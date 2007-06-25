@@ -299,7 +299,7 @@ public:
 	double yEnd();
     void setCoordinates(double xs, double xe, double ys, double ye);
 
-    void setFormula(const QString &s);
+    void setFormula(const QString &);
     bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 
     void setNumericPrecision(int prec);
@@ -346,12 +346,12 @@ public:
 
   ImageMarker(const QString&);
   QString fileName();
-  
+
   QSize size();
   void setSize(int, int);
-  
+
   void setBoundingRect(double, double, double, double) /PyName=setCoordinates/;
-  
+
 private:
   ImageMarker(const ImageMarker&);
 };
@@ -402,7 +402,7 @@ public:
 
   ImageMarker* addImage(ImageMarker*);
   ImageMarker* addImage(const QString& fileName);
-  
+
   void setTitle(const QString& t);
   Legend* newLegend();
   Legend* newLegend(const QString&);
@@ -432,7 +432,7 @@ public:
   void showGrid(int);
   void showGrid();
   void replot();
-  void print();
+
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
   void exportVector(const QString& fileName, int res = 0, bool color = true,
                     bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
@@ -472,7 +472,6 @@ public:
   void exportVector(const QString& fileName, int res = 0, bool color = true,
                     bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
 
-  void print();
 private:
   MultiLayer(const MultiLayer&);
 };
@@ -484,9 +483,75 @@ class Note: MyWidget
 %End
 public:
   void execute() const;
+  void executeAll();
+  void evaluate();
+
   bool autoexec() const;
+  void setAutoexec(bool = true);
+
+  QString text();
+  void setText(const QString &s);
+
+  void exportPDF(const QString& fileName);
+  QString exportASCII(const QString &file=QString::null);
+  QString importASCII(const QString &file=QString::null);
+
 private:
   Note(const Note&);
+};
+
+class Graph3D: MyWidget
+{
+%TypeHeaderCode
+#include "src/Graph3D.h"
+%End
+public:
+
+    void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
+
+    void setRotation(double  xVal,double  yVal,double  zVal);
+	void setScale(double  xVal,double  yVal,double  zVal);
+	void setShift(double  xVal,double  yVal,double  zVal);
+    void setZoom(double  val);
+
+    void setOrtho(bool = true);
+
+    void setMeshLineWidth(int);
+    void setDataColors(const QColor& cMax, const QColor& cMin);
+    void setDataColorMap(const QString& fileName);
+    void changeTransparency(double) /PyName=setOpacity/;
+    void setResolution(int);
+    void showColorLegend(bool = true) /PyName=showLegend/;
+    void setTitle(const QString&, const QColor& color = QColor(Qt::black), const QFont& font = QFont());
+    void animate(bool = true);
+
+    void setSmoothMesh(bool smooth);
+
+    void setLeftGrid(bool = true);
+	void setRightGrid(bool = true);
+	void setCeilGrid(bool = true);
+	void setFloorGrid(bool = true);
+	void setFrontGrid(bool = true);
+	void setBackGrid(bool = true);
+
+    void setFramed();
+	void setBoxed();
+	void setNoAxes();
+
+	void setFloorData() /PyName=showFloor/;
+	void setFloorIsolines() /PyName=showFloorIsolines/;
+	void setEmptyFloor();
+
+    void findBestLayout();
+
+    void clearData();
+    void addFunction(const QString& s, double xl, double xr, double yl,
+                    double yr, double zl, double zr) /PyName=setFunction/;
+
+    void update();
+
+private:
+  Graph3D(const Graph3D&);
 };
 
 class ApplicationWindow: QMainWindow
@@ -567,6 +632,10 @@ public:
 	MultiLayer* plotContour(Matrix*);
 	MultiLayer* plotColorMap(Matrix*);
 	MultiLayer* plotGrayScale(Matrix*);
+	Graph3D* plot3DMatrix(Matrix *, int style = 0) /PyName=plot3D/;
+    Graph3D* plotSurface(const QString&, double xl, double xr,
+					   double yl, double yr, double zl, double zr);
+
 
   QWidgetList *windowsList() /PyName=windows/;
 
@@ -581,7 +650,10 @@ public:
   void saveFolder(Folder *folder, const QString& fn);
   Folder* projectFolder() /PyName=rootFolder/;
 
-  void renameWindow(MyWidget *, const QString &);
+  MyWidget* openTemplate(const QString&);
+  void saveAsTemplate(MyWidget*, const QString&);
+
+  void setWindowName(MyWidget *, const QString &);
   void setPreferences(Graph*);
 
   MyWidget* clone(MyWidget*);

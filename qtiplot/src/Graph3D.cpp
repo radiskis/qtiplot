@@ -218,21 +218,15 @@ void Graph3D::addFunction(const QString& s,double xl,double xr,double yl,
 
 	sp->legend()->setLimits(zl,zr);
 
-	if (sp->plotStyle() == NOPLOT)
-	{
+	if (sp->plotStyle() == NOPLOT){
 		sp->setPlotStyle(FILLED);
 		style_=FILLED;
 		pointStyle = None;
 	}
   	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	findBestLayout();
-}
-
-void Graph3D::insertFunction(const QString& s,double xl,double xr,double yl,
-		double yr,double zl,double zr)
-{
-	addFunction(s,xl,xr,yl,yr,zl,zr);
 	update();
+
 }
 
 void Graph3D::addData(Table* table, int xcol, int ycol)
@@ -794,8 +788,7 @@ void Graph3D::update()
 
 void Graph3D::adjustLabels(int val)
 {
-	if (labelsDist != val)
-	{
+	if (labelsDist != val){
 		labelsDist=val;
 		sp->coordinates()->adjustLabels(val);
 		sp->makeCurrent();
@@ -1937,8 +1930,7 @@ void Graph3D::clearData()
 		matrix_ = 0;
 	else if (worksheet)
 		worksheet = 0;
-	else if (func)
-	{
+	else if (func){
 		delete func;
 		func = 0;
 	}
@@ -2038,7 +2030,7 @@ void Graph3D::setGrid(int grids)
 	if (!sp)
 		return;
 
-	sp->coordinates()->setGridLines(true, false,grids);
+	sp->coordinates()->setGridLines(true, false, grids);
 }
 
 void Graph3D::setLeftGrid(bool b)
@@ -2101,8 +2093,7 @@ void Graph3D::copyImage()
 
 void Graph3D::exportImage(const QString& fileName, int quality, bool transparent)
 {
-	if (transparent)
-	{
+	if (transparent){
         QPixmap pic = sp->renderPixmap();
         sp->updateData();
 
@@ -2115,10 +2106,8 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 		QColor background = QColor (Qt::white);
 		QRgb backgroundPixel = background.rgb ();
 		QImage image = pic.convertToImage();
-		for (int y=0; y<image.height(); y++)
-		{
-			for ( int x=0; x<image.width(); x++ )
-			{
+		for (int y=0; y<image.height(); y++){
+			for ( int x=0; x<image.width(); x++ ){
 				QRgb rgb = image.pixel(x, y);
 				if (rgb == backgroundPixel) // we want the frame transparent
 					p.drawPoint( x, y );
@@ -2127,9 +2116,7 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 		p.end();
 		pic.setMask(mask);
 		pic.save(fileName, 0, quality);
-	}
-    else
-    {
+	} else {
         QImage im = sp->grabFrameBuffer(true);
         QImageWriter iw(fileName);
         iw.setQuality(quality);
@@ -2940,7 +2927,7 @@ Turns 3D animation on or off
 void Graph3D::animate(bool on)
 {
 if ( on )
-   d_timer->start( animation_redraw_wait ); // Wait this many msecs before redraw
+    d_timer->start( animation_redraw_wait ); // Wait this many msecs before redraw
 else
     d_timer->stop();
 }
@@ -3063,7 +3050,7 @@ void Graph3D::copy(Graph3D* g)
 		setDataColorMap(g->colorMap());
 	else
 		setDataColors(g->minDataColor(),g->maxDataColor());
-	
+
 	setColors(g->meshColor(),g->axesColor(),g->numColor(),
 				g->labelColor(), g->bgColor(),g->gridColor());
 	setAxesLabels(g->axesLabels());

@@ -3245,7 +3245,7 @@ void Table::updateDecimalSeparators()
 {
     saveToMemory();
 
-	for (int i=0; i<d_table->numCols(); i++){
+    for (int i=0; i<d_table->numCols(); i++){
 	    if (colTypes[i] != Numeric)
             continue;
 

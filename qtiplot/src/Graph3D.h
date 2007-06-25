@@ -71,10 +71,8 @@ public slots:
 	void copy(Graph3D* g);
 	void initPlot();
 	void initCoord();
-	void addFunction(const QString& s,double xl,double xr,double yl,
-						  double yr,double zl,double zr);
-	void insertFunction(const QString& s,double xl,double xr,double yl,
-						  double yr,double zl,double zr);
+	void addFunction(const QString& s, double xl, double xr, double yl,
+						  double yr, double zl, double zr);
 	void insertNewData(Table* table, const QString& colName);
 
 	Matrix * matrix(){return matrix_;};
@@ -196,12 +194,12 @@ public slots:
 	void setGrid(Qwt3D::SIDE s, bool b);
 	void setGrid(int grids);
 
-	void setLeftGrid(bool b);
-	void setRightGrid(bool b);
-	void setCeilGrid(bool b);
-	void setFloorGrid(bool b);
-	void setFrontGrid(bool b);
-	void setBackGrid(bool b);
+	void setLeftGrid(bool b = true);
+	void setRightGrid(bool b = true);
+	void setCeilGrid(bool b = true);
+	void setFloorGrid(bool b = true);
+	void setFrontGrid(bool b = true);
+	void setBackGrid(bool b = true);
 	//@}
 
 	void setStyle(Qwt3D::COORDSTYLE coord,Qwt3D::FLOORSTYLE floor,
@@ -286,7 +284,7 @@ public slots:
 	QString plotTitle(){return title;};
 	QColor titleColor(){return titleCol;};
 	void setTitle(const QStringList& lst);
-	void setTitle(const QString& s,const QColor& color,const QFont& font);
+	void setTitle(const QString& s, const QColor& color = QColor(Qt::black), const QFont& font = QFont());
 	//@}
 
 	//! \name Resolution
@@ -297,7 +295,7 @@ public slots:
 
 	//! \name Legend
 	//@{
-	void showColorLegend(bool show);
+	void showColorLegend(bool show = true);
 	bool isLegendOn(){return legendOn;};
 	//@}
 
@@ -339,7 +337,7 @@ public slots:
 	Table* getTable(){return worksheet;};
 	void showWorksheet();
 	void setPlotAssociation(const QString& s){plotAssociation = s;};
-	void setSmoothMesh(bool smooth);
+	void setSmoothMesh(bool smooth = true);
 
 	//! Used for the animation: rotates the scene with 1/360 degrees
 	void rotate();
