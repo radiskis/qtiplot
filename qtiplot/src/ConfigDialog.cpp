@@ -644,7 +644,7 @@ void ConfigDialog::initFittingPage()
     fittingCurveLayout->addWidget(linearFit2PointsBox, 0, 3);
 
 	showPointsBox(!app->generateUniformFitPoints);
-	
+
 	samePointsBtn = new QRadioButton();
 	samePointsBtn->setChecked(!app->generateUniformFitPoints);
 	fittingCurveLayout->addWidget(samePointsBtn, 1, 0);
@@ -1010,8 +1010,7 @@ void ConfigDialog::apply()
 	sep.replace(tr("SPACE"), " ");
 	sep.replace("\\s", " ");
 
-	if (sep.contains(QRegExp("[0-9.eE+-]"))!=0)
-	{
+	if (sep.contains(QRegExp("[0-9.eE+-]"))!=0){
 		QMessageBox::warning(0, tr("QtiPlot - Import options error"),
 				tr("The separator must not contain the following characters: 0-9eE.+-"));
 		return;
@@ -1048,10 +1047,8 @@ void ConfigDialog::apply()
 	app->d_print_cropmarks = boxPrintCropmarks->isChecked();
 	app->d_scale_plots_on_print = boxScaleLayersOnPrint->isChecked();
 	QWidgetList *windows = app->windowsList();
-	foreach(QWidget *w, *windows)
-	{
-		if (w->isA("MultiLayer"))
-		{
+	foreach(QWidget *w, *windows){
+		if (w->isA("MultiLayer")){
 			((MultiLayer*)w)->setScaleLayersOnPrint(boxScaleLayersOnPrint->isChecked());
 			((MultiLayer*)w)->printCropmarks(boxPrintCropmarks->isChecked());
 		}

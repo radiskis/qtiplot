@@ -2,8 +2,8 @@
     File                 : ScaleDraw.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Extension to QwtScaleDraw
 
  ***************************************************************************/
@@ -30,10 +30,10 @@
 #include "MyParser.h"
 
 #include <QDateTime>
-#include <QMessageBox>
 
 #include <qwt_painter.h>
 #include <qwt_text.h>
+#include <qwt_scale_map.h>
 
 ScaleDraw::ScaleDraw(const QString& s):
 	d_fmt('g'),
@@ -141,11 +141,21 @@ QwtText QwtTextScaleDraw::label(double value) const
 		return QwtText();
 
 	QwtValueList lst = scDiv.ticks (QwtScaleDiv::MajorTick);
-	lst.pop_front();
-	lst.pop_back();
-	int index = lst.indexOf(value);
+
+	int index = 0;
+	if (map().transformation()->type() == QwtScaleTransformation::Linear){
+        int step = abs(lst[1] - lst[0]);
+        index = lst[0] + step*lst.indexOf(value) - 1;
+	}
+	else if (map().transformation()->type() == QwtScaleTransformation::Log10){
+	    if (lst.count() >= 2){
+            double step = lst[1]/lst[0];
+            index = lst[0]*pow(step, lst.indexOf(value)) - 1;
+	    }
+	}
+
 	if (index >= 0 && index < (int)labels.count())
-		return QwtText(labels[index]);
+        return QwtText(labels[index]);
 	else
 		return QwtText();
 }

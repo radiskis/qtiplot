@@ -233,10 +233,14 @@ appImports = (
 	"matrix", "newMatrix",
 	"graph", "newGraph",
 	"note", "newNote",
-	"plot", "plotContour", "plotColorMap", "plotGrayScale",
+	"plot", "plot3D", "plotSurface",
+	"plotContour", "plotColorMap", "plotGrayScale",
 	"activeFolder", "rootFolder", "saveFolder",
-	"renameWindow", "clone",
-	"importImage"
+	"saveAsTemplate", "openTemplate",
+	"clone",
+	"importImage",
+	"setWindowName",
+	"setPreferences"
 	)
 for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))

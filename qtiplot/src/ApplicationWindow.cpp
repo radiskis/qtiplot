@@ -1741,19 +1741,17 @@ void ApplicationWindow::change3DData(const QString& colName)
 
 void ApplicationWindow::editSurfacePlot()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
+	if ( ws->activeWindow() && ws->activeWindow()->isA("Graph3D")){
 		Graph3D* g = (Graph3D*)ws->activeWindow();
 
 		SurfaceDialog* sd= new SurfaceDialog(this,"FunctionDialog",true,0);
 		sd->setAttribute(Qt::WA_DeleteOnClose);
 		connect (sd,SIGNAL(options(const QString&,double,double,double,double,double,double)),
-				g,SLOT(insertFunction(const QString&,double,double,double,double,double,double)));
-		connect (sd,SIGNAL(clearFunctionsList()),this,SLOT(clearSurfaceFunctionsList()));
+				g, SLOT(addFunction(const QString&,double,double,double,double,double,double)));
+		connect (sd, SIGNAL(clearFunctionsList()), this, SLOT(clearSurfaceFunctionsList()));
 
 		sd->insertFunctionsList(surfaceFunc);
-		if (g->hasData())
-		{
+		if (g->hasData()){
 			sd->setFunction(g->formula());
 			sd->setLimits(g->xStart(), g->xStop(), g->yStart(),
 					g->yStop(), g->zStart(), g->zStop());
@@ -1767,26 +1765,25 @@ void ApplicationWindow::newSurfacePlot()
 	SurfaceDialog* sd= new SurfaceDialog(this,"FunctionDialog",true,0);
 	sd->setAttribute(Qt::WA_DeleteOnClose);
 	connect (sd,SIGNAL(options(const QString&,double,double,double,double,double,double)),
-			this,SLOT(newPlot3D(const QString&,double,double,double,double,double,double)));
+			this, SLOT(plotSurface(const QString&,double,double,double,double,double,double)));
 	connect (sd,SIGNAL(clearFunctionsList()),this,SLOT(clearSurfaceFunctionsList()));
 
 	sd->insertFunctionsList(surfaceFunc);
 	sd->exec();
 }
 
-Graph3D* ApplicationWindow::newPlot3D(const QString& formula, double xl, double xr,
+Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, double xr,
 		double yl, double yr, double zl, double zr)
 {
 	QString label = generateUniqueName(tr("Graph"));
 
 	Graph3D *plot = new Graph3D("",ws,0);
 	plot->setAttribute(Qt::WA_DeleteOnClose);
-	plot->addFunction(formula, xl, xr, yl, yr, zl, zr);
 	plot->resize(500,400);
 	plot->setWindowTitle(label);
 	plot->setName(label);
 	customPlot3D(plot);
-	plot->update();
+	plot->addFunction(formula, xl, xr, yl, yr, zl, zr);
 
 	initPlot3D(plot);
 
@@ -1809,7 +1806,6 @@ Graph3D* ApplicationWindow::newPlot3D(const QString& caption,const QString& form
 	Graph3D *plot = new Graph3D("",ws,0);
 	plot->setAttribute(Qt::WA_DeleteOnClose);
 	plot->addFunction(formula, xl, xr, yl, yr, zl, zr);
-	plot->update();
 
 	QString label = caption;
 	while(alreadyUsedName(label))
@@ -3844,7 +3840,7 @@ void ApplicationWindow::restartScriptingEnv()
 				tr("Scripting language \"%1\" failed to initialize.").arg(scriptEnv->name()));
 }
 
-void ApplicationWindow::openTemplate()
+/*void ApplicationWindow::openTemplate()
 {
 	QString filter = "QtiPlot 2D Graph Template (*.qpt);;";
 	filter += "QtiPlot 3D Surface Template (*.qst);;";
@@ -3852,15 +3848,13 @@ void ApplicationWindow::openTemplate()
 	filter += "QtiPlot Matrix Template (*.qmt);;";
 
 	QString fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Open Template File"), templatesDir, filter);
-	if (!fn.isEmpty())
-	{
+	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		templatesDir = fi.dirPath(true);
 		if (fn.contains(".qmt",true) || fn.contains(".qpt",true) ||
 				fn.contains(".qtt",true) || fn.contains(".qst",true))
 		{
-			if (!fi.exists())
-			{
+			if (!fi.exists()){
 				QMessageBox::critical(this, tr("QtiPlot - File opening error"),
 						tr("The file: <b>%1</b> doesn't exist!").arg(fn));
 				return;
@@ -3871,8 +3865,7 @@ void ApplicationWindow::openTemplate()
 			f.open(QIODevice::ReadOnly);
 			QStringList l=t.readLine().split(QRegExp("\\s"), QString::SkipEmptyParts);
 			QString fileType=l[0];
-			if (fileType != "QtiPlot")
-			{
+			if (fileType != "QtiPlot"){
 				QMessageBox::critical(this,tr("QtiPlot - File opening error"),
 						tr("The file: <b> %1 </b> was not created using QtiPlot!").arg(fn));
 				return;
@@ -3885,8 +3878,7 @@ void ApplicationWindow::openTemplate()
 			QString templateType;
 			t>>templateType;
 
-			if (templateType == "<SurfacePlot>")
-			{
+			if (templateType == "<SurfacePlot>") {
 				t.skipWhiteSpace();
 				QStringList lst;
 				while (!t.atEnd())
@@ -3894,24 +3886,19 @@ void ApplicationWindow::openTemplate()
 				w = openSurfacePlot(this,lst);
 				if (w)
 					((Graph3D *)w)->clearData();
-			}
-			else
-			{
+			} else {
 				int rows, cols;
 				t>>rows; t>>cols;
 				t.skipWhiteSpace();
 				QString geometry = t.readLine();
 
-				if (templateType == "<multiLayer>")
-				{
+				if (templateType == "<multiLayer>"){
 					w = multilayerPlot(generateUniqueName(tr("Graph")));
-					if (w)
-					{
+					if (w){
 						((MultiLayer*)w)->setCols(cols);
 						((MultiLayer*)w)->setRows(rows);
 						restoreWindowGeometry(this, w, geometry);
-						if (d_file_version > 83)
-						{
+						if (d_file_version > 83){
 							QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
 							((MultiLayer*)w)->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
 							lst=t.readLine().split("\t", QString::SkipEmptyParts);
@@ -3921,14 +3908,11 @@ void ApplicationWindow::openTemplate()
 							lst=t.readLine().split("\t", QString::SkipEmptyParts);
 							((MultiLayer*)w)->setAlignement(lst[1].toInt(),lst[2].toInt());
 						}
-						while (!t.atEnd())
-						{//open layers
+						while (!t.atEnd()){//open layers
 							QString s=t.readLine();
-							if (s.left(7)=="<graph>")
-							{
+							if (s.left(7)=="<graph>"){
 								QStringList lst;
-								while ( s!="</graph>" )
-								{
+								while ( s!="</graph>" ){
 									s = t.readLine();
 									lst << s;
 								}
@@ -3936,15 +3920,12 @@ void ApplicationWindow::openTemplate()
 							}
 						}
 					}
-				}
-				else
-				{
+				} else {
 					if (templateType == "<table>")
 						w = newTable(tr("Table1"), rows, cols);
 					else if (templateType == "<matrix>")
 						w = newMatrix(rows, cols);
-					if (w)
-					{
+					if (w){
 						QStringList lst;
 						while (!t.atEnd())
 							lst << t.readLine();
@@ -3955,20 +3936,133 @@ void ApplicationWindow::openTemplate()
 			}
 
 			f.close();
-			if (w)
-			{
+			if (w){
 				customMenu((QWidget*)w);
 				customToolBars((QWidget*)w);
 			}
 			QApplication::restoreOverrideCursor();
-		}
-		else
-		{
+		} else {
 			QMessageBox::critical(this,tr("QtiPlot - File opening error"),
 					tr("The file: <b>%1</b> is not a QtiPlot template file!").arg(fn));
 			return;
 		}
 	}
+}*/
+
+void ApplicationWindow::openTemplate()
+{
+	QString filter = "QtiPlot 2D Graph Template (*.qpt);;";
+	filter += "QtiPlot 3D Surface Template (*.qst);;";
+	filter += "QtiPlot Table Template (*.qtt);;";
+	filter += "QtiPlot Matrix Template (*.qmt);;";
+
+	QString fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Open Template File"), templatesDir, filter);
+	if (!fn.isEmpty()){
+		QFileInfo fi(fn);
+		templatesDir = fi.dirPath(true);
+		if (fn.contains(".qmt") || fn.contains(".qpt") || fn.contains(".qtt") || fn.contains(".qst"))
+			openTemplate(fn);
+		else {
+			QMessageBox::critical(this,tr("QtiPlot - File opening error"),
+					tr("The file: <b>%1</b> is not a QtiPlot template file!").arg(fn));
+			return;
+		}
+	}
+}
+
+MyWidget* ApplicationWindow::openTemplate(const QString& fn)
+{
+	if (fn.isEmpty() || !QFile::exists(fn)){
+		QMessageBox::critical(this, tr("QtiPlot - File opening error"),
+					tr("The file: <b>%1</b> doesn't exist!").arg(fn));
+		return 0;
+	}
+
+	QFile f(fn);
+	QTextStream t(&f);
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	f.open(QIODevice::ReadOnly);
+	QStringList l=t.readLine().split(QRegExp("\\s"), QString::SkipEmptyParts);
+	QString fileType=l[0];
+	if (fileType != "QtiPlot"){
+		QMessageBox::critical(this,tr("QtiPlot - File opening error"),
+						tr("The file: <b> %1 </b> was not created using QtiPlot!").arg(fn));
+		return 0;
+	}
+
+	QStringList vl = l[1].split(".", QString::SkipEmptyParts);
+	d_file_version = 100*(vl[0]).toInt()+10*(vl[1]).toInt()+(vl[2]).toInt();
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	MyWidget *w = 0;
+	QString templateType;
+	t>>templateType;
+
+	if (templateType == "<SurfacePlot>") {
+		t.skipWhiteSpace();
+		QStringList lst;
+		while (!t.atEnd())
+			lst << t.readLine();
+		w = openSurfacePlot(this,lst);
+		if (w)
+			((Graph3D *)w)->clearData();
+	} else {
+		int rows, cols;
+		t>>rows; t>>cols;
+		t.skipWhiteSpace();
+		QString geometry = t.readLine();
+
+		if (templateType == "<multiLayer>"){
+			w = multilayerPlot(generateUniqueName(tr("Graph")));
+			if (w){
+				((MultiLayer*)w)->setCols(cols);
+				((MultiLayer*)w)->setRows(rows);
+				restoreWindowGeometry(this, w, geometry);
+				if (d_file_version > 83){
+					QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					((MultiLayer*)w)->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
+					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					((MultiLayer*)w)->setSpacing(lst[1].toInt(),lst[2].toInt());
+					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					((MultiLayer*)w)->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
+					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					((MultiLayer*)w)->setAlignement(lst[1].toInt(),lst[2].toInt());
+				}
+				while (!t.atEnd()){//open layers
+					QString s=t.readLine();
+					if (s.left(7)=="<graph>"){
+						QStringList lst;
+						while ( s!="</graph>" ){
+							s = t.readLine();
+							lst << s;
+						}
+					openGraph(this, (MultiLayer*)w, lst);
+					}
+				}
+			}
+		} else {
+			if (templateType == "<table>")
+				w = newTable(tr("Table1"), rows, cols);
+			else if (templateType == "<matrix>")
+				w = newMatrix(rows, cols);
+			if (w){
+				QStringList lst;
+				while (!t.atEnd())
+					lst << t.readLine();
+				w->restore(lst);
+				restoreWindowGeometry(this, w, geometry);
+			}
+		}
+	}
+
+	f.close();
+	if (w){
+		customMenu((QWidget*)w);
+		customToolBars((QWidget*)w);
+	}
+
+	QApplication::restoreOverrideCursor();
+	return w;
 }
 
 void ApplicationWindow::readSettings()
@@ -4877,20 +4971,17 @@ void ApplicationWindow::saveAsTemplate()
 
 	QString selectedFilter;
 	QString fn = QFileDialog::getSaveFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->name(), filter, &selectedFilter);
-	if ( !fn.isEmpty() )
-	{
+	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		workingDir = fi.dirPath(true);
 		QString baseName = fi.fileName();
-		if (!baseName.contains("."))
-		{
+		if (!baseName.contains(".")){
 			selectedFilter = selectedFilter.right(5).left(4);
 			fn.append(selectedFilter);
 		}
 
-		QFile f(fn);
-		if ( !f.open( QIODevice::WriteOnly ) )
-		{
+		/*QFile f(fn);
+		if ( !f.open( QIODevice::WriteOnly ) ){
 			QMessageBox::critical(this, tr("QtiPlot - Export error"),
 			tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
 			return;
@@ -4903,8 +4994,32 @@ void ApplicationWindow::saveAsTemplate()
 		t.setEncoding(QTextStream::UnicodeUTF8);
 		t << text;
 		f.close();
-		QApplication::restoreOverrideCursor();
+		QApplication::restoreOverrideCursor();*/
+
+		saveAsTemplate(w, fn);
 	}
+}
+
+void ApplicationWindow::saveAsTemplate(MyWidget* w, const QString& fn)
+{
+	if (!w)
+		return;
+
+	QFile f(fn);
+	if ( !f.open( QIODevice::WriteOnly ) ){
+		QMessageBox::critical(this, tr("QtiPlot - Export error"),
+		tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
+		return;
+	}
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	QString text = "QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
+				QString::number(patch_version) + " template file\n";
+	text += w->saveAsTemplate(windowGeometryInfo(w));
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << text;
+	f.close();
+	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::rename()
@@ -4941,15 +5056,14 @@ void ApplicationWindow::renameWindow(Q3ListViewItem *item, int, const QString &t
 	if (!w || text == w->name())
 		return;
 
-	while(!renameWindow(w, text))
-	{
+	while(!setWindowName(w, text)){
 		item->setRenameEnabled (0, true);
 		item->startRename (0);
 		return;
 	}
 }
 
-bool ApplicationWindow::renameWindow(MyWidget *w, const QString &text)
+bool ApplicationWindow::setWindowName(MyWidget *w, const QString &text)
 {
 	if (!w)
 		return false;
@@ -4961,8 +5075,7 @@ bool ApplicationWindow::renameWindow(MyWidget *w, const QString &text)
 	if (newName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please enter a valid name!"));
 		return false;
-	}
-	else if (newName.contains(QRegExp("\\W"))){
+	} else if (newName.contains(QRegExp("\\W"))){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("The name you chose is not valid: only letters and digits are allowed!")+
 				"<p>" + tr("Please choose another name!"));
@@ -4989,8 +5102,7 @@ bool ApplicationWindow::renameWindow(MyWidget *w, const QString &text)
 		int id=tableWindows.findIndex(name);
 		tableWindows[id]=newName;
 		updateTableNames(name,newName);
-	}
-	else if (w->isA("Matrix"))
+	} else if (w->isA("Matrix"))
 		changeMatrixName(name, newName);
 
 	w->setName(newName);
@@ -6968,7 +7080,7 @@ void ApplicationWindow::addImage()
 	Graph* g = (Graph*)plot->activeGraph();
 	if (!g)
 		return;
-		
+
 	QList<QByteArray> list = QImageReader::supportedImageFormats();
 	QString filter = tr("Images") + " (", aux1, aux2;
 	for (int i=0; i<(int)list.count(); i++){
@@ -11842,6 +11954,14 @@ void ApplicationWindow::plot3DMatrix(int style)
 	if (!ws->activeWindow()|| !ws->activeWindow()->isA("Matrix"))
 		return;
 
+    plot3DMatrix((Matrix*)ws->activeWindow(), style);
+}
+
+Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
+{
+	if (!m)
+		return 0;
+
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	QString label = generateUniqueName(tr("Graph"));
 
@@ -11859,6 +11979,7 @@ void ApplicationWindow::plot3DMatrix(int style)
 
 	emit modified();
 	QApplication::restoreOverrideCursor();
+	return plot;
 }
 
 void ApplicationWindow::plotGrayScale()

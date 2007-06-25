@@ -810,6 +810,39 @@ n = f.note(name, recursive=False)
         entering <userinput>self.cell("t",i)</userinput> as a column formula
         is equivalent to the convenience function
         <userinput>col("t")</userinput>.</para>
+
+		<para> Once you have established contact with a MDI window, you can modify some of it's properties, like the name, the window label, the geometry, etc..
+		For example, here's how to rename a window, change it's label and the way they are displayed in the window title bar, the so called caption policy:
+	    <programlisting width="40">
+t = table("Table1")
+setWindowName(t, "toto")
+t.setWindowLabel("tutu")
+t.setCaptionPolicy(MDIWindow.Both)
+		</programlisting>
+The caption policy can have one of the following values:
+	<orderedlist>
+        <listitem>
+          Name <para>the window caption is determined by the window name</para>
+        </listitem>
+        <listitem>
+          Label<para>the caption is detemined by the window label</para>
+        </listitem>
+        <listitem>
+          Both<para>caption = "name - label"</para>
+        </listitem>
+      </orderedlist>
+
+For a fast editing process, you can create template files from existing tables, matrices or plots. The templates can be used later on in order to create customized windows very easily:
+	<programlisting>
+saveAsTemplate(graph("Graph1"), "my_plot.qpt")
+g = openTemplate("my_plot.qpt")
+	</programlisting>
+
+Also, you can easily clone a MDI window:
+<programlisting>
+g1 = clone(graph("Graph1"))
+</programlisting>
+		</para>
       </sect3>
 
       <sect3>
@@ -872,11 +905,49 @@ m.cell(row, col)
 m.setCell(row, col, value)
 m.text(row, col)
 m.setText(row, col, string)
-	  </programlisting> Also like with tables, there's <programlisting width="40">
-m.numRows()
+	  </programlisting>
+	  An alternative solution to assign values to a Matrix, would be to define a formula and to calculate the values using this formula, like in the following example:
+    <programlisting>
+m.setFormula("x*y*sin(x*y)")
+m.calculate()
+	   </programlisting>
+
+You can also specify a column/row range in the calculate() function, like this:
+    <programlisting>
+m.calculate(startRow, endRow, startColumn, endColumn)
+    </programlisting>
+
+Before setting the values in a matrix you might want to define the numeric precision, that is the number of significant digits used for the computations:
+    <programlisting>
+m.setNumericPrecision(prec)
+    </programlisting>
+
+	  Also, like with tables, you can access the number of rows/columns in a matrix: <programlisting width="40">
+rows = m.numRows()
 # and
-m.numCols()
-	  </programlisting></para>
+columns = m.numCols()
+	  </programlisting>
+
+Matrix objects allow you to define a system of x/y coordinates that will be used when plotting color/contour maps or 3D height maps.
+You can manipulate these coordinates using the following functions:
+
+<programlisting>
+xs = m.xStart()
+xe = m.xEnd()
+ys = m.yStart()
+ye = m.yEnd()
+m.setCoordinates(xs + 2.5, xe, ys - 1, ye + 1);
+plotColorMap(m)
+</programlisting>
+
+You can also transpose or invert a matrix and calculate its determinant, provided, of course, that the conditions on the matrix dimensions, required by these operations, are satisfied:
+<programlisting>
+m.transpose()
+m.invert()
+d = m.determinant()
+</programlisting>
+
+	  </para>
       </sect3>
 
       <sect3>
@@ -1062,8 +1133,8 @@ l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5
 	  The other flags should be self-explanatory.
 	  Now, here is how you can export a layer <programlisting width="40">
 l.print()
-l.exportToSVG(filename)
-l.exportToEPS(filename)
+l.export(filename)
+l.exportVector(fileName, resolution = 96, color = True, keepAspect = True, pageSize = QtGui.QPrinter.Custom);
 l.exportImage(filename, filetype="PNG", quality=100, transparent=False)
 	  </programlisting> and a graph <programlisting width="40">
 g.print()

@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Rename window dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -67,22 +67,22 @@ RenameWindowDialog::RenameWindowDialog(QWidget* parent, Qt::WFlags fl )
 
 	boxBoth = new QRadioButton(tr("&Both Name and Label"));
 	leftLayout->addWidget(boxBoth, 4, 0);
-	
+
 	buttons = new QButtonGroup(this);
 	buttons->addButton(boxName);
 	buttons->addButton(boxLabel);
 	buttons->addButton(boxBoth);
-	
+
 	buttonOk = new QPushButton(tr( "&OK" ));
     buttonOk->setAutoDefault( true );
     buttonOk->setDefault( true );
 	rightLayout->addWidget(buttonOk);
-   
+
     buttonCancel = new QPushButton(tr( "&Cancel" ));
     buttonCancel->setAutoDefault( true );
 	rightLayout->addWidget(buttonCancel);
 	rightLayout->addStretch();
-	
+
 	QHBoxLayout * mainLayout = new QHBoxLayout(this);
     mainLayout->addWidget(groupBox1);
 	mainLayout->addLayout(rightLayout);
@@ -141,9 +141,9 @@ void RenameWindowDialog::accept()
 	if (text.contains("_")){
   		QMessageBox::warning(this, tr("QtiPlot - Warning"),
   	    tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
-  	 
+
   	if (text.replace("_", "-") != name){
-		if(!app->renameWindow(window, text))
+		if(!app->setWindowName(window, text))
 			return;
 	}
 

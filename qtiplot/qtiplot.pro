@@ -412,6 +412,7 @@ contains(SCRIPTING_LANGS, Python) {
 
   HEADERS += $${SIP_DIR}/sipqtiApplicationWindow.h\
              $${SIP_DIR}/sipqtiGraph.h\
+             $${SIP_DIR}/sipqtiGraph3D.h\
              $${SIP_DIR}/sipqtiArrowMarker.h\
 			 $${SIP_DIR}/sipqtiImageMarker.h\
 			 $${SIP_DIR}/sipqtiLegend.h\
@@ -452,6 +453,7 @@ contains(SCRIPTING_LANGS, Python) {
   SOURCES += $${SIP_DIR}/sipqticmodule.cpp\
              $${SIP_DIR}/sipqtiApplicationWindow.cpp\
              $${SIP_DIR}/sipqtiGraph.cpp\
+             $${SIP_DIR}/sipqtiGraph3D.cpp\
              $${SIP_DIR}/sipqtiArrowMarker.cpp\
 			 $${SIP_DIR}/sipqtiImageMarker.cpp\
 			 $${SIP_DIR}/sipqtiLegend.cpp\

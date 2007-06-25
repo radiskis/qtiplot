@@ -246,10 +246,10 @@ public slots:
 	//! \name Surface Plots
 	//@{
 	Graph3D* newPlot3D();
-	Graph3D* newPlot3D(const QString& formula, double xl, double xr,
-					   double yl, double yr, double zl, double zr);
 	Graph3D* newPlot3D(const QString& caption,const QString& formula,
 					   double xl, double xr,double yl, double yr, double zl, double zr);
+    Graph3D* plotSurface(const QString& formula, double xl, double xr,
+					   double yl, double yr, double zl, double zr);
 	void connectSurfacePlot(Graph3D *plot);
 	void newSurfacePlot();
 	void editSurfacePlot();
@@ -273,6 +273,7 @@ public slots:
 	void plot3DWireSurface();
 
 	void plot3DMatrix(int style);
+	Graph3D* plot3DMatrix(Matrix *m, int style = 0);
 
 	void plot3DRibbon();
 	void plot3DScatter();
@@ -421,7 +422,7 @@ public slots:
 	void renameWindow(Q3ListViewItem *item, int, const QString &s);
 
 	//!  Checks weather the new window name is valid and modifies the name.
-	bool renameWindow(MyWidget *w, const QString &text);
+	bool setWindowName(MyWidget *w, const QString &text);
 
 	void maximizeWindow(Q3ListViewItem * lbi);
 	void maximizeWindow();
@@ -458,7 +459,9 @@ public slots:
 	QStringList multilayerDependencies(QWidget *w);
 
 	void saveAsTemplate();
+	void saveAsTemplate(MyWidget* w, const QString& fn);
 	void openTemplate();
+	MyWidget* openTemplate(const QString& fn);
 
 	QString windowGeometryInfo(MyWidget *w);
 	void restoreWindowGeometry(ApplicationWindow *app, MyWidget *w, const QString s);
