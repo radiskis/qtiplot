@@ -98,12 +98,30 @@ struct spreadSheet {
 	int maxRows;
 	bool bHidden;
 	bool bLoose;
+	bool bMultisheet;
 	vector <spreadColumn> column;
 	spreadSheet(string _name="")
 	:	name(_name)
 	,	label("")
 	,	bHidden(false)
 	,	bLoose(true)
+	,	bMultisheet(false)
+	{};
+};
+
+struct excel {
+	string name;
+	string label;
+	int maxRows;
+	bool bHidden;
+	bool bLoose;
+	vector <spreadSheet> sheet;
+	excel(string _name="", string _label="", int _maxRows=0, bool _bHidden=false, bool _bLoose=true)
+	:	name(_name)
+	,	label(_label)
+	,	maxRows(_maxRows)
+	,	bHidden(_bHidden)
+	,	bLoose(_bLoose)
 	{};
 };
 
@@ -447,11 +465,14 @@ private:
 	int ParseFormatOld();
 	int ParseFormatNew();
 	int  compareSpreadnames(char *sname);				//!< returns matching spread index
+	int  compareExcelnames(char *sname);				//!< returns matching excel index
 	int  compareColumnnames(int spread, char *sname);	//!< returns matching column index
+	int  compareExcelColumnnames(int excel, int sheet, char *sname);  //!< returns matching column index
 	int  compareMatrixnames(char *sname);				//!< returns matching matrix index
 	int  compareFunctionnames(const char *sname);				//!< returns matching function index
 	vector<string> findDataByIndex(int index);
 	void readSpreadInfo(FILE *fopj, FILE *fdebug);
+	void readExcelInfo(FILE *f, FILE *debug);
 	void readMatrixInfo(FILE *fopj, FILE *fdebug);
 	void readGraphInfo(FILE *fopj, FILE *fdebug);
 	void readGraphGridInfo(graphGrid &grid, FILE *fopj, int pos);
@@ -459,12 +480,14 @@ private:
 	void readGraphAxisTickLabelsInfo(graphAxisTick &tick, FILE *fopj, int pos);
 	void skipObjectInfo(FILE *fopj, FILE *fdebug);
 	void setColName(int spread);		//!< set default column name starting from spreadsheet spread
+	void convertSpreadToExcel(int spread);
 	const char* filename;			//!< project file name
 	int version;				//!< project version
 	int dataIndex;
 	string resultsLog;
 	vector <spreadSheet> SPREADSHEET;
 	vector <matrix> MATRIX;
+	vector <excel> EXCEL;
 	vector <function> FUNCTION;
 	vector <graph> GRAPH;
 	vector <note> NOTE;

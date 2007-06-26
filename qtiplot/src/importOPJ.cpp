@@ -444,6 +444,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 			int style=0;
 			for(int c=0; c<opj.numCurves(g,l); c++)
 			{
+				try{
 				QString data(opj.curveDataName(g,l,c));
 				int color=0;
 				switch(opj.curveType(g,l,c))
@@ -474,6 +475,9 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 					continue;
 				}
 				QString tableName;
+				QStringList formulas;
+				QList<double> ranges;
+				int s;
 				switch(data[0].toAscii())
 				{
 				case 'T':
@@ -491,9 +495,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 						graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveXColName(g,l,c), tableName + "_" + opj.curveYColName(g,l,c), style);
 					break;
 				case 'F':
-					QStringList formulas;
-					QList<double> ranges;
-					int s=opj.functionIndex(data.right(data.length()-2).toStdString().c_str());
+					s=opj.functionIndex(data.right(data.length()-2).toStdString().c_str());
 					int type;
 					if(opj.functionType(s)==1)//Polar
 					{
@@ -511,6 +513,8 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 
 					mw->updateFunctionLists(type, formulas);
 					break;
+				default:
+					continue;
 				}
 
 				CurveLayout cl = graph->initCurveLayout(style, opj.numCurves(g,l));
@@ -711,6 +715,10 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 					break;
 				}
 
+				}
+				catch(...)
+				{
+				}
 			}
 			vector<double> rangeX=opj.layerXRange(g,l);
 			vector<int>    ticksX=opj.layerXTicks(g,l);
