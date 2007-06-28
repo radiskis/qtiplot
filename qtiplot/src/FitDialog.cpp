@@ -661,7 +661,7 @@ void FitDialog::showFitPage()
         it->setFont(font);
         boxParams->setItem(i, 0, it);
 
-        it = new QTableWidgetItem(QLocale().toString(1.0, 'f', boxPrecision->value()));
+        it = new QTableWidgetItem(QString::number(1.0, 'f', boxPrecision->value()));
         it->setTextAlignment(Qt::AlignRight);
         boxParams->setItem(i, 1, it);
 	}
@@ -1026,8 +1026,7 @@ void FitDialog::accept()
 {
 	QString curve = boxCurve->currentText();
 	QStringList curvesList = graph->curvesList();
-	if (curvesList.contains(curve) <= 0)
-	{
+	if (curvesList.contains(curve) <= 0){
 		QMessageBox::critical(this,tr("QtiPlot - Warning"),
 				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curve));
 		boxCurve->clear();
@@ -1042,55 +1041,44 @@ void FitDialog::accept()
 	QString to=boxTo->text().lower();
 	QString tolerance=boxTolerance->text().lower();
 	double start, end, eps;
-	try
-	{
+	try{
 		MyParser parser;
 		parser.SetExpr(from.ascii());
 		start=parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
-		QMessageBox::critical(this, tr("QtiPlot - Start limit error"),QString::fromStdString(e.GetMsg()));
+	} catch(mu::ParserError &e){
+		QMessageBox::critical(this, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
 		boxFrom->setFocus();
 		return;
 	}
 
-	try
-	{
+	try{
 		MyParser parser;
 		parser.SetExpr(to.ascii());
 		end=parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
+	} catch(mu::ParserError &e){
 		QMessageBox::critical(this, tr("QtiPlot - End limit error"),QString::fromStdString(e.GetMsg()));
 		boxTo->setFocus();
 		return;
 	}
 
-	if (start>=end)
-	{
+	if (start>=end){
 		QMessageBox::critical(0, tr("QtiPlot - Input error"),
 				tr("Please enter x limits that satisfy: from < end!"));
 		boxTo->setFocus();
 		return;
 	}
 
-	try
-	{
+	try{
 		MyParser parser;
 		parser.SetExpr(tolerance.ascii());
 		eps=parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
+	} catch(mu::ParserError &e) {
 		QMessageBox::critical(0, tr("QtiPlot - Tolerance input error"),QString::fromStdString(e.GetMsg()));
 		boxTolerance->setFocus();
 		return;
 	}
 
-	if (eps<0 || eps>=1)
-	{
+	if (eps<0 || eps>=1){
 		QMessageBox::critical(0, tr("QtiPlot - Tolerance input error"),
 				tr("The tolerance value must be positive and less than 1!"));
 		boxTolerance->setFocus();
@@ -1098,16 +1086,13 @@ void FitDialog::accept()
 	}
 
 	int i, n=0, rows=boxParams->rowCount();
-	if (!boxParams->isColumnHidden(2))
-	{
-		for (i=0;i<rows;i++)
-		{//count the non-constant parameters
+	if (!boxParams->isColumnHidden(2)){
+		for (i=0;i<rows;i++){//count the non-constant parameters
             QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 			if (!cb->isChecked())
 				n++;
 		}
-	}
-	else
+	} else
 		n=rows;
 
 	QStringList parameters;
@@ -1116,15 +1101,11 @@ void FitDialog::accept()
 
 	double *paramsInit = new double[n];
 	QString formula = boxFunction->text();
-	try
-	{
+	try{
 		bool withNames = containsUserFunctionName(formula);
-		while(withNames)
-		{
-			for (i=0; i<(int)userFunctionNames.count(); i++)
-			{
-				if (formula.contains(userFunctionNames[i]))
-				{
+		while(withNames){
+			for (i=0; i<(int)userFunctionNames.count(); i++){
+				if (formula.contains(userFunctionNames[i])){
 					QStringList l = userFunctions[i].split("=");
 					formula.replace(userFunctionNames[i], "(" + l[1] + ")");
 				}
@@ -1132,34 +1113,26 @@ void FitDialog::accept()
 			withNames = containsUserFunctionName(formula);
 		}
 
-		for (i=0; i<(int)builtInFunctionNames.count(); i++)
-		{
+		for (i=0; i<(int)builtInFunctionNames.count(); i++){
 			if (formula.contains(builtInFunctionNames[i]))
 				formula.replace(builtInFunctionNames[i], "(" + builtInFunctions[i] + ")");
 		}
 
-		if (!boxParams->isColumnHidden(2))
-		{
+		if (!boxParams->isColumnHidden(2)){
 			int j = 0;
-			for (i=0;i<rows;i++)
-			{
+			for (i=0;i<rows;i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
-				if (!cb->isChecked())
-				{
+				if (!cb->isChecked()){
 					paramsInit[j] = boxParams->item(i,1)->text().toDouble();
 					parser.DefineVar(boxParams->item(i,0)->text().ascii(), &paramsInit[j]);
 					parameters << boxParams->item(i,0)->text();
 					j++;
-				}
-				else
+				} else
 					formula.replace(boxParams->item(i,0)->text(), boxParams->item(i,1)->text());
 			}
-		}
-		else
-		{
-			for (i=0;i<n;i++)
-			{
-				paramsInit[i] = QLocale().toDouble(boxParams->item(i,1)->text());
+		} else {
+			for (i=0;i<n;i++) {
+				paramsInit[i] = boxParams->item(i,1)->text().toDouble();
 				parser.DefineVar(boxParams->item(i,0)->text().ascii(), &paramsInit[i]);
 				parameters << boxParams->item(i,0)->text();
 			}
@@ -1169,9 +1142,7 @@ void FitDialog::accept()
 		double x=start;
 		parser.DefineVar("x", &x);
 		parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
+	} catch(mu::ParserError &e) {
 		QString errorMsg = boxFunction->text() + " = " + formula + "\n" + QString::fromStdString(e.GetMsg()) + "\n" +
 			tr("Please verify that you have initialized all the parameters!");
 
@@ -1180,12 +1151,10 @@ void FitDialog::accept()
 		error = true;
 	}
 
-	if (!error)
-	{
+	if (!error){
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 
-		if (fitter)
-		{
+		if (fitter){
 			delete fitter;
 			fitter  = 0;
 		}
@@ -1199,9 +1168,7 @@ void FitDialog::accept()
 				fitter  = 0;
 				return;}
 				fitter->setInitialGuesses(paramsInit);
-		}
-		else
-		{
+		} else {
 			fitter = new NonLinearFit(app, graph);
 			((NonLinearFit*)fitter)->setParametersList(parameters);
 			((NonLinearFit*)fitter)->setFormula(formula);
@@ -1233,18 +1200,14 @@ void FitDialog::accept()
 
 		fitter->fit();
 		double *res = fitter->results();
-		if (!boxParams->isColumnHidden(2))
-		{
+		if (!boxParams->isColumnHidden(2)){
 			int j = 0;
-			for (i=0;i<rows;i++)
-			{
+			for (i=0;i<rows;i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 				if (!cb->isChecked())
 					boxParams->item(i, 1)->setText(QString::number(res[j++], 'g', app->fit_output_precision));
 			}
-		}
-		else
-		{
+		} else {
 			for (i=0;i<rows;i++)
 				boxParams->item(i, 1)->setText(QString::number(res[i], 'g', app->fit_output_precision));
 		}
@@ -1309,26 +1272,21 @@ bool FitDialog::containsUserFunctionName(const QString& s)
 
 bool FitDialog::validInitialValues()
 {
-	for (int i=0; i<boxParams->rowCount(); i++)
-	{
-		if(boxParams->item(i,1)->text().isEmpty())
-		{
-			QMessageBox::critical(0, tr("QtiPlot - Input error"),
+	for (int i=0; i<boxParams->rowCount(); i++){
+		if(boxParams->item(i,1)->text().isEmpty()){
+			QMessageBox::critical(this, tr("QtiPlot - Input error"),
 					tr("Please enter initial guesses for your parameters!"));
-			boxParams->setCurrentCell (i,1);
+			boxParams->setCurrentCell (i, 1);
 			return false;
 		}
 
-		try
-		{
+		try{
 			MyParser parser;
-			parser.SetExpr(boxParams->item(i,1)->text().ascii());
+			parser.SetExpr(boxParams->item(i, 1)->text().ascii());
 			parser.Eval();
-		}
-		catch (mu::ParserError &e)
-		{
-			QMessageBox::critical(0, tr("QtiPlot - Start limit error"),QString::fromStdString(e.GetMsg()));
-			boxParams->setCurrentCell (i,1);
+		} catch (mu::ParserError &e){
+			QMessageBox::critical(this, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
+			boxParams->setCurrentCell (i, 1);
 			return false;
 		}
 	}

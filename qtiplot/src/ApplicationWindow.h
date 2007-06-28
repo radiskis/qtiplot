@@ -234,7 +234,7 @@ public slots:
 	//@{
 	Graph3D* openMatrixPlot3D(const QString& caption, const QString& matrix_name,
 							 double xl,double xr,double yl,double yr,double zl,double zr);
-	Graph3D* dataPlot3D(Table* table,const QString& colName);
+	Graph3D* plotRibbon(Table* table,const QString& colName);
 	Graph3D* dataPlotXYZ(Table* table,const QString& zColName, int type);
 		//when reading from .qti file
 	Graph3D* dataPlot3D(const QString& caption,const QString& formula,

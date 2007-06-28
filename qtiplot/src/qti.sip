@@ -506,34 +506,37 @@ class Graph3D: MyWidget
 #include "src/Graph3D.h"
 %End
 public:
-
+    void exportToFile(const QString& fileName) /PyName=export/;
+    void exportVector(const QString& fileName);
     void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 
-    void setRotation(double  xVal,double  yVal,double  zVal);
-	void setScale(double  xVal,double  yVal,double  zVal);
-	void setShift(double  xVal,double  yVal,double  zVal);
-    void setZoom(double  val);
-
-    void setOrtho(bool = true);
-
+    void setRotation(double xVal, double yVal, double zVal);
+	void setScale(double xVal, double yVal, double zVal);
+	void setShift(double xVal, double yVal, double zVal);
+    void setZoom(double val);
+    void setOrthogonal(bool = true);
     void setMeshLineWidth(int);
+	void setMeshColor(const QColor&);
+	void setAxesColor(const QColor&);
+	void setNumbersColor(const QColor&);
+	void setLabelsColor(const QColor&);
+    void setLabelsDistance(int);
+	void setBackgroundColor(const QColor&);
+	void setGridColor(const QColor&);
     void setDataColors(const QColor& cMax, const QColor& cMin);
     void setDataColorMap(const QString& fileName);
     void changeTransparency(double) /PyName=setOpacity/;
     void setResolution(int);
     void showColorLegend(bool = true) /PyName=showLegend/;
     void setTitle(const QString&, const QColor& color = QColor(Qt::black), const QFont& font = QFont());
-    void animate(bool = true);
-
-    void setSmoothMesh(bool smooth);
-
+    void setSmoothMesh(bool = true);
     void setLeftGrid(bool = true);
 	void setRightGrid(bool = true);
 	void setCeilGrid(bool = true);
 	void setFloorGrid(bool = true);
 	void setFrontGrid(bool = true);
 	void setBackGrid(bool = true);
-
+	
     void setFramed();
 	void setBoxed();
 	void setNoAxes();
@@ -542,13 +545,33 @@ public:
 	void setFloorIsolines() /PyName=showFloorIsolines/;
 	void setEmptyFloor();
 
+    void setPolygonStyle();
+	void setHiddenLineStyle();
+	void setWireframeStyle();
+	void setFilledMeshStyle();
+	void setDotStyle();
+	void setBarStyle();
+
+    void animate(bool = true);
     void findBestLayout();
 
-    void clearData();
+    void addData(Table*, const QString&) /PyName=plotRibbon/;
+    void changeDataColumn(Table* table, const QString& colName) /PyName=setData/;
+    void addMatrixData(Matrix* ) /PyName=setMatrix/;
     void addFunction(const QString& s, double xl, double xr, double yl,
                     double yr, double zl, double zr) /PyName=setFunction/;
 
     void update();
+
+    void setXAxisLabel(const QString&);
+    void setYAxisLabel(const QString&);
+	void setZAxisLabel(const QString&);
+	
+	void setXAxisTickLength(double majorLength, double minorLength);
+    void setYAxisTickLength(double majorLength, double minorLength);
+	void setZAxisTickLength(double majorLength, double minorLength);
+
+    void setScales(double xl, double xr, double yl, double yr, double zl, double zr);
 
 private:
   Graph3D(const Graph3D&);
@@ -632,10 +655,11 @@ public:
 	MultiLayer* plotContour(Matrix*);
 	MultiLayer* plotColorMap(Matrix*);
 	MultiLayer* plotGrayScale(Matrix*);
+
+	Graph3D* plotRibbon(Table*, const QString&);
 	Graph3D* plot3DMatrix(Matrix *, int style = 0) /PyName=plot3D/;
     Graph3D* plotSurface(const QString&, double xl, double xr,
 					   double yl, double yr, double zl, double zr);
-
 
   QWidgetList *windowsList() /PyName=windows/;
 
