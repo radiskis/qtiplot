@@ -4,11 +4,10 @@
     --------------------------------------------------------------------
 
     Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
                            Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
+    Email (use @ for *)  : ion_vasilief*yahoo.fr,
                            knut.franke*gmx.de
-    Description          : Evaluate mathematical expression using muParser
+    Description          : Evaluate mathematical expressions using muParser
 
  ***************************************************************************/
 

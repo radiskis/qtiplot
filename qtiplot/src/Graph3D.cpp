@@ -76,11 +76,7 @@ double UserFunction::operator()(double x, double y)
 	return result;
 }
 
-UserFunction::~UserFunction()
-{
-}
-
-	Graph3D::Graph3D(const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
+Graph3D::Graph3D(const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
 : MyWidget(label,parent,name,f)
 {
 	initPlot();
@@ -88,8 +84,8 @@ UserFunction::~UserFunction()
 
 void Graph3D::initPlot()
 {
-	worksheet = 0;
-	matrix_ = 0;
+	d_table = 0;
+	d_matrix = 0;
     plotAssociation = QString();
 
 	QDateTime dt = QDateTime::currentDateTime ();
@@ -98,15 +94,15 @@ void Graph3D::initPlot()
     color_map = QString::null;
     animation_redraw_wait = 50;
     d_timer = new QTimer(this);
-    connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()) );
+    connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()));
 	ignoreFonts = false;
 
 	sp = new SurfacePlot(this);
-	sp->resize(500,400);
+	sp->resize(500, 400);
 	sp->installEventFilter(this);
-	sp->setRotation(30,0,15);
-	sp->setScale(1,1,1);
-	sp->setShift(0.15,0,0);
+	sp->setRotation(30, 0, 15);
+	sp->setScale(1, 1, 1);
+	sp->setShift(0.15, 0, 0);
 	sp->setZoom(0.9);
 	sp->setOrtho(false);
 
@@ -121,11 +117,11 @@ void Graph3D::initPlot()
 	titleCol = QColor(Qt::black);
 	sp->setTitleColor(Qt2GL(titleCol));
 
-	titleFnt = QFont("Times New Roman",14);
+	titleFnt = QFont("Times New Roman", 14);
 	titleFnt.setBold(true);
 
-	sp->setTitleFont(titleFnt.family(),titleFnt.pointSize(),
-			titleFnt.weight(),titleFnt.italic());
+	sp->setTitleFont(titleFnt.family(), titleFnt.pointSize(),
+			titleFnt.weight(), titleFnt.italic());
 
 	axesCol=QColor(Qt::black);
 	labelsCol=QColor(Qt::black);
@@ -142,7 +138,7 @@ void Graph3D::initPlot()
 	legendMajorTicks = 5;
 	sp->showColorLegend(legendOn);
 	sp->legend()->setAutoScale(true);
-	sp->legend()->setMajors (legendMajorTicks) ;
+	sp->legend()->setMajors(legendMajorTicks) ;
 
 	labelsDist=0;
 
@@ -151,7 +147,7 @@ void Graph3D::initPlot()
 		scaleType[j]=0;
 
 	pointStyle = None;
-	func = 0;
+	d_func = 0;
 	alpha = 1.0;
 	barsRad = 0.007;
 	pointSize = 5; smooth = false;
@@ -171,8 +167,7 @@ void Graph3D::initPlot()
 void Graph3D::initCoord()
 {
 	sp->makeCurrent();
-	for (unsigned i=0; i!=sp->coordinates()->axes.size(); ++i)
-	{
+	for (unsigned i=0; i!=sp->coordinates()->axes.size(); ++i){
 		sp->coordinates()->axes[i].setMajors(5);
 		sp->coordinates()->axes[i].setMinors(5);
 	}
@@ -208,15 +203,15 @@ void Graph3D::addFunction(const QString& s,double xl,double xr,double yl,
 	sp->makeCurrent();
 	sp->resize(this->size());
 
-	func= new UserFunction(s, *sp);
+	d_func = new UserFunction(s, *sp);
 
-	func->setMesh(41,31);
-	func->setDomain(xl,xr,yl,yr);
-	func->setMinZ(zl);
-	func->setMaxZ(zr);
-	func->create();
+	d_func->setMesh(41, 31);
+	d_func->setDomain(xl, xr, yl, yr);
+	d_func->setMinZ(zl);
+	d_func->setMaxZ(zr);
+	d_func->create();
 
-	sp->legend()->setLimits(zl,zr);
+	sp->legend()->setLimits(zl, zr);
 
 	if (sp->plotStyle() == NOPLOT){
 		sp->setPlotStyle(FILLED);
@@ -226,16 +221,14 @@ void Graph3D::addFunction(const QString& s,double xl,double xr,double yl,
   	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	findBestLayout();
 	update();
-
 }
 
 void Graph3D::addData(Table* table, int xcol, int ycol)
 {
-	worksheet=table;
+	d_table=table;
 	int r=table->numRows();
 	int i, xmesh=0, ymesh=2;
-	for (i = 0; i < r; i++)
-	{
+	for (i = 0; i < r; i++){
 		if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty())
 			xmesh++;
 	}
@@ -247,13 +240,10 @@ void Graph3D::addData(Table* table, int xcol, int ycol)
 	gsl_vector * x = gsl_vector_alloc (xmesh);
 	gsl_vector * y = gsl_vector_alloc (xmesh);
 
-	for (int j = 0; j < ymesh; j++)
-	{
+	for (int j = 0; j < ymesh; j++){
 		int k=0;
-		for (i = 0; i < r; i++)
-		{
-			if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty())
-			{
+		for (i = 0; i < r; i++){
+			if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty()){
 				gsl_vector_set (x, k, table->cell(i, xcol));
 
 				double yv = table->cell(i, ycol);
@@ -278,16 +268,17 @@ void Graph3D::addData(Table* table, int xcol, int ycol)
 	Matrix::freeMatrixData(data, xmesh);
 }
 
-void Graph3D::addData(Table* table,const QString& colName)
+void Graph3D::addData(Table* table, const QString& colName)
 {
 	int ycol = table->colIndex(colName);
-	int xcol=table->colX(ycol);
+	int xcol = table->colX(ycol);
 	plotAssociation = table->colName(xcol)+"(X)," + colName + "(Y)";
 
 	addData(table, xcol, ycol);
+    update();
 }
 
-void Graph3D::addData(Table* table,const QString& xColName,const QString& yColName)
+void Graph3D::addData(Table* table,const QString& xColName, const QString& yColName)
 {
 	int xcol=table->colIndex(xColName);
 	plotAssociation = table->colName(xcol)+"(X)," + yColName+"(Y)";
@@ -295,31 +286,22 @@ void Graph3D::addData(Table* table,const QString& xColName,const QString& yColNa
 	addData(table, xcol, table->colIndex(yColName));
 }
 
-void Graph3D::changeMatrix(Matrix* m)
-{
-	if (matrix_ == m)
-		return;
-
-	addMatrixData(m);
-}
-
 void Graph3D::addMatrixData(Matrix* m)
 {
-	if (matrix_ == m)
+	if (!d_matrix || d_matrix == m)
 		return;
 
 	bool first_time = false;
-	if(!matrix_)
+	if(!d_matrix)
 		first_time = true;
 
-	matrix_ = m;
+	d_matrix = m;
 	plotAssociation = "matrix<" + QString(m->name()) + ">";
 
 	int cols = m->numCols();
 	int rows = m->numRows();
 	double **data_matrix = Matrix::allocateMatrixData(rows, cols);
-	for (int i = 0; i < rows; i++ )
-	{
+	for (int i = 0; i < rows; i++ ){
 		for (int j = 0; j < cols; j++)
 			data_matrix[i][j] = m->cell(i,j);
 	}
@@ -343,7 +325,7 @@ void Graph3D::addMatrixData(Matrix* m)
 void Graph3D::addMatrixData(Matrix* m, double xl, double xr,
 		double yl, double yr, double zl, double zr)
 {
-	matrix_ = m;
+	d_matrix = m;
 	plotAssociation = "matrix<" + QString(m->name()) + ">";
 
 	updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
@@ -352,7 +334,7 @@ void Graph3D::addMatrixData(Matrix* m, double xl, double xr,
 void Graph3D::addData(Table* table,const QString& xColName,const QString& yColName,
 		double xl, double xr, double yl, double yr, double zl, double zr)
 {
-	worksheet=table;
+	d_table=table;
 	int r=table->numRows();
 	int xcol=table->colIndex(xColName);
 	int ycol=table->colIndex(yColName);
@@ -364,10 +346,8 @@ void Graph3D::addData(Table* table,const QString& xColName,const QString& yColNa
 	int i, j, xmesh=0, ymesh=2;
 	double xv, yv;
 
-	for (i = 0; i < r; i++)
-	{
-		if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty())
-		{
+	for (i = 0; i < r; i++){
+		if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty()){
 			xv=table->cell(i, xcol);
 			if (xv>=xl && xv <= xr)
 				xmesh++;
@@ -378,16 +358,12 @@ void Graph3D::addData(Table* table,const QString& xColName,const QString& yColNa
 		xmesh++;
 
 	double **data = Matrix::allocateMatrixData(xmesh, ymesh);
-	for ( j = 0; j < ymesh; j++)
-	{
+	for ( j = 0; j < ymesh; j++){
 		int k=0;
-		for ( i = 0; i < r; i++)
-		{
-			if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty())
-			{
+		for ( i = 0; i < r; i++){
+			if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty()){
 				xv=table->cell(i,xcol);
-				if (xv>=xl && xv <= xr)
-				{
+				if (xv>=xl && xv <= xr){
 					yv=table->cell(i,ycol);
 					if (yv > zr)
 						data[k][j] = zr;
@@ -431,11 +407,12 @@ void Graph3D::changeDataColumn(Table* table, const QString& colName)
 	updateDataXYZ(table, xCol, yCol, zCol);
 	if (d_autoscale)
 		findBestLayout();
+    resetAxesLabels();
 }
 
 void Graph3D::addData(Table* table, int xCol,int yCol,int zCol, int type)
 {
-	worksheet=table;
+	d_table=table;
 	int r=table->numRows();
 
 	QString s=table->colName(xCol)+"(X),";
@@ -444,8 +421,7 @@ void Graph3D::addData(Table* table, int xCol,int yCol,int zCol, int type)
 	plotAssociation = s;
 
 	int i,j,columns=0;
-	for ( i = 0; i < r; i++)
-	{
+	for ( i = 0; i < r; i++){
 		if (!table->text(i,xCol).isEmpty() && !table->text(i,yCol).isEmpty() && !table->text(i,zCol).isEmpty())
 			columns++;
 	}
@@ -479,20 +455,15 @@ void Graph3D::addData(Table* table, int xCol,int yCol,int zCol, int type)
 	sp->legend()->setLimits(start, end);
 	sp->legend()->setMajors(legendMajorTicks);
 
-	if (type == Scatter)
-	{
+	if (type == Scatter){
 		Dot d(pointSize, smooth);
 		sp->setPlotStyle(d);
 		pointStyle=Dots;
 		style_ = Qwt3D::USER;
-	}
-	else if (type == Trajectory)
-	{
+	} else if (type == Trajectory) {
 		legendOn=false;
 		sp->showColorLegend(legendOn);
-	}
-	else
-	{
+	} else {
 		sp->setPlotStyle(Bar(barsRad));
 		pointStyle=VerticalBars;
 		style_ = Qwt3D::USER;
@@ -506,7 +477,7 @@ void Graph3D::addData(Table* table, int xCol,int yCol,int zCol, int type)
 void Graph3D::addData(Table* table, int xCol,int yCol,int zCol,
 		double xl, double xr, double yl, double yr, double zl, double zr)
 {
-	worksheet=table;
+	d_table=table;
 	int r=table->numRows();
 
 	QString s=table->colName(xCol)+"(X),";
@@ -565,7 +536,7 @@ void Graph3D::addData(Table* table, int xCol,int yCol,int zCol,
 
 void Graph3D::updateData(Table* table)
 {
-	if (func)// function plot
+	if (d_func)// function plot
 		return;
 
 	QString name = plotAssociation;
@@ -659,27 +630,23 @@ void Graph3D::updateDataXYZ(Table* table, int xCol, int yCol, int zCol)
 	int r=table->numRows();
 	int i,j,columns=0;
 
-	for ( i = 0; i < r; i++)
-	{
+	for ( i = 0; i < r; i++){
 		if (!table->text(i,xCol).isEmpty() && !table->text(i,yCol).isEmpty() && !table->text(i,zCol).isEmpty())
 			columns++;
 	}
 
-	if (columns<2)
-	{
+	if (columns<2){
 		sp->setPlotStyle(NOPLOT);
 		update();
 		return;
 	}
 
-	Qwt3D::Triple **data=allocateData(columns,columns);
+	Qwt3D::Triple **data=allocateData(columns, columns);
 	gsl_vector * z = gsl_vector_alloc (columns);
 
-	for ( j = 0; j < columns; j++)
-	{
+	for ( j = 0; j < columns; j++){
 		int k=0;
-		for ( i = 0; i < r; i++)
-		{
+		for ( i = 0; i < r; i++){
 			if (!table->text(i,xCol).isEmpty() && !table->text(i,yCol).isEmpty() && !table->text(i,zCol).isEmpty())
 			{
 				double xv=table->cell(i,xCol);
@@ -770,8 +737,8 @@ void Graph3D::resetNonEmptyStyle()
 
 UserFunction* Graph3D::userFunction()
 {
-	if (func)
-		return func;
+	if (d_func)
+		return d_func;
 	else
 		return 0;
 }
@@ -786,15 +753,15 @@ void Graph3D::update()
 	sp->updateGL();
 }
 
-void Graph3D::adjustLabels(int val)
+void Graph3D::setLabelsDistance(int val)
 {
 	if (labelsDist != val){
-		labelsDist=val;
+		labelsDist = val;
 		sp->coordinates()->adjustLabels(val);
 		sp->makeCurrent();
 		sp->updateGL();
+        emit modified();
 	}
-	emit modified();
 }
 
 QFont Graph3D::numbersFont()
@@ -888,7 +855,7 @@ QStringList Graph3D::axisTickLengths()
 
 void Graph3D::setTickLengths(const QStringList& lst)
 {
-	double majorl,minorl;
+	double majorl, minorl;
 	QStringList tick_length = lst;
 	if (int(lst.count()) > 6)
 		tick_length.remove(tick_length.first());
@@ -915,15 +882,50 @@ void Graph3D::setTickLengths(const QStringList& lst)
 	sp->coordinates()->axes[Z4].setTicLength (majorl,minorl);
 }
 
-void Graph3D::updateTickLength(int axis,double majorLength, double minorLength)
+void Graph3D::setXAxisTickLength(double majorLength, double minorLength)
 {
-	double majorl,minorl;
+	double majorl, minorl;
+	sp->coordinates()->axes[X1].ticLength (majorl,minorl);
+	if (majorl != majorLength || minorl != minorLength){
+		sp->coordinates()->axes[X1].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[X2].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[X3].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[X4].setTicLength (majorLength,minorLength);
+		}
+}
+
+void Graph3D::setYAxisTickLength(double majorLength, double minorLength)
+{
+	double majorl, minorl;
+	sp->coordinates()->axes[Y1].ticLength (majorl,minorl);
+	if (majorl != majorLength || minorl != minorLength){
+		sp->coordinates()->axes[Y1].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[Y2].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[Y3].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[Y4].setTicLength (majorLength,minorLength);
+	}
+}
+
+void Graph3D::setZAxisTickLength(double majorLength, double minorLength)
+{
+	double majorl, minorl;
+	sp->coordinates()->axes[Z1].ticLength (majorl,minorl);
+	if (majorl != majorLength || minorl != minorLength){
+		sp->coordinates()->axes[Z1].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[Z2].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[Z3].setTicLength (majorLength,minorLength);
+		sp->coordinates()->axes[Z4].setTicLength (majorLength,minorLength);
+	}
+}
+
+void Graph3D::setAxisTickLength(int axis, double majorLength, double minorLength)
+{
+	double majorl, minorl;
 	switch(axis)
 	{
 		case 0:
 			sp->coordinates()->axes[X1].ticLength (majorl,minorl);
-			if (majorl != majorLength || minorl != minorLength)
-			{
+			if (majorl != majorLength || minorl != minorLength){
 				sp->coordinates()->axes[X1].setTicLength (majorLength,minorLength);
 				sp->coordinates()->axes[X2].setTicLength (majorLength,minorLength);
 				sp->coordinates()->axes[X3].setTicLength (majorLength,minorLength);
@@ -933,8 +935,7 @@ void Graph3D::updateTickLength(int axis,double majorLength, double minorLength)
 
 		case 1:
 			sp->coordinates()->axes[Y1].ticLength (majorl,minorl);
-			if (majorl != majorLength || minorl != minorLength)
-			{
+			if (majorl != majorLength || minorl != minorLength){
 				sp->coordinates()->axes[Y1].setTicLength (majorLength,minorLength);
 				sp->coordinates()->axes[Y2].setTicLength (majorLength,minorLength);
 				sp->coordinates()->axes[Y3].setTicLength (majorLength,minorLength);
@@ -944,8 +945,7 @@ void Graph3D::updateTickLength(int axis,double majorLength, double minorLength)
 
 		case 2:
 			sp->coordinates()->axes[Z1].ticLength (majorl,minorl);
-			if (majorl != majorLength || minorl != minorLength)
-			{
+			if (majorl != majorLength || minorl != minorLength){
 				sp->coordinates()->axes[Z1].setTicLength (majorLength,minorLength);
 				sp->coordinates()->axes[Z2].setTicLength (majorLength,minorLength);
 				sp->coordinates()->axes[Z3].setTicLength (majorLength,minorLength);
@@ -996,86 +996,66 @@ void Graph3D::resetAxesLabels()
 
 void Graph3D::setAxesLabels(const QStringList& l)
 {
-	QString label= l[0];
+	QString label = l[0];
 	sp->coordinates()->axes[X1].setLabelString(label);
 	sp->coordinates()->axes[X2].setLabelString(label);
 	sp->coordinates()->axes[X3].setLabelString(label);
 	sp->coordinates()->axes[X4].setLabelString(label);
 
-	label= l[1];
+	label = l[1];
 	sp->coordinates()->axes[Y1].setLabelString(label);
 	sp->coordinates()->axes[Y2].setLabelString(label);
 	sp->coordinates()->axes[Y3].setLabelString(label);
 	sp->coordinates()->axes[Y4].setLabelString(label);
 
-	label= l[2];
+	label = l[2];
 	sp->coordinates()->axes[Z1].setLabelString(label);
 	sp->coordinates()->axes[Z2].setLabelString(label);
 	sp->coordinates()->axes[Z3].setLabelString(label);
 	sp->coordinates()->axes[Z4].setLabelString(label);
 
-	labels=l;
+	labels = l;
 }
 
-void Graph3D::updateLabel(int axis,const QString& label, const QFont& f)
+void Graph3D::setXAxisLabel(const QString& label)
 {
-	switch(axis)
-	{
-		case 0:
-			if (labels[0] != label)
-			{
-				sp->coordinates()->axes[X1].setLabelString(label);
-				sp->coordinates()->axes[X2].setLabelString(label);
-				sp->coordinates()->axes[X3].setLabelString(label);
-				sp->coordinates()->axes[X4].setLabelString(label);
-				labels[0]=label;
-			}
-			if (sp->coordinates()->axes[X1].labelFont() != f)
-			{
-				sp->coordinates()->axes[X1].setLabelFont (f);
-				sp->coordinates()->axes[X2].setLabelFont (f);
-				sp->coordinates()->axes[X3].setLabelFont (f);
-				sp->coordinates()->axes[X4].setLabelFont (f);
-			}
-			break;
+    if (labels[0] != label){
+        sp->coordinates()->axes[X1].setLabelString(label);
+        sp->coordinates()->axes[X2].setLabelString(label);
+        sp->coordinates()->axes[X3].setLabelString(label);
+        sp->coordinates()->axes[X4].setLabelString(label);
+        labels[0]=label;
+    }
 
-		case 1:
-			if (labels[1] != label)
-			{
-				sp->coordinates()->axes[Y1].setLabelString(label);
-				sp->coordinates()->axes[Y2].setLabelString(label);
-				sp->coordinates()->axes[Y3].setLabelString(label);
-				sp->coordinates()->axes[Y4].setLabelString(label);
+	sp->makeCurrent();
+	sp->updateGL();
+	emit modified();
+}
 
-				labels[1]=label;
-			}
-			if (sp->coordinates()->axes[Y1].labelFont() != f)
-			{
-				sp->coordinates()->axes[Y1].setLabelFont (f);
-				sp->coordinates()->axes[Y2].setLabelFont (f);
-				sp->coordinates()->axes[Y3].setLabelFont (f);
-				sp->coordinates()->axes[Y4].setLabelFont (f);
-			}
-			break;
+void Graph3D::setYAxisLabel(const QString& label)
+{
+    if (labels[1] != label){
+        sp->coordinates()->axes[Y1].setLabelString(label);
+        sp->coordinates()->axes[Y2].setLabelString(label);
+        sp->coordinates()->axes[Y3].setLabelString(label);
+        sp->coordinates()->axes[Y4].setLabelString(label);
+        labels[1]=label;
+    }
 
-		case 2:
-			if (labels[2] != label)
-			{
-				sp->coordinates()->axes[Z1].setLabelString(label);
-				sp->coordinates()->axes[Z2].setLabelString(label);
-				sp->coordinates()->axes[Z3].setLabelString(label);
-				sp->coordinates()->axes[Z4].setLabelString(label);
-				labels[2]=label;
-			}
-			if (sp->coordinates()->axes[Z1].labelFont() != f)
-			{
-				sp->coordinates()->axes[Z1].setLabelFont (f);
-				sp->coordinates()->axes[Z2].setLabelFont (f);
-				sp->coordinates()->axes[Z3].setLabelFont (f);
-				sp->coordinates()->axes[Z4].setLabelFont (f);
-			}
-			break;
-	}
+	sp->makeCurrent();
+	sp->updateGL();
+	emit modified();
+}
+
+void Graph3D::setZAxisLabel(const QString& label)
+{
+    if (labels[2] != label){
+        sp->coordinates()->axes[Z1].setLabelString(label);
+        sp->coordinates()->axes[Z2].setLabelString(label);
+        sp->coordinates()->axes[Z3].setLabelString(label);
+        sp->coordinates()->axes[Z4].setLabelString(label);
+        labels[2]=label;
+    }
 
 	sp->makeCurrent();
 	sp->updateGL();
@@ -1201,12 +1181,11 @@ QStringList Graph3D::scaleTicks()
 	return limits;
 }
 
-void Graph3D::updateScale(int axis,const QStringList& options)
+void Graph3D::updateScale(int axis, const QStringList& options)
 {
-	QString st=QString::number(scaleType[axis]);
-	double start,stop;
-	double xl,xr,yl,yr;
-	int majors,minors, newMaj, newMin;
+	QString st = QString::number(scaleType[axis]);
+	double start, stop, xl, xr, yl, yr;
+	int majors, minors, newMaj, newMin;
 
 	sp->makeCurrent();
 	switch(axis)
@@ -1222,42 +1201,34 @@ void Graph3D::updateScale(int axis,const QStringList& options)
 				sp->coordinates()->axes[Y1].limits(yl,yr);
 				sp->coordinates()->axes[Z1].limits(start,stop);
 
-				if (func)
-				{
-					func->setDomain(xl,xr,yl,yr);
-					func->create ();
+				if (d_func){
+					d_func->setDomain(xl,xr,yl,yr);
+					d_func->create ();
 					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				}
-				else
-					updateScales(xl, xr, yl, yr, start, stop);
+				} else
+					setScales(xl, xr, yl, yr, start, stop);
 			}
 
-			if(st != options[4])
-			{
-				if (options[4]=="0")
-				{
+			if(st != options[4]){
+				if (options[4]=="0"){
 					sp->coordinates()->axes[X1].setScale (LINEARSCALE);
 					scaleType[axis]=0;
-				}
-				else
-				{
+				} else {
 					sp->coordinates()->axes[X1].setScale (LOG10SCALE);
 					scaleType[axis]=1;
 				}
 			}
 
-			newMaj= options[2].toInt();
-			if (majors != newMaj)
-			{
+			newMaj = options[2].toInt();
+			if (majors != newMaj){
 				sp->coordinates()->axes[X1].setMajors(newMaj);
 				sp->coordinates()->axes[X2].setMajors(newMaj);
 				sp->coordinates()->axes[X3].setMajors(newMaj);
 				sp->coordinates()->axes[X4].setMajors(newMaj);
 			}
 
-			newMin= options[3].toInt();
-			if (minors != newMin)
-			{
+			newMin = options[3].toInt();
+			if (minors != newMin){
 				sp->coordinates()->axes[X1].setMinors(newMin);
 				sp->coordinates()->axes[X2].setMinors(newMin);
 				sp->coordinates()->axes[X3].setMinors(newMin);
@@ -1266,53 +1237,44 @@ void Graph3D::updateScale(int axis,const QStringList& options)
 			break;
 
 		case 1:
-			majors=sp->coordinates()->axes[Y1].majors ();
-  	        minors=sp->coordinates()->axes[Y1].minors ();
-			sp->coordinates()->axes[Y1].limits(yl,yr);
-			if (yl != options[0].toDouble() || yr != options[1].toDouble())
-			{
-				yl=options[0].toDouble();
-				yr=options[1].toDouble();
-				sp->coordinates()->axes[X1].limits(xl,xr);
-				sp->coordinates()->axes[Z1].limits(start,stop);
+			majors = sp->coordinates()->axes[Y1].majors ();
+  	        minors = sp->coordinates()->axes[Y1].minors ();
+			sp->coordinates()->axes[Y1].limits(yl, yr);
+			if (yl != options[0].toDouble() || yr != options[1].toDouble()){
+				yl = options[0].toDouble();
+				yr = options[1].toDouble();
+				sp->coordinates()->axes[X1].limits(xl, xr);
+				sp->coordinates()->axes[Z1].limits(start, stop);
 
-				if (func)
-				{
-					func->setDomain(xl,xr,yl,yr);
-					func->create ();
+				if (d_func){
+					d_func->setDomain(xl, xr, yl, yr);
+					d_func->create();
 					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				}
-				else
-					updateScales(xl, xr, yl, yr,start,stop);
+				} else
+					setScales(xl, xr, yl, yr, start, stop);
 			}
 
-			newMaj= options[2].toInt();
-			if (majors != newMaj )
-			{
+			newMaj = options[2].toInt();
+			if (majors != newMaj ){
 				sp->coordinates()->axes[Y1].setMajors(newMaj);
 				sp->coordinates()->axes[Y2].setMajors(newMaj);
 				sp->coordinates()->axes[Y3].setMajors(newMaj);
 				sp->coordinates()->axes[Y4].setMajors(newMaj);
 			}
 
-			minors=sp->coordinates()->axes[Y1].minors ();
-			if (minors != newMin)
-			{
+            newMin = options[3].toInt();
+			if (minors != newMin){
 				sp->coordinates()->axes[Y1].setMinors(newMin);
 				sp->coordinates()->axes[Y2].setMinors(newMin);
 				sp->coordinates()->axes[Y3].setMinors(newMin);
 				sp->coordinates()->axes[Y4].setMinors(newMin);
 			}
 
-			if(st != options[4])
-			{
-				if (options[4]=="0")
-				{
+			if(st != options[4]){
+				if (options[4]=="0"){
 					sp->coordinates()->axes[Y1].setScale (LINEARSCALE);
 					scaleType[axis]=0;
-				}
-				else
-				{
+				} else {
 					sp->coordinates()->axes[Y1].setScale (LOG10SCALE);
 					scaleType[axis]=1;
 				}
@@ -1329,21 +1291,18 @@ void Graph3D::updateScale(int axis,const QStringList& options)
 				stop=options[1].toDouble();
 				sp->coordinates()->axes[X1].limits(xl,xr);
   	            sp->coordinates()->axes[Y1].limits(yl,yr);
-				if (func)
-				{
-					func->setMinZ(start);
-					func->setMaxZ(stop);
-					func->create ();
+				if (d_func){
+					d_func->setMinZ(start);
+					d_func->setMaxZ(stop);
+					d_func->create ();
 					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
-				}
-				else
-					updateScales(xl, xr, yl, yr, start, stop);
+				} else
+					setScales(xl, xr, yl, yr, start, stop);
 				sp->legend()->setLimits(start,stop);
 			}
 
 			newMaj= options[2].toInt();
-			if (majors != newMaj )
-			{
+			if (majors != newMaj ){
 				sp->coordinates()->axes[Z1].setMajors(newMaj);
 				sp->coordinates()->axes[Z2].setMajors(newMaj);
 				sp->coordinates()->axes[Z3].setMajors(newMaj);
@@ -1351,22 +1310,17 @@ void Graph3D::updateScale(int axis,const QStringList& options)
 			}
 
 			newMin = options[3].toInt();
-			if (minors != newMin)
-			{
+			if (minors != newMin){
 				sp->coordinates()->axes[Z1].setMinors(newMin);
 				sp->coordinates()->axes[Z2].setMinors(newMin);
 				sp->coordinates()->axes[Z3].setMinors(newMin);
 				sp->coordinates()->axes[Z4].setMinors(newMin);
 			}
-			if(st != options[4])
-  	        {
-  	         	if (options[4]=="0")
-  	            {
+			if(st != options[4]){
+  	         	if (options[4]=="0"){
   	             	sp->coordinates()->axes[Z1].setScale (LINEARSCALE);
   	            	scaleType[axis]=0;
-  	            }
-  	            else
-  	            {
+  	            } else {
   	            	sp->coordinates()->axes[Z1].setScale (LOG10SCALE);
   	                scaleType[axis]=1;
   	            }
@@ -1377,60 +1331,63 @@ void Graph3D::updateScale(int axis,const QStringList& options)
 	emit modified();
 }
 
-void Graph3D::updateScales(double xl, double xr, double yl, double yr, double zl, double zr)
+void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	if (matrix_)
+	if (d_matrix)
 		updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
-	else
-	{
+    else if (d_func){
+        d_func->setDomain(xl, xr, yl, yr);
+        d_func->setMinZ(zl);
+        d_func->setMaxZ(zr);
+        d_func->create ();
+        sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+    } else if (d_table){
 		QString name= plotAssociation;
 
-		int pos=name.find("_",0);
-		int posX=name.find("(",pos);
-		QString xColName=name.mid(pos+1,posX-pos-1);
-		int xCol=worksheet->colIndex(xColName);
+		int pos = name.find("_", 0);
+		int posX = name.find("(", pos);
+		QString xColName = name.mid(pos+1, posX-pos-1);
+		int xCol = d_table->colIndex(xColName);
 
-		pos=name.find(",",posX);
-		posX=name.find("(",pos);
-		QString yColName=name.mid(pos+1,posX-pos-1);
-		int yCol=worksheet->colIndex(yColName);
+		pos = name.find(",", posX);
+		posX = name.find("(", pos);
+		QString yColName = name.mid(pos+1, posX-pos-1);
+		int yCol = d_table->colIndex(yColName);
 
-		if (name.endsWith("(Z)",true))
-		{
-			pos=name.find(",",posX);
-			posX=name.find("(",pos);
-			QString zColName=name.mid(pos+1,posX-pos-1);
-			int zCol=worksheet->colIndex(zColName);
+		if (name.endsWith("(Z)",true)){
+			pos = name.find(",",posX);
+			posX = name.find("(",pos);
+			QString zColName = name.mid(pos+1,posX-pos-1);
+			int zCol = d_table->colIndex(zColName);
 
 			updateScales(xl, xr, yl, yr, zl, zr, xCol, yCol, zCol);
-		}
-		else if (name.endsWith("(Y)",true))
+		} else if (name.endsWith("(Y)",true))
 			updateScales(xl, xr, yl, yr, zl, zr, xCol, yCol);
 	}
-
+    resetAxesLabels();
 	QApplication::restoreOverrideCursor();
 }
 
 void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl,
 		double yr, double zl, double zr)
 {
-	double dx = (matrix_->xEnd() - matrix_->xStart())/(matrix_->numCols()-1);
-	double dy = (matrix_->yEnd() - matrix_->yStart())/(matrix_->numRows()-1);
+	double dx = (d_matrix->xEnd() - d_matrix->xStart())/(d_matrix->numCols()-1);
+	double dy = (d_matrix->yEnd() - d_matrix->yStart())/(d_matrix->numRows()-1);
 
 	int nc = int((xr - xl)/dx)+1;
 	int nr = int((yr - yl)/dy)+1;
 
-	int start_row = int((yl - matrix_->yStart())/dy);
-	int start_col = int((xl - matrix_->xStart())/dx);
+	int start_row = int((yl - d_matrix->yStart())/dy);
+	int start_col = int((xl - d_matrix->xStart())/dx);
 
 	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
 	for (int j = 0; j < nr; j++)
 	{
 		for (int i = 0; i < nc; i++)
 		{
-			double val = matrix_->cell(j + start_row, i + start_col);
+			double val = d_matrix->cell(j + start_row, i + start_col);
 			if (val > zr)
 				data_matrix[i][j] = zr;
 			else if (val < zl)
@@ -1451,15 +1408,15 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl,
 void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl, double zr,
 		int xcol, int ycol)
 {
-	int r=worksheet->numRows();
+	int r=d_table->numRows();
 	int i, j, xmesh=0, ymesh=2;
 	double xv, yv;
 
 	for (i = 0; i < r; i++)
 	{
-		if (!worksheet->text(i,xcol).isEmpty() && !worksheet->text(i,ycol).isEmpty())
+		if (!d_table->text(i,xcol).isEmpty() && !d_table->text(i,ycol).isEmpty())
 		{
-			xv=worksheet->cell(i,xcol);
+			xv=d_table->cell(i,xcol);
 			if (xv >= xl && xv <= xr)
 				xmesh++;
 		}
@@ -1475,12 +1432,12 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 		int k=0;
 		for ( i = 0; i < r; i++)
 		{
-			if (!worksheet->text(i,xcol).isEmpty() && !worksheet->text(i,ycol).isEmpty())
+			if (!d_table->text(i,xcol).isEmpty() && !d_table->text(i,ycol).isEmpty())
 			{
-				xv=worksheet->cell(i,xcol);
+				xv=d_table->cell(i,xcol);
 				if (xv >= xl && xv <= xr)
 				{
-					yv=worksheet->cell(i,ycol);
+					yv=d_table->cell(i,ycol);
 					if (yv > zr)
 						data[k][j] = zr;
 					else if (yv < zl)
@@ -1501,15 +1458,15 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 void Graph3D::updateScales(double xl, double xr, double yl, double yr, double zl, double zr,
 		int xCol, int yCol, int zCol)
 {
-	int r=worksheet->numRows();
+	int r=d_table->numRows();
 	int i,j,columns=0;
 	double xv, yv, zv;
 	for ( i = 0; i < r; i++)
 	{
-		if (!worksheet->text(i,xCol).isEmpty() && !worksheet->text(i,yCol).isEmpty() && !worksheet->text(i,zCol).isEmpty())
+		if (!d_table->text(i,xCol).isEmpty() && !d_table->text(i,yCol).isEmpty() && !d_table->text(i,zCol).isEmpty())
 		{
-			xv=worksheet->cell(i,xCol);
-			yv=worksheet->cell(i,yCol);
+			xv=d_table->cell(i,xCol);
+			yv=d_table->cell(i,yCol);
 			if (xv >= xl && xv <= xr && yv >= yl && yv <= yr)
 				columns++;
 		}
@@ -1524,13 +1481,13 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr, double zl
 		int k=0;
 		for ( i = 0; i < r; i++)
 		{
-			if (!worksheet->text(i,xCol).isEmpty() && !worksheet->text(i,yCol).isEmpty() && !worksheet->text(i,zCol).isEmpty())
+			if (!d_table->text(i,xCol).isEmpty() && !d_table->text(i,yCol).isEmpty() && !d_table->text(i,zCol).isEmpty())
 			{
-				xv=worksheet->cell(i,xCol);
-				yv=worksheet->cell(i,yCol);
+				xv=d_table->cell(i,xCol);
+				yv=d_table->cell(i,yCol);
 				if (xv >= xl && xv <= xr && yv >= yl && yv <= yr )
 				{
-					zv=worksheet->cell(i,zCol);
+					zv=d_table->cell(i,zCol);
 					if (zv > zr)
 						data[k][j] = Triple(xv,yv,zr);
 					else if (zv < zl)
@@ -1628,41 +1585,49 @@ void Graph3D::setTicks(const QStringList& options)
 	}
 }
 
-void Graph3D::setColors(const QColor& meshColor,const QColor& axesColor,const QColor& numColor,
-		const QColor& labelColor,const QColor& bgColor,const QColor& gridColor)
+void Graph3D::setMeshColor(const QColor& meshColor)
 {
-	if (meshCol != meshColor)
-	{
+	if (meshCol != meshColor){
 		sp->setMeshColor(Qt2GL(meshColor));
 		meshCol=meshColor;
 	}
+}
 
-	if(axesCol != axesColor)
-	{
+void Graph3D::setAxesColor(const QColor& axesColor)
+{
+	if(axesCol != axesColor){
 		sp->coordinates()->setAxesColor(Qt2GL(axesColor));
 		axesCol=axesColor;
 	}
+}
 
-	if(numCol !=numColor)
-	{
+void Graph3D::setNumbersColor(const QColor& numColor)
+{
+	if(numCol !=numColor){
 		sp->coordinates()->setNumberColor(Qt2GL(numColor));
 		numCol=numColor;
 	}
+}
 
-	if(labelsCol !=labelColor)
-	{
+void Graph3D::setLabelsColor(const QColor& labelColor)
+{
+	if(labelsCol !=labelColor){
 		sp->coordinates()->setLabelColor(Qt2GL(labelColor));
 		labelsCol=labelColor;
 	}
+}
 
-	if(bgCol !=bgColor)
-	{
+void Graph3D::setBackgroundColor(const QColor& bgColor)
+{
+	if(bgCol !=bgColor){
 		sp->setBackgroundColor(Qt2GL(bgColor));
 		bgCol=bgColor;
 	}
+}
 
-	if(gridCol !=gridColor)
-	{
+void Graph3D::setGridColor(const QColor& gridColor)
+{
+	if(gridCol !=gridColor){
 		sp->coordinates()->setGridLinesColor(Qt2GL(gridColor));
 		gridCol=gridColor;
 	}
@@ -1698,50 +1663,6 @@ void Graph3D::setColors(const QStringList& colors)
         else
 		    setDataColors(min,max);
 	}
-}
-
-void Graph3D::updateColors(const QColor& meshColor,const QColor& axesColor,const QColor& numColor,
-		const QColor& labelColor,const QColor& bgColor,const QColor& gridColor)
-{
-	if (meshCol != meshColor)
-	{
-		sp->setMeshColor(Qt2GL(meshColor));
-		meshCol=meshColor;
-	}
-
-	if(axesCol != axesColor)
-	{
-		sp->coordinates()->setAxesColor(Qt2GL(axesColor));
-		axesCol=axesColor;
-	}
-
-	if(numCol !=numColor)
-	{
-		sp->coordinates()->setNumberColor(Qt2GL(numColor));
-		numCol=numColor;
-	}
-
-	if(labelsCol !=labelColor)
-	{
-		sp->coordinates()->setLabelColor(Qt2GL(labelColor));
-		labelsCol=labelColor;
-	}
-
-	if(bgCol !=bgColor)
-	{
-		sp->setBackgroundColor(Qt2GL(bgColor));
-		bgCol=bgColor;
-	}
-
-	if(gridCol !=gridColor)
-	{
-		sp->coordinates()->setGridLinesColor(Qt2GL(gridColor));
-		gridCol=gridColor;
-	}
-
-	sp->updateData();
-	sp->updateGL();
-	emit modified();
 }
 
 void Graph3D::scaleFonts(double factor)
@@ -1818,7 +1739,7 @@ void Graph3D::setNoAxes()
 	sp->setCoordinateStyle(NOCOORD);
 }
 
-void Graph3D::setNoGrid()
+void Graph3D::setPolygonStyle()
 {
 	if (sp->plotStyle() == FILLED)
 		return;
@@ -1832,7 +1753,7 @@ void Graph3D::setNoGrid()
 	pointStyle = None;
 }
 
-void Graph3D::setFilledMesh()
+void Graph3D::setFilledMeshStyle()
 {
 	if (sp->plotStyle() == FILLEDMESH)
 		return;
@@ -1846,7 +1767,7 @@ void Graph3D::setFilledMesh()
 	pointStyle = None;
 }
 
-void Graph3D::setHiddenLineGrid()
+void Graph3D::setHiddenLineStyle()
 {
 	if (sp->plotStyle() == HIDDENLINE)
 		return;
@@ -1862,7 +1783,7 @@ void Graph3D::setHiddenLineGrid()
 	legendOn=false;
 }
 
-void Graph3D::setLineGrid()
+void Graph3D::setWireframeStyle()
 {
 	if (sp->plotStyle() == WIREFRAME)
 		return;
@@ -1878,7 +1799,7 @@ void Graph3D::setLineGrid()
 	legendOn=false;
 }
 
-void Graph3D::setPointsMesh()
+void Graph3D::setDotStyle()
 {
 	if (!sp  || pointStyle == Dots)
 		return;
@@ -1926,13 +1847,13 @@ void Graph3D::setCrossMesh()
 
 void Graph3D::clearData()
 {
-	if (matrix_)
-		matrix_ = 0;
-	else if (worksheet)
-		worksheet = 0;
-	else if (func){
-		delete func;
-		func = 0;
+	if (d_matrix)
+		d_matrix = 0;
+	else if (d_table)
+		d_table = 0;
+	else if (d_func){
+		delete d_func;
+		d_func = 0;
 	}
 	plotAssociation = QString();
 
@@ -1942,7 +1863,7 @@ void Graph3D::clearData()
 	sp->updateGL();
 }
 
-void Graph3D::setBarsPlot()
+void Graph3D::setBarStyle()
 {
 	if (pointStyle == VerticalBars)
 		return;
@@ -2129,23 +2050,46 @@ void Graph3D::exportPDF(const QString& fileName)
 	exportVector(fileName);
 }
 
-void Graph3D::exportVector(const QString& fileName, const QString& fileType)
+void Graph3D::exportVector(const QString& fileName)
 {
-	if ( fileName.isEmpty() )
-	{
-		QMessageBox::critical(0, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+	if ( fileName.isEmpty() ){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
         return;
 	}
 
-    QString format = fileType;
-    format = format.toUpper();
+    QString format = "PDF";
+    if (fileName.endsWith(".eps", Qt::CaseInsensitive))
+        format = "EPS";
+    else if (fileName.endsWith(".ps", Qt::CaseInsensitive))
+        format = "PS";
 
     VectorWriter * gl2ps = (VectorWriter*)IO::outputHandler(format);
     if (gl2ps)
-    {
       gl2ps->setTextMode(VectorWriter::NATIVE);
-    }
+
     IO::save(sp, fileName, format);
+}
+
+void Graph3D::exportToFile(const QString& fileName)
+{
+	if ( fileName.isEmpty() ){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+        return;
+	}
+
+	if (fileName.contains(".eps") || fileName.contains(".pdf") || fileName.contains(".ps")){
+		exportVector(fileName);
+		return;
+	} else {
+		QList<QByteArray> list = QImageWriter::supportedImageFormats();
+    	for(int i=0 ; i<list.count() ; i++){
+			if (fileName.contains( "." + list[i].toLower())){
+				exportImage(fileName);
+				return;
+			}
+		}
+    	QMessageBox::critical(this, tr("QtiPlot - Error"), tr("File format not handled, operation aborted!"));
+	}
 }
 
 bool Graph3D::eventFilter(QObject *object, QEvent *e)
@@ -2417,53 +2361,30 @@ void Graph3D::setStyle(const QStringList& st)
 	style_ = sp->plotStyle() ;
 }
 
-void Graph3D::setRotation(double  xVal,double  yVal,double  zVal)
+void Graph3D::setRotation(double xVal, double yVal, double zVal)
 {
-	sp->setRotation(xVal,yVal,zVal);
+	sp->setRotation(xVal, yVal, zVal);
 }
 
-void Graph3D::setScale(double  xVal,double  yVal,double  zVal)
+void Graph3D::setZoom(double val)
 {
-	sp->setScale(xVal,yVal,zVal);
+    if (sp->zoom() == val)
+        return;
+
+    sp->setZoom(val);
+}
+
+void Graph3D::setScale(double  xVal, double  yVal, double  zVal)
+{
+    if (sp->xScale() == xVal && sp->yScale() == yVal && sp->zScale() == zVal)
+        return;
+
+	sp->setScale(xVal, yVal, zVal);
 }
 
 void Graph3D::setShift(double  xVal,double  yVal,double  zVal)
 {
-	sp->setShift(xVal,yVal,zVal);
-}
-
-void Graph3D::setZoom(double  val)
-{
-	sp->setZoom(val);
-}
-
-void Graph3D::updateZoom(double  val)
-{
-	if (sp->zoom() == val)
-		return;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	sp->makeCurrent();
-	sp->setZoom(val);
-	sp->updateData();
-	sp->updateGL();
-
-	QApplication::restoreOverrideCursor();
-}
-
-void Graph3D::updateScaling(double  xVal,double  yVal,double  zVal)
-{
-	if (sp->xScale() == xVal && sp->yScale() == yVal && sp->zScale() == zVal)
-		return;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	sp->setScale(xVal,yVal,zVal);
-	sp->updateData();
-	sp->updateGL();
-
-	QApplication::restoreOverrideCursor();
+	sp->setShift(xVal, yVal, zVal);
 }
 
 Qwt3D::PLOTSTYLE Graph3D::plotStyle()
@@ -2483,8 +2404,8 @@ Qwt3D::COORDSTYLE Graph3D::coordStyle()
 
 QString Graph3D::formula()
 {
-	if (func)
-		return func->function();
+	if (d_func)
+		return d_func->function();
 	else
 		return plotAssociation;
 }
@@ -2498,8 +2419,8 @@ QString Graph3D::saveToString(const QString& geometry)
 	s+= "SurfaceFunction\t";
 
 	sp->makeCurrent();
-	if (func)
-		s+=func->function()+"\t";
+	if (d_func)
+		s+=d_func->function()+"\t";
 	else
 	{
 		s+= plotAssociation;
@@ -2718,8 +2639,7 @@ void Graph3D::setTitle(const QStringList& lst)
 
 void Graph3D::setTitle(const QString& s,const QColor& color,const QFont& font)
 {
-	if (title != s)
-	{
+	if (title != s){
 		title=s;
 		sp->setTitle(title);
 	}
@@ -2727,33 +2647,10 @@ void Graph3D::setTitle(const QString& s,const QColor& color,const QFont& font)
 	titleCol=color;
 	sp->setTitleColor(Qt2GL(color));
 
-	if (titleFnt != font)
-	{
+	if (titleFnt != font){
 		titleFnt=font;
 		sp->setTitleFont(font.family(),font.pointSize(),font.weight(),font.italic());
 	}
-}
-
-void Graph3D::updateTitle(const QString& s,const QColor& color,const QFont& font)
-{
-	if (title != s)
-	{
-		title=s;
-		sp->setTitle(title);
-	}
-
-	titleCol=color;
-	sp->setTitleColor(Qt2GL(color));
-
-	if (titleFnt != font)
-	{
-		titleFnt=font;
-		sp->setTitleFont(font.family(),font.pointSize(),font.weight(),font.italic());
-	}
-
-	sp->makeCurrent();
-	sp->updateGL();
-	emit modified();
 }
 
 void Graph3D::setTitleFont(const QFont& font)
@@ -2772,16 +2669,16 @@ void Graph3D::setOptions(const QStringList& lst)
 		legendOn=true;
 	sp->showColorLegend(legendOn);
 	sp->setResolution(lst[2].toInt());
-	adjustLabels(lst[3].toInt());
+	setLabelsDistance(lst[3].toInt());
 }
 
 
 void Graph3D::setOptions(bool legend, int r, int dist)
 {
 	sp->showColorLegend(legend);
-	legendOn=legend;
+	legendOn = legend;
 	sp->setResolution(r);
-	adjustLabels(dist);
+	setLabelsDistance(dist);
 }
 
 Qwt3D::Triple** Graph3D::allocateData(int columns, int rows)
@@ -2893,10 +2790,10 @@ void Graph3D::setTransparency(double t)
 
 void Graph3D::showWorksheet()
 {
-	if (worksheet)
-		worksheet->showMaximized();
-	else if (matrix_)
-		matrix_->showMaximized();
+	if (d_table)
+		d_table->showMaximized();
+	else if (d_matrix)
+		d_matrix->showMaximized();
 }
 
 void Graph3D::setSmoothMesh(bool smooth)
@@ -3008,10 +2905,10 @@ void Graph3D::findBestLayout()
   	sp->setZoom(d/sqrt(3));
 
   	double majl = 0.1/yScale;
-  	updateTickLength(0, majl, 0.6*majl);
+  	setAxisTickLength(0, majl, 0.6*majl);
   	majl = 0.1/xScale;
-  	updateTickLength(1, majl, 0.6*majl);
-  	updateTickLength(2, majl, 0.6*majl);
+  	setAxisTickLength(1, majl, 0.6*majl);
+  	setAxisTickLength(2, majl, 0.6*majl);
 }
 
 void Graph3D::copy(Graph3D* g)
@@ -3051,8 +2948,13 @@ void Graph3D::copy(Graph3D* g)
 	else
 		setDataColors(g->minDataColor(),g->maxDataColor());
 
-	setColors(g->meshColor(),g->axesColor(),g->numColor(),
-				g->labelColor(), g->bgColor(),g->gridColor());
+	setMeshColor(g->meshColor());
+	setAxesColor(g->axesColor());
+	setNumbersColor(g->numColor());
+	setLabelsColor(g->labelColor());
+	setBackgroundColor(g->bgColor());
+	setGridColor(g->gridColor());
+
 	setAxesLabels(g->axesLabels());
 	setTicks(g->scaleTicks());
 	setTickLengths(g->axisTickLengths());
@@ -3066,15 +2968,15 @@ void Graph3D::copy(Graph3D* g)
 	setScale(g->xScale(),g->yScale(),g->zScale());
 	setShift(g->xShift(),g->yShift(),g->zShift());
 	setMeshLineWidth((int)g->meshLineWidth());
-	setOrtho(g->isOrthogonal());
+	setOrthogonal(g->isOrthogonal());
 	update();
 	animate(g->isAnimated());
 }
 
 Graph3D::~Graph3D()
 {
-	if (func)
-		delete func;
+	if (d_func)
+		delete d_func;
 
 	delete sp;
 }

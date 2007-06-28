@@ -64,9 +64,6 @@ public:
 	enum PlotType{Scatter=0, Trajectory = 1, Bars = 2};
 	enum PointStyle{None=0, Dots=1, VerticalBars=2, HairCross=3, Cones=4};
 
-	Qwt3D::SurfacePlot* sp;
-	UserFunction *func;
-
 public slots:
 	void copy(Graph3D* g);
 	void initPlot();
@@ -75,7 +72,7 @@ public slots:
 						  double yr, double zl, double zr);
 	void insertNewData(Table* table, const QString& colName);
 
-	Matrix * matrix(){return matrix_;};
+	Matrix * matrix(){return d_matrix;};
 	void addMatrixData(Matrix* m);//used to plot matrixes
 	void addMatrixData(Matrix* m,double xl,double xr,double yl,double yr,double zl,double zr);
 	void updateMatrixData(Matrix* m);
@@ -99,7 +96,6 @@ public slots:
 	void updateDataXY(Table* table, int xCol, int yCol);
 	void updateDataXYZ(Table* table, int xCol, int yCol, int zCol);
 
-	void changeMatrix(Matrix* m);
 	void changeDataColumn(Table* table, const QString& colName);
 
 	//! \name User Functions
@@ -123,12 +119,15 @@ public slots:
 	void setBoxed();
 	void setNoAxes();
 	bool isOrthogonal(){return sp->ortho();};
-	void setOrtho(bool on = true){sp->setOrtho(on);};
+	void setOrthogonal(bool on = true){sp->setOrtho(on);};
 
 	QStringList axesLabels(){return labels;};
-	void updateLabel(int axis,const QString& label, const QFont& f);
 	void setAxesLabels(const QStringList& lst);
 	void resetAxesLabels();
+
+    void setXAxisLabel(const QString&);
+    void setYAxisLabel(const QString&);
+	void setZAxisLabel(const QString&);
 
 	QFont xAxisLabelFont();
 	QFont yAxisLabelFont();
@@ -153,8 +152,8 @@ public slots:
 	double zStart();
 	double zStop();
 	QStringList scaleLimits();
-	void updateScale(int axis,const QStringList& options);
-	void updateScales(double xl, double xr, double yl, double yr, double zl, double zr);
+	void updateScale(int axis, const QStringList& options);
+	void setScales(double xl, double xr, double yl, double yr, double zl, double zr);
 	void updateScales(double xl, double xr, double yl, double yr,
 				  		double zl, double zr, int xcol, int ycol);
 	void updateScales(double xl, double xr, double yl, double yr,
@@ -164,8 +163,12 @@ public slots:
 	QStringList scaleTicks();
 	void setTicks(const QStringList& options);
 
-	void updateTickLength(int, double majorLength, double minorLength);
-	void adjustLabels(int val);
+	void setXAxisTickLength(double majorLength, double minorLength);
+    void setYAxisTickLength(double majorLength, double minorLength);
+	void setZAxisTickLength(double majorLength, double minorLength);
+
+	void setAxisTickLength(int axis, double majorLength, double minorLength);
+	void setLabelsDistance(int val);
 	int labelsDistance(){return labelsDist;};
 
 	QStringList axisTickLengths();
@@ -174,12 +177,12 @@ public slots:
 
 	//! \name Mesh
 	//@{
-	void setNoGrid();
-	void setHiddenLineGrid();
-	void setLineGrid();
-	void setFilledMesh();
-	void setPointsMesh();
-	void setBarsPlot();
+	void setPolygonStyle();
+	void setHiddenLineStyle();
+	void setWireframeStyle();
+	void setFilledMeshStyle();
+	void setDotStyle();
+	void setBarStyle();
 	void setFloorData();
 	void setFloorIsolines();
 	void setEmptyFloor();
@@ -211,7 +214,6 @@ public slots:
 	void setRotation(double  xVal,double  yVal,double  zVal);
 	void setScale(double  xVal,double  yVal,double  zVal);
 	void setShift(double  xVal,double  yVal,double  zVal);
-	void updateScaling(double  xVal,double  yVal,double  zVal);
 
 	double xRotation(){return sp->xRotation();};
 	double yRotation(){return sp->yRotation();};
@@ -226,8 +228,7 @@ public slots:
 	double zShift(){return sp->zShift();};
 
 	double zoom(){return sp->zoom();};
-	void setZoom(double  val);
-	void updateZoom(double  val);
+	void setZoom(double val);
 
 	Qwt3D::PLOTSTYLE plotStyle();
 	Qwt3D::FLOORSTYLE floorStyle();
@@ -236,9 +237,9 @@ public slots:
 	void print();
 	void copyImage();
 	void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
-
     void exportPDF(const QString& fileName);
-    void exportVector(const QString& fileName, const QString& fileType = "pdf");
+    void exportVector(const QString& fileName);
+    void exportToFile(const QString& fileName);
 
 	QString saveToString(const QString& geometry);
 	QString saveAsTemplate(const QString& geometryInfo);
@@ -252,8 +253,6 @@ public slots:
 	//@{
 	void setDataColors(const QColor& cMax, const QColor& cMin);
 
-	void updateColors(const QColor& meshColor,const QColor& axesColor,const QColor& numColor,
-						   const QColor& labelColor,const QColor& bgColor,const QColor& gridColor);
 	void changeTransparency(double t);
 	void setTransparency(double t);
 	double transparency(){return alpha;};
@@ -271,14 +270,18 @@ public slots:
 	void setDataColorMap(const QString& fileName);
 	bool openColorMap(ColorVector& cv, QString fname);
 
+	void setMeshColor(const QColor&);
+	void setAxesColor(const QColor&);
+	void setNumbersColor(const QColor&);
+	void setLabelsColor(const QColor&);
+	void setBackgroundColor(const QColor&);
+	void setGridColor(const QColor&);
+
 	void setColors(const QStringList& colors);
-	void setColors(const QColor& meshColor,const QColor& axesColor,const QColor& numColor,
-						   const QColor& labelColor,const QColor& bgColor,const QColor& gridColor);
 	//@}
 
 	//! \name Title
 	//@{
-	void updateTitle(const QString& s,const QColor& color,const QFont& font);
 	QFont titleFont(){return titleFnt;};
 	void setTitleFont(const QFont& font);
 	QString plotTitle(){return title;};
@@ -334,7 +337,7 @@ public slots:
 	void setPointOptions(double size, bool s);
 	//@}
 
-	Table* getTable(){return worksheet;};
+	Table* table(){return d_table;};
 	void showWorksheet();
 	void setPlotAssociation(const QString& s){plotAssociation = s;};
 	void setSmoothMesh(bool smooth = true);
@@ -382,18 +385,19 @@ private:
 	bool crossHairSmooth, crossHairBoxed;
 	int conesQuality;
 	PointStyle pointStyle;
-	Table *worksheet;
-	Matrix *matrix_;
+	Table *d_table;
+	Matrix *d_matrix;
+    Qwt3D::SurfacePlot* sp;
+	UserFunction *d_func;
 	Qwt3D::PLOTSTYLE style_;
 };
 
-//! Class for user defined functions
+//! Class for user defined surfaces
 class UserFunction : public Function
 {
 public:
-
     UserFunction(const QString& s, SurfacePlot& pw);
-	~UserFunction();
+
     double operator()(double x, double y);
 	QString function(){return formula;};
 

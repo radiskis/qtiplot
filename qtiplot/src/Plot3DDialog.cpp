@@ -2,8 +2,8 @@
     File                 : Plot3DDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Surface plot options dialog
 
  ***************************************************************************/
@@ -46,6 +46,7 @@
 #include <QGroupBox>
 #include <QFontDialog>
 #include <QColorDialog>
+#include <QApplication>
 
 #include <qwt3d_color.h>
 
@@ -61,7 +62,6 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  const char* name, bool modal, Qt::
     QHBoxLayout *hbox = new QHBoxLayout();
     hbox->addStretch();
 	btnTable = new QPushButton();
-	btnTable->hide();
     hbox->addWidget(btnTable);
 	buttonApply = new QPushButton(tr( "&Apply" ));
     hbox->addWidget(buttonApply);
@@ -98,7 +98,7 @@ void Plot3DDialog::initScalesPage()
 	axesList->addItem(tr( "Y" ) );
 	axesList->addItem(tr( "Z" ) );
 	axesList->setFixedWidth(50);
-	axesList->setCurrentItem(0);
+	axesList->setCurrentRow(0);
 
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("From")), 0, 0);
@@ -149,7 +149,7 @@ void Plot3DDialog::initAxesPage()
 	axesList2->addItem(tr( "Y" ) );
 	axesList2->addItem(tr( "Z" ) );
 	axesList2->setFixedWidth(50);
-	axesList2->setCurrentItem (0);
+	axesList2->setCurrentRow(0);
 
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Title")), 0, 0);
@@ -362,18 +362,13 @@ void Plot3DDialog::initGeneralPage()
 
     general = new QWidget();
     general->setLayout(hl);
-	generalDialog->insertTab(general, tr( "&General" ) );
+	generalDialog->insertTab(general, tr("&General"));
 
-	connect( boxResolution, SIGNAL(valueChanged(int)), this, SIGNAL(updateResolution(int)));
-	connect( boxDistance, SIGNAL(valueChanged(int)), this, SIGNAL(adjustLabels(int)));
-	connect( boxMeshLineWidth, SIGNAL(valueChanged(int)), this, SIGNAL(updateMeshLineWidth(int)));
-	connect( boxOrthogonal, SIGNAL(toggled(bool)), this, SIGNAL(setOrtho(bool)));
-	connect( boxLegend, SIGNAL(toggled(bool)), this, SIGNAL(showColorLegend(bool)));
 	connect( boxZoom, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
 	connect( boxXScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
 	connect( boxYScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
 	connect( boxZScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
-	connect( btnNumbersFont, SIGNAL(clicked()), this, SLOT(pickNumbersFont() ) );
+	connect( btnNumbersFont, SIGNAL(clicked()), this, SLOT(pickNumbersFont()));
 }
 
 void Plot3DDialog::initPointsOptionsStack()
@@ -450,6 +445,121 @@ void Plot3DDialog::initPointsOptionsStack()
 	connect( boxPointStyle, SIGNAL( activated(int) ), optionStack, SLOT( setCurrentIndex(int) ) );
 }
 
+void Plot3DDialog::setPlot(Graph3D *g)
+{
+	if (!g)
+		return;
+
+	d_plot = g;
+
+	fromColor = g->minDataColor();
+	toColor = g->maxDataColor();
+	titleColor = g->titleColor();
+	meshColor = g->meshColor();
+	axesColor = g->axesColor();
+	numColor = g->numColor();
+	labelColor = g->labelColor();
+	bgColor = g->bgColor();
+	gridColor = g->gridColor();
+
+	boxMeshLineWidth->setValue(int(g->meshLineWidth()));
+	boxTransparency->setValue(int(100*g->transparency()));
+
+	boxTitle->setText(g->plotTitle());
+	titleFont = g->titleFont();
+
+	boxZoom->setValue(int(g->zoom()*100));
+	boxXScale->setValue(int(g->xScale()*100));
+	boxYScale->setValue(int(g->yScale()*100));
+	boxZScale->setValue(int(g->zScale()*100));
+	boxResolution->setValue(g->resolution());
+	boxLegend->setChecked(g->isLegendOn());
+	boxOrthogonal->setChecked(g->isOrthogonal());
+
+	labels = g->axesLabels();
+	boxLabel->setText(labels[0]);
+
+	tickLengths = g->axisTickLengths();
+	boxMajorLength->setText(tickLengths[0]);
+	boxMinorLength->setText(tickLengths[1]);
+
+	xAxisFont = g->xAxisLabelFont();
+	yAxisFont = g->yAxisLabelFont();
+	zAxisFont = g->zAxisLabelFont();
+
+	scales = g->scaleLimits();
+	boxFrom->setText(scales[0]);
+	boxTo->setText(scales[1]);
+	boxMajors->setValue(scales[2].toInt());
+	boxMinors->setValue(scales[3].toInt());
+	boxType->setCurrentIndex(scales[4].toInt());
+
+	boxDistance->setValue(g->labelsDistance());
+	numbersFont = g->numbersFont();
+
+	if (g->coordStyle() == Qwt3D::NOCOORD){
+		TicksGroupBox->setDisabled(true);
+		generalDialog->setTabEnabled(axes,false);
+		AxesColorGroupBox->setDisabled(true);
+		boxDistance->setDisabled(true);
+		btnNumbersFont->setDisabled(true);
+	}
+
+	Qwt3D::PLOTSTYLE style = g->plotStyle();
+	Graph3D::PointStyle pt = g->pointType();
+
+	if ( style == Qwt3D::USER ){
+			switch (pt)
+			{
+				case Graph3D::None :
+					break;
+
+				case Graph3D::Dots :
+					disableMeshOptions();
+					initPointsOptionsStack();
+					showPointsTab (g->pointsSize(), g->smoothPoints());
+					break;
+
+				case Graph3D::VerticalBars :
+					showBarsTab(g->barsRadius());
+					break;
+
+				case Graph3D::HairCross :
+					disableMeshOptions();
+					initPointsOptionsStack();
+					showCrossHairTab (g->crossHairRadius(), g->crossHairLinewidth(),
+							g->smoothCrossHair(), g->boxedCrossHair());
+					break;
+
+				case Graph3D::Cones :
+					disableMeshOptions();
+					initPointsOptionsStack();
+					showConesTab(g->coneRadius(), g->coneQuality());
+					break;
+			}
+		}
+		else if ( style == Qwt3D::FILLED )
+			disableMeshOptions();
+		else if (style == Qwt3D::HIDDENLINE || style == Qwt3D::WIREFRAME)
+			boxLegend->setDisabled(true);
+
+		if (g->grids() == 0)
+			btnGrid->setDisabled(true);
+
+		if (g->userFunction())
+			btnTable->hide();
+		else if (g->table())
+            btnTable->setText(tr("&Worksheet"));
+		else if (g->matrix())
+			btnTable->setText(tr("&Matrix"));
+
+	connect( boxMeshLineWidth, SIGNAL(valueChanged(int)), d_plot, SLOT(setMeshLineWidth(int)));
+	connect( boxOrthogonal, SIGNAL(toggled(bool)), d_plot, SLOT(setOrthogonal(bool)));
+	connect( boxLegend, SIGNAL(toggled(bool)), d_plot, SLOT(showColorLegend(bool)));
+    connect( boxResolution, SIGNAL(valueChanged(int)), d_plot, SLOT(setResolution(int)));
+	connect( boxDistance, SIGNAL(valueChanged(int)), d_plot, SLOT(setLabelsDistance(int)));
+};
+
 void Plot3DDialog::showLowerGreek()
 {
 	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::lowerGreek, this, Qt::Tool);
@@ -478,31 +588,8 @@ void Plot3DDialog::addSymbol(const QString& letter)
 
 void Plot3DDialog::worksheet()
 {
-	emit showWorksheet();
+	d_plot->showWorksheet();
 	close();
-}
-
-void Plot3DDialog::customWorksheetBtn(const QString& text)
-{
-	if (!text.isEmpty())
-	{
-		btnTable->show();
-		btnTable->setText(text);
-	}
-}
-
-void Plot3DDialog::disableGridOptions()
-{
-	btnGrid->setDisabled(true);
-}
-
-void Plot3DDialog::disableAxesOptions()
-{
-	TicksGroupBox->setDisabled(true);
-	generalDialog->setTabEnabled(axes,false);
-	AxesColorGroupBox->setDisabled(true);
-	boxDistance->setDisabled(true);
-	btnNumbersFont->setDisabled(true);
 }
 
 void Plot3DDialog::showBarsTab(double rad)
@@ -518,15 +605,15 @@ void Plot3DDialog::showBarsTab(double rad)
 
 void Plot3DDialog::showPointsTab(double rad, bool smooth)
 {
-	boxPointStyle->setCurrentItem(0);
+	boxPointStyle->setCurrentIndex(0);
 	boxSize->setText(QString::number(rad));
 	boxSmooth->setChecked(smooth);
-	optionStack->setCurrentIndex (0);
+	optionStack->setCurrentIndex(0);
 }
 
 void Plot3DDialog::showConesTab(double rad, int quality)
 {
-	boxPointStyle->setCurrentItem(2);
+	boxPointStyle->setCurrentIndex(2);
 	boxConesRad->setText(QString::number(rad));
 	boxQuality->setValue(quality);
 	optionStack->setCurrentIndex (2);
@@ -534,7 +621,7 @@ void Plot3DDialog::showConesTab(double rad, int quality)
 
 void Plot3DDialog::showCrossHairTab(double rad, double linewidth, bool smooth, bool boxed)
 {
-	boxPointStyle->setCurrentItem(1);
+	boxPointStyle->setCurrentIndex(1);
 	boxCrossRad->setText(QString::number(rad));
 	boxCrossLinewidth->setText(QString::number(linewidth));
 	boxCrossSmooth->setChecked(smooth);
@@ -548,21 +635,11 @@ void Plot3DDialog::disableMeshOptions()
 	boxMeshLineWidth->setDisabled(true);
 }
 
-void Plot3DDialog::disableLegend()
-{
-	boxLegend->setDisabled(true);
-}
-
-void Plot3DDialog::setLabelsDistance(int dist)
-{
-	boxDistance->setValue(dist);
-}
-
 void Plot3DDialog::pickDataColorMap()
 {
 QString fn = QFileDialog::getOpenFileName(d_plot->colorMap(), tr("Colormap files") + " (*.map *.MAP)", this);
 if (!fn.isEmpty())
-   emit setDataColorMap(fn);
+   d_plot->setDataColorMap(fn);
 }
 
 QColor Plot3DDialog::pickFromColor()
@@ -675,46 +752,13 @@ void Plot3DDialog::viewAxisOptions(int axis)
 	boxMinorLength->setText(tickLengths[2*axis+1]);
 }
 
-void Plot3DDialog::setAxesLabels(const QStringList& list)
-{
-	labels=list;
-	boxLabel->setText(labels[0]);
-}
-
-void Plot3DDialog::setScales(const QStringList& list)
-{
-	scales=list;
-	boxFrom->setText(scales[0]);
-	boxTo->setText(scales[1]);
-	boxMajors->setValue(scales[2].toInt());
-	boxMinors->setValue(scales[3].toInt());
-	boxType->setCurrentItem(scales[4].toInt());
-}
-
-void Plot3DDialog::setAxesTickLengths(const QStringList& list)
-{
-	tickLengths=list;
-	boxMajorLength->setText(list[0]);
-	boxMinorLength->setText(list[1]);
-}
-
 void Plot3DDialog::viewScaleLimits(int axis)
 {
 	boxFrom->setText(scales[5*axis+0]);
 	boxTo->setText(scales[5*axis+1]);
 	boxMajors->setValue(scales[5*axis+2].toInt());
 	boxMinors->setValue(scales[5*axis+3].toInt());
-	boxType->setCurrentItem(scales[5*axis+4].toInt());
-}
-
-void Plot3DDialog::setTitle(const QString& title)
-{
-	boxTitle->setText(title);
-}
-
-void Plot3DDialog::setTitleFont(const QFont& font)
-{
-	titleFont=font;
+	boxType->setCurrentIndex(scales[5*axis+4].toInt());
 }
 
 QColor Plot3DDialog::pickMeshColor()
@@ -734,37 +778,16 @@ void Plot3DDialog::accept()
 		close();
 }
 
-void Plot3DDialog::setDataColors(const QColor& minColor, const QColor& maxColor)
-{
-	fromColor=minColor;
-	toColor=maxColor;
-}
-
-void Plot3DDialog::setColors(const QColor& title, const QColor& mesh,const QColor& axes,const QColor& num,
-		const QColor& label,const QColor& bg,const QColor& grid)
-{
-	titleColor=title;
-	meshColor=mesh;
-	axesColor=axes;
-	numColor=num;
-	labelColor=label;
-	bgColor=bg;
-	gridColor=grid;
-}
-
-void Plot3DDialog::showLegend(bool show)
-{
-	boxLegend->setChecked(show);
-}
-
 void Plot3DDialog::changeZoom(int)
 {
 	if (generalDialog->currentPage() != (QWidget*)general)
 		return;
 
-	emit updateZoom(boxZoom->value()*0.01);
-	emit updateScaling(boxXScale->value()*0.01,boxYScale->value()*0.01,
-			boxZScale->value()*0.01);
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	d_plot->setZoom(boxZoom->value()*0.01);
+    d_plot->setScale(boxXScale->value()*0.01, boxYScale->value()*0.01, boxZScale->value()*0.01);
+    d_plot->update();
+    QApplication::restoreOverrideCursor();
 }
 
 void Plot3DDialog::changeTransparency(int val)
@@ -772,110 +795,114 @@ void Plot3DDialog::changeTransparency(int val)
 	if (generalDialog->currentPage() != (QWidget*)colors)
 		return;
 
-	emit updateTransparency(val*0.01);
+	d_plot->changeTransparency(val*0.01);
+	d_plot->update();
 }
 
 bool Plot3DDialog::updatePlot()
 {
-	int axis=-1;
+	if (!d_plot)
+		return false;
 
-	if (generalDialog->currentPage()==(QWidget*)bars)
-	{
-		emit updateBars(boxBarsRad->text().toDouble());
+	if (generalDialog->currentPage()==(QWidget*)bars){
+		d_plot->updateBars(boxBarsRad->text().toDouble());
 	}
 
-	if (generalDialog->currentPage()==(QWidget*)points)
-	{
-		if (boxPointStyle->currentItem() == 0)
-			emit updatePoints(boxSize->text().toDouble(), boxSmooth->isChecked());
-		else if (boxPointStyle->currentItem() == 1)
-			emit updateCross(boxCrossRad->text().toDouble(), boxCrossLinewidth->text().toDouble(),
+	if (generalDialog->currentPage()==(QWidget*)points){
+		if (boxPointStyle->currentIndex() == 0)
+			d_plot->updatePoints(boxSize->text().toDouble(), boxSmooth->isChecked());
+		else if (boxPointStyle->currentIndex() == 1)
+			d_plot->updateCross(boxCrossRad->text().toDouble(), boxCrossLinewidth->text().toDouble(),
 					boxCrossSmooth->isChecked(), boxBoxed->isChecked());
-		else if (boxPointStyle->currentItem() == 2)
-			emit updateCones(boxConesRad->text().toDouble(), boxQuality->value());
+		else if (boxPointStyle->currentIndex() == 2)
+			d_plot->updateCones(boxConesRad->text().toDouble(), boxQuality->value());
 	}
 
-	if (generalDialog->currentPage()==(QWidget*)title)
-	{
-		emit updateTitle(boxTitle->text(),titleColor,titleFont);
+	if (generalDialog->currentPage()==(QWidget*)title){
+		d_plot->setTitle(boxTitle->text(),titleColor,titleFont);
 	}
 
-	if (generalDialog->currentPage()==(QWidget*)colors)
-	{
-		emit updateTransparency(boxTransparency->value()*0.01);
-		emit updateDataColors(fromColor,toColor);
-		emit updateColors(meshColor,axesColor,numColor,labelColor,bgColor,gridColor);
+	if (generalDialog->currentPage()==(QWidget*)colors){
+		d_plot->changeTransparency(boxTransparency->value()*0.01);
+		d_plot->setDataColors(fromColor, toColor);
+		d_plot->setMeshColor(meshColor);
+		d_plot->setAxesColor(axesColor);
+		d_plot->setNumbersColor(numColor);
+		d_plot->setLabelsColor(labelColor);
+		d_plot->setBackgroundColor(bgColor);
+		d_plot->setGridColor(gridColor);
 	}
 
-	if (generalDialog->currentPage()==(QWidget*)general)
-	{
-		emit showColorLegend(boxLegend->isChecked());
-		emit updateMeshLineWidth(boxMeshLineWidth->value());
-		emit adjustLabels(boxDistance->value());
-		emit updateResolution (boxResolution->value());
-		emit showColorLegend(boxLegend->isChecked());
-		emit setNumbersFont(numbersFont);
-		emit updateZoom(boxZoom->value()*0.01);
-		emit updateScaling(boxXScale->value()*0.01,boxYScale->value()*0.01,
-				boxZScale->value()*0.01);
+	if (generalDialog->currentPage()==(QWidget*)general){
+		d_plot->showColorLegend(boxLegend->isChecked());
+		d_plot->setResolution(boxResolution->value());
+		d_plot->setMeshLineWidth(boxMeshLineWidth->value());
+		d_plot->setLabelsDistance(boxDistance->value());
+		d_plot->setNumbersFont(numbersFont);
+		d_plot->setZoom(boxZoom->value()*0.01);
+		d_plot->setScale(boxXScale->value()*0.01, boxYScale->value()*0.01, boxZScale->value()*0.01);
 	}
 
-	if (generalDialog->currentPage()==(QWidget*)scale)
-	{
-		axis=axesList->currentRow();
+	if (generalDialog->currentPage()==(QWidget*)scale){
+		int axis = axesList->currentRow();
 		QString from=boxFrom->text().lower();
 		QString to=boxTo->text().lower();
 		double start,end;
-		bool error=false;
-		try
-		{
+		try {
 			MyParser parser;
 			parser.SetExpr(from.ascii());
-			start=parser.Eval();
-		}
-		catch(mu::ParserError &e)
-		{
+			start = parser.Eval();
+		} catch(mu::ParserError &e){
 			QMessageBox::critical(0,tr("QtiPlot - Start limit error"),  QString::fromStdString(e.GetMsg()));
 			boxFrom->setFocus();
-			error=true;
-			return false;
-		}
-		try
-		{
-			MyParser parser;
-			parser.SetExpr(to.ascii());
-			end=parser.Eval();
-		}
-		catch(mu::ParserError &e)
-		{
-			QMessageBox::critical(0,tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
-			boxTo->setFocus();
-			error=true;
 			return false;
 		}
 
-		if (start>=end)
-		{
+		try {
+			MyParser parser;
+			parser.SetExpr(to.ascii());
+			end = parser.Eval();
+		} catch(mu::ParserError &e){
+			QMessageBox::critical(0,tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
+			boxTo->setFocus();
+			return false;
+		}
+
+		if (start>=end){
 			QMessageBox::critical(0,tr("QtiPlot - Input error"),
 					tr("Please enter scale limits that satisfy: from < to!"));
 			boxTo->setFocus();
 			return false;
 		}
 
-		if (! error)
-			emit updateScale(axis,scaleOptions(axis, start, end,
-						boxMajors->text(), boxMinors->text()));
+        d_plot->updateScale(axis, scaleOptions(axis, start, end, boxMajors->text(), boxMinors->text()));
 	}
 
-	if (generalDialog->currentPage()==(QWidget*)axes)
-	{
-		axis=axesList2->currentRow();
+	if (generalDialog->currentPage()==(QWidget*)axes){
+		int axis = axesList2->currentRow();
 		labels[axis] = boxLabel->text();
-		emit updateLabel(axis, boxLabel->text(),axisFont(axis));
-		emit updateTickLength(axis,boxMajorLength->text().toDouble(),
-				boxMinorLength->text().toDouble());
+
+		switch(axis)
+		{
+		case 0:
+			d_plot->setXAxisLabel(boxLabel->text());
+			d_plot->setXAxisLabelFont(axisFont(axis));
+			d_plot->setXAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
+		break;
+		case 1:
+			d_plot->setYAxisLabel(boxLabel->text());
+			d_plot->setYAxisLabelFont(axisFont(axis));
+			d_plot->setYAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
+		break;
+		case 2:
+			d_plot->setZAxisLabel(boxLabel->text());
+			d_plot->setZAxisLabelFont(axisFont(axis));
+			d_plot->setZAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
+		break;
+		}
 	}
 
+    d_plot->update();
 	return true;
 }
 
@@ -887,23 +914,11 @@ QStringList Plot3DDialog::scaleOptions(int axis, double start, double end,
 	l<<QString::number(end);
 	l<<majors;
 	l<<minors;
-	l<<QString::number(boxType->currentItem());
+	l<<QString::number(boxType->currentIndex());
 
 	for (int i=0;i<5;i++)
 		scales[5*axis+i]=l[i];
 	return l;
-}
-
-void Plot3DDialog::setMeshLineWidth(double lw)
-{
-	boxMeshLineWidth->setValue(int(lw));
-}
-
-void Plot3DDialog::setAxesFonts(const QFont& xf, const QFont& yf, const QFont& zf)
-{
-	xAxisFont=xf;
-	yAxisFont=yf;
-	zAxisFont=zf;
 }
 
 void Plot3DDialog::pickAxisLabelFont()
@@ -958,28 +973,6 @@ QFont Plot3DDialog::axisFont(int axis)
 	return f;
 }
 
-void Plot3DDialog::setTransparency(double t)
-{
-	boxTransparency->setValue(int(100*t));
-}
-
-void Plot3DDialog::setResolution(int r)
-{
-	boxResolution->setValue( r );
-}
-
-void Plot3DDialog::setZoom(double zoom)
-{
-	boxZoom->setValue(int(zoom*100));
-}
-
-void Plot3DDialog::setScaling(double xVal, double yVal, double zVal)
-{
-	boxXScale->setValue(int(xVal*100));
-	boxYScale->setValue(int(yVal*100));
-	boxZScale->setValue(int(zVal*100));
-}
-
 void Plot3DDialog::showGeneralTab()
 {
 	generalDialog->showPage(general);
@@ -993,8 +986,4 @@ void Plot3DDialog::showTitleTab()
 void Plot3DDialog::showAxisTab()
 {
 	generalDialog->setCurrentPage(1);
-}
-
-Plot3DDialog::~Plot3DDialog()
-{
 }

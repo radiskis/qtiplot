@@ -233,7 +233,7 @@ appImports = (
 	"matrix", "newMatrix",
 	"graph", "newGraph",
 	"note", "newNote",
-	"plot", "plot3D", "plotSurface",
+	"plot", "plot3D", "plotSurface", "plotRibbon",
 	"plotContour", "plotColorMap", "plotGrayScale",
 	"activeFolder", "rootFolder", "saveFolder",
 	"saveAsTemplate", "openTemplate",
