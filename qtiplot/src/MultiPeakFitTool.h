@@ -2,10 +2,8 @@
     File                 : MultiPeakFitTool.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for doing multi-peak fitting.
 
  ***************************************************************************/
@@ -53,6 +51,8 @@ class MultiPeakFitTool : public QObject, public PlotToolInterface
 	public:
 		MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPeakFit::PeakProfile profile, int num_peaks, const QObject *status_target, const char *status_slot);
 		virtual ~MultiPeakFitTool();
+
+        virtual int rtti() const {return PlotToolInterface::Rtti_MultiPeakFitTool;};
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
 		 *

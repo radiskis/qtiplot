@@ -2,10 +2,8 @@
     File                 : DataPickerTool.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for selecting points on curves.
 
  ***************************************************************************/
@@ -36,12 +34,15 @@
 #include "PlotCurve.h"
 #include "QwtErrorPlotCurve.h"
 #include "ApplicationWindow.h"
+#include <QClipboard>
 
 #include <qwt_symbol.h>
 #include <qwt_plot_picker.h>
 #include <qwt_plot_curve.h>
 #include <QMessageBox>
 #include <QLocale>
+#include <QApplication>
+#include <QTextStream>
 
 DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, const QObject *status_target, const char *status_slot) :
 	QwtPlotPicker(graph->plotWidget()->canvas()),
@@ -411,4 +412,84 @@ void DataPickerTool::moveBy(int dx, int dy)
 		return;
 	movePoint(transform(QwtDoublePoint(d_selected_curve->x(d_selected_point),
 					d_selected_curve->y(d_selected_point))) + QPoint(dx, dy));
+}
+
+void DataPickerTool::cutSelection()
+{
+    copySelection();
+    removePoint();
+}
+
+void DataPickerTool::copySelection()
+{
+    if (!d_selected_curve)
+        return;
+
+    QString text = QLocale().toString(d_selected_curve->x(d_selected_point), 'G', 16) + "\t";
+    text += QLocale().toString(d_selected_curve->y(d_selected_point), 'G', 16) + "\n";
+
+	QApplication::clipboard()->setText(text);
+}
+
+void DataPickerTool::pasteSelection()
+{
+	QString text = QApplication::clipboard()->text();
+	if (text.isEmpty())
+		return;
+
+    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function)
+        return;
+
+    Table *t = ((DataCurve*)d_selected_curve)->table();
+    if (!t)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QTextStream ts( &text, QIODevice::ReadOnly );
+    int row = ((DataCurve*)d_selected_curve)->tableRow(d_selected_point);
+    int col = t->colIndex(d_selected_curve->title().text());
+
+    int prec; char f;
+    t->columnNumericFormat(col, &f, &prec);
+    QLocale locale = QLocale();
+    QStringList cellTexts = ts.readLine().split("\t");
+    if (cellTexts.count() >= 2){
+        bool numeric;
+        double value = locale.toDouble(cellTexts[1], &numeric);
+        if (numeric){
+            t->setText(row, col, locale.toString(value, f, prec));
+
+            double x_val = d_selected_curve->x(d_selected_point);
+            d_selection_marker.setValue(x_val, value);
+            if (d_selection_marker.plot() == NULL)
+                d_selection_marker.attach(d_graph->plotWidget());
+
+            t->notifyChanges();
+
+            emit statusText(QString("%1[%2]: x=%3; y=%4")
+                            .arg(d_selected_curve->title().text())
+                            .arg(row + 1)
+                            .arg(locale.toString(x_val, 'G', d_app->d_decimal_digits))
+                            .arg(cellTexts[1]));
+        }
+    }
+
+	QApplication::restoreOverrideCursor();
+}
+
+void DataPickerTool::selectTableRow()
+{
+    if (!d_selected_curve)
+        return;
+
+    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function)
+        return;
+
+    Table *t = ((DataCurve*)d_selected_curve)->table();
+    if (!t)
+        return;
+
+    int row = ((DataCurve*)d_selected_curve)->tableRow(d_selected_point);
+    t->goToRow(row + 1);
 }

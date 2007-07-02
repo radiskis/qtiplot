@@ -103,10 +103,7 @@ typedef struct{
  * What definitely should be split out are plot types like histograms and pie charts (TODO: which others?).
  * We need a generic framework for this in any case so that new plot types can be implemented in plugins,
  * and Graph could do with a little diet. Especially after merging in Plot and CanvasPicker.
- * [ Framework needs to support plug-ins; assigned to knut ]
- *
- * Add support for floating-point line widths of curves and axes (request 2300).
- * [ assigned to thzs ]
+ * [ Framework needs to support plug-ins; assigned to ion ]
  */
 
 class Graph: public QWidget
@@ -556,7 +553,7 @@ class Graph: public QWidget
 		 * tool interface.
 		 */
 		bool enableRangeSelectors(const QObject *status_target=NULL, const char *status_slot="");
-
+		
 		//! \name Border and Margin
 		//@{
 		void setMargin (int d);

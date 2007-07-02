@@ -54,6 +54,8 @@ class TranslateCurveTool : public QObject, public PlotToolInterface
 		 * during initialization, before there's any other chance of connecting to it.
 		 */
 		TranslateCurveTool(Graph *graph, ApplicationWindow *app, Direction dir, const QObject *status_target=NULL, const char *status_slot="");
+
+        virtual int rtti() const {return PlotToolInterface::Rtti_TranslateCurveTool;};
 	signals:
 		/*!\brief Emitted whenever a new message should be presented to the user.
 		 *

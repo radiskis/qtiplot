@@ -33,6 +33,8 @@
 #include "ImageMarker.h"
 #include "ArrowMarker.h"
 #include "Graph.h"
+#include "ApplicationWindow.h"
+#include "MultiLayer.h"
 
 #include <QPoint>
 #include <QImage>
@@ -40,17 +42,18 @@
 #include <QPainter>
 #include <qwt_plot_canvas.h>
 
-LineProfileTool::LineProfileTool(Graph *graph, int average_pixels)
+LineProfileTool::LineProfileTool(Graph *graph, ApplicationWindow *app, int average_pixels)
 	: QWidget(graph->plotWidget()->canvas()),
-	PlotToolInterface(graph)
+	PlotToolInterface(graph),
+	d_app(app)
 {
 	d_op_start = d_op_dp = QPoint(0,0);
 	// make sure we average over an odd number of pixels
 	d_average_pixels = (average_pixels % 2) ? average_pixels : average_pixels + 1;
 	d_target = dynamic_cast<ImageMarker*>(d_graph->selectedMarkerPtr());
 	if (!d_target)
-		QMessageBox::critical(d_graph->window(),tr("QtiPlot - Pixel selection warning"),
-				"Please select an image marker first.");
+		QMessageBox::critical(d_graph->window(), tr("QtiPlot - Pixel selection warning"),
+				tr("Please select an image marker first."));
 	d_graph->deselectMarker();
 	setGeometry(0, 0, parentWidget()->width(), parentWidget()->height());
 	show();
@@ -60,10 +63,9 @@ LineProfileTool::LineProfileTool(Graph *graph, int average_pixels)
 void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& end)
 {
 	QRect rect = d_target->rect();
-	if (!rect.contains(start) || !rect.contains(end))
-	{
+	if (!rect.contains(start) || !rect.contains(end)){
 		QMessageBox::warning(d_graph, tr("QtiPlot - Pixel selection warning"),
-				"Please select the end line point inside the image rectangle!");
+				tr("Please select the end line point inside the image rectangle!"));
 		return;
 	}
 
@@ -79,8 +81,7 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 	QSize realSize = pic.size();
 	QSize actualSize = d_target->size();
 
-	if (realSize != actualSize)
-	{
+	if (realSize != actualSize){
 		double ratioX = (double)realSize.width()/(double)actualSize.width();
 		double ratioY = (double)realSize.height()/(double)actualSize.height();
 		x1 = int(x1*ratioX);
@@ -106,13 +107,10 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 	px=x1;
 	py=y1;
 
-	if (dxabs>=dyabs) //the line is more horizontal than vertical
-	{
-		for(i=0;i<dxabs;i++)
-		{
+	if (dxabs>=dyabs){ //the line is more horizontal than vertical
+		for(i=0;i<dxabs;i++){
 			y+=dyabs;
-			if (y>=dxabs)
-			{
+			if (y>=dxabs){
 				y-=dxabs;
 				py+=sdy;
 			}
@@ -124,14 +122,10 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 			text+=QString::number(py)+"\t";
 			text+=QString::number(averageImagePixel(image, px, py, true))+"\n";
 		}
-	}
-	else // the line is more vertical than horizontal
-	{
-		for(i=0;i<dyabs;i++)
-		{
+	} else {// the line is more vertical than horizontal
+		for(i=0;i<dyabs;i++){
 			x+=dxabs;
-			if (x>=dyabs)
-			{
+			if (x>=dyabs){
 				x-=dyabs;
 				px+=sdx;
 			}
@@ -144,8 +138,16 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 			text+=QString::number(averageImagePixel(image, px, py, false))+"\n";
 		}
 	}
-	QString caption = tr("Table") + "1";
-	emit createTablePlot(caption, n, 4, text);
+
+	Table *t = d_app->newTable(tr("Table") + "1", n, 4, text);
+	MultiLayer* plot = d_app->multilayerPlot(t, QStringList(QString(t->name())+"_intensity"), 0);
+	Graph *g = (Graph*)plot->activeGraph();
+	if (g){
+		g->setTitle("");
+		g->setXAxisTitle(tr("pixels"));
+		g->setYAxisTitle(tr("pixel intensity (a.u.)"));
+	}
+
 }
 
 int LineProfileTool::averageImagePixel(const QImage& image, int px, int py, bool moreHorizontal)
@@ -153,20 +155,15 @@ int LineProfileTool::averageImagePixel(const QImage& image, int px, int py, bool
 	QRgb pixel;
 	int sum=0,start,i;
 	int middle=int(0.5*(d_average_pixels-1));
-	if (moreHorizontal)
-	{
+	if (moreHorizontal){
 		start=py-middle;
-		for(i=0; i<d_average_pixels; i++)
-		{
+		for(i=0; i<d_average_pixels; i++){
 			pixel= image.pixel(px,start+i);
 			sum+=qGray(pixel);
 		}
-	}
-	else
-	{
+	} else {
 		start=px-middle;
-		for(i=0; i<d_average_pixels; i++)
-		{
+		for(i=0; i<d_average_pixels; i++) {
 			pixel= image.pixel(start+i,py);
 			sum+=qGray(pixel);
 		}

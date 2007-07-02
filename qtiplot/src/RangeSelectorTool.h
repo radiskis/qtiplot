@@ -2,10 +2,8 @@
     File                 : RangeSelectorTool.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for selecting ranges on curves.
 
  ***************************************************************************/
@@ -67,8 +65,15 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		//! Caller is responsible for replot.
 		void setSelectedCurve(QwtPlotCurve *curve);
 
+        void copySelection();
+        void cutSelection();
+        void clearSelection();
+        void pasteSelection();
+        virtual int rtti() const {return PlotToolInterface::Rtti_RangeSelector;};
+
 	public slots:
 		virtual void pointSelected(const QPoint &point);
+        void setCurveRange();
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.

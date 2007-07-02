@@ -2708,7 +2708,7 @@ void Table::contextMenuEvent(QContextMenuEvent *e)
 	setFocus();
 	if (e->pos().x() > r.right() + d_table->verticalHeader()->width())
 		emit showContextMenu(false);
-	else
+	else if (d_table->numCols() > 0 && d_table->numRows() > 0)
 		emit showContextMenu(true);
 	e->accept();
 }

@@ -80,7 +80,7 @@ bool ImportOPJ::createProjectTree(const OPJFile& opj)
 	Folder* projectFolder=mw->projectFolder();
 	tree<projectNode>::iterator sib=projectTree->begin(root);
 	tree<projectNode>::iterator end=projectTree->end(root);
-	while(sib!=end) 
+	while(sib!=end)
 	{
 		if(sib->type==1)
 		{
@@ -134,7 +134,7 @@ bool ImportOPJ::importTables(OPJFile opj)
 		Folder *f=mw->projectFolder()->findSubfolder(opj.spreadParentFolder(s), true, false);
 		if(!f)
 			f=mw->projectFolder();
-		mw->changeFolder(f); 
+		mw->changeFolder(f);
 		Table *table = (opj.spreadHidden(s)||opj.spreadLoose(s))&&opj.Version()==7.5 ? mw->newHiddenTable(opj.spreadName(s), opj.spreadLabel(s), maxrows, nr_cols)
 										: mw->newTable(opj.spreadName(s), maxrows, nr_cols);
 		if (!table)
@@ -469,7 +469,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 		Folder *f=mw->projectFolder()->findSubfolder(opj.graphParentFolder(g), true, false);
 		if(!f)
 			f=mw->projectFolder();
-		mw->changeFolder(f); 
+		mw->changeFolder(f);
 		MultiLayer *ml = mw->multilayerPlot(opj.graphName(g));
 		if (!ml)
 			return false;

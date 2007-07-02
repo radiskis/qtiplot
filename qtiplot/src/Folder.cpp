@@ -156,7 +156,6 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
 	QObjectList folderList = children();
 	if (!folderList.isEmpty()){
 		QObject * f;
-
 		foreach(f,folderList){
 			QString name = static_cast<Folder *>(f)->name();
 			if (partialMatch){
@@ -164,17 +163,16 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
 					return static_cast<Folder *>(f);
 				else if (!caseSensitive && name.startsWith(s,Qt::CaseInsensitive))
 					return static_cast<Folder *>(f);
-			}
-			else // partialMatch == false
-			{
+			} else {// partialMatch == false
 				if (caseSensitive && name == s)
 					return static_cast<Folder *>(f);
 				else if ( !caseSensitive && (name.toLower() == s.toLower()) )
 					return static_cast<Folder *>(f);
 			}
-			Folder* folder=((Folder*)f)->findSubfolder(s, caseSensitive, partialMatch);
-			if(folder)
-				return folder;
+
+			Folder* folder = ((Folder*)f)->findSubfolder(s, caseSensitive, partialMatch);
+            if(folder)
+                return folder;
 		}
 	}
 	return 0;

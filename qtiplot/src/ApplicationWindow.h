@@ -339,7 +339,6 @@ public slots:
 	QWidgetList* tableList();
 
 	void connectTable(Table* w);
-	void newWrksheetPlot(const QString& caption,int r, int c, const QString& text);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
 	void customizeTables(const QColor& bgColor,const QColor& textColor,
@@ -807,7 +806,7 @@ public slots:
 	Folder* currentFolder(){return current_folder;};
 	//! Adds a new folder to the project
 	void addFolder();
-	void addFolder(QString name, Folder* parent);
+	Folder* addFolder(QString name, Folder* parent = NULL);
 	//! Deletes the current folder
 	void deleteFolder();
 
@@ -939,6 +938,7 @@ public:
     //! Last selected filter in import ASCII dialog
     QString d_ASCII_file_filter;
 	bool d_import_dec_separators;
+	int d_ASCII_import_mode;
 	//! Specifies if only the Tables/Matrices in the current folder should be displayed in the Add/remove curve dialog.
 	bool d_show_current_folder;
 	bool d_scale_plots_on_print, d_print_cropmarks;

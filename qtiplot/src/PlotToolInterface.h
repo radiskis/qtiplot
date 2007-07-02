@@ -2,8 +2,8 @@
     File                 : PlotToolInterface.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Knut Franke
-    Email (use @ for *)  : knut.franke*gmx.de
+    Copyright            : (C) 2007 by Knut Franke, Ion Vasilief
+    Email (use @ for *)  : knut.franke*gmx.de, ion_vasilief*yahoo.fr
     Description          : Interface for tools operating on a Graph
 
  ***************************************************************************/
@@ -59,8 +59,25 @@ class Graph;
 class PlotToolInterface
 {
 	public:
+
+    enum RttiValues
+    {
+        Rtti_PlotTool = 0,
+
+        Rtti_RangeSelector,
+        Rtti_DataPicker,
+        Rtti_TranslateCurveTool,
+        Rtti_MultiPeakFitTool,
+        Rtti_LineProfileTool,
+
+        Rtti_PlotUserTool = 1000
+    };
+
 		PlotToolInterface(Graph *graph) { d_graph = graph; }
 		virtual ~PlotToolInterface() {};
+
+        virtual int rtti() const { return Rtti_PlotTool;};
+
 	protected:
 		Graph *d_graph;
 };

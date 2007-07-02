@@ -2,10 +2,8 @@
     File                 : LineProfileTool.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for calculating intensity profiles of
                            image markers.
 
@@ -39,6 +37,7 @@
 class QPoint;
 class QImage;
 class ImageMarker;
+class ApplicationWindow;
 
 /*!\brief Plot tool for calculating intensity profiles of image markers along a line.
  *
@@ -65,8 +64,10 @@ class LineProfileTool : public QWidget, public PlotToolInterface
 
 	public:
 		//! Standard constructor.
-		LineProfileTool(Graph *graph, int average_pixels);
+		LineProfileTool(Graph *graph, ApplicationWindow *app, int average_pixels);
 		void calculateLineProfile(const QPoint &start, const QPoint &end);
+
+        virtual int rtti() const {return PlotToolInterface::Rtti_LineProfileTool;};
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
@@ -74,7 +75,6 @@ class LineProfileTool : public QWidget, public PlotToolInterface
 		 * You don't have to connect to this signal if you alreay specified a reciever during initialization.
 		 */
 		void statusText(const QString&);
-		void createTablePlot(const QString& caption, int r, int c, const QString& content);
 
 	protected:
 		int averageImagePixel(const QImage &image, int px, int py, bool moreHorizontal);
@@ -95,6 +95,7 @@ class LineProfileTool : public QWidget, public PlotToolInterface
 		virtual void mouseReleaseEvent(QMouseEvent *e);
 
 	private:
+        ApplicationWindow *d_app;
 		//! Number of image pixels over which to average.
 		int d_average_pixels;
 		//! The image marker to operate on.
