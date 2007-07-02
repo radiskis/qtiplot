@@ -104,6 +104,8 @@
 #include "TranslateCurveTool.h"
 #include "MultiPeakFitTool.h"
 #include "LineProfileTool.h"
+#include "RangeSelectorTool.h"
+#include "PlotToolInterface.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -2367,19 +2369,6 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->setAntialiasing(antialiasing2DPlots);
 }
 
-void ApplicationWindow::newWrksheetPlot(const QString& caption, int r, int c, const QString& text)
-{
-	Table* w = newTable(caption, r, c, text);
-	MultiLayer* plot=multilayerPlot(w, QStringList(QString(w->name())+"_intensity"), 0);
-	Graph *g=(Graph*)plot->activeGraph();
-	if (g)
-	{
-		g->setTitle("");
-		g->setXAxisTitle(tr("pixels"));
-		g->setYAxisTitle(tr("pixel intensity (a.u.)"));
-	}
-}
-
 /*
  *used when importing an ASCII file
  */
@@ -3249,6 +3238,7 @@ void ApplicationWindow::importASCII()
 
 	asciiDirPath = import_dialog->directory().path();
 	if (import_dialog->rememberOptions()) {
+	    d_ASCII_import_mode = import_dialog->importMode();
 		columnSeparator = import_dialog->columnSeparator();
 		ignoredLines = import_dialog->ignoredLines();
 		renameColumns = import_dialog->renameColumns();
@@ -3997,7 +3987,7 @@ void ApplicationWindow::readSettings()
 	autoSaveTime = settings.value("/AutoSaveTime",15).toInt();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
 	QLocale::setDefault(settings.value("/Locale", QLocale::system().name()).toString());
-	d_decimal_digits = settings.value("/DecimalDigits", 14).toInt();
+	d_decimal_digits = settings.value("/DecimalDigits", 16).toInt();
 
 	//restore dock windows and tool bars
 	restoreState(settings.value("/DockWindows").toByteArray());
@@ -4211,6 +4201,7 @@ void ApplicationWindow::readSettings()
 	d_ASCII_file_filter = settings.value("/AsciiFileTypeFilter", "*").toString();
 	d_ASCII_import_locale = settings.value("/AsciiImportLocale", QLocale::system().name()).toString();
 	d_import_dec_separators = settings.value("/UpdateDecSeparators", true).toBool();
+	d_ASCII_import_mode = settings.value("/ImportMode", ImportASCIIDialog::NewTables).toInt();
 	settings.endGroup(); // Import ASCII
 
     settings.beginGroup("/ExportImage");
@@ -4453,6 +4444,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/AsciiFileTypeFilter", d_ASCII_file_filter);
 	settings.setValue("/AsciiImportLocale", d_ASCII_import_locale.name());
 	settings.setValue("/UpdateDecSeparators", d_import_dec_separators);
+    settings.setValue("/ImportMode", d_ASCII_import_mode);
 	settings.endGroup(); // ImportASCII
 
     settings.beginGroup("/ExportImage");
@@ -5337,19 +5329,18 @@ void ApplicationWindow::showColsDialog()
 void ApplicationWindow::showColumnValuesDialog()
 {
 	Table* w = (Table*)ws->activeWindow();
-	if ( w && w->isA("Table"))
-	{
-		if (int(w->selectedColumns().count())>0 || !(w->getSelection().isEmpty()) )
-		{
-			SetColValuesDialog* vd= new SetColValuesDialog(scriptEnv,this,"valuesDialog",true);
+	if (!w)
+        return;
+	if (!w->isA("Table"))
+        return;
+
+    if (int(w->selectedColumns().count())>0 || !(w->getSelection().isEmpty())){
+			SetColValuesDialog* vd = new SetColValuesDialog(scriptEnv, this, "valuesDialog", true);
 			vd->setAttribute(Qt::WA_DeleteOnClose);
 			vd->setTable(w);
 			vd->exec();
-		}
-		else
-			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-					tr("Please select a column first!"));
-	}
+    } else
+        QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
 }
 
 void ApplicationWindow::recalculateTable()
@@ -5991,15 +5982,11 @@ void ApplicationWindow::showCurveContextMenu(int curveKey)
 	curveMenu.addAction(actionHideCurve);
 	actionHideCurve->setData(curveKey);
 
-    if (g->visibleCurves() > 1 && c->type() == Graph::Function)
-    {
+    if (g->visibleCurves() > 1 && c->type() == Graph::Function){
         curveMenu.addAction(actionHideOtherCurves);
         actionHideOtherCurves->setData(curveKey);
-    }
-    else if (c->type() != Graph::Function)
-    {
-        if ((g->visibleCurves() - c->errorBarsList().count()) > 1)
-        {
+    } else if (c->type() != Graph::Function) {
+        if ((g->visibleCurves() - c->errorBarsList().count()) > 1) {
             curveMenu.addAction(actionHideOtherCurves);
             actionHideOtherCurves->setData(curveKey);
         }
@@ -6009,13 +5996,32 @@ void ApplicationWindow::showCurveContextMenu(int curveKey)
 		curveMenu.addAction(actionShowAllCurves);
 	curveMenu.insertSeparator();
 
-	if (c->type() == Graph::Function)
-	{
+    if (g->activeTool()){
+        if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector ||
+            g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+            curveMenu.addAction(actionCopySelection);
+    }
+
+	if (c->type() == Graph::Function){
+        curveMenu.insertSeparator();
 		curveMenu.addAction(actionEditFunction);
 		actionEditFunction->setData(curveKey);
-	}
-	else if (c->type() != Graph::ErrorBars)
-	{
+	} else if (c->type() != Graph::ErrorBars){
+        if (g->activeTool()){
+            if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector ||
+                g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker){
+                curveMenu.addAction(actionCutSelection);
+                curveMenu.addAction(actionPasteSelection);
+				curveMenu.addAction(actionClearSelection);
+				curveMenu.insertSeparator();
+                if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
+                    QAction *act = new QAction(tr("Set Display Range"), this);
+                    connect(act, SIGNAL(activated()), (RangeSelectorTool *)g->activeTool(), SLOT(setCurveRange()));
+                    curveMenu.addAction(act);
+                }
+			}
+        }
+
 		curveMenu.addAction(actionEditCurveRange);
 		actionEditCurveRange->setData(curveKey);
 
@@ -6109,16 +6115,17 @@ void ApplicationWindow::showCurveWorksheet(Graph *g, int curveIndex)
 	if (!it)
 		return;
 
-	if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-	{
+	if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
 		Spectrogram *sp = (Spectrogram *)it;
 		if (sp->matrix())
 			sp->matrix()->showMaximized();
-	}
-	else if (((PlotCurve *)it)->type() == Graph::Function)
+	} else if (((PlotCurve *)it)->type() == Graph::Function)
 		g->createTable((PlotCurve *)it);
-    else
+    else {
 		showTable(it->title().text());
+		if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+            ((DataPickerTool *)g->activeTool())->selectTableRow();
+    }
 }
 
 void ApplicationWindow::showCurveWorksheet()
@@ -7052,8 +7059,7 @@ void ApplicationWindow::addColToTable()
 
 void ApplicationWindow::clearSelection()
 {
-	if(lv->hasFocus())
-	{
+	if(lv->hasFocus()){
 		deleteSelectedItems();
 		return;
 	}
@@ -7066,13 +7072,17 @@ void ApplicationWindow::clearSelection()
 		((Table*)m)->clearSelection();
 	else if (m->isA("Matrix"))
 		((Matrix*)m)->clearSelection();
-	else if (m->isA("MultiLayer"))
-	{
+	else if (m->isA("MultiLayer")){
 		Graph* g = ((MultiLayer*)m)->activeGraph();
 		if (!g)
 			return;
 
-		if (g->titleSelected())
+        if (g->activeTool()){
+            if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
+                ((RangeSelectorTool *)g->activeTool())->clearSelection();
+            else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+                ((DataPickerTool *)g->activeTool())->removePoint();
+        } else if (g->titleSelected())
 			g->removeTitle();
 		else if (g->markerSelected())
 			g->removeMarker();
@@ -7084,13 +7094,10 @@ void ApplicationWindow::clearSelection()
 
 void ApplicationWindow::copySelection()
 {
-	if(results->hasFocus())
-	{
+	if(results->hasFocus()){
 		results->copy();
 		return;
-	}
-	else if(info->hasFocus())
-	{
+	} else if(info->hasFocus()) {
 		info->copy();
 		return;
 	}
@@ -7103,15 +7110,22 @@ void ApplicationWindow::copySelection()
 		((Table*)m)->copySelection();
 	else if (m->isA("Matrix"))
 		((Matrix*)m)->copySelection();
-	else if (m->isA("MultiLayer"))
-	{
+	else if (m->isA("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot || plot->layers() == 0)
 			return;
 
 		plot->copyAllLayers();
 		Graph* g = (Graph*)plot->activeGraph();
-		if (g && g->markerSelected())
+		if (!g)
+            return;
+
+        if (g->activeTool()){
+            if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
+                ((RangeSelectorTool *)g->activeTool())->copySelection();
+            else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+                ((DataPickerTool *)g->activeTool())->copySelection();
+        } else if (g->markerSelected())
 			copyMarker();
 		else
 			copyActiveLayer();
@@ -7130,15 +7144,24 @@ void ApplicationWindow::cutSelection()
 		((Table*)m)->cutSelection();
 	else if (m->isA("Matrix"))
 		((Matrix*)m)->cutSelection();
-	else if(m->isA("MultiLayer"))
-	{
+	else if(m->isA("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot || plot->layers() == 0)
 			return;
 
 		Graph* g = (Graph*)plot->activeGraph();
-		copyMarker();
-		g->removeMarker();
+		if (!g)
+            return;
+
+		if (g->activeTool()){
+            if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
+                ((RangeSelectorTool *)g->activeTool())->cutSelection();
+            else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+                ((DataPickerTool *)g->activeTool())->cutSelection();
+        } else {
+            copyMarker();
+            g->removeMarker();
+        }
 	}
 	else if (m->isA("Note"))
 		((Note*)m)->textWidget()->cut();
@@ -7202,13 +7225,11 @@ void ApplicationWindow::pasteSelection()
 		((Matrix*)m)->pasteSelection();
 	else if (m->isA("Note"))
 		((Note*)m)->textWidget()->paste();
-	else if (m->isA("MultiLayer"))
-	{
+	else if (m->isA("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot)
 			return;
-		if (copiedLayer)
-		{
+		if (copiedLayer){
 			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 			Graph* g = plot->addLayer();
@@ -7217,9 +7238,7 @@ void ApplicationWindow::pasteSelection()
 			plot->setGraphGeometry(pos.x(), pos.y()-20, lastCopiedLayer->width(), lastCopiedLayer->height());
 
 			QApplication::restoreOverrideCursor();
-		}
-		else
-		{
+		} else {
 			if (plot->layers() == 0)
 				return;
 
@@ -7227,17 +7246,24 @@ void ApplicationWindow::pasteSelection()
 			if (!g)
 				return;
 
-			g->setCopiedMarkerType(copiedMarkerType);
-			g->setCopiedMarkerEnds(auxMrkStart,auxMrkEnd);
+            if (g->activeTool()){
+                if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
+                    ((RangeSelectorTool *)g->activeTool())->pasteSelection();
+                else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+                    ((DataPickerTool *)g->activeTool())->pasteSelection();
+            } else {
+                g->setCopiedMarkerType(copiedMarkerType);
+                g->setCopiedMarkerEnds(auxMrkStart,auxMrkEnd);
 
-			if (copiedMarkerType == Graph::Text)
-				g->setCopiedTextOptions(auxMrkBkg,auxMrkText,auxMrkFont,auxMrkColor, auxMrkBkgColor);
-			if (copiedMarkerType == Graph::Arrow)
-				g->setCopiedArrowOptions(auxMrkWidth,auxMrkStyle,auxMrkColor,startArrowOn,
+                if (copiedMarkerType == Graph::Text)
+                    g->setCopiedTextOptions(auxMrkBkg,auxMrkText,auxMrkFont,auxMrkColor, auxMrkBkgColor);
+                if (copiedMarkerType == Graph::Arrow)
+                    g->setCopiedArrowOptions(auxMrkWidth,auxMrkStyle,auxMrkColor,startArrowOn,
 						endArrowOn, arrowHeadLength,arrowHeadAngle, fillArrowHead);
-			if (copiedMarkerType == Graph::Image)
-				g->setCopiedImageName(auxMrkFileName);
-			g->pasteMarker();
+                if (copiedMarkerType == Graph::Image)
+                    g->setCopiedImageName(auxMrkFileName);
+                g->pasteMarker();
+            }
 		}
 	}
 	emit modified();
@@ -8150,8 +8176,7 @@ void ApplicationWindow::showGraphContextMenu()
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer"))
-	{
+	if (w->isA("MultiLayer")){
 		MultiLayer *plot=(MultiLayer*)w;
 		QMenu cm(this);
 		QMenu exports(this);
@@ -8168,10 +8193,8 @@ void ApplicationWindow::showGraphContextMenu()
 
 		if (ag->isPiePlot())
 			cm.insertItem(tr("Re&move Pie Curve"),ag, SLOT(removePie()));
-		else
-		{
-			if (ag->visibleCurves() != ag->curves())
-			{
+		else {
+			if (ag->visibleCurves() != ag->curves()){
 				cm.addAction(actionShowAllCurves);
 				cm.insertSeparator();
 			}
@@ -8220,13 +8243,10 @@ void ApplicationWindow::showGraphContextMenu()
 			cm.insertItem(tr("Anal&yze"), &calcul);
 		}
 
-		if (copiedLayer)
-		{
+		if (copiedLayer){
 			cm.insertSeparator();
 			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Layer"),this, SLOT(pasteSelection()));
-		}
-		else if (copiedMarkerType >=0 )
-		{
+		} else if (copiedMarkerType >=0 ){
 			cm.insertSeparator();
 			if (copiedMarkerType == Graph::Text )
 				cm.insertItem(QPixmap(paste_xpm),tr("&Paste Text"),plot, SIGNAL(pasteMarker()));
@@ -8377,15 +8397,11 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 		return;
 
 	QMenu cm(this);
-	if (selection)
-	{
-		if ((int)t->selectedColumns().count() > 0)
-		{
+	if (selection){
+		if ((int)t->selectedColumns().count() > 0){
 			showColMenu(t->firstSelectedColumn());
 			return;
-		}
-		else if (t->numSelectedRows() == 1)
-		{
+		} else if (t->numSelectedRows() == 1) {
 			cm.addAction(actionShowColumnValuesDialog);
 			cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
 			cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
@@ -8397,9 +8413,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.insertItem(QPixmap(erase_xpm),tr("Clea&r Row"), t, SLOT(clearSelection()));
 			cm.insertSeparator();
 			cm.addAction(actionShowRowStatistics);
-		}
-		else if (t->numSelectedRows() > 1)
-		{
+		} else if (t->numSelectedRows() > 1) {
 			cm.addAction(actionShowColumnValuesDialog);
 			cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
 			cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
@@ -8410,9 +8424,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.insertItem(QPixmap(erase_xpm),tr("Clea&r Rows"), t, SLOT(clearSelection()));
 			cm.insertSeparator();
 			cm.addAction(actionShowRowStatistics);
-		}
-		else
-		{
+		} else if (t->numRows() > 0 && t->numCols() > 0){
 			cm.addAction(actionShowColumnValuesDialog);
 			cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
 			cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
@@ -8421,9 +8433,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.addAction(actionTableRecalculate);
 			cm.insertItem(QPixmap(erase_xpm),tr("Clea&r"), t, SLOT(clearSelection()));
 		}
-	}
-	else
-	{
+	} else {
 		cm.addAction(actionShowExportASCIIDialog);
 		cm.insertSeparator();
 		cm.addAction(actionAddColToTable);
@@ -9268,9 +9278,7 @@ void ApplicationWindow::pixelLineProfile()
 	if ( !ok )
 		return;
 
-	LineProfileTool *lpt = new LineProfileTool(g, res);
-	connect(lpt, SIGNAL(createTablePlot(const QString&,int,int,const QString&)),
-			this, SLOT(newWrksheetPlot(const QString&,int,int,const QString&)));
+	LineProfileTool *lpt = new LineProfileTool(g, this, res);
 	g->setActiveTool(lpt);
 }
 
@@ -9887,15 +9895,12 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 						ag->setBarsGap(curveID, curve[15].toInt(), curve[16].toInt());
 				}
 				ag->updateCurveLayout(curveID, &cl);
-				if (d_file_version >= 88)
-				{
+				if (d_file_version >= 88){
 					QwtPlotCurve *c = ag->curve(curveID);
-					if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve)
-					{
+					if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve){
 						if (d_file_version < 90)
 							c->setAxis(curve[curve.count()-2].toInt(), curve[curve.count()-1].toInt());
-						else
-						{
+						else {
 							c->setAxis(curve[curve.count()-5].toInt(), curve[curve.count()-4].toInt());
 							c->setVisible(curve.last().toInt());
 						}
@@ -9938,14 +9943,15 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			ag->insertFunctionCurve(curve[1], curve[2].toInt(), d_file_version);
 			ag->setCurveType(curveID, curve[5].toInt());
 			ag->updateCurveLayout(curveID, &cl);
-			if (d_file_version >= 88)
-			{
+			if (d_file_version >= 88){
 				QwtPlotCurve *c = ag->curve(curveID);
-				if (c)
-				{
-					c->setAxis(curve[current_index].toInt(), curve[current_index+1].toInt());
-					if (d_file_version >= 90)
+				if (c){
+                    if(current_index + 1 < curve.size())
+                        c->setAxis(curve[current_index].toInt(), curve[current_index+1].toInt());
+					if (d_file_version >= 90 && current_index+2 < curve.size())
 						c->setVisible(curve.last().toInt());
+                    else
+                        c->setVisible(true);
 				}
 
 			}
@@ -10403,10 +10409,8 @@ void ApplicationWindow::disableTools()
 		displayBar->hide();
 
 	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows)
-	{
-		if (w->isA("MultiLayer"))
-		{
+	foreach(QWidget *w, *windows){
+		if (w->isA("MultiLayer")){
 			QWidgetList lst= ((MultiLayer *)w)->graphPtrs();
 			foreach(QWidget *widget, lst)
 				((Graph *)widget)->disableTools();
@@ -13128,23 +13132,31 @@ void ApplicationWindow::addFolder()
 	}
 }
 
-void ApplicationWindow::addFolder(QString name, Folder* parent)
+Folder* ApplicationWindow::addFolder(QString name, Folder* parent)
 {
-	QStringList lst = parent->subfolders();
-	lst = lst.grep( name );
-	if (!lst.isEmpty())
-		name += " ("+ QString::number(lst.size()+1)+")";
+    if(!parent)
+        parent = current_folder;
 
-	Folder *f = new Folder(parent, name);
-	addFolderListViewItem(f);
+    QStringList lst = parent->subfolders();
+    lst = lst.grep( name );
+    if (!lst.isEmpty())
+        name += " ("+ QString::number(lst.size()+1)+")";
 
-	FolderListItem *fi = new FolderListItem(parent->folderListItem(), f);
-	if (fi)
-		f->setFolderListItem(fi);
+    Folder *f = new Folder(parent, name);
+    addFolderListViewItem(f);
+
+    FolderListItem *fi = new FolderListItem(parent->folderListItem(), f);
+    if (fi)
+        f->setFolderListItem(fi);
+
+    return f;
 }
 
 bool ApplicationWindow::deleteFolder(Folder *f)
 {
+    if (!f)
+        return false;
+
 	if (confirmCloseFolder && QMessageBox::information(this, tr("QtiPlot - Delete folder?"),
 				tr("Delete folder '%1' and all the windows it contains?").arg(f->name()),
 				tr("Yes"), tr("No"), 0, 0))
@@ -13240,6 +13252,9 @@ void ApplicationWindow::hideFolderWindows(Folder *f)
 
 void ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 {
+    if (!newFolder)
+        return;
+
 	if (current_folder == newFolder && !force)
 		return;
 

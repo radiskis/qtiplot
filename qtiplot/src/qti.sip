@@ -536,7 +536,7 @@ public:
 	void setFloorGrid(bool = true);
 	void setFrontGrid(bool = true);
 	void setBackGrid(bool = true);
-	
+
     void setFramed();
 	void setBoxed();
 	void setNoAxes();
@@ -566,7 +566,7 @@ public:
     void setXAxisLabel(const QString&);
     void setYAxisLabel(const QString&);
 	void setZAxisLabel(const QString&);
-	
+
 	void setXAxisTickLength(double majorLength, double minorLength);
     void setYAxisTickLength(double majorLength, double minorLength);
 	void setZAxisTickLength(double majorLength, double minorLength);
@@ -673,6 +673,9 @@ public:
 %End
   void saveFolder(Folder *folder, const QString& fn);
   Folder* projectFolder() /PyName=rootFolder/;
+
+  Folder* addFolder(QString name, Folder* parent = 0);
+  bool deleteFolder(Folder *);
 
   MyWidget* openTemplate(const QString&);
   void saveAsTemplate(MyWidget*, const QString&);

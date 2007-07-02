@@ -51,6 +51,15 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 		virtual bool eventFilter(QObject *obj, QEvent *event);
 		bool keyEventFilter(QKeyEvent *ke);
 		QwtPlotCurve *selectedCurve() const { return d_selected_curve; }
+
+        void copySelection();
+        void cutSelection();
+        void pasteSelection();
+        void removePoint();
+        virtual int rtti() const {return PlotToolInterface::Rtti_DataPicker;};
+
+        void selectTableRow();
+
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
 		 *
@@ -61,7 +70,6 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 		void selected(QwtPlotCurve*, int);
 	protected:
 		void movePoint(const QPoint &cursor);
-		void removePoint();
 		virtual void append(const QPoint &point);
 		virtual void move(const QPoint &point);
 		virtual bool end(bool ok);

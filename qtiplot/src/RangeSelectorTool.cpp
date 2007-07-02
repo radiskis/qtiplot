@@ -2,10 +2,8 @@
     File                 : RangeSelectorTool.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for selecting ranges on curves.
 
  ***************************************************************************/
@@ -36,9 +34,12 @@
 
 #include <qwt_symbol.h>
 #include <QPoint>
+#include <QApplication>
+#include <QClipboard>
 #include <QMessageBox>
 #include <QEvent>
 #include <QLocale>
+#include <QTextStream>
 
 RangeSelectorTool::RangeSelectorTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->plotWidget()->canvas()),
@@ -114,32 +115,13 @@ void RangeSelectorTool::pointSelected(const QPoint &pos)
 	if (curve == d_selected_curve)
 		setActivePoint(point);
 	else {
-		// try to be intelligent about selecting the inactive point
-		double min_x = curve->minXValue();
-		double max_x = curve->maxXValue();
-		int n = curve->dataSize();
-		double second_x;
-		if (curve->x(point) == min_x)
-			second_x = max_x;
-		else if (curve->x(point) == max_x)
-			second_x = min_x;
-		else if ( d_active_marker.xValue() < d_inactive_marker.xValue() )
-			second_x = max_x;
-		else
-			second_x = min_x;
-		if (second_x == max_x) { // start at selected point and try larger indices first
-			for (int i=0; i<n; ++i)
-				if (curve->x((i + point) % n) == max_x)
-					d_inactive_point = (i + point) % n;
-		} else { // start at selected point and try smaller indices first
-			for (int i=n-1; i>=0; --i)
-				if (curve->x((i + point) % n) == max_x)
-					d_inactive_point = (i + point) % n;
-		}
-		d_selected_curve = curve;
-		d_inactive_marker.setValue(curve->x(d_inactive_point), curve->y(d_inactive_point));
-		d_active_point = point;
+        d_selected_curve = curve;
+
+        d_active_point = point;
 		d_active_marker.setValue(d_selected_curve->x(d_active_point), d_selected_curve->y(d_active_point));
+
+        d_active_point > 0 ? d_inactive_point = 0 : d_inactive_point = d_selected_curve->dataSize() - 1;
+		d_inactive_marker.setValue(curve->x(d_inactive_point), curve->y(d_inactive_point));
 		emitStatusText();
 		emit changed();
 	}
@@ -171,17 +153,14 @@ void RangeSelectorTool::setActivePoint(int point)
 
 void RangeSelectorTool::emitStatusText()
 {
-    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function)
-    {
+    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function){
          emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
 			.arg(d_selected_curve->title().text())
 			.arg(d_active_point + 1)
-			.arg(QLocale().toString(d_selected_curve->x(d_active_point), 'G', 15))
-			.arg(QLocale().toString(d_selected_curve->y(d_active_point), 'G', 15)));
-    }
-    else
-    {
+			.arg(QLocale().toString(d_selected_curve->x(d_active_point), 'G', 16))
+			.arg(QLocale().toString(d_selected_curve->y(d_active_point), 'G', 16)));
+    } else {
         Table *t = ((DataCurve*)d_selected_curve)->table();
         if (!t)
             return;
@@ -276,4 +255,127 @@ bool RangeSelectorTool::keyEventFilter(QKeyEvent *ke)
 			break;
 	}
 	return false;
+}
+
+void RangeSelectorTool::cutSelection()
+{
+    copySelection();
+    clearSelection();
+}
+
+void RangeSelectorTool::copySelection()
+{
+    if (!d_selected_curve)
+        return;
+
+    int start_point = QMIN(d_active_point, d_inactive_point);
+    int end_point = QMAX(d_active_point, d_inactive_point);
+    QString text;
+    for (int i = start_point; i <= end_point; i++){
+        text += QLocale().toString(d_selected_curve->x(i), 'G', 16) + "\t";
+        text += QLocale().toString(d_selected_curve->y(i), 'G', 16) + "\n";
+    }
+
+	QApplication::clipboard()->setText(text);
+}
+
+void RangeSelectorTool::clearSelection()
+{
+    if (!d_selected_curve)
+        return;
+
+    if (((PlotCurve *)d_selected_curve)->type() != Graph::Function){
+        Table *t = ((DataCurve*)d_selected_curve)->table();
+        if (!t)
+            return;
+
+        int start_point = QMIN(d_active_point, d_inactive_point);
+        int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
+        int end_point = QMAX(d_active_point, d_inactive_point);
+        int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
+        int col = t->colIndex(d_selected_curve->title().text());
+        bool ok_update = (end_point - start_point + 1) < d_selected_curve->dataSize() ? true : false;
+        for (int i = start_row; i <= end_row; i++)
+            t->setText(i, col, "");
+        t->notifyChanges();
+
+        if (ok_update){
+            d_active_point = 0;
+            d_inactive_point = d_selected_curve->dataSize() - 1;
+            d_active_marker.setValue(d_selected_curve->x(d_active_point), d_selected_curve->y(d_active_point));
+            d_inactive_marker.setValue(d_selected_curve->x(d_inactive_point), d_selected_curve->y(d_inactive_point));
+            emitStatusText();
+            emit changed();
+            d_graph->plotWidget()->replot();
+        }
+    }
+}
+
+// Paste text from the clipboard
+void RangeSelectorTool::pasteSelection()
+{
+	QString text = QApplication::clipboard()->text();
+	if (text.isEmpty())
+		return;
+
+    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function)
+        return;
+
+    Table *t = ((DataCurve*)d_selected_curve)->table();
+    if (!t)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QTextStream ts( &text, QIODevice::ReadOnly );
+    int start_point = QMIN(d_active_point, d_inactive_point);
+    int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
+    int end_point = QMAX(d_active_point, d_inactive_point);
+    int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
+    int col = t->colIndex(d_selected_curve->title().text());
+
+    int prec; char f;
+    t->columnNumericFormat(col, &f, &prec);
+    QLocale locale = QLocale();
+    for (int i = start_row; i <= end_row; i++){
+        QString s = ts.readLine();
+        if (s.isEmpty())
+            continue;
+
+        QStringList cellTexts = s.split("\t");
+        if (cellTexts.count() >= 2){
+            bool numeric;
+            double value = locale.toDouble(cellTexts[1], &numeric);
+			if (numeric)
+                t->setText(i, col, locale.toString(value, f, prec));
+			else
+                t->setText(i, col, cellTexts[1]);
+        }
+
+        if(ts.atEnd())
+            break;
+    }
+
+    t->notifyChanges();
+
+    d_active_marker.setValue(d_selected_curve->x(d_active_point), d_selected_curve->y(d_active_point));
+    d_inactive_marker.setValue(d_selected_curve->x(d_inactive_point), d_selected_curve->y(d_inactive_point));
+    emitStatusText();
+    emit changed();
+    d_graph->plotWidget()->replot();
+
+	QApplication::restoreOverrideCursor();
+}
+
+void RangeSelectorTool::setCurveRange()
+{
+    if (!d_selected_curve)
+        return;
+
+    if (((PlotCurve *)d_selected_curve)->type() != Graph::Function){
+        ((DataCurve*)d_selected_curve)->setRowRange(QMIN(d_active_point, d_inactive_point),
+                                    QMAX(d_active_point, d_inactive_point));
+        d_graph->updatePlot();
+        d_graph->notifyChanges();
+    }
 }

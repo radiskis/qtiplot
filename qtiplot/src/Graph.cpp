@@ -1823,7 +1823,7 @@ void Graph::pasteMarker()
 		mrk->setTextColor(auxMrkColor);
 		mrk->setBackgroundColor(auxMrkBkgColor);
 	}
-	
+
 	d_plot->replot();
 	deselectMarker();
 }
@@ -3678,7 +3678,7 @@ void Graph::removeCurve(int index)
         else if (n_curves > 1 && index + 1 < n_curves)
             d_range_selector->setSelectedCurve(curve(index + 1));
         else
-            delete d_range_selector;
+            disableTools();
     }
 
 	d_plot->removeCurve(c_keys[index]);
@@ -3833,7 +3833,7 @@ ImageMarker* Graph::addImage(ImageMarker* mrk)
 {
 	if (!mrk)
 		return 0;
-	
+
 	ImageMarker* mrk2 = new ImageMarker(mrk->fileName());
 
 	int imagesOnPlot = d_images.size();
@@ -3851,7 +3851,7 @@ ImageMarker* Graph::addImage(const QString& fileName)
 				tr("Image file: <p><b> %1 </b><p>does not exist anymore!").arg(fileName));
 		return 0;
 	}
-	
+
 	ImageMarker* mrk = new ImageMarker(fileName);
 	int imagesOnPlot = d_images.size();
 	d_images.resize(++imagesOnPlot);
@@ -3861,7 +3861,7 @@ ImageMarker* Graph::addImage(const QString& fileName)
 	int w = d_plot->canvas()->width();
 	if (picSize.width()>w)
 		picSize.setWidth(w);
-	
+
 	int h=d_plot->canvas()->height();
 	if (picSize.height()>h)
 		picSize.setHeight(h);
@@ -3883,7 +3883,7 @@ void Graph::insertImageMarker(const QStringList& lst, int fileVersion)
 		ImageMarker* mrk = new ImageMarker(fn);
 		if (!mrk)
 			return;
-		
+
         int imagesOnPlot = d_images.size();
 		d_images.resize(++imagesOnPlot);
 		d_images[imagesOnPlot-1] = d_plot->insertMarker(mrk);
@@ -4780,7 +4780,7 @@ void Graph::copy(Graph* g)
 	QVector<int> imag = g->imageMarkerKeys();
 	for (i=0; i<(int)imag.size(); i++)
 		addImage((ImageMarker*)g->imageMarker(imag[i]));
-	
+
 	QVector<int> txtMrkKeys=g->textMarkerKeys();
 	for (i=0; i<(int)txtMrkKeys.size(); i++){
 		Legend* mrk = (Legend*)g->textMarker(txtMrkKeys[i]);
@@ -4947,9 +4947,10 @@ void Graph::disableTools()
 
 bool Graph::enableRangeSelectors(const QObject *status_target, const char *status_slot)
 {
-	if (d_range_selector)
-		delete d_range_selector;
+	/*if (d_range_selector)
+		delete d_range_selector;*/
 	d_range_selector = new RangeSelectorTool(this, status_target, status_slot);
+	setActiveTool(d_range_selector);
 	connect(d_range_selector, SIGNAL(changed()), this, SIGNAL(dataRangeChanged()));
 	return true;
 }

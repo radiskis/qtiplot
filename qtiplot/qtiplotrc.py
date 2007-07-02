@@ -236,6 +236,7 @@ appImports = (
 	"plot", "plot3D", "plotSurface", "plotRibbon",
 	"plotContour", "plotColorMap", "plotGrayScale",
 	"activeFolder", "rootFolder", "saveFolder",
+	"addFolder", "deleteFolder",
 	"saveAsTemplate", "openTemplate",
 	"clone",
 	"importImage",
