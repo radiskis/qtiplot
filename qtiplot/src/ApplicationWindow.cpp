@@ -13128,6 +13128,21 @@ void ApplicationWindow::addFolder()
 	}
 }
 
+void ApplicationWindow::addFolder(QString name, Folder* parent)
+{
+	QStringList lst = parent->subfolders();
+	lst = lst.grep( name );
+	if (!lst.isEmpty())
+		name += " ("+ QString::number(lst.size()+1)+")";
+
+	Folder *f = new Folder(parent, name);
+	addFolderListViewItem(f);
+
+	FolderListItem *fi = new FolderListItem(parent->folderListItem(), f);
+	if (fi)
+		f->setFolderListItem(fi);
+}
+
 bool ApplicationWindow::deleteFolder(Folder *f)
 {
 	if (confirmCloseFolder && QMessageBox::information(this, tr("QtiPlot - Delete folder?"),

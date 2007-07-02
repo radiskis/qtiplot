@@ -807,6 +807,7 @@ public slots:
 	Folder* currentFolder(){return current_folder;};
 	//! Adds a new folder to the project
 	void addFolder();
+	void addFolder(QString name, Folder* parent);
 	//! Deletes the current folder
 	void deleteFolder();
 
