@@ -38,7 +38,9 @@
 #include "ColorBox.h"
 #include "MultiLayer.h"
 #include "Note.h"
+#include "Folder.h"
 #include "QwtHistogram.h"
+
 
 #define OBJECTXOFFSET 200
 
@@ -58,10 +60,39 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	xoffset=0;
 	OPJFile opj((const char *)filename.latin1());
 	parse_error = opj.Parse();
+	if(filename.endsWith(".opj", Qt::CaseInsensitive))
+		createProjectTree(opj);
 	importTables(opj);
 	importGraphs(opj);
 	importNotes(opj);
 	mw->showResults(opj.resultsLogString(),mw->logWindow->isVisible());
+}
+
+bool ImportOPJ::createProjectTree(const OPJFile& opj)
+{
+	const tree<projectNode>* projectTree=opj.project();
+	tree<projectNode>::iterator root=projectTree->begin(projectTree->begin());
+	if(!root.node)
+		return false;
+	FolderListItem *item = (FolderListItem *)mw->folders->firstChild();
+	item->setText(0, root->name.c_str());
+	item->folder()->setName(root->name.c_str());
+	Folder* projectFolder=mw->projectFolder();
+	tree<projectNode>::iterator sib=projectTree->begin(root);
+	tree<projectNode>::iterator end=projectTree->end(root);
+	while(sib!=end) 
+	{
+		if(sib->type==1)
+		{
+			tree<projectNode>::iterator p=projectTree->parent(sib);
+			Folder *f=projectFolder->findSubfolder(p->name.c_str(), true, false);
+			if(!f)
+				f=projectFolder;
+			mw->addFolder(sib->name.c_str(), f);
+		}
+		++sib;
+	}
+	return true;
 }
 
 int ImportOPJ::translateOrigin2QtiplotLineStyle(int linestyle) {
@@ -98,7 +129,12 @@ bool ImportOPJ::importTables(OPJFile opj)
 	{
 		int nr_cols = opj.numCols(s);
 		int maxrows = opj.maxRows(s);
-
+		if(!nr_cols) //remove tables without cols
+			continue;
+		Folder *f=mw->projectFolder()->findSubfolder(opj.spreadParentFolder(s), true, false);
+		if(!f)
+			f=mw->projectFolder();
+		mw->changeFolder(f); 
 		Table *table = (opj.spreadHidden(s)||opj.spreadLoose(s))&&opj.Version()==7.5 ? mw->newHiddenTable(opj.spreadName(s), opj.spreadLabel(s), maxrows, nr_cols)
 										: mw->newTable(opj.spreadName(s), maxrows, nr_cols);
 		if (!table)
@@ -335,6 +371,10 @@ bool ImportOPJ::importTables(OPJFile opj)
 		int nr_cols = opj.numMartixCols(s);
 		int nr_rows = opj.numMartixRows(s);
 
+		Folder *f=mw->projectFolder()->findSubfolder(opj.matrixParentFolder(s), true, false);
+		if(!f)
+			f=mw->projectFolder();
+		mw->changeFolder(f);
 		Matrix* matrix = mw->newMatrix(opj.matrixName(s), nr_rows, nr_cols);
 		if (!matrix)
 			return false;
@@ -357,21 +397,21 @@ bool ImportOPJ::importTables(OPJFile opj)
 
 		matrix->saveCellsToMemory();
 
-		QChar f;
+		QChar format;
 		switch(opj.matrixValueTypeSpec(s))
 		{
 		case 0: //Decimal 1000
-			f='f';
+			format='f';
 			break;
 		case 1: //Scientific
-			f='e';
+			format='e';
 			break;
 		case 2: //Engeneering
 		case 3: //Decimal 1,000
-			f='g';
+			format='g';
 			break;
 		}
-		matrix->setNumericFormat(f, opj.matrixSignificantDigits(s));
+		matrix->setNumericFormat(format, opj.matrixSignificantDigits(s));
         matrix->table()->blockSignals(false);
 		matrix->showNormal();
 
@@ -394,11 +434,14 @@ bool ImportOPJ::importNotes(OPJFile opj)
 	for (int n=0; n<opj.numNotes(); n++)
 	{
 		QString name=opj.noteName(n);
-		QRegExp rx("^@(\\S+)$");
+		QRegExp rx("^@\\((\\S+)\\)$");
 		if(rx.indexIn(name)==0)
-		{
-			name=name.mid(2,name.length()-3);
-		}
+			name=rx.cap(1);
+
+		Folder *f=mw->projectFolder()->findSubfolder(opj.noteParentFolder(n), true, false);
+		if(!f)
+			f=mw->projectFolder();
+		mw->changeFolder(f);
 		Note *note = mw->newNote(name);
 		if(!note)
 			return false;
@@ -423,6 +466,10 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 	int tickTypeMap[]={0,3,1,2};
 	for (int g=0; g<opj.numGraphs(); g++)
 	{
+		Folder *f=mw->projectFolder()->findSubfolder(opj.graphParentFolder(g), true, false);
+		if(!f)
+			f=mw->projectFolder();
+		mw->changeFolder(f); 
 		MultiLayer *ml = mw->multilayerPlot(opj.graphName(g));
 		if (!ml)
 			return false;

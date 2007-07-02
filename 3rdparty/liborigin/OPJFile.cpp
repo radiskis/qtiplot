@@ -28,8 +28,8 @@
  ***************************************************************************/
 
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
-#include <string.h>
 #include <math.h>
 
 #include <algorithm> //required for std::swap
@@ -62,6 +62,7 @@ OPJFile::OPJFile(const char *filename)
 {
 	version=0;
 	dataIndex=0;
+	objectIndex=0;
 }
 
 int OPJFile::compareSpreadnames(char *sname) {
@@ -85,7 +86,7 @@ int OPJFile::compareColumnnames(int spread, char *sname) {
 			return i;
 	return -1;
 }
-int  OPJFile::compareExcelColumnnames(int iexcel, int isheet, char *sname) {
+int OPJFile::compareExcelColumnnames(int iexcel, int isheet, char *sname) {
 	for(unsigned int i=0;i<EXCEL[iexcel].sheet[isheet].column.size();i++)
 		if (EXCEL[iexcel].sheet[isheet].column[i].name == sname)
 			return i;
@@ -140,6 +141,38 @@ vector<string> OPJFile::findDataByIndex(int index) {
 			return str;
 		}
 	return str;
+}
+
+string OPJFile::findObjectByIndex(int index, string folder) {
+	for(unsigned int i=0;i<SPREADSHEET.size();i++)
+		if (SPREADSHEET[i].objectID == index)
+		{
+			SPREADSHEET[i].parentFolder=folder;
+			return SPREADSHEET[i].name;
+		}
+
+	for(unsigned int i=0;i<MATRIX.size();i++)
+		if (MATRIX[i].objectID == index)
+		{
+			MATRIX[i].parentFolder=folder;
+			return MATRIX[i].name;
+		}
+
+	for(unsigned int i=0;i<EXCEL.size();i++)
+		if (EXCEL[i].objectID == index)
+		{
+			EXCEL[i].parentFolder=folder;
+			return EXCEL[i].name;
+		}
+
+	for(unsigned int i=0;i<GRAPH.size();i++)
+		if (GRAPH[i].objectID == index)
+		{
+			GRAPH[i].parentFolder=folder;
+			return GRAPH[i].name;
+		}
+
+	return "";
 }
 
 void OPJFile::convertSpreadToExcel(int spread)
@@ -1173,6 +1206,8 @@ int OPJFile::ParseFormatNew() {
 		else
 		{
 			NOTE.push_back(note(stmp));
+			NOTE.back().objectID=objectIndex;
+			objectIndex++;
 			delete stmp;
 			fseek(f,1,SEEK_CUR);
 			fread(&size,4,1,f);
@@ -1198,6 +1233,12 @@ int OPJFile::ParseFormatNew() {
 		}
 	}
 
+	fseek(f,1+4*5+0x10+1,SEEK_CUR);
+	try{
+		readProjectTree(f, debug);
+	}
+	catch(...)
+	{}
 	fprintf(debug,"Done parsing\n");
 	fclose(debug);
 
@@ -1224,6 +1265,8 @@ void OPJFile::readSpreadInfo(FILE *f, FILE *debug)
 
 	int spread=compareSpreadnames(name);
 	SPREADSHEET[spread].name=name;
+	SPREADSHEET[spread].objectID=objectIndex;
+	objectIndex++;
 
 	fprintf(debug,"			SPREADSHEET %d NAME : %s	(@ 0x%X) has %d columns\n",
 		spread+1,name,POS + 0x2,SPREADSHEET[spread].column.size());
@@ -1469,6 +1512,8 @@ void OPJFile::readExcelInfo(FILE *f, FILE *debug)
 
 	int iexcel=compareExcelnames(name);
 	EXCEL[iexcel].name=name;
+	EXCEL[iexcel].objectID=objectIndex;
+	objectIndex++;
 
 	fprintf(debug,"			EXCEL %d NAME : %s	(@ 0x%X) has %d sheets\n",
 		iexcel+1,name,POS + 0x2,EXCEL[iexcel].sheet.size());
@@ -1725,6 +1770,8 @@ void OPJFile::readMatrixInfo(FILE *f, FILE *debug)
 
 	int idx=compareMatrixnames(name);
 	MATRIX[idx].name=name;
+	MATRIX[idx].objectID=objectIndex;
+	objectIndex++;
 
 	fprintf(debug,"			MATRIX %d NAME : %s	(@ 0x%X) \n", idx+1,name,POS + 0x2);
 	fflush(debug);
@@ -1892,6 +1939,8 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 	fread(&name,25,1,f);
 
 	GRAPH.push_back(graph(name));
+	GRAPH.back().objectID=objectIndex;
+	objectIndex++;
 
 	fprintf(debug,"			GRAPH %d NAME : %s	(@ 0x%X) \n", GRAPH.size(),name,POS + 0x2);
 	fflush(debug);
@@ -2543,6 +2592,77 @@ void OPJFile::readGraphAxisTickLabelsInfo(graphAxisTick &tick, FILE *f, int pos)
 		tick.value_type_specification=0;
 		break;
 	}
+}
+
+void OPJFile::readProjectTree(FILE *f, FILE *debug)
+{
+	readProjectTreeFolder(f, debug, projectTree.begin());
+
+	fprintf(debug,"Origin project Tree\n");
+	tree<projectNode>::iterator sib2=projectTree.begin(projectTree.begin());
+    tree<projectNode>::iterator end2=projectTree.end(projectTree.begin());
+    while(sib2!=end2) 
+	{
+        for(int i=0; i<projectTree.depth(sib2)-1; ++i) 
+			fprintf(debug," ");
+		fprintf(debug,"%s\n",(*sib2).name.c_str());
+        ++sib2;
+    }
+	fflush(debug);
+}
+
+void OPJFile::readProjectTreeFolder(FILE *f, FILE *debug, tree<projectNode>::iterator parent)
+{
+	int POS=ftell(f);
+
+	POS+=5+0x20+1+5;
+	fseek(f,POS,SEEK_SET);
+
+	int namesize;
+	fread(&namesize,4,1,f);
+	if(IsBigEndian()) SwapBytes(namesize);
+
+	POS+=5;
+
+	// read folder name
+	char* name=new char[namesize+1];
+	name[namesize]='\0';
+	fseek(f,POS,SEEK_SET);
+	fread(name,namesize,1,f);
+	tree<projectNode>::iterator current_folder=projectTree.append_child(parent, projectNode(name, 1));
+	POS+=namesize+1+5+5;
+
+	int objectcount;
+	fseek(f,POS,SEEK_SET);
+	fread(&objectcount,4,1,f);
+	if(IsBigEndian()) SwapBytes(objectcount);
+	POS+=5+5;
+
+	for(int i=0; i<objectcount; ++i)
+	{
+		POS+=5;
+		char c;
+		fseek(f,POS+0x2,SEEK_SET);
+		fread(&c,1,1,f);
+		int objectID;
+		fseek(f,POS+0x4,SEEK_SET);
+		fread(&objectID,4,1,f);
+		if(IsBigEndian()) SwapBytes(objectID);
+		if(c==0x10)
+		{
+			NOTE[objectID].parentFolder=current_folder->name;
+			projectTree.append_child(current_folder, projectNode(NOTE[objectID].name, 0));
+		}
+		else
+			projectTree.append_child(current_folder, projectNode(findObjectByIndex(objectID, current_folder->name), 0));
+		POS+=8+1+5+5;
+	}
+	fseek(f,POS,SEEK_SET);
+	fread(&objectcount,4,1,f);
+	if(IsBigEndian()) SwapBytes(objectcount);
+	fseek(f,1,SEEK_CUR);
+	for(int i=0; i<objectcount; ++i)
+		readProjectTreeFolder(f, debug, current_folder);
 }
 
 bool OPJFile::IsBigEndian()

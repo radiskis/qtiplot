@@ -172,6 +172,9 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
 				else if ( !caseSensitive && (name.toLower() == s.toLower()) )
 					return static_cast<Folder *>(f);
 			}
+			Folder* folder=((Folder*)f)->findSubfolder(s, caseSensitive, partialMatch);
+			if(folder)
+				return folder;
 		}
 	}
 	return 0;
