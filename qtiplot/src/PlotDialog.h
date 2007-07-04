@@ -175,6 +175,10 @@ private slots:
   	void pickContourLinesColor();
   	void showDefaultContourLinesBox(bool show);
 	void showColorMapEditor(bool show);
+	
+	//layer geometry
+	void adjustLayerHeight(int width);
+	void adjustLayerWidth(int height);
 
 protected slots:
     void setActiveLayer(LayerItem *item);
@@ -208,19 +212,25 @@ private:
 	void initPercentilePage();
 	void initSpectrogramPage();
 	void initLayerPage();
+	void initLayerGeometryPage();
 	void initFontsPage();
 	void initPiePage();
 	void initPrintPage();
     void contextMenuEvent(QContextMenuEvent *e);
 
+	double aspect_ratio;
+	
     QFont titleFont, legendFont, axesFont, numbersFont;
 
     MultiLayer *d_ml;
 	QStringList columnNames;
 
+	QSpinBox* boxX, *boxY, *boxLayerWidth, *boxLayerHeight;
+	QCheckBox *keepRatioBox;
+	
     QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
 	ColorMapEditor *colorMapEditor;
-    QWidget *curvePlotTypeBox, *layerPage, *piePage, *fontsPage, *printPage;
+    QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage;
     QTreeWidget* listBox;
     QCheckBox *boxAntialiasing, *boxAll, *boxScaleLayers, *boxPrintCrops;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;

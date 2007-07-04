@@ -236,12 +236,12 @@ appImports = (
 	"plot", "plot3D", "plotSurface", "plotRibbon",
 	"plotContour", "plotColorMap", "plotGrayScale",
 	"activeFolder", "rootFolder", "saveFolder",
-	"addFolder", "deleteFolder",
+	"addFolder", "deleteFolder", "changeFolder",
 	"saveAsTemplate", "openTemplate",
 	"clone",
 	"importImage",
 	"setWindowName",
-	"setPreferences"
+	"setPreferences", "saveProjectAs"
 	)
 for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))

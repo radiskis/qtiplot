@@ -106,6 +106,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent,  const char* name, bo
 	initSpectrogramPage();
 	initPiePage();
 	initLayerPage();
+	initLayerGeometryPage();
 	initFontsPage();
 	initPrintPage();
 
@@ -398,6 +399,61 @@ void PlotDialog::initLayerPage()
 	connect(boxBackgroundColor, SIGNAL(clicked()), this, SLOT(pickBackgroundColor()));
 	connect(boxCanvasColor, SIGNAL(clicked()), this, SLOT(pickCanvasColor()));
 	connect(boxBorderWidth,SIGNAL(valueChanged (int)), this, SLOT(updateBorder(int)));
+}
+
+void PlotDialog::initLayerGeometryPage()
+{
+    layerGeometryPage = new QWidget();
+
+	QGroupBox *gb1 = new QGroupBox(tr("Origin"));
+	boxX = new QSpinBox();
+	boxX->setRange(0, 2000);
+	boxX->setSuffix(tr(" pixels"));
+	
+	boxY = new QSpinBox();
+	boxY->setRange(0, 2000);
+	boxY->setSuffix(tr(" pixels"));
+	
+    QGridLayout *gl1 = new QGridLayout(gb1);
+    gl1->addWidget(new QLabel( tr("X= ")), 0, 0);
+    gl1->addWidget(boxX, 0, 1);
+    gl1->addWidget(new QLabel(tr("Y= ")), 1, 0);
+    gl1->addWidget(boxY, 1, 1);
+    gl1->setRowStretch(2, 1);
+    
+    QGroupBox *gb2 = new QGroupBox(tr("Size"));
+    boxLayerWidth = new QSpinBox();
+	boxLayerWidth->setRange(0, 2000);
+	boxLayerWidth->setSuffix(tr(" pixels"));
+		
+	boxLayerHeight = new QSpinBox();
+	boxLayerHeight->setRange(0, 2000);
+	boxLayerHeight->setSuffix(tr(" pixels"));
+	
+    QGridLayout *gl2 = new QGridLayout(gb2);
+    gl2->addWidget(new QLabel( tr("width= ")), 0, 0);
+    gl2->addWidget(boxLayerWidth, 0, 1);
+
+    gl2->addWidget(new QLabel(tr("height= ")), 2, 0);
+    gl2->addWidget(boxLayerHeight, 2, 1);
+
+	keepRatioBox = new QCheckBox(tr("Keep aspect ratio"));
+	keepRatioBox->setChecked(true);
+    gl2->addWidget(keepRatioBox, 3, 1);
+
+    gl2->setRowStretch(4, 1);
+	
+    QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
+	bl1->addWidget(gb1);
+	bl1->addWidget(gb2);
+	
+    QHBoxLayout * hl = new QHBoxLayout( layerGeometryPage );
+    hl->addLayout(bl1);
+
+    privateTabWidget->addTab(layerGeometryPage, tr("Geometry"));
+	
+	connect( boxLayerWidth, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerHeight(int) ) );
+	connect( boxLayerHeight, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerWidth(int) ) );
 }
 
 void PlotDialog::initPiePage()
@@ -1336,6 +1392,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
         {
             clearTabWidget();
             privateTabWidget->addTab (layerPage, tr("Layer"));
+			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
             privateTabWidget->showPage(layerPage);
         }
         setActiveLayer((LayerItem *)currentItem);
@@ -1443,6 +1500,7 @@ void PlotDialog::clearTabWidget()
     privateTabWidget->removeTab(privateTabWidget->indexOf(piePage));
 
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(layerGeometryPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(fontsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(printPage));
 }
@@ -1568,6 +1626,19 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxBackgroundTransparency->blockSignals(false);
     boxCanvasTransparency->blockSignals(false);
     boxBorderWidth->blockSignals(false);
+	
+	boxX->setValue(g->pos().x());
+	boxY->setValue(g->pos().y());
+	
+	boxLayerWidth->blockSignals(true);
+	boxLayerWidth->setValue(p->size().width());
+	boxLayerWidth->blockSignals(false);
+
+	boxLayerHeight->blockSignals(true);
+	boxLayerHeight->setValue(p->size().height());
+	boxLayerHeight->blockSignals(false);
+	
+	aspect_ratio = (double)p->size().width()/(double)p->size().height();
 }
 
 void PlotDialog::setActiveCurve(CurveTreeItem *item)
@@ -1818,8 +1889,24 @@ bool PlotDialog::acceptParams()
 			}
 		}
 		return true;
-	}
+	} else if (privateTabWidget->currentWidget() == layerGeometryPage){
+		LayerItem *item = (LayerItem *)listBox->currentItem();
+        if (!item)
+            return false;
+        Graph *g = item->graph();
+		if (!g)
+			return false;
+		
+		QPoint pos = QPoint(boxX->value(), boxY->value());
+		QSize size = QSize(boxLayerWidth->value(), boxLayerHeight->value());
+		if (g->pos() == pos && g->size() == size)
+			return false;
 
+		g->setGeometry(QRect(pos, size));
+    	g->plotWidget()->resize(size);
+		return true;
+	}
+	
     QTreeWidgetItem *it = listBox->currentItem();
     if (!it)
         return false;
@@ -2606,6 +2693,26 @@ void PlotDialog::initFonts(const QFont& titlefont, const QFont& axesfont, const 
 	titleFont = titlefont;
 	numbersFont = numbersfont;
 	legendFont = legendfont;
+}
+
+void PlotDialog::adjustLayerHeight(int width)
+{
+	if (keepRatioBox->isChecked()){
+		disconnect( boxLayerHeight, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerWidth(int) ) );
+		boxLayerHeight->setValue(int(width/aspect_ratio));
+		connect( boxLayerHeight, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerWidth(int) ) );
+	} else
+		aspect_ratio = (double)width/double(boxLayerHeight->value());
+}
+
+void PlotDialog::adjustLayerWidth(int height)
+{
+	if (keepRatioBox->isChecked()){
+		disconnect( boxLayerWidth, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerHeight(int) ) );
+		boxLayerWidth->setValue(int(height*aspect_ratio));
+		connect( boxLayerWidth, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerHeight(int) ) );
+	} else
+		aspect_ratio = double(boxLayerWidth->value())/(double)height;
 }
 
 void PlotDialog::closeEvent(QCloseEvent* e)

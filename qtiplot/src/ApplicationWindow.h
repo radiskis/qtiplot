@@ -175,8 +175,8 @@ public slots:
     */
 	void cascade();
 
-	void saveProjectAs();
-	bool saveProject();
+	void saveProjectAs(const QString& fileName = QString(), bool compress = false);
+	bool saveProject(bool compress = false);
 
 	//! Set the project status to modifed
 	void modifiedProject();
@@ -670,7 +670,6 @@ public slots:
 	void showColStatistics();
 	void showFitDialog();
 	void showImageDialog();
-	void showPlotGeometryDialog();
 	void showLayerDialog();
 	void showPreferencesDialog();
 	void showMatrixDialog();
@@ -819,8 +818,8 @@ public slots:
 	//! Sets all items in the folders list view to be desactivated (QPixmap = folder_closed_xpm)
 	void desactivateFolders();
 
-	//! Changes the current folder
-	void changeFolder(Folder *newFolder, bool force = false);
+	//! Changes the current folder. Returns true if successfull
+	bool changeFolder(Folder *newFolder, bool force = false);
 
 	//! Changes the current folder when the user changes the current item in the QListView "folders"
 	void folderItemChanged(Q3ListViewItem *it);
@@ -872,7 +871,7 @@ public slots:
 	void appendProject(const QString& file_name);
 	void saveAsProject();
 	void saveFolderAsProject(Folder *f);
-	void saveFolder(Folder *folder, const QString& fn);
+	void saveFolder(Folder *folder, const QString& fn, bool compress = false);
 
 	//!  adds a folder list item to the list view "lv"
 	void addFolderListViewItem(Folder *f);
@@ -1098,7 +1097,7 @@ private:
     QAction *actionShowMoreWindows, *actionPixelLineProfile, *actionIntensityTable;
     QAction *actionShowLineDialog, *actionShowImageDialog, *actionShowTextDialog;
     QAction *actionActivateWindow, *actionMinimizeWindow, *actionMaximizeWindow, *actionHideWindow, *actionResizeWindow, *actionPrintWindow;
-    QAction *actionShowPlotGeometryDialog, *actionEditSurfacePlot, *actionAdd3DData;
+    QAction *actionEditSurfacePlot, *actionAdd3DData;
 	QAction *actionMatrixDeterminant, *actionSetMatrixProperties;
 	QAction *actionSetMatrixDimensions, *actionConvertMatrix, *actionSetMatrixValues, *actionTransposeMatrix, *actionInvertMatrix;
 	QAction *actionPlot3DWireFrame, *actionPlot3DHiddenLine, *actionPlot3DPolygons, *actionPlot3DWireSurface;

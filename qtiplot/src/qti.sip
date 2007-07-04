@@ -387,8 +387,29 @@ public:
   sipRes = PyString_FromString(sipCpp->pieLegendText());
 %End
 
-  bool insertCurve(Table*, const QString&, int=1);
   bool insertCurve(Table*, const QString&, const QString&, int=1);
+  bool addCurves(Table*, SIP_PYTUPLE, int=0, int=1, int=3, int=0, int=-1)/PyName=addCurves/;
+%MethodCode
+  QStringList l;
+  int n = PyTuple_Size(a1);
+  for (int i=0; i<n; i++) {
+    PyObject *str = PyObject_Str(PyTuple_GET_ITEM(a1,i));
+    if (str) {
+      l << PyString_AsString(str);
+		Py_DECREF(str);
+	 } else {
+      sipIsErr = 1;
+      break;
+    }
+  }
+  sipRes = sipCpp->addCurves(a0, l, a2, a3, a4, a5, a6);
+%End
+  bool addCurves(Table*, const QString&, int=0, int=1, int=3, int=0, int=-1);
+%MethodCode
+  QStringList l;
+  l << *a1;
+  sipRes = sipCpp->addCurves(a0, l, a2, a3, a4, a5, a6);
+%End
   void removeCurve(int);
   void removeCurve(const QString&);
   void deleteFitCurves();
@@ -671,11 +692,12 @@ public:
 %MethodCode
   sipRes = sipCpp->current_folder;
 %End
-  void saveFolder(Folder *folder, const QString& fn);
+  void saveFolder(Folder *folder, const QString& fn, bool=false);
   Folder* projectFolder() /PyName=rootFolder/;
 
   Folder* addFolder(QString name, Folder* parent = 0);
   bool deleteFolder(Folder *);
+  bool changeFolder(Folder *, bool force = false);
 
   MyWidget* openTemplate(const QString&);
   void saveAsTemplate(MyWidget*, const QString&);
@@ -683,6 +705,7 @@ public:
   void setWindowName(MyWidget *, const QString &);
   void setPreferences(Graph*);
 
+  void saveProjectAs(const QString& fileName = QString(), bool = false);
   MyWidget* clone(MyWidget*);
 
 private:
