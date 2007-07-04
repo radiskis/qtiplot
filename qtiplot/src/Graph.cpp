@@ -1270,7 +1270,7 @@ void Graph::setGridOptions(const GridOptions& o)
 		mrkX = d_plot->insertMarker(m);
 		m->setAxis(grid.xAxis, grid.yAxis);
 		m->setLineStyle(QwtPlotMarker::VLine);
-		m->setValue(0.0,0.0);
+		m->setValue(0.0, 0.0);
 		m->setLinePen(QPen(Qt::black, 2,Qt::SolidLine));
 	}
 	else if (mrkX>=0 && !grid.xZeroOn)
@@ -3254,7 +3254,7 @@ void Graph::insertPlotItem(QwtPlotItem *i, int type)
   		addLegendItem(i->title().text());
 }
 
-bool Graph::insertCurvesList(Table* w, const QStringList& names, int style, int lWidth,
+bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
 							int sSize, int startRow, int endRow)
 {
 	if (style==Graph::Pie)
@@ -3263,8 +3263,7 @@ bool Graph::insertCurvesList(Table* w, const QStringList& names, int style, int 
 		plotBoxDiagram(w, names, startRow, endRow);
 	else if (style==Graph::VectXYXY || style==Graph::VectXYAM)
 		plotVectorCurve(w, names, style, startRow, endRow);
-	else
-	{
+	else{
 		int curves = (int)names.count();
         int errCurves = 0;
 		QStringList lst = QStringList();
@@ -3275,13 +3274,11 @@ bool Graph::insertCurvesList(Table* w, const QStringList& names, int style, int 
 			{
 				errCurves++;
 				lst << names[i];
-			}
-			else
+			} else
 				lst.prepend(names[i]);
         }
 
-		for (int i=0; i<curves; i++)
-		{
+		for (int i=0; i<curves; i++){
             int j = w->colIndex(names[i]);
             bool ok = false;
             if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr)
@@ -3294,18 +3291,15 @@ bool Graph::insertCurvesList(Table* w, const QStringList& names, int style, int 
                     ok = addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
                 else
                     ok = addErrorBars(w->colName(ycol), w, names[i]);
-			}
-			else
+			} else
                 ok = insertCurve(w, names[i], style, startRow, endRow);
 
-            if (ok)
-			{
+            if (ok){
 				CurveLayout cl = initCurveLayout(style, curves - errCurves);
 				cl.sSize = sSize;
 				cl.lWidth = lWidth;
 				updateCurveLayout(i, &cl);
-			}
-			else
+			} else
                 return false;
 		}
 	}

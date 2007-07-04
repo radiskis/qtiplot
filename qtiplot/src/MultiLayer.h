@@ -206,7 +206,6 @@ signals:
 	void showLineDialog();
 	void viewTitleDialog();
 	void createTable(const QString&,int,int,const QString&);
-	void showGeometryDialog();
 	void pasteMarker();
 	void createIntensityTable(const QString&);
 	void setPointerCursor();

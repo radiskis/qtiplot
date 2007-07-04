@@ -231,6 +231,17 @@ MyWidget *Folder::window(const QString &name, const char *cls, bool recursive)
 	return NULL;
 }
 
+void Folder::removeWindow( MyWidget *w )
+{ 
+	if (!w)
+		return;
+	
+	if (d_active_window == w)
+		d_active_window = NULL;
+	
+	lstWindows.takeAt( lstWindows.indexOf(w) );
+}
+
 QString Folder::sizeToString()
 {
 int size = 0;

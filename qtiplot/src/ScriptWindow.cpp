@@ -153,7 +153,7 @@ void ScriptWindow::initActions()
 
 void ScriptWindow::languageChange()
 {
-	setWindowTitle(tr("QtiPlot - Python Script Window"));
+	setWindowTitle(tr("QtiPlot - Script Window"));
 
 	menuBar()->clear();
 	menuBar()->addMenu(file);

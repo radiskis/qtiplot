@@ -257,7 +257,7 @@ void ApplicationWindow::init()
 	outWindows = new QList<QWidget*>();
 
 	scriptWindow = 0;
-
+	
 	renamedTables = QStringList();
 	readSettings();
 	createLanguagesList();
@@ -603,7 +603,7 @@ void ApplicationWindow::insertTranslatedStrings()
 	lv->setColumnText (5, tr("Label"));
 
 	if (scriptWindow)
-		scriptWindow->setCaption(tr("QtiPlot - Script Window"));
+		scriptWindow->setWindowTitle(tr("QtiPlot - Script Window"));
 	explorerWindow->setWindowTitle(tr("Project Explorer"));
 	logWindow->setWindowTitle(tr("Results Log"));
 #ifdef SCRIPTING_CONSOLE
@@ -1049,8 +1049,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
 
-	if(w)
-	{
+	if(w){
 		actionPrintAllPlots->setEnabled(projectHas2DPlots());
 		actionPrint->setEnabled(true);
 		actionCutSelection->setEnabled(true);
@@ -1059,8 +1058,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 		actionClearSelection->setEnabled(true);
 		actionSaveTemplate->setEnabled(true);
 
-		if (w->isA("MultiLayer"))
-		{
+		if (w->isA("MultiLayer")) {
 			menuBar()->insertItem(tr("&Graph"), graph);
 			menuBar()->insertItem(tr("&Data"), plotDataMenu);
 			menuBar()->insertItem(tr("&Analysis"), calcul);
@@ -1079,9 +1077,7 @@ void ApplicationWindow::customMenu(QWidget* w)
             format->insertSeparator();
             format->addAction(actionShowGridDialog);
 			format->addAction(actionShowTitleDialog);
-		}
-		else if (w->isA("Graph3D"))
-		{
+		} else if (w->isA("Graph3D")) {
 			disableActions();
 
 			menuBar()->insertItem(tr("For&mat"), format);
@@ -1098,12 +1094,9 @@ void ApplicationWindow::customMenu(QWidget* w)
 			format->addAction(actionShowTitleDialog);
 			if (((Graph3D*)w)->coordStyle() == Qwt3D::NOCOORD)
 				actionShowAxisDialog->setEnabled(false);
-		}
-		else if (w->inherits("Table"))
-		{
+		} else if (w->inherits("Table")) {
 			menuBar()->insertItem(tr("&Plot"), plot2D);
-			if (w->isA("Table"))
-			{
+			if (w->isA("Table")){
 				menuBar()->insertItem(tr("&Analysis"), dataMenu);
 				menuBar()->insertItem(tr("&Table"), tableMenu);
 			}
@@ -1112,15 +1105,11 @@ void ApplicationWindow::customMenu(QWidget* w)
 			actionTableRecalculate->setEnabled(true);
 			file->setItemEnabled (exportID,false);
 			file->setItemEnabled (closeID,true);
-		}
-		else if (w->isA("Matrix"))
-		{
+		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
 			menuBar()->insertItem(tr("&Matrix"), matrixMenu);
-		}
-		else if (w->isA("Note"))
-		{
+		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
 			scriptingMenu->insertSeparator();
@@ -1134,13 +1123,11 @@ void ApplicationWindow::customMenu(QWidget* w)
 			connect(actionNoteExecute, SIGNAL(activated()), w, SLOT(execute()));
 			connect(actionNoteExecuteAll, SIGNAL(activated()), w, SLOT(executeAll()));
 			connect(actionNoteEvaluate, SIGNAL(activated()), w, SLOT(evaluate()));
-		}
-		else
+		} else
 			disableActions();
 
 		menuBar()->insertItem(tr("&Windows"), windowsMenu );
-	}
-	else
+	} else
 		disableActions();
 
 	menuBar()->insertItem(tr("&Help"), help );
@@ -2119,9 +2106,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 	if (!ag)
 		return 0;
 
-	ag->insertCurvesList(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
-
-	//QMessageBox::about(0, "multilayerPlot", "muie");
+	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
 
 	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
 
@@ -2167,7 +2152,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 			Graph *ag = g->addLayer();
 			if (ag)
 			{
-				ag->insertCurvesList(w, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
+				ag->addCurves(w, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
 				setPreferences(ag);
 				ag->newLegend();
 				ag->setAutoscaleFonts(false);//in order to avoid to small fonts
@@ -2185,7 +2170,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 			{
 				QStringList lst;
 				lst << list[i];
-				ag->insertCurvesList(w, lst, style, defaultCurveLineWidth, defaultSymbolSize);
+				ag->addCurves(w, lst, style, defaultCurveLineWidth, defaultSymbolSize);
 				setPreferences(ag);
 				ag->newLegend();
 				ag->setAutoscaleFonts(false);//in order to avoid to small fonts
@@ -3358,8 +3343,9 @@ void ApplicationWindow::open()
 				}
 
 				if (fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti~",Qt::CaseInsensitive) ||
-						fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogm",Qt::CaseInsensitive) ||
-						fn.endsWith(".ogw",Qt::CaseInsensitive) || fn.endsWith(".ogg",Qt::CaseInsensitive))
+					fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogm",Qt::CaseInsensitive) ||
+					fn.endsWith(".ogw",Qt::CaseInsensitive) || fn.endsWith(".ogg",Qt::CaseInsensitive) ||
+					fn.endsWith(".qti.gz",Qt::CaseInsensitive))
 				{
 					if (!fi.exists ()){
 						QMessageBox::critical(this, tr("QtiPlot - File openning error"),
@@ -3373,7 +3359,8 @@ void ApplicationWindow::open()
 					if (a){
 						a->workingDir = workingDir;
 						if (fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti~",Qt::CaseInsensitive) ||
-                            fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive))
+                            fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive) ||
+							fn.endsWith(".qti.gz",Qt::CaseInsensitive))
                             this->close();
 					}
 				} else {
@@ -3401,7 +3388,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn)
 		return plotFile(fn);
 
 	QString fname = fn;
-	if (fn.endsWith(".qti.gz",Qt::CaseInsensitive))
+	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive))
 	{//decompress using zlib
 		file_uncompress((char *)fname.ascii());
 		fname = fname.left(fname.size() - 3);
@@ -4755,7 +4742,7 @@ Folder* ApplicationWindow::projectFolder()
 	return ((FolderListItem *)folders->firstChild())->folder();
 }
 
-bool ApplicationWindow::saveProject()
+bool ApplicationWindow::saveProject(bool compress)
 {
 	if (projectname == "untitled" || projectname.endsWith(".opj", Qt::CaseInsensitive) ||
 		projectname.endsWith(".ogm", Qt::CaseInsensitive) || projectname.endsWith(".ogw", Qt::CaseInsensitive)
@@ -4770,40 +4757,43 @@ bool ApplicationWindow::saveProject()
 	return false;
 #endif
 
-	saveFolder(projectFolder(), projectname);
+	saveFolder(projectFolder(), projectname, compress);
 
 	setWindowTitle("QtiPlot - " + projectname);
 	savedProject();
 	actionUndo->setEnabled(false);
 	actionRedo->setEnabled(false);
 
-	if (autoSave)
-	{
+	if (autoSave){
 		if (savingTimerId)
 			killTimer(savingTimerId);
 		savingTimerId=startTimer(autoSaveTime*60000);
-	}
-	else
+	} else
 		savingTimerId=0;
 
 	QApplication::restoreOverrideCursor();
 	return true;
 }
 
-void ApplicationWindow::saveProjectAs()
+void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 {
 #ifdef QTIPLOT_DEMO
 	showDemoVersionMessage();
 	return;
 #endif
 
-	QString filter = tr("QtiPlot project")+" (*.qti);;";
-	filter += tr("Compressed QtiPlot project")+" (*.qti.gz)";
+	QString fn = fileName;
+	if (fileName.isEmpty()){
+		QString filter = tr("QtiPlot project")+" (*.qti);;";
+		filter += tr("Compressed QtiPlot project")+" (*.qti.gz)";
 
-	QString selectedFilter;
-	QString fn = QFileDialog::getSaveFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter);
-	if ( !fn.isEmpty() )
-	{
+		QString selectedFilter;
+		fn = QFileDialog::getSaveFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter);
+		if (selectedFilter.contains(".gz"))
+			compress = true;
+	}
+	
+	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		workingDir = fi.dirPath(true);
 		QString baseName = fi.fileName();
@@ -4811,8 +4801,7 @@ void ApplicationWindow::saveProjectAs()
 			fn.append(".qti");
 
 		projectname = fn;
-		if (saveProject())
-		{
+		if (saveProject(compress)){
 			recentProjects.remove(projectname);
 			recentProjects.push_front(projectname);
 			updateRecentProjectsList();
@@ -4823,8 +4812,6 @@ void ApplicationWindow::saveProjectAs()
 			item->setText(0, baseName);
 			item->folder()->setName(baseName);
 		}
-		if (selectedFilter.contains(".gz"))
-			file_compress((char *)fn.ascii(), "wb9");
 	}
 }
 
@@ -6985,26 +6972,6 @@ void ApplicationWindow::showLayerDialog()
 	id->exec();
 }
 
-void ApplicationWindow::showPlotGeometryDialog()
-{
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
-		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
-	Graph* g = plot->activeGraph();
-	if (g)
-	{
-		ImageDialog *id=new ImageDialog(0,"ImageDialog",true,0);
-		id->setAttribute(Qt::WA_DeleteOnClose);
-		connect (id, SIGNAL(setGeometry(int,int,int,int)), plot, SLOT(setGraphGeometry(int,int,int,int)));
-		id->setIcon(QPixmap(logo_xpm));
-		id->setWindowTitle(tr("QtiPlot - Layer Geometry"));
-		id->setOrigin(g->pos());
-		id->setSize(g->plotWidget()->size());
-		id->exec();
-	}
-}
-
 void ApplicationWindow::showTextDialog()
 {
 	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
@@ -7756,7 +7723,7 @@ void ApplicationWindow::windowsMenuActivated( int id )
 void ApplicationWindow::newProject()
 {
 	saveSettings();//the recent projects must be saved
-
+	
 	ApplicationWindow *ed = new ApplicationWindow();
 	ed->applyUserSettings();
 	ed->newTable();
@@ -8268,7 +8235,6 @@ void ApplicationWindow::showGraphContextMenu()
 		prints.insertItem(tr("&Window"),plot, SLOT(print()));
 		cm.insertItem(QPixmap(fileprint_xpm),tr("&Print"),&prints);
 		cm.insertSeparator();
-		cm.insertItem(QPixmap(resize_xpm), tr("&Geometry..."), plot, SIGNAL(showGeometryDialog()));
 		cm.insertItem(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
 		cm.insertSeparator();
 		cm.insertItem(QPixmap(close_xpm), tr("&Delete Layer"), plot, SLOT(confirmRemoveLayer()));
@@ -8284,25 +8250,19 @@ void ApplicationWindow::showWindowContextMenu()
 
 	QMenu cm(this);
 	QMenu plot3D(this);
-	if (w->isA("MultiLayer"))
-	{
+	if (w->isA("MultiLayer")){
 		MultiLayer *g=(MultiLayer*)w;
-		if (copiedLayer)
-		{
+		if (copiedLayer){
 			cm.insertItem(QPixmap(paste_xpm),tr("&Paste Layer"),this, SLOT(pasteSelection()));
 			cm.insertSeparator();
 		}
 
 		cm.addAction(actionAddLayer);
-		cm.insertSeparator();
 		if (g->layers() != 0)
-		{
 			cm.addAction(actionDeleteLayer);
-			cm.insertSeparator();
-			cm.addAction(actionShowPlotGeometryDialog);
-			cm.addAction(actionShowLayerDialog);
-			cm.insertSeparator();
-		}
+
+		cm.addAction(actionShowLayerDialog);
+		cm.insertSeparator();
 		cm.addAction(actionRename);
 		cm.addAction(actionCopyWindow);
 		cm.insertSeparator();
@@ -10488,7 +10448,6 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(modifiedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
 	connect (g,SIGNAL(modifiedPlot()),this,SLOT(modifiedProject()));
 	connect (g,SIGNAL(showLineDialog()),this,SLOT(showLineDialog()));
-	connect (g,SIGNAL(showGeometryDialog()),this,SLOT(showPlotGeometryDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
 	connect (g,SIGNAL(showGraphContextMenu()),this,SLOT(showGraphContextMenu()));
 	connect (g,SIGNAL(createIntensityTable(const QString&)),this,SLOT(importImage(const QString&)));
@@ -10986,9 +10945,6 @@ void ApplicationWindow::createActions()
 
 	actionPrintWindow = new QAction(QIcon(QPixmap(fileprint_xpm)),tr("&Print Window"), this);
 	connect(actionPrintWindow, SIGNAL(activated()), this, SLOT(printWindow()));
-
-	actionShowPlotGeometryDialog = new QAction(QIcon(QPixmap(resize_xpm)), tr("&Layer Geometry"), this);
-	connect(actionShowPlotGeometryDialog, SIGNAL(activated()), this, SLOT(showPlotGeometryDialog()));
 
 	actionEditSurfacePlot = new QAction(tr("&Surface..."), this);
 	connect(actionEditSurfacePlot, SIGNAL(activated()), this, SLOT(editSurfacePlot()));
@@ -11498,7 +11454,6 @@ void ApplicationWindow::translateActionsStrings()
 	actionHideWindow->setMenuText(tr("&Hide Window"));
 	actionResizeWindow->setMenuText(tr("Re&size Window..."));
 	actionPrintWindow->setMenuText(tr("&Print Window"));
-	actionShowPlotGeometryDialog->setMenuText(tr("&Layer Geometry"));
 	actionEditSurfacePlot->setMenuText(tr("&Surface..."));
 	actionAdd3DData->setMenuText(tr("&Data Set..."));
 	actionSetMatrixProperties->setMenuText(tr("Set &Properties..."));
@@ -12669,7 +12624,7 @@ void ApplicationWindow::showDemoVersionMessage()
 }
 #endif
 
-void ApplicationWindow::saveFolder(Folder *folder, const QString& fn)
+void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
 {
 	QFile f( fn );
 	if (f.exists())
@@ -12759,6 +12714,9 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn)
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	t << text;
 	f.close();
+	
+	if (compress)
+		file_compress((char *)fn.ascii(), "wb9");
 
 	QApplication::restoreOverrideCursor();
 }
@@ -12786,9 +12744,7 @@ void ApplicationWindow::saveFolderAsProject(Folder *f)
 		if (!baseName.contains("."))
 			fn.append(".qti");
 
-		saveFolder(f, fn);
-		if (selectedFilter.contains(".gz"))
-			file_compress((char *)fn.ascii(), "wb9");
+		saveFolder(f, fn, selectedFilter.contains(".gz"));
 	}
 }
 
@@ -13134,8 +13090,12 @@ void ApplicationWindow::addFolder()
 
 Folder* ApplicationWindow::addFolder(QString name, Folder* parent)
 {
-    if(!parent)
-        parent = current_folder;
+    if(!parent){
+		if (current_folder)
+			parent = current_folder;
+		else
+        	parent = projectFolder();
+	}
 
     QStringList lst = parent->subfolders();
     lst = lst.grep( name );
@@ -13156,13 +13116,20 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 {
     if (!f)
         return false;
-
+	
 	if (confirmCloseFolder && QMessageBox::information(this, tr("QtiPlot - Delete folder?"),
 				tr("Delete folder '%1' and all the windows it contains?").arg(f->name()),
 				tr("Yes"), tr("No"), 0, 0))
 		return false;
-	else
-	{
+	else {
+		Folder *parent = projectFolder();
+		if (current_folder){
+			if (current_folder->parent())
+				parent = (Folder *)current_folder->parent();
+		}
+
+		folders->blockSignals(true);
+
 		FolderListItem *fi = f->folderListItem();
 		foreach(MyWidget *w, f->windowsList())
             closeWindow(w);
@@ -13189,6 +13156,12 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 
 		delete f;
 		delete fi;
+		
+		current_folder = parent;
+		folders->setCurrentItem(parent->folderListItem());
+		changeFolder(parent, true);
+		folders->blockSignals(false);
+		folders->setFocus();
 		return true;
 	}
 }
@@ -13250,13 +13223,13 @@ void ApplicationWindow::hideFolderWindows(Folder *f)
 	}
 }
 
-void ApplicationWindow::changeFolder(Folder *newFolder, bool force)
+bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 {
     if (!newFolder)
-        return;
+        return false;
 
 	if (current_folder == newFolder && !force)
-		return;
+		return false;
 
     desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
@@ -13348,6 +13321,8 @@ void ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
     foreach(MyWidget *w, newFolder->windowsList())
         w->blockSignals(false);
+	 
+	return true;
 }
 
 void ApplicationWindow::desactivateFolders()
@@ -13456,27 +13431,21 @@ void ApplicationWindow::addFolderListViewItem(Folder *f)
 }
 
 void ApplicationWindow::find(const QString& s, bool windowNames, bool labels,
-		bool folderNames, bool caseSensitive, bool partialMatch,
-		bool subfolders)
+		bool folderNames, bool caseSensitive, bool partialMatch, bool subfolders)
 {
-	if (windowNames || labels)
-	{
-		MyWidget *w = current_folder->findWindow(s,windowNames,labels,caseSensitive,partialMatch);
-		if (w)
-		{
+	if (windowNames || labels){
+		MyWidget *w = current_folder->findWindow(s, windowNames, labels, caseSensitive, partialMatch);
+		if (w){
 			activateWindow(w);
 			return;
 		}
 
-		if (subfolders)
-		{
+		if (subfolders){
 			FolderListItem *item = (FolderListItem *)folders->currentItem()->firstChild();
-			while (item)
-			{
+			while (item){
 				Folder *f = item->folder();
 				MyWidget *w = f->findWindow(s,windowNames,labels,caseSensitive,partialMatch);
-				if (w)
-				{
+				if (w){
 					folders->setCurrentItem(f->folderListItem());
 					activateWindow(w);
 					return;
@@ -13486,23 +13455,18 @@ void ApplicationWindow::find(const QString& s, bool windowNames, bool labels,
 		}
 	}
 
-	if (folderNames)
-	{
+	if (folderNames){
 		Folder *f = current_folder->findSubfolder(s, caseSensitive, partialMatch);
-		if (f)
-		{
+		if (f){
 			folders->setCurrentItem(f->folderListItem());
 			return;
 		}
 
-		if (subfolders)
-		{
+		if (subfolders){
 			FolderListItem *item = (FolderListItem *)folders->currentItem()->firstChild();
-			while (item)
-			{
+			while (item){
 				Folder *f = item->folder()->findSubfolder(s, caseSensitive, partialMatch);
-				if (f)
-				{
+				if (f){
 					folders->setCurrentItem(f->folderListItem());
 					return;
 				}
@@ -13766,18 +13730,15 @@ void ApplicationWindow::goToRow()
 
 void ApplicationWindow::showScriptWindow()
 {
-	if (!scriptWindow)
-	{
+	if (!scriptWindow){
 		scriptWindow = new ScriptWindow(scriptEnv);
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
 	}
 
-	if (!scriptWindow->isVisible())
-	{
+	if (!scriptWindow->isVisible()){
 		scriptWindow->show();
 		scriptWindow->setFocus();
-	}
-	else
+	} else
 		scriptWindow->hide();
 }
 
@@ -13823,7 +13784,7 @@ ApplicationWindow::~ApplicationWindow()
 	delete outWindows;
 
 	if (scriptWindow)
-		delete scriptWindow;
+		scriptWindow->close();
 
 	QApplication::clipboard()->clear(QClipboard::Clipboard);
 }

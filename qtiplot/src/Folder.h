@@ -67,7 +67,7 @@ public:
 	QList<MyWidget *> windowsList(){return lstWindows;};
 
     void addWindow( MyWidget *w ){ lstWindows.append( w );};
-	void removeWindow( MyWidget *w ){ lstWindows.takeAt( lstWindows.indexOf(w) );};
+	void removeWindow( MyWidget *w );
 
 	//! The list of subfolder names, including first generation children only
 	QStringList subfolders();

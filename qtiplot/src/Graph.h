@@ -120,12 +120,6 @@ class Graph: public QWidget
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayMap, ContourMap, Function};
 
-		Plot *d_plot;
-		QwtPlotZoomer *d_zoomer[2];
-		TitlePicker *titlePicker;
-		ScalePicker *scalePicker;
-		CanvasPicker* cp;
-
 		//! Returns the name of the parent MultiLayer object.
 		QString parentPlotName();
 
@@ -151,7 +145,7 @@ class Graph: public QWidget
 		QString savePieCurveLayout();
 		//@}
 
-		bool insertCurvesList(Table* w, const QStringList& names, int style, int lWidth, int sSize, int startRow = 0, int endRow = -1);
+		bool addCurves(Table* w, const QStringList& names, int style = 0, int lWidth = 1, int sSize = 3, int startRow = 0, int endRow = -1);
 		bool insertCurve(Table* w, const QString& name, int style, int startRow = 0, int endRow = -1);
 		bool insertCurve(Table* w, int xcol, const QString& name, int style);
 		bool insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow = 0, int endRow = -1);
@@ -553,7 +547,7 @@ class Graph: public QWidget
 		 * tool interface.
 		 */
 		bool enableRangeSelectors(const QObject *status_target=NULL, const char *status_slot="");
-		
+
 		//! \name Border and Margin
 		//@{
 		void setMargin (int d);
@@ -698,6 +692,12 @@ signals:
 		void showFitResults(const QString&);
 
 	private:
+        Plot *d_plot;
+		QwtPlotZoomer *d_zoomer[2];
+		TitlePicker *titlePicker;
+		ScalePicker *scalePicker;
+		CanvasPicker* cp;
+
 		//! List storing pointers to the curves resulting after a fit session, in case the user wants to delete them later on.
 		QList<QwtPlotCurve *>d_fit_curves;
 		//! Render hint for plot items.
