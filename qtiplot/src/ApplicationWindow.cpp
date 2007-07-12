@@ -257,7 +257,7 @@ void ApplicationWindow::init()
 	outWindows = new QList<QWidget*>();
 
 	scriptWindow = 0;
-	
+
 	renamedTables = QStringList();
 	readSettings();
 	createLanguagesList();
@@ -1275,14 +1275,12 @@ void ApplicationWindow::plot3DBars()
 	if (!w)
 		return;
 
-	if (w->inherits("Table"))
-	{
+	if (w->inherits("Table")){
 		if(int(((Table*)w)->selectedColumns().count())==1)
 			((Table*)w)->plot3DBars();
 		else
 			QMessageBox::warning(this, tr("QtiPlot - Plot error"),tr("You must select exactly one column for plotting!"));
-	}
-	else
+	} else
 		plot3DMatrix (Qwt3D::USER);
 }
 
@@ -1479,19 +1477,14 @@ QString ApplicationWindow::listViewDate(const QString& caption)
 void ApplicationWindow::updateTableNames(const QString& oldName, const QString& newName)
 {
 	QWidgetList *windows = windowsList();
-	foreach (QWidget *w, *windows)
-	{
-		if (w->isA("MultiLayer"))
-		{
+	foreach (QWidget *w, *windows) {
+		if (w->isA("MultiLayer")) {
 			QWidgetList gr_lst = ((MultiLayer*)w)->graphPtrs();
 			foreach(QWidget *widget, gr_lst)
 				((Graph *)widget)->updateCurveNames(oldName, newName);
-		}
-		else if (w->isA("Graph3D"))
-		{
+		} else if (w->isA("Graph3D")) {
 			QString name = ((Graph3D*)w)->formula();
-			if (name.contains(oldName,true))
-			{
+			if (name.contains(oldName, true)) {
 				name.replace(oldName,newName);
 				((Graph3D*)w)->setPlotAssociation(name);
 			}
@@ -1788,7 +1781,7 @@ void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 		surfaceFunc.pop_back();
 }
 
-Graph3D* ApplicationWindow::newPlot3D(const QString& caption,const QString& formula,
+Graph3D* ApplicationWindow::newSurfacePlot(const QString& caption,const QString& formula,
 		double xl, double xr,double yl, double yr,
 		double zl, double zr)
 {
@@ -1879,24 +1872,22 @@ Graph3D* ApplicationWindow::newPlot3D()
 	return plot;
 }
 
-Graph3D* ApplicationWindow::dataPlotXYZ(Table* table, const QString& zColName, int type)
+Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int type)
 {
+	int zCol = table->colIndex(zColName);
+	if (zCol < 0)
+		return 0;
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QString label = generateUniqueName(tr("Graph"));
-	int zCol=table->colIndex(zColName);
-	int yCol=table->colY(zCol);
-	int xCol=table->colX(zCol);
-
-	Graph3D *plot=new Graph3D("", ws,0);
+	Graph3D *plot = new Graph3D("", ws, 0);
 	plot->setAttribute(Qt::WA_DeleteOnClose);
-	plot->addData(table, xCol, yCol, zCol, type);
-	plot->resize(500,400);
+	QString label = generateUniqueName(tr("Graph"));
 	plot->setWindowTitle(label);
 	plot->setName(label);
 
 	customPlot3D(plot);
-	plot->update();
+	plot->addData(table, table->colX(zCol), table->colY(zCol), zCol, type);
 	initPlot3D(plot);
 
 	emit modified();
@@ -1904,7 +1895,7 @@ Graph3D* ApplicationWindow::dataPlotXYZ(Table* table, const QString& zColName, i
 	return plot;
 }
 
-Graph3D* ApplicationWindow::dataPlotXYZ(const QString& caption,const QString& formula,
+Graph3D* ApplicationWindow::openPlotXYZ(const QString& caption,const QString& formula,
 		double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	int pos=formula.find("_",0);
@@ -1932,11 +1923,11 @@ Graph3D* ApplicationWindow::dataPlotXYZ(const QString& caption,const QString& fo
 
 	Graph3D *plot=new Graph3D("", ws, 0);
 	plot->setAttribute(Qt::WA_DeleteOnClose);
-	plot->addData(w, xCol, yCol, zCol, xl, xr, yl, yr, zl, zr);
-	plot->update();
+	plot->loadData(w, xCol, yCol, zCol, xl, xr, yl, yr, zl, zr);
 
-	QString label=caption;
-	label = generateUniqueName(tr("Graph"));
+	QString label = caption;
+	if (alreadyUsedName(label))
+		label = generateUniqueName(tr("Graph"));
 
 	plot->setWindowTitle(label);
 	plot->setName(label);
@@ -1955,7 +1946,7 @@ void ApplicationWindow::customPlot3D(Graph3D *plot)
 	plot->setGridColor(QColor(plot3DColors[3]));
 	plot->setResolution(plot3DResolution);
 	plot->showColorLegend(showPlot3DLegend);
-	plot->setSmoothMesh(smooth3DMesh);
+	plot->setAntialiasing(smooth3DMesh);
 	plot->setOrthogonal(orthogonal3DPlots);
 	if (showPlot3DProjection)
 		plot->setFloorData();
@@ -2079,8 +2070,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption)
 MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 {
 	MultiLayer *ml = multilayerPlot(generateUniqueName(caption));
-	if (ml)
-    {
+	if (ml) {
         Graph *g = ml->addLayer();
 		setPreferences(g);
         g->newLegend();
@@ -2106,11 +2096,11 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 	if (!ag)
 		return 0;
 
+    setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
 
 	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
 
-	setPreferences(ag);
 	polishGraph(ag, style);
 	ag->newLegend();
 	g->arrangeLayers(false, false);
@@ -2145,33 +2135,26 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 	g->setAttribute(Qt::WA_DeleteOnClose);
 	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
 	int layers = c*r;
-	if (curves<layers)
-	{
-		for (int i=0; i<curves; i++)
-		{
+	if (curves<layers) {
+		for (int i=0; i<curves; i++) {
 			Graph *ag = g->addLayer();
-			if (ag)
-			{
+			if (ag){
+                setPreferences(ag);
 				ag->addCurves(w, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
-				setPreferences(ag);
 				ag->newLegend();
 				ag->setAutoscaleFonts(false);//in order to avoid to small fonts
                 ag->setIgnoreResizeEvents(false);
 				polishGraph(ag, style);
 			}
 		}
-	}
-	else
-	{
-		for (int i=0; i<layers; i++)
-		{
+	} else {
+		for (int i=0; i<layers; i++) {
 			Graph *ag = g->addLayer();
-			if (ag)
-			{
+			if (ag) {
 				QStringList lst;
 				lst << list[i];
+                setPreferences(ag);
 				ag->addCurves(w, lst, style, defaultCurveLineWidth, defaultSymbolSize);
-				setPreferences(ag);
 				ag->newLegend();
 				ag->setAutoscaleFonts(false);//in order to avoid to small fonts
                 ag->setIgnoreResizeEvents(false);
@@ -2184,8 +2167,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 	g->arrangeLayers(false, false);
     g->adjustSize();
     QWidgetList lst = g->graphPtrs();
-	foreach(QWidget *widget, lst)
-    {
+	foreach(QWidget *widget, lst) {
         Graph *ag = (Graph *)widget;
         ag->setAutoscaleFonts(autoScaleFonts);//restore user defined fonts behaviour
         ag->setIgnoreResizeEvents(!autoResizeLayers);
@@ -2205,8 +2187,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 	polishGraph(ag, defaultCurveStyle);
 	int curves = (int)colList.count();
 	int errorBars = 0;
-	for (int i=0; i<curves; i++)
-	{
+	for (int i=0; i<curves; i++) {
 		if (colList[i].contains("(yErr)") || colList[i].contains("(xErr)"))
 			errorBars++;
 	}
@@ -2279,6 +2260,7 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 	g->setIcon(QPixmap(graph_xpm));
 	g->setScaleLayersOnPrint(d_scale_plots_on_print);
 	g->printCropmarks(d_print_cropmarks);
+	g->setLocale(d_locale);
 	g->show();
 	g->setFocus();
 
@@ -2316,6 +2298,7 @@ void ApplicationWindow::customTable(Table* w)
 	w->setHeaderFont(tableHeaderFont);
 	w->showComments(d_show_table_comments);
 	w->setNumericPrecision(d_decimal_digits);
+	w->setLocale(d_locale);
 }
 
 void ApplicationWindow::setPreferences(Graph* g)
@@ -2352,6 +2335,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->setAutoscaleFonts(autoScaleFonts);
     g->setIgnoreResizeEvents(!autoResizeLayers);
 	g->setAntialiasing(antialiasing2DPlots);
+	g->plotWidget()->setLocale(d_locale);
 }
 
 /*
@@ -2611,6 +2595,14 @@ Table* ApplicationWindow::convertMatrixToTable()
 	if (!m)
 		return 0;
 
+	return matrixToTable(m);
+}
+
+Table* ApplicationWindow::matrixToTable(Matrix* m)
+{
+	if (!m)
+		return 0;
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	int rows = m->numRows();
@@ -2618,8 +2610,7 @@ Table* ApplicationWindow::convertMatrixToTable()
 
 	Table* w = new Table(scriptEnv, rows, cols, "", ws, 0);
 	w->setAttribute(Qt::WA_DeleteOnClose);
-	for (int i = 0; i<rows; i++)
-	{
+	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
 			w->setText(i, j, m->text(i,j));
 	}
@@ -2631,7 +2622,6 @@ Table* ApplicationWindow::convertMatrixToTable()
 	w->showNormal();
 
 	QApplication::restoreOverrideCursor();
-
 	return w;
 }
 
@@ -2646,6 +2636,7 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	m->askOnCloseEvent(confirmCloseMatrix);
 	m->setNumericPrecision(d_decimal_digits);
 	m->setFolder(current_folder);
+    m->setLocale(d_locale);
 
 	current_folder->addWindow(m);
 	ws->addWindow(m);
@@ -2664,33 +2655,42 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 
 Matrix* ApplicationWindow::convertTableToMatrix()
 {
-	Table* m = (Table*)ws->activeWindow();
-	if (!m)
+	Table* t = (Table*)ws->activeWindow();
+	if (!t)
+		return 0;
+
+	return tableToMatrix (t);
+}
+
+Matrix* ApplicationWindow::tableToMatrix(Table* t)
+{
+	if (!t)
 		return 0;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	int rows = m->numRows();
-	int cols = m->numCols();
+	int rows = t->numRows();
+	int cols = t->numCols();
 
-	Matrix* w = new Matrix(scriptEnv, rows, cols, "", ws, 0);
-	w->setAttribute(Qt::WA_DeleteOnClose);
-	for (int i = 0; i<rows; i++)
-	{
+	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws, 0);
+	m->setAttribute(Qt::WA_DeleteOnClose);
+	m->table()->blockSignals(true);
+	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
-			w->setText(i, j, m->text(i,j));
+			m->setText(i, j, t->text(i,j));
 	}
+    m->table()->blockSignals(false);
 
 	QString caption = generateUniqueName(tr("Matrix"));
-	initMatrix(w, caption);
+	initMatrix(m, caption);
 
-	w->setWindowLabel(m->windowLabel());
-	w->setCaptionPolicy(m->captionPolicy());
-	w->resize(m->size());
-	w->showNormal();
+	m->setWindowLabel(m->windowLabel());
+	m->setCaptionPolicy(m->captionPolicy());
+	m->resize(m->size());
+	m->showNormal();
 
 	QApplication::restoreOverrideCursor();
-	return w;
+	return m;
 }
 
 QWidget* ApplicationWindow::window(const QString& name)
@@ -3973,7 +3973,11 @@ void ApplicationWindow::readSettings()
 	autoSave = settings.value("/AutoSave",true).toBool();
 	autoSaveTime = settings.value("/AutoSaveTime",15).toInt();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
-	QLocale::setDefault(settings.value("/Locale", QLocale::system().name()).toString());
+	d_thousands_sep = settings.value("/ThousandsSeparator", true).toBool();
+	d_locale = QLocale(settings.value("/Locale", QLocale::system().name()).toString());
+	if (!d_thousands_sep)
+        d_locale.setNumberOptions(QLocale::OmitGroupSeparator);
+
 	d_decimal_digits = settings.value("/DecimalDigits", 16).toInt();
 
 	//restore dock windows and tool bars
@@ -4222,7 +4226,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/AutoSave", autoSave);
 	settings.setValue("/AutoSaveTime", autoSaveTime);
 	settings.setValue("/ScriptingLang", defaultScriptingLang);
-	settings.setValue("/Locale", QLocale().name());
+    settings.setValue("/ThousandsSeparator", d_thousands_sep);
+	settings.setValue("/Locale", d_locale.name());
 	settings.setValue("/DecimalDigits", d_decimal_digits);
 
 	settings.setValue("/DockWindows", saveState());
@@ -4698,37 +4703,30 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MyWidget *
 {
 	w->blockSignals (true);
 	QString caption = w->name();
-	if (s.contains ("minimized"))
-	{
+	if (s.contains ("minimized")) {
 	    QStringList lst = s.split("\t");
 	    if (lst.count() > 4)
             w->parentWidget()->setGeometry(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
 		w->setStatus(MyWidget::Minimized);
 		app->setListView(caption, tr("Minimized"));
-	}
-	else if (s.contains ("maximized"))
-	{
+	} else if (s.contains ("maximized")) {
 		w->setStatus(MyWidget::Maximized);
 		if (w->isA("MultiLayer"))
             ((MultiLayer*)w)->setOpenMaximized();
 
 		app->setListView(caption, tr("Maximized"));
-	}
-	else
-	{
+	} else {
 		QStringList lst = s.split("\t");
 		w->parentWidget()->setGeometry(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
 		w->setStatus(MyWidget::Normal);
 
-        if (lst.count() > 5)
-        {
+        if (lst.count() > 5) {
             if (lst[5] == "hidden")
                 app->hideWindow(w);
         }
 	}
 
-	if (s.contains ("active"))
-	{
+	if (s.contains ("active")) {
         Folder *f = w->folder();
         if (f)
             f->setActiveWindow(w);
@@ -4792,7 +4790,7 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 		if (selectedFilter.contains(".gz"))
 			compress = true;
 	}
-	
+
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		workingDir = fi.dirPath(true);
@@ -5917,7 +5915,7 @@ QDialog* ApplicationWindow::showPlot3dDialog()
 			return 0;
 		}
 
-		Plot3DDialog* pd= new Plot3DDialog(this, "Plot3DDialog", true);
+		Plot3DDialog* pd = new Plot3DDialog(this, "Plot3DDialog", true);
 		pd->setPlot(g);
 		pd->exec();
 		return pd;
@@ -7254,6 +7252,7 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
         return 0;
 
 	MyWidget* nw = 0;
+	MyWidget::Status status = w->status();
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	if (w->isA("MultiLayer")){
@@ -7277,9 +7276,9 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 		QString caption = generateUniqueName(tr("Graph"));
 		QString s = g->formula();
 		if (g->userFunction())
-			nw = newPlot3D(caption, s, g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
+			nw = newSurfacePlot(caption, s, g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
 		else if (s.endsWith("(Z)"))
-			nw = dataPlotXYZ(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
+			nw = openPlotXYZ(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
 		else if (s.endsWith("(Y)"))//Ribbon plot
 			nw = dataPlot3D(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
 		else
@@ -7288,6 +7287,8 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 		if (!nw)
 			return 0;
 
+        if (status == MyWidget::Maximized)
+            nw->hide();
 		((Graph3D *)nw)->copy(g);
 		customToolBars((QWidget*)nw);
 	} else if (w->isA("Matrix")){
@@ -7301,18 +7302,16 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 
 	if (nw){
 		if (w->isA("MultiLayer")){
-			if (w->status() == MyWidget::Maximized)
+			if (status == MyWidget::Maximized)
 				nw->showMaximized();
 		} else if (w->isA("Graph3D")){
-			((Graph3D*)nw)->setIgnoreFonts(true);
-			if (w->status() == MyWidget::Maximized){
-				w->showNormal();
-				w->resize(500,400);
+            ((Graph3D*)nw)->setIgnoreFonts(true);
+			if (status != MyWidget::Maximized){
 				nw->resize(w->size());
-				nw->showMaximized();
+				nw->showNormal();
 			} else
-				nw->resize(w->size());
-			((Graph3D*)nw)->setIgnoreFonts(false);
+                nw->showMaximized();
+            ((Graph3D*)nw)->setIgnoreFonts(false);
 		} else {
 			nw->resize(w->size());
 			nw->showNormal();
@@ -7399,11 +7398,9 @@ bool ApplicationWindow::hidden(QWidget* window)
 void ApplicationWindow::updateWindowStatus(MyWidget* w)
 {
 	setListView(w->name(), w->aspect());
-	if (w->status() == MyWidget::Maximized)
-	{
+	if (w->status() == MyWidget::Maximized){
 		QList<MyWidget *> windows = current_folder->windowsList();
-		foreach(MyWidget *oldMaxWindow, windows)
-		{
+		foreach(MyWidget *oldMaxWindow, windows){
 			if (oldMaxWindow != w && oldMaxWindow->status() == MyWidget::Maximized)
 				oldMaxWindow->setStatus(MyWidget::Normal);
 		}
@@ -7723,7 +7720,7 @@ void ApplicationWindow::windowsMenuActivated( int id )
 void ApplicationWindow::newProject()
 {
 	saveSettings();//the recent projects must be saved
-	
+
 	ApplicationWindow *ed = new ApplicationWindow();
 	ed->applyUserSettings();
 	ed->newTable();
@@ -8739,13 +8736,13 @@ void ApplicationWindow::setPoints3DPlot()
 void ApplicationWindow::setCones3DPlot()
 {
 	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setConesMesh();
+		((Graph3D*)ws->activeWindow())->setConeStyle();
 }
 
 void ApplicationWindow::setCrosses3DPlot()
 {
 	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setCrossMesh();
+		((Graph3D*)ws->activeWindow())->setCrossStyle();
 }
 
 void ApplicationWindow::setBars3DPlot()
@@ -10171,13 +10168,13 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 		plot=app->dataPlot3D(caption, fList[1],fList[2].toDouble(),fList[3].toDouble(),
 				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
 	else if (fList[1].contains("(Z)",true) > 0)
-		plot=app->dataPlotXYZ(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
+		plot=app->openPlotXYZ(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
 				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
 	else if (fList[1].startsWith("matrix<",true) && fList[1].endsWith(">",false))
 		plot=app->openMatrixPlot3D(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
 				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
 	else
-		plot=app->newPlot3D(caption, fList[1],fList[2].toDouble(),fList[3].toDouble(),
+		plot=app->newSurfacePlot(caption, fList[1],fList[2].toDouble(),fList[3].toDouble(),
 				fList[4].toDouble(),fList[5].toDouble(),
 				fList[6].toDouble(),fList[7].toDouble());
 
@@ -10189,42 +10186,23 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 	plot->setIgnoreFonts(true);
 	restoreWindowGeometry(app, plot, lst[1]);
 
-	fList=lst[3].split("\t", QString::SkipEmptyParts);
-	plot->setStyle(fList);
-
 	fList=lst[4].split("\t", QString::SkipEmptyParts);
 	plot->setGrid(fList[1].toInt());
 
-	fList=lst[5].split("\t");
-	plot->setTitle(fList);
-
-	fList=lst[6].split("\t", QString::SkipEmptyParts);
-	plot->setColors(fList);
+	plot->setTitle(lst[5].split("\t"));
+	plot->setColors(lst[6].split("\t", QString::SkipEmptyParts));
 
 	fList=lst[7].split("\t", QString::SkipEmptyParts);
 	fList.pop_front();
 	plot->setAxesLabels(fList);
 
-	fList=lst[8].split("\t", QString::SkipEmptyParts);
-	plot->setTicks(fList);
-
-	fList=lst[9].split("\t", QString::SkipEmptyParts);
-	plot->setTickLengths(fList);
-
-	fList=lst[10].split("\t", QString::SkipEmptyParts);
-	plot->setOptions(fList);
-
-	fList=lst[11].split("\t", QString::SkipEmptyParts);
-	plot->setNumbersFont(fList);
-
-	fList=lst[12].split("\t", QString::SkipEmptyParts);
-	plot->setXAxisLabelFont(fList);
-
-	fList=lst[13].split("\t", QString::SkipEmptyParts);
-	plot->setYAxisLabelFont(fList);
-
-	fList=lst[14].split("\t", QString::SkipEmptyParts);
-	plot->setZAxisLabelFont(fList);
+	plot->setTicks(lst[8].split("\t", QString::SkipEmptyParts));
+	plot->setTickLengths(lst[9].split("\t", QString::SkipEmptyParts));
+	plot->setOptions(lst[10].split("\t", QString::SkipEmptyParts));
+	plot->setNumbersFont(lst[11].split("\t", QString::SkipEmptyParts));
+	plot->setXAxisLabelFont(lst[12].split("\t", QString::SkipEmptyParts));
+	plot->setYAxisLabelFont(lst[13].split("\t", QString::SkipEmptyParts));
+	plot->setZAxisLabelFont(lst[14].split("\t", QString::SkipEmptyParts));
 
 	fList=lst[15].split("\t", QString::SkipEmptyParts);
 	plot->setRotation(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
@@ -10239,23 +10217,21 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 	plot->setShift(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
 
 	fList=lst[19].split("\t", QString::SkipEmptyParts);
-	plot->setMeshLineWidth(fList[1].toInt());
+	plot->setMeshLineWidth(fList[1].toDouble());
 
-	if (d_file_version > 71)
-	{
+	if (d_file_version > 71){
 		fList=lst[20].split("\t"); // using QString::SkipEmptyParts here causes a crash for empty window labels
 		plot->setWindowLabel(fList[1]);
 		plot->setCaptionPolicy((MyWidget::CaptionPolicy)fList[2].toInt());
 		app->setListViewLabel(plot->name(),fList[1]);
 	}
 
-	if (d_file_version >= 88)
-	{
+	if (d_file_version >= 88){
 		fList=lst[21].split("\t", QString::SkipEmptyParts);
 		plot->setOrthogonal(fList[1].toInt());
 	}
 
-	plot->update();
+	plot->setStyle(lst[3].split("\t", QString::SkipEmptyParts));
 	plot->setIgnoreFonts(true);
 	return plot;
 }
@@ -10415,7 +10391,6 @@ void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 	connect (plot,SIGNAL(hiddenWindow(MyWidget*)),this, SLOT(hideWindow(MyWidget*)));
 	connect (plot,SIGNAL(statusChanged(MyWidget*)),this, SLOT(updateWindowStatus(MyWidget*)));
 	connect (plot,SIGNAL(modified()),this, SIGNAL(modified()));
-	connect (plot,SIGNAL(custom3DActions(QWidget*)),this, SLOT(custom3DActions(QWidget*)));
 
 	plot->askOnCloseEvent(confirmClosePlot3D);
 }
@@ -10476,7 +10451,7 @@ void ApplicationWindow::connectTable(Table* w)
 
 	//3d plots
 	connect( w,SIGNAL(plot3DRibbon(Table*,const QString&)),this, SLOT(plotRibbon(Table*,const QString&)));
-	connect( w,SIGNAL(plotXYZ(Table*,const QString&, int)),this, SLOT(dataPlotXYZ(Table*,const QString&, int)));
+	connect( w,SIGNAL(plotXYZ(Table*,const QString&, int)),this, SLOT(plotXYZ(Table*,const QString&, int)));
 
 	w->askOnCloseEvent(confirmCloseTable);
 }
@@ -10509,14 +10484,12 @@ void ApplicationWindow::setAppColors(const QColor& wc,const QColor& pc,const QCo
 void ApplicationWindow::setPlot3DOptions()
 {
 	QList<QWidget*> *windows = windowsList();
-	for (int i = 0; i<int(windows->count());i++ )
-	{
-		if (windows->at(i)->isA("Graph3D"))
-		{
-			Graph3D *g = (Graph3D*)windows->at(i);
-			g->setSmoothMesh(smooth3DMesh);
+	foreach (QWidget *w, *windows){
+		if (w->isA("Graph3D")){
+			Graph3D *g = (Graph3D*)w;
 			g->setOrthogonal(orthogonal3DPlots);
 			g->setAutoscale(autoscale3DPlots);
+			g->setAntialiasing(smooth3DMesh);
 		}
 	}
 	delete windows;
@@ -11690,7 +11663,7 @@ Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 
 	Graph3D *plot = new Graph3D("", ws, 0);
 	plot->setAttribute(Qt::WA_DeleteOnClose);
-	plot->addMatrixData((Matrix*)ws->activeWindow());
+	plot->addMatrixData(m);
 	plot->customPlotStyle(style);
 	customPlot3D(plot);
 	plot->update();
@@ -12714,7 +12687,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	t << text;
 	f.close();
-	
+
 	if (compress)
 		file_compress((char *)fn.ascii(), "wb9");
 
@@ -13116,7 +13089,7 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 {
     if (!f)
         return false;
-	
+
 	if (confirmCloseFolder && QMessageBox::information(this, tr("QtiPlot - Delete folder?"),
 				tr("Delete folder '%1' and all the windows it contains?").arg(f->name()),
 				tr("Yes"), tr("No"), 0, 0))
@@ -13156,7 +13129,7 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 
 		delete f;
 		delete fi;
-		
+
 		current_folder = parent;
 		folders->setCurrentItem(parent->folderListItem());
 		changeFolder(parent, true);
@@ -13266,8 +13239,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
                 w->showNormal();
             else if(w->status() == MyWidget::Minimized)
                 w->showMinimized();
-        }
-        else
+        } else
             w->setStatus(MyWidget::Hidden);
 
         addListViewItem(w);
@@ -13321,7 +13293,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
     foreach(MyWidget *w, newFolder->windowsList())
         w->blockSignals(false);
-	 
+
 	return true;
 }
 

@@ -2,8 +2,8 @@
     File                 : Graph3D.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : 3D graph widget
 
  ***************************************************************************/
@@ -84,17 +84,16 @@ public slots:
 	void addData(Table* table, int xcol, int ycol);
 	void addData(Table* table,const QString& xColName,const QString& yColName);
 	void addData(Table* table,const QString& xColName,const QString& yColName,
-							double xl, double xr, double yl, double yr, double zl, double zr);
-	void addData(Table* table, int xCol,int yCol,int zCol, int type);
-	void addData(Table* table, int xCol,int yCol,int zCol,
-							double xl, double xr, double yl, double yr, double zl, double zr);
+                double xl, double xr, double yl, double yr, double zl, double zr);
+	void addData(Table* table, int xCol, int yCol, int zCol, int type = 0);
+	void loadData(Table* table, int xCol, int yCol, int zCol,
+                double xl=0.0, double xr=0.0, double yl=0.0, double yr=0.0, double zl=0.0, double zr=0.0);
 
 	void clearData();
 	bool hasData(){return sp->hasData();};
 
 	void updateData(Table* table);
 	void updateDataXY(Table* table, int xCol, int yCol);
-	void updateDataXYZ(Table* table, int xCol, int yCol, int zCol);
 
 	void changeDataColumn(Table* table, const QString& colName);
 
@@ -156,8 +155,6 @@ public slots:
 	void setScales(double xl, double xr, double yl, double yr, double zl, double zr);
 	void updateScales(double xl, double xr, double yl, double yr,
 				  		double zl, double zr, int xcol, int ycol);
-	void updateScales(double xl, double xr, double yl, double yr,
-				  		double zl, double zr, int xCol, int yCol, int zCol);
 	void updateScalesFromMatrix(double xl,double xr,double yl,double yr,double zl,double zr);
 
 	QStringList scaleTicks();
@@ -187,7 +184,7 @@ public slots:
 	void setFloorIsolines();
 	void setEmptyFloor();
 
-	void setMeshLineWidth(int lw);
+	void setMeshLineWidth(double lw);
 	double meshLineWidth(){return sp->meshLineWidth();};
 	//@}
 
@@ -205,8 +202,6 @@ public slots:
 	void setBackGrid(bool b = true);
 	//@}
 
-	void setStyle(Qwt3D::COORDSTYLE coord,Qwt3D::FLOORSTYLE floor,
-							Qwt3D::PLOTSTYLE plot, Graph3D::PointStyle point);
 	void setStyle(const QStringList& st);
 	void customPlotStyle(int style);
 	void resetNonEmptyStyle();
@@ -309,38 +304,36 @@ public slots:
 	//! \name Bars
 	//@{
 	double barsRadius();
-	void setBarsRadius(double rad);
-	void updateBars(double rad);
+	void setBarRadius(double rad);
 	//@}
 
 	//! \name Scatter Plots
 	//@{
-	double pointsSize(){return pointSize;};
-	bool smoothPoints(){return smooth;};
-	void updatePoints(double size, bool sm);
+	double pointsSize(){return d_point_size;};
+	bool smoothPoints(){return d_smooth_points;};
+	void setDotOptions(double size, bool smooth);
 
 	bool smoothCrossHair(){return crossHairSmooth;};
 	bool boxedCrossHair(){return crossHairBoxed;};
 	double crossHairRadius(){return crossHairRad;};
 	double crossHairLinewidth(){return crossHairLineWidth;};
-	void updateCross(double rad, double linewidth, bool smooth, bool boxed);
 	void setCrossOptions(double rad, double linewidth, bool smooth, bool boxed);
-	void setCrossMesh();
+	void setCrossStyle();
 
 	double coneRadius(){return conesRad;};
 	int coneQuality(){return conesQuality;};
-	void updateCones(double rad, int quality);
 	void setConesOptions(double rad, int quality);
-	void setConesMesh();
+	void setConeStyle();
 
 	PointStyle pointType(){return pointStyle;};
-	void setPointOptions(double size, bool s);
 	//@}
 
 	Table* table(){return d_table;};
 	void showWorksheet();
 	void setPlotAssociation(const QString& s){plotAssociation = s;};
-	void setSmoothMesh(bool smooth = true);
+
+	void setAntialiasing(bool smooth = true);
+	bool antialiasing(){return sp->smoothDataMesh();};
 
 	//! Used for the animation: rotates the scene with 1/360 degrees
 	void rotate();
@@ -356,12 +349,8 @@ signals:
 	void showContextMenu();
 	void showOptionsDialog();
 	void modified();
-	void custom3DActions(QWidget*);
 
 private:
-	Qwt3D::Triple** allocateData(int columns, int rows);
-	void deleteData(Qwt3D::Triple **data, int columns);
-
 	//! Wait this many msecs before redraw 3D plot (used for animations)
   	int animation_redraw_wait;
 	//! File name of the color map used for the data (if any)
@@ -371,7 +360,7 @@ private:
 	QString title, plotAssociation;
 	QStringList labels;
 	QFont titleFnt;
-	bool legendOn, smoothMesh, d_autoscale;
+	bool legendOn, d_autoscale;
 	QVector<int> scaleType;
 	QColor axesCol,labelsCol,titleCol,meshCol,bgCol,numCol,gridCol;
 	//! Custom data colors.
@@ -379,9 +368,9 @@ private:
 	int labelsDist, legendMajorTicks;
 	bool ignoreFonts;
 	Qwt3D::StandardColor* col_;
-	double barsRad, alpha, pointSize, crossHairRad, crossHairLineWidth, conesRad;
+	double barsRad, alpha, d_point_size, crossHairRad, crossHairLineWidth, conesRad;
 	//! Draw 3D points with smoothed angles.
-	bool smooth;
+	bool d_smooth_points;
 	bool crossHairSmooth, crossHairBoxed;
 	int conesQuality;
 	PointStyle pointStyle;

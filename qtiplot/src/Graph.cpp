@@ -463,12 +463,12 @@ void Graph::setLabelsNumericFormat(int axis, int format, int prec, const QString
 	const QwtScaleDiv div = sd_old->scaleDiv ();
 
 	if (format == Plot::Superscripts){
-		QwtSupersciptsScaleDraw *sd = new QwtSupersciptsScaleDraw(formula.ascii());
+		QwtSupersciptsScaleDraw *sd = new QwtSupersciptsScaleDraw(d_plot, formula.ascii());
 		sd->setLabelFormat('s', prec);
 		sd->setScaleDiv(div);
 		d_plot->setAxisScaleDraw (axis, sd);
 	} else {
-		ScaleDraw *sd = new ScaleDraw(formula.ascii());
+		ScaleDraw *sd = new ScaleDraw(d_plot, formula.ascii());
 		sd->setScaleDiv(div);
 
 		if (format == Plot::Automatic)
@@ -757,8 +757,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 
 	if (!labelsOn)
 		sclDraw->enableComponent (QwtAbstractScaleDraw::Labels, false);
-	else
-	{
+	else {
 		if (type == Numeric)
 			setLabelsNumericFormat(axis, format, prec, formula);
 		else if (type == Day)
@@ -1264,32 +1263,42 @@ void Graph::setGridOptions(const GridOptions& o)
 
 	d_plot->grid()->setAxis(grid.xAxis, grid.yAxis);
 
-	if (mrkX<0 && grid.xZeroOn)
-	{
+	if (mrkX<0 && grid.xZeroOn) {
 		QwtPlotMarker *m = new QwtPlotMarker();
 		mrkX = d_plot->insertMarker(m);
+		m->setRenderHint(QwtPlotItem::RenderAntialiased, false);
 		m->setAxis(grid.xAxis, grid.yAxis);
 		m->setLineStyle(QwtPlotMarker::VLine);
 		m->setValue(0.0, 0.0);
-		m->setLinePen(QPen(Qt::black, 2,Qt::SolidLine));
-	}
-	else if (mrkX>=0 && !grid.xZeroOn)
-	{
+		
+		int width = 1;
+		if (d_plot->canvas()->lineWidth())
+			width = d_plot->canvas()->lineWidth();
+		else if (d_plot->axisEnabled (QwtPlot::yLeft) || d_plot->axisEnabled (QwtPlot::yRight))
+			width =  d_plot->axesLinewidth();
+		
+		m->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
+	} else if (mrkX>=0 && !grid.xZeroOn) {
 		d_plot->removeMarker(mrkX);
 		mrkX=-1;
 	}
 
-	if (mrkY<0 && grid.yZeroOn)
-	{
+	if (mrkY<0 && grid.yZeroOn) {
 		QwtPlotMarker *m = new QwtPlotMarker();
 		mrkY = d_plot->insertMarker(m);
+		m->setRenderHint(QwtPlotItem::RenderAntialiased, false);
 		m->setAxis(grid.xAxis, grid.yAxis);
 		m->setLineStyle(QwtPlotMarker::HLine);
-		m->setValue(0.0,0.0);
-		m->setLinePen(QPen(Qt::black, 2,Qt::SolidLine));
-	}
-	else if (mrkY>=0 && !grid.yZeroOn)
-	{
+		m->setValue(0.0, 0.0);
+		
+		int width = 1;
+		if (d_plot->canvas()->lineWidth())
+			width = d_plot->canvas()->lineWidth();
+		else if (d_plot->axisEnabled (QwtPlot::xBottom) || d_plot->axisEnabled (QwtPlot::xTop))
+			width =  d_plot->axesLinewidth();
+		
+		m->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
+	} else if (mrkY>=0 && !grid.yZeroOn) {
 		d_plot->removeMarker(mrkY);
 		mrkY=-1;
 	}
@@ -3111,6 +3120,13 @@ bool Graph::addErrorBars(const QString& xColName, const QString& yColName,
 		return false;
 
 	QwtErrorPlotCurve *er = new QwtErrorPlotCurve(type, errTable, errColName);
+
+    c_type.resize(++n_curves);
+	c_type[n_curves-1] = ErrorBars;
+
+	c_keys.resize(n_curves);
+	c_keys[n_curves-1] = d_plot->insertCurve(er);
+
 	er->setMasterCurve(master_curve);
 	er->setCapLength(cap);
 	er->setColor(color);
@@ -3118,12 +3134,6 @@ bool Graph::addErrorBars(const QString& xColName, const QString& yColName,
 	er->drawPlusSide(plus);
 	er->drawMinusSide(minus);
 	er->drawThroughSymbol(through);
-
-	c_type.resize(++n_curves);
-	c_type[n_curves-1] = ErrorBars;
-
-	c_keys.resize(n_curves);
-	c_keys[n_curves-1] = d_plot->insertCurve(er);
 
 	updatePlot();
 	return true;
@@ -3136,18 +3146,19 @@ void Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
 		endRow = w->numRows() - 1;
 
 	QwtPieCurve *pieCurve = new QwtPieCurve(w, name, startRow, endRow);
+
+    c_keys.resize(++n_curves);
+	c_keys[n_curves-1] = d_plot->insertCurve(pieCurve);
+
+	c_type.resize(n_curves);
+	c_type[n_curves-1] = Pie;
+
 	pieCurve->loadData();
 	pieCurve->setPen(pen);
 	pieCurve->setRay(size);
 	pieCurve->setFirstColor(firstColor);
 	pieCurve->setBrushStyle(getBrushStyle(brush));
 	pieCurve->setVisible(visible);
-
-	c_keys.resize(++n_curves);
-	c_keys[n_curves-1] = d_plot->insertCurve(pieCurve);
-
-	c_type.resize(n_curves);
-	c_type[n_curves-1] = Pie;
 }
 
 void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
@@ -3164,7 +3175,7 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 		QString yval = w->text(i,ycol);
 		if (!yval.isEmpty()){
 		    bool valid_data = true;
-			Y[size] = QLocale().toDouble(yval, &valid_data);
+			Y[size] = d_plot->locale().toDouble(yval, &valid_data);
 			if (valid_data){
                 sum += Y[size];
                 size++;
@@ -3180,13 +3191,14 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 	const QRect rect = pLayout->canvasRect();
 
 	QwtPieCurve *pieCurve = new QwtPieCurve(w, name, startRow, endRow);
-	pieCurve->setData(Y.data(), Y.data(), size);
 
-	c_keys.resize(++n_curves);
+    c_keys.resize(++n_curves);
 	c_keys[n_curves-1] = d_plot->insertCurve(pieCurve);
 
 	c_type.resize(n_curves);
 	c_type[n_curves-1] = Pie;
+
+	pieCurve->setData(Y.data(), Y.data(), size);
 
 	const int ray = 125;
 	int xc = int(rect.width()/2 + 10);
@@ -3337,7 +3349,6 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 	QStringList xLabels, yLabels;// store text labels
 	QTime time0;
 	QDate date0;
-    QLocale locale;
 
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
@@ -3388,14 +3399,14 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 					X[size] = (double) date0.daysTo(d);
 			}
 			else
-                X[size] = QLocale().toDouble(xval, &valid_data);
+                X[size] = d_plot->locale().toDouble(xval, &valid_data);
 
 			if (yColType == Table::Text){
 				yLabels << yval;
 				Y[size] = (double) (size + 1);
 			}
 			else
-                Y[size] = QLocale().toDouble(yval, &valid_data);
+                Y[size] = d_plot->locale().toDouble(yval, &valid_data);
 
             if (valid_data)
                 size++;
@@ -3496,14 +3507,14 @@ void Graph::plotVectorCurve(Table* w, const QStringList& colList, int style, int
 	if (!v)
 		return;
 
-	v->loadData();
-	v->setStyle(QwtPlotCurve::NoCurve);
-
-	c_type.resize(++n_curves);
+    c_type.resize(++n_curves);
 	c_type[n_curves-1] = style;
 
 	c_keys.resize(n_curves);
 	c_keys[n_curves-1] = d_plot->insertCurve(v);
+
+	v->loadData();
+	v->setStyle(QwtPlotCurve::NoCurve);
 
 	addLegendItem(colList[1]);
 	updatePlot();
@@ -4582,58 +4593,52 @@ void Graph::copy(Graph* g)
 	setAxesLinewidth(plot->axesLinewidth());
 	removeLegend();
 
-    for (i=0; i<g->curves(); i++)
-		{
-			QwtPlotItem *it = (QwtPlotItem *)g->plotItem(i);
-			if (it->rtti() == QwtPlotItem::Rtti_PlotCurve)
-  	        {
+    for (i=0; i<g->curves(); i++){
+        QwtPlotItem *it = (QwtPlotItem *)g->plotItem(i);
+        if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
   	        DataCurve *cv = (DataCurve *)it;
 			int n = cv->dataSize();
 			int style = ((PlotCurve *)it)->type();
 			QVector<double> x(n);
 			QVector<double> y(n);
-			for (int j=0; j<n; j++)
-			{
+			for (int j=0; j<n; j++){
 				x[j]=cv->x(j);
 				y[j]=cv->y(j);
 			}
 
 			PlotCurve *c = 0;
-			if (style == Pie)
-			{
+            c_keys.resize(++n_curves);
+			c_type.resize(n_curves);
+			c_type[i] = g->curveType(i);
+
+			if (style == Pie){
 				c = new QwtPieCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
+				c_keys[i] = d_plot->insertCurve(c);
 				((QwtPieCurve*)c)->setRay(((QwtPieCurve*)cv)->ray());
                 ((QwtPieCurve*)c)->setFirstColor(((QwtPieCurve*)cv)->firstColor());
-			}
-			else if (style == Function)
-			{
+			} else if (style == Function) {
 				c = new FunctionCurve(cv->title().text());
+				c_keys[i] = d_plot->insertCurve(c);
 				((FunctionCurve*)c)->copy((FunctionCurve*)cv);
-			}
-			else if (style == VerticalBars || style == HorizontalBars)
-			{
+			} else if (style == VerticalBars || style == HorizontalBars) {
 				c = new QwtBarCurve(((QwtBarCurve*)cv)->orientation(), cv->table(), cv->xColumnName(),
 									cv->title().text(), cv->startRow(), cv->endRow());
+                c_keys[i] = d_plot->insertCurve(c);
 				((QwtBarCurve*)c)->copy((const QwtBarCurve*)cv);
-			}
-			else if (style == ErrorBars)
-			{
+			} else if (style == ErrorBars) {
 				QwtErrorPlotCurve *er = (QwtErrorPlotCurve*)cv;
 				DataCurve *master_curve = masterCurve(er);
-				if (master_curve)
-				{
+				if (master_curve) {
 					c = new QwtErrorPlotCurve(cv->table(), cv->title().text());
+					c_keys[i] = d_plot->insertCurve(c);
 					((QwtErrorPlotCurve*)c)->copy(er);
 					((QwtErrorPlotCurve*)c)->setMasterCurve(master_curve);
 				}
-			}
-			else if (style == Histogram)
-			{
+			} else if (style == Histogram) {
 				c = new QwtHistogram(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
+				c_keys[i] = d_plot->insertCurve(c);
 				((QwtHistogram *)c)->copy((const QwtHistogram*)cv);
-			}
-			else if (style == VectXYXY || style == VectXYAM)
-			{
+			} else if (style == VectXYXY || style == VectXYAM) {
 				VectorCurve::VectorStyle vs = VectorCurve::XYXY;
 				if (style == VectXYAM)
 					vs = VectorCurve::XYAM;
@@ -4641,23 +4646,18 @@ void Graph::copy(Graph* g)
 									((VectorCurve *)cv)->vectorEndXAColName(),
 									((VectorCurve *)cv)->vectorEndYMColName(),
 									cv->startRow(), cv->endRow());
+                c_keys[i] = d_plot->insertCurve(c);
 				((VectorCurve *)c)->copy((const VectorCurve *)cv);
-			}
-			else if (style == Box)
-			{
+			} else if (style == Box) {
 				c = new BoxCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
+				c_keys[i] = d_plot->insertCurve(c);
 				((BoxCurve*)c)->copy((const BoxCurve *)cv);
 				QwtSingleArrayData dat(x[0], y, n);
 				c->setData(dat);
-			}
-			else
+			} else {
 				c = new DataCurve(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
-
-			c_keys.resize(++n_curves);
-			c_keys[i] = d_plot->insertCurve(c);
-
-			c_type.resize(n_curves);
-			c_type[i] = g->curveType(i);
+                c_keys[i] = d_plot->insertCurve(c);
+			}
 
 			if (c_type[i] != Box && c_type[i] != ErrorBars)
 				c->setData(x.data(), y.data(), n);
@@ -4808,13 +4808,14 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 
 	for (int j = 0; j <(int)names.count(); j++){
         BoxCurve *c = new BoxCurve(w, names[j], startRow, endRow);
-        c->setData(QwtSingleArrayData(double(j+1), QwtArray<double>(), 0));
-        c->loadData();
 
         c_keys.resize(++n_curves);
         c_keys[n_curves-1] = d_plot->insertCurve(c);
         c_type.resize(n_curves);
         c_type[n_curves-1] = Box;
+
+        c->setData(QwtSingleArrayData(double(j+1), QwtArray<double>(), 0));
+        c->loadData();
 
         c->setPen(QPen(ColorBox::color(j), 1));
         c->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(ColorBox::color(j), 1), QSize(7,7)));
@@ -4900,21 +4901,21 @@ void Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
 
     int startRow = 0;
     int endRow = w->numRows()-1;
-    if (fileVersion >= 90)
-    {
+    if (fileVersion >= 90) {
         startRow = l[l.count()-3].toInt();
         endRow = l[l.count()-2].toInt();
     }
 
 	BoxCurve *c = new BoxCurve(w, l[2], startRow, endRow);
-	c->setData(QwtSingleArrayData(l[1].toDouble(), QwtArray<double>(), 0));
-	c->setData(QwtSingleArrayData(l[1].toDouble(), QwtArray<double>(), 0));
-	c->loadData();
 
-	c_keys.resize(++n_curves);
+    c_keys.resize(++n_curves);
 	c_keys[n_curves-1] = d_plot->insertCurve(c);
 	c_type.resize(n_curves);
 	c_type[n_curves-1] = Box;
+
+	c->setData(QwtSingleArrayData(l[1].toDouble(), QwtArray<double>(), 0));
+	c->setData(QwtSingleArrayData(l[1].toDouble(), QwtArray<double>(), 0));
+	c->loadData();
 
 	c->setMaxStyle(SymbolBox::style(l[16].toInt()));
 	c->setP99Style(SymbolBox::style(l[17].toInt()));

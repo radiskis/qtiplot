@@ -153,13 +153,14 @@ void RangeSelectorTool::setActivePoint(int point)
 
 void RangeSelectorTool::emitStatusText()
 {
+    QLocale locale = d_graph->plotWidget()->locale();
     if (((PlotCurve *)d_selected_curve)->type() == Graph::Function){
          emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
 			.arg(d_selected_curve->title().text())
 			.arg(d_active_point + 1)
-			.arg(QLocale().toString(d_selected_curve->x(d_active_point), 'G', 16))
-			.arg(QLocale().toString(d_selected_curve->y(d_active_point), 'G', 16)));
+			.arg(locale.toString(d_selected_curve->x(d_active_point), 'G', 16))
+			.arg(locale.toString(d_selected_curve->y(d_active_point), 'G', 16)));
     } else {
         Table *t = ((DataCurve*)d_selected_curve)->table();
         if (!t)
@@ -270,10 +271,11 @@ void RangeSelectorTool::copySelection()
 
     int start_point = QMIN(d_active_point, d_inactive_point);
     int end_point = QMAX(d_active_point, d_inactive_point);
+    QLocale locale = d_graph->plotWidget()->locale();
     QString text;
     for (int i = start_point; i <= end_point; i++){
-        text += QLocale().toString(d_selected_curve->x(i), 'G', 16) + "\t";
-        text += QLocale().toString(d_selected_curve->y(i), 'G', 16) + "\n";
+        text += locale.toString(d_selected_curve->x(i), 'G', 16) + "\t";
+        text += locale.toString(d_selected_curve->y(i), 'G', 16) + "\n";
     }
 
 	QApplication::clipboard()->setText(text);
@@ -336,7 +338,7 @@ void RangeSelectorTool::pasteSelection()
 
     int prec; char f;
     t->columnNumericFormat(col, &f, &prec);
-    QLocale locale = QLocale();
+    QLocale locale = d_graph->plotWidget()->locale();
     for (int i = start_row; i <= end_row; i++){
         QString s = ts.readLine();
         if (s.isEmpty())

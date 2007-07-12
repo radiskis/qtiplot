@@ -31,6 +31,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QLocale>
 
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
@@ -52,7 +53,7 @@ public:
 	QwtPlotGrid *grid(){return (QwtPlotGrid *)d_grid;};
 	QList<int> curveKeys(){return d_curves.keys();};
 	QList<QwtPlotItem *> curvesList(){return d_curves.values();};
-	
+
 	int insertCurve(QwtPlotItem *c);
 	void removeCurve(int index);
 
@@ -93,6 +94,9 @@ public:
     void print(QPainter *, const QRect &rect, const QwtPlotPrintFilter & = QwtPlotPrintFilter());
 	void updateLayout();
 
+    QLocale locale(){return d_locale;};
+    void setLocale(const QLocale & l){d_locale = l;};
+
 protected:
 	void printCanvas(QPainter *painter, const QRect &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
@@ -109,6 +113,7 @@ protected:
 	int minTickLength, majTickLength;
 	int marker_key;
 	int curve_key;
+	QLocale d_locale;
 };
 
 class Grid : public QwtPlotGrid

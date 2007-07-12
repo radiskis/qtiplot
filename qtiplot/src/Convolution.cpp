@@ -138,13 +138,13 @@ void Convolution::addResultCurve()
 	d_table->addCol();
 	d_table->addCol();
 	double x_temp[d_n];
-	for (int i = 0; i<d_n; i++)
-	{
+	QLocale locale = app->locale();
+	for (int i = 0; i<d_n; i++){
 		double x = i+1;
 		x_temp[i] = x;
 
 		d_table->setText(i, cols, QString::number(x));
-		d_table->setText(i, cols2, QLocale().toString(d_x[i], 'g', app->d_decimal_digits));
+		d_table->setText(i, cols2, locale.toString(d_x[i], 'g', app->d_decimal_digits));
 	}
 
 	QStringList l = d_table->colNames().grep(tr("Index"));

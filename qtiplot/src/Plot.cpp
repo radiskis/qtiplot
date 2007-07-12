@@ -46,6 +46,7 @@ Plot::Plot(QWidget *parent, const char *)
 : QwtPlot(parent)
 {
 	setAutoReplot (false);
+    d_locale = QLocale::c();
 
 	marker_key = 0;
 	curve_key = 0;
@@ -66,11 +67,9 @@ Plot::Plot(QWidget *parent, const char *)
 	d_grid->attach(this);
 
 	//custom scale
-	for (int i= 0; i<QwtPlot::axisCnt; i++)
-	{
+	for (int i= 0; i<QwtPlot::axisCnt; i++) {
 		QwtScaleWidget *scale = (QwtScaleWidget *) axisWidget(i);
-		if (scale)
-		{
+		if (scale) {
 			scale->setMargin(0);
 
 			//the axis title color must be initialized...
@@ -83,7 +82,7 @@ Plot::Plot(QWidget *parent, const char *)
             pal.setColor(QColorGroup::Foreground, QColor(Qt::black));
             scale->setPalette(pal);
 
-			ScaleDraw *sd = new ScaleDraw();
+			ScaleDraw *sd = new ScaleDraw(this);
 			sd->setTickLength(QwtScaleDiv::MinorTick, minTickLength);
 			sd->setTickLength(QwtScaleDiv::MediumTick, minTickLength);
 			sd->setTickLength(QwtScaleDiv::MajorTick, majTickLength);
@@ -355,11 +354,9 @@ void Plot::drawInwardTicks(QPainter *painter, const QRect &rect,
 
 void Plot::setAxesLinewidth(int width)
 {
-	for (int i=0; i<QwtPlot::axisCnt; i++)
-	{
+	for (int i=0; i<QwtPlot::axisCnt; i++){
 		QwtScaleWidget *scale=(QwtScaleWidget*) this->axisWidget(i);
-		if (scale)
-		{
+		if (scale) {
 			scale->setPenWidth(width);
 			scale->repaint();
 		}
@@ -368,8 +365,7 @@ void Plot::setAxesLinewidth(int width)
 
 int Plot::axesLinewidth() const
 {
-	for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
-	{
+	for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ ) {
 		const QwtScaleWidget *scale = this->axisWidget(axis);
 		if (scale)
 			return scale->penWidth();

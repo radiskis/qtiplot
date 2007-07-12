@@ -140,6 +140,7 @@ bool ImportOPJ::importTables(OPJFile opj)
 		if (!table)
 			return false;
 
+        QLocale locale = mw->locale();
 		table->setWindowLabel(opj.spreadLabel(s));
 		for (int j=0; j<nr_cols; j++)
 		{
@@ -174,7 +175,7 @@ bool ImportOPJ::importTables(OPJFile opj)
 					if(fabs(*val)>0 && fabs(*val)<2.0e-300)// empty entry
 						continue;
 
-                    table->setText(i, j, QLocale().toString(*val, 'g', 14));
+                    table->setText(i, j, locale.toString(*val, 'g', 16));
                     d_cells[j][i] = *val;
 				}
 				else// label? doesn't seem to work
@@ -333,23 +334,6 @@ bool ImportOPJ::importTables(OPJFile opj)
 				break;
 			}
             table->freeMemory();
-
-			/*for (int i=0; i<opj.numRows(s,j); i++)
-			{
-				if(strcmp(opj.colType(s,j),"LABEL")&&opj.colValueType(s,j)!=1)
-				{// number
-					double* val = (double*)opj.oData(s,j,i,true);
-					if(fabs(*val)>0 && fabs(*val)<2.0e-300)// empty entry
-						continue;
-
-                    //if (table->columnType(j) == Table::Date)
-                        //QMessageBox::about(0, "", QDate::fromJulianDay(int(*val)+1).toString("dd/MM/yyyy"));
-
-					table->setText(i, j, QLocale().toString(*val));
-				}
-				else// label? doesn't seem to work
-					table->setText(i, j, QString((char*)opj.oData(s,j,i)));
-			}*/
 		}
 
 

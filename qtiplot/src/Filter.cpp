@@ -303,12 +303,12 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
 QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 {
     ApplicationWindow *app = (ApplicationWindow *)parent();
+    QLocale locale = app->locale();
     const QString tableName = app->generateUniqueName(QString(this->name()));
     Table *t = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + d_curve->title().text(), d_points, 2);
-	for (int i=0; i<d_points; i++)
-	{
-		t->setText(i, 0, QLocale().toString(x[i], 'g', app->d_decimal_digits));
-		t->setText(i, 1, QLocale().toString(y[i], 'g', app->d_decimal_digits));
+	for (int i=0; i<d_points; i++){
+		t->setText(i, 0, locale.toString(x[i], 'g', app->d_decimal_digits));
+		t->setText(i, 1, locale.toString(y[i], 'g', app->d_decimal_digits));
 	}
 
 	DataCurve *c = new DataCurve(t, tableName + "_1", tableName + "_2");

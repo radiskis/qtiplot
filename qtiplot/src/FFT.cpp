@@ -69,8 +69,7 @@ QString FFT::fftCurve()
 	double *amp = new double[d_n];
 	double *result = new double[2*d_n];
 
-	if(!amp || !result)
-	{
+	if(!amp || !result){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                         tr("Could not allocate memory, operation aborted!"));
         d_init_err = true;
@@ -80,16 +79,14 @@ QString FFT::fftCurve()
 	double df = 1.0/(double)(d_n*d_sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
 	QString text;
-	if(!d_inverse)
-	{
+	if(!d_inverse){
         d_explanation = tr("Forward") + " " + tr("FFT") + " " + tr("of") + " " + d_curve->title().text();
 		text = tr("Frequency");
 
 		gsl_fft_real_workspace *work=gsl_fft_real_workspace_alloc(d_n);
 		gsl_fft_real_wavetable *real=gsl_fft_real_wavetable_alloc(d_n);
 
-		if(!work || !real)
-		{
+		if(!work || !real){
 			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                         tr("Could not allocate memory, operation aborted!"));
             d_init_err = true;
@@ -101,9 +98,7 @@ QString FFT::fftCurve()
 
 		gsl_fft_real_wavetable_free(real);
 		gsl_fft_real_workspace_free(work);
-	}
-	else
-	{
+	} else {
         d_explanation = tr("Inverse") + " " + tr("FFT") + " " + tr("of") + " " + d_curve->title().text();
 		text = tr("Time");
 
@@ -111,8 +106,7 @@ QString FFT::fftCurve()
 		gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
 		gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
 
-		if(!workspace || !wavetable)
-		{
+		if(!workspace || !wavetable){
 			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                         tr("Could not allocate memory, operation aborted!"));
             d_init_err = true;
@@ -124,25 +118,20 @@ QString FFT::fftCurve()
 		gsl_fft_complex_workspace_free (workspace);
 	}
 
-	if (d_shift_order)
-	{
-		for(i=0; i<d_n; i++)
-		{
+	if (d_shift_order){
+		for(i=0; i<d_n; i++){
 			d_x[i] = (i-n2)*df;
 			int j = i + d_n;
 			double aux = result[i];
 			result[i] = result[j];
 			result[j] = aux;
 		}
-	}
-	else
-	{
+	} else {
 		for(i=0; i<d_n; i++)
 			d_x[i] = i*df;
 	}
 
-	for(i=0;i<d_n;i++)
-	{
+	for(i=0;i<d_n;i++) {
 		i2 = 2*i;
 		double real_part = result[i2];
 		double im_part = result[i2+1];
@@ -153,20 +142,20 @@ QString FFT::fftCurve()
 	}
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = app->locale();
 	int prec = app->d_decimal_digits;
 
 	text += "\t"+tr("Real")+"\t"+tr("Imaginary")+"\t"+ tr("Amplitude")+"\t"+tr("Angle")+"\n";
-	for (i=0;i<d_n;i++)
-	{
+	for (i=0; i<d_n; i++){
 		i2 = 2*i;
-		text += QLocale().toString(d_x[i], 'g', prec)+"\t";
-		text += QLocale().toString(result[i2], 'g', prec)+"\t";
-		text += QLocale().toString(result[i2+1], 'g', prec)+"\t";
+		text += locale.toString(d_x[i], 'g', prec)+"\t";
+		text += locale.toString(result[i2], 'g', prec)+"\t";
+		text += locale.toString(result[i2+1], 'g', prec)+"\t";
 		if (d_normalize)
-			text += QLocale().toString(amp[i]/aMax, 'g', prec)+"\t";
+			text += locale.toString(amp[i]/aMax, 'g', prec)+"\t";
 		else
-			text += QLocale().toString(amp[i], 'g', prec)+"\t";
-		text += QLocale().toString(atan(result[i2+1]/result[i2]), 'g', prec)+"\n";
+			text += locale.toString(amp[i], 'g', prec)+"\t";
+		text += locale.toString(atan(result[i2+1]/result[i2]), 'g', prec)+"\n";
 	}
 	delete[] amp;
 	delete[] result;
@@ -182,8 +171,7 @@ QString FFT::fftTable()
 	gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (rows);
 	gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (rows);
 
-	if(!amp || !wavetable || !workspace)
-	{
+	if(!amp || !wavetable || !workspace){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                         tr("Could not allocate memory, operation aborted!"));
         d_init_err = true;
@@ -193,13 +181,10 @@ QString FFT::fftTable()
 	double df = 1.0/(double)(rows*d_sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
 	QString text;
-	if(!d_inverse)
-	{
+	if(!d_inverse) {
 		text = tr("Frequency");
 		gsl_fft_complex_forward (d_y, 1, rows, wavetable, workspace);
-	}
-	else
-	{
+	} else {
 		text = tr("Time");
 		gsl_fft_complex_inverse (d_y, 1, rows, wavetable, workspace);
 	}
@@ -207,26 +192,21 @@ QString FFT::fftTable()
 	gsl_fft_complex_wavetable_free (wavetable);
 	gsl_fft_complex_workspace_free (workspace);
 
-	if (d_shift_order)
-	{
+	if (d_shift_order) {
 		int n2 = rows/2;
-		for(i=0; i<rows; i++)
-		{
+		for(i=0; i<rows; i++) {
 			d_x[i] = (i-n2)*df;
 			int j = i + rows;
 			double aux = d_y[i];
 			d_y[i] = d_y[j];
 			d_y[j] = aux;
 		}
-	}
-	else
-	{
+	} else {
 		for(i=0; i<rows; i++)
 			d_x[i] = i*df;
 	}
 
-	for(i=0; i<rows; i++)
-	{
+	for(i=0; i<rows; i++) {
 		int i2 = 2*i;
 		double a = sqrt(d_y[i2]*d_y[i2] + d_y[i2+1]*d_y[i2+1]);
 		amp[i]= a;
@@ -235,20 +215,20 @@ QString FFT::fftTable()
 	}
 
     ApplicationWindow *app = (ApplicationWindow *)parent();
+    QLocale locale = app->locale();
 	int prec = app->d_decimal_digits;
 
 	text += "\t"+tr("Real")+"\t"+tr("Imaginary")+"\t"+tr("Amplitude")+"\t"+tr("Angle")+"\n";
-	for (i=0; i<rows; i++)
-	{
+	for (i=0; i<rows; i++) {
 		int i2 = 2*i;
-		text += QLocale().toString(d_x[i], 'g', prec)+"\t";
-		text += QLocale().toString(d_y[i2], 'g', prec)+"\t";
-		text += QLocale().toString(d_y[i2+1], 'g', prec)+"\t";
+		text += locale.toString(d_x[i], 'g', prec)+"\t";
+		text += locale.toString(d_y[i2], 'g', prec)+"\t";
+		text += locale.toString(d_y[i2+1], 'g', prec)+"\t";
 		if (d_normalize)
-			text += QLocale().toString(amp[i]/aMax, 'g', prec)+"\t";
+			text += locale.toString(amp[i]/aMax, 'g', prec)+"\t";
 		else
-			text += QLocale().toString(amp[i], 'g', prec)+"\t";
-		text += QLocale().toString(atan(d_y[i2+1]/d_y[i2]), 'g', prec)+"\n";
+			text += locale.toString(amp[i], 'g', prec)+"\t";
+		text += locale.toString(atan(d_y[i2+1]/d_y[i2]), 'g', prec)+"\n";
 	}
 	delete[] amp;
     return text;
@@ -276,8 +256,7 @@ void FFT::output(const QString &text)
 		return;
 
 	Graph* g = ml->activeGraph();
-	if ( g )
-	{
+	if ( g ) {
 		g->setCurvePen(0, QPen(ColorBox::color(d_curveColorIndex), 1));
 
         Plot* plot = g->plotWidget();
@@ -303,8 +282,7 @@ void FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
     if (!imagColName.isEmpty())
         d_imag_col = d_table->colIndex(imagColName);
 
-    if (d_n > 0)
-	{//delete previousely allocated memory
+    if (d_n > 0) {//delete previousely allocated memory
 		delete[] d_x;
 		delete[] d_y;
 	}
@@ -314,19 +292,15 @@ void FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
     d_y = new double[n2];
     d_x = new double[d_n];
 
-    if(d_y && d_x)
-	{// zero-pad data array
+    if(d_y && d_x) {// zero-pad data array
 		memset( d_y, 0, n2* sizeof( double ) );
-		for(int i=0; i<d_n; i++)
-		{
+		for(int i=0; i<d_n; i++) {
 			int i2 = 2*i;
 			d_y[i2] = d_table->cell(i, d_real_col);
 			if (d_imag_col >= 0)
 				d_y[i2+1] = d_table->cell(i, d_imag_col);
 		}
-	}
-	else
-	{
+	} else {
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                         tr("Could not allocate memory, operation aborted!"));
         d_init_err = true;

@@ -138,6 +138,8 @@ void Correlation::addResultCurve()
     if (!app)
         return;
 
+    QLocale locale = app->locale();
+
     int rows = d_table->numRows();
 	int cols = d_table->numCols();
 	int cols2 = cols+1;
@@ -146,8 +148,7 @@ void Correlation::addResultCurve()
 	int n = rows/2;
 
 	double x_temp[rows], y_temp[rows];
-	for (int i = 0; i<rows; i++)
-	{
+	for (int i = 0; i<rows; i++){
 	    double x = i - n;
         x_temp[i] = x;
 
@@ -158,7 +159,7 @@ void Correlation::addResultCurve()
 			y_temp[i] = d_x[i-n];
 
 		d_table->setText(i, cols, QString::number(x));
-		d_table->setText(i, cols2, QLocale().toString(y, 'g', app->d_decimal_digits));
+		d_table->setText(i, cols2, locale.toString(y, 'g', app->d_decimal_digits));
 	}
 
 	QStringList l = d_table->colNames().grep(tr("Lag"));

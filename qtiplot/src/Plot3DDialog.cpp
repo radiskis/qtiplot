@@ -30,11 +30,13 @@
 #include "TextDialog.h"
 #include "MyParser.h"
 #include "SymbolDialog.h"
+#include "ApplicationWindow.h"
 
 #include <QListWidget>
 #include <QLineEdit>
 #include <QLayout>
 #include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QPushButton>
 #include <QLabel>
 #include <QStackedWidget>
@@ -303,7 +305,9 @@ void Plot3DDialog::initGeneralPage()
     gl1->addWidget(boxOrthogonal, 0, 1);
 
     gl1->addWidget(new QLabel(tr( "Line Width" )), 1, 0);
-	boxMeshLineWidth = new QSpinBox();
+	boxMeshLineWidth = new QDoubleSpinBox();
+	boxMeshLineWidth->setDecimals(1);
+	boxMeshLineWidth->setSingleStep(0.1);
     boxMeshLineWidth->setRange(1, 100);
     gl1->addWidget(boxMeshLineWidth, 1, 1);
 
@@ -462,7 +466,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	bgColor = g->bgColor();
 	gridColor = g->gridColor();
 
-	boxMeshLineWidth->setValue(int(g->meshLineWidth()));
+	boxMeshLineWidth->setValue(g->meshLineWidth());
 	boxTransparency->setValue(int(100*g->transparency()));
 
 	boxTitle->setText(g->plotTitle());
@@ -553,7 +557,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 		else if (g->matrix())
 			btnTable->setText(tr("&Matrix"));
 
-	connect( boxMeshLineWidth, SIGNAL(valueChanged(int)), d_plot, SLOT(setMeshLineWidth(int)));
+	connect( boxMeshLineWidth, SIGNAL(valueChanged(double)), d_plot, SLOT(setMeshLineWidth(double)));
 	connect( boxOrthogonal, SIGNAL(toggled(bool)), d_plot, SLOT(setOrthogonal(bool)));
 	connect( boxLegend, SIGNAL(toggled(bool)), d_plot, SLOT(showColorLegend(bool)));
     connect( boxResolution, SIGNAL(valueChanged(int)), d_plot, SLOT(setResolution(int)));
@@ -596,11 +600,14 @@ void Plot3DDialog::showBarsTab(double rad)
 {
 	bars = new QWidget( generalDialog );
 
-	new QLabel( tr( "Width" ));
+	QHBoxLayout* hb = new QHBoxLayout(bars);
+	hb->addWidget(new QLabel( tr( "Width" )));
+
 	boxBarsRad = new QLineEdit();
 	boxBarsRad->setText(QString::number(rad));
+	hb->addWidget(boxBarsRad);
 
-	generalDialog->insertTab(bars, tr( "Bars" ),4 );
+	generalDialog->insertTab(bars, tr( "Bars" ), 4);
 }
 
 void Plot3DDialog::showPointsTab(double rad, bool smooth)
@@ -804,25 +811,30 @@ bool Plot3DDialog::updatePlot()
 	if (!d_plot)
 		return false;
 
+    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    if (!app)
+        return false;
+
 	if (generalDialog->currentPage()==(QWidget*)bars){
-		d_plot->updateBars(boxBarsRad->text().toDouble());
-	}
-
-	if (generalDialog->currentPage()==(QWidget*)points){
-		if (boxPointStyle->currentIndex() == 0)
-			d_plot->updatePoints(boxSize->text().toDouble(), boxSmooth->isChecked());
-		else if (boxPointStyle->currentIndex() == 1)
-			d_plot->updateCross(boxCrossRad->text().toDouble(), boxCrossLinewidth->text().toDouble(),
+		d_plot->setBarRadius(boxBarsRad->text().toDouble());
+		d_plot->setBarStyle();
+	} else if (generalDialog->currentPage() == (QWidget*)points){
+		if (boxPointStyle->currentIndex() == 0) {
+			d_plot->setDotOptions(boxSize->text().toDouble(), boxSmooth->isChecked());
+			d_plot->setDotStyle();
+		} else if (boxPointStyle->currentIndex() == 1){
+			d_plot->setCrossOptions(boxCrossRad->text().toDouble(), boxCrossLinewidth->text().toDouble(),
 					boxCrossSmooth->isChecked(), boxBoxed->isChecked());
-		else if (boxPointStyle->currentIndex() == 2)
-			d_plot->updateCones(boxConesRad->text().toDouble(), boxQuality->value());
-	}
+            d_plot->setCrossStyle();
+        } else if (boxPointStyle->currentIndex() == 2) {
+			d_plot->setConesOptions(boxConesRad->text().toDouble(), boxQuality->value());
+			d_plot->setConeStyle();
+        }
 
-	if (generalDialog->currentPage()==(QWidget*)title){
+        app->custom3DActions(d_plot);
+	} else if (generalDialog->currentPage()==(QWidget*)title){
 		d_plot->setTitle(boxTitle->text(),titleColor,titleFont);
-	}
-
-	if (generalDialog->currentPage()==(QWidget*)colors){
+	} else if (generalDialog->currentPage()==(QWidget*)colors){
 		d_plot->changeTransparency(boxTransparency->value()*0.01);
 		d_plot->setDataColors(fromColor, toColor);
 		d_plot->setMeshColor(meshColor);
@@ -831,9 +843,7 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setLabelsColor(labelColor);
 		d_plot->setBackgroundColor(bgColor);
 		d_plot->setGridColor(gridColor);
-	}
-
-	if (generalDialog->currentPage()==(QWidget*)general){
+	} else if (generalDialog->currentPage()==(QWidget*)general){
 		d_plot->showColorLegend(boxLegend->isChecked());
 		d_plot->setResolution(boxResolution->value());
 		d_plot->setMeshLineWidth(boxMeshLineWidth->value());
@@ -841,9 +851,7 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setNumbersFont(numbersFont);
 		d_plot->setZoom(boxZoom->value()*0.01);
 		d_plot->setScale(boxXScale->value()*0.01, boxYScale->value()*0.01, boxZScale->value()*0.01);
-	}
-
-	if (generalDialog->currentPage()==(QWidget*)scale){
+	} else if (generalDialog->currentPage()==(QWidget*)scale){
 		int axis = axesList->currentRow();
 		QString from=boxFrom->text().lower();
 		QString to=boxTo->text().lower();
@@ -876,9 +884,7 @@ bool Plot3DDialog::updatePlot()
 		}
 
         d_plot->updateScale(axis, scaleOptions(axis, start, end, boxMajors->text(), boxMinors->text()));
-	}
-
-	if (generalDialog->currentPage()==(QWidget*)axes){
+	} else if (generalDialog->currentPage()==(QWidget*)axes){
 		int axis = axesList2->currentRow();
 		labels[axis] = boxLabel->text();
 
@@ -903,6 +909,7 @@ bool Plot3DDialog::updatePlot()
 	}
 
     d_plot->update();
+    app->modifiedProject(d_plot);
 	return true;
 }
 

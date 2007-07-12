@@ -159,6 +159,7 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 	g->setAttribute(Qt::WA_DeleteOnClose);
 	g->setGeometry(x, y, width, height);
     g->plotWidget()->resize(QSize(width, height));
+    g->plotWidget()->setLocale(locale());
 	graphsList.append(g);
 
 	active_graph = g;
@@ -1309,7 +1310,7 @@ void MultiLayer::copy(MultiLayer* ml)
 {
 	hide();//FIXME: find a better way to avoid a resize event
     resize(ml->size());
-	
+
 	setSpacing(ml->rowsSpacing(), ml->colsSpacing());
 	setAlignement(ml->horizontalAlignement(), ml->verticalAlignement());
 	setMargins(ml->leftMargin(), ml->rightMargin(), ml->topMargin(), ml->bottomMargin());

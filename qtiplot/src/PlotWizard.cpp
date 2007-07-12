@@ -389,20 +389,12 @@ void PlotWizard::plot3D(const QStringList& lst)
             int xCol = t->colIndex(xColName);
             int yCol = t->colIndex(yColName);
             int zCol = t->colIndex(zColName);
-            if (xCol >= 0 && yCol >= 0 && zCol >= 0)
-            {
+            if (xCol >= 0 && yCol >= 0 && zCol >= 0) {
                 Graph3D *g = app->newPlot3D();
                 if (g)
-                {
                     g->addData(t, xCol, yCol, zCol, 1);
-                    g->update();
-                }
             }
         }
     }
 	QApplication::restoreOverrideCursor();
-}
-
-PlotWizard::~PlotWizard()
-{
 }

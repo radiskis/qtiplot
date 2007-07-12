@@ -177,13 +177,13 @@ void DataCurve::loadData()
 				if (d.isValid())
 					X[size] = (double) date0.daysTo(d);
 			} else
-				X[size] = QLocale().toDouble(xval, &valid_data);
+				X[size] = ((Plot *)plot())->locale().toDouble(xval, &valid_data);
 
 			if (yColType == Table::Text){
 				yLabels << yval;
 				Y[size] = (double)(size + 1);
 			} else
-				Y[size] = QLocale().toDouble(yval, &valid_data);
+				Y[size] = ((Plot *)plot())->locale().toDouble(yval, &valid_data);
 
             if (valid_data)
                 size++;

@@ -33,7 +33,6 @@
 #include <qwt_symbol.h>
 
 #include <QPainter>
-#include <QLocale>
 
 QwtErrorPlotCurve::QwtErrorPlotCurve(int orientation, Table *t, const char *name):
 	DataCurve(t, QString(), name),
@@ -242,6 +241,9 @@ void QwtErrorPlotCurve::loadData()
 	if (!d_master_curve)
 		return;
 
+    if (!plot())
+        return;
+
 	Table *mt = d_master_curve->table();
 	if (!mt)
 		return;
@@ -260,6 +262,7 @@ void QwtErrorPlotCurve::loadData()
     int r = abs(d_end_row - d_start_row) + 1;
 	QVector<double> X(r), Y(r), err(r);
     int data_size = 0;
+    QLocale locale = ((Plot *)plot())->locale();
 	for (int i = d_start_row; i <= d_end_row; i++){
 		QString xval = mt->text(i, xcol);
 		QString yval = mt->text(i, ycol);
@@ -269,17 +272,17 @@ void QwtErrorPlotCurve::loadData()
 			if (xColType == Table::Text)
 				X[data_size] = (double)(data_size + 1);
 			else
-				X[data_size] = QLocale().toDouble(xval, &ok);
+				X[data_size] = locale.toDouble(xval, &ok);
 
 			if (yColType == Table::Text)
 				Y[data_size] = (double)(data_size + 1);
 			else
-				Y[data_size] = QLocale().toDouble(yval, &ok);
+				Y[data_size] = locale.toDouble(yval, &ok);
 
             if (!ok)
                 continue;
 
-			err[data_size] = QLocale().toDouble(errval, &ok);
+			err[data_size] = locale.toDouble(errval, &ok);
 			if (ok)
                 data_size++;
 		}

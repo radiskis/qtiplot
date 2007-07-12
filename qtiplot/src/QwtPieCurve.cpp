@@ -33,7 +33,6 @@
 #include <QPaintDevice>
 #include <QPainter>
 #include <QVarLengthArray>
-#include <QLocale>
 
 QwtPieCurve::QwtPieCurve(Table *t, const char *name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow)
@@ -119,7 +118,7 @@ void QwtPieCurve::loadData()
 		QString xval = d_table->text(i, ycol);
 		bool valid_data = true;
 		if (!xval.isEmpty()){
-            X[size] = QLocale().toDouble(xval, &valid_data);
+            X[size] = ((Plot *)plot())->locale().toDouble(xval, &valid_data);
             if (valid_data)
                 size++;
 		}

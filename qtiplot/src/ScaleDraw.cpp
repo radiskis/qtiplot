@@ -35,7 +35,8 @@
 #include <qwt_text.h>
 #include <qwt_scale_map.h>
 
-ScaleDraw::ScaleDraw(const QString& s):
+ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
+	d_plot(plot),
 	d_fmt('g'),
     d_prec(4),
 	formula_string (s),
@@ -45,11 +46,9 @@ ScaleDraw::ScaleDraw(const QString& s):
 
 double ScaleDraw::transformValue(double value) const
 	{
-	if (!formula_string.isEmpty())
-		{
+	if (!formula_string.isEmpty()) {
 		double lbl=0.0;
-		try
-			{
+		try{
 			MyParser parser;
 			if (formula_string.contains("x"))
 				parser.DefineVar("x", &value);
@@ -59,15 +58,13 @@ double ScaleDraw::transformValue(double value) const
 			parser.SetExpr(formula_string.ascii());
 			lbl=parser.Eval();
 			}
-		catch(mu::ParserError &)
-			{
+		catch(mu::ParserError &){
 			return 0;
 			}
 
 		return lbl;
-		}
-	else
-		return value;
+		} else
+			return value;
 	}
 
 /*!
@@ -285,39 +282,38 @@ return QwtText(day);
  *
  *****************************************************************************/
 
-QwtSupersciptsScaleDraw::QwtSupersciptsScaleDraw(const QString& s)
-{
-setFormulaString(s);
-}
+QwtSupersciptsScaleDraw::QwtSupersciptsScaleDraw(Plot *plot, const QString& s): 
+	ScaleDraw(plot, s)
+{}
 
 QwtText QwtSupersciptsScaleDraw::label(double value) const
 {
-char f;
-int prec;
-labelFormat(f, prec);
+	char f;
+	int prec;
+	labelFormat(f, prec);
 
-QString txt = QLocale().toString(transformValue(value), 'e', prec);
-QStringList list = txt.split( "e", QString::SkipEmptyParts);
-if (list[0].toDouble() == 0.0)
-	return QString("0");
+	QLocale locale = d_plot->locale();
+	QString txt = locale.toString(transformValue(value), 'e', prec);
+	QStringList list = txt.split( "e", QString::SkipEmptyParts);
+	if (list[0].toDouble() == 0.0)
+		return QString("0");
 
-QString s= list[1];
-int l = s.length();
-QChar sign = s[0];
+	QString s= list[1];
+	int l = s.length();
+	QChar sign = s[0];
 
-s.remove (sign);
+	s.remove (sign);
 
-while (l>1 && s.startsWith ("0", false))
-	{
-	s.remove ( 0, 1 );
-	l = s.length();
+	while (l>1 && s.startsWith ("0", false)){
+		s.remove ( 0, 1 );
+		l = s.length();
 	}
 
-if (sign == '-')
-	s.prepend(sign);
+	if (sign == '-')
+		s.prepend(sign);
 
-if (list[0] == "1")
-	return QwtText("10<sup>" + s + "</sup>");
-else
-	return QwtText(list[0] + "x10<sup>" + s + "</sup>");
+	if (list[0] == "1")
+		return QwtText("10<sup>" + s + "</sup>");
+	else
+		return QwtText(list[0] + "x10<sup>" + s + "</sup>");
 }

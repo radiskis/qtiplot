@@ -31,21 +31,23 @@
 #include <qwt_painter.h>
 #include <qwt_double_rect.h>
 #include <QPainter>
-#include <QLocale>
 
 VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, const char *name,
 				const QString& endCol1, const QString& endCol2, int startRow, int endRow):
-    DataCurve(t, xColName, name, startRow, endRow)
+    DataCurve(t, xColName, name, startRow, endRow),
+	d_style (style),
+	pen(QPen(Qt::black, 1, Qt::SolidLine)),
+	d_headLength (4),
+	d_headAngle (45),
+	d_position (Tail),
+	filledArrow (true),
+	d_end_x_a (endCol1),
+	d_end_y_m (endCol2)
 {
-d_style = style;
-pen=QPen(Qt::black, 1, Qt::SolidLine);
-filledArrow=true;
-d_headLength=4;
-d_headAngle=45;
-d_position = Tail;
-
-d_end_x_a = endCol1;
-d_end_y_m = endCol2;
+	if (style == XYXY)
+		setType(Graph::VectXYXY);	
+	else if (style == XYAM)
+		setType(Graph::VectXYAM);
 }
 
 void VectorCurve::copy(const VectorCurve *vc)
@@ -188,7 +190,7 @@ loadData();
 
 void VectorCurve::setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&y)
 {
-vectorEnd=new QwtArrayData(x, y);
+    vectorEnd=new QwtArrayData(x, y);
 }
 
 int VectorCurve::width()
@@ -331,6 +333,9 @@ bool VectorCurve::updateData(Table *t, const QString& colName)
 
 void VectorCurve::loadData()
 {
+    if (!plot())
+        return;
+
 	int xcol = d_table->colIndex(d_x_column);
 	int ycol = d_table->colIndex(title().text());
 	int endXCol = d_table->colIndex(d_end_x_a);
@@ -339,6 +344,7 @@ void VectorCurve::loadData()
 	int rows = abs(d_end_row - d_start_row) + 1;
     QVector<double> X(rows), Y(rows), X2(rows), Y2(rows);
     int size = 0;
+    QLocale locale = ((Plot *)plot())->locale();
 	for (int i = d_start_row; i <= d_end_row; i++){
 		QString xval = d_table->text(i, xcol);
 		QString yval = d_table->text(i, ycol);
@@ -346,16 +352,16 @@ void VectorCurve::loadData()
 		QString yend = d_table->text(i, endYCol);
 		if (!xval.isEmpty() && !yval.isEmpty() && !xend.isEmpty() && !yend.isEmpty()){
 		    bool valid_data = true;
-			X[size] = QLocale().toDouble(xval, &valid_data);
+			X[size] = locale.toDouble(xval, &valid_data);
 			if (!valid_data)
                 continue;
-            Y[size] = QLocale().toDouble(yval, &valid_data);
+            Y[size] = locale.toDouble(yval, &valid_data);
             if (!valid_data)
                 continue;
-			X2[size] = QLocale().toDouble(xend, &valid_data);
+			X2[size] = locale.toDouble(xend, &valid_data);
 			if (!valid_data)
                 continue;
-            Y2[size] = QLocale().toDouble(yend, &valid_data);
+            Y2[size] = locale.toDouble(yend, &valid_data);
 			if (valid_data)
                 size++;
 		}

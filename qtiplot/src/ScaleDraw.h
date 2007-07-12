@@ -33,6 +33,7 @@
 #include <QStringList>
 #include <QLocale>
 
+#include "Plot.h"
 #include <qwt_scale_draw.h>
 
 //! Extension to QwtScaleDraw
@@ -41,7 +42,7 @@ class ScaleDraw: public QwtScaleDraw
 public:
 	enum TicksStyle{None = 0, Out = 1, Both = 2, In = 3};
 
-	ScaleDraw(const QString& s = QString::null);
+	ScaleDraw(Plot *plot = 0, const QString& s = QString::null);
 	virtual ~ScaleDraw(){};
 
 	QString formulaString() {return formula_string;};
@@ -51,7 +52,10 @@ public:
 
 	virtual QwtText label(double value) const
 	{
-	return QwtText(QLocale().toString(transformValue(value), d_fmt, d_prec));
+	if (d_plot)
+		return QwtText(d_plot->locale().toString(transformValue(value), d_fmt, d_prec));
+	else
+		return QwtText(QLocale::system().toString(transformValue(value), d_fmt, d_prec));
 	};
 
 	void labelFormat(char &f, int &prec) const;
@@ -64,9 +68,11 @@ public:
 
 	int minorTicksStyle(){return d_minTicks;};
 	void setMinorTicksStyle(TicksStyle type){d_minTicks = type;};
-
+	
 protected:
 	void drawTick(QPainter *p, double value, int len) const;
+
+	Plot *d_plot;
 
 private:
 	QString formula_string;
@@ -153,7 +159,7 @@ private:
 class QwtSupersciptsScaleDraw: public ScaleDraw
 {
 public:
-	QwtSupersciptsScaleDraw(const QString& s = QString::null);
+	QwtSupersciptsScaleDraw(Plot *plot, const QString& s = QString::null);
 	~QwtSupersciptsScaleDraw(){};
 
 	QwtText label(double value) const;

@@ -105,8 +105,7 @@ void FFTFilter::setBand(double lowFreq, double highFreq)
 
 void FFTFilter::calculateOutputData(double *x, double *y)
 {
-    for (int i = 0; i < d_points; i++)
-	{
+    for (int i = 0; i < d_points; i++){
 	   x[i] = d_x[i];
 	   y[i] = d_y[i];
 	}
@@ -119,9 +118,12 @@ void FFTFilter::calculateOutputData(double *x, double *y)
 	gsl_fft_real_transform (y, 1, d_n, real, work);
 	gsl_fft_real_wavetable_free (real);
 
-    d_explanation = QLocale().toString(d_low_freq) + " ";
+    ApplicationWindow *app = (ApplicationWindow *)parent();
+    QLocale locale = app->locale();
+
+    d_explanation = locale.toString(d_low_freq) + " ";
 	if (d_filter_type > 2)
-	   d_explanation += tr("to") + " " + QLocale().toString(d_high_freq) + " ";
+	   d_explanation += tr("to") + " " + locale.toString(d_high_freq) + " ";
 	d_explanation += tr("Hz") + " ";
 
 	switch ((int)d_filter_type)

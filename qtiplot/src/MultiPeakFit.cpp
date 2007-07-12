@@ -303,10 +303,11 @@ void MultiPeakFit::generateFitCurve(double *par)
 		header << "2";
 		t->setHeader(header);
 
+        QLocale locale = app->locale();
 		for (i = 0; i<d_points; i++)
 		{
 			X[i] = d_x[i];
-			t->setText(i, 0, QLocale().toString(X[i], 'g', d_prec));
+			t->setText(i, 0, locale.toString(X[i], 'g', d_prec));
 
 			double yi=0;
 			for (j=0; j<d_peaks; j++)
@@ -321,12 +322,12 @@ void MultiPeakFit::generateFitCurve(double *par)
 
 				yi += y_aux;
 				y_aux += par[d_p - 1];
-				t->setText(i, j+1, QLocale().toString(y_aux, 'g', d_prec));
+				t->setText(i, j+1, locale.toString(y_aux, 'g', d_prec));
 				gsl_matrix_set(m, i, j, y_aux);
 			}
 			Y[i] = yi + par[d_p - 1];//add offset
 			if (d_peaks > 1)
-				t->setText(i, d_peaks+1, QLocale().toString(Y[i], 'g', d_prec));
+				t->setText(i, d_peaks+1, locale.toString(Y[i], 'g', d_prec));
 		}
 
 		label = tableName + "_2";
@@ -369,20 +370,23 @@ QString MultiPeakFit::logFitInfo(double *par, int iterations, int status, const 
 	if (d_peaks == 1)
 		return info;
 
+    ApplicationWindow *app = (ApplicationWindow *)parent();
+    QLocale locale = app->locale();
+
 	info += tr("Peak") + "\t" + tr("Area") + "\t";
 	info += tr("Center") + "\t" + tr("Width") + "\t" + tr("Height") + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
 	for (int j=0; j<d_peaks; j++)
 	{
 		info += QString::number(j+1)+"\t";
-		info += QLocale().toString(par[3*j],'g', d_prec)+"\t";
-		info += QLocale().toString(par[3*j+1],'g', d_prec)+"\t";
-		info += QLocale().toString(par[3*j+2],'g', d_prec)+"\t";
+		info += locale.toString(par[3*j],'g', d_prec)+"\t";
+		info += locale.toString(par[3*j+1],'g', d_prec)+"\t";
+		info += locale.toString(par[3*j+2],'g', d_prec)+"\t";
 
 		if (d_profile == Lorentz)
-			info += QLocale().toString(M_2_PI*par[3*j]/par[3*j+2],'g', d_prec)+"\n";
+			info += locale.toString(M_2_PI*par[3*j]/par[3*j+2],'g', d_prec)+"\n";
 		else
-			info += QLocale().toString(sqrt(M_2_PI)*par[3*j]/par[3*j+2],'g', d_prec)+"\n";
+			info += locale.toString(sqrt(M_2_PI)*par[3*j]/par[3*j+2],'g', d_prec)+"\n";
 	}
 	info += "---------------------------------------------------------------------------------------\n";
 	return info;

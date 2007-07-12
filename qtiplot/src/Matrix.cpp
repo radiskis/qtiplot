@@ -124,10 +124,9 @@ void Matrix::cellEdited(int row,int col)
 	QString cell_formula = cell_text;
 
 	bool ok = true;
-    QLocale locale;
-  	double res = locale.toDouble(cell_text, &ok);
+  	double res = locale().toDouble(cell_text, &ok);
 	if (ok)
-		setText(row, col, locale.toString(res, txt_format.toAscii(), num_precision));
+		setText(row, col, locale().toString(res, txt_format.toAscii(), num_precision));
 	else
 	{
 		Script *script = scriptEnv->newScript(cell_formula, this, QString("<%1_%2_%3>").arg(name()).arg(row).arg(col));
@@ -143,7 +142,7 @@ void Matrix::cellEdited(int row,int col)
 				|| ret.type()==QVariant::ULongLong)
 			setText(row, col, ret.toString());
 		else if(ret.canConvert(QVariant::Double))
-			setText(row, col, locale.toString(ret.toDouble(), txt_format.toAscii(), num_precision));
+			setText(row, col, locale().toString(ret.toDouble(), txt_format.toAscii(), num_precision));
 		else
 			setText(row, col, "");
 	}
@@ -162,7 +161,7 @@ double Matrix::cell(int row, int col)
 		return dMatrix[row][col];
 	else {
 		if(d_table->item(row, col))
-		    return QLocale().toDouble(d_table->item(row, col)->text());
+		    return locale().toDouble(d_table->item(row, col)->text());
 		else
 			return 0.0;
 	}
@@ -171,9 +170,9 @@ double Matrix::cell(int row, int col)
 void Matrix::setCell(int row, int col, double value)
 {
 	if(d_table->item(row, col))
-		d_table->item(row, col)->setText(QLocale().toString(value, txt_format.toAscii(), num_precision));
+		d_table->item(row, col)->setText(locale().toString(value, txt_format.toAscii(), num_precision));
 	else
-		d_table->setItem(row, col, new QTableWidgetItem(QLocale().toString(value, txt_format.toAscii(), num_precision)));
+		d_table->setItem(row, col, new QTableWidgetItem(locale().toString(value, txt_format.toAscii(), num_precision)));
 }
 
 QString Matrix::text(int row, int col)
@@ -541,7 +540,7 @@ void Matrix::saveCellsToMemory()
 	{
         for (int j=0; j<cols; j++)
         {
-            dMatrix[i][j] = QLocale().toDouble(text(i, j), &ok);
+            dMatrix[i][j] = locale().toDouble(text(i, j), &ok);
             if (!ok)
                 break;
         }
@@ -633,7 +632,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol)
 					|| ret.type()==QVariant::ULongLong)
 				setText(row, col, ret.toString());
 			else if (ret.canConvert(QVariant::Double))
-				setText(row, col, QLocale().toString(ret.toDouble(), txt_format.toAscii(), num_precision));
+				setText(row, col, locale().toString(ret.toDouble(), txt_format.toAscii(), num_precision));
 			else{
 				setText(row, col, "");
 				d_table->blockSignals(false);
@@ -867,7 +866,7 @@ void Matrix::pasteSelection()
 		for(int j=left; j<left+cols; j++){
 			double value = system_locale.toDouble(cellTexts[j-left], &numeric);
 			if (numeric)
-				setText(i, j, QLocale().toString(value, txt_format.toAscii(), num_precision));
+				setText(i, j, locale().toString(value, txt_format.toAscii(), num_precision));
 			else
 				setText(i, j, cellTexts[j-left]);
 		}

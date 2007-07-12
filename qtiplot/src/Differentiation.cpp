@@ -65,13 +65,13 @@ void Differentiation::output()
 		result[i]=0.5*((d_y[i+1]-d_y[i])/(d_x[i+1]-d_x[i]) + (d_y[i]-d_y[i-1])/(d_x[i]-d_x[i-1]));
 
     ApplicationWindow *app = (ApplicationWindow *)parent();
+    QLocale locale = app->locale();
     QString tableName = app->generateUniqueName(QString(name()));
     QString curveTitle = d_curve->title().text();
     Table *t = app->newHiddenTable(tableName, tr("Derivative") + " " + tr("of","Derivative of")  + " " + curveTitle, d_n-2, 2);
-	for (int i = 1; i < d_n-1; i++)
-	{
-		t->setText(i-1, 0, QLocale().toString(d_x[i], 'g', app->d_decimal_digits));
-		t->setText(i-1, 1, QLocale().toString(result[i], 'g', app->d_decimal_digits));
+	for (int i = 1; i < d_n-1; i++) {
+		t->setText(i-1, 0, locale.toString(d_x[i], 'g', app->d_decimal_digits));
+		t->setText(i-1, 1, locale.toString(result[i], 'g', app->d_decimal_digits));
 	}
     delete[] result;
 
