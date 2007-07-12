@@ -159,7 +159,7 @@ private:
 	ColorBox *boxPeaksColor;
 	QLabel *lblScriptingLanguage;
 	QComboBox *boxScriptingLanguage;
-	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments;
+	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
 };
 
 #endif // CONFIGDIALOG_H

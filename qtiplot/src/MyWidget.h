@@ -33,6 +33,8 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <QLocale>
+
 class QEvent;
 class QCloseEvent;
 class QString;
@@ -144,6 +146,9 @@ public:
 	void setMinimized();
 	void setMaximized();
 
+    QLocale locale(){return d_locale;};
+    void setLocale(const QLocale & l){d_locale = l;};
+
 signals:
 	//! Emitted when the window was closed
 	void closedWindow(MyWidget *);
@@ -184,6 +189,8 @@ private:
 	CaptionPolicy caption_policy;
 	//! Toggle on/off: Ask the user "delete, hide, or cancel?" on a close event
 	bool askOnClose;
+
+    QLocale d_locale;
 };
 
 #endif

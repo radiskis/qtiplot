@@ -462,7 +462,6 @@ void ConfigDialog::initPlots3DPage()
 
 	groupBox3DFonts = new QGroupBox();
 	QHBoxLayout * bottomLayout = new QHBoxLayout( groupBox3DFonts );
-
 	btnTitleFnt = new QPushButton();
 	bottomLayout->addWidget( btnTitleFnt );
 	btnLabelsFnt = new QPushButton();
@@ -603,10 +602,14 @@ void ConfigDialog::initAppPage()
 
 	numericFormatLayout->addWidget(boxDecimalSeparator, 1, 1);
 
+    boxThousandsSeparator = new QCheckBox();
+    boxThousandsSeparator->setChecked(app->locale().numberOptions() & QLocale::OmitGroupSeparator);
+    numericFormatLayout->addWidget(boxThousandsSeparator, 2, 0);
+
     boxUpdateSeparators = new QCheckBox();
     boxUpdateSeparators->setChecked(true);
-    numericFormatLayout->addWidget(boxUpdateSeparators, 2, 0);
-	numericFormatLayout->setRowStretch(3, 1);
+    numericFormatLayout->addWidget(boxUpdateSeparators, 3, 0);
+	numericFormatLayout->setRowStretch(4, 1);
 
 	appTabWidget->addTab( numericFormatPage, QString() );
 
@@ -884,12 +887,14 @@ void ConfigDialog::languageChange()
 	boxDecimalSeparator->addItem("1,000.0");
 	boxDecimalSeparator->addItem("1.000,0");
 	boxDecimalSeparator->addItem("1 000,0");
+	boxThousandsSeparator->setText(tr("Omit Thousands Separator"));
 
-    if (QLocale().name() == QLocale::c().name())
+    QLocale locale = app->locale();
+    if (locale.name() == QLocale::c().name())
         boxDecimalSeparator->setCurrentIndex(1);
-    else if (QLocale().name() == QLocale(QLocale::German).name())
+    else if (locale.name() == QLocale(QLocale::German).name())
         boxDecimalSeparator->setCurrentIndex(2);
-    else if (QLocale().name() == QLocale(QLocale::French).name())
+    else if (locale.name() == QLocale(QLocale::French).name())
         boxDecimalSeparator->setCurrentIndex(3);
 
 	//tables page
@@ -1065,8 +1070,7 @@ void ConfigDialog::apply()
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();
     QLocale locale;
-    switch (boxDecimalSeparator->currentIndex())
-	{
+    switch (boxDecimalSeparator->currentIndex()){
         case 0:
             locale = QLocale::system();
         break;
@@ -1080,23 +1084,30 @@ void ConfigDialog::apply()
             locale = QLocale(QLocale::French);
         break;
     }
+    if (boxThousandsSeparator->isChecked())
+        locale.setNumberOptions(QLocale::OmitGroupSeparator);
 
-    if (QLocale() != locale){
-        QLocale::setDefault(locale);
-
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        if (boxUpdateSeparators->isChecked()){
-            QList<QWidget*> *lst = app->windowsList();
-            foreach(QWidget *w, *lst){
-                if(w->isA("Table"))
-                    ((Table *)w)->updateDecimalSeparators();
-                else if(w->isA("Matrix"))
-                    ((Matrix *)w)->updateDecimalSeparators();
+    app->d_thousands_sep = !boxThousandsSeparator->isChecked();
+    app->setLocale(locale);
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    if (boxUpdateSeparators->isChecked()){
+        QList<QWidget*> *lst = app->windowsList();
+        foreach(QWidget *w, *lst){
+            ((MyWidget *)w)->setLocale(locale);
+            if(w->isA("Table"))
+                ((Table *)w)->updateDecimalSeparators();
+            else if(w->isA("Matrix"))
+                ((Matrix *)w)->updateDecimalSeparators();
+            else if (w->isA("MultiLayer")){
+                QWidgetList gr_lst = ((MultiLayer*)w)->graphPtrs();
+                foreach(QWidget *g, gr_lst)
+                    ((Graph *)g)->plotWidget()->setLocale(locale);
             }
-            delete lst;
         }
-        QApplication::restoreOverrideCursor();
+        delete lst;
+        app->modifiedProject();
     }
+    QApplication::restoreOverrideCursor();
 
 	// general page: confirmations tab
 	app->confirmCloseFolder = boxFolders->isChecked();
@@ -1133,8 +1144,8 @@ void ConfigDialog::apply()
 	// calculate a sensible width for the items list
 	// (default QListWidget size is 256 which looks too big)
 	QFontMetrics fm(itemsList->font());
-	int width = 32,i;
-	for(i=0 ; i<itemsList->count() ; i++)
+	int width = 32;
+	for(int i=0; i<itemsList->count(); i++)
 		if( fm.width(itemsList->item(i)->text()) > width)
 			width = fm.width(itemsList->item(i)->text());
 	itemsList->setMaximumWidth( itemsList->iconSize().width() + width + 50 );

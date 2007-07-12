@@ -404,7 +404,7 @@ public:
   }
   sipRes = sipCpp->addCurves(a0, l, a2, a3, a4, a5, a6);
 %End
-  bool addCurves(Table*, const QString&, int=0, int=1, int=3, int=0, int=-1);
+  bool addCurve(Table*, const QString&, int=0, int=1, int=3, int=0, int=-1);
 %MethodCode
   QStringList l;
   l << *a1;
@@ -550,7 +550,7 @@ public:
     void setResolution(int);
     void showColorLegend(bool = true) /PyName=showLegend/;
     void setTitle(const QString&, const QColor& color = QColor(Qt::black), const QFont& font = QFont());
-    void setSmoothMesh(bool = true);
+    void setAntialiasing(bool = true);
     void setLeftGrid(bool = true);
 	void setRightGrid(bool = true);
 	void setCeilGrid(bool = true);
@@ -572,12 +572,18 @@ public:
 	void setFilledMeshStyle();
 	void setDotStyle();
 	void setBarStyle();
+    void setConeStyle();
+    void setCrossStyle();
+
+    void setConesOptions(double rad, int quality);
+    void setCrossOptions(double rad, double linewidth, bool smooth, bool boxed);
+    void setDotOptions(double size, bool smooth);
 
     void animate(bool = true);
     void findBestLayout();
 
-    void addData(Table*, const QString&) /PyName=plotRibbon/;
     void changeDataColumn(Table* table, const QString& colName) /PyName=setData/;
+    void addData(Table*, const QString&) /PyName=plotRibbon/;
     void addMatrixData(Matrix* ) /PyName=setMatrix/;
     void addFunction(const QString& s, double xl, double xr, double yl,
                     double yr, double zl, double zr) /PyName=setFunction/;
@@ -677,6 +683,8 @@ public:
 	MultiLayer* plotColorMap(Matrix*);
 	MultiLayer* plotGrayScale(Matrix*);
 
+    Graph3D* newPlot3D();
+    Graph3D* plotXYZ(Table* table, const QString&, int = 0) /PyName=plot3D/;
 	Graph3D* plotRibbon(Table*, const QString&);
 	Graph3D* plot3DMatrix(Matrix *, int style = 0) /PyName=plot3D/;
     Graph3D* plotSurface(const QString&, double xl, double xr,
@@ -707,6 +715,9 @@ public:
 
   void saveProjectAs(const QString& fileName = QString(), bool = false);
   MyWidget* clone(MyWidget*);
+
+  Matrix* tableToMatrix(Table* t);
+  Table* matrixToTable(Matrix* m);
 
 private:
   ApplicationWindow(const ApplicationWindow&);

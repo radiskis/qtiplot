@@ -121,16 +121,14 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
     d_restricted_move_pos = QPoint(plot()->transform(xAxis(), d_selected_curve->x(d_selected_point)),
                                     plot()->transform(yAxis(), d_selected_curve->y(d_selected_point)));
 
-    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function)
-    {
+    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function) {
+         QLocale locale = d_app->locale();
          emit statusText(QString("%1[%2]: x=%3; y=%4")
 			.arg(d_selected_curve->title().text())
 			.arg(d_selected_point + 1)
-			.arg(QLocale().toString(d_selected_curve->x(d_selected_point), 'G', d_app->d_decimal_digits))
-			.arg(QLocale().toString(d_selected_curve->y(d_selected_point), 'G', d_app->d_decimal_digits)));
-    }
-    else
-    {
+			.arg(locale.toString(d_selected_curve->x(d_selected_point), 'G', d_app->d_decimal_digits))
+			.arg(locale.toString(d_selected_curve->y(d_selected_point), 'G', d_app->d_decimal_digits)));
+    } else {
         int row = ((DataCurve*)d_selected_curve)->tableRow(d_selected_point);
 
         Table *t = ((DataCurve*)d_selected_curve)->table();
@@ -326,8 +324,7 @@ void DataPickerTool::movePoint(const QPoint &pos)
 {
 	if ( !d_selected_curve )
 		return;
-	if ( ((PlotCurve *)d_selected_curve)->type() == Graph::Function)
-	{
+	if ( ((PlotCurve *)d_selected_curve)->type() == Graph::Function){
 		QMessageBox::critical(d_graph, tr("QtiPlot - Move point error"),
 				tr("Sorry, but moving points of a function is not possible."));
 		return;
@@ -355,26 +352,25 @@ void DataPickerTool::movePoint(const QPoint &pos)
 	if (d_selection_marker.plot() == NULL)
 		d_selection_marker.attach(d_graph->plotWidget());
 
+    QLocale locale = d_app->locale();
 	int row = ((DataCurve *)d_selected_curve)->tableRow(d_selected_point);
 	int xcol = t->colIndex(((DataCurve *)d_selected_curve)->xColumnName());
 	int ycol = t->colIndex(d_selected_curve->title().text());
-	if (t->columnType(xcol) == Table::Numeric && t->columnType(ycol) == Table::Numeric)
-	{
-		t->setText(row, xcol, QLocale().toString(new_x_val));
-		t->setText(row, ycol, QLocale().toString(new_y_val));
+	if (t->columnType(xcol) == Table::Numeric && t->columnType(ycol) == Table::Numeric) {
+		t->setText(row, xcol, locale.toString(new_x_val));
+		t->setText(row, ycol, locale.toString(new_y_val));
 		d_app->updateCurves(t, d_selected_curve->title().text());
 		d_app->modifiedProject();
-	}
-	else
+	} else
 		QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
-				tr("This operation cannot be performed on curves plotted from columns having a non-numerical format."));
+        tr("This operation cannot be performed on curves plotted from columns having a non-numerical format."));
 
 
 	emit statusText(QString("%1[%2]: x=%3; y=%4")
 			.arg(d_selected_curve->title().text())
 			.arg(row + 1)
-			.arg(QLocale().toString(new_x_val, 'G', d_app->d_decimal_digits))
-			.arg(QLocale().toString(new_y_val, 'G', d_app->d_decimal_digits)) );
+			.arg(locale.toString(new_x_val, 'G', d_app->d_decimal_digits))
+			.arg(locale.toString(new_y_val, 'G', d_app->d_decimal_digits)) );
 }
 
 void DataPickerTool::move(const QPoint &point)
@@ -425,8 +421,8 @@ void DataPickerTool::copySelection()
     if (!d_selected_curve)
         return;
 
-    QString text = QLocale().toString(d_selected_curve->x(d_selected_point), 'G', 16) + "\t";
-    text += QLocale().toString(d_selected_curve->y(d_selected_point), 'G', 16) + "\n";
+    QString text = d_app->locale().toString(d_selected_curve->x(d_selected_point), 'G', 16) + "\t";
+    text += d_app->locale().toString(d_selected_curve->y(d_selected_point), 'G', 16) + "\n";
 
 	QApplication::clipboard()->setText(text);
 }
@@ -452,7 +448,7 @@ void DataPickerTool::pasteSelection()
 
     int prec; char f;
     t->columnNumericFormat(col, &f, &prec);
-    QLocale locale = QLocale();
+    QLocale locale = d_app->locale();
     QStringList cellTexts = ts.readLine().split("\t");
     if (cellTexts.count() >= 2){
         bool numeric;

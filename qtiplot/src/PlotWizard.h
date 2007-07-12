@@ -49,8 +49,6 @@ public:
 	 * \param fl Qt window flags
 	 */
     PlotWizard( QWidget* parent = 0, Qt::WFlags fl = 0 );
-	 //! Destructor
-    ~PlotWizard();
 
 private:
 				//! Button "Plot"

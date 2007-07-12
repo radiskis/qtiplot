@@ -125,9 +125,11 @@ void TranslateCurveTool::selectDestination(const QwtDoublePoint &point)
 	tab->columnNumericFormat(col, &f, &prec);
 	int row_start = c->tableRow(0);
     int row_end = row_start + c->dataSize();
+
+    QLocale locale = d_app->locale();
 	for (int i=row_start; i<row_end; i++){
 		if (!tab->text(i, col).isEmpty())
-			tab->setText(i, col, QLocale().toString(
+			tab->setText(i, col, locale.toString(
 					(d_dir==Horizontal ? d_selected_curve->x(i) : d_selected_curve->y(i)) + d, f, prec));
 	}
 	d_app->updateCurves(tab, col_name);

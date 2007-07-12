@@ -47,6 +47,7 @@ MyWidget::MyWidget(const QString& label, QWidget * parent, const char * name, Qt
 	w_status = Normal;
 	titleBar = NULL;
 	setObjectName(QString(name));
+	d_locale = QLocale::c();
 }
 
 void MyWidget::updateCaption()

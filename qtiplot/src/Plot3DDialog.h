@@ -43,6 +43,7 @@ class QTabWidget;
 class QWidget;
 class QStringList;
 class QStackedWidget;
+class QDoubleSpinBox;
 
 using namespace Qwt3D;
 
@@ -111,7 +112,7 @@ private:
 	QStringList labels, scales, tickLengths;
 	QColor titleColor,meshColor,bgColor, axesColor, numColor,labelColor, gridColor;
 	QColor fromColor, toColor; //custom data colors
-    QSpinBox *boxMeshLineWidth;
+    QDoubleSpinBox *boxMeshLineWidth;
     QPushButton* buttonApply;
     QPushButton* buttonOk;
     QPushButton* buttonCancel, *buttonLowerGreek, *buttonUpperGreek;

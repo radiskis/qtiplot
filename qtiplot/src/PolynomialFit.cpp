@@ -176,7 +176,9 @@ void PolynomialFit::fit()
 
 QString PolynomialFit::legendInfo()
 {
-	QString legend = "Y=" + QLocale().toString(d_results[0], 'g', d_prec);
+    ApplicationWindow *app = (ApplicationWindow *)parent();
+    QLocale locale = app->locale();
+	QString legend = "Y=" + locale.toString(d_results[0], 'g', d_prec);
 	for (int j = 1; j < d_p; j++)
 	{
 		double cj = d_results[j];
@@ -186,7 +188,7 @@ QString PolynomialFit::legendInfo()
 		QString s;
 		s.sprintf("%.5f",cj);
 		if (s != "1.00000")
-			legend += QLocale().toString(cj, 'g', d_prec);
+			legend += locale.toString(cj, 'g', d_prec);
 
 		legend += "X";
 		if (j>1)

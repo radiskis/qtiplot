@@ -294,10 +294,9 @@ void Table::cellEdited(int row, int col)
 	int precision;
   	columnNumericFormat(col, &f, &precision);
   	bool ok = true;
-  	QLocale locale;
-  	double res = locale.toDouble(text, &ok);
+  	double res = locale().toDouble(text, &ok);
   	if (ok)
-  		d_table->setText(row, col, locale.toString(res, f, precision));
+  		d_table->setText(row, col, locale().toString(res, f, precision));
   	else
   	{
   	Script *script = scriptEnv->newScript(d_table->text(row,col),this,QString("<%1_%2_%3>").arg(name()).arg(row+1).arg(col+1));
@@ -309,7 +308,7 @@ void Table::cellEdited(int row, int col)
   	if(ret.type()==QVariant::Int || ret.type()==QVariant::UInt || ret.type()==QVariant::LongLong || ret.type()==QVariant::ULongLong)
   		d_table->setText(row, col, ret.toString());
   	else if(ret.canCast(QVariant::Double))
-  		d_table->setText(row, col, locale.toString(ret.toDouble(), f, precision));
+  		d_table->setText(row, col, locale().toString(ret.toDouble(), f, precision));
   	else
   		d_table->setText(row, col, "");
   	}
@@ -504,7 +503,7 @@ bool Table::calculate(int col, int startRow, int endRow)
 			int prec;
 			char f;
 			columnNumericFormat(col, &f, &prec);
-			d_table->setText(i, col, QLocale().toString(ret.toDouble(), f, prec));
+			d_table->setText(i, col, locale().toString(ret.toDouble(), f, prec));
 		} else if(ret.canConvert(QVariant::String))
 			d_table->setText(i, col, ret.toString());
 		else {
@@ -1149,7 +1148,6 @@ void Table::pasteSelection()
 
 	bool numeric;
 	QLocale system_locale = QLocale::system();
-	QLocale locale;
 	for (int i=top; i<top+rows; i++){
 		s = ts2.readLine();
 		cellTexts=s.split("\t");
@@ -1159,7 +1157,7 @@ void Table::pasteSelection()
 			    int prec;
                 char f;
 				columnNumericFormat(j, &f, &prec);
-				d_table->setText(i, j, locale.toString(value, f, prec));
+				d_table->setText(i, j, locale().toString(value, f, prec));
 			} else
 				d_table->setText(i, j, cellTexts[j-left]);
 		}
@@ -1260,7 +1258,7 @@ void Table::normalizeCol(int col)
 		QString text = this->text(i, col);
 		aux=text.toDouble();
 		if ( !text.isEmpty() )
-			d_table->setText(i, col, QLocale().toString(aux/max, f, prec));
+			d_table->setText(i, col, locale().toString(aux/max, f, prec));
 	}
 
 	QString name=colName(col);
@@ -1363,10 +1361,10 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
                 columnNumericFormat(col, &f, &prec);
                 if(!order)
                     for (int j=0; j<non_empty_cells; j++)
-                        d_table->setText(valid_cell[j], col, QLocale().toString(data_double[p[j]], f, prec));
+                        d_table->setText(valid_cell[j], col, locale().toString(data_double[p[j]], f, prec));
                 else
                     for (int j=0; j<non_empty_cells; j++)
-                        d_table->setText(valid_cell[j], col, QLocale().toString(data_double[p[non_empty_cells-j-1]], f, prec));
+                        d_table->setText(valid_cell[j], col, locale().toString(data_double[p[non_empty_cells-j-1]], f, prec));
             }
             emit modifiedData(this, colName(col));
         }
@@ -1422,10 +1420,10 @@ void Table::sortColumn(int col, int order)
 	   columnNumericFormat(col, &f, &prec);
        if (!order) {
 	       for (int i=0; i<non_empty_cells; i++)
-                d_table->setText(valid_cell[i], col, QLocale().toString(r[i], f, prec));
+                d_table->setText(valid_cell[i], col, locale().toString(r[i], f, prec));
         } else {
             for (int i=0; i<non_empty_cells; i++)
-                d_table->setText(valid_cell[i], col, QLocale().toString(r[non_empty_cells-i-1], f, prec));
+                d_table->setText(valid_cell[i], col, locale().toString(r[non_empty_cells-i-1], f, prec));
         }
     }
 	emit modifiedData(this, colName(col));
@@ -1507,7 +1505,7 @@ int Table::nonEmptyRows()
 
 double Table::cell(int row, int col)
 {
-	return QLocale().toDouble(d_table->text(row, col));
+	return locale().toDouble(d_table->text(row, col));
 }
 
 void Table::setCell(int row, int col, double val)
@@ -1515,7 +1513,7 @@ void Table::setCell(int row, int col, double val)
 	char format;
     int prec;
     columnNumericFormat(col, &format, &prec);
-    d_table->setText(row, col, QLocale().toString(val, format, prec));
+    d_table->setText(row, col, locale().toString(val, format, prec));
 }
 
 QString Table::text(int row, int col)
@@ -1561,7 +1559,7 @@ void Table::saveToMemory()
             bool ok = false;
             for (int row=0; row<d_table->numRows(); row++){
                 if (!d_table->text(row, col).isEmpty()){
-                    d_saved_cells[col][row] = QLocale().toDouble(d_table->text(row, col), &ok);
+                    d_saved_cells[col][row] = locale().toDouble(d_table->text(row, col), &ok);
                     if (!ok){
                         wrongLocale = true;
                         break;
@@ -1674,9 +1672,9 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells)
                 format = 'e';
 
 			if (d_saved_cells)
-				setText(i, col, QLocale().toString(d_saved_cells[col][i], format, prec));
+				setText(i, col, locale().toString(d_saved_cells[col][i], format, prec));
 			else
-				setText(i, col, QLocale().toString(QLocale().toDouble(t), format, prec));
+				setText(i, col, locale().toString(locale().toDouble(t), format, prec));
 		}
 	}
 }
@@ -1856,7 +1854,7 @@ void Table::setRandomValues()
 		columnNumericFormat(selectedCol, &f, &prec);
 
 		for (int i=0; i<rows; i++)
-			d_table->setText(i, selectedCol, QLocale().toString(double(rand())/double(RAND_MAX), f, prec));
+			d_table->setText(i, selectedCol, locale().toString(double(rand())/double(RAND_MAX), f, prec));
 
 		emit modifiedData(this, name);
 	}
@@ -2299,7 +2297,7 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 		bool allNumbers = true;
 		for (i=0; i<cols; i++)
 		{//verify if the strings in the line used to rename the columns are not all numbers
-			QLocale().toDouble(line[i], &allNumbers);
+			locale().toDouble(line[i], &allNumbers);
 			if (!allNumbers)
 				break;
 		}
@@ -2442,7 +2440,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		bool allNumbers = true;
 		for (i=0; i<cols; i++)
 		{//verify if the strings in the line used to rename the columns are not all numbers
-			QLocale().toDouble(line[i], &allNumbers);
+			locale().toDouble(line[i], &allNumbers);
 			if (!allNumbers)
 				break;
 		}
@@ -3235,7 +3233,7 @@ void Table::updateDecimalSeparators(const QLocale& oldSeparators)
         for (int j=0; j<d_table->numRows(); j++){
             if (!d_table->text(j, i).isEmpty()){
 				double val = oldSeparators.toDouble(d_table->text(j, i));
-                d_table->setText(j, i, QLocale().toString(val, format, prec));
+                d_table->setText(j, i, locale().toString(val, format, prec));
 			}
 		}
 	}
@@ -3255,7 +3253,7 @@ void Table::updateDecimalSeparators()
 
         for (int j=0; j<d_table->numRows(); j++){
             if (!d_table->text(j, i).isEmpty())
-                d_table->setText(j, i, QLocale().toString(d_saved_cells[i][j], format, prec));
+                d_table->setText(j, i, locale().toString(d_saved_cells[i][j], format, prec));
 		}
 	}
 

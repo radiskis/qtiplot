@@ -260,19 +260,14 @@ void Legend::drawSymbols(QPainter *p, const QRect& rect,
 	QString text = d_text->text().trimmed();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 
-	for (int i=0;i<(int)titles.count();i++)
-	{
-		if (titles[i].contains("\\c{") || titles[i].contains("\\l("))
-		{
+	for (int i=0;i<(int)titles.count();i++){
+		if (titles[i].contains("\\c{") || titles[i].contains("\\l(")){
 		    QString aux;
-		    if (titles[i].contains("\\c{"))
-		    {//QtiPlot symbol specification
+		    if (titles[i].contains("\\c{")) {//QtiPlot symbol specification
                 int pos=titles[i].find("{",0);
                 int pos2=titles[i].find("}",pos);
                 aux=titles[i].mid(pos+1,pos2-pos-1);
-		    }
-		    else if (titles[i].contains("\\l("))
-		    {//Origin project legend
+		    } else if (titles[i].contains("\\l(")) {//Origin project legend
 		        int pos=titles[i].find("(",0);
                 int pos2=titles[i].find(")",pos);
                 aux=titles[i].mid(pos+1,pos2-pos-1);
@@ -284,27 +279,22 @@ void Legend::drawSymbols(QPainter *p, const QRect& rect,
 
 			if (g->curveType(cv) == Graph :: VectXYXY || g->curveType(cv) == Graph :: VectXYAM)
 				drawVector(p, w, height[i], l, cv);
-			else
-			{
+			else {
 				const QwtPlotCurve *curve = g->curve(cv);
-				if (curve && curve->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-				{
+				if (curve && curve->rtti() != QwtPlotItem::Rtti_PlotSpectrogram) {
 					QwtSymbol symb=curve->symbol();
 					const QBrush br=curve->brush();
 					QPen pen=curve->pen();
 
 					p->save();
 
-					if (curve->style()!=0)
-					{
+					if (curve->style()!=0){
 						p->setPen (pen);
-						if (br.style() != Qt::NoBrush || g->curveType(cv) == Graph::Box)
-						{
+						if (br.style() != Qt::NoBrush || g->curveType(cv) == Graph::Box) {
 							QRect lr=QRect(w,height[i]-4,l,10);
 							p->setBrush(br);
 							QwtPainter::drawRect(p, lr);
-						}
-						else
+						} else
 							QwtPainter::drawLine(p, w,height[i],w+l,height[i]);
 					}
 					int symb_size = symb.size().width();
@@ -317,9 +307,7 @@ void Legend::drawSymbols(QPainter *p, const QRect& rect,
 					p->restore();
 				}
 			}
-		}
-		else if (titles[i].contains("\\p{"))
-		{
+		} else if (titles[i].contains("\\p{")) {
 			int pos=titles[i].find("{",0);
 			int pos2=titles[i].find("}",pos);
 			QString aux=titles[i].mid(pos+1,pos2-pos-1);
@@ -327,16 +315,14 @@ void Legend::drawSymbols(QPainter *p, const QRect& rect,
 			int id=aux.toInt();
 
 			Graph* g=(Graph*)d_plot->parent();
-			if (g->isPiePlot())
-			{
+			if (g->isPiePlot()){
 				QwtPieCurve *curve = (QwtPieCurve *)d_plot->curve(1);
-				if (curve)
-				{
-					const QBrush br=QBrush(curve->color(id-1), curve->pattern());
-					QPen pen=curve->pen();
+				if (curve){
+					const QBrush br = QBrush(curve->color(id-1), curve->pattern());
+					QPen pen = curve->pen();
 
 					p->save();
-					p->setPen (QPen(pen.color(),1,Qt::SolidLine));
+					p->setPen (QPen(pen.color(), 1, Qt::SolidLine));
 					QRect lr=QRect(w,height[i]-4,l,10);
 					p->setBrush(br);
 					QwtPainter::drawRect(p, lr);
@@ -355,8 +341,7 @@ void Legend::drawLegends(QPainter *p, const QRect& rect,
 	QString text = d_text->text().trimmed();
 	QStringList titles=text.split("\n", QString::KeepEmptyParts);
 
-	for (int i=0; i<(int)titles.count(); i++)
-	{
+	for (int i=0; i<(int)titles.count(); i++) {
 		QString str = titles[i];
 		int x = w;
 		if (str.contains("\\c{") || str.contains("\\p{") || str.contains("\\l("))

@@ -63,6 +63,7 @@ class QShortcut;
 class QMenu;
 class QToolBar;
 class QAssistantClient;
+class QLocale;
 
 class Matrix;
 class Table;
@@ -196,6 +197,9 @@ public slots:
 	void changeAppFont(const QFont& f);
 	void updateAppFonts();
 	void setAppColors(const QColor& wc,const QColor& pc,const QColor& tpc);
+
+	QLocale locale(){return d_locale;};
+	void setLocale(const QLocale& l){d_locale = l;};
 	//@}
 
 	//! \name Multilayer Plots
@@ -232,21 +236,21 @@ public slots:
 
 	//! \name 3D Data Plots
 	//@{
+    Graph3D* newPlot3D();
 	Graph3D* openMatrixPlot3D(const QString& caption, const QString& matrix_name,
 							 double xl,double xr,double yl,double yr,double zl,double zr);
 	Graph3D* plotRibbon(Table* table,const QString& colName);
-	Graph3D* dataPlotXYZ(Table* table,const QString& zColName, int type);
+	Graph3D* plotXYZ(Table* table,const QString& zColName, int type);
 		//when reading from .qti file
 	Graph3D* dataPlot3D(const QString& caption,const QString& formula,
 						double xl, double xr, double yl, double yr, double zl, double zr);
-	Graph3D* dataPlotXYZ(const QString& caption,const QString& formula,
+	Graph3D* openPlotXYZ(const QString& caption,const QString& formula,
  						double xl, double xr, double yl, double yr, double zl, double zr);
 	//@}
 
 	//! \name Surface Plots
 	//@{
-	Graph3D* newPlot3D();
-	Graph3D* newPlot3D(const QString& caption,const QString& formula,
+	Graph3D* newSurfacePlot(const QString& caption,const QString& formula,
 					   double xl, double xr,double yl, double yr, double zl, double zr);
     Graph3D* plotSurface(const QString& formula, double xl, double xr,
 					   double yl, double yr, double zl, double zr);
@@ -307,6 +311,7 @@ public slots:
 	Matrix* newMatrix(const QString& caption, int r, int c);
 	Matrix* matrix(const QString& name);
 	Matrix* convertTableToMatrix();
+	Matrix* tableToMatrix(Table* t);
 	void initMatrix(Matrix* m, const QString& caption);
 	void transposeMatrix();
 	void invertMatrix();
@@ -336,6 +341,7 @@ public slots:
 	Table* newHiddenTable(const QString& name, const QString& label, int r, int c, const QString& text=QString());
 	Table* table(const QString& name);
 	Table* convertMatrixToTable();
+	Table* matrixToTable(Matrix* m);
 	QWidgetList* tableList();
 
 	void connectTable(Table* w);
@@ -924,6 +930,8 @@ signals:
 
 // TODO: a lot of this stuff should be private
 public:
+
+    bool d_thousands_sep;
     //! Last selected filter in export image dialog
     QString d_image_export_filter;
     bool d_keep_plot_aspect;
@@ -1038,6 +1046,7 @@ public:
 	QString defaultScriptingLang;
 
 private:
+    QLocale d_locale;
 
 #ifdef QTIPLOT_DEMO
 	int demoCloseTimerId;

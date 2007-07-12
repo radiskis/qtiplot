@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "BoxCurve.h"
 #include <QPainter>
-#include <QLocale>
 
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_statistics.h>
@@ -337,7 +336,7 @@ void BoxCurve::loadData()
 		QString s = d_table->text(i, ycol);
         if (!s.isEmpty()){
             bool valid_data = true;
-            Y[size] = QLocale().toDouble(s, &valid_data);
+            Y[size] = ((Plot *)plot())->locale().toDouble(s, &valid_data);
             if (valid_data)
                 size++;
         }
