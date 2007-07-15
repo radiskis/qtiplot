@@ -1755,7 +1755,10 @@ void AxesDialog::drawFrame(bool framed)
 	if (generalDialog->currentWidget() != frame)
 		return;
 
-	d_graph->drawCanvasFrame(framed, boxFrameWidth->value(), boxFrameColor->color());
+	if (framed)
+		d_graph->setCanvasFrame(boxFrameWidth->value(), boxFrameColor->color());
+	else
+		d_graph->setCanvasFrame(0);
 }
 
 void AxesDialog::updateFrame(int width)
@@ -1763,7 +1766,7 @@ void AxesDialog::updateFrame(int width)
 	if (generalDialog->currentWidget() != frame)
 		return;
 
-    d_graph->drawCanvasFrame(boxFramed->isChecked(), width, boxFrameColor->color());
+    d_graph->setCanvasFrame(width, boxFrameColor->color());
 }
 
 void AxesDialog::pickCanvasFrameColor()
@@ -1773,7 +1776,7 @@ void AxesDialog::pickCanvasFrameColor()
 			return;
 
 	boxFrameColor->setColor ( c ) ;
-	d_graph->drawCanvasFrame(boxFramed->isChecked(), boxFrameWidth->value(), c);
+	d_graph->setCanvasFrame(boxFrameWidth->value(), c);
 }
 
 void AxesDialog::showAxisFormatOptions(int format)
@@ -2434,11 +2437,13 @@ bool AxesDialog::updatePlot()
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color());
 	}
-	else if (generalDialog->currentWidget()==(QWidget*)frame)
-	{
+	else if (generalDialog->currentWidget()==(QWidget*)frame) {
 		d_graph->setAxesLinewidth(boxAxesLinewidth->value());
         d_graph->changeTicksLength(boxMinorTicksLength->value(), boxMajorTicksLength->value());
-        d_graph->drawCanvasFrame(boxFramed->isChecked(), boxFrameWidth->value(), boxFrameColor->color());
+		if (boxFramed->isChecked())
+        	d_graph->setCanvasFrame(boxFrameWidth->value(), boxFrameColor->color());
+		else
+			d_graph->setCanvasFrame(0);
         d_graph->drawAxesBackbones(boxBackbones->isChecked());
 	}
 
@@ -2456,7 +2461,7 @@ void AxesDialog::setGraph(Graph *g)
 	boxAxesLinewidth->setValue(p->axesLinewidth());
     boxBackbones->setChecked (d_graph->axesBackbones());
 
-	boxFramed->setChecked(d_graph->framed());
+	boxFramed->setChecked(d_graph->canvasFrameWidth()>0);
 	boxFrameColor->setColor(d_graph->canvasFrameColor());
 	boxFrameWidth->setValue(d_graph->canvasFrameWidth());
 
@@ -2815,19 +2820,16 @@ void AxesDialog::setLabelsNumericFormat(int)
 void AxesDialog::showAxisFormula(int axis)
 {
 	QStringList l = d_graph->getAxesFormulas();
-		QString formula = l[axis];
-		if (!formula.isEmpty())
-		{
-			boxShowFormula->setChecked(true);
-			boxFormula->show();
-			boxFormula->setText(formula);
-		}
-		else
-		{
-			boxShowFormula->setChecked(false);
-			boxFormula->clear();
-			boxFormula->hide();
-		}
+    QString formula = l[axis];
+    if (!formula.isEmpty()){
+        boxShowFormula->setChecked(true);
+        boxFormula->show();
+        boxFormula->setText(formula);
+    } else {
+        boxShowFormula->setChecked(false);
+        boxFormula->clear();
+        boxFormula->hide();
+    }
 }
 
 void AxesDialog::updateLabelsFormat(int)

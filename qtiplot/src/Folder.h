@@ -141,7 +141,6 @@ public:
     WindowListItem( Q3ListView *parent, MyWidget *w );
 
     MyWidget *window() { return myWindow; };
-	void cancelRename(int){return;};
 
 protected:
     MyWidget *myWindow;

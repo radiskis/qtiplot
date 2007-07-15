@@ -100,7 +100,7 @@ void ImageExportDialog::initAdvancedOptions()
 	vector_layout->addWidget(d_color, 2, 0, 1, 2);
 
     d_standard_page = new QCheckBox();
-	d_standard_page->setText(tr("Export to &standard page size"));
+	d_standard_page->setText(tr("Custom &page size"));
 	vector_layout->addWidget(d_standard_page, 3, 0, 1, 2);
 
 	boxPageSize = new QComboBox();

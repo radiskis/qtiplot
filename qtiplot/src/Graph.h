@@ -509,12 +509,9 @@ class Graph: public QWidget
 
 		//! \name Canvas Frame
 		//@{
-		void drawCanvasFrame(bool frameOn, int width);
-		void drawCanvasFrame(const QStringList& frame);
-		void drawCanvasFrame(bool frameOn, int width, const QColor& color);
+		void setCanvasFrame(int width = 1, const QColor& color =  QColor(Qt::black));
 		QColor canvasFrameColor();
 		int canvasFrameWidth();
-		bool framed();
 		//@}
 
 		//! \name Plot Title
