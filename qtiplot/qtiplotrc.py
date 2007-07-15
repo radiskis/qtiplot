@@ -235,15 +235,15 @@ appImports = (
 	"note", "newNote",
 	"newPlot3D",
 	"tableToMatrix", "matrixToTable",
-	"plot", "plot3D", "plotSurface", "plotRibbon", "plotXYZ",
-	"plotContour", "plotColorMap", "plotGrayScale",
-	"activeFolder", "rootFolder", "saveFolder",
-	"addFolder", "deleteFolder", "changeFolder",
-	"saveAsTemplate", "openTemplate",
-	"clone",
+	"openTemplate", "saveAsTemplate", 
+	"clone", "setWindowName",
 	"importImage",
-	"setWindowName",
-	"setPreferences", "saveProjectAs"
+	"setPreferences",
+	"plotContour", "plotColorMap", "plotGrayScale",
+	"plot", "plot3D", "plotSurface", "plotRibbon",
+	"activeFolder", "rootFolder",
+	"addFolder", "deleteFolder", "changeFolder",
+	"saveFolder", "saveProjectAs"
 	)
 for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))

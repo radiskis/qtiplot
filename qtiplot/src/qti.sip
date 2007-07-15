@@ -447,6 +447,7 @@ public:
 
   void setMargin(int);
   void setFrame(int width = 1, const QColor& color = QColor(Qt::black));
+  void setCanvasFrame(int width = 1, const QColor& color =  QColor(Qt::black));
   void setBackgroundColor(const QColor& color);
   void setCanvasBackground(const QColor& color) /PyName=setCanvasColor/;
 
@@ -677,7 +678,6 @@ public:
   sipRes = sipCpp->multilayerPlot(a0, l, a2);
 %End
 
-	Matrix* importImage();
 	Matrix* importImage(const QString&);
 	MultiLayer* plotContour(Matrix*);
 	MultiLayer* plotColorMap(Matrix*);
@@ -686,7 +686,7 @@ public:
     Graph3D* newPlot3D();
     Graph3D* plotXYZ(Table* table, const QString&, int = 0) /PyName=plot3D/;
 	Graph3D* plotRibbon(Table*, const QString&);
-	Graph3D* plot3DMatrix(Matrix *, int style = 0) /PyName=plot3D/;
+	Graph3D* plot3DMatrix(Matrix *, int style = 5) /PyName=plot3D/;
     Graph3D* plotSurface(const QString&, double xl, double xr,
 					   double yl, double yr, double zl, double zr);
 

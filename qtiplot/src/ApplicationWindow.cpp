@@ -212,6 +212,7 @@ void ApplicationWindow::init()
 	lv->setResizeMode(Q3ListView::LastColumn);
 	lv->setMinimumHeight(80);
 	lv->setSelectionMode(Q3ListView::Extended);
+	lv->setDefaultRenameAction (Q3ListView::Accept);
 
 	explorerSplitter = new QSplitter(Qt::Horizontal, explorerWindow);
 	explorerSplitter->addWidget(folders);
@@ -293,6 +294,7 @@ void ApplicationWindow::init()
 	connect(lv, SIGNAL(deleteSelection()), this, SLOT(deleteSelectedItems()));
 	connect(lv, SIGNAL(itemRenamed(Q3ListViewItem *, int, const QString &)),
 			this, SLOT(renameWindow(Q3ListViewItem *, int, const QString &)));
+
 	connect(scriptEnv, SIGNAL(error(const QString&,const QString&,int)),
 			this, SLOT(scriptError(const QString&,const QString&,int)));
 	connect(scriptEnv, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
@@ -1251,22 +1253,22 @@ void ApplicationWindow::plot3DRibbon()
 
 void ApplicationWindow::plot3DWireframe()
 {
-	plot3DMatrix (Qwt3D::WIREFRAME);
+	plot3DMatrix (0, Qwt3D::WIREFRAME);
 }
 
 void ApplicationWindow::plot3DHiddenLine()
 {
-	plot3DMatrix (Qwt3D::HIDDENLINE);
+	plot3DMatrix (0, Qwt3D::HIDDENLINE);
 }
 
 void ApplicationWindow::plot3DPolygons()
 {
-	plot3DMatrix (Qwt3D::FILLED);
+	plot3DMatrix (0, Qwt3D::FILLED);
 }
 
 void ApplicationWindow::plot3DWireSurface()
 {
-	plot3DMatrix (Qwt3D::FILLEDMESH);
+	plot3DMatrix (0, Qwt3D::FILLEDMESH);
 }
 
 void ApplicationWindow::plot3DBars()
@@ -1281,7 +1283,7 @@ void ApplicationWindow::plot3DBars()
 		else
 			QMessageBox::warning(this, tr("QtiPlot - Plot error"),tr("You must select exactly one column for plotting!"));
 	} else
-		plot3DMatrix (Qwt3D::USER);
+		plot3DMatrix (0, Qwt3D::USER);
 }
 
 void ApplicationWindow::plot3DScatter()
@@ -1298,7 +1300,7 @@ void ApplicationWindow::plot3DScatter()
 			QMessageBox::warning(this, tr("QtiPlot - Plot error"),tr("You must select exactly one column for plotting!"));
 	}
 	else if (w->isA("Matrix"))
-		plot3DMatrix (Qwt3D::POINTS);
+		plot3DMatrix (0, Qwt3D::POINTS);
 }
 
 void ApplicationWindow::plot3DTrajectory()
@@ -1980,24 +1982,72 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 	customToolBars(plot);
 }
 
-Matrix* ApplicationWindow::importImage()
+Matrix* ApplicationWindow::importImage(const QString& fileName)
 {
-	QList<QByteArray> list = QImageReader::supportedImageFormats();
-	QString filter = tr("Images") + " (", aux1, aux2;
-	for (int i=0; i<(int)list.count(); i++){
-		aux1 = " *."+list[i]+" ";
-		aux2 += " *."+list[i]+";;";
-		filter += aux1;
-	}
-	filter+=");;" + aux2;
+	QString fn = fileName;
+	if (fn.isEmpty()){
+		QList<QByteArray> list = QImageReader::supportedImageFormats();
+		QString filter = tr("Images") + " (", aux1, aux2;
+		for (int i=0; i<(int)list.count(); i++){
+			aux1 = " *."+list[i]+" ";
+			aux2 += " *."+list[i]+";;";
+			filter += aux1;
+		}
+		filter+=");;" + aux2;
 
-	QString fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Import image from file"), imagesDirPath, filter);
-	if ( !fn.isEmpty() ){
-		QFileInfo fi(fn);
-		imagesDirPath = fi.dirPath(true);
-		return importImage(fn);
+		fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Import image from file"), imagesDirPath, filter);
+		if ( !fn.isEmpty() ){
+			QFileInfo fi(fn);
+			imagesDirPath = fi.dirPath(true);
+		}
 	}
-	else return 0;
+
+    QImage image(fn);
+    if (image.isNull())
+        return 0;
+
+	int cols = image.width();
+	int rows = image.height();
+
+	QProgressDialog progress(this);
+	progress.setRange(0, rows);
+	progress.setMinimumWidth(width()/2);
+	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Import image..."));
+	progress.setLabelText(fn);
+	progress.setActiveWindow();
+
+	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws);
+	m->setAttribute(Qt::WA_DeleteOnClose);
+	m->table()->blockSignals(true);
+
+	int aux = rows - 1;
+	for (int i=0; i<rows; i++ ){
+		int l = aux - i;
+		for (int j=0; j<cols; j++)
+			m->setCell(i, j, qGray(image.pixel (j, l)));
+
+		if (i%10 == 9){
+		    progress.setValue(i);
+		    QApplication::processEvents();
+		}
+
+        if (progress.wasCanceled())
+            break;
+	}
+
+	if (!progress.wasCanceled()){
+		QString caption = generateUniqueName(tr("Matrix"));
+		initMatrix(m, caption);
+    	m->show();
+    	m->setWindowLabel(fn);
+    	m->setCaptionPolicy(MyWidget::Both);
+    	setListViewLabel(m->name(), fn);
+    	m->table()->blockSignals(false);
+		return m;
+	} else {
+		delete m;
+		return 0;
+	}
 }
 
 void ApplicationWindow::loadImage()
@@ -2329,7 +2379,10 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->setArrowDefaults(defaultArrowLineWidth, defaultArrowColor, defaultArrowLineStyle,
 			defaultArrowHeadLength, defaultArrowHeadAngle, defaultArrowHeadFill);
 	g->initTitle(titleOn, plotTitleFont);
-	g->drawCanvasFrame(canvasFrameOn, canvasFrameWidth);
+	if (canvasFrameOn)
+		g->setCanvasFrame(canvasFrameWidth);
+	else
+		g->setCanvasFrame(0);
 	g->plotWidget()->setMargin(defaultPlotMargin);
 	g->enableAutoscaling(autoscale2DPlots);
 	g->setAutoscaleFonts(autoScaleFonts);
@@ -3388,8 +3441,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn)
 		return plotFile(fn);
 
 	QString fname = fn;
-	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive))
-	{//decompress using zlib
+	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive)){//decompress using zlib
 		file_uncompress((char *)fname.ascii());
 		fname = fname.left(fname.size() - 3);
 	}
@@ -3399,11 +3451,9 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn)
 	f.open(QIODevice::ReadOnly);
 	QString s = t.readLine();
     QStringList list = s.split(QRegExp("\\s"), QString::SkipEmptyParts);
-    if (list.count() < 2 || list[0] != "QtiPlot")
-    {
+    if (list.count() < 2 || list[0] != "QtiPlot"){
         f.close();
-        if (QFile::exists(fname + "~"))
-        {
+        if (QFile::exists(fname + "~")){
             int choice = QMessageBox::question(this, tr("QtiPlot - File opening error"),
 					tr("The file <b>%1</b> is corrupted, but there exists a backup copy.<br>Do you want to open the backup instead?").arg(fn),
 					QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape);
@@ -4821,57 +4871,40 @@ void ApplicationWindow::saveNoteAs()
 	w->exportASCII();
 }
 
-void ApplicationWindow::saveAsTemplate()
+void ApplicationWindow::saveAsTemplate(MyWidget* w, const QString& fileName)
 {
-	MyWidget* w = (MyWidget*)ws->activeWindow();
-	if (!w)
-		return;
-
-	QString filter;
-	if (w->isA("Matrix"))
-		filter = tr("QtiPlot Matrix Template")+" (*.qmt)";
-	else if (w->isA("MultiLayer"))
-		filter = tr("QtiPlot 2D Graph Template")+" (*.qpt)";
-	else if (w->isA("Table"))
-		filter = tr("QtiPlot Table Template")+" (*.qtt)";
-	else if (w->isA("Graph3D"))
-		filter = tr("QtiPlot 3D Surface Template")+" (*.qst)";
-
-	QString selectedFilter;
-	QString fn = QFileDialog::getSaveFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->name(), filter, &selectedFilter);
-	if ( !fn.isEmpty() ){
-		QFileInfo fi(fn);
-		workingDir = fi.dirPath(true);
-		QString baseName = fi.fileName();
-		if (!baseName.contains(".")){
-			selectedFilter = selectedFilter.right(5).left(4);
-			fn.append(selectedFilter);
-		}
-
-		/*QFile f(fn);
-		if ( !f.open( QIODevice::WriteOnly ) ){
-			QMessageBox::critical(this, tr("QtiPlot - Export error"),
-			tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
+	if (!w) {
+		w = (MyWidget*)ws->activeWindow();
+		if (!w)
 			return;
-		}
-		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		QString text = "QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
-				QString::number(patch_version) + " template file\n";
-		text += w->saveAsTemplate(windowGeometryInfo(w));
-		QTextStream t( &f );
-		t.setEncoding(QTextStream::UnicodeUTF8);
-		t << text;
-		f.close();
-		QApplication::restoreOverrideCursor();*/
-
-		saveAsTemplate(w, fn);
 	}
-}
 
-void ApplicationWindow::saveAsTemplate(MyWidget* w, const QString& fn)
-{
-	if (!w)
-		return;
+	QString fn = fileName;
+	if (fn.isEmpty()){
+		QString filter;
+		if (w->isA("Matrix"))
+			filter = tr("QtiPlot Matrix Template")+" (*.qmt)";
+		else if (w->isA("MultiLayer"))
+			filter = tr("QtiPlot 2D Graph Template")+" (*.qpt)";
+		else if (w->isA("Table"))
+			filter = tr("QtiPlot Table Template")+" (*.qtt)";
+		else if (w->isA("Graph3D"))
+			filter = tr("QtiPlot 3D Surface Template")+" (*.qst)";
+
+		QString selectedFilter;
+		fn = QFileDialog::getSaveFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->name(), filter, &selectedFilter);
+
+		if (!fn.isEmpty()){
+			QFileInfo fi(fn);
+			workingDir = fi.dirPath(true);
+			QString baseName = fi.fileName();
+			if (!baseName.contains(".")){
+				selectedFilter = selectedFilter.right(5).left(4);
+				fn.append(selectedFilter);
+			}
+		} else
+			return;
+	}
 
 	QFile f(fn);
 	if ( !f.open( QIODevice::WriteOnly ) ){
@@ -4879,6 +4912,7 @@ void ApplicationWindow::saveAsTemplate(MyWidget* w, const QString& fn)
 		tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
 		return;
 	}
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	QString text = "QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
 				QString::number(patch_version) + " template file\n";
@@ -4924,11 +4958,16 @@ void ApplicationWindow::renameWindow(Q3ListViewItem *item, int, const QString &t
 	if (!w || text == w->name())
 		return;
 
-	while(!setWindowName(w, text)){
+	/*while(!setWindowName(w, text)){
+        //lv->setCurrentItem(item);
+        //lv->setSelected (item, true);
 		item->setRenameEnabled (0, true);
 		item->startRename (0);
 		return;
-	}
+	}*/
+
+	if(!setWindowName(w, text))
+        item->setText(0, w->name());
 }
 
 bool ApplicationWindow::setWindowName(MyWidget *w, const QString &text)
@@ -7234,22 +7273,16 @@ void ApplicationWindow::pasteSelection()
 	emit modified();
 }
 
-MyWidget* ApplicationWindow::clone()
-{
-	MyWidget* w = (MyWidget*)ws->activeWindow();
-	if (!w){
-		QMessageBox::critical(this,tr("QtiPlot - Duplicate window error"),
-				tr("There are no windows available in this project!"));
-		return 0;
-	}
-
-	return clone(w);
-}
-
 MyWidget* ApplicationWindow::clone(MyWidget* w)
 {
-    if (!w)
-        return 0;
+    if (!w) {
+        w = (MyWidget*)ws->activeWindow();
+		if (!w){
+			QMessageBox::critical(this,tr("QtiPlot - Duplicate window error"),
+				tr("There are no windows available in this project!"));
+			return 0;
+		}
+	}
 
 	MyWidget* nw = 0;
 	MyWidget::Status status = w->status();
@@ -9249,56 +9282,6 @@ void ApplicationWindow::intensityTable()
 		g->showIntensityTable();
 }
 
-Matrix* ApplicationWindow::importImage(const QString& fileName)
-{
-    QImage image(fileName);
-    if (image.isNull())
-        return 0;
-
-	int cols = image.width();
-	int rows = image.height();
-
-	QProgressDialog progress(this);
-	progress.setRange(0, rows);
-	progress.setMinimumWidth(width()/2);
-	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Import image..."));
-	progress.setLabelText(fileName);
-	progress.setActiveWindow();
-
-	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws);
-	m->setAttribute(Qt::WA_DeleteOnClose);
-	m->table()->blockSignals(true);
-
-	int aux = rows - 1;
-	for (int i=0; i<rows; i++ ){
-		int l = aux - i;
-		for (int j=0; j<cols; j++)
-			m->setCell(i, j, qGray(image.pixel (j, l)));
-
-		if (i%10 == 9){
-		    progress.setValue(i);
-		    QApplication::processEvents();
-		}
-
-        if (progress.wasCanceled())
-            break;
-	}
-
-	if (!progress.wasCanceled()){
-		QString caption = generateUniqueName(tr("Matrix"));
-		initMatrix(m, caption);
-    	m->show();
-    	m->setWindowLabel(fileName);
-    	m->setCaptionPolicy(MyWidget::Both);
-    	setListViewLabel(m->name(), fileName);
-    	m->table()->blockSignals(false);
-		return m;
-	} else {
-		delete m;
-		return 0;
-	}
-}
-
 void ApplicationWindow::autoArrangeLayers()
 {
 	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
@@ -10057,10 +10040,9 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			QStringList fList=s.split("\t");
 			ag->loadAxesLinewidth(fList[1].toInt());
 		}
-		else if (s.contains ("CanvasFrame"))
-		{
-			QStringList list=s.split("\t");
-			ag->drawCanvasFrame(list);
+		else if (s.contains ("CanvasFrame")){
+			QStringList lst = s.split("\t");
+			ag->setCanvasFrame(lst[1].toInt(), QColor(lst[2]));
 		}
 		else if (s.contains ("CanvasBackground"))
 		{
@@ -11645,18 +11627,13 @@ Graph3D * ApplicationWindow::openMatrixPlot3D(const QString& caption, const QStr
 	return plot;
 }
 
-void ApplicationWindow::plot3DMatrix(int style)
-{
-	if (!ws->activeWindow()|| !ws->activeWindow()->isA("Matrix"))
-		return;
-
-    plot3DMatrix((Matrix*)ws->activeWindow(), style);
-}
-
 Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 {
-	if (!m)
-		return 0;
+	if (!m) {
+		m = (Matrix*)ws->activeWindow();
+		if (!m || !m->isA("Matrix"))
+			return 0;
+	}
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	QString label = generateUniqueName(tr("Graph"));
@@ -11678,50 +11655,35 @@ Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 	return plot;
 }
 
-void ApplicationWindow::plotGrayScale()
-{
-	if (!ws->activeWindow()|| !ws->activeWindow()->isA("Matrix"))
-		return;
-
-	plotSpectrogram((Matrix*)ws->activeWindow(), Graph::GrayMap);
-}
-
 MultiLayer* ApplicationWindow::plotGrayScale(Matrix *m)
 {
-	if (!m)
-		return 0;
+	if (!m) {
+		m = (Matrix*)ws->activeWindow();
+		if (!m || !m->isA("Matrix"))
+			return 0;
+	}
 
 	return plotSpectrogram(m, Graph::GrayMap);
 }
 
-void ApplicationWindow::plotContour()
-{
-	if (!ws->activeWindow()|| !ws->activeWindow()->isA("Matrix"))
-		return;
-
-	plotSpectrogram((Matrix*)ws->activeWindow(), Graph::ContourMap);
-}
-
 MultiLayer* ApplicationWindow::plotContour(Matrix *m)
 {
-	if (!m)
-		return 0;
+	if (!m) {
+		m = (Matrix*)ws->activeWindow();
+		if (!m || !m->isA("Matrix"))
+			return 0;
+	}
 
 	return plotSpectrogram(m, Graph::ContourMap);
 }
 
-void ApplicationWindow::plotColorMap()
-{
-	if (!ws->activeWindow()|| !ws->activeWindow()->isA("Matrix"))
-		return;
-
-	plotSpectrogram((Matrix*)ws->activeWindow(), Graph::ColorMap);
-}
-
 MultiLayer* ApplicationWindow::plotColorMap(Matrix *m)
 {
-	if (!m)
-		return 0;
+	if (!m) {
+		m = (Matrix*)ws->activeWindow();
+		if (!m || !m->isA("Matrix"))
+			return 0;
+	}
 
 	return plotSpectrogram(m, Graph::ColorMap);
 }
@@ -12831,16 +12793,13 @@ void ApplicationWindow::startRenameFolder(Q3ListViewItem *item)
 	if (!item || item == folders->firstChild())
 		return;
 
-	if (item->listView() == lv && item->rtti() == FolderListItem::RTTI)
-	{
+	if (item->listView() == lv && item->rtti() == FolderListItem::RTTI) {
         disconnect(folders, SIGNAL(currentChanged(Q3ListViewItem *)), this, SLOT(folderItemChanged(Q3ListViewItem *)));
 		current_folder = ((FolderListItem *)item)->folder();
 		FolderListItem *it = current_folder->folderListItem();
 		it->setRenameEnabled (0, true);
 		it->startRename (0);
-	}
-	else
-	{
+	} else {
 		item->setRenameEnabled (0, true);
 		item->startRename (0);
 	}
@@ -13053,8 +13012,7 @@ void ApplicationWindow::addFolder()
 	addFolderListViewItem(f);
 
 	FolderListItem *fi = new FolderListItem(current_folder->folderListItem(), f);
-	if (fi)
-	{
+	if (fi){
 		f->setFolderListItem(fi);
 		fi->setRenameEnabled (0, true);
 		fi->startRename(0);

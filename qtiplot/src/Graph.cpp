@@ -1270,13 +1270,13 @@ void Graph::setGridOptions(const GridOptions& o)
 		m->setAxis(grid.xAxis, grid.yAxis);
 		m->setLineStyle(QwtPlotMarker::VLine);
 		m->setValue(0.0, 0.0);
-		
+
 		int width = 1;
 		if (d_plot->canvas()->lineWidth())
 			width = d_plot->canvas()->lineWidth();
 		else if (d_plot->axisEnabled (QwtPlot::yLeft) || d_plot->axisEnabled (QwtPlot::yRight))
 			width =  d_plot->axesLinewidth();
-		
+
 		m->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
 	} else if (mrkX>=0 && !grid.xZeroOn) {
 		d_plot->removeMarker(mrkX);
@@ -1290,13 +1290,13 @@ void Graph::setGridOptions(const GridOptions& o)
 		m->setAxis(grid.xAxis, grid.yAxis);
 		m->setLineStyle(QwtPlotMarker::HLine);
 		m->setValue(0.0, 0.0);
-		
+
 		int width = 1;
 		if (d_plot->canvas()->lineWidth())
 			width = d_plot->canvas()->lineWidth();
 		else if (d_plot->axisEnabled (QwtPlot::xBottom) || d_plot->axisEnabled (QwtPlot::xTop))
 			width =  d_plot->axesLinewidth();
-		
+
 		m->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
 	} else if (mrkY>=0 && !grid.yZeroOn) {
 		d_plot->removeMarker(mrkY);
@@ -1340,18 +1340,16 @@ QStringList Graph::scalesTitles()
 
 void Graph::updateSecondaryAxis(int axis)
 {
-	for (int i=0; i<n_curves; i++)
-	{
+	for (int i=0; i<n_curves; i++){
 		QwtPlotItem *it = plotItem(i);
 		if (!it)
 			continue;
 
-		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-  	         {
-  	         Spectrogram *sp = (Spectrogram *)it;
-  	         if (sp->colorScaleAxis() == axis)
-  	              return;
-  	         }
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+            Spectrogram *sp = (Spectrogram *)it;
+            if (sp->colorScaleAxis() == axis)
+                return;
+        }
 
 		if ((axis == QwtPlot::yRight && it->yAxis() == QwtPlot::yRight) ||
             (axis == QwtPlot::xTop && it->xAxis () == QwtPlot::xTop))
@@ -2024,17 +2022,6 @@ QString Graph::saveEnabledAxes()
 	return list;
 }
 
-bool Graph::framed()
-{
-	bool frameOn=false;
-
-	QwtPlotCanvas* canvas=(QwtPlotCanvas*) d_plot->canvas();
-	if (canvas->lineWidth()>0)
-		frameOn=true;
-
-	return frameOn;
-}
-
 QColor Graph::canvasFrameColor()
 {
 	QwtPlotCanvas* canvas=(QwtPlotCanvas*) d_plot->canvas();
@@ -2048,47 +2035,19 @@ int Graph::canvasFrameWidth()
 	return canvas->lineWidth();
 }
 
-void Graph::drawCanvasFrame(const QStringList& frame)
-{
-	QwtPlotCanvas* canvas=(QwtPlotCanvas*) d_plot->canvas();
-	canvas->setLineWidth((frame[1]).toInt());
-
-	QPalette pal = canvas->palette();
-	pal.setColor(QColorGroup::Foreground,QColor(frame[2]));
-	canvas->setPalette(pal);
-}
-
-void Graph::drawCanvasFrame(bool frameOn, int width, const QColor& color)
+void Graph::setCanvasFrame(int width, const QColor& color)
 {
 	QwtPlotCanvas* canvas=(QwtPlotCanvas*) d_plot->canvas();
 	QPalette pal = canvas->palette();
 
-	if (frameOn && canvas->lineWidth() == width &&
-			pal.color(QPalette::Active, QColorGroup::Foreground) == color)
+	if (canvas->lineWidth() == width &&
+		pal.color(QPalette::Active, QColorGroup::Foreground) == color)
 		return;
 
-	if (frameOn)
-	{
-		canvas->setLineWidth(width);
-		pal.setColor(QColorGroup::Foreground,color);
-		canvas->setPalette(pal);
-	}
-	else
-	{
-		canvas->setLineWidth(0);
-		pal.setColor(QColorGroup::Foreground,QColor(Qt::black));
-		canvas->setPalette(pal);
-	}
+	canvas->setLineWidth(width);
+	pal.setColor(QColorGroup::Foreground,color);
+	canvas->setPalette(pal);
 	emit modifiedGraph();
-}
-
-void Graph::drawCanvasFrame(bool frameOn, int width)
-{
-	if (frameOn)
-	{
-		QwtPlotCanvas* canvas=(QwtPlotCanvas*) d_plot->canvas();
-		canvas->setLineWidth(width);
-	}
 }
 
 void Graph::drawAxesBackbones(bool yes)
@@ -3551,6 +3510,8 @@ void Graph::updatePlot()
 
 	d_plot->replot();
     updateMarkersBoundingRect();
+    updateSecondaryAxis(QwtPlot::xTop);
+	updateSecondaryAxis(QwtPlot::yRight);
 
     if (isPiePlot()){
         QwtPieCurve *c = (QwtPieCurve *)curve(0);
@@ -4565,7 +4526,7 @@ void Graph::copy(Graph* g)
 
 	d_plot->setTitle (g->plotWidget()->title());
 
-	drawCanvasFrame(g->framed(),g->canvasFrameWidth(), g->canvasFrameColor());
+	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 
 	QStringList lst = g->scalesTitles();
 	for (i=0;i<(int)lst.count();i++)

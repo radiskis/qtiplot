@@ -216,12 +216,9 @@ public slots:
 
 	//! Creates a new spectrogram graph
   	MultiLayer* plotSpectrogram(Matrix *m, Graph::CurveType type);
-  	void plotGrayScale();
-  	MultiLayer* plotGrayScale(Matrix *m);
-  	void plotContour();
-  	MultiLayer* plotContour(Matrix *m);
-  	void plotColorMap();
-  	MultiLayer* plotColorMap(Matrix *m);
+  	MultiLayer* plotGrayScale(Matrix *m = 0);
+  	MultiLayer* plotContour(Matrix *m = 0);
+  	MultiLayer* plotColorMap(Matrix *m = 0);
 
 	//! Rearrange the layersin order to fit to the size of the plot window
   	void autoArrangeLayers();
@@ -276,8 +273,7 @@ public slots:
 	void plot3DPolygons();
 	void plot3DWireSurface();
 
-	void plot3DMatrix(int style);
-	Graph3D* plot3DMatrix(Matrix *m, int style = 0);
+	Graph3D* plot3DMatrix(Matrix *m = 0, int style = 5);
 
 	void plot3DRibbon();
 	void plot3DScatter();
@@ -396,8 +392,7 @@ public slots:
 	void pixelLineProfile();
 	void loadImage();
 	void loadImage(const QString& fn);
-	Matrix* importImage();
-  	Matrix* importImage(const QString& fn);
+  	Matrix* importImage(const QString& = QString());
 	//@}
 
 	//! \name Export and Print
@@ -418,8 +413,7 @@ public slots:
 
 	//! \name MDI Windows
 	//@{
-	MyWidget* clone();
-	MyWidget* clone(MyWidget*);
+	MyWidget* clone(MyWidget* w = 0);
 	void rename();
 	void renameWindow();
 
@@ -463,8 +457,7 @@ public slots:
 	QStringList depending3DPlots(Matrix *m);
 	QStringList multilayerDependencies(QWidget *w);
 
-	void saveAsTemplate();
-	void saveAsTemplate(MyWidget* w, const QString& fn);
+	void saveAsTemplate(MyWidget* w = 0, const QString& = QString());
 	void openTemplate();
 	MyWidget* openTemplate(const QString& fn);
 
