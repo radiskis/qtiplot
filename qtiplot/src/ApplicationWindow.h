@@ -236,7 +236,6 @@ public slots:
     Graph3D* newPlot3D();
 	Graph3D* openMatrixPlot3D(const QString& caption, const QString& matrix_name,
 							 double xl,double xr,double yl,double yr,double zl,double zr);
-	Graph3D* plotRibbon(Table* table,const QString& colName);
 	Graph3D* plotXYZ(Table* table,const QString& zColName, int type);
 		//when reading from .qti file
 	Graph3D* dataPlot3D(const QString& caption,const QString& formula,
@@ -283,7 +282,7 @@ public slots:
 
 	//! \name User-defined Functions
 	//@{
-	void newFunctionPlot(int type,QStringList &formulas, const QString& var,QList<double> &ranges, int points);
+	MultiLayer * newFunctionPlot(QStringList &formulas, double start, double end, int points = 100, const QString& var = "x", int type = 0);
 
 	FunctionDialog* functionDialog();
 	void showFunctionDialog();
@@ -989,7 +988,7 @@ public:
 	bool smooth3DMesh, autoScaleFonts, autoResizeLayers, askForSupport, autoSearchUpdates;
 	bool confirmCloseTable, confirmCloseMatrix, confirmClosePlot2D, confirmClosePlot3D;
 	bool confirmCloseFolder, confirmCloseNotes;
-	bool canvasFrameOn, titleOn, autoSave, drawBackbones, allAxesOn, autoscale2DPlots, antialiasing2DPlots;
+	bool titleOn, autoSave, drawBackbones, allAxesOn, autoscale2DPlots, antialiasing2DPlots;
 	int majTicksStyle, minTicksStyle, legendFrameStyle, autoSaveTime, axesLineWidth, canvasFrameWidth;
 	QColor legendBackground, legendTextColor, defaultArrowColor;
 	int defaultArrowLineWidth, defaultArrowHeadLength, defaultArrowHeadAngle;

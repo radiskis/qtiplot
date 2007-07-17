@@ -43,11 +43,10 @@
 #include <QWidget>
 #include <QMessageBox>
 
-FunctionDialog::FunctionDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-: QDialog( parent, name, modal, fl )
+FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
+: QDialog( parent, fl )
 {
-	if ( !name )
-		setName( "FunctionDialog" );
+    setName( "FunctionDialog" );
 	setWindowTitle( tr( "QtiPlot - Add function curve" ) );
 	setSizeGripEnabled(true);
 
@@ -152,9 +151,11 @@ FunctionDialog::FunctionDialog( QWidget* parent, const char* name, bool modal, Q
 	optionStack->addWidget( polarPage );
 
 	buttonClear = new QPushButton(tr( "Clear Function" ));
+	buttonClear->setAutoDefault(false);
 	buttonOk = new QPushButton(tr( "Ok" ));
 	buttonOk->setDefault(true);
 	buttonCancel = new QPushButton(tr( "Close" ));
+	buttonCancel->setAutoDefault(false);
 
 	QHBoxLayout *hbox2 = new QHBoxLayout();
 	hbox2->addStretch();
@@ -168,9 +169,7 @@ FunctionDialog::FunctionDialog( QWidget* parent, const char* name, bool modal, Q
 	vbox1->addLayout(hbox2);
 
 	setLayout(vbox1);
-	languageChange();
 	setFocusProxy (boxFunction);
-    resize(minimumSize());
 
 	connect( boxType, SIGNAL( activated(int) ), this, SLOT( raiseWidget(int) ) );
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
@@ -326,22 +325,19 @@ void FunctionDialog::acceptFunction()
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
-	QList<double> ranges;
 	formulas+=formula;
-	ranges+=start;
-	ranges+=end;
 	if (!error)
 	{
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		app->updateFunctionLists(type,formulas);
 		if (!graph)
-			app->newFunctionPlot(type, formulas, "x", ranges, boxPoints->value());
+			app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
 		else
 		{
 			if (curveID >= 0)
-				graph->modifyFunctionCurve(curveID, type, formulas, "x", ranges, boxPoints->value());
+				graph->modifyFunctionCurve(curveID, type, formulas, "x", start, end, boxPoints->value());
 			else
-				graph->addFunctionCurve(type,formulas, "x", ranges, boxPoints->value());
+				graph->addFunction(formulas, start, end, boxPoints->value(), "x", type);
 		}
 	}
 
@@ -429,23 +425,20 @@ void FunctionDialog::acceptParametric()
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
-	QList<double> ranges;
 	formulas+=xformula;
 	formulas+=yformula;
-	ranges+=start;
-	ranges+=end;
 	if (!error)
 	{
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		app->updateFunctionLists(type,formulas);
 		if (!graph)
-			app->newFunctionPlot(type, formulas, boxParameter->text(),ranges, boxParPoints->value());
+			app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
 		else
 		{
 			if (curveID >= 0)
-				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(),ranges, boxParPoints->value());
+				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(), start, end, boxParPoints->value());
 			else
-				graph->addFunctionCurve(type,formulas, boxParameter->text(),ranges, boxParPoints->value());
+				graph->addFunction(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
 		}
 	}
 }
@@ -533,24 +526,21 @@ void FunctionDialog::acceptPolar()
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
-	QList<double> ranges;
 	formulas+=rformula;
 	formulas+=tformula;
-	ranges+=start;
-	ranges+=end;
 	if (!error)
 	{
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		app->updateFunctionLists(type,formulas);
 
 		if (!graph)
-			app->newFunctionPlot(type, formulas, boxPolarParameter->text(),ranges, boxPolarPoints->value());
+			app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
 		else
 		{
 			if (curveID >= 0)
-				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(),ranges, boxPolarPoints->value());
+				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(), start, end, boxPolarPoints->value());
 			else
-				graph->addFunctionCurve(type, formulas, boxPolarParameter->text(),ranges, boxPolarPoints->value());
+				graph->addFunction(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
 		}
 	}
 }
@@ -585,4 +575,3 @@ void FunctionDialog::insertPolarFunctionsList(const QStringList& rList, const QS
 	boxPolarRadius->insertItems (0, rList);
 	boxPolarTheta->insertItems (0, thetaList);
 }
-

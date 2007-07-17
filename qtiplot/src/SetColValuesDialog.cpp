@@ -2,13 +2,13 @@
     File                 : SetColValuesDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, 
+    Copyright            : (C) 2006 by Ion Vasilief,
                            Tilman Hoener zu Siederdissen,
                            Knut Franke
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
                            knut.franke*gmx.de
     Description          : Set column values dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -46,15 +46,14 @@
 #include <QTextEdit>
 #include <QTextCursor>
 
-SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent,  const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl ), scripted(env)
+SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl ), scripted(env)
 {
-	if ( !name )
-		setName( "SetColValuesDialog" );
+    setName( "SetColValuesDialog" );
 	setWindowTitle( tr( "QtiPlot - Set column values" ) );
 	setSizeGripEnabled(true);
 
-	QHBoxLayout *hbox1 = new QHBoxLayout(); 
+	QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addWidget(new QLabel(tr("For row (i)")));
 	start = new QSpinBox();
 	start->setMinValue(1);
@@ -87,7 +86,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent,  con
 	btnAddCol = new QPushButton(tr( "Add column" ));
 	gl1->addWidget(btnAddCol, 1, 1);
 
-	QHBoxLayout *hbox3 = new QHBoxLayout(); 
+	QHBoxLayout *hbox3 = new QHBoxLayout();
 	hbox3->addStretch();
 	buttonPrev = new QPushButton("&<<");
 	hbox3->addWidget(buttonPrev);
@@ -98,7 +97,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent,  con
 	gl1->addWidget(addCellButton, 2, 1);
 
 	QGroupBox *gb = new QGroupBox();
-	QVBoxLayout *vbox1 = new QVBoxLayout(); 
+	QVBoxLayout *vbox1 = new QVBoxLayout();
 	vbox1->addLayout(hbox1);
 	vbox1->addLayout(gl1);
 	gb->setLayout(vbox1);
@@ -111,13 +110,13 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent,  con
 	palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
 	explain->setPalette(palette);
 
-	QHBoxLayout *hbox2 = new QHBoxLayout(); 
+	QHBoxLayout *hbox2 = new QHBoxLayout();
 	hbox2->addWidget(explain);
 	hbox2->addWidget(gb);
 
 	commands = new ScriptEdit( scriptEnv);
 
-	QVBoxLayout *vbox2 = new QVBoxLayout(); 
+	QVBoxLayout *vbox2 = new QVBoxLayout();
 	btnOk = new QPushButton(tr( "&OK" ));
 	vbox2->addWidget(btnOk);
 	btnApply = new QPushButton(tr( "&Apply" ));
@@ -127,7 +126,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent,  con
 	vbox2->addWidget(btnCancel);
 	vbox2->addStretch();
 
-	QHBoxLayout *hbox4 = new QHBoxLayout(); 
+	QHBoxLayout *hbox4 = new QHBoxLayout();
 	hbox4->addWidget(commands);
 	hbox4->addLayout(vbox2);
 
@@ -191,7 +190,7 @@ void SetColValuesDialog::updateColumn(int sc)
 	cursor.movePosition(QTextCursor::End,QTextCursor::KeepAnchor);
 }
 
-QSize SetColValuesDialog::sizeHint() const 
+QSize SetColValuesDialog::sizeHint() const
 {
 	return QSize( 400, 190 );
 }
@@ -253,7 +252,7 @@ void SetColValuesDialog::setTable(Table* w)
 	QStringList colNames=w->colNames();
 	int cols = w->numCols();
 	for (int i=0; i<cols; i++)
-		boxColumn->insertItem("col(\""+colNames[i]+"\")",i); 
+		boxColumn->insertItem("col(\""+colNames[i]+"\")",i);
 
 	int s = w->table()->currentSelection();
 	if (s >= 0)

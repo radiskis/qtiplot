@@ -215,7 +215,7 @@ void ScriptEdit::execute()
 	fname = fname.arg(lineNumber(codeCursor.selectionStart()));
 
 	myScript->setName(fname);
-	myScript->setCode(codeCursor.selectedText());
+	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
 	printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
 	printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	myScript->exec();
@@ -243,7 +243,7 @@ void ScriptEdit::evaluate()
 	fname = fname.arg(lineNumber(codeCursor.selectionStart()));
 
 	myScript->setName(fname);
-	myScript->setCode(codeCursor.selectedText());
+	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
 	printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
 	printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	QVariant res = myScript->eval();
@@ -320,7 +320,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 				tr("Save Text to File"), &selectedFilter, false);
 	else
 		fn = filename;
-		
+
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		QString baseName = fi.fileName();
@@ -337,7 +337,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 						tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
 			return QString::null;
 		}
-			
+
 		QTextStream t( &f );
 		t.setEncoding(QTextStream::UnicodeUTF8);
 		t << text();

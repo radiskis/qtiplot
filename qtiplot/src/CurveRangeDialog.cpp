@@ -2,7 +2,7 @@
     File                 : CurveRangeDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+    Copyright            : (C) 2007 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Curve range dialog
 
@@ -38,13 +38,11 @@
 #include <QLabel>
 #include <QSpinBox>
 
-CurveRangeDialog::CurveRangeDialog(QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+CurveRangeDialog::CurveRangeDialog(QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
 	setWindowTitle(tr("QtiPlot - Plot range"));
-
-    if ( !name )
-		setName( "CurveRangeDialog" );
+    setName( "CurveRangeDialog" );
 
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);

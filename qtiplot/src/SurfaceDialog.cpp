@@ -38,10 +38,9 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-SurfaceDialog::SurfaceDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
-    if ( !name )
 	setName( "SurfaceDialog" );
 	setWindowTitle(tr("QtiPlot - Define surface plot"));
     setSizeGripEnabled( true );
@@ -121,7 +120,6 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, const char* name, bool modal, Qt:
 	vl->addLayout(bl3);
 	vl->addLayout(bl2);
 
-    resize(minimumSize());
     setFocusProxy(boxFunction);
 
 	connect( buttonClear, SIGNAL( clicked() ), this, SLOT(clearList() ) );
@@ -278,8 +276,4 @@ if (!error)
 void SurfaceDialog::insertFunctionsList(const QStringList& list)
 {
 boxFunction->insertStringList (list, 1);
-}
-
-SurfaceDialog::~SurfaceDialog()
-{
 }

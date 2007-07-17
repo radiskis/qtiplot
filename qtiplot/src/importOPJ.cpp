@@ -507,7 +507,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 				}
 				QString tableName;
 				QStringList formulas;
-				QList<double> ranges;
+				double start, end;
 				int s;
 				switch(data[0].toAscii())
 				{
@@ -532,15 +532,17 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 					{
 						type=2;
 						formulas << opj.functionFormula(s) << "x";
-						ranges << pi/180*opj.functionBegin(s) << pi/180*opj.functionEnd(s);
+						start = pi/180*opj.functionBegin(s) ;
+						end = pi/180*opj.functionEnd(s);
 					}
 					else
 					{
 						type=0;
 						formulas << opj.functionFormula(s);
-						ranges << opj.functionBegin(s) << opj.functionEnd(s);
+						start = opj.functionBegin(s);
+						end = opj.functionEnd(s);
 					}
-					graph->addFunctionCurve(type, formulas, "x", ranges, opj.functionPoints(s), opj.functionName(s));
+					graph->addFunction(formulas, start, end, opj.functionPoints(s), "x", type, opj.functionName(s));
 
 					mw->updateFunctionLists(type, formulas);
 					break;

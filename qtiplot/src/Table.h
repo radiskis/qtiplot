@@ -358,7 +358,6 @@ public slots:
 	void colWidthModified(int, int, int);
 
 signals:
-	void plot3DRibbon(Table *,const QString&);
 	void plotXYZ(Table *,const QString&, int);
 	void plotCol(Table *,const QStringList&, int, int, int);
 	void changedColHeader(const QString&, const QString&);

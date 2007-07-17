@@ -40,11 +40,10 @@
 #include <QFont>
 #include <QMessageBox>
 
-LayerDialog::LayerDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-: QDialog( parent, name, modal, fl )
+LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
+: QDialog( parent, fl )
 {
-	if ( !name )
-		setName("LayerDialog");
+    setName("LayerDialog");
 	setWindowTitle(tr( "QtiPlot - Arrange Layers" ));
 
     QGroupBox *gb1 = new QGroupBox(tr("Layers"));

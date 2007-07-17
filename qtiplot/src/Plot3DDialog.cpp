@@ -52,11 +52,10 @@
 
 #include <qwt3d_color.h>
 
-Plot3DDialog::Plot3DDialog( QWidget* parent,  const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
-	if ( !name )
-		setName( "Plot3DDialog" );
+    setName( "Plot3DDialog" );
 	setWindowTitle( tr( "QtiPlot - Surface Plot Options" ) );
 
 	bars=0; points=0;
@@ -84,8 +83,6 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  const char* name, bool modal, Qt::
 	QVBoxLayout* vl = new QVBoxLayout(this);
 	vl->addWidget(generalDialog);
 	vl->addLayout(hbox);
-
-    resize(minimumSize());
 
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
@@ -827,7 +824,7 @@ bool Plot3DDialog::updatePlot()
 					boxCrossSmooth->isChecked(), boxBoxed->isChecked());
             d_plot->setCrossStyle();
         } else if (boxPointStyle->currentIndex() == 2) {
-			d_plot->setConesOptions(boxConesRad->text().toDouble(), boxQuality->value());
+			d_plot->setConeOptions(boxConesRad->text().toDouble(), boxQuality->value());
 			d_plot->setConeStyle();
         }
 

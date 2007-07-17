@@ -2,13 +2,13 @@
     File                 : SetColValuesDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, 
+    Copyright            : (C) 2006 by Ion Vasilief,
                            Tilman Hoener zu Siederdissen
                            Knut Franke
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
                            knut.franke*gmx.de
     Description          : Set column values dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -46,22 +46,22 @@ class Table;
 class ScriptingEnv;
 class ScriptEdit;
 
-	
+
 //! Set column values dialog
 class SetColValuesDialog : public QDialog, public scripted
-{ 
+{
     Q_OBJECT
 
 public:
-    SetColValuesDialog( ScriptingEnv *env, QWidget* parent = 0, const char* name = 0, bool modal = FALSE, Qt::WFlags fl = 0 );
+    SetColValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
     ~SetColValuesDialog();
-	
+
 	QSize sizeHint() const ;
 	void customEvent( QEvent *e );
 
     QComboBox* functions;
     QComboBox* boxColumn;
-    QPushButton* btnAddFunction; 
+    QPushButton* btnAddFunction;
     QPushButton* btnAddCol;
     QPushButton* btnOk;
     QPushButton* btnCancel;

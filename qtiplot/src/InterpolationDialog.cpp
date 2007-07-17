@@ -41,11 +41,10 @@
 #include <QComboBox>
 #include <QLayout>
 
-InterpolationDialog::InterpolationDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
-    if ( !name )
-		setName( "InterpolationDialog" );
+    setName( "InterpolationDialog" );
 	setWindowTitle(tr("QtiPlot - Interpolation Options"));
 
     QGroupBox *gb1 = new QGroupBox();

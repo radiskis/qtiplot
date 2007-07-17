@@ -122,7 +122,7 @@ class PlotDialog : public QDialog
     Q_OBJECT
 
 public:
-    PlotDialog(bool showExtended, QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WFlags fl = 0 );
+    PlotDialog(bool showExtended, QWidget* parent = 0, Qt::WFlags fl = 0 );
     void initFonts(const QFont& titlefont, const QFont& axesfont, const QFont& numbersfont, const QFont& legendfont);
 	void insertColumnsList(const QStringList& names){columnNames = names;};
 	void setMultiLayer(MultiLayer *ml);
@@ -175,7 +175,7 @@ private slots:
   	void pickContourLinesColor();
   	void showDefaultContourLinesBox(bool show);
 	void showColorMapEditor(bool show);
-	
+
 	//layer geometry
 	void adjustLayerHeight(int width);
 	void adjustLayerWidth(int height);
@@ -219,7 +219,7 @@ private:
     void contextMenuEvent(QContextMenuEvent *e);
 
 	double aspect_ratio;
-	
+
     QFont titleFont, legendFont, axesFont, numbersFont;
 
     MultiLayer *d_ml;
@@ -227,7 +227,7 @@ private:
 
 	QSpinBox* boxX, *boxY, *boxLayerWidth, *boxLayerHeight;
 	QCheckBox *keepRatioBox;
-	
+
     QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
 	ColorMapEditor *colorMapEditor;
     QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage;

@@ -3161,7 +3161,7 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 
 	const int ray = 125;
 	int xc = int(rect.width()/2 + 10);
-	int yc = int(rect.y() + rect.height()/2 + pLayout->titleRect().height() + 5);
+	int yc = int(rect.y() + rect.height()/2 - 10);
 
 	double PI = 4*atan(1.0);
 	double angle = 90;
@@ -3877,7 +3877,7 @@ void Graph::drawLine(bool on, bool arrow)
 }
 
 void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas,
-		const QString& var,QList<double> &ranges, int points)
+		const QString& var, double start, double end, int points)
 {
 	FunctionCurve *c = (FunctionCurve *)this->curve(curve);
 	if (!c)
@@ -3886,24 +3886,22 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 	if (c->functionType() == type &&
 		c->variable() == var &&
 		c->formulas() == formulas &&
-		c->startRange() == ranges[0] &&
-		c->endRange() == ranges[1] &&
+		c->startRange() == start &&
+		c->endRange() == end &&
 		c->dataSize() == points)
 		return;
 
 	QString oldLegend = c->legend();
 
 	c->setFunctionType((FunctionCurve::FunctionType)type);
-	c->setRange(ranges[0], ranges[1]);
+	c->setRange(start, end);
 	c->setFormulas(formulas);
 	c->setVariable(var);
 	c->loadData(points);
 
-	if (legendMarkerID >= 0)
-	{//update the legend marker
+	if (legendMarkerID >= 0) {//update the legend marker
 		Legend* mrk=(Legend*) d_plot->marker(legendMarkerID);
-		if (mrk)
-		{
+		if (mrk) {
 			QString text = (mrk->text()).replace(oldLegend, c->legend());
 			mrk->setText(text);
 		}
@@ -3933,8 +3931,7 @@ QString Graph::generateFunctionName(const QString& name)
   	return newName;
 }
 
-void Graph::addFunctionCurve(int type, const QStringList &formulas, const QString &var,
-		QList<double> &ranges, int points, const QString& title)
+void Graph::addFunction(const QStringList &formulas, double start, double end, int points, const QString &var, int type, const QString& title)
 {
 	QString name;
 	if (!title.isEmpty())
@@ -3943,8 +3940,7 @@ void Graph::addFunctionCurve(int type, const QStringList &formulas, const QStrin
 		name = generateFunctionName();
 
 	FunctionCurve *c = new FunctionCurve((const FunctionCurve::FunctionType)type, name);
-	c->setPen(QPen(QColor(Qt::black), widthLine));
-	c->setRange(ranges[0], ranges[1]);
+	c->setRange(start, end);
 	c->setFormulas(formulas);
 	c->setVariable(var);
 	c->loadData(points);
@@ -3954,6 +3950,10 @@ void Graph::addFunctionCurve(int type, const QStringList &formulas, const QStrin
 
 	c_keys.resize(n_curves);
 	c_keys[n_curves-1] = d_plot->insertCurve(c);
+
+	int colorIndex = 0, symbolIndex;
+	guessUniqueCurveLayout(colorIndex, symbolIndex);
+	c->setPen(QPen(ColorBox::color(colorIndex), widthLine));
 
 	addLegendItem(c->legend());
 	updatePlot();
@@ -3966,60 +3966,49 @@ void Graph::insertFunctionCurve(const QString& formula, int points, int fileVers
 	int type;
 	QStringList formulas;
 	QString var, name = QString::null;
-	QList<double> ranges;
+	double start, end;
 
 	QStringList curve = formula.split(",");
-	if (fileVersion < 87)
-	{
-		if (curve[0][0]=='f')
-		{
+	if (fileVersion < 87) {
+		if (curve[0][0]=='f') {
 			type = FunctionCurve::Normal;
 			formulas += curve[0].section('=',1,1);
 			var = curve[1];
-			ranges += curve[2].toDouble();
-			ranges += curve[3].toDouble();
-		}
-		else if (curve[0][0]=='X')
-		{
+			start = curve[2].toDouble();
+			end = curve[3].toDouble();
+		} else if (curve[0][0]=='X') {
 			type = FunctionCurve::Parametric;
 			formulas += curve[0].section('=',1,1);
 			formulas += curve[1].section('=',1,1);
 			var = curve[2];
-			ranges += curve[3].toDouble();
-			ranges += curve[4].toDouble();
-		}
-		else if (curve[0][0]=='R')
-		{
+			start = curve[3].toDouble();
+			end = curve[4].toDouble();
+		} else if (curve[0][0]=='R') {
 			type = FunctionCurve::Polar;
 			formulas += curve[0].section('=',1,1);
 			formulas += curve[1].section('=',1,1);
 			var = curve[2];
-			ranges += curve[3].toDouble();
-			ranges += curve[4].toDouble();
+			start = curve[3].toDouble();
+			end = curve[4].toDouble();
 		}
-	}
-	else
-	{
+	} else {
 		type = curve[0].toInt();
 		name = curve[1];
 
-		if (type == FunctionCurve::Normal)
-		{
+		if (type == FunctionCurve::Normal) {
 			formulas << curve[2];
 			var = curve[3];
-			ranges += curve[4].toDouble();
-			ranges += curve[5].toDouble();
-		}
-		else if (type == FunctionCurve::Polar || type == FunctionCurve::Parametric)
-		{
+			start = curve[4].toDouble();
+			end = curve[5].toDouble();
+		} else if (type == FunctionCurve::Polar || type == FunctionCurve::Parametric) {
 			formulas << curve[2];
 			formulas << curve[3];
 			var = curve[4];
-			ranges += curve[5].toDouble();
-			ranges += curve[6].toDouble();
+			start = curve[5].toDouble();
+			end = curve[6].toDouble();
 		}
 	}
-	addFunctionCurve(type, formulas, var, ranges, points, name);
+	addFunction(formulas, start, end, points,  var, type, name);
 }
 
 void Graph::createTable(const QString& curveName)
@@ -4996,13 +4985,13 @@ void Graph::deleteFitCurves()
 
 void Graph::plotSpectrogram(Matrix *m, CurveType type)
 {
-	if (type != GrayMap && type != ColorMap && type != ContourMap)
+	if (type != GrayScale && type != ColorMap && type != Contour)
   		return;
 
   	Spectrogram *d_spectrogram = new Spectrogram(m);
-  	if (type == GrayMap)
+  	if (type == GrayScale)
   		d_spectrogram->setGrayScale();
-  	else if (type == ContourMap)
+  	else if (type == Contour)
   		{
   	    d_spectrogram->setDisplayMode(QwtPlotSpectrogram::ImageMode, false);
   	    d_spectrogram->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
@@ -5020,7 +5009,7 @@ void Graph::plotSpectrogram(Matrix *m, CurveType type)
   	c_type[n_curves-1] = type;
 
   	QwtScaleWidget *rightAxis = d_plot->axisWidget(QwtPlot::yRight);
-  	rightAxis->setColorBarEnabled(type != ContourMap);
+  	rightAxis->setColorBarEnabled(type != Contour);
   	rightAxis->setColorMap(d_spectrogram->data().range(), d_spectrogram->colorMap());
 
   	d_plot->setAxisScale(QwtPlot::xBottom, m->xStart(), m->xEnd());
@@ -5029,7 +5018,7 @@ void Graph::plotSpectrogram(Matrix *m, CurveType type)
   	d_plot->setAxisScale(QwtPlot::yRight,
   	d_spectrogram->data().range().minValue(),
   	d_spectrogram->data().range().maxValue());
-  	d_plot->enableAxis(QwtPlot::yRight, type != ContourMap);
+  	d_plot->enableAxis(QwtPlot::yRight, type != Contour);
 
   	d_plot->replot();
 }

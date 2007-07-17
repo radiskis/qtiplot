@@ -41,14 +41,13 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-FilterDialog::FilterDialog(int type, QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
 	setWindowTitle(tr("QtiPlot - Filter options"));
     filter_type = type;
 
-    if ( !name )
-		setName( "FilterDialog" );
+    setName( "FilterDialog" );
 
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);

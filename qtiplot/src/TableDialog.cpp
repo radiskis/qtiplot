@@ -43,12 +43,11 @@
 #include <QRegExp>
 #include <QDate>
 
-TableDialog::TableDialog(Table *t, QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl ),
+TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl),
     d_table(t)
 {
-    if ( !name )
-		setName( "TableDialog" );
+    setName( "TableDialog" );
     setWindowTitle( tr( "QtiPlot - Column options" ) );
     setSizeGripEnabled(true);
 
@@ -170,7 +169,6 @@ TableDialog::TableDialog(Table *t, QWidget* parent, const char* name, bool modal
     setFocusProxy (colName);
 
     updateColumn(d_table->selectedColumn());
-    resize(minimumSize());
 
    // signals and slots connections
 	connect(colWidth, SIGNAL(valueChanged(int)), this, SLOT(changeColWidth(int)));

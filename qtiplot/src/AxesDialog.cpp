@@ -1211,8 +1211,6 @@ AxesDialog::AxesDialog( QWidget* parent, Qt::WFlags fl )
 		mainLayout->addWidget(generalDialog);
 		mainLayout->addLayout(bottomButtons);
 
-		resize(minimumSize());
-
 		for (int i=0;i<4;i++)
 			titles<<"";
 

@@ -2,13 +2,13 @@
     File                 : MatrixValuesDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, 
+    Copyright            : (C) 2006 by Ion Vasilief,
                            Tilman Hoener zu Siederdissen,
                            Knut Franke
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
                            knut.franke*gmx.de
     Description          : Set matrix values dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -33,7 +33,7 @@
 #define MVALUESDIALOG_H
 
 #include <QDialog>
-#include "ScriptingEnv.h" 
+#include "ScriptingEnv.h"
 #include "Script.h"
 #include "ScriptEdit.h"
 #include "Matrix.h"
@@ -44,23 +44,23 @@ class QSpinBox;
 class QPushButton;
 class ScriptEdit;
 class Matrix;
-	
+
 //! Set matrix values dialog
 class MatrixValuesDialog : public QDialog, public scripted
-{ 
+{
     Q_OBJECT
 
 public:
-    MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = 0, const char* name = 0, bool modal = FALSE, Qt::WFlags fl = 0 );
+    MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
     ~MatrixValuesDialog();
-	
+
 	QSize sizeHint() const ;
 
 	void customEvent( QEvent *e);
 
 	ScriptEdit* commands;
     QComboBox* functions;
-    QPushButton* btnAddFunction; 
+    QPushButton* btnAddFunction;
 	QPushButton* btnAddCell;
     QPushButton* btnOk;
     QPushButton* btnCancel;
