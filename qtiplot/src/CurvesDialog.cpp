@@ -50,12 +50,10 @@
 
 #include <QMessageBox>
 
-CurvesDialog::CurvesDialog( QWidget* parent,  const char* name, bool modal, Qt::WFlags fl )
-: QDialog( parent, name, modal, fl )
+CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
+: QDialog( parent, fl )
 {
-	if ( !name )
-		setName( "CurvesDialog" );
-
+    setName( "CurvesDialog" );
 	setWindowTitle( tr( "QtiPlot - Add/Remove curves" ) );
     setSizeGripEnabled(true);
 	setFocus();
@@ -355,10 +353,10 @@ bool CurvesDialog::addCurve(const QString& name)
                 d_graph->plotSpectrogram(m, Graph::ColorMap);
             break;
             case 1:
-                d_graph->plotSpectrogram(m, Graph::ContourMap);
+                d_graph->plotSpectrogram(m, Graph::Contour);
             break;
             case 2:
-                d_graph->plotSpectrogram(m, Graph::GrayMap);
+                d_graph->plotSpectrogram(m, Graph::GrayScale);
             break;
         }
 

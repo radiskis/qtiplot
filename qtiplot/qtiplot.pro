@@ -18,8 +18,13 @@ CONFIG          += release
 # what to install and where
 INSTALLS        += target
 INSTALLS        += documentation
-unix: target.path = /usr/bin
-unix: documentation.path = /usr/share/doc/qtiplot
+unix: INSTALLBASE = /usr
+win32: INSTALLBASE = c:/QtiPlot
+
+unix: target.path = $$INSTALLBASE/bin
+unix: documentation.path = $$INSTALLBASE/share/doc/qtiplot
+win32: target.path = $$INSTALLBASE
+win32: documentation.path = $$INSTALLBASE/doc
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -37,10 +42,6 @@ INCLUDEPATH       += ../3rdparty/zlib123/include
 #############################################################################
 
 ##################### Linux (Mac OS X) ######################################
-
-#for dynamically linked libs
-linux-g++-64: libsuff = 64
-unix:LIBS         += -L /usr/lib$${libsuff}
 
 # statically link against Qwt(3D) in 3rdparty
 unix:LIBS         += ../3rdparty/qwtplot3d/lib/libqwtplot3d.a
@@ -404,7 +405,6 @@ contains(SCRIPTING_LANGS, Python) {
   win32 {
     INCLUDEPATH += $$system(call python-includepath.py)
     LIBS        += $$system(call python-libs-win.py)
-    system(md $${SIP_DIR})
     system($$system(call python-sipcmd.py) -c $${SIP_DIR} src/qti.sip)
   }
 

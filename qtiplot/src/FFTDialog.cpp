@@ -45,8 +45,8 @@
 #include <QComboBox>
 #include <QLayout>
 
-FFTDialog::FFTDialog(int type, QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-: QDialog( parent, name, modal, fl )
+FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
+: QDialog( parent, fl )
 {
 	setWindowTitle(tr("QtiPlot - FFT Options"));
 

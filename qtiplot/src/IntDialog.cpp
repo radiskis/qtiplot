@@ -2,8 +2,8 @@
     File                 : IntDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Vasileios Gkanis, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief, Vasileios Gkanis
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Integration options dialog
 
  ***************************************************************************/
@@ -43,11 +43,10 @@
 #include <QComboBox>
 #include <QLayout>
 
-IntDialog::IntDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+IntDialog::IntDialog( QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
-    if ( !name )
-	   setName( "IntegrationDialog" );
+    setName( "IntegrationDialog" );
 	setWindowTitle(tr("QtiPlot - Integration Options"));
 	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 

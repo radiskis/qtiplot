@@ -2213,7 +2213,7 @@ void Table::plot3DRibbon()
 	if (!valid3DPlot())
 		return;
 
-	emit plot3DRibbon(this,colName(selectedCol));
+	emit plotXYZ(this, colName(selectedCol), 3);
 }
 
 void Table::plot3DBars()
@@ -2221,7 +2221,7 @@ void Table::plot3DBars()
 	if (!valid3DPlot())
 		return;
 
-	emit plotXYZ(this,colName(selectedCol),2);
+	emit plotXYZ(this,colName(selectedCol), 2);
 }
 
 void Table::plot3DScatter()

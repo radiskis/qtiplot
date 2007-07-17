@@ -44,12 +44,10 @@
 #include <QApplication>
 #include <QMessageBox>
 
-AssociationsDialog::AssociationsDialog( QWidget* parent,  const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+AssociationsDialog::AssociationsDialog( QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
-    if ( !name )
-		setName( "AssociationsDialog" );
-
+    setName( "AssociationsDialog" );
     setWindowTitle( tr( "QtiPlot - Plot Associations" ) );
 	setSizeGripEnabled(true);
 	setFocus();

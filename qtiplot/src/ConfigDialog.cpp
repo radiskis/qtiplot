@@ -263,7 +263,7 @@ void ConfigDialog::initPlotsPage()
 	optionsLayout->addWidget( boxBackbones, 2, 1 );
 
 	boxFrame = new QCheckBox();
-	boxFrame->setChecked(app->canvasFrameOn);
+	boxFrame->setChecked(app->canvasFrameWidth > 0);
 	optionsLayout->addWidget( boxFrame, 3, 0 );
 
 	labelFrameWidth = new QLabel();
@@ -272,7 +272,7 @@ void ConfigDialog::initPlotsPage()
 	optionsLayout->addWidget( boxFrameWidth, 4, 1 );
 	boxFrameWidth->setRange(1, 100);
 	boxFrameWidth->setValue(app->canvasFrameWidth);
-	if (!app->canvasFrameOn)
+	if (!app->canvasFrameWidth)
 	{
 		labelFrameWidth->hide();
 		boxFrameWidth->hide();
@@ -1027,8 +1027,12 @@ void ConfigDialog::apply()
 	// 2D plots page: options tab
 	app->titleOn=boxTitle->isChecked();
 	app->allAxesOn = boxAllAxes->isChecked();
-	app->canvasFrameOn=boxFrame->isChecked();
-	app->canvasFrameWidth = boxFrameWidth->value();
+	
+	if (boxFrame->isChecked())
+		app->canvasFrameWidth = boxFrameWidth->value();
+	else
+		app->canvasFrameWidth = 0;
+	
 	app->drawBackbones = boxBackbones->isChecked();
 	app->axesLineWidth = boxLineWidth->value();
 	app->defaultPlotMargin = boxMargin->value();

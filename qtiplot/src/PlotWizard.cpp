@@ -349,8 +349,7 @@ void PlotWizard::plot3DRibbon(const QStringList& lst)
             QString yColName = table_name + s.mid(posX+2, posY-posX-2);
 
             Graph3D *g = app->newPlot3D();
-            if (g)
-            {
+            if (g) {
                 g->addData(t, xColName, yColName);
                 g->update();
             }

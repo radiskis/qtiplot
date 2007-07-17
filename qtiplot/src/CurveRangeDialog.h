@@ -2,9 +2,9 @@
     File                 : CurveRangeDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : Filter options dialog
+    Copyright            : (C) 2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+    Description          : Curve range dialog
 
  ***************************************************************************/
 
@@ -43,14 +43,7 @@ class CurveRangeDialog : public QDialog
     Q_OBJECT
 
 public:
-    CurveRangeDialog(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WFlags fl = 0 );
-    ~CurveRangeDialog(){};
-
-	QPushButton* buttonOK;
-	QPushButton* buttonCancel;
-	QLabel* boxName;
-	QSpinBox* boxStart;
-	QSpinBox* boxEnd;
+    CurveRangeDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
 	void setCurveToModify(Graph *g, int curve);
@@ -59,6 +52,12 @@ public slots:
 private:
 	DataCurve *d_curve;
 	Graph *d_graph;
+
+    QPushButton* buttonOK;
+	QPushButton* buttonCancel;
+	QLabel* boxName;
+	QSpinBox* boxStart;
+	QSpinBox* boxEnd;
 };
 
 #endif

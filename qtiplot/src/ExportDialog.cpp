@@ -100,9 +100,7 @@ ExportDialog::ExportDialog( QWidget* parent, Qt::WFlags fl )
     vl->addLayout(vl1);
 	vl->addStretch();
 	vl->addLayout(hbox3);
-	
-	resize(minimumSize());
-   
+	   
     // signals and slots connections
     connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );

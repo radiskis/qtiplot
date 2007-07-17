@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Image geometry dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -32,38 +32,37 @@
 #include <QGroupBox>
 #include <QLabel>
 
-ImageDialog::ImageDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+ImageDialog::ImageDialog( QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
-    if ( !name )
 	setName( "ImageDialog" );
 	setWindowTitle( tr( "QtiPlot - Image Geometry" ) );
-	
+
 	QGroupBox *gb1 = new QGroupBox(tr("Origin"));
 	boxX = new QSpinBox();
 	boxX->setRange(0, 2000);
 	boxX->setSuffix(tr(" pixels"));
-	
+
 	boxY = new QSpinBox();
 	boxY->setRange(0, 2000);
 	boxY->setSuffix(tr(" pixels"));
-	
+
     QGridLayout *gl1 = new QGridLayout(gb1);
     gl1->addWidget(new QLabel( tr("X= ")), 0, 0);
     gl1->addWidget(boxX, 0, 1);
     gl1->addWidget(new QLabel(tr("Y= ")), 1, 0);
     gl1->addWidget(boxY, 1, 1);
     gl1->setRowStretch(2, 1);
-    
+
     QGroupBox *gb2 = new QGroupBox(tr("Size"));
     boxWidth = new QSpinBox();
 	boxWidth->setRange(0, 2000);
 	boxWidth->setSuffix(tr(" pixels"));
-	
+
 	boxHeight = new QSpinBox();
 	boxHeight->setRange(0, 2000);
 	boxHeight->setSuffix(tr(" pixels"));
-	
+
     QGridLayout *gl2 = new QGridLayout(gb2);
     gl2->addWidget(new QLabel( tr("width= ")), 0, 0);
     gl2->addWidget(boxWidth, 0, 1);
@@ -76,7 +75,7 @@ ImageDialog::ImageDialog( QWidget* parent, const char* name, bool modal, Qt::WFl
     gl2->addWidget(keepRatioBox, 3, 1);
 
     gl2->setRowStretch(4, 1);
-	
+
     QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl1->addWidget(gb1);
 	bl1->addWidget(gb2);
@@ -84,7 +83,7 @@ ImageDialog::ImageDialog( QWidget* parent, const char* name, bool modal, Qt::WFl
 	buttonApply = new QPushButton( tr( "&Apply" ) );
 	buttonOk = new QPushButton(tr( "&Ok" ) );
     buttonCancel = new QPushButton(tr( "&Cancel" ) );
-    
+
     QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
     bl2->addStretch();
 	bl2->addWidget(buttonApply);
@@ -94,7 +93,7 @@ ImageDialog::ImageDialog( QWidget* parent, const char* name, bool modal, Qt::WFl
 	QVBoxLayout* vl = new QVBoxLayout(this);
     vl->addLayout(bl1);
 	vl->addLayout(bl2);
-   
+
     connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT(update() ) );
     connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );

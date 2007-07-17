@@ -118,7 +118,7 @@ class Graph: public QWidget
 		enum MarkerType{None = -1, Text = 0, Arrow = 1, Image = 2};
 		enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
-			Box, VectXYAM, VerticalSteps, ColorMap, GrayMap, ContourMap, Function};
+			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function};
 
 		//! Returns the name of the parent MultiLayer object.
 		QString parentPlotName();
@@ -572,9 +572,8 @@ class Graph: public QWidget
 
 		//! \name User-defined Functions
 		//@{
-		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var,QList<double> &ranges, int points);
-		void addFunctionCurve(int type, const QStringList &formulas, const QString& var,
-				QList<double> &ranges, int points, const QString& title = QString::null);
+		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var, double start, double end, int points);
+		void addFunction(const QStringList &formulas, double start, double end, int points = 100, const QString &var = "x", int type = 0, const QString& title = QString::null);
 		//! Used when reading from a project file.
 		void insertFunctionCurve(const QString& formula, int points, int fileVersion);
 		//! Returns an unique function name

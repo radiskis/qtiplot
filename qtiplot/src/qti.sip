@@ -381,6 +381,11 @@ class Graph : QWidget /PyName=Layer/
 #include "src/Legend.h"
 %End
 public:
+
+  enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
+			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
+			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function};
+
   bool isPiePlot();
   SIP_PYOBJECT pieLegendText() /PyName=pieLegend/;
 %MethodCode
@@ -414,6 +419,27 @@ public:
   void removeCurve(const QString&);
   void deleteFitCurves();
   int curves() /PyName=numCurves/;
+
+	void addFunction(const QString&, double, double, int=100);
+%MethodCode
+  QStringList l;
+  l << *a0;
+  sipCpp->addFunction(l, a1, a2, a3);
+%End
+	void addPolarFunction(const QString&, const QString&, double, double, int=100, const QString & = "t");
+%MethodCode
+  QStringList l;
+  l << *a0;
+  l << *a1;
+  sipCpp->addFunction(l, a2, a3, a4, *a5, 2);
+%End
+	void addParametricFunction(const QString&, const QString&, double, double, int=100, const QString & = "m");
+%MethodCode
+  QStringList l;
+  l << *a0;
+  l << *a1;
+  sipCpp->addFunction(l, a2, a3, a4, *a5, 1);
+%End
 
   void addErrorBars(const QString&, Table *, const QString&,
 		  int type = 1, int width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
@@ -528,6 +554,8 @@ class Graph3D: MyWidget
 #include "src/Graph3D.h"
 %End
 public:
+	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon = 3};
+
     void exportToFile(const QString& fileName) /PyName=export/;
     void exportVector(const QString& fileName);
     void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
@@ -576,18 +604,17 @@ public:
     void setConeStyle();
     void setCrossStyle();
 
-    void setConesOptions(double rad, int quality);
+    void setConeOptions(double rad, int quality);
     void setCrossOptions(double rad, double linewidth, bool smooth, bool boxed);
     void setDotOptions(double size, bool smooth);
+    void setBarRadius(double rad);
 
     void animate(bool = true);
     void findBestLayout();
 
-    void changeDataColumn(Table* table, const QString& colName) /PyName=setData/;
-    void addData(Table*, const QString&) /PyName=plotRibbon/;
+    void changeDataColumn(Table* table, const QString& colName, int = 0) /PyName=setData/;
     void addMatrixData(Matrix* ) /PyName=setMatrix/;
-    void addFunction(const QString& s, double xl, double xr, double yl,
-                    double yr, double zl, double zr) /PyName=setFunction/;
+    void addFunction(const QString&, double, double, double, double, double, double) /PyName=setFunction/;
 
     void update();
 
@@ -679,16 +706,18 @@ public:
 %End
 
 	Matrix* importImage(const QString&);
-	MultiLayer* plotContour(Matrix*);
-	MultiLayer* plotColorMap(Matrix*);
-	MultiLayer* plotGrayScale(Matrix*);
+	MultiLayer* plotSpectrogram(Matrix*, Graph::CurveType = Graph::ColorMap) /PyName=plot/;
+	MultiLayer* plot(const QString&, double, double, int = 100);
+%MethodCode
+  QStringList l;
+  l << *a0;
+  sipRes = sipCpp->newFunctionPlot(l, a1, a2, a3);
+%End
 
     Graph3D* newPlot3D();
     Graph3D* plotXYZ(Table* table, const QString&, int = 0) /PyName=plot3D/;
-	Graph3D* plotRibbon(Table*, const QString&);
 	Graph3D* plot3DMatrix(Matrix *, int style = 5) /PyName=plot3D/;
-    Graph3D* plotSurface(const QString&, double xl, double xr,
-					   double yl, double yr, double zl, double zr);
+    Graph3D* plotSurface(const QString&, double xl, double xr, double yl, double yr, double zl, double zr) /PyName=plot3D/;
 
   QWidgetList *windowsList() /PyName=windows/;
 

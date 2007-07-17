@@ -60,11 +60,10 @@
 #include <QLocale>
 #include <stdio.h>
 
-FitDialog::FitDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-: QDialog( parent, name, modal, fl )
+FitDialog::FitDialog( QWidget* parent, Qt::WFlags fl )
+: QDialog( parent, fl )
 {
-	if ( !name )
-		setName( "FitDialog" );
+    setName( "FitDialog" );
 	setWindowTitle(tr("QtiPlot - Fit Wizard"));
 	setSizeGripEnabled( true );
 
@@ -83,7 +82,6 @@ FitDialog::FitDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags 
 	QVBoxLayout* vl = new QVBoxLayout();
 	vl->addWidget(tw);
     setLayout(vl);
-    resize(minimumSize());
 
 	setBuiltInFunctionNames();
 	setBuiltInFunctions();
@@ -1175,7 +1173,7 @@ void FitDialog::accept()
 			fitter->setInitialGuesses(paramsInit);
 		}
 		delete[] paramsInit;
-				
+
 		if (!fitter->setDataFromCurve(curve, start, end) ||
 			!fitter->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText()))
@@ -1184,7 +1182,7 @@ void FitDialog::accept()
 			fitter  = 0;
 			return;
 		}
-				
+
 		fitter->setTolerance (eps);
 		fitter->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
 		fitter->setColor(boxColor->currentIndex());
@@ -1309,7 +1307,7 @@ void FitDialog::setSrcTables(QWidgetList* tables)
 		colNamesBox->addItem(tr("No data tables"));
 		return;
 	}
-	
+
 	srcTables = tables;
 	tableNamesBox->clear();
 	foreach(QWidget *i, *srcTables)
@@ -1322,7 +1320,7 @@ void FitDialog::setSrcTables(QWidgetList* tables)
 void FitDialog::selectSrcTable(int tabnr)
 {
 	colNamesBox->clear();
-	
+
 	if (tabnr >= 0 && tabnr < srcTables->count())
 	{
 		Table *t = (Table*)srcTables->at(tabnr);

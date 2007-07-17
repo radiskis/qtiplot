@@ -61,7 +61,7 @@ public:
 	Graph3D (const QString& label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 	~Graph3D();
 
-	enum PlotType{Scatter=0, Trajectory = 1, Bars = 2};
+	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon =  3};
 	enum PointStyle{None=0, Dots=1, VerticalBars=2, HairCross=3, Cones=4};
 
 public slots:
@@ -77,11 +77,6 @@ public slots:
 	void addMatrixData(Matrix* m,double xl,double xr,double yl,double yr,double zl,double zr);
 	void updateMatrixData(Matrix* m);
 
-	void addData(Table* table, const QString& colName);
-	/*!
-	 * used when creating a ribbon plot from the plot wizard
-	 */
-	void addData(Table* table, int xcol, int ycol);
 	void addData(Table* table,const QString& xColName,const QString& yColName);
 	void addData(Table* table,const QString& xColName,const QString& yColName,
                 double xl, double xr, double yl, double yr, double zl, double zr);
@@ -95,7 +90,7 @@ public slots:
 	void updateData(Table* table);
 	void updateDataXY(Table* table, int xCol, int yCol);
 
-	void changeDataColumn(Table* table, const QString& colName);
+	void changeDataColumn(Table* table, const QString& colName, int type = 0);
 
 	//! \name User Functions
 	//@{
@@ -322,7 +317,7 @@ public slots:
 
 	double coneRadius(){return conesRad;};
 	int coneQuality(){return conesQuality;};
-	void setConesOptions(double rad, int quality);
+	void setConeOptions(double rad, int quality);
 	void setConeStyle();
 
 	PointStyle pointType(){return pointStyle;};

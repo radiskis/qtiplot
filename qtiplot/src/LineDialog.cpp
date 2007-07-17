@@ -47,8 +47,8 @@
 #include <QColorDialog>
 #include <QTabWidget>
 
-LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  const char* name, bool modal, Qt::WFlags fl )
-    : QDialog( parent, name, modal, fl )
+LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
+    : QDialog( parent, fl )
 {
     setWindowTitle( tr( "QtiPlot - Line options" ) );
 

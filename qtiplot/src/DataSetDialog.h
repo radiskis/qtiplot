@@ -46,13 +46,6 @@ class DataSetDialog : public QDialog
 
 public:
     DataSetDialog( const QString& text, QWidget* parent = 0, Qt::WFlags fl = 0 );
-    ~DataSetDialog(){};
-
-    QPushButton* buttonOk;
-	QPushButton* buttonCancel;
-    QGroupBox* groupBox1;
-    QCheckBox* boxShowFormula;
-	QComboBox* boxName;
 
 public slots:
 	void accept();
@@ -68,6 +61,12 @@ private:
 	QString operation;
 	QString windowTitle;
 	Graph *d_graph;
+
+    QPushButton* buttonOk;
+	QPushButton* buttonCancel;
+    QGroupBox* groupBox1;
+    QCheckBox* boxShowFormula;
+	QComboBox* boxName;
 };
 
 #endif

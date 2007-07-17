@@ -44,17 +44,7 @@ class InterpolationDialog : public QDialog
     Q_OBJECT
 
 public:
-    InterpolationDialog( QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WFlags fl = 0 );
-    ~InterpolationDialog(){};
-
-	QPushButton* buttonFit;
-	QPushButton* buttonCancel;
-	QComboBox* boxName;
-	QComboBox* boxMethod;
-	QSpinBox* boxPoints;
-	QLineEdit* boxStart;
-	QLineEdit* boxEnd;
-	ColorBox* boxColor;
+    InterpolationDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
 	void activateCurve(const QString& curveName);
@@ -64,6 +54,14 @@ public slots:
 
 private:
 	Graph *graph;
+	QPushButton* buttonFit;
+	QPushButton* buttonCancel;
+	QComboBox* boxName;
+	QComboBox* boxMethod;
+	QSpinBox* boxPoints;
+	QLineEdit* boxStart;
+	QLineEdit* boxEnd;
+	ColorBox* boxColor;
 };
 
 #endif

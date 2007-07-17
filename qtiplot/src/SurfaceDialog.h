@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Define surface plot dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -35,15 +35,14 @@
 class QPushButton;
 class QLineEdit;
 class QComboBox;
-	
+
 //! Define surface plot dialog
 class SurfaceDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    SurfaceDialog( QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WFlags fl = 0 );
-    ~SurfaceDialog();
+    SurfaceDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
 	void accept();
@@ -56,7 +55,7 @@ signals:
 	void options(const QString&,double,double,double,double,double,double);
 	void clearFunctionsList();
 	void custom3DToolBar();
-	
+
 private:
     QPushButton* buttonOk;
 	QPushButton* buttonCancel;
@@ -70,6 +69,6 @@ private:
 	QLineEdit* boxZTo;
 };
 
-#endif 
+#endif
 
 

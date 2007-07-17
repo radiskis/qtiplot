@@ -42,11 +42,10 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-PolynomFitDialog::PolynomFitDialog( QWidget* parent, const char* name, bool modal, Qt::WFlags fl )
-: QDialog( parent, name, modal, fl )
+PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
+: QDialog( parent, fl )
 {
-	if ( !name )
-		setName( "PolynomFitDialog" );
+    setName( "PolynomFitDialog" );
 	setWindowTitle(tr("QtiPlot - Polynomial Fit Options"));
     setSizeGripEnabled( true );
 
@@ -101,9 +100,6 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, const char* name, bool moda
 	QHBoxLayout* hlayout = new QHBoxLayout(this);
 	hlayout->addWidget(gb1);
 	hlayout->addLayout(vl);
-
-	languageChange();
-	resize(minimumSize());
 
 	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( fit() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );

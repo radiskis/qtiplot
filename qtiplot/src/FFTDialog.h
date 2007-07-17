@@ -47,15 +47,7 @@ class FFTDialog : public QDialog
 public:
 	enum DataType{onGraph = 0, onTable = 1};
 
-    FFTDialog(int type, QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WFlags fl = 0 );
-    ~FFTDialog(){};
-
-	QPushButton* buttonOK;
-	QPushButton* buttonCancel;
-	QRadioButton *forwardBtn, *backwardBtn;
-	QComboBox* boxName, *boxReal, *boxImaginary;
-	QLineEdit* boxSampling;
-	QCheckBox* boxNormalize, *boxOrder;
+    FFTDialog(int type, QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
 	void setGraph(Graph *g);
@@ -67,6 +59,13 @@ private:
 	Graph *graph;
 	Table *d_table;
 	int d_type;
+
+	QPushButton* buttonOK;
+	QPushButton* buttonCancel;
+	QRadioButton *forwardBtn, *backwardBtn;
+	QComboBox* boxName, *boxReal, *boxImaginary;
+	QLineEdit* boxSampling;
+	QCheckBox* boxNormalize, *boxOrder;
 };
 
 #endif
