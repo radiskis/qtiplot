@@ -4222,6 +4222,13 @@ void ApplicationWindow::readSettings()
 	d_import_dec_separators = settings.value("/UpdateDecSeparators", true).toBool();
 	d_ASCII_import_mode = settings.value("/ImportMode", ImportASCIIDialog::NewTables).toInt();
 	settings.endGroup(); // Import ASCII
+	
+	settings.beginGroup("/ExportASCII");
+	d_export_col_separator = settings.value("/ColumnSeparator", "\\t").toString();
+	d_export_col_separator.replace("\\t", "\t").replace("\\s", " ");
+	d_export_col_names = settings.value("/ExportLabels", false).toBool();
+	d_export_table_selection = settings.value("/ExportSelection", false).toBool();
+	settings.endGroup(); // ExportASCII
 
     settings.beginGroup("/ExportImage");
 	d_image_export_filter = settings.value("/ImageFileTypeFilter", ".png").toString();
@@ -4466,6 +4473,13 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/ImportMode", d_ASCII_import_mode);
 	settings.endGroup(); // ImportASCII
 
+	settings.beginGroup("/ExportASCII");
+	sep = d_export_col_separator;
+	settings.setValue("/ColumnSeparator", sep.replace("\t", "\\t").replace(" ", "\\s"));
+	settings.setValue("/ExportLabels", d_export_col_names);
+	settings.setValue("/ExportSelection", d_export_table_selection);
+	settings.endGroup(); // ExportASCII
+	
     settings.beginGroup("/ExportImage");
 	settings.setValue("/ImageFileTypeFilter", d_image_export_filter);
 	settings.setValue("/ExportTransparency", d_export_transparency);
@@ -5212,18 +5226,9 @@ void ApplicationWindow::showTopAxisTitleDialog()
 
 void ApplicationWindow::showExportASCIIDialog()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->inherits("Table"))
-	{
-		ExportDialog* ed= new ExportDialog(this,Qt::WindowContextHelpButtonHint);
+	if ( ws->activeWindow() && ws->activeWindow()->inherits("Table")){
+		ExportDialog* ed = new ExportDialog(ws->activeWindow()->name(), this, Qt::WindowContextHelpButtonHint);
 		ed->setAttribute(Qt::WA_DeleteOnClose);
-		connect (ed, SIGNAL(exportTable(const QString&, const QString&, bool, bool)),
-				this, SLOT(exportASCII (const QString&, const QString&, bool, bool)));
-		connect (ed, SIGNAL(exportAllTables(const QString&, bool, bool)),
-				this, SLOT(exportAllTables(const QString&, bool, bool)));
-
-		ed->setTableNames(tableWindows);
-		ed->setActiveTableName(ws->activeWindow()->name());
-		ed->setColumnSeparator(columnSeparator);
 		ed->exec();
 	}
 }
