@@ -119,11 +119,19 @@ protected:
 class Grid : public QwtPlotGrid
 {
 public:
-    Grid(){};
+    Grid(){d_x_zero_line = false; d_y_zero_line = false;};
 
 void draw (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &rect) const;
 void drawLines(QPainter *painter, const QRect &rect, Qt::Orientation orientation, const QwtScaleMap &map,
     const QwtValueList &values) const;
+
+    bool xZeroLineEnabled(){return d_x_zero_line;};
+    void enableZeroLineX(bool enable = true){d_x_zero_line = enable;};
+    bool yZeroLineEnabled(){return d_y_zero_line;};
+    void enableZeroLineY(bool enable = true){d_y_zero_line = enable;};
+
+private:
+    bool d_x_zero_line, d_y_zero_line;
 };
 
 #endif

@@ -1237,6 +1237,7 @@ void Graph::setGridOptions(const GridOptions& o)
 
 	grid=o;
 
+    Grid *grd = (Grid *)d_plot->grid();
 	QColor minColor = ColorBox::color(grid.minorCol);
 	QColor majColor = ColorBox::color(grid.majorCol);
 
@@ -1244,24 +1245,24 @@ void Graph::setGridOptions(const GridOptions& o)
 	Qt::PenStyle minStyle = getPenStyle(grid.minorStyle);
 
 	QPen majPen=QPen (majColor,grid.majorWidth,majStyle);
-	d_plot->grid()->setMajPen (majPen);
+	grd->setMajPen (majPen);
 
 	QPen minPen=QPen (minColor,grid.minorWidth,minStyle);
-	d_plot->grid()->setMinPen(minPen);
+	grd->setMinPen(minPen);
 
-	if (grid.majorOnX) d_plot->grid()->enableX (true);
-	else if (grid.majorOnX==0) d_plot->grid()->enableX (false);
+	if (grid.majorOnX) grd->enableX (true);
+	else if (grid.majorOnX==0) grd->enableX (false);
 
-	if (grid.minorOnX) d_plot->grid()->enableXMin (true);
-	else if (grid.minorOnX==0) d_plot->grid()->enableXMin (false);
+	if (grid.minorOnX) grd->enableXMin (true);
+	else if (grid.minorOnX==0) grd->enableXMin (false);
 
-	if (grid.majorOnY) d_plot->grid()->enableY (true);
-	else if (grid.majorOnY==0) d_plot->grid()->enableY (false);
+	if (grid.majorOnY)grd->enableY (true);
+	else if (grid.majorOnY==0) grd->enableY (false);
 
-	if (grid.minorOnY) d_plot->grid()->enableYMin (true);
+	if (grid.minorOnY) grd->enableYMin (true);
 	else d_plot->grid()->enableYMin (false);
 
-	d_plot->grid()->setAxis(grid.xAxis, grid.yAxis);
+	grd->setAxis(grid.xAxis, grid.yAxis);
 
 	if (mrkX<0 && grid.xZeroOn) {
 		QwtPlotMarker *m = new QwtPlotMarker();
@@ -1270,6 +1271,7 @@ void Graph::setGridOptions(const GridOptions& o)
 		m->setAxis(grid.xAxis, grid.yAxis);
 		m->setLineStyle(QwtPlotMarker::VLine);
 		m->setValue(0.0, 0.0);
+		grd->enableZeroLineX();
 
 		int width = 1;
 		if (d_plot->canvas()->lineWidth())
@@ -1280,16 +1282,19 @@ void Graph::setGridOptions(const GridOptions& o)
 		m->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
 	} else if (mrkX>=0 && !grid.xZeroOn) {
 		d_plot->removeMarker(mrkX);
+        grd->enableZeroLineX(false);
 		mrkX=-1;
 	}
 
 	if (mrkY<0 && grid.yZeroOn) {
+
 		QwtPlotMarker *m = new QwtPlotMarker();
 		mrkY = d_plot->insertMarker(m);
 		m->setRenderHint(QwtPlotItem::RenderAntialiased, false);
 		m->setAxis(grid.xAxis, grid.yAxis);
 		m->setLineStyle(QwtPlotMarker::HLine);
 		m->setValue(0.0, 0.0);
+        grd->enableZeroLineY();
 
 		int width = 1;
 		if (d_plot->canvas()->lineWidth())
@@ -1300,6 +1305,7 @@ void Graph::setGridOptions(const GridOptions& o)
 		m->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
 	} else if (mrkY>=0 && !grid.yZeroOn) {
 		d_plot->removeMarker(mrkY);
+        grd->enableZeroLineY(false);
 		mrkY=-1;
 	}
 

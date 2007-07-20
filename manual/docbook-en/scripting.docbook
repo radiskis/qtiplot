@@ -874,12 +874,36 @@ t.setColName(col, newName)
 	  </programlisting> Normalize a single or all columns: <programlisting width="40">
 t.normalize(col)
 t.normalize()
-	  </programlisting> Import values from <varname>file</varname>, using
+	  </programlisting> 
+	  
+	  Sort a single or all columns: <programlisting width="40">
+t.sortColumn(col, order = 0);
+t.sort(type = 0, order = 0, leadingColumnName)
+	  </programlisting> 
+	  
+	  Import values from <varname>file</varname>, using
         <varname>sep</varname> as separator char and ignoring
         <varname>ignore</varname> lines at the head of the file. The flags
         should be self-explanatory. <programlisting width="40">
 t.importASCII(file, sep="\t", ignore=0, renameCols=False, stripSpaces=True, simplifySpace=False, newTable=False)
-	  </programlisting> After having changed some table values from a script, you will
+	  </programlisting> 
+	  
+	  	 You can export values from a table to an ASCII <varname>file</varname>, using
+        <varname>sep</varname> as separator chararacter. The <varname>ColumnLabels</varname> option
+        allows you to export or ignore the column labels and the <varname>SelectionOnly</varname> option makes
+        possible to export only the selected cells of the table. <programlisting width="40">
+t.exportASCII(file, sep="\t", ignore=0, ColumnLabels=False, SelectionOnly=False)
+	  </programlisting>
+	  
+	  Other settings that you can modify are the text displayed as a comment in the header of a column 
+or the expression used to calculate the column values. Please beware that changing the command doesn't automatically 
+update the values of the column!
+<programlisting>
+t.setComment(col, newComment)
+t.setCommand(col, newExpression)
+</programlisting>
+	
+	  After having changed some table values from a script, you will
         likely want to update dependent Graphs: <programlisting width="40">
 t.notifyChanges()
 	  </programlisting></para>
@@ -956,101 +980,128 @@ d = m.determinant()
         <para>If you want to create a new Graph window for some data in table
         table1, you can use the plot command: <programlisting width="40">
 g = plot(table, column, type)
-	  </programlisting> <varname>type</varname> is a number between 0 and 10 and
-        specifies the desired plot type: <variablelist spacing="compact">
+	  </programlisting> <varname>type</varname> specifies the desired plot type and 
+	  can be one of the following numbers or the equivalent reserved word: 
+	  <variablelist spacing="compact">
             <varlistentry>
-              <term>0.</term>
+              <term>0</term>
 
               <listitem>
-                <para>Line</para>
+                <para>Layer.Line</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>1.</term>
+              <term>1</term>
 
               <listitem>
-                <para>Symbols</para>
+                <para>Layer.Scatter</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>2.</term>
+              <term>2</term>
 
               <listitem>
-                <para>Line and Symbols</para>
+                <para>Layer.LineSymbols</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>3.</term>
+              <term>3</term>
 
               <listitem>
-                <para>Columns</para>
+                <para>Layer.VerticalBars</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>4.</term>
+              <term>4</term>
 
               <listitem>
-                <para>Area</para>
+                <para>Layer.Area</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>5.</term>
+              <term>5</term>
 
               <listitem>
-                <para>Pie</para>
+                <para>Layer.Pie</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>6.</term>
+              <term>6</term>
 
               <listitem>
-                <para>Vertical drop lines</para>
+                <para>Layer.VerticalDropLines</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>7.</term>
+              <term>7</term>
 
               <listitem>
-                <para>Splines and Symbols</para>
+                <para>Layer.Spline</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>8.</term>
+              <term>8</term>
 
               <listitem>
-                <para>Vertical steps</para>
+                <para>Layer.HorizontalSteps</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>9.</term>
+              <term>9</term>
 
               <listitem>
-                <para>Histogram</para>
+                <para>Layer.Histogram</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term>10.</term>
+              <term>10</term>
 
               <listitem>
-                <para>Rows</para>
+                <para>Layer.HorizontalBars</para>
               </listitem>
             </varlistentry>
+			
+			 <varlistentry>
+              <term>13</term>
+
+              <listitem>
+                <para>Layer.Box</para>
+              </listitem>
+            </varlistentry>
+			
+			<varlistentry>
+              <term>15</term>
+
+              <listitem>
+                <para>Layer.VerticalSteps</para>
+              </listitem>
+            </varlistentry>
+			
           </variablelist> You can plot more than one column at once by giving
         a Python tuple (see the <ulink url="http://docs.python.org/tut">Python
         Tutorial</ulink>) as an argument: <programlisting width="40">
-g = plot(table("table1"), (2,4,7), 2)
+g1 = plot(table("Table1"), (2,4,7), 2)
+g2 = plot(table("Table1"), ("Table1_2","Table1_3"), Layer.LineSymbols)
 	  </programlisting></para>
 
+<para>You can also create a vector plot by giving four columns in
+a Python tuple as an argument and the plot type as Layer.VectXYXY (11) or Layer.VectXYAM (14),
+depending on how you want to define the end point of your vectors: using (X, Y) coordinates or 
+(Angle, Magnitude) coordinates.	
+		<programlisting>
+g = plot(table("Table1"), (2,3,4,5), Layer.VectXYXY)
+	  </programlisting></para>
+	  
         <para>If you want to add a curve to an existing Graph window, you have
         to choose the destination layer. Usually, <programlisting width="40">
 l = g.activeLayer()
@@ -1059,15 +1110,27 @@ l = g.activeLayer()
 l = g.layer(num)
 	  </programlisting> You can then add or remove curves to or from this layer: <programlisting
         width="40">
-l.insertCurve(table, column, type=1)
-l.insertCurve(table, Xcolumn, Ycolumn, type=1)
+l.insertCurve(table, Xcolumn, Ycolumn, type=Layer.Scatter)
+l.addCurve(table, column, type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)
+l.addCurves(table, (2,4), type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)
 l.removeCurve(curveName)
 l.removeCurve(curveNumber)
 l.deleteFitCurves()
-	  </programlisting> In case you need the number of curves on a layer, you can get it
+	  </programlisting> 
+	  
+You can also add analytical function curves to a plot layer: 
+<programlisting>
+l.addFunction("x*sin(x)", 0, 3*pi, points = 100);
+l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
+l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
+</programlisting>
+	  
+	  In case you need the number of curves on a layer, you can get it
         with <programlisting width="40">
 l.numCurves()
 	  </programlisting></para>
+	  
+	  
 
         <para>Layers and whole Graphs can be printed and exported from within
         Python. Before you do this, you would probably want to change layer and axis

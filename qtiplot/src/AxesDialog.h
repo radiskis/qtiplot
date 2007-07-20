@@ -86,8 +86,6 @@ public:
 	 * \param fl window flags
 	 */
     AxesDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
-	//! Destructor
-    ~AxesDialog(){};
 
 	void setGraph(Graph *g);
 
@@ -162,6 +160,8 @@ public slots:
 	void minorGridEnabled(bool on);
 	GridOptions getGridOptions();
 	void putGridOptions(GridOptions gr);
+    void showGridOptions(int axis);
+
 	void setGridOptions();
 	void accept();
 	void customAxisFont();
