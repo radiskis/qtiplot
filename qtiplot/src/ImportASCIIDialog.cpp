@@ -188,8 +188,7 @@ void ImportASCIIDialog::setColumnSeparator(const QString& sep)
 		d_column_separator->setCurrentIndex(6);
 	else if (sep==",")
 		d_column_separator->setCurrentIndex(7);
-	else
-	{
+	else {
 		QString separator = sep;
 		d_column_separator->setEditText(separator.replace(" ","\\s").replace("\t","\\t"));
 	}

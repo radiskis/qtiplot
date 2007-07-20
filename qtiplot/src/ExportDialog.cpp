@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ExportDialog.h"
+#include "ApplicationWindow.h"
 
 #include <QLayout>
 #include <QLabel>
@@ -35,18 +36,22 @@
 #include <QCheckBox>
 #include <QComboBox>
 
-ExportDialog::ExportDialog( QWidget* parent, Qt::WFlags fl )
+ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
 	setWindowTitle( tr( "QtiPlot - Export ASCII" ) );
 	setSizeGripEnabled( true );
 	
+	ApplicationWindow *app = (ApplicationWindow *)parent;
+
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Table")), 0, 0);
 	boxTable = new QComboBox();
+	boxTable->addItems(app->tableWindows);
+	boxTable->setCurrentIndex(boxTable->findText(tableName));
 	boxTable->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	gl1->addWidget(boxTable, 0, 1);
-
+	
 	boxAllTables = new QCheckBox(tr( "&All" ));
     boxAllTables->setChecked(false);
 	gl1->addWidget(boxAllTables, 0, 2);
@@ -66,6 +71,7 @@ ExportDialog::ExportDialog( QWidget* parent, Qt::WFlags fl )
 	boxSeparator->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	boxSeparator->setEditable( true );
 	gl1->addWidget(boxSeparator, 1, 1);
+	setColumnSeparator(app->d_export_col_separator);
 
 	QString help = tr("The column separator can be customized. The following special codes can be used:\n\\t for a TAB character \n\\s for a SPACE");
 	help += "\n"+tr("The separator must not contain the following characters: 0-9eE.+-");
@@ -76,10 +82,10 @@ ExportDialog::ExportDialog( QWidget* parent, Qt::WFlags fl )
 	sepText->setToolTip(help);
 
 	boxNames = new QCheckBox(tr( "Include Column &Names" ));
-    boxNames->setChecked( true );
+    boxNames->setChecked( app->d_export_col_names );
 	
     boxSelection = new QCheckBox(tr( "Export &Selection" ));
-    boxSelection->setChecked( false );
+    boxSelection->setChecked( app->d_export_table_selection );
 
 	QVBoxLayout *vl1 = new QVBoxLayout();
 	vl1->addLayout( gl1 );
@@ -103,7 +109,7 @@ ExportDialog::ExportDialog( QWidget* parent, Qt::WFlags fl )
 	   
     // signals and slots connections
     connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
     connect( buttonHelp, SIGNAL( clicked() ), this, SLOT( help() ) );
 	connect( boxAllTables, SIGNAL( toggled(bool) ), this, SLOT( enableTableName(bool) ) );
 }
@@ -115,16 +121,6 @@ void ExportDialog::help()
 	QMessageBox::about(0, tr("QtiPlot - Help"),s);
 }
 
-void ExportDialog::setTableNames(const QStringList& names)
-{
-	boxTable->addItems(names);
-}
-
-void ExportDialog::setActiveTableName(const QString& name)
-{
-	boxTable->setCurrentIndex(boxTable->findText(name));
-}
-
 void ExportDialog::enableTableName(bool ok)
 {
 	boxTable->setEnabled(!ok);
@@ -132,14 +128,17 @@ void ExportDialog::enableTableName(bool ok)
 
 void ExportDialog::accept()
 {
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (!app)
+		return;
+	
 	QString sep = boxSeparator->currentText();
 	sep.replace(tr("TAB"), "\t", Qt::CaseInsensitive);
 	sep.replace(tr("SPACE"), " ");
 	sep.replace("\\s", " ");
 	sep.replace("\\t", "\t");
 
-	if (sep.contains(QRegExp("[0-9.eE+-]")))
-	{
+	if (sep.contains(QRegExp("[0-9.eE+-]"))){
 		QMessageBox::warning(0, tr("QtiPlot - Import options error"),
 				tr("The separator must not contain the following characters: 0-9eE.+-"));
 		return;
@@ -147,10 +146,9 @@ void ExportDialog::accept()
 
 	hide();
 	if (boxAllTables->isChecked())
-		emit exportAllTables(sep, boxNames->isChecked(), boxSelection->isChecked());
+		app->exportAllTables(sep, boxNames->isChecked(), boxSelection->isChecked());
 	else
-		emit exportTable(boxTable->currentText(), sep, 
-				boxNames->isChecked(), boxSelection->isChecked());
+		app->exportASCII(boxTable->currentText(), sep, boxNames->isChecked(), boxSelection->isChecked());
 	close();
 }
 
@@ -172,13 +170,26 @@ void ExportDialog::setColumnSeparator(const QString& sep)
 		boxSeparator->setCurrentIndex(6);
 	else if (sep==",")
 		boxSeparator->setCurrentIndex(7);
-	else
-	{
+	else {
 		QString separator = sep;
 		boxSeparator->setEditText(separator.replace(" ","\\s").replace("\t","\\t"));
 	}
 }
 
-ExportDialog::~ExportDialog()
+void ExportDialog::closeEvent(QCloseEvent* e)
 {
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (app){
+		app->d_export_col_names = boxNames->isChecked();
+		app->d_export_table_selection = boxSelection->isChecked();
+		
+		QString sep = boxSeparator->currentText();
+		sep.replace(tr("TAB"), "\t", Qt::CaseInsensitive);
+		sep.replace(tr("SPACE"), " ");
+		sep.replace("\\s", " ");
+		sep.replace("\\t", "\t");
+		app->d_export_col_separator = sep;
+	}
+
+	e->accept();
 }

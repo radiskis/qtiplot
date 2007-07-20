@@ -922,6 +922,8 @@ signals:
 
 // TODO: a lot of this stuff should be private
 public:
+	QString d_export_col_separator;
+	bool d_export_col_names, d_export_table_selection;
 
     bool d_thousands_sep;
     //! Last selected filter in export image dialog
