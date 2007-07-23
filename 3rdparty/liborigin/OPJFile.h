@@ -194,7 +194,6 @@ struct graphCurve {
 	int fillarea_pattern_border_color;
 	int fillarea_pattern_border_width;
 
-
 	int symbol_type;
 	int symbol_color;
 	int symbol_fill_color;
@@ -203,7 +202,7 @@ struct graphCurve {
 	int point_offset;
 };
 
-enum AxisPosition{ Left = 0, Bottom = 1, Right = 2, Top = 3};
+enum AxisPosition {Left = 0, Bottom = 1, Right = 2, Top = 3};
 
 struct graphGrid {
 	bool hidden;
@@ -250,7 +249,36 @@ struct graphAxis {
 	graphAxisTick tickAxis[2]; //bottom-top, left-right
 };
 
+struct rect {
+	short left;
+	short top;
+	short right;
+	short bottom;
+	int height()
+	{
+		return bottom-top;
+	};
+	int width()
+	{
+		return right-left;
+	};
+};
+
+struct text {
+	string txt;
+	rect clientRect;
+	int color;
+	int fontsize;
+	int rotation;
+	int tab;
+	int border_type;
+	text(string _txt="")
+		:	txt(_txt)
+	{};
+};
+
 struct graphLayer {
+	rect clientRect;
 	string legend;
 	graphAxis xAxis;
 	graphAxis yAxis;
@@ -259,6 +287,7 @@ struct graphLayer {
 	double histogram_begin;
 	double histogram_end;
 
+	vector<text> texts;
 	vector<graphCurve> curve;
 };
 
@@ -376,9 +405,11 @@ public:
 
 	enum LineConnect {NoLine=0, Straight=1, TwoPointSegment=2, ThreePointSegment=3, BSpline=8, Spline=9, StepHorizontal=11, StepVertical=12, StepHCenter=13, StepVCenter=14, Bezier=15};
 
-	enum Scale{Linear=0, Log10=1, Probability=2, Probit=3, Reciprocal=4, OffsetReciprocal=5, Logit=6, Ln=7, Log2=8};
+	enum Scale {Linear=0, Log10=1, Probability=2, Probit=3, Reciprocal=4, OffsetReciprocal=5, Logit=6, Ln=7, Log2=8};
 
 	enum ValueType {Numeric=0, Text=1, Time=2, Date=3,  Month=4, Day=5, ColumnHeading=6, TickIndexedDataset=7, TextNumeric=9, Categorical=10};
+	
+	enum BorderType {BlackLine=0, Shadow=1, DarkMarble=2, WhiteOut=3, BlackOut=4, None=-1};
 
 	int numGraphs() { return GRAPH.size(); }			//!< get number of graphs
 	const char *graphName(int s) { return GRAPH[s].name.c_str(); }	//!< get name of graph s
@@ -386,9 +417,11 @@ public:
 	const char *graphLabel(int s) { return GRAPH[s].label.c_str(); }	//!< get name of graph s
 	bool graphHidden(int s) { return GRAPH[s].bHidden; }	//!< is graph s hidden
 	int numLayers(int s) { return GRAPH[s].layer.size(); }			//!< get number of layers of graph s
+	rect layerRect(int s, int l) { return GRAPH[s].layer[l].clientRect; }		//!< get rectangle of layer l of graph s
 	const char *layerXAxisTitle(int s, int l) { return GRAPH[s].layer[l].xAxis.label.c_str(); }		//!< get label of X-axis of layer l of graph s
 	const char *layerYAxisTitle(int s, int l) { return GRAPH[s].layer[l].yAxis.label.c_str(); }		//!< get label of Y-axis of layer l of graph s
 	const char *layerLegend(int s, int l) { return GRAPH[s].layer[l].legend.c_str(); }		//!< get legend of layer l of graph s
+	vector<text> layerTexts(int s, int l) {	return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
 	vector<double> layerXRange(int s, int l) {
 		vector<double> range;
 		range.push_back(GRAPH[s].layer[l].xAxis.min);

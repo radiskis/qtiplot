@@ -373,8 +373,8 @@ int OPJFile::ParseFormatOld() {
 				current_col=1;
 			current_col++;
 		}
-		fprintf(debug,"SPREADSHEET = %s COLUMN NAME = %s (%d) (@0x%X)\n",
-			sname, cname,current_col,(unsigned int) ftell(f));
+		fprintf(debug,"SPREADSHEET = %s COLUMN %d NAME = %s (@0x%X)\n",
+			sname, current_col, cname, (unsigned int) ftell(f));
 		fflush(debug);
 
 		if(cname == 0) {
@@ -569,6 +569,8 @@ int OPJFile::ParseFormatOld() {
 	fread(&name,25,1,f);
 
 	spread=compareSpreadnames(name);
+	if(spread == -1)
+		spread=i;
 
 	fprintf(debug,"			SPREADSHEET %d NAME : %s	(@ 0x%X) has %d columns\n",
 		spread+1,name,POS + 0x12,SPREADSHEET[spread].column.size());
@@ -2028,6 +2030,12 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 		fread(&m,1,1,f);
 		GRAPH.back().layer.back().yAxis.scale=m;
 
+		rect r;
+		fseek(f, LAYER+0x71, SEEK_SET);
+		fread(&r,sizeof(rect),1,f);
+		if(IsBigEndian()) SwapBytes(r);
+		GRAPH.back().layer.back().clientRect=r;
+
 		LAYER += 0x12D + 0x1;
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: axes, legend, __BC02, _202, _231, _232, __LayerInfoStorage etc
@@ -2043,6 +2051,17 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			sec_name[41]='\0';
 			fread(&sec_name,41,1,f);
 
+			fseek(f, LAYER+0x3, SEEK_SET);
+			fread(&r,sizeof(rect),1,f);
+			if(IsBigEndian()) SwapBytes(r);
+
+			unsigned char c,b;
+			fseek(f, LAYER+0x29, SEEK_SET);
+			fread(&b,1,1,f);
+
+			fseek(f, LAYER+0x33, SEEK_SET);
+			fread(&c,1,1,f);
+
 		//section_body_1_size
 			LAYER+=0x6F+0x1;
 			fseek(f,LAYER,SEEK_SET);
@@ -2051,6 +2070,15 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 
 		//section_body_1
 			LAYER+=0x5;
+			short rotation=0;
+			fseek(f,LAYER+2,SEEK_SET);
+			if(IsBigEndian()) SwapBytes(rotation);
+			fread(&rotation,2,1,f);
+			unsigned char fontsize=0;
+			fread(&fontsize,1,1,f);
+			unsigned char tab=0;
+			fseek(f,LAYER+0xA,SEEK_SET);
+			fread(&tab,1,1,f);
 
 		//section_body_2_size
 			LAYER+=sec_size+0x1;
@@ -2097,6 +2125,21 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				fread(&stmp,sec_size,1,f);
 				GRAPH.back().layer.back().legend=stmp;
 			}
+			else if(sec_name==strstr(sec_name,"Text"))
+			{
+				stmp[sec_size]='\0';
+				fread(&stmp,sec_size,1,f);
+				GRAPH.back().layer.back().texts.push_back(text(stmp));
+				GRAPH.back().layer.back().texts.back().color=c;
+				GRAPH.back().layer.back().texts.back().clientRect=r;
+				GRAPH.back().layer.back().texts.back().tab=tab;
+				GRAPH.back().layer.back().texts.back().fontsize=fontsize;
+				GRAPH.back().layer.back().texts.back().rotation=rotation/10;
+				if(b>=0x80)
+					GRAPH.back().layer.back().texts.back().border_type=b-0x80;
+				else
+					GRAPH.back().layer.back().texts.back().border_type=None;
+			}
 			else if(0==strcmp(sec_name,"__BCO2"))
 			{
 				double d;
@@ -2135,141 +2178,148 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 		LAYER+=0x5;
 		unsigned char h;
 		short w;
-		while(1)//need to add empty layer check!!!
-		{
-			LAYER+=0x5;
-
-			GRAPH.back().layer.back().curve.push_back(graphCurve());
-
-			vector<string> col;
-			fseek(f,LAYER+0x4,SEEK_SET);
-			fread(&w,2,1,f);
-			if(IsBigEndian()) SwapBytes(w);
-			col=findDataByIndex(w-1);
-			if(col.size()>0)
-			{
-				fprintf(debug,"			GRAPH %d layer %d curve %d Y : %s.%s\n",GRAPH.size(),GRAPH.back().layer.size(),GRAPH.back().layer.back().curve.size(),col[1].c_str(),col[0].c_str());
-				fflush(debug);
-				GRAPH.back().layer.back().curve.back().yColName=col[0];
-				GRAPH.back().layer.back().curve.back().dataName=col[1];
-			}
-
-			fseek(f,LAYER+0x23,SEEK_SET);
-			fread(&w,2,1,f);
-			if(IsBigEndian()) SwapBytes(w);
-			col=findDataByIndex(w-1);
-			if(col.size()>0)
-			{
-				fprintf(debug,"			GRAPH %d layer %d curve %d X : %s.%s\n",GRAPH.size(),GRAPH.back().layer.size(),GRAPH.back().layer.back().curve.size(),col[1].c_str(),col[0].c_str());
-				fflush(debug);
-				GRAPH.back().layer.back().curve.back().xColName=col[0];
-				if(GRAPH.back().layer.back().curve.back().dataName!=col[1])
-					fprintf(debug,"			GRAPH %d X and Y from different tables\n",GRAPH.size());
-			}
-
-			fseek(f,LAYER+0x4C,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().type=h;
-
-			fseek(f,LAYER+0x11,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().line_connect=h;
-
-			fseek(f,LAYER+0x12,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().line_style=h;
-
-			fseek(f,LAYER+0x15,SEEK_SET);
-			fread(&w,2,1,f);
-			if(IsBigEndian()) SwapBytes(w);
-			GRAPH.back().layer.back().curve.back().line_width=(double)w/500.0;
-
-			fseek(f,LAYER+0x19,SEEK_SET);
-			fread(&w,2,1,f);
-			if(IsBigEndian()) SwapBytes(w);
-			GRAPH.back().layer.back().curve.back().symbol_size=(double)w/500.0;
-
-			fseek(f,LAYER+0x1C,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().fillarea=(h==2?true:false);
-
-			fseek(f,LAYER+0x1E,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().fillarea_type=h;
-
-			fseek(f,LAYER+0xC2,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().fillarea_color=h;
-
-			fseek(f,LAYER+0xCE,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().fillarea_pattern=h;
-
-			fseek(f,LAYER+0xCA,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().fillarea_pattern_color=h;
-
-			fseek(f,LAYER+0xC6,SEEK_SET);
-			fread(&w,2,1,f);
-			if(IsBigEndian()) SwapBytes(w);
-			GRAPH.back().layer.back().curve.back().fillarea_pattern_width=(double)w/500.0;
-
-			fseek(f,LAYER+0xCF,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().fillarea_pattern_border_style=h;
-
-			fseek(f,LAYER+0xD2,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().fillarea_pattern_border_color=h;
 			
-			fseek(f,LAYER+0xD0,SEEK_SET);
-			fread(&w,2,1,f);
-			if(IsBigEndian()) SwapBytes(w);
-			GRAPH.back().layer.back().curve.back().fillarea_pattern_border_width=(double)w/500.0;
-
-			fseek(f,LAYER+0x16A,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().line_color=h;
-
-			fseek(f,LAYER+0x17,SEEK_SET);
-			fread(&w,2,1,f);
-			if(IsBigEndian()) SwapBytes(w);
-			GRAPH.back().layer.back().curve.back().symbol_type=w;
-
-			fseek(f,LAYER+0x12E,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().symbol_fill_color=h;
-
-			fseek(f,LAYER+0x132,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().symbol_color=h;
-
-			fseek(f,LAYER+0x136,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().symbol_thickness=(h==255?1:h);
-
-			fseek(f,LAYER+0x137,SEEK_SET);
-			fread(&h,1,1,f);
-			GRAPH.back().layer.back().curve.back().point_offset=h;
-
-			LAYER+=0x1E7+0x1;
-			fseek(f,LAYER,SEEK_SET);
-			int comm_size=0;
-			fread(&comm_size,4,1,f);
-			if(IsBigEndian()) SwapBytes(comm_size);
-			LAYER+=0x5;
-			if(comm_size>0)
+		fseek(f,LAYER,SEEK_SET);
+		fread(&sec_size,4,1,f);
+		if(IsBigEndian()) SwapBytes(sec_size);
+		if(sec_size==0x1E7)//check layer is not empty
+		{
+			while(1)
 			{
-				LAYER+=comm_size+0x1;
-			}
-			fseek(f,LAYER,SEEK_SET);
-			int ntmp;
-			fread(&ntmp,4,1,f);
-			if(IsBigEndian()) SwapBytes(ntmp);
-			if(ntmp!=0x1E7)
-				break;
-		}
+				LAYER+=0x5;
 
+				GRAPH.back().layer.back().curve.push_back(graphCurve());
+
+				vector<string> col;
+				fseek(f,LAYER+0x4,SEEK_SET);
+				fread(&w,2,1,f);
+				if(IsBigEndian()) SwapBytes(w);
+				col=findDataByIndex(w-1);
+				if(col.size()>0)
+				{
+					fprintf(debug,"			GRAPH %d layer %d curve %d Y : %s.%s\n",GRAPH.size(),GRAPH.back().layer.size(),GRAPH.back().layer.back().curve.size(),col[1].c_str(),col[0].c_str());
+					fflush(debug);
+					GRAPH.back().layer.back().curve.back().yColName=col[0];
+					GRAPH.back().layer.back().curve.back().dataName=col[1];
+				}
+
+				fseek(f,LAYER+0x23,SEEK_SET);
+				fread(&w,2,1,f);
+				if(IsBigEndian()) SwapBytes(w);
+				col=findDataByIndex(w-1);
+				if(col.size()>0)
+				{
+					fprintf(debug,"			GRAPH %d layer %d curve %d X : %s.%s\n",GRAPH.size(),GRAPH.back().layer.size(),GRAPH.back().layer.back().curve.size(),col[1].c_str(),col[0].c_str());
+					fflush(debug);
+					GRAPH.back().layer.back().curve.back().xColName=col[0];
+					if(GRAPH.back().layer.back().curve.back().dataName!=col[1])
+						fprintf(debug,"			GRAPH %d X and Y from different tables\n",GRAPH.size());
+				}
+
+				fseek(f,LAYER+0x4C,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().type=h;
+
+				fseek(f,LAYER+0x11,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().line_connect=h;
+
+				fseek(f,LAYER+0x12,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().line_style=h;
+
+				fseek(f,LAYER+0x15,SEEK_SET);
+				fread(&w,2,1,f);
+				if(IsBigEndian()) SwapBytes(w);
+				GRAPH.back().layer.back().curve.back().line_width=(double)w/500.0;
+
+				fseek(f,LAYER+0x19,SEEK_SET);
+				fread(&w,2,1,f);
+				if(IsBigEndian()) SwapBytes(w);
+				GRAPH.back().layer.back().curve.back().symbol_size=(double)w/500.0;
+
+				fseek(f,LAYER+0x1C,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().fillarea=(h==2?true:false);
+
+				fseek(f,LAYER+0x1E,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().fillarea_type=h;
+
+				fseek(f,LAYER+0xC2,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().fillarea_color=h;
+
+				fseek(f,LAYER+0xCE,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().fillarea_pattern=h;
+
+				fseek(f,LAYER+0xCA,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().fillarea_pattern_color=h;
+
+				fseek(f,LAYER+0xC6,SEEK_SET);
+				fread(&w,2,1,f);
+				if(IsBigEndian()) SwapBytes(w);
+				GRAPH.back().layer.back().curve.back().fillarea_pattern_width=(double)w/500.0;
+
+				fseek(f,LAYER+0xCF,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().fillarea_pattern_border_style=h;
+
+				fseek(f,LAYER+0xD2,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().fillarea_pattern_border_color=h;
+				
+				fseek(f,LAYER+0xD0,SEEK_SET);
+				fread(&w,2,1,f);
+				if(IsBigEndian()) SwapBytes(w);
+				GRAPH.back().layer.back().curve.back().fillarea_pattern_border_width=(double)w/500.0;
+
+				fseek(f,LAYER+0x16A,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().line_color=h;
+
+				fseek(f,LAYER+0x17,SEEK_SET);
+				fread(&w,2,1,f);
+				if(IsBigEndian()) SwapBytes(w);
+				GRAPH.back().layer.back().curve.back().symbol_type=w;
+
+				fseek(f,LAYER+0x12E,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().symbol_fill_color=h;
+
+				fseek(f,LAYER+0x132,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().symbol_color=h;
+
+				fseek(f,LAYER+0x136,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().symbol_thickness=(h==255?1:h);
+
+				fseek(f,LAYER+0x137,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().point_offset=h;
+
+				LAYER+=0x1E7+0x1;
+				fseek(f,LAYER,SEEK_SET);
+				int comm_size=0;
+				fread(&comm_size,4,1,f);
+				if(IsBigEndian()) SwapBytes(comm_size);
+				LAYER+=0x5;
+				if(comm_size>0)
+				{
+					LAYER+=comm_size+0x1;
+				}
+				fseek(f,LAYER,SEEK_SET);
+				int ntmp;
+				fread(&ntmp,4,1,f);
+				if(IsBigEndian()) SwapBytes(ntmp);
+				if(ntmp!=0x1E7)
+					break;
+			}
+
+		}
 		//LAYER+=0x5*0x5+0x1ED*0x12;
 		LAYER+=2*0x5;
 
