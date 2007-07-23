@@ -40,6 +40,9 @@
 #include "Note.h"
 #include "Folder.h"
 #include "QwtHistogram.h"
+#include "Legend.h"
+
+#include "qwt_plot_canvas.h"
 
 
 #define OBJECTXOFFSET 200
@@ -448,7 +451,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 	double pi=3.141592653589793;
 	int visible_count=0;
 	int tickTypeMap[]={0,3,1,2};
-	for (int g=0; g<opj.numGraphs(); g++)
+	for (int g=0; g<opj.numGraphs(); ++g)
 	{
 		Folder *f=mw->projectFolder()->findSubfolder(opj.graphParentFolder(g), true, false);
 		if(!f)
@@ -460,12 +463,13 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 
 		ml->hide();//!hack used in order to avoid resize and repaint events
 		ml->setWindowLabel(opj.graphLabel(g));
-		for(int l=0; l<opj.numLayers(g); l++)
+		for(int l=0; l<opj.numLayers(g); ++l)
 		{
 			Graph *graph=ml->addLayer();
 			if(!graph)
 				return false;
-
+			
+			rect gRect=opj.layerRect(g,l);
 			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerXAxisTitle(g,l))));
 			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerYAxisTitle(g,l))));
 			if(strlen(opj.layerLegend(g,l))>0)
@@ -867,6 +871,43 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 
 			graph->setAutoscaleFonts(mw->autoScaleFonts);//restore user defined fonts behaviour
         	graph->setIgnoreResizeEvents(!mw->autoResizeLayers);
+
+			//add texts
+			//graph->setGeometry(gRect.left, gRect.top, gRect.right, gRect.bottom);
+			//graph->plotWidget()->resize(gRect.width(), gRect.height());
+			QRect qtiRect=graph->plotWidget()->canvas()->geometry();
+			vector<text> texts=opj.layerTexts(g, l);
+			for(int i=0; i<texts.size(); ++i)
+			{
+				int bkg;
+				switch(texts[i].border_type)
+				{
+				case OPJFile::BlackLine:
+					bkg=1;
+					break;
+				case OPJFile::Shadow:
+				case OPJFile::DarkMarble:
+					bkg=2;
+					break;
+				default:
+					bkg=0;
+					break;
+				}
+
+				Legend* txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(texts[i].txt.c_str())));
+				rect txtRect=texts[i].clientRect;
+				QFont font(graph->defaultTextMarkerFont());
+				//font.setPointSize(texts[i].fontsize);
+				txt->setAngle(texts[i].rotation);
+				txt->setTextColor(ColorBox::color(texts[i].color));
+				txt->setFont(font);
+				txt->setFrameStyle(bkg);
+
+				int x=(txtRect.left>gRect.left ? txtRect.left-gRect.left : 0);
+				int y=(txtRect.top>gRect.top ? txtRect.top-gRect.top : 0);
+				txt->setOrigin(QPoint(x*qtiRect.width()/gRect.width(),
+					y*qtiRect.height()/gRect.height()));
+			}
 		}
 		//cascade the graphs
 		if(!opj.graphHidden(g))
