@@ -2562,9 +2562,7 @@ void OPJFile::readGraphAxisFormatInfo(graphAxisFormat &format, FILE *f, int pos)
 void OPJFile::readGraphAxisTickLabelsInfo(graphAxisTick &tick, FILE *f, int pos) {
 	unsigned char h;
 	unsigned char h1;
-	unsigned char h2;
 	short w;
-	double p;
 	fseek(f,pos+0x26,SEEK_SET);
 	fread(&h,1,1,f);
 	tick.hidden=(h==0);
