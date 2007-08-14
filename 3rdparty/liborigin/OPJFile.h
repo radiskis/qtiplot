@@ -277,6 +277,26 @@ struct text {
 	{};
 };
 
+struct rectangle {
+	rect clientRect;
+};
+
+struct circle {
+	rect clientRect;
+};
+
+struct line {
+	rect clientRect;
+};
+
+struct bitmap {
+	rect clientRect;
+};
+
+struct metafile {
+	rect clientRect;
+};
+
 struct graphLayer {
 	rect clientRect;
 	string legend;

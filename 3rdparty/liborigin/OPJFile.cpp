@@ -2071,6 +2071,9 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 		//section_body_1
 			LAYER+=0x5;
 			short rotation=0;
+			int size=sec_size;
+			char type=0;
+			fread(&type,1,1,f);
 			fseek(f,LAYER+2,SEEK_SET);
 			if(IsBigEndian()) SwapBytes(rotation);
 			fread(&rotation,2,1,f);
@@ -2125,21 +2128,6 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				fread(&stmp,sec_size,1,f);
 				GRAPH.back().layer.back().legend=stmp;
 			}
-			else if(sec_name==strstr(sec_name,"Text"))
-			{
-				stmp[sec_size]='\0';
-				fread(&stmp,sec_size,1,f);
-				GRAPH.back().layer.back().texts.push_back(text(stmp));
-				GRAPH.back().layer.back().texts.back().color=c;
-				GRAPH.back().layer.back().texts.back().clientRect=r;
-				GRAPH.back().layer.back().texts.back().tab=tab;
-				GRAPH.back().layer.back().texts.back().fontsize=fontsize;
-				GRAPH.back().layer.back().texts.back().rotation=rotation/10;
-				if(b>=0x80)
-					GRAPH.back().layer.back().texts.back().border_type=b-0x80;
-				else
-					GRAPH.back().layer.back().texts.back().border_type=None;
-			}
 			else if(0==strcmp(sec_name,"__BCO2"))
 			{
 				double d;
@@ -2155,6 +2143,21 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				fread(&d,8,1,f);
 				if(IsBigEndian()) SwapBytes(d);
 				GRAPH.back().layer.back().histogram_begin=d;
+			}
+			else if(size==0x3E)
+			{
+				stmp[sec_size]='\0';
+				fread(&stmp,sec_size,1,f);
+				GRAPH.back().layer.back().texts.push_back(text(stmp));
+				GRAPH.back().layer.back().texts.back().color=c;
+				GRAPH.back().layer.back().texts.back().clientRect=r;
+				GRAPH.back().layer.back().texts.back().tab=tab;
+				GRAPH.back().layer.back().texts.back().fontsize=fontsize;
+				GRAPH.back().layer.back().texts.back().rotation=rotation/10;
+				if(b>=0x80)
+					GRAPH.back().layer.back().texts.back().border_type=b-0x80;
+				else
+					GRAPH.back().layer.back().texts.back().border_type=None;
 			}
 
 		//close section 00 00 00 00 0A
