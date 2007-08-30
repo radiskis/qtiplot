@@ -4222,7 +4222,7 @@ void ApplicationWindow::readSettings()
 	d_import_dec_separators = settings.value("/UpdateDecSeparators", true).toBool();
 	d_ASCII_import_mode = settings.value("/ImportMode", ImportASCIIDialog::NewTables).toInt();
 	settings.endGroup(); // Import ASCII
-	
+
 	settings.beginGroup("/ExportASCII");
 	d_export_col_separator = settings.value("/ColumnSeparator", "\\t").toString();
 	d_export_col_separator.replace("\\t", "\t").replace("\\s", " ");
@@ -4479,7 +4479,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ExportLabels", d_export_col_names);
 	settings.setValue("/ExportSelection", d_export_table_selection);
 	settings.endGroup(); // ExportASCII
-	
+
     settings.beginGroup("/ExportImage");
 	settings.setValue("/ImageFileTypeFilter", d_image_export_filter);
 	settings.setValue("/ExportTransparency", d_export_transparency);
@@ -4934,7 +4934,7 @@ void ApplicationWindow::renameWindow()
 	if (!w)
 		return;
 
-	RenameWindowDialog *rwd = new RenameWindowDialog(this,0);
+	RenameWindowDialog *rwd = new RenameWindowDialog(this);
 	rwd->setAttribute(Qt::WA_DeleteOnClose);
 	rwd->setWidget(w);
 	rwd->exec();
@@ -4948,14 +4948,6 @@ void ApplicationWindow::renameWindow(Q3ListViewItem *item, int, const QString &t
 	MyWidget *w = ((WindowListItem *)item)->window();
 	if (!w || text == w->name())
 		return;
-
-	/*while(!setWindowName(w, text)){
-        //lv->setCurrentItem(item);
-        //lv->setSelected (item, true);
-		item->setRenameEnabled (0, true);
-		item->startRename (0);
-		return;
-	}*/
 
 	if(!setWindowName(w, text))
         item->setText(0, w->name());
@@ -8587,16 +8579,15 @@ void ApplicationWindow::showFunctionDialog(Graph *g, int curve)
 
 FunctionDialog* ApplicationWindow::functionDialog()
 {
-	FunctionDialog* fd= new FunctionDialog(this);
+	FunctionDialog* fd = new FunctionDialog(this);
 	fd->setAttribute(Qt::WA_DeleteOnClose);
 	connect (fd,SIGNAL(clearParamFunctionsList()),this,SLOT(clearParamFunctionsList()));
 	connect (fd,SIGNAL(clearPolarFunctionsList()),this,SLOT(clearPolarFunctionsList()));
 
 	fd->insertParamFunctionsList(xFunctions, yFunctions);
 	fd->insertPolarFunctionsList(rFunctions, thetaFunctions);
-	fd->exec();
-	//fd->resize(fd->minimumSize());
-	//fd->setActiveWindow();
+	fd->show();
+	fd->setActiveWindow();
 	return fd;
 }
 
@@ -13730,7 +13721,8 @@ void ApplicationWindow::cascade()
         ((MyWidget *)w)->setStatus(MyWidget::Normal);
         updateWindowStatus((MyWidget *)w);
 
-        w->parentWidget()->setGeometry(x, y, w->width(), w->height());
+        w->parentWidget()->setGeometry(x, y, w->parentWidget()->geometry().width(),
+                                            w->parentWidget()->geometry().height());
         w->raise();
         x += xoffset;
         y += yoffset;

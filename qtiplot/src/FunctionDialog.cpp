@@ -202,17 +202,14 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		return;
 
 	curveID = curve;
-
 	QStringList formulas = c->formulas();
-	if (c->functionType() == FunctionCurve::Normal)
-	{
+
+	if (c->functionType() == FunctionCurve::Normal){
 		boxFunction->setText(formulas[0]);
 		boxFrom->setText(QString::number(c->startRange(), 'g', 15));
 		boxTo->setText(QString::number(c->endRange(), 'g', 15));
 		boxPoints->setValue(c->dataSize());
-	}
-	else if (c->functionType() == FunctionCurve::Polar)
-	{
+	} else if (c->functionType() == FunctionCurve::Polar) {
 		optionStack->setCurrentIndex(2);
 		boxType->setCurrentItem(2);
 
@@ -222,9 +219,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		boxPolarFrom->setText(QString::number(c->startRange(), 'g', 15));
 		boxPolarTo->setText(QString::number(c->endRange(), 'g', 15));
 		boxPolarPoints->setValue(c->dataSize());
-	}
-	else if (c->functionType() == FunctionCurve::Parametric)
-	{
+	} else if (c->functionType() == FunctionCurve::Parametric) {
 		boxType->setCurrentItem(1);
 		optionStack->setCurrentIndex(1);
 

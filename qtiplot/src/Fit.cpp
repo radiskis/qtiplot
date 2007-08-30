@@ -253,7 +253,7 @@ QString Fit::legendInfo()
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
-	
+
 	double chi_2_dof = chi_2/(d_n - d_p);
 	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'g', d_prec) + "\n";
 	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
@@ -504,14 +504,12 @@ void Fit::generateFitCurve(double *par)
 
 	calculateFitCurveData(par, X, Y);
 
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y);
 		d_graph->replot();
 		delete[] X;
 		delete[] Y;
-	}
-	else
+	} else
         d_graph->addFitCurve(addResultCurve(X, Y));
 }
 
@@ -524,12 +522,18 @@ void Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int 
 	c->setRange(d_x[0], d_x[d_n-1]);
 
 	QString formula = d_formula;
-	for (int j=0; j<d_p; j++)
-	{
+	for (int j=0; j<d_p; j++){
 		QString parameter = QString::number(d_results[j], 'g', d_prec);
 		formula.replace(d_param_names[j], parameter);
 	}
-	c->setFormula(formula.replace("--", "+").replace("-+", "-").replace("+-", "-"));
+
+	formula = formula.replace("-+", "-").replace("+-", "-");
+	if (formula.startsWith ("--", Qt::CaseInsensitive))
+        formula = formula.right(formula.length() - 2);
+	formula.replace("(--", "(");
+	formula.replace("--", "+");
+
+	c->setFormula(formula);
 	d_graph->insertPlotItem(c, Graph::Line);
 	d_graph->addFitCurve(c);
 }

@@ -5251,11 +5251,9 @@ void Graph::updateCurveNames(const QString& oldName, const QString& newName, boo
             c->updateColumnNames(oldName, newName, updateTableName);
 	}
 
-    if (legendMarkerID >= 0 )
-	{//update legend
+    if (legendMarkerID >= 0 ){//update legend
 		Legend * mrk = (Legend*) d_plot->marker(legendMarkerID);
-		if (mrk)
-		{
+		if (mrk){
             QStringList lst = mrk->text().split("\n", QString::SkipEmptyParts);
             lst.replaceInStrings(oldName, newName);
 			mrk->setText(lst.join("\n"));
