@@ -86,19 +86,18 @@ QString DataCurve::plotAssociation()
 
 void DataCurve::updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName)
 {
-    if (updateTableName)
-    {
+    if (updateTableName){
         QString s = title().text();
         QStringList lst = s.split("_", QString::SkipEmptyParts);
         if (lst[0] == oldName)
             setTitle(newName + "_" + lst[1]);
 
-        lst = d_x_column.split("_", QString::SkipEmptyParts);
-        if (lst[0] == oldName)
-            d_x_column = newName + "_" + lst[1];
-    }
-    else
-    {
+        if (type() != Graph::ErrorBars){
+            lst = d_x_column.split("_", QString::SkipEmptyParts);
+            if (lst[0] == oldName)
+                d_x_column = newName + "_" + lst[1];
+        }
+    } else {
         if (title().text() == oldName)
             setTitle(newName);
         if (d_x_column == oldName)

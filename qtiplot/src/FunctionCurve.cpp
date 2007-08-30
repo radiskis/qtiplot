@@ -36,6 +36,7 @@ FunctionCurve::FunctionCurve(const char *name):
 {
 	d_variable = "x";
 	setType(Graph::Function);
+	d_formulas = QStringList();
 }
 
 FunctionCurve::FunctionCurve(const FunctionType& t, const char *name):
@@ -101,56 +102,45 @@ void FunctionCurve::loadData(int points)
     double step = (d_to - d_from)/(double)(points - 1);
     bool error = false;
 
-	if (d_function_type == Normal)
-	{
+	if (d_function_type == Normal){
 		MyParser parser;
 		double x;
-		try
-		{
+		try {
 			parser.DefineVar(d_variable.ascii(), &x);
 			parser.SetExpr(d_formulas[0].ascii());
 
 			X[0] = d_from; x = d_from; Y[0]=parser.Eval();
-			for (int i = 1; i<points; i++ )
-			{
+			for (int i = 1; i<points; i++ ){
 				x += step;
 				X[i] = x;
 				Y[i] = parser.Eval();
 			}
-		}
-		catch(mu::ParserError &)
-		{
+		} catch(mu::ParserError &) {
 			error = true;
 		}
-	}
-	else if (d_function_type == Parametric || d_function_type == Polar)
-	{
+	} else if (d_function_type == Parametric || d_function_type == Polar) {
 		QStringList aux = d_formulas;
 		MyParser xparser;
 		MyParser yparser;
 		double par;
-		if (d_function_type == Polar)
-		{
+		if (d_function_type == Polar) {
 			QString swap=aux[0];
 			aux[0]="("+swap+")*cos("+aux[1]+")";
 			aux[1]="("+swap+")*sin("+aux[1]+")";
 		}
-		try
-		{
+
+		try {
 			xparser.DefineVar(d_variable.ascii(), &par);
 			yparser.DefineVar(d_variable.ascii(), &par);
 			xparser.SetExpr(aux[0].ascii());
 			yparser.SetExpr(aux[1].ascii());
 			par = d_from;
-			for (int i = 0; i<points; i++ )
-			{
+			for (int i = 0; i<points; i++ ){
 				X[i]=xparser.Eval();
 				Y[i]=yparser.Eval();
 				par+=step;
 			}
-		}
-		catch(mu::ParserError &)
-		{
+		} catch(mu::ParserError &) {
 			error = true;
 		}
 	}
