@@ -92,7 +92,7 @@ void DataCurve::updateColumnNames(const QString& oldName, const QString& newName
         if (lst[0] == oldName)
             setTitle(newName + "_" + lst[1]);
 
-        if (type() != Graph::ErrorBars){
+        if (!d_x_column.isEmpty()){
             lst = d_x_column.split("_", QString::SkipEmptyParts);
             if (lst[0] == oldName)
                 d_x_column = newName + "_" + lst[1];
