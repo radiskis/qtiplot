@@ -920,6 +920,7 @@ void ApplicationWindow::initTableMenu()
 	tableMenu->addAction(actionShowColsDialog);
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionShowRowsDialog);
+	tableMenu->addAction(actionDeleteRows);
 	tableMenu->addAction(actionGoToRow);
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionConvertTable);
@@ -5332,6 +5333,23 @@ void ApplicationWindow::showRowsDialog()
 		((Table*)ws->activeWindow())->resizeRows(rows);
 }
 
+void ApplicationWindow::showDeleteRowsDialog()
+{
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+		return;
+
+    Table *t = (Table*)ws->activeWindow();
+	bool ok;
+	int start_row = QInputDialog::getInteger(tr("QtiPlot - Delete rows"), tr("Start row"),
+                    1, 1, t->numRows(), 1, &ok);
+    if (ok){
+        int end_row = QInputDialog::getInteger(tr("QtiPlot - Delete rowsr"), tr("End row"),
+                        t->numRows(), 1, t->numRows(), 1, &ok);
+        if (ok)
+            t->deleteRows(start_row, end_row);
+	}
+}
+
 void ApplicationWindow::showColsDialog()
 {
 	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
@@ -8319,8 +8337,7 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.insertSeparator();
 		cm.addAction(actionCloseWindow);
 	}
-	else if (w->isA("Matrix"))
-	{
+	else if (w->isA("Matrix")) {
 		Matrix *t=(Matrix *)w;
 		cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
 		cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
@@ -8329,13 +8346,10 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.insertItem(tr("&Insert Row"), t, SLOT(insertRow()));
 		cm.insertItem(tr("&Insert Column"), t, SLOT(insertColumn()));
 		if (t->rowsSelected())
-		{
 			cm.insertItem(QPixmap(close_xpm), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
-		}
 		else if (t->columnsSelected())
-		{
 			cm.insertItem(QPixmap(close_xpm), tr("&Delete Columns"), t, SLOT(deleteSelectedColumns()));
-		}
+
 		cm.insertItem(QPixmap(erase_xpm),tr("Clea&r"), t, SLOT(clearSelection()));
 	}
 	cm.exec(QCursor::pos());
@@ -8388,7 +8402,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.addAction(actionTableRecalculate);
 			cm.insertItem(tr("&Insert Row"), t, SLOT(insertRow()));
 			cm.insertItem(QPixmap(close_xpm), tr("&Delete Row"), t, SLOT(deleteSelectedRows()));
-			cm.insertItem(QPixmap(erase_xpm),tr("Clea&r Row"), t, SLOT(clearSelection()));
+			cm.insertItem(QPixmap(erase_xpm), tr("Clea&r Row"), t, SLOT(clearSelection()));
 			cm.insertSeparator();
 			cm.addAction(actionShowRowStatistics);
 		} else if (t->numSelectedRows() > 1) {
@@ -10807,6 +10821,9 @@ void ApplicationWindow::createActions()
 
 	actionShowRowsDialog = new QAction(tr("&Rows..."), this);
 	connect(actionShowRowsDialog, SIGNAL(activated()), this, SLOT(showRowsDialog()));
+
+    actionDeleteRows = new QAction(tr("&Delete Rows Interval..."), this);
+	connect(actionDeleteRows, SIGNAL(activated()), this, SLOT(showDeleteRowsDialog()));
 
 	actionAbout = new QAction(tr("&About QtiPlot"), this);
 	actionAbout->setShortcut( tr("F1") );

@@ -209,6 +209,7 @@ public slots:
 	//! \name Row Operations
 	//@{
 	void deleteSelectedRows();
+	void deleteRows(int startRow, int endRow);
 	void insertRow();
 	//@}
 
