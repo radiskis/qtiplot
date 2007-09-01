@@ -383,6 +383,13 @@ public slots:
 	void plotVectXYXY();
 	void plotVectXYAM();
 	void plotBoxDiagram();
+
+    //! Check whether a table is valid for a 3D plot and display an appropriate error if not
+    bool validFor3DPlot(Table *table);
+    //! Check whether a table is valid for a 2D plot and display an appropriate error if not
+    bool validFor2DPlot(Table *table);
+    //! Generate a new 2D graph
+    void generate2DGraph(Graph::CurveType type);
 	//@}
 
 	//! \name Image Analysis
@@ -812,6 +819,10 @@ public slots:
 
 	//! Deletes the currently selected items from the list view #lv.
 	void deleteSelectedItems();
+	//! Hides the currently selected windows from the list view #lv.
+	void hideSelectedWindows();
+    //! Show the currently selected windows from the list view #lv.
+	void showSelectedWindows();
 
 	//! Sets all items in the folders list view to be desactivated (QPixmap = folder_closed_xpm)
 	void desactivateFolders();

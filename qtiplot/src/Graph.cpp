@@ -1397,7 +1397,7 @@ void Graph::updateSecondaryAxis(int axis)
 void Graph::setAutoScale()
 {
 	for (int i = 0; i < QwtPlot::axisCnt; i++)
-		d_plot->setAxisAutoScale(i);
+        d_plot->setAxisAutoScale(i);
 
 	d_plot->replot();
 	d_zoomer[0]->setZoomBase();
@@ -3531,7 +3531,7 @@ void Graph::updatePlot()
 
 void Graph::updateScale()
 {
-	const QwtScaleDiv *scDiv=d_plot->axisScaleDiv(QwtPlot::xBottom);
+	const QwtScaleDiv *scDiv = d_plot->axisScaleDiv(QwtPlot::xBottom);
 	QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 
 	double step = fabs(lst[1]-lst[0]);
@@ -3539,7 +3539,7 @@ void Graph::updateScale()
 	if (!autoscale)
 		d_plot->setAxisScale (QwtPlot::xBottom, scDiv->lBound(), scDiv->hBound(), step);
 
-	scDiv=d_plot->axisScaleDiv(QwtPlot::yLeft);
+	scDiv = d_plot->axisScaleDiv(QwtPlot::yLeft);
 	lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 
 	step = fabs(lst[1]-lst[0]);
