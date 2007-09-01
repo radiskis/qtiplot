@@ -123,6 +123,8 @@ public:
   void resizeRows(int) /PyName=setNumRows/;
   void resizeCols(int) /PyName=setNumCols/;
 
+  void deleteRows(int, int);
+
   SIP_PYOBJECT text(SIP_PYOBJECT, int);
 %MethodCode
   sipIsErr = 0;

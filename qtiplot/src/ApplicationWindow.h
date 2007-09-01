@@ -636,6 +636,7 @@ public slots:
 	void showTopAxisTitleDialog();
 	void showColumnOptionsDialog();
 	void showRowsDialog();
+	void showDeleteRowsDialog();
 	void showColsDialog();
 	void showColMenu(int c);
 	void showColumnValuesDialog();
@@ -1132,7 +1133,7 @@ private:
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote;
 	QAction *actionShowScriptWindow;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
-
+    QAction *actionDeleteRows;
 	QActionGroup* dataTools;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints;
 	QAction  *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;

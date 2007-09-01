@@ -978,13 +978,27 @@ void Table::clearCell(int row, int col)
 
 void Table::deleteSelectedRows()
 {
-	Q3TableSelection sel=d_table->selection(0);
-	int top=sel.topRow();
-	int bottom=sel.bottomRow();
-	int numberOfRows=bottom-top+1;
-	Q3MemArray<int> rowsToDelete(numberOfRows);
-	for (int i=0; i<numberOfRows; i++)
-		rowsToDelete[i]=top+i;
+	Q3TableSelection sel = d_table->selection(0);
+	deleteRows(sel.topRow() + 1, sel.bottomRow() + 1);
+}
+
+void Table::deleteRows(int startRow, int endRow)
+{
+    int start =  QMIN(startRow, endRow);
+    int end = QMAX(startRow, endRow);
+
+    start--;
+    end--;
+    if (start < 0)
+        start = 0;
+    if (end >= d_table->numRows())
+        end = d_table->numRows() - 1;
+
+	int rows = abs(end - start) + 1;
+	Q3MemArray<int> rowsToDelete(rows);
+	for (int i=0; i<rows; i++)
+		rowsToDelete[i] = start + i;
+
 	d_table->removeRows(rowsToDelete);
 	notifyChanges();
 }
@@ -2772,8 +2786,7 @@ void Table::resizeRows(int r)
 	if (rows == r)
 		return;
 
-	if (rows > r)
-	{
+	if (rows > r){
 		QString text= tr("Rows will be deleted from the table!");
 		text+="<p>"+tr("Do you really want to continue?");
 		int i,cols = d_table->numCols();
@@ -2792,9 +2805,7 @@ void Table::resizeRows(int r)
 				return;
 				break;
 		}
-	}
-	else
-	{
+	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		d_table->setNumRows(r);
 		QApplication::restoreOverrideCursor();
