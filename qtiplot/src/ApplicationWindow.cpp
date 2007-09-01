@@ -1244,11 +1244,13 @@ void ApplicationWindow::plot3DRibbon()
 	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
-	Table* w = (Table*)ws->activeWindow();
-	if(int(w->selectedColumns().count())==1)
-		w->plot3DRibbon();
-	else
-		QMessageBox::warning(this,tr("QtiPlot - Plot error"),tr("You must select exactly one column for plotting!"));
+	Table *table = static_cast<Table*>(ws->activeWindow());
+	if(table->selectedColumns().count() == 1){
+		if (!validFor3DPlot(table))
+			return;
+		plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Ribbon);
+	} else
+		QMessageBox::warning(this, tr("QtiPLot - Plot error"), tr("You must select exactly one column for plotting!"));
 }
 
 void ApplicationWindow::plot3DWireframe()
@@ -1278,12 +1280,17 @@ void ApplicationWindow::plot3DBars()
 		return;
 
 	if (w->inherits("Table")){
-		if(int(((Table*)w)->selectedColumns().count())==1)
-			((Table*)w)->plot3DBars();
+		Table *table = static_cast<Table *>(w);
+		if (!validFor3DPlot(table))
+			return;
+
+		if(table->selectedColumns().count() == 1)
+			plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Bars);
 		else
 			QMessageBox::warning(this, tr("QtiPlot - Plot error"),tr("You must select exactly one column for plotting!"));
-	} else
-		plot3DMatrix (0, Qwt3D::USER);
+	}
+	else if(w->inherits("Matrix"))
+		plot3DMatrix(0, Qwt3D::USER);
 }
 
 void ApplicationWindow::plot3DScatter()
@@ -1294,12 +1301,16 @@ void ApplicationWindow::plot3DScatter()
 
 	if (w->inherits("Table"))
 	{
-		if(int(((Table*)w)->selectedColumns().count())==1)
-			((Table*)w)->plot3DScatter();
+		Table *table = static_cast<Table *>(w);
+		if (!validFor3DPlot(table))
+			return;
+
+		if(table->selectedColumns().count() == 1)
+			plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Scatter);
 		else
 			QMessageBox::warning(this, tr("QtiPlot - Plot error"),tr("You must select exactly one column for plotting!"));
 	}
-	else if (w->isA("Matrix"))
+	else if(w->inherits("Matrix"))
 		plot3DMatrix (0, Qwt3D::POINTS);
 }
 
@@ -1308,44 +1319,39 @@ void ApplicationWindow::plot3DTrajectory()
 	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
-	Table* w = (Table*)ws->activeWindow();
-	if(int(w->selectedColumns().count())==1)
-		w->plot3DTrajectory();
-	else
-		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
-				tr("You must select exactly one column for plotting!"));
+	Table *table = static_cast<Table *>(ws->activeWindow());
+    if (!validFor3DPlot(table))
+        return;
+
+    if(table->selectedColumns().count() == 1)
+        plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Trajectory);
+    else
+        QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("You must select exactly one column for plotting!"));
+}
+
+void ApplicationWindow::plotBoxDiagram()
+{
+    generate2DGraph(Graph::Box);
 }
 
 void ApplicationWindow::plotVerticalBars()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotVB();
+	generate2DGraph(Graph::VerticalBars);
 }
 
 void ApplicationWindow::plotHorizontalBars()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotHB();
+	generate2DGraph(Graph::HorizontalBars);
 }
 
 void ApplicationWindow::plotHistogram()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotHistogram();
+	generate2DGraph(Graph::Histogram);
 }
 
 void ApplicationWindow::plotArea()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotArea();
+	generate2DGraph(Graph::Area);
 }
 
 void ApplicationWindow::plotPie()
@@ -1353,83 +1359,94 @@ void ApplicationWindow::plotPie()
 	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
-	if(int(((Table*)ws->activeWindow())->selectedColumns().count())==1)
-		((Table*)ws->activeWindow())->plotPie();
-	else
+	Table *table = static_cast<Table *>(ws->activeWindow());
+
+	if(table->selectedColumns().count() != 1){
 		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
 				tr("You must select exactly one column for plotting!"));
+		return;
+	}
+	/*if (table->noXColumn()){
+		QMessageBox::critical(0,tr("QtiPlot - Error"),
+            tr("Please set a default X column for this table, first!"));
+		return;
+	}*/
+
+	QStringList s = table->selectedColumns();
+	if (s.count()>0){
+		Q3TableSelection sel = table->getSelection();
+		multilayerPlot(table, s, Graph::Pie, sel.topRow(), sel.bottomRow());
+	} else
+		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a column to plot!"));
 }
 
 void ApplicationWindow::plotL()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotL();
+	generate2DGraph(Graph::Line);
 }
 
 void ApplicationWindow::plotP()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotP();
+	generate2DGraph(Graph::Scatter);
 }
 
 void ApplicationWindow::plotLP()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotLP();
+	generate2DGraph(Graph::LineSymbols);
 }
 
 void ApplicationWindow::plotVerticalDropLines()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotVerticalDropLines();
+	generate2DGraph(Graph::VerticalDropLines);
 }
 
 void ApplicationWindow::plotSpline()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotSpline();
+	generate2DGraph(Graph::Spline);
 }
 
 void ApplicationWindow::plotVertSteps()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotVertSteps();
+	generate2DGraph(Graph::VerticalSteps);
 }
 
 void ApplicationWindow::plotHorSteps()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	((Table*)ws->activeWindow())->plotHorSteps();
+	generate2DGraph(Graph::HorizontalSteps);
 }
 
 void ApplicationWindow::plotVectXYXY()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
-	((Table*)ws->activeWindow())->plotVectXYXY();
+	Table * table = static_cast<Table *>(ws->activeWindow());
+	if (!validFor2DPlot(table))
+		return;
+
+	QStringList s = table->selectedColumns();
+	if (s.count() == 4) {
+		Q3TableSelection sel = table->getSelection();
+		multilayerPlot(table, s, Graph::VectXYXY, sel.topRow(), sel.bottomRow());
+	} else
+		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
 }
 
 void ApplicationWindow::plotVectXYAM()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
-	((Table*)ws->activeWindow())->plotVectXYAM();
+	Table * table = static_cast<Table *>(ws->activeWindow());
+	if (!validFor2DPlot(table))
+		return;
+
+	QStringList s = table->selectedColumns();
+	if (s.count() == 4){
+		Q3TableSelection sel = table->getSelection();
+		multilayerPlot(table, s, Graph::VectXYAM, sel.topRow(), sel.bottomRow());
+	} else
+		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
 }
 
 void ApplicationWindow::renameListViewItem(const QString& oldName,const QString& newName)
@@ -2149,13 +2166,12 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return 0;
 
-	Table* w = (Table*)ws->activeWindow();
-	if (!w->valid2DPlot())
+	Table *w = (Table*)ws->activeWindow();
+	if (!validFor2DPlot(w))
 		return 0;
 
-	QStringList list=w->selectedYColumns();
-	if((int)list.count() < 1)
-	{
+	QStringList list = w->selectedYColumns();
+	if((int)list.count() < 1) {
 		QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
 		return 0;
 	}
@@ -4040,13 +4056,13 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); // Colors
 
 	settings.beginGroup("/Paths");
-	workingDir = settings.value("/WorkingDir", qApp->applicationDirPath()).toString();
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WIN || ifdef Q_OS_MAC
 	helpFilePath = settings.value("/HelpFile", qApp->applicationDirPath()+"/manual/index.html").toString();
 	fitPluginsPath = settings.value("/FitPlugins", "fitPlugins").toString();
 	templatesDir = settings.value("/TemplatesDir", qApp->applicationDirPath()).toString();
 	asciiDirPath = settings.value("/ASCII", qApp->applicationDirPath()).toString();
 	imagesDirPath = settings.value("/Images", qApp->applicationDirPath()).toString();
+    workingDir = settings.value("/WorkingDir", qApp->applicationDirPath()).toString();
 #else
 	QVariant help_file_setting = settings.value("/HelpFile");
 	if (help_file_setting.isValid())
@@ -4068,6 +4084,7 @@ void ApplicationWindow::readSettings()
 	templatesDir = settings.value("/TemplatesDir", QDir::homePath()).toString();
 	asciiDirPath = settings.value("/ASCII", QDir::homePath()).toString();
 	imagesDirPath = settings.value("/Images", QDir::homePath()).toString();
+    workingDir = settings.value("/WorkingDir", QDir::homePath()).toString();
 #endif
 	settings.endGroup(); // Paths
 	settings.endGroup();
@@ -7875,22 +7892,18 @@ void ApplicationWindow::deleteSelectedItems()
 
 	Q3ListViewItem *item;
 	QList<Q3ListViewItem *> lst;
-	for (item = lv->firstChild(); item; item = item->nextSibling())
-	{
+	for (item = lv->firstChild(); item; item = item->nextSibling()){
 		if (item->isSelected())
 			lst.append(item);
 	}
 
 	folders->blockSignals(true);
-	foreach(item, lst)
-	{
-		if (item->rtti() == FolderListItem::RTTI)
-		{
+	foreach(item, lst){
+		if (item->rtti() == FolderListItem::RTTI){
 			Folder *f = ((FolderListItem *)item)->folder();
 			if (deleteFolder(f))
 				delete item;
-		}
-		else
+		} else
 			((WindowListItem *)item)->window()->close();
 	}
 	folders->blockSignals(false);
@@ -7899,6 +7912,9 @@ void ApplicationWindow::deleteSelectedItems()
 void ApplicationWindow::showListViewSelectionMenu(const QPoint &p)
 {
 	QMenu cm(this);
+	cm.insertItem(tr("&Show All Windows"), this, SLOT(showSelectedWindows()));
+	cm.insertItem(tr("&Hide All Windows"), this, SLOT(hideSelectedWindows()));
+	cm.insertSeparator();
 	cm.insertItem(tr("&Delete Selection"), this, SLOT(deleteSelectedItems()), Qt::Key_F8);
 	cm.exec(p);
 }
@@ -10393,17 +10409,12 @@ void ApplicationWindow::connectTable(Table* w)
 	connect (w,SIGNAL(removedCol(const QString&)),this,SLOT(removeCurves(const QString&)));
 	connect (w,SIGNAL(modifiedData(Table *, const QString&)),
 			this,SLOT(updateCurves(Table *, const QString&)));
-	connect (w,SIGNAL(plotCol(Table*,const QStringList&, int, int, int)),
-			this, SLOT(multilayerPlot(Table*,const QStringList&, int, int, int)));
 	connect (w,SIGNAL(modifiedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
 	connect (w,SIGNAL(optionsDialog()),this,SLOT(showColumnOptionsDialog()));
 	connect (w,SIGNAL(colValuesDialog()),this,SLOT(showColumnValuesDialog()));
 	connect (w,SIGNAL(showContextMenu(bool)),this,SLOT(showTableContextMenu(bool)));
 	connect (w,SIGNAL(changedColHeader(const QString&,const QString&)),this,SLOT(updateColNames(const QString&,const QString&)));
 	connect (w,SIGNAL(createTable(const QString&,int,int,const QString&)),this,SLOT(newTable(const QString&,int,int,const QString&)));
-
-	//3d plots
-	connect( w, SIGNAL(plotXYZ(Table*,const QString&, int)), this, SLOT(plotXYZ(Table*,const QString&, int)));
 
 	w->askOnCloseEvent(confirmCloseTable);
 }
@@ -11911,14 +11922,6 @@ void ApplicationWindow::disregardCol()
 		return;
 
 	((Table *)ws->activeWindow())->setPlotDesignation(Table::None);
-}
-
-void ApplicationWindow::plotBoxDiagram()
-{
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
-		return;
-
-	((Table *)ws->activeWindow())->plotBoxDiagram();
 }
 
 void ApplicationWindow::fitMultiPeakGauss()
@@ -13744,4 +13747,87 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	if (execute)
 		app->scriptWindow->executeAll();
 	return app;
+}
+
+bool ApplicationWindow::validFor2DPlot(Table *table)
+{
+	if (!table->selectedYColumns().count()){
+  		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a Y column to plot!"));
+  	    return false;
+  	} else if (table->numCols()<2) {
+		QMessageBox::critical(this, tr("QtiPlot - Error"),tr("You need at least two columns for this operation!"));
+		return false;
+	} else if (table->noXColumn()) {
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please set a default X column for this table, first!"));
+		return false;
+	}
+	return true;
+}
+
+void ApplicationWindow::generate2DGraph(Graph::CurveType type)
+{
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+		return;
+
+	Table *table = static_cast<Table *>(ws->activeWindow());
+	if (!validFor2DPlot(table))
+		return;
+
+	Q3TableSelection sel = table->getSelection();
+	multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
+}
+
+bool ApplicationWindow::validFor3DPlot(Table *table)
+{
+	if (table->numCols()<2){
+		QMessageBox::critical(0,tr("QtiPlot - Error"),tr("You need at least two columns for this operation!"));
+		return false;
+	}
+	if (table->selectedColumn() < 0 || table->colPlotDesignation(table->selectedColumn()) != Table::Z){
+		QMessageBox::critical(0,tr("QtiPlot - Error"),tr("Please select a Z column for this operation!"));
+		return false;
+	}
+	if (table->noXColumn()){
+		QMessageBox::critical(0,tr("QtiPlot - Error"),tr("You need to define a X column first!"));
+		return false;
+	}
+	if (table->noYColumn()){
+		QMessageBox::critical(0,tr("QtiPlot - Error"),tr("You need to define a Y column first!"));
+		return false;
+	}
+	return true;
+}
+
+void ApplicationWindow::hideSelectedWindows()
+{
+	Q3ListViewItem *item;
+	QList<Q3ListViewItem *> lst;
+	for (item = lv->firstChild(); item; item = item->nextSibling()){
+		if (item->isSelected())
+			lst.append(item);
+	}
+
+	folders->blockSignals(true);
+	foreach(item, lst){
+		if (item->rtti() != FolderListItem::RTTI)
+			hideWindow(((WindowListItem *)item)->window());
+	}
+	folders->blockSignals(false);
+}
+
+void ApplicationWindow::showSelectedWindows()
+{
+	Q3ListViewItem *item;
+	QList<Q3ListViewItem *> lst;
+	for (item = lv->firstChild(); item; item = item->nextSibling()){
+		if (item->isSelected())
+			lst.append(item);
+	}
+
+	folders->blockSignals(true);
+	foreach(item, lst){
+		if (item->rtti() != FolderListItem::RTTI)
+			activateWindow(((WindowListItem *)item)->window());
+	}
+	folders->blockSignals(false);
 }
