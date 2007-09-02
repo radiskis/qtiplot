@@ -53,7 +53,7 @@ DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, 
 {
 	d_selected_curve = NULL;
 
-	d_selection_marker.setSymbol(QwtSymbol(QwtSymbol::Ellipse, QBrush(QColor(255,255,0,128)), QPen(Qt::black,2), QSize(20,20)));
+	//d_selection_marker.setSymbol(QwtSymbol(QwtSymbol::Ellipse, QBrush(QColor(255,255,0,128)), QPen(Qt::black,2), QSize(20,20)));
 	d_selection_marker.setLineStyle(QwtPlotMarker::Cross);
 	d_selection_marker.setLinePen(QPen(Qt::red,1));
 
@@ -190,13 +190,23 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 			emit selected(d_selected_curve, d_selected_point);
 			return true;
 
+        case Qt::Key_Home:
+			setSelection(d_selected_curve, 0);
+			return true;
+
+		case Qt::Key_End:
+			setSelection(d_selected_curve, d_selected_curve->dataSize() - 1);
+			return true;
+
 		case Qt::Key_Up:
 			{
 				int n_curves = d_graph->curves();
 				int start = d_graph->curveIndex(d_selected_curve) + 1;
 				for (int i = start; i < start + n_curves; ++i)
 					if (d_graph->curve(i % n_curves)->dataSize() > 0) {
-						setSelection(d_graph->curve(i % n_curves), 0);
+					    QwtPlotCurve *c = d_graph->curve(i % n_curves);
+					    if (c)
+                            setSelection(c, findClosestPoint(c, d_selected_curve->x(d_selected_point), true));
 						break;
 					}
 				d_graph->plotWidget()->replot();
@@ -209,7 +219,10 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 				int start = d_graph->curveIndex(d_selected_curve) + n_curves - 1;
 				for (int i = start; i > start - n_curves; --i)
 					if (d_graph->curve(i % n_curves)->dataSize() > 0) {
-						setSelection(d_graph->curve(i % n_curves), 0);
+						QwtPlotCurve *c = d_graph->curve(i % n_curves);
+					    if (c)
+                            setSelection(c, findClosestPoint(c, d_selected_curve->x(d_selected_point), false));
+
 						break;
 					}
 				d_graph->plotWidget()->replot();
@@ -220,7 +233,10 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 		case Qt::Key_Plus:
 			if (d_selected_curve) {
 				int n_points = d_selected_curve->dataSize();
-				setSelection(d_selected_curve, (d_selected_point + 1) % n_points);
+				if (ke->modifiers () == Qt::ShiftModifier)
+                    setSelection(d_selected_curve, (d_selected_point + 10) % n_points);
+                else if (ke->modifiers () == Qt::NoModifier)
+                    setSelection(d_selected_curve, (d_selected_point + 1) % n_points);
 				d_graph->plotWidget()->replot();
 			} else
 				setSelection(d_graph->curve(0), 0);
@@ -230,7 +246,10 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 		case Qt::Key_Minus:
 			if (d_selected_curve) {
 				int n_points = d_selected_curve->dataSize();
-				setSelection(d_selected_curve, (d_selected_point - 1 + n_points) % n_points);
+				if (ke->modifiers () == Qt::ShiftModifier)
+                    setSelection(d_selected_curve, (d_selected_point - 10 + n_points) % n_points);
+                else if (ke->modifiers () == Qt::NoModifier)
+                    setSelection(d_selected_curve, (d_selected_point - 1 + n_points) % n_points);
 				d_graph->plotWidget()->replot();
 			} else
 				setSelection(d_graph->curve(d_graph->curves()-1), 0);
@@ -488,4 +507,30 @@ void DataPickerTool::selectTableRow()
 
     int row = ((DataCurve*)d_selected_curve)->tableRow(d_selected_point);
     t->goToRow(row + 1);
+}
+
+int DataPickerTool::findClosestPoint(QwtPlotCurve *c, double x, bool up)
+{
+    if (!c)
+        return -1;
+
+    if (c->minXValue() > x)
+        return 0;
+
+    if (c->maxXValue() < x)
+        return c->dataSize() - 1;
+
+    int index_left = 0;
+    int index_right = c->dataSize() - 1;
+    while ((index_right - index_left)>1) {
+        int middle = (index_right + index_left)/2;
+        if (c->x(index_left) < x && c->x(middle) > x)
+            index_right = middle;
+        else
+            index_left = middle;
+    }
+    if (up)
+        return index_left;
+    else
+        return index_right;
 }

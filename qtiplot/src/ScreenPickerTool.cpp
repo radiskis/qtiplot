@@ -33,12 +33,12 @@
 #include "Plot.h"
 #include "cursors.h"
 #include <qwt_symbol.h>
+#include <QMessageBox.h>
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->plotWidget()->canvas()),
 	PlotToolInterface(graph)
 {
-//	d_selection_marker.setSymbol(QwtSymbol(QwtSymbol::Cross, QBrush(Qt::NoBrush), QPen(Qt::red,1), QSize(15,15)));
 	d_selection_marker.setLineStyle(QwtPlotMarker::Cross);
 	d_selection_marker.setLinePen(QPen(Qt::red,1));
 	setTrackerMode(QwtPicker::AlwaysOn);
@@ -84,8 +84,15 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
 				switch(ke->key()) {
 					case Qt::Key_Enter:
 					case Qt::Key_Return:
+					{
+                        QwtDoublePoint pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
+                        d_selection_marker.setValue(pos);
+                        if (d_selection_marker.plot() == NULL)
+                            d_selection_marker.attach(d_graph->plotWidget());
+                        d_graph->plotWidget()->replot();
 						emit selected(d_selection_marker.value());
 						return true;
+					}
 					default:
 						break;
 				}

@@ -5327,8 +5327,8 @@ void ApplicationWindow::showRowsDialog()
 		return;
 
 	bool ok;
-	int rows = QInputDialog::getInteger(tr("QtiPlot - Enter rows number"), tr("Rows"),
-			((Table*)ws->activeWindow())->numRows(), 0, 1000000, 1, &ok, this );
+	int rows = QInputDialog::getInteger(this, tr("QtiPlot - Enter rows number"), tr("Rows"),
+			((Table*)ws->activeWindow())->numRows(), 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
 	if ( ok )
 		((Table*)ws->activeWindow())->resizeRows(rows);
 }
@@ -5340,11 +5340,12 @@ void ApplicationWindow::showDeleteRowsDialog()
 
     Table *t = (Table*)ws->activeWindow();
 	bool ok;
-	int start_row = QInputDialog::getInteger(tr("QtiPlot - Delete rows"), tr("Start row"),
-                    1, 1, t->numRows(), 1, &ok);
+
+	int start_row = QInputDialog::getInteger(this, tr("QtiPlot - Delete rows"), tr("Start row"),
+                    1, 1, t->numRows(), 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
     if (ok){
-        int end_row = QInputDialog::getInteger(tr("QtiPlot - Delete rowsr"), tr("End row"),
-                        t->numRows(), 1, t->numRows(), 1, &ok);
+        int end_row = QInputDialog::getInteger(this, tr("QtiPlot - Delete rows"), tr("End row"),
+                        t->numRows(), 1, t->numRows(), 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
         if (ok)
             t->deleteRows(start_row, end_row);
 	}
@@ -5356,8 +5357,8 @@ void ApplicationWindow::showColsDialog()
 		return;
 
 	bool ok;
-	int cols = QInputDialog::getInteger(tr("QtiPlot - Enter columns number"), tr("Columns"),
-			((Table*)ws->activeWindow())->numCols(), 0, 1000000, 1, &ok, this );
+	int cols = QInputDialog::getInteger(this, tr("QtiPlot - Enter columns number"), tr("Columns"),
+			((Table*)ws->activeWindow())->numCols(), 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
 	if ( ok )
 		((Table*)ws->activeWindow())->resizeCols(cols);
 }
@@ -13636,8 +13637,8 @@ void ApplicationWindow::goToRow()
 	if (ws->activeWindow()->isA("Table") || ws->activeWindow()->isA("Matrix"))
 	{
 		bool ok;
-		int row = QInputDialog::getInteger(tr("QtiPlot - Enter row number"), tr("Row"),
-				1, 0, 1000000, 1, &ok, this );
+		int row = QInputDialog::getInteger(this, tr("QtiPlot - Enter row number"), tr("Row"),
+				1, 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
 		if ( !ok )
 			return;
 

@@ -56,6 +56,9 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
         void cutSelection();
         void pasteSelection();
         void removePoint();
+        //! Searches the index of the closest point to the given x coordinate
+        int findClosestPoint(QwtPlotCurve *c, double x, bool up);
+
         virtual int rtti() const {return PlotToolInterface::Rtti_DataPicker;};
 
         void selectTableRow();
