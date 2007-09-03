@@ -318,8 +318,8 @@ public slots:
 	//! Creates an empty table
 	Table* newTable();
 	//! Used when importing an ASCII file
-	Table* newTable(const QString& fname, const QString &sep, int lines,
-		            bool renameCols, bool stripSpaces, bool simplifySpaces);
+	Table* newTable(const QString& fname, const QString &sep, int lines, bool renameCols, bool stripSpaces,
+                    bool simplifySpaces, bool importComments, const QString &commentString);
 	//! Used when loading a table from a project file
 	Table* newTable(const QString& caption,int r, int c);
 	Table* newTable(int r, int c, const QString& name = QString(),const QString& legend = QString());
@@ -347,10 +347,11 @@ public slots:
 						const QFont& headerFont, bool showComments);
 
 	void importASCII();
-	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines,
-		 bool local_rename_columns, bool local_strip_spaces, bool local_simplify_spaces, bool update_dec_separators, QLocale local_separators);
-	void exportAllTables(const QString& sep, bool colNames, bool expSelection);
-	void exportASCII(const QString& tableName, const QString& sep, bool colNames, bool expSelection);
+	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
+        bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
+        bool update_dec_separators, QLocale local_separators, const QString& local_comment_string);
+	void exportAllTables(const QString& sep, bool colNames, bool colComments, bool expSelection);
+	void exportASCII(const QString& tableName, const QString& sep, bool colNames, bool colComments, bool expSelection);
 
 	//! recalculate selected cells of current table
 	void recalculateTable();
@@ -935,7 +936,7 @@ signals:
 // TODO: a lot of this stuff should be private
 public:
 	QString d_export_col_separator;
-	bool d_export_col_names, d_export_table_selection;
+	bool d_export_col_names, d_export_table_selection, d_export_col_comment;
 
     bool d_thousands_sep;
     //! Last selected filter in export image dialog
@@ -949,8 +950,8 @@ public:
 	//! Locale used to specify the decimal separators in imported ASCII files
 	QLocale d_ASCII_import_locale;
     //! Last selected filter in import ASCII dialog
-    QString d_ASCII_file_filter;
-	bool d_import_dec_separators;
+    QString d_ASCII_file_filter, d_ASCII_comment_string;
+	bool d_import_dec_separators, d_ASCII_import_comments;
 	int d_ASCII_import_mode;
 	//! Specifies if only the Tables/Matrices in the current folder should be displayed in the Add/remove curve dialog.
 	bool d_show_current_folder;

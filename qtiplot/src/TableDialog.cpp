@@ -294,8 +294,7 @@ if (colName->text().contains("_")){
   	tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
 
 QString name=colName->text().replace("-", "_");
-if (name.contains(QRegExp("\\W")))
-	{
+if (name.contains(QRegExp("\\W"))){
 	QMessageBox::warning(this,tr("QtiPlot - Error"),
 						tr("The column names must only contain letters and digits!"));
 	name.remove(QRegExp("\\W"));

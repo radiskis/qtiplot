@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Export ASCII dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -55,6 +55,7 @@ private:
 	QPushButton* buttonCancel;
 	QPushButton* buttonHelp;
     QCheckBox* boxNames;
+    QCheckBox* boxComments;
     QCheckBox* boxSelection;
 	QCheckBox* boxAllTables;
     QComboBox* boxSeparator;

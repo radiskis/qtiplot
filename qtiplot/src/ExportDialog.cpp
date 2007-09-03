@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Export ASCII dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -41,7 +41,7 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 {
 	setWindowTitle( tr( "QtiPlot - Export ASCII" ) );
 	setSizeGripEnabled( true );
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 
 	QGridLayout *gl1 = new QGridLayout();
@@ -51,11 +51,11 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 	boxTable->setCurrentIndex(boxTable->findText(tableName));
 	boxTable->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	gl1->addWidget(boxTable, 0, 1);
-	
+
 	boxAllTables = new QCheckBox(tr( "&All" ));
     boxAllTables->setChecked(false);
 	gl1->addWidget(boxAllTables, 0, 2);
-	
+
     QLabel *sepText = new QLabel( tr( "Separator" ) );
 	gl1->addWidget(sepText, 1, 0);
 
@@ -83,16 +83,20 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 
 	boxNames = new QCheckBox(tr( "Include Column &Names" ));
     boxNames->setChecked( app->d_export_col_names );
-	
+
+	boxComments = new QCheckBox(tr( "Include Column Co&mments" ));
+    boxComments->setChecked( app->d_export_col_comment );
+
     boxSelection = new QCheckBox(tr( "Export &Selection" ));
     boxSelection->setChecked( app->d_export_table_selection );
 
 	QVBoxLayout *vl1 = new QVBoxLayout();
 	vl1->addLayout( gl1 );
 	vl1->addWidget( boxNames );
+	vl1->addWidget( boxComments );
 	vl1->addWidget( boxSelection );
-	
-	QHBoxLayout *hbox3 = new QHBoxLayout();	
+
+	QHBoxLayout *hbox3 = new QHBoxLayout();
 	buttonOk = new QPushButton(tr( "&OK" ));
     buttonOk->setDefault( true );
 	hbox3->addWidget( buttonOk );
@@ -101,12 +105,12 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 	buttonHelp = new QPushButton(tr( "&Help" ));
 	hbox3->addWidget( buttonHelp );
 	hbox3->addStretch();
-	
+
 	QVBoxLayout *vl = new QVBoxLayout( this );
     vl->addLayout(vl1);
 	vl->addStretch();
 	vl->addLayout(hbox3);
-	   
+
     // signals and slots connections
     connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
@@ -131,7 +135,7 @@ void ExportDialog::accept()
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (!app)
 		return;
-	
+
 	QString sep = boxSeparator->currentText();
 	sep.replace(tr("TAB"), "\t", Qt::CaseInsensitive);
 	sep.replace(tr("SPACE"), " ");
@@ -146,9 +150,9 @@ void ExportDialog::accept()
 
 	hide();
 	if (boxAllTables->isChecked())
-		app->exportAllTables(sep, boxNames->isChecked(), boxSelection->isChecked());
+		app->exportAllTables(sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
 	else
-		app->exportASCII(boxTable->currentText(), sep, boxNames->isChecked(), boxSelection->isChecked());
+		app->exportASCII(boxTable->currentText(), sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
 	close();
 }
 
@@ -182,7 +186,8 @@ void ExportDialog::closeEvent(QCloseEvent* e)
 	if (app){
 		app->d_export_col_names = boxNames->isChecked();
 		app->d_export_table_selection = boxSelection->isChecked();
-		
+		app->d_export_col_comment = boxComments->isChecked();
+
 		QString sep = boxSeparator->currentText();
 		sep.replace(tr("TAB"), "\t", Qt::CaseInsensitive);
 		sep.replace(tr("SPACE"), " ");

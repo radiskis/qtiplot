@@ -57,11 +57,11 @@
 #include <gsl/gsl_sort_vector.h>
 
 Table::Table(ScriptingEnv *env, const QString &fname,const QString &sep, int ignoredLines, bool renameCols,
-			 bool stripSpaces, bool simplifySpaces, const QString& label,
+			 bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString, const QString& label,
 			 QWidget* parent, const char* name, Qt::WFlags f)
 : MyWidget(label, parent,name,f), scripted(env)
 {
-	importASCII(fname, sep, ignoredLines, renameCols, stripSpaces, simplifySpaces, true);
+	importASCII(fname, sep, ignoredLines, renameCols, stripSpaces, simplifySpaces, importComments, true, commentString);
 }
 
 	Table::Table(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
@@ -559,8 +559,7 @@ QString Table::saveCommands()
 QString Table::saveComments()
 {
 	QString s = "Comments\t";
-	for (int i=0; i<d_table->numCols(); i++)
-	{
+	for (int i=0; i<d_table->numCols(); i++){
 		if (comments.count() > i)
 			s += comments[i] + "\t";
 		else
@@ -2037,8 +2036,7 @@ bool Table::noXColumn()
 bool Table::noYColumn()
 {
 	bool notSet = true;
-	for (int i=0; i<d_table->numCols(); i++)
-	{
+	for (int i=0; i<d_table->numCols(); i++){
 		if (col_plot_type[i] == Y)
 			return false;
 	}
@@ -2046,15 +2044,15 @@ bool Table::noYColumn()
 }
 
 void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, int ignoredLines,
-		bool renameCols, bool stripSpaces, bool simplifySpaces,
-		int importFileAs)
+		bool renameCols, bool stripSpaces, bool simplifySpaces, bool importComments,
+		const QString &commentString, int importFileAs)
 {
 	QFile f(fname);
 	Q3TextStream t( &f );// use a text stream
 	if ( f.open(QIODevice::ReadOnly) ){
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-		int i, rows = 1, cols = 0;
+		int i, rows = 0, cols = 0;
 		int r = d_table->numRows();
 		int c = d_table->numCols();
 		for (i=0; i<ignoredLines; i++)
@@ -2062,9 +2060,19 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 
 		QString s = t.readLine();//read first line after the ignored ones
 		while (!t.atEnd()){
-			t.readLine();
-			rows++;
-			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+            if (commentString.isEmpty() || !s.startsWith(commentString)){
+                rows++;
+                break;
+            } else
+                s = t.readLine();
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+
+		while (!t.atEnd()){
+			QString aux = t.readLine();
+			if (commentString.isEmpty() || !aux.startsWith(commentString))
+                rows++;
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
 		}
 
 		if (simplifySpaces)
@@ -2084,6 +2092,8 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 
 		if (renameCols && !allNumbers)
 			rows--;
+        if (importComments)
+            rows--;
 
 		QProgressDialog progress(this);
 		int steps = int(rows/1000);
@@ -2100,8 +2110,7 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 			addColumns(cols);
 			if (r < rows)
 				d_table->setNumRows(rows);
-		}
-		else if (importFileAs == 2){//new rows
+		} else if (importFileAs == 2){//new rows
 			if (c < cols)
 				addColumns(cols-c);
 			d_table->setNumRows(r+rows);
@@ -2111,7 +2120,14 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 		for (i=0; i<ignoredLines; i++)
 			t.readLine();
 
-		int startRow = 0, startCol =0;
+        s = t.readLine();//read first line after the ignored ones
+		while (!t.atEnd() && !commentString.isEmpty() && s.startsWith(commentString)){
+		    //ignore all commented lines
+            s = t.readLine();
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+
+		int startRow = 0, startCol = 0;
 		if (importFileAs == 2)
 			startRow = r;
 		else if (importFileAs == 1)
@@ -2119,7 +2135,6 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 
 		if (renameCols && !allNumbers)
 		{//use first line to set the table header
-			s = t.readLine();
 			if (simplifySpaces)
 				s = s.simplifyWhiteSpace();
 			else if (stripSpaces)
@@ -2130,11 +2145,11 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 			for (i=startCol; i<end; i++)
   	        	col_label[i] = QString::null;
 			for (i=startCol; i<end; i++){
-				comments[i] = line[i-startCol];
+                if (!importComments)
+                    comments[i] = line[i-startCol];
 				s = line[i-startCol].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
 				int n = col_label.count(s);
-				if(n){
-					//avoid identical col names
+				if(n){//avoid identical col names
 					while (col_label.contains(s+QString::number(n)))
 						n++;
 					s += QString::number(n);
@@ -2142,6 +2157,24 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 				col_label[i] = s;
 			}
 		}
+
+        if (importComments){//import comments
+            s = t.readLine();//read 2nd line after the ignored ones
+            while (!t.atEnd() && !commentString.isEmpty() && s.startsWith(commentString)){//ignore all commented lines
+                s = t.readLine();
+                qApp->processEvents(QEventLoop::ExcludeUserInput);
+            }
+
+            if (simplifySpaces)
+                s = s.simplifyWhiteSpace();
+            else if (stripSpaces)
+                s = s.stripWhiteSpace();
+            line = s.split(sep, QString::SkipEmptyParts);
+            int end = startCol+(int)line.count();
+			for (int i=startCol; i<end; i++)
+                comments[i] = line[i-startCol];
+        }
+
 		d_table->blockSignals(true);
 		setHeaderColType();
 
@@ -2153,13 +2186,22 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 
 			for (int k=0; k<1000; k++){
 				s = t.readLine();
+				if (!commentString.isEmpty() && s.startsWith(commentString)){
+				    k--;
+                    continue;
+				}
+
 				if (simplifySpaces)
 					s = s.simplifyWhiteSpace();
 				else if (stripSpaces)
 					s = s.stripWhiteSpace();
+
 				line = s.split(sep);
-				for (int j=startCol; j<d_table->numCols(); j++)
-					d_table->setText(startRow + k, j, line[j-startCol]);
+				for (int j=startCol; j<d_table->numCols(); j++){
+				    int aux = j-startCol;
+                    if (line.count() > aux)
+                        d_table->setText(startRow + k, j, line[aux]);
+				}
 			}
 
 			startRow += 1000;
@@ -2168,28 +2210,36 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 
 		for (i=startRow; i<d_table->numRows(); i++){
 			s = t.readLine();
+			if (!commentString.isEmpty() && s.startsWith(commentString)){
+                i--;
+                continue;
+            }
+
 			if (simplifySpaces)
 				s = s.simplifyWhiteSpace();
 			else if (stripSpaces)
 				s = s.stripWhiteSpace();
+
 			line = s.split(sep);
-			for (int j=startCol; j<d_table->numCols(); j++)
-				d_table->setText(i, j, line[j-startCol]);
+			for (int j=startCol; j<d_table->numCols(); j++){
+			    int aux = j-startCol;
+			    if (line.count() > aux)
+                    d_table->setText(i, j, line[aux]);
+			}
 		}
 		progress.setValue(steps+1);
 		d_table->blockSignals(false);
 		f.close();
 
-		if (importFileAs)
-		{
+		if (importFileAs){
 			for (i=0; i<d_table->numCols(); i++)
 				emit modifiedData(this, colName(i));
 		}
 	}
 }
 
-void Table::importASCII(const QString &fname, const QString &sep, int ignoredLines,
-		bool renameCols, bool stripSpaces, bool simplifySpaces, bool newTable)
+void Table::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
+    bool stripSpaces, bool simplifySpaces, bool importComments, bool newTable, const QString& commentString)
 {
 	QFile f(fname);
 	if (f.open(QIODevice::ReadOnly)) //| QIODevice::Text | QIODevice::Unbuffered ))
@@ -2198,14 +2248,24 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
         Q3TextStream t(&f);//TODO: use QTextStream instead and find a way to make it read the end-of-line char correctly.
                          //Opening the file with the above combination doesn't seem to help: problems on Mac OS X generated ASCII files!
 
-		int i, c, rows = 1, cols = 0;
+		int i, c, rows = 0, cols = 0;
 		for (i=0; i<ignoredLines; i++)
 			t.readLine();
 
 		QString s = t.readLine();//read first line after the ignored ones
-		while ( !t.atEnd() ){
-			t.readLine();
-			rows++;
+		while (!t.atEnd()){
+            if (commentString.isEmpty() || !s.startsWith(commentString)){
+                rows++;
+                break;
+            } else
+                s = t.readLine();
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+
+		while (!t.atEnd()){
+			QString aux = t.readLine();
+			if (commentString.isEmpty() || !aux.startsWith(commentString))
+                rows++;
 			qApp->processEvents(QEventLoop::ExcludeUserInput);
 		}
 
@@ -2227,6 +2287,9 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 
 		if (renameCols && !allNumbers)
 			rows--;
+        if (importComments)
+            rows--;
+
 		int steps = int(rows/1000);
 
 		QProgressDialog progress(this);
@@ -2270,9 +2333,14 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		for (i=0; i<ignoredLines; i++)
 			t.readLine();
 
+        s = t.readLine();//read first line after the ignored ones
+		while (!t.atEnd() && !commentString.isEmpty() && s.startsWith(commentString)){//ignore all commented lines
+            s = t.readLine();
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+
 		if (renameCols && !allNumbers)
 		{//use first line to set the table header
-			s = t.readLine();
 			if (simplifySpaces)
 				s = s.simplifyWhiteSpace();
 			else if (stripSpaces)
@@ -2281,14 +2349,12 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			for (i=0; i<(int)line.count(); i++)
   	        	col_label[i] = QString::null;
 
-			for (i=0; i<(int)line.count(); i++)
-			{
-				comments[i] = line[i];
+			for (i=0; i<(int)line.count(); i++){
+			    if (!importComments)
+                    comments[i] = line[i];
 				s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
 				int n = col_label.count(s);
-				if(n)
-				{
-					//avoid identical col names
+				if(n){//avoid identical col names
 					while (col_label.contains(s+QString::number(n)))
 						n++;
 					s += QString::number(n);
@@ -2297,22 +2363,41 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			}
 		}
 
+        if (importComments){//import comments
+            s = t.readLine();//read 2nd line after the ignored ones
+            while (!t.atEnd() && !commentString.isEmpty() && s.startsWith(commentString)){//ignore all commented lines
+                s = t.readLine();
+                qApp->processEvents(QEventLoop::ExcludeUserInput);
+            }
+
+            if (simplifySpaces)
+                s = s.simplifyWhiteSpace();
+            else if (stripSpaces)
+                s = s.stripWhiteSpace();
+            line = s.split(sep, QString::SkipEmptyParts);
+			for (i=0; i<(int)line.count(); i++)
+                comments[i] = line[i];
+        }
+
         d_table->blockSignals(true);
 		setHeaderColType();
 
 		int start = 0;
 		for (i=0; i<steps; i++)
 		{
-			if (progress.wasCanceled())
-			{
+			if (progress.wasCanceled()){
 				f.close();
 				return;
 			}
 
 			start = i*1000;
-			for (int k=0; k<1000; k++)
-			{
+			for (int k=0; k<1000; k++){
 				s = t.readLine();
+				if (!commentString.isEmpty() && s.startsWith(commentString)){
+				    k--;
+                    continue;
+				}
+
 				if (simplifySpaces)
 					s = s.simplifyWhiteSpace();
 				else if (stripSpaces)
@@ -2334,6 +2419,11 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		for (i=start; i<rows; i++)
 		{
 			s = t.readLine();
+			if (!commentString.isEmpty() && s.startsWith(commentString)){
+			    i--;
+                continue;
+			}
+
 			if (simplifySpaces)
 				s = s.simplifyWhiteSpace();
 			else if (stripSpaces)
@@ -2368,7 +2458,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 }
 
 bool Table::exportASCII(const QString& fname, const QString& separator,
-		bool withLabels,bool exportSelection)
+		bool withLabels, bool exportComments, bool exportSelection)
 {
 	QFile f(fname);
 	if ( !f.open( QIODevice::WriteOnly ) ){
@@ -2379,99 +2469,93 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	}
 
 	QString text;
-	int i,j;
 	int rows=d_table->numRows();
 	int cols=d_table->numCols();
 	int selectedCols = 0;
 	int topRow = 0, bottomRow = 0;
 	int *sCols;
 	if (exportSelection){
-		for (i=0; i<cols; i++){
+		for (int i=0; i<cols; i++){
 			if (d_table->isColumnSelected(i))
 				selectedCols++;
 		}
 
 		sCols = new int[selectedCols];
 		int aux = 1;
-		for (i=0; i<cols; i++){
+		for (int i=0; i<cols; i++){
 			if (d_table->isColumnSelected(i)){
 				sCols[aux] = i;
 				aux++;
 			}
 		}
 
-		for (i=0; i<rows; i++)
-		{
-			if (d_table->isRowSelected(i))
-			{
+		for (int i=0; i<rows; i++){
+			if (d_table->isRowSelected(i)){
 				topRow = i;
 				break;
 			}
 		}
 
-		for (i=rows - 1; i>0; i--)
-		{
-			if (d_table->isRowSelected(i))
-			{
+		for (int i=rows - 1; i>0; i--){
+			if (d_table->isRowSelected(i)){
 				bottomRow = i;
 				break;
 			}
 		}
 	}
 
-	if (withLabels)
-	{
-		QStringList header=colNames();
-		QStringList ls=header.grep ( QRegExp ("\\D"));
-		if (exportSelection)
-		{
-			for (i=1;i<selectedCols;i++)
-			{
+	if (withLabels){
+		QStringList header = colNames();
+		QStringList ls = header.grep ( QRegExp ("\\D"));
+		if (exportSelection){
+			for (int i=1; i<selectedCols; i++){
 				if (ls.count()>0)
-					text+=header[sCols[i]]+separator;
+					text += header[sCols[i]] + separator;
 				else
-					text+="C"+header[sCols[i]]+separator;
+					text += "C" + header[sCols[i]] + separator;
 			}
 
 			if (ls.count()>0)
-				text+=header[sCols[selectedCols]] + "\n";
+				text += header[sCols[selectedCols]] + "\n";
 			else
-				text+="C"+header[sCols[selectedCols]] + "\n";
-		}
-		else
-		{
-			if (ls.count()>0)
-			{
-				for (j=0; j<cols-1; j++)
-					text+=header[j]+separator;
-				text+=header[cols-1]+"\n";
-			}
-			else
-			{
-				for (j=0; j<cols-1; j++)
-					text+="C"+header[j]+separator;
-				text+="C"+header[cols-1]+"\n";
+				text += "C" + header[sCols[selectedCols]] + "\n";
+		} else {
+			if (ls.count()>0){
+				for (int j=0; j<cols-1; j++)
+					text += header[j] + separator;
+				text += header[cols-1] + "\n";
+			} else {
+				for (int j=0; j<cols-1; j++)
+					text += "C" + header[j] + separator;
+				text += "C" + header[cols-1] + "\n";
 			}
 		}
 	}// finished writting labels
 
-	if (exportSelection)
-	{
-		for (i=topRow;i<=bottomRow; i++)
-		{
-			for (j=1;j<selectedCols;j++)
-				text+=d_table->text(i, sCols[j]) + separator;
-			text+=d_table->text(i, sCols[selectedCols]) + "\n";
+	if (exportComments){
+		if (exportSelection){
+			for (int i=1; i<selectedCols; i++)
+                text += comments[sCols[i]] + separator;
+			text += comments[sCols[selectedCols]] + "\n";
+		} else {
+            for (int i=0; i<cols-1; i++)
+                text += comments[i] + separator;
+            text += comments[cols-1] + "\n";
+        }
+	}
+
+	if (exportSelection){
+		for (int i=topRow; i<=bottomRow; i++){
+			for (int j=1; j<selectedCols; j++)
+				text += d_table->text(i, sCols[j]) + separator;
+			text += d_table->text(i, sCols[selectedCols]) + "\n";
 		}
 		delete[] sCols;//free memory
-	}
-	else
-	{
-		for (i=0;i<rows;i++)
-		{
-			for (j=0;j<cols-1;j++)
-				text+=d_table->text(i,j)+separator;
-			text+=d_table->text(i,cols-1)+"\n";
+	} else {
+		for (int i=0;i<rows;i++) {
+			for (int j=0; j<cols-1; j++)
+				text += d_table->text(i,j) + separator;
+			text += d_table->text(i, cols-1)+"\n";
 		}
 	}
 	QTextStream t( &f );

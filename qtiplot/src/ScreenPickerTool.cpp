@@ -33,7 +33,6 @@
 #include "Plot.h"
 #include "cursors.h"
 #include <qwt_symbol.h>
-#include <QMessageBox.h>
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->plotWidget()->canvas()),

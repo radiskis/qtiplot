@@ -7,7 +7,7 @@
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
                            knut.franke*gmx.de
     Description          : Import ASCII file(s) dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -36,6 +36,7 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QLineEdit>
 
 class QGroupBox;
 class QPushButton;
@@ -86,12 +87,18 @@ public:
 
 	//! Set the selected columns separator.
 	void setColumnSeparator(const QString &sep);
-	
+
 	//! Returns a locale having the decimal separators set to user custom settings.
 	QLocale decimalSeparators();
 	//! Whether the user wants the decimal separators to be changed to application settings.
 	bool updateDecimalSeparators() const { return d_import_dec_separators->isChecked(); };
-		
+
+    //! Returns a string used to comment lines when importing ASCII files
+	QString commentString(){return d_comment_string->text();};
+
+    //! Returns true if the second line of the ASCII file should be used to set comments in table
+    bool importComments(){return d_import_comments->isChecked();};
+
 private slots:
 	//! Display help for advanced options.
 	void displayHelp();
@@ -110,7 +117,8 @@ private:
 	// the actual options
 	QComboBox *d_import_mode, *d_column_separator, *boxDecimalSeparator;
 	QSpinBox *d_ignored_lines;
-	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces;
+	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces, *d_import_comments;
+	QLineEdit *d_comment_string;
 };
 
 
