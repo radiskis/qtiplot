@@ -65,8 +65,8 @@ public:
 	enum ColType{Numeric = 0, Text = 1, Date = 2, Time = 3, Month = 4, Day = 5};
 
    	Table(ScriptingEnv *env, const QString &fname,const QString &sep, int ignoredLines, bool renameCols,
-		 bool stripSpaces, bool simplifySpaces, const QString &label,
-		 QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
+		 bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
+         const QString &label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 	Table(ScriptingEnv *env, int r,int c, const QString &label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 
 	Q3TableSelection getSelection();
@@ -274,12 +274,14 @@ public slots:
 	void setMonthFormat(const QString& format, int col, bool updateCells = true);
 	void setDayFormat(const QString& format, int col, bool updateCells = true);
 
-	bool exportASCII(const QString& fname, const QString& separator,
-					bool withLabels = false, bool exportSelection = false);
-	void importASCII(const QString &fname, const QString &sep, int ignoredLines,
-						bool renameCols, bool stripSpaces, bool simplifySpaces, bool newTable);
+	bool exportASCII(const QString& fname, const QString& separator, bool withLabels = false,
+                     bool exportComments = false, bool exportSelection = false);
+	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
+                    bool stripSpaces, bool simplifySpaces, bool importComments, bool newTable,
+                    const QString& commentString);
 	void importMultipleASCIIFiles(const QString &fname, const QString &sep, int ignoredLines,
-					bool renameCols, bool stripSpaces, bool simplifySpaces, int importFileAs);
+					bool renameCols, bool stripSpaces, bool simplifySpaces, bool importComments,
+					const QString &commentString, int importFileAs);
 
 	//! \name Saving and Restoring
 	//@{

@@ -66,6 +66,8 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	d_ignored_lines->setValue(app->ignoredLines);
 	d_rename_columns->setChecked(app->renameColumns);
 	setColumnSeparator(app->columnSeparator);
+    d_comment_string->setText(app->d_ASCII_comment_string);
+    d_import_comments->setChecked(app->d_ASCII_import_comments);
 
 	if (app->d_ASCII_import_locale.name() == QLocale::c().name())
         boxDecimalSeparator->setCurrentIndex(1);
@@ -127,11 +129,18 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_ignored_lines->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 	advanced_layout->addWidget(d_ignored_lines, 2, 1);
 
+	advanced_layout->addWidget(new QLabel(tr("Ignore lines starting with")), 3, 0);
+	d_comment_string = new QLineEdit();
+    advanced_layout->addWidget(d_comment_string, 3, 1);
+
 	d_rename_columns = new QCheckBox(tr("Use first row to &name columns"));
 	advanced_layout->addWidget(d_rename_columns, 0, 2, 1, 2);
 
+    d_import_comments = new QCheckBox(tr("Use second row as &comments"));
+	advanced_layout->addWidget(d_import_comments, 1, 2, 1, 2);
+
 	d_strip_spaces = new QCheckBox(tr("&Remove white spaces from line ends"));
-	advanced_layout->addWidget(d_strip_spaces, 1, 2, 1, 2);
+	advanced_layout->addWidget(d_strip_spaces, 2, 2, 1, 2);
 	// context-sensitive help
 	QString help_strip_spaces = tr("By checking this option all white spaces will be \nremoved from the beginning and the end of \nthe lines in the ASCII file.","when translating this check the what's this functions and tool tips to place the '\\n's correctly");
 	help_strip_spaces +="\n\n"+tr("Warning: checking this option leads to column \noverlaping if the columns in the ASCII file don't \nhave the same number of rows.");
@@ -140,7 +149,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_strip_spaces->setToolTip(help_strip_spaces);
 
 	d_simplify_spaces = new QCheckBox(tr("&Simplify white spaces" ));
-	advanced_layout->addWidget(d_simplify_spaces, 2, 2, 1, 2);
+	advanced_layout->addWidget(d_simplify_spaces, 3, 2, 1, 2);
 	// context-sensitive help
 	QString help_simplify_spaces = tr("By checking this option all white spaces will be \nremoved from the beginning and the end of the \nlines and each sequence of internal \nwhitespaces (including the TAB character) will \nbe replaced with a single space.","when translating this check the what's this functions and tool tips to place the '\\n's correctly");
 	help_simplify_spaces +="\n\n"+tr("Warning: checking this option leads to column \noverlaping if the columns in the ASCII file don't \nhave the same number of rows.","when translating this check the what's this functions and tool tips to place the '\\n's correctly");
@@ -148,17 +157,17 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_simplify_spaces->setWhatsThis(help_simplify_spaces);
 	d_simplify_spaces->setToolTip(help_simplify_spaces);
 
-	advanced_layout->addWidget(new QLabel(tr("Decimal Separators")), 3, 0);
+	advanced_layout->addWidget(new QLabel(tr("Decimal Separators")), 4, 0);
 	boxDecimalSeparator = new QComboBox();
 	boxDecimalSeparator->addItem(tr("System Locale Setting"));
 	boxDecimalSeparator->addItem("1,000.0");
 	boxDecimalSeparator->addItem("1.000,0");
 	boxDecimalSeparator->addItem("1 000,0");
-	advanced_layout->addWidget(boxDecimalSeparator, 3, 1);
+	advanced_layout->addWidget(boxDecimalSeparator, 4, 1);
 
 	d_import_dec_separators = new QCheckBox(tr("Import &decimal separators"));
 	connect(d_import_dec_separators, SIGNAL(toggled(bool)), boxDecimalSeparator, SLOT(setEnabled(bool)));
-	advanced_layout->addWidget(d_import_dec_separators, 3, 2, 1, 2);
+	advanced_layout->addWidget(d_import_dec_separators, 4, 2, 1, 2);
 
 	QHBoxLayout *meta_options_layout = new QHBoxLayout();
 	d_remember_options = new QCheckBox(tr("Re&member the above options"));
