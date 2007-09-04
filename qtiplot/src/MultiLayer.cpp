@@ -1357,3 +1357,26 @@ void MultiLayer::setHidden()
 
 	MyWidget::setHidden();
 }
+
+bool MultiLayer::swapLayers(int src, int dest)
+{
+	Graph *layerSrc = layer(src);
+	Graph *layerDest = layer(dest);
+	if (!layerSrc || !layerDest)
+		return false;
+	
+	QRect rectSrc = layerSrc->geometry();
+	QRect rectDest = layerDest->geometry();
+
+	layerSrc->setGeometry(rectDest);
+    layerSrc->plotWidget()->resize(rectDest.size());
+	
+	layerDest->setGeometry(rectSrc);
+    layerDest->plotWidget()->resize(rectSrc.size());
+	
+	graphsList[src-1] = layerDest;
+	graphsList[dest-1] = layerSrc;
+	
+	emit modifiedPlot();
+	return true;
+}

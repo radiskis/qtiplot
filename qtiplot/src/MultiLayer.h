@@ -133,6 +133,7 @@ public slots:
 
 	QSize arrangeLayers(bool userSize);
 	void arrangeLayers(bool fit, bool userSize);
+	bool swapLayers(int src, int dest);
     void adjustSize();
 
 	int getRows(){return rows;};

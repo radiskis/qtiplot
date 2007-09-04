@@ -516,6 +516,7 @@ public:
   void setLayerCanvasSize (int, int);
   void setAlignement (int, int);
   void arrangeLayers(bool fit = true, bool userSize = false);
+  bool swapLayers(int, int);
 
   void exportToFile(const QString& fileName) /PyName=export/;
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
