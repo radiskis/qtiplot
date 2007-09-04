@@ -2,8 +2,8 @@
     File                 : LayerDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Arrange layers dialog
 
  ***************************************************************************/
@@ -87,7 +87,6 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	boxY->setRange(1, 100);
 	gl3->addWidget(boxY, 1, 1);
 
-
 	GroupCanvasSize = new QGroupBox(tr("&Layer Canvas Size"));
 	GroupCanvasSize->setCheckable(true);
 	GroupCanvasSize->setChecked(false);
@@ -159,6 +158,20 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	hbox1->addWidget(buttonOk);
 	hbox1->addWidget(buttonCancel);
 
+	QGroupBox *gb5 = new QGroupBox(tr("Swap Layers"));
+	QHBoxLayout *hbox2 = new QHBoxLayout(gb5);
+	hbox2->addWidget(new QLabel( tr( "Source Layer") ));
+		
+	boxLayerSrc = new QSpinBox();
+	hbox2->addWidget(boxLayerSrc);
+	
+	hbox2->addWidget(new QLabel( tr( "Destination Layer") ));
+	boxLayerDest = new QSpinBox();
+	hbox2->addWidget(boxLayerDest);
+	
+	buttonSwapLayers = new QPushButton(tr( "&Swap" ));
+	hbox2->addWidget(buttonSwapLayers);
+
 	QGridLayout *gl6 = new QGridLayout();
 	gl6->addWidget(gb1, 0, 0);
 	gl6->addWidget(gb2, 0, 1);
@@ -168,8 +181,11 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 
 	QVBoxLayout *vbox2 = new QVBoxLayout(this);
 	vbox2->addLayout(gl6);
+	vbox2->addWidget(gb5);
+	vbox2->addStretch();
 	vbox2->addLayout(hbox1);
 
+	connect( buttonSwapLayers, SIGNAL( clicked() ), this, SLOT( swapLayers() ) );
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT(update() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
@@ -199,6 +215,9 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 	boxCanvasHeight->setValue(g->layerCanvasSize().height());
 	alignHorBox->setCurrentItem(g->horizontalAlignement());
 	alignVertBox->setCurrentItem(g->verticalAlignement());
+	
+	boxLayerSrc->setRange(1, g->layers());
+	boxLayerDest->setRange(1, g->layers());
 }
 
 void LayerDialog::update()
@@ -228,7 +247,7 @@ void LayerDialog::update()
 
 		if (cols>graphs && !fitBox->isChecked())
 		{
-			QMessageBox::about(0,tr("QtiPlot - Columns input error"),
+			QMessageBox::about(this, tr("QtiPlot - Columns input error"),
 					tr("The number of columns you've entered is greater than the number of graphs (%1)!").arg(graphs));
 			boxX->setFocus();
 			return;
@@ -236,7 +255,7 @@ void LayerDialog::update()
 
 		if (rows>graphs && !fitBox->isChecked())
 		{
-			QMessageBox::about(0,tr("QtiPlot - Rows input error"),
+			QMessageBox::about(this, tr("QtiPlot - Rows input error"),
 					tr("The number of rows you've entered is greater than the number of graphs (%1)!").arg(graphs));
 			boxY->setFocus();
 			return;
@@ -278,3 +297,13 @@ void LayerDialog::accept()
 	close();
 }
 
+void LayerDialog::swapLayers()
+{
+	if(boxLayerSrc->value() == boxLayerDest->value()){
+		QMessageBox::warning(this, tr("QtiPlot - Error"),
+		tr("Please enter different indexes for the source and destination layers!"));
+		return;
+	}
+	
+	multi_layer->swapLayers(boxLayerSrc->value(), boxLayerDest->value());
+}

@@ -862,6 +862,10 @@ void ApplicationWindow::initMainMenu()
 	connect( windowsMenu, SIGNAL( aboutToShow() ),
 			this, SLOT( windowsMenuAboutToShow() ) );
 
+	foldersMenu = new QMenu(this);
+	foldersMenu->setFont(appFont);
+	foldersMenu->setCheckable(true);
+
 	help = new QMenu( this );
 	help->setFont(appFont);
 
@@ -2019,6 +2023,8 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
 
 	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws);
 	m->setAttribute(Qt::WA_DeleteOnClose);
+	m->setNumericPrecision(d_decimal_digits);
+    m->setLocale(d_locale);
 	m->table()->blockSignals(true);
 
 	int aux = rows - 1;
@@ -2807,9 +2813,18 @@ void ApplicationWindow::windowActivated(QWidget *w)
 	customMenu(w);
 
 	Folder *f = ((MyWidget *)w)->folder();
-	if (f)
+	if (f){
         f->setActiveWindow((MyWidget *)w);
-
+		if (w->inherits("Table")){//clear selection on all other tables
+			QList<MyWidget *> folderWindows = f->windowsList();
+			foreach(MyWidget *t, folderWindows){
+				if (t->inherits("Table") && t!= w){
+					((Table *)t)->table()->clearSelection();
+				}
+			}
+		}
+	}
+	
 	emit modified();
 }
 
@@ -3061,6 +3076,7 @@ void ApplicationWindow::updateAppFonts()
 	this->setFont(appFont);
 	scriptingMenu->setFont(appFont);
 	windowsMenu->setFont(appFont);
+	foldersMenu->setFont(appFont);
 	view->setFont(appFont);
 	graph->setFont(appFont);
 	file->setFont(appFont);
@@ -5575,29 +5591,29 @@ void ApplicationWindow::showColMenu(int c)
 	if ((int)w->selectedColumns().count()==1)
 	{
 		w->setSelectedCol(c);
-		plot.addAction(QIcon(QPixmap(lPlot_xpm)),tr("&Line"),w, SLOT(plotL()));
-		plot.addAction(QIcon(QPixmap(pPlot_xpm)),tr("&Scatter"),w, SLOT(plotP()));
-		plot.addAction(QIcon(QPixmap(lpPlot_xpm)),tr("Line + S&ymbol"),w,SLOT(plotLP()));
+		plot.addAction(QIcon(QPixmap(lPlot_xpm)),tr("&Line"), this, SLOT(plotL()));
+		plot.addAction(QIcon(QPixmap(pPlot_xpm)),tr("&Scatter"), this, SLOT(plotP()));
+		plot.addAction(QIcon(QPixmap(lpPlot_xpm)),tr("Line + S&ymbol"), this, SLOT(plotLP()));
 
-		specialPlot.addAction(QIcon(QPixmap(dropLines_xpm)),tr("Vertical &Drop Lines"),w,SLOT(plotVerticalDropLines()));
-		specialPlot.addAction(QIcon(QPixmap(spline_xpm)),tr("&Spline"),w,SLOT(plotSpline()));
-		specialPlot.addAction(QIcon(QPixmap(vert_steps_xpm)),tr("&Vertical Steps"),w,SLOT(plotVertSteps()));
-		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Horizontal Steps"),w,SLOT(plotHorSteps()));
+		specialPlot.addAction(QIcon(QPixmap(dropLines_xpm)),tr("Vertical &Drop Lines"), this, SLOT(plotVerticalDropLines()));
+		specialPlot.addAction(QIcon(QPixmap(spline_xpm)),tr("&Spline"), this,SLOT(plotSpline()));
+		specialPlot.addAction(QIcon(QPixmap(vert_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotVertSteps()));
+		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Horizontal Steps"), this, SLOT(plotHorSteps()));
 		specialPlot.setTitle(tr("Special Line/Symb&ol"));
 		plot.addMenu(&specialPlot);
 		plot.insertSeparator();
 
-		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"),w,SLOT(plotVB()));
-		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"),w,SLOT(plotHB()));
-		plot.addAction(QIcon(QPixmap(area_xpm)),tr("&Area"),w,SLOT(plotArea()));
+		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"), this, SLOT(plotVB()));
+		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"), this, SLOT(plotHB()));
+		plot.addAction(QIcon(QPixmap(area_xpm)),tr("&Area"), this, SLOT(plotArea()));
 
-		plot.addAction(QIcon(QPixmap(pie_xpm)),tr("&Pie"),w,SLOT(plotPie()));
+		plot.addAction(QIcon(QPixmap(pie_xpm)),tr("&Pie"), this, SLOT(plotPie()));
 		plot.insertSeparator();
 
-		plot.addAction(QIcon(QPixmap(ribbon_xpm)),tr("3D Ribbo&n"),w,SLOT(plot3DRibbon()));
-		plot.addAction(QIcon(QPixmap(bars_xpm)),tr("3D &Bars"),w,SLOT(plot3DBars()));
-		plot.addAction(QIcon(QPixmap(scatter_xpm)),tr("3&D Scatter"),w,SLOT(plot3DScatter()));
-		plot.addAction(QIcon(QPixmap(trajectory_xpm)),tr("3D &Trajectory"),w,SLOT(plot3DTrajectory()));
+		plot.addAction(QIcon(QPixmap(ribbon_xpm)),tr("3D Ribbo&n"), this, SLOT(plot3DRibbon()));
+		plot.addAction(QIcon(QPixmap(bars_xpm)),tr("3D &Bars"), this, SLOT(plot3DBars()));
+		plot.addAction(QIcon(QPixmap(scatter_xpm)),tr("3&D Scatter"), this, SLOT(plot3DScatter()));
+		plot.addAction(QIcon(QPixmap(trajectory_xpm)),tr("3D &Trajectory"), this, SLOT(plot3DTrajectory()));
 
 		plot.insertSeparator();
 
@@ -5680,34 +5696,34 @@ void ApplicationWindow::showColMenu(int c)
 	}
 	else if ((int)w->selectedColumns().count()>1)
 	{
-		plot.addAction(QIcon(QPixmap(lPlot_xpm)),tr("&Line"),w, SLOT(plotL()));
-		plot.addAction(QIcon(QPixmap(pPlot_xpm)),tr("&Scatter"),w, SLOT(plotP()));
-		plot.addAction(QIcon(QPixmap(lpPlot_xpm)),tr("Line + S&ymbol"),w,SLOT(plotLP()));
+		plot.addAction(QIcon(QPixmap(lPlot_xpm)),tr("&Line"), this, SLOT(plotL()));
+		plot.addAction(QIcon(QPixmap(pPlot_xpm)),tr("&Scatter"), this, SLOT(plotP()));
+		plot.addAction(QIcon(QPixmap(lpPlot_xpm)),tr("Line + S&ymbol"), this,SLOT(plotLP()));
 
-		specialPlot.addAction(QIcon(QPixmap(dropLines_xpm)),tr("Vertical &Drop Lines"),w,SLOT(plotVerticalDropLines()));
-		specialPlot.addAction(QIcon(QPixmap(spline_xpm)),tr("&Spline"),w,SLOT(plotSpline()));
-		specialPlot.addAction(QIcon(QPixmap(vert_steps_xpm)),tr("&Vertical Steps"),w,SLOT(plotVertSteps()));
-		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Vertical Steps"),w,SLOT(plotHorSteps()));
+		specialPlot.addAction(QIcon(QPixmap(dropLines_xpm)),tr("Vertical &Drop Lines"), this, SLOT(plotVerticalDropLines()));
+		specialPlot.addAction(QIcon(QPixmap(spline_xpm)),tr("&Spline"), this, SLOT(plotSpline()));
+		specialPlot.addAction(QIcon(QPixmap(vert_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotVertSteps()));
+		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotHorSteps()));
 		specialPlot.setTitle(tr("Special Line/Symb&ol"));
 		plot.addMenu(&specialPlot);
 		plot.insertSeparator();
 
-		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"),w,SLOT(plotVB()));
-		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"),w,SLOT(plotHB()));
-		plot.addAction(QIcon(QPixmap(area_xpm)),tr("&Area"),w,SLOT(plotArea()));
-		plot.addAction(QIcon(QPixmap(vectXYXY_xpm)),tr("Vectors &XYXY"), w, SLOT(plotVectXYXY()));
+		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"), this, SLOT(plotVB()));
+		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"), this, SLOT(plotHB()));
+		plot.addAction(QIcon(QPixmap(area_xpm)),tr("&Area"), this, SLOT(plotArea()));
+		plot.addAction(QIcon(QPixmap(vectXYXY_xpm)),tr("Vectors &XYXY"), this, SLOT(plotVectXYXY()));
 		plot.insertSeparator();
 
 		stat.addAction(actionBoxPlot);
-		stat.addAction(QIcon(QPixmap(histogram_xpm)),tr("&Histogram"),w,SLOT(plotHistogram()));
-		stat.addAction(QIcon(QPixmap(stacked_hist_xpm)),tr("&Stacked Histograms"),this,SLOT(plotStackedHistograms()));
+		stat.addAction(QIcon(QPixmap(histogram_xpm)),tr("&Histogram"), this, SLOT(plotHistogram()));
+		stat.addAction(QIcon(QPixmap(stacked_hist_xpm)),tr("&Stacked Histograms"), this, SLOT(plotStackedHistograms()));
 		stat.setTitle(tr("Statistical &Graphs"));
 		plot.addMenu(&stat);
 
-		panels.addAction(QIcon(QPixmap(panel_v2_xpm)),tr("&Vertical 2 Layers"),this, SLOT(plot2VerticalLayers()));
-		panels.addAction(QIcon(QPixmap(panel_h2_xpm)),tr("&Horizontal 2 Layers"),this, SLOT(plot2HorizontalLayers()));
-		panels.addAction(QIcon(QPixmap(panel_4_xpm)),tr("&4 Layers"),this, SLOT(plot4Layers()));
-		panels.addAction(QIcon(QPixmap(stacked_xpm)),tr("&Stacked Layers"),this, SLOT(plotStackedLayers()));
+		panels.addAction(QIcon(QPixmap(panel_v2_xpm)),tr("&Vertical 2 Layers"), this, SLOT(plot2VerticalLayers()));
+		panels.addAction(QIcon(QPixmap(panel_h2_xpm)),tr("&Horizontal 2 Layers"), this, SLOT(plot2HorizontalLayers()));
+		panels.addAction(QIcon(QPixmap(panel_4_xpm)),tr("&4 Layers"), this, SLOT(plot4Layers()));
+		panels.addAction(QIcon(QPixmap(stacked_xpm)),tr("&Stacked Layers"), this, SLOT(plotStackedLayers()));
 		panels.setTitle(tr("Pa&nel"));
 		plot.addMenu(&panels);
 
@@ -7664,12 +7680,36 @@ mb->exec();
 
 void ApplicationWindow::windowsMenuAboutToShow()
 {
+	windowsMenu->clear();
+	foldersMenu->clear();
+
+	Folder *project_folder = projectFolder();
+	FolderListItem *item = project_folder->folderListItem();
+	int initial_depth = item->depth();
+	int folder_param = 0;
+	while (item && item->depth() >= initial_depth){
+		Folder *f = item->folder();
+		int id;
+		if (folder_param < 9)
+			id = foldersMenu->insertItem("&" + QString::number(folder_param+1) + " " + f->path(), this, SLOT(foldersMenuActivated(int)));
+		else	
+			id = foldersMenu->insertItem(f->path(), this, SLOT(foldersMenuActivated(int)));
+
+		foldersMenu->setItemParameter(id, folder_param);
+		folder_param++;		
+		foldersMenu->setItemChecked(id, f == current_folder);
+		
+		item = (FolderListItem *)item->itemBelow();
+	}
+	
+	windowsMenu->insertItem(tr("&Folders"), foldersMenu);
+	windowsMenu->insertSeparator();
+	
 	QList<QWidget*> windows = ws->windowList();
-	int n=int(windows.count());
+	int n = int(windows.count());
 	if (!n )
 		return;
 
-	windowsMenu->clear();
 	windowsMenu->insertItem(tr("&Cascade"), this, SLOT(cascade() ) );
 	windowsMenu->insertItem(tr("&Tile"), ws, SLOT(tile() ) );
 	windowsMenu->insertSeparator();
@@ -7683,28 +7723,24 @@ void ApplicationWindow::windowsMenuAboutToShow()
 	windowsMenu->addAction(actionShowScriptWindow);
 	windowsMenu->insertSeparator();
 #endif
+	
 	windowsMenu->addAction(actionResizeActiveWindow);
 	windowsMenu->insertItem(tr("&Hide Window"),
 			this, SLOT(hideActiveWindow()));
 	windowsMenu->insertItem(QPixmap(close_xpm), tr("Close &Window"),
 			this, SLOT(closeActiveWindow()), Qt::CTRL+Qt::Key_W );
 
-	if (n>0 && n<10)
-	{
+	if (n>0 && n<10){
 		windowsMenu->insertSeparator();
-		for (int i = 0; i<n; ++i )
-		{
+		for (int i = 0; i<n; ++i ){
 			int id = windowsMenu->insertItem(windows.at(i)->name(),
 					this, SLOT( windowsMenuActivated( int ) ) );
 			windowsMenu->setItemParameter( id, i );
 			windowsMenu->setItemChecked( id, ws->activeWindow() == windows.at(i) );
 		}
-	}
-	else if (n>=10)
-	{
+	} else if (n>=10) {
 		windowsMenu->insertSeparator();
-		for ( int i = 0; i<9; ++i )
-		{
+		for ( int i = 0; i<9; ++i ){
 			int id = windowsMenu->insertItem(windows.at(i)->name(),
 					this, SLOT( windowsMenuActivated( int ) ) );
 			windowsMenu->setItemParameter( id, i );
@@ -7723,8 +7759,7 @@ void ApplicationWindow::showMarkerPopupMenu()
 	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
 	QMenu markerMenu(this);
 
-	if (g->imageMarkerSelected())
-	{
+	if (g->imageMarkerSelected()){
 		markerMenu.insertItem(QPixmap(pixelProfile_xpm),tr("&View Pixel Line profile"),this, SLOT(pixelLineProfile()));
 		markerMenu.insertItem(tr("&Intensity Matrix"),this, SLOT(intensityTable()));
 		markerMenu.insertSeparator();
@@ -7756,15 +7791,31 @@ void ApplicationWindow::windowsMenuActivated( int id )
 {
 	QList<QWidget*> windows = ws->windowList();
 	QWidget* w = windows.at( id );
-	if ( w )
-	{
+	if ( w ){
 		w->showNormal();
 		w->setFocus();
-		if(hidden(w))
-		{
+		if(hidden(w)){
 			hiddenWindows->takeAt(hiddenWindows->indexOf(w));
 			setListView(w->name(), tr("Normal"));
 		}
+	}
+}
+
+void ApplicationWindow::foldersMenuActivated( int id )
+{	
+	Folder *project_folder = projectFolder();
+	FolderListItem *item = project_folder->folderListItem();
+	int initial_depth = item->depth();
+	int folder_param = 0;
+	while (item && item->depth() >= initial_depth){
+		Folder *f = item->folder();
+		if (folder_param == id){
+			changeFolder (f);
+			break;
+		}
+		
+		folder_param++;		
+		item = (FolderListItem *)item->itemBelow();
 	}
 }
 
@@ -11743,6 +11794,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename)
         updateRecentProjectsList();
         return this;
     }
+	return 0;
 }
 
 void ApplicationWindow::deleteFitTables()

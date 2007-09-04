@@ -2,8 +2,8 @@
     File                 : LayerDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Arrange layers dialog
 
  ***************************************************************************/
@@ -50,6 +50,7 @@ protected slots:
 	void accept();
 	void update();
 	void enableLayoutOptions(bool ok);
+	void swapLayers();
 
 private:
 	MultiLayer *multi_layer;
@@ -57,10 +58,12 @@ private:
 	QPushButton* buttonOk;
 	QPushButton* buttonCancel;
 	QPushButton* buttonApply;
+	QPushButton* buttonSwapLayers;
     QGroupBox *GroupCanvasSize, *GroupGrid;
     QSpinBox *boxX, *boxY, *boxColsGap, *boxRowsGap;
 	QSpinBox *boxRightSpace, *boxLeftSpace, *boxTopSpace, *boxBottomSpace;
 	QSpinBox *boxCanvasWidth, *boxCanvasHeight, *layersBox;
+	QSpinBox *boxLayerDest, *boxLayerSrc;
 	QCheckBox *fitBox;
 	QComboBox *alignHorBox, *alignVertBox;
 };

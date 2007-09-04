@@ -808,7 +808,7 @@ public slots:
 
 	//! \name Folders
 	//@{
-	//! Returns a to the current folder in the project
+	//! Returns a pointer to the current folder in the project
 	Folder* currentFolder(){return current_folder;};
 	//! Adds a new folder to the project
 	void addFolder();
@@ -912,6 +912,8 @@ public slots:
 	 * \param dest destination folder item
 	 */
 	void moveFolder(FolderListItem *src, FolderListItem *dest);
+	
+	void foldersMenuActivated( int id );
 	//@}
 
 	//! \name Scripting
@@ -1073,7 +1075,7 @@ private:
 	Graph *lastCopiedLayer;
 	QSplitter *explorerSplitter;
 
-	QMenu *windowsMenu,*view,*graph,*file,*format,*calcul,*edit,*dataMenu,*recent, *exportPlot;
+	QMenu *windowsMenu, *foldersMenu, *view,*graph,*file,*format,*calcul,*edit,*dataMenu,*recent, *exportPlot;
 	QMenu *help,*type,*plot2D,*plot3D, *specialPlot, *panels,*stat,*decay, *filter;
 	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tableMenu, *tablesDepend;
 	QMenu *smooth, *normMenu, *translateMenu, *fillMenu, *setAsMenu, *multiPeakMenu;

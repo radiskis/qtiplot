@@ -2598,7 +2598,7 @@ void Table::moveCurrentCell()
 }
 
 bool Table::eventFilter(QObject *object, QEvent *e)
-{
+{	
 	Q3Header *hheader = d_table->horizontalHeader();
 	Q3Header *vheader = d_table->verticalHeader();
 
