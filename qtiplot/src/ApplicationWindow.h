@@ -114,7 +114,7 @@ class ApplicationWindow: public QMainWindow, public scripted
 {
     Q_OBJECT
 public:
-    ApplicationWindow();
+    ApplicationWindow(bool factorySettings = false);
 	ApplicationWindow(const QStringList& l);
 	~ApplicationWindow();
 
@@ -148,8 +148,8 @@ public slots:
 	//! \name Projects and Project Files
 	//@{
 	void open();
-	ApplicationWindow* open(const QString& fn);
-	ApplicationWindow* openProject(const QString& fn);
+	ApplicationWindow* open(const QString& fn, bool factorySettings = false);
+	ApplicationWindow* openProject(const QString& fn, bool factorySettings = false);
 	ApplicationWindow* importOPJ(const QString& filename);
 
 	/**
@@ -167,7 +167,7 @@ public slots:
 	 * \param fn is read as a Python script file and loaded in the command script window.
 	 * \param execute specifies if the script should be executed after opening.
 	 */
-	ApplicationWindow * loadScript(const QString& fn, bool execute = false);
+	ApplicationWindow * loadScript(const QString& fn, bool execute = false, bool factorySettings = false);
 
 	QWidgetList * windowsList();
 	void updateWindowLists(MyWidget *w);
@@ -520,7 +520,7 @@ public slots:
 	//@{
 	void insertTranslatedStrings();
 	void translateActionsStrings();
-	void init();
+	void init(bool factorySettings = false);
 	void initGlobalConstants();
 	void createActions();
 	void initMainMenu();
