@@ -153,14 +153,14 @@ void file_compress(char  *file, char  *mode);
 void file_uncompress(char  *file);
 }
 
-ApplicationWindow::ApplicationWindow()
+ApplicationWindow::ApplicationWindow(bool factorySettings)
 : QMainWindow(), scripted(ScriptingLangManager::newEnv(this))
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	init();
+	init(factorySettings);
 }
 
-void ApplicationWindow::init()
+void ApplicationWindow::init(bool factorySettings)
 {
 	setWindowTitle(tr("QtiPlot - untitled"));
 	initGlobalConstants();
@@ -260,7 +260,8 @@ void ApplicationWindow::init()
 	scriptWindow = 0;
 
 	renamedTables = QStringList();
-	readSettings();
+	if (!factorySettings)
+		readSettings();
 	createLanguagesList();
 	insertTranslatedStrings();
 
@@ -339,6 +340,131 @@ void ApplicationWindow::initGlobalConstants()
 	plot3DAxesFont = QFont(family, pointSize, QFont::Bold, false );
 	plot3DNumbersFont = QFont(family, pointSize);
 	plot3DTitleFont = QFont(family, pointSize + 2, QFont::Bold,false);
+	
+	autoSearchUpdates = false;
+	askForSupport = false;
+	appLanguage = QLocale::system().name().section('_',0,0);
+	show_windows_policy = ApplicationWindow::ActiveFolder;
+
+	workspaceColor = QColor("darkGray");
+	panelsColor = QColor("#ffffff");
+	panelsTextColor = QColor("#000000");
+	tableBkgdColor = QColor("#ffffff");
+	tableTextColor = QColor("#000000");
+	tableHeaderColor = QColor("#000000");
+	
+	plot3DColors = QStringList();
+	plot3DColors << "blue";
+	plot3DColors << "#000000";
+	plot3DColors << "#000000";
+	plot3DColors << "#000000";
+	plot3DColors << "red";
+	plot3DColors << "#000000";
+	plot3DColors << "#000000";
+	plot3DColors << "#ffffff";
+	
+	autoSave = true;
+	autoSaveTime = 15;
+	defaultScriptingLang = "muParser";
+	d_thousands_sep = true;
+	d_locale = QLocale::system().name();
+	if (!d_thousands_sep)
+        d_locale.setNumberOptions(QLocale::OmitGroupSeparator);
+
+	d_decimal_digits = 16;
+
+	d_extended_open_dialog = true;
+	d_extended_export_dialog = true;
+	d_extended_import_ASCII_dialog = true;
+	d_extended_plot_dialog = true;
+
+	d_add_curves_dialog_size = QSize(700, 400);
+	d_show_current_folder = false;
+
+	confirmCloseFolder = true;
+	confirmCloseTable = true;
+	confirmCloseMatrix = true;
+	confirmClosePlot2D = true;
+	confirmClosePlot3D = true;
+	confirmCloseNotes = true;
+
+	d_show_table_comments = false;
+
+	titleOn = true;
+	allAxesOn = false;
+	canvasFrameWidth = 0;
+	defaultPlotMargin = 0;
+	drawBackbones = true;
+	axesLineWidth = 1;
+	autoscale2DPlots = true;
+	autoScaleFonts = true;
+	autoResizeLayers = true;
+	antialiasing2DPlots = true;
+	d_scale_plots_on_print = false;
+	d_print_cropmarks = false;
+
+	defaultCurveStyle = int(Graph::LineSymbols);
+	defaultCurveLineWidth = 1;
+	defaultSymbolSize = 7;
+
+	majTicksStyle = int(ScaleDraw::Out);
+	minTicksStyle = int(ScaleDraw::Out);
+	minTicksLength = 5;
+	majTicksLength = 9;
+
+	legendFrameStyle = int(Legend::Line);
+	legendTextColor = Qt::black;
+	legendBackground = Qt::white;
+	legendBackground.setAlpha(0); // transparent by default;
+
+	defaultArrowLineWidth = 1;
+	defaultArrowColor = Qt::black;
+	defaultArrowHeadLength = 4;
+	defaultArrowHeadAngle = 45;
+	defaultArrowHeadFill = true;
+	defaultArrowLineStyle = Graph::getPenStyle("SolidLine");
+
+	showPlot3DLegend = true;
+	showPlot3DProjection = false;
+	smooth3DMesh = true;
+	plot3DResolution = 1;
+	orthogonal3DPlots = false;
+	autoscale3DPlots = true;
+
+	fit_output_precision = 15;
+	pasteFitResultsToPlot = false;
+	writeFitResultsToLog = true;
+	generateUniformFitPoints = true;
+	fitPoints = 100;
+	generatePeakCurves = true;
+	peakCurvesColor = 2;
+	fit_scale_errors = false;
+	d_2_linear_fit_points = true;
+
+	columnSeparator = "\t";
+	ignoredLines = 0;
+	renameColumns = true;
+	strip_spaces = false;
+	simplify_spaces = false;
+	d_ASCII_file_filter = "*";
+	d_ASCII_import_locale = QLocale::system().name();
+	d_import_dec_separators = true;
+	d_ASCII_import_mode = int(ImportASCIIDialog::NewTables);
+	d_ASCII_comment_string = "#";
+	d_ASCII_import_comments = false;
+
+	d_export_col_separator = "\t";
+	d_export_col_names = false;
+    d_export_col_comment = false;
+	d_export_table_selection = false;
+
+	d_image_export_filter = ".png";
+	d_export_transparency = false;
+	d_export_quality = 100;
+	d_export_resolution = QPrinter().resolution();
+	d_export_color = true;
+	d_export_vector_size = int(QPrinter::Custom);
+	d_keep_plot_aspect = true;
 }
 
 void ApplicationWindow::applyUserSettings()
@@ -2813,17 +2939,8 @@ void ApplicationWindow::windowActivated(QWidget *w)
 	customMenu(w);
 
 	Folder *f = ((MyWidget *)w)->folder();
-	if (f){
+	if (f)
         f->setActiveWindow((MyWidget *)w);
-		if (w->inherits("Table")){//clear selection on all other tables
-			QList<MyWidget *> folderWindows = f->windowsList();
-			foreach(MyWidget *t, folderWindows){
-				if (t->inherits("Table") && t!= w){
-					((Table *)t)->table()->clearSelection();
-				}
-			}
-		}
-	}
 	
 	emit modified();
 }
@@ -3450,7 +3567,7 @@ void ApplicationWindow::open()
 	}
 }
 
-ApplicationWindow* ApplicationWindow::open(const QString& fn)
+ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettings)
 {
 	if (fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
 		fn.endsWith(".ogw", Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive))
@@ -3489,7 +3606,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn)
     QStringList vl = list[1].split(".", QString::SkipEmptyParts);
     d_file_version = 100*(vl[0]).toInt()+10*(vl[1]).toInt()+(vl[2]).toInt();
 
-	ApplicationWindow* app = openProject(fname);
+	ApplicationWindow* app = openProject(fname, factorySettings);
 
 	f.close();
 	return app;
@@ -3535,9 +3652,9 @@ void ApplicationWindow::openRecentProject(int index)
 	}
 }
 
-ApplicationWindow* ApplicationWindow::openProject(const QString& fn)
+ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factorySettings)
 {
-	ApplicationWindow *app = new ApplicationWindow();
+	ApplicationWindow *app = new ApplicationWindow(factorySettings);
 	app->applyUserSettings();
 	app->projectname = fn;
 	app->d_file_version = d_file_version;
@@ -4225,6 +4342,7 @@ void ApplicationWindow::readSettings()
 	}
 
 	settings.beginGroup("/Colors");
+	plot3DColors = QStringList();
 	plot3DColors << QColor(settings.value("/MaxData", "blue").value<QColor>()).name();
 	plot3DColors << QColor(settings.value("/Labels", "#000000").value<QColor>()).name();
 	plot3DColors << QColor(settings.value("/Mesh", "#000000").value<QColor>()).name();
@@ -5603,8 +5721,8 @@ void ApplicationWindow::showColMenu(int c)
 		plot.addMenu(&specialPlot);
 		plot.insertSeparator();
 
-		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"), this, SLOT(plotVB()));
-		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"), this, SLOT(plotHB()));
+		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"), this, SLOT(plotVerticalBars()));
+		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"), this, SLOT(plotHorizontalBars()));
 		plot.addAction(QIcon(QPixmap(area_xpm)),tr("&Area"), this, SLOT(plotArea()));
 
 		plot.addAction(QIcon(QPixmap(pie_xpm)),tr("&Pie"), this, SLOT(plotPie()));
@@ -5618,8 +5736,8 @@ void ApplicationWindow::showColMenu(int c)
 		plot.insertSeparator();
 
 		stat.addAction(actionBoxPlot);
-		stat.addAction(QIcon(QPixmap(histogram_xpm)),tr("&Histogram"),w,SLOT(plotHistogram()));
-		stat.addAction(QIcon(QPixmap(stacked_hist_xpm)),tr("&Stacked Histograms"),this,SLOT(plotStackedHistograms()));
+		stat.addAction(QIcon(QPixmap(histogram_xpm)),tr("&Histogram"), this, SLOT(plotHistogram()));
+		stat.addAction(QIcon(QPixmap(stacked_hist_xpm)),tr("&Stacked Histograms"), this, SLOT(plotStackedHistograms()));
 		stat.setTitle(tr("Statistical &Graphs"));
 		plot.addMenu(&stat);
 
@@ -5708,8 +5826,8 @@ void ApplicationWindow::showColMenu(int c)
 		plot.addMenu(&specialPlot);
 		plot.insertSeparator();
 
-		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"), this, SLOT(plotVB()));
-		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"), this, SLOT(plotHB()));
+		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"), this, SLOT(plotVerticalBars()));
+		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"), this, SLOT(plotHorizontalBars()));
 		plot.addAction(QIcon(QPixmap(area_xpm)),tr("&Area"), this, SLOT(plotArea()));
 		plot.addAction(QIcon(QPixmap(vectXYXY_xpm)),tr("Vectors &XYXY"), this, SLOT(plotVectXYXY()));
 		plot.insertSeparator();
@@ -12123,12 +12241,17 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 
 	QString str;
 	bool exec = false;
+	bool default_settings = false;
 	foreach(str, args){
 		if( (str == "-a" || str == "--about") ||
 				(str == "-m" || str == "--manual") )
 		{
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 			tr("<b> %1 </b>: This command line option must be used without other arguments!").arg(str));
+		}
+		else if( (str == "-d" || str == "--default-settings"))
+		{
+			default_settings = true;
 		}
 		else if (str == "-v" || str == "--version")
 		{
@@ -12206,9 +12329,9 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 
 		ApplicationWindow *a;
 		if (exec)
-			a = loadScript(file_name, exec);
+			a = loadScript(file_name, exec, default_settings);
 		else
-			a = open(file_name);
+			a = open(file_name, default_settings);
 
 		if (a){
 			a->workingDir = workingDir;
@@ -13817,10 +13940,10 @@ void ApplicationWindow::cascade()
     modifiedProject();
 }
 
-ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute)
+ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute, bool factorySettings)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	ApplicationWindow *app= new ApplicationWindow();
+	ApplicationWindow *app= new ApplicationWindow(factorySettings);
 	app->applyUserSettings();
 	app->showMaximized();
 	app->showScriptWindow();

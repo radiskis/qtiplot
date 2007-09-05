@@ -132,7 +132,11 @@ int main( int argc, char ** argv )
 		ApplicationWindow::about();
 		exit(0);
 	} else {
-		ApplicationWindow *mw = new ApplicationWindow();
+		bool factorySettings = false;
+		if (args.contains("-d") || args.contains("--default-settings"))
+			factorySettings = true;
+		
+		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
 		mw->applyUserSettings();
 		mw->newTable();
 		mw->showMaximized();
