@@ -127,6 +127,8 @@ class Graph: public QWidget
 		void setActiveTool(PlotToolInterface *tool) { if(d_active_tool) delete d_active_tool; d_active_tool=tool; }
 		//! Return the active tool, or NULL if none is active.
 		PlotToolInterface* activeTool() const { return d_active_tool; }
+		
+		Grid *grid(){return d_plot->grid();};
 
 	public slots:
 		//! Accessor method for #d_plot.
@@ -258,10 +260,7 @@ class Graph: public QWidget
 		//! Tries to guess not already used curve color and symbol style
 		void guessUniqueCurveLayout(int& colorIndex, int& symbolIndex);
 		//@}
-
-		GridOptions gridOptions(){return grid;};
-		void setGridOptions(const GridOptions& options);
-
+		
 		//! \name Zoom
 		//@{
 		void zoomed (const QwtDoubleRect &);
@@ -276,7 +275,6 @@ class Graph: public QWidget
 		//! \name Saving to File
 		//@{
 		QString saveToString(bool saveAsTemplate = false);
-		QString saveGridOptions();
 		QString saveScale();
 		QString saveScaleTitles();
 		QString saveFonts();
@@ -705,8 +703,6 @@ signals:
 		//! Stores columns used for axes with text labels or time/date format info
 		QStringList axesFormatInfo;
 		QList <int> axisType;
-		//! Structure used to define the grid
-		GridOptions grid;
 		MarkerType selectedMarkerType;
 		QwtPlotMarker::LineStyle mrklStyle;
 
@@ -736,7 +732,6 @@ signals:
 		int auxMrkAngle,auxMrkBkg,auxMrkWidth;
 		int auxArrowHeadLength, auxArrowHeadAngle;
 		long selectedMarker,legendMarkerID;
-		long mrkX, mrkY;//x=0 et y=0 line markers keys
 		bool startArrowOn, endArrowOn, drawTextOn, drawLineOn, drawArrowOn;
 
 		bool auxFilledArrowHead, ignoreResize;

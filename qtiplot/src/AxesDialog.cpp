@@ -30,6 +30,7 @@
 #include "TextDialog.h"
 #include "ColorBox.h"
 #include "Graph.h"
+#include "Grid.h"
 #include "Plot.h"
 #include "MyParser.h"
 #include "ColorButton.h"
@@ -1439,17 +1440,16 @@ void AxesDialog::initGridPage()
     generalDialog->addTab( gridPage, tr( "Grid" ) );
 
 	//grid page slot connections
-	//connect(axesGridList,SIGNAL(itemSelectionChanged()),this, SLOT(setGridOptions()));
-    connect(axesGridList,SIGNAL(currentRowChanged(int)),this, SLOT(showGridOptions(int)));
+    connect(axesGridList, SIGNAL(currentRowChanged(int)), this, SLOT(showGridOptions(int)));
 
 	connect(boxMajorGrid,SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
 	connect(boxMinorGrid,SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
-	connect(boxColorMajor,SIGNAL(activated(int)),this, SLOT(updateGrid(int)));
-	connect(boxColorMinor,SIGNAL(activated(int)),this, SLOT(updateGrid(int)));
-	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid(int)));
-	connect(boxTypeMinor,SIGNAL(activated(int)),this, SLOT(updateGrid(int)));
-	connect(boxWidthMajor,SIGNAL(valueChanged (int)),this, SLOT(updateGrid(int)));
-	connect(boxWidthMinor,SIGNAL(valueChanged (int)),this, SLOT(updateGrid(int)));
+	connect(boxColorMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
+	connect(boxColorMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
+	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
+	connect(boxTypeMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
+	connect(boxWidthMajor,SIGNAL(valueChanged (int)),this, SLOT(updateGrid()));
+	connect(boxWidthMinor,SIGNAL(valueChanged (int)),this, SLOT(updateGrid()));
 	connect(boxXLine,SIGNAL(clicked()),this, SLOT(updatePlot()));
 	connect(boxYLine,SIGNAL(clicked()),this, SLOT(updatePlot()));
 }
@@ -2126,11 +2126,7 @@ void AxesDialog::majorGridEnabled(bool on)
 	boxColorMajor->setEnabled(on);
 	boxWidthMajor->setEnabled(on);
 
-	if (generalDialog->currentWidget()==gridPage)
-		{
-		d_graph->setGridOptions(getGridOptions());
-		d_graph->replot();
-		}
+	updateGrid();
 }
 
 void AxesDialog::minorGridEnabled(bool on)
@@ -2139,11 +2135,103 @@ void AxesDialog::minorGridEnabled(bool on)
 	boxColorMinor->setEnabled(on);
 	boxWidthMinor->setEnabled(on);
 
-	if (generalDialog->currentWidget()==gridPage)
-		{
-		d_graph->setGridOptions(getGridOptions());
-	    d_graph->replot();
-		}
+	updateGrid();
+}
+
+void AxesDialog::updateGrid()
+{
+	if (generalDialog->currentWidget() != gridPage)
+		return;
+	
+	Grid *grid = (Grid *)d_graph->plotWidget()->grid();
+    if (!grid)
+        return;
+			
+	if (axesGridList->currentRow()==1){
+		grid->enableX(boxMajorGrid->isChecked());	
+		grid->enableXMin(boxMinorGrid->isChecked());
+
+		grid->setMajPenX(QPen(ColorBox::color(boxColorMajor->currentIndex()), boxWidthMajor->value(), 
+					 		Graph::getPenStyle(boxTypeMajor->currentIndex())));
+		grid->setMinPenX(QPen(ColorBox::color(boxColorMinor->currentIndex()), boxWidthMinor->value(), 
+					 		Graph::getPenStyle(boxTypeMinor->currentIndex())));
+	} else {
+		grid->enableY(boxMajorGrid->isChecked());
+		grid->enableYMin(boxMinorGrid->isChecked());
+
+		grid->setMajPenY(QPen(ColorBox::color(boxColorMajor->currentIndex()), boxWidthMajor->value(), 
+					 		Graph::getPenStyle(boxTypeMajor->currentIndex())));
+		grid->setMinPenY(QPen(ColorBox::color(boxColorMinor->currentIndex()), boxWidthMinor->value(), 
+					 		Graph::getPenStyle(boxTypeMinor->currentIndex())));
+	} 
+	
+	grid->enableZeroLineX(boxXLine->isChecked());
+	grid->enableZeroLineY(boxYLine->isChecked());
+
+	grid->setAxis(boxGridXAxis->currentIndex() + 2, boxGridYAxis->currentIndex());	
+	d_graph->replot();
+	d_graph->notifyChanges();
+}
+
+void AxesDialog::showGridOptions(int axis)
+{
+    Grid *grd = (Grid *)d_graph->plotWidget()->grid();
+    if (!grd)
+        return;
+
+	disconnect(boxMajorGrid, SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
+	disconnect(boxMinorGrid, SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
+
+    if (axis == 1) {
+        boxMajorGrid->setChecked(grd->xEnabled());
+        boxMinorGrid->setChecked(grd->xMinEnabled());
+		boxMinorGrid->setEnabled(grd->xEnabled());
+		
+        boxXLine->setEnabled(true);
+        boxYLine->setDisabled(true);
+
+        boxGridXAxis->setEnabled(true);
+        boxGridYAxis->setDisabled(true);
+		
+		QPen majPenX = grd->majPenX();
+		boxTypeMajor->setCurrentIndex(majPenX.style() - 1);
+    	boxColorMajor->setColor(majPenX.color());
+    	boxWidthMajor->setValue(majPenX.width());
+		
+		QPen minPenX = grd->minPenX();
+    	boxTypeMinor->setCurrentItem(minPenX.style() - 1);
+    	boxColorMinor->setColor(minPenX.color());
+    	boxWidthMinor->setValue(minPenX.width());
+    } else if (axis == 0) {
+        boxMajorGrid->setChecked(grd->yEnabled());
+        boxMinorGrid->setChecked(grd->yMinEnabled());
+		boxMinorGrid->setEnabled(grd->yEnabled());
+
+        boxXLine->setDisabled(true);
+        boxYLine->setEnabled(true);
+
+        boxGridXAxis->setDisabled(true);
+        boxGridYAxis->setEnabled(true);
+		
+		QPen majPenY = grd->majPenY();
+		boxTypeMajor->setCurrentIndex(majPenY.style() - 1);
+    	boxColorMajor->setColor(majPenY.color());
+    	boxWidthMajor->setValue(majPenY.width());
+		
+		QPen minPenY = grd->minPenY();
+    	boxTypeMinor->setCurrentItem(minPenY.style() - 1);
+    	boxColorMinor->setColor(minPenY.color());
+    	boxWidthMinor->setValue(minPenY.width());
+	}
+
+    boxGridXAxis->setCurrentIndex(grd->xAxis() - 2);
+    boxGridYAxis->setCurrentIndex(grd->yAxis());
+
+    boxXLine->setChecked(grd->xZeroLineEnabled());
+    boxYLine->setChecked(grd->yZeroLineEnabled());
+	
+	connect(boxMajorGrid, SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
+	connect(boxMinorGrid, SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
 }
 
 void AxesDialog::stepEnabled()
@@ -2160,133 +2248,6 @@ void AxesDialog::stepDisabled()
 	boxUnit->setDisabled(btnMajor->isChecked ());
 	boxMajorValue->setEnabled(btnMajor->isChecked ());
 	btnStep->setChecked(!btnMajor->isChecked ());
-}
-
-void AxesDialog::setGridOptions()
-{
-	putGridOptions(grid);
-}
-
-void AxesDialog::putGridOptions(GridOptions gr)
-{
-    Grid *grd = (Grid *)d_graph->plotWidget()->grid();
-    if (!grd)
-        return;
-
-    if (axesGridList->currentRow() == 1) {
-        boxMajorGrid->setChecked(gr.majorOnX);
-        boxMinorGrid->setChecked(gr.minorOnX);
-
-        boxXLine->setEnabled(true);
-        boxYLine->setDisabled(true);
-
-        boxGridXAxis->setEnabled(true);
-        boxGridYAxis->setDisabled(true);
-    } else if (axesGridList->currentRow() == 0) {
-        boxMajorGrid->setChecked(gr.majorOnY);
-        boxMinorGrid->setChecked(gr.minorOnY);
-
-        boxXLine->setDisabled(true);
-        boxYLine->setEnabled(true);
-
-        boxGridXAxis->setDisabled(true);
-        boxGridYAxis->setEnabled(true);
-	}
-
-    boxGridXAxis->setCurrentItem(gr.xAxis - 2);
-    boxGridYAxis->setCurrentItem(gr.yAxis);
-    boxTypeMajor->setCurrentItem(gr.majorStyle);
-    boxColorMajor->setCurrentItem(gr.majorCol);
-    boxWidthMajor->setValue(gr.majorWidth);
-    boxTypeMinor->setCurrentItem(gr.minorStyle);
-    boxColorMinor->setCurrentItem(gr.minorCol);
-    boxWidthMinor->setValue(gr.minorWidth);
-    boxXLine->setChecked(gr.xZeroOn);
-    boxYLine->setChecked(gr.yZeroOn);
-
-    grid = gr;
-}
-
-void AxesDialog::showGridOptions(int axis)
-{
-    Grid *grd = (Grid *)d_graph->plotWidget()->grid();
-    if (!grd)
-        return;
-
-    if (axis == 1) {
-        boxMajorGrid->setChecked(grd->xEnabled());
-        boxMinorGrid->setChecked(grd->xMinEnabled());
-
-        boxXLine->setEnabled(true);
-        boxYLine->setDisabled(true);
-
-        boxGridXAxis->setEnabled(true);
-        boxGridYAxis->setDisabled(true);
-    } else if (axis == 0) {
-        boxMajorGrid->setChecked(grd->yEnabled());
-        boxMinorGrid->setChecked(grd->yMinEnabled());
-
-        boxXLine->setDisabled(true);
-        boxYLine->setEnabled(true);
-
-        boxGridXAxis->setDisabled(true);
-        boxGridYAxis->setEnabled(true);
-	}
-
-    boxGridXAxis->setCurrentIndex(grd->xAxis() - 2);
-    boxGridYAxis->setCurrentIndex(grd->yAxis());
-
-    boxTypeMajor->setCurrentIndex(grd->majPen().style() - 1);
-    boxColorMajor->setColor(grd->majPen().color());
-    boxWidthMajor->setValue(grd->majPen().width());
-    boxTypeMinor->setCurrentItem(grd->minPen().style() - 1);
-    boxColorMinor->setColor(grd->minPen().color());
-    boxWidthMinor->setValue(grd->minPen().width());
-
-    boxXLine->setChecked(grd->xZeroLineEnabled());
-    boxYLine->setChecked(grd->yZeroLineEnabled());
-}
-
-GridOptions AxesDialog::getGridOptions()
-{
-	if (boxMajorGrid->isChecked() && axesGridList->currentRow()==1)
-		grid.majorOnX=1;
-	else if (!boxMajorGrid->isChecked() && axesGridList->currentRow()==1)
-		grid.majorOnX=0;
-	else if (boxMajorGrid->isChecked() && axesGridList->currentRow()==0)
-		grid.majorOnY=1;
-	else
-		grid.majorOnY=0;
-
-    grid.majorStyle=boxTypeMajor->currentIndex();
-	grid.majorCol=boxColorMajor->currentIndex();
-	grid.majorWidth=boxWidthMajor->value();
-
-	if (boxMinorGrid->isChecked() && axesGridList->currentRow()==1)
-	   grid.minorOnX=1;
-	else if (!boxMinorGrid->isChecked() && axesGridList->currentRow()==1)
-       grid.minorOnX=0;
-	else if (boxMinorGrid->isChecked() && axesGridList->currentRow()==0)
-	     grid.minorOnY=1;
-	else
-	     grid.minorOnY=0;
-
-	grid.minorStyle=boxTypeMinor->currentIndex();
-	grid.minorCol=boxColorMinor->currentIndex();
-	grid.minorWidth=boxWidthMinor->value();
-
-	if (boxXLine->isChecked())
-	   grid.xZeroOn=1;
-	else grid.xZeroOn=0;
-
-	if (boxYLine->isChecked())
-		grid.yZeroOn=1;
-	else grid.yZeroOn=0;
-
-    grid.yAxis = boxGridYAxis->currentIndex();
-  	grid.xAxis = boxGridXAxis->currentIndex() + 2;
-
-	return grid;
 }
 
 void AxesDialog::updateAxisColor(int)
@@ -2406,10 +2367,8 @@ bool AxesDialog::updatePlot()
                              boxScaleType->currentIndex(), btnInvert->isChecked());
 		d_graph->notifyChanges();
 	}
-	else if (generalDialog->currentWidget()==gridPage)
-	{
-		d_graph->setGridOptions(getGridOptions());
-		d_graph->replot();
+	else if (generalDialog->currentWidget()==gridPage){
+		updateGrid();
 	}
 	else if (generalDialog->currentWidget()==(QWidget*)axesPage)
 	{
@@ -2509,6 +2468,8 @@ void AxesDialog::setGraph(Graph *g)
 
 	boxMinorTicksLength->setValue(p->minorTickLength());
 	boxMajorTicksLength->setValue(p->majorTickLength());
+	
+	showGridOptions(axesGridList->currentRow());
 }
 
 int AxesDialog::mapToQwtAxisId()
@@ -2806,14 +2767,6 @@ void AxesDialog::showGridPage()
 {
 	if (generalDialog->currentWidget()!=(QWidget*)gridPage)
 		generalDialog->setCurrentWidget(gridPage);
-}
-
-void AxesDialog::updateGrid(int)
-{
-	if (generalDialog->currentWidget()==gridPage) {
-		d_graph->setGridOptions(getGridOptions());
-        d_graph->replot();
-	}
 }
 
 void AxesDialog::setLabelsNumericFormat(int)

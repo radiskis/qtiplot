@@ -96,6 +96,7 @@ static const char *unzoom_xpm[]={
 ".......#......#..."};
 
 #include "Graph.h"
+#include "Grid.h"
 #include "CanvasPicker.h"
 #include "QwtErrorPlotCurve.h"
 #include "Legend.h"
@@ -162,7 +163,7 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 
 	n_curves=0;
 	d_active_tool = NULL;
-	widthLine=1;mrkX=-1;mrkY=-1;;
+	widthLine=1;
 	selectedMarker=-1;
 	drawTextOn=false;
 	drawLineOn=false;
@@ -215,7 +216,7 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 	setFocusProxy(d_plot);
 	setMouseTracking(true );
 
-	grid.majorOnX=0;
+	/*grid.majorOnX=0;
 	grid.majorOnY=0;
 	grid.minorOnX=0;
 	grid.minorOnY=0;
@@ -229,7 +230,7 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 	grid.yZeroOn=0;
 	setGridOptions(grid);
 	grid.xAxis = QwtPlot::xBottom;
-	grid.yAxis = QwtPlot::yLeft;
+	grid.yAxis = QwtPlot::yLeft;*/
 
 	legendMarkerID = -1; // no legend for an empty graph
 	d_texts = QVector<int>();
@@ -1225,7 +1226,7 @@ void Graph::setAxisTitle(int axis, const QString& text)
 	emit modifiedGraph();
 }
 
-void Graph::setGridOptions(const GridOptions& o)
+/*void Graph::setGridOptions(const GridOptions& o)
 {
 	if (grid.majorCol == o.majorCol && grid.majorOnX == o.majorOnX &&
 			grid.majorOnY == o.majorOnY && grid.majorStyle == o.majorStyle &&
@@ -1310,7 +1311,7 @@ void Graph::setGridOptions(const GridOptions& o)
 	}
 
 	emit modifiedGraph();
-}
+}*/
 
 QStringList Graph::scalesTitles()
 {
@@ -1590,13 +1591,13 @@ void Graph::exportVector(const QString& fileName, int res, bool color, bool keep
         if (page_aspect > plot_aspect){
             int margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
             int height = printer.height() - 2*margin;
-            int width = height*plot_aspect;
+            int width = int(height*plot_aspect);
             int x = (printer.width()- width)/2;
             plotRect = QRect(x, margin, width, height);
         } else if (plot_aspect >= page_aspect){
             int margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
             int width = printer.width() - 2*margin;
-            int height = width/plot_aspect;
+            int height = int(width/plot_aspect);
             int y = (printer.height()- height)/2;
             plotRect = QRect(margin, y, width, height);
         }
@@ -2543,26 +2544,6 @@ QString Graph::saveCurves()
   	       }
 		}
 	}
-	return s;
-}
-
-QString Graph::saveGridOptions()
-{
-	QString s="grid\t";
-	s+=QString::number(grid.majorOnX)+"\t";
-	s+=QString::number(grid.minorOnX)+"\t";
-	s+=QString::number(grid.majorOnY)+"\t";
-	s+=QString::number(grid.minorOnY)+"\t";
-	s+=QString::number(grid.majorCol)+"\t";
-	s+=QString::number(grid.majorStyle)+"\t";
-	s+=QString::number(grid.majorWidth)+"\t";
-	s+=QString::number(grid.minorCol)+"\t";
-	s+=QString::number(grid.minorStyle)+"\t";
-	s+=QString::number(grid.minorWidth)+"\t";
-	s+=QString::number(grid.xZeroOn)+"\t";
-	s+=QString::number(grid.yZeroOn)+"\t";
-	s+=QString::number(grid.xAxis)+"\t";
-	s+=QString::number(grid.yAxis)+"\n";
 	return s;
 }
 
@@ -4059,7 +4040,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=QString::number(d_plot->paletteBackgroundColor().alpha()) + "\n";
 	s+="Margin\t"+QString::number(d_plot->margin())+"\n";
 	s+="Border\t"+QString::number(d_plot->lineWidth())+"\t"+d_plot->frameColor().name()+"\n";
-	s+=saveGridOptions();
+	s+=grid()->saveToString();
 	s+=saveEnabledAxes();
 	s+="AxesTitles\t"+saveScaleTitles();
 	s+=saveAxesTitleColors();
@@ -4434,11 +4415,11 @@ void Graph::showAxisContextMenu(int axis)
 
 	int gridsID = menu.insertItem(tr("&Show grids"), this, SLOT(showGrids()));
 	if (axis == QwtScaleDraw::LeftScale || axis == QwtScaleDraw::RightScale){
-		if (grid.majorOnY)
-			menu. setItemChecked(gridsID, true);
+		if (d_plot->grid()->yEnabled())
+			menu.setItemChecked(gridsID, true);
 	} else {
-		if (grid.majorOnX)
-			menu. setItemChecked(gridsID, true);
+		if (d_plot->grid()->xEnabled())
+			menu.setItemChecked(gridsID, true);
 	}
 
 	menu.insertSeparator();
@@ -4483,16 +4464,16 @@ void Graph::showGrid()
 
 void Graph::showGrid(int axis)
 {
+	Grid *grid = d_plot->grid();
+	if (!grid)
+		return;
+	
 	if (axis == QwtScaleDraw::LeftScale || axis == QwtScaleDraw::RightScale){
-		grid.majorOnY = 1 - grid.majorOnY;
-		d_plot->grid()->enableY(grid.majorOnY);
-		grid.minorOnY = 1 - grid.minorOnY;
-		d_plot->grid()->enableYMin(grid.minorOnY);
+		grid->enableY(!grid->yEnabled());
+		grid->enableYMin(!grid->yMinEnabled());
 	} else if (axis == QwtScaleDraw::BottomScale || axis == QwtScaleDraw::TopScale){
-		grid.majorOnX = 1 - grid.majorOnX;
-		d_plot->grid()->enableX(grid.majorOnX);
-		grid.minorOnX = 1 - grid.minorOnX;
-		d_plot->grid()->enableXMin(grid.minorOnX);
+		grid->enableX(!grid->xEnabled());
+		grid->enableXMin(!grid->xMinEnabled());
 	} else
 		return;
 
@@ -4517,7 +4498,7 @@ void Graph::copy(Graph* g)
     setAxesNumColors(g->axesNumColors());
 	setAxesBaseline(g->axesBaseline());
 
-	setGridOptions(g->gridOptions());
+	grid()->copy(g->grid());
 
 	d_plot->setTitle (g->plotWidget()->title());
 
