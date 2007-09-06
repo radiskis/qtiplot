@@ -53,24 +53,6 @@ class ColorButton;
 class Graph;
 class TextFormatButtons;
 
-//! Structure containing grid properties
-typedef struct{
-  int majorOnX;
-  int minorOnX;
-  int majorOnY;
-  int minorOnY;
-  int majorStyle;
-  int majorCol;
-  int majorWidth;
-  int minorStyle;
-  int minorCol;
-  int minorWidth;
-  int xZeroOn;
-  int yZeroOn;
-  int xAxis;
-  int yAxis;
-}  GridOptions;
-
 //! General plot options dialog
 /**
  * Remark: Don't use this dialog as a non modal dialog!
@@ -158,11 +140,7 @@ public slots:
 	void stepDisabled();
 	void majorGridEnabled(bool on);
 	void minorGridEnabled(bool on);
-	GridOptions getGridOptions();
-	void putGridOptions(GridOptions gr);
     void showGridOptions(int axis);
-
-	void setGridOptions();
 	void accept();
 	void customAxisFont();
 	void showAxis();
@@ -185,7 +163,7 @@ public slots:
 
 	void updateMajTicksType(int);
 	void updateMinTicksType(int);
-	void updateGrid(int);
+	void updateGrid();
 	void updateFrame(int);
 	void setLabelsNumericFormat(int);
 	void updateLabelsFormat(int);
@@ -231,8 +209,7 @@ protected:
 	QStringList	tablesList;
 	QList<int> majTicks, minTicks, axesType, axesBaseline;
 	QFont xBottomFont, yLeftFont, xTopFont, yRightFont;
-	GridOptions grid;
-	bool xAxisOn,yAxisOn,topAxisOn,rightAxisOn;
+	bool xAxisOn, yAxisOn, topAxisOn, rightAxisOn;
 	int xBottomLabelsRotation, xTopLabelsRotation;
 
 	Graph* d_graph;

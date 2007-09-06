@@ -46,6 +46,7 @@
 #include "ImageMarker.h"
 #include "Graph.h"
 #include "Plot.h"
+#include "Grid.h"
 #include "PlotWizard.h"
 #include "PolynomFitDialog.h"
 #include "ExpDecayDialog.h"
@@ -6061,11 +6062,9 @@ QDialog* ApplicationWindow::showScaleDialog()
         ad->setEnabledAxes(g->enabledAxes());
         ad->setAxesType(g->axesType());
         ad->setAxesBaseline(g->axesBaseline());
-
         ad->initAxisFonts(g->axisFont(2), g->axisFont(0),g->axisFont(3),g->axisFont(1));
         ad->setAxisTitles(g->scalesTitles());
         ad->updateTitleBox(0);
-        ad->putGridOptions(g->gridOptions());
         ad->setTicksType(g->plotWidget()->getMajorTicksType(), g->plotWidget()->getMinorTicksType());
         ad->setEnabledTickLabels(g->enabledTickLabels());
         ad->initLabelsRotation(g->labelsRotation(QwtPlot::xBottom), g->labelsRotation(QwtPlot::xTop));
@@ -9832,28 +9831,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			fList.pop_front();
 			ag->setAxesNumColors(fList);
 		}
-		else if (s.left(5)=="grid\t")
-		{
-			QStringList grid=s.split("\t");
-			GridOptions gr;
-			gr.majorOnX=grid[1].toInt();
-			gr.minorOnX=grid[2].toInt();
-			gr.majorOnY=grid[3].toInt();
-			gr.minorOnY=grid[4].toInt();
-			gr.majorCol=grid[5].toInt();
-			gr.majorStyle=grid[6].toInt();
-			gr.majorWidth=grid[7].toInt();
-			gr.minorCol=grid[8].toInt();
-			gr.minorStyle=grid[9].toInt();
-			gr.minorWidth=grid[10].toInt();
-			gr.xZeroOn=grid[11].toInt();
-			gr.yZeroOn=grid[12].toInt();
-			if (grid.count() == 15)
-			{
-				gr.xAxis=grid[13].toInt();
-				gr.yAxis=grid[14].toInt();
-			}
-			ag->setGridOptions(gr);
+		else if (s.left(5)=="grid\t"){
+			ag->plotWidget()->grid()->load(s.split("\t"));
 		}
 		else if (s.startsWith ("<Antialiasing>") && s.endsWith ("</Antialiasing>"))
 		{

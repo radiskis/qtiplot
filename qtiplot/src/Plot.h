@@ -39,7 +39,7 @@
 #include <qwt_plot_marker.h>
 
 class Grid;
-
+	
 //! Plot window class
 class Plot: public QwtPlot
 {
@@ -50,7 +50,7 @@ public:
 
 	enum LabelFormat{Automatic, Decimal, Scientific, Superscripts};
 
-	QwtPlotGrid *grid(){return (QwtPlotGrid *)d_grid;};
+	Grid *grid(){return (Grid *)d_grid;};
 	QList<int> curveKeys(){return d_curves.keys();};
 	QList<QwtPlotItem *> curvesList(){return d_curves.values();};
 
@@ -115,23 +115,4 @@ protected:
 	int curve_key;
 	QLocale d_locale;
 };
-
-class Grid : public QwtPlotGrid
-{
-public:
-    Grid(){d_x_zero_line = false; d_y_zero_line = false;};
-
-void draw (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &rect) const;
-void drawLines(QPainter *painter, const QRect &rect, Qt::Orientation orientation, const QwtScaleMap &map,
-    const QwtValueList &values) const;
-
-    bool xZeroLineEnabled(){return d_x_zero_line;};
-    void enableZeroLineX(bool enable = true){d_x_zero_line = enable;};
-    bool yZeroLineEnabled(){return d_y_zero_line;};
-    void enableZeroLineY(bool enable = true){d_y_zero_line = enable;};
-
-private:
-    bool d_x_zero_line, d_y_zero_line;
-};
-
 #endif
