@@ -2120,21 +2120,19 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 		for (i=0; i<ignoredLines; i++)
 			t.readLine();
 
-        s = t.readLine();//read first line after the ignored ones
-		while (!t.atEnd() && !commentString.isEmpty() && s.startsWith(commentString)){
-		    //ignore all commented lines
-            s = t.readLine();
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
-		}
-
 		int startRow = 0, startCol = 0;
 		if (importFileAs == 2)
 			startRow = r;
 		else if (importFileAs == 1)
 			startCol = c;
 
-		if (renameCols && !allNumbers)
-		{//use first line to set the table header
+		if (renameCols && !allNumbers){//use first line to set the table header
+			s = t.readLine();//read first line after the ignored ones
+			while (!t.atEnd() && !commentString.isEmpty() && s.startsWith(commentString)){
+            	s = t.readLine();//ignore all commented lines
+				qApp->processEvents(QEventLoop::ExcludeUserInput);
+			}
+
 			if (simplifySpaces)
 				s = s.simplifyWhiteSpace();
 			else if (stripSpaces)
@@ -2333,14 +2331,16 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		for (i=0; i<ignoredLines; i++)
 			t.readLine();
 
-        s = t.readLine();//read first line after the ignored ones
-		while (!t.atEnd() && !commentString.isEmpty() && s.startsWith(commentString)){//ignore all commented lines
-            s = t.readLine();
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
-		}
-
-		if (renameCols && !allNumbers)
-		{//use first line to set the table header
+		if (renameCols && !allNumbers){//use first line to set the table header
+			s = t.readLine();//read first line after the ignored ones
+			while (!t.atEnd()){
+            	if (commentString.isEmpty() || !s.startsWith(commentString))
+                	break;
+             	else
+                	s = t.readLine();//ignore all commented lines
+				qApp->processEvents(QEventLoop::ExcludeUserInput);
+			}
+		
 			if (simplifySpaces)
 				s = s.simplifyWhiteSpace();
 			else if (stripSpaces)
@@ -2365,8 +2365,11 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 
         if (importComments){//import comments
             s = t.readLine();//read 2nd line after the ignored ones
-            while (!t.atEnd() && !commentString.isEmpty() && s.startsWith(commentString)){//ignore all commented lines
-                s = t.readLine();
+            while (!t.atEnd()){
+                if (commentString.isEmpty() || !s.startsWith(commentString))
+                	break;
+             	else
+					s = t.readLine();//ignore all commented lines
                 qApp->processEvents(QEventLoop::ExcludeUserInput);
             }
 
@@ -2383,8 +2386,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		setHeaderColType();
 
 		int start = 0;
-		for (i=0; i<steps; i++)
-		{
+		for (i=0; i<steps; i++){
 			if (progress.wasCanceled()){
 				f.close();
 				return;
@@ -2416,8 +2418,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		}
 
 		start = steps*1000;
-		for (i=start; i<rows; i++)
-		{
+		for (i=start; i<rows; i++){
 			s = t.readLine();
 			if (!commentString.isEmpty() && s.startsWith(commentString)){
 			    i--;
@@ -2442,12 +2443,10 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		d_table->blockSignals(false);
 		f.close();
 
-		if (!newTable)
-		{
+		if (!newTable){
 			if (cols > c)
 				cols = c;
-			for (i=0; i<cols; i++)
-			{
+			for (i=0; i<cols; i++){
 				emit modifiedData(this, colName(i));
 				if (colLabel(i) != oldHeader[i])
 					emit changedColHeader(QString(name())+"_"+oldHeader[i],

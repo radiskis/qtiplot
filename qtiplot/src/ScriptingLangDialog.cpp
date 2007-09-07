@@ -73,7 +73,7 @@ void ScriptingLangDialog::updateLangList()
 void ScriptingLangDialog::accept()
 {
 	ApplicationWindow *app = (ApplicationWindow*) parent();
-	if (app->setScriptingLang(langList->currentItem()->text()))
+	if (app->setScriptingLanguage(langList->currentItem()->text()))
 		close();
 	else
 		QMessageBox::critical(this, tr("QtiPlot - Scripting Error"),

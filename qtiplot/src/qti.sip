@@ -767,7 +767,7 @@ public:
   QWidgetList *windowsList() /PyName=windows/;
 
   QTextEdit *results;
-//  QTextEdit *console;
+//QTextEdit *console;
 
   // folders
   Folder *activeFolder() /NoDerived/;
@@ -792,7 +792,7 @@ public:
 
   Matrix* tableToMatrix(Table* t);
   Table* matrixToTable(Matrix* m);
-
+  
 private:
   ApplicationWindow(const ApplicationWindow&);
 };

@@ -929,7 +929,7 @@ public slots:
 	//! print to scripting console (if available) or to stdout
 	void scriptPrint(const QString &text);
 	//! switches to the given scripting language; if this is the same as the current one and force is true, restart it
-	bool setScriptingLang(const QString &lang, bool force=false);
+	bool setScriptingLanguage(const QString &lang, bool force=false);
 	//@}
 
 signals:
