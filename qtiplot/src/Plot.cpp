@@ -65,8 +65,6 @@ Plot::Plot(QWidget *parent, const char *)
 	d_grid->enableY(false);
 	d_grid->setMajPenX(QPen(Qt::blue, 0, Qt::SolidLine));
 	d_grid->setMinPenX(QPen(Qt::gray, 0, Qt::DotLine));
-	d_grid->setMajPenY(QPen(Qt::blue, 0, Qt::SolidLine));
-	d_grid->setMinPenY(QPen(Qt::gray, 0, Qt::DotLine));
 	d_grid->attach(this);
 
 	//custom scale

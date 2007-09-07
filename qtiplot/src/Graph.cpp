@@ -216,22 +216,6 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 	setFocusProxy(d_plot);
 	setMouseTracking(true );
 
-	/*grid.majorOnX=0;
-	grid.majorOnY=0;
-	grid.minorOnX=0;
-	grid.minorOnY=0;
-	grid.majorCol=3;
-	grid.majorStyle=0;
-	grid.majorWidth=1;
-	grid.minorCol=18;
-	grid.minorStyle=2;
-	grid.minorWidth=1;
-	grid.xZeroOn=0;
-	grid.yZeroOn=0;
-	setGridOptions(grid);
-	grid.xAxis = QwtPlot::xBottom;
-	grid.yAxis = QwtPlot::yLeft;*/
-
 	legendMarkerID = -1; // no legend for an empty graph
 	d_texts = QVector<int>();
 	c_type = QVector<int>();

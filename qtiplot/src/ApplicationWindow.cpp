@@ -12251,6 +12251,7 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			s += "qtiplot [" + tr("options") + "] [" + tr("file") + "_" + tr("name") + "]\n\n";
 			s += tr("Valid options are") + ":\n";
 			s += "-a " + tr("or") + " --about: " + tr("show about dialog and exit") + "\n";
+			s += "-d " + tr("or") + " --default-settings: " + tr("start QtiPlot with the default settings") + "\n";
 			s += "-h " + tr("or") + " --help: " + tr("show command line options") + "\n";
 			s += "-l=XX " + tr("or") + " --lang=XX: " + tr("start QtiPlot in language") + " XX ('en', 'fr', 'de', ...)\n";
 			s += "-m " + tr("or") + " --manual: " + tr("show QtiPlot manual in a standalone window") + "\n";

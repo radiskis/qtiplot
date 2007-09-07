@@ -376,6 +376,46 @@ private:
   Legend(const Legend&);
 };
 
+class Grid // : QwtPlotGrid
+{
+%TypeHeaderCode
+#include "src/Grid.h"
+%End
+public:
+
+	Grid();
+
+	void enableX(bool = true) /PyName=enableXMax/;
+	bool xEnabled() /PyName=xMaxEnabled/;
+	void enableXMin(bool = true);
+	bool xMinEnabled();
+	
+	void enableY(bool = true) /PyName=enableYMax/;
+	bool yEnabled() /PyName=yMaxEnabled/;
+	void enableYMin(bool = true);
+	bool yMinEnabled();
+	
+	bool xZeroLineEnabled();
+	void enableZeroLineX(bool = true);
+	bool yZeroLineEnabled();
+	void enableZeroLineY(bool = true);
+
+	void setMajPenX(const QPen &p);
+	const QPen& majPenX();
+
+	void setMinPenX(const QPen &p);
+	const QPen& minPenX();
+	
+	void setMajPenY(const QPen &p);
+	const QPen& majPenY();
+
+	void setMinPenY(const QPen &p);
+	const QPen& minPenY();
+
+private:
+	Grid(const Grid&);
+};
+
 class Graph : QWidget /PyName=Layer/
 {
 %TypeHeaderCode
@@ -464,7 +504,7 @@ public:
 
   void removeLegend();
   void addTimeStamp();
-
+  
   void enableAxis(int axis, bool on = true);
   void setXAxisTitle(const QString& text) /PyName=setXTitle/;
   void setYAxisTitle(const QString& text) /PyName=setYTitle/;
@@ -479,8 +519,10 @@ public:
   void setBackgroundColor(const QColor& color);
   void setCanvasBackground(const QColor& color) /PyName=setCanvasColor/;
 
+  Grid* grid();
   void showGrid(int);
   void showGrid();
+  
   void replot();
 
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
