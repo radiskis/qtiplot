@@ -36,6 +36,12 @@
 
 #include <QPainter>
 
+Grid::Grid() : QwtPlotGrid(), mrkX(-1), mrkY(-1)
+{	
+d_maj_pen_y = QPen(Qt::blue, 0, Qt::SolidLine); 
+d_min_pen_y = QPen(Qt::gray, 0, Qt::DotLine);
+}
+
 /*!
   \brief Draw the grid
 
@@ -170,14 +176,9 @@ void Grid::load(const QStringList& grid)
 
 void Grid::enableZeroLineX(bool enable)
 {
-	if (d_x_zero_line == enable)
-		return;
-
 	Plot *d_plot = (Plot *)plot();
 	if (!d_plot)
 		return;
-
-	d_x_zero_line = enable;
 
 	if (mrkX<0 && enable){
 		QwtPlotMarker *m = new QwtPlotMarker();
@@ -202,14 +203,9 @@ void Grid::enableZeroLineX(bool enable)
 
 void Grid::enableZeroLineY(bool enable)
 {
-	if (d_y_zero_line == enable)
-		return;
-
 	Plot *d_plot = (Plot *)plot();
 	if (!d_plot)
 		return;
-
-	d_y_zero_line = enable;
 
 	if (mrkY<0 && enable) {
 		QwtPlotMarker *m = new QwtPlotMarker();

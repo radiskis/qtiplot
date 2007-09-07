@@ -418,6 +418,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiArrowMarker.h\
 			 $${SIP_DIR}/sipqtiImageMarker.h\
 			 $${SIP_DIR}/sipqtiLegend.h\
+			 $${SIP_DIR}/sipqtiGrid.h\
              $${SIP_DIR}/sipqtiMultiLayer.h\
              $${SIP_DIR}/sipqtiTable.h\
              $${SIP_DIR}/sipqtiMatrix.h\
@@ -459,6 +460,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiArrowMarker.cpp\
 			 $${SIP_DIR}/sipqtiImageMarker.cpp\
 			 $${SIP_DIR}/sipqtiLegend.cpp\
+			 $${SIP_DIR}/sipqtiGrid.cpp\
              $${SIP_DIR}/sipqtiMultiLayer.cpp\
              $${SIP_DIR}/sipqtiTable.cpp\
              $${SIP_DIR}/sipqtiMatrix.cpp\

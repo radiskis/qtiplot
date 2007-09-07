@@ -26,8 +26,8 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef MYGRID_H
-#define MYGRID_H
+#ifndef GRID_H
+#define GRID_H
 
 #include <qwt_plot.h>
 #include <qwt_plot_grid.h>
@@ -36,15 +36,15 @@
 class Grid : public QwtPlotGrid
 {
 public:
-    Grid(){d_x_zero_line = false; d_y_zero_line = false; mrkX = -1; mrkY = -1;};
+    Grid();
 
 	void draw (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &rect) const;
 	void drawLines(QPainter *painter, const QRect &rect, Qt::Orientation orientation, const QwtScaleMap &map,
     	const QwtValueList &values) const;
 
-    bool xZeroLineEnabled(){return d_x_zero_line;};
+    bool xZeroLineEnabled(){return (mrkX >= 0)?true:false;};
     void enableZeroLineX(bool enable = true);
-    bool yZeroLineEnabled(){return d_y_zero_line;};
+    bool yZeroLineEnabled(){return (mrkY >= 0)?true:false;};
     void enableZeroLineY(bool enable = true);
 
 	void setMajPenX(const QPen &p){	setMajPen(p);};
@@ -64,7 +64,6 @@ public:
 	QString saveToString();
 	
 private:
-    bool d_x_zero_line, d_y_zero_line;
 	QPen d_maj_pen_y;
 	QPen d_min_pen_y;
 
