@@ -471,7 +471,7 @@ void ApplicationWindow::initGlobalConstants()
 void ApplicationWindow::applyUserSettings()
 {
 	updateAppFonts();
-	setScriptingLang(defaultScriptingLang);
+	setScriptingLanguage(defaultScriptingLang);
 
 	ws->setPaletteBackgroundColor (workspaceColor);
 
@@ -3677,7 +3677,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	QStringList list=s.split("\t", QString::SkipEmptyParts);
 	if (list[0] == "<scripting-lang>")
 	{
-		if (!app->setScriptingLang(list[1], true))
+		if (!app->setScriptingLanguage(list[1], true))
 			QMessageBox::warning(app, tr("QtiPlot - File opening error"),
 					tr("The file \"%1\" was created using \"%2\" as scripting language.\n\n"\
 						"Initializing support for this language FAILED; I'm using \"%3\" instead.\n"\
@@ -3958,7 +3958,7 @@ void ApplicationWindow::scriptPrint(const QString &text)
 #endif
 }
 
-bool ApplicationWindow::setScriptingLang(const QString &lang, bool force)
+bool ApplicationWindow::setScriptingLanguage(const QString &lang, bool force)
 {
 	if (!force && lang == scriptEnv->name()) return true;
 	if (lang.isEmpty()) return false;
@@ -3998,7 +3998,7 @@ void ApplicationWindow::showScriptingLangDialog()
 
 void ApplicationWindow::restartScriptingEnv()
 {
-	if (setScriptingLang(scriptEnv->name(), true))
+	if (setScriptingLanguage(scriptEnv->name(), true))
 		executeNotes();
 	else
 		QMessageBox::critical(this, tr("QtiPlot - Scripting Error"),
@@ -4147,8 +4147,7 @@ void ApplicationWindow::readSettings()
 #ifdef Q_OS_WIN
 	if (!recentProjects.isEmpty() && recentProjects[0].contains("^e"))
         recentProjects = recentProjects[0].split("^e", QString::SkipEmptyParts);
-    else if (recentProjects.count() == 1)
-    {
+    else if (recentProjects.count() == 1){
         QString s = recentProjects[0];
         if (s.remove(QRegExp("\\s")).isEmpty())
             recentProjects = QStringList();
@@ -13925,6 +13924,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	ApplicationWindow *app= new ApplicationWindow(factorySettings);
 	app->applyUserSettings();
+	app->setScriptingLanguage("Python");
 	app->showMaximized();
 	app->showScriptWindow();
 	app->scriptWindow->open(fn);
