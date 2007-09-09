@@ -42,7 +42,6 @@ public:
     enum FilterType{LowPass = 1, HighPass = 2, BandPass = 3, BandBlock = 4};
 
     void setFilterType(int type);
-    void setFilterType(FilterType type){setFilterType((int)type);};
 
     //! Sets the cutoff frequency. To be used only for Low Pass and High Pass filters.
     void setCutoff(double f);
@@ -57,7 +56,7 @@ private:
     void init(int m);
     void calculateOutputData(double *x, double *y);
 
-    //! The filter type. 
+    //! The filter type.
     FilterType d_filter_type;
 
     //! Cutoff frequency for Low Pass and High Pass filters. Lower edge of the band for Band Pass and Band block filters.

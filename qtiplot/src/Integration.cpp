@@ -93,13 +93,10 @@ QString Integration::logInfo()
 	// This method uses the Nevilles' algorithm for interpollation;
 	double yup, ylow;
 	double xx,tnm,sum,del,ss,dss,error,tsum;
-	if(d_n > 3)
-	{
+	if(d_n > 3){
 		yup = gsl_spline_eval (interp, d_to, acc);
 		ylow = gsl_spline_eval (interp, d_from, acc);
-	}
-	else if (d_n<=3)
-	{
+	} else if (d_n<=3){
 		polint(d_x,d_y,d_n,d_to,&yup,&dss);
 		polint(d_x,d_y,d_n,d_from,&ylow,&dss);
 	}
@@ -109,22 +106,18 @@ QString Integration::logInfo()
 	int j,it,l;
 	bool success = false;
 	h[0]=1.0;
-	for(j=0; j < d_max_iterations; j++)
-	{//Trapezoid Rule
+	for(j=0; j < d_max_iterations; j++){//Trapezoid Rule
 		if(j==0)
 			S[0]=0.5*(d_to-d_from)*(ylow+yup);
-		else
-		{
+		else{
 			for(it=1,l=1;l<j-1;l++)it<<=1;
 			tnm=it;
 			del=(d_to-d_from)/tnm;
 			xx=d_from+0.5*del;
-			for(sum=0.0,l=1;l<=it;l++)
-			{
+			for(sum=0.0,l=1;l<=it;l++){
 				if(d_n>3)
 					sum+=gsl_spline_eval (interp,xx, acc);
-				else if(d_n<=3)
-				{
+				else if(d_n<=3){
 					polint(d_x,d_y,d_n,xx,&tsum,&dss);
 					sum+=tsum;
 				}
@@ -133,8 +126,7 @@ QString Integration::logInfo()
 			S[j]=0.5*(S[j-1]+(d_to-d_from)*sum/tnm);
 
 		}
-		if(j>=d_method)
-		{
+		if(j>=d_method){
 			polint(&h[j-d_method],&S[j-d_method],d_method,0,&ss,&dss);
 			S[j]=ss;
 		}
@@ -155,7 +147,7 @@ QString Integration::logInfo()
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QLocale locale = app->locale();
     int prec = app->d_decimal_digits;
-	logInfo += tr("Tolerance") + "(" + tr("max") + " = " + locale.toString(d_tolerance, 'g', prec)+"): " + QString::number(error)+ "\n";
+	logInfo += tr("Tolerance") + " (" + tr("max") + " = " + locale.toString(d_tolerance, 'g', prec)+"): " + QString::number(error)+ "\n";
 	logInfo += tr("Points") + ": "+QString::number(d_n) + " " + tr("from") + " x = " + locale.toString(d_from, 'g', prec) + " ";
     logInfo += tr("to") + " x = " + locale.toString(d_to, 'g', prec) + "\n";
 
@@ -171,9 +163,11 @@ QString Integration::logInfo()
 
 	logInfo += tr("Area") + "=";
 	if(success)
-		logInfo += locale.toString(S[j], 'g', prec);
-	if(!success)
-		logInfo += locale.toString(S[j-1], 'g', prec);
+	    d_area = S[j];
+	else
+	    d_area = S[j-1];
+
+    logInfo += locale.toString(d_area, 'g', prec);
 	logInfo += "\n-------------------------------------------------------------\n";
 
 	if(d_n>3)

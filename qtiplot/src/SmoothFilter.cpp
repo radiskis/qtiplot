@@ -62,20 +62,18 @@ void SmoothFilter::init (int m)
 
 void SmoothFilter::setMethod(int m)
 {
-if (m < 1 || m > 3)
-    {
-        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-        tr("Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average."));
-        d_init_err = true;
-        return;
+if (m < 1 || m > 3){
+    QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+    tr("Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average."));
+    d_init_err = true;
+    return;
     }
 d_method = (SmoothMethod)m;
 }
 
 void SmoothFilter::calculateOutputData(double *x, double *y)
 {
-    for (int i = 0; i < d_points; i++)
-	{
+    for (int i = 0; i < d_points; i++){
 	   x[i] = d_x[i];
 	   y[i] = d_y[i];//filtering frequencies
 	}
@@ -108,8 +106,7 @@ void SmoothFilter::smoothFFT(double *x, double *y)
 	double lf = df/(double)d_smooth_points;//frequency cutoff
 	df = 0.5*df/(double)d_n;
 
-    for (int i = 0; i < d_n; i++)
-	{
+    for (int i = 0; i < d_n; i++){
 	   x[i] = d_x[i];
 	   y[i] = i*df > lf ? 0 : y[i];//filtering frequencies
 	}
@@ -128,24 +125,21 @@ void SmoothFilter::smoothAverage(double *, double *y)
     double *s = new double[d_n];
 
 	s[0] = y[0];
-	for (int i=1; i<p2; i++)
-	{
+	for (int i=1; i<p2; i++){
 		aux = 0.0;
 		for (int j=-i; j<=i; j++)
 			aux += y[i+j];
 
 		s[i] = aux/(double)(2*i+1);
 	}
-	for (int i=p2; i<d_n-p2; i++)
-	{
+	for (int i=p2; i<d_n-p2; i++){
 		aux = 0.0;
 		for (int j=-p2; j<=p2; j++)
 			aux += y[i+j];
 
 		s[i] = aux/m;
 	}
-	for (int i=d_n-p2; i<d_n-1; i++)
-	{
+	for (int i=d_n-p2; i<d_n-1; i++){
 		aux = 0.0;
 		for (int j=d_n-i-1; j>=i-d_n+1; j--)
 			aux += y[i+j];
@@ -187,11 +181,9 @@ void SmoothFilter::smoothSavGol(double *, double *y)
 	//calculate Savitzky-Golay filter coefficients.
 	savgol(c, np, nl, nr, 0, d_polynom_order);
 
-	for (i=0; i<d_n; i++)
-	{// Apply filter to input data.
+	for (i=0; i<d_n; i++){// Apply filter to input data.
 		s[i]=0.0;
-		for (j=1; j<=np; j++)
-		{
+		for (j=1; j<=np; j++){
 			int it = i+index[j];
 			if (it >=0 && it < d_n)//skip left points that do not exist.
 				s[i] += c[j]*y[i+index[j]];
@@ -235,7 +227,7 @@ void SmoothFilter::setPolynomOrder(int order)
 				tr("Setting polynomial order is only available for Savitzky-Golay smooth filters! Ignored option!"));
 		return;
     }
-	
+
     if (order > d_smooth_points + d_sav_gol_points)
     {
         QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),

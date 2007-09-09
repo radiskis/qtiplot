@@ -364,6 +364,7 @@ class Legend // : QwtPlotMarker
 #include "src/Legend.h"
 %End
 public:
+    enum FrameStyle{None = 0, Line = 1, Shadow=2};
 
   void setText(const QString&);
   void setTextColor(const QColor&);
@@ -389,12 +390,12 @@ public:
 	bool xEnabled() /PyName=xMaxEnabled/;
 	void enableXMin(bool = true);
 	bool xMinEnabled();
-	
+
 	void enableY(bool = true) /PyName=enableYMax/;
 	bool yEnabled() /PyName=yMaxEnabled/;
 	void enableYMin(bool = true);
 	bool yMinEnabled();
-	
+
 	bool xZeroLineEnabled();
 	void enableZeroLineX(bool = true);
 	bool yZeroLineEnabled();
@@ -405,7 +406,7 @@ public:
 
 	void setMinPenX(const QPen &p);
 	const QPen& minPenX();
-	
+
 	void setMajPenY(const QPen &p);
 	const QPen& majPenY();
 
@@ -504,7 +505,7 @@ public:
 
   void removeLegend();
   void addTimeStamp();
-  
+
   void enableAxis(int axis, bool on = true);
   void setXAxisTitle(const QString& text) /PyName=setXTitle/;
   void setYAxisTitle(const QString& text) /PyName=setYTitle/;
@@ -522,7 +523,7 @@ public:
   Grid* grid();
   void showGrid(int);
   void showGrid();
-  
+
   void replot();
 
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
@@ -636,7 +637,7 @@ public:
 	void setBoxed();
 	void setNoAxes();
 
-	void setFloorData() /PyName=showFloor/;
+	void setFloorData() /PyName=showFloorProjection/;
 	void setFloorIsolines() /PyName=showFloorIsolines/;
 	void setEmptyFloor();
 
@@ -792,7 +793,7 @@ public:
 
   Matrix* tableToMatrix(Table* t);
   Table* matrixToTable(Matrix* m);
-  
+
 private:
   ApplicationWindow(const ApplicationWindow&);
 };
@@ -1168,6 +1169,8 @@ public:
   ~Filter();
 
   void setOutputPoints(int);
+  void setTolerance(double);
+  void setMaximumIterations(int);
 
   void setColor(int);
   void setColor(const QString&);
@@ -1213,6 +1216,8 @@ public:
 
   void setMethodOrder(int n);
   bool run();
+
+  double area();
 };
 
 class Interpolation : Filter
@@ -1235,7 +1240,6 @@ public:
 %End
 
   void setMethod(int n);
-  void setMethod(InterpolationMethod m);
   bool run();
 };
 
@@ -1259,11 +1263,8 @@ public:
 %End
 
   void setMethod(int);
-  void setMethod(SmoothMethod);
-
   void setSmoothPoints(int, int = 0);
   void setPolynomOrder(int);
-
   bool run();
 };
 
@@ -1287,8 +1288,6 @@ public:
 %End
 
   void setFilterType(int);
-  void setFilterType(FilterType);
-
   void setCutoff(double);
   void setBand(double, double);
   void enableOffset(bool=true);

@@ -43,7 +43,6 @@ public:
 
     int method(){return (int)d_method;};
     void setMethod(int m);
-	void setMethod(SmoothMethod m){setMethod((int)m);};
 
     void setSmoothPoints(int points, int left_points = 0);
     //! Sets the polynomial order in the Savitky-Golay algorithm.

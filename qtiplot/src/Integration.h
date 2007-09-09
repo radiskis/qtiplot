@@ -43,6 +43,8 @@ public:
     int method(){return d_method;};
     void setMethodOrder(int n);
 
+    double area(){return d_area;};
+
 private:
     void init();
     //!Uses code originally written by Vasileios Gkanis. It needs some more checking.
@@ -51,6 +53,9 @@ private:
 
     //! the integration method: 1 = trapezoidal, max = 5!
     int d_method;
+
+    //! the value of the integral
+    double d_area;
 };
 
 #endif
