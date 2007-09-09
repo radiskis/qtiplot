@@ -171,8 +171,7 @@ void Filter::setColor(const QString& colorName)
         c = QColor(Qt::green);
     else if (colorName == "darkYellow")
         c = QColor(Qt::darkYellow);
-    if (!ColorBox::isValidColor(c))
-    {
+    if (!ColorBox::isValidColor(c)){
         QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Color Name Error"),
 				tr("The color name '%1' is not valid, a default color (red) will be used instead!").arg(colorName));
         d_curveColorIndex = 1;

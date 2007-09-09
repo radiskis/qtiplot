@@ -44,7 +44,6 @@ public:
 
     int method(){return d_method;};
     void setMethod(int m);
-	void setMethod(InterpolationMethod m){setMethod((int)m);};
 
 private:
     void init(int m);

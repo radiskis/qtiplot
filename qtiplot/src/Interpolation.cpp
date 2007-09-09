@@ -51,8 +51,7 @@ Interpolation::Interpolation(ApplicationWindow *parent, Graph *g, const QString&
 
 void Interpolation::init(int m)
 {
-    if (m < 0 || m > 2)
-    {
+    if (m < 0 || m > 2){
         QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
         tr("Unknown interpolation method. Valid values are: 0 - Linear, 1 - Cubic, 2 - Akima."));
         d_init_err = true;
@@ -81,23 +80,36 @@ void Interpolation::init(int m)
 
 void Interpolation::setMethod(int m)
 {
-if (m < 0 || m > 2)
-    {
-        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
-        tr("Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima."));
-        d_init_err = true;
-        return;
+if (m < 0 || m > 2){
+    QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
+    tr("Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima."));
+    d_init_err = true;
+    return;
     }
 int min_points = m + 3;
-if (d_n < min_points)
-	{
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-				tr("You need at least %1 points in order to perform this operation!").arg(min_points));
-        d_init_err = true;
-        return;
+if (d_n < min_points){
+    QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+    tr("You need at least %1 points in order to perform this operation!").arg(min_points));
+    d_init_err = true;
+    return;
 	}
-d_method = m;
-d_min_points = min_points;
+    d_method = m;
+    d_min_points = min_points;
+	switch(d_method)
+	{
+		case 0:
+			setName(tr("Linear") + tr("Int"));
+			d_explanation = tr("Linear") + " " + tr("Interpolation");
+			break;
+		case 1:
+			setName(tr("Cubic") + tr("Int"));
+			d_explanation = tr("Cubic") + " " + tr("Interpolation");
+			break;
+		case 2:
+			setName(tr("Akima") + tr("Int"));
+			d_explanation = tr("Akima") + " " + tr("Interpolation");
+			break;
+	}
 }
 
 void Interpolation::calculateOutputData(double *x, double *y)
