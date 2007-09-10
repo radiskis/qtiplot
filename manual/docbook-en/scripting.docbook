@@ -1126,16 +1126,30 @@ l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
 l.numCurves()
 	  </programlisting></para>
 
-        <para>Layers and whole Graphs can be printed and exported from within
-        Python. Before you do this, you would probably want to change layer and axis
-        titles: <programlisting width="40">
-l.setTitle(title)
-l.setXTitle(Xtitle)
-l.setYTitle(Ytitle)
-	  </programlisting> You can also customize the scales of the different axes using: <programlisting width="40">
-l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False);
+<sect3>
+<title>The plot title</title>
+<programlisting>
+l.setTitle("My beautiful plot")
+l.setTitleFont(QFont("Arial", 12))
+l.setTitleColor(QtGui.QColor("red"))
+l.setTitleAlignment(QtCore.Qt.AlignLeft)
 </programlisting>
-	  where <varname>axis</varname> can be any integer value between 0 and 3 or the equivalent reserved word:
+The alignment parameter can be any combination of the Qt alignment flags (see the
+<ulink url="http://www.riverbankcomputing.com/Docs/PyQt4/html/qt.html#AlignmentFlag-enum">PyQt documentation</ulink>
+for more details).
+<para>If you want you can remove the plot title using:</para>
+<programlisting>
+l.removeTitle()
+</programlisting>
+</sect3>
+
+<sect3>
+<title>Customizing the axes</title>
+Layer axes can be shown/hidden using the following function:
+<programlisting>
+l.enableAxis(int axis, on = True)
+</programlisting>
+where <varname>axis</varname> can be any integer value between 0 and 3 or the equivalent reserved word:
 	  <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
@@ -1162,7 +1176,111 @@ l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5
               </listitem>
             </varlistentry>
           </variablelist>
-<varname>type</varname> specifies the desired scale type: <variablelist spacing="compact">
+
+If an axis is enabled, you can fully customize it via a Python script.
+For example you can set it's title:
+<programlisting>
+l.setAxisTitle(axis, "My axis title")
+l.setAxisTitleFont(axis, QtGui.QFont("Arial", 11))
+l.setAxisTitleColor(axis, QtGui.QColor("blue"))
+l.setAxisTitleAlignment(axis, alignFlags)
+</programlisting>
+it's color and the font used for the tick labels:
+<programlisting>
+l.setAxisColor(axis, QtGui.QColor("green"))
+l.setAxisFont(axis, QtGui.QFont("Arial", 10))
+</programlisting>
+
+The tick labels of an axis can be enabled or disabled, you can set their color and their rotation angle:
+<programlisting>
+l.enableAxisLabels(axis, on = True)
+l.setAxisLabelsColor(axis, QtGui.QColor("black"))
+l.setAxisLabelRotation(axis, angle)
+</programlisting>
+<varname>angle</varname> can be any integer value between -90 and 90 degrees.
+A rotation angle can be set only for horizontal axes (Bottom and Top).
+<para>The numerical format of the labels can be set using:</para>
+<programlisting>
+l.setAxisNumericFormat(axis, format, precision = 6, formula)
+</programlisting>
+where <varname>format</varname> can have the following values: <variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Automatic: the most compact numeric representation is chosen</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Decimal: numbers are displayed in floating point form</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Scientific: numbers are displayed using the exponential notation</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Superscripts: like Scientific, but the exponential part is displayed as a power of 10</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+<varname>precision</varname> is the number of significant digits and
+<varname>formula</varname> is a mathematical expression that can be used to link oposite scales. It's
+argument must be <varname>x</varname> for horizontal axes and <varname>y</varname> for vertical axes.
+For example, assuming that the bottom axis displays a range of wavelengths in nanometers and that the top
+axis represents the equivalent energies in eV, with the help of the code bellow all the wavelengths
+will be automatically converted to electron-volts and the result will be displayed in floating point form
+with two significant digits after the decimal dot sign:
+<programlisting>
+l.setAxisNumericFormat(Layer.Top, 1, 2, "1239.8419/x")
+</programlisting>
+
+The axis ticks can be customized via the following functions:
+
+<programlisting>
+l.setTicksLength(minLength, majLength)
+l.setAxisTicksLength(axis, majTicksType, minTicksType, minLength, majLength)
+</programlisting>
+where the <varname>majTicksType</varname> and <varname>minTicksType</varname> parameters specify the
+desired orientation for the major and minor ticks, respectively:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Layer.NoTicks</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Layer.Out: outward orientation for ticks, with respect to the plot canvas</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Layer.InOut: both inward and outward ticks</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Layer.In: inward ticks</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+<varname>minLength</varname> specifies the length of the minor ticks, in pixels and
+<varname>majLength</varname> the length of the major ticks.
+
+<para>You can also customize the scales of the different axes using: <programlisting width="40">
+l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False);
+</programlisting>
+where <varname>type</varname> specifies the desired scale type: <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
               <listitem>
@@ -1176,13 +1294,51 @@ l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5
               </listitem>
             </varlistentry>
           </variablelist>
-	  and <varname>step</varname> defines the size of the interval between the major scale ticks. If not specified (default value is 0.0), the step size is calculated automatically.
-	  The other flags should be self-explanatory.
+and <varname>step</varname> defines the size of the interval between the major scale ticks. If not specified (default value is 0.0), the step size is calculated automatically.
+The other flags should be self-explanatory.</para>
+Defining a scale range for an axis doesn't automatically disable autoscaling.
+This means that if a curve is added or removed from the layer, the axes will still automatically
+adapt to the new data interval. This can be avoided by disabling the autoscaling mode, thus
+making sure that your scale settings will always be taken into account:
+<programlisting>
+l.enableAutoscaling(False)
+</programlisting>
+
+Finally, you can specify the width of all axes and enable/disable the drawing of their backbone line, using:
+<programlisting>
+l.setAxesLinewidth(2)
+l.drawAxesBackbones(True)
+</programlisting>
+</sect3>
+
+<sect3>
+<title>The canvas frame</title>
+You can display a rectangular frame around the drawing area of the plot (the canvas) and
+fill it with a background color, using:<programlisting>
+l.setCanvasFrame(2, QtGui.QColor("red"))
+l.setCanvasColor(QtGui.QColor("lightGrey"))
+</programlisting>
+Drawing the canvas frame and disabling the axes backbone lines
+is the only possible solution for the issue of axes not touching themselves at their ends.
+</sect3>
+
+<sect3>
+<title>The layer frame</title>
+You can display a rectangular frame around the whole layer and fill it with a background color,
+using:<programlisting>
+l.setFrame(2, QtGui.QColor("blue"))
+l.setBackgroundColor(QtGui.QColor("grey"))
+</programlisting>
+The default spacing between the layer frame and the other layer elements (axes, title) can be changed via:
+<programlisting>
+l.setMargin(10)
+</programlisting>
+</sect3>
 
 <sect3>
 <title>Customizing the grid</title>
 
-<para>You can display the grid associated to a layer axis or the whole grid using:<programlisting>
+You can display the grid associated to a layer axis or the whole grid using:<programlisting>
 l.showGrid(axis)
 l.showGrid()
 </programlisting>
@@ -1203,7 +1359,7 @@ grid.enableZeroLineY(False)
 l.replot()
 </programlisting>
 All the grid functions containing an <varname>X</varname> refer to the vertical grid lineas, whereas the <varname>Y</varname> leter indicates the horizontal ones.
-Also, the <varname>Maj</varname> word refers to the main grid lines and <varname>Min</varname> to the secondary grid.</para>
+Also, the <varname>Maj</varname> word refers to the main grid lines and <varname>Min</varname> to the secondary grid.
 </sect3>
 
 <sect3>
@@ -1271,7 +1427,27 @@ l.replot()
 </sect3>
 
 <sect3>
+<title>Antialiasing</title>
+Antialiasing can be enabled/disabled for the drawing of the curves and other layer
+objects, but it is a very resources consuming feature:<programlisting>
+l.setAntialiasing(True, bool update = True)
+</programlisting>
+</sect3>
+
+<sect3>
+<title>Resize events</title>
+The default behaviour of 2D plot layers, with respect to the resizing of the graph window
+is to adapt their size and the sizes of the fonts used for the various texts, to the new size
+of the plot window. You can override this behaviour and make the layers ignore any resize events coming from the
+parent window: <programlisting>
+l.setIgnoreResize(True)
+l.setAutoscaleFonts(False)
+</programlisting>
+</sect3>
+
+<sect3>
 <title>Exporting plots/layers to different image formats</title>
+Layers and whole Graphs can be printed and exported from within Python.
 The fastest way to export a plot/layer is the following: <programlisting>
 l.export(fileName)
 </programlisting>
@@ -1297,7 +1473,7 @@ The <varname>quality</varname> parameter influences the size of the output file.
 the higher the qualitity of the image, but the larger the size of the resulting files.</para>
 
 <para>All the export functions rely on the file name suffix in order to choose the image format.</para>
-</sect3></para></sect2>
+</sect3></sect2>
 
 <sect2 id="Python-MultiLayer">
       <title>Working with Layers</title>
@@ -1306,22 +1482,22 @@ be a very tedious task. With the help of a simple Python script you can make thi
 automatically manage the layout of the plot window.
 For example, here's how you can create a two rows by two columns matrix of layers,
 each plot layer having a canvas size (the drawing area) of 400 pixels wide and 300 pixels in height:
-<programlisting> 
+<programlisting>
 g=newGraph()
 g.setNumLayers(4)
 g.setLayerCanvasSize(400, 300)
 g.arrangeLayers(True, True)
 </programlisting>
 
-The <varname>arrangeLayers()</varname> function takes two parameters. The first one specifies 
+The <varname>arrangeLayers()</varname> function takes two parameters. The first one specifies
 if the layers should be arranged automatically, using a best-layout algorithm, or if the
-numbers of rows and columns is fixed by the user. If the value of the second parameter is 
+numbers of rows and columns is fixed by the user. If the value of the second parameter is
 <varname>True</varname>, the size of the canvas is fixed by the user and the plot window
 will be enlarged or shrinked, according to the user settings. Otherwise the size of the plot
 window will be kept and the canvas area of each layer will be automatically adapted to fit this size.
 Here's how you can modify the graph created in the previous example, in order to display a row of three
 layers, while keeping the size of the plot window unchanged:
-<programlisting> 
+<programlisting>
 g.setNumLayers(3)
 g.setRows(1)
 g.setCols(3)
@@ -1344,9 +1520,10 @@ aligns the layers with the right edge of the window and centers them vertically 
 g.setAlignement(Graph.Right, Graph.VCenter)
 </programlisting>
 
-All the examples above suppose that the layers are aranged on a grid. Of course you can add layers
-to any position you might need. The x, y coordinates, in pixels, refer to the position of the top-left corner of
-the layer. The origin of the coordinates system is set in the top-left corner of the plot window, the y
+All the examples above suppose that the layers are aranged on a grid, but of course you can add layers
+at any position in the plot window. In the examples bellow the x, y coordinates, in pixels,
+refer to the position of the top-left corner of the layer.
+The origin of the coordinates system coincides with the top-left corner of the plot window, the y
 coordinate increasing towards the bottom of the window. If the width and height of the layer are not specified
 they will be set to the default values:
 <programlisting>
@@ -1356,14 +1533,14 @@ l2 = g.addLayer(10, 20, 200, 200)
 l3 = g.addLayer(215, 20)
 </programlisting>
 
-As you have already seen, in a plot window there's always an active layer, which is the last layer added
-to the plot, but you can change the active layer programatically:
+As you have already seen, in a plot window the active layer is, by default, the last layer added
+to the plot, but you can change it programatically:
 <programlisting>
 l = g.layer(num)
 g.setActiveLayer(l)
 </programlisting>
 
-In case you need to do a repetitive task on all the layers in a plot window, you need to use a for loop
+In case you need to perform a repetitive task on all the layers in a plot window, you need to use a for loop
 and of course you need to know the number of layers existant on the plot. Here's a small example showing how to
 custom the titles of all the layers in the plot window:
 <programlisting>

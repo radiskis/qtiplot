@@ -130,7 +130,7 @@ class Graph: public QWidget
 		void setActiveTool(PlotToolInterface *tool) { if(d_active_tool) delete d_active_tool; d_active_tool=tool; }
 		//! Return the active tool, or NULL if none is active.
 		PlotToolInterface* activeTool() const { return d_active_tool; }
-		
+
 		Grid *grid(){return d_plot->grid();};
 
 	public slots:
@@ -263,7 +263,7 @@ class Graph: public QWidget
 		//! Tries to guess not already used curve color and symbol style
 		void guessUniqueCurveLayout(int& colorIndex, int& symbolIndex);
 		//@}
-		
+
 		//! \name Zoom
 		//@{
 		void zoomed (const QwtDoubleRect &);
@@ -436,7 +436,7 @@ class Graph: public QWidget
 
 		int axisTitleAlignment (int axis);
 		void setAxisTitleAlignment(int axis, int align);
-		
+
 		void setXAxisTitleAlignment(int align);
 		void setYAxisTitleAlignment(int align);
 		void setTopAxisTitleAlignment(int align);
@@ -444,10 +444,10 @@ class Graph: public QWidget
 
         QColor axisColor(int axis);
 		void setAxisColor(int axis, const QColor& color);
-		
+
         QColor axisLabelsColor(int axis);
 		void setAxisLabelsColor(int axis, const QColor& color);
-		
+
 		void showAxis(int axis, int type, const QString& formatInfo, Table *table, bool axisOn,
 				int majTicksType, int minTicksType, bool labelsOn, const QColor& c, int format,
                 int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor);
@@ -485,8 +485,7 @@ class Graph: public QWidget
 
 		int minorTickLength();
 		int majorTickLength();
-		void setAxisTicksLength(int axis, int majTicksType, int minTicksType,
-				int minLength, int majLength);
+		void setAxisTicksLength(int axis, int majTicksType, int minTicksType, int minLength, int majLength);
 		void setTicksLength(int minLength, int majLength);
 		void changeTicksLength(int minLength, int majLength);
 
@@ -565,11 +564,6 @@ class Graph: public QWidget
 
 		//!  Used for VerticalBars, HorizontalBars and Histograms
 		void setBarsGap(int curve, int gapPercent, int offset);
-
-		//! \name Image Analysis Tools
-		//@{
-		void showIntensityTable();
-		//@}
 
 		//! \name User-defined Functions
 		//@{
@@ -684,7 +678,6 @@ signals:
 		void rightAxisTitleDblClicked();
 		void topAxisTitleDblClicked();
 
-		void createIntensityTable(const QString&);
 		void dataRangeChanged();
 		void showFitResults(const QString&);
 

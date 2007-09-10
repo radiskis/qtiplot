@@ -953,8 +953,6 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveGraph(Graph*)));
 	connect (g,SIGNAL(viewTextDialog()),this,SIGNAL(showTextDialog()));
-	connect (g,SIGNAL(createIntensityTable(const QString&)),
-			this,SIGNAL(createIntensityTable(const QString&)));
 }
 
 void MultiLayer::addTextLayer(int f, const QFont& font,
@@ -1355,19 +1353,19 @@ bool MultiLayer::swapLayers(int src, int dest)
 	Graph *layerDest = layer(dest);
 	if (!layerSrc || !layerDest)
 		return false;
-	
+
 	QRect rectSrc = layerSrc->geometry();
 	QRect rectDest = layerDest->geometry();
 
 	layerSrc->setGeometry(rectDest);
     layerSrc->plotWidget()->resize(rectDest.size());
-	
+
 	layerDest->setGeometry(rectSrc);
     layerDest->plotWidget()->resize(rectSrc.size());
-	
+
 	graphsList[src-1] = layerDest;
 	graphsList[dest-1] = layerSrc;
-	
+
 	emit modifiedPlot();
 	return true;
 }

@@ -208,7 +208,6 @@ signals:
 	void viewTitleDialog();
 	void createTable(const QString&,int,int,const QString&);
 	void pasteMarker();
-	void createIntensityTable(const QString&);
 	void setPointerCursor();
 
 private:
