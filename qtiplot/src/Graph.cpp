@@ -2121,7 +2121,7 @@ void Graph::setTopAxisTitleColor(const QColor& c)
 }
 
 void Graph::setAxisTitleColor(int axis, const QColor& c)
-{	
+{
 	QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(axis);
 	if (scale){
 		QwtText title = scale->title();
@@ -3917,15 +3917,6 @@ QString Graph::saveToString(bool saveAsTemplate)
 	return s;
 }
 
-void Graph::showIntensityTable()
-{
-	ImageMarker* mrk=(ImageMarker*) d_plot->marker(selectedMarker);
-	if (!mrk)
-		return;
-
-	emit createIntensityTable(mrk->fileName());
-}
-
 void Graph::updateMarkersBoundingRect()
 {
 	for (int i=0;i<(int)d_lines.size();i++)
@@ -4316,7 +4307,7 @@ void Graph::showGrid(int axis)
 	Grid *grid = d_plot->grid();
 	if (!grid)
 		return;
-	
+
 	if (axis == QwtScaleDraw::LeftScale || axis == QwtScaleDraw::RightScale){
 		grid->enableY(!grid->yEnabled());
 		grid->enableYMin(!grid->yMinEnabled());
@@ -4351,7 +4342,7 @@ void Graph::copy(Graph* g)
 				pal.setColor(QColorGroup::Text, g->axisLabelsColor(i));
 				scale->setPalette(pal);
 				d_plot->setAxisFont (i, plot->axisFont(i));
-				
+
 				QwtText src_axis_title = plot->axisTitle(i);
 				QwtText title = scale->title();
 				title.setText(src_axis_title.text());

@@ -341,7 +341,7 @@ void ApplicationWindow::initGlobalConstants()
 	plot3DAxesFont = QFont(family, pointSize, QFont::Bold, false );
 	plot3DNumbersFont = QFont(family, pointSize);
 	plot3DTitleFont = QFont(family, pointSize + 2, QFont::Bold,false);
-	
+
 	autoSearchUpdates = false;
 	askForSupport = false;
 	appLanguage = QLocale::system().name().section('_',0,0);
@@ -353,7 +353,7 @@ void ApplicationWindow::initGlobalConstants()
 	tableBkgdColor = QColor("#ffffff");
 	tableTextColor = QColor("#000000");
 	tableHeaderColor = QColor("#000000");
-	
+
 	plot3DColors = QStringList();
 	plot3DColors << "blue";
 	plot3DColors << "#000000";
@@ -363,7 +363,7 @@ void ApplicationWindow::initGlobalConstants()
 	plot3DColors << "#000000";
 	plot3DColors << "#000000";
 	plot3DColors << "#ffffff";
-	
+
 	autoSave = true;
 	autoSaveTime = 15;
 	defaultScriptingLang = "muParser";
@@ -2942,7 +2942,7 @@ void ApplicationWindow::windowActivated(QWidget *w)
 	Folder *f = ((MyWidget *)w)->folder();
 	if (f)
         f->setActiveWindow((MyWidget *)w);
-	
+
 	emit modified();
 }
 
@@ -7808,19 +7808,19 @@ void ApplicationWindow::windowsMenuAboutToShow()
 		int id;
 		if (folder_param < 9)
 			id = foldersMenu->insertItem("&" + QString::number(folder_param+1) + " " + f->path(), this, SLOT(foldersMenuActivated(int)));
-		else	
+		else
 			id = foldersMenu->insertItem(f->path(), this, SLOT(foldersMenuActivated(int)));
 
 		foldersMenu->setItemParameter(id, folder_param);
-		folder_param++;		
+		folder_param++;
 		foldersMenu->setItemChecked(id, f == current_folder);
-		
+
 		item = (FolderListItem *)item->itemBelow();
 	}
-	
+
 	windowsMenu->insertItem(tr("&Folders"), foldersMenu);
 	windowsMenu->insertSeparator();
-	
+
 	QList<QWidget*> windows = ws->windowList();
 	int n = int(windows.count());
 	if (!n )
@@ -7839,7 +7839,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 	windowsMenu->addAction(actionShowScriptWindow);
 	windowsMenu->insertSeparator();
 #endif
-	
+
 	windowsMenu->addAction(actionResizeActiveWindow);
 	windowsMenu->insertItem(tr("&Hide Window"),
 			this, SLOT(hideActiveWindow()));
@@ -7918,7 +7918,7 @@ void ApplicationWindow::windowsMenuActivated( int id )
 }
 
 void ApplicationWindow::foldersMenuActivated( int id )
-{	
+{
 	Folder *project_folder = projectFolder();
 	FolderListItem *item = project_folder->folderListItem();
 	int initial_depth = item->depth();
@@ -7929,8 +7929,8 @@ void ApplicationWindow::foldersMenuActivated( int id )
 			changeFolder (f);
 			break;
 		}
-		
-		folder_param++;		
+
+		folder_param++;
 		item = (FolderListItem *)item->itemBelow();
 	}
 }
@@ -9458,8 +9458,14 @@ void ApplicationWindow::intensityTable()
 		return;
 
 	Graph* g = ((MultiLayer *)ws->activeWindow())->activeGraph();
-	if (g)
-		g->showIntensityTable();
+	if (g){
+		ImageMarker *im = (ImageMarker *) g->selectedMarkerPtr();
+        if (im){
+            QString fn = im->fileName();
+            if (!fn.isEmpty())
+                importImage(fn);
+        }
+	}
 }
 
 void ApplicationWindow::autoArrangeLayers()
@@ -10137,13 +10143,13 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 		else if (s.contains ("AxesTitleColors")){
 			QStringList colors = s.split("\t", QString::SkipEmptyParts);
-			colors.pop_front();			
+			colors.pop_front();
 			for (int i=0; i<int(colors.count()); i++)
 				ag->setAxisTitleColor(i, colors[i]);
 
 		}else if (s.contains ("AxesTitleAlignment")){
 			QStringList align=s.split("\t", QString::SkipEmptyParts);
-			align.pop_front();	
+			align.pop_front();
 			for (int i=0; i<(int)align.count(); i++)
 				ag->setAxisTitleAlignment(i, align[i].toInt());
 		}else if (s.contains ("ScaleFont")){
@@ -10567,7 +10573,6 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(showLineDialog()),this,SLOT(showLineDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
 	connect (g,SIGNAL(showGraphContextMenu()),this,SLOT(showGraphContextMenu()));
-	connect (g,SIGNAL(createIntensityTable(const QString&)),this,SLOT(importImage(const QString&)));
 	connect (g, SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
 
 	g->askOnCloseEvent(confirmClosePlot2D);

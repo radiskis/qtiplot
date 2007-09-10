@@ -27,21 +27,22 @@ revision history. (see installation appendix comment) -->
 </sect1>
 
 <sect1 id="command-line-options">
-<title>Command Line Options</title>
-<indexterm><primary>Command line parameters</primary><secondary>Specify a File</secondary></indexterm>
+<title>Command Line Parameters</title>
 <sect2 id="specify-a-file">
+	<sect2info><indexterm><primary>Command line parameters</primary><secondary>Specify a File</secondary></indexterm></sect2info>
 <title>Specify a File</title>
 
-<para>When starting QtiPlot from the command prompt, you can supply the name of a project file:</para>
+<para>When starting &appname; from the command prompt, you can supply the name of a project file:</para>
 
 <screen>
-qtiplot file_name.qti
+&appname; file_name.&file-ext;
 </screen>
 
-<para>or the name of an ASCII file:</para>
+<para>Other file formats are also accepted: <emphasis>.opj, .ogm, .ogw, .ogg</emphasis> for Origin projects, and <emphasis>.qti, qti.gz</emphasis> for &appname; projects.</para>
+<para>The name can also refer to an ASCII file:</para>
 
 <screen>
-qtiplot ASCII_file_name
+&appname; ASCII_file_name
 </screen>
 
 <para> In this latter case a new "untitled" project will be created, containing a spreadsheet with the ASCII data in the file and a 2D plot of all columns as a function of the first column in the file. You must take care of the format of the ASCII file because it will be read with the current values of the &set-import-options-lnk; dialog. These default values are:</para>
@@ -54,8 +55,23 @@ qtiplot ASCII_file_name
 </itemizedlist>
 
 </sect2>
-</sect1>
 
+<sect2 id="qtiplot-options">
+	<sect2info><indexterm><primary>Command line parameters</primary><secondary>Options</secondary></indexterm></sect2info>
+<title>Command Line Options</title>
+
+<para>Valid options are:</para>
+<itemizedlist>
+<listitem><para>-a or --about: show about dialog and exit</para></listitem>
+<listitem><para>-d or --default-settings: start &appname; with the default settings</para></listitem>
+<listitem><para>-h or --help: show command line options</para></listitem>
+<listitem><para>-l=XX or --lang=XX: start &appname; in language XX ('en', 'fr', 'de', ...)</para></listitem>
+<listitem><para>-m or --manual: show &appname; manual in a standalone window</para></listitem>
+<listitem><para>-v or --version: print &appname; version and release date</para></listitem>
+<listitem><para>-x or --execute: execute the script file given as argument</para></listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 <sect1 id="general-concepts">
 <title>General Concepts and Terms</title>
@@ -97,7 +113,7 @@ qtiplot ASCII_file_name
         <primary>graph</primary>
       </indexterm>
       <para>A graph can contain one or several plots. Each of these plots is contained in a different <emphasis>layer</emphasis>, these layers can be arranged in many ways to build matrix of plots.</para>
-      <para>A new layer can be added to an existing graph with the &add-layer-lnk; from the &graph-menu-lnk;. you can also remove an existing layer with the &remove-layer-lnk;, but if you remove a layer, the plot will be deleted. You can also copy a layer from one graph to another. You can also copy an existing graph into another, the window will be added as a new layer (see the section on <link linkend="sec-multilayer-plots">Multilayer Plots</link> for more details).</para> 
+      <para>A new layer can be added to an existing graph with the &add-layer-lnk; from the &graph-menu-lnk;. you can also remove an existing layer with the &remove-layer-lnk;, but if you remove a layer, the plot will be deleted. You can also copy a layer from one graph to another. You can also copy an existing graph into another, the window will be added as a new layer (see the section on <link linkend="sec-multilayer-plots">Multilayer Plots</link> for more details).</para>
       <para>Plots can be created in several ways. You can select data in tables or matrix and build a plot, or create new plots from functions of one or two variables (see sections <link linkend="sec-2d-plots">2D plots</link> and <link linkend="sec-3d-plots">3D plots</link>).</para>
     </listitem>
   </varlistentry>
@@ -132,7 +148,7 @@ qtiplot ASCII_file_name
 
       <indexterm><primary>table</primary></indexterm>
 <para>
-The table is the main part of QtiPlot when working with data. For controlling and converting data the spreadsheet contains a highly customizable table: all colors and font preferences can be set using the &preferences-lnk; of the &view-menu-lnk;. You can resize a table in terms of rows and columns using the &table-menu-lnk; with &rows-lnk; or &columns-lnk;. 
+The table is the main part of QtiPlot when working with data. For controlling and converting data the spreadsheet contains a highly customizable table: all colors and font preferences can be set using the &preferences-lnk; of the &view-menu-lnk;. You can resize a table in terms of rows and columns using the &table-menu-lnk; with &rows-lnk; or &columns-lnk;.
 </para>
 
 <figure id="fig-the-table">
