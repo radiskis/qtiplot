@@ -972,7 +972,7 @@ d = m.determinant()
       </sect2>
 
       <sect2 id = "Python-Plots2D">
-        <title>Plotting and Working with Graphs</title>
+        <title>2D Plots</title>
 
         <para>If you want to create a new Graph window for some data in table
         table1, you can use the plot command: <programlisting width="40">
@@ -1135,54 +1135,44 @@ l.setYTitle(Ytitle)
 	  </programlisting> You can also customize the scales of the different axes using: <programlisting width="40">
 l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False);
 </programlisting>
-	  where <varname>axis</varname> is a number between 0 and 3 with the following signification:
+	  where <varname>axis</varname> can be any integer value between 0 and 3 or the equivalent reserved word:
 	  <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
-
               <listitem>
-                <para>Left axis</para>
+                <para>Layer.Left</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>1.</term>
-
               <listitem>
-                <para>Right axis</para>
+                <para>Layer.Right</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>2.</term>
-
               <listitem>
-                <para>Bottom axis</para>
+                <para>Layer.Bottom</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>3.</term>
-
               <listitem>
-                <para>Top axis</para>
+                <para>Layer.Top</para>
               </listitem>
             </varlistentry>
           </variablelist>
 <varname>type</varname> specifies the desired scale type: <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
-
               <listitem>
-                <para>Linear</para>
+                <para>Layer.Linear</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>1.</term>
-
               <listitem>
-                <para>Log10</para>
+                <para>Layer.Log10</para>
               </listitem>
             </varlistentry>
           </variablelist>
@@ -1309,6 +1299,91 @@ the higher the qualitity of the image, but the larger the size of the resulting 
 <para>All the export functions rely on the file name suffix in order to choose the image format.</para>
 </sect3></para></sect2>
 
+<sect2 id="Python-MultiLayer">
+      <title>Working with Layers</title>
+When you have several layers in a 2D plot window, setting the layout of these layers manually can
+be a very tedious task. With the help of a simple Python script you can make this task very easy and
+automatically manage the layout of the plot window.
+For example, here's how you can create a two rows by two columns matrix of layers,
+each plot layer having a canvas size (the drawing area) of 400 pixels wide and 300 pixels in height:
+<programlisting> 
+g=newGraph()
+g.setNumLayers(4)
+g.setLayerCanvasSize(400, 300)
+g.arrangeLayers(True, True)
+</programlisting>
+
+The <varname>arrangeLayers()</varname> function takes two parameters. The first one specifies 
+if the layers should be arranged automatically, using a best-layout algorithm, or if the
+numbers of rows and columns is fixed by the user. If the value of the second parameter is 
+<varname>True</varname>, the size of the canvas is fixed by the user and the plot window
+will be enlarged or shrinked, according to the user settings. Otherwise the size of the plot
+window will be kept and the canvas area of each layer will be automatically adapted to fit this size.
+Here's how you can modify the graph created in the previous example, in order to display a row of three
+layers, while keeping the size of the plot window unchanged:
+<programlisting> 
+g.setNumLayers(3)
+g.setRows(1)
+g.setCols(3)
+g.arrangeLayers(False, False)
+</programlisting>
+
+By default, the space betwee two neighbouring layers as well as the distance between the layers
+and the borders of the plot window is set to five pixels. You can change the spacing between the
+layers and the margins using the following functions:
+<programlisting>
+g.setSpacing (x, y)
+g.setMargins (left, right, top, bottom)
+</programlisting>
+
+Another aspect of the layout management is the alignement of the layers. There are three alignement
+flags that you can use for the horizontal alignement (HCenter, Left, Right) and another three for
+the vertical alignement (VCenter, Top, Bottom) of the layers. The following code line
+aligns the layers with the right edge of the window and centers them vertically in the available space:
+<programlisting>
+g.setAlignement(Graph.Right, Graph.VCenter)
+</programlisting>
+
+All the examples above suppose that the layers are aranged on a grid. Of course you can add layers
+to any position you might need. The x, y coordinates, in pixels, refer to the position of the top-left corner of
+the layer. The origin of the coordinates system is set in the top-left corner of the plot window, the y
+coordinate increasing towards the bottom of the window. If the width and height of the layer are not specified
+they will be set to the default values:
+<programlisting>
+g = newGraph()
+l1 = g.addLayer()
+l2 = g.addLayer(10, 20, 200, 200)
+l3 = g.addLayer(215, 20)
+</programlisting>
+
+As you have already seen, in a plot window there's always an active layer, which is the last layer added
+to the plot, but you can change the active layer programatically:
+<programlisting>
+l = g.layer(num)
+g.setActiveLayer(l)
+</programlisting>
+
+In case you need to do a repetitive task on all the layers in a plot window, you need to use a for loop
+and of course you need to know the number of layers existant on the plot. Here's a small example showing how to
+custom the titles of all the layers in the plot window:
+<programlisting>
+g = graph("Graph1")
+layers = g.numLayers()
+for i in range (1, layers+1):
+	l = g.layer(i)
+	l.setTitle("Layer"+QtCore.QString.number(i))
+	l.setTitleColor(QtGui.QColor("red"))
+	l.setTitleFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold, True))
+	l.setTitleAlignment(QtCore.Qt.AlignLeft)
+</programlisting>
+
+Finally, sometimes it might be useful to be able to swap two layers. This can be done with the help of the
+following function:
+<programlisting>
+g.swapLayers(layerNum1, layerNum2)
+</programlisting>
+
+</sect2>
 <sect2 id="Python-Plots3D">
       <title>3D Plots</title>
 

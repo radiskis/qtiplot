@@ -114,6 +114,9 @@ class Graph: public QWidget
 		Graph (QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 		~Graph();
 
+		enum Axis{Left, Right, Bottom, Top};
+		enum ScaleType{Linear, Log10};
+		enum Ticks{NoTicks = 0, Out = 1, InOut = 2, In = 3};
 		enum AxisType{Numeric = 0, Txt = 1, Day = 2, Month = 3, Time = 4, Date = 5, ColHeader = 6};
 		enum MarkerType{None = -1, Text = 0, Arrow = 1, Image = 2};
 		enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
@@ -420,7 +423,7 @@ class Graph: public QWidget
 		void setTopAxisTitleFont(const QFont &fnt);
 		void setAxisTitleFont(int axis,const QFont &fnt);
 
-		void setAxisFont(int axis,const QFont &fnt);
+		void setAxisFont(int axis, const QFont &fnt);
 		QFont axisFont(int axis);
 		void initFonts(const QFont &scaleTitleFnt,const QFont &numbersFnt);
 
@@ -429,23 +432,22 @@ class Graph: public QWidget
 		void setYAxisTitleColor(const QColor& c);
 		void setRightAxisTitleColor(const QColor& c);
 		void setTopAxisTitleColor(const QColor& c);
-		void setAxesTitleColor(QStringList l);
+		void setAxisTitleColor(int axis, const QColor& c);
 
 		int axisTitleAlignment (int axis);
+		void setAxisTitleAlignment(int axis, int align);
+		
 		void setXAxisTitleAlignment(int align);
 		void setYAxisTitleAlignment(int align);
 		void setTopAxisTitleAlignment(int align);
 		void setRightAxisTitleAlignment(int align);
-		void setAxesTitlesAlignment(const QStringList& align);
 
         QColor axisColor(int axis);
-		QStringList axesColors();
-		void setAxesColors(const QStringList& colors);
-
-        QColor axisNumbersColor(int axis);
-  	    QStringList axesNumColors();
-  	    void setAxesNumColors(const QStringList& colors);
-
+		void setAxisColor(int axis, const QColor& color);
+		
+        QColor axisLabelsColor(int axis);
+		void setAxisLabelsColor(int axis, const QColor& color);
+		
 		void showAxis(int axis, int type, const QString& formatInfo, Table *table, bool axisOn,
 				int majTicksType, int minTicksType, bool labelsOn, const QColor& c, int format,
                 int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor);
@@ -460,6 +462,7 @@ class Graph: public QWidget
 
 		QStringList enabledTickLabels();
 		void setEnabledTickLabels(const QStringList& list);
+		void enableAxisLabels(int axis, bool on = true);
 
 		void setAxesLinewidth(int width);
 		//! used when opening a project file
