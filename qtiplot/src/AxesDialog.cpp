@@ -2260,7 +2260,7 @@ void AxesDialog::updateAxisColor(int)
 {
 	int a = mapToQwtAxisId();
     boxAxisColor->setColor(d_graph->axisColor(a));
-    boxAxisNumColor->setColor(d_graph->axisNumbersColor(a));
+    boxAxisNumColor->setColor(d_graph->axisLabelsColor(a));
 }
 
 void AxesDialog::changeBaselineDist(int baseline)

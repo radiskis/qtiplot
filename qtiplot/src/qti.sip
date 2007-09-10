@@ -424,7 +424,9 @@ class Graph : QWidget /PyName=Layer/
 #include "src/Legend.h"
 %End
 public:
-
+  enum ScaleType{Linear, Log10};
+  enum Axis{Left, Right, Bottom, Top};
+  enum TicksStyle{NoTicks = 0, Out = 1, InOut = 2, In = 3};
   enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function};
@@ -494,6 +496,11 @@ public:
   ImageMarker* addImage(const QString& fileName);
 
   void setTitle(const QString& t);
+  void setTitleFont(const QFont &fnt);
+  void setTitleColor(const QColor &c);
+  void setTitleAlignment(int align);
+  void removeTitle();
+		
   Legend* newLegend();
   Legend* newLegend(const QString&);
   void setLegend(const QString&) /NoDerived/;
@@ -506,10 +513,27 @@ public:
   void removeLegend();
   void addTimeStamp();
 
-  void enableAxis(int axis, bool on = true);
   void setXAxisTitle(const QString& text) /PyName=setXTitle/;
   void setYAxisTitle(const QString& text) /PyName=setYTitle/;
 
+  void enableAxis(int axis, bool on = true);
+  void setAxisColor(int axis, const QColor& color);
+  void setAxisFont(int axis, const QFont &fnt);
+  
+  void setAxisTitle(int axis, const QString& text);
+  void setAxisTitleFont(int axis,const QFont &fnt);
+  void setAxisTitleColor(int axis, const QColor& c);
+  void setAxisTitleAlignment(int axis, int align);
+  
+  void setAxisTicksLength(int axis, int majTicksType, int minTicksType, int minLength, int majLength);
+  void setAxisLabelRotation(int axis, int rotation);
+  
+  void setAxesLinewidth(int width);
+  void drawAxesBackbones(bool yes);
+  void setTicksLength(int minLength, int majLength);
+
+  void enableAxisLabels(int axis, bool on);
+  void setAxisLabelsColor(int axis, const QColor& color);
   void setLabelsNumericFormat(int axis, int format, int = 6, const QString& = QString()) /PyName=setAxisNumericFormat/;
   void setScale(int axis, double start, double end, double step = 0.0,
                 int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false);
@@ -546,9 +570,14 @@ class MultiLayer : MyWidget /PyName=Graph/
 #include "src/MultiLayer.h"
 %End
 public:
+
+  enum HorAlignement{HCenter, Left, Right};
+  enum VertAlignement{VCenter, Top, Bottom};
+
   Graph *activeGraph() /PyName=activeLayer/;
   void setActiveGraph(Graph*) /PyName=setActiveLayer/;
   int layers() /PyName=numLayers/;
+  void setLayersNumber(int n) /PyName=setNumLayers/;
   Graph* layer(int num);
   Graph* addLayer(int = 0, int = 0, int = 0, int = 0);
 

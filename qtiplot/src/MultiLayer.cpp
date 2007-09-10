@@ -1255,20 +1255,16 @@ void MultiLayer::setLayersNumber(int n)
 		return;
 
 	int dn = graphs - n;
-	if (dn > 0)
-	{
-		for (int i = 0; i < dn; i++)
-		{//remove layer buttons
+	if (dn > 0){
+		for (int i = 0; i < dn; i++){//remove layer buttons
 			LayerButton *btn=(LayerButton*)buttonsList.last();
-			if (btn)
-			{
+			if (btn){
 				btn->close();
 				buttonsList.removeLast();
 			}
 
 			Graph *g = (Graph *)graphsList.last();
-			if (g)
-			{//remove layers
+			if (g){//remove layers
 				if (g->zoomOn() || g->activeTool())
 					setPointerCursor();
 
@@ -1277,8 +1273,7 @@ void MultiLayer::setLayersNumber(int n)
 			}
 		}
 		graphs = n;
-		if (!graphs)
-		{
+		if (!graphs){
 			active_graph = 0;
 			return;
 		}
@@ -1286,19 +1281,15 @@ void MultiLayer::setLayersNumber(int n)
 		// check whether the active Graph.has been deleted
 		if(graphsList.indexOf(active_graph) == -1)
 			active_graph=(Graph*) graphsList.last();
-		for (int j=0;j<(int)graphsList.count();j++)
-		{
+		for (int j=0;j<(int)graphsList.count();j++){
 			Graph *gr=(Graph *)graphsList.at(j);
-			if (gr == active_graph)
-			{
+			if (gr == active_graph){
 				LayerButton *button=(LayerButton *)buttonsList.at(j);
 				button->setOn(TRUE);
 				break;
 			}
 		}
-	}
-	else
-	{
+	}else{
 		for (int i = 0; i < abs(dn); i++)
 			addLayer();
 	}

@@ -9820,15 +9820,17 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 		else if (s.contains ("AxesColors"))
 		{
-			QStringList fList=s.split("\t");
+			QStringList fList = s.split("\t");
 			fList.pop_front();
-			ag->setAxesColors(fList);
+			for (int i=0; i<int(fList.count()); i++)
+				ag->setAxisColor(i, QColor(fList[i]));
 		}
 		else if (s.contains ("AxesNumberColors"))
 		{
 			QStringList fList=QStringList::split ("\t",s,TRUE);
 			fList.pop_front();
-			ag->setAxesNumColors(fList);
+			for (int i=0; i<int(fList.count()); i++)
+				ag->setAxisLabelsColor(i, QColor(fList[i]));
 		}
 		else if (s.left(5)=="grid\t"){
 			ag->plotWidget()->grid()->load(s.split("\t"));
@@ -10128,24 +10130,23 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		{
 			QStringList legend=s.split("\t");
 			legend.pop_front();
-			for (int i=0; i<4; i++)
-			{
+			for (int i=0; i<4; i++){
 			    if (legend.count() > i)
                     ag->setAxisTitle(i, legend[i]);
 			}
 		}
-		else if (s.contains ("AxesTitleColors"))
-		{
-			QStringList colors=s.split("\t", QString::SkipEmptyParts);
-			ag->setAxesTitleColor(colors);
-		}
-		else if (s.contains ("AxesTitleAlignment"))
-		{
+		else if (s.contains ("AxesTitleColors")){
+			QStringList colors = s.split("\t", QString::SkipEmptyParts);
+			colors.pop_front();			
+			for (int i=0; i<int(colors.count()); i++)
+				ag->setAxisTitleColor(i, colors[i]);
+
+		}else if (s.contains ("AxesTitleAlignment")){
 			QStringList align=s.split("\t", QString::SkipEmptyParts);
-			ag->setAxesTitlesAlignment(align);
-		}
-		else if (s.contains ("ScaleFont"))
-		{
+			align.pop_front();	
+			for (int i=0; i<(int)align.count(); i++)
+				ag->setAxisTitleAlignment(i, align[i].toInt());
+		}else if (s.contains ("ScaleFont")){
 			QStringList fList=s.split("\t");
 			QFont fnt=QFont (fList[1],fList[2].toInt(),fList[3].toInt(),fList[4].toInt());
 			fnt.setUnderline(fList[5].toInt());
@@ -10153,9 +10154,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 
 			int axis=(fList[0].right(1)).toInt();
 			ag->setAxisTitleFont(axis,fnt);
-		}
-		else if (s.contains ("AxisFont"))
-		{
+		}else if (s.contains ("AxisFont")){
 			QStringList fList=s.split("\t");
 			QFont fnt=QFont (fList[1],fList[2].toInt(),fList[3].toInt(),fList[4].toInt());
 			fnt.setUnderline(fList[5].toInt());
