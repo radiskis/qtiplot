@@ -407,7 +407,6 @@ class Graph: public QWidget
 		//! \name Axes
 		//@{
 		QList<int> axesType();
-		void setAxesType(const QList<int> tl);
 
 		QStringList scalesTitles();
 		void setXAxisTitle(const QString& text);
@@ -428,11 +427,12 @@ class Graph: public QWidget
 		void initFonts(const QFont &scaleTitleFnt,const QFont &numbersFnt);
 
 		QColor axisTitleColor(int axis);
+		void setAxisTitleColor(int axis, const QColor& c);
+
 		void setXAxisTitleColor(const QColor& c);
 		void setYAxisTitleColor(const QColor& c);
 		void setRightAxisTitleColor(const QColor& c);
 		void setTopAxisTitleColor(const QColor& c);
-		void setAxisTitleColor(int axis, const QColor& c);
 
 		int axisTitleAlignment (int axis);
 		void setAxisTitleAlignment(int axis, int align);
@@ -453,16 +453,10 @@ class Graph: public QWidget
                 int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor);
 
 		void enableAxis(int axis, bool on = true);
-		QVector<bool> enabledAxes();
-		void enableAxes(QVector<bool> axesOn);
-		void enableAxes(const QStringList& list);
+		void enableAxisLabels(int axis, bool on = true);
 
 		int labelsRotation(int axis);
 		void setAxisLabelRotation(int axis, int rotation);
-
-		QStringList enabledTickLabels();
-		void setEnabledTickLabels(const QStringList& list);
-		void enableAxisLabels(int axis, bool on = true);
 
 		void setAxesLinewidth(int width);
 		//! used when opening a project file
@@ -473,9 +467,7 @@ class Graph: public QWidget
 		//! used when opening a project file
 		void loadAxesOptions(const QString& s);
 
-		QList<int> axesBaseline();
-		void setAxesBaseline(const QList<int> &lst);
-		void setAxesBaseline(QStringList &lst);
+		void setAxisMargin(int axis, int margin);
 
 		void setMajorTicksType(const QList<int>& lst);
 		void setMajorTicksType(const QStringList& lst);

@@ -761,11 +761,15 @@ void ConfigDialog::initConfirmationsPage()
 	boxNotes = new QCheckBox();
 	boxNotes->setChecked(app->confirmCloseNotes);
 	layout->addWidget( boxNotes );
-
 	layout->addStretch();
 
-	QHBoxLayout * confirmPageLayout = new QHBoxLayout( confirm );
+	boxPromptRenameTables = new QCheckBox();
+	boxPromptRenameTables->setChecked(app->d_inform_rename_table);
+	
+	QVBoxLayout * confirmPageLayout = new QVBoxLayout( confirm );
 	confirmPageLayout->addWidget(groupBoxConfirm);
+	confirmPageLayout->addWidget(boxPromptRenameTables);
+	confirmPageLayout->addStretch();
 }
 
 void ConfigDialog::languageChange()
@@ -860,6 +864,7 @@ void ConfigDialog::languageChange()
 	buttonNumbersFont->setText( tr( "Axes &Numbers" ) );
 	buttonLegendFont->setText( tr( "&Legend" ) );
 	buttonTitleFont->setText( tr( "T&itle" ) );
+	boxPromptRenameTables->setText( tr( "Prompt on &renaming tables when appending projects" ) );
 
 	//application page
 	appTabWidget->setTabText(appTabWidget->indexOf(application), tr("Application"));
@@ -1114,6 +1119,7 @@ void ConfigDialog::apply()
     QApplication::restoreOverrideCursor();
 
 	// general page: confirmations tab
+	app->d_inform_rename_table = boxPromptRenameTables->isChecked();
 	app->confirmCloseFolder = boxFolders->isChecked();
 	app->updateConfirmOptions(boxTables->isChecked(), boxMatrices->isChecked(),
 			boxPlots2D->isChecked(), boxPlots3D->isChecked(),

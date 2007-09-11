@@ -973,10 +973,8 @@ void MultiLayer::addTextLayer(const QPoint& pos)
 	Graph* g=addLayer();
 	g->removeLegend();
 	g->setTitle("");
-	QVector<bool> axesOn(4);
-	for (int j=0;j<4;j++)
-		axesOn[j] = false;
-	g->enableAxes(axesOn);
+	for (int i=0; i<4; i++)
+		g->enableAxis(i, false);
 	g->setIgnoreResizeEvents(true);
 	g->setTextMarkerDefaults(defaultTextMarkerFrame, defaultTextMarkerFont,
 			defaultTextMarkerColor, defaultTextMarkerBackground);

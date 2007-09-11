@@ -804,6 +804,8 @@ public:
 %MethodCode
   sipRes = sipCpp->current_folder;
 %End
+
+  Folder* appendProject(const QString& file_name, Folder* parentFolder = 0);
   void saveFolder(Folder *folder, const QString& fn, bool=false);
   Folder* projectFolder() /PyName=rootFolder/;
 

@@ -72,8 +72,7 @@ void Filter::init()
 
 void Filter::setInterval(double from, double to)
 {
-	if (!d_curve)
-	{
+	if (!d_curve){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
 				tr("Please assign a curve first!"));
 		return;
@@ -96,15 +95,12 @@ void Filter::setDataCurve(int curve, double start, double end)
     else
     	d_n = curveData(d_curve, start, end, &d_x, &d_y);
 
-	if (d_n == -1)
-	{
+	if (d_n == -1){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
 				tr("Several data points have the same x value causing divisions by zero, operation aborted!"));
 		d_init_err = true;
         return;
-	}
-    else if (d_n < d_min_points)
-	{
+	}else if (d_n < d_min_points){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
 				tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
 		d_init_err = true;
@@ -117,8 +113,7 @@ void Filter::setDataCurve(int curve, double start, double end)
 
 int Filter::curveIndex(const QString& curveTitle, Graph *g)
 {
-	if (curveTitle.isEmpty())
-	{
+	if (curveTitle.isEmpty()){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Filter Error"),
 				tr("Please enter a valid curve name!"));
 		d_init_err = true;
@@ -128,8 +123,7 @@ int Filter::curveIndex(const QString& curveTitle, Graph *g)
 	if (g)
 		d_graph = g;
 
-	if (!d_graph)
-	{
+	if (!d_graph){
 		d_init_err = true;
 		return -1;
 	}
@@ -140,8 +134,7 @@ int Filter::curveIndex(const QString& curveTitle, Graph *g)
 bool Filter::setDataFromCurve(const QString& curveTitle, Graph *g)
 {
 	int index = curveIndex(curveTitle, g);
-	if (index < 0)
-	{
+	if (index < 0){
 		d_init_err = true;
 		return false;
 	}
@@ -154,8 +147,7 @@ bool Filter::setDataFromCurve(const QString& curveTitle, Graph *g)
 bool Filter::setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g)
 {
 	int index = curveIndex(curveTitle, g);
-	if (index < 0)
-	{
+	if (index < 0){
 		d_init_err = true;
 		return false;
 	}
@@ -198,8 +190,7 @@ bool Filter::run()
 	if (d_init_err)
 		return false;
 
-	if (d_n < 0)
-	{
+	if (d_n < 0){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
 				tr("You didn't specify a valid data set for this operation!"));
 		return false;
@@ -230,38 +221,55 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
     if (!c)
         return 0;
 
-    int i_start = 0, i_end = c->dataSize();
-    for (int i = 0; i < i_end; i++)
-  	    if (c->x(i) >= start)
-        {
-  	      i_start = i;
-          break;
-        }
-    for (int i = i_end-1; i >= 0; i--)
-  	    if (c->x(i) <= end)
-        {
-  	      i_end = i;
-          break;
-        }
-    int n = i_end - i_start + 1;
+	int n = c->dataSize();
+    int i_start = 0, i_end = n;
+	
+	if (c->x(0) < c->x(n-1)){
+    	for (int i = 0; i < n; i++){
+  	   	 if (c->x(i) >= start){
+  	    	  i_start = i;
+          	break;
+        	}
+		}
+    	for (int i = n-1; i >= 0; i--){
+  	    	if (c->x(i) <= end){
+  	      		i_end = i;
+          		break;
+        	}
+		}
+	} else {
+    	for (int i = 0; i < n; i++){
+  	   	 if (c->x(i) <= end){
+  	    	  i_start = i;
+          	break;
+        	}
+		}
+    	for (int i = n-1; i >= 0; i--){
+  	    	if (c->x(i) >= start){
+  	      		i_end = i;
+          		break;
+        	}
+		}
+	}
+	
+    n = abs(i_end - i_start) + 1;
     (*x) = new double[n];
     (*y) = new double[n];
     double *xtemp = new double[n];
     double *ytemp = new double[n];
 
   	int j=0;
-    for (int i = i_start; i <= i_end; i++)
-    {
+    for (int i = i_start; i <= i_end; i++){
         xtemp[j] = c->x(i);
         ytemp[j++] = c->y(i);
     }
     size_t *p = new size_t[n];
     gsl_sort_index(p, xtemp, 1, n);
-    for (int i=0; i<n; i++)
-    {
+    for (int i=0; i<n; i++){
         (*x)[i] = xtemp[p[i]];
   	    (*y)[i] = ytemp[p[i]];
     }
+	
     delete[] xtemp;
     delete[] ytemp;
     delete[] p;
@@ -272,27 +280,44 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
 {
     if (!c)
         return 0;
-
-    int i_start = 0, i_end = c->dataSize();
-    for (int i = 0; i < i_end; i++)
-  	    if (c->x(i) >= start)
-        {
-  	      i_start = i;
-          break;
-        }
-    for (int i = i_end-1; i >= 0; i--)
-  	    if (c->x(i) <= end)
-        {
-  	      i_end = i;
-          break;
-        }
-    int n = i_end - i_start + 1;
+	
+    int n = c->dataSize();
+    int i_start = 0, i_end = n;
+	
+	if (c->x(0) < c->x(n-1)){
+    	for (int i = 0; i < n; i++){
+  	   	 if (c->x(i) >= start){
+  	    	  i_start = i;
+          	break;
+        	}
+		}
+    	for (int i = n-1; i >= 0; i--){
+  	    	if (c->x(i) <= end){
+  	      		i_end = i;
+          		break;
+        	}
+		}
+	} else {
+    	for (int i = 0; i < n; i++){
+  	   	 if (c->x(i) <= end){
+  	    	  i_start = i;
+          	break;
+        	}
+		}
+    	for (int i = n-1; i >= 0; i--){
+  	    	if (c->x(i) >= start){
+  	      		i_end = i;
+          		break;
+        	}
+		}
+	}
+	
+    n = abs(i_end - i_start) + 1;
     (*x) = new double[n];
     (*y) = new double[n];
 
     int j=0;
-    for (int i = i_start; i <= i_end; i++)
-    {
+    for (int i = i_start; i <= i_end; i++){
         (*x)[j] = c->x(i);
         (*y)[j++] = c->y(i);
     }

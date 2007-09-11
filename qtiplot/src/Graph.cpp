@@ -359,79 +359,11 @@ void Graph::enableAxis(int axis, bool on)
 	scalePicker->refresh();
 }
 
-void Graph::enableAxes(const QStringList& list)
+void Graph::setAxisMargin(int axis, int margin)
 {
-	int i;
-	for (i = 0;i<QwtPlot::axisCnt;i++)
-	{
-		bool ok=list[i+1].toInt();
-		d_plot->enableAxis(i,ok);
-	}
-
-	for (i = 0;i<QwtPlot::axisCnt;i++)
-	{
-		QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(i);
-		if (scale)
-			scale->setMargin(0);
-	}
-	scalePicker->refresh();
-}
-
-void Graph::enableAxes(QVector<bool> axesOn)
-{
-	for (int i = 0; i<QwtPlot::axisCnt; i++)
-		d_plot->enableAxis(i, axesOn[i]);
-
-	for (int i = 0;i<QwtPlot::axisCnt;i++)
-	{
-		QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(i);
-		if (scale)
-			scale->setMargin(0);
-	}
-	scalePicker->refresh();
-}
-
-QVector<bool> Graph::enabledAxes()
-{
-	QVector<bool> axesOn(4);
-	for (int i = 0; i<QwtPlot::axisCnt; i++)
-		axesOn[i]=d_plot->axisEnabled (i);
-	return axesOn;
-}
-
-QList<int> Graph::axesBaseline()
-{
-	QList<int> baselineDist;
-	for (int i = 0; i<QwtPlot::axisCnt; i++)
-	{
-		QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(i);
-		if (scale)
-			baselineDist << scale->margin();
-		else
-			baselineDist << 0;
-	}
-	return baselineDist;
-}
-
-void Graph::setAxesBaseline(const QList<int> &lst)
-{
-	for (int i = 0; i<QwtPlot::axisCnt; i++)
-	{
-		QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(i);
-		if (scale)
-			scale->setMargin(lst[i]);
-	}
-}
-
-void Graph::setAxesBaseline(QStringList &lst)
-{
-	lst.remove(lst.first());
-	for (int i = 0; i<QwtPlot::axisCnt; i++)
-	{
-		QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(i);
-		if (scale)
-			scale->setMargin((lst[i]).toInt());
-	}
+	QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(axis);
+	if (scale)
+		scale->setMargin(margin);
 }
 
 QList<int> Graph::axesType()
@@ -484,11 +416,6 @@ void Graph::setLabelsNumericFormat(const QStringList& l)
 		setLabelsNumericFormat (axis, l);
 }
 
-void Graph::setAxesType(const QList<int> tl)
-{
-	axisType = tl;
-}
-
 QString Graph::saveAxesLabelsType()
 {
 	QString s="AxisType\t";
@@ -522,22 +449,10 @@ QString Graph::saveTicksType()
 	return s+"\n";
 }
 
-QStringList Graph::enabledTickLabels()
-{
-	QStringList lst;
-	for (int axis=0; axis<QwtPlot::axisCnt; axis++)
-	{
-		const QwtScaleDraw *sd = d_plot->axisScaleDraw (axis);
-		lst << QString::number(sd->hasComponent(QwtAbstractScaleDraw::Labels));
-	}
-	return lst;
-}
-
 QString Graph::saveEnabledTickLabels()
 {
 	QString s="EnabledTickLabels\t";
-	for (int axis=0; axis<QwtPlot::axisCnt; axis++)
-	{
+	for (int axis=0; axis<QwtPlot::axisCnt; axis++){
 		const QwtScaleDraw *sd = d_plot->axisScaleDraw (axis);
 		s += QString::number(sd->hasComponent(QwtAbstractScaleDraw::Labels))+"\t";
 	}
@@ -575,19 +490,6 @@ QString Graph::saveLabelsRotation()
 	s+=QString::number(labelsRotation(QwtPlot::xBottom))+"\t";
 	s+=QString::number(labelsRotation(QwtPlot::xTop))+"\n";
 	return s;
-}
-
-void Graph::setEnabledTickLabels(const QStringList& labelsOn)
-{
-	for (int axis=0; axis<QwtPlot::axisCnt; axis++)
-	{
-		QwtScaleWidget *sc = d_plot->axisWidget(axis);
-		if (sc)
-		{
-			QwtScaleDraw *sd = d_plot->axisScaleDraw (axis);
-			sd->enableComponent (QwtAbstractScaleDraw::Labels, labelsOn[axis] == "1");
-		}
-	}
 }
 
 void Graph::enableAxisLabels(int axis, bool on)
@@ -2261,8 +2163,7 @@ QString Graph::saveCurveLayout(int index)
 	QString s = QString::null;
 	int style = c_type[index];
 	QwtPlotCurve *c = (QwtPlotCurve*)curve(index);
-	if (c)
-	{
+	if (c){
 		s+=QString::number(style)+"\t";
 		if (style == Spline)
 			s+="5\t";
@@ -2292,23 +2193,19 @@ QString Graph::saveCurveLayout(int index)
 			s+=QString::number(symbol.pen().width())+"\t";
 	}
 
-	if(style == VerticalBars||style == HorizontalBars||style == Histogram)
-	{
+	if(style == VerticalBars||style == HorizontalBars||style == Histogram){
 		QwtBarCurve *b = (QwtBarCurve*)c;
 		s+=QString::number(b->gap())+"\t";
 		s+=QString::number(b->offset())+"\t";
 	}
 
-	if(style == Histogram)
-	{
+	if(style == Histogram){
 		QwtHistogram *h = (QwtHistogram*)c;
 		s+=QString::number(h->autoBinning())+"\t";
 		s+=QString::number(h->binSize())+"\t";
 		s+=QString::number(h->begin())+"\t";
 		s+=QString::number(h->end())+"\t";
-	}
-	else if(style == VectXYXY || style == VectXYAM)
-	{
+	}else if(style == VectXYXY || style == VectXYAM){
 		VectorCurve *v = (VectorCurve*)c;
 		s+=v->color().name()+"\t";
 		s+=QString::number(v->width())+"\t";
@@ -2322,9 +2219,7 @@ QString Graph::saveCurveLayout(int index)
 		if (style == VectXYAM)
 			s+="\t"+QString::number(v->position());
 		s+="\t";
-	}
-	else if(style == Box)
-	{
+	}else if(style == Box){
 		BoxCurve *b = (BoxCurve*)c;
 		s+=QString::number(SymbolBox::symbolIndex(b->maxStyle()))+"\t";
 		s+=QString::number(SymbolBox::symbolIndex(b->p99Style()))+"\t";
@@ -2347,23 +2242,19 @@ QString Graph::saveCurves()
 	QString s;
 	if (isPiePlot())
 		s+=savePieCurveLayout();
-	else
-	{
-		for (int i=0; i<n_curves; i++)
-		{
+	else{
+		for (int i=0; i<n_curves; i++){
 			QwtPlotItem *it = plotItem(i);
 			if (!it)
   	        	continue;
 
-            if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-            {
+            if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
                 s += ((Spectrogram *)it)->saveToString();
                 continue;
             }
 
             DataCurve *c = (DataCurve *)it;
-			if (c->type() != ErrorBars)
-			{
+			if (c->type() != ErrorBars){
 				if (c->type() == Function)
 					s += ((FunctionCurve *)c)->saveToString();
 				else if (c->type() == Box)
@@ -2375,9 +2266,7 @@ QString Graph::saveCurves()
 				s += QString::number(c->xAxis())+"\t"+QString::number(c->yAxis())+"\t";
 				s += QString::number(c->startRow())+"\t"+QString::number(c->endRow())+"\t";
 				s += QString::number(c->isVisible())+"\n";
-			}
-		    else if (c->type() == ErrorBars)
-  	        {
+			}else if (c->type() == ErrorBars){
   	        	QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)it;
   	            s += "ErrorBars\t";
   	            s += QString::number(er->direction())+"\t";
@@ -2731,7 +2620,7 @@ int Graph::range(int index, double *start, double *end)
 {
 	if (d_range_selector && d_range_selector->selectedCurve() == curve(index)) {
 		*start = d_range_selector->minXValue();
-		*end = d_range_selector->maxXValue();
+		*end = d_range_selector->maxXValue();		
 		return d_range_selector->dataSize();
 	} else {
 		QwtPlotCurve *c = curve(index);
