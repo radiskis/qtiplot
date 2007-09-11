@@ -15,6 +15,7 @@
 	<keyword ref="./ch01.html#sec-qtiplot-intro">What QtiPlot does</keyword>
 	<section ref="./ch01s02.html" title="Command Line Options">
 		<keyword ref="ch01s02.html#specify-a-file">Specify a File</keyword>
+		<keyword ref="ch01s02.html#qtiplot-options">Command Line Options</keyword>
 	</section>
 	<section ref="ch01s03.html" title="General Concepts and Terms">
 		<keyword ref="ch01s03.html#sec-intro-table">Tables</keyword>
@@ -125,7 +126,102 @@
 		<keyword ref="ch07s02.html#d0e7488">Python Basics</keyword>
 		<keyword ref="ch07s02.html#Python-def">Defining Functions and Control Flow</keyword>
 		<keyword ref="ch07s02.html#Python-functions">Mathematical Functions</keyword>
-		<keyword ref="ch07s02.html#Python-API">Accessing QtiPlot's functions from Python</keyword>
+			<section ref="ch07s02.html#Python-API" title="Accessing QtiPlot's objects">
+			</section>
+			<section ref="ch07s02.html#Python-Folders" title="Project Folders">
+			</section>
+			<section ref="ch07s02.html#Python-Tables" title="Working with Tables">
+			</section>
+			<section ref="ch07s02.html#Python-Matrix" title="Working with Matrices">
+			</section>
+			<section ref="ch07s02.html#Python-Plots2D" title="2D Plots">
+				<section ref="ch07s02.html#Python-Curves" title="Working with Curves">
+					<keyword ref="ch07s02.html#Python-Curves">Curves 2D</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Title" title="The Title">
+					<keyword ref="ch07s02.html#Python-Title">Layer Title</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Axes" title="Customizing the axes">
+					<keyword ref="ch07s02.html#Python-Axes">Layer Axes</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Canvas" title="The Canvas">
+					<keyword ref="ch07s02.html#Python-Canvas">Canvas</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Frame" title="The Layer Frame">
+					<keyword ref="ch07s02.html#Python-Frame">Layer Frame</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Grid-2D" title="The Grid">
+					<keyword ref="ch07s02.html#Python-Grid-2D">Grid 2D</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Legends" title="Legends">
+					<keyword ref="ch07s02.html#Python-Legends">Legends</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Arrows" title="Arrows/Lines">
+					<keyword ref="ch07s02.html#Python-Arrows">Arrows</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Images" title="Adding Images">
+					<keyword ref="ch07s02.html#Python-Images">Images</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Antialiasing" title="Antialiasing">
+					<keyword ref="ch07s02.html#Python-Antialiasing">Antialiasing</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Resizing" title="Resize events">
+					<keyword ref="ch07s02.html#Python-Resizing">Resize Layer</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Exporting-2DPlots" title="Exporting 2D Plots">
+					<keyword ref="ch07s02.html#Python-Exporting-2DPlots">Export Layer</keyword>
+				</section>
+			</section>
+			<section ref="ch07s02.html#Python-MultiLayer" title="Arranging Layers">
+			</section>
+			<section ref="ch07s02.html#Python-Plots3D" title="3D Plots">
+				<section ref="ch07s02.html#Python-3D-View" title="The View">
+				</section>
+				<section ref="ch07s02.html#Python-3D-Style" title="The Plot Styles">
+				</section>
+				<section ref="ch07s02.html#Python-3D-Projection" title="The 2D Projection">
+				</section>
+				<section ref="ch07s02.html#Python-3D-Coordinates" title="The Coordinates System">
+				</section>
+				<section ref="ch07s02.html#Python-3D-Grid" title="The Grid">
+				</section>
+				<section ref="ch07s02.html#Python-3D-Colors" title="Customizing Colors">
+				</section>
+				<section ref="ch07s02.html#Python-3D-Export" title="Exporting">
+				</section>
+			</section>
+			<section ref="ch07s02.html#Python-DataAnalysis" title="Data Analysis">
+				<section ref="ch07s02.html#Python-Correlation" title="Correlation">
+					<keyword ref="./ch07s02.html#Python-Correlation">Correlation</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Correlation" title="Convolution">
+					<keyword ref="./ch07s02.html#Python-Correlation">Convolution</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Correlation" title="Deconvolution">
+					<keyword ref="./ch07s02.html#Python-Correlation">Deconvolution</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Differentiation" title="Differentiation">
+					<keyword ref="./ch07s02.html#Python-Differentiation">Differentiation</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-FFT" title="FFT">
+					<keyword ref="./ch07s02.html#Python-FFT">FFT</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-FFT Filters" title="FFT Filters">
+					<keyword ref="./ch07s02.html#Python-Filtering">FFT Filters</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Fitting" title="Fitting">
+					<keyword ref="./ch07s02.html#Python-Fitting">Fitting</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Integration" title="Integration">
+					<keyword ref="./ch07s02.html#Python-Integration">Integration</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Interpolation" title="Interpolation">
+					<keyword ref="./ch07s02.html#Python-Interpolation">Interpolation</keyword>
+				</section>
+				<section ref="ch07s02.html#Python-Smooth" title="Data Smoothing">
+					<keyword ref="./ch07s02.html#Python-Smooth">Data Smoothing</keyword>
+				</section>
+			</section>
 	</section>
 </section>
 <section ref="./apa.html" title="Installation">

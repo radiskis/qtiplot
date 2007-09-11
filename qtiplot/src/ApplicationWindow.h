@@ -714,9 +714,6 @@ public slots:
 	void disregardCol();
 
 	void updateConfirmOptions(bool askTables, bool askMatrixes, bool askPlots2D, bool askPlots3D, bool askNotes);
-	void showAxis(int axis, int type, const QString& labelsColName, bool axisOn,
-				int majTicksType, int minTicksType, bool labelsOn, const QColor& c,
-				int format, int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor);
 
 	//! \name Plot3D Tools
 	//@{
@@ -878,8 +875,8 @@ public slots:
 
 	//! Pops up a file dialog and invokes appendProject(const QString&) on the result.
 	void appendProject();
-	//! Open the specified project file and add it as a subfolder to the current folder.
-	void appendProject(const QString& file_name);
+	//! Open the specified project file and add it as a subfolder to the parentFolder or to the current folder if no parent folder is specified.
+	Folder* appendProject(const QString& file_name, Folder* parentFolder = 0);
 	void saveAsProject();
 	void saveFolderAsProject(Folder *f);
 	void saveFolder(Folder *folder, const QString& fn, bool compress = false);
@@ -937,6 +934,7 @@ signals:
 
 // TODO: a lot of this stuff should be private
 public:
+	bool d_inform_rename_table;
 	QString d_export_col_separator;
 	bool d_export_col_names, d_export_table_selection, d_export_col_comment;
 

@@ -32,7 +32,6 @@
 #include <QDialog>
 #include <QLabel>
 #include <QList>
-#include <QVector>
 #include <QTextEdit>
 
 class QListWidget;
@@ -70,6 +69,64 @@ public:
     AxesDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 	void setGraph(Graph *g);
+
+public slots:
+	void setCurrentScale(int axisPos);
+	void showGeneralPage();
+	void showAxesPage();
+	void showGridPage();
+	void showFormulaBox();
+
+	//! Shows the dialog as a modal dialog
+	/**
+	 * Show the dialog as a modal dialog and do
+	 * some initialization.
+	 */
+	int exec();
+
+private slots:
+	void showAxisFormula(int axis);
+	void customAxisLabelFont();
+	void setAxisType(int axis);
+	void updateAxisType(int axis);
+	void updateTitleBox(int axis);
+	bool updatePlot();
+	void updateScale();
+	void stepEnabled();
+	void stepDisabled();
+	void majorGridEnabled(bool on);
+	void minorGridEnabled(bool on);
+    void showGridOptions(int axis);
+	void accept();
+	void customAxisFont();
+	void showAxis();
+	void updateShowBox(int axis);
+	void drawFrame(bool framed);
+	void pickAxisColor();
+	void pickAxisNumColor();
+	void updateAxisColor(int);
+	int mapToQwtAxis(int axis);
+	int mapToQwtAxisId();
+	void updateTickLabelsList(bool);
+	void updateMinorTicksList(int scaleType);
+	void setTicksType(int);
+	void updateMajTicksType(int);
+	void updateMinTicksType(int);
+	void updateGrid();
+	void updateFrame(int);
+	void setLabelsNumericFormat(int);
+	void updateLabelsFormat(int);
+	void showAxisFormatOptions(int format);
+	void setBaselineDist(int);
+	void changeBaselineDist(int baseline);
+	void changeMinorTicksLength (int minLength);
+	void changeMajorTicksLength (int majLength);
+	void pickCanvasFrameColor();
+	void changeAxesLinewidth (int);
+	void drawAxesBackbones (bool);
+	void pageChanged ( QWidget *page);
+	void showAxis(int, int, const QString&, bool, int, int, bool,
+				  const QColor&, int, int, int, int, const QString&, const QColor&);
 
 protected:
 	//! generate UI for the axes page
@@ -128,83 +185,6 @@ protected:
 	QPushButton * buttonLabelFont;
 	TextFormatButtons *formatButtons;
 
-public slots:
-	void setAxesType(const QList<int>& list);
-	void setAxisType(int axis);
-	void updateAxisType(int axis);
-	void setAxisTitles(QStringList t);
-	void updateTitleBox(int axis);
-	bool updatePlot();
-	void updateScale();
-	void stepEnabled();
-	void stepDisabled();
-	void majorGridEnabled(bool on);
-	void minorGridEnabled(bool on);
-    void showGridOptions(int axis);
-	void accept();
-	void customAxisFont();
-	void showAxis();
-	void updateShowBox(int axis);
-	void setEnabledAxes(QVector<bool> ok);
-	void drawFrame(bool framed);
-
-	void pickAxisColor();
-	void pickAxisNumColor();
-	void updateAxisColor(int);
-	int mapToQwtAxis(int axis);
-	int mapToQwtAxisId();
-	void setEnabledTickLabels(const QStringList& labelsOn);
-	void updateTickLabelsList(bool);
-	void updateMinorTicksList(int scaleType);
-	void setTicksType(const QList<int>& majLst, const QList<int>& minLst);
-	void setTicksType(int);
-	void setCurrentScale(int axisPos);
-	void initAxisFonts(const QFont& xB, const QFont& yL, const QFont& xT, const QFont& yR );
-
-	void updateMajTicksType(int);
-	void updateMinTicksType(int);
-	void updateGrid();
-	void updateFrame(int);
-	void setLabelsNumericFormat(int);
-	void updateLabelsFormat(int);
-	void initLabelsRotation(int xAngle, int yAngle);
-	void insertColList(const QStringList& cols);
-	void insertTablesList(const QStringList& l);
-	void setAxesLabelsFormatInfo(const QStringList& lst);
-	void showAxisFormatOptions(int format);
-	void setBaselineDist(int);
-	void changeBaselineDist(int baseline);
-	void setAxesBaseline(const QList<int>& lst);
-	void changeMinorTicksLength (int minLength);
-	void changeMajorTicksLength (int majLength);
-	void pickCanvasFrameColor();
-	void changeAxesLinewidth (int);
-	void drawAxesBackbones (bool);
-	void showGeneralPage();
-	void showAxesPage();
-	void showGridPage();
-	void showFormulaBox();
-	void showAxisFormula(int axis);
-
-	void customAxisLabelFont();
-
-	//! Shows the dialog as a modal dialog
-	/**
-	 * Show the dialog as a modal dialog and do
-	 * some initialization.
-	 */
-	int exec();
-
-private slots:
-	void pageChanged ( QWidget *page);
-
-signals:
-	void updateAxisTitle(int,const QString&);
-	void changeAxisFont(int, const QFont &);
-	void showAxis(int, int, const QString&, bool, int, int, bool,
-				  const QColor&, int, int, int, int, const QString&, const QColor&);
-
-protected:
 	QStringList titles, tickLabelsOn, formatInfo;
 	QStringList	tablesList;
 	QList<int> majTicks, minTicks, axesType, axesBaseline;

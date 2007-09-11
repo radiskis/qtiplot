@@ -242,7 +242,7 @@ appImports = (
 	"plot", "plot3D",
 	"activeFolder", "rootFolder",
 	"addFolder", "deleteFolder", "changeFolder",
-	"saveFolder", "saveProjectAs"
+	"saveFolder", "appendProject", "saveProjectAs"
 	)
 for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))

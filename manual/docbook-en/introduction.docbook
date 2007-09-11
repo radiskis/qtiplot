@@ -57,7 +57,7 @@ revision history. (see installation appendix comment) -->
 </sect2>
 
 <sect2 id="qtiplot-options">
-	<sect2info><indexterm><primary>Command line parameters</primary><secondary>Options</secondary></indexterm></sect2info>
+	<sect2info><indexterm><primary>Command line options</primary><secondary>Options</secondary></indexterm></sect2info>
 <title>Command Line Options</title>
 
 <para>Valid options are:</para>
@@ -308,4 +308,3 @@ The table is the main part of QtiPlot when working with data. For controlling an
 </sect1>
 
 </chapter>
-

@@ -66,7 +66,7 @@ Fit::Fit( ApplicationWindow *parent, Graph *g, const char * name)
 	d_init_err = false;
 	chi_2 = -1;
 	d_scale_errors = false;
-	d_sort_data = true;
+	d_sort_data = false;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)
@@ -113,8 +113,7 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	status = gsl_multimin_fminimizer_set (s_min, &f, d_param_init, ss);
 	double size;
 	size_t iter = 0;
-	do
-	{
+	do{
 		iter++;
 		status = gsl_multimin_fminimizer_iterate (s_min);
 
@@ -142,11 +141,9 @@ void Fit::setDataCurve(int curve, double start, double end)
     if (d_graph && d_curve && ((PlotCurve *)d_curve)->type() != Graph::Function)
     {
         QList<DataCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
-        foreach (DataCurve *c, lst)
-        {
+        foreach (DataCurve *c, lst){
             QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
-            if (!er->xErrors())
-            {
+            if (!er->xErrors()){
                 d_weihting = Instrumental;
                 for (int i=0; i<d_n; i++)
                     d_w[i] = er->errorValue(i); //d_w are equal to the error bar values

@@ -194,8 +194,7 @@ void MultiPeakFit::storeCustomFitResults(double *par)
 	for (int i=0; i<d_p; i++)
 		d_results[i] = par[i];
 
-	if (d_profile == Lorentz)
-	{
+	if (d_profile == Lorentz){
 		for (int j=0; j<d_peaks; j++)
 			d_results[3*j] = M_PI_2*d_results[3*j];
 	}
@@ -508,21 +507,16 @@ void GaussAmpFit::init()
 void GaussAmpFit::calculateFitCurveData(double *par, double *X, double *Y)
 {
 	double w2 = par[3]*par[3];
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++)
-		{
+		for (int i=0; i<d_points; i++){
 			X[i] = X0+i*step;
 			double diff = X[i]-par[2];
 			Y[i] = par[1]*exp(-0.5*diff*diff/w2)+par[0];
 		}
-	}
-	else
-	{
-		for (int i=0; i<d_points; i++)
-		{
+	}else{
+		for (int i=0; i<d_points; i++){
 			X[i] = d_x[i];
 			double diff = X[i]-par[2];
 			Y[i] = par[1]*exp(-0.5*diff*diff/w2)+par[0];
