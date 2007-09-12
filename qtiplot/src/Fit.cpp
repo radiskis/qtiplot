@@ -66,7 +66,7 @@ Fit::Fit( ApplicationWindow *parent, Graph *g, const char * name)
 	d_init_err = false;
 	chi_2 = -1;
 	d_scale_errors = false;
-	d_sort_data = false;
+	d_sort_data = true;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)
@@ -407,26 +407,22 @@ void Fit::fit()
 	if (!d_graph || d_init_err)
 		return;
 
-	if (!d_n)
-	{
+	if (!d_n){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("You didn't specify a valid data set for this fit operation. Operation aborted!"));
 		return;
 	}
-	if (!d_p)
-	{
+	if (!d_p){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("There are no parameters specified for this fit operation. Operation aborted!"));
 		return;
 	}
-	if (d_p > d_n)
-  	{
+	if (d_p > d_n){
   		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
   	    tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p));
   	    return;
   	}
-	if (d_formula.isEmpty())
-	{
+	if (d_formula.isEmpty()){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("You must specify a valid fit function first. Operation aborted!"));
 		return;
@@ -442,8 +438,7 @@ void Fit::fit()
 
 	int status, iterations = d_max_iterations;
 	double *par = new double[d_p];
-	if(d_solver == NelderMeadSimplex)
-	{
+	if(d_solver == NelderMeadSimplex){
 		gsl_multimin_function f;
 		f.f = d_fsimplex;
 		f.n = d_p;
@@ -462,9 +457,7 @@ void Fit::fit()
 		// free previousely allocated memory
 		gsl_matrix_free (J);
 		gsl_multimin_fminimizer_free (s_min);
-	}
-	else
-	{
+	} else {
 		gsl_multifit_function_fdf f;
 		f.f = d_f;
 		f.df = d_df;

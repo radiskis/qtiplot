@@ -6817,8 +6817,7 @@ void ApplicationWindow::showScreenReader()
 		return;
 
 	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
@@ -6839,8 +6838,7 @@ void ApplicationWindow::showRangeSelectors()
 		return;
 
 	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 				tr("There are no plot layers available in this window!"));
 		btnPointer->setChecked(true);
@@ -6851,15 +6849,12 @@ void ApplicationWindow::showRangeSelectors()
 	if (!g)
 		return;
 
-	if (!g->curves())
-	{
+	if (!g->curves()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 				tr("There are no curves available on this plot!"));
 		btnPointer->setChecked(true);
 		return;
-	}
-	else if (g->isPiePlot())
-	{
+	} else if (g->isPiePlot()) {
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 				tr("This functionality is not available for pie plots!"));
 		btnPointer->setChecked(true);
@@ -6876,8 +6871,7 @@ void ApplicationWindow::showCursor()
 		return;
 
 	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
@@ -6885,8 +6879,7 @@ void ApplicationWindow::showCursor()
 		return;
 	}
 
-	if ((Graph*)plot->activeGraph()->isPiePlot())
-	{
+	if ((Graph*)plot->activeGraph()->isPiePlot()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("This functionality is not available for pie plots!"));
 
@@ -10002,7 +9995,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			curveID++;
 		}
 		else if (s.contains ("ErrorBars")){
-			QStringList curve = s.split("\t", QString::SkipEmptyParts);	
+			QStringList curve = s.split("\t", QString::SkipEmptyParts);
 			if (!app->renamedTables.isEmpty()){
 				QString caption = (curve[4]).left((curve[4]).find("_",0));
 				if (app->renamedTables.contains(caption))
@@ -12053,8 +12046,7 @@ void ApplicationWindow::fitMultiPeak(int profile)
 		return;
 
 	MultiLayer *plot = (MultiLayer*)w;
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
@@ -12066,19 +12058,15 @@ void ApplicationWindow::fitMultiPeak(int profile)
 	if (!g || !g->validCurvesDataSize())
 		return;
 
-	if (g->isPiePlot())
-	{
+	if (g->isPiePlot()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("This functionality is not available for pie plots!"));
 		return;
-	}
-	else
-	{
+	} else {
 		bool ok;
 		int peaks = QInputDialog::getInteger(tr("QtiPlot - Enter the number of peaks"),
 				tr("Peaks"), 2, 2, 1000000, 1, &ok, this);
-		if (ok && peaks)
-		{
+		if (ok && peaks){
 			g->setActiveTool(new MultiPeakFitTool(g, this, (MultiPeakFit::PeakProfile)profile, peaks, info, SLOT(setText(const QString&))));
 			displayBar->show();
 		}
@@ -12428,7 +12416,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	Folder *cf = current_folder;
 	if (parentFolder)
 		changeFolder(parentFolder, true);
-	
+
 	FolderListItem *item = (FolderListItem *)current_folder->folderListItem();
 	folders->blockSignals (true);
 	blockSignals (true);
@@ -12447,7 +12435,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 		new_folder = new Folder(parentFolder, baseName);
 	else
 		new_folder = new Folder(current_folder, baseName);
-	
+
 	current_folder = new_folder;
 	FolderListItem *fli = new FolderListItem(item, current_folder);
 	current_folder->setFolderListItem(fli);

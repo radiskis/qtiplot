@@ -2620,7 +2620,7 @@ int Graph::range(int index, double *start, double *end)
 {
 	if (d_range_selector && d_range_selector->selectedCurve() == curve(index)) {
 		*start = d_range_selector->minXValue();
-		*end = d_range_selector->maxXValue();		
+		*end = d_range_selector->maxXValue();
 		return d_range_selector->dataSize();
 	} else {
 		QwtPlotCurve *c = curve(index);
@@ -4577,13 +4577,32 @@ void Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
 	c->setWhiskersRange(l[25].toInt(), l[26].toDouble());
 }
 
+void Graph::setActiveTool(PlotToolInterface *tool)
+{
+    if (tool && tool->rtti() == PlotToolInterface::Rtti_MultiPeakFitTool){
+        if (d_range_selector)
+            d_range_selector->setEnabled(false);
+        return;
+    }
+
+    if(d_active_tool)
+        delete d_active_tool;
+
+    d_active_tool=tool;
+}
+
 void Graph::disableTools()
 {
 	if (zoomOn())
 		zoom(false);
 	if (drawLineActive())
 		drawLine(false);
-	setActiveTool(NULL);
+
+    if(d_active_tool)
+        delete d_active_tool;
+
+    d_active_tool = NULL;
+
 	if (d_range_selector)
 		delete d_range_selector;
 }

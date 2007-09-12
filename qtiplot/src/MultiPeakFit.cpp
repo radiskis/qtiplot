@@ -41,15 +41,12 @@
 {
 	setName(tr("MultiPeak"));
 
-	if (profile == Gauss)
-	{
+	if (profile == Gauss){
 		d_f = gauss_multi_peak_f;
 		d_df = gauss_multi_peak_df;
 		d_fdf = gauss_multi_peak_fdf;
 		d_fsimplex = gauss_multi_peak_d;
-	}
-	else
-	{
+	} else {
 		d_f = lorentz_multi_peak_f;
 		d_df = lorentz_multi_peak_df;
 		d_fdf = lorentz_multi_peak_fdf;
@@ -99,8 +96,7 @@ QStringList MultiPeakFit::generateParameterList(int peaks)
 		return QStringList() << "A" << "xc" << "w" << "y0";
 
 	QStringList lst;
-	for (int i = 0; i<peaks; i++)
-	{
+	for (int i = 0; i<peaks; i++){
 		QString index = QString::number(i+1);
 		lst << "A" + index;
 		lst << "xc" + index;
@@ -116,8 +112,7 @@ QStringList MultiPeakFit::generateExplanationList(int peaks)
 		return QStringList() << "(amplitude)" << "(center)" << "(width)" << "(offset)";
 
 	QStringList lst;
-	for (int i = 0; i<peaks; i++)
-	{
+	for (int i = 0; i<peaks; i++){
 		QString index = QString::number(i+1);
 		lst << "(amplitude " + index + ")";
 		lst << "(center " + index + ")";
@@ -142,8 +137,7 @@ QString MultiPeakFit::generateFormula(int peaks, PeakProfile profile)
 		}
 
 	QString formula = "y0+";
-	for (int i = 0; i<peaks; i++)
-	{
+	for (int i = 0; i<peaks; i++){
 		formula += peakFormula(i+1, profile);
 		if (i < peaks - 1)
 			formula += "+";
@@ -204,8 +198,7 @@ void MultiPeakFit::insertPeakFunctionCurve(double *x, double *y, int peak)
 {
 	QStringList curves = d_graph->curvesList();
 	int index = 0;
-	for (int i = 0; i<(int)curves.count(); i++ )
-	{
+	for (int i = 0; i<(int)curves.count(); i++ ){
 		if (curves[i].startsWith(tr("Peak")))
 			index++;
 	}
@@ -219,8 +212,7 @@ void MultiPeakFit::insertPeakFunctionCurve(double *x, double *y, int peak)
 	QString formula = "y0+"+peakFormula(peak + 1, d_profile);
 	QString parameter = QString::number(d_results[d_p-1], 'g', d_prec);
 	formula.replace(d_param_names[d_p-1], parameter);
-	for (int j=0; j<3; j++)
-	{
+	for (int j=0; j<3; j++){
 		int p = 3*peak + j;
 		parameter = QString::number(d_results[p], 'g', d_prec);
 		formula.replace(d_param_names[p], parameter);
@@ -237,8 +229,7 @@ void MultiPeakFit::generateFitCurve(double *par)
 		d_points = d_n;
 
 	gsl_matrix * m = gsl_matrix_alloc (d_points, d_peaks);
-	if (!m)
-	{
+	if (!m){
 		QMessageBox::warning(app, tr("QtiPlot - Fit Error"), tr("Could not allocate enough memory for the fit curves!"));
 		return;
 	}
@@ -250,15 +241,12 @@ void MultiPeakFit::generateFitCurve(double *par)
 	if (d_peaks == 1)
 		peaks_aux--;
 
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		double step = (d_x[d_n-1] - d_x[0])/(d_points-1);
-		for (i = 0; i<d_points; i++)
-		{
+		for (i = 0; i<d_points; i++){
 			X[i] = d_x[0] + i*step;
 			double yi=0;
-			for (j=0; j<d_peaks; j++)
-			{
+			for (j=0; j<d_peaks; j++){
 				double diff = X[i] - par[3*j + 1];
 				double w = par[3*j + 2];
 				double y_aux = 0;
@@ -279,8 +267,7 @@ void MultiPeakFit::generateFitCurve(double *par)
 		else
 			insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y);
 
-		if (generate_peak_curves)
-		{
+		if (generate_peak_curves){
 			for (i=0; i<peaks_aux; i++)
 			{//add the peak curves
 				for (j=0; j<d_points; j++)
@@ -289,9 +276,7 @@ void MultiPeakFit::generateFitCurve(double *par)
 				insertPeakFunctionCurve(X, Y, i);
 			}
 		}
-	}
-	else
-	{
+	} else {
 		QString tableName = app->generateUniqueName(tr("Fit"));
 		QString label = d_explanation + " " + tr("fit of") + " " + d_curve->title().text();
 
@@ -303,14 +288,12 @@ void MultiPeakFit::generateFitCurve(double *par)
 		t->setHeader(header);
 
         QLocale locale = app->locale();
-		for (i = 0; i<d_points; i++)
-		{
+		for (i = 0; i<d_points; i++){
 			X[i] = d_x[i];
 			t->setText(i, 0, locale.toString(X[i], 'g', d_prec));
 
 			double yi=0;
-			for (j=0; j<d_peaks; j++)
-			{
+			for (j=0; j<d_peaks; j++){
 				double diff = X[i] - par[3*j + 1];
 				double w = par[3*j + 2];
 				double y_aux = 0;
@@ -339,8 +322,7 @@ void MultiPeakFit::generateFitCurve(double *par)
 		d_graph->insertPlotItem(c, Graph::Line);
 		d_graph->addFitCurve(c);
 
-		if (generate_peak_curves)
-		{
+		if (generate_peak_curves){
 			for (i=0; i<peaks_aux; i++)
 			{//add the peak curves
 				for (j=0; j<d_points; j++)
@@ -375,8 +357,7 @@ QString MultiPeakFit::logFitInfo(double *par, int iterations, int status, const 
 	info += tr("Peak") + "\t" + tr("Area") + "\t";
 	info += tr("Center") + "\t" + tr("Width") + "\t" + tr("Height") + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
-	for (int j=0; j<d_peaks; j++)
-	{
+	for (int j=0; j<d_peaks; j++){
 		info += QString::number(j+1)+"\t";
 		info += locale.toString(par[3*j],'g', d_prec)+"\t";
 		info += locale.toString(par[3*j+1],'g', d_prec)+"\t";

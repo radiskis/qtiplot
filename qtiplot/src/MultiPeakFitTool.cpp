@@ -29,11 +29,15 @@
  *                                                                         *
  ***************************************************************************/
 #include "MultiPeakFitTool.h"
+#include "RangeSelectorTool.h"
 #include "ApplicationWindow.h"
 #include "DataPickerTool.h"
 #include "Plot.h"
+#include "cursors.h"
+
 #include <qwt_plot_curve.h>
 #include <QApplication>
+#include <QMessageBox>
 
 MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPeakFit::PeakProfile profile, int num_peaks, const QObject *status_target, const char *status_slot)
 	: PlotToolInterface(graph),
@@ -51,8 +55,11 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	d_picker_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
+    d_graph->plotWidget()->canvas()->setCursor(QCursor(QPixmap(cursor_xpm), -1, -1));
+
 	connect(d_picker_tool, SIGNAL(selected(QwtPlotCurve*,int)), this, SLOT(selectPeak(QwtPlotCurve*,int)));
 	d_graph->plotWidget()->canvas()->grabMouse();
+
 	emit statusText(tr("Move cursor and click to select a point and double-click/press 'Enter' to set the position of a peak!"));
 }
 
@@ -62,7 +69,6 @@ MultiPeakFitTool::~MultiPeakFitTool()
 		delete d_picker_tool;
 	if (d_fit)
 		delete d_fit;
-	d_graph->plotWidget()->canvas()->unsetCursor();
 }
 
 void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
@@ -96,8 +102,7 @@ void MultiPeakFitTool::finalize()
 	delete d_picker_tool; d_picker_tool = NULL;
 	d_graph->plotWidget()->canvas()->releaseMouse();
 
-	if (d_fit->setDataFromCurve(d_curve->title().text()))
-	{
+	if (d_fit->setDataFromCurve(d_curve->title().text())){
 		QApplication::setOverrideCursor(Qt::WaitCursor);
 		d_fit->fit();
 		delete d_fit; d_fit = NULL;
@@ -111,8 +116,10 @@ void MultiPeakFitTool::finalize()
 		d_graph->plotWidget()->removeMarker(mrks[n-i-1]);
 
 	d_graph->plotWidget()->replot();
-
-	d_graph->setActiveTool(NULL);
-	// attention: I'm now deleted. Maybe there is a cleaner solution...
+    if (d_graph->activeTool() && d_graph->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
+        ((RangeSelectorTool *)d_graph->activeTool())->setEnabled();
+    } else
+        d_graph->plotWidget()->canvas()->unsetCursor();
+    delete this;
 }
 
