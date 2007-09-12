@@ -66,7 +66,7 @@ Fit::Fit( ApplicationWindow *parent, Graph *g, const char * name)
 	d_init_err = false;
 	chi_2 = -1;
 	d_scale_errors = false;
-	d_sort_data = true;
+	d_sort_data = false;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)

@@ -84,6 +84,9 @@ class Filter : public QObject
 		//! Returns the size of the fitted data set
 		int dataSize(){return d_n;};
 
+		double* x(){return d_x;};
+		double* y(){return d_y;};
+		
         bool error(){return d_init_err;};
 
 	protected:

@@ -70,6 +70,7 @@ class Fit : public Filter
 		QString formula(){return d_formula;};
 		int numParameters() {return d_p;}
 
+		double initialGuess(int parIndex){return gsl_vector_get(d_param_init, parIndex);};
 		void setInitialGuess(int parIndex, double val){gsl_vector_set(d_param_init, parIndex, val);};
 		void setInitialGuesses(double *x_init);
 

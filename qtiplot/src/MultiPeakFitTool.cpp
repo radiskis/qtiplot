@@ -37,7 +37,8 @@
 
 #include <qwt_plot_curve.h>
 #include <QApplication>
-#include <QMessageBox>
+
+#include <gsl/gsl_statistics.h>
 
 MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPeakFit::PeakProfile profile, int num_peaks, const QObject *status_target, const char *status_slot)
 	: PlotToolInterface(graph),
@@ -80,7 +81,7 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 
 	d_fit->setInitialGuess(3*d_selected_peaks, curve->y(point_index));
 	d_fit->setInitialGuess(3*d_selected_peaks+1, curve->x(point_index));
-
+	
 	QwtPlotMarker *m = new QwtPlotMarker();
 	m->setLineStyle(QwtPlotMarker::VLine);
 	m->setLinePen(QPen(Qt::green, 2, Qt::DashLine));
@@ -104,6 +105,30 @@ void MultiPeakFitTool::finalize()
 
 	if (d_fit->setDataFromCurve(d_curve->title().text())){
 		QApplication::setOverrideCursor(Qt::WaitCursor);
+		
+		double *x = d_fit->x();
+		double *y = d_fit->y();
+		int n = d_fit->dataSize();
+		
+		size_t imin, imax;
+		gsl_stats_minmax_index(&imin, &imax, y, 1, n);
+		double min_out = y[imin];
+		double max_out = y[imax];
+		
+		double temp[n];
+		for (int i = 0; i < n; i++)
+			temp[i] = fabs(y[i]);	
+		size_t imax_temp = gsl_stats_max_index(temp, 1, n);
+	
+		double w = 2*gsl_stats_sd(y, 1, n)/(double)d_selected_peaks;
+		for (int i = 0; i < d_selected_peaks; i++)
+			d_fit->setInitialGuess(3*i+2, w);
+		
+		if (imax_temp == imax)
+			d_fit->setInitialGuess(3*d_selected_peaks, min_out);
+		else 
+			d_fit->setInitialGuess(3*d_selected_peaks, max_out);	
+	
 		d_fit->fit();
 		delete d_fit; d_fit = NULL;
 		QApplication::restoreOverrideCursor();
@@ -122,4 +147,3 @@ void MultiPeakFitTool::finalize()
         d_graph->plotWidget()->canvas()->unsetCursor();
     delete this;
 }
-

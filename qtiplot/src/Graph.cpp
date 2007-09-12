@@ -2595,8 +2595,7 @@ QwtPlotItem* Graph::plotItem(int index)
 
 int Graph::plotItemIndex(QwtPlotItem *it) const
 {
-	for (int i = 0; i < n_curves; i++)
-	{
+	for (int i = 0; i < n_curves; i++){
 		if (d_plot->plotItem(c_keys[i]) == it)
 			return i;
 	}
