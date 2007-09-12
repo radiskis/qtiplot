@@ -74,6 +74,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 	public slots:
 		virtual void pointSelected(const QPoint &point);
         void setCurveRange();
+        void setEnabled(bool on = true);
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
@@ -93,6 +94,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		QwtPlotMarker d_active_marker, d_inactive_marker;
 		int d_active_point, d_inactive_point;
 		QwtPlotCurve *d_selected_curve;
+		bool d_enabled;
 };
 
 #endif // ifndef RANGE_SELECTOR_TOOL_H

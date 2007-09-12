@@ -59,15 +59,11 @@ RangeSelectorTool::RangeSelectorTool(Graph *graph, const QObject *status_target,
 		return;
 	}
 
+    d_enabled = true;
 	d_active_point = 0;
 	d_inactive_point = d_selected_curve->dataSize() - 1;
 	int marker_size = 20;
-	/* If we want this, it should also be added setSelectedCurve and pointSelected
-	if (d_selected_curve->symbol().style() != QwtSymbol::NoSymbol) {
-		QSize ssize = d_selected_curve->symbol().size();
-		marker_size += qMax(ssize.width(), ssize.height());
-	}
-	*/
+
 	d_active_marker.setSymbol(QwtSymbol(QwtSymbol::Cross, QBrush(QColor(255,255,255,0)),//QBrush(QColor(255,255,0,128)),
 				QPen(Qt::red,2), QSize(marker_size,marker_size)));
 	d_active_marker.setLineStyle(QwtPlotMarker::VLine);
@@ -130,7 +126,7 @@ void RangeSelectorTool::pointSelected(const QPoint &pos)
 
 void RangeSelectorTool::setSelectedCurve(QwtPlotCurve *curve)
 {
-	if (!curve || d_selected_curve == curve)
+	if (!curve || d_selected_curve == curve || !d_enabled)
 		return;
 	d_selected_curve = curve;
 	d_active_point = 0;
@@ -143,7 +139,7 @@ void RangeSelectorTool::setSelectedCurve(QwtPlotCurve *curve)
 
 void RangeSelectorTool::setActivePoint(int point)
 {
-	if (point == d_active_point)
+	if (!d_enabled || point == d_active_point)
 		return;
 	d_active_point = point;
 	d_active_marker.setValue(d_selected_curve->x(d_active_point), d_selected_curve->y(d_active_point));
@@ -380,4 +376,11 @@ void RangeSelectorTool::setCurveRange()
         d_graph->updatePlot();
         d_graph->notifyChanges();
     }
+}
+
+void RangeSelectorTool::setEnabled(bool on)
+{
+    d_enabled = on;
+    if (on)
+        d_graph->plotWidget()->canvas()->setCursor(QCursor(QPixmap(vizor_xpm), -1, -1));
 }

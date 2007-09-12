@@ -223,7 +223,7 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
 
 	int n = c->dataSize();
     int i_start = 0, i_end = n;
-	
+
 	if (c->x(0) < c->x(n-1)){
     	for (int i = 0; i < n; i++){
   	   	 if (c->x(i) >= start){
@@ -251,13 +251,15 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
         	}
 		}
 	}
-	
+
     n = abs(i_end - i_start) + 1;
     (*x) = new double[n];
     (*y) = new double[n];
     double *xtemp = new double[n];
     double *ytemp = new double[n];
 
+    /*i_start = QMIN(i_start, i_end);
+    i_end = i_start + n - 1;*/
   	int j=0;
     for (int i = i_start; i <= i_end; i++){
         xtemp[j] = c->x(i);
@@ -269,7 +271,7 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
         (*x)[i] = xtemp[p[i]];
   	    (*y)[i] = ytemp[p[i]];
     }
-	
+
     delete[] xtemp;
     delete[] ytemp;
     delete[] p;
@@ -280,10 +282,10 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
 {
     if (!c)
         return 0;
-	
+
     int n = c->dataSize();
     int i_start = 0, i_end = n;
-	
+
 	if (c->x(0) < c->x(n-1)){
     	for (int i = 0; i < n; i++){
   	   	 if (c->x(i) >= start){
@@ -311,11 +313,13 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
         	}
 		}
 	}
-	
+
     n = abs(i_end - i_start) + 1;
     (*x) = new double[n];
     (*y) = new double[n];
 
+    /*i_start = QMIN(i_start, i_end);
+    i_end = i_start + n - 1;*/
     int j=0;
     for (int i = i_start; i <= i_end; i++){
         (*x)[j] = c->x(i);
