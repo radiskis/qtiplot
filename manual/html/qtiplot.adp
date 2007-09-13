@@ -191,6 +191,9 @@
 				</section>
 			</section>
 			<section ref="ch07s02.html#Python-DataAnalysis" title="Data Analysis">
+				<section ref="ch07s02.html#Python-GeneralFunctions" title="General Functions">
+					<keyword ref="./ch07s02.html#Python-Correlation">General Functions</keyword>
+				</section>
 				<section ref="ch07s02.html#Python-Correlation" title="Correlation">
 					<keyword ref="./ch07s02.html#Python-Correlation">Correlation</keyword>
 				</section>

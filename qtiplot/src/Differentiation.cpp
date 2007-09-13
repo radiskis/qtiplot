@@ -68,15 +68,15 @@ void Differentiation::output()
     QLocale locale = app->locale();
     QString tableName = app->generateUniqueName(QString(name()));
     QString curveTitle = d_curve->title().text();
-    Table *t = app->newHiddenTable(tableName, tr("Derivative") + " " + tr("of","Derivative of")  + " " + curveTitle, d_n-2, 2);
+    d_result_table = app->newHiddenTable(tableName, tr("Derivative") + " " + tr("of","Derivative of")  + " " + curveTitle, d_n-2, 2);
 	for (int i = 1; i < d_n-1; i++) {
-		t->setText(i-1, 0, locale.toString(d_x[i], 'g', app->d_decimal_digits));
-		t->setText(i-1, 1, locale.toString(result[i], 'g', app->d_decimal_digits));
+		d_result_table->setText(i-1, 0, locale.toString(d_x[i], 'g', app->d_decimal_digits));
+		d_result_table->setText(i-1, 1, locale.toString(result[i], 'g', app->d_decimal_digits));
 	}
     delete[] result;
 
     MultiLayer *ml = app->newGraph(tr("Plot")+tr("Derivative"));
-    ml->activeGraph()->insertCurve(t, tableName + "_2", 0);
+    ml->activeGraph()->insertCurve(d_result_table, tableName + "_2", 0);
     Legend *l = ml->activeGraph()->legend();
     l->setText("\\c{1}" + tr("Derivative") + " " + tr("of","Derivative of") + " " + curveTitle);
 }

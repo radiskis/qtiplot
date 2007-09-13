@@ -500,7 +500,7 @@ public:
   void setTitleColor(const QColor &c);
   void setTitleAlignment(int align);
   void removeTitle();
-		
+
   Legend* newLegend();
   Legend* newLegend(const QString&);
   void setLegend(const QString&) /NoDerived/;
@@ -519,15 +519,15 @@ public:
   void enableAxis(int axis, bool on = true);
   void setAxisColor(int axis, const QColor& color);
   void setAxisFont(int axis, const QFont &fnt);
-  
+
   void setAxisTitle(int axis, const QString& text);
   void setAxisTitleFont(int axis,const QFont &fnt);
   void setAxisTitleColor(int axis, const QColor& c);
   void setAxisTitleAlignment(int axis, int align);
-  
+
   void setAxisTicksLength(int axis, int majTicksType, int minTicksType, int minLength, int majLength);
   void setAxisLabelRotation(int axis, int rotation);
-  
+
   void setAxesLinewidth(int width);
   void drawAxesBackbones(bool yes);
   void setTicksLength(int minLength, int majLength);
@@ -829,7 +829,7 @@ private:
   ApplicationWindow(const ApplicationWindow&);
 };
 
-class Fit : QObject
+class Fit : Filter
 {
 %TypeHeaderCode
 #include "src/Fit.h"
@@ -842,7 +842,8 @@ public:
   ~Fit();
 
   virtual void fit();
-
+  virtual bool run();
+   
   bool setWeightingData(WeightingMethod, const QString&=QString::null);
 
   bool setDataFromCurve(const QString&, Graph*=0);
@@ -878,20 +879,10 @@ delete values;
   virtual void guessInitialValues();
 
   void setAlgorithm(Algorithm);
-
-  void setTolerance(double);
-
-  void setColor(int);
-  void setColor(const QString&);
-
   void setOutputPrecision(int);
-
   void generateFunction(bool, int=100);
-
-  void setMaximumIterations(int);
-
+  
   void showLegend();
-
   virtual QString legendInfo();
 
   void scaleErrors(bool yes = true);
@@ -1109,6 +1100,8 @@ public:
 
   static QString generateFormula(int, PeakProfile);
   static QStringList generateParameterList(int);
+  
+  void guessInitialValues();
 };
 
 class LorentzFit : MultiPeakFit
@@ -1206,6 +1199,7 @@ public:
   void setColor(int);
   void setColor(const QString&);
 
+  Table *resultTable();
   virtual bool run();
 };
 

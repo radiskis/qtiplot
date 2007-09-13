@@ -934,6 +934,8 @@ signals:
 
 // TODO: a lot of this stuff should be private
 public:
+	QRect d_script_win_rect;
+	bool d_script_win_on_top;
 	bool d_inform_rename_table;
 	QString d_export_col_separator;
 	bool d_export_col_names, d_export_table_selection, d_export_col_comment;

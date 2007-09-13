@@ -124,6 +124,7 @@ void Convolution::output()
 {
 	convlv(d_x, d_n_signal, d_y, d_n_response, 1);
 	addResultCurve();
+    d_result_table = d_table;
 }
 
 void Convolution::addResultCurve()
@@ -234,4 +235,5 @@ void Deconvolution::output()
 {
 	convlv(d_x, signalDataSize(), d_y, responseDataSize(), -1);
 	addResultCurve();
+    d_result_table = d_table;
 }

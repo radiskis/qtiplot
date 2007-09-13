@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Fit base class
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -60,7 +60,7 @@ class Fit : public Filter
 
 		//! Actually does the fit. Should be reimplemented in derived classes.
 		virtual void fit();
-        virtual bool run(){return false;};
+        virtual bool run(){fit(); return true;};
 
 		//! Sets the data set to be used for weighting
 		bool setWeightingData(WeightingMethod w, const QString& colName = QString::null);
@@ -70,7 +70,6 @@ class Fit : public Filter
 		QString formula(){return d_formula;};
 		int numParameters() {return d_p;}
 
-		double initialGuess(int parIndex){return gsl_vector_get(d_param_init, parIndex);};
 		void setInitialGuess(int parIndex, double val){gsl_vector_set(d_param_init, parIndex, val);};
 		void setInitialGuesses(double *x_init);
 
@@ -133,10 +132,10 @@ class Fit : public Filter
 		//! Number of fit parameters
 		int d_p;
 
-		//! Initial guesses for the fit parameters 
+		//! Initial guesses for the fit parameters
 		gsl_vector *d_param_init;
 
-		/*! \brief Tells whether the fitter uses non-linear/simplex fitting 
+		/*! \brief Tells whether the fitter uses non-linear/simplex fitting
 		 * with an initial parameters set, that must be freed in the destructor.
 		 */
 		bool is_non_linear;
