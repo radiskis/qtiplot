@@ -29,6 +29,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ScriptWindow.h"
+#include "ApplicationWindow.h"
 #include "ScriptEdit.h"
 #include "pixmaps.h"
 
@@ -41,11 +42,12 @@
 #include <QCloseEvent>
 #include <QTextStream>
 
-ScriptWindow::ScriptWindow(ScriptingEnv *env)
-: QMainWindow()
-{
+ScriptWindow::ScriptWindow(ScriptingEnv *env, ApplicationWindow *app)
+: QMainWindow(),
+d_app(app)
+{	
 	initMenu();
-
+	
 	fileName = QString::null;
 
 	te = new ScriptEdit(env, this, name());
@@ -71,7 +73,8 @@ void ScriptWindow::initMenu()
 	run = new QMenu(tr("E&xecute"), this);
 	menuBar()->addMenu(run);
 
-	menuBar()->addAction(tr("&Hide"), this, SLOT(close()));
+	windowMenu = new QMenu(tr("&Window"), this);
+	menuBar()->addMenu(windowMenu);	
 }
 
 void ScriptWindow::initActions()
@@ -145,6 +148,17 @@ void ScriptWindow::initActions()
 	connect(actionEval, SIGNAL(activated()), te, SLOT(evaluate()));
 	run->addAction(actionEval);
 
+	actionAlwaysOnTop = new QAction(tr("Always on &Top"), this);
+	actionAlwaysOnTop->setCheckable(true);
+	if (d_app)
+		actionAlwaysOnTop->setChecked (d_app->d_script_win_on_top);
+	windowMenu->addAction(actionAlwaysOnTop);
+	connect(actionAlwaysOnTop, SIGNAL(toggled(bool)), this, SLOT(setAlwaysOnTop(bool)));
+
+	actionHide = new QAction(tr("&Hide"), this);
+	connect(actionHide, SIGNAL(activated()), this, SLOT(close()));
+	windowMenu->addAction(actionHide);
+	
 	connect(te, SIGNAL(copyAvailable(bool)), actionCut, SLOT(setEnabled(bool)));
 	connect(te, SIGNAL(copyAvailable(bool)), actionCopy, SLOT(setEnabled(bool)));
 	connect(te, SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
@@ -252,4 +266,23 @@ void ScriptWindow::setVisible(bool visible)
 		return;
 	QMainWindow::setVisible(visible);
 	emit visibilityChanged(visible);
+}
+
+void ScriptWindow::setAlwaysOnTop(bool on)
+{	
+	if (!d_app)
+		return;
+	
+	d_app->d_script_win_on_top = on;
+	Qt::WindowFlags flags = 0;
+	if (on)
+		flags |= Qt::WindowStaysOnTopHint;
+	
+	setWindowFlags(flags);
+}
+
+void ScriptWindow::closeEvent( QCloseEvent* ce )
+{
+	d_app->d_script_win_rect = QRect(pos(), size());
+	ce->accept();
 }

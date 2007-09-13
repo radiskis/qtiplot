@@ -816,21 +816,21 @@ Also, you can easily clone a MDI window:
 g1 = clone(graph("Graph1"))
 </programlisting>
 </sect2>
-	  
+
 <sect2 id="Python-Folders">
-<title>Project Folders</title>	  
+<title>Project Folders</title>
 Storing your data tables/matrices and your plots in folders can be very convenient and helpful
 when you're analysing loads of data files in the same project.
 New objects will always be added to the active folder. You can get a pointer to it via:
 <programlisting>
 f = activeFolder()
 </programlisting>
-The functions table, matrix, graph and note will start searching in the active folder and, failing this, 
+The functions table, matrix, graph and note will start searching in the active folder and, failing this,
 will continue with a depth-first recursive search of the project's root folder, given by:
 <programlisting width="40">
 f = rootFolder()
 </programlisting>
-In order to access subfolders and windows, there are the following functions: 
+In order to access subfolders and windows, there are the following functions:
 <programlisting width="40">
 f2 = f.folders()[number]
 f2 = f.folder(name, caseSensitive=True, partialMatch=False)
@@ -839,11 +839,11 @@ m = f.matrix(name, recursive=False)
 g = f.graph(name, recursive=False)
 n = f.note(name, recursive=False)
 </programlisting>
-If you supply True for the recursive argument, a depth-first recursive search of all subfolders will 
+If you supply True for the recursive argument, a depth-first recursive search of all subfolders will
 be performed and the first match returned.
 <para>New folders can be created using:</para>
 <programlisting>
-newFolder = addFolder("New Folder", parentFolder = 0)  
+newFolder = addFolder("New Folder", parentFolder = 0)
 </programlisting>
 If the <varname>parentFolder</varname> is not specified, the new folder will be added as a subfolder of the project's
 root folder. When you create a new folder via a Python script, it doesn't automatically become the active folder
@@ -861,15 +861,15 @@ saveFolder(folder, "new_file.qti", compress=False)
 saveProjectAs("new_file_2.qti", compress=False)
 </programlisting>
 If <varname>compress</varname> is set to True, the project file will be archived to the .gz format, using zlib.
-<para>Also, you can load a QtiPlot or an Origin project file into a new folder. 
-The new folder will have the base name of the project file and will be added as a subfolder 
+<para>Also, you can load a QtiPlot or an Origin project file into a new folder.
+The new folder will have the base name of the project file and will be added as a subfolder
 to the <varname>parentFolder</varname> or to the current folder if no parent folder is specified.</para>
 <programlisting>
 newFolder = appendProject("projectName", parentFolder = 0)
 </programlisting>
-If you don't want to be asked for confirmation when a table/matrix is renamed during this operation, 
-or when deleting a folder via a Python script, you must change your preferences 
-concerning prompting of warning messages, using the <link linkend="fig-preferences-dialog-2">Preferences dialog ("Confirmations" tab)</link>. 
+If you don't want to be asked for confirmation when a table/matrix is renamed during this operation,
+or when deleting a folder via a Python script, you must change your preferences
+concerning prompting of warning messages, using the <link linkend="fig-preferences-dialog-2">Preferences dialog ("Confirmations" tab)</link>.
 </sect2>
 
 <sect2 id="Python-Tables">
@@ -880,7 +880,7 @@ We'll assume that you have assigned some table to the variable
 t.cell(col, row)
 # and
 t.setCell(col, row, value)
-</programlisting> 
+</programlisting>
 Whenever you have to specify a column, you can use either the
 column name (as a string) or the consecutive column number (starting
 with 1). Row numbers also start with 1, just as they are displayed. If
@@ -890,8 +890,8 @@ of numeric values, you can use:
 t.text(col, row)
 # and
 t.setText(col, row, string)
-</programlisting> 
-The number of columns and rows is accessed via: 
+</programlisting>
+The number of columns and rows is accessed via:
 <programlisting width="40">
 t.numRows()
 t.numCols()
@@ -902,17 +902,17 @@ You can delete a range of rows using:
 <programlisting>
 t.deleteRows(startRowNumber, endRowNumber)
 </programlisting>
-Column names can be read and written with 
+Column names can be read and written with
 <programlisting width="40">
 t.colName(number)
 t.setColName(col, newName)
-</programlisting> 
-Normalize a single or all columns: 
+</programlisting>
+Normalize a single or all columns:
 <programlisting width="40">
 t.normalize(col)
 t.normalize()
 </programlisting>
-Sort a single or all columns: 
+Sort a single or all columns:
 <programlisting width="40">
 t.sortColumn(col, order = 0);
 t.sort(type = 0, order = 0, leadingColumnName)
@@ -920,7 +920,7 @@ t.sort(type = 0, order = 0, leadingColumnName)
 
 Import values from <varname>file</varname>, using <varname>sep</varname> as separator char, ignoring
 <varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string.
-The other flags should be self-explanatory. 
+The other flags should be self-explanatory.
 <programlisting width="40">
 t.importASCII(file, sep="\t", ignore=0, renameCols=False, stripSpaces=True, simplifySpace=False, importComments = False, newTable=False, comment="#")
 </programlisting>
@@ -928,7 +928,7 @@ You can export values from a table to an ASCII <varname>file</varname>, using
 <varname>sep</varname> as separator chararacter. The <varname>ColumnLabels</varname> option
 allows you to export or ignore the column labels, <varname>ColumnComments</varname> does the same for the comments
 displayed in the table header and the <varname>SelectionOnly</varname> option makes
-possible to export only the selected cells of the table. 
+possible to export only the selected cells of the table.
 <programlisting>
 t.exportASCII(file, sep="\t", ignore=0, ColumnLabels=False, ColumnComments=False, SelectionOnly=False)
 </programlisting>
@@ -940,12 +940,12 @@ t.setComment(col, newComment)
 t.setCommand(col, newExpression)
 </programlisting>
 
-After having changed some table values from a script, you will likely want to update dependent Graphs: 
+After having changed some table values from a script, you will likely want to update dependent Graphs:
 <programlisting width="40">
 t.notifyChanges()
 </programlisting>
 
-As a simple example, let's set some column values without using the dialog. 
+As a simple example, let's set some column values without using the dialog.
 <programlisting width="40">
 t = table("table1")
 for i in range(1, t.numRows()+1):
@@ -957,48 +957,47 @@ t.notifyChanges()
       <sect2 id="Python-Matrix">
         <title>Working with Matrices</title>
 
-        <para>We'll assume that you have assigned some matrix to the variable
-        <varname>m</varname>. Accessing cell values is very similar to Table,
-        but since Matrix doesn't use column logic, row arguments are specified
-        before columns and obviously you can't use column name. <programlisting
-        width="40">
+We'll assume that you have assigned some matrix to the variable
+<varname>m</varname>. Accessing cell values is very similar to Table,
+but since Matrix doesn't use column logic, row arguments are specified
+before columns and obviously you can't use column name.
+<programlisting width="40">
 m.cell(row, col)
 m.setCell(row, col, value)
 m.text(row, col)
 m.setText(row, col, string)
-	  </programlisting>
-	  An alternative solution to assign values to a Matrix, would be to define a formula and to calculate the values using this formula, like in the following example:
-    <programlisting>
+</programlisting>
+
+An alternative solution to assign values to a Matrix, would be to define a formula and to calculate the values using this formula, like in the following example:
+<programlisting>
 m.setFormula("x*y*sin(x*y)")
 m.calculate()
-	   </programlisting>
+</programlisting>
 
 You can also specify a column/row range in the calculate() function, like this:
-    <programlisting>
+<programlisting>
 m.calculate(startRow, endRow, startColumn, endColumn)
-    </programlisting>
+</programlisting>
 
-Before setting the values in a matrix you might want to define the numeric precision, that is the number of significant digits used for the computations:
-    <programlisting>
+Before setting the values in a matrix you might want to define the numeric precision,
+that is the number of significant digits used for the computations:
+<programlisting>
 m.setNumericPrecision(prec)
-    </programlisting>
-
-	  Also, like with tables, you can access the number of rows/columns in a matrix: <programlisting width="40">
+</programlisting>
+Also, like with tables, you can access the number of rows/columns in a matrix:
+<programlisting>
 rows = m.numRows()
-# and
 columns = m.numCols()
-	  </programlisting>
+</programlisting>
 
 Matrix objects allow you to define a system of x/y coordinates that will be used when plotting color/contour maps or 3D height maps.
 You can manipulate these coordinates using the following functions:
-
 <programlisting>
 xs = m.xStart()
 xe = m.xEnd()
 ys = m.yStart()
 ye = m.yEnd()
-m.setCoordinates(xs + 2.5, xe, ys - 1, ye + 1);
-plotColorMap(m)
+m.setCoordinates(xs + 2.5, xe, ys - 1, ye + 1)
 </programlisting>
 
 You can also transpose or invert a matrix and calculate its determinant, provided, of course, that the conditions on the matrix dimensions, required by these operations, are satisfied:
@@ -1008,16 +1007,40 @@ m.invert()
 d = m.determinant()
 </programlisting>
 
-	  </para>
-      </sect2>
+If you need to get data from a table, in order to use it in a matrix (or vice-versa), you can
+avoid time consuming copy/paste operations and speed up the whole proces by simply converting
+the table into a matrix:
+<programlisting>
+m = tableToMatrix(table("Table1"))
+t = matrixToTable(m)
+</programlisting>
+
+Also, is worth knowing that you can easily import image files to matrices, that can be
+used afterwards for plotting (see the next section for more details about 2D plots).
+<programlisting>
+m = importImage("C:/poze/adi/PIC00074.jpg")
+</programlisting>
+The algorithm used to import the image returns a gray value between 0 and 255 from the (r, g, b) triplet
+corresponding to each pixel. The gray value is calculated using the formula:
+(r * 11 + g * 16 + b * 5)/32
+</sect2>
 
 <sect2 id = "Python-Plots2D">
 <title>2D Plots</title>
+As you have seen in the previous section, it is possible create 2D plots from matrices.
+Here's how you can do it in practice:
+<programlisting>
+m = importImage("C:/poze/adi/PIC00074.jpg")
+g1 = plot(m, Layer.ColorMap)
+g2 = plot(m, Layer.Contour)
+g3 = plot(m, Layer.GrayScale)
+</programlisting>
 
-If you want to create a new Graph window for some data in table table1, you can use the plot command: 
+If you want to create a new Graph window for some data in table Table1, you can use the plot command:
 <programlisting width="40">
-g = plot(table, column, type)
-</programlisting> 
+t = table("Table1")
+g = plot(t, column, type)
+</programlisting>
 <varname>type</varname> specifies the desired plot type and can be one of the following numbers or the equivalent reserved word:
 	  <variablelist spacing="compact">
             <varlistentry>
@@ -1123,10 +1146,10 @@ g = plot(table, column, type)
                 <para>Layer.VerticalSteps</para>
               </listitem>
             </varlistentry>
-          </variablelist> 
-		  
+          </variablelist>
+
 You can plot more than one column at once by giving a Python tuple (see the <ulink url="http://docs.python.org/tut">Python
-Tutorial</ulink>) as an argument: 
+Tutorial</ulink>) as an argument:
 <programlisting width="40">
 g1 = plot(table("Table1"), (2,4,7), 2)
 g2 = plot(table("Table1"), ("Table1_2","Table1_3"), Layer.LineSymbols)
@@ -1141,18 +1164,18 @@ g = plot(table("Table1"), (2,3,4,5), Layer.VectXYXY)
 </programlisting>
 
 If you want to add a curve to an existing Graph window, you have
-to choose the destination layer. Usually, 
+to choose the destination layer. Usually,
 <programlisting width="40">
 l = g.activeLayer()
 </programlisting>
 will do the trick, but you can also select a layer by its number:
 <programlisting width="40">
 l = g.layer(num)
-</programlisting> 
-	
+</programlisting>
+
 <sect3 id="Python-Curves">
-<title>Working with curves</title>	
-You can then add or remove curves to or from this layer: 
+<title>Working with curves</title>
+You can then add or remove curves to or from this layer:
 <programlisting width="40">
 l.insertCurve(table, Xcolumn, Ycolumn, type=Layer.Scatter)
 l.addCurve(table, column, type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)
@@ -1867,9 +1890,43 @@ g.exportImage(fileName, int quality = 100, bool transparent = False)
 </programlisting>
 </sect3>
 </sect2>
-      
+
 <sect2 id="Python-DataAnalysis">
 <title>Data Analysis</title>
+<sect3 id="Python-GeneralFunctions">
+<title>General Functions</title>
+As you will see in the following subsections, the data analysis operations available
+in QtiPlot are: convolution/deconvolution, correlation, differentiation, FFT, filtering,
+smoothing, fitting and numerical integration of data sets. When performing analysis tasks 
+via Python scripts, there are several utility functions that can be called for all operations. 
+Let's assume that you need to perform a specific operation <varname>op</varname>, 
+which analyses your data (the data source can be a 2D plot curve or a table) and at the end, 
+displays a result curve. For this kind of operations, you can customize the number of points
+in the resulting curve and its color:
+<programlisting>
+op.setOutputPoints(int)
+op.setColor(int)
+op.setColor("green")
+</programlisting>
+Colors can be specified by their names or as integer values, from 0 to 23, 
+each integer corresponding to a predefined color: 0 - "black", 1 - "red", 2 - "green", 3 - "blue", 
+4 - "cyan", 5 - "magenta", 6 - "yellow", 7 - "darkYellow", 8 - "navy", 9 - "purple", etc ...
+<para>Most of the time, a new table is also created as a result of a data anaylis operation. 
+This table stores the data displayed by the result curve and is hidden by default, 
+but you can interact with it via the following function:
+<programlisting>
+t = op.resultTable()
+</programlisting></para>
+
+After the initialization of an analysis operation, which consists of setting the data source,
+the data range and some other properties, like color, number of points, etc..., you can execute
+it via a call to its run() function:
+<programlisting>
+op.run()
+</programlisting>
+For data fitting operations, there's an alias for the run() function which is: fit().
+</sect3>
+
 <sect3 id="Python-Correlation">
 <title>Correlation, Convolution/Deconvolution</title>
 Assuming you have a table named "Table1", here's how you can calculate the convolution of two of it's columns,
@@ -2033,7 +2090,7 @@ f.load(pluginName)
             </listitem>
           </itemizedlist> For each of these, you can optionally restrict the X
         range that will be used for the fit, like in <programlisting width="40">
-f = LinearFit(graph("graph1").activeLayer(), "table1_2", 2, 7)
+f = LinearFit(graph("Graph1").activeLayer(), "Table1_2", 2, 7)
 f.fit()
 	  </programlisting></para>
 
@@ -2128,5 +2185,186 @@ smooth.setPolynomOrder(9)
 smooth.run()
 </programlisting>
 </sect3>
+</sect2>
+
+<sect2 id="Python-Example">
+<title>A real life example</title>
+Here follows a Python script that I intensively use in my everyday work.
+It's quite long and maybe complicated, but it shows how to perform some basic things via a
+script: how to use Qt dialogs, how to import ASCII files, how to sort tables, how to
+perform a second derivative of a data set, how to plot data and to customize the 
+apearance of your plot, how to export it automatically to an .eps file and, finally, how to save
+all this piece of work to a new project file.
+<programlisting>
+################################################################################
+#### Choose the working directory using a Qt file dialog #######################
+################################################################################
+
+dirPath=QtGui.QFileDialog.getExistingDirectory(qti.app, "Choose Working Folder", "/home/vasilief/Prog/Fortran/Fibre/Results/TAS-modif/")
+folder = QtCore.QDir(dirPath)
+
+################################################################################
+#### Choose dispersion file to analyse using a Qt text input dialog ############
+################################################################################
+
+dispFileID = QtGui.QInputDialog.getText(qti.app, "Choose Dispersion File Index", "Dispersion file: ", QtGui.QLineEdit.Normal, "disper1")
+
+################################################################################
+#### Import file containing the effective refractive index #####################
+################################################################################
+
+lst = folder.entryList (QtCore.QStringList ("*_" + dispFileID[0] + "*_disp.dat"))
+t=newTable()
+setWindowName(t, folder.dirName()+"-disp")
+t.setWindowLabel(dirPath+lst[0])
+t.importASCII(dirPath+lst[0], " ", 0, False, True, True)
+t.setColName(1, "lambda")
+t.setColName(2, "Re-neff")
+t.setColName(3, "Im-neff")
+
+################################################################################
+#### Import  material refractive index file in a new table #####################
+################################################################################
+
+matDispLst = folder.entryList ( QtCore.QStringList ("*_" + dispFileID[0] + "*_matdisp.dat"))
+t2=newTable()
+setWindowName(t2, folder.dirName()+"-disp-mat")
+t2.setWindowLabel(dirPath+matDispLst[0])
+t2.importASCII(dirPath+matDispLst[0], " ", 0, False, True, True)
+
+################################################################################
+#### Insert wavelength column into the material dispersion table ###############
+################################################################################
+
+t2.setNumCols(2)
+t2.setColName(1, "lambda")
+t2.setColName(2, "indice-mat")
+for row in range (1, t2.numRows()+1):
+	t2.setText(2, row, t2.text(1, row))
+	t2.setText(1, row, t.text(1, row))
+	
+################################################################################
+#### Sort the refractive index table and calculate chromatic dispersion ########
+################################################################################
+
+t.sort(1, 0, "lambda")
+t.setNumCols(4)
+t.setColName(4, "pertes")
+t.setCommand("pertes", "40*pi/log(10)*col(\"Im-neff\")*1e6/col(\"lambda\")")
+for row in range (1, t.numRows()+1):
+	t.setCell("pertes", row, 40*pi/log(10)*t.cell("Im-neff", row)*1e6/t.cell("lambda", row))
+
+t.setNumCols(7)
+t.setColName(5, "diff1")
+t.setColName(6, "diff2")
+t.setColName(7, "disp-chrom")
+
+# Calculate the first derivative of the real part of the effective index (column 2)
+for i in range (2, t.numRows()):
+	diff1 = 0.5*((t.cell(2, i+1) - t.cell(2, i))/(t.cell(1, i+1) - t.cell(1, i)) + (t.cell(2, i)-t.cell(2, i-1))/(t.cell(1, i)-t.cell(1, i-1)))
+	t.setCell(5, i, diff1)
+	
+# Calculate the second derivative
+for i in range (3, t.numRows()-1):
+	diff2 = 0.5*((t.cell(5, i+1) - t.cell(5, i))/(t.cell(1, i+1) - t.cell(1, i)) + (t.cell(5, i)-t.cell(5, i-1))/(t.cell(1, i)-t.cell(1, i-1)))
+	t.setCell(6, i, diff2)
+	
+## Calculate chromatic dispersion
+for i in range (3, t.numRows()-1):
+	t.setCell(7, i, -t.cell("lambda", i)*t.cell("diff2", i)*1e4/3)
+	
+#############################################################################
+#### Sort the material index table and calculate material dispersion ########
+#############################################################################
+
+t2.sort(1, 0, "lambda")
+
+t2.setNumCols(5)
+t2.setColName(3, "diff1")
+t2.setColName(4, "diff2")
+t2.setColName(5, "disp-mat")
+
+# Calculate the first derivative
+for i in range (2, t2.numRows()):
+	diff1 = 0.5*((t2.cell(2, i+1) - t2.cell(2, i))/(t2.cell(1, i+1) - t2.cell(1, i)) + (t2.cell(2, i)-t2.cell(2, i-1))/(t2.cell(1, i)-t2.cell(1, i-1)))
+	t2.setCell(3, i, diff1)
+
+# Calculate the second derivative
+for i in range (3, t2.numRows()-1):
+	diff2 = 0.5*((t2.cell(3, i+1) - t2.cell(3, i))/(t2.cell(1, i+1) - t2.cell(1, i)) + (t2.cell(3, i)-t2.cell(3, i-1))/(t2.cell(1, i)-t2.cell(1, i-1)))
+	t2.setCell(4, i, diff2)
+
+# Calculate material dispersion
+for i in range (3, t2.numRows()-1):
+	t2.setCell(5, i, -t2.cell("lambda", i)*t2.cell("diff2", i)*1e4/3)
+	
+# Calculate waveguide dispersion in a new table
+t3=newTable()
+setWindowName(t3, folder.dirName()+"-disp-waveguide")
+t3.setNumCols(4)
+t3.setColName(1, "lambda")
+t3.setColName(2, "disp-chrom")
+t3.setColName(3, "disp-mat")
+t3.setColName(4, "disp-w")
+t3.setCommand("disp-w", "col(\"disp-chrom\")-col(\"disp-mat\")")
+t3.setNumRows(t2.numRows())
+for row in range (3, t.numRows()-1):
+	t3.setText(1, row, t.text(1, row))
+	t3.setText(2, row, t.text(7, row))
+	t3.setText(3, row, t2.text(5, row))
+	t3.setCell(4, row, t3.cell(2, row) - t3.cell(3, row))
+
+################################################################################
+#### Plot table t3 #############################################################
+################################################################################
+
+g=plot(t3, ("disp-chrom","disp-mat","disp-w"), 0)
+setWindowName(g, folder.dirName()+"-plot")
+p = g.activeLayer()
+p.setCanvasColor(QtGui.QColor("palegoldenrod"));
+setPreferences(p)
+legend = p.legend()
+legend.setFrameStyle(2)
+legend.setBackgroundColor(QtGui.QColor(255, 255, 255, 255)); ### transparent white color
+legend.setText("\c{1}Chromatic dispersion\n\c{2}Material dispersion\n\c{3}Waveguide dispersion\n")
+p.setTitle(folder.dirName())
+p.setXTitle("wavelength (nm)")
+p.setYTitle("Dispersion (ps.nm<sup>-1</sup>.km<sup>-1</sup>)")
+p.showGrid()
+
+################################################################################
+#### Add a new layer to the plot ###############################################
+################################################################################
+
+p = g.addLayer()
+p.setCanvasColor(QtGui.QColor("palegoldenrod"));
+setPreferences(p)
+p.addCurve(t, "pertes", 0, 2)
+p.setScale(0, 1e-1, 1e2, 0.0, 5, 5, 1)
+p.setAxisNumericFormat(0, 3, 0)
+p.setTitle(folder.dirName())
+p.setXTitle("wavelength (nm)")
+p.setYTitle("Losses (dB/m)")
+p.showGrid()
+
+################################################################################
+#### Arrange layers in a 2 columns x 1 row matrix and define plot layout #######
+################################################################################
+
+g.setRows(1)
+g.setCols(2)
+g.setSpacing(5, 5)
+g.setMargins(0, 0, 0, 0)
+g.showMaximized()
+g.arrangeLayers(False)
+
+################################################################################
+#### Save project to working folder ############################################
+################################################################################
+
+p.exportVector(dirPath+folder.dirName()+ "_" + dispFileID[0] +"_pertes.eps", 96, True, False, QtGui.QPrinter.A5)
+saveProjectAs(dirPath+folder.dirName()+"_" + dispFileID[0] + ".qti")
+
+</programlisting>
 </sect2>
 </sect1>

@@ -68,6 +68,7 @@ void Filter::init()
     d_explanation = QString(name());
     d_graph = 0;
     d_table = 0;
+    d_result_table = 0;
 }
 
 void Filter::setInterval(double from, double to)
@@ -220,46 +221,15 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
 {
     if (!c)
         return 0;
+	
+	int i_start = 0, i_end = 0;
+	int n = curveRange(c, start, end, &i_start, &i_end);
 
-	int n = c->dataSize();
-    int i_start = 0, i_end = n;
-
-	if (c->x(0) < c->x(n-1)){
-    	for (int i = 0; i < n; i++){
-  	   	 if (c->x(i) >= start){
-  	    	  i_start = i;
-          	break;
-        	}
-		}
-    	for (int i = n-1; i >= 0; i--){
-  	    	if (c->x(i) <= end){
-  	      		i_end = i;
-          		break;
-        	}
-		}
-	} else {
-    	for (int i = 0; i < n; i++){
-  	   	 if (c->x(i) <= end){
-  	    	  i_start = i;
-          	break;
-        	}
-		}
-    	for (int i = n-1; i >= 0; i--){
-  	    	if (c->x(i) >= start){
-  	      		i_end = i;
-          		break;
-        	}
-		}
-	}
-
-    n = abs(i_end - i_start) + 1;
     (*x) = new double[n];
     (*y) = new double[n];
     double *xtemp = new double[n];
     double *ytemp = new double[n];
 
-    /*i_start = QMIN(i_start, i_end);
-    i_end = i_start + n - 1;*/
   	int j=0;
     for (int i = i_start; i <= i_end; i++){
         xtemp[j] = c->x(i);
@@ -279,6 +249,25 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
 }
 
 int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, double **y)
+{
+    if (!c)
+        return 0;
+
+   	int i_start = 0, i_end = 0;
+	int n = curveRange(c, start, end, &i_start, &i_end);
+
+    (*x) = new double[n];
+    (*y) = new double[n];
+
+    int j=0;
+    for (int i = i_start; i <= i_end; i++){
+        (*x)[j] = c->x(i);
+        (*y)[j++] = c->y(i);
+    }
+    return n;
+}
+
+int Filter::curveRange(QwtPlotCurve *c, double start, double end, int *iStart, int *iEnd)
 {
     if (!c)
         return 0;
@@ -313,18 +302,10 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
         	}
 		}
 	}
-
+	
+	*iStart = QMIN(i_start, i_end);
+	*iEnd = QMAX(i_start, i_end);
     n = abs(i_end - i_start) + 1;
-    (*x) = new double[n];
-    (*y) = new double[n];
-
-    /*i_start = QMIN(i_start, i_end);
-    i_end = i_start + n - 1;*/
-    int j=0;
-    for (int i = i_start; i <= i_end; i++){
-        (*x)[j] = c->x(i);
-        (*y)[j++] = c->y(i);
-    }
     return n;
 }
 
@@ -333,13 +314,13 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QLocale locale = app->locale();
     const QString tableName = app->generateUniqueName(QString(this->name()));
-    Table *t = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + d_curve->title().text(), d_points, 2);
+    d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + d_curve->title().text(), d_points, 2);
 	for (int i=0; i<d_points; i++){
-		t->setText(i, 0, locale.toString(x[i], 'g', app->d_decimal_digits));
-		t->setText(i, 1, locale.toString(y[i], 'g', app->d_decimal_digits));
+		d_result_table->setText(i, 0, locale.toString(x[i], 'g', app->d_decimal_digits));
+		d_result_table->setText(i, 1, locale.toString(y[i], 'g', app->d_decimal_digits));
 	}
 
-	DataCurve *c = new DataCurve(t, tableName + "_1", tableName + "_2");
+	DataCurve *c = new DataCurve(d_result_table, tableName + "_1", tableName + "_2");
 	c->setData(x, y, d_points);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
 	d_graph->insertPlotItem(c, Graph::Line);

@@ -327,6 +327,8 @@ void ApplicationWindow::initGlobalConstants()
 	autoSearchUpdatesRequest = false;
 
 	show_windows_policy = ActiveFolder;
+	d_script_win_on_top = true;
+	d_script_win_rect = QRect(0, 0, 500, 300);
 
 	appFont = QFont();
 	QString family = appFont.family();
@@ -2614,8 +2616,7 @@ Table* ApplicationWindow::newHiddenTable(const QString& name, const QString& lab
 		w->setHeader(list);
 
 		QString rlist;
-		for (int i=0; i<r; i++)
-		{
+		for (int i=0; i<r; i++){
 			rlist=rows[i+1];
 			list = rlist.split("\t");
 			for (int j=0; j<c; j++)
@@ -4172,7 +4173,7 @@ void ApplicationWindow::readSettings()
 	QStringList applicationFont = settings.value("/Font").toStringList();
 	if (applicationFont.size() == 4)
 		appFont=QFont (applicationFont[0],applicationFont[1].toInt(),applicationFont[2].toInt(),applicationFont[3].toInt());
-
+	
 	settings.beginGroup("/Dialogs");
 	d_extended_open_dialog = settings.value("/ExtendedOpenDialog", true).toBool();
 	d_extended_export_dialog = settings.value("/ExtendedExportDialog", true).toBool();
@@ -4399,6 +4400,12 @@ void ApplicationWindow::readSettings()
 	d_export_vector_size = settings.value("/ExportPageSize", QPrinter::Custom).toInt();
 	d_keep_plot_aspect = settings.value("/KeepAspect", true).toBool();
 	settings.endGroup(); // ExportImage
+	
+	settings.beginGroup("/ScriptWindow");	
+	d_script_win_on_top = settings.value("/AlwaysOnTop", true).toBool();
+	d_script_win_rect = QRect(settings.value("/x", 0).toInt(), settings.value("/y", 0).toInt(),
+							settings.value("/width", 500).toInt(), settings.value("/height", 300).toInt());
+	settings.endGroup();
 }
 
 void ApplicationWindow::saveSettings()
@@ -4653,6 +4660,14 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ExportPageSize", d_export_vector_size);
 	settings.setValue("/KeepAspect", d_keep_plot_aspect);
 	settings.endGroup(); // ExportImage
+	
+	settings.beginGroup("/ScriptWindow");	
+	settings.setValue("/AlwaysOnTop", d_script_win_on_top);
+	settings.setValue("/x", d_script_win_rect.x());
+	settings.setValue("/y", d_script_win_rect.y());
+	settings.setValue("/width", d_script_win_rect.width());
+	settings.setValue("/height", d_script_win_rect.height());
+	settings.endGroup();
 }
 
 void ApplicationWindow::exportGraph()
@@ -7988,6 +8003,9 @@ void ApplicationWindow::dragEnterEvent( QDragEnterEvent* e )
 
 void ApplicationWindow::closeEvent( QCloseEvent* ce )
 {
+	if (scriptWindow)
+		d_script_win_rect = QRect(scriptWindow->pos(), scriptWindow->size());
+	
 	if (!saved)
 	{
 		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
@@ -11871,8 +11889,6 @@ QWidgetList* ApplicationWindow::windowsList()
 		item = (FolderListItem *)item->itemBelow();
 	}
 
-	foreach(QWidget *w, *hiddenWindows)
-		lst->append(w);
 	foreach(QWidget *w, *outWindows)
 		lst->append(w);
 
@@ -12809,18 +12825,15 @@ void ApplicationWindow::setShowWindowsPolicy(int p)
 		return;
 
 	show_windows_policy = (ShowWindowsPolicy)p;
-	if (show_windows_policy == HideAll)
-	{
+	if (show_windows_policy == HideAll){
 		QList<QWidget*> *lst = windowsList();
-		foreach(QWidget *w, *lst)
-		{
+		foreach(QWidget *w, *lst){
 			hiddenWindows->append(w);
 			w->hide();
 			setListView(w->name(),tr("Hidden"));
 		}
 		delete lst;
-	}
-	else
+	} else
 		showAllFolderWindows();
 }
 
@@ -13655,11 +13668,9 @@ QString ApplicationWindow::generateUniqueName(const QString& name, bool incremen
 	int index = 0;
 	QWidgetList *windows = windowsList();
 	QStringList lst;
-
-	for (int i = 0; i < windows->count();i++ )
-	{
-		lst << windows->at(i)->name();
-		if (QString(windows->at(i)->name()).startsWith(name))
+	foreach (QWidget *w, *windows){
+		lst << w->name();
+		if (QString(w->name()).startsWith(name))
 			index++;
 	}
 	delete windows;
@@ -13667,14 +13678,12 @@ QString ApplicationWindow::generateUniqueName(const QString& name, bool incremen
 	QString newName = name;
 	if (increment)//force return of a different name
 		newName += QString::number(++index);
-	else
-	{
-		if (index>0)
-			newName += QString::number(index);
-	}
-
+	else if (index>0)
+		newName += QString::number(index);
+	
 	while(lst.contains(newName))
 		newName = name + QString::number(++index);
+	
 	return newName;
 }
 
@@ -13715,7 +13724,11 @@ void ApplicationWindow::goToRow()
 void ApplicationWindow::showScriptWindow()
 {
 	if (!scriptWindow){
-		scriptWindow = new ScriptWindow(scriptEnv);
+		scriptWindow = new ScriptWindow(scriptEnv, this);
+		scriptWindow->setAlwaysOnTop(d_script_win_on_top);		
+		scriptWindow->resize(d_script_win_rect.size());
+		scriptWindow->move(d_script_win_rect.topLeft());
+
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
 	}
 

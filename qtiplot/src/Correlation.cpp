@@ -130,6 +130,7 @@ void Correlation::output()
 	gsl_fft_halfcomplex_radix2_inverse(d_x, 1, d_n );	//inverse FFT
 
 	addResultCurve();
+    d_result_table = d_table;
 }
 
 void Correlation::addResultCurve()

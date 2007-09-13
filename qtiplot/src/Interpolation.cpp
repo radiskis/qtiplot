@@ -150,14 +150,12 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
 
     int i_start = 0, i_end = c->dataSize();
     for (int i = 0; i < i_end; i++)
-  	    if (c->x(i) > start && i)
-        {
+  	    if (c->x(i) > start && i){
   	      i_start = i - 1;
           break;
         }
     for (int i = i_end-1; i >= 0; i--)
-  	    if (c->x(i) < end && i < c->dataSize())
-        {
+  	    if (c->x(i) < end && i < c->dataSize()){
   	      i_end = i + 1;
           break;
         }
@@ -169,11 +167,9 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
 
 	double pr_x;
   	int j=0;
-    for (int i = i_start; i <= i_end; i++)
-    {
+    for (int i = i_start; i <= i_end; i++){
         xtemp[j] = c->x(i);
-        if (xtemp[j] == pr_x)
-        {
+        if (xtemp[j] == pr_x){
             delete (*x);
             delete (*y);
             return -1;//this kind of data causes division by zero in GSL interpolation routines
@@ -183,8 +179,7 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
     }
     size_t *p = new size_t[n];
     gsl_sort_index(p, xtemp, 1, n);
-    for (int i=0; i<n; i++)
-    {
+    for (int i=0; i<n; i++){
         (*x)[i] = xtemp[p[i]];
   	    (*y)[i] = ytemp[p[i]];
     }

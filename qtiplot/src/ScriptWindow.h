@@ -37,6 +37,7 @@
 #include <QMenu>
 #include <QCloseEvent>
 class ScriptingEnv;
+class ApplicationWindow;
 class QAction;
 
 //! Python script window
@@ -45,7 +46,7 @@ class ScriptWindow: public QMainWindow
 	Q_OBJECT
 
 public:
-		ScriptWindow(ScriptingEnv *env);
+		ScriptWindow(ScriptingEnv *env, ApplicationWindow *app);
         ~ScriptWindow(){exit(0);};
 
 public slots:
@@ -57,21 +58,26 @@ public slots:
 		virtual void setVisible(bool visible);
 
 		void executeAll(){te->executeAll();};
-		
+		void setAlwaysOnTop(bool on);
+
 signals:
 		void visibilityChanged(bool visible);
 
 private:
+		void closeEvent( QCloseEvent*);
+
 		void initMenu();
 		void initActions();
 		ScriptEdit *te;
+		ApplicationWindow *d_app;
 
 		QString fileName;
 
-		QMenu *file, *edit, *run;
+		QMenu *file, *edit, *run, *windowMenu;
 		QAction *actionNew, *actionUndo, *actionRedo, *actionCut, *actionCopy, *actionPaste;
 		QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionOpen;
 		QAction *actionSave, *actionSaveAs;
+		QAction *actionAlwaysOnTop, *actionHide;
 };
 
 #endif

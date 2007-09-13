@@ -250,8 +250,8 @@ void FFT::output(const QString &text)
 {
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QString tableName = app->generateUniqueName(QString(name()));
-    Table *t = app->newHiddenTable(tableName, d_explanation, d_n, 5, text);
-	MultiLayer *ml = app->multilayerPlot(t, QStringList() << tableName + "_" + tr("Amplitude"), 0);
+    d_result_table = app->newHiddenTable(tableName, d_explanation, d_n, 5, text);
+	MultiLayer *ml = app->multilayerPlot(d_result_table, QStringList() << tableName + "_" + tr("Amplitude"), 0);
    	if (!ml)
 		return;
 

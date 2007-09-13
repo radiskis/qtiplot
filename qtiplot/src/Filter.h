@@ -81,12 +81,15 @@ class Filter : public QObject
         //! Output string added to the plot as a new legend
 		virtual QString legendInfo(){return QString();};
 
-		//! Returns the size of the fitted data set
+		//! Returns the size of the input data set
 		int dataSize(){return d_n;};
-
+        //! Returns the x values of the input data set
 		double* x(){return d_x;};
+		//! Returns the y values of the input data set
 		double* y(){return d_y;};
-		
+		//! Returns a pointer to the table created to display the results
+        Table *resultTable(){return d_result_table;};
+
         bool error(){return d_init_err;};
 
 	protected:
@@ -98,6 +101,8 @@ class Filter : public QObject
         //! Same as curveData, but sorts the points by their x value.
         virtual int sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y);
 
+		int curveRange(QwtPlotCurve *c, double start, double end, int *iStart, int *iEnd);
+	
         //! Adds the result curve to the target output plot window. Creates a hidden table and frees the input data from memory.
         QwtPlotCurve* addResultCurve(double *x, double *y);
 
@@ -112,12 +117,15 @@ class Filter : public QObject
 
 		//! Calculates the data for the output curve and store it in the X an Y vectors
 		virtual void calculateOutputData(double *X, double *Y) { Q_UNUSED(X) Q_UNUSED(Y) };
-
+		
 		//! The graph where the result curve should be displayed
 		Graph *d_graph;
 
         //! A table source of data
 		Table *d_table;
+
+        //! The table displaying the results of the filtering operation (not alvays valid!)
+        Table *d_result_table;
 
 		//! Size of the data arrays
 		int d_n;

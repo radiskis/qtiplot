@@ -49,6 +49,9 @@ class MultiPeakFit : public Fit
 		static QStringList generateParameterList(int order);
 		static QStringList generateExplanationList(int order);
 
+		//! Used by the GaussFit and LorentzFit derived classes to calculate initial values for the parameters 
+		void guessInitialValues();
+
 	private:
 		QString logFitInfo(double *par, int iterations, int status, const QString& plotName);
 		void generateFitCurve(double *par);
@@ -56,9 +59,6 @@ class MultiPeakFit : public Fit
 		//! Inserts a peak function curve into the plot 
 		void insertPeakFunctionCurve(double *x, double *y, int peak);
 		void storeCustomFitResults(double *par);
-
-		//! Used by the GaussFit and LorentzFit derived classes to calculate initial values for the parameters 
-		void guessInitialValues();
 
 		//! Number of peaks
 		int d_peaks;
