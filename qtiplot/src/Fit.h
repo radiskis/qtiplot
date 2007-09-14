@@ -67,6 +67,7 @@ class Fit : public Filter
 
 		void setDataCurve(int curve, double start, double end);
 
+		QString resultFormula(){return d_result_formula;};
 		QString formula(){return d_formula;};
 		int numParameters() {return d_p;}
 
@@ -155,9 +156,12 @@ class Fit : public Filter
 		//! Algorithm type
 		Algorithm d_solver;
 
-		//! The fit formula
+		//! The fit formula given on input
 		QString d_formula;
 
+		//! The result fit formula, where the fit parameters are replaced with the calculated values.
+		QString d_result_formula;
+		
 		//! Covariance matrix
 		gsl_matrix *covar;
 

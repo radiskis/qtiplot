@@ -450,12 +450,16 @@
 <sect1 id="export-ascii-dialog">
   <title>Export ASCII</title>
       <indexterm><primary>table</primary></indexterm>
-  <para>This dialog is activated by selecting the command <link linkend="export-ascii-cmd">&export-ascii-cmd;</link> from the <link linkend="sec-file-menu">File Menu</link>. It is only active when a table is selected.</para>
+  <para>This dialog is activated by selecting the command <link linkend="export-ascii-cmd">&export-ascii-cmd;</link> from the <link linkend="sec-file-menu">File Menu</link>. 
+  The command is active if there is at least a table window in the project.</para>
   <para>This command is used to export all or a part of the data of a project in an ASCII file.</para>
   <figure id="fig-export-ascii">
     <title>Export of a selection in a table to an ASCII file.</title>
     <informalexample>
-      <para>In this example of export of a selection in a table to an ASCII file, TAB is used as a separator between the columns.</para>
+      <para>In this example of export of a table selection to an ASCII file, the names of the
+	  selected columns are exported as the first line of the file. The comments displayed in the table header are exported 
+	  as the second line of the file and a TAB character is used as a separator between the columns.
+	  Only the two selected columns are exported.</para>
     </informalexample>
     <mediaobject> 
       <imageobject>
@@ -463,7 +467,9 @@
       </imageobject>
     </mediaobject>
   </figure>
-  <para>If the names of the columns have not been set, they will be set to C1,C2,... in the exported file. The formatting of the numbers is kept in the ASCII file, so you have to be carefull to obtain a good enough precision in the ASCII file.</para>
+<para>If the "Include Column Names" option is not checked, the names of the columns will be set to C1, C2,... in the exported file. 
+The formatting of the numbers is kept in the ASCII file, so you have to be careful to obtain a good enough precision in the ASCII 
+file.</para>
 </sect1>
 
 <!-- ************************************************** -->

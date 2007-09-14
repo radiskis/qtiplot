@@ -47,8 +47,11 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Table")), 0, 0);
 	boxTable = new QComboBox();
-	boxTable->addItems(app->tableWindows);
-	boxTable->setCurrentIndex(boxTable->findText(tableName));
+	QStringList tables = app->tableWindows;
+	boxTable->addItems(tables);
+	boxTable->setCurrentIndex(0);
+	if (tables.contains(tableName))
+		boxTable->setCurrentIndex(boxTable->findText(tableName));
 	boxTable->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	gl1->addWidget(boxTable, 0, 1);
 

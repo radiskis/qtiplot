@@ -274,11 +274,10 @@ void ScriptWindow::setAlwaysOnTop(bool on)
 		return;
 	
 	d_app->d_script_win_on_top = on;
-	Qt::WindowFlags flags = 0;
-	if (on)
-		flags |= Qt::WindowStaysOnTopHint;
 	
-	setWindowFlags(flags);
+	QString msg = tr("You need to close and reopen the script window before your changes become effective! Do you want to close it now?");
+	if (QMessageBox::question(this, tr("QtiPlot"), msg, QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok)
+		this->close();
 }
 
 void ScriptWindow::closeEvent( QCloseEvent* ce )
