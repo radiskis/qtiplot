@@ -30,7 +30,7 @@ win32: documentation.path = $$INSTALLBASE/doc
 #!!! Warning: You must modify these paths according to your computer settings
 #############################################################################
 
-INCLUDEPATH       += ../3rdparty/muParser
+INCLUDEPATH       += ../3rdparty/muparser/include
 INCLUDEPATH       += ../3rdparty/qwtplot3d/include
 INCLUDEPATH       += ../3rdparty/qwt/src
 INCLUDEPATH       += ../3rdparty/liborigin
@@ -43,22 +43,22 @@ INCLUDEPATH       += ../3rdparty/zlib123/include
 
 ##################### Linux (Mac OS X) ######################################
 
-# statically link against Qwt(3D) in 3rdparty
+# statically link against libraries in 3rdparty
+unix:LIBS         += ../3rdparty/muparser/lib/libmuparser.a
 unix:LIBS         += ../3rdparty/qwtplot3d/lib/libqwtplot3d.a
 unix:LIBS         += ../3rdparty/qwt/lib/libqwt.a
-# dynamically link against Qwt(3D) installed system-wide
-# WARNING: make sure they are compiled against Qt4
-#unix:LIBS         += -lqwtplot3d
-#unix:LIBS         += -lqwt
-
-# statically link against GSL in 3rdparty
 unix:LIBS         += ../3rdparty/gsl/lib/libgsl.a
 unix:LIBS         += ../3rdparty/gsl/lib/libgslcblas.a
-#dynamically link against GSL installed system-wide
+
+# dynamically link against dependencies if they are installed system-wide
+#unix:LIBS         += -lmuparser
+#unix:LIBS         += -lqwtplot3d
+#unix:LIBS         += -lqwt
 #unix:LIBS         += -lgsl -lgslcblas
 
 ##################### Windows ###############################################
 
+win32:LIBS        += ../3rdparty/muparser/lib/libmuparser.a
 win32:LIBS        += ../3rdparty/qwtplot3d/lib/libqwtplot3d.a
 win32:LIBS        += ../3rdparty/qwt/lib/libqwt.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgsl.a
@@ -365,28 +365,9 @@ contains(SCRIPTING_LANGS, muParser) {
 
   HEADERS += src/muParserScript.h \
              src/muParserScripting.h \
-             ../3rdparty/muParser/muParser.h \
-             ../3rdparty/muParser/muParserBase.h \
-             ../3rdparty/muParser/muParserInt.h \
-             ../3rdparty/muParser/muParserError.h \
-             ../3rdparty/muParser/muParserStack.h \
-             ../3rdparty/muParser/muParserToken.h \
-             ../3rdparty/muParser/muParserBytecode.h \
-             ../3rdparty/muParser/muParserCallback.h \
-             ../3rdparty/muParser/muParserTokenReader.h \
-             ../3rdparty/muParser/muParserFixes.h \
-             ../3rdparty/muParser/muParserDef.h \
 
   SOURCES += src/muParserScript.cpp \
              src/muParserScripting.cpp \
-             ../3rdparty/muParser/muParser.cpp \
-             ../3rdparty/muParser/muParserBase.cpp \
-             ../3rdparty/muParser/muParserInt.cpp \
-             ../3rdparty/muParser/muParserBytecode.cpp \
-             ../3rdparty/muParser/muParserCallback.cpp \
-             ../3rdparty/muParser/muParserTokenReader.cpp \
-             ../3rdparty/muParser/muParserError.cpp \
-
 }
 
 ##################### PYTHON + SIP + PyQT #####################
