@@ -852,6 +852,7 @@ public:
   void setInterval(double from, double to);
 
   QString formula();
+  QString resultFormula();
   int numParameters();
 
   void setInitialGuess(int, double) /PyName=setInitialValue/;

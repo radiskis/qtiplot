@@ -2114,8 +2114,8 @@ f.scaleErrors(yes = True)
 f.setColor("green")			<lineannotation>change the color of the result fit curve to green (default color is red)</lineannotation>
 	  </programlisting></para>
 
-        <para>After you've called fit(), you have a number of possibilities
-        for extracting the results: <programlisting width="40">
+After you've called fit(), you have a number of possibilities
+for extracting the results: <programlisting width="40">
 f.results()
 f.errors()
 f.chiSquare()
@@ -2124,8 +2124,31 @@ f.dataSize()
 f.numParameters()
 f.parametersTable("params")
 f.covarianceMatrix("cov")
-	  </programlisting></para>
-      </sect3>
+</programlisting>
+
+It is important to know that QtiPlot can generate an analytical formula 
+for the resulting fit curve or a normal plot curve with data stored in a hidden table. 
+You can choose either of these two output options, before calling the fit() instruction, using:
+<programlisting>
+f.generateFunction(True, points=100)
+</programlisting>
+
+If the first parameter of the above function is set to True,
+QtiPlot will generate an analytical function curve. If the <varname>points</varname> parameter 
+is not specified, by default the function will be estimated over 100 points. 
+You can get the analytical formula of the fit curve via a call to resultFormula():
+<programlisting>
+formula = f.resultFormula()
+print(formula)
+</programlisting>
+
+If the first parameter of generateFunction() is set to False, QtiPlot will create a hidden data 
+table contining the same number of points as the data set/curve to be fitted (same abscissae). 
+You can interact with this table and extract the data points of the result fit curve using:
+<programlisting>
+t = f.resultTable()
+</programlisting>
+</sect3>
 
 <sect3 id="Python-Integration">
 <title>Integration</title>

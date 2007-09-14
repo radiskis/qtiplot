@@ -166,11 +166,12 @@ QString MultiPeakFit::peakFormula(int peakIndex, PeakProfile profile)
 
 void MultiPeakFit::guessInitialValues()
 {
-	if (d_peaks > 1)
+	if (!d_n || d_peaks > 1)
 		return;	
-			
+				
 	size_t imin, imax;
 	gsl_stats_minmax_index(&imin, &imax, d_y, 1, d_n);
+	
 	double min_out = d_y[imin];
 	double max_out = d_y[imax];
 	
@@ -290,17 +291,17 @@ void MultiPeakFit::generateFitCurve(double *par)
 		QString tableName = app->generateUniqueName(tr("Fit"));
 		QString label = d_explanation + " " + tr("fit of") + " " + d_curve->title().text();
 
-		Table *t = app->newHiddenTable(tableName, label, d_points, peaks_aux + 2);
+		d_result_table = app->newHiddenTable(tableName, label, d_points, peaks_aux + 2);
 		QStringList header = QStringList() << "1";
 		for (i = 0; i<peaks_aux; i++)
 			header << tr("peak") + QString::number(i+1);
 		header << "2";
-		t->setHeader(header);
+		d_result_table->setHeader(header);
 
         QLocale locale = app->locale();
 		for (i = 0; i<d_points; i++){
 			X[i] = d_x[i];
-			t->setText(i, 0, locale.toString(X[i], 'g', d_prec));
+			d_result_table->setText(i, 0, locale.toString(X[i], 'g', d_prec));
 
 			double yi=0;
 			for (j=0; j<d_peaks; j++){
@@ -314,16 +315,16 @@ void MultiPeakFit::generateFitCurve(double *par)
 
 				yi += y_aux;
 				y_aux += par[d_p - 1];
-				t->setText(i, j+1, locale.toString(y_aux, 'g', d_prec));
+				d_result_table->setText(i, j+1, locale.toString(y_aux, 'g', d_prec));
 				gsl_matrix_set(m, i, j, y_aux);
 			}
 			Y[i] = yi + par[d_p - 1];//add offset
 			if (d_peaks > 1)
-				t->setText(i, d_peaks+1, locale.toString(Y[i], 'g', d_prec));
+				d_result_table->setText(i, d_peaks+1, locale.toString(Y[i], 'g', d_prec));
 		}
 
 		label = tableName + "_2";
-		DataCurve *c = new DataCurve(t, tableName + "_1", label);
+		DataCurve *c = new DataCurve(d_result_table, tableName + "_1", label);
 		if (d_peaks > 1)
 			c->setPen(QPen(ColorBox::color(d_curveColorIndex), 2));
 		else
@@ -339,7 +340,7 @@ void MultiPeakFit::generateFitCurve(double *par)
 					Y[j] = gsl_matrix_get (m, j, i);
 
 				label = tableName + "_" + tr("peak") + QString::number(i+1);
-				c = new DataCurve(t, tableName + "_1", label);
+				c = new DataCurve(d_result_table, tableName + "_1", label);
 				c->setPen(QPen(ColorBox::color(d_peaks_color), 1));
 				c->setData(X, Y, d_points);
 				d_graph->insertPlotItem(c, Graph::Line);

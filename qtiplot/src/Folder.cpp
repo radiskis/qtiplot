@@ -223,12 +223,20 @@ MyWidget *Folder::window(const QString &name, const char *cls, bool recursive)
 		if (w->inherits(cls) && name == w->name())
 			return w;
 	if (!recursive) return NULL;
-	foreach (QObject *f, children())
-	{
+	foreach (QObject *f, children()){
 		MyWidget *w = ((Folder*)f)->window(name, cls, true);
 		if (w) return w;
 	}
 	return NULL;
+}
+
+void Folder::addWindow( MyWidget *w )
+{ 
+	if (w) {
+		lstWindows.append( w ); 
+		w->setFolder(this);
+		d_active_window = w;
+	}
 }
 
 void Folder::removeWindow( MyWidget *w )
@@ -236,30 +244,30 @@ void Folder::removeWindow( MyWidget *w )
 	if (!w)
 		return;
 	
-	if (d_active_window == w)
+	if (d_active_window && d_active_window == w)
 		d_active_window = NULL;
 	
-	lstWindows.takeAt( lstWindows.indexOf(w) );
+	int index = lstWindows.indexOf(w);
+	if (index >= 0 && index < lstWindows.size())
+		lstWindows.removeAt(index);
 }
 
 QString Folder::sizeToString()
 {
-int size = 0;
+	int size = 0;
 
-QObjectList folderList = children();
-if (!folderList.isEmpty())
-	{
+	QObjectList folderList = children();
+	if (!folderList.isEmpty()){
 		QObject *f;
 		foreach(f,folderList)
 			size +=  sizeof(static_cast<Folder *>(f)); // FIXME: Doesn't this function add the size of pointers together? For what?
 	}
 
+	MyWidget * w;
+	foreach(w, lstWindows)
+		size += sizeof(w);
 
-MyWidget * w;
-foreach(w, lstWindows)
-	size += sizeof(w);
-
-return QString::number(8*size/1024.0,'f',1)+" "+tr("kB")+" ("+QString::number(8*size)+" "+tr("bytes")+")";
+	return QString::number(8*size/1024.0,'f',1)+" "+tr("kB")+" ("+QString::number(8*size)+" "+tr("bytes")+")";
 }
 
 Folder* Folder::rootFolder()

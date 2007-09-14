@@ -2480,7 +2480,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		}
 
 		sCols = new int[selectedCols];
-		int aux = 1;
+		int aux = 0;
 		for (int i=0; i<cols; i++){
 			if (d_table->isColumnSelected(i)){
 				sCols[aux] = i;
@@ -2503,21 +2503,24 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		}
 	}
 
+	int aux = selectedCols-1;
 	if (withLabels){
 		QStringList header = colNames();
 		QStringList ls = header.grep ( QRegExp ("\\D"));
 		if (exportSelection){
-			for (int i=1; i<selectedCols; i++){
+			for (int i=0; i<aux; i++){
 				if (ls.count()>0)
 					text += header[sCols[i]] + separator;
 				else
 					text += "C" + header[sCols[i]] + separator;
 			}
-
-			if (ls.count()>0)
-				text += header[sCols[selectedCols]] + "\n";
-			else
-				text += "C" + header[sCols[selectedCols]] + "\n";
+			
+			if (aux >= 0){
+				if (ls.count()>0)
+					text += header[sCols[aux]] + "\n";
+				else
+					text += "C" + header[sCols[aux]] + "\n";
+			}
 		} else {
 			if (ls.count()>0){
 				for (int j=0; j<cols-1; j++)
@@ -2533,9 +2536,10 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 
 	if (exportComments){
 		if (exportSelection){
-			for (int i=1; i<selectedCols; i++)
+			for (int i=0; i<aux; i++)
                 text += comments[sCols[i]] + separator;
-			text += comments[sCols[selectedCols]] + "\n";
+			if (aux >= 0)
+				text += comments[sCols[aux]] + "\n";
 		} else {
             for (int i=0; i<cols-1; i++)
                 text += comments[i] + separator;
@@ -2545,11 +2549,12 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 
 	if (exportSelection){
 		for (int i=topRow; i<=bottomRow; i++){
-			for (int j=1; j<selectedCols; j++)
+			for (int j=0; j<aux; j++)
 				text += d_table->text(i, sCols[j]) + separator;
-			text += d_table->text(i, sCols[selectedCols]) + "\n";
+			if (aux >= 0)
+				text += d_table->text(i, sCols[aux]) + "\n";
 		}
-		delete[] sCols;//free memory
+		delete [] sCols;
 	} else {
 		for (int i=0;i<rows;i++) {
 			for (int j=0; j<cols-1; j++)

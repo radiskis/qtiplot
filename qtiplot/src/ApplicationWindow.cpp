@@ -1185,7 +1185,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
-
+	
 	if(w){
 		actionPrintAllPlots->setEnabled(projectHas2DPlots());
 		actionPrint->setEnabled(true);
@@ -1194,6 +1194,10 @@ void ApplicationWindow::customMenu(QWidget* w)
 		actionPasteSelection->setEnabled(true);
 		actionClearSelection->setEnabled(true);
 		actionSaveTemplate->setEnabled(true);
+		if (tableWindows.count() > 0)
+			actionShowExportASCIIDialog->setEnabled(true);
+		else
+			actionShowExportASCIIDialog->setEnabled(false);
 
 		if (w->isA("MultiLayer")) {
 			menuBar()->insertItem(tr("&Graph"), graph);
@@ -1202,7 +1206,6 @@ void ApplicationWindow::customMenu(QWidget* w)
 			menuBar()->insertItem(tr("For&mat"), format);
 
 			file->setItemEnabled (exportID,true);
-			actionShowExportASCIIDialog->setEnabled(false);
 			file->setItemEnabled (closeID,true);
 
 			format->clear();
@@ -1238,7 +1241,6 @@ void ApplicationWindow::customMenu(QWidget* w)
 				menuBar()->insertItem(tr("&Table"), tableMenu);
 			}
 
-			actionShowExportASCIIDialog->setEnabled(true);
 			actionTableRecalculate->setEnabled(true);
 			file->setItemEnabled (exportID,false);
 			file->setItemEnabled (closeID,true);
@@ -1275,7 +1277,6 @@ void ApplicationWindow::disableActions()
 	actionSaveTemplate->setEnabled(false);
 	actionPrintAllPlots->setEnabled(false);
 	actionPrint->setEnabled(false);
-	actionShowExportASCIIDialog->setEnabled(false);
 	file->setItemEnabled (exportID,false);
 	file->setItemEnabled (closeID,false);
 
@@ -2911,17 +2912,14 @@ Table* ApplicationWindow::table(const QString& name)
 Matrix* ApplicationWindow::matrix(const QString& name)
 {
 	QString caption = name;
-	if (!renamedTables.isEmpty() && renamedTables.contains(caption))
-	{
+	if (!renamedTables.isEmpty() && renamedTables.contains(caption)){
 		int index = renamedTables.findIndex(caption);
 		caption = renamedTables[index+1];
 	}
 
 	QWidgetList *lst = windowsList();
-	foreach(QWidget *w, *lst)
-	{
-		if (w->isA("Matrix") && w->name() == caption)
-		{
+	foreach(QWidget *w, *lst){
+		if (w->isA("Matrix") && w->name() == caption){
 			delete lst;
 			return (Matrix*)w;
 		}
@@ -2951,8 +2949,7 @@ void ApplicationWindow::addErrorBars()
 		return;
 
 	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
@@ -2963,14 +2960,12 @@ void ApplicationWindow::addErrorBars()
 	if (!g)
         return;
 
-    if (!g->curves())
-	{
+    if (!g->curves()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		return;
 	}
 
-	if (g->isPiePlot())
-	{
+	if (g->isPiePlot()){
         QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
         return;
 	}
@@ -5396,8 +5391,11 @@ void ApplicationWindow::showTopAxisTitleDialog()
 
 void ApplicationWindow::showExportASCIIDialog()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->inherits("Table")){
-		ExportDialog* ed = new ExportDialog(ws->activeWindow()->name(), this, Qt::WindowContextHelpButtonHint);
+	if (tableWindows.count()){
+		QString tableName;
+		if (ws->activeWindow() && ws->activeWindow()->inherits("Table"))
+			tableName = ws->activeWindow()->name();
+		ExportDialog* ed = new ExportDialog(tableName, this, Qt::WindowContextHelpButtonHint);
 		ed->setAttribute(Qt::WA_DeleteOnClose);
 		ed->exec();
 	}
@@ -5406,8 +5404,7 @@ void ApplicationWindow::showExportASCIIDialog()
 void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool colComments, bool expSelection)
 {
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose a directory to export the tables to"), workingDir, QFileDialog::ShowDirsOnly);
-	if (!dir.isEmpty())
-	{
+	if (!dir.isEmpty()){
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		QWidgetList *windows = windowsList();
 		workingDir = dir;
@@ -5415,15 +5412,12 @@ void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool 
 		bool confirmOverwrite = true;
 		bool success = true;
 		QWidget *w;
-		foreach(w, *windows)
-		{
-			if (w->inherits("Table"))
-			{
+		foreach(w, *windows){
+			if (w->inherits("Table")){
 				Table *t = (Table*)w;
 				QString fileName = dir + "/" + w->name() + ".txt";
 				QFile f(fileName);
-				if (f.exists(fileName) && confirmOverwrite)
-				{
+				if (f.exists(fileName) && confirmOverwrite){
 					QApplication::restoreOverrideCursor();
 					switch(QMessageBox::question(this, tr("QtiPlot - Overwrite file?"),
 								tr("A file called: <p><b>%1</b><p>already exists. "
@@ -5442,8 +5436,7 @@ void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool 
 							return;
 							break;
 					}
-				}
-				else
+				} else
 					success = t->exportASCII(fileName, sep, colNames, colComments, expSelection);
 
 				if (!success)
@@ -5464,8 +5457,7 @@ void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep
 
 	QString selectedFilter;
 	QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"), asciiDirPath, "*.txt;;*.dat;;*.DAT", &selectedFilter);
-	if (!fname.isEmpty() )
-	{
+	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
 		QString baseName = fi.fileName();
 		if (baseName.contains(".")==0)
@@ -7736,6 +7728,10 @@ void ApplicationWindow::closeWindow(MyWidget* window)
 		return;
 
 	removeWindowFromLists(window);
+	if (window->inherits("Table")){
+		if (!tableWindows.count())
+			actionShowExportASCIIDialog->setEnabled(false);
+	}
 	window->folder()->removeWindow(window);
 
 	//update list view in project explorer
@@ -7960,13 +7956,11 @@ void ApplicationWindow::timerEvent ( QTimerEvent *e)
 void ApplicationWindow::dropEvent( QDropEvent* e )
 {
 	QStringList fileNames;
-	if (Q3UriDrag::decodeLocalFiles(e, fileNames))
-	{
+	if (Q3UriDrag::decodeLocalFiles(e, fileNames)){
 		QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 		QStringList asciiFiles;
 
-		for(int i = 0; i<(int)fileNames.count(); i++)
-		{
+		for(int i = 0; i<(int)fileNames.count(); i++){
 			QString fn = fileNames[i];
 			QFileInfo fi (fn);
 			QString ext = fi.extension().lower();
@@ -7992,8 +7986,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 
 void ApplicationWindow::dragEnterEvent( QDragEnterEvent* e )
 {
-	if (e->source())
-	{
+	if (e->source()){
 		e->ignore();
 		return;
 	}
@@ -13228,7 +13221,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
 	if (current_folder == newFolder && !force)
 		return false;
-
+	
     desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
 
@@ -13240,6 +13233,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
     MyWidget::Status active_window_state = MyWidget::Normal;
     MyWidget *active_window = newFolder->activeWindow();
+	
     if (active_window)
         active_window_state = active_window->status();
 
@@ -13308,7 +13302,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
             }
         current_folder->setActiveWindow(active_window);
         customMenu(active_window);
-        customToolBars(active_window);
+        customToolBars(active_window);			
         }
 
      if (old_active_window){
@@ -13318,7 +13312,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
     foreach(MyWidget *w, newFolder->windowsList())
         w->blockSignals(false);
-
+	 
 	return true;
 }
 
@@ -13487,20 +13481,16 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 	Q3ListViewItem *it;
 	QStringList subfolders = dest_f->subfolders();
 
-	foreach(it, draggedItems)
-	{
-		if (it->rtti() == FolderListItem::RTTI)
-		{
+	foreach(it, draggedItems){
+		if (it->rtti() == FolderListItem::RTTI){
 			Folder *f = ((FolderListItem *)it)->folder();
 			FolderListItem *src = f->folderListItem();
-			if (dest_f == f)
-			{
+			if (dest_f == f){
 				QMessageBox::critical(this, "QtiPlot - Error", tr("Cannot move an object to itself!"));
 				return;
 			}
 
-			if (((FolderListItem *)dest)->isChildOf(src))
-			{
+			if (((FolderListItem *)dest)->isChildOf(src)){
 				QMessageBox::critical(this,"QtiPlot - Error",tr("Cannot move a parent folder into a child folder!"));
 				draggedItems.clear();
 				folders->setCurrentItem(current_folder->folderListItem());
@@ -13513,22 +13503,17 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 			if (dest_f == parent)
 				return;
 
-			if (subfolders.contains(f->name()))
-			{
+			if (subfolders.contains(f->name())){
 				QMessageBox::critical(this, tr("QtiPlot") +" - " + tr("Skipped moving folder"),
 						tr("The destination folder already contains a folder called '%1'! Folder skipped!").arg(f->name()));
-			}
-			else
+			} else
 				moveFolder(src, (FolderListItem *)dest);
-		}
-		else
-		{
+		} else {
 			if (dest_f == current_folder)
 				return;
 
 			MyWidget *w = ((WindowListItem *)it)->window();
-			if (w)
-			{
+			if (w){
 				current_folder->removeWindow(w);
 				w->hide();
 				dest_f->addWindow(w);
@@ -13540,7 +13525,7 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 	draggedItems.clear();
 	current_folder = dest_f;
 	folders->setCurrentItem(dest_f->folderListItem());
-	changeFolder(dest_f, true);
+	changeFolder(dest_f, true);	
 	folders->setFocus();
 }
 
@@ -13725,14 +13710,17 @@ void ApplicationWindow::showScriptWindow()
 {
 	if (!scriptWindow){
 		scriptWindow = new ScriptWindow(scriptEnv, this);
-		scriptWindow->setAlwaysOnTop(d_script_win_on_top);		
 		scriptWindow->resize(d_script_win_rect.size());
 		scriptWindow->move(d_script_win_rect.topLeft());
-
+		
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
 	}
 
 	if (!scriptWindow->isVisible()){
+		Qt::WindowFlags flags = 0;
+		if (d_script_win_on_top)
+			flags |= Qt::WindowStaysOnTopHint;
+		scriptWindow->setWindowFlags(flags);
 		scriptWindow->show();
 		scriptWindow->setFocus();
 	} else
@@ -13745,9 +13733,7 @@ void ApplicationWindow::showScriptWindow()
 void ApplicationWindow::togglePerspective(bool on)
 {
 	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
 		((Graph3D*)ws->activeWindow())->setOrthogonal(!on);
-	}
 }
 
 /*!
@@ -13756,9 +13742,7 @@ void ApplicationWindow::togglePerspective(bool on)
 void ApplicationWindow::resetRotation()
 {
 	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
 		((Graph3D*)ws->activeWindow())->setRotation(30,0,15);
-	}
 }
 
 /*!

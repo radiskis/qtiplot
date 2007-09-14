@@ -58,6 +58,8 @@ public slots:
 		virtual void setVisible(bool visible);
 
 		void executeAll(){te->executeAll();};
+		
+private slots:
 		void setAlwaysOnTop(bool on);
 
 signals:
