@@ -96,6 +96,7 @@ public slots:
 	QStringList columnsList();
 	QStringList colNames(){return col_label;}
 	QString colName(int col);
+    void setColName(int col, const QString& text, bool enumerateRight = false);
 	QString colLabel(int col){return col_label[col];};
 	int colIndex(const QString& name);
 
@@ -104,7 +105,6 @@ public slots:
 	void setPlotDesignation(PlotDesignation pd);
 	Q3ValueList<int> plotDesignations(){return col_plot_type;};
 
-	void setColName(int col,const QString& text);
 	void setHeader(QStringList header);
 	void loadHeader(QStringList header);
 	void setHeaderColType();
@@ -232,8 +232,6 @@ public slots:
 	QStringList drawableColumnSelection();
 	QStringList YColumns();
 	int selectedColsNumber();
-	void changeColName(const QString& text);
-	void enumerateRightCols(bool checked);
 
 	void changeColWidth(int width, bool allCols);
 	void changeColWidth(int width, int col);

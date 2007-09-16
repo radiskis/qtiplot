@@ -1185,7 +1185,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
-	
+
 	if(w){
 		actionPrintAllPlots->setEnabled(projectHas2DPlots());
 		actionPrint->setEnabled(true);
@@ -1651,19 +1651,15 @@ void ApplicationWindow::updateTableNames(const QString& oldName, const QString& 
 void ApplicationWindow::updateColNames(const QString& oldName, const QString& newName)
 {
 	QWidgetList *windows = windowsList();
-	foreach (QWidget *w, *windows)
-	{
-		if (w->isA("MultiLayer"))
-		{
+	foreach (QWidget *w, *windows){
+		if (w->isA("MultiLayer")){
 			QWidgetList gr_lst = ((MultiLayer*)w)->graphPtrs();
 			foreach (QWidget *widget, gr_lst)
                 ((Graph *)widget)->updateCurveNames(oldName, newName, false);
 		}
-		else if (w->isA("Graph3D"))
-		{
+		else if (w->isA("Graph3D")){
 			QString name = ((Graph3D*)w)->formula();
-			if (name.contains(oldName))
-			{
+			if (name.contains(oldName)){
 				name.replace(oldName,newName);
 				((Graph3D*)w)->setPlotAssociation(name);
 			}
@@ -3112,20 +3108,15 @@ void ApplicationWindow::removeCurves(const QString& name)
 void ApplicationWindow::updateCurves(Table *t, const QString& name)
 {
 	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows)
-	{
-		if (w->isA("MultiLayer"))
-		{
+	foreach(QWidget *w, *windows){
+		if (w->isA("MultiLayer")){
 			QWidgetList graphsList = ((MultiLayer*)w)->graphPtrs();
-			for (int k=0; k<(int)graphsList.count(); k++)
-			{
-				Graph* g=(Graph*)graphsList.at(k);
+			for (int k=0; k<(int)graphsList.count(); k++){
+				Graph* g = (Graph*)graphsList.at(k);
                 if (g)
                     g->updateCurvesData(t, name);
 			}
-		}
-		else if (w->isA("Graph3D"))
-		{
+		} else if (w->isA("Graph3D")){
 			Graph3D* g = (Graph3D*)w;
 			if ((g->formula()).contains(name))
 				g->updateData(t);
@@ -4168,7 +4159,7 @@ void ApplicationWindow::readSettings()
 	QStringList applicationFont = settings.value("/Font").toStringList();
 	if (applicationFont.size() == 4)
 		appFont=QFont (applicationFont[0],applicationFont[1].toInt(),applicationFont[2].toInt(),applicationFont[3].toInt());
-	
+
 	settings.beginGroup("/Dialogs");
 	d_extended_open_dialog = settings.value("/ExtendedOpenDialog", true).toBool();
 	d_extended_export_dialog = settings.value("/ExtendedExportDialog", true).toBool();
@@ -4395,8 +4386,8 @@ void ApplicationWindow::readSettings()
 	d_export_vector_size = settings.value("/ExportPageSize", QPrinter::Custom).toInt();
 	d_keep_plot_aspect = settings.value("/KeepAspect", true).toBool();
 	settings.endGroup(); // ExportImage
-	
-	settings.beginGroup("/ScriptWindow");	
+
+	settings.beginGroup("/ScriptWindow");
 	d_script_win_on_top = settings.value("/AlwaysOnTop", true).toBool();
 	d_script_win_rect = QRect(settings.value("/x", 0).toInt(), settings.value("/y", 0).toInt(),
 							settings.value("/width", 500).toInt(), settings.value("/height", 300).toInt());
@@ -4655,8 +4646,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ExportPageSize", d_export_vector_size);
 	settings.setValue("/KeepAspect", d_keep_plot_aspect);
 	settings.endGroup(); // ExportImage
-	
-	settings.beginGroup("/ScriptWindow");	
+
+	settings.beginGroup("/ScriptWindow");
 	settings.setValue("/AlwaysOnTop", d_script_win_on_top);
 	settings.setValue("/x", d_script_win_rect.x());
 	settings.setValue("/y", d_script_win_rect.y());
@@ -5156,16 +5147,16 @@ bool ApplicationWindow::setWindowName(MyWidget *w, const QString &text)
 	}
 
 	if (w->inherits("Table")){
-		QStringList labels=((Table *)w)->colNames();
+		/*QStringList labels=((Table *)w)->colNames();
 		if (labels.contains(newName)>0){
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 					tr("The table name must be different from the names of its columns!")+"<p>"+tr("Please choose another name!"));
 			return false;
-		}
+		}*/
 
-		int id=tableWindows.findIndex(name);
-		tableWindows[id]=newName;
-		updateTableNames(name,newName);
+		int id = tableWindows.findIndex(name);
+		tableWindows[id] = newName;
+		updateTableNames(name, newName);
 	} else if (w->isA("Matrix"))
 		changeMatrixName(name, newName);
 
@@ -6336,16 +6327,14 @@ void ApplicationWindow::setAutoScale()
 		return;
 
 	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
-	if ( g )
-	{
+	Graph *g = (Graph*)plot->activeGraph();
+	if (g){
 		g->setAutoScale();
 		emit modified();
 	}
@@ -7998,7 +7987,7 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
 {
 	if (scriptWindow)
 		d_script_win_rect = QRect(scriptWindow->pos(), scriptWindow->size());
-	
+
 	if (!saved)
 	{
 		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
@@ -10222,8 +10211,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 	}
 	ag->replot();
-	if (ag->isPiePlot())
-	{
+	if (ag->isPiePlot()){
         QwtPieCurve *c = (QwtPieCurve *)ag->curve(0);
         if (c) c->updateBoundingRect();
     }
@@ -10675,7 +10663,7 @@ void ApplicationWindow::createActions()
 	connect(actionAddLayer, SIGNAL(activated()), this, SLOT(addLayer()));
 
 	actionShowLayerDialog = new QAction(QIcon(QPixmap(arrangeLayers_xpm)), tr("Arran&ge Layers"), this);
-	actionShowLayerDialog->setShortcut( tr("ALT+A") );
+	actionShowLayerDialog->setShortcut( tr("Shift+A") );
 	connect(actionShowLayerDialog, SIGNAL(activated()), this, SLOT(showLayerDialog()));
 
 	actionAutomaticLayout = new QAction(QIcon(QPixmap(auto_layout_xpm)), tr("Automatic Layout"), this);
@@ -11303,7 +11291,7 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionShowLayerDialog->setMenuText(tr("Arran&ge Layers"));
 	actionShowLayerDialog->setToolTip(tr("Arrange Layers"));
-	actionShowLayerDialog->setShortcut(tr("ALT+A"));
+	actionShowLayerDialog->setShortcut(tr("Shift+A"));
 
 	actionAutomaticLayout->setMenuText(tr("Automatic Layout"));
 	actionAutomaticLayout->setToolTip(tr("Automatic Layout"));
@@ -13221,7 +13209,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
 	if (current_folder == newFolder && !force)
 		return false;
-	
+
     desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
 
@@ -13233,7 +13221,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
     MyWidget::Status active_window_state = MyWidget::Normal;
     MyWidget *active_window = newFolder->activeWindow();
-	
+
     if (active_window)
         active_window_state = active_window->status();
 
@@ -13302,7 +13290,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
             }
         current_folder->setActiveWindow(active_window);
         customMenu(active_window);
-        customToolBars(active_window);			
+        customToolBars(active_window);
         }
 
      if (old_active_window){
@@ -13312,7 +13300,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
     foreach(MyWidget *w, newFolder->windowsList())
         w->blockSignals(false);
-	 
+
 	return true;
 }
 
@@ -13525,7 +13513,7 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 	draggedItems.clear();
 	current_folder = dest_f;
 	folders->setCurrentItem(dest_f->folderListItem());
-	changeFolder(dest_f, true);	
+	changeFolder(dest_f, true);
 	folders->setFocus();
 }
 
@@ -13665,10 +13653,10 @@ QString ApplicationWindow::generateUniqueName(const QString& name, bool incremen
 		newName += QString::number(++index);
 	else if (index>0)
 		newName += QString::number(index);
-	
+
 	while(lst.contains(newName))
 		newName = name + QString::number(++index);
-	
+
 	return newName;
 }
 
@@ -13712,7 +13700,7 @@ void ApplicationWindow::showScriptWindow()
 		scriptWindow = new ScriptWindow(scriptEnv, this);
 		scriptWindow->resize(d_script_win_rect.size());
 		scriptWindow->move(d_script_win_rect.topLeft());
-		
+
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
 	}
 

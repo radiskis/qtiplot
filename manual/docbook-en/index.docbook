@@ -110,20 +110,15 @@
 <!ENTITY print-all-plots-lnk '<link linkend="print-all-plots-cmd"><command>Print All Plots</command> command</link>'>
 <!ENTITY export-ascii-cmd "<command>Export ASCII</command>">
 <!ENTITY export-ascii-lnk '<link linkend="export-ascii-cmd"><command>Export ASCII</command> command</link>'>
-<!ENTITY import-ascii-cmd "<command>Import ASCII</command>">
-<!ENTITY import-ascii-lnk '<link linkend="import-ascii-cmd"><command>Import ASCII</command> command</link>'>
-<!ENTITY import-ascii-1-cmd "<command>Import ASCII -> Single File...</command>">
-<!ENTITY import-ascii-1-lnk '<link linkend="import-ascii-1-cmd"><command>Import ASCII -> Single File...</command> command</link>'>
-  <!ENTITY import-ascii-1-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/import.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY import-ascii-n-cmd "<command>Import ASCII -> Multiple Files...</command>">
-<!ENTITY import-ascii-n-lnk '<link linkend="import-ascii-n-cmd"><command>Import ASCII -> Multiple Files...</command> command</link>'>
-  <!ENTITY import-ascii-n-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/multiload.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY set-import-options-cmd "<command>Set Import Options...</command>">
-<!ENTITY set-import-options-lnk '<link linkend="set-import-options-cmd"><command>Set Import Options...</command> command</link>'>
+
+<!ENTITY import-ascii-cmd "<command>Import ASCII...</command>">
+<!ENTITY import-ascii-lnk '<link linkend="import-ascii-cmd"><command>Import ASCII...</command> command</link>'>
+<!ENTITY import-ascii-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/import.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY import-ascii-key "<keycode>Ctrl-K</keycode>">
 <!ENTITY quit-cmd "<command>Quit</command>">
 <!ENTITY quit-lnk '<link linkend="quit-cmd"><command>Quit</command> command</link>'>
-  <!ENTITY quit-key "<keycode>Alt-F4</keycode>">
-  <!ENTITY quit-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/quit.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY quit-key "<keycode>Alt-F4</keycode>">
+<!ENTITY quit-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/quit.png"/></imageobject></inlinemediaobject>'>
 <!--
               menu: Edit
 -->
@@ -230,7 +225,7 @@
   <!ENTITY remove-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY arrange-layers-cmd "<command>Arrange Layers</command>">
 <!ENTITY arrange-layers-lnk '<link linkend="arrange-layers-cmd"><command>Arrange Layers</command> command</link>'>
-  <!ENTITY arrange-layers-key "<keycode>Alt-A</keycode>">
+  <!ENTITY arrange-layers-key "<keycode>Shift-A</keycode>">
   <!ENTITY arrange-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/arrangeLayers.png"/></imageobject></inlinemediaobject>'>
 <!--
               menu: Plot3d

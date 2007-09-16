@@ -295,14 +295,12 @@ if (colName->text().contains("_")){
 
 QString name=colName->text().replace("-", "_");
 if (name.contains(QRegExp("\\W"))){
-	QMessageBox::warning(this,tr("QtiPlot - Error"),
-						tr("The column names must only contain letters and digits!"));
+	QMessageBox::warning(this,tr("QtiPlot - Error"), tr("The column names must only contain letters and digits!"));
 	name.remove(QRegExp("\\W"));
 	}
-d_table->enumerateRightCols(enumerateAllBox->isChecked());
 d_table->changeColWidth(colWidth->value(), applyToAllBox->isChecked());
 d_table->setColComment(d_table->selectedColumn(), comments->text().replace("\n", " ").replace("\t", " "));
-d_table->changeColName(name.replace("_", "-"));
+d_table->setColName(d_table->selectedColumn(), name.replace("_", "-"), enumerateAllBox->isChecked());
 
 int format = formatBox->currentIndex();
 int colType = displayBox->currentIndex();

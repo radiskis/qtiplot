@@ -58,7 +58,7 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	gl1->addWidget(fitBox, 1, 1);
 	gl1->setRowStretch(2, 1);
 
-    QGroupBox *gb2 = new QGroupBox(tr("Alignement"));
+    QGroupBox *gb2 = new QGroupBox(tr("Alignment"));
 	QGridLayout *gl2 = new QGridLayout(gb2);
 	gl2->addWidget(new QLabel(tr("Horizontal")), 0, 0);
 
@@ -161,14 +161,14 @@ LayerDialog::LayerDialog( QWidget* parent, Qt::WFlags fl )
 	QGroupBox *gb5 = new QGroupBox(tr("Swap Layers"));
 	QHBoxLayout *hbox2 = new QHBoxLayout(gb5);
 	hbox2->addWidget(new QLabel( tr( "Source Layer") ));
-		
+
 	boxLayerSrc = new QSpinBox();
 	hbox2->addWidget(boxLayerSrc);
-	
+
 	hbox2->addWidget(new QLabel( tr( "Destination Layer") ));
 	boxLayerDest = new QSpinBox();
 	hbox2->addWidget(boxLayerDest);
-	
+
 	buttonSwapLayers = new QPushButton(tr( "&Swap" ));
 	hbox2->addWidget(buttonSwapLayers);
 
@@ -215,7 +215,7 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 	boxCanvasHeight->setValue(g->layerCanvasSize().height());
 	alignHorBox->setCurrentItem(g->horizontalAlignement());
 	alignVertBox->setCurrentItem(g->verticalAlignement());
-	
+
 	boxLayerSrc->setRange(1, g->layers());
 	boxLayerDest->setRange(1, g->layers());
 }
@@ -304,6 +304,6 @@ void LayerDialog::swapLayers()
 		tr("Please enter different indexes for the source and destination layers!"));
 		return;
 	}
-	
+
 	multi_layer->swapLayers(boxLayerSrc->value(), boxLayerDest->value());
 }

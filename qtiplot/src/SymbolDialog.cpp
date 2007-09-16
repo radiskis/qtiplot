@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Tool window to select special text characters
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -56,7 +56,7 @@ SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WFlags fl )
 		initNumberSymbols();
 
 	closeButton = new QPushButton(tr("&Close"), this);
-	
+
 	mainLayout->addLayout( gridLayout );
 	mainLayout->addWidget( closeButton );
 
@@ -72,9 +72,8 @@ SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WFlags fl )
 
 void SymbolDialog::initLowerGreekChars()
 {
-	int i, counter = 0;
-	for ( i=0 ; i <= (0x3C9-0x3B1) ; i++,counter++ )
-	{
+	int counter = 0;
+	for (int i=0 ; i <= (0x3C9-0x3B1) ; i++,counter++ ){
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x3B1)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
@@ -82,41 +81,12 @@ void SymbolDialog::initLowerGreekChars()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/5,counter%5);
 	}
-	for ( i=0 ; i <= (0x3D1-0x3D1) ; i++,counter++ )
-	{
-		QPushButton *btn = new QPushButton(QString(QChar(i+0x3D1)));
-		btn->setMaximumWidth(40);
-		btn->setFlat ( true );
-		btn->setAutoDefault (false);
-		buttons->addButton(btn,counter+1);
-		gridLayout->addWidget(btn,counter/5,counter%5);
-	}
-	for ( i=0 ; i <= (0x3D5-0x3D5) ; i++,counter++ )
-	{
-		QPushButton *btn = new QPushButton(QString(QChar(i+0x3D5)));
-		btn->setMaximumWidth(40);
-		btn->setFlat ( true );
-		btn->setAutoDefault (false);
-		buttons->addButton(btn,counter+1);
-		gridLayout->addWidget(btn,counter/5,counter%5);
-	}
-	for ( i=0 ; i <= (0x3F1-0x3F0) ; i++,counter++ )
-	{
-		QPushButton *btn = new QPushButton(QString(QChar(i+0x3F0)));
-		btn->setMaximumWidth(40);
-		btn->setFlat ( true );
-		btn->setAutoDefault (false);
-		buttons->addButton(btn,counter+1);
-		gridLayout->addWidget(btn,counter/5,counter%5);
-	}
-	numButtons = counter;
 }
 
 void SymbolDialog::initUpperGreekChars()
 {
 	int i, counter = 0;
-	for ( i=0 ; i <= (0x3A1-0x391) ; i++,counter++ )
-	{
+	for ( i=0 ; i <= (0x3A1-0x391) ; i++,counter++ ){
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x391)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
@@ -124,8 +94,7 @@ void SymbolDialog::initUpperGreekChars()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/5,counter%5);
 	}
-	for ( i=0 ; i <= (0x3A9-0x3A3) ; i++,counter++ )
-	{
+	for ( i=0 ; i <= (0x3A9-0x3A3) ; i++,counter++ ){
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x3A3)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
@@ -139,8 +108,7 @@ void SymbolDialog::initUpperGreekChars()
 void SymbolDialog::initNumberSymbols()
 {
 	int i, counter = 0;
-	for ( i=0 ; i <= (0x216B-0x2153) ; i++,counter++ )
-	{
+	for ( i=0 ; i <= (0x216B-0x2153) ; i++,counter++ ){
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x2153)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
@@ -148,8 +116,7 @@ void SymbolDialog::initNumberSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
-	for ( i=0 ; i <= (0x217B-0x2170) ; i++,counter++ )
-	{
+	for ( i=0 ; i <= (0x217B-0x2170) ; i++,counter++ ){
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x2170)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
@@ -163,8 +130,7 @@ void SymbolDialog::initNumberSymbols()
 void SymbolDialog::initMathSymbols()
 {
 	int i, counter = 0;
-	for ( i=0 ; i <= (0x220D-0x2200) ; i++,counter++ )
-	{
+	for ( i=0 ; i <= (0x220D-0x2200) ; i++,counter++ ){
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x2200)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
@@ -172,8 +138,7 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
-	for ( i=0 ; i <= (0x2211-0x220F) ; i++,counter++ )
-	{
+	for ( i=0 ; i <= (0x2211-0x220F) ; i++,counter++ ){
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x220F)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
@@ -181,8 +146,7 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
-	for ( i=0 ; i <= (0x00B1-0x00B1) ; i++,counter++ )
-	{
+	for ( i=0 ; i <= (0x00B1-0x00B1) ; i++,counter++ ){
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x00B1)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
