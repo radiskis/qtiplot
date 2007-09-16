@@ -8,8 +8,8 @@
     <para>How can I visualise data from a text file?</para>
   </question>
   <answer>
-    <para>Go to the &file-menu-lnk; and select the &import-ascii-1-lnk; command.</para>
-    <para>If the file is not imported correctly, change the columns separator using the &set-import-options-lnk; options command from the &file-menu-lnk; .</para>
+    <para>Go to the &file-menu-lnk; and select the &import-ascii-lnk; command.</para>
+    <para>If the file is not imported correctly, change the columns separator using the &import-ascii-lnk; options command from the &file-menu-lnk; .</para>
     <para>The default columns separator is the TAB.</para>
   </answer>
 </qandaentry>

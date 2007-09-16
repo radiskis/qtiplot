@@ -1,10 +1,10 @@
 <title>The Toolbars</title>
 
 <para>
-All toolbars can be moved and docked to a more convenient location (left, right or bottom sides of the application window) or on the desktop (outside the main window) by drag-and-drop, using their left side handle. The toolbars are automatically enabled/disabled depending on the currently active window: for example if the current window is a table, the Table toolbar will be enabled and all the other toolbars will be automatically disabled. 
+All toolbars can be moved and docked to a more convenient location (left, right or bottom sides of the application window) or on the desktop (outside the main window) by drag-and-drop, using their left side handle. The toolbars are automatically enabled/disabled depending on the currently active window: for example if the current window is a table, the Table toolbar will be enabled and all the other toolbars will be automatically disabled.
 </para>
 <para>
-The same approach is used for showing/hidding the toolbars: if there are no more visible tables in the workspace, the Table toolbar will be automatically hidden and will be shown again when the users adds a new table into the project. A toolbar can be manually shown/hidden by the user, at any time, by right-clicking on the main window menu area and checking/unchecking the corresponding box in the pop-up menu. 
+The same approach is used for showing/hidding the toolbars: if there are no more visible tables in the workspace, the Table toolbar will be automatically hidden and will be shown again when the users adds a new table into the project. A toolbar can be manually shown/hidden by the user, at any time, by right-clicking on the main window menu area and checking/unchecking the corresponding box in the pop-up menu.
 </para>
 
 
@@ -13,7 +13,7 @@ The same approach is used for showing/hidding the toolbars: if there are no more
 
 <figure id="fig-edit-toolbar">
   <title>The &appname; Edit Toolbar</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/edit-toolbar.png"/>
     </imageobject>
@@ -87,7 +87,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
 
 <figure id="fig-file-toolbar">
   <title>The &appname; File Toolbar</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/file-toolbar.png"/>
     </imageobject>
@@ -177,16 +177,10 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>Saves the current project as a template.</entry>
   </row>
   <row>
-   <entry>&import-ascii-1-icon;</entry>
-   <entry>&import-ascii-1-lnk;</entry>
+   <entry>&import-ascii-icon;</entry>
+   <entry>&import-ascii-lnk;</entry>
    <entry></entry>
-   <entry>Imports an ASCII file into one single table.</entry>
-  </row>
-  <row>
-   <entry>&import-ascii-n-icon;</entry>
-   <entry>&import-ascii-n-lnk;</entry>
-   <entry></entry>
-   <entry>Imports an ASCII file into multiple tables.</entry>
+   <entry>Import ASCII files.</entry>
   </row>
   <row>
    <entry>&duplicate-window-icon;</entry>
@@ -223,7 +217,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
 <para>This toolbar is only active when a plot window is selected. It allows the quick access to the commands of the &graph-menu-lnk; and of the &data-menu-lnk; which are used for the modification of the plots and of the data points of the plots.</para>
 <figure id="plot-file-toolbar">
   <title>The &appname; Plot Toolbar</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/plot-toolbar.png"/>
     </imageobject>
@@ -374,7 +368,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
 
 <figure id="plot-table-toolbar">
   <title>The &appname; Table Toolbar</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/table-toolbar.png"/>
     </imageobject>
@@ -504,7 +498,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
 <para></para>
 <figure id="plot-plot3d-toolbar">
   <title>The &appname; Plot 3D Toolbar</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/plot3d-toolbar.png"/>
     </imageobject>

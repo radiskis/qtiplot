@@ -44,11 +44,11 @@
 
 <para>The first step is to create an empty project with the &new-project-lnk; from the &file-menu-lnk;, you can also use the key &new-project-key; or the &new-project-icon; icon from the &file-toolbar-lnk;. Then create a new table with the &new-table-lnk; from the &file-menu-lnk; or with the &new-table-key; or with the &new-table-icon; icon from the &file-toolbar-lnk;.</para>
 
-<para>At its creation, the table has two column (one for X and one for Y) and 32 rows. You can add rows and columns by selecting a row or a column and using the right button of the mouse, you can also modify the number of rows and columns with the &rows-lnk; and &columns-lnk; from the &table-menu-lnk;. You enter your values, and obtain this table:</para> 
+<para>At its creation, the table has two column (one for X and one for Y) and 32 rows. You can add rows and columns by selecting a row or a column and using the right button of the mouse, you can also modify the number of rows and columns with the &rows-lnk; and &columns-lnk; from the &table-menu-lnk;. You enter your values, and obtain this table:</para>
 
 <figure id="fig-simple-2dplot-1">
   <title>A simple 2D plot: the table.</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="tutorial/simple-2dplot-1.png"/>
     </imageobject>
@@ -59,7 +59,7 @@
 
 <figure id="fig-simple-2dplot-2">
   <title>A simple 2D plot: the default plot.</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="tutorial/simple-2dplot-2.png"/>
     </imageobject>
@@ -70,7 +70,7 @@
 
 <figure id="fig-simple-2dplot-3">
   <title>A simple 2D plot: the plot finished.</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="tutorial/simple-2dplot-3.png"/>
     </imageobject>
@@ -86,7 +86,7 @@
 
 <figure id="fig-two-axes-plot">
   <title>A 2D plot with two Y axis.</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/plot-two-axes.png"/>
     </imageobject>
@@ -96,7 +96,7 @@
 <para>In addition to the customization which has been already described, the  axes which are used for each curve were defined with the <link linkend="custom-curves-dialog">Custom Curves</link> Dialog, and two arrows were added with the &draw-arrow-lnk;.</para>
 
 <informalfigure id="fig-two-axes-dialog">
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/plot-two-axes-dialog.png"/>
     </imageobject>
@@ -118,7 +118,7 @@
 
 <figure id="fig-direct-function-plot">
   <title>Direct plot of a function.</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/direct-function-plot.png"/>
     </imageobject>
@@ -136,7 +136,7 @@
 
 <figure id="fig-table-function-plot-1">
   <title>Function plot: filling of the X column.</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="tutorial/table-function-plot1.png"/>
     </imageobject>
@@ -147,7 +147,7 @@
 
 <figure id="fig-table-function-plot-2">
   <title>Function plot: filling of the Y column.</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="tutorial/table-function-plot2.png"/>
     </imageobject>
@@ -197,7 +197,7 @@
 
 <figure id="fig-exemple-3dplot">
   <title>Example of a 3D Plots.</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/exemple-plot3d.png"/>
     </imageobject>
@@ -217,7 +217,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 
 <figure id="fig-define-surface-plot">
   <title>Definition of a new surface 3D plot</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/define-surface-plot.png"/>
     </imageobject>
@@ -228,7 +228,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 
 <figure id="fig-default-surface-plot">
   <title>The 3D surface plot created by default</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/3D-function-plot-default.png"/>
     </imageobject>
@@ -239,7 +239,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 
 <figure id="fig-modified-surface-plot">
   <title>The 3D surface plot after customizations</title>
-  <mediaobject> 
+  <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/3D-function-plot-modified.png"/>
     </imageobject>
@@ -256,7 +256,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 <para>The &new-matrix-lnk; create a default empty matrix with 32x32 cells. Then use the &set-dimensions-lnk; to modify the number of rows and columns of the matrix. This <link linkend="set-dimensions-dialog">dialog box</link> is also used to define the X and Y ranges. </para>
 
   <informalfigure>
-    <mediaobject> 
+    <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/matrix-set-dimensions.png"/>
       </imageobject>
@@ -265,7 +265,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 
 <para>Then use the &set-values-lnk; to fill the cells with numbers. The ranges of X and Y defined in the previous step are not known by this dialog box, then the function is defined with the row and column numbers (i and j) as entry parameters (see the section <link linkend="set-values-dialog">set-values</link> for details).</para>
 
-<para>The other way to obtain a matrix is to import an ASCII file into a table with the &import-ascii-1-lnk; from the &file-menu-lnk;. The table can then be transformed in a matrix with the command &convert-to-matrix-lnk; from the &table-menu-lnk;.</para>
+<para>The other way to obtain a matrix is to import an ASCII file into a table with the &import-ascii-lnk; from the &file-menu-lnk;. The table can then be transformed in a matrix with the command &convert-to-matrix-lnk; from the &table-menu-lnk;.</para>
 
 <para>You can then use this matrix to build a 3D plot with one of the command of the &plot-menu-lnk;.</para>
 
@@ -294,7 +294,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 <para>You can select two columns with Y-values in a table, and then use one of the &panel-cmd; commands in the &plot-menu-lnk;. &appname; will create a panel of plots in which the size of the different elements of each plot are synchronized.</para>
 
   <informalfigure>
-    <mediaobject> 
+    <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/multilayer-panel.png"/>
       </imageobject>
@@ -312,7 +312,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 <para>The first step is to build your first plot, for example from two columns of a table. We obtain a standard plot window:</para>
 
   <informalfigure>
-    <mediaobject> 
+    <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/multilayer-step-1.png"/>
       </imageobject>
@@ -322,7 +322,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 <para>Then, select the plot window and use the &add-layer-lnk; from the &graph-menu-lnk;. This will activate the <link linkend="add-layer-dialog">&add-layer-cmd; dialog</link>. If you choose "Guess" you will obtain a panel with two columns, if you choose "corner" you will obtain two superposed layers, you can then modify these two layers.</para>
 
   <informalfigure>
-    <mediaobject> 
+    <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/multilayer-step-2.png"/>
       </imageobject>
@@ -332,7 +332,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 <para>If you want to build a panel with two rows, you can use the &arrange-layers-lnk; to convert this panel.</para>
 
   <informalfigure>
-    <mediaobject> 
+    <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/multilayer-step-3.png"/>
       </imageobject>
@@ -342,7 +342,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 <para>Then select the second void plot and use the &add-remove-curve-lnk; to select the Y-values from one of the tables of the project.</para>
 
   <informalfigure>
-    <mediaobject> 
+    <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/multilayer-step-4.png"/>
       </imageobject>
@@ -352,7 +352,7 @@ The 3D plots use OpenGL so you can easily rotate, scale and shift them with the 
 <para>After this, you can customize your plot. At the end, the modifications done on the axis or on the axis labels may have modified the geometry of the two plots. You can synchronize again the two plots by applying again the &arrange-layers-lnk;.</para>
 
   <informalfigure>
-    <mediaobject> 
+    <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/multilayer-step-5.png"/>
       </imageobject>

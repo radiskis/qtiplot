@@ -20,7 +20,9 @@ revision history. (see installation appendix comment) -->
 
 <para>Data analysis operations (integration, interpolation, FFT, curve fitting, etc...) can be performed on the curves in a 2D plot via the Analysis menu. The results of all these operations are also stored in the project files. They can be visualized at any moment using the &results-log-lnk; and can be deleted from the project file via the &clear-log-lnk;.</para>
 
-<para>When the application is launched, a new project file is created consisting of a grey main window (the workspace) which contains an empty table. In order to be operational, this workspace must be populated with tables storing data sets, either by creating empty tables first (&new-table-lnk;) and then filling them with data, or by importing ASCII files (&import-ascii-1-lnk;), which automatically creates new tables.</para>
+<para>When the application is launched, a new project file is created consisting of a grey main window (the workspace) which contains an empty table. In order to be operational, this workspace must be populated
+with tables storing data sets, either by creating empty tables first (&new-table-lnk;)
+and then filling them with data, or by importing ASCII files (&import-ascii-lnk;), which automatically creates new tables.</para>
 
 <para>The user can easily navigate through the objects of a project file using the project explorer or the Windows menu. The project explorer also allows the user to perform various operations on the windows (tables and plots) in the workspace: hiding, minimazing, closing, renaming, printing, etc...</para>
 
@@ -45,7 +47,8 @@ revision history. (see installation appendix comment) -->
 &appname; ASCII_file_name
 </screen>
 
-<para> In this latter case a new "untitled" project will be created, containing a spreadsheet with the ASCII data in the file and a 2D plot of all columns as a function of the first column in the file. You must take care of the format of the ASCII file because it will be read with the current values of the &set-import-options-lnk; dialog. These default values are:</para>
+<para> In this latter case a new "untitled" project will be created, containing a spreadsheet with the ASCII data in the file and a 2D plot of all columns as a function of the first column in the file.
+You must take care of the format of the ASCII file because it will be read with the current values of the &import-ascii-lnk; dialog. These default values are:</para>
 <itemizedlist>
   <listitem><para>the default field separator is ; but it can be changed in the &preferences-lnk; dialog,</para></listitem>
   <listitem><para>all lines are read,</para></listitem>
@@ -94,8 +97,12 @@ revision history. (see installation appendix comment) -->
     <term><link linkend="sec-intro-table">A Table</link></term>
     <listitem>
       <indexterm><primary>table</primary></indexterm>
-      <para>A table is a spreadsheet which can be used to store the datas you are entering. It can also be used to do some calculations and statistical analysis of datas. In each table, columns can be labelled as X-values or Y-values for 2D-plotting, or Z-values if you plan to build a 3D-plot.</para>
-      <para>A table can be created by the &new-table-lnk;. Then there are several ways to fill the table with your data. If you want to read a table from an ASCII file, you can import the data from the file to a table with the &import-ascii-1-lnk;. You can also enter each value from the keyboard. The last way to enter your data is to fill the table with the results of a mathematical function (&set-column-values-lnk; from the &table-menu-lnk;)</para>
+      <para>A table is a spreadsheet which can be used to store the datas you are entering.
+      It can also be used to do some calculations and statistical analysis of datas.
+      In each table, columns can be labelled as X-values or Y-values for 2D-plotting, or Z-values if you plan to build a
+      3D-plot.</para>
+      <para>A table can be created by the &new-table-lnk;. Then there are several ways to fill the table with your data.
+      If you want to read a table from an ASCII file, you can import the data from the file to a table with the &import-ascii-lnk;. You can also enter each value from the keyboard. The last way to enter your data is to fill the table with the results of a mathematical function (&set-column-values-lnk; from the &table-menu-lnk;)</para>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -103,7 +110,7 @@ revision history. (see installation appendix comment) -->
     <listitem>
       <indexterm><primary>matrix</primary></indexterm>
       <para>A matrix is a special table which is used to store the data points for surface 3D plots. It contains Z-values and doesn't include any column or row which could be designed as X-values or Y-values. Nevertheless, you can specify the X-values and the Y-values with the &set-dimensions-lnk; command from the &matrix-menu-lnk;.</para>
-      <para>A matrix can be created by the &new-matrix-lnk;. If you want to read a matrix from an ASCII file, you can import the data of the file to a table with the &import-ascii-1-lnk; and then convert this table to a matrix with the &convert-to-matrix-lnk;. In the same way as for tables, you can also fill matrix with the results of a function z=(i,j) in which i and j are row and column numbers (&set-values-lnk; from the &matrix-menu-lnk;)</para>
+      <para>A matrix can be created by the &new-matrix-lnk;. If you want to read a matrix from an ASCII file, you can import the data of the file to a table with the &import-ascii-lnk; and then convert this table to a matrix with the &convert-to-matrix-lnk;. In the same way as for tables, you can also fill matrix with the results of a function z=(i,j) in which i and j are row and column numbers (&set-values-lnk; from the &matrix-menu-lnk;)</para>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -170,7 +177,7 @@ The table is the main part of QtiPlot when working with data. For controlling an
 
 <para> You can cut, copy and paste data between spreadsheets or between a spreadsheet and another application (Excel, Gnumeric, etc...).</para>
 
-<para> You can import single or multiple ASCII files using the &import-ascii-lnk; from the &file-menu-lnk;. The file import options can be changed via the &set-import-options-lnk;. Of course you can export the data from the spreadsheet to a text file using the &export-ascii-lnk;.</para>
+<para> You can import single or multiple ASCII files using the &import-ascii-lnk; from the &file-menu-lnk;. Of course you can export the data from the spreadsheet to a text file using the &export-ascii-lnk;.</para>
 
 </sect2>
 

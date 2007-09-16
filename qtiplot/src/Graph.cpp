@@ -1759,8 +1759,7 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
 {
     QList<int> keys = d_plot->curveKeys();
     int updated_curves = 0;
-	for (int i=0; i<(int)keys.count(); i++)
-	{
+	for (int i=0; i<(int)keys.count(); i++){
 		QwtPlotItem *it = d_plot->plotItem(keys[i]);
 		if (!it)
             continue;
@@ -1772,8 +1771,14 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
         if(((DataCurve *)it)->updateData(w, yColName))
             updated_curves++;
 	}
-    if (updated_curves)
+    if (updated_curves){
+        for (int i = 0; i < QwtPlot::axisCnt; i++){
+			QwtScaleWidget *scale = d_plot->axisWidget(i);
+			if (scale)
+                connect(scale, SIGNAL(scaleDivChanged()), this, SLOT(updateMarkersBoundingRect()));
+		}
         updatePlot();
+    }
 }
 
 QString Graph::saveEnabledAxes()
@@ -2414,18 +2419,16 @@ long Graph::insertTextMarker(const QStringList& list, int fileVersion)
 
 void Graph::addArrow(QStringList list, int fileVersion)
 {
-	ArrowMarker* mrk= new ArrowMarker();
+	ArrowMarker* mrk = new ArrowMarker();
 	long mrkID=d_plot->insertMarker(mrk);
     int linesOnPlot = (int)d_lines.size();
 	d_lines.resize(++linesOnPlot);
 	d_lines[linesOnPlot-1]=mrkID;
 
-	if (fileVersion < 86)
-	{
+	if (fileVersion < 86){
 		mrk->setStartPoint(QPoint(list[1].toInt(), list[2].toInt()));
 		mrk->setEndPoint(QPoint(list[3].toInt(), list[4].toInt()));
-	}
-	else
+	} else
 		mrk->setBoundingRect(list[1].toDouble(), list[2].toDouble(),
 							list[3].toDouble(), list[4].toDouble());
 
@@ -2434,8 +2437,7 @@ void Graph::addArrow(QStringList list, int fileVersion)
 	mrk->setStyle(getPenStyle(list[7]));
 	mrk->drawEndArrow(list[8]=="1");
 	mrk->drawStartArrow(list[9]=="1");
-	if (list.count()>10)
-	{
+	if (list.count()>10){
 		mrk->setHeadLength(list[10].toInt());
 		mrk->setHeadAngle(list[11].toInt());
 		mrk->fillArrowHead(list[12]=="1");
@@ -2444,7 +2446,7 @@ void Graph::addArrow(QStringList list, int fileVersion)
 
 void Graph::addArrow(ArrowMarker* mrk)
 {
-	ArrowMarker* aux= new ArrowMarker();
+	ArrowMarker* aux = new ArrowMarker();
     int linesOnPlot = (int)d_lines.size();
 	d_lines.resize(++linesOnPlot);
 	d_lines[linesOnPlot-1] = d_plot->insertMarker(aux);
@@ -3227,15 +3229,14 @@ void Graph::updateVectorsLayout(int curve, const QColor& color, int width,
 
 void Graph::updatePlot()
 {
-	if (autoscale && !zoomOn() && d_active_tool==NULL)	{
+	if (autoscale && !zoomOn() && d_active_tool==NULL){
 		for (int i = 0; i < QwtPlot::axisCnt; i++)
 			d_plot->setAxisAutoScale(i);
 	}
-
 	d_plot->replot();
-    updateMarkersBoundingRect();
     updateSecondaryAxis(QwtPlot::xTop);
 	updateSecondaryAxis(QwtPlot::yRight);
+	updateMarkersBoundingRect();
 
     if (isPiePlot()){
         QwtPieCurve *c = (QwtPieCurve *)curve(0);
@@ -3807,25 +3808,24 @@ QString Graph::saveToString(bool saveAsTemplate)
 
 void Graph::updateMarkersBoundingRect()
 {
-	for (int i=0;i<(int)d_lines.size();i++)
-	{
+	for (int i=0;i<(int)d_lines.size();i++){
 		ArrowMarker* mrkL = (ArrowMarker*)d_plot->marker(d_lines[i]);
 		if (mrkL)
 			mrkL->updateBoundingRect();
 	}
-	for (int i=0; i<(int)d_texts.size(); i++)
-	{
+
+	for (int i=0; i<(int)d_texts.size(); i++){
 		Legend* mrkT = (Legend*) d_plot->marker(d_texts[i]);
 		if (mrkT)
 			mrkT->updateOrigin();
 	}
 
-	for (int i=0;i<(int)d_images.size();i++)
-	{
+	for (int i=0;i<(int)d_images.size();i++){
 		ImageMarker* mrk = (ImageMarker*) d_plot->marker(d_images[i]);
 		if (mrk)
 			mrk->updateBoundingRect();
 	}
+	d_plot->replot();
 }
 
 void Graph::resizeEvent ( QResizeEvent *e )
@@ -4081,7 +4081,7 @@ void Graph::copyTitle()
 void Graph::removeAxisTitle()
 {
 	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
-  	//QwtScaleDraw::alignement and QwtPlot::Axis
+  	//QwtScaleDraw::alignment and QwtPlot::Axis
   	d_plot->setAxisTitle(axis, QString::null);
 	d_plot->replot();
 	emit modifiedGraph();
@@ -4096,7 +4096,7 @@ void Graph::cutAxisTitle()
 void Graph::copyAxisTitle()
 {
 	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
-  	//QwtScaleDraw::alignement and QwtPlot::Axis
+  	//QwtScaleDraw::alignment and QwtPlot::Axis
   	QApplication::clipboard()->setText(d_plot->axisTitle(axis).text(), QClipboard::Clipboard);
 	}
 
@@ -4965,7 +4965,12 @@ void Graph::updateCurveNames(const QString& oldName, const QString& newName, boo
 		Legend * mrk = (Legend*) d_plot->marker(legendMarkerID);
 		if (mrk){
             QStringList lst = mrk->text().split("\n", QString::SkipEmptyParts);
-            lst.replaceInStrings(oldName, newName);
+            QStringList oldNameLst = oldName.split("_", QString::SkipEmptyParts);
+            QStringList newNameLst = newName.split("_", QString::SkipEmptyParts);
+            if (updateTableName)
+                lst.replaceInStrings(oldNameLst[0] + "_", newNameLst[0] + "_");
+            else
+                lst.replaceInStrings("_" + oldNameLst[1], "_" + newNameLst[1]);
 			mrk->setText(lst.join("\n"));
 			d_plot->replot();
 		}

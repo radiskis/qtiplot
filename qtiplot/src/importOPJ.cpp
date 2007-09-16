@@ -472,7 +472,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 			Graph *graph=ml->addLayer();
 			if(!graph)
 				return false;
-			
+
 			rect gRect=opj.layerRect(g,l);
 			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerXAxisTitle(g,l))));
 			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerYAxisTitle(g,l))));
@@ -783,20 +783,20 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 			grid->enableXMin(grids[1].hidden?0:1);
 			grid->enableY(grids[2].hidden?0:1);
 			grid->enableYMin(grids[3].hidden?0:1);
-			
-			grid->setMajPenX(QPen(ColorBox::color(grids[0].color), ceil(grids[0].width), 
+
+			grid->setMajPenX(QPen(ColorBox::color(grids[0].color), ceil(grids[0].width),
 							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(grids[0].style))));
-			grid->setMinPenX(QPen(ColorBox::color(grids[1].color), ceil(grids[1].width), 
+			grid->setMinPenX(QPen(ColorBox::color(grids[1].color), ceil(grids[1].width),
 							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(grids[1].style))));
-			grid->setMajPenY(QPen(ColorBox::color(grids[2].color), ceil(grids[2].width), 
+			grid->setMajPenY(QPen(ColorBox::color(grids[2].color), ceil(grids[2].width),
 							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(grids[2].style))));
-			grid->setMinPenY(QPen(ColorBox::color(grids[3].color), ceil(grids[3].width), 
+			grid->setMinPenY(QPen(ColorBox::color(grids[3].color), ceil(grids[3].width),
 							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(grids[3].style))));
-									
+
 			grid->setAxis(2, 0);
 			grid->enableZeroLineX(0);
 			grid->enableZeroLineY(0);
-			
+
 			vector<graphAxisFormat> formats=opj.layerAxisFormat(g,l);
 			vector<graphAxisTick> ticks=opj.layerAxisTickLabels(g,l);
 			for(int i=0; i<4; ++i)
@@ -914,7 +914,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 				txt->setOrigin(QPoint(x*qtiRect.width()/gRect.width(),
 					y*qtiRect.height()/gRect.height()));
 			}
-		
+
 			vector<line> lines = opj.layerLines(g, l);
 			for(int i=0; i<lines.size(); ++i)
 			{
@@ -923,10 +923,12 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 				mrk.setEndPoint(lines[i].end.x, lines[i].end.y);
 				mrk.drawStartArrow(lines[i].begin.shape_type > 0);
 				mrk.drawEndArrow(lines[i].end.shape_type > 0);
-				mrk.setHeadLength(qMin(lines[i].begin.shape_length, lines[i].begin.shape_width));
+				mrk.setHeadLength(lines[i].end.shape_length);
+                mrk.setHeadAngle(arrowAngle(lines[i].end.shape_length, lines[i].end.shape_width));
 				mrk.setColor(ColorBox::color(lines[i].color));
-				mrk.setWidth(lines[i].width);
+				mrk.setWidth((int)lines[i].width);
 				Qt::PenStyle s;
+
 				switch(lines[i].line_style)
 				{
 				case OPJFile::Solid:
@@ -948,9 +950,8 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 					s=Qt::DashDotDotLine;
 					break;
 				default:
-					s=Qt::NoPen;
+					s=Qt::SolidLine;
 				}
-				
 				mrk.setStyle(s);
 				graph->addArrow(&mrk);
 			}

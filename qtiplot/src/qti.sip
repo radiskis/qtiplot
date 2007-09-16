@@ -173,12 +173,12 @@ public:
 	} else
 		sipRes = PyString_FromString(sipCpp->colLabel(a0-1));
 %End
-  void setColName(SIP_PYOBJECT, const QString&);
+  void setColName(SIP_PYOBJECT, const QString&, bool=false);
 %MethodCode
 	sipIsErr = 0;
    CHECK_TABLE_COL(a0);
 	if (sipIsErr == 0)
-		sipCpp->setColName(col, *a1);
+		sipCpp->setColName(col, *a1, a2);
 %End
   void notifyChanges();
 
@@ -843,7 +843,7 @@ public:
 
   virtual void fit();
   virtual bool run();
-   
+
   bool setWeightingData(WeightingMethod, const QString&=QString::null);
 
   bool setDataFromCurve(const QString&, Graph*=0);
@@ -882,7 +882,7 @@ delete values;
   void setAlgorithm(Algorithm);
   void setOutputPrecision(int);
   void generateFunction(bool, int=100);
-  
+
   void showLegend();
   virtual QString legendInfo();
 
@@ -1101,7 +1101,7 @@ public:
 
   static QString generateFormula(int, PeakProfile);
   static QStringList generateParameterList(int);
-  
+
   void guessInitialValues();
 };
 

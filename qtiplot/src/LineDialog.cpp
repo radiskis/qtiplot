@@ -253,27 +253,25 @@ else
 
 void LineDialog::apply()
 {
-if (tw->currentPage()==(QWidget *)options)
-	{
-	lm->setStyle(Graph::getPenStyle(styleBox->currentItem()));
-	lm->setColor(colorBox->color());
-	lm->setWidth(widthBox->currentText().toInt());
-	lm->drawEndArrow(endBox->isChecked());
-	lm->drawStartArrow(startBox->isChecked());
+    if (tw->currentPage()==(QWidget *)options){
+        lm->setStyle(Graph::getPenStyle(styleBox->currentItem()));
+        lm->setColor(colorBox->color());
+        lm->setWidth(widthBox->currentText().toInt());
+        lm->drawEndArrow(endBox->isChecked());
+        lm->drawStartArrow(startBox->isChecked());
 	}
-else if (tw->currentPage()==(QWidget *)head)
-	{
-	if (lm->headLength() != boxHeadLength->value())
-		lm->setHeadLength( boxHeadLength->value() );
+    else if (tw->currentPage()==(QWidget *)head){
+        if (lm->headLength() != boxHeadLength->value())
+            lm->setHeadLength( boxHeadLength->value() );
 
-	if (lm->headAngle() != boxHeadAngle->value())
-		lm->setHeadAngle( boxHeadAngle->value() );
+        if (lm->headAngle() != boxHeadAngle->value())
+            lm->setHeadAngle( boxHeadAngle->value() );
 
-	if (lm->filledArrowHead() != filledBox->isChecked())
-		lm->fillArrowHead( filledBox->isChecked() );
+        if (lm->filledArrowHead() != filledBox->isChecked())
+            lm->fillArrowHead( filledBox->isChecked() );
 	}
-else if (tw->currentPage()==(QWidget *)geometry)
-	setCoordinates(unitBox->currentItem());
+    else if (tw->currentPage()==(QWidget *)geometry)
+        setCoordinates(unitBox->currentItem());
 
 QwtPlot *plot = lm->plot();
 Graph *g = (Graph *)plot->parent();

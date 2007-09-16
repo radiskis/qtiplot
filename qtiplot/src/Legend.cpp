@@ -156,12 +156,12 @@ void Legend::updateOrigin()
 	const QwtScaleDiv *xScDiv = d_plot->axisScaleDiv (xAxis());
 	double xVal = xMap.invTransform(d_pos.x());
   	if (!xScDiv->contains(xVal))
-  	        return;
+        return;
 
   	const QwtScaleDiv *yScDiv = d_plot->axisScaleDiv (yAxis());
   	double yVal = yMap.invTransform(d_pos.y());
   	if (!yScDiv->contains(yVal))
-  	        return;
+        return;
 
   	setXValue (xVal);
   	setYValue (yVal);

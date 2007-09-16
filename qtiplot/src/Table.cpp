@@ -617,26 +617,6 @@ int Table::firstXCol()
 	return xcol;
 }
 
-void Table::enumerateRightCols(bool checked)
-{
-	if (!checked)
-		return;
-
-	QString oldLabel=colLabel(selectedCol);
-	QStringList oldLabels=colNames();
-	QString caption=QString(this->name())+"_";
-	int n=1;
-	for (int i=selectedCol; i<(int)d_table->numCols(); i++)
-	{
-		QString newLabel=oldLabel+QString::number(n);
-		commands.replaceInStrings("col(\""+colLabel(i)+"\")", "col(\""+newLabel+"\")");
-		setColName(i, newLabel);
-		emit changedColHeader(caption+oldLabels[i],colName(i));
-		n++;
-	}
-	emit modifiedWindow(this);
-}
-
 void Table::setColComment(int col, const QString& s)
 {
 	if (col < 0 || col >= d_table->numCols())
@@ -681,44 +661,54 @@ void Table::changeColWidth(int width, int col)
 	emit modifiedWindow(this);
 }
 
-void Table::changeColName(const QString& text)
-{
-	QString caption = this->name();
-	QString oldName = colName(selectedCol);
-	QString newName = caption+"_"+text;
+QString Table::colName(int col)
+{//returns the table name + horizontal header text
+	if (col<0 || col >= col_label.count())
+		return QString();
 
-	if (oldName == newName)
-		return;
-
-	if (caption == text)
-	{
-		QMessageBox::critical(0,tr("QtiPlot - Error"),
-				tr("The column name must be different from the table name : <b>"+caption+"</b></b>!<p>Please choose another name!"));
-		return;
-	}
-
-	QStringList labels=colNames();
-	if (labels.contains(text)>0)
-	{
-		QMessageBox::critical(0,tr("QtiPlot - Error"),
-				tr("There is already a column called : <b>"+text+"</b> in table <b>"+caption+"</b>!<p>Please choose another name!"));
-		return;
-	}
-
-	commands.replaceInStrings("col(\""+colLabel(selectedCol)+"\")", "col(\""+text+"\")");
-
-	setColName(selectedCol, text);
-	emit changedColHeader(oldName, newName);
-	emit modifiedWindow(this);
+	return QString(this->name())+"_"+col_label[col];
 }
 
-void Table::setColName(int col, const QString& text)
+void Table::setColName(int col, const QString& text, bool enumerateRight)
 {
-	if (text.isEmpty() || col<0 || col >=d_table->numCols())
+    if (text.isEmpty() || col<0 || col >= d_table->numCols())
 		return;
 
-	col_label[col] = text;
-	setHeaderColType();
+	QString caption = this->name();
+	QString oldLabel = col_label[col];
+	int cols = col + 1;
+	if (enumerateRight)
+        cols = (int)d_table->numCols();
+
+    int n = 1;
+	for (int i = col; i<cols; i++){
+		QString newLabel = text;
+		if (enumerateRight)
+            newLabel += QString::number(n);
+
+        if (col_label.contains(newLabel) > 0){
+            QMessageBox::critical(0,tr("QtiPlot - Error"),
+            tr("There is already a column called : <b>"+newLabel+"</b> in table <b>"+caption+"</b>!<p>Please choose another name!"));
+            return;
+        }
+		n++;
+	}
+
+    n = 1;
+    caption += "_";
+	for (int i = col; i<cols; i++){
+		QString newLabel = text;
+		if (enumerateRight)
+            newLabel += QString::number(n);
+
+        commands.replaceInStrings("col(\"" + colLabel(i) + "\")", "col(\"" + newLabel + "\")");
+		emit changedColHeader(caption + col_label[i], caption + newLabel);
+        col_label[i] = newLabel;
+		n++;
+	}
+
+    setHeaderColType();
+	emit modifiedWindow(this);
 }
 
 QStringList Table::selectedColumns()
@@ -833,14 +823,6 @@ int Table::selectedColsNumber()
 			c++;
 	}
 	return c;
-}
-
-QString Table::colName(int col)
-{//returns the table name + horizontal header text
-	if (col<0 || col >= col_label.count())
-		return QString();
-
-	return QString(this->name())+"_"+col_label[col];
 }
 
 QVarLengthArray<double> Table::col(int ycol)
@@ -1936,28 +1918,23 @@ int Table::colIndex(const QString& name)
 void Table::setHeaderColType()
 {
 	int xcols=0;
-	for (int j=0;j<(int)d_table->numCols();j++)
-	{
+	for (int j=0;j<(int)d_table->numCols();j++){
 		if (col_plot_type[j] == X)
 			xcols++;
 	}
 
-	if (xcols>1)
-	{
+	if (xcols>1){
 		xcols = 0;
-		for (int i=0; i<(int)d_table->numCols(); i++)
-		{
+		for (int i=0; i<(int)d_table->numCols(); i++){
 			if (col_plot_type[i] == X)
 				setColumnHeader(i, col_label[i]+"[X" + QString::number(++xcols) +"]");
-			else if (col_plot_type[i] == Y)
-			{
+			else if (col_plot_type[i] == Y){
 				if(xcols>0)
 					setColumnHeader(i, col_label[i]+"[Y"+ QString::number(xcols) +"]");
 				else
 					setColumnHeader(i, col_label[i]+"[Y]");
 			}
-			else if (col_plot_type[i] == Z)
-			{
+			else if (col_plot_type[i] == Z){
 				if(xcols>0)
 					setColumnHeader(i, col_label[i]+"[Z"+ QString::number(xcols) +"]");
 				else
@@ -1970,11 +1947,8 @@ void Table::setHeaderColType()
 			else
 				setColumnHeader(i, col_label[i]);
 		}
-	}
-	else
-	{
-		for (int i=0; i<(int)d_table->numCols(); i++)
-		{
+	} else {
+		for (int i=0; i<(int)d_table->numCols(); i++){
 			if (col_plot_type[i] == X)
 				setColumnHeader(i, col_label[i]+"[X]");
 			else if (col_plot_type[i] == Y)
@@ -2340,7 +2314,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
                 	s = t.readLine();//ignore all commented lines
 				qApp->processEvents(QEventLoop::ExcludeUserInput);
 			}
-		
+
 			if (simplifySpaces)
 				s = s.simplifyWhiteSpace();
 			else if (stripSpaces)
@@ -2514,7 +2488,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 				else
 					text += "C" + header[sCols[i]] + separator;
 			}
-			
+
 			if (aux >= 0){
 				if (ls.count()>0)
 					text += header[sCols[aux]] + "\n";
@@ -2602,7 +2576,7 @@ void Table::moveCurrentCell()
 }
 
 bool Table::eventFilter(QObject *object, QEvent *e)
-{	
+{
 	Q3Header *hheader = d_table->horizontalHeader();
 	Q3Header *vheader = d_table->verticalHeader();
 
