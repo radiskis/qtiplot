@@ -2122,6 +2122,17 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			if(IsBigEndian()) SwapBytes(w);
 			end.shape_length = (double)w/500.0;
 
+			// bitmap properties
+			double left = 0.0;
+			fseek(f,LAYER+0x13,SEEK_SET);
+			fread(&left,8,1,f);
+			if(IsBigEndian()) SwapBytes(left);
+
+			double top = 0.0;
+			fseek(f,LAYER+0x1B,SEEK_SET);
+			fread(&top,8,1,f);
+			if(IsBigEndian()) SwapBytes(top);
+
 		//section_body_2_size
 			LAYER+=sec_size+0x1;
 			fseek(f,LAYER,SEEK_SET);
@@ -2209,6 +2220,29 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				GRAPH.back().layer.back().lines.back().line_style=line_style;
 				GRAPH.back().layer.back().lines.back().begin=begin;
 				GRAPH.back().layer.back().lines.back().end=end;
+			}
+			else if(size==0x28 && type==4) // bitmap
+			{
+				unsigned long filesize=sec_size+14;
+				GRAPH.back().layer.back().bitmaps.push_back(bitmap());
+				GRAPH.back().layer.back().bitmaps.back().left=left;
+				GRAPH.back().layer.back().bitmaps.back().top=top;
+				GRAPH.back().layer.back().bitmaps.back().attach=attach;
+				GRAPH.back().layer.back().bitmaps.back().size=filesize;
+				GRAPH.back().layer.back().bitmaps.back().data=new unsigned char[filesize];
+				unsigned char *data=GRAPH.back().layer.back().bitmaps.back().data;
+				//add Bitmap header
+				memcpy(data, "BM", 2);
+				data+=2;
+				memcpy(data, &filesize, 4);
+				data+=4;
+				unsigned int d=0;
+				memcpy(data, &d, 4);
+				data+=4;
+				d=0x36;
+				memcpy(data, &d, 4);
+				data+=4;
+				fread(data,sec_size,1,f);
 			}
 
 		//close section 00 00 00 00 0A

@@ -254,7 +254,6 @@ struct rect {
 	};
 };
 
-enum Attach {Frame=0, Page=1, Scale=2};
 
 struct text {
 	string txt;
@@ -309,6 +308,10 @@ struct line {
 struct bitmap {
 	rect clientRect;
 	int attach;
+	unsigned long size;
+	unsigned char* data;
+	double left;
+	double top;
 };
 
 struct metafile {
@@ -328,6 +331,7 @@ struct graphLayer {
 
 	vector<text> texts;
 	vector<line> lines;
+	vector<bitmap> bitmaps;
 	vector<graphCurve> curve;
 };
 
@@ -369,6 +373,13 @@ class OPJFile
 {
 public:
 	OPJFile(const char* filename);
+	~OPJFile()
+	{
+	/*	for(int g=0; g<GRAPH.size(); ++g)
+			for(int l=0; l<GRAPH[g].layer.size(); ++l)
+				for(int i=0; i<GRAPH[g].layer[l].bitmaps.size(); ++i)
+					delete GRAPH[g].layer[l].bitmaps[i].data;*/
+	}
 	int Parse();
 	double Version() { return version/100.0; }		//!< get version of project file
 
@@ -451,6 +462,8 @@ public:
 
 	enum BorderType {BlackLine=0, Shadow=1, DarkMarble=2, WhiteOut=3, BlackOut=4, None=-1};
 
+	enum Attach {Frame=0, Page=1, Scale=2};
+
 	int numGraphs() { return GRAPH.size(); }			//!< get number of graphs
 	const char *graphName(int s) { return GRAPH[s].name.c_str(); }	//!< get name of graph s
 	const char *graphParentFolder(int s) { return GRAPH[s].parentFolder.c_str(); }	//!< get parent folder of graph s
@@ -463,6 +476,7 @@ public:
 	const char *layerLegend(int s, int l) { return GRAPH[s].layer[l].legend.c_str(); }		//!< get legend of layer l of graph s
 	vector<text> layerTexts(int s, int l) {	return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
 	vector<line> layerLines(int s, int l) {	return GRAPH[s].layer[l].lines; } //!< get lines of layer l of graph s
+	vector<bitmap> layerBitmaps(int s, int l) {	return GRAPH[s].layer[l].bitmaps; } //!< get bitmaps of layer l of graph s
 	vector<double> layerXRange(int s, int l) {
 		vector<double> range;
 		range.push_back(GRAPH[s].layer[l].xAxis.min);
