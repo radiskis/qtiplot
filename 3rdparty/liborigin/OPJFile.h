@@ -38,16 +38,6 @@
 
 using namespace std;
 
-// for string entries
-struct Entry {
-	short spread;
-	short column;
-	short row;
-	char *name;
-};
-
-typedef Entry Entry;
-
 struct originData {
 	int type; // 0 - double, 1 - string
 	double d;
@@ -264,6 +254,8 @@ struct rect {
 	};
 };
 
+enum Attach {Frame=0, Page=1, Scale=2};
+
 struct text {
 	string txt;
 	rect clientRect;
@@ -272,29 +264,56 @@ struct text {
 	int rotation;
 	int tab;
 	int border_type;
+	int attach;
+
 	text(string _txt="")
-		:	txt(_txt)
+	:	txt(_txt)
 	{};
 };
 
 struct rectangle {
 	rect clientRect;
+	int attach;
 };
 
 struct circle {
 	rect clientRect;
+	int attach;
+};
+
+struct lineVertex {
+	int shape_type;
+	double shape_width;
+	double shape_length;
+	double x;
+	double y;
+	lineVertex()
+	:	shape_type(0)
+	,	shape_width(0.0)
+	,	shape_length(0.0)
+	,	x(0.0)
+	,	y(0.0)
+	{}
 };
 
 struct line {
 	rect clientRect;
+	int color;
+	int attach;
+	double width;
+	int line_style;
+	lineVertex begin;
+	lineVertex end;
 };
 
 struct bitmap {
 	rect clientRect;
+	int attach;
 };
 
 struct metafile {
 	rect clientRect;
+	int attach;
 };
 
 struct graphLayer {
@@ -308,6 +327,7 @@ struct graphLayer {
 	double histogram_end;
 
 	vector<text> texts;
+	vector<line> lines;
 	vector<graphCurve> curve;
 };
 
@@ -428,7 +448,7 @@ public:
 	enum Scale {Linear=0, Log10=1, Probability=2, Probit=3, Reciprocal=4, OffsetReciprocal=5, Logit=6, Ln=7, Log2=8};
 
 	enum ValueType {Numeric=0, Text=1, Time=2, Date=3,  Month=4, Day=5, ColumnHeading=6, TickIndexedDataset=7, TextNumeric=9, Categorical=10};
-	
+
 	enum BorderType {BlackLine=0, Shadow=1, DarkMarble=2, WhiteOut=3, BlackOut=4, None=-1};
 
 	int numGraphs() { return GRAPH.size(); }			//!< get number of graphs
@@ -442,6 +462,7 @@ public:
 	const char *layerYAxisTitle(int s, int l) { return GRAPH[s].layer[l].yAxis.label.c_str(); }		//!< get label of Y-axis of layer l of graph s
 	const char *layerLegend(int s, int l) { return GRAPH[s].layer[l].legend.c_str(); }		//!< get legend of layer l of graph s
 	vector<text> layerTexts(int s, int l) {	return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
+	vector<line> layerLines(int s, int l) {	return GRAPH[s].layer[l].lines; } //!< get lines of layer l of graph s
 	vector<double> layerXRange(int s, int l) {
 		vector<double> range;
 		range.push_back(GRAPH[s].layer[l].xAxis.min);
