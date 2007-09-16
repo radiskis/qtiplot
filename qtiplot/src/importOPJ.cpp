@@ -42,6 +42,7 @@
 #include "QwtHistogram.h"
 #include "Legend.h"
 #include "Grid.h"
+#include "ArrowMarker.h"
 
 #include "qwt_plot_canvas.h"
 
@@ -909,6 +910,46 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 				int y=(txtRect.top>gRect.top ? txtRect.top-gRect.top : 0);
 				txt->setOrigin(QPoint(x*qtiRect.width()/gRect.width(),
 					y*qtiRect.height()/gRect.height()));
+			}
+		
+			vector<line> lines=opj.layerLines(g, l);
+			for(int i=0; i<lines.size(); ++i)
+			{
+				ArrowMarker mrk;
+				mrk.setStartPoint(lines[i].begin.x, lines[i].begin.y);
+				mrk.setEndPoint(lines[i].end.x, lines[i].end.y);
+				mrk.drawStartArrow(lines[i].begin.shape_type > 0);
+				mrk.drawEndArrow(lines[i].end.shape_type > 0);
+				mrk.setHeadLength(lines[i].begin.shape_length);
+				mrk.setColor(ColorBox::color(lines[i].color));
+				mrk.setWidth(lines[i].width);
+				Qt::PenStyle s;
+				switch(lines[i].line_style)
+				{
+				case OPJFile::Solid:
+					s=Qt::SolidLine;
+					break;
+				case OPJFile::Dash:
+				case OPJFile::ShortDash:
+					s=Qt::DashLine;
+					break;
+				case OPJFile::Dot:
+				case OPJFile::ShortDot:
+					s=Qt::DotLine;
+					break;
+				case OPJFile::DashDot:
+				case OPJFile::ShortDashDot:
+					s=Qt::DashDotLine;
+					break;
+				case OPJFile::DashDotDot:
+					s=Qt::DashDotDotLine;
+					break;
+				default:
+					s=Qt::NoPen;
+				}
+				
+				mrk.setStyle(s);
+				graph->addArrow(&mrk);
 			}
 		}
 		//cascade the graphs

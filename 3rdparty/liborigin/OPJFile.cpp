@@ -1118,31 +1118,7 @@ int OPJFile::ParseFormatNew() {
 		fread(&object_type,10,1,f);
 
 		fseek(f,POS,SEEK_SET);
-		/*if(0==strcmp(object_type,"ORIGIN")
-			|| 0==strcmp(object_type,"CREATE")
-			|| 0==strcmp(object_type,"FFT")
-			|| 0==strcmp(object_type,"TEMP")
-			|| 0==strcmp(object_type,"Microc.OT")
-			|| 0==strcmp(object_type,"MICROC.OT")
-			|| 0==strcmp(object_type,"EXCEL"))
-		{
-			if(compareSpreadnames(object_name)!=-1)
-				readSpreadInfo(f, debug);
-			else if(compareMatrixnames(object_name)!=-1)
-				readMatrixInfo(f, debug);
-			else
-				skipObjectInfo(f, debug);
 
-		}
-		else if(0==strcmp(object_type,"LINE")
-			|| 0==strcmp(object_type,"SCATTER")
-			|| 0==strcmp(object_type,"LINESYMB"))
-			readGraphInfo(f, debug);
-		else
-		{
-			fprintf(debug,"Object %s has not supported yes type: %s\n", object_name, object_type);
-			skipObjectInfo(f, debug);
-		}*/
 		if(compareSpreadnames(object_name)!=-1)
 			readSpreadInfo(f, debug);
 		else if(compareMatrixnames(object_name)!=-1)
@@ -2055,12 +2031,17 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			fread(&r,sizeof(rect),1,f);
 			if(IsBigEndian()) SwapBytes(r);
 
-			unsigned char c,b;
-			fseek(f, LAYER+0x29, SEEK_SET);
-			fread(&b,1,1,f);
+			unsigned char attach=0;
+			fseek(f,LAYER+0x28,SEEK_SET);
+			fread(&attach,1,1,f);
 
-			fseek(f, LAYER+0x33, SEEK_SET);
-			fread(&c,1,1,f);
+			unsigned char border=0;
+			fseek(f, LAYER+0x29, SEEK_SET);
+			fread(&border,1,1,f);
+
+			unsigned char color=0;
+			fseek(f,LAYER+0x33,SEEK_SET);
+			fread(&color,1,1,f);
 
 		//section_body_1_size
 			LAYER+=0x6F+0x1;
@@ -2070,18 +2051,76 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 
 		//section_body_1
 			LAYER+=0x5;
-			short rotation=0;
 			int size=sec_size;
-			char type=0;
+			
+			unsigned char type=0;
+			fseek(f,LAYER,SEEK_SET);
 			fread(&type,1,1,f);
+
+			//text properties
+			short rotation=0;
 			fseek(f,LAYER+2,SEEK_SET);
-			if(IsBigEndian()) SwapBytes(rotation);
 			fread(&rotation,2,1,f);
+			if(IsBigEndian()) SwapBytes(rotation);
+
 			unsigned char fontsize=0;
 			fread(&fontsize,1,1,f);
+
 			unsigned char tab=0;
 			fseek(f,LAYER+0xA,SEEK_SET);
 			fread(&tab,1,1,f);
+
+			//line properties
+			int line_style;
+			double width;
+			lineVertex begin, end;
+			unsigned int w=0;
+
+			fseek(f,LAYER+0x12,SEEK_SET);
+			fread(&line_style,1,1,f);
+
+			fseek(f,LAYER+0x13,SEEK_SET);
+			fread(&w,2,1,f);
+			if(IsBigEndian()) SwapBytes(w);
+			width = (double)w/500.0;
+
+			fseek(f,LAYER+0x20,SEEK_SET);
+			fread(&begin.x,8,1,f);
+			if(IsBigEndian()) SwapBytes(begin.x);
+
+			fread(&end.x,8,1,f);
+			if(IsBigEndian()) SwapBytes(end.x);
+
+			fseek(f,LAYER+0x40,SEEK_SET);
+			fread(&begin.y,8,1,f);
+			if(IsBigEndian()) SwapBytes(begin.y);
+
+			fread(&end.y,8,1,f);
+			if(IsBigEndian()) SwapBytes(end.y);
+
+			fseek(f,LAYER+0x60,SEEK_SET);
+			fread(&begin.shape_type,1,1,f);
+
+			fseek(f,LAYER+0x64,SEEK_SET);
+			fread(&w,4,1,f);
+			if(IsBigEndian()) SwapBytes(w);
+			begin.shape_width = (double)w/500.0;
+
+			fread(&w,4,1,f);
+			if(IsBigEndian()) SwapBytes(w);
+			begin.shape_length = (double)w/500.0;
+
+			fseek(f,LAYER+0x6C,SEEK_SET);
+			fread(&end.shape_type,1,1,f);
+
+			fseek(f,LAYER+0x70,SEEK_SET);
+			fread(&w,4,1,f);
+			if(IsBigEndian()) SwapBytes(w);
+			end.shape_width = (double)w/500.0;
+
+			fread(&w,4,1,f);
+			if(IsBigEndian()) SwapBytes(w);
+			end.shape_length = (double)w/500.0;
 
 		//section_body_2_size
 			LAYER+=sec_size+0x1;
@@ -2128,7 +2167,7 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				fread(&stmp,sec_size,1,f);
 				GRAPH.back().layer.back().legend=stmp;
 			}
-			else if(0==strcmp(sec_name,"__BCO2"))
+			else if(0==strcmp(sec_name,"__BCO2")) // histogram
 			{
 				double d;
 				fseek(f,LAYER+0x10,SEEK_SET);
@@ -2144,20 +2183,32 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				if(IsBigEndian()) SwapBytes(d);
 				GRAPH.back().layer.back().histogram_begin=d;
 			}
-			else if(size==0x3E)
+			else if(size==0x3E) // text
 			{
 				stmp[sec_size]='\0';
 				fread(&stmp,sec_size,1,f);
 				GRAPH.back().layer.back().texts.push_back(text(stmp));
-				GRAPH.back().layer.back().texts.back().color=c;
+				GRAPH.back().layer.back().texts.back().color=color;
 				GRAPH.back().layer.back().texts.back().clientRect=r;
 				GRAPH.back().layer.back().texts.back().tab=tab;
 				GRAPH.back().layer.back().texts.back().fontsize=fontsize;
 				GRAPH.back().layer.back().texts.back().rotation=rotation/10;
-				if(b>=0x80)
-					GRAPH.back().layer.back().texts.back().border_type=b-0x80;
+				GRAPH.back().layer.back().texts.back().attach=attach;
+				if(border>=0x80)
+					GRAPH.back().layer.back().texts.back().border_type=border-0x80;
 				else
 					GRAPH.back().layer.back().texts.back().border_type=None;
+			}
+			else if(size==0x78 && type==2) // line
+			{
+				GRAPH.back().layer.back().lines.push_back(line());
+				GRAPH.back().layer.back().lines.back().color=color;
+				GRAPH.back().layer.back().lines.back().clientRect=r;
+				GRAPH.back().layer.back().lines.back().attach=attach;
+				GRAPH.back().layer.back().lines.back().width=width;
+				GRAPH.back().layer.back().lines.back().line_style=line_style;
+				GRAPH.back().layer.back().lines.back().begin=begin;
+				GRAPH.back().layer.back().lines.back().end=end;
 			}
 
 		//close section 00 00 00 00 0A
