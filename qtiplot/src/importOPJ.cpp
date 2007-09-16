@@ -34,6 +34,8 @@
 #include <QDockWidget>
 #include <QLocale>
 #include <QDate>
+#include <QDir>
+#include <QTemporaryFile>
 #include "Matrix.h"
 #include "ColorBox.h"
 #include "MultiLayer.h"
@@ -43,6 +45,7 @@
 #include "Legend.h"
 #include "Grid.h"
 #include "ArrowMarker.h"
+#include "ImageMarker.h"
 
 #include "qwt_plot_canvas.h"
 
@@ -912,7 +915,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 					y*qtiRect.height()/gRect.height()));
 			}
 		
-			vector<line> lines=opj.layerLines(g, l);
+			vector<line> lines = opj.layerLines(g, l);
 			for(int i=0; i<lines.size(); ++i)
 			{
 				ArrowMarker mrk;
@@ -920,7 +923,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 				mrk.setEndPoint(lines[i].end.x, lines[i].end.y);
 				mrk.drawStartArrow(lines[i].begin.shape_type > 0);
 				mrk.drawEndArrow(lines[i].end.shape_type > 0);
-				mrk.setHeadLength(lines[i].begin.shape_length);
+				mrk.setHeadLength(qMin(lines[i].begin.shape_length, lines[i].begin.shape_width));
 				mrk.setColor(ColorBox::color(lines[i].color));
 				mrk.setWidth(lines[i].width);
 				Qt::PenStyle s;
@@ -950,6 +953,34 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 				
 				mrk.setStyle(s);
 				graph->addArrow(&mrk);
+			}
+
+			vector<bitmap> bitmaps=opj.layerBitmaps(g, l);
+			for(int i=0; i<bitmaps.size(); ++i)
+			{
+				QPixmap bmp;
+				bmp.loadFromData(bitmaps[i].data, bitmaps[i].size, "BMP");
+				QTemporaryFile file;
+				file.setFileTemplate(QDir::tempPath() + "/XXXXXX.bmp");
+				if (file.open())
+				{
+					bmp.save(file.fileName(), "BMP");
+					ImageMarker *mrk = graph->addImage(file.fileName());
+					double left = 0.0;
+					double top = 0.0;
+					if(bitmaps[i].attach == OPJFile::Scale)
+					{
+						left = bitmaps[i].left;
+						top = bitmaps[i].top;
+					}
+					else
+					{
+						left = rangeX[0];
+						top = rangeY[1];
+					}
+
+					mrk->setValue(left, top);
+				}
 			}
 		}
 		//cascade the graphs
