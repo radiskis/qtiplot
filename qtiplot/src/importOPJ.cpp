@@ -72,7 +72,7 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	importTables(opj);
 	importGraphs(opj);
 	importNotes(opj);
-	mw->showResults(opj.resultsLogString(),mw->logWindow->isVisible());
+	mw->showResults(opj.resultsLogString(), mw->logWindow->isVisible());
 }
 
 bool ImportOPJ::createProjectTree(const OPJFile& opj)
@@ -128,7 +128,7 @@ int ImportOPJ::translateOrigin2QtiplotLineStyle(int linestyle) {
 	return qtiplotstyle;
 }
 
-bool ImportOPJ::importTables(OPJFile opj)
+bool ImportOPJ::importTables(const OPJFile& opj)
 {
 	int visible_count=0;
 	int QtiPlot_scaling_factor=10; //in Origin width is measured in characters while in QtiPlot - pixels --- need to be accurate
@@ -419,7 +419,7 @@ bool ImportOPJ::importTables(OPJFile opj)
 	return true;
 }
 
-bool ImportOPJ::importNotes(OPJFile opj)
+bool ImportOPJ::importNotes(const OPJFile& opj)
 {
 	int visible_count=0;
 	for (int n=0; n<opj.numNotes(); n++)
@@ -450,7 +450,7 @@ bool ImportOPJ::importNotes(OPJFile opj)
 	return true;
 }
 
-bool ImportOPJ::importGraphs(OPJFile opj)
+bool ImportOPJ::importGraphs(const OPJFile& opj)
 {
 	double pi=3.141592653589793;
 	int visible_count=0;
@@ -473,7 +473,7 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 			if(!graph)
 				return false;
 
-			rect gRect=opj.layerRect(g,l);
+			rect layerRect=opj.layerRect(g,l);
 			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerXAxisTitle(g,l))));
 			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerYAxisTitle(g,l))));
 			if(strlen(opj.layerLegend(g,l))>0)
@@ -879,8 +879,8 @@ bool ImportOPJ::importGraphs(OPJFile opj)
         	graph->setIgnoreResizeEvents(!mw->autoResizeLayers);
 
 			//add texts
-			//graph->setGeometry(gRect.left, gRect.top, gRect.right, gRect.bottom);
-			//graph->plotWidget()->resize(gRect.width(), gRect.height());
+			//graph->setGeometry(layerRect.left, layerRect.top, layerRect.right, layerRect.bottom);
+			//graph->plotWidget()->resize(layerRect.width(), layerRect.height());
 			QRect qtiRect=graph->plotWidget()->canvas()->geometry();
 			vector<text> texts=opj.layerTexts(g, l);
 			for(int i=0; i<texts.size(); ++i)
@@ -909,10 +909,10 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 				txt->setFont(font);
 				txt->setFrameStyle(bkg);
 
-				int x=(txtRect.left>gRect.left ? txtRect.left-gRect.left : 0);
-				int y=(txtRect.top>gRect.top ? txtRect.top-gRect.top : 0);
-				txt->setOrigin(QPoint(x*qtiRect.width()/gRect.width(),
-					y*qtiRect.height()/gRect.height()));
+				int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
+				int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
+				txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),
+					y*qtiRect.height()/layerRect.height()));
 			}
 
 			vector<line> lines = opj.layerLines(g, l);
@@ -967,20 +967,49 @@ bool ImportOPJ::importGraphs(OPJFile opj)
 				{
 					bmp.save(file.fileName(), "BMP");
 					ImageMarker *mrk = graph->addImage(file.fileName());
-					double left = 0.0;
-					double top = 0.0;
-					if(bitmaps[i].attach == OPJFile::Scale)
+					double left, top, right, bottom;
+					left = top = right = bottom = 0.0;
+					switch(bitmaps[i].attach)
 					{
+					case OPJFile::Scale:
 						left = bitmaps[i].left;
 						top = bitmaps[i].top;
-					}
-					else
-					{
-						left = rangeX[0];
-						top = rangeY[1];
+						right = left + bitmaps[i].width;
+						bottom = top - bitmaps[i].height;
+						break;
+					case OPJFile::Frame:
+						if(bitmaps[i].width > 0)
+						{
+							left = (rangeX[1]-rangeX[0])*bitmaps[i].left + rangeX[0];
+							right = left + bitmaps[i].width;
+						}
+						else
+						{
+							right = (rangeX[1]-rangeX[0])*bitmaps[i].left + rangeX[0];
+							left = right + bitmaps[i].width;
+						}
+
+						if(bitmaps[i].height > 0)
+						{
+							top = rangeY[1] - (rangeY[1]-rangeY[0])*bitmaps[i].top;
+							bottom = top - bitmaps[i].height;
+						}
+						else
+						{
+							bottom = rangeY[1] - (rangeY[1]-rangeY[0])*bitmaps[i].top;
+							top = bottom - bitmaps[i].height;
+						}
+						break;
+						case OPJFile::Page:
+							rect graphRect = opj.graphRect(g);
+							left = (rangeX[1]-rangeX[0])*(bitmaps[i].left - (double)layerRect.left/(double)graphRect.width())/((double)layerRect.width()/(double)graphRect.width()) + rangeX[0];
+							top = rangeY[1] - (rangeY[1]-rangeY[0])*(bitmaps[i].top - (double)layerRect.top/(double)graphRect.height())/((double)layerRect.height()/(double)graphRect.height());
+							right = left + bitmaps[i].width;
+							bottom = top - bitmaps[i].height;
+							break;
 					}
 
-					mrk->setValue(left, top);
+					mrk->setBoundingRect(left, top, right, bottom);
 				}
 			}
 		}
