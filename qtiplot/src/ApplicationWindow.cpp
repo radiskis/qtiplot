@@ -265,7 +265,7 @@ void ApplicationWindow::init(bool factorySettings)
 		readSettings();
 	createLanguagesList();
 	insertTranslatedStrings();
-		
+
 	assistant = new QAssistantClient( QString(), this );
 
 	actionNextWindow = new QAction(QIcon(QPixmap(next_xpm)), tr("&Next","next window"), this);
@@ -313,19 +313,19 @@ void ApplicationWindow::initWindow()
 	switch(d_init_window_type){
 		case TableWindow:
 			newTable();
-		break;	
+		break;
 		case MatrixWindow:
 			newMatrix();
-		break;	
+		break;
 		case MultiLayerWindow:
 			newGraph();
-		break;	
+		break;
 		case NoteWindow:
 			newNote();
-		break;	
+		break;
 		default:
-			break;				
-	}	
+			break;
+	}
 }
 
 void ApplicationWindow::initGlobalConstants()
@@ -1523,11 +1523,6 @@ void ApplicationWindow::plotPie()
 				tr("You must select exactly one column for plotting!"));
 		return;
 	}
-	/*if (table->noXColumn()){
-		QMessageBox::critical(0,tr("QtiPlot - Error"),
-            tr("Please set a default X column for this table, first!"));
-		return;
-	}*/
 
 	QStringList s = table->selectedColumns();
 	if (s.count()>0){
@@ -2549,7 +2544,9 @@ Table* ApplicationWindow::newTable(const QString& fname, const QString &sep,
 			simplifySpaces, importComments, commentString, fname, ws, 0, 0);
 	if (w){
 		w->setAttribute(Qt::WA_DeleteOnClose);
-		initTable(w, generateUniqueName(tr("Table")));
+		QFileInfo fi(fname);
+		QString tableName = fi.baseName().remove(QRegExp("\\s")).replace("_", "-");
+		initTable(w, generateUniqueName(tableName, false));
 		w->show();
 	}
 	return w;
@@ -5508,16 +5505,14 @@ void ApplicationWindow::showColsDialog()
 void ApplicationWindow::showColumnValuesDialog()
 {
 	Table* w = (Table*)ws->activeWindow();
-	if (!w)
-        return;
-	if (!w->isA("Table"))
+	if (!w || !w->inherits("Table"))
         return;
 
-    if (int(w->selectedColumns().count())>0 || !(w->getSelection().isEmpty())){
-			SetColValuesDialog* vd = new SetColValuesDialog(scriptEnv, this);
-			vd->setAttribute(Qt::WA_DeleteOnClose);
-			vd->setTable(w);
-			vd->exec();
+    if (w->selectedColumns().count()>0 || w->table()->currentSelection() >= 0){
+        SetColValuesDialog* vd = new SetColValuesDialog(scriptEnv, this);
+        vd->setAttribute(Qt::WA_DeleteOnClose);
+        vd->setTable(w);
+        vd->exec();
     } else
         QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
 }

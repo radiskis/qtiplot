@@ -521,8 +521,7 @@ bool Table::calculate(int col, int startRow, int endRow)
 Q3TableSelection Table::getSelection()
 {
 	Q3TableSelection sel;
-	if (d_table->numSelections()==0)
-	{
+	if (d_table->numSelections() == 0){
 		sel.init(d_table->currentRow(), d_table->currentColumn());
 		sel.expandTo(d_table->currentRow(), d_table->currentColumn());
 	} else if (d_table->currentSelection()>0)
@@ -714,8 +713,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight)
 QStringList Table::selectedColumns()
 {
 	QStringList names;
-	for (int i=0; i<d_table->numCols(); i++)
-	{
+	for (int i=0; i<d_table->numCols(); i++){
 		if(d_table->isColumnSelected (i, true))
 			names << QString(name()) + "_" + col_label[i];
 	}

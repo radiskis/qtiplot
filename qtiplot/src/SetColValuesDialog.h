@@ -54,7 +54,6 @@ class SetColValuesDialog : public QDialog, public scripted
 
 public:
     SetColValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
-    ~SetColValuesDialog();
 
 	QSize sizeHint() const ;
 	void customEvent( QEvent *e );
@@ -63,7 +62,6 @@ public:
     QComboBox* boxColumn;
     QPushButton* btnAddFunction;
     QPushButton* btnAddCol;
-    QPushButton* btnOk;
     QPushButton* btnCancel;
     QPushButton *buttonPrev;
     QPushButton *buttonNext;
@@ -75,7 +73,6 @@ public:
 	QLabel *colNameLabel;
 
 public slots:
-	void accept();
 	bool apply();
 	void prevColumn();
 	void nextColumn();
