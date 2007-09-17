@@ -252,6 +252,16 @@ struct rect {
 	{
 		return right-left;
 	};
+	rect()
+	{
+	}
+	rect(short width, short height)
+	:	left(0)
+	,	top(0)
+	,	right(width)
+	,	bottom(height)
+	{
+	}
 };
 
 
@@ -312,6 +322,8 @@ struct bitmap {
 	unsigned char* data;
 	double left;
 	double top;
+	double width;
+	double height;
 };
 
 struct metafile {
@@ -342,6 +354,8 @@ struct graph {
 	string parentFolder;
 	bool bHidden;
 	vector<graphLayer> layer;
+	unsigned short width;
+	unsigned short height;
 	graph(string _name="")
 	:	name(_name)
 	,	label("")
@@ -375,37 +389,38 @@ public:
 	OPJFile(const char* filename);
 	~OPJFile()
 	{
-	/*	for(int g=0; g<GRAPH.size(); ++g)
+		for(int g=0; g<GRAPH.size(); ++g)
 			for(int l=0; l<GRAPH[g].layer.size(); ++l)
 				for(int i=0; i<GRAPH[g].layer[l].bitmaps.size(); ++i)
-					delete GRAPH[g].layer[l].bitmaps[i].data;*/
+					if(GRAPH[g].layer[l].bitmaps[i].size > 0)
+						delete GRAPH[g].layer[l].bitmaps[i].data;
 	}
 	int Parse();
-	double Version() { return version/100.0; }		//!< get version of project file
+	double Version() const { return version/100.0; }		//!< get version of project file
 
 	const tree<projectNode>* project() const { return &projectTree; }
 	//spreadsheet properties
-	int numSpreads() { return SPREADSHEET.size(); }			//!< get number of spreadsheets
-	const char *spreadName(int s) { return SPREADSHEET[s].name.c_str(); }	//!< get name of spreadsheet s
-	const char *spreadParentFolder(int s) { return SPREADSHEET[s].parentFolder.c_str(); }	//!< get parent folder of spreadsheet s
-	bool spreadHidden(int s) { return SPREADSHEET[s].bHidden; }	//!< is spreadsheet s hidden
-	bool spreadLoose(int s) { return SPREADSHEET[s].bLoose; }	//!< is spreadsheet s loose
-	const char *spreadLabel(int s) { return SPREADSHEET[s].label.c_str(); }	//!< get label of spreadsheet s
-	int numCols(int s) { return SPREADSHEET[s].column.size(); }		//!< get number of columns of spreadsheet s
-	int numRows(int s,int c) { return SPREADSHEET[s].column[c].odata.size(); }	//!< get number of rows of column c of spreadsheet s
-	int maxRows(int s) { return SPREADSHEET[s].maxRows; }		//!< get maximum number of rows of spreadsheet s
+	int numSpreads() const { return SPREADSHEET.size(); }			//!< get number of spreadsheets
+	const char *spreadName(int s) const { return SPREADSHEET[s].name.c_str(); }	//!< get name of spreadsheet s
+	const char *spreadParentFolder(int s) const { return SPREADSHEET[s].parentFolder.c_str(); }	//!< get parent folder of spreadsheet s
+	bool spreadHidden(int s) const { return SPREADSHEET[s].bHidden; }	//!< is spreadsheet s hidden
+	bool spreadLoose(int s) const { return SPREADSHEET[s].bLoose; }	//!< is spreadsheet s loose
+	const char *spreadLabel(int s) const { return SPREADSHEET[s].label.c_str(); }	//!< get label of spreadsheet s
+	int numCols(int s) const { return SPREADSHEET[s].column.size(); }		//!< get number of columns of spreadsheet s
+	int numRows(int s,int c) const { return SPREADSHEET[s].column[c].odata.size(); }	//!< get number of rows of column c of spreadsheet s
+	int maxRows(int s) const { return SPREADSHEET[s].maxRows; }		//!< get maximum number of rows of spreadsheet s
 	//spreadsheet's column properties
-	const char *colName(int s, int c) { return SPREADSHEET[s].column[c].name.c_str(); }	//!< get name of column c of spreadsheet s
-	const char *colType(int s, int c) { return SPREADSHEET[s].column[c].type.c_str(); }	//!< get type of column c of spreadsheet s
-	const char *colCommand(int s, int c) { return SPREADSHEET[s].column[c].command.c_str(); }	//!< get command of column c of spreadsheet s
-	const char *colComment(int s, int c) { return SPREADSHEET[s].column[c].comment.c_str(); }	//!< get comment of column c of spreadsheet s
-	int colValueType(int s, int c) { return SPREADSHEET[s].column[c].value_type; }	//!< get value type of column c of spreadsheet s
-	int colValueTypeSpec(int s, int c) { return SPREADSHEET[s].column[c].value_type_specification; }	//!< get value type specification of column c of spreadsheet s
-	int colSignificantDigits(int s, int c) { return SPREADSHEET[s].column[c].significant_digits; }	//!< get significant digits of column c of spreadsheet s
-	int colDecPlaces(int s, int c) { return SPREADSHEET[s].column[c].decimal_places; }	//!< get decimal places of column c of spreadsheet s
-	int colNumDisplayType(int s, int c) { return SPREADSHEET[s].column[c].numeric_display_type; }	//!< get numeric display type of column c of spreadsheet s
-	int colWidth(int s, int c) { return SPREADSHEET[s].column[c].width; }	//!< get width of column c of spreadsheet s
-	void* oData(int s, int c, int r, bool alwaysDouble=false) {
+	const char *colName(int s, int c) const { return SPREADSHEET[s].column[c].name.c_str(); }	//!< get name of column c of spreadsheet s
+	const char *colType(int s, int c) const { return SPREADSHEET[s].column[c].type.c_str(); }	//!< get type of column c of spreadsheet s
+	const char *colCommand(int s, int c) const { return SPREADSHEET[s].column[c].command.c_str(); }	//!< get command of column c of spreadsheet s
+	const char *colComment(int s, int c) const { return SPREADSHEET[s].column[c].comment.c_str(); }	//!< get comment of column c of spreadsheet s
+	int colValueType(int s, int c) const { return SPREADSHEET[s].column[c].value_type; }	//!< get value type of column c of spreadsheet s
+	int colValueTypeSpec(int s, int c) const { return SPREADSHEET[s].column[c].value_type_specification; }	//!< get value type specification of column c of spreadsheet s
+	int colSignificantDigits(int s, int c) const { return SPREADSHEET[s].column[c].significant_digits; }	//!< get significant digits of column c of spreadsheet s
+	int colDecPlaces(int s, int c) const { return SPREADSHEET[s].column[c].decimal_places; }	//!< get decimal places of column c of spreadsheet s
+	int colNumDisplayType(int s, int c) const { return SPREADSHEET[s].column[c].numeric_display_type; }	//!< get numeric display type of column c of spreadsheet s
+	int colWidth(int s, int c) const { return SPREADSHEET[s].column[c].width; }	//!< get width of column c of spreadsheet s
+	void* oData(int s, int c, int r, bool alwaysDouble=false) const {
 		if(alwaysDouble)
 			return (void*)&SPREADSHEET[s].column[c].odata[r].d;
 		if(SPREADSHEET[s].column[c].odata[r].type==0)
@@ -415,29 +430,29 @@ public:
 	}	//!< get data of column c/row r of spreadsheet s
 
 	//matrix properties
-	int numMatrices() { return MATRIX.size(); }			//!< get number of matrices
-	const char *matrixName(int s) { return MATRIX[s].name.c_str(); }	//!< get name of matrix s
-	const char *matrixParentFolder(int s) { return MATRIX[s].parentFolder.c_str(); }	//!< get parent folder of matrix s
-	const char *matrixLabel(int s) { return MATRIX[s].label.c_str(); }	//!< get label of matrix s
-	int numMartixCols(int s) { return MATRIX[s].nr_cols; }		//!< get number of columns of matrix s
-	int numMartixRows(int s) { return MATRIX[s].nr_rows; }	//!< get number of rows of matrix s
-	const char *matrixFormula(int s) { return MATRIX[s].command.c_str(); }	//!< get formula of matrix s
-	int matrixValueTypeSpec(int s) { return MATRIX[s].value_type_specification; }	//!< get value type specification of matrix s
-	int matrixSignificantDigits(int s) { return MATRIX[s].significant_digits; }	//!< get significant digits of matrix s
-	int matrixDecPlaces(int s) { return MATRIX[s].decimal_places; }	//!< get decimal places of matrix s
-	int matrixNumDisplayType(int s) { return MATRIX[s].numeric_display_type; }	//!< get numeric display type of matrix s
-	int matrixWidth(int s) { return MATRIX[s].width; }	//!< get width of matrix s
-	double matrixData(int s, int c, int r) { return MATRIX[s].data[r*MATRIX[s].nr_cols+c]; }	//!< get data of row r of column c of matrix s
+	int numMatrices() const { return MATRIX.size(); }			//!< get number of matrices
+	const char *matrixName(int s) const { return MATRIX[s].name.c_str(); }	//!< get name of matrix s
+	const char *matrixParentFolder(int s) const { return MATRIX[s].parentFolder.c_str(); }	//!< get parent folder of matrix s
+	const char *matrixLabel(int s) const { return MATRIX[s].label.c_str(); }	//!< get label of matrix s
+	int numMartixCols(int s) const { return MATRIX[s].nr_cols; }		//!< get number of columns of matrix s
+	int numMartixRows(int s) const { return MATRIX[s].nr_rows; }	//!< get number of rows of matrix s
+	const char *matrixFormula(int s) const { return MATRIX[s].command.c_str(); }	//!< get formula of matrix s
+	int matrixValueTypeSpec(int s) const { return MATRIX[s].value_type_specification; }	//!< get value type specification of matrix s
+	int matrixSignificantDigits(int s) const { return MATRIX[s].significant_digits; }	//!< get significant digits of matrix s
+	int matrixDecPlaces(int s) const { return MATRIX[s].decimal_places; }	//!< get decimal places of matrix s
+	int matrixNumDisplayType(int s) const { return MATRIX[s].numeric_display_type; }	//!< get numeric display type of matrix s
+	int matrixWidth(int s) const { return MATRIX[s].width; }	//!< get width of matrix s
+	double matrixData(int s, int c, int r) const { return MATRIX[s].data[r*MATRIX[s].nr_cols+c]; }	//!< get data of row r of column c of matrix s
 
 	//function properties
-	int numFunctions() { return FUNCTION.size(); }			//!< get number of functions
-	int functionIndex(const char* s) { return compareFunctionnames(s); }	//!< get name of function s
-	const char *functionName(int s) { return FUNCTION[s].name.c_str(); }	//!< get name of function s
-	int functionType(int s) { return FUNCTION[s].type; }		//!< get type of function s
-	double functionBegin(int s) { return FUNCTION[s].begin; }	//!< get begin of interval of function s
-	double functionEnd(int s) { return FUNCTION[s].end; }	//!< get end of interval of function s
-	int functionPoints(int s) { return FUNCTION[s].points; }	//!< get number of points in interval of function s
-	const char *functionFormula(int s) { return FUNCTION[s].formula.c_str(); }	//!< get formula of function s
+	int numFunctions() const { return FUNCTION.size(); }			//!< get number of functions
+	int functionIndex(const char* s) const { return compareFunctionnames(s); }	//!< get name of function s
+	const char *functionName(int s) const { return FUNCTION[s].name.c_str(); }	//!< get name of function s
+	int functionType(int s) const { return FUNCTION[s].type; }		//!< get type of function s
+	double functionBegin(int s) const { return FUNCTION[s].begin; }	//!< get begin of interval of function s
+	double functionEnd(int s) const { return FUNCTION[s].end; }	//!< get end of interval of function s
+	int functionPoints(int s) const { return FUNCTION[s].points; }	//!< get number of points in interval of function s
+	const char *functionFormula(int s) const { return FUNCTION[s].formula.c_str(); }	//!< get formula of function s
 
 	//graph properties
 	enum Color {Black=0, Red=1, Green=2, Blue=3, Cyan=4, Magenta=5, Yellow=6, DarkYellow=7, Navy=8,
@@ -464,46 +479,47 @@ public:
 
 	enum Attach {Frame=0, Page=1, Scale=2};
 
-	int numGraphs() { return GRAPH.size(); }			//!< get number of graphs
-	const char *graphName(int s) { return GRAPH[s].name.c_str(); }	//!< get name of graph s
-	const char *graphParentFolder(int s) { return GRAPH[s].parentFolder.c_str(); }	//!< get parent folder of graph s
-	const char *graphLabel(int s) { return GRAPH[s].label.c_str(); }	//!< get name of graph s
-	bool graphHidden(int s) { return GRAPH[s].bHidden; }	//!< is graph s hidden
-	int numLayers(int s) { return GRAPH[s].layer.size(); }			//!< get number of layers of graph s
-	rect layerRect(int s, int l) { return GRAPH[s].layer[l].clientRect; }		//!< get rectangle of layer l of graph s
-	const char *layerXAxisTitle(int s, int l) { return GRAPH[s].layer[l].xAxis.label.c_str(); }		//!< get label of X-axis of layer l of graph s
-	const char *layerYAxisTitle(int s, int l) { return GRAPH[s].layer[l].yAxis.label.c_str(); }		//!< get label of Y-axis of layer l of graph s
-	const char *layerLegend(int s, int l) { return GRAPH[s].layer[l].legend.c_str(); }		//!< get legend of layer l of graph s
-	vector<text> layerTexts(int s, int l) {	return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
-	vector<line> layerLines(int s, int l) {	return GRAPH[s].layer[l].lines; } //!< get lines of layer l of graph s
-	vector<bitmap> layerBitmaps(int s, int l) {	return GRAPH[s].layer[l].bitmaps; } //!< get bitmaps of layer l of graph s
-	vector<double> layerXRange(int s, int l) {
+	int numGraphs() const { return GRAPH.size(); }			//!< get number of graphs
+	const char *graphName(int s) const { return GRAPH[s].name.c_str(); }	//!< get name of graph s
+	const char *graphParentFolder(int s) const { return GRAPH[s].parentFolder.c_str(); }	//!< get parent folder of graph s
+	const char *graphLabel(int s) const { return GRAPH[s].label.c_str(); }	//!< get name of graph s
+	bool graphHidden(int s) const { return GRAPH[s].bHidden; }	//!< is graph s hidden
+	rect graphRect(int s) const { return rect(GRAPH[s].width, GRAPH[s].height); }		//!< get rectangle of graph s
+	int numLayers(int s) const { return GRAPH[s].layer.size(); }			//!< get number of layers of graph s
+	rect layerRect(int s, int l) const { return GRAPH[s].layer[l].clientRect; }		//!< get rectangle of layer l of graph s
+	const char *layerXAxisTitle(int s, int l) const { return GRAPH[s].layer[l].xAxis.label.c_str(); }		//!< get label of X-axis of layer l of graph s
+	const char *layerYAxisTitle(int s, int l) const { return GRAPH[s].layer[l].yAxis.label.c_str(); }		//!< get label of Y-axis of layer l of graph s
+	const char *layerLegend(int s, int l) const { return GRAPH[s].layer[l].legend.c_str(); }		//!< get legend of layer l of graph s
+	vector<text> layerTexts(int s, int l) const {	return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
+	vector<line> layerLines(int s, int l) const {	return GRAPH[s].layer[l].lines; } //!< get lines of layer l of graph s
+	vector<bitmap> layerBitmaps(int s, int l) const {	return GRAPH[s].layer[l].bitmaps; } //!< get bitmaps of layer l of graph s
+	vector<double> layerXRange(int s, int l) const {
 		vector<double> range;
 		range.push_back(GRAPH[s].layer[l].xAxis.min);
 		range.push_back(GRAPH[s].layer[l].xAxis.max);
 		range.push_back(GRAPH[s].layer[l].xAxis.step);
 		return range;
 	} //!< get X-range of layer l of graph s
-	vector<double> layerYRange(int s, int l) {
+	vector<double> layerYRange(int s, int l) const {
 		vector<double> range;
 		range.push_back(GRAPH[s].layer[l].yAxis.min);
 		range.push_back(GRAPH[s].layer[l].yAxis.max);
 		range.push_back(GRAPH[s].layer[l].yAxis.step);
 		return range;
 	} //!< get Y-range of layer l of graph s
-	vector<int> layerXTicks(int s, int l) {
+	vector<int> layerXTicks(int s, int l) const {
 		vector<int> tick;
 		tick.push_back(GRAPH[s].layer[l].xAxis.majorTicks);
 		tick.push_back(GRAPH[s].layer[l].xAxis.minorTicks);
 		return tick;
 	} //!< get X-axis ticks of layer l of graph s
-	vector<int> layerYTicks(int s, int l) {
+	vector<int> layerYTicks(int s, int l) const {
 		vector<int> tick;
 		tick.push_back(GRAPH[s].layer[l].yAxis.majorTicks);
 		tick.push_back(GRAPH[s].layer[l].yAxis.minorTicks);
 		return tick;
 	} //!< get Y-axis ticks of layer l of graph s
-	vector<graphGrid> layerGrid(int s, int l) {
+	vector<graphGrid> layerGrid(int s, int l) const {
 		vector<graphGrid> grid;
 		grid.push_back(GRAPH[s].layer[l].xAxis.majorGrid);
 		grid.push_back(GRAPH[s].layer[l].xAxis.minorGrid);
@@ -511,7 +527,7 @@ public:
 		grid.push_back(GRAPH[s].layer[l].yAxis.minorGrid);
 		return grid;
 	} //!< get grid of layer l of graph s
-	vector<graphAxisFormat> layerAxisFormat(int s, int l) {
+	vector<graphAxisFormat> layerAxisFormat(int s, int l) const {
 		vector<graphAxisFormat> format;
 		format.push_back(GRAPH[s].layer[l].yAxis.formatAxis[0]); //bottom
 		format.push_back(GRAPH[s].layer[l].yAxis.formatAxis[1]); //top
@@ -519,7 +535,7 @@ public:
 		format.push_back(GRAPH[s].layer[l].xAxis.formatAxis[1]); //right
 		return format;
 	} //!< get title and format of axes of layer l of graph s
-	vector<graphAxisTick> layerAxisTickLabels(int s, int l) {
+	vector<graphAxisTick> layerAxisTickLabels(int s, int l) const {
 		vector<graphAxisTick> tick;
 		tick.push_back(GRAPH[s].layer[l].yAxis.tickAxis[0]); //bottom
 		tick.push_back(GRAPH[s].layer[l].yAxis.tickAxis[1]); //top
@@ -527,61 +543,61 @@ public:
 		tick.push_back(GRAPH[s].layer[l].xAxis.tickAxis[1]); //right
 		return tick;
 	} //!< get tick labels of axes of layer l of graph s
-	vector<double> layerHistogram(int s, int l) {
+	vector<double> layerHistogram(int s, int l) const {
 		vector<double> range;
 		range.push_back(GRAPH[s].layer[l].histogram_bin);
 		range.push_back(GRAPH[s].layer[l].histogram_begin);
 		range.push_back(GRAPH[s].layer[l].histogram_end);
 		return range;
 	} //!< get histogram bin of layer l of graph s
-	int layerXScale(int s, int l){ return GRAPH[s].layer[l].xAxis.scale; }		//!< get scale of X-axis of layer l of graph s
-	int layerYScale(int s, int l){ return GRAPH[s].layer[l].yAxis.scale; }		//!< get scale of Y-axis of layer l of graph s
-	int numCurves(int s, int l) { return GRAPH[s].layer[l].curve.size(); }			//!< get number of curves of layer l of graph s
-	const char *curveDataName(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].dataName.c_str(); }	//!< get data source name of curve c of layer l of graph s
-	const char *curveXColName(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].xColName.c_str(); }	//!< get X-column name of curve c of layer l of graph s
-	const char *curveYColName(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].yColName.c_str(); }	//!< get Y-column name of curve c of layer l of graph s
-	int curveType(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].type; }	//!< get type of curve c of layer l of graph s
-	int curveLineStyle(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].line_style; }	//!< get line style of curve c of layer l of graph s
-	int curveLineColor(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].line_color; }	//!< get line color of curve c of layer l of graph s
-	int curveLineConnect(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].line_connect; }	//!< get line connect of curve c of layer l of graph s
-	double curveLineWidth(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].line_width; }	//!< get line width of curve c of layer l of graph s
+	int layerXScale(int s, int l) const { return GRAPH[s].layer[l].xAxis.scale; }		//!< get scale of X-axis of layer l of graph s
+	int layerYScale(int s, int l) const { return GRAPH[s].layer[l].yAxis.scale; }		//!< get scale of Y-axis of layer l of graph s
+	int numCurves(int s, int l) const { return GRAPH[s].layer[l].curve.size(); }			//!< get number of curves of layer l of graph s
+	const char *curveDataName(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].dataName.c_str(); }	//!< get data source name of curve c of layer l of graph s
+	const char *curveXColName(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].xColName.c_str(); }	//!< get X-column name of curve c of layer l of graph s
+	const char *curveYColName(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].yColName.c_str(); }	//!< get Y-column name of curve c of layer l of graph s
+	int curveType(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].type; }	//!< get type of curve c of layer l of graph s
+	int curveLineStyle(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].line_style; }	//!< get line style of curve c of layer l of graph s
+	int curveLineColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].line_color; }	//!< get line color of curve c of layer l of graph s
+	int curveLineConnect(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].line_connect; }	//!< get line connect of curve c of layer l of graph s
+	double curveLineWidth(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].line_width; }	//!< get line width of curve c of layer l of graph s
 
-	bool curveIsFilledArea(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].fillarea; }	//!< get is filled area of curve c of layer l of graph s
-	int curveFillAreaColor(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].fillarea_color; }	//!< get area fillcolor of curve c of layer l of graph s
-	int curveFillPattern(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].fillarea_pattern; }	//!< get fill pattern of curve c of layer l of graph s
-	int curveFillPatternColor(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].fillarea_pattern_color; }	//!< get fill pattern color of curve c of layer l of graph s
-	double curveFillPatternWidth(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].fillarea_pattern_width; }	//!< get fill pattern line width of curve c of layer l of graph s
-	int curveFillPatternBorderStyle(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].fillarea_pattern_border_style; }	//!< get fill pattern border style of curve c of layer l of graph s
-	int curveFillPatternBorderColor(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].fillarea_pattern_border_color; }	//!< get fill pattern border color of curve c of layer l of graph s
-	double curveFillPatternBorderWidth(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].fillarea_pattern_border_width; }	//!< get fill pattern border line width of curve c of layer l of graph s
+	bool curveIsFilledArea(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea; }	//!< get is filled area of curve c of layer l of graph s
+	int curveFillAreaColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_color; }	//!< get area fillcolor of curve c of layer l of graph s
+	int curveFillPattern(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern; }	//!< get fill pattern of curve c of layer l of graph s
+	int curveFillPatternColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern_color; }	//!< get fill pattern color of curve c of layer l of graph s
+	double curveFillPatternWidth(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern_width; }	//!< get fill pattern line width of curve c of layer l of graph s
+	int curveFillPatternBorderStyle(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern_border_style; }	//!< get fill pattern border style of curve c of layer l of graph s
+	int curveFillPatternBorderColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern_border_color; }	//!< get fill pattern border color of curve c of layer l of graph s
+	double curveFillPatternBorderWidth(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern_border_width; }	//!< get fill pattern border line width of curve c of layer l of graph s
 
-	int curveSymbolType(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].symbol_type; }	//!< get symbol type of curve c of layer l of graph s
-	int curveSymbolColor(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].symbol_color; }	//!< get symbol color of curve c of layer l of graph s
-	int curveSymbolFillColor(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].symbol_fill_color; }	//!< get symbol fill color of curve c of layer l of graph s
-	double curveSymbolSize(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].symbol_size; }	//!< get symbol size of curve c of layer l of graph s
-	int curveSymbolThickness(int s, int l, int c) { return GRAPH[s].layer[l].curve[c].symbol_thickness; }	//!< get symbol thickness of curve c of layer l of graph s
+	int curveSymbolType(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_type; }	//!< get symbol type of curve c of layer l of graph s
+	int curveSymbolColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_color; }	//!< get symbol color of curve c of layer l of graph s
+	int curveSymbolFillColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_fill_color; }	//!< get symbol fill color of curve c of layer l of graph s
+	double curveSymbolSize(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_size; }	//!< get symbol size of curve c of layer l of graph s
+	int curveSymbolThickness(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_thickness; }	//!< get symbol thickness of curve c of layer l of graph s
 
 	//note
-	int numNotes() { return NOTE.size(); }			//!< get number of notes
-	const char *noteName(int n) { return NOTE[n].name.c_str(); }	//!< get name of note n
-	const char *noteParentFolder(int n) { return NOTE[n].parentFolder.c_str(); }	//!< get parent folder of note n
-	const char *noteLabel(int n) { return NOTE[n].label.c_str(); }	//!< get label of note n
-	const char *noteText(int n) { return NOTE[n].text.c_str(); }	//!< get text of note n
+	int numNotes() const { return NOTE.size(); }			//!< get number of notes
+	const char *noteName(int n) const { return NOTE[n].name.c_str(); }	//!< get name of note n
+	const char *noteParentFolder(int n) const { return NOTE[n].parentFolder.c_str(); }	//!< get parent folder of note n
+	const char *noteLabel(int n) const { return NOTE[n].label.c_str(); }	//!< get label of note n
+	const char *noteText(int n) const { return NOTE[n].text.c_str(); }	//!< get text of note n
 
-	const char* resultsLogString(){ return resultsLog.c_str();}		//!< get Results Log
+	const char* resultsLogString() const { return resultsLog.c_str();}		//!< get Results Log
 
 private:
 	bool IsBigEndian();
 	void ByteSwap(unsigned char * b, int n);
 	int ParseFormatOld();
 	int ParseFormatNew();
-	int  compareSpreadnames(char *sname);				//!< returns matching spread index
-	int  compareExcelnames(char *sname);				//!< returns matching excel index
-	int  compareColumnnames(int spread, char *sname);	//!< returns matching column index
-	int  compareExcelColumnnames(int excel, int sheet, char *sname);  //!< returns matching column index
-	int  compareMatrixnames(char *sname);				//!< returns matching matrix index
-	int  compareFunctionnames(const char *sname);				//!< returns matching function index
-	vector<string> findDataByIndex(int index);
+	int compareSpreadnames(char *sname) const;				//!< returns matching spread index
+	int compareExcelnames(char *sname) const;				//!< returns matching excel index
+	int compareColumnnames(int spread, char *sname) const;	//!< returns matching column index
+	int compareExcelColumnnames(int excel, int sheet, char *sname) const;  //!< returns matching column index
+	int compareMatrixnames(char *sname) const;				//!< returns matching matrix index
+	int compareFunctionnames(const char *sname) const;				//!< returns matching function index
+	vector<string> findDataByIndex(int index) const;
 	string findObjectByIndex(int index, string folder);
 	void readSpreadInfo(FILE *fopj, FILE *fdebug);
 	void readExcelInfo(FILE *f, FILE *debug);

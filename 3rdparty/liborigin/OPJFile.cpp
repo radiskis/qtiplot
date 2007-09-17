@@ -65,14 +65,14 @@ OPJFile::OPJFile(const char *filename)
 	objectIndex=0;
 }
 
-int OPJFile::compareSpreadnames(char *sname) {
+int OPJFile::compareSpreadnames(char *sname) const {
 	for(unsigned int i=0;i<SPREADSHEET.size();i++)
 		if (0==strcmp_i(SPREADSHEET[i].name.c_str(),sname))
 			return i;
 	return -1;
 }
 
-int OPJFile::compareExcelnames(char *sname) {
+int OPJFile::compareExcelnames(char *sname) const {
 	for(unsigned int i=0;i<EXCEL.size();i++)
 		if (0==strcmp_i(EXCEL[i].name.c_str(),sname))
 			return i;
@@ -80,34 +80,34 @@ int OPJFile::compareExcelnames(char *sname) {
 }
 
 
-int OPJFile::compareColumnnames(int spread, char *sname) {
+int OPJFile::compareColumnnames(int spread, char *sname) const {
 	for(unsigned int i=0;i<SPREADSHEET[spread].column.size();i++)
 		if (SPREADSHEET[spread].column[i].name == sname)
 			return i;
 	return -1;
 }
-int OPJFile::compareExcelColumnnames(int iexcel, int isheet, char *sname) {
+int OPJFile::compareExcelColumnnames(int iexcel, int isheet, char *sname) const {
 	for(unsigned int i=0;i<EXCEL[iexcel].sheet[isheet].column.size();i++)
 		if (EXCEL[iexcel].sheet[isheet].column[i].name == sname)
 			return i;
 	return -1;
 }
 
-int OPJFile::compareMatrixnames(char *sname) {
+int OPJFile::compareMatrixnames(char *sname) const {
 	for(unsigned int i=0;i<MATRIX.size();i++)
 		if (0==strcmp_i(MATRIX[i].name.c_str(),sname))
 			return i;
 	return -1;
 }
 
-int OPJFile::compareFunctionnames(const char *sname) {
+int OPJFile::compareFunctionnames(const char *sname) const {
 	for(unsigned int i=0;i<FUNCTION.size();i++)
 		if (0==strcmp_i(FUNCTION[i].name.c_str(),sname))
 			return i;
 	return -1;
 }
 
-vector<string> OPJFile::findDataByIndex(int index) {
+vector<string> OPJFile::findDataByIndex(int index) const {
 	vector<string> str;
 	for(unsigned int spread=0;spread<SPREADSHEET.size();spread++)
 		for(unsigned int i=0;i<SPREADSHEET[spread].column.size();i++)
@@ -1923,6 +1923,17 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 	fprintf(debug,"			GRAPH %d NAME : %s	(@ 0x%X) \n", GRAPH.size(),name,POS + 0x2);
 	fflush(debug);
 
+	unsigned short graph_width;
+	fseek(f,POS + 0x23,SEEK_SET);
+	fread(&graph_width,2,1,f);
+	if(IsBigEndian()) SwapBytes(graph_width);
+	GRAPH.back().width = graph_width;
+
+	unsigned short graph_height;
+	fread(&graph_height,2,1,f);
+	if(IsBigEndian()) SwapBytes(graph_height);
+	GRAPH.back().height = graph_height;
+
 	char c;
 	fseek(f,POS + 0x69,SEEK_SET);
 	fread(&c,1,1,f);
@@ -2123,15 +2134,24 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			end.shape_length = (double)w/500.0;
 
 			// bitmap properties
-			double left = 0.0;
-			fseek(f,LAYER+0x13,SEEK_SET);
-			fread(&left,8,1,f);
-			if(IsBigEndian()) SwapBytes(left);
+			short bitmap_width = 0;
+			fseek(f,LAYER+0x1,SEEK_SET);
+			fread(&bitmap_width,2,1,f);
+			if(IsBigEndian()) SwapBytes(bitmap_width);
 
-			double top = 0.0;
+			short bitmap_height = 0;
+			fread(&bitmap_height,2,1,f);
+			if(IsBigEndian()) SwapBytes(bitmap_height);
+
+			double bitmap_left = 0.0;
+			fseek(f,LAYER+0x13,SEEK_SET);
+			fread(&bitmap_left,8,1,f);
+			if(IsBigEndian()) SwapBytes(bitmap_left);
+
+			double bitmap_top = 0.0;
 			fseek(f,LAYER+0x1B,SEEK_SET);
-			fread(&top,8,1,f);
-			if(IsBigEndian()) SwapBytes(top);
+			fread(&bitmap_top,8,1,f);
+			if(IsBigEndian()) SwapBytes(bitmap_top);
 
 		//section_body_2_size
 			LAYER+=sec_size+0x1;
@@ -2225,8 +2245,12 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			{
 				unsigned long filesize=sec_size+14;
 				GRAPH.back().layer.back().bitmaps.push_back(bitmap());
-				GRAPH.back().layer.back().bitmaps.back().left=left;
-				GRAPH.back().layer.back().bitmaps.back().top=top;
+				GRAPH.back().layer.back().bitmaps.back().left=bitmap_left;
+				GRAPH.back().layer.back().bitmaps.back().top=bitmap_top;
+				GRAPH.back().layer.back().bitmaps.back().width=
+					(GRAPH.back().layer.back().xAxis.max - GRAPH.back().layer.back().xAxis.min)*bitmap_width/10000;
+				GRAPH.back().layer.back().bitmaps.back().height=
+					(GRAPH.back().layer.back().yAxis.max - GRAPH.back().layer.back().yAxis.min)*bitmap_height/10000;
 				GRAPH.back().layer.back().bitmaps.back().attach=attach;
 				GRAPH.back().layer.back().bitmaps.back().size=filesize;
 				GRAPH.back().layer.back().bitmaps.back().data=new unsigned char[filesize];

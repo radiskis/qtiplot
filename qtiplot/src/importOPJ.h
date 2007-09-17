@@ -39,14 +39,14 @@ class ImportOPJ
 public:
 	ImportOPJ(ApplicationWindow *app, const QString& filename);
 
-	bool createProjectTree (const OPJFile& opj);
-	bool importTables (OPJFile opj);
-	bool importGraphs (OPJFile opj);
-	bool importNotes (OPJFile opj);
+	bool createProjectTree(const OPJFile& opj);
+	bool importTables(const OPJFile& opj);
+	bool importGraphs(const OPJFile& opj);
+	bool importNotes(const OPJFile& opj);
 	int error(){return parse_error;};
 
 private:
-    int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1));};
+    int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
 	int translateOrigin2QtiplotLineStyle(int linestyle);
 	QString parseOriginText(const QString &str);
 	QString parseOriginTags(const QString &str);
