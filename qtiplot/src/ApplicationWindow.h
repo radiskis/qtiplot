@@ -119,6 +119,7 @@ public:
 	~ApplicationWindow();
 
 	enum ShowWindowsPolicy{HideAll, ActiveFolder, SubFolders};
+	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow};
 
 	QAssistantClient *assistant;
 	ScriptWindow *scriptWindow;
@@ -200,6 +201,8 @@ public slots:
 
 	QLocale locale(){return d_locale;};
 	void setLocale(const QLocale& l){d_locale = l;};
+	
+	void initWindow();
 	//@}
 
 	//! \name Multilayer Plots
@@ -934,6 +937,7 @@ signals:
 
 // TODO: a lot of this stuff should be private
 public:
+	WindowType d_init_window_type;
 	QRect d_script_win_rect;
 	bool d_script_win_on_top;
 	bool d_inform_rename_table;

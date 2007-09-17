@@ -52,6 +52,13 @@ Differentiation::Differentiation(ApplicationWindow *parent, Graph *g, const QStr
 	setDataFromCurve(curveTitle, start, end);
 }
 
+Differentiation::Differentiation(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end)
+: Filter(parent, t)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, start, end);
+}
+
 void Differentiation::init()
 {
 	setName(tr("Derivative"));
@@ -67,16 +74,25 @@ void Differentiation::output()
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QLocale locale = app->locale();
     QString tableName = app->generateUniqueName(QString(name()));
-    QString curveTitle = d_curve->title().text();
-    d_result_table = app->newHiddenTable(tableName, tr("Derivative") + " " + tr("of","Derivative of")  + " " + curveTitle, d_n-2, 2);
+    QString dataSet;
+	if (d_curve)
+		dataSet = d_curve->title().text();
+	else
+		dataSet = d_y_col_name;
+	
+    d_result_table = app->newHiddenTable(tableName, tr("Derivative") + " " + tr("of","Derivative of")  + " " + dataSet, d_n-2, 2);
 	for (int i = 1; i < d_n-1; i++) {
 		d_result_table->setText(i-1, 0, locale.toString(d_x[i], 'g', app->d_decimal_digits));
 		d_result_table->setText(i-1, 1, locale.toString(result[i], 'g', app->d_decimal_digits));
 	}
     delete[] result;
 
-    MultiLayer *ml = app->newGraph(tr("Plot")+tr("Derivative"));
-    ml->activeGraph()->insertCurve(d_result_table, tableName + "_2", 0);
-    Legend *l = ml->activeGraph()->legend();
-    l->setText("\\c{1}" + tr("Derivative") + " " + tr("of","Derivative of") + " " + curveTitle);
+	if (d_graphics_display){	
+		if (!d_output_graph)
+			d_output_graph = createOutputGraph()->activeGraph();
+		
+    	d_output_graph->insertCurve(d_result_table, tableName + "_2", 0);
+    	Legend *l = d_output_graph->legend();
+    	l->setText("\\c{1}" + tr("Derivative") + " " + tr("of","Derivative of") + " " + dataSet);
+	}
 }

@@ -528,22 +528,27 @@ void ConfigDialog::initAppPage()
 	boxScriptingLanguage->insertStringList(llist);
 	boxScriptingLanguage->setCurrentItem(llist.findIndex(app->defaultScriptingLang));
 	topBoxLayout->addWidget( boxScriptingLanguage, 3, 1 );
+	
+	lblInitWindow = new QLabel();
+	topBoxLayout->addWidget( lblInitWindow, 4, 0 );
+	boxInitWindow = new QComboBox();
+	topBoxLayout->addWidget( boxInitWindow, 4, 1 );
 
     boxSave= new QCheckBox();
 	boxSave->setChecked(app->autoSave);
-	topBoxLayout->addWidget( boxSave, 4, 0 );
+	topBoxLayout->addWidget( boxSave, 5, 0 );
 
 	boxMinutes = new QSpinBox();
-	boxMinutes->setRange(1,100);
+	boxMinutes->setRange(1, 100);
 	boxMinutes->setValue(app->autoSaveTime);
 	boxMinutes->setEnabled(app->autoSave);
-	topBoxLayout->addWidget( boxMinutes, 4, 1 );
+	topBoxLayout->addWidget( boxMinutes, 5, 1 );
 
 	boxSearchUpdates = new QCheckBox();
 	boxSearchUpdates->setChecked(app->autoSearchUpdates);
-	topBoxLayout->addWidget( boxSearchUpdates, 5, 0, 1, 2 );
+	topBoxLayout->addWidget( boxSearchUpdates, 6, 0, 1, 2 );
 
-	topBoxLayout->setRowStretch( 6, 1 );
+	topBoxLayout->setRowStretch( 7, 1 );
 
 	appTabWidget->addTab( application, QString() );
 
@@ -883,7 +888,15 @@ void ConfigDialog::languageChange()
 	boxSearchUpdates->setText(tr("Check for new versions at startup"));
 	boxMinutes->setSuffix(tr(" minutes"));
 	lblScriptingLanguage->setText(tr("Default scripting language"));
-
+	lblInitWindow->setText(tr("Start with"));
+	boxInitWindow->clear();
+	boxInitWindow->addItem(tr("Empty Project"));
+	boxInitWindow->addItem(tr("Table"));
+	boxInitWindow->addItem(tr("Matrix"));
+	boxInitWindow->addItem(tr("Empty Graph"));
+	boxInitWindow->addItem(tr("Note"));
+	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
+	
     boxUpdateSeparators->setText(tr("Update separators in Tables/Matrices"));
 	lblAppPrecision->setText(tr("Number of Decimal Digits"));
 	lblDecimalSeparator->setText(tr("Decimal Separators"));
@@ -1075,6 +1088,7 @@ void ConfigDialog::apply()
 	app->autoSearchUpdates = boxSearchUpdates->isChecked();
 	app->setSaveSettings(boxSave->isChecked(), boxMinutes->value());
 	app->defaultScriptingLang = boxScriptingLanguage->currentText();
+	app->d_init_window_type = (ApplicationWindow::WindowType)boxInitWindow->currentIndex();
 
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();

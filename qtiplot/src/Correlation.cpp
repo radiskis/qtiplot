@@ -172,13 +172,14 @@ void Correlation::addResultCurve()
 	d_table->setColPlotDesignation(cols, Table::X);
 	d_table->setHeaderColType();
 
-	MultiLayer *ml = app->newGraph(name() + tr("Plot"));
-	if (!ml)
-        return;
+	if (d_graphics_display){	
+		if (!d_output_graph)
+			d_output_graph = createOutputGraph()->activeGraph();
 
-    DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
-	c->setData(x_temp, y_temp, rows);
-    c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
-	ml->activeGraph()->insertPlotItem(c, Graph::Line);
-	ml->activeGraph()->updatePlot();
+    	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
+		c->setData(x_temp, y_temp, rows);
+    	c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+		d_output_graph->insertPlotItem(c, Graph::Line);
+		d_output_graph->updatePlot();
+	}
 }

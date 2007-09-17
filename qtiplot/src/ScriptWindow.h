@@ -66,7 +66,8 @@ signals:
 		void visibilityChanged(bool visible);
 
 private:
-		void closeEvent( QCloseEvent*);
+		void moveEvent( QMoveEvent* );
+		void resizeEvent( QResizeEvent* );
 
 		void initMenu();
 		void initActions();

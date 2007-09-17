@@ -242,11 +242,9 @@ void ScriptWindow::saveAs()
 
 void ScriptWindow::save()
 {
-	if (!fileName.isEmpty())
-	{
+	if (!fileName.isEmpty()){
 		QFile f(fileName);
-		if ( !f.open( QIODevice::WriteOnly ) )
-		{
+		if ( !f.open( QIODevice::WriteOnly ) ){
 			QMessageBox::critical(0, tr("QtiPlot - File Save Error"),
 					tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fileName));
 			return;
@@ -255,8 +253,7 @@ void ScriptWindow::save()
 		t.setCodec("UTF-8");
 		t << te->text();
 		f.close();
-	}
-	else
+	} else
 		saveAs();
 }
 
@@ -280,8 +277,14 @@ void ScriptWindow::setAlwaysOnTop(bool on)
 		this->close();
 }
 
-void ScriptWindow::closeEvent( QCloseEvent* ce )
+void ScriptWindow::moveEvent( QMoveEvent* e )
 {
 	d_app->d_script_win_rect = QRect(pos(), size());
-	ce->accept();
+	e->accept();
+}
+
+void ScriptWindow::resizeEvent( QResizeEvent* e )
+{
+	d_app->d_script_win_rect = QRect(geometry().topLeft(), size());
+	e->accept();
 }

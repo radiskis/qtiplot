@@ -39,11 +39,14 @@ public:
 	Integration(ApplicationWindow *parent, Graph *g);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
+	Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end);
 
     int method(){return d_method;};
     void setMethodOrder(int n);
 
     double area(){return d_area;};
+	
+	virtual void enableGraphicsDisplay(bool = true, Graph* = 0){};
 
 private:
     void init();
