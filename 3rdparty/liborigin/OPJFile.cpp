@@ -2082,10 +2082,10 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			fread(&tab,1,1,f);
 
 			//line properties
-			int line_style;
-			double width;
+			unsigned char line_style = 0;
+			double width = 0.0;
 			lineVertex begin, end;
-			unsigned int w=0;
+			unsigned int w = 0;
 
 			fseek(f,LAYER+0x12,SEEK_SET);
 			fread(&line_style,1,1,f);
