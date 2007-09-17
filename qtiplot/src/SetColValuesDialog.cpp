@@ -117,12 +117,9 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	commands = new ScriptEdit( scriptEnv);
 
 	QVBoxLayout *vbox2 = new QVBoxLayout();
-	btnOk = new QPushButton(tr( "&OK" ));
-	vbox2->addWidget(btnOk);
 	btnApply = new QPushButton(tr( "&Apply" ));
-
 	vbox2->addWidget(btnApply);
-	btnCancel = new QPushButton(tr( "Cancel" ));
+	btnCancel = new QPushButton(tr( "&Close" ));
 	vbox2->addWidget(btnCancel);
 	vbox2->addStretch();
 
@@ -147,7 +144,6 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	connect(btnAddFunction, SIGNAL(clicked()),this, SLOT(insertFunction()));
 	connect(btnAddCol, SIGNAL(clicked()),this, SLOT(insertCol()));
 	connect(addCellButton, SIGNAL(clicked()),this, SLOT(insertCell()));
-	connect(btnOk, SIGNAL(clicked()),this, SLOT(accept()));
 	connect(btnApply, SIGNAL(clicked()),this, SLOT(apply()));
 	connect(btnCancel, SIGNAL(clicked()),this, SLOT(close()));
 	connect(functions, SIGNAL(activated(int)),this, SLOT(insertExplain(int)));
@@ -169,12 +165,15 @@ void SetColValuesDialog::nextColumn()
 
 void SetColValuesDialog::updateColumn(int sc)
 {
-	if (!sc)
+    if (sc < 0 || sc > table->numCols() - 1)
+        return;
+
+	if (sc == 0)
 		buttonPrev->setEnabled(false);
 	else
 		buttonPrev->setEnabled(true);
 
-	if (sc >= table->numCols() - 1)
+	if (sc == table->numCols() - 1)
 		buttonNext->setEnabled(false);
 	else
 		buttonNext->setEnabled(true);
@@ -201,22 +200,19 @@ void SetColValuesDialog::customEvent(QEvent *e)
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
 }
 
-void SetColValuesDialog::accept()
-{
-	if (apply())
-		close();
-}
-
 bool SetColValuesDialog::apply()
 {
 	int col = table->selectedColumn();
+    if (col < 0 || col > table->numCols() - 1)
+        return false;
+
 	QString formula = commands->text();
 	QString oldFormula = table->getCommands()[col];
 
 	table->setCommand(col,formula);
-	if(table->calculate(col,start->value()-1,end->value()-1))
+	if(table->calculate(col, start->value()-1, end->value()-1))
 		return true;
-	table->setCommand(col,oldFormula);
+	table->setCommand(col, oldFormula);
 	return false;
 }
 
@@ -248,31 +244,24 @@ void SetColValuesDialog::insertCell()
 
 void SetColValuesDialog::setTable(Table* w)
 {
-	table=w;
-	QStringList colNames=w->colNames();
+	table = w;
+	QStringList colNames = w->colNames();
 	int cols = w->numCols();
 	for (int i=0; i<cols; i++)
-		boxColumn->insertItem("col(\""+colNames[i]+"\")",i);
+		boxColumn->insertItem("col(\""+colNames[i]+"\")", i);
 
 	int s = w->table()->currentSelection();
-	if (s >= 0)
-	{
+	if (s >= 0) {
 		Q3TableSelection sel = w->table()->selection(s);
 		w->setSelectedCol(sel.leftCol());
 
 		start->setValue(sel.topRow() + 1);
 		end->setValue(sel.bottomRow() + 1);
-	}
-	else
-	{
+	} else {
 		start->setValue(1);
 		end->setValue(w->numRows());
 	}
 
 	updateColumn(w->selectedColumn());
 	commands->setContext(w);
-}
-
-SetColValuesDialog::~SetColValuesDialog()
-{
 }
