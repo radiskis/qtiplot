@@ -160,7 +160,7 @@ private:
 	QLabel *lblScriptingLanguage, *lblInitWindow;
 	QComboBox *boxScriptingLanguage, *boxInitWindow;
 	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
-	QCheckBox *boxPromptRenameTables;
+	QCheckBox *boxPromptRenameTables, *boxBackupProject;
 };
 
 #endif // CONFIGDIALOG_H
