@@ -59,6 +59,13 @@ Integration::Integration(ApplicationWindow *parent, Graph *g, const QString& cur
 	setDataFromCurve(curveTitle, start, end);
 }
 
+Integration::Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end)
+: Filter(parent, t)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, start, end);
+}
+
 void Integration::init()
 {
 	setName(tr("Integration"));
@@ -68,7 +75,7 @@ void Integration::init()
 }
 
 QString Integration::logInfo()
-{
+{	
 	// Do the interpolation, use GSL libraries for that
 	gsl_interp_accel *acc = gsl_interp_accel_alloc();
 	const gsl_interp_type *method;
@@ -82,12 +89,11 @@ QString Integration::logInfo()
 
 	// If we have enough points use GSL libraries for interpolation, else use the polint algorithm
 	gsl_spline *interp ;
-	if(d_n>3)
-	{
+	if(d_n>3){
 		interp = gsl_spline_alloc (method, d_n);
 		gsl_spline_init (interp, d_x, d_y, d_n);
 	}
-
+	
 	// Using Numerical Recipes
 	// This is Romberg Integration method
 	// This method uses the Nevilles' algorithm for interpollation;
@@ -137,8 +143,19 @@ QString Integration::logInfo()
 		if(success) break;
 	}
 
-	QString logInfo = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate) + "\t" + tr("Plot")+ ": ''" + d_graph->parentPlotName() + "'']\n";
-	logInfo += "\n" + tr("Numerical integration of") + ": " + d_curve->title().text() + " " + tr("using a %1 order method").arg(d_method)+"\n";
+	QString dataSet;
+	if (d_curve)
+		dataSet = d_curve->title().text();
+	else
+		dataSet = d_y_col_name;
+	
+	QString logInfo = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate);
+	if (d_graph)
+		logInfo += tr("\tPlot")+ ": ''" + d_graph->parentPlotName() + "'']\n";
+	else
+		logInfo += "\n";
+	
+	logInfo += "\n" + tr("Numerical integration of") + ": " + dataSet + " " + tr("using a %1 order method").arg(d_method)+"\n";
 	if(success)
 		logInfo += tr("Iterations") + ": " + QString::number(j)+"\n";
 	if(!success)

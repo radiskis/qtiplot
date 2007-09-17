@@ -49,6 +49,13 @@ SmoothFilter::SmoothFilter(ApplicationWindow *parent, Graph *g, const QString& c
     init(m);
 }
 
+SmoothFilter::SmoothFilter(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end, int m)
+: Filter(parent, t)
+{
+	setDataFromTable(t, xCol, yCol, start, end);
+	init(m);
+}
+
 void SmoothFilter::init (int m)
 {
     setName(tr("Smoothed"));

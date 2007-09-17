@@ -49,6 +49,13 @@ Interpolation::Interpolation(ApplicationWindow *parent, Graph *g, const QString&
 	setDataFromCurve(curveTitle, start, end);
 }
 
+Interpolation::Interpolation(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end, int m)
+: Filter(parent, t)
+{
+	init(m);
+	setDataFromTable(t, xCol, yCol, start, end);
+}
+
 void Interpolation::init(int m)
 {
     if (m < 0 || m > 2){

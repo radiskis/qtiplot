@@ -235,7 +235,6 @@ void Folder::addWindow( MyWidget *w )
 	if (w) {
 		lstWindows.append( w ); 
 		w->setFolder(this);
-		d_active_window = w;
 	}
 }
 

@@ -48,6 +48,13 @@ FFTFilter::FFTFilter(ApplicationWindow *parent, Graph *g, const QString& curveTi
     init(m);
 }
 
+FFTFilter::FFTFilter(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end, int m)
+: Filter(parent, t)
+{
+	setDataFromTable(t, xCol, yCol, start, end);
+	init(m);
+}
+
 void FFTFilter::init (int m)
 {
     setName(tr("FFT") + tr("Filtered"));

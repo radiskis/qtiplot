@@ -26,9 +26,9 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include <qapplication.h>
-#include <qaction.h>
- #include "ApplicationWindow.h"
+#include <QApplication>
+#include <QAction>
+#include "ApplicationWindow.h"
 
 // The following stuff is for the doxygen title page
 /*!  \mainpage QtiPlot - Data analysis and scientific plotting - API documentation
@@ -137,9 +137,9 @@ int main( int argc, char ** argv )
 			factorySettings = true;
 		
 		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
-		mw->applyUserSettings();
-		mw->newTable();
+		mw->applyUserSettings();		
 		mw->showMaximized();
+		mw->initWindow();
 		mw->savedProject();
 		mw->showDonationDialog();
 		if (mw->autoSearchUpdates){

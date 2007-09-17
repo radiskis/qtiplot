@@ -32,6 +32,7 @@
 #include "Table.h"
 #include "FunctionCurve.h"
 #include "PlotCurve.h"
+#include "MultiLayer.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -44,6 +45,7 @@ Filter::Filter( ApplicationWindow *parent, Graph *g, const char * name)
 {
 	init();
 	d_graph = g;
+	d_output_graph = g;
 }
 
 Filter::Filter( ApplicationWindow *parent, Table *t, const char * name)
@@ -69,6 +71,9 @@ void Filter::init()
     d_graph = 0;
     d_table = 0;
     d_result_table = 0;
+	d_output_graph = 0;
+	d_graphics_display = true;
+	d_y_col_name = QString::null;
 }
 
 void Filter::setInterval(double from, double to)
@@ -121,8 +126,10 @@ int Filter::curveIndex(const QString& curveTitle, Graph *g)
 		return -1;
 	}
 
-	if (g)
+	if (g){
 		d_graph = g;
+		d_output_graph = g;
+	}
 
 	if (!d_graph){
 		d_init_err = true;
@@ -177,8 +184,7 @@ void Filter::setColor(const QString& colorName)
 void Filter::showLegend()
 {
 	Legend* mrk = d_graph->newLegend(legendInfo());
-	if (d_graph->hasLegend())
-	{
+	if (d_graph->hasLegend()){
 		Legend* legend = d_graph->legend();
 		QPoint p = legend->rect().bottomLeft();
 		mrk->setOrigin(QPoint(p.x(), p.y()+20));
@@ -314,21 +320,131 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QLocale locale = app->locale();
     const QString tableName = app->generateUniqueName(QString(this->name()));
-    d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + d_curve->title().text(), d_points, 2);
+	QString dataSet;
+	if (d_curve)
+		dataSet = d_curve->title().text();
+	else
+		dataSet = d_y_col_name;
+	
+    d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + dataSet, d_points, 2);
 	for (int i=0; i<d_points; i++){
 		d_result_table->setText(i, 0, locale.toString(x[i], 'g', app->d_decimal_digits));
 		d_result_table->setText(i, 1, locale.toString(y[i], 'g', app->d_decimal_digits));
 	}
 
-	DataCurve *c = new DataCurve(d_result_table, tableName + "_1", tableName + "_2");
-	c->setData(x, y, d_points);
-    c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
-	d_graph->insertPlotItem(c, Graph::Line);
-    d_graph->updatePlot();
+	DataCurve *c = 0;
+	if (d_graphics_display){
+		c = new DataCurve(d_result_table, tableName + "_1", tableName + "_2");
+		c->setData(x, y, d_points);
+    	c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+		
+		if (!d_output_graph)
+			d_output_graph = createOutputGraph()->activeGraph();
+			
+		d_output_graph->insertPlotItem(c, Graph::Line);
+    	d_output_graph->updatePlot();
+	}
 
     delete[] x;
 	delete[] y;
 	return (QwtPlotCurve*)c;
+}
+
+void Filter::enableGraphicsDisplay(bool on, Graph *g)
+{
+	d_graphics_display = on;
+	if (on){
+		if (g)
+			d_output_graph = g;
+		else 
+			d_output_graph = createOutputGraph()->activeGraph();
+	}
+}
+
+MultiLayer * Filter::createOutputGraph()
+{
+	MultiLayer *ml = ((ApplicationWindow *)parent())->newGraph(name() + tr("Plot"));
+   	d_output_graph = ml->activeGraph();
+	return ml;	
+}
+
+bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to)
+{
+	d_init_err = true;
+
+	if (!t)
+		return false;
+		
+	int xcol = t->colIndex(xColName);
+	int ycol = t->colIndex(yColName);
+	if (xcol < 0 || ycol < 0)
+		return false;
+
+	if (t->columnType(xcol) != Table::Numeric || t->columnType(ycol) != Table::Numeric)
+		return false;
+	
+	from--; to--;
+	if (from < 0)
+		from = 0;
+	if (to < 0)
+		to = t->numRows() - 1;
+
+	int r = abs(to - from) + 1;
+    QVector<double> X(r), Y(r);
+
+	int size = 0;
+	for (int i = from; i<=to; i++ ){
+		QString xval = t->text(i, xcol);
+		QString yval = t->text(i, ycol);
+		if (!xval.isEmpty() && !yval.isEmpty()){
+		    bool valid_data = true;
+            X[size] = t->locale().toDouble(xval, &valid_data);
+            Y[size] = t->locale().toDouble(yval, &valid_data);
+            if (valid_data)
+                size++;
+		}
+	}
+
+	if (size < d_min_points){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+				tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
+        return false;
+	}
+	
+	if (d_n > 0){//delete previousely allocated memory
+		delete[] d_x;
+		delete[] d_y;
+	}
+	
+	d_graph = 0;
+	d_curve = 0;
+	d_n = size;
+	d_init_err = false;
+	d_table = t;
+	d_y_col_name = t->colName(ycol);
+	X.resize(d_n);
+	Y.resize(d_n);	
+	d_from = X[0];
+    d_to = X[d_n-1];
+
+	d_x = new double[d_n];
+    d_y = new double[d_n];
+
+    for (int i = 0; i < d_n; i++){
+        d_x[i] = X[i];
+        d_y[i] = Y[i];
+    }
+	
+	if (d_sort_data){	
+    	size_t *p = new size_t[d_n];
+   		gsl_sort_index(p, X.data(), 1, d_n);
+    	for (int i=0; i<d_n; i++){
+        	d_x[i] = X[p[i]];
+  	    	d_y[i] = Y[p[i]];
+		}
+		delete[] p;
+    }	
+	return true;
 }
 
 Filter::~Filter()

@@ -265,7 +265,7 @@ void ApplicationWindow::init(bool factorySettings)
 		readSettings();
 	createLanguagesList();
 	insertTranslatedStrings();
-
+		
 	assistant = new QAssistantClient( QString(), this );
 
 	actionNextWindow = new QAction(QIcon(QPixmap(next_xpm)), tr("&Next","next window"), this);
@@ -308,6 +308,26 @@ void ApplicationWindow::init(bool factorySettings)
 	scriptEnv->initialize();
 }
 
+void ApplicationWindow::initWindow()
+{
+	switch(d_init_window_type){
+		case TableWindow:
+			newTable();
+		break;	
+		case MatrixWindow:
+			newMatrix();
+		break;	
+		case MultiLayerWindow:
+			newGraph();
+		break;	
+		case NoteWindow:
+			newNote();
+		break;	
+		default:
+			break;				
+	}	
+}
+
 void ApplicationWindow::initGlobalConstants()
 {
 	appStyle = qApp->style()->objectName();
@@ -329,6 +349,7 @@ void ApplicationWindow::initGlobalConstants()
 	show_windows_policy = ActiveFolder;
 	d_script_win_on_top = true;
 	d_script_win_rect = QRect(0, 0, 500, 300);
+	d_init_window_type = TableWindow;
 
 	appFont = QFont();
 	QString family = appFont.family();
@@ -2459,8 +2480,7 @@ void ApplicationWindow::customizeTables(const QColor& bgColor,const QColor& text
 	d_show_table_comments = showComments;
 
 	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows)
-	{
+	foreach(QWidget *w, *windows){
 		if (w->inherits("Table"))
 			customTable((Table*)w);
 	}
@@ -3605,8 +3625,7 @@ void ApplicationWindow::openRecentProject(int index)
 	fn = fn.right(fn.length()-pos-1);
 
 	QFile f(fn);
-	if (!f.exists())
-	{
+	if (!f.exists()){
 		QMessageBox::critical(this,tr("QtiPlot - File Open Error"),
 				tr("The file: <b> %1 </b> <p>does not exist anymore!"
 					"<p>It will be removed from the list.").arg(fn));
@@ -3616,20 +3635,17 @@ void ApplicationWindow::openRecentProject(int index)
 		return;
 	}
 
-	if (projectname != "untitled")
-	{
+	if (projectname != "untitled"){
 		QFileInfo fi(projectname);
 		QString pn = fi.absFilePath();
-		if (fn == pn)
-		{
+		if (fn == pn){
 			QMessageBox::warning(this, tr("QtiPlot - File openning error"),
 					tr("The file: <p><b> %1 </b><p> is the current file!").arg(fn));
 			return;
 		}
 	}
 
-	if (!fn.isEmpty())
-	{
+	if (!fn.isEmpty()){
 		saveSettings();//the recent projects must be saved
 		ApplicationWindow * a = open (fn);
 		if (a && (fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti~",Qt::CaseInsensitive) ||
@@ -3694,12 +3710,10 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	item->folder()->setName(fi.baseName());
 
 	//process tables and matrix information
-	while ( !t.atEnd() && !progress.wasCanceled())
-	{
+	while ( !t.atEnd() && !progress.wasCanceled()){
 		s = t.readLine();
 		list.clear();
-		if  (s.left(8) == "<folder>")
-		{
+		if  (s.left(8) == "<folder>"){
 			list = s.split("\t");
 			Folder *f = new Folder(app->current_folder, list[1]);
 			f->setBirthDate(list[2]);
@@ -3713,68 +3727,53 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			f->setFolderListItem(fli);
 
 			app->current_folder = f;
-		}
-		else if  (s == "<table>")
-		{
+		} else if  (s == "<table>") {
 			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
 			QStringList lst;
-			while ( s!="</table>" )
-			{
+			while ( s!="</table>" ){
 				s=t.readLine();
 				lst<<s;
 			}
 			lst.pop_back();
 			openTable(app,lst);
 			progress.setValue(aux);
-		}
-		else if (s.left(17)=="<TableStatistics>")
-		{
+		} else if (s.left(17)=="<TableStatistics>") {
 			QStringList lst;
-			while ( s!="</TableStatistics>" )
-			{
+			while ( s!="</TableStatistics>" ){
 				s=t.readLine();
 				lst<<s;
 			}
 			lst.pop_back();
 			app->openTableStatistics(lst);
-		}
-		else if  (s == "<matrix>")
-		{
+		} else if  (s == "<matrix>") {
 			title= titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
 			QStringList lst;
-			while ( s != "</matrix>" )
-			{
+			while ( s != "</matrix>" ) {
 				s=t.readLine();
 				lst<<s;
 			}
 			lst.pop_back();
 			openMatrix(app, lst);
 			progress.setValue(aux);
-		}
-		else if  (s == "<note>")
-		{
+		} else if  (s == "<note>") {
 			title= titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
-			for (int i=0; i<3; i++)
-			{
+			for (int i=0; i<3; i++){
 				s = t.readLine();
 				list << s;
 			}
 			Note* m = openNote(app,list);
 			QStringList cont;
-			while ( s != "</note>" )
-			{
+			while ( s != "</note>" ){
 				s=t.readLine();
 				cont << s;
 			}
 			cont.pop_back();
 			m->restore(cont);
 			progress.setValue(aux);
-		}
-		else if  (s == "</folder>")
-		{
+		} else if  (s == "</folder>") {
 			Folder *parent = (Folder *)app->current_folder->parent();
 			if (!parent)
 				app->current_folder = projectFolder();
@@ -3784,8 +3783,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	}
 	f.close();
 
-	if (progress.wasCanceled())
-	{
+	if (progress.wasCanceled()){
 		app->saved = true;
 		app->close();
 		return 0;
@@ -4144,6 +4142,7 @@ void ApplicationWindow::readSettings()
 	changeAppStyle(settings.value("/Style", appStyle).toString());
 	autoSave = settings.value("/AutoSave",true).toBool();
 	autoSaveTime = settings.value("/AutoSaveTime",15).toInt();
+	d_init_window_type = (WindowType)settings.value("/InitWindow", TableWindow).toInt();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
 	d_thousands_sep = settings.value("/ThousandsSeparator", true).toBool();
 	d_locale = QLocale(settings.value("/Locale", QLocale::system().name()).toString());
@@ -4413,6 +4412,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Style", appStyle);
 	settings.setValue("/AutoSave", autoSave);
 	settings.setValue("/AutoSaveTime", autoSaveTime);
+	settings.setValue("/InitWindow", int(d_init_window_type));
+
 	settings.setValue("/ScriptingLang", defaultScriptingLang);
     settings.setValue("/ThousandsSeparator", d_thousands_sep);
 	settings.setValue("/Locale", d_locale.name());
@@ -7893,15 +7894,14 @@ void ApplicationWindow::newProject()
 
 	ApplicationWindow *ed = new ApplicationWindow();
 	ed->applyUserSettings();
-	ed->newTable();
 
 	if (this->isMaximized())
 		ed->showMaximized();
 	else
 		ed->show();
 
+	ed->initWindow();
 	ed->savedProject();
-
 	this->close();
 }
 
@@ -7985,18 +7985,13 @@ void ApplicationWindow::dragEnterEvent( QDragEnterEvent* e )
 
 void ApplicationWindow::closeEvent( QCloseEvent* ce )
 {
-	if (scriptWindow)
-		d_script_win_rect = QRect(scriptWindow->pos(), scriptWindow->size());
-
-	if (!saved)
-	{
+	if (!saved){
 		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
 		switch( QMessageBox::information(this, tr("QtiPlot"), s, tr("Yes"), tr("No"),
 					tr("Cancel"), 0, 2 ) )
 		{
 			case 0:
-				if (!saveProject())
-				{
+				if (!saveProject()){
 					ce->ignore();
 					break;
 				}
@@ -8014,9 +8009,7 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
 				ce->ignore();
 				break;
 		}
-	}
-	else
-	{
+	} else {
 		saveSettings();//the recent projects must be saved
 		ce->accept();
 	}
@@ -8024,8 +8017,7 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
 
 void ApplicationWindow::customEvent(QEvent *e)
 {
-	if (e->type() == SCRIPTING_CHANGE_EVENT)
-	{
+	if (e->type() == SCRIPTING_CHANGE_EVENT){
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
 		connect(scriptEnv,SIGNAL(error(const QString&,const QString&,int)),this,SLOT(scriptError(const QString&,const QString&,int)));
 	}
@@ -12615,8 +12607,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	QFile f( fn );
 	if (f.exists())
 	{// make byte-copy of current file so that there's always a copy of the data on disk
-		while (!f.open(QIODevice::ReadOnly))
-		{
+		while (!f.open(QIODevice::ReadOnly)){
 			if (f.isOpen())
 				f.close();
 			int choice = QMessageBox::warning(this, tr("QtiPlot - File backup error"),
@@ -12628,15 +12619,13 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 				break;
 		}
 
-		if (f.isOpen())
-		{
+		if (f.isOpen()){
             QFile::copy (fn, fn + "~");
 			f.close();
 		}
 	}
 
-	if ( !f.open( QIODevice::WriteOnly ) )
-	{
+	if ( !f.open( QIODevice::WriteOnly ) ){
 		QMessageBox::about(this, tr("QtiPlot - File save error"), tr("The file: <br><b>%1</b> is opened in read-only mode").arg(fn));
 		return;
 	}
@@ -12645,8 +12634,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	QList<MyWidget *> lst = folder->windowsList();
 	int windows = 0;
 	QString text;
-	foreach(MyWidget *w, lst)
-	{
+	foreach(MyWidget *w, lst){
 		text += w->saveToString(windowGeometryInfo(w));
 		windows++;
 	}
@@ -12655,8 +12643,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	FolderListItem *item = (FolderListItem *)fi->firstChild();
 	int opened_folders = 0;
 	int initial_depth = fi->depth();
-	while (item && item->depth() > initial_depth)
-	{
+	while (item && item->depth() > initial_depth){
 		Folder *dir = (Folder *)item->folder();
 		text += "<folder>\t"+QString(dir->name())+"\t"+dir->birthDate()+"\t"+dir->modificationDate();
 		if (dir == current_folder)
@@ -12665,8 +12652,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 			text += "\n";  // FIXME: Having no 5th string here is not a good idea
 
 		lst = dir->windowsList();
-		foreach(MyWidget *w, lst)
-		{
+		foreach(MyWidget *w, lst){
 			text += w->saveToString(windowGeometryInfo(w));
 			windows++;
 		}
@@ -12678,13 +12664,10 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 
 		int depth = item->depth();
 		item = (FolderListItem *)item->itemBelow();
-		if (item && item->depth() < depth && item->depth() > initial_depth)
-		{
+		if (item && item->depth() < depth && item->depth() > initial_depth){
 			text += "</folder>\n";
 			opened_folders--;
-		}
-		else if (!item)
-		{
+		} else if (!item) {
 			for (int i = 0; i<opened_folders; i++)
 				text += "</folder>\n";
 			opened_folders = 0;
@@ -13700,7 +13683,6 @@ void ApplicationWindow::showScriptWindow()
 		scriptWindow = new ScriptWindow(scriptEnv, this);
 		scriptWindow->resize(d_script_win_rect.size());
 		scriptWindow->move(d_script_win_rect.topLeft());
-
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
 	}
 

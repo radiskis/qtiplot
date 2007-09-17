@@ -1201,6 +1201,8 @@ public:
   void setColor(const QString&);
 
   Table *resultTable();
+  
+  virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
   virtual bool run();
 };
 
@@ -1210,6 +1212,12 @@ class Differentiation : Filter
 #include "src/Differentiation.h"
 %End
 public:
+  Differentiation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  Differentiation(Table *, const QString&, const QString&, int = 0, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipDifferentiation(app, a0, *a1, *a2, a3, a4))
+%End
+
   Differentiation(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   Differentiation(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   Differentiation(Graph *, const QString&) /NoDerived/;
@@ -1229,6 +1237,12 @@ class Integration : Filter
 #include "src/Integration.h"
 %End
 public:
+  Integration(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  Integration(Table *, const QString&, const QString&, int = 0, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipIntegration(app, a0, *a1, *a2, a3, a4))
+%End
+
   Integration(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   Integration(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   Integration(Graph *, const QString&) /NoDerived/;
@@ -1240,6 +1254,7 @@ public:
   SIPQTI_APP(new sipIntegration(app, a0, *a1, a2, a3))
 %End
 
+  void enableGraphicsDisplay(bool on = true, Graph *g = 0);
   void setMethodOrder(int n);
   bool run();
 
@@ -1253,6 +1268,12 @@ class Interpolation : Filter
 %End
 public:
   enum InterpolationMethod{Linear, Cubic, Akima};
+
+  Interpolation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
+  Interpolation(Table *, const QString&, const QString&, int = 0, int = -1, int = 0) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipInterpolation(app, a0, *a1, *a2, a3, a4, a5))
+%End
 
   Interpolation(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=0);
   Interpolation(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=0);
@@ -1276,6 +1297,12 @@ class SmoothFilter : Filter
 %End
 public:
   enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3};
+
+  SmoothFilter(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
+  SmoothFilter(Table *, const QString&, const QString&, int = 0, int = -1, int = 3) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipSmoothFilter(app, a0, *a1, *a2, a3, a4, a5))
+%End
 
   SmoothFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=3);
   SmoothFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=3);
@@ -1301,6 +1328,12 @@ class FFTFilter : Filter
 %End
 public:
   enum FilterType{LowPass = 1, HighPass = 2, BandPass = 3, BandBlock = 4};
+
+  FFTFilter(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
+  FFTFilter(Table *, const QString&, const QString&, int = 0, int = -1, int = 1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipFFTFilter(app, a0, *a1, *a2, a3, a4, a5))
+%End
 
   FFTFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=1);
   FFTFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=1);
@@ -1328,11 +1361,11 @@ class FFT : Filter
 %End
 public:
 
-  FFT(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString& = QString());
+  FFT(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString& = QString(), int = 0, int = -1);
   FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  FFT(Table *, const QString&, const QString& = QString()) /NoDerived/;
+  FFT(Table *, const QString&, const QString& = QString(), int = 0, int = -1) /NoDerived/;
 %MethodCode
-  SIPQTI_APP(new sipFFT(app, a0, *a1, *a2))
+  SIPQTI_APP(new sipFFT(app, a0, *a1, *a2, a3, a4))
 %End
   FFT(Graph *, const QString&) /NoDerived/;
 %MethodCode

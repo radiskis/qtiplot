@@ -20,9 +20,13 @@ revision history. (see installation appendix comment) -->
 
 <para>Data analysis operations (integration, interpolation, FFT, curve fitting, etc...) can be performed on the curves in a 2D plot via the Analysis menu. The results of all these operations are also stored in the project files. They can be visualized at any moment using the &results-log-lnk; and can be deleted from the project file via the &clear-log-lnk;.</para>
 
-<para>When the application is launched, a new project file is created consisting of a grey main window (the workspace) which contains an empty table. In order to be operational, this workspace must be populated
-with tables storing data sets, either by creating empty tables first (&new-table-lnk;)
-and then filling them with data, or by importing ASCII files (&import-ascii-lnk;), which automatically creates new tables.</para>
+<para>When the application is launched, a new untitled project file is created consisting of a grey main window 
+(the workspace) which may contains an empty window, depending on your preferences. The type of the initial
+window can be customized using the <link linkend="preferences-dialog">Preferences dialog</link>. It may be a table, a matrix,
+a note or an empty 2D graph window. In order to be operational, the workspace must 
+be populated with tables storing data sets, either by creating empty tables/matrices first (&new-table-lnk;)
+and then filling them with data, or by importing ASCII files (&import-ascii-lnk;), 
+which automatically creates new tables.</para>
 
 <para>The user can easily navigate through the objects of a project file using the project explorer or the Windows menu. The project explorer also allows the user to perform various operations on the windows (tables and plots) in the workspace: hiding, minimazing, closing, renaming, printing, etc...</para>
 

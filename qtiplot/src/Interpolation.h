@@ -41,6 +41,7 @@ public:
 
 	Interpolation(ApplicationWindow *parent, Graph *g, const QString& curveTitle, int m = 0);
 	Interpolation(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end, int m = 0);
+	Interpolation(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start = 0, int end = -1, int m = 0);
 
     int method(){return d_method;};
     void setMethod(int m);

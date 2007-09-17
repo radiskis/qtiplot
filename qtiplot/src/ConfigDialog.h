@@ -157,8 +157,8 @@ private:
 	QRadioButton *samePointsBtn, *generatePointsBtn;
     QGroupBox *groupBoxMultiPeak;
 	ColorBox *boxPeaksColor;
-	QLabel *lblScriptingLanguage;
-	QComboBox *boxScriptingLanguage;
+	QLabel *lblScriptingLanguage, *lblInitWindow;
+	QComboBox *boxScriptingLanguage, *boxInitWindow;
 	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
 	QCheckBox *boxPromptRenameTables;
 };
