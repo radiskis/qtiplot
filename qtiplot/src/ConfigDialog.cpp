@@ -528,7 +528,7 @@ void ConfigDialog::initAppPage()
 	boxScriptingLanguage->insertStringList(llist);
 	boxScriptingLanguage->setCurrentItem(llist.findIndex(app->defaultScriptingLang));
 	topBoxLayout->addWidget( boxScriptingLanguage, 3, 1 );
-	
+
 	lblInitWindow = new QLabel();
 	topBoxLayout->addWidget( lblInitWindow, 4, 0 );
 	boxInitWindow = new QComboBox();
@@ -544,11 +544,15 @@ void ConfigDialog::initAppPage()
 	boxMinutes->setEnabled(app->autoSave);
 	topBoxLayout->addWidget( boxMinutes, 5, 1 );
 
+    boxBackupProject = new QCheckBox();
+	boxBackupProject->setChecked(app->d_backup_files);
+	topBoxLayout->addWidget( boxBackupProject, 6, 0, 1, 2 );
+
 	boxSearchUpdates = new QCheckBox();
 	boxSearchUpdates->setChecked(app->autoSearchUpdates);
-	topBoxLayout->addWidget( boxSearchUpdates, 6, 0, 1, 2 );
+	topBoxLayout->addWidget( boxSearchUpdates, 7, 0, 1, 2 );
 
-	topBoxLayout->setRowStretch( 7, 1 );
+	topBoxLayout->setRowStretch( 8, 1 );
 
 	appTabWidget->addTab( application, QString() );
 
@@ -770,7 +774,7 @@ void ConfigDialog::initConfirmationsPage()
 
 	boxPromptRenameTables = new QCheckBox();
 	boxPromptRenameTables->setChecked(app->d_inform_rename_table);
-	
+
 	QVBoxLayout * confirmPageLayout = new QVBoxLayout( confirm );
 	confirmPageLayout->addWidget(groupBoxConfirm);
 	confirmPageLayout->addWidget(boxPromptRenameTables);
@@ -885,18 +889,19 @@ void ConfigDialog::languageChange()
 	lblPanelsText->setText(tr("Panels text"));
 	lblPanels->setText(tr("Panels"));
 	boxSave->setText(tr("Save every"));
+	boxBackupProject->setText(tr("&Backup project before saving"));
 	boxSearchUpdates->setText(tr("Check for new versions at startup"));
 	boxMinutes->setSuffix(tr(" minutes"));
 	lblScriptingLanguage->setText(tr("Default scripting language"));
-	lblInitWindow->setText(tr("Start with"));
+	lblInitWindow->setText(tr("Start New Project"));
 	boxInitWindow->clear();
-	boxInitWindow->addItem(tr("Empty Project"));
+	boxInitWindow->addItem(tr("Empty"));
 	boxInitWindow->addItem(tr("Table"));
 	boxInitWindow->addItem(tr("Matrix"));
 	boxInitWindow->addItem(tr("Empty Graph"));
 	boxInitWindow->addItem(tr("Note"));
 	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
-	
+
     boxUpdateSeparators->setText(tr("Update separators in Tables/Matrices"));
 	lblAppPrecision->setText(tr("Number of Decimal Digits"));
 	lblDecimalSeparator->setText(tr("Decimal Separators"));
@@ -1045,12 +1050,12 @@ void ConfigDialog::apply()
 	// 2D plots page: options tab
 	app->titleOn=boxTitle->isChecked();
 	app->allAxesOn = boxAllAxes->isChecked();
-	
+
 	if (boxFrame->isChecked())
 		app->canvasFrameWidth = boxFrameWidth->value();
 	else
 		app->canvasFrameWidth = 0;
-	
+
 	app->drawBackbones = boxBackbones->isChecked();
 	app->axesLineWidth = boxLineWidth->value();
 	app->defaultPlotMargin = boxMargin->value();
@@ -1087,6 +1092,7 @@ void ConfigDialog::apply()
 	app->changeAppStyle(boxStyle->currentText());
 	app->autoSearchUpdates = boxSearchUpdates->isChecked();
 	app->setSaveSettings(boxSave->isChecked(), boxMinutes->value());
+	app->d_backup_files = boxBackupProject->isChecked();
 	app->defaultScriptingLang = boxScriptingLanguage->currentText();
 	app->d_init_window_type = (ApplicationWindow::WindowType)boxInitWindow->currentIndex();
 

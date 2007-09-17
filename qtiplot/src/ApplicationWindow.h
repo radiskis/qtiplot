@@ -201,7 +201,7 @@ public slots:
 
 	QLocale locale(){return d_locale;};
 	void setLocale(const QLocale& l){d_locale = l;};
-	
+
 	void initWindow();
 	//@}
 
@@ -912,7 +912,7 @@ public slots:
 	 * \param dest destination folder item
 	 */
 	void moveFolder(FolderListItem *src, FolderListItem *dest);
-	
+
 	void foldersMenuActivated( int id );
 	//@}
 
@@ -937,6 +937,7 @@ signals:
 
 // TODO: a lot of this stuff should be private
 public:
+    bool d_backup_files;
 	WindowType d_init_window_type;
 	QRect d_script_win_rect;
 	bool d_script_win_on_top;

@@ -389,6 +389,7 @@ void ApplicationWindow::initGlobalConstants()
 
 	autoSave = true;
 	autoSaveTime = 15;
+	d_backup_files = true;
 	defaultScriptingLang = "muParser";
 	d_thousands_sep = true;
 	d_locale = QLocale::system().name();
@@ -4139,6 +4140,7 @@ void ApplicationWindow::readSettings()
 	changeAppStyle(settings.value("/Style", appStyle).toString());
 	autoSave = settings.value("/AutoSave",true).toBool();
 	autoSaveTime = settings.value("/AutoSaveTime",15).toInt();
+    d_backup_files = settings.value("/BackupProjects", true).toBool();
 	d_init_window_type = (WindowType)settings.value("/InitWindow", TableWindow).toInt();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
 	d_thousands_sep = settings.value("/ThousandsSeparator", true).toBool();
@@ -4409,6 +4411,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Style", appStyle);
 	settings.setValue("/AutoSave", autoSave);
 	settings.setValue("/AutoSaveTime", autoSaveTime);
+	settings.setValue("/BackupProjects", d_backup_files);
 	settings.setValue("/InitWindow", int(d_init_window_type));
 
 	settings.setValue("/ScriptingLang", defaultScriptingLang);
@@ -12600,7 +12603,7 @@ void ApplicationWindow::showDemoVersionMessage()
 void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
 {
 	QFile f( fn );
-	if (f.exists())
+	if (d_backup_files && f.exists())
 	{// make byte-copy of current file so that there's always a copy of the data on disk
 		while (!f.open(QIODevice::ReadOnly)){
 			if (f.isOpen())
