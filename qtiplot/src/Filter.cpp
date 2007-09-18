@@ -183,13 +183,16 @@ void Filter::setColor(const QString& colorName)
 
 void Filter::showLegend()
 {
-	Legend* mrk = d_graph->newLegend(legendInfo());
-	if (d_graph->hasLegend()){
-		Legend* legend = d_graph->legend();
+	if (!d_output_graph)
+		return;
+	
+	Legend* mrk = d_output_graph->newLegend(legendInfo());
+	if (d_output_graph->hasLegend()){
+		Legend* legend = d_output_graph->legend();
 		QPoint p = legend->rect().bottomLeft();
 		mrk->setOrigin(QPoint(p.x(), p.y()+20));
 	}
-	d_graph->replot();
+	d_output_graph->replot();
 }
 
 bool Filter::run()

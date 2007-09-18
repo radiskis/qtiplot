@@ -32,24 +32,31 @@
 
 #include <QMessageBox>
 
-	NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g)
+NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
 	init();
 }
 
-	NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
+}
+
+NonLinearFit::NonLinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: Fit(parent, t, xCol, yCol, startRow, endRow)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
 }
 
 void NonLinearFit::init()
@@ -60,21 +67,19 @@ void NonLinearFit::init()
 	d_df = user_df;
 	d_fdf = user_fdf;
 	d_fsimplex = user_d;
-	d_explanation = tr("Non-linear");
+	d_explanation = tr("Non-linear Fit");
 }
 
 void NonLinearFit::setFormula(const QString& s)
 {
-	if (s.isEmpty())
-	{
+	if (s.isEmpty()){
 		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"),
 				tr("Please enter a valid non-empty expression! Operation aborted!"));
 		d_init_err = true;
 		return;
 	}
 
-	if (!d_p)
-	{
+	if (!d_p){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("There are no parameters specified for this fit operation. Please define a list of parameters first!"));
 		d_init_err = true;
@@ -90,8 +95,7 @@ void NonLinearFit::setFormula(const QString& s)
 		MyParser parser;
 		double xvar;
 		parser.DefineVar("x", &xvar);
-		for (int k=0; k<(int)d_p; k++)
-		{
+		for (int k=0; k<(int)d_p; k++){
 			param[k]=gsl_vector_get(d_param_init, k);
 			parser.DefineVar(d_param_names[k].ascii(), &param[k]);
 		}
@@ -112,8 +116,7 @@ void NonLinearFit::setFormula(const QString& s)
 
 void NonLinearFit::setParametersList(const QStringList& lst)
 {
-	if ((int)lst.count() < 1)
-	{
+	if ((int)lst.count() < 1){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("You must provide a list containing at least one parameter for this type of fit. Operation aborted!"));
 		d_init_err = true;
@@ -123,8 +126,7 @@ void NonLinearFit::setParametersList(const QStringList& lst)
 	d_init_err = false;
 	d_param_names = lst;
 
-	if (d_p > 0)
-	{//free previously allocated memory
+	if (d_p > 0){//free previously allocated memory
 		gsl_vector_free(d_param_init);
 		gsl_matrix_free (covar);
 		delete[] d_results;
@@ -152,21 +154,16 @@ void NonLinearFit::calculateFitCurveData(double *par, double *X, double *Y)
 	parser.DefineVar("x", &xvar);
 	parser.SetExpr(d_formula.ascii());
 
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++)
-		{
+		for (int i=0; i<d_points; i++){
 			X[i] = X0+i*step;
 			xvar = X[i];
 			Y[i] = parser.Eval();
 		}
-	}
-	else
-	{
-		for (int i=0; i<d_points; i++)
-		{
+	} else {
+		for (int i=0; i<d_points; i++) {
 			X[i] = d_x[i];
 			xvar = X[i];
 			Y[i] = parser.Eval();

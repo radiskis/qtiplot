@@ -1902,12 +1902,41 @@ g.exportImage(fileName, int quality = 100, bool transparent = False)
 <title>General Functions</title>
 As you will see in the following subsections, the data analysis operations available
 in QtiPlot are: convolution/deconvolution, correlation, differentiation, FFT, filtering,
-smoothing, fitting and numerical integration of data sets. When performing analysis tasks
+smoothing, fitting and numerical integration of data sets. 
+
+Generally, you can declare/initialize an analysis operation using one of the following methods, 
+depending on the data source, which can be a 2D plot curve or a table:
+<programlisting>
+op = FFTFilter(graph("Graph1").activeLayer(), "Table1_2", 1.5, 3.9)
+op = LinearFit(table("Table1", "colX", "colY", 10, 100)
+</programlisting>
+
+In the first example the data source is a curve <emphasis>Table1_2</emphasis>, plotted
+in the active layer of the graph <emphasis>Graph1</emphasis> and the abscissae range is 
+chosen between 1.5 and 3.9. 
+In the second example the data source is a table <emphasis>Table1</emphasis>.
+The abscissae of the data set are stored in the column called <emphasis>colX</emphasis> 
+and the ordinates in the column <emphasis>colY</emphasis>. The data range is 
+chosen between the 10th row and the row with the index 100. If you don't specify the row range,
+by default the whole table will be used.
+
+Not all operations support curves as data sources, like for example:
+convolution/deconvolution and correlation. For these operations only table columns can be used 
+as data sources for the moment.
+
+<para>When performing analysis tasks
 via Python scripts, there are several utility functions that can be called for all operations.
+For example you can disable any graphical output or you can redirect the output to the 
+plot layer of your choice: </para>
+<programlisting>
+op.enableGraphicsDisplay(False)
+op.enableGraphicsDisplay(True, graph("Graph2").activeLayer())
+</programlisting>
+
 Let's assume that you need to perform a specific operation <varname>op</varname>,
-which analyses your data (the data source can be a 2D plot curve or a table) and at the end,
-displays a result curve. For this kind of operations, you can customize the number of points
-in the resulting curve and its color:
+which analyses your data and at the end, displays a result curve. 
+For this kind of operations, you can customize the number of points in the resulting curve
+and its color:
 <programlisting>
 op.setOutputPoints(int)
 op.setColor(int)
@@ -1916,7 +1945,8 @@ op.setColor("green")
 Colors can be specified by their names or as integer values, from 0 to 23,
 each integer corresponding to a predefined color: 0 - "black", 1 - "red", 2 - "green", 3 - "blue",
 4 - "cyan", 5 - "magenta", 6 - "yellow", 7 - "darkYellow", 8 - "navy", 9 - "purple", etc ...
-<para>Most of the time, a new table is also created as a result of a data anaylis operation.
+
+<para>Most of the time, a new table is also created as a result of a data analysis operation.
 This table stores the data displayed by the result curve and is hidden by default,
 but you can interact with it via the following function:
 <programlisting>
@@ -2102,6 +2132,7 @@ f.fit()
         <para>After creating the Fit object and before calling its fit()
         method, you can set a number of parameters that influence the fit:
         <programlisting width="80">
+f.setDataFromTable(table("Table4"), "w", "energy", 10, 200) <lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curve)			<lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curve, graph)		<lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curve, from, to)		<lineannotation>change data source</lineannotation>
