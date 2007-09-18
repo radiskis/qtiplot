@@ -39,7 +39,8 @@ class PluginFit : public Fit
 		PluginFit(ApplicationWindow *parent, Graph *g);
 		PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
-
+		PluginFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
+	
 		bool load(const QString& pluginName);
 
 	private:
@@ -49,4 +50,3 @@ class PluginFit : public Fit
 		fitFunctionEval f_eval;
 };
 #endif
-

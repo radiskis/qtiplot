@@ -31,24 +31,31 @@
 #include <QLibrary>
 #include <QMessageBox>
 
-	PluginFit::PluginFit(ApplicationWindow *parent, Graph *g)
+PluginFit::PluginFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
 	init();
 }
 
-	PluginFit::PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+PluginFit::PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	PluginFit::PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+PluginFit::PluginFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
+}
+
+PluginFit::PluginFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: Fit(parent, t, xCol, yCol, startRow, endRow)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
 }
 
 void PluginFit::init()
@@ -58,8 +65,7 @@ void PluginFit::init()
 
 bool PluginFit::load(const QString& pluginName)
 {
-	if (!QFile::exists (pluginName))
-	{
+	if (!QFile::exists (pluginName)){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - File not found"),
 				tr("Plugin file: <p><b> %1 </b> <p>not found. Operation aborted!").arg(pluginName));
 		return false;
@@ -70,32 +76,28 @@ bool PluginFit::load(const QString& pluginName)
 	lib.setAutoUnload(false);
 
 	d_fsimplex = (fit_function_simplex) lib.resolve( "function_d" );
-	if (!d_fsimplex)
-	{
+	if (!d_fsimplex){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Plugin Error"),
 				tr("The plugin does not implement a %1 method necessary for simplex fitting.").arg("function_d"));
 		return false;
 	}
 
 	d_f = (fit_function) lib.resolve( "function_f" );
-	if (!d_f)
-	{
+	if (!d_f){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Plugin Error"),
 				tr("The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.").arg("function_f"));
 		return false;
 	}
 
 	d_df = (fit_function_df) lib.resolve( "function_df" );
-	if (!d_df)
-	{
+	if (!d_df){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Plugin Error"),
 				tr("The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.").arg("function_df"));
 		return false;
 	}
 
 	d_fdf = (fit_function_fdf) lib.resolve( "function_fdf" );
-	if (!d_fdf)
-	{
+	if (!d_fdf){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Plugin Error"),
 				tr("The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.").arg("function_fdf"));
 		return false;
@@ -107,16 +109,14 @@ bool PluginFit::load(const QString& pluginName)
 
 	typedef char* (*fitFunc)();
 	fitFunc fitFunction = (fitFunc) lib.resolve("parameters");
-	if (fitFunction)
-	{
+	if (fitFunction){
 		d_param_names = QString(fitFunction()).split(",", QString::SkipEmptyParts);
 		d_p = (int)d_param_names.count();
         d_min_points = d_p;
 		d_param_init = gsl_vector_alloc(d_p);
 		covar = gsl_matrix_alloc (d_p, d_p);
 		d_results = new double[d_p];
-	}
-	else
+	} else
 		return false;
 
 	fitFunc fitExplain = (fitFunc) lib.resolve("explanations");
@@ -140,24 +140,18 @@ bool PluginFit::load(const QString& pluginName)
 
 void PluginFit::calculateFitCurveData(double *par, double *X, double *Y)
 {
-	if (d_gen_function)
-	{
+	if (d_gen_function) {
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++)
-		{
+		for (int i=0; i<d_points; i++){
 			X[i] = X0+i*step;
 			Y[i]= f_eval(X[i], par);
 		}
-	}
-	else
-	{
-		for (int i=0; i<d_points; i++)
-		{
+	} else {
+		for (int i=0; i<d_points; i++) {
 			X[i] = d_x[i];
 			Y[i]= f_eval(X[i], par);
 		}
 	}
 	delete[] par;
 }
-

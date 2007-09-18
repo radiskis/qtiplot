@@ -35,7 +35,7 @@
  *
  *****************************************************************************/
 
-	ExponentialFit::ExponentialFit(ApplicationWindow *parent, Graph *g, bool expGrowth)
+ExponentialFit::ExponentialFit(ApplicationWindow *parent, Graph *g, bool expGrowth)
 : Fit(parent, g),
 	is_exp_growth(expGrowth)
 {
@@ -59,6 +59,13 @@ ExponentialFit::ExponentialFit(ApplicationWindow *parent, Graph *g,
 	setDataFromCurve(curveTitle, start, end);
 }
 
+ExponentialFit::ExponentialFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow, bool expGrowth)
+: Fit(parent, t, xCol, yCol, startRow, endRow), is_exp_growth(expGrowth)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
+}
+
 void ExponentialFit::init()
 {
 	d_f = exp_f;
@@ -74,15 +81,12 @@ void ExponentialFit::init()
 	d_results = new double[d_p];
 	d_param_names << "A" << "t" << "y0";
 
-	if (is_exp_growth)
-	{
+	if (is_exp_growth) {
 		setName("ExpGrowth");
 		d_explanation = tr("Exponential growth");
 		d_formula = "y0+A*exp(x/t)";
 		d_param_explain << "(amplitude)" << "(lifetime)" << "(offset)";
-	}
-	else
-	{
+	} else {
 		setName("ExpDecay");
 		d_explanation = tr("Exponential decay");
 		d_formula = "y0+A*exp(-x/t)";
@@ -103,20 +107,15 @@ void ExponentialFit::storeCustomFitResults(double *par)
 
 void ExponentialFit::calculateFitCurveData(double *par, double *X, double *Y)
 {
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++)
-		{
+		for (int i=0; i<d_points; i++) {
 			X[i] = X0+i*step;
 			Y[i] = par[0]*exp(-par[1]*X[i])+par[2];
 		}
-	}
-	else
-	{
-		for (int i=0; i<d_points; i++)
-		{
+	} else {
+		for (int i=0; i<d_points; i++) {
 			X[i] = d_x[i];
 			Y[i] = par[0]*exp(-par[1]*X[i])+par[2];
 		}
@@ -130,24 +129,31 @@ void ExponentialFit::calculateFitCurveData(double *par, double *X, double *Y)
  *
  *****************************************************************************/
 
-	TwoExpFit::TwoExpFit(ApplicationWindow *parent, Graph *g)
+TwoExpFit::TwoExpFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
 	init();
 }
 
-	TwoExpFit::TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+TwoExpFit::TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	TwoExpFit::TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+TwoExpFit::TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
+}
+
+TwoExpFit::TwoExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: Fit(parent, t, xCol, yCol, startRow, endRow)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
 }
 
 void TwoExpFit::init()
@@ -207,24 +213,31 @@ void TwoExpFit::calculateFitCurveData(double *par, double *X, double *Y)
  *
  *****************************************************************************/
 
-	ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Graph *g)
+ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
 	init();
 }
 
-	ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
+}
+
+ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: Fit(parent, t, xCol, yCol, startRow, endRow)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
 }
 
 void ThreeExpFit::init()

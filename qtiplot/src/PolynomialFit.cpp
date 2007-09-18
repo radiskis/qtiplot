@@ -34,31 +34,38 @@
 #include <gsl/gsl_multifit.h>
 #include <gsl/gsl_fit.h>
 
-	PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, int order, bool legend)
+PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, int order, bool legend)
 : Fit(parent, g), d_order(order), show_legend(legend)
 {
 	init();
 }
 
-	PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, QString& curveTitle, int order, bool legend)
+PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, QString& curveTitle, int order, bool legend)
 : Fit(parent, g), d_order(order), show_legend(legend)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, QString& curveTitle, double start, double end, int order, bool legend)
+PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, QString& curveTitle, double start, double end, int order, bool legend)
 : Fit(parent, g), d_order(order), show_legend(legend)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
 }
 
+PolynomialFit::PolynomialFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow, int order, bool legend)
+: Fit(parent, t, xCol, yCol, startRow, endRow), d_order(order), show_legend(legend)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
+}
+
 void PolynomialFit::init()
 {
 	setName(tr("Poly"));
 	is_non_linear = false;
-	d_explanation = tr("Polynomial");
+	d_explanation = tr("Polynomial Fit");
 	d_p = d_order + 1;
     d_min_points = d_p;
 
@@ -99,12 +106,10 @@ QStringList PolynomialFit::generateParameterList(int order)
 
 void PolynomialFit::calculateFitCurveData(double *par, double *X, double *Y)
 {
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++)
-		{
+		for (int i=0; i<d_points; i++){
 			X[i] = X0+i*step;
 			double 	yi = 0.0;
 			for (int j=0; j<d_p;j++)
@@ -112,11 +117,8 @@ void PolynomialFit::calculateFitCurveData(double *par, double *X, double *Y)
 
 			Y[i] = yi;
 		}
-	}
-	else
-	{
-		for (int i=0; i<d_points; i++)
-		{
+	} else {
+		for (int i=0; i<d_points; i++) {
 			X[i] = d_x[i];
 			double 	yi = 0.0;
 			for (int j=0; j<d_p;j++)
@@ -132,8 +134,7 @@ void PolynomialFit::fit()
     if (d_init_err)
         return;
 
-	if (d_p > d_n)
-  	{
+	if (d_p > d_n){
   		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
   	    tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p));
   		return;
@@ -142,8 +143,7 @@ void PolynomialFit::fit()
 	gsl_matrix *X = gsl_matrix_alloc (d_n, d_p);
 	gsl_vector *c = gsl_vector_alloc (d_p);
 
-	for (int i = 0; i <d_n; i++)
-	{
+	for (int i = 0; i <d_n; i++){
 		for (int j= 0; j < d_p; j++)
 			gsl_matrix_set (X, i, j, pow(d_x[i],j));
 	}
@@ -164,14 +164,15 @@ void PolynomialFit::fit()
 	gsl_matrix_free (X);
 	gsl_vector_free (c);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog)
-		app->updateLog(logFitInfo(d_results, 0, 0, d_graph->parentPlotName()));
-
 	if (show_legend)
 		showLegend();
 
 	generateFitCurve(d_results);
+	
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (app->writeFitResultsToLog)
+		app->updateLog(logFitInfo(d_results, 0, 0));
+
 }
 
 QString PolynomialFit::legendInfo()
@@ -179,8 +180,7 @@ QString PolynomialFit::legendInfo()
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QLocale locale = app->locale();
 	QString legend = "Y=" + locale.toString(d_results[0], 'g', d_prec);
-	for (int j = 1; j < d_p; j++)
-	{
+	for (int j = 1; j < d_p; j++){
 		double cj = d_results[j];
 		if (cj>0 && !legend.isEmpty())
 			legend += "+";
@@ -203,24 +203,31 @@ QString PolynomialFit::legendInfo()
  *
  *****************************************************************************/
 
-	LinearFit::LinearFit(ApplicationWindow *parent, Graph *g)
+LinearFit::LinearFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
 	init();
 }
 
-	LinearFit::LinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+LinearFit::LinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	LinearFit::LinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+LinearFit::LinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
+}
+
+LinearFit::LinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: Fit(parent, t, xCol, yCol, startRow, endRow)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
 }
 
 void LinearFit::init()
@@ -244,8 +251,7 @@ void LinearFit::fit()
     if (d_init_err)
         return;
 
-	if (d_p > d_n)
-  	{
+	if (d_p > d_n){
   		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
   	    tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p));
   		return;
@@ -268,29 +274,25 @@ void LinearFit::fit()
 	gsl_matrix_set(covar, 1, 1, cov11);
 	gsl_matrix_set(covar, 1, 0, cov01);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog)
-		app->updateLog(logFitInfo(d_results, 0, 0, d_graph->parentPlotName()));
-
 	generateFitCurve(d_results);
+	
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (app->writeFitResultsToLog){
+		app->updateLog(logFitInfo(d_results, 0, 0));
+	}
 }
 
 void LinearFit::calculateFitCurveData(double *par, double *X, double *Y)
 {
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++)
-		{
+		for (int i=0; i<d_points; i++){
 			X[i] = X0+i*step;
 			Y[i] = par[0]+par[1]*X[i];
 		}
-	}
-	else
-	{
-		for (int i=0; i<d_points; i++)
-		{
+	} else {
+		for (int i=0; i<d_points; i++) {
 			X[i] = d_x[i];
 			Y[i] = par[0]+par[1]*X[i];
 		}

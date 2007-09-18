@@ -39,6 +39,8 @@ class SigmoidalFit : public Fit
 		SigmoidalFit(ApplicationWindow *parent, Graph *g);
 		SigmoidalFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		SigmoidalFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
+		SigmoidalFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
+
 		void guessInitialValues();
 
 	private:
@@ -47,4 +49,3 @@ class SigmoidalFit : public Fit
 };
 
 #endif
-

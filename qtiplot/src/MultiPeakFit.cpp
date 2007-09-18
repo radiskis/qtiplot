@@ -31,23 +31,37 @@
 #include "PlotCurve.h"
 #include "FunctionCurve.h"
 #include "ColorBox.h"
+#include "MultiLayer.h"
 
 #include <gsl/gsl_statistics.h>
 
 #include <QLocale>
 #include <QMessageBox>
 
-	MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile profile, int peaks)
+MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile profile, int peaks)
 : Fit(parent, g),
-	d_profile(profile)
+d_profile(profile)
+{
+init(peaks);
+}
+
+MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, 
+		  				  int startRow, int endRow, PeakProfile profile, int peaks)
+: Fit(parent, t, xCol, yCol, startRow, endRow),
+d_profile(profile)
+{
+init(peaks);
+}
+
+void MultiPeakFit::init(int peaks)
 {
 	setName(tr("MultiPeak"));
 
-	if (profile == Gauss){
+	if (d_profile == Gauss){
 		d_f = gauss_multi_peak_f;
 		d_df = gauss_multi_peak_df;
 		d_fdf = gauss_multi_peak_fdf;
-		d_fsimplex = gauss_multi_peak_d;
+		d_fsimplex = gauss_multi_peak_d;		
 	} else {
 		d_f = lorentz_multi_peak_f;
 		d_df = lorentz_multi_peak_df;
@@ -207,7 +221,7 @@ void MultiPeakFit::storeCustomFitResults(double *par)
 
 void MultiPeakFit::insertPeakFunctionCurve(double *x, double *y, int peak)
 {
-	QStringList curves = d_graph->curvesList();
+	QStringList curves = d_output_graph->curvesList();
 	int index = 0;
 	for (int i = 0; i<(int)curves.count(); i++ ){
 		if (curves[i].startsWith(tr("Peak")))
@@ -229,8 +243,8 @@ void MultiPeakFit::insertPeakFunctionCurve(double *x, double *y, int peak)
 		formula.replace(d_param_names[p], parameter);
 	}
 	c->setFormula(formula.replace("--", "+").replace("-+", "-").replace("+-", "-"));
-	d_graph->insertPlotItem(c, Graph::Line);
-	d_graph->addFitCurve(c);
+	d_output_graph->insertPlotItem(c, Graph::Line);
+	d_output_graph->addFitCurve(c);
 }
 
 void MultiPeakFit::generateFitCurve(double *par)
@@ -273,23 +287,32 @@ void MultiPeakFit::generateFitCurve(double *par)
 			Y[i] = yi + par[d_p - 1];//add offset
 		}
 
-		if (d_peaks > 1)
-			insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y, 2);
-		else
-			insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y);
+		if (d_graphics_display){	
+			if (!d_output_graph)
+				d_output_graph = createOutputGraph()->activeGraph();
+			
+			if (d_peaks > 1)
+				insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y, 2);
+			else
+				insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y);
 
-		if (generate_peak_curves){
-			for (i=0; i<peaks_aux; i++)
-			{//add the peak curves
-				for (j=0; j<d_points; j++)
-					Y[j] = gsl_matrix_get (m, j, i);
+			if (generate_peak_curves){
+				for (i=0; i<peaks_aux; i++){//add the peak curves
+					for (j=0; j<d_points; j++)
+						Y[j] = gsl_matrix_get (m, j, i);
 
 				insertPeakFunctionCurve(X, Y, i);
+				}
 			}
 		}
 	} else {
 		QString tableName = app->generateUniqueName(tr("Fit"));
-		QString label = d_explanation + " " + tr("fit of") + " " + d_curve->title().text();
+		QString dataSet;
+		if (d_curve)
+			dataSet = d_curve->title().text();
+		else
+			dataSet = d_y_col_name;
+		QString label = d_explanation + " " + tr("fit of") + " " + dataSet;
 
 		d_result_table = app->newHiddenTable(tableName, label, d_points, peaks_aux + 2);
 		QStringList header = QStringList() << "1";
@@ -323,42 +346,45 @@ void MultiPeakFit::generateFitCurve(double *par)
 				d_result_table->setText(i, d_peaks+1, locale.toString(Y[i], 'g', d_prec));
 		}
 
-		label = tableName + "_2";
-		DataCurve *c = new DataCurve(d_result_table, tableName + "_1", label);
-		if (d_peaks > 1)
-			c->setPen(QPen(ColorBox::color(d_curveColorIndex), 2));
-		else
-			c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
-		c->setData(X, Y, d_points);
-		d_graph->insertPlotItem(c, Graph::Line);
-		d_graph->addFitCurve(c);
+		if (d_graphics_display){	
+			if (!d_output_graph)
+				d_output_graph = createOutputGraph()->activeGraph();
+		
+			label = tableName + "_2";
+			DataCurve *c = new DataCurve(d_result_table, tableName + "_1", label);
+			if (d_peaks > 1)
+				c->setPen(QPen(ColorBox::color(d_curveColorIndex), 2));
+			else
+				c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+			c->setData(X, Y, d_points);
+			d_output_graph->insertPlotItem(c, Graph::Line);
+			d_output_graph->addFitCurve(c);
 
-		if (generate_peak_curves){
-			for (i=0; i<peaks_aux; i++)
-			{//add the peak curves
-				for (j=0; j<d_points; j++)
-					Y[j] = gsl_matrix_get (m, j, i);
+			if (generate_peak_curves){
+				for (i=0; i<peaks_aux; i++){//add the peak curves
+					for (j=0; j<d_points; j++)
+						Y[j] = gsl_matrix_get (m, j, i);
 
-				label = tableName + "_" + tr("peak") + QString::number(i+1);
-				c = new DataCurve(d_result_table, tableName + "_1", label);
-				c->setPen(QPen(ColorBox::color(d_peaks_color), 1));
-				c->setData(X, Y, d_points);
-				d_graph->insertPlotItem(c, Graph::Line);
-				d_graph->addFitCurve(c);
+					label = tableName + "_" + tr("peak") + QString::number(i+1);
+					c = new DataCurve(d_result_table, tableName + "_1", label);
+					c->setPen(QPen(ColorBox::color(d_peaks_color), 1));
+					c->setData(X, Y, d_points);
+					d_output_graph->insertPlotItem(c, Graph::Line);
+					d_output_graph->addFitCurve(c);
+				}
 			}
+			d_output_graph->replot();
 		}
 	}
-	d_graph->replot();
-
 	delete[] par;
 	delete[] X;
 	delete[] Y;
 	gsl_matrix_free(m);
 }
 
-QString MultiPeakFit::logFitInfo(double *par, int iterations, int status, const QString& plotName)
+QString MultiPeakFit::logFitInfo(double *par, int iterations, int status)
 {
-	QString info = Fit::logFitInfo(par, iterations, status, plotName);
+	QString info = Fit::logFitInfo(par, iterations, status);
 	if (d_peaks == 1)
 		return info;
 
@@ -389,30 +415,37 @@ QString MultiPeakFit::logFitInfo(double *par, int iterations, int status, const 
  *
  *****************************************************************************/
 
-	LorentzFit::LorentzFit(ApplicationWindow *parent, Graph *g)
+LorentzFit::LorentzFit(ApplicationWindow *parent, Graph *g)
 : MultiPeakFit(parent, g, MultiPeakFit::Lorentz, 1)
 {
 	init();
 }
 
-	LorentzFit::LorentzFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+LorentzFit::LorentzFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : MultiPeakFit(parent, g, MultiPeakFit::Lorentz, 1)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	LorentzFit::LorentzFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+LorentzFit::LorentzFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : MultiPeakFit(parent, g, MultiPeakFit::Lorentz, 1)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
 }
 
+LorentzFit::LorentzFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: MultiPeakFit(parent, t, xCol, yCol, startRow, endRow, MultiPeakFit::Lorentz, 1)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
+}
+
 void LorentzFit::init()
 {
 	setName("Lorentz");
-	d_explanation = tr("Lorentz");
+	d_explanation = tr("Lorentz Fit");
 	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
 }
 
@@ -422,32 +455,37 @@ void LorentzFit::init()
  *
  *****************************************************************************/
 
-	GaussFit::GaussFit(ApplicationWindow *parent, Graph *g)
+GaussFit::GaussFit(ApplicationWindow *parent, Graph *g)
 : MultiPeakFit(parent, g, MultiPeakFit::Gauss, 1)
 {
-	setName("Gauss");
-	d_explanation = tr("Gauss");
-	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
+	init();
 }
 
-	GaussFit::GaussFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+GaussFit::GaussFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : MultiPeakFit(parent, g, MultiPeakFit::Gauss, 1)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	GaussFit::GaussFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+GaussFit::GaussFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : MultiPeakFit(parent, g, MultiPeakFit::Gauss, 1)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
 }
 
+GaussFit::GaussFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: MultiPeakFit(parent, t, xCol, yCol, startRow, endRow, MultiPeakFit::Gauss, 1)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
+}
+
 void GaussFit::init()
 {
 	setName("Gauss");
-	d_explanation = tr("Gauss");
+	d_explanation = tr("Gauss Fit");
 	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
 }
 
@@ -457,24 +495,31 @@ void GaussFit::init()
  *
  *****************************************************************************/
 
-	GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Graph *g)
+GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
 	init();
 }
 
-	GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-	GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
+}
+
+GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: Fit(parent, t, xCol, yCol, startRow, endRow)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
 }
 
 void GaussAmpFit::init()
@@ -515,4 +560,28 @@ void GaussAmpFit::calculateFitCurveData(double *par, double *X, double *Y)
 		}
 	}
 	delete[] par;
+}
+
+void GaussAmpFit::guessInitialValues()
+{				
+	size_t imin, imax;
+	gsl_stats_minmax_index(&imin, &imax, d_y, 1, d_n);
+	
+	double min_out = d_y[imin];
+	double max_out = d_y[imax];
+	
+	gsl_vector_set(d_param_init, 1, fabs(max_out - min_out));
+	
+	double temp[d_n];
+	for (int i = 0; i < d_n; i++)
+		temp[i] = fabs(d_y[i]);
+	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
+	
+	gsl_vector_set(d_param_init, 2, d_x[imax_temp]);
+	gsl_vector_set(d_param_init, 3, 2*gsl_stats_sd(d_y, 1, d_n));
+	
+	if (imax_temp == imax)
+		gsl_vector_set(d_param_init, 0, min_out);
+	else //reversed bell
+		gsl_vector_set(d_param_init, 0, max_out);
 }

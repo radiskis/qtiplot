@@ -838,6 +838,12 @@ public:
   enum Algorithm{ScaledLevenbergMarquardt, UnscaledLevenbergMarquardt, NelderMeadSimplex};
   enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset};
 
+  Fit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  Fit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   Fit(ApplicationWindow* /TransferThis/, Graph*=0, const char*=0);
   ~Fit();
 
@@ -848,6 +854,7 @@ public:
 
   bool setDataFromCurve(const QString&, Graph*=0);
   bool setDataFromCurve(const QString&, double, double, Graph*=0);
+  bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1);
 
   void setInterval(double from, double to);
 
@@ -950,6 +957,12 @@ class ExponentialFit : Fit
 #include "src/ExponentialFit.h"
 %End
 public:
+  ExponentialFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, bool);
+  ExponentialFit(Table *, const QString&, const QString&, int = 1, int = -1, bool = false) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipExponentialFit(app, a0, *a1, *a2, a3, a4, a5))
+%End
+
   ExponentialFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, bool=false);
   ExponentialFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, bool=false);
   ExponentialFit(Graph *, const QString&, bool=false) /NoDerived/;
@@ -968,6 +981,12 @@ class TwoExpFit : Fit
 #include "src/ExponentialFit.h"
 %End
 public:
+  TwoExpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  TwoExpFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipTwoExpFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   TwoExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   TwoExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   TwoExpFit(Graph *, const QString&) /NoDerived/;
@@ -986,6 +1005,12 @@ class ThreeExpFit : Fit
 #include "src/ExponentialFit.h"
 %End
 public:
+  ThreeExpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  ThreeExpFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipThreeExpFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   ThreeExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   ThreeExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   ThreeExpFit(Graph *, const QString&) /NoDerived/;
@@ -1004,6 +1029,12 @@ class SigmoidalFit : Fit
 #include "src/SigmoidalFit.h"
 %End
 public:
+  SigmoidalFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  SigmoidalFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipSigmoidalFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   SigmoidalFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   SigmoidalFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   SigmoidalFit(Graph *, const QString&) /NoDerived/;
@@ -1014,6 +1045,8 @@ public:
 %MethodCode
   SIPQTI_APP(new sipSigmoidalFit(app, a0, *a1, a2, a3))
 %End
+
+  void guessInitialValues();
 };
 
 class GaussAmpFit : Fit
@@ -1022,6 +1055,12 @@ class GaussAmpFit : Fit
 #include "src/MultiPeakFit.h"
 %End
 public:
+  GaussAmpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  GaussAmpFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipGaussAmpFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   GaussAmpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   GaussAmpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   GaussAmpFit(Graph *, const QString&) /NoDerived/;
@@ -1032,6 +1071,8 @@ public:
 %MethodCode
   SIPQTI_APP(new sipGaussAmpFit(app, a0, *a1, a2, a3))
 %End
+
+  void guessInitialValues();
 };
 
 class NonLinearFit : Fit
@@ -1040,6 +1081,12 @@ class NonLinearFit : Fit
 #include "src/NonLinearFit.h"
 %End
 public:
+  NonLinearFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  NonLinearFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipNonLinearFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   NonLinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   NonLinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   NonLinearFit(Graph *, const QString&) /NoDerived/;
@@ -1071,6 +1118,12 @@ class PluginFit : Fit
 #include "src/PluginFit.h"
 %End
 public:
+  PluginFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  PluginFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipPluginFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   PluginFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   PluginFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   PluginFit(Graph *, const QString&) /NoDerived/;
@@ -1111,6 +1164,12 @@ class LorentzFit : MultiPeakFit
 #include "src/MultiPeakFit.h"
 %End
 public:
+  LorentzFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  LorentzFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLorentzFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   LorentzFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   LorentzFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   LorentzFit(Graph *, const QString&) /NoDerived/;
@@ -1129,6 +1188,12 @@ class GaussFit : MultiPeakFit
 #include "src/MultiPeakFit.h"
 %End
 public:
+  GaussFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  GaussFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipGaussFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   GaussFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   GaussFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   GaussFit(Graph *, const QString&) /NoDerived/;
@@ -1147,6 +1212,12 @@ class PolynomialFit : Fit
 #include "src/PolynomialFit.h"
 %End
 public:
+  PolynomialFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int, bool);
+  PolynomialFit(Table *, const QString&, const QString&, int = 1, int = -1, int = 2, bool = false) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipPolynomialFit(app, a0, *a1, *a2, a3, a4, a5, a6))
+%End
+
   PolynomialFit(ApplicationWindow * /TransferThis/, Graph *, QString&, int=2, bool=false);
   PolynomialFit(ApplicationWindow * /TransferThis/, Graph *, QString&, int, int, int=2, bool=false);
   PolynomialFit(Graph *, QString&, int=2, bool=false) /NoDerived/;
@@ -1171,6 +1242,12 @@ class LinearFit : Fit
 #include "src/PolynomialFit.h"
 %End
 public:
+  LinearFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  LinearFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLinearFit(app, a0, *a1, *a2, a3, a4))
+%End
+
   LinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
   LinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   LinearFit(Graph *, const QString&) /NoDerived/;
@@ -1213,7 +1290,7 @@ class Differentiation : Filter
 %End
 public:
   Differentiation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  Differentiation(Table *, const QString&, const QString&, int = 0, int = -1) /NoDerived/;
+  Differentiation(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipDifferentiation(app, a0, *a1, *a2, a3, a4))
 %End
@@ -1238,7 +1315,7 @@ class Integration : Filter
 %End
 public:
   Integration(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  Integration(Table *, const QString&, const QString&, int = 0, int = -1) /NoDerived/;
+  Integration(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipIntegration(app, a0, *a1, *a2, a3, a4))
 %End
@@ -1270,7 +1347,7 @@ public:
   enum InterpolationMethod{Linear, Cubic, Akima};
 
   Interpolation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
-  Interpolation(Table *, const QString&, const QString&, int = 0, int = -1, int = 0) /NoDerived/;
+  Interpolation(Table *, const QString&, const QString&, int = 1, int = -1, int = 0) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipInterpolation(app, a0, *a1, *a2, a3, a4, a5))
 %End
@@ -1299,7 +1376,7 @@ public:
   enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3};
 
   SmoothFilter(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
-  SmoothFilter(Table *, const QString&, const QString&, int = 0, int = -1, int = 3) /NoDerived/;
+  SmoothFilter(Table *, const QString&, const QString&, int = 1, int = -1, int = 3) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipSmoothFilter(app, a0, *a1, *a2, a3, a4, a5))
 %End
@@ -1330,7 +1407,7 @@ public:
   enum FilterType{LowPass = 1, HighPass = 2, BandPass = 3, BandBlock = 4};
 
   FFTFilter(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
-  FFTFilter(Table *, const QString&, const QString&, int = 0, int = -1, int = 1) /NoDerived/;
+  FFTFilter(Table *, const QString&, const QString&, int = 1, int = -1, int = 1) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFTFilter(app, a0, *a1, *a2, a3, a4, a5))
 %End
@@ -1361,9 +1438,9 @@ class FFT : Filter
 %End
 public:
 
-  FFT(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString& = QString(), int = 0, int = -1);
+  FFT(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString& = QString(), int = 1, int = -1);
   FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  FFT(Table *, const QString&, const QString& = QString(), int = 0, int = -1) /NoDerived/;
+  FFT(Table *, const QString&, const QString& = QString(), int = 1, int = -1) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFT(app, a0, *a1, *a2, a3, a4))
 %End

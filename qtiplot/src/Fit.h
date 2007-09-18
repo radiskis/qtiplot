@@ -56,6 +56,8 @@ class Fit : public Filter
 		enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset};
 
 		Fit(ApplicationWindow *parent, Graph *g = 0, const char * name = 0);
+		Fit( ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, 
+		  	int startRow = 1, int endRow = -1, const char * name = 0);
 		~Fit();
 
 		//! Actually does the fit. Should be reimplemented in derived classes.
@@ -66,6 +68,7 @@ class Fit : public Filter
 		bool setWeightingData(WeightingMethod w, const QString& colName = QString::null);
 
 		void setDataCurve(int curve, double start, double end);
+		bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1);
 
 		QString resultFormula(){return d_result_formula;};
 		QString formula(){return d_formula;};
@@ -103,6 +106,8 @@ class Fit : public Filter
 		Matrix* covarianceMatrix(const QString& matrixName);
 
 	private:
+		void init();
+	
 		//! Pointer to the GSL multifit minimizer (for simplex algorithm)
 		gsl_multimin_fminimizer * fitSimplex(gsl_multimin_function f, int &iterations, int &status);
 
@@ -123,7 +128,7 @@ class Fit : public Filter
 		virtual void calculateFitCurveData(double *par, double *X, double *Y) { Q_UNUSED(par) Q_UNUSED(X) Q_UNUSED(Y)   };
 
 		//! Output string added to the result log
-		virtual QString logFitInfo(double *par, int iterations, int status, const QString& plotName);
+		virtual QString logFitInfo(double *par, int iterations, int status);
 
 		fit_function d_f;
 		fit_function_df d_df;

@@ -40,6 +40,7 @@ class ExponentialFit : public Fit
 		ExponentialFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, bool expGrowth = false);
 		ExponentialFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, 
 				double start, double end, bool expGrowth = false);
+		ExponentialFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1, bool expGrowth = false);
 
 	private:
 		void init();
@@ -57,6 +58,7 @@ class TwoExpFit : public Fit
 		TwoExpFit(ApplicationWindow *parent, Graph *g);
 		TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
+		TwoExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
 
 	private:
 		void init();
@@ -72,7 +74,8 @@ class ThreeExpFit : public Fit
 		ThreeExpFit(ApplicationWindow *parent, Graph *g);
 		ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
-
+		ThreeExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
+	
 	private:
 		void init();
 		void storeCustomFitResults(double *par);

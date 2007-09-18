@@ -54,7 +54,7 @@ class Filter : public QObject
 		bool setDataFromCurve(const QString& curveTitle, Graph *g = 0);
 		bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
 
-		virtual bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 0, int to = -1);
+		virtual bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1);
 	
 		//! Changes the data range if the source curve was already assigned. Provided for convenience.
 		void setInterval(double from, double to);

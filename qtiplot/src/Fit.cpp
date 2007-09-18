@@ -34,6 +34,7 @@
 #include "Legend.h"
 #include "FunctionCurve.h"
 #include "ColorBox.h"
+#include "MultiLayer.h"
 
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_blas.h>
@@ -45,6 +46,18 @@
 
 Fit::Fit( ApplicationWindow *parent, Graph *g, const char * name)
 : Filter( parent, g, name)
+{
+	init();
+}
+
+Fit::Fit( ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, 
+		  int startRow, int endRow, const char * name)
+: Filter( parent, t, name)
+{
+	init();
+}
+
+void Fit::init()
 {
 	d_p = 0;
 	d_n = 0;
@@ -63,11 +76,11 @@ Fit::Fit( ApplicationWindow *parent, Graph *g, const char * name)
 	is_non_linear = true;
 	d_results = 0;
 	d_errors = 0;
-	d_prec = parent->fit_output_precision;
 	d_init_err = false;
 	chi_2 = -1;
 	d_scale_errors = false;
 	d_sort_data = false;
+	d_prec = (((ApplicationWindow *)parent())->fit_output_precision);
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)
@@ -131,6 +144,18 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	return s_min;
 }
 
+bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to)
+{
+	if (d_n > 0)
+		delete[] d_w;
+
+    if (Filter::setDataFromTable(t, xColName, yColName, from, to)){
+    	d_w = new double[d_n];
+    	for (int i=0; i<d_n; i++)//initialize the weighting data to 1.0
+       		d_w[i] = 1.0;
+	}
+}
+
 void Fit::setDataCurve(int curve, double start, double end)
 {
     if (d_n > 0)
@@ -171,11 +196,22 @@ void Fit::generateFunction(bool yes, int points)
 		d_points = points;
 }
 
-QString Fit::logFitInfo(double *par, int iterations, int status, const QString& plotName)
+QString Fit::logFitInfo(double *par, int iterations, int status)
 {
+	QString dataSet;
+	if (d_curve)
+		dataSet = d_curve->title().text();
+	else
+		dataSet = d_y_col_name;
+			
 	QDateTime dt = QDateTime::currentDateTime ();
-	QString info = "[" + dt.toString(Qt::LocalDate)+ "\t" + tr("Plot")+ ": ''" + plotName+ "'']\n";
-	info += d_explanation + " " + tr("fit of dataset") + ": " + d_curve->title().text();
+	QString info = "[" + dt.toString(Qt::LocalDate)+ "\t" + tr("Plot")+ ": ";
+	if (!d_graphics_display)
+		info += tr("graphics display disabled") + "]\n";
+	else if (d_output_graph)
+		info += "''" + d_output_graph->parentPlotName() + "'']\n";
+	
+	info += d_explanation + " " + tr("fit of dataset") + ": " + dataSet;
 	if (!d_formula.isEmpty())
 		info +=", " + tr("using function") + ": " + d_formula + "\n";
 	else
@@ -201,8 +237,7 @@ QString Fit::logFitInfo(double *par, int iterations, int status, const QString& 
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
-	if (is_non_linear)
-	{
+	if (is_non_linear){
 		if (d_solver == NelderMeadSimplex)
 			info+=tr("Nelder-Mead Simplex");
 		else if (d_solver == UnscaledLevenbergMarquardt)
@@ -215,8 +250,7 @@ QString Fit::logFitInfo(double *par, int iterations, int status, const QString& 
 
 	info+=tr("From x")+" = "+locale.toString(d_x[0], 'g', 15)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'g', 15)+"\n";
 	double chi_2_dof = chi_2/(d_n - d_p);
-	for (int i=0; i<d_p; i++)
-	{
+	for (int i=0; i<d_p; i++){
 		info += d_param_names[i]+" "+d_param_explain[i]+" = "+locale.toString(par[i], 'g', d_prec) + " +/- ";
 		if (d_scale_errors)
 			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar,i,i)), 'g', d_prec) + "\n";
@@ -229,8 +263,7 @@ QString Fit::logFitInfo(double *par, int iterations, int status, const QString& 
 	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
 	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'g', d_prec) + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
-	if (is_non_linear)
-	{
+	if (is_non_linear){
 		info += tr("Iterations")+ " = " + QString::number(iterations) + "\n";
 		info += tr("Status") + " = " + gsl_strerror (status) + "\n";
 		info +="---------------------------------------------------------------------------------------\n";
@@ -246,7 +279,13 @@ double Fit::rSquare()
 
 QString Fit::legendInfo()
 {
-	QString info = tr("Dataset") + ": " + d_curve->title().text() + "\n";
+	QString dataSet;
+	if (d_curve)
+		dataSet = d_curve->title().text();
+	else
+		dataSet = d_y_col_name;
+	
+	QString info = tr("Dataset") + ": " + dataSet + "\n";
 	info += tr("Function") + ": " + d_formula + "\n\n";
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
@@ -257,8 +296,7 @@ QString Fit::legendInfo()
 	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
 	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'g', d_prec) + "\n";
 
-	for (int i=0; i<d_p; i++)
-	{
+	for (int i=0; i<d_p; i++){
 		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'g', d_prec) + " +/- ";
 		if (d_scale_errors)
 			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar,i,i)), 'g', d_prec) + "\n";
@@ -269,9 +307,8 @@ QString Fit::legendInfo()
 }
 
 bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
-{
-	d_weihting = w;
-	switch (d_weihting)
+{	
+	switch (w)
 	{
 		case NoWeighting:
 			{
@@ -282,30 +319,31 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 			break;
 		case Instrumental:
 			{
+				if (!d_graph && d_table){
+					QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
+  	    				tr("You cannot use the instrumental weighting method."));
+  	    			return false;
+				}
+
 				bool error = true;
 				QwtErrorPlotCurve *er = 0;
-				if (((PlotCurve *)d_curve)->type() != Graph::Function)
-				{
+				if (((PlotCurve *)d_curve)->type() != Graph::Function){
 					QList<DataCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
-                	foreach (DataCurve *c, lst)
-                	{
+                	foreach (DataCurve *c, lst){
                     	er = (QwtErrorPlotCurve *)c;
-                    	if (!er->xErrors())
-                    	{
+                    	if (!er->xErrors()){
                         	weighting_dataset = er->title().text();
                         	error = false;
                         	break;
                     	}
 					}
                 }
-				if (error)
-				{
+				if (error){
 					QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
 					tr("The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.").arg(d_curve->title().text()));
 					return false;
 				}
-				if (er)
-				{
+				if (er){
 					for (int j=0; j<d_n; j++)
 						d_w[j] = er->errorValue(j); //d_w are equal to the error bar values
 				}
@@ -313,8 +351,11 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 			break;
 		case Statistical:
 			{
-				weighting_dataset = d_curve->title().text();
-
+				if (d_graph && d_curve)
+					weighting_dataset = d_curve->title().text();
+				else if (d_table)
+					weighting_dataset = d_y_col_name;
+				
 				for (int i=0; i<d_n; i++)
 					d_w[i] = sqrt(d_y[i]);
 			}
@@ -328,8 +369,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				if (!t)
 					return false;
 
-				if (t->numRows() < d_n)
-  	            {
+				if (t->numRows() < d_n){
   	            	QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
   	                tr("The column %1 has less points than the fitted data set. Please choose another column!.").arg(colName));
   	                return false;
@@ -343,6 +383,8 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 			}
 			break;
 	}
+	
+	d_weihting = w;
 	return true;
 }
 
@@ -352,8 +394,7 @@ Table* Fit::parametersTable(const QString& tableName)
 	QLocale locale = app->locale();
 	Table *t = app->newTable(tableName, d_p, 3);
 	t->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
-	for (int i=0; i<d_p; i++)
-	{
+	for (int i=0; i<d_p; i++){
 		t->setText(i, 0, d_param_names[i]);
 		t->setText(i, 1, locale.toString(d_results[i], 'g', d_prec));
 		t->setText(i, 2, locale.toString(sqrt(gsl_matrix_get(covar,i,i)), 'g', d_prec));
@@ -386,8 +427,7 @@ double *Fit::errors()
 	if (!d_errors) {
 		d_errors = new double[d_p];
 		double chi_2_dof = chi_2/(d_n - d_p);
-		for (int i=0; i<d_p; i++)
-		{
+		for (int i=0; i<d_p; i++){
 			if (d_scale_errors)
 				d_errors[i] = sqrt(chi_2_dof*gsl_matrix_get(covar,i,i));
 			else
@@ -405,7 +445,7 @@ void Fit::storeCustomFitResults(double *par)
 
 void Fit::fit()
 {
-	if (!d_graph || d_init_err)
+	if (!(d_graph || d_table) || d_init_err)
 		return;
 
 	if (!d_n){
@@ -466,6 +506,7 @@ void Fit::fit()
 		f.n = d_n;
 		f.p = d_p;
 		f.params = &d_data;
+		
 		gsl_multifit_fdfsolver *s = fitGSL(f, iterations, status);
 
 		for (int i=0; i<d_p; i++)
@@ -474,14 +515,15 @@ void Fit::fit()
 		chi_2 = pow(gsl_blas_dnrm2(s->f), 2.0);
 		gsl_multifit_fdfsolver_free(s);
 	}
-
+	
 	storeCustomFitResults(par);
-
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog)
-		app->updateLog(logFitInfo(d_results, iterations, status, d_graph->parentPlotName()));
-
 	generateFitCurve(par);
+	
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (app->writeFitResultsToLog){		
+		app->updateLog(logFitInfo(d_results, iterations, status));
+	}
+	
 	QApplication::restoreOverrideCursor();
 }
 
@@ -495,13 +537,18 @@ void Fit::generateFitCurve(double *par)
 
 	calculateFitCurveData(par, X, Y);
 
-	if (d_gen_function){
-		insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y);
-		d_graph->replot();
-		delete[] X;
-		delete[] Y;
-	} else
-        d_graph->addFitCurve(addResultCurve(X, Y));
+	if (d_graphics_display){	
+		if (!d_output_graph)
+			d_output_graph = createOutputGraph()->activeGraph();
+
+		if (d_gen_function){
+			insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y);
+			d_output_graph->replot();
+			delete[] X;
+			delete[] Y;
+		} else
+        	d_output_graph->addFitCurve(addResultCurve(X, Y));
+	}
 }
 
 void Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth)
@@ -519,14 +566,14 @@ void Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int 
 	formula.replace("--", "+");
 	d_result_formula = formula;
 
-	QString title = d_graph->generateFunctionName(name);
+	QString title = d_output_graph->generateFunctionName(name);
 	FunctionCurve *c = new FunctionCurve(FunctionCurve::Normal, title);
 	c->setPen(QPen(ColorBox::color(d_curveColorIndex), penWidth));
 	c->setData(x, y, d_points);
 	c->setRange(d_x[0], d_x[d_n-1]);
 	c->setFormula(formula);
-	d_graph->insertPlotItem(c, Graph::Line);
-	d_graph->addFitCurve(c);
+	d_output_graph->insertPlotItem(c, Graph::Line);
+	d_output_graph->addFitCurve(c);
 }
 
 Fit::~Fit()
