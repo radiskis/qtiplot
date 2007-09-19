@@ -1277,8 +1277,11 @@ public:
   void setColor(int);
   void setColor(const QString&);
 
+  bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
+  virtual bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1);
+
   Table *resultTable();
-  
+
   virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
   virtual bool run();
 };
@@ -1439,7 +1442,9 @@ class FFT : Filter
 public:
 
   FFT(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString& = QString(), int = 1, int = -1);
+  FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
   FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&);
+
   FFT(Table *, const QString&, const QString& = QString(), int = 1, int = -1) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFT(app, a0, *a1, *a2, a3, a4))
@@ -1447,6 +1452,10 @@ public:
   FFT(Graph *, const QString&) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFT(app, a0, *a1))
+%End
+  FFT(Graph *, const QString&, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipFFT(app, a0, *a1, a2, a3))
 %End
 
   void setInverseFFT(bool=true);
@@ -1464,13 +1473,13 @@ class Correlation : Filter
 %End
 public:
 
-  Correlation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&);
-  Correlation(Table *, const QString&, const QString&) /NoDerived/;
+  Correlation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  Correlation(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
 %MethodCode
-  SIPQTI_APP(new sipCorrelation(app, a0, *a1, *a2))
+  SIPQTI_APP(new sipCorrelation(app, a0, *a1, *a2, a3, a4))
 %End
 
-  void setDataFromTable(Table *, const QString&, const QString&);
+  bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1);
   bool run();
 };
 

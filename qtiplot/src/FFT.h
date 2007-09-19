@@ -36,8 +36,9 @@ class FFT : public Filter
 Q_OBJECT
 
 public:
-    FFT(ApplicationWindow *parent, Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 0, int to = -1);
+    FFT(ApplicationWindow *parent, Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 1, int to = -1);
 	FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
+    FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 
     void setInverseFFT(bool inverse = true){d_inverse = inverse;};
     void setSampling(double sampling){d_sampling = sampling;};

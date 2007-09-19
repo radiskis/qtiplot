@@ -54,8 +54,8 @@ class Filter : public QObject
 		bool setDataFromCurve(const QString& curveTitle, Graph *g = 0);
 		bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
 
-		virtual bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1);
-	
+		virtual bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1);
+
 		//! Changes the data range if the source curve was already assigned. Provided for convenience.
 		void setInterval(double from, double to);
 
@@ -93,7 +93,7 @@ class Filter : public QObject
         Table *resultTable(){return d_result_table;};
 
         bool error(){return d_init_err;};
-		
+
 		virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
 
 	protected:
@@ -106,7 +106,7 @@ class Filter : public QObject
         virtual int sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y);
 
 		int curveRange(QwtPlotCurve *c, double start, double end, int *iStart, int *iEnd);
-	
+
         //! Adds the result curve to the target output plot window. Creates a hidden table and frees the input data from memory.
         QwtPlotCurve* addResultCurve(double *x, double *y);
 
@@ -121,15 +121,15 @@ class Filter : public QObject
 
 		//! Calculates the data for the output curve and store it in the X an Y vectors
 		virtual void calculateOutputData(double *X, double *Y) { Q_UNUSED(X) Q_UNUSED(Y) };
-		
+
 		MultiLayer* createOutputGraph();
-		
+
 		//! The source graph with the curve to be analyzed
 		Graph *d_graph;
 
 		//! The graph where the result curve should be displayed
 		Graph *d_output_graph;
-		
+
         //! A table source of data
 		Table *d_table;
 
@@ -177,10 +177,10 @@ class Filter : public QObject
 
         //! String explaining the operation in the comment of the result table and in the project explorer
         QString d_explanation;
-		
+
 		//! Specifies if the filter should display a result curve
 		bool d_graphics_display;
-		
+
 		QString d_y_col_name;
 };
 

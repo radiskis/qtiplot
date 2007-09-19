@@ -36,9 +36,9 @@ class Correlation : public Filter
 Q_OBJECT
 
 public:
-    Correlation(ApplicationWindow *parent, Table *t, const QString& colName1, const QString& colName2);
+    Correlation(ApplicationWindow *parent, Table *t, const QString& colName1, const QString& colName2, int startRow = 1, int endRow = -1);
 
-	void setDataFromTable(Table *t, const QString& colName1, const QString& colName2);
+	bool setDataFromTable(Table *t, const QString& colName1, const QString& colName2, int startRow = 1, int endRow = -1);
 
 protected:
 	//! Handles the graphical output

@@ -225,6 +225,9 @@
 					<keyword ref="./ch07s02.html#Python-Smooth">Data Smoothing</keyword>
 				</section>
 			</section>
+			<section ref="ch07s02.html#Python-QtDialogs" title="Using Qt's dialogs and classes">
+                <keyword ref="./ch07s02.html#Python-QtDialogs">Qt dialogs</keyword>
+            </section>
 	</section>
 </section>
 <section ref="./apa.html" title="Installation">
