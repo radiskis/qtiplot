@@ -56,8 +56,7 @@ class Fit : public Filter
 		enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset};
 
 		Fit(ApplicationWindow *parent, Graph *g = 0, const char * name = 0);
-		Fit( ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, 
-		  	int startRow = 1, int endRow = -1, const char * name = 0);
+		Fit(ApplicationWindow *parent, Table *t, const char * name = 0);
 		~Fit();
 
 		//! Actually does the fit. Should be reimplemented in derived classes.

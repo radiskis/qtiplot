@@ -838,12 +838,6 @@ public:
   enum Algorithm{ScaledLevenbergMarquardt, UnscaledLevenbergMarquardt, NelderMeadSimplex};
   enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset};
 
-  Fit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  Fit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFit(app, a0, *a1, *a2, a3, a4))
-%End
-
   Fit(ApplicationWindow* /TransferThis/, Graph*=0, const char*=0);
   ~Fit();
 

@@ -185,7 +185,7 @@ protected:
 	QPushButton * buttonLabelFont;
 	TextFormatButtons *formatButtons;
 
-	QStringList titles, tickLabelsOn, formatInfo;
+	QStringList tickLabelsOn, formatInfo;
 	QStringList	tablesList;
 	QList<int> majTicks, minTicks, axesType, axesBaseline;
 	QFont xBottomFont, yLeftFont, xTopFont, yRightFont;

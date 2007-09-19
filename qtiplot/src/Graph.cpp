@@ -1047,7 +1047,7 @@ void Graph::setRightAxisTitleAlignment(int align)
 	emit modifiedGraph();
 }
 
-void Graph::setAxisTitle(int axis, const QString& text)
+void Graph::setScaleTitle(int axis, const QString& text)
 {
 	int a;
 	switch (axis)
@@ -1066,40 +1066,13 @@ void Graph::setAxisTitle(int axis, const QString& text)
         break;
 	}
 	d_plot->setAxisTitle(a, text);
-	d_plot->replot();
-	emit modifiedGraph();
 }
 
-QStringList Graph::scalesTitles()
+void Graph::setAxisTitle(int axis, const QString& text)
 {
-	QStringList scaleTitles;
-	int axis;
-	for (int i=0;i<QwtPlot::axisCnt;i++)
-	{
-		switch (i)
-		{
-			case 0:
-				axis=2;
-				scaleTitles<<d_plot->axisTitle(axis).text();
-				break;
-
-			case 1:
-				axis=0;
-				scaleTitles<<d_plot->axisTitle(axis).text();
-				break;
-
-			case 2:
-				axis=3;
-				scaleTitles<<d_plot->axisTitle(axis).text();
-				break;
-
-			case 3:
-				axis=1;
-				scaleTitles<<d_plot->axisTitle(axis).text();
-				break;
-		}
-	}
-	return scaleTitles;
+	d_plot->setAxisTitle(axis, text);
+	d_plot->replot();
+	emit modifiedGraph();
 }
 
 void Graph::updateSecondaryAxis(int axis)

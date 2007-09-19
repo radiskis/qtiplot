@@ -2269,12 +2269,12 @@ folder = QtCore.QDir(dirPath)
 namePattern = QtGui.QInputDialog.getText(qti.app, "Enter Pattern", "Text: ", QtGui.QLineEdit.Normal, "disper1")
 
 # Get the list of file names in the working directory containing the above pattern:
-lst = folder.entryList (QtCore.QStringList ("*_" + namePattern[0] + "*.dat"))
+fileNames = folder.entryList (QtCore.QStringList ("*_" + namePattern[0] + "*.dat"))
 
 # Import each file into a new project table:
 for i in range (0, lst.count()):
     t = newTable()
-    t.importASCII(dirPath+lst[i], " ", 0, False, True, True)
+    t.importASCII(dirPath + fileNames[i], " ", 0, False, True, True)
 </programlisting>
 
 For a detailed description of all the dialogs and utility classes provided by Qt/PyQt

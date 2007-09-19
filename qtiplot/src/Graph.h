@@ -408,12 +408,15 @@ class Graph: public QWidget
 		//@{
 		QList<int> axesType();
 
-		QStringList scalesTitles();
 		void setXAxisTitle(const QString& text);
 		void setYAxisTitle(const QString& text);
 		void setRightAxisTitle(const QString& text);
 		void setTopAxisTitle(const QString& text);
+		
+		QString axisTitle(int axis){return d_plot->axisTitle(axis).text();};
 		void setAxisTitle(int axis, const QString& text);
+		//! TODO: eliminate this function in version 0.9.1 (used only when restoring project files)
+		void setScaleTitle(int axis, const QString& text);
 
 		QFont axisTitleFont(int axis);
 		void setXAxisTitleFont(const QFont &fnt);

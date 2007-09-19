@@ -2250,10 +2250,9 @@ void ApplicationWindow::polishGraph(Graph *g, int style)
 		g->setMajorTicksType(ticksList);
 		g->setMinorTicksType(ticksList);
 	}
-	if (style == Graph::HorizontalBars)
-	{
-		g->setAxisTitle(0, tr("Y Axis Title"));
-		g->setAxisTitle(1, tr("X Axis Title"));
+	if (style == Graph::HorizontalBars){
+		g->setAxisTitle(QwtPlot::xBottom, tr("X Axis Title"));
+		g->setAxisTitle(QwtPlot::yLeft, tr("Y Axis Title"));
 	}
 }
 
@@ -5297,8 +5296,7 @@ void ApplicationWindow::showXAxisTitleDialog()
 		connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setXAxisTitleColor(const QColor &)));
 		connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setXAxisTitleAlignment(int)));
 
-		QStringList t=g->scalesTitles();
-		td->setText(t[0]);
+		td->setText(g->axisTitle(QwtPlot::xBottom));
 		td->setFont(g->axisTitleFont(2));
 		td->setTextColor(g->axisTitleColor(2));
 		td->setAlignment(g->axisTitleAlignment(2));
@@ -5322,8 +5320,7 @@ void ApplicationWindow::showYAxisTitleDialog()
 		connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setYAxisTitleColor(const QColor &)));
 		connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setYAxisTitleAlignment(int)));
 
-		QStringList t=g->scalesTitles();
-		td->setText(t[1]);
+		td->setText(g->axisTitle(QwtPlot::yLeft));
 		td->setFont(g->axisTitleFont(0));
 		td->setTextColor(g->axisTitleColor(0));
 		td->setAlignment(g->axisTitleAlignment(0));
@@ -5347,8 +5344,7 @@ void ApplicationWindow::showRightAxisTitleDialog()
 		connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setRightAxisTitleColor(const QColor &)));
 		connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setRightAxisTitleAlignment(int)));
 
-		QStringList t=g->scalesTitles();
-		td->setText(t[3]);
+		td->setText(g->axisTitle(QwtPlot::yRight));
 		td->setFont(g->axisTitleFont(1));
 		td->setTextColor(g->axisTitleColor(1));
 		td->setAlignment(g->axisTitleAlignment(1));
@@ -5371,8 +5367,7 @@ void ApplicationWindow::showTopAxisTitleDialog()
 		connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setTopAxisTitleColor(const QColor &)));
 		connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setTopAxisTitleAlignment(int)));
 
-		QStringList t=g->scalesTitles();
-		td->setText(t[2]);
+		td->setText(g->axisTitle(QwtPlot::xTop));
 		td->setFont(g->axisTitleFont(3));
 		td->setTextColor(g->axisTitleColor(3));
 		td->setAlignment(g->axisTitleAlignment(3));
@@ -10050,11 +10045,11 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			ag->setTitleFont(fnt);
 		}
 		else if (s.contains ("AxesTitles")){
-			QStringList legend=s.split("\t");
-			legend.pop_front();
+			QStringList lst=s.split("\t");
+			lst.pop_front();
 			for (int i=0; i<4; i++){
-			    if (legend.count() > i)
-                    ag->setAxisTitle(i, legend[i]);
+			    if (lst.count() > i)
+                    ag->setScaleTitle(i, lst[i]);
 			}
 		}
 		else if (s.contains ("AxesTitleColors")){

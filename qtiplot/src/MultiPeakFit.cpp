@@ -39,16 +39,14 @@
 #include <QMessageBox>
 
 MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile profile, int peaks)
-: Fit(parent, g),
-d_profile(profile)
+: Fit(parent, g), d_profile(profile)
 {
 init(peaks);
 }
 
 MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, 
 		  				  int startRow, int endRow, PeakProfile profile, int peaks)
-: Fit(parent, t, xCol, yCol, startRow, endRow),
-d_profile(profile)
+: Fit(parent, t), d_profile(profile)
 {
 init(peaks);
 }
@@ -516,7 +514,7 @@ GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& cur
 }
 
 GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
-: Fit(parent, t, xCol, yCol, startRow, endRow)
+: Fit(parent, t)
 {
 	init();
 	setDataFromTable(t, xCol, yCol, startRow, endRow);

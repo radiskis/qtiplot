@@ -50,8 +50,7 @@ Fit::Fit( ApplicationWindow *parent, Graph *g, const char * name)
 	init();
 }
 
-Fit::Fit( ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, 
-		  int startRow, int endRow, const char * name)
+Fit::Fit( ApplicationWindow *parent, Table *t, const char * name)
 : Filter( parent, t, name)
 {
 	init();
