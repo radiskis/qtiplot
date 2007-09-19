@@ -1214,9 +1214,6 @@ AxesDialog::AxesDialog( QWidget* parent, Qt::WFlags fl )
 		mainLayout->addWidget(generalDialog);
 		mainLayout->addLayout(bottomButtons);
 
-		for (int i=0;i<4;i++)
-			titles<<"";
-
 		lastPage = scalesPage;
 
 		connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
@@ -2243,12 +2240,8 @@ void AxesDialog::changeBaselineDist(int baseline)
 	int axis=mapToQwtAxisId();
 	axesBaseline[axis] = baseline;
 
-	int at=axesTitlesList->currentRow();
-	QString title=boxTitle->text();
-	if (titles[at] != title){
-		d_graph->setAxisTitle(at, title);
-		titles[at] = title;
-	}
+	if (d_graph->axisTitle(axis) != boxTitle->text())
+		d_graph->setAxisTitle(axis, boxTitle->text());
 
 	QString formula =  boxFormula->text();
 	if (!boxShowFormula->isChecked())
@@ -2397,13 +2390,9 @@ bool AxesDialog::updatePlot()
 			formatInfo[axis] = boxTableName->currentText();
 		else
 			formatInfo[axis] = boxColName->currentText();
-
-		int at=axesTitlesList->currentRow();
-		QString title=boxTitle->text();
-		if (titles[at] != title){
-			d_graph->setAxisTitle(at, title);
-			titles[at] = title;
-		}
+		
+		if (d_graph->axisTitle(axis) != boxTitle->text())
+			d_graph->setAxisTitle(axis, boxTitle->text());
 
 		if (axis == QwtPlot::xBottom)
 			xBottomLabelsRotation=boxAngle->value();
@@ -2461,7 +2450,6 @@ void AxesDialog::setGraph(Graph *g)
 	minTicks = p->getMinorTicksType();
 
 	formatInfo = g->axesLabelsFormatInfo();
-	titles = g->scalesTitles();
 	updateTitleBox(0);
 
 	xBottomLabelsRotation = g->labelsRotation(QwtPlot::xBottom);
@@ -2589,7 +2577,8 @@ boxMinorValue->setEditText(QString::number(d_plot->axisMaxMinor(a)));
 
 void AxesDialog::updateTitleBox(int axis)
 {
-	boxTitle->setText(titles[axis]);
+	int axisId = mapToQwtAxis(axis);
+	boxTitle->setText(d_graph->axisTitle(axisId));
 }
 
 void AxesDialog::pickAxisColor()

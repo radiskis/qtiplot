@@ -53,7 +53,7 @@ NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& c
 }
 
 NonLinearFit::NonLinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
-: Fit(parent, t, xCol, yCol, startRow, endRow)
+: Fit(parent, t)
 {
 	init();
 	setDataFromTable(t, xCol, yCol, startRow, endRow);

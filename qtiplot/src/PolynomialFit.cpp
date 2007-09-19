@@ -55,7 +55,7 @@ PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, QString& curve
 }
 
 PolynomialFit::PolynomialFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow, int order, bool legend)
-: Fit(parent, t, xCol, yCol, startRow, endRow), d_order(order), show_legend(legend)
+: Fit(parent, t), d_order(order), show_legend(legend)
 {
 	init();
 	setDataFromTable(t, xCol, yCol, startRow, endRow);
@@ -224,7 +224,7 @@ LinearFit::LinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTi
 }
 
 LinearFit::LinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
-: Fit(parent, t, xCol, yCol, startRow, endRow)
+: Fit(parent, t)
 {
 	init();
 	setDataFromTable(t, xCol, yCol, startRow, endRow);

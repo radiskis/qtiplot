@@ -60,7 +60,7 @@ ExponentialFit::ExponentialFit(ApplicationWindow *parent, Graph *g,
 }
 
 ExponentialFit::ExponentialFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow, bool expGrowth)
-: Fit(parent, t, xCol, yCol, startRow, endRow), is_exp_growth(expGrowth)
+: Fit(parent, t), is_exp_growth(expGrowth)
 {
 	init();
 	setDataFromTable(t, xCol, yCol, startRow, endRow);
@@ -150,7 +150,7 @@ TwoExpFit::TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTi
 }
 
 TwoExpFit::TwoExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
-: Fit(parent, t, xCol, yCol, startRow, endRow)
+: Fit(parent, t)
 {
 	init();
 	setDataFromTable(t, xCol, yCol, startRow, endRow);
@@ -234,7 +234,7 @@ ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& cur
 }
 
 ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
-: Fit(parent, t, xCol, yCol, startRow, endRow)
+: Fit(parent, t)
 {
 	init();
 	setDataFromTable(t, xCol, yCol, startRow, endRow);
