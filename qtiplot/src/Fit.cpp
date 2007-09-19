@@ -145,14 +145,16 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 
 bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to)
 {
-	if (d_n > 0)
+	if (d_n > 0)//delete old weighting data set
 		delete[] d_w;
 
     if (Filter::setDataFromTable(t, xColName, yColName, from, to)){
     	d_w = new double[d_n];
     	for (int i=0; i<d_n; i++)//initialize the weighting data to 1.0
        		d_w[i] = 1.0;
-	}
+		return true;
+	} else
+		return false;
 }
 
 void Fit::setDataCurve(int curve, double start, double end)
