@@ -51,6 +51,13 @@ FFT::FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
     setDataFromCurve(curveTitle);
 }
 
+FFT::FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+: Filter(parent, g)
+{
+	init();
+    setDataFromCurve(curveTitle, start, end);
+}
+
 void FFT::init ()
 {
     setName(tr("FFT"));
@@ -60,6 +67,7 @@ void FFT::init ()
     d_real_col = -1;
     d_imag_col = -1;
 	d_sampling = 1.0;
+	d_output_graph = 0;
 }
 
 QString FFT::fftCurve()
@@ -252,25 +260,27 @@ void FFT::output(const QString &text)
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QString tableName = app->generateUniqueName(QString(name()));
     d_result_table = app->newHiddenTable(tableName, d_explanation, d_n, 5, text);
-		
+
 	if (d_graphics_display){
-		MultiLayer *ml = app->multilayerPlot(d_result_table, QStringList() << tableName + "_" + tr("Amplitude"), 0);
-   		if (!ml)
-			return;
+	    MultiLayer *ml = 0;
+	    if (!d_output_graph){
+            ml = createOutputGraph();
+            d_output_graph = ml->activeGraph();
+	    }
 
-		d_output_graph = ml->activeGraph();
-		d_output_graph->setCurvePen(0, QPen(ColorBox::color(d_curveColorIndex), 1));
-
-        Plot* plot = d_output_graph->plotWidget();
-		plot->setTitle(QString());
+		d_output_graph->setTitle(QString());
 		if (!d_inverse)
-			plot->setAxisTitle(QwtPlot::xBottom, tr("Frequency") + " (" + tr("Hz") + ")");
+			d_output_graph->setXAxisTitle(tr("Frequency") + " (" + tr("Hz") + ")");
 		else
-			plot->setAxisTitle(QwtPlot::xBottom, tr("Time") + + " (" + tr("s") + ")");
+			d_output_graph->setXAxisTitle(tr("Time") + + " (" + tr("s") + ")");
+		d_output_graph->setYAxisTitle(tr("Amplitude"));
 
-		plot->setAxisTitle(QwtPlot::yLeft, tr("Amplitude"));
-		plot->replot();
-		ml->showMaximized();
+        d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
+		d_output_graph->setCurvePen(d_output_graph->curves() - 1, QPen(ColorBox::color(d_curveColorIndex), 1));
+        d_output_graph->replot();
+
+        if (ml)
+            ml->showMaximized();
 	}
 }
 
@@ -280,21 +290,21 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 
 	if (!t)
 		return false;
-		
+
 	d_real_col = d_table->colIndex(realColName);
 	if (d_real_col < 0 || t->columnType(d_real_col) != Table::Numeric)
 		return false;
-	
+
     if (!imagColName.isEmpty()){
         d_imag_col = d_table->colIndex(imagColName);
 		if (d_imag_col < 0 || t->columnType(d_imag_col) != Table::Numeric)
 			return false;
 	}
-	
+
 	from--; to--;
-	if (from < 0)
+	if (from < 0 || from >= t->numRows())
 		from = 0;
-	if (to < 0)
+	if (to < 0 || to >= t->numRows())
 		to = t->numRows() - 1;
 
     if (t && d_table != t)
@@ -309,7 +319,7 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 	d_curve = 0;
 	d_init_err = false;
 
-    d_n = abs(to - from) + 1; //d_table->numRows();
+    d_n = abs(to - from) + 1;
     int n2 = 2*d_n;
     d_y = new double[n2];
     d_x = new double[d_n];

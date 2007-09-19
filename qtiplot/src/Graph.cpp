@@ -970,28 +970,28 @@ void Graph::setTitleFont(const QFont &fnt)
 
 void Graph::setYAxisTitle(const QString& text)
 {
-	d_plot->setAxisTitle(0,text);
+	d_plot->setAxisTitle(QwtPlot::yLeft, text);
 	d_plot->replot();
 	emit modifiedGraph();
 }
 
 void Graph::setXAxisTitle(const QString& text)
 {
-	d_plot->setAxisTitle(2,text);
+	d_plot->setAxisTitle(QwtPlot::xBottom, text);
 	d_plot->replot();
 	emit modifiedGraph();
 }
 
 void Graph::setRightAxisTitle(const QString& text)
 {
-	d_plot->setAxisTitle(1,text);
+	d_plot->setAxisTitle(QwtPlot::yRight, text);
 	d_plot->replot();
 	emit modifiedGraph();
 }
 
 void Graph::setTopAxisTitle(const QString& text)
 {
-	d_plot->setAxisTitle(3,text);
+	d_plot->setAxisTitle(QwtPlot::xTop, text);
 	d_plot->replot();
 	emit modifiedGraph();
 }
@@ -1741,10 +1741,8 @@ QString Graph::pieLegendText()
 	QString text="";
 	QList<int> keys= d_plot->curveKeys();
 	const QwtPlotCurve *curve = (QwtPlotCurve *)d_plot->curve(keys[0]);
-	if (curve)
-	{
-		for (int i=0;i<int(curve->dataSize());i++)
-		{
+	if (curve){
+		for (int i=0;i<int(curve->dataSize());i++){
 			text+="\\p{";
 			text+=QString::number(i+1);
 			text+="} ";

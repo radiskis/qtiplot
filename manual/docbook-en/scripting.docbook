@@ -1902,9 +1902,9 @@ g.exportImage(fileName, int quality = 100, bool transparent = False)
 <title>General Functions</title>
 As you will see in the following subsections, the data analysis operations available
 in QtiPlot are: convolution/deconvolution, correlation, differentiation, FFT, filtering,
-smoothing, fitting and numerical integration of data sets. 
+smoothing, fitting and numerical integration of data sets.
 
-Generally, you can declare/initialize an analysis operation using one of the following methods, 
+Generally, you can declare/initialize an analysis operation using one of the following methods,
 depending on the data source, which can be a 2D plot curve or a table:
 <programlisting>
 op = FFTFilter(graph("Graph1").activeLayer(), "Table1_2", 1.5, 3.9)
@@ -1912,29 +1912,39 @@ op = LinearFit(table("Table1", "colX", "colY", 10, 100)
 </programlisting>
 
 In the first example the data source is a curve <emphasis>Table1_2</emphasis>, plotted
-in the active layer of the graph <emphasis>Graph1</emphasis> and the abscissae range is 
-chosen between 1.5 and 3.9. 
+in the active layer of the graph <emphasis>Graph1</emphasis> and the abscissae range is
+chosen between 1.5 and 3.9.
 In the second example the data source is a table <emphasis>Table1</emphasis>.
-The abscissae of the data set are stored in the column called <emphasis>colX</emphasis> 
-and the ordinates in the column <emphasis>colY</emphasis>. The data range is 
+The abscissae of the data set are stored in the column called <emphasis>colX</emphasis>
+and the ordinates in the column <emphasis>colY</emphasis>. The data range is
 chosen between the 10th row and the row with the index 100. If you don't specify the row range,
 by default the whole table will be used.
 
 Not all operations support curves as data sources, like for example:
-convolution/deconvolution and correlation. For these operations only table columns can be used 
+convolution/deconvolution and correlation. For these operations only table columns can be used
 as data sources for the moment.
 
-<para>When performing analysis tasks
-via Python scripts, there are several utility functions that can be called for all operations.
-For example you can disable any graphical output or you can redirect the output to the 
-plot layer of your choice: </para>
+<para>Once you have initialized an operation, you can still chage it's input data via
+the following functions:</para>
+<programlisting>
+op.setDataFromCurve("Table1_energy", 10.5, 20.1, graph("Graph2").activeLayer())
+op.setDataFromTable(table("Table1", "colX", "colY", 10, 100)
+</programlisting>
+
+You don't have to specify a plot layer in the setDataFromCurve() function, if the analysis operation has
+already been initialized by specifying a curve on an existing graph and you just want to treat another
+curve from the same plot layer.
+
+<para>Also, when performing analysis tasks via Python scripts, there are several utility functions that
+can be called for all operations. For example you can disable any graphical output from an operation
+or you can redirect the output to the plot layer of your choice: </para>
 <programlisting>
 op.enableGraphicsDisplay(False)
 op.enableGraphicsDisplay(True, graph("Graph2").activeLayer())
 </programlisting>
 
 Let's assume that you need to perform a specific operation <varname>op</varname>,
-which analyses your data and at the end, displays a result curve. 
+which analyses your data and at the end, displays a result curve.
 For this kind of operations, you can customize the number of points in the resulting curve
 and its color:
 <programlisting>
@@ -1976,15 +1986,8 @@ The deconvolution and the correlation of two data sets can be done using a simil
 dec = Deconvolution(table("Table1"),  "B", "C")
 dec.run()
 
-cor = Correlation(table("Table1"),  "B", "C")
+cor = Correlation(table("Table1"),  "B", "C", 10, 200)
 cor.setColor("green")
-cor.run()
-</programlisting>
-
-For all these operations, once you have processed a couple of data sets,
-you can assign new data, using:
-<programlisting>
-cor.setDataFromTable(table("Table2"),  "A", "D");
 cor.run()
 </programlisting>
 </sect3>
@@ -2246,184 +2249,36 @@ smooth.run()
 </sect3>
 </sect2>
 
-<sect2 id="Python-Example">
-<title>A real life example</title>
-Here follows a Python script that I intensively use in my everyday work.
-It's quite long and maybe complicated, but it shows how to perform some basic things via a
-script: how to use Qt dialogs, how to import ASCII files, how to sort tables, how to
-perform a second derivative of a data set, how to plot data and to customize the
-apearance of your plot, how to export it automatically to an .eps file and, finally, how to save
-all this piece of work to a new project file.
-<programlisting>
-################################################################################
-#### Choose the working directory using a Qt file dialog #######################
-################################################################################
+<sect2 id="Python-QtDialogs">
+<title>Using Qt's dialogs and classes</title>
+Let's assume that you have a lot of ASCII data files to analyze.
+Furthermore, let's suppose that these files were created
+during several series of measurements, each measurement generating a set
+of files identified by a certain string in the file name, like for example: "disper1".
+In order to analyze these files, you need first of all to import them into tables.
+The following code snippet shows how to automize this task using Qt dialogs and convenience classes:
 
-dirPath=QtGui.QFileDialog.getExistingDirectory(qti.app, "Choose Working Folder", "/home/vasilief/Prog/Fortran/Fibre/Results/TAS-modif/")
+<programlisting>
+# Pop-up a file dialog allowing to chose the working folder:
+dirPath = QtGui.QFileDialog.getExistingDirectory(qti.app, "Choose Working Folder", "/test/")
+
+# Create a folder object using Qt's QDir class:
 folder = QtCore.QDir(dirPath)
 
-################################################################################
-#### Choose dispersion file to analyse using a Qt text input dialog ############
-################################################################################
+# Pop-up a text input dialog allowing to chose the file naming pattern:
+namePattern = QtGui.QInputDialog.getText(qti.app, "Enter Pattern", "Text: ", QtGui.QLineEdit.Normal, "disper1")
 
-dispFileID = QtGui.QInputDialog.getText(qti.app, "Choose Dispersion File Index", "Dispersion file: ", QtGui.QLineEdit.Normal, "disper1")
+# Get the list of file names in the working directory containing the above pattern:
+lst = folder.entryList (QtCore.QStringList ("*_" + namePattern[0] + "*.dat"))
 
-################################################################################
-#### Import file containing the effective refractive index #####################
-################################################################################
-
-lst = folder.entryList (QtCore.QStringList ("*_" + dispFileID[0] + "*_disp.dat"))
-t=newTable()
-setWindowName(t, folder.dirName()+"-disp")
-t.setWindowLabel(dirPath+lst[0])
-t.importASCII(dirPath+lst[0], " ", 0, False, True, True)
-t.setColName(1, "lambda")
-t.setColName(2, "Re-neff")
-t.setColName(3, "Im-neff")
-
-################################################################################
-#### Import  material refractive index file in a new table #####################
-################################################################################
-
-matDispLst = folder.entryList ( QtCore.QStringList ("*_" + dispFileID[0] + "*_matdisp.dat"))
-t2=newTable()
-setWindowName(t2, folder.dirName()+"-disp-mat")
-t2.setWindowLabel(dirPath+matDispLst[0])
-t2.importASCII(dirPath+matDispLst[0], " ", 0, False, True, True)
-
-################################################################################
-#### Insert wavelength column into the material dispersion table ###############
-################################################################################
-
-t2.setNumCols(2)
-t2.setColName(1, "lambda")
-t2.setColName(2, "indice-mat")
-for row in range (1, t2.numRows()+1):
-	t2.setText(2, row, t2.text(1, row))
-	t2.setText(1, row, t.text(1, row))
-
-################################################################################
-#### Sort the refractive index table and calculate chromatic dispersion ########
-################################################################################
-
-t.sort(1, 0, "lambda")
-t.setNumCols(4)
-t.setColName(4, "pertes")
-t.setCommand("pertes", "40*pi/log(10)*col(\"Im-neff\")*1e6/col(\"lambda\")")
-for row in range (1, t.numRows()+1):
-	t.setCell("pertes", row, 40*pi/log(10)*t.cell("Im-neff", row)*1e6/t.cell("lambda", row))
-
-t.setNumCols(7)
-t.setColName(5, "diff1")
-t.setColName(6, "diff2")
-t.setColName(7, "disp-chrom")
-
-# Calculate the first derivative of the real part of the effective index (column 2)
-for i in range (2, t.numRows()):
-	diff1 = 0.5*((t.cell(2, i+1) - t.cell(2, i))/(t.cell(1, i+1) - t.cell(1, i)) + (t.cell(2, i)-t.cell(2, i-1))/(t.cell(1, i)-t.cell(1, i-1)))
-	t.setCell(5, i, diff1)
-
-# Calculate the second derivative
-for i in range (3, t.numRows()-1):
-	diff2 = 0.5*((t.cell(5, i+1) - t.cell(5, i))/(t.cell(1, i+1) - t.cell(1, i)) + (t.cell(5, i)-t.cell(5, i-1))/(t.cell(1, i)-t.cell(1, i-1)))
-	t.setCell(6, i, diff2)
-
-## Calculate chromatic dispersion
-for i in range (3, t.numRows()-1):
-	t.setCell(7, i, -t.cell("lambda", i)*t.cell("diff2", i)*1e4/3)
-
-#############################################################################
-#### Sort the material index table and calculate material dispersion ########
-#############################################################################
-
-t2.sort(1, 0, "lambda")
-
-t2.setNumCols(5)
-t2.setColName(3, "diff1")
-t2.setColName(4, "diff2")
-t2.setColName(5, "disp-mat")
-
-# Calculate the first derivative
-for i in range (2, t2.numRows()):
-	diff1 = 0.5*((t2.cell(2, i+1) - t2.cell(2, i))/(t2.cell(1, i+1) - t2.cell(1, i)) + (t2.cell(2, i)-t2.cell(2, i-1))/(t2.cell(1, i)-t2.cell(1, i-1)))
-	t2.setCell(3, i, diff1)
-
-# Calculate the second derivative
-for i in range (3, t2.numRows()-1):
-	diff2 = 0.5*((t2.cell(3, i+1) - t2.cell(3, i))/(t2.cell(1, i+1) - t2.cell(1, i)) + (t2.cell(3, i)-t2.cell(3, i-1))/(t2.cell(1, i)-t2.cell(1, i-1)))
-	t2.setCell(4, i, diff2)
-
-# Calculate material dispersion
-for i in range (3, t2.numRows()-1):
-	t2.setCell(5, i, -t2.cell("lambda", i)*t2.cell("diff2", i)*1e4/3)
-
-# Calculate waveguide dispersion in a new table
-t3=newTable()
-setWindowName(t3, folder.dirName()+"-disp-waveguide")
-t3.setNumCols(4)
-t3.setColName(1, "lambda")
-t3.setColName(2, "disp-chrom")
-t3.setColName(3, "disp-mat")
-t3.setColName(4, "disp-w")
-t3.setCommand("disp-w", "col(\"disp-chrom\")-col(\"disp-mat\")")
-t3.setNumRows(t2.numRows())
-for row in range (3, t.numRows()-1):
-	t3.setText(1, row, t.text(1, row))
-	t3.setText(2, row, t.text(7, row))
-	t3.setText(3, row, t2.text(5, row))
-	t3.setCell(4, row, t3.cell(2, row) - t3.cell(3, row))
-
-################################################################################
-#### Plot table t3 #############################################################
-################################################################################
-
-g=plot(t3, ("disp-chrom","disp-mat","disp-w"), 0)
-setWindowName(g, folder.dirName()+"-plot")
-p = g.activeLayer()
-p.setCanvasColor(QtGui.QColor("palegoldenrod"));
-setPreferences(p)
-legend = p.legend()
-legend.setFrameStyle(2)
-legend.setBackgroundColor(QtGui.QColor(255, 255, 255, 255)); ### transparent white color
-legend.setText("\c{1}Chromatic dispersion\n\c{2}Material dispersion\n\c{3}Waveguide dispersion\n")
-p.setTitle(folder.dirName())
-p.setXTitle("wavelength (nm)")
-p.setYTitle("Dispersion (ps.nm<sup>-1</sup>.km<sup>-1</sup>)")
-p.showGrid()
-
-################################################################################
-#### Add a new layer to the plot ###############################################
-################################################################################
-
-p = g.addLayer()
-p.setCanvasColor(QtGui.QColor("palegoldenrod"));
-setPreferences(p)
-p.addCurve(t, "pertes", 0, 2)
-p.setScale(0, 1e-1, 1e2, 0.0, 5, 5, 1)
-p.setAxisNumericFormat(0, 3, 0)
-p.setTitle(folder.dirName())
-p.setXTitle("wavelength (nm)")
-p.setYTitle("Losses (dB/m)")
-p.showGrid()
-
-################################################################################
-#### Arrange layers in a 2 columns x 1 row matrix and define plot layout #######
-################################################################################
-
-g.setRows(1)
-g.setCols(2)
-g.setSpacing(5, 5)
-g.setMargins(0, 0, 0, 0)
-g.showMaximized()
-g.arrangeLayers(False)
-
-################################################################################
-#### Save project to working folder ############################################
-################################################################################
-
-p.exportVector(dirPath+folder.dirName()+ "_" + dispFileID[0] +"_pertes.eps", 96, True, False, QtGui.QPrinter.A5)
-saveProjectAs(dirPath+folder.dirName()+"_" + dispFileID[0] + ".qti")
-
+# Import each file into a new project table:
+for i in range (0, lst.count()):
+    t = newTable()
+    t.importASCII(dirPath+lst[i], " ", 0, False, True, True)
 </programlisting>
+
+For a detailed description of all the dialogs and utility classes provided by Qt/PyQt
+please take a look at the
+<ulink url="http://www.riverbankcomputing.com/Docs/PyQt4/html/classes.html">PyQt documentation</ulink>.
 </sect2>
 </sect1>

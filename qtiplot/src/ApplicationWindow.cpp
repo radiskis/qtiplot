@@ -5581,8 +5581,7 @@ void ApplicationWindow::correlate()
 
 	Table *t = (Table*)ws->activeWindow();
 	QStringList s = t->selectedColumns();
-	if ((int)s.count() != 2)
-	{
+	if ((int)s.count() != 2){
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select two columns for this operation!"));
 		return;
 	}

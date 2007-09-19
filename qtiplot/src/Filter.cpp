@@ -185,7 +185,7 @@ void Filter::showLegend()
 {
 	if (!d_output_graph)
 		return;
-	
+
 	Legend* mrk = d_output_graph->newLegend(legendInfo());
 	if (d_output_graph->hasLegend()){
 		Legend* legend = d_output_graph->legend();
@@ -230,7 +230,7 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
 {
     if (!c)
         return 0;
-	
+
 	int i_start = 0, i_end = 0;
 	int n = curveRange(c, start, end, &i_start, &i_end);
 
@@ -311,7 +311,7 @@ int Filter::curveRange(QwtPlotCurve *c, double start, double end, int *iStart, i
         	}
 		}
 	}
-	
+
 	*iStart = QMIN(i_start, i_end);
 	*iEnd = QMAX(i_start, i_end);
     n = abs(i_end - i_start) + 1;
@@ -328,7 +328,7 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 		dataSet = d_curve->title().text();
 	else
 		dataSet = d_y_col_name;
-	
+
     d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + dataSet, d_points, 2);
 	for (int i=0; i<d_points; i++){
 		d_result_table->setText(i, 0, locale.toString(x[i], 'g', app->d_decimal_digits));
@@ -340,10 +340,10 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 		c = new DataCurve(d_result_table, tableName + "_1", tableName + "_2");
 		c->setData(x, y, d_points);
     	c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
-		
+
 		if (!d_output_graph)
 			d_output_graph = createOutputGraph()->activeGraph();
-			
+
 		d_output_graph->insertPlotItem(c, Graph::Line);
     	d_output_graph->updatePlot();
 	}
@@ -359,7 +359,7 @@ void Filter::enableGraphicsDisplay(bool on, Graph *g)
 	if (on){
 		if (g)
 			d_output_graph = g;
-		else 
+		else
 			d_output_graph = createOutputGraph()->activeGraph();
 	}
 }
@@ -368,16 +368,16 @@ MultiLayer * Filter::createOutputGraph()
 {
 	MultiLayer *ml = ((ApplicationWindow *)parent())->newGraph(name() + tr("Plot"));
    	d_output_graph = ml->activeGraph();
-	return ml;	
+	return ml;
 }
 
-bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to)
+bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int startRow, int endRow)
 {
 	d_init_err = true;
 
 	if (!t)
 		return false;
-		
+
 	int xcol = t->colIndex(xColName);
 	int ycol = t->colIndex(yColName);
 	if (xcol < 0 || ycol < 0)
@@ -385,12 +385,15 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 
 	if (t->columnType(xcol) != Table::Numeric || t->columnType(ycol) != Table::Numeric)
 		return false;
-	
-	from--; to--;
-	if (from < 0)
-		from = 0;
-	if (to < 0)
-		to = t->numRows() - 1;
+
+    startRow--; endRow--;
+	if (startRow < 0 || startRow >= t->numRows())
+		startRow = 0;
+	if (endRow < 0 || endRow >= t->numRows())
+		endRow = t->numRows() - 1;
+
+    int from = qMin(startRow, endRow);
+    int to = qMax(startRow, endRow);
 
 	int r = abs(to - from) + 1;
     QVector<double> X(r), Y(r);
@@ -413,12 +416,12 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 				tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
         return false;
 	}
-	
+
 	if (d_n > 0){//delete previousely allocated memory
 		delete[] d_x;
 		delete[] d_y;
 	}
-	
+
 	d_graph = 0;
 	d_curve = 0;
 	d_n = size;
@@ -426,7 +429,7 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	d_table = t;
 	d_y_col_name = t->colName(ycol);
 	X.resize(d_n);
-	Y.resize(d_n);	
+	Y.resize(d_n);
 	d_from = X[0];
     d_to = X[d_n-1];
 
@@ -437,8 +440,8 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
         d_x[i] = X[i];
         d_y[i] = Y[i];
     }
-	
-	if (d_sort_data){	
+
+	if (d_sort_data){
     	size_t *p = new size_t[d_n];
    		gsl_sort_index(p, X.data(), 1, d_n);
     	for (int i=0; i<d_n; i++){
@@ -446,7 +449,7 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
   	    	d_y[i] = Y[p[i]];
 		}
 		delete[] p;
-    }	
+    }
 	return true;
 }
 
