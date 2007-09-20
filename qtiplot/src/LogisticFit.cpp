@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : SigmoidalFit.cpp
+    File                 : LogisticFit.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2007 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Sigmoidal (Boltzmann) Fit class
+    Description          : Logistic Fit class
 
  ***************************************************************************/
 
@@ -26,47 +26,47 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "SigmoidalFit.h"
+#include "LogisticFit.h"
 #include "fit_gsl.h"
 
-SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Graph *g)
+LogisticFit::LogisticFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
 {
 	init();
 }
 
-SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+LogisticFit::LogisticFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle);
 }
 
-SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+LogisticFit::LogisticFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : Fit(parent, g)
 {
 	init();
 	setDataFromCurve(curveTitle, start, end);
 }
 
-SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+LogisticFit::LogisticFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
 : Fit(parent, t)
 {
 	init();
 	setDataFromTable(t, xCol, yCol, startRow, endRow);
 }
 
-void SigmoidalFit::init()
+void LogisticFit::init()
 {
-	setName("Boltzmann");
-	d_f = boltzmann_f;
-	d_df = boltzmann_df;
-	d_fdf = boltzmann_fdf;
-	d_fsimplex = boltzmann_d;
-	d_param_explain << tr("(init value)") << tr("(final value)") << tr("(center)") << tr("(time constant)");
-	d_param_names << "A1" << "A2" << "x0" << "dx";
-	d_explanation = tr("Boltzmann (Sigmoidal) Fit");
-	d_formula = "A2+(A1-A2)/(1+exp((x-x0)/dx))";
+	setName(tr("Logistic"));
+    d_f = logistic_f;
+    d_df = logistic_df;
+	d_fdf = logistic_fdf;
+	d_fsimplex = logistic_d;
+	d_param_explain << tr("(init value)") << tr("(final value)") << tr("(center)") << tr("(power)");
+	d_param_names << "A1" << "A2" << "x0" << "p";
+	d_explanation = tr("Logistic Fit");
+	d_formula = "A2+(A1-A2)/(1+(x/x0)^p))";
 	d_p = 4;
     d_min_points = d_p;
 	d_param_init = gsl_vector_alloc(d_p);
@@ -75,25 +75,25 @@ void SigmoidalFit::init()
 	d_results = new double[d_p];
 }
 
-void SigmoidalFit::calculateFitCurveData(double *par, double *X, double *Y)
+void LogisticFit::calculateFitCurveData(double *par, double *X, double *Y)
 {
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
         for (int i=0; i<d_points; i++){
         	X[i] = X0+i*step;
-        	Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
-		}
+        	Y[i] = (par[0]-par[1])/(1+pow(X[i]/par[2], par[3]))+par[1];
+		} 
 	} else {
-        for (int i=0; i<d_points; i++){
+      	for (int i=0; i<d_points; i++){
         	X[i] = d_x[i];
-        	Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
+        	Y[i] = (par[0]-par[1])/(1+pow(X[i]/par[2], par[3]))+par[1];
 		}
 	}
 	delete[] par;
 }
 
-void SigmoidalFit::guessInitialValues()
+void LogisticFit::guessInitialValues()
 {
 	gsl_vector_view x = gsl_vector_view_array (d_x, d_n);
 	gsl_vector_view y = gsl_vector_view_array (d_y, d_n);

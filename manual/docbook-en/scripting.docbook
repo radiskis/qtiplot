@@ -2061,11 +2061,9 @@ filter.run()
 Other types of FFT filters available in QtiPlot are: low pass (<varname>FFTFilter.LowPass</varname>)
 and band block (<varname>FFTFilter.BandBlock</varname>).
 </sect3>
-
-      <sect3 id="Python-Fitting">
-        <title>Fitting</title>
-
-        <para>Assuming you have a graph named "Graph1" with a curve entitled
+<sect3 id="Python-Fitting">
+<title>Fitting</title>
+        Assuming you have a graph named "Graph1" with a curve entitled
         "Table1_2" (on its active layer), a minimal Fit example would be:
         <programlisting width="40">
 f = GaussFit(graph("Graph1").activeLayer(), "Table1_2")
@@ -2101,15 +2099,15 @@ f.fit()
             <listitem>
               <para>GaussAmpFit(layer, curve)</para>
             </listitem>
-
             <listitem>
-              <para>LorentzFit(layer,curve)</para>
+              <para>LorentzFit(layer, curve)</para>
             </listitem>
-
+			<listitem>
+              <para>LogisticFit(layer, curve)</para>
+            </listitem>
             <listitem>
               <para>SigmoidalFit(layer, curve)</para>
             </listitem>
-
             <listitem>
               <para>NonLinearFit(layer, curve)</para>
 		    <programlisting width="40">
@@ -2118,7 +2116,6 @@ f.setParameters(name1, ...)
 f.setFormula(formula_string)
 		    </programlisting>
             </listitem>
-
             <listitem>
 		    <para>PluginFit(layer, curve)</para>
 		    <programlisting width="40">
@@ -2130,7 +2127,7 @@ f.load(pluginName)
         range that will be used for the fit, like in <programlisting width="40">
 f = LinearFit(graph("Graph1").activeLayer(), "Table1_2", 2, 7)
 f.fit()
-	  </programlisting></para>
+	  </programlisting>
 
         <para>After creating the Fit object and before calling its fit()
         method, you can set a number of parameters that influence the fit:

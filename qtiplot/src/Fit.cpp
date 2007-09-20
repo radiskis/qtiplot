@@ -212,7 +212,7 @@ QString Fit::logFitInfo(double *par, int iterations, int status)
 	else if (d_output_graph)
 		info += "''" + d_output_graph->parentPlotName() + "'']\n";
 	
-	info += d_explanation + " " + tr("fit of dataset") + ": " + dataSet;
+	info += d_explanation + " " + tr("of dataset") + ": " + dataSet;
 	if (!d_formula.isEmpty())
 		info +=", " + tr("using function") + ": " + d_formula + "\n";
 	else

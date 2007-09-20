@@ -200,6 +200,7 @@ HEADERS  += src/ApplicationWindow.h \
             src/NonLinearFit.h\
             src/PluginFit.h\
             src/SigmoidalFit.h\
+			src/LogisticFit.h\
             src/customevents.h\
             src/ScriptingLangDialog.h\
             src/ScriptWindow.h\
@@ -312,6 +313,7 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/PluginFit.cpp\
             src/NonLinearFit.cpp\
             src/SigmoidalFit.cpp\
+			src/LogisticFit.cpp\
             src/ScriptingEnv.cpp\
             src/Script.cpp\
             src/ScriptingLangDialog.cpp\
@@ -415,6 +417,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiTwoExpFit.h \
              $${SIP_DIR}/sipqtiThreeExpFit.h \
              $${SIP_DIR}/sipqtiSigmoidalFit.h \
+			 $${SIP_DIR}/sipqtiLogisticFit.h \
              $${SIP_DIR}/sipqtiGaussAmpFit.h \
              $${SIP_DIR}/sipqtiLorentzFit.h \
              $${SIP_DIR}/sipqtiNonLinearFit.h \
@@ -457,6 +460,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiTwoExpFit.cpp \
              $${SIP_DIR}/sipqtiThreeExpFit.cpp \
              $${SIP_DIR}/sipqtiSigmoidalFit.cpp \
+			 $${SIP_DIR}/sipqtiLogisticFit.cpp \
              $${SIP_DIR}/sipqtiGaussAmpFit.cpp \
              $${SIP_DIR}/sipqtiLorentzFit.cpp \
              $${SIP_DIR}/sipqtiNonLinearFit.cpp \

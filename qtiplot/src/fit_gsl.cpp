@@ -880,11 +880,12 @@ int logistic_df (const gsl_vector * x, void *params, gsl_matrix * J)
 		/* and the xj are the parameters (A1,A2,x0,p)*/
 		double s = sigma[i];
 		double rap = X[i]/x0;
-		double r = 1/(1+pow(rap, p));
+		double r = 1/(1 + pow(rap, p));
+		double aux = (A1-A2)*r*r*pow(rap, p);
 		gsl_matrix_set (J, i, 0, r/s);
 		gsl_matrix_set (J, i, 1, (1-r)/s);
-		gsl_matrix_set (J, i, 2, (A1 - A2)*r);
-		gsl_matrix_set (J, i, 3, (A1 - A2)*r*p*pow(rap, p-1));
+		gsl_matrix_set (J, i, 2, aux*p/(x0*s));
+		gsl_matrix_set (J, i, 3, -aux*log(rap)/s);
 	}
 	return GSL_SUCCESS;
 }
