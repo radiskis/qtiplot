@@ -846,7 +846,6 @@ void ApplicationWindow::initMainMenu()
 	file->addAction(actionLoad);
 
 	file->insertSeparator();
-
 	file->addAction(actionCloseAllWindows);
 
 	edit = new QMenu(this);
@@ -7920,11 +7919,10 @@ void ApplicationWindow::modifiedProject(QWidget *w)
 void ApplicationWindow::timerEvent ( QTimerEvent *e)
 {
     #ifdef QTIPLOT_DEMO
-        if (e->timerId() == demoCloseTimerId)
-        {
+        if (e->timerId() == demoCloseTimerId){
             saved = true;
             showDemoVersionMessage();
-            close();
+            qApp->closeAllWindows();
         }
     #endif
 

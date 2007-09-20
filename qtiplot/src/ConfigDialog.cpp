@@ -216,10 +216,10 @@ void ConfigDialog::initTablesPage()
 	boxTableComments->setChecked(app->d_show_table_comments);
 
 	QVBoxLayout * tablesPageLayout = new QVBoxLayout( tables );
-	tablesPageLayout->addWidget(boxTableComments);
 	tablesPageLayout->addLayout(topLayout,1);
 	tablesPageLayout->addWidget(groupBoxTableCol);
 	tablesPageLayout->addWidget(groupBoxTableFonts);
+    tablesPageLayout->addWidget(boxTableComments);
 	tablesPageLayout->addStretch();
 }
 

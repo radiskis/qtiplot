@@ -1041,6 +1041,7 @@ public:
 %End
 
   void guessInitialValues();
+  void setLogistic(bool = true);
 };
 
 class GaussAmpFit : Fit

@@ -67,8 +67,8 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	gl1->addWidget(endCol, 1, 3);
 
 	functions = new QComboBox(false);
-	btnAddFunction = new QPushButton(tr( "Add function" ));
-	btnAddCell = new QPushButton(tr( "Add Cell" ));
+	btnAddFunction = new QPushButton(tr( "Add &Function" ));
+	btnAddCell = new QPushButton(tr( "Add Ce&ll" ));
 
 	QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addWidget(functions);
@@ -101,11 +101,9 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	hbox3->addWidget(commands);
 
 	QVBoxLayout *vbox2 = new QVBoxLayout();
-	btnOk = new QPushButton(tr( "OK" ));
-    vbox2->addWidget(btnOk);
-	btnApply = new QPushButton(tr( "Apply" ));
+	btnApply = new QPushButton(tr( "&Apply" ));
     vbox2->addWidget(btnApply);
-	btnCancel = new QPushButton(tr( "Cancel" ));
+	btnCancel = new QPushButton(tr( "&Close" ));
     vbox2->addWidget(btnCancel);
     vbox2->addStretch();
 
@@ -121,7 +119,6 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 
 	connect(btnAddCell, SIGNAL(clicked()),this, SLOT(addCell()));
 	connect(btnAddFunction, SIGNAL(clicked()),this, SLOT(insertFunction()));
-	connect(btnOk, SIGNAL(clicked()),this, SLOT(accept()));
 	connect(btnApply, SIGNAL(clicked()),this, SLOT(apply()));
 	connect(btnCancel, SIGNAL(clicked()),this, SLOT(close()));
 	connect(functions, SIGNAL(activated(int)),this, SLOT(insertExplain(int)));
@@ -136,12 +133,6 @@ void MatrixValuesDialog::customEvent(QEvent *e)
 {
 	if (e->type() == SCRIPTING_CHANGE_EVENT)
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
-}
-
-void MatrixValuesDialog::accept()
-{
-	if (apply())
-		close();
 }
 
 bool MatrixValuesDialog::apply()

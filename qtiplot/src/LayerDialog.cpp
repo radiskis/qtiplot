@@ -218,6 +218,7 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 
 	boxLayerSrc->setRange(1, g->layers());
 	boxLayerDest->setRange(1, g->layers());
+	boxLayerDest->setValue(g->layers());
 }
 
 void LayerDialog::update()

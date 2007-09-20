@@ -2,8 +2,8 @@
     File                 : SigmoidalFit.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Sigmoidal (Boltzmann) Fit class
 
  ***************************************************************************/
@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "SigmoidalFit.h"
 #include "fit_gsl.h"
+#include <qwt_scale_engine.h>
 
 SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
@@ -39,14 +40,26 @@ SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Graph *g, const QString& c
 : Fit(parent, g)
 {
 	init();
-	setDataFromCurve(curveTitle);
+	if (g && setDataFromCurve(curveTitle)){
+	    if (d_curve){
+            const QwtScaleEngine *sc_eng = g->plotWidget()->axisScaleEngine(d_curve->xAxis());
+            QwtScaleTransformation *tr = sc_eng->transformation();
+            setLogistic(tr->type() == QwtScaleTransformation::Log10);
+	    }
+	}
 }
 
 SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
 : Fit(parent, g)
 {
 	init();
-	setDataFromCurve(curveTitle, start, end);
+	if (g && setDataFromCurve(curveTitle, start, end)){
+	    if (d_curve){
+            const QwtScaleEngine *sc_eng = g->plotWidget()->axisScaleEngine(d_curve->xAxis());
+            QwtScaleTransformation *tr = sc_eng->transformation();
+            setLogistic(tr->type() == QwtScaleTransformation::Log10);
+	    }
+	}
 }
 
 SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
@@ -58,21 +71,40 @@ SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Table *t, const QString& x
 
 void SigmoidalFit::init()
 {
-	setName("Boltzmann");
-	d_f = boltzmann_f;
-	d_df = boltzmann_df;
-	d_fdf = boltzmann_fdf;
-	d_fsimplex = boltzmann_d;
 	d_p = 4;
     d_min_points = d_p;
 	d_param_init = gsl_vector_alloc(d_p);
 	gsl_vector_set_all (d_param_init, 1.0);
 	covar = gsl_matrix_alloc (d_p, d_p);
 	d_results = new double[d_p];
-	d_param_explain << tr("(init value)") << tr("(final value)") << tr("(center)") << tr("(time constant)");
-	d_param_names << "A1" << "A2" << "x0" << "dx";
-	d_explanation = tr("Boltzmann (Sigmoidal) Fit");
-	d_formula = "(A1-A2)/(1+exp((x-x0)/dx))+A2";
+
+	setLogistic (false);
+}
+
+void SigmoidalFit::setLogistic(bool on)
+{
+    d_logistic = on;
+    if (on){
+        setName("Boltzmann");
+        d_f = boltzmann_f;
+        d_df = boltzmann_df;
+        d_fdf = boltzmann_fdf;
+        d_fsimplex = boltzmann_d;
+        d_param_explain << tr("(init value)") << tr("(final value)") << tr("(center)") << tr("(time constant)");
+        d_param_names << "A1" << "A2" << "x0" << "dx";
+        d_explanation = tr("Boltzmann (Sigmoidal) Fit");
+        d_formula = "A2+(A1-A2)/(1+exp((x-x0)/dx))";
+    } else {
+        setName(tr("Logistic"));
+        d_f = logistic_f;
+        d_df = logistic_df;
+        d_fdf = logistic_fdf;
+        d_fsimplex = logistic_d;
+        d_param_explain << tr("(init value)") << tr("(final value)") << tr("(center)") << tr("(power)");
+        d_param_names << "A1" << "A2" << "x0" << "p";
+        d_explanation = tr("Logistic Fit");
+        d_formula = "A2+(A1-A2)/(1+(x/x0)^p))";
+    }
 }
 
 void SigmoidalFit::calculateFitCurveData(double *par, double *X, double *Y)
@@ -80,14 +112,28 @@ void SigmoidalFit::calculateFitCurveData(double *par, double *X, double *Y)
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++){
-			X[i] = X0+i*step;
-			Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
+		if (d_logistic) {
+            for (int i=0; i<d_points; i++){
+                X[i] = X0+i*step;
+                Y[i] = (par[0]-par[1])/(1+pow(X[i]/par[2], par[3]))+par[1];
+            }
+		} else  {
+            for (int i=0; i<d_points; i++){
+                X[i] = X0+i*step;
+                Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
+            }
 		}
 	} else {
-		for (int i=0; i<d_points; i++){
-			X[i] = d_x[i];
-			Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
+        if (d_logistic) {
+            for (int i=0; i<d_points; i++){
+                X[i] = d_x[i];
+                Y[i] = (par[0]-par[1])/(1+pow(X[i]/par[2], par[3]))+par[1];
+            }
+        } else {
+            for (int i=0; i<d_points; i++){
+                X[i] = d_x[i];
+                Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
+            }
 		}
 	}
 	delete[] par;

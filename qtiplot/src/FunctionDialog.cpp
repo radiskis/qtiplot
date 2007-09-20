@@ -113,6 +113,7 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	boxParPoints->setSingleStep(100);
 	boxParPoints->setValue(100);
 	gl2->addWidget(boxParPoints, 5, 1);
+	gl2->setRowStretch(6, 1);
 
 	parametricPage = new QWidget();
 	parametricPage->setLayout(gl2);
@@ -145,6 +146,7 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	boxPolarPoints->setSingleStep(100);
 	boxPolarPoints->setValue(100);
 	gl3->addWidget(boxPolarPoints, 6, 1);
+	gl3->setRowStretch(7, 1);
 
 	polarPage = new QWidget();
 	polarPage->setLayout(gl3);

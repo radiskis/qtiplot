@@ -506,8 +506,8 @@
 <!ENTITY analysis-menu-lnk '<link linkend="sec-analysis-menu">Analysis menu</link>'>
 <!ENTITY fft-cmd "<command>FFT...</command>">
 <!ENTITY fft-lnk '<link linkend="fft-cmd"><command>FFT...</command> command</link>'>
-<!ENTITY non-linear-curve-fit-cmd "<command>Non Linear Curve Fit...</command>">
-<!ENTITY non-linear-curve-fit-lnk '<link linkend="non-linear-curve-fit-cmd"><command>Non Linear Curve Fit...</command> command</link>'>
+<!ENTITY non-linear-curve-fit-cmd "<command>Fit Wizard...</command>">
+<!ENTITY non-linear-curve-fit-lnk '<link linkend="non-linear-curve-fit-cmd"><command>The Fit Wizard...</command> command</link>'>
   <!ENTITY non-linear-curve-fit-key "<keycode>Ctrl-Y</keycode>">
 <!--
               menu: Data

@@ -673,6 +673,9 @@ void Table::setColName(int col, const QString& text, bool enumerateRight)
     if (text.isEmpty() || col<0 || col >= d_table->numCols())
 		return;
 
+    if (col_label[col] == text && !enumerateRight)
+        return;
+
 	QString caption = this->name();
 	QString oldLabel = col_label[col];
 	int cols = col + 1;
