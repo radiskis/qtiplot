@@ -2,8 +2,8 @@
     File                 : SigmoidalFit.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Sigmoidal (Boltzmann) Fit class
 
  ***************************************************************************/
@@ -42,10 +42,13 @@ class SigmoidalFit : public Fit
 		SigmoidalFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
 
 		void guessInitialValues();
+		void setLogistic(bool on = true);
 
 	private:
 		void init();
 		void calculateFitCurveData(double *par, double *X, double *Y);
+
+		bool d_logistic;
 };
 
 #endif

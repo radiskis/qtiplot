@@ -232,6 +232,7 @@ void TableDialog::updateColumn(int sc)
 
     QString colLabel = d_table->colLabel(sc);
     colName->setText(colLabel);
+    colName->setFocus();
     colName->selectAll();
 
     comments->setText(d_table->colComment(sc));
@@ -242,25 +243,20 @@ void TableDialog::updateColumn(int sc)
 
     d_table->saveToMemory();
 
-    if (colType == Table::Numeric)
-	{
+    if (colType == Table::Numeric){
         int f, prec;
         d_table->columnNumericFormat(sc, &f, &prec);
 
         formatBox->setCurrentIndex(f);
         precisionBox->setValue(prec);
         enablePrecision(f);
-	}
-    else if (colType == Table::Time || colType == Table::Date)
-    {
+	} else if (colType == Table::Time || colType == Table::Date){
         QString format = d_table->columnFormat(sc);
         if (formatBox->findText(format) < 0)
             formatBox->insertItem(0, format);
 
         formatBox->setCurrentText(format);
-    }
-    else if (colType == Table::Day)
-    {
+    } else if (colType == Table::Day){
         QString format = d_table->columnFormat(sc);
         if (format == "ddd")
             formatBox->setCurrentIndex(0);
@@ -268,9 +264,7 @@ void TableDialog::updateColumn(int sc)
             formatBox->setCurrentIndex(1);
         else if (format == "d")
             formatBox->setCurrentIndex(2);
-    }
-    else if (colType == Table::Month)
-    {
+    } else if (colType == Table::Month){
         QString format = d_table->columnFormat(sc);
         if (format == "MMM")
             formatBox->setCurrentIndex(0);

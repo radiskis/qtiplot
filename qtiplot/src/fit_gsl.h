@@ -18,7 +18,7 @@ int expd3_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * 
 int expd3_df (const gsl_vector * x, void *params, gsl_matrix * J);
 int expd3_f (const gsl_vector * x, void *params, gsl_vector * f);
 double expd3_d (const gsl_vector * x, void *params);
-	
+
 int expd2_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J);
 int expd2_df (const gsl_vector * x, void *params, gsl_matrix * J);
 int expd2_f (const gsl_vector * x, void *params, gsl_vector * f);
@@ -33,6 +33,11 @@ int boltzmann_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matri
 int boltzmann_df (const gsl_vector * x, void *params, gsl_matrix * J);
 int boltzmann_f (const gsl_vector * x, void *params, gsl_vector * f);
 double boltzmann_d (const gsl_vector * x, void *params);
+
+int logistic_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J);
+int logistic_df (const gsl_vector * x, void *params, gsl_matrix * J);
+int logistic_f (const gsl_vector * x, void *params, gsl_vector * f);
+double logistic_d (const gsl_vector * x, void *params);
 
 int gauss_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J);
 int gauss_df (const gsl_vector * x, void *params, gsl_matrix * J);

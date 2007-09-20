@@ -932,13 +932,25 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="data-reader-cmd">
   <term>Data -> &data-reader-cmd; (&data-reader-key;)</term>
   <listitem>
-    <para>Shows a red cross cursor and opens the Data Display toolbar giving easy and fast access to the values of the data points. You can select data points by moving the cursor with the Left and Right arrow keys or faster by clicking on them with the mouse. You can navigate through the curves on the plot layer using the Up and Down arrow keys.</para>
+    <para>Shows a red cross cursor and opens the Data Display toolbar giving easy and fast access
+    to the values of the data points. You can select data points by moving the cursor with the Left
+    and Right arrow keys or faster by clicking on them with the mouse.
+    You can navigate through the curves on the plot layer using the Up and Down arrow keys.
+    The [Home] key  makes the data reader jump to the beginning of the selected curve
+    and the [End] key to its end point.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="select-data-range-cmd">
   <term>Data -> &select-data-range-cmd; (&select-data-range-key;)</term>
   <listitem>
-    <para>Shows two rectangular cursors that can be used for selecting the data range when performing analysis operations. The mouse cursor shape changes to a rectangular target only inside the active plot canvas. The active cursor is red, the other is black.You can move the active cursor with the arrows keys while keeping the Ctrl key pressed or faster by clicking on a curve point. You can change the active cursor using the Left and Right arrow keys. You can navigate through the curves on the plot layer using the Up and Down arrow keys.</para>
+    <para>Shows two rectangular cursors that can be used for selecting the data range when performing analysis operations.
+    The mouse cursor shape changes to a rectangular target only inside the active plot canvas.
+    The active cursor is red, the other is black.You can move the active cursor with the arrows keys while
+    keeping the Ctrl key pressed or faster by clicking on a curve point.
+    You can change the active cursor using the Left and Right arrow keys.
+    You can navigate through the curves on the plot layer using the Up and Down arrow keys.
+    When this tool is active you can easily copy, paste or cut the whole selected data range,
+    using the well-known shortcuts: Ctrl+C, Ctrl+V and Ctrl+X, respectively.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="screen-reader-cmd">

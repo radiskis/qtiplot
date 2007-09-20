@@ -737,16 +737,19 @@ void FitDialog::setFunction(bool ok)
 				case 4:
 					lst << "A1" << "t1" << "A2" << "t2" << "A3" << "t3" << "y0";
 					break;
-				case 5:
-					lst << "y0" << "A" << "xc" << "w";
+                case 5:
+                    lst << "A1" << "A2" << "x0" << "p";
 					break;
 				case 6:
-					lst = MultiPeakFit::generateParameterList(polynomOrderBox->value());
+					lst << "y0" << "A" << "xc" << "w";
 					break;
 				case 7:
 					lst = MultiPeakFit::generateParameterList(polynomOrderBox->value());
 					break;
 				case 8:
+					lst = MultiPeakFit::generateParameterList(polynomOrderBox->value());
+					break;
+				case 9:
 					lst = PolynomialFit::generateParameterList(polynomOrderBox->value());
 					break;
 			}
@@ -891,16 +894,14 @@ void FitDialog::loadPlugins()
 	QDir dir(path);
 	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks);
 
-	for (int i=0; i<(int)lst.count(); i++)
-	{
+	for (int i=0; i<(int)lst.count(); i++){
 		QLibrary lib(path + lst[i]);
 
 		fitFunc name = (fitFunc) lib.resolve( "name" );
 		fitFunc function = (fitFunc) lib.resolve("function");
 		fitFunc params = (fitFunc) lib.resolve("parameters");
 
-		if ( name && function && params )
-		{
+		if ( name && function && params ){
 			pluginFunctionNames << QString(name());
 			pluginFunctions << QString(function());
 			pluginParameters << QString(params());
@@ -917,16 +918,17 @@ void FitDialog::showUserFunctions()
 void FitDialog::setBuiltInFunctionNames()
 {
 	builtInFunctionNames << "Boltzmann" << "ExpGrowth" << "ExpDecay1" << "ExpDecay2" << "ExpDecay3"
-		<< "GaussAmp" << "Gauss" << "Lorentz" << "Polynomial";
+		<< "Logistic" << "GaussAmp" << "Gauss" << "Lorentz" <<"Polynomial";
 }
 
 void FitDialog::setBuiltInFunctions()
 {
-	builtInFunctions << "(A1-A2)/(1+exp((x-x0)/dx))+A2";
+	builtInFunctions << "A2+(A1-A2)/(1+exp((x-x0)/dx))";
 	builtInFunctions << "y0+A*exp(x/t)";
 	builtInFunctions << "y0+A*exp(-x/t)";
 	builtInFunctions << "y0+A1*exp(-x/t1)+A2*exp(-x/t2)";
 	builtInFunctions << "y0+A1*exp(-x/t1)+A2*exp(-x/t2)+A3*exp(-x/t3)";
+	builtInFunctions << "A2+(A1-A2)/(1+(x/x0)^p)";
 	builtInFunctions << "y0+A*exp(-(x-xc)*(x-xc)/(2*w*w))";
 }
 
@@ -941,31 +943,21 @@ void FitDialog::showExpression(int function)
         return;
 
 	if (categoryBox->currentRow() == 2)
-	{
 		explainBox->setText(MyParser::explainFunction(function));
-	}
-	else if (categoryBox->currentRow() == 1)
-	{
+	else if (categoryBox->currentRow() == 1){
 		polynomOrderLabel->show();
 		polynomOrderBox->show();
 
-		if (funcBox->currentItem()->text() == tr("Gauss"))
-		{
+		if (funcBox->currentItem()->text() == tr("Gauss")){
 			polynomOrderLabel->setText(tr("Peaks"));
 			explainBox->setText(MultiPeakFit::generateFormula(polynomOrderBox->value(), MultiPeakFit::Gauss));
-		}
-		else if (funcBox->currentItem()->text() == tr("Lorentz"))
-		{
+		} else if (funcBox->currentItem()->text() == tr("Lorentz")) {
 			polynomOrderLabel->setText(tr("Peaks"));
 			explainBox->setText(MultiPeakFit::generateFormula(polynomOrderBox->value(), MultiPeakFit::Lorentz));
-		}
-		else if (funcBox->currentItem()->text() == tr("Polynomial"))
-		{
+		} else if (funcBox->currentItem()->text() == tr("Polynomial")){
 			polynomOrderLabel->setText(tr("Polynomial Order"));
 			explainBox->setText(PolynomialFit::generateFormula(polynomOrderBox->value()));
-		}
-		else
-		{
+		} else {
 			polynomOrderLabel->hide();
 			polynomOrderBox->hide();
 			polynomOrderBox->setValue(1);
@@ -973,8 +965,7 @@ void FitDialog::showExpression(int function)
 		}
 		setFunction(boxUseBuiltIn->isChecked());
 	}
-	else if (categoryBox->currentRow() == 0)
-	{
+	else if (categoryBox->currentRow() == 0){
 		if (userFunctions.size() > function) {
 			QStringList l = userFunctions[function].split("=");
 			explainBox->setText(l[1]);
@@ -982,14 +973,11 @@ void FitDialog::showExpression(int function)
 			explainBox->clear();
 		setFunction(boxUseBuiltIn->isChecked());
 	}
-	else if (categoryBox->currentRow() == 3)
-	{
-		if ((int)pluginFunctions.size() > 0)
-		{
+	else if (categoryBox->currentRow() == 3){
+		if ((int)pluginFunctions.size() > 0){
 			explainBox->setText(pluginFunctions[function]);
 			setFunction(boxUseBuiltIn->isChecked());
-		}
-		else
+		}else
 			explainBox->clear();
 	}
 }
@@ -1246,6 +1234,10 @@ void FitDialog::fitBuiltInFunction(const QString& function, double* initVal)
 		fitter = new MultiPeakFit(app, graph, MultiPeakFit::Gauss, polynomOrderBox->value());
 	else if (function == "Lorentz")
 		fitter = new MultiPeakFit(app, graph, MultiPeakFit::Lorentz, polynomOrderBox->value());
+    else if (function == "Logistic"){
+		fitter = new SigmoidalFit(app, graph);
+		((SigmoidalFit *)fitter)->setLogistic();
+    }
 	else if (function == tr("Polynomial"))
 		fitter = new PolynomialFit(app, graph, polynomOrderBox->value());
 

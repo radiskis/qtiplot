@@ -3,8 +3,6 @@
 		DESCRIPTION OF THE DIFFERENTS DIALOG BOX
 		========================================
 
-		JANUARY 2006: BASED ON VERSION 0.7.7
-
 -->
 <title>The Dialogs</title>
 
@@ -352,7 +350,6 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
       </imageobject>
     </mediaobject>
   </figure>
-
 </sect2>
 
 <sect2 id="custom-curves-dialog-pie">
@@ -408,7 +405,6 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
       </imageobject>
     </mediaobject>
   </figure>
-
 </sect2>
 
 <sect2 id="custom-curves-dialog-histogram">
@@ -546,7 +542,9 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>In the case of a table, you must select the sampling column (X-values) and two columns for Y-values. If they are complex numbers, the first column is the real part of Y-values and the second is the imaginary part. If Y-values are simple reals, you must select the same column for real and imaginary part.</para>
+  <para>In the case of a table, you must select the sampling column (X-values) and two columns for Y-values. If they are complex numbers, the first column is the real part of Y-values and the second is the imaginary part.
+  If Y-values are simple reals, you don't have to select a column for the imaginary part, you can
+  leave the combo box empty.</para>
   <para>By default, the <emphasis>Sampling Interval</emphasis> corresponds to the interval between X-values. Giving a smaller value makes no sense, but you can increase this value in order to sample less values</para>
 </sect1>
 
@@ -568,10 +566,10 @@ which opens a dialog allowing to edit the plot range.</para>
 </sect1>
 
 <!-- ************************************************** -->
-<!--		Non linear curve fit			-->
+<!--		Fit Wizard			-->
 <!-- ************************************************** -->
 <sect1 id="non-linear-curve-fit-dialog">
-  <title>Non linear curve fit</title>
+  <title>The Fit Wizard</title>
   <para>This dialog is activated by selecting the command <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> from the <link linkend="sec-analysis-menu-plot">Analysis Menu</link>. This command is active if a plot or a table window is selected. In the latter case, this command first creates a new plot window using the list of selected columns in the table.</para>
   <para>This dialog is used to fit discrete data points with a mathematical function. The fitting is done by minimizing the least square difference between the data points and the Y values of the function.</para>
   <sidebar>
@@ -618,6 +616,18 @@ which opens a dialog allowing to edit the plot range.</para>
   	</orderedlist>
   <para>After the fit, the log window is opened to show the results of the fitting process.</para>
   <para>Depending on the settings in the <emphasis>Custom Output</emphasis> tab, a function curve (option <emphasis>Uniform X Function</emphasis>) or a new table (if you choose the option <emphasis>Same X as Fitting Data</emphasis>) will be created for each fit. The new table includes all the X and Y values used to compute and to plot the fitted function and is hidden by default, but it can be found and viewed with the <link linkend="project-explorer-dialog">project explorer</link>.</para>
+
+  <figure id="fig-non-linear-curve-fit-4">
+    <title>The third step of the &non-linear-curve-fit-cmd; dialog box.</title>
+    <informalexample>
+      <para>This third step is used to customize the output of a fitting operation.</para>
+    </informalexample>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-dialog4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
 </sect1>
 
 <!-- ************************************************** -->
@@ -671,7 +681,7 @@ which opens a dialog allowing to edit the plot range.</para>
 <sect1 id="plot-wizard-dialog">
   <title>Plot Wizard</title>
   <para>This dialog is activated by selecting the command <link linkend="plot-wizard-cmd">&plot-wizard-cmd;</link> from the <link linkend="sec-view-menu">View Menu</link> or with the &plot-wizard-key; key. This command is always active.</para>
-  <para>This dialog is used to build a new plot by selecting the columns in the tables available in the current project. At first, you have to select the table you want to use, and then click on <emphasis>New curve</emphasis> to create the curve. 
+  <para>This dialog is used to build a new plot by selecting the columns in the tables available in the current project. At first, you have to select the table you want to use, and then click on <emphasis>New curve</emphasis> to create the curve.
   After that, you have to select at least one column for X and one for Y. You can also select one more column for X-errors or for Y-errors. The plot created will have the default style you defined using the <link linkend="preferences-dialog">Preferences dialog</link> through the '2D Plots -> Curves' tab.</para>
   <figure id="fig-plot-wizard">
     <title>The plot wizard dialog box.</title>
@@ -717,7 +727,9 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The second tab of the <emphasis>General</emphasis> option set is used to disable the prompting on deleting of objects.</para>
+  <para>The second tab of the <emphasis>General</emphasis> option set is used to disable the prompting on deleting
+  project windows. Also you can disable the warnings prompted by default when renaming
+  new table windows with names already used in the current project.</para>
   <informalfigure id="fig-preferences-dialog-2">
     <mediaobject>
       <imageobject>
@@ -733,7 +745,24 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The second set of option allows to customize the defaut aspect of <link linkend="sec-intro-table">tables</link>: background and text colors, and fonts for tables and labels.</para>
+
+  <para>The <emphasis>Numeric Format</emphasis> tab allows you to customize the
+  characters used as decimal point and as thousands separator. By default, QtiPlot uses the
+  locale settings detected on your system. If the <emphasis>Update separators in Tables/Matrices</emphasis>
+  is checked, QtiPlot will try to convert all the existing data in your project to these new settings
+  when you click the <emphasis>Apply</emphasis> button. The <emphasis>Number of Decimal Digits</emphasis>
+  specifies the default precision used for any calculations operated on your data in Tables/Matrices.</para>
+  <informalfigure id="fig-preferences-dialog-11">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog11.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+  <para>The second set of option allows to customize the defaut aspect of <link linkend="sec-intro-table">tables</link>: background, text colors, and fonts for tables and labels.
+  By checking the <emphasis>Display Comments in Header</emphasis> option, the column comments will also be
+  displayed in the table header, bellow the column names.</para>
   <figure id="fig-preferences-dialog-4">
     <title>The preferences dialog: table options.</title>
     <mediaobject>
@@ -742,7 +771,13 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The second set of options is used to customize the default aspect of <emphasis>2D plots</emphasis>. The first tab is used to modify general options.</para>
+  <para>The second set of options is used to customize the default aspect of <emphasis>2D plots</emphasis>.
+  The first tab is used to modify some general options. Most of the changes made to these
+  options will be applied only to the newly created plots.
+  Only a few of the changes, like <emphasis>Autoscaling</emphasis> of the plot axes,
+  <emphasis>Antialising</emphasis> of curves and the behavior on resize events will also affect
+  the already existing plots.
+  </para>
   <figure id="fig-preferences-dialog-5">
     <title>The preferences dialog: 2D plot options.</title>
     <mediaobject>
@@ -767,7 +802,7 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The fourth tab named <emphasis>Fonts</emphasis> defines the default style for the fonts used for the axes, used when you create a new plot.</para>
+  <para>The fourth tab named <emphasis>Fonts</emphasis> defines the default fonts used when you create a new plot.</para>
   <informalfigure id="fig-preferences-dialog-8">
     <mediaobject>
       <imageobject>
@@ -775,6 +810,22 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
+   <para>The fifth tab named <emphasis>Print</emphasis> allows you to define the default options
+   used when printing 2D plots. If you want the layers to be printed with their original dimensions,
+   you must be sure to uncheck the option <emphasis>Scale layers to paper size</emphasis>. By checking the <emphasis>Print Cropmarks</emphasis>
+   option you ensure that some visible marks are drawn around the borders of the plot.</para>
+  <informalfigure id="fig-preferences-dialog-12">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog12.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+     <para>The following tab allows to customize the aspect of three dimensional plots.
+    From this dialog you have the possibility to define a speed drawing mode, which is very usefull
+    when working with large data sets. This can be realized via the <emphasis>Resolution</emphasis>
+    option: the higher this value, the smaller the number of data points drawn on the 3D plots,
+    therefore the higher the drawing speed. For a value of 1, all the data points are drawn.</para>
   <figure id="fig-preferences-dialog-9">
     <title>The preferences dialog: 3D plot options.</title>
     <mediaobject>
@@ -839,10 +890,10 @@ which opens a dialog allowing to edit the plot range.</para>
 </sect1>
 
 <!-- ************************************************** -->
-<!--		Set Dimensions				-->
+<!--		Set Matrix Dimensions				-->
 <!-- ************************************************** -->
 <sect1 id="set-dimensions-dialog">
-  <title>&set-dimensions-cmd;</title>
+  <title>Set Matrix Dimensions</title>
       <indexterm><primary>matrix</primary></indexterm>
   <para>This command is in the &matrix-menu-lnk;. It allows to specify the number of rows and columns of a matrix</para>
   <para>In this window, you can also define X-values and Y-values. These X and Y ranges will only be used by the 3D-plot, they are not known if you choose to define the content of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
@@ -925,10 +976,11 @@ to convert the data to your current settings, by checking the
 <!--		Set Values				-->
 <!-- ************************************************** -->
 <sect1 id="set-values-dialog">
-  <title>&set-values-cmd;</title>
+  <title></title>
       <indexterm><primary>matrix</primary></indexterm>
   <para>This command is in the &matrix-menu-lnk;. It allows to fill in a matrix with the results of a function z=f(i,j) in which i and j are the row and column numbers.</para>
-  <para>Even if you have defined X-values and Y-values with the &set-dimensions-lnk; command, you must use i and j as parameters for the function. In the example below, X and Y ranges have been defined as 101 values ( i and j from 1 to 101) between -5 and +5. Therefore, the function uses as entries the parameters x=(j-1)/100-5 and y=(i-1)/100-5.</para>
+  <para>You can use the X-values and Y-values defined with the &set-dimensions-lnk; command, and also define your functions based on the
+  <emphasis>x</emphasis> and <emphasis>y</emphasis> variables.</para>
   <para>The functions can be written on several lines, and the intrinsic functions which are available are listed in the <link linkend="sec-muParser">appendix</link> .</para>
   <figure id="fig-set-values-dialog">
     <title>The &set-values-cmd; dialog for matrix.</title>
@@ -1028,21 +1080,41 @@ to convert the data to your current settings, by checking the
 <!-- ************************************************** -->
 <sect1 id="text-options-dialog">
   <title>Text options</title>
-  <para>This dialog can be opened by several commands such as &format-title-lnk; or when you double click on a text object in your plot. It allows to add/customize the text objects.</para>
+  <para>This dialog can be opened by several commands such as &format-title-lnk;
+  or when you double click on an axis title in your plot.
+  The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis> commands allow the modification of the general settings of the text label.</para>
+
   <figure id="fig-text-options">
-    <title>The text options dialog.</title>
+    <title>The axis title options dialog.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/text-options-dialog.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis> commands allow the modification of the general settings of the text label.</para>
+  <para>The following slightly modified dialog is opened when you double click on texts/legends
+  in your plot in order to customize them. It also allows to add text boxes to a plot layer.
+  When the text object is a legend, listing the curves plotted on the layer, the curve symbols and
+  lines are also drawn in the text box, in front of the curve names.
+  In order to display the symbol of a curve and the name of the data set,
+  the follwing synthax is used: <emphasis>\c{2}%(2)</emphasis>. Here the number 2, refers to the index
+  of the curve and the % character is an alias for the name of the data set. </para>
+
+  <para>The <emphasis>Opacity</emphasis> of the <emphasis>Background color</emphasis> can have a value
+  between 0 (transparent background) and 255 (completely opaque background).</para>
+  <figure id="fig-text-options-legend">
+    <title>The legend/text options dialog.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/text-options-dialog3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
   <para>The text item can be modified in the text window. Several improvements can be added to the text:</para>
   <itemizedlist>
     <listitem><para>&lt;sub&gt;text&lt;/sub&gt; will draw the text as subscripts. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon1.png"/></imageobject></inlinemediaobject>.</para></listitem>
     <listitem><para>&lt;sup&gt;text&lt;/sup&gt; will draw the text as superscripts. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon2.png"/></imageobject></inlinemediaobject>.</para></listitem>
-    <listitem><para>By clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon3.png"/></imageobject></inlinemediaobject>, you can open a new dialog which allows to select greek characters:</para>
+    <listitem><para>By clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon3.png"/></imageobject></inlinemediaobject>, you can open a new dialog which allows to select lower greek characters:</para>
     <informalfigure id="fig-text-options1">
       <mediaobject>
         <imageobject>
@@ -1051,11 +1123,29 @@ to convert the data to your current settings, by checking the
       </mediaobject>
     </informalfigure>
     </listitem>
-    <listitem><para>By clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon4.png"/></imageobject></inlinemediaobject>, you can open a new dialog which allows to select various mathematical symbols:</para>
+    <listitem><para>By clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon4.png"/></imageobject></inlinemediaobject>, you can open a new dialog which allows to select upper greek characters:</para>
     <informalfigure id="fig-text-options2">
       <mediaobject>
         <imageobject>
           <imagedata  format="PNG" fileref="pics/text-options-dialog2.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>By clicking on the integral symbol you can open a new dialog which allows to select various mathematical symbols:</para>
+    <informalfigure id="fig-text-options4">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog4.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>By clicking on the arrow icon, you can open a new dialog which allows to select various arrow symbols:</para>
+    <informalfigure id="fig-text-options5">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog5.png"/>
         </imageobject>
       </mediaobject>
     </informalfigure>

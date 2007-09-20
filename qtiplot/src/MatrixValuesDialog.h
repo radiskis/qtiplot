@@ -62,14 +62,12 @@ public:
     QComboBox* functions;
     QPushButton* btnAddFunction;
 	QPushButton* btnAddCell;
-    QPushButton* btnOk;
     QPushButton* btnCancel;
     QTextEdit* explain;
 	QSpinBox *startRow, *endRow, *startCol, *endCol;
 	QPushButton *btnApply;
 
 public slots:
-	void accept();
 	bool apply();
 	void setFunctions();
 	void addCell();
