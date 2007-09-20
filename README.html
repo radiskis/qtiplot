@@ -52,13 +52,16 @@ Free software is a matter of the users' freedom to run, copy, distribute, study,
 
 <h2>General requirements:</h2>
 For QtiPlot, you need to install the following libraries:
-<a href="http://www.trolltech.com/products/qt/index.html">Qt (>=4.2)</a>, <a href="http://qwtplot3d.sourceforge.net/">QwtPlot3D</a>, <a href="http://sources.redhat.com/gsl/">GSL</a>, <a href="http://qwt.sourceforge.net/index.html">Qwt (>=5.0.0)</a> and <a href="http://www.zlib.net/">zlib</a>.
-<b>QwtPlot3D and Qwt must be compiled against Qt 4.2! If these are compiled with Qt3 the application will crash!</b><br>
-This version of QtiPlot uses a modified version of <a href="http://sourceforge.net/projects/liborigin/">liborigin</a> which is supplied in the "3rdparty" folder.
-It is already included in the qtiplot/qtiplot.pro file and does not need to be compiled or installed separately. <br>
-
-The latest version of <a href="http://muparser.sourceforge.net/">muParser (1.28 not officially released yet)</a> is also included in "3rdparty/muParser", so you don't need to download and install it.<br>
-
+<a href="http://www.trolltech.com/products/qt/index.html">Qt (>=4.2)</a>, 
+<a href="http://qwtplot3d.sourceforge.net/">QwtPlot3D</a>, 
+<a href="http://qwt.sourceforge.net/index.html">Qwt (5.0.2)</a>,
+<a href="http://sources.redhat.com/gsl/">GSL</a>, 
+<a href="http://muparser.sourceforge.net/">muParser (1.28)</a>,
+and <a href="http://www.zlib.net/">zlib</a>.<br>
+<b>QwtPlot3D and Qwt must be compiled against Qt >= 4.2!</b><br>
+The QtiPlot developers also work very actively on the <a href="http://sourceforge.net/projects/liborigin/">liborigin</a> library.
+The development version of this library is shipped with QtiPlot in the "3rdparty" folder and 
+does not need to be compiled or installed separately. <br>
 In order to build QtiPlot you also need <b>qmake</b>, which is distributed as a part of Qt. <br>
 
 <h2>Linux/Mac OS X:</h2>
@@ -75,7 +78,9 @@ To install the RPM package, download the file <a class="qindex" href="http://sof
 To install the binary package on Mac OS X 10.4, download the file <a class="qindex" href="http://soft.proindependent.com/download.html">qtiplot-X.X.X.pkg.zip</a>, unzip it, double-click on the "qtiplot-X.X.X.pkg" file and follow the installation instructions. The package provides all needed libraries, except Python 2.5, which must be installed separately on your system. 
 
 <h3>QtiPlot Linux binaries free of charge:</h3>
-The QtiPlot team offers GNU/Linux binaries for several distributions free of charge but without any guaranteed support. Some time after each release, you will find these (including notes how to install them) on the <a href="http://soft.proindependent.com/download.html">QtiPlot download page</a> or in the files section at the <a href="https://developer.berlios.de/project/showfiles.php?group_id=6626">QtiPlot project page at berliOS</a>.<br>
+The QtiPlot team offers GNU/Linux binaries free of charge but without any guaranteed support. 
+Some time after each release, you will find these (including notes how to install them) on the 
+<a href="http://soft.proindependent.com/download.html">QtiPlot download page</a> or in the files section at the <a href="https://developer.berlios.de/project/showfiles.php?group_id=6626">QtiPlot project page at berliOS</a>.<br>
 
 <h3>Compiling QtiPlot from source:</h3>
 <ol>

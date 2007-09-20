@@ -957,10 +957,10 @@ to convert the data to your current settings, by checking the
 </sect1>
 
 <!-- ************************************************** -->
-<!--		Set Properties				-->
+<!--		Set Matrix Properties				-->
 <!-- ************************************************** -->
 <sect1 id="set-properties-dialog">
-  <title>&set-properties-cmd;</title>
+  <title>Matrix Properties</title>
   <para>This command is in the &matrix-menu-lnk;. It allows to specify some global properties of the selected matrix such as the cell width (in pixels) and the format for numbers.</para>
   <figure id="fig-set-properties-dialog">
     <title>The &set-properties-cmd; dialog for matrix.</title>
@@ -973,10 +973,10 @@ to convert the data to your current settings, by checking the
 </sect1>
 
 <!-- ************************************************** -->
-<!--		Set Values				-->
+<!--		Set Matrix Values				-->
 <!-- ************************************************** -->
 <sect1 id="set-values-dialog">
-  <title></title>
+  <title>Set Matrix Values</title>
       <indexterm><primary>matrix</primary></indexterm>
   <para>This command is in the &matrix-menu-lnk;. It allows to fill in a matrix with the results of a function z=f(i,j) in which i and j are the row and column numbers.</para>
   <para>You can use the X-values and Y-values defined with the &set-dimensions-lnk; command, and also define your functions based on the
