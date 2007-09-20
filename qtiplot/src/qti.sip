@@ -1041,7 +1041,32 @@ public:
 %End
 
   void guessInitialValues();
-  void setLogistic(bool = true);
+};
+
+class LogisticFit : Fit
+{
+%TypeHeaderCode
+#include "src/LogisticFit.h"
+%End
+public:
+  LogisticFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
+  LogisticFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLogisticFit(app, a0, *a1, *a2, a3, a4))
+%End
+
+  LogisticFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
+  LogisticFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
+  LogisticFit(Graph *, const QString&) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLogisticFit(app, a0, *a1))
+%End
+  LogisticFit(Graph *, const QString&, double, double) /NoDerived/;
+%MethodCode
+  SIPQTI_APP(new sipLogisticFit(app, a0, *a1, a2, a3))
+%End
+
+  void guessInitialValues();
 };
 
 class GaussAmpFit : Fit

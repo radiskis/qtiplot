@@ -85,6 +85,7 @@
 #include "MultiPeakFit.h"
 #include "PolynomialFit.h"
 #include "SigmoidalFit.h"
+#include "LogisticFit.h"
 #include "FunctionCurve.h"
 #include "QwtPieCurve.h"
 #include "Spectrogram.h"
@@ -111,6 +112,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <qwt_scale_engine.h>
 #include <q3listview.h>
 
 #include <QFileDialog>
@@ -10324,13 +10326,25 @@ void ApplicationWindow::showDataSetDialog(const QString& whichFit)
 
 void ApplicationWindow::analyzeCurve(Graph *g, const QString& whichFit, const QString& curveTitle)
 {
+	if (!g)
+		return;
+	
 	if(whichFit=="fitLinear" || whichFit=="fitSigmoidal" || whichFit=="fitGauss" || whichFit=="fitLorentz")
 	{
 		Fit *fitter = 0;
 		if (whichFit == "fitLinear")
 			fitter = new LinearFit (this, g);
-		else if (whichFit == "fitSigmoidal")
-			fitter = new SigmoidalFit (this, g);
+		else if (whichFit == "fitSigmoidal"){
+			QwtPlotCurve* c = g->curve(curveTitle);
+            if (c){
+            	const QwtScaleEngine *sc_eng = g->plotWidget()->axisScaleEngine(c->xAxis());
+            	QwtScaleTransformation *tr = sc_eng->transformation();
+            	if(tr->type() == QwtScaleTransformation::Log10)
+					fitter = new LogisticFit (this, g);
+				else
+					fitter = new SigmoidalFit (this, g);
+            }
+		}
 		else if(whichFit == "fitGauss")
 			fitter = new GaussFit(this, g);
 		else if(whichFit == "fitLorentz")

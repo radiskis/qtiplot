@@ -37,6 +37,7 @@
 #include "PluginFit.h"
 #include "NonLinearFit.h"
 #include "SigmoidalFit.h"
+#include "LogisticFit.h"
 #include "Matrix.h"
 
 #include <QListWidget>
@@ -1234,10 +1235,9 @@ void FitDialog::fitBuiltInFunction(const QString& function, double* initVal)
 		fitter = new MultiPeakFit(app, graph, MultiPeakFit::Gauss, polynomOrderBox->value());
 	else if (function == "Lorentz")
 		fitter = new MultiPeakFit(app, graph, MultiPeakFit::Lorentz, polynomOrderBox->value());
-    else if (function == "Logistic"){
-		fitter = new SigmoidalFit(app, graph);
-		((SigmoidalFit *)fitter)->setLogistic();
-    }
+    else if (function == "Logistic")
+		fitter = new LogisticFit(app, graph);
+
 	else if (function == tr("Polynomial"))
 		fitter = new PolynomialFit(app, graph, polynomOrderBox->value());
 
