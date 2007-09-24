@@ -1204,7 +1204,7 @@ l.numCurves()
 <title>The plot title</title>
 <programlisting>
 l.setTitle("My beautiful plot")
-l.setTitleFont(QFont("Arial", 12))
+l.setTitleFont(QtGui.QFont("Arial", 12))
 l.setTitleColor(QtGui.QColor("red"))
 l.setTitleAlignment(QtCore.Qt.AlignLeft)
 </programlisting>

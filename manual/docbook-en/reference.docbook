@@ -178,15 +178,8 @@ The active items in the menus depend on the active window in the project. If the
   <listitem>
 <!--		beginning of Export Graph			-->
   <para>The plot can be exported into several different image formats. You can define some parameters to customize your image file by checking the <emphasis>show options</emphasis> check box. Depending on the chosen image format, the available options are not the same.</para>
-  <para>For <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only option is the quality of the image, this parameter between 0 and 100% defines the compression ratio. The higher it is, the best the quality is but the larger the file is.</para>
-    <informalfigure id="fig-export-graph-bmp">
-      <mediaobject>
-        <imageobject>
-          <imagedata  format="PNG" fileref="pics/export-graph-bmp.png"/>
-        </imageobject>
-      </mediaobject>
-    </informalfigure>
-  <para>For <emphasis>png</emphasis> and <emphasis>xpm</emphasis>, you can choose to use a transparent background.</para>
+  <para>For <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only option is the quality of the image, this parameter between 0 and 100% defines the compression ratio. The higher it is, the best the quality is but the larger the file is.
+   For <emphasis>png</emphasis>, <emphasis>tiff</emphasis> and <emphasis>xpm</emphasis>, you can choose to use a transparent background.</para>
     <informalfigure id="fig-export-graph-png">
       <mediaobject>
         <imageobject>
@@ -194,8 +187,19 @@ The active items in the menus depend on the active window in the project. If the
         </imageobject>
       </mediaobject>
     </informalfigure>
-  <para>For <emphasis>eps</emphasis> file format, the option dialog is different. The parameters availables are: the size of the paper which is used to draw the plot, and the orientation of the paper sheet. The plot aspect ratio will be adapted to the sheet size and orientation.</para>
- <para>In addition, you can define the resolution. The default value is 84. If you increase this parameter, the quality of the graphic elements will be better (but the overall size of the plot will be unchanged).</para>
+  <para>For <emphasis>eps</emphasis>, <emphasis>pdf</emphasis>, <emphasis>ps</emphasis>file formats, the option dialog
+  is different. The main parameters availables are: the resolution and the size of the paper which is used to draw the plot.
+  of the paper sheet. The default value for the resolution is the screen resolution.
+  If you increase this parameter, the quality of the graphic elements will be better
+  (but the overall size of the plot will be unchanged).</para>
+
+  <para>By default the plot is exported to a page size that fits best its real size on screen, but if you want
+  you can choose a different page size, by checking the <emphasis>Custom page size</emphasis> option.
+  The orientation of the exported image will be automatically adapted to the sheet size.</para>
+
+  <para>In addition, you have the option to <emphasis>Keep the aspect ratio</emphasis> of the plot.
+  If you leave this box unchecked, the exported image will be scaled to the entire sheet size, in order to avoid blank
+  margins around the plot and therefore the width/height ratio of the plot will be modified.</para>
     <informalfigure id="fig-export-graph-eps">
       <mediaobject>
         <imageobject>
@@ -203,7 +207,6 @@ The active items in the menus depend on the active window in the project. If the
         </imageobject>
       </mediaobject>
     </informalfigure>
-  <para>The last format which can be selected is the Scalable Vector Graphic format. With this format, the files can be modified in vector drawing software such as <ulink url="http://www.sodipodi.com/index.php3">Sodipodi</ulink>.</para>
      <variablelist>
        <varlistentry id="export-graph-current-cmd">
          <term>&export-graph-current-cmd; (&export-graph-current-key;)</term>
@@ -1133,7 +1136,7 @@ The active items in the menus depend on the active window in the project. If the
 	  </informalequation>
 	  <para>The f<subscript>i</subscript> values are computed by fitting the data points to a polynome, they depend on the number of points used for the smoothing of the curve and the order of the polynome. Compared to the moving window average method, the advantage of this smoothing method is that the values of extrema are not truncated. The dialog allows to specify the curve which will be smoothed, the value of the order of the polynome, the number of data points used for the polynomial fit before and after each point and the color used to draw the smoothed curved. A new table will be created to store the data points x<subscript>i</subscript>, z<subscript>i</subscript>.</para>
 	  <figure id="fig-smooth-1">
-	    <title>The &moving-window-cmd; dialog.</title>
+	    <title>The &savitsky-golay-cmd; dialog.</title>
 	    <mediaobject>
 	      <imageobject>
 	        <imagedata  format="PNG" fileref="pics/smooth-1-dialog.png"/>
@@ -1159,7 +1162,7 @@ The active items in the menus depend on the active window in the project. If the
 	    <title>The &moving-window-cmd; dialog.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics/smooth-1-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics/smooth-2-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
@@ -1200,7 +1203,7 @@ The active items in the menus depend on the active window in the project. If the
 	    <title>The &fft-high-pass-cmd; dialog.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics/filter-fft-high-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics/filter-fft-low-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
