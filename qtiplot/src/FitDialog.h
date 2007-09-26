@@ -46,7 +46,8 @@ class QRadioButton;
 class QLineEdit;
 class ColorBox;
 class Fit;
-
+class Table;
+	
 //! Fit Wizard
 class FitDialog : public QDialog
 {
@@ -115,6 +116,7 @@ private:
     int d_param_table_rows;
     Fit *fitter;
 	Graph *graph;
+	Table *d_param_table;
 	QStringList userFunctions, userFunctionNames, userFunctionParams;
 	QStringList builtInFunctionNames, builtInFunctions;
 	QStringList pluginFunctionNames, pluginFunctions, pluginFilesList, pluginParameters;
@@ -150,7 +152,7 @@ private:
 	QRadioButton *generatePointsBtn, *samePointsBtn;
 	QPushButton *btnParamTable, *btnCovMatrix;
 	QLineEdit *covMatrixName, *paramTableName;
-	QCheckBox *plotLabelBox, *logBox, *scaleErrorsBox;
+	QCheckBox *plotLabelBox, *logBox, *scaleErrorsBox, *globalParamTableBox;
 };
 
 #endif // FITDIALOG_H

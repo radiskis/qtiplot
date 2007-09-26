@@ -32,6 +32,10 @@
 #ifndef OPJFILE_H
 #define OPJFILE_H
 
+/* version 0.0 2007-09-26 */
+#define LIBORIGIN_VERSION 0x00070926
+#define LIBORIGIN_VERSION_STRING "2007-09-26"
+
 #include <string>
 #include <vector>
 #include "tree.hh"
@@ -389,9 +393,9 @@ public:
 	OPJFile(const char* filename);
 	~OPJFile()
 	{
-		for(int g=0; g<GRAPH.size(); ++g)
-			for(int l=0; l<GRAPH[g].layer.size(); ++l)
-				for(int i=0; i<GRAPH[g].layer[l].bitmaps.size(); ++i)
+		for(unsigned int g=0; g<GRAPH.size(); ++g)
+			for(unsigned int l=0; l<GRAPH[g].layer.size(); ++l)
+				for(unsigned int i=0; i<GRAPH[g].layer[l].bitmaps.size(); ++i)
 					if(GRAPH[g].layer[l].bitmaps[i].size > 0)
 						delete GRAPH[g].layer[l].bitmaps[i].data;
 	}
@@ -409,6 +413,7 @@ public:
 	int numCols(int s) const { return SPREADSHEET[s].column.size(); }		//!< get number of columns of spreadsheet s
 	int numRows(int s,int c) const { return SPREADSHEET[s].column[c].odata.size(); }	//!< get number of rows of column c of spreadsheet s
 	int maxRows(int s) const { return SPREADSHEET[s].maxRows; }		//!< get maximum number of rows of spreadsheet s
+
 	//spreadsheet's column properties
 	const char *colName(int s, int c) const { return SPREADSHEET[s].column[c].name.c_str(); }	//!< get name of column c of spreadsheet s
 	const char *colType(int s, int c) const { return SPREADSHEET[s].column[c].type.c_str(); }	//!< get type of column c of spreadsheet s
@@ -434,8 +439,8 @@ public:
 	const char *matrixName(int s) const { return MATRIX[s].name.c_str(); }	//!< get name of matrix s
 	const char *matrixParentFolder(int s) const { return MATRIX[s].parentFolder.c_str(); }	//!< get parent folder of matrix s
 	const char *matrixLabel(int s) const { return MATRIX[s].label.c_str(); }	//!< get label of matrix s
-	int numMartixCols(int s) const { return MATRIX[s].nr_cols; }		//!< get number of columns of matrix s
-	int numMartixRows(int s) const { return MATRIX[s].nr_rows; }	//!< get number of rows of matrix s
+	int numMatrixCols(int s) const { return MATRIX[s].nr_cols; }		//!< get number of columns of matrix s
+	int numMatrixRows(int s) const { return MATRIX[s].nr_rows; }	//!< get number of rows of matrix s
 	const char *matrixFormula(int s) const { return MATRIX[s].command.c_str(); }	//!< get formula of matrix s
 	int matrixValueTypeSpec(int s) const { return MATRIX[s].value_type_specification; }	//!< get value type specification of matrix s
 	int matrixSignificantDigits(int s) const { return MATRIX[s].significant_digits; }	//!< get significant digits of matrix s
@@ -474,7 +479,7 @@ public:
 	enum Scale {Linear=0, Log10=1, Probability=2, Probit=3, Reciprocal=4, OffsetReciprocal=5, Logit=6, Ln=7, Log2=8};
 
 	enum ValueType {Numeric=0, Text=1, Time=2, Date=3,  Month=4, Day=5, ColumnHeading=6, TickIndexedDataset=7, TextNumeric=9, Categorical=10};
-
+	
 	enum BorderType {BlackLine=0, Shadow=1, DarkMarble=2, WhiteOut=3, BlackOut=4, None=-1};
 
 	enum Attach {Frame=0, Page=1, Scale=2};
@@ -577,7 +582,6 @@ public:
 	double curveSymbolSize(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_size; }	//!< get symbol size of curve c of layer l of graph s
 	int curveSymbolThickness(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_thickness; }	//!< get symbol thickness of curve c of layer l of graph s
 
-	//note
 	int numNotes() const { return NOTE.size(); }			//!< get number of notes
 	const char *noteName(int n) const { return NOTE[n].name.c_str(); }	//!< get name of note n
 	const char *noteParentFolder(int n) const { return NOTE[n].parentFolder.c_str(); }	//!< get parent folder of note n

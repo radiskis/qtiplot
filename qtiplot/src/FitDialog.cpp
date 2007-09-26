@@ -72,6 +72,7 @@ FitDialog::FitDialog( QWidget* parent, Qt::WFlags fl )
     userFunctions = QStringList();
     userFunctionParams = QStringList();
 
+	d_param_table = 0;
 	fitter = 0;
 
 	tw = new QStackedWidget();
@@ -374,6 +375,8 @@ void FitDialog::initAdvancedPage()
 	gl2->addWidget(new QLabel( tr("Name: ")), 1, 1);
 	paramTableName = new QLineEdit(tr( "Parameters" ));
     gl2->addWidget(paramTableName, 1, 2);
+	globalParamTableBox = new QCheckBox (tr("&One table for all fits"));
+	gl2->addWidget(globalParamTableBox, 1, 3);
 	btnCovMatrix = new QPushButton(tr( "Covariance &Matrix" ));
     gl2->addWidget(btnCovMatrix, 2, 0);
     gl2->addWidget(new QLabel( tr("Name: ")), 2, 1);
@@ -447,44 +450,36 @@ void FitDialog::applyChanges()
 void FitDialog::showParametersTable()
 {
 	QString tableName = paramTableName->text();
-	if (tableName.isEmpty())
-	{
+	if (tableName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("Please enter a valid name for the parameters table."));
 		return;
 	}
 
-	if (!fitter)
-	{
+	if (!fitter){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("Please perform a fit first and try again."));
 		return;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	tableName = app->generateUniqueName(tableName, false);
-	fitter->parametersTable(tableName);
+	d_param_table = fitter->parametersTable(tableName);
 }
 
 void FitDialog::showCovarianceMatrix()
 {
 	QString matrixName = covMatrixName->text();
-	if (matrixName.isEmpty())
-	{
+	if (matrixName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("Please enter a valid name for the covariance matrix."));
 		return;
 	}
 
-	if (!fitter)
-	{
+	if (!fitter){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("Please perform a fit first and try again."));
 		return;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	matrixName = app->generateUniqueName(matrixName, false);
 	fitter->covarianceMatrix(matrixName);
 }
 
@@ -1194,10 +1189,13 @@ void FitDialog::accept()
 				if (!cb->isChecked())
 					boxParams->item(i, 1)->setText(QString::number(res[j++], 'g', app->fit_output_precision));
 			}
-		} else {
+		} else {				
 			for (i=0;i<rows;i++)
 				boxParams->item(i, 1)->setText(QString::number(res[i], 'g', app->fit_output_precision));
 		}
+		
+		if (globalParamTableBox->isChecked() && d_param_table)
+			fitter->writeParametersToTable(d_param_table, true);
 	}
 }
 

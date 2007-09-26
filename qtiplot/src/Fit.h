@@ -102,6 +102,8 @@ class Fit : public Filter
 		void scaleErrors(bool yes = true){d_scale_errors = yes;};
 
 		Table* parametersTable(const QString& tableName);
+		void writeParametersToTable(Table *t, bool append = false);
+		
 		Matrix* covarianceMatrix(const QString& matrixName);
 
 	private:
@@ -186,6 +188,13 @@ class Fit : public Filter
 
 		//! Specifies wheather the errors must be scaled with sqrt(chi_2/dof)
 		bool d_scale_errors;
+		
+		//! Table window used for the output of fit parameters 
+		Table *d_param_table;
+		
+		//! Matrix window used for the output of covariance matrix 
+		Matrix *d_cov_matrix;
+		
 };
 
 #endif

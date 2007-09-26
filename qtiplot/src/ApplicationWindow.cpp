@@ -2893,10 +2893,8 @@ QWidget* ApplicationWindow::window(const QString& name)
 {
 	QWidget* w = 0;
 	QWidgetList *windows = windowsList();
-	for (int i = 0; i < int(windows->count());i++ )
-	{
-		if (windows->at(i)->name() == name)
-		{
+	for (int i = 0; i < int(windows->count());i++ ){
+		if (windows->at(i)->name() == name){
 			w = windows->at(i);
 			break;
 		}
@@ -2911,10 +2909,8 @@ Table* ApplicationWindow::table(const QString& name)
 	QString caption = name.left(pos);
 
 	QList<QWidget*> *lst = windowsList();
-	foreach(QWidget *w, *lst)
-	{
-		if (w->inherits("Table") && w->name() == caption)
-		{
+	foreach(QWidget *w, *lst){
+		if (w->inherits("Table") && w->name() == caption){
 			delete lst;
 			return (Table*)w;
 		}

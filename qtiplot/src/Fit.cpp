@@ -80,6 +80,8 @@ void Fit::init()
 	d_scale_errors = false;
 	d_sort_data = false;
 	d_prec = (((ApplicationWindow *)parent())->fit_output_precision);
+	d_param_table = 0;
+	d_cov_matrix = 0;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)
@@ -389,38 +391,87 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 	return true;
 }
 
-Table* Fit::parametersTable(const QString& tableName)
+/*Table* Fit::parametersTable(const QString& tableName)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
-	Table *t = app->newTable(tableName, d_p, 3);
-	t->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
+	if (!d_param_table || d_param_table->name() != tableName)
+		d_param_table = app->newTable(app->generateUniqueName(tableName, false), d_p, 3);
+	
+	d_param_table->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
 	for (int i=0; i<d_p; i++){
-		t->setText(i, 0, d_param_names[i]);
-		t->setText(i, 1, locale.toString(d_results[i], 'g', d_prec));
-		t->setText(i, 2, locale.toString(sqrt(gsl_matrix_get(covar,i,i)), 'g', d_prec));
+		d_param_table->setText(i, 0, d_param_names[i]);
+		d_param_table->setText(i, 1, locale.toString(d_results[i], 'g', d_prec));
+		d_param_table->setText(i, 2, locale.toString(sqrt(gsl_matrix_get(covar,i,i)), 'g', d_prec));
 	}
 
-	t->setColPlotDesignation(2, Table::yErr);
-	t->setHeaderColType();
+	d_param_table->setColPlotDesignation(2, Table::yErr);
+	d_param_table->setHeaderColType();
 	for (int j=0; j<3; j++)
-		t->table()->adjustColumn(j);
+		d_param_table->table()->adjustColumn(j);
 
-	t->showNormal();
-	return t;
+	d_param_table->showNormal();
+	return d_param_table;
+}*/
+
+Table* Fit::parametersTable(const QString& tableName)
+{
+	if (!d_param_table || d_param_table->name() != tableName){
+		ApplicationWindow *app = (ApplicationWindow *)parent();
+		d_param_table = app->newTable(app->generateUniqueName(tableName, false), d_p, 3);
+	}
+	
+	d_param_table->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
+	d_param_table->setColPlotDesignation(2, Table::yErr);
+	d_param_table->setHeaderColType();
+
+	writeParametersToTable(d_param_table);
+	
+	d_param_table->showNormal();
+	return d_param_table;
+}
+
+void Fit::writeParametersToTable(Table *t, bool append)
+{
+	if (!t)
+		return;
+	
+	if (t->numCols() < 3)
+		t->setNumCols(3);
+	
+	int rows = 0;
+	if (append){
+		rows = t->numRows();
+		t->setNumRows(rows + d_p);
+	}
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = app->locale();
+
+	for (int i=0; i<d_p; i++){
+		int j = rows + i;
+		t->setText(j, 0, d_param_names[i]);
+		t->setText(j, 1, locale.toString(d_results[i], 'g', d_prec));
+		t->setText(j, 2, locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'g', d_prec));
+	}
+
+	for (int i=0; i<3; i++)
+		t->table()->adjustColumn(i);
 }
 
 Matrix* Fit::covarianceMatrix(const QString& matrixName)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
-	Matrix* m = app->newMatrix(matrixName, d_p, d_p);
+	if (!d_cov_matrix || d_cov_matrix->name() != matrixName)
+		d_cov_matrix = app->newMatrix(app->generateUniqueName(matrixName, false), d_p, d_p);
+
 	for (int i = 0; i < d_p; i++){
 		for (int j = 0; j < d_p; j++)
-			m->setText(i, j, locale.toString(gsl_matrix_get(covar, i, j), 'g', d_prec));
+			d_cov_matrix->setText(i, j, locale.toString(gsl_matrix_get(covar, i, j), 'g', d_prec));
 	}
-	m->showNormal();
-	return m;
+	d_cov_matrix->showNormal();
+	return d_cov_matrix;
 }
 
 double *Fit::errors()
