@@ -359,8 +359,8 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 //Import matrices
 	for (int s=0; s<opj.numMatrices(); s++)
 	{
-		int nr_cols = opj.numMartixCols(s);
-		int nr_rows = opj.numMartixRows(s);
+		int nr_cols = opj.numMatrixCols(s);
+		int nr_rows = opj.numMatrixRows(s);
 
 		Folder *f=mw->projectFolder()->findSubfolder(opj.matrixParentFolder(s), true, false);
 		if(!f)

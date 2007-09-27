@@ -715,6 +715,7 @@ public slots:
 	void setXErrCol();
 	void setYErrCol();
 	void disregardCol();
+	void setReadOnlyCol();
 
 	void updateConfirmOptions(bool askTables, bool askMatrixes, bool askPlots2D, bool askPlots3D, bool askNotes);
 
@@ -1098,7 +1099,7 @@ private:
 #endif
 
     QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
-    QAction *actionExportPDF;
+    QAction *actionExportPDF, *actionReadOnlyCol;
     QAction *actionCloseAllWindows, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
     QAction *actionShowCurvesDialog, *actionAddErrorBars, *actionAddFunctionCurve, *actionUnzoom, *actionNewLegend, *actionAddImage, *actionAddText;
     QAction *actionPlotL, *actionPlotP, *actionPlotLP, *actionPlotVerticalDropLines, *actionPlotSpline;
