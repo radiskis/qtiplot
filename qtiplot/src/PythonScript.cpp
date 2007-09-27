@@ -38,6 +38,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QMessageBox>
 
 PythonScript::PythonScript(PythonScripting *env, const QString &code, QObject *context, const QString &name)
 : Script(env, code, context, name)
@@ -82,7 +83,7 @@ bool PythonScript::compile(bool for_eval)
 				Py_file_input, localDict, localDict);
 		if (ret)
 			Py_DECREF(ret);
-		else
+		else 
 			PyErr_Print();
 	} else if(Context->inherits("Matrix")) {
 		// A bit of a hack, but we need either IndexError or len() from __builtins__.
@@ -167,10 +168,14 @@ QVariant PythonScript::eval()
 	} else
 		pyret = PyEval_EvalCode((PyCodeObject*)PyCode, env()->globalDict(), localDict);
 	endStdoutRedirect();
-	if (!pyret)
-	{
-		emit_error(env()->errorMsg(), 0);
-		return QVariant();
+	if (!pyret){
+		if (PyErr_ExceptionMatches(PyExc_ValueError) || 
+			PyErr_ExceptionMatches(PyExc_ZeroDivisionError))
+			return  QVariant("");
+		else {
+			emit_error(env()->errorMsg(), 0);
+			return QVariant();
+		}
 	}
 
 	QVariant qret = QVariant();
@@ -285,4 +290,3 @@ bool PythonScript::setDouble(double val, const char *name)
 		compiled = notCompiled;
 	return env()->setDouble(val, name, localDict);
 }
-

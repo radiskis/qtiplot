@@ -1118,8 +1118,11 @@ void ConfigDialog::apply()
 
     app->d_thousands_sep = !boxThousandsSeparator->isChecked();
     app->setLocale(locale);
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    if (boxUpdateSeparators->isChecked()){
+	
+	if (generalDialog->currentWidget() == appTabWidget &&
+		appTabWidget->currentWidget() == numericFormatPage && 
+		boxUpdateSeparators->isChecked()){
+    	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         QList<QWidget*> *lst = app->windowsList();
         foreach(QWidget *w, *lst){
             ((MyWidget *)w)->setLocale(locale);
@@ -1135,9 +1138,8 @@ void ConfigDialog::apply()
         }
         delete lst;
         app->modifiedProject();
-    }
-    QApplication::restoreOverrideCursor();
-
+    	QApplication::restoreOverrideCursor();
+	}
 	// general page: confirmations tab
 	app->d_inform_rename_table = boxPromptRenameTables->isChecked();
 	app->confirmCloseFolder = boxFolders->isChecked();

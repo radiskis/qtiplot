@@ -1128,7 +1128,7 @@ void Graph::updateSecondaryAxis(int axis)
 void Graph::setAutoScale()
 {
 	for (int i = 0; i < QwtPlot::axisCnt; i++)
-        d_plot->setAxisAutoScale(i);
+		d_plot->setAxisAutoScale(i);
 
 	d_plot->replot();
 	d_zoomer[0]->setZoomBase();
@@ -3221,23 +3221,33 @@ void Graph::updatePlot()
 
 void Graph::updateScale()
 {
-	const QwtScaleDiv *scDiv = d_plot->axisScaleDiv(QwtPlot::xBottom);
-	QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
+	if (!autoscale){
+		const QwtScaleDiv *scDiv = d_plot->axisScaleDiv(QwtPlot::xBottom);
+		QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 
-	double step = fabs(lst[1]-lst[0]);
-
-	if (!autoscale)
+		double step = 0.0;
+		if (lst.count() >= 2){
+			step = fabs(lst[1]-lst[0]);
+			const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(QwtPlot::xBottom);
+        	if(sc_eng->transformation()->type() == QwtScaleTransformation::Log10)
+				step = log10(lst[1]/lst[0]);
+		}
+		
 		d_plot->setAxisScale (QwtPlot::xBottom, scDiv->lBound(), scDiv->hBound(), step);
 
-	scDiv = d_plot->axisScaleDiv(QwtPlot::yLeft);
-	lst = scDiv->ticks (QwtScaleDiv::MajorTick);
-
-	step = fabs(lst[1]-lst[0]);
-
-	if (!autoscale)
+		scDiv = d_plot->axisScaleDiv(QwtPlot::yLeft);
+		lst = scDiv->ticks (QwtScaleDiv::MajorTick);
+		if (lst.count() >= 2){
+			step = fabs(lst[1]-lst[0]);
+			const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(QwtPlot::yLeft);
+        	if(sc_eng->transformation()->type() == QwtScaleTransformation::Log10)
+				step = log10(lst[1]/lst[0]);
+		}
+		
 		d_plot->setAxisScale (QwtPlot::yLeft, scDiv->lBound(), scDiv->hBound(), step);
-
-	d_plot->replot();
+		d_plot->replot();
+	}
+	
 	updateMarkersBoundingRect();
 	updateSecondaryAxis(QwtPlot::xTop);
 	updateSecondaryAxis(QwtPlot::yRight);
