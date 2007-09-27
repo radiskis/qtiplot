@@ -141,13 +141,20 @@ public:
 		}
 	}
 %End
+
   double cell(SIP_PYOBJECT, int);
 %MethodCode
   sipIsErr = 0;
   CHECK_TABLE_COL(a0);
   CHECK_TABLE_ROW(a1);
-	if (sipIsErr == 0)
-		sipRes = sipCpp->cell(row, col);
+	if (sipIsErr == 0){
+		if (sipCpp->text(row, col) != "")
+			sipRes = sipCpp->cell(row, col);
+		else {
+			sipRes = NULL;
+			PyErr_SetString(PyExc_ValueError, "Empty table cell");
+		}
+	}
 %End
   void setText(SIP_PYOBJECT, int, const QString&);
 %MethodCode
