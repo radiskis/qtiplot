@@ -261,6 +261,9 @@ public slots:
 	void saveToMemory();
 	void freeMemory();
 
+    bool isReadOnlyColumn(int col);
+    void setReadOnlyColumn(int col, bool on = true);
+
 	QString columnFormat(int col){return col_format[col];};
 	QStringList getColumnsFormat(){return col_format;};
 	void setColumnsFormat(const QStringList& lst);
@@ -349,6 +352,7 @@ private:
 	QString specifications, newSpecifications;
 	QStringList commands, col_format, comments, col_label;
 	QList<int> colTypes, col_plot_type;
+	QList<bool> d_read_only;
 	int selectedCol;
 	int d_numeric_precision;
 	double **d_saved_cells;

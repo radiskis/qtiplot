@@ -1055,7 +1055,6 @@ void ApplicationWindow::initTableMenu()
 	setAsMenu->addAction(actionSetYErrCol);
 	setAsMenu->addAction(actionSetXErrCol);
 	setAsMenu->insertSeparator();
-
 	setAsMenu->addAction(actionDisregardCol);
 	setAsMenuID = tableMenu->insertItem(tr("Set Columns &As"), setAsMenu);
 
@@ -5688,7 +5687,7 @@ void ApplicationWindow::showColMenu(int c)
 	QMenu fill(this);
 	QMenu sorting(this);
 	QMenu colType(this);
-	colType.setCheckable ( true );
+	colType.setCheckable(true);
 	QMenu panels(this);
 	QMenu stat(this);
 	QMenu norm(this);
@@ -5737,32 +5736,42 @@ void ApplicationWindow::showColMenu(int c)
 		contextMenu.addAction(QIcon(QPixmap(paste_xpm)),tr("Past&e"), w, SLOT(pasteSelection()));
 		contextMenu.insertSeparator();
 
-		QAction * xColID=colType.addAction(tr("X"), this, SLOT(setXCol()));
-		QAction * yColID=colType.addAction(tr("Y"), this, SLOT(setYCol()));
-		QAction * zColID=colType.addAction(tr("Z"), this, SLOT(setZCol()));
-		colType.insertSeparator();
-		QAction * xErrColID =colType.addAction(tr("X Error"), this, SLOT(setXErrCol()));
-		QAction * yErrColID = colType.addAction(QIcon(QPixmap(errors_xpm)), tr("Y Error"), this, SLOT(setYErrCol()));
-		colType.insertSeparator();
-		QAction * noneID=colType.addAction(tr("None"), this, SLOT(disregardCol()));
+		QAction * xColID=colType.addAction(tr("&X"), this, SLOT(setXCol()));
+		xColID->setCheckable(true);
+        QAction * yColID=colType.addAction(tr("&Y"), this, SLOT(setYCol()));
+        yColID->setCheckable(true);
+        QAction * zColID=colType.addAction(tr("&Z"), this, SLOT(setZCol()));
+        zColID->setCheckable(true);
+        colType.insertSeparator();
+        QAction * xErrColID =colType.addAction(tr("X E&rror"), this, SLOT(setXErrCol()));
+        xErrColID->setCheckable(true);
+        QAction * yErrColID = colType.addAction(QIcon(QPixmap(errors_xpm)), tr("Y &Error"), this, SLOT(setYErrCol()));
+        yErrColID->setCheckable(true);
+        colType.insertSeparator();
+        QAction * noneID=colType.addAction(tr("&None"), this, SLOT(disregardCol()));
+        noneID->setCheckable(true);
 
-		if (w->colPlotDesignation(c) == Table::X)
-			xColID->setChecked(true);
-		else if (w->colPlotDesignation(c) == Table::Y)
-			yColID->setChecked(true);
-		else if (w->colPlotDesignation(c) == Table::Z)
-			zColID->setChecked(true);
-		else if (w->colPlotDesignation(c) == Table::xErr)
-			xErrColID->setChecked(true);
-		else if (w->colPlotDesignation(c) == Table::yErr)
-			yErrColID->setChecked(true);
-		else
-			noneID->setChecked(true);
+        if (w->colPlotDesignation(c) == Table::X)
+            xColID->setChecked(true);
+        else if (w->colPlotDesignation(c) == Table::Y)
+            yColID->setChecked(true);
+        else if (w->colPlotDesignation(c) == Table::Z)
+            zColID->setChecked(true);
+        else if (w->colPlotDesignation(c) == Table::xErr)
+            xErrColID->setChecked(true);
+        else if (w->colPlotDesignation(c) == Table::yErr)
+            yErrColID->setChecked(true);
+        else
+            noneID->setChecked(true);
+
+        actionReadOnlyCol->addTo(&colType);
+        actionReadOnlyCol->setCheckable(true);
+        actionReadOnlyCol->setChecked(w->isReadOnlyColumn(c));
 
 		colType.setTitle(tr("Set As"));
 		contextMenu.addMenu(&colType);
-		if (ws->activeWindow()->isA("Table"))
-		{
+
+		if (ws->activeWindow()->isA("Table")){
 			contextMenu.insertSeparator();
 
 			contextMenu.addAction(actionShowColumnValuesDialog);
@@ -10324,7 +10333,7 @@ void ApplicationWindow::analyzeCurve(Graph *g, const QString& whichFit, const QS
 {
 	if (!g)
 		return;
-	
+
 	if(whichFit=="fitLinear" || whichFit=="fitSigmoidal" || whichFit=="fitGauss" || whichFit=="fitLorentz")
 	{
 		Fit *fitter = 0;
@@ -11064,6 +11073,9 @@ void ApplicationWindow::createActions()
 	actionSetRandomValues = new QAction(QIcon(QPixmap(randomNumbers_xpm)),tr("&Random Values"), this);
 	connect(actionSetRandomValues, SIGNAL(activated()), this, SLOT(setRandomValues()));
 
+    actionReadOnlyCol = new QAction(tr("&Read Only"), this);
+    connect(actionReadOnlyCol, SIGNAL(activated()), this, SLOT(setReadOnlyCol()));
+
 	actionSetXCol = new QAction(tr("&X"), this);
 	connect(actionSetXCol, SIGNAL(activated()), this, SLOT(setXCol()));
 
@@ -11517,6 +11529,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetXErrCol->setMenuText(tr("X E&rror"));
 	actionSetYErrCol->setMenuText(tr("Y &Error"));
 	actionDisregardCol->setMenuText(tr("&None"));
+	actionReadOnlyCol->setMenuText(tr("&Read Only"));
 
 	actionBoxPlot->setMenuText(tr("&Box Plot"));
 	actionBoxPlot->setToolTip(tr("Box and whiskers plot"));
@@ -11952,6 +11965,17 @@ void ApplicationWindow::translateCurveVert()
 		g->setActiveTool(new TranslateCurveTool(g, this, TranslateCurveTool::Vertical, info, SLOT(setText(const QString&))));
 		displayBar->show();
 	}
+}
+
+void ApplicationWindow::setReadOnlyCol()
+{
+	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+		return;
+
+	Table *t = (Table *)ws->activeWindow();
+    QStringList list = t->selectedColumns();
+	for (int i=0; i<(int) list.count(); i++)
+		t->setReadOnlyColumn(t->colIndex(list[i]), actionReadOnlyCol->isChecked());
 }
 
 void ApplicationWindow::setAscValues()

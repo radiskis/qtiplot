@@ -96,14 +96,14 @@ void Table::init(int rows, int cols)
 	hlayout->setMargin(0);
 	hlayout->addWidget(d_table);
 
-	for (int i=0; i<cols; i++)
-	{
+	for (int i=0; i<cols; i++){
 		commands << "";
 		colTypes << Numeric;
 		col_format << "0/16";
 		comments << "";
 		col_label << QString::number(i+1);
 		col_plot_type << Y;
+		d_read_only << false;
 	}
 
 	Q3Header* head=(Q3Header*)d_table->horizontalHeader();
@@ -477,14 +477,19 @@ void Table::setCommands(const QString& com)
 
 bool Table::calculate(int col, int startRow, int endRow)
 {
+    if (d_read_only[col]){
+        QMessageBox::warning(this, tr("QtiPlot - Error"),
+        tr("Column '%1' is read only!").arg(col_label[col]));
+        return false;
+    }
+
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	Script *colscript = scriptEnv->newScript(commands[col], this,  QString("<%1>").arg(colName(col)));
 	connect(colscript, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 	connect(colscript, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
 
-	if (!colscript->compile())
-	{
+	if (!colscript->compile()){
 		QApplication::restoreOverrideCursor();
 		return false;
 	}
@@ -495,8 +500,7 @@ bool Table::calculate(int col, int startRow, int endRow)
 	colscript->setInt(startRow+1, "sr");
 	colscript->setInt(endRow+1, "er");
 	QVariant ret;
-	for (int i=startRow; i<=endRow; i++)
-	{
+	for (int i=startRow; i<=endRow; i++){
 		colscript->setInt(i+1,"i");
 		ret = colscript->eval();
 		if(ret.type()==QVariant::Double) {
@@ -846,10 +850,8 @@ void Table::insertCols(int start, int count)
         start = 0;
 
 	int max = 0;
-	for (int i = 0; i<d_table->numCols(); i++)
-	{
-		if (!col_label[i].contains(QRegExp ("\\D")))
-		{
+	for (int i = 0; i<d_table->numCols(); i++){
+		if (!col_label[i].contains(QRegExp ("\\D"))){
 			int id = col_label[i].toInt();
 			if (id > max)
 				max = id;
@@ -859,8 +861,7 @@ void Table::insertCols(int start, int count)
 
     d_table->insertColumns(start, count);
 
-	for(int i = 0; i<count; i++ )
-	{
+	for(int i = 0; i<count; i++ ){
         int j = start + i;
 		commands.insert(j, QString());
 		col_format.insert(j, "0/6");
@@ -868,6 +869,7 @@ void Table::insertCols(int start, int count)
 		col_label.insert(j, QString::number(max + i));
 		colTypes.insert(j, Numeric);
 		col_plot_type.insert(j, Y);
+		d_read_only.insert(j, false);
 	}
 	setHeaderColType();
 	emit modifiedWindow(this);
@@ -892,10 +894,8 @@ void Table::addCol(PlotDesignation pd)
 {
 	d_table->clearSelection();
 	int index, max=0, cols=d_table->numCols();
-	for (int i=0; i<cols; i++)
-	{
-		if (!col_label[i].contains(QRegExp ("\\D")))
-		{
+	for (int i=0; i<cols; i++){
+		if (!col_label[i].contains(QRegExp ("\\D"))){
 			index = col_label[i].toInt();
 			if (index > max)
 				max = index;
@@ -910,6 +910,7 @@ void Table::addCol(PlotDesignation pd)
 	col_format<<"0/" + QString::number(d_numeric_precision);
 	col_label<< QString::number(max+1);
 	col_plot_type << pd;
+	d_read_only << false;
 
 	setHeaderColType();
 	emit modifiedWindow(this);
@@ -1198,6 +1199,9 @@ void Table::removeCol(const QStringList& list)
 			if ( id < col_plot_type.size() )
 				col_plot_type.removeAt(id);
 
+            if ( id < d_read_only.size() )
+				d_read_only.removeAt(id);
+
 			d_table->removeColumn(id);
 		}
 		emit removedCol(name);
@@ -1231,11 +1235,13 @@ void Table::normalize()
 void Table::normalizeCol(int col)
 {
 	if (col<0) col = selectedCol;
+	if (d_read_only[col])
+	    return;
+
 	double max=d_table->text(0,col).toDouble();
 	double aux=0.0;
 	int rows=d_table->numRows();
-	for (int i=0; i<rows; i++)
-	{
+	for (int i=0; i<rows; i++){
 		QString text=this->text(i,col);
 		aux=text.toDouble();
 		if (!text.isEmpty() && fabs(aux)>fabs(max))
@@ -1249,8 +1255,7 @@ void Table::normalizeCol(int col)
     char f;
     columnNumericFormat(col, &f, &prec);
 
-	for (int i=0; i<rows; i++)
-	{
+	for (int i=0; i<rows; i++){
 		QString text = this->text(i, col);
 		aux=text.toDouble();
 		if ( !text.isEmpty() )
@@ -1340,6 +1345,9 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 
 		for(int i=0;i<cols;i++){// Since we have the permutation index, sort all the columns
             int col=colIndex(s[i]);
+            if (d_read_only[col])
+                continue;
+
             if (columnType(col) == Text){
                 for (int j=0; j<non_empty_cells; j++)
                     data_string[j] = text(valid_cell[j], col);
@@ -1373,6 +1381,9 @@ void Table::sortColumn(int col, int order)
 {
 	if (col < 0)
 		col = d_table->currentColumn();
+
+    if (d_read_only[col])
+        return;
 
 	int rows=d_table->numRows();
 	int non_empty_cells = 0;
@@ -1840,10 +1851,12 @@ void Table::setRandomValues()
     time_t tmp;
     srand(time(&tmp));
 
-	for (int j=0;j<(int) list.count(); j++)
+	for (int j=0; j<(int) list.count(); j++)
 	{
 		QString name=list[j];
 		selectedCol=colIndex(name);
+        if (d_read_only[selectedCol])
+            continue;
 
 		int prec;
 		char f;
@@ -1970,15 +1983,17 @@ void Table::setAscValues()
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	int rows=d_table->numRows();
+	int rows = d_table->numRows();
 	QStringList list=selectedColumns();
 
-	for (int j=0;j<(int) list.count(); j++)
-	{
-		QString name=list[j];
-		selectedCol=colIndex(name);
+	for (int j=0; j<(int) list.count(); j++){
+		QString name = list[j];
+		selectedCol = colIndex(name);
 
-		if (columnType(selectedCol) != Numeric) {
+        if (d_read_only[selectedCol])
+            continue;
+
+		if (columnType(selectedCol) != Numeric){
 			colTypes[selectedCol] = Numeric;
 			col_format[selectedCol] = "0/6";
 		}
@@ -1988,11 +2003,10 @@ void Table::setAscValues()
 		columnNumericFormat(selectedCol, &f, &prec);
 
 		for (int i=0; i<rows; i++)
-			setText(i,selectedCol,QString::number(i+1, f, prec));
+			setText(i, selectedCol, QString::number(i+1, f, prec));
 
 		emit modifiedData(this, name);
 	}
-
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
 }
@@ -3098,6 +3112,22 @@ void Table::updateDecimalSeparators()
 	}
 
     freeMemory();
+}
+
+bool Table::isReadOnlyColumn(int col)
+{
+    if (col < 0 || col >= d_table->numCols())
+        return false;
+
+    return d_read_only[col];
+}
+
+void Table::setReadOnlyColumn(int col, bool on)
+{
+    if (col < 0 || col >= d_table->numCols())
+        return;
+
+    d_read_only[col] = on;
 }
 
 /*****************************************************************************

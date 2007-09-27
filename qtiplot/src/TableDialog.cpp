@@ -132,6 +132,9 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     precisionBox = new QSpinBox();
     gl1->addWidget(precisionBox, 3, 1);
 
+    boxReadOnly = new QCheckBox(tr("&Read Only" ));
+    gl1->addWidget(boxReadOnly, 4, 0);
+
 	applyToRightCols = new QCheckBox(tr( "Apply to all columns to the right" ));
 
     QVBoxLayout *vbox3 = new QVBoxLayout();
@@ -241,6 +244,8 @@ void TableDialog::updateColumn(int sc)
     displayBox->setCurrentIndex(colType);
     updateDisplay(colType);
 
+    boxReadOnly->setChecked(d_table->isReadOnlyColumn(sc));
+
     d_table->saveToMemory();
 
     if (colType == Table::Numeric){
@@ -283,55 +288,65 @@ d_table->setHeaderColType();
 
 void TableDialog::apply()
 {
-if (colName->text().contains("_")){
-	QMessageBox::warning(this, tr("QtiPlot - Warning"),
-  	tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
+    if (colName->text().contains("_")){
+        QMessageBox::warning(this, tr("QtiPlot - Warning"),
+        tr("For internal consistency reasons the underscore character is replaced with a minus sign."));}
 
-QString name=colName->text().replace("-", "_");
-if (name.contains(QRegExp("\\W"))){
-	QMessageBox::warning(this,tr("QtiPlot - Error"), tr("The column names must only contain letters and digits!"));
-	name.remove(QRegExp("\\W"));
+    QString name=colName->text().replace("-", "_");
+    if (name.contains(QRegExp("\\W"))){
+        QMessageBox::warning(this,tr("QtiPlot - Error"), tr("The column names must only contain letters and digits!"));
+        name.remove(QRegExp("\\W"));
 	}
-d_table->changeColWidth(colWidth->value(), applyToAllBox->isChecked());
-d_table->setColComment(d_table->selectedColumn(), comments->text().replace("\n", " ").replace("\t", " "));
-d_table->setColName(d_table->selectedColumn(), name.replace("_", "-"), enumerateAllBox->isChecked());
 
-int format = formatBox->currentIndex();
-int colType = displayBox->currentIndex();
-switch(colType)
+    int sc = d_table->selectedColumn();
+    d_table->changeColWidth(colWidth->value(), applyToAllBox->isChecked());
+    d_table->setColComment(sc, comments->text().replace("\n", " ").replace("\t", " "));
+    d_table->setColName(sc, name.replace("_", "-"), enumerateAllBox->isChecked());
+
+    bool rightColumns = applyToRightCols->isChecked();
+    if (rightColumns){
+        bool readOnly = boxReadOnly->isChecked();
+		for (int i = sc; i<d_table->numCols(); i++)
+            d_table->setReadOnlyColumn(i, readOnly);
+    } else
+        d_table->setReadOnlyColumn(sc, boxReadOnly->isChecked());
+
+    int format = formatBox->currentIndex();
+    int colType = displayBox->currentIndex();
+    switch(colType)
 	{
 	case 0:
-		setNumericFormat(formatBox->currentIndex(), precisionBox->value(), applyToRightCols->isChecked());
+		setNumericFormat(formatBox->currentIndex(), precisionBox->value(), rightColumns);
 	break;
 
 	case 1:
-		setTextFormat(applyToRightCols->isChecked());
+		setTextFormat(rightColumns);
 	break;
 
 	case 2:
-		 setDateTimeFormat(colType, formatBox->currentText(), applyToRightCols->isChecked());
+		 setDateTimeFormat(colType, formatBox->currentText(), rightColumns);
 	break;
 
 	case 3:
-		setDateTimeFormat(colType, formatBox->currentText(), applyToRightCols->isChecked());
+		setDateTimeFormat(colType, formatBox->currentText(), rightColumns);
 	break;
 
 	case 4:
         if(format == 0)
-            setMonthFormat("MMM", applyToRightCols->isChecked());
+            setMonthFormat("MMM", rightColumns);
         else if(format == 1)
-            setMonthFormat("MMMM", applyToRightCols->isChecked());
+            setMonthFormat("MMMM", rightColumns);
         else if(format == 2)
-            setMonthFormat("M", applyToRightCols->isChecked());
+            setMonthFormat("M", rightColumns);
 	break;
 
 	case 5:
         if(format == 0)
-            setDayFormat("ddd", applyToRightCols->isChecked());
+            setDayFormat("ddd", rightColumns);
         else if(format == 1)
-            setDayFormat("dddd", applyToRightCols->isChecked());
+            setDayFormat("dddd", rightColumns);
         else if(format == 2)
-            setDayFormat("d", applyToRightCols->isChecked());
+            setDayFormat("d", rightColumns);
 	break;
 	}
 }
