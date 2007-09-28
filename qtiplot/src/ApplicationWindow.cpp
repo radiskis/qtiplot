@@ -1055,6 +1055,9 @@ void ApplicationWindow::initTableMenu()
 	setAsMenu->addAction(actionSetYErrCol);
 	setAsMenu->addAction(actionSetXErrCol);
 	setAsMenu->insertSeparator();
+	setAsMenu->addAction(tr("&Read-only"), this, SLOT(setReadOnlyColumns()));
+	setAsMenu->addAction(tr("Read/&Write"), this, SLOT(setReadWriteColumns()));
+	setAsMenu->insertSeparator();
 	setAsMenu->addAction(actionDisregardCol);
 	setAsMenuID = tableMenu->insertItem(tr("Set Columns &As"), setAsMenu);
 
@@ -1258,7 +1261,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 				actionShowAxisDialog->setEnabled(false);
 		} else if (w->inherits("Table")) {
 			menuBar()->insertItem(tr("&Plot"), plot2D);
-			if (w->isA("Table")){
+			if (w->inherits("Table")){
 				menuBar()->insertItem(tr("&Analysis"), dataMenu);
 				menuBar()->insertItem(tr("&Table"), tableMenu);
 			}
@@ -3229,51 +3232,41 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 		bool askPlots3D, bool askNotes)
 {
 	QList<QWidget*> *windows = windowsList();
-	if (confirmCloseTable != askTables)
-	{
+	if (confirmCloseTable != askTables){
 		confirmCloseTable=askTables;
-		for (int i = 0; i < int(windows->count());i++ )
-		{
-			if (windows->at(i)->isA("Table"))
+		for (int i = 0; i < int(windows->count());i++ ){
+			if (windows->at(i)->inherits("Table"))
 				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmCloseTable);
 		}
 	}
 
-	if (confirmCloseMatrix != askMatrices)
-	{
+	if (confirmCloseMatrix != askMatrices){
 		confirmCloseMatrix = askMatrices;
-		for (int i = 0; i < int(windows->count());i++ )
-		{
+		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->isA("Matrix"))
 				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmCloseMatrix);
 		}
 	}
 
-	if (confirmClosePlot2D != askPlots2D)
-	{
+	if (confirmClosePlot2D != askPlots2D){
 		confirmClosePlot2D=askPlots2D;
-		for (int i = 0; i < int(windows->count());i++ )
-		{
+		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->isA("MultiLayer"))
 				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmClosePlot2D);
 		}
 	}
 
-	if (confirmClosePlot3D != askPlots3D)
-	{
+	if (confirmClosePlot3D != askPlots3D){
 		confirmClosePlot3D=askPlots3D;
-		for (int i = 0; i < int(windows->count());i++ )
-		{
+		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->isA("Graph3D"))
 				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmClosePlot3D);
 		}
 	}
 
-	if (confirmCloseNotes != askNotes)
-	{
+	if (confirmCloseNotes != askNotes){
 		confirmCloseNotes = askNotes;
-		for (int i = 0; i < int(windows->count());i++ )
-		{
+		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->isA("Note"))
 				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmCloseNotes);
 		}
@@ -3397,7 +3390,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 
 void ApplicationWindow::importASCII()
 {
-	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(ws->activeWindow() && ws->activeWindow()->isA("Table"), this, d_extended_import_ASCII_dialog);
+	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(ws->activeWindow() && ws->activeWindow()->inherits("Table"), this, d_extended_import_ASCII_dialog);
 	import_dialog->setDir(asciiDirPath);
 	import_dialog->selectFilter(d_ASCII_file_filter);
 	if (import_dialog->exec() != QDialog::Accepted)
@@ -3467,7 +3460,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 		case ImportASCIIDialog::NewRows:
 			{
 				Table *t = (Table*) ws->activeWindow();
-				if (t && t->isA("Table")){
+				if (t && t->inherits("Table")){
 					for (int i=0; i<files.size(); i++)
                         t->importMultipleASCIIFiles(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
 							local_strip_spaces, local_simplify_spaces, local_import_comments, local_comment_string, import_mode);
@@ -3484,7 +3477,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 		case ImportASCIIDialog::Overwrite:
 			{
 				Table *t = (Table*) ws->activeWindow();
-				if ( t && t->isA("Table")){
+				if ( t && t->inherits("Table")){
 					t->importASCII(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
 							local_strip_spaces, local_simplify_spaces, local_import_comments, false, local_comment_string);
 					if (update_dec_separators)
@@ -5038,7 +5031,7 @@ void ApplicationWindow::saveAsTemplate(MyWidget* w, const QString& fileName)
 			filter = tr("QtiPlot Matrix Template")+" (*.qmt)";
 		else if (w->isA("MultiLayer"))
 			filter = tr("QtiPlot 2D Graph Template")+" (*.qpt)";
-		else if (w->isA("Table"))
+		else if (w->inherits("Table"))
 			filter = tr("QtiPlot Table Template")+" (*.qtt)";
 		else if (w->isA("Graph3D"))
 			filter = tr("QtiPlot 3D Surface Template")+" (*.qst)";
@@ -5517,7 +5510,7 @@ void ApplicationWindow::recalculateTable()
 	if (!w)
 		return;
 
-	if (w->isA("Table"))
+	if (w->inherits("Table"))
 		((Table*)w)->calculate();
 	else if (w->isA("Matrix"))
 		((Matrix*)w)->calculate();
@@ -5525,7 +5518,7 @@ void ApplicationWindow::recalculateTable()
 
 void ApplicationWindow::sortActiveTable()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	if (int(((Table*)ws->activeWindow())->selectedColumns().count())>0)
@@ -5536,7 +5529,7 @@ void ApplicationWindow::sortActiveTable()
 
 void ApplicationWindow::sortSelection()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	((Table*)ws->activeWindow())->sortColumnsDialog();
@@ -5556,7 +5549,7 @@ void ApplicationWindow::normalizeActiveTable()
 
 void ApplicationWindow::normalizeSelection()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	if (int(((Table*)ws->activeWindow())->selectedColumns().count())>0)
@@ -5567,7 +5560,7 @@ void ApplicationWindow::normalizeSelection()
 
 void ApplicationWindow::correlate()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	Table *t = (Table*)ws->activeWindow();
@@ -5584,7 +5577,7 @@ void ApplicationWindow::correlate()
 
 void ApplicationWindow::autoCorrelate()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	Table *t = (Table*)ws->activeWindow();
@@ -5602,7 +5595,7 @@ void ApplicationWindow::autoCorrelate()
 
 void ApplicationWindow::convolute()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	Table *t = (Table*)ws->activeWindow();
@@ -5620,7 +5613,7 @@ void ApplicationWindow::convolute()
 
 void ApplicationWindow::deconvolute()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	Table *t = (Table*)ws->activeWindow();
@@ -5661,15 +5654,13 @@ void ApplicationWindow::showRowStatistics()
 		return;
 	Table *t = (Table*)ws->activeWindow();
 
-	if (t->numSelectedRows() > 0)
-	{
+	if (t->numSelectedRows() > 0){
 		QList<int> targets;
 		for (int i=0; i < t->numRows(); i++)
 			if (t->isRowSelected(i, true))
 				targets << i;
 		newTableStatistics(t, TableStatistics::row, targets)->showNormal();
-	}
-	else
+	} else
 		QMessageBox::warning(this, tr("QtiPlot - Row selection error"),
 				tr("Please select a row first!"));
 }
@@ -5771,7 +5762,7 @@ void ApplicationWindow::showColMenu(int c)
 		colType.setTitle(tr("Set As"));
 		contextMenu.addMenu(&colType);
 
-		if (ws->activeWindow()->isA("Table")){
+		if (ws->activeWindow()->inherits("Table")){
 			contextMenu.insertSeparator();
 
 			contextMenu.addAction(actionShowColumnValuesDialog);
@@ -5849,8 +5840,7 @@ void ApplicationWindow::showColMenu(int c)
 		contextMenu.addAction(QIcon(QPixmap(paste_xpm)),tr("Past&e"), w, SLOT(pasteSelection()));
 		contextMenu.insertSeparator();
 
-		if (ws->activeWindow()->isA("Table"))
-		{
+		if (ws->activeWindow()->inherits("Table")){
 			contextMenu.addAction(QIcon(QPixmap(erase_xpm)),tr("Clea&r"), w, SLOT(clearSelection()));
 			contextMenu.addAction(QIcon(QPixmap(close_xpm)),tr("&Delete"), w, SLOT(removeCol()));
 			contextMenu.insertSeparator();
@@ -5866,11 +5856,14 @@ void ApplicationWindow::showColMenu(int c)
 		colType.addAction(actionSetXErrCol);
 		colType.addAction(actionSetYErrCol);
 		colType.insertSeparator();
+		colType.addAction(tr("&Read-only"), this, SLOT(setReadOnlyColumns()));
+		colType.addAction(tr("Read/&Write"), this, SLOT(setReadWriteColumns()));
+		colType.insertSeparator();
 		colType.addAction(actionDisregardCol);
 		colType.setTitle(tr("Set As"));
 		contextMenu.addMenu(&colType);
 
-		if (ws->activeWindow()->isA("Table"))
+		if (ws->activeWindow()->inherits("Table"))
 		{
 			contextMenu.insertSeparator();
 
@@ -6583,7 +6576,7 @@ void ApplicationWindow::showFitDialog()
 	MultiLayer* plot = 0;
 	if(w->isA("MultiLayer"))
 		plot = (MultiLayer*)w;
-	else if(w->isA("Table"))
+	else if(w->inherits("Table"))
 		plot = multilayerPlot((Table *)w, ((Table *)w)->drawableColumnSelection(), Graph::LineSymbols);
 
 	if (!plot)
@@ -6656,7 +6649,7 @@ void ApplicationWindow::showFFTDialog()
 			sd->setAttribute(Qt::WA_DeleteOnClose);
 			sd->setGraph(g);
 		}
-	} else if (w->isA("Table")) {
+	} else if (w->inherits("Table")) {
 		sd = new FFTDialog(FFTDialog::onTable, this);
 		sd->setAttribute(Qt::WA_DeleteOnClose);
 		sd->setTable((Table*)w);
@@ -7320,7 +7313,7 @@ void ApplicationWindow::pasteSelection()
 	if (!m)
 		return;
 
-	if (m->isA("Table"))
+	if (m->inherits("Table"))
 		((Table*)m)->pasteSelection();
 	else if (m->isA("Matrix"))
 		((Matrix*)m)->pasteSelection();
@@ -7463,7 +7456,7 @@ void ApplicationWindow::undo()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	if (lastModified->isA("Table")){
+	if (lastModified->inherits("Table")){
 		Table *t = (Table *)lastModified;
 		t->setNewSpecifications();
 		QString newCaption=t->oldCaption();
@@ -7492,7 +7485,7 @@ void ApplicationWindow::redo()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	if (lastModified->isA("Table"))
+	if (lastModified->inherits("Table"))
 	{
 		Table *t= (Table *)lastModified;
 		QString newCaption=t->newCaption();
@@ -7681,7 +7674,7 @@ void ApplicationWindow::removeWindowFromLists(MyWidget* w)
 		return;
 
 	QString caption = w->name();
-	if (w->isA("Table")){
+	if (w->inherits("Table")){
 		Table* m=(Table*)w;
 		for (int i=0; i<m->numCols(); i++){
 			QString name=m->colName(i);
@@ -8129,7 +8122,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 		cm.insertSeparator();
 		cm.insertItem(tr("&Properties..."), this, SLOT(windowProperties()));
 
-		if (w->isA("Table"))
+		if (w->inherits("Table"))
 		{
 			QStringList graphs = dependingPlots(w->name());
 			if (int(graphs.count())>0)
@@ -8482,7 +8475,7 @@ void ApplicationWindow::showWindowTitleBarMenu()
 
 	QMenu cm(this);
 
-	if (ws->activeWindow()->isA("Table"))
+	if (ws->activeWindow()->inherits("Table"))
 	{
 		cm.addAction(actionShowExportASCIIDialog);
 		cm.insertSeparator();
@@ -9596,6 +9589,10 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 			w->setWindowLabel(fields[1]);
 			w->setCaptionPolicy((MyWidget::CaptionPolicy)fields[2].toInt());
 			app->setListViewLabel(w->name(), fields[1]);
+		} else if (fields[0] == "ReadOnlyColumn") { // d_file_version > 91
+			fields.pop_front();
+			for (int i=0; i < w->numCols(); i++)
+				w->setReadOnlyColumn(i, fields[i] == "1");
 		} else // <data> or values
 			break;
 	}
@@ -11938,8 +11935,7 @@ void ApplicationWindow::translateCurveVert()
 		return;
 
 	MultiLayer *plot = (MultiLayer*)w;
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
@@ -11951,16 +11947,13 @@ void ApplicationWindow::translateCurveVert()
 	if (!g)
 		return;
 
-	if (g->isPiePlot())
-	{
+	if (g->isPiePlot()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("This functionality is not available for pie plots!"));
 
 		btnPointer->setChecked(true);
 		return;
-	}
-	else if (g->validCurvesDataSize())
-	{
+	} else if (g->validCurvesDataSize()) {
 		btnPointer->setChecked(true);
 		g->setActiveTool(new TranslateCurveTool(g, this, TranslateCurveTool::Vertical, info, SLOT(setText(const QString&))));
 		displayBar->show();
@@ -11969,7 +11962,7 @@ void ApplicationWindow::translateCurveVert()
 
 void ApplicationWindow::setReadOnlyCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	Table *t = (Table *)ws->activeWindow();
@@ -11978,9 +11971,31 @@ void ApplicationWindow::setReadOnlyCol()
 		t->setReadOnlyColumn(t->colIndex(list[i]), actionReadOnlyCol->isChecked());
 }
 
+void ApplicationWindow::setReadOnlyColumns()
+{
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+		return;
+
+	Table *t = (Table *)ws->activeWindow();
+    QStringList list = t->selectedColumns();
+	for (int i=0; i<(int) list.count(); i++)
+		t->setReadOnlyColumn(t->colIndex(list[i]));
+}
+
+void ApplicationWindow::setReadWriteColumns()
+{
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+		return;
+
+	Table *t = (Table *)ws->activeWindow();
+    QStringList list = t->selectedColumns();
+	for (int i=0; i<(int) list.count(); i++)
+		t->setReadOnlyColumn(t->colIndex(list[i]), false);
+}
+
 void ApplicationWindow::setAscValues()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	((Table *)ws->activeWindow())->setAscValues();
@@ -11988,7 +12003,7 @@ void ApplicationWindow::setAscValues()
 
 void ApplicationWindow::setRandomValues()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Table"))
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
 		return;
 
 	((Table *)ws->activeWindow())->setRandomValues();
@@ -13670,7 +13685,7 @@ QString ApplicationWindow::generateUniqueName(const QString& name, bool incremen
 void ApplicationWindow::clearTable()
 {
 	Table *t = (Table*)ws->activeWindow();
-	if (!t || !t->isA("Table"))
+	if (!t || !t->inherits("Table"))
 		return;
 
 	if (QMessageBox::question(this, tr("QtiPlot - Warning"),
@@ -13686,15 +13701,14 @@ void ApplicationWindow::goToRow()
 	if (!ws->activeWindow())
 		return;
 
-	if (ws->activeWindow()->isA("Table") || ws->activeWindow()->isA("Matrix"))
-	{
+	if (ws->activeWindow()->inherits("Table") || ws->activeWindow()->isA("Matrix")){
 		bool ok;
 		int row = QInputDialog::getInteger(this, tr("QtiPlot - Enter row number"), tr("Row"),
 				1, 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
 		if ( !ok )
 			return;
 
-		if (ws->activeWindow()->isA("Table"))
+		if (ws->activeWindow()->inherits("Table"))
 			((Table *)ws->activeWindow())->goToRow(row);
 		else if (ws->activeWindow()->isA("Matrix"))
 			((Matrix *)ws->activeWindow())->goToRow(row);

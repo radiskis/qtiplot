@@ -241,6 +241,14 @@ public:
 		sipCpp->setColComment(col, *a1);
 %End
 
+    void setReadOnlyColumn(SIP_PYOBJECT, bool = true);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setReadOnlyColumn(col, a1);
+%End
+
 private:
   Table(const Table&);
 };
