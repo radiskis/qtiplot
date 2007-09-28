@@ -3230,7 +3230,7 @@ void Graph::updateScale()
 			step = fabs(lst[1]-lst[0]);
 			const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(QwtPlot::xBottom);
         	if(sc_eng->transformation()->type() == QwtScaleTransformation::Log10)
-				step = log10(lst[1]/lst[0]);
+				step = fabs(log10(lst[1]/lst[0]));
 		}
 		
 		d_plot->setAxisScale (QwtPlot::xBottom, scDiv->lBound(), scDiv->hBound(), step);
@@ -3241,7 +3241,7 @@ void Graph::updateScale()
 			step = fabs(lst[1]-lst[0]);
 			const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(QwtPlot::yLeft);
         	if(sc_eng->transformation()->type() == QwtScaleTransformation::Log10)
-				step = log10(lst[1]/lst[0]);
+				step = fabs(log10(lst[1]/lst[0]));
 		}
 		
 		d_plot->setAxisScale (QwtPlot::yLeft, scDiv->lBound(), scDiv->hBound(), step);

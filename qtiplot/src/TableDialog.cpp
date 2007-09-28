@@ -132,7 +132,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     precisionBox = new QSpinBox();
     gl1->addWidget(precisionBox, 3, 1);
 
-    boxReadOnly = new QCheckBox(tr("&Read Only" ));
+    boxReadOnly = new QCheckBox(tr("&Read-only" ));
     gl1->addWidget(boxReadOnly, 4, 0);
 
 	applyToRightCols = new QCheckBox(tr( "Apply to all columns to the right" ));

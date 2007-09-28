@@ -58,6 +58,27 @@ TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Dir
 
 void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 {
+	if(((PlotCurve *)curve)->type() != Graph::Function){
+		DataCurve *c = (DataCurve *)curve;
+		Table *t = c->table();
+		if (!t)
+			return;
+		
+	    if (d_dir == Horizontal && t->isReadOnlyColumn(t->colIndex(c->xColumnName()))){
+            QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
+            tr("The column '%1' is read-only! Operation aborted!").arg(c->xColumnName()));
+			delete d_sub_tool;
+			d_graph->setActiveTool(NULL);
+			return;
+        } else if (d_dir == Vertical && t->isReadOnlyColumn(t->colIndex(c->title().text()))){
+            QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
+            tr("The column '%1' is read-only! Operation aborted!").arg(c->title().text()));
+			delete d_sub_tool;
+			d_graph->setActiveTool(NULL);
+			return;
+        } 
+	}
+		
 	d_selected_curve = curve;
 	d_curve_point = QwtDoublePoint(curve->x(point_index), curve->y(point_index));
 	delete d_sub_tool;
@@ -78,7 +99,7 @@ void TranslateCurveTool::selectDestination(const QwtDoublePoint &point)
 
 	if(((PlotCurve *)d_selected_curve)->type() == Graph::Function){
 	    if (d_dir == Horizontal){
-            QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
+            QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
             tr("This operation cannot be performed on function curves."));
         } else {
             FunctionCurve *func = (FunctionCurve *)d_selected_curve;
@@ -116,7 +137,7 @@ void TranslateCurveTool::selectDestination(const QwtDoublePoint &point)
 	if (!tab) return;
 	int col = tab->colIndex(col_name);
 	if (tab->columnType(col) != Table::Numeric) {
-		QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
+		QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
 				tr("This operation cannot be performed on curves plotted from columns having a non-numerical format."));
 		return;
 	}

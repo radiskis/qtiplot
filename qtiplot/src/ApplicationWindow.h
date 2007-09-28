@@ -716,6 +716,8 @@ public slots:
 	void setYErrCol();
 	void disregardCol();
 	void setReadOnlyCol();
+	void setReadOnlyColumns();
+	void setReadWriteColumns();
 
 	void updateConfirmOptions(bool askTables, bool askMatrixes, bool askPlots2D, bool askPlots3D, bool askNotes);
 

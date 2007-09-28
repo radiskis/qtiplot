@@ -292,6 +292,7 @@ public slots:
 	QString saveCommands();
 	QString saveColumnWidths();
 	QString saveColumnTypes();
+	QString saveReadOnlyInfo();
 
 	void setSpecifications(const QString& s);
 	QString& getSpecifications();

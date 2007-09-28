@@ -351,6 +351,16 @@ void DataPickerTool::movePoint(const QPoint &pos)
 	Table *t = ((DataCurve *)d_selected_curve)->table();
 	if (!t)
 		return;
+	
+	if (t->isReadOnlyColumn(t->colIndex(((DataCurve *)d_selected_curve)->xColumnName()))){
+    	QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
+        tr("The column '%1' is read-only! Please choose another curve!").arg(((DataCurve *)d_selected_curve)->xColumnName()));
+		return;
+	} else if (t->isReadOnlyColumn(t->colIndex(d_selected_curve->title().text()))){
+    	QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
+		tr("The column '%1' is read-only! Please choose another curve!").arg(d_selected_curve->title().text()));
+		return;
+    } 
 
 	double new_x_val = d_graph->plotWidget()->invTransform(d_selected_curve->xAxis(), pos.x());
 	double new_y_val = d_graph->plotWidget()->invTransform(d_selected_curve->yAxis(), pos.y());
