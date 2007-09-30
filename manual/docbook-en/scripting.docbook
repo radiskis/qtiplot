@@ -912,13 +912,6 @@ If <varname>enumerateRight</varname> is set to True, all the table columns start
 <varname>newName</varname> and a numerical increasing index. If this parameter is not specified,
 by default it is set to False.
 
-<para>If you want to rearrange the columns in a table, you can use the following function:</para>
-<programlisting width="40">
-t.moveColumn(col, colNumber)
-</programlisting>
-where the first parameter can be the name or the index of a column and the second can only be
-a valid column index. If the second column index is not valid, nothing is done.
-
 <para>You can normalize a single column or all columns in a table:</para>
 <programlisting width="40">
 t.normalize(col)

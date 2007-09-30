@@ -125,14 +125,6 @@ public:
 
   void deleteRows(int, int);
 
-  void moveColumn(SIP_PYOBJECT, int);
-%MethodCode
-  	sipIsErr = 0;
-  	CHECK_TABLE_COL(a0);
-	if (sipIsErr == 0)
-		sipCpp->moveColumn(col, a1-1);
-%End
-
   SIP_PYOBJECT text(SIP_PYOBJECT, int);
 %MethodCode
   sipIsErr = 0;
