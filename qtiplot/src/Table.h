@@ -140,8 +140,7 @@ public slots:
 	void insertCols(int start, int count);
 	void addCol(PlotDesignation pd = Y);
 	void addColumns(int c, bool readOnly = false);
-	void horizontalIndexChange(int, int, int);
-	void moveColumn(int from, int to);
+	void moveColumn(int, int, int);
 	//@}
 
 	//! \name Sorting

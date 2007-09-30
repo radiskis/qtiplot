@@ -89,7 +89,7 @@ void Table::init(int rows, int cols)
 	connect(d_table->verticalHeader(), SIGNAL(indexChange(int, int, int)),
 			this, SLOT(notifyChanges()));
     connect(d_table->horizontalHeader(), SIGNAL(indexChange(int, int, int)),
-			this, SLOT(horizontalIndexChange(int, int, int)));
+			this, SLOT(moveColumn(int, int, int)));
 
 	QVBoxLayout* hlayout = new QVBoxLayout(this);
 	hlayout->setMargin(0);
@@ -3248,29 +3248,19 @@ void Table::setReadOnlyColumn(int col, bool on)
     d_read_only[col] = on;
 }
 
-void Table::horizontalIndexChange(int section, int fromIndex, int toIndex)
+void Table::moveColumn(int section, int fromIndex, int toIndex)
 {
-    int dest = toIndex;
+    int to = toIndex;
     if (fromIndex < toIndex)
-        dest = toIndex - 1;
+        to = toIndex - 1;
 
-	moveColumn(fromIndex, dest);
-}
-
-void Table::moveColumn(int from, int to)
-{
-    if(from < 0 || from >= d_table->numCols())
-        return;
-    if(to < 0 || to >= d_table->numCols())
-        return;
-
-    col_label.move(from, to);
-    comments.move(from, to);
-	commands.move(from, to);
-	colTypes.move(from, to);
-	col_format.move(from, to);
-	col_plot_type.move(from, to);
-	d_read_only.move(from, to);
+    col_label.move(fromIndex, to);
+    comments.move(fromIndex, to);
+	commands.move(fromIndex, to);
+	colTypes.move(fromIndex, to);
+	col_format.move(fromIndex, to);
+	col_plot_type.move(fromIndex, to);
+	d_read_only.move(fromIndex, to);
 
 	setHeaderColType();
 }
