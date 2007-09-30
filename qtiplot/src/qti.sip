@@ -125,6 +125,14 @@ public:
 
   void deleteRows(int, int);
 
+  void moveColumn(SIP_PYOBJECT, int);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->moveColumn(col, a1-1);
+%End
+
   SIP_PYOBJECT text(SIP_PYOBJECT, int);
 %MethodCode
   sipIsErr = 0;
@@ -189,7 +197,7 @@ public:
 %End
   void notifyChanges();
 
-  void importASCII(const QString&, const QString&="\t", int=0, bool=false, bool=true, bool=false, bool=false, bool = false, const QString&="#");
+  void importASCII(const QString&, const QString&="\t", int=0, bool=false, bool=true, bool=false, bool=false, bool=false, const QString&="#", bool=false);
   bool exportASCII(const QString&, const QString&="\t", bool=false, bool=false, bool=false);
   void normalizeCol(SIP_PYOBJECT) /PyName=normalize/;
 %MethodCode

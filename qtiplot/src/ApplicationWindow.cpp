@@ -480,6 +480,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_ASCII_import_mode = int(ImportASCIIDialog::NewTables);
 	d_ASCII_comment_string = "#";
 	d_ASCII_import_comments = false;
+	d_ASCII_import_read_only = false;
 
 	d_export_col_separator = "\t";
 	d_export_col_names = false;
@@ -2540,11 +2541,11 @@ void ApplicationWindow::setPreferences(Graph* g)
  *used when importing an ASCII file
  */
 Table* ApplicationWindow::newTable(const QString& fname, const QString &sep,
-		int lines, bool renameCols, bool stripSpaces,
-		bool simplifySpaces, bool importComments, const QString &commentString)
+		int lines, bool renameCols, bool stripSpaces, bool simplifySpaces,
+		bool importComments, const QString &commentString, bool readOnly)
 {
 	Table* w = new Table(scriptEnv, fname, sep, lines, renameCols, stripSpaces,
-			simplifySpaces, importComments, commentString, fname, ws, 0, 0);
+			simplifySpaces, importComments, commentString, readOnly, fname, ws, 0, 0);
 	if (w){
 		w->setAttribute(Qt::WA_DeleteOnClose);
 		QFileInfo fi(fname);
@@ -3380,8 +3381,8 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	app->applyUserSettings();
 	app->showMaximized();
 
-	Table* t = app->newTable(fn, app->columnSeparator, 0, true, app->strip_spaces,
-                            app->simplify_spaces, app->d_ASCII_import_comments, app->d_ASCII_comment_string);
+	Table* t = app->newTable(fn, app->columnSeparator, 0, true, app->strip_spaces, app->simplify_spaces,
+                app->d_ASCII_import_comments, app->d_ASCII_comment_string, app->d_ASCII_import_read_only);
 	t->setCaptionPolicy(MyWidget::Both);
 	app->multilayerPlot(t, t->YColumns(),Graph::LineSymbols);
 	QApplication::restoreOverrideCursor();
@@ -3397,19 +3398,18 @@ void ApplicationWindow::importASCII()
 		return;
 
 	asciiDirPath = import_dialog->directory().path();
-	if (import_dialog->rememberOptions()) {
-	    d_ASCII_import_mode = import_dialog->importMode();
-		columnSeparator = import_dialog->columnSeparator();
-		ignoredLines = import_dialog->ignoredLines();
-		renameColumns = import_dialog->renameColumns();
-		strip_spaces = import_dialog->stripSpaces();
-		simplify_spaces = import_dialog->simplifySpaces();
-		d_ASCII_import_locale = import_dialog->decimalSeparators();
-		d_import_dec_separators = import_dialog->updateDecimalSeparators();
-		d_ASCII_comment_string = import_dialog->commentString();
-		d_ASCII_import_comments = import_dialog->importComments();
-		saveSettings();
-	}
+    d_ASCII_import_mode = import_dialog->importMode();
+    columnSeparator = import_dialog->columnSeparator();
+    ignoredLines = import_dialog->ignoredLines();
+    renameColumns = import_dialog->renameColumns();
+    strip_spaces = import_dialog->stripSpaces();
+    simplify_spaces = import_dialog->simplifySpaces();
+    d_ASCII_import_locale = import_dialog->decimalSeparators();
+    d_import_dec_separators = import_dialog->updateDecimalSeparators();
+    d_ASCII_comment_string = import_dialog->commentString();
+    d_ASCII_import_comments = import_dialog->importComments();
+    d_ASCII_import_read_only = import_dialog->readOnly();
+    saveSettings();
 
 	importASCII(import_dialog->selectedFiles(),
 			import_dialog->importMode(),
@@ -3421,12 +3421,14 @@ void ApplicationWindow::importASCII()
 			import_dialog->importComments(),
 			import_dialog->updateDecimalSeparators(),
 			import_dialog->decimalSeparators(),
-			import_dialog->commentString());
+			import_dialog->commentString(),
+			import_dialog->readOnly());
 }
 
-void ApplicationWindow::importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines,
-		bool local_rename_columns, bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
-		bool update_dec_separators, QLocale local_separators, const QString& local_comment_string)
+void ApplicationWindow::importASCII(const QStringList& files, int import_mode, const QString& local_column_separator,
+        int local_ignored_lines, bool local_rename_columns, bool local_strip_spaces, bool local_simplify_spaces,
+        bool local_import_comments, bool update_dec_separators, QLocale local_separators, const QString& local_comment_string,
+		bool import_read_only)
 {
 	if (files.isEmpty())
 		return;
@@ -3438,8 +3440,9 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				QStringList sorted_files = files;
 				sorted_files.sort();
 				for (int i=0; i<sorted_files.size(); i++){
-					Table *w = newTable(sorted_files[i], local_column_separator, local_ignored_lines, local_rename_columns,
-                                    local_strip_spaces, local_simplify_spaces, local_import_comments, local_comment_string);
+					Table *w = newTable(sorted_files[i], local_column_separator, local_ignored_lines,
+                                        local_rename_columns, local_strip_spaces, local_simplify_spaces,
+                                        local_import_comments, local_comment_string, import_read_only);
 					if (!w) continue;
 					w->setCaptionPolicy(MyWidget::Both);
 					setListViewLabel(w->name(), sorted_files[i]);
@@ -3463,7 +3466,8 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				if (t && t->inherits("Table")){
 					for (int i=0; i<files.size(); i++)
                         t->importMultipleASCIIFiles(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
-							local_strip_spaces, local_simplify_spaces, local_import_comments, local_comment_string, import_mode);
+							local_strip_spaces, local_simplify_spaces, local_import_comments,
+							local_comment_string, import_read_only, import_mode);
 
 					t->setWindowLabel(files.join("; "));
 					t->setCaptionPolicy(MyWidget::Name);
@@ -3479,14 +3483,16 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				Table *t = (Table*) ws->activeWindow();
 				if ( t && t->inherits("Table")){
 					t->importASCII(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
-							local_strip_spaces, local_simplify_spaces, local_import_comments, false, local_comment_string);
+                                    local_strip_spaces, local_simplify_spaces, local_import_comments, false,
+                                    local_comment_string, import_read_only);
 					if (update_dec_separators)
 						t->updateDecimalSeparators(local_separators);
 					t->setWindowLabel(files[0]);
 					t->notifyChanges();
 				} else {
 					t = newTable(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
-                        local_strip_spaces, local_simplify_spaces, local_import_comments, local_comment_string);
+                                 local_strip_spaces, local_simplify_spaces, local_import_comments,
+                                 local_comment_string, import_read_only);
 					if (update_dec_separators)
 						t->updateDecimalSeparators(local_separators);
 				}
@@ -4352,6 +4358,7 @@ void ApplicationWindow::readSettings()
 	d_ASCII_import_mode = settings.value("/ImportMode", ImportASCIIDialog::NewTables).toInt();
 	d_ASCII_comment_string = settings.value("/CommentString", "#").toString();
 	d_ASCII_import_comments = settings.value("/ImportComments", false).toBool();
+    d_ASCII_import_read_only = settings.value("/ImportReadOnly", false).toBool();
 	settings.endGroup(); // Import ASCII
 
 	settings.beginGroup("/ExportASCII");
@@ -4616,6 +4623,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/ImportMode", d_ASCII_import_mode);
     settings.setValue("/CommentString", d_ASCII_comment_string);
     settings.setValue("/ImportComments", d_ASCII_import_comments);
+    settings.setValue("/ImportReadOnly", d_ASCII_import_read_only);
 	settings.endGroup(); // ImportASCII
 
 	settings.beginGroup("/ExportASCII");
@@ -7959,7 +7967,8 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 
 		importASCII(asciiFiles, ImportASCIIDialog::NewTables, columnSeparator, ignoredLines,
                     renameColumns, strip_spaces, simplify_spaces, d_ASCII_import_comments,
-                    d_import_dec_separators, d_ASCII_import_locale, d_ASCII_comment_string);
+                    d_import_dec_separators, d_ASCII_import_locale, d_ASCII_comment_string,
+                    d_ASCII_import_read_only);
 	}
 }
 
@@ -11088,7 +11097,7 @@ void ApplicationWindow::createActions()
 	actionSetYErrCol = new QAction(QIcon(QPixmap(errors_xpm)), tr("Y &Error"), this);
 	connect(actionSetYErrCol, SIGNAL(activated()), this, SLOT(setYErrCol()));
 
-	actionDisregardCol = new QAction(tr("&None"), this);
+	actionDisregardCol = new QAction(tr("&Disregard"), this);
 	connect(actionDisregardCol, SIGNAL(activated()), this, SLOT(disregardCol()));
 
 	actionBoxPlot = new QAction(QIcon(QPixmap(boxPlot_xpm)),tr("&Box Plot"), this);
@@ -11525,7 +11534,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetZCol->setMenuText(tr("&Z"));
 	actionSetXErrCol->setMenuText(tr("X E&rror"));
 	actionSetYErrCol->setMenuText(tr("Y &Error"));
-	actionDisregardCol->setMenuText(tr("&None"));
+	actionDisregardCol->setMenuText(tr("&Disregard"));
 	actionReadOnlyCol->setMenuText(tr("&Read Only"));
 
 	actionBoxPlot->setMenuText(tr("&Box Plot"));

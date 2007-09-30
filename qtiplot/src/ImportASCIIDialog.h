@@ -83,7 +83,7 @@ public:
 	//! Whether to remove whitespace from beginning and end of lines.
 	bool stripSpaces() const { return d_strip_spaces->isChecked(); }
 	//! Whether the user wants the import options to be saved.
-	bool rememberOptions() const { return d_remember_options->isChecked(); }
+	bool readOnly() const {return d_read_only->isChecked(); }
 
 	//! Set the selected columns separator.
 	void setColumnSeparator(const QString &sep);
@@ -112,7 +112,7 @@ private:
 
 	//! Container widget for all advanced options.
 	QGroupBox *d_advanced_options;
-	QCheckBox *d_remember_options, *d_import_dec_separators;
+	QCheckBox *d_read_only, *d_import_dec_separators;
 	QPushButton *d_help_button;
 	// the actual options
 	QComboBox *d_import_mode, *d_column_separator, *boxDecimalSeparator;

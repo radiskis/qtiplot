@@ -65,7 +65,7 @@ public:
 	enum ColType{Numeric = 0, Text = 1, Date = 2, Time = 3, Month = 4, Day = 5};
 
    	Table(ScriptingEnv *env, const QString &fname,const QString &sep, int ignoredLines, bool renameCols,
-		 bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
+		 bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString, bool readOnly,
          const QString &label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 	Table(ScriptingEnv *env, int r,int c, const QString &label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 
@@ -139,7 +139,9 @@ public slots:
 	void insertCol();
 	void insertCols(int start, int count);
 	void addCol(PlotDesignation pd = Y);
-	void addColumns(int c);
+	void addColumns(int c, bool readOnly = false);
+	void horizontalIndexChange(int, int, int);
+	void moveColumn(int from, int to);
 	//@}
 
 	//! \name Sorting
@@ -279,10 +281,10 @@ public slots:
                      bool exportComments = false, bool exportSelection = false);
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
                     bool stripSpaces, bool simplifySpaces, bool importComments, bool newTable,
-                    const QString& commentString);
+                    const QString& commentString, bool readOnly = false);
 	void importMultipleASCIIFiles(const QString &fname, const QString &sep, int ignoredLines,
 					bool renameCols, bool stripSpaces, bool simplifySpaces, bool importComments,
-					const QString &commentString, int importFileAs);
+					const QString &commentString, bool readOnly, int importFileAs);
 
 	//! \name Saving and Restoring
 	//@{

@@ -68,6 +68,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	setColumnSeparator(app->columnSeparator);
     d_comment_string->setText(app->d_ASCII_comment_string);
     d_import_comments->setChecked(app->d_ASCII_import_comments);
+    d_read_only->setChecked(app->d_ASCII_import_read_only);
 
 	if (app->d_ASCII_import_locale.name() == QLocale::c().name())
         boxDecimalSeparator->setCurrentIndex(1);
@@ -170,8 +171,8 @@ void ImportASCIIDialog::initAdvancedOptions()
 	advanced_layout->addWidget(d_import_dec_separators, 4, 2, 1, 2);
 
 	QHBoxLayout *meta_options_layout = new QHBoxLayout();
-	d_remember_options = new QCheckBox(tr("Re&member the above options"));
-	meta_options_layout->addWidget(d_remember_options);
+	d_read_only = new QCheckBox(tr("Import as &read-only"));
+	meta_options_layout->addWidget(d_read_only);
 	d_help_button = new QPushButton(tr("&Help"));
 	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
 	meta_options_layout->addWidget(d_help_button);
