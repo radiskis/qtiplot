@@ -530,6 +530,7 @@ void ApplicationWindow::initToolBars()
 	addToolBar( Qt::TopToolBarArea, fileTools );
 
 	fileTools->addAction(actionNewProject);
+	fileTools->addAction(actionNewFolder);
 	fileTools->addAction(actionNewTable);
 	fileTools->addAction(actionNewMatrix);
 	fileTools->addAction(actionNewNote);
@@ -806,6 +807,7 @@ void ApplicationWindow::initMainMenu()
 	type = new QMenu(this);
 	type->setFont(appFont);
 	type->addAction(actionNewProject);
+    type->addAction(actionNewFolder);
 	type->addAction(actionNewTable);
 	type->addAction(actionNewMatrix);
 	type->addAction(actionNewNote);
@@ -1010,11 +1012,10 @@ void ApplicationWindow::initMainMenu()
 	scriptingMenu = new QMenu(this);
 	scriptingMenu->setFont(appFont);
 
-	windowsMenu = new QMenu( this );
+	windowsMenu = new QMenu(this);
 	windowsMenu->setFont(appFont);
-	windowsMenu->setCheckable( true );
-	connect( windowsMenu, SIGNAL( aboutToShow() ),
-			this, SLOT( windowsMenuAboutToShow() ) );
+	windowsMenu->setCheckable(true);
+	connect(windowsMenu, SIGNAL(aboutToShow()), this, SLOT(windowsMenuAboutToShow()));
 
 	foldersMenu = new QMenu(this);
 	foldersMenu->setFont(appFont);
@@ -1078,6 +1079,7 @@ void ApplicationWindow::initTableMenu()
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionAddColToTable);
 	tableMenu->addAction(actionShowColsDialog);
+	tableMenu->addAction(actionSwapColumns);
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionShowRowsDialog);
 	tableMenu->addAction(actionDeleteRows);
@@ -1290,11 +1292,10 @@ void ApplicationWindow::customMenu(QWidget* w)
 			connect(actionNoteEvaluate, SIGNAL(activated()), w, SLOT(evaluate()));
 		} else
 			disableActions();
-
-		menuBar()->insertItem(tr("&Windows"), windowsMenu );
 	} else
 		disableActions();
 
+    menuBar()->insertItem(tr("&Windows"), windowsMenu );
 	menuBar()->insertItem(tr("&Help"), help );
 }
 
@@ -1317,8 +1318,7 @@ void ApplicationWindow::disableActions()
 
 void ApplicationWindow::customToolBars(QWidget* w)
 {
-	if (w)
-	{
+	if (w){
 		if (!projectHas3DPlots())
 			plot3DTools->hide();
 		if (!projectHas2DPlots())
@@ -1328,8 +1328,7 @@ void ApplicationWindow::customToolBars(QWidget* w)
 		if ((int)tableWindows.count()<=0)
 			tableTools->hide();
 
-		if (w->isA("MultiLayer"))
-		{
+		if (w->isA("MultiLayer")){
 			if (plotTools->isHidden())
 				plotTools->show();
 
@@ -1337,9 +1336,7 @@ void ApplicationWindow::customToolBars(QWidget* w)
 			plot3DTools->setEnabled (false);
 			tableTools->setEnabled(false);
 			plotMatrixBar->setEnabled (false);
-		}
-		else if (w->inherits("Table"))
-		{
+		} else if (w->inherits("Table")){
 			if (tableTools->isHidden())
 				tableTools->show();
 
@@ -1347,9 +1344,7 @@ void ApplicationWindow::customToolBars(QWidget* w)
 			plot3DTools->setEnabled (false);
 			tableTools->setEnabled (true);
 			plotMatrixBar->setEnabled (false);
-		}
-		else if (w->isA("Matrix"))
-		{
+		} else if (w->isA("Matrix")) {
 			if (plotMatrixBar->isHidden())
 				plotMatrixBar->show();
 
@@ -1357,9 +1352,7 @@ void ApplicationWindow::customToolBars(QWidget* w)
 			plot3DTools->setEnabled (false);
 			tableTools->setEnabled (false);
 			plotMatrixBar->setEnabled (true);
-		}
-		else if (w->isA("Graph3D"))
-		{
+		} else if (w->isA("Graph3D")){
 			plotTools->setEnabled (false);
 			tableTools->setEnabled (false);
 			plotMatrixBar->setEnabled (false);
@@ -1374,17 +1367,13 @@ void ApplicationWindow::customToolBars(QWidget* w)
 				plot3DTools->setEnabled (true);
 
 			custom3DActions(w);
-		}
-		else if (w->isA("Note"))
-		{
+		} else if (w->isA("Note")){
 			plotTools->setEnabled (false);
 			plot3DTools->setEnabled (false);
 			tableTools->setEnabled (false);
 			plotMatrixBar->setEnabled (false);
 		}
-
-	}
-	else
+	} else
 		hideToolbars();
 }
 
@@ -7721,7 +7710,9 @@ void ApplicationWindow::closeWindow(MyWidget* window)
 		if (!tableWindows.count())
 			actionShowExportASCIIDialog->setEnabled(false);
 	}
-	window->folder()->removeWindow(window);
+
+	Folder *f = window->folder();
+	f->removeWindow(window);
 
 	//update list view in project explorer
 	Q3ListViewItem *it=lv->findItem (window->name(), 0, Q3ListView::ExactMatch|Q3ListView::CaseSensitive);
@@ -7729,6 +7720,28 @@ void ApplicationWindow::closeWindow(MyWidget* window)
 		lv->takeItem(it);
 
 	delete window;
+
+    if (show_windows_policy == ActiveFolder && !f->windowsList().count()){
+        customMenu(0);
+        customToolBars(0);
+    } else if (show_windows_policy == SubFolders && !(current_folder->children()).isEmpty()){
+		FolderListItem *fi = current_folder->folderListItem();
+		FolderListItem *item = (FolderListItem *)fi->firstChild();
+		int initial_depth = item->depth();
+		bool emptyFolder = true;
+		while (item && item->depth() >= initial_depth){
+			QList<MyWidget *> lst = item->folder()->windowsList();
+			if (lst.count() > 0){
+			    emptyFolder = false;
+                break;
+			}
+			item = (FolderListItem *)item->itemBelow();
+		}
+		if (emptyFolder){
+            customMenu(0);
+            customToolBars(0);
+		}
+    }
 	emit modified();
 }
 
@@ -10571,6 +10584,10 @@ void ApplicationWindow::createActions()
 	actionNewProject->setShortcut( tr("Ctrl+N") );
 	connect(actionNewProject, SIGNAL(activated()), this, SLOT(newProject()));
 
+    actionNewFolder = new QAction(QIcon(QPixmap(newFolder_xpm)), tr("New &Project"), this);
+	actionNewProject->setShortcut(Qt::Key_F7);
+	connect(actionNewFolder, SIGNAL(activated()), this, SLOT(addFolder()));
+
 	actionNewGraph = new QAction(QIcon(QPixmap(new_graph_xpm)), tr("New &Graph"), this);
 	actionNewGraph->setShortcut( tr("Ctrl+G") );
 	connect(actionNewGraph, SIGNAL(activated()), this, SLOT(newGraph()));
@@ -10909,6 +10926,9 @@ void ApplicationWindow::createActions()
 	actionTableRecalculate->setShortcut(tr("Ctrl+Return"));
 	connect(actionTableRecalculate, SIGNAL(activated()), this, SLOT(recalculateTable()));
 
+    actionSwapColumns = new QAction(QIcon(QPixmap(swap_columns_xpm)), tr("&Swap columns"), this);
+	connect(actionSwapColumns, SIGNAL(activated()), this, SLOT(swapColumns()));
+
 	actionShowColsDialog = new QAction(tr("&Columns..."), this);
 	connect(actionShowColsDialog, SIGNAL(activated()), this, SLOT(showColsDialog()));
 
@@ -11202,6 +11222,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionNewProject->setToolTip(tr("Open a new project"));
 	actionNewProject->setShortcut(tr("Ctrl+N"));
 
+    actionNewFolder->setMenuText(tr("New Fol&der"));
+	actionNewFolder->setToolTip(tr("Create a new folder"));
+	actionNewFolder->setShortcut(Qt::Key_F7);
+
 	actionNewGraph->setMenuText(tr("New &Graph"));
 	actionNewGraph->setToolTip(tr("Create an empty 2D plot"));
 	actionNewGraph->setShortcut(tr("Ctrl+G"));
@@ -11464,6 +11488,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowColumnValuesDialog->setMenuText(tr("Set Column &Values ..."));
 	actionShowColumnValuesDialog->setShortcut(tr("Alt+Q"));
 	actionTableRecalculate->setMenuText(tr("Recalculate"));
+	actionSwapColumns->setMenuText(tr("&Swap columns"));
 	actionShowColsDialog->setMenuText(tr("&Columns..."));
 	actionShowRowsDialog->setMenuText(tr("&Rows..."));
 
@@ -12960,10 +12985,8 @@ void ApplicationWindow::showAllFolderWindows()
 	while (item && item->depth() >= initial_depth)
 	{// show/hide windows in all subfolders
 		lst = ((Folder *)item->folder())->windowsList();
-		foreach(MyWidget *w, lst)
-		{
-			if (w && show_windows_policy == SubFolders)
-			{
+		foreach(MyWidget *w, lst){
+			if (w && show_windows_policy == SubFolders){
 				updateWindowLists(w);
 				switch (w->status())
 				{
@@ -13081,6 +13104,9 @@ void ApplicationWindow::folderProperties()
 
 void ApplicationWindow::addFolder()
 {
+    if (!explorerWindow->isVisible())
+		explorerWindow->show();
+
 	QStringList lst = current_folder->subfolders();
 	QString name =  tr("New Folder");
 	lst = lst.grep( name );
@@ -13926,4 +13952,18 @@ void ApplicationWindow::showSelectedWindows()
 			activateWindow(((WindowListItem *)item)->window());
 	}
 	folders->blockSignals(false);
+}
+
+void ApplicationWindow::swapColumns()
+{
+    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+		return;
+
+	Table *t = static_cast<Table*>(ws->activeWindow());
+	QStringList lst = t->selectedColumns();
+	if(lst.count() != 2){
+        QMessageBox::warning(this, tr("QtiPlot - Error"), tr("You must select exactly two columnw for this operation!"));
+        return;
+	}
+	t->swapColumns(t->colIndex(lst[0]), t->colIndex(lst[1]));
 }

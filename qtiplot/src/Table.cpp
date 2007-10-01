@@ -3265,6 +3265,28 @@ void Table::moveColumn(int section, int fromIndex, int toIndex)
 	setHeaderColType();
 }
 
+void Table::swapColumns(int col1, int col2)
+{
+    if (col1 < 0 || col1 >= d_table->numCols() || col2 < 0 || col2 >= d_table->numCols())
+        return;
+
+    int width1 = d_table->columnWidth(col1);
+    int width2 = d_table->columnWidth(col2);
+
+    d_table->swapColumns(col1, col2);
+    col_label.swap (col1, col2);
+    comments.swap (col1, col2);
+    commands.swap (col1, col2);
+    colTypes.swap (col1, col2);
+    col_format.swap (col1, col2);
+    col_plot_type.swap (col1, col2);
+    d_read_only.swap (col1, col2);
+
+    d_table->setColumnWidth(col1, width2);
+    d_table->setColumnWidth(col2, width1);
+    setHeaderColType();
+}
+
 /*****************************************************************************
  *
  * Class MyTable

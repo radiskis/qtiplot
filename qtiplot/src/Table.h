@@ -141,6 +141,7 @@ public slots:
 	void addCol(PlotDesignation pd = Y);
 	void addColumns(int c, bool readOnly = false);
 	void moveColumn(int, int, int);
+	void swapColumns(int, int);
 	//@}
 
 	//! \name Sorting

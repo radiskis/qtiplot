@@ -718,6 +718,7 @@ public slots:
 	void setReadOnlyCol();
 	void setReadOnlyColumns();
 	void setReadWriteColumns();
+	void swapColumns();
 
 	void updateConfirmOptions(bool askTables, bool askMatrixes, bool askPlots2D, bool askPlots3D, bool askNotes);
 
@@ -1090,7 +1091,8 @@ private:
 	QMenu *scriptingMenu;
 	QAction *actionEditCurveRange, *actionCurveFullRange, *actionShowAllCurves, *actionHideCurve, *actionHideOtherCurves;
 	QAction *actionEditFunction, *actionRemoveCurve, *actionShowCurveWorksheet, *actionShowCurvePlotDialog;
-    QAction *actionNewProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot, *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph;
+    QAction *actionNewProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
+    QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
     QAction *actionLoad, *actionUndo, *actionRedo;
     QAction *actionCopyWindow;
@@ -1099,7 +1101,7 @@ private:
 #ifdef SCRIPTING_CONSOLE
     QAction *actionShowConsole;
 #endif
-
+    QAction *actionSwapColumns;
     QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
     QAction *actionExportPDF, *actionReadOnlyCol;
     QAction *actionCloseAllWindows, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
