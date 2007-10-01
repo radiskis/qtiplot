@@ -83,7 +83,7 @@ bool PythonScript::compile(bool for_eval)
 				Py_file_input, localDict, localDict);
 		if (ret)
 			Py_DECREF(ret);
-		else 
+		else
 			PyErr_Print();
 	} else if(Context->inherits("Matrix")) {
 		// A bit of a hack, but we need either IndexError or len() from __builtins__.
@@ -169,10 +169,11 @@ QVariant PythonScript::eval()
 		pyret = PyEval_EvalCode((PyCodeObject*)PyCode, env()->globalDict(), localDict);
 	endStdoutRedirect();
 	if (!pyret){
-		if (PyErr_ExceptionMatches(PyExc_ValueError) || 
-			PyErr_ExceptionMatches(PyExc_ZeroDivisionError))
+		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
+			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){
+            PyErr_Clear(); // silently ignore errors
 			return  QVariant("");
-		else {
+		} else {
 			emit_error(env()->errorMsg(), 0);
 			return QVariant();
 		}
@@ -218,9 +219,15 @@ QVariant PythonScript::eval()
 	}
 
 	Py_DECREF(pyret);
-	if (PyErr_Occurred()) {
-		emit_error(env()->errorMsg(), 0);
-		return QVariant();
+	if (PyErr_Occurred()){
+		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
+			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){
+            PyErr_Clear(); // silently ignore errors
+			return  QVariant("");
+		} else {
+			emit_error(env()->errorMsg(), 0);
+			return QVariant();
+		}
 	} else
 		return qret;
 }
