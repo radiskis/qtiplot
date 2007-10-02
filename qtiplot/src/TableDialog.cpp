@@ -229,7 +229,7 @@ void TableDialog::updateColumn(int sc)
         buttonNext->setEnabled(true);
 
     d_table->setSelectedCol(sc);
-    d_table->table()->clearSelection ();
+    d_table->table()->clearSelection();
     d_table->table()->selectColumn(sc);
     columnsBox->setCurrentIndex(d_table->colPlotDesignation(sc));
 

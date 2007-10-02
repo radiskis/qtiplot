@@ -28,6 +28,8 @@
  ***************************************************************************/
 #include <QApplication>
 #include <QAction>
+#include <QMessageBox>
+
 #include "ApplicationWindow.h"
 
 // The following stuff is for the doxygen title page
@@ -137,8 +139,8 @@ int main( int argc, char ** argv )
 			factorySettings = true;
 		
 		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
-		mw->applyUserSettings();		
-		mw->showMaximized();
+		mw->applyUserSettings();
+		mw->restoreApplicationGeometry();	
 		mw->initWindow();
 		mw->savedProject();
 		mw->showDonationDialog();
