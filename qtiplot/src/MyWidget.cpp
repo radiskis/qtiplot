@@ -74,6 +74,12 @@ switch (caption_policy)
 	}
 };
 
+void MyWidget::resizeEvent( QResizeEvent* e )
+{
+	emit resizedWindow((QWidget *)this);
+	e->accept();
+}
+
 void MyWidget::closeEvent( QCloseEvent *e )
 {
 if (askOnClose)
@@ -209,5 +215,3 @@ void MyWidget::setMaximized()
 	w_status = Maximized;
 	emit statusChanged (this);
 }
-
-

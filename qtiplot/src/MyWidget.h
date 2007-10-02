@@ -128,6 +128,8 @@ public:
 	 * "ask on close" flag is set.
 	 */
 	void closeEvent( QCloseEvent *);
+	void resizeEvent( QResizeEvent* );
+	
 	//! Toggle the "ask on close" flag
 	void askOnCloseEvent(bool ask){askOnClose = ask;};
 	//! Filters other object's events (customizes title bar's context menu)
