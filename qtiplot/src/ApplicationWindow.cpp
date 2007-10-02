@@ -221,6 +221,9 @@ void ApplicationWindow::init(bool factorySettings)
 	explorerSplitter->addWidget(folders);
 	explorerSplitter->addWidget(lv);
 	explorerWindow->setWidget(explorerSplitter);
+	
+	QList<int> splitterSizes;
+	explorerSplitter->setSizes( splitterSizes << 45 << 45);
 	explorerWindow->hide();
 
 	logWindow = new QDockWidget(this);
@@ -2745,6 +2748,7 @@ void ApplicationWindow::initNote(Note* m, const QString& caption)
 	connect(m->textWidget(), SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
 	connect(m->textWidget(), SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
 	connect(m, SIGNAL(modifiedWindow(QWidget*)), this, SLOT(modifiedProject(QWidget*)));
+	connect(m, SIGNAL(resizedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
 	connect(m, SIGNAL(closedWindow(MyWidget*)), this, SLOT(closeWindow(MyWidget*)));
 	connect(m, SIGNAL(hiddenWindow(MyWidget*)), this, SLOT(hideWindow(MyWidget*)));
 	connect(m, SIGNAL(statusChanged(MyWidget*)), this, SLOT(updateWindowStatus(MyWidget*)));
@@ -2868,6 +2872,7 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	connect(m, SIGNAL(showTitleBarMenu()),this,SLOT(showWindowTitleBarMenu()));
 	connect(m, SIGNAL(modifiedWindow(QWidget*)), this, SLOT(modifiedProject(QWidget*)));
 	connect(m, SIGNAL(modifiedWindow(QWidget*)), this, SLOT(updateMatrixPlots(QWidget *)));
+	connect(m, SIGNAL(resizedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
 	connect(m, SIGNAL(closedWindow(MyWidget*)), this, SLOT(closeWindow(MyWidget*)));
 	connect(m, SIGNAL(hiddenWindow(MyWidget*)), this, SLOT(hideWindow(MyWidget*)));
 	connect(m, SIGNAL(statusChanged(MyWidget*)),this, SLOT(updateWindowStatus(MyWidget*)));
@@ -4176,7 +4181,14 @@ void ApplicationWindow::readSettings()
 	//restore dock windows and tool bars
 	restoreState(settings.value("/DockWindows").toByteArray());
 	explorerSplitter->restoreState(settings.value("/ExplorerSplitter").toByteArray());
-
+	QList<int> lst = explorerSplitter->sizes();
+	for (int i=0; i< lst.count(); i++){
+		if (lst[i] == 0){
+			lst[i] = 45;
+			explorerSplitter->setSizes(lst);
+		}
+	}
+	
 	QStringList applicationFont = settings.value("/Font").toStringList();
 	if (applicationFont.size() == 4)
 		appFont=QFont (applicationFont[0],applicationFont[1].toInt(),applicationFont[2].toInt(),applicationFont[3].toInt());
@@ -10578,6 +10590,7 @@ void ApplicationWindow::connectTable(Table* w)
 	connect (w,SIGNAL(removedCol(const QString&)),this,SLOT(removeCurves(const QString&)));
 	connect (w,SIGNAL(modifiedData(Table *, const QString&)),
 			this,SLOT(updateCurves(Table *, const QString&)));
+	connect (w,SIGNAL(resizedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
 	connect (w,SIGNAL(modifiedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
 	connect (w,SIGNAL(optionsDialog()),this,SLOT(showColumnOptionsDialog()));
 	connect (w,SIGNAL(colValuesDialog()),this,SLOT(showColumnValuesDialog()));
