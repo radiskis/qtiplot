@@ -142,6 +142,7 @@ public slots:
 	void addColumns(int c, bool readOnly = false);
 	void moveColumn(int, int, int);
 	void swapColumns(int, int);
+	void moveColumnBy(int cols);
 	//@}
 
 	//! \name Sorting

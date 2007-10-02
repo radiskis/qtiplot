@@ -131,7 +131,7 @@ public:
 	QTextEdit *console;
 #endif
 	QWorkspace* ws;
-    QToolBar *fileTools, *plotTools, *tableTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
+    QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
 	FolderListView *lv, *folders;
 	QToolButton *btnResults;
 	QWidgetList *hiddenWindows, *outWindows;
@@ -473,7 +473,7 @@ public slots:
 
 	QString windowGeometryInfo(MyWidget *w);
 	void restoreWindowGeometry(ApplicationWindow *app, MyWidget *w, const QString s);
-
+	void restoreApplicationGeometry();
 	void resizeActiveWindow();
 	void resizeWindow();
 
@@ -719,7 +719,11 @@ public slots:
 	void setReadOnlyColumns();
 	void setReadWriteColumns();
 	void swapColumns();
-
+	void moveColumnRight();
+	void moveColumnLeft();
+	void moveColumnFirst();
+	void moveColumnLast();
+	
 	void updateConfirmOptions(bool askTables, bool askMatrixes, bool askPlots2D, bool askPlots3D, bool askNotes);
 
 	//! \name Plot3D Tools
@@ -943,7 +947,7 @@ signals:
 public:
     bool d_backup_files;
 	WindowType d_init_window_type;
-	QRect d_script_win_rect;
+	QRect d_script_win_rect, d_app_rect;
 	bool d_script_win_on_top;
 	bool d_inform_rename_table;
 	QString d_export_col_separator;
@@ -1101,7 +1105,7 @@ private:
 #ifdef SCRIPTING_CONSOLE
     QAction *actionShowConsole;
 #endif
-    QAction *actionSwapColumns;
+    QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast;
     QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
     QAction *actionExportPDF, *actionReadOnlyCol;
     QAction *actionCloseAllWindows, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;

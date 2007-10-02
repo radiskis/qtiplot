@@ -909,7 +909,7 @@ void Table::addCol(PlotDesignation pd)
 				max = index;
 		}
 	}
-	d_table->insertColumns(cols,1);
+	d_table->insertColumns(cols);
 	d_table->ensureCellVisible ( 0, cols );
 
 	comments << QString();
@@ -3266,7 +3266,7 @@ void Table::moveColumn(int section, int fromIndex, int toIndex)
 }
 
 void Table::swapColumns(int col1, int col2)
-{
+{	
     if (col1 < 0 || col1 >= d_table->numCols() || col2 < 0 || col2 >= d_table->numCols())
         return;
 
@@ -3285,6 +3285,48 @@ void Table::swapColumns(int col1, int col2)
     d_table->setColumnWidth(col1, width2);
     d_table->setColumnWidth(col2, width1);
     setHeaderColType();
+}
+
+void Table::moveColumnBy(int cols)
+{
+	QStringList lst = selectedColumns();
+	if(lst.count() != 1){
+        QMessageBox::warning(this, tr("QtiPlot - Error"), 
+		tr("You must select exactly one column for this operation!"));
+        return;
+	}
+	
+	int oldPos = colIndex(lst[0]);
+	int newPos = oldPos + cols;
+	if (newPos < 0)
+		newPos = 0;
+	else if	(newPos >= d_table->numCols())
+		newPos = d_table->numCols() - 1;
+		
+	if (abs(cols) > 1){
+		d_table->insertColumns(newPos);
+		if (cols < 0)
+			d_table->swapColumns(oldPos + 1, newPos);
+		else
+			d_table->swapColumns(oldPos, newPos + 1);
+		
+		d_table->removeColumn(oldPos);
+		
+		col_label.move(oldPos, newPos);
+    	comments.move(oldPos, newPos);
+		commands.move(oldPos, newPos);
+		colTypes.move(oldPos, newPos);
+		col_format.move(oldPos, newPos);
+		col_plot_type.move(oldPos, newPos);
+		d_read_only.move(oldPos, newPos);
+	} else
+		swapColumns(oldPos, newPos);
+	
+	setHeaderColType();
+
+	setSelectedCol(newPos);
+    d_table->clearSelection();
+    d_table->selectColumn(newPos);
 }
 
 /*****************************************************************************

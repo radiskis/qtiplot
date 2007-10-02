@@ -981,18 +981,14 @@ void FitDialog::showExpression(int function)
 void FitDialog::addFunction()
 {
 	QString f = explainBox->text();
-	if (categoryBox->currentRow() == 2)
-	{//basic parser function
+	if (categoryBox->currentRow() == 2){//basic parser function
 		f = f.left(f.find("(", 0)+1);
-		if (editBox->hasSelectedText())
-		{
+		if (editBox->hasSelectedText()){
 			QString markedText=editBox->selectedText();
 			editBox->insert(f+markedText+")");
-		}
-		else
+		} else
 			editBox->insert(f+")");
-	}
-	else
+	}else
 		editBox->insert(f);
 
 	editBox->setFocus();
@@ -1000,8 +996,10 @@ void FitDialog::addFunction()
 
 void FitDialog::addFunctionName()
 {
-	editBox->insert(funcBox->currentItem()->text());
-	editBox->setFocus();
+	if (funcBox->count() > 0){
+		editBox->insert(funcBox->currentItem()->text());
+		editBox->setFocus();
+	}
 }
 
 void FitDialog::accept()
