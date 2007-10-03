@@ -534,6 +534,7 @@ public slots:
 	void initToolBars();
 	void initPlot3DToolBar();
 	void disableActions();
+	void customColumnActions();
 	void hideToolbars();
 	void customToolBars(QWidget* w);
 	void customMenu(QWidget* w);
@@ -723,7 +724,7 @@ public slots:
 	void moveColumnLeft();
 	void moveColumnFirst();
 	void moveColumnLast();
-	
+
 	void updateConfirmOptions(bool askTables, bool askMatrixes, bool askPlots2D, bool askPlots3D, bool askNotes);
 
 	//! \name Plot3D Tools
