@@ -221,7 +221,7 @@ void ApplicationWindow::init(bool factorySettings)
 	explorerSplitter->addWidget(folders);
 	explorerSplitter->addWidget(lv);
 	explorerWindow->setWidget(explorerSplitter);
-	
+
 	QList<int> splitterSizes;
 	explorerSplitter->setSizes( splitterSizes << 45 << 45);
 	explorerWindow->hide();
@@ -540,26 +540,18 @@ void ApplicationWindow::initToolBars()
 	fileTools->addAction(actionNewGraph);
 	fileTools->addAction(actionNewFunctionPlot);
 	fileTools->addAction(actionNewSurfacePlot);
-
 	fileTools->addSeparator ();
-
 	fileTools->addAction(actionOpen);
 	fileTools->addAction(actionOpenTemplate);
 	fileTools->addAction(actionSaveProject);
 	fileTools->addAction(actionSaveTemplate);
-
 	fileTools->addSeparator ();
-
 	fileTools->addAction(actionLoad);
-
 	fileTools->addSeparator ();
-
 	fileTools->addAction(actionCopyWindow);
 	fileTools->addAction(actionPrint);
 	fileTools->addAction(actionExportPDF);
-
 	fileTools->addSeparator();
-
 	fileTools->addAction(actionShowExplorer);
 	fileTools->addAction(actionShowLog);
 #ifdef SCRIPTING_PYTHON
@@ -586,16 +578,12 @@ void ApplicationWindow::initToolBars()
 	plotTools->addAction(actionAddLayer);
 	plotTools->addAction(actionShowLayerDialog);
 	plotTools->addAction(actionAutomaticLayout);
-
 	plotTools->addSeparator();
-
 	plotTools->addAction(actionShowCurvesDialog);
 	plotTools->addAction(actionAddErrorBars);
 	plotTools->addAction(actionAddFunctionCurve);
 	plotTools->addAction(actionNewLegend);
-
 	plotTools->addSeparator ();
-
 	plotTools->addAction(actionUnzoom);
 
 	dataTools = new QActionGroup( this );
@@ -682,11 +670,12 @@ void ApplicationWindow::initToolBars()
 
 	plotTools->addAction(actionTimeStamp);
 	plotTools->addAction(actionAddImage);
+	plotTools->hide();
 
-	tableTools = new QToolBar( tr( "Table" ), this );
+	tableTools = new QToolBar(tr("Table"), this);
 	tableTools->setObjectName("tableTools"); // this is needed for QMainWindow::restoreState()
-	tableTools->setIconSize( QSize(16,20) );
-	addToolBar( Qt::TopToolBarArea, tableTools );
+	tableTools->setIconSize( QSize(16, 20));
+	addToolBar(Qt::TopToolBarArea, tableTools);
 
 	tableTools->addAction(actionPlotL);
 	tableTools->addAction(actionPlotP);
@@ -699,25 +688,23 @@ void ApplicationWindow::initToolBars()
 	tableTools->addAction(actionBoxPlot);
 	tableTools->addAction(actionPlotVectXYXY);
 	tableTools->addAction(actionPlotVectXYAM);
-
 	tableTools->addSeparator ();
-
 	tableTools->addAction(actionPlot3DRibbon);
 	tableTools->addAction(actionPlot3DBars);
 	tableTools->addAction(actionPlot3DScatter);
 	tableTools->addAction(actionPlot3DTrajectory);
-
 	tableTools->addSeparator();
-
 	tableTools->addAction(actionAddColToTable);
 	tableTools->addAction(actionShowColStatistics);
 	tableTools->addAction(actionShowRowStatistics);
+	tableTools->setEnabled(false);
+    tableTools->hide();
 
 	columnTools = new QToolBar(tr( "Column"), this);
 	columnTools->setObjectName("columnTools"); // this is needed for QMainWindow::restoreState()
-	columnTools->setIconSize( QSize(16, 20) );
-	addToolBar( Qt::TopToolBarArea, columnTools);
-	
+	columnTools->setIconSize(QSize(16, 20));
+	addToolBar(Qt::TopToolBarArea, columnTools);
+
 	columnTools->addAction(actionSetXCol);
 	columnTools->addAction(actionSetYCol);
 	columnTools->addAction(actionSetZCol);
@@ -729,9 +716,7 @@ void ApplicationWindow::initToolBars()
 	columnTools->addAction(actionMoveColRight);
 	columnTools->addAction(actionMoveColLast);
 	columnTools->addAction(actionSwapColumns);
-	
-	plotTools->hide();
-	tableTools->hide();
+    columnTools->setEnabled(false);
 	columnTools->hide();
 
 	displayBar = new QToolBar( tr( "Data Display" ), this );
@@ -1343,8 +1328,57 @@ void ApplicationWindow::disableActions()
 	actionClearSelection->setEnabled(false);
 }
 
+void ApplicationWindow::customColumnActions()
+{
+    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+		return;
+
+    actionMoveColFirst->setEnabled(false);
+    actionMoveColLeft->setEnabled(false);
+    actionMoveColRight->setEnabled(false);
+    actionMoveColLast->setEnabled(false);
+    actionSetXCol->setEnabled(false);
+    actionSetYCol->setEnabled(false);
+    actionSetZCol->setEnabled(false);
+    actionSetYErrCol->setEnabled(false);
+    actionDisregardCol->setEnabled(false);
+    actionSwapColumns->setEnabled(false);
+
+    Table *t = static_cast<Table*>(ws->activeWindow());
+    int selectedCols = t->selectedColsNumber();
+    if (selectedCols == 1){
+        int col = t->selectedColumn();
+        if (col > 0){
+            actionMoveColFirst->setEnabled(true);
+            actionMoveColLeft->setEnabled(true);
+        }
+
+        if (col < t->numCols() - 1){
+            actionMoveColRight->setEnabled(true);
+            actionMoveColLast->setEnabled(true);
+        }
+	}
+
+	if (selectedCols >= 1){
+        actionSetXCol->setEnabled(true);
+        actionSetYCol->setEnabled(true);
+        actionSetZCol->setEnabled(true);
+        actionSetYErrCol->setEnabled(true);
+        actionDisregardCol->setEnabled(true);
+	}
+
+	if (selectedCols == 2)
+	    actionSwapColumns->setEnabled(true);
+}
+
 void ApplicationWindow::customToolBars(QWidget* w)
 {
+    plotTools->setEnabled (false);
+	tableTools->setEnabled (false);
+	columnTools->setEnabled (false);
+	plot3DTools->setEnabled (false);
+	plotMatrixBar->setEnabled (false);
+
 	if (w){
 		if (!projectHas3DPlots())
 			plot3DTools->hide();
@@ -1362,36 +1396,19 @@ void ApplicationWindow::customToolBars(QWidget* w)
 				plotTools->show();
 
 			plotTools->setEnabled (true);
-			plot3DTools->setEnabled (false);
-			tableTools->setEnabled(false);
-			columnTools->setEnabled (false);
-			plotMatrixBar->setEnabled (false);
 		} else if (w->inherits("Table")){
 			if (tableTools->isHidden())
 				tableTools->show();
 			if (columnTools->isHidden())
 				columnTools->show();
-
-			plotTools->setEnabled (false);
-			plot3DTools->setEnabled (false);
 			tableTools->setEnabled (true);
 			columnTools->setEnabled (true);
-			plotMatrixBar->setEnabled (false);
+			customColumnActions();
 		} else if (w->isA("Matrix")) {
 			if (plotMatrixBar->isHidden())
 				plotMatrixBar->show();
-
-			plotTools->setEnabled (false);
-			plot3DTools->setEnabled (false);
-			tableTools->setEnabled (false);
-			columnTools->setEnabled (false);
 			plotMatrixBar->setEnabled (true);
 		} else if (w->isA("Graph3D")){
-			plotTools->setEnabled (false);
-			tableTools->setEnabled (false);
-			columnTools->setEnabled (false);
-			plotMatrixBar->setEnabled (false);
-
 			if (plot3DTools->isHidden())
 				plot3DTools->show();
 
@@ -1402,12 +1419,6 @@ void ApplicationWindow::customToolBars(QWidget* w)
 				plot3DTools->setEnabled (true);
 
 			custom3DActions(w);
-		} else if (w->isA("Note")){
-			plotTools->setEnabled (false);
-			plot3DTools->setEnabled (false);
-			tableTools->setEnabled (false);
-			columnTools->setEnabled (false);
-			plotMatrixBar->setEnabled (false);
 		}
 	} else
 		hideToolbars();
@@ -1420,12 +1431,6 @@ void ApplicationWindow::hideToolbars()
 	tableTools->hide();
 	columnTools->hide();
 	plotMatrixBar->hide();
-
-	plotTools->setEnabled (false);
-	tableTools->setEnabled (false);
-	columnTools->setEnabled (false);
-	plot3DTools->setEnabled (false);
-	plotMatrixBar->setEnabled (false);
 }
 
 void ApplicationWindow::plot3DRibbon()
@@ -4139,7 +4144,7 @@ void ApplicationWindow::readSettings()
 	d_app_rect = QRect(settings.value("/x", 0).toInt(), settings.value("/y", 0).toInt(),
 				 settings.value("/width", 0).toInt(), settings.value("/height", 0).toInt());
 	settings.endGroup();
-	
+
 	autoSearchUpdates = settings.value("/AutoSearchUpdates", false).toBool();
 #ifdef QTIPLOT_DEMO
 	// don't overdo it.. ;)
@@ -4188,7 +4193,7 @@ void ApplicationWindow::readSettings()
 			explorerSplitter->setSizes(lst);
 		}
 	}
-	
+
 	QStringList applicationFont = settings.value("/Font").toStringList();
 	if (applicationFont.size() == 4)
 		appFont=QFont (applicationFont[0],applicationFont[1].toInt(),applicationFont[2].toInt(),applicationFont[3].toInt());
@@ -4439,18 +4444,18 @@ void ApplicationWindow::saveSettings()
 
 	/* ---------------- group General --------------- */
 	settings.beginGroup("/General");
-	
+
 	settings.beginGroup("/ApplicationGeometry");
-	d_app_rect = this->geometry();
+	d_app_rect = QRect(this->pos(), this->size());
 	if (this->isMaximized())
 		d_app_rect = QRect();
-	
+
 	settings.setValue("/x", d_app_rect.x());
 	settings.setValue("/y", d_app_rect.y());
 	settings.setValue("/width", d_app_rect.width());
 	settings.setValue("/height", d_app_rect.height());
 	settings.endGroup();
-	
+
 	settings.setValue("/AutoSearchUpdates", autoSearchUpdates);
 	settings.setValue("/Support", askForSupport);
 	settings.setValue("/Language", appLanguage);
@@ -8056,8 +8061,6 @@ void ApplicationWindow::dragEnterEvent( QDragEnterEvent* e )
 
 void ApplicationWindow::closeEvent( QCloseEvent* ce )
 {
-	d_app_rect = this->geometry();
-	
 	if (!saved){
 		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
 		switch( QMessageBox::information(this, tr("QtiPlot"), s, tr("Yes"), tr("No"),
@@ -10583,6 +10586,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 
 void ApplicationWindow::connectTable(Table* w)
 {
+    connect (w->table(), SIGNAL(selectionChanged()), this, SLOT(customColumnActions()));
 	connect (w,SIGNAL(showTitleBarMenu()),this,SLOT(showWindowTitleBarMenu()));
 	connect (w,SIGNAL(statusChanged(MyWidget*)),this, SLOT(updateWindowStatus(MyWidget*)));
 	connect (w,SIGNAL(hiddenWindow(MyWidget*)),this, SLOT(hideWindow(MyWidget*)));
@@ -10991,16 +10995,16 @@ void ApplicationWindow::createActions()
     actionSwapColumns = new QAction(QIcon(QPixmap(swap_columns_xpm)), tr("&Swap columns"), this);
 	connect(actionSwapColumns, SIGNAL(activated()), this, SLOT(swapColumns()));
 
-	actionMoveColRight = new QAction(QIcon(QPixmap(move_col_right_xpm)), tr("Move to the &right"), this);
+	actionMoveColRight = new QAction(QIcon(QPixmap(move_col_right_xpm)), tr("Move &Right"), this);
 	connect(actionMoveColRight, SIGNAL(activated()), this, SLOT(moveColumnRight()));
 
-	actionMoveColLeft = new QAction(QIcon(QPixmap(move_col_left_xpm)), tr("Move to the &left"), this);
+	actionMoveColLeft = new QAction(QIcon(QPixmap(move_col_left_xpm)), tr("Move &Left"), this);
 	connect(actionMoveColLeft, SIGNAL(activated()), this, SLOT(moveColumnLeft()));
 
-	actionMoveColFirst = new QAction(QIcon(QPixmap(move_col_first_xpm)), tr("Move to the &left"), this);
+	actionMoveColFirst = new QAction(QIcon(QPixmap(move_col_first_xpm)), tr("Move to F&irst"), this);
 	connect(actionMoveColFirst, SIGNAL(activated()), this, SLOT(moveColumnFirst()));
 
-	actionMoveColLast = new QAction(QIcon(QPixmap(move_col_last_xpm)), tr("Move to the &left"), this);
+	actionMoveColLast = new QAction(QIcon(QPixmap(move_col_last_xpm)), tr("Move to Las&t"), this);
 	connect(actionMoveColLast, SIGNAL(activated()), this, SLOT(moveColumnLast()));
 
 	actionShowColsDialog = new QAction(tr("&Columns..."), this);
@@ -11563,10 +11567,15 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowColumnValuesDialog->setShortcut(tr("Alt+Q"));
 	actionTableRecalculate->setMenuText(tr("Recalculate"));
 	actionSwapColumns->setMenuText(tr("&Swap columns"));
-	actionMoveColRight->setMenuText(tr("Move to the &right"));
-	actionMoveColLeft->setMenuText(tr("Move to the &left"));
-	actionMoveColFirst->setMenuText(tr("Move &first"));
-	actionMoveColLast->setMenuText(tr("Move las&t"));
+	actionSwapColumns->setToolTip(tr("Swap selected columns"));
+	actionMoveColRight->setMenuText(tr("Move &Right"));
+    actionMoveColRight->setToolTip(tr("Move Right"));
+	actionMoveColLeft->setMenuText(tr("Move &Left"));
+    actionMoveColLeft->setToolTip(tr("Move Left"));
+	actionMoveColFirst->setMenuText(tr("Move to F&irst"));
+	actionMoveColFirst->setToolTip(tr("Move to First"));
+	actionMoveColLast->setMenuText(tr("Move to Las&t"));
+    actionMoveColLast->setToolTip(tr("Move to Last"));
 	actionShowColsDialog->setMenuText(tr("&Columns..."));
 	actionShowRowsDialog->setMenuText(tr("&Rows..."));
 
@@ -14039,10 +14048,9 @@ void ApplicationWindow::swapColumns()
 
 	Table *t = static_cast<Table*>(ws->activeWindow());
 	QStringList lst = t->selectedColumns();
-	if(lst.count() != 2){
-        QMessageBox::warning(this, tr("QtiPlot - Error"), tr("You must select exactly two columns for this operation!"));
+	if(lst.count() != 2)
         return;
-	}
+
 	t->swapColumns(t->colIndex(lst[0]), t->colIndex(lst[1]));
 }
 
@@ -14088,9 +14096,9 @@ void ApplicationWindow::moveColumnLast()
 
 void ApplicationWindow::restoreApplicationGeometry()
 {
-	if (d_app_rect.isNull())		
+	if (d_app_rect.isNull())
 		showMaximized();
-	else {			
+	else {
 		resize(d_app_rect.size());
 		move(d_app_rect.topLeft());
 		show();
