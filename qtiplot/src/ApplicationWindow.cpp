@@ -579,8 +579,8 @@ void ApplicationWindow::initToolBars()
 	plotTools->addAction(actionShowLayerDialog);
 	plotTools->addAction(actionAutomaticLayout);
 	plotTools->addSeparator();
-	plotTools->addAction(actionShowCurvesDialog);
 	plotTools->addAction(actionAddErrorBars);
+	plotTools->addAction(actionShowCurvesDialog);
 	plotTools->addAction(actionAddFunctionCurve);
 	plotTools->addAction(actionNewLegend);
 	plotTools->addSeparator ();
@@ -891,8 +891,8 @@ void ApplicationWindow::initMainMenu()
 	graph = new QMenu(this);
 	graph->setFont(appFont);
 	graph->setCheckable(true);
-	graph->addAction(actionShowCurvesDialog);
 	graph->addAction(actionAddErrorBars);
+	graph->addAction(actionShowCurvesDialog);
 	graph->addAction(actionAddFunctionCurve);
 	graph->addAction(actionNewLegend);
 
@@ -9600,20 +9600,20 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 
     w->table()->blockSignals(true);
 	//read and set table values
-	for (; line!=flist.end() && *line != "</data>"; line++)
-	{
+	for (; line!=flist.end() && *line != "</data>"; line++){
 		QStringList fields = (*line).split("\t");
 		int row = fields[0].toInt();
-		for (int col=0; col<cols; col++)
-		{
+		for (int col=0; col<cols; col++){
 		    QString cell = fields[col+1];
 		    if (cell.isEmpty())
                 continue;
 
 		    if (d_file_version < 90)
                 w->setCell(row, col, QLocale::c().toDouble(cell));
-            else
+            else if (d_file_version == 90)
                 w->setText(row, col, cell);
+			else 
+				w->setCell(row, col, cell.toDouble());
 		}
 		qApp->processEvents(QEventLoop::ExcludeUserInput);
 	}
@@ -9689,16 +9689,20 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 	{//read and set table values
 		QStringList fields = (*line).split("\t");
 		int row = fields[0].toInt();
-		for (int col=0; col<cols; col++)
-		{
+		for (int col=0; col<cols; col++){
 		    if (fields.count() >= col+2){
 		        QString cell = fields[col+1];
 		        if (cell.isEmpty())
                     continue;
 
-		        if (d_file_version < 90 && w->columnType(col) == Table::Numeric)
-                    w->setCell(row, col, QLocale::c().toDouble(cell.replace(",", ".")));
-		        else
+				if (w->columnType(col) == Table::Numeric){
+		        	if (d_file_version < 90)
+                    	w->setCell(row, col, QLocale::c().toDouble(cell.replace(",", ".")));
+					else if (d_file_version == 90)
+						w->setText(row, col, cell);
+					else if (d_file_version >= 91)
+						w->setCell(row, col, cell.toDouble());
+		        } else
                     w->setText(row, col, cell);
 		    }
 		}

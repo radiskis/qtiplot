@@ -284,15 +284,13 @@ QString Matrix::saveText()
 {
 	QString out_text = "<data>\n";
 	int cols = d_table->columnCount() - 1;
-	for(int i=0; i<d_table->rowCount(); i++)
-	{
-		if (!isEmptyRow(i))
-		{
+	for(int i=0; i<d_table->rowCount(); i++){
+		if (!isEmptyRow(i)){
 			out_text += QString::number(i)+"\t";
 			for(int j=0; j<cols; j++)
-				out_text += text(i, j) + "\t";
+				out_text += QString::number(cell(i, j), 'e', 16) + "\t";
 
-			out_text += text(i, cols)+"\n";
+			out_text += QString::number(cell(i, cols-1), 'e', 16) + "\n";
 		}
 	}
 	return out_text + "</data>\n";
