@@ -1569,16 +1569,13 @@ QString Table::saveText()
 	QString text = "<data>\n";
 	int cols=d_table->numCols();
 	int rows=d_table->numRows();
-
-	for (int i=0; i<rows; i++)
-	{
-		if (!isEmptyRow(i))
-		{
-			text+=QString::number(i)+"\t";
+	for (int i=0; i<rows; i++){
+		if (!isEmptyRow(i)){
+			text += QString::number(i) + "\t";
 			for (int j=0; j<cols-1; j++)
-				text+=d_table->text(i,j)+"\t";
+				text += QString::number(cell(i, j), 'e', 16)+"\t";
 
-			text+=d_table->text(i,cols-1)+"\n";
+			text += QString::number(cell(i, cols-1), 'e', 16)+"\n";
 		}
 	}
 	return text + "</data>\n";
@@ -1587,8 +1584,7 @@ QString Table::saveText()
 int Table::nonEmptyRows()
 {
 	int r=0;
-	for (int i=0;i<d_table->numRows();i++)
-	{
+	for (int i=0;i<d_table->numRows();i++){
 		if (!isEmptyRow(i))
 			r++;
 	}
