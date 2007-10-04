@@ -253,6 +253,10 @@ public slots:
 					   double xl, double xr,double yl, double yr, double zl, double zr);
     Graph3D* plotSurface(const QString& formula, double xl, double xr,
 					   double yl, double yr, double zl, double zr);
+	Graph3D* plotParametricSurface(const QString& xFormula, const QString& yFormula,
+						const QString& zFormula, double ul, double ur, double vl, double vr, 
+						int columns, int rows, bool uPeriodic, bool vPeriodic);
+
 	void connectSurfacePlot(Graph3D *plot);
 	void newSurfacePlot();
 	void editSurfacePlot();

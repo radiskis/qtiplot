@@ -76,6 +76,61 @@ double UserFunction::operator()(double x, double y)
 	return result;
 }
 
+UserParametricSurface::UserParametricSurface(const QString& xFormula, const QString& yFormula, 
+											 const QString& zFormula, SurfacePlot& pw)
+: ParametricSurface(pw),
+d_x_formula(xFormula),
+d_y_formula(yFormula),
+d_z_formula(zFormula)
+{}
+
+void UserParametricSurface::setDomain(double ul, double ur, double vl, double vr)
+{
+	ParametricSurface::setDomain(ul, ur, vl, vr);
+	d_ul = ul;
+	d_ur = ur;
+	d_vl = vl;
+	d_vr = vr;
+}
+	
+void UserParametricSurface::setMesh (unsigned int columns, unsigned int rows)
+{
+	ParametricSurface::setMesh (columns, rows);
+	d_columns = columns;
+	d_rows = rows;
+}
+	
+void UserParametricSurface::setPeriodic (bool u, bool v)
+{
+	ParametricSurface::setPeriodic (u, v);
+	d_u_periodic = u;
+	d_v_periodic = v;
+}
+
+Triple UserParametricSurface::operator()(double u, double v)
+{
+	if (d_x_formula.isEmpty() || d_y_formula.isEmpty() || d_z_formula.isEmpty())
+		return Triple(0.0, 0.0, 0.0);
+
+	double x = 0.0, y = 0.0, z = 0.0;
+	MyParser parser;
+	try{
+		parser.DefineVar("u", &u);
+		parser.DefineVar("v", &v);
+
+		parser.SetExpr((const std::string)d_x_formula.ascii());
+		x = parser.Eval();
+		parser.SetExpr((const std::string)d_y_formula.ascii());
+		y = parser.Eval();
+		parser.SetExpr((const std::string)d_z_formula.ascii());
+		z = parser.Eval();
+	}
+	catch(mu::ParserError &e){
+		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdString(e.GetMsg()));
+	}
+	return Triple(x, y, z);
+}
+
 Graph3D::Graph3D(const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
 : MyWidget(label,parent,name,f)
 {
@@ -147,6 +202,7 @@ void Graph3D::initPlot()
 
 	pointStyle = None;
 	d_func = 0;
+	d_surface = 0;
 	alpha = 1.0;
 	barsRad = 0.007;
 	d_point_size = 5; d_smooth_points = false;
@@ -200,6 +256,11 @@ void Graph3D::initCoord()
 void Graph3D::addFunction(const QString& s,double xl,double xr,double yl,
 		double yr,double zl,double zr)
 {
+	if (d_surface)
+		delete d_surface;
+	else if (d_func)
+		delete d_func;
+	
 	sp->makeCurrent();
 	sp->resize(this->size());
 
@@ -219,6 +280,38 @@ void Graph3D::addFunction(const QString& s,double xl,double xr,double yl,
 		pointStyle = None;
 	}
   	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+	findBestLayout();
+	update();
+}
+
+void Graph3D::addParametricSurface(const QString& xFormula, const QString& yFormula,
+						const QString& zFormula, double ul, double ur, double vl, double vr, 
+						int columns, int rows, bool uPeriodic, bool vPeriodic)
+{
+	if (d_surface)
+		delete d_surface;
+	else if (d_func)
+		delete d_func;
+	
+	sp->makeCurrent();
+	sp->resize(this->size());
+
+	d_surface = new UserParametricSurface(xFormula, yFormula, zFormula, *sp);
+	d_surface->setMesh(columns, rows);
+	d_surface->setDomain(ul, ur, vl, vr);
+	d_surface->setPeriodic(uPeriodic, vPeriodic);
+	d_surface->create();
+
+	double zl, zr;
+	sp->coordinates()->axes[Z1].limits(zl, zr);
+	sp->legend()->setLimits(zl, zr);
+
+	if (sp->plotStyle() == NOPLOT){
+		sp->setPlotStyle(FILLED);
+		style_=FILLED;
+		pointStyle = None;
+	}
+  	//sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	findBestLayout();
 	update();
 }
@@ -1093,6 +1186,10 @@ void Graph3D::updateScale(int axis, const QStringList& options)
 					d_func->setDomain(xl,xr,yl,yr);
 					d_func->create ();
 					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
+				} else if (d_surface){
+					d_surface->restrictRange (ParallelEpiped(Triple(xl, yl, start), Triple(xr, yr, stop)));
+					d_surface->create();
+					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
 				} else
 					setScales(xl, xr, yl, yr, start, stop);
 			}
@@ -1137,6 +1234,10 @@ void Graph3D::updateScale(int axis, const QStringList& options)
 				if (d_func){
 					d_func->setDomain(xl, xr, yl, yr);
 					d_func->create();
+					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
+				} else if (d_surface){
+					d_surface->restrictRange (ParallelEpiped(Triple(xl, yl, start), Triple(xr, yr, stop)));
+					d_surface->create();
 					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
 				} else
 					setScales(xl, xr, yl, yr, start, stop);
@@ -1183,6 +1284,10 @@ void Graph3D::updateScale(int axis, const QStringList& options)
 					d_func->setMinZ(start);
 					d_func->setMaxZ(stop);
 					d_func->create ();
+					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
+				} else if (d_surface){
+					d_surface->restrictRange (ParallelEpiped(Triple(xl, yl, start), Triple(xr, yr, stop)));
+					d_surface->create();
 					sp->createCoordinateSystem(Triple(xl, yl, start), Triple(xr, yr, stop));
 				} else
 					setScales(xl, xr, yl, yr, start, stop);
@@ -1492,8 +1597,7 @@ void Graph3D::setColors(const QStringList& colors)
 	gridCol=QColor(colors[6]);
 	sp->coordinates()->setGridLinesColor(Qt2GL(gridCol));
 
-	if ((int)colors.count()>7)
-	{
+	if ((int)colors.count()>7){
 		QColor min=QColor(colors[7]);
 		QColor max=QColor(colors[8]);
 		alpha = colors[9].toDouble();
@@ -2143,10 +2247,20 @@ QString Graph3D::saveToString(const QString& geometry)
 
 	sp->makeCurrent();
 	if (d_func)
-		s+=d_func->function()+"\t";
-	else {
-		s+= plotAssociation;
-		s+="\t";
+		s += d_func->function()+"\t";
+	else if (d_surface){
+		s += d_surface->xFormula() + "," + d_surface->yFormula() + "," + d_surface->zFormula() + ",";
+		s += QString::number(d_surface->uStart(), 'e', 15) + ",";
+		s += QString::number(d_surface->uEnd(), 'e', 15) + ",";
+		s += QString::number(d_surface->vStart(), 'e', 15) + ",";
+		s += QString::number(d_surface->vEnd(), 'e', 15) + ",";
+		s += QString::number(d_surface->columns()) + ",";
+		s += QString::number(d_surface->rows()) + ",";
+		s += QString::number(d_surface->uPeriodic()) + ",";
+		s += QString::number(d_surface->vPeriodic());
+	} else {
+		s += plotAssociation;
+		s += "\t";
 	}
 
 	double start,stop;
@@ -2611,14 +2725,14 @@ void Graph3D::copy(Graph3D* g)
 	if (g->plotStyle() == Qwt3D::USER ){
 		switch (pointStyle){
 			case None :
-					sp->setPlotStyle(g->plotStyle());
-				break;
+				sp->setPlotStyle(g->plotStyle());
+			break;
 
 			case Dots :
-					d_point_size = g->pointsSize();
-					d_smooth_points = g->smoothPoints();
-					sp->setPlotStyle(Dot(d_point_size, d_smooth_points));
-				break;
+				d_point_size = g->pointsSize();
+				d_smooth_points = g->smoothPoints();
+				sp->setPlotStyle(Dot(d_point_size, d_smooth_points));
+			break;
 
 			case VerticalBars :
 				setBarRadius(g->barsRadius());
@@ -2682,6 +2796,8 @@ void Graph3D::copy(Graph3D* g)
 
 Graph3D::~Graph3D()
 {
+	if (d_surface)
+		delete d_surface;
 	if (d_func)
 		delete d_func;
 

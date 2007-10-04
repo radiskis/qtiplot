@@ -1932,15 +1932,13 @@ void ApplicationWindow::editSurfacePlot()
 		SurfaceDialog* sd = new SurfaceDialog(this);
 		sd->setAttribute(Qt::WA_DeleteOnClose);
 		connect (sd,SIGNAL(options(const QString&,double,double,double,double,double,double)),
-				g, SLOT(addFunction(const QString&,double,double,double,double,double,double)));
-		connect (sd, SIGNAL(clearFunctionsList()), this, SLOT(clearSurfaceFunctionsList()));
-
-		sd->insertFunctionsList(surfaceFunc);
-		if (g->hasData()){
+                  g, SLOT(addFunction(const QString&,double,double,double,double,double,double)));
+		
+		if (g->hasData() && g->userFunction()){
 			sd->setFunction(g->formula());
-			sd->setLimits(g->xStart(), g->xStop(), g->yStart(),
-					g->yStop(), g->zStart(), g->zStop());
-		}
+			sd->setLimits(g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
+		} else if (g->hasData() && g->parametricSurface())
+			sd->setParametricSurface(g);
 		sd->exec();
 	}
 }
@@ -1949,11 +1947,8 @@ void ApplicationWindow::newSurfacePlot()
 {
 	SurfaceDialog* sd = new SurfaceDialog(this);
 	sd->setAttribute(Qt::WA_DeleteOnClose);
-	connect (sd,SIGNAL(options(const QString&,double,double,double,double,double,double)),
-			this, SLOT(plotSurface(const QString&,double,double,double,double,double,double)));
-	connect (sd,SIGNAL(clearFunctionsList()),this,SLOT(clearSurfaceFunctionsList()));
-
-	sd->insertFunctionsList(surfaceFunc);
+	connect (sd, SIGNAL(options(const QString&,double,double,double,double,double,double)),
+             this, SLOT(plotSurface(const QString&,double,double,double,double,double,double)));
 	sd->exec();
 }
 
@@ -1976,6 +1971,25 @@ Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, doubl
 	return plot;
 }
 
+Graph3D* ApplicationWindow::plotParametricSurface(const QString& xFormula, const QString& yFormula,
+		const QString& zFormula, double ul, double ur, double vl, double vr, 
+		int columns, int rows, bool uPeriodic, bool vPeriodic)
+{
+	QString label = generateUniqueName(tr("Graph"));
+
+	Graph3D *plot = new Graph3D("", ws);
+	plot->setAttribute(Qt::WA_DeleteOnClose);
+	plot->resize(500, 400);
+	plot->setWindowTitle(label);
+	plot->setName(label);
+	customPlot3D(plot);
+	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr, 
+								columns, rows, uPeriodic, vPeriodic);
+	initPlot3D(plot);
+	emit modified();
+	return plot;
+}
+
 void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 {
 	surfaceFunc.remove(s);
@@ -1985,8 +1999,7 @@ void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 }
 
 Graph3D* ApplicationWindow::newSurfacePlot(const QString& caption,const QString& formula,
-		double xl, double xr,double yl, double yr,
-		double zl, double zr)
+		double xl, double xr,double yl, double yr, double zl, double zr)
 {
 	Graph3D *plot = new Graph3D("",ws,0);
 	plot->setAttribute(Qt::WA_DeleteOnClose);
@@ -5202,13 +5215,6 @@ bool ApplicationWindow::setWindowName(MyWidget *w, const QString &text)
 	}
 
 	if (w->inherits("Table")){
-		/*QStringList labels=((Table *)w)->colNames();
-		if (labels.contains(newName)>0){
-			QMessageBox::critical(this, tr("QtiPlot - Error"),
-					tr("The table name must be different from the names of its columns!")+"<p>"+tr("Please choose another name!"));
-			return false;
-		}*/
-
 		int id = tableWindows.findIndex(name);
 		tableWindows[id] = newName;
 		updateTableNames(name, newName);
@@ -7466,7 +7472,11 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 		QString s = g->formula();
 		if (g->userFunction())
 			nw = newSurfacePlot(caption, s, g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
-		else if (s.endsWith("(Z)"))
+		else if (g->parametricSurface()){
+			UserParametricSurface *s = g->parametricSurface();
+			nw = plotParametricSurface(s->xFormula(), s->yFormula(), s->zFormula(), s->uStart(), s->uEnd(),
+				 	s->vStart(), s->vEnd(), s->columns(), s->rows(), s->uPeriodic(), s->vPeriodic());
+		} else if (s.endsWith("(Z)"))
 			nw = openPlotXYZ(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
 		else if (s.endsWith("(Y)"))//Ribbon plot
 			nw = dataPlot3D(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
@@ -8506,12 +8516,9 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(actionPrint);
 		cm.insertSeparator();
 		cm.addAction(actionCloseWindow);
-	}
-	else if (w->isA("Graph3D"))
-	{
+	} else if (w->isA("Graph3D")){
 		Graph3D *g=(Graph3D*)w;
-		if (!g->hasData())
-		{
+		if (!g->hasData()){
 			cm.insertItem(tr("3D &Plot"), &plot3D);
 			plot3D.addAction(actionAdd3DData);
 			plot3D.insertItem(tr("&Matrix..."), this, SLOT(add3DMatrixPlot()));
@@ -8521,7 +8528,7 @@ void ApplicationWindow::showWindowContextMenu()
 				cm.insertItem(tr("Choose &Data Set..."), this, SLOT(change3DData()));
 			else if (g->matrix())
 				cm.insertItem(tr("Choose &Matrix..."), this, SLOT(change3DMatrix()));
-			else if (g->userFunction())
+			else if (g->userFunction() || g->parametricSurface())
 				cm.addAction(actionEditSurfacePlot);
 			cm.insertItem(QPixmap(erase_xpm), tr("C&lear"), g, SLOT(clearData()));
 		}
@@ -10321,15 +10328,19 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 	else if (fList[1].startsWith("matrix<",true) && fList[1].endsWith(">",false))
 		plot=app->openMatrixPlot3D(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
 				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	else
+	else if (fList[1].contains(",")){
+		QStringList l = fList[1].split(",", QString::SkipEmptyParts);
+		plot = app->plotParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
+				l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
+		app->setWindowName(plot, caption);
+	} else
 		plot=app->newSurfacePlot(caption, fList[1],fList[2].toDouble(),fList[3].toDouble(),
-				fList[4].toDouble(),fList[5].toDouble(),
-				fList[6].toDouble(),fList[7].toDouble());
+				fList[4].toDouble(),fList[5].toDouble(), fList[6].toDouble(),fList[7].toDouble());
 
 	if (!plot)
 		return 0;
 
-	app->setListViewDate(caption,date);
+	app->setListViewDate(caption, date);
 	plot->setBirthDate(date);
 	plot->setIgnoreFonts(true);
 	restoreWindowGeometry(app, plot, lst[1]);
@@ -10381,6 +10392,7 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 
 	plot->setStyle(lst[3].split("\t", QString::SkipEmptyParts));
 	plot->setIgnoreFonts(true);
+	plot->update();
 	return plot;
 }
 

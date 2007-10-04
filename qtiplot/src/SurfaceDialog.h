@@ -29,13 +29,16 @@
 #ifndef SURFACEDIALOG_H
 #define SURFACEDIALOG_H
 
-#include <qvariant.h>
-#include <qdialog.h>
+#include <QDialog>
 
 class QPushButton;
 class QLineEdit;
+class QCheckBox;
 class QComboBox;
-
+class QStackedWidget;
+class QSpinBox;
+class Graph3D;
+	
 //! Define surface plot dialog
 class SurfaceDialog : public QDialog
 {
@@ -46,20 +49,32 @@ public:
 
 public slots:
 	void accept();
-	void insertFunctionsList(const QStringList& list);
-	void clearList();
 	void setFunction(const QString& s);
 	void setLimits(double xs, double xe, double ys, double ye, double zs, double ze);
+	void setParametricSurface(Graph3D *);
 
 signals:
-	void options(const QString&,double,double,double,double,double,double);
-	void clearFunctionsList();
-	void custom3DToolBar();
+     void options(const QString&,double,double,double,double,double,double);
+
+private slots:
+	void clearList();
+	void raiseWidget(int index);
 
 private:
+	Graph3D *d_graph;
+
+	void acceptParametricSurface();
+	void acceptFunction();
+	void initFunctionPage();
+	void initParametricSurfacePage();
+	
+	QWidget* functionPage;
+	QWidget* parametricPage;
+	QStackedWidget* optionStack;
     QPushButton* buttonOk;
 	QPushButton* buttonCancel;
 	QPushButton* buttonClear;
+	QComboBox* boxType;
 	QComboBox* boxFunction;
 	QLineEdit* boxXFrom;
 	QLineEdit* boxXTo;
@@ -67,8 +82,18 @@ private:
 	QLineEdit* boxYTo;
 	QLineEdit* boxZFrom;
 	QLineEdit* boxZTo;
+	
+	QLineEdit* boxX;
+	QLineEdit* boxY;
+	QLineEdit* boxZ;
+
+	QLineEdit* boxUFrom;
+	QLineEdit* boxUTo;
+	QLineEdit* boxVFrom;
+	QLineEdit* boxVTo;
+	
+	QCheckBox *boxUPeriodic, *boxVPeriodic;
+	QSpinBox *boxColumns, *boxRows;
 };
 
 #endif
-
-
