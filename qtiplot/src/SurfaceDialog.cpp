@@ -29,6 +29,7 @@
 #include "SurfaceDialog.h"
 #include "MyParser.h"
 #include "ApplicationWindow.h"
+#include "Graph3D.h"
 
 #include <QMessageBox>
 #include <QLayout>
@@ -37,6 +38,9 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCheckBox>
+#include <QSpinBox>
+#include <QStackedWidget>
 
 SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -45,6 +49,50 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
 	setWindowTitle(tr("QtiPlot - Define surface plot"));
     setSizeGripEnabled( true );
 
+	QHBoxLayout *hbox1 = new QHBoxLayout();
+	hbox1->addWidget(new QLabel(tr( "Surface type" )));
+	boxType = new QComboBox();
+	boxType->addItem( tr( "Function" ) );
+	boxType->addItem( tr( "Parametric" ) );
+	hbox1->addWidget(boxType);
+	hbox1->addStretch();
+	
+	optionStack = new QStackedWidget();
+
+	initFunctionPage();
+	initParametricSurfacePage();
+	
+	buttonClear = new QPushButton(tr("Clear &list"));
+	buttonOk = new QPushButton(tr("&OK"));
+    buttonOk->setDefault(true);
+    buttonCancel = new QPushButton(tr("&Close"));
+
+    QBoxLayout *bl2 = new QBoxLayout ( QBoxLayout::LeftToRight);
+    bl2->addStretch();
+	bl2->addWidget(buttonClear);
+	bl2->addWidget(buttonOk);
+	bl2->addWidget(buttonCancel);
+
+	QVBoxLayout* vl = new QVBoxLayout(this);
+    vl->addLayout(hbox1);
+	vl->addWidget(optionStack);
+	vl->addLayout(bl2);
+
+	ApplicationWindow *app = (ApplicationWindow *)parent;
+	if (app)
+		boxFunction->insertStringList (app->surfaceFunc, 1);
+	
+	d_graph = 0;
+    setFocusProxy(boxFunction);
+
+	connect( boxType, SIGNAL(activated(int)), this, SLOT(raiseWidget(int)));
+	connect( buttonClear, SIGNAL(clicked()), this, SLOT(clearList()));
+    connect( buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
+    connect( buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
+}
+
+void SurfaceDialog::initFunctionPage()
+{	
 	boxFunction = new QComboBox();
 	boxFunction->setEditable(true);
 
@@ -97,40 +145,106 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
     gl3->addWidget(boxZTo, 1, 1);
     gl3->setRowStretch(2, 1);
     gb3->setLayout(gl3);
+	
+	QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
+	bl2->addWidget(gb1);
+	bl2->addWidget(gb2);
+	bl2->addWidget(gb3);
 
-    QBoxLayout *bl3 = new QBoxLayout (QBoxLayout::LeftToRight);
-	bl3->addWidget(gb1);
-	bl3->addWidget(gb2);
-	bl3->addWidget(gb3);
+	functionPage = new QWidget();
 
-	buttonClear = new QPushButton(tr("Clear &list"));
-	buttonOk = new QPushButton(tr("&OK"));
-    buttonOk->setDefault(true);
-    buttonCancel = new QPushButton(tr("&Close"));
-
-    QBoxLayout *bl2 = new QBoxLayout ( QBoxLayout::LeftToRight);
-    bl2->addStretch();
-	bl2->addWidget(buttonOk);
-    bl2->addWidget(buttonClear);
-	bl2->addWidget(buttonCancel);
-    bl2->addStretch();
-
-	QVBoxLayout* vl = new QVBoxLayout(this);
+	QVBoxLayout* vl = new QVBoxLayout(functionPage);
     vl->addLayout(bl1);
-	vl->addLayout(bl3);
 	vl->addLayout(bl2);
 
-    setFocusProxy(boxFunction);
+	optionStack->addWidget(functionPage);
+}
 
-	connect( buttonClear, SIGNAL( clicked() ), this, SLOT(clearList() ) );
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+void SurfaceDialog::initParametricSurfacePage()
+{	
+	boxX = new QLineEdit();
+	boxY = new QLineEdit();
+	boxZ = new QLineEdit();
+	
+	QGroupBox *gb = new QGroupBox(tr("Equations"));
+	QGridLayout *gl = new QGridLayout(gb);
+    gl->addWidget(new QLabel( tr("X(u,v)=")), 0, 0);
+    gl->addWidget(boxX, 0, 1);
+    gl->addWidget(new QLabel(tr("Y(u,v)=")), 1, 0);
+    gl->addWidget(boxY, 1, 1);
+	gl->addWidget(new QLabel(tr("Z(u,v)=")), 2, 0);
+    gl->addWidget(boxZ, 2, 1);
+    gl->setRowStretch(3, 1);
+		
+    QGroupBox *gb1 = new QGroupBox(tr("u"));
+	boxUFrom = new QLineEdit();
+	boxUFrom->setText("0");
+	boxUTo = new QLineEdit();
+	boxUTo->setText("pi");
+    QGridLayout *gl1 = new QGridLayout();
+    gl1->addWidget(new QLabel( tr("From")), 0, 0);
+    gl1->addWidget(boxUFrom, 0, 1);
+    gl1->addWidget(new QLabel(tr("To")), 1, 0);
+    gl1->addWidget(boxUTo, 1, 1);
+	boxUPeriodic = new QCheckBox(tr("Periodic"));
+	gl1->addWidget(boxUPeriodic, 2, 1);
+    gl1->setRowStretch(3, 1);
+    gb1->setLayout(gl1);
+
+    QGroupBox *gb2 = new QGroupBox(tr("v"));
+	boxVFrom = new QLineEdit();
+	boxVFrom->setText("0");
+
+	boxVTo = new QLineEdit();
+	boxVTo->setText("pi");
+
+    QGridLayout *gl2 = new QGridLayout();
+    gl2->addWidget(new QLabel( tr("From")), 0, 0);
+    gl2->addWidget(boxVFrom, 0, 1);
+    gl2->addWidget(new QLabel(tr("To")), 1, 0);
+    gl2->addWidget(boxVTo, 1, 1);
+	boxVPeriodic = new QCheckBox(tr("Periodic"));
+	gl2->addWidget(boxVPeriodic, 2, 1);
+    gl2->setRowStretch(3, 1);
+    gb2->setLayout(gl2);
+	
+	QGroupBox *gb3 = new QGroupBox(tr("Mesh"));
+	boxColumns = new QSpinBox();
+	boxColumns->setRange(1, 1000);
+	boxColumns->setValue(40);
+	
+	boxRows = new QSpinBox();
+	boxRows->setRange(1, 1000);
+	boxRows->setValue(40);
+	
+    QGridLayout *gl3 = new QGridLayout();
+    gl3->addWidget(new QLabel( tr("Columns")), 0, 0);
+    gl3->addWidget(boxColumns, 0, 1);
+    gl3->addWidget(new QLabel(tr("Rows")), 1, 0);
+    gl3->addWidget(boxRows, 1, 1);
+    gl3->setRowStretch(2, 1);
+    gb3->setLayout(gl3);
+	
+	QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
+	bl2->addWidget(gb1);
+	bl2->addWidget(gb2);
+	bl2->addWidget(gb3);
+
+	parametricPage = new QWidget();
+
+	QVBoxLayout* vl = new QVBoxLayout(parametricPage);
+    vl->addWidget(gb);
+	vl->addLayout(bl2);
+
+	optionStack->addWidget(parametricPage);
 }
 
 void SurfaceDialog::clearList()
 {
-boxFunction->clear();
-emit clearFunctionsList();
+	boxFunction->clear();
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (app)
+		app->clearSurfaceFunctionsList();
 }
 
 void SurfaceDialog::setFunction(const QString& s)
@@ -150,6 +264,108 @@ void SurfaceDialog::setLimits(double xs, double xe, double ys, double ye, double
 
 void SurfaceDialog::accept()
 {
+	if (boxType->currentIndex())
+		acceptParametricSurface();
+	else
+		acceptFunction();
+}
+
+void SurfaceDialog::acceptParametricSurface()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+
+	MyParser parser;
+	double u = 1.0, v = 1.0;	
+	parser.DefineVar("u", &u);
+	parser.DefineVar("v", &v);
+	
+	try {
+		parser.SetExpr(boxX->text().ascii());
+		parser.Eval();
+	} catch(mu::ParserError &e){
+		QMessageBox::critical(app, tr("QtiPlot - X Formula Error"), QString::fromStdString(e.GetMsg()));
+		boxX->setFocus();
+		return;
+	}
+	
+	try {
+		parser.SetExpr(boxY->text().ascii());
+		parser.Eval();
+	} catch(mu::ParserError &e){
+		QMessageBox::critical(app, tr("QtiPlot - Y Formula Error"), QString::fromStdString(e.GetMsg()));
+		boxY->setFocus();
+		return;
+	}
+	
+	try {
+		parser.SetExpr(boxZ->text().ascii());
+		parser.Eval();
+	} catch(mu::ParserError &e){
+		QMessageBox::critical(app, tr("QtiPlot - Z Formula Error"), QString::fromStdString(e.GetMsg()));
+		boxZ->setFocus();
+		return;
+	}
+	
+	QString ufrom = boxUFrom->text().lower();
+	QString uto = boxUTo->text().lower();
+	QString vfrom = boxVFrom->text().lower();
+	QString vto = boxVTo->text().lower();
+	double ul, ur, vl, vr;
+	try{
+		parser.SetExpr(ufrom.ascii());
+		ul = parser.Eval();
+	} 
+	catch(mu::ParserError &e){
+		QMessageBox::critical(app, tr("QtiPlot - u start limit error"), QString::fromStdString(e.GetMsg()));
+		boxUFrom->setFocus();
+		return;
+	}
+	
+	try{
+		parser.SetExpr(uto.ascii());
+		ur = parser.Eval();
+	} 
+	catch(mu::ParserError &e){
+		QMessageBox::critical(app, tr("QtiPlot - u end limit error"), QString::fromStdString(e.GetMsg()));
+		boxUTo->setFocus();
+		return;
+	}
+	
+	try{
+		parser.SetExpr(vfrom.ascii());
+		vl = parser.Eval();
+	} 
+	catch(mu::ParserError &e){
+		QMessageBox::critical(app, tr("QtiPlot - v start limit error"), QString::fromStdString(e.GetMsg()));
+		boxVFrom->setFocus();
+		return;
+	}
+	
+	try{
+		parser.SetExpr(vto.ascii());
+		vr = parser.Eval();
+	} 
+	catch(mu::ParserError &e){
+		QMessageBox::critical(app, tr("QtiPlot - u end limit error"), QString::fromStdString(e.GetMsg()));
+		boxVTo->setFocus();
+		return;
+	}
+	
+	if (!d_graph)
+		app->plotParametricSurface(boxX->text(), boxY->text(), boxZ->text(),
+							   ul, ur, vl, vr, boxColumns->value(), boxRows->value(),
+							   boxUPeriodic->isChecked(), boxVPeriodic->isChecked());
+	else
+		d_graph->addParametricSurface(boxX->text(), boxY->text(), boxZ->text(),
+							   ul, ur, vl, vr, boxColumns->value(), boxRows->value(),
+							   boxUPeriodic->isChecked(), boxVPeriodic->isChecked());
+	close();
+}
+
+void SurfaceDialog::acceptFunction()
+{
+ApplicationWindow *app = (ApplicationWindow *)this->parent();
+
 QString Xfrom=boxXFrom->text().lower();
 QString Xto=boxXTo->text().lower();
 QString Yfrom=boxYFrom->text().lower();
@@ -166,7 +382,7 @@ try
 	}
 catch(mu::ParserError &e)
 	{
-	QMessageBox::critical(0, tr("QtiPlot - X Start limit error"), QString::fromStdString(e.GetMsg()));
+	QMessageBox::critical(app, tr("QtiPlot - X Start limit error"), QString::fromStdString(e.GetMsg()));
 	boxXFrom->setFocus();
 	return;
 	}
@@ -178,7 +394,7 @@ try
 	}
 catch(mu::ParserError &e)
 	{
-	QMessageBox::critical(0, tr("QtiPlot - X End limit error"), QString::fromStdString(e.GetMsg()));
+	QMessageBox::critical(app, tr("QtiPlot - X End limit error"), QString::fromStdString(e.GetMsg()));
 	boxXTo->setFocus();
 	return;
 	}
@@ -191,7 +407,7 @@ try
 	}
 catch(mu::ParserError &e)
 	{
-	QMessageBox::critical(0, tr("QtiPlot - Y Start limit error"), QString::fromStdString(e.GetMsg()));
+	QMessageBox::critical(app, tr("QtiPlot - Y Start limit error"), QString::fromStdString(e.GetMsg()));
 	boxYFrom->setFocus();
 	return;
 	}
@@ -203,7 +419,7 @@ try
 	}
 catch(mu::ParserError &e)
 	{
-	QMessageBox::critical(0, tr("QtiPlot - Y End limit error"), QString::fromStdString(e.GetMsg()));
+	QMessageBox::critical(app, tr("QtiPlot - Y End limit error"), QString::fromStdString(e.GetMsg()));
 	boxYTo->setFocus();
 	return;
 	}
@@ -215,7 +431,7 @@ try
 	}
 catch(mu::ParserError &e)
 	{
-	QMessageBox::critical(0, tr("QtiPlot - Z Start limit error"), QString::fromStdString(e.GetMsg()));
+	QMessageBox::critical(app, tr("QtiPlot - Z Start limit error"), QString::fromStdString(e.GetMsg()));
 	boxZFrom->setFocus();
 	return;
 	}
@@ -227,14 +443,14 @@ try
 	}
 catch(mu::ParserError &e)
 	{
-	QMessageBox::critical(0, tr("QtiPlot - Z End limit error"), QString::fromStdString(e.GetMsg()));
+	QMessageBox::critical(app, tr("QtiPlot - Z End limit error"), QString::fromStdString(e.GetMsg()));
 	boxZTo->setFocus();
 	return;
 	}
 
 if (fromX >= toX || fromY >= toY || fromZ >= toZ)
 	{
-	QMessageBox::critical(0, tr("QtiPlot - Input error"),
+	QMessageBox::critical(app, tr("QtiPlot - Input error"),
 				tr("Please enter limits that satisfy: from < end!"));
 	boxXTo->setFocus();
 	return;
@@ -262,18 +478,46 @@ catch(mu::ParserError &e)
 	error=true;
 	}
 
-if (!error)
-	{
+if (!error){
 	emit options(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ);
-	emit custom3DToolBar();
-
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	app->updateSurfaceFuncList(boxFunction->currentText());
 	close();
 	}
 }
 
-void SurfaceDialog::insertFunctionsList(const QStringList& list)
+void SurfaceDialog::raiseWidget(int index)
 {
-boxFunction->insertStringList (list, 1);
+	if (index)
+		buttonClear->hide();
+	else
+		buttonClear->show();
+
+	optionStack->setCurrentIndex(index);
+}
+
+void SurfaceDialog::setParametricSurface(Graph3D *g)
+{
+	if (!g)
+		return;
+	
+	d_graph = g;
+	UserParametricSurface *s = d_graph->parametricSurface();
+	
+	boxType->setCurrentIndex(1);
+	raiseWidget(1);
+	
+	boxX->setText(s->xFormula());
+	boxY->setText(s->yFormula());
+	boxZ->setText(s->zFormula());
+	
+	boxUFrom->setText(QString::number(s->uStart()));
+	boxUTo->setText(QString::number(s->uEnd()));
+	boxVFrom->setText(QString::number(s->vStart()));
+	boxVTo->setText(QString::number(s->vEnd()));
+
+	boxColumns->setValue(s->columns());
+	boxRows->setValue(s->rows());
+	
+	boxUPeriodic->setChecked(s->uPeriodic());
+	boxVPeriodic->setChecked(s->vPeriodic());
 }

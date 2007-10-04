@@ -31,6 +31,7 @@
 
 #include <qwt3d_surfaceplot.h>
 #include <qwt3d_function.h>
+#include <qwt3d_parametricsurface.h>
 
 #include <QTimer>
 #include <QVector>
@@ -42,6 +43,7 @@
 using namespace Qwt3D;
 
 class UserFunction;
+class UserParametricSurface;
 
 /*!\brief 3D graph widget.
  *
@@ -70,6 +72,9 @@ public slots:
 	void initCoord();
 	void addFunction(const QString& s, double xl, double xr, double yl,
 						  double yr, double zl, double zr);
+	void addParametricSurface(const QString& xFormula, const QString& yFormula,
+						const QString& zFormula, double ul, double ur, double vl, double vr, 
+						int columns, int rows, bool uPeriodic, bool vPeriodic);
 	void insertNewData(Table* table, const QString& colName);
 
 	Matrix * matrix(){return d_matrix;};
@@ -92,6 +97,11 @@ public slots:
 
 	void changeDataColumn(Table* table, const QString& colName, int type = 0);
 
+	//! \name User Functions
+	//@{
+	UserParametricSurface *parametricSurface(){return d_surface;};
+	//@}
+	
 	//! \name User Functions
 	//@{
 	UserFunction* userFunction();
@@ -373,6 +383,7 @@ private:
 	Matrix *d_matrix;
     Qwt3D::SurfacePlot* sp;
 	UserFunction *d_func;
+	UserParametricSurface *d_surface;
 	Qwt3D::PLOTSTYLE style_;
 };
 
@@ -389,4 +400,36 @@ private:
 	  QString formula;
 };
 
+//! Class for user defined parametric surfaces
+class UserParametricSurface : public ParametricSurface
+{
+public:
+    UserParametricSurface(const QString& xFormula, const QString& yFormula, 
+						  const QString& zFormula, SurfacePlot& pw);
+    Triple operator()(double u, double v);
+
+	unsigned int rows(){return d_rows;};
+	unsigned int columns(){return d_columns;};
+	void setMesh (unsigned int columns, unsigned int rows);
+		
+	bool uPeriodic(){return d_u_periodic;};
+	bool vPeriodic(){return d_v_periodic;};
+	void setPeriodic (bool u, bool v);
+	
+	double uStart(){return d_ul;};
+	double uEnd(){return d_ur;};
+	double vStart(){return d_vl;};
+	double vEnd(){return d_vr;};
+	void setDomain(double ul, double ur, double vl, double vr);
+	
+	QString xFormula(){return d_x_formula;};
+	QString yFormula(){return d_y_formula;};
+	QString zFormula(){return d_z_formula;};
+	
+private:
+	QString d_x_formula, d_y_formula, d_z_formula;
+	unsigned int d_rows, d_columns;
+	bool d_u_periodic, d_v_periodic;
+	double d_ul, d_ur, d_vl, d_vr;
+};
 #endif // Plot3D_H

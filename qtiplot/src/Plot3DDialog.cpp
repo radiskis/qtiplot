@@ -547,7 +547,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 		if (g->grids() == 0)
 			btnGrid->setDisabled(true);
 
-		if (g->userFunction())
+		if (g->userFunction() || g->parametricSurface())
 			btnTable->hide();
 		else if (g->table())
             btnTable->setText(tr("&Worksheet"));
