@@ -1051,18 +1051,6 @@ QString ImportOPJ::parseOriginText(const QString &str)
 QString ImportOPJ::parseOriginTags(const QString &str)
 {
 	QString line=str;
-	//replace \l(...) and %(...) tags
-	QRegExp rxline("\\\\\\s*l\\s*\\(\\s*\\d+\\s*\\)");
-	QRegExp rxcol("\\%\\(\\d+\\)");
-	int pos = rxline.indexIn(line);
-	while (pos > -1) {
-		QString value = rxline.cap(0);
-		int len=value.length();
-		value.replace(QRegExp(" "),"");
-		value="\\c{"+value.mid(3,value.length()-4)+"}";
-		line.replace(pos, len, value);
-		pos = rxline.indexIn(line);
-	}
 	//Lookbehind conditions are not supported - so need to reverse string
 	QRegExp rx("\\)[^\\)\\(]*\\((?!\\s*[buig\\+\\-]\\s*\\\\)");
 	QRegExp rxfont("\\)[^\\)\\(]*\\((?![^\\:]*\\:f\\s*\\\\)");
@@ -1156,7 +1144,7 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 	for(int i=0; i<6; ++i)
 		line.replace(QRegExp(rxstr[i]), ltag[i]);
 	rxfont.setPattern(rxstr[6]);
-	pos = rxfont.indexIn(line);
+	int pos = rxfont.indexIn(line);
 	while (pos > -1) {
 		QString value = rxfont.cap(0);
 		int len=value.length();
