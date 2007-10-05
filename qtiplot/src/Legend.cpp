@@ -42,22 +42,25 @@
 #include <qwt_layout_metrics.h>
 #include <qwt_symbol.h>
 
+#include <iostream>
+
 Legend::Legend(Plot *plot):
 	d_plot(plot),
 	d_frame (0),
 	d_angle(0)
 {
 	d_text = new QwtText(QString::null, QwtText::RichText);
-	d_text->setFont(QFont("Arial",12, QFont::Normal, FALSE));
+	d_text->setFont(QFont("Arial", 12, QFont::Normal, false));
 	d_text->setRenderFlags(Qt::AlignTop|Qt::AlignLeft);
 	d_text->setBackgroundBrush(QBrush(Qt::NoBrush));
 	d_text->setColor(Qt::black);
 	d_text->setBackgroundPen (QPen(Qt::NoPen));
 	d_text->setPaintAttribute(QwtText::PaintBackground);
 
-	hspace = 30;
+	h_space = 5;
 	left_margin = 10;
 	top_margin = 5;
+	line_length = 20;
 }
 
 void Legend::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &) const
@@ -65,16 +68,14 @@ void Legend::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap,
 	const int x = xMap.transform(xValue());
 	const int y = yMap.transform(yValue());
 
-	const int symbolLineLength = symbolsMaxLineLength();
+	const int symbolLineLength = line_length + symbolsMaxWidth();
 
 	int width, height;
 	QwtArray<long> heights = itemsHeight(y, symbolLineLength, width, height);
 
 	QRect rs = QRect(QPoint(x, y), QSize(width, height));
-
 	drawFrame(p, d_frame, rs);
-	drawSymbols(p, rs, heights, symbolLineLength);
-	drawLegends(p, rs, heights, symbolLineLength);
+	drawText(p, rs, heights, symbolLineLength);
 }
 
 void Legend::setText(const QString& s)
@@ -107,7 +108,7 @@ QRect Legend::rect() const
 	const int y = yMap.transform(yValue());
 
 	int width, height;
-	itemsHeight(y, symbolsMaxLineLength(), width, height);
+	itemsHeight(y, line_length + symbolsMaxWidth(), width, height);
 
 	return QRect(QPoint(x, y), QSize(width - 1, height - 1));
 }
@@ -196,13 +197,10 @@ void Legend::drawFrame(QPainter *p, int type, const QRect& rect) const
 	if (type == None)
 		p->fillRect (rect, d_text->backgroundBrush());
 
-	if (type == Line)
-	{
+	if (type == Line){
 		p->setBrush(d_text->backgroundBrush());
 		QwtPainter::drawRect(p, rect);
-	}
-	else if (type == Shadow)
-	{
+	} else if (type == Shadow) {
 		QRect shadow_right = QRect(rect.right(), rect.y() + 5, 5, rect.height()-1);
 		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom(), rect.width()-1, 5);
 		p->setBrush(QBrush(Qt::black));
@@ -249,53 +247,53 @@ void Legend::drawVector(QPainter *p, int x, int y, int l, int curveIndex) const
 	p->restore();
 }
 
-void Legend::drawSymbols(QPainter *p, const QRect& rect,
+void Legend::drawText(QPainter *p, const QRect& rect,
 		QwtArray<long> height, int symbolLineLength) const
 {
 	Graph *g = (Graph *) d_plot->parent();
-
-	int w = rect.x() + 10;
-	int l = symbolLineLength + 20;
-
-	QString text = d_text->text().trimmed();
+	int l = symbolLineLength;
+	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 
-	for (int i=0;i<(int)titles.count();i++){
-		if (titles[i].contains("\\c{") || titles[i].contains("\\l(")){
-		    QString aux;
-		    if (titles[i].contains("\\c{")) {//QtiPlot symbol specification
-                int pos=titles[i].find("{",0);
-                int pos2=titles[i].find("}",pos);
-                aux=titles[i].mid(pos+1,pos2-pos-1);
-		    } else if (titles[i].contains("\\l(")) {//Origin project legend
-		        int pos=titles[i].find("(",0);
-                int pos2=titles[i].find(")",pos);
-                aux=titles[i].mid(pos+1,pos2-pos-1);
-            }
-
-			int cv = aux.toInt() - 1;
-			if (cv < 0)
+	for (int i=0; i<(int)titles.count(); i++){
+        int w = rect.x() + left_margin;
+		QString s = titles[i];
+		while (s.contains("\\l(")){
+			int pos = s.indexOf("\\l(", 0);			
+			QwtText aux(parse(s.left(pos)));
+			aux.setFont(d_text->font());
+			aux.setColor(d_text->color());
+			
+			QSize size = aux.textSize();
+			QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
+			aux.draw(p, tr);
+			w += size.width();
+			
+		    int pos1 = s.indexOf("(", pos);
+            int pos2 = s.indexOf(")", pos1);
+			int cv = s.mid(pos1+1, pos2-pos1-1).toInt() - 1;
+			if (cv < 0 || cv >= g->curves()){
+				s = s.right(s.length() - pos2 - 1);
 				continue;
+			}
 
-			if (g->curveType(cv) == Graph :: VectXYXY || g->curveType(cv) == Graph :: VectXYAM)
+			if (g->curveType(cv) == Graph::VectXYXY || g->curveType(cv) == Graph::VectXYAM)
 				drawVector(p, w, height[i], l, cv);
 			else {
 				const QwtPlotCurve *curve = g->curve(cv);
 				if (curve && curve->rtti() != QwtPlotItem::Rtti_PlotSpectrogram) {
-					QwtSymbol symb=curve->symbol();
-					const QBrush br=curve->brush();
-					QPen pen=curve->pen();
-
+					QwtSymbol symb = curve->symbol();
+					const QBrush br = curve->brush();
+					QPen pen = curve->pen();
 					p->save();
-
 					if (curve->style()!=0){
 						p->setPen (pen);
 						if (br.style() != Qt::NoBrush || g->curveType(cv) == Graph::Box) {
-							QRect lr=QRect(w,height[i]-4,l,10);
+							QRect lr = QRect(w, height[i]-4, l, 10);
 							p->setBrush(br);
 							QwtPainter::drawRect(p, lr);
 						} else
-							QwtPainter::drawLine(p, w,height[i],w+l,height[i]);
+							QwtPainter::drawLine(p, w, height[i], w+l, height[i]);
 					}
 					int symb_size = symb.size().width();
   	                if (symb_size > 15)
@@ -303,13 +301,27 @@ void Legend::drawSymbols(QPainter *p, const QRect& rect,
   	                else if (symb_size < 3)
   	                	symb_size = 3;
   	                symb.setSize(symb_size);
-					symb.draw(p,w+l/2,height[i]);
+					symb.draw(p, w+l/2, height[i]);
 					p->restore();
 				}
 			}
-		} else if (titles[i].contains("\\p{")) {
-			int pos=titles[i].find("{",0);
-			int pos2=titles[i].find("}",pos);
+        w += l + h_space;
+		s = s.right(s.length() - pos2 - 1);
+		}
+
+		if (!s.isEmpty()){
+			w += h_space;
+			QwtText aux(parse(s));
+			aux.setFont(d_text->font());
+			aux.setColor(d_text->color());
+			QSize size = aux.textSize();
+			QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
+			aux.draw(p, tr);
+		}
+		
+        /*if (titles[i].contains("\\p{")) {
+			int pos=titles[i].indexOf("{",0);
+			int pos2=titles[i].indexOf("}",pos);
 			QString aux=titles[i].mid(pos+1,pos2-pos-1);
 
 			int id=aux.toInt();
@@ -329,63 +341,51 @@ void Legend::drawSymbols(QPainter *p, const QRect& rect,
 					p->restore();
 				}
 			}
-		}
-	}
-}
-
-void Legend::drawLegends(QPainter *p, const QRect& rect,
-		QwtArray<long> height, int symbolLineLength) const
-{
-	int w = rect.x() + left_margin;
-
-	QString text = d_text->text().trimmed();
-	QStringList titles=text.split("\n", QString::KeepEmptyParts);
-
-	for (int i=0; i<(int)titles.count(); i++) {
-		QString str = titles[i];
-		int x = w;
-		if (str.contains("\\c{") || str.contains("\\p{") || str.contains("\\l("))
-			x += symbolLineLength + hspace;
-
-		QwtText aux(parse(str));
-		aux.setFont(d_text->font());
-		aux.setColor(d_text->color());
-
-		QSize size = aux.textSize();
-
-		QRect tr = QRect(QPoint(x, height[i] - size.height()/2), size);
-		aux.draw(p, tr);
+		}*/
 	}
 }
 
 QwtArray<long> Legend::itemsHeight(int y, int symbolLineLength, int &width, int &height) const
 {
-	int maxL=0;
+	Graph *g = (Graph *) d_plot->parent();
+	QString text = d_text->text();
+	QStringList titles = text.split("\n", QString::KeepEmptyParts);
+	int n = (int)titles.count();
+	QwtArray<long> heights(n);
 
 	width = 0;
 	height = 0;
-
-	QString text = d_text->text().trimmed();
-	QStringList titles = text.split("\n", QString::KeepEmptyParts);
-	int n=(int)titles.count();
-	QwtArray<long> heights(n);
-
+	int maxL = 0;
 	int h = top_margin;
-
-	for (int i=0; i<n; i++)
-	{
-		QString str=titles[i];
-		int textL=0;
-		if (str.contains("\\c{") || str.contains("\\p{") || str.contains("\\l("))
-			textL = symbolLineLength + hspace;
-
-		QwtText aux(parse(str));
-		QSize size = aux.textSize(d_text->font());
-		textL += size.width();
+	for (int i=0; i<n; i++){
+		QString s = titles[i];		
+		int textL = 0;
+		while (s.contains("\\l(")){
+			int pos = s.indexOf("\\l(", 0);			
+			QwtText aux(parse(s.left(pos)));
+			aux.setFont(d_text->font());			
+			QSize size = aux.textSize();
+			textL += size.width();			
+			
+			int pos1 = s.indexOf("(", pos);
+            int pos2 = s.indexOf(")", pos1);
+			int cv = s.mid(pos1+1, pos2-pos1-1).toInt() - 1;
+			if (cv < 0 || cv >= g->curves()){
+				s = s.right(s.length() - pos2 - 1);
+				continue;
+			}
+			textL += symbolLineLength + 2*h_space;
+			s = s.right(s.length() - s.indexOf(")", pos) - 1);
+		}
+		
+		QwtText aux(parse(s));
+		aux.setFont(d_text->font());
+		textL += aux.textSize().width();
+		
 		if (textL > maxL)
 			maxL = textL;
 
-		int textH = size.height();
+		int textH = aux.textSize().height();
 		height += textH;
 
 		heights[i] = y + h + textH/2;
@@ -398,44 +398,43 @@ QwtArray<long> Legend::itemsHeight(int y, int symbolLineLength, int &width, int 
 	return heights;
 }
 
-int Legend::symbolsMaxLineLength() const
+int Legend::symbolsMaxWidth() const
 {
 	QList<int> cvs = d_plot->curveKeys();
-
-	int maxL=0;
-	QString text = d_text->text().trimmed();
+	int curves = cvs.count();
+	if (!curves)
+		return 0;
+	
+	int maxL = 0;
+	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
-	for (int i=0;i<(int)titles.count();i++){
-		if (titles[i].contains("\\c{") && (int)cvs.size()>0){
-		    QString aux;
-		    if (titles[i].contains("\\c{")){//QtiPlot symbol specification
-                int pos=titles[i].find("{", 0);
-                int pos2=titles[i].find("}", pos);
-                aux=titles[i].mid(pos+1, pos2-pos-1);
-		    } else if (titles[i].contains("\\l(")){//Origin project legend
-		        int pos=titles[i].find("(", 0);
-                int pos2=titles[i].find(")", pos);
-                aux=titles[i].mid(pos+1, pos2-pos-1);
-            }
-
-			int cv = aux.toInt()-1;
-			if (cv < 0 || cv >= cvs.count())
+	for (int i=0; i<(int)titles.count(); i++){
+		QString s = titles[i];
+		while (s.contains("\\l(")){
+			int pos = s.indexOf("\\l(", 0);
+		    int pos1 = s.indexOf("(", pos);
+            int pos2 = s.indexOf(")", pos1);
+			int cv = s.mid(pos1+1, pos2-pos1-1).toInt()-1;
+			if (cv < 0 || cv >= curves){
+				s = s.right(s.length() - pos2 - 1);
 				continue;
+			}
 
 			const QwtPlotCurve *c = (QwtPlotCurve *)d_plot->curve(cvs[cv]);
 			if (c && c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram) {
-				int l=c->symbol().size().width();
+				int l = c->symbol().size().width();
 				if (l < 3)
   	            	l = 3;
   	            else if (l > 15)
   	            	l = 15;
   	            if (l>maxL && c->symbol().style() != QwtSymbol::NoSymbol)
-					maxL=l;
+					maxL = l;
 			}
+			s = s.right(s.length() - pos2 - 1);
 		}
 
 		if (titles[i].contains("\\p{"))
-			maxL=10;
+			maxL = 10;
 	}
 	return maxL;
 }
@@ -443,25 +442,21 @@ int Legend::symbolsMaxLineLength() const
 QString Legend::parse(const QString& str) const
 {
     QString s = str;
-    if (s.contains("\\c{") || s.contains("\\p{") || s.contains("\\l(")){
-        int pos = s.find("}",0);
-        if (s.contains("\\l("))
-            pos = s.find(")",0);
-        s = s.right(s.length()-pos-1);
-    }
-
-    if (s.contains("%(")){//curve name specification
-        int pos = s.find("%(",0);
-        int pos2 = s.find(")",pos);
-        int cv = s.mid(pos+2, pos2-pos-2).toInt() - 1;
-        if (cv >= 0){
-			Graph *g = (Graph *)d_plot->parent();
-			if (g){
-            	const QwtPlotCurve *c = (QwtPlotCurve *)g->curve(cv);
-            	if (c)
-                	s = s.replace(pos, pos2-pos+1, c->title().text());
-			}
+    s.remove(QRegExp("\\l(*)", Qt::CaseSensitive, QRegExp::Wildcard));
+    s.remove(QRegExp("\\p{*}", Qt::CaseSensitive, QRegExp::Wildcard));
+	
+	QString aux = str;
+    while (aux.contains(QRegExp("%(*)", Qt::CaseInsensitive, QRegExp::Wildcard))){//curve name specification
+        int pos = str.indexOf("%(", 0, Qt::CaseInsensitive);
+        int pos2 = str.indexOf(")", pos, Qt::CaseInsensitive);
+        int cv = str.mid(pos+2, pos2-pos-2).toInt() - 1;
+		Graph *g = (Graph *)d_plot->parent();
+        if (g && cv >= 0 && cv < g->curves()){
+			const QwtPlotCurve *c = (QwtPlotCurve *)g->curve(cv);
+            if (c)
+                s = s.replace(pos, pos2-pos+1, c->title().text());
         }
+		aux = aux.right(aux.length() - pos2 - 1);
     }
     return s;
 }

@@ -94,16 +94,12 @@ public:
 
 private:
 	void draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &r) const;
-
 	void drawFrame(QPainter *p, int type, const QRect& rect) const;
-	void drawSymbols(QPainter *p, const QRect& rect,
-					QwtArray<long> height, int symbolLineLength) const;
-	void drawLegends(QPainter *p, const QRect& rect,
-					QwtArray<long> height, int symbolLineLength) const;
 	void drawVector(QPainter *p, int x, int y, int l, int curveIndex) const;
+	void drawText(QPainter *, const QRect&, QwtArray<long>, int) const;
 
 	QwtArray<long> itemsHeight(int y, int symbolLineLength, int &width, int &height) const;
-	int symbolsMaxLineLength() const;
+	int symbolsMaxWidth() const;
 	QString parse(const QString& str) const;
 
 protected:
@@ -122,11 +118,14 @@ protected:
 	//! TopLeft position in pixels
 	QPoint d_pos;
 
-	//!Distance between symbols and legend text
-	int hspace;
+	//! Distance between symbols and legend text
+	int h_space;
 
-	//!Distance between frame and content
+	//! Distance between frame and content
 	int left_margin, top_margin;
+
+	//! Length of the symbol line
+	int line_length;
 };
 
 #endif

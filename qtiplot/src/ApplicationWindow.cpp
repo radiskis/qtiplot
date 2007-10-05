@@ -10609,7 +10609,7 @@ void ApplicationWindow::connectTable(Table* w)
 	connect (w,SIGNAL(closedWindow(MyWidget*)),this, SLOT(closeWindow(MyWidget*)));
 	connect (w,SIGNAL(removedCol(const QString&)),this,SLOT(removeCurves(const QString&)));
 	connect (w,SIGNAL(modifiedData(Table *, const QString&)),
-			this,SLOT(updateCurves(Table *, const QString&)));
+			this, SLOT(updateCurves(Table *, const QString&)));
 	connect (w,SIGNAL(resizedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
 	connect (w,SIGNAL(modifiedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
 	connect (w,SIGNAL(optionsDialog()),this,SLOT(showColumnOptionsDialog()));

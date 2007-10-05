@@ -1694,16 +1694,14 @@ Legend* Graph::legend()
 QString Graph::legendText()
 {
 	QString text="";
-	for (int i=0; i<n_curves; i++)
-	{
+	for (int i=0; i<n_curves; i++){
 		const QwtPlotCurve *c = curve(i);
-		if (c && c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram && c_type[i] != ErrorBars )
-		{
-			text+="\\c{";
+		if (c && c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram && c_type[i] != ErrorBars ){
+			text+="\\l(";
 			text+=QString::number(i+1);
-			text+="}";
-			text+=c->title().text();
-			text+="\n";
+			text+=")%(";
+			text+=QString::number(i+1);
+			text+=")\n";
 		}
 	}
 	return text;
@@ -2342,38 +2340,33 @@ long Graph::insertTextMarker(const QStringList& list, int fileVersion)
 	mrk->setAngle(fList[11].toInt());
 
     QString text = QString();
-	if (fileVersion < 71)
-	{
+	if (fileVersion < 71){
 		int bkg=fList[10].toInt();
 		if (bkg <= 2)
 			mrk->setFrameStyle(bkg);
-		else if (bkg == 3)
-		{
+		else if (bkg == 3){
 			mrk->setFrameStyle(0);
 			mrk->setBackgroundColor(QColor(255, 255, 255));
 		}
-		else if (bkg == 4)
-		{
+		else if (bkg == 4){
 			mrk->setFrameStyle(0);
 			mrk->setBackgroundColor(QColor(Qt::black));
 		}
 
 		int n =(int)fList.count();
-		for (int i=0;i<n-12;i++)
-			text += fList[12+i]+"\n";
-	}
-	else if (fileVersion < 90)
-	{
+		text += fList[12];
+		for (int i=1; i<n-12; i++)
+			text += "\n" + fList[12+i];
+	} else if (fileVersion < 90) {
 		mrk->setTextColor(QColor(fList[9]));
 		mrk->setFrameStyle(fList[10].toInt());
 		mrk->setBackgroundColor(QColor(fList[12]));
 
 		int n=(int)fList.count();
-		for (int i=0;i<n-13;i++)
-			text += fList[13+i]+"\n";
-	}
-	else
-	{
+		text += fList[13];
+		for (int i=1; i<n-13; i++)
+			text += "\n" + fList[13+i];
+	} else {
 		mrk->setTextColor(QColor(fList[9]));
 		mrk->setFrameStyle(fList[10].toInt());
 		QColor c = QColor(fList[12]);
@@ -2381,10 +2374,15 @@ long Graph::insertTextMarker(const QStringList& list, int fileVersion)
 		mrk->setBackgroundColor(c);
 
 		int n = (int)fList.count();
-		for (int i=0; i<n-14; i++)
-			text += fList[14+i]+"\n";
+		text += fList[14];
+		for (int i=1; i<n-14; i++)
+			text += "\n" + fList[14+i];
 	}
-    mrk->setText(text.trimmed());
+	
+	if (fileVersion < 91)
+		text = text.replace("\\c{", "\\l(").replace("}", ")");
+		
+    mrk->setText(text);
 	return key;
 }
 
@@ -3375,34 +3373,32 @@ void Graph::removeLegendItem(int index)
 	if (!mrk)
 		return;
 
-	if (isPiePlot())
-	{
+	if (isPiePlot()){
 		mrk->setText(QString::null);
 		return;
 	}
 
-	QString text=mrk->text();
+	/*QString text=mrk->text();
 	QStringList items=text.split( "\n", QString::SkipEmptyParts);
 
 	if (index >= (int) items.count())
 		return;
 
-	QStringList l = items.grep( "\\c{" + QString::number(index+1) + "}" );
+	QStringList l = items.grep( "\\l(" + QString::number(index+1) + ")" );
 	items.remove(l[0]);//remove the corresponding legend string
 
 	int cv=0;
 	for (int i=0; i< (int)items.count(); i++)
 	{//set new curves indexes in legend text
 		QString item = (items[i]).stripWhiteSpace();
-		if (item.startsWith("\\c{", true))
-		{
-			item.remove(0, item.find("}", 0));
-			item.prepend("\\c{"+QString::number(++cv));
+		if (item.startsWith("\\l(", true)){
+			item.remove(0, item.find(")", 0));
+			item.prepend("\\l("+QString::number(++cv));
 		}
 		items[i]=item;
 	}
 	text=items.join ( "\n" ) + "\n";
-	mrk->setText(text);
+	mrk->setText(text);*/
 }
 
 void Graph::addLegendItem(const QString& colName)
@@ -3412,9 +3408,9 @@ void Graph::addLegendItem(const QString& colName)
 		if (mrk){
 			QString text = mrk->text();
 			if (text.endsWith ( "\n", true ) )
-				text.append("\\c{"+QString::number(curves())+"}"+colName+"\n");
+				text.append("\\l("+QString::number(curves())+")"+colName+"\n");
 			else
-				text.append("\n\\c{"+QString::number(curves())+"}"+colName+"\n");
+				text.append("\n\\l("+QString::number(curves())+")"+colName+"\n");
 
 			mrk->setText(text);
 		}
@@ -4942,20 +4938,7 @@ void Graph::updateCurveNames(const QString& oldName, const QString& newName, boo
             c->updateColumnNames(oldName, newName, updateTableName);
 	}
 
-    if (legendMarkerID >= 0 ){//update legend
-		Legend * mrk = (Legend*) d_plot->marker(legendMarkerID);
-		if (mrk){
-            QStringList lst = mrk->text().split("\n", QString::SkipEmptyParts);
-            QStringList oldNameLst = oldName.split("_", QString::SkipEmptyParts);
-            QStringList newNameLst = newName.split("_", QString::SkipEmptyParts);
-            if (updateTableName)
-                lst.replaceInStrings(oldNameLst[0] + "_", newNameLst[0] + "_");
-            else
-                lst.replaceInStrings("_" + oldNameLst[1], "_" + newNameLst[1]);
-			mrk->setText(lst.join("\n"));
-			d_plot->replot();
-		}
-	}
+	d_plot->replot();
 }
 
 void Graph::setCurveFullRange(int curveIndex)
