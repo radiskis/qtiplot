@@ -210,7 +210,7 @@ void TextFormatButtons::addSymbol(const QString & letter)
 
 void TextFormatButtons::addCurve()
 {
-	formatText("\\c{","}");
+	formatText("\\l(",")");
 }
 
 void TextFormatButtons::addUnderline()
