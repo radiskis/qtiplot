@@ -41,6 +41,7 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QStackedWidget>
+#include <QCompleter>
 
 SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -56,12 +57,12 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
 	boxType->addItem( tr( "Parametric" ) );
 	hbox1->addWidget(boxType);
 	hbox1->addStretch();
-	
+
 	optionStack = new QStackedWidget();
 
 	initFunctionPage();
 	initParametricSurfacePage();
-	
+
 	buttonClear = new QPushButton(tr("Clear &list"));
 	buttonOk = new QPushButton(tr("&OK"));
     buttonOk->setDefault(true);
@@ -79,20 +80,24 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
 	vl->addLayout(bl2);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent;
-	if (app)
-		boxFunction->insertStringList (app->surfaceFunc, 1);
-	
+	if (app){
+		boxFunction->insertItems(0, app->surfaceFunc);
+		boxX->setCompleter (new QCompleter(app->d_param_surface_func));
+		boxY->setCompleter (new QCompleter(app->d_param_surface_func));
+		boxZ->setCompleter (new QCompleter(app->d_param_surface_func));
+	}
+
 	d_graph = 0;
     setFocusProxy(boxFunction);
 
-	connect( boxType, SIGNAL(activated(int)), this, SLOT(raiseWidget(int)));
+	connect( boxType, SIGNAL(activated(int)), optionStack, SLOT(setCurrentIndex(int)));
 	connect( buttonClear, SIGNAL(clicked()), this, SLOT(clearList()));
     connect( buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
     connect( buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 void SurfaceDialog::initFunctionPage()
-{	
+{
 	boxFunction = new QComboBox();
 	boxFunction->setEditable(true);
 
@@ -145,7 +150,7 @@ void SurfaceDialog::initFunctionPage()
     gl3->addWidget(boxZTo, 1, 1);
     gl3->setRowStretch(2, 1);
     gb3->setLayout(gl3);
-	
+
 	QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl2->addWidget(gb1);
 	bl2->addWidget(gb2);
@@ -161,11 +166,11 @@ void SurfaceDialog::initFunctionPage()
 }
 
 void SurfaceDialog::initParametricSurfacePage()
-{	
+{
 	boxX = new QLineEdit();
 	boxY = new QLineEdit();
 	boxZ = new QLineEdit();
-	
+
 	QGroupBox *gb = new QGroupBox(tr("Equations"));
 	QGridLayout *gl = new QGridLayout(gb);
     gl->addWidget(new QLabel( tr("X(u,v)=")), 0, 0);
@@ -175,7 +180,7 @@ void SurfaceDialog::initParametricSurfacePage()
 	gl->addWidget(new QLabel(tr("Z(u,v)=")), 2, 0);
     gl->addWidget(boxZ, 2, 1);
     gl->setRowStretch(3, 1);
-		
+
     QGroupBox *gb1 = new QGroupBox(tr("u"));
 	boxUFrom = new QLineEdit();
 	boxUFrom->setText("0");
@@ -207,16 +212,16 @@ void SurfaceDialog::initParametricSurfacePage()
 	gl2->addWidget(boxVPeriodic, 2, 1);
     gl2->setRowStretch(3, 1);
     gb2->setLayout(gl2);
-	
+
 	QGroupBox *gb3 = new QGroupBox(tr("Mesh"));
 	boxColumns = new QSpinBox();
 	boxColumns->setRange(1, 1000);
 	boxColumns->setValue(40);
-	
+
 	boxRows = new QSpinBox();
 	boxRows->setRange(1, 1000);
 	boxRows->setValue(40);
-	
+
     QGridLayout *gl3 = new QGridLayout();
     gl3->addWidget(new QLabel( tr("Columns")), 0, 0);
     gl3->addWidget(boxColumns, 0, 1);
@@ -224,7 +229,7 @@ void SurfaceDialog::initParametricSurfacePage()
     gl3->addWidget(boxRows, 1, 1);
     gl3->setRowStretch(2, 1);
     gb3->setLayout(gl3);
-	
+
 	QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl2->addWidget(gb1);
 	bl2->addWidget(gb2);
@@ -241,10 +246,15 @@ void SurfaceDialog::initParametricSurfacePage()
 
 void SurfaceDialog::clearList()
 {
-	boxFunction->clear();
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (app)
-		app->clearSurfaceFunctionsList();
+    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+
+    if (app && boxType->currentIndex()){
+        app->d_param_surface_func.clear();
+    }else{
+        boxFunction->clear();
+        if (app)
+            app->clearSurfaceFunctionsList();
+    }
 }
 
 void SurfaceDialog::setFunction(const QString& s)
@@ -275,37 +285,56 @@ void SurfaceDialog::acceptParametricSurface()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 
 	MyParser parser;
-	double u = 1.0, v = 1.0;	
+	double u = 1.0, v = 1.0;
 	parser.DefineVar("u", &u);
 	parser.DefineVar("v", &v);
-	
+
+    int list_size = 15;
+    QString x_formula = boxX->text();
 	try {
-		parser.SetExpr(boxX->text().ascii());
+		parser.SetExpr(x_formula.ascii());
 		parser.Eval();
 	} catch(mu::ParserError &e){
 		QMessageBox::critical(app, tr("QtiPlot - X Formula Error"), QString::fromStdString(e.GetMsg()));
 		boxX->setFocus();
 		return;
 	}
-	
+
+    app->d_param_surface_func.remove(x_formula);
+	app->d_param_surface_func.push_front(x_formula);
+	while ((int)app->d_param_surface_func.size() > list_size)
+		app->d_param_surface_func.pop_back();
+
+    QString y_formula = boxY->text();
 	try {
-		parser.SetExpr(boxY->text().ascii());
+		parser.SetExpr(y_formula.ascii());
 		parser.Eval();
 	} catch(mu::ParserError &e){
 		QMessageBox::critical(app, tr("QtiPlot - Y Formula Error"), QString::fromStdString(e.GetMsg()));
 		boxY->setFocus();
 		return;
 	}
-	
+
+    app->d_param_surface_func.remove(y_formula);
+	app->d_param_surface_func.push_front(y_formula);
+	while ((int)app->d_param_surface_func.size() > list_size)
+		app->d_param_surface_func.pop_back();
+
+    QString z_formula = boxZ->text();
 	try {
-		parser.SetExpr(boxZ->text().ascii());
+		parser.SetExpr(z_formula.ascii());
 		parser.Eval();
 	} catch(mu::ParserError &e){
 		QMessageBox::critical(app, tr("QtiPlot - Z Formula Error"), QString::fromStdString(e.GetMsg()));
 		boxZ->setFocus();
 		return;
 	}
-	
+
+    app->d_param_surface_func.remove(z_formula);
+	app->d_param_surface_func.push_front(z_formula);
+	while ((int)app->d_param_surface_func.size() > list_size)
+		app->d_param_surface_func.pop_back();
+
 	QString ufrom = boxUFrom->text().lower();
 	QString uto = boxUTo->text().lower();
 	QString vfrom = boxVFrom->text().lower();
@@ -314,49 +343,49 @@ void SurfaceDialog::acceptParametricSurface()
 	try{
 		parser.SetExpr(ufrom.ascii());
 		ul = parser.Eval();
-	} 
+	}
 	catch(mu::ParserError &e){
 		QMessageBox::critical(app, tr("QtiPlot - u start limit error"), QString::fromStdString(e.GetMsg()));
 		boxUFrom->setFocus();
 		return;
 	}
-	
+
 	try{
 		parser.SetExpr(uto.ascii());
 		ur = parser.Eval();
-	} 
+	}
 	catch(mu::ParserError &e){
 		QMessageBox::critical(app, tr("QtiPlot - u end limit error"), QString::fromStdString(e.GetMsg()));
 		boxUTo->setFocus();
 		return;
 	}
-	
+
 	try{
 		parser.SetExpr(vfrom.ascii());
 		vl = parser.Eval();
-	} 
+	}
 	catch(mu::ParserError &e){
 		QMessageBox::critical(app, tr("QtiPlot - v start limit error"), QString::fromStdString(e.GetMsg()));
 		boxVFrom->setFocus();
 		return;
 	}
-	
+
 	try{
 		parser.SetExpr(vto.ascii());
 		vr = parser.Eval();
-	} 
+	}
 	catch(mu::ParserError &e){
 		QMessageBox::critical(app, tr("QtiPlot - u end limit error"), QString::fromStdString(e.GetMsg()));
 		boxVTo->setFocus();
 		return;
 	}
-	
+
 	if (!d_graph)
-		app->plotParametricSurface(boxX->text(), boxY->text(), boxZ->text(),
+		app->plotParametricSurface(x_formula, y_formula, z_formula,
 							   ul, ur, vl, vr, boxColumns->value(), boxRows->value(),
 							   boxUPeriodic->isChecked(), boxVPeriodic->isChecked());
 	else
-		d_graph->addParametricSurface(boxX->text(), boxY->text(), boxZ->text(),
+		d_graph->addParametricSurface(x_formula, y_formula, z_formula,
 							   ul, ur, vl, vr, boxColumns->value(), boxRows->value(),
 							   boxUPeriodic->isChecked(), boxVPeriodic->isChecked());
 	close();
@@ -485,31 +514,21 @@ if (!error){
 	}
 }
 
-void SurfaceDialog::raiseWidget(int index)
-{
-	if (index)
-		buttonClear->hide();
-	else
-		buttonClear->show();
-
-	optionStack->setCurrentIndex(index);
-}
-
 void SurfaceDialog::setParametricSurface(Graph3D *g)
 {
 	if (!g)
 		return;
-	
+
 	d_graph = g;
 	UserParametricSurface *s = d_graph->parametricSurface();
-	
+
 	boxType->setCurrentIndex(1);
-	raiseWidget(1);
-	
+	optionStack->setCurrentIndex(1);
+
 	boxX->setText(s->xFormula());
 	boxY->setText(s->yFormula());
 	boxZ->setText(s->zFormula());
-	
+
 	boxUFrom->setText(QString::number(s->uStart()));
 	boxUTo->setText(QString::number(s->uEnd()));
 	boxVFrom->setText(QString::number(s->vStart()));
@@ -517,7 +536,7 @@ void SurfaceDialog::setParametricSurface(Graph3D *g)
 
 	boxColumns->setValue(s->columns());
 	boxRows->setValue(s->rows());
-	
+
 	boxUPeriodic->setChecked(s->uPeriodic());
 	boxVPeriodic->setChecked(s->vPeriodic());
 }

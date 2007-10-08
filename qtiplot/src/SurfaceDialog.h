@@ -38,7 +38,7 @@ class QComboBox;
 class QStackedWidget;
 class QSpinBox;
 class Graph3D;
-	
+
 //! Define surface plot dialog
 class SurfaceDialog : public QDialog
 {
@@ -58,7 +58,6 @@ signals:
 
 private slots:
 	void clearList();
-	void raiseWidget(int index);
 
 private:
 	Graph3D *d_graph;
@@ -67,7 +66,7 @@ private:
 	void acceptFunction();
 	void initFunctionPage();
 	void initParametricSurfacePage();
-	
+
 	QWidget* functionPage;
 	QWidget* parametricPage;
 	QStackedWidget* optionStack;
@@ -82,7 +81,7 @@ private:
 	QLineEdit* boxYTo;
 	QLineEdit* boxZFrom;
 	QLineEdit* boxZTo;
-	
+
 	QLineEdit* boxX;
 	QLineEdit* boxY;
 	QLineEdit* boxZ;
@@ -91,7 +90,7 @@ private:
 	QLineEdit* boxUTo;
 	QLineEdit* boxVFrom;
 	QLineEdit* boxVTo;
-	
+
 	QCheckBox *boxUPeriodic, *boxVPeriodic;
 	QSpinBox *boxColumns, *boxRows;
 };

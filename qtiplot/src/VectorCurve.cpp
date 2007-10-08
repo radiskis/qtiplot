@@ -45,7 +45,7 @@ VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, c
 	d_end_y_m (endCol2)
 {
 	if (style == XYXY)
-		setType(Graph::VectXYXY);	
+		setType(Graph::VectXYXY);
 	else if (style == XYAM)
 		setType(Graph::VectXYAM);
 }
@@ -298,9 +298,7 @@ void VectorCurve::updateColumnNames(const QString& oldName, const QString& newNa
 		lst = d_end_y_m.split("_", QString::SkipEmptyParts);
         if (lst[0] == oldName)
             d_end_y_m = newName + "_" + lst[1];
-    }
-    else
-    {
+    } else {
         if (title().text() == oldName)
             setTitle(newName);
         if (d_x_column == oldName)

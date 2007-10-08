@@ -254,7 +254,7 @@ public slots:
     Graph3D* plotSurface(const QString& formula, double xl, double xr,
 					   double yl, double yr, double zl, double zr);
 	Graph3D* plotParametricSurface(const QString& xFormula, const QString& yFormula,
-						const QString& zFormula, double ul, double ur, double vl, double vr, 
+						const QString& zFormula, double ul, double ur, double vl, double vr,
 						int columns, int rows, bool uPeriodic, bool vPeriodic);
 
 	void connectSurfacePlot(Graph3D *plot);
@@ -1045,7 +1045,7 @@ public:
 	QStringList xFunctions, yFunctions, rFunctions,thetaFunctions; // user functions for parametric and polar plots
 	QStringList fitFunctions; //user-defined fit functions;
 	QStringList surfaceFunc; //user-defined surface functions;
-
+    QStringList d_param_surface_func; //user-defined parametric surface functions;
 	//! List of tables and matrices renamed in order to avoid conflicts when appending a project to a folder
 	QStringList renamedTables;
 	Graph::MarkerType copiedMarkerType;
