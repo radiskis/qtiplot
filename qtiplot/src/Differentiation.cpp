@@ -93,6 +93,7 @@ void Differentiation::output()
 		
     	d_output_graph->insertCurve(d_result_table, tableName + "_2", 0);
     	Legend *l = d_output_graph->legend();
-    	l->setText("\\c{1}" + tr("Derivative") + " " + tr("of","Derivative of") + " " + dataSet);
+		if (l)
+    		l->setText("\\l(1)" + tr("Derivative") + " " + tr("of","Derivative of") + " " + dataSet);
 	}
 }

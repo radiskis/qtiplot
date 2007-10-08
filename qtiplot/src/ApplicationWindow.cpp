@@ -10450,8 +10450,7 @@ void ApplicationWindow::analyzeCurve(Graph *g, const QString& whichFit, const QS
 				else
 					fitter = new SigmoidalFit (this, g);
             }
-		}
-		else if(whichFit == "fitGauss")
+		} else if(whichFit == "fitGauss")
 			fitter = new GaussFit(this, g);
 		else if(whichFit == "fitLorentz")
 			fitter = new LorentzFit(this, g);
@@ -10472,10 +10471,9 @@ void ApplicationWindow::analyzeCurve(Graph *g, const QString& whichFit, const QS
                 fitter->showLegend();
 			delete fitter;
 		}
-	}
-	else if(whichFit == "differentiate")
-	{
+	} else if(whichFit == "differentiate"){
 		Differentiation *diff = new Differentiation(this, g, curveTitle);
+		diff->enableGraphicsDisplay(true);
 		diff->run();
 		delete diff;
 	}
