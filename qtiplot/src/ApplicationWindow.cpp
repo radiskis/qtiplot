@@ -1933,7 +1933,7 @@ void ApplicationWindow::editSurfacePlot()
 		sd->setAttribute(Qt::WA_DeleteOnClose);
 		connect (sd,SIGNAL(options(const QString&,double,double,double,double,double,double)),
                   g, SLOT(addFunction(const QString&,double,double,double,double,double,double)));
-		
+
 		if (g->hasData() && g->userFunction()){
 			sd->setFunction(g->formula());
 			sd->setLimits(g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
@@ -1972,7 +1972,7 @@ Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, doubl
 }
 
 Graph3D* ApplicationWindow::plotParametricSurface(const QString& xFormula, const QString& yFormula,
-		const QString& zFormula, double ul, double ur, double vl, double vr, 
+		const QString& zFormula, double ul, double ur, double vl, double vr,
 		int columns, int rows, bool uPeriodic, bool vPeriodic)
 {
 	QString label = generateUniqueName(tr("Graph"));
@@ -1983,7 +1983,7 @@ Graph3D* ApplicationWindow::plotParametricSurface(const QString& xFormula, const
 	plot->setWindowTitle(label);
 	plot->setName(label);
 	customPlot3D(plot);
-	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr, 
+	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr,
 								columns, rows, uPeriodic, vPeriodic);
 	initPlot3D(plot);
 	emit modified();
@@ -4274,6 +4274,7 @@ void ApplicationWindow::readSettings()
 	yFunctions = settings.value("/yFunctions").toStringList();
 	rFunctions = settings.value("/rFunctions").toStringList();
 	thetaFunctions = settings.value("/thetaFunctions").toStringList();
+	d_param_surface_func = settings.value("/ParametricSurfaces").toStringList();
 	settings.endGroup(); // UserFunctions
 
 
@@ -4531,6 +4532,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/yFunctions", yFunctions);
 	settings.setValue("/rFunctions", rFunctions);
 	settings.setValue("/thetaFunctions", thetaFunctions);
+    settings.setValue("/ParametricSurfaces", d_param_surface_func);
 	settings.endGroup(); // UserFunctions
 
 	settings.beginGroup("/Confirmations");
@@ -9619,7 +9621,7 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
                 w->setCell(row, col, QLocale::c().toDouble(cell));
             else if (d_file_version == 90)
                 w->setText(row, col, cell);
-			else 
+			else
 				w->setCell(row, col, cell.toDouble());
 		}
 		qApp->processEvents(QEventLoop::ExcludeUserInput);

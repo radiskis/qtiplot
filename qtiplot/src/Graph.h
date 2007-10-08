@@ -43,6 +43,7 @@
 #include "Table.h"
 #include "AxesDialog.h"
 #include "PlotToolInterface.h"
+#include "MultiLayer.h"
 
 class QwtPlotCurve;
 class QwtPlotZoomer;
@@ -61,6 +62,7 @@ class RangeSelectorTool;
 class DataCurve;
 class PlotCurve;
 class QwtErrorPlotCurve;
+class MultiLayer;
 
 //! Structure containing curve layout parameters
 typedef struct{
@@ -125,6 +127,9 @@ class Graph: public QWidget
 
 		//! Returns the name of the parent MultiLayer object.
 		QString parentPlotName();
+
+		//! Returns a pointer to the parent MultiLayer object.
+		MultiLayer *parentPlot(){return (MultiLayer *)(this->parent()->parent());};
 
 		//! Change the active tool, deleting the old one if it exists.
 		void setActiveTool(PlotToolInterface *tool);
@@ -412,7 +417,7 @@ class Graph: public QWidget
 		void setYAxisTitle(const QString& text);
 		void setRightAxisTitle(const QString& text);
 		void setTopAxisTitle(const QString& text);
-		
+
 		QString axisTitle(int axis){return d_plot->axisTitle(axis).text();};
 		void setAxisTitle(int axis, const QString& text);
 		//! TODO: eliminate this function in version 0.9.1 (used only when restoring project files)

@@ -1704,7 +1704,7 @@ QString Graph::legendText()
 			text+=")\n";
 		}
 	}
-	return text;
+	return text.trimmed();
 }
 
 QString Graph::pieLegendText()
@@ -1721,7 +1721,7 @@ QString Graph::pieLegendText()
 			text+="\n";
 		}
 	}
-	return text;
+	return text.trimmed();
 }
 
 void Graph::updateCurvesData(Table* w, const QString& yColName)
@@ -2378,10 +2378,10 @@ long Graph::insertTextMarker(const QStringList& list, int fileVersion)
 		for (int i=1; i<n-14; i++)
 			text += "\n" + fList[14+i];
 	}
-	
+
 	if (fileVersion < 91)
 		text = text.replace("\\c{", "\\l(").replace("}", ")");
-		
+
     mrk->setText(text);
 	return key;
 }
@@ -3230,7 +3230,7 @@ void Graph::updateScale()
         	if(sc_eng->transformation()->type() == QwtScaleTransformation::Log10)
 				step = fabs(log10(lst[1]/lst[0]));
 		}
-		
+
 		d_plot->setAxisScale (QwtPlot::xBottom, scDiv->lBound(), scDiv->hBound(), step);
 
 		scDiv = d_plot->axisScaleDiv(QwtPlot::yLeft);
@@ -3241,11 +3241,11 @@ void Graph::updateScale()
         	if(sc_eng->transformation()->type() == QwtScaleTransformation::Log10)
 				step = fabs(log10(lst[1]/lst[0]));
 		}
-		
+
 		d_plot->setAxisScale (QwtPlot::yLeft, scDiv->lBound(), scDiv->hBound(), step);
 		d_plot->replot();
 	}
-	
+
 	updateMarkersBoundingRect();
 	updateSecondaryAxis(QwtPlot::xTop);
 	updateSecondaryAxis(QwtPlot::yRight);
@@ -3378,7 +3378,7 @@ void Graph::removeLegendItem(int index)
 		return;
 	}
 
-	/*QString text=mrk->text();
+	QString text=mrk->text();
 	QStringList items=text.split( "\n", QString::SkipEmptyParts);
 
 	if (index >= (int) items.count())
@@ -3397,8 +3397,8 @@ void Graph::removeLegendItem(int index)
 		}
 		items[i]=item;
 	}
-	text=items.join ( "\n" ) + "\n";
-	mrk->setText(text);*/
+	text=items.join ( "\n" );
+	mrk->setText(text);
 }
 
 void Graph::addLegendItem(const QString& colName)
@@ -3408,9 +3408,9 @@ void Graph::addLegendItem(const QString& colName)
 		if (mrk){
 			QString text = mrk->text();
 			if (text.endsWith ( "\n", true ) )
-				text.append("\\l("+QString::number(curves())+")"+colName+"\n");
+				text.append("\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
 			else
-				text.append("\n\\l("+QString::number(curves())+")"+colName+"\n");
+				text.append("\n\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
 
 			mrk->setText(text);
 		}

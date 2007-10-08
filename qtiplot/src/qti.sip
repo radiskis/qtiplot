@@ -705,6 +705,8 @@ public:
     void changeDataColumn(Table* table, const QString& colName, int = 0) /PyName=setData/;
     void addMatrixData(Matrix* ) /PyName=setMatrix/;
     void addFunction(const QString&, double, double, double, double, double, double) /PyName=setFunction/;
+    void addParametricSurface(const QString&, const QString&, const QString&, double,
+                        double, double, double, int=40, int=40, bool=true, bool=true) /PyName=setParametricSurface/;
 
     void update();
 
@@ -808,6 +810,8 @@ public:
     Graph3D* plotXYZ(Table* table, const QString&, int = 0) /PyName=plot3D/;
 	Graph3D* plot3DMatrix(Matrix *, int style = 5) /PyName=plot3D/;
     Graph3D* plotSurface(const QString&, double xl, double xr, double yl, double yr, double zl, double zr) /PyName=plot3D/;
+    Graph3D* plotParametricSurface(const QString&, const QString&, const QString&,
+            double, double, double, double, int=40, int=40, bool=true, bool=true) /PyName=plot3D/;
 
   QWidgetList *windowsList() /PyName=windows/;
 

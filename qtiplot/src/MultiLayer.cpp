@@ -127,7 +127,11 @@ MultiLayer::MultiLayer(const QString& label, QWidget* parent, const char* name, 
 
 Graph *MultiLayer::layer(int num)
 {
-	return (Graph*) graphsList.at(num-1);
+    int index = num - 1;
+    if (index < 0 || index >= graphsList.count())
+        return 0;
+
+	return (Graph*) graphsList.at(index);
 }
 
 LayerButton* MultiLayer::addLayerButton()
