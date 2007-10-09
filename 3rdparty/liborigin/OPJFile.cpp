@@ -2356,9 +2356,53 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				fread(&h,1,1,f);
 				GRAPH.back().layer.back().curve.back().fillarea_type=h;
 
+				//pie
+				fseek(f,LAYER+0x92,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().pie.format_percentages = (h&0x01);
+				GRAPH.back().layer.back().curve.back().pie.format_values = (h&0x02);
+				GRAPH.back().layer.back().curve.back().pie.position_associate = (h&0x08);
+				GRAPH.back().layer.back().curve.back().pie.clockwise_rotation = (h&0x20);
+				GRAPH.back().layer.back().curve.back().pie.format_categories = (h&0x80);
+				
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().pie.format_automatic = h;
+
+				fread(&GRAPH.back().layer.back().curve.back().pie.distance,2,1,f);
+				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.distance);
+
+				fread(&GRAPH.back().layer.back().curve.back().pie.view_angle,1,1,f);
+
+				fseek(f,LAYER+0x98,SEEK_SET);
+				fread(&GRAPH.back().layer.back().curve.back().pie.thickness,1,1,f);
+
+				fseek(f,LAYER+0x9A,SEEK_SET);
+				fread(&GRAPH.back().layer.back().curve.back().pie.rotation,2,1,f);
+				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.rotation);
+
+				fseek(f,LAYER+0x9E,SEEK_SET);
+				fread(&GRAPH.back().layer.back().curve.back().pie.displacement,2,1,f);
+				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.displacement);
+
+				fseek(f,LAYER+0xA0,SEEK_SET);
+				fread(&GRAPH.back().layer.back().curve.back().pie.radius,2,1,f);
+				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.radius);
+
+				fseek(f,LAYER+0xA2,SEEK_SET);
+				fread(&GRAPH.back().layer.back().curve.back().pie.horizontal_offset,2,1,f);
+				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.horizontal_offset);
+
+				fseek(f,LAYER+0xA6,SEEK_SET);
+				fread(&GRAPH.back().layer.back().curve.back().pie.displaced_sections,4,1,f);
+				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.displaced_sections);
+				
 				fseek(f,LAYER+0xC2,SEEK_SET);
 				fread(&h,1,1,f);
 				GRAPH.back().layer.back().curve.back().fillarea_color=h;
+
+				fseek(f,LAYER+0xC3,SEEK_SET);
+				fread(&h,1,1,f);
+				GRAPH.back().layer.back().curve.back().fillarea_first_color=h;
 
 				fseek(f,LAYER+0xCE,SEEK_SET);
 				fread(&h,1,1,f);
