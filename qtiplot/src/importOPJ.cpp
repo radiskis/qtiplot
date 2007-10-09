@@ -42,6 +42,7 @@
 #include "Note.h"
 #include "Folder.h"
 #include "QwtHistogram.h"
+#include "QwtPieCurve.h"
 #include "Legend.h"
 #include "Grid.h"
 #include "ArrowMarker.h"
@@ -510,6 +511,12 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				case OPJFile::Histogram:
 					style=Graph::Histogram;
 					break;
+				case OPJFile::Pie:
+					style=Graph::Pie;
+					break;
+				case OPJFile::Box:
+					style=Graph::Box;
+					break;
 				default:
 					continue;
 				}
@@ -530,6 +537,12 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					}
 					else if(style==Graph::Histogram)
 						graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveYColName(g,l,c), style);
+					else if(style==Graph::Pie || style==Graph::Box)
+					{
+						QStringList names;
+						names << (tableName + "_" + opj.curveYColName(g,l,c));
+						graph->addCurves(mw->table(tableName), names, style);
+					}
 					else
 						graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveXColName(g,l,c), tableName + "_" + opj.curveYColName(g,l,c), style);
 					break;
@@ -642,7 +655,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				color=opj.curveLineColor(g,l,c);
 				cl.lCol=(color==0xF7?0:color); //0xF7 -Automatic color
 				int linestyle=opj.curveLineStyle(g,l,c);
-				cl.filledArea=(opj.curveIsFilledArea(g,l,c)||style==Graph::VerticalBars||style==Graph::HorizontalBars||style==Graph::Histogram)?1:0;
+				cl.filledArea=(opj.curveIsFilledArea(g,l,c)||style==Graph::VerticalBars||style==Graph::HorizontalBars||style==Graph::Histogram||style == Graph::Pie)?1:0;
 				if(cl.filledArea)
 				{
 					switch(opj.curveFillPattern(g,l,c))
@@ -683,7 +696,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					}
 					color=(cl.aStyle==0 ? opj.curveFillAreaColor(g,l,c) : opj.curveFillPatternColor(g,l,c));
 					cl.aCol=(color==0xF7?0:color); //0xF7 -Automatic color
-					if (style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram)
+					if (style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie)
 					{
 						color=opj.curveFillPatternBorderColor(g,l,c);
 						cl.lCol = (color==0xF7?0:color); //0xF7 -Automatic color
@@ -733,6 +746,34 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 						h->loadData();
 					}
 				}
+				else if(style == Graph::Pie)
+				{
+					QwtPieCurve *p = (QwtPieCurve*)graph->curve(c);
+					switch (linestyle)
+					{
+					case OPJFile::Solid:
+						cl.lStyle=Qt::SolidLine;
+						break;
+					case OPJFile::Dash:
+					case OPJFile::ShortDash:
+						cl.lStyle=Qt::DashLine;
+						break;
+					case OPJFile::Dot:
+					case OPJFile::ShortDot:
+						cl.lStyle=Qt::DotLine;
+						break;
+					case OPJFile::DashDot:
+					case OPJFile::ShortDashDot:
+						cl.lStyle=Qt::DashDotLine;
+						break;
+					case OPJFile::DashDotDot:
+						cl.lStyle=Qt::DashDotDotLine;
+						break;
+					}
+					p->setPen(QPen(ColorBox::color(cl.lCol), cl.lWidth, (Qt::PenStyle)cl.lStyle));
+					p->setRay(opj.curvePieProperties(g,l,c).radius);
+					p->setFirstColor(opj.curveFillAreaFirstColor(g,l,c));
+				}
 				switch(opj.curveLineConnect(g,l,c))
 				{
 				case OPJFile::NoLine:
@@ -770,7 +811,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				graph->setScale(0,rangeX[0],rangeX[1],rangeX[2],ticksX[0],ticksX[1],opj.layerXScale(g,l));
 				graph->setScale(2,rangeY[0],rangeY[1],rangeY[2],ticksY[0],ticksY[1],opj.layerYScale(g,l));
 			}
-			else
+			else if(style != Graph::Box)
 			{
 				graph->setScale(2,rangeX[0],rangeX[1],rangeX[2],ticksX[0],ticksX[1],opj.layerXScale(g,l));
 				graph->setScale(0,rangeY[0],rangeY[1],rangeY[2],ticksY[0],ticksY[1],opj.layerYScale(g,l));
@@ -883,36 +924,39 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 			//graph->plotWidget()->resize(layerRect.width(), layerRect.height());
 			QRect qtiRect=graph->plotWidget()->canvas()->geometry();
 			vector<text> texts=opj.layerTexts(g, l);
-			for(int i=0; i<texts.size(); ++i)
+			if(style != Graph::Pie)
 			{
-				int bkg;
-				switch(texts[i].border_type)
+				for(int i=0; i<texts.size(); ++i)
 				{
-				case OPJFile::BlackLine:
-					bkg=1;
-					break;
-				case OPJFile::Shadow:
-				case OPJFile::DarkMarble:
-					bkg=2;
-					break;
-				default:
-					bkg=0;
-					break;
+					int bkg;
+					switch(texts[i].border_type)
+					{
+					case OPJFile::BlackLine:
+						bkg=1;
+						break;
+					case OPJFile::Shadow:
+					case OPJFile::DarkMarble:
+						bkg=2;
+						break;
+					default:
+						bkg=0;
+						break;
+					}
+
+					Legend* txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(texts[i].txt.c_str())));
+					rect txtRect=texts[i].clientRect;
+					QFont font(graph->defaultTextMarkerFont());
+					//font.setPointSize(texts[i].fontsize);
+					txt->setAngle(texts[i].rotation);
+					txt->setTextColor(ColorBox::color(texts[i].color));
+					txt->setFont(font);
+					txt->setFrameStyle(bkg);
+
+					int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
+					int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
+					txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),
+						y*qtiRect.height()/layerRect.height()));
 				}
-
-				Legend* txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(texts[i].txt.c_str())));
-				rect txtRect=texts[i].clientRect;
-				QFont font(graph->defaultTextMarkerFont());
-				//font.setPointSize(texts[i].fontsize);
-				txt->setAngle(texts[i].rotation);
-				txt->setTextColor(ColorBox::color(texts[i].color));
-				txt->setFont(font);
-				txt->setFrameStyle(bkg);
-
-				int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
-				int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
-				txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),
-					y*qtiRect.height()/layerRect.height()));
 			}
 
 			vector<line> lines = opj.layerLines(g, l);

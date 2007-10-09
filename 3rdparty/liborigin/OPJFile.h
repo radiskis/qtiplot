@@ -168,6 +168,34 @@ struct function {
 	{};
 };
 
+struct pieProperties
+{
+	unsigned char view_angle;
+	unsigned char thickness;
+	bool clockwise_rotation;
+	short rotation;
+	unsigned short radius;
+	unsigned short horizontal_offset;
+	unsigned long displaced_sections; // maximum - 32 sections
+	unsigned short displacement;
+	
+	//labels
+	bool format_automatic;
+	bool format_values;
+	bool format_percentages;
+	bool format_categories;
+	bool position_associate;
+	unsigned short distance;
+
+	pieProperties()
+	:	clockwise_rotation(false)
+	,	format_automatic(false)
+	,	format_values(false)
+	,	format_percentages(false)
+	,	format_categories(false)
+	,	position_associate(false)
+	{};
+};
 struct graphCurve {
 	int type;
 	string dataName;
@@ -182,6 +210,7 @@ struct graphCurve {
 	int fillarea_type;
 	int fillarea_pattern;
 	int fillarea_color;
+	int fillarea_first_color;
 	int fillarea_pattern_color;
 	double fillarea_pattern_width;
 	int fillarea_pattern_border_style;
@@ -194,6 +223,9 @@ struct graphCurve {
 	double symbol_size;
 	int symbol_thickness;
 	int point_offset;
+
+	//pie
+	pieProperties pie;
 };
 
 enum AxisPosition {Left = 0, Bottom = 1, Right = 2, Top = 3};
@@ -395,9 +427,9 @@ public:
 	{
 		for(unsigned int g=0; g<GRAPH.size(); ++g)
 			for(unsigned int l=0; l<GRAPH[g].layer.size(); ++l)
-				for(unsigned int i=0; i<GRAPH[g].layer[l].bitmaps.size(); ++i)
-					if(GRAPH[g].layer[l].bitmaps[i].size > 0)
-						delete GRAPH[g].layer[l].bitmaps[i].data;
+				for(unsigned int b=0; b<GRAPH[g].layer[l].bitmaps.size(); ++b)
+					if(GRAPH[g].layer[l].bitmaps[b].size > 0)
+						delete GRAPH[g].layer[l].bitmaps[b].data;
 	}
 	int Parse();
 	double Version() const { return version/100.0; }		//!< get version of project file
@@ -569,6 +601,7 @@ public:
 
 	bool curveIsFilledArea(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea; }	//!< get is filled area of curve c of layer l of graph s
 	int curveFillAreaColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_color; }	//!< get area fillcolor of curve c of layer l of graph s
+	int curveFillAreaFirstColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_first_color; }	//!< get area first fillcolor of curve c of layer l of graph s
 	int curveFillPattern(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern; }	//!< get fill pattern of curve c of layer l of graph s
 	int curveFillPatternColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern_color; }	//!< get fill pattern color of curve c of layer l of graph s
 	double curveFillPatternWidth(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].fillarea_pattern_width; }	//!< get fill pattern line width of curve c of layer l of graph s
@@ -581,6 +614,8 @@ public:
 	int curveSymbolFillColor(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_fill_color; }	//!< get symbol fill color of curve c of layer l of graph s
 	double curveSymbolSize(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_size; }	//!< get symbol size of curve c of layer l of graph s
 	int curveSymbolThickness(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_thickness; }	//!< get symbol thickness of curve c of layer l of graph s
+
+	pieProperties curvePieProperties(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].pie; }	//!< get pie properties of curve c of layer l of graph s
 
 	int numNotes() const { return NOTE.size(); }			//!< get number of notes
 	const char *noteName(int n) const { return NOTE[n].name.c_str(); }	//!< get name of note n
