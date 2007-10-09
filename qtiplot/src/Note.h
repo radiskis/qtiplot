@@ -49,7 +49,6 @@ public:
 	Note(ScriptingEnv *env, const QString& label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 	~Note(){};
 
-
 	void init(ScriptingEnv *env);
 	void setName(const char *name);
 
@@ -72,6 +71,10 @@ public slots:
 	void execute() { te->execute(); };
 	void executeAll() { te->executeAll(); };
 	void evaluate() { te->evaluate(); };
+	void setDirPath(const QString& path){te->setDirPath(path);};
+
+ signals:
+	void dirPathChanged(const QString& path);
 
 private:
 	ScriptEdit *te;

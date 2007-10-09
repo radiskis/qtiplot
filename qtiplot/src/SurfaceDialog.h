@@ -49,12 +49,8 @@ public:
 
 public slots:
 	void accept();
-	void setFunction(const QString& s);
-	void setLimits(double xs, double xe, double ys, double ye, double zs, double ze);
+	void setFunction(Graph3D *);
 	void setParametricSurface(Graph3D *);
-
-signals:
-     void options(const QString&,double,double,double,double,double,double);
 
 private slots:
 	void clearList();
@@ -92,7 +88,7 @@ private:
 	QLineEdit* boxVTo;
 
 	QCheckBox *boxUPeriodic, *boxVPeriodic;
-	QSpinBox *boxColumns, *boxRows;
+	QSpinBox *boxColumns, *boxRows, *boxFuncColumns, *boxFuncRows;
 };
 
 #endif

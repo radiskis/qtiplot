@@ -249,10 +249,8 @@ public slots:
 
 	//! \name Surface Plots
 	//@{
-	Graph3D* newSurfacePlot(const QString& caption,const QString& formula,
-					   double xl, double xr,double yl, double yr, double zl, double zr);
     Graph3D* plotSurface(const QString& formula, double xl, double xr,
-					   double yl, double yr, double zl, double zr);
+					   double yl, double yr, double zl, double zr, int columns = 40, int rows = 30);
 	Graph3D* plotParametricSurface(const QString& xFormula, const QString& yFormula,
 						const QString& zFormula, double ul, double ur, double vl, double vr,
 						int columns, int rows, bool uPeriodic, bool vPeriodic);
@@ -943,6 +941,8 @@ public slots:
 	void scriptPrint(const QString &text);
 	//! switches to the given scripting language; if this is the same as the current one and force is true, restart it
 	bool setScriptingLanguage(const QString &lang, bool force=false);
+	
+	void scriptsDirPathChanged(const QString& path);
 	//@}
 
 signals:
@@ -1035,7 +1035,7 @@ public:
 	QFont tableTextFont, tableHeaderFont, plotAxesFont, plotLegendFont, plotNumbersFont, plotTitleFont;
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;
 	QString projectname,columnSeparator, helpFilePath, appLanguage;
-	QString configFilePath, logInfo, fitPluginsPath, asciiDirPath, imagesDirPath;
+	QString configFilePath, logInfo, fitPluginsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
 	int logID,asciiID,closeID, exportID, printAllID, ignoredLines, savingTimerId, plot3DResolution;
 	bool renameColumns, copiedLayer, strip_spaces, simplify_spaces;
 	QStringList recentProjects, tableWindows;
