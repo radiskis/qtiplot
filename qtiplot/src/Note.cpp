@@ -60,6 +60,7 @@ hlayout->addWidget(te);
 
 setGeometry(0, 0, 500, 200);
 connect(te, SIGNAL(textChanged()), this, SLOT(modifiedNote()));
+connect(te, SIGNAL(dirPathChanged(const QString& )), this, SIGNAL(dirPathChanged(const QString&)));
 }
 
 void Note::setName(const char *name)

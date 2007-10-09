@@ -71,7 +71,7 @@ public slots:
 	void initPlot();
 	void initCoord();
 	void addFunction(const QString& s, double xl, double xr, double yl,
-						  double yr, double zl, double zr);
+						  double yr, double zl, double zr, int columns, int rows);
 	void addParametricSurface(const QString& xFormula, const QString& yFormula,
 						const QString& zFormula, double ul, double ur, double vl, double vr, 
 						int columns, int rows, bool uPeriodic, bool vPeriodic);
@@ -104,7 +104,7 @@ public slots:
 	
 	//! \name User Functions
 	//@{
-	UserFunction* userFunction();
+	UserFunction* userFunction(){return d_func;};
 	QString formula();
 	//@}
 
@@ -396,8 +396,13 @@ public:
     double operator()(double x, double y);
 	QString function(){return formula;};
 
+	unsigned int rows(){return d_rows;};
+	unsigned int columns(){return d_columns;};
+	void setMesh (unsigned int columns, unsigned int rows);
+	
 private:
 	  QString formula;
+	  unsigned int d_rows, d_columns;
 };
 
 //! Class for user defined parametric surfaces

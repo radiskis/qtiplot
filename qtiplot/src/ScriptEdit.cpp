@@ -39,6 +39,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QTextStream>
+#include <QApplication>
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
   : QTextEdit(parent, name), scripted(env)
@@ -53,7 +54,8 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	setFamily("Monospace");
 
 	printCursor = textCursor();
-
+	scriptsDirPath = qApp->applicationDirPath();
+	
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("Ctrl+J") );
 	connect(actionExecute, SIGNAL(activated()), this, SLOT(execute()));
@@ -113,10 +115,9 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 	menu->addAction(actionExecuteAll);
 	menu->addAction(actionEval);
 
-	if (parent()->isA("Note"))
-	{
+	if (parent()->isA("Note")){
 		Note *sp = (Note*) parent();
-		QAction *actionAutoexec = new QAction( tr("Auto&exec"), menu );
+		QAction *actionAutoexec = new QAction(tr("Auto&exec"), menu);
 		actionAutoexec->setToggleAction(true);
 		actionAutoexec->setOn(sp->autoexec());
 		connect(actionAutoexec, SIGNAL(toggled(bool)), sp, SLOT(setAutoexec(bool)));
@@ -290,15 +291,24 @@ QString ScriptEdit::importASCII(const QString &filename)
 
 	QString f;
 	if (filename.isEmpty())
-		f = QFileDialog::getOpenFileName(name(),  filter, this, 0, tr("QtiPlot - Import Text From File"));
+		f = QFileDialog::getOpenFileName(this, tr("QtiPlot - Import Text From File"), scriptsDirPath, filter);
 	else
 		f = filename;
 	if (f.isEmpty()) return QString::null;
+		
 	QFile file(f);
 	if (!file.open(IO_ReadOnly)){
 		QMessageBox::critical(this, tr("QtiPlot - Error Opening File"), tr("Could not open file \"%1\" for reading.").arg(f));
 		return QString::null;
 	}
+	
+	QFileInfo fi(f);
+	if (scriptsDirPath != fi.absolutePath()){
+		scriptsDirPath = fi.absolutePath();
+		emit dirPathChanged(scriptsDirPath);
+	}
+	
+	clear();
 	QTextStream s(&file);
 	s.setEncoding(QTextStream::UnicodeUTF8);
 	while (!s.atEnd())
@@ -316,13 +326,14 @@ QString ScriptEdit::exportASCII(const QString &filename)
 	QString selectedFilter;
 	QString fn;
 	if (filename.isEmpty())
-		fn = QFileDialog::getSaveFileName(name(), filter, this, 0,
-				tr("Save Text to File"), &selectedFilter, false);
+		fn = QFileDialog::getSaveFileName(this, tr("Save Text to File"), scriptsDirPath, filter, &selectedFilter);
 	else
 		fn = filename;
 
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
+		scriptsDirPath = fi.absolutePath();
+		
 		QString baseName = fi.fileName();
 		if (!baseName.contains(".")){
 			if (selectedFilter.contains(".txt"))
@@ -356,4 +367,13 @@ void ScriptEdit::updateIndentation()
 	QString indent = prev.mid(0, i);
 	cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
 	cursor.insertText(indent);
+}
+
+void ScriptEdit::setDirPath(const QString& path)
+{
+	QFileInfo fi(path);
+	if (!fi.exists() || !fi.isDir())
+		return;
+	
+	scriptsDirPath = path;
 }

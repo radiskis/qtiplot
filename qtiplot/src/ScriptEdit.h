@@ -69,7 +69,11 @@ class ScriptEdit: public QTextEdit, public scripted
     void setContext(QObject *context) { myScript->setContext(context); }
     void scriptPrint(const QString&);
     void updateIndentation();
+	void setDirPath(const QString& path);
 
+  signals:
+	void dirPathChanged(const QString& path);
+	
   protected:
     virtual void contextMenuEvent(QContextMenuEvent *e);
     virtual void keyPressEvent(QKeyEvent *e);
@@ -79,6 +83,7 @@ class ScriptEdit: public QTextEdit, public scripted
     QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionImport, *actionExport;
     QMenu *functionsMenu;
     QTextCursor printCursor;
+  	QString scriptsDirPath;
 
   private slots:
     void insertErrorMsg(const QString &message);

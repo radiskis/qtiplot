@@ -156,12 +156,28 @@ void SurfaceDialog::initFunctionPage()
 	bl2->addWidget(gb2);
 	bl2->addWidget(gb3);
 
+	QGroupBox *gb4 = new QGroupBox(tr("Mesh"));
+	boxFuncColumns = new QSpinBox();
+	boxFuncColumns->setRange(1, 1000);
+	boxFuncColumns->setValue(40);
+	
+	boxFuncRows = new QSpinBox();
+	boxFuncRows->setRange(1, 1000);
+	boxFuncRows->setValue(40);
+	
+	QGridLayout *hb4 = new QGridLayout(gb4);
+    hb4->addWidget(new QLabel( tr("Columns")), 0, 0);
+    hb4->addWidget(boxFuncColumns, 0, 1);
+    hb4->addWidget(new QLabel(tr("Rows")), 1, 0);
+    hb4->addWidget(boxFuncRows, 1, 1);
+
 	functionPage = new QWidget();
 
 	QVBoxLayout* vl = new QVBoxLayout(functionPage);
     vl->addLayout(bl1);
 	vl->addLayout(bl2);
-
+	vl->addWidget(gb4);
+	
 	optionStack->addWidget(functionPage);
 }
 
@@ -257,19 +273,26 @@ void SurfaceDialog::clearList()
     }
 }
 
-void SurfaceDialog::setFunction(const QString& s)
+void SurfaceDialog::setFunction(Graph3D *g)
 {
-boxFunction->setCurrentText(s);
-}
+	if (!g)
+		return;
 
-void SurfaceDialog::setLimits(double xs, double xe, double ys, double ye, double zs, double ze)
-{
-	boxXFrom->setText(QString::number(xs));
-	boxXTo->setText(QString::number(xe));
-	boxYFrom->setText(QString::number(ys));
-	boxYTo->setText(QString::number(ye));
-	boxZFrom->setText(QString::number(zs));
-	boxZTo->setText(QString::number(ze));
+	d_graph = g;
+	UserFunction *f = d_graph->userFunction();
+	if (!f)
+		return;
+	
+	boxFunction->setCurrentText(f->function());
+	boxFuncColumns->setValue(f->columns());
+	boxFuncRows->setValue(f->rows());
+	
+	boxXFrom->setText(QString::number(g->xStart()));
+	boxXTo->setText(QString::number(g->xStop()));
+	boxYFrom->setText(QString::number(g->yStart()));
+	boxYTo->setText(QString::number(g->yStop()));
+	boxZFrom->setText(QString::number(g->zStart()));
+	boxZTo->setText(QString::number(g->zStop()));
 }
 
 void SurfaceDialog::accept()
@@ -508,7 +531,13 @@ catch(mu::ParserError &e)
 	}
 
 if (!error){
-	emit options(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ);
+	if (!d_graph){
+		app->plotSurface(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ, 
+					 boxFuncColumns->value(), boxFuncRows->value());
+	} else
+		d_graph->addFunction(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ, 
+					 boxFuncColumns->value(), boxFuncRows->value());
+	
 	app->updateSurfaceFuncList(boxFunction->currentText());
 	close();
 	}

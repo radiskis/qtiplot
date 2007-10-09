@@ -52,6 +52,8 @@ d_app(app)
 
 	te = new ScriptEdit(env, this, name());
 	te->setContext(this);
+	te->setDirPath(d_app->scriptsDirPath);
+	connect(te, SIGNAL(dirPathChanged(const QString& )), d_app, SLOT(scriptsDirPathChanged(const QString&)));
 	setCentralWidget(te);
 
 	initActions();

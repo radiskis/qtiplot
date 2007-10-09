@@ -356,6 +356,15 @@ void ApplicationWindow::initGlobalConstants()
 	d_script_win_rect = QRect(0, 0, 500, 300);
 	d_init_window_type = TableWindow;
 
+	QString aux = qApp->applicationDirPath();
+    workingDir = aux;
+	helpFilePath = aux + "/manual/index.html";
+	fitPluginsPath = aux + "fitPlugins";
+	templatesDir = aux;
+	asciiDirPath = aux;
+	imagesDirPath = aux;
+	scriptsDirPath = aux;
+	
 	appFont = QFont();
 	QString family = appFont.family();
 	int pointSize = appFont.pointSize();
@@ -1928,16 +1937,12 @@ void ApplicationWindow::editSurfacePlot()
 {
 	if ( ws->activeWindow() && ws->activeWindow()->isA("Graph3D")){
 		Graph3D* g = (Graph3D*)ws->activeWindow();
-
 		SurfaceDialog* sd = new SurfaceDialog(this);
 		sd->setAttribute(Qt::WA_DeleteOnClose);
-		connect (sd,SIGNAL(options(const QString&,double,double,double,double,double,double)),
-                  g, SLOT(addFunction(const QString&,double,double,double,double,double,double)));
 
-		if (g->hasData() && g->userFunction()){
-			sd->setFunction(g->formula());
-			sd->setLimits(g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
-		} else if (g->hasData() && g->parametricSurface())
+		if (g->hasData() && g->userFunction())
+			sd->setFunction(g);
+		else if (g->hasData() && g->parametricSurface())
 			sd->setParametricSurface(g);
 		sd->exec();
 	}
@@ -1947,13 +1952,11 @@ void ApplicationWindow::newSurfacePlot()
 {
 	SurfaceDialog* sd = new SurfaceDialog(this);
 	sd->setAttribute(Qt::WA_DeleteOnClose);
-	connect (sd, SIGNAL(options(const QString&,double,double,double,double,double,double)),
-             this, SLOT(plotSurface(const QString&,double,double,double,double,double,double)));
 	sd->exec();
 }
 
 Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, double xr,
-		double yl, double yr, double zl, double zr)
+		double yl, double yr, double zl, double zr, int columns, int rows)
 {
 	QString label = generateUniqueName(tr("Graph"));
 
@@ -1963,7 +1966,7 @@ Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, doubl
 	plot->setWindowTitle(label);
 	plot->setName(label);
 	customPlot3D(plot);
-	plot->addFunction(formula, xl, xr, yl, yr, zl, zr);
+	plot->addFunction(formula, xl, xr, yl, yr, zl, zr, columns, rows);
 
 	initPlot3D(plot);
 
@@ -1996,23 +1999,6 @@ void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 	surfaceFunc.push_front(s);
 	while ((int)surfaceFunc.size() > 10)
 		surfaceFunc.pop_back();
-}
-
-Graph3D* ApplicationWindow::newSurfacePlot(const QString& caption,const QString& formula,
-		double xl, double xr,double yl, double yr, double zl, double zr)
-{
-	Graph3D *plot = new Graph3D("",ws,0);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
-	plot->addFunction(formula, xl, xr, yl, yr, zl, zr);
-
-	QString label = caption;
-	while(alreadyUsedName(label))
-		label = generateUniqueName(tr("Graph"));
-
-	plot->setWindowTitle(label);
-	plot->setName(label);
-	initPlot3D(plot);
-	return plot;
 }
 
 Graph3D* ApplicationWindow::dataPlot3D(const QString& caption,const QString& formula,
@@ -2758,6 +2744,7 @@ void ApplicationWindow::initNote(Note* m, const QString& caption)
 	m->setIcon( QPixmap(note_xpm) );
 	m->askOnCloseEvent(confirmCloseNotes);
 	m->setFolder(current_folder);
+	m->setDirPath(scriptsDirPath);
 
 	current_folder->addWindow(m);
 	ws->addWindow(m);
@@ -2771,6 +2758,7 @@ void ApplicationWindow::initNote(Note* m, const QString& caption)
 	connect(m, SIGNAL(hiddenWindow(MyWidget*)), this, SLOT(hideWindow(MyWidget*)));
 	connect(m, SIGNAL(statusChanged(MyWidget*)), this, SLOT(updateWindowStatus(MyWidget*)));
 	connect(m, SIGNAL(showTitleBarMenu()), this, SLOT(showWindowTitleBarMenu()));
+	connect(m, SIGNAL(dirPathChanged(const QString&)), this, SLOT(scriptsDirPathChanged(const QString&)));
 
 	emit modified();
 }
@@ -4262,6 +4250,7 @@ void ApplicationWindow::readSettings()
 	imagesDirPath = settings.value("/Images", QDir::homePath()).toString();
     workingDir = settings.value("/WorkingDir", QDir::homePath()).toString();
 #endif
+	scriptsDirPath = settings.value("/ScriptsDir", qApp->applicationDirPath()).toString();
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ------------- end group General ------------------- */
@@ -4521,6 +4510,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/FitPlugins", fitPluginsPath);
 	settings.setValue("/ASCII", asciiDirPath);
 	settings.setValue("/Images", imagesDirPath);
+	settings.setValue("/ScriptsDir", scriptsDirPath);
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ---------------- end group General --------------- */
@@ -5194,6 +5184,8 @@ bool ApplicationWindow::setWindowName(MyWidget *w, const QString &text)
 		return false;
 
 	QString name = w->name();
+	if (name == text)
+		return true;
 
 	QString newName = text;
 	newName.replace("-", "_");
@@ -7472,9 +7464,11 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 
 		QString caption = generateUniqueName(tr("Graph"));
 		QString s = g->formula();
-		if (g->userFunction())
-			nw = newSurfacePlot(caption, s, g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
-		else if (g->parametricSurface()){
+		if (g->userFunction()){
+			UserFunction *f = g->userFunction();
+			nw = plotSurface(f->function(), g->xStart(), g->xStop(), g->yStart(), g->yStop(), 
+							 g->zStart(), g->zStop(), f->columns(), f->rows());
+		} else if (g->parametricSurface()){
 			UserParametricSurface *s = g->parametricSurface();
 			nw = plotParametricSurface(s->xFormula(), s->yFormula(), s->zFormula(), s->uStart(), s->uEnd(),
 				 	s->vStart(), s->vEnd(), s->columns(), s->rows(), s->uPeriodic(), s->vPeriodic());
@@ -10335,9 +10329,16 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 		plot = app->plotParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
 				l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
 		app->setWindowName(plot, caption);
-	} else
-		plot=app->newSurfacePlot(caption, fList[1],fList[2].toDouble(),fList[3].toDouble(),
-				fList[4].toDouble(),fList[5].toDouble(), fList[6].toDouble(),fList[7].toDouble());
+	} else {
+		QStringList l = fList[1].split(";", QString::SkipEmptyParts);
+		if (l.count() == 1)
+			plot = app->plotSurface(fList[1], fList[2].toDouble(), fList[3].toDouble(),
+				fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
+		else if (l.count() == 3)
+			plot = app->plotSurface(l[0], fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
+					fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble(), l[1].toInt(), l[2].toInt());
+		app->setWindowName(plot, caption);
+	}
 
 	if (!plot)
 		return 0;
@@ -14119,4 +14120,16 @@ void ApplicationWindow::restoreApplicationGeometry()
 		move(d_app_rect.topLeft());
 		show();
 	}
+}
+
+void ApplicationWindow::scriptsDirPathChanged(const QString& path)
+{
+	scriptsDirPath = path;
+	
+	QList<QWidget*> *lst = windowsList();
+	foreach(QWidget *w, *lst){
+		if (w->isA("Note"))
+			((Note*)w)->setDirPath(path);
+	}
+	delete lst;
 }

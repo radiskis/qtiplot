@@ -76,6 +76,13 @@ double UserFunction::operator()(double x, double y)
 	return result;
 }
 
+void UserFunction::setMesh (unsigned int columns, unsigned int rows)
+{
+	Function::setMesh (columns, rows);
+	d_columns = columns;
+	d_rows = rows;
+}
+
 UserParametricSurface::UserParametricSurface(const QString& xFormula, const QString& yFormula, 
 											 const QString& zFormula, SurfacePlot& pw)
 : ParametricSurface(pw),
@@ -253,8 +260,8 @@ void Graph3D::initCoord()
 	sp->coordinates()->setAutoScale(false);
 }
 
-void Graph3D::addFunction(const QString& s,double xl,double xr,double yl,
-		double yr,double zl,double zr)
+void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
+						double yr, double zl, double zr, int columns, int rows)
 {
 	if (d_surface)
 		delete d_surface;
@@ -266,7 +273,7 @@ void Graph3D::addFunction(const QString& s,double xl,double xr,double yl,
 
 	d_func = new UserFunction(s, *sp);
 
-	d_func->setMesh(41, 31);
+	d_func->setMesh(columns, rows);
 	d_func->setDomain(xl, xr, yl, yr);
 	d_func->setMinZ(zl);
 	d_func->setMaxZ(zr);
@@ -714,14 +721,6 @@ void Graph3D::resetNonEmptyStyle()
 	}
 	else
 		sp->setPlotStyle(style_);
-}
-
-UserFunction* Graph3D::userFunction()
-{
-	if (d_func)
-		return d_func;
-	else
-		return 0;
 }
 
 void Graph3D::update()
@@ -2247,7 +2246,7 @@ QString Graph3D::saveToString(const QString& geometry)
 
 	sp->makeCurrent();
 	if (d_func)
-		s += d_func->function()+"\t";
+		s += d_func->function() + ";" + QString::number(d_func->columns()) + ";" + QString::number(d_func->rows()) + "\t";
 	else if (d_surface){
 		s += d_surface->xFormula() + "," + d_surface->yFormula() + "," + d_surface->zFormula() + ",";
 		s += QString::number(d_surface->uStart(), 'e', 15) + ",";
@@ -2721,7 +2720,7 @@ void Graph3D::copy(Graph3D* g)
         return;
 
 	pointStyle = g->pointType();
-	style_=g->plotStyle();
+	style_ = g->plotStyle();
 	if (g->plotStyle() == Qwt3D::USER ){
 		switch (pointStyle){
 			case None :
@@ -2749,7 +2748,8 @@ void Graph3D::copy(Graph3D* g)
 				sp->setPlotStyle(Cone3D(conesRad, conesQuality));
 				break;
 		}
-	}
+	} else 
+		customPlotStyle(style_);
 
 	sp->setCoordinateStyle(g->coordStyle());
 	sp->setFloorStyle(g->floorStyle());
