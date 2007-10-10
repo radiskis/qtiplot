@@ -95,7 +95,7 @@ RenameWindowDialog::RenameWindowDialog(QWidget* parent, Qt::WFlags fl )
 void RenameWindowDialog::setWidget(MyWidget *w)
 {
 	window = w;
-	boxNameLine->setText(w->name());
+	boxNameLine->setText(w->objectName());
 	boxLabelEdit->setText(w->windowLabel());
 	switch (w->captionPolicy())
 	{

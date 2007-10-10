@@ -102,10 +102,11 @@ bool PythonScript::compile(bool for_eval)
 	bool success=false;
 	Py_XDECREF(PyCode);
 	// Simplest case: Code is a single expression
-	PyCode = Py_CompileString(Code.ascii(), Name, Py_eval_input);
-	if (PyCode) {
+	PyCode = Py_CompileString(Code, Name, Py_eval_input);
+
+	if (PyCode)
 		success = true;
-	} else if (for_eval) {
+	else if (for_eval) {
 		// Code contains statements (or errors) and we want to get a return
 		// value from it.
 		// So we wrap the code into a function definition,
@@ -127,8 +128,7 @@ bool PythonScript::compile(bool for_eval)
 		fdef.append(Code);
 		fdef.replace('\n',"\n\t");
 		PyCode = Py_CompileString(fdef, Name, Py_file_input);
-		if (PyCode)
-		{
+		if (PyCode){
 			PyObject *tmp = PyDict_New();
 			Py_XDECREF(PyEval_EvalCode((PyCodeObject*)PyCode, env()->globalDict(), tmp));
 			Py_DECREF(PyCode);
@@ -136,16 +136,16 @@ bool PythonScript::compile(bool for_eval)
 			Py_XINCREF(PyCode);
 			Py_DECREF(tmp);
 		}
-		success = PyCode != NULL;
+		success = (PyCode != NULL);
 	} else {
 		// Code contains statements (or errors), but we do not need to get
 		// a return value.
 		PyErr_Clear(); // silently ignore errors
-		PyCode = Py_CompileString(Code.ascii(), Name, Py_file_input);
-		success = PyCode != NULL;
+		PyCode = Py_CompileString(Code, Name, Py_file_input);
+		success = (PyCode != NULL);
 	}
-	if (!success)
-	{
+	
+	if (!success){
 		compiled = compileErr;
 		emit_error(env()->errorMsg(), 0);
 	} else

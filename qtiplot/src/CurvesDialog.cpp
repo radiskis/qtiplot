@@ -339,10 +339,9 @@ bool CurvesDialog::addCurve(const QString& name)
     ApplicationWindow *app = (ApplicationWindow *)this->parent();
     if (!app)
         return false;
-
+	
     QStringList matrices = app->matrixNames();
-    if (matrices.contains(name))
-    {
+    if (matrices.contains(name)){
         Matrix *m = app->matrix(name);
         if (!m)
             return false;
@@ -366,8 +365,7 @@ bool CurvesDialog::addCurve(const QString& name)
 
 	int style = curveStyle();
 	Table* t = app->table(name);
-	if (t && d_graph->insertCurve(t, name, style))
-	{
+	if (t && d_graph->insertCurve(t, name, style)){
 		CurveLayout cl = Graph::initCurveLayout();
 		int color, symbol;
 		d_graph->guessUniqueCurveLayout(color, symbol);
@@ -381,31 +379,24 @@ bool CurvesDialog::addCurve(const QString& name)
 
 		if (style == Graph::Line)
 			cl.sType = 0;
-		else if (style==Graph::VerticalBars || style==Graph::HorizontalBars )
-		{
+		else if (style==Graph::VerticalBars || style==Graph::HorizontalBars ){
 			cl.filledArea=1;
 			cl.lCol=0;
 			cl.aCol=color;
 			cl.sType = 0;
-		}
-		else if (style==Graph::Area )
-		{
+		}else if (style==Graph::Area ){
 			cl.filledArea=1;
 			cl.aCol=color;
 			cl.sType = 0;
-		}
-		else if (style == Graph::VerticalDropLines)
+		}else if (style == Graph::VerticalDropLines)
 			cl.connectType=2;
-		else if (style == Graph::VerticalSteps || style == Graph::HorizontalSteps)
-		{
+		else if (style == Graph::VerticalSteps || style == Graph::HorizontalSteps){
 			cl.connectType=3;
 			cl.sType = 0;
-		}
-		else if (style == Graph::Spline)
+		}else if (style == Graph::Spline)
 			cl.connectType=5;
 
 		d_graph->updateCurveLayout(d_graph->curves() - 1, &cl);
-
 		contents->addItem(name);
 		return true;
 	}
@@ -482,21 +473,17 @@ void CurvesDialog::showCurveRange(bool on )
 {
     int row = contents->currentRow();
     contents->clear();
-    if (on)
-    {
+    if (on){
         QStringList lst = QStringList();
-        for (int i=0; i<d_graph->curves(); i++)
-        {
+        for (int i=0; i<d_graph->curves(); i++){
             QwtPlotItem *it = d_graph->plotItem(i);
             if (!it)
                 continue;
 
-            if (it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function)
-            {
+            if (it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function){
                 DataCurve *c = (DataCurve *)it;
                 lst << c->title().text() + "[" + QString::number(c->startRow()+1) + ":" + QString::number(c->endRow()+1) + "]";
-            }
-            else
+            } else
                 lst << it->title().text();
         }
         contents->addItems(lst);

@@ -2990,7 +2990,7 @@ bool Graph::insertCurve(Table* w, int xcol, const QString& name, int style)
 }
 
 bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
-{
+{	
 	int xcol=w->colIndex(xColName);
 	int ycol=w->colIndex(yColName);
 	if (xcol < 0 || ycol < 0)
@@ -3407,7 +3407,7 @@ void Graph::addLegendItem(const QString& colName)
 		Legend* mrk=(Legend*) d_plot->marker(legendMarkerID);
 		if (mrk){
 			QString text = mrk->text();
-			if (text.endsWith ( "\n", true ) )
+			if (text.endsWith ("\n") || text.isEmpty())
 				text.append("\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
 			else
 				text.append("\n\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");

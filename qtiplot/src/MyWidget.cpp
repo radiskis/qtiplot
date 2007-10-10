@@ -38,7 +38,7 @@
 #include <QString>
 #include <QLocale>
 
-MyWidget::MyWidget(const QString& label, QWidget * parent, const char * name, Qt::WFlags f):
+MyWidget::MyWidget(const QString& label, QWidget * parent, const QString& name, Qt::WFlags f):
 		QWidget (parent, f)
 {
 	w_label = label;
@@ -46,7 +46,7 @@ MyWidget::MyWidget(const QString& label, QWidget * parent, const char * name, Qt
 	askOnClose = true;
 	w_status = Normal;
 	titleBar = NULL;
-	setObjectName(QString(name));
+	setObjectName(name);
 	d_locale = QLocale::c();
 }
 
