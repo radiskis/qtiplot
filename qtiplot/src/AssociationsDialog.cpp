@@ -194,14 +194,13 @@ associations->setCurrentRow (curve);
 
 Table * AssociationsDialog::findTable(int index)
 {
-QString text = associations->item(index)->text();
-QStringList lst= text.split(":", QString::SkipEmptyParts);
-for (int i=0; i < (int)tables->count(); i++ )
-	{
-	if (tables->at(i)->name() == lst[0])
-		return (Table *)tables->at(i);
+	QString text = associations->item(index)->text();
+	QStringList lst= text.split(":", QString::SkipEmptyParts);
+	for (int i=0; i < (int)tables->count(); i++ ){
+		if (tables->at(i)->objectName() == lst[0])
+			return (Table *)tables->at(i);
 	}
-return 0;
+	return 0;
 }
 
 void AssociationsDialog::updateTable(int index)

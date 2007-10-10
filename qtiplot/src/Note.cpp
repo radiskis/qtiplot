@@ -41,7 +41,7 @@
 #include <QVBoxLayout>
 #include <QPrintDialog>
 
-Note::Note(ScriptingEnv *env, const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
+Note::Note(ScriptingEnv *env, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
 				: MyWidget(label, parent, name, f)
 {
 init(env);	
@@ -63,10 +63,10 @@ connect(te, SIGNAL(textChanged()), this, SLOT(modifiedNote()));
 connect(te, SIGNAL(dirPathChanged(const QString& )), this, SIGNAL(dirPathChanged(const QString&)));
 }
 
-void Note::setName(const char *name)
+void Note::setName(const QString& name)
 {
-	te->setName(name);
-	QObject::setName(name);
+	te->setObjectName(name);
+	MyWidget::setName(name);
 }
 
 void Note::modifiedNote()

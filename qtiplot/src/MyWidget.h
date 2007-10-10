@@ -65,7 +65,7 @@ public:
 	 * \param f window flags
 	 * \sa setCaptionPolicy(), captionPolicy()
 	 */
-	MyWidget(const QString& label = QString(), QWidget * parent = 0, const char * name = 0, Qt::WFlags f = 0);
+	MyWidget(const QString& label = QString(), QWidget * parent = 0, const QString& name = QString(), Qt::WFlags f = 0);
 
 	//! Possible window captions.
 	enum CaptionPolicy{
@@ -84,13 +84,13 @@ public:
 	QString name(){return objectName();};
 	//! Set the window name
 	void setName(const QString& s){setObjectName(s); updateCaption();};
+	//! Set the widget's name
+	//void setName(const char *newname){setObjectName(QString(newname)); updateCaption();}; //{ QWidget::setName(newname); updateCaption(); }
 
 	//! Return the caption policy
 	CaptionPolicy captionPolicy(){return caption_policy;};
 	//! Set the caption policy
 	void setCaptionPolicy(CaptionPolicy policy) { caption_policy = policy; updateCaption(); }
- 	//! Set the widget's name
-	void setName(const char *newname) { QWidget::setName(newname); updateCaption(); }
 
 	//! Return the creation date
 	QString birthDate(){return birthdate;};

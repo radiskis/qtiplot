@@ -677,7 +677,7 @@ QString Table::colName(int col)
 	if (col<0 || col >= col_label.count())
 		return QString();
 
-	return QString(this->name())+"_"+col_label[col];
+	return QString(this->objectName())+"_"+col_label[col];
 }
 
 void Table::setColName(int col, const QString& text, bool enumerateRight)

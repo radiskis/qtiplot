@@ -46,11 +46,11 @@ class Note: public MyWidget
 
 public:
 
-	Note(ScriptingEnv *env, const QString& label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
+	Note(ScriptingEnv *env, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
 	~Note(){};
 
 	void init(ScriptingEnv *env);
-	void setName(const char *name);
+	void setName(const QString& name);
 
 public slots:
 	QString saveToString(const QString &info);

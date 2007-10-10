@@ -112,10 +112,11 @@ static const char* folder_open_xpm[]={
     "............#ee#"};
 
 Folder::Folder( Folder *parent, const QString &name )
-    : QObject( parent, name ), d_active_window(0)
+    : QObject(parent), d_active_window(0)
 {
 	birthdate = QDateTime::currentDateTime ().toString(Qt::LocalDate);
-
+	setObjectName(name);
+	
 	// FIXME: This doesn't work anymore in Qt4, need alternative method
 	// lstWindows.setAutoDelete( true );
 }
@@ -135,17 +136,17 @@ QStringList Folder::subfolders()
 	if (!folderList.isEmpty()){
 		QObject * f;
 		foreach(f,folderList)
-			list << static_cast<Folder *>(f)->name();
+			list << static_cast<Folder *>(f)->objectName();
 	}
 	return list;
 }
 
 QString Folder::path()
 {
-    QString s = "/" + QString(name()) + "/";
+    QString s = "/" + QString(objectName()) + "/";
     Folder *parentFolder = (Folder *)parent();
     while (parentFolder){
-        s.prepend("/" + QString(parentFolder->name()));
+        s.prepend("/" + QString(parentFolder->objectName()));
         parentFolder = (Folder *)parentFolder->parent();
 	}
     return s;
@@ -157,7 +158,7 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
 	if (!folderList.isEmpty()){
 		QObject * f;
 		foreach(f,folderList){
-			QString name = static_cast<Folder *>(f)->name();
+			QString name = static_cast<Folder *>(f)->objectName();
 			if (partialMatch){
 				if (caseSensitive && name.startsWith(s,Qt::CaseSensitive))
 					return static_cast<Folder *>(f);
@@ -182,32 +183,27 @@ MyWidget* Folder::findWindow(const QString& s, bool windowNames, bool labels,
 							 bool caseSensitive, bool partialMatch)
 {
 	MyWidget* w;
-	foreach(w,lstWindows)
-	{
-		if (windowNames)
-		{
-			QString name = w->name();
+	foreach(w,lstWindows){
+		if (windowNames){
+			QString name = w->objectName();
 			if (partialMatch && name.startsWith(s, caseSensitive))
 				return w;
 			else if (caseSensitive && name == s)
 				return w;
-			else
-			{
+			else{
 				QString text = s;
 				if (name == text.lower())
 					return w;
 			}
 		}
 
-		if (labels)
-		{
+		if (labels){
 			QString label = w->windowLabel();
 			if (partialMatch && label.startsWith(s, caseSensitive))
 				return w;
 			else if (caseSensitive && label == s)
 				return w;
-			else
-			{
+			else{
 				QString text = s;
 				if (label == text.lower())
 					return w;
@@ -219,9 +215,11 @@ MyWidget* Folder::findWindow(const QString& s, bool windowNames, bool labels,
 
 MyWidget *Folder::window(const QString &name, const char *cls, bool recursive)
 {
-	foreach (MyWidget *w, lstWindows)
-		if (w->inherits(cls) && name == w->name())
+	foreach (MyWidget *w, lstWindows){
+		if (w->inherits(cls) && name == w->objectName())
 			return w;
+	}
+		
 	if (!recursive) return NULL;
 	foreach (QObject *f, children()){
 		MyWidget *w = ((Folder*)f)->window(name, cls, true);
@@ -288,11 +286,11 @@ FolderListItem::FolderListItem( Q3ListView *parent, Folder *f )
 {
     myFolder = f;
 
-    setText( 0, f->name() );
-	setOpen( true );
-	setActive( true );
-	setDragEnabled ( true );
-	setDropEnabled ( true );
+    setText(0, f->objectName());
+	setOpen(true);
+	setActive(true);
+	setDragEnabled (true);
+	setDropEnabled (true);
 }
 
 FolderListItem::FolderListItem( FolderListItem *parent, Folder *f )
@@ -300,14 +298,14 @@ FolderListItem::FolderListItem( FolderListItem *parent, Folder *f )
 {
     myFolder = f;
 
-    setText( 0, f->name() );
-	setOpen( true );
-	setActive( true );
+    setText(0, f->objectName());
+	setOpen(true);
+	setActive(true);
 }
 
 void FolderListItem::setActive( bool o )
 {
-    if ( o )
+    if (o)
 		setPixmap(0, QPixmap( folder_open_xpm ) );
     else
 		setPixmap(0, QPixmap( folder_closed_xpm ) );
@@ -317,15 +315,14 @@ void FolderListItem::setActive( bool o )
 
 bool FolderListItem::isChildOf(FolderListItem *src)
 {
-FolderListItem *parent = (FolderListItem *)this->parent();
-while (parent)
-	{
+	FolderListItem *parent = (FolderListItem *)this->parent();
+	while (parent){
 	if (parent == src)
 		return true;
 
 	parent = (FolderListItem *)parent->parent();
 	}
-return false;
+	return false;
 }
 
 /*****************************************************************************
