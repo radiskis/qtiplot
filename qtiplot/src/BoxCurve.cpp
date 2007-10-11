@@ -32,7 +32,7 @@
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_statistics.h>
 
-BoxCurve::BoxCurve(Table *t, const char *name, int startRow, int endRow):
+BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow)
 {
 	mean_style = QwtSymbol::Rect;

@@ -58,13 +58,13 @@
 
 Table::Table(ScriptingEnv *env, const QString &fname,const QString &sep, int ignoredLines, bool renameCols,
 			 bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString, bool readOnly,
-			 const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
+			 const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
 : MyWidget(label, parent,name,f), scripted(env)
 {
 	importASCII(fname, sep, ignoredLines, renameCols, stripSpaces, simplifySpaces, importComments, true, commentString, readOnly);
 }
 
-	Table::Table(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
+	Table::Table(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
 : MyWidget(label,parent,name,f), scripted(env)
 {
 	init(r,c);

@@ -58,7 +58,7 @@ SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, Table *t, const QString& x
 
 void SigmoidalFit::init()
 {
-	setName("Boltzmann");
+	setName(tr("Boltzmann"));
 	d_f = boltzmann_f;
 	d_df = boltzmann_df;
 	d_fdf = boltzmann_fdf;

@@ -103,7 +103,7 @@ bool PythonScript::compile(bool for_eval)
 	Py_XDECREF(PyCode);
 	// Simplest case: Code is a single expression
 	PyCode = Py_CompileString(Code, Name, Py_eval_input);
-
+	
 	if (PyCode)
 		success = true;
 	else if (for_eval) {
@@ -160,8 +160,7 @@ QVariant PythonScript::eval()
 		return QVariant();
 	PyObject *pyret;
 	beginStdoutRedirect();
-	if (PyCallable_Check(PyCode))
-	{
+	if (PyCallable_Check(PyCode)){
 		PyObject *empty_tuple = PyTuple_New(0);
 		pyret = PyObject_Call(PyCode, empty_tuple, localDict);
 		Py_DECREF(empty_tuple);
@@ -190,11 +189,9 @@ QVariant PythonScript::eval()
 		qret = QVariant((qlonglong)PyInt_AS_LONG(pyret));
 	else if (PyLong_Check(pyret))
 		qret = QVariant((qlonglong)PyLong_AsLongLong(pyret));
-	else if (PyNumber_Check(pyret))
-	{
+	else if (PyNumber_Check(pyret)){
 		PyObject *number = PyNumber_Float(pyret);
-		if (number)
-		{
+		if (number){
 			qret = QVariant(PyFloat_AS_DOUBLE(number));
 			Py_DECREF(number);
 		}
@@ -239,8 +236,7 @@ bool PythonScript::exec()
 		return false;
 	PyObject *pyret;
 	beginStdoutRedirect();
-	if (PyCallable_Check(PyCode))
-	{
+	if (PyCallable_Check(PyCode)){
 		PyObject *empty_tuple = PyTuple_New(0);
 		if (!empty_tuple) {
 			emit_error(env()->errorMsg(), 0);
@@ -248,8 +244,11 @@ bool PythonScript::exec()
 		}
 		pyret = PyObject_Call(PyCode,empty_tuple,localDict);
 		Py_DECREF(empty_tuple);
-	} else
+	} else {
 		pyret = PyEval_EvalCode((PyCodeObject*)PyCode, env()->globalDict(), localDict);
+		//pyret = PyRun_String(Code, 0, env()->globalDict(), localDict);
+	}
+	
 	endStdoutRedirect();
 	if (pyret) {
 		Py_DECREF(pyret);

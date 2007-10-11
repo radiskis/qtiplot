@@ -82,12 +82,12 @@ void ExponentialFit::init()
 	d_param_names << "A" << "t" << "y0";
 
 	if (is_exp_growth) {
-		setName("ExpGrowth");
+		setName(tr("ExpGrowth"));
 		d_explanation = tr("Exponential growth");
 		d_formula = "y0+A*exp(x/t)";
 		d_param_explain << "(amplitude)" << "(lifetime)" << "(offset)";
 	} else {
-		setName("ExpDecay");
+		setName(tr("ExpDecay"));
 		d_explanation = tr("Exponential decay");
 		d_formula = "y0+A*exp(-x/t)";
 		d_param_explain << "(amplitude)" << "(e-folding time)" << "(offset)";

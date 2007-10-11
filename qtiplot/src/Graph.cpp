@@ -3616,10 +3616,9 @@ QString Graph::generateFunctionName(const QString& name)
 {
     int index = 1;
   	QString newName = name + QString::number(index);
-
+	
   	QStringList lst;
-  	for (int i=0; i<n_curves; i++)
-  	{
+  	for (int i=0; i<n_curves; i++){
   		PlotCurve *c = (PlotCurve*)this->curve(i);
   		if (!c)
             continue;
@@ -3628,8 +3627,8 @@ QString Graph::generateFunctionName(const QString& name)
   	    	lst << c->title().text();
 	}
 
-  	while(lst.contains(newName)){
-  	        newName = name + QString::number(++index);}
+  	while(lst.contains(newName))
+  		newName = name + QString::number(++index);
   	return newName;
 }
 
@@ -4616,7 +4615,7 @@ void Graph::setArrowDefaults(int lineWidth,  const QColor& c, Qt::PenStyle style
 QString Graph::parentPlotName()
 {
 	QWidget *w = (QWidget *)parent()->parent();
-	return QString(w->name());
+	return QString(w->objectName());
 }
 
 void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)

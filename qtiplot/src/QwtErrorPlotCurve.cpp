@@ -34,7 +34,7 @@
 
 #include <QPainter>
 
-QwtErrorPlotCurve::QwtErrorPlotCurve(int orientation, Table *t, const char *name):
+QwtErrorPlotCurve::QwtErrorPlotCurve(int orientation, Table *t, const QString& name):
 	DataCurve(t, QString(), name),
 	d_master_curve(NULL)
 {
@@ -46,7 +46,7 @@ QwtErrorPlotCurve::QwtErrorPlotCurve(int orientation, Table *t, const char *name
 	setType(Graph::ErrorBars);
 }
 
-QwtErrorPlotCurve::QwtErrorPlotCurve(Table *t, const char *name):
+QwtErrorPlotCurve::QwtErrorPlotCurve(Table *t, const QString& name):
 	DataCurve(t, QString(), name),
 	d_master_curve(NULL)
 {

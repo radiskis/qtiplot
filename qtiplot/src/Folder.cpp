@@ -31,27 +31,9 @@
  ***************************************************************************/
 #include "Folder.h"
 
-#include <qobject.h>
-#include <qdatetime.h>
-#include <qpixmap.h>
-
-#include <qevent.h>
-#include <qpoint.h>
-#include <qmessagebox.h>
-#include <q3dragobject.h>
-#include <qmime.h>
-#include <q3strlist.h>
-#include <qstringlist.h>
+#include <QApplication>
+#include <QDateTime>
 #include <q3header.h>
-#include <qapplication.h>
-#include <q3dragobject.h>
-#include <q3iconview.h>
-#include <qcursor.h>
-//Added by qt3to4:
-#include <Q3PtrList>
-#include <QKeyEvent>
-#include <QDropEvent>
-#include <QMouseEvent>
 
 static const char* folder_closed_xpm[]={
     "16 16 9 1",
@@ -214,7 +196,7 @@ MyWidget* Folder::findWindow(const QString& s, bool windowNames, bool labels,
 }
 
 MyWidget *Folder::window(const QString &name, const char *cls, bool recursive)
-{
+{		
 	foreach (MyWidget *w, lstWindows){
 		if (w->inherits(cls) && name == w->objectName())
 			return w;

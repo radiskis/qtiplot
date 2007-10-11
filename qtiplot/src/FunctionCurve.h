@@ -37,8 +37,8 @@ class FunctionCurve: public PlotCurve
 public:
 	enum FunctionType{Normal = 0, Parametric = 1, Polar = 2};
 
-	FunctionCurve(const FunctionType& t, const char *name=0);
-	FunctionCurve(const char *name=0);
+	FunctionCurve(const FunctionType& t, const QString& name = QString());
+	FunctionCurve(const QString& name = QString());
 
 	double startRange(){return d_from;};
 	double endRange(){return d_to;};
@@ -74,4 +74,3 @@ private:
 };
 
 #endif
-
