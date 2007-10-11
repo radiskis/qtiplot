@@ -593,7 +593,7 @@ void Fit::generateFitCurve(double *par)
 		if (!d_output_graph)
 			d_output_graph = createOutputGraph()->activeGraph();
 
-		if (d_gen_function){
+		if (d_gen_function){			
 			insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y);
 			d_output_graph->replot();
 			delete[] X;

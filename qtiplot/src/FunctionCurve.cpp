@@ -31,7 +31,7 @@
 
 #include <QMessageBox>
 
-FunctionCurve::FunctionCurve(const char *name):
+FunctionCurve::FunctionCurve(const QString& name):
 	PlotCurve(name)
 {
 	d_variable = "x";
@@ -39,7 +39,7 @@ FunctionCurve::FunctionCurve(const char *name):
 	d_formulas = QStringList();
 }
 
-FunctionCurve::FunctionCurve(const FunctionType& t, const char *name):
+FunctionCurve::FunctionCurve(const FunctionType& t, const QString& name):
 	PlotCurve(name),
 	d_function_type(t)
 {

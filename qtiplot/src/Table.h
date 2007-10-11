@@ -66,8 +66,8 @@ public:
 
    	Table(ScriptingEnv *env, const QString &fname,const QString &sep, int ignoredLines, bool renameCols,
 		 bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString, bool readOnly,
-         const QString &label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
-	Table(ScriptingEnv *env, int r,int c, const QString &label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
+         const QString &label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
+	Table(ScriptingEnv *env, int r,int c, const QString &label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
 
 	Q3TableSelection getSelection();
 
