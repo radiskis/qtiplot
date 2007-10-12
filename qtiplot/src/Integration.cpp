@@ -68,7 +68,7 @@ Integration::Integration(ApplicationWindow *parent, Table *t, const QString& xCo
 
 void Integration::init()
 {
-	setName(tr("Integration"));
+	setObjectName(tr("Integration"));
 	d_method = 1;
     d_max_iterations = 40;
     d_sort_data = true;

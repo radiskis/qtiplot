@@ -492,6 +492,9 @@ bool Table::calculate(int col, int startRow, int endRow)
 		QApplication::restoreOverrideCursor();
 		return false;
 	}
+		
+	if (startRow < 0)
+		startRow = 0;
 	if (endRow >= numRows())
 		resizeRows(endRow + 1);
 
@@ -500,7 +503,7 @@ bool Table::calculate(int col, int startRow, int endRow)
 	colscript->setInt(endRow+1, "er");
 	QVariant ret;
 	for (int i=startRow; i<=endRow; i++){
-		colscript->setInt(i+1,"i");
+		colscript->setInt(i+1, "i");
 		ret = colscript->eval();
 		if(ret.type()==QVariant::Double) {
 			int prec;
@@ -1592,7 +1595,7 @@ int Table::nonEmptyRows()
 }
 
 double Table::cell(int row, int col)
-{
+{	
 	return locale().toDouble(d_table->text(row, col));
 }
 

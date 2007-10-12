@@ -40,18 +40,20 @@
 
 #include <gsl/gsl_sort.h>
 
-Filter::Filter( ApplicationWindow *parent, Graph *g, const char * name)
-: QObject( parent, name)
+Filter::Filter( ApplicationWindow *parent, Graph *g, const QString& name)
+: QObject( parent)
 {
 	init();
+	setObjectName(name);
 	d_graph = g;
 	d_output_graph = g;
 }
 
-Filter::Filter( ApplicationWindow *parent, Table *t, const char * name)
+Filter::Filter( ApplicationWindow *parent, Table *t, const QString& name)
 : QObject( parent, name)
 {
 	init();
+	setObjectName(name);
 	d_table = t;
 }
 
@@ -67,7 +69,7 @@ void Filter::init()
 	d_init_err = false;
     d_sort_data = false;
     d_min_points = 2;
-    d_explanation = QString(name());
+    d_explanation = objectName();
     d_graph = 0;
     d_table = 0;
     d_result_table = 0;

@@ -58,7 +58,7 @@ LogisticFit::LogisticFit(ApplicationWindow *parent, Table *t, const QString& xCo
 
 void LogisticFit::init()
 {
-	setName(tr("Logistic"));
+	setObjectName(tr("Logistic"));
     d_f = logistic_f;
     d_df = logistic_df;
 	d_fdf = logistic_fdf;

@@ -61,7 +61,7 @@ Differentiation::Differentiation(ApplicationWindow *parent, Table *t, const QStr
 
 void Differentiation::init()
 {
-	setName(tr("Derivative"));
+	setObjectName(tr("Derivative"));
     d_min_points = 4;
 }
 

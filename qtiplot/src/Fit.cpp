@@ -44,13 +44,13 @@
 #include <QDateTime>
 #include <QLocale>
 
-Fit::Fit( ApplicationWindow *parent, Graph *g, const char * name)
+Fit::Fit( ApplicationWindow *parent, Graph *g, const QString& name)
 : Filter( parent, g, name)
 {
 	init();
 }
 
-Fit::Fit( ApplicationWindow *parent, Table *t, const char * name)
+Fit::Fit( ApplicationWindow *parent, Table *t, const QString& name)
 : Filter( parent, t, name)
 {
 	init();

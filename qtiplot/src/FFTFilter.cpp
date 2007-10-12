@@ -57,7 +57,7 @@ FFTFilter::FFTFilter(ApplicationWindow *parent, Table *t, const QString& xCol, c
 
 void FFTFilter::init (int m)
 {
-    setName(tr("FFT") + tr("Filtered"));
+    setObjectName(tr("FFT") + tr("Filtered"));
     setFilterType(m);
     d_points = d_n;
     d_offset = true;
