@@ -106,8 +106,7 @@ void MatrixDialog::showPrecisionBox(int item)
 {
 	if (item)
 		boxPrecision->setEnabled( true );
-	else
-	{
+	else{
 		boxPrecision->setValue(6);
 		boxPrecision->setEnabled( false );
 	}
@@ -133,8 +132,7 @@ void MatrixDialog::setMatrix(Matrix *m)
 		boxFormat->setCurrentIndex(1);
 
 	boxPrecision->setValue(m->precision());
-	if (m->precision() != 6)
-	{
+	if (m->precision() != 6){
 		boxPrecision->setEnabled( true );
 		boxNumericDisplay->setCurrentIndex(1);
 	}

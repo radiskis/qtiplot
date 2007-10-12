@@ -31,6 +31,7 @@
 #include "MyParser.h"
 #include "SymbolDialog.h"
 #include "ApplicationWindow.h"
+#include "ColorButton.h"
 
 #include <QListWidget>
 #include <QLineEdit>
@@ -196,14 +197,20 @@ void Plot3DDialog::initTitlePage()
 {
     QHBoxLayout* hb1 = new QHBoxLayout();
     hb1->addStretch();
+    QLabel *colorLabel = new QLabel(tr( "Co&lor" ));
+    hb1->addWidget(colorLabel);
+    btnTitleColor = new ColorButton();
+    hb1->addWidget(btnTitleColor);
+    colorLabel->setBuddy(btnTitleColor);
+
+    btnTitleFont = new QPushButton(tr( "&Font" ));
+    hb1->addWidget(btnTitleFont);
+
 	buttonLowerGreek = new QPushButton(QChar(0x3B1));
     hb1->addWidget(buttonLowerGreek);
 	buttonUpperGreek = new QPushButton(QChar(0x393));
     hb1->addWidget(buttonUpperGreek);
-	btnTitleColor = new QPushButton(tr( "&Color" ));
-    hb1->addWidget(btnTitleColor);
-	btnTitleFont = new QPushButton(tr( "&Font" ));
-    hb1->addWidget(btnTitleFont);
+
     hb1->addStretch();
 
 	QVBoxLayout* vl = new QVBoxLayout();
@@ -224,38 +231,68 @@ void Plot3DDialog::initTitlePage()
 
 void Plot3DDialog::initColorsPage()
 {
-    QVBoxLayout* vl1 = new QVBoxLayout();
-	btnFromColor = new QPushButton(tr( "Ma&x" ));
-    vl1->addWidget(btnFromColor);
-	btnToColor = new QPushButton(tr( "&Min" ));
-    vl1->addWidget(btnToColor);
+    QGridLayout* vl1 = new QGridLayout();
+    btnFromColor = new ColorButton();
+    QLabel *maxLabel = new QLabel(tr( "&Max" ));
+    maxLabel->setBuddy(btnFromColor);
+    vl1->addWidget(maxLabel, 0, 0);
+    vl1->addWidget(btnFromColor, 0, 1);
+
+	btnToColor = new ColorButton();
+	QLabel *minLabel = new QLabel(tr( "M&in" ));
+	minLabel->setBuddy(btnToColor);
+    vl1->addWidget(minLabel, 1, 0);
+    vl1->addWidget(btnToColor, 1, 1);
+
 	btnColorMap = new QPushButton(tr( "Color Ma&p" ));
-    vl1->addWidget(btnColorMap);
-    vl1->addStretch();
+    vl1->addWidget(btnColorMap, 2, 1);
+    vl1->setRowStretch(3, 1);
 
     QGroupBox *gb1 = new QGroupBox(tr( "Data" ));
     gb1->setLayout(vl1);
 
-    QVBoxLayout* vl2 = new QVBoxLayout();
-	btnMesh = new QPushButton(tr( "&Line" ));
-    vl2->addWidget(btnMesh);
-	btnBackground = new QPushButton(tr( "&Background" ));
-    vl2->addWidget(btnBackground);
-    vl2->addStretch();
+    QGridLayout* vl2 = new QGridLayout();
+    btnMesh = new ColorButton();
+    QLabel *meshLabel = new QLabel(tr( "&Line" ));
+    meshLabel->setBuddy(btnMesh);
+    vl2->addWidget(meshLabel, 0, 0);
+    vl2->addWidget(btnMesh, 0, 1);
+
+    btnBackground = new ColorButton();
+    QLabel *backgroundLabel = new QLabel(tr( "&Background" ));
+    backgroundLabel->setBuddy(btnBackground);
+    vl2->addWidget(backgroundLabel, 1, 0);
+    vl2->addWidget(btnBackground, 1, 1);
+    vl2->setRowStretch(2, 1);
 
     QGroupBox *gb2 = new QGroupBox(tr( "General" ));
     gb2->setLayout(vl2);
 
     QGridLayout *gl1 = new QGridLayout();
-	btnAxes = new QPushButton(tr( "&Axes" ));
-    gl1->addWidget(btnAxes, 0, 0);
-	btnLabels = new QPushButton(tr( "Lab&els" ));
-    gl1->addWidget(btnLabels, 0, 1);
-	btnNumbers = new QPushButton(tr( "&Numbers" ));
-    gl1->addWidget(btnNumbers, 1, 0);
-	btnGrid = new QPushButton(tr( "&Grid" ));
-    gl1->addWidget(btnGrid, 1, 1);
-    gl1->setRowStretch(2, 1);
+    btnAxes = new ColorButton();
+    QLabel *axesLabel = new QLabel(tr( "A&xes" ));
+    axesLabel->setBuddy(btnAxes);
+    gl1->addWidget(axesLabel, 0, 0);
+    gl1->addWidget(btnAxes, 0, 1);
+
+    btnLabels = new ColorButton();
+    QLabel *labLabels = new QLabel(tr( "Lab&els" ));
+    labLabels->setBuddy(btnLabels);
+    gl1->addWidget(labLabels, 1, 0);
+    gl1->addWidget(btnLabels, 1, 1);
+
+	btnNumbers = new ColorButton();
+	QLabel *numbersLabel = new QLabel(tr( "&Numbers" ));
+    numbersLabel->setBuddy(btnNumbers);
+	gl1->addWidget(numbersLabel, 2, 0);
+    gl1->addWidget(btnNumbers, 2, 1);
+
+	btnGrid = new ColorButton();
+	QLabel *gridLabel = new QLabel(tr( "&Grid" ));
+	gridLabel->setBuddy(btnGrid);
+	gl1->addWidget(gridLabel, 3, 0);
+    gl1->addWidget(btnGrid, 3, 1);
+    gl1->setRowStretch(4, 1);
 
     AxesColorGroupBox = new QGroupBox(tr( "Coordinate System" ));
     AxesColorGroupBox->setLayout(gl1);
@@ -453,15 +490,15 @@ void Plot3DDialog::setPlot(Graph3D *g)
 
 	d_plot = g;
 
-	fromColor = g->minDataColor();
-	toColor = g->maxDataColor();
-	titleColor = g->titleColor();
-	meshColor = g->meshColor();
-	axesColor = g->axesColor();
-	numColor = g->numColor();
-	labelColor = g->labelColor();
-	bgColor = g->bgColor();
-	gridColor = g->gridColor();
+	btnFromColor->setColor(g->minDataColor());
+	btnToColor->setColor(g->maxDataColor());
+	btnTitleColor->setColor(g->titleColor());
+	btnMesh->setColor(g->meshColor());
+	btnAxes->setColor(g->axesColor());
+	btnNumbers->setColor(g->numColor());
+	btnLabels->setColor(g->labelColor());
+	btnBackground->setColor(g->bgColor());
+	btnGrid->setColor(g->gridColor());
 
 	boxMeshLineWidth->setValue(g->meshLineWidth());
 	boxTransparency->setValue(int(100*g->transparency()));
@@ -648,82 +685,82 @@ if (!fn.isEmpty())
 
 QColor Plot3DDialog::pickFromColor()
 {
-	QColor c = QColorDialog::getColor(fromColor, this );
+	QColor c = QColorDialog::getColor(btnFromColor->color(), this );
 	if ( !c.isValid() )
-		return fromColor;
+		return btnFromColor->color();
 
-	fromColor = c;
-	return fromColor;
+    btnFromColor->setColor(c);
+	return c;
 }
 
 QColor Plot3DDialog::pickToColor()
 {
-	QColor c = QColorDialog::getColor(toColor, this );
+	QColor c = QColorDialog::getColor(btnToColor->color(), this );
 	if ( !c.isValid() )
-		return toColor;
+		return btnToColor->color();
 
-	toColor = c;
-	return toColor;
+    btnToColor->setColor(c);
+	return c;
 }
 
 QColor Plot3DDialog::pickGridColor()
 {
-	QColor c = QColorDialog::getColor(gridColor, this );
+	QColor c = QColorDialog::getColor(btnGrid->color(), this);
 	if ( !c.isValid() )
-		return gridColor;
+		return btnGrid->color();
 
-	gridColor = c;
-	return gridColor;
+	btnGrid->setColor(c);
+	return c;
 }
 
 QColor Plot3DDialog::pickAxesColor()
 {
-	QColor c = QColorDialog::getColor(axesColor, this );
+	QColor c = QColorDialog::getColor(btnAxes->color(), this);
 	if ( !c.isValid() )
-		return axesColor;
+		return btnAxes->color();
 
-	axesColor = c;
-	return axesColor;
+	btnAxes->setColor(c);
+	return c;
 }
 
 QColor Plot3DDialog::pickBgColor()
 {
-	QColor c = QColorDialog::getColor(bgColor, this );
+	QColor c = QColorDialog::getColor(btnBackground->color(), this );
 	if ( !c.isValid() )
-		return bgColor;
+		return btnBackground->color();
 
-	bgColor = c;
-	return bgColor;
+	btnBackground->setColor(c);
+	return c;
 }
 
 QColor Plot3DDialog::pickNumberColor()
 {
-	QColor c = QColorDialog::getColor(numColor, this );
+	QColor c = QColorDialog::getColor(btnNumbers->color(), this );
 	if ( !c.isValid() )
-		return numColor;
+		return btnNumbers->color();
 
-	numColor = c;
-	return numColor;
+	btnNumbers->setColor(c);
+	return c;
 }
 
 QColor Plot3DDialog::pickLabelColor()
 {
-	QColor c = QColorDialog::getColor(labelColor, this );
+	QColor c = QColorDialog::getColor(btnLabels->color(), this );
 	if ( !c.isValid() )
-		return labelColor;
+		return btnLabels->color();
 
-	labelColor = c;
-	return labelColor;
+	btnLabels->setColor(c);
+	return c;
 }
 
 QColor Plot3DDialog::pickTitleColor()
 {
-	QColor c = QColorDialog::getColor(titleColor, this );
+	QColor c = QColorDialog::getColor(btnTitleColor->color(), this );
 	if ( !c.isValid() )
-		return titleColor;
+		return btnTitleColor->color();
 
-	titleColor = c;
-	return titleColor;
+	btnTitleColor->setColor(c);
+	return c;
 }
 
 void Plot3DDialog::pickTitleFont()
@@ -768,12 +805,12 @@ void Plot3DDialog::viewScaleLimits(int axis)
 QColor Plot3DDialog::pickMeshColor()
 {
 
-	QColor c = QColorDialog::getColor(meshColor, this );
+	QColor c = QColorDialog::getColor(btnMesh->color(), this);
 	if ( !c.isValid() )
-		return meshColor;
+		return btnMesh->color();
 
-	meshColor=c;
-	return meshColor;
+	btnMesh->setColor(c);
+	return c;
 }
 
 void Plot3DDialog::accept()
@@ -830,16 +867,16 @@ bool Plot3DDialog::updatePlot()
 
         app->custom3DActions(d_plot);
 	} else if (generalDialog->currentPage()==(QWidget*)title){
-		d_plot->setTitle(boxTitle->text(),titleColor,titleFont);
+		d_plot->setTitle(boxTitle->text(), btnTitleColor->color(), titleFont);
 	} else if (generalDialog->currentPage()==(QWidget*)colors){
 		d_plot->changeTransparency(boxTransparency->value()*0.01);
-		d_plot->setDataColors(fromColor, toColor);
-		d_plot->setMeshColor(meshColor);
-		d_plot->setAxesColor(axesColor);
-		d_plot->setNumbersColor(numColor);
-		d_plot->setLabelsColor(labelColor);
-		d_plot->setBackgroundColor(bgColor);
-		d_plot->setGridColor(gridColor);
+		d_plot->setDataColors(btnFromColor->color(), btnToColor->color());
+		d_plot->setMeshColor(btnMesh->color());
+		d_plot->setAxesColor(btnAxes->color());
+		d_plot->setNumbersColor(btnNumbers->color());
+		d_plot->setLabelsColor(btnLabels->color());
+		d_plot->setBackgroundColor(btnBackground->color());
+		d_plot->setGridColor(btnGrid->color());
 	} else if (generalDialog->currentPage()==(QWidget*)general){
 		d_plot->showColorLegend(boxLegend->isChecked());
 		d_plot->setResolution(boxResolution->value());
@@ -979,15 +1016,15 @@ QFont Plot3DDialog::axisFont(int axis)
 
 void Plot3DDialog::showGeneralTab()
 {
-	generalDialog->showPage(general);
+	generalDialog->setCurrentWidget (general);
 }
 
 void Plot3DDialog::showTitleTab()
 {
-	generalDialog->setCurrentPage(2);
+	generalDialog->setCurrentWidget (title);
 }
 
 void Plot3DDialog::showAxisTab()
 {
-	generalDialog->setCurrentPage(1);
+	generalDialog->setCurrentWidget (axes);
 }
