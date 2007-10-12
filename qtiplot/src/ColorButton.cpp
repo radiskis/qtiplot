@@ -338,7 +338,8 @@ void ColorButton::init()
 
 	setMaximumWidth(3*btn_size);
 	setMaximumHeight(btn_size);
-
+	setFocusPolicy(Qt::StrongFocus);
+    setFocusProxy(selectButton);
 	connect(selectButton, SIGNAL(clicked()), this, SIGNAL(clicked()));
 }
 

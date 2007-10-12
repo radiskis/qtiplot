@@ -364,7 +364,7 @@ void ApplicationWindow::initGlobalConstants()
 	asciiDirPath = aux;
 	imagesDirPath = aux;
 	scriptsDirPath = aux;
-	
+
 	appFont = QFont();
 	QString family = appFont.family();
 	int pointSize = appFont.pointSize();
@@ -3761,7 +3761,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 				s=t.readLine();
 				lst<<s;
 			}
-			lst.pop_back();				
+			lst.pop_back();
 			openTable(app,lst);
 			progress.setValue(aux);
 		} else if (s.left(17)=="<TableStatistics>") {
@@ -3804,7 +3804,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			if (!parent)
 				app->current_folder = app->projectFolder();
 			else
-				app->current_folder = parent;			
+				app->current_folder = parent;
 		}
 	}
 	f.close();
@@ -3814,7 +3814,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 		app->close();
 		return 0;
 	}
-	
+
 	//process the rest
 	f.open(QIODevice::ReadOnly);
 
@@ -5302,11 +5302,9 @@ void ApplicationWindow::showTitleDialog()
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer"))
-	{
+	if (w->isA("MultiLayer")){
 		Graph* g = ((MultiLayer*)w)->activeGraph();
-		if (g)
-		{
+		if (g){
 			TextDialog* td= new TextDialog(TextDialog::AxisTitle, this,0);
 			td->setAttribute(Qt::WA_DeleteOnClose);
 			connect (td,SIGNAL(changeFont(const QFont &)),g,SLOT(setTitleFont(const QFont &)));
@@ -5321,13 +5319,10 @@ void ApplicationWindow::showTitleDialog()
 			td->setAlignment(t.renderFlags());
 			td->exec();
 		}
-	}
-	else if (w->isA("Graph3D"))
-	{
+	} else if (w->isA("Graph3D")) {
 		Plot3DDialog* pd = (Plot3DDialog*)showPlot3dDialog();
 		if (pd)
 			pd->showTitleTab();
-		delete pd;
 	}
 }
 
@@ -6119,7 +6114,7 @@ QDialog* ApplicationWindow::showPlot3dDialog()
 
 		Plot3DDialog* pd = new Plot3DDialog(this);
 		pd->setPlot(g);
-		pd->exec();
+		pd->show();
 		return pd;
 	}
 	else return 0;
@@ -7461,7 +7456,7 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 		QString s = g->formula();
 		if (g->userFunction()){
 			UserFunction *f = g->userFunction();
-			nw = plotSurface(f->function(), g->xStart(), g->xStop(), g->yStart(), g->yStop(), 
+			nw = plotSurface(f->function(), g->xStart(), g->xStop(), g->yStart(), g->yStop(),
 							 g->zStart(), g->zStop(), f->columns(), f->rows());
 		} else if (g->parametricSurface()){
 			UserParametricSurface *s = g->parametricSurface();
@@ -13778,7 +13773,7 @@ void ApplicationWindow::toggle3DAnimation(bool on)
 }
 
 QString ApplicationWindow::generateUniqueName(const QString& name, bool increment)
-{	
+{
 	int index = 0;
 	QWidgetList *windows = windowsList();
 	QStringList lst;
@@ -14105,7 +14100,7 @@ void ApplicationWindow::restoreApplicationGeometry()
 void ApplicationWindow::scriptsDirPathChanged(const QString& path)
 {
 	scriptsDirPath = path;
-	
+
 	QList<QWidget*> *lst = windowsList();
 	foreach(QWidget *w, *lst){
 		if (w->isA("Note"))

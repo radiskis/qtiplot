@@ -127,8 +127,7 @@ void Matrix::cellEdited(int row,int col)
   	double res = locale().toDouble(cell_text, &ok);
 	if (ok)
 		setText(row, col, locale().toString(res, txt_format.toAscii(), num_precision));
-	else
-	{
+	else {
 		Script *script = scriptEnv->newScript(cell_formula, this, QString("<%1_%2_%3>").arg(name()).arg(row).arg(col));
 		connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 
@@ -177,10 +176,10 @@ void Matrix::setCell(int row, int col, double value)
 
 QString Matrix::text(int row, int col)
 {
-		if(d_table->item(row, col))
-			return d_table->item(row, col)->text();
-		else
-			return QString("");
+    if(d_table->item(row, col))
+        return d_table->item(row, col)->text();
+    else
+        return QString("");
 }
 
 void Matrix::setText (int row, int col, const QString & new_text )
@@ -259,8 +258,7 @@ void Matrix::restore(const QStringList &lst)
 	l= (*i++).split("\t");
 	if (l[0] == "Formula")
 		formula_str = l[1];
-	else if (l[0] == "<formula>")
-	{
+	else if (l[0] == "<formula>"){
 		for(formula_str=""; i != lst.end() && *i != "</formula>"; i++)
 			formula_str += *i + "\n";
 		formula_str.truncate(formula_str.length()-1);
@@ -306,9 +304,6 @@ QString Matrix::formula()
 	return formula_str;
 }
 
-// TODO: Port this class to the model/view framework and make
-// sure the diplayed precision and the saved precision
-// are independent
 void Matrix::setNumericFormat(const QChar& f, int prec)
 {
 	if (txt_format == f && num_precision == prec)
@@ -534,10 +529,8 @@ void Matrix::saveCellsToMemory()
 	}
 
     bool ok = true;
-	for (int i=0; i<rows; i++)
-	{
-        for (int j=0; j<cols; j++)
-        {
+	for (int i=0; i<rows; i++){
+        for (int j=0; j<cols; j++){
             dMatrix[i][j] = locale().toDouble(text(i, j), &ok);
             if (!ok)
                 break;
@@ -545,10 +538,8 @@ void Matrix::saveCellsToMemory()
 	}
 	if (!ok){// fall back to C locale
 	    ok = true;
-        for (int i=0; i<rows; i++)
-        {
-            for (int j=0; j<cols; j++)
-            {
+        for (int i=0; i<rows; i++){
+            for (int j=0; j<cols; j++){
                 dMatrix[i][j] = QLocale::c().toDouble(text(i, j), &ok);
                 if (!ok)
                     break;
@@ -557,10 +548,8 @@ void Matrix::saveCellsToMemory()
 	}
 	if (!ok){// fall back to German locale
 	    ok = true;
-        for (int i=0; i<rows; i++)
-        {
-            for (int j=0; j<cols; j++)
-            {
+        for (int i=0; i<rows; i++){
+            for (int j=0; j<cols; j++){
                 dMatrix[i][j] = QLocale(QLocale::German).toDouble(text(i, j), &ok);
                 if (!ok)
                     break;
@@ -569,10 +558,8 @@ void Matrix::saveCellsToMemory()
 	}
 	if (!ok){// fall back to French locale
 	    ok = true;
-        for (int i=0; i<rows; i++)
-        {
-            for (int j=0; j<cols; j++)
-            {
+        for (int i=0; i<rows; i++){
+            for (int j=0; j<cols; j++){
                 dMatrix[i][j] = QLocale(QLocale::French).toDouble(text(i, j), &ok);
                 if (!ok)
                     break;
@@ -617,8 +604,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol)
 	double dx = fabs(x_end-x_start)/(double)(numRows()-1);
 	double dy = fabs(y_end-y_start)/(double)(numCols()-1);
 	for(int row = startRow; row <= endRow; row++)
-		for(int col = startCol; col <= endCol; col++)
-		{
+		for(int col = startCol; col <= endCol; col++){
 			script->setInt(row+1, "i");
 			script->setInt(row+1, "row");
 			script->setDouble(y_start+row*dy, "y");
@@ -704,11 +690,9 @@ bool Matrix::rowsSelected()
 	QListIterator<QTableWidgetSelectionRange> it(sel);
 	QTableWidgetSelectionRange cur;
 
-	if( it.hasNext() )
-	{
+	if(it.hasNext()){
 		cur = it.next();
-		for(int i=cur.topRow(); i<=cur.bottomRow(); i++)
-		{
+		for(int i=cur.topRow(); i<=cur.bottomRow(); i++){
 			if (!isRowSelected (i, true))
 				return false;
 		}
@@ -720,10 +704,8 @@ void Matrix::deleteSelectedRows()
 {
 	QVarLengthArray<int> rows(1);
 	int n=0;
-	for (int i=0; i<numRows(); i++)
-	{
-		if (isRowSelected(i, true))
-		{
+	for (int i=0; i<numRows(); i++){
+		if (isRowSelected(i, true)){
 			n++;
 			rows.resize(n);
 			rows[n-1]= i;
@@ -736,9 +718,6 @@ void Matrix::deleteSelectedRows()
 	emit modifiedWindow(this);
 }
 
-// TODO: Maybe change this to insertColumns and make the
-// number of inserted columns depend on the number
-// of selected columns
 void Matrix::insertColumn()
 {
 	int cc = d_table->currentColumn();
@@ -748,8 +727,7 @@ void Matrix::insertColumn()
 
 bool Matrix::columnsSelected()
 {
-	for(int i=0; i<numCols(); i++)
-	{
+	for(int i=0; i<numCols(); i++){
 		if (isColumnSelected (i, true))
 			return true;
 	}
@@ -760,10 +738,8 @@ void Matrix::deleteSelectedColumns()
 {
 	QVarLengthArray<int> cols(1);
 	int n=0;
-	for (int i=0; i<numCols(); i++)
-	{
-		if (isColumnSelected(i, true))
-		{
+	for (int i=0; i<numCols(); i++){
+		if (isColumnSelected(i, true)){
 			n++;
 			cols.resize(n);
 			cols[n-1]= i;
@@ -794,9 +770,6 @@ int Matrix::numSelectedColumns()
 	return c;
 }
 
-// TODO: Maybe change this to insertRows and make the
-// number of inserted rows depend on the number
-// of selected row
 void Matrix::insertRow()
 {
 	int cr = d_table->currentRow();
@@ -914,14 +887,11 @@ void Matrix::print(const QString& fileName)
 	QPrinter printer;
 	printer.setColorMode (QPrinter::GrayScale);
 
-	if (!fileName.isEmpty())
-	{
+	if (!fileName.isEmpty()){
 	    printer.setCreator("QtiPlot");
 	    printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(fileName);
-	}
-    else
-    {
+	} else {
         QPrintDialog printDialog(&printer);
         if (printDialog.exec() != QDialog::Accepted)
             return;
@@ -948,8 +918,7 @@ void Matrix::print(const QString& fileName)
 		p.drawLine(right, height, right, height+br.height());
 		QRect tr(br);
 
-		for(i=0;i<cols;i++)
-		{
+		for(i=0;i<cols;i++){
 			int w = d_table->columnWidth(i);
 			tr.setTopLeft(QPoint(right,height));
 			tr.setWidth(w);
@@ -968,8 +937,7 @@ void Matrix::print(const QString& fileName)
 		p.drawLine(margin, height, right-1, height);
 
 		// print table values
-		for(i=0;i<rows;i++)
-		{
+		for(i=0;i<rows;i++){
 			right = margin;
 			QString cell_text = d_table->model()->headerData(i, Qt::Horizontal).toString()+"\t";
 			tr = p.boundingRect(tr, Qt::AlignCenter, cell_text);
@@ -982,8 +950,7 @@ void Matrix::print(const QString& fileName)
 			right += vertHeaderWidth;
 			p.drawLine(right, height, right, height+tr.height());
 
-			for(int j=0;j<cols;j++)
-			{
+			for(int j=0;j<cols;j++){
 				int w = d_table->columnWidth (j);
 				cell_text = text(i,j)+"\t";
 				tr = p.boundingRect(tr,Qt::AlignCenter,cell_text);
@@ -1000,8 +967,7 @@ void Matrix::print(const QString& fileName)
 			height += br.height();
 			p.drawLine(margin, height, right-1, height);
 
-			if (height >= printer.height()-margin )
-			{
+			if (height >= printer.height()-margin ){
 				printer.newPage();
 				height = margin;
 				p.drawLine(margin, height, right, height);
@@ -1014,10 +980,8 @@ void Matrix::range(double *min, double *max)
 	double d_min = cell(0, 0);
 	double d_max = d_min;
 
-	for(int i=0; i<numRows(); i++)
-	{
-		for(int j=0; j<numCols(); j++)
-		{
+	for(int i=0; i<numRows(); i++){
+		for(int j=0; j<numCols(); j++){
 			double aux = cell(i, j);
 			if (aux <= d_min)
 				d_min = aux;
@@ -1037,19 +1001,14 @@ bool Matrix::isColumnSelected(int col, bool full)
 	QListIterator<QTableWidgetSelectionRange> it(sel);
 	QTableWidgetSelectionRange cur;
 
-	if ( !full )
-	{
-		if( it.hasNext() )
-		{
+	if ( !full ){
+		if( it.hasNext() ){
 			cur = it.next();
 			if ( (col >= cur.leftColumn()) && (col <= cur.rightColumn() ) )
 				return true;
 		}
-	}
-	else
-	{
-		if( it.hasNext() )
-		{
+	} else {
+		if( it.hasNext() ){
 			cur = it.next();
 			if ( col >= cur.leftColumn() &&
 					col <= cur.rightColumn() &&
@@ -1067,19 +1026,14 @@ bool Matrix::isRowSelected(int row, bool full)
 	QListIterator<QTableWidgetSelectionRange> it(sel);
 	QTableWidgetSelectionRange cur;
 
-	if ( !full )
-	{
-		if( it.hasNext() )
-		{
+	if ( !full ){
+		if( it.hasNext() ){
 			cur = it.next();
 			if ( (row >= cur.topRow()) && (row <= cur.bottomRow() ) )
 				return true;
 		}
-	}
-	else
-	{
-		if( it.hasNext() )
-		{
+	} else {
+		if( it.hasNext() ) {
 			cur = it.next();
 			if ( row >= cur.topRow() &&
 					row <= cur.bottomRow() &&
@@ -1094,8 +1048,7 @@ bool Matrix::isRowSelected(int row, bool full)
 
 int Matrix::firstSelectedColumn()
 {
-	for(int i=0;i<numCols();i++)
-	{
+	for(int i=0;i<numCols();i++){
 		if(isColumnSelected(i,true))
 			return i;
 	}
@@ -1119,14 +1072,12 @@ void Matrix::freeMatrixData(double **data, int rows)
 	delete [] data;
 }
 
-// TODO: in a matrix goToCell would make more sense since rows and columns are equally important
 void Matrix::goToRow(int row)
 {
 	if( (row < 1) || (row > numRows()) ) return;
 
 	QTableWidgetItem * the_item = d_table->item(row-1, 0);
-	if(!the_item)
-	{
+	if(!the_item){
 		the_item = new QTableWidgetItem("");
 		d_table->setItem(row-1, 0, the_item);
 	}
@@ -1140,10 +1091,8 @@ void Matrix::updateDecimalSeparators()
     saveCellsToMemory();
 
     d_table->blockSignals(true);
-    for(int i=0; i<d_table->rowCount(); i++)
-	{
-		for(int j=0; j<d_table->columnCount(); j++)
-		{
+    for(int i=0; i<d_table->rowCount(); i++){
+		for(int j=0; j<d_table->columnCount(); j++){
 			if (!text(i, j).isEmpty())
 				setCell(i, j, dMatrix[i][j]);
 		}

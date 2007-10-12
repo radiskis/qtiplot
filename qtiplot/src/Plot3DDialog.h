@@ -44,6 +44,7 @@ class QWidget;
 class QStringList;
 class QStackedWidget;
 class QDoubleSpinBox;
+class ColorButton;
 
 using namespace Qwt3D;
 
@@ -110,15 +111,14 @@ private:
     Graph3D *d_plot;
 	QFont titleFont, xAxisFont,yAxisFont,zAxisFont, numbersFont;
 	QStringList labels, scales, tickLengths;
-	QColor titleColor,meshColor,bgColor, axesColor, numColor,labelColor, gridColor;
-	QColor fromColor, toColor; //custom data colors
     QDoubleSpinBox *boxMeshLineWidth;
     QPushButton* buttonApply;
     QPushButton* buttonOk;
     QPushButton* buttonCancel, *buttonLowerGreek, *buttonUpperGreek;
-	QPushButton* btnTitleColor, *btnTitleFont, *btnLabelFont, *btnGrid;
-	QPushButton *btnBackground, *btnMesh, *btnAxes, *btnTitle, *btnLabels, *btnNumbers;
-	QPushButton *btnNumbersFont, *btnFromColor, *btnToColor, *btnTable, *btnColorMap;
+	QPushButton *btnTitleFont, *btnLabelFont;
+    QPushButton *btnNumbersFont, *btnTable, *btnColorMap;
+	ColorButton *btnBackground, *btnMesh, *btnAxes, *btnTitleColor, *btnLabels;
+	ColorButton *btnFromColor, *btnToColor, *btnNumbers, *btnGrid;
 	QPushButton *buttonAxisLowerGreek, *buttonAxisUpperGreek;
     QTabWidget* generalDialog;
 	QWidget *scale, *colors, *general, *axes, *title, *bars, *points;
