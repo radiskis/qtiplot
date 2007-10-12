@@ -39,7 +39,7 @@
 Correlation::Correlation(ApplicationWindow *parent, Table *t, const QString& colName1, const QString& colName2, int startRow, int endRow)
 : Filter(parent, t)
 {
-	setName(tr("Correlation"));
+	setObjectName(tr("Correlation"));
     setDataFromTable(t, colName1, colName2, startRow, endRow);
 }
 

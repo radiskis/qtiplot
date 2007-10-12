@@ -60,7 +60,7 @@ FFT::FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double 
 
 void FFT::init ()
 {
-    setName(tr("FFT"));
+    setObjectName(tr("FFT"));
     d_inverse = false;
     d_normalize = true;
     d_shift_order = true;

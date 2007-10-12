@@ -84,8 +84,6 @@ public:
 	QString name(){return objectName();};
 	//! Set the window name
 	void setName(const QString& s){setObjectName(s); updateCaption();};
-	//! Set the widget's name
-	//void setName(const char *newname){setObjectName(QString(newname)); updateCaption();}; //{ QWidget::setName(newname); updateCaption(); }
 
 	//! Return the caption policy
 	CaptionPolicy captionPolicy(){return caption_policy;};

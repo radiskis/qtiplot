@@ -169,7 +169,7 @@ QVariant PythonScript::eval()
 	endStdoutRedirect();
 	if (!pyret){
 		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
-			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){
+			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){				
             PyErr_Clear(); // silently ignore errors
 			return  QVariant("");
 		} else {

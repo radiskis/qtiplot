@@ -71,7 +71,7 @@ bool PluginFit::load(const QString& pluginName)
 		return false;
 	}
 
-	setName(pluginName);
+	setObjectName(pluginName);
 	QLibrary lib(pluginName);
 	lib.setAutoUnload(false);
 

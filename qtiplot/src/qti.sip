@@ -84,14 +84,14 @@ class Table: MyWidget
 {
 %TypeHeaderCode
 #include "src/Table.h"
-
+#include <QMessageBox>
 #define CHECK_TABLE_COL(arg)\
     int col;\
     if (PyInt_Check(arg)) {\
       col = (int)PyInt_AsLong(arg) - 1;\
 		if (col < 0 || col >= sipCpp->numCols()) {\
 			sipIsErr = 1;\
-			PyErr_Format(PyExc_ValueError, "There's no column %d in table %s!", col+1, sipCpp->name());\
+			PyErr_Format(PyExc_ValueError, "There's no column %d in table %s!", col+1, sipCpp->name().ascii());\
 		}\
 	 } else {\
       PyObject *tmp = PyObject_Str(arg);\
@@ -103,18 +103,18 @@ class Table: MyWidget
 			if (col < 0) {\
 				sipIsErr = 1;\
 				PyErr_Format(PyExc_ValueError, "There's no column named %s in table %s!", PyString_AsString(tmp),\
-						sipCpp->name());\
+						sipCpp->name().ascii());\
 				Py_DECREF(tmp);\
 			}\
 		}\
 	 }
+	 
 #define CHECK_TABLE_ROW(arg)\
    int row = arg-1;\
 	if (row < 0 || row >= sipCpp->numRows()) {\
 		sipIsErr = 1;\
-		PyErr_Format(PyExc_ValueError, "There's no row %d in table %s!", row+1, sipCpp->name());\
+		PyErr_Format(PyExc_ValueError, "There's no row %d in table %s!", row+1, sipCpp->name().ascii());\
 	}
-
 %End
 
 public:
@@ -261,13 +261,13 @@ class Matrix: MyWidget
 	int col = arg-1;\
    if (col < 0 || col >= sipCpp->numCols()) {\
 		sipIsErr = 1;\
-		PyErr_Format(PyExc_ValueError, "There's no column %d in matrix %s!", col+1, sipCpp->name());\
+		PyErr_Format(PyExc_ValueError, "There's no column %d in matrix %s!", col+1, sipCpp->name().ascii());\
 	}
 #define CHECK_MATRIX_ROW(arg)\
    int row = arg-1;\
 	if (row < 0 || row >= sipCpp->numRows()) {\
 		sipIsErr = 1;\
-		PyErr_Format(PyExc_ValueError, "There's no row %d in matrix %s!", row+1, sipCpp->name());\
+		PyErr_Format(PyExc_ValueError, "There's no row %d in matrix %s!", row+1, sipCpp->name().ascii());\
 	}
 %End
 public:

@@ -53,7 +53,7 @@ init(peaks);
 
 void MultiPeakFit::init(int peaks)
 {
-	setName(tr("MultiPeak"));
+	setObjectName(tr("MultiPeak"));
 
 	if (d_profile == Gauss){
 		d_f = gauss_multi_peak_f;
@@ -442,7 +442,7 @@ LorentzFit::LorentzFit(ApplicationWindow *parent, Table *t, const QString& xCol,
 
 void LorentzFit::init()
 {
-	setName("Lorentz");
+	setObjectName("Lorentz");
 	d_explanation = tr("Lorentz Fit");
 	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
 }
@@ -482,7 +482,7 @@ GaussFit::GaussFit(ApplicationWindow *parent, Table *t, const QString& xCol, con
 
 void GaussFit::init()
 {
-	setName("Gauss");
+	setObjectName("Gauss");
 	d_explanation = tr("Gauss Fit");
 	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
 }
@@ -522,7 +522,7 @@ GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Table *t, const QString& xCo
 
 void GaussAmpFit::init()
 {
-	setName("GaussAmp");
+	setObjectName("GaussAmp");
 	d_f = gauss_f;
 	d_df = gauss_df;
 	d_fdf = gauss_fdf;

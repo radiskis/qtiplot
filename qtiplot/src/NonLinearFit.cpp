@@ -61,7 +61,7 @@ NonLinearFit::NonLinearFit(ApplicationWindow *parent, Table *t, const QString& x
 
 void NonLinearFit::init()
 {
-	setName(tr("NonLinear"));
+	setObjectName(tr("NonLinear"));
 	d_formula = QString::null;
 	d_f = user_f;
 	d_df = user_df;

@@ -63,7 +63,7 @@ PolynomialFit::PolynomialFit(ApplicationWindow *parent, Table *t, const QString&
 
 void PolynomialFit::init()
 {
-	setName(tr("Poly"));
+	setObjectName(tr("Poly"));
 	is_non_linear = false;
 	d_explanation = tr("Polynomial Fit");
 	d_p = d_order + 1;
@@ -243,7 +243,7 @@ void LinearFit::init()
 	d_param_names << "B" << "A";
 	d_param_explain << "(y-intercept)" << "(slope)";
 	d_explanation = tr("Linear Regression");
-	setName(tr("Linear"));
+	setObjectName(tr("Linear"));
 }
 
 void LinearFit::fit()
