@@ -108,7 +108,7 @@ class Table: MyWidget
 			}\
 		}\
 	 }
-	 
+
 #define CHECK_TABLE_ROW(arg)\
    int row = arg-1;\
 	if (row < 0 || row >= sipCpp->numRows()) {\
@@ -118,6 +118,8 @@ class Table: MyWidget
 %End
 
 public:
+  enum PlotDesignation{None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5};
+
   int numRows() /PyName=numRows/;
   int numCols() /PyName=numCols/;
   void resizeRows(int) /PyName=setNumRows/;
@@ -247,6 +249,16 @@ public:
   	CHECK_TABLE_COL(a0);
 	if (sipIsErr == 0)
 		sipCpp->setReadOnlyColumn(col, a1);
+%End
+
+    void setColumnRole(SIP_PYOBJECT, PlotDesignation);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0){
+		sipCpp->setColPlotDesignation(col, a1);
+		sipCpp->setHeaderColType();
+	}
 %End
 
 private:
@@ -809,7 +821,7 @@ public:
     Graph3D* newPlot3D();
     Graph3D* plotXYZ(Table* table, const QString&, int = 0) /PyName=plot3D/;
 	Graph3D* plot3DMatrix(Matrix *, int style = 5) /PyName=plot3D/;
-    Graph3D* plotSurface(const QString&, double xl, double xr, double yl, double yr, 
+    Graph3D* plotSurface(const QString&, double xl, double xr, double yl, double yr,
 			double zl, double zr, int=40, int=40) /PyName=plot3D/;
     Graph3D* plotParametricSurface(const QString&, const QString&, const QString&,
             double, double, double, double, int=40, int=40, bool=true, bool=true) /PyName=plot3D/;

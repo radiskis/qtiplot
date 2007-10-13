@@ -782,14 +782,14 @@ void ApplicationWindow::insertTranslatedStrings()
 #ifdef SCRIPTING_CONSOLE
 	consoleWindow->setWindowTitle(tr("Scripting Console"));
 #endif
-	displayBar->setLabel(tr("Data Display"));
-	tableTools->setLabel(tr("Table"));
-	columnTools->setLabel(tr("Column"));
-	plotTools->setLabel(tr("Plot"));
-	fileTools->setLabel(tr("File"));
-	editTools->setLabel(tr("Edit"));
-	plotMatrixBar->setLabel(tr("Matrix Plot"));
-	plot3DTools->setLabel(tr("3D Surface"));
+	displayBar->setWindowTitle(tr("Data Display"));
+	tableTools->setWindowTitle(tr("Table"));
+	columnTools->setWindowTitle(tr("Column"));
+	plotTools->setWindowTitle(tr("Plot"));
+	fileTools->setWindowTitle(tr("File"));
+	editTools->setWindowTitle(tr("Edit"));
+	plotMatrixBar->setWindowTitle(tr("Matrix Plot"));
+	plot3DTools->setWindowTitle(tr("3D Surface"));
 
 	file->changeItem(newMenuID, tr("&New"));
 	file->changeItem(recentMenuID, tr("&Recent Projects"));

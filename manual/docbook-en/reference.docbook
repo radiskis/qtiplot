@@ -23,6 +23,14 @@ The active items in the menus depend on the active window in the project. If the
              <para>Creates a new QtiPlot project file. If a project is open and saved, it will be closed. If a project is open is not saved, a dialog will be open to ask if the current project has to be saved.</para>
           </listitem>
        </varlistentry>
+
+       <varlistentry id="new-folder-cmd">
+          <term>&new-folder-cmd; (&new-folder-key;)</term>
+          <listitem>
+             <para>Adds a new folder to the project. The new folder is added to the current folder.</para>
+          </listitem>
+       </varlistentry>
+
        <varlistentry id="new-table-cmd">
           <term>&new-table-cmd; (&new-table-key;)</term>
           <listitem>
@@ -1072,6 +1080,14 @@ The active items in the menus depend on the active window in the project. If the
     <para>Does a cross-correlation of the two columns which are selected. See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="autocorrelate-cmd">
+  <term>&autocorrelate-cmd;</term>
+  <listitem>
+    <para>Does a cross-correlation of the selected column. See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="convolute-cmd">
   <term>&convolute-cmd;</term>
   <listitem>
@@ -1393,6 +1409,18 @@ The active items in the menus depend on the active window in the project. If the
         <para>Define the selected column for use as error bars for Y-values.</para>
       </listitem>
     </varlistentry>
+    <varlistentry id="set-read-only-column-cmd">
+      <term>&set-read-only-column-cmd;</term>
+      <listitem>
+        <para>Set the selected columns as read-only.</para>
+      </listitem>
+    </varlistentry>
+      <varlistentry id="set-read-write-column-cmd">
+      <term>&set-read-write-column-cmd;</term>
+      <listitem>
+        <para>Restore the write acess to the selected columns.</para>
+      </listitem>
+    </varlistentry>
     <varlistentry id="set-column-as-none-cmd">
       <term>&set-column-as-none-cmd;</term>
       <listitem>
@@ -1458,6 +1486,42 @@ The active items in the menus depend on the active window in the project. If the
     <para>Allows to define the number of columns in the table. Be carefull if you decrease the number of columns in a table, a number of columns will be removed and the data will be lost.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="move-column-first-cmd">
+  <term>&move-column-first-cmd;</term>
+  <listitem>
+    <para>Moves the selected column to the beginning of the table. </para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="move-column-left-cmd">
+  <term>&move-column-left-cmd;</term>
+  <listitem>
+    <para>Moves the selected column to the left. </para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="move-column-right-cmd">
+  <term>&move-column-right-cmd;</term>
+  <listitem>
+    <para>Moves the selected column to the right. </para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="move-column-last-cmd">
+  <term>&move-column-last-cmd;</term>
+  <listitem>
+    <para>Moves the selected column to the end of the table. </para>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="swap-columns-cmd">
+  <term>&swap-columns-cmd;</term>
+  <listitem>
+    <para>Swap the selected columns. </para>
+  </listitem>
+</varlistentry>
+
 <varlistentry id="row-cmd">
   <term>&rows-cmd;</term>
   <listitem>
@@ -1601,6 +1665,13 @@ The active items in the menus depend on the active window in the project. If the
 <!-- ************************************************** -->
 <variablelist>
 <varlistentry>
+  <term>Folders</term>
+  <listitem>
+    <para>Opens a menu displaying a list of all the folders and subfolders in the project. The active folder is toggled.
+    You can change the active folder in the project by selecting an item from this list.</para>
+  </listitem>
+</varlistentry>
+<varlistentry>
   <term>Cascade</term>
   <listitem>
     <para>Arranges the visible windows in the project in a cascading style.</para>
@@ -1636,6 +1707,14 @@ The active items in the menus depend on the active window in the project. If the
     <para>Clonates the active window.</para>
   </listitem>
 </varlistentry>
+
+<varlistentry id="script-window-cmd">
+  <term>Script Window (<keycode>F3</keycode>)</term>
+  <listitem>
+    <para>Opens the script console window.</para>
+  </listitem>
+</varlistentry>
+
 <varlistentry>
   <term>Window Geometry...</term>
   <listitem>

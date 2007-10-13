@@ -116,6 +116,12 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&new-project-key;</entry>
    <entry>Create a new project.</entry>
   </row>
+   <row>
+   <entry>&new-folder-icon;</entry>
+   <entry>&new-folder-lnk;</entry>
+   <entry>&new-folder-key;</entry>
+   <entry>Add a new folder.</entry>
+  </row>
   <row>
    <entry>&new-table-icon;</entry>
    <entry>&new-table-lnk;</entry>
@@ -194,6 +200,12 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&print-key;</entry>
    <entry>Print the active window.</entry>
   </row>
+   <row>
+   <entry>&export-pdf-icon;</entry>
+   <entry>Export to PDF command</entry>
+   <entry></entry>
+   <entry>Export the active window to the PDF file format.</entry>
+  </row>
   <row>
    <entry>&project-explorer-icon;</entry>
    <entry>&project-explorer-lnk;</entry>
@@ -205,6 +217,12 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&results-log-lnk;</entry>
    <entry></entry>
    <entry>Show or hide the results window.</entry>
+  </row>
+  <row>
+   <entry>&script-window-icon;</entry>
+   <entry>&script-window-lnk;</entry>
+   <entry>&script-window-key;</entry>
+   <entry>Show the script window.</entry>
   </row>
 </tbody>
 </tgroup>
@@ -362,7 +380,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
 </sect1>
 
 <sect1 id="sec-table-toolbar">
-<title>The Table Toolbar.</title>
+<title>The Table Toolbar</title>
 
 <para>This toolbar allows a quick access to the commands of the <link linkend="sec-plot-menu">Plot Menu</link> used to plot the datas of the table.</para>
 
@@ -492,8 +510,91 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
 </table>
 </sect1>
 
+<sect1 id="column-toolbar">
+<title>The Column Toolbar</title>
+<para>This toolbar allows a quick access to the commands of the <link linkend="sec-table-menu">Table Menu</link> used to rearrange columns in the table
+or to define the plot role of the selected columns.</para>
+
+<figure id="column-table-toolbar">
+  <title>The &appname; Column Toolbar</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics/column-toolbar.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
+<table tocentry="1" pgwide="1" frame="sides">
+<title>Column toolbar commands.</title>
+<tgroup cols="3">
+  <colspec colname="icon" colwidth="1*" align="center"/>
+  <colspec colname="command" colwidth="5*" align="left"/>
+  <colspec colname="description" colwidth="10*" align="justify"/>
+  <thead>
+    <row>
+      <entry>Icon</entry>
+      <entry>Command</entry>
+      <entry>Description</entry>
+    </row>
+  </thead>
+ <tbody>
+ <row>
+   <entry>&set-column-as-x-icon;</entry>
+   <entry><link linkend="set-column-as-x-cmd">table -> &set-column-as-x-cmd;</link></entry>
+   <entry>Define the selected column as abscissae for the plots.</entry>
+  </row>
+  <row>
+   <entry>&set-column-as-y-icon;</entry>
+   <entry><link linkend="set-column-as-y-cmd">table -> &set-column-as-y-cmd;</link></entry>
+   <entry>This command defines the selected column as ordinates for the plots.</entry>
+  </row>
+  <row>
+   <entry>&set-column-as-z-icon;</entry>
+   <entry><link linkend="set-column-as-z-cmd">table -> &set-column-as-z-cmd;</link></entry>
+   <entry>In the case of 3D plots, Z columns will be used as height values.</entry>
+  </row>
+  <row>
+   <entry>&set-column-as-y-error-icon;</entry>
+   <entry><link linkend="set-column-as-y-error-cmd">table -> &set-column-as-y-error-cmd;</link></entry>
+   <entry>Define the selected column for use as error bars for Y-values.</entry>
+  </row>
+  <row>
+   <entry>&set-column-as-none-icon;</entry>
+   <entry><link linkend="set-column-as-none-cmd">table -> &set-column-as-none-cmd;</link></entry>
+   <entry>This command removes any plot role from the selected columns.</entry>
+  </row>
+  <row>
+   <entry>&move-column-first-icon;</entry>
+   <entry><link linkend="move-column-first-cmd">table -> &move-column-first-cmd;</link></entry>
+   <entry>Moves the selected column to the beginning of the table.</entry>
+  </row>
+  <row>
+   <entry>&move-column-left-icon;</entry>
+   <entry><link linkend="move-column-left-cmd">table -> &move-column-left-cmd;</link></entry>
+   <entry>Moves the selected column to the left.</entry>
+  </row>
+  <row>
+   <entry>&move-column-right-icon;</entry>
+   <entry><link linkend="move-column-right-cmd">table -> &move-column-right-cmd;</link></entry>
+   <entry>Moves the selected column to the right.</entry>
+  </row>
+   <row>
+   <entry>&move-column-last-icon;</entry>
+   <entry><link linkend="move-column-last-cmd">table -> &move-column-last-cmd;</link></entry>
+   <entry>Moves the selected column to the end of the table.</entry>
+  </row>
+   <row>
+   <entry>&swap-columns-icon;</entry>
+   <entry><link linkend="swap-columns-cmd">table -> &swap-columns-cmd;</link></entry>
+   <entry>Swap the selected columns.</entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+</sect1>
+
 <sect1 id="sec-plot3d-toolbar">
-<title>The Plot 3D Toolbar.</title>
+<title>The Plot 3D Toolbar</title>
 
 <para></para>
 <figure id="plot-plot3d-toolbar">
