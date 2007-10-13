@@ -27,7 +27,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "importOPJ.h"
-#include <OPJFile.h>
 
 #include <QRegExp>
 #include <QMessageBox>
@@ -544,9 +543,10 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 
 			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerXAxisTitle(g,l).txt.c_str())));
 			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerYAxisTitle(g,l).txt.c_str())));
-			if(strlen(opj.layerLegend(g,l))>0)
+			Legend* legend = 0;
+			if(!opj.layerLegend(g,l).txt.empty())
 			{
-				Legend* legend = graph->newLegend(parseOriginText(QString::fromLocal8Bit(opj.layerLegend(g,l))));
+				legend = graph->newLegend(parseOriginText(QString::fromLocal8Bit(opj.layerLegend(g,l).txt.c_str())));
 			}
 			int auto_color=0;
 			int auto_color1=0;
@@ -1026,43 +1026,18 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 			graph->plotWidget()->resize(layerRect.width()*fXScale + nXDelta,
 				layerRect.height()*fYScale + nYDelta);
 
-			QRect qtiRect=graph->plotWidget()->canvas()->geometry();
 			//add texts
 			vector<text> texts=opj.layerTexts(g, l);
 			if(style != Graph::Pie)
 			{
 				for(int i=0; i<texts.size(); ++i)
 				{
-					int bkg;
-					switch(texts[i].border_type)
-					{
-					case OPJFile::BlackLine:
-						bkg=1;
-						break;
-					case OPJFile::Shadow:
-					case OPJFile::DarkMarble:
-						bkg=2;
-						break;
-					default:
-						bkg=0;
-						break;
-					}
-
-					Legend* txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(texts[i].txt.c_str())));
-					rect txtRect=texts[i].clientRect;
-					QFont font(graph->defaultTextMarkerFont());
-					font.setPointSize(floor(texts[i].fontsize*fFontScaleFactor + 0.5));
-					txt->setAngle(texts[i].rotation);
-					txt->setTextColor(ColorBox::color(texts[i].color));
-					txt->setFont(font);
-					txt->setFrameStyle(bkg);
-
-					int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
-					int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
-					txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),
-						y*qtiRect.height()/layerRect.height()));
+					addText(texts[i], graph, 0, layerRect, fFontScaleFactor, fXScale, fYScale);
 				}
 			}
+
+			if(legend)
+				addText(opj.layerLegend(g,l), graph, legend, layerRect, fFontScaleFactor, fXScale, fYScale);
 
 			vector<line> lines = opj.layerLines(g, l);
 			for(int i=0; i<lines.size(); ++i)
@@ -1190,6 +1165,43 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 	if(visible_count>0)
 		xoffset++;
 	return true;
+}
+
+void ImportOPJ::addText(const text& _text, Graph* graph, Legend* txt, const rect& layerRect, double fFontScaleFactor, double fXScale, double fYScale)
+{
+	int bkg;
+	switch(_text.border_type)
+	{
+	case OPJFile::BlackLine:
+		bkg=1;
+		break;
+	case OPJFile::Shadow:
+	case OPJFile::DarkMarble:
+		bkg=2;
+		break;
+	default:
+		bkg=0;
+		break;
+	}
+
+	if(!txt)
+		txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(_text.txt.c_str())));
+	
+	QFont font(graph->defaultTextMarkerFont());
+	font.setPointSize(floor(_text.fontsize*fFontScaleFactor + 0.5));
+	txt->setAngle(_text.rotation);
+	txt->setTextColor(ColorBox::color(_text.color));
+	txt->setFont(font);
+	txt->setFrameStyle(bkg);
+
+	rect txtRect=_text.clientRect;
+	int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
+	int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
+	txt->setOrigin(QPoint(x*fXScale, y*fYScale));
+
+	/*QRect qtiRect=graph->plotWidget()->canvas()->geometry();
+	txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),
+		y*qtiRect.height()/layerRect.height()));*/
 }
 
 QString ImportOPJ::parseOriginText(const QString &str)

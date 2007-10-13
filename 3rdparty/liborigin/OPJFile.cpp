@@ -2049,7 +2049,7 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			{
 				stmp[sec_size]='\0';
 				fread(&stmp,sec_size,1,f);
-				GRAPH.back().layer.back().legend=stmp;
+				GRAPH.back().layer.back().legend = text(stmp, r, color, fontsize, rotation/10, tab, (border >= 0x80 ? border-0x80 : None), attach);
 			}
 			else if(0==strcmp(sec_name,"__BCO2")) // histogram
 			{

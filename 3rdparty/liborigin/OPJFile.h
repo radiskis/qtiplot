@@ -47,11 +47,11 @@ struct rect {
 	short top;
 	short right;
 	short bottom;
-	int height()
+	int height() const
 	{
 		return bottom-top;
 	};
-	int width()
+	int width() const
 	{
 		return right-left;
 	};
@@ -381,7 +381,7 @@ struct metafile {
 
 struct graphLayer {
 	rect clientRect;
-	string legend;
+	text legend;
 	graphAxis xAxis;
 	graphAxis yAxis;
 
@@ -535,7 +535,7 @@ public:
 	rect layerRect(int s, int l) const { return GRAPH[s].layer[l].clientRect; }		//!< get rectangle of layer l of graph s
 	text layerXAxisTitle(int s, int l) const { return GRAPH[s].layer[l].xAxis.label; }		//!< get label of X-axis of layer l of graph s
 	text layerYAxisTitle(int s, int l) const { return GRAPH[s].layer[l].yAxis.label; }		//!< get label of Y-axis of layer l of graph s
-	const char *layerLegend(int s, int l) const { return GRAPH[s].layer[l].legend.c_str(); }		//!< get legend of layer l of graph s
+	text layerLegend(int s, int l) const { return GRAPH[s].layer[l].legend; }		//!< get legend of layer l of graph s
 	vector<text> layerTexts(int s, int l) const {	return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
 	vector<line> layerLines(int s, int l) const {	return GRAPH[s].layer[l].lines; } //!< get lines of layer l of graph s
 	vector<bitmap> layerBitmaps(int s, int l) const {	return GRAPH[s].layer[l].bitmaps; } //!< get bitmaps of layer l of graph s
