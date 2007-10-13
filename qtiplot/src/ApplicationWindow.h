@@ -436,7 +436,9 @@ public slots:
 	bool setWindowName(MyWidget *w, const QString &text);
 
 	void maximizeWindow(Q3ListViewItem * lbi);
+	void maximizeWindow(MyWidget *w);
 	void maximizeWindow();
+	void minimizeWindow(MyWidget *w);
 	void minimizeWindow();
     //! Changes the geometry of the active MDI window
     void setWindowGeometry(int x, int y, int w, int h);

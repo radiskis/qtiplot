@@ -7691,6 +7691,16 @@ void ApplicationWindow::maximizeWindow(Q3ListViewItem * lbi)
 	emit modified();
 }
 
+void ApplicationWindow::maximizeWindow(MyWidget *w)
+{
+	if (!w)
+		return;
+
+	w->setMaximized();
+	updateWindowLists(w);
+	emit modified();
+}
+
 void ApplicationWindow::maximizeWindow()
 {
 	maximizeWindow(lv->currentItem());
@@ -7700,6 +7710,16 @@ void ApplicationWindow::minimizeWindow()
 {
 	WindowListItem *it = (WindowListItem *)lv->currentItem();
 	MyWidget *w= it->window();
+	if (!w)
+		return;
+
+	updateWindowLists(w);
+	w->setMinimized();
+	emit modified();
+}
+
+void ApplicationWindow::minimizeWindow(MyWidget *w)
+{
 	if (!w)
 		return;
 

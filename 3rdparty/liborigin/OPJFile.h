@@ -42,6 +42,49 @@
 
 using namespace std;
 
+struct rect {
+	short left;
+	short top;
+	short right;
+	short bottom;
+	int height()
+	{
+		return bottom-top;
+	};
+	int width()
+	{
+		return right-left;
+	};
+	rect()
+	{
+	}
+	rect(short width, short height)
+		:	left(0)
+		,	top(0)
+		,	right(width)
+		,	bottom(height)
+	{
+	}
+};
+
+struct originWindow {
+	enum State {Normal, Minimized, Maximized};
+
+	string name;
+	string label;
+	int objectID;
+	string parentFolder;
+	bool bHidden;
+	State state;
+	rect clientRect;
+
+	originWindow(string _name="", string _label="", bool _bHidden=false)
+	:	name(_name)
+	,	label(_label)
+	,	bHidden(_bHidden)
+	,	state(Normal)
+	{};
+};
 struct originData {
 	int type; // 0 - double, 1 - string
 	double d;
@@ -85,48 +128,31 @@ struct spreadColumn {
 	{};
 };
 
-struct spreadSheet {
-	string name;
-	string label;
-	int objectID;
-	string parentFolder;
+struct spreadSheet : public originWindow {
 	int maxRows;
-	bool bHidden;
 	bool bLoose;
 	bool bMultisheet;
 	vector <spreadColumn> column;
 	spreadSheet(string _name="")
-	:	name(_name)
-	,	label("")
-	,	bHidden(false)
+	:	originWindow(_name)
 	,	bLoose(true)
 	,	bMultisheet(false)
 	{};
 };
 
-struct excel {
-	string name;
-	string label;
-	int objectID;
-	string parentFolder;
+struct excel : public originWindow {
 	int maxRows;
-	bool bHidden;
 	bool bLoose;
 	vector <spreadSheet> sheet;
 	excel(string _name="", string _label="", int _maxRows=0, bool _bHidden=false, bool _bLoose=true)
-	:	name(_name)
-	,	label(_label)
+	:	originWindow(_name, _label, _bHidden)
 	,	maxRows(_maxRows)
-	,	bHidden(_bHidden)
 	,	bLoose(_bLoose)
-	{};
+	{
+	};
 };
 
-struct matrix {
-	string name;
-	string label;
-	int objectID;
-	string parentFolder;
+struct matrix : public originWindow {
 	int nr_rows;
 	int nr_cols;
 	int value_type_specification;
@@ -138,7 +164,7 @@ struct matrix {
 	int index;
 	vector <double> data;
 	matrix(string _name="", int _index=0)
-	:	name(_name)
+	:	originWindow(_name)
 	,	index(_index)
 	,	command("")
 	,	value_type_specification(0)
@@ -165,6 +191,32 @@ struct function {
 	,	begin(0.0)
 	,	end(0.0)
 	,	points(0)
+	{};
+};
+
+
+struct text {
+	string txt;
+	rect clientRect;
+	int color;
+	int fontsize;
+	int rotation;
+	int tab;
+	int border_type;
+	int attach;
+
+	text(const string& _txt="")
+		:	txt(_txt)
+	{};
+	text(const string& _txt, const rect& _clientRect, int _color, int _fontsize, int _rotation, int _tab, int _border_type, int _attach)
+		:	txt(_txt)
+		,	clientRect(_clientRect)
+		,	color(_color)
+		,	fontsize(_fontsize)
+		,	rotation(_rotation)
+		,	tab(_tab)
+		,	border_type(_border_type)
+		,	attach(_attach)
 	{};
 };
 
@@ -255,6 +307,7 @@ struct graphAxisTick {
 	int value_type_specification; 
 	int decimal_places;
 	int fontsize;
+	bool fontbold;
 	string dataName;
 	string colName;
 	int rotation;
@@ -262,7 +315,7 @@ struct graphAxisTick {
 
 struct graphAxis {
 	int pos;
-	string label;
+	text label;
 	double min;
 	double max;
 	double step;
@@ -273,47 +326,6 @@ struct graphAxis {
 	graphGrid minorGrid;
 	graphAxisFormat formatAxis[2];
 	graphAxisTick tickAxis[2]; //bottom-top, left-right
-};
-
-struct rect {
-	short left;
-	short top;
-	short right;
-	short bottom;
-	int height()
-	{
-		return bottom-top;
-	};
-	int width()
-	{
-		return right-left;
-	};
-	rect()
-	{
-	}
-	rect(short width, short height)
-	:	left(0)
-	,	top(0)
-	,	right(width)
-	,	bottom(height)
-	{
-	}
-};
-
-
-struct text {
-	string txt;
-	rect clientRect;
-	int color;
-	int fontsize;
-	int rotation;
-	int tab;
-	int border_type;
-	int attach;
-
-	text(string _txt="")
-	:	txt(_txt)
-	{};
 };
 
 struct rectangle {
@@ -383,30 +395,20 @@ struct graphLayer {
 	vector<graphCurve> curve;
 };
 
-struct graph {
-	string name;
-	string label;
-	int objectID;
-	string parentFolder;
-	bool bHidden;
+struct graph : public originWindow {
 	vector<graphLayer> layer;
 	unsigned short width;
 	unsigned short height;
+
 	graph(string _name="")
-	:	name(_name)
-	,	label("")
-	,	bHidden(false)
+	:	originWindow(_name)
 	{};
 };
 
-struct note {
-	string name;
-	string label;
-	int objectID;
-	string parentFolder;
+struct note : public originWindow {
 	string text;
 	note(string _name="")
-	:	name(_name)
+	:	originWindow(_name)
 	{};
 };
 
@@ -441,7 +443,9 @@ public:
 	const char *spreadParentFolder(int s) const { return SPREADSHEET[s].parentFolder.c_str(); }	//!< get parent folder of spreadsheet s
 	bool spreadHidden(int s) const { return SPREADSHEET[s].bHidden; }	//!< is spreadsheet s hidden
 	bool spreadLoose(int s) const { return SPREADSHEET[s].bLoose; }	//!< is spreadsheet s loose
+	rect spreadWindowRect(int s) const { return SPREADSHEET[s].clientRect; }		//!< get window rectangle of spreadsheet s
 	const char *spreadLabel(int s) const { return SPREADSHEET[s].label.c_str(); }	//!< get label of spreadsheet s
+	originWindow::State spreadState(int s) const { return SPREADSHEET[s].state; }	//!< get window state of spreadsheet s
 	int numCols(int s) const { return SPREADSHEET[s].column.size(); }		//!< get number of columns of spreadsheet s
 	int numRows(int s,int c) const { return SPREADSHEET[s].column[c].odata.size(); }	//!< get number of rows of column c of spreadsheet s
 	int maxRows(int s) const { return SPREADSHEET[s].maxRows; }		//!< get maximum number of rows of spreadsheet s
@@ -470,7 +474,10 @@ public:
 	int numMatrices() const { return MATRIX.size(); }			//!< get number of matrices
 	const char *matrixName(int s) const { return MATRIX[s].name.c_str(); }	//!< get name of matrix s
 	const char *matrixParentFolder(int s) const { return MATRIX[s].parentFolder.c_str(); }	//!< get parent folder of matrix s
+	bool matrixHidden(int s) const { return MATRIX[s].bHidden; }	//!< is matrix s hidden
+	rect matrixWindowRect(int s) const { return MATRIX[s].clientRect; }		//!< get window rectangle of matrix s
 	const char *matrixLabel(int s) const { return MATRIX[s].label.c_str(); }	//!< get label of matrix s
+	originWindow::State matrixState(int s) const { return MATRIX[s].state; }	//!< get window state of matrix s
 	int numMatrixCols(int s) const { return MATRIX[s].nr_cols; }		//!< get number of columns of matrix s
 	int numMatrixRows(int s) const { return MATRIX[s].nr_rows; }	//!< get number of rows of matrix s
 	const char *matrixFormula(int s) const { return MATRIX[s].command.c_str(); }	//!< get formula of matrix s
@@ -520,12 +527,14 @@ public:
 	const char *graphName(int s) const { return GRAPH[s].name.c_str(); }	//!< get name of graph s
 	const char *graphParentFolder(int s) const { return GRAPH[s].parentFolder.c_str(); }	//!< get parent folder of graph s
 	const char *graphLabel(int s) const { return GRAPH[s].label.c_str(); }	//!< get name of graph s
+	originWindow::State graphState(int s) const { return GRAPH[s].state; }	//!< get window state of graph s
 	bool graphHidden(int s) const { return GRAPH[s].bHidden; }	//!< is graph s hidden
 	rect graphRect(int s) const { return rect(GRAPH[s].width, GRAPH[s].height); }		//!< get rectangle of graph s
+	rect graphWindowRect(int s) const { return GRAPH[s].clientRect; }		//!< get window rectangle of graph s
 	int numLayers(int s) const { return GRAPH[s].layer.size(); }			//!< get number of layers of graph s
 	rect layerRect(int s, int l) const { return GRAPH[s].layer[l].clientRect; }		//!< get rectangle of layer l of graph s
-	const char *layerXAxisTitle(int s, int l) const { return GRAPH[s].layer[l].xAxis.label.c_str(); }		//!< get label of X-axis of layer l of graph s
-	const char *layerYAxisTitle(int s, int l) const { return GRAPH[s].layer[l].yAxis.label.c_str(); }		//!< get label of Y-axis of layer l of graph s
+	text layerXAxisTitle(int s, int l) const { return GRAPH[s].layer[l].xAxis.label; }		//!< get label of X-axis of layer l of graph s
+	text layerYAxisTitle(int s, int l) const { return GRAPH[s].layer[l].yAxis.label; }		//!< get label of Y-axis of layer l of graph s
 	const char *layerLegend(int s, int l) const { return GRAPH[s].layer[l].legend.c_str(); }		//!< get legend of layer l of graph s
 	vector<text> layerTexts(int s, int l) const {	return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
 	vector<line> layerLines(int s, int l) const {	return GRAPH[s].layer[l].lines; } //!< get lines of layer l of graph s
@@ -647,6 +656,7 @@ private:
 	void readGraphAxisTickLabelsInfo(graphAxisTick &tick, FILE *fopj, int pos);
 	void readProjectTree(FILE *f, FILE *debug);
 	void readProjectTreeFolder(FILE *f, FILE *debug, tree<projectNode>::iterator parent);
+	void readWindowProperties(originWindow& window, FILE *f, FILE *debug, int POS, int headersize);
 	void skipObjectInfo(FILE *fopj, FILE *fdebug);
 	void setColName(int spread);		//!< set default column name starting from spreadsheet spread
 	void convertSpreadToExcel(int spread);
