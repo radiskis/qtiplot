@@ -1241,47 +1241,9 @@ void OPJFile::readSpreadInfo(FILE *f, FILE *debug)
 
 	int spread=compareSpreadnames(name);
 	SPREADSHEET[spread].name=name;
-	SPREADSHEET[spread].objectID=objectIndex;
-	objectIndex++;
-
-	fprintf(debug,"			SPREADSHEET %d NAME : %s	(@ 0x%X) has %d columns\n",
-		spread+1,name,POS + 0x2,SPREADSHEET[spread].column.size());
-	fflush(debug);
-
-	char c;
-	fseek(f,POS + 0x69,SEEK_SET);
-	fread(&c,1,1,f);
-	if( (c&0x08) == 0x08)
-	{
-		SPREADSHEET[spread].bHidden=true;
-		fprintf(debug,"			SPREADSHEET %d NAME : %s	is hidden\n", spread+1,name);
-		fflush(debug);
-	}
+	readWindowProperties(SPREADSHEET[spread], f, debug, POS, headersize);
 	SPREADSHEET[spread].bLoose=false;
-
-	if(headersize>0xC3)
-	{
-		int labellen=0;
-		fseek(f,POS + 0xC3,SEEK_SET);
-		fread(&c,1,1,f);
-		while (c != '@'){
-			fread(&c,1,1,f);
-			labellen++;
-		}
-		if(labellen>0)
-		{
-			char *label=new char[labellen+1];
-			label[labellen]='\0';
-			fseek(f,POS + 0xC3,SEEK_SET);
-			fread(label,labellen,1,f);
-			SPREADSHEET[spread].label=label;
-			delete label;
-		}
-		else
-			SPREADSHEET[spread].label="";
-		fprintf(debug,"			SPREADSHEET %d LABEL : %s\n",spread+1,SPREADSHEET[spread].label.c_str());
-		fflush(debug);
-	}
+	char c = 0;
 
 	int LAYER = POS;
 	{
@@ -1470,7 +1432,6 @@ void OPJFile::readSpreadInfo(FILE *f, FILE *debug)
 void OPJFile::readExcelInfo(FILE *f, FILE *debug)
 {
 	int POS=ftell(f);
-	// unused : int spreadPOS=POS;
 
 	int headersize;
 	fread(&headersize,4,1,f);
@@ -1488,47 +1449,9 @@ void OPJFile::readExcelInfo(FILE *f, FILE *debug)
 
 	int iexcel=compareExcelnames(name);
 	EXCEL[iexcel].name=name;
-	EXCEL[iexcel].objectID=objectIndex;
-	objectIndex++;
-
-	fprintf(debug,"			EXCEL %d NAME : %s	(@ 0x%X) has %d sheets\n",
-		iexcel+1,name,POS + 0x2,EXCEL[iexcel].sheet.size());
-	fflush(debug);
-
-	char c;
-	fseek(f,POS + 0x69,SEEK_SET);
-	fread(&c,1,1,f);
-	if( (c&0x08) == 0x08)
-	{
-		EXCEL[iexcel].bHidden=true;
-		fprintf(debug,"			EXCEL %d NAME : %s	is hidden\n", iexcel+1,name);
-		fflush(debug);
-	}
+	readWindowProperties(EXCEL[iexcel], f, debug, POS, headersize);
 	EXCEL[iexcel].bLoose=false;
-
-	if(headersize>0xC3)
-	{
-		int labellen=0;
-		fseek(f,POS + 0xC3,SEEK_SET);
-		fread(&c,1,1,f);
-		while (c != '@'){
-			fread(&c,1,1,f);
-			labellen++;
-		}
-		if(labellen>0)
-		{
-			char *label=new char[labellen+1];
-			label[labellen]='\0';
-			fseek(f,POS + 0xC3,SEEK_SET);
-			fread(label,labellen,1,f);
-			EXCEL[iexcel].label=label;
-			delete label;
-		}
-		else
-			EXCEL[iexcel].label="";
-		fprintf(debug,"			EXCEL %d LABEL : %s\n",iexcel+1,EXCEL[iexcel].label.c_str());
-		fflush(debug);
-	}
+	char c = 0;
 
 	int LAYER = POS;
 	LAYER += headersize + 0x1;
@@ -1746,36 +1669,7 @@ void OPJFile::readMatrixInfo(FILE *f, FILE *debug)
 
 	int idx=compareMatrixnames(name);
 	MATRIX[idx].name=name;
-	MATRIX[idx].objectID=objectIndex;
-	objectIndex++;
-
-	fprintf(debug,"			MATRIX %d NAME : %s	(@ 0x%X) \n", idx+1,name,POS + 0x2);
-	fflush(debug);
-
-	if(headersize>0xC3)
-	{
-		int labellen=0;
-		char c=0;
-		fseek(f,POS + 0xC3,SEEK_SET);
-		fread(&c,1,1,f);
-		while (c != '@'){
-			fread(&c,1,1,f);
-			labellen++;
-		}
-		if(labellen>0)
-		{
-			char *label=new char[labellen+1];
-			label[labellen]='\0';
-			fseek(f,POS + 0xC3,SEEK_SET);
-			fread(label,labellen,1,f);
-			MATRIX[idx].label=label;
-			delete label;
-		}
-		else
-			MATRIX[idx].label="";
-		fprintf(debug,"			MATRIX %d LABEL : %s\n",idx+1,MATRIX[idx].label.c_str());
-		fflush(debug);
-	}
+	readWindowProperties(MATRIX[idx], f, debug, POS, headersize);
 
 	int LAYER = POS;
 	LAYER += headersize + 0x1;
@@ -1909,17 +1803,13 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 	fprintf(debug,"			[Graph SECTION (@ 0x%X)]\n",POS);
 	fflush(debug);
 
-	// check spreadsheet name
 	char name[25];
 	fseek(f,POS + 0x2,SEEK_SET);
 	fread(&name,25,1,f);
 
 	GRAPH.push_back(graph(name));
-	GRAPH.back().objectID=objectIndex;
-	objectIndex++;
-
-	fprintf(debug,"			GRAPH %d NAME : %s	(@ 0x%X) \n", GRAPH.size(),name,POS + 0x2);
-	fflush(debug);
+	readWindowProperties(GRAPH.back(), f, debug, POS, headersize);
+	char c = 0;
 
 	unsigned short graph_width;
 	fseek(f,POS + 0x23,SEEK_SET);
@@ -1931,41 +1821,6 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 	fread(&graph_height,2,1,f);
 	if(IsBigEndian()) SwapBytes(graph_height);
 	GRAPH.back().height = graph_height;
-
-	char c;
-	fseek(f,POS + 0x69,SEEK_SET);
-	fread(&c,1,1,f);
-	if( (c&0x08) == 0x08)
-	{
-		GRAPH.back().bHidden=true;
-		fprintf(debug,"			GRAPH %d NAME : %s	is hidden\n", GRAPH.size(),name);
-		fflush(debug);
-	}
-
-	if(headersize>0xC3)
-	{
-		int labellen=0;
-		char c=0;
-		fseek(f,POS + 0xC3,SEEK_SET);
-		fread(&c,1,1,f);
-		while (c != '@'){
-			fread(&c,1,1,f);
-			labellen++;
-		}
-		if(labellen>0)
-		{
-			char *label=new char[labellen+1];
-			label[labellen]='\0';
-			fseek(f,POS + 0xC3,SEEK_SET);
-			fread(label,labellen,1,f);
-			GRAPH.back().label=label;
-			delete label;
-		}
-		else
-			GRAPH.back().label="";
-		fprintf(debug,"			GRAPH %d LABEL : %s\n",GRAPH.size(),GRAPH.back().label.c_str());
-		fflush(debug);
-	}
 
 	int LAYER = POS;
 	LAYER += headersize + 0x1;
@@ -2166,29 +2021,29 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			{
 				stmp[sec_size]='\0';
 				fread(&stmp,sec_size,1,f);
-				GRAPH.back().layer.back().xAxis.pos=Bottom;
-				GRAPH.back().layer.back().xAxis.label=stmp;
+				GRAPH.back().layer.back().xAxis.pos = Bottom;
+				GRAPH.back().layer.back().xAxis.label = text(stmp, r, color, fontsize, rotation/10, tab, (border >= 0x80 ? border-0x80 : None), attach);
 			}
 			else if(0==strcmp(sec_name,"XT"))
 			{
 				stmp[sec_size]='\0';
 				fread(&stmp,sec_size,1,f);
 				GRAPH.back().layer.back().xAxis.pos=Top;
-				GRAPH.back().layer.back().xAxis.label=stmp;
+				GRAPH.back().layer.back().xAxis.label = text(stmp, r, color, fontsize, rotation/10, tab, (border >= 0x80 ? border-0x80 : None), attach);
 			}
 			else if(0==strcmp(sec_name,"YL"))
 			{
 				stmp[sec_size]='\0';
 				fread(&stmp,sec_size,1,f);
-				GRAPH.back().layer.back().yAxis.pos=Left;
-				GRAPH.back().layer.back().yAxis.label=stmp;
+				GRAPH.back().layer.back().yAxis.pos = Left;
+				GRAPH.back().layer.back().yAxis.label = text(stmp, r, color, fontsize, rotation/10, tab, (border >= 0x80 ? border-0x80 : None), attach);
 			}
 			else if(0==strcmp(sec_name,"YR"))
 			{
 				stmp[sec_size]='\0';
 				fread(&stmp,sec_size,1,f);
-				GRAPH.back().layer.back().yAxis.pos=Right;
-				GRAPH.back().layer.back().yAxis.label=stmp;
+				GRAPH.back().layer.back().yAxis.pos = Right;
+				GRAPH.back().layer.back().yAxis.label = text(stmp, r, color, fontsize, rotation/10, tab, (border >= 0x80 ? border-0x80 : None), attach);
 			}
 			else if(0==strcmp(sec_name,"Legend"))
 			{
@@ -2732,6 +2587,10 @@ void OPJFile::readGraphAxisTickLabelsInfo(graphAxisTick &tick, FILE *f, int pos)
 	if(IsBigEndian()) SwapBytes(w);
 	tick.fontsize=w;
 
+	fseek(f,pos+0x1A,SEEK_SET);
+	fread(&h,1,1,f);
+	tick.fontbold=(h&0x8);
+
 	fseek(f,pos+0x23,SEEK_SET);
 	fread(&w,2,1,f);
 	if(IsBigEndian()) SwapBytes(w);
@@ -2867,6 +2726,59 @@ void OPJFile::readProjectTreeFolder(FILE *f, FILE *debug, tree<projectNode>::ite
 		readProjectTreeFolder(f, debug, current_folder);
 }
 
+void OPJFile::readWindowProperties(originWindow& window, FILE *f, FILE *debug, int POS, int headersize)
+{
+	window.objectID=objectIndex;
+	objectIndex++;
+
+	fseek(f,POS + 0x1B,SEEK_SET);
+	fread(&window.clientRect,8,1,f);
+	if(IsBigEndian()) SwapBytes(window.clientRect);
+
+	char c;
+	fseek(f,POS + 0x32,SEEK_SET);
+	fread(&c,1,1,f);
+
+	if(c&0x01)
+		window.state = originWindow::Minimized;
+	else if(c&0x02)
+		window.state = originWindow::Maximized;
+
+	fseek(f,POS + 0x69,SEEK_SET);
+	fread(&c,1,1,f);
+
+	window.bHidden = (c&0x08);
+	if(window.bHidden)
+	{
+		fprintf(debug,"			WINDOW %d NAME : %s	is hidden\n", objectIndex, window.name.c_str());
+		fflush(debug);
+	}
+	
+	if(headersize > 0xC3)
+	{
+		int labellen = 0;
+		fseek(f,POS + 0xC3,SEEK_SET);
+		fread(&c,1,1,f);
+		while (c != '@')
+		{
+			fread(&c,1,1,f);
+			labellen++;
+		}
+		if(labellen > 0)
+		{
+			char *label=new char[labellen+1];
+			label[labellen]='\0';
+			fseek(f,POS + 0xC3,SEEK_SET);
+			fread(label,labellen,1,f);
+			window.label=label;
+			delete label;
+		}
+		else
+			window.label="";
+		fprintf(debug,"			WINDOW %d LABEL: %s\n", objectIndex, window.label.c_str());
+		fflush(debug);
+	}
+}
 bool OPJFile::IsBigEndian()
 {
    short word = 0x4321;
