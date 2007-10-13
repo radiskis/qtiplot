@@ -351,11 +351,19 @@ int Table::colY(int col)
 void Table::setPlotDesignation(PlotDesignation pd)
 {
 	QStringList list=selectedColumns();
-	for (int i=0;i<(int) list.count(); i++)
+	for (int i=0; i<(int) list.count(); i++)
 		col_plot_type[colIndex(list[i])] = pd;
 
 	setHeaderColType();
 	emit modifiedWindow(this);
+}
+
+void Table::setColPlotDesignation(int col, PlotDesignation pd)
+{
+	if (col < 0 || col >= d_table->numCols() || col_plot_type[col] == pd)
+        return;
+
+	col_plot_type[col] = pd;
 }
 
 void Table::columnNumericFormat(int col, int *f, int *precision)
@@ -492,7 +500,7 @@ bool Table::calculate(int col, int startRow, int endRow)
 		QApplication::restoreOverrideCursor();
 		return false;
 	}
-		
+
 	if (startRow < 0)
 		startRow = 0;
 	if (endRow >= numRows())
@@ -1595,7 +1603,7 @@ int Table::nonEmptyRows()
 }
 
 double Table::cell(int row, int col)
-{	
+{
 	return locale().toDouble(d_table->text(row, col));
 }
 

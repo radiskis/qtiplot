@@ -443,7 +443,9 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
 <!-- ************************************************** -->
 <sect1 id="define-surface-plot-dialog">
   <title>Define surface plot</title>
-  <para>This dialog is used when you enter the &new-surface-3d-plot-cmd; command. It allows to create a new function of two variables. The only available coordinate system is the cartesian one: z=f(x,y).</para>
+  <para>This dialog is used when you enter the &new-surface-3d-plot-cmd; command.
+  It allows to create a new function of two variables.
+  The only available coordinate system is the cartesian one: z = f(x,y).</para>
   <figure id="fig-define-surface-plot-dialog">
     <title>The &new-surface-3d-plot-cmd; dialog box.</title>
     <mediaobject>
@@ -452,9 +454,29 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
       </imageobject>
     </mediaobject>
   </figure>
-  <para>You can then enter the X, Y and Z scales.</para>
-</sect1>
+  <para>You can then enter the X, Y and Z scales and you can define the mesh parameters.</para>
 
+<para>You can also create parametric surfaces.
+The only parameters allowed are the latitude and the longitude: <varname>u</varname> and <varname>v</varname>.
+Here's, for example, how you can plot a sphere having a radius equal to one:</para>
+  <figure id="fig-define-param-surface-plot-dialog">
+    <title>The &new-surface-3d-plot-cmd; dialog box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/define-param-surface-plot.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>Like in the case of functions, you can supply the drawing domain for the
+two angle parameters and you can define the mesh parameters.
+The more rows/columns you request for, the better the resolution of the
+output image, but also the larger the memory consumption and the lower the speed of your computer.</para>
+
+<para>Also, you can provide information about the rotational symmetry of the
+parametric surface to the drawing routines, using the two <varname>Periodic</varname> box options
+(one for each parameter).</para>
+</sect1>
 <!-- ************************************************** -->
 <!--		Export ASCII				-->
 <!-- ************************************************** -->
@@ -628,6 +650,10 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </figure>
+
+    <para>By default, the reported errors are not automatically scaled with the square root of the
+    reduced chi-squared value. You can choose to enable this option by checking the
+    <emphasis>Scale errors with sqrt(Chi^2/doF)</emphasis> box.</para>
 </sect1>
 
 <!-- ************************************************** -->

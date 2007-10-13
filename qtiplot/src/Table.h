@@ -101,7 +101,7 @@ public slots:
 	int colIndex(const QString& name);
 
 	int colPlotDesignation(int col){return col_plot_type[col];};
-	void setColPlotDesignation(int col, PlotDesignation d){col_plot_type[col]=d;};
+	void setColPlotDesignation(int col, PlotDesignation pd);
 	void setPlotDesignation(PlotDesignation pd);
 	Q3ValueList<int> plotDesignations(){return col_plot_type;};
 

@@ -912,6 +912,50 @@ If <varname>enumerateRight</varname> is set to True, all the table columns start
 <varname>newName</varname> and a numerical increasing index. If this parameter is not specified,
 by default it is set to False.
 
+<para>You can change the plot role of a table column (abscissae, ordinates, error bars, etc...) using:</para>
+<programlisting>
+t.setColumnRole(col, role)
+</programlisting>
+where <varname>role</varname> specifies the desired column role:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Table.None</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Table.X</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Table.Y</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Table.Z</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>4.</term>
+              <listitem>
+                <para>Table.xErr</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>5.</term>
+              <listitem>
+                <para>Table.yErr</para>
+              </listitem>
+            </varlistentry>
+</variablelist>
+
 <para>You can normalize a single column or all columns in a table:</para>
 <programlisting width="40">
 t.normalize(col)
@@ -1428,10 +1472,10 @@ This will display the grid with the default color, width and pen style settings.
 If you need to change these settings, as well as to enable/disable certain grid lines,
 you can use the following functions:<programlisting>
 grid = l.grid()
-grid.setMajPenX(QPen(QtGui.Color("red"), 1))
-grid.setMinPenX(QPen(QtGui.Color("yellow"), 1))
-grid.setMajPenY(QPen(QtGui.Color("green"), 1))
-grid.setMinPenY(QPen(QtGui.Color("blue"), 1))
+grid.setMajPenX(QtGui.QPen(QtCore.Qt.red, 1))
+grid.setMinPenX(QtGui.QPen(QtCore.Qt.yellow, 1, QtCore.Qt.DotLine))
+grid.setMajPenY(QtGui.QPen(QtCore.Qt.green, 1))
+grid.setMinPenY(QtGui.QPen(QtCore.Qt.blue, 1, QtCore.Qt.DashDotLine))
 grid.enableXMax(True)
 grid.enableXMin()
 grid.enableYMax()
@@ -1647,9 +1691,18 @@ g.swapLayers(layerNum1, layerNum2)
 <title>3D Plots</title>
 <sect3>
 <title>Creating a 3D plot</title>
-You can plot 3D analytical surfaces, height maps using data from matrices and table columns:
+You can plot 3D analytical functions or parametric surfaces.
+For the 3D functions, the only parameters allowed are <varname>x</varname> for the the abscissae values and <varname>y</varname> for the ordinates:
 <programlisting>
 g = plot3D("sin(x*y)", -10.0, 10.0, -10.0, 10.0, -2.0, 2.0)
+</programlisting>
+For the parametric surfaces the only parameters allowed are the latitude and the longitude: <varname>u</varname> and <varname>v</varname>. Here's, for example,
+how you can plot a sphere:
+<programlisting>
+g = plot3D("cos(u)*cos(v)", "sin(u)*cos(v)", "sin(v)", -3.14, 3.14, -2, 2)
+</programlisting>
+You can also create 3D height maps using data from matrices and, of course, you can plot table columns:
+<programlisting>
 g = plot3D(matrix("Matrix1"), style = 5)
 g = plot3D(table("Table1"), "3", style)
 </programlisting>
