@@ -42,6 +42,7 @@
 #include "Folder.h"
 #include "QwtHistogram.h"
 #include "QwtPieCurve.h"
+#include "VectorCurve.h"
 #include "Legend.h"
 #include "Grid.h"
 #include "ArrowMarker.h"
@@ -531,7 +532,10 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 		double fXScale = (double)ml->width()/(double)graphRect.width();
 		double fYScale = (double)ml->height()/(double)graphRect.height();
 		fXScale = fYScale = qMin(fXScale, fYScale);
-		double fFontScaleFactor = qMin(graphWindowRect.width()*0.37/500, graphWindowRect.height()*0.37/350);
+		
+		double fWindowFactor =  qMin((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
+		double fFontScaleFactor = 0.37*fWindowFactor;
+		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 		
 		for(int l=0; l<opj.numLayers(g); ++l)
 		{
@@ -586,6 +590,9 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				case OPJFile::Box:
 					style=Graph::Box;
 					break;
+				case OPJFile::FlowVector:
+					style=Graph::VectXYXY;
+					break;
 				default:
 					continue;
 				}
@@ -610,6 +617,17 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					{
 						QStringList names;
 						names << (tableName + "_" + opj.curveYColName(g,l,c));
+						graph->addCurves(mw->table(tableName), names, style);
+					}
+					else if(style==Graph::VectXYXY)
+					{
+						QStringList names;
+						vectorProperties vector = opj.curveVectorProperties(g,l,c);
+						names << (tableName + "_" + opj.curveXColName(g,l,c))
+							<< (tableName + "_" + opj.curveYColName(g,l,c))
+							<< (tableName + "_" + QString(vector.endXColName.c_str()))
+							<< (tableName + "_" + QString(vector.endYColName.c_str()));
+						
 						graph->addCurves(mw->table(tableName), names, style);
 					}
 					else
@@ -842,6 +860,12 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					p->setPen(QPen(ColorBox::color(cl.lCol), cl.lWidth, (Qt::PenStyle)cl.lStyle));
 					p->setRay(opj.curvePieProperties(g,l,c).radius);
 					p->setFirstColor(opj.curveFillAreaFirstColor(g,l,c));
+				}
+				else if(style == Graph::VectXYXY)
+				{
+					vectorProperties vector = opj.curveVectorProperties(g,l,c);
+					graph->updateVectorsLayout(c, ColorBox::color(cl.symCol), ceil(vector.width),
+						floor(vector.arrow_lenght*fVectorArrowScaleFactor + 0.5), vector.arrow_angle, vector.arrow_closed, VectorCurve::Head);
 				}
 				switch(opj.curveLineConnect(g,l,c))
 				{
