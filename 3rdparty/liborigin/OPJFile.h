@@ -259,8 +259,19 @@ struct vectorProperties
 	string endXColName;
 	string endYColName;
 
+	int position;
+	string angleColName;
+	string magnitudeColName;
+	float multiplier;
+	int const_angle;
+	int const_magnitude;
+
 	vectorProperties()
 	:	arrow_closed(false)
+	,	position(0)
+	,	multiplier(1.0)
+	,	const_angle(0)
+	,	const_magnitude(0)
 	{};
 };
 
@@ -541,6 +552,8 @@ public:
 	enum BorderType {BlackLine=0, Shadow=1, DarkMarble=2, WhiteOut=3, BlackOut=4, None=-1};
 
 	enum Attach {Frame=0, Page=1, Scale=2};
+
+	enum VectorPosition {Tail, Midpoint, Head};
 
 	int numGraphs() const { return GRAPH.size(); }			//!< get number of graphs
 	const char *graphName(int s) const { return GRAPH[s].name.c_str(); }	//!< get name of graph s

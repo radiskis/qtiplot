@@ -593,6 +593,9 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				case OPJFile::FlowVector:
 					style=Graph::VectXYXY;
 					break;
+				case OPJFile::Vector:
+					style=Graph::VectXYAM;
+					break;
 				default:
 					continue;
 				}
@@ -628,6 +631,17 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 							<< (tableName + "_" + QString(vector.endXColName.c_str()))
 							<< (tableName + "_" + QString(vector.endYColName.c_str()));
 						
+						graph->addCurves(mw->table(tableName), names, style);
+					}
+					else if(style==Graph::VectXYAM)
+					{
+						QStringList names;
+						vectorProperties vector = opj.curveVectorProperties(g,l,c);
+						names << (tableName + "_" + opj.curveXColName(g,l,c))
+							<< (tableName + "_" + opj.curveYColName(g,l,c))
+							<< (tableName + "_" + QString(vector.angleColName.c_str()))
+							<< (tableName + "_" + QString(vector.magnitudeColName.c_str()));
+
 						graph->addCurves(mw->table(tableName), names, style);
 					}
 					else
@@ -861,11 +875,11 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					p->setRay(opj.curvePieProperties(g,l,c).radius);
 					p->setFirstColor(opj.curveFillAreaFirstColor(g,l,c));
 				}
-				else if(style == Graph::VectXYXY)
+				else if(style == Graph::VectXYXY || style == Graph::VectXYAM)
 				{
 					vectorProperties vector = opj.curveVectorProperties(g,l,c);
 					graph->updateVectorsLayout(c, ColorBox::color(cl.symCol), ceil(vector.width),
-						floor(vector.arrow_lenght*fVectorArrowScaleFactor + 0.5), vector.arrow_angle, vector.arrow_closed, VectorCurve::Head);
+						floor(vector.arrow_lenght*fVectorArrowScaleFactor + 0.5), vector.arrow_angle, vector.arrow_closed, vector.position);
 				}
 				switch(opj.curveLineConnect(g,l,c))
 				{
