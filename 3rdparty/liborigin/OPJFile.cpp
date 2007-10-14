@@ -2153,19 +2153,20 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 			{
 				LAYER+=0x5;
 
-				GRAPH.back().layer.back().curve.push_back(graphCurve());
+				graphCurve curve;
 
 				vector<string> col;
 				fseek(f,LAYER+0x4,SEEK_SET);
 				fread(&w,2,1,f);
 				if(IsBigEndian()) SwapBytes(w);
 				col=findDataByIndex(w-1);
+				short nColY = w;
 				if(col.size()>0)
 				{
 					fprintf(debug,"			GRAPH %d layer %d curve %d Y : %s.%s\n",GRAPH.size(),GRAPH.back().layer.size(),GRAPH.back().layer.back().curve.size(),col[1].c_str(),col[0].c_str());
 					fflush(debug);
-					GRAPH.back().layer.back().curve.back().yColName=col[0];
-					GRAPH.back().layer.back().curve.back().dataName=col[1];
+					curve.yColName=col[0];
+					curve.dataName=col[1];
 				}
 
 				fseek(f,LAYER+0x23,SEEK_SET);
@@ -2176,139 +2177,178 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				{
 					fprintf(debug,"			GRAPH %d layer %d curve %d X : %s.%s\n",GRAPH.size(),GRAPH.back().layer.size(),GRAPH.back().layer.back().curve.size(),col[1].c_str(),col[0].c_str());
 					fflush(debug);
-					GRAPH.back().layer.back().curve.back().xColName=col[0];
-					if(GRAPH.back().layer.back().curve.back().dataName!=col[1])
+					curve.xColName=col[0];
+					if(curve.dataName!=col[1])
 						fprintf(debug,"			GRAPH %d X and Y from different tables\n",GRAPH.size());
 				}
 
 				fseek(f,LAYER+0x4C,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().type=h;
+				curve.type=h;
 
 				fseek(f,LAYER+0x11,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().line_connect=h;
+				curve.line_connect=h;
 
 				fseek(f,LAYER+0x12,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().line_style=h;
+				curve.line_style=h;
 
 				fseek(f,LAYER+0x15,SEEK_SET);
 				fread(&w,2,1,f);
 				if(IsBigEndian()) SwapBytes(w);
-				GRAPH.back().layer.back().curve.back().line_width=(double)w/500.0;
+				curve.line_width=(double)w/500.0;
 
 				fseek(f,LAYER+0x19,SEEK_SET);
 				fread(&w,2,1,f);
 				if(IsBigEndian()) SwapBytes(w);
-				GRAPH.back().layer.back().curve.back().symbol_size=(double)w/500.0;
+				curve.symbol_size=(double)w/500.0;
 
 				fseek(f,LAYER+0x1C,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().fillarea=(h==2?true:false);
+				curve.fillarea=(h==2?true:false);
 
 				fseek(f,LAYER+0x1E,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().fillarea_type=h;
+				curve.fillarea_type=h;
+
+				//vector
+				if(curve.type == FlowVector)
+				{
+					fseek(f,LAYER+0x5E,SEEK_SET);
+					fread(&h,1,1,f);
+					col=findDataByIndex(nColY - 1 + h - 0x64);
+					if(col.size()>0)
+					{
+						curve.vector.endXColName = col[0];
+					}
+
+					fseek(f,LAYER+0x62,SEEK_SET);
+					fread(&h,1,1,f);
+					col=findDataByIndex(nColY - 1 + h - 0x64);
+					if(col.size()>0)
+					{
+						curve.vector.endYColName = col[0];
+					}
+
+					fseek(f,LAYER+0x66,SEEK_SET);
+					fread(&curve.vector.arrow_lenght,2,1,f);
+					if(IsBigEndian()) SwapBytes(curve.vector.arrow_lenght);
+
+					fread(&curve.vector.arrow_angle,1,1,f);
+
+					fread(&h,1,1,f);
+					curve.vector.arrow_closed = !(h&0x1);
+
+					fread(&w,2,1,f);
+					if(IsBigEndian()) SwapBytes(w);
+					curve.vector.width=(double)w/500.0;
+				}
 
 				//pie
-				fseek(f,LAYER+0x92,SEEK_SET);
-				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().pie.format_percentages = (h&0x01);
-				GRAPH.back().layer.back().curve.back().pie.format_values = (h&0x02);
-				GRAPH.back().layer.back().curve.back().pie.position_associate = (h&0x08);
-				GRAPH.back().layer.back().curve.back().pie.clockwise_rotation = (h&0x20);
-				GRAPH.back().layer.back().curve.back().pie.format_categories = (h&0x80);
-				
-				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().pie.format_automatic = h;
+				if(curve.type == Pie)
+				{
+					fseek(f,LAYER+0x92,SEEK_SET);
+					fread(&h,1,1,f);
+					curve.pie.format_percentages = (h&0x01);
+					curve.pie.format_values = (h&0x02);
+					curve.pie.position_associate = (h&0x08);
+					curve.pie.clockwise_rotation = (h&0x20);
+					curve.pie.format_categories = (h&0x80);
 
-				fread(&GRAPH.back().layer.back().curve.back().pie.distance,2,1,f);
-				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.distance);
+					fread(&h,1,1,f);
+					curve.pie.format_automatic = h;
 
-				fread(&GRAPH.back().layer.back().curve.back().pie.view_angle,1,1,f);
+					fread(&curve.pie.distance,2,1,f);
+					if(IsBigEndian()) SwapBytes(curve.pie.distance);
 
-				fseek(f,LAYER+0x98,SEEK_SET);
-				fread(&GRAPH.back().layer.back().curve.back().pie.thickness,1,1,f);
+					fread(&curve.pie.view_angle,1,1,f);
 
-				fseek(f,LAYER+0x9A,SEEK_SET);
-				fread(&GRAPH.back().layer.back().curve.back().pie.rotation,2,1,f);
-				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.rotation);
+					fseek(f,LAYER+0x98,SEEK_SET);
+					fread(&curve.pie.thickness,1,1,f);
 
-				fseek(f,LAYER+0x9E,SEEK_SET);
-				fread(&GRAPH.back().layer.back().curve.back().pie.displacement,2,1,f);
-				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.displacement);
+					fseek(f,LAYER+0x9A,SEEK_SET);
+					fread(&curve.pie.rotation,2,1,f);
+					if(IsBigEndian()) SwapBytes(curve.pie.rotation);
 
-				fseek(f,LAYER+0xA0,SEEK_SET);
-				fread(&GRAPH.back().layer.back().curve.back().pie.radius,2,1,f);
-				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.radius);
+					fseek(f,LAYER+0x9E,SEEK_SET);
+					fread(&curve.pie.displacement,2,1,f);
+					if(IsBigEndian()) SwapBytes(curve.pie.displacement);
 
-				fseek(f,LAYER+0xA2,SEEK_SET);
-				fread(&GRAPH.back().layer.back().curve.back().pie.horizontal_offset,2,1,f);
-				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.horizontal_offset);
+					fseek(f,LAYER+0xA0,SEEK_SET);
+					fread(&curve.pie.radius,2,1,f);
+					if(IsBigEndian()) SwapBytes(curve.pie.radius);
 
-				fseek(f,LAYER+0xA6,SEEK_SET);
-				fread(&GRAPH.back().layer.back().curve.back().pie.displaced_sections,4,1,f);
-				if(IsBigEndian()) SwapBytes(GRAPH.back().layer.back().curve.back().pie.displaced_sections);
+					fseek(f,LAYER+0xA2,SEEK_SET);
+					fread(&curve.pie.horizontal_offset,2,1,f);
+					if(IsBigEndian()) SwapBytes(curve.pie.horizontal_offset);
+
+					fseek(f,LAYER+0xA6,SEEK_SET);
+					fread(&curve.pie.displaced_sections,4,1,f);
+					if(IsBigEndian()) SwapBytes(curve.pie.displaced_sections);
+				}
 				
 				fseek(f,LAYER+0xC2,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().fillarea_color=h;
+				curve.fillarea_color=h;
 
 				fseek(f,LAYER+0xC3,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().fillarea_first_color=h;
+				curve.fillarea_first_color=h;
 
 				fseek(f,LAYER+0xCE,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().fillarea_pattern=h;
+				curve.fillarea_pattern=h;
 
 				fseek(f,LAYER+0xCA,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().fillarea_pattern_color=h;
+				curve.fillarea_pattern_color=h;
 
 				fseek(f,LAYER+0xC6,SEEK_SET);
 				fread(&w,2,1,f);
 				if(IsBigEndian()) SwapBytes(w);
-				GRAPH.back().layer.back().curve.back().fillarea_pattern_width=(double)w/500.0;
+				curve.fillarea_pattern_width=(double)w/500.0;
 
 				fseek(f,LAYER+0xCF,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().fillarea_pattern_border_style=h;
+				curve.fillarea_pattern_border_style=h;
 
 				fseek(f,LAYER+0xD2,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().fillarea_pattern_border_color=h;
+				curve.fillarea_pattern_border_color=h;
 
 				fseek(f,LAYER+0xD0,SEEK_SET);
 				fread(&w,2,1,f);
 				if(IsBigEndian()) SwapBytes(w);
-				GRAPH.back().layer.back().curve.back().fillarea_pattern_border_width=(double)w/500.0;
+				curve.fillarea_pattern_border_width=(double)w/500.0;
 
 				fseek(f,LAYER+0x16A,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().line_color=h;
+				curve.line_color=h;
 
 				fseek(f,LAYER+0x17,SEEK_SET);
 				fread(&w,2,1,f);
 				if(IsBigEndian()) SwapBytes(w);
-				GRAPH.back().layer.back().curve.back().symbol_type=w;
+				curve.symbol_type=w;
 
 				fseek(f,LAYER+0x12E,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().symbol_fill_color=h;
+				curve.symbol_fill_color=h;
 
 				fseek(f,LAYER+0x132,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().symbol_color=h;
+				curve.symbol_color=h;
+				curve.vector.color=h;
 
 				fseek(f,LAYER+0x136,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().symbol_thickness=(h==255?1:h);
+				curve.symbol_thickness=(h==255?1:h);
 
 				fseek(f,LAYER+0x137,SEEK_SET);
 				fread(&h,1,1,f);
-				GRAPH.back().layer.back().curve.back().point_offset=h;
+				curve.point_offset=h;
+
+				GRAPH.back().layer.back().curve.push_back(curve);
 
 				LAYER+=0x1E7+0x1;
 				fseek(f,LAYER,SEEK_SET);

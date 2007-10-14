@@ -248,6 +248,22 @@ struct pieProperties
 	,	position_associate(false)
 	{};
 };
+
+struct vectorProperties
+{
+	int color;
+	double width;
+	unsigned short arrow_lenght;
+	unsigned char arrow_angle;
+	bool arrow_closed;
+	string endXColName;
+	string endYColName;
+
+	vectorProperties()
+	:	arrow_closed(false)
+	{};
+};
+
 struct graphCurve {
 	int type;
 	string dataName;
@@ -278,6 +294,9 @@ struct graphCurve {
 
 	//pie
 	pieProperties pie;
+
+	//vector
+	vectorProperties vector;
 };
 
 enum AxisPosition {Left = 0, Bottom = 1, Right = 2, Top = 3};
@@ -625,6 +644,7 @@ public:
 	int curveSymbolThickness(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].symbol_thickness; }	//!< get symbol thickness of curve c of layer l of graph s
 
 	pieProperties curvePieProperties(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].pie; }	//!< get pie properties of curve c of layer l of graph s
+	vectorProperties curveVectorProperties(int s, int l, int c) const { return GRAPH[s].layer[l].curve[c].vector; }	//!< get vector properties of curve c of layer l of graph s
 
 	int numNotes() const { return NOTE.size(); }			//!< get number of notes
 	const char *noteName(int n) const { return NOTE[n].name.c_str(); }	//!< get name of note n
