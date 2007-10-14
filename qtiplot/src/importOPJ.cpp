@@ -596,6 +596,10 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				case OPJFile::Vector:
 					style=Graph::VectXYAM;
 					break;
+				case OPJFile::Area:
+				case OPJFile::AreaStack:
+					style=Graph::Area;
+					break;
 				default:
 					continue;
 				}
@@ -676,7 +680,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				cl.sSize = ceil(opj.curveSymbolSize(g,l,c));
 				cl.penWidth=opj.curveSymbolThickness(g,l,c);
 				color=opj.curveSymbolColor(g,l,c);
-				if((style==Graph::Scatter||style==Graph::LineSymbols)&&color==0xF7)//0xF7 -Automatic color
+				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&color==0xF7)//0xF7 -Automatic color
 					color=auto_color++;
 				cl.symCol=color;
 				switch(opj.curveSymbolType(g,l,c)&0xFF)
@@ -744,7 +748,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				case 10:
 				case 11:
 					color=opj.curveSymbolFillColor(g,l,c);
-					if((style==Graph::Scatter||style==Graph::LineSymbols)&&color==0xF7)//0xF7 -Automatic color
+					if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&color==0xF7)//0xF7 -Automatic color
 						color=17;// depend on Origin settings - not stored in file
 					cl.fillCol=color;
 					break;
