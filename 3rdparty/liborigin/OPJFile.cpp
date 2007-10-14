@@ -2213,8 +2213,12 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 				curve.fillarea_type=h;
 
 				//vector
-				if(curve.type == FlowVector)
+				if(curve.type == FlowVector || curve.type == Vector)
 				{
+					fseek(f,LAYER+0x56,SEEK_SET);
+					fread(&curve.vector.multiplier,4,1,f);
+					if(IsBigEndian()) SwapBytes(curve.vector.multiplier);
+
 					fseek(f,LAYER+0x5E,SEEK_SET);
 					fread(&h,1,1,f);
 					col=findDataByIndex(nColY - 1 + h - 0x64);
@@ -2231,6 +2235,32 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 						curve.vector.endYColName = col[0];
 					}
 
+					fseek(f,LAYER+0x18,SEEK_SET);
+					fread(&h,1,1,f);
+					if(h >= 0x64)
+					{
+						col=findDataByIndex(nColY - 1 + h - 0x64);
+						if(col.size()>0)
+							curve.vector.angleColName = col[0];
+					}
+					else if(h <= 0x08)
+					{
+						curve.vector.const_angle = 45*h;
+					}
+
+					fseek(f,LAYER+0x19,SEEK_SET);
+					fread(&h,1,1,f);
+					if(h >= 0x64 && h < 0x1F4)
+					{
+						col=findDataByIndex(nColY - 1 + h - 0x64);
+						if(col.size()>0)
+							curve.vector.magnitudeColName = col[0];
+					}
+					else
+					{
+						curve.vector.const_magnitude = curve.symbol_size;
+					}
+
 					fseek(f,LAYER+0x66,SEEK_SET);
 					fread(&curve.vector.arrow_lenght,2,1,f);
 					if(IsBigEndian()) SwapBytes(curve.vector.arrow_lenght);
@@ -2243,6 +2273,22 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 					fread(&w,2,1,f);
 					if(IsBigEndian()) SwapBytes(w);
 					curve.vector.width=(double)w/500.0;
+
+					fseek(f,LAYER+0x142,SEEK_SET);
+					fread(&h,1,1,f);
+					switch(h)
+					{
+					case 2:
+						curve.vector.position = Midpoint;
+						break;
+					case 4:
+						curve.vector.position = Head;
+					    break;
+					default:
+						curve.vector.position = Tail;
+					    break;
+					}
+					
 				}
 
 				//pie
