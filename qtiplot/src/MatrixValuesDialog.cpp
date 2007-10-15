@@ -156,29 +156,26 @@ void MatrixValuesDialog::setMatrix(Matrix* m)
 	commands->setText(m->formula());
 	commands->setContext(m);
 
-	QTableWidget *table = m->table();
+	/*QTableWidget *table = m->table();
 	QList<QTableWidgetSelectionRange> lst = table->selectedRanges();
-	if (!lst.isEmpty())
-	{
+	if (!lst.isEmpty()){
 	    QTableWidgetSelectionRange selection = lst.first();
-	    if (selection.columnCount() == 1 && selection.rowCount() == 1)
-	    {
+	    if (selection.columnCount() == 1 && selection.rowCount() == 1){
 	        endCol->setValue(m->numCols());
             endRow->setValue(m->numRows());
-        }
-        else
-        {
+        } else {
             startCol->setValue(selection.leftColumn()+1);
             startRow->setValue(selection.topRow()+1);
             endCol->setValue(selection.rightColumn()+1);
             endRow->setValue(selection.bottomRow()+1);
         }
-    }
-    else
-    {
+    } else {
         endCol->setValue(m->numCols());
         endRow->setValue(m->numRows());
-    }
+    }*/
+	
+	endCol->setValue(m->numCols());
+    endRow->setValue(m->numRows());
 }
 
 void MatrixValuesDialog::setFunctions()

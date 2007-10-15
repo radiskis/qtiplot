@@ -2204,7 +2204,6 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
 	m->setAttribute(Qt::WA_DeleteOnClose);
 	m->setNumericPrecision(d_decimal_digits);
     m->setLocale(d_locale);
-	m->table()->blockSignals(true);
 
 	int aux = rows - 1;
 	for (int i=0; i<rows; i++ ){
@@ -2228,7 +2227,6 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
     	m->setWindowLabel(fn);
     	m->setCaptionPolicy(MyWidget::Both);
     	setListViewLabel(m->objectName(), fn);
-    	m->table()->blockSignals(false);
 		return m;
 	} else {
 		delete m;
@@ -2908,13 +2906,10 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 
 	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws, 0);
 	m->setAttribute(Qt::WA_DeleteOnClose);
-	m->table()->blockSignals(true);
 	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
 			m->setText(i, j, t->text(i,j));
 	}
-    m->table()->blockSignals(false);
-
 	QString caption = generateUniqueName(tr("Matrix"));
 	initMatrix(m, caption);
 
@@ -9606,7 +9601,6 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 	}
 	if (*line == "<data>") line++;
 
-    w->table()->blockSignals(true);
 	//read and set table values
 	for (; line!=flist.end() && *line != "</data>"; line++){
 		QStringList fields = (*line).split("\t");
@@ -9625,7 +9619,6 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 		}
 		qApp->processEvents(QEventLoop::ExcludeUserInput);
 	}
-    w->table()->blockSignals(false);
 	return w;
 }
 
