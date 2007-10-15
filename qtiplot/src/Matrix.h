@@ -45,6 +45,8 @@
 #define _Matrix_initial_rows_ 10
 #define _Matrix_initial_columns_ 3
 
+class MatrixModel;
+
 //! Matrix worksheet class
 class Matrix: public MyWidget, public scripted
 {
@@ -231,12 +233,6 @@ public slots:
 	 * \sa setNumericFormat(), forgetSavedCells(), dMatrix
 	 */
 	void saveCellsToMemory();
-	/*!
-	 * \ brief Free memory of saved cells
-	 *
-	 * \sa setNumericFormat(), saveCellsToMemory(), dMatrix
-	 */
-	void forgetSavedCells();
 
 	//! Return the X value corresponding to column 1
 	double xStart(){return x_start;};
@@ -254,8 +250,6 @@ public slots:
 
 	 //! Min and max values of the matrix.
   	void range(double *min, double *max);
-	//! Return a pointer to the QTableWidget
-	QTableWidget* table(){return d_table;};
 
 	//! Scroll to row (row starts with 1)
 	void goToRow(int row);
@@ -265,7 +259,7 @@ public slots:
 	//! Free memory used for a matrix buffer
 	static void freeMatrixData(double **data, int rows);
 
-	int verticalHeaderWidth(){return table()->verticalHeader()->width();}
+	int verticalHeaderWidth(){return d_table_view->verticalHeader()->width();}
 
     void copy(Matrix *m);
 
@@ -277,16 +271,16 @@ private:
 	//! Initialize the matrix
 	void init(int rows, int cols);
 
-	//! Pointer to the table widget
-	QTableWidget *d_table;
+    MatrixModel *d_matrix_model;
+	//! Pointer to the table view
+    QTableView *d_table_view;
+
 	//! Last formula used to calculate cell values
 	QString formula_str;
 	//! Format code for displaying numbers
 	QChar txt_format;
 	//! Number of significant digits
 	int num_precision;
-	//! Stores the matrix data only before the user opens the matrix dialog in order to avoid data loses during number format changes.
-	double **dMatrix;
 	double x_start, //!< X value corresponding to column 1
 	x_end,  //!< X value corresponding to the last column
 	y_start,  //!< Y value corresponding to row 1

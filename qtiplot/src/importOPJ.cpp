@@ -409,7 +409,6 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		matrix->setWindowLabel(opj.matrixLabel(s));
 		matrix->setFormula(opj.matrixFormula(s));
 		matrix->setColumnsWidth(opj.matrixWidth(s)*QtiPlot_scaling_factor);
-		matrix->table()->blockSignals(true);
 		for (int j=0; j<nr_cols; j++)
 		{
 			for (int i=0; i<nr_rows; i++)
@@ -439,7 +438,6 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			break;
 		}
 		matrix->setNumericFormat(format, opj.matrixSignificantDigits(s));
-        matrix->table()->blockSignals(false);
 		
 		if(!opj.matrixHidden(s)||opj.Version()!=7.5)
 		{

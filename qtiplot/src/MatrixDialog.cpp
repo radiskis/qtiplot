@@ -138,18 +138,10 @@ void MatrixDialog::setMatrix(Matrix *m)
 	}
 
     connect(boxColWidth, SIGNAL(valueChanged(int)), d_matrix, SLOT(setColumnsWidth(int)));
-    m->saveCellsToMemory();
 }
 
 void MatrixDialog::accept()
 {
 	apply();
 	close();
-}
-
-void MatrixDialog::closeEvent(QCloseEvent* e)
-{
-    if (d_matrix)
-        d_matrix->forgetSavedCells();
-    e->accept();
 }

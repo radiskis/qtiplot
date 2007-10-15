@@ -63,8 +63,6 @@ private slots:
 private:
     Matrix *d_matrix;
 
-    void closeEvent(QCloseEvent*);
-
     QPushButton* buttonOk;
 	QPushButton* buttonCancel, *buttonApply;
 	QSpinBox* boxColWidth, *boxPrecision;
