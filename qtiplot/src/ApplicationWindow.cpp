@@ -8171,36 +8171,31 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 	if (folders->isRenaming())
 		return;
 
-	if (!it)
-	{
+	if (!it){
 		showListViewPopupMenu(p);
 		return;
 	}
 
 	Q3ListViewItem *item;
 	int selected = 0;
-	for (item = lv->firstChild(); item; item = item->nextSibling())
-	{
+	for (item = lv->firstChild(); item; item = item->nextSibling()){
 		if (item->isSelected())
 			selected++;
 
-		if (selected>1)
-		{
+		if (selected>1){
 			showListViewSelectionMenu(p);
 			return;
 		}
 	}
 
-	if (it->rtti() == FolderListItem::RTTI)
-	{
+	if (it->rtti() == FolderListItem::RTTI){
 		current_folder = ((FolderListItem *)it)->folder();
 		showFolderPopupMenu(it, p, false);
 		return;
 	}
 
 	MyWidget *w= ((WindowListItem *)it)->window();
-	if (w)
-	{
+	if (w){
 		QMenu cm(this);
 		QMenu plots(this);
 
@@ -8219,66 +8214,50 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 		cm.insertSeparator();
 		cm.insertItem(tr("&Properties..."), this, SLOT(windowProperties()));
 
-		if (w->inherits("Table"))
-		{
+		if (w->inherits("Table")){
 			QStringList graphs = dependingPlots(w->objectName());
-			if (int(graphs.count())>0)
-			{
+			if (int(graphs.count())>0){
 				cm.insertSeparator();
 				for (int i=0;i<int(graphs.count());i++)
 					plots.insertItem(graphs[i], window(graphs[i]), SLOT(showMaximized()));
 
 				cm.insertItem(tr("D&epending Graphs"),&plots);
 			}
-		}
-		else if (w->isA("Matrix"))
-		{
+		} else if (w->isA("Matrix")){
 			QStringList graphs = depending3DPlots((Matrix*)w);
-			if (int(graphs.count())>0)
-			{
+			if (int(graphs.count())>0){
 				cm.insertSeparator();
 				for (int i=0;i<int(graphs.count());i++)
 					plots.insertItem(graphs[i], window(graphs[i]), SLOT(showMaximized()));
 
 				cm.insertItem(tr("D&epending 3D Graphs"),&plots);
 			}
-		}
-		else if (w->isA("MultiLayer"))
-		{
+		} else if (w->isA("MultiLayer")) {
 			tablesDepend->clear();
 			QStringList tbls=multilayerDependencies(w);
 			int n = int(tbls.count());
-			if (n > 0)
-			{
+			if (n > 0){
 				cm.insertSeparator();
 				for (int i=0; i<n; i++)
 					tablesDepend->insertItem(tbls[i], i, -1);
 
 				cm.insertItem(tr("D&epends on"), tablesDepend);
 			}
-		}
-		else if (w->isA("Graph3D"))
-		{
+		} else if (w->isA("Graph3D")) {
 			Graph3D *sp=(Graph3D*)w;
 			Matrix *m = sp->matrix();
 			QString formula = sp->formula();
-			if (!formula.isEmpty())
-			{
+			if (!formula.isEmpty()){
 				cm.insertSeparator();
-				if (formula.contains("_"))
-				{
+				if (formula.contains("_")){
 					QStringList tl = formula.split("_", QString::SkipEmptyParts);
 					tablesDepend->clear();
 					tablesDepend->insertItem(tl[0], 0, -1);
 					cm.insertItem(tr("D&epends on"), tablesDepend);
-				}
-				else if (m)
-				{
+				} else if (m) {
 					plots.insertItem(m->objectName(), m, SLOT(showNormal()));
 					cm.insertItem(tr("D&epends on"),&plots);
-				}
-				else
-				{
+				} else {
 					plots.insertItem(formula, w, SLOT(showNormal()));
 					cm.insertItem(tr("Function"), &plots);
 				}
@@ -8547,9 +8526,9 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.insertSeparator();
 		cm.insertItem(tr("&Insert Row"), t, SLOT(insertRow()));
 		cm.insertItem(tr("&Insert Column"), t, SLOT(insertColumn()));
-		if (t->rowsSelected())
+		if (t->numSelectedRows() > 0)
 			cm.insertItem(QPixmap(close_xpm), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
-		else if (t->columnsSelected())
+		else if (t->numSelectedColumns() > 0)
 			cm.insertItem(QPixmap(close_xpm), tr("&Delete Columns"), t, SLOT(deleteSelectedColumns()));
 
 		cm.insertItem(QPixmap(erase_xpm),tr("Clea&r"), t, SLOT(clearSelection()));
@@ -11968,18 +11947,13 @@ void ApplicationWindow::deleteFitTables()
 	}
 	delete windows;
 
-	foreach(QWidget *ml, *mLst)
-	{
-		if (ml->isA("MultiLayer"))
-		{
+	foreach(QWidget *ml, *mLst){
+		if (ml->isA("MultiLayer")){
 			QWidgetList lst = ((MultiLayer*)ml)->graphPtrs();
-			foreach(QWidget *widget, lst)
-			{
+			foreach(QWidget *widget, lst){
 				QList<QwtPlotCurve *> curves = ((Graph *)widget)->fitCurvesList();
-				foreach(QwtPlotCurve *c, curves)
-				{
-					if (((PlotCurve *)c)->type() != Graph::Function)
-					{
+				foreach(QwtPlotCurve *c, curves){
+					if (((PlotCurve *)c)->type() != Graph::Function){
 						Table *t = ((DataCurve *)c)->table();
 						if (!t)
 							continue;
