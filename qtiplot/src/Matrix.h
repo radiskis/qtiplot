@@ -69,6 +69,7 @@ public:
 	Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 	~Matrix(){};
 
+	MatrixModel * matrixModel(){return d_matrix_model;};  
 	//! Return the number of rows
 	int numRows();
 	void setNumRows(int rows);
@@ -96,7 +97,8 @@ public:
 	 */
 	void customEvent(QEvent *e);
 
-	void updateDecimalSeparators();
+	void resetView(){d_table_view->reset();};
+	void moveCell(const QModelIndex& index);
 
 public slots:
 	void exportPDF(const QString& fileName);
@@ -104,8 +106,6 @@ public slots:
 	void print();
 	//! Print the Matrix to fileName
 	void print(const QString& fileName);
-	//! Called if any cell value was changed
-	void cellEdited(int,int);
 
 	//! Return the width of all columns
 	int columnsWidth();
@@ -162,26 +162,12 @@ public slots:
 	 * \sa setTextFormat()
 	 */
 	void setTextFormat(const QChar &format, int precision);
-	/*!
-	  \brief Set the number format for the cells
-
-	  You must call saveCellsToMemory() before and
-	  forgetSavedCells() after calling this!
-	  Format character and precision have the same meaning as for
-	  sprintf().
-	  \param f format character 'e', 'f', 'g'
-	  \param prec
-	  - for 'e', 'f': the number of digits after the radix character (point)
-	  - for 'g': the maximum number of significant digits
-
-	  \sa saveCellsToMemory(), forgetSavedCells(), dMatrix
-	  */
 	void setNumericFormat(const QChar & f, int prec);
 
 	//! Return the matrix formula
-	QString formula();
+	QString formula(){return formula_str;};
 	//! Set the matrix forumla
-	void setFormula(const QString &s);
+	void setFormula(const QString &s){formula_str = s;};
 
 	//! Load the matrix from a string list (i.e. lines from a project file)
 	void restore(const QStringList &l);
@@ -205,8 +191,6 @@ public slots:
 
 	//! Insert a row before the current cell
 	void insertRow();
-	//! Return whether any rows are fully selected
-	bool rowsSelected();
 	//! Delete the selected rows
 	void deleteSelectedRows();
 	//! Return the number of selected rows
@@ -214,25 +198,10 @@ public slots:
 
 	//! Insert a column before the current cell
 	void insertColumn();
-	//! Return whether any columns are fully selected
-	bool columnsSelected();
 	//! Delte the selected columns
 	void deleteSelectedColumns();
 	//! Return the number of selected columns
 	int numSelectedColumns();
-	//! Returns whether a column contains selected cells (full=false) or is fully selected (full=true)
-	bool isColumnSelected(int col, bool full=false);
-	//! Returns whether a row contains selected cells (full=false) or is fully selected (full=true)
-	bool isRowSelected(int row, bool full=false);
-	//! Return the first fully selected column or -1 if no column is fully selected
-	int firstSelectedColumn();
-
-	/*!
-	 * \brief Temporally save the cell values to memory
-	 *
-	 * \sa setNumericFormat(), forgetSavedCells(), dMatrix
-	 */
-	void saveCellsToMemory();
 
 	//! Return the X value corresponding to column 1
 	double xStart(){return x_start;};

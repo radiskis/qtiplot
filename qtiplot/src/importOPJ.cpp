@@ -421,8 +421,6 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			}
 		}
 
-		matrix->saveCellsToMemory();
-
 		QChar format;
 		switch(opj.matrixValueTypeSpec(s))
 		{

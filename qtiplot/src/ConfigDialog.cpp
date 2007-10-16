@@ -1129,7 +1129,7 @@ void ConfigDialog::apply()
             if(w->isA("Table"))
                 ((Table *)w)->updateDecimalSeparators();
             else if(w->isA("Matrix"))
-                ((Matrix *)w)->updateDecimalSeparators();
+                ((Matrix *)w)->resetView();
             else if (w->isA("MultiLayer")){
                 QWidgetList gr_lst = ((MultiLayer*)w)->graphPtrs();
                 foreach(QWidget *g, gr_lst)
