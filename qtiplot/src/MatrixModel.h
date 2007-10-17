@@ -58,6 +58,9 @@ public:
 	QString text(int row, int col);
 	void setText(int row, int col, const QString&);
 
+	QString saveToString();
+	QImage renderImage();
+
 	double data(int row, int col) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);

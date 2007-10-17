@@ -842,7 +842,8 @@ void ApplicationWindow::initMainMenu()
 
 	file->addAction(actionLoadImage);
 	file->addAction(actionImportImage);
-
+	actionExportMatrix->setEnabled(false);
+	file->addAction(actionExportMatrix);
 	file->insertSeparator();
 
 	file->addAction(actionSaveProject);
@@ -946,16 +947,22 @@ void ApplicationWindow::initMainMenu()
 	matrixMenu->addAction(actionSetMatrixValues);
 	matrixMenu->addAction(actionTableRecalculate);
 	matrixMenu->insertSeparator();
-
+	matrixMenu->addAction(actionRotateMatrix);
+	matrixMenu->addAction(actionFlipMatrixVertically);
+	matrixMenu->addAction(actionFlipMatrixHorizontally);
+	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionTransposeMatrix);
 	matrixMenu->addAction(actionInvertMatrix);
 	matrixMenu->addAction(actionMatrixDeterminant);
-
 	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionGoToRow);
 	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionConvertMatrix);
-
+	matrixMenu->insertSeparator();
+	QMenu *matrixViewMenu = matrixMenu->addMenu (tr("Vie&w"));
+	matrixViewMenu->addAction(actionViewMatrixImage);	
+	matrixViewMenu->addAction(actionViewMatrix);
+	
 	initPlotMenu();
 	initTableAnalysisMenu();
 	initTableMenu();
@@ -1234,6 +1241,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
+	actionExportMatrix->setEnabled(false);
 
 	if(w){
 		actionPrintAllPlots->setEnabled(projectHas2DPlots());
@@ -1297,6 +1305,9 @@ void ApplicationWindow::customMenu(QWidget* w)
 			actionTableRecalculate->setEnabled(true);
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
 			menuBar()->insertItem(tr("&Matrix"), matrixMenu);
+			actionExportMatrix->setEnabled(true);
+			//actionViewMatrixImage->setChecked(((Matrix *)w)->viewType() == Matrix::ImageView);
+			//actionViewMatrix->setChecked(((Matrix *)w)->viewType() == Matrix::TableView);
 		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
@@ -2166,6 +2177,29 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 	customToolBars(plot);
 }
 
+void ApplicationWindow::exportMatrix()
+{
+	Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QList<QByteArray> lst = QImageWriter::supportedImageFormats();
+	QString filter;
+	for(int i=0 ; i<lst.count() ; i++)
+		filter += "*." + lst[i] + ";;";
+	
+	QString selectedFilter;
+	QString fn = QFileDialog::getSaveFileName(this, tr("QtiPlot - Export image to file"), imagesDirPath, filter, &selectedFilter);
+	if (!fn.isEmpty()){
+		QFileInfo fi(fn);
+		imagesDirPath = fi.dirPath(true);
+		
+		if (!fi.fileName().contains("."))
+			fn += selectedFilter.remove("*");
+		m->image().save(fn);
+	}
+}
+
 Matrix* ApplicationWindow::importImage(const QString& fileName)
 {
 	QString fn = fileName;
@@ -2783,6 +2817,30 @@ Matrix* ApplicationWindow::newMatrix(const QString& caption, int r, int c)
 	return w;
 }
 
+void ApplicationWindow::viewMatrixImage()
+{
+	Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->setViewType(Matrix::ImageView);
+	actionViewMatrix->setChecked(false);
+	QApplication::restoreOverrideCursor();
+}
+
+void ApplicationWindow::viewMatrix()
+{
+	Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->setViewType(Matrix::TableView);
+	actionViewMatrixImage->setChecked(false);
+	QApplication::restoreOverrideCursor();
+}
+
 void ApplicationWindow::transposeMatrix()
 {
 	Matrix* m = (Matrix*)ws->activeWindow();
@@ -2791,6 +2849,39 @@ void ApplicationWindow::transposeMatrix()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->transpose();
+	QApplication::restoreOverrideCursor();
+}
+
+void ApplicationWindow::flipMatrixVertically()
+{
+	Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->flipVertically();
+	QApplication::restoreOverrideCursor();
+}
+
+void ApplicationWindow::flipMatrixHorizontally()
+{
+	Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->flipHorizontally();
+	QApplication::restoreOverrideCursor();
+}
+
+void ApplicationWindow::rotateMatrix90()
+{
+	Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->rotate90();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -11102,12 +11193,33 @@ void ApplicationWindow::createActions()
 	actionTransposeMatrix = new QAction(tr("&Transpose"), this);
 	connect(actionTransposeMatrix, SIGNAL(activated()), this, SLOT(transposeMatrix()));
 
+	actionFlipMatrixVertically = new QAction(tr("Flip &Vertically"), this);
+	connect(actionFlipMatrixVertically, SIGNAL(activated()), this, SLOT(flipMatrixVertically()));
+	
+	actionFlipMatrixHorizontally = new QAction(tr("Flip &Horizontally"), this);
+	connect(actionFlipMatrixHorizontally, SIGNAL(activated()), this, SLOT(flipMatrixHorizontally()));
+
+	actionRotateMatrix = new QAction(tr("&Rotate 90"), this);
+	connect(actionRotateMatrix, SIGNAL(activated()), this, SLOT(rotateMatrix90()));
+	
 	actionInvertMatrix = new QAction(tr("&Invert"), this);
 	connect(actionInvertMatrix, SIGNAL(activated()), this, SLOT(invertMatrix()));
 
 	actionMatrixDeterminant = new QAction(tr("&Determinant"), this);
 	connect(actionMatrixDeterminant, SIGNAL(activated()), this, SLOT(matrixDeterminant()));
 
+	actionViewMatrixImage = new QAction(tr("&Image"), this);
+	connect(actionViewMatrixImage, SIGNAL(activated()), this, SLOT(viewMatrixImage()));
+	actionViewMatrixImage->setCheckable(true);
+	
+	actionViewMatrix = new QAction(tr("&Matrix"), this);
+	connect(actionViewMatrix, SIGNAL(activated()), this, SLOT(viewMatrix()));
+	actionViewMatrix->setCheckable(true);
+	actionViewMatrix->setChecked(true);
+
+	actionExportMatrix = new QAction(tr("&Export Image ..."), this);
+	connect(actionExportMatrix, SIGNAL(activated()), this, SLOT(exportMatrix()));
+	
 	actionConvertMatrix = new QAction(tr("&Convert to Spreadsheet"), this);
 	connect(actionConvertMatrix, SIGNAL(activated()), this, SLOT(convertMatrixToTable()));
 
@@ -11615,9 +11727,14 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetMatrixDimensions->setMenuText(tr("Set &Dimensions..."));
 	actionSetMatrixValues->setMenuText(tr("Set &Values..."));
 	actionTransposeMatrix->setMenuText(tr("&Transpose"));
+	actionRotateMatrix->setMenuText(tr("&Rotate 90"));	
+	actionFlipMatrixVertically->setMenuText(tr("Flip &Vertically"));
+	actionFlipMatrixHorizontally->setMenuText(tr("Flip &Horizontally"));
 	actionInvertMatrix->setMenuText(tr("&Invert"));
 	actionMatrixDeterminant->setMenuText(tr("&Determinant"));
 	actionConvertMatrix->setMenuText(tr("&Convert to Spreadsheet"));
+	actionExportMatrix->setMenuText(tr("&Export Image ..."));
+
 	actionConvertTable->setMenuText(tr("Convert to &Matrix"));
 	actionPlot3DWireFrame->setMenuText(tr("3D &Wire Frame"));
 	actionPlot3DHiddenLine->setMenuText(tr("3D &Hidden Line"));

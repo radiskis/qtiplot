@@ -114,14 +114,14 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	vbox3->addLayout(hbox3);
     setLayout(vbox3);
 
-	setFunctions();
+	functions->insertStringList(scriptEnv->mathFunctions(), -1);
 	insertExplain(0);
 
-	connect(btnAddCell, SIGNAL(clicked()),this, SLOT(addCell()));
-	connect(btnAddFunction, SIGNAL(clicked()),this, SLOT(insertFunction()));
-	connect(btnApply, SIGNAL(clicked()),this, SLOT(apply()));
-	connect(btnCancel, SIGNAL(clicked()),this, SLOT(close()));
-	connect(functions, SIGNAL(activated(int)),this, SLOT(insertExplain(int)));
+	connect(btnAddCell, SIGNAL(clicked()), this, SLOT(addCell()));
+	connect(btnAddFunction, SIGNAL(clicked()), this, SLOT(insertFunction()));
+	connect(btnApply, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(btnCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(functions, SIGNAL(activated(int)), this, SLOT(insertExplain(int)));
 }
 
 QSize MatrixValuesDialog::sizeHint() const
@@ -156,31 +156,22 @@ void MatrixValuesDialog::setMatrix(Matrix* m)
 	commands->setText(m->formula());
 	commands->setContext(m);
 
-	/*QTableWidget *table = m->table();
-	QList<QTableWidgetSelectionRange> lst = table->selectedRanges();
-	if (!lst.isEmpty()){
-	    QTableWidgetSelectionRange selection = lst.first();
-	    if (selection.columnCount() == 1 && selection.rowCount() == 1){
+	QItemSelectionModel *selModel = m->selectionModel();
+	if (selModel->hasSelection()){		
+		QItemSelectionRange selection = selModel->selection().first();
+	    if (selection.width() == 1 && selection.height() == 1){
 	        endCol->setValue(m->numCols());
             endRow->setValue(m->numRows());
         } else {
-            startCol->setValue(selection.leftColumn()+1);
-            startRow->setValue(selection.topRow()+1);
-            endCol->setValue(selection.rightColumn()+1);
-            endRow->setValue(selection.bottomRow()+1);
+            startCol->setValue(selection.left()+1);
+            startRow->setValue(selection.top()+1);
+            endCol->setValue(selection.right()+1);
+            endRow->setValue(selection.bottom()+1);
         }
     } else {
         endCol->setValue(m->numCols());
         endRow->setValue(m->numRows());
-    }*/
-	
-	endCol->setValue(m->numCols());
-    endRow->setValue(m->numRows());
-}
-
-void MatrixValuesDialog::setFunctions()
-{
-	functions->insertStringList(scriptEnv->mathFunctions(), -1);
+    }
 }
 
 void MatrixValuesDialog::insertExplain(int index)
@@ -196,8 +187,4 @@ void MatrixValuesDialog::insertFunction()
 void MatrixValuesDialog::addCell()
 {
 	commands->insert("cell(i, j)");
-}
-
-MatrixValuesDialog::~MatrixValuesDialog()
-{
 }

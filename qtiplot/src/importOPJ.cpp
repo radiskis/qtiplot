@@ -409,10 +409,8 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		matrix->setWindowLabel(opj.matrixLabel(s));
 		matrix->setFormula(opj.matrixFormula(s));
 		matrix->setColumnsWidth(opj.matrixWidth(s)*QtiPlot_scaling_factor);
-		for (int j=0; j<nr_cols; j++)
-		{
-			for (int i=0; i<nr_rows; i++)
-			{
+		for (int j=0; j<nr_cols; j++){
+			for (int i=0; i<nr_rows; i++){
 				double val = opj.matrixData(s,j,i);
 				if(fabs(val)>0 && fabs(val)<2.0e-300)// empty entry
 					continue;
