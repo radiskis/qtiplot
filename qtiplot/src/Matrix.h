@@ -32,21 +32,22 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include <QTableWidget>
-#include <QContextMenuEvent>
-#include <QEvent>
 #include <QHeaderView>
+#include <QTableView>
 #include "MyWidget.h"
 #include "ScriptingEnv.h"
 #include "Script.h"
 #include <qwt_double_rect.h>
+#include <qwt_color_map.h>
 
 // (maximum) initial matrix size
 #define _Matrix_initial_rows_ 10
 #define _Matrix_initial_columns_ 3
 
 class MatrixModel;
-
+class QLabel;
+class QStackedWidget;
+	
 //! Matrix worksheet class
 class Matrix: public MyWidget, public scripted
 {
@@ -69,7 +70,16 @@ public:
 	Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
 	~Matrix(){};
 
+	enum ViewType{TableView, ImageView};
+	enum ColorMap{GrayScale, Default, Custom};
+	
+	void setViewType(ViewType);
+	int viewType(){return (int)d_view_type;};
+	QImage image();
+	
 	MatrixModel * matrixModel(){return d_matrix_model;};  
+	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
+	
 	//! Return the number of rows
 	int numRows();
 	void setNumRows(int rows);
@@ -77,9 +87,6 @@ public:
 	//! Return the number of columns
 	int numCols();
 	void setNumCols(int cols);
-
-	//! Returns whether the row is empty or not
-	bool isEmptyRow(int row);
 
 	//event handlers
 	/*!
@@ -99,6 +106,14 @@ public:
 
 	void resetView(){d_table_view->reset();};
 	void moveCell(const QModelIndex& index);
+
+	void flipVertically();
+	void flipHorizontally();
+	void rotate90();
+	
+	QwtLinearColorMap colorMap(){return d_color_map;};
+	void setGrayScale();
+	void setDefaultColorMap();
 
 public slots:
 	void exportPDF(const QString& fileName);
@@ -176,8 +191,6 @@ public slots:
 
 	//! Return a string to save the matrix in a project file (\<matrix\> section)
 	QString saveToString(const QString &info);
-	//! Return a string conaining the data of the matrix (\<data\> section)
-	QString saveText();
 
 	// selection operations
 	//! Standard cut operation
@@ -243,7 +256,8 @@ private:
     MatrixModel *d_matrix_model;
 	//! Pointer to the table view
     QTableView *d_table_view;
-
+	//! Used to display the image view
+	QLabel *imageLabel;
 	//! Last formula used to calculate cell values
 	QString formula_str;
 	//! Format code for displaying numbers
@@ -254,6 +268,11 @@ private:
 	x_end,  //!< X value corresponding to the last column
 	y_start,  //!< Y value corresponding to row 1
 	y_end;  //!< Y value corresponding to the last row
+
+	ViewType d_view_type;
+	QwtLinearColorMap d_color_map;
+	
+	QStackedWidget *d_stack;
 };
 
 #endif

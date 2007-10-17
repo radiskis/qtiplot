@@ -3,10 +3,8 @@
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
                            Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-                           knut.franke*gmx.de
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Set matrix values dialog
 
  ***************************************************************************/
@@ -52,10 +50,18 @@ class MatrixValuesDialog : public QDialog, public scripted
 
 public:
     MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
-    ~MatrixValuesDialog();
+	void setMatrix(Matrix *m);
+
+private slots:
+	bool apply();
+	void addCell();
+	void insertFunction();
+	void insertExplain(int index);
+
+private:
+	Matrix *matrix;
 
 	QSize sizeHint() const ;
-
 	void customEvent( QEvent *e);
 
 	ScriptEdit* commands;
@@ -66,17 +72,6 @@ public:
     QTextEdit* explain;
 	QSpinBox *startRow, *endRow, *startCol, *endCol;
 	QPushButton *btnApply;
-
-public slots:
-	bool apply();
-	void setFunctions();
-	void addCell();
-	void insertFunction();
-	void insertExplain(int index);
-	void setMatrix(Matrix *m);
-
-private:
-	Matrix *matrix;
 };
 
 #endif //

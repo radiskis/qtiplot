@@ -137,7 +137,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	setFocusProxy (commands);
 	commands->setFocus();
 
-	setFunctions();
+	functions->insertStringList(scriptEnv->mathFunctions(), -1);
 	if (functions->count() > 0)
 		insertExplain(0);
 
@@ -214,11 +214,6 @@ bool SetColValuesDialog::apply()
 		return true;
 	table->setCommand(col, oldFormula);
 	return false;
-}
-
-void SetColValuesDialog::setFunctions()
-{
-	functions->insertStringList(scriptEnv->mathFunctions(), -1);
 }
 
 void SetColValuesDialog::insertExplain(int index)

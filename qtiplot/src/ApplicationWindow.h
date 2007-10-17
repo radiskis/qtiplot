@@ -316,6 +316,12 @@ public slots:
 	void transposeMatrix();
 	void invertMatrix();
 	void matrixDeterminant();
+	void flipMatrixVertically();
+	void flipMatrixHorizontally();
+	void rotateMatrix90();
+	void viewMatrixImage();
+	void viewMatrix();
+	void exportMatrix();
 	//@}
 
 	//! \name Tables
@@ -1160,8 +1166,10 @@ private:
     QAction *actionDeleteRows;
 	QActionGroup* dataTools;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints;
-	QAction  *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
-
+	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
+	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
+	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix;
+	
 	QActionGroup* coord;
 	QAction* Box;
     QAction* Frame;

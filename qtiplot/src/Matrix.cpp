@@ -48,6 +48,8 @@
 #include <QPainter>
 #include <QLocale>
 #include <QItemDelegate>
+#include <QLabel>
+#include <QStackedWidget>
 
 #include <stdlib.h>
 #include <math.h>
@@ -64,6 +66,9 @@ Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* p
 
 void Matrix::init(int rows, int cols)
 {
+	d_view_type = TableView;
+	setGrayScale();
+	
 	formula_str = "";
 	txt_format = 'f';
 	num_precision = 6;
@@ -75,26 +80,25 @@ void Matrix::init(int rows, int cols)
 	QDateTime dt = QDateTime::currentDateTime();
 	setBirthDate(dt.toString(Qt::LocalDate));
 
+	d_stack = new QStackedWidget();
+	
     d_matrix_model = new MatrixModel(rows, cols, this);
 
-    d_table_view = new QTableView(this);
+    d_table_view = new QTableView();
 	d_table_view->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
 	d_table_view->setSelectionMode(QAbstractItemView::ContiguousSelection);// only one contiguous selection supported
     d_table_view->setModel(d_matrix_model);
 	d_table_view->setEditTriggers(QAbstractItemView::DoubleClicked);
 	d_table_view->setFocusPolicy(Qt::StrongFocus);
 	d_table_view->setFocus();
+	
+	d_stack->addWidget(d_table_view);
 	 
 	// background color to yellow to distinguish between matrix and table
 	QPalette pal = d_table_view->palette();
 	pal.setColor(QColorGroup::Base, QColor(255, 255, 128));
 	d_table_view->setPalette(pal);
-
-	// give all space to the table widget
-	QVBoxLayout* main_layout = new QVBoxLayout(this);
-	main_layout->setMargin(0);
-	main_layout->addWidget(d_table_view);
-
+	
 	// set header properties
 	QHeaderView* hHeader = (QHeaderView*)d_table_view->horizontalHeader();
 	hHeader->setMovable(false);
@@ -102,6 +106,17 @@ void Matrix::init(int rows, int cols)
 	QHeaderView* vHeader = (QHeaderView*)d_table_view->verticalHeader();
 	vHeader->setMovable(false);
 	vHeader->setResizeMode(QHeaderView::ResizeToContents);
+
+	imageLabel = new QLabel();
+    imageLabel->setBackgroundRole(QPalette::Base);
+    imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    imageLabel->setScaledContents(true);
+	d_stack->addWidget(imageLabel);
+	
+	// give all space to the table widget
+	QVBoxLayout* main_layout = new QVBoxLayout(this);
+	main_layout->setMargin(0);
+	main_layout->addWidget(d_stack);
 
 	// resize the table
 	setGeometry(50, 50, qMin(_Matrix_initial_columns_, cols)*hHeader->sectionSize(0) + 55,
@@ -132,17 +147,6 @@ void Matrix::setText (int row, int col, const QString & new_text )
 	d_matrix_model->setText(row, col, new_text);
 }
 
-bool Matrix::isEmptyRow(int row)
-{
-	int cols = numCols();
-
-	for(int i=0; i<cols; i++)
-		if (!text(row, i).isEmpty())
-			return false;
-
-	return true;
-}
-
 void Matrix::setCoordinates(double xs, double xe, double ys, double ye)
 {
 	if (x_start == xs && x_end == xe &&	y_start == ys && y_end == ye)
@@ -170,7 +174,7 @@ QString Matrix::saveToString(const QString &info)
 	s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	s += "Coordinates\t" + QString::number(x_start,'g',15) + "\t" +QString::number(x_end,'g',15) + "\t";
 	s += QString::number(y_start,'g',15) + "\t" + QString::number(y_end,'g',15) + "\n";
-	s += saveText();
+	s += d_matrix_model->saveToString();
 	s +="</matrix>\n";
 	return s;
 }
@@ -218,23 +222,6 @@ void Matrix::restore(const QStringList &lst)
 	x_end = l[2].toDouble();
 	y_start = l[3].toDouble();
 	y_end = l[4].toDouble();
-}
-
-QString Matrix::saveText()
-{
-	QString out_text = "<data>\n";
-	int cols = numCols() - 1;
-	int rows = numRows();
-	for(int i=0; i<rows; i++){
-		if (!isEmptyRow(i)){
-			out_text += QString::number(i)+"\t";
-			for(int j=0; j<cols; j++)
-				out_text += QString::number(cell(i, j), 'e', 16) + "\t";
-
-			out_text += QString::number(cell(i, cols-1), 'e', 16) + "\n";
-		}
-	}
-	return out_text + "</data>\n";
 }
 
 void Matrix::setNumericFormat(const QChar& f, int prec)
@@ -441,6 +428,63 @@ void Matrix::transpose()
 	for(int i = 0; i < cols; i++){
 		for(int j = 0; j < rows; j++)
 			new_matrix_model->setCell(i, j, d_matrix_model->data(j, i));
+	}
+	
+	d_table_view->setModel(new_matrix_model);
+	d_table_view->reset();
+	delete d_matrix_model;
+	d_matrix_model = new_matrix_model;
+	emit modifiedWindow(this);
+}
+
+void Matrix::flipVertically()
+{
+	int rows = numRows();
+	int cols = numCols();
+	
+	MatrixModel *new_matrix_model = new MatrixModel(rows, cols, this);
+	for(int i = 0; i < rows; i++){
+		int row = rows - i - 1;
+		for(int j = 0; j < cols; j++)
+			new_matrix_model->setCell(i, j, d_matrix_model->data(row, j));
+	}
+	
+	d_table_view->setModel(new_matrix_model);
+	d_table_view->reset();
+	delete d_matrix_model;
+	d_matrix_model = new_matrix_model;
+	emit modifiedWindow(this);
+}
+
+void Matrix::flipHorizontally()
+{
+	int rows = numRows();
+	int cols = numCols();
+	
+	MatrixModel *new_matrix_model = new MatrixModel(rows, cols, this);
+	for(int i = 0; i < cols; i++){
+		int col = cols - i - 1;
+		for(int j = 0; j < rows; j++)
+			new_matrix_model->setCell(j, i, d_matrix_model->data(j, col));
+	}
+	
+	d_table_view->setModel(new_matrix_model);
+	d_table_view->reset();
+	delete d_matrix_model;
+	d_matrix_model = new_matrix_model;
+	emit modifiedWindow(this);
+}
+
+void Matrix::rotate90()
+{
+	int rows = numRows();
+	int cols = numCols();
+	
+	MatrixModel *new_matrix_model = new MatrixModel(cols, rows, this);
+	for(int i = 0; i < cols; i++){
+		int col = cols - i - 1;
+		for(int j = 0; j < rows; j++)
+			new_matrix_model->setCell(i, j, d_matrix_model->data(j, col));
 	}
 	
 	d_table_view->setModel(new_matrix_model);
@@ -931,4 +975,37 @@ void Matrix::copy(Matrix *m)
 	formula_str = m->formula();
 	setTextFormat(m->textFormat(), m->precision());
 	d_table_view->reset();
+}
+
+void Matrix::setViewType(ViewType type)
+{
+	if (d_view_type == type)
+		return;
+	
+	d_view_type = type;
+	
+	if (type == ImageView){
+		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+		d_stack->setCurrentWidget(imageLabel);
+	} else 
+		d_stack->setCurrentWidget(d_table_view);
+		
+}
+
+QImage Matrix::image()
+{
+	return d_matrix_model->renderImage();
+}
+
+void Matrix::setGrayScale()
+{
+	d_color_map = QwtLinearColorMap(Qt::black, Qt::white);
+}
+
+void Matrix::setDefaultColorMap()
+{
+	d_color_map = QwtLinearColorMap(Qt::blue, Qt::red);
+	d_color_map.addColorStop(0.25, Qt::cyan);
+	d_color_map.addColorStop(0.5, Qt::green);
+	d_color_map.addColorStop(0.75, Qt::yellow);
 }

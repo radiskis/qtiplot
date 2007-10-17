@@ -28,9 +28,7 @@
 
 #include "Spectrogram.h"
 #include <math.h>
-#include <qpen.h>
-#include <qmessagebox.h>
-
+#include <QPen>
 #include <qwt_scale_widget.h>
 
 Spectrogram::Spectrogram():
