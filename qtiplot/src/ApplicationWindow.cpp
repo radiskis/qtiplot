@@ -948,6 +948,7 @@ void ApplicationWindow::initMainMenu()
 	matrixMenu->addAction(actionTableRecalculate);
 	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionRotateMatrix);
+	matrixMenu->addAction(actionRotateMatrixMinus);
 	matrixMenu->addAction(actionFlipMatrixVertically);
 	matrixMenu->addAction(actionFlipMatrixHorizontally);
 	matrixMenu->insertSeparator();
@@ -960,9 +961,12 @@ void ApplicationWindow::initMainMenu()
 	matrixMenu->addAction(actionConvertMatrix);
 	matrixMenu->insertSeparator();
 	QMenu *matrixViewMenu = matrixMenu->addMenu (tr("Vie&w"));
-	matrixViewMenu->addAction(actionViewMatrixImage);	
+	matrixViewMenu->addAction(actionViewMatrixImage);
 	matrixViewMenu->addAction(actionViewMatrix);
-	
+    QMenu *matrixPaletteMenu = matrixMenu->addMenu (tr("&Palette"));
+	matrixPaletteMenu->addAction(actionMatrixGrayScale);
+	matrixPaletteMenu->addAction(actionMatrixRainbowScale);
+
 	initPlotMenu();
 	initTableAnalysisMenu();
 	initTableMenu();
@@ -1306,8 +1310,10 @@ void ApplicationWindow::customMenu(QWidget* w)
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
 			menuBar()->insertItem(tr("&Matrix"), matrixMenu);
 			actionExportMatrix->setEnabled(true);
-			//actionViewMatrixImage->setChecked(((Matrix *)w)->viewType() == Matrix::ImageView);
-			//actionViewMatrix->setChecked(((Matrix *)w)->viewType() == Matrix::TableView);
+			actionViewMatrixImage->setChecked(((Matrix *)w)->viewType() == Matrix::ImageView);
+			actionViewMatrix->setChecked(((Matrix *)w)->viewType() == Matrix::TableView);
+            actionMatrixGrayScale->setChecked(((Matrix *)w)->colorMapType() == Matrix::GrayScale);
+			actionMatrixRainbowScale->setChecked(((Matrix *)w)->colorMapType() == Matrix::Rainbow);
 		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
@@ -2187,13 +2193,13 @@ void ApplicationWindow::exportMatrix()
 	QString filter;
 	for(int i=0 ; i<lst.count() ; i++)
 		filter += "*." + lst[i] + ";;";
-	
+
 	QString selectedFilter;
 	QString fn = QFileDialog::getSaveFileName(this, tr("QtiPlot - Export image to file"), imagesDirPath, filter, &selectedFilter);
 	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		imagesDirPath = fi.dirPath(true);
-		
+
 		if (!fi.fileName().contains("."))
 			fn += selectedFilter.remove("*");
 		m->image().save(fn);
@@ -2224,48 +2230,20 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
     if (image.isNull())
         return 0;
 
-	int cols = image.width();
-	int rows = image.height();
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QProgressDialog progress(this);
-	progress.setRange(0, rows);
-	progress.setMinimumWidth(width()/2);
-	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Import image..."));
-	progress.setLabelText(fn);
-	progress.setActiveWindow();
-
-	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws);
+	Matrix* m = new Matrix(scriptEnv, image, "", ws);
 	m->setAttribute(Qt::WA_DeleteOnClose);
 	m->setNumericPrecision(d_decimal_digits);
     m->setLocale(d_locale);
+    initMatrix(m, generateUniqueName(tr("Matrix")));
+    m->show();
+    m->setWindowLabel(fn);
+    m->setCaptionPolicy(MyWidget::Both);
+    setListViewLabel(m->objectName(), fn);
 
-	int aux = rows - 1;
-	for (int i=0; i<rows; i++ ){
-		int l = aux - i;
-		for (int j=0; j<cols; j++)
-			m->setCell(i, j, qGray(image.pixel (j, l)));
-
-		if (i%10 == 9){
-		    progress.setValue(i);
-		    QApplication::processEvents();
-		}
-
-        if (progress.wasCanceled())
-            break;
-	}
-
-	if (!progress.wasCanceled()){
-		QString caption = generateUniqueName(tr("Matrix"));
-		initMatrix(m, caption);
-    	m->show();
-    	m->setWindowLabel(fn);
-    	m->setCaptionPolicy(MyWidget::Both);
-    	setListViewLabel(m->objectName(), fn);
-		return m;
-	} else {
-		delete m;
-		return 0;
-	}
+    QApplication::restoreOverrideCursor();
+    return m;
 }
 
 void ApplicationWindow::loadImage()
@@ -2807,7 +2785,7 @@ Matrix* ApplicationWindow::newMatrix(int rows, int columns)
 
 Matrix* ApplicationWindow::newMatrix(const QString& caption, int r, int c)
 {
-	Matrix* w = new Matrix(scriptEnv, r, c, "", ws,0);
+	Matrix* w = new Matrix(scriptEnv, r, c, "", ws, 0);
 	w->setAttribute(Qt::WA_DeleteOnClose);
 	initMatrix(w, caption);
 	if (w->objectName() != caption)//the matrix was renamed
@@ -2829,15 +2807,39 @@ void ApplicationWindow::viewMatrixImage()
 	QApplication::restoreOverrideCursor();
 }
 
-void ApplicationWindow::viewMatrix()
+void ApplicationWindow::viewMatrixTable()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
 	if (!m)
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setViewType(Matrix::TableView);
 	actionViewMatrixImage->setChecked(false);
+	QApplication::restoreOverrideCursor();
+}
+
+void ApplicationWindow::setMatrixGrayScale()
+{
+	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->setGrayScale();
+	actionMatrixRainbowScale->setChecked(false);
+	QApplication::restoreOverrideCursor();
+}
+
+void ApplicationWindow::setMatrixRainbowScale()
+{
+	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->setRainbowColorMap();
+	actionMatrixGrayScale->setChecked(false);
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2882,6 +2884,17 @@ void ApplicationWindow::rotateMatrix90()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->rotate90();
+	QApplication::restoreOverrideCursor();
+}
+
+void ApplicationWindow::rotateMatrixMinus90()
+{
+	Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->rotate90(false);
 	QApplication::restoreOverrideCursor();
 }
 
@@ -6071,27 +6084,16 @@ void ApplicationWindow::showMatrixDialog()
 
 void ApplicationWindow::showMatrixSizeDialog()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Matrix"))
-	{
-		Matrix* w = (Matrix*)ws->activeWindow();
-
-		MatrixSizeDialog* md= new MatrixSizeDialog(this);
+	if ( ws->activeWindow() && ws->activeWindow()->isA("Matrix")){
+		MatrixSizeDialog* md = new MatrixSizeDialog((Matrix*)ws->activeWindow(), this);
 		md->setAttribute(Qt::WA_DeleteOnClose);
-		connect (md, SIGNAL(changeDimensions(int, int)), w, SLOT(setDimensions(int, int)));
-		connect (md, SIGNAL(changeCoordinates(double, double, double, double)),
-				w, SLOT(setCoordinates(double, double, double, double)));
-
-		md->setCoordinates(w->xStart(), w->xEnd(), w->yStart(), w->yEnd());
-		md->setColumns(w->numCols());
-		md->setRows(w->numRows());
 		md->exec();
 	}
 }
 
 void ApplicationWindow::showMatrixValuesDialog()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Matrix"))
-	{
+	if ( ws->activeWindow() && ws->activeWindow()->isA("Matrix")){
 		MatrixValuesDialog* md = new MatrixValuesDialog(scriptEnv, this);
 		md->setAttribute(Qt::WA_DeleteOnClose);
 		md->setMatrix((Matrix*)ws->activeWindow());
@@ -11193,33 +11195,51 @@ void ApplicationWindow::createActions()
 	actionTransposeMatrix = new QAction(tr("&Transpose"), this);
 	connect(actionTransposeMatrix, SIGNAL(activated()), this, SLOT(transposeMatrix()));
 
-	actionFlipMatrixVertically = new QAction(tr("Flip &Vertically"), this);
+	actionFlipMatrixVertically = new QAction(tr("Flip &V"), this);
+	actionFlipMatrixVertically->setShortcut(tr("Ctrl+Shift+V"));
 	connect(actionFlipMatrixVertically, SIGNAL(activated()), this, SLOT(flipMatrixVertically()));
-	
-	actionFlipMatrixHorizontally = new QAction(tr("Flip &Horizontally"), this);
+
+	actionFlipMatrixHorizontally = new QAction(tr("Flip &H"), this);
+	actionFlipMatrixHorizontally->setShortcut(tr("Ctrl+Shift+H"));
 	connect(actionFlipMatrixHorizontally, SIGNAL(activated()), this, SLOT(flipMatrixHorizontally()));
 
-	actionRotateMatrix = new QAction(tr("&Rotate 90"), this);
+	actionRotateMatrix = new QAction(tr("R&otate 90"), this);
+	actionRotateMatrix->setShortcut(tr("Ctrl+Shift+R"));
 	connect(actionRotateMatrix, SIGNAL(activated()), this, SLOT(rotateMatrix90()));
-	
+
+    actionRotateMatrixMinus = new QAction(tr("Rotate &-90"), this);
+	actionRotateMatrixMinus->setShortcut(tr("Ctrl+Alt+R"));
+	connect(actionRotateMatrixMinus, SIGNAL(activated()), this, SLOT(rotateMatrixMinus90()));
+
 	actionInvertMatrix = new QAction(tr("&Invert"), this);
 	connect(actionInvertMatrix, SIGNAL(activated()), this, SLOT(invertMatrix()));
 
 	actionMatrixDeterminant = new QAction(tr("&Determinant"), this);
 	connect(actionMatrixDeterminant, SIGNAL(activated()), this, SLOT(matrixDeterminant()));
 
-	actionViewMatrixImage = new QAction(tr("&Image"), this);
+	actionViewMatrixImage = new QAction(tr("&Image mode"), this);
+	actionViewMatrixImage->setShortcut(tr("Ctrl+Shift+I"));
 	connect(actionViewMatrixImage, SIGNAL(activated()), this, SLOT(viewMatrixImage()));
 	actionViewMatrixImage->setCheckable(true);
-	
-	actionViewMatrix = new QAction(tr("&Matrix"), this);
-	connect(actionViewMatrix, SIGNAL(activated()), this, SLOT(viewMatrix()));
+
+	actionViewMatrix = new QAction(tr("&Data mode"), this);
+	actionViewMatrix->setShortcut(tr("Ctrl+Shift+D"));
+	connect(actionViewMatrix, SIGNAL(activated()), this, SLOT(viewMatrixTable()));
 	actionViewMatrix->setCheckable(true);
 	actionViewMatrix->setChecked(true);
 
+    actionMatrixGrayScale = new QAction(tr("&Gray Scale"), this);
+	connect(actionMatrixGrayScale, SIGNAL(activated()), this, SLOT(setMatrixGrayScale()));
+	actionMatrixGrayScale->setCheckable(true);
+	actionMatrixGrayScale->setChecked(true);
+
+	actionMatrixRainbowScale = new QAction(tr("&Rainbow"), this);
+	connect(actionMatrixRainbowScale, SIGNAL(activated()), this, SLOT(setMatrixRainbowScale()));
+	actionMatrixRainbowScale->setCheckable(true);
+
 	actionExportMatrix = new QAction(tr("&Export Image ..."), this);
 	connect(actionExportMatrix, SIGNAL(activated()), this, SLOT(exportMatrix()));
-	
+
 	actionConvertMatrix = new QAction(tr("&Convert to Spreadsheet"), this);
 	connect(actionConvertMatrix, SIGNAL(activated()), this, SLOT(convertMatrixToTable()));
 
@@ -11727,9 +11747,14 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetMatrixDimensions->setMenuText(tr("Set &Dimensions..."));
 	actionSetMatrixValues->setMenuText(tr("Set &Values..."));
 	actionTransposeMatrix->setMenuText(tr("&Transpose"));
-	actionRotateMatrix->setMenuText(tr("&Rotate 90"));	
-	actionFlipMatrixVertically->setMenuText(tr("Flip &Vertically"));
-	actionFlipMatrixHorizontally->setMenuText(tr("Flip &Horizontally"));
+	actionRotateMatrix->setMenuText(tr("R&otate 90"));
+    actionRotateMatrixMinus->setMenuText(tr("Rotate &-90"));
+	actionFlipMatrixVertically->setMenuText(tr("Flip &V"));
+	actionFlipMatrixHorizontally->setMenuText(tr("Flip &H"));
+	actionViewMatrix->setMenuText(tr("&Data mode"));
+	actionViewMatrixImage->setMenuText(tr("&Image mode"));
+    actionMatrixGrayScale->setMenuText(tr("&Gray Scale"));
+	actionMatrixRainbowScale->setMenuText(tr("&Rainbow"));
 	actionInvertMatrix->setMenuText(tr("&Invert"));
 	actionMatrixDeterminant->setMenuText(tr("&Determinant"));
 	actionConvertMatrix->setMenuText(tr("&Convert to Spreadsheet"));

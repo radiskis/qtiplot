@@ -319,9 +319,12 @@ public slots:
 	void flipMatrixVertically();
 	void flipMatrixHorizontally();
 	void rotateMatrix90();
+	void rotateMatrixMinus90();
 	void viewMatrixImage();
-	void viewMatrix();
+	void viewMatrixTable();
 	void exportMatrix();
+	void setMatrixGrayScale();
+	void setMatrixRainbowScale();
 	//@}
 
 	//! \name Tables
@@ -949,7 +952,7 @@ public slots:
 	void scriptPrint(const QString &text);
 	//! switches to the given scripting language; if this is the same as the current one and force is true, restart it
 	bool setScriptingLanguage(const QString &lang, bool force=false);
-	
+
 	void scriptsDirPathChanged(const QString& path);
 	//@}
 
@@ -1169,7 +1172,8 @@ private:
 	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
 	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix;
-	
+    QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionRotateMatrixMinus;
+
 	QActionGroup* coord;
 	QAction* Box;
     QAction* Frame;

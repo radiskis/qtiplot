@@ -156,21 +156,20 @@ void MatrixValuesDialog::setMatrix(Matrix* m)
 	commands->setText(m->formula());
 	commands->setContext(m);
 
-	QItemSelectionModel *selModel = m->selectionModel();
-	if (selModel->hasSelection()){		
-		QItemSelectionRange selection = selModel->selection().first();
-	    if (selection.width() == 1 && selection.height() == 1){
-	        endCol->setValue(m->numCols());
-            endRow->setValue(m->numRows());
-        } else {
-            startCol->setValue(selection.left()+1);
-            startRow->setValue(selection.top()+1);
-            endCol->setValue(selection.right()+1);
-            endRow->setValue(selection.bottom()+1);
+    endCol->setValue(m->numCols());
+    endRow->setValue(m->numRows());
+
+    if (m->viewType() == Matrix::TableView){
+        QItemSelectionModel *selModel = m->selectionModel();
+        if (selModel->hasSelection()){
+            QItemSelectionRange selection = selModel->selection().first();
+            if (selection.width() > 1 || selection.height() > 1){
+                startCol->setValue(selection.left()+1);
+                startRow->setValue(selection.top()+1);
+                endCol->setValue(selection.right()+1);
+                endRow->setValue(selection.bottom()+1);
+            }
         }
-    } else {
-        endCol->setValue(m->numCols());
-        endRow->setValue(m->numRows());
     }
 }
 

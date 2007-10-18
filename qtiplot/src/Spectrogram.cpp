@@ -51,7 +51,7 @@ setData(MatrixData(m));
 double step = fabs(data().range().maxValue() - data().range().minValue())/5.0;
 
 QwtValueList contourLevels;
-for ( double level = data().range().minValue() + step; 
+for ( double level = data().range().minValue() + step;
 	level < data().range().maxValue(); level += step )
     contourLevels += level;
 
@@ -83,11 +83,11 @@ void Spectrogram::setLevelsNumber(int levels)
 double step = fabs(data().range().maxValue() - data().range().minValue())/(double)levels;
 
 QwtValueList contourLevels;
-for ( double level = data().range().minValue() + step; 
+for ( double level = data().range().minValue() + step;
 	level < data().range().maxValue(); level += step )
     contourLevels += level;
 
-setContourLevels(contourLevels);	
+setContourLevels(contourLevels);
 }
 
 bool Spectrogram::hasColorScale()
@@ -288,12 +288,13 @@ return s+"</spectrogram>\n";
 }
 
 double MatrixData::value(double x, double y) const
-{       
-int i = abs((int)floor((y - y_start)/dy - 1));
+{
+//int i = abs((int)floor(()/dy - 1));
+int i = abs((int)floor((y - y_start)/dy));
 int j = abs((int)floor((x - x_start)/dx));
 
 if (d_m && i < n_rows && j < n_cols)
 	return d_m[i][j];
-else 
+else
 	return 0.0;
 }

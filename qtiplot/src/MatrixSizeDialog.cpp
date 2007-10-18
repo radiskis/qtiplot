@@ -2,8 +2,8 @@
     File                 : MatrixSizeDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix dimensions dialog
 
  ***************************************************************************/
@@ -37,8 +37,9 @@
 #include <QMessageBox>
 #include <QLayout>
 
-MatrixSizeDialog::MatrixSizeDialog( QWidget* parent, Qt::WFlags fl )
-    : QDialog( parent, fl )
+MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
+    : QDialog( parent, fl ),
+    d_matrix(m)
 {
     setWindowTitle(tr("QtiPlot - Matrix Dimensions"));
 
@@ -85,26 +86,16 @@ MatrixSizeDialog::MatrixSizeDialog( QWidget* parent, Qt::WFlags fl )
 	mainLayout->addWidget(groupBox2);
 	mainLayout->addLayout(bottomLayout);
 
+    boxRows->setValue(m->numRows());
+    boxCols->setValue(m->numCols());
+
+    boxXStart->setText(QString::number(m->xStart(), 'g', 6));
+	boxYStart->setText(QString::number(m->yStart(), 'g', 6));
+	boxXEnd->setText(QString::number(m->xEnd(), 'g', 6));
+	boxYEnd->setText(QString::number(m->yEnd(), 'g', 6));
+
     connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
     connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-}
-
-void MatrixSizeDialog::setColumns(int c)
-{
-	boxCols->setValue(c);
-}
-
-void MatrixSizeDialog::setRows(int r)
-{
-	boxRows->setValue(r);
-}
-
-void MatrixSizeDialog::setCoordinates(double xs, double xe, double ys, double ye)
-{
-	boxXStart->setText(QString::number(xs, 'g', 6));
-	boxYStart->setText(QString::number(ys, 'g', 6));
-	boxXEnd->setText(QString::number(xe, 'g', 6));
-	boxYEnd->setText(QString::number(ye, 'g', 6));
 }
 
 void MatrixSizeDialog::accept()
@@ -156,7 +147,7 @@ void MatrixSizeDialog::accept()
 		return;
 	}
 
-	emit changeDimensions(boxRows->value(), boxCols->value());
-	emit changeCoordinates(fromX, toX, fromY, toY);
+	d_matrix->setCoordinates(fromX, toX, fromY, toY);
+	d_matrix->setDimensions(boxRows->value(), boxCols->value());
 	close();
 }
