@@ -44,8 +44,8 @@ MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile prof
 init(peaks);
 }
 
-MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, 
-		  				  int startRow, int endRow, PeakProfile profile, int peaks)
+MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Table *t, const QString&, const QString&, 
+		  				  int, int, PeakProfile profile, int peaks)
 : Fit(parent, t), d_profile(profile)
 {
 init(peaks);
@@ -123,16 +123,17 @@ QStringList MultiPeakFit::generateParameterList(int peaks)
 QStringList MultiPeakFit::generateExplanationList(int peaks)
 {
 	if (peaks == 1)
-		return QStringList() << "(amplitude)" << "(center)" << "(width)" << "(offset)";
+		return QStringList() << "(" + tr("amplitude") + ")" << "(" + tr("center") + ")" << 
+								"(" + tr("width") + ")" << "(" + tr("offset") + ")";
 
 	QStringList lst;
 	for (int i = 0; i<peaks; i++){
 		QString index = QString::number(i+1);
-		lst << "(amplitude " + index + ")";
-		lst << "(center " + index + ")";
-		lst << "(width " + index + ")";
+		lst << "(" + tr("amplitude") + " " + index + ")";
+		lst << "(" + tr("center") + " " + index + ")";
+		lst << "(" + tr("width") + " " + index + ")";
 	}
-	lst << "(offset)";
+	lst << "(" + tr("offset") + ")";
 	return lst;
 }
 
@@ -290,9 +291,9 @@ void MultiPeakFit::generateFitCurve(double *par)
 				d_output_graph = createOutputGraph()->activeGraph();
 			
 			if (d_peaks > 1)
-				insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y, 2);
+				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y, 2);
 			else
-				insertFitFunctionCurve(QString(name()) + tr("Fit"), X, Y);
+				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y);
 
 			if (generate_peak_curves){
 				for (i=0; i<peaks_aux; i++){//add the peak curves
@@ -442,7 +443,7 @@ LorentzFit::LorentzFit(ApplicationWindow *parent, Table *t, const QString& xCol,
 
 void LorentzFit::init()
 {
-	setObjectName("Lorentz");
+	setObjectName(tr("Lorentz"));
 	d_explanation = tr("Lorentz Fit");
 	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
 }
@@ -482,7 +483,7 @@ GaussFit::GaussFit(ApplicationWindow *parent, Table *t, const QString& xCol, con
 
 void GaussFit::init()
 {
-	setObjectName("Gauss");
+	setObjectName(tr("Gauss"));
 	d_explanation = tr("Gauss Fit");
 	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
 }
@@ -522,7 +523,7 @@ GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, Table *t, const QString& xCo
 
 void GaussAmpFit::init()
 {
-	setObjectName("GaussAmp");
+	setObjectName(tr("GaussAmp"));
 	d_f = gauss_f;
 	d_df = gauss_df;
 	d_fdf = gauss_fdf;

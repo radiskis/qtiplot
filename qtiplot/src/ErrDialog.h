@@ -52,8 +52,6 @@ public:
 	 * \param fl window flags
 	 */
     ErrDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
-	//! Destructor
-    ~ErrDialog();
 
 private:
     QLabel* textLabel1;
