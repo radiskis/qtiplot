@@ -2,8 +2,8 @@
     File                 : MatrixSizeDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix dimensions dialog
 
  ***************************************************************************/
@@ -29,6 +29,7 @@
 #ifndef MATRIXSIZEDIALOG_H
 #define MATRIXSIZEDIALOG_H
 
+#include "Matrix.h"
 #include <QDialog>
 
 class QGroupBox;
@@ -47,39 +48,11 @@ public:
 	 * \param parent parent widget
 	 * \param fl window flags
 	 */
-    MatrixSizeDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    MatrixSizeDialog(Matrix *m, QWidget* parent = 0, Qt::WFlags fl = 0);
 
 public slots:
 	//! Accept changes and quit
 	void accept();
-	//! Set the number of columns
-	void setColumns(int c);
-	//! Set the number of rows
-	void setRows(int r);
-	//! Set the start and end coordinates
-	/**
-	 * \param xs start x value
-	 * \param xe end x value
-	 * \param ys start y value
-	 * \param ye end y value
-	 */
-	void setCoordinates(double xs, double xe, double ys, double ye);
-
-signals:
-	//! Emit the new matrix dimensions
-	/**
-	 * \param rows number of rows
-	 * \param cols number of columns
-	 */
-	void changeDimensions(int rows, int cols);
-	//! Emit the new coordinates
-	/**
-	 * \param fromX start x value
-	 * \param toX end x value
-	 * \param fromY start y value
-	 * \param toY end y value
-	 */
-	void changeCoordinates(double fromX, double toX, double fromY, double toY);
 
 private:
     QPushButton* buttonOk;
@@ -87,6 +60,7 @@ private:
     QGroupBox* groupBox1, *groupBox2;
 	QSpinBox *boxCols, *boxRows;
 	QLineEdit *boxXStart, *boxYStart, *boxXEnd, *boxYEnd;
+	Matrix *d_matrix;
 };
 
 #endif // MATRIXSIZEDIALOG_H

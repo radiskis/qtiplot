@@ -34,13 +34,14 @@
 #include <QVector>
 
 class Matrix;
-	
+
 class MatrixModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
     MatrixModel(int rows = 32, int cols = 32, QObject *parent = 0);
+    MatrixModel(const QImage& image, QObject *parent);
 
 	Qt::ItemFlags flags( const QModelIndex & index ) const;
 
@@ -64,7 +65,7 @@ public:
 	double data(int row, int col) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);
-	
+
 private:
     int d_rows, d_cols;
     QVector<double> d_data;

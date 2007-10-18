@@ -47,7 +47,7 @@
 class MatrixModel;
 class QLabel;
 class QStackedWidget;
-	
+
 //! Matrix worksheet class
 class Matrix: public MyWidget, public scripted
 {
@@ -67,19 +67,21 @@ public:
 	 * \param name window name
 	 * \param f window flags
 	 */
-	Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
-	~Matrix(){};
+	Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
+    Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
 
 	enum ViewType{TableView, ImageView};
-	enum ColorMap{GrayScale, Default, Custom};
-	
+	enum ColorMapType{GrayScale, Rainbow, Custom};
+
 	void setViewType(ViewType);
-	int viewType(){return (int)d_view_type;};
+	ViewType viewType(){return d_view_type;};
+
 	QImage image();
-	
-	MatrixModel * matrixModel(){return d_matrix_model;};  
+	void setImage(const QImage& image);
+
+	MatrixModel * matrixModel(){return d_matrix_model;};
 	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
-	
+
 	//! Return the number of rows
 	int numRows();
 	void setNumRows(int rows);
@@ -104,16 +106,17 @@ public:
 	 */
 	void customEvent(QEvent *e);
 
-	void resetView(){d_table_view->reset();};
+	void resetView();
 	void moveCell(const QModelIndex& index);
 
 	void flipVertically();
 	void flipHorizontally();
-	void rotate90();
-	
+	void rotate90(bool clockwise = true);
+
+    ColorMapType colorMapType(){return d_color_map_type;};
 	QwtLinearColorMap colorMap(){return d_color_map;};
 	void setGrayScale();
-	void setDefaultColorMap();
+	void setRainbowColorMap();
 
 public slots:
 	void exportPDF(const QString& fileName);
@@ -123,7 +126,7 @@ public slots:
 	void print(const QString& fileName);
 
 	//! Return the width of all columns
-	int columnsWidth();
+	int columnsWidth(){return d_column_width;};
 	//! Set the width of all columns
 	void setColumnsWidth(int width);
 
@@ -251,8 +254,13 @@ signals:
 
 private:
 	//! Initialize the matrix
-	void init(int rows, int cols);
+	void initTable(int rows, int cols);
+	void initImage(const QImage& image);
+	void initImageView();
+	void initTableView();
+    void initGlobals();
 
+    QStackedWidget *d_stack;
     MatrixModel *d_matrix_model;
 	//! Pointer to the table view
     QTableView *d_table_view;
@@ -269,10 +277,13 @@ private:
 	y_start,  //!< Y value corresponding to row 1
 	y_end;  //!< Y value corresponding to the last row
 
+    //! Keeps track of the view type;
 	ViewType d_view_type;
 	QwtLinearColorMap d_color_map;
-	
-	QStackedWidget *d_stack;
+	ColorMapType d_color_map_type;
+
+	//! Column width in pixels;
+	int d_column_width;
 };
 
 #endif
