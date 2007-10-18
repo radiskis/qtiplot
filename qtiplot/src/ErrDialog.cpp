@@ -88,6 +88,7 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 	gridLayout->addWidget(percentBox, 1, 0 );
 
     valueBox = new QLineEdit();
+	valueBox->setText("5");
     valueBox->setAlignment( Qt::AlignHCenter );
 	valueBox->setEnabled(false);
 	gridLayout->addWidget(valueBox, 1, 1);
@@ -144,12 +145,15 @@ void ErrDialog::setCurveNames(const QStringList& names)
 
 void ErrDialog::setSrcTables(QWidgetList* tables)
 {
+	if (!tables->size())
+		return;
+	
 	srcTables = tables;
 	tableNamesBox->clear();
 
 	QList<QWidget *>::const_iterator i;
     for (i = srcTables->begin(); i != srcTables->end(); i++)
-		tableNamesBox->insertItem((*i)->name());
+		tableNamesBox->insertItem((*i)->objectName());
 
 	if (!nameLabel->currentText().contains("="))
 		tableNamesBox->setCurrentIndex(tableNamesBox->findText(nameLabel->currentText().split("_", QString::SkipEmptyParts)[0]));
@@ -184,10 +188,6 @@ void ErrDialog::add()
 	}
 }
 
-ErrDialog::~ErrDialog()
-{
-}
-
 void ErrDialog::languageChange()
 {
     setWindowTitle( tr( "QtiPlot - Error Bars" ) );
@@ -196,9 +196,8 @@ void ErrDialog::languageChange()
     textLabel1->setText( tr( "Add Error Bars to" ) );
     groupBox1->setTitle( tr( "Source of errors" ) );
     percentBox->setText( tr( "Percent of data (%)" ) );
-    valueBox->setText( tr( "5" ) );
     standardBox->setText( tr( "Standard Deviation of Data" ) );
     yErrBox->setText( tr( "&Y Error Bars" ) );
     buttonCancel->setText( tr( "&Close" ) );
-	columnBox->setText("Existing column");
+	columnBox->setText(tr("Existing column"));
 }

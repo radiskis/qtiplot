@@ -473,6 +473,7 @@ public slots:
 	static void about();
 	//! Return a version string ("QtiPlot x.y.z")
 	static QString versionString();
+	void matrixMenuAboutToShow();
 	void windowsMenuAboutToShow();
 	void windowsMenuActivated( int id );
 	void removeCurves(const QString& name);
@@ -709,6 +710,7 @@ public slots:
 	void bandPassFilterDialog();
 	void bandBlockFilterDialog();
 	void showFFTDialog();
+	void showColorMapDialog();
 	//@}
 
 	void translateCurveHor();
@@ -1172,7 +1174,7 @@ private:
 	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
 	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix;
-    QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionRotateMatrixMinus;
+    QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
 
 	QActionGroup* coord;
 	QAction* Box;

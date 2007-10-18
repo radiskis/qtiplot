@@ -99,6 +99,7 @@
 #include "ColorBox.h"
 #include "QwtHistogram.h"
 #include "OpenProjectDialog.h"
+#include "ColorMapDialog.h"
 
 // TODO: move tool-specific code to an extension manager
 #include "ScreenPickerTool.h"
@@ -940,32 +941,7 @@ void ApplicationWindow::initMainMenu()
 
 	matrixMenu = new QMenu(this);
 	matrixMenu->setFont(appFont);
-
-	matrixMenu->addAction(actionSetMatrixProperties);
-	matrixMenu->addAction(actionSetMatrixDimensions);
-	matrixMenu->insertSeparator();
-	matrixMenu->addAction(actionSetMatrixValues);
-	matrixMenu->addAction(actionTableRecalculate);
-	matrixMenu->insertSeparator();
-	matrixMenu->addAction(actionRotateMatrix);
-	matrixMenu->addAction(actionRotateMatrixMinus);
-	matrixMenu->addAction(actionFlipMatrixVertically);
-	matrixMenu->addAction(actionFlipMatrixHorizontally);
-	matrixMenu->insertSeparator();
-	matrixMenu->addAction(actionTransposeMatrix);
-	matrixMenu->addAction(actionInvertMatrix);
-	matrixMenu->addAction(actionMatrixDeterminant);
-	matrixMenu->insertSeparator();
-	matrixMenu->addAction(actionGoToRow);
-	matrixMenu->insertSeparator();
-	matrixMenu->addAction(actionConvertMatrix);
-	matrixMenu->insertSeparator();
-	QMenu *matrixViewMenu = matrixMenu->addMenu (tr("Vie&w"));
-	matrixViewMenu->addAction(actionViewMatrixImage);
-	matrixViewMenu->addAction(actionViewMatrix);
-    QMenu *matrixPaletteMenu = matrixMenu->addMenu (tr("&Palette"));
-	matrixPaletteMenu->addAction(actionMatrixGrayScale);
-	matrixPaletteMenu->addAction(actionMatrixRainbowScale);
+	connect(matrixMenu, SIGNAL(aboutToShow()), this, SLOT(matrixMenuAboutToShow()));
 
 	initPlotMenu();
 	initTableAnalysisMenu();
@@ -1310,10 +1286,6 @@ void ApplicationWindow::customMenu(QWidget* w)
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
 			menuBar()->insertItem(tr("&Matrix"), matrixMenu);
 			actionExportMatrix->setEnabled(true);
-			actionViewMatrixImage->setChecked(((Matrix *)w)->viewType() == Matrix::ImageView);
-			actionViewMatrix->setChecked(((Matrix *)w)->viewType() == Matrix::TableView);
-            actionMatrixGrayScale->setChecked(((Matrix *)w)->colorMapType() == Matrix::GrayScale);
-			actionMatrixRainbowScale->setChecked(((Matrix *)w)->colorMapType() == Matrix::Rainbow);
 		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
@@ -2803,7 +2775,6 @@ void ApplicationWindow::viewMatrixImage()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setViewType(Matrix::ImageView);
-	actionViewMatrix->setChecked(false);
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2815,7 +2786,6 @@ void ApplicationWindow::viewMatrixTable()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setViewType(Matrix::TableView);
-	actionViewMatrixImage->setChecked(false);
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2827,8 +2797,9 @@ void ApplicationWindow::setMatrixGrayScale()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setGrayScale();
-	actionMatrixRainbowScale->setChecked(false);
 	QApplication::restoreOverrideCursor();
+	
+	modifiedProject();
 }
 
 void ApplicationWindow::setMatrixRainbowScale()
@@ -2839,8 +2810,21 @@ void ApplicationWindow::setMatrixRainbowScale()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setRainbowColorMap();
-	actionMatrixGrayScale->setChecked(false);
 	QApplication::restoreOverrideCursor();
+	
+	modifiedProject();
+}
+
+void ApplicationWindow::showColorMapDialog()
+{
+	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	if (!m)
+		return;
+	
+	ColorMapDialog *cmd = new ColorMapDialog(this);
+	cmd->setAttribute(Qt::WA_DeleteOnClose);
+	cmd->setMatrix(m);
+	cmd->exec();
 }
 
 void ApplicationWindow::transposeMatrix()
@@ -3166,16 +3150,12 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 
 	double prc=percent.toDouble();
 	double moyenne=0.0;
-	if (type==0)
-	{
-		for (int i=0;i<r;i++)
-		{
+	if (type==0){
+		for (int i=0;i<r;i++){
 			if (!w->text(i,ycol).isEmpty())
-				w->setText(i,c,QString::number(Y[i]*prc/100.0,'g',15));
+				w->setText(i, c, QString::number(Y[i]*prc/100.0,'g',15));
 		}
-	}
-	else if (type==1)
-	{
+	} else if (type==1) {
 		int i;
 		double dev=0.0;
 		for (i=0;i<r;i++)
@@ -3184,10 +3164,9 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 		for (i=0;i<r;i++)
 			dev+=(Y[i]-moyenne)*(Y[i]-moyenne);
 		dev=sqrt(dev/(r-1));
-		for (i=0;i<r;i++)
-		{
+		for (i=0;i<r;i++){
 			if (!w->table()->item(i,ycol)->text().isEmpty())
-				w->setText(i,c,QString::number(dev,'g',15));
+				w->setText(i, c, QString::number(dev, 'g', 15));
 		}
 	}
 	g->addErrorBars(xColName, name, w, errColName, direction);
@@ -3204,8 +3183,7 @@ void ApplicationWindow::defineErrorBars(const QString& curveName, const QString&
 	}
 
 	Table *errTable=table(errColumnName);
-	if (w->numRows() != errTable->numRows())
-	{
+	if (w->numRows() != errTable->numRows()){
 		QMessageBox::critical(this,tr("QtiPlot - Error"),
 				tr("The selected columns have different numbers of rows!"));
 
@@ -3214,9 +3192,8 @@ void ApplicationWindow::defineErrorBars(const QString& curveName, const QString&
 	}
 
 	int errCol=errTable->colIndex(errColumnName);
-	if (errTable->isEmptyColumn(errCol))
-	{
-		QMessageBox::critical(this,tr("QtiPlot - Error"),
+	if (errTable->isEmptyColumn(errCol)){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("The selected error column is empty!"));
 		addErrorBars();
 		return;
@@ -7596,6 +7573,7 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 		setListViewSize(nw->objectName(), w->sizeToString());
 	}
 	QApplication::restoreOverrideCursor();
+	customMenu(nw);
 	return nw;
 }
 
@@ -7930,6 +7908,47 @@ mb->setWindowIcon (QPixmap(logo_xpm));
 mb->setIconPixmap(QPixmap(logo_xpm));
 mb->setText(text);
 mb->exec();
+}
+
+void ApplicationWindow::matrixMenuAboutToShow()
+{
+	matrixMenu->clear();
+	matrixMenu->addAction(actionSetMatrixProperties);
+	matrixMenu->addAction(actionSetMatrixDimensions);
+	matrixMenu->insertSeparator();
+	matrixMenu->addAction(actionSetMatrixValues);
+	matrixMenu->addAction(actionTableRecalculate);
+	matrixMenu->insertSeparator();
+	matrixMenu->addAction(actionRotateMatrix);
+	matrixMenu->addAction(actionRotateMatrixMinus);
+	matrixMenu->addAction(actionFlipMatrixVertically);
+	matrixMenu->addAction(actionFlipMatrixHorizontally);
+	matrixMenu->insertSeparator();
+	matrixMenu->addAction(actionTransposeMatrix);
+	matrixMenu->addAction(actionInvertMatrix);
+	matrixMenu->addAction(actionMatrixDeterminant);
+	matrixMenu->insertSeparator();
+	matrixMenu->addAction(actionGoToRow);
+	matrixMenu->insertSeparator();
+	QMenu *matrixViewMenu = matrixMenu->addMenu (tr("Vie&w"));
+	matrixViewMenu->addAction(actionViewMatrixImage);
+	matrixViewMenu->addAction(actionViewMatrix);
+    QMenu *matrixPaletteMenu = matrixMenu->addMenu (tr("&Palette"));
+	matrixPaletteMenu->addAction(actionMatrixGrayScale);
+	matrixPaletteMenu->addAction(actionMatrixRainbowScale);
+	matrixPaletteMenu->addAction(actionMatrixCustomScale);	
+	matrixMenu->insertSeparator();
+	matrixMenu->addAction(actionConvertMatrix);
+	
+	if (!ws->activeWindow() || !ws->activeWindow()->isA("Matrix"))
+		return;
+	
+	Matrix* m = (Matrix*)ws->activeWindow();	
+	actionViewMatrixImage->setChecked(m->viewType() == Matrix::ImageView);
+	actionViewMatrix->setChecked(m->viewType() == Matrix::TableView);
+    actionMatrixGrayScale->setChecked(m->colorMapType() == Matrix::GrayScale);
+	actionMatrixRainbowScale->setChecked(m->colorMapType() == Matrix::Rainbow);
+	actionMatrixCustomScale->setChecked(m->colorMapType() == Matrix::Custom);
 }
 
 void ApplicationWindow::windowsMenuAboutToShow()
@@ -9668,6 +9687,18 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 			app->setListViewLabel(w->objectName(), fields[1]);
 		} else if (fields[0] == "Coordinates") { // d_file_version > 81
 			w->setCoordinates(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble(), fields[4].toDouble());
+		} else if (fields[0] == "ViewType") { // d_file_version > 90
+			w->setViewType((Matrix::ViewType)fields[1].toInt());
+		} else if (fields[0] == "ColorPolicy"){// d_file_version > 90
+			w->setColorMapType((Matrix::ColorMapType)fields[1].toInt());
+		} else if (fields[0] == "<ColorMap>"){// d_file_version > 90
+			QStringList lst;
+			while ( *line != "</ColorMap>" ){
+				line++;
+				lst << *line;
+			}
+			lst.pop_back();
+			w->setColorMap(lst);
 		} else // <data> or values
 			break;
 	}
@@ -9691,6 +9722,7 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 		}
 		qApp->processEvents(QEventLoop::ExcludeUserInput);
 	}
+	w->resetView();
 	return w;
 }
 
@@ -11237,6 +11269,10 @@ void ApplicationWindow::createActions()
 	connect(actionMatrixRainbowScale, SIGNAL(activated()), this, SLOT(setMatrixRainbowScale()));
 	actionMatrixRainbowScale->setCheckable(true);
 
+	actionMatrixCustomScale = new QAction(tr("&Custom"), this);
+	connect(actionMatrixCustomScale, SIGNAL(activated()), this, SLOT(showColorMapDialog()));
+	actionMatrixCustomScale->setCheckable(true);
+	
 	actionExportMatrix = new QAction(tr("&Export Image ..."), this);
 	connect(actionExportMatrix, SIGNAL(activated()), this, SLOT(exportMatrix()));
 
@@ -11755,6 +11791,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionViewMatrixImage->setMenuText(tr("&Image mode"));
     actionMatrixGrayScale->setMenuText(tr("&Gray Scale"));
 	actionMatrixRainbowScale->setMenuText(tr("&Rainbow"));
+	actionMatrixCustomScale->setMenuText(tr("&Custom"));
 	actionInvertMatrix->setMenuText(tr("&Invert"));
 	actionMatrixDeterminant->setMenuText(tr("&Determinant"));
 	actionConvertMatrix->setMenuText(tr("&Convert to Spreadsheet"));
@@ -12442,7 +12479,7 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
                 hide();
 				QMessageBox::information(this, tr("QtiPlot") + " - " + tr("Version"), s);
 			#else
-				std::cout << s.toStdString();
+				std::wcout << s.toStdWString();
 			#endif
 			exit(0);
 		}
@@ -12461,9 +12498,9 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			s += "'" + tr("file") + "_" + tr("name") + "' " + tr("can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py or ASCII file") + "\n";
 			#ifdef Q_OS_WIN
                 hide();
-				QMessageBox::information(this, tr("QtiPlot - Help"), s);
+				QMessageBox::information(this, tr("QtiPlot") + " - " + tr("Help"), s);
 			#else
-				std::cout << s.toStdString();
+				std::wcout << s.toStdWString();
 			#endif
 			exit(0);
 		}

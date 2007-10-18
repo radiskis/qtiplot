@@ -3626,7 +3626,7 @@ QString Graph::generateFunctionName(const QString& name)
   	    if (c->type() == Function)
   	    	lst << c->title().text();
 	}
-
+	
   	while(lst.contains(newName))
   		newName = name + QString::number(++index);
   	return newName;

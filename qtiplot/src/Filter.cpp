@@ -324,7 +324,7 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 {
     ApplicationWindow *app = (ApplicationWindow *)parent();
     QLocale locale = app->locale();
-    const QString tableName = app->generateUniqueName(QString(this->name()));
+    const QString tableName = app->generateUniqueName(QString(objectName()));
 	QString dataSet;
 	if (d_curve)
 		dataSet = d_curve->title().text();

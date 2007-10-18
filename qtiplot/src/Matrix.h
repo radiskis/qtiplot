@@ -71,7 +71,7 @@ public:
     Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
 
 	enum ViewType{TableView, ImageView};
-	enum ColorMapType{GrayScale, Rainbow, Custom};
+	enum ColorMapType{DefaultMap, GrayScale, Rainbow, Custom};
 
 	void setViewType(ViewType);
 	ViewType viewType(){return d_view_type;};
@@ -114,7 +114,13 @@ public:
 	void rotate90(bool clockwise = true);
 
     ColorMapType colorMapType(){return d_color_map_type;};
+	void setColorMapType(ColorMapType mapType);
+	
 	QwtLinearColorMap colorMap(){return d_color_map;};
+	void setColorMap(const QwtLinearColorMap& map);
+	//! Used when restoring from project files
+	void setColorMap(const QStringList& lst);
+	
 	void setGrayScale();
 	void setRainbowColorMap();
 
