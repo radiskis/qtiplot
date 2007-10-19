@@ -795,15 +795,26 @@ void MultiLayer::exportSVG(const QString& fname)
 
 void MultiLayer::copyAllLayers()
 {
+	bool selectionOn = false;
+	if (d_layers_selector){
+		d_layers_selector->hide();
+		selectionOn = true;
+	}
+	
+	foreach (QWidget* g, graphsList)
+		((Graph *)g)->deselectMarker();
+		
 	QPixmap pic = canvasPixmap();
 	QImage image= pic.convertToImage();
 	QApplication::clipboard()->setImage(image);
+	
+	if (selectionOn)
+		d_layers_selector->show();
 }
 
 void MultiLayer::printActiveLayer()
 {
-	if (active_graph)
-	{
+	if (active_graph){
 		active_graph->setScaleOnPrint(d_scale_on_print);
 		active_graph->printCropmarks(d_print_cropmarks);
 		active_graph->print();

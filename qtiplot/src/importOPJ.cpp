@@ -525,9 +525,9 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 		
 		double fXScale = (double)ml->width()/(double)graphRect.width();
 		double fYScale = (double)ml->height()/(double)graphRect.height();
-		fXScale = fYScale = qMin(fXScale, fYScale);
+		fXScale = fYScale = QMIN(fXScale, fYScale);
 		
-		double fWindowFactor =  qMin((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
+		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
 		double fFontScaleFactor = 0.37*fWindowFactor;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 		

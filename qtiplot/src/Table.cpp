@@ -431,7 +431,7 @@ void Table::setColWidths(const QStringList& widths)
 
 void Table::setColumnTypes(const QStringList& ctl)
 {
-	int n = qMin((int)ctl.count(), numCols());
+	int n = QMIN((int)ctl.count(), numCols());
 	for (int i=0; i<n; i++)
 	{
 		QStringList l = ctl[i].split(";");

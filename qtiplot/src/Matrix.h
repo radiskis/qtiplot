@@ -71,7 +71,7 @@ public:
     Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
 
 	enum ViewType{TableView, ImageView};
-	enum ColorMapType{DefaultMap, GrayScale, Rainbow, Custom};
+	enum ColorMapType{GrayScale, Rainbow, Custom};
 
 	void setViewType(ViewType);
 	ViewType viewType(){return d_view_type;};

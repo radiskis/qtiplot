@@ -72,8 +72,8 @@ Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWi
 
 void Matrix::initGlobals()
 {
-    d_color_map_type = DefaultMap;
-	d_color_map = QwtLinearColorMap();
+	d_color_map_type = GrayScale;
+	d_color_map = QwtLinearColorMap(Qt::black, Qt::white);
     d_column_width = 100;
 
 	formula_str = "";
@@ -102,8 +102,8 @@ void Matrix::initTable(int rows, int cols)
     initTableView();
 
 	// resize the table
-	setGeometry(50, 50, qMin(_Matrix_initial_columns_, cols)*d_table_view->horizontalHeader()->sectionSize(0) + 55,
-                (qMin(_Matrix_initial_rows_,rows)+1)*d_table_view->verticalHeader()->sectionSize(0));
+	setGeometry(50, 50, QMIN(_Matrix_initial_columns_, cols)*d_table_view->horizontalHeader()->sectionSize(0) + 55,
+                (QMIN(_Matrix_initial_rows_,rows)+1)*d_table_view->verticalHeader()->sectionSize(0));
 }
 
 void Matrix::initImage(const QImage& image)
@@ -113,14 +113,27 @@ void Matrix::initImage(const QImage& image)
 
     d_matrix_model = new MatrixModel(image, this);
     initImageView();
-    imageLabel->setPixmap(QPixmap::fromImage(image));
 
 	int w = image.width();
 	int h = image.height();
-	if (w <= 500 && h <= 400)
-        resize(w, h);
-    else // resize the image and keep aspect ratio
-        resize(400*(double)w/(double)h, 400);
+	if (w <= 500 && h <= 400){
+		int size = QMAX(w, h);
+        resize(size, size);
+    } else 
+		resize(500, 500);
+	
+	/*int rows = image.height();
+    int cols = image.width();
+	int size = QMAX(cols, rows);
+	QImage imageCopy(QSize(size, size), QImage::Format_RGB32);
+	for ( int i = 0; i < rows; i++ ){
+    	QRgb *line = (QRgb *)imageCopy.scanLine(i);
+		for ( int j = 0; j < cols; j++)
+			*line++ = image.pixel(j, i);
+     }
+	imageLabel->setPixmap(QPixmap::fromImage(imageCopy));*/
+	
+	imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
 }
 
 double Matrix::cell(int row, int col)
@@ -1040,7 +1053,7 @@ void Matrix::setViewType(ViewType type)
 void Matrix::initImageView()
 {
     imageLabel = new QLabel();
-    imageLabel->setBackgroundRole(QPalette::Base);
+    imageLabel->setBackgroundRole(QPalette::Base);	
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     imageLabel->setScaledContents(true);
     d_stack->addWidget(imageLabel);
