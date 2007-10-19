@@ -394,8 +394,8 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	if (endRow < 0 || endRow >= t->numRows())
 		endRow = t->numRows() - 1;
 
-    int from = qMin(startRow, endRow);
-    int to = qMax(startRow, endRow);
+    int from = QMIN(startRow, endRow);
+    int to = QMAX(startRow, endRow);
 
 	int r = abs(to - from) + 1;
     QVector<double> X(r), Y(r);
