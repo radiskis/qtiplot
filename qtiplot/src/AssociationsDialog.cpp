@@ -212,7 +212,7 @@ if (!t)
 if (active_table != t)
 	{
 	active_table = t;
-	tableCaptionLabel->setText(t->name());
+	tableCaptionLabel->setText(t->objectName());
 	table->clearContents();
 	table->setRowCount(t->numCols());
 
@@ -353,25 +353,25 @@ for (int i=0; i < table->rowCount(); i++ )
 
 void AssociationsDialog::setGraph(Graph *g)
 {
-graph = g;
+    graph = g;
 
-for (int i=0; i<graph->curves(); i++)
-	{
-    const QwtPlotItem *it = (QwtPlotItem *)graph->plotItem(i);
-    if (!it)
-        continue;
-    if (it->rtti() != QwtPlotItem::Rtti_PlotCurve)
-        continue;
+    for (int i=0; i<graph->curves(); i++){
+        const QwtPlotItem *it = (QwtPlotItem *)graph->plotItem(i);
+        if (!it)
+            continue;
+        if (it->rtti() != QwtPlotItem::Rtti_PlotCurve)
+            continue;
 
-    if (((DataCurve *)it)->type() != Graph::Function)
-        {
-        QString s = ((DataCurve *)it)->plotAssociation();
-        QString table = ((DataCurve *)it)->table()->name();
-        plotAssociationsList << table + ": " + s.remove(table + "_");
+        if (((DataCurve *)it)->type() != Graph::Function){
+            QString s = ((DataCurve *)it)->plotAssociation();
+            if (((DataCurve *)it)->table()){
+                QString table = ((DataCurve *)it)->table()->objectName();
+                plotAssociationsList << table + ": " + s.remove(table + "_");
+            }
         }
 	}
-associations->addItems(plotAssociationsList);
-associations->setMaximumHeight((plotAssociationsList.count()+1)*associations->visualItemRect(associations->item(0)).height());
+    associations->addItems(plotAssociationsList);
+    associations->setMaximumHeight((plotAssociationsList.count()+1)*associations->visualItemRect(associations->item(0)).height());
 }
 
 void AssociationsDialog::updatePlotAssociation(int row, int col)

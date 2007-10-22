@@ -707,7 +707,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
 	}
 
 	QPrinter printer;
-    printer.setDocName (this->name());
+    printer.setDocName (objectName());
     printer.setCreator("QtiPlot");
 	printer.setFullPage(true);
 	printer.setOutputFileName(fileName);
@@ -800,14 +800,14 @@ void MultiLayer::copyAllLayers()
 		d_layers_selector->hide();
 		selectionOn = true;
 	}
-	
+
 	foreach (QWidget* g, graphsList)
 		((Graph *)g)->deselectMarker();
-		
+
 	QPixmap pic = canvasPixmap();
 	QImage image= pic.convertToImage();
 	QApplication::clipboard()->setImage(image);
-	
+
 	if (selectionOn)
 		d_layers_selector->show();
 }
@@ -1147,47 +1147,35 @@ bool MultiLayer::isEmpty ()
 		return false;
 }
 
-QString MultiLayer::saveToString(const QString& geometry)
+QString MultiLayer::saveToString(const QString& geometry, bool saveAsTemplate)
 {
+    bool notTemplate = !saveAsTemplate;
 	QString s="<multiLayer>\n";
-	s+=QString(name())+"\t";
+	if (notTemplate)
+        s+=QString(objectName())+"\t";
 	s+=QString::number(cols)+"\t";
 	s+=QString::number(rows)+"\t";
-	s+=birthDate()+"\n";
+	if (notTemplate)
+        s+=birthDate()+"\n";
 	s+=geometry;
-	s+="WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+	if (notTemplate)
+        s+="WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	s+="Margins\t"+QString::number(left_margin)+"\t"+QString::number(right_margin)+"\t"+
 		QString::number(top_margin)+"\t"+QString::number(bottom_margin)+"\n";
 	s+="Spacing\t"+QString::number(rowsSpace)+"\t"+QString::number(colsSpace)+"\n";
 	s+="LayerCanvasSize\t"+QString::number(l_canvas_width)+"\t"+QString::number(l_canvas_height)+"\n";
 	s+="Alignement\t"+QString::number(hor_align)+"\t"+QString::number(vert_align)+"\n";
 
-	for (int i=0;i<(int)graphsList.count();i++)
-	{
+	for (int i=0; i<(int)graphsList.count(); i++){
 		Graph* ag=(Graph*)graphsList.at(i);
-		s+=ag->saveToString();
+		s += ag->saveToString(saveAsTemplate);
 	}
 	return s+"</multiLayer>\n";
 }
 
 QString MultiLayer::saveAsTemplate(const QString& geometryInfo)
 {
-	QString s="<multiLayer>\t";
-	s+=QString::number(rows)+"\t";
-	s+=QString::number(cols)+"\n";
-	s+= geometryInfo;
-	s+="Margins\t"+QString::number(left_margin)+"\t"+QString::number(right_margin)+"\t"+
-		QString::number(top_margin)+"\t"+QString::number(bottom_margin)+"\n";
-	s+="Spacing\t"+QString::number(rowsSpace)+"\t"+QString::number(colsSpace)+"\n";
-	s+="LayerCanvasSize\t"+QString::number(l_canvas_width)+"\t"+QString::number(l_canvas_height)+"\n";
-	s+="Alignement\t"+QString::number(hor_align)+"\t"+QString::number(vert_align)+"\n";
-
-	for (int i=0;i<(int)graphsList.count();i++)
-	{
-		Graph* ag=(Graph*)graphsList.at(i);
-		s += ag->saveToString(true);
-	}
-	return s;
+	return saveToString(geometryInfo, true);
 }
 
 void MultiLayer::mousePressEvent ( QMouseEvent * e )

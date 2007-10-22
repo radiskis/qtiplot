@@ -760,6 +760,9 @@ void ApplicationWindow::initToolBars()
 	actionColorMap->addTo(plotMatrixBar);
 	actionContourMap->addTo(plotMatrixBar);
 	actionGrayMap->addTo(plotMatrixBar);
+	actionImagePlot->addTo(plotMatrixBar);
+	plotMatrixBar->addSeparator();
+	actionPlotHistogram->addTo(plotMatrixBar);
 
 	plotMatrixBar->hide();
 }
@@ -933,11 +936,13 @@ void ApplicationWindow::initMainMenu()
 
 	plot3DMenu->addAction(actionPlot3DBars);
 	plot3DMenu->addAction(actionPlot3DScatter);
-
 	plot3DMenu->insertSeparator();
+    plot3DMenu->addAction(actionImagePlot);
 	plot3DMenu->addAction(actionColorMap);
 	plot3DMenu->addAction(actionContourMap);
 	plot3DMenu->addAction(actionGrayMap);
+	plot3DMenu->insertSeparator();
+	plot3DMenu->addAction(actionPlotHistogram);
 
 	matrixMenu = new QMenu(this);
 	matrixMenu->setFont(appFont);
@@ -1538,7 +1543,10 @@ void ApplicationWindow::plotHorizontalBars()
 
 void ApplicationWindow::plotHistogram()
 {
-	generate2DGraph(Graph::Histogram);
+    if (!ws->activeWindow())
+		return;
+
+    generate2DGraph(Graph::Histogram);
 }
 
 void ApplicationWindow::plotArea()
@@ -1799,10 +1807,17 @@ void ApplicationWindow::updateMatrixPlots(QWidget *window)
 			for (int j=0; j<(int)graphsList.count(); j++){
 				Graph* g = (Graph*)graphsList.at(j);
 				for (int i=0; i<g->curves(); i++){
-					Spectrogram *sp = (Spectrogram *)g->plotItem(i);
-					if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->matrix() == m)
-						sp->updateData(m);
+				    if (g->curveType(i) == Graph::Histogram){
+                        QwtHistogram *h = (QwtHistogram *)g->plotItem(i);
+                        if (h && h->matrix() == m)
+                            h->loadData();
+				    } else {
+                        Spectrogram *sp = (Spectrogram *)g->plotItem(i);
+                        if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->matrix() == m)
+                            sp->updateData(m);
+				    }
 				}
+                g->updatePlot();
 			}
 		}
 	}
@@ -1859,7 +1874,7 @@ void ApplicationWindow::change3DMatrix()
 
 	Graph3D* g = (Graph3D*)ws->activeWindow();
 	if (g && g->matrix())
-		ad->setCurentDataSet(g->matrix()->name());
+		ad->setCurentDataSet(g->matrix()->objectName());
 	ad->exec();
 }
 
@@ -2789,6 +2804,30 @@ void ApplicationWindow::viewMatrixTable()
 	QApplication::restoreOverrideCursor();
 }
 
+void ApplicationWindow::viewMatrixXY()
+{
+    Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->setHeaderViewType(Matrix::XY);
+	modifiedProject();
+	QApplication::restoreOverrideCursor();
+}
+
+void ApplicationWindow::viewMatrixColumnRow()
+{
+    Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->setHeaderViewType(Matrix::ColumnRow);
+	modifiedProject();
+	QApplication::restoreOverrideCursor();
+}
+
 void ApplicationWindow::setMatrixGrayScale()
 {
 	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
@@ -2798,7 +2837,7 @@ void ApplicationWindow::setMatrixGrayScale()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setGrayScale();
 	QApplication::restoreOverrideCursor();
-	
+
 	modifiedProject();
 }
 
@@ -2811,7 +2850,7 @@ void ApplicationWindow::setMatrixRainbowScale()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setRainbowColorMap();
 	QApplication::restoreOverrideCursor();
-	
+
 	modifiedProject();
 }
 
@@ -2820,7 +2859,7 @@ void ApplicationWindow::showColorMapDialog()
 	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
 	if (!m)
 		return;
-	
+
 	ColorMapDialog *cmd = new ColorMapDialog(this);
 	cmd->setAttribute(Qt::WA_DeleteOnClose);
 	cmd->setMatrix(m);
@@ -7936,16 +7975,21 @@ void ApplicationWindow::matrixMenuAboutToShow()
     QMenu *matrixPaletteMenu = matrixMenu->addMenu (tr("&Palette"));
 	matrixPaletteMenu->addAction(actionMatrixGrayScale);
 	matrixPaletteMenu->addAction(actionMatrixRainbowScale);
-	matrixPaletteMenu->addAction(actionMatrixCustomScale);	
+	matrixPaletteMenu->addAction(actionMatrixCustomScale);
+	matrixMenu->insertSeparator();
+	matrixMenu->addAction(actionMatrixColumnRow);
+    matrixMenu->addAction(actionMatrixXY);
 	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionConvertMatrix);
-	
+
 	if (!ws->activeWindow() || !ws->activeWindow()->isA("Matrix"))
 		return;
-	
-	Matrix* m = (Matrix*)ws->activeWindow();	
+
+	Matrix* m = (Matrix*)ws->activeWindow();
 	actionViewMatrixImage->setChecked(m->viewType() == Matrix::ImageView);
 	actionViewMatrix->setChecked(m->viewType() == Matrix::TableView);
+	actionMatrixColumnRow->setChecked(m->headerViewType() == Matrix::ColumnRow);
+	actionMatrixXY->setChecked(m->headerViewType() == Matrix::XY);
     actionMatrixGrayScale->setChecked(m->colorMapType() == Matrix::GrayScale);
 	actionMatrixRainbowScale->setChecked(m->colorMapType() == Matrix::Rainbow);
 	actionMatrixCustomScale->setChecked(m->colorMapType() == Matrix::Custom);
@@ -9689,6 +9733,8 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 			w->setCoordinates(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble(), fields[4].toDouble());
 		} else if (fields[0] == "ViewType") { // d_file_version > 90
 			w->setViewType((Matrix::ViewType)fields[1].toInt());
+		} else if (fields[0] == "HeaderViewType") { // d_file_version > 90
+			w->setHeaderViewType((Matrix::HeaderViewType)fields[1].toInt());
 		} else if (fields[0] == "ColorPolicy"){// d_file_version > 90
 			w->setColorMapType((Matrix::ColorMapType)fields[1].toInt());
 		} else if (fields[0] == "<ColorMap>"){// d_file_version > 90
@@ -10049,11 +10095,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			else
 				cl.penWidth = cl.lWidth;
 
+            int plotType = curve[3].toInt();
 			Table *w = app->table(curve[2]);
 			if (w){
-				int plotType = curve[3].toInt();
-				if(plotType == Graph::VectXYXY || plotType == Graph::VectXYAM)
-				{
+				if(plotType == Graph::VectXYXY || plotType == Graph::VectXYAM){
 					QStringList colsList;
 					colsList<<curve[2]; colsList<<curve[20]; colsList<<curve[21];
 					if (d_file_version < 72)
@@ -10074,7 +10119,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 						int temp_index = convertOldToNewColorIndex(curve[15].toInt());
 						ag->updateVectorsLayout(curveID, ColorBox::color(temp_index), curve[16].toInt(), curve[17].toInt(),
 								curve[18].toInt(), curve[19].toInt(), 0, curve[20], curve[21]);
-					}else{
+					} else {
 						if(plotType == Graph::VectXYXY)
 							ag->updateVectorsLayout(curveID, curve[15], curve[16].toInt(),
 								curve[17].toInt(), curve[18].toInt(), curve[19].toInt(), 0);
@@ -10082,10 +10127,9 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 							ag->updateVectorsLayout(curveID, curve[15], curve[16].toInt(), curve[17].toInt(),
 									curve[18].toInt(), curve[19].toInt(), curve[22].toInt());
 					}
-				}
-				else if(plotType == Graph::Box)
+				} else if(plotType == Graph::Box)
 					ag->openBoxDiagram(w, curve, d_file_version);
-				else{
+				else {
 					if (d_file_version < 72)
 						ag->insertCurve(w, curve[1].toInt(), curve[2], plotType);
 					else if (d_file_version < 90)
@@ -10125,6 +10169,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 						}
 					}
 				}
+			} else if(plotType == Graph::Histogram){//histograms from matrices
+                Matrix *m = app->matrix(curve[2]);
+                ag->restoreHistogram(m, curve);
+                ag->updateCurveLayout(curveID, &cl);
 			}
 			curveID++;
 		}
@@ -11224,6 +11272,9 @@ void ApplicationWindow::createActions()
 	actionSetMatrixValues = new QAction(tr("Set &Values..."), this);
 	connect(actionSetMatrixValues, SIGNAL(activated()), this, SLOT(showMatrixValuesDialog()));
 
+    actionImagePlot =  new QAction(QIcon(QPixmap(image_plot_xpm)),tr("&Image Plot"), this);
+	connect(actionImagePlot, SIGNAL(activated()), this, SLOT(plotImage()));
+
 	actionTransposeMatrix = new QAction(tr("&Transpose"), this);
 	connect(actionTransposeMatrix, SIGNAL(activated()), this, SLOT(transposeMatrix()));
 
@@ -11258,12 +11309,20 @@ void ApplicationWindow::createActions()
 	actionViewMatrix->setShortcut(tr("Ctrl+Shift+D"));
 	connect(actionViewMatrix, SIGNAL(activated()), this, SLOT(viewMatrixTable()));
 	actionViewMatrix->setCheckable(true);
-	actionViewMatrix->setChecked(true);
+
+    actionMatrixXY = new QAction(tr("Show &X/Y"), this);
+	actionMatrixXY->setShortcut(tr("Ctrl+Shift+X"));
+	connect(actionMatrixXY, SIGNAL(activated()), this, SLOT(viewMatrixXY()));
+	actionMatrixXY->setCheckable(true);
+
+    actionMatrixColumnRow = new QAction(tr("Show &Column/Row"), this);
+	actionMatrixColumnRow->setShortcut(tr("Ctrl+Shift+C"));
+	connect(actionMatrixColumnRow, SIGNAL(activated()), this, SLOT(viewMatrixColumnRow()));
+	actionMatrixColumnRow->setCheckable(true);
 
     actionMatrixGrayScale = new QAction(tr("&Gray Scale"), this);
 	connect(actionMatrixGrayScale, SIGNAL(activated()), this, SLOT(setMatrixGrayScale()));
 	actionMatrixGrayScale->setCheckable(true);
-	actionMatrixGrayScale->setChecked(true);
 
 	actionMatrixRainbowScale = new QAction(tr("&Rainbow"), this);
 	connect(actionMatrixRainbowScale, SIGNAL(activated()), this, SLOT(setMatrixRainbowScale()));
@@ -11272,7 +11331,7 @@ void ApplicationWindow::createActions()
 	actionMatrixCustomScale = new QAction(tr("&Custom"), this);
 	connect(actionMatrixCustomScale, SIGNAL(activated()), this, SLOT(showColorMapDialog()));
 	actionMatrixCustomScale->setCheckable(true);
-	
+
 	actionExportMatrix = new QAction(tr("&Export Image ..."), this);
 	connect(actionExportMatrix, SIGNAL(activated()), this, SLOT(exportMatrix()));
 
@@ -11782,11 +11841,14 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetMatrixProperties->setMenuText(tr("Set &Properties..."));
 	actionSetMatrixDimensions->setMenuText(tr("Set &Dimensions..."));
 	actionSetMatrixValues->setMenuText(tr("Set &Values..."));
+    actionImagePlot->setMenuText(tr("&Image Plot"));
 	actionTransposeMatrix->setMenuText(tr("&Transpose"));
 	actionRotateMatrix->setMenuText(tr("R&otate 90"));
     actionRotateMatrixMinus->setMenuText(tr("Rotate &-90"));
 	actionFlipMatrixVertically->setMenuText(tr("Flip &V"));
 	actionFlipMatrixHorizontally->setMenuText(tr("Flip &H"));
+    actionMatrixXY->setMenuText(tr("Show &X/Y"));
+    actionMatrixColumnRow->setMenuText(tr("Show &Column/Row"));
 	actionViewMatrix->setMenuText(tr("&Data mode"));
 	actionViewMatrixImage->setMenuText(tr("&Image mode"));
     actionMatrixGrayScale->setMenuText(tr("&Gray Scale"));
@@ -12066,6 +12128,41 @@ MultiLayer* ApplicationWindow::plotColorMap(Matrix *m)
 	}
 
 	return plotSpectrogram(m, Graph::ColorMap);
+}
+
+MultiLayer* ApplicationWindow::plotImage(Matrix *m)
+{
+    if (!m) {
+		m = (Matrix*)ws->activeWindow();
+		if (!m || !m->isA("Matrix"))
+			return 0;
+	}
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    MultiLayer* g = new MultiLayer("", ws, 0);
+	g->setAttribute(Qt::WA_DeleteOnClose);
+
+	Graph* plot = g->addLayer();
+	setPreferences(plot);
+
+	plot->plotSpectrogram(m, Graph::GrayScale);
+	plot->enableAxis(QwtPlot::xTop, true);
+	plot->setScale(QwtPlot::xTop, m->xStart(), m->xEnd());
+	plot->enableAxis(QwtPlot::xBottom, false);
+	plot->enableAxis(QwtPlot::yRight, false);
+	plot->invertScale(QwtPlot::yLeft);
+	plot->setAxisTitle(QwtPlot::yLeft, QString::null);
+	plot->setAxisTitle(QwtPlot::xTop, QString::null);
+	plot->setTitle(QString::null);
+
+    initMultilayerPlot(g, generateUniqueName(tr("Graph")));
+    g->setMargins(5, 5, 5, 5);
+	g->arrangeLayers(true, false);
+
+	emit modified();
+	QApplication::restoreOverrideCursor();
+	return g;
 }
 
 MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
@@ -12981,7 +13078,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 
 		lst = dir->windowsList();
 		foreach(MyWidget *w, lst){
-			text += w->saveToString(windowGeometryInfo(w));
+            text += w->saveToString(windowGeometryInfo(w));
 			windows++;
 		}
 
@@ -14133,15 +14230,36 @@ bool ApplicationWindow::validFor2DPlot(Table *table)
 
 void ApplicationWindow::generate2DGraph(Graph::CurveType type)
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	if (!ws->activeWindow())
 		return;
 
-	Table *table = static_cast<Table *>(ws->activeWindow());
-	if (!validFor2DPlot(table))
-		return;
+    if (ws->activeWindow()->inherits("Table")){
+        Table *table = static_cast<Table *>(ws->activeWindow());
+        if (!validFor2DPlot(table))
+            return;
 
-	Q3TableSelection sel = table->getSelection();
-	multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
+        Q3TableSelection sel = table->getSelection();
+        multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
+    } else if (ws->activeWindow()->isA("Matrix")){
+        Matrix *m = static_cast<Matrix *>(ws->activeWindow());
+
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+        MultiLayer* g = new MultiLayer("", ws, 0);
+        g->setAttribute(Qt::WA_DeleteOnClose);
+
+        Graph* plot = g->addLayer();
+        setPreferences(plot);
+
+        plot->plotHistogram(m);
+        initMultilayerPlot(g, generateUniqueName(tr("Graph")));
+        g->setMargins(5, 5, 5, 5);
+        g->arrangeLayers(true, false);
+
+        emit modified();
+        QApplication::restoreOverrideCursor();
+        //return g;
+    }
 }
 
 bool ApplicationWindow::validFor3DPlot(Table *table)

@@ -53,7 +53,7 @@ public:
 	void setName(const QString& name);
 
 public slots:
-	QString saveToString(const QString &info);
+	QString saveToString(const QString &info, bool = false);
 	void restore(const QStringList&);
 
 	QTextEdit* textWidget(){return (QTextEdit*)te;};

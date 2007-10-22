@@ -206,14 +206,14 @@ QString Fit::logFitInfo(double *par, int iterations, int status)
 		dataSet = d_curve->title().text();
 	else
 		dataSet = d_y_col_name;
-			
+
 	QDateTime dt = QDateTime::currentDateTime ();
 	QString info = "[" + dt.toString(Qt::LocalDate)+ "\t" + tr("Plot")+ ": ";
 	if (!d_graphics_display)
 		info += tr("graphics display disabled") + "]\n";
 	else if (d_output_graph)
 		info += "''" + d_output_graph->parentPlotName() + "'']\n";
-	
+
 	info += d_explanation + " " + tr("of dataset") + ": " + dataSet;
 	if (!d_formula.isEmpty())
 		info +=", " + tr("using function") + ": " + d_formula + "\n";
@@ -287,7 +287,7 @@ QString Fit::legendInfo()
 		dataSet = d_curve->title().text();
 	else
 		dataSet = d_y_col_name;
-	
+
 	QString info = tr("Dataset") + ": " + dataSet + "\n";
 	info += tr("Function") + ": " + d_formula + "\n\n";
 
@@ -310,7 +310,7 @@ QString Fit::legendInfo()
 }
 
 bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
-{	
+{
 	switch (w)
 	{
 		case NoWeighting:
@@ -358,7 +358,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 					weighting_dataset = d_curve->title().text();
 				else if (d_table)
 					weighting_dataset = d_y_col_name;
-				
+
 				for (int i=0; i<d_n; i++)
 					d_w[i] = sqrt(d_y[i]);
 			}
@@ -386,47 +386,24 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 			}
 			break;
 	}
-	
+
 	d_weihting = w;
 	return true;
 }
 
-/*Table* Fit::parametersTable(const QString& tableName)
-{
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale locale = app->locale();
-	if (!d_param_table || d_param_table->name() != tableName)
-		d_param_table = app->newTable(app->generateUniqueName(tableName, false), d_p, 3);
-	
-	d_param_table->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
-	for (int i=0; i<d_p; i++){
-		d_param_table->setText(i, 0, d_param_names[i]);
-		d_param_table->setText(i, 1, locale.toString(d_results[i], 'g', d_prec));
-		d_param_table->setText(i, 2, locale.toString(sqrt(gsl_matrix_get(covar,i,i)), 'g', d_prec));
-	}
-
-	d_param_table->setColPlotDesignation(2, Table::yErr);
-	d_param_table->setHeaderColType();
-	for (int j=0; j<3; j++)
-		d_param_table->table()->adjustColumn(j);
-
-	d_param_table->showNormal();
-	return d_param_table;
-}*/
-
 Table* Fit::parametersTable(const QString& tableName)
 {
-	if (!d_param_table || d_param_table->name() != tableName){
+	if (!d_param_table || d_param_table->objectName() != tableName){
 		ApplicationWindow *app = (ApplicationWindow *)parent();
 		d_param_table = app->newTable(app->generateUniqueName(tableName, false), d_p, 3);
 	}
-	
+
 	d_param_table->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
 	d_param_table->setColPlotDesignation(2, Table::yErr);
 	d_param_table->setHeaderColType();
 
 	writeParametersToTable(d_param_table);
-	
+
 	d_param_table->showNormal();
 	return d_param_table;
 }
@@ -435,10 +412,10 @@ void Fit::writeParametersToTable(Table *t, bool append)
 {
 	if (!t)
 		return;
-	
+
 	if (t->numCols() < 3)
 		t->setNumCols(3);
-	
+
 	int rows = 0;
 	if (append){
 		rows = t->numRows();
@@ -463,7 +440,7 @@ Matrix* Fit::covarianceMatrix(const QString& matrixName)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
-	if (!d_cov_matrix || d_cov_matrix->name() != matrixName)
+	if (!d_cov_matrix || d_cov_matrix->objectName() != matrixName)
 		d_cov_matrix = app->newMatrix(app->generateUniqueName(matrixName, false), d_p, d_p);
 
 	for (int i = 0; i < d_p; i++){
@@ -558,7 +535,7 @@ void Fit::fit()
 		f.n = d_n;
 		f.p = d_p;
 		f.params = &d_data;
-		
+
 		gsl_multifit_fdfsolver *s = fitGSL(f, iterations, status);
 
 		for (int i=0; i<d_p; i++)
@@ -567,15 +544,15 @@ void Fit::fit()
 		chi_2 = pow(gsl_blas_dnrm2(s->f), 2.0);
 		gsl_multifit_fdfsolver_free(s);
 	}
-	
+
 	storeCustomFitResults(par);
 	generateFitCurve(par);
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog){		
+	if (app->writeFitResultsToLog){
 		app->updateLog(logFitInfo(d_results, iterations, status));
 	}
-	
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -589,11 +566,11 @@ void Fit::generateFitCurve(double *par)
 
 	calculateFitCurveData(par, X, Y);
 
-	if (d_graphics_display){	
+	if (d_graphics_display){
 		if (!d_output_graph)
 			d_output_graph = createOutputGraph()->activeGraph();
 
-		if (d_gen_function){			
+		if (d_gen_function){
 			insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y);
 			d_output_graph->replot();
 			delete[] X;

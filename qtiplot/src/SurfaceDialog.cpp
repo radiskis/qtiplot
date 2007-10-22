@@ -42,6 +42,7 @@
 #include <QSpinBox>
 #include <QStackedWidget>
 #include <QCompleter>
+#include <QApplication>
 
 SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -160,11 +161,11 @@ void SurfaceDialog::initFunctionPage()
 	boxFuncColumns = new QSpinBox();
 	boxFuncColumns->setRange(1, 1000);
 	boxFuncColumns->setValue(40);
-	
+
 	boxFuncRows = new QSpinBox();
 	boxFuncRows->setRange(1, 1000);
 	boxFuncRows->setValue(40);
-	
+
 	QGridLayout *hb4 = new QGridLayout(gb4);
     hb4->addWidget(new QLabel( tr("Columns")), 0, 0);
     hb4->addWidget(boxFuncColumns, 0, 1);
@@ -177,7 +178,7 @@ void SurfaceDialog::initFunctionPage()
     vl->addLayout(bl1);
 	vl->addLayout(bl2);
 	vl->addWidget(gb4);
-	
+
 	optionStack->addWidget(functionPage);
 }
 
@@ -282,11 +283,11 @@ void SurfaceDialog::setFunction(Graph3D *g)
 	UserFunction *f = d_graph->userFunction();
 	if (!f)
 		return;
-	
+
 	boxFunction->setCurrentText(f->function());
 	boxFuncColumns->setValue(f->columns());
 	boxFuncRows->setValue(f->rows());
-	
+
 	boxXFrom->setText(QString::number(g->xStart()));
 	boxXTo->setText(QString::number(g->xStop()));
 	boxYFrom->setText(QString::number(g->yStart()));
@@ -403,6 +404,7 @@ void SurfaceDialog::acceptParametricSurface()
 		return;
 	}
 
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	if (!d_graph)
 		app->plotParametricSurface(x_formula, y_formula, z_formula,
 							   ul, ur, vl, vr, boxColumns->value(), boxRows->value(),
@@ -411,6 +413,7 @@ void SurfaceDialog::acceptParametricSurface()
 		d_graph->addParametricSurface(x_formula, y_formula, z_formula,
 							   ul, ur, vl, vr, boxColumns->value(), boxRows->value(),
 							   boxUPeriodic->isChecked(), boxVPeriodic->isChecked());
+    QApplication::restoreOverrideCursor();
 	close();
 }
 
@@ -531,14 +534,16 @@ catch(mu::ParserError &e)
 	}
 
 if (!error){
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	if (!d_graph){
-		app->plotSurface(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ, 
+		app->plotSurface(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ,
 					 boxFuncColumns->value(), boxFuncRows->value());
 	} else
-		d_graph->addFunction(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ, 
+		d_graph->addFunction(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ,
 					 boxFuncColumns->value(), boxFuncRows->value());
-	
+
 	app->updateSurfaceFuncList(boxFunction->currentText());
+    QApplication::restoreOverrideCursor();
 	close();
 	}
 }

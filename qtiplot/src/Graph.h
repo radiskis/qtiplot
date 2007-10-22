@@ -256,6 +256,7 @@ class Graph: public QWidget
 		//@}
 
 		//! Set axis scale
+		void invertScale(int axis);
 		void setScale(int axis, double start, double end, double step = 0.0,
 				int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false);
 		double axisStep(int axis){return d_user_step[axis];};
@@ -646,6 +647,10 @@ class Graph: public QWidget
   		void plotSpectrogram(Matrix *m, CurveType type);
 		//! Restores a spectrogram. Used when opening a project file.
   		void restoreSpectrogram(ApplicationWindow *app, const QStringList& lst);
+        //! Add a matrix histogram  to the graph
+        void plotHistogram(Matrix *m);
+        //! Restores a histogram from a project file.
+        void restoreHistogram(Matrix *m, const QStringList& l);
 
 		bool antialiasing(){return d_antialiasing;};
 		//! Enables/Disables antialiasing of plot items.

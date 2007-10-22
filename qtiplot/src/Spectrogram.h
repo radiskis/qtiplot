@@ -105,12 +105,10 @@ public:
 	m->range(&min_z, &max_z);
 
 	x_start = d_matrix->xStart();
-	dx = (d_matrix->xEnd() - x_start)/(double)n_cols;
+	dx = (d_matrix->xEnd() - x_start)/(double)(n_cols);
 
-	//y_start = d_matrix->yStart();
-	//dy = (d_matrix->yEnd() - y_start)/(double)n_rows;
-	y_start = d_matrix->yEnd();
-	dy = (y_start - d_matrix->yStart())/(double)n_rows;
+	y_start = d_matrix->yStart();
+	dy = (d_matrix->yEnd() - y_start)/(double)(n_rows);
     }
 
 	~MatrixData()

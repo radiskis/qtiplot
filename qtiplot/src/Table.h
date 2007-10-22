@@ -289,7 +289,7 @@ public slots:
 
 	//! \name Saving and Restoring
 	//@{
-	virtual QString saveToString(const QString& geometry);
+	virtual QString saveToString(const QString& geometry, bool = false);
 	QString saveHeader();
 	QString saveComments();
 	QString saveCommands();

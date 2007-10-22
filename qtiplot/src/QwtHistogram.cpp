@@ -27,16 +27,30 @@
  *                                                                         *
  ***************************************************************************/
 #include "QwtHistogram.h"
+#include "Matrix.h"
+#include "MatrixModel.h"
 #include <QPainter>
-
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_histogram.h>
 
 QwtHistogram::QwtHistogram(Table *t, const QString& xColName, const QString& name, int startRow, int endRow):
 	QwtBarCurve(QwtBarCurve::Vertical, t, xColName, name, startRow, endRow)
-{}
+{
+    d_matrix = 0;
+    setType(Graph::Histogram);
+}
 
-void QwtHistogram::copy(const QwtHistogram *h)
+QwtHistogram::QwtHistogram(Matrix *m):
+    QwtBarCurve(QwtBarCurve::Vertical, NULL, "matrix", m->objectName(), 0, 0)
+{
+    if (m){
+        d_autoBin = true;
+        d_matrix = m;
+        setType(Graph::Histogram);
+    }
+}
+
+void QwtHistogram::copy(QwtHistogram *h)
 {
 	QwtBarCurve::copy((const QwtBarCurve *)h);
 
@@ -94,6 +108,11 @@ void QwtHistogram::setBinning(bool autoBin, double size, double begin, double en
 
 void QwtHistogram::loadData()
 {
+    if (d_matrix){
+        loadDataFromMatrix();
+        return;
+    }
+
     int r = abs(d_end_row - d_start_row) + 1;
 	QVarLengthArray<double> Y(r);
 
@@ -175,7 +194,69 @@ void QwtHistogram::loadData()
 	gsl_histogram_free (h);
 }
 
-void QwtHistogram::initData(const QVector<double>& Y, int size)
+void QwtHistogram::loadDataFromMatrix()
+{
+    if (!d_matrix)
+        return;
+
+   int size = d_matrix->numRows()*d_matrix->numCols();
+   double *data = d_matrix->matrixModel()->dataVector();
+
+	int n;
+	gsl_histogram *h;
+	if (d_autoBin){
+		double min, max;
+		d_matrix->range(&min, &max);
+		d_begin = floor(min);
+		d_end = ceil(max);
+		d_bin_size = 1.0;
+
+		n = (int)(d_end - d_begin)/d_bin_size;
+		if (!n)
+            return;
+
+		h = gsl_histogram_alloc (n);
+		if (!h)
+			return;
+		gsl_histogram_set_ranges_uniform (h, floor(min), ceil(max));
+	} else {
+		n = int((d_end - d_begin)/d_bin_size + 1);
+		if (!n)
+            return;
+
+		h = gsl_histogram_alloc (n);
+		if (!h)
+			return;
+
+		double *range = new double[n+2];
+		for (int i = 0; i<= n+1; i++ )
+			range[i] = d_begin + i*d_bin_size;
+
+		gsl_histogram_set_ranges (h, range, n+1);
+		delete[] range;
+	}
+
+	for (int i = 0; i<size; i++ )
+		gsl_histogram_increment (h, data[i]);
+
+	double X[n], Y[n]; //stores ranges (x) and bins (y)
+	for (int i = 0; i<n; i++ ){
+		Y[i] = gsl_histogram_get (h, i);
+		double lower, upper;
+		gsl_histogram_get_range (h, i, &lower, &upper);
+		X[i] = lower;
+	}
+	setData(X, Y, n);
+
+	d_mean = gsl_histogram_mean(h);
+	d_standard_deviation = gsl_histogram_sigma(h);
+	d_min = gsl_histogram_min_val(h);
+	d_max = gsl_histogram_max_val(h);
+
+	gsl_histogram_free (h);
+}
+
+void QwtHistogram::initData(double *Y, int size)
 {
 	if(size<2 || (size == 2 && Y[0] == Y[1]))
 	{//non valid histogram data

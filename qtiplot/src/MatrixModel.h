@@ -66,6 +66,9 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);
 
+    double* dataVector(){return d_data.data();};
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
 private:
     int d_rows, d_cols;
     QVector<double> d_data;

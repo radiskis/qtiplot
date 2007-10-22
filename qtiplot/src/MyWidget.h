@@ -110,7 +110,7 @@ public:
 	virtual void print(){};
 	virtual void exportPDF(const QString&){};
 
-	virtual QString saveToString(const QString &){return QString();};
+	virtual QString saveToString(const QString &, bool = false){return QString();};
 
 	// TODO: make this return something useful
 	//! Size of the widget as a string
@@ -127,7 +127,7 @@ public:
 	 */
 	void closeEvent( QCloseEvent *);
 	void resizeEvent( QResizeEvent* );
-	
+
 	//! Toggle the "ask on close" flag
 	void askOnCloseEvent(bool ask){askOnClose = ask;};
 	//! Filters other object's events (customizes title bar's context menu)

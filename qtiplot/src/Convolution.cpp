@@ -150,14 +150,14 @@ void Convolution::addResultCurve()
 
 	QStringList l = d_table->colNames().grep(tr("Index"));
 	QString id = QString::number((int)l.size()+1);
-	QString label = name() + id;
+	QString label = objectName() + id;
 
 	d_table->setColName(cols, tr("Index") + id);
 	d_table->setColName(cols2, label);
 	d_table->setColPlotDesignation(cols, Table::X);
 	d_table->setHeaderColType();
 
-	if (d_graphics_display){	
+	if (d_graphics_display){
 		if (!d_output_graph)
 			d_output_graph = createOutputGraph()->activeGraph();
 
