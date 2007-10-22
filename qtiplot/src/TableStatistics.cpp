@@ -42,8 +42,8 @@ TableStatistics::TableStatistics(ScriptingEnv *env, QWidget *parent, Table *base
 	setCaptionPolicy(MyWidget::Both);
 	if (d_type == row)
 	{
-		setName(QString(d_base->name())+"-"+tr("RowStats"));
-		setWindowLabel(tr("Row Statistics of %1").arg(base->name()));
+		setName(QString(d_base->objectName())+"-"+tr("RowStats"));
+		setWindowLabel(tr("Row Statistics of %1").arg(base->objectName()));
 		resizeRows(d_targets.size());
 		resizeCols(9);
 		setColName(0, tr("Row"));
@@ -65,8 +65,8 @@ TableStatistics::TableStatistics(ScriptingEnv *env, QWidget *parent, Table *base
 	}
 	else if (d_type == column)
 	{
-		setName(QString(d_base->name())+"-"+tr("ColStats"));
-		setWindowLabel(tr("Column Statistics of %1").arg(base->name()));
+		setName(QString(d_base->objectName())+"-"+tr("ColStats"));
+		setWindowLabel(tr("Column Statistics of %1").arg(base->objectName()));
 		resizeRows(d_targets.size());
 		resizeCols(11);
 		setColName(0, tr("Col"));
@@ -132,7 +132,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 				{
 					QString text = d_base->text(i,j);
 					if (!text.isEmpty() && d_base->columnType(j) == Numeric)
-					{					
+					{
 						double val = d_base->cell(i,j);
 						gsl_vector_set (y, aux, val);
 						dat[aux] = val;
@@ -158,7 +158,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 		}
 	else if (d_type == column)
 		for (int c=0; c < d_targets.size(); c++)
-			if (colName == QString(d_base->name())+"_"+text(c, 0))
+			if (colName == QString(d_base->objectName())+"_"+text(c, 0))
 			{
 				int i = d_base->colIndex(colName);
 				if (d_base->columnType(i) != Numeric) return;
@@ -234,7 +234,7 @@ void TableStatistics::renameCol(const QString &from, const QString &to)
 {
 	if (d_type == row) return;
 	for (int c=0; c < d_targets.size(); c++)
-		if (from == QString(d_base->name())+"_"+text(c, 0))
+		if (from == QString(d_base->objectName())+"_"+text(c, 0))
 		{
 			setText(c, 0, to.section('_', 1, 1));
 			return;
@@ -249,7 +249,7 @@ void TableStatistics::removeCol(const QString &col)
 		return;
 	}
 	for (int c=0; c < d_targets.size(); c++)
-		if (col == QString(d_base->name())+"_"+text(c, 0))
+		if (col == QString(d_base->objectName())+"_"+text(c, 0))
 		{
 			d_targets.remove(d_targets.at(c));
 			d_table->removeRow(c);
@@ -257,11 +257,11 @@ void TableStatistics::removeCol(const QString &col)
 		}
 }
 
-QString TableStatistics::saveToString(const QString &geometry)
+QString TableStatistics::saveToString(const QString &geometry, bool)
 {
 	QString s = "<TableStatistics>\n";
-	s += QString(name())+"\t";
-	s += QString(d_base->name())+"\t";
+	s += QString(objectName())+"\t";
+	s += QString(d_base->objectName())+"\t";
 	s += QString(d_type == row ? "row" : "col") + "\t";
 	s += birthDate()+"\n";
 	s += "Targets";

@@ -1172,7 +1172,7 @@ void FitDialog::accept()
 		fitter->setMaximumIterations(boxPoints->value());
 		fitter->scaleErrors(scaleErrorsBox->isChecked());
 
-		if (fitter->name() == tr("MultiPeak") && ((MultiPeakFit *)fitter)->peaks() > 1)
+		if (fitter->objectName() == tr("MultiPeak") && ((MultiPeakFit *)fitter)->peaks() > 1)
 		{
 			((MultiPeakFit *)fitter)->enablePeakCurves(app->generatePeakCurves);
 			((MultiPeakFit *)fitter)->setPeakCurvesColor(app->peakCurvesColor);
@@ -1187,11 +1187,11 @@ void FitDialog::accept()
 				if (!cb->isChecked())
 					boxParams->item(i, 1)->setText(QString::number(res[j++], 'g', app->fit_output_precision));
 			}
-		} else {				
+		} else {
 			for (i=0;i<rows;i++)
 				boxParams->item(i, 1)->setText(QString::number(res[i], 'g', app->fit_output_precision));
 		}
-		
+
 		if (globalParamTableBox->isChecked() && d_param_table)
 			fitter->writeParametersToTable(d_param_table, true);
 	}
@@ -1299,7 +1299,7 @@ void FitDialog::setSrcTables(QWidgetList* tables)
 	srcTables = tables;
 	tableNamesBox->clear();
 	foreach(QWidget *i, *srcTables)
-		tableNamesBox->addItem(i->name());
+		tableNamesBox->addItem(i->objectName());
 
 	tableNamesBox->setCurrentIndex(tableNamesBox->findText(boxCurve->currentText().split("_", QString::SkipEmptyParts)[0]));
 	selectSrcTable(tableNamesBox->currentIndex());

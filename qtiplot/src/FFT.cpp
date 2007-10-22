@@ -258,7 +258,7 @@ void FFT::output()
 void FFT::output(const QString &text)
 {
     ApplicationWindow *app = (ApplicationWindow *)parent();
-    QString tableName = app->generateUniqueName(QString(name()));
+    QString tableName = app->generateUniqueName(QString(objectName()));
     d_result_table = app->newHiddenTable(tableName, d_explanation, d_n, 5, text);
 
 	if (d_graphics_display){

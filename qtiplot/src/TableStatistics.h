@@ -50,7 +50,7 @@ class TableStatistics : public Table
 		//! return the base table of which statistics are displayed
 		Table *base() const { return d_base; }
 		// saving
-		virtual QString saveToString(const QString &geometry);
+		virtual QString saveToString(const QString &geometry, bool = false);
 
 		public slots:
 			//! update statistics after a column has changed (to be connected with Table::modifiedData)

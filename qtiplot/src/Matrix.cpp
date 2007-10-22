@@ -72,6 +72,7 @@ Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWi
 
 void Matrix::initGlobals()
 {
+    d_header_view_type = ColumnRow;
 	d_color_map_type = GrayScale;
 	d_color_map = QwtLinearColorMap(Qt::black, Qt::white);
     d_column_width = 100;
@@ -88,6 +89,8 @@ void Matrix::initGlobals()
 	setBirthDate(dt.toString(Qt::LocalDate));
 
     d_stack = new QStackedWidget();
+    d_stack->setFocusPolicy(Qt::StrongFocus);
+
 	QVBoxLayout *d_main_layout = new QVBoxLayout(this);
 	d_main_layout->setMargin(0);
     d_main_layout->addWidget(d_stack);
@@ -119,20 +122,9 @@ void Matrix::initImage(const QImage& image)
 	if (w <= 500 && h <= 400){
 		int size = QMAX(w, h);
         resize(size, size);
-    } else 
+    } else
 		resize(500, 500);
-	
-	/*int rows = image.height();
-    int cols = image.width();
-	int size = QMAX(cols, rows);
-	QImage imageCopy(QSize(size, size), QImage::Format_RGB32);
-	for ( int i = 0; i < rows; i++ ){
-    	QRgb *line = (QRgb *)imageCopy.scanLine(i);
-		for ( int j = 0; j < cols; j++)
-			*line++ = image.pixel(j, i);
-     }
-	imageLabel->setPixmap(QPixmap::fromImage(imageCopy));*/
-	
+
 	imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
 }
 
@@ -169,22 +161,27 @@ void Matrix::setCoordinates(double xs, double xe, double ys, double ye)
 	emit modifiedWindow(this);
 }
 
-QString Matrix::saveToString(const QString &info)
+QString Matrix::saveToString(const QString &info, bool saveAsTemplate)
 {
+    bool notTemplate = !saveAsTemplate;
 	QString s = "<matrix>\n";
-	s += QString(name()) + "\t";
+	if (notTemplate)
+        s += QString(objectName()) + "\t";
 	s += QString::number(numRows())+"\t";
 	s += QString::number(numCols())+"\t";
-	s += birthDate() + "\n";
+	if (notTemplate)
+        s += birthDate() + "\n";
 	s += info;
 	s += "ColWidth\t" + QString::number(d_column_width)+"\n";
 	s += "<formula>\n" + formula_str + "\n</formula>\n";
 	s += "TextFormat\t" + QString(txt_format) + "\t" + QString::number(num_precision) + "\n";
-	s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+	if (notTemplate)
+        s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	s += "Coordinates\t" + QString::number(x_start,'g',15) + "\t" +QString::number(x_end,'g',15) + "\t";
 	s += QString::number(y_start,'g',15) + "\t" + QString::number(y_end,'g',15) + "\n";
 	s += "ViewType\t" + QString::number((int)d_view_type) + "\n";
-	
+    s += "HeaderViewType\t" + QString::number((int)d_header_view_type) + "\n";
+
 	if (d_color_map_type != Custom)
 		s += "ColorPolicy\t" + QString::number(d_color_map_type) + "\n";
 	else {
@@ -202,24 +199,16 @@ QString Matrix::saveToString(const QString &info)
 		}
 		s += "</ColorMap>\n";
 	}
-	
-	s += d_matrix_model->saveToString();
-	s +="</matrix>\n";
+
+    if (notTemplate)
+        s += d_matrix_model->saveToString();
+    s +="</matrix>\n";
 	return s;
 }
 
 QString Matrix::saveAsTemplate(const QString &info)
 {
-	QString s= "<matrix>\t";
-	s+= QString::number(numRows())+"\t";
-	s+= QString::number(numCols())+"\n";
-	s+= info;
-	s+= "ColWidth\t" + QString::number(d_table_view->columnWidth(0))+"\n";
-	s+= "<formula>\n" + formula_str + "\n</formula>\n";
-	s+= "TextFormat\t" + QString(txt_format) + "\t" + QString::number(num_precision) + "\n";
-	s+= "Coordinates\t" + QString::number(x_start,'g',15) + "\t" +QString::number(x_end,'g',15) + "\t";
-	s+= QString::number(y_start,'g',15) + "\t" + QString::number(y_end,'g',15) + "\n";
-	return s;
+	return saveToString(info, true);
 }
 
 void Matrix::restore(const QStringList &lst)
@@ -227,10 +216,10 @@ void Matrix::restore(const QStringList &lst)
 	QStringList l;
 	QStringList::const_iterator i = lst.begin();
 
-	l= (*i++).split("\t");
+	l = (*i++).split("\t");
 	setColumnsWidth(l[1].toInt());
 
-	l= (*i++).split("\t");
+	l = (*i++).split("\t");
 	if (l[0] == "Formula")
 		formula_str = l[1];
 	else if (l[0] == "<formula>"){
@@ -240,17 +229,45 @@ void Matrix::restore(const QStringList &lst)
 		i++;
 	}
 
-	l= (*i++).split("\t");
+	l = (*i++).split("\t");
 	if (l[1] == "f")
 		setTextFormat('f', l[2].toInt());
 	else
 		setTextFormat('e', l[2].toInt());
 
-	l= (*i++).split("\t");
+	l = (*i++).split("\t");
 	x_start = l[1].toDouble();
 	x_end = l[2].toDouble();
 	y_start = l[3].toDouble();
 	y_end = l[4].toDouble();
+
+	l = (*i++).split("\t");
+	d_view_type = (Matrix::ViewType)l[1].toInt();
+	l = (*i++).split("\t");
+	d_header_view_type = (Matrix::HeaderViewType)l[1].toInt();
+	l = (*i++).split("\t");
+	d_color_map_type = (Matrix::ColorMapType)l[1].toInt();
+
+    if (lst.contains ("<ColorMap>")){
+        QStringList aux;
+        while (*i != "</ColorMap>"){
+            aux << *i;
+            i++;
+        }
+        setColorMap(aux);
+    }
+
+    if (d_view_type == ImageView){
+	    if (d_table_view)
+            delete d_table_view;
+        if (d_select_all_shortcut)
+            delete d_select_all_shortcut;
+	    initImageView();
+		d_stack->setCurrentWidget(imageLabel);
+		if (d_color_map_type == Rainbow)
+            setRainbowColorMap();
+	}
+    resetView();
 }
 
 void Matrix::setNumericFormat(const QChar& f, int prec)
@@ -278,6 +295,7 @@ void Matrix::setColumnsWidth(int width)
 		return;
 
     d_column_width = width;
+    d_table_view->horizontalHeader()->setDefaultSectionSize(d_column_width);
 
     if (d_view_type == TableView){
         int cols = numCols();
@@ -536,7 +554,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	Script *script = scriptEnv->newScript(formula_str, this, QString("<%1>").arg(name()));
+	Script *script = scriptEnv->newScript(formula_str, this, QString("<%1>").arg(objectName()));
 	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 	connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
 	if (!script->compile()){
@@ -1013,24 +1031,33 @@ void Matrix::copy(Matrix *m)
 	if (!mModel)
 		return;
 
+    txt_format = m->textFormat();
+	num_precision = m->precision();
+
     for (int i=0; i<rows; i++)
         for (int j=0; j<cols; j++)
             d_matrix_model->setCell(i, j, mModel->data(i, j));
 
+	d_header_view_type = m->headerViewType();
+    d_view_type = m->viewType();
 	setColumnsWidth(m->columnsWidth());
 	formula_str = m->formula();
-	setTextFormat(m->textFormat(), m->precision());
-	setViewType(m->viewType());
-	if (m->colorMapType() == GrayScale)
-        setGrayScale();
-    else if (m->colorMapType() == Rainbow)
-        setRainbowColorMap();
-	else if (m->colorMapType() == Custom)
-        setColorMap(m->colorMap());
+    d_color_map_type = m->colorMapType();
+    d_color_map = m->colorMap();
+
+    if (d_view_type == ImageView){
+	    if (d_table_view)
+            delete d_table_view;
+        if (d_select_all_shortcut)
+            delete d_select_all_shortcut;
+	    initImageView();
+		d_stack->setCurrentWidget(imageLabel);
+	}
+	resetView();
 }
 
 void Matrix::setViewType(ViewType type)
-{	
+{
 	if (d_view_type == type)
 		return;
 
@@ -1039,6 +1066,8 @@ void Matrix::setViewType(ViewType type)
 	if (d_view_type == ImageView){
 	    if (d_table_view)
             delete d_table_view;
+        if (d_select_all_shortcut)
+            delete d_select_all_shortcut;
 	    initImageView();
 		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
 		d_stack->setCurrentWidget(imageLabel);
@@ -1053,7 +1082,7 @@ void Matrix::setViewType(ViewType type)
 void Matrix::initImageView()
 {
     imageLabel = new QLabel();
-    imageLabel->setBackgroundRole(QPalette::Base);	
+    imageLabel->setBackgroundRole(QPalette::Base);
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     imageLabel->setScaledContents(true);
     d_stack->addWidget(imageLabel);
@@ -1069,10 +1098,6 @@ void Matrix::initTableView()
     d_table_view->setFocusPolicy(Qt::StrongFocus);
     d_table_view->setFocus();
 
-    int cols = numCols();
-	for(int i=0; i<cols; i++)
-		d_table_view->setColumnWidth(i, d_column_width);
-
     QPalette pal = d_table_view->palette();
 	pal.setColor(QColorGroup::Base, QColor(255, 255, 128));
 	d_table_view->setPalette(pal);
@@ -1081,15 +1106,21 @@ void Matrix::initTableView()
 	QHeaderView* hHeader = (QHeaderView*)d_table_view->horizontalHeader();
 	hHeader->setMovable(false);
 	hHeader->setResizeMode(QHeaderView::Fixed);
+	hHeader->setDefaultSectionSize(d_column_width);
+
+    int cols = numCols();
+	for(int i=0; i<cols; i++)
+		d_table_view->setColumnWidth(i, d_column_width);
+
 	QHeaderView* vHeader = (QHeaderView*)d_table_view->verticalHeader();
 	vHeader->setMovable(false);
-	vHeader->setResizeMode(QHeaderView::ResizeToContents);
+	vHeader->setResizeMode(QHeaderView::Fixed);
 
     d_stack->addWidget(d_table_view);
 
-    // keyboard shortcuts
-	QShortcut * sel_all = new QShortcut(QKeySequence(tr("Ctrl+A", "Matrix: select all")), this);
-	connect(sel_all, SIGNAL(activated()), d_table_view, SLOT(selectAll()));
+    // recreate keyboard shortcut
+	d_select_all_shortcut = new QShortcut(QKeySequence(tr("Ctrl+A", "Matrix: select all")), this);
+	connect(d_select_all_shortcut, SIGNAL(activated()), d_table_view, SLOT(selectAll()));
 }
 
 QImage Matrix::image()
@@ -1138,14 +1169,14 @@ void Matrix::setColorMap(const QwtLinearColorMap& map)
 	d_color_map = map;
 	if (d_view_type == ImageView)
 		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
-	
+
 	emit modifiedWindow(this);
 }
 
 void Matrix::setColorMap(const QStringList& lst)
 {
 	d_color_map_type = Custom;
-	
+
 	QStringList::const_iterator line = lst.begin();
   	QString s = (*line).stripWhiteSpace();
 
@@ -1164,13 +1195,13 @@ void Matrix::setColorMap(const QStringList& lst)
 		s = (*(++line)).stripWhiteSpace();
 		QStringList l = QStringList::split("\t", s.remove("<Stop>").remove("</Stop>"));
 		d_color_map.addColorStop(l[0].toDouble(), QColor(l[1]));
-	}        
+	}
 }
 
 void Matrix::setColorMapType(ColorMapType mapType)
 {
 	d_color_map_type = mapType;
-	
+
 	if (d_color_map_type == GrayScale)
         setGrayScale();
     else if (d_color_map_type == Rainbow)
@@ -1181,6 +1212,29 @@ void Matrix::resetView()
 {
     if (d_view_type == ImageView)
 		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
-    else if (d_view_type == TableView)
+    else if (d_view_type == TableView){
         d_table_view->setModel(d_matrix_model);
+        d_table_view->horizontalHeader()->setDefaultSectionSize(d_column_width);
+    }
 }
+
+void Matrix::setHeaderViewType(HeaderViewType type)
+{
+    if (d_header_view_type == type)
+        return;
+
+    d_header_view_type = type;
+
+    if (d_view_type == TableView)
+        resetView();
+}
+
+/*QwtDoubleRect Matrix::boundingRect()
+{
+    int rows = numRows();
+    int cols = numCols();
+    double dx = fabs(x_end - x_start)/(double)(cols - 1);
+    double dy = fabs(y_end - y_start)/(double)(rows - 1);
+
+    return QwtDoubleRect(x_start - 0.5*dx, y_start - 0.5*dy, x_end - x_start, y_end - y_start).normalized();
+}*/

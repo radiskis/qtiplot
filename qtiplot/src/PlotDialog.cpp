@@ -153,8 +153,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 
 void PlotDialog::showAll(bool all)
 {
-	if(all)
-	{
+	if(all){
 		listBox->show();
 		listBox->setFocus();
 
@@ -163,9 +162,7 @@ void PlotDialog::showAll(bool all)
         	curvePlotTypeBox->show();
 
 		btnMore->setText("&>>");
-	}
-	else
-	{
+	} else {
 		listBox->hide();
 		curvePlotTypeBox->hide();
 		btnMore->setText("&<<");
@@ -1116,8 +1113,7 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
     listBox->setCurrentItem(item);
 
     QWidgetList plots = ml->graphPtrs();
-    for (int i = 0; i < plots.count(); ++i)
-    {
+    for (int i = 0; i < plots.count(); ++i){
         Graph* g = (Graph*)plots.at(i);
         if (!g)
             continue;
@@ -1125,8 +1121,7 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
         LayerItem *layer = new LayerItem(g, item, tr("Layer") + QString::number(i+1));
         item->addChild(layer);
 
-        if (g == ml->activeGraph())
-		{
+        if (g == ml->activeGraph()){
             layer->setExpanded(true);
         	layer->setActive(true);
         	listBox->setCurrentItem(layer);
@@ -1142,8 +1137,7 @@ void PlotDialog::selectCurve(int index)
     if (layerItem->type() != LayerItem::LayerTreeItem)
         return;
 	QTreeWidgetItem *item = layerItem->child(index);
-	if (item)
-	{
+	if (item){
 	    ((CurveTreeItem *)item)->setActive(true);
         listBox->setCurrentItem(item);
 	}
@@ -1734,21 +1728,17 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxFillColor->setColor(s.brush().color());
 
     if (curveType == Graph::VerticalBars || curveType == Graph::HorizontalBars ||
-				curveType == Graph::Histogram)
-    {//spacing page
+				curveType == Graph::Histogram){//spacing page
         QwtBarCurve *b = (QwtBarCurve*)i;
-        if (b)
-        {
+        if (b){
             gapBox->setValue(b->gap());
             offsetBox->setValue(b->offset());
         }
     }
 
-    if (curveType == Graph::Histogram)
-    {//Histogram page
+    if (curveType == Graph::Histogram){//Histogram page
         QwtHistogram *h = (QwtHistogram*)i;
-        if (h)
-        {
+        if (h){
             automaticBox->setChecked(h->autoBinning());
             binSizeBox->setText(QString::number(h->binSize()));
             histogramBeginBox->setText(QString::number(h->begin()));
@@ -1757,11 +1747,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         }
     }
 
-    if (curveType == Graph::VectXYXY || curveType == Graph::VectXYAM)
-    {//Vector page
+    if (curveType == Graph::VectXYXY || curveType == Graph::VectXYAM){//Vector page
         VectorCurve *v = (VectorCurve*)i;
-        if (v)
-        {
+        if (v){
             vectColorBox->setColor(v->color());
             vectWidthBox->setValue(v->width());
             headLengthBox->setValue(v->headLength());
@@ -1772,11 +1760,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         }
     }
 
-    if (curveType == Graph::ErrorBars)
-    {
+    if (curveType == Graph::ErrorBars){
         QwtErrorPlotCurve *err = (QwtErrorPlotCurve*)i;
-        if (err)
-        {
+        if (err){
             xBox->setChecked(err->xErrors());
             widthBox->setEditText(QString::number(err->width()));
             capBox->setEditText(QString::number(err->capLength()));
@@ -1787,11 +1773,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         }
     }
 
-    if (curveType == Graph::Box)
-    {
+    if (curveType == Graph::Box){
         BoxCurve *b = (BoxCurve*)i;
-        if (b)
-        {
+        if (b){
             boxMaxStyle->setStyle(b->maxStyle());
             boxMinStyle->setStyle(b->minStyle());
             boxMeanStyle->setStyle(b->meanStyle());
@@ -1988,13 +1972,7 @@ bool PlotDialog::acceptParams()
 		if (!h)
 			return false;
 
-		QString text = item->text(0);
-		QStringList t = text.split(": ", QString::SkipEmptyParts);
-		QStringList list = t[1].split(",", QString::SkipEmptyParts);
-		text = t[0] + "_" + list[1].remove("(Y)");
-		bool accept = validInput();
-		if (accept)
-		{
+		if (validInput()){
             if (h->autoBinning() == automaticBox->isChecked() &&
                 h->binSize() == binSizeBox->text().toDouble() &&
                 h->begin() == histogramBeginBox->text().toDouble() &&
@@ -2005,10 +1983,9 @@ bool PlotDialog::acceptParams()
             h->loadData();
 			graph->updateScale();
 			graph->notifyChanges();
+			return true;
 		}
-		return accept;
-	}
-	else if (privateTabWidget->currentPage()==spacingPage)
+	} else if (privateTabWidget->currentPage()==spacingPage)
 		graph->setBarsGap(item->plotItemIndex(), gapBox->value(), offsetBox->value());
 	else if (privateTabWidget->currentPage() == vectPage)
 	{
@@ -2746,26 +2723,21 @@ void LayerItem::setActive(bool on)
 
 void LayerItem::insertCurvesList()
 {
-	for (int i=0; i<d_graph->curves(); i++)
-	{
+	for (int i=0; i<d_graph->curves(); i++){
         QString plotAssociation = QString();
         const QwtPlotItem *it = (QwtPlotItem *)d_graph->plotItem(i);
         if (!it)
             continue;
 
-        if (it->rtti() == QwtPlotItem::Rtti_PlotCurve)
-        {
+        if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
             PlotCurve *c = (PlotCurve *)it;
-            if (c->type() != Graph::Function)
-            {
+            if (c->type() != Graph::Function && ((DataCurve *)it)->table()){
                 QString s = ((DataCurve *)it)->plotAssociation();
                 QString table = ((DataCurve *)it)->table()->name();
                 plotAssociation = table + ": " + s.remove(table + "_");
-            }
-            else
+            } else
                 plotAssociation = it->title().text();
-        }
-        else
+        } else
             plotAssociation = it->title().text();
 
         addChild(new CurveTreeItem(it, this, plotAssociation));

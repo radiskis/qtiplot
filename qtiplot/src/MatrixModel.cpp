@@ -126,6 +126,43 @@ double MatrixModel::data(int row, int col) const
 	return d_data[i];
 }
 
+/*!
+   \brief The convention used in Origin is different:
+   double dx = fabs(start - end)/(double)(d_cols - 1)
+   double dy = fabs(end - start)/(double)(d_rows - 1)
+
+   The convention in QtiPlot is due to the way the data intervals are treated by Qwt.
+   An Origin like convention would request overwriting QwtPlotSpectrogram:renderImage in the
+   Spectrogram class, which I prefer to avoid for the moment.
+*/
+QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int role) const
+{
+    if (d_matrix->headerViewType() == Matrix::ColumnRow)
+        return QAbstractItemModel::headerData(section, orientation, role);
+
+    QLocale locale = d_matrix->locale();
+    if (role == Qt::DisplayRole || role == Qt::EditRole){
+        if (orientation == Qt::Horizontal){
+            double start = d_matrix->xStart();
+            double end = d_matrix->xEnd();
+            double dx = fabs(start - end)/(double)(d_cols);
+            if (start < end)
+                return QVariant(locale.toString(start + section*dx, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+            else
+                return QVariant(locale.toString(start - section*dx, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+        } else if (orientation == Qt::Vertical){
+            double start = d_matrix->yStart();
+            double end = d_matrix->yEnd();
+            double dy = fabs(end - start)/(double)(d_rows);
+            if (start < end)
+                return QVariant(locale.toString(start + section*dy, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+            else
+                return QVariant(locale.toString(start - section*dy, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+        }
+    } else
+        return QAbstractItemModel::headerData(section, orientation, role);
+}
+
 QVariant MatrixModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -273,6 +310,7 @@ QImage MatrixModel::renderImage()
 {
 	int size = QMAX(d_cols, d_rows);
 	QImage image(QSize(size, size), QImage::Format_RGB32);
+	image.fill(0);
 	QwtLinearColorMap color_map = d_matrix->colorMap();
 
 	double minValue = 0.0, maxValue = 0.0;

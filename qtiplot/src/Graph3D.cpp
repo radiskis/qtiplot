@@ -83,7 +83,7 @@ void UserFunction::setMesh (unsigned int columns, unsigned int rows)
 	d_rows = rows;
 }
 
-UserParametricSurface::UserParametricSurface(const QString& xFormula, const QString& yFormula, 
+UserParametricSurface::UserParametricSurface(const QString& xFormula, const QString& yFormula,
 											 const QString& zFormula, SurfacePlot& pw)
 : ParametricSurface(pw),
 d_x_formula(xFormula),
@@ -99,14 +99,14 @@ void UserParametricSurface::setDomain(double ul, double ur, double vl, double vr
 	d_vl = vl;
 	d_vr = vr;
 }
-	
+
 void UserParametricSurface::setMesh (unsigned int columns, unsigned int rows)
 {
 	ParametricSurface::setMesh (columns, rows);
 	d_columns = columns;
 	d_rows = rows;
 }
-	
+
 void UserParametricSurface::setPeriodic (bool u, bool v)
 {
 	ParametricSurface::setPeriodic (u, v);
@@ -267,7 +267,7 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 		delete d_surface;
 	else if (d_func)
 		delete d_func;
-	
+
 	sp->makeCurrent();
 	sp->resize(this->size());
 
@@ -292,14 +292,14 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 }
 
 void Graph3D::addParametricSurface(const QString& xFormula, const QString& yFormula,
-						const QString& zFormula, double ul, double ur, double vl, double vr, 
+						const QString& zFormula, double ul, double ur, double vl, double vr,
 						int columns, int rows, bool uPeriodic, bool vPeriodic)
 {
 	if (d_surface)
 		delete d_surface;
 	else if (d_func)
 		delete d_func;
-	
+
 	sp->makeCurrent();
 	sp->resize(this->size());
 
@@ -440,7 +440,7 @@ void Graph3D::addMatrixData(Matrix* m)
 		first_time = true;
 
 	d_matrix = m;
-	plotAssociation = "matrix<" + QString(m->name()) + ">";
+	plotAssociation = "matrix<" + QString(m->objectName()) + ">";
 
 	int cols = m->numCols();
 	int rows = m->numRows();
@@ -470,7 +470,7 @@ void Graph3D::addMatrixData(Matrix* m, double xl, double xr,
 		double yl, double yr, double zl, double zr)
 {
 	d_matrix = m;
-	plotAssociation = "matrix<" + QString(m->name()) + ">";
+	plotAssociation = "matrix<" + QString(m->objectName()) + ">";
 
 	updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
 }
@@ -2236,7 +2236,7 @@ QString Graph3D::formula()
 		return plotAssociation;
 }
 
-QString Graph3D::saveToString(const QString& geometry)
+QString Graph3D::saveToString(const QString& geometry, bool saveAsTemplate)
 {
 	QString s="<SurfacePlot>\n";
 	s+= QString(name())+"\t";
@@ -2430,6 +2430,16 @@ QString Graph3D::saveToString(const QString& geometry)
 	return s;
 }
 
+QString Graph3D::saveAsTemplate(const QString& geometryInfo)
+{
+	QString s = saveToString(geometryInfo);
+	QStringList lst = s.split("\n", QString::SkipEmptyParts);
+	QStringList l = lst[3].split("\t");
+	l[1] = QString();
+	lst[3] = l.join("\t");
+	return lst.join("\n");
+}
+
 void Graph3D::showColorLegend(bool show)
 {
 	if (legendOn == show)
@@ -2613,16 +2623,6 @@ void Graph3D::setAntialiasing(bool smooth)
 	sp->updateGL();
 }
 
-QString Graph3D::saveAsTemplate(const QString& geometryInfo)
-{
-	QString s = saveToString(geometryInfo);
-	QStringList lst = s.split("\n", QString::SkipEmptyParts);
-	QStringList l = lst[3].split("\t");
-	l[1] = QString();
-	lst[3] = l.join("\t");
-	return lst.join("\n");
-}
-
 /*!
 Turns 3D animation on or off
 */
@@ -2748,7 +2748,7 @@ void Graph3D::copy(Graph3D* g)
 				sp->setPlotStyle(Cone3D(conesRad, conesQuality));
 				break;
 		}
-	} else 
+	} else
 		customPlotStyle(style_);
 
 	sp->setCoordinateStyle(g->coordStyle());

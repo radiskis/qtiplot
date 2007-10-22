@@ -298,7 +298,7 @@ void Table::cellEdited(int row, int col)
   		d_table->setText(row, col, locale().toString(res, f, precision));
   	else
   	{
-  	Script *script = scriptEnv->newScript(d_table->text(row,col),this,QString("<%1_%2_%3>").arg(name()).arg(row+1).arg(col+1));
+  	Script *script = scriptEnv->newScript(d_table->text(row,col),this,QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
   	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 
   	script->setInt(row+1, "i");
@@ -581,23 +581,45 @@ QString Table::saveComments()
 	return s + "\n";
 }
 
-QString Table::saveToString(const QString& geometry)
+QString Table::saveToString(const QString& geometry, bool saveAsTemplate)
 {
-	QString s="<table>\n";
-	s+=QString(name())+"\t";
-	s+=QString::number(d_table->numRows())+"\t";
-	s+=QString::number(d_table->numCols())+"\t";
-	s+=birthDate()+"\n";
-	s+=geometry;
+	QString s = "<table>";
+	if (saveAsTemplate){
+	    s += "\t" + QString::number(d_table->numRows()) + "\t";
+        s += QString::number(d_table->numCols()) + "\n";
+	} else {
+	    s += "\n" + QString(objectName()) + "\t";
+        s += QString::number(d_table->numRows()) + "\t";
+        s += QString::number(d_table->numCols()) + "\t";
+        s += birthDate() + "\n";
+	}
+	s += geometry;
+	s += saveHeader();
+	s += saveColumnWidths();
+	s += saveCommands();
+	s += saveColumnTypes();
+	s += saveReadOnlyInfo();
+	s += saveComments();
+	if (!saveAsTemplate){
+        s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+        s += saveText();
+	}
+	return s += "</table>\n";
+}
+
+QString Table::saveAsTemplate(const QString& geometryInfo)
+{
+	/*QString s="<table>\t"+QString::number(d_table->numRows())+"\t";
+	s+=QString::number(d_table->numCols())+"\n";
+	s+=geometryInfo;
 	s+=saveHeader();
 	s+=saveColumnWidths();
 	s+=saveCommands();
 	s+=saveColumnTypes();
 	s+=saveReadOnlyInfo();
 	s+=saveComments();
-	s+="WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-	s+=saveText();
-	return s+="</table>\n";
+	return s;*/
+	return saveToString(geometryInfo, true);
 }
 
 QString Table::saveHeader()
@@ -699,7 +721,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight)
     if (col_label[col] == text && !enumerateRight)
         return;
 
-	QString caption = this->name();
+	QString caption = objectName();
 	QString oldLabel = col_label[col];
 	int cols = col + 1;
 	if (enumerateRight)
@@ -775,7 +797,7 @@ QStringList Table::selectedErrColumns()
   		{
   	    if(d_table->isColumnSelected (i,true) &&
   	       (col_plot_type[i] == yErr || col_plot_type[i] == xErr))
-  	       	names<<QString(name())+"_"+col_label[i];
+  	       	names<<QString(objectName())+"_"+col_label[i];
   	    }
   	return names;
 }
@@ -786,13 +808,13 @@ QStringList Table::drawableColumnSelection()
   	for (int i=0; i<d_table->numCols(); i++)
   	{
 	if(d_table->isColumnSelected (i) && col_plot_type[i] == Y)
-		names << QString(name()) + "_" + col_label[i];
+		names << QString(objectName()) + "_" + col_label[i];
     }
 
   	for (int i=0; i<d_table->numCols(); i++)
   	{
   	 	if(d_table->isColumnSelected (i) && (col_plot_type[i] == yErr || col_plot_type[i] == xErr))
-  	    	names << QString(name()) + "_" + col_label[i];
+  	    	names << QString(objectName()) + "_" + col_label[i];
   	}
 	return names;
 }
@@ -812,7 +834,7 @@ QStringList Table::columnsList()
 {
 	QStringList names;
 	for (int i=0;i<d_table->numCols();i++)
-		names<<QString(name())+"_"+col_label[i];
+		names<<QString(objectName())+"_"+col_label[i];
 
 	return names;
 }
@@ -998,7 +1020,7 @@ void Table::deleteRows(int startRow, int endRow)
 	for(int i=0; i<d_table->numCols(); i++){
         if (d_read_only[i]){
 			QMessageBox::warning(this, tr("QtiPlot - Error"),
-        	tr("The table '%1' contains read-only columns! Operation aborted!").arg(name()));
+        	tr("The table '%1' contains read-only columns! Operation aborted!").arg(objectName()));
 			return;
 		}
 	}
@@ -2425,7 +2447,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 				else{
 					d_table->setNumCols(cols);
                     for (int i=c-1; i>=cols; i--){
-                        emit removedCol(QString(name()) + "_" + oldHeader[i]);
+                        emit removedCol(QString(objectName()) + "_" + oldHeader[i]);
                         commands.removeLast();
                         comments.removeLast();
                         col_format.removeLast();
@@ -2565,7 +2587,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			for (i=0; i<cols; i++){
 				emit modifiedData(this, colName(i));
 				if (colLabel(i) != oldHeader[i])
-					emit changedColHeader(QString(name())+"_"+oldHeader[i], QString(name())+"_"+colLabel(i));
+					emit changedColHeader(QString(objectName())+"_"+oldHeader[i], QString(name())+"_"+colLabel(i));
 			}
 		}
 	}
@@ -2833,7 +2855,7 @@ void Table::restore(QString& spec)
 	QString s = t.readLine();
 	QStringList list = s.split("\t");
 
-	QString oldCaption = name();
+	QString oldCaption = objectName();
 	QString newCaption=list[0];
 	if (oldCaption != newCaption)
 		this->setName(newCaption);
@@ -3077,20 +3099,6 @@ void Table::copy(Table *m)
 	commands = m->getCommands();
 	setColumnTypes(m->columnTypes());
 	col_format = m->getColumnsFormat();
-}
-
-QString Table::saveAsTemplate(const QString& geometryInfo)
-{
-	QString s="<table>\t"+QString::number(d_table->numRows())+"\t";
-	s+=QString::number(d_table->numCols())+"\n";
-	s+=geometryInfo;
-	s+=saveHeader();
-	s+=saveColumnWidths();
-	s+=saveCommands();
-	s+=saveColumnTypes();
-	s+=saveReadOnlyInfo();
-	s+=saveComments();
-	return s;
 }
 
 void Table::restore(const QStringList& lst)

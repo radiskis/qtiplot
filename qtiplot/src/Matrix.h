@@ -47,6 +47,7 @@
 class MatrixModel;
 class QLabel;
 class QStackedWidget;
+class QShortcut;
 
 //! Matrix worksheet class
 class Matrix: public MyWidget, public scripted
@@ -70,11 +71,15 @@ public:
 	Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
     Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
 
+    enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};
 	enum ColorMapType{GrayScale, Rainbow, Custom};
 
 	void setViewType(ViewType);
 	ViewType viewType(){return d_view_type;};
+
+    HeaderViewType headerViewType(){return d_header_view_type;};
+    void setHeaderViewType(HeaderViewType type);
 
 	QImage image();
 	void setImage(const QImage& image);
@@ -115,12 +120,12 @@ public:
 
     ColorMapType colorMapType(){return d_color_map_type;};
 	void setColorMapType(ColorMapType mapType);
-	
+
 	QwtLinearColorMap colorMap(){return d_color_map;};
 	void setColorMap(const QwtLinearColorMap& map);
 	//! Used when restoring from project files
 	void setColorMap(const QStringList& lst);
-	
+
 	void setGrayScale();
 	void setRainbowColorMap();
 
@@ -199,7 +204,7 @@ public slots:
 	QString saveAsTemplate(const QString &info);
 
 	//! Return a string to save the matrix in a project file (\<matrix\> section)
-	QString saveToString(const QString &info);
+	QString saveToString(const QString &info, bool saveAsTemplate = false);
 
 	// selection operations
 	//! Standard cut operation
@@ -285,11 +290,16 @@ private:
 
     //! Keeps track of the view type;
 	ViewType d_view_type;
+	//! Keeps track of the header view type;
+	HeaderViewType d_header_view_type;
+
 	QwtLinearColorMap d_color_map;
 	ColorMapType d_color_map_type;
 
 	//! Column width in pixels;
 	int d_column_width;
+
+	QShortcut *d_select_all_shortcut;
 };
 
 #endif

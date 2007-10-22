@@ -40,7 +40,7 @@
 
 ColorMapEditor::ColorMapEditor(QWidget* parent)
 				: QWidget(parent, 0, 0),
-				min_val(0), 
+				min_val(0),
 				max_val(1),
 				color_map(QwtLinearColorMap())
 {
@@ -48,7 +48,7 @@ table = new QTableWidget();
 table->setColumnCount(2);
 table->setSelectionMode(QAbstractItemView::SingleSelection);
 table->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-table->verticalHeader()->hide();		
+table->verticalHeader()->hide();
 table->horizontalHeader()->setClickable( false );
 table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 table->viewport()->setMouseTracking(true);
@@ -61,7 +61,7 @@ connect(table, SIGNAL(cellClicked (int, int)), this, SLOT(showColorDialog(int, i
 connect(table, SIGNAL(currentCellChanged(int, int, int, int)),
         this, SLOT(enableButtons(int, int, int, int)));
 connect(table, SIGNAL(cellChanged(int, int)), this, SLOT(validateLevel(int, int)));
-	
+
 insertBtn = new QPushButton(tr("&Insert"));
 insertBtn->setEnabled(false);
 connect(insertBtn, SIGNAL(clicked()), this, SLOT(insertLevel()));
@@ -80,7 +80,7 @@ connect(scaleColorsBox, SIGNAL(toggled(bool)), this, SLOT(setScaledColors(bool))
 
 QVBoxLayout* vl = new QVBoxLayout(this);
 vl->setSpacing(0);
-vl->addWidget(table);	
+vl->addWidget(table);
 vl->addLayout(hb);
 vl->addWidget(scaleColorsBox);
 
@@ -113,15 +113,15 @@ QwtArray <double> colors = map.colorStops();
 int rows = (int)colors.size();
 table->setRowCount(rows);
 table->blockSignals(true);
-	
+
 for (int i = 0; i < rows; i++)
 	{
 	QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
 	double val = min_val + colors[i] * range.width();
-		
+
 	QTableWidgetItem *it = new QTableWidgetItem(QString::number(val));
     table->setItem(i, 0, it);
-		
+
 	QColor c = QColor(map.rgb(QwtDoubleInterval(0, 1), colors[i]));
 	it = new QTableWidgetItem(c.name());
 	it->setFlags(!Qt::ItemIsEditable);
@@ -130,14 +130,14 @@ for (int i = 0; i < rows; i++)
     table->setItem(i, 1, it);
 	}
 table->blockSignals(false);
-	
+
 color_map = map;
 }
 
 void ColorMapEditor::setRange(double min, double max)
 {
-min_val = min;
-max_val = max;
+    min_val = min;
+    max_val = max;
 }
 
 void ColorMapEditor::insertLevel()
@@ -154,14 +154,14 @@ table->insertRow(row);
 
 QTableWidgetItem *it = new QTableWidgetItem(QString::number(val));
 table->setItem(row, 0, it);
-		
+
 it = new QTableWidgetItem(c.name());
 it->setFlags(!Qt::ItemIsEditable);
 it->setBackground(QBrush(c));
 it->setForeground(QBrush(c));
 table->setItem(row, 1, it);
 table->blockSignals(false);
-	
+
 enableButtons(table->currentRow(), 0);
 updateColorMap();
 }
@@ -250,7 +250,7 @@ QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
 double val = table->item(row, 0)->text().replace(",", ".").toDouble();
 if (!range.contains (val) || user_input_error)
 	{
-	QwtArray<double> colors = color_map.colorStops();	
+	QwtArray<double> colors = color_map.colorStops();
 	val = min_val + colors[row] * range.width();
 	table->blockSignals(true);
 	table->item(row, 0)->setText(QString::number(val));

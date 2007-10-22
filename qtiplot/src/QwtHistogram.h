@@ -28,13 +28,16 @@
  ***************************************************************************/
 #include "QwtBarCurve.h"
 
+class Matrix;
+
 //! Histogram class
 class QwtHistogram: public QwtBarCurve
 {
 public:
 	QwtHistogram(Table *t, const QString& xColName, const QString& name, int startRow, int endRow);
+    QwtHistogram(Matrix *m);
 
-	void copy(const QwtHistogram *h);
+	void copy(QwtHistogram *h);
 
 	QwtDoubleRect boundingRect() const;
 
@@ -45,16 +48,21 @@ public:
 	double binSize(){return d_bin_size;};
 
     void loadData();
-    void initData(const QVector<double>& Y, int size);
+    void initData(double* Y, int size);
 
     double mean(){return d_mean;};
     double standardDeviation(){return d_standard_deviation;};
     double minimum(){return d_min;};
     double maximum(){return d_max;};
 
+	Matrix* matrix(){return d_matrix;};
+
 private:
 	void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
+
+    void loadDataFromMatrix();
+    Matrix *d_matrix;
 
 	bool d_autoBin;
 	double d_bin_size, d_begin, d_end;

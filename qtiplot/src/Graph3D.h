@@ -73,7 +73,7 @@ public slots:
 	void addFunction(const QString& s, double xl, double xr, double yl,
 						  double yr, double zl, double zr, int columns, int rows);
 	void addParametricSurface(const QString& xFormula, const QString& yFormula,
-						const QString& zFormula, double ul, double ur, double vl, double vr, 
+						const QString& zFormula, double ul, double ur, double vl, double vr,
 						int columns, int rows, bool uPeriodic, bool vPeriodic);
 	void insertNewData(Table* table, const QString& colName);
 
@@ -101,7 +101,7 @@ public slots:
 	//@{
 	UserParametricSurface *parametricSurface(){return d_surface;};
 	//@}
-	
+
 	//! \name User Functions
 	//@{
 	UserFunction* userFunction(){return d_func;};
@@ -241,7 +241,7 @@ public slots:
     void exportVector(const QString& fileName);
     void exportToFile(const QString& fileName);
 
-	QString saveToString(const QString& geometry);
+	QString saveToString(const QString& geometry, bool = false);
 	QString saveAsTemplate(const QString& geometryInfo);
 
 	void zoomChanged(double);
@@ -399,7 +399,7 @@ public:
 	unsigned int rows(){return d_rows;};
 	unsigned int columns(){return d_columns;};
 	void setMesh (unsigned int columns, unsigned int rows);
-	
+
 private:
 	  QString formula;
 	  unsigned int d_rows, d_columns;
@@ -409,28 +409,28 @@ private:
 class UserParametricSurface : public ParametricSurface
 {
 public:
-    UserParametricSurface(const QString& xFormula, const QString& yFormula, 
+    UserParametricSurface(const QString& xFormula, const QString& yFormula,
 						  const QString& zFormula, SurfacePlot& pw);
     Triple operator()(double u, double v);
 
 	unsigned int rows(){return d_rows;};
 	unsigned int columns(){return d_columns;};
 	void setMesh (unsigned int columns, unsigned int rows);
-		
+
 	bool uPeriodic(){return d_u_periodic;};
 	bool vPeriodic(){return d_v_periodic;};
 	void setPeriodic (bool u, bool v);
-	
+
 	double uStart(){return d_ul;};
 	double uEnd(){return d_ur;};
 	double vStart(){return d_vl;};
 	double vEnd(){return d_vr;};
 	void setDomain(double ul, double ur, double vl, double vr);
-	
+
 	QString xFormula(){return d_x_formula;};
 	QString yFormula(){return d_y_formula;};
 	QString zFormula(){return d_z_formula;};
-	
+
 private:
 	QString d_x_formula, d_y_formula, d_z_formula;
 	unsigned int d_rows, d_columns;

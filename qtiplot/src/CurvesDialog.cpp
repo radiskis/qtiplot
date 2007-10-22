@@ -339,7 +339,7 @@ bool CurvesDialog::addCurve(const QString& name)
     ApplicationWindow *app = (ApplicationWindow *)this->parent();
     if (!app)
         return false;
-	
+
     QStringList matrices = app->matrixNames();
     if (matrices.contains(name)){
         Matrix *m = app->matrix(name);
@@ -520,7 +520,7 @@ void CurvesDialog::showCurrentFolder(bool currentFolder)
 				Table *t = (Table *)w;
 				for (int i=0; i < t->numCols(); i++){
 					if(t->colPlotDesignation(i) == Table::Y)
-						columns << QString(t->name()) + "_" + t->colLabel(i);
+						columns << QString(t->objectName()) + "_" + t->colLabel(i);
 				}
 			}
 			available->addItems(columns);

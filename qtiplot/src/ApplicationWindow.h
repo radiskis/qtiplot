@@ -222,6 +222,7 @@ public slots:
   	MultiLayer* plotGrayScale(Matrix *m = 0);
   	MultiLayer* plotContour(Matrix *m = 0);
   	MultiLayer* plotColorMap(Matrix *m = 0);
+  	MultiLayer* plotImage(Matrix *m = 0);
 
 	//! Rearrange the layersin order to fit to the size of the plot window
   	void autoArrangeLayers();
@@ -325,6 +326,8 @@ public slots:
 	void exportMatrix();
 	void setMatrixGrayScale();
 	void setMatrixRainbowScale();
+	void viewMatrixColumnRow();
+	void viewMatrixXY();
 	//@}
 
 	//! \name Tables
@@ -1175,6 +1178,7 @@ private:
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
 	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix;
     QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
+    QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot;
 
 	QActionGroup* coord;
 	QAction* Box;

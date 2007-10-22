@@ -8,7 +8,7 @@
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
                            knut.franke*gmx.de
     Description          : Notes window class
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -44,7 +44,7 @@
 Note::Note(ScriptingEnv *env, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
 				: MyWidget(label, parent, name, f)
 {
-init(env);	
+init(env);
 }
 
 void Note::init(ScriptingEnv *env)
@@ -74,7 +74,7 @@ void Note::modifiedNote()
 emit modifiedWindow(this);
 }
 
-QString Note::saveToString(const QString &info)
+QString Note::saveToString(const QString &info, bool)
 {
 QString s= "<note>\n";
 s+= QString(name()) + "\t" + birthDate() + "\n";

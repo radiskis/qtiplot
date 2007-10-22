@@ -743,7 +743,7 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& labelsColName
 		if (!table)
 			return;
 
-		axesFormatInfo[axis] = table->name();
+		axesFormatInfo[axis] = table->objectName();
 		for (int i=0; i<table->numCols(); i++)
 		{
 			if (table->colPlotDesignation(i) == Table::Y)
@@ -1136,6 +1136,13 @@ void Graph::setAutoScale()
 	updateScale();
 
 	emit modifiedGraph();
+}
+
+void Graph::invertScale(int axis)
+{
+QwtScaleDiv *scaleDiv = d_plot->axisScaleDiv(axis);
+if (scaleDiv)
+    scaleDiv->invert();
 }
 
 void Graph::setScale(int axis, double start, double end, double step, int majorTicks, int minorTicks, int type, bool inverted)
@@ -2215,8 +2222,8 @@ QString Graph::saveCurves()
 {
 	QString s;
 	if (isPiePlot())
-		s+=savePieCurveLayout();
-	else{
+		s += savePieCurveLayout();
+	else {
 		for (int i=0; i<n_curves; i++){
 			QwtPlotItem *it = plotItem(i);
 			if (!it)
@@ -2990,7 +2997,7 @@ bool Graph::insertCurve(Table* w, int xcol, const QString& name, int style)
 }
 
 bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
-{	
+{
 	int xcol=w->colIndex(xColName);
 	int ycol=w->colIndex(yColName);
 	if (xcol < 0 || ycol < 0)
@@ -3018,8 +3025,7 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 					break;
 			}
 		}
-	}
-	else if (xColType == Table::Date){
+	} else if (xColType == Table::Date){
 		for (i = startRow; i<=endRow; i++ ){
 			QString xval=w->text(i,xcol);
 			if (!xval.isEmpty()){
@@ -3039,27 +3045,23 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 				if (xLabels.contains(xval) == 0)
 					xLabels << xval;
 				X[size] = (double)(xLabels.findIndex(xval)+1);
-			}
-			else if (xColType == Table::Time){
+			} else if (xColType == Table::Time){
 				QTime time = QTime::fromString (xval, date_time_fmt);
 				if (time.isValid())
 					X[size] = time0.msecsTo (time);
 				else
 					X[size] = 0;
-			}
-			else if (xColType == Table::Date){
+			} else if (xColType == Table::Date){
 				QDate d = QDate::fromString (xval, date_time_fmt);
 				if (d.isValid())
 					X[size] = (double) date0.daysTo(d);
-			}
-			else
+			} else
                 X[size] = d_plot->locale().toDouble(xval, &valid_data);
 
 			if (yColType == Table::Text){
 				yLabels << yval;
 				Y[size] = (double) (size + 1);
-			}
-			else
+			} else
                 Y[size] = d_plot->locale().toDouble(yval, &valid_data);
 
             if (valid_data)
@@ -3077,17 +3079,14 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 	if (style == VerticalBars){
 		c = new QwtBarCurve(QwtBarCurve::Vertical, w, xColName, yColName, startRow, endRow);
 		c->setStyle(QwtPlotCurve::UserCurve);
-	}
-	else if (style == HorizontalBars){
+	} else if (style == HorizontalBars){
 		c = new QwtBarCurve(QwtBarCurve::Horizontal, w, xColName, yColName, startRow, endRow);
 		c->setStyle(QwtPlotCurve::UserCurve);
-	}
-	else if (style == Histogram){
+	} else if (style == Histogram){
 		c = new QwtHistogram(w, xColName, yColName, startRow, endRow);
-		((QwtHistogram *)c)->initData(Y, size);
+		((QwtHistogram *)c)->initData(Y.data(), size);
 		c->setStyle(QwtPlotCurve::UserCurve);
-	}
-	else
+	} else
 		c = new DataCurve(w, xColName, yColName, startRow, endRow);
 
 	c_type.resize(++n_curves);
@@ -3108,22 +3107,19 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 			axesFormatInfo[QwtPlot::yRight] = xColName;
 			axisType[QwtPlot::yLeft] = Txt;
 			d_plot->setAxisScaleDraw (QwtPlot::yLeft, new QwtTextScaleDraw(xLabels));
-		}
-		else{
+		} else {
 			axesFormatInfo[QwtPlot::xBottom] = xColName;
 			axesFormatInfo[QwtPlot::xTop] = xColName;
 			axisType[QwtPlot::xBottom] = Txt;
 			d_plot->setAxisScaleDraw (QwtPlot::xBottom, new QwtTextScaleDraw(xLabels));
 		}
-	}
-	else if (xColType == Table::Time){
+	} else if (xColType == Table::Time){
 		QString fmtInfo = time0.toString() + ";" + date_time_fmt;
 		if (style == HorizontalBars)
 			setLabelsDateTimeFormat(QwtPlot::yLeft, Time, fmtInfo);
 		else
 			setLabelsDateTimeFormat(QwtPlot::xBottom, Time, fmtInfo);
-	}
-	else if (xColType == Table::Date ){
+	} else if (xColType == Table::Date ){
 		QString fmtInfo = date0.toString(Qt::ISODate) + ";" + date_time_fmt;
 		if (style == HorizontalBars)
 			setLabelsDateTimeFormat(QwtPlot::yLeft, Date, fmtInfo);
@@ -3140,8 +3136,46 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 
 	addLegendItem(yColName);
 	updatePlot();
-
 	return true;
+}
+
+void Graph::plotHistogram(Matrix *m)
+{
+	if (!m)
+		return;
+
+	QwtHistogram *c = new QwtHistogram(m);
+    c->setStyle(QwtPlotCurve::UserCurve);
+	c->setPen(QPen(Qt::black, widthLine));
+	c->setBrush(QBrush(Qt::black));
+	c->loadData();
+
+	c_type.resize(++n_curves);
+	c_type[n_curves - 1] = Histogram;
+	c_keys.resize(n_curves);
+	c_keys[n_curves - 1] = d_plot->insertCurve(c);
+
+	addLegendItem(m->objectName());
+	updatePlot();
+}
+
+void Graph::restoreHistogram(Matrix *m, const QStringList& l)
+{
+	if (!m)
+		return;
+
+    QwtHistogram *h = new QwtHistogram(m);
+    h->setBinning(l[17].toInt(), l[18].toDouble(), l[19].toDouble(), l[20].toDouble());
+    h->setGap(l[15].toInt());
+	h->setOffset(l[16].toInt());
+    h->loadData();
+    h->setAxis(l[l.count()-5].toInt(), l[l.count()-4].toInt());
+    h->setVisible(l.last().toInt());
+
+	c_type.resize(++n_curves);
+	c_type[n_curves - 1] = Histogram;
+	c_keys.resize(n_curves);
+	c_keys[n_curves - 1] = d_plot->insertCurve(h);
 }
 
 void Graph::plotVectorCurve(Table* w, const QStringList& colList, int style, int startRow, int endRow)
@@ -3616,7 +3650,7 @@ QString Graph::generateFunctionName(const QString& name)
 {
     int index = 1;
   	QString newName = name + QString::number(index);
-	
+
   	QStringList lst;
   	for (int i=0; i<n_curves; i++){
   		PlotCurve *c = (PlotCurve*)this->curve(i);
@@ -3626,7 +3660,7 @@ QString Graph::generateFunctionName(const QString& name)
   	    if (c->type() == Function)
   	    	lst << c->title().text();
 	}
-	
+
   	while(lst.contains(newName))
   		newName = name + QString::number(++index);
   	return newName;
@@ -4187,7 +4221,6 @@ void Graph::showGrid(int axis)
 
 void Graph::copy(Graph* g)
 {
-	int i;
 	Plot *plot = g->plotWidget();
 	d_plot->setMargin(plot->margin());
 	setAntialiasing(g->antialiasing());
@@ -4224,7 +4257,7 @@ void Graph::copy(Graph* g)
 	setAxesLinewidth(plot->axesLinewidth());
 	removeLegend();
 
-    for (i=0; i<g->curves(); i++){
+    for (int i=0; i<g->curves(); i++){
         QwtPlotItem *it = (QwtPlotItem *)g->plotItem(i);
         if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
   	        DataCurve *cv = (DataCurve *)it;
@@ -4266,9 +4299,13 @@ void Graph::copy(Graph* g)
 					((QwtErrorPlotCurve*)c)->setMasterCurve(master_curve);
 				}
 			} else if (style == Histogram) {
-				c = new QwtHistogram(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
+			    QwtHistogram *h = (QwtHistogram*)cv;
+				if (h->matrix())
+					c = new QwtHistogram(h->matrix());
+				else
+					c = new QwtHistogram(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
 				c_keys[i] = d_plot->insertCurve(c);
-				((QwtHistogram *)c)->copy((const QwtHistogram*)cv);
+				((QwtHistogram *)c)->copy(h);
 			} else if (style == VectXYXY || style == VectXYAM) {
 				VectorCurve::VectorStyle vs = VectorCurve::XYXY;
 				if (style == VectXYAM)
@@ -4328,7 +4365,7 @@ void Graph::copy(Graph* g)
 	axesFormatInfo = g->axesFormatInfo;
 	axisType = g->axisType;
 
-	for (i=0; i<QwtPlot::axisCnt; i++){
+	for (int i=0; i<QwtPlot::axisCnt; i++){
 		QwtScaleWidget *sc = g->plotWidget()->axisWidget(i);
 		if (!sc)
 			continue;
@@ -4353,7 +4390,7 @@ void Graph::copy(Graph* g)
 			sd->enableComponent (QwtAbstractScaleDraw::Labels, false);
 		}
 	}
-	for (i=0; i<QwtPlot::axisCnt; i++){//set same scales
+	for (int i=0; i<QwtPlot::axisCnt; i++){//set same scales
 		const QwtScaleEngine *se = plot->axisScaleEngine(i);
 		if (!se)
 			continue;
@@ -4395,11 +4432,11 @@ void Graph::copy(Graph* g)
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
 
 	QVector<int> imag = g->imageMarkerKeys();
-	for (i=0; i<(int)imag.size(); i++)
+	for (int i=0; i<(int)imag.size(); i++)
 		addImage((ImageMarker*)g->imageMarker(imag[i]));
 
 	QVector<int> txtMrkKeys=g->textMarkerKeys();
-	for (i=0; i<(int)txtMrkKeys.size(); i++){
+	for (int i=0; i<(int)txtMrkKeys.size(); i++){
 		Legend* mrk = (Legend*)g->textMarker(txtMrkKeys[i]);
 		if (!mrk)
 			continue;
@@ -4411,7 +4448,7 @@ void Graph::copy(Graph* g)
 	}
 
 	QVector<int> l = g->lineMarkerKeys();
-	for (i=0; i<(int)l.size(); i++){
+	for (int i=0; i<(int)l.size(); i++){
 		ArrowMarker* lmrk=(ArrowMarker*)g->arrow(l[i]);
 		if (lmrk)
 			addArrow(lmrk);
@@ -4458,8 +4495,8 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 	d_plot->setAxisMaxMajor(QwtPlot::xTop, names.count()+1);
 	d_plot->setAxisMaxMinor(QwtPlot::xTop, 0);
 
-	axesFormatInfo[QwtPlot::xBottom] = w->name();
-	axesFormatInfo[QwtPlot::xTop] = w->name();
+	axesFormatInfo[QwtPlot::xBottom] = w->objectName();
+	axesFormatInfo[QwtPlot::xTop] = w->objectName();
 }
 
 void Graph::setCurveStyle(int index, int s)
