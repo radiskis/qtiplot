@@ -52,7 +52,6 @@
 #include <QStackedWidget>
 
 #include <stdlib.h>
-#include <math.h>
 #include <stdio.h>
 
 #include <gsl/gsl_linalg.h>
@@ -1229,12 +1228,13 @@ void Matrix::setHeaderViewType(HeaderViewType type)
         resetView();
 }
 
-/*QwtDoubleRect Matrix::boundingRect()
+QwtDoubleRect Matrix::boundingRect()
 {
     int rows = numRows();
     int cols = numCols();
     double dx = fabs(x_end - x_start)/(double)(cols - 1);
     double dy = fabs(y_end - y_start)/(double)(rows - 1);
 
-    return QwtDoubleRect(x_start - 0.5*dx, y_start - 0.5*dy, x_end - x_start, y_end - y_start).normalized();
-}*/
+    return QwtDoubleRect(QMIN(x_start, x_end) - 0.5*dx, QMIN(y_start, y_end) - 0.5*dy, 
+						 fabs(x_end - x_start) + dx, fabs(y_end - y_start) + dy).normalized();
+}

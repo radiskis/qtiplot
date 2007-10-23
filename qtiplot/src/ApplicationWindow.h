@@ -397,7 +397,8 @@ public slots:
 	void plotHorSteps();
 	void plotSpline();
 	void plotVerticalDropLines();
-	void plotHistogram();
+	MultiLayer* plotHistogram();
+	MultiLayer* plotHistogram(Matrix *m);
 	void plotVectXYXY();
 	void plotVectXYAM();
 	void plotBoxDiagram();
@@ -407,7 +408,7 @@ public slots:
     //! Check whether a table is valid for a 2D plot and display an appropriate error if not
     bool validFor2DPlot(Table *table);
     //! Generate a new 2D graph
-    void generate2DGraph(Graph::CurveType type);
+    MultiLayer* generate2DGraph(Graph::CurveType type);
 	//@}
 
 	//! \name Image Analysis

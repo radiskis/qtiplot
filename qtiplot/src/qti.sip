@@ -283,6 +283,9 @@ class Matrix: MyWidget
 	}
 %End
 public:
+  enum HeaderViewType{ColumnRow, XY};
+  enum ViewType{TableView, ImageView};
+
   int numRows();
   void setNumRows(int);
   int numCols();
@@ -322,6 +325,8 @@ public:
 		sipCpp->setCell(row, col, a2);
 %End
 
+	double dx();
+	double dy();
     double xStart();
 	double xEnd();
 	double yStart();
@@ -335,7 +340,15 @@ public:
 
     void transpose();
 	void invert();
+	void flipVertically();
+	void flipHorizontally();
+	void rotate90(bool = true);
 	double determinant();
+	
+	void setViewType(ViewType);
+	void setHeaderViewType(HeaderViewType);
+	void setGrayScale();
+	void setRainbowColorMap();
 
 private:
   Matrix(const Matrix&);
@@ -456,7 +469,7 @@ public:
   enum TicksStyle{NoTicks = 0, Out = 1, InOut = 2, In = 3};
   enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
-			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function};
+			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot};
 
   bool isPiePlot();
   SIP_PYOBJECT pieLegendText() /PyName=pieLegend/;
@@ -517,6 +530,7 @@ public:
 		  int type = 1, int width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 		  bool through = true, bool minus = true, bool plus = true);
 
+  void addHistogram(Matrix*);
   void addArrow(ArrowMarker*);
 
   ImageMarker* addImage(ImageMarker*);
