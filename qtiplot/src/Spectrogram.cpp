@@ -92,12 +92,15 @@ setContourLevels(contourLevels);
 
 bool Spectrogram::hasColorScale()
 {
-QwtPlot *plot = this->plot();
-if (!plot)
-	return false;
+	QwtPlot *plot = this->plot();
+	if (!plot)
+		return false;
 
-QwtScaleWidget *colorAxis = plot->axisWidget(color_axis);
-return colorAxis->isColorBarEnabled();
+	if (!plot->axisEnabled (color_axis))
+		return false;
+
+	QwtScaleWidget *colorAxis = plot->axisWidget(color_axis);
+	return colorAxis->isColorBarEnabled();
 }
 
 void Spectrogram::showColorScale(int axis, bool on)
@@ -287,11 +290,19 @@ s += "\t<Visible>"+ QString::number(isVisible()) + "</Visible>\n";
 return s+"</spectrogram>\n";
 }
 
-double MatrixData::value(double x, double y) const
+QwtDoubleRect Spectrogram::boundingRect() const
 {
-int i = abs((y - y_start)/dy) - 1;
-int j = abs((x - x_start)/dx);
+	return d_matrix->boundingRect();
+}
 
+double MatrixData::value(double x, double y) const
+{		
+x += 0.5*dx;
+y -= 0.5*dy;
+	
+int i = abs((y - y_start)/dy);
+int j = abs((x - x_start)/dx);
+	
 if (d_m && i >= 0 && i < n_rows && j >=0 && j < n_cols)
 	return d_m[i][j];
 else

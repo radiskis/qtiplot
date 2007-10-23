@@ -70,6 +70,8 @@ public:
 
 	ColorMapPolicy colorMapPolicy(){return color_map_policy;};
 
+	virtual QwtDoubleRect boundingRect() const;
+
 protected:
 	//! Pointer to the source data matrix
 	Matrix *d_matrix;
@@ -105,10 +107,9 @@ public:
 	m->range(&min_z, &max_z);
 
 	x_start = d_matrix->xStart();
-	dx = (d_matrix->xEnd() - x_start)/(double)(n_cols);
-
+	dx = d_matrix->dx();
 	y_start = d_matrix->yStart();
-	dy = (d_matrix->yEnd() - y_start)/(double)(n_rows);
+	dy = d_matrix->dy();
     }
 
 	~MatrixData()

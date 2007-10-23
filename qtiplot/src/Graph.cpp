@@ -3139,7 +3139,7 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 	return true;
 }
 
-void Graph::plotHistogram(Matrix *m)
+void Graph::addHistogram(Matrix *m)
 {
 	if (!m)
 		return;
@@ -4248,7 +4248,8 @@ void Graph::copy(Graph* g)
 				title.setRenderFlags(src_axis_title.renderFlags());
  				scale->setTitle(title);
 			}
-		}
+		} else
+			d_plot->enableAxis(i, false);
 	}
 
 	grid()->copy(g->grid());
@@ -4712,10 +4713,10 @@ void Graph::deleteFitCurves()
 	d_plot->replot();
 }
 
-void Graph::plotSpectrogram(Matrix *m, CurveType type)
+Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
 {
 	if (type != GrayScale && type != ColorMap && type != Contour)
-  		return;
+  		return 0;
 
   	Spectrogram *d_spectrogram = new Spectrogram(m);
   	if (type == GrayScale)
@@ -4741,15 +4742,13 @@ void Graph::plotSpectrogram(Matrix *m, CurveType type)
   	rightAxis->setColorBarEnabled(type != Contour);
   	rightAxis->setColorMap(d_spectrogram->data().range(), d_spectrogram->colorMap());
 
-  	d_plot->setAxisScale(QwtPlot::xBottom, m->xStart(), m->xEnd());
-  	d_plot->setAxisScale(QwtPlot::yLeft, m->yStart(), m->yEnd());
-
   	d_plot->setAxisScale(QwtPlot::yRight,
   	d_spectrogram->data().range().minValue(),
   	d_spectrogram->data().range().maxValue());
   	d_plot->enableAxis(QwtPlot::yRight, type != Contour);
 
   	d_plot->replot();
+	return d_spectrogram;
 }
 
 void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
@@ -4858,18 +4857,13 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
 
 bool Graph::validCurvesDataSize()
 {
-	if (!n_curves)
-	{
+	if (!n_curves){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		return false;
-	}
-	else
-	{
-		for (int i=0; i < n_curves; i++)
-		{
+	} else {
+		for (int i=0; i < n_curves; i++){
 			 QwtPlotItem *item = curve(i);
-  	         if(item && item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-  	         {
+  	         if(item && item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
   	             QwtPlotCurve *c = (QwtPlotCurve *)item;
   	             if (c->dataSize() >= 2)
                     return true;

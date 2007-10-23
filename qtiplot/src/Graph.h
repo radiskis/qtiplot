@@ -63,7 +63,8 @@ class DataCurve;
 class PlotCurve;
 class QwtErrorPlotCurve;
 class MultiLayer;
-
+class Spectrogram;
+	
 //! Structure containing curve layout parameters
 typedef struct{
   int lCol;        //!< line color
@@ -123,7 +124,7 @@ class Graph: public QWidget
 		enum MarkerType{None = -1, Text = 0, Arrow = 1, Image = 2};
 		enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
-			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function};
+			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot};
 
 		//! Returns the name of the parent MultiLayer object.
 		QString parentPlotName();
@@ -644,11 +645,11 @@ class Graph: public QWidget
 		void showScaleDialog();
 
 		//! Add a spectrogram to the graph
-  		void plotSpectrogram(Matrix *m, CurveType type);
+  		Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
 		//! Restores a spectrogram. Used when opening a project file.
   		void restoreSpectrogram(ApplicationWindow *app, const QStringList& lst);
         //! Add a matrix histogram  to the graph
-        void plotHistogram(Matrix *m);
+        void addHistogram(Matrix *m);
         //! Restores a histogram from a project file.
         void restoreHistogram(Matrix *m, const QStringList& l);
 

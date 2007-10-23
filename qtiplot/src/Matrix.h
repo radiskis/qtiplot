@@ -40,6 +40,8 @@
 #include <qwt_double_rect.h>
 #include <qwt_color_map.h>
 
+#include <math.h>
+
 // (maximum) initial matrix size
 #define _Matrix_initial_rows_ 10
 #define _Matrix_initial_columns_ 3
@@ -230,17 +232,22 @@ public slots:
 	//! Return the number of selected columns
 	int numSelectedColumns();
 
-	//! Return the X value corresponding to column 1
+	//! Returns the X value corresponding to column 1
 	double xStart(){return x_start;};
-	//! Return the X value corresponding to the last column
+	//! Returns the X value corresponding to the last column
 	double xEnd(){return x_end;};
-	//! Return the Y value corresponding to row 1
+	//! Returns the Y value corresponding to row 1
 	double yStart(){return y_start;};
-	//! Return the Y value corresponding to the last row
+	//! Returns the Y value corresponding to the last row
 	double yEnd(){return y_end;};
 
+	//! Returns the step of the X axis
+	double dx(){return fabs(x_end - x_start)/(double)(numCols() - 1);};
+	//! Returns the step of the Y axis
+	double dy(){return fabs(y_end - y_start)/(double)(numRows() - 1);};
+	
 	//! Returns the bounding rect of the matrix coordinates
-  	QwtDoubleRect boundingRect(){return QwtDoubleRect(x_start, y_start, x_end-x_start, y_end-y_start).normalized();};
+  	QwtDoubleRect boundingRect();
 	//! Set the X and Y coordinate intervals
 	void setCoordinates(double xs, double xe, double ys, double ye);
 

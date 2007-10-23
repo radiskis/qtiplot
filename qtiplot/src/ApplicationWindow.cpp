@@ -1541,12 +1541,35 @@ void ApplicationWindow::plotHorizontalBars()
 	generate2DGraph(Graph::HorizontalBars);
 }
 
-void ApplicationWindow::plotHistogram()
+MultiLayer* ApplicationWindow::plotHistogram()
 {
-    if (!ws->activeWindow())
-		return;
+    return generate2DGraph(Graph::Histogram);
+}
 
-    generate2DGraph(Graph::Histogram);
+MultiLayer* ApplicationWindow::plotHistogram(Matrix *m)
+{
+	if (!m) {
+		m = (Matrix*)ws->activeWindow();
+		if (!m || !m->isA("Matrix"))
+			return 0;
+	}
+	
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	MultiLayer* g = new MultiLayer("", ws, 0);
+	g->setAttribute(Qt::WA_DeleteOnClose);
+
+	Graph* plot = g->addLayer();
+	setPreferences(plot);
+
+	plot->addHistogram(m);
+	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
+	g->setMargins(5, 5, 5, 5);
+	g->arrangeLayers(true, false);
+
+	emit modified();
+	QApplication::restoreOverrideCursor();
+	return g;
 }
 
 void ApplicationWindow::plotArea()
@@ -12146,12 +12169,17 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 	Graph* plot = g->addLayer();
 	setPreferences(plot);
 
-	plot->plotSpectrogram(m, Graph::GrayScale);
+	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
+	if (!s)
+		return 0;
+	
+	s->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
 	plot->enableAxis(QwtPlot::xTop, true);
-	plot->setScale(QwtPlot::xTop, m->xStart(), m->xEnd());
+	plot->setScale(QwtPlot::xTop, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
 	plot->enableAxis(QwtPlot::xBottom, false);
 	plot->enableAxis(QwtPlot::yRight, false);
-	plot->invertScale(QwtPlot::yLeft);
+	plot->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+					0.0, 5, 5, Graph::Linear, true);
 	plot->setAxisTitle(QwtPlot::yLeft, QString::null);
 	plot->setAxisTitle(QwtPlot::xTop, QString::null);
 	plot->setTitle(QString::null);
@@ -12167,6 +12195,11 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 
 MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 {
+	if (type == Graph::ImagePlot)
+		return plotImage(m);
+	else if (type == Graph::Histogram)
+		return plotHistogram(m);
+	
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
@@ -14228,37 +14261,21 @@ bool ApplicationWindow::validFor2DPlot(Table *table)
 	return true;
 }
 
-void ApplicationWindow::generate2DGraph(Graph::CurveType type)
+MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
 {
 	if (!ws->activeWindow())
-		return;
+		return 0;
 
     if (ws->activeWindow()->inherits("Table")){
         Table *table = static_cast<Table *>(ws->activeWindow());
         if (!validFor2DPlot(table))
-            return;
+            return 0;
 
         Q3TableSelection sel = table->getSelection();
-        multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
+        return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
     } else if (ws->activeWindow()->isA("Matrix")){
         Matrix *m = static_cast<Matrix *>(ws->activeWindow());
-
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-        MultiLayer* g = new MultiLayer("", ws, 0);
-        g->setAttribute(Qt::WA_DeleteOnClose);
-
-        Graph* plot = g->addLayer();
-        setPreferences(plot);
-
-        plot->plotHistogram(m);
-        initMultilayerPlot(g, generateUniqueName(tr("Graph")));
-        g->setMargins(5, 5, 5, 5);
-        g->arrangeLayers(true, false);
-
-        emit modified();
-        QApplication::restoreOverrideCursor();
-        //return g;
+        return plotHistogram(m);
     }
 }
 
