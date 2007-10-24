@@ -65,7 +65,7 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
 
 	topLayout->addWidget( boxNumericDisplay, 2, 1 );
 	boxPrecision = new QSpinBox();
-	boxPrecision->setRange(0,100);
+	boxPrecision->setRange(0, 13);
 	boxPrecision->setEnabled( false );
 	topLayout->addWidget( boxPrecision, 2, 2 );
 

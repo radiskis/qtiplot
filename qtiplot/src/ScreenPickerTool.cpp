@@ -92,6 +92,8 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
                             d_selection_marker.attach(d_graph->plotWidget());
                         d_graph->plotWidget()->replot();
 						emit selected(d_selection_marker.value());
+						QString info;
+                        emit statusText(info.sprintf("x=%g; y=%g", pos.x(), pos.y()));
 						return true;
 					}
 					default:
@@ -112,29 +114,23 @@ DrawPointTool::DrawPointTool(ApplicationWindow *app, Graph *graph, const QObject
 	d_table = NULL;
 }
 
-void DrawPointTool::append(const QPoint &point)
+void DrawPointTool::appendPoint(const QwtDoublePoint &pos)
 {
 	if (!d_app)
 		return;
-	
-	QwtDoublePoint pos = invTransform(point);
-	QString info;
-	info.sprintf("x=%g; y=%g", pos.x(), pos.y());
-	emit statusText(info);
 
-	d_selection_marker.setValue(pos);
-	if (d_selection_marker.plot() == NULL)
-		d_selection_marker.attach(d_graph->plotWidget());
-	
+    QString info;
+	emit statusText(info.sprintf("x=%g; y=%g", pos.x(), pos.y()));
+
 	if (!d_table){
 		d_table = d_app->newHiddenTable(d_app->generateUniqueName(tr("Draw")), "", 30, 2, "");
 		d_app->modifiedProject();
 	}
-	
+
 	int rows = 0;
 	if (d_curve)
 		rows = d_curve->dataSize();
-	
+
 	if (d_table->numRows() <= rows)
 		d_table->setNumRows(rows + 10);
 
@@ -145,12 +141,45 @@ void DrawPointTool::append(const QPoint &point)
 		d_curve = new DataCurve(d_table, d_table->colName(0), d_table->colName(1));
 		d_curve->setAxis(QwtPlot::xBottom, QwtPlot::yLeft);
 		d_curve->setPen(QPen(Qt::black, d_app->defaultCurveLineWidth));
-		d_curve->setSymbol(QwtSymbol(QwtSymbol::Ellipse, QBrush(Qt::black), 
-						  QPen(Qt::black, d_app->defaultCurveLineWidth), 
+		d_curve->setSymbol(QwtSymbol(QwtSymbol::Ellipse, QBrush(Qt::black),
+						  QPen(Qt::black, d_app->defaultCurveLineWidth),
 						  QSize(d_app->defaultSymbolSize, d_app->defaultSymbolSize)));
 		d_graph->insertPlotItem(d_curve, Graph::LineSymbols);
 	}
-			
+
 	d_curve->setFullRange();
 	d_graph->updatePlot();
+}
+
+bool DrawPointTool::eventFilter(QObject *obj, QEvent *event)
+{
+	switch(event->type()) {
+		case QEvent::MouseButtonDblClick:
+			appendPoint(d_selection_marker.value());
+			return true;
+		case QEvent::KeyPress:
+			{
+				QKeyEvent *ke = (QKeyEvent*) event;
+				switch(ke->key()) {
+					case Qt::Key_Enter:
+					case Qt::Key_Return:
+					{
+                        QwtDoublePoint pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
+                        d_selection_marker.setValue(pos);
+                        if (d_selection_marker.plot() == NULL)
+                            d_selection_marker.attach(d_graph->plotWidget());
+                        d_graph->plotWidget()->replot();
+						emit selected(d_selection_marker.value());
+
+						appendPoint(pos);
+						return true;
+					}
+					default:
+						break;
+				}
+			}
+		default:
+			break;
+	}
+	return QwtPlotPicker::eventFilter(obj, event);
 }

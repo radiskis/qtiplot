@@ -75,7 +75,7 @@ void Table::init(int rows, int cols)
 	selectedCol=-1;
 	d_saved_cells = 0;
 	d_show_comments = false;
-	d_numeric_precision = 14;
+	d_numeric_precision = 13;
 
 	setBirthDate(QDateTime::currentDateTime().toString(Qt::LocalDate));
 
