@@ -579,6 +579,7 @@ public slots:
 	void addTimeStamp();
 	void drawLine();
 	void drawArrow();
+	void drawPoints();
 	void addText();
 	void disableAddText();
 	void addImage();
@@ -1172,7 +1173,7 @@ private:
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote;
 	QAction *actionShowScriptWindow;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
-    QAction *actionDeleteRows;
+    QAction *actionDeleteRows, *actionDrawPoints;
 	QActionGroup* dataTools;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints;
 	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;

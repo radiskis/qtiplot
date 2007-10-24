@@ -3175,15 +3175,11 @@ void Table::goToRow(int row)
 void Table::setColumnHeader(int index, const QString& label)
 {
 	Q3Header *head = d_table->horizontalHeader();
-
-	if (d_show_comments)
-	{
+	if (d_show_comments){
 		QString s = label;
-
 		int lines = d_table->columnWidth(index)/d_table->horizontalHeader()->fontMetrics().averageCharWidth();
 		head->setLabel(index, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[index]);
-	}
-	else
+	} else
 		head->setLabel(index, label);
 }
 
@@ -3336,6 +3332,14 @@ void Table::moveColumnBy(int cols)
     d_table->selectColumn(newPos);
 }
 
+void Table::resetHeader()
+{
+	int cols = d_table->numCols();
+	for (int i=0; i<cols; i++){
+	    comments[i] = QString::null;
+		col_label[i] = QString::number(i+1);
+	}
+}
 /*****************************************************************************
  *
  * Class MyTable

@@ -32,6 +32,7 @@
 
 #include "ImportASCIIDialog.h"
 #include "ApplicationWindow.h"
+#include "Table.h"
 
 #include <QGridLayout>
 #include <QVBoxLayout>
@@ -40,7 +41,7 @@
 #include <QPushButton>
 #include <QRegExp>
 #include <QMessageBox>
-
+	
 ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent, bool extended, Qt::WFlags flags )
 : ExtensibleFileDialog(parent, extended, flags )
 {
@@ -176,8 +177,21 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_help_button = new QPushButton(tr("&Help"));
 	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
 	meta_options_layout->addWidget(d_help_button);
+	d_preview_button = new QPushButton(tr("&Preview"));
+	connect(d_preview_button, SIGNAL(clicked()), this, SLOT(preview()));
+	meta_options_layout->addWidget(d_preview_button);
 	meta_options_layout->addStretch();
 	main_layout->addLayout(meta_options_layout);
+	
+	QHBoxLayout *preview_layout = new QHBoxLayout();
+	d_preview_table = new Table(ScriptingLangManager::newEnv((ApplicationWindow *)parent()), 30, 2, tr("Preview"), 0, 0);
+	d_preview_table->setAttribute(Qt::WA_DeleteOnClose);
+	d_preview_table->showComments(true);
+	int height = d_preview_table->table()->horizontalHeader()->height();
+	d_preview_table->setMinimumHeight(2*height);
+	d_preview_table->setMaximumHeight(5*height);
+	preview_layout->addWidget(d_preview_table);
+	main_layout->addLayout(preview_layout);
 }
 
 void ImportASCIIDialog::setColumnSeparator(const QString& sep)
@@ -279,4 +293,16 @@ QLocale ImportASCIIDialog::decimalSeparators()
         break;
     }
 	return locale;
+}
+
+void ImportASCIIDialog::preview()
+{
+	d_preview_table->resetHeader();
+	d_preview_table->importASCII(selectedFiles()[0], columnSeparator(), d_ignored_lines->value(), 
+							d_rename_columns->isChecked(), d_strip_spaces->isChecked(), 
+							d_simplify_spaces->isChecked(), d_import_comments->isChecked(), false,
+                            d_comment_string->text(), d_read_only->isChecked());
+	
+	if (d_import_dec_separators->isChecked())
+		d_preview_table->updateDecimalSeparators(decimalSeparators());
 }

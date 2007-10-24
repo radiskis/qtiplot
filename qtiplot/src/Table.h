@@ -77,7 +77,8 @@ public:
 	void updateDecimalSeparators();
 	//! Updates the decimal separators when importing ASCII files on user request
 	void updateDecimalSeparators(const QLocale& oldSeparators);
-
+	void resetHeader();
+	
 public slots:
 	MyTable* table(){return d_table;};
 	void copy(Table *m);
