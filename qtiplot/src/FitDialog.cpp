@@ -913,8 +913,9 @@ void FitDialog::showUserFunctions()
 
 void FitDialog::setBuiltInFunctionNames()
 {
-	builtInFunctionNames << "Boltzmann" << "ExpGrowth" << "ExpDecay1" << "ExpDecay2" << "ExpDecay3"
-		<< "Logistic" << "GaussAmp" << "Gauss" << "Lorentz" <<"Polynomial";
+	builtInFunctionNames << tr("Boltzmann") << tr("ExpGrowth") << tr("ExpDecay1")
+		<< tr("ExpDecay2") << tr("ExpDecay3") << tr("Logistic")
+		<< tr("GaussAmp") << tr("Gauss") << tr("Lorentz") << tr("Polynomial");
 }
 
 void FitDialog::setBuiltInFunctions()
@@ -1200,38 +1201,38 @@ void FitDialog::accept()
 void FitDialog::fitBuiltInFunction(const QString& function, double* initVal)
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (function == "ExpDecay1")
+	if (function == tr("ExpDecay1"))
 	{
 		initVal[1] = 1/initVal[1];
 		fitter = new ExponentialFit(app, graph);
 	}
-	else if (function == "ExpGrowth")
+	else if (function == tr("ExpGrowth"))
 	{
 		initVal[1] = -1/initVal[1];
 		fitter = new ExponentialFit(app, graph, true);
 	}
-	else if (function == "ExpDecay2")
+	else if (function == tr("ExpDecay2"))
 	{
 		initVal[1] = 1/initVal[1];
 		initVal[3] = 1/initVal[3];
 		fitter = new TwoExpFit(app, graph);
 	}
-	else if (function == "ExpDecay3")
+	else if (function == tr("ExpDecay3"))
 	{
 		initVal[1] = 1/initVal[1];
 		initVal[3] = 1/initVal[3];
 		initVal[5] = 1/initVal[5];
 		fitter = new ThreeExpFit(app, graph);
 	}
-	else if (function == "Boltzmann")
+	else if (function == tr("Boltzmann"))
 		fitter = new SigmoidalFit(app, graph);
-	else if (function == "GaussAmp")
+	else if (function == tr("GaussAmp"))
 		fitter = new GaussAmpFit(app, graph);
-	else if (function == "Gauss")
+	else if (function == tr("Gauss"))
 		fitter = new MultiPeakFit(app, graph, MultiPeakFit::Gauss, polynomOrderBox->value());
-	else if (function == "Lorentz")
+	else if (function == tr("Lorentz"))
 		fitter = new MultiPeakFit(app, graph, MultiPeakFit::Lorentz, polynomOrderBox->value());
-    else if (function == "Logistic")
+    else if (function == tr("Logistic"))
 		fitter = new LogisticFit(app, graph);
 
 	else if (function == tr("Polynomial"))
