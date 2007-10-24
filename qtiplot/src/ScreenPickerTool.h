@@ -38,7 +38,7 @@
 class ApplicationWindow;
 class Table;
 class DataCurve;
-	
+
 /*!Plot tool for selecting arbitrary points.
  *
  * This is a rather thin wrapper around QwtPlotPicker, providing selection of points
@@ -50,7 +50,7 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 	public:
 		ScreenPickerTool(Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
 		virtual ~ScreenPickerTool();
-		virtual bool eventFilter(QObject *obj, QEvent *event);
+
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
 		 *
@@ -58,6 +58,7 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 		 */
 		void statusText(const QString&);
 	protected:
+        virtual bool eventFilter(QObject *obj, QEvent *event);
 		virtual void append(const QPoint &point);
 		QwtPlotMarker d_selection_marker;
 };
@@ -70,9 +71,10 @@ class DrawPointTool : public ScreenPickerTool
 	Q_OBJECT
 	public:
 		DrawPointTool(ApplicationWindow *app, Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
-	
+
 	protected:
-		virtual void append(const QPoint &point);
+        virtual bool eventFilter(QObject *obj, QEvent *event);
+		void appendPoint(const QwtDoublePoint &point);
 		DataCurve *d_curve;
 		Table *d_table;
 		ApplicationWindow *d_app;

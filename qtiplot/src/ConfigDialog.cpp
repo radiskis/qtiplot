@@ -597,7 +597,7 @@ void ConfigDialog::initAppPage()
 	lblAppPrecision = new QLabel();
 	numericFormatLayout->addWidget(lblAppPrecision, 0, 0);
 	boxAppPrecision = new QSpinBox();
-	boxAppPrecision->setRange(0, 16);
+	boxAppPrecision->setRange(0, 14);
 	boxAppPrecision->setValue(app->d_decimal_digits);
 	numericFormatLayout->addWidget(boxAppPrecision, 0, 1);
 
@@ -1118,9 +1118,9 @@ void ConfigDialog::apply()
 
     app->d_thousands_sep = !boxThousandsSeparator->isChecked();
     app->setLocale(locale);
-	
+
 	if (generalDialog->currentWidget() == appTabWidget &&
-		appTabWidget->currentWidget() == numericFormatPage && 
+		appTabWidget->currentWidget() == numericFormatPage &&
 		boxUpdateSeparators->isChecked()){
     	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         QList<QWidget*> *lst = app->windowsList();

@@ -411,7 +411,7 @@ void ApplicationWindow::initGlobalConstants()
 	if (!d_thousands_sep)
         d_locale.setNumberOptions(QLocale::OmitGroupSeparator);
 
-	d_decimal_digits = 16;
+	d_decimal_digits = 13;
 
 	d_extended_open_dialog = true;
 	d_extended_export_dialog = true;
@@ -640,13 +640,12 @@ void ApplicationWindow::initToolBars()
 	btnPicker->setIcon(QIcon(QPixmap(cursor_16)) );
 	plotTools->addAction(btnPicker);
 
-	actionDrawPoints = new QAction(tr("&Draw Points"), this);
-	//actionDrawPoints->setShortcut( tr("Ctrl+ALT+D") );
+	actionDrawPoints = new QAction(tr("&Draw Data Points"), this);
 	actionDrawPoints->setActionGroup(dataTools);
 	actionDrawPoints->setCheckable( true );
 	actionDrawPoints->setIcon(QIcon(QPixmap(draw_points_xpm)) );
 	plotTools->addAction(actionDrawPoints);
-	
+
 	btnMovePoints = new QAction(tr("&Move Data Points..."), this);
 	btnMovePoints->setShortcut( tr("Ctrl+ALT+M") );
 	btnMovePoints->setActionGroup(dataTools);
@@ -1561,7 +1560,7 @@ MultiLayer* ApplicationWindow::plotHistogram(Matrix *m)
 		if (!m || !m->isA("Matrix"))
 			return 0;
 	}
-	
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = new MultiLayer("", ws, 0);
@@ -1798,18 +1797,14 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows)
-	{
+	foreach(QWidget *w, *windows){
 		if (w->isA("Graph3D") && ((Graph3D*)w)->matrix() == m)
 			((Graph3D*)w)->clearData();
-		else if (w->isA("MultiLayer"))
-		{
+		else if (w->isA("MultiLayer")){
 			QWidgetList graphsList = ((MultiLayer*)w)->graphPtrs();
-			for (int j=0; j<(int)graphsList.count(); j++)
-			{
+			for (int j=0; j<(int)graphsList.count(); j++){
 				Graph* g = (Graph*)graphsList.at(j);
-				for (int i=0; i<g->curves(); i++)
-				{
+				for (int i=0; i<g->curves(); i++){
 					Spectrogram *sp = (Spectrogram *)g->plotItem(i);
 					if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->matrix() == m)
 						g->removeCurve(i);
@@ -4323,7 +4318,7 @@ void ApplicationWindow::readSettings()
 	if (!d_thousands_sep)
         d_locale.setNumberOptions(QLocale::OmitGroupSeparator);
 
-	d_decimal_digits = settings.value("/DecimalDigits", 16).toInt();
+	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
 
 	//restore dock windows and tool bars
 	restoreState(settings.value("/DockWindows").toByteArray());
@@ -6966,8 +6961,7 @@ void ApplicationWindow::differentiate()
 
 void ApplicationWindow::showResults(bool ok)
 {
-	if (ok)
-	{
+	if (ok){
 		if (!logInfo.isEmpty())
 			results->setText(logInfo);
 		else
@@ -6977,8 +6971,7 @@ void ApplicationWindow::showResults(bool ok)
 		QTextCursor cur = results->textCursor();
 		cur.movePosition(QTextCursor::End);
 		results->setTextCursor(cur);
-	}
-	else
+	} else
 		logWindow->hide();
 }
 
@@ -11988,6 +11981,9 @@ void ApplicationWindow::translateActionsStrings()
 	btnPicker->setMenuText(tr("S&creen Reader"));
 	btnPicker->setToolTip(tr("Screen reader"));
 
+    actionDrawPoints->setMenuText(tr("&Draw Data Points"));
+    actionDrawPoints->setToolTip(tr("&Draw Data Points"));
+
 	btnMovePoints->setMenuText(tr("&Move Data Points..."));
 	btnMovePoints->setShortcut(tr("Ctrl+ALT+M"));
 	btnMovePoints->setToolTip(tr("Move data points"));
@@ -12203,7 +12199,7 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
 	if (!s)
 		return 0;
-	
+
 	s->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
 	plot->enableAxis(QwtPlot::xTop, true);
 	plot->setScale(QwtPlot::xTop, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
@@ -12230,7 +12226,7 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 		return plotImage(m);
 	else if (type == Graph::Histogram)
 		return plotHistogram(m);
-	
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
