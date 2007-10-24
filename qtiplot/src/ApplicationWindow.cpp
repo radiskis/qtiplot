@@ -1805,9 +1805,15 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 			for (int j=0; j<(int)graphsList.count(); j++){
 				Graph* g = (Graph*)graphsList.at(j);
 				for (int i=0; i<g->curves(); i++){
-					Spectrogram *sp = (Spectrogram *)g->plotItem(i);
-					if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->matrix() == m)
-						g->removeCurve(i);
+				    if (g->curveType(i) == Graph::Histogram){
+                        QwtHistogram *h = (QwtHistogram *)g->plotItem(i);
+                        if (h && h->matrix() == m)
+                            g->removeCurve(i);
+				    } else {
+                        Spectrogram *sp = (Spectrogram *)g->plotItem(i);
+                        if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->matrix() == m)
+                            g->removeCurve(i);
+				    }
 				}
 			}
 		}
