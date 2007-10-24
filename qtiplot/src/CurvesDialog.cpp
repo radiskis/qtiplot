@@ -78,6 +78,7 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 	boxMatrixStyle->addItem( QPixmap(color_map_xpm), tr("Contour - Color Fill"));
 	boxMatrixStyle->addItem( QPixmap(contour_map_xpm), tr("Contour Lines"));
 	boxMatrixStyle->addItem( QPixmap(gray_map_xpm), tr("Gray Scale Map"));
+	boxMatrixStyle->addItem( QPixmap(histogram_xpm), tr("Histogram"));
 	boxMatrixStyle->hide();
     hl->addWidget(boxMatrixStyle);
     hl->addStretch();
@@ -356,6 +357,9 @@ bool CurvesDialog::addCurve(const QString& name)
             break;
             case 2:
                 d_graph->plotSpectrogram(m, Graph::GrayScale);
+            break;
+			case 3:
+                d_graph->addHistogram(m);
             break;
         }
 

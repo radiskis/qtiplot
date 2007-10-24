@@ -2,10 +2,8 @@
     File                 : ScreenPickerTool.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for selecting arbitrary points.
 
  ***************************************************************************/
@@ -37,6 +35,10 @@
 #include <qwt_plot_marker.h>
 #include <qwt_plot_picker.h>
 
+class ApplicationWindow;
+class Table;
+class DataCurve;
+	
 /*!Plot tool for selecting arbitrary points.
  *
  * This is a rather thin wrapper around QwtPlotPicker, providing selection of points
@@ -60,5 +62,20 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 		QwtPlotMarker d_selection_marker;
 };
 
-#endif // ifndef SCREEN_PICKER_TOOL_H
+/*!Plot tool for drawing arbitrary points.
+ *
+ */
+class DrawPointTool : public ScreenPickerTool
+{
+	Q_OBJECT
+	public:
+		DrawPointTool(ApplicationWindow *app, Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
+	
+	protected:
+		virtual void append(const QPoint &point);
+		DataCurve *d_curve;
+		Table *d_table;
+		ApplicationWindow *d_app;
+};
 
+#endif // ifndef SCREEN_PICKER_TOOL_H

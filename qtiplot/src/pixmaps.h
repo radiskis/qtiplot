@@ -31,6 +31,22 @@
 #define PIXMAPS_H
 
 /* XPM */
+static const char * draw_points_xpm[] = {
+"10 10 2 1",
+" 	c None",
+".	c #BC0F0F",
+"  ..      ",
+"  ..      ",
+"        ..",
+"        ..",
+"..        ",
+"..      ..",
+"        ..",
+"          ",
+"    ..    ",
+"    ..    "};
+
+/* XPM */
 static const char * image_plot_xpm[] = {
 "14 14 6 1",
 " 	c None",

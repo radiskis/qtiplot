@@ -640,6 +640,13 @@ void ApplicationWindow::initToolBars()
 	btnPicker->setIcon(QIcon(QPixmap(cursor_16)) );
 	plotTools->addAction(btnPicker);
 
+	actionDrawPoints = new QAction(tr("&Draw Points"), this);
+	//actionDrawPoints->setShortcut( tr("Ctrl+ALT+D") );
+	actionDrawPoints->setActionGroup(dataTools);
+	actionDrawPoints->setCheckable( true );
+	actionDrawPoints->setIcon(QIcon(QPixmap(draw_points_xpm)) );
+	plotTools->addAction(actionDrawPoints);
+	
 	btnMovePoints = new QAction(tr("&Move Data Points..."), this);
 	btnMovePoints->setShortcut( tr("Ctrl+ALT+M") );
 	btnMovePoints->setActionGroup(dataTools);
@@ -1119,6 +1126,7 @@ void ApplicationWindow::initPlotDataMenu()
 
 	plotDataMenu->insertSeparator();
 
+	plotDataMenu->addAction(actionDrawPoints);
 	plotDataMenu->addAction(btnMovePoints);
 	plotDataMenu->addAction(btnRemovePoints);
 }
@@ -7003,6 +7011,27 @@ void ApplicationWindow::showScreenReader()
 	displayBar->show();
 }
 
+void ApplicationWindow::drawPoints()
+{
+	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+		return;
+
+	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
+	if (plot->isEmpty()){
+		QMessageBox::warning(this,tr("QtiPlot - Warning"),
+				tr("<h4>There are no plot layers available in this window.</h4>"
+					"<p><h4>Please add a layer and try again!</h4>"));
+		btnPointer->setChecked(true);
+		return;
+	}
+
+	QWidgetList graphsList=plot->graphPtrs();
+	foreach(QWidget *w, graphsList)
+		((Graph *)w)->setActiveTool(new DrawPointTool(this, (Graph*)w, info, SLOT(setText(const QString&))));
+
+	displayBar->show();
+}
+
 void ApplicationWindow::showRangeSelectors()
 {
 	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
@@ -10716,6 +10745,8 @@ void ApplicationWindow::pickDataTool( QAction* action )
 		movePoints();
 	else if (action == btnRemovePoints)
 		removePoints();
+	else if (action == actionDrawPoints)
+		drawPoints();
 	else if (action == btnZoomIn)
 		zoomIn();
 	else if (action == btnZoomOut)

@@ -38,6 +38,7 @@
 #include <QSpinBox>
 #include <QLineEdit>
 
+class Table;
 class QGroupBox;
 class QPushButton;
 
@@ -104,6 +105,7 @@ private slots:
 	void displayHelp();
 	//! For #Overwrite mode, allow only one file to be selected.
 	void updateImportMode(int mode);
+	void preview();
 
 private:
 	void closeEvent(QCloseEvent*);
@@ -119,6 +121,8 @@ private:
 	QSpinBox *d_ignored_lines;
 	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces, *d_import_comments;
 	QLineEdit *d_comment_string;
+	Table *d_preview_table;
+	QPushButton *d_preview_button;
 };
 
 

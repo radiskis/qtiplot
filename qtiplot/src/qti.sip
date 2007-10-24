@@ -349,6 +349,7 @@ public:
 	void setHeaderViewType(HeaderViewType);
 	void setGrayScale();
 	void setRainbowColorMap();
+	void resetView();
 
 private:
   Matrix(const Matrix&);
