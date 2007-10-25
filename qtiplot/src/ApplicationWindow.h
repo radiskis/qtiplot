@@ -123,7 +123,7 @@ public:
 
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
-	
+
 public:
 	/*! Generates a new unique name starting with string /param name.
 	You can force the output to be a name different from /param name,
@@ -539,7 +539,6 @@ public slots:
 	void initPlot3DToolBar();
 	void disableActions();
 	void customColumnActions();
-	void hideToolbars();
 	void disableToolbars();
 	void customToolBars(QWidget* w);
 	void customMenu(QWidget* w);
@@ -1118,7 +1117,7 @@ private:
 	QWidgetList *hiddenWindows, *outWindows;
 	QLineEdit *info;
 	QWidget *lastModified;
-	
+
 	QMenu *windowsMenu, *foldersMenu, *view,*graph,*file,*format,*calcul,*edit,*dataMenu,*recent, *exportPlot;
 	QMenu *help,*type,*plot2D,*plot3D, *specialPlot, *panels,*stat,*decay, *filter;
 	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tableMenu, *tablesDepend;
