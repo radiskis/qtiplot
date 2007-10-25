@@ -121,23 +121,9 @@ public:
 	enum ShowWindowsPolicy{HideAll, ActiveFolder, SubFolders};
 	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow};
 
-	QAssistantClient *assistant;
-	ScriptWindow *scriptWindow;
-	QTranslator *appTranslator, *qtTranslator;
-	QDockWidget *logWindow, *explorerWindow;
-	QTextEdit *results;
-#ifdef SCRIPTING_CONSOLE
-	QDockWidget *consoleWindow;
-	QTextEdit *console;
-#endif
-	QWorkspace* ws;
-    QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
 	FolderListView *lv, *folders;
-	QToolButton *btnResults;
-	QWidgetList *hiddenWindows, *outWindows;
-	QLineEdit *info;
-	QWidget *lastModified;
-
+	QDockWidget *logWindow;
+	
 public:
 	/*! Generates a new unique name starting with string /param name.
 	You can force the output to be a name different from /param name,
@@ -554,6 +540,7 @@ public slots:
 	void disableActions();
 	void customColumnActions();
 	void hideToolbars();
+	void disableToolbars();
 	void customToolBars(QWidget* w);
 	void customMenu(QWidget* w);
 	void windowActivated(QWidget *w);
@@ -817,8 +804,6 @@ public slots:
 
 	bool alreadyUsedName(const QString& label);
 	bool projectHas2DPlots();
-	bool projectHas3DPlots();
-	bool projectHasMatrices();
 
 	//! Returns a pointer to the window named "name"
 	QWidget* window(const QString& name);
@@ -963,12 +948,19 @@ public slots:
 	void scriptsDirPathChanged(const QString& path);
 	//@}
 
+	void showToolBarsMenu();
+
 signals:
 	void modified();
 
+private:
+	virtual QMenu * createPopupMenu(){return NULL;};
+
 // TODO: a lot of this stuff should be private
 public:
-    bool d_backup_files;
+	bool d_matrix_tool_bar, d_file_tool_bar, d_table_tool_bar, d_column_tool_bar, d_edit_tool_bar;
+	bool d_plot_tool_bar, d_plot3D_tool_bar, d_display_tool_bar;
+	bool d_backup_files;
 	WindowType d_init_window_type;
 	QRect d_script_win_rect, d_app_rect;
 	bool d_script_win_on_top;
@@ -1111,6 +1103,22 @@ private:
 	Graph *lastCopiedLayer;
 	QSplitter *explorerSplitter;
 
+	QAssistantClient *assistant;
+	ScriptWindow *scriptWindow;
+	QTranslator *appTranslator, *qtTranslator;
+	QDockWidget *explorerWindow;
+	QTextEdit *results;
+#ifdef SCRIPTING_CONSOLE
+	QDockWidget *consoleWindow;
+	QTextEdit *console;
+#endif
+	QWorkspace* ws;
+    QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
+	QToolButton *btnResults;
+	QWidgetList *hiddenWindows, *outWindows;
+	QLineEdit *info;
+	QWidget *lastModified;
+	
 	QMenu *windowsMenu, *foldersMenu, *view,*graph,*file,*format,*calcul,*edit,*dataMenu,*recent, *exportPlot;
 	QMenu *help,*type,*plot2D,*plot3D, *specialPlot, *panels,*stat,*decay, *filter;
 	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tableMenu, *tablesDepend;
@@ -1180,7 +1188,7 @@ private:
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
 	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix;
     QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
-    QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot;
+    QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars;
 
 	QActionGroup* coord;
 	QAction* Box;

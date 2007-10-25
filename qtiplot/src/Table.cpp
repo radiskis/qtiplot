@@ -748,7 +748,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight)
 		if (enumerateRight)
             newLabel += QString::number(n);
 
-        commands.replaceInStrings("col(\"" + colLabel(i) + "\")", "col(\"" + newLabel + "\")");
+        commands.replaceInStrings(col_label[i], newLabel);
 		emit changedColHeader(caption + col_label[i], caption + newLabel);
         col_label[i] = newLabel;
 		n++;
