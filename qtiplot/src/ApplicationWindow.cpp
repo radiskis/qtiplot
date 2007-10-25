@@ -271,7 +271,8 @@ void ApplicationWindow::init(bool factorySettings)
 		readSettings();
 	createLanguagesList();
 	insertTranslatedStrings();
-
+	disableToolbars();
+	
 	assistant = new QAssistantClient( QString(), this );
 
 	actionNextWindow = new QAction(QIcon(QPixmap(next_xpm)), tr("&Next","next window"), this);
@@ -336,6 +337,15 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_matrix_tool_bar = true;
+	d_file_tool_bar = true;
+	d_table_tool_bar = true;
+	d_column_tool_bar = true;
+	d_edit_tool_bar = true;
+	d_plot_tool_bar = true;
+	d_plot3D_tool_bar = true;
+	d_display_tool_bar = false;
+
 	appStyle = qApp->style()->objectName();
 	d_app_rect = QRect();
 	projectname="untitled";
@@ -900,6 +910,7 @@ void ApplicationWindow::initMainMenu()
 	view = new QMenu(this);
 	view->setFont(appFont);
 	view->setCheckable(true);
+	view->addAction(actionToolBars);
 	view->addAction(actionShowPlotWizard);
 	view->addAction(actionShowExplorer);
 	view->addAction(actionShowLog);
@@ -1383,55 +1394,37 @@ void ApplicationWindow::customColumnActions()
 
 void ApplicationWindow::customToolBars(QWidget* w)
 {
-    plotTools->setEnabled (false);
-	tableTools->setEnabled (false);
-	columnTools->setEnabled (false);
-	plot3DTools->setEnabled (false);
-	plotMatrixBar->setEnabled (false);
-
+    disableToolbars();
 	if (w){
-		if (!projectHas3DPlots())
-			plot3DTools->hide();
-		if (!projectHas2DPlots())
-			plotTools->hide();
-		if (!projectHasMatrices())
-			plotMatrixBar->hide();
-		if ((int)tableWindows.count()<=0){
-			tableTools->hide();
-			columnTools->hide();
-		}
-
-		if (w->isA("MultiLayer")){
-			if (plotTools->isHidden())
-				plotTools->show();
-
+		if (w->isA("MultiLayer") && d_plot_tool_bar){
+			plotTools->show();
 			plotTools->setEnabled (true);
 		} else if (w->inherits("Table")){
-			if (tableTools->isHidden())
+			if (d_table_tool_bar){
 				tableTools->show();
-			if (columnTools->isHidden())
+				tableTools->setEnabled (true);
+			}
+			if (d_column_tool_bar){
 				columnTools->show();
-			tableTools->setEnabled (true);
-			columnTools->setEnabled (true);
-			customColumnActions();
-		} else if (w->isA("Matrix")) {
-			if (plotMatrixBar->isHidden())
-				plotMatrixBar->show();
+				columnTools->setEnabled (true);
+				customColumnActions();
+			}
+		} else if (w->isA("Matrix") && d_matrix_tool_bar) {
+			plotMatrixBar->show();
 			plotMatrixBar->setEnabled (true);
-		} else if (w->isA("Graph3D")){
-			if (plot3DTools->isHidden())
-				plot3DTools->show();
-
+		} else if (w->isA("Graph3D") && d_plot3D_tool_bar){
+			plot3DTools->show();
 			Graph3D* plot= (Graph3D*)w;
 			if (plot->plotStyle() == Qwt3D::NOPLOT)
 				plot3DTools->setEnabled (false);
 			else
 				plot3DTools->setEnabled (true);
-
 			custom3DActions(w);
 		}
-	} else
+	} else {
 		hideToolbars();
+		disableToolbars();
+	}
 }
 
 void ApplicationWindow::hideToolbars()
@@ -1441,6 +1434,15 @@ void ApplicationWindow::hideToolbars()
 	tableTools->hide();
 	columnTools->hide();
 	plotMatrixBar->hide();
+}
+
+void ApplicationWindow::disableToolbars()
+{
+	plotTools->setEnabled (false);
+	tableTools->setEnabled (false);
+	columnTools->setEnabled (false);
+	plot3DTools->setEnabled (false);
+	plotMatrixBar->setEnabled (false);
 }
 
 void ApplicationWindow::plot3DRibbon()
@@ -4327,7 +4329,7 @@ void ApplicationWindow::readSettings()
 	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
 
 	//restore dock windows and tool bars
-	restoreState(settings.value("/DockWindows").toByteArray());
+	restoreState(settings.value("/DockWindows").toByteArray());	
 	explorerSplitter->restoreState(settings.value("/ExplorerSplitter").toByteArray());
 	QList<int> lst = explorerSplitter->sizes();
 	for (int i=0; i< lst.count(); i++){
@@ -11555,6 +11557,9 @@ void ApplicationWindow::createActions()
 
 	actionEditFunction = new QAction(tr("&Edit Function..."), this);
 	connect(actionEditFunction, SIGNAL(activated()), this, SLOT(showFunctionDialog()));
+	
+	actionToolBars = new QAction(tr("Toolbars..."), this);
+	connect(actionToolBars, SIGNAL(activated()), this, SLOT(showToolBarsMenu()));
 }
 
 void ApplicationWindow::translateActionsStrings()
@@ -11988,7 +11993,7 @@ void ApplicationWindow::translateActionsStrings()
 	btnPicker->setToolTip(tr("Screen reader"));
 
     actionDrawPoints->setMenuText(tr("&Draw Data Points"));
-    actionDrawPoints->setToolTip(tr("&Draw Data Points"));
+    actionDrawPoints->setToolTip(tr("Draw Data Points"));
 
 	btnMovePoints->setMenuText(tr("&Move Data Points..."));
 	btnMovePoints->setShortcut(tr("Ctrl+ALT+M"));
@@ -12806,20 +12811,6 @@ bool ApplicationWindow::alreadyUsedName(const QString& label)
 	return false;
 }
 
-bool ApplicationWindow::projectHasMatrices()
-{
-	QWidgetList *windows = windowsList();
-	bool has = false;
-	foreach(QWidget *w, *windows){
-		if (w->isA("Matrix")){
-			has = true;
-			break;
-		}
-	}
-	delete windows;
-	return has;
-}
-
 bool ApplicationWindow::projectHas2DPlots()
 {
 	QWidgetList *windows = windowsList();
@@ -12832,19 +12823,6 @@ bool ApplicationWindow::projectHas2DPlots()
 	}
 	delete windows;
 	return hasPlots;
-}
-
-bool ApplicationWindow::projectHas3DPlots()
-{
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows){
-		if (w->isA("Graph3D")){
-			delete windows;
-			return true;
-		}
-	}
-	delete windows;
-	return false;
 }
 
 void ApplicationWindow::appendProject()
@@ -14441,4 +14419,86 @@ void ApplicationWindow::scriptsDirPathChanged(const QString& path)
 			((Note*)w)->setDirPath(path);
 	}
 	delete lst;
+}
+
+void ApplicationWindow::showToolBarsMenu()
+{
+	QMenu toolBarsMenu;
+	
+	QAction *actionFileTools = new QAction(fileTools->windowTitle(), this);
+	actionFileTools->setCheckable(true);
+	actionFileTools->setChecked(fileTools->isVisible());
+	connect(actionFileTools, SIGNAL(toggled(bool)), fileTools, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionFileTools);
+	
+	QAction *actionEditTools = new QAction(editTools->windowTitle(), this);
+	actionEditTools->setCheckable(true);
+	actionEditTools->setChecked(editTools->isVisible());
+	connect(actionEditTools, SIGNAL(toggled(bool)), editTools, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionEditTools);
+	
+	QAction *actionTableTools = new QAction(tableTools->windowTitle(), this);
+	actionTableTools->setCheckable(true);
+	actionTableTools->setChecked(tableTools->isVisible());
+	connect(actionTableTools, SIGNAL(toggled(bool)), tableTools, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionTableTools);
+	
+	QAction *actionColumnTools = new QAction(columnTools->windowTitle(), this);
+	actionColumnTools->setCheckable(true);
+	actionColumnTools->setChecked(columnTools->isVisible());
+	connect(actionColumnTools, SIGNAL(toggled(bool)), columnTools, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionColumnTools);
+	
+	QAction *actionPlotTools = new QAction(plotTools->windowTitle(), this);
+	actionPlotTools->setCheckable(true);
+	actionPlotTools->setChecked(plotTools->isVisible());
+	connect(actionPlotTools, SIGNAL(toggled(bool)), plotTools, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionPlotTools);
+	
+	QAction *actionMatrixTools = new QAction(plotMatrixBar->windowTitle(), this);
+	actionMatrixTools->setCheckable(true);
+	actionMatrixTools->setChecked(plotMatrixBar->isVisible());
+	connect(actionMatrixTools, SIGNAL(toggled(bool)), plotMatrixBar, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionMatrixTools);
+	
+	QAction *actionPlot3DTools = new QAction(plot3DTools->windowTitle(), this);
+	actionPlot3DTools->setCheckable(true);
+	actionPlot3DTools->setChecked(plot3DTools->isVisible());
+	connect(actionPlot3DTools, SIGNAL(toggled(bool)), plot3DTools, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionPlot3DTools);
+	
+	QAction *actionDisplayBar = new QAction(displayBar->windowTitle(), this);
+	actionDisplayBar->setCheckable(true);
+	actionDisplayBar->setChecked(displayBar->isVisible());
+	connect(actionDisplayBar, SIGNAL(toggled(bool)), displayBar, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionDisplayBar);
+	
+	QAction *action = toolBarsMenu.exec(QCursor::pos());
+	if (!action)
+		return;
+	
+	QWidget *w = ws->activeWindow();
+	
+	if (action->text() == plotMatrixBar->windowTitle()){
+		d_matrix_tool_bar = action->isChecked();
+		plotMatrixBar->setEnabled(w && w->isA("Matrix"));
+	} else if (action->text() == tableTools->windowTitle()){
+		d_table_tool_bar = action->isChecked();
+		tableTools->setEnabled(w && w->inherits("Table"));
+	} else if (action->text() == columnTools->windowTitle()){
+		d_column_tool_bar = action->isChecked();
+		columnTools->setEnabled(w && w->inherits("Table"));
+	} else if (action->text() == plotTools->windowTitle()){
+		d_plot_tool_bar = action->isChecked();
+		plotTools->setEnabled(w && w->isA("MultiLayer"));
+	} else if (action->text() == plot3DTools->windowTitle()){
+		d_plot3D_tool_bar = action->isChecked();
+		plot3DTools->setEnabled(w && w->isA("Graph3D"));
+	} else if (action->text() == fileTools->windowTitle()){
+		d_file_tool_bar = action->isChecked();
+	} else if (action->text() == editTools->windowTitle()){
+		d_edit_tool_bar = action->isChecked();
+	} else if (action->text() == displayBar->windowTitle()){
+		d_display_tool_bar = action->isChecked();
+	}
 }

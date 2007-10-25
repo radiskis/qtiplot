@@ -843,9 +843,6 @@ public:
 
   QWidgetList *windowsList() /PyName=windows/;
 
-  QTextEdit *results;
-//QTextEdit *console;
-
   // folders
   Folder *activeFolder() /NoDerived/;
 %MethodCode
