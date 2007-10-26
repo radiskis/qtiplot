@@ -43,6 +43,9 @@ class PolynomialFit : public Fit
 
 		virtual QString legendInfo();
 		void fit();
+	
+		int order(){return d_order;};
+		void setOrder(int order);
 
 		static QString generateFormula(int order);
 		static QStringList generateParameterList(int order);

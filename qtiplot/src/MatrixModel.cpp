@@ -126,6 +126,21 @@ double MatrixModel::data(int row, int col) const
 	return d_data[i];
 }
 
+double* MatrixModel::rowData(int row)
+{
+	double *data = new double [d_cols];
+	int aux = row*d_cols;
+	for (int i = 0; i < d_cols; i++){
+		double val = d_data[aux];
+		if (gsl_isnan(val))
+			data[i] = 0.0;
+		else
+			data[i] = val;
+		aux++;
+	}
+	return data;
+}
+
 QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int role) const
 {
     if (d_matrix->headerViewType() == Matrix::ColumnRow)

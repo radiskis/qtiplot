@@ -63,27 +63,37 @@ PolynomialFit::PolynomialFit(ApplicationWindow *parent, Table *t, const QString&
 
 void PolynomialFit::init()
 {
-	setObjectName(tr("Poly"));
+	setObjectName(tr("Polynomial"));
 	is_non_linear = false;
 	d_explanation = tr("Polynomial Fit");
+	setOrder(d_order);
+}
+
+void PolynomialFit::setOrder(int order)
+{
+	d_order = order;
 	d_p = d_order + 1;
     d_min_points = d_p;
 
+	if (covar) gsl_matrix_free(covar);
 	covar = gsl_matrix_alloc (d_p, d_p);
+	
+	if (d_results)
+		delete[] d_results;
 	d_results = new double[d_p];
 
 	d_formula = generateFormula(d_order);
 	d_param_names = generateParameterList(d_order);
 
+	d_param_explain.clear();
 	for (int i=0; i<d_p; i++)
 		d_param_explain << "";
 }
 
 QString PolynomialFit::generateFormula(int order)
 {
-	QString formula;
-	for (int i = 0; i < order+1; i++)
-	{
+	QString formula = QString::null;
+	for (int i = 0; i < order+1; i++){
 		QString par = "a" + QString::number(i);
 		formula += par;
 		if (i>0)
@@ -172,7 +182,6 @@ void PolynomialFit::fit()
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (app->writeFitResultsToLog)
 		app->updateLog(logFitInfo(d_results, 0, 0));
-
 }
 
 QString PolynomialFit::legendInfo()

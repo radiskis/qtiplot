@@ -30,6 +30,7 @@
 #include "Bar.h"
 #include "Cone3D.h"
 #include "MyParser.h"
+#include "MatrixModel.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -444,12 +445,11 @@ void Graph3D::addMatrixData(Matrix* m)
 
 	int cols = m->numCols();
 	int rows = m->numRows();
-	double **data_matrix = Matrix::allocateMatrixData(rows, cols);
-	for (int i = 0; i < rows; i++ ){
-		for (int j = 0; j < cols; j++)
-			data_matrix[i][j] = m->cell(i,j);
-	}
-
+	double **data_matrix = new double* [rows];
+	MatrixModel *model = m->matrixModel();
+	for (int i = 0; i < rows; i++ )
+		data_matrix[i] = model->rowData(i);
+	
 	sp->makeCurrent();
 	sp->loadFromData(data_matrix, rows, cols, m->xStart(), m->xEnd(),
 			m->yStart(), m->yEnd());
@@ -1375,10 +1375,8 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl,
 	int start_col = int((xl - d_matrix->xStart())/dx);
 
 	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
-	for (int j = 0; j < nr; j++)
-	{
-		for (int i = 0; i < nc; i++)
-		{
+	for (int j = 0; j < nr; j++){
+		for (int i = 0; i < nc; i++){
 			double val = d_matrix->cell(j + start_row, i + start_col);
 			if (val > zr)
 				data_matrix[i][j] = zr;

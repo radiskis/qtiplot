@@ -62,6 +62,7 @@ public:
 	QString saveToString();
 	QImage renderImage();
 
+    double* rowData(int);
 	double data(int row, int col) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);

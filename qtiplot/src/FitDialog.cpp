@@ -61,7 +61,7 @@
 #include <QLocale>
 #include <stdio.h>
 
-FitDialog::FitDialog( QWidget* parent, Qt::WFlags fl )
+FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
     setName( "FitDialog" );
@@ -73,7 +73,7 @@ FitDialog::FitDialog( QWidget* parent, Qt::WFlags fl )
     userFunctionParams = QStringList();
 
 	d_param_table = 0;
-	fitter = 0;
+	d_current_fit = 0;
 
 	tw = new QStackedWidget();
 
@@ -85,13 +85,12 @@ FitDialog::FitDialog( QWidget* parent, Qt::WFlags fl )
 	vl->addWidget(tw);
     setLayout(vl);
 
-	setBuiltInFunctionNames();
-	setBuiltInFunctions();
-
 	categoryBox->setCurrentRow (2);
 	funcBox->setCurrentRow (0);
 
 	loadPlugins();
+	setGraph(g);
+	initBuiltInFunctions();
 }
 
 void FitDialog::initFitPage()
@@ -254,9 +253,9 @@ void FitDialog::initEditPage()
 
 	polynomOrderBox = new QSpinBox();
     polynomOrderBox->setMinValue(1);
-	polynomOrderBox->setValue(2);
+	polynomOrderBox->setValue(1);
 	polynomOrderBox->hide();
-	connect(polynomOrderBox, SIGNAL(valueChanged(int)), this, SLOT(showExpression(int)));
+	connect(polynomOrderBox, SIGNAL(valueChanged(int)), this, SLOT(setNumPeaks(int)));
     hbox1->addWidget(polynomOrderBox);
 
 	buttonPlugins = new QPushButton(tr( "&Choose plugins folder..." ) );
@@ -336,7 +335,6 @@ void FitDialog::initAdvancedPage()
 	generatePointsBtn->setChecked(app->generateUniformFitPoints);
 	connect( generatePointsBtn, SIGNAL(clicked()), this, SLOT(enableApplyChanges()));
 
-
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(generatePointsBtn, 0, 0);
 
@@ -366,7 +364,7 @@ void FitDialog::initAdvancedPage()
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel( tr("Significant Digits")), 0, 1);
 	boxPrecision = new QSpinBox ();
-    boxPrecision->setRange(0, 15);
+    boxPrecision->setRange(0, 13);
 	boxPrecision->setValue (app->fit_output_precision);
 	connect( boxPrecision, SIGNAL(valueChanged (int)), this, SLOT(enableApplyChanges(int)));
     gl2->addWidget(boxPrecision, 0, 2);
@@ -456,13 +454,13 @@ void FitDialog::showParametersTable()
 		return;
 	}
 
-	if (!fitter){
+	if (!d_current_fit){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("Please perform a fit first and try again."));
 		return;
 	}
 
-	d_param_table = fitter->parametersTable(tableName);
+	d_param_table = d_current_fit->parametersTable(tableName);
 }
 
 void FitDialog::showCovarianceMatrix()
@@ -474,13 +472,13 @@ void FitDialog::showCovarianceMatrix()
 		return;
 	}
 
-	if (!fitter){
+	if (!d_current_fit){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("Please perform a fit first and try again."));
 		return;
 	}
 
-	fitter->covarianceMatrix(matrixName);
+	d_current_fit->covarianceMatrix(matrixName);
 }
 
 void FitDialog::showPointsBox(bool)
@@ -502,9 +500,9 @@ void FitDialog::setGraph(Graph *g)
 	if (!g)
 		return;
 
-	graph = g;
+	d_graph = g;
 	boxCurve->clear();
-	boxCurve->addItems(graph->analysableCurvesList());
+	boxCurve->addItems(d_graph->analysableCurvesList());
 
     QString selectedCurve = g->selectedCurveTitle();
 	if (!selectedCurve.isEmpty())
@@ -514,18 +512,18 @@ void FitDialog::setGraph(Graph *g)
 	}
     activateCurve(boxCurve->currentText());
 
-	connect (graph, SIGNAL(closedGraph()), this, SLOT(close()));
-	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
+	connect (d_graph, SIGNAL(closedGraph()), this, SLOT(close()));
+	connect (d_graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
 };
 
 void FitDialog::activateCurve(const QString& curveName)
 {
-	QwtPlotCurve *c = graph->curve(curveName);
+	QwtPlotCurve *c = d_graph->curve(curveName);
 	if (!c)
 		return;
 
 	double start, end;
-    graph->range(graph->curveIndex(curveName), &start, &end);
+    d_graph->range(d_graph->curveIndex(curveName), &start, &end);
     boxFrom->setText(QString::number(QMIN(start, end), 'g', 15));
     boxTo->setText(QString::number(QMAX(start, end), 'g', 15));
 };
@@ -553,7 +551,7 @@ void FitDialog::saveUserFunction()
 		return;
 	}
 
-	if (builtInFunctionNames.contains(boxName->text()))
+	if (builtInFunctionNames().contains(boxName->text()))
 	{
 		QMessageBox::critical(this, tr("QtiPlot - Error: function name"),
 				"<p><b>" + boxName->text() + "</b>" + tr(" is a built-in function name"
@@ -644,8 +642,7 @@ void FitDialog::showFitPage()
 		parameters = 7;
 	boxParams->setMinimumHeight(4+(parameters+1)*boxParams->horizontalHeader()->height());
 
-    for (int i = d_param_table_rows; i<(int)paramList.count(); i++)
-	{
+    for (int i = d_param_table_rows; i<(int)paramList.count(); i++){
         QTableWidgetItem *it = new QTableWidgetItem(paramList[i]);
         it->setFlags(!Qt::ItemIsEditable);
         it->setBackground(QBrush(Qt::lightGray));
@@ -668,8 +665,7 @@ void FitDialog::showFitPage()
 	{
         boxParams->showColumn(2);
 
-		for (int i = 0; i<boxParams->rowCount(); i++ )
-		{
+		for (int i = 0; i<boxParams->rowCount(); i++ ){
             QTableWidgetItem *it = new QTableWidgetItem();
             it->setFlags(!Qt::ItemIsEditable);
             it->setBackground(QBrush(Qt::lightGray));
@@ -706,51 +702,14 @@ void FitDialog::setFunction(bool ok)
 	btnAddTxt->setEnabled(!ok);
 	buttonClear->setEnabled(!ok);
 
-	if (ok)
-	{
+	if (ok){
 		boxName->setText(funcBox->currentItem()->text());
 		editBox->setText(explainBox->text());
 
 		if (categoryBox->currentRow() == 0 && (int)userFunctionParams.size() > 0)
 			boxParam->setText(userFunctionParams[funcBox->currentRow ()]);
 		else if (categoryBox->currentRow() == 1)
-		{
-			QStringList lst;
-			switch(funcBox->currentRow ())
-			{
-				case 0:
-					lst << "A1" << "A2" << "x0" << "dx";
-					break;
-				case 1:
-					lst << "A" << "t" << "y0";
-					break;
-				case 2:
-					lst << "A" << "t" << "y0";
-					break;
-				case 3:
-					lst << "A1" << "t1" << "A2" << "t2" << "y0";
-					break;
-				case 4:
-					lst << "A1" << "t1" << "A2" << "t2" << "A3" << "t3" << "y0";
-					break;
-                case 5:
-                    lst << "A1" << "A2" << "x0" << "p";
-					break;
-				case 6:
-					lst << "y0" << "A" << "xc" << "w";
-					break;
-				case 7:
-					lst = MultiPeakFit::generateParameterList(polynomOrderBox->value());
-					break;
-				case 8:
-					lst = MultiPeakFit::generateParameterList(polynomOrderBox->value());
-					break;
-				case 9:
-					lst = PolynomialFit::generateParameterList(polynomOrderBox->value());
-					break;
-			}
-			boxParam->setText(lst.join(", "));
-		}
+			boxParam->setText(d_current_fit->parameterNames().join(", "));
 		else if (categoryBox->currentRow() == 3 && (int)pluginParameters.size() > 0 )
 			boxParam->setText(pluginParameters[funcBox->currentRow()]);
 	}
@@ -827,12 +786,14 @@ void FitDialog::showFunctionsList(int category)
 			break;
 
 		case 1:
+		{
 			boxUseBuiltIn->setText(tr("Fit using &built-in function"));
 			boxUseBuiltIn->show();
 			boxUseBuiltIn->setEnabled(true);
-			funcBox->addItems(builtInFunctionNames);
+			funcBox->addItems(builtInFunctionNames());
 			break;
-
+		}
+		
 		case 2:
 			showParseFunctions();
 			break;
@@ -911,24 +872,6 @@ void FitDialog::showUserFunctions()
 	funcBox->addItems(userFunctionNames);
 }
 
-void FitDialog::setBuiltInFunctionNames()
-{
-	builtInFunctionNames << tr("Boltzmann") << tr("ExpGrowth") << tr("ExpDecay1")
-		<< tr("ExpDecay2") << tr("ExpDecay3") << tr("Logistic")
-		<< tr("GaussAmp") << tr("Gauss") << tr("Lorentz") << tr("Polynomial");
-}
-
-void FitDialog::setBuiltInFunctions()
-{
-	builtInFunctions << "A2+(A1-A2)/(1+exp((x-x0)/dx))";
-	builtInFunctions << "y0+A*exp(x/t)";
-	builtInFunctions << "y0+A*exp(-x/t)";
-	builtInFunctions << "y0+A1*exp(-x/t1)+A2*exp(-x/t2)";
-	builtInFunctions << "y0+A1*exp(-x/t1)+A2*exp(-x/t2)+A3*exp(-x/t3)";
-	builtInFunctions << "A2+(A1-A2)/(1+(x/x0)^p)";
-	builtInFunctions << "y0+A*exp(-(x-xc)*(x-xc)/(2*w*w))";
-}
-
 void FitDialog::showParseFunctions()
 {
 	funcBox->addItems(MyParser::functionsList());
@@ -942,24 +885,21 @@ void FitDialog::showExpression(int function)
 	if (categoryBox->currentRow() == 2)
 		explainBox->setText(MyParser::explainFunction(function));
 	else if (categoryBox->currentRow() == 1){
-		polynomOrderLabel->show();
-		polynomOrderBox->show();
-
-		if (funcBox->currentItem()->text() == tr("Gauss")){
-			polynomOrderLabel->setText(tr("Peaks"));
-			explainBox->setText(MultiPeakFit::generateFormula(polynomOrderBox->value(), MultiPeakFit::Gauss));
-		} else if (funcBox->currentItem()->text() == tr("Lorentz")) {
-			polynomOrderLabel->setText(tr("Peaks"));
-			explainBox->setText(MultiPeakFit::generateFormula(polynomOrderBox->value(), MultiPeakFit::Lorentz));
+		polynomOrderLabel->hide();
+		polynomOrderBox->hide();
+		if (funcBox->currentItem()->text() == tr("Gauss") ||
+			funcBox->currentItem()->text() == tr("Lorentz")){
+			polynomOrderLabel->setText(tr("Peaks"));		
+			polynomOrderLabel->show();
+			polynomOrderBox->show();
 		} else if (funcBox->currentItem()->text() == tr("Polynomial")){
-			polynomOrderLabel->setText(tr("Polynomial Order"));
-			explainBox->setText(PolynomialFit::generateFormula(polynomOrderBox->value()));
-		} else {
-			polynomOrderLabel->hide();
-			polynomOrderBox->hide();
-			polynomOrderBox->setValue(1);
-			explainBox->setText(builtInFunctions[function]);
+			polynomOrderLabel->setText(tr("Polynomial Order"));		
+			polynomOrderLabel->show();
+			polynomOrderBox->show();
 		}
+			
+		d_current_fit = d_built_in_functions[function];
+		explainBox->setText(d_current_fit->formula());
 		setFunction(boxUseBuiltIn->isChecked());
 	}
 	else if (categoryBox->currentRow() == 0){
@@ -1006,7 +946,7 @@ void FitDialog::addFunctionName()
 void FitDialog::accept()
 {
 	QString curve = boxCurve->currentText();
-	QStringList curvesList = graph->curvesList();
+	QStringList curvesList = d_graph->curvesList();
 	if (curvesList.contains(curve) <= 0){
 		QMessageBox::critical(this,tr("QtiPlot - Warning"),
 				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curve));
@@ -1080,7 +1020,7 @@ void FitDialog::accept()
 	MyParser parser;
 	bool error=FALSE;
 
-	double *paramsInit = new double[n];
+	double paramsInit[n];
 	QString formula = boxFunction->text();
 	try{
 		bool withNames = containsUserFunctionName(formula);
@@ -1094,9 +1034,12 @@ void FitDialog::accept()
 			withNames = containsUserFunctionName(formula);
 		}
 
-		for (i=0; i<(int)builtInFunctionNames.count(); i++){
-			if (formula.contains(builtInFunctionNames[i]))
-				formula.replace(builtInFunctionNames[i], "(" + builtInFunctions[i] + ")");
+		QStringList builtInFunctions = builtInFunctionNames();
+		for (i=0; i<(int)builtInFunctions.count(); i++){
+			if (formula.contains(builtInFunctions[i])){
+				Fit *fit = d_built_in_functions[i];
+				formula.replace(builtInFunctions[i], "(" + fit->formula() + ")");
+			}
 		}
 
 		if (!boxParams->isColumnHidden(2)){
@@ -1135,52 +1078,40 @@ void FitDialog::accept()
 	if (!error){
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 
-		if (fitter){
-			delete fitter;
-			fitter  = 0;
-		}
-
 		if (boxUseBuiltIn->isChecked() && categoryBox->currentRow() == 1)
-			fitBuiltInFunction(funcBox->currentItem()->text(), paramsInit);
-		else if (boxUseBuiltIn->isChecked() && categoryBox->currentRow() == 3)
-		{
-			fitter = new PluginFit(app, graph);
-			if (!((PluginFit*)fitter)->load(pluginFilesList[funcBox->currentRow()])){
-				fitter  = 0;
-				return;}
-				fitter->setInitialGuesses(paramsInit);
+			modifyGuesses (paramsInit);
+		else if (boxUseBuiltIn->isChecked() && categoryBox->currentRow() == 3){
+			d_current_fit = new PluginFit(app, d_graph);
+			if (!((PluginFit*)d_current_fit)->load(pluginFilesList[funcBox->currentRow()])){
+				d_current_fit  = 0;
+				return;
+			}
 		} else {
-			fitter = new NonLinearFit(app, graph);
-			((NonLinearFit*)fitter)->setParametersList(parameters);
-			((NonLinearFit*)fitter)->setFormula(formula);
-			fitter->setInitialGuesses(paramsInit);
+			d_current_fit = new NonLinearFit(app, d_graph);
+			((NonLinearFit*)d_current_fit)->setParametersList(parameters);
+			((NonLinearFit*)d_current_fit)->setFormula(formula);
 		}
-		delete[] paramsInit;
-
-		if (!fitter->setDataFromCurve(curve, start, end) ||
-			!fitter->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
+		
+		if (d_current_fit->objectName() != tr("Polynomial"))
+			d_current_fit->setInitialGuesses(paramsInit);
+		
+		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
+			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText()))
 		{
-			delete fitter;
-			fitter  = 0;
+			delete d_current_fit;
+			d_current_fit  = 0;
 			return;
 		}
 
-		fitter->setTolerance (eps);
-		fitter->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
-		fitter->setColor(boxColor->currentIndex());
-		fitter->generateFunction(generatePointsBtn->isChecked(), generatePointsBox->value());
-		fitter->setMaximumIterations(boxPoints->value());
-		fitter->scaleErrors(scaleErrorsBox->isChecked());
-
-		if (fitter->objectName() == tr("MultiPeak") && ((MultiPeakFit *)fitter)->peaks() > 1)
-		{
-			((MultiPeakFit *)fitter)->enablePeakCurves(app->generatePeakCurves);
-			((MultiPeakFit *)fitter)->setPeakCurvesColor(app->peakCurvesColor);
-		}
-
-		fitter->fit();
-		double *res = fitter->results();
+		d_current_fit->setTolerance(eps);
+		d_current_fit->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
+		d_current_fit->setColor(boxColor->currentIndex());
+		d_current_fit->generateFunction(generatePointsBtn->isChecked(), generatePointsBox->value());
+		d_current_fit->setMaximumIterations(boxPoints->value());
+		d_current_fit->scaleErrors(scaleErrorsBox->isChecked());
+		d_current_fit->fit();
+		double *res = d_current_fit->results();
 		if (!boxParams->isColumnHidden(2)){
 			int j = 0;
 			for (i=0;i<rows;i++){
@@ -1194,52 +1125,28 @@ void FitDialog::accept()
 		}
 
 		if (globalParamTableBox->isChecked() && d_param_table)
-			fitter->writeParametersToTable(d_param_table, true);
+			d_current_fit->writeParametersToTable(d_param_table, true);
 	}
 }
 
-void FitDialog::fitBuiltInFunction(const QString& function, double* initVal)
+void FitDialog::modifyGuesses(double* initVal)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (function == tr("ExpDecay1"))
-	{
+	if (!d_current_fit)
+		return;
+	
+	QString fitName = d_current_fit->objectName();
+	if (fitName == tr("ExpDecay1"))
 		initVal[1] = 1/initVal[1];
-		fitter = new ExponentialFit(app, graph);
-	}
-	else if (function == tr("ExpGrowth"))
-	{
+	else if (fitName == tr("ExpGrowth"))
 		initVal[1] = -1/initVal[1];
-		fitter = new ExponentialFit(app, graph, true);
-	}
-	else if (function == tr("ExpDecay2"))
-	{
+	else if (fitName == tr("ExpDecay2")){
 		initVal[1] = 1/initVal[1];
 		initVal[3] = 1/initVal[3];
-		fitter = new TwoExpFit(app, graph);
-	}
-	else if (function == tr("ExpDecay3"))
-	{
+	} else if (fitName == tr("ExpDecay3")){
 		initVal[1] = 1/initVal[1];
 		initVal[3] = 1/initVal[3];
 		initVal[5] = 1/initVal[5];
-		fitter = new ThreeExpFit(app, graph);
 	}
-	else if (function == tr("Boltzmann"))
-		fitter = new SigmoidalFit(app, graph);
-	else if (function == tr("GaussAmp"))
-		fitter = new GaussAmpFit(app, graph);
-	else if (function == tr("Gauss"))
-		fitter = new MultiPeakFit(app, graph, MultiPeakFit::Gauss, polynomOrderBox->value());
-	else if (function == tr("Lorentz"))
-		fitter = new MultiPeakFit(app, graph, MultiPeakFit::Lorentz, polynomOrderBox->value());
-    else if (function == tr("Logistic"))
-		fitter = new LogisticFit(app, graph);
-
-	else if (function == tr("Polynomial"))
-		fitter = new PolynomialFit(app, graph, polynomOrderBox->value());
-
-	if (function != tr("Polynomial"))
-		fitter->setInitialGuesses(initVal);
 }
 
 bool FitDialog::containsUserFunctionName(const QString& s)
@@ -1282,8 +1189,8 @@ bool FitDialog::validInitialValues()
 
 void FitDialog::changeDataRange()
 {
-	double start = graph->selectedXStartValue();
-	double end = graph->selectedXEndValue();
+	double start = d_graph->selectedXStartValue();
+	double end = d_graph->selectedXEndValue();
 	boxFrom->setText(QString::number(QMIN(start, end), 'g', 15));
 	boxTo->setText(QString::number(QMAX(start, end), 'g', 15));
 }
@@ -1331,8 +1238,8 @@ void FitDialog::enableWeightingParameters(int index)
 
 void FitDialog::closeEvent (QCloseEvent * e )
 {
-	if(fitter && plotLabelBox->isChecked())
-		fitter->showLegend();
+	if(d_current_fit && plotLabelBox->isChecked())
+		d_current_fit->showLegend();
 
 	e->accept();
 }
@@ -1344,9 +1251,9 @@ void FitDialog::enableApplyChanges(int)
 
 void FitDialog::deleteFitCurves()
 {
-	graph->deleteFitCurves();
+	d_graph->deleteFitCurves();
 	boxCurve->clear();
-	boxCurve->addItems(graph->curvesList());
+	boxCurve->addItems(d_graph->curvesList());
 }
 
 void FitDialog::resetFunction()
@@ -1354,4 +1261,51 @@ void FitDialog::resetFunction()
 	boxName->clear();
 	boxParam->clear();
 	editBox->clear();
+}
+
+void FitDialog::initBuiltInFunctions()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+
+	d_built_in_functions << new SigmoidalFit(app, d_graph);
+	d_built_in_functions << new ExponentialFit(app, d_graph);
+	d_built_in_functions << new TwoExpFit(app, d_graph);
+	d_built_in_functions << new ThreeExpFit(app, d_graph);
+	d_built_in_functions << new ExponentialFit(app, d_graph, true);
+	
+	MultiPeakFit *fit = new MultiPeakFit(app, d_graph, MultiPeakFit::Gauss);
+	fit->enablePeakCurves(app->generatePeakCurves);
+	fit->setPeakCurvesColor(app->peakCurvesColor);
+	d_built_in_functions << fit;
+	
+	d_built_in_functions << new GaussAmpFit(app, d_graph);
+	d_built_in_functions << new LogisticFit(app, d_graph);
+
+	fit = new MultiPeakFit(app, d_graph, MultiPeakFit::Lorentz);
+	fit->enablePeakCurves(app->generatePeakCurves);
+	fit->setPeakCurvesColor(app->peakCurvesColor);
+	d_built_in_functions << fit;
+	
+	d_built_in_functions << new PolynomialFit(app, d_graph, 1);
+}
+
+void FitDialog::setNumPeaks(int peaks)
+{
+	if (d_current_fit->objectName() == tr("Gauss") || 
+		d_current_fit->objectName() == tr("Lorentz"))
+		((MultiPeakFit *)d_current_fit)->setNumPeaks(peaks);
+	else if (d_current_fit->objectName() == tr("Polynomial"))
+		((PolynomialFit *)d_current_fit)->setOrder(peaks);
+	
+	int index = funcBox->currentRow();	
+	d_built_in_functions[index] = d_current_fit;
+	showExpression(index);
+}
+
+QStringList FitDialog::builtInFunctionNames()
+{
+	QStringList lst;
+	foreach(Fit *fit, d_built_in_functions)
+		lst << fit->objectName();
+	return lst;
 }

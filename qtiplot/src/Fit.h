@@ -71,7 +71,8 @@ class Fit : public Filter
 
 		QString resultFormula(){return d_result_formula;};
 		QString formula(){return d_formula;};
-		int numParameters() {return d_p;}
+		int numParameters(){return d_p;};
+		QStringList parameterNames(){return d_param_names;};
 
 		void setInitialGuess(int parIndex, double val){gsl_vector_set(d_param_init, parIndex, val);};
 		void setInitialGuesses(double *x_init);

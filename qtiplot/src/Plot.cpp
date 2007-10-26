@@ -161,8 +161,7 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
     painter->restore();
 
     painter->save();
-	if(plotCanvas->lineWidth() > 0)
-	{
+	if(plotCanvas->lineWidth() > 0){
 		QColor color = plotCanvas->palette().color(QPalette::Active, QColorGroup::Foreground);
 		painter->setPen (QPen(color, plotCanvas->lineWidth(),
                          Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
@@ -179,8 +178,7 @@ void Plot::drawItems (QPainter *painter, const QRect &rect,
 {
 	QwtPlot::drawItems(painter, rect, map, pfilter);
 
-	for (int i=0; i<QwtPlot::axisCnt; i++)
-	{
+	for (int i=0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;
 

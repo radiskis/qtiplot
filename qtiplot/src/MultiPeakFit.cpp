@@ -53,14 +53,14 @@ init(peaks);
 
 void MultiPeakFit::init(int peaks)
 {
-	setObjectName(tr("MultiPeak"));
-
 	if (d_profile == Gauss){
+		setObjectName(tr("Gauss"));
 		d_f = gauss_multi_peak_f;
 		d_df = gauss_multi_peak_df;
 		d_fdf = gauss_multi_peak_fdf;
 		d_fsimplex = gauss_multi_peak_d;		
 	} else {
+		setObjectName(tr("Lorentz"));
 		d_f = lorentz_multi_peak_f;
 		d_df = lorentz_multi_peak_df;
 		d_fdf = lorentz_multi_peak_fdf;

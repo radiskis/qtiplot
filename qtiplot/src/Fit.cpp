@@ -82,6 +82,7 @@ void Fit::init()
 	d_prec = (((ApplicationWindow *)parent())->fit_output_precision);
 	d_param_table = 0;
 	d_cov_matrix = 0;
+	covar = 0;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)
