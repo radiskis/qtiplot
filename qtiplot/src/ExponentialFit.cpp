@@ -89,7 +89,7 @@ void ExponentialFit::init()
 		d_formula = "y0+A*exp(x/t)";
 		d_param_explain << tr("(amplitude)") << tr("(lifetime)") << tr("(offset)");
 	} else {
-		setObjectName(tr("ExpDecay"));
+		setObjectName(tr("ExpDecay1"));
 		d_explanation = tr("Exponential decay");
 		d_formula = "y0+A*exp(-x/t)";
 		d_param_explain << tr("(amplitude)") << tr("(e-folding time)") << tr("(offset)");
@@ -160,7 +160,7 @@ TwoExpFit::TwoExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, c
 
 void TwoExpFit::init()
 {
-	setObjectName(tr("ExpDecay"));
+	setObjectName(tr("ExpDecay2"));
 	d_f = expd2_f;
 	d_df = expd2_df;
 	d_fdf = expd2_fdf;
@@ -244,7 +244,7 @@ ThreeExpFit::ThreeExpFit(ApplicationWindow *parent, Table *t, const QString& xCo
 
 void ThreeExpFit::init()
 {
-	setObjectName(tr("ExpDecay"));
+	setObjectName(tr("ExpDecay3"));
 	d_f = expd3_f;
 	d_df = expd3_df;
 	d_fdf = expd3_fdf;

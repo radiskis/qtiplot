@@ -54,7 +54,7 @@ class FitDialog : public QDialog
     Q_OBJECT
 
 public:
-    FitDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
+    FitDialog(Graph *g, QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 protected:
 	void closeEvent (QCloseEvent * e );
@@ -81,15 +81,12 @@ public slots:
 	void setFunction(bool ok);
 	void saveUserFunction();
 	void removeUserFunction();
-	void setBuiltInFunctionNames();
-	void setBuiltInFunctions();
 	bool containsUserFunctionName(const QString& s);
 	void setGraph(Graph *g);
 	void activateCurve(const QString& curveName);
 	void choosePluginsFolder();
 	bool validInitialValues();
 	void changeDataRange();
-	void fitBuiltInFunction(const QString& function, double* initVal);
 
 	void setSrcTables(QWidgetList* tables);
 	void selectSrcTable(int tabnr);
@@ -107,19 +104,24 @@ public slots:
 private slots:
     //! Enable the "Apply" button
 	void enableApplyChanges(int = 0);
-
+	void setNumPeaks(int peaks);
+	
 signals:
 	void clearFunctionsList();
 	void saveFunctionsList(const QStringList&);
 
 private:
+	void initBuiltInFunctions();
+	void modifyGuesses(double* initVal);
+	QStringList builtInFunctionNames();
+
     int d_param_table_rows;
-    Fit *fitter;
-	Graph *graph;
+    Fit *d_current_fit;
+	Graph *d_graph;
 	Table *d_param_table;
 	QStringList userFunctions, userFunctionNames, userFunctionParams;
-	QStringList builtInFunctionNames, builtInFunctions;
 	QStringList pluginFunctionNames, pluginFunctions, pluginFilesList, pluginParameters;
+	QList <Fit*> d_user_functions, d_built_in_functions;
 	QWidgetList *srcTables;
 
     QCheckBox* boxUseBuiltIn;

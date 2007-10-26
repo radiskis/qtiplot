@@ -482,7 +482,7 @@ void ApplicationWindow::initGlobalConstants()
 	orthogonal3DPlots = false;
 	autoscale3DPlots = true;
 
-	fit_output_precision = 15;
+	fit_output_precision = 13;
 	pasteFitResultsToPlot = false;
 	writeFitResultsToLog = true;
 	generateUniformFitPoints = true;
@@ -6797,7 +6797,7 @@ void ApplicationWindow::showFitDialog()
 	if (!g || !g->validCurvesDataSize())
 		return;
 
-	FitDialog *fd = new FitDialog(this);
+	FitDialog *fd = new FitDialog(g, this);
 	fd->setAttribute(Qt::WA_DeleteOnClose);
 	connect (fd, SIGNAL(clearFunctionsList()), this, SLOT(clearFitFunctionsList()));
 	connect (fd, SIGNAL(saveFunctionsList(const QStringList&)),
@@ -6805,7 +6805,6 @@ void ApplicationWindow::showFitDialog()
 	connect (plot, SIGNAL(destroyed()), fd, SLOT(close()));
 
 	fd->insertFunctionsList(fitFunctions);
-	fd->setGraph(g);
 	fd->setSrcTables(tableList());
 	fd->show();
 	fd->resize(fd->minimumSize());
