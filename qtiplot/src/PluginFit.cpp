@@ -61,6 +61,7 @@ PluginFit::PluginFit(ApplicationWindow *parent, Table *t, const QString& xCol, c
 void PluginFit::init()
 {
 	d_explanation = tr("Plugin Fit");
+    d_fit_type = Plugin;
 }
 
 bool PluginFit::load(const QString& pluginName)
@@ -71,7 +72,6 @@ bool PluginFit::load(const QString& pluginName)
 		return false;
 	}
 
-	setObjectName(pluginName);
 	QLibrary lib(pluginName);
 	lib.setAutoUnload(false);
 
@@ -114,6 +114,7 @@ bool PluginFit::load(const QString& pluginName)
 		d_p = (int)d_param_names.count();
         d_min_points = d_p;
 		d_param_init = gsl_vector_alloc(d_p);
+		gsl_vector_set_all (d_param_init, 1.0);
 		covar = gsl_matrix_alloc (d_p, d_p);
 		d_results = new double[d_p];
 	} else
@@ -127,7 +128,7 @@ bool PluginFit::load(const QString& pluginName)
 			d_param_explain << "";
 
 	fitFunction = (fitFunc) lib.resolve( "name" );
-	setName(QString(fitFunction()));
+	setObjectName(QString(fitFunction()));
 
 	fitFunction = (fitFunc) lib.resolve( "function" );
 	if (fitFunction)

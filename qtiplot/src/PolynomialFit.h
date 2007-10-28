@@ -2,8 +2,8 @@
     File                 : PolynomialFit.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Polynomial Fit and Linear Fit classes
 
  ***************************************************************************/
@@ -43,7 +43,7 @@ class PolynomialFit : public Fit
 
 		virtual QString legendInfo();
 		void fit();
-	
+
 		int order(){return d_order;};
 		void setOrder(int order);
 

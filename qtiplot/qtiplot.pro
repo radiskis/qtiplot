@@ -4,7 +4,7 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-SCRIPTING_LANGS += Python
+#SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -82,7 +82,7 @@ CONFIG        += assistant
 
 DEFINES       += QT_PLUGIN
 win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
-QT            += opengl qt3support network svg
+QT            += opengl qt3support network svg xml
 
 MOC_DIR        = ../tmp/qtiplot
 OBJECTS_DIR    = ../tmp/qtiplot
@@ -231,7 +231,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/ExtensibleFileDialog.h\
             src/OpenProjectDialog.h\
             src/Grid.h\
-            src/MatrixModel.h
+            src/MatrixModel.h\
+            src/FitModelHandler.h
 
 ###################### SOURCES ##############################################
 
@@ -345,7 +346,8 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/ExtensibleFileDialog.cpp\
             src/OpenProjectDialog.cpp\
             src/Grid.cpp\
-            src/MatrixModel.cpp
+            src/MatrixModel.cpp\
+            src/FitModelHandler.cpp
 
 ###############################################################
 ##################### Compression (zlib123) ###################

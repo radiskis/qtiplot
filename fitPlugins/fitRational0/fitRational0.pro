@@ -12,9 +12,10 @@ CONFIG           += dll
 DESTDIR           = ../
  
 # statically link against GSL in 3rdparty
-INCLUDEPATH += ../../3rdparty/gsl
-LIBS         += ../3rdparty/gsl/lib/libgsl.a
-LIBS         += ../3rdparty/gsl/lib/libgslcblas.a
+INCLUDEPATH += ../../3rdparty/gsl/include/
+LIBS        += ../../3rdparty/gsl/lib/libgsl.a
+LIBS        += ../../3rdparty/gsl/lib/libgslcblas.a
+
 #dynamically link against GSL installed system-wide
 #unix:LIBS += -L /usr/lib$${libsuff} -lgsl -lgslcblas
 

@@ -2,8 +2,8 @@
     File                 : PolynomialFit.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Polynomial Fit and Linear Fit classes
 
  ***************************************************************************/
@@ -77,7 +77,12 @@ void PolynomialFit::setOrder(int order)
 
 	if (covar) gsl_matrix_free(covar);
 	covar = gsl_matrix_alloc (d_p, d_p);
-	
+
+    if (d_param_init)
+        gsl_vector_free(d_param_init);
+    d_param_init = gsl_vector_alloc(d_p);
+	gsl_vector_set_all (d_param_init, 1.0);
+
 	if (d_results)
 		delete[] d_results;
 	d_results = new double[d_p];
@@ -151,7 +156,6 @@ void PolynomialFit::fit()
   	}
 
 	gsl_matrix *X = gsl_matrix_alloc (d_n, d_p);
-	gsl_vector *c = gsl_vector_alloc (d_p);
 
 	for (int i = 0; i <d_n; i++){
 		for (int j= 0; j < d_p; j++)
@@ -162,23 +166,22 @@ void PolynomialFit::fit()
 	gsl_vector_view w = gsl_vector_view_array (d_w, d_n);
 	gsl_multifit_linear_workspace * work = gsl_multifit_linear_alloc (d_n, d_p);
 
-	if (d_weihting == NoWeighting)
-		gsl_multifit_linear (X, &y.vector, c, covar, &chi_2, work);
+	if (d_weighting == NoWeighting)
+		gsl_multifit_linear (X, &y.vector, d_param_init, covar, &chi_2, work);
 	else
-		gsl_multifit_wlinear (X, &w.vector, &y.vector, c, covar, &chi_2, work);
+		gsl_multifit_wlinear (X, &w.vector, &y.vector, d_param_init, covar, &chi_2, work);
 
 	for (int i = 0; i < d_p; i++)
-		d_results[i] = gsl_vector_get(c, i);
+		d_results[i] = gsl_vector_get(d_param_init, i);
 
 	gsl_multifit_linear_free (work);
 	gsl_matrix_free (X);
-	gsl_vector_free (c);
 
 	if (show_legend)
 		showLegend();
 
 	generateFitCurve(d_results);
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (app->writeFitResultsToLog)
 		app->updateLog(logFitInfo(d_results, 0, 0));
@@ -247,6 +250,9 @@ void LinearFit::init()
 	covar = gsl_matrix_alloc (d_p, d_p);
 	d_results = new double[d_p];
 
+    d_param_init = gsl_vector_alloc(d_p);
+	gsl_vector_set_all (d_param_init, 1.0);
+
 	is_non_linear = false;
 	d_formula = "A*x+B";
 	d_param_names << "B" << "A";
@@ -266,17 +272,14 @@ void LinearFit::fit()
   		return;
   	}
 
-	gsl_vector *c = gsl_vector_alloc (d_p);
-
 	double c0, c1, cov00, cov01, cov11;
-	if (d_weihting == NoWeighting)
+	if (d_weighting == NoWeighting)
 		gsl_fit_linear(d_x, 1, d_y, 1, d_n, &c0, &c1, &cov00, &cov01, &cov11, &chi_2);
 	else
 		gsl_fit_wlinear(d_x, 1, d_w, 1, d_y, 1, d_n, &c0, &c1, &cov00, &cov01, &cov11, &chi_2);
 
 	d_results[0] = c0;
 	d_results[1] = c1;
-	gsl_vector_free (c);
 
 	gsl_matrix_set(covar, 0, 0, cov00);
 	gsl_matrix_set(covar, 0, 1, cov01);
@@ -284,7 +287,7 @@ void LinearFit::fit()
 	gsl_matrix_set(covar, 1, 0, cov01);
 
 	generateFitCurve(d_results);
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (app->writeFitResultsToLog){
 		app->updateLog(logFitInfo(d_results, 0, 0));

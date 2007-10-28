@@ -2,8 +2,8 @@
     File                 : NonLinearFit.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : NonLinearFit class
 
  ***************************************************************************/
@@ -61,13 +61,15 @@ NonLinearFit::NonLinearFit(ApplicationWindow *parent, Table *t, const QString& x
 
 void NonLinearFit::init()
 {
-	setObjectName(tr("NonLinear"));
+    if (objectName().isEmpty())
+        setObjectName(tr("NonLinear"));
 	d_formula = QString::null;
 	d_f = user_f;
 	d_df = user_df;
 	d_fdf = user_fdf;
 	d_fsimplex = user_d;
 	d_explanation = tr("Non-linear Fit");
+    d_fit_type = User;
 }
 
 void NonLinearFit::setFormula(const QString& s)
@@ -116,7 +118,7 @@ void NonLinearFit::setFormula(const QString& s)
 
 void NonLinearFit::setParametersList(const QStringList& lst)
 {
-	if ((int)lst.count() < 1){
+	if (lst.count() < 1){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("You must provide a list containing at least one parameter for this type of fit. Operation aborted!"));
 		d_init_err = true;

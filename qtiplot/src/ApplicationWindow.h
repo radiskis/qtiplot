@@ -130,6 +130,7 @@ public:
 	even if 'name' is not used in the project, by setting /param increment = true (the default)
 	*/
 	QString generateUniqueName(const QString& name, bool increment = true);
+	void saveFitFunctions(const QStringList& lst);
 
 public slots:
 	//! \name Projects and Project Files
@@ -280,8 +281,6 @@ public slots:
 	void showFunctionDialog();
 	void showFunctionDialog(Graph * g, int curve);
 	void addFunctionCurve();
-	void clearFitFunctionsList();
-	void saveFitFunctionsList(const QStringList& l);
 	void clearSurfaceFunctionsList();
 	void clearLogInfo();
 	void clearParamFunctionsList();
@@ -1044,15 +1043,14 @@ public:
 	QFont tableTextFont, tableHeaderFont, plotAxesFont, plotLegendFont, plotNumbersFont, plotTitleFont;
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;
 	QString projectname,columnSeparator, helpFilePath, appLanguage;
-	QString configFilePath, logInfo, fitPluginsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
+	QString configFilePath, logInfo, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
 	int logID,asciiID,closeID, exportID, printAllID, ignoredLines, savingTimerId, plot3DResolution;
 	bool renameColumns, copiedLayer, strip_spaces, simplify_spaces;
 	QStringList recentProjects, tableWindows;
 	bool saved, showPlot3DProjection, showPlot3DLegend, orthogonal3DPlots, autoscale3DPlots;
 	QStringList plot3DColors, locales;
 	QStringList functions; //user-defined functions;
-	QStringList xFunctions, yFunctions, rFunctions,thetaFunctions; // user functions for parametric and polar plots
-	QStringList fitFunctions; //user-defined fit functions;
+	QStringList xFunctions, yFunctions, rFunctions, thetaFunctions; // user functions for parametric and polar plots
 	QStringList surfaceFunc; //user-defined surface functions;
     QStringList d_param_surface_func; //user-defined parametric surface functions;
 	//! List of tables and matrices renamed in order to avoid conflicts when appending a project to a folder

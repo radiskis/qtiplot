@@ -2,8 +2,8 @@
     File                 : FitDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit Wizard
 
  ***************************************************************************/
@@ -64,13 +64,9 @@
 FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
-    setName( "FitDialog" );
+    setName("FitDialog");
 	setWindowTitle(tr("QtiPlot - Fit Wizard"));
-	setSizeGripEnabled( true );
-
-    userFunctionNames = QStringList();
-    userFunctions = QStringList();
-    userFunctionParams = QStringList();
+	setSizeGripEnabled(true);
 
 	d_param_table = 0;
 	d_current_fit = 0;
@@ -88,9 +84,10 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 	categoryBox->setCurrentRow (2);
 	funcBox->setCurrentRow (0);
 
-	loadPlugins();
 	setGraph(g);
 	initBuiltInFunctions();
+    loadPlugins();
+    loadUserFunctions();
 }
 
 void FitDialog::initFitPage()
@@ -109,7 +106,14 @@ void FitDialog::initFitPage()
     boxFunction->setPalette(palette);
 	boxFunction->setMaximumHeight(50);
     gl1->addWidget(boxFunction, 2, 1);
-	gl1->addWidget(new QLabel( tr("Initial guesses")), 3, 0 );
+
+    QVBoxLayout *vb = new QVBoxLayout();
+    vb->addWidget(new QLabel(tr("Initial guesses")));
+    btnSaveGuesses = new QPushButton(tr( "&Save" ));
+    connect(btnSaveGuesses, SIGNAL(clicked()), this, SLOT(saveInitialGuesses()));
+    vb->addWidget(btnSaveGuesses);
+    vb->addStretch();
+	gl1->addLayout(vb, 3, 0);
 
 	boxParams = new QTableWidget();
     boxParams->setColumnCount(3);
@@ -258,13 +262,9 @@ void FitDialog::initEditPage()
 	connect(polynomOrderBox, SIGNAL(valueChanged(int)), this, SLOT(setNumPeaks(int)));
     hbox1->addWidget(polynomOrderBox);
 
-	buttonPlugins = new QPushButton(tr( "&Choose plugins folder..." ) );
+	buttonPlugins = new QPushButton(tr( "Choose plug&ins folder..." ) );
     hbox1->addWidget(buttonPlugins);
 	buttonPlugins->hide();
-
-    buttonClearUsrList = new QPushButton(tr( "Clear user &list" ) );
-    hbox1->addWidget(buttonClearUsrList);
-	buttonClearUsrList->hide();
 
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel(tr("Name")), 0, 0);
@@ -312,9 +312,8 @@ void FitDialog::initEditPage()
     editPage->setLayout(vbox2);
     tw->addWidget(editPage);
 
-	connect( buttonPlugins, SIGNAL( clicked() ), this, SLOT(choosePluginsFolder()));
+	connect( buttonPlugins, SIGNAL( clicked() ), this, SLOT(chooseFolder()));
     connect( buttonClear, SIGNAL( clicked() ), this, SLOT(resetFunction()));
-	connect( buttonClearUsrList, SIGNAL( clicked() ), this, SLOT(clearUserList()));
 	connect( categoryBox, SIGNAL(currentRowChanged (int)), this, SLOT(showFunctionsList(int) ) );
 	connect( funcBox, SIGNAL(currentRowChanged(int)), this, SLOT(showExpression(int)));
 	connect( boxUseBuiltIn, SIGNAL(toggled(bool)), this, SLOT(setFunction(bool) ) );
@@ -483,13 +482,10 @@ void FitDialog::showCovarianceMatrix()
 
 void FitDialog::showPointsBox(bool)
 {
-	if (generatePointsBtn->isChecked())
-	{
+	if (generatePointsBtn->isChecked()){
 		lblPoints->show();
 		generatePointsBox->show();
-	}
-	else
-	{
+	} else {
 		lblPoints->hide();
 		generatePointsBox->hide();
 	}
@@ -505,8 +501,7 @@ void FitDialog::setGraph(Graph *g)
 	boxCurve->addItems(d_graph->analysableCurvesList());
 
     QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty())
-	{
+	if (!selectedCurve.isEmpty()){
 	    int index = boxCurve->findText (selectedCurve);
 		boxCurve->setCurrentItem(index);
 	}
@@ -530,119 +525,132 @@ void FitDialog::activateCurve(const QString& curveName)
 
 void FitDialog::saveUserFunction()
 {
-	if (editBox->text().isEmpty())
-	{
+	if (editBox->text().isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), tr("Please enter a valid function!"));
 		editBox->setFocus();
 		return;
-	}
-	else if (boxName->text().isEmpty())
-	{
+	} else if (boxName->text().isEmpty()) {
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"),
 				tr("Please enter a function name!"));
 		boxName->setFocus();
 		return;
-	}
-	else if (boxParam->text().remove(QRegExp("[,;\\s]")).isEmpty())
-	{
+	} else if (boxParam->text().remove(QRegExp("[,;\\s]")).isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"),
 				tr("Please enter at least one parameter name!"));
 		boxParam->setFocus();
 		return;
 	}
 
-	if (builtInFunctionNames().contains(boxName->text()))
-	{
+	if (builtInFunctionNames().contains(boxName->text())){
 		QMessageBox::critical(this, tr("QtiPlot - Error: function name"),
 				"<p><b>" + boxName->text() + "</b>" + tr(" is a built-in function name"
 					"<p>You must choose another name for your function!"));
 		editBox->setFocus();
 		return;
 	}
-	if (editBox->text().contains(boxName->text()))
-	{
+
+	if (editBox->text().contains(boxName->text())){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"),
-				tr("You can't define functions recursevely!"));
+				tr("You can't define functions recursively!"));
 		editBox->setFocus();
 		return;
 	}
 
 	QString name = boxName->text();
-	QString f = name + "(x, " + boxParam->text() + ")=" + editBox->text().remove("\n");
-
-	if (userFunctionNames.contains(name))
-	{
-		int index = userFunctionNames.findIndex(name);
-		userFunctions[index] = f;
-		userFunctionParams[index] = boxParam->text();
+    QStringList lst = userFunctionNames();
+	if (lst.contains(name)){
+		int index = lst.findIndex(name);
+		d_current_fit = (NonLinearFit *)d_user_functions[index];
+		d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
+        d_current_fit->setFormula(editBox->text().remove("\n"));
+        d_current_fit->save(d_current_fit->fileName());
 
 		if (funcBox->currentItem()->text() == name)
 			showExpression(index);
-	}
-	else
-	{
-		userFunctionNames << name;
-		userFunctions << f;
-		userFunctionParams << boxParam->text();
 
-		if (categoryBox->currentRow() == 0)
-		{
-			funcBox->addItem(name);
-			funcBox->setCurrentRow (funcBox->count()-1);
+	} else {
+	    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		QString filter = tr("QtiPlot fit model")+" (*.fit);;";
+		filter += tr("All files")+" (*.*)";
+		QString fn = QFileDialog::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
+                                app->fitModelsPath + "/" + name, filter);
+		if (!fn.isEmpty()){
+            QFileInfo fi(fn);
+            QString baseName = fi.fileName();
+            if (!baseName.contains("."))
+                fn.append(".fit");
+
+            d_current_fit = new NonLinearFit(app, d_graph);
+            d_current_fit->setObjectName(name);
+            d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
+            d_current_fit->setFormula(editBox->text().remove("\n"));
+            if (d_current_fit->save(fn)){
+                QStringList lst = userFunctionNames();
+                lst << name;
+                lst.sort();
+                int index = lst.indexOf(name);
+                d_user_functions.insert (index, d_current_fit);
+
+                if (categoryBox->currentRow() == 0){
+                    funcBox->clear();
+                    funcBox->addItems(lst);
+                    funcBox->setCurrentRow(index);
+                }
+
+                if (d_user_functions.count()>0 && !boxUseBuiltIn->isEnabled() && categoryBox->currentRow() == 0)
+                    boxUseBuiltIn->setEnabled(true);
+            }
 		}
-
-		if ((int)userFunctionNames.count()>0 && !boxUseBuiltIn->isEnabled() && categoryBox->currentRow() == 0)
-			boxUseBuiltIn->setEnabled(true);
 	}
-    buttonClearUsrList->setEnabled(true);
-	emit saveFunctionsList(userFunctions);
 }
 
 void FitDialog::removeUserFunction()
 {
+    QString s = tr("Are you sure you want to remove fit model file:\n %1 ?").arg(d_current_fit->fileName());
+    if (QMessageBox::Ok != QMessageBox::question (this, tr("QtiPlot") + " - " + tr("Remove Fit Model"), s))
+        return;
+
 	QString name = funcBox->currentItem()->text();
-	if (userFunctionNames.contains(name))
-	{
+	QStringList lst = userFunctionNames();
+	if (lst.contains(name)){
 		explainBox->setText(QString());
 
-		int index = userFunctionNames.findIndex(name);
-		userFunctionNames.remove(name);
+		int index = lst.indexOf(name);
+		if (0 <= index && index < d_user_functions.size()){
+            QFile f((d_user_functions[index])->fileName());
+            f.remove();
+            d_user_functions.removeAt(index);
+		}
 
-		QString f = userFunctions[index];
-		userFunctions.remove(f);
-
-		f = userFunctionParams[index];
-		userFunctionParams.remove(f);
-
+        lst.remove(name);
 		funcBox->clear();
-		funcBox->addItems (userFunctionNames);
-		funcBox->setCurrentRow (0);
+		funcBox->addItems(lst);
+		funcBox->setCurrentRow(0);
 
-		if (!userFunctionNames.count())
-            {
+		if (!lst.count())
 			boxUseBuiltIn->setEnabled(false);
-            buttonClearUsrList->setEnabled(false);
-            }
-
-		emit saveFunctionsList(userFunctions);
 	}
 }
 
 void FitDialog::showFitPage()
 {
-    d_param_table_rows = boxParams->rowCount();
+    if (!boxUseBuiltIn->isChecked()){
+        d_current_fit = new NonLinearFit((ApplicationWindow *)parent(), d_graph);
+		d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
+        d_current_fit->setFormula(editBox->text().remove("\n"));
+    }
 
-	QString par = boxParam->text().simplified();
-	QStringList paramList = par.split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts);
-	int parameters = (int)paramList.count();
+	QStringList paramList = d_current_fit->parameterNames();
+	int parameters = d_current_fit->numParameters();
 	boxParams->setRowCount(parameters);
     boxParams->hideColumn(2);
 
-	if (parameters > 7)
-		parameters = 7;
-	boxParams->setMinimumHeight(4+(parameters+1)*boxParams->horizontalHeader()->height());
+    int aux = parameters;
+	if (aux > 7)
+		aux = 7;
+	boxParams->setMinimumHeight(4 + (aux + 1)*boxParams->horizontalHeader()->height());
 
-    for (int i = d_param_table_rows; i<(int)paramList.count(); i++){
+    for (int i = 0; i<parameters; i++){
         QTableWidgetItem *it = new QTableWidgetItem(paramList[i]);
         it->setFlags(!Qt::ItemIsEditable);
         it->setBackground(QBrush(Qt::lightGray));
@@ -652,19 +660,15 @@ void FitDialog::showFitPage()
         it->setFont(font);
         boxParams->setItem(i, 0, it);
 
-        it = new QTableWidgetItem(QString::number(1.0, 'f', boxPrecision->value()));
+        it = new QTableWidgetItem(QString::number(d_current_fit->initialGuess(i), 'f', boxPrecision->value()));
         it->setTextAlignment(Qt::AlignRight);
         boxParams->setItem(i, 1, it);
 	}
-    for (int i = 0; i<(int)paramList.count(); i++)
+    for (int i = 0; i<parameters; i++)
         boxParams->item (i, 0)->setText(paramList[i]);
 
-	// FIXME: this check is pretty ugly, should be changed to a more elegant way some time
-	if (!boxUseBuiltIn->isChecked() ||
-		(boxUseBuiltIn->isChecked()&& categoryBox->currentRow()!=3 && categoryBox->currentRow()!=1))
-	{
+	if (d_current_fit->type() == Fit::User){
         boxParams->showColumn(2);
-
 		for (int i = 0; i<boxParams->rowCount(); i++ ){
             QTableWidgetItem *it = new QTableWidgetItem();
             it->setFlags(!Qt::ItemIsEditable);
@@ -677,14 +681,16 @@ void FitDialog::showFitPage()
 	}
 
 	boxFunction->setText(editBox->text().simplified());
-	lblFunction->setText(boxName->text() +" (x, " + par + ")");
+	lblFunction->setText(boxName->text() +" (x, " + boxParam->text().simplified() + ")");
 
 	tw->setCurrentWidget (fitPage);
 }
 
 void FitDialog::showEditPage()
 {
-	tw->setCurrentWidget (editPage);
+    if (d_current_fit)
+        d_current_fit->freeMemory();
+	tw->setCurrentWidget(editPage);
 }
 
 void FitDialog::showAdvancedPage()
@@ -705,51 +711,7 @@ void FitDialog::setFunction(bool ok)
 	if (ok){
 		boxName->setText(funcBox->currentItem()->text());
 		editBox->setText(explainBox->text());
-
-		if (categoryBox->currentRow() == 0 && (int)userFunctionParams.size() > 0)
-			boxParam->setText(userFunctionParams[funcBox->currentRow ()]);
-		else if (categoryBox->currentRow() == 1)
-			boxParam->setText(d_current_fit->parameterNames().join(", "));
-		else if (categoryBox->currentRow() == 3 && (int)pluginParameters.size() > 0 )
-			boxParam->setText(pluginParameters[funcBox->currentRow()]);
-	}
-}
-
-void FitDialog::clearUserList()
-{
-	userFunctions.clear();
-	userFunctionNames.clear();
-	if (categoryBox->currentRow() == 0)
-	{
-		funcBox->clear();
-		explainBox->clear();
-        boxUseBuiltIn->setEnabled(false);
-        buttonClearUsrList->setEnabled(false);
-	}
-	emit clearFunctionsList();
-}
-
-void FitDialog::insertFunctionsList(const QStringList& list)
-{
-	if (!list.count())
-	{
-		boxUseBuiltIn->setEnabled(false);
-		return;
-	}
-
-	for (int i = 0; i<(int)list.count(); i++)
-	{
-		QString s = list[i].simplified();
-		if (!s.isEmpty())
-		{
-            userFunctions << s;
-
-            int pos1 = s.find("(", 0);
-            userFunctionNames << s.left(pos1);
-
-            int pos2 = s.find(")", pos1);
-            userFunctionParams << s.mid(pos1+4, pos2-pos1-4);
-		}
+		boxParam->setText(d_current_fit->parameterNames().join(", "));
 	}
 }
 
@@ -759,8 +721,6 @@ void FitDialog::showFunctionsList(int category)
 	boxUseBuiltIn->setEnabled(false);
 	boxUseBuiltIn->hide();
 	buttonPlugins->hide();
-    buttonClearUsrList->hide();
-    buttonClearUsrList->setEnabled(false);
 	btnDelFunc->setEnabled(false);
     funcBox->blockSignals(true);
 	funcBox->clear();
@@ -771,105 +731,103 @@ void FitDialog::showFunctionsList(int category)
 	switch (category)
 	{
 		case 0:
-			if ((int)userFunctionNames.count() > 0)
-			{
-				showUserFunctions();
-                buttonClearUsrList->show();
+			if (d_user_functions.count() > 0){
 				boxUseBuiltIn->setEnabled(true);
-                buttonClearUsrList->setEnabled(true);
-			}
 
+                QStringList lst;
+                foreach(Fit *fit, d_user_functions)
+                    lst << fit->objectName();
+                funcBox->addItems(lst);
+			}
+            buttonPlugins->setText(tr("Choose &models folder..."));
+            buttonPlugins->show();
 			boxUseBuiltIn->setText(tr("Fit with selected &user function"));
 			boxUseBuiltIn->show();
-            buttonClearUsrList->show();
 			btnDelFunc->setEnabled(true);
-			break;
+        break;
 
 		case 1:
-		{
 			boxUseBuiltIn->setText(tr("Fit using &built-in function"));
 			boxUseBuiltIn->show();
 			boxUseBuiltIn->setEnabled(true);
 			funcBox->addItems(builtInFunctionNames());
-			break;
-		}
-		
+        break;
+
 		case 2:
 			showParseFunctions();
-			break;
+        break;
 
 		case 3:
-			buttonPlugins->show();
+            buttonPlugins->setText(tr("Choose plug&ins folder..."));
+            buttonPlugins->show();
 			boxUseBuiltIn->setText(tr("Fit using &plugin function"));
 			boxUseBuiltIn->show();
-			if ((int)pluginFunctionNames.size() > 0)
-			{
-				funcBox->addItems(pluginFunctionNames);
-				boxUseBuiltIn->setEnabled(true);
-			}
-			break;
+            boxUseBuiltIn->setEnabled(d_plugins.size() > 0);
+            QStringList lst;
+            foreach(Fit *fit, d_plugins)
+                lst << fit->objectName();
+            funcBox->addItems(lst);
+        break;
 	}
     funcBox->blockSignals(false);
 	funcBox->setCurrentRow (0);
 }
 
-void FitDialog::choosePluginsFolder()
+void FitDialog::chooseFolder()
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	QString dir = QFileDialog::getExistingDirectory(QDir::currentDirPath(), this, "get directory",
-			tr("Choose the plugins folder"), true, true);
-	if (!dir.isEmpty())
-	{
-		pluginFilesList.clear();
-		pluginFunctionNames.clear();
-		pluginFunctions.clear();
-		pluginParameters.clear();
-		funcBox->clear();
-		explainBox->clear();
+	if (categoryBox->currentRow() == 3){//plugins
+        QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the plugins folder"), app->fitPluginsPath);
+        if (!dir.isEmpty()){
+            funcBox->clear();
+            explainBox->clear();
+            app->fitPluginsPath = dir;
+            loadPlugins();
+        }
+	} else if (!categoryBox->currentRow()){//user-defined
+	    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the fit models folder"), app->fitModelsPath);
+        if (!dir.isEmpty()){
+            funcBox->clear();
+            explainBox->clear();
+            app->fitModelsPath = dir;
+            loadUserFunctions();
 
-		app->fitPluginsPath = dir;
-		loadPlugins();
-		if ((int)pluginFunctionNames.size() > 0)
-		{
-			funcBox->addItems(pluginFunctionNames);
-			if (!boxUseBuiltIn->isEnabled())
-				boxUseBuiltIn->setEnabled(true);
-
-			funcBox->setCurrentRow(0);
-		}
-		else
-			boxUseBuiltIn->setEnabled(false);
+            QString path = app->fitModelsPath + "/";
+            foreach(Fit *fit, d_built_in_functions)
+                fit->setFileName(path + fit->objectName() + ".fit");
+        }
 	}
 }
 
 void FitDialog::loadPlugins()
 {
+    d_plugins.clear();
 	typedef char* (*fitFunc)();
 
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	QString path = app->fitPluginsPath + "/";
+	QString modelsDirPath = app->fitModelsPath + "/";
 	QDir dir(path);
-	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks);
-
-	for (int i=0; i<(int)lst.count(); i++){
-		QLibrary lib(path + lst[i]);
-
-		fitFunc name = (fitFunc) lib.resolve( "name" );
-		fitFunc function = (fitFunc) lib.resolve("function");
-		fitFunc params = (fitFunc) lib.resolve("parameters");
-
-		if ( name && function && params ){
-			pluginFunctionNames << QString(name());
-			pluginFunctions << QString(function());
-			pluginParameters << QString(params());
-			pluginFilesList << lib.library();
-		}
+	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks, QDir::Name);
+    QStringList names;
+	for (int i=0; i<lst.count(); i++){
+	    QString file = lst[i];
+	    if (QLibrary::isLibrary (file)){
+            QLibrary lib(path + file);
+            PluginFit *fit = new PluginFit(app, d_graph);
+            fit->load(lib.library());
+            d_plugins << fit;
+            names << fit->objectName();
+            fit->setFileName(modelsDirPath + fit->objectName() + ".fit");
+	    }
 	}
-}
 
-void FitDialog::showUserFunctions()
-{
-	funcBox->addItems(userFunctionNames);
+    if (d_plugins.size() > 0){
+        funcBox->addItems(names);
+        funcBox->setCurrentRow(0);
+        boxUseBuiltIn->setEnabled(true);
+    } else
+        boxUseBuiltIn->setEnabled(false);
 }
 
 void FitDialog::showParseFunctions()
@@ -889,30 +847,29 @@ void FitDialog::showExpression(int function)
 		polynomOrderBox->hide();
 		if (funcBox->currentItem()->text() == tr("Gauss") ||
 			funcBox->currentItem()->text() == tr("Lorentz")){
-			polynomOrderLabel->setText(tr("Peaks"));		
+			polynomOrderLabel->setText(tr("Peaks"));
 			polynomOrderLabel->show();
 			polynomOrderBox->show();
 		} else if (funcBox->currentItem()->text() == tr("Polynomial")){
-			polynomOrderLabel->setText(tr("Polynomial Order"));		
+			polynomOrderLabel->setText(tr("Polynomial Order"));
 			polynomOrderLabel->show();
 			polynomOrderBox->show();
 		}
-			
+
 		d_current_fit = d_built_in_functions[function];
 		explainBox->setText(d_current_fit->formula());
 		setFunction(boxUseBuiltIn->isChecked());
-	}
-	else if (categoryBox->currentRow() == 0){
-		if (userFunctions.size() > function) {
-			QStringList l = userFunctions[function].split("=");
-			explainBox->setText(l[1]);
+	} else if (categoryBox->currentRow() == 0){
+		if (d_user_functions.size() > function) {
+			d_current_fit = d_user_functions[function];
+			explainBox->setText(d_current_fit->formula());
 		} else
 			explainBox->clear();
 		setFunction(boxUseBuiltIn->isChecked());
-	}
-	else if (categoryBox->currentRow() == 3){
-		if ((int)pluginFunctions.size() > 0){
-			explainBox->setText(pluginFunctions[function]);
+	} else if (categoryBox->currentRow() == 3){
+		if (d_plugins.size() > 0){
+		    d_current_fit = d_plugins[function];
+			explainBox->setText(d_current_fit->formula());
 			setFunction(boxUseBuiltIn->isChecked());
 		}else
 			explainBox->clear();
@@ -977,7 +934,7 @@ void FitDialog::accept()
 		parser.SetExpr(to.ascii());
 		end=parser.Eval();
 	} catch(mu::ParserError &e){
-		QMessageBox::critical(this, tr("QtiPlot - End limit error"),QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
 		boxTo->setFocus();
 		return;
 	}
@@ -1006,33 +963,28 @@ void FitDialog::accept()
 		return;
 	}
 
-	int i, n=0, rows=boxParams->rowCount();
+	int i, n = 0, rows = boxParams->rowCount();
 	if (!boxParams->isColumnHidden(2)){
-		for (i=0;i<rows;i++){//count the non-constant parameters
+		for (i=0; i<rows; i++){//count the non-constant parameters
             QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 			if (!cb->isChecked())
 				n++;
 		}
 	} else
-		n=rows;
+		n = rows;
 
 	QStringList parameters;
 	MyParser parser;
-	bool error=FALSE;
+	bool error = false;
 
 	double paramsInit[n];
 	QString formula = boxFunction->text();
-	try{
-		bool withNames = containsUserFunctionName(formula);
-		while(withNames){
-			for (i=0; i<(int)userFunctionNames.count(); i++){
-				if (formula.contains(userFunctionNames[i])){
-					QStringList l = userFunctions[i].split("=");
-					formula.replace(userFunctionNames[i], "(" + l[1] + ")");
-				}
-			}
-			withNames = containsUserFunctionName(formula);
-		}
+	try {
+        QStringList lst = userFunctionNames();
+		for (i=0; i<lst.count(); i++){
+            if (formula.contains(lst[i]))
+                formula.replace(lst[i], "(" + (d_user_functions[i])->formula() + ")");
+        }
 
 		QStringList builtInFunctions = builtInFunctionNames();
 		for (i=0; i<(int)builtInFunctions.count(); i++){
@@ -1044,7 +996,7 @@ void FitDialog::accept()
 
 		if (!boxParams->isColumnHidden(2)){
 			int j = 0;
-			for (i=0;i<rows;i++){
+			for (i=0; i<rows; i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 				if (!cb->isChecked()){
 					paramsInit[j] = boxParams->item(i,1)->text().toDouble();
@@ -1055,7 +1007,7 @@ void FitDialog::accept()
 					formula.replace(boxParams->item(i,0)->text(), boxParams->item(i,1)->text());
 			}
 		} else {
-			for (i=0;i<n;i++) {
+			for (i=0; i<n; i++) {
 				paramsInit[i] = boxParams->item(i,1)->text().toDouble();
 				parser.DefineVar(boxParams->item(i,0)->text().ascii(), &paramsInit[i]);
 				parameters << boxParams->item(i,0)->text();
@@ -1078,31 +1030,13 @@ void FitDialog::accept()
 	if (!error){
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 
-		if (boxUseBuiltIn->isChecked() && categoryBox->currentRow() == 1)
+		if (d_current_fit->type() == Fit::BuiltIn)
 			modifyGuesses (paramsInit);
-		else if (boxUseBuiltIn->isChecked() && categoryBox->currentRow() == 3){
-			d_current_fit = new PluginFit(app, d_graph);
-			if (!((PluginFit*)d_current_fit)->load(pluginFilesList[funcBox->currentRow()])){
-				d_current_fit  = 0;
-				return;
-			}
-		} else {
-			d_current_fit = new NonLinearFit(app, d_graph);
-			((NonLinearFit*)d_current_fit)->setParametersList(parameters);
-			((NonLinearFit*)d_current_fit)->setFormula(formula);
-		}
-		
-		if (d_current_fit->objectName() != tr("Polynomial"))
-			d_current_fit->setInitialGuesses(paramsInit);
-		
+		d_current_fit->setInitialGuesses(paramsInit);
+
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
-					       tableNamesBox->currentText()+"_"+colNamesBox->currentText()))
-		{
-			delete d_current_fit;
-			d_current_fit  = 0;
-			return;
-		}
+					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
 
 		d_current_fit->setTolerance(eps);
 		d_current_fit->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
@@ -1133,7 +1067,7 @@ void FitDialog::modifyGuesses(double* initVal)
 {
 	if (!d_current_fit)
 		return;
-	
+
 	QString fitName = d_current_fit->objectName();
 	if (fitName == tr("ExpDecay1"))
 		initVal[1] = 1/initVal[1];
@@ -1147,21 +1081,6 @@ void FitDialog::modifyGuesses(double* initVal)
 		initVal[3] = 1/initVal[3];
 		initVal[5] = 1/initVal[5];
 	}
-}
-
-bool FitDialog::containsUserFunctionName(const QString& s)
-{
-	bool contains = false;
-	for (int i=0; i<(int)userFunctionNames.count(); i++)
-	{
-        QString fn = userFunctionNames[i];
-		if (!fn.isEmpty() && s.contains(fn))
-		{
-			contains = true;
-			break;
-		}
-	}
-	return contains;
 }
 
 bool FitDialog::validInitialValues()
@@ -1197,8 +1116,7 @@ void FitDialog::changeDataRange()
 
 void FitDialog::setSrcTables(QWidgetList* tables)
 {
-	if (tables->isEmpty())
-	{
+	if (tables->isEmpty()){
 		tableNamesBox->addItem(tr("No data tables"));
 		colNamesBox->addItem(tr("No data tables"));
 		return;
@@ -1217,8 +1135,7 @@ void FitDialog::selectSrcTable(int tabnr)
 {
 	colNamesBox->clear();
 
-	if (tabnr >= 0 && tabnr < srcTables->count())
-	{
+	if (tabnr >= 0 && tabnr < srcTables->count()){
 		Table *t = (Table*)srcTables->at(tabnr);
 		if (t)
 			colNamesBox->addItems(t->colNames());
@@ -1272,12 +1189,12 @@ void FitDialog::initBuiltInFunctions()
 	d_built_in_functions << new TwoExpFit(app, d_graph);
 	d_built_in_functions << new ThreeExpFit(app, d_graph);
 	d_built_in_functions << new ExponentialFit(app, d_graph, true);
-	
+
 	MultiPeakFit *fit = new MultiPeakFit(app, d_graph, MultiPeakFit::Gauss);
 	fit->enablePeakCurves(app->generatePeakCurves);
 	fit->setPeakCurvesColor(app->peakCurvesColor);
 	d_built_in_functions << fit;
-	
+
 	d_built_in_functions << new GaussAmpFit(app, d_graph);
 	d_built_in_functions << new LogisticFit(app, d_graph);
 
@@ -1285,19 +1202,23 @@ void FitDialog::initBuiltInFunctions()
 	fit->enablePeakCurves(app->generatePeakCurves);
 	fit->setPeakCurvesColor(app->peakCurvesColor);
 	d_built_in_functions << fit;
-	
+
 	d_built_in_functions << new PolynomialFit(app, d_graph, 1);
+
+    QString path = app->fitModelsPath + "/";
+    foreach(Fit *fit, d_built_in_functions)
+        fit->setFileName(path + fit->objectName() + ".fit");
 }
 
 void FitDialog::setNumPeaks(int peaks)
 {
-	if (d_current_fit->objectName() == tr("Gauss") || 
+	if (d_current_fit->objectName() == tr("Gauss") ||
 		d_current_fit->objectName() == tr("Lorentz"))
 		((MultiPeakFit *)d_current_fit)->setNumPeaks(peaks);
 	else if (d_current_fit->objectName() == tr("Polynomial"))
 		((PolynomialFit *)d_current_fit)->setOrder(peaks);
-	
-	int index = funcBox->currentRow();	
+
+	int index = funcBox->currentRow();
 	d_built_in_functions[index] = d_current_fit;
 	showExpression(index);
 }
@@ -1306,6 +1227,99 @@ QStringList FitDialog::builtInFunctionNames()
 {
 	QStringList lst;
 	foreach(Fit *fit, d_built_in_functions)
+		lst << fit->objectName();
+	return lst;
+}
+
+void FitDialog::loadUserFunctions()
+{
+    d_user_functions.clear();
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	QString path = app->fitModelsPath + "/";
+	QDir dir(path);
+	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks, QDir::Name);
+	QStringList names;
+	for (int i=0; i<lst.count(); i++){
+        NonLinearFit *fit = new NonLinearFit(app, d_graph);
+        if (fit->load(path + lst[i])){
+            if (fit->type() == Fit::User){
+                d_user_functions << fit;
+                names << fit->objectName();
+            } else if (fit->type() == Fit::BuiltIn){
+                QStringList lst = builtInFunctionNames();
+                int index = lst.indexOf(fit->objectName());
+                if (index >= 0 && index < d_built_in_functions.size()){
+                    Fit *f = d_built_in_functions[index];
+                    f->setFileName(fit->fileName());
+                    for (int i=0; i<f->numParameters(); i++)
+                        f->setInitialGuess(i, fit->initialGuess(i));
+                }
+            } else if (fit->type() == Fit::Plugin){
+                QStringList lst = plugInNames();
+                int index = lst.indexOf(fit->objectName());
+                if (index >= 0 && index < d_plugins.size()){
+                    Fit *f = d_plugins[index];
+                    f->setFileName(fit->fileName());
+                    for (int i=0; i<f->numParameters(); i++)
+                        f->setInitialGuess(i, fit->initialGuess(i));
+                }
+            }
+        }
+    }
+
+    if (d_user_functions.size() > 0){
+        funcBox->addItems(names);
+        funcBox->setCurrentRow(0);
+        boxUseBuiltIn->setEnabled(true);
+    } else
+        boxUseBuiltIn->setEnabled(false);
+}
+
+QStringList FitDialog::userFunctionNames()
+{
+	QStringList lst;
+	foreach(Fit *fit, d_user_functions)
+		lst << fit->objectName();
+	return lst;
+}
+
+void FitDialog::saveInitialGuesses()
+{
+    if (!d_current_fit)
+        return;
+
+    if (!validInitialValues())
+		return;
+
+	int rows = boxParams->rowCount();
+    for (int i=0; i<rows; i++)
+        d_current_fit->setInitialGuess(i, boxParams->item(i, 1)->text().toDouble());
+
+    QString fileName = d_current_fit->fileName();
+    if (!fileName.isEmpty())
+        d_current_fit->save(fileName);
+    else {
+	    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		QString filter = tr("QtiPlot fit model") + " (*.fit);;";
+		filter += tr("All files") + " (*.*)";
+		QString fn = QFileDialog::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
+                                app->fitModelsPath + "/" + d_current_fit->objectName(), filter);
+		if (!fn.isEmpty()){
+            QFileInfo fi(fn);
+            QString baseName = fi.fileName();
+            if (!baseName.contains("."))
+                fn.append(".fit");
+
+            if (d_current_fit->save(fn))
+                d_user_functions.append(d_current_fit);
+          }
+    }
+}
+
+QStringList FitDialog::plugInNames()
+{
+	QStringList lst;
+	foreach(Fit *fit, d_plugins)
 		lst << fit->objectName();
 	return lst;
 }

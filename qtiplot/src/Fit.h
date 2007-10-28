@@ -54,6 +54,7 @@ class Fit : public Filter
 
 		enum Algorithm{ScaledLevenbergMarquardt, UnscaledLevenbergMarquardt, NelderMeadSimplex};
 		enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset};
+        enum FitType{BuiltIn = 0, Plugin = 1, User = 2};
 
 		Fit(ApplicationWindow *parent, Graph *g = 0, const QString& name = QString());
 		Fit(ApplicationWindow *parent, Table *t, const QString& name = QString());
@@ -71,9 +72,14 @@ class Fit : public Filter
 
 		QString resultFormula(){return d_result_formula;};
 		QString formula(){return d_formula;};
+		virtual void setFormula(const QString&){};
+
 		int numParameters(){return d_p;};
 		QStringList parameterNames(){return d_param_names;};
+		virtual void setParametersList(const QStringList& lst){};
+        void setParameterExplanations(const QStringList& lst){d_param_explain = lst;};
 
+        double initialGuess(int parIndex){return gsl_vector_get(d_param_init, parIndex);};
 		void setInitialGuess(int parIndex, double val){gsl_vector_set(d_param_init, parIndex, val);};
 		void setInitialGuesses(double *x_init);
 
@@ -104,12 +110,24 @@ class Fit : public Filter
 
 		Table* parametersTable(const QString& tableName);
 		void writeParametersToTable(Table *t, bool append = false);
-		
+
 		Matrix* covarianceMatrix(const QString& matrixName);
+
+        bool save(const QString& fileName);
+        bool load(const QString& fileName);
+
+        FitType type(){return d_fit_type;};
+        void setType(FitType t){d_fit_type = t;};
+
+        QString fileName(){return d_file_name;};
+		void setFileName(const QString& fn){d_file_name = fn;};
+
+        //! Frees the memory allocated for the X and Y data sets
+        void freeMemory();
 
 	private:
 		void init();
-	
+
 		//! Pointer to the GSL multifit minimizer (for simplex algorithm)
 		gsl_multimin_fminimizer * fitSimplex(gsl_multimin_function f, int &iterations, int &status);
 
@@ -168,12 +186,12 @@ class Fit : public Filter
 
 		//! The result fit formula, where the fit parameters are replaced with the calculated values.
 		QString d_result_formula;
-		
+
 		//! Covariance matrix
 		gsl_matrix *covar;
 
 		//! The kind of weighting to be performed on the data
-		WeightingMethod d_weihting;
+		WeightingMethod d_weighting;
 
 		//! The name of the weighting dataset
 		QString weighting_dataset;
@@ -189,13 +207,17 @@ class Fit : public Filter
 
 		//! Specifies wheather the errors must be scaled with sqrt(chi_2/dof)
 		bool d_scale_errors;
-		
-		//! Table window used for the output of fit parameters 
+
+		//! Table window used for the output of fit parameters
 		Table *d_param_table;
-		
-		//! Matrix window used for the output of covariance matrix 
+
+		//! Matrix window used for the output of covariance matrix
 		Matrix *d_cov_matrix;
-		
+
+		FitType d_fit_type;
+
+		//! Path of the XML file where the user stores the fit model
+        QString d_file_name;
 };
 
 #endif
