@@ -2,8 +2,8 @@
     File                 : FitDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit Wizard
 
  ***************************************************************************/
@@ -47,7 +47,7 @@ class QLineEdit;
 class ColorBox;
 class Fit;
 class Table;
-	
+
 //! Fit Wizard
 class FitDialog : public QDialog
 {
@@ -56,16 +56,16 @@ class FitDialog : public QDialog
 public:
     FitDialog(Graph *g, QWidget* parent = 0, Qt::WFlags fl = 0 );
 
+    void setSrcTables(QWidgetList* tables);
+
 protected:
 	void closeEvent (QCloseEvent * e );
     void initFitPage();
 	void initEditPage();
 	void initAdvancedPage();
 
-public slots:
+private slots:
 	void accept();
-	void insertFunctionsList(const QStringList& list);
-	void clearUserList();
     //! Clears the function editor, the parameter names and the function name
     void resetFunction();
 	void showFitPage();
@@ -73,22 +73,17 @@ public slots:
 	void showAdvancedPage();
 	void showFunctionsList(int category);
 	void showParseFunctions();
-	void showUserFunctions();
-	void loadPlugins();
 	void showExpression(int function);
 	void addFunction();
 	void addFunctionName();
 	void setFunction(bool ok);
 	void saveUserFunction();
 	void removeUserFunction();
-	bool containsUserFunctionName(const QString& s);
 	void setGraph(Graph *g);
 	void activateCurve(const QString& curveName);
-	void choosePluginsFolder();
+	void chooseFolder();
 	bool validInitialValues();
 	void changeDataRange();
-
-	void setSrcTables(QWidgetList* tables);
 	void selectSrcTable(int tabnr);
 	void enableWeightingParameters(int index);
 	void showPointsBox(bool);
@@ -101,27 +96,24 @@ public slots:
 	//! Deletes the result fit curves from the plot
 	void deleteFitCurves();
 
-private slots:
     //! Enable the "Apply" button
 	void enableApplyChanges(int = 0);
 	void setNumPeaks(int peaks);
-	
-signals:
-	void clearFunctionsList();
-	void saveFunctionsList(const QStringList&);
+	void saveInitialGuesses();
 
 private:
+	void loadPlugins();
+    void loadUserFunctions();
 	void initBuiltInFunctions();
 	void modifyGuesses(double* initVal);
 	QStringList builtInFunctionNames();
+	QStringList userFunctionNames();
+	QStringList plugInNames();
 
-    int d_param_table_rows;
     Fit *d_current_fit;
 	Graph *d_graph;
 	Table *d_param_table;
-	QStringList userFunctions, userFunctionNames, userFunctionParams;
-	QStringList pluginFunctionNames, pluginFunctions, pluginFilesList, pluginParameters;
-	QList <Fit*> d_user_functions, d_built_in_functions;
+	QList <Fit*> d_user_functions, d_built_in_functions, d_plugins;
 	QWidgetList *srcTables;
 
     QCheckBox* boxUseBuiltIn;
@@ -132,9 +124,9 @@ private:
 	QPushButton* buttonCancel3;
 	QPushButton* buttonAdvanced;
 	QPushButton* buttonClear;
-    QPushButton* buttonClearUsrList;
 	QPushButton* buttonPlugins;
 	QPushButton* btnBack;
+	QPushButton* btnSaveGuesses;
 	QComboBox* boxCurve;
 	QComboBox* boxAlgorithm;
 	QTableWidget* boxParams;

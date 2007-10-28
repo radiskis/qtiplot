@@ -86,6 +86,7 @@
 #include "PolynomialFit.h"
 #include "SigmoidalFit.h"
 #include "LogisticFit.h"
+#include "NonLinearFit.h"
 #include "FunctionCurve.h"
 #include "QwtPieCurve.h"
 #include "Spectrogram.h"
@@ -371,6 +372,7 @@ void ApplicationWindow::initGlobalConstants()
     workingDir = aux;
 	helpFilePath = aux + "/manual/index.html";
 	fitPluginsPath = aux + "fitPlugins";
+	fitModelsPath = QString::null;
 	templatesDir = aux;
 	asciiDirPath = aux;
 	imagesDirPath = aux;
@@ -4390,13 +4392,16 @@ void ApplicationWindow::readSettings()
     workingDir = settings.value("/WorkingDir", QDir::homePath()).toString();
 #endif
 	scriptsDirPath = settings.value("/ScriptsDir", qApp->applicationDirPath()).toString();
+	fitModelsPath = settings.value("/FitModelsDir", "").toString();
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ------------- end group General ------------------- */
 
-
 	settings.beginGroup("/UserFunctions");
-	fitFunctions = settings.value("/FitFunctions").toStringList();
+	if (100*maj_version + 10*min_version + patch_version == 91 &&
+        settings.contains("/FitFunctions")){
+        saveFitFunctions(settings.value("/FitFunctions").toStringList());
+	}
 	surfaceFunc = settings.value("/SurfaceFunctions").toStringList();
 	xFunctions = settings.value("/xFunctions").toStringList();
 	yFunctions = settings.value("/yFunctions").toStringList();
@@ -4404,7 +4409,6 @@ void ApplicationWindow::readSettings()
 	thetaFunctions = settings.value("/thetaFunctions").toStringList();
 	d_param_surface_func = settings.value("/ParametricSurfaces").toStringList();
 	settings.endGroup(); // UserFunctions
-
 
 	settings.beginGroup("/Confirmations");
 	confirmCloseFolder = settings.value("/Folder", true).toBool();
@@ -4661,12 +4665,12 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ASCII", asciiDirPath);
 	settings.setValue("/Images", imagesDirPath);
 	settings.setValue("/ScriptsDir", scriptsDirPath);
+    settings.setValue("/FitModelsDir", fitModelsPath);
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ---------------- end group General --------------- */
 
 	settings.beginGroup("/UserFunctions");
-	settings.setValue("/FitFunctions", fitFunctions);
 	settings.setValue("/SurfaceFunctions", surfaceFunc);
 	settings.setValue("/xFunctions", xFunctions);
 	settings.setValue("/yFunctions", yFunctions);
@@ -6799,12 +6803,8 @@ void ApplicationWindow::showFitDialog()
 
 	FitDialog *fd = new FitDialog(g, this);
 	fd->setAttribute(Qt::WA_DeleteOnClose);
-	connect (fd, SIGNAL(clearFunctionsList()), this, SLOT(clearFitFunctionsList()));
-	connect (fd, SIGNAL(saveFunctionsList(const QStringList&)),
-			this, SLOT(saveFitFunctionsList(const QStringList&)));
 	connect (plot, SIGNAL(destroyed()), fd, SLOT(close()));
 
-	fd->insertFunctionsList(fitFunctions);
 	fd->setSrcTables(tableList());
 	fd->show();
 	fd->resize(fd->minimumSize());
@@ -9111,16 +9111,6 @@ void ApplicationWindow::clearPolarFunctionsList()
 {
 	rFunctions.clear();
 	thetaFunctions.clear();
-}
-
-void ApplicationWindow::clearFitFunctionsList()
-{
-	fitFunctions.clear();
-}
-
-void ApplicationWindow::saveFitFunctionsList(const QStringList& l)
-{
-	fitFunctions = l;
 }
 
 void ApplicationWindow::clearSurfaceFunctionsList()
@@ -14520,5 +14510,42 @@ void ApplicationWindow::showToolBarsMenu()
 		d_edit_tool_bar = action->isChecked();
 	} else if (action->text() == displayBar->windowTitle()){
 		d_display_tool_bar = action->isChecked();
+	}
+}
+
+void ApplicationWindow::saveFitFunctions(const QStringList& lst)
+{
+	if (!lst.count())
+		return;
+
+    QString explain = tr("Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.");
+    explain += " " + tr("If you want to save your already defined models, please choose a destination folder.");
+    if (QMessageBox::Ok != QMessageBox::information(this, tr("QtiPlot") + " - " + tr("Import fit models"), explain,
+                            QMessageBox::Ok, QMessageBox::Cancel)) return;
+
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose a directory to export the fit models to"), fitModelsPath, QFileDialog::ShowDirsOnly);
+	if (!dir.isEmpty()){
+	    fitModelsPath = dir;
+
+        for (int i = 0; i<lst.count(); i++){
+            QString s = lst[i].simplified();
+            if (!s.isEmpty()){
+                NonLinearFit *fit = new NonLinearFit(this, 0);
+
+                int pos1 = s.find("(", 0);
+                fit->setObjectName(s.left(pos1));
+
+                int pos2 = s.find(")", pos1);
+                QString par = s.mid(pos1+4, pos2-pos1-4);
+                QStringList paramList = par.split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts);
+                fit->setParametersList(paramList);
+
+                QStringList l = s.split("=");
+                if (l.count() == 2)
+                    fit->setFormula(l[1]);
+
+                fit->save(fitModelsPath + "/" + fit->objectName() + ".fit");
+            }
+        }
 	}
 }

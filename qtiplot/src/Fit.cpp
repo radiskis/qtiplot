@@ -35,6 +35,7 @@
 #include "FunctionCurve.h"
 #include "ColorBox.h"
 #include "MultiLayer.h"
+#include "FitModelHandler.h"
 
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_blas.h>
@@ -43,6 +44,7 @@
 #include <QMessageBox>
 #include <QDateTime>
 #include <QLocale>
+#include <QTextStream>
 
 Fit::Fit( ApplicationWindow *parent, Graph *g, const QString& name)
 : Filter( parent, g, name)
@@ -70,7 +72,7 @@ void Fit::init()
 	d_formula = QString::null;
 	d_result_formula = QString::null;
 	d_explanation = QString::null;
-	d_weihting = NoWeighting;
+	d_weighting = NoWeighting;
 	weighting_dataset = QString::null;
 	is_non_linear = true;
 	d_results = 0;
@@ -83,6 +85,8 @@ void Fit::init()
 	d_param_table = 0;
 	d_cov_matrix = 0;
 	covar = 0;
+	d_param_init = 0;
+	d_fit_type = BuiltIn;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)
@@ -174,7 +178,7 @@ void Fit::setDataCurve(int curve, double start, double end)
         foreach (DataCurve *c, lst){
             QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
             if (!er->xErrors()){
-                d_weihting = Instrumental;
+                d_weighting = Instrumental;
                 for (int i=0; i<d_n; i++)
                     d_w[i] = er->errorValue(i); //d_w are equal to the error bar values
                 weighting_dataset = er->title().text();
@@ -222,7 +226,7 @@ QString Fit::logFitInfo(double *par, int iterations, int status)
 		info +="\n";
 
 	info += tr("Weighting Method") + ": ";
-	switch(d_weihting)
+	switch(d_weighting)
 	{
 		case NoWeighting:
 			info += tr("No weighting");
@@ -255,7 +259,10 @@ QString Fit::logFitInfo(double *par, int iterations, int status)
 	info+=tr("From x")+" = "+locale.toString(d_x[0], 'g', 15)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'g', 15)+"\n";
 	double chi_2_dof = chi_2/(d_n - d_p);
 	for (int i=0; i<d_p; i++){
-		info += d_param_names[i]+" "+d_param_explain[i]+" = "+locale.toString(par[i], 'g', d_prec) + " +/- ";
+		info += d_param_names[i];
+		if (!d_param_explain[i].isEmpty())
+            info += " (" + d_param_explain[i] + ")";
+		info += " = " + locale.toString(par[i], 'g', d_prec) + " +/- ";
 		if (d_scale_errors)
 			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar,i,i)), 'g', d_prec) + "\n";
 		else
@@ -388,7 +395,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 			break;
 	}
 
-	d_weihting = w;
+	d_weighting = w;
 	return true;
 }
 
@@ -606,12 +613,78 @@ void Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int 
 	d_output_graph->addFitCurve(c);
 }
 
+bool Fit::save(const QString& fileName)
+{
+    QFile f(fileName);
+	if ( !f.open( QIODevice::WriteOnly ) ){
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("File Save Error"),
+				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fileName));
+		return false;
+	}
+
+    QTextStream out( &f );
+    out.setCodec("UTF-8");
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+         << "<!DOCTYPE fit>\n"
+         << "<fit version=\"1.0\">\n";
+
+     out << "<model>" + objectName() + "</model>\n";
+     out << "<type>" + QString::number(d_fit_type) + "</type>\n";
+     out << "<function>" + d_formula + "</function>\n";
+
+     QString indent = QString(4, ' ');
+     for (int i=0; i< d_p; i++){
+         out << "<parameter>\n";
+         out << indent << "<name>" + d_param_names[i] + "</name>\n";
+         out << indent << "<explanation>" + d_param_explain[i] + "</explanation>\n";
+         out << indent << "<value>" + QString::number(gsl_vector_get(d_param_init, i), 'e', 13) + "</value>\n";
+         out << "</parameter>\n";
+     }
+     out << "</fit>\n";
+     d_file_name = fileName;
+     return true;
+}
+
+bool Fit::load(const QString& fileName)
+{
+    FitModelHandler handler(this);
+    QXmlSimpleReader reader;
+    reader.setContentHandler(&handler);
+    reader.setErrorHandler(&handler);
+
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
+                              tr("Cannot read file %1:\n%2.")
+                              .arg(fileName)
+                              .arg(file.errorString()));
+        return false;
+    }
+
+    QXmlInputSource xmlInputSource(&file);
+    if (reader.parse(xmlInputSource)){
+        d_file_name = fileName;
+        return true;
+    }
+    return false;
+}
+
+void Fit::freeMemory()
+{
+	if (!d_p)
+		return;
+
+	if (d_results) delete[] d_results;
+	if (d_errors) delete[] d_errors;
+}
+
 Fit::~Fit()
 {
 	if (!d_p)
 		return;
 
-	if (is_non_linear)
+	if (d_param_init)
 		gsl_vector_free(d_param_init);
 
 	if (d_results) delete[] d_results;
