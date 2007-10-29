@@ -78,13 +78,11 @@ void PolynomialFit::setOrder(int order)
 	if (covar) gsl_matrix_free(covar);
 	covar = gsl_matrix_alloc (d_p, d_p);
 
-    if (d_param_init)
-        gsl_vector_free(d_param_init);
+    if (d_param_init) gsl_vector_free(d_param_init);
     d_param_init = gsl_vector_alloc(d_p);
 	gsl_vector_set_all (d_param_init, 1.0);
 
-	if (d_results)
-		delete[] d_results;
+	if (d_results) delete[] d_results;
 	d_results = new double[d_p];
 
 	d_formula = generateFormula(d_order);
@@ -256,7 +254,7 @@ void LinearFit::init()
 	is_non_linear = false;
 	d_formula = "A*x+B";
 	d_param_names << "B" << "A";
-	d_param_explain << "(y-intercept)" << "(slope)";
+	d_param_explain << "y-intercept" << "slope";
 	d_explanation = tr("Linear Regression");
 	setObjectName(tr("Linear"));
 }

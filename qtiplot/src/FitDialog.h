@@ -30,6 +30,7 @@
 #define FITDIALOG_H
 
 #include "Graph.h"
+#include <QDoubleSpinBox>
 
 class QPushButton;
 class QLineEdit;
@@ -82,7 +83,6 @@ private slots:
 	void setGraph(Graph *g);
 	void activateCurve(const QString& curveName);
 	void chooseFolder();
-	bool validInitialValues();
 	void changeDataRange();
 	void selectSrcTable(int tabnr);
 	void enableWeightingParameters(int index);
@@ -100,6 +100,7 @@ private slots:
 	void enableApplyChanges(int = 0);
 	void setNumPeaks(int peaks);
 	void saveInitialGuesses();
+	void returnToFitPage();
 
 private:
 	void loadPlugins();
@@ -149,4 +150,17 @@ private:
 	QCheckBox *plotLabelBox, *logBox, *scaleErrorsBox, *globalParamTableBox;
 };
 
+class DoubleSpinBox : public QDoubleSpinBox
+{
+public:
+    DoubleSpinBox(QWidget * parent = 0);
+	virtual QString textFromValue ( double value ) const {return d_locale.toString(value, 'f', decimals());};
+	virtual double valueFromText ( const QString & text ) const {return d_locale.toDouble(text);};
+	virtual QValidator::State validate ( QString & input, int & pos ) const;
+	virtual void fixup ( QString & input ) const;
+	
+	void setLocale(const QLocale& locale){d_locale = locale;};
+	private:
+		QLocale d_locale;
+};
 #endif // FITDIALOG_H

@@ -366,6 +366,7 @@ void FitDialog::initAdvancedPage()
     boxPrecision->setRange(0, 13);
 	boxPrecision->setValue (app->fit_output_precision);
 	connect( boxPrecision, SIGNAL(valueChanged (int)), this, SLOT(enableApplyChanges(int)));
+	
     gl2->addWidget(boxPrecision, 0, 2);
 	btnParamTable = new QPushButton(tr( "Parameters &Table" ));
     gl2->addWidget(btnParamTable, 1, 0);
@@ -398,8 +399,7 @@ void FitDialog::initAdvancedPage()
     QHBoxLayout *hbox1 = new QHBoxLayout();
 
 	btnBack = new QPushButton(tr( "<< &Fit" ));
-	connect( btnBack, SIGNAL(clicked()), this, SLOT(showFitPage()));
-	connect( btnBack, SIGNAL(clicked()), this, SLOT(applyChanges()));
+	connect( btnBack, SIGNAL(clicked()), this, SLOT(returnToFitPage()));
     hbox1->addWidget(btnBack);
 
 	btnApply = new QPushButton(tr( "&Apply" ));
@@ -434,7 +434,13 @@ void FitDialog::initAdvancedPage()
 void FitDialog::applyChanges()
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	app->fit_output_precision = boxPrecision->value();
+	int prec = boxPrecision->value();
+	app->fit_output_precision = prec;
+	if (d_current_fit)
+		d_current_fit->setOutputPrecision(prec);
+	for (int i=0; i<boxParams->rowCount(); i++)
+		((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->setDecimals(prec);
+
 	app->pasteFitResultsToPlot = plotLabelBox->isChecked();
 	app->writeFitResultsToLog = logBox->isChecked();
 	app->fitPoints = generatePointsBox->value();
@@ -634,8 +640,9 @@ void FitDialog::removeUserFunction()
 
 void FitDialog::showFitPage()
 {
+	ApplicationWindow *app = (ApplicationWindow *)parent();
     if (!boxUseBuiltIn->isChecked()){
-        d_current_fit = new NonLinearFit((ApplicationWindow *)parent(), d_graph);
+        d_current_fit = new NonLinearFit(app, d_graph);
 		d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
         d_current_fit->setFormula(editBox->text().remove("\n"));
     }
@@ -650,6 +657,7 @@ void FitDialog::showFitPage()
 		aux = 7;
 	boxParams->setMinimumHeight(4 + (aux + 1)*boxParams->horizontalHeader()->height());
 
+	QLocale locale = app->locale();
     for (int i = 0; i<parameters; i++){
         QTableWidgetItem *it = new QTableWidgetItem(paramList[i]);
         it->setFlags(!Qt::ItemIsEditable);
@@ -660,9 +668,12 @@ void FitDialog::showFitPage()
         it->setFont(font);
         boxParams->setItem(i, 0, it);
 
-        it = new QTableWidgetItem(QString::number(d_current_fit->initialGuess(i), 'f', boxPrecision->value()));
-        it->setTextAlignment(Qt::AlignRight);
-        boxParams->setItem(i, 1, it);
+		DoubleSpinBox *sb = new DoubleSpinBox();
+		sb->setLocale(locale);
+		sb->setDecimals(boxPrecision->value());
+		sb->setRange(-DBL_MAX, DBL_MAX);
+		sb->setValue(d_current_fit->initialGuess(i));
+        boxParams->setCellWidget(i, 1, sb);
 	}
     for (int i = 0; i<parameters; i++)
         boxParams->item (i, 0)->setText(paramList[i]);
@@ -912,9 +923,6 @@ void FitDialog::accept()
 		return;
 	}
 
-	if (!validInitialValues())
-		return;
-
 	QString from=boxFrom->text().lower();
 	QString to=boxTo->text().lower();
 	QString tolerance=boxTolerance->text().lower();
@@ -999,7 +1007,7 @@ void FitDialog::accept()
 			for (i=0; i<rows; i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 				if (!cb->isChecked()){
-					paramsInit[j] = boxParams->item(i,1)->text().toDouble();
+					paramsInit[j] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->value();
 					parser.DefineVar(boxParams->item(i,0)->text().ascii(), &paramsInit[j]);
 					parameters << boxParams->item(i,0)->text();
 					j++;
@@ -1008,7 +1016,7 @@ void FitDialog::accept()
 			}
 		} else {
 			for (i=0; i<n; i++) {
-				paramsInit[i] = boxParams->item(i,1)->text().toDouble();
+				paramsInit[i] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->value();
 				parser.DefineVar(boxParams->item(i,0)->text().ascii(), &paramsInit[i]);
 				parameters << boxParams->item(i,0)->text();
 			}
@@ -1039,6 +1047,7 @@ void FitDialog::accept()
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
 
 		d_current_fit->setTolerance(eps);
+		d_current_fit->setOutputPrecision(app->fit_output_precision);
 		d_current_fit->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
 		d_current_fit->setColor(boxColor->currentIndex());
 		d_current_fit->generateFunction(generatePointsBtn->isChecked(), generatePointsBox->value());
@@ -1051,11 +1060,11 @@ void FitDialog::accept()
 			for (i=0;i<rows;i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 				if (!cb->isChecked())
-					boxParams->item(i, 1)->setText(QString::number(res[j++], 'g', app->fit_output_precision));
+					((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->setValue(res[j++]);
 			}
 		} else {
 			for (i=0;i<rows;i++)
-				boxParams->item(i, 1)->setText(QString::number(res[i], 'g', app->fit_output_precision));
+				((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->setValue(res[i]);
 		}
 
 		if (globalParamTableBox->isChecked() && d_param_table)
@@ -1081,29 +1090,6 @@ void FitDialog::modifyGuesses(double* initVal)
 		initVal[3] = 1/initVal[3];
 		initVal[5] = 1/initVal[5];
 	}
-}
-
-bool FitDialog::validInitialValues()
-{
-	for (int i=0; i<boxParams->rowCount(); i++){
-		if(boxParams->item(i,1)->text().isEmpty()){
-			QMessageBox::critical(this, tr("QtiPlot - Input error"),
-					tr("Please enter initial guesses for your parameters!"));
-			boxParams->setCurrentCell (i, 1);
-			return false;
-		}
-
-		try{
-			MyParser parser;
-			parser.SetExpr(boxParams->item(i, 1)->text().ascii());
-			parser.Eval();
-		} catch (mu::ParserError &e){
-			QMessageBox::critical(this, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
-			boxParams->setCurrentCell (i, 1);
-			return false;
-		}
-	}
-	return true;
 }
 
 void FitDialog::changeDataRange()
@@ -1288,9 +1274,6 @@ void FitDialog::saveInitialGuesses()
     if (!d_current_fit)
         return;
 
-    if (!validInitialValues())
-		return;
-
 	int rows = boxParams->rowCount();
     for (int i=0; i<rows; i++)
         d_current_fit->setInitialGuess(i, boxParams->item(i, 1)->text().toDouble());
@@ -1322,4 +1305,43 @@ QStringList FitDialog::plugInNames()
 	foreach(Fit *fit, d_plugins)
 		lst << fit->objectName();
 	return lst;
+}
+
+void FitDialog::returnToFitPage()
+{
+	applyChanges();
+	tw->setCurrentWidget (fitPage);
+}
+
+/*****************************************************************************
+ *
+ * Class DoubleSpinBox
+ *
+ *****************************************************************************/
+
+DoubleSpinBox::DoubleSpinBox(QWidget * parent)
+:QDoubleSpinBox(parent),
+d_locale(QLocale())
+{}
+
+QValidator::State DoubleSpinBox::validate ( QString & input, int & pos) const
+{
+	if (input.lower().contains("e"))
+		return QValidator::Intermediate;
+	
+	bool ok = false;
+	d_locale.toDouble (input, &ok);
+	if (ok)
+		return QValidator::Acceptable;
+	else 
+		return QValidator::Invalid;	
+}
+	
+void DoubleSpinBox::fixup ( QString & input ) const
+{	
+	if (input.contains("e") || input.contains("E")){
+		input = QString::number(d_locale.toDouble(input.lower()));
+		return;
+	} else
+		return QDoubleSpinBox::fixup(input);
 }

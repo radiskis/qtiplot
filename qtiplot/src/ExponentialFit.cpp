@@ -87,12 +87,12 @@ void ExponentialFit::init()
 		setObjectName(tr("ExpGrowth"));
 		d_explanation = tr("Exponential growth");
 		d_formula = "y0+A*exp(x/t)";
-		d_param_explain << tr("(amplitude)") << tr("(lifetime)") << tr("(offset)");
+		d_param_explain << tr("amplitude") << tr("lifetime") << tr("offset");
 	} else {
 		setObjectName(tr("ExpDecay1"));
 		d_explanation = tr("Exponential decay");
 		d_formula = "y0+A*exp(-x/t)";
-		d_param_explain << tr("(amplitude)") << tr("(e-folding time)") << tr("(offset)");
+		d_param_explain << tr("amplitude") << tr("e-folding time") << tr("offset");
 	}
 }
 
@@ -174,7 +174,7 @@ void TwoExpFit::init()
 	d_param_names << "A1" << "t1" << "A2" << "t2" << "y0";
 	d_explanation = tr("Exponential decay");
 	d_formula = "A1*exp(-x/t1)+A2*exp(-x/t2)+y0";
-	d_param_explain << tr("(first amplitude)") << tr("(first lifetime)") << tr("(second amplitude)") << tr("(second lifetime)") << tr("(offset)");
+	d_param_explain << tr("first amplitude") << tr("first lifetime") << tr("second amplitude") << tr("second lifetime") << tr("offset");
 }
 
 void TwoExpFit::storeCustomFitResults(double *par)
@@ -258,7 +258,7 @@ void ThreeExpFit::init()
 	d_param_names << "A1" << "t1" << "A2" << "t2" << "A3" << "t3" << "y0";
 	d_explanation = tr("Exponential decay");
 	d_formula = "A1*exp(-x/t1)+A2*exp(-x/t2)+A3*exp(-x/t3)+y0";
-	d_param_explain << tr("(first amplitude)") << tr("(first lifetime)") << tr("(second amplitude)") << tr("(second lifetime)") << tr("(third amplitude)") << tr("(third lifetime)") << tr("(offset)");
+	d_param_explain << tr("first amplitude") << tr("first lifetime") << tr("second amplitude") << tr("second lifetime") << tr("third amplitude") << tr("third lifetime") << tr("offset");
 }
 
 void ThreeExpFit::storeCustomFitResults(double *par)

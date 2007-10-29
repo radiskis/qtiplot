@@ -457,9 +457,8 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 
 Filter::~Filter()
 {
-	if (d_n > 0)
-	{//delete the memory allocated for the data
-		delete[] d_x;
-		delete[] d_y;
+	if (d_n > 0){//delete the memory allocated for the data
+		if (d_x) delete[] d_x;
+		if (d_y) delete[] d_y;
 	}
 }

@@ -256,23 +256,23 @@ QString Fit::logFitInfo(double *par, int iterations, int status)
 		info+=tr(" algorithm with tolerance = ") + locale.toString(d_tolerance)+"\n";
 	}
 
-	info+=tr("From x")+" = "+locale.toString(d_x[0], 'g', 15)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'g', 15)+"\n";
+	info+=tr("From x")+" = "+locale.toString(d_x[0], 'f', d_prec)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'f', d_prec)+"\n";
 	double chi_2_dof = chi_2/(d_n - d_p);
 	for (int i=0; i<d_p; i++){
 		info += d_param_names[i];
 		if (!d_param_explain[i].isEmpty())
             info += " (" + d_param_explain[i] + ")";
-		info += " = " + locale.toString(par[i], 'g', d_prec) + " +/- ";
+		info += " = " + locale.toString(par[i], 'f', d_prec) + " +/- ";
 		if (d_scale_errors)
-			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar,i,i)), 'g', d_prec) + "\n";
+			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
 		else
-			info += locale.toString(sqrt(gsl_matrix_get(covar,i,i)), 'g', d_prec) + "\n";
+			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
 	}
 	info += "--------------------------------------------------------------------------------------\n";
-	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'g', d_prec) + "\n";
+	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'f', d_prec) + "\n";
 
 	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
-	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'g', d_prec) + "\n";
+	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'f', d_prec) + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
 	if (is_non_linear){
 		info += tr("Iterations")+ " = " + QString::number(iterations) + "\n";
@@ -303,16 +303,16 @@ QString Fit::legendInfo()
 	QLocale locale = app->locale();
 
 	double chi_2_dof = chi_2/(d_n - d_p);
-	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'g', d_prec) + "\n";
+	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'f', d_prec) + "\n";
 	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
-	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'g', d_prec) + "\n";
+	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'f', d_prec) + "\n";
 
 	for (int i=0; i<d_p; i++){
-		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'g', d_prec) + " +/- ";
+		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'f', d_prec) + " +/- ";
 		if (d_scale_errors)
-			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar,i,i)), 'g', d_prec) + "\n";
+			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
 		else
-			info += locale.toString(sqrt(gsl_matrix_get(covar,i,i)), 'g', d_prec) + "\n";
+			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
 	}
 	return info;
 }
@@ -401,11 +401,12 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 
 Table* Fit::parametersTable(const QString& tableName)
 {
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	d_param_table = app->table(tableName);
 	if (!d_param_table || d_param_table->objectName() != tableName){
-		ApplicationWindow *app = (ApplicationWindow *)parent();
 		d_param_table = app->newTable(app->generateUniqueName(tableName, false), d_p, 3);
 	}
-
+		
 	d_param_table->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
 	d_param_table->setColPlotDesignation(2, Table::yErr);
 	d_param_table->setHeaderColType();
@@ -447,14 +448,16 @@ void Fit::writeParametersToTable(Table *t, bool append)
 Matrix* Fit::covarianceMatrix(const QString& matrixName)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale locale = app->locale();
+	d_cov_matrix = app->matrix(matrixName);
 	if (!d_cov_matrix || d_cov_matrix->objectName() != matrixName)
 		d_cov_matrix = app->newMatrix(app->generateUniqueName(matrixName, false), d_p, d_p);
 
+	d_cov_matrix->setNumericPrecision(d_prec);
 	for (int i = 0; i < d_p; i++){
 		for (int j = 0; j < d_p; j++)
-			d_cov_matrix->setText(i, j, locale.toString(gsl_matrix_get(covar, i, j), 'g', d_prec));
+			d_cov_matrix->setCell(i, j, gsl_matrix_get(covar, i, j));
 	}
+	d_cov_matrix->resetView();
 	d_cov_matrix->showNormal();
 	return d_cov_matrix;
 }
@@ -675,8 +678,14 @@ void Fit::freeMemory()
 	if (!d_p)
 		return;
 
-	if (d_results) delete[] d_results;
-	if (d_errors) delete[] d_errors;
+	if (d_x){
+		delete[] d_x;
+		d_x = NULL;
+	}
+	if (d_y) {
+		delete[] d_y;
+		d_y = NULL;
+	}
 }
 
 Fit::~Fit()
