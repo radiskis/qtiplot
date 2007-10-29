@@ -63,7 +63,7 @@ void LogisticFit::init()
     d_df = logistic_df;
 	d_fdf = logistic_fdf;
 	d_fsimplex = logistic_d;
-	d_param_explain << tr("(init value)") << tr("(final value)") << tr("(center)") << tr("(power)");
+	d_param_explain << tr("init value") << tr("final value") << tr("center") << tr("power");
 	d_param_names << "A1" << "A2" << "x0" << "p";
 	d_explanation = tr("Logistic Fit");
 	d_formula = "A2+(A1-A2)/(1+(x/x0)^p))";

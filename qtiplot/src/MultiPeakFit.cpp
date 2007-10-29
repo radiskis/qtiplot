@@ -123,17 +123,16 @@ QStringList MultiPeakFit::generateParameterList(int peaks)
 QStringList MultiPeakFit::generateExplanationList(int peaks)
 {
 	if (peaks == 1)
-		return QStringList() << "(" + tr("amplitude") + ")" << "(" + tr("center") + ")" << 
-								"(" + tr("width") + ")" << "(" + tr("offset") + ")";
+		return QStringList() << tr("amplitude") << tr("center") <<  tr("width") << tr("offset");
 
 	QStringList lst;
 	for (int i = 0; i<peaks; i++){
 		QString index = QString::number(i+1);
-		lst << "(" + tr("amplitude") + " " + index + ")";
-		lst << "(" + tr("center") + " " + index + ")";
-		lst << "(" + tr("width") + " " + index + ")";
+		lst << tr("amplitude") + " " + index;
+		lst << tr("center") + " " + index;
+		lst << tr("width") + " " + index;
 	}
-	lst << "(" + tr("offset") + ")";
+	lst << tr("offset");
 	return lst;
 }
 
@@ -445,7 +444,7 @@ void LorentzFit::init()
 {
 	setObjectName(tr("Lorentz"));
 	d_explanation = tr("Lorentz Fit");
-	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
+	d_param_explain << tr("area") << tr("center") << tr("width") << tr("offset");
 }
 
 /*****************************************************************************
@@ -485,7 +484,7 @@ void GaussFit::init()
 {
 	setObjectName(tr("Gauss"));
 	d_explanation = tr("Gauss Fit");
-	d_param_explain << tr("(area)") << tr("(center)") << tr("(width)") << tr("(offset)");
+	d_param_explain << tr("area") << tr("center") << tr("width") << tr("offset");
 }
 
 /*****************************************************************************
@@ -534,7 +533,7 @@ void GaussAmpFit::init()
 	gsl_vector_set_all (d_param_init, 1.0);
 	covar = gsl_matrix_alloc (d_p, d_p);
 	d_results = new double[d_p];
-	d_param_explain << tr("(offset)") << tr("(height)") << tr("(center)") << tr("(width)");
+	d_param_explain << tr("offset") << tr("height") << tr("center") << tr("width");
 	d_param_names << "y0" << "A" << "xc" << "w";
 	d_explanation = tr("GaussAmp Fit");
 	d_formula = "y0+A*exp(-(x-xc)^2/(2*w^2))";

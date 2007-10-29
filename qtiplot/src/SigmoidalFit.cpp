@@ -63,7 +63,7 @@ void SigmoidalFit::init()
 	d_df = boltzmann_df;
 	d_fdf = boltzmann_fdf;
 	d_fsimplex = boltzmann_d;
-	d_param_explain << tr("(init value)") << tr("(final value)") << tr("(center)") << tr("(time constant)");
+	d_param_explain << tr("init value") << tr("final value") << tr("center") << tr("time constant");
 	d_param_names << "A1" << "A2" << "x0" << "dx";
 	d_explanation = tr("Boltzmann (Sigmoidal) Fit");
 	d_formula = "A2+(A1-A2)/(1+exp((x-x0)/dx))";
