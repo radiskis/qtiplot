@@ -193,7 +193,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	meta_options_layout->addWidget(d_preview_lines_box);
 	meta_options_layout->addStretch();
 	main_layout->addLayout(meta_options_layout);
-	
+
 	QHBoxLayout *preview_layout = new QHBoxLayout();
 	d_preview_table = new Table(ScriptingLangManager::newEnv((ApplicationWindow *)parent()), 30, 2, tr("Preview"), 0, 0);
 	d_preview_table->setAttribute(Qt::WA_DeleteOnClose);
@@ -203,6 +203,8 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_preview_table->setMaximumHeight(5*height);
 	preview_layout->addWidget(d_preview_table);
 	main_layout->addLayout(preview_layout);
+
+    connect(this, SIGNAL(filesSelected(const QStringList&)), this, SLOT(enablePreviewButton(const QStringList&)));
 }
 
 void ImportASCIIDialog::setColumnSeparator(const QString& sep)
@@ -309,7 +311,14 @@ QLocale ImportASCIIDialog::decimalSeparators()
 
 void ImportASCIIDialog::preview()
 {
-	QString fileName = selectedFiles()[0];
+    QStringList selected = selectedFiles();
+    if (selected.isEmpty()){
+        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+                tr("Please select a file first!"));
+        return;
+    }
+
+	QString fileName = selected[0];
 	QTemporaryFile tempFile;
 	int rows = d_preview_lines_box->value();
 	if (rows){
@@ -320,19 +329,19 @@ void ImportASCIIDialog::preview()
 			int i = 0;
 			while(i<rows && !t.atEnd()){
 				tt << t.readLine() + "\n";
-				i++;			
+				i++;
 			}
-			fileName = tempFile.fileName();	
+			fileName = tempFile.fileName();
 		}
 	}
-	 
+
 	d_preview_table->resetHeader();
-	d_preview_table->importASCII(fileName, columnSeparator(), d_ignored_lines->value(), 
-							d_rename_columns->isChecked(), d_strip_spaces->isChecked(), 
+	d_preview_table->importASCII(fileName, columnSeparator(), d_ignored_lines->value(),
+							d_rename_columns->isChecked(), d_strip_spaces->isChecked(),
 							d_simplify_spaces->isChecked(), d_import_comments->isChecked(), false,
                             d_comment_string->text(), d_read_only->isChecked());
-	
+
 	if (d_import_dec_separators->isChecked())
 		d_preview_table->updateDecimalSeparators(decimalSeparators());
-	tempFile.close();			
+	tempFile.close();
 }
