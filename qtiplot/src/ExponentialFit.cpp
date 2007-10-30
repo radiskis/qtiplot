@@ -125,6 +125,11 @@ void ExponentialFit::calculateFitCurveData(double *par, double *X, double *Y)
 	delete[] par;
 }
 
+double ExponentialFit::eval(double *par, double x)
+{
+    return par[0]*exp(-par[1]*x) + par[2];
+}
+
 /*****************************************************************************
  *
  * Class TwoExpFit
@@ -209,6 +214,11 @@ void TwoExpFit::calculateFitCurveData(double *par, double *X, double *Y)
 	delete[] par;
 }
 
+double TwoExpFit::eval(double *par, double x)
+{
+    return par[0]*exp(-par[1]*x)+par[2]*exp(-par[3]*x)+par[4];
+}
+
 /*****************************************************************************
  *
  * Class ThreeExpFit
@@ -273,23 +283,24 @@ void ThreeExpFit::storeCustomFitResults(double *par)
 
 void ThreeExpFit::calculateFitCurveData(double *par, double *X, double *Y)
 {
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++)
-		{
+		for (int i=0; i<d_points; i++){
 			X[i]=X0+i*step;
 			Y[i]=par[0]*exp(-X[i]*par[1])+par[2]*exp(-X[i]*par[3])+par[4]*exp(-X[i]*par[5])+par[6];
 		}
-	}
-	else
-	{
-		for (int i=0; i<d_points; i++)
-		{
+	} else {
+		for (int i=0; i<d_points; i++){
 			X[i]=d_x[i];
 			Y[i]=par[0]*exp(-X[i]*par[1])+par[2]*exp(-X[i]*par[3])+par[4]*exp(-X[i]*par[5])+par[6];
 		}
 	}
 	delete[] par;
+}
+
+double ThreeExpFit::eval(double *par, double x)
+{
+    return par[0]*exp(-x*par[1])+par[2]*exp(-x*par[3])+par[4]*exp(-x*par[5])+par[6];
+
 }

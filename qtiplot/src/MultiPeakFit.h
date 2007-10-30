@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : MultiPeakFit module with Lorentz and Gauss peak shapes
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -35,10 +35,10 @@ class MultiPeakFit : public Fit
 {
 	Q_OBJECT
 
-	public:		
+	public:
 		enum PeakProfile{Gauss, Lorentz};
 		MultiPeakFit(ApplicationWindow *parent, Graph *g = 0, PeakProfile profile = Gauss, int peaks = 1);
-		MultiPeakFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, 
+		MultiPeakFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol,
 		  			 int startRow = 0, int endRow = -1, PeakProfile profile = Gauss, int peaks = 1);
 
 		int peaks(){return d_peaks;};
@@ -51,16 +51,16 @@ class MultiPeakFit : public Fit
 		static QStringList generateParameterList(int order);
 		static QStringList generateExplanationList(int order);
 
-		//! Used by the GaussFit and LorentzFit derived classes to calculate initial values for the parameters 
+		//! Used by the GaussFit and LorentzFit derived classes to calculate initial values for the parameters
 		void guessInitialValues();
 
 	private:
 		void init(int);
-	
+
 		QString logFitInfo(double *par, int iterations, int status);
 		void generateFitCurve(double *par);
 		static QString peakFormula(int peakIndex, PeakProfile profile);
-		//! Inserts a peak function curve into the plot 
+		//! Inserts a peak function curve into the plot
 		void insertPeakFunctionCurve(double *x, double *y, int peak);
 		void storeCustomFitResults(double *par);
 
@@ -116,7 +116,8 @@ class GaussAmpFit : public Fit
 		GaussAmpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 0, int endRow = -1);
 
 		void guessInitialValues();
-	
+        double eval(double *par, double x);
+
 	private:
 		void init();
 		void calculateFitCurveData(double *par, double *X, double *Y);

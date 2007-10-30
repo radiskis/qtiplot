@@ -125,6 +125,9 @@ class Fit : public Filter
         //! Frees the memory allocated for the X and Y data sets
         void freeMemory();
 
+        //! Calculates the data for the output fit curve
+        virtual double eval(double *par, double x){return 0.0;};
+
 	private:
 		void init();
 
@@ -144,8 +147,8 @@ class Fit : public Filter
 		//! Adds the result curve to the plot
 		virtual void generateFitCurve(double *par);
 
-		//! Calculates the data for the output fit curve and store itin the X an Y vectors
-		virtual void calculateFitCurveData(double *par, double *X, double *Y) { Q_UNUSED(par) Q_UNUSED(X) Q_UNUSED(Y)   };
+        //! Calculates the data for the output fit curve and store itin the X an Y vectors
+		virtual void calculateFitCurveData(double *par, double *X, double *Y) {Q_UNUSED(par) Q_UNUSED(X) Q_UNUSED(Y)};
 
 		//! Output string added to the result log
 		virtual QString logFitInfo(double *par, int iterations, int status);

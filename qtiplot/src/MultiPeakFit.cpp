@@ -44,7 +44,7 @@ MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile prof
 init(peaks);
 }
 
-MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Table *t, const QString&, const QString&, 
+MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Table *t, const QString&, const QString&,
 		  				  int, int, PeakProfile profile, int peaks)
 : Fit(parent, t), d_profile(profile)
 {
@@ -58,7 +58,7 @@ void MultiPeakFit::init(int peaks)
 		d_f = gauss_multi_peak_f;
 		d_df = gauss_multi_peak_df;
 		d_fdf = gauss_multi_peak_fdf;
-		d_fsimplex = gauss_multi_peak_d;		
+		d_fsimplex = gauss_multi_peak_d;
 	} else {
 		setObjectName(tr("Lorentz"));
 		d_f = lorentz_multi_peak_f;
@@ -179,24 +179,24 @@ QString MultiPeakFit::peakFormula(int peakIndex, PeakProfile profile)
 void MultiPeakFit::guessInitialValues()
 {
 	if (!d_n || d_peaks > 1)
-		return;	
-				
+		return;
+
 	size_t imin, imax;
 	gsl_stats_minmax_index(&imin, &imax, d_y, 1, d_n);
-	
+
 	double min_out = d_y[imin];
 	double max_out = d_y[imax];
-	
+
 	if (d_profile == Gauss)
 		gsl_vector_set(d_param_init, 0, sqrt(M_2_PI)*fabs(max_out - min_out));
 	else if (d_profile == Lorentz)
 		gsl_vector_set(d_param_init, 0, 1.0);
-	
+
 	double temp[d_n];
 	for (int i = 0; i < d_n; i++)
 		temp[i] = fabs(d_y[i]);
 	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
-	
+
 	gsl_vector_set(d_param_init, 1, d_x[imax_temp]);
 	gsl_vector_set(d_param_init, 2, 2*gsl_stats_sd(d_y, 1, d_n));
 
@@ -285,10 +285,10 @@ void MultiPeakFit::generateFitCurve(double *par)
 			Y[i] = yi + par[d_p - 1];//add offset
 		}
 
-		if (d_graphics_display){	
+		if (d_graphics_display){
 			if (!d_output_graph)
 				d_output_graph = createOutputGraph()->activeGraph();
-			
+
 			if (d_peaks > 1)
 				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y, 2);
 			else
@@ -344,10 +344,10 @@ void MultiPeakFit::generateFitCurve(double *par)
 				d_result_table->setText(i, d_peaks+1, locale.toString(Y[i], 'g', d_prec));
 		}
 
-		if (d_graphics_display){	
+		if (d_graphics_display){
 			if (!d_output_graph)
 				d_output_graph = createOutputGraph()->activeGraph();
-		
+
 			label = tableName + "_2";
 			DataCurve *c = new DataCurve(d_result_table, tableName + "_1", label);
 			if (d_peaks > 1)
@@ -560,24 +560,30 @@ void GaussAmpFit::calculateFitCurveData(double *par, double *X, double *Y)
 	delete[] par;
 }
 
+double GaussAmpFit::eval(double *par, double x)
+{
+    double diff = x - par[2];
+    return par[1]*exp(-0.5*diff*diff/(par[3]*par[3])) + par[0];
+}
+
 void GaussAmpFit::guessInitialValues()
-{				
+{
 	size_t imin, imax;
 	gsl_stats_minmax_index(&imin, &imax, d_y, 1, d_n);
-	
+
 	double min_out = d_y[imin];
 	double max_out = d_y[imax];
-	
+
 	gsl_vector_set(d_param_init, 1, fabs(max_out - min_out));
-	
+
 	double temp[d_n];
 	for (int i = 0; i < d_n; i++)
 		temp[i] = fabs(d_y[i]);
 	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
-	
+
 	gsl_vector_set(d_param_init, 2, d_x[imax_temp]);
 	gsl_vector_set(d_param_init, 3, 2*gsl_stats_sd(d_y, 1, d_n));
-	
+
 	if (imax_temp == imax)
 		gsl_vector_set(d_param_init, 0, min_out);
 	else //reversed bell

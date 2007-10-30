@@ -41,6 +41,8 @@ class NonLinearFit : public Fit
 		NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		NonLinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
 
+        double eval(double *par, double x);
+
 		virtual void setParametersList(const QStringList& lst);
 		virtual void setFormula(const QString& s);
 

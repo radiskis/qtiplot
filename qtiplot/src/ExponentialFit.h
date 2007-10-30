@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Exponential fit classes
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -38,9 +38,11 @@ class ExponentialFit : public Fit
 	public:
 		ExponentialFit(ApplicationWindow *parent, Graph *g,  bool expGrowth = false);
 		ExponentialFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, bool expGrowth = false);
-		ExponentialFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, 
+		ExponentialFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle,
 				double start, double end, bool expGrowth = false);
 		ExponentialFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1, bool expGrowth = false);
+
+        double eval(double *par, double x);
 
 	private:
 		void init();
@@ -60,6 +62,8 @@ class TwoExpFit : public Fit
 		TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		TwoExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
 
+        double eval(double *par, double x);
+
 	private:
 		void init();
 		void storeCustomFitResults(double *par);
@@ -75,7 +79,9 @@ class ThreeExpFit : public Fit
 		ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		ThreeExpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
-	
+
+        double eval(double *par, double x);
+
 	private:
 		void init();
 		void storeCustomFitResults(double *par);

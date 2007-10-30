@@ -48,6 +48,8 @@ class QLineEdit;
 class ColorBox;
 class Fit;
 class Table;
+class DoubleSpinBox;
+class QwtPlotCurve;
 
 //! Fit Wizard
 class FitDialog : public QDialog
@@ -101,6 +103,7 @@ private slots:
 	void setNumPeaks(int peaks);
 	void saveInitialGuesses();
 	void returnToFitPage();
+	void updatePreview();
 
 private:
 	void loadPlugins();
@@ -116,6 +119,7 @@ private:
 	Table *d_param_table;
 	QList <Fit*> d_user_functions, d_built_in_functions, d_plugins;
 	QWidgetList *srcTables;
+	QwtPlotCurve *d_preview_curve;
 
     QCheckBox* boxUseBuiltIn;
 	QStackedWidget* tw;
@@ -131,9 +135,9 @@ private:
 	QComboBox* boxCurve;
 	QComboBox* boxAlgorithm;
 	QTableWidget* boxParams;
-	QLineEdit* boxFrom;
-	QLineEdit* boxTo;
-	QLineEdit* boxTolerance;
+	DoubleSpinBox* boxFrom;
+	DoubleSpinBox* boxTo;
+	DoubleSpinBox* boxTolerance;
 	QSpinBox* boxPoints, *generatePointsBox, *boxPrecision, *polynomOrderBox;
 	QWidget *fitPage, *editPage, *advancedPage;
 	QTextEdit *editBox, *explainBox, *boxFunction;
@@ -148,19 +152,21 @@ private:
 	QPushButton *btnParamTable, *btnCovMatrix;
 	QLineEdit *covMatrixName, *paramTableName;
 	QCheckBox *plotLabelBox, *logBox, *scaleErrorsBox, *globalParamTableBox;
+	QCheckBox *previewBox;
 };
 
 class DoubleSpinBox : public QDoubleSpinBox
 {
 public:
-    DoubleSpinBox(QWidget * parent = 0);
-	virtual QString textFromValue ( double value ) const {return d_locale.toString(value, 'f', decimals());};
+    DoubleSpinBox(const char format, QWidget * parent = 0);
+	virtual QString textFromValue ( double value ) const {return d_locale.toString(value, d_format, decimals());};
 	virtual double valueFromText ( const QString & text ) const {return d_locale.toDouble(text);};
 	virtual QValidator::State validate ( QString & input, int & pos ) const;
-	virtual void fixup ( QString & input ) const;
-	
+
 	void setLocale(const QLocale& locale){d_locale = locale;};
-	private:
-		QLocale d_locale;
+
+private:
+    QLocale d_locale;
+    const char d_format;
 };
 #endif // FITDIALOG_H
