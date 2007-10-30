@@ -52,17 +52,17 @@ public:
 
 	void setMinPenX(const QPen &p){	setMinPen(p);};
 	const QPen& minPenX() const {return minPen();};
-	
+
 	void setMajPenY(const QPen &p){	if (d_maj_pen_y != p) d_maj_pen_y = p;};
 	const QPen& majPenY() const {return d_maj_pen_y;};
 
 	void setMinPenY(const QPen &p){	if (d_min_pen_y != p) d_min_pen_y = p;};
 	const QPen& minPenY() const {return d_min_pen_y;};
-	
+
 	void load(const QStringList& );
 	void copy(Grid *);
 	QString saveToString();
-	
+
 private:
 	QPen d_maj_pen_y;
 	QPen d_min_pen_y;

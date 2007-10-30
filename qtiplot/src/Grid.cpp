@@ -37,8 +37,8 @@
 #include <QPainter>
 
 Grid::Grid() : QwtPlotGrid(), mrkX(-1), mrkY(-1)
-{	
-d_maj_pen_y = QPen(Qt::blue, 0, Qt::SolidLine); 
+{
+d_maj_pen_y = QPen(Qt::blue, 0, Qt::SolidLine);
 d_min_pen_y = QPen(Qt::gray, 0, Qt::DotLine);
 }
 
@@ -100,18 +100,17 @@ void Grid::drawLines(QPainter *painter, const QRect &rect,
 		const QwtValueList &values) const
 {
 	const int x1 = rect.left();
-	const int x2 = rect.right() + 1;
+	const int x2 = rect.right();
 	const int y1 = rect.top();
-	const int y2 = rect.bottom() + 1;
-	const int margin = 10;
+	const int y2 = rect.bottom();
 
 	for (uint i = 0; i < (uint)values.count(); i++){
 		const int value = map.transform(values[i]);
 		if ( orientation == Qt::Horizontal ){
-			if ((value >= y1 + margin) && (value <= y2 - margin))
+			if ((value > y1) && (value < y2))
 				QwtPainter::drawLine(painter, x1, value, x2, value);
 		} else {
-			if ((value >= x1 + margin) && (value <= x2 - margin))
+			if ((value > x1) && (value < x2))
 				QwtPainter::drawLine(painter, value, y1, value, y2);
 		}
 	}
