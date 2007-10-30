@@ -126,7 +126,7 @@ class Fit : public Filter
         void freeMemory();
 
         //! Calculates the data for the output fit curve
-        virtual double eval(double *par, double x){return 0.0;};
+        virtual double eval(double *, double){return 0.0;};
 
 	private:
 		void init();

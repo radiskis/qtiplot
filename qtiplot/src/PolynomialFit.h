@@ -49,6 +49,8 @@ class PolynomialFit : public Fit
 
 		static QString generateFormula(int order);
 		static QStringList generateParameterList(int order);
+		
+		virtual double eval(double *par, double x);
 
 	private:
 		void init();
@@ -69,6 +71,7 @@ class LinearFit : public Fit
 		LinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
 
 		void fit();
+	    virtual double eval(double *par, double x){return par[0]+par[1]*x;};
 
 	private:
 		void init();

@@ -719,10 +719,12 @@ void FitDialog::showFitPage()
 	lblFunction->setText(boxName->text() +" (x, " + boxParam->text().simplified() + ")");
 
 	tw->setCurrentWidget (fitPage);
+	if (previewBox->isChecked())
+		updatePreview();
 }
 
 void FitDialog::showEditPage()
-{
+{	
     if (d_current_fit)
         d_current_fit->freeMemory();
 	tw->setCurrentWidget(editPage);

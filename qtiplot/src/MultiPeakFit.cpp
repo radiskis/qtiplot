@@ -380,6 +380,20 @@ void MultiPeakFit::generateFitCurve(double *par)
 	gsl_matrix_free(m);
 }
 
+double MultiPeakFit::eval(double *par, double x)
+{
+	double y=0;
+	for (int j=0; j<d_peaks; j++){
+		double diff = x - par[3*j + 1];
+		double w = par[3*j + 2];
+		if (d_profile == Gauss)
+			y += sqrt(M_2_PI)*par[3*j]/w*exp(-2*diff*diff/(w*w));
+		else
+			y += par[3*j]*w/(4*diff*diff+w*w);
+	}
+	return y + par[d_p - 1];//add offset
+}
+
 QString MultiPeakFit::logFitInfo(double *par, int iterations, int status)
 {
 	QString info = Fit::logFitInfo(par, iterations, status);

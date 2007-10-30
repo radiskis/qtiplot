@@ -142,6 +142,14 @@ void PolynomialFit::calculateFitCurveData(double *par, double *X, double *Y)
 	}
 }
 
+double PolynomialFit::eval(double *par, double x)
+{
+	double 	y = 0.0;
+	for (int j=0; j<d_p; j++)
+		y += par[j]*pow(x, j);
+	return y;
+}
+
 void PolynomialFit::fit()
 {
     if (d_init_err)

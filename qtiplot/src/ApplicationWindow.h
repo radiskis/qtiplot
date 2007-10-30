@@ -980,7 +980,7 @@ public:
     //! Last selected filter in import ASCII dialog
     QString d_ASCII_file_filter, d_ASCII_comment_string;
 	bool d_import_dec_separators, d_ASCII_import_comments, d_ASCII_import_read_only;
-	int d_ASCII_import_mode;
+	int d_ASCII_import_mode, d_preview_lines;
 	//! Specifies if only the Tables/Matrices in the current folder should be displayed in the Add/remove curve dialog.
 	bool d_show_current_folder;
 	bool d_scale_plots_on_print, d_print_cropmarks;

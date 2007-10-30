@@ -62,6 +62,8 @@ void Fit::init()
 {
 	d_p = 0;
 	d_n = 0;
+	d_x = 0;
+	d_y = 0;
 	d_curveColorIndex = 1;
 	d_solver = ScaledLevenbergMarquardt;
 	d_tolerance = 1e-4;
