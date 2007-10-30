@@ -173,3 +173,13 @@ void NonLinearFit::calculateFitCurveData(double *par, double *X, double *Y)
 	}
 	delete[] par;
 }
+
+double NonLinearFit::eval(double *par, double x)
+{
+	MyParser parser;
+	for (int i=0; i<d_p; i++)
+		parser.DefineVar(d_param_names[i].ascii(), &par[i]);
+	parser.DefineVar("x", &x);
+	parser.SetExpr(d_formula.ascii());
+    return parser.Eval();
+}

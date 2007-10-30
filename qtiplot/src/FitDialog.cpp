@@ -61,6 +61,8 @@
 #include <QLocale>
 #include <stdio.h>
 
+#include <qwt_plot_curve.h>
+
 FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
@@ -70,6 +72,7 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 
 	d_param_table = 0;
 	d_current_fit = 0;
+	d_preview_curve = 0;
 
 	tw = new QStackedWidget();
 
@@ -92,6 +95,8 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 
 void FitDialog::initFitPage()
 {
+    ApplicationWindow *app = (ApplicationWindow *)parent();
+
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
 	boxCurve = new QComboBox();
@@ -112,6 +117,9 @@ void FitDialog::initFitPage()
     btnSaveGuesses = new QPushButton(tr( "&Save" ));
     connect(btnSaveGuesses, SIGNAL(clicked()), this, SLOT(saveInitialGuesses()));
     vb->addWidget(btnSaveGuesses);
+    previewBox = new QCheckBox(tr("&Preview"));
+    connect(previewBox, SIGNAL(stateChanged(int)), this, SLOT(updatePreview()));
+    vb->addWidget(previewBox);
     vb->addStretch();
 	gl1->addLayout(vb, 3, 0);
 
@@ -144,11 +152,21 @@ void FitDialog::initFitPage()
 
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel(tr("From x=")), 0, 0);
-	boxFrom = new QLineEdit();
+
+	boxFrom = new DoubleSpinBox('g');
+    boxFrom->setLocale(app->locale());
+    boxFrom->setDecimals(app->d_decimal_digits);
+    connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
     gl2->addWidget(boxFrom, 0, 1);
+
 	gl2->addWidget(new QLabel( tr("To x=")), 1, 0);
-	boxTo = new QLineEdit();
+
+	boxTo = new DoubleSpinBox('g');
+    boxTo->setLocale(app->locale());
+    boxTo->setDecimals(app->d_decimal_digits);
+    connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
     gl2->addWidget(boxTo, 1, 1);
+
     QGroupBox *gb2 = new QGroupBox();
     gb2->setLayout(gl2);
 
@@ -160,8 +178,15 @@ void FitDialog::initFitPage()
 	boxPoints->setValue(1000);
     gl3->addWidget(boxPoints, 0, 1);
 	gl3->addWidget(new QLabel( tr("Tolerance")), 1, 0);
-	boxTolerance = new QLineEdit("1e-4");
+
+	boxTolerance = new DoubleSpinBox('g');
+	boxTolerance->setRange(0.0, 1.0);
+	boxTolerance->setSingleStep(1e-4);
+    boxTolerance->setLocale(app->locale());
+    boxTolerance->setDecimals(13);
+    boxTolerance->setValue(1e-4);
 	gl3->addWidget(boxTolerance, 1, 1);
+
     QGroupBox *gb3 = new QGroupBox();
     gb3->setLayout(gl3);
 
@@ -243,8 +268,7 @@ void FitDialog::initEditPage()
 	explainBox->setReadOnly(true);
     gl1->addWidget(explainBox, 1, 2);
 
-	boxUseBuiltIn = new QCheckBox();
-	boxUseBuiltIn->setText(tr("Fit with &built-in function"));
+	boxUseBuiltIn = new QCheckBox(tr("Fit with &built-in function"));
 	boxUseBuiltIn->hide();
 
     QHBoxLayout *hbox1 = new QHBoxLayout();
@@ -366,7 +390,7 @@ void FitDialog::initAdvancedPage()
     boxPrecision->setRange(0, 13);
 	boxPrecision->setValue (app->fit_output_precision);
 	connect( boxPrecision, SIGNAL(valueChanged (int)), this, SLOT(enableApplyChanges(int)));
-	
+
     gl2->addWidget(boxPrecision, 0, 2);
 	btnParamTable = new QPushButton(tr( "Parameters &Table" ));
     gl2->addWidget(btnParamTable, 1, 0);
@@ -525,8 +549,8 @@ void FitDialog::activateCurve(const QString& curveName)
 
 	double start, end;
     d_graph->range(d_graph->curveIndex(curveName), &start, &end);
-    boxFrom->setText(QString::number(QMIN(start, end), 'g', 15));
-    boxTo->setText(QString::number(QMAX(start, end), 'g', 15));
+    boxFrom->setValue(QMIN(start, end));
+    boxTo->setValue(QMAX(start, end));
 };
 
 void FitDialog::saveUserFunction()
@@ -668,11 +692,11 @@ void FitDialog::showFitPage()
         it->setFont(font);
         boxParams->setItem(i, 0, it);
 
-		DoubleSpinBox *sb = new DoubleSpinBox();
+		DoubleSpinBox *sb = new DoubleSpinBox('f');
 		sb->setLocale(locale);
 		sb->setDecimals(boxPrecision->value());
-		sb->setRange(-DBL_MAX, DBL_MAX);
 		sb->setValue(d_current_fit->initialGuess(i));
+        connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
         boxParams->setCellWidget(i, 1, sb);
 	}
     for (int i = 0; i<parameters; i++)
@@ -923,57 +947,20 @@ void FitDialog::accept()
 		return;
 	}
 
-	QString from=boxFrom->text().lower();
-	QString to=boxTo->text().lower();
-	QString tolerance=boxTolerance->text().lower();
-	double start, end, eps;
-	try{
-		MyParser parser;
-		parser.SetExpr(from.ascii());
-		start=parser.Eval();
-	} catch(mu::ParserError &e){
-		QMessageBox::critical(this, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
-		boxFrom->setFocus();
-		return;
-	}
+	double start = boxFrom->value();
+	double end = boxTo->value();
+	double eps = boxTolerance->value();
 
-	try{
-		MyParser parser;
-		parser.SetExpr(to.ascii());
-		end=parser.Eval();
-	} catch(mu::ParserError &e){
-		QMessageBox::critical(this, tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
-		boxTo->setFocus();
-		return;
-	}
-
-	if (start>=end){
+	if (start >= end){
 		QMessageBox::critical(0, tr("QtiPlot - Input error"),
 				tr("Please enter x limits that satisfy: from < end!"));
 		boxTo->setFocus();
 		return;
 	}
 
-	try{
-		MyParser parser;
-		parser.SetExpr(tolerance.ascii());
-		eps=parser.Eval();
-	} catch(mu::ParserError &e) {
-		QMessageBox::critical(0, tr("QtiPlot - Tolerance input error"),QString::fromStdString(e.GetMsg()));
-		boxTolerance->setFocus();
-		return;
-	}
-
-	if (eps<0 || eps>=1){
-		QMessageBox::critical(0, tr("QtiPlot - Tolerance input error"),
-				tr("The tolerance value must be positive and less than 1!"));
-		boxTolerance->setFocus();
-		return;
-	}
-
-	int i, n = 0, rows = boxParams->rowCount();
+	int n = 0, rows = boxParams->rowCount();
 	if (!boxParams->isColumnHidden(2)){
-		for (i=0; i<rows; i++){//count the non-constant parameters
+		for (int i=0; i<rows; i++){//count the non-constant parameters
             QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 			if (!cb->isChecked())
 				n++;
@@ -989,13 +976,13 @@ void FitDialog::accept()
 	QString formula = boxFunction->text();
 	try {
         QStringList lst = userFunctionNames();
-		for (i=0; i<lst.count(); i++){
+		for (int i=0; i<lst.count(); i++){
             if (formula.contains(lst[i]))
                 formula.replace(lst[i], "(" + (d_user_functions[i])->formula() + ")");
         }
 
 		QStringList builtInFunctions = builtInFunctionNames();
-		for (i=0; i<(int)builtInFunctions.count(); i++){
+		for (int i=0; i<(int)builtInFunctions.count(); i++){
 			if (formula.contains(builtInFunctions[i])){
 				Fit *fit = d_built_in_functions[i];
 				formula.replace(builtInFunctions[i], "(" + fit->formula() + ")");
@@ -1004,18 +991,18 @@ void FitDialog::accept()
 
 		if (!boxParams->isColumnHidden(2)){
 			int j = 0;
-			for (i=0; i<rows; i++){
+			for (int i=0; i<rows; i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 				if (!cb->isChecked()){
 					paramsInit[j] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->value();
-					parser.DefineVar(boxParams->item(i,0)->text().ascii(), &paramsInit[j]);
+					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
 					parameters << boxParams->item(i,0)->text();
 					j++;
 				} else
 					formula.replace(boxParams->item(i,0)->text(), boxParams->item(i,1)->text());
 			}
 		} else {
-			for (i=0; i<n; i++) {
+			for (int i=0; i<n; i++) {
 				paramsInit[i] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->value();
 				parser.DefineVar(boxParams->item(i,0)->text().ascii(), &paramsInit[i]);
 				parameters << boxParams->item(i,0)->text();
@@ -1023,7 +1010,7 @@ void FitDialog::accept()
 		}
 
 		parser.SetExpr(formula.ascii());
-		double x=start;
+		double x = start;
 		parser.DefineVar("x", &x);
 		parser.Eval();
 	} catch(mu::ParserError &e) {
@@ -1057,13 +1044,13 @@ void FitDialog::accept()
 		double *res = d_current_fit->results();
 		if (!boxParams->isColumnHidden(2)){
 			int j = 0;
-			for (i=0;i<rows;i++){
+			for (int i=0;i<rows;i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
 				if (!cb->isChecked())
 					((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->setValue(res[j++]);
 			}
 		} else {
-			for (i=0;i<rows;i++)
+			for (int i=0;i<rows;i++)
 				((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->setValue(res[i]);
 		}
 
@@ -1096,8 +1083,8 @@ void FitDialog::changeDataRange()
 {
 	double start = d_graph->selectedXStartValue();
 	double end = d_graph->selectedXEndValue();
-	boxFrom->setText(QString::number(QMIN(start, end), 'g', 15));
-	boxTo->setText(QString::number(QMAX(start, end), 'g', 15));
+	boxFrom->setValue(QMIN(start, end));
+	boxTo->setValue(QMAX(start, end));
 }
 
 void FitDialog::setSrcTables(QWidgetList* tables)
@@ -1141,6 +1128,12 @@ void FitDialog::enableWeightingParameters(int index)
 
 void FitDialog::closeEvent (QCloseEvent * e )
 {
+    if (d_preview_curve){
+        d_preview_curve->detach();
+        d_graph->replot();
+        delete d_preview_curve;
+    }
+
 	if(d_current_fit && plotLabelBox->isChecked())
 		d_current_fit->showLegend();
 
@@ -1313,35 +1306,70 @@ void FitDialog::returnToFitPage()
 	tw->setCurrentWidget (fitPage);
 }
 
+void FitDialog::updatePreview()
+{
+    if (!previewBox->isChecked() && d_preview_curve){
+        d_preview_curve->detach();
+        d_graph->replot();
+        delete d_preview_curve;
+        d_preview_curve = 0;
+        return;
+    }
+
+    if (!d_current_fit || !previewBox->isChecked())
+        return;
+
+    int d_points = generatePointsBox->value();
+    double X[d_points], Y[d_points];
+    int p = boxParams->rowCount();
+    double parameters[p];
+    for (int i=0; i<p; i++)
+        parameters[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 1))->value();
+    if (d_current_fit->type() == Fit::BuiltIn)
+        modifyGuesses(parameters);
+
+    double x0 = boxFrom->value();
+    double step = (boxTo->value() - x0)/(d_points - 1);
+    for (int i=0; i<d_points; i++){
+        double x = x0 + i*step;
+        X[i] = x;
+        Y[i] = d_current_fit->eval(parameters, x);
+    }
+
+	if (!d_preview_curve){
+        d_preview_curve = new QwtPlotCurve();
+		d_preview_curve->setRenderHint(QwtPlotItem::RenderAntialiased, d_graph->antialiasing());
+        d_preview_curve->attach(d_graph->plotWidget());
+	}
+
+    d_preview_curve->setPen(QPen(ColorBox::color(boxColor->currentIndex()), 1));
+    d_preview_curve->setData(X, Y, d_points);
+    d_graph->replot();
+}
+
 /*****************************************************************************
  *
  * Class DoubleSpinBox
  *
  *****************************************************************************/
 
-DoubleSpinBox::DoubleSpinBox(QWidget * parent)
+DoubleSpinBox::DoubleSpinBox(const char format, QWidget * parent)
 :QDoubleSpinBox(parent),
+d_format(format),
 d_locale(QLocale())
-{}
+{
+    setRange(-DBL_MAX, DBL_MAX);
+}
 
-QValidator::State DoubleSpinBox::validate ( QString & input, int & pos) const
+QValidator::State DoubleSpinBox::validate(QString & input, int & pos) const
 {
 	if (input.lower().contains("e"))
-		return QValidator::Intermediate;
-	
+		return QValidator::Acceptable;
+
 	bool ok = false;
 	d_locale.toDouble (input, &ok);
 	if (ok)
 		return QValidator::Acceptable;
-	else 
-		return QValidator::Invalid;	
-}
-	
-void DoubleSpinBox::fixup ( QString & input ) const
-{	
-	if (input.contains("e") || input.contains("E")){
-		input = QString::number(d_locale.toDouble(input.lower()));
-		return;
-	} else
-		return QDoubleSpinBox::fixup(input);
+	else
+		return QValidator::Invalid;
 }
