@@ -41,7 +41,10 @@
 #include <QPushButton>
 #include <QRegExp>
 #include <QMessageBox>
-	
+#include <QTemporaryFile>
+#include <QTextStream>
+#include <Q3TextStream>
+
 ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent, bool extended, Qt::WFlags flags )
 : ExtensibleFileDialog(parent, extended, flags )
 {
@@ -83,6 +86,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	connect(d_import_mode, SIGNAL(currentIndexChanged(int)), this, SLOT(updateImportMode(int)));
 	if (import_mode_enabled)
         d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
+	d_preview_lines_box->setValue(app->d_preview_lines);
 }
 
 void ImportASCIIDialog::initAdvancedOptions()
@@ -180,6 +184,13 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_preview_button = new QPushButton(tr("&Preview"));
 	connect(d_preview_button, SIGNAL(clicked()), this, SLOT(preview()));
 	meta_options_layout->addWidget(d_preview_button);
+	meta_options_layout->addWidget(new QLabel(tr("Lines")));
+	d_preview_lines_box = new QSpinBox();
+	d_preview_lines_box->setMaximum (INT_MAX);
+	d_preview_lines_box->setValue(100);
+	d_preview_lines_box->setSingleStep(10);
+	d_preview_lines_box->setSpecialValueText(tr("All"));
+	meta_options_layout->addWidget(d_preview_lines_box);
 	meta_options_layout->addStretch();
 	main_layout->addLayout(meta_options_layout);
 	
@@ -270,6 +281,7 @@ void ImportASCIIDialog::closeEvent(QCloseEvent* e)
 	if (app){
 		app->d_extended_import_ASCII_dialog = this->isExtended();
 		app->d_ASCII_file_filter = this->selectedFilter();
+		app->d_preview_lines = d_preview_lines_box->value();
 	}
 
 	e->accept();
@@ -297,12 +309,30 @@ QLocale ImportASCIIDialog::decimalSeparators()
 
 void ImportASCIIDialog::preview()
 {
+	QString fileName = selectedFiles()[0];
+	QTemporaryFile tempFile;
+	int rows = d_preview_lines_box->value();
+	if (rows){
+		QFile dataFile(fileName);
+		if(tempFile.open() && dataFile.open(QIODevice::ReadOnly)){
+			Q3TextStream t(&dataFile);
+			QTextStream tt(&tempFile);
+			int i = 0;
+			while(i<rows && !t.atEnd()){
+				tt << t.readLine() + "\n";
+				i++;			
+			}
+			fileName = tempFile.fileName();	
+		}
+	}
+	 
 	d_preview_table->resetHeader();
-	d_preview_table->importASCII(selectedFiles()[0], columnSeparator(), d_ignored_lines->value(), 
+	d_preview_table->importASCII(fileName, columnSeparator(), d_ignored_lines->value(), 
 							d_rename_columns->isChecked(), d_strip_spaces->isChecked(), 
 							d_simplify_spaces->isChecked(), d_import_comments->isChecked(), false,
                             d_comment_string->text(), d_read_only->isChecked());
 	
 	if (d_import_dec_separators->isChecked())
 		d_preview_table->updateDecimalSeparators(decimalSeparators());
+	tempFile.close();			
 }

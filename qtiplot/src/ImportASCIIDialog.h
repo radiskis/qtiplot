@@ -118,7 +118,7 @@ private:
 	QPushButton *d_help_button;
 	// the actual options
 	QComboBox *d_import_mode, *d_column_separator, *boxDecimalSeparator;
-	QSpinBox *d_ignored_lines;
+	QSpinBox *d_ignored_lines, *d_preview_lines_box;
 	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces, *d_import_comments;
 	QLineEdit *d_comment_string;
 	Table *d_preview_table;

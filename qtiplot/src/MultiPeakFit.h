@@ -53,6 +53,8 @@ class MultiPeakFit : public Fit
 
 		//! Used by the GaussFit and LorentzFit derived classes to calculate initial values for the parameters
 		void guessInitialValues();
+		
+		virtual double eval(double *par, double x);
 
 	private:
 		void init(int);
