@@ -128,19 +128,10 @@ void NonLinearFit::setParametersList(const QStringList& lst)
 	d_init_err = false;
 	d_param_names = lst;
 
-	if (d_p > 0){//free previously allocated memory
-		gsl_vector_free(d_param_init);
-		gsl_matrix_free (covar);
-		delete[] d_results;
-	}
-
+	if (d_p > 0) 
+		freeWorkspace();
 	d_p = (int)lst.count();
-    d_min_points = d_p;
-	d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
-
-	covar = gsl_matrix_alloc (d_p, d_p);
-	d_results = new double[d_p];
+	initWorkspace(d_p);
 
 	for (int i=0; i<d_p; i++)
 		d_param_explain << "";
@@ -171,7 +162,6 @@ void NonLinearFit::calculateFitCurveData(double *par, double *X, double *Y)
 			Y[i] = parser.Eval();
 		}
 	}
-	delete[] par;
 }
 
 double NonLinearFit::eval(double *par, double x)

@@ -68,11 +68,7 @@ void SigmoidalFit::init()
 	d_explanation = tr("Boltzmann (Sigmoidal) Fit");
 	d_formula = "A2+(A1-A2)/(1+exp((x-x0)/dx))";
 	d_p = 4;
-    d_min_points = d_p;
-	d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
-	covar = gsl_matrix_alloc (d_p, d_p);
-	d_results = new double[d_p];
+    initWorkspace(d_p);
 }
 
 void SigmoidalFit::calculateFitCurveData(double *par, double *X, double *Y)
@@ -90,7 +86,6 @@ void SigmoidalFit::calculateFitCurveData(double *par, double *X, double *Y)
         	Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
 		}
 	}
-	delete[] par;
 }
 
 void SigmoidalFit::guessInitialValues()

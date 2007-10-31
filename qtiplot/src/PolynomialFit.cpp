@@ -73,17 +73,9 @@ void PolynomialFit::setOrder(int order)
 {
 	d_order = order;
 	d_p = d_order + 1;
-    d_min_points = d_p;
 
-	if (covar) gsl_matrix_free(covar);
-	covar = gsl_matrix_alloc (d_p, d_p);
-
-    if (d_param_init) gsl_vector_free(d_param_init);
-    d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
-
-	if (d_results) delete[] d_results;
-	d_results = new double[d_p];
+	freeWorkspace();
+	initWorkspace(d_p);
 
 	d_formula = generateFormula(d_order);
 	d_param_names = generateParameterList(d_order);

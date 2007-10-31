@@ -31,6 +31,7 @@
 
 #include "Graph.h"
 #include <QDoubleSpinBox>
+#include <QCheckBox>
 
 class QPushButton;
 class QLineEdit;
@@ -39,7 +40,6 @@ class QStackedWidget;
 class QWidget;
 class QTextEdit;
 class QListWidget;
-class QCheckBox;
 class QTableWidget;
 class QSpinBox;
 class QLabel;
@@ -168,5 +168,22 @@ public:
 private:
     QLocale d_locale;
     const char d_format;
+};
+
+class RangeLimitBox : public QWidget
+{
+public:
+	enum LimitType{LeftLimit, RightLimit};
+
+    RangeLimitBox(LimitType type, QWidget * parent = 0);
+	void setLocale(const QLocale& locale){d_spin_box->setLocale(locale);};
+	void setDecimals(int prec){d_spin_box->setDecimals(prec);};
+	double value();
+	bool isChecked(){return d_checkbox->isChecked();};
+	
+private:
+    DoubleSpinBox *d_spin_box;
+    QCheckBox *d_checkbox;
+	LimitType d_type;
 };
 #endif // FITDIALOG_H

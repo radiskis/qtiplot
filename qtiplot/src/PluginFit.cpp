@@ -112,11 +112,7 @@ bool PluginFit::load(const QString& pluginName)
 	if (fitFunction){
 		d_param_names = QString(fitFunction()).split(",", QString::SkipEmptyParts);
 		d_p = (int)d_param_names.count();
-        d_min_points = d_p;
-		d_param_init = gsl_vector_alloc(d_p);
-		gsl_vector_set_all (d_param_init, 1.0);
-		covar = gsl_matrix_alloc (d_p, d_p);
-		d_results = new double[d_p];
+        initWorkspace(d_p);
 	} else
 		return false;
 
@@ -154,5 +150,4 @@ void PluginFit::calculateFitCurveData(double *par, double *X, double *Y)
 			Y[i]= f_eval(X[i], par);
 		}
 	}
-	delete[] par;
 }
