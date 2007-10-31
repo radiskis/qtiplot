@@ -89,6 +89,8 @@ void Fit::init()
 	covar = 0;
 	d_param_init = 0;
 	d_fit_type = BuiltIn;
+	d_param_range_left = 0;
+	d_param_range_right = 0;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)
@@ -103,7 +105,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 	gsl_multifit_fdfsolver_set (s, &f, d_param_init);
 
 	size_t iter = 0;
-	do
+	/*do
 	{
 		iter++;
 		status = gsl_multifit_fdfsolver_iterate (s);
@@ -113,8 +115,40 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 
 		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
 	}
-	while (status == GSL_CONTINUE && (int)iter < d_max_iterations);
+	while (status == GSL_CONTINUE && (int)iter < d_max_iterations);*/
+	
+	bool inRange = true;
+	for (int i=0; i<d_p; i++){
+		double p = gsl_vector_get(d_param_init, i);
+		d_results[i] = p;
+		if (p < d_param_range_left[i] || p > d_param_range_right[i]){
+			inRange = false;
+			break;
+		}
+	}
+	
+	do{
+		iter++;
+		status = gsl_multifit_fdfsolver_iterate (s);
+		if (status)
+			break;
 
+		for (int i=0; i<d_p; i++){
+			double p = gsl_vector_get(s->x, i);
+			if (p < d_param_range_left[i] || p > d_param_range_right[i]){
+				inRange = false;
+				break;
+			}
+		}
+		if (!inRange)
+			break;
+		
+		for (int i=0; i<d_p; i++)
+			d_results[i] = gsl_vector_get(s->x, i);
+
+		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);	
+	} while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
+		
 	gsl_multifit_covar (s->J, 0.0, covar);
 	iterations = iter;
 	return s;
@@ -129,7 +163,7 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	//initial vertex size vector
 	ss = gsl_vector_alloc (f.n);
 	//set all step sizes to 1 can be increased to converge faster
-	gsl_vector_set_all (ss,10.0);
+	gsl_vector_set_all (ss, 10.0);
 
 	gsl_multimin_fminimizer *s_min = gsl_multimin_fminimizer_alloc (T, f.n);
 	status = gsl_multimin_fminimizer_set (s_min, &f, d_param_init, ss);
@@ -144,7 +178,6 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 		size=gsl_multimin_fminimizer_size (s_min);
 		status = gsl_multimin_test_size (size, d_tolerance);
 	}
-
 	while (status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	iterations = iter;
@@ -479,12 +512,6 @@ double *Fit::errors()
 	return d_errors;
 }
 
-void Fit::storeCustomFitResults(double *par)
-{
-	for (int i=0; i<d_p; i++)
-		d_results[i] = par[i];
-}
-
 void Fit::fit()
 {
 	if (!(d_graph || d_table) || d_init_err)
@@ -520,7 +547,6 @@ void Fit::fit()
 	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, function, parNames};
 
 	int status, iterations = d_max_iterations;
-	double *par = new double[d_p];
 	if(d_solver == NelderMeadSimplex){
 		gsl_multimin_function f;
 		f.f = d_fsimplex;
@@ -528,8 +554,8 @@ void Fit::fit()
 		f.params = &d_data;
 		gsl_multimin_fminimizer *s_min = fitSimplex(f, iterations, status);
 
-		for (int i=0; i<d_p; i++)
-			par[i]=gsl_vector_get(s_min->x, i);
+		//for (int i=0; i<d_p; i++)
+			//par[i]=gsl_vector_get(s_min->x, i);
 
 		// allocate memory and calculate covariance matrix based on residuals
 		gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
@@ -551,15 +577,12 @@ void Fit::fit()
 
 		gsl_multifit_fdfsolver *s = fitGSL(f, iterations, status);
 
-		for (int i=0; i<d_p; i++)
-			par[i]=gsl_vector_get(s->x, i);
-
 		chi_2 = pow(gsl_blas_dnrm2(s->f), 2.0);
 		gsl_multifit_fdfsolver_free(s);
 	}
 
-	storeCustomFitResults(par);
-	generateFitCurve(par);
+	storeCustomFitResults(d_results);
+	generateFitCurve(d_results);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (app->writeFitResultsToLog){
@@ -675,6 +698,41 @@ bool Fit::load(const QString& fileName)
     return false;
 }
 
+void Fit::setParameterRange(int parIndex, double left, double right)
+{
+	if (parIndex < 0 || parIndex >= d_p)
+		return;
+	
+	d_param_range_left[parIndex] = left;
+	d_param_range_right[parIndex] = right;
+}
+
+void Fit::initWorkspace(int par)
+{
+	d_min_points = par;
+	d_param_init = gsl_vector_alloc(par);
+	gsl_vector_set_all (d_param_init, 1.0);
+
+	covar = gsl_matrix_alloc (par, par);
+	d_results = new double[par];
+	d_param_range_left = new double[par];
+	d_param_range_right = new double[par];
+	for (int i = 0; i<par; i++){
+		d_param_range_left[i] = -DBL_MAX;
+		d_param_range_right[i] = DBL_MAX;
+	}
+}
+	
+void Fit::freeWorkspace()
+{
+	if (d_param_init) gsl_vector_free(d_param_init);
+	if (covar) gsl_matrix_free (covar);		
+	if (d_results) delete[] d_results;
+	if (d_errors) delete[] d_errors;
+	if (d_param_range_left) delete[] d_param_range_left;
+	if (d_param_range_right) delete[] d_param_range_right;
+}
+
 void Fit::freeMemory()
 {
 	if (!d_p)
@@ -695,10 +753,5 @@ Fit::~Fit()
 	if (!d_p)
 		return;
 
-	if (d_param_init)
-		gsl_vector_free(d_param_init);
-
-	if (d_results) delete[] d_results;
-	if (d_errors) delete[] d_errors;
-	gsl_matrix_free (covar);
+	freeWorkspace();
 }

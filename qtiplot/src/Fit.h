@@ -85,6 +85,7 @@ class Fit : public Filter
 
 		virtual void guessInitialValues(){};
 
+		void setParameterRange(int parIndex, double left, double right);
 		void setAlgorithm(Algorithm s){d_solver = s;};
 
 		//! Specifies weather the result of the fit is a function curve
@@ -138,9 +139,13 @@ class Fit : public Filter
 		gsl_multifit_fdfsolver * fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status);
 
 		//! Customs and stores the fit results according to the derived class specifications. Used by exponential fits.
-		virtual void storeCustomFitResults(double *par);
+		virtual void storeCustomFitResults(double *){};
 
 	protected:
+		//! Allocates the memory for the fit workspace
+		void initWorkspace(int par);
+		//! Frees the memory allocated for the fit workspace
+		void freeWorkspace();
 		//! Adds the result curve as a FunctionCurve to the plot, if d_gen_function = true
 		void insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth = 1);
 
@@ -221,6 +226,12 @@ class Fit : public Filter
 
 		//! Path of the XML file where the user stores the fit model
         QString d_file_name;
+		
+		//! Stores the left limits of the research interval for the result parameters
+		double *d_param_range_left;
+		
+		//! Stores the right limits of the research interval for the result parameters
+		double *d_param_range_right;
 };
 
 #endif

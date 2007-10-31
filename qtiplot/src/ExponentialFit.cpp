@@ -74,13 +74,9 @@ void ExponentialFit::init()
 	d_df = exp_df;
 	d_fdf = exp_fdf;
 	d_fsimplex = exp_d;
-	d_p = 3;
-    d_min_points = d_p;
-	d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
+	d_p = 3;	
+	initWorkspace(d_p);
 
-	covar = gsl_matrix_alloc (d_p, d_p);
-	d_results = new double[d_p];
 	d_param_names << "A" << "t" << "y0";
 
 	if (is_exp_growth) {
@@ -97,10 +93,7 @@ void ExponentialFit::init()
 }
 
 void ExponentialFit::storeCustomFitResults(double *par)
-{
-	for (int i=0; i<d_p; i++)
-		d_results[i] = par[i];
-
+{	
 	if (is_exp_growth)
 		d_results[1]=-1.0/d_results[1];
 	else
@@ -108,7 +101,7 @@ void ExponentialFit::storeCustomFitResults(double *par)
 }
 
 void ExponentialFit::calculateFitCurveData(double *par, double *X, double *Y)
-{
+{	
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
@@ -122,7 +115,6 @@ void ExponentialFit::calculateFitCurveData(double *par, double *X, double *Y)
 			Y[i] = par[0]*exp(-par[1]*X[i])+par[2];
 		}
 	}
-	delete[] par;
 }
 
 double ExponentialFit::eval(double *par, double x)
@@ -171,11 +163,7 @@ void TwoExpFit::init()
 	d_fdf = expd2_fdf;
 	d_fsimplex = expd2_d;
 	d_p = 5;
-    d_min_points = d_p;
-	d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
-	covar = gsl_matrix_alloc (d_p, d_p);
-	d_results = new double[d_p];
+    initWorkspace(d_p);
 	d_param_names << "A1" << "t1" << "A2" << "t2" << "y0";
 	d_explanation = tr("Exponential decay");
 	d_formula = "A1*exp(-x/t1)+A2*exp(-x/t2)+y0";
@@ -193,25 +181,19 @@ void TwoExpFit::storeCustomFitResults(double *par)
 
 void TwoExpFit::calculateFitCurveData(double *par, double *X, double *Y)
 {
-	if (d_gen_function)
-	{
+	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++)
-		{
+		for (int i=0; i<d_points; i++){
 			X[i] = X0+i*step;
 			Y[i] = par[0]*exp(-par[1]*X[i])+par[2]*exp(-par[3]*X[i])+par[4];
 		}
-	}
-	else
-	{
-		for (int i=0; i<d_points; i++)
-		{
+	} else {
+		for (int i=0; i<d_points; i++){
 			X[i] = d_x[i];
 			Y[i] = par[0]*exp(-par[1]*X[i])+par[2]*exp(-par[3]*X[i])+par[4];
 		}
 	}
-	delete[] par;
 }
 
 double TwoExpFit::eval(double *par, double x)
@@ -260,11 +242,7 @@ void ThreeExpFit::init()
 	d_fdf = expd3_fdf;
 	d_fsimplex = expd3_d;
 	d_p = 7;
-    d_min_points = d_p;
-	d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
-	covar = gsl_matrix_alloc (d_p, d_p);
-	d_results = new double[d_p];
+    initWorkspace(d_p);
 	d_param_names << "A1" << "t1" << "A2" << "t2" << "A3" << "t3" << "y0";
 	d_explanation = tr("Exponential decay");
 	d_formula = "A1*exp(-x/t1)+A2*exp(-x/t2)+A3*exp(-x/t3)+y0";
@@ -296,7 +274,6 @@ void ThreeExpFit::calculateFitCurveData(double *par, double *X, double *Y)
 			Y[i]=par[0]*exp(-X[i]*par[1])+par[2]*exp(-X[i]*par[3])+par[4]*exp(-X[i]*par[5])+par[6];
 		}
 	}
-	delete[] par;
 }
 
 double ThreeExpFit::eval(double *par, double x)

@@ -46,7 +46,6 @@
 #include <QLineEdit>
 #include <QLayout>
 #include <QSpinBox>
-#include <QCheckBox>
 #include <QPushButton>
 #include <QLabel>
 #include <QStackedWidget>
@@ -124,12 +123,14 @@ void FitDialog::initFitPage()
 	gl1->addLayout(vb, 3, 0);
 
 	boxParams = new QTableWidget();
-    boxParams->setColumnCount(3);
+    boxParams->setColumnCount(5);
     boxParams->horizontalHeader()->setClickable(false);
     boxParams->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
-    boxParams->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
-    boxParams->horizontalHeader()->setResizeMode (2, QHeaderView::ResizeToContents);
-    QStringList header = QStringList() << tr("Parameter") << tr("Value") << tr("Constant");
+	boxParams->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
+    boxParams->horizontalHeader()->setResizeMode (2, QHeaderView::Stretch);
+    boxParams->horizontalHeader()->setResizeMode (3, QHeaderView::Stretch);
+	boxParams->horizontalHeader()->setResizeMode (4, QHeaderView::ResizeToContents);
+    QStringList header = QStringList() << tr("Parameter") << tr("From") << tr("Value") << tr("To") << tr("Constant");
     boxParams->setHorizontalHeaderLabels(header);
     boxParams->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     boxParams->verticalHeader()->hide();
@@ -462,8 +463,11 @@ void FitDialog::applyChanges()
 	app->fit_output_precision = prec;
 	if (d_current_fit)
 		d_current_fit->setOutputPrecision(prec);
-	for (int i=0; i<boxParams->rowCount(); i++)
-		((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->setDecimals(prec);
+	for (int i=0; i<boxParams->rowCount(); i++){
+		((RangeLimitBox*)boxParams->cellWidget(i, 1))->setDecimals(prec);
+		((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->setDecimals(prec);
+		((RangeLimitBox*)boxParams->cellWidget(i, 3))->setDecimals(prec);
+	}
 
 	app->pasteFitResultsToPlot = plotLabelBox->isChecked();
 	app->writeFitResultsToLog = logBox->isChecked();
@@ -674,7 +678,7 @@ void FitDialog::showFitPage()
 	QStringList paramList = d_current_fit->parameterNames();
 	int parameters = d_current_fit->numParameters();
 	boxParams->setRowCount(parameters);
-    boxParams->hideColumn(2);
+    boxParams->hideColumn(4);
 
     int aux = parameters;
 	if (aux > 7)
@@ -682,6 +686,7 @@ void FitDialog::showFitPage()
 	boxParams->setMinimumHeight(4 + (aux + 1)*boxParams->horizontalHeader()->height());
 
 	QLocale locale = app->locale();
+	int prec = boxPrecision->value();
     for (int i = 0; i<parameters; i++){
         QTableWidgetItem *it = new QTableWidgetItem(paramList[i]);
         it->setFlags(!Qt::ItemIsEditable);
@@ -692,26 +697,36 @@ void FitDialog::showFitPage()
         it->setFont(font);
         boxParams->setItem(i, 0, it);
 
+		RangeLimitBox *rbl = new RangeLimitBox(RangeLimitBox::LeftLimit);
+		rbl->setLocale(locale);
+		rbl->setDecimals(prec);
+		boxParams->setCellWidget(i, 1, rbl);
+		
 		DoubleSpinBox *sb = new DoubleSpinBox('f');
 		sb->setLocale(locale);
-		sb->setDecimals(boxPrecision->value());
+		sb->setDecimals(prec);
 		sb->setValue(d_current_fit->initialGuess(i));
         connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
-        boxParams->setCellWidget(i, 1, sb);
+        boxParams->setCellWidget(i, 2, sb);
+		
+		RangeLimitBox *rbr = new RangeLimitBox(RangeLimitBox::RightLimit);
+		rbr->setLocale(locale);
+		rbr->setDecimals(prec);
+		boxParams->setCellWidget(i, 3, rbr);
 	}
     for (int i = 0; i<parameters; i++)
         boxParams->item (i, 0)->setText(paramList[i]);
 
 	if (d_current_fit->type() == Fit::User){
-        boxParams->showColumn(2);
+        boxParams->showColumn(4);
 		for (int i = 0; i<boxParams->rowCount(); i++ ){
             QTableWidgetItem *it = new QTableWidgetItem();
             it->setFlags(!Qt::ItemIsEditable);
             it->setBackground(QBrush(Qt::lightGray));
-            boxParams->setItem(i, 2, it);
+            boxParams->setItem(i, 4, it);
 
 			QCheckBox *cb = new QCheckBox();
-            boxParams->setCellWidget(i, 2, cb);
+            boxParams->setCellWidget(i, 4, cb);
 		}
 	}
 
@@ -961,9 +976,9 @@ void FitDialog::accept()
 	}
 
 	int n = 0, rows = boxParams->rowCount();
-	if (!boxParams->isColumnHidden(2)){
+	if (!boxParams->isColumnHidden(4)){
 		for (int i=0; i<rows; i++){//count the non-constant parameters
-            QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
+            QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
 			if (!cb->isChecked())
 				n++;
 		}
@@ -991,23 +1006,31 @@ void FitDialog::accept()
 			}
 		}
 
-		if (!boxParams->isColumnHidden(2)){
+		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
 			for (int i=0; i<rows; i++){
-                QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
+                QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
 				if (!cb->isChecked()){
-					paramsInit[j] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->value();
+					paramsInit[j] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
 					parameters << boxParams->item(i,0)->text();
+					
+					double left = ((RangeLimitBox*)boxParams->cellWidget(j, 1))->value();
+					double right = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
+					d_current_fit->setParameterRange(j, left, right);
 					j++;
 				} else
-					formula.replace(boxParams->item(i,0)->text(), boxParams->item(i,1)->text());
+					formula.replace(boxParams->item(i, 0)->text(), boxParams->item(i, 2)->text());
 			}
 		} else {
 			for (int i=0; i<n; i++) {
-				paramsInit[i] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->value();
-				parser.DefineVar(boxParams->item(i,0)->text().ascii(), &paramsInit[i]);
-				parameters << boxParams->item(i,0)->text();
+				paramsInit[i] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
+				parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[i]);
+				parameters << boxParams->item(i, 0)->text();
+				
+				double left = ((RangeLimitBox*)boxParams->cellWidget(i, 1))->value();
+				double right = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
+				d_current_fit->setParameterRange(i, left, right);
 			}
 		}
 
@@ -1030,7 +1053,7 @@ void FitDialog::accept()
 		if (d_current_fit->type() == Fit::BuiltIn)
 			modifyGuesses (paramsInit);
 		d_current_fit->setInitialGuesses(paramsInit);
-
+			
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
@@ -1044,16 +1067,16 @@ void FitDialog::accept()
 		d_current_fit->scaleErrors(scaleErrorsBox->isChecked());
 		d_current_fit->fit();
 		double *res = d_current_fit->results();
-		if (!boxParams->isColumnHidden(2)){
+		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
 			for (int i=0;i<rows;i++){
-                QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 2);
+                QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
 				if (!cb->isChecked())
-					((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->setValue(res[j++]);
+					((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[j++]);
 			}
 		} else {
 			for (int i=0;i<rows;i++)
-				((QDoubleSpinBox*)boxParams->cellWidget(i, 1))->setValue(res[i]);
+				((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[i]);
 		}
 
 		if (globalParamTableBox->isChecked() && d_param_table)
@@ -1271,7 +1294,7 @@ void FitDialog::saveInitialGuesses()
 
 	int rows = boxParams->rowCount();
     for (int i=0; i<rows; i++)
-        d_current_fit->setInitialGuess(i, boxParams->item(i, 1)->text().toDouble());
+        d_current_fit->setInitialGuess(i, boxParams->item(i, 2)->text().toDouble());
 
     QString fileName = d_current_fit->fileName();
     if (!fileName.isEmpty())
@@ -1326,7 +1349,7 @@ void FitDialog::updatePreview()
     int p = boxParams->rowCount();
     double parameters[p];
     for (int i=0; i<p; i++)
-        parameters[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 1))->value();
+        parameters[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
     if (d_current_fit->type() == Fit::BuiltIn)
         modifyGuesses(parameters);
 
@@ -1374,4 +1397,43 @@ QValidator::State DoubleSpinBox::validate(QString & input, int & pos) const
 		return QValidator::Acceptable;
 	else
 		return QValidator::Invalid;
+}
+
+/*****************************************************************************
+ *
+ * Class RangeLimitBox
+ *
+ *****************************************************************************/
+
+RangeLimitBox::RangeLimitBox(LimitType type, QWidget * parent)
+:QWidget(parent),
+d_type(type)
+{
+    d_checkbox = new QCheckBox();
+	d_spin_box = new DoubleSpinBox('g');
+	d_spin_box->setSpecialValueText(" ");
+	d_spin_box->setValue(-DBL_MAX);
+	d_spin_box->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	d_spin_box->setEnabled(false);
+	
+	QHBoxLayout *l = new QHBoxLayout(this);
+	l->setMargin( 2 );
+	l->setSpacing( 0 );
+	l->addWidget( d_checkbox );
+	l->addWidget( d_spin_box );
+
+	setFocusPolicy(Qt::StrongFocus);
+    setFocusProxy(d_spin_box);
+	connect(d_checkbox, SIGNAL(toggled(bool)), d_spin_box, SLOT(setEnabled(bool)));
+}
+
+double RangeLimitBox::value()
+{
+	if (d_checkbox->isChecked()) 
+		return d_spin_box->value();
+	
+	double val = -DBL_MAX;
+	if (d_type == RightLimit)
+		return DBL_MAX;
+	return val;
 }

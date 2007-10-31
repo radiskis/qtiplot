@@ -87,17 +87,9 @@ void MultiPeakFit::setNumPeaks(int n)
 	if (d_peaks > 1)
 		d_explanation += "(" + QString::number(d_peaks) +") " + tr("multi-peak");
 
+	freeWorkspace();
 	d_p = 3*d_peaks + 1;
-    d_min_points = d_p;
-
-	if(d_param_init) gsl_vector_free(d_param_init);
-	d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
-
-	if (covar) gsl_matrix_free(covar);
-	covar = gsl_matrix_alloc (d_p, d_p);
-	if (d_results) delete[] d_results;
-	d_results = new double[d_p];
+	initWorkspace(d_p);
 
 	d_param_names = generateParameterList(d_peaks);
 	d_param_explain = generateExplanationList(d_peaks);
@@ -542,11 +534,7 @@ void GaussAmpFit::init()
 	d_fdf = gauss_fdf;
 	d_fsimplex = gauss_d;
 	d_p = 4;
-    d_min_points = d_p;
-	d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
-	covar = gsl_matrix_alloc (d_p, d_p);
-	d_results = new double[d_p];
+    initWorkspace(d_p);
 	d_param_explain << tr("offset") << tr("height") << tr("center") << tr("width");
 	d_param_names << "y0" << "A" << "xc" << "w";
 	d_explanation = tr("GaussAmp Fit");
@@ -571,7 +559,6 @@ void GaussAmpFit::calculateFitCurveData(double *par, double *X, double *Y)
 			Y[i] = par[1]*exp(-0.5*diff*diff/w2)+par[0];
 		}
 	}
-	delete[] par;
 }
 
 double GaussAmpFit::eval(double *par, double x)
