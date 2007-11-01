@@ -49,12 +49,12 @@ class PolynomialFit : public Fit
 
 		static QString generateFormula(int order);
 		static QStringList generateParameterList(int order);
-		
+
 		virtual double eval(double *par, double x);
 
 	private:
 		void init();
-		void calculateFitCurveData(double *par, double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y);
 
 		int d_order;
 		bool show_legend;
@@ -75,6 +75,6 @@ class LinearFit : public Fit
 
 	private:
 		void init();
-		void calculateFitCurveData(double *par, double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y);
 };
 #endif

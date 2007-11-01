@@ -135,19 +135,21 @@ bool PluginFit::load(const QString& pluginName)
 	return true;
 }
 
-void PluginFit::calculateFitCurveData(double *par, double *X, double *Y)
+void PluginFit::calculateFitCurveData(double *X, double *Y)
 {
 	if (d_gen_function) {
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++){
-			X[i] = X0+i*step;
-			Y[i]= f_eval(X[i], par);
+		    double x = X0+i*step;
+			X[i] = x;
+			Y[i]= f_eval(x, d_results);
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
-			X[i] = d_x[i];
-			Y[i]= f_eval(X[i], par);
+		    double x = d_x[i];
+			X[i] = x;
+			Y[i]= f_eval(x, d_results);
 		}
 	}
 }

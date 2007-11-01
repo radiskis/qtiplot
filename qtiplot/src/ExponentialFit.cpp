@@ -74,7 +74,7 @@ void ExponentialFit::init()
 	d_df = exp_df;
 	d_fdf = exp_fdf;
 	d_fsimplex = exp_d;
-	d_p = 3;	
+	d_p = 3;
 	initWorkspace(d_p);
 
 	d_param_names << "A" << "t" << "y0";
@@ -92,34 +92,31 @@ void ExponentialFit::init()
 	}
 }
 
-void ExponentialFit::storeCustomFitResults(double *par)
-{	
+void ExponentialFit::customizeFitResults()
+{
 	if (is_exp_growth)
-		d_results[1]=-1.0/d_results[1];
+		d_results[1] = -1.0/d_results[1];
 	else
-		d_results[1]=1.0/d_results[1];
+		d_results[1] = 1.0/d_results[1];
 }
 
-void ExponentialFit::calculateFitCurveData(double *par, double *X, double *Y)
-{	
+void ExponentialFit::calculateFitCurveData(double *X, double *Y)
+{
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++) {
-			X[i] = X0+i*step;
-			Y[i] = par[0]*exp(-par[1]*X[i])+par[2];
+		    double x = X0+i*step;
+			X[i] = x;
+			Y[i] = d_results[0]*exp(-d_results[1]*x) + d_results[2];
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
-			X[i] = d_x[i];
-			Y[i] = par[0]*exp(-par[1]*X[i])+par[2];
+		    double x = d_x[i];
+			X[i] = x;
+			Y[i] = d_results[0]*exp(-d_results[1]*x) + d_results[2];
 		}
 	}
-}
-
-double ExponentialFit::eval(double *par, double x)
-{
-    return par[0]*exp(-par[1]*x) + par[2];
 }
 
 /*****************************************************************************
@@ -170,35 +167,29 @@ void TwoExpFit::init()
 	d_param_explain << tr("first amplitude") << tr("first lifetime") << tr("second amplitude") << tr("second lifetime") << tr("offset");
 }
 
-void TwoExpFit::storeCustomFitResults(double *par)
+void TwoExpFit::customizeFitResults()
 {
-	for (int i=0; i<d_p; i++)
-		d_results[i] = par[i];
-
-	d_results[1]=1.0/d_results[1];
-	d_results[3]=1.0/d_results[3];
+    d_results[1] = 1.0/d_results[1];
+	d_results[3] = 1.0/d_results[3];
 }
 
-void TwoExpFit::calculateFitCurveData(double *par, double *X, double *Y)
+void TwoExpFit::calculateFitCurveData(double *X, double *Y)
 {
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++){
-			X[i] = X0+i*step;
-			Y[i] = par[0]*exp(-par[1]*X[i])+par[2]*exp(-par[3]*X[i])+par[4];
+		    double x = X0+i*step;
+			X[i] = x;
+			Y[i] = d_results[0]*exp(-d_results[1]*x)+d_results[2]*exp(-d_results[3]*x)+d_results[4];
 		}
 	} else {
 		for (int i=0; i<d_points; i++){
-			X[i] = d_x[i];
-			Y[i] = par[0]*exp(-par[1]*X[i])+par[2]*exp(-par[3]*X[i])+par[4];
+		    double x = d_x[i];
+			X[i] = x;
+			Y[i] = d_results[0]*exp(-d_results[1]*x)+d_results[2]*exp(-d_results[3]*x)+d_results[4];
 		}
 	}
-}
-
-double TwoExpFit::eval(double *par, double x)
-{
-    return par[0]*exp(-par[1]*x)+par[2]*exp(-par[3]*x)+par[4];
 }
 
 /*****************************************************************************
@@ -249,35 +240,28 @@ void ThreeExpFit::init()
 	d_param_explain << tr("first amplitude") << tr("first lifetime") << tr("second amplitude") << tr("second lifetime") << tr("third amplitude") << tr("third lifetime") << tr("offset");
 }
 
-void ThreeExpFit::storeCustomFitResults(double *par)
+void ThreeExpFit::customizeFitResults()
 {
-	for (int i=0; i<d_p; i++)
-		d_results[i] = par[i];
-
 	d_results[1]=1.0/d_results[1];
 	d_results[3]=1.0/d_results[3];
 	d_results[5]=1.0/d_results[5];
 }
 
-void ThreeExpFit::calculateFitCurveData(double *par, double *X, double *Y)
+void ThreeExpFit::calculateFitCurveData(double *X, double *Y)
 {
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++){
-			X[i]=X0+i*step;
-			Y[i]=par[0]*exp(-X[i]*par[1])+par[2]*exp(-X[i]*par[3])+par[4]*exp(-X[i]*par[5])+par[6];
+		    double x = X0+i*step;
+			X[i] = x;
+			Y[i] = d_results[0]*exp(-x*d_results[1])+d_results[2]*exp(-x*d_results[3])+d_results[4]*exp(-x*d_results[5])+d_results[6];
 		}
 	} else {
 		for (int i=0; i<d_points; i++){
-			X[i]=d_x[i];
-			Y[i]=par[0]*exp(-X[i]*par[1])+par[2]*exp(-X[i]*par[3])+par[4]*exp(-X[i]*par[5])+par[6];
+		    double x = d_x[i];
+			X[i] = x;
+			Y[i] = d_results[0]*exp(-x*d_results[1])+d_results[2]*exp(-x*d_results[3])+d_results[4]*exp(-x*d_results[5])+d_results[6];
 		}
 	}
-}
-
-double ThreeExpFit::eval(double *par, double x)
-{
-    return par[0]*exp(-x*par[1])+par[2]*exp(-x*par[3])+par[4]*exp(-x*par[5])+par[6];
-
 }

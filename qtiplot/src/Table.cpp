@@ -1600,15 +1600,19 @@ bool Table::isEmptyColumn(int col)
 QString Table::saveText()
 {
 	QString text = "<data>\n";
-	int cols=d_table->numCols();
-	int rows=d_table->numRows();
+	int cols = d_table->numCols() - 1;
+	int rows = d_table->numRows();
 	for (int i=0; i<rows; i++){
 		if (!isEmptyRow(i)){
 			text += QString::number(i) + "\t";
-			for (int j=0; j<cols-1; j++)
-				text += QString::number(cell(i, j), 'e', 16)+"\t";
-
-			text += QString::number(cell(i, cols-1), 'e', 16)+"\n";
+			for (int j=0; j<cols; j++){
+			    if (!d_table->text(i, j).isEmpty())
+                    text += QString::number(cell(i, j), 'e', 14);
+                text += "\t";
+			}
+            if (!d_table->text(i, cols).isEmpty())
+                text += QString::number(cell(i, cols), 'e', 14);
+            text += "\n";
 		}
 	}
 	return text + "</data>\n";

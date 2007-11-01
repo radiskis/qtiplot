@@ -219,12 +219,8 @@ bool Filter::run()
 
 void Filter::output()
 {
-    double *X = new double[d_points];
-    double *Y = new double[d_points];
-
-    //do the data analysis
-    calculateOutputData(X, Y);
-
+    double X[d_points], Y[d_points];
+    calculateOutputData(X, Y); //does the data analysis
 	addResultCurve(X, Y);
 }
 
@@ -333,8 +329,8 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 
     d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + dataSet, d_points, 2);
 	for (int i=0; i<d_points; i++){
-		d_result_table->setText(i, 0, locale.toString(x[i], 'g', app->d_decimal_digits));
-		d_result_table->setText(i, 1, locale.toString(y[i], 'g', app->d_decimal_digits));
+		d_result_table->setText(i, 0, locale.toString(x[i], 'f', app->d_decimal_digits));
+		d_result_table->setText(i, 1, locale.toString(y[i], 'f', app->d_decimal_digits));
 	}
 
 	DataCurve *c = 0;
@@ -349,9 +345,6 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 		d_output_graph->insertPlotItem(c, Graph::Line);
     	d_output_graph->updatePlot();
 	}
-
-    delete[] x;
-	delete[] y;
 	return (QwtPlotCurve*)c;
 }
 

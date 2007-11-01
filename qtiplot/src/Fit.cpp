@@ -105,18 +105,6 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 	gsl_multifit_fdfsolver_set (s, &f, d_param_init);
 
 	size_t iter = 0;
-	/*do
-	{
-		iter++;
-		status = gsl_multifit_fdfsolver_iterate (s);
-
-		if (status)
-			break;
-
-		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
-	}
-	while (status == GSL_CONTINUE && (int)iter < d_max_iterations);*/
-	
 	bool inRange = true;
 	for (int i=0; i<d_p; i++){
 		double p = gsl_vector_get(d_param_init, i);
@@ -126,7 +114,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 			break;
 		}
 	}
-	
+
 	do{
 		iter++;
 		status = gsl_multifit_fdfsolver_iterate (s);
@@ -142,13 +130,13 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 		}
 		if (!inRange)
 			break;
-		
+
 		for (int i=0; i<d_p; i++)
 			d_results[i] = gsl_vector_get(s->x, i);
 
-		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);	
+		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
 	} while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
-		
+
 	gsl_multifit_covar (s->J, 0.0, covar);
 	iterations = iter;
 	return s;
@@ -169,16 +157,40 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	status = gsl_multimin_fminimizer_set (s_min, &f, d_param_init, ss);
 	double size;
 	size_t iter = 0;
+	bool inRange = true;
+	for (int i=0; i<d_p; i++){
+		double p = gsl_vector_get(d_param_init, i);
+		d_results[i] = p;
+		if (p < d_param_range_left[i] || p > d_param_range_right[i]){
+			inRange = false;
+			break;
+		}
+	}
+
 	do{
 		iter++;
 		status = gsl_multimin_fminimizer_iterate (s_min);
 
 		if (status)
 			break;
-		size=gsl_multimin_fminimizer_size (s_min);
+
+        for (int i=0; i<d_p; i++){
+			double p = gsl_vector_get(s_min->x, i);
+			if (p < d_param_range_left[i] || p > d_param_range_right[i]){
+				inRange = false;
+				break;
+			}
+		}
+		if (!inRange)
+			break;
+
+		for (int i=0; i<d_p; i++)
+			d_results[i] = gsl_vector_get(s_min->x, i);
+
+		size = gsl_multimin_fminimizer_size (s_min);
 		status = gsl_multimin_test_size (size, d_tolerance);
 	}
-	while (status == GSL_CONTINUE && (int)iter < d_max_iterations);
+	while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	iterations = iter;
 	gsl_vector_free(ss);
@@ -239,7 +251,7 @@ void Fit::generateFunction(bool yes, int points)
 		d_points = points;
 }
 
-QString Fit::logFitInfo(double *par, int iterations, int status)
+QString Fit::logFitInfo(int iterations, int status)
 {
 	QString dataSet;
 	if (d_curve)
@@ -297,7 +309,7 @@ QString Fit::logFitInfo(double *par, int iterations, int status)
 		info += d_param_names[i];
 		if (!d_param_explain[i].isEmpty())
             info += " (" + d_param_explain[i] + ")";
-		info += " = " + locale.toString(par[i], 'f', d_prec) + " +/- ";
+		info += " = " + locale.toString(d_results[i], 'f', d_prec) + " +/- ";
 		if (d_scale_errors)
 			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
 		else
@@ -441,7 +453,7 @@ Table* Fit::parametersTable(const QString& tableName)
 	if (!d_param_table || d_param_table->objectName() != tableName){
 		d_param_table = app->newTable(app->generateUniqueName(tableName, false), d_p, 3);
 	}
-		
+
 	d_param_table->setHeader(QStringList() << tr("Parameter") << tr("Value") << tr ("Error"));
 	d_param_table->setColPlotDesignation(2, Table::yErr);
 	d_param_table->setHeaderColType();
@@ -554,9 +566,6 @@ void Fit::fit()
 		f.params = &d_data;
 		gsl_multimin_fminimizer *s_min = fitSimplex(f, iterations, status);
 
-		//for (int i=0; i<d_p; i++)
-			//par[i]=gsl_vector_get(s_min->x, i);
-
 		// allocate memory and calculate covariance matrix based on residuals
 		gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
 		d_df(s_min->x,(void*)f.params, J);
@@ -581,26 +590,23 @@ void Fit::fit()
 		gsl_multifit_fdfsolver_free(s);
 	}
 
-	storeCustomFitResults(d_results);
-	generateFitCurve(d_results);
+	generateFitCurve();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog){
-		app->updateLog(logFitInfo(d_results, iterations, status));
-	}
+	if (app->writeFitResultsToLog)
+		app->updateLog(logFitInfo(iterations, status));
 
 	QApplication::restoreOverrideCursor();
 }
 
-void Fit::generateFitCurve(double *par)
+void Fit::generateFitCurve()
 {
 	if (!d_gen_function)
 		d_points = d_n;
 
-	double *X = new double[d_points];
-	double *Y = new double[d_points];
-
-	calculateFitCurveData(par, X, Y);
+    double X[d_points], Y[d_points];
+	calculateFitCurveData(X, Y);
+    customizeFitResults();
 
 	if (d_graphics_display){
 		if (!d_output_graph)
@@ -609,8 +615,6 @@ void Fit::generateFitCurve(double *par)
 		if (d_gen_function){
 			insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y);
 			d_output_graph->replot();
-			delete[] X;
-			delete[] Y;
 		} else
         	d_output_graph->addFitCurve(addResultCurve(X, Y));
 	}
@@ -620,7 +624,7 @@ void Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int 
 {
 	QString formula = d_formula;
 	for (int j=0; j<d_p; j++){
-		QString parameter = QString::number(d_results[j], 'g', d_prec);
+		QString parameter = QString::number(d_results[j], 'f', d_prec);
 		formula.replace(d_param_names[j], parameter);
 	}
 
@@ -702,7 +706,7 @@ void Fit::setParameterRange(int parIndex, double left, double right)
 {
 	if (parIndex < 0 || parIndex >= d_p)
 		return;
-	
+
 	d_param_range_left[parIndex] = left;
 	d_param_range_right[parIndex] = right;
 }
@@ -722,11 +726,11 @@ void Fit::initWorkspace(int par)
 		d_param_range_right[i] = DBL_MAX;
 	}
 }
-	
+
 void Fit::freeWorkspace()
 {
 	if (d_param_init) gsl_vector_free(d_param_init);
-	if (covar) gsl_matrix_free (covar);		
+	if (covar) gsl_matrix_free (covar);
 	if (d_results) delete[] d_results;
 	if (d_errors) delete[] d_errors;
 	if (d_param_range_left) delete[] d_param_range_left;
