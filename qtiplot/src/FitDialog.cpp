@@ -62,6 +62,29 @@
 
 #include <qwt_plot_curve.h>
 
+/* XPM */
+static const char * param_range_btn_xpm[] = {
+"18 14 5 1",
+" 	c None",
+".	c #000000",
+"+	c #FFFFFF",
+"@	c #808000",
+"#	c #FFFF00",
+"..+            ..+",
+"..+            ..+",
+"..+  @@+  @@+  ..+",
+"..+ @#@+  @#@+ ..+",
+"..+@##@+  @##@+..+",
+"..@###@@@@@###@..+",
+"..#############..+",
+"..@###@@@@@###@..+",
+"..+@##@+  @##@+..+",
+"..++@#@+  @#@++..+",
+"..+ +@@+  @@++ ..+",
+"..+  +++  +++  ..+",
+"..+            ..+",
+"+++            +++"};
+
 FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
@@ -116,6 +139,11 @@ void FitDialog::initFitPage()
     btnSaveGuesses = new QPushButton(tr( "&Save" ));
     connect(btnSaveGuesses, SIGNAL(clicked()), this, SLOT(saveInitialGuesses()));
     vb->addWidget(btnSaveGuesses);
+    btnParamRange = new QPushButton();
+    btnParamRange->setIcon(QIcon(QPixmap(param_range_btn_xpm)));
+    btnParamRange->setCheckable(true);
+    connect(btnParamRange, SIGNAL(toggled(bool)), this, SLOT(showParameterRange(bool)));
+    vb->addWidget(btnParamRange);
     previewBox = new QCheckBox(tr("&Preview"));
     connect(previewBox, SIGNAL(stateChanged(int)), this, SLOT(updatePreview()));
     vb->addWidget(previewBox);
@@ -134,6 +162,8 @@ void FitDialog::initFitPage()
     boxParams->setHorizontalHeaderLabels(header);
     boxParams->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     boxParams->verticalHeader()->hide();
+    boxParams->hideColumn(1);
+    boxParams->hideColumn(3);
     gl1->addWidget(boxParams, 3, 1);
 
 	gl1->addWidget(new QLabel( tr("Algorithm")), 4, 0 );
@@ -675,6 +705,14 @@ void FitDialog::showFitPage()
         d_current_fit->setFormula(editBox->text().remove("\n"));
     }
 
+    if (d_current_fit->type() == Fit::BuiltIn && d_current_fit->objectName() == tr("Polynomial")){
+        btnParamRange->setEnabled(false);
+        boxAlgorithm->setEnabled(false);
+    } else {
+        btnParamRange->setEnabled(true);
+        boxAlgorithm->setEnabled(true);
+    }
+
 	QStringList paramList = d_current_fit->parameterNames();
 	int parameters = d_current_fit->numParameters();
 	boxParams->setRowCount(parameters);
@@ -701,14 +739,14 @@ void FitDialog::showFitPage()
 		rbl->setLocale(locale);
 		rbl->setDecimals(prec);
 		boxParams->setCellWidget(i, 1, rbl);
-		
+
 		DoubleSpinBox *sb = new DoubleSpinBox('f');
 		sb->setLocale(locale);
 		sb->setDecimals(prec);
 		sb->setValue(d_current_fit->initialGuess(i));
         connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
         boxParams->setCellWidget(i, 2, sb);
-		
+
 		RangeLimitBox *rbr = new RangeLimitBox(RangeLimitBox::RightLimit);
 		rbr->setLocale(locale);
 		rbr->setDecimals(prec);
@@ -739,7 +777,7 @@ void FitDialog::showFitPage()
 }
 
 void FitDialog::showEditPage()
-{	
+{
     if (d_current_fit)
         d_current_fit->freeMemory();
 	tw->setCurrentWidget(editPage);
@@ -1014,7 +1052,7 @@ void FitDialog::accept()
 					paramsInit[j] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
 					parameters << boxParams->item(i,0)->text();
-					
+
 					double left = ((RangeLimitBox*)boxParams->cellWidget(j, 1))->value();
 					double right = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
 					d_current_fit->setParameterRange(j, left, right);
@@ -1027,7 +1065,7 @@ void FitDialog::accept()
 				paramsInit[i] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 				parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[i]);
 				parameters << boxParams->item(i, 0)->text();
-				
+
 				double left = ((RangeLimitBox*)boxParams->cellWidget(i, 1))->value();
 				double right = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
 				d_current_fit->setParameterRange(i, left, right);
@@ -1053,7 +1091,7 @@ void FitDialog::accept()
 		if (d_current_fit->type() == Fit::BuiltIn)
 			modifyGuesses (paramsInit);
 		d_current_fit->setInitialGuesses(paramsInit);
-			
+
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
@@ -1372,6 +1410,17 @@ void FitDialog::updatePreview()
     d_graph->replot();
 }
 
+void FitDialog::showParameterRange(bool on)
+{
+    if (on){
+        boxParams->showColumn(1);
+        boxParams->showColumn(3);
+    } else {
+        boxParams->hideColumn(1);
+        boxParams->hideColumn(3);
+    }
+}
+
 /*****************************************************************************
  *
  * Class DoubleSpinBox
@@ -1415,12 +1464,12 @@ d_type(type)
 	d_spin_box->setValue(-DBL_MAX);
 	d_spin_box->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	d_spin_box->setEnabled(false);
-	
+
 	QHBoxLayout *l = new QHBoxLayout(this);
-	l->setMargin( 2 );
-	l->setSpacing( 0 );
-	l->addWidget( d_checkbox );
-	l->addWidget( d_spin_box );
+	l->setMargin(0);
+	l->setSpacing(0);
+	l->addWidget(d_checkbox);
+	l->addWidget(d_spin_box);
 
 	setFocusPolicy(Qt::StrongFocus);
     setFocusProxy(d_spin_box);
@@ -1429,9 +1478,9 @@ d_type(type)
 
 double RangeLimitBox::value()
 {
-	if (d_checkbox->isChecked()) 
+	if (d_checkbox->isChecked())
 		return d_spin_box->value();
-	
+
 	double val = -DBL_MAX;
 	if (d_type == RightLimit)
 		return DBL_MAX;

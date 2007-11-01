@@ -109,26 +109,26 @@ QStringList PolynomialFit::generateParameterList(int order)
 	return lst;
 }
 
-void PolynomialFit::calculateFitCurveData(double *par, double *X, double *Y)
+void PolynomialFit::calculateFitCurveData(double *X, double *Y)
 {
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++){
-			X[i] = X0+i*step;
+		    double x = X0+i*step;
+			X[i] = x;
 			double 	yi = 0.0;
 			for (int j=0; j<d_p;j++)
-				yi += par[j]*pow(X[i],j);
-
+				yi += d_results[j]*pow(x, j);
 			Y[i] = yi;
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
-			X[i] = d_x[i];
+		    double x = d_x[i];
+			X[i] = x;
 			double 	yi = 0.0;
-			for (int j=0; j<d_p;j++)
-				yi += par[j]*pow(X[i],j);
-
+			for (int j=0; j<d_p; j++)
+				yi += d_results[j]*pow(x, j);
 			Y[i] = yi;
 		}
 	}
@@ -178,11 +178,11 @@ void PolynomialFit::fit()
 	if (show_legend)
 		showLegend();
 
-	generateFitCurve(d_results);
+	generateFitCurve();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (app->writeFitResultsToLog)
-		app->updateLog(logFitInfo(d_results, 0, 0));
+		app->updateLog(logFitInfo(0, 0));
 }
 
 QString PolynomialFit::legendInfo()
@@ -284,27 +284,28 @@ void LinearFit::fit()
 	gsl_matrix_set(covar, 1, 1, cov11);
 	gsl_matrix_set(covar, 1, 0, cov01);
 
-	generateFitCurve(d_results);
+	generateFitCurve();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog){
-		app->updateLog(logFitInfo(d_results, 0, 0));
-	}
+	if (app->writeFitResultsToLog)
+		app->updateLog(logFitInfo(0, 0));
 }
 
-void LinearFit::calculateFitCurveData(double *par, double *X, double *Y)
+void LinearFit::calculateFitCurveData(double *X, double *Y)
 {
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++){
-			X[i] = X0+i*step;
-			Y[i] = par[0]+par[1]*X[i];
+		    double x = X0+i*step;
+			X[i] = x;
+			Y[i] = d_results[0] + d_results[1]*x;
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
-			X[i] = d_x[i];
-			Y[i] = par[0]+par[1]*X[i];
+		    double x = d_x[i];
+			X[i] = x;
+			Y[i] = d_results[0] + d_results[1]*x;
 		}
 	}
 }

@@ -115,12 +115,12 @@ QStringList MultiPeakFit::generateParameterList(int peaks)
 QStringList MultiPeakFit::generateExplanationList(int peaks)
 {
 	if (peaks == 1)
-		return QStringList() << tr("amplitude") << tr("center") <<  tr("width") << tr("offset");
+		return QStringList() << tr("area") << tr("center") <<  tr("width") << tr("offset");
 
 	QStringList lst;
 	for (int i = 0; i<peaks; i++){
 		QString index = QString::number(i+1);
-		lst << tr("amplitude") + " " + index;
+		lst << tr("area") + " " + index;
 		lst << tr("center") + " " + index;
 		lst << tr("width") + " " + index;
 	}
@@ -130,9 +130,8 @@ QStringList MultiPeakFit::generateExplanationList(int peaks)
 
 QString MultiPeakFit::generateFormula(int peaks, PeakProfile profile)
 {
-	if (peaks == 1)
-		switch (profile)
-		{
+	if (peaks == 1){
+		switch (profile){
 			case Gauss:
 				return "y0+A*sqrt(2/PI)/w*exp(-2*((x-xc)/w)^2)";
 				break;
@@ -141,6 +140,7 @@ QString MultiPeakFit::generateFormula(int peaks, PeakProfile profile)
 				return "y0+2*A/PI*w/(4*(x-xc)^2+w^2)";
 				break;
 		}
+	}
 
 	QString formula = "y0+";
 	for (int i = 0; i<peaks; i++){
@@ -198,14 +198,13 @@ void MultiPeakFit::guessInitialValues()
 		gsl_vector_set(d_param_init, 3, max_out);
 }
 
-void MultiPeakFit::storeCustomFitResults(double *par)
+void MultiPeakFit::customizeFitResults()
 {
-	for (int i=0; i<d_p; i++)
-		d_results[i] = par[i];
-
-	if (d_profile == Lorentz){
-		for (int j=0; j<d_peaks; j++)
-			d_results[3*j] = M_PI_2*d_results[3*j];
+	for (int j=0; j<d_peaks; j++){
+	    d_results[3*j] = fabs(d_results[3*j]);
+	    if (d_profile == Lorentz)
+            d_results[3*j] = M_PI_2*d_results[3*j];
+        d_results[3*j + 2] = fabs(d_results[3*j + 2]);
 	}
 }
 
@@ -225,11 +224,11 @@ void MultiPeakFit::insertPeakFunctionCurve(double *x, double *y, int peak)
 	c->setRange(d_x[0], d_x[d_n-1]);
 
 	QString formula = "y0+"+peakFormula(peak + 1, d_profile);
-	QString parameter = QString::number(d_results[d_p-1], 'g', d_prec);
+	QString parameter = QString::number(d_results[d_p-1], 'f', d_prec);
 	formula.replace(d_param_names[d_p-1], parameter);
 	for (int j=0; j<3; j++){
 		int p = 3*peak + j;
-		parameter = QString::number(d_results[p], 'g', d_prec);
+		parameter = QString::number(d_results[p], 'f', d_prec);
 		formula.replace(d_param_names[p], parameter);
 	}
 	c->setFormula(formula.replace("--", "+").replace("-+", "-").replace("+-", "-"));
@@ -237,7 +236,7 @@ void MultiPeakFit::insertPeakFunctionCurve(double *x, double *y, int peak)
 	d_output_graph->addFitCurve(c);
 }
 
-void MultiPeakFit::generateFitCurve(double *par)
+void MultiPeakFit::generateFitCurve()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (!d_gen_function)
@@ -249,8 +248,7 @@ void MultiPeakFit::generateFitCurve(double *par)
 		return;
 	}
 
-	double *X = new double[d_points];
-	double *Y = new double[d_points];
+	double X[d_points], Y[d_points];
 	int i, j;
 	int peaks_aux = d_peaks;
 	if (d_peaks == 1)
@@ -259,23 +257,18 @@ void MultiPeakFit::generateFitCurve(double *par)
 	if (d_gen_function){
 		double step = (d_x[d_n-1] - d_x[0])/(d_points-1);
 		for (i = 0; i<d_points; i++){
-			X[i] = d_x[0] + i*step;
-			double yi=0;
+		    double x = d_x[0] + i*step;
+			X[i] = x;
+			double yi = 0;
 			for (j=0; j<d_peaks; j++){
-				double diff = X[i] - par[3*j + 1];
-				double w = par[3*j + 2];
-				double y_aux = 0;
-				if (d_profile == Gauss)
-					y_aux += sqrt(M_2_PI)*par[3*j]/w*exp(-2*diff*diff/(w*w));
-				else
-					y_aux += par[3*j]*w/(4*diff*diff+w*w);
-
-				yi += y_aux;
-				y_aux += par[d_p - 1];
-				gsl_matrix_set(m, i, j, y_aux);
+                double y = evalPeak(d_results, x, j);
+				gsl_matrix_set(m, i, j, y + d_results[d_p - 1]);
+				yi += y;
 			}
-			Y[i] = yi + par[d_p - 1];//add offset
+            Y[i] = yi + d_results[d_p - 1];//add offset
 		}
+
+        customizeFitResults();
 
 		if (d_graphics_display){
 			if (!d_output_graph)
@@ -294,6 +287,7 @@ void MultiPeakFit::generateFitCurve(double *par)
 				insertPeakFunctionCurve(X, Y, i);
 				}
 			}
+			d_output_graph->replot();
 		}
 	} else {
 		QString tableName = app->generateUniqueName(tr("Fit"));
@@ -314,27 +308,29 @@ void MultiPeakFit::generateFitCurve(double *par)
         QLocale locale = app->locale();
 		for (i = 0; i<d_points; i++){
 			X[i] = d_x[i];
-			d_result_table->setText(i, 0, locale.toString(X[i], 'g', d_prec));
+			d_result_table->setText(i, 0, locale.toString(X[i], 'f', d_prec));
 
 			double yi=0;
 			for (j=0; j<d_peaks; j++){
-				double diff = X[i] - par[3*j + 1];
-				double w = par[3*j + 2];
+				double diff = X[i] - d_results[3*j + 1];
+				double w = d_results[3*j + 2];
 				double y_aux = 0;
 				if (d_profile == Gauss)
-					y_aux += sqrt(M_2_PI)*par[3*j]/w*exp(-2*diff*diff/(w*w));
+					y_aux += sqrt(M_2_PI)*d_results[3*j]/w*exp(-2*diff*diff/(w*w));
 				else
-					y_aux += par[3*j]*w/(4*diff*diff+w*w);
+					y_aux += d_results[3*j]*w/(4*diff*diff+w*w);
 
 				yi += y_aux;
-				y_aux += par[d_p - 1];
-				d_result_table->setText(i, j+1, locale.toString(y_aux, 'g', d_prec));
+				y_aux += d_results[d_p - 1];
+				d_result_table->setText(i, j+1, locale.toString(y_aux, 'f', d_prec));
 				gsl_matrix_set(m, i, j, y_aux);
 			}
-			Y[i] = yi + par[d_p - 1];//add offset
+			Y[i] = yi + d_results[d_p - 1];//add offset
 			if (d_peaks > 1)
-				d_result_table->setText(i, d_peaks+1, locale.toString(Y[i], 'g', d_prec));
+				d_result_table->setText(i, d_peaks+1, locale.toString(Y[i], 'f', d_prec));
 		}
+
+		customizeFitResults();
 
 		if (d_graphics_display){
 			if (!d_output_graph)
@@ -366,15 +362,12 @@ void MultiPeakFit::generateFitCurve(double *par)
 			d_output_graph->replot();
 		}
 	}
-	delete[] par;
-	delete[] X;
-	delete[] Y;
 	gsl_matrix_free(m);
 }
 
 double MultiPeakFit::eval(double *par, double x)
 {
-	double y=0;
+	double y = 0;
 	for (int j=0; j<d_peaks; j++){
 		double diff = x - par[3*j + 1];
 		double w = par[3*j + 2];
@@ -386,9 +379,20 @@ double MultiPeakFit::eval(double *par, double x)
 	return y + par[d_p - 1];//add offset
 }
 
-QString MultiPeakFit::logFitInfo(double *par, int iterations, int status)
+double MultiPeakFit::evalPeak(double *par, double x, int peak)
 {
-	QString info = Fit::logFitInfo(par, iterations, status);
+	int aux = 3*peak;
+    double diff = x - par[aux + 1];
+    double w = par[aux + 2];
+    if (d_profile == Gauss)
+        return sqrt(M_2_PI)*par[aux]/w*exp(-2*diff*diff/(w*w));
+    else
+        return par[aux]*w/(4*diff*diff+w*w);
+}
+
+QString MultiPeakFit::logFitInfo(int iterations, int status)
+{
+	QString info = Fit::logFitInfo(iterations, status);
 	if (d_peaks == 1)
 		return info;
 
@@ -399,15 +403,15 @@ QString MultiPeakFit::logFitInfo(double *par, int iterations, int status)
 	info += tr("Center") + "\t" + tr("Width") + "\t" + tr("Height") + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
 	for (int j=0; j<d_peaks; j++){
-		info += QString::number(j+1)+"\t";
-		info += locale.toString(par[3*j],'g', d_prec)+"\t";
-		info += locale.toString(par[3*j+1],'g', d_prec)+"\t";
-		info += locale.toString(par[3*j+2],'g', d_prec)+"\t";
+		info += QString::number(j+1) + "\t";
+		info += locale.toString(d_results[3*j], 'f', d_prec) + "\t";
+		info += locale.toString(d_results[3*j+1], 'f', d_prec) + "\t";
+		info += locale.toString(d_results[3*j+2], 'f', d_prec) + "\t";
 
 		if (d_profile == Lorentz)
-			info += locale.toString(M_2_PI*par[3*j]/par[3*j+2],'g', d_prec)+"\n";
+			info += locale.toString(M_2_PI*d_results[3*j]/d_results[3*j+2], 'f', d_prec) + "\n";
 		else
-			info += locale.toString(sqrt(M_2_PI)*par[3*j]/par[3*j+2],'g', d_prec)+"\n";
+			info += locale.toString(sqrt(M_2_PI)*d_results[3*j]/d_results[3*j+2], 'f', d_prec) + "\n";
 	}
 	info += "---------------------------------------------------------------------------------------\n";
 	return info;
@@ -535,28 +539,30 @@ void GaussAmpFit::init()
 	d_fsimplex = gauss_d;
 	d_p = 4;
     initWorkspace(d_p);
-	d_param_explain << tr("offset") << tr("height") << tr("center") << tr("width");
+	d_param_explain << tr("offset") << tr("amplitude") << tr("center") << tr("width");
 	d_param_names << "y0" << "A" << "xc" << "w";
 	d_explanation = tr("GaussAmp Fit");
 	d_formula = "y0+A*exp(-(x-xc)^2/(2*w^2))";
 }
 
-void GaussAmpFit::calculateFitCurveData(double *par, double *X, double *Y)
+void GaussAmpFit::calculateFitCurveData(double *X, double *Y)
 {
-	double w2 = par[3]*par[3];
+	double w2 = d_results[3]*d_results[3];
 	if (d_gen_function){
 		double X0 = d_x[0];
-		double step = (d_x[d_n-1]-X0)/(d_points-1);
+		double step = (d_x[d_n-1] - X0)/(d_points - 1);
 		for (int i=0; i<d_points; i++){
-			X[i] = X0+i*step;
-			double diff = X[i]-par[2];
-			Y[i] = par[1]*exp(-0.5*diff*diff/w2)+par[0];
+            double x = X0 + i*step;
+			X[i] = x;
+			double diff = x - d_results[2];
+			Y[i] = d_results[1]*exp(-0.5*diff*diff/w2) + d_results[0];
 		}
 	}else{
 		for (int i=0; i<d_points; i++){
-			X[i] = d_x[i];
-			double diff = X[i]-par[2];
-			Y[i] = par[1]*exp(-0.5*diff*diff/w2)+par[0];
+		    double x = d_x[i];
+			X[i] = x;
+			double diff = x - d_results[2];
+			Y[i] = d_results[1]*exp(-0.5*diff*diff/w2) + d_results[0];
 		}
 	}
 }

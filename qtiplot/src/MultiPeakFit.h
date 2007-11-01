@@ -53,18 +53,19 @@ class MultiPeakFit : public Fit
 
 		//! Used by the GaussFit and LorentzFit derived classes to calculate initial values for the parameters
 		void guessInitialValues();
-		
+
 		virtual double eval(double *par, double x);
+		double evalPeak(double *par, double x, int peak);
 
 	private:
 		void init(int);
 
-		QString logFitInfo(double *par, int iterations, int status);
-		void generateFitCurve(double *par);
+		QString logFitInfo(int iterations, int status);
+		void generateFitCurve();
 		static QString peakFormula(int peakIndex, PeakProfile profile);
 		//! Inserts a peak function curve into the plot
 		void insertPeakFunctionCurve(double *x, double *y, int peak);
-		void storeCustomFitResults(double *par);
+		void customizeFitResults();
 
 		//! Number of peaks
 		int d_peaks;
@@ -122,6 +123,6 @@ class GaussAmpFit : public Fit
 
 	private:
 		void init();
-		void calculateFitCurveData(double *par, double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y);
 };
 #endif

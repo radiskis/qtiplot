@@ -128,7 +128,7 @@ void NonLinearFit::setParametersList(const QStringList& lst)
 	d_init_err = false;
 	d_param_names = lst;
 
-	if (d_p > 0) 
+	if (d_p > 0)
 		freeWorkspace();
 	d_p = (int)lst.count();
 	initWorkspace(d_p);
@@ -137,28 +137,28 @@ void NonLinearFit::setParametersList(const QStringList& lst)
 		d_param_explain << "";
 }
 
-void NonLinearFit::calculateFitCurveData(double *par, double *X, double *Y)
+void NonLinearFit::calculateFitCurveData(double *X, double *Y)
 {
 	MyParser parser;
 	for (int i=0; i<d_p; i++)
-		parser.DefineVar(d_param_names[i].ascii(), &par[i]);
+		parser.DefineVar(d_param_names[i].ascii(), &d_results[i]);
 
-	double xvar;
-	parser.DefineVar("x", &xvar);
+	double x;
+	parser.DefineVar("x", &x);
 	parser.SetExpr(d_formula.ascii());
 
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++){
-			X[i] = X0+i*step;
-			xvar = X[i];
+		    x = X0 + i*step;
+			X[i] = x;
 			Y[i] = parser.Eval();
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
-			X[i] = d_x[i];
-			xvar = X[i];
+		    x = d_x[i];
+			X[i] = x;
 			Y[i] = parser.Eval();
 		}
 	}

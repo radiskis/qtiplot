@@ -344,7 +344,7 @@ public:
 	void flipHorizontally();
 	void rotate90(bool = true);
 	double determinant();
-	
+
 	void setViewType(ViewType);
 	void setHeaderViewType(HeaderViewType);
 	void setGrayScale();
@@ -923,6 +923,7 @@ delete values;
 %End
 
   virtual void guessInitialValues();
+  void setParameterRange(int, double, double);
 
   void setAlgorithm(Algorithm);
   void setOutputPrecision(int);

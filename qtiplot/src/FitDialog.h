@@ -104,6 +104,7 @@ private slots:
 	void saveInitialGuesses();
 	void returnToFitPage();
 	void updatePreview();
+	void showParameterRange(bool);
 
 private:
 	void loadPlugins();
@@ -149,7 +150,7 @@ private:
 	ColorBox* boxColor;
 	QComboBox *boxWeighting, *tableNamesBox, *colNamesBox;
 	QRadioButton *generatePointsBtn, *samePointsBtn;
-	QPushButton *btnParamTable, *btnCovMatrix;
+	QPushButton *btnParamTable, *btnCovMatrix, *btnParamRange;
 	QLineEdit *covMatrixName, *paramTableName;
 	QCheckBox *plotLabelBox, *logBox, *scaleErrorsBox, *globalParamTableBox;
 	QCheckBox *previewBox;
@@ -180,7 +181,7 @@ public:
 	void setDecimals(int prec){d_spin_box->setDecimals(prec);};
 	double value();
 	bool isChecked(){return d_checkbox->isChecked();};
-	
+
 private:
     DoubleSpinBox *d_spin_box;
     QCheckBox *d_checkbox;

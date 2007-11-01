@@ -47,7 +47,7 @@ class NonLinearFit : public Fit
 		virtual void setFormula(const QString& s);
 
 	private:
-		void calculateFitCurveData(double *par, double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y);
 		void init();
 };
 #endif
