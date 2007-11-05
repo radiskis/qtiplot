@@ -122,7 +122,7 @@ private:
 	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces, *d_import_comments;
 	QLineEdit *d_comment_string;
 	Table *d_preview_table;
-	QPushButton *d_preview_button;
+	QCheckBox *d_preview_button;
 };
 
 
