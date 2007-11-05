@@ -87,6 +87,18 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	if (import_mode_enabled)
         d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
 	d_preview_lines_box->setValue(app->d_preview_lines);
+
+    connect(d_preview_lines_box, SIGNAL(valueChanged(int)), this, SLOT(preview()));
+    connect(d_rename_columns, SIGNAL(clicked()), this, SLOT(preview()));
+    connect(d_import_comments, SIGNAL(clicked()), this, SLOT(preview()));
+    connect(d_strip_spaces, SIGNAL(clicked()), this, SLOT(preview()));
+    connect(d_simplify_spaces, SIGNAL(clicked()), this, SLOT(preview()));
+    connect(d_ignored_lines, SIGNAL(valueChanged(int)), this, SLOT(preview()));
+    connect(d_import_dec_separators, SIGNAL(clicked()), this, SLOT(preview()));
+    connect(d_column_separator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
+    connect(boxDecimalSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
+    connect(d_comment_string, SIGNAL(textChanged(const QString&)), this, SLOT(preview()));
+    connect(this, SIGNAL(currentChanged(const QString&)), this, SLOT(preview()));
 }
 
 void ImportASCIIDialog::initAdvancedOptions()
@@ -181,7 +193,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_help_button = new QPushButton(tr("&Help"));
 	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
 	meta_options_layout->addWidget(d_help_button);
-	d_preview_button = new QPushButton(tr("&Preview"));
+	d_preview_button = new QCheckBox(tr("&Preview"));
 	connect(d_preview_button, SIGNAL(clicked()), this, SLOT(preview()));
 	meta_options_layout->addWidget(d_preview_button);
 	meta_options_layout->addWidget(new QLabel(tr("Lines")));
@@ -201,10 +213,9 @@ void ImportASCIIDialog::initAdvancedOptions()
 	int height = d_preview_table->table()->horizontalHeader()->height();
 	d_preview_table->setMinimumHeight(2*height);
 	d_preview_table->setMaximumHeight(5*height);
+    d_preview_table->hide();
 	preview_layout->addWidget(d_preview_table);
 	main_layout->addLayout(preview_layout);
-
-    connect(this, SIGNAL(filesSelected(const QStringList&)), this, SLOT(enablePreviewButton(const QStringList&)));
 }
 
 void ImportASCIIDialog::setColumnSeparator(const QString& sep)
@@ -311,10 +322,16 @@ QLocale ImportASCIIDialog::decimalSeparators()
 
 void ImportASCIIDialog::preview()
 {
+    if (!d_preview_button->isChecked()){
+        d_preview_table->hide();
+        return;
+    }
+
     QStringList selected = selectedFiles();
     if (selected.isEmpty()){
         QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                 tr("Please select a file first!"));
+        d_preview_button->setChecked(false);
         return;
     }
 
@@ -343,5 +360,9 @@ void ImportASCIIDialog::preview()
 
 	if (d_import_dec_separators->isChecked())
 		d_preview_table->updateDecimalSeparators(decimalSeparators());
+    if (!d_preview_table->isVisible())
+        d_preview_table->show();
+
 	tempFile.close();
 }
+
