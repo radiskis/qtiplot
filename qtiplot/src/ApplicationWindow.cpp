@@ -491,7 +491,7 @@ void ApplicationWindow::initGlobalConstants()
 	fitPoints = 100;
 	generatePeakCurves = true;
 	peakCurvesColor = 2;
-	fit_scale_errors = false;
+	fit_scale_errors = true;
 	d_2_linear_fit_points = true;
 
 	columnSeparator = "\t";
@@ -506,6 +506,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_ASCII_comment_string = "#";
 	d_ASCII_import_comments = false;
 	d_ASCII_import_read_only = false;
+	d_ASCII_import_preview = true;
 	d_preview_lines = 100;
 
 	d_export_col_separator = "\t";
@@ -4535,7 +4536,7 @@ void ApplicationWindow::readSettings()
 	fitPoints = settings.value("/Points", 100).toInt();
 	generatePeakCurves = settings.value("/GeneratePeakCurves", true).toBool();
 	peakCurvesColor = settings.value("/PeaksColor", 2).toInt();//green color
-	fit_scale_errors = settings.value("/ScaleErrors", false).toBool();
+	fit_scale_errors = settings.value("/ScaleErrors", true).toBool();
 	d_2_linear_fit_points = settings.value("/TwoPointsLinearFit", true).toBool();
 	settings.endGroup(); // Fitting
 
@@ -4553,6 +4554,7 @@ void ApplicationWindow::readSettings()
 	d_ASCII_comment_string = settings.value("/CommentString", "#").toString();
 	d_ASCII_import_comments = settings.value("/ImportComments", false).toBool();
     d_ASCII_import_read_only = settings.value("/ImportReadOnly", false).toBool();
+	d_ASCII_import_preview = settings.value("/Preview", true).toBool();
 	d_preview_lines = settings.value("/PreviewLines", 100).toInt();
 	settings.endGroup(); // Import ASCII
 
@@ -4844,6 +4846,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/CommentString", d_ASCII_comment_string);
     settings.setValue("/ImportComments", d_ASCII_import_comments);
     settings.setValue("/ImportReadOnly", d_ASCII_import_read_only);
+	settings.setValue("/Preview", d_ASCII_import_preview);
 	settings.setValue("/PreviewLines", d_preview_lines);
 	settings.endGroup(); // ImportASCII
 

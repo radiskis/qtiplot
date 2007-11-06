@@ -1422,12 +1422,18 @@ where <varname>type</varname> specifies the desired scale type: <variablelist sp
           </variablelist>
 and <varname>step</varname> defines the size of the interval between the major scale ticks. If not specified (default value is 0.0), the step size is calculated automatically.
 The other flags should be self-explanatory.</para>
+
 Defining a scale range for an axis doesn't automatically disable autoscaling.
 This means that if a curve is added or removed from the layer, the axes will still automatically
 adapt to the new data interval. This can be avoided by disabling the autoscaling mode, thus
 making sure that your scale settings will always be taken into account:
 <programlisting>
 l.enableAutoscaling(False)
+</programlisting>
+
+If you want to rescale the plot layer so that all the data points are visible, you can use the following utility function:
+<programlisting>
+l.setAutoScale()
 </programlisting>
 
 Finally, you can specify the width of all axes and enable/disable the drawing of their backbone line, using:
@@ -2175,6 +2181,7 @@ f.fit()
 f = NonLinearFit(layer, curve)
 f.setParameters(name1, ...)
 f.setFormula(formula_string)
+f.save(fileName)
 		    </programlisting>
             </listitem>
             <listitem>
@@ -2190,6 +2197,26 @@ f = LinearFit(graph("Graph1").activeLayer(), "Table1_2", 2, 7)
 f.fit()
 	  </programlisting>
 
+You can also restrict the search range for any of the fit parameters:
+<programlisting width="40">
+f = NonLinearFit(graph("Graph1").activeLayer(), "Table1_2")
+f.setParameters("a0", "a1", "a2")
+f.setFormula("a0+a1*x+a2*x*x")
+f.setParameterRange(parameterIndex, start, end)
+</programlisting>
+
+All the settings of a non-linear fit can be saved to an XML file and restored later one, using this file,
+for a faster editing process. Here's for example how you can save the above fit function:
+<programlisting>
+f.save("/fit_models/poly_fit.txt")
+</programlisting>
+and how you can use this file during another fitting session, later on:
+<programlisting>
+f = NonLinearFit(graph("Graph1").activeLayer(), "Table1_2")
+f.load("/fit_models/poly_fit.txt")
+f.fit()
+</programlisting>
+			
         <para>After creating the Fit object and before calling its fit()
         method, you can set a number of parameters that influence the fit:
         <programlisting width="80">
