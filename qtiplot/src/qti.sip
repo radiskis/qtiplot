@@ -579,7 +579,7 @@ public:
   void setLabelsNumericFormat(int axis, int format, int = 6, const QString& = QString()) /PyName=setAxisNumericFormat/;
   void setScale(int axis, double start, double end, double step = 0.0,
                 int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false);
-
+  void setAutoScale();
   void setMargin(int);
   void setFrame(int width = 1, const QColor& color = QColor(Qt::black));
   void setCanvasFrame(int width = 1, const QColor& color =  QColor(Qt::black));
@@ -1175,6 +1175,9 @@ public:
 %End
   // TODO: make it accept Python callables
   void setFormula(const QString&);
+  
+  bool save(const QString&);
+  bool load(const QString&);
 };
 
 class PluginFit : Fit

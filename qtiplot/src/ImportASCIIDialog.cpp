@@ -59,6 +59,8 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 
 	setFileMode( QFileDialog::ExistingFiles );
 
+	d_current_path = QString::null;
+	
 	initAdvancedOptions();
 	d_import_mode->setEnabled(import_mode_enabled);
 	setExtensionWidget(d_advanced_options);
@@ -87,6 +89,9 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	if (import_mode_enabled)
         d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
 	d_preview_lines_box->setValue(app->d_preview_lines);
+	d_preview_button->setChecked(app->d_ASCII_import_preview);
+	if (!app->d_ASCII_import_preview)
+		d_preview_table->hide();
 
     connect(d_preview_lines_box, SIGNAL(valueChanged(int)), this, SLOT(preview()));
     connect(d_rename_columns, SIGNAL(clicked()), this, SLOT(preview()));
@@ -98,7 +103,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
     connect(d_column_separator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
     connect(boxDecimalSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
     connect(d_comment_string, SIGNAL(textChanged(const QString&)), this, SLOT(preview()));
-    connect(this, SIGNAL(currentChanged(const QString&)), this, SLOT(preview()));
+    connect(this, SIGNAL(currentChanged(const QString&)), this, SLOT(changePreviewFile(const QString&)));
 }
 
 void ImportASCIIDialog::initAdvancedOptions()
@@ -213,7 +218,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	int height = d_preview_table->table()->horizontalHeader()->height();
 	d_preview_table->setMinimumHeight(2*height);
 	d_preview_table->setMaximumHeight(5*height);
-    d_preview_table->hide();
+    //d_preview_table->hide();
 	preview_layout->addWidget(d_preview_table);
 	main_layout->addLayout(preview_layout);
 }
@@ -294,6 +299,7 @@ void ImportASCIIDialog::closeEvent(QCloseEvent* e)
 	if (app){
 		app->d_extended_import_ASCII_dialog = this->isExtended();
 		app->d_ASCII_file_filter = this->selectedFilter();
+		app->d_ASCII_import_preview = d_preview_button->isChecked();
 		app->d_preview_lines = d_preview_lines_box->value();
 	}
 
@@ -326,14 +332,21 @@ void ImportASCIIDialog::preview()
         d_preview_table->hide();
         return;
     }
-
-    QStringList selected = selectedFiles();
-    if (selected.isEmpty()){
+			
+	if (d_current_path.trimmed().isEmpty()){
         QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                 tr("Please select a file first!"));
-        d_preview_button->setChecked(false);
+		d_preview_table->clear();
+		d_preview_table->resetHeader();
+		d_preview_table->showComments();
+		if (!d_preview_table->isVisible())
+			d_preview_table->show();
         return;
     }
+
+	QStringList selected = selectedFiles();
+    if (selected.isEmpty())
+		return;
 
 	QString fileName = selected[0];
 	QTemporaryFile tempFile;
@@ -366,3 +379,8 @@ void ImportASCIIDialog::preview()
 	tempFile.close();
 }
 
+void ImportASCIIDialog::changePreviewFile(const QString& path)
+{
+	d_current_path = path;
+	preview();
+}

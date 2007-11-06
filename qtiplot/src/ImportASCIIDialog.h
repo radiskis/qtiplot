@@ -106,6 +106,7 @@ private slots:
 	//! For #Overwrite mode, allow only one file to be selected.
 	void updateImportMode(int mode);
 	void preview();
+	void changePreviewFile(const QString& path);
 
 private:
 	void closeEvent(QCloseEvent*);
@@ -123,6 +124,8 @@ private:
 	QLineEdit *d_comment_string;
 	Table *d_preview_table;
 	QCheckBox *d_preview_button;
+
+	QString d_current_path;
 };
 
 
