@@ -1013,9 +1013,28 @@ t.notifyChanges()
 
 <sect2 id="Python-Matrix">
 <title>Working with Matrices</title>
+Matrix objects have a dual view mode: either as images or as data tables.
+Assuming that you have assigned some matrix to the variable
+<varname>m</varname>, you can change it's display mode via the following function:
+<programlisting>
+m.setViewType(Matrix.TableView)
+m.setViewType(Matrix.ImageView)
+</programlisting>
 
-We'll assume that you have assigned some matrix to the variable
-<varname>m</varname>. Accessing cell values is very similar to Table,
+If a matrix is viewed as an image, you have the choice to display it
+either as gray scale or using a predefined color map:
+<programlisting>
+m.setGrayScale()
+m.setRainbowColorMap()
+</programlisting>
+
+Sometimes, after a change in the matrix view settings, as in the example above,
+you need to use the following function in order to update the display:
+<programlisting>
+m.resetView()
+</programlisting>
+
+Accessing cell values is very similar to Table,
 but since Matrix doesn't use column logic, row arguments are specified
 before columns and obviously you can't use column name.
 <programlisting width="40">
@@ -1057,11 +1076,29 @@ ye = m.yEnd()
 m.setCoordinates(xs + 2.5, xe, ys - 1, ye + 1)
 </programlisting>
 
-You can also transpose or invert a matrix and calculate its determinant, provided, of course, that the conditions on the matrix dimensions, required by these operations, are satisfied:
+The horizontal and vertical headers of a matrix can display either the x/y coordinates or
+the column/row indexes:
+<programlisting>
+m.setHeaderViewType(Matrix.ColumnRow)
+m.setHeaderViewType(Matrix.XY)
+</programlisting>
+
+There are several built-in transformations that you can apply to a matrix object.
+You can transpose or invert a matrix and calculate its determinant, provided, of course, that
+the conditions on the matrix dimensions, required by these operations, are matched:
 <programlisting>
 m.transpose()
 m.invert()
 d = m.determinant()
+</programlisting>
+
+Some other operations, very useful when working with images, like 90 degrees rotations and mirroring,
+can also be performed. By default rotations are performed clockwise. For a counterclockwise rotation
+you must set the <varname>clockwise</varname> parameter to <varname>False</varname>.
+<programlisting>
+m.flipVertically()
+m.flipHorizontally()
+m.rotate90(clockwise = True)
 </programlisting>
 
 If you need to get data from a table, in order to use it in a matrix (or vice-versa), you can
@@ -2216,7 +2253,7 @@ f = NonLinearFit(graph("Graph1").activeLayer(), "Table1_2")
 f.load("/fit_models/poly_fit.txt")
 f.fit()
 </programlisting>
-			
+
         <para>After creating the Fit object and before calling its fit()
         method, you can set a number of parameters that influence the fit:
         <programlisting width="80">
