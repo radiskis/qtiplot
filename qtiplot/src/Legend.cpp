@@ -213,7 +213,7 @@ void Legend::drawFrame(QPainter *p, int type, const QRect& rect) const
 	p->restore();
 }
 
-void Legend::drawVector(QwtPlotCurve *c, QPainter *p, int x, int y, int l) const
+void Legend::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l) const
 {
 	if (!c)
 		return;
@@ -242,24 +242,36 @@ void Legend::drawVector(QwtPlotCurve *c, QPainter *p, int x, int y, int l) const
 	p->restore();
 }
 
-void Legend::drawSymbol(QwtPlotCurve *c, QPainter *p, int x, int y, int l) const
+void Legend::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y, int l) const
 {
     if (!c || c->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
         return;
 
-    if (((PlotCurve *)c)->type() == Graph::VectXYXY ||
-        ((PlotCurve *)c)->type() == Graph::VectXYAM){
+    if (c->type() == Graph::VectXYXY || c->type() == Graph::VectXYAM){
         drawVector(c, p, x, y, l);
         return;
     }
-
+	
+	if (c->type() == Graph::Pie){
+		QwtPieCurve *pie = (QwtPieCurve *)c;
+		const QBrush br = QBrush(pie->color(point), pie->pattern());
+		QPen pen = pie->pen();
+		p->save();
+		p->setPen (QPen(pen.color(), 1, Qt::SolidLine));
+		QRect lr = QRect(x, y - 4, l, 10);
+		p->setBrush(br);
+		QwtPainter::drawRect(p, lr);
+		p->restore();
+		return;
+	}
+						
     QwtSymbol symb = c->symbol();
     const QBrush br = c->brush();
     QPen pen = c->pen();
     p->save();
     if (c->style()!=0){
         p->setPen (pen);
-        if (br.style() != Qt::NoBrush || ((PlotCurve *)c)->type() == Graph::Box){
+        if (br.style() != Qt::NoBrush || c->type() == Graph::Box){
             QRect lr = QRect(x, y-4, l, 10);
             p->setBrush(br);
             QwtPainter::drawRect(p, lr);
@@ -279,7 +291,6 @@ void Legend::drawSymbol(QwtPlotCurve *c, QPainter *p, int x, int y, int l) const
 void Legend::drawText(QPainter *p, const QRect& rect,
 		QwtArray<long> height, int symbolLineLength) const
 {
-	Graph *g = (Graph *) d_plot->parent();
 	int l = symbolLineLength;
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
@@ -301,28 +312,16 @@ void Legend::drawText(QPainter *p, const QRect& rect,
 
                 int pos1 = s.indexOf("(", pos);
                 int pos2 = s.indexOf(")", pos1);
-                QwtPlotCurve *curve = 0;
-                QString layer_curve = s.mid(pos1+1, pos2-pos1-1);
-                QStringList lst = layer_curve.split(".");
-                if (lst.count() == 2){
-                    int cv = lst[1].toInt() - 1;
-                    Graph *layer = g->parentPlot()->layer(lst[0].toInt());
-                    if (!layer || cv < 0 || cv >= layer->curves()){
-                        s = s.right(s.length() - pos2 - 1);
-                        continue;
-                    }
-                    curve = layer->curve(cv);
-                } else if (lst.count() == 1) {
-                    int cv = lst[0].toInt() - 1;
-                    if (cv < 0 || cv >= g->curves()){
-                        s = s.right(s.length() - pos2 - 1);
-                        continue;
-                    }
-                    curve = g->curve(cv);
+				int point = -1;
+				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
+				if (!curve){
+                	s = s.right(s.length() - pos2 - 1);
+                    continue;
                 }
-            drawSymbol(curve, p, w, height[i], l);
-            w += l + h_space;
-            s = s.right(s.length() - pos2 - 1);
+				
+            	drawSymbol(curve, point, p, w, height[i], l);
+            	w += l + h_space;
+            	s = s.right(s.length() - pos2 - 1);
 			} else {
 			    pos = s.indexOf("\\p{", 0);
                 if (pos >= 0){
@@ -337,24 +336,10 @@ void Legend::drawText(QPainter *p, const QRect& rect,
 
                     int pos1 = s.indexOf("{", pos);
                     int pos2 = s.indexOf("}", pos1);
-                    int id = s.mid(pos1+1, pos2-pos1-1).toInt();
-
-                    Graph* g=(Graph*)d_plot->parent();
-                    if (g->isPiePlot()){
-                        QwtPieCurve *curve = (QwtPieCurve *)d_plot->curve(1);
-                        if (curve){
-                            const QBrush br = QBrush(curve->color(id-1), curve->pattern());
-                            QPen pen = curve->pen();
-                            p->save();
-                            p->setPen (QPen(pen.color(), 1, Qt::SolidLine));
-                            QRect lr = QRect(w, height[i]-4, l, 10);
-                            p->setBrush(br);
-                            QwtPainter::drawRect(p, lr);
-                            p->restore();
-                        }
-                    }
-                w += l;
-                s = s.right(s.length() - pos2 - 1);
+                    int point = s.mid(pos1 + 1, pos2 - pos1 - 1).toInt() - 1;
+					drawSymbol((PlotCurve*)d_plot->curve(1), point, p, w, height[i], l); 			
+                	w += l;
+                	s = s.right(s.length() - pos2 - 1);
                 }
 			}
 		}
@@ -373,7 +358,6 @@ void Legend::drawText(QPainter *p, const QRect& rect,
 
 QwtArray<long> Legend::itemsHeight(int y, int symbolLineLength, int &width, int &height) const
 {
-	Graph *g = (Graph *) d_plot->parent();
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 	int n = (int)titles.count();
@@ -396,22 +380,13 @@ QwtArray<long> Legend::itemsHeight(int y, int symbolLineLength, int &width, int 
 
                 int pos1 = s.indexOf("(", pos);
                 int pos2 = s.indexOf(")", pos1);
-                QString layer_curve = s.mid(pos1+1, pos2-pos1-1);
-                QStringList lst = layer_curve.split(".");
-                if (lst.count() == 2){
-                    int cv = lst[1].toInt() - 1;
-                    Graph *layer = g->parentPlot()->layer(lst[0].toInt());
-                    if (!layer || cv < 0 || cv >= layer->curves()){
-                        s = s.right(s.length() - pos2 - 1);
-                        continue;
-                    }
-                } else if (lst.count() == 1){
-                    int cv = lst[0].toInt() - 1;
-                    if (cv < 0 || cv >= g->curves()){
-                        s = s.right(s.length() - pos2 - 1);
-                        continue;
-                    }
+				int point = -1;
+				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
+				if (!curve){
+                	s = s.right(s.length() - pos2 - 1);
+                    continue;
                 }
+				
                 textL += symbolLineLength + h_space;
                 s = s.right(s.length() - s.indexOf(")", pos) - 1);
             } else {
@@ -426,7 +401,7 @@ QwtArray<long> Legend::itemsHeight(int y, int symbolLineLength, int &width, int 
                 }
             }
 		}
-
+		
 		QwtText aux(parse(s));
 		aux.setFont(d_text->font());
 		textL += aux.textSize().width();
@@ -495,19 +470,57 @@ QString Legend::parse(const QString& str) const
     s.remove(QRegExp("\\p{*}", Qt::CaseSensitive, QRegExp::Wildcard));
 
 	QString aux = str;
-    while (aux.contains(QRegExp("%(*)", Qt::CaseInsensitive, QRegExp::Wildcard))){//curve name specification
-        int pos = str.indexOf("%(", 0, Qt::CaseInsensitive);
+    while (aux.contains(QRegExp("%(*)", Qt::CaseInsensitive, QRegExp::Wildcard))){//curve name specification		
+		int pos = str.indexOf("%(", 0, Qt::CaseInsensitive);
         int pos2 = str.indexOf(")", pos, Qt::CaseInsensitive);
-        int cv = str.mid(pos+2, pos2-pos-2).toInt() - 1;
-		Graph *g = (Graph *)d_plot->parent();
-        if (g && cv >= 0 && cv < g->curves()){
-			const QwtPlotCurve *c = (QwtPlotCurve *)g->curve(cv);
-            if (c)
-                s = s.replace(pos, pos2-pos+1, c->title().text());
-        }
-		aux = aux.right(aux.length() - pos2 - 1);
+		QString spec = str.mid(pos + 2, pos2 - pos - 2);
+		QStringList lst = spec.split(",");
+		if (!lst.isEmpty()){
+        	int cv = lst[0].toInt() - 1;
+			Graph *g = (Graph *)d_plot->parent();
+        	if (g && cv >= 0 && cv < g->curves()){
+				PlotCurve *c = (PlotCurve *)g->curve(cv);
+            	if (c){
+					if (lst.count() == 1)
+						s = s.replace(pos, pos2-pos+1, c->title().text());
+					else if (lst.count() == 3 && c->type() == Graph::Pie){
+						Table *t = ((DataCurve *)c)->table();
+						int col = t->colIndex(c->title().text());
+						int row = lst[2].toInt() - 1;
+						s = s.replace(pos, pos2-pos+1, t->text(row, col));
+					}
+				}
+        	}
+			aux = aux.right(aux.length() - pos2 - 1);
+		}
     }
     return s;
+}
+
+PlotCurve* Legend::getCurve(const QString& s, int &point) const
+{
+	point = -1;
+	PlotCurve *curve = 0;
+	Graph *g = (Graph *)d_plot->parent();
+	
+	QStringList l = s.split(",");
+    if (l.count() == 2)
+		point = l[1].toInt() - 1;
+	
+	if (!l.isEmpty()){
+		l = l[0].split(".");
+    	if (l.count() == 2){
+    		int cv = l[1].toInt() - 1;
+			Graph *layer = g->parentPlot()->layer(l[0].toInt());
+			if (layer && cv >= 0 && cv < layer->curves())
+				return (PlotCurve*)layer->curve(cv);
+		} else if (l.count() == 1){
+			int cv = l[0].toInt() - 1;
+			if (cv >= 0 || cv < g->curves())
+				return (PlotCurve*)g->curve(cv);
+		}
+	}
+	return curve;
 }
 
 Legend::~Legend()
