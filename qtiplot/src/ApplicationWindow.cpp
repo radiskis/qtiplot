@@ -7445,7 +7445,6 @@ void ApplicationWindow::copySelection()
 		if (!plot || plot->layers() == 0)
 			return;
 
-		plot->copyAllLayers();
 		Graph* g = (Graph*)plot->activeGraph();
 		if (!g)
             return;
@@ -7459,6 +7458,8 @@ void ApplicationWindow::copySelection()
 			copyMarker();
 		else
 			copyActiveLayer();
+		
+		plot->copyAllLayers();
 	}
 	else if (m->isA("Note"))
 		((Note*)m)->textWidget()->copy();

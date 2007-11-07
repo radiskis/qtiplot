@@ -93,10 +93,11 @@ public:
 	void setAngle(int ang){d_angle=ang;};
 
 private:
+	PlotCurve* getCurve(const QString& s, int &point) const;
 	void draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &r) const;
 	void drawFrame(QPainter *p, int type, const QRect& rect) const;
-	void drawVector(QwtPlotCurve *c, QPainter *p, int x, int y, int l) const;
-	void drawSymbol(QwtPlotCurve *c, QPainter *p, int x, int y, int l) const;
+	void drawVector(PlotCurve *c, QPainter *p, int x, int y, int l) const;
+	void drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y, int l) const;
 	void drawText(QPainter *, const QRect&, QwtArray<long>, int) const;
 
 	QwtArray<long> itemsHeight(int y, int symbolLineLength, int &width, int &height) const;
