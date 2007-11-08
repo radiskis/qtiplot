@@ -815,9 +815,7 @@ void ApplicationWindow::insertTranslatedStrings()
 	plotMatrixBar->setWindowTitle(tr("Matrix Plot"));
 	plot3DTools->setWindowTitle(tr("3D Surface"));
 
-	file->changeItem(newMenuID, tr("&New"));
-	file->changeItem(recentMenuID, tr("&Recent Projects"));
-	file->changeItem(exportID, tr("&Export Graph"));
+	fileMenu->changeItem(recentMenuID, tr("&Recent Projects"));
 
 	plot2D->changeItem(specialPlotMenuID, tr("Special Line/Symb&ol"));
 	plot2D->changeItem(statMenuID, tr("Statistical &Graphs"));
@@ -841,73 +839,22 @@ void ApplicationWindow::insertTranslatedStrings()
 
 void ApplicationWindow::initMainMenu()
 {
-	file = new QMenu( this );
-	file->setFont(appFont);
-
-	type = new QMenu(this);
-	type->setFont(appFont);
-	type->addAction(actionNewProject);
-    type->addAction(actionNewFolder);
-	type->addAction(actionNewTable);
-	type->addAction(actionNewMatrix);
-	type->addAction(actionNewNote);
-	type->addAction(actionNewGraph);
-	type->addAction(actionNewFunctionPlot);
-	type->addAction(actionNewSurfacePlot);
-
-	newMenuID = file->insertItem(tr("&New"),type);
-	file->addAction(actionOpen);
+	fileMenu = new QMenu(this);
+	fileMenu->setFont(appFont);
+	connect(fileMenu, SIGNAL(aboutToShow()), this, SLOT(fileMenuAboutToShow()));
 
 	recent = new QMenu(this);
 	recent->setFont(appFont);
-	recentMenuID = file->insertItem(tr("&Recent Projects"), recent);
-
-	file->insertSeparator();
-
-	file->addAction(actionLoadImage);
-	file->addAction(actionImportImage);
-	actionExportMatrix->setEnabled(false);
-	file->addAction(actionExportMatrix);
-	file->insertSeparator();
-
-	file->addAction(actionSaveProject);
-	file->addAction(actionSaveProjectAs);
-
-	file->insertSeparator();
-	file->addAction(actionOpenTemplate);
-	file->addAction(actionSaveTemplate);
-	file->insertSeparator();
-
-	exportPlot = new QMenu(this);
-	exportPlot->addAction(actionExportGraph);
-	exportPlot->addAction(actionExportAllGraphs);
-	exportID=file->insertItem(tr("&Export Graph"), exportPlot);
-
-	file->addAction(actionPrint);
-	file->addAction(actionPrintAllPlots);
-
-	file->insertSeparator();
-
-	file->addAction(actionShowExportASCIIDialog);
-	file->addAction(actionLoad);
-
-	file->insertSeparator();
-	file->addAction(actionCloseAllWindows);
 
 	edit = new QMenu(this);
 	edit->setFont(appFont);
 	edit->addAction(actionUndo);
 	edit->addAction(actionRedo);
-
 	edit->insertSeparator();
-
-	edit->addAction(actionCutSelection);
-	edit->addAction(actionCopySelection);
+	addAction(actionCopySelection);
 	edit->addAction(actionPasteSelection);
 	edit->addAction(actionClearSelection);
-
 	edit->insertSeparator();
-
 	edit->addAction(actionDeleteFitTables);
 	edit->addAction(actionClearLogInfo);
 
@@ -930,15 +877,12 @@ void ApplicationWindow::initMainMenu()
 	graph->addAction(actionShowCurvesDialog);
 	graph->addAction(actionAddFunctionCurve);
 	graph->addAction(actionNewLegend);
-
 	graph->insertSeparator();
-
 	graph->addAction(actionAddText);
 	graph->addAction(btnArrow);
 	graph->addAction(btnLine);
 	graph->addAction(actionTimeStamp);
 	graph->addAction(actionAddImage);
-
 	graph->insertSeparator();//layers section
 	graph->addAction(actionAddLayer);
 	graph->addAction(actionDeleteLayer);
@@ -1234,7 +1178,7 @@ void ApplicationWindow::initTableAnalysisMenu()
 void ApplicationWindow::customMenu(QWidget* w)
 {
 	menuBar()->clear();
-	menuBar()->insertItem(tr("&File"), file);
+	menuBar()->insertItem(tr("&File"), fileMenu);
 	menuBar()->insertItem(tr("&Edit"), edit);
 	menuBar()->insertItem(tr("&View"), view);
 	menuBar()->insertItem(tr("Scripting"), scriptingMenu);
@@ -1248,7 +1192,6 @@ void ApplicationWindow::customMenu(QWidget* w)
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
-	actionExportMatrix->setEnabled(false);
 
 	if(w){
 		actionPrintAllPlots->setEnabled(projectHas2DPlots());
@@ -1268,10 +1211,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 			menuBar()->insertItem(tr("&Data"), plotDataMenu);
 			menuBar()->insertItem(tr("&Analysis"), calcul);
 			menuBar()->insertItem(tr("For&mat"), format);
-
-			file->setItemEnabled (exportID,true);
-			file->setItemEnabled (closeID,true);
-
+			
 			format->clear();
 			format->addAction(actionShowPlotDialog);
 			format->insertSeparator();
@@ -1288,9 +1228,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 
 			actionPrint->setEnabled(true);
 			actionSaveTemplate->setEnabled(true);
-			file->setItemEnabled (exportID,true);
-			file->setItemEnabled (closeID,true);
-
+			
 			format->clear();
 			format->addAction(actionShowPlotDialog);
 			format->addAction(actionShowScaleDialog);
@@ -1306,13 +1244,10 @@ void ApplicationWindow::customMenu(QWidget* w)
 			}
 
 			actionTableRecalculate->setEnabled(true);
-			file->setItemEnabled (exportID,false);
-			file->setItemEnabled (closeID,true);
 		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
 			menuBar()->insertItem(tr("&Matrix"), matrixMenu);
-			actionExportMatrix->setEnabled(true);
 		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
@@ -1341,8 +1276,6 @@ void ApplicationWindow::disableActions()
 	actionSaveTemplate->setEnabled(false);
 	actionPrintAllPlots->setEnabled(false);
 	actionPrint->setEnabled(false);
-	file->setItemEnabled (exportID,false);
-	file->setItemEnabled (closeID,false);
 
 	actionUndo->setEnabled(false);
 	actionRedo->setEnabled(false);
@@ -3375,21 +3308,20 @@ void ApplicationWindow::changeAppFont(const QFont& f)
 
 void ApplicationWindow::updateAppFonts()
 {
-	qApp->setFont (appFont);
+	qApp->setFont(appFont);
 	this->setFont(appFont);
 	scriptingMenu->setFont(appFont);
 	windowsMenu->setFont(appFont);
 	foldersMenu->setFont(appFont);
 	view->setFont(appFont);
 	graph->setFont(appFont);
-	file->setFont(appFont);
+	fileMenu->setFont(appFont);
 	format->setFont(appFont);
 	calcul->setFont(appFont);
 	edit->setFont(appFont);
 	dataMenu->setFont(appFont);
 	recent->setFont(appFont);
 	help->setFont(appFont);
-	type->setFont(appFont);
 	plot2D->setFont(appFont);
 	plot3D->setFont(appFont);
 	plot3DMenu->setFont(appFont);
@@ -3402,14 +3334,13 @@ void ApplicationWindow::updateAppFonts()
 	decay->setFont(appFont);
 	plotDataMenu->setFont(appFont);
 	tablesDepend->setFont(appFont);
-	tableMenu->setFont(appFont);
-	exportPlot->setFont(appFont);
+	tableMenu->setFont(appFont);	
 	normMenu->setFont(appFont);
 	translateMenu->setFont(appFont);
 	fillMenu->setFont(appFont);
 	setAsMenu->setFont(appFont);
 	multiPeakMenu->setFont(appFont);
-	info->setFont(QFont(appFont.family(),2+appFont.pointSize(),QFont::Bold,false));
+	info->setFont(QFont(appFont.family(), 2 + appFont.pointSize(), QFont::Bold,false));
 }
 
 void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, bool askPlots2D,
@@ -8070,6 +8001,54 @@ void ApplicationWindow::matrixMenuAboutToShow()
     actionMatrixGrayScale->setChecked(m->colorMapType() == Matrix::GrayScale);
 	actionMatrixRainbowScale->setChecked(m->colorMapType() == Matrix::Rainbow);
 	actionMatrixCustomScale->setChecked(m->colorMapType() == Matrix::Custom);
+}
+
+void ApplicationWindow::fileMenuAboutToShow()
+{
+	fileMenu->clear();
+			
+	QMenu *newMenu = fileMenu->addMenu(tr("&New"));
+	newMenu->addAction(actionNewProject);
+    newMenu->addAction(actionNewFolder);
+	newMenu->addAction(actionNewTable);
+	newMenu->addAction(actionNewMatrix);
+	newMenu->addAction(actionNewNote);
+	newMenu->addAction(actionNewGraph);
+	newMenu->addAction(actionNewFunctionPlot);
+	newMenu->addAction(actionNewSurfacePlot);
+	fileMenu->addAction(actionOpen);
+
+	recentMenuID = fileMenu->insertItem(tr("&Recent Projects"), recent);
+
+	fileMenu->insertSeparator();
+	fileMenu->addAction(actionLoadImage);
+	fileMenu->addAction(actionImportImage);
+	
+	QWidget *w = ws->activeWindow();
+	if (w && w->isA("Matrix"))
+		fileMenu->addAction(actionExportMatrix);
+	
+	fileMenu->insertSeparator();
+	fileMenu->addAction(actionSaveProject);
+	fileMenu->addAction(actionSaveProjectAs);
+	fileMenu->insertSeparator();
+	fileMenu->addAction(actionOpenTemplate);
+	fileMenu->addAction(actionSaveTemplate);
+	fileMenu->insertSeparator();
+
+	if (w && w->isA("MultiLayer")){
+		QMenu *exportPlotMenu = fileMenu->addMenu (tr("&Export Graph"));
+		exportPlotMenu->addAction(actionExportGraph);
+		exportPlotMenu->addAction(actionExportAllGraphs);
+	}
+	
+	fileMenu->addAction(actionPrint);
+	fileMenu->addAction(actionPrintAllPlots);
+	fileMenu->insertSeparator();
+	fileMenu->addAction(actionShowExportASCIIDialog);
+	fileMenu->addAction(actionLoad);
+	fileMenu->insertSeparator();
+	fileMenu->addAction(actionCloseAllWindows);
 }
 
 void ApplicationWindow::windowsMenuAboutToShow()
