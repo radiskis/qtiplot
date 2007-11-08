@@ -462,6 +462,7 @@ public slots:
 	static void about();
 	//! Return a version string ("QtiPlot x.y.z")
 	static QString versionString();
+	void fileMenuAboutToShow();
 	void matrixMenuAboutToShow();
 	void windowsMenuAboutToShow();
 	void windowsMenuActivated( int id );
@@ -1044,7 +1045,7 @@ public:
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;
 	QString projectname,columnSeparator, helpFilePath, appLanguage;
 	QString configFilePath, logInfo, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
-	int logID,asciiID,closeID, exportID, printAllID, ignoredLines, savingTimerId, plot3DResolution;
+	int ignoredLines, savingTimerId, plot3DResolution;
 	bool renameColumns, copiedLayer, strip_spaces, simplify_spaces;
 	QStringList recentProjects, tableWindows;
 	bool saved, showPlot3DProjection, showPlot3DLegend, orthogonal3DPlots, autoscale3DPlots;
@@ -1070,7 +1071,7 @@ public:
 
 	bool startArrowOn, endArrowOn, fillArrowHead;
 	int arrowHeadLength, arrowHeadAngle, specialPlotMenuID, statMenuID, panelMenuID, plot3dID;
-	int plotMenuID, newMenuID, recentMenuID, setAsMenuID, fillMenuID, normMenuID;
+	int plotMenuID, recentMenuID, setAsMenuID, fillMenuID, normMenuID;
 	int translateMenuID, smoothMenuID, filterMenuID, fitExpMenuID, multiPeakMenuID;
 
 	//! Equals true if an automatical search for updates was performed on start-up otherwise is set to false;
@@ -1116,8 +1117,8 @@ private:
 	QLineEdit *info;
 	QWidget *lastModified;
 
-	QMenu *windowsMenu, *foldersMenu, *view,*graph,*file,*format,*calcul,*edit,*dataMenu,*recent, *exportPlot;
-	QMenu *help,*type,*plot2D,*plot3D, *specialPlot, *panels,*stat,*decay, *filter;
+	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *calcul, *edit, *dataMenu, *recent;
+	QMenu *help, *plot2D, *plot3D, *specialPlot, *panels, *stat, *decay, *filter;
 	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tableMenu, *tablesDepend;
 	QMenu *smooth, *normMenu, *translateMenu, *fillMenu, *setAsMenu, *multiPeakMenu;
 	QMenu *scriptingMenu;

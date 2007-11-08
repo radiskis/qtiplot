@@ -1028,12 +1028,6 @@ m.setGrayScale()
 m.setRainbowColorMap()
 </programlisting>
 
-Sometimes, after a change in the matrix view settings, as in the example above,
-you need to use the following function in order to update the display:
-<programlisting>
-m.resetView()
-</programlisting>
-
 Accessing cell values is very similar to Table,
 but since Matrix doesn't use column logic, row arguments are specified
 before columns and obviously you can't use column name.
@@ -1099,6 +1093,12 @@ you must set the <varname>clockwise</varname> parameter to <varname>False</varna
 m.flipVertically()
 m.flipHorizontally()
 m.rotate90(clockwise = True)
+</programlisting>
+
+Please note that sometimes, after a change in the matrix settings,
+you need to use the following function in order to update the display:
+<programlisting>
+m.resetView()
 </programlisting>
 
 If you need to get data from a table, in order to use it in a matrix (or vice-versa), you can
