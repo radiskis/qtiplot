@@ -171,6 +171,8 @@
               menu: View
 -->
 <!ENTITY view-menu-lnk '<link linkend="sec-view-menu">View menu</link>'>
+<!ENTITY toolbars-cmd "<command>Toolbars...</command>">
+  <!ENTITY toolbars-key "<keycode>Ctrl-Shift-T</keycode>">
 <!ENTITY plot-wizard-cmd "<command>Plot Wizard</command>">
 <!ENTITY plot-wizard-lnk '<link linkend="plot-wizard-cmd"><command>Plot Wizard</command> command</link>'>
   <!ENTITY plot-wizard-key "<keycode>Ctrl-Alt-W</keycode>">
@@ -367,13 +369,35 @@
 <!ENTITY set-dimensions-lnk '<link linkend="set-dimensions-cmd"><command>Set Dimensions...</command> command</link>'>
 <!ENTITY set-values-cmd "<command>Set Values...</command>">
 <!ENTITY set-values-lnk '<link linkend="set-values-cmd"><command>Set Values...</command> command</link>'>
+<!ENTITY recalculate-cmd "<command>Recalculate</command>">
+<!ENTITY recalculate-key "<keycode>Ctrl-Return</keycode>">
+<!ENTITY rotate90-cmd "<command>Rotate 90</command>">
+<!ENTITY rotate90-key "<keycode>Ctrl-Shift-R</keycode>">
+<!ENTITY rotate-90-cmd "<command>Rotate -90</command>">
+<!ENTITY rotate-90-key "<keycode>Ctrl-Alt-R</keycode>">
+<!ENTITY flipV-cmd "<command>Flip V</command>">
+<!ENTITY flipV-key "<keycode>Ctrl-Shift-V</keycode>">
+<!ENTITY flipH-cmd "<command>Flip H</command>">
+<!ENTITY flipH-key "<keycode>Ctrl-Shift-H</keycode>">
 <!ENTITY transpose-cmd "<command>Transpose</command>">
 <!ENTITY transpose-lnk '<link linkend="transpose-cmd"><command>Transpose</command> command</link>'>
 <!ENTITY invert-cmd "<command>Invert</command>">
 <!ENTITY invert-lnk '<link linkend="invert-cmd"><command>Invert</command> command</link>'>
 <!ENTITY go-to-row-cmd "<command>Go to Row...</command>">
 <!ENTITY go-to-row-lnk '<link linkend="go-to-row-cmd"><command>Go to Row...</command> command</link>'>
-  <!ENTITY go-to-row-key "<keycode>Ctrl-Alt-G</keycode>">
+<!ENTITY go-to-row-key "<keycode>Ctrl-Alt-G</keycode>">
+<!ENTITY image-view-cmd "<command>Image mode</command>">
+<!ENTITY image-view-key "<keycode>Ctrl-Shift-I</keycode>">
+<!ENTITY table-view-cmd "<command>Data mode</command>">
+<!ENTITY table-view-key "<keycode>Ctrl-Shift-D</keycode>">
+<!ENTITY gray-scale-cmd "<command>Gray Scale</command>">
+<!ENTITY rainbow-palette-cmd "<command>Rainbow</command>">
+<!ENTITY custom-palette-cmd "<command>Custom</command>">
+<!ENTITY show-col-row-cmd "<command>Show Column/Row</command>">
+<!ENTITY show-col-row-key "<keycode>Ctrl-Shift-C</keycode>">
+<!ENTITY show-x-y-cmd "<command>Show X/Y</command>">
+<!ENTITY show-x-y-key "<keycode>Ctrl-Shift-X</keycode>">
+
 <!ENTITY determinant-cmd "<command>Determinant</command>">
 <!ENTITY determinant-lnk '<link linkend="determinant-cmd"><command>Determinant</command> command</link>'>
 <!ENTITY convert-to-table-cmd "<command>Convert to Spreadsheet</command>">
