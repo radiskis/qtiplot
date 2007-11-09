@@ -361,7 +361,7 @@ void Filter::enableGraphicsDisplay(bool on, Graph *g)
 
 MultiLayer * Filter::createOutputGraph()
 {
-	MultiLayer *ml = ((ApplicationWindow *)parent())->newGraph(name() + tr("Plot"));
+	MultiLayer *ml = ((ApplicationWindow *)parent())->newGraph(objectName() + tr("Plot"));
    	d_output_graph = ml->activeGraph();
 	return ml;
 }
