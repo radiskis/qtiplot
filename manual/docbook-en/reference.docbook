@@ -335,6 +335,12 @@ The active items in the menus depend on the active window in the project. If the
 <title>The View Menu</title>
 
 <variablelist>
+<varlistentry id="toolbars-cmd">
+  <term>View -> &toolbars-cmd; (&toolbars-key;)</term>
+  <listitem>
+     <para>Opens a pop-up menu allowing to enable/disable tool bars.</para>
+  </listitem>
+</varlistentry>
 <varlistentry id="plot-wizard-cmd">
   <term>View -> &plot-wizard-cmd; (&plot-wizard-key;)</term>
   <listitem>
@@ -1572,6 +1578,36 @@ The active items in the menus depend on the active window in the project. If the
     <para>This command opens a <link linkend="set-values-dialog">dialog window</link> which is used to fill in a matrix with the result of a function z=f(i,j) in which i and j stand for the row and column numbers.</para>
   </listitem>
 </varlistentry>
+<varlistentry id="recalculate-cmd">
+  <term>&recalculate-cmd; (&recalculate-key;)</term>
+  <listitem>
+    <para>This command allows to recalculate the matrix cell values using a predefined formula.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="rotate90-cmd">
+  <term>&rotate90-cmd; (&rotate90-key;)</term>
+  <listitem>
+    <para>This command performes a clockwise 90 degrees rotation of the active matrix.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="rotate90-cmd">
+  <term>&rotate-90-cmd; (&rotate-90-key;)</term>
+  <listitem>
+    <para>This command performes a counterclockwise 90 degrees rotation of the active matrix.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="flipV-cmd">
+<term>&flipV-cmd; (&flipV-key;)</term>
+  <listitem>
+    <para>Flips vertically the selected matrix.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="flipH-cmd">
+  <term>&flipH-cmd; (&flipH-key;)</term>
+  <listitem>
+    <para>Flips horizontally the selected matrix.</para>
+  </listitem>
+</varlistentry>
 <varlistentry id="transpose-cmd">
   <term>&transpose-cmd;</term>
   <listitem>
@@ -1588,6 +1624,73 @@ The active items in the menus depend on the active window in the project. If the
   <term>&determinant-cmd;</term>
   <listitem>
     <para>Compute the determinant of the selected matrix.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="go-to-row-cmd">
+  <term>&go-to-row-cmd; (&go-to-row-key;)</term>
+  <listitem>
+    <para>This command opens a dialog allowing to select a row index that will become the current row in the selected matrix.</para>
+  </listitem>
+</varlistentry>
+
+<varlistentry>
+  <term>View</term>
+  <listitem>
+    <para></para>
+    <variablelist>
+      <varlistentry>
+	<term>&image-view-cmd; (&image-view-key;)</term>
+	<listitem>
+	  <para>Displays the selected matrix as an image.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>&table-view-cmd; (&table-view-key;)</term>
+	<listitem>
+	  <para>Displays the selected matrix as a data table.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </listitem>
+</varlistentry>
+
+<varlistentry>
+  <term>Palette</term>
+  <listitem>
+    <para></para>
+    <variablelist>
+      <varlistentry>
+	<term>&gray-scale-cmd;</term>
+	<listitem>
+	  <para>If the selected matrix is viewed as an image, this command sets its palette to a gray scale.</para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>&rainbow-palette-cmd;</term>
+	<listitem>
+	  <para>If the selected matrix is viewed as an image, this command sets its palette to a predefined color scale.</para>
+	</listitem>
+      </varlistentry>
+	  <varlistentry>
+	  <term>&custom-palette-cmd;</term>
+	<listitem>
+	  <para>Opens a dialog allowing to customize the palette of the selected matrix, in case this is displayed as an image.</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </listitem>
+</varlistentry>
+
+<varlistentry id="show-col-row-cmd">
+  <term>&show-col-row-cmd; (&show-col-row-key;)</term>
+  <listitem>
+    <para>By checking this option the horizontal and vertical headers of the selected matrix will display the column/row indexes.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="show-x-y-cmd">
+  <term>&show-x-y-cmd; (&show-x-y-key;)</term>
+  <listitem>
+    <para>By checking this option the horizontal and vertical headers of the selected matrix will display the x/y coordinates.</para>
   </listitem>
 </varlistentry>
 <varlistentry id="convert-to-spreadsheet-cmd">
