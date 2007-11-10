@@ -834,6 +834,9 @@ void Matrix::insertColumn()
 
 void Matrix::contextMenuEvent(QContextMenuEvent *e)
 {
+	if(d_view_type == ImageView)
+		return;
+
 	emit showContextMenu();
 	e->accept();
 }

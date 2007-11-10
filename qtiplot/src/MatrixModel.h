@@ -69,6 +69,7 @@ public:
 
     double* dataVector(){return d_data.data();};
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	void setDataVector(const QVector<double>& data);
 
 private:
     int d_rows, d_cols;

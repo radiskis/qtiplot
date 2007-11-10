@@ -36,6 +36,7 @@
 #include <QDir>
 #include <QTemporaryFile>
 #include "Matrix.h"
+#include "MatrixModel.h"
 #include "ColorBox.h"
 #include "MultiLayer.h"
 #include "Note.h"
@@ -51,6 +52,8 @@
 #include "qwt_plot_canvas.h"
 #include "qwt_plot_layout.h"
 #include "qwt_scale_widget.h"
+
+#include <gsl/gsl_math.h>
 
 #define OBJECTXOFFSET 200
 
@@ -409,15 +412,18 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		matrix->setWindowLabel(opj.matrixLabel(s));
 		matrix->setFormula(opj.matrixFormula(s));
 		matrix->setColumnsWidth(opj.matrixWidth(s)*QtiPlot_scaling_factor);
-		for (int j=0; j<nr_cols; j++){
-			for (int i=0; i<nr_rows; i++){
-				double val = opj.matrixData(s,j,i);
+		vector<double> data = opj.matrixData(s);
+		for(int i=0; i<nr_rows; i++)
+		{
+			for (int j=0; j<nr_cols; j++)
+			{
+				double val = data[i*nr_cols+j];
 				if(fabs(val)>0 && fabs(val)<2.0e-300)// empty entry
-					continue;
-
-				matrix->setCell(i, j, val);
+					data[i*nr_cols+j] = GSL_NAN;
 			}
 		}
+
+		matrix->matrixModel()->setDataVector(QVector<double>::fromStdVector(data));
 
 		QChar format;
 		switch(opj.matrixValueTypeSpec(s))
