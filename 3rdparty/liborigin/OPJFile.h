@@ -517,6 +517,7 @@ public:
 	int matrixNumDisplayType(int s) const { return MATRIX[s].numeric_display_type; }	//!< get numeric display type of matrix s
 	int matrixWidth(int s) const { return MATRIX[s].width; }	//!< get width of matrix s
 	double matrixData(int s, int c, int r) const { return MATRIX[s].data[r*MATRIX[s].nr_cols+c]; }	//!< get data of row r of column c of matrix s
+	vector<double> matrixData(int s) const { return MATRIX[s].data; }	//!< get data of matrix s
 
 	//function properties
 	int numFunctions() const { return FUNCTION.size(); }			//!< get number of functions

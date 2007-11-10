@@ -37,10 +37,9 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
      : QAbstractTableModel(parent),
 	 d_matrix((Matrix*)parent),
      d_rows(rows),
-     d_cols(cols)
+     d_cols(cols),
+	 d_data(d_rows*d_cols, GSL_NAN)
 {
-    d_data.resize(d_rows*d_cols);
-	d_data.fill(GSL_NAN);
 }
 
 MatrixModel::MatrixModel(const QImage& image, QObject *parent)
@@ -325,7 +324,15 @@ QImage MatrixModel::renderImage()
     for ( int i = 0; i < d_rows; i++ ){
     	QRgb *line = (QRgb *)image.scanLine(i);
 		for ( int j = 0; j < d_cols; j++)
-			*line++ = color_map.rgb(intensityRange, d_data[i*d_cols + j]);
+		{
+			if(fabs(d_data[i*d_cols + j]) < HUGE_VAL)
+				*line++ = color_map.rgb(intensityRange, d_data[i*d_cols + j]);
+		}
      }
 	 return image;
+}
+
+void MatrixModel::setDataVector(const QVector<double>& data)
+{
+	d_data = data;
 }
