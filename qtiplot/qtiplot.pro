@@ -4,13 +4,16 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-SCRIPTING_LANGS += Python
+#SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
 DEFINES         += SCRIPTING_CONSOLE
 # a dialog for selecting the scripting language on a per-project basis
 DEFINES         += SCRIPTING_DIALOG
+
+# comment the following line out if you haven't subscribed for a QtiPlot binary maintenance contract
+#RESTRICTED_MODULES += FFT2D
 
 CONFIG          += release
 #CONFIG          += debug
@@ -361,6 +364,17 @@ SOURCES += ../3rdparty/zlib123/minigzip.c
 
 HEADERS += ../3rdparty/liborigin/OPJFile.h
 SOURCES += ../3rdparty/liborigin/OPJFile.cpp
+
+###############################################################
+################# Restricted Module: FFT 2D ###################
+###############################################################
+
+contains(RESTRICTED_MODULES, FFT2D) {
+    DEFINES += QTIPLOT_PRO
+    INCLUDEPATH += ../3rdparty/fft2D
+    HEADERS += ../3rdparty/fft2D/fourier.h
+    SOURCES += ../3rdparty/fft2D/fourier.cpp
+}
 
 ###############################################################
 ##################### SCRIPTING LANGUAGES SECTION #############

@@ -34,6 +34,10 @@
 #include "Table.h"
 #include "Plot.h"
 #include "FFT.h"
+#include "Matrix.h"
+#ifdef QTIPLOT_PRO
+#include <fourier.h>
+#endif
 
 #include <QRadioButton>
 #include <QGroupBox>
@@ -44,12 +48,14 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QLayout>
+#include <QApplication>
 
 FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
 	setWindowTitle(tr("QtiPlot - FFT Options"));
 
+    d_matrix = 0;
 	d_table = 0;
 	graph = 0;
 	d_type = type;
@@ -68,15 +74,18 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	QGridLayout *gl1 = new QGridLayout();
 	if (d_type == onGraph)
 	    gl1->addWidget(new QLabel(tr("Curve")), 0, 0);
-	else
+	else if (d_type == onTable)
 		gl1->addWidget(new QLabel(tr("Sampling")), 0, 0);
 
-	boxName = new QComboBox();
-	gl1->addWidget(boxName, 0, 1);
+    if (d_type != onMatrix){
+        boxName = new QComboBox();
+        connect( boxName, SIGNAL( activated(const QString&) ), this, SLOT( activateCurve(const QString&) ) );
+        gl1->addWidget(boxName, 0, 1);
+        setFocusProxy(boxName);
+    }
 
     boxSampling = new QLineEdit();
-	if (d_type == onTable)
-       {
+	if (d_type == onTable || d_type == onMatrix){
 		gl1->addWidget(new QLabel(tr("Real")), 1, 0);
 		boxReal = new QComboBox();
 		gl1->addWidget(boxReal, 1, 1);
@@ -85,28 +94,32 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 		boxImaginary = new QComboBox();
 		gl1->addWidget(boxImaginary, 2, 1);
 
-		gl1->addWidget(new QLabel(tr("Sampling Interval")), 3, 0);
-		gl1->addWidget(boxSampling, 3, 1);
-	   }
-    else
-       {
+        if (d_type == onTable){
+            gl1->addWidget(new QLabel(tr("Sampling Interval")), 3, 0);
+            gl1->addWidget(boxSampling, 3, 1);
+        }
+    } else if (d_type == onGraph){
         gl1->addWidget(new QLabel(tr("Sampling Interval")), 1, 0);
 		gl1->addWidget(boxSampling, 1, 1);
-       }
+    }
+
  	QGroupBox *gb2 = new QGroupBox();
     gb2->setLayout(gl1);
 
 	boxNormalize = new QCheckBox(tr( "&Normalize Amplitude" ));
 	boxNormalize->setChecked(true);
 
-    boxOrder = new QCheckBox(tr( "&Shift Results" ));
-	boxOrder->setChecked(true);
+    if (d_type != onMatrix){
+        boxOrder = new QCheckBox(tr( "&Shift Results" ));
+        boxOrder->setChecked(true);
+    }
 
     QVBoxLayout *vbox1 = new QVBoxLayout();
     vbox1->addWidget(gb1);
     vbox1->addWidget(gb2);
     vbox1->addWidget(boxNormalize);
-    vbox1->addWidget(boxOrder);
+    if (d_type != onMatrix)
+        vbox1->addWidget(boxOrder);
 	vbox1->addStretch();
 
     buttonOK = new QPushButton(tr("&OK"));
@@ -122,16 +135,19 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
     hbox2->addLayout(vbox1);
     hbox2->addLayout(vbox2);
 
-	setFocusProxy(boxName);
-
 	// signals and slots connections
-	connect( boxName, SIGNAL( activated(const QString&) ), this, SLOT( activateCurve(const QString&) ) );
 	connect( buttonOK, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 }
 
 void FFTDialog::accept()
 {
+    if (d_type == onMatrix){
+        fftMatrix();
+        close();
+        return;
+    }
+
 	double sampling;
 	try
 	{
@@ -149,13 +165,9 @@ void FFTDialog::accept()
 	ApplicationWindow *app = (ApplicationWindow *)parent();
     FFT *fft;
 	if (graph)
-	{
         fft = new FFT(app, graph, boxName->currentText());
-	}
-	else if (d_table)
-	{
-		if (boxReal->currentText().isEmpty())
-		{
+	else if (d_table){
+		if (boxReal->currentText().isEmpty()){
 			QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please choose a column for the real part of the data!"));
 			boxReal->setFocus();
 			return;
@@ -180,16 +192,13 @@ void FFTDialog::setGraph(Graph *g)
 
 void FFTDialog::activateCurve(const QString& curveName)
 {
-	if (graph)
-	{
+	if (graph){
 		QwtPlotCurve *c = graph->curve(curveName);
 		if (!c)
 			return;
 
 		boxSampling->setText(QString::number(c->x(1) - c->x(0)));
-	}
-	else if (d_table)
-	{
+	} else if (d_table) {
 	    int col = d_table->colIndex(curveName);
 		double x0 = d_table->text(0, col).toDouble();
 		double x1 = d_table->text(1, col).toDouble();
@@ -206,8 +215,7 @@ void FFTDialog::setTable(Table *t)
 	boxImaginary->insertStringList (l);
 
 	int xcol = t->firstXCol();
-	if (xcol >= 0)
-	{
+	if (xcol >= 0){
 		boxName->setCurrentItem(xcol);
 
 		double x0 = t->text(0, xcol).toDouble();
@@ -217,19 +225,134 @@ void FFTDialog::setTable(Table *t)
 
 	l = t->selectedColumns();
 	int selected = (int)l.size();
-	if (!selected)
-	{
+	if (!selected){
 		boxReal->setCurrentText(QString());
 		boxImaginary->setCurrentText(QString());
-	}
-	else if (selected == 1)
-	{
+	} else if (selected == 1) {
 		boxReal->setCurrentItem(t->colIndex(l[0]));
 		boxImaginary->setCurrentText(QString());
-	}
-	else
-	{
+	} else {
 		boxReal->setCurrentItem(t->colIndex(l[0]));
 		boxImaginary->setCurrentItem(t->colIndex(l[1]));
 	}
 };
+
+void FFTDialog::setMatrix(Matrix *m)
+{
+    ApplicationWindow *app = (ApplicationWindow *)parent();
+    QStringList lst = app->matrixNames();
+    boxReal->addItems(lst);
+    if (m){
+        boxReal->setCurrentIndex(lst.indexOf(m->objectName()));
+        d_matrix = m;
+    }
+    boxImaginary->addItem (" ");
+    boxImaginary->addItems(lst);
+}
+
+void FFTDialog::fftMatrix()
+{
+#ifdef QTIPLOT_PRO
+    ApplicationWindow *app = (ApplicationWindow *)parent();
+    Matrix *mReal = app->matrix(boxReal->currentText());
+    if (!mReal)
+        return;
+
+    bool inverse = backwardBtn->isChecked();
+    int width = mReal->numCols();
+    int height = mReal->numRows();
+
+    bool errors = false;
+    Matrix *mIm = app->matrix(boxImaginary->currentText());
+    if (!mIm)
+        errors = true;
+    else if (mIm && mIm->numCols() != width || mIm->numRows() != height){
+        errors = true;
+        QMessageBox::warning(app, tr("QtiPlot"),
+        tr("The two matrices have different dimensions, the imaginary part will be neglected!"));
+    }
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    double **x_int_re = allocateMatrixData(height, width); /* real coeff matrix */
+    double **x_int_im = allocateMatrixData(height, width); /* imaginary coeff  matrix*/
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            x_int_re[i][j] = mReal->cell(i, j);
+            if (errors)
+                x_int_im[i][j] = 0.0;
+            else
+                x_int_im[i][j] = mIm->cell(i, j);
+        }
+    }
+
+    double **x_fin_re, **x_fin_im;
+    if (inverse){
+        x_fin_re = allocateMatrixData(height, width); /* coeff de l'image de départ */
+        x_fin_im = allocateMatrixData(height, width); /*normalement remplie de 0 si tout a bien fonctionné */
+        fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
+    } else
+        fft2d(x_int_re, x_int_im, width, height);
+
+    Matrix *realCoeffMatrix = app->newMatrix(height, width);
+    QString realCoeffMatrixName = app->generateUniqueName(tr("RealMatrixFFT"));
+    app->setWindowName(realCoeffMatrix, realCoeffMatrixName);
+    realCoeffMatrix->setWindowLabel(tr("Real part of the FFT transform of") + " " + mReal->objectName());
+
+    Matrix *imagCoeffMatrix = app->newMatrix(height, width);
+    QString imagCoeffMatrixName = app->generateUniqueName(tr("ImagMatrixFFT"));
+    app->setWindowName(imagCoeffMatrix, imagCoeffMatrixName);
+    imagCoeffMatrix->setWindowLabel(tr("Imaginary part of the FFT transform of") + " " + mReal->objectName());
+
+    Matrix *ampMatrix = app->newMatrix(height, width);
+    QString ampMatrixName = app->generateUniqueName(tr("AmplitudeMatrixFFT"));
+    app->setWindowName(ampMatrix, ampMatrixName);
+    ampMatrix->setWindowLabel(tr("Amplitudes of the FFT transform of") + " " + mReal->objectName());
+
+    if (inverse){
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                double re = x_fin_re[i][j];
+                double im = x_fin_im[i][j];
+                realCoeffMatrix->setCell(i, j, re);
+                imagCoeffMatrix->setCell(i, j, im);
+                ampMatrix->setCell(i, j, sqrt(re*re + im*im));
+            }
+        }
+        freeMatrixData(x_fin_re, height);
+        freeMatrixData(x_fin_im, height);
+    } else {
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                double re = x_int_re[i][j];
+                double im = x_int_im[i][j];
+                realCoeffMatrix->setCell(i, j, re);
+                imagCoeffMatrix->setCell(i, j, im);
+                ampMatrix->setCell(i, j, sqrt(re*re + im*im));
+            }
+        }
+    }
+
+    if (boxNormalize->isChecked()){
+        double amp_min, amp_max;
+        ampMatrix->range(&amp_min, &amp_max);
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                double amp = ampMatrix->cell(i, j);
+                ampMatrix->setCell(i, j, amp/amp_max);
+            }
+        }
+    }
+
+    if (d_matrix){
+        realCoeffMatrix->resize(d_matrix->size());
+        imagCoeffMatrix->resize(d_matrix->size());
+        ampMatrix->resize(d_matrix->size());
+    }
+    ampMatrix->setViewType(Matrix::ImageView);
+
+    freeMatrixData(x_int_re, height);
+    freeMatrixData(x_int_im, height);
+    QApplication::restoreOverrideCursor();
+#endif
+}

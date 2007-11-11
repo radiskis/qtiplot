@@ -120,6 +120,10 @@ public:
 	void flipHorizontally();
 	void rotate90(bool clockwise = true);
 
+#ifdef QTIPLOT_PRO
+    void fft(bool inverse = false);
+#endif
+
     ColorMapType colorMapType(){return d_color_map_type;};
 	void setColorMapType(ColorMapType mapType);
 
@@ -245,7 +249,7 @@ public slots:
 	double dx(){return fabs(x_end - x_start)/(double)(numCols() - 1);};
 	//! Returns the step of the Y axis
 	double dy(){return fabs(y_end - y_start)/(double)(numRows() - 1);};
-	
+
 	//! Returns the bounding rect of the matrix coordinates
   	QwtDoubleRect boundingRect();
 	//! Set the X and Y coordinate intervals

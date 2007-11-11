@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "Matrix.h"
 #include "MatrixModel.h"
+#include "nrutil.h"
 
 #include <QtGlobal>
 #include <QTextStream>
@@ -56,6 +57,10 @@
 
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_math.h>
+
+#ifdef QTIPLOT_PRO
+#include <fourier.h>
+#endif
 
 Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
 : MyWidget(label, parent, name, f), scripted(env)
@@ -834,9 +839,6 @@ void Matrix::insertColumn()
 
 void Matrix::contextMenuEvent(QContextMenuEvent *e)
 {
-	if(d_view_type == ImageView)
-		return;
-
 	emit showContextMenu();
 	e->accept();
 }
@@ -1238,6 +1240,55 @@ QwtDoubleRect Matrix::boundingRect()
     double dx = fabs(x_end - x_start)/(double)(cols - 1);
     double dy = fabs(y_end - y_start)/(double)(rows - 1);
 
-    return QwtDoubleRect(QMIN(x_start, x_end) - 0.5*dx, QMIN(y_start, y_end) - 0.5*dy, 
+    return QwtDoubleRect(QMIN(x_start, x_end) - 0.5*dx, QMIN(y_start, y_end) - 0.5*dy,
 						 fabs(x_end - x_start) + dx, fabs(y_end - y_start) + dy).normalized();
 }
+
+#ifdef QTIPLOT_PRO
+void Matrix::fft(bool inverse)
+{
+	int width = numCols();
+    int height = numRows();
+
+    double **x_int_re = allocateMatrixData(height, width); /* real coeff matrix */
+    double **x_int_im = allocateMatrixData(height, width); /* imaginary coeff  matrix*/
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            x_int_re[i][j] = cell(i, j);
+            x_int_im[i][j] = 0.0;
+        }
+    }
+
+    if (inverse){
+        double **x_fin_re = allocateMatrixData(height, width);
+        double **x_fin_im = allocateMatrixData(height, width);
+        fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
+
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                double re = x_fin_re[i][j];
+                double im = x_fin_im[i][j];
+                setCell(i, j, sqrt(re*re + im*im));
+            }
+        }
+        freeMatrixData(x_fin_re, height);
+        freeMatrixData(x_fin_im, height);
+    } else {
+        fft2d(x_int_re, x_int_im, width, height);
+
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                double re = x_int_re[i][j];
+                double im = x_int_im[i][j];
+                setCell(i, j, sqrt(re*re + im*im));
+            }
+        }
+    }
+
+    freeMatrixData(x_int_re, height);
+    freeMatrixData(x_int_im, height);
+
+    resetView();
+	emit modifiedWindow(this);
+}
+#endif
