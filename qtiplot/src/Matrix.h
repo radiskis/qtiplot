@@ -34,6 +34,7 @@
 
 #include <QHeaderView>
 #include <QTableView>
+#include <QPrinter>
 #include "MyWidget.h"
 #include "ScriptingEnv.h"
 #include "Script.h"
@@ -137,6 +138,7 @@ public:
 
 public slots:
 	void exportPDF(const QString& fileName);
+	void exportVector(const QString& fileName, int res, bool color, bool keepAspect, QPrinter::PageSize pageSize);
 	//! Print the Matrix
 	void print();
 	//! Print the Matrix to fileName

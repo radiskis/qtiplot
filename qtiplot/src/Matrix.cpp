@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "Matrix.h"
 #include "MatrixModel.h"
-#include "nrutil.h"
+#include "Graph.h"
 
 #include <QtGlobal>
 #include <QTextStream>
@@ -891,6 +891,11 @@ void Matrix::print(const QString& fileName)
 		int dpiy = printer.logicalDpiY();
 		const int margin = (int) ( (1/2.54)*dpiy ); // 1 cm margins
 
+        if (d_view_type == ImageView){
+            p.drawImage (printer.pageRect(), d_matrix_model->renderImage());
+            return;
+        }
+
 		QHeaderView *vHeader = d_table_view->verticalHeader();
 
 		int rows = numRows();
@@ -961,6 +966,73 @@ void Matrix::print(const QString& fileName)
 				p.drawLine(margin, height, right, height);
 			}
 		}
+}
+
+void Matrix::exportVector(const QString& fileName, int res, bool color, bool keepAspect, QPrinter::PageSize pageSize)
+{
+    if (d_view_type != ImageView)
+        return;
+
+	if ( fileName.isEmpty() ){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+        return;
+	}
+
+	QPrinter printer;
+    printer.setCreator("QtiPlot");
+	printer.setFullPage(true);
+	if (res)
+		printer.setResolution(res);
+
+    printer.setOutputFileName(fileName);
+    if (fileName.contains(".eps"))
+    	printer.setOutputFormat(QPrinter::PostScriptFormat);
+
+    if (color)
+		printer.setColorMode(QPrinter::Color);
+	else
+		printer.setColorMode(QPrinter::GrayScale);
+
+    int cols = numCols();
+    int rows = numRows();
+    QRect rect = QRect(0, 0, cols, rows);
+    if (pageSize == QPrinter::Custom)
+        printer.setPageSize(Graph::minPageSize(printer, rect));
+    else
+        printer.setPageSize(pageSize);
+
+    double aspect = (double)cols/(double)rows;
+	if (aspect < 1)
+		printer.setOrientation(QPrinter::Portrait);
+	else
+		printer.setOrientation(QPrinter::Landscape);
+
+    if (keepAspect){// export should preserve aspect ratio
+        double page_aspect = double(printer.width())/double(printer.height());
+        if (page_aspect > aspect){
+            int margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
+            int height = printer.height() - 2*margin;
+            int width = int(height*aspect);
+            int x = (printer.width()- width)/2;
+            rect = QRect(x, margin, width, height);
+        } else if (aspect >= page_aspect){
+            int margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
+            int width = printer.width() - 2*margin;
+            int height = int(width/aspect);
+            int y = (printer.height()- height)/2;
+            rect = QRect(margin, y, width, height);
+        }
+	} else {
+	    int x_margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
+        int y_margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
+        int width = printer.width() - 2*x_margin;
+        int height = printer.height() - 2*y_margin;
+        rect = QRect(x_margin, y_margin, width, height);
+	}
+
+    QPainter paint(&printer);
+    paint.drawImage(rect, d_matrix_model->renderImage());
+    paint.end();
 }
 
 void Matrix::range(double *min, double *max)

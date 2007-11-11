@@ -1997,20 +1997,36 @@ void ApplicationWindow::exportMatrix()
 	if (!m)
 		return;
 
-	QList<QByteArray> lst = QImageWriter::supportedImageFormats();
-	QString filter;
-	for(int i=0 ; i<lst.count() ; i++)
-		filter += "*." + lst[i] + ";;";
+	ImageExportDialog *ied = new ImageExportDialog(this, m!=NULL, d_extended_export_dialog);
+	ied->setDir(workingDir);
+    ied->selectFilter(d_image_export_filter);
+	if ( ied->exec() != QDialog::Accepted )
+		return;
+	workingDir = ied->directory().path();
+	if (ied->selectedFiles().isEmpty())
+		return;
 
-	QString selectedFilter;
-	QString fn = QFileDialog::getSaveFileName(this, tr("QtiPlot - Export image to file"), imagesDirPath, filter, &selectedFilter);
-	if (!fn.isEmpty()){
-		QFileInfo fi(fn);
-		imagesDirPath = fi.dirPath(true);
+	QString selected_filter = ied->selectedFilter();
+	QString file_name = ied->selectedFiles()[0];
+	QFileInfo file_info(file_name);
+	if (!file_info.fileName().contains("."))
+		file_name.append(selected_filter.remove("*"));
 
-		if (!fi.fileName().contains("."))
-			fn += selectedFilter.remove("*");
-		m->image().save(fn);
+	QFile file(file_name);
+	if (!file.open( QIODevice::WriteOnly )){
+		QMessageBox::critical(this, tr("QtiPlot - Export error"),
+        tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
+		return;
+	}
+
+	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
+		m->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
+	else {
+		QList<QByteArray> list = QImageWriter::supportedImageFormats();
+		for (int i=0; i<(int)list.count(); i++){
+			if (selected_filter.contains("." + (list[i]).lower()))
+				m->image().save(file_name, list[i], ied->quality());
+		}
 	}
 }
 
@@ -4654,17 +4670,14 @@ void ApplicationWindow::exportGraph()
 
 	MultiLayer *plot2D = 0;
 	Graph3D *plot3D = 0;
-	if(w->isA("MultiLayer"))
-	{
+	if(w->isA("MultiLayer")){
 		plot2D = (MultiLayer*)w;
-		if (plot2D->isEmpty())
-		{
+		if (plot2D->isEmpty()){
 			QMessageBox::critical(this, tr("QtiPlot - Export Error"),
 					tr("<h4>There are no plot layers available in this window!</h4>"));
 			return;
 		}
-	}
-	else if (w->isA("Graph3D"))
+	} else if (w->isA("Graph3D"))
 		plot3D = (Graph3D*)w;
 	else
 		return;
@@ -4685,8 +4698,7 @@ void ApplicationWindow::exportGraph()
 		file_name.append(selected_filter.remove("*"));
 
 	QFile file(file_name);
-	if ( !file.open( QIODevice::WriteOnly ) )
-	{
+	if (!file.open( QIODevice::WriteOnly )){
 		QMessageBox::critical(this, tr("QtiPlot - Export error"),
 				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
 		return;
@@ -4702,8 +4714,7 @@ void ApplicationWindow::exportGraph()
 			plot2D->exportSVG(file_name);
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-		for (int i=0; i<(int)list.count(); i++)
-		{
+		for (int i=0; i<(int)list.count(); i++){
 			if (selected_filter.contains("." + (list[i]).lower())) {
 				if (plot2D)
 					plot2D->exportImage(file_name, ied->quality(), ied->transparency());
