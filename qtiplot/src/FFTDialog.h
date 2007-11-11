@@ -38,6 +38,7 @@ class QComboBox;
 class QCheckBox;
 class Graph;
 class Table;
+class Matrix;
 
 //! Fast Fourier transform options dialog
 class FFTDialog : public QDialog
@@ -45,19 +46,23 @@ class FFTDialog : public QDialog
     Q_OBJECT
 
 public:
-	enum DataType{onGraph = 0, onTable = 1};
+	enum DataType{onGraph = 0, onTable = 1, onMatrix = 2};
 
     FFTDialog(int type, QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 public slots:
 	void setGraph(Graph *g);
 	void setTable(Table *t);
+	void setMatrix(Matrix *m);
 	void activateCurve(const QString& curveName);
 	void accept();
 
 private:
+    void fftMatrix();
+
 	Graph *graph;
 	Table *d_table;
+	Matrix *d_matrix;
 	int d_type;
 
 	QPushButton* buttonOK;

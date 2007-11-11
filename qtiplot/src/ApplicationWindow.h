@@ -313,6 +313,8 @@ public slots:
 	void setMatrixRainbowScale();
 	void viewMatrixColumnRow();
 	void viewMatrixXY();
+    void matrixDirectFFT();
+    void matrixInverseFFT();
 	//@}
 
 	//! \name Tables
@@ -462,10 +464,6 @@ public slots:
 	static void about();
 	//! Return a version string ("QtiPlot x.y.z")
 	static QString versionString();
-	void fileMenuAboutToShow();
-	void matrixMenuAboutToShow();
-	void windowsMenuAboutToShow();
-	void windowsMenuActivated( int id );
 	void removeCurves(const QString& name);
 	QStringList dependingPlots(const QString& caption);
 	QStringList depending3DPlots(Matrix *m);
@@ -521,28 +519,6 @@ public slots:
 	Graph* openGraph(ApplicationWindow* app, MultiLayer *plot, const QStringList &list);
 
 	void openRecentProject(int index);
-	//@}
-
-	//! \name Initialization
-	//@{
-	void insertTranslatedStrings();
-	void translateActionsStrings();
-	void init(bool factorySettings = false);
-	void initGlobalConstants();
-	void createActions();
-	void initMainMenu();
-	void initPlotMenu();
-	void initTableMenu();
-	void initTableAnalysisMenu();
-	void initPlotDataMenu();
-	void initToolBars();
-	void initPlot3DToolBar();
-	void disableActions();
-	void customColumnActions();
-	void disableToolbars();
-	void customToolBars(QWidget* w);
-	void customMenu(QWidget* w);
-	void windowActivated(QWidget *w);
 	//@}
 
 	//! \name Table Tools
@@ -955,6 +931,34 @@ signals:
 private:
 	virtual QMenu * createPopupMenu(){return NULL;};
 
+private slots:
+    //! \name Initialization
+	//@{
+	void insertTranslatedStrings();
+	void translateActionsStrings();
+	void init(bool factorySettings = false);
+	void initGlobalConstants();
+	void createActions();
+	void initMainMenu();
+	void initToolBars();
+	void initPlot3DToolBar();
+	void disableActions();
+	void customColumnActions();
+	void disableToolbars();
+	void customToolBars(QWidget* w);
+	void customMenu(QWidget* w);
+	void windowActivated(QWidget *w);
+	//@}
+
+	void analysisMenuAboutToShow();
+	void fileMenuAboutToShow();
+	void matrixMenuAboutToShow();
+	void plotMenuAboutToShow();
+	void plotDataMenuAboutToShow();
+	void tableMenuAboutToShow();
+	void windowsMenuAboutToShow();
+	void windowsMenuActivated( int id );
+
 // TODO: a lot of this stuff should be private
 public:
 	bool d_matrix_tool_bar, d_file_tool_bar, d_table_tool_bar, d_column_tool_bar, d_edit_tool_bar;
@@ -1070,9 +1074,7 @@ public:
 	//@}
 
 	bool startArrowOn, endArrowOn, fillArrowHead;
-	int arrowHeadLength, arrowHeadAngle, specialPlotMenuID, statMenuID, panelMenuID, plot3dID;
-	int plotMenuID, recentMenuID, setAsMenuID, fillMenuID, normMenuID;
-	int translateMenuID, smoothMenuID, filterMenuID, fitExpMenuID, multiPeakMenuID;
+	int arrowHeadLength, arrowHeadAngle, recentMenuID;
 
 	//! Equals true if an automatical search for updates was performed on start-up otherwise is set to false;
 	bool autoSearchUpdatesRequest;
@@ -1117,11 +1119,9 @@ private:
 	QLineEdit *info;
 	QWidget *lastModified;
 
-	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *calcul, *edit, *dataMenu, *recent;
-	QMenu *help, *plot2D, *plot3D, *specialPlot, *panels, *stat, *decay, *filter;
-	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tableMenu, *tablesDepend;
-	QMenu *smooth, *normMenu, *translateMenu, *fillMenu, *setAsMenu, *multiPeakMenu;
-	QMenu *scriptingMenu;
+	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *edit, *recent;
+	QMenu *help, *plot2DMenu, *analysisMenu;
+	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tableMenu, *tablesDepend, *scriptingMenu;
 	QAction *actionEditCurveRange, *actionCurveFullRange, *actionShowAllCurves, *actionHideCurve, *actionHideOtherCurves;
 	QAction *actionEditFunction, *actionRemoveCurve, *actionShowCurveWorksheet, *actionShowCurvePlotDialog;
     QAction *actionNewProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
@@ -1187,6 +1187,7 @@ private:
 	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix;
     QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
     QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars;
+    QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
 
 	QActionGroup* coord;
 	QAction* Box;

@@ -128,5 +128,4 @@ private:
 	QString d_current_path;
 };
 
-
 #endif

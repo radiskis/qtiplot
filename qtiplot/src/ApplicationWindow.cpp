@@ -817,22 +817,6 @@ void ApplicationWindow::insertTranslatedStrings()
 
 	fileMenu->changeItem(recentMenuID, tr("&Recent Projects"));
 
-	plot2D->changeItem(specialPlotMenuID, tr("Special Line/Symb&ol"));
-	plot2D->changeItem(statMenuID, tr("Statistical &Graphs"));
-	plot2D->changeItem(panelMenuID, tr("Pa&nel"));
-	plot2D->changeItem(plot3dID, tr("3&D Plot"));
-
-	dataMenu->changeItem(normMenuID, tr("&Normalize"));
-
-	tableMenu->changeItem(setAsMenuID, tr("Set Columns &As"));
-	tableMenu->changeItem(fillMenuID, tr("&Fill Columns With"));
-
-	calcul->changeItem(translateMenuID, tr("&Translate"));
-	calcul->changeItem(smoothMenuID, tr("&Smooth"));
-	calcul->changeItem(filterMenuID, tr("&FFT Filter"));
-	calcul->changeItem(fitExpMenuID, tr("Fit E&xponential Decay"));
-	calcul->changeItem(multiPeakMenuID, tr("Fit &Multi-Peak"));
-
 	translateActionsStrings();
 	customMenu(ws->activeWindow());
 }
@@ -840,14 +824,11 @@ void ApplicationWindow::insertTranslatedStrings()
 void ApplicationWindow::initMainMenu()
 {
 	fileMenu = new QMenu(this);
-	fileMenu->setFont(appFont);
 	connect(fileMenu, SIGNAL(aboutToShow()), this, SLOT(fileMenuAboutToShow()));
 
 	recent = new QMenu(this);
-	recent->setFont(appFont);
 
 	edit = new QMenu(this);
-	edit->setFont(appFont);
 	edit->addAction(actionUndo);
 	edit->addAction(actionRedo);
 	edit->insertSeparator();
@@ -859,7 +840,6 @@ void ApplicationWindow::initMainMenu()
 	edit->addAction(actionClearLogInfo);
 
 	view = new QMenu(this);
-	view->setFont(appFont);
 	view->setCheckable(true);
 	view->addAction(actionToolBars);
 	view->addAction(actionShowPlotWizard);
@@ -871,7 +851,6 @@ void ApplicationWindow::initMainMenu()
 	view->addAction(actionShowConfigureDialog);
 
 	graph = new QMenu(this);
-	graph->setFont(appFont);
 	graph->setCheckable(true);
 	graph->addAction(actionAddErrorBars);
 	graph->addAction(actionShowCurvesDialog);
@@ -889,16 +868,11 @@ void ApplicationWindow::initMainMenu()
 	graph->addAction(actionShowLayerDialog);
 
 	plot3DMenu = new QMenu(this);
-	plot3DMenu->setFont(appFont);
-
 	plot3DMenu->addAction(actionPlot3DWireFrame);
 	plot3DMenu->addAction(actionPlot3DHiddenLine);
-
 	plot3DMenu->addAction(actionPlot3DPolygons);
 	plot3DMenu->addAction(actionPlot3DWireSurface);
-
 	plot3DMenu->insertSeparator();
-
 	plot3DMenu->addAction(actionPlot3DBars);
 	plot3DMenu->addAction(actionPlot3DScatter);
 	plot3DMenu->insertSeparator();
@@ -910,93 +884,33 @@ void ApplicationWindow::initMainMenu()
 	plot3DMenu->addAction(actionPlotHistogram);
 
 	matrixMenu = new QMenu(this);
-	matrixMenu->setFont(appFont);
 	connect(matrixMenu, SIGNAL(aboutToShow()), this, SLOT(matrixMenuAboutToShow()));
 
-	initPlotMenu();
-	initTableAnalysisMenu();
-	initTableMenu();
-	initPlotDataMenu();
+    plot2DMenu = new QMenu(this);
+    connect(plot2DMenu, SIGNAL(aboutToShow()), this, SLOT(plotMenuAboutToShow()));
 
-	calcul = new QMenu( this );
-	calcul->setFont(appFont);
+    plotDataMenu = new QMenu(this);
+	plotDataMenu->setCheckable(true);
+    connect(plotDataMenu, SIGNAL(aboutToShow()), this, SLOT(plotDataMenuAboutToShow()));
 
-	translateMenu = new QMenu(this);
-	translateMenu->setFont(appFont);
-	translateMenu->addAction(actionTranslateVert);
-	translateMenu->addAction(actionTranslateHor);
-	translateMenuID = calcul->insertItem(tr("&Translate"),translateMenu);
-	calcul->insertSeparator();
+	tableMenu = new QMenu(this);
+    connect(tableMenu, SIGNAL(aboutToShow()), this, SLOT(tableMenuAboutToShow()));
 
-	calcul->addAction(actionDifferentiate);
-	calcul->addAction(actionShowIntDialog);
-
-	calcul->insertSeparator();
-
-	smooth = new QMenu(this);
-	smooth->setFont(appFont);
-	smooth->addAction(actionSmoothSavGol);
-	smooth->addAction(actionSmoothAverage);
-	smooth->addAction(actionSmoothFFT);
-	smoothMenuID = calcul->insertItem(tr("&Smooth"),smooth);
-
-	filter = new QMenu(this);
-	filter->setFont(appFont);
-	filter->addAction(actionLowPassFilter);
-	filter->addAction(actionHighPassFilter);
-	filter->addAction(actionBandPassFilter);
-	filter->addAction(actionBandBlockFilter);
-	filterMenuID = calcul->insertItem(tr("&FFT filter"),filter);
-
-	calcul->insertSeparator();
-	calcul->addAction(actionInterpolate);
-	calcul->addAction(actionFFT);
-	calcul->insertSeparator();
-	calcul->addAction(actionFitLinear);
-	calcul->addAction(actionShowFitPolynomDialog);
-
-	calcul->insertSeparator();
-
-	decay = new QMenu(this);
-	decay->setFont(appFont);
-	decay->addAction(actionShowExpDecayDialog);
-	decay->addAction(actionShowTwoExpDecayDialog);
-	decay->addAction(actionShowExpDecay3Dialog);
-	fitExpMenuID = calcul->insertItem(tr("Fit E&xponential Decay"), decay);
-
-	calcul->addAction(actionFitExpGrowth);
-	calcul->addAction(actionFitSigmoidal);
-	calcul->addAction(actionFitGauss);
-	calcul->addAction(actionFitLorentz);
-
-	multiPeakMenu = new QMenu(this);
-	multiPeakMenu->setFont(appFont);
-	multiPeakMenu->addAction(actionMultiPeakGauss);
-	multiPeakMenu->addAction(actionMultiPeakLorentz);
-	multiPeakMenuID = calcul->insertItem(tr("Fit &Multi-peak"), multiPeakMenu);
-
-	calcul->insertSeparator();
-
-	calcul->addAction(actionShowFitDialog);
+	analysisMenu = new QMenu( this );
+	analysisMenu->setFont(appFont);
+    connect(analysisMenu, SIGNAL(aboutToShow()), this, SLOT(analysisMenuAboutToShow()));
 
 	format = new QMenu(this);
-	format->setFont(appFont);
-
 	scriptingMenu = new QMenu(this);
-	scriptingMenu->setFont(appFont);
 
 	windowsMenu = new QMenu(this);
-	windowsMenu->setFont(appFont);
 	windowsMenu->setCheckable(true);
 	connect(windowsMenu, SIGNAL(aboutToShow()), this, SLOT(windowsMenuAboutToShow()));
 
 	foldersMenu = new QMenu(this);
-	foldersMenu->setFont(appFont);
 	foldersMenu->setCheckable(true);
 
 	help = new QMenu( this );
-	help->setFont(appFont);
-
 	help->addAction(actionShowHelp);
 	help->addAction(actionChooseHelpFolder);
 	help->insertSeparator();
@@ -1015,14 +929,11 @@ void ApplicationWindow::initMainMenu()
 	disableActions();
 }
 
-void ApplicationWindow::initTableMenu()
+void ApplicationWindow::tableMenuAboutToShow()
 {
-	tableMenu = new QMenu(this);
-	tableMenu->setFont(appFont);
+    tableMenu->clear();
 
-	setAsMenu = new QMenu(this);
-	setAsMenu->setFont(appFont);
-
+    QMenu *setAsMenu = tableMenu->addMenu(tr("Set Columns &As"));
 	setAsMenu->addAction(actionSetXCol);
 	setAsMenu->addAction(actionSetYCol);
 	setAsMenu->addAction(actionSetZCol);
@@ -1034,7 +945,6 @@ void ApplicationWindow::initTableMenu()
 	setAsMenu->addAction(tr("Read/&Write"), this, SLOT(setReadWriteColumns()));
 	setAsMenu->insertSeparator();
 	setAsMenu->addAction(actionDisregardCol);
-	setAsMenuID = tableMenu->insertItem(tr("Set Columns &As"), setAsMenu);
 
 	tableMenu->addAction(actionShowColumnOptionsDialog);
 	tableMenu->insertSeparator();
@@ -1042,11 +952,9 @@ void ApplicationWindow::initTableMenu()
 	tableMenu->addAction(actionShowColumnValuesDialog);
 	tableMenu->addAction(actionTableRecalculate);
 
-	fillMenu = new QMenu(this);
-	fillMenu->setFont(appFont);
+    QMenu *fillMenu = tableMenu->addMenu (tr("&Fill Columns With"));
 	fillMenu->addAction(actionSetAscValues);
 	fillMenu->addAction(actionSetRandomValues);
-	fillMenuID = tableMenu->insertItem(tr("&Fill Columns With"),fillMenu);
 
 	tableMenu->addAction(actionClearTable);
 	tableMenu->insertSeparator();
@@ -1066,113 +974,61 @@ void ApplicationWindow::initTableMenu()
 	tableMenu->addAction(actionConvertTable);
 }
 
-void ApplicationWindow::initPlotDataMenu()
+void ApplicationWindow::plotDataMenuAboutToShow()
 {
-	plotDataMenu = new QMenu(this);
-	plotDataMenu->setFont(appFont);
-	plotDataMenu->setCheckable(true);
-
+    plotDataMenu->clear();
 	plotDataMenu->addAction(btnPointer);
 	plotDataMenu->addAction(btnZoomIn);
 	plotDataMenu->addAction(btnZoomOut);
 	plotDataMenu->addAction(actionUnzoom);
 	plotDataMenu->insertSeparator();
-
 	plotDataMenu->addAction(btnCursor);
 	plotDataMenu->addAction(btnSelect);
 	plotDataMenu->addAction(btnPicker);
-
 	plotDataMenu->insertSeparator();
-
 	plotDataMenu->addAction(actionDrawPoints);
 	plotDataMenu->addAction(btnMovePoints);
 	plotDataMenu->addAction(btnRemovePoints);
 }
 
-void ApplicationWindow::initPlotMenu()
+void ApplicationWindow::plotMenuAboutToShow()
 {
-	plot2D = new QMenu(this);
-	plot2D->setFont(appFont);
-	specialPlot = new QMenu(this);
-	specialPlot->setFont(appFont);
-	panels = new QMenu(this);
-	panels->setFont(appFont);
-	stat = new QMenu(this);
-	stat->setFont(appFont);
+	plot2DMenu->clear();
 
-	plot2D->addAction(actionPlotL);
-	plot2D->addAction(actionPlotP);
-	plot2D->addAction(actionPlotLP);
+	plot2DMenu->addAction(actionPlotL);
+	plot2DMenu->addAction(actionPlotP);
+	plot2DMenu->addAction(actionPlotLP);
 
-	specialPlot->addAction(actionPlotVerticalDropLines);
-	specialPlot->addAction(actionPlotSpline);
-	specialPlot->addAction(actionPlotVertSteps);
-	specialPlot->addAction(actionPlotHorSteps);
-	specialPlotMenuID = plot2D->insertItem(tr("Special Line/Symb&ol"), specialPlot);
+    QMenu *specialPlotMenu = plot2DMenu->addMenu (tr("Special Line/Symb&ol"));
+	specialPlotMenu->addAction(actionPlotVerticalDropLines);
+	specialPlotMenu->addAction(actionPlotSpline);
+	specialPlotMenu->addAction(actionPlotVertSteps);
+	specialPlotMenu->addAction(actionPlotHorSteps);
+	plot2DMenu->insertSeparator();
+	plot2DMenu->addAction(actionPlotVerticalBars);
+	plot2DMenu->addAction(actionPlotHorizontalBars);
+	plot2DMenu->addAction(actionPlotArea);
+	plot2DMenu->addAction(actionPlotPie);
+	plot2DMenu->addAction(actionPlotVectXYXY);
+	plot2DMenu->addAction(actionPlotVectXYAM);
+	plot2DMenu->insertSeparator();
 
-	plot2D->insertSeparator();
+	QMenu *statMenu = plot2DMenu->addMenu (tr("Statistical &Graphs"));
+	statMenu->addAction(actionBoxPlot);
+	statMenu->addAction(actionPlotHistogram);
+	statMenu->addAction(actionPlotStackedHistograms);
 
-	plot2D->addAction(actionPlotVerticalBars);
-	plot2D->addAction(actionPlotHorizontalBars);
-	plot2D->addAction(actionPlotArea);
-	plot2D->addAction(actionPlotPie);
-	plot2D->addAction(actionPlotVectXYXY);
-	plot2D->addAction(actionPlotVectXYAM);
+    QMenu *panelsMenu = plot2DMenu->addMenu (tr("Pa&nel"));
+	panelsMenu->addAction(actionPlot2VerticalLayers);
+	panelsMenu->addAction(actionPlot2HorizontalLayers);
+	panelsMenu->addAction(actionPlot4Layers);
+	panelsMenu->addAction(actionPlotStackedLayers);
 
-	plot2D->insertSeparator();
-
-	stat->addAction(actionBoxPlot);
-	stat->addAction(actionPlotHistogram);
-	stat->addAction(actionPlotStackedHistograms);
-	statMenuID = plot2D->insertItem(tr("Statistical &Graphs"),stat);
-
-	panels->addAction(actionPlot2VerticalLayers);
-	panels->addAction(actionPlot2HorizontalLayers);
-	panels->addAction(actionPlot4Layers);
-	panels->addAction(actionPlotStackedLayers);
-	panelMenuID = plot2D->insertItem(tr("Pa&nel"),panels);
-
-	plot3D = new QMenu(this);
-	plot3D->setFont(appFont);
+	QMenu *plot3D = plot2DMenu->addMenu (tr("3&D Plot"));
 	plot3D->addAction(actionPlot3DRibbon);
 	plot3D->addAction(actionPlot3DBars);
 	plot3D->addAction(actionPlot3DScatter);
 	plot3D->addAction(actionPlot3DTrajectory);
-
-	plot2D->insertSeparator();
-	plot3dID = plot2D->insertItem(tr("3&D Plot"), plot3D);
-}
-
-void ApplicationWindow::initTableAnalysisMenu()
-{
-	dataMenu = new QMenu(this);
-	dataMenu->setFont(appFont);
-
-	dataMenu->addAction(actionShowColStatistics);
-	dataMenu->addAction(actionShowRowStatistics);
-
-	dataMenu->insertSeparator();
-
-	dataMenu->addAction(actionSortSelection);
-	dataMenu->addAction(actionSortTable);
-
-	normMenu = new QMenu(this);
-	normMenu->setFont(appFont);
-	normMenu->addAction(actionNormalizeSelection);
-	normMenu->addAction(actionNormalizeTable);
-	normMenuID = dataMenu->insertItem(tr("&Normalize"), normMenu);
-
-	dataMenu->insertSeparator();
-	dataMenu->addAction(actionFFT);
-	dataMenu->insertSeparator();
-	dataMenu->addAction(actionCorrelate);
-	dataMenu->addAction(actionAutoCorrelate);
-	dataMenu->insertSeparator();
-	dataMenu->addAction(actionConvolute);
-	dataMenu->addAction(actionDeconvolute);
-
-	dataMenu->insertSeparator();
-	dataMenu->addAction(actionShowFitDialog);
 }
 
 void ApplicationWindow::customMenu(QWidget* w)
@@ -1209,9 +1065,9 @@ void ApplicationWindow::customMenu(QWidget* w)
 		if (w->isA("MultiLayer")) {
 			menuBar()->insertItem(tr("&Graph"), graph);
 			menuBar()->insertItem(tr("&Data"), plotDataMenu);
-			menuBar()->insertItem(tr("&Analysis"), calcul);
+			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
 			menuBar()->insertItem(tr("For&mat"), format);
-			
+
 			format->clear();
 			format->addAction(actionShowPlotDialog);
 			format->insertSeparator();
@@ -1228,7 +1084,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 
 			actionPrint->setEnabled(true);
 			actionSaveTemplate->setEnabled(true);
-			
+
 			format->clear();
 			format->addAction(actionShowPlotDialog);
 			format->addAction(actionShowScaleDialog);
@@ -1237,17 +1093,16 @@ void ApplicationWindow::customMenu(QWidget* w)
 			if (((Graph3D*)w)->coordStyle() == Qwt3D::NOCOORD)
 				actionShowAxisDialog->setEnabled(false);
 		} else if (w->inherits("Table")) {
-			menuBar()->insertItem(tr("&Plot"), plot2D);
-			if (w->inherits("Table")){
-				menuBar()->insertItem(tr("&Analysis"), dataMenu);
-				menuBar()->insertItem(tr("&Table"), tableMenu);
-			}
+			menuBar()->insertItem(tr("&Plot"), plot2DMenu);
+            menuBar()->insertItem(tr("&Analysis"), analysisMenu);
+            menuBar()->insertItem(tr("&Table"), tableMenu);
 
 			actionTableRecalculate->setEnabled(true);
 		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
 			menuBar()->insertItem(tr("&Matrix"), matrixMenu);
+			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
 		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
@@ -2756,6 +2611,7 @@ void ApplicationWindow::viewMatrixImage()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setViewType(Matrix::ImageView);
+	modifiedProject();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2767,6 +2623,7 @@ void ApplicationWindow::viewMatrixTable()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->setViewType(Matrix::TableView);
+	modifiedProject();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -3302,7 +3159,7 @@ void ApplicationWindow::changeAppFont(const QFont& f)
 	if (appFont == f)
 		return;
 
-	appFont=f;
+	appFont = f;
 	updateAppFonts();
 }
 
@@ -3310,36 +3167,6 @@ void ApplicationWindow::updateAppFonts()
 {
 	qApp->setFont(appFont);
 	this->setFont(appFont);
-	scriptingMenu->setFont(appFont);
-	windowsMenu->setFont(appFont);
-	foldersMenu->setFont(appFont);
-	view->setFont(appFont);
-	graph->setFont(appFont);
-	fileMenu->setFont(appFont);
-	format->setFont(appFont);
-	calcul->setFont(appFont);
-	edit->setFont(appFont);
-	dataMenu->setFont(appFont);
-	recent->setFont(appFont);
-	help->setFont(appFont);
-	plot2D->setFont(appFont);
-	plot3D->setFont(appFont);
-	plot3DMenu->setFont(appFont);
-	matrixMenu->setFont(appFont);
-	specialPlot->setFont(appFont);
-	panels->setFont(appFont);
-	stat->setFont(appFont);
-	smooth->setFont(appFont);
-	filter->setFont(appFont);
-	decay->setFont(appFont);
-	plotDataMenu->setFont(appFont);
-	tablesDepend->setFont(appFont);
-	tableMenu->setFont(appFont);	
-	normMenu->setFont(appFont);
-	translateMenu->setFont(appFont);
-	fillMenu->setFont(appFont);
-	setAsMenu->setFont(appFont);
-	multiPeakMenu->setFont(appFont);
 	info->setFont(QFont(appFont.family(), 2 + appFont.pointSize(), QFont::Bold,false));
 }
 
@@ -6801,6 +6628,18 @@ void ApplicationWindow::showFFTDialog()
 		sd = new FFTDialog(FFTDialog::onTable, this);
 		sd->setAttribute(Qt::WA_DeleteOnClose);
 		sd->setTable((Table*)w);
+	} else if (w->inherits("Matrix")) {
+    #ifdef QTIPLOT_PRO
+		sd = new FFTDialog(FFTDialog::onMatrix, this);
+		sd->setAttribute(Qt::WA_DeleteOnClose);
+		sd->setMatrix((Matrix*)w);
+    #else
+        QString s = tr("This feature is only available to users having subscribed for a binaries maintenance contract!");
+        s += " " + tr("Please visit the following web page for more details:");
+        s += "<p><a href = http://soft.proindependent.com/pricing.html>http://soft.proindependent.com/pricing.html</a></p>";
+        QMessageBox::critical(this, tr("QtiPlot"), s);
+        return;
+    #endif
 	}
 
 	if (sd)
@@ -7389,7 +7228,7 @@ void ApplicationWindow::copySelection()
 			copyMarker();
 		else
 			copyActiveLayer();
-		
+
 		plot->copyAllLayers();
 	}
 	else if (m->isA("Note"))
@@ -7957,6 +7796,76 @@ mb->setText(text);
 mb->exec();
 }
 
+void ApplicationWindow::analysisMenuAboutToShow()
+{
+    analysisMenu->clear();
+    QWidget *w = ws->activeWindow();
+    if (!w)
+        return;
+
+	if (w->isA("MultiLayer")){
+        QMenu *translateMenu = analysisMenu->addMenu (tr("&Translate"));
+        translateMenu->addAction(actionTranslateVert);
+        translateMenu->addAction(actionTranslateHor);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionDifferentiate);
+        analysisMenu->addAction(actionShowIntDialog);
+        analysisMenu->insertSeparator();
+        QMenu *smoothMenu = analysisMenu->addMenu (tr("&Smooth"));
+        smoothMenu->addAction(actionSmoothSavGol);
+        smoothMenu->addAction(actionSmoothAverage);
+        smoothMenu->addAction(actionSmoothFFT);
+        QMenu *filterMenu = analysisMenu->addMenu (tr("&FFT filter"));
+        filterMenu->addAction(actionLowPassFilter);
+        filterMenu->addAction(actionHighPassFilter);
+        filterMenu->addAction(actionBandPassFilter);
+        filterMenu->addAction(actionBandBlockFilter);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionInterpolate);
+        analysisMenu->addAction(actionFFT);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionFitLinear);
+        analysisMenu->addAction(actionShowFitPolynomDialog);
+        analysisMenu->insertSeparator();
+        QMenu *decayMenu = analysisMenu->addMenu (tr("Fit E&xponential Decay"));
+        decayMenu->addAction(actionShowExpDecayDialog);
+        decayMenu->addAction(actionShowTwoExpDecayDialog);
+        decayMenu->addAction(actionShowExpDecay3Dialog);
+        analysisMenu->addAction(actionFitExpGrowth);
+        analysisMenu->addAction(actionFitSigmoidal);
+        analysisMenu->addAction(actionFitGauss);
+        analysisMenu->addAction(actionFitLorentz);
+        QMenu *multiPeakMenu = analysisMenu->addMenu (tr("Fit &Multi-peak"));
+        multiPeakMenu->addAction(actionMultiPeakGauss);
+        multiPeakMenu->addAction(actionMultiPeakLorentz);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionShowFitDialog);
+	} else if (w->isA("Matrix")){
+        analysisMenu->addAction(actionFFT);
+        analysisMenu->addAction(actionMatrixFFTDirect);
+        analysisMenu->addAction(actionMatrixFFTInverse);
+	} else if (w->inherits("Table")){
+        analysisMenu->addAction(actionShowColStatistics);
+        analysisMenu->addAction(actionShowRowStatistics);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionSortSelection);
+        analysisMenu->addAction(actionSortTable);
+        QMenu *normMenu = analysisMenu->addMenu (tr("&Normalize"));
+        normMenu->addAction(actionNormalizeSelection);
+        normMenu->addAction(actionNormalizeTable);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionFFT);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionCorrelate);
+        analysisMenu->addAction(actionAutoCorrelate);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionConvolute);
+        analysisMenu->addAction(actionDeconvolute);
+        analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionShowFitDialog);
+	}
+}
+
 void ApplicationWindow::matrixMenuAboutToShow()
 {
 	matrixMenu->clear();
@@ -7997,7 +7906,10 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	actionViewMatrixImage->setChecked(m->viewType() == Matrix::ImageView);
 	actionViewMatrix->setChecked(m->viewType() == Matrix::TableView);
 	actionMatrixColumnRow->setChecked(m->headerViewType() == Matrix::ColumnRow);
+	actionMatrixColumnRow->setEnabled(m->viewType() == Matrix::TableView);
 	actionMatrixXY->setChecked(m->headerViewType() == Matrix::XY);
+	actionMatrixXY->setEnabled(m->viewType() == Matrix::TableView);
+
     actionMatrixGrayScale->setChecked(m->colorMapType() == Matrix::GrayScale);
 	actionMatrixRainbowScale->setChecked(m->colorMapType() == Matrix::Rainbow);
 	actionMatrixCustomScale->setChecked(m->colorMapType() == Matrix::Custom);
@@ -8006,7 +7918,7 @@ void ApplicationWindow::matrixMenuAboutToShow()
 void ApplicationWindow::fileMenuAboutToShow()
 {
 	fileMenu->clear();
-			
+
 	QMenu *newMenu = fileMenu->addMenu(tr("&New"));
 	newMenu->addAction(actionNewProject);
     newMenu->addAction(actionNewFolder);
@@ -8023,11 +7935,11 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionLoadImage);
 	fileMenu->addAction(actionImportImage);
-	
+
 	QWidget *w = ws->activeWindow();
 	if (w && w->isA("Matrix"))
 		fileMenu->addAction(actionExportMatrix);
-	
+
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionSaveProject);
 	fileMenu->addAction(actionSaveProjectAs);
@@ -8041,7 +7953,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 		exportPlotMenu->addAction(actionExportGraph);
 		exportPlotMenu->addAction(actionExportAllGraphs);
 	}
-	
+
 	fileMenu->addAction(actionPrint);
 	fileMenu->addAction(actionPrintAllPlots);
 	fileMenu->insertSeparator();
@@ -8581,13 +8493,6 @@ void ApplicationWindow::showGraphContextMenu()
 		QMenu exports(this);
 		QMenu copy(this);
 		QMenu prints(this);
-		QMenu calcul(this);
-		QMenu smooth(this);
-		QMenu filter(this);
-		QMenu decay(this);
-		QMenu translate(this);
-		QMenu multiPeakMenu(this);
-
 		Graph* ag = (Graph*)plot->activeGraph();
 
 		if (ag->isPiePlot())
@@ -8599,47 +8504,7 @@ void ApplicationWindow::showGraphContextMenu()
 			}
 			cm.addAction(actionShowCurvesDialog);
 			cm.addAction(actionAddFunctionCurve);
-
-			translate.addAction(actionTranslateVert);
-			translate.addAction(actionTranslateHor);
-			calcul.insertItem(tr("&Translate"),&translate);
-			calcul.insertSeparator();
-
-			calcul.addAction(actionDifferentiate);
-			calcul.addAction(actionShowIntDialog);
-			calcul.insertSeparator();
-			smooth.addAction(actionSmoothSavGol);
-			smooth.addAction(actionSmoothFFT);
-			smooth.addAction(actionSmoothAverage);
-			calcul.insertItem(tr("&Smooth"), &smooth);
-
-			filter.addAction(actionLowPassFilter);
-			filter.addAction(actionHighPassFilter);
-			filter.addAction(actionBandPassFilter);
-			filter.addAction(actionBandBlockFilter);
-			calcul.insertItem(tr("&FFT Filter"),&filter);
-			calcul.insertSeparator();
-			calcul.addAction(actionInterpolate);
-			calcul.addAction(actionFFT);
-			calcul.insertSeparator();
-			calcul.addAction(actionFitLinear);
-			calcul.addAction(actionShowFitPolynomDialog);
-			calcul.insertSeparator();
-			decay.addAction(actionShowExpDecayDialog);
-			decay.addAction(actionShowTwoExpDecayDialog);
-			decay.addAction(actionShowExpDecay3Dialog);
-			calcul.insertItem(tr("Fit E&xponential Decay"), &decay);
-			calcul.addAction(actionFitExpGrowth);
-			calcul.addAction(actionFitSigmoidal);
-			calcul.addAction(actionFitGauss);
-			calcul.addAction(actionFitLorentz);
-
-			multiPeakMenu.addAction(actionMultiPeakGauss);
-			multiPeakMenu.addAction(actionMultiPeakLorentz);
-			calcul.insertItem(tr("Fit &Multi-Peak"), &multiPeakMenu);
-			calcul.insertSeparator();
-			calcul.addAction(actionShowFitDialog);
-			cm.insertItem(tr("Anal&yze"), &calcul);
+			cm.insertItem(tr("Anal&yze"), analysisMenu);
 		}
 
 		if (copiedLayer){
@@ -8731,19 +8596,38 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(actionCloseWindow);
 	}
 	else if (w->isA("Matrix")) {
-		Matrix *t=(Matrix *)w;
-		cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
-		cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
-		cm.insertItem(QPixmap(paste_xpm),tr("&Paste"), t, SLOT(pasteSelection()));
-		cm.insertSeparator();
-		cm.insertItem(tr("&Insert Row"), t, SLOT(insertRow()));
-		cm.insertItem(tr("&Insert Column"), t, SLOT(insertColumn()));
-		if (t->numSelectedRows() > 0)
-			cm.insertItem(QPixmap(close_xpm), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
-		else if (t->numSelectedColumns() > 0)
-			cm.insertItem(QPixmap(close_xpm), tr("&Delete Columns"), t, SLOT(deleteSelectedColumns()));
+		Matrix *t = (Matrix *)w;
+		if (t->viewType() == Matrix::TableView){
+            cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
+            cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
+            cm.insertItem(QPixmap(paste_xpm),tr("&Paste"), t, SLOT(pasteSelection()));
+            cm.insertSeparator();
+            cm.insertItem(tr("&Insert Row"), t, SLOT(insertRow()));
+            cm.insertItem(tr("&Insert Column"), t, SLOT(insertColumn()));
+            if (t->numSelectedRows() > 0)
+                cm.insertItem(QPixmap(close_xpm), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
+            else if (t->numSelectedColumns() > 0)
+                cm.insertItem(QPixmap(close_xpm), tr("&Delete Columns"), t, SLOT(deleteSelectedColumns()));
 
-		cm.insertItem(QPixmap(erase_xpm),tr("Clea&r"), t, SLOT(clearSelection()));
+            cm.insertItem(QPixmap(erase_xpm),tr("Clea&r"), t, SLOT(clearSelection()));
+		} else if (t->viewType() == Matrix::ImageView){
+            cm.addAction(actionExportMatrix);
+            cm.insertSeparator();
+            cm.addAction(actionSetMatrixProperties);
+            cm.addAction(actionSetMatrixDimensions);
+            cm.insertSeparator();
+            cm.addAction(actionSetMatrixValues);
+            cm.addAction(actionTableRecalculate);
+            cm.insertSeparator();
+            cm.addAction(actionRotateMatrix);
+            cm.addAction(actionRotateMatrixMinus);
+            cm.insertSeparator();
+            cm.addAction(actionFlipMatrixVertically);
+            cm.addAction(actionFlipMatrixHorizontally);
+            cm.insertSeparator();
+            cm.addAction(actionTransposeMatrix);
+            cm.addAction(actionInvertMatrix);
+		}
 	}
 	cm.exec(QCursor::pos());
 }
@@ -8755,8 +8639,7 @@ void ApplicationWindow::showWindowTitleBarMenu()
 
 	QMenu cm(this);
 
-	if (ws->activeWindow()->inherits("Table"))
-	{
+	if (ws->activeWindow()->inherits("Table")){
 		cm.addAction(actionShowExportASCIIDialog);
 		cm.insertSeparator();
 	}
@@ -11385,6 +11268,12 @@ void ApplicationWindow::createActions()
 
 	actionConvertMatrix = new QAction(tr("&Convert to Spreadsheet"), this);
 	connect(actionConvertMatrix, SIGNAL(activated()), this, SLOT(convertMatrixToTable()));
+
+    actionMatrixFFTDirect = new QAction(tr("&Forward FFT"), this);
+	connect(actionMatrixFFTDirect, SIGNAL(activated()), this, SLOT(matrixDirectFFT()));
+
+	actionMatrixFFTInverse = new QAction(tr("&Inverse FFT"), this);
+	connect(actionMatrixFFTInverse, SIGNAL(activated()), this, SLOT(matrixInverseFFT()));
 
 	actionConvertTable= new QAction(tr("Convert to &Matrix"), this);
 	connect(actionConvertTable, SIGNAL(activated()), this, SLOT(convertTableToMatrix()));
@@ -14535,4 +14424,42 @@ void ApplicationWindow::saveFitFunctions(const QStringList& lst)
             }
         }
 	}
+}
+
+void ApplicationWindow::matrixDirectFFT()
+{
+#ifdef QTIPLOT_PRO
+    Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->fft();
+	QApplication::restoreOverrideCursor();
+#else
+    QString s = tr("This feature is only available to users having subscribed for a binaries maintenance contract!");
+	s += " " + tr("Please visit the following web page for more details:");
+	s += "<p><a href = http://soft.proindependent.com/pricing.html>http://soft.proindependent.com/pricing.html</a></p>";
+	QMessageBox::critical(this, tr("QtiPlot"), s);
+    return;
+#endif
+}
+
+void ApplicationWindow::matrixInverseFFT()
+{
+#ifdef QTIPLOT_PRO
+    Matrix* m = (Matrix*)ws->activeWindow();
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->fft(true);
+	QApplication::restoreOverrideCursor();
+#else
+    QString s = tr("This feature is only available to users having subscribed for a binaries maintenance contract!");
+	s += " " + tr("Please visit the following web page for more details:");
+	s += "<p><a href = http://soft.proindependent.com/pricing.html>http://soft.proindependent.com/pricing.html</a></p>";
+	QMessageBox::critical(this, tr("QtiPlot"), s);
+    return;
+#endif
 }
