@@ -1671,6 +1671,19 @@ void OPJFile::readMatrixInfo(FILE *f, FILE *debug)
 	MATRIX[idx].name=name;
 	readWindowProperties(MATRIX[idx], f, debug, POS, headersize);
 
+	unsigned char h = 0;
+	fseek(f,POS+0x87,SEEK_SET);
+	fread(&h,1,1,f);
+	switch(h)
+	{
+	case 1:
+		MATRIX[idx].view = matrix::ImageView;
+		break;
+	case 2:
+		MATRIX[idx].header = matrix::XY;
+		break;
+	}
+
 	int LAYER = POS;
 	LAYER += headersize + 0x1;
 	int sec_size;
@@ -1685,6 +1698,7 @@ void OPJFile::readMatrixInfo(FILE *f, FILE *debug)
 	fread(&w,2,1,f);
 	if(IsBigEndian()) SwapBytes(w);
 	MATRIX[idx].nr_rows=w;
+
 	LAYER +=0x12D + 0x1;
 	//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 	//possible sections: column formulas, __WIPR, __WIOTN, __LayerInfoStorage

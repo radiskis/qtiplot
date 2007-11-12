@@ -412,6 +412,10 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		matrix->setWindowLabel(opj.matrixLabel(s));
 		matrix->setFormula(opj.matrixFormula(s));
 		matrix->setColumnsWidth(opj.matrixWidth(s)*QtiPlot_scaling_factor);
+		if(opj.matrixViewType(s) == matrix::ImageView)
+			matrix->setViewType(Matrix::ImageView);
+		if(opj.matrixHeaderViewType(s) == matrix::XY)
+			matrix->setHeaderViewType(Matrix::XY);
 		vector<double> data = opj.matrixData(s);
 		for(int i=0; i<nr_rows; i++)
 		{
