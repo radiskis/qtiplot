@@ -484,15 +484,25 @@ void Table::setCommands(const QString& com)
 
 bool Table::calculate(int col, int startRow, int endRow)
 {
+	if (col < 0 || col >= d_table->numCols())
+		return false;
+	
     if (d_read_only[col]){
         QMessageBox::warning(this, tr("QtiPlot - Error"),
         tr("Column '%1' is read only!").arg(col_label[col]));
         return false;
     }
 
+	QString cmd = commands[col];
+	if (cmd.isEmpty()){
+		for (int i=startRow; i<=endRow; i++)
+			d_table->setText(i, col, "");
+        return true;
+	}
+	
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	Script *colscript = scriptEnv->newScript(commands[col], this,  QString("<%1>").arg(colName(col)));
+	Script *colscript = scriptEnv->newScript(cmd, this,  QString("<%1>").arg(colName(col)));
 	connect(colscript, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 	connect(colscript, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
 

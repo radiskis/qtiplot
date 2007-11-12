@@ -121,6 +121,10 @@ static const char *unzoom_xpm[]={
 #include "PlotCurve.h"
 #include "ApplicationWindow.h"
 
+#ifdef EMF_OUTPUT
+#include "EmfEngine.h"
+#endif
+
 #include <QApplication>
 #include <QBitmap>
 #include <QClipboard>
@@ -1421,6 +1425,18 @@ void Graph::exportSVG(const QString& fname)
 	#endif
 }
 
+void Graph::exportEMF(const QString& fname)
+{
+#ifdef EMF_OUTPUT
+	QPainter paint;
+	EMFDevice *emf = new EMFDevice(QSize(d_plot->size()), fname);
+	paint.begin(emf);
+	d_plot->print(&paint, d_plot->rect());
+	paint.end();
+	delete emf;
+#endif
+}
+	
 int Graph::selectedCurveID()
 {
 	if (d_range_selector)
