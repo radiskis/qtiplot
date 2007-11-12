@@ -4,7 +4,7 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-#SCRIPTING_LANGS += Python
+SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -12,8 +12,9 @@ DEFINES         += SCRIPTING_CONSOLE
 # a dialog for selecting the scripting language on a per-project basis
 DEFINES         += SCRIPTING_DIALOG
 
-# comment the following line out if you haven't subscribed for a QtiPlot binary maintenance contract
+# comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
 #RESTRICTED_MODULES += FFT2D
+#RESTRICTED_MODULES += EMF
 
 CONFIG          += release
 #CONFIG          += debug
@@ -110,8 +111,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 ###################### DOCUMENTATION ########################################
 
@@ -374,6 +375,22 @@ contains(RESTRICTED_MODULES, FFT2D) {
     INCLUDEPATH += ../3rdparty/fft2D
     HEADERS += ../3rdparty/fft2D/fourier.h
     SOURCES += ../3rdparty/fft2D/fourier.cpp
+}
+
+###############################################################
+################# Restricted Module: EmfEngine ################
+###############################################################
+
+contains(RESTRICTED_MODULES, EMF) {
+	DEFINES += EMF_OUTPUT
+	
+    INCLUDEPATH += ../3rdparty/libEMF/include
+	unix:LIBS += -L../3rdparty/libEMF/lib
+	win32:LIBS += -lgdi32
+	
+	INCLUDEPATH += ../3rdparty/EmfEngine
+    HEADERS += ../3rdparty/EmfEngine/EmfEngine.h
+    SOURCES += ../3rdparty/EmfEngine/EmfEngine.cpp
 }
 
 ###############################################################
