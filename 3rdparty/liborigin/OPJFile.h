@@ -153,6 +153,8 @@ struct excel : public originWindow {
 };
 
 struct matrix : public originWindow {
+	enum ViewType {DataView, ImageView};
+	enum HeaderViewType {ColumnRow, XY};
 	int nr_rows;
 	int nr_cols;
 	int value_type_specification;
@@ -162,6 +164,8 @@ struct matrix : public originWindow {
 	string command;
 	int width;
 	int index;
+	ViewType view;
+	HeaderViewType header;
 	vector <double> data;
 	matrix(string _name="", int _index=0)
 	:	originWindow(_name)
@@ -172,6 +176,8 @@ struct matrix : public originWindow {
 	,	decimal_places(6)
 	,	width(8)
 	,	numeric_display_type(0)
+	,	view(DataView)
+	,	header(ColumnRow)
 	{};
 };
 
@@ -502,22 +508,24 @@ public:
 
 	//matrix properties
 	int numMatrices() const { return MATRIX.size(); }			//!< get number of matrices
-	const char *matrixName(int s) const { return MATRIX[s].name.c_str(); }	//!< get name of matrix s
-	const char *matrixParentFolder(int s) const { return MATRIX[s].parentFolder.c_str(); }	//!< get parent folder of matrix s
-	bool matrixHidden(int s) const { return MATRIX[s].bHidden; }	//!< is matrix s hidden
-	rect matrixWindowRect(int s) const { return MATRIX[s].clientRect; }		//!< get window rectangle of matrix s
-	const char *matrixLabel(int s) const { return MATRIX[s].label.c_str(); }	//!< get label of matrix s
-	originWindow::State matrixState(int s) const { return MATRIX[s].state; }	//!< get window state of matrix s
-	int numMatrixCols(int s) const { return MATRIX[s].nr_cols; }		//!< get number of columns of matrix s
-	int numMatrixRows(int s) const { return MATRIX[s].nr_rows; }	//!< get number of rows of matrix s
-	const char *matrixFormula(int s) const { return MATRIX[s].command.c_str(); }	//!< get formula of matrix s
-	int matrixValueTypeSpec(int s) const { return MATRIX[s].value_type_specification; }	//!< get value type specification of matrix s
-	int matrixSignificantDigits(int s) const { return MATRIX[s].significant_digits; }	//!< get significant digits of matrix s
-	int matrixDecPlaces(int s) const { return MATRIX[s].decimal_places; }	//!< get decimal places of matrix s
-	int matrixNumDisplayType(int s) const { return MATRIX[s].numeric_display_type; }	//!< get numeric display type of matrix s
-	int matrixWidth(int s) const { return MATRIX[s].width; }	//!< get width of matrix s
-	double matrixData(int s, int c, int r) const { return MATRIX[s].data[r*MATRIX[s].nr_cols+c]; }	//!< get data of row r of column c of matrix s
-	vector<double> matrixData(int s) const { return MATRIX[s].data; }	//!< get data of matrix s
+	const char *matrixName(int m) const { return MATRIX[m].name.c_str(); }	//!< get name of matrix m
+	const char *matrixParentFolder(int m) const { return MATRIX[m].parentFolder.c_str(); }	//!< get parent folder of matrix m
+	bool matrixHidden(int m) const { return MATRIX[m].bHidden; }	//!< is matrix m hidden
+	rect matrixWindowRect(int m) const { return MATRIX[m].clientRect; }		//!< get window rectangle of matrix m
+	const char *matrixLabel(int m) const { return MATRIX[m].label.c_str(); }	//!< get label of matrix m
+	originWindow::State matrixState(int m) const { return MATRIX[m].state; }	//!< get window state of matrix m
+	int numMatrixCols(int m) const { return MATRIX[m].nr_cols; }		//!< get number of columns of matrix m
+	int numMatrixRows(int m) const { return MATRIX[m].nr_rows; }	//!< get number of rows of matrix m
+	const char *matrixFormula(int m) const { return MATRIX[m].command.c_str(); }	//!< get formula of matrix m
+	int matrixValueTypeSpec(int m) const { return MATRIX[m].value_type_specification; }	//!< get value type specification of matrix m
+	int matrixSignificantDigits(int m) const { return MATRIX[m].significant_digits; }	//!< get significant digits of matrix m
+	int matrixDecPlaces(int m) const { return MATRIX[m].decimal_places; }	//!< get decimal places of matrix m
+	int matrixNumDisplayType(int m) const { return MATRIX[m].numeric_display_type; }	//!< get numeric display type of matrix m
+	int matrixWidth(int m) const { return MATRIX[m].width; }	//!< get width of matrix m
+	matrix::ViewType matrixViewType(int m) const { return MATRIX[m].view; }	//!< get view type of matrix m
+	matrix::HeaderViewType matrixHeaderViewType(int m) const { return MATRIX[m].header; }	//!< get header view type of matrix m
+	double matrixData(int m, int c, int r) const { return MATRIX[m].data[r*MATRIX[m].nr_cols+c]; }	//!< get data of row r of column c of matrix m
+	vector<double> matrixData(int m) const { return MATRIX[m].data; }	//!< get data of matrix m
 
 	//function properties
 	int numFunctions() const { return FUNCTION.size(); }			//!< get number of functions
