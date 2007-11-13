@@ -157,7 +157,7 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		if(opj.Version() == 7.5)
 		{
 			windowRect = opj.spreadWindowRect(s);
-			table->resize(windowRect.width() - (table->parentWidget()->frameGeometry().width() - table->parentWidget()->width()), 
+			table->resize(windowRect.width() - (table->parentWidget()->frameGeometry().width() - table->parentWidget()->width()),
 				windowRect.height() - (table->parentWidget()->frameGeometry().height() - table->parentWidget()->height()));
 		}
 
@@ -402,10 +402,9 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			return false;
 
 		rect windowRect;
-		if(opj.Version() == 7.5)
-		{
+		if(opj.Version() == 7.5){
 			windowRect = opj.matrixWindowRect(s);
-			matrix->resize(windowRect.width() - (matrix->parentWidget()->frameGeometry().width() - matrix->parentWidget()->width()), 
+			matrix->resize(windowRect.width() - (matrix->parentWidget()->frameGeometry().width() - matrix->parentWidget()->width()),
 				windowRect.height() - (matrix->parentWidget()->frameGeometry().height() - matrix->parentWidget()->height()));
 		}
 
@@ -417,10 +416,8 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		if(opj.matrixHeaderViewType(s) == matrix::XY)
 			matrix->setHeaderViewType(Matrix::XY);
 		vector<double> data = opj.matrixData(s);
-		for(int i=0; i<nr_rows; i++)
-		{
-			for (int j=0; j<nr_cols; j++)
-			{
+		for(int i=0; i<nr_rows; i++){
+			for (int j=0; j<nr_cols; j++){
 				double val = data[i*nr_cols+j];
 				if(fabs(val)>0 && fabs(val)<2.0e-300)// empty entry
 					data[i*nr_cols+j] = GSL_NAN;
@@ -444,7 +441,7 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			break;
 		}
 		matrix->setNumericFormat(format, opj.matrixSignificantDigits(s));
-		
+
 		if(!opj.matrixHidden(s)||opj.Version()!=7.5)
 		{
 			switch(opj.matrixState(s))
@@ -461,11 +458,8 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 
 			//cascade the matrices
 			if(opj.Version() == 7.5)
-			{
 				matrix->parentWidget()->move(QPoint(windowRect.left, windowRect.top));
-			}
-			else
-			{
+			else {
 				int dx=matrix->verticalHeaderWidth();
 				int dy=matrix->parentWidget()->frameGeometry().height() - matrix->height();
 				matrix->parentWidget()->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
@@ -530,17 +524,17 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 
 		rect graphRect = opj.graphRect(g);
 		rect graphWindowRect = opj.graphWindowRect(g);
-		ml->resize(graphWindowRect.width() - (ml->parentWidget()->frameGeometry().width() - ml->parentWidget()->width()), 
+		ml->resize(graphWindowRect.width() - (ml->parentWidget()->frameGeometry().width() - ml->parentWidget()->width()),
 									graphWindowRect.height() - (ml->parentWidget()->frameGeometry().height() - ml->parentWidget()->height()));
-		
+
 		double fXScale = (double)ml->width()/(double)graphRect.width();
 		double fYScale = (double)ml->height()/(double)graphRect.height();
 		fXScale = fYScale = QMIN(fXScale, fYScale);
-		
+
 		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
 		double fFontScaleFactor = 0.37*fWindowFactor;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
-		
+
 		for(int l=0; l<opj.numLayers(g); ++l)
 		{
 			Graph *graph=ml->addLayer();
@@ -638,7 +632,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 							<< (tableName + "_" + opj.curveYColName(g,l,c))
 							<< (tableName + "_" + QString(vector.endXColName.c_str()))
 							<< (tableName + "_" + QString(vector.endYColName.c_str()));
-						
+
 						graph->addCurves(mw->table(tableName), names, style);
 					}
 					else if(style==Graph::VectXYAM)
@@ -975,7 +969,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 							format = 1;
 						else
 							format = 0;
-						
+
 						break;
 					case 1: //Scientific
 						format=2;
@@ -1057,7 +1051,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 
 			graph->setAutoscaleFonts(true);
         	graph->setIgnoreResizeEvents(!mw->autoResizeLayers);
-	
+
 			int nXDelta = graph->plotWidget()->width() - graph->plotWidget()->canvas()->width();
 			int nYDelta = graph->plotWidget()->height() - graph->plotWidget()->canvas()->height();
 			QPoint posCanvas =  graph->plotWidget()->canvas()->pos();
@@ -1232,7 +1226,7 @@ void ImportOPJ::addText(const text& _text, Graph* graph, Legend* txt, const rect
 
 	if(!txt)
 		txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(_text.txt.c_str())));
-	
+
 	QFont font(graph->defaultTextMarkerFont());
 	font.setPointSize(floor(_text.fontsize*fFontScaleFactor + 0.5));
 	txt->setAngle(_text.rotation);
