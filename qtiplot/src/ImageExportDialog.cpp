@@ -159,7 +159,7 @@ void ImageExportDialog::initAdvancedOptions()
 
 void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 {
-	if (filter.contains("*.svg")) {
+	if (filter.contains("*.svg") || filter.contains("*.emf")) {
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
 		return;

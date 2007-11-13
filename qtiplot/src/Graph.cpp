@@ -1368,12 +1368,10 @@ void Graph::print()
 		printer.setOrientation(QPrinter::Landscape);
 
 	QPrintDialog printDialog(&printer);
-    if (printDialog.exec() == QDialog::Accepted)
-	{
+    if (printDialog.exec() == QDialog::Accepted){
 		QRect plotRect = d_plot->rect();
 		QRect paperRect = printer.paperRect();
-		if (d_scale_on_print)
-		{
+		if (d_scale_on_print){
 			int dpiy = printer.logicalDpiY();
 			int margin = (int) ((2/2.54)*dpiy ); // 2 cm margins
 
@@ -1386,17 +1384,14 @@ void Graph::print()
 				plotRect.setLeft(margin);
 				plotRect.setWidth(printer.width() - 2*margin);
 			}
-		}
-		else
-		{
+		} else {
     		int x_margin = (paperRect.width() - plotRect.width())/2;
     		int y_margin = (paperRect.height() - plotRect.height())/2;
     		plotRect.moveTo(x_margin, y_margin);
 		}
 
         QPainter paint(&printer);
-        if (d_print_cropmarks)
-        {
+        if (d_print_cropmarks){
 			QRect cr = plotRect; // cropmarks rectangle
 			cr.addCoords(-1, -1, 2, 2);
             paint.save();
@@ -1428,7 +1423,7 @@ void Graph::exportSVG(const QString& fname)
 void Graph::exportEMF(const QString& fname)
 {
 #ifdef EMF_OUTPUT
-	EMFDevice *emf = new EMFDevice(d_plot->size(), fname);
+	EmfPaintDevice *emf = new EmfPaintDevice(d_plot->size(), fname);
 	QPainter paint;
 	paint.begin(emf);
 	d_plot->print(&paint, d_plot->rect());
