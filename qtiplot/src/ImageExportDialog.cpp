@@ -55,6 +55,10 @@ ImageExportDialog::ImageExportDialog(QWidget * parent, bool vector_options, bool
 		list<<"SVG";
 	#endif
 
+    #if EMF_OUTPUT
+		list<<"EMF";
+	#endif
+
 	QStringList filters;
 	for(int i=0 ; i<list.count() ; i++)
 		filters << "*."+list[i].toLower();

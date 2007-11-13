@@ -1428,15 +1428,15 @@ void Graph::exportSVG(const QString& fname)
 void Graph::exportEMF(const QString& fname)
 {
 #ifdef EMF_OUTPUT
+	EMFDevice *emf = new EMFDevice(d_plot->size(), fname);
 	QPainter paint;
-	EMFDevice *emf = new EMFDevice(QSize(d_plot->size()), fname);
 	paint.begin(emf);
 	d_plot->print(&paint, d_plot->rect());
 	paint.end();
 	delete emf;
 #endif
 }
-	
+
 int Graph::selectedCurveID()
 {
 	if (d_range_selector)

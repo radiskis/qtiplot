@@ -4,7 +4,7 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-SCRIPTING_LANGS += Python
+#SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -13,8 +13,8 @@ DEFINES         += SCRIPTING_CONSOLE
 DEFINES         += SCRIPTING_DIALOG
 
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
-#RESTRICTED_MODULES += FFT2D
-#RESTRICTED_MODULES += EMF
+RESTRICTED_MODULES += FFT2D
+RESTRICTED_MODULES += EMF
 
 CONFIG          += release
 #CONFIG          += debug
@@ -383,11 +383,11 @@ contains(RESTRICTED_MODULES, FFT2D) {
 
 contains(RESTRICTED_MODULES, EMF) {
 	DEFINES += EMF_OUTPUT
-	
+
     INCLUDEPATH += ../3rdparty/libEMF/include
 	unix:LIBS += -L../3rdparty/libEMF/lib
 	win32:LIBS += -lgdi32
-	
+
 	INCLUDEPATH += ../3rdparty/EmfEngine
     HEADERS += ../3rdparty/EmfEngine/EmfEngine.h
     SOURCES += ../3rdparty/EmfEngine/EmfEngine.cpp

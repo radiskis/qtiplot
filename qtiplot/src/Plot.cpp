@@ -131,12 +131,10 @@ void Plot::printFrame(QPainter *painter, const QRect &rect) const
 	painter->save();
 
 	int lw = lineWidth();
-	if (lw)
-	{
+	if (lw){
 		QColor color = palette().color(QPalette::Active, QColorGroup::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-	}
-	else
+	} else
 		painter->setPen(QPen(Qt::NoPen));
 
     painter->setBrush(paletteBackgroundColor());

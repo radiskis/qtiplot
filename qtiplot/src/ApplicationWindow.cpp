@@ -4762,7 +4762,10 @@ void ApplicationWindow::exportLayer()
 		g->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name);
-	else {
+    else if (selected_filter.contains(".emf")){
+        file.close();
+		g->exportEMF(file_name);
+    }else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++)
 			if (selected_filter.contains("."+(list[i]).lower()))
