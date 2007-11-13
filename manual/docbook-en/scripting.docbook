@@ -2012,7 +2012,7 @@ Generally, you can declare/initialize an analysis operation using one of the fol
 depending on the data source, which can be a 2D plot curve or a table:
 <programlisting>
 op = FFTFilter(graph("Graph1").activeLayer(), "Table1_2", 1.5, 3.9)
-op = LinearFit(table("Table1", "colX", "colY", 10, 100)
+op = LinearFit(table("Table1"), "colX", "colY", 10, 100)
 </programlisting>
 
 In the first example the data source is a curve <emphasis>Table1_2</emphasis>, plotted
@@ -2032,7 +2032,7 @@ as data sources for the moment.
 the following functions:</para>
 <programlisting>
 op.setDataFromCurve("Table1_energy", 10.5, 20.1, graph("Graph2").activeLayer())
-op.setDataFromTable(table("Table1", "colX", "colY", 10, 100)
+op.setDataFromTable(table("Table1"), "colX", "colY", 10, 100)
 </programlisting>
 
 You don't have to specify a plot layer in the setDataFromCurve() function, if the analysis operation has

@@ -4703,7 +4703,8 @@ void ApplicationWindow::exportGraph()
 				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
 		return;
 	}
-
+	file.close();
+	
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps")) {
 		if (plot3D)
 			plot3D->exportVector(file_name);
@@ -4751,21 +4752,20 @@ void ApplicationWindow::exportLayer()
 		file_name.append(selected_filter.remove("*"));
 
 	QFile file(file_name);
-	if ( !file.open( QIODevice::WriteOnly ) )
-	{
+	if ( !file.open( QIODevice::WriteOnly ) ){
 		QMessageBox::critical(this, tr("QtiPlot - Export error"),
 				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
 		return;
 	}
-
+	file.close();
+	
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
 		g->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name);
-    else if (selected_filter.contains(".emf")){
-        file.close();
+    else if (selected_filter.contains(".emf"))
 		g->exportEMF(file_name);
-    }else {
+    else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++)
 			if (selected_filter.contains("."+(list[i]).lower()))
@@ -4848,6 +4848,8 @@ void ApplicationWindow::exportAllGraphs()
 			delete windows;
 			return;
 		}
+		f.close();
+		
 		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") || file_suffix.contains(".ps")) {
 			if (plot3D)
 				plot3D->exportVector(file_name);
@@ -4858,8 +4860,7 @@ void ApplicationWindow::exportAllGraphs()
 				plot2D->exportSVG(file_name);
 		} else {
 			QList<QByteArray> list = QImageWriter::supportedImageFormats();
-			for (int i=0; i<(int)list.count(); i++)
-			{
+			for (int i=0; i<(int)list.count(); i++){
 				if (file_suffix.contains("." + (list[i]).lower())) {
 					if (plot2D)
 						plot2D->exportImage(file_name, ied->quality(), ied->transparency());
@@ -7962,7 +7963,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->addAction(actionSaveTemplate);
 	fileMenu->insertSeparator();
 
-	if (w && w->isA("MultiLayer")){
+	if (w && (w->isA("MultiLayer") || w->isA("Graph3D"))){
 		QMenu *exportPlotMenu = fileMenu->addMenu (tr("&Export Graph"));
 		exportPlotMenu->addAction(actionExportGraph);
 		exportPlotMenu->addAction(actionExportAllGraphs);
