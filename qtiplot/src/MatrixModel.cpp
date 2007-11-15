@@ -125,21 +125,6 @@ double MatrixModel::data(int row, int col) const
 	return d_data[i];
 }
 
-double* MatrixModel::rowData(int row)
-{
-	double *data = new double [d_cols];
-	int aux = row*d_cols;
-	for (int i = 0; i < d_cols; i++){
-		double val = d_data[aux];
-		if (gsl_isnan(val))
-			data[i] = 0.0;
-		else
-			data[i] = val;
-		aux++;
-	}
-	return data;
-}
-
 QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int role) const
 {
     if (d_matrix->headerViewType() == Matrix::ColumnRow)
@@ -323,8 +308,7 @@ QImage MatrixModel::renderImage()
     const QwtDoubleInterval intensityRange = QwtDoubleInterval (minValue, maxValue);
     for ( int i = 0; i < d_rows; i++ ){
     	QRgb *line = (QRgb *)image.scanLine(i);
-		for ( int j = 0; j < d_cols; j++)
-		{
+		for ( int j = 0; j < d_cols; j++){
 			if(fabs(d_data[i*d_cols + j]) < HUGE_VAL)
 				*line++ = color_map.rgb(intensityRange, d_data[i*d_cols + j]);
 		}

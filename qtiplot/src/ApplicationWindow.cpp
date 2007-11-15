@@ -2809,7 +2809,7 @@ Table* ApplicationWindow::matrixToTable(Matrix* m)
 	w->setAttribute(Qt::WA_DeleteOnClose);
 	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
-			w->setText(i, j, m->text(i,j));
+			w->setCell(i, j, m->cell(i,j));
 	}
 
 	initTable(w, generateUniqueName(tr("Table")));
@@ -2874,7 +2874,7 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 	m->setAttribute(Qt::WA_DeleteOnClose);
 	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
-			m->setText(i, j, t->text(i,j));
+			m->setCell(i, j, t->cell(i,j));
 	}
 	QString caption = generateUniqueName(tr("Matrix"));
 	initMatrix(m, caption);
