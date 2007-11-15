@@ -27,9 +27,6 @@
  *                                                                         *
  ***************************************************************************/
 #include <QApplication>
-#include <QAction>
-#include <QMessageBox>
-
 #include "ApplicationWindow.h"
 
 // The following stuff is for the doxygen title page
@@ -124,7 +121,7 @@ If you want to contribute code, please read the notes on \ref style "coding styl
 int main( int argc, char ** argv )
 {
     QApplication app( argc, argv );
-
+	
 	QStringList args = app.arguments();
 	args.removeFirst(); // remove application name
 
@@ -138,7 +135,7 @@ int main( int argc, char ** argv )
 		if (args.contains("-d") || args.contains("--default-settings"))
 			factorySettings = true;
 		
-		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
+		ApplicationWindow *mw = new ApplicationWindow(factorySettings);		
 		mw->applyUserSettings();
 		mw->restoreApplicationGeometry();	
 		mw->initWindow();

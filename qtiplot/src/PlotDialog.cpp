@@ -1833,28 +1833,21 @@ void PlotDialog::updateEndPointColumns(const QString& text)
 
 bool PlotDialog::acceptParams()
 {
-    if (privateTabWidget->currentWidget() == fontsPage)
-    {
+    if (privateTabWidget->currentWidget() == fontsPage){
 		d_ml->setFonts(titleFont, axesFont, numbersFont, legendFont);
 		return true;
-    }
-	else if (privateTabWidget->currentWidget() == printPage)
-    {
+    } else if (privateTabWidget->currentWidget() == printPage){
 		d_ml->setScaleLayersOnPrint(boxScaleLayers->isChecked());
 		d_ml->printCropmarks(boxPrintCrops->isChecked());
 		return true;
-    }
-    else if (privateTabWidget->currentWidget() == layerPage)
-	{
+    } else if (privateTabWidget->currentWidget() == layerPage){
 		if (!boxAll->isChecked())
 			return true;
 
 		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++)
-		{
+		for (int i=0; i<allPlots.count();i++){
 			Graph* g = (Graph*)allPlots.at(i);
-			if (g)
-			{
+			if (g){
 				g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
 				g->setMargin(boxMargin->value());
 
@@ -1881,10 +1874,11 @@ bool PlotDialog::acceptParams()
 		QPoint pos = QPoint(boxX->value(), boxY->value());
 		QSize size = QSize(boxLayerWidth->value(), boxLayerHeight->value());
 		if (g->pos() == pos && g->size() == size)
-			return false;
+			return true;
 
 		g->setGeometry(QRect(pos, size));
     	g->plotWidget()->resize(size);
+		d_ml->repaint();
 		return true;
 	}
 
