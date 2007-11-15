@@ -445,22 +445,23 @@ void Graph3D::addMatrixData(Matrix* m)
 
 	int cols = m->numCols();
 	int rows = m->numRows();
-	double **data_matrix = new double* [rows];
-	MatrixModel *model = m->matrixModel();
-	for (int i = 0; i < rows; i++ )
-		data_matrix[i] = model->rowData(i);
+				
+	double **data_matrix = Matrix::allocateMatrixData(cols, rows);
+	for (int i = 0; i < cols; i++ ){
+		for (int j = 0; j < rows; j++)
+			data_matrix[i][j] = m->cell(j, i);
+	}
 	
 	sp->makeCurrent();
-	sp->loadFromData(data_matrix, rows, cols, m->xStart(), m->xEnd(),
-			m->yStart(), m->yEnd());
-
+	sp->loadFromData(data_matrix, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
+		
 	double start, end;
 	sp->coordinates()->axes[Z1].limits (start, end);
 	sp->legend()->setLimits(start, end);
 	sp->legend()->setMajors(legendMajorTicks);
 
-	Matrix::freeMatrixData(data_matrix, rows);
-
+	Matrix::freeMatrixData(data_matrix, cols);
+	
 	if (d_autoscale || first_time)
 		findBestLayout();
 	update();
@@ -666,14 +667,13 @@ void Graph3D::updateMatrixData(Matrix* m)
 {
 	int cols=m->numCols();
 	int rows=m->numRows();
-
-	double **data = Matrix::allocateMatrixData(rows, cols);
-	for (int i = 0; i < rows; i++ ){
-		for (int j = 0; j < cols; j++)
-			data[i][j] = m->cell(i, j);
+	
+	double **data = Matrix::allocateMatrixData(cols, rows);
+	for (int i = 0; i < cols; i++ ){
+		for (int j = 0; j < rows; j++)
+			data[i][j] = m->cell(j, i);
 	}
-
-	sp->loadFromData(data, rows, cols, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
+	sp->loadFromData(data, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
 
 	Qwt3D::Axis z_axis = sp->coordinates()->axes[Z1];
 	double start, end;
@@ -684,7 +684,7 @@ void Graph3D::updateMatrixData(Matrix* m)
 	sp->legend()->setLimits(start, end);
 	sp->legend()->setMajors(legendMajorTicks);
 
-	Matrix::freeMatrixData(data, rows);
+	Matrix::freeMatrixData(data, cols);
 	if (d_autoscale)
 		findBestLayout();
 	update();
@@ -1102,8 +1102,8 @@ double Graph3D::zStop()
 QStringList Graph3D::scaleLimits()
 {
 	QStringList limits;
-	double start,stop;
-	int majors,minors;
+	double start, stop;
+	int majors, minors;
 
 	sp->coordinates()->axes[X1].limits (start,stop);
 	majors=sp->coordinates()->axes[X1].majors();
@@ -1365,27 +1365,40 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl,
 		double yr, double zl, double zr)
 {
-	double dx = (d_matrix->xEnd() - d_matrix->xStart())/(d_matrix->numCols()-1);
-	double dy = (d_matrix->yEnd() - d_matrix->yStart())/(d_matrix->numRows()-1);
+	double xStart = d_matrix->xStart();
+	double xEnd = d_matrix->xEnd();
+	double yStart = d_matrix->yStart();
+	double yEnd = d_matrix->yEnd();
+	
+	double dx = fabs(xEnd - xStart)/double(d_matrix->numCols()-1);
+	double dy = fabs(yEnd - yStart)/double(d_matrix->numRows()-1);
 
-	int nc = int((xr - xl)/dx)+1;
-	int nr = int((yr - yl)/dy)+1;
-
-	int start_row = int((yl - d_matrix->yStart())/dy);
-	int start_col = int((xl - d_matrix->xStart())/dx);
-
+	int nc = int(fabs(xr - xl)/dx)+1;
+	int nr = int(fabs(yr - yl)/dy)+1;
+	
+	double x_begin = qMin(xl, xr);
+	double y_begin = qMin(yl, yr);
+	
 	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
-	for (int j = 0; j < nr; j++){
-		for (int i = 0; i < nc; i++){
-			double val = d_matrix->cell(j + start_row, i + start_col);
-			if (val > zr)
-				data_matrix[i][j] = zr;
-			else if (val < zl)
-				data_matrix[i][j] = zl;
-			else
-				data_matrix[i][j] = val;
+	for (int i = 0; i < nc; i++){
+		double x = x_begin + i*dx;
+		for (int j = 0; j < nr; j++){
+			double y = y_begin + j*dy;
+			if (x >= xStart && x <= xEnd && y >= yStart && y <= yEnd){
+				int k = abs((y - yStart)/dy);
+				int l = abs((x - xStart)/dx);
+				double val = d_matrix->cell(k, l);
+				if (val > zr)
+					data_matrix[i][j] = zr;
+				else if (val < zl)
+					data_matrix[i][j] = zl;
+				else
+					data_matrix[i][j] = val;
+			} else
+				data_matrix[i][j] = 0.0;
 		}
 	}
+	
 	sp->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
 	Matrix::freeMatrixData(data_matrix, nc);
 
@@ -1399,13 +1412,11 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 		int xcol, int ycol)
 {
 	int r=d_table->numRows();
-	int i, j, xmesh=0, ymesh=2;
+	int xmesh=0, ymesh=2;
 	double xv, yv;
 
-	for (i = 0; i < r; i++)
-	{
-		if (!d_table->text(i,xcol).isEmpty() && !d_table->text(i,ycol).isEmpty())
-		{
+	for (int i = 0; i < r; i++){
+		if (!d_table->text(i,xcol).isEmpty() && !d_table->text(i,ycol).isEmpty()){
 			xv=d_table->cell(i,xcol);
 			if (xv >= xl && xv <= xr)
 				xmesh++;
@@ -1417,16 +1428,12 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 
 	double **data = Matrix::allocateMatrixData(xmesh, ymesh);
 
-	for ( j = 0; j < ymesh; j++)
-	{
+	for (int j = 0; j < ymesh; j++){
 		int k=0;
-		for ( i = 0; i < r; i++)
-		{
-			if (!d_table->text(i,xcol).isEmpty() && !d_table->text(i,ycol).isEmpty())
-			{
+		for (int i = 0; i < r; i++){
+			if (!d_table->text(i,xcol).isEmpty() && !d_table->text(i,ycol).isEmpty()){
 				xv=d_table->cell(i,xcol);
-				if (xv >= xl && xv <= xr)
-				{
+				if (xv >= xl && xv <= xr){
 					yv=d_table->cell(i,ycol);
 					if (yv > zr)
 						data[k][j] = zr;

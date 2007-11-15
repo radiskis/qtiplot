@@ -889,7 +889,7 @@ bool Plot3DDialog::updatePlot()
 		int axis = axesList->currentRow();
 		QString from=boxFrom->text().lower();
 		QString to=boxTo->text().lower();
-		double start,end;
+		double start, end;
 		try {
 			MyParser parser;
 			parser.SetExpr(from.ascii());
@@ -910,12 +910,12 @@ bool Plot3DDialog::updatePlot()
 			return false;
 		}
 
-		if (start>=end){
+		/*if (start>=end){
 			QMessageBox::critical(0,tr("QtiPlot - Input error"),
 					tr("Please enter scale limits that satisfy: from < to!"));
 			boxTo->setFocus();
 			return false;
-		}
+		}*/
 
         d_plot->updateScale(axis, scaleOptions(axis, start, end, boxMajors->text(), boxMinors->text()));
 	} else if (generalDialog->currentPage()==(QWidget*)axes){
