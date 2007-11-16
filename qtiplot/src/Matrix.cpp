@@ -76,6 +76,9 @@ Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWi
 
 void Matrix::initGlobals()
 {
+    d_table_view = NULL;
+    imageLabel = NULL;
+
     d_header_view_type = ColumnRow;
 	d_color_map_type = GrayScale;
 	d_color_map = QwtLinearColorMap(Qt::black, Qt::white);
@@ -1214,9 +1217,12 @@ void Matrix::setImage(const QImage& image)
     initImageView();
     if (d_matrix_model)
         delete d_matrix_model;
+
     d_matrix_model = new MatrixModel(image, this);
+
     imageLabel->setPixmap(QPixmap::fromImage(image));
     d_stack->setCurrentWidget(imageLabel);
+    emit modifiedWindow(this);
 }
 
 void Matrix::setGrayScale()
