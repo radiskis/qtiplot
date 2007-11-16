@@ -2056,15 +2056,22 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	Matrix* m = new Matrix(scriptEnv, image, "", ws);
-	m->setAttribute(Qt::WA_DeleteOnClose);
-	m->setNumericPrecision(d_decimal_digits);
-    m->setLocale(d_locale);
-    initMatrix(m, generateUniqueName(tr("Matrix")));
-    m->show();
-    m->setWindowLabel(fn);
-    m->setCaptionPolicy(MyWidget::Both);
-    setListViewLabel(m->objectName(), fn);
+    QWidget *w = ws->activeWindow();
+    Matrix* m = NULL;
+    if (w && w->isA("Matrix")){
+        m = (Matrix *)w;
+        m->setImage(image);
+    } else {
+        m = new Matrix(scriptEnv, image, "", ws);
+        m->setAttribute(Qt::WA_DeleteOnClose);
+        m->setNumericPrecision(d_decimal_digits);
+        m->setLocale(d_locale);
+        initMatrix(m, generateUniqueName(tr("Matrix")));
+        m->show();
+        m->setWindowLabel(fn);
+        m->setCaptionPolicy(MyWidget::Both);
+        setListViewLabel(m->objectName(), fn);
+    }
 
     QApplication::restoreOverrideCursor();
     return m;
@@ -4704,7 +4711,7 @@ void ApplicationWindow::exportGraph()
 		return;
 	}
 	file.close();
-	
+
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps")) {
 		if (plot3D)
 			plot3D->exportVector(file_name);
@@ -4758,7 +4765,7 @@ void ApplicationWindow::exportLayer()
 		return;
 	}
 	file.close();
-	
+
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
 		g->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
 	else if (selected_filter.contains(".svg"))
@@ -4849,7 +4856,7 @@ void ApplicationWindow::exportAllGraphs()
 			return;
 		}
 		f.close();
-		
+
 		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") || file_suffix.contains(".ps")) {
 			if (plot3D)
 				plot3D->exportVector(file_name);
@@ -8609,8 +8616,7 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(actionPrint);
 		cm.insertSeparator();
 		cm.addAction(actionCloseWindow);
-	}
-	else if (w->isA("Matrix")) {
+	} else if (w->isA("Matrix")) {
 		Matrix *t = (Matrix *)w;
 		if (t->viewType() == Matrix::TableView){
             cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
@@ -8626,6 +8632,7 @@ void ApplicationWindow::showWindowContextMenu()
 
             cm.insertItem(QPixmap(erase_xpm),tr("Clea&r"), t, SLOT(clearSelection()));
 		} else if (t->viewType() == Matrix::ImageView){
+		    cm.addAction(actionImportImage);
             cm.addAction(actionExportMatrix);
             cm.insertSeparator();
             cm.addAction(actionSetMatrixProperties);
