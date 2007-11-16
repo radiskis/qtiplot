@@ -445,23 +445,23 @@ void Graph3D::addMatrixData(Matrix* m)
 
 	int cols = m->numCols();
 	int rows = m->numRows();
-				
+
 	double **data_matrix = Matrix::allocateMatrixData(cols, rows);
 	for (int i = 0; i < cols; i++ ){
 		for (int j = 0; j < rows; j++)
 			data_matrix[i][j] = m->cell(j, i);
 	}
-	
+
 	sp->makeCurrent();
 	sp->loadFromData(data_matrix, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
-		
+
 	double start, end;
 	sp->coordinates()->axes[Z1].limits (start, end);
 	sp->legend()->setLimits(start, end);
 	sp->legend()->setMajors(legendMajorTicks);
 
 	Matrix::freeMatrixData(data_matrix, cols);
-	
+
 	if (d_autoscale || first_time)
 		findBestLayout();
 	update();
@@ -667,7 +667,7 @@ void Graph3D::updateMatrixData(Matrix* m)
 {
 	int cols=m->numCols();
 	int rows=m->numRows();
-	
+
 	double **data = Matrix::allocateMatrixData(cols, rows);
 	for (int i = 0; i < cols; i++ ){
 		for (int j = 0; j < rows; j++)
@@ -1365,20 +1365,20 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl,
 		double yr, double zl, double zr)
 {
-	double xStart = d_matrix->xStart();
-	double xEnd = d_matrix->xEnd();
-	double yStart = d_matrix->yStart();
-	double yEnd = d_matrix->yEnd();
-	
-	double dx = fabs(xEnd - xStart)/double(d_matrix->numCols()-1);
-	double dy = fabs(yEnd - yStart)/double(d_matrix->numRows()-1);
+	double xStart = qMin(d_matrix->xStart(), d_matrix->xEnd());
+	double xEnd = qMax(d_matrix->xStart(), d_matrix->xEnd());
+	double yStart = qMin(d_matrix->yStart(), d_matrix->yEnd());
+	double yEnd = qMax(d_matrix->yStart(), d_matrix->yEnd());
+
+	double dx = fabs((xEnd - xStart)/double(d_matrix->numCols()-1));
+	double dy = fabs((yEnd - yStart)/double(d_matrix->numRows()-1));
 
 	int nc = int(fabs(xr - xl)/dx)+1;
 	int nr = int(fabs(yr - yl)/dy)+1;
-	
-	double x_begin = qMin(xl, xr);
+
+    double x_begin = qMin(xl, xr);
 	double y_begin = qMin(yl, yr);
-	
+
 	double **data_matrix = Matrix::allocateMatrixData(nc, nr);
 	for (int i = 0; i < nc; i++){
 		double x = x_begin + i*dx;
@@ -1398,7 +1398,6 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl,
 				data_matrix[i][j] = 0.0;
 		}
 	}
-	
 	sp->loadFromData(data_matrix, nc, nr, xl, xr, yl, yr);
 	Matrix::freeMatrixData(data_matrix, nc);
 

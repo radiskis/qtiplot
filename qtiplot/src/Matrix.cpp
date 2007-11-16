@@ -558,6 +558,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
+
 	Script *script = scriptEnv->newScript(formula_str, this, QString("<%1>").arg(objectName()));
 	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 	connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
@@ -1291,6 +1292,7 @@ void Matrix::resetView()
     else if (d_view_type == TableView){
         d_table_view->setModel(d_matrix_model);
         d_table_view->horizontalHeader()->setDefaultSectionSize(d_column_width);
+        d_table_view->reset();
     }
 }
 

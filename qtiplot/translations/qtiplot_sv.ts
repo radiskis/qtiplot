@@ -5010,12 +5010,27 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>QtiPlot - HTTP hämta versionsfil</translation>
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="7904"/>
+        <source>Vie&amp;w</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11896"/>
         <source>&amp;Draw Data Points</source>
         <translation>&amp;Rita datapunkter</translation>
+>>>>>>> .r745
+    </message>
+    <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="7907"/>
+        <source>&amp;Palette</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5865"/>
+=======
+        <location filename="../src/ApplicationWindow.cpp" line="5865"/>
+>>>>>>> .r745
         <source>&amp;Read-only</source>
         <translation>&amp;Skrivskyddat</translation>
     </message>
@@ -5055,6 +5070,9 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Slutrad</translation>
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="8005"/>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="14474"/>
         <source>This feature is only available to users having subscribed for a binaries maintenance contract!</source>
         <translation>Denna egenskap är endast tillgänglig för användare, som prenumererat på ett underhållskontrakt för binärfiler!</translation>
@@ -5076,6 +5094,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8005"/>
+>>>>>>> .r745
         <source>&amp;Folders</source>
         <translation>&amp;Mappar</translation>
     </message>
@@ -5115,7 +5134,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>&amp;Tag bort radintervall...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11803"/>
+        <location filename="../src/ApplicationWindow.cpp" line="11807"/>
         <source>&amp;Image Plot</source>
         <translation>B&amp;ilddiagram</translation>
     </message>
@@ -5175,66 +5194,127 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Ctrl+Shift+D</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11809"/>
+        <location filename="../src/ApplicationWindow.cpp" line="11813"/>
         <source>Show &amp;X/Y</source>
         <translation>Visa &amp;X/Y</translation>
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11814"/>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11260"/>
         <source>Ctrl+Shift+X</source>
         <translation>Ctrl+Shift+X</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11810"/>
+>>>>>>> .r745
         <source>Show &amp;Column/Row</source>
         <translation>Visa &amp;kolumn/rad</translation>
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11819"/>
+        <source>&amp;Export Image ...</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11265"/>
         <source>Ctrl+Shift+C</source>
         <translation>Ctrl+Shift+C</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11844"/>
+        <source>&amp;Read Only</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11813"/>
         <source>&amp;Gray Scale</source>
         <translation>&amp;Gråskala</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11843"/>
+        <source>&amp;Disregard</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11814"/>
         <source>&amp;Rainbow</source>
         <translation>&amp;Regnbåge</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="14197"/>
+        <source>You need at least two columns for this operation!</source>
+        <translation type="unfinished">Du behöver minst två kolumner för denna åtgärd!</translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11815"/>
         <source>&amp;Custom</source>
         <translation>&amp;Anpassad</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="14170"/>
+        <source>Please set a default X column for this table, first!</source>
+        <translation type="unfinished">Bestäm en standard X-kolumn till denna tabell först!</translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11819"/>
         <source>&amp;Export Image ...</source>
         <translation>&amp;Exportera bild...</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="14201"/>
+        <source>Please select a Z column for this operation!</source>
+        <translation type="unfinished">Välj en Z-kolumn för denna åtgärd!</translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11287"/>
         <source>&amp;Forward FFT</source>
         <translation>&amp;Framåt FFT</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="14205"/>
+        <source>You need to define a X column first!</source>
+        <translation type="unfinished">Du måste definiera en X-kolumn först!</translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11290"/>
         <source>&amp;Inverse FFT</source>
         <translation>&amp;Imvänd FFT</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="14209"/>
+        <source>You need to define a Y column first!</source>
+        <translation type="unfinished">Du måste definiera en Y-kolumn först!</translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11844"/>
         <source>&amp;Read Only</source>
         <translation>Sk&amp;rivskyddat</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11815"/>
+        <source>&amp;Custom</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11843"/>
         <source>&amp;Disregard</source>
         <translation>&amp;Förbise</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11480"/>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11613"/>
         <source>Toolbars...</source>
         <translation>Verktygsrader...</translation>
@@ -5246,6 +5326,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11480"/>
+>>>>>>> .r745
         <source>New Fol&amp;der</source>
         <translation>Ny ma&amp;pp</translation>
     </message>
@@ -5280,12 +5361,16 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Flytta sist</translation>
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="12561"/>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="11897"/>
         <source>Draw Data Points</source>
         <translation>Rita datapunkter</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12561"/>
+>>>>>>> .r745
         <source>start QtiPlot with the default settings</source>
         <translation>börja QtiPlot med standardinställningar</translation>
     </message>
@@ -5295,32 +5380,106 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Hjälp</translation>
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11896"/>
+        <source>&amp;Draw Data Points</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="14197"/>
         <source>You need at least two columns for this operation!</source>
         <translation>Du behöver minst två kolumner för denna åtgärd!</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="14474"/>
+        <source>This feature is only available to users having subscribed for a binaries maintenance contract!</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="14170"/>
         <source>Please set a default X column for this table, first!</source>
         <translation>Bestäm en standard X-kolumn till denna tabell först!</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="14475"/>
+        <source>Please visit the following web page for more details:</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="14201"/>
         <source>Please select a Z column for this operation!</source>
         <translation>Välj en Z-kolumn för denna åtgärd!</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11803"/>
+        <source>&amp;Image Plot</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="14205"/>
         <source>You need to define a X column first!</source>
         <translation>Du måste definiera en X-kolumn först!</translation>
+>>>>>>> .r745
     </message>
     <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11809"/>
+        <source>Show &amp;X/Y</source>
+        <translation type="unfinished"></translation>
+=======
         <location filename="../src/ApplicationWindow.cpp" line="14209"/>
         <source>You need to define a Y column first!</source>
         <translation>Du måste definiera en Y-kolumn först!</translation>
+>>>>>>> .r745
+    </message>
+    <message>
+<<<<<<< .mine
+        <location filename="../src/ApplicationWindow.cpp" line="11260"/>
+        <source>Ctrl+Shift+X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11810"/>
+        <source>Show &amp;Column/Row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11265"/>
+        <source>Ctrl+Shift+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11287"/>
+        <source>&amp;Forward FFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11290"/>
+        <source>&amp;Inverse FFT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11613"/>
+        <source>Toolbars...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11614"/>
+        <source>Ctrl+Shift+T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11897"/>
+        <source>Draw Data Points</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14412"/>
+=======
+        <location filename="../src/ApplicationWindow.cpp" line="14412"/>
+>>>>>>> .r745
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
         <translation>Med början av version lagrar 0.9.1 QtiPlot användardefinierade anpassningsmodeller på en anna plats. </translation>
     </message>
