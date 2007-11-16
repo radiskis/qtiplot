@@ -910,13 +910,6 @@ bool Plot3DDialog::updatePlot()
 			return false;
 		}
 
-		/*if (start>=end){
-			QMessageBox::critical(0,tr("QtiPlot - Input error"),
-					tr("Please enter scale limits that satisfy: from < to!"));
-			boxTo->setFocus();
-			return false;
-		}*/
-
         d_plot->updateScale(axis, scaleOptions(axis, start, end, boxMajors->text(), boxMinors->text()));
 	} else if (generalDialog->currentPage()==(QWidget*)axes){
 		int axis = axesList2->currentRow();

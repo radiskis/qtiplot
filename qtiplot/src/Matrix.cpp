@@ -51,6 +51,8 @@
 #include <QItemDelegate>
 #include <QLabel>
 #include <QStackedWidget>
+#include <QImageWriter>
+#include <QSvgGenerator>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -864,6 +866,55 @@ bool Matrix::eventFilter(QObject *object, QEvent *e)
 	return MyWidget::eventFilter(object, e);
 }
 
+void Matrix::exportRasterImage(const QString& fileName, int quality)
+{
+	d_matrix_model->renderImage().save(fileName, 0, quality);
+}
+	
+void Matrix::exportToFile(const QString& fileName)
+{
+	if ( fileName.isEmpty() ){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+        return;
+	}
+
+	if (fileName.contains(".eps") || fileName.contains(".pdf") || fileName.contains(".ps")){
+		exportVector(fileName);
+		return;
+	} else if(fileName.contains(".svg")){
+		exportSVG(fileName);
+		return;
+	} else {
+		QList<QByteArray> list = QImageWriter::supportedImageFormats();
+    	for(int i=0 ; i<list.count() ; i++){
+			if (fileName.contains( "." + list[i].toLower())){
+				d_matrix_model->renderImage().save(fileName, list[i], 100);
+				return;
+			}
+		}
+    	QMessageBox::critical(this, tr("QtiPlot - Error"), tr("File format not handled, operation aborted!"));
+	}
+}
+
+void Matrix::exportSVG(const QString& fileName)
+{
+	#if QT_VERSION >= 0x040300
+		if (d_view_type != ImageView)
+			return;
+		
+		int width = numRows();
+		int height = numCols();
+		
+		QSvgGenerator svg;
+        svg.setFileName(fileName);
+        svg.setSize(QSize(width, height));
+
+		QPainter p(&svg);
+        p.drawImage (QRect(0, 0, width, height), d_matrix_model->renderImage());
+		p.end();
+	#endif	
+}
+
 void Matrix::exportPDF(const QString& fileName)
 {
 	print(fileName);
@@ -1223,6 +1274,15 @@ void Matrix::setImage(const QImage& image)
     imageLabel->setPixmap(QPixmap::fromImage(image));
     d_stack->setCurrentWidget(imageLabel);
     emit modifiedWindow(this);
+}
+
+void Matrix::importImage(const QString& fn)
+{
+	QImage image(fn);
+    if (image.isNull())
+        return;
+	
+	setImage(image);
 }
 
 void Matrix::setGrayScale()

@@ -350,6 +350,12 @@ public:
 	void setGrayScale();
 	void setRainbowColorMap();
 	void resetView();
+	
+	QImage image();
+	void importImage(const QString&);
+	void exportRasterImage(const QString&, int = 100);
+	void exportToFile(const QString&)  /PyName=export/;
+	void exportVector(const QString&, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize = QPrinter::Custom);
 
 private:
   Matrix(const Matrix&);
