@@ -1110,13 +1110,32 @@ t = matrixToTable(m)
 </programlisting>
 
 Also, is worth knowing that you can easily import image files to matrices, that can be
-used afterwards for plotting (see the next section for more details about 2D plots).
+used afterwards for plotting (see the next section for more details about 2D plots):
 <programlisting>
-m = importImage("C:/poze/adi/PIC00074.jpg")
+m1 = importImage("C:/poze/adi/PIC00074.jpg")
+m2 = newMatrix()
+m2.importImage("C:/poze/adi/PIC00075.jpg")
 </programlisting>
 The algorithm used to import the image returns a gray value between 0 and 255 from the (r, g, b) triplet
-corresponding to each pixel. The gray value is calculated using the formula:
-(r * 11 + g * 16 + b * 5)/32
+corresponding to each pixel. The gray value is calculated using the formula: (r * 11 + g * 16 + b * 5)/32
+
+<para>For custom image analysis operations, you can get a copy of the matrix image view, as a QImage object, via:</para>
+<programlisting>
+image = m.image()
+</programlisting>
+
+You can export matrices to all raster image formats supported by Qt or to any of the following vectorial image format: 
+EPS, PS, PDF or SVG using: 
+<programlisting>
+m.export(fileName)
+</programlisting>
+
+This is a shortcut function which uses some default parameters in order to generate the output image.
+If you need more control over the export parameters you must use one of the following functions:
+<programlisting>
+m1.exportRasterImage(fileName, quality = 100)
+m2.exportVector(fileName, resolution, color = true, keepAspect = true, pageSize = QPrinter::Custom)
+</programlisting>
 </sect2>
 
 <sect2 id = "Python-Plots2D">

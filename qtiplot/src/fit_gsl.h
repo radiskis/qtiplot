@@ -5,13 +5,13 @@
 
 //! Structure for fitting data
 struct FitData {
-  size_t n;
-  size_t p;
-  double * X;
-  double * Y;
-  double * sigma; // weighting data
-  const char *function;
-  const char *names;
+  size_t n;// number of points to be fitted (size of X, Y and sigma arrays)
+  size_t p;// number of fit parameters
+  double * X;// the data to be fitted (abscissae) 
+  double * Y; // the data to be fitted (ordinates)
+  double * sigma; // the weighting data
+  const char *function; // fit model (used only by the NonLinearFit class)
+  const char *names; // names of the fit parameters separated by "," (used only by the NonLinearFit class)
 };
 
 int expd3_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J);

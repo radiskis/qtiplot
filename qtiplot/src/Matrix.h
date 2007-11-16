@@ -86,6 +86,11 @@ public:
 
 	QImage image();
 	void setImage(const QImage& image);
+	void importImage(const QString& fn);
+	void exportRasterImage(const QString& fileName, int quality = 100);
+	void exportSVG(const QString& fileName);
+	void exportToFile(const QString& fileName);
+	void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
 
 	MatrixModel * matrixModel(){return d_matrix_model;};
 	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
@@ -138,7 +143,6 @@ public:
 
 public slots:
 	void exportPDF(const QString& fileName);
-	void exportVector(const QString& fileName, int res, bool color, bool keepAspect, QPrinter::PageSize pageSize);
 	//! Print the Matrix
 	void print();
 	//! Print the Matrix to fileName
