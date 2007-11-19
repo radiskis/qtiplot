@@ -106,23 +106,6 @@ public slots:
     void removeLayer();
 	void confirmRemoveLayer();
 
-	/*!\brief Start adding a text layer.
-	 *
-	 * This works by having #canvas grab the mouse, remembering that we are in the midst of adding
-	 * text in #addTextOn and dispatching the next mouse click to addTextLayer(const QPoint&) in eventFilter().
-	 *
-	 * \sa #defaultTextMarkerFont, #defaultTextMarkerFrame, #defaultTextMarkerColor, #defaultTextMarkerBackground
-	 */
-	void addTextLayer(int f, const QFont& font, const QColor& textCol, const QColor& backgroundCol);
-	/*!\brief Finish adding a text layer.
-	 *
-	 * An empty Graph is created and added to me.
-	 * Legend, title and axes are removed and a new Legend is added with a placeholder text.
-	 *
-	 * \sa #defaultTextMarkerFont, #defaultTextMarkerFrame, #defaultTextMarkerColor, #defaultTextMarkerBackground, addTextLayer(int,const QFont&,const QColor&,const QColor&)
-	 */
-	void addTextLayer(const QPoint& pos);
-
 	Graph* activeGraph(){return active_graph;};
 	void setActiveGraph(Graph* g);
 	void activateGraph(LayerButton* button);
@@ -219,13 +202,7 @@ private:
 	int graphs, cols, rows, graph_width, graph_height, colsSpace, rowsSpace;
 	int left_margin, right_margin, top_margin, bottom_margin;
 	int l_canvas_width, l_canvas_height, hor_align, vert_align;
-	bool addTextOn;
 	bool d_scale_on_print, d_print_cropmarks;
-
-	//! Used when adding text markers on new layers
-	int defaultTextMarkerFrame;
-	QFont defaultTextMarkerFont;
-	QColor defaultTextMarkerColor, defaultTextMarkerBackground;
 
     QWidgetList buttonsList, graphsList;
 	QHBoxLayout *layerButtonsBox;

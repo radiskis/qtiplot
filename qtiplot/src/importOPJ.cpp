@@ -44,7 +44,7 @@
 #include "QwtHistogram.h"
 #include "QwtPieCurve.h"
 #include "VectorCurve.h"
-#include "Legend.h"
+#include "LegendWidget.h"
 #include "Grid.h"
 #include "ArrowMarker.h"
 #include "ImageMarker.h"
@@ -545,7 +545,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 
 			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerXAxisTitle(g,l).txt.c_str())));
 			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerYAxisTitle(g,l).txt.c_str())));
-			Legend* legend = 0;
+			LegendWidget* legend = 0;
 			if(!opj.layerLegend(g,l).txt.empty())
 			{
 				legend = graph->newLegend(parseOriginText(QString::fromLocal8Bit(opj.layerLegend(g,l).txt.c_str())));
@@ -1207,7 +1207,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 	return true;
 }
 
-void ImportOPJ::addText(const text& _text, Graph* graph, Legend* txt, const rect& layerRect, double fFontScaleFactor, double fXScale, double fYScale)
+void ImportOPJ::addText(const text& _text, Graph* graph, LegendWidget* txt, const rect& layerRect, double fFontScaleFactor, double fXScale, double fYScale)
 {
 	int bkg;
 	switch(_text.border_type)

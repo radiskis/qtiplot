@@ -216,9 +216,8 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_preview_table->setAttribute(Qt::WA_DeleteOnClose);
 	d_preview_table->showComments(true);
 	int height = d_preview_table->table()->horizontalHeader()->height();
-	d_preview_table->setMinimumHeight(2*height);
-	d_preview_table->setMaximumHeight(5*height);
-    //d_preview_table->hide();
+	d_preview_table->setMinimumHeight(3*height);
+	d_preview_table->setMaximumHeight(7*height);
 	preview_layout->addWidget(d_preview_table);
 	main_layout->addLayout(preview_layout);
 }

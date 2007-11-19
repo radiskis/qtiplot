@@ -549,8 +549,7 @@ public:
   void setTitleAlignment(int align);
   void removeTitle();
 
-  Legend* newLegend();
-  Legend* newLegend(const QString&);
+  //LegendWidget* newLegend(const QString& = QString());
   void setLegend(const QString&) /NoDerived/;
 %MethodCode
   sipCpp->legend()->setText(*a0);

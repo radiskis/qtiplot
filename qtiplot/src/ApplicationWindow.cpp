@@ -42,6 +42,7 @@
 #include "SetColValuesDialog.h"
 #include "ErrDialog.h"
 #include "Legend.h"
+#include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "ImageMarker.h"
 #include "Graph.h"
@@ -2064,8 +2065,6 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
     } else {
         m = new Matrix(scriptEnv, image, "", ws);
         m->setAttribute(Qt::WA_DeleteOnClose);
-        m->setNumericPrecision(d_decimal_digits);
-        m->setLocale(d_locale);
         initMatrix(m, generateUniqueName(tr("Matrix")));
         m->show();
         m->setWindowLabel(fn);
@@ -2831,7 +2830,7 @@ Table* ApplicationWindow::matrixToTable(Matrix* m)
 
 void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 {
-	QString name=caption;
+	QString name = caption;
 	while(alreadyUsedName(name)){name = generateUniqueName(tr("Matrix"));}
 
 	m->setWindowTitle(name);
@@ -2877,14 +2876,15 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 	int rows = t->numRows();
 	int cols = t->numCols();
 
+	QString caption = generateUniqueName(tr("Matrix"));
 	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws, 0);
+	initMatrix(m, caption);
+	
 	m->setAttribute(Qt::WA_DeleteOnClose);
 	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
-			m->setCell(i, j, t->cell(i,j));
+			m->setCell(i, j, t->cell(i, j));
 	}
-	QString caption = generateUniqueName(tr("Matrix"));
-	initMatrix(m, caption);
 
 	m->setWindowLabel(m->windowLabel());
 	m->setCaptionPolicy(m->captionPolicy());
@@ -6926,8 +6926,7 @@ void ApplicationWindow::newLegend()
 
 	Graph* g = (Graph*)plot->activeGraph();
 	if ( g )
-        g->newLegendWidget();
-		//g->newLegend();
+		g->newLegend();
 }
 
 void ApplicationWindow::addTimeStamp()
@@ -6964,40 +6963,9 @@ void ApplicationWindow::addText()
 		return;
 
 	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
-
-	switch(QMessageBox::information(this,
-				tr("QtiPlot - Add new layer?"),
-				tr("Do you want to add the text on a new layer or on the active layer?"),
-				tr("On &New Layer"), tr("On &Active Layer"), tr("&Cancel"),
-				0, 2 ) )
-	{
-		case 0:
-			plot->addTextLayer(legendFrameStyle, plotLegendFont, legendTextColor, legendBackground);
-			break;
-
-		case 1:
-			{
-				if (plot->isEmpty())
-				{
-					QMessageBox::warning(this,tr("QtiPlot - Warning"),
-							tr("<h4>There are no plot layers available in this window.</h4>"
-								"<p><h4>Please add a layer and try again!</h4>"));
-
-					actionAddText->setChecked(false);
-					return;
-				}
-
-				Graph *g = (Graph*)plot->activeGraph();
-				if (g)
-					g->drawText(true);
-			}
-			break;
-
-		case 2:
-			actionAddText->setChecked(false);
-			return;
-			break;
-	}
+	Graph *g = (Graph*)plot->activeGraph();
+	if (g)
+		g->drawText(true);
 }
 
 void ApplicationWindow::addImage()
@@ -7133,24 +7101,23 @@ void ApplicationWindow::showTextDialog()
 		return;
 
 	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
-	if ( g )
-	{
-		Legend *m = (Legend *) g->selectedMarkerPtr();
-		if (!m)
+	if ( g ){		
+		LegendWidget *l = (LegendWidget *) g->selectedText();
+		if (!l)
 			return;
 
-		TextDialog *td=new TextDialog(TextDialog::TextMarker, this, 0);
+		TextDialog *td = new TextDialog(TextDialog::TextMarker, this, 0);
 		td->setAttribute(Qt::WA_DeleteOnClose);
-		connect (td,SIGNAL(values(const QString&,int,int,const QFont&, const QColor&, const QColor&)),
-				g,SLOT(updateTextMarker(const QString&,int,int,const QFont&, const QColor&, const QColor&)));
+		connect (td, SIGNAL(values(const QString&, int, int, const QFont&, const QColor&, const QColor&)),
+				g, SLOT(updateTextMarker(const QString&, int, int, const QFont&, const QColor&, const QColor&)));
 
 		td->setIcon(QPixmap(logo_xpm));
-		td->setText(m->text());
-		td->setFont(m->font());
-		td->setTextColor(m->textColor());
-		td->setBackgroundColor(m->backgroundColor());
-		td->setBackgroundType(m->frameStyle());
-		td->setAngle(m->angle());
+		td->setText(l->text());
+		td->setFont(l->font());
+		td->setTextColor(l->textColor());
+		td->setBackgroundColor(l->backgroundColor());
+		td->setBackgroundType(l->frameStyle());
+		td->setAngle(l->angle());
 		td->exec();
 	}
 }
