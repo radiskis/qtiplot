@@ -34,6 +34,7 @@
 #include "ArrowMarker.h"
 
 #include <QVector>
+#include <QMessageBox>
 
 #include <qwt_text_label.h>
 #include <qwt_plot_canvas.h>
@@ -68,27 +69,24 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				const QMouseEvent *me = (const QMouseEvent *)e;
 
 				bool allAxisDisabled = true;
-				for (int i=0; i < QwtPlot::axisCnt; i++)
-				{
-					if (plotWidget->axisEnabled(i))
-					{
+				for (int i=0; i < QwtPlot::axisCnt; i++){
+					if (plotWidget->axisEnabled(i)){
 						allAxisDisabled = false;
 						break;
 					}
 				}
 
-				if (me->button()==Qt::LeftButton && (plot()->drawLineActive()))
-				{
+				if (me->button()==Qt::LeftButton && (plot()->drawLineActive())){
 					startLinePoint = me->pos();
 					return true;
 				}
 
-				if (me->button()==Qt::LeftButton && plot()->drawTextActive()) {
+				if (me->button()==Qt::LeftButton && plot()->drawTextActive()){
 					drawTextMarker(me->pos());
 					return true;
 				}
 
-				if (!plot()->zoomOn() && selectMarker(me)) {
+				if (!plot()->zoomOn() && selectMarker(me)){
 					if (me->button() == Qt::RightButton)
 						emit showMarkerPopupMenu();
 					return true;

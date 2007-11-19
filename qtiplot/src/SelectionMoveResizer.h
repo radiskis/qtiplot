@@ -36,7 +36,7 @@
 
 class QPoint;
 class QwtPlotMarker;
-class Legend;
+class LegendWidget;
 class ArrowMarker;
 class ImageMarker;
 
@@ -92,7 +92,7 @@ class SelectionMoveResizer : public QWidget
 
 	public:
 		//! Construct a new MoveResizer with the given marker as the only target.
-		SelectionMoveResizer(Legend *target);
+		SelectionMoveResizer(LegendWidget *target);
 		//! Construct a new MoveResizer with the given marker as the only target.
 		SelectionMoveResizer(ArrowMarker *target);
 		//! Construct a new MoveResizer with the given marker as the only target.
@@ -107,7 +107,7 @@ class SelectionMoveResizer : public QWidget
 		//! Returns true if w is one of targets, false else.
 		bool contains(QWidget *w) const { return d_widgets.contains(w); };
 		//! Returns true if m is one of targets, false else.
-		bool contains(Legend *m) const { return d_legend_markers.contains(m); };
+		bool contains(LegendWidget *m) const { return d_legend_markers.contains(m); };
 		//! Returns true if m is one of targets, false else.
 		bool contains(ArrowMarker *m) const { return d_line_markers.contains(m); };
 		//! Returns true if m is one of targets, false else.
@@ -115,7 +115,7 @@ class SelectionMoveResizer : public QWidget
 
 	public slots:
 		//! Add target to the list of items to be moved/resized together.
-		void add(Legend *target);
+		void add(LegendWidget *target);
 		//! Add target to the list of items to be moved/resized together.
 		void add(ArrowMarker *target);
 		//! Add target to the list of items to be moved/resized together.
@@ -123,7 +123,7 @@ class SelectionMoveResizer : public QWidget
 		//! Add target to the list of items to be moved/resized together.
 		void add(QWidget *target);
 		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
-		int removeAll(Legend *target);
+		int removeAll(LegendWidget *target);
 		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
 		int removeAll(ArrowMarker *target);
 		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
@@ -187,7 +187,7 @@ class SelectionMoveResizer : public QWidget
 		QRect boundingRectOf(QwtPlotMarker *target) const;
 
 		//! Target markers I'm handling.
-		QList <Legend *> d_legend_markers;
+		QList <LegendWidget *> d_legend_markers;
 		//! Target markers I'm handling.
 		QList <ArrowMarker *> d_line_markers;
 		//! Target markers I'm handling.

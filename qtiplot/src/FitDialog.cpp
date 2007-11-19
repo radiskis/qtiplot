@@ -992,6 +992,8 @@ void FitDialog::addFunctionName()
 
 void FitDialog::accept()
 {
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	
 	QString curve = boxCurve->currentText();
 	QStringList curvesList = d_graph->curvesList();
 	if (curvesList.contains(curve) <= 0){
@@ -1022,7 +1024,7 @@ void FitDialog::accept()
 		}
 	} else
 		n = rows;
-
+	
 	QStringList parameters;
 	MyParser parser;
 	bool error = false;
@@ -1047,18 +1049,20 @@ void FitDialog::accept()
 		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
 			for (int i=0; i<rows; i++){
-                QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
+                QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);				
 				if (!cb->isChecked()){
-					paramsInit[j] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
+					paramsInit[j] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
-					parameters << boxParams->item(i,0)->text();
+					parameters << boxParams->item(i, 0)->text();
 
 					double left = ((RangeLimitBox*)boxParams->cellWidget(j, 1))->value();
 					double right = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
 					d_current_fit->setParameterRange(j, left, right);
 					j++;
-				} else
-					formula.replace(boxParams->item(i, 0)->text(), boxParams->item(i, 2)->text());
+				} else {
+					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value(); 
+					formula.replace(boxParams->item(i, 0)->text(), QString::number(val, 'f', app->fit_output_precision));
+				}
 			}
 		} else {
 			for (int i=0; i<n; i++) {
@@ -1086,10 +1090,13 @@ void FitDialog::accept()
 	}
 
 	if (!error){
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
-
 		if (d_current_fit->type() == Fit::BuiltIn)
 			modifyGuesses (paramsInit);
+		if (d_current_fit->type() == Fit::User){
+			d_current_fit->setFormula(formula);
+			d_current_fit->setParametersList(parameters);
+		}
+		
 		d_current_fit->setInitialGuesses(paramsInit);
 
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
@@ -1107,14 +1114,14 @@ void FitDialog::accept()
 		double *res = d_current_fit->results();
 		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
-			for (int i=0;i<rows;i++){
+			for (int i=0; i<rows; i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
 				if (!cb->isChecked())
-					((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[j++]);
+					((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[j++]);
 			}
 		} else {
-			for (int i=0;i<rows;i++)
-				((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[i]);
+			for (int i=0; i<rows; i++)
+				((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[i]);
 		}
 
 		if (globalParamTableBox->isChecked() && d_param_table)
