@@ -6917,8 +6917,7 @@ void ApplicationWindow::newLegend()
 		return;
 
 	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
-	if (plot->isEmpty())
-	{
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
@@ -6927,7 +6926,8 @@ void ApplicationWindow::newLegend()
 
 	Graph* g = (Graph*)plot->activeGraph();
 	if ( g )
-		g->newLegend();
+        g->newLegendWidget();
+		//g->newLegend();
 }
 
 void ApplicationWindow::addTimeStamp()

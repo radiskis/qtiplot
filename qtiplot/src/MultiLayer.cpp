@@ -52,6 +52,7 @@
 #include "MultiLayer.h"
 #include "Plot.h"
 #include "Legend.h"
+#include "LegendWidget.h"
 #include "SelectionMoveResizer.h"
 
 #include <gsl/gsl_vector.h>
@@ -208,8 +209,7 @@ void MultiLayer::setActiveGraph(Graph* g)
 
 	active_graph->raise();//raise layer on top of the layers stack
 
-	for (int i=0;i<(int)graphsList.count();i++)
-	{
+	for (int i=0;i<(int)graphsList.count();i++){
 		Graph *gr = (Graph *)graphsList.at(i);
 		LayerButton *btn = (LayerButton *)buttonsList.at(i);
 		if (gr == g)
@@ -1186,6 +1186,13 @@ void MultiLayer::mousePressEvent ( QMouseEvent * e )
 	QList<QWidget*>::iterator i = graphsList.end();
 	while (i!=graphsList.begin()) {
 		--i;
+
+		QList <LegendWidget *> texts = ((Graph *)(*i))->textsList();
+		foreach(LegendWidget *text, texts){
+		    if (!text->geometry().contains(pos))
+                text->deselect();
+		}
+
 		QRect igeo = (*i)->frameGeometry();
 		igeo.addCoords(-margin, -margin, margin, margin);
 		if (igeo.contains(pos)) {

@@ -4,7 +4,7 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-SCRIPTING_LANGS += Python
+#SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -151,6 +151,7 @@ HEADERS  += src/ApplicationWindow.h \
             src/QwtPieCurve.h \
             src/ErrDialog.h \
             src/Legend.h \
+            src/LegendWidget.h \
             src/ArrowMarker.h \
             src/ImageMarker.h \
             src/ImageDialog.h \
@@ -268,6 +269,7 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/QwtPieCurve.cpp \
             src/ErrDialog.cpp \
             src/Legend.cpp \
+            src/LegendWidget.cpp \
             src/ArrowMarker.cpp \
             src/ImageMarker.cpp \
             src/ImageDialog.cpp \

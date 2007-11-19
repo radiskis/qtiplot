@@ -50,6 +50,7 @@ class QwtPlotZoomer;
 class QwtPieCurve;
 class Table;
 class Legend;
+class LegendWidget;
 class ArrowMarker;
 class ImageMarker;
 class TitlePicker;
@@ -64,7 +65,7 @@ class PlotCurve;
 class QwtErrorPlotCurve;
 class MultiLayer;
 class Spectrogram;
-	
+
 //! Structure containing curve layout parameters
 typedef struct{
   int lCol;        //!< line color
@@ -138,6 +139,8 @@ class Graph: public QWidget
 		PlotToolInterface* activeTool() const { return d_active_tool; }
 
 		Grid *grid(){return d_plot->grid();};
+
+		QList <LegendWidget *> textsList(){return d_texts_list;};
 
 	public slots:
 		//! Accessor method for #d_plot.
@@ -343,6 +346,7 @@ class Graph: public QWidget
 		void insertLegend(const QStringList& lst, int fileVersion);
 		Legend *legend();
 		Legend *newLegend();
+		LegendWidget* newLegendWidget();
 		Legend *newLegend(const QString& text);
 		bool hasLegend(){return legendMarkerID >= 0;};
 
@@ -721,6 +725,7 @@ signals:
 		QVector<int> d_images;
 		//! Stores the identifiers (keys) of the text objects on the plot
 		QVector<int> d_texts;
+		QList <LegendWidget *> d_texts_list;
 
 		QPen mrkLinePen;
 		QFont auxMrkFont, defaultMarkerFont;

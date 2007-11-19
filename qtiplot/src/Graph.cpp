@@ -100,6 +100,7 @@ static const char *unzoom_xpm[]={
 #include "CanvasPicker.h"
 #include "QwtErrorPlotCurve.h"
 #include "Legend.h"
+#include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "cursors.h"
 #include "ScalePicker.h"
@@ -193,8 +194,7 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 	defaultTextMarkerBackground = QColor(Qt::white);
 
 	d_user_step = QVector<double>(QwtPlot::axisCnt);
-	for (int i=0; i<QwtPlot::axisCnt; i++)
-	{
+	for (int i=0; i<QwtPlot::axisCnt; i++){
 		axisType << Numeric;
 		axesFormatInfo << QString::null;
 		axesFormulas << QString::null;
@@ -268,6 +268,9 @@ void Graph::deselectMarker()
 	selectedMarker = -1;
 	if (d_markers_selector)
 		delete d_markers_selector;
+
+    foreach(LegendWidget *legend, d_texts_list)
+        legend->deselect();
 }
 
 long Graph::selectedMarkerKey()
@@ -285,32 +288,24 @@ void Graph::setSelectedMarker(long mrk, bool add)
 	selectedMarker = mrk;
 	if (add) {
 		if (d_markers_selector) {
-			if (d_texts.contains(mrk))
-				d_markers_selector->add((Legend*)d_plot->marker(mrk));
-			else if (d_lines.contains(mrk))
+			if (d_lines.contains(mrk))
 				d_markers_selector->add((ArrowMarker*)d_plot->marker(mrk));
 			else if (d_images.contains(mrk))
 				d_markers_selector->add((ImageMarker*)d_plot->marker(mrk));
+			else
+				return;
 		} else {
-			if (d_texts.contains(mrk))
-				d_markers_selector = new SelectionMoveResizer((Legend*)d_plot->marker(mrk));
-			else if (d_lines.contains(mrk))
+			if (d_lines.contains(mrk))
 				d_markers_selector = new SelectionMoveResizer((ArrowMarker*)d_plot->marker(mrk));
 			else if (d_images.contains(mrk))
 				d_markers_selector = new SelectionMoveResizer((ImageMarker*)d_plot->marker(mrk));
 			else
 				return;
+
 			connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
 		}
 	} else {
-		if (d_texts.contains(mrk)) {
-			if (d_markers_selector) {
-				if (d_markers_selector->contains((Legend*)d_plot->marker(mrk)))
-					return;
-				delete d_markers_selector;
-			}
-			d_markers_selector = new SelectionMoveResizer((Legend*)d_plot->marker(mrk));
-		} else if (d_lines.contains(mrk)) {
+		if (d_lines.contains(mrk)) {
 			if (d_markers_selector) {
 				if (d_markers_selector->contains((ArrowMarker*)d_plot->marker(mrk)))
 					return;
@@ -325,7 +320,8 @@ void Graph::setSelectedMarker(long mrk, bool add)
 			}
 			d_markers_selector = new SelectionMoveResizer((ImageMarker*)d_plot->marker(mrk));
 		} else
-			return;
+            return;
+
 		connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
 	}
 }
@@ -1450,7 +1446,7 @@ QString Graph::selectedCurveTitle()
 
 bool Graph::markerSelected()
 {
-	return (selectedMarker>=0);
+	return (selectedMarker >= 0);
 }
 
 void Graph::removeMarker()
@@ -1459,7 +1455,7 @@ void Graph::removeMarker()
 	{
 		if (d_markers_selector) {
 			if (d_texts.contains(selectedMarker))
-				d_markers_selector->removeAll((Legend*)d_plot->marker(selectedMarker));
+				d_markers_selector->removeAll((LegendWidget*)d_texts_list[selectedMarker]);
 			else if (d_lines.contains(selectedMarker))
 				d_markers_selector->removeAll((ArrowMarker*)d_plot->marker(selectedMarker));
 			else if (d_images.contains(selectedMarker))
@@ -1469,7 +1465,7 @@ void Graph::removeMarker()
 		d_plot->replot();
 		emit modifiedGraph();
 
-		if (selectedMarker==legendMarkerID)
+		if (selectedMarker == legendMarkerID)
 			legendMarkerID=-1;
 
 		if (d_lines.contains(selectedMarker)>0)
@@ -2275,6 +2271,27 @@ QString Graph::saveCurves()
 		}
 	}
 	return s;
+}
+
+LegendWidget* Graph::newLegendWidget()
+{
+	LegendWidget* mrk = new LegendWidget(d_plot);
+
+	if (isPiePlot())
+		mrk->setText(pieLegendText());
+	else
+		mrk->setText(legendText());
+
+	mrk->setFrameStyle(defaultMarkerFrame);
+	mrk->setFont(defaultMarkerFont);
+	mrk->setTextColor(defaultTextMarkerColor);
+	mrk->setBackgroundColor(defaultTextMarkerBackground);
+	//mrk->setOrigin(QPoint(10, 10));
+
+    d_texts_list << mrk;
+
+	//emit modifiedGraph();
+	return mrk;
 }
 
 Legend* Graph::newLegend()
