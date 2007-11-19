@@ -30,7 +30,7 @@
  ***************************************************************************/
 #include "CanvasPicker.h"
 #include "ImageMarker.h"
-#include "Legend.h"
+#include "LegendWidget.h"
 #include "ArrowMarker.h"
 
 #include <QVector>
@@ -54,7 +54,6 @@ CanvasPicker::CanvasPicker(Graph *graph):
 bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 {
 	QVector<int> images=plot()->imageMarkerKeys();
-	QVector<int> texts=plot()->textMarkerKeys();
 	QVector<int> lines=plot()->lineMarkerKeys();
 
 	if (object != (QObject *)plot()->plotWidget()->canvas())
@@ -109,26 +108,17 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				if (d_editing_marker) {
 					return d_editing_marker->eventFilter(plotWidget->canvas(), e);
 				} else if (plot()->selectedMarkerKey() >= 0) {
-					if (texts.contains(plot()->selectedMarkerKey()))
-					{
-						emit viewTextDialog();
-						return true;
-					}
-					else if (lines.contains(plot()->selectedMarkerKey()))
-					{
+					if (lines.contains(plot()->selectedMarkerKey())){
 						emit viewLineDialog();
 						return true;
-					}
-					else if (images.contains(plot()->selectedMarkerKey()))
-					{
+					} else if (images.contains(plot()->selectedMarkerKey())){
 						emit viewImageDialog();
 						return true;
 					}
 				} else if (plot()->isPiePlot()){
                         emit showPlotDialog(plot()->curveKey(0));
                         return true;
-				}
-                  else{
+				} else {
 					const QMouseEvent *me = (const QMouseEvent *)e;
                     int dist, point;
                     int curveKey = plotWidget->closestCurve(me->pos().x(), me->pos().y(), dist, point);
@@ -193,12 +183,6 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				int key=((const QKeyEvent *)e)->key();
 
 				long selectedMarker = plot()->selectedMarkerKey();
-				if (texts.contains(selectedMarker) &&
-						(key==Qt::Key_Enter || key==Qt::Key_Return))
-				{
-					emit viewTextDialog();
-					return true;
-				}
 				if (lines.contains(selectedMarker) &&
 						(key==Qt::Key_Enter || key==Qt::Key_Return))
 				{
@@ -230,14 +214,18 @@ void CanvasPicker::disableEditing()
 
 void CanvasPicker::drawTextMarker(const QPoint& point)
 {
-	Legend mrkT(plotWidget);
-	mrkT.setOrigin(point);
-	mrkT.setFrameStyle(plot()->textMarkerDefaultFrame());
-	mrkT.setFont(plot()->defaultTextMarkerFont());
-	mrkT.setTextColor(plot()->textMarkerDefaultColor());
-	mrkT.setBackgroundColor(plot()->textMarkerDefaultBackground());
-	mrkT.setText(tr("enter your text here"));
-	plot()->insertTextMarker(&mrkT);
+	LegendWidget t(plotWidget);
+	t.setOrigin(point);
+	t.setFrameStyle(plot()->textMarkerDefaultFrame());
+	t.setFont(plot()->defaultTextMarkerFont());
+	t.setTextColor(plot()->textMarkerDefaultColor());
+	t.setBackgroundColor(plot()->textMarkerDefaultBackground());
+	t.setText(tr("enter your text here"));
+	
+	LegendWidget *l = plot()->insertText(&t);
+	l->setSelected();
+	l->showTextDialog();
+	
 	plot()->drawText(FALSE);
 	emit drawTextOff();
 }
@@ -268,7 +256,7 @@ void CanvasPicker::drawLineMarker(const QPoint& point, bool endArrow)
 bool CanvasPicker::selectMarker(const QMouseEvent *e)
 {
 	const QPoint point = e->pos();
-	foreach(long i, plot()->textMarkerKeys()) {
+	/*foreach(long i, plot()->textMarkerKeys()) {
 		Legend *m = (Legend*)plotWidget->marker(i);
 		if (!m) return false;
 		if (m->rect().contains(point)) {
@@ -279,7 +267,7 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 			plot()->setSelectedMarker(i, e->modifiers() & Qt::ShiftModifier);
 			return true;
 		}
-	}
+	}*/
 	foreach(long i, plot()->imageMarkerKeys()) {
 		ImageMarker* m=(ImageMarker*)plotWidget->marker(i);
 		if (!m) return false;

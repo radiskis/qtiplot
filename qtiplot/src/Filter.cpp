@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "Filter.h"
-#include "Legend.h"
+#include "LegendWidget.h"
 #include "ColorBox.h"
 #include "Table.h"
 #include "FunctionCurve.h"
@@ -188,12 +188,12 @@ void Filter::showLegend()
 	if (!d_output_graph)
 		return;
 
-	Legend* mrk = d_output_graph->newLegend(legendInfo());
-	if (d_output_graph->hasLegend()){
+	LegendWidget* mrk = d_output_graph->newLegend(legendInfo());
+	/*if (d_output_graph->hasLegend()){
 		Legend* legend = d_output_graph->legend();
 		QPoint p = legend->rect().bottomLeft();
 		mrk->setOrigin(QPoint(p.x(), p.y()+20));
-	}
+	}*/
 	d_output_graph->replot();
 }
 

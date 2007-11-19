@@ -141,6 +141,8 @@ class Graph: public QWidget
 		Grid *grid(){return d_plot->grid();};
 
 		QList <LegendWidget *> textsList(){return d_texts_list;};
+		LegendWidget *selectedText(){return d_selected_text;};
+		void setSelectedText(LegendWidget *l){d_selected_text = l;};
 
 	public slots:
 		//! Accessor method for #d_plot.
@@ -314,10 +316,10 @@ class Graph: public QWidget
 		//@{
 		void drawText(bool on);
 		bool drawTextActive(){return drawTextOn;};
-		long insertTextMarker(Legend* mrk);
+		LegendWidget* insertText(LegendWidget*);
 
 		//! Used when opening a project file
-		long insertTextMarker(const QStringList& list, int fileVersion);
+		void insertTextMarker(const QStringList& list, int fileVersion);
 		void updateTextMarker(const QString& text,int angle, int bkg,const QFont& fnt,
 				const QColor& textColor, const QColor& backgroundColor);
 
@@ -335,19 +337,16 @@ class Graph: public QWidget
 				bool start, bool end, int headLength, int headAngle, bool filledHead);
 		void setCopiedImageName(const QString& fn){auxMrkFileName=fn;};
 		QRect copiedMarkerRect(){return QRect(auxMrkStart, auxMrkEnd);};
-		QVector<int> textMarkerKeys(){return d_texts;};
+		
 		Legend* textMarker(long id);
 
 		void addTimeStamp();
-
 		void removeLegend();
 		void removeLegendItem(int index);
 		void addLegendItem(const QString& colName);
 		void insertLegend(const QStringList& lst, int fileVersion);
 		Legend *legend();
-		Legend *newLegend();
-		LegendWidget* newLegendWidget();
-		Legend *newLegend(const QString& text);
+		LegendWidget* newLegend(const QString& text = QString());
 		bool hasLegend(){return legendMarkerID >= 0;};
 
 		//! Creates a new legend text using the curves titles
@@ -723,8 +722,7 @@ signals:
 		QVector<int> d_lines;
 		//! Images on plot keys
 		QVector<int> d_images;
-		//! Stores the identifiers (keys) of the text objects on the plot
-		QVector<int> d_texts;
+		//! Stores pointers to the text objects on the plot
 		QList <LegendWidget *> d_texts_list;
 
 		QPen mrkLinePen;
@@ -756,5 +754,7 @@ signals:
 		QPointer<RangeSelectorTool> d_range_selector;
 		//! The currently active tool, or NULL for default (pointer).
 		PlotToolInterface *d_active_tool;
+		
+		LegendWidget *d_selected_text;
 };
 #endif // GRAPH_H

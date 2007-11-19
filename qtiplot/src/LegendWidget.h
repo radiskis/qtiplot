@@ -29,21 +29,19 @@
 #ifndef LEGENDWIDGET_H
 #define LEGENDWIDGET_H
 
-#include <qfont.h>
-#include <qpen.h>
-
+#include <QWidget>
 #include <qwt_plot.h>
-#include <qwt_array.h>
 #include <qwt_text.h>
 
 #include "Graph.h"
 #include "Plot.h"
-#include "PlotEnrichement.h"
 
-class SelectionMoveResizer;
+//class SelectionMoveResizer;
 
 class LegendWidget: public QWidget
-{
+{	
+	Q_OBJECT
+
 public:
     LegendWidget(Plot *);
 	~LegendWidget();
@@ -51,23 +49,14 @@ public:
 	QwtPlot *plot(){return d_plot;};
 
 	//! The kinds of frame a LegendWidget can draw around the Text.
-	enum FrameStyle{None = 0, Line = 1, Shadow=2};
+	enum FrameStyle{None = 0, Line = 1, Shadow = 2};
 
 	QString text(){return d_text->text();};
 	void setText(const QString& s);
 
-	//! Bounding rectangle in paint coordinates.
-	//QRect rect();
-	//! Bounding rectangle in plot coordinates.
-	//virtual QwtDoubleRect boundingRect();
-
 	void setOrigin(const QPoint & p);
-
 	//! Sets the position of the top left corner in axis coordinates
 	void setOriginCoord(double x, double y);
-
-	//! Keep the markers on screen each time the scales are modified by adding/removing curves
-	void updateOrigin();
 
 	QColor textColor(){return d_text->color();};
 	void setTextColor(const QColor& c);
@@ -82,10 +71,16 @@ public:
 	void setFont(const QFont& font);
 
 	int angle(){return d_angle;};
-	void setAngle(int ang){d_angle=ang;};
+	void setAngle(int ang){d_angle = ang;};
 
-	void deselect();
-
+	double xValue();
+	double yValue();
+	
+	void setSelected(bool on = true);
+	
+	void showTextDialog(){emit showDialog();};
+	void showContextMenu(){emit showMenu();};
+	
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
 	void drawFrame(QPainter *p, int type, const QRect& rect);
@@ -93,13 +88,13 @@ private:
 	void drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y, int l);
 	void drawText(QPainter *, const QRect&, QwtArray<long>, int);
 
-	QwtArray<long> itemsHeight(int y, int symbolLineLength, int &width, int &height);
+	QwtArray<long> itemsHeight(int symbolLineLength, int &width, int &height);
 	int symbolsMaxWidth();
 	QString parse(const QString& str);
 
-protected:
 	virtual void paintEvent(QPaintEvent *e);
     void mousePressEvent(QMouseEvent *);
+	void contextMenuEvent(QContextMenuEvent * ){emit showMenu();};
 
 	//! Parent plot
 	Plot *d_plot;
@@ -113,9 +108,6 @@ protected:
 	//! Pointer to the QwtText object
 	QwtText* d_text;
 
-	//! TopLeft position in pixels
-	QPoint d_pos;
-
 	//! Distance between symbols and legend text
 	int h_space;
 
@@ -128,6 +120,10 @@ protected:
 	double d_x, d_y;
 
 	SelectionMoveResizer *d_selector;
+	
+signals:
+	void showDialog();
+	void showMenu();
 };
 
 #endif

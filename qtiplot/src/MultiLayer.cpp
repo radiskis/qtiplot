@@ -102,7 +102,6 @@ MultiLayer::MultiLayer(const QString& label, QWidget* parent, const char* name, 
 	l_canvas_width = 400; l_canvas_height = 300;
 	hor_align = HCenter;  vert_align = VCenter;
 	active_graph = 0;
-	addTextOn = false;
     d_open_maximized = 0;
     d_max_size = QSize();
     d_normal_size = QSize();
@@ -916,16 +915,14 @@ void MultiLayer::printAllLayers(QPainter *painter)
 void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 		const QFont& numbersFnt, const QFont& legendFnt)
 {
-	for (int i=0;i<(int)graphsList.count();i++)
-	{
+	for (int i=0;i<(int)graphsList.count();i++){
 		Graph *gr=(Graph *)graphsList.at(i);
 		QwtPlot *plot=gr->plotWidget();
 
 		QwtText text = plot->title();
   	    text.setFont(titleFnt);
   	    plot->setTitle(text);
-		for (int j= 0;j<QwtPlot::axisCnt;j++)
-		{
+		for (int j= 0;j<QwtPlot::axisCnt;j++){
 			plot->setAxisFont (j,numbersFnt);
 
 			text = plot->axisTitle(j );
@@ -933,13 +930,10 @@ void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
   	        plot->setAxisTitle(j, text);
 		}
 
-		QVector<int> keys=gr->textMarkerKeys();
-		for (int k=0;k<(int)keys.size();k++)
-		{
-			Legend* mrk=(Legend*)gr->textMarker(keys[k]);
-			if (mrk)
-				mrk->setFont(legendFnt);
-		}
+		QList <LegendWidget *> texts = gr->textsList();
+		foreach (LegendWidget *l, texts)
+			l->setFont(legendFnt);
+		
 		plot->replot();
 	}
 	emit modifiedPlot();
@@ -970,57 +964,11 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(viewTextDialog()),this,SIGNAL(showTextDialog()));
 }
 
-void MultiLayer::addTextLayer(int f, const QFont& font,
-		const QColor& textCol, const QColor& backgroundCol)
-{
-	defaultTextMarkerFont = font;
-	defaultTextMarkerFrame = f;
-	defaultTextMarkerColor = textCol;
-	defaultTextMarkerBackground = backgroundCol;
-
-	addTextOn=TRUE;
-	QApplication::setOverrideCursor(Qt::IBeamCursor);
-	canvas->grabMouse();
-}
-
-void MultiLayer::addTextLayer(const QPoint& pos)
-{
-	Graph* g=addLayer();
-	g->removeLegend();
-	g->setTitle("");
-	for (int i=0; i<4; i++)
-		g->enableAxis(i, false);
-	g->setIgnoreResizeEvents(true);
-	g->setTextMarkerDefaults(defaultTextMarkerFrame, defaultTextMarkerFont,
-			defaultTextMarkerColor, defaultTextMarkerBackground);
-	Legend *mrk = g->newLegend(tr("enter your text here"));
-	QSize size = mrk->rect().size();
-	setGraphGeometry(pos.x(), pos.y(), size.width()+10, size.height()+10);
-	g->setIgnoreResizeEvents(false);
-	g->show();
-	QApplication::restoreOverrideCursor();
-	canvas->releaseMouse();
-	addTextOn=false;
-	emit drawTextOff();
-	emit modifiedPlot();
-}
-
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 {
-	if(e->type() == QEvent::MouseButtonPress && object == (QObject *)canvas)
-	{
-		const QMouseEvent *me = (const QMouseEvent *)e;
-		if (me->button()==Qt::LeftButton && addTextOn)
-			addTextLayer(me->pos());
-
-		return false;
-	}
-	else if(e->type() == QEvent::Resize && object == (QObject *)canvas)
-	{
+	if(e->type() == QEvent::Resize && object == (QObject *)canvas){
 		resizeLayers((const QResizeEvent *)e);
-	}
-	else if (e->type()==QEvent::ContextMenu && object == titleBar)
-	{
+	} else if (e->type()==QEvent::ContextMenu && object == titleBar){
 		emit showTitleBarMenu();
 		((QContextMenuEvent*)e)->accept();
 		return true;
@@ -1188,9 +1136,9 @@ void MultiLayer::mousePressEvent ( QMouseEvent * e )
 		--i;
 
 		QList <LegendWidget *> texts = ((Graph *)(*i))->textsList();
-		foreach(LegendWidget *text, texts){
-		    if (!text->geometry().contains(pos))
-                text->deselect();
+		foreach(LegendWidget *l, texts){			
+		    if (!l->geometry().contains(pos))
+                l->setSelected(false);
 		}
 
 		QRect igeo = (*i)->frameGeometry();

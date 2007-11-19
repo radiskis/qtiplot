@@ -79,7 +79,6 @@ private:
 
 signals:
 	void showPlotDialog(int);
-	void viewTextDialog();
 	void viewLineDialog();
 	void viewImageDialog();
 	void drawTextOff();

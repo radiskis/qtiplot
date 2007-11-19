@@ -31,7 +31,6 @@
 
 #include <QPainter>
 #include <QMouseEvent>
-#include <QMessageBox>
 
 #include <qwt_scale_map.h>
 #include <qwt_plot.h>
@@ -43,7 +42,7 @@
 #include "PlotEnrichement.h"
 
 SelectionMoveResizer::SelectionMoveResizer(LegendWidget *target)
-	: QWidget(target->plot())
+	: QWidget(target->parentWidget())
 {
 	init();
 	add(target);
@@ -74,7 +73,7 @@ void SelectionMoveResizer::init()
 	d_op = None;
 	d_op_start = QPoint(0,0);
 	d_op_dp = QPoint(0,0);
-
+	
 	setGeometry(0, 0, parentWidget()->width(), parentWidget()->height());
 	setMouseTracking(true);
 	parentWidget()->installEventFilter(this);
@@ -89,10 +88,10 @@ SelectionMoveResizer::~SelectionMoveResizer()
 
 void SelectionMoveResizer::add(LegendWidget *target)
 {
-	if ((QWidget*)target->plot() != parent())
+	if ((QWidget*)target->parentWidget() != parent())
 		return;
 	d_legend_markers << target;
-
+	target->installEventFilter(this);
 	if (d_bounding_rect.isValid())
 		d_bounding_rect |= target->geometry();
 	else
@@ -323,11 +322,13 @@ void SelectionMoveResizer::operateOnTargets()
 					p2.x()<p1.x() ? new_rect.left() : new_rect.right(),
 					p2.y()<p1.y() ? new_rect.top() : new_rect.bottom() ));
 	}
+	
 	foreach(ImageMarker *i, d_image_markers) {
 		QRect new_rect = operateOn(i->rect());
 		i->setOrigin(new_rect.topLeft());
 		i->setSize(new_rect.size());
 	}
+	
 	foreach(QWidget *i, d_widgets)
 		i->setGeometry(operateOn(i->geometry()));
 
@@ -362,6 +363,10 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 {
 	if (me->button() == Qt::RightButton) {
 		// If one of the parents' event handlers deletes me, Qt crashes while trying to send the QContextMenuEvent.
+		foreach(LegendWidget *l, d_legend_markers){
+			if(l->geometry().contains(me->pos()))
+				return l->showContextMenu();
+		}		
 		me->accept();
 		return;
 	}
@@ -408,6 +413,11 @@ void SelectionMoveResizer::mouseMoveEvent(QMouseEvent *me)
 
 void SelectionMoveResizer::mouseDoubleClickEvent(QMouseEvent *e)
 {
+	foreach(LegendWidget *l, d_legend_markers) {
+		if(l->geometry().contains(e->pos()))
+			return l->showTextDialog();
+	}
+	
 	e->ignore();
 }
 

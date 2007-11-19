@@ -63,14 +63,14 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 	top_margin = 5;
 	line_length = 20;
 
-	//QPoint pos = plot->canvas()->pos();
-	//pos = QPoint(pos.x() + 10, pos.y() + 10);
-
-    d_pos = QPoint(0, 0);
-	d_x = d_plot->canvasMap(QwtPlot::xBottom).invTransform(0);
-	d_y = d_plot->canvasMap(QwtPlot::yLeft).invTransform(0);
-
+	QPoint pos = plot->canvas()->pos();
+	pos = QPoint(pos.x() + 10, pos.y() + 10);
+	move(pos);
+	
     d_selector = NULL;
+
+	connect (this, SIGNAL(showDialog()), plot->parent(), SIGNAL(viewTextDialog()));
+	connect (this, SIGNAL(showMenu()), plot->parent(), SIGNAL(showMarkerPopupMenu()));
 
 	setMouseTracking(true);
 	show();
@@ -81,8 +81,11 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 {
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
-	QwtArray<long> heights = itemsHeight(0, symbolLineLength, width, height);
-    resize(width, height);
+	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height);
+	if (d_frame == Shadow)
+		resize(width + 5, height + 5);
+	else
+    	resize(width, height);
 
 	QRect rect = QRect(0, 0, width, height);
     QPainter p(this);
@@ -112,27 +115,6 @@ void LegendWidget::setBackgroundColor(const QColor& c)
 	d_text->setBackgroundBrush(QBrush(c));
 }
 
-/*QRect LegendWidget::rect()
-{
-	int width, height;
-	itemsHeight(d_pos.y(), line_length + symbolsMaxWidth(), width, height);
-	return QRect(d_pos, QSize(width - 1, height - 1));
-}*/
-
-/*QwtDoubleRect LegendWidget::boundingRect()
-{
-	QRect bounding_rect = geometry();
-	const QwtScaleMap &x_map = d_plot->canvasMap(QwtPlot::xBottom);
-	const QwtScaleMap &y_map = d_plot->canvasMap(QwtPlot::yLeft);
-
-	double left = x_map.invTransform(bounding_rect.left());
-	double right = x_map.invTransform(bounding_rect.right());
-	double top = y_map.invTransform(bounding_rect.top());
-	double bottom = y_map.invTransform(bounding_rect.bottom());
-
-	return QwtDoubleRect(left, top, qAbs(right-left), qAbs(bottom-top));
-}*/
-
 void LegendWidget::setTextColor(const QColor& c)
 {
 	if ( c == d_text->color() )
@@ -143,50 +125,27 @@ void LegendWidget::setTextColor(const QColor& c)
 
 void LegendWidget::setOrigin( const QPoint & p )
 {
-	d_pos = p;
-	//d_x = d_plot->canvasMap(QwtPlot::xBottom).invTransform(p.x());
-	//d_y = d_plot->canvasMap(QwtPlot::yLeft).invTransform(p.y());
-
 	move(p);
 	update();
 }
 
-void LegendWidget::updateOrigin()
-{
-	if (!d_plot)
-		return;
-
-	/*const QwtScaleMap &xMap = d_plot->canvasMap(xAxis());
-	const QwtScaleMap &yMap = d_plot->canvasMap(yAxis());
-
-	const QwtScaleDiv *xScDiv = d_plot->axisScaleDiv (xAxis());
-	double xVal = xMap.invTransform(d_pos.x());
-  	if (!xScDiv->contains(xVal))
-        return;
-
-  	const QwtScaleDiv *yScDiv = d_plot->axisScaleDiv (yAxis());
-  	double yVal = yMap.invTransform(d_pos.y());
-  	if (!yScDiv->contains(yVal))
-        return;
-
-  	setXValue (xVal);
-  	setYValue (yVal);*/
+void LegendWidget::setOriginCoord(double x, double y)
+{	
+	QPoint pos(d_plot->transform(QwtPlot::xBottom, x), d_plot->transform(QwtPlot::yLeft, y));
+	pos = d_plot->canvas()->mapToParent(pos);	
+	move(pos);
 }
 
-void LegendWidget::setOriginCoord(double x, double y)
+double LegendWidget::xValue()
 {
-	/*if (d_x == x && d_y == y)
-		return;
+	QPoint d_pos = d_plot->canvas()->mapFromParent(geometry().topLeft());
+	return d_plot->invTransform(QwtPlot::xBottom, d_pos.x());
+}
 
-	d_x = x;
-	d_y = y;*/
-
-	const QwtScaleMap &xMap = d_plot->canvasMap(QwtPlot::xBottom);
-	const QwtScaleMap &yMap = d_plot->canvasMap(QwtPlot::yLeft);
-
-	d_pos = QPoint(xMap.transform(x), yMap.transform(y));
-	move(d_pos);
-	update();
+double LegendWidget::yValue()
+{
+	QPoint d_pos = d_plot->canvas()->mapFromParent(geometry().topLeft());
+	return d_plot->invTransform(QwtPlot::yLeft, d_pos.y());
 }
 
 void LegendWidget::setFont(const QFont& font)
@@ -363,7 +322,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	}
 }
 
-QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width, int &height)
+QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &height)
 {
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
@@ -419,7 +378,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 		int textH = aux.textSize().height();
 		height += textH;
 
-		heights[i] = y + h + textH/2;
+		heights[i] = h + textH/2;
 		h += textH;
 	}
 
@@ -530,25 +489,38 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 	return curve;
 }
 
-void LegendWidget::mousePressEvent ( QMouseEvent * e )
+void LegendWidget::mousePressEvent (QMouseEvent * e)
 {
-    if (d_selector)
+    if (d_selector){
         delete d_selector;
+		d_selector = NULL;
+	}
 
     d_selector = new SelectionMoveResizer(this);
-    connect(d_selector, SIGNAL(targetsChanged()), d_plot, SIGNAL(modifiedGraph()));
+	connect(d_selector, SIGNAL(targetsChanged()), (Graph*)d_plot->parent(), SIGNAL(modifiedGraph()));
+	((Graph *)d_plot->parent())->setSelectedText(this);
 }
 
-void LegendWidget::deselect()
+void LegendWidget::setSelected(bool on)
 {
-    if (d_selector)
+	if (on){
+		if (d_selector)
+			return;
+		else {
+			d_selector = new SelectionMoveResizer(this);
+			connect(d_selector, SIGNAL(targetsChanged()), (Graph*)d_plot->parent(), SIGNAL(modifiedGraph()));
+			((Graph *)d_plot->parent())->setSelectedText(this);
+		}
+	} else if (d_selector){
         delete d_selector;
-
-    d_plot->raise();
-    d_plot->setFocus();
+		d_selector = NULL;
+		((Graph *)d_plot->parent())->setSelectedText(NULL);
+	}
 }
 
 LegendWidget::~LegendWidget()
 {
 	delete d_text;
+	if (d_selector)
+        delete d_selector;
 }
