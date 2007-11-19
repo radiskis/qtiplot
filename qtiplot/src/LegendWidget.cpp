@@ -66,7 +66,7 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 	QPoint pos = plot->canvas()->pos();
 	pos = QPoint(pos.x() + 10, pos.y() + 10);
 	move(pos);
-	
+
     d_selector = NULL;
 
 	connect (this, SIGNAL(showDialog()), plot->parent(), SIGNAL(viewTextDialog()));
@@ -81,7 +81,7 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 {
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
-	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height);
+	QwtArray<long> heights = itemsHeight(0, symbolLineLength, width, height);
 	if (d_frame == Shadow)
 		resize(width + 5, height + 5);
 	else
@@ -89,9 +89,23 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 
 	QRect rect = QRect(0, 0, width, height);
     QPainter p(this);
-	drawFrame(&p, d_frame, rect);
+	drawFrame(&p, rect);
 	drawText(&p, rect, heights, symbolLineLength);
 	e->accept();
+}
+
+void LegendWidget::print(QPainter *painter, const QRect& plotRect)
+{
+    QPoint plotPos = plotRect.topLeft();
+    QPoint p = QPoint(plotPos.x() + pos().x(), plotPos.y() + pos().y());
+
+    const int symbolLineLength = line_length + symbolsMaxWidth();
+	int width, height;
+	QwtArray<long> heights = itemsHeight(p.y(), symbolLineLength, width, height);
+
+	QRect rect = QRect(p.x(), p.y(), width, height);
+	drawFrame(painter, rect);
+	drawText(painter, rect, heights, symbolLineLength);
 }
 
 void LegendWidget::setText(const QString& s)
@@ -130,9 +144,9 @@ void LegendWidget::setOrigin( const QPoint & p )
 }
 
 void LegendWidget::setOriginCoord(double x, double y)
-{	
+{
 	QPoint pos(d_plot->transform(QwtPlot::xBottom, x), d_plot->transform(QwtPlot::yLeft, y));
-	pos = d_plot->canvas()->mapToParent(pos);	
+	pos = d_plot->canvas()->mapToParent(pos);
 	move(pos);
 }
 
@@ -156,17 +170,17 @@ void LegendWidget::setFont(const QFont& font)
 	d_text->setFont(font);
 }
 
-void LegendWidget::drawFrame(QPainter *p, int type, const QRect& rect)
+void LegendWidget::drawFrame(QPainter *p, const QRect& rect)
 {
 	p->save();
 	p->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-	if (type == None)
+	if (d_frame == None)
 		p->fillRect (rect, d_text->backgroundBrush());
 
-	if (type == Line){
+	if (d_frame == Line){
 		p->setBrush(d_text->backgroundBrush());
 		QwtPainter::drawRect(p, rect);
-	} else if (type == Shadow) {
+	} else if (d_frame == Shadow) {
 		QRect shadow_right = QRect(rect.right(), rect.y() + 5, 5, rect.height()-1);
 		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom(), rect.width()-1, 5);
 		p->setBrush(QBrush(Qt::black));
@@ -322,7 +336,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	}
 }
 
-QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &height)
+QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width, int &height)
 {
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
@@ -378,7 +392,7 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
 		int textH = aux.textSize().height();
 		height += textH;
 
-		heights[i] = h + textH/2;
+		heights[i] = y + h + textH/2;
 		h += textH;
 	}
 

@@ -41,7 +41,6 @@
 #include "TableDialog.h"
 #include "SetColValuesDialog.h"
 #include "ErrDialog.h"
-#include "Legend.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "ImageMarker.h"
@@ -466,7 +465,7 @@ void ApplicationWindow::initGlobalConstants()
 	minTicksLength = 5;
 	majTicksLength = 9;
 
-	legendFrameStyle = int(Legend::Line);
+	legendFrameStyle = int(LegendWidget::Line);
 	legendTextColor = Qt::black;
 	legendBackground = Qt::white;
 	legendBackground.setAlpha(0); // transparent by default;
@@ -2879,7 +2878,7 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 	QString caption = generateUniqueName(tr("Matrix"));
 	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws, 0);
 	initMatrix(m, caption);
-	
+
 	m->setAttribute(Qt::WA_DeleteOnClose);
 	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
@@ -4262,7 +4261,7 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); // Ticks
 
 	settings.beginGroup("/Legend");
-	legendFrameStyle = settings.value("/FrameStyle", Legend::Line).toInt();
+	legendFrameStyle = settings.value("/FrameStyle", LegendWidget::Line).toInt();
 	legendTextColor = settings.value("/TextColor", "#000000").value<QColor>(); //default color Qt::black
 	legendBackground = settings.value("/BackgroundColor", "#ffffff").value<QColor>(); //default color Qt::white
 	legendBackground.setAlpha(settings.value("/Transparency", 0).toInt()); // transparent by default;
@@ -7101,7 +7100,7 @@ void ApplicationWindow::showTextDialog()
 		return;
 
 	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
-	if ( g ){		
+	if ( g ){
 		LegendWidget *l = (LegendWidget *) g->selectedText();
 		if (!l)
 			return;
@@ -7264,25 +7263,21 @@ void ApplicationWindow::copyMarker()
 	QWidget* m = (QWidget*)ws->activeWindow();
 	MultiLayer* plot = (MultiLayer*)m;
 	Graph* g = (Graph*)plot->activeGraph();
-	if (g && g->markerSelected())
-	{
+	if (g && g->markerSelected()){
 		g->copyMarker();
-		copiedMarkerType=g->copiedMarkerType();
-		QRect rect=g->copiedMarkerRect();
-		auxMrkStart=rect.topLeft();
-		auxMrkEnd=rect.bottomRight();
+		copiedMarkerType = g->copiedMarkerType();
+		QRect rect = g->copiedMarkerRect();
+		auxMrkStart = rect.topLeft();
+		auxMrkEnd = rect.bottomRight();
 
-		if (copiedMarkerType == Graph::Text)
-		{
-			Legend *m = (Legend *) g->selectedMarkerPtr();
-			auxMrkText=m->text();
-			auxMrkColor=m->textColor();
-			auxMrkFont=m->font();
-			auxMrkBkg=m->frameStyle();
-			auxMrkBkgColor=m->backgroundColor();
-		}
-		else if (copiedMarkerType == Graph::Arrow)
-		{
+		if (copiedMarkerType == Graph::Text){
+			LegendWidget *t = g->selectedText();
+			auxMrkText = t->text();
+			auxMrkColor = t->textColor();
+			auxMrkFont = t->font();
+			auxMrkBkg = t->frameStyle();
+			auxMrkBkgColor = t->backgroundColor();
+		} else if (copiedMarkerType == Graph::Arrow){
 			ArrowMarker *m = (ArrowMarker *) g->selectedMarkerPtr();
 			auxMrkWidth=m->width();
 			auxMrkColor=m->color();
@@ -7292,15 +7287,13 @@ void ApplicationWindow::copyMarker()
 			arrowHeadLength=m->headLength();
 			arrowHeadAngle=m->headAngle();
 			fillArrowHead=m->filledArrowHead();
-		}
-		else if (copiedMarkerType == Graph::Image)
-		{
+		} else if (copiedMarkerType == Graph::Image){
 			ImageMarker *im = (ImageMarker *) g->selectedMarkerPtr();
 			if (im)
 				auxMrkFileName = im->fileName();
 		}
 	}
-	copiedLayer=false;
+	copiedLayer = false;
 }
 
 void ApplicationWindow::pasteSelection()
@@ -10303,13 +10296,13 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 		else if (s.contains ("textMarker"))
 		{// version <= 0.8.9
-			QStringList fList=QStringList::split ("\t",s, true);
-			ag->insertTextMarker(fList, d_file_version);
+			QStringList fList = QStringList::split ("\t",s, true);
+			ag->insertText(fList, d_file_version);
 		}
 		else if (s.startsWith ("<text>") && s.endsWith ("</text>"))
 		{
-			QStringList fList=QStringList::split ("\t", s.remove("</text>"), true);
-			ag->insertTextMarker(fList, d_file_version);
+			QStringList fList = QStringList::split ("\t", s.remove("</text>"), true);
+			ag->insertText(fList, d_file_version);
 		}
 		else if (s.contains ("lineMarker"))
 		{// version <= 0.8.9

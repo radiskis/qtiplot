@@ -39,7 +39,7 @@
 //class SelectionMoveResizer;
 
 class LegendWidget: public QWidget
-{	
+{
 	Q_OBJECT
 
 public:
@@ -75,20 +75,22 @@ public:
 
 	double xValue();
 	double yValue();
-	
+
 	void setSelected(bool on = true);
-	
+
 	void showTextDialog(){emit showDialog();};
 	void showContextMenu(){emit showMenu();};
-	
+
+    void print(QPainter *p, const QRect& plotRect);
+
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
-	void drawFrame(QPainter *p, int type, const QRect& rect);
+	void drawFrame(QPainter *p, const QRect& rect);
 	void drawVector(PlotCurve *c, QPainter *p, int x, int y, int l);
 	void drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y, int l);
 	void drawText(QPainter *, const QRect&, QwtArray<long>, int);
 
-	QwtArray<long> itemsHeight(int symbolLineLength, int &width, int &height);
+	QwtArray<long> itemsHeight(int y, int symbolLineLength, int &width, int &height);
 	int symbolsMaxWidth();
 	QString parse(const QString& str);
 
@@ -120,7 +122,7 @@ private:
 	double d_x, d_y;
 
 	SelectionMoveResizer *d_selector;
-	
+
 signals:
 	void showDialog();
 	void showMenu();

@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "Differentiation.h"
 #include "MultiLayer.h"
-#include "Legend.h"
+#include "LegendWidget.h"
 
 #include <QLocale>
 
@@ -92,8 +92,12 @@ void Differentiation::output()
 			d_output_graph = createOutputGraph()->activeGraph();
 
     	d_output_graph->insertCurve(d_result_table, tableName + "_2", 0);
-    	Legend *l = d_output_graph->legend();
-		if (l)
-    		l->setText("\\l(1)" + tr("Derivative") + " " + tr("of","Derivative of") + " " + dataSet);
+    	QString legend = "\\l(1)" + tr("Derivative") + " " + tr("of","Derivative of") + " " + dataSet;
+    	LegendWidget *l = d_output_graph->legend();
+		if (l){
+    		l->setText(legend);
+    		l->repaint();
+        } else
+            d_output_graph->newLegend(legend);
 	}
 }

@@ -49,7 +49,6 @@ class QwtPlotCurve;
 class QwtPlotZoomer;
 class QwtPieCurve;
 class Table;
-class Legend;
 class LegendWidget;
 class ArrowMarker;
 class ImageMarker;
@@ -319,7 +318,7 @@ class Graph: public QWidget
 		LegendWidget* insertText(LegendWidget*);
 
 		//! Used when opening a project file
-		void insertTextMarker(const QStringList& list, int fileVersion);
+		LegendWidget* insertText(const QStringList& list, int fileVersion);
 		void updateTextMarker(const QString& text,int angle, int bkg,const QFont& fnt,
 				const QColor& textColor, const QColor& backgroundColor);
 
@@ -337,17 +336,15 @@ class Graph: public QWidget
 				bool start, bool end, int headLength, int headAngle, bool filledHead);
 		void setCopiedImageName(const QString& fn){auxMrkFileName=fn;};
 		QRect copiedMarkerRect(){return QRect(auxMrkStart, auxMrkEnd);};
-		
-		Legend* textMarker(long id);
 
 		void addTimeStamp();
 		void removeLegend();
 		void removeLegendItem(int index);
 		void addLegendItem(const QString& colName);
 		void insertLegend(const QStringList& lst, int fileVersion);
-		Legend *legend();
+
+		LegendWidget *legend(){return d_legend;};
 		LegendWidget* newLegend(const QString& text = QString());
-		bool hasLegend(){return legendMarkerID >= 0;};
 
 		//! Creates a new legend text using the curves titles
 		QString legendText();
@@ -737,7 +734,7 @@ signals:
 		QColor defaultTextMarkerColor, defaultTextMarkerBackground;
 		int auxMrkAngle,auxMrkBkg,auxMrkWidth;
 		int auxArrowHeadLength, auxArrowHeadAngle;
-		long selectedMarker,legendMarkerID;
+		long selectedMarker;
 		bool startArrowOn, endArrowOn, drawTextOn, drawLineOn, drawArrowOn;
 
 		bool auxFilledArrowHead, ignoreResize;
@@ -754,7 +751,10 @@ signals:
 		QPointer<RangeSelectorTool> d_range_selector;
 		//! The currently active tool, or NULL for default (pointer).
 		PlotToolInterface *d_active_tool;
-		
+
+		//! Pointer to the currently selected text/legend
 		LegendWidget *d_selected_text;
+		//! Pointer to the current legend
+		LegendWidget *d_legend;
 };
 #endif // GRAPH_H

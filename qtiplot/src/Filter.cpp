@@ -188,13 +188,12 @@ void Filter::showLegend()
 	if (!d_output_graph)
 		return;
 
-	LegendWidget* mrk = d_output_graph->newLegend(legendInfo());
-	/*if (d_output_graph->hasLegend()){
-		Legend* legend = d_output_graph->legend();
-		QPoint p = legend->rect().bottomLeft();
-		mrk->setOrigin(QPoint(p.x(), p.y()+20));
-	}*/
-	d_output_graph->replot();
+	LegendWidget* l = d_output_graph->newLegend(legendInfo());
+	LegendWidget* legend = d_output_graph->legend();
+	if (legend){
+		QPoint p = l->rect().bottomLeft();
+		l->setOrigin(QPoint(p.x(), p.y()+20));
+	}
 }
 
 bool Filter::run()
