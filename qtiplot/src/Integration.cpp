@@ -29,7 +29,6 @@
 #include "Integration.h"
 #include "nrutil.h"
 #include "MultiLayer.h"
-#include "Legend.h"
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -75,7 +74,7 @@ void Integration::init()
 }
 
 QString Integration::logInfo()
-{	
+{
 	// Do the interpolation, use GSL libraries for that
 	gsl_interp_accel *acc = gsl_interp_accel_alloc();
 	const gsl_interp_type *method;
@@ -93,7 +92,7 @@ QString Integration::logInfo()
 		interp = gsl_spline_alloc (method, d_n);
 		gsl_spline_init (interp, d_x, d_y, d_n);
 	}
-	
+
 	// Using Numerical Recipes
 	// This is Romberg Integration method
 	// This method uses the Nevilles' algorithm for interpollation;
@@ -148,13 +147,13 @@ QString Integration::logInfo()
 		dataSet = d_curve->title().text();
 	else
 		dataSet = d_y_col_name;
-	
+
 	QString logInfo = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate);
 	if (d_graph)
 		logInfo += tr("\tPlot")+ ": ''" + d_graph->parentPlotName() + "'']\n";
 	else
 		logInfo += "\n";
-	
+
 	logInfo += "\n" + tr("Numerical integration of") + ": " + dataSet + " " + tr("using a %1 order method").arg(d_method)+"\n";
 	if(success)
 		logInfo += tr("Iterations") + ": " + QString::number(j)+"\n";

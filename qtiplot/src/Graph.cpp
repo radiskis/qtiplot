@@ -99,7 +99,6 @@ static const char *unzoom_xpm[]={
 #include "Grid.h"
 #include "CanvasPicker.h"
 #include "QwtErrorPlotCurve.h"
-#include "Legend.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "cursors.h"
@@ -169,6 +168,7 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 	n_curves=0;
 	d_active_tool = NULL;
 	d_selected_text = NULL;
+	d_legend = NULL; // no legend for an empty graph
 	widthLine=1;
 	selectedMarker=-1;
 	drawTextOn=false;
@@ -221,7 +221,6 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 	setFocusProxy(d_plot);
 	setMouseTracking(true );
 
-	legendMarkerID = -1; // no legend for an empty graph
 	c_type = QVector<int>();
 	c_keys = QVector<int>();
 
@@ -1449,7 +1448,7 @@ bool Graph::markerSelected()
 }
 
 void Graph::removeMarker()
-{	
+{
 	if (selectedMarker>=0){
 		if (d_markers_selector) {
 			if (d_lines.contains(selectedMarker))
@@ -1460,9 +1459,6 @@ void Graph::removeMarker()
 		d_plot->removeMarker(selectedMarker);
 		d_plot->replot();
 		emit modifiedGraph();
-
-		if (selectedMarker == legendMarkerID)
-			legendMarkerID=-1;
 
 		if (d_lines.contains(selectedMarker)>0)
 		{
@@ -1480,6 +1476,8 @@ void Graph::removeMarker()
 		}
 		selectedMarker=-1;
 	} else if (d_selected_text){
+	    if (d_selected_text == d_legend)
+            d_legend = NULL;
 		d_texts_list.remove(d_selected_text);
 		delete d_selected_text;
 		d_selected_text = NULL;
@@ -1504,12 +1502,15 @@ bool Graph::imageMarkerSelected()
 
 void Graph::copyMarker()
 {
-	if (selectedMarker<0){
-		selectedMarkerType=None;
-		return ;
+	if (selectedMarker<0 || !d_selected_text){
+		selectedMarkerType = None;
+		return;
 	}
 
-	if (d_lines.contains(selectedMarker)){
+    if (d_selected_text){
+        selectedMarkerType = Text;
+        return;
+	} else if (d_lines.contains(selectedMarker)){
 		ArrowMarker* mrkL=(ArrowMarker*) d_plot->marker(selectedMarker);
 		auxMrkStart=mrkL->startPoint();
 		auxMrkEnd=mrkL->endPoint();
@@ -1521,8 +1522,7 @@ void Graph::copyMarker()
 		auxMrkEnd=rect.bottomRight();
 		auxMrkFileName=mrkI->fileName();
 		selectedMarkerType=Image;
-	} else
-		selectedMarkerType=Text;
+	}
 }
 
 void Graph::pasteMarker()
@@ -1561,7 +1561,7 @@ void Graph::pasteMarker()
 		QPoint o=d_plot->canvas()->mapFromGlobal(QCursor::pos());
 		if (!d_plot->canvas()->contentsRect().contains(o))
 			o=QPoint(auxMrkStart.x()+20,auxMrkStart.y()+20);
-		
+
 		l->setOrigin(o);
 		l->setAngle(auxMrkAngle);
 		l->setFrameStyle(auxMrkBkg);
@@ -1650,17 +1650,10 @@ void Graph::initTitle(bool on, const QFont& fnt)
 
 void Graph::removeLegend()
 {
-	/*if (legendMarkerID >= 0)
-	{
-		int index = d_texts.indexOf(legendMarkerID);
-		int texts = d_texts.size();
-		for (int i=index; i<texts; i++)
-			d_texts[i]=d_texts[i+1];
-		d_texts.resize(--texts);
-
-		d_plot->removeMarker(legendMarkerID);
-		legendMarkerID=-1;
-	}*/
+	if (d_legend){
+	    delete d_legend;
+	    d_legend = NULL;
+	}
 }
 
 void Graph::updateImageMarker(int x, int y, int w, int h)
@@ -1676,7 +1669,7 @@ void Graph::updateTextMarker(const QString& text, int angle, int bkg,const QFont
 {
 	if (!d_selected_text)
 		return;
-	
+
 	d_selected_text->setText(text);
 	d_selected_text->setAngle(angle);
 	d_selected_text->setTextColor(textColor);
@@ -1685,14 +1678,6 @@ void Graph::updateTextMarker(const QString& text, int angle, int bkg,const QFont
 	d_selected_text->setFrameStyle(bkg);
 	d_selected_text->setSelected(false);
 	emit modifiedGraph();
-}
-
-Legend* Graph::legend()
-{
-	if (legendMarkerID >=0 )
-		return (Legend*) d_plot->marker(legendMarkerID);
-	else
-		return 0;
 }
 
 QString Graph::legendText()
@@ -2265,8 +2250,8 @@ QString Graph::saveCurves()
 
 LegendWidget* Graph::newLegend(const QString& text)
 {
-	LegendWidget* mrk = new LegendWidget(d_plot);
-	
+	LegendWidget* l = new LegendWidget(d_plot);
+
 	QString s = text;
 	if (s.isEmpty()){
 		if (isPiePlot())
@@ -2274,22 +2259,22 @@ LegendWidget* Graph::newLegend(const QString& text)
 		else
 			s = legendText();
 	}
-	mrk->setText(s);
-	mrk->setFrameStyle(defaultMarkerFrame);
-	mrk->setFont(defaultMarkerFont);
-	mrk->setTextColor(defaultTextMarkerColor);
-	mrk->setBackgroundColor(defaultTextMarkerBackground);
+	l->setText(s);
+	l->setFrameStyle(defaultMarkerFrame);
+	l->setFont(defaultMarkerFont);
+	l->setTextColor(defaultTextMarkerColor);
+	l->setBackgroundColor(defaultTextMarkerBackground);
 
-    d_texts_list << mrk;
-
+    d_texts_list << l;
+    d_legend = l;
 	emit modifiedGraph();
-	return mrk;
+	return l;
 }
 
 void Graph::addTimeStamp()
 {
 	LegendWidget* l = newLegend(QDateTime::currentDateTime().toString(Qt::LocalDate));
-	
+
 	QPoint p = d_plot->canvas()->pos();
 	l->setOrigin(QPoint(p.x() + d_plot->canvas()->width()/2, p.y() + 10));
 	emit modifiedGraph();
@@ -2297,11 +2282,10 @@ void Graph::addTimeStamp()
 
 void Graph::insertLegend(const QStringList& lst, int fileVersion)
 {
-	//legendMarkerID = 
-	insertTextMarker(lst, fileVersion);
+	d_legend = insertText(lst, fileVersion);
 }
 
-void Graph::insertTextMarker(const QStringList& list, int fileVersion)
+LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 {
 	QStringList fList = list;
 	LegendWidget* l = new LegendWidget(d_plot);
@@ -2309,7 +2293,7 @@ void Graph::insertTextMarker(const QStringList& list, int fileVersion)
 
 	if (fileVersion < 86 || fileVersion > 91)
 		l->setOrigin(QPoint(fList[1].toInt(),fList[2].toInt()));
-	else 
+	else
 		l->setOriginCoord(fList[1].toDouble(), fList[2].toDouble());
 
 	QFont fnt=QFont (fList[3],fList[4].toInt(),fList[5].toInt(),fList[6].toInt());
@@ -2363,6 +2347,7 @@ void Graph::insertTextMarker(const QStringList& list, int fileVersion)
 		text = text.replace("\\c{", "\\l(").replace("}", ")");
 
     l->setText(text);
+    return l;
 }
 
 void Graph::addArrow(QStringList list, int fileVersion)
@@ -2421,16 +2406,11 @@ ImageMarker* Graph::imageMarker(long id)
 	return (ImageMarker*)d_plot->marker(id);
 }
 
-Legend* Graph::textMarker(long id)
-{
-	return (Legend*)d_plot->marker(id);
-}
-
 LegendWidget* Graph::insertText(LegendWidget* t)
 {
 	LegendWidget* aux = new LegendWidget(d_plot);
 	d_texts_list << aux;
-	
+
 	//if(d_markers_selector)
 		//delete d_markers_selector;
 
@@ -2481,10 +2461,10 @@ QString Graph::saveMarkers()
 	}
 
 	foreach (LegendWidget *l, d_texts_list){
-		//if (d_texts[i] != legendMarkerID)
-			s+="<text>\t";
-		//else
-			//s+="<legend>\t";
+		if (l != d_legend)
+			s += "<text>\t";
+		else
+			s += "<legend>\t";
 
 		s += QString::number(l->x()) + "\t";
 		s += QString::number(l->y()) + "\t";
@@ -2504,10 +2484,10 @@ QString Graph::saveMarkers()
 
 		QStringList textList=l->text().split("\n", QString::KeepEmptyParts);
 		s+=textList.join ("\t");
-		//if (d_texts[i]!=legendMarkerID)
-  	        s+="</text>\n";
-  	    //else
-  	       // s+="</legend>\n";
+		if (l != d_legend)
+  	        s += "</text>\n";
+  	    else
+  	        s += "</legend>\n";
 	}
 	return s;
 }
@@ -2848,20 +2828,17 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 		angle -= value;
 	}
 
-	/*if (legendMarkerID>=0){
-		LegendWidget* l = (Legend*) d_plot->marker(legendMarkerID);
-		if (l){
-			QString text="";
-			for (int i=0; i<size; i++){
-				text+="\\p{";
-				text+=QString::number(i+1);
-				text+="} ";
-				text+=QString::number(i+1);
-				text+="\n";
+	if (d_legend){
+		QString text = "";
+        for (int i=0; i<size; i++){
+            text += "\\p{";
+            text += QString::number(i+1);
+            text += "} ";
+            text += QString::number(i+1);
+            text += "\n";
 			}
-			l->setText(text);
-		}
-	}*/
+        d_legend->setText(text);
+	}
 
 	for (int i=0; i<QwtPlot::axisCnt; i++)
 		d_plot->enableAxis(i, false);
@@ -3263,12 +3240,8 @@ void Graph::setBarsGap(int curve, int gapPercent, int offset)
 
 void Graph::removePie()
 {
-	if (legendMarkerID>=0)
-	{
-		Legend* mrk=(Legend*) d_plot->marker(legendMarkerID);
-		if (mrk)
-			mrk->setText(QString::null);
-	}
+	if (d_legend)
+        d_legend->setText(QString::null);
 
 	d_plot->removeCurve(c_keys[0]);
 	d_plot->replot();
@@ -3361,20 +3334,16 @@ void Graph::removeCurve(int index)
 
 void Graph::removeLegendItem(int index)
 {
-	if (legendMarkerID<0 || c_type[index] == ErrorBars)
-		return;
-
-	Legend* mrk=(Legend*) d_plot->marker(legendMarkerID);
-	if (!mrk)
+	if (!d_legend || c_type[index] == ErrorBars)
 		return;
 
 	if (isPiePlot()){
-		mrk->setText(QString::null);
+		d_legend->setText(QString::null);
 		return;
 	}
 
-	QString text=mrk->text();
-	QStringList items=text.split( "\n", QString::SkipEmptyParts);
+	QString text = d_legend->text();
+	QStringList items = text.split( "\n", QString::SkipEmptyParts);
 
 	if (index >= (int) items.count())
 		return;
@@ -3392,23 +3361,21 @@ void Graph::removeLegendItem(int index)
 		}
 		items[i]=item;
 	}
-	text=items.join ( "\n" );
-	mrk->setText(text);
+	text = items.join ( "\n" );
+	d_legend->setText(text);
 }
 
 void Graph::addLegendItem(const QString& colName)
 {
-	if (legendMarkerID >= 0 ){
-		Legend* mrk=(Legend*) d_plot->marker(legendMarkerID);
-		if (mrk){
-			QString text = mrk->text();
-			if (text.endsWith ("\n") || text.isEmpty())
-				text.append("\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
-			else
-				text.append("\n\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
+	if (d_legend){
+		QString text = d_legend->text();
+        if (text.endsWith ("\n") || text.isEmpty())
+            text.append("\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
+        else
+            text.append("\n\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
 
-			mrk->setText(text);
-		}
+        d_legend->setText(text);
+        d_legend->repaint();
 	}
 }
 
@@ -3598,12 +3565,9 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 	c->setVariable(var);
 	c->loadData(points);
 
-	if (legendMarkerID >= 0) {//update the legend marker
-		Legend* mrk=(Legend*) d_plot->marker(legendMarkerID);
-		if (mrk) {
-			QString text = (mrk->text()).replace(oldLegend, c->legend());
-			mrk->setText(text);
-		}
+	if (d_legend){//update the legend marker
+		QString text = (d_legend->text()).replace(oldLegend, c->legend());
+        d_legend->setText(text);
 	}
 	updatePlot();
 	emit modifiedGraph();
@@ -3819,7 +3783,7 @@ void Graph::scaleFonts(double factor)
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
 		l->setFont(font);
 	}
-	
+
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		QFont font = axisFont(i);
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
@@ -4390,14 +4354,13 @@ void Graph::copy(Graph* g)
 	QVector<int> imag = g->imageMarkerKeys();
 	for (int i=0; i<(int)imag.size(); i++)
 		addImage((ImageMarker*)g->imageMarker(imag[i]));
-	
+
 	QList<LegendWidget *> texts = g->textsList();
-	foreach (LegendWidget *l, texts){
-		/*if (txtMrkKeys[i] == g->legendMarkerID)
-			legendMarkerID = insertTextMarker(mrk);
+	foreach (LegendWidget *t, texts){
+		if (t == g->legend())
+			d_legend = insertText(t);
 		else
-			insertTextMarker(mrk);*/
-		insertText(l);
+			insertText(t);
 	}
 
 	QVector<int> l = g->lineMarkerKeys();
@@ -4434,9 +4397,8 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
         c->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(ColorBox::color(j), 1), QSize(7,7)));
 	}
 
-	Legend* mrk=(Legend*) d_plot->marker(legendMarkerID);
-	if (mrk)
-		mrk->setText(legendText());
+	if (d_legend)
+		d_legend->setText(legendText());
 
 	axisType[QwtPlot::xBottom] = ColHeader;
 	d_plot->setAxisScaleDraw (QwtPlot::xBottom, new QwtTextScaleDraw(w->selectedYLabels()));

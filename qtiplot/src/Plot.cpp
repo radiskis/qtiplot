@@ -32,6 +32,7 @@
 #include "ScaleDraw.h"
 #include "Spectrogram.h"
 #include "PlotCurve.h"
+#include "LegendWidget.h"
 
 #include <qwt_plot.h>
 #include <qwt_painter.h>
@@ -395,7 +396,16 @@ void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFil
     QwtText t = title();
 	printFrame(painter, plotRect);
 	QwtPlot::print(painter, plotRect, pfilter);
+	printTexts(painter, plotRect);
 	setTitle(t);
+}
+
+void Plot::printTexts(QPainter *painter, const QRect& rect)
+{
+    Graph *g = (Graph *)parent();
+    QList<LegendWidget *> texts = g->textsList();
+    foreach(LegendWidget *t, texts)
+        t->print(painter, rect);
 }
 
 QwtPlotCurve* Plot::curve(int index)

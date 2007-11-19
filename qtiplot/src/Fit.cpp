@@ -31,7 +31,6 @@
 #include "Table.h"
 #include "Matrix.h"
 #include "QwtErrorPlotCurve.h"
-#include "Legend.h"
 #include "FunctionCurve.h"
 #include "ColorBox.h"
 #include "MultiLayer.h"

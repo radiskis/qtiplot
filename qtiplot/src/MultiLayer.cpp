@@ -51,7 +51,6 @@
 
 #include "MultiLayer.h"
 #include "Plot.h"
-#include "Legend.h"
 #include "LegendWidget.h"
 #include "SelectionMoveResizer.h"
 
@@ -933,7 +932,7 @@ void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 		QList <LegendWidget *> texts = gr->textsList();
 		foreach (LegendWidget *l, texts)
 			l->setFont(legendFnt);
-		
+
 		plot->replot();
 	}
 	emit modifiedPlot();
@@ -1136,7 +1135,7 @@ void MultiLayer::mousePressEvent ( QMouseEvent * e )
 		--i;
 
 		QList <LegendWidget *> texts = ((Graph *)(*i))->textsList();
-		foreach(LegendWidget *l, texts){			
+		foreach(LegendWidget *l, texts){
 		    if (!l->geometry().contains(pos))
                 l->setSelected(false);
 		}
