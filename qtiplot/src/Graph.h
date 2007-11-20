@@ -326,13 +326,6 @@ class Graph: public QWidget
 		int textMarkerDefaultFrame(){return defaultMarkerFrame;};
 		void setTextMarkerDefaults(int f, const QFont &font, const QColor& textCol, const QColor& backgroundCol);
 
-		void setCopiedMarkerType(Graph::MarkerType type){selectedMarkerType=type;};
-		void setCopiedMarkerEnds(const QPoint& start, const QPoint& end);
-		void setCopiedArrowOptions(int width, Qt::PenStyle style, const QColor& color,
-				bool start, bool end, int headLength, int headAngle, bool filledHead);
-		void setCopiedImageName(const QString& fn){auxMrkFileName=fn;};
-		QRect copiedMarkerRect(){return QRect(auxMrkStart, auxMrkEnd);};
-
 		void addTimeStamp();
 		void removeLegend();
 		void removeLegendItem(int index);
@@ -349,7 +342,7 @@ class Graph: public QWidget
 		//! \name Line Markers
 		//@{
 		ArrowMarker* arrow(long id);
-		void addArrow(ArrowMarker* mrk);
+		ArrowMarker* addArrow(ArrowMarker* mrk);
 
 		//! Used when opening a project file
 		void addArrow(QStringList list, int fileVersion);
@@ -389,7 +382,6 @@ class Graph: public QWidget
 		void removeMarker();
 		void cutMarker();
 		void copyMarker();
-		void pasteMarker();
 		//! Keep the markers on screen each time the scales are modified by adding/removing curves
 		void updateMarkersBoundingRect();
 
@@ -718,23 +710,13 @@ signals:
 		//! Stores pointers to the text objects on the plot
 		QList <LegendWidget *> d_texts_list;
 
-		QPen mrkLinePen;
 		QFont defaultMarkerFont;
-		QColor auxMrkColor;
-		QPoint auxMrkStart, auxMrkEnd;
-		Qt::PenStyle auxMrkStyle;
-		QString auxMrkFileName;
-
 		int n_curves;
 		int widthLine, defaultMarkerFrame;
 		QColor defaultTextMarkerColor, defaultTextMarkerBackground;
-		int auxMrkWidth;
-		int auxArrowHeadLength, auxArrowHeadAngle;
 		long selectedMarker;
-		bool startArrowOn, endArrowOn, drawTextOn, drawLineOn, drawArrowOn;
-
-		bool auxFilledArrowHead, ignoreResize;
-		bool drawAxesBackbone, autoscale;
+		bool drawTextOn, drawLineOn, drawArrowOn;
+		bool ignoreResize, drawAxesBackbone, autoscale;
 
 		QColor defaultArrowColor;
 		int defaultArrowLineWidth, defaultArrowHeadLength, defaultArrowHeadAngle;

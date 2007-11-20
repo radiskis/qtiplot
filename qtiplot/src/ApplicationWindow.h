@@ -82,6 +82,8 @@ class MyWidget;
 class TableStatistics;
 class CurveRangeDialog;
 class LegendWidget;
+class ArrowMarker;
+class ImageMarker;
 
 /**
  * \brief QtiPlot's main window.
@@ -1050,8 +1052,8 @@ public:
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;
 	QString projectname,columnSeparator, helpFilePath, appLanguage;
 	QString configFilePath, logInfo, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
-	int ignoredLines, savingTimerId, plot3DResolution;
-	bool renameColumns, copiedLayer, strip_spaces, simplify_spaces;
+	int ignoredLines, savingTimerId, plot3DResolution, recentMenuID;
+	bool renameColumns, strip_spaces, simplify_spaces;
 	QStringList recentProjects, tableWindows;
 	bool saved, showPlot3DProjection, showPlot3DLegend, orthogonal3DPlots, autoscale3DPlots;
 	QStringList plot3DColors, locales;
@@ -1061,20 +1063,13 @@ public:
     QStringList d_param_surface_func; //user-defined parametric surface functions;
 	//! List of tables and matrices renamed in order to avoid conflicts when appending a project to a folder
 	QStringList renamedTables;
-	Graph::MarkerType copiedMarkerType;
 
 	//! \name variables used when user copy/paste markers
 	//@{
 	LegendWidget *d_text_copy;
-	QColor auxMrkColor;
-	QPoint auxMrkStart,auxMrkEnd;
-	Qt::PenStyle auxMrkStyle;
-	QString auxMrkFileName;
-	int auxMrkWidth;
+	ArrowMarker *d_arrow_copy;
+	ImageMarker *d_image_copy;
 	//@}
-
-	bool startArrowOn, endArrowOn, fillArrowHead;
-	int arrowHeadLength, arrowHeadAngle, recentMenuID;
 
 	//! Equals true if an automatical search for updates was performed on start-up otherwise is set to false;
 	bool autoSearchUpdatesRequest;
