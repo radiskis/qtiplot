@@ -268,7 +268,7 @@ void Graph::deselectMarker()
 		delete d_markers_selector;
 
 	cp->disableEditing();
-	
+
     foreach(LegendWidget *legend, d_texts_list)
         legend->setSelected(false);
 }
@@ -1512,74 +1512,10 @@ void Graph::copyMarker()
 		return;
 	}
 
-    if (d_lines.contains(selectedMarker)){
-		ArrowMarker* mrkL=(ArrowMarker*) d_plot->marker(selectedMarker);
-		auxMrkStart=mrkL->startPoint();
-		auxMrkEnd=mrkL->endPoint();
+    if (d_lines.contains(selectedMarker))
 		selectedMarkerType = Arrow;
-	} else if (d_images.contains(selectedMarker)){
-		ImageMarker* mrkI=(ImageMarker*) d_plot->marker(selectedMarker);
-		auxMrkStart=mrkI->origin();
-		QRect rect=mrkI->rect();
-		auxMrkEnd=rect.bottomRight();
-		auxMrkFileName=mrkI->fileName();
+	else if (d_images.contains(selectedMarker))
 		selectedMarkerType=Image;
-	}
-}
-
-void Graph::pasteMarker()
-{
-	if (selectedMarkerType == Arrow){
-		ArrowMarker* mrkL = new ArrowMarker();
-        int linesOnPlot = (int)d_lines.size();
-  	    d_lines.resize(++linesOnPlot);
-  	    d_lines[linesOnPlot-1] = d_plot->insertMarker(mrkL);
-
-		mrkL->setColor(auxMrkColor);
-		mrkL->setWidth(auxMrkWidth);
-		mrkL->setStyle(auxMrkStyle);
-		mrkL->setStartPoint(QPoint(auxMrkStart.x()+10,auxMrkStart.y()+10));
-		mrkL->setEndPoint(QPoint(auxMrkEnd.x()+10,auxMrkEnd.y()+10));
-		mrkL->drawStartArrow(startArrowOn);
-		mrkL->drawEndArrow(endArrowOn);
-		mrkL->setHeadLength(auxArrowHeadLength);
-		mrkL->setHeadAngle(auxArrowHeadAngle);
-		mrkL->fillArrowHead(auxFilledArrowHead);
-	} else if (selectedMarkerType==Image){
-		ImageMarker* mrk = new ImageMarker(auxMrkFileName);
-		int imagesOnPlot=d_images.size();
-  	    d_images.resize(++imagesOnPlot);
-  	    d_images[imagesOnPlot-1] = d_plot->insertMarker(mrk);
-
-		QPoint o = d_plot->canvas()->mapFromGlobal(QCursor::pos());
-		if (!d_plot->canvas()->contentsRect().contains(o))
-			o = QPoint(auxMrkStart.x()+20, auxMrkStart.y()+20);
-		mrk->setOrigin(o);
-		mrk->setSize(QRect(auxMrkStart,auxMrkEnd).size());
-	}
-
-	d_plot->replot();
-	deselectMarker();
-}
-
-void Graph::setCopiedMarkerEnds(const QPoint& start, const QPoint& end)
-{
-	auxMrkStart=start;
-	auxMrkEnd=end;
-}
-
-void Graph::setCopiedArrowOptions(int width, Qt::PenStyle style, const QColor& color,
-		bool start, bool end, int headLength,
-		int headAngle, bool filledHead)
-{
-	auxMrkWidth=width;
-	auxMrkStyle=style;
-	auxMrkColor=color;
-	startArrowOn=start;
-	endArrowOn=end;
-	auxArrowHeadLength=headLength;
-	auxArrowHeadAngle=headAngle;
-	auxFilledArrowHead=filledHead;
 }
 
 bool Graph::titleSelected()
@@ -1589,13 +1525,11 @@ bool Graph::titleSelected()
 
 void Graph::selectTitle()
 {
-	if (!d_plot->hasFocus())
-	{
+	if (!d_plot->hasFocus()){
 		emit selectedGraph(this);
 		QwtTextLabel *title = d_plot->titleLabel();
 		title->setFocus();
 	}
-
 	deselectMarker();
 }
 
@@ -1607,8 +1541,7 @@ void Graph::setTitle(const QString& t)
 
 void Graph::removeTitle()
 {
-	if (d_plot->titleLabel()->hasFocus())
-	{
+	if (d_plot->titleLabel()->hasFocus()){
 		d_plot->setTitle(" ");
 		emit modifiedGraph();
 	}
@@ -1616,8 +1549,7 @@ void Graph::removeTitle()
 
 void Graph::initTitle(bool on, const QFont& fnt)
 {
-	if (on)
-	{
+	if (on){
 		QwtText t = d_plot->title();
 		t.setFont(fnt);
 		t.setText(tr("Title"));
@@ -1635,7 +1567,7 @@ void Graph::removeLegend()
 
 void Graph::updateImageMarker(int x, int y, int w, int h)
 {
-	ImageMarker* mrk =(ImageMarker*) d_plot->marker(selectedMarker);
+	ImageMarker* mrk = (ImageMarker*) d_plot->marker(selectedMarker);
 	mrk->setRect(x, y, w, h);
 	d_plot->replot();
 	emit modifiedGraph();
@@ -2338,7 +2270,7 @@ void Graph::addArrow(QStringList list, int fileVersion)
 	}
 }
 
-void Graph::addArrow(ArrowMarker* mrk)
+ArrowMarker* Graph::addArrow(ArrowMarker* mrk)
 {
 	ArrowMarker* aux = new ArrowMarker();
     int linesOnPlot = (int)d_lines.size();
@@ -2355,6 +2287,7 @@ void Graph::addArrow(ArrowMarker* mrk)
 	aux->setHeadLength(mrk->headLength());
 	aux->setHeadAngle(mrk->headAngle());
 	aux->fillArrowHead(mrk->filledArrowHead());
+	return aux;
 }
 
 ArrowMarker* Graph::arrow(long id)

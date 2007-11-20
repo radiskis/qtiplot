@@ -351,11 +351,11 @@ void ApplicationWindow::initGlobalConstants()
 	d_app_rect = QRect();
 	projectname="untitled";
 	lastModified=0;
-	lastCopiedLayer=0;
-	copiedLayer=false;
-	copiedMarkerType=Graph::None;
+	lastCopiedLayer = 0;
 	d_text_copy = NULL;
-	
+	d_arrow_copy = NULL;
+	d_image_copy = NULL;
+
 	logInfo = QString();
 	savingTimerId=0;
 
@@ -7200,8 +7200,6 @@ void ApplicationWindow::copySelection()
 		if (!g)
             return;
 
-		d_text_copy = NULL;
-		
         if (g->activeTool()){
             if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
                 ((RangeSelectorTool *)g->activeTool())->copySelection();
@@ -7255,38 +7253,27 @@ void ApplicationWindow::cutSelection()
 
 void ApplicationWindow::copyMarker()
 {
-	copiedLayer = false;
+    lastCopiedLayer = NULL;
 
 	QWidget* m = (QWidget*)ws->activeWindow();
 	MultiLayer* plot = (MultiLayer*)m;
 	Graph* g = (Graph*)plot->activeGraph();
 	if (g && g->markerSelected()){
 		g->copyMarker();
-		copiedMarkerType = g->copiedMarkerType();
-		QRect rect = g->copiedMarkerRect();
-		auxMrkStart = rect.topLeft();
-		auxMrkEnd = rect.bottomRight();
 
-		if (copiedMarkerType == Graph::Text)
+		Graph::MarkerType copiedMarkerType = g->copiedMarkerType();
+		if (copiedMarkerType == Graph::Text){
 			d_text_copy = g->selectedText();
-		else if (copiedMarkerType == Graph::Arrow){
-			ArrowMarker *m = (ArrowMarker *) g->selectedMarkerPtr();
-			auxMrkWidth=m->width();
-			auxMrkColor=m->color();
-			auxMrkStyle=m->style();
-			startArrowOn=m->hasStartArrow();
-			endArrowOn=m->hasEndArrow();
-			arrowHeadLength=m->headLength();
-			arrowHeadAngle=m->headAngle();
-			fillArrowHead=m->filledArrowHead();
-			
+			d_image_copy = NULL;
+			d_arrow_copy = NULL;
+		} else if (copiedMarkerType == Graph::Arrow){
+			d_arrow_copy = (ArrowMarker *) g->selectedMarkerPtr();
+            d_image_copy = NULL;
 			d_text_copy = NULL;
 		} else if (copiedMarkerType == Graph::Image){
-			ImageMarker *im = (ImageMarker *) g->selectedMarkerPtr();
-			if (im)
-				auxMrkFileName = im->fileName();
-			
+			d_image_copy = (ImageMarker *) g->selectedMarkerPtr();
 			d_text_copy = NULL;
+			d_arrow_copy = NULL;
 		}
 	}
 }
@@ -7307,12 +7294,13 @@ void ApplicationWindow::pasteSelection()
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot)
 			return;
-		if (copiedLayer){
+
+		if (lastCopiedLayer){
 			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 			Graph* g = plot->addLayer();
 			g->copy(lastCopiedLayer);
-			QPoint pos=plot->mapFromGlobal(QCursor::pos());
+			QPoint pos = plot->mapFromGlobal(QCursor::pos());
 			plot->setGraphGeometry(pos.x(), pos.y()-20, lastCopiedLayer->width(), lastCopiedLayer->height());
 
 			QApplication::restoreOverrideCursor();
@@ -7332,16 +7320,18 @@ void ApplicationWindow::pasteSelection()
             } else if (d_text_copy){
 				LegendWidget *t = g->insertText(d_text_copy);
 				t->move(g->mapFromGlobal(QCursor::pos()));
-			} else {
-				g->setCopiedMarkerType(copiedMarkerType);
-                g->setCopiedMarkerEnds(auxMrkStart,auxMrkEnd);
-
-                if (copiedMarkerType == Graph::Arrow)
-                    g->setCopiedArrowOptions(auxMrkWidth,auxMrkStyle,auxMrkColor,startArrowOn,
-						endArrowOn, arrowHeadLength,arrowHeadAngle, fillArrowHead);
-                if (copiedMarkerType == Graph::Image)
-                    g->setCopiedImageName(auxMrkFileName);
-                g->pasteMarker();
+			} else if (d_arrow_copy){
+                ArrowMarker *a = g->addArrow(d_arrow_copy);
+                a->setStartPoint(QPoint(d_arrow_copy->startPoint().x() + 10,
+                                        d_arrow_copy->startPoint().y() + 10));
+                a->setEndPoint(QPoint(d_arrow_copy->endPoint().x() + 10,
+                                      d_arrow_copy->endPoint().y() + 10));
+                g->replot();
+                g->deselectMarker();
+			} else if (d_image_copy){
+                g->addImage(d_image_copy);
+                g->replot();
+                g->deselectMarker();
             }
 		}
 	}
@@ -8485,17 +8475,18 @@ void ApplicationWindow::showGraphContextMenu()
 			cm.insertItem(tr("Anal&yze"), analysisMenu);
 		}
 
-		if (copiedLayer){
+		if (lastCopiedLayer){
 			cm.insertSeparator();
 			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Layer"),this, SLOT(pasteSelection()));
-		} else if (copiedMarkerType >=0 ){
-			cm.insertSeparator();
-			if (copiedMarkerType == Graph::Text )
-				cm.insertItem(QPixmap(paste_xpm),tr("&Paste Text"),plot, SIGNAL(pasteMarker()));
-			else if (copiedMarkerType == Graph::Arrow )
-				cm.insertItem(QPixmap(paste_xpm),tr("&Paste Line/Arrow"),plot, SIGNAL(pasteMarker()));
-			else if (copiedMarkerType == Graph::Image )
-				cm.insertItem(QPixmap(paste_xpm),tr("&Paste Image"),plot, SIGNAL(pasteMarker()));
+		} else if (d_text_copy){
+            cm.insertSeparator();
+            cm.insertItem(QPixmap(paste_xpm),tr("&Paste Text"),plot, SIGNAL(pasteMarker()));
+        } else if (d_arrow_copy){
+            cm.insertSeparator();
+            cm.insertItem(QPixmap(paste_xpm),tr("&Paste Line/Arrow"),plot, SIGNAL(pasteMarker()));
+        } else if (d_image_copy){
+            cm.insertSeparator();
+            cm.insertItem(QPixmap(paste_xpm),tr("&Paste Image"),plot, SIGNAL(pasteMarker()));
 		}
 		cm.insertSeparator();
 		copy.insertItem(tr("&Layer"), this, SLOT(copyActiveLayer()));
@@ -8526,9 +8517,9 @@ void ApplicationWindow::showWindowContextMenu()
 	QMenu cm(this);
 	QMenu plot3D(this);
 	if (w->isA("MultiLayer")){
-		MultiLayer *g=(MultiLayer*)w;
-		if (copiedLayer){
-			cm.insertItem(QPixmap(paste_xpm),tr("&Paste Layer"),this, SLOT(pasteSelection()));
+		MultiLayer *g = (MultiLayer*)w;
+		if (lastCopiedLayer){
+			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Layer"), this, SLOT(pasteSelection()));
 			cm.insertSeparator();
 		}
 
@@ -10460,8 +10451,6 @@ void ApplicationWindow::copyActiveLayer()
 {
 	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
 		return;
-
-	copiedLayer=TRUE;
 
 	Graph *g = ((MultiLayer *)ws->activeWindow())->activeGraph();
 	delete lastCopiedLayer;
