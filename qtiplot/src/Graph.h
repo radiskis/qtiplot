@@ -141,7 +141,7 @@ class Graph: public QWidget
 
 		QList <LegendWidget *> textsList(){return d_texts_list;};
 		LegendWidget *selectedText(){return d_selected_text;};
-		void setSelectedText(LegendWidget *l){d_selected_text = l;};
+		void setSelectedText(LegendWidget *l){d_selected_text = l; selectedMarkerType = Text;};
 
 	public slots:
 		//! Accessor method for #d_plot.
@@ -319,8 +319,6 @@ class Graph: public QWidget
 
 		//! Used when opening a project file
 		LegendWidget* insertText(const QStringList& list, int fileVersion);
-		void updateTextMarker(const QString& text,int angle, int bkg,const QFont& fnt,
-				const QColor& textColor, const QColor& backgroundColor);
 
 		QFont defaultTextMarkerFont(){return defaultMarkerFont;};
 		QColor textMarkerDefaultColor(){return defaultTextMarkerColor;};
@@ -330,8 +328,6 @@ class Graph: public QWidget
 
 		void setCopiedMarkerType(Graph::MarkerType type){selectedMarkerType=type;};
 		void setCopiedMarkerEnds(const QPoint& start, const QPoint& end);
-		void setCopiedTextOptions(int bkg, const QString& text, const QFont& font,
-				const QColor& color, const QColor& bkgColor);
 		void setCopiedArrowOptions(int width, Qt::PenStyle style, const QColor& color,
 				bool start, bool end, int headLength, int headAngle, bool filledHead);
 		void setCopiedImageName(const QString& fn){auxMrkFileName=fn;};
@@ -723,16 +719,16 @@ signals:
 		QList <LegendWidget *> d_texts_list;
 
 		QPen mrkLinePen;
-		QFont auxMrkFont, defaultMarkerFont;
-		QColor auxMrkColor, auxMrkBkgColor;
+		QFont defaultMarkerFont;
+		QColor auxMrkColor;
 		QPoint auxMrkStart, auxMrkEnd;
 		Qt::PenStyle auxMrkStyle;
-		QString auxMrkFileName, auxMrkText;
+		QString auxMrkFileName;
 
 		int n_curves;
 		int widthLine, defaultMarkerFrame;
 		QColor defaultTextMarkerColor, defaultTextMarkerBackground;
-		int auxMrkAngle,auxMrkBkg,auxMrkWidth;
+		int auxMrkWidth;
 		int auxArrowHeadLength, auxArrowHeadAngle;
 		long selectedMarker;
 		bool startArrowOn, endArrowOn, drawTextOn, drawLineOn, drawArrowOn;

@@ -1237,7 +1237,7 @@ void ImportOPJ::addText(const text& _text, Graph* graph, LegendWidget* txt, cons
 	rect txtRect=_text.clientRect;
 	int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
 	int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
-	txt->setOrigin(QPoint(x*fXScale, y*fYScale));
+	txt->move(QPoint(x*fXScale, y*fYScale));
 
 	/*QRect qtiRect=graph->plotWidget()->canvas()->geometry();
 	txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),

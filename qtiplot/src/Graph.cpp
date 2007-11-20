@@ -267,6 +267,8 @@ void Graph::deselectMarker()
 	if (d_markers_selector)
 		delete d_markers_selector;
 
+	cp->disableEditing();
+	
     foreach(LegendWidget *legend, d_texts_list)
         legend->setSelected(false);
 }
@@ -1502,15 +1504,15 @@ bool Graph::imageMarkerSelected()
 
 void Graph::copyMarker()
 {
-	if (selectedMarker<0 || !d_selected_text){
+	if (d_selected_text){
+        selectedMarkerType = Text;
+        return;
+	} else if (selectedMarker<0){
 		selectedMarkerType = None;
 		return;
 	}
 
-    if (d_selected_text){
-        selectedMarkerType = Text;
-        return;
-	} else if (d_lines.contains(selectedMarker)){
+    if (d_lines.contains(selectedMarker)){
 		ArrowMarker* mrkL=(ArrowMarker*) d_plot->marker(selectedMarker);
 		auxMrkStart=mrkL->startPoint();
 		auxMrkEnd=mrkL->endPoint();
@@ -1554,21 +1556,6 @@ void Graph::pasteMarker()
 			o = QPoint(auxMrkStart.x()+20, auxMrkStart.y()+20);
 		mrk->setOrigin(o);
 		mrk->setSize(QRect(auxMrkStart,auxMrkEnd).size());
-	} else {
-		LegendWidget* l = new LegendWidget(d_plot);
-		d_texts_list << l;
-
-		QPoint o=d_plot->canvas()->mapFromGlobal(QCursor::pos());
-		if (!d_plot->canvas()->contentsRect().contains(o))
-			o=QPoint(auxMrkStart.x()+20,auxMrkStart.y()+20);
-
-		l->setOrigin(o);
-		l->setAngle(auxMrkAngle);
-		l->setFrameStyle(auxMrkBkg);
-		l->setFont(auxMrkFont);
-		l->setText(auxMrkText);
-		l->setTextColor(auxMrkColor);
-		l->setBackgroundColor(auxMrkBkgColor);
 	}
 
 	d_plot->replot();
@@ -1579,16 +1566,6 @@ void Graph::setCopiedMarkerEnds(const QPoint& start, const QPoint& end)
 {
 	auxMrkStart=start;
 	auxMrkEnd=end;
-}
-
-void Graph::setCopiedTextOptions(int bkg, const QString& text, const QFont& font,
-		const QColor& color, const QColor& bkgColor)
-{
-	auxMrkBkg=bkg;
-	auxMrkText=text;
-	auxMrkFont=font;
-	auxMrkColor=color;
-	auxMrkBkgColor = bkgColor;
 }
 
 void Graph::setCopiedArrowOptions(int width, Qt::PenStyle style, const QColor& color,
@@ -1661,22 +1638,6 @@ void Graph::updateImageMarker(int x, int y, int w, int h)
 	ImageMarker* mrk =(ImageMarker*) d_plot->marker(selectedMarker);
 	mrk->setRect(x, y, w, h);
 	d_plot->replot();
-	emit modifiedGraph();
-}
-
-void Graph::updateTextMarker(const QString& text, int angle, int bkg,const QFont& fnt,
-		const QColor& textColor, const QColor& backgroundColor)
-{
-	if (!d_selected_text)
-		return;
-
-	d_selected_text->setText(text);
-	d_selected_text->setAngle(angle);
-	d_selected_text->setTextColor(textColor);
-	d_selected_text->setBackgroundColor(backgroundColor);
-	d_selected_text->setFont(fnt);
-	d_selected_text->setFrameStyle(bkg);
-	d_selected_text->setSelected(false);
 	emit modifiedGraph();
 }
 
@@ -2276,7 +2237,7 @@ void Graph::addTimeStamp()
 	LegendWidget* l = newLegend(QDateTime::currentDateTime().toString(Qt::LocalDate));
 
 	QPoint p = d_plot->canvas()->pos();
-	l->setOrigin(QPoint(p.x() + d_plot->canvas()->width()/2, p.y() + 10));
+	l->move(QPoint(p.x() + d_plot->canvas()->width()/2, p.y() + 10));
 	emit modifiedGraph();
 }
 
@@ -2292,7 +2253,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 	d_texts_list << l;
 
 	if (fileVersion < 86 || fileVersion > 91)
-		l->setOrigin(QPoint(fList[1].toInt(),fList[2].toInt()));
+		l->move(QPoint(fList[1].toInt(),fList[2].toInt()));
 	else
 		l->setOriginCoord(fList[1].toDouble(), fList[2].toDouble());
 
@@ -2416,7 +2377,7 @@ LegendWidget* Graph::insertText(LegendWidget* t)
 
 	aux->setTextColor(t->textColor());
 	aux->setBackgroundColor(t->backgroundColor());
-	aux->setOrigin(t->pos());
+	aux->move(t->pos());
 	aux->setFont(t->font());
 	aux->setFrameStyle(t->frameStyle());
 	aux->setAngle(t->angle());
@@ -2821,7 +2782,7 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 		const int y = int(yc - ray*sin(alabel));
 
 		LegendWidget* aux = new LegendWidget(d_plot);
-		aux->setOrigin(QPoint(x,y));
+		aux->move(QPoint(x,y));
 		aux->setFrameStyle(0);
 		aux->setText(QString::number(Y[i]/sum*100,'g',2)+"%");
 		d_texts_list << aux;
@@ -3453,10 +3414,10 @@ void Graph::drawText(bool on)
 	QCursor c = QCursor(Qt::IBeamCursor);
 	if (on){
 		d_plot->canvas()->setCursor(c);
-		d_plot->setCursor(c);
+		//d_plot->setCursor(c);
 	} else {
 		d_plot->canvas()->setCursor(Qt::arrowCursor);
-		d_plot->setCursor(Qt::arrowCursor);
+		//d_plot->setCursor(Qt::arrowCursor);
 	}
 	drawTextOn = on;
 }

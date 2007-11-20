@@ -354,7 +354,9 @@ void ApplicationWindow::initGlobalConstants()
 	lastCopiedLayer=0;
 	copiedLayer=false;
 	copiedMarkerType=Graph::None;
-	logInfo=QString();
+	d_text_copy = NULL;
+	
+	logInfo = QString();
 	savingTimerId=0;
 
 	#ifdef QTIPLOT_DEMO
@@ -7107,16 +7109,7 @@ void ApplicationWindow::showTextDialog()
 
 		TextDialog *td = new TextDialog(TextDialog::TextMarker, this, 0);
 		td->setAttribute(Qt::WA_DeleteOnClose);
-		connect (td, SIGNAL(values(const QString&, int, int, const QFont&, const QColor&, const QColor&)),
-				g, SLOT(updateTextMarker(const QString&, int, int, const QFont&, const QColor&, const QColor&)));
-
-		td->setIcon(QPixmap(logo_xpm));
-		td->setText(l->text());
-		td->setFont(l->font());
-		td->setTextColor(l->textColor());
-		td->setBackgroundColor(l->backgroundColor());
-		td->setBackgroundType(l->frameStyle());
-		td->setAngle(l->angle());
+		td->setLegendWidget(l);
 		td->exec();
 	}
 }
@@ -7207,14 +7200,16 @@ void ApplicationWindow::copySelection()
 		if (!g)
             return;
 
+		d_text_copy = NULL;
+		
         if (g->activeTool()){
             if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
                 ((RangeSelectorTool *)g->activeTool())->copySelection();
             else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
                 ((DataPickerTool *)g->activeTool())->copySelection();
-        } else if (g->markerSelected())
+		} else if (g->markerSelected()){
 			copyMarker();
-		else
+		} else
 			copyActiveLayer();
 
 		plot->copyAllLayers();
@@ -7260,6 +7255,8 @@ void ApplicationWindow::cutSelection()
 
 void ApplicationWindow::copyMarker()
 {
+	copiedLayer = false;
+
 	QWidget* m = (QWidget*)ws->activeWindow();
 	MultiLayer* plot = (MultiLayer*)m;
 	Graph* g = (Graph*)plot->activeGraph();
@@ -7270,14 +7267,9 @@ void ApplicationWindow::copyMarker()
 		auxMrkStart = rect.topLeft();
 		auxMrkEnd = rect.bottomRight();
 
-		if (copiedMarkerType == Graph::Text){
-			LegendWidget *t = g->selectedText();
-			auxMrkText = t->text();
-			auxMrkColor = t->textColor();
-			auxMrkFont = t->font();
-			auxMrkBkg = t->frameStyle();
-			auxMrkBkgColor = t->backgroundColor();
-		} else if (copiedMarkerType == Graph::Arrow){
+		if (copiedMarkerType == Graph::Text)
+			d_text_copy = g->selectedText();
+		else if (copiedMarkerType == Graph::Arrow){
 			ArrowMarker *m = (ArrowMarker *) g->selectedMarkerPtr();
 			auxMrkWidth=m->width();
 			auxMrkColor=m->color();
@@ -7287,13 +7279,16 @@ void ApplicationWindow::copyMarker()
 			arrowHeadLength=m->headLength();
 			arrowHeadAngle=m->headAngle();
 			fillArrowHead=m->filledArrowHead();
+			
+			d_text_copy = NULL;
 		} else if (copiedMarkerType == Graph::Image){
 			ImageMarker *im = (ImageMarker *) g->selectedMarkerPtr();
 			if (im)
 				auxMrkFileName = im->fileName();
+			
+			d_text_copy = NULL;
 		}
 	}
-	copiedLayer = false;
 }
 
 void ApplicationWindow::pasteSelection()
@@ -7334,12 +7329,13 @@ void ApplicationWindow::pasteSelection()
                     ((RangeSelectorTool *)g->activeTool())->pasteSelection();
                 else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
                     ((DataPickerTool *)g->activeTool())->pasteSelection();
-            } else {
-                g->setCopiedMarkerType(copiedMarkerType);
+            } else if (d_text_copy){
+				LegendWidget *t = g->insertText(d_text_copy);
+				t->move(g->mapFromGlobal(QCursor::pos()));
+			} else {
+				g->setCopiedMarkerType(copiedMarkerType);
                 g->setCopiedMarkerEnds(auxMrkStart,auxMrkEnd);
 
-                if (copiedMarkerType == Graph::Text)
-                    g->setCopiedTextOptions(auxMrkBkg,auxMrkText,auxMrkFont,auxMrkColor, auxMrkBkgColor);
                 if (copiedMarkerType == Graph::Arrow)
                     g->setCopiedArrowOptions(auxMrkWidth,auxMrkStyle,auxMrkColor,startArrowOn,
 						endArrowOn, arrowHeadLength,arrowHeadAngle, fillArrowHead);

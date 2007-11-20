@@ -37,6 +37,7 @@ class QTextCursor;
 class QComboBox;
 class QLabel;
 class QSpinBox;
+class LegendWidget;
 	
 #include "ColorButton.h"
 #include "TextFormatButtons.h"
@@ -96,6 +97,7 @@ public slots:
 	 *  Qt::AlignHCenter, Qt::AlignLeft, or Qt::AlignRight)
 	 */
 	void setAlignment(int align);
+	void setLegendWidget(LegendWidget *);
 
 private slots:
 	//! Let the user select another font
@@ -112,18 +114,7 @@ private slots:
 
 	void updateTransparency(int alpha);
 
-signals:
-	//! Emit all current values
-	/**
-	 * \param text the label text
-	 * \param angle the rotation angle
-	 * \param bkg the background type
-	 * \param fnt the text font
-	 * \param textColor the text color
-	 * \param backgroundColor the backgroundcolor
-	 */
-	void values(const QString& text, int angle, int bkg, const QFont& fnt, const QColor& textColor, const QColor& backgroundColor);
-	
+signals:	
 	//! Signal for axes labels: change text
 	void changeText(const QString &);
 	//! Signal for axes labels: change text color
@@ -151,6 +142,8 @@ protected:
 	QComboBox *alignmentBox;
 	TextFormatButtons *formatButtons;
 	QSpinBox *boxBackgroundTransparency;
+
+	LegendWidget *d_legend;
 };
 
 #endif // TEXTDLG_H

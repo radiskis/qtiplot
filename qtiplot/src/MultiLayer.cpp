@@ -1134,10 +1134,14 @@ void MultiLayer::mousePressEvent ( QMouseEvent * e )
 	while (i!=graphsList.begin()) {
 		--i;
 
-		QList <LegendWidget *> texts = ((Graph *)(*i))->textsList();
-		foreach(LegendWidget *l, texts){
-		    if (!l->geometry().contains(pos))
-                l->setSelected(false);
+		Graph *g = (Graph*) (*i);
+		if (g->selectedText()){
+			QList <LegendWidget *> texts = ((Graph *)(*i))->textsList();
+			foreach(LegendWidget *l, texts){
+		    	if (!l->geometry().contains(pos))
+                	l->setSelected(false);
+			}
+			return;
 		}
 
 		QRect igeo = (*i)->frameGeometry();
@@ -1151,7 +1155,7 @@ void MultiLayer::mousePressEvent ( QMouseEvent * e )
 					connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
 				}
 			} else {
-				setActiveGraph((Graph*) (*i));
+				setActiveGraph(g);
 				active_graph->raise();
 				if (!d_layers_selector) {
 					d_layers_selector = new SelectionMoveResizer(*i);
