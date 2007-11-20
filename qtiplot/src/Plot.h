@@ -98,7 +98,6 @@ public:
     void setLocale(const QLocale & l){d_locale = l;};
 
 protected:
-    void printTexts(QPainter *painter, const QRect& rect);
 	void printCanvas(QPainter *painter, const QRect &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 

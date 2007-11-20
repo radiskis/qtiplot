@@ -49,7 +49,7 @@ Plot::Plot(QWidget *parent, const char *)
 {
 	setAutoReplot (false);
     d_locale = QLocale::c();
-
+	
 	marker_key = 0;
 	curve_key = 0;
 
@@ -170,6 +170,11 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
 		QwtPainter::drawRect(painter, rect);
 	}
     painter->restore();
+	
+	// print texts
+    QList<LegendWidget *> texts = ((Graph *)parent())->textsList();
+    foreach(LegendWidget *t, texts)
+        t->print(painter, map);
 }
 
 void Plot::drawItems (QPainter *painter, const QRect &rect,
@@ -396,16 +401,7 @@ void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFil
     QwtText t = title();
 	printFrame(painter, plotRect);
 	QwtPlot::print(painter, plotRect, pfilter);
-	printTexts(painter, plotRect);
 	setTitle(t);
-}
-
-void Plot::printTexts(QPainter *painter, const QRect& rect)
-{
-    Graph *g = (Graph *)parent();
-    QList<LegendWidget *> texts = g->textsList();
-    foreach(LegendWidget *t, texts)
-        t->print(painter, rect);
 }
 
 QwtPlotCurve* Plot::curve(int index)

@@ -4,7 +4,7 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-#SCRIPTING_LANGS += Python
+SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -438,7 +438,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiGraph3D.h\
              $${SIP_DIR}/sipqtiArrowMarker.h\
 			 $${SIP_DIR}/sipqtiImageMarker.h\
-			 $${SIP_DIR}/sipqtiLegend.h\
+			 $${SIP_DIR}/sipqtiLegendWidget.h\
 			 $${SIP_DIR}/sipqtiGrid.h\
              $${SIP_DIR}/sipqtiMultiLayer.h\
              $${SIP_DIR}/sipqtiTable.h\
@@ -481,7 +481,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiGraph3D.cpp\
              $${SIP_DIR}/sipqtiArrowMarker.cpp\
 			 $${SIP_DIR}/sipqtiImageMarker.cpp\
-			 $${SIP_DIR}/sipqtiLegend.cpp\
+			 $${SIP_DIR}/sipqtiLegendWidget.cpp\
 			 $${SIP_DIR}/sipqtiGrid.cpp\
              $${SIP_DIR}/sipqtiMultiLayer.cpp\
              $${SIP_DIR}/sipqtiTable.cpp\

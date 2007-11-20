@@ -405,10 +405,10 @@ private:
   ImageMarker(const ImageMarker&);
 };
 
-class Legend // : QwtPlotMarker
+class LegendWidget // : QWidget /PyName=Legend/
 {
 %TypeHeaderCode
-#include "src/Legend.h"
+#include "src/LegendWidget.h"
 %End
 public:
     enum FrameStyle{None = 0, Line = 1, Shadow=2};
@@ -421,7 +421,7 @@ public:
   void setOriginCoord(double, double);
 
 private:
-  Legend(const Legend&);
+  LegendWidget(const LegendWidget&);
 };
 
 class Grid // : QwtPlotGrid
@@ -468,7 +468,7 @@ class Graph : QWidget /PyName=Layer/
 {
 %TypeHeaderCode
 #include "src/Graph.h"
-#include "src/Legend.h"
+#include "src/LegendWidget.h"
 %End
 public:
   enum ScaleType{Linear, Log10};
@@ -549,13 +549,13 @@ public:
   void setTitleAlignment(int align);
   void removeTitle();
 
-  //LegendWidget* newLegend(const QString& = QString());
+  LegendWidget* newLegend(const QString& = QString());
   void setLegend(const QString&) /NoDerived/;
 %MethodCode
   sipCpp->legend()->setText(*a0);
 %End
 
-  Legend* legend();
+  LegendWidget* legend();
 
   void removeLegend();
   void addTimeStamp();

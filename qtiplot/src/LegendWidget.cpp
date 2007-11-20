@@ -94,16 +94,16 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void LegendWidget::print(QPainter *painter, const QRect& plotRect)
-{
-    QPoint plotPos = plotRect.topLeft();
-    QPoint p = QPoint(plotPos.x() + pos().x(), plotPos.y() + pos().y());
-
+void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
+{	
+	int x = map[QwtPlot::xBottom].transform(xValue());
+	int y = map[QwtPlot::yLeft].transform(yValue());
+	
     const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
-	QwtArray<long> heights = itemsHeight(p.y(), symbolLineLength, width, height);
+	QwtArray<long> heights = itemsHeight(y, symbolLineLength, width, height);
 
-	QRect rect = QRect(p.x(), p.y(), width, height);
+	QRect rect = QRect(x, y, width, height);
 	drawFrame(painter, rect);
 	drawText(painter, rect, heights, symbolLineLength);
 }
@@ -135,12 +135,6 @@ void LegendWidget::setTextColor(const QColor& c)
 		return;
 
 	d_text->setColor(c);
-}
-
-void LegendWidget::setOrigin( const QPoint & p )
-{
-	move(p);
-	update();
 }
 
 void LegendWidget::setOriginCoord(double x, double y)
@@ -271,6 +265,10 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 void LegendWidget::drawText(QPainter *p, const QRect& rect,
 		QwtArray<long> height, int symbolLineLength)
 {
+	p->save();
+	if (((Graph *)d_plot->parent())->antialiasing())
+		p->setRenderHints(QPainter::Antialiasing);
+	
 	int l = symbolLineLength;
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
@@ -334,6 +332,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 			aux.draw(p, tr);
 		}
 	}
+	p->restore();
 }
 
 QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width, int &height)
@@ -397,7 +396,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 	}
 
 	height += 2*top_margin;
-	width = 2*left_margin + maxL;
+	width = 2*left_margin + maxL + h_space;
 
 	return heights;
 }
@@ -503,13 +502,16 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 	return curve;
 }
 
-void LegendWidget::mousePressEvent (QMouseEvent * e)
+void LegendWidget::mousePressEvent (QMouseEvent *)
 {
     if (d_selector){
         delete d_selector;
 		d_selector = NULL;
 	}
 
+	((Graph *)d_plot->parent())->activateGraph();
+	((Graph *)d_plot->parent())->deselectMarker();
+	
     d_selector = new SelectionMoveResizer(this);
 	connect(d_selector, SIGNAL(targetsChanged()), (Graph*)d_plot->parent(), SIGNAL(modifiedGraph()));
 	((Graph *)d_plot->parent())->setSelectedText(this);

@@ -54,7 +54,6 @@ public:
 	QString text(){return d_text->text();};
 	void setText(const QString& s);
 
-	void setOrigin(const QPoint & p);
 	//! Sets the position of the top left corner in axis coordinates
 	void setOriginCoord(double x, double y);
 
@@ -81,7 +80,7 @@ public:
 	void showTextDialog(){emit showDialog();};
 	void showContextMenu(){emit showMenu();};
 
-    void print(QPainter *p, const QRect& plotRect);
+    void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
 
 private:
 	PlotCurve* getCurve(const QString& s, int &point);

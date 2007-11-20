@@ -29,6 +29,7 @@
 
 #include "TextDialog.h"
 #include "ApplicationWindow.h"
+#include "LegendWidget.h"
 
 #include <QFontDialog>
 #include <QColorDialog>
@@ -50,6 +51,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl )
 	setWindowTitle( tr( "QtiPlot - Text options" ) );
 	setSizeGripEnabled( true );
 
+	d_legend = NULL;
 	textType = type;
 
 	// top groupbox
@@ -185,19 +187,40 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl )
 	connect( buttonFont, SIGNAL( clicked() ), this, SLOT(customFont() ) );
 }
 
+void TextDialog::setLegendWidget(LegendWidget *l)
+{
+	if (!l)
+		return;
+	
+	d_legend = l;
+	
+	setText(l->text());
+	selectedFont = l->font();
+	colorBtn->setColor(l->textColor());
+	setBackgroundColor(l->backgroundColor());	
+	backgroundBox->setCurrentIndex(l->frameStyle());
+	setAngle(l->angle());
+	
+	d_legend->setSelected(false);
+}
+
 void TextDialog::apply()
 {
-	if (textType == TextDialog::AxisTitle)
-	{
+	if (textType == TextDialog::AxisTitle){
 		emit changeAlignment(alignment());
 		emit changeText(textEditBox->toPlainText());
 		emit changeColor(colorBtn->color());
-	}
-	else
-	{
+	} else if (d_legend){		
 		QColor c = backgroundBtn->color();
 		c.setAlpha(boxBackgroundTransparency->value());
-		emit values(textEditBox->text(), angle(), backgroundBox->currentIndex(), selectedFont, colorBtn->color(), c);
+		d_legend->setBackgroundColor(c);
+		
+		d_legend->setText(textEditBox->text());
+		d_legend->setAngle(angle());
+		d_legend->setTextColor(colorBtn->color());
+		d_legend->setFont(selectedFont);
+		d_legend->setFrameStyle(backgroundBox->currentIndex());
+		d_legend->repaint();
 	}
 }
 

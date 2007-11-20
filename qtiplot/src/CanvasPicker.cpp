@@ -91,10 +91,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					return true;
 				}
 
-				if (d_editing_marker) {
-					d_editing_marker->setEditable(false);
-					d_editing_marker = 0;
-				}
+				disableEditing();
 
 				if(plot()->markerSelected())
 					plot()->deselectMarker();
@@ -215,7 +212,7 @@ void CanvasPicker::disableEditing()
 void CanvasPicker::drawTextMarker(const QPoint& point)
 {
 	LegendWidget t(plotWidget);
-	t.setOrigin(point);
+	t.move(point);
 	t.setFrameStyle(plot()->textMarkerDefaultFrame());
 	t.setFont(plot()->defaultTextMarkerFont());
 	t.setTextColor(plot()->textMarkerDefaultColor());
@@ -272,10 +269,7 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 		ImageMarker* m=(ImageMarker*)plotWidget->marker(i);
 		if (!m) return false;
 		if (m->rect().contains(point)) {
-			if (d_editing_marker) {
-				d_editing_marker->setEditable(false);
-				d_editing_marker = 0;
-			}
+			disableEditing();
 			plot()->setSelectedMarker(i, e->modifiers() & Qt::ShiftModifier);
 			return true;
 		}
@@ -286,12 +280,8 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 			return false;
 		int d=mrkL->width()+(int)floor(mrkL->headLength()*tan(M_PI*mrkL->headAngle()/180.0)+0.5);
 		double dist=mrkL->dist(point.x(),point.y());
-		if (dist <= d)
-		{
-			if (d_editing_marker) {
-				d_editing_marker->setEditable(false);
-				d_editing_marker = 0;
-			}
+		if (dist <= d){
+			disableEditing();
 			if (e->modifiers() & Qt::ShiftModifier) {
 				plot()->setSelectedMarker(i, true);
 				return true;

@@ -192,7 +192,7 @@ void Filter::showLegend()
 	LegendWidget* legend = d_output_graph->legend();
 	if (legend){
 		QPoint p = l->rect().bottomLeft();
-		l->setOrigin(QPoint(p.x(), p.y()+20));
+		l->move(QPoint(p.x(), p.y()+20));
 	}
 }
 

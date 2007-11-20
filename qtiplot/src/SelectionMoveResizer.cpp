@@ -303,7 +303,7 @@ void SelectionMoveResizer::operateOnTargets()
 {
 	foreach(LegendWidget *i, d_legend_markers) {
 		QRect new_rect = operateOn(i->geometry());
-		i->setOrigin(new_rect.topLeft());
+		i->move(new_rect.topLeft());
 		if (!i->text().isEmpty()){
             QFont f = i->font();
             f.setPointSize(f.pointSize() * new_rect.width() * new_rect.height()/(i->rect().width() * i->rect().height()));

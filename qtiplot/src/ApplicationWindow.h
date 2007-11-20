@@ -81,6 +81,7 @@ class Plot3DDialog;
 class MyWidget;
 class TableStatistics;
 class CurveRangeDialog;
+class LegendWidget;
 
 /**
  * \brief QtiPlot's main window.
@@ -1064,13 +1065,12 @@ public:
 
 	//! \name variables used when user copy/paste markers
 	//@{
-	QString auxMrkText;
-	QFont auxMrkFont;
-	QColor auxMrkColor, auxMrkBkgColor;
+	LegendWidget *d_text_copy;
+	QColor auxMrkColor;
 	QPoint auxMrkStart,auxMrkEnd;
 	Qt::PenStyle auxMrkStyle;
 	QString auxMrkFileName;
-	int auxMrkBkg,auxMrkWidth;
+	int auxMrkWidth;
 	//@}
 
 	bool startArrowOn, endArrowOn, fillArrowHead;
