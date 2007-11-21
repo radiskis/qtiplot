@@ -78,18 +78,23 @@ void Table::init(int rows, int cols)
 	d_numeric_precision = 13;
 
 	setBirthDate(QDateTime::currentDateTime().toString(Qt::LocalDate));
-
+	
 	d_table = new MyTable(rows, cols, this, "table");
 	d_table->setFocusPolicy(Qt::StrongFocus);
 	d_table->setFocus();
 	d_table->setSelectionMode (Q3Table::Single);
 	d_table->setRowMovingEnabled(true);
 	d_table->setColumnMovingEnabled(true);
+	d_table->setCurrentCell(-1, -1);
 
 	connect(d_table->verticalHeader(), SIGNAL(indexChange(int, int, int)),
 			this, SLOT(notifyChanges()));
     connect(d_table->horizontalHeader(), SIGNAL(indexChange(int, int, int)),
 			this, SLOT(moveColumn(int, int, int)));
+
+	setFocusPolicy(Qt::StrongFocus);
+	setFocusProxy(d_table);
+	setFocus();
 
 	QVBoxLayout* hlayout = new QVBoxLayout(this);
 	hlayout->setMargin(0);
@@ -114,12 +119,10 @@ void Table::init(int rows, int cols)
 	col_plot_type[0] = X;
 	setHeaderColType();
 
-	int w=4*(d_table->horizontalHeader())->sectionSize(0);
-	int h;
+	int w = 4*(d_table->horizontalHeader())->sectionSize(0);
+	int h = (rows+1)*(d_table->verticalHeader())->sectionSize(0);
 	if (rows>11)
 		h=11*(d_table->verticalHeader())->sectionSize(0);
-	else
-		h=(rows+1)*(d_table->verticalHeader())->sectionSize(0);
 	setGeometry(50, 50, w + 45, h);
 
 	d_table->verticalHeader()->setResizeEnabled(false);
@@ -131,7 +134,7 @@ void Table::init(int rows, int cols)
 	QShortcut *accelAll = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_A), this);
 	connect(accelAll, SIGNAL(activated()), this, SLOT(selectAllTable()));
 
-	connect(d_table, SIGNAL(valueChanged(int,int)),this, SLOT(cellEdited(int,int)));
+	connect(d_table, SIGNAL(valueChanged(int, int)), this, SLOT(cellEdited(int, int)));
 }
 
 void Table::colWidthModified(int, int, int)
@@ -482,6 +485,16 @@ void Table::setCommands(const QString& com)
 	setCommands(lst);
 }
 
+bool Table::calculate()
+{
+	Q3TableSelection sel = getSelection();
+	bool success = true;
+	for (int col=sel.leftCol(); col<=sel.rightCol(); col++)
+		if (!calculate(col, sel.topRow(), sel.bottomRow()))
+			success = false;
+	return success;
+}
+
 bool Table::calculate(int col, int startRow, int endRow)
 {
 	if (col < 0 || col >= d_table->numCols())
@@ -555,16 +568,6 @@ Q3TableSelection Table::getSelection()
 	return sel;
 }
 
-bool Table::calculate()
-{
-	Q3TableSelection sel = getSelection();
-	bool success = true;
-	for (int col=sel.leftCol(); col<=sel.rightCol(); col++)
-		if (!calculate(col, sel.topRow(), sel.bottomRow()))
-			success = false;
-	return success;
-}
-
 QString Table::saveCommands()
 {
 	QString s="<com>\n";
@@ -619,16 +622,6 @@ QString Table::saveToString(const QString& geometry, bool saveAsTemplate)
 
 QString Table::saveAsTemplate(const QString& geometryInfo)
 {
-	/*QString s="<table>\t"+QString::number(d_table->numRows())+"\t";
-	s+=QString::number(d_table->numCols())+"\n";
-	s+=geometryInfo;
-	s+=saveHeader();
-	s+=saveColumnWidths();
-	s+=saveCommands();
-	s+=saveColumnTypes();
-	s+=saveReadOnlyInfo();
-	s+=saveComments();
-	return s;*/
 	return saveToString(geometryInfo, true);
 }
 

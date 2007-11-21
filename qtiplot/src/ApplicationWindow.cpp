@@ -827,7 +827,7 @@ void ApplicationWindow::initMainMenu()
 {
 	fileMenu = new QMenu(this);
 	connect(fileMenu, SIGNAL(aboutToShow()), this, SLOT(fileMenuAboutToShow()));
-
+	
 	recent = new QMenu(this);
 
 	edit = new QMenu(this);
@@ -887,7 +887,7 @@ void ApplicationWindow::initMainMenu()
 
 	matrixMenu = new QMenu(this);
 	connect(matrixMenu, SIGNAL(aboutToShow()), this, SLOT(matrixMenuAboutToShow()));
-
+	
     plot2DMenu = new QMenu(this);
     connect(plot2DMenu, SIGNAL(aboutToShow()), this, SLOT(plotMenuAboutToShow()));
 
@@ -897,7 +897,7 @@ void ApplicationWindow::initMainMenu()
 
 	tableMenu = new QMenu(this);
     connect(tableMenu, SIGNAL(aboutToShow()), this, SLOT(tableMenuAboutToShow()));
-
+	
 	analysisMenu = new QMenu( this );
 	analysisMenu->setFont(appFont);
     connect(analysisMenu, SIGNAL(aboutToShow()), this, SLOT(analysisMenuAboutToShow()));
@@ -1037,6 +1037,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 {
 	menuBar()->clear();
 	menuBar()->insertItem(tr("&File"), fileMenu);
+	fileMenuAboutToShow();
 	menuBar()->insertItem(tr("&Edit"), edit);
 	menuBar()->insertItem(tr("&View"), view);
 	menuBar()->insertItem(tr("Scripting"), scriptingMenu);
@@ -1067,7 +1068,9 @@ void ApplicationWindow::customMenu(QWidget* w)
 		if (w->isA("MultiLayer")) {
 			menuBar()->insertItem(tr("&Graph"), graph);
 			menuBar()->insertItem(tr("&Data"), plotDataMenu);
+			plotDataMenuAboutToShow();
 			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
+			analysisMenuAboutToShow();
 			menuBar()->insertItem(tr("For&mat"), format);
 
 			format->clear();
@@ -1097,14 +1100,17 @@ void ApplicationWindow::customMenu(QWidget* w)
 		} else if (w->inherits("Table")) {
 			menuBar()->insertItem(tr("&Plot"), plot2DMenu);
             menuBar()->insertItem(tr("&Analysis"), analysisMenu);
+			analysisMenuAboutToShow();
             menuBar()->insertItem(tr("&Table"), tableMenu);
-
+			tableMenuAboutToShow();
 			actionTableRecalculate->setEnabled(true);
 		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
 			menuBar()->insertItem(tr("&Matrix"), matrixMenu);
+			matrixMenuAboutToShow();
 			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
+			analysisMenuAboutToShow();
 		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
@@ -1124,7 +1130,8 @@ void ApplicationWindow::customMenu(QWidget* w)
 	} else
 		disableActions();
 
-    menuBar()->insertItem(tr("&Windows"), windowsMenu );
+    menuBar()->insertItem(tr("&Windows"), windowsMenu);
+	windowsMenuAboutToShow();
 	menuBar()->insertItem(tr("&Help"), help );
 }
 
@@ -5519,7 +5526,7 @@ void ApplicationWindow::showColumnValuesDialog()
 }
 
 void ApplicationWindow::recalculateTable()
-{
+{	
 	QWidget* w = ws->activeWindow();
 	if (!w)
 		return;
@@ -7259,18 +7266,15 @@ void ApplicationWindow::copyMarker()
 	MultiLayer* plot = (MultiLayer*)m;
 	Graph* g = (Graph*)plot->activeGraph();
 	if (g && g->markerSelected()){
-		g->copyMarker();
-
-		Graph::MarkerType copiedMarkerType = g->copiedMarkerType();
-		if (copiedMarkerType == Graph::Text){
+		if (g->selectedText()){
 			d_text_copy = g->selectedText();
 			d_image_copy = NULL;
 			d_arrow_copy = NULL;
-		} else if (copiedMarkerType == Graph::Arrow){
+		} else if (g->arrowMarkerSelected()){
 			d_arrow_copy = (ArrowMarker *) g->selectedMarkerPtr();
             d_image_copy = NULL;
 			d_text_copy = NULL;
-		} else if (copiedMarkerType == Graph::Image){
+		} else if (g->imageMarkerSelected()){
 			d_image_copy = (ImageMarker *) g->selectedMarkerPtr();
 			d_text_copy = NULL;
 			d_arrow_copy = NULL;
@@ -7329,7 +7333,10 @@ void ApplicationWindow::pasteSelection()
                 g->replot();
                 g->deselectMarker();
 			} else if (d_image_copy){
-                g->addImage(d_image_copy);
+                ImageMarker *i = g->addImage(d_image_copy);
+				QPoint pos = g->plotWidget()->canvas()->mapFromGlobal(QCursor::pos());
+				QSize size = d_image_copy->size();
+				i->setRect(pos.x(), pos.y(), size.width(), size.height());
                 g->replot();
                 g->deselectMarker();
             }
@@ -7960,8 +7967,12 @@ void ApplicationWindow::windowsMenuAboutToShow()
 
 	QList<QWidget*> windows = ws->windowList();
 	int n = int(windows.count());
-	if (!n )
+	if (!n ){
+		#ifdef SCRIPTING_PYTHON
+			windowsMenu->addAction(actionShowScriptWindow);
+		#endif
 		return;
+	}
 
 	windowsMenu->insertItem(tr("&Cascade"), this, SLOT(cascade() ) );
 	windowsMenu->insertItem(tr("&Tile"), ws, SLOT(tile() ) );
@@ -11698,6 +11709,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowColumnValuesDialog->setMenuText(tr("Set Column &Values ..."));
 	actionShowColumnValuesDialog->setShortcut(tr("Alt+Q"));
 	actionTableRecalculate->setMenuText(tr("Recalculate"));
+	actionTableRecalculate->setShortcut(tr("Ctrl+Return"));
 	actionSwapColumns->setMenuText(tr("&Swap columns"));
 	actionSwapColumns->setToolTip(tr("Swap selected columns"));
 	actionMoveColRight->setMenuText(tr("Move &Right"));
