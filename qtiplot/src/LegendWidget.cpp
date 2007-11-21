@@ -268,7 +268,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	p->save();
 	if (((Graph *)d_plot->parent())->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
-	
+		
 	int l = symbolLineLength;
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
@@ -342,6 +342,8 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 	int n = (int)titles.count();
 	QwtArray<long> heights(n);
 
+	QFontMetrics fm(d_text->font());
+	
 	width = 0;
 	height = 0;
 	int maxL = 0;
@@ -354,7 +356,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 			if (pos >= 0){
                 QwtText aux(parse(s.left(pos)));
                 aux.setFont(d_text->font());
-                QSize size = aux.textSize();
+                QSize size = fm.size(Qt::TextSingleLine, aux.text());
                 textL += size.width();
 
                 int pos1 = s.indexOf("(", pos);
@@ -373,7 +375,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
                 if (pos >= 0){
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
-                    QSize size = aux.textSize();
+                    QSize size = fm.size(Qt::TextSingleLine, aux.text());
                     textL += size.width();
                     textL += symbolLineLength;
                     s = s.right(s.length() - s.indexOf("}", pos) - 1);
@@ -383,7 +385,8 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 
 		QwtText aux(parse(s));
 		aux.setFont(d_text->font());
-		textL += aux.textSize().width();
+		QSize size = fm.size(Qt::TextSingleLine, aux.text());
+		textL += size.width();
 
 		if (textL > maxL)
 			maxL = textL;

@@ -2,10 +2,8 @@
     File                 : ImportASCIIDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Import ASCII file(s) dialog
 
  ***************************************************************************/
@@ -331,7 +329,7 @@ void ImportASCIIDialog::preview()
         d_preview_table->hide();
         return;
     }
-			
+				
 	if (d_current_path.trimmed().isEmpty()){
         QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                 tr("Please select a file first!"));
@@ -342,12 +340,8 @@ void ImportASCIIDialog::preview()
 			d_preview_table->show();
         return;
     }
-
-	QStringList selected = selectedFiles();
-    if (selected.isEmpty())
-		return;
-
-	QString fileName = selected[0];
+		
+	QString fileName = d_current_path;
 	QTemporaryFile tempFile;
 	int rows = d_preview_lines_box->value();
 	if (rows){
@@ -380,6 +374,9 @@ void ImportASCIIDialog::preview()
 
 void ImportASCIIDialog::changePreviewFile(const QString& path)
 {
+	if (path.isEmpty() || !QFileInfo(path).exists())
+		return;
+
 	d_current_path = path;
 	preview();
 }

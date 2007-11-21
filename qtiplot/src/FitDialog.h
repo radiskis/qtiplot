@@ -114,6 +114,7 @@ private:
 	QStringList builtInFunctionNames();
 	QStringList userFunctionNames();
 	QStringList plugInNames();
+	QString parseFormula(const QString& s);
 
     Fit *d_current_fit;
 	Graph *d_graph;

@@ -622,11 +622,12 @@ void FitDialog::saveUserFunction()
 
 	QString name = boxName->text();
     QStringList lst = userFunctionNames();
+	QString formula = parseFormula(editBox->text().simplified());
 	if (lst.contains(name)){
 		int index = lst.findIndex(name);
 		d_current_fit = (NonLinearFit *)d_user_functions[index];
 		d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
-        d_current_fit->setFormula(editBox->text().remove("\n"));
+        d_current_fit->setFormula(formula);
         d_current_fit->save(d_current_fit->fileName());
 
 		if (funcBox->currentItem()->text() == name)
@@ -647,7 +648,7 @@ void FitDialog::saveUserFunction()
             d_current_fit = new NonLinearFit(app, d_graph);
             d_current_fit->setObjectName(name);
             d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
-            d_current_fit->setFormula(editBox->text().remove("\n"));
+            d_current_fit->setFormula(formula);
             if (d_current_fit->save(fn)){
                 QStringList lst = userFunctionNames();
                 lst << name;
@@ -699,10 +700,12 @@ void FitDialog::removeUserFunction()
 void FitDialog::showFitPage()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QString formula = editBox->text().simplified();
     if (!boxUseBuiltIn->isChecked()){
         d_current_fit = new NonLinearFit(app, d_graph);
 		d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
-        d_current_fit->setFormula(editBox->text().remove("\n"));
+		formula = parseFormula(formula);
+		d_current_fit->setFormula(formula);
     }
 
     if (d_current_fit->type() == Fit::BuiltIn && d_current_fit->objectName() == tr("Polynomial")){
@@ -768,7 +771,7 @@ void FitDialog::showFitPage()
 		}
 	}
 
-	boxFunction->setText(editBox->text().simplified());
+	boxFunction->setText(formula);
 	lblFunction->setText(boxName->text() +" (x, " + boxParam->text().simplified() + ")");
 
 	tw->setCurrentWidget (fitPage);
@@ -997,7 +1000,7 @@ void FitDialog::accept()
 	QString curve = boxCurve->currentText();
 	QStringList curvesList = d_graph->curvesList();
 	if (curvesList.contains(curve) <= 0){
-		QMessageBox::critical(this,tr("QtiPlot - Warning"),
+		QMessageBox::critical(app, tr("QtiPlot - Warning"),
 				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curve));
 		boxCurve->clear();
 		boxCurve->addItems(curvesList);
@@ -1009,7 +1012,7 @@ void FitDialog::accept()
 	double eps = boxTolerance->value();
 
 	if (start >= end){
-		QMessageBox::critical(0, tr("QtiPlot - Input error"),
+		QMessageBox::critical(app, tr("QtiPlot - Input error"),
 				tr("Please enter x limits that satisfy: from < end!"));
 		boxTo->setFocus();
 		return;
@@ -1025,27 +1028,12 @@ void FitDialog::accept()
 	} else
 		n = rows;
 	
-	QStringList parameters;
+	QStringList parameters = QStringList();
 	MyParser parser;
 	bool error = false;
-
 	double paramsInit[n];
 	QString formula = boxFunction->text();
 	try {
-        QStringList lst = userFunctionNames();
-		for (int i=0; i<lst.count(); i++){
-            if (formula.contains(lst[i]))
-                formula.replace(lst[i], "(" + (d_user_functions[i])->formula() + ")");
-        }
-
-		QStringList builtInFunctions = builtInFunctionNames();
-		for (int i=0; i<(int)builtInFunctions.count(); i++){
-			if (formula.contains(builtInFunctions[i])){
-				Fit *fit = d_built_in_functions[i];
-				formula.replace(builtInFunctions[i], "(" + fit->formula() + ")");
-			}
-		}
-
 		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
 			for (int i=0; i<rows; i++){
@@ -1084,7 +1072,7 @@ void FitDialog::accept()
 		QString errorMsg = boxFunction->text() + " = " + formula + "\n" + QString::fromStdString(e.GetMsg()) + "\n" +
 			tr("Please verify that you have initialized all the parameters!");
 
-		QMessageBox::critical(0, tr("QtiPlot - Input function error"), errorMsg);
+		QMessageBox::critical(app, tr("QtiPlot - Input function error"), errorMsg);
 		boxFunction->setFocus();
 		error = true;
 	}
@@ -1093,8 +1081,8 @@ void FitDialog::accept()
 		if (d_current_fit->type() == Fit::BuiltIn)
 			modifyGuesses (paramsInit);
 		if (d_current_fit->type() == Fit::User){
-			d_current_fit->setFormula(formula);
 			d_current_fit->setParametersList(parameters);
+			d_current_fit->setFormula(formula);
 		}
 		
 		d_current_fit->setInitialGuesses(paramsInit);
@@ -1432,6 +1420,26 @@ void FitDialog::showParameterRange(bool on)
     }
 }
 
+QString FitDialog::parseFormula(const QString& s)
+{        
+	QString formula = s;
+	
+	QStringList lst = userFunctionNames();
+	for (int i=0; i<lst.count(); i++){
+		if (formula.contains(lst[i]))
+			formula.replace(lst[i], "(" + (d_user_functions[i])->formula() + ")");
+	}
+
+	QStringList builtInFunctions = builtInFunctionNames();
+	for (int i=0; i<(int)builtInFunctions.count(); i++){
+		if (formula.contains(builtInFunctions[i])){
+			Fit *fit = d_built_in_functions[i];
+			formula.replace(builtInFunctions[i], "(" + fit->formula() + ")");
+		}
+	}
+	return formula;
+}
+
 /*****************************************************************************
  *
  * Class DoubleSpinBox
@@ -1446,7 +1454,7 @@ d_locale(QLocale())
     setRange(-DBL_MAX, DBL_MAX);
 }
 
-QValidator::State DoubleSpinBox::validate(QString & input, int & pos) const
+QValidator::State DoubleSpinBox::validate(QString & input, int & ) const
 {
 	if (input.lower().contains("e"))
 		return QValidator::Acceptable;

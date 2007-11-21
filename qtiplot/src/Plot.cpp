@@ -160,14 +160,19 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
     painter->restore();
 
     painter->save();
-	if(plotCanvas->lineWidth() > 0){
+	int lw = plotCanvas->lineWidth();
+	if(lw > 0){
 		QColor color = plotCanvas->palette().color(QPalette::Active, QColorGroup::Foreground);
-		painter->setPen (QPen(color, plotCanvas->lineWidth(),
-                         Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
+		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 
-        int lw = plotCanvas->lineWidth()/2;
-  	    rect.addCoords(-lw, -lw, plotCanvas->lineWidth(), plotCanvas->lineWidth());
-		QwtPainter::drawRect(painter, rect);
+        int lw2 = lw/2;
+		rect = canvasRect;
+		if (plotCanvas->lineWidth()%2)
+			rect.addCoords(-lw2, -lw2, lw2, lw2);
+		else
+			rect.addCoords(-lw2, -lw2, lw, lw);
+		
+		QwtPainter::drawRect(painter, rect);	
 	}
     painter->restore();
 	

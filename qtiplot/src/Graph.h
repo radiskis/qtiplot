@@ -141,7 +141,7 @@ class Graph: public QWidget
 
 		QList <LegendWidget *> textsList(){return d_texts_list;};
 		LegendWidget *selectedText(){return d_selected_text;};
-		void setSelectedText(LegendWidget *l){d_selected_text = l; selectedMarkerType = Text;};
+		void setSelectedText(LegendWidget *l){d_selected_text = l;};
 
 	public slots:
 		//! Accessor method for #d_plot.
@@ -380,8 +380,6 @@ class Graph: public QWidget
 		//! \name Common to all Markers
 		//@{
 		void removeMarker();
-		void cutMarker();
-		void copyMarker();
 		//! Keep the markers on screen each time the scales are modified by adding/removing curves
 		void updateMarkersBoundingRect();
 
@@ -397,7 +395,6 @@ class Graph: public QWidget
 		bool markerSelected();
 		//! Reset any selection states on markers.
 		void deselectMarker();
-		MarkerType copiedMarkerType(){return selectedMarkerType;};
 		//@}
 
 		//! \name Axes
@@ -694,8 +691,6 @@ signals:
 		//! Stores columns used for axes with text labels or time/date format info
 		QStringList axesFormatInfo;
 		QList <int> axisType;
-		MarkerType selectedMarkerType;
-		QwtPlotMarker::LineStyle mrklStyle;
 
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
@@ -710,26 +705,25 @@ signals:
 		//! Stores pointers to the text objects on the plot
 		QList <LegendWidget *> d_texts_list;
 
-		QFont defaultMarkerFont;
-		int n_curves;
-		int widthLine, defaultMarkerFrame;
-		QColor defaultTextMarkerColor, defaultTextMarkerBackground;
+		int n_curves, widthLine;	
 		long selectedMarker;
-		bool drawTextOn, drawLineOn, drawArrowOn;
-		bool ignoreResize, drawAxesBackbone, autoscale;
+		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone, autoscale;
 
-		QColor defaultArrowColor;
-		int defaultArrowLineWidth, defaultArrowHeadLength, defaultArrowHeadAngle;
+		//! \name variables used when creating a new marker (text/line/arrow)
+		//@{
+		QFont defaultMarkerFont;
+		QColor defaultArrowColor, defaultTextMarkerColor, defaultTextMarkerBackground;
+		int defaultMarkerFrame, defaultArrowLineWidth, defaultArrowHeadLength, defaultArrowHeadAngle;
 		bool defaultArrowHeadFill;
 		Qt::PenStyle defaultArrowLineStyle;
-
+		//@}
+		
 		//! The markers selected for move/resize operations or NULL if none are selected.
 		QPointer<SelectionMoveResizer> d_markers_selector;
 		//! The current curve selection, or NULL if none is active.
 		QPointer<RangeSelectorTool> d_range_selector;
 		//! The currently active tool, or NULL for default (pointer).
 		PlotToolInterface *d_active_tool;
-
 		//! Pointer to the currently selected text/legend
 		LegendWidget *d_selected_text;
 		//! Pointer to the current legend

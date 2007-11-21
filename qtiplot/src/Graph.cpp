@@ -1409,7 +1409,7 @@ void Graph::exportSVG(const QString& fname)
 		QSvgGenerator svg;
         svg.setFileName(fname);
         svg.setSize(d_plot->size());
-
+		
 		QPainter p(&svg);
 		d_plot->print(&p, d_plot->rect());
 		p.end();
@@ -1486,12 +1486,6 @@ void Graph::removeMarker()
 	}
 }
 
-void Graph::cutMarker()
-{
-	copyMarker();
-	removeMarker();
-}
-
 bool Graph::arrowMarkerSelected()
 {
 	return (d_lines.contains(selectedMarker));
@@ -1500,22 +1494,6 @@ bool Graph::arrowMarkerSelected()
 bool Graph::imageMarkerSelected()
 {
 	return (d_images.contains(selectedMarker));
-}
-
-void Graph::copyMarker()
-{
-	if (d_selected_text){
-        selectedMarkerType = Text;
-        return;
-	} else if (selectedMarker<0){
-		selectedMarkerType = None;
-		return;
-	}
-
-    if (d_lines.contains(selectedMarker))
-		selectedMarkerType = Arrow;
-	else if (d_images.contains(selectedMarker))
-		selectedMarkerType=Image;
 }
 
 bool Graph::titleSelected()
@@ -3367,7 +3345,7 @@ ImageMarker* Graph::addImage(ImageMarker* mrk)
 	d_images[imagesOnPlot-1]=d_plot->insertMarker(mrk2);
 
 	mrk2->setBoundingRect(mrk->xValue(), mrk->yValue(), mrk->right(), mrk->bottom());
-	return mrk;
+	return mrk2;
 }
 
 ImageMarker* Graph::addImage(const QString& fileName)
