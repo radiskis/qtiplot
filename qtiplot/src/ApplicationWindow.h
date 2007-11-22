@@ -961,11 +961,20 @@ private slots:
 	void tableMenuAboutToShow();
 	void windowsMenuAboutToShow();
 	void windowsMenuActivated( int id );
+	
+	//! \name Font Format Functions
+	//@{
+	void setActiveText(LegendWidget* t);
+	void setFontSize(int);
+	void setFontFamily(const QFont &);
+	void setItalicFont(bool);
+	void setBoldFont(bool);
+	//@}
 
 // TODO: a lot of this stuff should be private
 public:
 	bool d_matrix_tool_bar, d_file_tool_bar, d_table_tool_bar, d_column_tool_bar, d_edit_tool_bar;
-	bool d_plot_tool_bar, d_plot3D_tool_bar, d_display_tool_bar;
+	bool d_plot_tool_bar, d_plot3D_tool_bar, d_display_tool_bar, d_format_tool_bar;
 	bool d_backup_files;
 	WindowType d_init_window_type;
 	QRect d_script_win_rect, d_app_rect;
@@ -1109,6 +1118,7 @@ private:
 #endif
 	QWorkspace* ws;
     QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
+	QToolBar *formatToolBar;
 	QToolButton *btnResults;
 	QWidgetList *hiddenWindows, *outWindows;
 	QLineEdit *info;
@@ -1183,6 +1193,7 @@ private:
     QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
     QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars;
     QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
+	QAction *actionFontBold, *actionFontItalic, *actionFontBox, *actionFontSize;
 
 	QActionGroup* coord;
 	QAction* Box;

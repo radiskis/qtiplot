@@ -302,23 +302,23 @@ QString Fit::logFitInfo(int iterations, int status)
 		info+=tr(" algorithm with tolerance = ") + locale.toString(d_tolerance)+"\n";
 	}
 
-	info+=tr("From x")+" = "+locale.toString(d_x[0], 'f', d_prec)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'f', d_prec)+"\n";
+	info+=tr("From x")+" = "+locale.toString(d_x[0], 'e', d_prec)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'e', d_prec)+"\n";
 	double chi_2_dof = chi_2/(d_n - d_p);
 	for (int i=0; i<d_p; i++){
 		info += d_param_names[i];
 		if (!d_param_explain[i].isEmpty())
             info += " (" + d_param_explain[i] + ")";
-		info += " = " + locale.toString(d_results[i], 'f', d_prec) + " +/- ";
+		info += " = " + locale.toString(d_results[i], 'e', d_prec) + " +/- ";
 		if (d_scale_errors)
-			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
+			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'e', d_prec) + "\n";
 		else
-			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
+			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'e', d_prec) + "\n";
 	}
 	info += "--------------------------------------------------------------------------------------\n";
-	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'f', d_prec) + "\n";
+	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
 
 	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
-	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'f', d_prec) + "\n";
+	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'e', d_prec) + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
 	if (is_non_linear){
 		info += tr("Iterations")+ " = " + QString::number(iterations) + "\n";
@@ -349,16 +349,16 @@ QString Fit::legendInfo()
 	QLocale locale = app->locale();
 
 	double chi_2_dof = chi_2/(d_n - d_p);
-	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'f', d_prec) + "\n";
+	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
 	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
-	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'f', d_prec) + "\n";
+	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'e', d_prec) + "\n";
 
 	for (int i=0; i<d_p; i++){
-		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'f', d_prec) + " +/- ";
+		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'e', d_prec) + " +/- ";
 		if (d_scale_errors)
-			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
+			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'e', d_prec) + "\n";
 		else
-			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'f', d_prec) + "\n";
+			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'e', d_prec) + "\n";
 	}
 	return info;
 }
@@ -623,7 +623,7 @@ void Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int 
 {
 	QString formula = d_formula;
 	for (int j=0; j<d_p; j++){
-		QString parameter = QString::number(d_results[j], 'f', d_prec);
+		QString parameter = QString::number(d_results[j], 'e', d_prec);
 		formula.replace(d_param_names[j], parameter);
 	}
 

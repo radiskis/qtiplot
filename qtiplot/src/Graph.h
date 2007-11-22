@@ -141,7 +141,7 @@ class Graph: public QWidget
 
 		QList <LegendWidget *> textsList(){return d_texts_list;};
 		LegendWidget *selectedText(){return d_selected_text;};
-		void setSelectedText(LegendWidget *l){d_selected_text = l;};
+		void setSelectedText(LegendWidget *l){d_selected_text = l; emit activatedText(l);};
 
 	public slots:
 		//! Accessor method for #d_plot.
@@ -672,6 +672,7 @@ signals:
 
 		void dataRangeChanged();
 		void showFitResults(const QString&);
+		void activatedText(LegendWidget*);
 
 	private:
         Plot *d_plot;

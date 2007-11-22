@@ -1409,10 +1409,12 @@ void Graph::exportSVG(const QString& fname)
 		QSvgGenerator svg;
         svg.setFileName(fname);
         svg.setSize(d_plot->size());
-		
+			
 		QPainter p(&svg);
+		d_plot->setSVGMode();
 		d_plot->print(&p, d_plot->rect());
-		p.end();
+		d_plot->setSVGMode(false);
+		p.end();			
 	#endif
 }
 
@@ -3221,15 +3223,17 @@ void Graph::removeLegendItem(int index)
 		return;
 
 	QStringList l = items.grep( "\\l(" + QString::number(index+1) + ")" );
+	if (l.isEmpty())
+		return;
+	
 	items.remove(l[0]);//remove the corresponding legend string
 
 	int cv=0;
-	for (int i=0; i< (int)items.count(); i++)
-	{//set new curves indexes in legend text
+	for (int i=0; i<items.count(); i++){//set new curves indexes in legend text
 		QString item = (items[i]).stripWhiteSpace();
 		if (item.startsWith("\\l(", true)){
 			item.remove(0, item.find(")", 0));
-			item.prepend("\\l("+QString::number(++cv));
+			item.prepend("\\l(" + QString::number(++cv));
 		}
 		items[i]=item;
 	}

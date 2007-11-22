@@ -1049,7 +1049,7 @@ void FitDialog::accept()
 					j++;
 				} else {
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value(); 
-					formula.replace(boxParams->item(i, 0)->text(), QString::number(val, 'f', app->fit_output_precision));
+					formula.replace(boxParams->item(i, 0)->text(), QString::number(val, 'e', app->fit_output_precision));
 				}
 			}
 		} else {

@@ -68,6 +68,7 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 	move(pos);
 
     d_selector = NULL;
+	d_SVG_mode = false;
 
 	connect (this, SIGNAL(showDialog()), plot->parent(), SIGNAL(viewTextDialog()));
 	connect (this, SIGNAL(showMenu()), plot->parent(), SIGNAL(showMarkerPopupMenu()));
@@ -273,6 +274,8 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 
+	QFontMetrics fm(d_text->font());
+	
 	for (int i=0; i<(int)titles.count(); i++){
         int w = rect.x() + left_margin;
 		QString s = titles[i];
@@ -284,6 +287,11 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                 aux.setColor(d_text->color());
 
                 QSize size = aux.textSize();
+				if (d_SVG_mode){
+					size = fm.size(Qt::TextSingleLine, aux.text());
+					aux.setRenderFlags(Qt::AlignLeft | Qt::AlignVCenter);
+				}
+				
                 QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
                 aux.draw(p, tr);
                 w += size.width();
@@ -308,6 +316,9 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                     aux.setColor(d_text->color());
 
                     QSize size = aux.textSize();
+					if (d_SVG_mode)
+						size = fm.size(Qt::TextSingleLine, aux.text());
+					
                     QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
                     aux.draw(p, tr);
                     w += size.width();
@@ -328,6 +339,11 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 			aux.setFont(d_text->font());
 			aux.setColor(d_text->color());
 			QSize size = aux.textSize();
+			if (d_SVG_mode){
+				size = fm.size(Qt::TextSingleLine, aux.text());
+				aux.setRenderFlags(Qt::AlignLeft | Qt::AlignVCenter);
+			}
+			
 			QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
 			aux.draw(p, tr);
 		}
@@ -356,7 +372,9 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 			if (pos >= 0){
                 QwtText aux(parse(s.left(pos)));
                 aux.setFont(d_text->font());
-                QSize size = fm.size(Qt::TextSingleLine, aux.text());
+                QSize size = aux.textSize(); 
+				if (d_SVG_mode)
+					size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
                 textL += size.width();
 
                 int pos1 = s.indexOf("(", pos);
@@ -375,7 +393,9 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
                 if (pos >= 0){
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
-                    QSize size = fm.size(Qt::TextSingleLine, aux.text());
+                    QSize size = aux.textSize(); 
+					if (d_SVG_mode)
+						size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
                     textL += size.width();
                     textL += symbolLineLength;
                     s = s.right(s.length() - s.indexOf("}", pos) - 1);
@@ -385,13 +405,15 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 
 		QwtText aux(parse(s));
 		aux.setFont(d_text->font());
-		QSize size = fm.size(Qt::TextSingleLine, aux.text());
+		QSize size = aux.textSize(); 
+		if (d_SVG_mode)
+			size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
 		textL += size.width();
 
 		if (textL > maxL)
 			maxL = textL;
 
-		int textH = aux.textSize().height();
+		int textH = size.height();
 		height += textH;
 
 		heights[i] = y + h + textH/2;
@@ -443,6 +465,14 @@ int LegendWidget::symbolsMaxWidth()
 			maxL = 10;
 	}
 	return maxL;
+}
+
+QString LegendWidget::parseSVG(const QString& str)
+{
+	QString s = str;
+    s.remove("<sub>").remove("</sub>");
+    s.remove("<sup>").remove("</sup>");
+	return s;
 }
 
 QString LegendWidget::parse(const QString& str)

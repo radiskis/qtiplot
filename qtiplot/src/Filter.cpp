@@ -188,12 +188,10 @@ void Filter::showLegend()
 	if (!d_output_graph)
 		return;
 
-	LegendWidget* l = d_output_graph->newLegend(legendInfo());
 	LegendWidget* legend = d_output_graph->legend();
-	if (legend){
-		QPoint p = l->rect().bottomLeft();
-		l->move(QPoint(p.x(), p.y()+20));
-	}
+	LegendWidget* l = d_output_graph->newLegend(legendInfo());
+	if (legend)
+		l->move(QPoint(legend->x(), legend->y() + legend->height() + 20));
 }
 
 bool Filter::run()
@@ -328,8 +326,8 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 
     d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + dataSet, d_points, 2);
 	for (int i=0; i<d_points; i++){
-		d_result_table->setText(i, 0, locale.toString(x[i], 'f', app->d_decimal_digits));
-		d_result_table->setText(i, 1, locale.toString(y[i], 'f', app->d_decimal_digits));
+		d_result_table->setText(i, 0, locale.toString(x[i], 'e', app->d_decimal_digits));
+		d_result_table->setText(i, 1, locale.toString(y[i], 'e', app->d_decimal_digits));
 	}
 
 	DataCurve *c = 0;

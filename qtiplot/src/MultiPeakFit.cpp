@@ -224,11 +224,11 @@ void MultiPeakFit::insertPeakFunctionCurve(double *x, double *y, int peak)
 	c->setRange(d_x[0], d_x[d_n-1]);
 
 	QString formula = "y0+"+peakFormula(peak + 1, d_profile);
-	QString parameter = QString::number(d_results[d_p-1], 'f', d_prec);
+	QString parameter = QString::number(d_results[d_p-1], 'e', d_prec);
 	formula.replace(d_param_names[d_p-1], parameter);
 	for (int j=0; j<3; j++){
 		int p = 3*peak + j;
-		parameter = QString::number(d_results[p], 'f', d_prec);
+		parameter = QString::number(d_results[p], 'e', d_prec);
 		formula.replace(d_param_names[p], parameter);
 	}
 	c->setFormula(formula.replace("--", "+").replace("-+", "-").replace("+-", "-"));
@@ -308,7 +308,7 @@ void MultiPeakFit::generateFitCurve()
         QLocale locale = app->locale();
 		for (i = 0; i<d_points; i++){
 			X[i] = d_x[i];
-			d_result_table->setText(i, 0, locale.toString(X[i], 'f', d_prec));
+			d_result_table->setText(i, 0, locale.toString(X[i], 'e', d_prec));
 
 			double yi=0;
 			for (j=0; j<d_peaks; j++){
@@ -322,12 +322,12 @@ void MultiPeakFit::generateFitCurve()
 
 				yi += y_aux;
 				y_aux += d_results[d_p - 1];
-				d_result_table->setText(i, j+1, locale.toString(y_aux, 'f', d_prec));
+				d_result_table->setText(i, j+1, locale.toString(y_aux, 'e', d_prec));
 				gsl_matrix_set(m, i, j, y_aux);
 			}
 			Y[i] = yi + d_results[d_p - 1];//add offset
 			if (d_peaks > 1)
-				d_result_table->setText(i, d_peaks+1, locale.toString(Y[i], 'f', d_prec));
+				d_result_table->setText(i, d_peaks+1, locale.toString(Y[i], 'e', d_prec));
 		}
 
 		customizeFitResults();
@@ -404,14 +404,14 @@ QString MultiPeakFit::logFitInfo(int iterations, int status)
 	info += "---------------------------------------------------------------------------------------\n";
 	for (int j=0; j<d_peaks; j++){
 		info += QString::number(j+1) + "\t";
-		info += locale.toString(d_results[3*j], 'f', d_prec) + "\t";
-		info += locale.toString(d_results[3*j+1], 'f', d_prec) + "\t";
-		info += locale.toString(d_results[3*j+2], 'f', d_prec) + "\t";
+		info += locale.toString(d_results[3*j], 'e', d_prec) + "\t";
+		info += locale.toString(d_results[3*j+1], 'e', d_prec) + "\t";
+		info += locale.toString(d_results[3*j+2], 'e', d_prec) + "\t";
 
 		if (d_profile == Lorentz)
-			info += locale.toString(M_2_PI*d_results[3*j]/d_results[3*j+2], 'f', d_prec) + "\n";
+			info += locale.toString(M_2_PI*d_results[3*j]/d_results[3*j+2], 'e', d_prec) + "\n";
 		else
-			info += locale.toString(sqrt(M_2_PI)*d_results[3*j]/d_results[3*j+2], 'f', d_prec) + "\n";
+			info += locale.toString(sqrt(M_2_PI)*d_results[3*j]/d_results[3*j+2], 'e', d_prec) + "\n";
 	}
 	info += "---------------------------------------------------------------------------------------\n";
 	return info;

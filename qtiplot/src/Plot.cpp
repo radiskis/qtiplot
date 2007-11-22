@@ -49,6 +49,7 @@ Plot::Plot(QWidget *parent, const char *)
 {
 	setAutoReplot (false);
     d_locale = QLocale::c();
+	d_SVG_mode = false;
 	
 	marker_key = 0;
 	curve_key = 0;
@@ -404,8 +405,22 @@ void Plot::setTickLength (int minLength, int majLength)
 void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &pfilter)
 {
     QwtText t = title();
+	
 	printFrame(painter, plotRect);
+	
+	QList<LegendWidget *> texts = ((Graph *)parent())->textsList();
+	if (d_SVG_mode){
+		foreach(LegendWidget *t, texts)
+			t->setSVGMode();
+	}
+
 	QwtPlot::print(painter, plotRect, pfilter);
+	
+	if (d_SVG_mode){
+		foreach(LegendWidget *t, texts)
+			t->setSVGMode(false);
+	}
+	
 	setTitle(t);
 }
 

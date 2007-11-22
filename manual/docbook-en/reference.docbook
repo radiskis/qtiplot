@@ -405,7 +405,7 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="add-text-cmd">
   <term>Graph -> &add-text-cmd; (&add-text-key;)</term>
   <listitem>
-     <para>Opens a <link linkend="add-text-dialog">dialog</link> allowing you to select whether the text is to be added to the active plot layer or on a new layer. The cursor changes to an edit text cursor. Next, you must click in the plot window to specify the position of the new text box. A text dialog will pop-up allowing you to type the new text to be displayed and all its properties (color, font, etc...)</para>
+     <para>The cursor changes to an edit text cursor. Next, you must click in the plot window to specify the position of the new text box. A text dialog will pop-up allowing you to type the new text to be displayed and all its properties (color, font, etc...)</para>
   </listitem>
 </varlistentry>
 <varlistentry id="draw-arrow-cmd">
