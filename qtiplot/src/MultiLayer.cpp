@@ -207,8 +207,10 @@ void MultiLayer::setActiveGraph(Graph* g)
 
 	active_graph->raise();//raise layer on top of the layers stack
 
-	for (int i=0;i<(int)graphsList.count();i++){
+	for(int i=0; i<graphsList.count(); i++){
 		Graph *gr = (Graph *)graphsList.at(i);
+		gr->deselectMarker();
+		
 		LayerButton *btn = (LayerButton *)buttonsList.at(i);
 		if (gr == g)
 			btn->setOn(true);
@@ -779,13 +781,14 @@ void MultiLayer::exportSVG(const QString& fname)
         generator.setSize(canvas->size());
 
 		QPainter p(&generator);
-        for (int i=0; i<(int)graphsList.count(); i++)
-		{
+        for (int i=0; i<(int)graphsList.count(); i++){
 			Graph *gr = (Graph *)graphsList.at(i);
 			Plot *myPlot = (Plot *)gr->plotWidget();
 
 			QPoint pos = QPoint(gr->pos().x(), gr->pos().y());
+			myPlot->setSVGMode();
 			myPlot->print(&p, QRect(pos, myPlot->size()));
+			myPlot->setSVGMode(false);
 		}
 		p.end();
 	#endif
@@ -961,6 +964,7 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveGraph(Graph*)));
 	connect (g,SIGNAL(viewTextDialog()),this,SIGNAL(showTextDialog()));
+	connect (g,SIGNAL(activatedText(LegendWidget*)), this, SIGNAL(activatedText(LegendWidget*)));
 }
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)

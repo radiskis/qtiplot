@@ -175,10 +175,10 @@ void PolynomialFit::fit()
 	gsl_multifit_linear_free (work);
 	gsl_matrix_free (X);
 
+	generateFitCurve();
+
 	if (show_legend)
 		showLegend();
-
-	generateFitCurve();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (app->writeFitResultsToLog)

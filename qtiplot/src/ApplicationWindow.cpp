@@ -145,6 +145,8 @@
 #include <QList>
 #include <QUrl>
 #include <QAssistantClient>
+#include <QFontComboBox>
+#include <QSpinBox>
 
 #include <zlib.h>
 
@@ -346,7 +348,8 @@ void ApplicationWindow::initGlobalConstants()
 	d_plot_tool_bar = true;
 	d_plot3D_tool_bar = true;
 	d_display_tool_bar = false;
-
+	d_format_tool_bar = true;
+	
 	appStyle = qApp->style()->objectName();
 	d_app_rect = QRect();
 	projectname="untitled";
@@ -787,6 +790,23 @@ void ApplicationWindow::initToolBars()
 	actionPlotHistogram->addTo(plotMatrixBar);
 
 	plotMatrixBar->hide();
+	
+	formatToolBar = new QToolBar(tr( "Format" ), this);
+	formatToolBar->setObjectName("formatToolBar");
+	addToolBar(Qt::TopToolBarArea, formatToolBar);
+	
+	QFontComboBox *fb = new QFontComboBox();
+	connect(fb, SIGNAL(currentFontChanged(const QFont &)), this, SLOT(setFontFamily(const QFont &)));
+	actionFontBox = formatToolBar->addWidget(fb);
+	
+	QSpinBox *sb = new QSpinBox();
+	connect(sb, SIGNAL(valueChanged(int)), this, SLOT(setFontSize(int)));
+	actionFontSize = formatToolBar->addWidget(sb);
+		
+	actionFontBold->addTo(formatToolBar);
+	actionFontItalic->addTo(formatToolBar);
+	formatToolBar->setEnabled(false);
+	formatToolBar->hide();
 }
 
 void ApplicationWindow::insertTranslatedStrings()
@@ -816,7 +836,8 @@ void ApplicationWindow::insertTranslatedStrings()
 	editTools->setWindowTitle(tr("Edit"));
 	plotMatrixBar->setWindowTitle(tr("Matrix Plot"));
 	plot3DTools->setWindowTitle(tr("3D Surface"));
-
+	formatToolBar->setWindowTitle(tr("Format"));
+	
 	fileMenu->changeItem(recentMenuID, tr("&Recent Projects"));
 
 	translateActionsStrings();
@@ -1203,6 +1224,12 @@ void ApplicationWindow::customToolBars(QWidget* w)
         if(!plotTools->isVisible())
             plotTools->show();
         plotTools->setEnabled (true);
+		
+		if(d_format_tool_bar && ((MultiLayer*)w)->activeGraph()->selectedText() && 
+		  !formatToolBar->isVisible()){
+			formatToolBar->setEnabled (true);
+            formatToolBar->show();
+		}	
     }else if (w->inherits("Table")){
         if(d_table_tool_bar){
             if(!tableTools->isVisible())
@@ -4381,6 +4408,7 @@ void ApplicationWindow::readSettings()
 	d_plot_tool_bar = settings.value("/PlotToolBar", true).toBool();
 	d_plot3D_tool_bar = settings.value("/Plot3DToolBar", true).toBool();
 	d_display_tool_bar = settings.value("/DisplayToolBar", false).toBool();
+	d_format_tool_bar = settings.value("/FormatToolBar", true).toBool();
 	settings.endGroup();
 }
 
@@ -4674,6 +4702,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/PlotToolBar", d_plot_tool_bar);
     settings.setValue("/Plot3DToolBar", d_plot3D_tool_bar);
     settings.setValue("/DisplayToolBar", d_display_tool_bar);
+	settings.setValue("/FormatToolBar", d_format_tool_bar);
 	settings.endGroup();
 }
 
@@ -10655,7 +10684,8 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(showLineDialog()),this,SLOT(showLineDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
 	connect (g,SIGNAL(showGraphContextMenu()),this,SLOT(showGraphContextMenu()));
-	connect (g, SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
+	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
+	connect (g,SIGNAL(activatedText(LegendWidget*)), this, SLOT(setActiveText(LegendWidget*)));
 
 	g->askOnCloseEvent(confirmClosePlot2D);
 }
@@ -11421,6 +11451,20 @@ void ApplicationWindow::createActions()
 	actionToolBars = new QAction(tr("Toolbars..."), this);
 	actionToolBars->setShortcut(tr("Ctrl+Shift+T"));
 	connect(actionToolBars, SIGNAL(activated()), this, SLOT(showToolBarsMenu()));
+	
+	actionFontBold = new QAction("B", this);
+	QFont font = appFont;
+	font.setBold(true);
+	actionFontBold->setFont(font);
+	actionFontBold->setCheckable(true);
+	connect(actionFontBold, SIGNAL(toggled(bool)), this, SLOT(setBoldFont(bool)));
+
+	actionFontItalic = new QAction("It", this);
+	font = appFont;
+	font.setItalic(true);
+	actionFontItalic->setFont(font);
+	actionFontItalic->setCheckable(true);
+	connect(actionFontItalic, SIGNAL(toggled(bool)), this, SLOT(setItalicFont(bool)));
 }
 
 void ApplicationWindow::translateActionsStrings()
@@ -14338,6 +14382,12 @@ void ApplicationWindow::showToolBarsMenu()
 	connect(actionDisplayBar, SIGNAL(toggled(bool)), displayBar, SLOT(setVisible(bool)));
 	toolBarsMenu.addAction(actionDisplayBar);
 
+	QAction *actionFormatToolBar = new QAction(formatToolBar->windowTitle(), this);
+	actionFormatToolBar->setCheckable(true);
+	actionFormatToolBar->setChecked(formatToolBar->isVisible());
+	connect(actionFormatToolBar, SIGNAL(toggled(bool)), formatToolBar, SLOT(setVisible(bool)));
+	toolBarsMenu.addAction(actionFormatToolBar);
+
 	QAction *action = toolBarsMenu.exec(QCursor::pos());
 	if (!action)
 		return;
@@ -14365,6 +14415,8 @@ void ApplicationWindow::showToolBarsMenu()
 		d_edit_tool_bar = action->isChecked();
 	} else if (action->text() == displayBar->windowTitle()){
 		d_display_tool_bar = action->isChecked();
+	} else if (action->text() == formatToolBar->windowTitle()){
+		d_format_tool_bar = action->isChecked();
 	}
 }
 
@@ -14441,4 +14493,119 @@ void ApplicationWindow::matrixInverseFFT()
 	QMessageBox::critical(this, tr("QtiPlot"), s);
     return;
 #endif
+}
+
+void ApplicationWindow::setActiveText(LegendWidget* t)
+{
+	if (t)
+		formatToolBar->setEnabled(true);
+	else {
+		formatToolBar->setEnabled(false);
+		return;
+	}
+	
+	QFont font = t->font();
+	
+	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+	fb->blockSignals(true);
+	fb->setCurrentFont(font);
+	fb->blockSignals(false);
+	
+	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
+	sb->blockSignals(true);
+	sb->setValue(font.pointSize());
+	sb->blockSignals(false);
+	
+	actionFontBold->setChecked(font.bold());
+	actionFontItalic->setChecked(font.italic());
+}
+
+void ApplicationWindow::setFontSize(int size)
+{
+	QWidget *w = ws->activeWindow();
+	if (!w || !w->isA("MultiLayer"))
+		return;
+
+	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	if (!g)
+		return;
+	
+	LegendWidget *t = g->selectedText();
+	if (t){
+		QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+		QFont f(fb->currentFont().family(), size);
+		f.setBold(actionFontBold->isChecked());
+		f.setItalic(actionFontItalic->isChecked());
+		t->setFont(f);
+		t->repaint();
+		modifiedProject();
+	}
+}
+
+void ApplicationWindow::setFontFamily(const QFont& font)
+{
+	QWidget *w = ws->activeWindow();
+	if (!w || !w->isA("MultiLayer"))
+		return;
+
+	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	if (!g)
+		return;
+	
+	LegendWidget *t = g->selectedText();
+	if (t){
+		QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
+		QFont f(font.family(), sb->value());
+		f.setBold(actionFontBold->isChecked());
+		f.setItalic(actionFontItalic->isChecked());
+		t->setFont(f);
+		t->repaint();
+		modifiedProject();
+	}
+}
+
+void ApplicationWindow::setItalicFont(bool italic)
+{
+	QWidget *w = ws->activeWindow();
+	if (!w || !w->isA("MultiLayer"))
+		return;
+
+	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	if (!g)
+		return;
+		
+	LegendWidget *t = g->selectedText();
+	if (t){
+		QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+		QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
+		QFont f(fb->currentFont().family(), sb->value());
+		f.setBold(actionFontBold->isChecked());
+		f.setItalic(italic);
+		t->setFont(f);
+		t->repaint();
+		modifiedProject();
+	}
+}
+
+void ApplicationWindow::setBoldFont(bool bold)
+{
+	QWidget *w = ws->activeWindow();
+	if (!w || !w->isA("MultiLayer"))
+		return;
+
+	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	if (!g)
+		return;
+	
+	LegendWidget *t = g->selectedText();
+	if (t){
+		QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+		QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
+		QFont f(fb->currentFont().family(), sb->value());
+		f.setBold(bold);
+		f.setItalic(actionFontItalic->isChecked());
+		t->setFont(f);
+		t->repaint();
+		modifiedProject();
+	}
 }

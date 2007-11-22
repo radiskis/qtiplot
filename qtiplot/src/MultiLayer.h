@@ -43,6 +43,7 @@ class QLabel;
 class QWidget;
 class LayerButton;
 class SelectionMoveResizer;
+class LegendWidget;
 
 /**
  * \brief An MDI window (MyWidget) managing one or more Graph objects.
@@ -192,6 +193,7 @@ signals:
 	void createTable(const QString&,int,int,const QString&);
 	void pasteMarker();
 	void setPointerCursor();
+	void activatedText(LegendWidget*);
 
 private:
 	void resizeLayers (const QResizeEvent *re);

@@ -142,22 +142,6 @@ which opens a dialog allowing to edit the plot range.</para>
 </sect1>
 
 <!-- ************************************************** -->
-<!--		Add Text				-->
-<!-- ************************************************** -->
-<sect1 id="add-text-dialog">
-  <title>Add Text</title>
-  <para>This dialog box is opened when you use the &add-text-lnk; command  from the &graph-menu-lnk;. If you choose the <emphasis>On new layer</emphasis> option, the text will be inserted as a new layer which has the size and the position of the text. You can then modify the size and position of this layer with the <emphasis>layer Geometry</emphasis> (see the <link linkend="add-layer-dialog">&add-layer-cmd;</link> for details). Beware that in this case, all text which is not in the layer will be clipped, therefore, you need to modify the layer to modify the position of the text. If you choose the <emphasis>On Active layer</emphasis> option, the text will be inserted in the selected layer, and its position can be modified directly with the mouse inside this layer.</para>
-  <figure id="fig-add-text-dialog">
-    <title>The &add-text-cmd; dialog box.</title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-text-dialog.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-</sect1>
-
-<!-- ************************************************** -->
 <!--		Arrange Layers				-->
 <!-- ************************************************** -->
 <sect1 id="arrange-layers-dialog">
