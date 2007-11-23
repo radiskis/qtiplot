@@ -2,10 +2,10 @@
     File                 : ScalePicker.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Scale picker
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -32,7 +32,7 @@ class QRect;
 class QPoint;
 class QwtPlot;
 class QwtScaleWidget;
-	
+
 /*!\brief Handles user interaction with a QwtScaleWidget.
  *
  * This class is used by Graph to catch events for the scales on its Plot.
@@ -49,15 +49,26 @@ public:
 
 	//! Returns the bounding rectangle of a scale excluding the title and the tick labels.
 	QRect scaleTicksRect(const QwtScaleWidget *scale) const;
+	
+	//! Returns the bounding rectangle of a scale's title.
+	QRect titleRect(const QwtScaleWidget *scale) const;
 
 	/*! Install myself as event filter for all axes of my parent.
 	 * For every axis of plot(), add myself to the corresponding QwtScaleWidget.
 	 * \sa QwtPlot::axisWidget()
 	 */
 	void refresh();
-	
+
 	//! Return my parent casted to QwtPlot.
 	QwtPlot *plot() { return (QwtPlot *)parent(); }
+
+	void deselect();
+	
+	bool titleSelected(){return d_title_selected;};
+    void selectTitle(QwtScaleWidget *scale, bool select = true);
+	
+	bool labelsSelected(){return d_labels_selected;};
+	void selectLabels(QwtScaleWidget *scale, bool select = true);
 
 signals:
 	//! Emitted when the user clicks on one of the monitored axes.
@@ -93,11 +104,15 @@ signals:
 	 * \sa QwtScaleDraw::Alignment
 	 */
 	void topAxisTitleDblClicked();
-	
+
 private:
     bool eventFilter(QObject *, QEvent *);
 
 	void mouseDblClicked(const QwtScaleWidget *, const QPoint &);
 	void mouseClicked(const QwtScaleWidget *scale, const QPoint &pos) ;
 	void mouseRightClicked(const QwtScaleWidget *scale, const QPoint &pos);
+
+	bool d_title_selected;
+	bool d_labels_selected;
+	QwtScaleWidget *d_selected_axis;
 };

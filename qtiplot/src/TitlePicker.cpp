@@ -2,10 +2,10 @@
     File                 : TitlePicker.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Title picker
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -32,10 +32,12 @@
 #include <qwt_text_label.h>
 
 #include <QMouseEvent>
+#include <QPen>
 
 TitlePicker::TitlePicker(QwtPlot *plot):
 	QObject(plot)
 {
+    d_selected = false;
 	title = (QwtTextLabel *)plot->titleLabel();
 	title->setFocusPolicy(Qt::StrongFocus);
 	if (title)
@@ -46,33 +48,50 @@ bool TitlePicker::eventFilter(QObject *object, QEvent *e)
 {
 	if (object != (QObject *)title)
 		return FALSE;
-	
-    if ( object->inherits("QwtTextLabel") && e->type() == QEvent::MouseButtonDblClick)
-		{
+
+    if ( object->inherits("QwtTextLabel") && e->type() == QEvent::MouseButtonDblClick){
         emit doubleClicked();
         return TRUE;
-		}
+    }
 
-	 if ( object->inherits("QwtTextLabel") &&  e->type() == QEvent::MouseButtonPress )
-	 {
-		 const QMouseEvent *me = (const QMouseEvent *)e;	
+	 if ( object->inherits("QwtTextLabel") &&  e->type() == QEvent::MouseButtonPress ){
+		 const QMouseEvent *me = (const QMouseEvent *)e;
+
 		 emit clicked();
 
-		 if (me->button()==Qt::RightButton)
+		 if (me->button() == Qt::RightButton)
 			 emit showTitleMenu();
+         else if (me->button() == Qt::LeftButton)
+            setSelected();
+
 		 return !(me->modifiers() & Qt::ShiftModifier);
     }
 
-	if ( object->inherits("QwtTextLabel") && 
-        e->type() == QEvent::KeyPress)
-		{
-		switch (((const QKeyEvent *)e)->key()) 
+	if ( object->inherits("QwtTextLabel") &&
+        e->type() == QEvent::KeyPress){
+		switch (((const QKeyEvent *)e)->key())
 			{
-			case Qt::Key_Delete: 
-			emit removeTitle();	
+			case Qt::Key_Delete:
+			emit removeTitle();
             return TRUE;
 			}
 		}
 
     return QObject::eventFilter(object, e);
+}
+
+void TitlePicker::setSelected(bool select)
+{
+    if (!title || d_selected == select)
+        return;
+
+    d_selected = select;
+
+    QwtText text = title->text();
+    if (select)
+        text.setBackgroundPen(QPen(Qt::blue));
+    else
+        text.setBackgroundPen(QPen(Qt::NoPen));
+
+    ((QwtPlot *)parent())->setTitle(text);
 }

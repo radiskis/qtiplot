@@ -2,10 +2,10 @@
     File                 : TitlePicker.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Title picker
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -34,9 +34,10 @@ class QwtTextLabel;
 class TitlePicker: public QObject
 {
     Q_OBJECT
-	
+
 public:
     TitlePicker(QwtPlot *plot);
+    void setSelected(bool select = true);
 
 signals:
 	void clicked();
@@ -47,4 +48,5 @@ signals:
 private:
 	bool eventFilter(QObject *, QEvent *);
 	QwtTextLabel *title;
+	bool d_selected;
 };

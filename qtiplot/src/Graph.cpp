@@ -283,8 +283,24 @@ QwtPlotMarker* Graph::selectedMarkerPtr()
 	return d_plot->marker(selectedMarker);
 }
 
+void Graph::setSelectedText(LegendWidget *l)
+{
+    if (l){
+        selectTitle(false);
+        scalePicker->deselect();
+    }
+
+    d_selected_text = l;
+    emit activatedText(l);
+}
+
 void Graph::setSelectedMarker(long mrk, bool add)
 {
+    if (mrk >= 0){
+        selectTitle(false);
+        scalePicker->deselect();
+    }
+
 	selectedMarker = mrk;
 	if (add) {
 		if (d_markers_selector) {
@@ -1409,12 +1425,12 @@ void Graph::exportSVG(const QString& fname)
 		QSvgGenerator svg;
         svg.setFileName(fname);
         svg.setSize(d_plot->size());
-			
+
 		QPainter p(&svg);
 		d_plot->setSVGMode();
 		d_plot->print(&p, d_plot->rect());
 		d_plot->setSVGMode(false);
-		p.end();			
+		p.end();
 	#endif
 }
 
@@ -1503,14 +1519,15 @@ bool Graph::titleSelected()
 	return d_plot->titleLabel()->hasFocus();
 }
 
-void Graph::selectTitle()
+void Graph::selectTitle(bool select)
 {
-	if (!d_plot->hasFocus()){
-		emit selectedGraph(this);
-		QwtTextLabel *title = d_plot->titleLabel();
-		title->setFocus();
-	}
-	deselectMarker();
+    if (select){
+        deselectMarker();
+        scalePicker->deselect();
+    }
+
+    titlePicker->setSelected(select);
+	emit selectedGraph(this);
 }
 
 void Graph::setTitle(const QString& t)
@@ -3225,7 +3242,7 @@ void Graph::removeLegendItem(int index)
 	QStringList l = items.grep( "\\l(" + QString::number(index+1) + ")" );
 	if (l.isEmpty())
 		return;
-	
+
 	items.remove(l[0]);//remove the corresponding legend string
 
 	int cv=0;
