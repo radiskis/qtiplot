@@ -50,7 +50,7 @@ Plot::Plot(QWidget *parent, const char *)
 	setAutoReplot (false);
     d_locale = QLocale::c();
 	d_SVG_mode = false;
-	
+
 	marker_key = 0;
 	curve_key = 0;
 
@@ -172,11 +172,11 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
 			rect.addCoords(-lw2, -lw2, lw2, lw2);
 		else
 			rect.addCoords(-lw2, -lw2, lw, lw);
-		
-		QwtPainter::drawRect(painter, rect);	
+
+		QwtPainter::drawRect(painter, rect);
 	}
     painter->restore();
-	
+
 	// print texts
     QList<LegendWidget *> texts = ((Graph *)parent())->textsList();
     foreach(LegendWidget *t, texts)
@@ -405,9 +405,9 @@ void Plot::setTickLength (int minLength, int majLength)
 void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &pfilter)
 {
     QwtText t = title();
-	
+
 	printFrame(painter, plotRect);
-	
+
 	QList<LegendWidget *> texts = ((Graph *)parent())->textsList();
 	if (d_SVG_mode){
 		foreach(LegendWidget *t, texts)
@@ -415,12 +415,12 @@ void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFil
 	}
 
 	QwtPlot::print(painter, plotRect, pfilter);
-	
+
 	if (d_SVG_mode){
 		foreach(LegendWidget *t, texts)
 			t->setSVGMode(false);
 	}
-	
+
 	setTitle(t);
 }
 

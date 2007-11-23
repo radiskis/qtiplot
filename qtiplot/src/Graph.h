@@ -141,7 +141,7 @@ class Graph: public QWidget
 
 		QList <LegendWidget *> textsList(){return d_texts_list;};
 		LegendWidget *selectedText(){return d_selected_text;};
-		void setSelectedText(LegendWidget *l){d_selected_text = l; emit activatedText(l);};
+		void setSelectedText(LegendWidget *l);
 
 	public slots:
 		//! Accessor method for #d_plot.
@@ -510,7 +510,7 @@ class Graph: public QWidget
 		void setTitleAlignment(int align);
 
 		bool titleSelected();
-		void selectTitle();
+		void selectTitle(bool select = true);
 
 		void removeTitle();
 		void initTitle( bool on, const QFont& fnt);
@@ -706,7 +706,7 @@ signals:
 		//! Stores pointers to the text objects on the plot
 		QList <LegendWidget *> d_texts_list;
 
-		int n_curves, widthLine;	
+		int n_curves, widthLine;
 		long selectedMarker;
 		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone, autoscale;
 
@@ -718,7 +718,7 @@ signals:
 		bool defaultArrowHeadFill;
 		Qt::PenStyle defaultArrowLineStyle;
 		//@}
-		
+
 		//! The markers selected for move/resize operations or NULL if none are selected.
 		QPointer<SelectionMoveResizer> d_markers_selector;
 		//! The current curve selection, or NULL if none is active.

@@ -30,6 +30,8 @@
 #include "MyParser.h"
 
 #include <QDateTime>
+#include <QPainter>
+#include <QMatrix>
 
 #include <qwt_painter.h>
 #include <qwt_text.h>
@@ -41,12 +43,46 @@ ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
     d_prec(4),
 	formula_string (s),
 	d_majTicks(Out),
-	d_minTicks(Out)
+	d_minTicks(Out),
+	d_selected(false)
 	{};
 
+QwtText ScaleDraw::label(double value) const
+{
+	if (d_plot)
+		return QwtText(d_plot->locale().toString(transformValue(value), d_fmt, d_prec));
+	else
+		return QwtText(QLocale::system().toString(transformValue(value), d_fmt, d_prec));
+}
+
+void ScaleDraw::drawLabel(QPainter *painter, double value) const
+{
+    QwtText lbl = tickLabel(painter->font(), value);
+    if (lbl.isEmpty())
+        return;
+
+    const QPoint pos = labelPosition(value);
+
+    QSize labelSize = lbl.textSize(painter->font());
+    if ( labelSize.height() % 2 )
+        labelSize.setHeight(labelSize.height() + 1);
+
+    const QMatrix m = labelMatrix(pos, labelSize);
+
+    painter->save();
+    painter->setMatrix(m, true);
+    if (d_selected)
+        lbl.setBackgroundPen(QPen(Qt::blue));
+    else
+        lbl.setBackgroundPen(QPen(Qt::NoPen));
+
+    lbl.draw(painter, QRect(QPoint(0, 0), labelSize));
+    painter->restore();
+}
+
 double ScaleDraw::transformValue(double value) const
-	{
-	if (!formula_string.isEmpty()) {
+{
+	if (!formula_string.isEmpty()){
 		double lbl=0.0;
 		try{
 			MyParser parser;
@@ -57,15 +93,14 @@ double ScaleDraw::transformValue(double value) const
 
 			parser.SetExpr(formula_string.ascii());
 			lbl=parser.Eval();
-			}
-		catch(mu::ParserError &){
+        }
+        catch(mu::ParserError &){
 			return 0;
-			}
-
+        }
 		return lbl;
-		} else
-			return value;
-	}
+    } else
+        return value;
+}
 
 /*!
   \brief Set the number format for the major scale labels
@@ -282,7 +317,7 @@ return QwtText(day);
  *
  *****************************************************************************/
 
-QwtSupersciptsScaleDraw::QwtSupersciptsScaleDraw(Plot *plot, const QString& s): 
+QwtSupersciptsScaleDraw::QwtSupersciptsScaleDraw(Plot *plot, const QString& s):
 	ScaleDraw(plot, s)
 {}
 

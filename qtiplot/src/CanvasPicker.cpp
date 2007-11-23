@@ -53,8 +53,8 @@ CanvasPicker::CanvasPicker(Graph *graph):
 
 bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 {
-	QVector<int> images=plot()->imageMarkerKeys();
-	QVector<int> lines=plot()->lineMarkerKeys();
+	QVector<int> images = plot()->imageMarkerKeys();
+	QVector<int> lines = plot()->lineMarkerKeys();
 
 	if (object != (QObject *)plot()->plotWidget()->canvas())
 		return false;
@@ -218,11 +218,11 @@ void CanvasPicker::drawTextMarker(const QPoint& point)
 	t.setTextColor(plot()->textMarkerDefaultColor());
 	t.setBackgroundColor(plot()->textMarkerDefaultBackground());
 	t.setText(tr("enter your text here"));
-	
+
 	LegendWidget *l = plot()->insertText(&t);
 	l->setSelected();
 	l->showTextDialog();
-	
+
 	plot()->drawText(FALSE);
 	emit drawTextOff();
 }
@@ -253,18 +253,6 @@ void CanvasPicker::drawLineMarker(const QPoint& point, bool endArrow)
 bool CanvasPicker::selectMarker(const QMouseEvent *e)
 {
 	const QPoint point = e->pos();
-	/*foreach(long i, plot()->textMarkerKeys()) {
-		Legend *m = (Legend*)plotWidget->marker(i);
-		if (!m) return false;
-		if (m->rect().contains(point)) {
-			if (d_editing_marker) {
-				d_editing_marker->setEditable(false);
-				d_editing_marker = 0;
-			}
-			plot()->setSelectedMarker(i, e->modifiers() & Qt::ShiftModifier);
-			return true;
-		}
-	}*/
 	foreach(long i, plot()->imageMarkerKeys()) {
 		ImageMarker* m=(ImageMarker*)plotWidget->marker(i);
 		if (!m) return false;

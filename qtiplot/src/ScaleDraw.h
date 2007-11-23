@@ -49,14 +49,7 @@ public:
 	void setFormulaString(const QString& formula) {formula_string = formula;};
 
 	double transformValue(double value) const;
-
-	virtual QwtText label(double value) const
-	{
-	if (d_plot)
-		return QwtText(d_plot->locale().toString(transformValue(value), d_fmt, d_prec));
-	else
-		return QwtText(QLocale::system().toString(transformValue(value), d_fmt, d_prec));
-	};
+	virtual QwtText label(double value) const;
 
 	void labelFormat(char &f, int &prec) const;
 	void setLabelFormat(char f, int prec);
@@ -68,9 +61,12 @@ public:
 
 	int minorTicksStyle(){return d_minTicks;};
 	void setMinorTicksStyle(TicksStyle type){d_minTicks = type;};
-	
+
+	void setSelected(bool select = true){d_selected = select;};
+
 protected:
-	void drawTick(QPainter *p, double value, int len) const;
+    virtual void drawLabel(QPainter *painter, double value) const;
+	virtual void drawTick(QPainter *p, double value, int len) const;
 
 	Plot *d_plot;
 
@@ -79,6 +75,7 @@ private:
 	char d_fmt;
     int d_prec;
 	int d_minTicks, d_majTicks;
+	bool d_selected;
 };
 
 class QwtTextScaleDraw: public ScaleDraw

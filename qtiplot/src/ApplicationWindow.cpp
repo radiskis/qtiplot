@@ -1225,8 +1225,7 @@ void ApplicationWindow::customToolBars(QWidget* w)
             plotTools->show();
         plotTools->setEnabled (true);
 		
-		if(d_format_tool_bar && ((MultiLayer*)w)->activeGraph()->selectedText() && 
-		  !formatToolBar->isVisible()){
+		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
             formatToolBar->show();
 		}	
