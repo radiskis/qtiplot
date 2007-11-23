@@ -84,32 +84,10 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 
 void ScalePicker::mouseDblClicked(const QwtScaleWidget *scale, const QPoint &pos)
 {
-    if (scaleRect(scale).contains(pos))
+	if (titleRect(scale).contains(pos))
+		emit axisTitleDblClicked();
+	else if (scaleRect(scale).contains(pos))
         emit axisDblClicked(scale->alignment());
-    else {// Click on the title
-        switch(scale->alignment()){
-            case QwtScaleDraw::LeftScale:
-            {
-                emit yAxisTitleDblClicked();
-                break;
-            }
-            case QwtScaleDraw::RightScale:
-            {
-                emit rightAxisTitleDblClicked();
-                break;
-            }
-            case QwtScaleDraw::BottomScale:
-            {
-                emit xAxisTitleDblClicked();
-                break;
-            }
-            case QwtScaleDraw::TopScale:
-            {
-                emit topAxisTitleDblClicked();
-                break;
-            }
-		}
-	}
 }
 
 void ScalePicker::mouseRightClicked(const QwtScaleWidget *scale, const QPoint &pos)
@@ -241,9 +219,10 @@ void ScalePicker::selectTitle(QwtScaleWidget *scale, bool select)
 	d_labels_selected = false;
 
     QwtText title = scale->title();
-    if (select)
+    if (select){
         title.setBackgroundPen(QPen(Qt::blue));
-    else
+		g->notifyFontChange(title.font());
+    } else
         title.setBackgroundPen(QPen(Qt::NoPen));
 
     scale->setTitle(title);
@@ -265,6 +244,8 @@ void ScalePicker::selectLabels(QwtScaleWidget *scale, bool select)
 	d_selected_axis = scale;
 	d_title_selected = false;
 		
+	g->notifyFontChange(scale->font());
+	
 	ScaleDraw *sc_draw = (ScaleDraw *)scale->scaleDraw();
 	sc_draw->setSelected(select);
 	scale->repaint();

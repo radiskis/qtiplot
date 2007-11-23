@@ -63,6 +63,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 	{
 		case QEvent::MouseButtonPress:
 			{
+				plot()->deselect();
 				emit selectPlot();
 
 				const QMouseEvent *me = (const QMouseEvent *)e;
@@ -90,11 +91,6 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 						emit showMarkerPopupMenu();
 					return true;
 				}
-
-				disableEditing();
-
-				if(plot()->markerSelected())
-					plot()->deselectMarker();
 
 				return !(me->modifiers() & Qt::ShiftModifier);
 			}

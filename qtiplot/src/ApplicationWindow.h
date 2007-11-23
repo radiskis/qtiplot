@@ -964,7 +964,7 @@ private slots:
 	
 	//! \name Font Format Functions
 	//@{
-	void setActiveText(LegendWidget* t);
+	void setFormatBarFont(const QFont &);
 	void setFontSize(int);
 	void setFontFamily(const QFont &);
 	void setItalicFont(bool);

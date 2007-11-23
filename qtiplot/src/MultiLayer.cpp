@@ -209,7 +209,7 @@ void MultiLayer::setActiveGraph(Graph* g)
 
 	for(int i=0; i<graphsList.count(); i++){
 		Graph *gr = (Graph *)graphsList.at(i);
-		gr->deselectMarker();
+		gr->deselect();
 		
 		LayerButton *btn = (LayerButton *)buttonsList.at(i);
 		if (gr == g)
@@ -964,7 +964,7 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveGraph(Graph*)));
 	connect (g,SIGNAL(viewTextDialog()),this,SIGNAL(showTextDialog()));
-	connect (g,SIGNAL(activatedText(LegendWidget*)), this, SIGNAL(activatedText(LegendWidget*)));
+	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
 }
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
@@ -1137,14 +1137,9 @@ void MultiLayer::mousePressEvent ( QMouseEvent * e )
 	QList<QWidget*>::iterator i = graphsList.end();
 	while (i!=graphsList.begin()) {
 		--i;
-
 		Graph *g = (Graph*) (*i);
-		if (g->selectedText()){
-			QList <LegendWidget *> texts = ((Graph *)(*i))->textsList();
-			foreach(LegendWidget *l, texts){
-		    	if (!l->geometry().contains(pos))
-                	l->setSelected(false);
-			}
+		if (g->selectedText() || g->titleSelected() || g->selectedScale()){
+			g->deselect();
 			return;
 		}
 

@@ -237,7 +237,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/OpenProjectDialog.h\
             src/Grid.h\
             src/MatrixModel.h\
-            src/FitModelHandler.h
+            src/FitModelHandler.h \
+            src/TextEditor.h
 
 ###################### SOURCES ##############################################
 
@@ -352,7 +353,8 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/OpenProjectDialog.cpp\
             src/Grid.cpp\
             src/MatrixModel.cpp\
-            src/FitModelHandler.cpp
+            src/FitModelHandler.cpp \
+            src/TextEditor.cpp
 
 ###############################################################
 ##################### Compression (zlib123) ###################

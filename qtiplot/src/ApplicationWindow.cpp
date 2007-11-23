@@ -805,7 +805,7 @@ void ApplicationWindow::initToolBars()
 		
 	actionFontBold->addTo(formatToolBar);
 	actionFontItalic->addTo(formatToolBar);
-	formatToolBar->setEnabled(false);
+	//formatToolBar->setEnabled(false);
 	formatToolBar->hide();
 }
 
@@ -10684,7 +10684,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
 	connect (g,SIGNAL(showGraphContextMenu()),this,SLOT(showGraphContextMenu()));
 	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
-	connect (g,SIGNAL(activatedText(LegendWidget*)), this, SLOT(setActiveText(LegendWidget*)));
+	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SLOT(setFormatBarFont(const QFont&)));
 
 	g->askOnCloseEvent(confirmClosePlot2D);
 }
@@ -14494,16 +14494,9 @@ void ApplicationWindow::matrixInverseFFT()
 #endif
 }
 
-void ApplicationWindow::setActiveText(LegendWidget* t)
+void ApplicationWindow::setFormatBarFont(const QFont& font)
 {
-	if (t)
-		formatToolBar->setEnabled(true);
-	else {
-		formatToolBar->setEnabled(false);
-		return;
-	}
-	
-	QFont font = t->font();
+	formatToolBar->setEnabled(true);
 	
 	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
 	fb->blockSignals(true);
@@ -14529,16 +14522,11 @@ void ApplicationWindow::setFontSize(int size)
 	if (!g)
 		return;
 	
-	LegendWidget *t = g->selectedText();
-	if (t){
-		QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
-		QFont f(fb->currentFont().family(), size);
-		f.setBold(actionFontBold->isChecked());
-		f.setItalic(actionFontItalic->isChecked());
-		t->setFont(f);
-		t->repaint();
-		modifiedProject();
-	}
+	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+	QFont f(fb->currentFont().family(), size);
+	f.setBold(actionFontBold->isChecked());
+	f.setItalic(actionFontItalic->isChecked());
+	g->setCurrentFont(f);
 }
 
 void ApplicationWindow::setFontFamily(const QFont& font)
@@ -14551,16 +14539,11 @@ void ApplicationWindow::setFontFamily(const QFont& font)
 	if (!g)
 		return;
 	
-	LegendWidget *t = g->selectedText();
-	if (t){
-		QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
-		QFont f(font.family(), sb->value());
-		f.setBold(actionFontBold->isChecked());
-		f.setItalic(actionFontItalic->isChecked());
-		t->setFont(f);
-		t->repaint();
-		modifiedProject();
-	}
+	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
+	QFont f(font.family(), sb->value());
+	f.setBold(actionFontBold->isChecked());
+	f.setItalic(actionFontItalic->isChecked());
+	g->setCurrentFont(f);
 }
 
 void ApplicationWindow::setItalicFont(bool italic)
@@ -14573,17 +14556,12 @@ void ApplicationWindow::setItalicFont(bool italic)
 	if (!g)
 		return;
 		
-	LegendWidget *t = g->selectedText();
-	if (t){
-		QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
-		QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
-		QFont f(fb->currentFont().family(), sb->value());
-		f.setBold(actionFontBold->isChecked());
-		f.setItalic(italic);
-		t->setFont(f);
-		t->repaint();
-		modifiedProject();
-	}
+	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
+	QFont f(fb->currentFont().family(), sb->value());
+	f.setBold(actionFontBold->isChecked());
+	f.setItalic(italic);
+	g->setCurrentFont(f);
 }
 
 void ApplicationWindow::setBoldFont(bool bold)
@@ -14596,15 +14574,10 @@ void ApplicationWindow::setBoldFont(bool bold)
 	if (!g)
 		return;
 	
-	LegendWidget *t = g->selectedText();
-	if (t){
-		QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
-		QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
-		QFont f(fb->currentFont().family(), sb->value());
-		f.setBold(bold);
-		f.setItalic(actionFontItalic->isChecked());
-		t->setFont(f);
-		t->repaint();
-		modifiedProject();
-	}
+	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
+	QFont f(fb->currentFont().family(), sb->value());
+	f.setBold(bold);
+	f.setItalic(actionFontItalic->isChecked());
+	g->setCurrentFont(f);
 }

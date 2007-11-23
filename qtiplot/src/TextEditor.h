@@ -1,11 +1,11 @@
 /***************************************************************************
-    File                 : txt_icons.h
+    File                 : TextEditor.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : Icons for subscript and superscript
-                           
+    Copyright            : (C) 2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+    Description          : A QwtText editor 
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -26,47 +26,25 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-static const char *index_xpm[]={
-"16 16 3 1",
-". c None",
-"# c #000000",
-"a c #ff0710",
-"................",
-"................",
-"................",
-"................",
-"..##.....##.....",
-"...##...##......",
-"....##.##.......",
-".....###........",
-"....##.##.......",
-"...##...##.aaa..",
-"..##.....##..a..",
-"...........aaa..",
-"...........a....",
-"...........aaa..",
-"................",
-"................"};
+ 
+#ifndef TEXTEDITOR_H
+#define TEXTEDITOR_H
 
-static const char *exp_xpm[]={
-"16 16 4 1",
-"b c None",
-". c None",
-"a c #000000",
-"# c #ff0710",
-"................",
-"................",
-"............###.",
-"..............#.",
-"..aa.....aa.###.",
-"...aa...aa..#...",
-"....aa.aa...###.",
-".....aaa........",
-"....aa.aa.......",
-"...aa...aa.bbb..",
-"..aa.....aa..b..",
-"...........bbb..",
-"...........b....",
-"...........bbb..",
-"................",
-"................"};
+#include <QTextEdit>
+#include "Graph.h"
+
+class TextEditor: public QTextEdit
+{
+	Q_OBJECT
+
+public:
+    TextEditor(Graph *g);
+	~TextEditor(){};
+
+private:
+	void closeEvent(QCloseEvent *e);
+	
+	QWidget *d_target;
+};
+
+#endif

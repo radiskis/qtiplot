@@ -36,8 +36,6 @@
 #include "Graph.h"
 #include "Plot.h"
 
-//class SelectionMoveResizer;
-
 class LegendWidget: public QWidget
 {
 	Q_OBJECT
@@ -77,6 +75,7 @@ public:
 
 	void setSelected(bool on = true);
 
+	void showTextEditor();
 	void showTextDialog(){emit showDialog();};
 	void showContextMenu(){emit showMenu();};
 
@@ -130,6 +129,7 @@ private:
 signals:
 	void showDialog();
 	void showMenu();
+	void enableEditor();
 };
 
 #endif

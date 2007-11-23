@@ -415,7 +415,7 @@ void SelectionMoveResizer::mouseDoubleClickEvent(QMouseEvent *e)
 {
 	foreach(LegendWidget *l, d_legend_markers) {
 		if(l->geometry().contains(e->pos()))
-			return l->showTextDialog();
+			return l->showTextEditor();
 	}
 	
 	e->ignore();
