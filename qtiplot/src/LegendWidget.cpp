@@ -72,6 +72,7 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 
 	connect (this, SIGNAL(showDialog()), plot->parent(), SIGNAL(viewTextDialog()));
 	connect (this, SIGNAL(showMenu()), plot->parent(), SIGNAL(showMarkerPopupMenu()));
+	connect (this, SIGNAL(enableEditor()), plot->parent(), SLOT(enableTextEditor()));
 
 	setMouseTracking(true);
 	show();
@@ -565,6 +566,16 @@ void LegendWidget::setSelected(bool on)
 		d_selector = NULL;
 		((Graph *)d_plot->parent())->setSelectedText(NULL);
 	}
+}
+
+void LegendWidget::showTextEditor()
+{
+	if (d_selector){
+        delete d_selector;
+		d_selector = NULL;
+	}
+	
+	enableEditor();
 }
 
 LegendWidget::~LegendWidget()

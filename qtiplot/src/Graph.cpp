@@ -120,6 +120,7 @@ static const char *unzoom_xpm[]={
 #include "RangeSelectorTool.h"
 #include "PlotCurve.h"
 #include "ApplicationWindow.h"
+#include "TextEditor.h"
 
 #ifdef EMF_OUTPUT
 #include "EmfEngine.h"
@@ -150,7 +151,6 @@ static const char *unzoom_xpm[]={
 #include <qwt_plot_zoomer.h>
 #include <qwt_scale_widget.h>
 #include <qwt_scale_engine.h>
-#include <qwt_text.h>
 #include <qwt_text_label.h>
 #include <qwt_color_map.h>
 
@@ -166,6 +166,7 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 		setName( "graph" );
 
 	n_curves=0;
+	d_text_editor = NULL;
 	d_active_tool = NULL;
 	d_selected_text = NULL;
 	d_legend = NULL; // no legend for an empty graph
@@ -233,19 +234,16 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 	connect (cp,SIGNAL(modified()), this, SIGNAL(modifiedGraph()));
 
 	connect (titlePicker,SIGNAL(showTitleMenu()),this,SLOT(showTitleContextMenu()));
-	connect (titlePicker,SIGNAL(doubleClicked()),this,SIGNAL(viewTitleDialog()));
+	connect (titlePicker,SIGNAL(doubleClicked()),this, SLOT(enableTextEditor()));
 	connect (titlePicker,SIGNAL(removeTitle()),this,SLOT(removeTitle()));
 	connect (titlePicker,SIGNAL(clicked()), this,SLOT(selectTitle()));
 
 	connect (scalePicker,SIGNAL(clicked()),this,SLOT(activateGraph()));
 	connect (scalePicker,SIGNAL(clicked()),this,SLOT(deselectMarker()));
 	connect (scalePicker,SIGNAL(axisDblClicked(int)),this,SIGNAL(axisDblClicked(int)));
+	connect (scalePicker, SIGNAL(axisTitleDblClicked()), this, SLOT(enableTextEditor()));
 	connect (scalePicker,SIGNAL(axisTitleRightClicked(int)),this,SLOT(showAxisTitleMenu(int)));
 	connect (scalePicker,SIGNAL(axisRightClicked(int)),this,SLOT(showAxisContextMenu(int)));
-	connect (scalePicker,SIGNAL(xAxisTitleDblClicked()),this,SIGNAL(xAxisTitleDblClicked()));
-	connect (scalePicker,SIGNAL(yAxisTitleDblClicked()),this,SIGNAL(yAxisTitleDblClicked()));
-	connect (scalePicker,SIGNAL(rightAxisTitleDblClicked()),this,SIGNAL(rightAxisTitleDblClicked()));
-	connect (scalePicker,SIGNAL(topAxisTitleDblClicked()),this,SIGNAL(topAxisTitleDblClicked()));
 
 	connect (d_zoomer[0],SIGNAL(zoomed (const QwtDoubleRect &)),this,SLOT(zoomed (const QwtDoubleRect &)));
 }
@@ -266,7 +264,12 @@ void Graph::deselectMarker()
 	selectedMarker = -1;
 	if (d_markers_selector)
 		delete d_markers_selector;
-
+	
+	if (d_text_editor){
+		d_text_editor->close();
+		d_text_editor = NULL;
+	}
+	
 	cp->disableEditing();
 
     foreach(LegendWidget *legend, d_texts_list)
@@ -288,10 +291,10 @@ void Graph::setSelectedText(LegendWidget *l)
     if (l){
         selectTitle(false);
         scalePicker->deselect();
+		emit currentFontChanged(l->font());
     }
 
     d_selected_text = l;
-    emit activatedText(l);
 }
 
 void Graph::setSelectedMarker(long mrk, bool add)
@@ -1514,9 +1517,16 @@ bool Graph::imageMarkerSelected()
 	return (d_images.contains(selectedMarker));
 }
 
+void Graph::deselect()
+{
+	deselectMarker();
+    scalePicker->deselect();
+	titlePicker->setSelected(false);
+}
+
 bool Graph::titleSelected()
 {
-	return d_plot->titleLabel()->hasFocus();
+	return titlePicker->selected();
 }
 
 void Graph::selectTitle(bool select)
@@ -1524,6 +1534,7 @@ void Graph::selectTitle(bool select)
     if (select){
         deselectMarker();
         scalePicker->deselect();
+		emit currentFontChanged(d_plot->title().font());
     }
 
     titlePicker->setSelected(select);
@@ -4926,4 +4937,50 @@ QPrinter::PageSize Graph::minPageSize(const QPrinter& printer, const QRect& r)
         size =  QPrinter::B0;
 
 	return size;
+}
+
+QwtScaleWidget* Graph::selectedScale()
+{
+	return scalePicker->selectedAxis();
+}
+
+QRect Graph::axisTitleRect(const QwtScaleWidget *scale)
+{
+	if (!scale)
+		return QRect();
+	
+	return scalePicker->titleRect(scale);
+}
+
+void Graph::setCurrentFont(const QFont& f)
+{
+	QwtScaleWidget *axis = scalePicker->selectedAxis();
+	if (axis){
+		if (scalePicker->titleSelected()){
+			QwtText title = axis->title();
+			title.setFont(f);
+			axis->setTitle(title);	
+		} else if (scalePicker->labelsSelected())
+			axis->setFont(f);	
+		emit modifiedGraph();
+	} else if (d_selected_text){
+		d_selected_text->setFont(f);
+		d_selected_text->repaint();
+		emit modifiedGraph();
+	} else if (titlePicker->selected()){
+		QwtText title = d_plot->title();
+		title.setFont(f);
+		d_plot->setTitle(title);
+		emit modifiedGraph();
+	}
+}
+	
+void Graph::enableTextEditor()
+{
+	if (d_text_editor){
+		d_text_editor->close();
+		d_text_editor = NULL;
+	}
+	
+	d_text_editor = new TextEditor(this);
 }

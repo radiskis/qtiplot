@@ -193,7 +193,7 @@ signals:
 	void createTable(const QString&,int,int,const QString&);
 	void pasteMarker();
 	void setPointerCursor();
-	void activatedText(LegendWidget*);
+	void currentFontChanged(const QFont&);
 
 private:
 	void resizeLayers (const QResizeEvent *re);

@@ -29,7 +29,7 @@
 
 #include "TextFormatButtons.h"
 #include "SymbolDialog.h"
-#include "txt_icons.h"
+#include "pixmaps.h"
 #include <QTextEdit>
 #include <QPushButton>
 #include <QHBoxLayout>
@@ -78,7 +78,7 @@ TextFormatButtons::TextFormatButtons(QTextEdit * textEdit, QWidget * parent)
 	buttonCurve->setFont(font);
 	layout->addWidget(buttonCurve);
 
-	buttonSubscript = new QPushButton(QPixmap(index_xpm),QString());
+	buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
 	buttonSubscript->setMaximumWidth(40);
 	buttonSubscript->setMinimumHeight(35);
 	buttonSubscript->setFont(font);

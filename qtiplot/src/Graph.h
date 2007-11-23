@@ -35,6 +35,7 @@
 #include <QVector>
 #include <QEvent>
 
+#include <qwt_text.h>
 #include <qwt_plot.h>
 #include <qwt_plot_marker.h>
 #include <qwt_plot_curve.h>
@@ -64,7 +65,8 @@ class PlotCurve;
 class QwtErrorPlotCurve;
 class MultiLayer;
 class Spectrogram;
-
+class TextEditor;
+	
 //! Structure containing curve layout parameters
 typedef struct{
   int lCol;        //!< line color
@@ -143,6 +145,8 @@ class Graph: public QWidget
 		LegendWidget *selectedText(){return d_selected_text;};
 		void setSelectedText(LegendWidget *l);
 
+		void deselect();
+		
 	public slots:
 		//! Accessor method for #d_plot.
 		Plot* plotWidget(){return d_plot;};
@@ -399,6 +403,9 @@ class Graph: public QWidget
 
 		//! \name Axes
 		//@{
+		QwtScaleWidget* selectedScale();
+		QRect axisTitleRect(const QwtScaleWidget *scale);
+		
 		QList<int> axesType();
 
 		void setXAxisTitle(const QString& text);
@@ -643,6 +650,10 @@ class Graph: public QWidget
 		//! Enables/Disables antialiasing of plot items.
 		void setAntialiasing(bool on = true, bool update = true);
 
+		void enableTextEditor();
+		void setCurrentFont(const QFont& f);
+		void notifyFontChange(const QFont& f){emit currentFontChanged(f);};
+
 signals:
 		void selectedGraph (Graph*);
 		void closedGraph();
@@ -665,6 +676,7 @@ signals:
 
 		void showAxisDialog(int);
 		void axisDblClicked(int);
+		
 		void xAxisTitleDblClicked();
 		void yAxisTitleDblClicked();
 		void rightAxisTitleDblClicked();
@@ -672,7 +684,7 @@ signals:
 
 		void dataRangeChanged();
 		void showFitResults(const QString&);
-		void activatedText(LegendWidget*);
+		void currentFontChanged(const QFont&);
 
 	private:
         Plot *d_plot;
@@ -729,5 +741,7 @@ signals:
 		LegendWidget *d_selected_text;
 		//! Pointer to the current legend
 		LegendWidget *d_legend;
+		
+		TextEditor *d_text_editor;
 };
 #endif // GRAPH_H

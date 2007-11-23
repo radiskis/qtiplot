@@ -69,6 +69,8 @@ public:
 	
 	bool labelsSelected(){return d_labels_selected;};
 	void selectLabels(QwtScaleWidget *scale, bool select = true);
+	
+	QwtScaleWidget* selectedAxis(){return d_selected_axis;};
 
 signals:
 	//! Emitted when the user clicks on one of the monitored axes.
@@ -88,23 +90,10 @@ signals:
 	 */
 	void axisDblClicked(int);
 
-	/*! Emitted when the user double-clicks on an the bottom-axis title.
-	 * \sa QwtScaleDraw::Alignment
+	/*! Emitted when the user double-clicks on an the axis title.
 	 */
-	void xAxisTitleDblClicked();
-	/*! Emitted when the user double-clicks on an the left-axis title.
-	 * \sa QwtScaleDraw::Alignment
-	 */
-	void yAxisTitleDblClicked();
-	/*! Emitted when the user double-clicks on an the right-axis title.
-	 * \sa QwtScaleDraw::Alignment
-	 */
-	void rightAxisTitleDblClicked();
-	/*! Emitted when the user double-clicks on an the top-axis title.
-	 * \sa QwtScaleDraw::Alignment
-	 */
-	void topAxisTitleDblClicked();
-
+	void axisTitleDblClicked();
+	
 private:
     bool eventFilter(QObject *, QEvent *);
 

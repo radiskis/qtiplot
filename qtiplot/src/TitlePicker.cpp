@@ -51,6 +51,7 @@ bool TitlePicker::eventFilter(QObject *object, QEvent *e)
 
     if ( object->inherits("QwtTextLabel") && e->type() == QEvent::MouseButtonDblClick){
         emit doubleClicked();
+		d_selected = true;
         return TRUE;
     }
 
@@ -60,9 +61,9 @@ bool TitlePicker::eventFilter(QObject *object, QEvent *e)
 		 emit clicked();
 
 		 if (me->button() == Qt::RightButton)
-			 emit showTitleMenu();
+			emit showTitleMenu();
          else if (me->button() == Qt::LeftButton)
-            setSelected();
+		 	setSelected();
 
 		 return !(me->modifiers() & Qt::ShiftModifier);
     }
