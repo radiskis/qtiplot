@@ -84,7 +84,7 @@ TextFormatButtons::TextFormatButtons(QTextEdit * textEdit, QWidget * parent)
 	buttonSubscript->setFont(font);
 	layout->addWidget(buttonSubscript);
 
-	buttonSuperscript = new QPushButton(QPixmap(exp_xpm),QString());
+	buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
 	buttonSuperscript->setMaximumWidth(40);
 	buttonSuperscript->setMinimumHeight(35);
 	buttonSuperscript->setFont(font);

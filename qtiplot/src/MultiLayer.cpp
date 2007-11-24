@@ -210,7 +210,7 @@ void MultiLayer::setActiveGraph(Graph* g)
 	for(int i=0; i<graphsList.count(); i++){
 		Graph *gr = (Graph *)graphsList.at(i);
 		gr->deselect();
-		
+
 		LayerButton *btn = (LayerButton *)buttonsList.at(i);
 		if (gr == g)
 			btn->setOn(true);
@@ -965,6 +965,7 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveGraph(Graph*)));
 	connect (g,SIGNAL(viewTextDialog()),this,SIGNAL(showTextDialog()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
+    connect (g,SIGNAL(enableTextEditor(Graph *)), this, SIGNAL(enableTextEditor(Graph *)));
 }
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)

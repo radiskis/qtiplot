@@ -194,6 +194,7 @@ signals:
 	void pasteMarker();
 	void setPointerCursor();
 	void currentFontChanged(const QFont&);
+    void enableTextEditor(Graph *);
 
 private:
 	void resizeLayers (const QResizeEvent *re);

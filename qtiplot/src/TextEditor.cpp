@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
     Copyright            : (C) 2007 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A QwtText editor 
+    Description          : A QwtText editor
 
  ***************************************************************************/
 
@@ -38,14 +38,22 @@
 TextEditor::TextEditor(Graph *g): QTextEdit(g)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setFrameShadow ( QFrame::Plain );
-	setFrameShape ( QFrame::Box );
-	
+	setFrameShadow(QFrame::Plain);
+	setFrameShape(QFrame::Box);
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+	QPalette palette = this->palette();
+	palette.setColor(QPalette::Active, QPalette::WindowText, Qt::blue);
+	palette.setColor(QPalette::Active, QPalette::Base, Qt::white);
+	setPalette(palette);
+
 	QString text;
 	if (g->selectedText()){
 		d_target = g->selectedText();
 		setGeometry(d_target->geometry());
 		text = ((LegendWidget*)d_target)->text();
+		d_target->hide();
 	} else if (g->titleSelected()){
 		d_target = g->plotWidget()->titleLabel();
 		QwtText t = g->plotWidget()->title();
@@ -58,7 +66,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g)
 		QwtText t = scale->title();
 		text = t.text();
 		setAlignment((Qt::Alignment)t.renderFlags());
-		
+
 		QRect rect = g->axisTitleRect(scale);
 		if (scale->alignment() == QwtScaleDraw::BottomScale ||
 			scale->alignment() == QwtScaleDraw::TopScale){
@@ -66,35 +74,59 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g)
 			move(QPoint(d_target->x() + rect.x(), d_target->y() + rect.y()));
 		} else {
 			resize(QSize(rect.height(), rect.width()));
-			move(QPoint(d_target->x() + rect.x(), d_target->y() + rect.y() + rect.height()/2));
+			if (scale->alignment() == QwtScaleDraw::LeftScale)
+                move(QPoint(d_target->x() + rect.x(), d_target->y() + rect.y() + rect.height()/2));
+            else if (scale->alignment() == QwtScaleDraw::RightScale)
+                move(QPoint(d_target->x() - rect.height(), d_target->y() + rect.y() + rect.height()/2));
+
+			t.setText(" ");
+			t.setBackgroundPen(QPen(Qt::NoPen));
+			scale->setTitle(t);
 		}
 	}
-			
+
 	QTextCursor cursor = textCursor();
 	cursor.insertText(text);
-		
+
 	show();
 	setFocus();
 }
 
 void TextEditor::closeEvent(QCloseEvent *e)
-{	
+{
+    Graph *g = (Graph *)parent();
 	if (d_target->isA("LegendWidget")){
 		((LegendWidget*)d_target)->setText(text());
-		((Graph *)parent())->setSelectedText(NULL);
+        d_target->show();
+		g->setSelectedText(NULL);
 	} else if (d_target->isA("QwtTextLabel")){
-		Graph *g = (Graph *)parent();
 		QwtText title = g->plotWidget()->title();
 		title.setText(text());
 		g->plotWidget()->setTitle(title);
-		d_target->repaint();
 	} else if (d_target->isA("QwtScaleWidget")){
 		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
 		QwtText title = scale->title();
 		title.setText(text());
-		scale->setTitle(title);		
-		d_target->repaint();
+		scale->setTitle(title);
 	}
-	
+
+    d_target->repaint();
 	e->accept();
+}
+
+void TextEditor::formatText(const QString& prefix, const QString& postfix)
+{
+	QTextCursor cursor = textCursor();
+	QString markedText = cursor.selectedText();
+	cursor.insertText(prefix + markedText + postfix);
+	if(markedText.isEmpty()){
+		cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor, postfix.size());
+		setTextCursor(cursor);
+	}
+	setFocus();
+}
+
+void TextEditor::addSymbol(const QString& letter)
+{
+	textCursor().insertText(letter);
 }

@@ -58,6 +58,7 @@ SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WFlags fl )
 	closeButton = new QPushButton(tr("&Close"), this);
 
 	mainLayout->addLayout( gridLayout );
+	mainLayout->addStretch();
 	mainLayout->addWidget( closeButton );
 
 	languageChange();

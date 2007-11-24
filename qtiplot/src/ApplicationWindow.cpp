@@ -101,6 +101,8 @@
 #include "QwtHistogram.h"
 #include "OpenProjectDialog.h"
 #include "ColorMapDialog.h"
+#include "TextEditor.h"
+#include "SymbolDialog.h"
 
 // TODO: move tool-specific code to an extension manager
 #include "ScreenPickerTool.h"
@@ -268,6 +270,7 @@ void ApplicationWindow::init(bool factorySettings)
 	outWindows = new QList<QWidget*>();
 
 	scriptWindow = 0;
+    d_text_editor = NULL;
 
 	renamedTables = QStringList();
 	if (!factorySettings)
@@ -349,7 +352,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_plot3D_tool_bar = true;
 	d_display_tool_bar = false;
 	d_format_tool_bar = true;
-	
+
 	appStyle = qApp->style()->objectName();
 	d_app_rect = QRect();
 	projectname="untitled";
@@ -790,22 +793,28 @@ void ApplicationWindow::initToolBars()
 	actionPlotHistogram->addTo(plotMatrixBar);
 
 	plotMatrixBar->hide();
-	
+
 	formatToolBar = new QToolBar(tr( "Format" ), this);
 	formatToolBar->setObjectName("formatToolBar");
 	addToolBar(Qt::TopToolBarArea, formatToolBar);
-	
+
 	QFontComboBox *fb = new QFontComboBox();
 	connect(fb, SIGNAL(currentFontChanged(const QFont &)), this, SLOT(setFontFamily(const QFont &)));
 	actionFontBox = formatToolBar->addWidget(fb);
-	
+
 	QSpinBox *sb = new QSpinBox();
 	connect(sb, SIGNAL(valueChanged(int)), this, SLOT(setFontSize(int)));
 	actionFontSize = formatToolBar->addWidget(sb);
-		
+
 	actionFontBold->addTo(formatToolBar);
 	actionFontItalic->addTo(formatToolBar);
-	//formatToolBar->setEnabled(false);
+
+	actionUnderline->addTo(formatToolBar);
+	actionSuperscript->addTo(formatToolBar);
+	actionSubscript->addTo(formatToolBar);
+	actionGreekSymbol->addTo(formatToolBar);
+
+	formatToolBar->setEnabled(false);
 	formatToolBar->hide();
 }
 
@@ -837,7 +846,7 @@ void ApplicationWindow::insertTranslatedStrings()
 	plotMatrixBar->setWindowTitle(tr("Matrix Plot"));
 	plot3DTools->setWindowTitle(tr("3D Surface"));
 	formatToolBar->setWindowTitle(tr("Format"));
-	
+
 	fileMenu->changeItem(recentMenuID, tr("&Recent Projects"));
 
 	translateActionsStrings();
@@ -848,7 +857,7 @@ void ApplicationWindow::initMainMenu()
 {
 	fileMenu = new QMenu(this);
 	connect(fileMenu, SIGNAL(aboutToShow()), this, SLOT(fileMenuAboutToShow()));
-	
+
 	recent = new QMenu(this);
 
 	edit = new QMenu(this);
@@ -908,7 +917,7 @@ void ApplicationWindow::initMainMenu()
 
 	matrixMenu = new QMenu(this);
 	connect(matrixMenu, SIGNAL(aboutToShow()), this, SLOT(matrixMenuAboutToShow()));
-	
+
     plot2DMenu = new QMenu(this);
     connect(plot2DMenu, SIGNAL(aboutToShow()), this, SLOT(plotMenuAboutToShow()));
 
@@ -918,7 +927,7 @@ void ApplicationWindow::initMainMenu()
 
 	tableMenu = new QMenu(this);
     connect(tableMenu, SIGNAL(aboutToShow()), this, SLOT(tableMenuAboutToShow()));
-	
+
 	analysisMenu = new QMenu( this );
 	analysisMenu->setFont(appFont);
     connect(analysisMenu, SIGNAL(aboutToShow()), this, SLOT(analysisMenuAboutToShow()));
@@ -1224,11 +1233,11 @@ void ApplicationWindow::customToolBars(QWidget* w)
         if(!plotTools->isVisible())
             plotTools->show();
         plotTools->setEnabled (true);
-		
+
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
             formatToolBar->show();
-		}	
+		}
     }else if (w->inherits("Table")){
         if(d_table_tool_bar){
             if(!tableTools->isVisible())
@@ -5554,7 +5563,7 @@ void ApplicationWindow::showColumnValuesDialog()
 }
 
 void ApplicationWindow::recalculateTable()
-{	
+{
 	QWidget* w = ws->activeWindow();
 	if (!w)
 		return;
@@ -10685,6 +10694,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(showGraphContextMenu()),this,SLOT(showGraphContextMenu()));
 	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SLOT(setFormatBarFont(const QFont&)));
+    connect (g,SIGNAL(enableTextEditor(Graph *)), this, SLOT(enableTextEditor(Graph *)));
 
 	g->askOnCloseEvent(confirmClosePlot2D);
 }
@@ -11450,8 +11460,9 @@ void ApplicationWindow::createActions()
 	actionToolBars = new QAction(tr("Toolbars..."), this);
 	actionToolBars->setShortcut(tr("Ctrl+Shift+T"));
 	connect(actionToolBars, SIGNAL(activated()), this, SLOT(showToolBarsMenu()));
-	
+
 	actionFontBold = new QAction("B", this);
+	actionFontBold->setToolTip(tr("Bold"));
 	QFont font = appFont;
 	font.setBold(true);
 	actionFontBold->setFont(font);
@@ -11459,15 +11470,43 @@ void ApplicationWindow::createActions()
 	connect(actionFontBold, SIGNAL(toggled(bool)), this, SLOT(setBoldFont(bool)));
 
 	actionFontItalic = new QAction("It", this);
+	actionFontItalic->setToolTip(tr("Italic"));
 	font = appFont;
 	font.setItalic(true);
 	actionFontItalic->setFont(font);
 	actionFontItalic->setCheckable(true);
 	connect(actionFontItalic, SIGNAL(toggled(bool)), this, SLOT(setItalicFont(bool)));
+
+	actionSuperscript = new QAction(QPixmap(exp_xpm), tr("Superscript"), this);
+	connect(actionSuperscript, SIGNAL(activated()), this, SLOT(insertSuperscript()));
+    actionSuperscript->setEnabled(false);
+
+	actionSubscript = new QAction(QPixmap(index_xpm), tr("Subscript"), this);
+	connect(actionSubscript, SIGNAL(activated()), this, SLOT(insertSubscript()));
+	actionSubscript->setEnabled(false);
+
+	actionUnderline = new QAction("U", this);
+	actionUnderline->setToolTip(tr("Underline (Ctrl+U)"));
+	actionUnderline->setShortcut(tr("Ctrl+U"));
+    font = appFont;
+	font.setUnderline(true);
+	actionUnderline->setFont(font);
+	connect(actionUnderline, SIGNAL(activated()), this, SLOT(underline()));
+	actionUnderline->setEnabled(false);
+
+	actionGreekSymbol = new QAction(QString(QChar(0x3B1)) + QString(QChar(0x3B2)), this);
+	actionGreekSymbol->setToolTip(tr("Greek"));
+	connect(actionGreekSymbol, SIGNAL(activated()), this, SLOT(insertGreekSymbol()));
 }
 
 void ApplicationWindow::translateActionsStrings()
 {
+    actionFontBold->setToolTip(tr("Bold"));
+    actionFontItalic->setToolTip(tr("Italic"));
+    actionUnderline->setStatusTip(tr("Underline (Ctrl+U)"));
+	actionUnderline->setShortcut(tr("Ctrl+U"));
+	actionGreekSymbol->setToolTip(tr("Greek"));
+
 	actionShowCurvePlotDialog->setMenuText(tr("&Plot details..."));
 	actionShowCurveWorksheet->setMenuText(tr("&Worksheet"));
 	actionRemoveCurve->setMenuText(tr("&Delete"));
@@ -14104,6 +14143,9 @@ ApplicationWindow::~ApplicationWindow()
 	if (scriptWindow)
 		scriptWindow->close();
 
+    if (d_text_editor)
+		delete d_text_editor;
+
 	QApplication::clipboard()->clear(QClipboard::Clipboard);
 }
 
@@ -14497,19 +14539,28 @@ void ApplicationWindow::matrixInverseFFT()
 void ApplicationWindow::setFormatBarFont(const QFont& font)
 {
 	formatToolBar->setEnabled(true);
-	
+
 	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
 	fb->blockSignals(true);
 	fb->setCurrentFont(font);
 	fb->blockSignals(false);
-	
+
 	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
 	sb->blockSignals(true);
 	sb->setValue(font.pointSize());
 	sb->blockSignals(false);
-	
+
+    actionFontBold->blockSignals(true);
 	actionFontBold->setChecked(font.bold());
+	actionFontBold->blockSignals(false);
+
+	actionFontItalic->blockSignals(true);
 	actionFontItalic->setChecked(font.italic());
+    actionFontItalic->blockSignals(false);
+
+    actionSubscript->setEnabled(false);
+    actionSuperscript->setEnabled(false);
+    actionUnderline->setEnabled(false);
 }
 
 void ApplicationWindow::setFontSize(int size)
@@ -14521,7 +14572,7 @@ void ApplicationWindow::setFontSize(int size)
 	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
 	if (!g)
 		return;
-	
+
 	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
 	QFont f(fb->currentFont().family(), size);
 	f.setBold(actionFontBold->isChecked());
@@ -14538,7 +14589,7 @@ void ApplicationWindow::setFontFamily(const QFont& font)
 	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
 	if (!g)
 		return;
-	
+
 	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
 	QFont f(font.family(), sb->value());
 	f.setBold(actionFontBold->isChecked());
@@ -14555,7 +14606,7 @@ void ApplicationWindow::setItalicFont(bool italic)
 	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
 	if (!g)
 		return;
-		
+
 	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
 	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
 	QFont f(fb->currentFont().family(), sb->value());
@@ -14573,11 +14624,63 @@ void ApplicationWindow::setBoldFont(bool bold)
 	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
 	if (!g)
 		return;
-	
+
 	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
 	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
 	QFont f(fb->currentFont().family(), sb->value());
 	f.setBold(bold);
 	f.setItalic(actionFontItalic->isChecked());
 	g->setCurrentFont(f);
+}
+
+void ApplicationWindow::enableTextEditor(Graph *g)
+{
+	if (!g){
+        formatToolBar->setEnabled(false);
+	    if (d_text_editor){
+            d_text_editor->close();
+            d_text_editor = NULL;
+	    }
+	} else if (g) {
+        d_text_editor = new TextEditor(g);
+        actionSubscript->setEnabled(true);
+        actionSuperscript->setEnabled(true);
+        actionUnderline->setEnabled(true);
+	}
+}
+
+void ApplicationWindow::insertSuperscript()
+{
+    if (!d_text_editor)
+        return;
+
+    d_text_editor->formatText("<sup>","</sup>");
+}
+
+void ApplicationWindow::insertSubscript()
+{
+    if (!d_text_editor)
+        return;
+
+    d_text_editor->formatText("<sub>","</sub>");
+}
+
+void ApplicationWindow::underline()
+{
+    if (!d_text_editor)
+        return;
+
+    d_text_editor->formatText("<u>","</u>");
+}
+
+void ApplicationWindow::insertGreekSymbol()
+{
+    if (!d_text_editor)
+        return;
+
+    SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::lowerGreek, this, Qt::Tool);
+	greekLetters->setAttribute(Qt::WA_DeleteOnClose);
+	connect(greekLetters, SIGNAL(addLetter(const QString&)), d_text_editor, SLOT(addSymbol(const QString&)));
+	greekLetters->show();
+	greekLetters->setFocus();
 }
