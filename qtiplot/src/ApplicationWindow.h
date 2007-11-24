@@ -84,6 +84,7 @@ class CurveRangeDialog;
 class LegendWidget;
 class ArrowMarker;
 class ImageMarker;
+class TextEditor;
 
 /**
  * \brief QtiPlot's main window.
@@ -961,14 +962,19 @@ private slots:
 	void tableMenuAboutToShow();
 	void windowsMenuAboutToShow();
 	void windowsMenuActivated( int id );
-	
+
 	//! \name Font Format Functions
 	//@{
+	void enableTextEditor(Graph *g);
 	void setFormatBarFont(const QFont &);
 	void setFontSize(int);
 	void setFontFamily(const QFont &);
 	void setItalicFont(bool);
 	void setBoldFont(bool);
+    void insertSuperscript();
+    void insertSubscript();
+    void underline();
+    void insertGreekSymbol();
 	//@}
 
 // TODO: a lot of this stuff should be private
@@ -1087,6 +1093,7 @@ public:
 	QString defaultScriptingLang;
 
 private:
+    TextEditor *d_text_editor;
     QLocale d_locale;
 
 #ifdef QTIPLOT_DEMO
@@ -1194,6 +1201,7 @@ private:
     QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars;
     QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
 	QAction *actionFontBold, *actionFontItalic, *actionFontBox, *actionFontSize;
+	QAction *actionSuperscript, *actionSubscript, *actionUnderline, *actionGreekSymbol;
 
 	QActionGroup* coord;
 	QAction* Box;

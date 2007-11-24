@@ -73,7 +73,7 @@ void SelectionMoveResizer::init()
 	d_op = None;
 	d_op_start = QPoint(0,0);
 	d_op_dp = QPoint(0,0);
-	
+
 	setGeometry(0, 0, parentWidget()->width(), parentWidget()->height());
 	setMouseTracking(true);
 	parentWidget()->installEventFilter(this);
@@ -308,6 +308,8 @@ void SelectionMoveResizer::operateOnTargets()
             QFont f = i->font();
             f.setPointSize(f.pointSize() * new_rect.width() * new_rect.height()/(i->rect().width() * i->rect().height()));
             i->setFont(f);
+            i->repaint();
+            ((Graph *)i->parent()->parent())->notifyFontChange(f);
 		}
 	}
 
@@ -322,13 +324,13 @@ void SelectionMoveResizer::operateOnTargets()
 					p2.x()<p1.x() ? new_rect.left() : new_rect.right(),
 					p2.y()<p1.y() ? new_rect.top() : new_rect.bottom() ));
 	}
-	
+
 	foreach(ImageMarker *i, d_image_markers) {
 		QRect new_rect = operateOn(i->rect());
 		i->setOrigin(new_rect.topLeft());
 		i->setSize(new_rect.size());
 	}
-	
+
 	foreach(QWidget *i, d_widgets)
 		i->setGeometry(operateOn(i->geometry()));
 
@@ -366,7 +368,7 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 		foreach(LegendWidget *l, d_legend_markers){
 			if(l->geometry().contains(me->pos()))
 				return l->showContextMenu();
-		}		
+		}
 		me->accept();
 		return;
 	}
@@ -417,7 +419,7 @@ void SelectionMoveResizer::mouseDoubleClickEvent(QMouseEvent *e)
 		if(l->geometry().contains(e->pos()))
 			return l->showTextEditor();
 	}
-	
+
 	e->ignore();
 }
 

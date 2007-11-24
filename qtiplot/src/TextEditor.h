@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
     Copyright            : (C) 2007 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A QwtText editor 
+    Description          : A QwtText editor
 
  ***************************************************************************/
 
@@ -26,12 +26,13 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
- 
+
 #ifndef TEXTEDITOR_H
 #define TEXTEDITOR_H
 
 #include <QTextEdit>
-#include "Graph.h"
+
+class Graph;
 
 class TextEditor: public QTextEdit
 {
@@ -39,11 +40,14 @@ class TextEditor: public QTextEdit
 
 public:
     TextEditor(Graph *g);
-	~TextEditor(){};
+    void formatText(const QString & prefix, const QString & postfix);
+
+public slots:
+    void addSymbol(const QString & letter);
 
 private:
 	void closeEvent(QCloseEvent *e);
-	
+
 	QWidget *d_target;
 };
 

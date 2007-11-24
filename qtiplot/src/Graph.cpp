@@ -120,7 +120,6 @@ static const char *unzoom_xpm[]={
 #include "RangeSelectorTool.h"
 #include "PlotCurve.h"
 #include "ApplicationWindow.h"
-#include "TextEditor.h"
 
 #ifdef EMF_OUTPUT
 #include "EmfEngine.h"
@@ -166,7 +165,6 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 		setName( "graph" );
 
 	n_curves=0;
-	d_text_editor = NULL;
 	d_active_tool = NULL;
 	d_selected_text = NULL;
 	d_legend = NULL; // no legend for an empty graph
@@ -264,12 +262,9 @@ void Graph::deselectMarker()
 	selectedMarker = -1;
 	if (d_markers_selector)
 		delete d_markers_selector;
-	
-	if (d_text_editor){
-		d_text_editor->close();
-		d_text_editor = NULL;
-	}
-	
+
+    emit enableTextEditor(NULL);
+
 	cp->disableEditing();
 
     foreach(LegendWidget *legend, d_texts_list)
@@ -4948,7 +4943,7 @@ QRect Graph::axisTitleRect(const QwtScaleWidget *scale)
 {
 	if (!scale)
 		return QRect();
-	
+
 	return scalePicker->titleRect(scale);
 }
 
@@ -4959,9 +4954,9 @@ void Graph::setCurrentFont(const QFont& f)
 		if (scalePicker->titleSelected()){
 			QwtText title = axis->title();
 			title.setFont(f);
-			axis->setTitle(title);	
+			axis->setTitle(title);
 		} else if (scalePicker->labelsSelected())
-			axis->setFont(f);	
+			axis->setFont(f);
 		emit modifiedGraph();
 	} else if (d_selected_text){
 		d_selected_text->setFont(f);
@@ -4973,14 +4968,4 @@ void Graph::setCurrentFont(const QFont& f)
 		d_plot->setTitle(title);
 		emit modifiedGraph();
 	}
-}
-	
-void Graph::enableTextEditor()
-{
-	if (d_text_editor){
-		d_text_editor->close();
-		d_text_editor = NULL;
-	}
-	
-	d_text_editor = new TextEditor(this);
 }
