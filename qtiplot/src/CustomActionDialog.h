@@ -40,7 +40,7 @@ class QListWidget;
 class QLineEdit;
 class QMenu;
 class QToolBar;
-	
+
 class CustomActionDialog : public QDialog
 {
     Q_OBJECT
@@ -69,7 +69,7 @@ private:
 	bool validUserInput();
 	QStringList d_app_shortcut_keys;
 
-	QList<QMenu *> d_menus;	
+	QList<QMenu *> d_menus;
 	QList<QToolBar *> d_app_toolbars;
 
     QListWidget *itemsList;
@@ -81,7 +81,7 @@ private:
 };
 
 class CustomActionHandler : public QXmlDefaultHandler
-{	
+{
 public:
     CustomActionHandler(QAction *action);
 
@@ -89,16 +89,13 @@ public:
                        const QString &qName, const QXmlAttributes &attributes);
     bool endElement(const QString &namespaceURI, const QString &localName,
                      const QString &qName);
-    bool characters(const QString &str);
-    bool fatalError(const QXmlParseException &exception);
-    QString errorString() const;
-
-	bool addToToolBar(){return toolBar;};
+    bool characters(const QString &str){currentText += str; return true;};
+    bool fatalError(const QXmlParseException &exception){return false;};
+    QString errorString() const {return errorStr;};
 	QString parentName(){return d_widget_name;};
 
 private:
     bool metFitTag;
-    bool toolBar;
     QString currentText;
     QString errorStr;
     QString filePath;

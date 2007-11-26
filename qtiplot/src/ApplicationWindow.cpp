@@ -319,7 +319,7 @@ void ApplicationWindow::init(bool factorySettings)
 
 	// this has to be done after connecting scriptEnv
 	scriptEnv->initialize();
-	loadCustomActions();
+    loadCustomActions();
 }
 
 void ApplicationWindow::initWindow()
@@ -563,7 +563,7 @@ void ApplicationWindow::initToolBars()
 	setWindowIcon(QIcon(QPixmap(logo_xpm)));
 	QPixmap openIcon, saveIcon;
 
-	fileTools = new QToolBar( tr( "File" ), this );
+	fileTools = new QToolBar(tr( "File" ), this);
 	fileTools->setObjectName("fileTools"); // this is needed for QMainWindow::restoreState()
 	fileTools->setIconSize( QSize(18,20) );
 	addToolBar( Qt::TopToolBarArea, fileTools );
@@ -594,7 +594,7 @@ void ApplicationWindow::initToolBars()
 	fileTools->addAction(actionShowScriptWindow);
 #endif
 
-	editTools = new QToolBar( tr("Edit"), this);
+	editTools = new QToolBar(tr("Edit"), this);
 	editTools->setObjectName("editTools"); // this is needed for QMainWindow::restoreState()
 	editTools->setIconSize( QSize(18,20) );
 	addToolBar( editTools );
@@ -606,7 +606,7 @@ void ApplicationWindow::initToolBars()
 	editTools->addAction(actionPasteSelection);
 	editTools->addAction(actionClearSelection);
 
-	plotTools = new QToolBar( tr("Plot"), this );
+	plotTools = new QToolBar(tr("Plot"), this);
 	plotTools->setObjectName("plotTools"); // this is needed for QMainWindow::restoreState()
 	plotTools->setIconSize( QSize(16,20) );
 	addToolBar( plotTools );
@@ -820,9 +820,9 @@ void ApplicationWindow::initToolBars()
 
 	formatToolBar->setEnabled(false);
 	formatToolBar->hide();
-	
+
 	QList<QToolBar *> toolBars = toolBarsList();
-	foreach (QToolBar *t, toolBars)		
+	foreach (QToolBar *t, toolBars)
 		connect(t, SIGNAL(actionTriggered(QAction *)), this, SLOT(performCustomAction(QAction *)));
 }
 
@@ -956,7 +956,7 @@ void ApplicationWindow::initMainMenu()
 	tableMenu = new QMenu(this);
 	tableMenu->setObjectName("tableMenu");
     connect(tableMenu, SIGNAL(aboutToShow()), this, SLOT(tableMenuAboutToShow()));
-	
+
 	smoothMenu = new QMenu(this);
 	smoothMenu->setObjectName("smoothMenu");
 
@@ -1007,7 +1007,7 @@ void ApplicationWindow::initMainMenu()
 	QList<QMenu *> menus = customizableMenusList();
 	foreach (QMenu *m, menus)
     	connect(m, SIGNAL(triggered(QAction *)), this, SLOT(performCustomAction(QAction *)));
-		
+
 	disableActions();
 }
 
@@ -1015,7 +1015,7 @@ void ApplicationWindow::tableMenuAboutToShow()
 {
     tableMenu->clear();
 	fillMenu->clear();
-	
+
     QMenu *setAsMenu = tableMenu->addMenu(tr("Set Columns &As"));
 	setAsMenu->addAction(actionSetXCol);
 	setAsMenu->addAction(actionSetYCol);
@@ -1215,11 +1215,11 @@ void ApplicationWindow::customMenu(QWidget* w)
     menuBar()->insertItem(tr("&Windows"), windowsMenu);
 	windowsMenuAboutToShow();
 	menuBar()->insertItem(tr("&Help"), help );
-	
+
 	foreach(QAction *a, d_user_actions){
 		if (!a->statusTip().isEmpty()){
 			QList<QMenu *> menus = customizableMenusList();
-    		foreach (QMenu *m, menus){			
+    		foreach (QMenu *m, menus){
         		if (m->objectName() == a->statusTip())
            			m->addAction(a);
         	}
@@ -7886,20 +7886,20 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionDifferentiate);
         analysisMenu->addAction(actionShowIntDialog);
         analysisMenu->insertSeparator();
-		
+
 		smoothMenu->clear();
         smoothMenu = analysisMenu->addMenu (tr("&Smooth"));
         smoothMenu->addAction(actionSmoothSavGol);
         smoothMenu->addAction(actionSmoothAverage);
         smoothMenu->addAction(actionSmoothFFT);
-        
+
 		filterMenu->clear();
 		filterMenu = analysisMenu->addMenu (tr("&FFT filter"));
         filterMenu->addAction(actionLowPassFilter);
         filterMenu->addAction(actionHighPassFilter);
         filterMenu->addAction(actionBandPassFilter);
         filterMenu->addAction(actionBandBlockFilter);
-		
+
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionInterpolate);
         analysisMenu->addAction(actionFFT);
@@ -7907,18 +7907,18 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionFitLinear);
         analysisMenu->addAction(actionShowFitPolynomDialog);
         analysisMenu->insertSeparator();
-		
+
 		decayMenu->clear();
         decayMenu = analysisMenu->addMenu (tr("Fit E&xponential Decay"));
         decayMenu->addAction(actionShowExpDecayDialog);
         decayMenu->addAction(actionShowTwoExpDecayDialog);
         decayMenu->addAction(actionShowExpDecay3Dialog);
-		
+
         analysisMenu->addAction(actionFitExpGrowth);
         analysisMenu->addAction(actionFitSigmoidal);
         analysisMenu->addAction(actionFitGauss);
         analysisMenu->addAction(actionFitLorentz);
-        
+
 		multiPeakMenu->clear();
 		multiPeakMenu = analysisMenu->addMenu (tr("Fit &Multi-peak"));
         multiPeakMenu->addAction(actionMultiPeakGauss);
@@ -7935,12 +7935,12 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionSortSelection);
         analysisMenu->addAction(actionSortTable);
-        
+
 		normMenu->clear();
 		normMenu = analysisMenu->addMenu (tr("&Normalize"));
         normMenu->addAction(actionNormalizeSelection);
         normMenu->addAction(actionNormalizeTable);
-		
+
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionFFT);
         analysisMenu->insertSeparator();
@@ -8008,7 +8008,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->clear();
 	newMenu->clear();
 	exportPlotMenu->clear();
-	
+
 	newMenu = fileMenu->addMenu(tr("&New"));
 	newMenu->addAction(actionNewProject);
     newMenu->addAction(actionNewFolder);
@@ -11701,7 +11701,7 @@ void ApplicationWindow::translateActionsStrings()
 #endif
 
 	actionCustomActionDialog->setMenuText(tr("Add &Custom Script Action..."));
-	
+
 	actionAddLayer->setMenuText(tr("Add La&yer"));
 	actionAddLayer->setToolTip(tr("Add Layer"));
 	actionAddLayer->setShortcut(tr("ALT+L"));
@@ -14277,6 +14277,7 @@ void ApplicationWindow::cascade()
 
 ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute, bool factorySettings)
 {
+#ifdef SCRIPTING_PYTHON
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	ApplicationWindow *app= new ApplicationWindow(factorySettings);
 	app->applyUserSettings();
@@ -14288,6 +14289,11 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	if (execute)
 		app->scriptWindow->executeAll();
 	return app;
+#else
+    QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
+    tr("QtiPlot was not built with Python scripting support included!"));
+#endif
+
 }
 
 bool ApplicationWindow::validFor2DPlot(Table *table)
@@ -14776,31 +14782,26 @@ void ApplicationWindow::showCustomActionDialog()
 	ad->setFocus();
 }
 
-void ApplicationWindow::addCustomAction(QAction *action, const QString& parentName, bool toolBar)
+void ApplicationWindow::addCustomAction(QAction *action, const QString& parentName)
 {
     if (!action)
         return;
 
-	if (toolBar){
-		QList<QToolBar *> toolBars = toolBarsList();
-		foreach (QToolBar *t, toolBars){
-        	if (t->objectName() == parentName){
-				QList<QAction *> lst = t->actions();
-				if (!lst.contains(action)){
-            		t->addAction(action);
-            		d_user_actions << action;
-				}
-				return;
-			}
-		}
-    } else {
-		QList<QMenu *> menus = customizableMenusList();
-    	foreach (QMenu *m, menus){			
-        	if (m->objectName() == parentName){
-           		m->addAction(action);
-            	d_user_actions << action;
-				return;
-			}
+	QList<QToolBar *> toolBars = toolBarsList();
+    foreach (QToolBar *t, toolBars){
+        if (t->objectName() == parentName){
+            t->addAction(action);
+            d_user_actions << action;
+            return;
+        }
+    }
+
+    QList<QMenu *> menus = customizableMenusList();
+    foreach (QMenu *m, menus){
+        if (m->objectName() == parentName){
+            m->addAction(action);
+            d_user_actions << action;
+            return;
         }
     }
 }
@@ -14818,14 +14819,19 @@ void ApplicationWindow::performCustomAction(QAction *action)
 {
 	if (!d_user_actions.contains(action))
 		return;
-	
+
+#ifdef SCRIPTING_PYTHON
 	setScriptingLanguage("Python");
-	
+
     QString fileName = action->data().toString();
     Note* n = new Note(scriptEnv, "", 0);
     n->importASCII(fileName);
     n->executeAll();
     delete n;
+#else
+    QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
+    tr("QtiPlot was not built with Python scripting support included!"));
+#endif
 }
 
 void ApplicationWindow::loadCustomActions()
@@ -14848,7 +14854,7 @@ void ApplicationWindow::loadCustomActions()
 
         QXmlInputSource xmlInputSource(&file);
 		if (reader.parse(xmlInputSource))
-			addCustomAction(action, handler.parentName(), handler.addToToolBar());				
+			addCustomAction(action, handler.parentName());
 	}
 }
 
@@ -14866,7 +14872,8 @@ QList<QMenu *> ApplicationWindow::customizableMenusList()
 QList<QMenu *> ApplicationWindow::menusList()
 {
 	QList<QMenu *> lst;
-	foreach (QWidget *w, QApplication::allWidgets()){
+	QObjectList children = this->children();
+	foreach (QObject *w, children){
         if (w->isA("QMenu"))
             lst << (QMenu *)w;
     }
@@ -14876,7 +14883,8 @@ QList<QMenu *> ApplicationWindow::menusList()
 QList<QToolBar *> ApplicationWindow::toolBarsList()
 {
 	QList<QToolBar *> lst;
-	foreach (QWidget *w, QApplication::allWidgets()){
+	QObjectList children = this->children();
+	foreach (QObject *w, children){
         if (w->isA("QToolBar"))
             lst << (QToolBar *)w;
     }
