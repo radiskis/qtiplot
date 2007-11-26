@@ -238,7 +238,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/Grid.h\
             src/MatrixModel.h\
             src/FitModelHandler.h \
-            src/TextEditor.h
+            src/TextEditor.h \
+            src/CustomActionDialog.h
 
 ###################### SOURCES ##############################################
 
@@ -354,7 +355,8 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/Grid.cpp\
             src/MatrixModel.cpp\
             src/FitModelHandler.cpp \
-            src/TextEditor.cpp
+            src/TextEditor.cpp \
+            src/CustomActionDialog.cpp
 
 ###############################################################
 ##################### Compression (zlib123) ###################

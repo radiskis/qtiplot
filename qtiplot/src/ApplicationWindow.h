@@ -128,13 +128,16 @@ public:
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
 
-public:
 	/*! Generates a new unique name starting with string /param name.
 	You can force the output to be a name different from /param name,
 	even if 'name' is not used in the project, by setting /param increment = true (the default)
 	*/
 	QString generateUniqueName(const QString& name, bool increment = true);
 	void saveFitFunctions(const QStringList& lst);
+
+    void removeCustomAction(QAction *);
+	void addCustomAction(QAction *, const QString& parentName, bool toolBar = false);
+    QList<QAction *> customActionsList(){return d_user_actions;};
 
 public slots:
 	//! \name Projects and Project Files
@@ -934,6 +937,7 @@ signals:
 
 private:
 	virtual QMenu * createPopupMenu(){return NULL;};
+	void loadCustomActions();
 
 private slots:
     //! \name Initialization
@@ -977,8 +981,12 @@ private slots:
     void insertGreekSymbol();
 	//@}
 
+	void showCustomActionDialog();
+	void performCustomAction(QAction *);
+
 // TODO: a lot of this stuff should be private
 public:
+    QString customActionsDirPath;
 	bool d_matrix_tool_bar, d_file_tool_bar, d_table_tool_bar, d_column_tool_bar, d_edit_tool_bar;
 	bool d_plot_tool_bar, d_plot3D_tool_bar, d_display_tool_bar, d_format_tool_bar;
 	bool d_backup_files;
@@ -1201,7 +1209,7 @@ private:
     QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars;
     QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
 	QAction *actionFontBold, *actionFontItalic, *actionFontBox, *actionFontSize;
-	QAction *actionSuperscript, *actionSubscript, *actionUnderline, *actionGreekSymbol;
+	QAction *actionSuperscript, *actionSubscript, *actionUnderline, *actionGreekSymbol, *actionCustomActionDialog;
 
 	QActionGroup* coord;
 	QAction* Box;
@@ -1229,5 +1237,6 @@ private:
     QAction* pointstyle;
 	QAction* barstyle;
 	QAction *conestyle, *crossHairStyle;
+    QList<QAction *> d_user_actions;
 };
 #endif
