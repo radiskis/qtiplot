@@ -103,6 +103,7 @@
 #include "ColorMapDialog.h"
 #include "TextEditor.h"
 #include "SymbolDialog.h"
+#include "CustomActionDialog.h"
 
 // TODO: move tool-specific code to an extension manager
 #include "ScreenPickerTool.h"
@@ -319,6 +320,7 @@ void ApplicationWindow::init(bool factorySettings)
 
 	// this has to be done after connecting scriptEnv
 	scriptEnv->initialize();
+	loadCustomActions();
 }
 
 void ApplicationWindow::initWindow()
@@ -385,6 +387,7 @@ void ApplicationWindow::initGlobalConstants()
 	asciiDirPath = aux;
 	imagesDirPath = aux;
 	scriptsDirPath = aux;
+	customActionsDirPath = QString::null;
 
 	appFont = QFont();
 	QString family = appFont.family();
@@ -1077,6 +1080,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 	scriptingMenu->addAction(actionScriptingLang);
 #endif
 	scriptingMenu->addAction(actionRestartScripting);
+    scriptingMenu->addAction(actionCustomActionDialog);
 
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
@@ -4219,6 +4223,7 @@ void ApplicationWindow::readSettings()
 #endif
 	scriptsDirPath = settings.value("/ScriptsDir", qApp->applicationDirPath()).toString();
 	fitModelsPath = settings.value("/FitModelsDir", "").toString();
+	customActionsDirPath = settings.value("/CustomActionsDir", "").toString();
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ------------- end group General ------------------- */
@@ -4496,6 +4501,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Images", imagesDirPath);
 	settings.setValue("/ScriptsDir", scriptsDirPath);
     settings.setValue("/FitModelsDir", fitModelsPath);
+    settings.setValue("/CustomActionsDir", customActionsDirPath);
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ---------------- end group General --------------- */
@@ -10761,6 +10767,9 @@ void ApplicationWindow::setPlot3DOptions()
 
 void ApplicationWindow::createActions()
 {
+    actionCustomActionDialog = new QAction(tr("Custom Script Action..."), this);
+	connect(actionCustomActionDialog, SIGNAL(activated()), this, SLOT(showCustomActionDialog()));
+
 	actionNewProject = new QAction(QIcon(QPixmap(new_xpm)), tr("New &Project"), this);
 	actionNewProject->setShortcut( tr("Ctrl+N") );
 	connect(actionNewProject, SIGNAL(activated()), this, SLOT(newProject()));
@@ -14683,4 +14692,72 @@ void ApplicationWindow::insertGreekSymbol()
 	connect(greekLetters, SIGNAL(addLetter(const QString&)), d_text_editor, SLOT(addSymbol(const QString&)));
 	greekLetters->show();
 	greekLetters->setFocus();
+}
+
+void ApplicationWindow::showCustomActionDialog()
+{
+    CustomActionDialog *ad = new CustomActionDialog(this);
+	ad->setAttribute(Qt::WA_DeleteOnClose);
+	ad->show();
+	ad->setFocus();
+}
+
+void ApplicationWindow::addCustomAction(QAction *action, const QString& parentName, bool toolBar)
+{
+    if (!action)
+        return;
+
+    foreach (QWidget *w, QApplication::allWidgets()){
+        if (w->isA("QToolBar") && toolBar && w->windowTitle() == parentName){
+            action->addTo(w);
+            connect((QToolBar*)w, SIGNAL(actionTriggered(QAction *)), this, SLOT(performCustomAction(QAction *)));
+            d_user_actions << action;
+        } else if (w->isA("QMenu") && !toolBar && ((QMenu*)w)->title() == parentName){
+            action->addTo(w);
+            connect((QToolBar*)w, SIGNAL(triggered(QAction *)), this, SLOT(performCustomAction(QAction *)));
+            d_user_actions << action;
+        }
+    }
+}
+
+void ApplicationWindow::removeCustomAction(QAction *action)
+{
+    int index = d_user_actions.indexOf(action);
+    if (index >= 0 && index < d_user_actions.count()){
+        d_user_actions.removeAt(index);
+        delete action;
+    }
+}
+
+void ApplicationWindow::performCustomAction(QAction *action)
+{
+    QString fileName = action->data().toString();
+    Note *note = newNote();
+    note->importASCII(fileName);
+    note->executeAll();
+    note->close();
+}
+
+void ApplicationWindow::loadCustomActions()
+{
+    QString path = customActionsDirPath + "/";
+	QDir dir(path);
+	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks, QDir::Name);
+	for (int i=0; i<lst.count(); i++){
+	    QString fileName = path + lst[i];
+        QFile file(fileName);
+        QFileInfo fi(file);
+        if (!file.open(QFile::ReadOnly | QFile::Text))
+            continue;
+
+        QAction *action = new QAction(this);
+        CustomActionHandler handler(action);
+        QXmlSimpleReader reader;
+        reader.setContentHandler(&handler);
+        reader.setErrorHandler(&handler);
+
+        QXmlInputSource xmlInputSource(&file);
+        if (reader.parse(xmlInputSource))
+            d_user_actions << action;
+	}
 }
