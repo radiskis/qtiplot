@@ -139,11 +139,11 @@ public:
 	//@{
 	void loadCustomActions();
     void removeCustomAction(QAction *);
-	void addCustomAction(QAction *, const QString& parentName, bool toolBar = false);
+	void addCustomAction(QAction *, const QString& parentName);
     QList<QAction *> customActionsList(){return d_user_actions;};
 	QList<QMenu *> customizableMenusList();
 	//@}
-	
+
 	QList<QMenu *> menusList();
 	QList<QToolBar *> toolBarsList();
 
@@ -1150,7 +1150,7 @@ private:
 	QMenu *help, *plot2DMenu, *analysisMenu, *multiPeakMenu;
 	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tablesDepend, *scriptingMenu;
 	QMenu *tableMenu, *fillMenu, *normMenu, *newMenu, *exportPlotMenu, *smoothMenu, *filterMenu, *decayMenu;
-	
+
 	QAction *actionEditCurveRange, *actionCurveFullRange, *actionShowAllCurves, *actionHideCurve, *actionHideOtherCurves;
 	QAction *actionEditFunction, *actionRemoveCurve, *actionShowCurveWorksheet, *actionShowCurvePlotDialog;
     QAction *actionNewProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
