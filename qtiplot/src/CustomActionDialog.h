@@ -38,8 +38,9 @@ class QRadioButton;
 class QComboBox;
 class QListWidget;
 class QLineEdit;
-
-//! Preferences dialog
+class QMenu;
+class QToolBar;
+	
 class CustomActionDialog : public QDialog
 {
     Q_OBJECT
@@ -58,16 +59,21 @@ private slots:
 	void chooseFolder();
 	QAction* addAction();
 	void removeAction();
-	void saveAction();
-	void saveAction(QAction *action);
 	void setCurrentAction(int);
 
 private:
-    void loadCustomActions();
-    QList<QAction *> d_actions;
+	void init();
+	void updateDisplayList();
+	void saveAction(QAction *action);
+	void customizeAction(QAction *action);
+	bool validUserInput();
+	QStringList d_app_shortcut_keys;
+
+	QList<QMenu *> d_menus;	
+	QList<QToolBar *> d_app_toolbars;
 
     QListWidget *itemsList;
-    QPushButton *buttonCancel, *buttonAdd, *buttonRemove, *buttonSave;
+    QPushButton *buttonCancel, *buttonAdd, *buttonRemove;
     QPushButton *folderBtn, *fileBtn, *iconBtn;
     QLineEdit *folderBox, *fileBox, *iconBox, *textBox, *toolTipBox, *shortcutBox;
     QRadioButton *menuBtn, *toolBarBtn;
@@ -75,7 +81,7 @@ private:
 };
 
 class CustomActionHandler : public QXmlDefaultHandler
-{
+{	
 public:
     CustomActionHandler(QAction *action);
 
@@ -87,13 +93,16 @@ public:
     bool fatalError(const QXmlParseException &exception);
     QString errorString() const;
 
+	bool addToToolBar(){return toolBar;};
+	QString parentName(){return d_widget_name;};
+
 private:
     bool metFitTag;
     bool toolBar;
     QString currentText;
     QString errorStr;
     QString filePath;
+	QString d_widget_name;
     QAction *d_action;
 };
 #endif
-
