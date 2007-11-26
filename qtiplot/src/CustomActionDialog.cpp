@@ -50,44 +50,16 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
     : QDialog(parent, fl)
 {
     setWindowTitle(tr("QtiPlot") + " - " + tr("Add Custom Action"));
-
-    d_actions.clear();
-
-    ApplicationWindow *app = (ApplicationWindow *)parent;
-    QStringList toolBars, menus;
-    foreach (QWidget *w, QApplication::allWidgets()){
-        if (w->isA("QToolBar"))
-            toolBars << ((QToolBar*)w)->windowTitle();
-        else if (w->isA("QMenu") && !((QMenu*)w)->title().isEmpty())
-            menus << ((QMenu*)w)->title();
-    }
-    toolBars.sort();
-    menus.sort();
-
+	
     itemsList = new QListWidget();
     itemsList->setSelectionMode(QAbstractItemView::SingleSelection);
 	itemsList->setSpacing(2);
-
-	QList<QAction *> actionsList = app->customActionsList();
-	foreach(QAction *action, actionsList){
-	    QString text = action->text();
-        QString shortcut = action->shortcut().toString();
-	    if (!shortcut.isEmpty())
-            text += " (" + shortcut + ")";
-
-        QListWidgetItem *it = new QListWidgetItem(text, itemsList);
-        if (!action->icon().isNull())
-            it->setIcon(action->icon());
-        itemsList->addItem(it);
-        d_actions << action;
-	}
 
     QGroupBox *gb1 = new QGroupBox();
 	QGridLayout *gl1 = new QGridLayout(gb1);
 
 	gl1->addWidget(new QLabel(tr("Folder")), 0, 0);
 	folderBox = new QLineEdit();
-	folderBox->setText(app->customActionsDirPath);
 
 	gl1->addWidget(folderBox, 0, 1);
 	folderBtn = new QPushButton(tr("Browse"));
@@ -121,14 +93,12 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
     menuBtn = new QRadioButton(tr("Menu"));
     gl1->addWidget(menuBtn, 6, 0);
     menuBox = new QComboBox();
-    menuBox->addItems(menus);
     gl1->addWidget(menuBox, 6, 1);
 
     toolBarBtn = new QRadioButton(tr("Tool Bar"));
     toolBarBtn->setChecked(true);
     gl1->addWidget(toolBarBtn, 7, 0);
     toolBarBox = new QComboBox();
-    toolBarBox->addItems(toolBars);
     gl1->addWidget(toolBarBox, 7, 1);
     gl1->setRowStretch(8, 1);
 
@@ -142,10 +112,6 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 	buttonRemove->setAutoDefault(true);
 	bottomButtons->addWidget(buttonRemove);
 
-	buttonSave = new QPushButton(tr("Save"));
-	buttonSave->setAutoDefault(true);
-	bottomButtons->addWidget(buttonSave);
-
 	buttonCancel = new QPushButton(tr("Close"));
 	buttonCancel->setAutoDefault( true );
 	bottomButtons->addWidget( buttonCancel );
@@ -158,12 +124,10 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
     mainLayout->addLayout(vl);
 	mainLayout->addLayout(bottomButtons);
 
-    setCurrentAction(0);
-    itemsList->setCurrentRow(0);
+	init();
 
 	connect(buttonAdd, SIGNAL(clicked()), this, SLOT(addAction()));
 	connect(buttonRemove, SIGNAL(clicked()), this, SLOT(removeAction()));
-	connect(buttonSave, SIGNAL(clicked()), this, SLOT(saveAction()));
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(iconBtn, SIGNAL(clicked()), this, SLOT(chooseIcon()));
 	connect(fileBtn, SIGNAL(clicked()), this, SLOT(chooseFile()));
@@ -171,22 +135,136 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 	connect(itemsList, SIGNAL(currentRowChanged(int)), this, SLOT(setCurrentAction(int)));
 }
 
+void CustomActionDialog::init()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	folderBox->setText(app->customActionsDirPath);
+	
+	d_menus = app->customizableMenusList();
+	d_app_toolbars = app->toolBarsList();
+	QList<QMenu *> d_app_menus = app->menusList();
+	
+	QStringList toolBars, menus;
+	foreach (QMenu *m, d_menus){
+		if (!m->title().isEmpty()){
+			menus << m->title().remove("&");
+	   }
+    }
+	menus.sort();
+	menuBox->addItems(menus);
+	
+	//Build the list of shortcut key sequences and keep it to memory to improve speed!
+	foreach (QMenu *m, d_app_menus){
+		QList<QAction *> actionsList = m->actions(); 
+		foreach (QAction *a, actionsList){
+			QString shortcut = a->shortcut().toString();
+	    	if (!shortcut.isEmpty() && !d_app_shortcut_keys.contains(shortcut))
+				d_app_shortcut_keys << shortcut;
+	   }
+    }
+	
+	foreach (QToolBar *t, d_app_toolbars){
+		toolBars << t->windowTitle();
+		QList<QAction *> actionsList = t->actions(); 
+		foreach (QAction *a, actionsList){
+			QString shortcut = a->shortcut().toString();
+	    	if (!shortcut.isEmpty() && !d_app_shortcut_keys.contains(shortcut))
+				d_app_shortcut_keys << shortcut;
+		}
+    }
+    toolBars.sort();
+	toolBarBox->addItems(toolBars);
+	
+	updateDisplayList();
+}
+
+void CustomActionDialog::updateDisplayList()
+{
+	itemsList->clear();
+
+	QList<QAction *> actionsList = ((ApplicationWindow *)parentWidget())->customActionsList();
+	foreach(QAction *action, actionsList){//add existing actions to the list widget
+	    QString text = action->text();
+        QString shortcut = action->shortcut().toString();
+	    if (!shortcut.isEmpty())
+            text += " (" + shortcut + ")";
+
+        QListWidgetItem *it = new QListWidgetItem(text, itemsList);
+        if (!action->icon().isNull())
+            it->setIcon(action->icon());
+        itemsList->addItem(it);
+	}
+	itemsList->setCurrentRow(0);
+	setCurrentAction(0);	
+}
+
 QAction* CustomActionDialog::addAction()
 {
+	QAction *action = NULL;
     ApplicationWindow *app = (ApplicationWindow *)parentWidget();
     if (!app)
-        return 0;
+        return action;
 
-    QString folder = folderBox->text();
-    if (folder.isEmpty() || !QFile::exists(folder))
+	if (validUserInput()){
+    	action = new QAction(app);
+		customizeAction(action);
+	
+    	if (toolBarBtn->isChecked()){
+			foreach (QToolBar *t, d_app_toolbars){
+				if (t->windowTitle() == toolBarBox->currentText()){
+					app->addCustomAction(action, t->objectName(), true);
+					break;
+				}
+   	 		}	
+    	} else {
+			foreach (QMenu *m, d_menus){
+				if (m->title() == menuBox->currentText()){
+					app->addCustomAction(action, m->objectName(), false);
+					break;
+				}
+   	 		}
+		}
+	
+		QString text = action->text();
+		QString shortcut = action->shortcut().toString();
+		if (!shortcut.isEmpty())
+			text += " (" + shortcut + ")";
+		
+    	QListWidgetItem *it = new QListWidgetItem(text, itemsList);
+    	if (!action->icon().isNull())
+        	it->setIcon(action->icon());
+    	itemsList->addItem(it);
+    	itemsList->setCurrentItem(it);
+
+    	saveAction(action);
+	}
+    return action;
+}
+
+bool CustomActionDialog::validUserInput()
+{
+	QString folder = folderBox->text();
+    while (folder.isEmpty() || !QFileInfo(folder).exists() || !QFileInfo(folder).isReadable()){
         chooseFolder();
+		folder = folderBox->text();
+	}
 
-    foreach(QAction *action, d_actions){
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	QList<QAction *>actions = app->customActionsList();
+
+	if (textBox->text().isEmpty()){
+        QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
+        tr("Please provide a description for your custom action!"));
+        textBox->setFocus();
+        return false;
+    }
+	
+    foreach(QAction *action, actions){
         if(action->text() == textBox->text()){
             QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
-            tr("You have already defined an action having menu text: %1, please choose another menu text!").arg(textBox->text()));
+            tr("You have already defined an action having description: %1, please provide a different description text!").arg(textBox->text()));
             textBox->setFocus();
-            return 0;
+            return false;
         }
     }
 
@@ -196,7 +274,7 @@ QAction* CustomActionDialog::addAction()
         QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
         tr("The file you have specified doesn't exist, please choose a valid script file!"));
         fileBox->setFocus();
-        return 0;
+        return false;
     }
 
     QString iconPath = iconBox->text();
@@ -206,53 +284,72 @@ QAction* CustomActionDialog::addAction()
         QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
         tr("The image file you have specified doesn't exist or can't be read, please choose another file!"));
         iconBox->setFocus();
-        return 0;
+        return false;
     }
+		
+	QStringList shortcuts = d_app_shortcut_keys;
+	foreach (QAction *a, actions){
+		QString shortcut = a->shortcut().toString();
+	    if (!shortcut.isEmpty() && !shortcuts.contains(shortcut))
+			shortcuts << shortcut;
+	}
+		
+	shortcuts.sort();
+	QString s;
+	int i = 0, n = shortcuts.count();
+	while(i < n-5){
+		s += shortcuts[i] + "\t" + shortcuts[i+1] + "\t" + shortcuts[i+2];
+		s += "\t" + shortcuts[i+3] + "\t" + shortcuts[i+4] + "\n";
+		i += 5;
+	}	
+		
+	if (shortcuts.contains(shortcutBox->text().remove(QRegExp("\\s")))){
+		QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
+        tr("Please provide a different key sequence! The following shortcut key sequences are already assigned:") +
+		"\n\n" + s);
+       	shortcutBox->setFocus();
+        return false;
+	}
+	
+	return true;
+}
 
-    QAction *action = new QAction(textBox->text(), app);
-    action->setData(fi.absoluteFilePath());
+void CustomActionDialog::customizeAction(QAction *action)
+{
+	action->setText(textBox->text());
+    action->setData(QFileInfo(fileBox->text()).absoluteFilePath());
 
     QIcon icon = QIcon();
-    if (!iconPath.isEmpty()){
+	QString iconPath = iconBox->text();
+	QFileInfo iconInfo(iconPath);
+    if (!iconPath.isEmpty() && iconInfo.exists()){
         icon = QIcon(iconPath);
         action->setIcon(icon);
-        action->setIconText(iconPath);
+        action->setIconText(iconInfo.absoluteFilePath());
     }
 
     if (!toolTipBox->text().isEmpty())
         action->setToolTip(toolTipBox->text());
 
     if (!shortcutBox->text().isEmpty())
-        action->setShortcut(shortcutBox->text());
-
-    if (toolBarBtn->isChecked())
-        app->addCustomAction(action, toolBarBox->currentText(), true);
-    else if (menuBtn->isChecked())
-        app->addCustomAction(action, menuBox->currentText(), false);
-
-    QListWidgetItem *it = new QListWidgetItem(textBox->text() + " (" + shortcutBox->text() + ")", itemsList);
-    if (!icon.isNull())
-        it->setIcon(icon);
-    itemsList->addItem(it);
-    itemsList->setCurrentItem(it);
-
-    d_actions << action;
-    saveAction(action);
-    return action;
+        action->setShortcut(shortcutBox->text().remove(QRegExp("\\s")));
 }
 
 void CustomActionDialog::removeAction()
 {
-    int row = itemsList->currentRow();
-    if (row < 0 || row >= d_actions.count())
+	int row = itemsList->currentRow();
+	
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	QList<QAction *>actions = app->customActionsList();
+	if (actions.isEmpty() || row < 0 || row >= actions.count())
         return;
 
-    ApplicationWindow *app = (ApplicationWindow *)parentWidget();
     QString s = tr("Are you sure you want to remove this action?");
-    if (QMessageBox::Ok != QMessageBox::question(app, tr("QtiPlot") + " - " + tr("Remove Action"), s))
+    if (QMessageBox::Ok != QMessageBox::question(this, tr("QtiPlot") + " - " + tr("Remove Action"), s))
         return;
 
-    QAction *action = d_actions.at(row);
+    QAction *action = actions.at(row);
+
     QFile f(app->customActionsDirPath + "/" + action->text() + ".qca");
     f.remove();
 
@@ -263,24 +360,9 @@ void CustomActionDialog::removeAction()
             break;
         }
     }
-    d_actions.removeAt(row);
     itemsList->takeItem(row);
-}
-
-void CustomActionDialog::saveAction()
-{
-    QAction *action = NULL;
-    foreach(QAction *act, d_actions){
-        if(act->text() == textBox->text()){
-            action = act;
-            break;
-        }
-    }
-
-    if (!action)
-        action = addAction();
-    else
-        saveAction(action);
+	if (itemsList->count())
+		setCurrentAction(0);
 }
 
 void CustomActionDialog::saveAction(QAction *action)
@@ -314,10 +396,7 @@ void CustomActionDialog::saveAction(QAction *action)
      QWidget *w = list[0];
      bool type = toolBarBtn->isChecked();
      out << "<type>" + QString::number(type) + "</type>\n";
-     if (type)
-         out << "<location>" + ((QToolBar*)w)->windowTitle() + "</location>\n";
-     else
-         out << "<location>" + ((QMenu*)w)->title() + "</location>\n";
+     out << "<location>" + w->objectName() + "</location>\n";
      out << "</action>\n";
 }
 
@@ -339,8 +418,7 @@ void CustomActionDialog::chooseIcon()
 
 void CustomActionDialog::chooseFile()
 {
-    ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-    QString fileName = QFileDialog::getOpenFileName(app, tr("Choose script file"), fileBox->text());
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Choose script file"), fileBox->text());
     if (!fileName.isEmpty())
         fileBox->setText(fileName);
 }
@@ -349,20 +427,27 @@ void CustomActionDialog::chooseFolder()
 {
     ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 
-    QString dir = QFileDialog::getExistingDirectory(app, tr("Choose the custom actions folder"), app->customActionsDirPath);
-    if (!dir.isEmpty()){
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the custom actions folder"), app->customActionsDirPath);
+    if (!dir.isEmpty() && QFileInfo(dir).isReadable()){	
+		QList<QAction *> actionsList = app->customActionsList();
+    	foreach (QAction *a, actionsList)
+            app->removeCustomAction(a);
+     	
         app->customActionsDirPath = dir;
-        loadCustomActions();
+        app->loadCustomActions();
+		updateDisplayList();
         folderBox->setText(dir);
     }
 }
 
 void CustomActionDialog::setCurrentAction(int row)
 {
-    if (d_actions.isEmpty() || row < 0 || row >= d_actions.count())
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	QList<QAction *>actions = app->customActionsList();
+	if (actions.isEmpty() || row < 0 || row >= actions.count())
         return;
 
-    QAction *action = d_actions.at(row);
+    QAction *action = actions.at(row);
     if (!action)
         return;
 
@@ -376,54 +461,22 @@ void CustomActionDialog::setCurrentAction(int row)
     QWidget *w = NULL;
     if (!list.isEmpty())
         w = list[0];
-
-    int index = toolBarBox->findText(((QToolBar*)w)->windowTitle());
-    if (index >= 0){
-        toolBarBox->setCurrentIndex(index);
-        toolBarBtn->setChecked(true);
-    } else {
-        index = menuBox->findText(((QMenu*)w)->title());
+	if (!w)
+		return;
+	
+	if (w->isA("QToolBar")){
+    	int index = toolBarBox->findText(((QToolBar*)w)->windowTitle());
+    	if (index >= 0){
+        	toolBarBox->setCurrentIndex(index);
+        	toolBarBtn->setChecked(true);
+    	} 
+	} else {
+        int index = menuBox->findText(((QMenu*)w)->title().remove("&"));
         if (index >= 0){
             menuBox->setCurrentIndex(index);
             menuBtn->setChecked(true);
         }
     }
-}
-
-void CustomActionDialog::loadCustomActions()
-{
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
-    QString path = app->customActionsDirPath + "/";
-	QDir dir(path);
-	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks, QDir::Name);
-	for (int i=0; i<lst.count(); i++){
-	    QString fileName = path + lst[i];
-        QFile file(fileName);
-        QFileInfo fi(file);
-        if (!file.open(QFile::ReadOnly | QFile::Text)){
-            QMessageBox::warning(((ApplicationWindow *)parent()), tr("QtiPlot Custom Action"),
-            tr("Cannot read file %1:\n%2.").arg(fileName).arg(file.errorString()));
-            continue;
-        }
-
-        QAction *action = new QAction(app);
-        CustomActionHandler handler(action);
-        QXmlSimpleReader reader;
-        reader.setContentHandler(&handler);
-        reader.setErrorHandler(&handler);
-
-        QXmlInputSource xmlInputSource(&file);
-        if (reader.parse(xmlInputSource)){
-            d_actions << action;
-
-            QListWidgetItem *it = new QListWidgetItem(action->text() + " (" + action->shortcut().toString() + ")", itemsList);
-            if (!action->icon().isNull()){
-                it->setIcon(action->icon());
-                itemsList->addItem(it);
-                itemsList->setCurrentItem(it);
-            }
-        }
-	}
 }
 
 /*****************************************************************************
@@ -438,6 +491,7 @@ CustomActionHandler::CustomActionHandler(QAction *action)
      metFitTag = false;
      toolBar = false;
      filePath = QString();
+	 d_widget_name = QString();
  }
 
 bool CustomActionHandler::startElement(const QString & /* namespaceURI */,
@@ -479,17 +533,14 @@ bool CustomActionHandler::endElement(const QString & /* namespaceURI */,
     else if (qName == "shortcut")
         d_action->setShortcut(currentText);
     else if (qName == "type")
-        toolBar = (currentText == "1") ? true:false;
+        toolBar = currentText.toInt() ? true:false;
     else if (qName == "location"){
-        foreach (QWidget *w, QApplication::allWidgets()){
-            if (toolBar && w->isA("QToolBar") && ((QToolBar*)w)->windowTitle() == currentText)
-                d_action->addTo((QToolBar*)w);
-            else if (!toolBar && w->isA("QMenu") && ((QMenu*)w)->title() == currentText)
-                d_action->addTo((QMenu*)w);
-        }
+		d_widget_name = currentText;
+		if (!toolBar)//use status tip to store the name of the destination menu (ugly hack!)
+			d_action->setStatusTip(currentText); 
     } else if (qName == "action")
         d_action->setData(filePath);
-
+	
     return true;
 }
 

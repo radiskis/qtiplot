@@ -135,9 +135,17 @@ public:
 	QString generateUniqueName(const QString& name, bool increment = true);
 	void saveFitFunctions(const QStringList& lst);
 
+	//! \name User custom actions
+	//@{
+	void loadCustomActions();
     void removeCustomAction(QAction *);
 	void addCustomAction(QAction *, const QString& parentName, bool toolBar = false);
     QList<QAction *> customActionsList(){return d_user_actions;};
+	QList<QMenu *> customizableMenusList();
+	//@}
+	
+	QList<QMenu *> menusList();
+	QList<QToolBar *> toolBarsList();
 
 public slots:
 	//! \name Projects and Project Files
@@ -937,7 +945,6 @@ signals:
 
 private:
 	virtual QMenu * createPopupMenu(){return NULL;};
-	void loadCustomActions();
 
 private slots:
     //! \name Initialization
@@ -1140,8 +1147,10 @@ private:
 	QWidget *lastModified;
 
 	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *edit, *recent;
-	QMenu *help, *plot2DMenu, *analysisMenu;
-	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tableMenu, *tablesDepend, *scriptingMenu;
+	QMenu *help, *plot2DMenu, *analysisMenu, *multiPeakMenu;
+	QMenu *matrixMenu, *plot3DMenu, *plotDataMenu, *tablesDepend, *scriptingMenu;
+	QMenu *tableMenu, *fillMenu, *normMenu, *newMenu, *exportPlotMenu, *smoothMenu, *filterMenu, *decayMenu;
+	
 	QAction *actionEditCurveRange, *actionCurveFullRange, *actionShowAllCurves, *actionHideCurve, *actionHideOtherCurves;
 	QAction *actionEditFunction, *actionRemoveCurve, *actionShowCurveWorksheet, *actionShowCurvePlotDialog;
     QAction *actionNewProject, *actionNewNote, *actionNewTable, *actionNewFunctionPlot;
