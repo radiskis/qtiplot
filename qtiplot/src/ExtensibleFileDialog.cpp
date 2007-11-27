@@ -2,8 +2,8 @@
     File                 : ExtensibleFileDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Knut Franke
-    Email (use @ for *)  : knut.franke*gmx.de
+    Copyright            : (C) 2007 by Knut Franke, Ion Vasilief
+    Email (use @ for *)  : knut.franke*gmx.de, ion_vasilief*yahoo.fr
     Description          : QFileDialog plus generic extension support
 
  ***************************************************************************/
@@ -53,7 +53,6 @@ ExtensibleFileDialog::ExtensibleFileDialog(QWidget *parent, bool extended, Qt::W
 		layout()->addWidget(d_extension_toggle);
 	}
 
-	connect(d_extension_toggle, SIGNAL(toggled(bool)), this, SLOT(resize(bool)));
 	connect(this, SIGNAL(accepted()), this, SLOT(close()));
     connect(this, SIGNAL(rejected()), this, SLOT(close()));
 }
@@ -81,11 +80,4 @@ void ExtensibleFileDialog::setExtensionWidget(QWidget *extension)
 
 	d_extension->setVisible(d_extension_toggle->isChecked());
 	connect(d_extension_toggle, SIGNAL(toggled(bool)), d_extension, SLOT(setVisible(bool)));
-}
-
-void ExtensibleFileDialog::resize(bool extension_on)
-{
-	QSize geo = size();
-	geo.setHeight(geo.height() + (extension_on ? 1 : -1) * (d_extension->sizeHint().height()-44));
-	setGeometry(QRect(geometry().topLeft(), geo));
 }

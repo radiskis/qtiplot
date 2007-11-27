@@ -50,10 +50,8 @@
 #include <fstream>
 
 UserFunction::UserFunction(const QString& s, SurfacePlot& pw)
-: Function(pw)
-{
-	formula=s;
-}
+: Function(pw), formula(s)
+{}
 
 double UserFunction::operator()(double x, double y)
 {

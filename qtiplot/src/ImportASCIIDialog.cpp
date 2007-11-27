@@ -91,8 +91,6 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	if (!app->d_ASCII_import_preview)
 		d_preview_table->hide();
 
-    d_preview_button->setChecked(false);
-
     connect(d_preview_lines_box, SIGNAL(valueChanged(int)), this, SLOT(preview()));
     connect(d_rename_columns, SIGNAL(clicked()), this, SLOT(preview()));
     connect(d_import_comments, SIGNAL(clicked()), this, SLOT(preview()));
@@ -110,7 +108,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 {
 	d_advanced_options = new QGroupBox();
 	QVBoxLayout *main_layout = new QVBoxLayout(d_advanced_options);
-	QGridLayout *advanced_layout = new QGridLayout(d_advanced_options);
+	QGridLayout *advanced_layout = new QGridLayout();
 	main_layout->addLayout(advanced_layout);
 
 	advanced_layout->addWidget(new QLabel(tr("Import each file as: ")), 0, 0);
@@ -214,8 +212,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_preview_table->setAttribute(Qt::WA_DeleteOnClose);
 	d_preview_table->showComments(true);
 	int height = d_preview_table->table()->horizontalHeader()->height();
-	d_preview_table->setMinimumHeight(3*height);
-	d_preview_table->setMaximumHeight(7*height);
+	d_preview_table->setMinimumHeight(2*height);
 	main_layout->addWidget(d_preview_table);
 }
 

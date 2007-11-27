@@ -751,7 +751,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight)
 		if (enumerateRight)
             newLabel += QString::number(n);
 
-        commands.replaceInStrings(col_label[i], newLabel);
+        commands.replaceInStrings("\"" + col_label[i] + "\"", "\"" + newLabel + "\"");
 		emit changedColHeader(caption + col_label[i], caption + newLabel);
         col_label[i] = newLabel;
 		n++;
@@ -1609,13 +1609,15 @@ QString Table::saveText()
 		if (!isEmptyRow(i)){
 			text += QString::number(i) + "\t";
 			for (int j=0; j<cols; j++){
-			    if (!d_table->text(i, j).isEmpty())
-                    text += QString::number(cell(i, j), 'e', 14);
-                text += "\t";
+			    if (colTypes[j] == Numeric && !d_table->text(i, j).isEmpty())
+                    text += QString::number(cell(i, j), 'e', 14) + "\t";
+				else 
+					text += d_table->text(i, j) + "\t";
 			}
-            if (!d_table->text(i, cols).isEmpty())
-                text += QString::number(cell(i, cols), 'e', 14);
-            text += "\n";
+            if (colTypes[cols] == Numeric && !d_table->text(i, cols).isEmpty())
+                text += QString::number(cell(i, cols), 'e', 14) + "\n";
+			else 
+				text += d_table->text(i, cols) + "\n";
 		}
 	}
 	return text + "</data>\n";
