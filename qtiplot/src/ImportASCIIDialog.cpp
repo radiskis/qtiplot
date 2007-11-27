@@ -58,7 +58,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	setFileMode( QFileDialog::ExistingFiles );
 
 	d_current_path = QString::null;
-	
+
 	initAdvancedOptions();
 	d_import_mode->setEnabled(import_mode_enabled);
 	setExtensionWidget(d_advanced_options);
@@ -91,6 +91,8 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	if (!app->d_ASCII_import_preview)
 		d_preview_table->hide();
 
+    d_preview_button->setChecked(false);
+
     connect(d_preview_lines_box, SIGNAL(valueChanged(int)), this, SLOT(preview()));
     connect(d_rename_columns, SIGNAL(clicked()), this, SLOT(preview()));
     connect(d_import_comments, SIGNAL(clicked()), this, SLOT(preview()));
@@ -108,7 +110,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 {
 	d_advanced_options = new QGroupBox();
 	QVBoxLayout *main_layout = new QVBoxLayout(d_advanced_options);
-	QGridLayout *advanced_layout = new QGridLayout();
+	QGridLayout *advanced_layout = new QGridLayout(d_advanced_options);
 	main_layout->addLayout(advanced_layout);
 
 	advanced_layout->addWidget(new QLabel(tr("Import each file as: ")), 0, 0);
@@ -190,34 +192,31 @@ void ImportASCIIDialog::initAdvancedOptions()
 	connect(d_import_dec_separators, SIGNAL(toggled(bool)), boxDecimalSeparator, SLOT(setEnabled(bool)));
 	advanced_layout->addWidget(d_import_dec_separators, 4, 2, 1, 2);
 
-	QHBoxLayout *meta_options_layout = new QHBoxLayout();
-	d_read_only = new QCheckBox(tr("Import as &read-only"));
-	meta_options_layout->addWidget(d_read_only);
-	d_help_button = new QPushButton(tr("&Help"));
-	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
-	meta_options_layout->addWidget(d_help_button);
-	d_preview_button = new QCheckBox(tr("&Preview"));
+	d_preview_button = new QCheckBox(tr("&Preview Lines"));
 	connect(d_preview_button, SIGNAL(clicked()), this, SLOT(preview()));
-	meta_options_layout->addWidget(d_preview_button);
-	meta_options_layout->addWidget(new QLabel(tr("Lines")));
+	advanced_layout->addWidget(d_preview_button, 5, 0);
+
 	d_preview_lines_box = new QSpinBox();
 	d_preview_lines_box->setMaximum (INT_MAX);
 	d_preview_lines_box->setValue(100);
 	d_preview_lines_box->setSingleStep(10);
 	d_preview_lines_box->setSpecialValueText(tr("All"));
-	meta_options_layout->addWidget(d_preview_lines_box);
-	meta_options_layout->addStretch();
-	main_layout->addLayout(meta_options_layout);
+	advanced_layout->addWidget(d_preview_lines_box, 5, 1);
 
-	QHBoxLayout *preview_layout = new QHBoxLayout();
+    d_read_only = new QCheckBox(tr("Import as &read-only"));
+	advanced_layout->addWidget(d_read_only, 5, 2);
+
+	d_help_button = new QPushButton(tr("&Help"));
+	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
+	advanced_layout->addWidget(d_help_button, 5, 3);
+
 	d_preview_table = new Table(ScriptingLangManager::newEnv((ApplicationWindow *)parent()), 30, 2, tr("Preview"), 0, 0);
 	d_preview_table->setAttribute(Qt::WA_DeleteOnClose);
 	d_preview_table->showComments(true);
 	int height = d_preview_table->table()->horizontalHeader()->height();
 	d_preview_table->setMinimumHeight(3*height);
 	d_preview_table->setMaximumHeight(7*height);
-	preview_layout->addWidget(d_preview_table);
-	main_layout->addLayout(preview_layout);
+	main_layout->addWidget(d_preview_table);
 }
 
 void ImportASCIIDialog::setColumnSeparator(const QString& sep)
@@ -329,7 +328,7 @@ void ImportASCIIDialog::preview()
         d_preview_table->hide();
         return;
     }
-				
+
 	if (d_current_path.trimmed().isEmpty()){
         QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
                 tr("Please select a file first!"));
@@ -340,7 +339,7 @@ void ImportASCIIDialog::preview()
 			d_preview_table->show();
         return;
     }
-		
+
 	QString fileName = d_current_path;
 	QTemporaryFile tempFile;
 	int rows = d_preview_lines_box->value();
