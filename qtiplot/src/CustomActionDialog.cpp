@@ -262,7 +262,7 @@ bool CustomActionDialog::validUserInput()
     foreach(QAction *action, actions){
         if(action->text() == textBox->text()){
             QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
-            tr("You have already defined an action having description: %1, please provide a different description text!").arg(textBox->text()));
+            tr("You have already defined an action having description: %1 <br>Please provide a different description text!").arg(textBox->text()));
             textBox->setFocus();
             return false;
         }

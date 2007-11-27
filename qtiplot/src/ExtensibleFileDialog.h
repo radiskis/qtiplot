@@ -2,8 +2,8 @@
     File                 : ExtensibleFileDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Knut Franke
-    Email (use @ for *)  : knut.franke*gmx.de
+    Copyright            : (C) 2007 by Knut Franke, Ion Vasilief
+    Email (use @ for *)  : knut.franke*gmx.de, ion_vasilief*yahoo.fr
     Description          : QFileDialog plus generic extension support
 
  ***************************************************************************/
@@ -64,10 +64,6 @@ class ExtensibleFileDialog : public QFileDialog
 	protected:
 		//! Button for toggling display of extension on/off.
 		QPushButton *d_extension_toggle;
-
-	private slots:
-		//! Resize to make/take space for the extension widget.
-		void resize(bool extension_on);
 
 	private:
 		//! The extension widget
