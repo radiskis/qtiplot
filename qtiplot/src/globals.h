@@ -39,4 +39,4 @@ const char * extra_version = "";
 //! Copyright string containing the author names
 const char * copyright_string = "Copyright (C) 2004-2007 Ion Vasilief\nCopyright (C) 2006 - june 2007 Tilman Hoener zu Siederdissen, Knut Franke";
 //! Release date as a string
-const char * release_date = " 2007/11/27";
+const char * release_date = " 2007/11/29";

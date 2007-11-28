@@ -64,8 +64,8 @@ public:
 	~Graph3D();
 
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon =  3};
-	enum PointStyle{None=0, Dots=1, VerticalBars=2, HairCross=3, Cones=4};
-
+	enum PointStyle{None = 0, Dots = 1, VerticalBars = 2, HairCross = 3, Cones = 4};
+	
 public slots:
 	void copy(Graph3D* g);
 	void initPlot();
@@ -111,7 +111,7 @@ public slots:
 	//! \name Event Handlers
 	//@{
 	bool eventFilter(QObject *object, QEvent *e);
-	void resizeEvent ( QResizeEvent *);
+	void resizeEvent (QResizeEvent *);
 	void contextMenuEvent(QContextMenuEvent *e);
 	void scaleFonts(double factor);
 	void setIgnoreFonts(bool ok){ignoreFonts = ok;};
@@ -349,6 +349,8 @@ public slots:
 	bool autoscale(){return d_autoscale;};
 	//! Enables/Disables autoscaling using findBestLayout().
 	void setAutoscale(bool on = true){d_autoscale = on;};
+	
+	void moveSurfacePlot();
 
 signals:
 	void showContextMenu();

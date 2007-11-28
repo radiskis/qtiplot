@@ -138,7 +138,7 @@ Triple UserParametricSurface::operator()(double u, double v)
 }
 
 Graph3D::Graph3D(const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
-: MyWidget(label,parent,name,f)
+: MyWidget(label, parent, name, f)
 {
 	initPlot();
 }
@@ -219,6 +219,9 @@ void Graph3D::initPlot()
 	style_ = NOPLOT;
 	initCoord();
 
+#if defined(Q_WS_MAC)
+	connect(this, SIGNAL(moved()), this, SLOT(moveSurfacePlot()));
+#endif	
 	connect(sp,SIGNAL(rotationChanged(double, double, double)),this,SLOT(rotationChanged(double, double, double)));
 	connect(sp,SIGNAL(zoomChanged(double)),this,SLOT(zoomChanged(double)));
 	connect(sp,SIGNAL(scaleChanged(double, double, double)),this,SLOT(scaleChanged(double, double, double)));
@@ -1631,6 +1634,13 @@ void Graph3D::scaleFonts(double factor)
 	setZAxisLabelFont(font);
 }
 
+void Graph3D::moveSurfacePlot()
+{
+	sp->makeCurrent();
+	sp->move(QPoint(0, 0));
+	sp->updateGL();
+}
+
 void Graph3D::resizeEvent ( QResizeEvent *e)
 {
 	QSize size=e->size();
@@ -2238,7 +2248,7 @@ QString Graph3D::formula()
 		return plotAssociation;
 }
 
-QString Graph3D::saveToString(const QString& geometry, bool saveAsTemplate)
+QString Graph3D::saveToString(const QString& geometry, bool)
 {
 	QString s="<SurfacePlot>\n";
 	s+= QString(name())+"\t";

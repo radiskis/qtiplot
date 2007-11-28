@@ -160,6 +160,7 @@ signals:
 	void statusChanged(MyWidget *);
 	//! Emitted when the title bar recieves a QContextMenuEvent
 	void showTitleBarMenu();
+	void moved();
 
 protected:
 	//! Catches parent changes (in order to gain access to the title bar)

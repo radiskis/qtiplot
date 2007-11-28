@@ -1760,6 +1760,57 @@ The active items in the menus depend on the active window in the project. If the
 <!-- ************************************************** -->
 </sect1>
 
+<!--  **************  Scripting Menu  ******************  -->
+<!--  *********************************************  -->
+
+<sect1 id="sec-scripting-menu">
+<title>The Scripting Menu</title>
+
+<variablelist>
+<varlistentry id="script-language-cmd">
+  <term>Scripting -> &script-language-cmd;</term>
+  <listitem>
+     <para>Opens a dialog allowing to choose the scripting language for the current project.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="restart-scripting-cmd">
+  <term>Scripting -> &restart-scripting-cmd;</term>
+  <listitem>
+     <para>Reinitializes the scripting environement.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="add-custom-action-cmd">
+  <term>Scripting -> &add-custom-action-cmd;</term>
+  <listitem>
+     <para>Opens the <link linkend="custom-action-dialog">Custom Action dialog</link>, 
+	 which allows you to define menu items and toolbar buttons used to launch Python scripts.</para>
+  </listitem>
+</varlistentry>
+</variablelist>
+
+If the actif window in the project is a Notes window, the following items are also available in the menu:
+<variablelist>
+<varlistentry id="execute-cmd">
+  <term>Scripting -> &execute-cmd; (&execute-key;)</term>
+  <listitem>
+     <para>Executes the line where the mouse cursor is placed in the Notes window.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="execute-all-cmd">
+  <term>Scripting -> &preferences-cmd; (&execute-all-key;)</term>
+  <listitem>
+     <para>Executes all lines in the Notes window.</para>
+  </listitem>
+</varlistentry>
+<varlistentry id="evaluate-cmd">
+  <term>Scripting -> &evaluate-cmd; (&evaluate-key;)</term>
+  <listitem>
+     <para>Evaluates the line where the mouse cursor is placed in the Notes window.</para>
+  </listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
 <sect1 id="sec-window-menu">
   <title>The Window Menu</title>
   <para>Additionaly to the items listed bellow, this menu will also display a list with the first ten windows created in the workspace. These windows can be made active or can be shown if they are hidden, by selecting their name from the list. If your project contains more then ten windows, you must use the Project explorer in order to perform these operations.</para>

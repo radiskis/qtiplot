@@ -1109,7 +1109,7 @@ m = tableToMatrix(table("Table1"))
 t = matrixToTable(m)
 </programlisting>
 
-Also, is worth knowing that you can easily import image files to matrices, that can be
+Also, it's worth knowing that you can easily import image files to matrices, that can be
 used afterwards for plotting (see the next section for more details about 2D plots):
 <programlisting>
 m1 = importImage("C:/poze/adi/PIC00074.jpg")
