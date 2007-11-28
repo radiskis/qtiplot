@@ -53,29 +53,32 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 
     itemsList = new QListWidget();
     itemsList->setSelectionMode(QAbstractItemView::SingleSelection);
+	itemsList->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
 	itemsList->setSpacing(2);
 
     QGroupBox *gb1 = new QGroupBox();
+	gb1->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
+
 	QGridLayout *gl1 = new QGridLayout(gb1);
 
 	gl1->addWidget(new QLabel(tr("Folder")), 0, 0);
 	folderBox = new QLineEdit();
 
 	gl1->addWidget(folderBox, 0, 1);
-	folderBtn = new QPushButton(tr("Browse"));
+	folderBtn = new QPushButton(tr("Choose &Folder"));
 	gl1->addWidget(folderBtn, 0, 2);
 
 	gl1->addWidget(new QLabel(tr("Script File")), 1, 0);
 	fileBox = new QLineEdit();
 
 	gl1->addWidget(fileBox, 1, 1);
-	fileBtn = new QPushButton(tr("Browse"));
+	fileBtn = new QPushButton(tr("Choose &Script"));
 	gl1->addWidget(fileBtn, 1, 2);
 
 	gl1->addWidget(new QLabel(tr("Icon")), 2, 0);
 	iconBox = new QLineEdit();
 	gl1->addWidget(iconBox, 2, 1);
-	iconBtn = new QPushButton(tr("Browse"));
+	iconBtn = new QPushButton(tr("Choose &Icon"));
 	gl1->addWidget(iconBtn, 2, 2);
 
 	gl1->addWidget(new QLabel(tr("Text")), 3, 0);
@@ -90,29 +93,30 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 	shortcutBox = new QLineEdit();
 	gl1->addWidget(shortcutBox, 5, 1);
 
-    menuBtn = new QRadioButton(tr("Menu"));
+    menuBtn = new QRadioButton(tr("&Menu"));
     gl1->addWidget(menuBtn, 6, 0);
     menuBox = new QComboBox();
     gl1->addWidget(menuBox, 6, 1);
 
-    toolBarBtn = new QRadioButton(tr("Tool Bar"));
+    toolBarBtn = new QRadioButton(tr("&Tool Bar"));
     toolBarBtn->setChecked(true);
     gl1->addWidget(toolBarBtn, 7, 0);
     toolBarBox = new QComboBox();
     gl1->addWidget(toolBarBox, 7, 1);
     gl1->setRowStretch(8, 1);
-
+	gl1->setColumnStretch(1, 10);
+	
 	QHBoxLayout * bottomButtons = new QHBoxLayout();
 	bottomButtons->addStretch();
-	buttonAdd = new QPushButton(tr("Add"));
+	buttonAdd = new QPushButton(tr("&Add"));
 	buttonAdd->setAutoDefault( true );
 	bottomButtons->addWidget(buttonAdd);
 
-	buttonRemove = new QPushButton(tr("Remove"));
+	buttonRemove = new QPushButton(tr("&Remove"));
 	buttonRemove->setAutoDefault(true);
 	bottomButtons->addWidget(buttonRemove);
 
-	buttonCancel = new QPushButton(tr("Close"));
+	buttonCancel = new QPushButton(tr("&Close"));
 	buttonCancel->setAutoDefault( true );
 	bottomButtons->addWidget( buttonCancel );
 

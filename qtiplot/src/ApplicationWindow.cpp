@@ -356,7 +356,7 @@ void ApplicationWindow::initGlobalConstants()
 
 	appStyle = qApp->style()->objectName();
 	d_app_rect = QRect();
-	projectname="untitled";
+	projectname = "untitled";
 	lastModified=0;
 	lastCopiedLayer = 0;
 	d_text_copy = NULL;
@@ -1286,7 +1286,7 @@ void ApplicationWindow::customColumnActions()
 }
 
 void ApplicationWindow::customToolBars(QWidget* w)
-{
+{	
     disableToolbars();
 	if (!w)
         return;
@@ -1300,7 +1300,7 @@ void ApplicationWindow::customToolBars(QWidget* w)
 			formatToolBar->setEnabled (true);
             formatToolBar->show();
 		}
-    }else if (w->inherits("Table")){
+    } else if (w->inherits("Table")){
         if(d_table_tool_bar){
             if(!tableTools->isVisible())
                 tableTools->show();
@@ -1312,16 +1312,15 @@ void ApplicationWindow::customToolBars(QWidget* w)
             columnTools->setEnabled (true);
             customColumnActions();
         }
-    }else if (w->isA("Matrix") && d_matrix_tool_bar){
+    } else if (w->isA("Matrix") && d_matrix_tool_bar){
          if(!plotMatrixBar->isVisible())
             plotMatrixBar->show();
         plotMatrixBar->setEnabled (true);
-    }else if (w->isA("Graph3D") && d_plot3D_tool_bar){
+    } else if (w->isA("Graph3D") && d_plot3D_tool_bar){
         if(!plot3DTools->isVisible())
             plot3DTools->show();
 
-        Graph3D *plot = (Graph3D*)w;
-        if (plot->plotStyle() == Qwt3D::NOPLOT)
+        if (((Graph3D*)w)->plotStyle() == Qwt3D::NOPLOT)
             plot3DTools->setEnabled(false);
         else
             plot3DTools->setEnabled(true);
@@ -2703,6 +2702,7 @@ void ApplicationWindow::initNote(Note* m, const QString& caption)
 	connect(m, SIGNAL(statusChanged(MyWidget*)), this, SLOT(updateWindowStatus(MyWidget*)));
 	connect(m, SIGNAL(showTitleBarMenu()), this, SLOT(showWindowTitleBarMenu()));
 	connect(m, SIGNAL(dirPathChanged(const QString&)), this, SLOT(scriptsDirPathChanged(const QString&)));
+	connect(m, SIGNAL(moved()), this, SLOT(modifiedProject()));
 
 	emit modified();
 }
@@ -2957,6 +2957,7 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	connect(m, SIGNAL(hiddenWindow(MyWidget*)), this, SLOT(hideWindow(MyWidget*)));
 	connect(m, SIGNAL(statusChanged(MyWidget*)),this, SLOT(updateWindowStatus(MyWidget*)));
 	connect(m, SIGNAL(showContextMenu()), this, SLOT(showWindowContextMenu()));
+	connect(m, SIGNAL(moved()), this, SLOT(modifiedProject()));
 
 	emit modified();
 }
@@ -8218,6 +8219,9 @@ void ApplicationWindow::savedProject()
 
 void ApplicationWindow::modifiedProject()
 {
+	if (saved == false)
+		return;
+	
 	actionSaveProject->setEnabled(true);
 	saved = false;
 }
@@ -10729,13 +10733,14 @@ void ApplicationWindow::pickDataTool( QAction* action )
 
 void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 {
-	connect (plot,SIGNAL(showTitleBarMenu()),this,SLOT(showWindowTitleBarMenu()));
-	connect (plot,SIGNAL(showContextMenu()),this,SLOT(showWindowContextMenu()));
-	connect (plot,SIGNAL(showOptionsDialog()),this,SLOT(showPlot3dDialog()));
-	connect (plot,SIGNAL(closedWindow(MyWidget*)),this, SLOT(closeWindow(MyWidget*)));
-	connect (plot,SIGNAL(hiddenWindow(MyWidget*)),this, SLOT(hideWindow(MyWidget*)));
-	connect (plot,SIGNAL(statusChanged(MyWidget*)),this, SLOT(updateWindowStatus(MyWidget*)));
-	connect (plot,SIGNAL(modified()),this, SIGNAL(modified()));
+	connect (plot, SIGNAL(showTitleBarMenu()), this,SLOT(showWindowTitleBarMenu()));
+	connect (plot, SIGNAL(showContextMenu()), this,SLOT(showWindowContextMenu()));
+	connect (plot, SIGNAL(showOptionsDialog()), this,SLOT(showPlot3dDialog()));
+	connect (plot, SIGNAL(closedWindow(MyWidget*)), this, SLOT(closeWindow(MyWidget*)));
+	connect (plot, SIGNAL(hiddenWindow(MyWidget*)), this, SLOT(hideWindow(MyWidget*)));
+	connect (plot, SIGNAL(statusChanged(MyWidget*)), this, SLOT(updateWindowStatus(MyWidget*)));
+	connect (plot, SIGNAL(modified()), this, SIGNAL(modified()));
+	connect (plot, SIGNAL(moved()), this, SLOT(modifiedProject()));
 
 	plot->askOnCloseEvent(confirmClosePlot3D);
 }
@@ -10773,6 +10778,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SLOT(setFormatBarFont(const QFont&)));
     connect (g,SIGNAL(enableTextEditor(Graph *)), this, SLOT(enableTextEditor(Graph *)));
+	connect (g, SIGNAL(moved()), this, SLOT(modifiedProject()));
 
 	g->askOnCloseEvent(confirmClosePlot2D);
 }
@@ -10794,6 +10800,7 @@ void ApplicationWindow::connectTable(Table* w)
 	connect (w,SIGNAL(showContextMenu(bool)),this,SLOT(showTableContextMenu(bool)));
 	connect (w,SIGNAL(changedColHeader(const QString&,const QString&)),this,SLOT(updateColNames(const QString&,const QString&)));
 	connect (w,SIGNAL(createTable(const QString&,int,int,const QString&)),this,SLOT(newTable(const QString&,int,int,const QString&)));
+	connect (w, SIGNAL(moved()), this, SLOT(modifiedProject()));
 
 	w->askOnCloseEvent(confirmCloseTable);
 }

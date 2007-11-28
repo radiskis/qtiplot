@@ -167,6 +167,12 @@ void MyWidget::changeEvent(QEvent *event)
 bool MyWidget::eventFilter(QObject *object, QEvent *e)
 {
 	QWidget *tmp;
+	if (titleBar)
+		titleBar->setMouseTracking(false);
+	
+	if (e->type() == QEvent::MouseMove && object == titleBar)
+		emit moved();
+	
 	if (e->type()==QEvent::ContextMenu && object == titleBar)
 	{
 		emit showTitleBarMenu();

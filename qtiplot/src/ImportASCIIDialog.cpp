@@ -212,11 +212,13 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_preview_table->setAttribute(Qt::WA_DeleteOnClose);
 #if defined(Q_WS_MAC)//displaying comments on Mac leads to a crash
     d_preview_table->showComments(false);
+	int height = d_preview_table->table()->horizontalHeader()->height();
+	d_preview_table->setMinimumHeight(4*height);
 #else
     d_preview_table->showComments();
-#endif
 	int height = d_preview_table->table()->horizontalHeader()->height();
 	d_preview_table->setMinimumHeight(2*height);
+#endif
 	main_layout->addWidget(d_preview_table);
 }
 
