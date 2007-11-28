@@ -210,7 +210,11 @@ void ImportASCIIDialog::initAdvancedOptions()
 
 	d_preview_table = new Table(ScriptingLangManager::newEnv((ApplicationWindow *)parent()), 30, 2, tr("Preview"), 0, 0);
 	d_preview_table->setAttribute(Qt::WA_DeleteOnClose);
-	d_preview_table->showComments(true);
+#if defined(Q_WS_MAC)//displaying comments on Mac leads to a crash
+    d_preview_table->showComments(false);
+#else
+    d_preview_table->showComments();
+#endif
 	int height = d_preview_table->table()->horizontalHeader()->height();
 	d_preview_table->setMinimumHeight(2*height);
 	main_layout->addWidget(d_preview_table);
@@ -327,11 +331,13 @@ void ImportASCIIDialog::preview()
     }
 
 	if (d_current_path.trimmed().isEmpty()){
-        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-                tr("Please select a file first!"));
 		d_preview_table->clear();
 		d_preview_table->resetHeader();
-		d_preview_table->showComments();
+		#if defined(Q_WS_MAC)//displaying comments on Mac leads to a crash
+            d_preview_table->showComments(false);
+        #else
+            d_preview_table->showComments();
+        #endif
 		if (!d_preview_table->isVisible())
 			d_preview_table->show();
         return;
