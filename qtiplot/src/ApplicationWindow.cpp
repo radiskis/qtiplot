@@ -4819,14 +4819,16 @@ void ApplicationWindow::exportGraph()
 	}
 	file.close();
 
-	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps")) {
+	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || 
+		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
 		if (plot3D)
 			plot3D->exportVector(file_name);
-		else if (plot2D)
-			plot2D->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
-	} else if (selected_filter.contains(".svg")) {
-		if (plot2D)
-			plot2D->exportSVG(file_name);
+		else if (plot2D){
+			if (selected_filter.contains(".svg"))
+				plot2D->exportSVG(file_name);	
+			else
+				plot2D->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
+		}
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++){
@@ -4964,14 +4966,16 @@ void ApplicationWindow::exportAllGraphs()
 		}
 		f.close();
 
-		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") || file_suffix.contains(".ps")) {
+		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") || 
+			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {
 			if (plot3D)
 				plot3D->exportVector(file_name);
-			else if (plot2D)
-				plot2D->exportVector(file_name, ied->resolution(), ied->color());
-		} else if (file_suffix.contains(".svg")) {
-			if (plot2D)
-				plot2D->exportSVG(file_name);
+			else if (plot2D){
+				if (file_suffix.contains(".svg"))
+					plot2D->exportSVG(file_name);
+				else
+					plot2D->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
+			}
 		} else {
 			QList<QByteArray> list = QImageWriter::supportedImageFormats();
 			for (int i=0; i<(int)list.count(); i++){
