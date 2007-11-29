@@ -15,7 +15,7 @@
   You can fully customize the script launchers by defining: a textual description
   that will be displayed in the destination menu, an icon, a shortcut key sequence and a tool tip.
   The <emphasis>Tool Tip Text</emphasis> is a short description that will be displayed near the launcher button
-  when you place the mouse on it. You can only assign unique shortcut key sequences to your custom launchers.
+  when you hover the mouse over it. You can only assign unique shortcut key sequences to your custom launchers.
 
   <figure id="fig-add-custom-action-dialog">
     <title>The &add-custom-action-cmd; dialog box.</title>

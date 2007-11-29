@@ -2003,6 +2003,8 @@ void Graph3D::exportVector(const QString& fileName)
         format = "EPS";
     else if (fileName.endsWith(".ps", Qt::CaseInsensitive))
         format = "PS";
+	else if (fileName.endsWith(".svg", Qt::CaseInsensitive))
+        format = "SVG";
 
     VectorWriter * gl2ps = (VectorWriter*)IO::outputHandler(format);
     if (gl2ps)
@@ -2018,7 +2020,8 @@ void Graph3D::exportToFile(const QString& fileName)
         return;
 	}
 
-	if (fileName.contains(".eps") || fileName.contains(".pdf") || fileName.contains(".ps")){
+	if (fileName.contains(".eps") || fileName.contains(".pdf") || 
+		fileName.contains(".ps") || fileName.contains(".svg")){
 		exportVector(fileName);
 		return;
 	} else {
