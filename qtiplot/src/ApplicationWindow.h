@@ -138,6 +138,7 @@ public:
 	//! \name User custom actions
 	//@{
 	void loadCustomActions();
+	void reloadCustomActions();
     void removeCustomAction(QAction *);
 	void addCustomAction(QAction *, const QString& parentName);
     QList<QAction *> customActionsList(){return d_user_actions;};

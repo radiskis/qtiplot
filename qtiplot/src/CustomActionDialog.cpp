@@ -44,6 +44,7 @@
 #include <QToolBar>
 #include <QMenu>
 #include <QImageReader>
+#include <QShortcut>
 #include <QMessageBox>
 
 CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
@@ -105,7 +106,7 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
     gl1->addWidget(toolBarBox, 7, 1);
     gl1->setRowStretch(8, 1);
 	gl1->setColumnStretch(1, 10);
-	
+
 	QHBoxLayout * bottomButtons = new QHBoxLayout();
 	bottomButtons->addStretch();
 	buttonAdd = new QPushButton(tr("&Add"));
@@ -129,6 +130,9 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 	mainLayout->addLayout(bottomButtons);
 
 	init();
+
+	QShortcut *accelRemove = new QShortcut(QKeySequence(Qt::Key_Delete), this);
+	connect(accelRemove, SIGNAL(activated()), this, SLOT(removeAction()));
 
 	connect(buttonAdd, SIGNAL(clicked()), this, SLOT(addAction()));
 	connect(buttonRemove, SIGNAL(clicked()), this, SLOT(removeAction()));
@@ -222,7 +226,8 @@ QAction* CustomActionDialog::addAction()
             }
         } else {
             foreach (QMenu *m, d_menus){
-                if (m->title() == menuBox->currentText()){
+                if (m->title().remove("&") == menuBox->currentText()){
+                    action->setStatusTip(m->objectName());
                     app->addCustomAction(action, m->objectName());
                     break;
                 }
@@ -261,10 +266,17 @@ bool CustomActionDialog::validUserInput()
         tr("Please provide a description for your custom action!"));
         textBox->setFocus();
         return false;
+    } else if (textBox->text().contains(".")){
+        QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
+        tr("Dot characters are not allowed in the description text!"));
+        textBox->setFocus();
+        textBox->setText(textBox->text().remove(".").simplified());
+        return false;
     }
 
+    QString text = textBox->text().remove(".").simplified();
     foreach(QAction *action, actions){
-        if(action->text() == textBox->text()){
+        if(action->text() == text){
             QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
             tr("You have already defined an action having description: %1 <br>Please provide a different description text!").arg(textBox->text()));
             textBox->setFocus();
@@ -320,7 +332,7 @@ bool CustomActionDialog::validUserInput()
 
 void CustomActionDialog::customizeAction(QAction *action)
 {
-	action->setText(textBox->text());
+	action->setText(textBox->text().remove(".").simplified());
     action->setData(QFileInfo(fileBox->text()).absoluteFilePath());
 
     QIcon icon = QIcon();
@@ -333,7 +345,7 @@ void CustomActionDialog::customizeAction(QAction *action)
     }
 
     if (!toolTipBox->text().isEmpty())
-        action->setToolTip(toolTipBox->text());
+        action->setToolTip(toolTipBox->text().simplified());
 
     if (!shortcutBox->text().isEmpty())
         action->setShortcut(shortcutBox->text().remove(QRegExp("\\s")));
@@ -349,7 +361,7 @@ void CustomActionDialog::removeAction()
         return;
 
     QString s = tr("Are you sure you want to remove this action?");
-    if (QMessageBox::Ok != QMessageBox::question(this, tr("QtiPlot") + " - " + tr("Remove Action"), s))
+    if (QMessageBox::Yes != QMessageBox::question(this, tr("QtiPlot") + " - " + tr("Remove Action"), s, QMessageBox::Yes, QMessageBox::Cancel))
         return;
 
     QAction *action = actions.at(row);

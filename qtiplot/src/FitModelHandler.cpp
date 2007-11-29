@@ -91,17 +91,6 @@ bool FitModelHandler::endElement(const QString & /* namespaceURI */,
      return true;
  }
 
- bool FitModelHandler::fatalError(const QXmlParseException &exception)
- {
-     QMessageBox::information(((ApplicationWindow *)d_fit->parent()), QObject::tr("QtiPlot Fit Model"),
-                              QObject::tr("Parse error at line %1, column %2:\n"
-                                          "%3")
-                              .arg(exception.lineNumber())
-                              .arg(exception.columnNumber())
-                              .arg(exception.message()));
-     return false;
- }
-
  QString FitModelHandler::errorString() const
  {
      return errorStr;

@@ -44,7 +44,7 @@ public:
     bool endElement(const QString &namespaceURI, const QString &localName,
                      const QString &qName);
     bool characters(const QString &str);
-    bool fatalError(const QXmlParseException &exception);
+    bool fatalError(const QXmlParseException &){return false;};
     QString errorString() const;
 
 private:

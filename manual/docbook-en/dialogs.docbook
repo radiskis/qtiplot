@@ -7,6 +7,35 @@
 <title>The Dialogs</title>
 
 <!-- ************************************************** -->
+<!--		Add Custom Script Action				-->
+<!-- ************************************************** -->
+<sect1 id="custom-action-dialog">
+  <title>Add Custom Action</title>
+  This dialog helps you define new Python script launchers that will be added to menus or tool bars in QtiPlot.
+  You can fully customize the script launchers by defining: a textual description
+  that will be displayed in the destination menu, an icon, a shortcut key sequence and a tool tip.
+  The <emphasis>Tool Tip Text</emphasis> is a short description that will be displayed near the launcher button
+  when you place the mouse on it. You can only assign unique shortcut key sequences to your custom launchers.
+
+  <figure id="fig-add-custom-action-dialog">
+    <title>The &add-custom-action-cmd; dialog box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-custom-action.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>The <emphasis>Script File</emphasis> is the path to the Python script that will be executed when you click the launcher.
+When you click the <emphasis>Add</emphasis> button all the settings for the new launcher are saved to an XML file
+in the directory specified in the <emphasis>Folder</emphasis> box. On start-up QtiPlot parses all XML files in this
+folder and creates the corresponding menu items or toolbar buttons.
+When you press the <emphasis>Remove</emphasis> button, the launcher selected in the left side list
+of the dialog is removed from QtiPlot menus/tool bars and the corresponding XML file is deleted from
+the hard disk.</para>
+</sect1>
+
+<!-- ************************************************** -->
 <!--		Errorbars				-->
 <!-- ************************************************** -->
 <sect1 id="add-error-bars-dialog">
@@ -51,35 +80,6 @@
       </imageobject>
     </mediaobject>
   </figure>
-</sect1>
-
-<!-- ************************************************** -->
-<!--		Add Custom Script Action				-->
-<!-- ************************************************** -->
-<sect1 id="custom-action-dialog">
-  <title>Add Custom Action</title>
-  This dialog helps you define new Python script launchers that will be added to menus or tool bars in QtiPlot. 
-  You can fully customize the script launchers by defining: a textual description 
-  that will be displayed in the destination menu, an icon, a shortcut key sequence and a tool tip.
-  The <emphasis>Tool Tip Text</emphasis> is a short description that will be displayed near the launcher button 
-  when you place the mouse on it. You can only assign unique shortcut key sequences to your custom launchers.
-  
-  <figure id="fig-add-custom-action-dialog">
-    <title>The &add-custom-action-cmd; dialog box.</title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics/add-custom-action.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-  
-<para>The <emphasis>Script File</emphasis> is the path to the Python script that will be executed when you click the launcher.
-When you click the <emphasis>Add</emphasis> button all the settings for the new launcher are saved to an XML file
-in the directory specified in the <emphasis>Folder</emphasis> box. On start-up QtiPlot parses all XML files in this
-folder and creates the corresponding menu items or toolbar buttons. 
-When you press the <emphasis>Remove</emphasis> button, the launcher selected in the left side list 
-of the dialog is removed from QtiPlot menus/tool bars and the corresponding XML file is deleted from
-the hard disk.</para>
 </sect1>
 
 <!-- ************************************************** -->
