@@ -221,7 +221,7 @@ void Graph3D::initPlot()
 
 #if defined(Q_WS_MAC)
 	connect(this, SIGNAL(moved()), this, SLOT(moveSurfacePlot()));
-#endif	
+#endif
 	connect(sp,SIGNAL(rotationChanged(double, double, double)),this,SLOT(rotationChanged(double, double, double)));
 	connect(sp,SIGNAL(zoomChanged(double)),this,SLOT(zoomChanged(double)));
 	connect(sp,SIGNAL(scaleChanged(double, double, double)),this,SLOT(scaleChanged(double, double, double)));
@@ -1636,9 +1636,9 @@ void Graph3D::scaleFonts(double factor)
 
 void Graph3D::moveSurfacePlot()
 {
-	sp->makeCurrent();
-	sp->move(QPoint(0, 0));
-	sp->updateGL();
+    // hack used to solve strange behavior of SurfacePlot on Mac OS X
+	sp->hide();
+	sp->show();
 }
 
 void Graph3D::resizeEvent ( QResizeEvent *e)
@@ -2020,7 +2020,7 @@ void Graph3D::exportToFile(const QString& fileName)
         return;
 	}
 
-	if (fileName.contains(".eps") || fileName.contains(".pdf") || 
+	if (fileName.contains(".eps") || fileName.contains(".pdf") ||
 		fileName.contains(".ps") || fileName.contains(".svg")){
 		exportVector(fileName);
 		return;
