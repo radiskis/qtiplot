@@ -641,6 +641,7 @@ void FitDialog::saveUserFunction()
                                 app->fitModelsPath + "/" + name, filter);
 		if (!fn.isEmpty()){
             QFileInfo fi(fn);
+            app->fitModelsPath = fi.dir().absolutePath();
             QString baseName = fi.fileName();
             if (!baseName.contains("."))
                 fn.append(".fit");
@@ -671,12 +672,15 @@ void FitDialog::saveUserFunction()
 
 void FitDialog::removeUserFunction()
 {
+    QStringList lst = userFunctionNames();
+    if (lst.isEmpty())
+        return;
+
     QString s = tr("Are you sure you want to remove fit model file:\n %1 ?").arg(d_current_fit->fileName());
-    if (QMessageBox::Ok != QMessageBox::question (this, tr("QtiPlot") + " - " + tr("Remove Fit Model"), s))
+    if (QMessageBox::Yes != QMessageBox::question (this, tr("QtiPlot") + " - " + tr("Remove Fit Model"), s, QMessageBox::Yes, QMessageBox::Cancel))
         return;
 
 	QString name = funcBox->currentItem()->text();
-	QStringList lst = userFunctionNames();
 	if (lst.contains(name)){
 		explainBox->setText(QString());
 
@@ -996,7 +1000,7 @@ void FitDialog::addFunctionName()
 void FitDialog::accept()
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	
+
 	QString curve = boxCurve->currentText();
 	QStringList curvesList = d_graph->curvesList();
 	if (curvesList.contains(curve) <= 0){
@@ -1027,7 +1031,7 @@ void FitDialog::accept()
 		}
 	} else
 		n = rows;
-	
+
 	QStringList parameters = QStringList();
 	MyParser parser;
 	bool error = false;
@@ -1037,7 +1041,7 @@ void FitDialog::accept()
 		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
 			for (int i=0; i<rows; i++){
-                QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);				
+                QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
 				if (!cb->isChecked()){
 					paramsInit[j] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
@@ -1048,7 +1052,7 @@ void FitDialog::accept()
 					d_current_fit->setParameterRange(j, left, right);
 					j++;
 				} else {
-					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value(); 
+					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					formula.replace(boxParams->item(i, 0)->text(), QString::number(val, 'e', app->fit_output_precision));
 				}
 			}
@@ -1084,7 +1088,7 @@ void FitDialog::accept()
 			d_current_fit->setParametersList(parameters);
 			d_current_fit->setFormula(formula);
 		}
-		
+
 		d_current_fit->setInitialGuesses(paramsInit);
 
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
@@ -1421,9 +1425,9 @@ void FitDialog::showParameterRange(bool on)
 }
 
 QString FitDialog::parseFormula(const QString& s)
-{        
+{
 	QString formula = s;
-	
+
 	QStringList lst = userFunctionNames();
 	for (int i=0; i<lst.count(); i++){
 		if (formula.contains(lst[i]))

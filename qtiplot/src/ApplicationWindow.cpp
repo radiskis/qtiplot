@@ -1055,6 +1055,8 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->addAction(actionGoToRow);
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionConvertTable);
+
+    reloadCustomActions();
 }
 
 void ApplicationWindow::plotDataMenuAboutToShow()
@@ -1072,6 +1074,8 @@ void ApplicationWindow::plotDataMenuAboutToShow()
 	plotDataMenu->addAction(actionDrawPoints);
 	plotDataMenu->addAction(btnMovePoints);
 	plotDataMenu->addAction(btnRemovePoints);
+
+    reloadCustomActions();
 }
 
 void ApplicationWindow::plotMenuAboutToShow()
@@ -1112,6 +1116,8 @@ void ApplicationWindow::plotMenuAboutToShow()
 	plot3D->addAction(actionPlot3DBars);
 	plot3D->addAction(actionPlot3DScatter);
 	plot3D->addAction(actionPlot3DTrajectory);
+
+    reloadCustomActions();
 }
 
 void ApplicationWindow::customMenu(QWidget* w)
@@ -1216,15 +1222,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 	windowsMenuAboutToShow();
 	menuBar()->insertItem(tr("&Help"), help );
 
-	foreach(QAction *a, d_user_actions){
-		if (!a->statusTip().isEmpty()){
-			QList<QMenu *> menus = customizableMenusList();
-    		foreach (QMenu *m, menus){
-        		if (m->objectName() == a->statusTip())
-           			m->addAction(a);
-        	}
-		}
-	}
+	reloadCustomActions();
 }
 
 void ApplicationWindow::disableActions()
@@ -1286,7 +1284,7 @@ void ApplicationWindow::customColumnActions()
 }
 
 void ApplicationWindow::customToolBars(QWidget* w)
-{	
+{
     disableToolbars();
 	if (!w)
         return;
@@ -7953,6 +7951,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionShowFitDialog);
 	}
+    reloadCustomActions();
 }
 
 void ApplicationWindow::matrixMenuAboutToShow()
@@ -8002,6 +8001,8 @@ void ApplicationWindow::matrixMenuAboutToShow()
     actionMatrixGrayScale->setChecked(m->colorMapType() == Matrix::GrayScale);
 	actionMatrixRainbowScale->setChecked(m->colorMapType() == Matrix::Rainbow);
 	actionMatrixCustomScale->setChecked(m->colorMapType() == Matrix::Custom);
+
+    reloadCustomActions();
 }
 
 void ApplicationWindow::fileMenuAboutToShow()
@@ -8052,6 +8053,8 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->addAction(actionLoad);
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionCloseAllWindows);
+
+	reloadCustomActions();
 }
 
 void ApplicationWindow::windowsMenuAboutToShow()
@@ -8129,6 +8132,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 		windowsMenu->insertSeparator();
 		windowsMenu->insertItem(tr("More windows..."),this, SLOT(showMoreWindows()));
 	}
+    reloadCustomActions();
 }
 
 void ApplicationWindow::showMarkerPopupMenu()
@@ -8221,7 +8225,7 @@ void ApplicationWindow::modifiedProject()
 {
 	if (saved == false)
 		return;
-	
+
 	actionSaveProject->setEnabled(true);
 	saved = false;
 }
@@ -14811,6 +14815,22 @@ void ApplicationWindow::addCustomAction(QAction *action, const QString& parentNa
             return;
         }
     }
+}
+
+void ApplicationWindow::reloadCustomActions()
+{
+    QList<QMenu *> menus = customizableMenusList();
+	foreach(QAction *a, d_user_actions){
+		if (!a->statusTip().isEmpty()){
+    		foreach (QMenu *m, menus){
+        		if (m->objectName() == a->statusTip()){
+        		    QList<QAction *> lst = m->actions();
+        		    if (!lst.contains(a))
+                        m->addAction(a);
+        		}
+        	}
+		}
+	}
 }
 
 void ApplicationWindow::removeCustomAction(QAction *action)
