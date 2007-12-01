@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ru">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -3954,7 +3955,7 @@
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13865"/>
         <source>Matrix</source>
-        <translation>Matrix</translation>
+        <translation>Матрица</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="1198"/>
@@ -6114,77 +6115,77 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14635"/>
         <source>This feature is only available to users having subscribed for a binaries maintenance contract!</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта опция доступна только для пользователей подписанных на поддежку!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14636"/>
         <source>Please visit the following web page for more details:</source>
-        <translation type="unfinished"></translation>
+        <translation>Для выяснения подробностей посетите веб-страницу:</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11385"/>
         <source>&amp;Forward FFT</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Прямое БПФ</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11388"/>
         <source>&amp;Inverse FFT</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Обратное БПФ</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="856"/>
         <source>Format</source>
-        <translation type="unfinished">Формат</translation>
+        <translation>Формат</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11718"/>
         <source>Add &amp;Custom Script Action...</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить пользовательское &amp;действие...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11600"/>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Полужирный</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11601"/>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>Курсив</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11576"/>
         <source>Superscript</source>
-        <translation type="unfinished"></translation>
+        <translation>Верхний индекс</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11580"/>
         <source>Subscript</source>
-        <translation type="unfinished"></translation>
+        <translation>Нижний индекс</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11602"/>
         <source>Underline (Ctrl+U)</source>
-        <translation type="unfinished"></translation>
+        <translation>Подчёркнутый</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11603"/>
         <source>Ctrl+U</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+U</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11604"/>
         <source>Greek</source>
-        <translation type="unfinished"></translation>
+        <translation>Греческие</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14863"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14864"/>
         <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot скомпилирован без поддерки сценариев на языке Python!</translation>
     </message>
 </context>
 <context>
@@ -7507,7 +7508,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/Convolution.cpp" line="42"/>
         <source>Convolution</source>
-        <translation>Изогнутость</translation>
+        <translation>Свёртка</translation>
     </message>
     <message>
         <location filename="../src/Convolution.cpp" line="117"/>
@@ -7555,7 +7556,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/Correlation.cpp" line="42"/>
         <source>Correlation</source>
-        <translation>Взаимосвязь</translation>
+        <translation>Корреляция</translation>
     </message>
     <message>
         <location filename="../src/Correlation.cpp" line="100"/>
@@ -7774,157 +7775,157 @@ The following special codes can be used:
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="394"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="53"/>
         <source>Add Custom Action</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить действие</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="65"/>
         <source>Folder</source>
-        <translation type="unfinished">Папка</translation>
+        <translation>Папка</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="69"/>
         <source>Choose &amp;Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать &amp;папку</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="72"/>
         <source>Script File</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл сценария</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="76"/>
         <source>Choose &amp;Script</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать &amp;сценарий</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="79"/>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Значок</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="82"/>
         <source>Choose &amp;Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать &amp;значок</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="85"/>
         <source>Text</source>
-        <translation type="unfinished">Текст</translation>
+        <translation>Текст</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="89"/>
         <source>Tool Tip Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Всплывающая подсказка</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="93"/>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Комбинация клавиш</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="97"/>
         <source>&amp;Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Меню</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="102"/>
         <source>&amp;Tool Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Панель инструментов</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="112"/>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Добавить</translation>
+        <translation>&amp;Добавить</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="116"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished">&amp;Удалить</translation>
+        <translation>&amp;Удалить</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="120"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрыть</translation>
+        <translation>&amp;Закрыть</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="323"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="266"/>
         <source>Please provide a description for your custom action!</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста, дайте описание для вашего действия!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="271"/>
         <source>Dot characters are not allowed in the description text!</source>
-        <translation type="unfinished"></translation>
+        <translation>Символ точки недопустим в описании!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="281"/>
         <source>You have already defined an action having description: %1 &lt;br&gt;Please provide a different description text!</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы уже определили действие: %1 &lt;br&gt;Пожалуйста, дайте другое описание!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="291"/>
         <source>The file you have specified doesn&apos;t exist, please choose a valid script file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Указанный файл не существует, пожалуйста, выберите действительный файл сценария!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="301"/>
         <source>The image file you have specified doesn&apos;t exist or can&apos;t be read, please choose another file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Указанное изображение не существует или не может быть прочитано, пожалуйста, выберите другой файл!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="325"/>
         <source>Please provide a different key sequence! The following shortcut key sequences are already assigned:</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста, назначте другое сочетание клавиш! Данное сочетание уже присвоено:</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="363"/>
         <source>Are you sure you want to remove this action?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы уверены, что хотите удалить это действие?</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="364"/>
         <source>Remove Action</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить действие</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="394"/>
         <source>File Save Error</source>
-        <translation type="unfinished">Ошибка сохранения файла</translation>
+        <translation>Ошибка сохранения файла</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="395"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
-        <translation type="unfinished">Невозможно выполнить запись в файл: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Пожалуйста, проверьте, есть ли у Вас права на запись в данное место!</translation>
+        <translation>Невозможно выполнить запись в файл: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Пожалуйста, проверьте, есть ли у Вас права на запись в данное место!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="420"/>
         <source>Images</source>
-        <translation type="unfinished">Изображения</translation>
+        <translation>Изображения</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="428"/>
         <source>QtiPlot - Load icon from file</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Загрузить значок из файла</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="435"/>
         <source>Choose script file</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать файл сценария</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="444"/>
         <source>Choose the custom actions folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать папку пользовательских действий</translation>
     </message>
 </context>
 <context>
@@ -8495,7 +8496,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/FFTDialog.cpp" line="271"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/FFTDialog.cpp" line="272"/>
@@ -8742,7 +8743,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/FindDialog.cpp" line="87"/>
         <source>Case &amp;Sensitive</source>
-        <translation>Ч&amp;увствительный к регистру</translation>
+        <translation>С &amp;учётом регистра</translation>
     </message>
     <message>
         <location filename="../src/FindDialog.cpp" line="105"/>
@@ -10389,7 +10390,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="193"/>
         <source>&amp;Preview Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Просмотр</translation>
     </message>
 </context>
 <context>
@@ -11341,12 +11342,12 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/Matrix.cpp" line="1032"/>
         <source>Please provide a valid file name!</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="895"/>
         <source>File format not handled, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
 </context>
 <context>
@@ -13427,12 +13428,12 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="516"/>
         <source>The file is not a QtiPlot custom action file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Этот файл не является файлом действия QtiPlot.</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="523"/>
         <source>The file is not an QtiPlot custom action version 1.0 file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Этот файл не является файлом версии 1.0 действия QtiPlot.</translation>
     </message>
 </context>
 <context>
