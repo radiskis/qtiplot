@@ -1646,8 +1646,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     btnEditCurve->show();
 
     int curveType = item->plotItemType();
-    if (curveType == Graph::Pie)
-    {
+    if (curveType == Graph::Pie){
         QwtPieCurve *pie = (QwtPieCurve*)i;
         boxRadius->setValue(pie->ray());
         boxPiePattern->setPattern(pie->pattern());
@@ -1662,8 +1661,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxXAxis->setCurrentItem(i->xAxis()-2);
     boxYAxis->setCurrentItem(i->yAxis());
 
-    if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-    {
+    if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
         btnEditCurve->hide();
         Spectrogram *sp = (Spectrogram *)i;
 
@@ -1895,14 +1893,11 @@ bool PlotDialog::acceptParams()
     if (!graph)
         return false;
 
-	if (privateTabWidget->currentPage() == axesPage)
-	{
+	if (privateTabWidget->currentPage() == axesPage){
 		plotItem->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
 		graph->setAutoScale();
 		return true;
-	}
-	else if (privateTabWidget->currentPage() == spectrogramPage)
-  	{
+	} else if (privateTabWidget->currentPage() == spectrogramPage){
   		Spectrogram *sp = (Spectrogram *)plotItem;
   	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
   	    	return false;
@@ -1917,17 +1912,13 @@ bool PlotDialog::acceptParams()
   	   sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
   	   sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, imageGroupBox->isChecked());
 
-  	   if (grayScaleBox->isChecked())
-	   {
+  	   if (grayScaleBox->isChecked()){
 		   sp->setGrayScale();
 	   	   colorMapEditor->setColorMap(QwtLinearColorMap(Qt::black, Qt::white));
-  	   }
-  	   else if (defaultScaleBox->isChecked())
-  	   {
+  	   } else if (defaultScaleBox->isChecked()){
 	   	   sp->setDefaultColorMap();
 		   colorMapEditor->setColorMap(Spectrogram::defaultColorMap());
-	   }
-  	   else
+	   } else
 	   	   sp->setCustomColorMap(colorMapEditor->colorMap());
 
   	   sp->showColorScale((QwtPlot::Axis)colorScaleBox->currentItem(), axisScaleBox->isChecked());
@@ -1936,32 +1927,26 @@ bool PlotDialog::acceptParams()
   	   //Update axes page
   	   boxXAxis->setCurrentItem(sp->xAxis()-2);
   	   boxYAxis->setCurrentItem(sp->yAxis());
-  	}
-	else if (privateTabWidget->currentPage()==linePage)
-	{
+  	} else if (privateTabWidget->currentPage() == linePage){
 		int index = item->plotItemIndex();
 		graph->setCurveStyle(index, boxConnect->currentIndex());
 		QBrush br = QBrush(boxAreaColor->color(), boxPattern->getSelectedPattern());
 		if (!fillGroupBox->isChecked())
 			br = QBrush();
 		graph->setCurveBrush(index, br);
-		QPen pen = QPen(boxLineColor->color(),boxLineWidth->value(),Graph::getPenStyle(boxLineStyle->currentIndex()));
+		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(), Graph::getPenStyle(boxLineStyle->currentIndex()));
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setPen(pen);
-	}
-	else if (privateTabWidget->currentPage()==symbolPage)
-	{
+	} else if (privateTabWidget->currentPage() == symbolPage){
 		int size = 2*boxSymbolSize->value()+1;
 		QBrush br = QBrush(boxFillColor->color(), Qt::SolidPattern);
 		if (!boxFillSymbol->isChecked())
 			br = QBrush();
-		QPen pen = QPen(boxSymbolColor->color(),boxPenWidth->value(),Qt::SolidLine);
+		QPen pen = QPen(boxSymbolColor->color(), boxPenWidth->value(), Qt::SolidLine);
 		QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setSymbol(s);
-	}
-	else if (privateTabWidget->currentPage()==histogramPage)
-	{
+	} else if (privateTabWidget->currentPage() == histogramPage){
         QwtHistogram *h = (QwtHistogram *)plotItem;
 		if (!h)
 			return false;
@@ -1979,10 +1964,9 @@ bool PlotDialog::acceptParams()
 			graph->notifyChanges();
 			return true;
 		}
-	} else if (privateTabWidget->currentPage()==spacingPage)
+	} else if (privateTabWidget->currentPage() == spacingPage)
 		graph->setBarsGap(item->plotItemIndex(), gapBox->value(), offsetBox->value());
-	else if (privateTabWidget->currentPage() == vectPage)
-	{
+	else if (privateTabWidget->currentPage() == vectPage){
 		int index = item->plotItemIndex();
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		if (!app)
@@ -2003,46 +1987,35 @@ bool PlotDialog::acceptParams()
 		QString table = t[0];
 
 		QStringList cols = t[1].split(",", QString::SkipEmptyParts);
-		if (graph->curveType(index) == Graph::VectXYXY)
-		{
+		if (graph->curveType(index) == Graph::VectXYXY){
 			xEndCol = xEndCol.remove(table + "_") + "(X)";
 			yEndCol = yEndCol.remove(table + "_") + "(Y)";
-		}
-		else
-		{
+		} else {
 			xEndCol = xEndCol.remove(table + "_") + "(A)";
 			yEndCol = yEndCol.remove(table + "_") + "(M)";
 		}
 
-		if (cols[2] != xEndCol || cols[3] != yEndCol)
-		{
+		if (cols[2] != xEndCol || cols[3] != yEndCol){
 			cols[2] = xEndCol;
 			cols[3] = yEndCol;
 			item->setText(0, table + ": " + cols.join(","));
 		}
 		return true;
-	}
-	else if (privateTabWidget->currentPage() == errorsPage)
-	{
+	} else if (privateTabWidget->currentPage() == errorsPage){
 		graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->currentText().toInt(),
 				capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
 				throughBox->isChecked());
         return true;
-	}
-    else if (privateTabWidget->currentPage() == piePage)
-	{
+	} else if (privateTabWidget->currentPage() == piePage){
 		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
 		pie->setPen(QPen(boxPieLineColor->color(), boxPieLineWidth->value(),
                     Graph::getPenStyle(boxPieLineStyle->currentIndex())));
         pie->setRay(boxRadius->value());
         pie->setBrushStyle(boxPiePattern->getSelectedPattern());
         pie->setFirstColor(boxFirstColor->currentIndex());
-	}
-	else if (privateTabWidget->currentPage() == percentilePage)
-	{
+	} else if (privateTabWidget->currentPage() == percentilePage){
 		BoxCurve *b = (BoxCurve*)plotItem;
-		if (b)
-		{
+		if (b){
 			b->setMaxStyle(boxMaxStyle->selectedSymbol());
 			b->setP99Style(box99Style->selectedSymbol());
 			b->setMeanStyle(boxMeanStyle->selectedSymbol());
@@ -2057,12 +2030,9 @@ bool PlotDialog::acceptParams()
                                     boxEdgeWidth->value(),Qt::SolidLine), QSize(size, size));
 			b->setSymbol(s);
 		}
-	}
-	else if (privateTabWidget->currentPage() == boxPage)
-	{
+	} else if (privateTabWidget->currentPage() == boxPage){
 		BoxCurve *b = (BoxCurve*)plotItem;
-		if (b)
-		{
+		if (b){
 			b->setBoxWidth(boxWidth->value());
 			b->setBoxStyle(boxType->currentIndex());
 			if (boxCnt->isVisible())
