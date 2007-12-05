@@ -14,7 +14,7 @@ DEFINES         += SCRIPTING_DIALOG
 #DEFINES         += QTIPLOT_DEMO
 
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
-#RESTRICTED_MODULES += FFT2D
+RESTRICTED_MODULES += FFT2D
 #RESTRICTED_MODULES += EMF
 
 CONFIG          += release

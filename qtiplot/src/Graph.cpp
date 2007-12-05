@@ -4319,25 +4319,28 @@ void Graph::setCurveStyle(int index, int s)
 	if (!c)
 		return;
 
-	if (s == 5)//ancient spline style in Qwt 4.2.0
-	{
+	c->setCurveAttribute(QwtPlotCurve::Fitted, false);
+	c->setCurveAttribute(QwtPlotCurve::Inverted, false);
+	
+	if (s == 5){//ancient spline style in Qwt 4.2.0
 		s = QwtPlotCurve::Lines;
 		c->setCurveAttribute(QwtPlotCurve::Fitted, true);
 		c_type[index] = Spline;
-	}
-	else if (s == QwtPlotCurve::Lines)
-		c->setCurveAttribute(QwtPlotCurve::Fitted, false);
-	else if (s == 6)// Vertical Steps
-	{
+	} else if (s == 6){// Vertical Steps
 		s = QwtPlotCurve::Steps;
 		c->setCurveAttribute(QwtPlotCurve::Inverted, true);
 		c_type[index] = VerticalSteps;
-	}
-	else if (s == QwtPlotCurve::Steps)// Horizontal Steps
-	{
-		c->setCurveAttribute(QwtPlotCurve::Inverted, false);
+	} else if (s == QwtPlotCurve::Steps)// Horizontal Steps
 		c_type[index] = HorizontalSteps;
-	}
+	else if (s == QwtPlotCurve::Sticks)
+		c_type[index] = VerticalDropLines;
+	else {//QwtPlotCurve::Lines || QwtPlotCurve::Dots
+		if (c->symbol().style() != QwtSymbol::NoSymbol)
+			c_type[index] = LineSymbols;
+		else 
+			c_type[index] = Line;
+	} 
+	
 	c->setStyle((QwtPlotCurve::CurveStyle)s);
 }
 

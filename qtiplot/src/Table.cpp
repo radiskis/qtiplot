@@ -948,10 +948,10 @@ void Table::addCol(PlotDesignation pd)
 	d_table->ensureCellVisible ( 0, cols );
 
 	comments << QString();
-	commands<<"";
-	colTypes<<Numeric;
-	col_format<<"0/" + QString::number(d_numeric_precision);
-	col_label<< QString::number(max+1);
+	commands << "";
+	colTypes << Numeric;
+	col_format << "0/" + QString::number(d_numeric_precision);
+	col_label << QString::number(max+1);
 	col_plot_type << pd;
 	d_read_only << false;
 
@@ -2853,7 +2853,7 @@ QString Table::newCaption()
 // TODO: This should probably be changed to restore(QString * spec)
 void Table::restore(QString& spec)
 {
-	int i, j, row;
+	int row;
 	int cols=d_table->numCols();
 	int rows=d_table->numRows();
 
@@ -2873,13 +2873,13 @@ void Table::restore(QString& spec)
 	if (rows != r)
 		d_table->setNumRows(r);
 
-	int c=list[2].toInt();
+	int c = list[2].toInt();
 	if (cols != c)
 		d_table->setNumCols(c);
-
+	
 	//clear all cells
-	for (i=0; i<r; i++){
-		for (j=0; j<c; j++)
+	for (int i=0; i<r; i++){
+		for (int j=0; j<c; j++)
 			d_table->setText(i, j, "");
 	}
 
@@ -2897,13 +2897,13 @@ void Table::restore(QString& spec)
 		list.replaceInStrings("[xEr]","");
 		list.replaceInStrings("[yEr]","");
 
-		for (j=0;j<c;j++){
+		for (int j=0; j<c; j++){
 			if (!list.contains(col_label[j]))
 				emit changedColHeader(newCaption + "_"+col_label[j], newCaption+"_"+list[j]);
 		}
 
 		if (c<cols){
-			for (j=0;j<c;j++){
+			for (int j=0; j<c; j++){
 				if (!list.contains(col_label[j]))
 					emit removedCol(oldCaption + "_" + col_label[j]);
 			}
@@ -2918,8 +2918,7 @@ void Table::restore(QString& spec)
 
 	s = t.readLine();
 	list = s.split("\t");
-	if (list[0] == "com") //commands line
-	{
+	if (list[0] == "com"){ //commands line
 		list.remove(list.first());
 		if (list != commands)
 			commands = list;
@@ -2943,7 +2942,7 @@ void Table::restore(QString& spec)
 	col_format.clear();
 	if (s.contains ("ColType")){
 		list.remove(list.first());
-		for (i=0; i<list.count(); i++){
+		for (int i=0; i<list.count(); i++){
 			colTypes << Numeric;
 			col_format << "0/16";
 
@@ -2955,7 +2954,7 @@ void Table::restore(QString& spec)
 		}
 	} else {//if fileVersion < 65 set table values
 		row = list[0].toInt();
-		for (j=0; j<cols; j++)
+		for (int j=0; j<cols; j++)
 			d_table->setText(row, j, list[j+1]);
 	}
 
@@ -2963,7 +2962,7 @@ void Table::restore(QString& spec)
 	list = s.split("\t");
 	if (s.contains ("ReadOnlyColumn")){
 		list.remove(list.first());
-		for (i=0; i<cols; i++)
+		for (int i=0; i<c; i++)
 			d_read_only[i] = (list[i] == "1")?true:false;
 	}
 
@@ -2989,13 +2988,13 @@ void Table::restore(QString& spec)
 	while (!t.atEnd () && s != "</data>"){
 		list = s.split("\t");
 		row = list[0].toInt();
-		for (j=0; j<c; j++)
+		for (int j=0; j<c; j++)
 			d_table->setText(row, j, list[j+1]);
 
 		s = t.readLine();
 	}
 
-	for (j=0; j<c; j++)
+	for (int j=0; j<c; j++)
 		emit modifiedData(this, colName(j));
 }
 
