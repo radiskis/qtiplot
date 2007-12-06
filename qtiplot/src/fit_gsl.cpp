@@ -503,21 +503,18 @@ int lorentz_multi_peak_f (const gsl_vector * x, void *params, gsl_vector * f)
 	double offset = gsl_vector_get (x, p-1);
 
 	size_t i,j;
-	for (i = 0; i < peaks; i++)
-	{
+	for (i = 0; i < peaks; i++){
 		a[i] = gsl_vector_get(x, 3*i);
 		xc[i] = gsl_vector_get(x, 3*i+1);
 		w[i] = gsl_vector_get(x, 3*i+2);
 	}
-	for (i = 0; i < n; i++)
-	{
+	for (i = 0; i < n; i++){
 		double res = 0;
-		for (j = 0; j < peaks; j++)
-		{
+		for (j = 0; j < peaks; j++){
 			double diff=X[i]-xc[j];
-			res+= a[j]*w[j]/(4*diff*diff+w[j]*w[j]);
+			res += a[j]*w[j]/(4*diff*diff+w[j]*w[j]);
 		}
-		gsl_vector_set(f, i, (res + offset - Y[i])/sigma[i]);
+		gsl_vector_set(f, i, (M_2_PI*res + offset - Y[i])/sigma[i]);
 	}
 	delete[] a;
 	delete[] xc;
@@ -541,22 +538,19 @@ double lorentz_multi_peak_d (const gsl_vector * x, void *params)
 
 	size_t i,j;
 	double val=0,t;
-	for (i = 0; i < peaks; i++)
-	{
+	for (i = 0; i < peaks; i++){
 		a[i] = gsl_vector_get(x, 3*i);
 		xc[i] = gsl_vector_get(x, 3*i+1);
 		w[i] = gsl_vector_get(x, 3*i+2);
 	}
-	for (i = 0; i < n; i++)
-	{
+	for (i = 0; i < n; i++){
 		double res = 0;
-		for (j = 0; j < peaks; j++)
-		{
-			double diff=X[i]-xc[j];
-			res+= a[j]*w[j]/(4*diff*diff+w[j]*w[j]);
+		for (j = 0; j < peaks; j++){
+			double diff = X[i]-xc[j];
+			res += a[j]*w[j]/(4*diff*diff+w[j]*w[j]);
 		}
-		t=(res+offset-Y[i])/sigma[i];
-		val+=t*t;
+		t = (M_2_PI*res + offset - Y[i])/sigma[i];
+		val += t*t;
 	}
 	delete[] a;
 	delete[] xc;
@@ -577,25 +571,24 @@ int lorentz_multi_peak_df (const gsl_vector * x, void *params, gsl_matrix * J)
 	double *w = new double[peaks];
 
 	size_t i,j;
-	for (i = 0; i<peaks; i++)
-	{
+	for (i = 0; i<peaks; i++){
 		a[i] = gsl_vector_get (x, 3*i);
 		xc[i] = gsl_vector_get (x, 3*i+1);
 		w[i] = gsl_vector_get (x, 3*i+2);
 	}
-	for (i = 0; i<n; i++)
-	{
+	for (i = 0; i<n; i++){
 		double s = sigma[i];
-		for (j = 0; j<peaks; j++)
-		{
+		for (j = 0; j<peaks; j++){
 			double diff = X[i]-xc[j];
+			double diff2 = diff*diff;
 			double w2 = w[j]*w[j];
-			double num = 1.0/(4*diff*diff+w2);
-			double den = 4*diff*diff-w2;
+			double num = 1.0/(4*diff2+w2);
+			double num2 = num*num;
+			double den = 4*diff2-w2;
 
-			gsl_matrix_set (J, i, 3*j, w[j]*num/s);
-			gsl_matrix_set (J, i, 3*j+1, 8*diff*a[j]*w[j]*num*sqrt(num)/s);
-			gsl_matrix_set (J, i, 3*j+2, den*a[j]*num*num/s);
+			gsl_matrix_set (J, i, 3*j, M_2_PI*w[j]*num/s);
+			gsl_matrix_set (J, i, 3*j+1, M_2_PI*8*diff*a[j]*w[j]*num2/s);
+			gsl_matrix_set (J, i, 3*j+2, M_2_PI*den*a[j]*num2/s);
 		}
 		gsl_matrix_set (J, i, p-1, 1.0/s);
 	}
