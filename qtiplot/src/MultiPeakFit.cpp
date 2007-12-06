@@ -183,7 +183,7 @@ void MultiPeakFit::guessInitialValues()
 	for (int i = 0; i < d_n; i++)
 		temp[i] = fabs(d_y[i]);
 	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
-		
+
 	double offset, area;
 	if (imax_temp == imax)
 		offset = min_out;
@@ -192,12 +192,12 @@ void MultiPeakFit::guessInitialValues()
 
 	double xc = d_x[imax_temp];
 	double width = 2*gsl_stats_sd(d_x, 1, d_n);
-	
+
 	if (d_profile == Lorentz)
 		area = M_2_PI*width*fabs(max_out - min_out);
 	else
-		area = sqrt(M_2_PI)*fabs(max_out - min_out);
-	
+		area = sqrt(M_PI_2)*width*fabs(max_out - min_out);
+
 	gsl_vector_set(d_param_init, 0, area);
 	gsl_vector_set(d_param_init, 1, xc);
 	gsl_vector_set(d_param_init, 2, width);
