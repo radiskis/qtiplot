@@ -179,31 +179,35 @@ void MultiPeakFit::guessInitialValues()
 	double min_out = d_y[imin];
 	double max_out = d_y[imax];
 
-	if (d_profile == Gauss)
-		gsl_vector_set(d_param_init, 0, sqrt(M_2_PI)*fabs(max_out - min_out));
-	else if (d_profile == Lorentz)
-		gsl_vector_set(d_param_init, 0, 1.0);
-
 	double temp[d_n];
 	for (int i = 0; i < d_n; i++)
 		temp[i] = fabs(d_y[i]);
 	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
-
-	gsl_vector_set(d_param_init, 1, d_x[imax_temp]);
-	gsl_vector_set(d_param_init, 2, 2*gsl_stats_sd(d_y, 1, d_n));
-
+		
+	double offset, area;
 	if (imax_temp == imax)
-		gsl_vector_set(d_param_init, 3, min_out);
+		offset = min_out;
 	else //reversed bell
-		gsl_vector_set(d_param_init, 3, max_out);
+		offset = max_out;
+
+	double xc = d_x[imax_temp];
+	double width = 2*gsl_stats_sd(d_x, 1, d_n);
+	
+	if (d_profile == Lorentz)
+		area = M_2_PI*width*fabs(max_out - min_out);
+	else
+		area = sqrt(M_2_PI)*fabs(max_out - min_out);
+	
+	gsl_vector_set(d_param_init, 0, area);
+	gsl_vector_set(d_param_init, 1, xc);
+	gsl_vector_set(d_param_init, 2, width);
+	gsl_vector_set(d_param_init, 3, offset);
 }
 
 void MultiPeakFit::customizeFitResults()
 {
 	for (int j=0; j<d_peaks; j++){
 	    d_results[3*j] = fabs(d_results[3*j]);
-	    if (d_profile == Lorentz)
-            d_results[3*j] = M_PI_2*d_results[3*j];
         d_results[3*j + 2] = fabs(d_results[3*j + 2]);
 	}
 }
@@ -318,7 +322,7 @@ void MultiPeakFit::generateFitCurve()
 				if (d_profile == Gauss)
 					y_aux += sqrt(M_2_PI)*d_results[3*j]/w*exp(-2*diff*diff/(w*w));
 				else
-					y_aux += d_results[3*j]*w/(4*diff*diff+w*w);
+					y_aux += M_2_PI*d_results[3*j]*w/(4*diff*diff+w*w);
 
 				yi += y_aux;
 				y_aux += d_results[d_p - 1];
@@ -374,7 +378,7 @@ double MultiPeakFit::eval(double *par, double x)
 		if (d_profile == Gauss)
 			y += sqrt(M_2_PI)*par[3*j]/w*exp(-2*diff*diff/(w*w));
 		else
-			y += par[3*j]*w/(4*diff*diff+w*w);
+			y += M_2_PI*par[3*j]*w/(4*diff*diff+w*w);
 	}
 	return y + par[d_p - 1];//add offset
 }
@@ -387,7 +391,7 @@ double MultiPeakFit::evalPeak(double *par, double x, int peak)
     if (d_profile == Gauss)
         return sqrt(M_2_PI)*par[aux]/w*exp(-2*diff*diff/(w*w));
     else
-        return par[aux]*w/(4*diff*diff+w*w);
+        return M_2_PI*par[aux]*w/(4*diff*diff+w*w);
 }
 
 QString MultiPeakFit::logFitInfo(int iterations, int status)

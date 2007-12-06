@@ -133,7 +133,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 		for (int i=0; i<d_p; i++)
 			d_results[i] = gsl_vector_get(s->x, i);
 
-		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
+		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);		
 	} while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	gsl_multifit_covar (s->J, 0.0, covar);

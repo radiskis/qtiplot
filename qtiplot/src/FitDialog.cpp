@@ -1138,10 +1138,6 @@ void FitDialog::modifyGuesses(double* initVal)
 		initVal[1] = 1/initVal[1];
 		initVal[3] = 1/initVal[3];
 		initVal[5] = 1/initVal[5];
-	} else if (fitName == tr("Lorentz")){
-		int peaks = ((MultiPeakFit*)d_current_fit)->peaks();
-		for (int i=0; i<peaks; i++)
-            initVal[3*i] /= M_PI_2;
 	}
 }
 
