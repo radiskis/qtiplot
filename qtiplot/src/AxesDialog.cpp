@@ -37,6 +37,8 @@
 #include "ColorButton.h"
 #include "TextFormatButtons.h"
 #include "Table.h"
+#include "FitDialog.h"
+#include "ScaleDraw.h"
 
 #include <QColorDialog>
 #include <QCheckBox>
@@ -1227,104 +1229,118 @@ void AxesDialog::initScalesPage()
 {
 	scalesPage = new QWidget();
 
-		QGroupBox * middleBox = new QGroupBox(QString());
-		QGridLayout * middleLayout = new QGridLayout(middleBox);
+	QGroupBox * middleBox = new QGroupBox(QString());
+	QGridLayout * middleLayout = new QGridLayout(middleBox);
 
-		middleLayout->addWidget(new QLabel(tr( "From" )), 0, 0);
-		boxStart = new QLineEdit();
-		middleLayout->addWidget( boxStart, 0, 1 );
+	middleLayout->addWidget(new QLabel(tr( "From" )), 0, 0);
+	boxStart = new QLineEdit();
+	middleLayout->addWidget( boxStart, 0, 1 );
 
-		middleLayout->addWidget(new QLabel(tr( "To" )), 1, 0);
-		boxEnd = new QLineEdit();
-		middleLayout->addWidget( boxEnd, 1, 1);
+	middleLayout->addWidget(new QLabel(tr( "To" )), 1, 0);
+	boxEnd = new QLineEdit();
+	middleLayout->addWidget( boxEnd, 1, 1);
 
-		boxScaleTypeLabel = new QLabel(tr( "Type" ));
-		boxScaleType = new QComboBox();
-		boxScaleType->addItem(tr( "linear" ) );
-		boxScaleType->addItem(tr( "logarithmic" ) );
-		middleLayout->addWidget( boxScaleTypeLabel, 2, 0);
-		middleLayout->addWidget( boxScaleType, 2, 1);
+	boxScaleTypeLabel = new QLabel(tr( "Type" ));
+	boxScaleType = new QComboBox();
+	boxScaleType->addItem(tr( "linear" ) );
+	boxScaleType->addItem(tr( "logarithmic" ) );
+	middleLayout->addWidget( boxScaleTypeLabel, 2, 0);
+	middleLayout->addWidget( boxScaleType, 2, 1);
 
-		btnInvert = new QCheckBox();
-		btnInvert->setText( tr( "Inverted" ) );
-		btnInvert->setChecked(false);
-		middleLayout->addWidget( btnInvert, 3, 1 );
+	btnInvert = new QCheckBox();
+	btnInvert->setText( tr( "Inverted" ) );
+	btnInvert->setChecked(false);
+	middleLayout->addWidget( btnInvert, 3, 1 );
 
-		middleLayout->setRowStretch( 4, 1 );
+	/*ApplicationWindow *app = (ApplicationWindow *)parent();
+	middleLayout->addWidget(new QLabel(tr( "Axis Break From" )), 4, 0);
+	boxBreakStart = new DoubleSpinBox('g');
+	boxBreakStart->setLocale(app->locale());
+    boxBreakStart->setDecimals(app->d_decimal_digits);
+	
+	middleLayout->addWidget(boxBreakStart, 4, 1);
+	
+	middleLayout->addWidget(new QLabel(tr( "Axis Break To" )), 5, 0);
+	boxBreakEnd = new DoubleSpinBox('g');
+	boxBreakEnd->setLocale(app->locale());
+    boxBreakEnd->setDecimals(app->d_decimal_digits);
+	middleLayout->addWidget(boxBreakEnd, 5, 1);*/
 
-		QGroupBox * rightBox = new QGroupBox(QString());
-		QGridLayout * rightLayout = new QGridLayout(rightBox);
-		QWidget * stepWidget = new QWidget();
-		QVBoxLayout * stepWidgetLayout = new QVBoxLayout( stepWidget );
+	middleLayout->setRowStretch( 4, 1 );
 
-		btnStep = new QCheckBox();
-		btnStep->setText( tr( "Step" ) );
-		btnStep->setChecked(true);
-		rightLayout->addWidget( btnStep, 0, 0 );
+	QGroupBox * rightBox = new QGroupBox(QString());
+	QGridLayout * rightLayout = new QGridLayout(rightBox);
+	QWidget * stepWidget = new QWidget();
+	QVBoxLayout * stepWidgetLayout = new QVBoxLayout( stepWidget );
 
-		boxStep = new QLineEdit();
-		stepWidgetLayout->addWidget( boxStep );
-		boxUnit = new QComboBox();
-		boxUnit->hide();
-		stepWidgetLayout->addWidget( boxUnit );
+	btnStep = new QCheckBox();
+	btnStep->setText( tr( "Step" ) );
+	btnStep->setChecked(true);
+	rightLayout->addWidget( btnStep, 0, 0 );
 
-		rightLayout->addWidget( stepWidget, 0, 1 );
+	boxStep = new QLineEdit();
+	stepWidgetLayout->addWidget( boxStep );
+	boxUnit = new QComboBox();
+	boxUnit->hide();
+	stepWidgetLayout->addWidget( boxUnit );
 
-		btnMajor = new QCheckBox();
-		btnMajor->setText( tr( "Major Ticks" ) );
-		rightLayout->addWidget( btnMajor, 1, 0);
+	rightLayout->addWidget( stepWidget, 0, 1 );
 
-		boxMajorValue = new QSpinBox();
-		boxMajorValue->setDisabled(true);
-		rightLayout->addWidget( boxMajorValue, 1, 1);
+	btnMajor = new QCheckBox();
+	btnMajor->setText( tr( "Major Ticks" ) );
+	rightLayout->addWidget( btnMajor, 1, 0);
 
-		minorBoxLabel = new QLabel( tr( "Minor Ticks" ));
-		rightLayout->addWidget( minorBoxLabel, 2, 0);
+	boxMajorValue = new QSpinBox();
+	boxMajorValue->setDisabled(true);
+	rightLayout->addWidget( boxMajorValue, 1, 1);
 
-		boxMinorValue = new QComboBox();
-		boxMinorValue->setEditable(true);
-		boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
-		rightLayout->addWidget( boxMinorValue, 2, 1);
+	minorBoxLabel = new QLabel( tr( "Minor Ticks" ));
+	rightLayout->addWidget( minorBoxLabel, 2, 0);
 
-		rightLayout->setRowStretch( 3, 1 );
+	boxMinorValue = new QComboBox();
+	boxMinorValue->setEditable(true);
+	boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
+	rightLayout->addWidget( boxMinorValue, 2, 1);
 
-		QPixmap image0( ( const char** ) bottom_scl_xpm );
-		QPixmap image1( ( const char** ) left_scl_xpm );
-		QPixmap image2( ( const char** ) top_scl_xpm );
-  	    QPixmap image3( ( const char** ) right_scl_xpm );
+	rightLayout->setRowStretch( 3, 1 );
 
-		axesList = new QListWidget();
-		axesList->addItem( new QListWidgetItem(image0, tr( "Bottom" )));
-		axesList->addItem( new QListWidgetItem(image1, tr( "Left" )));
-		axesList->addItem( new QListWidgetItem(image2, tr( "Top" )));
-  	    axesList->addItem( new QListWidgetItem(image3,  tr( "Right" )));
-		axesList->setIconSize(image0.size());
-		axesList->setCurrentRow(-1);
+	QPixmap image0( ( const char** ) bottom_scl_xpm );
+	QPixmap image1( ( const char** ) left_scl_xpm );
+	QPixmap image2( ( const char** ) top_scl_xpm );
+	QPixmap image3( ( const char** ) right_scl_xpm );
 
-		// calculate a sensible width for the items list
-		// (default QListWidget size is 256 which looks too big)
-		QFontMetrics fm(axesList->font());
-		int width = 32,i;
-		for(i=0 ; i<axesList->count() ; i++)
-			if( fm.width(axesList->item(i)->text()) > width)
-				width = fm.width(axesList->item(i)->text());
+	axesList = new QListWidget();
+	axesList->addItem( new QListWidgetItem(image0, tr( "Bottom" )));
+	axesList->addItem( new QListWidgetItem(image1, tr( "Left" )));
+	axesList->addItem( new QListWidgetItem(image2, tr( "Top" )));
+	axesList->addItem( new QListWidgetItem(image3,  tr( "Right" )));
+	axesList->setIconSize(image0.size());
+	axesList->setCurrentRow(-1);
 
-		axesList->setMaximumWidth( axesList->iconSize().width() + width + 50 );
-		// resize the list to the maximum width
-		axesList->resize(axesList->maximumWidth(),axesList->height());
+	// calculate a sensible width for the items list
+	// (default QListWidget size is 256 which looks too big)
+	QFontMetrics fm(axesList->font());
+	int width = 32;
+	for(int i=0 ; i<axesList->count() ; i++)
+		if( fm.width(axesList->item(i)->text()) > width)
+			width = fm.width(axesList->item(i)->text());
 
-		QHBoxLayout* mainLayout = new QHBoxLayout(scalesPage);
-		mainLayout->addWidget(axesList);
-		mainLayout->addWidget(middleBox);
-		mainLayout->addWidget(rightBox);
+	axesList->setMaximumWidth( axesList->iconSize().width() + width + 50 );
+	// resize the list to the maximum width
+	axesList->resize(axesList->maximumWidth(),axesList->height());
 
-		generalDialog->addTab(scalesPage, tr( "Scale" ));
+	QHBoxLayout* mainLayout = new QHBoxLayout(scalesPage);
+	mainLayout->addWidget(axesList);
+	mainLayout->addWidget(middleBox);
+	mainLayout->addWidget(rightBox);
 
-		connect(btnInvert,SIGNAL(clicked()), this, SLOT(updatePlot()));
-		connect(axesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateScale()));
-		connect(boxScaleType,SIGNAL(activated(int)), this, SLOT(updateMinorTicksList(int)));
-		connect(btnStep,SIGNAL(clicked()), this, SLOT(stepEnabled()));
-		connect(btnMajor,SIGNAL(clicked()), this, SLOT(stepDisabled()));
+	generalDialog->addTab(scalesPage, tr( "Scale" ));
+
+	connect(btnInvert,SIGNAL(clicked()), this, SLOT(updatePlot()));
+	connect(axesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateScale()));
+	connect(boxScaleType,SIGNAL(activated(int)), this, SLOT(updateMinorTicksList(int)));
+	connect(btnStep,SIGNAL(clicked()), this, SLOT(stepEnabled()));
+	connect(btnMajor,SIGNAL(clicked()), this, SLOT(stepDisabled()));
 }
 
 void AxesDialog::initGridPage()
@@ -2338,6 +2354,10 @@ bool AxesDialog::updatePlot()
 
 		d_graph->setScale(a, start, end, stp, boxMajorValue->value(), boxMinorValue->currentText().toInt(),
                              boxScaleType->currentIndex(), btnInvert->isChecked());
+		  
+		/*ScaleDraw *sc_draw = (ScaleDraw *)d_graph->plotWidget()->axisScaleDraw(a);
+		sc_draw->setAxisBreak(boxBreakStart->value(), boxBreakEnd->value());*/
+		  		  
 		d_graph->notifyChanges();
 	}
 	else if (generalDialog->currentWidget()==gridPage){
@@ -2523,27 +2543,28 @@ const QwtScaleDiv *scDiv=d_plot->axisScaleDiv(a);
 boxStart->setText(QString::number(QMIN(scDiv->lBound(), scDiv->hBound())));
 boxEnd->setText(QString::number(QMAX(scDiv->lBound(), scDiv->hBound())));
 
+/*ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw(a);
+boxBreakStart->setValue(sd->axisBreakLowLimit());
+boxBreakEnd->setValue(sd->axisBreakHighLimit());*/
+
 QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 boxStep->setText(QString::number(d_graph->axisStep(a)));
 boxMajorValue->setValue(lst.count());
 
-if (axesType[a] == Graph::Time)
-	{
+if (axesType[a] == Graph::Time){
 	boxUnit->show();
 	boxUnit->insertItem(tr("millisec."));
 	boxUnit->insertItem(tr("sec."));
 	boxUnit->insertItem(tr("min."));
 	boxUnit->insertItem(tr("hours"));
 	}
-else if (axesType[a] == Graph::Date)
-	{
+else if (axesType[a] == Graph::Date){
 	boxUnit->show();
 	boxUnit->insertItem(tr("days"));
 	boxUnit->insertItem(tr("weeks"));
 	}
 
-if (d_graph->axisStep(a) != 0.0)
-	{
+if (d_graph->axisStep(a) != 0.0){
 	btnStep->setChecked(true);
 	boxStep->setEnabled(true);
 	boxUnit->setEnabled(true);
@@ -2551,8 +2572,7 @@ if (d_graph->axisStep(a) != 0.0)
 	btnMajor->setChecked(false);
 	boxMajorValue->setEnabled(false);
 	}
-else
-	{
+else{
 	btnStep->setChecked(false);
 	boxStep->setEnabled(false);
 	boxUnit->setEnabled(false);

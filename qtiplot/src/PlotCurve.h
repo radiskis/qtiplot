@@ -30,22 +30,32 @@
 #define PLOTCURVE_H
 
 #include <qwt_plot_curve.h>
+#include <qwt_plot_marker.h>
 #include "Table.h"
 
+class PlotMarker;
+	
 //! Abstract 2D plot curve class
 class PlotCurve: public QwtPlotCurve
 {
 
 public:
-	PlotCurve(const QString& name = QString()): QwtPlotCurve(name), d_type(0){};
+	PlotCurve(const QString& name = QString()): QwtPlotCurve(name), d_type(0), d_x_offset(0.0), d_y_offset(0.0){};
 
 	int type(){return d_type;};
 	void setType(int t){d_type = t;};
 
+	double xOffset(){return d_x_offset;};
+	void setXOffset(double dx){d_x_offset = dx;};
+	
+	double yOffset(){return d_y_offset;};
+	void setYOffset(double dy){d_y_offset = dy;};
+	
 	QwtDoubleRect boundingRect() const;
 
 protected:
 	int d_type;
+	double d_x_offset, d_y_offset;
 };
 
 class DataCurve: public PlotCurve
@@ -56,6 +66,10 @@ public:
 
 	QString xColumnName(){return d_x_column;};
 	void setXColumnName(const QString& name){d_x_column = name;};
+
+	bool hasLabels(){return !d_labels_column.isEmpty();};
+	QString labelsColumnName(){return d_labels_column;};
+	void setLabelsColumnName(const QString& name);
 
 	Table* table(){return d_table;};
 
@@ -97,7 +111,9 @@ public:
 	void removeErrorBars(DataCurve *c);
 	//! Clears the list of attached error bars.
 	void clearErrorBars();
-
+	//! Clears the list of attached text labels.
+	void clearLabels();
+	
 	void setVisible(bool on);
 
 protected:
@@ -113,5 +129,38 @@ protected:
 
 	int d_start_row;
 	int d_end_row;
+
+	//!\brief The name of the column used for text labels.
+	QString d_labels_column;
+
+	//! List of the text labels associated to this curve.
+	QList <PlotMarker *> d_labels_list;
+
+	QColor d_labels_color;
+	QFont d_labels_font;
+	double d_labels_angle;
+	bool d_white_out_labels;
+	int d_labels_align;
+};
+
+class PlotMarker: public QwtPlotMarker
+{
+public:
+	PlotMarker(int index, double angle);
+
+	int index(){return d_index;};
+	void setIndex(int i){d_index = i;};
+
+	double angle(){return d_angle;};
+	void setAngle(double a){d_angle = a;};
+		
+	//QwtDoubleRect boundingRect() const;
+
+protected:
+	//! Does the actual drawing; see QwtPlotItem::draw.
+	void draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &r) const;
+
+	int d_index;
+	double d_angle;
 };
 #endif

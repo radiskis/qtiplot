@@ -30,6 +30,7 @@
 #include "ScaleDraw.h"
 #include <QDateTime>
 #include <QMessageBox>
+#include <QPainter>
 #include <qwt_symbol.h>
 
 DataCurve::DataCurve(Table *t, const QString& xColName, const QString& name, int startRow, int endRow):
@@ -37,7 +38,12 @@ DataCurve::DataCurve(Table *t, const QString& xColName, const QString& name, int
 	d_table(t),
 	d_x_column(xColName),
 	d_start_row(startRow),
-	d_end_row(endRow)
+	d_end_row(endRow),
+	d_labels_color(Qt::black),
+	d_labels_font(QFont()),
+	d_labels_angle(0.0),
+	d_white_out_labels(false),
+	d_labels_align(Qt::AlignCenter)
 {
 	if (t && d_end_row < 0)
 		d_end_row = t->numRows() - 1;
@@ -78,10 +84,14 @@ bool DataCurve::isFullRange()
 
 QString DataCurve::plotAssociation()
 {
+	QString s = title().text();
     if (!d_x_column.isEmpty())
-        return d_x_column + "(X)," + title().text() + "(Y)";
-    else
-        return title().text();
+        s = d_x_column + "(X)," + title().text() + "(Y)";
+	
+    if (!d_labels_column.isEmpty())
+        s += "," + d_labels_column + "(L)";
+
+	return s;
 }
 
 void DataCurve::updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName)
@@ -236,6 +246,19 @@ void DataCurve::loadData()
 		if (yColType == Table::Text)
             g->setLabelsTextFormat(QwtPlot::yLeft, Graph::Txt, title().text(), yLabels);
 	}
+	
+	if (d_labels_list.isEmpty())
+		return;
+	
+	double xoffset = xOffset();
+	double yoffset = yOffset() + 1.0;
+	
+	foreach (PlotMarker *m, d_labels_list){
+		m->setAxis(xAxis(), yAxis());	
+		int index = m->index();
+		m->setXValue(x(index) + xoffset);
+		m->setYValue(y(index) + yoffset);
+	}
 }
 
 void DataCurve::removeErrorBars(DataCurve *c)
@@ -320,6 +343,57 @@ int DataCurve::tableRow(int point)
 	return -1;
 }
 
+void DataCurve::setLabelsColumnName(const QString& name)
+{
+	if (d_labels_column == name)
+		return;
+	
+	d_labels_list.clear();
+	d_labels_column = name;
+	
+	int labelsCol = d_table->colIndex(d_labels_column);
+	if (labelsCol < 0 || labelsCol >= d_table->numCols())
+		return;
+	
+	QwtPlot *d_plot = plot();
+	if (!d_plot)
+		return;
+	
+	double xoffset = xOffset();
+	double yoffset = yOffset() + 1.0;
+	
+	for (int i = d_start_row; i <= d_end_row; i++){		
+		QString text = d_table->text(i, labelsCol);
+		if (text.isEmpty())
+			continue;
+				
+		int index = i - d_start_row;
+		PlotMarker *m = new PlotMarker(index, d_labels_angle);
+		m->setXValue(x(index) + xoffset);
+		m->setYValue(y(index) + yoffset);
+		
+		QwtText t = QwtText(text);
+		t.setColor(d_labels_color);
+		t.setFont(d_labels_font);
+		t.setRenderFlags(d_labels_align);
+		if (d_white_out_labels)
+			t.setBackgroundBrush(QBrush(Qt::white));
+		m->setLabel(t);
+		
+		m->setAxis(xAxis(), yAxis());
+		m->attach(d_plot);
+		d_labels_list << m;
+	}
+}
+
+void DataCurve::clearLabels()
+{
+	foreach(PlotMarker *m, d_labels_list){
+		m->detach();
+		delete m;
+	}
+}
+
 QwtDoubleRect PlotCurve::boundingRect() const
 {
     QwtDoubleRect r = QwtPlotCurve::boundingRect();
@@ -344,4 +418,23 @@ QwtDoubleRect PlotCurve::boundingRect() const
     double d_y_bottom = yMap.invTransform(y_bottom - margin);
 
     return QwtDoubleRect(d_x_left, d_y_top, qAbs(d_x_right - d_x_left), qAbs(d_y_bottom - d_y_top));
+}
+
+PlotMarker::PlotMarker(int index, double angle):QwtPlotMarker(),
+	d_index(index),
+	d_angle(angle)
+{}
+
+void PlotMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &) const
+{
+	p->save();
+	int x = xMap.transform (xValue());
+	int y = yMap.transform (yValue());
+	
+	p->translate(x, y);
+	p->rotate(-d_angle);
+
+	QwtText text = label();
+	text.draw(p, QRect(QPoint(0, 0), text.textSize()));
+	p->restore();
 }

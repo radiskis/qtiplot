@@ -7,8 +7,7 @@
 #include <gsl/gsl_math.h>
 #include "fit_gsl.h"
 #include "MyParser.h"
-int expd3_f (const gsl_vector * x, void *params,
-             gsl_vector * f) {
+int expd3_f (const gsl_vector * x, void *params, gsl_vector * f) {
     size_t n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
@@ -47,8 +46,7 @@ double expd3_d (const gsl_vector * x, void *params) {
     }
     return val;
 }
-int expd3_df (const gsl_vector * x, void *params,
-              gsl_matrix * J) {
+int expd3_df (const gsl_vector * x, void *params, gsl_matrix * J) {
     size_t n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *sigma = ((struct FitData *)params)->sigma;
@@ -79,14 +77,12 @@ int expd3_df (const gsl_vector * x, void *params,
     }
     return GSL_SUCCESS;
 }
-int expd3_fdf (const gsl_vector * x, void *params,
-               gsl_vector * f, gsl_matrix * J) {
+int expd3_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J) {
     expd3_f (x, params, f);
     expd3_df (x, params, J);
     return GSL_SUCCESS;
 }
-int expd2_f (const gsl_vector * x, void *params,
-             gsl_vector * f) {
+int expd2_f (const gsl_vector * x, void *params, gsl_vector * f) {
     size_t n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
@@ -121,8 +117,7 @@ double expd2_d (const gsl_vector * x, void *params) {
     }
     return val;
 }
-int expd2_df (const gsl_vector * x, void *params,
-              gsl_matrix * J) {
+int expd2_df (const gsl_vector * x, void *params, gsl_matrix * J) {
     size_t n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *sigma = ((struct FitData *)params)->sigma;
@@ -154,8 +149,7 @@ int expd2_fdf (const gsl_vector * x, void *params,
     expd2_df (x, params, J);
     return GSL_SUCCESS;
 }
-int exp_f (const gsl_vector * x, void *params,
-           gsl_vector * f) {
+int exp_f (const gsl_vector * x, void *params, gsl_vector * f) {
     size_t n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;

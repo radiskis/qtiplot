@@ -2778,7 +2778,9 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
         for (int i=0; i<curves; i++)
         {//We rearrange the list so that the error bars are placed at the end
         	int j = w->colIndex(names[i]);
-  	        if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr)
+  	        if (w->colPlotDesignation(j) == Table::xErr || 
+				w->colPlotDesignation(j) == Table::yErr || 
+				w->colPlotDesignation(j) == Table::Labels)
 			{
 				errCurves++;
 				lst << names[i];
@@ -2799,6 +2801,19 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
                     ok = addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
                 else
                     ok = addErrorBars(w->colName(ycol), w, names[i]);
+			} else if (w->colPlotDesignation(j) == Table::Labels){
+				QString labelsCol = names[i];
+				int xcol = w->colX(w->colIndex(labelsCol));
+				int ycol = w->colY(w->colIndex(labelsCol));
+				if (xcol < 0 || ycol < 0)
+                    return false;
+				 
+				DataCurve* mc = masterCurve(w->colName(xcol), w->colName(ycol));
+				if (mc){
+					mc->setLabelsColumnName(labelsCol);
+					return true;
+				} else
+					return false;
 			} else
                 ok = insertCurve(w, names[i], style, startRow, endRow);
 
@@ -3195,8 +3210,10 @@ void Graph::removeCurve(int index)
 	{
         if (((PlotCurve *)it)->type() == ErrorBars)
             ((QwtErrorPlotCurve *)it)->detachFromMasterCurve();
-		else if (((PlotCurve *)it)->type() != Function)
+		else if (((PlotCurve *)it)->type() != Function){
 			((DataCurve *)it)->clearErrorBars();
+			((DataCurve *)it)->clearLabels();
+		}
 
 		if (d_fit_curves.contains((QwtPlotCurve *)it))
 		{

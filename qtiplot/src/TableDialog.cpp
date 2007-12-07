@@ -107,6 +107,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	columnsBox->addItem(tr("Z (height)"));
 	columnsBox->addItem(tr("X Error"));
 	columnsBox->addItem(tr("Y Error"));
+	columnsBox->addItem(tr("Labels"));
     gl1->addWidget(columnsBox, 0, 1);
 
     gl1->addWidget(new QLabel(tr("Display")), 1, 0);
@@ -384,6 +385,10 @@ switch(i)
 
 	case 5:
 		d_table->setPlotDesignation(Table::yErr);
+	break;
+	
+	case 6:
+		d_table->setPlotDesignation(Table::Labels);
 	break;
 	}
 }
