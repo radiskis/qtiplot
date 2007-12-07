@@ -63,6 +63,10 @@ public:
 	void setMinorTicksStyle(TicksStyle type){d_minTicks = type;};
 
 	void setSelected(bool select = true){d_selected = select;};
+	
+	double axisBreakLowLimit(){return d_break_start;};
+	double axisBreakHighLimit(){return d_break_end;};
+	void setAxisBreak(double from, double to){d_break_start = from; d_break_end = to;};
 
 protected:
     virtual void drawLabel(QPainter *painter, double value) const;
@@ -76,6 +80,8 @@ private:
     int d_prec;
 	int d_minTicks, d_majTicks;
 	bool d_selected;
+	
+	double d_break_start, d_break_end;
 };
 
 class QwtTextScaleDraw: public ScaleDraw

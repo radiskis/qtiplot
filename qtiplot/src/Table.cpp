@@ -80,8 +80,6 @@ void Table::init(int rows, int cols)
 	setBirthDate(QDateTime::currentDateTime().toString(Qt::LocalDate));
 	
 	d_table = new MyTable(rows, cols, this, "table");
-	d_table->setFocusPolicy(Qt::StrongFocus);
-	d_table->setFocus();
 	d_table->setSelectionMode (Q3Table::Single);
 	d_table->setRowMovingEnabled(true);
 	d_table->setColumnMovingEnabled(true);
@@ -93,7 +91,6 @@ void Table::init(int rows, int cols)
 			this, SLOT(moveColumn(int, int, int)));
 
 	setFocusPolicy(Qt::StrongFocus);
-	setFocusProxy(d_table);
 	setFocus();
 
 	QVBoxLayout* hlayout = new QVBoxLayout(this);
@@ -639,6 +636,8 @@ QString Table::saveHeader()
 			s += "\t" + colLabel(j) + "[xEr]";
 		else if (col_plot_type[j] == yErr)
 			s += "\t" + colLabel(j) + "[yEr]";
+		else if (col_plot_type[j] == Labels)
+			s += "\t" + colLabel(j) + "[L]";
 		else
 			s += "\t" + colLabel(j);
 	}
@@ -816,7 +815,8 @@ QStringList Table::drawableColumnSelection()
 
   	for (int i=0; i<d_table->numCols(); i++)
   	{
-  	 	if(d_table->isColumnSelected (i) && (col_plot_type[i] == yErr || col_plot_type[i] == xErr))
+  	 	if(d_table->isColumnSelected (i) && 
+			(col_plot_type[i] == yErr || col_plot_type[i] == xErr || col_plot_type[i] == Labels))
   	    	names << QString(objectName()) + "_" + col_label[i];
   	}
 	return names;
@@ -2040,6 +2040,11 @@ void Table::loadHeader(QStringList header)
 			col_label << s.remove("[yEr]");
 			col_plot_type << yErr;
 		}
+		else if (s.contains("[L]"))
+		{
+			col_label << s.remove("[L]");
+			col_plot_type << Labels;
+		}
 		else
 		{
 			col_label << s;
@@ -2091,6 +2096,8 @@ void Table::setHeaderColType()
 				setColumnHeader(i, col_label[i]+"[xEr]");
 			else if (col_plot_type[i] == yErr)
 				setColumnHeader(i, col_label[i]+"[yEr]");
+			else if (col_plot_type[i] == Labels)
+				setColumnHeader(i, col_label[i]+"[L]");
 			else
 				setColumnHeader(i, col_label[i]);
 		}
@@ -2106,6 +2113,8 @@ void Table::setHeaderColType()
 				setColumnHeader(i, col_label[i]+"[xEr]");
 			else if (col_plot_type[i] == yErr)
 				setColumnHeader(i, col_label[i]+"[yEr]");
+			else if (col_plot_type[i] == Labels)
+				setColumnHeader(i, col_label[i]+"[L]");
 			else
 				setColumnHeader(i, col_label[i]);
 		}
@@ -2716,13 +2725,14 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 
 void Table::contextMenuEvent(QContextMenuEvent *e)
 {
+	e->accept();
+
 	QRect r = d_table->horizontalHeader()->sectionRect(d_table->numCols()-1);
 	setFocus();
 	if (e->pos().x() > r.right() + d_table->verticalHeader()->width())
 		emit showContextMenu(false);
 	else if (d_table->numCols() > 0 && d_table->numRows() > 0)
 		emit showContextMenu(true);
-	e->accept();
 }
 
 void Table::moveCurrentCell()

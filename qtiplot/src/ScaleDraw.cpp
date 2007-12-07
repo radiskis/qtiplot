@@ -45,7 +45,10 @@ ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
 	d_majTicks(Out),
 	d_minTicks(Out),
 	d_selected(false)
-	{};
+{
+	d_break_start = -DBL_MAX;
+	d_break_end	= DBL_MAX;
+}
 
 QwtText ScaleDraw::label(double value) const
 {

@@ -51,7 +51,8 @@ class ColorBox;
 class ColorButton;
 class Graph;
 class TextFormatButtons;
-
+class DoubleSpinBox;
+	
 //! General plot options dialog
 /**
  * Remark: Don't use this dialog as a non modal dialog!
@@ -192,6 +193,7 @@ protected:
 	bool xAxisOn, yAxisOn, topAxisOn, rightAxisOn;
 	int xBottomLabelsRotation, xTopLabelsRotation;
 
+	DoubleSpinBox *boxBreakStart, *boxBreakEnd;
 	Graph* d_graph;
 	//! Last selected tab
   	QWidget* lastPage;
