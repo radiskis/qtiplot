@@ -138,6 +138,7 @@ public:
 	void setVisible(bool on);
 
 protected:
+    void loadLabels();
     void updateLabelsPosition();
 
 	//! List of the error bar curves associated to this curve.

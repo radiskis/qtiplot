@@ -1196,29 +1196,32 @@ void Table::pasteSelection()
 
 	QTextStream ts( &text, QIODevice::ReadOnly );
 	QString s = ts.readLine();
-	QStringList cellTexts=s.split("\t");
-	int cols = int(cellTexts.count());
+	QStringList cellTexts = s.split("\t");
+	int cols = cellTexts.count();
 	int rows = 1;
 	while(!ts.atEnd()){
 		rows++;
 		s = ts.readLine();
+		int aux = s.split("\t").count();
+		if (aux > cols)
+            cols = aux;
 	}
 	ts.reset();
 
 	int top, left, firstCol = firstSelectedColumn();
 	Q3TableSelection sel = d_table->selection(0);
 	if (!sel.isEmpty()){// not columns but only cells are selected
-		top=sel.topRow();
-		left=sel.leftCol();
+		top = sel.topRow();
+		left = sel.leftCol();
 	} else {
-		if(cols==1 && rows==1){
-			top=d_table->currentRow();
-			left=d_table->currentColumn();
+		if(cols == 1 && rows == 1){
+			top = d_table->currentRow();
+			left = d_table->currentColumn();
 		} else {
-			top=0;
-			left=0;
-			if (firstCol>=0)// columns are selected
-				left=firstCol;
+			top = 0;
+			left = 0;
+			if (firstCol >= 0)// columns are selected
+				left = firstCol;
 		}
 	}
 
@@ -1232,7 +1235,7 @@ void Table::pasteSelection()
     }
 
 	QStringList lstReadOnly;
-	for (int i=left; i<left+cols; i++){
+	for (int i = left; i<left+cols; i++){
 		QString name = colName(i);
 		if (d_read_only[i])
 			lstReadOnly << name;
@@ -1248,19 +1251,23 @@ void Table::pasteSelection()
 	QLocale system_locale = QLocale::system();
 	for (int i=top; i<top+rows; i++){
 		s = ts2.readLine();
-		cellTexts=s.split("\t");
+		cellTexts = s.split("\t");
 		for (int j=left; j<left+cols; j++){
 			if (d_read_only[j])
 				continue;
 
-			double value = system_locale.toDouble(cellTexts[j-left], &numeric);
+            int colIndex = j-left;
+            if (colIndex >= cellTexts.count())
+                break;
+
+			double value = system_locale.toDouble(cellTexts[colIndex], &numeric);
 			if (numeric){
 			    int prec;
                 char f;
 				columnNumericFormat(j, &f, &prec);
 				d_table->setText(i, j, locale().toString(value, f, prec));
 			} else
-				d_table->setText(i, j, cellTexts[j-left]);
+				d_table->setText(i, j, cellTexts[colIndex]);
 		}
 	}
 
