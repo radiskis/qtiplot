@@ -53,7 +53,7 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 		return QObject::eventFilter(object, e);
 
 	QwtScaleWidget *scale = (QwtScaleWidget *)object;
-	
+
 	if ( e->type() == QEvent::MouseButtonDblClick ){
 		mouseDblClicked(scale, ((QMouseEvent *)e)->pos());
         return true;
@@ -72,7 +72,7 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
                 selectTitle(scale);
             else if (!scaleTicksRect(scale).contains(pos))
 				selectLabels(scale);
-			
+
 			return !(me->modifiers() & Qt::ShiftModifier) && !scaleTicksRect(scale).contains(pos);
         } else if (me->button() == Qt::RightButton){
 			mouseRightClicked(scale, pos);
@@ -174,7 +174,7 @@ QRect ScalePicker::titleRect(const QwtScaleWidget *scale) const
 	QRect rect = scale->rect();
 	int margin = scale->margin();
 	rect = rect.adjusted (margin, margin, -margin, -margin);
-	
+
 	int dh = scale->title().textSize().height();
 	switch(scale->alignment())
     {
@@ -211,8 +211,7 @@ void ScalePicker::selectTitle(QwtScaleWidget *scale, bool select)
         return;
 
     Graph *g = (Graph *)plot()->parent();
-    g->selectTitle(false);
-    g->deselectMarker();
+    g->deselect();
 
     d_title_selected = select;
     d_selected_axis = scale;
@@ -235,17 +234,16 @@ void ScalePicker::selectLabels(QwtScaleWidget *scale, bool select)
 
     if (d_labels_selected == select && d_selected_axis == scale)
         return;
-	
+
 	Graph *g = (Graph *)plot()->parent();
-    g->selectTitle(false);
-    g->deselectMarker();
-	
+    g->deselect();
+
 	d_labels_selected = select;
 	d_selected_axis = scale;
 	d_title_selected = false;
-		
+
 	g->notifyFontChange(scale->font());
-	
+
 	ScaleDraw *sc_draw = (ScaleDraw *)scale->scaleDraw();
 	sc_draw->setSelected(select);
 	scale->repaint();
@@ -255,17 +253,17 @@ void ScalePicker::deselect()
 {
 	if (!d_selected_axis)
 		return;
-	
+
 	d_title_selected = false;
 	d_labels_selected = false;
-	
+
 	QwtText title = d_selected_axis->title();
     title.setBackgroundPen(QPen(Qt::NoPen));
     d_selected_axis->setTitle(title);
-	
+
 	ScaleDraw *sc_draw = (ScaleDraw *)d_selected_axis->scaleDraw();
 	sc_draw->setSelected(false);
-	
+
     d_selected_axis->repaint();
 	d_selected_axis = NULL;
 }

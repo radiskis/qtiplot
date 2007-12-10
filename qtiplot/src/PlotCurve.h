@@ -137,6 +137,10 @@ public:
 
 	void setVisible(bool on);
 
+	bool selectedLabels(const QPoint& pos);
+	bool hasSelectedLabels();
+	void setLabelsSelected(bool on = true);
+
 protected:
     void loadLabels();
     void updateLabelsPosition();

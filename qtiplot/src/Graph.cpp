@@ -286,6 +286,7 @@ void Graph::setSelectedText(LegendWidget *l)
     if (l){
         selectTitle(false);
         scalePicker->deselect();
+        deselectCurves();
 		emit currentFontChanged(l->font());
     }
 
@@ -1517,6 +1518,20 @@ void Graph::deselect()
 	deselectMarker();
     scalePicker->deselect();
 	titlePicker->setSelected(false);
+	deselectCurves();
+}
+
+void Graph::deselectCurves()
+{
+	QList<QwtPlotItem *> curves = d_plot->curvesList();
+    foreach(QwtPlotItem *i, curves){
+        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+          ((PlotCurve *)i)->type() != Graph::Function &&
+          ((DataCurve *)i)->hasSelectedLabels()){
+            ((DataCurve *)i)->setLabelsSelected(false);
+            return;
+        }
+    }
 }
 
 bool Graph::titleSelected()
@@ -1527,8 +1542,7 @@ bool Graph::titleSelected()
 void Graph::selectTitle(bool select)
 {
     if (select){
-        deselectMarker();
-        scalePicker->deselect();
+        deselect();
 		emit currentFontChanged(d_plot->title().font());
     }
 
@@ -5031,5 +5045,18 @@ void Graph::setCurrentFont(const QFont& f)
 		title.setFont(f);
 		d_plot->setTitle(title);
 		emit modifiedGraph();
+	} else {
+	    QList<QwtPlotItem *> curves = d_plot->curvesList();
+	    foreach(QwtPlotItem *i, curves){
+	        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+	          ((PlotCurve *)i)->type() != Graph::Function){
+                if(((DataCurve *)i)->hasSelectedLabels()){
+                   ((DataCurve *)i)->setLabelsFont(f);
+                   d_plot->replot();
+                   emit modifiedGraph();
+                   return;
+                }
+			}
+	    }
 	}
 }

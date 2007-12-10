@@ -689,6 +689,8 @@ signals:
         void enableTextEditor(Graph *);
 
 	private:
+        void deselectCurves();
+
         Plot *d_plot;
 		QwtPlotZoomer *d_zoomer[2];
 		TitlePicker *titlePicker;

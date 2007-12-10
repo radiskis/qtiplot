@@ -190,12 +190,12 @@ void Plot::drawItems (QPainter *painter, const QRect &rect,
 		if (!axisEnabled(i))
 			continue;
 
-		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(i);	
+		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(i);
 		double start = sd->axisBreakLowLimit();
-		double end = sd->axisBreakHighLimit();	
+		double end = sd->axisBreakHighLimit();
 		//if (start == -DBL_MAX && end == DBL_MAX)
 			//continue;
-		
+
 		int x1, x2, y, h;
 		QwtScaleMap m = map[i];
 		if (i == QwtPlot::xBottom){
@@ -208,9 +208,9 @@ void Plot::drawItems (QPainter *painter, const QRect &rect,
 		QRegion cr2(x2, y, rect.width() - x2, h);
 		painter->setClipRegion(cr1.united(cr2));
 	}*/
-	
+
 	QwtPlot::drawItems(painter, rect, map, pfilter);
-	
+
 	for (int i=0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;
@@ -473,6 +473,12 @@ int Plot::closestCurve(int xpos, int ypos, int &dist, int &point)
 		if(item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
 		{
 			PlotCurve *c = (PlotCurve *)item;
+			if (c->type() != Graph::Function && ((DataCurve *)c)->hasLabels() &&
+			    ((DataCurve *)c)->selectedLabels(QPoint(xpos, ypos)))
+			    return iter.key();
+            else
+                ((DataCurve *)c)->setLabelsSelected(false);
+
 			for (int i=0; i<c->dataSize(); i++)
 			{
 				double cx = map[c->xAxis()].xTransform(c->x(i)) - double(xpos);

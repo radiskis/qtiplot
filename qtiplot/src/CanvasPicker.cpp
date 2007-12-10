@@ -45,7 +45,7 @@ CanvasPicker::CanvasPicker(Graph *graph):
 	pointSelected = false;
 	d_editing_marker = 0;
 
-	plotWidget=graph->plotWidget();
+	plotWidget = graph->plotWidget();
 
 	QwtPlotCanvas *canvas = plotWidget->canvas();
 	canvas->installEventFilter(this);
@@ -75,6 +75,9 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 						break;
 					}
 				}
+
+                int dist, point;
+                plotWidget->closestCurve(me->pos().x(), me->pos().y(), dist, point);
 
 				if (me->button()==Qt::LeftButton && (plot()->drawLineActive())){
 					startLinePoint = me->pos();
