@@ -78,7 +78,7 @@ void Table::init(int rows, int cols)
 	d_numeric_precision = 13;
 
 	setBirthDate(QDateTime::currentDateTime().toString(Qt::LocalDate));
-	
+
 	d_table = new MyTable(rows, cols, this, "table");
 	d_table->setSelectionMode (Q3Table::Single);
 	d_table->setRowMovingEnabled(true);
@@ -282,8 +282,7 @@ void Table::print(const QString& fileName)
 void Table::cellEdited(int row, int col)
 {
 	QString text = d_table->text(row,col).remove(QRegExp("\\s"));
-	if (columnType(col) != Numeric || text.isEmpty())
-	{
+	if (columnType(col) != Numeric || text.isEmpty()){
 		emit modifiedData(this, colName(col));
 		emit modifiedWindow(this);
 		return;
@@ -348,11 +347,28 @@ int Table::colY(int col)
 	return yCol;
 }
 
-void Table::setPlotDesignation(PlotDesignation pd)
+void Table::setPlotDesignation(PlotDesignation pd, bool rightColumns)
 {
-	QStringList list=selectedColumns();
-	for (int i=0; i<(int) list.count(); i++)
-		col_plot_type[colIndex(list[i])] = pd;
+	if (rightColumns){
+	     int cols = d_table->numCols();
+	     for (int i = selectedCol; i<cols; i++){
+            col_plot_type[i] = pd;
+            if (pd == Label)
+                colTypes[i] = Text;
+            else if (pd != None)
+                colTypes[i] = Numeric;
+        }
+	} else {
+        QStringList list = selectedColumns();
+        for (int i=0; i<(int) list.count(); i++){
+            int col = colIndex(list[i]);
+            col_plot_type[col] = pd;
+            if (pd == Label)
+                colTypes[col] = Text;
+            else if (pd != None)
+                colTypes[col] = Numeric;
+        }
+	}
 
 	setHeaderColType();
 	emit modifiedWindow(this);
@@ -364,6 +380,8 @@ void Table::setColPlotDesignation(int col, PlotDesignation pd)
         return;
 
 	col_plot_type[col] = pd;
+	if (pd == Label)
+        colTypes[col] = Text;
 }
 
 void Table::columnNumericFormat(int col, int *f, int *precision)
@@ -496,7 +514,7 @@ bool Table::calculate(int col, int startRow, int endRow)
 {
 	if (col < 0 || col >= d_table->numCols())
 		return false;
-	
+
     if (d_read_only[col]){
         QMessageBox::warning(this, tr("QtiPlot - Error"),
         tr("Column '%1' is read only!").arg(col_label[col]));
@@ -504,12 +522,14 @@ bool Table::calculate(int col, int startRow, int endRow)
     }
 
 	QString cmd = commands[col];
-	if (cmd.isEmpty()){
+	if (cmd.isEmpty() || colTypes[col] != Numeric){
 		for (int i=startRow; i<=endRow; i++)
-			d_table->setText(i, col, "");
+			d_table->setText(i, col, cmd);
+        emit modifiedData(this, colName(col));
+        emit modifiedWindow(this);
         return true;
 	}
-	
+
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	Script *colscript = scriptEnv->newScript(cmd, this,  QString("<%1>").arg(colName(col)));
@@ -636,7 +656,7 @@ QString Table::saveHeader()
 			s += "\t" + colLabel(j) + "[xEr]";
 		else if (col_plot_type[j] == yErr)
 			s += "\t" + colLabel(j) + "[yEr]";
-		else if (col_plot_type[j] == Labels)
+		else if (col_plot_type[j] == Label)
 			s += "\t" + colLabel(j) + "[L]";
 		else
 			s += "\t" + colLabel(j);
@@ -815,8 +835,8 @@ QStringList Table::drawableColumnSelection()
 
   	for (int i=0; i<d_table->numCols(); i++)
   	{
-  	 	if(d_table->isColumnSelected (i) && 
-			(col_plot_type[i] == yErr || col_plot_type[i] == xErr || col_plot_type[i] == Labels))
+  	 	if(d_table->isColumnSelected (i) &&
+			(col_plot_type[i] == yErr || col_plot_type[i] == xErr || col_plot_type[i] == Label))
   	    	names << QString(objectName()) + "_" + col_label[i];
   	}
 	return names;
@@ -1611,12 +1631,12 @@ QString Table::saveText()
 			for (int j=0; j<cols; j++){
 			    if (colTypes[j] == Numeric && !d_table->text(i, j).isEmpty())
                     text += QString::number(cell(i, j), 'e', 14) + "\t";
-				else 
+				else
 					text += d_table->text(i, j) + "\t";
 			}
             if (colTypes[cols] == Numeric && !d_table->text(i, cols).isEmpty())
                 text += QString::number(cell(i, cols), 'e', 14) + "\n";
-			else 
+			else
 				text += d_table->text(i, cols) + "\n";
 		}
 	}
@@ -2043,7 +2063,7 @@ void Table::loadHeader(QStringList header)
 		else if (s.contains("[L]"))
 		{
 			col_label << s.remove("[L]");
-			col_plot_type << Labels;
+			col_plot_type << Label;
 		}
 		else
 		{
@@ -2096,7 +2116,7 @@ void Table::setHeaderColType()
 				setColumnHeader(i, col_label[i]+"[xEr]");
 			else if (col_plot_type[i] == yErr)
 				setColumnHeader(i, col_label[i]+"[yEr]");
-			else if (col_plot_type[i] == Labels)
+			else if (col_plot_type[i] == Label)
 				setColumnHeader(i, col_label[i]+"[L]");
 			else
 				setColumnHeader(i, col_label[i]);
@@ -2113,7 +2133,7 @@ void Table::setHeaderColType()
 				setColumnHeader(i, col_label[i]+"[xEr]");
 			else if (col_plot_type[i] == yErr)
 				setColumnHeader(i, col_label[i]+"[yEr]");
-			else if (col_plot_type[i] == Labels)
+			else if (col_plot_type[i] == Label)
 				setColumnHeader(i, col_label[i]+"[L]");
 			else
 				setColumnHeader(i, col_label[i]);
@@ -2886,7 +2906,7 @@ void Table::restore(QString& spec)
 	int c = list[2].toInt();
 	if (cols != c)
 		d_table->setNumCols(c);
-	
+
 	//clear all cells
 	for (int i=0; i<r; i++){
 		for (int j=0; j<c; j++)

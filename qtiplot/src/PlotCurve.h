@@ -34,7 +34,7 @@
 #include "Table.h"
 
 class PlotMarker;
-	
+
 //! Abstract 2D plot curve class
 class PlotCurve: public QwtPlotCurve
 {
@@ -47,10 +47,10 @@ public:
 
 	double xOffset(){return d_x_offset;};
 	void setXOffset(double dx){d_x_offset = dx;};
-	
+
 	double yOffset(){return d_y_offset;};
 	void setYOffset(double dy){d_y_offset = dy;};
-	
+
 	QwtDoubleRect boundingRect() const;
 
 protected:
@@ -60,16 +60,37 @@ protected:
 
 class DataCurve: public PlotCurve
 {
-
 public:
 	DataCurve(Table *t, const QString& xColName, const QString& name, int startRow = 0, int endRow = -1);
+    void clone(DataCurve* c);
+
+    QString saveToString();
 
 	QString xColumnName(){return d_x_column;};
 	void setXColumnName(const QString& name){d_x_column = name;};
 
-	bool hasLabels(){return !d_labels_column.isEmpty();};
+	bool hasLabels(){return !d_labels_list.isEmpty();};
 	QString labelsColumnName(){return d_labels_column;};
 	void setLabelsColumnName(const QString& name);
+
+    int labelsAlignment(){return d_labels_align;};
+    void setLabelsAlignment(int flags);
+
+    int labelsXOffset(){return d_labels_x_offset;};
+    int labelsYOffset(){return d_labels_y_offset;};
+    void setLabelsOffset(int x, int y);
+
+    double labelsRotation(){return d_labels_angle;};
+    void setLabelsRotation(double angle);
+
+    QFont labelsFont(){return d_labels_font;};
+    void setLabelsFont(const QFont& font);
+
+    QColor labelsColor(){return d_labels_color;};
+    void setLabelsColor(const QColor& c);
+
+    bool labelsWhiteOut(){return d_white_out_labels;};
+    void setLabelsWhiteOut(bool whiteOut = true);
 
 	Table* table(){return d_table;};
 
@@ -113,10 +134,12 @@ public:
 	void clearErrorBars();
 	//! Clears the list of attached text labels.
 	void clearLabels();
-	
+
 	void setVisible(bool on);
 
 protected:
+    void updateLabelsPosition();
+
 	//! List of the error bar curves associated to this curve.
 	QList <DataCurve *> d_error_bars;
 	//! The data source table.
@@ -140,7 +163,7 @@ protected:
 	QFont d_labels_font;
 	double d_labels_angle;
 	bool d_white_out_labels;
-	int d_labels_align;
+	int d_labels_align, d_labels_x_offset, d_labels_y_offset;
 };
 
 class PlotMarker: public QwtPlotMarker
@@ -153,7 +176,7 @@ public:
 
 	double angle(){return d_angle;};
 	void setAngle(double a){d_angle = a;};
-		
+
 	//QwtDoubleRect boundingRect() const;
 
 protected:

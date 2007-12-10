@@ -118,7 +118,7 @@ class Table: MyWidget
 %End
 
 public:
-  enum PlotDesignation{None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5};
+  enum PlotDesignation{None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5, Label = 6};
 
   int numRows() /PyName=numRows/;
   int numCols() /PyName=numCols/;
@@ -350,7 +350,7 @@ public:
 	void setGrayScale();
 	void setRainbowColorMap();
 	void resetView();
-	
+
 	QImage image();
 	void importImage(const QString&);
 	void exportRasterImage(const QString&, int = 100);
@@ -1180,7 +1180,7 @@ public:
 %End
   // TODO: make it accept Python callables
   void setFormula(const QString&);
-  
+
   bool save(const QString&);
   bool load(const QString&);
 };

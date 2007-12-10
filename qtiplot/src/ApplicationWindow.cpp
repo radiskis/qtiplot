@@ -751,6 +751,7 @@ void ApplicationWindow::initToolBars()
 	columnTools->addAction(actionSetYCol);
 	columnTools->addAction(actionSetZCol);
 	columnTools->addAction(actionSetYErrCol);
+	columnTools->addAction(actionSetLabelCol);
 	columnTools->addAction(actionDisregardCol);
 	columnTools->addSeparator();
 	columnTools->addAction(actionMoveColFirst);
@@ -1021,13 +1022,14 @@ void ApplicationWindow::tableMenuAboutToShow()
 	setAsMenu->addAction(actionSetYCol);
 	setAsMenu->addAction(actionSetZCol);
 	setAsMenu->insertSeparator();
-	setAsMenu->addAction(actionSetYErrCol);
+	setAsMenu->addAction(actionSetLabelCol);
+	setAsMenu->addAction(actionDisregardCol);
+	setAsMenu->insertSeparator();
 	setAsMenu->addAction(actionSetXErrCol);
+	setAsMenu->addAction(actionSetYErrCol);
 	setAsMenu->insertSeparator();
 	setAsMenu->addAction(tr("&Read-only"), this, SLOT(setReadOnlyColumns()));
 	setAsMenu->addAction(tr("Read/&Write"), this, SLOT(setReadWriteColumns()));
-	setAsMenu->insertSeparator();
-	setAsMenu->addAction(actionDisregardCol);
 
 	tableMenu->addAction(actionShowColumnOptionsDialog);
 	tableMenu->insertSeparator();
@@ -1252,6 +1254,7 @@ void ApplicationWindow::customColumnActions()
     actionSetXCol->setEnabled(false);
     actionSetYCol->setEnabled(false);
     actionSetZCol->setEnabled(false);
+    actionSetLabelCol->setEnabled(false);
     actionSetYErrCol->setEnabled(false);
     actionDisregardCol->setEnabled(false);
     actionSwapColumns->setEnabled(false);
@@ -1276,6 +1279,7 @@ void ApplicationWindow::customColumnActions()
         actionSetYCol->setEnabled(true);
         actionSetZCol->setEnabled(true);
         actionSetYErrCol->setEnabled(true);
+        actionSetLabelCol->setEnabled(true);
         actionDisregardCol->setEnabled(true);
 	}
 
@@ -4819,13 +4823,13 @@ void ApplicationWindow::exportGraph()
 	}
 	file.close();
 
-	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || 
+	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
 		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
 		if (plot3D)
 			plot3D->exportVector(file_name);
 		else if (plot2D){
 			if (selected_filter.contains(".svg"))
-				plot2D->exportSVG(file_name);	
+				plot2D->exportSVG(file_name);
 			else
 				plot2D->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
 		}
@@ -4966,7 +4970,7 @@ void ApplicationWindow::exportAllGraphs()
 		}
 		f.close();
 
-		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") || 
+		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") ||
 			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {
 			if (plot3D)
 				plot3D->exportVector(file_name);
@@ -5858,13 +5862,17 @@ void ApplicationWindow::showColMenu(int c)
         QAction * zColID=colType.addAction(QIcon(QPixmap(z_col_xpm)), tr("&Z"), this, SLOT(setZCol()));
         zColID->setCheckable(true);
         colType.insertSeparator();
+        QAction * labelID = colType.addAction(QIcon(QPixmap(set_label_col_xpm)), tr("&Label"), this, SLOT(setLabelCol()));
+        labelID->setCheckable(true);
+        QAction * noneID=colType.addAction(QIcon(QPixmap(disregard_col_xpm)), tr("&None"), this, SLOT(disregardCol()));
+        noneID->setCheckable(true);
+        colType.insertSeparator();
         QAction * xErrColID =colType.addAction(tr("X E&rror"), this, SLOT(setXErrCol()));
         xErrColID->setCheckable(true);
         QAction * yErrColID = colType.addAction(QIcon(QPixmap(errors_xpm)), tr("Y &Error"), this, SLOT(setYErrCol()));
         yErrColID->setCheckable(true);
         colType.insertSeparator();
-        QAction * noneID=colType.addAction(QIcon(QPixmap(disregard_col_xpm)), tr("&None"), this, SLOT(disregardCol()));
-        noneID->setCheckable(true);
+
 
         if (w->colPlotDesignation(c) == Table::X)
             xColID->setChecked(true);
@@ -5876,6 +5884,8 @@ void ApplicationWindow::showColMenu(int c)
             xErrColID->setChecked(true);
         else if (w->colPlotDesignation(c) == Table::yErr)
             yErrColID->setChecked(true);
+        else if (w->colPlotDesignation(c) == Table::Label)
+            labelID->setChecked(true);
         else
             noneID->setChecked(true);
 
@@ -5977,13 +5987,14 @@ void ApplicationWindow::showColMenu(int c)
 		colType.addAction(actionSetYCol);
 		colType.addAction(actionSetZCol);
 		colType.insertSeparator();
+		colType.addAction(actionSetLabelCol);
+		colType.addAction(actionDisregardCol);
+		colType.insertSeparator();
 		colType.addAction(actionSetXErrCol);
 		colType.addAction(actionSetYErrCol);
 		colType.insertSeparator();
 		colType.addAction(tr("&Read-only"), this, SLOT(setReadOnlyColumns()));
 		colType.addAction(tr("Read/&Write"), this, SLOT(setReadWriteColumns()));
-		colType.insertSeparator();
-		colType.addAction(actionDisregardCol);
 		colType.setTitle(tr("Set As"));
 		contextMenu.addMenu(&colType);
 
@@ -10211,8 +10222,15 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
                 ag->updateCurveLayout(curveID, &cl);
 			}
 			curveID++;
-		}
-		else if (s.contains ("FunctionCurve")){
+		} else if (s == "<CurveLabels>"){
+			QStringList lst;
+			while ( s!="</CurveLabels>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			ag->restoreCurveLabels(curveID - 1, lst);
+		} else if (s.contains ("FunctionCurve")){
 			QStringList curve = s.split("\t");
 			CurveLayout cl;
 			cl.connectType=curve[6].toInt();
@@ -11469,6 +11487,9 @@ void ApplicationWindow::createActions()
 	actionDisregardCol = new QAction(QIcon(QPixmap(disregard_col_xpm)), tr("&Disregard"), this);
 	connect(actionDisregardCol, SIGNAL(activated()), this, SLOT(disregardCol()));
 
+	actionSetLabelCol = new QAction(QIcon(QPixmap(set_label_col_xpm)), tr("&Label"), this);
+	connect(actionSetLabelCol, SIGNAL(activated()), this, SLOT(setLabelCol()));
+
 	actionBoxPlot = new QAction(QIcon(QPixmap(boxPlot_xpm)),tr("&Box Plot"), this);
 	connect(actionBoxPlot, SIGNAL(activated()), this, SLOT(plotBoxDiagram()));
 
@@ -11984,6 +12005,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetZCol->setMenuText(tr("&Z"));
 	actionSetXErrCol->setMenuText(tr("X E&rror"));
 	actionSetYErrCol->setMenuText(tr("Y &Error"));
+	actionSetLabelCol->setMenuText(tr("&Label"));
 	actionDisregardCol->setMenuText(tr("&Disregard"));
 	actionReadOnlyCol->setMenuText(tr("&Read Only"));
 
@@ -12549,6 +12571,14 @@ void ApplicationWindow::setZCol()
 		return;
 
 	((Table *)ws->activeWindow())->setPlotDesignation(Table::Z);
+}
+
+void ApplicationWindow::setLabelCol()
+{
+	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+		return;
+
+	((Table *)ws->activeWindow())->setPlotDesignation(Table::Label);
 }
 
 void ApplicationWindow::disregardCol()

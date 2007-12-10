@@ -31,6 +31,23 @@
 #define PIXMAPS_H
 
 /* XPM */
+static const char * set_label_col_xpm[] = {
+"14 11 2 1",
+" 	c None",
+".	c #000000",
+"     .        ",
+" ..  ...   .. ",
+"   . .  . .  .",
+" ... .  . .   ",
+".  . .  . .  .",
+".... ...   .. ",
+"              ",
+"     ....     ",
+"     ....     ",
+"     ....     ",
+"     ....     "};
+
+/* XPM */
 static const char *index_xpm[]={
 "11 16 3 1",
 " 	c None",

@@ -4,7 +4,7 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-SCRIPTING_LANGS += Python
+#SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -239,7 +239,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/MatrixModel.h\
             src/FitModelHandler.h \
             src/TextEditor.h \
-            src/CustomActionDialog.h
+            src/CustomActionDialog.h \
+            src/DoubleSpinBox.h
 
 ###################### SOURCES ##############################################
 
@@ -356,7 +357,8 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/MatrixModel.cpp\
             src/FitModelHandler.cpp \
             src/TextEditor.cpp \
-            src/CustomActionDialog.cpp
+            src/CustomActionDialog.cpp \
+            src/DoubleSpinBox.cpp
 
 ###############################################################
 ##################### Compression (zlib123) ###################

@@ -37,7 +37,7 @@
 #include "ColorButton.h"
 #include "TextFormatButtons.h"
 #include "Table.h"
-#include "FitDialog.h"
+#include "DoubleSpinBox.h"
 #include "ScaleDraw.h"
 
 #include <QColorDialog>
@@ -1257,9 +1257,9 @@ void AxesDialog::initScalesPage()
 	boxBreakStart = new DoubleSpinBox('g');
 	boxBreakStart->setLocale(app->locale());
     boxBreakStart->setDecimals(app->d_decimal_digits);
-	
+
 	middleLayout->addWidget(boxBreakStart, 4, 1);
-	
+
 	middleLayout->addWidget(new QLabel(tr( "Axis Break To" )), 5, 0);
 	boxBreakEnd = new DoubleSpinBox('g');
 	boxBreakEnd->setLocale(app->locale());
@@ -2354,10 +2354,10 @@ bool AxesDialog::updatePlot()
 
 		d_graph->setScale(a, start, end, stp, boxMajorValue->value(), boxMinorValue->currentText().toInt(),
                              boxScaleType->currentIndex(), btnInvert->isChecked());
-		  
+
 		/*ScaleDraw *sc_draw = (ScaleDraw *)d_graph->plotWidget()->axisScaleDraw(a);
 		sc_draw->setAxisBreak(boxBreakStart->value(), boxBreakEnd->value());*/
-		  		  
+
 		d_graph->notifyChanges();
 	}
 	else if (generalDialog->currentWidget()==gridPage){
@@ -2410,7 +2410,7 @@ bool AxesDialog::updatePlot()
 			formatInfo[axis] = boxTableName->currentText();
 		else
 			formatInfo[axis] = boxColName->currentText();
-		
+
 		if (d_graph->axisTitle(axis) != boxTitle->text())
 			d_graph->setAxisTitle(axis, boxTitle->text());
 
@@ -2444,7 +2444,7 @@ void AxesDialog::setGraph(Graph *g)
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
-	
+
 	if (!g)
         return;
 
@@ -2460,12 +2460,12 @@ void AxesDialog::setGraph(Graph *g)
 	yAxisOn = p->axisEnabled(QwtPlot::yLeft);
 	topAxisOn = p->axisEnabled(QwtPlot::xTop);
 	rightAxisOn = p->axisEnabled(QwtPlot::yRight);
-	
+
 	xBottomFont = p->axisFont(QwtPlot::xBottom);
 	yLeftFont = p->axisFont(QwtPlot::yLeft);
 	xTopFont = p->axisFont(QwtPlot::xTop);
 	yRightFont = p->axisFont(QwtPlot::yRight);
-	
+
 	majTicks = p->getMajorTicksType();
 	minTicks = p->getMinorTicksType();
 
@@ -2474,20 +2474,20 @@ void AxesDialog::setGraph(Graph *g)
 
 	xBottomLabelsRotation = g->labelsRotation(QwtPlot::xBottom);
 	xTopLabelsRotation = g->labelsRotation(QwtPlot::xTop);
-	
+
 	for (int axis=0; axis<QwtPlot::axisCnt; axis++){
 		const QwtScaleDraw *sd = p->axisScaleDraw (axis);
 		tickLabelsOn << QString::number(sd->hasComponent(QwtAbstractScaleDraw::Labels));
-		
+
 		QwtScaleWidget *scale = (QwtScaleWidget *)p->axisWidget(axis);
 		if (scale)
 			axesBaseline << scale->margin();
 		else
 			axesBaseline << 0;
 	}
-	
+
 	axesType = d_graph->axesType();
-	
+
 	boxAxesLinewidth->setValue(p->axesLinewidth());
     boxBackbones->setChecked (d_graph->axesBackbones());
 
@@ -2922,7 +2922,7 @@ void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
-	
+
 	Table *w = app->table(labelsColName);
 	if ((type == Graph::Txt || type == Graph::ColHeader) && !w)
 		return;

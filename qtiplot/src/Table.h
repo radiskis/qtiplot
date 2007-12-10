@@ -62,7 +62,7 @@ class Table: public MyWidget, public scripted
     Q_OBJECT
 
 public:
-	enum PlotDesignation{All = -1, None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5, Labels = 6};
+	enum PlotDesignation{All = -1, None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5, Label = 6};
 	enum ColType{Numeric = 0, Text = 1, Date = 2, Time = 3, Month = 4, Day = 5};
 
    	Table(ScriptingEnv *env, const QString &fname,const QString &sep, int ignoredLines, bool renameCols,
@@ -79,7 +79,7 @@ public:
 	//! Updates the decimal separators when importing ASCII files on user request
 	void updateDecimalSeparators(const QLocale& oldSeparators);
 	void resetHeader();
-	
+
 public slots:
 	MyTable* table(){return d_table;};
 	void copy(Table *m);
@@ -104,7 +104,7 @@ public slots:
 
 	int colPlotDesignation(int col){return col_plot_type[col];};
 	void setColPlotDesignation(int col, PlotDesignation pd);
-	void setPlotDesignation(PlotDesignation pd);
+	void setPlotDesignation(PlotDesignation pd, bool rightColumns = false);
 	Q3ValueList<int> plotDesignations(){return col_plot_type;};
 
 	void setHeader(QStringList header);
