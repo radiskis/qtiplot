@@ -713,6 +713,7 @@ public slots:
 	void setZCol();
 	void setXErrCol();
 	void setYErrCol();
+	void setLabelCol();
 	void disregardCol();
 	void setReadOnlyCol();
 	void setReadOnlyColumns();
@@ -1199,7 +1200,7 @@ private:
 	QAction *actionSortTable, *actionSortSelection, *actionNormalizeSelection;
 	QAction *actionNormalizeTable, *actionConvolute, *actionDeconvolute, *actionCorrelate, *actionAutoCorrelate;
 	QAction *actionTranslateHor, *actionTranslateVert, *actionSetAscValues, *actionSetRandomValues;
-	QAction *actionSetXCol, *actionSetYCol, *actionSetZCol, *actionDisregardCol, *actionSetXErrCol, *actionSetYErrCol;
+	QAction *actionSetXCol, *actionSetYCol, *actionSetZCol, *actionSetLabelCol, *actionDisregardCol, *actionSetXErrCol, *actionSetYErrCol;
 	QAction *actionBoxPlot, *actionMultiPeakGauss, *actionMultiPeakLorentz, *actionCheckUpdates;
 	QAction *actionDonate, *actionHomePage, *actionDownloadManual, *actionTechnicalSupport, *actionTranslations;
 	QAction *actionHelpForums, *actionHelpBugReports;

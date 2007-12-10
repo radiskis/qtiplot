@@ -57,6 +57,7 @@ class MultiLayer;
 class SymbolBox;
 class ColorMapEditor;
 class QwtPlotItem;
+class DoubleSpinBox;
 
 static const char* folder_closed[]={
     "16 16 9 1",
@@ -196,8 +197,10 @@ protected slots:
 	void setAxesNumbersFont();
 	void setLegendsFont();
 	void editCurve();
+	void chooseLabelsFont();
 
 private:
+    int labelsAlignment();
 	void closeEvent(QCloseEvent* e);
 
     void clearTabWidget();
@@ -216,6 +219,7 @@ private:
 	void initFontsPage();
 	void initPiePage();
 	void initPrintPage();
+	void initLabelsPage();
     void contextMenuEvent(QContextMenuEvent *e);
 
 	double aspect_ratio;
@@ -290,6 +294,15 @@ private:
 
     SymbolBox *boxMaxStyle, *boxMinStyle, *boxMeanStyle, *box99Style, *box1Style;
     QDoubleSpinBox *whiskerCnt, *boxCnt;
+    //!Labels page
+    QGroupBox *labelsGroupBox;
+    DoubleSpinBox *boxLabelsAngle;
+    QSpinBox *boxLabelsXOffset, *boxLabelsYOffset;
+    QCheckBox *boxLabelsWhiteOut;
+    QPushButton *btnLabelsFont;
+    QComboBox *boxLabelsAlign, *boxLabelsColumn;
+    ColorBox* boxLabelsColor;
+    QWidget *labelsPage;
 };
 
 /*****************************************************************************

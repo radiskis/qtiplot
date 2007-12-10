@@ -107,7 +107,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	columnsBox->addItem(tr("Z (height)"));
 	columnsBox->addItem(tr("X Error"));
 	columnsBox->addItem(tr("Y Error"));
-	columnsBox->addItem(tr("Labels"));
+	columnsBox->addItem(tr("Label"));
     gl1->addWidget(columnsBox, 0, 1);
 
     gl1->addWidget(new QLabel(tr("Display")), 1, 0);
@@ -233,7 +233,9 @@ void TableDialog::updateColumn(int sc)
     d_table->setSelectedCol(sc);
     d_table->table()->clearSelection();
     d_table->table()->selectColumn(sc);
-    columnsBox->setCurrentIndex(d_table->colPlotDesignation(sc));
+    int pd = d_table->colPlotDesignation(sc);
+    columnsBox->setCurrentIndex(pd);
+    displayBox->setEnabled(pd != Table::Label);
 
     QString colLabel = d_table->colLabel(sc);
     colName->setText(colLabel);
@@ -361,36 +363,13 @@ ce->accept();
 
 void TableDialog::setPlotDesignation(int i)
 {
-switch(i)
-	{
-	case 0:
-		d_table->setPlotDesignation(Table::None);
-	break;
-
-	case 1:
-		d_table->setPlotDesignation(Table::X);
-	break;
-
-	case 2:
-		d_table->setPlotDesignation(Table::Y);
-	break;
-
-	case 3:
-		d_table->setPlotDesignation(Table::Z);
-	break;
-
-	case 4:
-		d_table->setPlotDesignation(Table::xErr);
-	break;
-
-	case 5:
-		d_table->setPlotDesignation(Table::yErr);
-	break;
-	
-	case 6:
-		d_table->setPlotDesignation(Table::Labels);
-	break;
-	}
+    d_table->setPlotDesignation((Table::PlotDesignation)i, applyToRightCols->isChecked());
+    if (i == Table::Label){
+        displayBox->setCurrentIndex(1);
+		updateDisplay(1);
+		displayBox->setEnabled(false);
+    } else
+        displayBox->setEnabled(true);
 }
 
 void TableDialog::showPrecisionBox(int item)
@@ -422,25 +401,22 @@ void TableDialog::updatePrecision(int prec)
 
 void TableDialog::updateDisplay(int item)
 {
-labelFormat->show();
-formatBox->show();
-formatBox->clear();
-formatBox->setEditable ( false );
-labelNumeric->hide();
-precisionBox->hide();
+    labelFormat->show();
+    formatBox->show();
+    formatBox->clear();
+    formatBox->setEditable(false);
+    labelNumeric->hide();
+    precisionBox->hide();
 
-if (item == 0)
-	{
-	formatBox->addItem( tr( "Default" ) );
-    formatBox->addItem( tr( "Decimal: 1000" ) );
-    formatBox->addItem( tr( "Scientific: 1E3" ) );
+    if (item == 0){
+        formatBox->addItem( tr( "Default" ) );
+        formatBox->addItem( tr( "Decimal: 1000" ) );
+        formatBox->addItem( tr( "Scientific: 1E3" ) );
 
-	labelNumeric->show();
-	precisionBox->show();
-	}
-else
-	{
-	switch (item)
+        labelNumeric->show();
+        precisionBox->show();
+	} else {
+        switch (item)
 		{
 		case 1:
 			labelFormat->hide();

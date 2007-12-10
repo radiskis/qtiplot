@@ -156,36 +156,4 @@ private:
 	QCheckBox *plotLabelBox, *logBox, *scaleErrorsBox, *globalParamTableBox;
 	QCheckBox *previewBox;
 };
-
-class DoubleSpinBox : public QDoubleSpinBox
-{
-public:
-    DoubleSpinBox(const char format, QWidget * parent = 0);
-	virtual QString textFromValue ( double value ) const {return d_locale.toString(value, d_format, decimals());};
-	virtual double valueFromText ( const QString & text ) const {return d_locale.toDouble(text);};
-	virtual QValidator::State validate ( QString & input, int & pos ) const;
-
-	void setLocale(const QLocale& locale){d_locale = locale;};
-
-private:
-    QLocale d_locale;
-    const char d_format;
-};
-
-class RangeLimitBox : public QWidget
-{
-public:
-	enum LimitType{LeftLimit, RightLimit};
-
-    RangeLimitBox(LimitType type, QWidget * parent = 0);
-	void setLocale(const QLocale& locale){d_spin_box->setLocale(locale);};
-	void setDecimals(int prec){d_spin_box->setDecimals(prec);};
-	double value();
-	bool isChecked(){return d_checkbox->isChecked();};
-
-private:
-    DoubleSpinBox *d_spin_box;
-    QCheckBox *d_checkbox;
-	LimitType d_type;
-};
 #endif // FITDIALOG_H

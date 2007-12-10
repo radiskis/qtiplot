@@ -43,6 +43,7 @@
 #include "QwtPieCurve.h"
 #include "ColorMapEditor.h"
 #include "pixmaps.h"
+#include "DoubleSpinBox.h"
 
 #include <QTreeWidget>
 #include <QLineEdit>
@@ -108,6 +109,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initLayerGeometryPage();
 	initFontsPage();
 	initPrintPage();
+	initLabelsPage();
 
 	clearTabWidget();
 
@@ -231,6 +233,9 @@ void PlotDialog::editCurve()
 
 void PlotDialog::changePlotType(int plotType)
 {
+    if (boxPlotType->count() == 1)
+		return;
+
     CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
     if (!item)
         return;
@@ -241,15 +246,12 @@ void PlotDialog::changePlotType(int plotType)
         return;
 
 	int curveType = item->plotItemType();
-	if (boxPlotType->count() == 1 || (curveType == plotType))
-		return;
-
 	if (curveType == Graph::ColorMap || curveType == Graph::Contour || curveType == Graph::GrayScale)
   		clearTabWidget();
   	else if (curveType == Graph::VectXYAM || curveType == Graph::VectXYXY)
 	{
 		if ((plotType && curveType == Graph::VectXYAM) ||
-				(!plotType && curveType == Graph::VectXYXY))
+            (!plotType && curveType == Graph::VectXYXY))
 			return;
 
 		clearTabWidget();
@@ -522,9 +524,69 @@ void PlotDialog::initPrintPage()
 	privateTabWidget->addTab(printPage, tr( "Print" ) );
 }
 
+void PlotDialog::initLabelsPage()
+{
+    labelsGroupBox = new QGroupBox(tr("&Show"));
+    labelsGroupBox->setCheckable (true);
+
+    QGridLayout *gl = new QGridLayout(labelsGroupBox);
+    gl->addWidget(new QLabel(tr( "Column" )), 0, 0);
+    boxLabelsColumn = new QComboBox();
+    gl->addWidget(boxLabelsColumn, 0, 1);
+
+    gl->addWidget(new QLabel(tr( "Color" )), 1, 0);
+    boxLabelsColor = new ColorBox();
+    gl->addWidget(boxLabelsColor, 1, 1);
+    boxLabelsWhiteOut = new QCheckBox(tr("White O&ut"));
+    gl->addWidget(boxLabelsWhiteOut, 1, 2);
+
+    gl->addWidget(new QLabel(tr( "Justify" )), 2, 0);
+    boxLabelsAlign = new QComboBox();
+    boxLabelsAlign->addItem( tr( "Center" ) );
+    boxLabelsAlign->addItem( tr( "Left" ) );
+    boxLabelsAlign->addItem( tr( "Right" ) );
+    gl->addWidget(boxLabelsAlign, 2, 1);
+    btnLabelsFont = new QPushButton(tr("&Font"));
+    gl->addWidget(btnLabelsFont, 2, 2);
+
+    gl->addWidget(new QLabel(tr( "Rotate (deg)" )), 3, 0);
+    boxLabelsAngle = new DoubleSpinBox('f');
+    boxLabelsAngle->setDecimals(1);
+    boxLabelsAngle->setLocale(((ApplicationWindow *)parent())->locale());
+    boxLabelsAngle->setRange(0, 180);
+    gl->addWidget(boxLabelsAngle, 3, 1);
+
+    gl->addWidget(new QLabel(tr("X Offset (font height %)")), 4, 0);
+    boxLabelsXOffset = new QSpinBox();
+    boxLabelsXOffset->setRange(-INT_MAX, INT_MAX);
+    gl->addWidget(boxLabelsXOffset, 4, 1);
+
+    gl->addWidget(new QLabel(tr("Y Offset (font height %)")), 5, 0);
+    boxLabelsYOffset = new QSpinBox();
+    boxLabelsYOffset->setRange(-INT_MAX, INT_MAX);
+    gl->addWidget(boxLabelsYOffset, 5, 1);
+    gl->setRowStretch (6, 1);
+    gl->setColumnStretch (3, 1);
+
+	labelsPage = new QWidget();
+	QHBoxLayout* hlayout = new QHBoxLayout(labelsPage);
+	hlayout->addWidget(labelsGroupBox);
+	privateTabWidget->addTab(labelsPage, tr("Labels"));
+
+    connect(labelsGroupBox, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
+    connect(boxLabelsColumn, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+    connect(boxLabelsAlign, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+    connect(boxLabelsWhiteOut, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
+    connect(boxLabelsColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+    connect(boxLabelsXOffset, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+    connect(boxLabelsYOffset, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+    connect(boxLabelsAngle, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
+    connect(btnLabelsFont, SIGNAL(clicked()), this, SLOT(chooseLabelsFont()));
+}
+
 void PlotDialog::initAxesPage()
 {
-	QGroupBox *gb = new QGroupBox(tr( "Attach curve to: " ));
+	QGroupBox *gb = new QGroupBox(tr( "Attach curve to: "));
     QGridLayout *gl = new QGridLayout(gb);
     gl->addWidget(new QLabel( tr( "x Axis" )), 0, 0);
 	boxXAxis = new QComboBox();
@@ -1468,16 +1530,27 @@ void PlotDialog::insertTabs(int plot_type)
 		privateTabWidget->addTab (boxPage, tr("Box/Whiskers"));
 		privateTabWidget->addTab (percentilePage, tr("Percentile"));
 		privateTabWidget->showPage(linePage);
+		return;
 	}
 	else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour)
   	{
   		privateTabWidget->addTab(spectrogramPage, tr("Colors") + " / " + tr("Contour"));
   	    privateTabWidget->showPage(spectrogramPage);
+  	    return;
   	}
+
+  	QTreeWidgetItem *item = listBox->currentItem();
+    if (!item || item->type() != CurveTreeItem::PlotCurveTreeItem)
+        return;
+
+    DataCurve *c = (DataCurve *)((CurveTreeItem *)item)->plotItem();
+    if (c && c->type() != Graph::Function)
+        privateTabWidget->addTab (labelsPage, tr("Labels"));
 }
 
 void PlotDialog::clearTabWidget()
 {
+    privateTabWidget->removeTab(privateTabWidget->indexOf(labelsPage));
     privateTabWidget->removeTab(privateTabWidget->indexOf(axesPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(linePage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(symbolPage));
@@ -1805,6 +1878,37 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
                 boxWhiskersCoef->setValue((int)b->whiskersRange());
         }
     }
+
+    DataCurve *dc = (DataCurve *)i;
+    labelsGroupBox->blockSignals(true);
+    labelsGroupBox->setChecked(dc->hasLabels());
+
+    QStringList cols = dc->table()->columnsList();
+    boxLabelsColumn->blockSignals(true);
+    boxLabelsColumn->clear();
+    boxLabelsColumn->addItems(cols);
+    int labelsColIndex = cols.indexOf(dc->labelsColumnName());
+    if (labelsColIndex >= 0)
+        boxLabelsColumn->setCurrentIndex(labelsColIndex);
+    boxLabelsColumn->blockSignals(false);
+
+    boxLabelsAngle->setValue(dc->labelsRotation());
+    boxLabelsColor->setColor(dc->labelsColor());
+    boxLabelsXOffset->setValue(dc->labelsXOffset());
+    boxLabelsYOffset->setValue(dc->labelsYOffset());
+    boxLabelsWhiteOut->setChecked(dc->labelsWhiteOut());
+    switch(dc->labelsAlignment()){
+		case Qt::AlignHCenter:
+			boxLabelsAlign->setCurrentIndex(0);
+			break;
+		case Qt::AlignLeft:
+			boxLabelsAlign->setCurrentIndex(1);
+			break;
+		case Qt::AlignRight:
+			boxLabelsAlign->setCurrentIndex(2);
+			break;
+	}
+	labelsGroupBox->blockSignals(false);
 }
 
 void PlotDialog::updateEndPointColumns(const QString& text)
@@ -2045,6 +2149,30 @@ bool PlotDialog::acceptParams()
 			else
 				b->setWhiskersRange(boxWhiskersRange->currentIndex(), (double)boxWhiskersCoef->value());
 		}
+	} else if (privateTabWidget->currentPage() == labelsPage){
+		DataCurve *c = (DataCurve *)plotItem;
+		if (labelsGroupBox->isChecked()){
+            c->setLabelsColumnName(boxLabelsColumn->currentText());
+
+            QString text = item->text(0);
+            QStringList t = text.split(": ", QString::SkipEmptyParts);
+            QString table = t[0];
+            QStringList cols = t[1].split(",", QString::SkipEmptyParts);
+            if (cols.count() == 3)
+                cols[2] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
+            else if (cols.count() == 5)//vector curves
+                cols[4] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
+            else
+                cols << boxLabelsColumn->currentText().remove(table + "_") + "(L)";
+            item->setText(0, table + ": " + cols.join(","));
+        } else
+            c->clearLabels();
+
+		c->setLabelsRotation(boxLabelsAngle->value());
+		c->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
+		c->setLabelsOffset(boxLabelsXOffset->value(), boxLabelsYOffset->value());
+		c->setLabelsColor(boxLabelsColor->color());
+		c->setLabelsAlignment(labelsAlignment());
 	}
 	graph->replot();
 	graph->notifyChanges();
@@ -2660,6 +2788,47 @@ void PlotDialog::closeEvent(QCloseEvent* e)
 		app->d_extended_plot_dialog = btnMore->isChecked ();
 
 	e->accept();
+}
+
+void PlotDialog::chooseLabelsFont()
+{
+    QTreeWidgetItem *item = listBox->currentItem();
+    if (!item || item->type() != CurveTreeItem::PlotCurveTreeItem)
+        return;
+
+    const QwtPlotItem *i = ((CurveTreeItem *)item)->plotItem();
+    Graph *graph = ((CurveTreeItem *)item)->graph();
+    if (!i || !graph)
+        return;
+
+    DataCurve *c = (DataCurve *)i;
+    bool okF;
+	QFont fnt = QFontDialog::getFont(&okF, c->labelsFont(), this);
+	if (okF && fnt != c->labelsFont()){
+		c->setLabelsFont(fnt);
+        graph->replot();
+        graph->notifyChanges();
+	}
+}
+
+int PlotDialog::labelsAlignment()
+{
+	int align = -1;
+	switch (boxLabelsAlign->currentIndex())
+	{
+		case 0:
+			align = Qt::AlignHCenter;
+			break;
+
+		case 1:
+			align = Qt::AlignLeft;
+			break;
+
+		case 2:
+			align = Qt::AlignRight;
+			break;
+	}
+	return align;
 }
 
 /*****************************************************************************

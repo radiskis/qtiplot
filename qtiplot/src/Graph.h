@@ -145,6 +145,8 @@ class Graph: public QWidget
 		void setSelectedText(LegendWidget *l);
 
 		void deselect();
+        //! Used when restoring DataCurve curveID from a project file
+        void restoreCurveLabels(int curveID, const QStringList& lst);
 
 	public slots:
 		//! Accessor method for #d_plot.

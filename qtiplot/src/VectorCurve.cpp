@@ -310,9 +310,14 @@ QString VectorCurve::plotAssociation()
 {
     QString base = d_x_column + "(X)," + title().text() + "(Y)," + d_end_x_a;
     if (d_style == XYAM)
-        return base + "(A)," + d_end_y_m + "(M)";
+        base += "(A)," + d_end_y_m + "(M)";
     else
-        return base + "(X)," + d_end_y_m + "(Y)";
+        base += "(X)," + d_end_y_m + "(Y)";
+
+    if (!d_labels_column.isEmpty())
+        base += "," + d_labels_column + "(L)";
+
+	return base;
 }
 
 bool VectorCurve::updateData(Table *t, const QString& colName)

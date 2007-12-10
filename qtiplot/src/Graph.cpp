@@ -2125,6 +2125,7 @@ QString Graph::saveCurves()
 				s += QString::number(c->xAxis())+"\t"+QString::number(c->yAxis())+"\t";
 				s += QString::number(c->startRow())+"\t"+QString::number(c->endRow())+"\t";
 				s += QString::number(c->isVisible())+"\n";
+				s += c->saveToString();
 			}else if (c->type() == ErrorBars){
   	        	QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)it;
   	            s += "ErrorBars\t";
@@ -2778,10 +2779,9 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
         for (int i=0; i<curves; i++)
         {//We rearrange the list so that the error bars are placed at the end
         	int j = w->colIndex(names[i]);
-  	        if (w->colPlotDesignation(j) == Table::xErr || 
-				w->colPlotDesignation(j) == Table::yErr || 
-				w->colPlotDesignation(j) == Table::Labels)
-			{
+  	        if (w->colPlotDesignation(j) == Table::xErr ||
+				w->colPlotDesignation(j) == Table::yErr ||
+				w->colPlotDesignation(j) == Table::Label){
 				errCurves++;
 				lst << names[i];
 			} else
@@ -2801,17 +2801,17 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
                     ok = addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
                 else
                     ok = addErrorBars(w->colName(ycol), w, names[i]);
-			} else if (w->colPlotDesignation(j) == Table::Labels){
+			} else if (w->colPlotDesignation(j) == Table::Label){
 				QString labelsCol = names[i];
 				int xcol = w->colX(w->colIndex(labelsCol));
 				int ycol = w->colY(w->colIndex(labelsCol));
 				if (xcol < 0 || ycol < 0)
                     return false;
-				 
+
 				DataCurve* mc = masterCurve(w->colName(xcol), w->colName(ycol));
 				if (mc){
+				    d_plot->replot();
 					mc->setLabelsColumnName(labelsCol);
-					return true;
 				} else
 					return false;
 			} else
@@ -2822,8 +2822,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
 				cl.sSize = sSize;
 				cl.lWidth = lWidth;
 				updateCurveLayout(i, &cl);
-			} else
-                return false;
+			}
 		}
 	}
 	updatePlot();
@@ -4163,8 +4162,11 @@ void Graph::copy(Graph* g)
                 c_keys[i] = d_plot->insertCurve(c);
 			}
 
-			if (c_type[i] != Box && c_type[i] != ErrorBars)
+			if (c_type[i] != Box && c_type[i] != ErrorBars){
 				c->setData(x.data(), y.data(), n);
+				if (c->type() != Function && c->type() != Pie)
+                    ((DataCurve *)c)->clone(cv);
+			}
 
 			c->setPen(cv->pen());
 			c->setBrush(cv->brush());
@@ -4338,7 +4340,7 @@ void Graph::setCurveStyle(int index, int s)
 
 	c->setCurveAttribute(QwtPlotCurve::Fitted, false);
 	c->setCurveAttribute(QwtPlotCurve::Inverted, false);
-	
+
 	if (s == 5){//ancient spline style in Qwt 4.2.0
 		s = QwtPlotCurve::Lines;
 		c->setCurveAttribute(QwtPlotCurve::Fitted, true);
@@ -4354,10 +4356,10 @@ void Graph::setCurveStyle(int index, int s)
 	else {//QwtPlotCurve::Lines || QwtPlotCurve::Dots
 		if (c->symbol().style() != QwtSymbol::NoSymbol)
 			c_type[index] = LineSymbols;
-		else 
+		else
 			c_type[index] = Line;
-	} 
-	
+	}
+
 	c->setStyle((QwtPlotCurve::CurveStyle)s);
 }
 
@@ -4686,6 +4688,48 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
             sp->setVisible(on);
         }
     }
+}
+
+void Graph::restoreCurveLabels(int curveID, const QStringList& lst)
+{
+    DataCurve *c = (DataCurve *)curve(curveID);
+	if (!c)
+		return;
+
+    QString labelsColumn = QString();
+    double xoffset = 0.0, yoffset = 0.0;
+  	QStringList::const_iterator line = lst.begin();
+  	QString s = *line;
+    if (s.contains("<column>"))
+        labelsColumn = s.remove("<column>").remove("</column>").trimmed();
+
+  	for (line++; line != lst.end(); line++){
+        s = *line;
+        if (s.contains("<color>"))
+            c->setLabelsColor(QColor(s.remove("<color>").remove("</color>").trimmed()));
+        else if (s.contains("<whiteOut>"))
+            c->setLabelsWhiteOut(s.remove("<whiteOut>").remove("</whiteOut>").toInt());
+        else if (s.contains("<font>")){
+            QStringList fontList = s.remove("<font>").remove("</font>").trimmed().split("\t");
+            QFont font = QFont(fontList[0], fontList[1].toInt());
+            if (fontList.count() >= 3)
+                font.setBold(fontList[2].toInt());
+            if (fontList.count() >= 4)
+                font.setItalic(fontList[3].toInt());
+            if (fontList.count() >= 5)
+                font.setUnderline(fontList[4].toInt());
+            c->setLabelsFont(font);
+        } else if (s.contains("<angle>"))
+            c->setLabelsRotation(s.remove("<angle>").remove("</angle>").toDouble());
+        else if (s.contains("<justify>"))
+            c->setLabelsAlignment(s.remove("<justify>").remove("</justify>").toInt());
+        else if (s.contains("<xoffset>"))
+            xoffset = s.remove("<xoffset>").remove("</xoffset>").toDouble();
+        else if (s.contains("<yoffset>"))
+            yoffset = s.remove("<yoffset>").remove("</yoffset>").toDouble();
+    }
+    c->setLabelsOffset(xoffset, yoffset);
+    c->setLabelsColumnName(labelsColumn);
 }
 
 bool Graph::validCurvesDataSize()
