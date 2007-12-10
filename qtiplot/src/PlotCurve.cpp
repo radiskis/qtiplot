@@ -255,7 +255,7 @@ void DataCurve::loadData()
 
     if (!d_labels_list.isEmpty()){
         plot()->replot();
-        updateLabelsPosition();
+        loadLabels();
     }
 }
 
@@ -346,19 +346,32 @@ void DataCurve::setLabelsColumnName(const QString& name)
 	if (d_labels_column == name && !d_labels_list.isEmpty())
 		return;
 
-	clearLabels();
 	d_labels_column = name;
+    loadLabels();
+}
 
-	int labelsCol = d_table->colIndex(d_labels_column);
-	if (labelsCol < 0 || labelsCol >= d_table->numCols())
+void DataCurve::loadLabels()
+{
+    clearLabels();
+
+    int xcol = d_table->colIndex(d_x_column);
+    int ycol = d_table->colIndex(title().text());
+    int labelsCol = d_table->colIndex(d_labels_column);
+    int cols = d_table->numCols();
+	if (xcol < 0 || ycol < 0 || labelsCol < 0 ||
+        xcol >= cols || ycol >= cols || labelsCol >= cols)
 		return;
 
 	QwtPlot *d_plot = plot();
 	if (!d_plot)
 		return;
 
+    int index = 0;
 	for (int i = d_start_row; i <= d_end_row; i++){
-		int index = i - d_start_row;
+		if (d_table->text(i, xcol).isEmpty() ||
+            d_table->text(i, ycol).isEmpty())
+            continue;
+
 		PlotMarker *m = new PlotMarker(index, d_labels_angle);
 
 		QwtText t = QwtText(d_table->text(i, labelsCol));
@@ -393,6 +406,7 @@ void DataCurve::setLabelsColumnName(const QString& name)
         m->setYValue(d_plot->invTransform(y_axis, y2));
 		m->attach(d_plot);
 		d_labels_list << m;
+		index++;
 	}
 }
 
@@ -449,25 +463,8 @@ void DataCurve::updateLabelsPosition()
     if (!d_plot)
         return;
 
-    int labelsCol = d_table->colIndex(d_labels_column);
-	if (labelsCol < 0 || labelsCol >= d_table->numCols())
-		return;
-
     foreach(PlotMarker *m, d_labels_list){
         int index = m->index();
-
-        QString text = d_table->text(index + d_start_row, labelsCol);
-		if (text != m->label().text()){
-            QwtText t = QwtText(text);
-            t.setColor(d_labels_color);
-            t.setFont(d_labels_font);
-            if (d_white_out_labels)
-                t.setBackgroundBrush(QBrush(Qt::white));
-            else
-                t.setBackgroundBrush(QBrush(Qt::transparent));
-            m->setLabel(t);
-		}
-
         QSize size = m->label().textSize();
         int x_axis = xAxis();
         int y_axis = yAxis();

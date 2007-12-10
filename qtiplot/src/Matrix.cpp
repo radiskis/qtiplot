@@ -684,6 +684,9 @@ void Matrix::pasteSelection()
 	while(!ts.atEnd()){
 		rows++;
 		s = ts.readLine();
+		int aux = s.split("\t").count();
+		if (aux > cols)
+            cols = aux;
 	}
 	ts.reset();
 
@@ -712,12 +715,16 @@ void Matrix::pasteSelection()
 	for(int i=top; i<top+rows; i++){
 		s = ts2.readLine();
 		cellTexts = s.split("\t");
-		for(int j=left; j<left+cols; j++){
-			double value = system_locale.toDouble(cellTexts[j-left], &numeric);
+		for(int j = left; j<left+cols; j++){
+		    int colIndex = j-left;
+            if (colIndex >= cellTexts.count())
+                break;
+
+			double value = system_locale.toDouble(cellTexts[colIndex], &numeric);
 			if (numeric)
 				d_matrix_model->setCell(i, j, value);
 			else
-				d_matrix_model->setText(i, j, cellTexts[j-left]);
+				d_matrix_model->setText(i, j, cellTexts[colIndex]);
 		}
 	}
 	d_table_view->reset();
@@ -870,7 +877,7 @@ void Matrix::exportRasterImage(const QString& fileName, int quality)
 {
 	d_matrix_model->renderImage().save(fileName, 0, quality);
 }
-	
+
 void Matrix::exportToFile(const QString& fileName)
 {
 	if ( fileName.isEmpty() ){
@@ -901,10 +908,10 @@ void Matrix::exportSVG(const QString& fileName)
 	#if QT_VERSION >= 0x040300
 		if (d_view_type != ImageView)
 			return;
-		
+
 		int width = numRows();
 		int height = numCols();
-		
+
 		QSvgGenerator svg;
         svg.setFileName(fileName);
         svg.setSize(QSize(width, height));
@@ -912,7 +919,7 @@ void Matrix::exportSVG(const QString& fileName)
 		QPainter p(&svg);
         p.drawImage (QRect(0, 0, width, height), d_matrix_model->renderImage());
 		p.end();
-	#endif	
+	#endif
 }
 
 void Matrix::exportPDF(const QString& fileName)
@@ -1281,7 +1288,7 @@ void Matrix::importImage(const QString& fn)
 	QImage image(fn);
     if (image.isNull())
         return;
-	
+
 	setImage(image);
 }
 
