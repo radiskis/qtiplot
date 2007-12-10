@@ -1332,7 +1332,7 @@ void FitDialog::saveInitialGuesses()
 
 	int rows = boxParams->rowCount();
     for (int i=0; i<rows; i++)
-        d_current_fit->setInitialGuess(i, boxParams->item(i, 2)->text().toDouble());
+        d_current_fit->setInitialGuess(i, ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value());
 
     QString fileName = d_current_fit->fileName();
     if (!fileName.isEmpty())

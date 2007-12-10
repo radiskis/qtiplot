@@ -254,7 +254,7 @@ void DataCurve::loadData()
 	}
 
     if (!d_labels_list.isEmpty()){
-        plot()->replot();
+        ((Graph*)plot()->parent())->updatePlot();
         loadLabels();
     }
 }
@@ -562,6 +562,70 @@ QString DataCurve::saveToString()
     if (d_labels_y_offset != 0.0)
         s += "\t<yoffset>" + QString::number(d_labels_y_offset) + "</yoffset>\n";
     return s + "</CurveLabels>\n";
+}
+
+bool DataCurve::selectedLabels(const QPoint& pos)
+{
+    bool selected = false;
+    foreach(PlotMarker *m, d_labels_list){
+		int index = m->index();
+        QSize size = m->label().textSize();
+        int dx = int(d_labels_x_offset*0.01*size.height());
+        int dy = -int((d_labels_y_offset*0.01 + 0.5)*size.height());
+        int x2 = plot()->transform(xAxis(), x(index)) + dx;
+        int y2 = plot()->transform(yAxis(), y(index)) + dy;
+        switch(d_labels_align){
+            case Qt::AlignLeft:
+            break;
+            case Qt::AlignHCenter:
+                x2 -= size.width()/2;
+            break;
+            case Qt::AlignRight:
+                x2 -= size.width();
+            break;
+        }
+        if (QRect(QPoint(x2, y2), size).contains(pos)){
+            setLabelsSelected();
+            return true;
+        }
+	}
+	return selected;
+}
+
+bool DataCurve::hasSelectedLabels()
+{
+    if (d_labels_list.isEmpty())
+        return false;
+
+    foreach(PlotMarker *m, d_labels_list){
+        if (m->label().backgroundPen() == QPen(Qt::blue))
+            return true;
+        else
+            return false;
+    }
+    return false;
+}
+
+void DataCurve::setLabelsSelected(bool on)
+{
+    foreach(PlotMarker *m, d_labels_list){
+		QwtText t = m->label();
+		if(t.text().isEmpty())
+            continue;
+
+        if (on){
+            t.setBackgroundPen(QPen(Qt::blue));
+        } else
+            t.setBackgroundPen(QPen(Qt::NoPen));
+        m->setLabel(t);
+    }
+    if (on){
+        Graph *g = (Graph *)plot()->parent();
+        g->selectTitle(false);
+        g->deselectMarker();
+        g->notifyFontChange(d_labels_font);
+    }
+    plot()->replot();
 }
 
 QwtDoubleRect PlotCurve::boundingRect() const

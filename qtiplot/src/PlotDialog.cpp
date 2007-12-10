@@ -559,11 +559,13 @@ void PlotDialog::initLabelsPage()
     gl->addWidget(new QLabel(tr("X Offset (font height %)")), 4, 0);
     boxLabelsXOffset = new QSpinBox();
     boxLabelsXOffset->setRange(-INT_MAX, INT_MAX);
+    boxLabelsXOffset->setSingleStep(10);
     gl->addWidget(boxLabelsXOffset, 4, 1);
 
     gl->addWidget(new QLabel(tr("Y Offset (font height %)")), 5, 0);
     boxLabelsYOffset = new QSpinBox();
     boxLabelsYOffset->setRange(-INT_MAX, INT_MAX);
+    boxLabelsYOffset->setSingleStep(10);
     gl->addWidget(boxLabelsYOffset, 5, 1);
     gl->setRowStretch (6, 1);
     gl->setColumnStretch (3, 1);

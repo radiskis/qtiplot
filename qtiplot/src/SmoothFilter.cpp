@@ -58,7 +58,7 @@ SmoothFilter::SmoothFilter(ApplicationWindow *parent, Table *t, const QString& x
 
 void SmoothFilter::init (int m)
 {
-    setName(tr("Smoothed"));
+    setObjectName(tr("Smoothed"));
     setMethod(m);
     d_points = d_n;
     d_smooth_points = 2;
