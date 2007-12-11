@@ -609,25 +609,12 @@ bool DataCurve::selectedLabels(const QPoint& pos)
     bool selected = false;
 	d_selected_label = NULL;
     foreach(PlotMarker *m, d_labels_list){
-		int index = m->index();
-        QSize size = m->label().textSize();
-        int dx = int(d_labels_x_offset*0.01*size.height());
-        int dy = -int((d_labels_y_offset*0.01 + 0.5)*size.height());
-        int x2 = plot()->transform(xAxis(), x(index)) + dx;
-        int y2 = plot()->transform(yAxis(), y(index)) + dy;
-        switch(d_labels_align){
-            case Qt::AlignLeft:
-            break;
-            case Qt::AlignHCenter:
-                x2 -= size.width()/2;
-            break;
-            case Qt::AlignRight:
-                x2 -= size.width();
-            break;
-        }
-        if (QRect(QPoint(x2, y2), size).contains(pos)){
+        int x = plot()->transform(xAxis(), m->xValue());
+        int y = plot()->transform(yAxis(), m->yValue());
+        if (QRect(QPoint(x, y), m->label().textSize()).contains(pos)){
 			d_selected_label = m;
-			d_click_pos = pos;
+			d_click_pos_x = plot()->invTransform(xAxis(), pos.x()) - m->xValue();
+			d_click_pos_y = plot()->invTransform(yAxis(), pos.y()) - m->yValue();
             setLabelsSelected();
             return true;
         }
@@ -696,15 +683,21 @@ void DataCurve::moveLabels(const QPoint& pos)
 	if (!d_selected_label || d_labels_list.isEmpty())
 		return;
 		
-    int dx = pos.x() - d_click_pos.x();
-	int dy = pos.y() - d_click_pos.y();		
+	int d_click_x = plot()->transform(xAxis(), d_click_pos_x + d_selected_label->xValue());
+	int d_click_y = plot()->transform(yAxis(), d_click_pos_y + d_selected_label->yValue());
+	
+    int dx = pos.x() - d_click_x;
+	int dy = pos.y() - d_click_y;	
+	
 	int height = d_selected_label->label().textSize().height();
 	d_labels_x_offset += int(dx*100.0/(double)height);
     d_labels_y_offset -= int(dy*100.0/(double)height);
 	
 	updateLabelsPosition();
+	
+	d_click_pos_x = plot()->invTransform(xAxis(), pos.x()) - d_selected_label->xValue();
+	d_click_pos_y = plot()->invTransform(yAxis(), pos.y()) - d_selected_label->yValue();
 	plot()->replot();
-	d_click_pos = pos;
 }
 
 QwtDoubleRect PlotCurve::boundingRect() const

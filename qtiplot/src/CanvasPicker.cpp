@@ -35,8 +35,6 @@
 #include "PlotCurve.h"
 
 #include <QVector>
-#include <QMessageBox>
-
 #include <qwt_text_label.h>
 #include <qwt_plot_canvas.h>
 
@@ -138,7 +136,6 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				DataCurve *c = plot()->selectedCurveLabels();
 				if (c){
-					//QMessageBox::about(0, "", "move labels");
 					c->moveLabels(pos);
 					return true;
 				}
