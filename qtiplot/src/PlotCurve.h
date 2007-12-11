@@ -140,8 +140,11 @@ public:
 	bool selectedLabels(const QPoint& pos);
 	bool hasSelectedLabels();
 	void setLabelsSelected(bool on = true);
+		
+	void moveLabels(const QPoint& pos);
 
 protected:
+	bool validCurveType();
     void loadLabels();
     void updateLabelsPosition();
 
@@ -163,7 +166,11 @@ protected:
 
 	//! List of the text labels associated to this curve.
 	QList <PlotMarker *> d_labels_list;
-
+	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
+	PlotMarker *d_selected_label;
+	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
+	QPoint d_click_pos;
+	
 	QColor d_labels_color;
 	QFont d_labels_font;
 	double d_labels_angle;

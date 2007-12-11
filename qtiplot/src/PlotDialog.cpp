@@ -1546,8 +1546,11 @@ void PlotDialog::insertTabs(int plot_type)
         return;
 
     DataCurve *c = (DataCurve *)((CurveTreeItem *)item)->plotItem();
-    if (c && c->type() != Graph::Function)
+    if (c && c->type() != Graph::Function){
         privateTabWidget->addTab (labelsPage, tr("Labels"));
+		if (c->hasSelectedLabels())
+			privateTabWidget->showPage(labelsPage);
+	}
 }
 
 void PlotDialog::clearTabWidget()
@@ -1768,11 +1771,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     }
 
     PlotCurve *c = (PlotCurve*)i;
-    if (c->type() == Graph::Function)
-        btnEditCurve->setText(tr("&Edit..."));
-    else
-        btnEditCurve->setText(tr("&Plot Associations..."));
-
+	
     //line page
     int style = c->style();
     if (curveType == Graph::Spline)
@@ -1844,6 +1843,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             plusBox->setChecked(err->plusSide());
             minusBox->setChecked(err->minusSide());
         }
+		return;
     }
 
     if (curveType == Graph::Box){
@@ -1879,7 +1879,14 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             else
                 boxWhiskersCoef->setValue((int)b->whiskersRange());
         }
+		return;
     }
+
+	if (c->type() == Graph::Function){
+        btnEditCurve->setText(tr("&Edit..."));
+		return;
+    } else
+        btnEditCurve->setText(tr("&Plot Associations..."));
 
     DataCurve *dc = (DataCurve *)i;
     labelsGroupBox->blockSignals(true);

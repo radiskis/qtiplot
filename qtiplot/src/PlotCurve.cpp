@@ -46,7 +46,8 @@ DataCurve::DataCurve(Table *t, const QString& xColName, const QString& name, int
 	d_white_out_labels(false),
 	d_labels_align(Qt::AlignHCenter),
 	d_labels_x_offset(0),
-	d_labels_y_offset(50)
+	d_labels_y_offset(50),
+	d_selected_label(NULL)
 {
 	if (t && d_end_row < 0)
 		d_end_row = t->numRows() - 1;
@@ -343,6 +344,9 @@ int DataCurve::tableRow(int point)
 
 void DataCurve::setLabelsColumnName(const QString& name)
 {
+	if (!validCurveType())
+		return;
+		
 	if (d_labels_column == name && !d_labels_list.isEmpty())
 		return;
 
@@ -352,6 +356,9 @@ void DataCurve::setLabelsColumnName(const QString& name)
 
 void DataCurve::loadLabels()
 {
+	if (!validCurveType())
+		return;
+		
     clearLabels();
 
     int xcol = d_table->colIndex(d_x_column);
@@ -412,6 +419,9 @@ void DataCurve::loadLabels()
 
 void DataCurve::clearLabels()
 {
+	if (!validCurveType())
+		return;
+		
 	foreach(PlotMarker *m, d_labels_list){
 		m->detach();
 		delete m;
@@ -421,6 +431,9 @@ void DataCurve::clearLabels()
 
 void DataCurve::setLabelsFont(const QFont& font)
 {
+	if (!validCurveType())
+		return;
+		
      if (font == d_labels_font)
         return;
 
@@ -436,6 +449,9 @@ void DataCurve::setLabelsFont(const QFont& font)
 
 void DataCurve::setLabelsColor(const QColor& c)
 {
+	if (!validCurveType())
+		return;
+		
     if (c == d_labels_color)
         return;
 
@@ -450,6 +466,9 @@ void DataCurve::setLabelsColor(const QColor& c)
 
 void DataCurve::setLabelsAlignment(int flags)
 {
+	if (!validCurveType())
+		return;
+		
     if (flags == d_labels_align)
         return;
 
@@ -459,6 +478,9 @@ void DataCurve::setLabelsAlignment(int flags)
 
 void DataCurve::updateLabelsPosition()
 {
+	if (!validCurveType())
+		return;
+		
     QwtPlot *d_plot = plot();
     if (!d_plot)
         return;
@@ -489,6 +511,9 @@ void DataCurve::updateLabelsPosition()
 
 void DataCurve::setLabelsOffset(int x, int y)
 {
+	if (!validCurveType())
+		return;
+		
     if (x == d_labels_x_offset && y == d_labels_y_offset)
         return;
 
@@ -499,6 +524,9 @@ void DataCurve::setLabelsOffset(int x, int y)
 
 void DataCurve::setLabelsRotation(double angle)
 {
+	if (!validCurveType())
+		return;
+		
     if (angle == d_labels_angle)
         return;
 
@@ -510,6 +538,9 @@ void DataCurve::setLabelsRotation(double angle)
 
 void DataCurve::setLabelsWhiteOut(bool whiteOut)
 {
+	if (!validCurveType())
+		return;
+		
     if (whiteOut == d_white_out_labels)
         return;
 
@@ -527,6 +558,9 @@ void DataCurve::setLabelsWhiteOut(bool whiteOut)
 
 void DataCurve::clone(DataCurve* c)
 {
+	if (!validCurveType())
+		return;
+	
     d_labels_color = c->labelsColor();
     d_labels_font = c->labelsFont();
 	d_labels_angle = c->labelsRotation();
@@ -543,7 +577,10 @@ void DataCurve::clone(DataCurve* c)
 
 QString DataCurve::saveToString()
 {
-    if (d_labels_list.isEmpty())
+	if (!validCurveType())
+		return QString();
+	
+    if (d_labels_list.isEmpty() || type() == Graph::Function || type() == Graph::Box)
         return QString();
 
     QString s = "<CurveLabels>\n";
@@ -566,7 +603,11 @@ QString DataCurve::saveToString()
 
 bool DataCurve::selectedLabels(const QPoint& pos)
 {
+	if (!validCurveType())
+		return false;
+	
     bool selected = false;
+	d_selected_label = NULL;
     foreach(PlotMarker *m, d_labels_list){
 		int index = m->index();
         QSize size = m->label().textSize();
@@ -585,6 +626,8 @@ bool DataCurve::selectedLabels(const QPoint& pos)
             break;
         }
         if (QRect(QPoint(x2, y2), size).contains(pos)){
+			d_selected_label = m;
+			d_click_pos = pos;
             setLabelsSelected();
             return true;
         }
@@ -594,6 +637,9 @@ bool DataCurve::selectedLabels(const QPoint& pos)
 
 bool DataCurve::hasSelectedLabels()
 {
+	if (!validCurveType())
+		return false;
+
     if (d_labels_list.isEmpty())
         return false;
 
@@ -608,6 +654,9 @@ bool DataCurve::hasSelectedLabels()
 
 void DataCurve::setLabelsSelected(bool on)
 {
+	if (!validCurveType())
+		return;
+	
     foreach(PlotMarker *m, d_labels_list){
 		QwtText t = m->label();
 		if(t.text().isEmpty())
@@ -626,6 +675,36 @@ void DataCurve::setLabelsSelected(bool on)
         g->notifyFontChange(d_labels_font);
     }
     plot()->replot();
+}
+
+bool DataCurve::validCurveType()
+{
+	int style = type();
+	if (style == Graph::Function || style == Graph::Box || 
+		style == Graph::Pie || style == Graph::ErrorBars || 
+		style == Graph::ColorMap ||  style == Graph::GrayScale ||
+		style == Graph::Contour || style == Graph::ImagePlot)
+		return false;
+	return true;
+}
+
+void DataCurve::moveLabels(const QPoint& pos)
+{
+	if (!validCurveType())
+		return;
+		
+	if (!d_selected_label || d_labels_list.isEmpty())
+		return;
+		
+    int dx = pos.x() - d_click_pos.x();
+	int dy = pos.y() - d_click_pos.y();		
+	int height = d_selected_label->label().textSize().height();
+	d_labels_x_offset += int(dx*100.0/(double)height);
+    d_labels_y_offset -= int(dy*100.0/(double)height);
+	
+	updateLabelsPosition();
+	plot()->replot();
+	d_click_pos = pos;
 }
 
 QwtDoubleRect PlotCurve::boundingRect() const

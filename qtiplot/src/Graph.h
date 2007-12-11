@@ -145,6 +145,7 @@ class Graph: public QWidget
 		void setSelectedText(LegendWidget *l);
 
 		void deselect();
+		DataCurve* selectedCurveLabels();
         //! Used when restoring DataCurve curveID from a project file
         void restoreCurveLabels(int curveID, const QStringList& lst);
 
