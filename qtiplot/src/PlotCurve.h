@@ -169,7 +169,7 @@ protected:
 	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
 	PlotMarker *d_selected_label;
 	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
-	QPoint d_click_pos;
+	double d_click_pos_x, d_click_pos_y;
 	
 	QColor d_labels_color;
 	QFont d_labels_font;
