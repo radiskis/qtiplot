@@ -780,9 +780,9 @@ public:
     sipRes = sipCpp->projectFolder()->table(*a0, true);
 %End
   Table* newTable();
-  Table* newTable(const QString&, int=2, int=30);
+  Table* newTable(const QString&, int=30, int=2);
 %MethodCode
-  sipRes = sipCpp->newTable(*a0, a2, a1);
+  sipRes = sipCpp->newTable(*a0, a1, a2);
 %End
   Matrix* matrix(const QString&);
 %MethodCode

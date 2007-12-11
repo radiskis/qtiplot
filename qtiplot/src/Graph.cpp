@@ -1534,6 +1534,18 @@ void Graph::deselectCurves()
     }
 }
 
+DataCurve* Graph::selectedCurveLabels()
+{
+	QList<QwtPlotItem *> curves = d_plot->curvesList();
+    foreach(QwtPlotItem *i, curves){
+        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+          ((PlotCurve *)i)->type() != Graph::Function &&
+          ((DataCurve *)i)->hasSelectedLabels())
+            return (DataCurve *)i;
+	}
+    return NULL;
+}
+
 bool Graph::titleSelected()
 {
 	return titlePicker->selected();

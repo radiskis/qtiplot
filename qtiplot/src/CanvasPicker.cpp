@@ -32,6 +32,7 @@
 #include "ImageMarker.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
+#include "PlotCurve.h"
 
 #include <QVector>
 #include <QMessageBox>
@@ -135,6 +136,13 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				QPoint pos = me->pos();
 
+				DataCurve *c = plot()->selectedCurveLabels();
+				if (c){
+					//QMessageBox::about(0, "", "move labels");
+					c->moveLabels(pos);
+					return true;
+				}
+				
 				if (plot()->drawLineActive()) {
 					drawLineMarker(pos, plot()->drawArrow());
 					return true;
