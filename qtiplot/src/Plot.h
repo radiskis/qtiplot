@@ -96,10 +96,13 @@ public:
 
     QLocale locale(){return d_locale;};
     void setLocale(const QLocale & l){d_locale = l;};
-	
+
 	void setSVGMode(bool on = true){d_SVG_mode = on;};
 
+    void updateCurveLabels();
+
 protected:
+    void showEvent (QShowEvent * event);
 	void printCanvas(QPainter *painter, const QRect &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 

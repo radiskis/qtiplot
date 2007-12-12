@@ -43,6 +43,7 @@
 #include <qwt_text_label.h>
 
 #include <QPainter>
+#include <QMessageBox>
 
 Plot::Plot(QWidget *parent, const char *)
 : QwtPlot(parent)
@@ -186,29 +187,6 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
 void Plot::drawItems (QPainter *painter, const QRect &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
 {
-   /*for (int i=0; i<QwtPlot::axisCnt; i++){
-		if (!axisEnabled(i))
-			continue;
-
-		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(i);
-		double start = sd->axisBreakLowLimit();
-		double end = sd->axisBreakHighLimit();
-		//if (start == -DBL_MAX && end == DBL_MAX)
-			//continue;
-
-		int x1, x2, y, h;
-		QwtScaleMap m = map[i];
-		if (i == QwtPlot::xBottom){
-			x1 = m.transform (start);
-			y = rect.y();
-			x2 = m.transform (end);
-			h = rect.height();
-		}
-		QRegion cr1(0, y, x1, h);
-		QRegion cr2(x2, y, rect.width() - x2, h);
-		painter->setClipRegion(cr1.united(cr2));
-	}*/
-
 	QwtPlot::drawItems(painter, rect, map, pfilter);
 
 	for (int i=0; i<QwtPlot::axisCnt; i++){
@@ -474,9 +452,10 @@ int Plot::closestCurve(int xpos, int ypos, int &dist, int &point)
 		{
 			PlotCurve *c = (PlotCurve *)item;
 			if (c->type() != Graph::Function && ((DataCurve *)c)->hasLabels() &&
-			    ((DataCurve *)c)->selectedLabels(QPoint(xpos, ypos)))
+                ((DataCurve *)c)->selectedLabels(QPoint(xpos, ypos))){
+                dist = 0;
 			    return iter.key();
-            else
+            } else
                 ((DataCurve *)c)->setLabelsSelected(false);
 
 			for (int i=0; i<c->dataSize(); i++)
@@ -703,4 +682,21 @@ void Plot::updateLayout()
 const QColor & Plot::paletteBackgroundColor() const
 {
 	return	palette().color(QPalette::Window);
+}
+
+void Plot::updateCurveLabels()
+{
+    QList<QwtPlotItem *> curves = curvesList();
+    foreach(QwtPlotItem *i, curves){
+        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+        ((PlotCurve *)i)->type() != Graph::Function &&
+        ((DataCurve *)i)->hasLabels())
+            ((DataCurve *)i)->updateLabelsPosition();
+    }
+}
+
+void Plot::showEvent (QShowEvent * event)
+{
+    event->accept();
+    updateCurveLabels();
 }

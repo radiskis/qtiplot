@@ -3705,16 +3705,15 @@ void Graph::resizeEvent ( QResizeEvent *e )
 	if (ignoreResize || !this->isVisible())
 		return;
 
-	if (autoScaleFonts)
-	{
-		QSize oldSize=e->oldSize();
-		QSize size=e->size();
-
-		double ratio=(double)size.height()/(double)oldSize.height();
-		scaleFonts(ratio);
+	if (autoScaleFonts){
+		QSize oldSize = e->oldSize();
+		QSize size = e->size();
+		d_plot->resize(e->size());
+		scaleFonts((double)size.height()/(double)oldSize.height());
+	} else {
+        d_plot->resize(e->size());
+        d_plot->updateCurveLabels();
 	}
-
-	d_plot->resize(e->size());
 }
 
 void Graph::scaleFonts(double factor)
@@ -3742,6 +3741,19 @@ void Graph::scaleFonts(double factor)
 	font.setPointSizeFloat(factor*font.pointSizeFloat());
 	title.setFont(font);
 	d_plot->setTitle(title);
+
+	QList<QwtPlotItem *> curves = d_plot->curvesList();
+    foreach(QwtPlotItem *i, curves){
+        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+          ((PlotCurve *)i)->type() != Graph::Function &&
+          ((DataCurve *)i)->hasLabels()){
+            QFont font = ((DataCurve *)i)->labelsFont();
+            font.setPointSizeFloat(factor*font.pointSizeFloat());
+            ((DataCurve *)i)->setLabelsFont(font);
+            if (((DataCurve *)i)->hasSelectedLabels())
+                notifyFontChange(font);
+        }
+    }
 
 	d_plot->replot();
 }

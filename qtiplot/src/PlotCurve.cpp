@@ -346,7 +346,7 @@ void DataCurve::setLabelsColumnName(const QString& name)
 {
 	if (!validCurveType())
 		return;
-		
+
 	if (d_labels_column == name && !d_labels_list.isEmpty())
 		return;
 
@@ -358,7 +358,7 @@ void DataCurve::loadLabels()
 {
 	if (!validCurveType())
 		return;
-		
+
     clearLabels();
 
     int xcol = d_table->colIndex(d_x_column);
@@ -421,7 +421,7 @@ void DataCurve::clearLabels()
 {
 	if (!validCurveType())
 		return;
-		
+
 	foreach(PlotMarker *m, d_labels_list){
 		m->detach();
 		delete m;
@@ -433,7 +433,7 @@ void DataCurve::setLabelsFont(const QFont& font)
 {
 	if (!validCurveType())
 		return;
-		
+
      if (font == d_labels_font)
         return;
 
@@ -451,7 +451,7 @@ void DataCurve::setLabelsColor(const QColor& c)
 {
 	if (!validCurveType())
 		return;
-		
+
     if (c == d_labels_color)
         return;
 
@@ -468,7 +468,7 @@ void DataCurve::setLabelsAlignment(int flags)
 {
 	if (!validCurveType())
 		return;
-		
+
     if (flags == d_labels_align)
         return;
 
@@ -480,7 +480,7 @@ void DataCurve::updateLabelsPosition()
 {
 	if (!validCurveType())
 		return;
-		
+
     QwtPlot *d_plot = plot();
     if (!d_plot)
         return;
@@ -513,7 +513,7 @@ void DataCurve::setLabelsOffset(int x, int y)
 {
 	if (!validCurveType())
 		return;
-		
+
     if (x == d_labels_x_offset && y == d_labels_y_offset)
         return;
 
@@ -526,7 +526,7 @@ void DataCurve::setLabelsRotation(double angle)
 {
 	if (!validCurveType())
 		return;
-		
+
     if (angle == d_labels_angle)
         return;
 
@@ -540,7 +540,7 @@ void DataCurve::setLabelsWhiteOut(bool whiteOut)
 {
 	if (!validCurveType())
 		return;
-		
+
     if (whiteOut == d_white_out_labels)
         return;
 
@@ -560,7 +560,7 @@ void DataCurve::clone(DataCurve* c)
 {
 	if (!validCurveType())
 		return;
-	
+
     d_labels_color = c->labelsColor();
     d_labels_font = c->labelsFont();
 	d_labels_angle = c->labelsRotation();
@@ -579,7 +579,7 @@ QString DataCurve::saveToString()
 {
 	if (!validCurveType())
 		return QString();
-	
+
     if (d_labels_list.isEmpty() || type() == Graph::Function || type() == Graph::Box)
         return QString();
 
@@ -605,16 +605,20 @@ bool DataCurve::selectedLabels(const QPoint& pos)
 {
 	if (!validCurveType())
 		return false;
-	
+
+    QwtPlot *d_plot = plot();
+    if (!d_plot)
+        return false;
+
     bool selected = false;
 	d_selected_label = NULL;
     foreach(PlotMarker *m, d_labels_list){
-        int x = plot()->transform(xAxis(), m->xValue());
-        int y = plot()->transform(yAxis(), m->yValue());
+        int x = d_plot->transform(xAxis(), m->xValue());
+        int y = d_plot->transform(yAxis(), m->yValue());
         if (QRect(QPoint(x, y), m->label().textSize()).contains(pos)){
 			d_selected_label = m;
-			d_click_pos_x = plot()->invTransform(xAxis(), pos.x()) - m->xValue();
-			d_click_pos_y = plot()->invTransform(yAxis(), pos.y()) - m->yValue();
+			d_click_pos_x = d_plot->invTransform(xAxis(), pos.x());
+			d_click_pos_y = d_plot->invTransform(yAxis(), pos.y());
             setLabelsSelected();
             return true;
         }
@@ -643,7 +647,7 @@ void DataCurve::setLabelsSelected(bool on)
 {
 	if (!validCurveType())
 		return;
-	
+
     foreach(PlotMarker *m, d_labels_list){
 		QwtText t = m->label();
 		if(t.text().isEmpty())
@@ -667,8 +671,8 @@ void DataCurve::setLabelsSelected(bool on)
 bool DataCurve::validCurveType()
 {
 	int style = type();
-	if (style == Graph::Function || style == Graph::Box || 
-		style == Graph::Pie || style == Graph::ErrorBars || 
+	if (style == Graph::Function || style == Graph::Box ||
+		style == Graph::Pie || style == Graph::ErrorBars ||
 		style == Graph::ColorMap ||  style == Graph::GrayScale ||
 		style == Graph::Contour || style == Graph::ImagePlot)
 		return false;
@@ -679,25 +683,28 @@ void DataCurve::moveLabels(const QPoint& pos)
 {
 	if (!validCurveType())
 		return;
-		
 	if (!d_selected_label || d_labels_list.isEmpty())
 		return;
-		
-	int d_click_x = plot()->transform(xAxis(), d_click_pos_x + d_selected_label->xValue());
-	int d_click_y = plot()->transform(yAxis(), d_click_pos_y + d_selected_label->yValue());
-	
-    int dx = pos.x() - d_click_x;
-	int dy = pos.y() - d_click_y;	
-	
+
+    QwtPlot *d_plot = plot();
+    if (!d_plot)
+        return;
+
+    d_plot->replot();
+    int d_x = pos.x() - d_plot->transform(xAxis(), d_click_pos_x);
+	int d_y = pos.y() - d_plot->transform(yAxis(), d_click_pos_y);
+
 	int height = d_selected_label->label().textSize().height();
-	d_labels_x_offset += int(dx*100.0/(double)height);
-    d_labels_y_offset -= int(dy*100.0/(double)height);
-	
+	d_labels_x_offset += int(d_x*100.0/(double)height);
+    d_labels_y_offset -= int(d_y*100.0/(double)height);
+
 	updateLabelsPosition();
-	
-	d_click_pos_x = plot()->invTransform(xAxis(), pos.x()) - d_selected_label->xValue();
-	d_click_pos_y = plot()->invTransform(yAxis(), pos.y()) - d_selected_label->yValue();
-	plot()->replot();
+	d_plot->replot();
+
+    ((Graph *)d_plot->parent())->notifyChanges();
+
+	d_click_pos_x = d_plot->invTransform(xAxis(), pos.x());
+	d_click_pos_y = d_plot->invTransform(yAxis(), pos.y());
 }
 
 QwtDoubleRect PlotCurve::boundingRect() const

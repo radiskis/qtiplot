@@ -140,13 +140,13 @@ public:
 	bool selectedLabels(const QPoint& pos);
 	bool hasSelectedLabels();
 	void setLabelsSelected(bool on = true);
-		
+
 	void moveLabels(const QPoint& pos);
+    void updateLabelsPosition();
 
 protected:
 	bool validCurveType();
     void loadLabels();
-    void updateLabelsPosition();
 
 	//! List of the error bar curves associated to this curve.
 	QList <DataCurve *> d_error_bars;
@@ -168,9 +168,9 @@ protected:
 	QList <PlotMarker *> d_labels_list;
 	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
 	PlotMarker *d_selected_label;
-	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
+	//! Keep track of the coordinates of the point where the user clicked when selecting the labels.
 	double d_click_pos_x, d_click_pos_y;
-	
+
 	QColor d_labels_color;
 	QFont d_labels_font;
 	double d_labels_angle;
