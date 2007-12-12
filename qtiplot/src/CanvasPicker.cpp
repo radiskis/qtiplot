@@ -139,7 +139,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					c->moveLabels(pos);
 					return true;
 				}
-				
+
 				if (plot()->drawLineActive()) {
 					drawLineMarker(pos, plot()->drawArrow());
 					return true;
