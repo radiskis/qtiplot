@@ -145,9 +145,6 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-	connect( buttonBackground, SIGNAL( clicked() ), this, SLOT( pickBgColor() ) );
-	connect( buttonText, SIGNAL( clicked() ), this, SLOT( pickTextColor() ) );
-	connect( buttonHeader, SIGNAL( clicked() ), this, SLOT( pickHeaderColor() ) );
 	connect( buttonTextFont, SIGNAL( clicked() ), this, SLOT( pickTextFont() ) );
 	connect( buttonHeaderFont, SIGNAL( clicked() ), this, SLOT( pickHeaderFont() ) );
 
@@ -194,7 +191,7 @@ void ConfigDialog::initTablesPage()
 
 	lblTextColor = new QLabel();
 	colorsLayout->addWidget( lblTextColor, 1, 0 );
-	buttonText= new ColorButton();
+	buttonText = new ColorButton();
 	buttonText->setColor(app->tableTextColor);
 	colorsLayout->addWidget( buttonText, 1, 1 );
 
@@ -625,9 +622,6 @@ void ConfigDialog::initAppPage()
 	connect( boxLanguage, SIGNAL( activated(int) ), this, SLOT( switchToLanguage(int) ) );
 	connect( fontsBtn, SIGNAL( clicked() ), this, SLOT( pickApplicationFont() ) );
 	connect( boxSave, SIGNAL( toggled(bool) ), boxMinutes, SLOT( setEnabled(bool) ) );
-	connect( btnWorkspace, SIGNAL( clicked() ), this, SLOT( pickWorkspaceColor() ) );
-	connect( btnPanels, SIGNAL( clicked() ), this, SLOT( pickPanelsColor() ) );
-	connect( btnPanelsText, SIGNAL( clicked() ), this, SLOT( pickPanelsTextColor() ) );
 }
 
 void ConfigDialog::initFittingPage()
@@ -1224,33 +1218,6 @@ int ConfigDialog::curveStyle()
 	return style;
 }
 
-void ConfigDialog::pickBgColor()
-{
-	QColor c = QColorDialog::getColor(buttonBackground->color(), this);
-	if ( !c.isValid() || c == buttonBackground->color())
-		return;
-
-	buttonBackground->setColor(c);
-}
-
-void ConfigDialog::pickTextColor()
-{
-	QColor c = QColorDialog::getColor(buttonText->color(), this);
-	if ( !c.isValid() || c == buttonText->color())
-		return;
-
-	buttonText->setColor(c);
-}
-
-void ConfigDialog::pickHeaderColor()
-{
-	QColor c = QColorDialog::getColor(buttonHeader->color(), this);
-	if ( !c.isValid() || c == buttonHeader->color())
-		return;
-
-	buttonHeader->setColor(c);
-}
-
 void ConfigDialog::pickTextFont()
 {
 	bool ok;
@@ -1325,33 +1292,6 @@ void ConfigDialog::pickApplicationFont()
 	else
 		return;
 	fontsBtn->setFont(appFont);
-}
-
-void ConfigDialog::pickPanelsTextColor()
-{
-	QColor c = QColorDialog::getColor(btnPanelsText->color(), this);
-	if ( !c.isValid() || c == btnPanelsText->color())
-		return;
-
-	btnPanelsText->setColor(c);
-}
-
-void ConfigDialog::pickPanelsColor()
-{
-	QColor c = QColorDialog::getColor(btnPanels->color(), this);
-	if ( !c.isValid() || c == btnPanels->color())
-		return;
-
-	btnPanels->setColor(c);
-}
-
-void ConfigDialog::pickWorkspaceColor()
-{
-	QColor c = QColorDialog::getColor(btnWorkspace->color(), this);
-	if ( !c.isValid() || c == btnWorkspace->color())
-		return;
-
-	btnWorkspace->setColor(c);
 }
 
 void ConfigDialog::pickDataMaxColor()

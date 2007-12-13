@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Text label/axis label options dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -32,7 +32,6 @@
 #include "LegendWidget.h"
 
 #include <QFontDialog>
-#include <QColorDialog>
 #include <QFont>
 #include <QGroupBox>
 #include <QTextEdit>
@@ -83,7 +82,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl )
 
 	buttonApply = new QPushButton(tr( "&Apply" ));
 	buttonApply->setDefault( true );
-	
+
 	// add apply button
 	topLayout->addWidget( buttonApply, 1, 3 );
 
@@ -123,16 +122,15 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl )
      	boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
 		// add background button
 		topLayout->addWidget( boxBackgroundTransparency, 3, 1 );
-		
-		// add label "background color"	
+
+		// add label "background color"
 		topLayout->addWidget(new QLabel(tr("Background color")), 4, 0);
 		backgroundBtn = new ColorButton(groupBox1);
 		backgroundBtn->setEnabled(false);
 		// add background button
-		topLayout->addWidget( backgroundBtn, 4, 1 );	
+		topLayout->addWidget( backgroundBtn, 4, 1 );
 
-		connect(backgroundBtn, SIGNAL(clicked()), this, SLOT(pickBackgroundColor()));
-		connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), 
+		connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)),
 				this, SLOT(updateTransparency(int)));
 
 		buttonDefault = new QPushButton( tr( "Set As &Default" ) );
@@ -180,7 +178,6 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl )
 	setLayout( mainLayout );
 
 	// signals and slots connections
-	connect( colorBtn, SIGNAL( clicked() ), this, SLOT( pickTextColor() ) );
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
@@ -191,16 +188,16 @@ void TextDialog::setLegendWidget(LegendWidget *l)
 {
 	if (!l)
 		return;
-	
+
 	d_legend = l;
-	
+
 	setText(l->text());
 	selectedFont = l->font();
 	colorBtn->setColor(l->textColor());
-	setBackgroundColor(l->backgroundColor());	
+	setBackgroundColor(l->backgroundColor());
 	backgroundBox->setCurrentIndex(l->frameStyle());
 	setAngle(l->angle());
-	
+
 	d_legend->setSelected(false);
 }
 
@@ -210,11 +207,11 @@ void TextDialog::apply()
 		emit changeAlignment(alignment());
 		emit changeText(textEditBox->toPlainText());
 		emit changeColor(colorBtn->color());
-	} else if (d_legend){		
+	} else if (d_legend){
 		QColor c = backgroundBtn->color();
 		c.setAlpha(boxBackgroundTransparency->value());
 		d_legend->setBackgroundColor(c);
-		
+
 		d_legend->setText(textEditBox->text());
 		d_legend->setAngle(angle());
 		d_legend->setTextColor(colorBtn->color());
@@ -229,7 +226,7 @@ void TextDialog::setDefaultValues()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
-	
+
 	QColor c = backgroundBtn->color();
 	c.setAlpha(boxBackgroundTransparency->value());
 	app->setLegendDefaultSettings(backgroundBox->currentIndex(), selectedFont, colorBtn->color(), c);
@@ -267,7 +264,7 @@ int TextDialog::alignment()
 }
 
 void TextDialog::setAlignment(int align)
-{	
+{
 	switch(align)
 	{
 		case Qt::AlignHCenter:
@@ -288,14 +285,14 @@ void TextDialog::customFont()
 	QFont fnt = QFontDialog::getFont( &okF, selectedFont, this);
 	if (okF && fnt != selectedFont)
 	{
-		selectedFont = fnt;		
+		selectedFont = fnt;
 		emit changeFont (fnt);
 	}
 }
 
 void TextDialog::setAngle(int /*angle*/)
 {
-	//TODO: Implement angle feature 
+	//TODO: Implement angle feature
 //X	rotateBox-> ...
 }
 
@@ -309,7 +306,7 @@ int TextDialog::angle()
 void TextDialog::setText(const QString & t)
 {
 	QTextCursor cursor = textEditBox->textCursor();
-	// select the whole (old) text 
+	// select the whole (old) text
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::End,QTextCursor::KeepAnchor);
 	// replace old text
@@ -317,7 +314,7 @@ void TextDialog::setText(const QString & t)
 	// select the whole (new) text
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::End,QTextCursor::KeepAnchor);
-	// this line makes the selection visible to the user 
+	// this line makes the selection visible to the user
 	// (the 2 lines above only change the selection in the
 	// underlying QTextDocument)
 	textEditBox->setTextCursor(cursor);
@@ -330,31 +327,13 @@ void TextDialog::setTextColor(QColor c)
 	colorBtn->setColor(c);
 }
 
-void TextDialog::pickTextColor()
-{
-	QColor c = QColorDialog::getColor( colorBtn->color(), this);
-	if ( !c.isValid() || c ==  colorBtn->color() )
-		return;
-
-	colorBtn->setColor ( c ) ;
-}
-
 void TextDialog::setBackgroundColor(QColor c)
 {
 	boxBackgroundTransparency->setValue(c.alpha());
 	backgroundBtn->setEnabled(c.alpha());
 	c.setAlpha(255);
-	
+
 	backgroundBtn->setColor(c);
-}
-
-void TextDialog::pickBackgroundColor()
-{
-	QColor c = QColorDialog::getColor( backgroundBtn->color(), this);
-	if ( !c.isValid() || c ==  backgroundBtn->color() )
-		return;
-
-	backgroundBtn->setColor ( c ) ;
 }
 
 void TextDialog::setFont(const QFont & fnt)

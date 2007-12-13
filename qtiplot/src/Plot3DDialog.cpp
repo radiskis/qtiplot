@@ -48,7 +48,6 @@
 #include <QFileDialog>
 #include <QGroupBox>
 #include <QFontDialog>
-#include <QColorDialog>
 #include <QApplication>
 
 #include <qwt3d_color.h>
@@ -223,7 +222,6 @@ void Plot3DDialog::initTitlePage()
     title->setLayout(vl);
 	generalDialog->insertTab(title, tr( "&Title" ) );
 
-	connect( btnTitleColor, SIGNAL(clicked()), this, SLOT(pickTitleColor() ) );
 	connect( btnTitleFont, SIGNAL(clicked()), this, SLOT(pickTitleFont() ) );
 	connect( buttonLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()));
 	connect( buttonUpperGreek, SIGNAL(clicked()), this, SLOT(showUpperGreek()));
@@ -318,15 +316,7 @@ void Plot3DDialog::initColorsPage()
     colors->setLayout(vl);
 	generalDialog->insertTab(colors, tr( "&Colors" ) );
 
-	connect( btnAxes, SIGNAL( clicked() ), this, SLOT(pickAxesColor() ) );
-	connect( btnLabels, SIGNAL( clicked() ), this, SLOT(pickLabelColor() ) );
-	connect( btnNumbers, SIGNAL( clicked() ), this, SLOT(pickNumberColor() ) );
-	connect( btnBackground, SIGNAL( clicked() ), this, SLOT(pickBgColor() ) );
-	connect( btnFromColor, SIGNAL( clicked() ), this, SLOT(pickFromColor() ) );
-	connect( btnToColor, SIGNAL( clicked() ), this, SLOT(pickToColor() ) );
 	connect( btnColorMap, SIGNAL( clicked() ), this, SLOT(pickDataColorMap() ) );
-	connect( btnGrid, SIGNAL( clicked() ), this, SLOT(pickGridColor() ) );
-	connect( btnMesh, SIGNAL( clicked() ), this, SLOT(pickMeshColor() ) );
 	connect( boxTransparency, SIGNAL( valueChanged(int) ), this, SLOT(changeTransparency(int) ) );
 }
 
@@ -683,86 +673,6 @@ if (!fn.isEmpty())
    d_plot->setDataColorMap(fn);
 }
 
-QColor Plot3DDialog::pickFromColor()
-{
-	QColor c = QColorDialog::getColor(btnFromColor->color(), this );
-	if ( !c.isValid() )
-		return btnFromColor->color();
-
-    btnFromColor->setColor(c);
-	return c;
-}
-
-QColor Plot3DDialog::pickToColor()
-{
-	QColor c = QColorDialog::getColor(btnToColor->color(), this );
-	if ( !c.isValid() )
-		return btnToColor->color();
-
-    btnToColor->setColor(c);
-	return c;
-}
-
-QColor Plot3DDialog::pickGridColor()
-{
-	QColor c = QColorDialog::getColor(btnGrid->color(), this);
-	if ( !c.isValid() )
-		return btnGrid->color();
-
-	btnGrid->setColor(c);
-	return c;
-}
-
-QColor Plot3DDialog::pickAxesColor()
-{
-	QColor c = QColorDialog::getColor(btnAxes->color(), this);
-	if ( !c.isValid() )
-		return btnAxes->color();
-
-	btnAxes->setColor(c);
-	return c;
-}
-
-QColor Plot3DDialog::pickBgColor()
-{
-	QColor c = QColorDialog::getColor(btnBackground->color(), this );
-	if ( !c.isValid() )
-		return btnBackground->color();
-
-	btnBackground->setColor(c);
-	return c;
-}
-
-QColor Plot3DDialog::pickNumberColor()
-{
-	QColor c = QColorDialog::getColor(btnNumbers->color(), this );
-	if ( !c.isValid() )
-		return btnNumbers->color();
-
-	btnNumbers->setColor(c);
-	return c;
-}
-
-QColor Plot3DDialog::pickLabelColor()
-{
-	QColor c = QColorDialog::getColor(btnLabels->color(), this );
-	if ( !c.isValid() )
-		return btnLabels->color();
-
-	btnLabels->setColor(c);
-	return c;
-}
-
-QColor Plot3DDialog::pickTitleColor()
-{
-	QColor c = QColorDialog::getColor(btnTitleColor->color(), this );
-	if ( !c.isValid() )
-		return btnTitleColor->color();
-
-	btnTitleColor->setColor(c);
-	return c;
-}
-
 void Plot3DDialog::pickTitleFont()
 {
 	bool ok;
@@ -800,17 +710,6 @@ void Plot3DDialog::viewScaleLimits(int axis)
 	boxMajors->setValue(scales[5*axis+2].toInt());
 	boxMinors->setValue(scales[5*axis+3].toInt());
 	boxType->setCurrentIndex(scales[5*axis+4].toInt());
-}
-
-QColor Plot3DDialog::pickMeshColor()
-{
-
-	QColor c = QColorDialog::getColor(btnMesh->color(), this);
-	if ( !c.isValid() )
-		return btnMesh->color();
-
-	btnMesh->setColor(c);
-	return c;
 }
 
 void Plot3DDialog::accept()

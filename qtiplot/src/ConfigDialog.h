@@ -67,10 +67,6 @@ public slots:
 
 	void setCurrentPage(int index);
 	void setColumnSeparator(const QString& sep);
-	//table colors
-	void pickBgColor();
-	void pickTextColor();
-	void pickHeaderColor();
 
 	//table fonts
 	void pickTextFont();
@@ -87,9 +83,6 @@ public slots:
 
 	//application
 	void pickApplicationFont();
-	void pickPanelsTextColor();
-	void pickPanelsColor();
-	void pickWorkspaceColor();
 
 	//2D curves
 	int curveStyle();
