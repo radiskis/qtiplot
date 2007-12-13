@@ -605,11 +605,12 @@ bool DataCurve::selectedLabels(const QPoint& pos)
 {
 	if (!validCurveType())
 		return false;
-
+	
     QwtPlot *d_plot = plot();
     if (!d_plot)
         return false;
 
+	
     bool selected = false;
 	d_selected_label = NULL;
     foreach(PlotMarker *m, d_labels_list){

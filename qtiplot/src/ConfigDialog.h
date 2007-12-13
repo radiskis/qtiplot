@@ -86,15 +86,6 @@ public slots:
 
 	//2D curves
 	int curveStyle();
-
-	void pickDataMaxColor();
-	void pickDataMinColor();
-	void pick3DBackgroundColor();
-	void pickMeshColor();
-	void pickGridColor();
-	void pick3DAxesColor();
-	void pick3DNumbersColor();
-	void pick3DLabelsColor();
 	void pick3DTitleFont();
 	void pick3DNumbersFont();
 	void pick3DAxesFont();
@@ -115,12 +106,11 @@ private:
 
 	QFont textFont, headerFont, axesFont, numbersFont, legendFont, titleFont, appFont;
 	QFont plot3DTitleFont, plot3DNumbersFont, plot3DAxesFont;
-	QStringList plot3DColors;
 
 	QCheckBox *boxScaleLayersOnPrint, *boxPrintCropmarks, *boxUpdateSeparators, *linearFit2PointsBox;
 	QTabWidget *plotsTabWidget, *appTabWidget;
-	QPushButton *btnBackground3D, *btnMesh, *btnAxes, *btnLabels, *btnNumbers;
-	QPushButton *btnFromColor, *btnToColor, *btnGrid;
+	ColorButton *btnBackground3D, *btnMesh, *btnAxes, *btnLabels, *btnNumbers;
+	ColorButton *btnFromColor, *btnToColor, *btnGrid;
 	QPushButton	*btnTitleFnt, *btnLabelsFnt, *btnNumFnt;
 	ColorButton *buttonBackground, *buttonText, *buttonHeader;
     QPushButton *buttonOk, *buttonCancel, *buttonApply;

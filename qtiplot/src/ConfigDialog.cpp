@@ -42,7 +42,6 @@
 #include <QGroupBox>
 #include <QFont>
 #include <QFontDialog>
-#include <QColorDialog>
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QWidget>
@@ -66,7 +65,6 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 {
 	// get current values from app window
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	plot3DColors = app->plot3DColors;
 	plot3DTitleFont = app->plot3DTitleFont;
 	plot3DNumbersFont = app->plot3DNumbersFont;
 	plot3DAxesFont = app->plot3DAxesFont;
@@ -439,22 +437,32 @@ void ConfigDialog::initPlots3DPage()
 
 	groupBox3DCol = new QGroupBox();
 	QGridLayout * middleLayout = new QGridLayout( groupBox3DCol );
-
-	btnFromColor = new QPushButton();
+	
+	QStringList plot3DColors = app->plot3DColors; 
+	
+	btnFromColor = new ColorButton();
+	btnFromColor->setColor(QColor(plot3DColors[4]));
 	middleLayout->addWidget( btnFromColor, 0, 0 );
-	btnLabels = new QPushButton();
+	btnLabels = new ColorButton();
+	btnLabels->setColor(QColor(plot3DColors[1]));
 	middleLayout->addWidget( btnLabels, 0, 1 );
-	btnMesh = new QPushButton();
+	btnMesh = new ColorButton();
+	btnMesh->setColor(QColor(plot3DColors[2]));
 	middleLayout->addWidget( btnMesh, 0, 2 );
-	btnGrid = new QPushButton();
+	btnGrid = new ColorButton();
+	btnGrid->setColor(QColor(plot3DColors[3]));
 	middleLayout->addWidget( btnGrid, 0, 3 );
-	btnToColor = new QPushButton();
+	btnToColor = new ColorButton();
+	btnToColor->setColor(QColor(plot3DColors[0]));
 	middleLayout->addWidget( btnToColor, 1, 0 );
-	btnNumbers = new QPushButton();
+	btnNumbers = new ColorButton();
+	btnNumbers->setColor(QColor(plot3DColors[5]));
 	middleLayout->addWidget( btnNumbers, 1, 1 );
-	btnAxes = new QPushButton();
+	btnAxes = new ColorButton();
+	btnAxes->setColor(QColor(plot3DColors[6]));
 	middleLayout->addWidget( btnAxes, 1, 2 );
-	btnBackground3D = new QPushButton();
+	btnBackground3D = new ColorButton();
+	btnBackground3D->setColor(QColor(plot3DColors[7]));
 	middleLayout->addWidget( btnBackground3D, 1, 3 );
 
 	groupBox3DFonts = new QGroupBox();
@@ -471,16 +479,7 @@ void ConfigDialog::initPlots3DPage()
 	plots3DPageLayout->addWidget(groupBox3DCol);
 	plots3DPageLayout->addWidget(groupBox3DFonts);
 	plots3DPageLayout->addStretch();
-
-	connect( btnAxes, SIGNAL( clicked() ), this, SLOT(pick3DAxesColor() ) );
-	connect( btnLabels, SIGNAL( clicked() ), this, SLOT(pick3DLabelsColor() ) );
-	connect( btnNumbers, SIGNAL( clicked() ), this, SLOT(pick3DNumbersColor() ) );
-	connect( btnBackground3D, SIGNAL( clicked() ), this, SLOT(pick3DBackgroundColor()));
-	connect( btnFromColor, SIGNAL( clicked() ), this, SLOT(pickDataMinColor() ) );
-	connect( btnToColor, SIGNAL( clicked() ), this, SLOT(pickDataMaxColor() ) );
-	connect( btnGrid, SIGNAL( clicked() ), this, SLOT(pickGridColor() ) );
-	connect( btnMesh, SIGNAL( clicked() ), this, SLOT(pickMeshColor() ) );
-
+	
 	connect( btnNumFnt, SIGNAL( clicked() ), this, SLOT(pick3DNumbersFont() ) );
 	connect( btnTitleFnt, SIGNAL( clicked() ), this, SLOT(pick3DTitleFont() ) );
 	connect( btnLabelsFnt, SIGNAL( clicked() ), this, SLOT(pick3DAxesFont() ) );
@@ -1143,7 +1142,11 @@ void ConfigDialog::apply()
 	// general page: colors tab
 	app->setAppColors(btnWorkspace->color(), btnPanels->color(), btnPanelsText->color());
 	// 3D plots page
+	QStringList plot3DColors = QStringList() << btnToColor->color().name() << btnLabels->color().name();
+	plot3DColors << btnMesh->color().name() << btnGrid->color().name() << btnFromColor->color().name();
+	plot3DColors << btnNumbers->color().name() << btnAxes->color().name() << btnBackground3D->color().name();
 	app->plot3DColors = plot3DColors;
+	
 	app->showPlot3DLegend = boxShowLegend->isChecked();
 	app->showPlot3DProjection = boxShowProjection->isChecked();
 	app->plot3DResolution = boxResolution->value();
@@ -1292,78 +1295,6 @@ void ConfigDialog::pickApplicationFont()
 	else
 		return;
 	fontsBtn->setFont(appFont);
-}
-
-void ConfigDialog::pickDataMaxColor()
-{
-	QColor c = QColorDialog::getColor(QColor(plot3DColors[0]), this );
-	if ( !c.isValid() )
-		return;
-
-	plot3DColors[0] = c.name();
-}
-
-void ConfigDialog::pickDataMinColor()
-{
-	QColor c = QColorDialog::getColor(QColor(plot3DColors[4]), this );
-	if ( !c.isValid() )
-		return;
-
-	plot3DColors[4] = c.name();
-}
-
-void ConfigDialog::pick3DBackgroundColor()
-{
-	QColor c = QColorDialog::getColor(QColor(plot3DColors[7]), this );
-	if ( !c.isValid() )
-		return;
-
-	plot3DColors[7] = c.name();
-}
-
-void ConfigDialog::pickMeshColor()
-{
-	QColor c = QColorDialog::getColor(QColor(plot3DColors[2]), this );
-	if ( !c.isValid() )
-		return;
-
-	plot3DColors[2] = c.name();
-}
-
-void ConfigDialog::pickGridColor()
-{
-	QColor c = QColorDialog::getColor(QColor(plot3DColors[3]), this );
-	if ( !c.isValid() )
-		return;
-
-	plot3DColors[3] = c.name();
-}
-
-void ConfigDialog::pick3DAxesColor()
-{
-	QColor c = QColorDialog::getColor(QColor(plot3DColors[6]), this );
-	if ( !c.isValid() )
-		return;
-
-	plot3DColors[6] = c.name();
-}
-
-void ConfigDialog::pick3DNumbersColor()
-{
-	QColor c = QColorDialog::getColor(QColor(plot3DColors[5]), this );
-	if ( !c.isValid() )
-		return;
-
-	plot3DColors[5] = c.name();
-}
-
-void ConfigDialog::pick3DLabelsColor()
-{
-	QColor c = QColorDialog::getColor(QColor(plot3DColors[1]), this );
-	if ( !c.isValid() )
-		return;
-
-	plot3DColors[1] = c.name();
 }
 
 void ConfigDialog::pick3DTitleFont()
