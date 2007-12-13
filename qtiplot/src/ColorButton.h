@@ -2,8 +2,8 @@
     File                 : ColorButton.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2007 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A button used for color selection
 
  ***************************************************************************/
@@ -30,18 +30,10 @@
 #ifndef COLORBUTTON_H
 #define COLORBUTTON_H
 
-#include <QWidget>
-class QPushButton;
-class QHBoxLayout;
-class QFrame;
+#include <QPushButton>
 
 //! A button used for color selection
-/**
- * This button contains two widgets:
- * 1) A frame reflecting the current color
- * 2) A button showing a color wheel to select the color
- */
-class ColorButton : public QWidget
+class ColorButton : public QPushButton
 {
 	Q_OBJECT
 
@@ -51,23 +43,17 @@ public:
 	//! Set the color of the display part
 	void setColor(const QColor& c);
 	//! Get the color of the display part
-	QColor color() const;
-	QSize sizeHint() const;
-
-private:
-	QPushButton *selectButton;
-	QFrame *display;
+	QColor color(){return d_color;};
 
 signals:
-	//! Signal clicked: This is emitted when the selection button is clicked
-	void clicked();
+    void colorChanged();
 
-protected:
-	//! Initialize the widget (called from constructor)
-	void init();
+private slots:
+    void pickColor();
 
 private:
-	int btn_size;
+    void updateColor();
+	QColor d_color;
 };
 
 #endif

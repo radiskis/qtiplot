@@ -65,16 +65,6 @@ private slots:
 	void accept();
 	bool updatePlot();
 
-	QColor pickFromColor();
-	QColor pickToColor();
-	QColor pickMeshColor();
-	QColor pickAxesColor();
-	QColor pickTitleColor();
-	QColor pickNumberColor();
-	QColor pickBgColor();
-	QColor pickLabelColor();
-	QColor pickGridColor();
-
 	void pickTitleFont();
 	void viewAxisOptions(int axis);
 	QFont axisFont(int axis);

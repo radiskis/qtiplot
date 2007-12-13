@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Text label/axis label options dialog
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -38,20 +38,20 @@ class QComboBox;
 class QLabel;
 class QSpinBox;
 class LegendWidget;
-	
+
 #include "ColorButton.h"
 #include "TextFormatButtons.h"
 
 //! Options dialog for text labels/axes labels
 class TextDialog : public QDialog
-{ 
+{
 	Q_OBJECT
 
 public:
 	//! Label types
 	enum TextType{
-		TextMarker, /*!< normal text label */ 
-		AxisTitle   /*!< axis label */ 
+		TextMarker, /*!< normal text label */
+		AxisTitle   /*!< axis label */
 	};
 
 	//! Constructor
@@ -102,10 +102,6 @@ public slots:
 private slots:
 	//! Let the user select another font
 	void customFont();
-	//! Let the user pick the background color
-	void pickBackgroundColor();
-	//! Let the user pick the text color
-	void pickTextColor();
 	//! Accept changes and close dialog
 	void accept();
 	//! Apply changes
@@ -114,7 +110,7 @@ private slots:
 
 	void updateTransparency(int alpha);
 
-signals:	
+signals:
 	//! Signal for axes labels: change text
 	void changeText(const QString &);
 	//! Signal for axes labels: change text color
