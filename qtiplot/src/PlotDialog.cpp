@@ -60,7 +60,6 @@
 #include <QFileDialog>
 #include <QGroupBox>
 #include <QFontDialog>
-#include <QColorDialog>
 #include <QShortcut>
 #include <QKeySequence>
 #include <QDoubleSpinBox>
@@ -391,9 +390,9 @@ void PlotDialog::initLayerPage()
 	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateCanvasTransparency(int)));
 	connect(boxAntialiasing, SIGNAL(toggled(bool)), this, SLOT(updateAntialiasing(bool)));
 	connect(boxMargin, SIGNAL(valueChanged (int)), this, SLOT(changeMargin(int)));
-	connect(boxBorderColor, SIGNAL(clicked()), this, SLOT(pickBorderColor()));
-	connect(boxBackgroundColor, SIGNAL(clicked()), this, SLOT(pickBackgroundColor()));
-	connect(boxCanvasColor, SIGNAL(clicked()), this, SLOT(pickCanvasColor()));
+	connect(boxBorderColor, SIGNAL(colorChanged()), this, SLOT(pickBorderColor()));
+	connect(boxBackgroundColor, SIGNAL(colorChanged()), this, SLOT(pickBackgroundColor()));
+	connect(boxCanvasColor, SIGNAL(colorChanged()), this, SLOT(pickCanvasColor()));
 	connect(boxBorderWidth,SIGNAL(valueChanged (int)), this, SLOT(updateBorder(int)));
 }
 
@@ -949,8 +948,6 @@ void PlotDialog::initSpectrogramPage()
     gl1->addWidget(boxContourStyle, 2, 1);
     hl2->addWidget(defaultPenBox);
 
-  	connect(levelsColorBox, SIGNAL(clicked()), this, SLOT(pickContourLinesColor()));
-
   	axisScaleBox = new QGroupBox(tr( "Color Bar Scale" ));
   	axisScaleBox->setCheckable (true);
 
@@ -1041,7 +1038,7 @@ void PlotDialog::initErrorsPage()
 	hl->addWidget(gb2);
     privateTabWidget->insertTab( errorsPage, tr( "Error Bars" ) );
 
-	connect(colorBox, SIGNAL(clicked()), this, SLOT(pickErrorBarsColor()));
+	connect(colorBox, SIGNAL(colorChanged()), this, SLOT(pickErrorBarsColor()));
 	connect(xBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsType()));
 	connect(plusBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsPlus()));
 	connect(minusBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsMinus()));
@@ -1386,12 +1383,6 @@ void PlotDialog::changeErrorBarsType()
 
 void PlotDialog::pickErrorBarsColor()
 {
-	QColor color = QColorDialog::getColor(colorBox->color(), this);
-	if ( !color.isValid() || color == colorBox->color() )
-		return;
-
-	colorBox->setColor (color);
-
     CurveTreeItem *item = (CurveTreeItem *)listBox->currentItem();
     if (!item)
         return;
@@ -1403,7 +1394,7 @@ void PlotDialog::pickErrorBarsColor()
         return;
 
 	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->currentText().toInt(),
-			capBox->currentText().toInt(), color, plusBox->isChecked(), minusBox->isChecked(),
+			capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
 			throughBox->isChecked());
 }
 
@@ -2449,15 +2440,6 @@ void PlotDialog::showDefaultContourLinesBox(bool)
   		defaultPenBox->show();
 }
 
-void PlotDialog::pickContourLinesColor()
-{
-  	QColor color = QColorDialog::getColor(levelsColorBox->color(), this);
-  	if ( !color.isValid() || color == levelsColorBox->color() )
-  		return;
-
-  	levelsColorBox->setColor(color);
-}
-
 void PlotDialog::updateTreeWidgetItem(QTreeWidgetItem *item)
 {
     if (item->type() != QTreeWidgetItem::Type)
@@ -2537,34 +2519,23 @@ void PlotDialog::updateCanvasTransparency(int alpha)
 
 void PlotDialog::pickCanvasColor()
 {
-	QColor c = QColorDialog::getColor(boxCanvasColor->color(), this);
-    if ( !c.isValid() || c == boxCanvasColor->color() )
-			return;
-
-	boxCanvasColor->setColor ( c ) ;
-
-	if (boxAll->isChecked())
-	{
+	QColor c = boxCanvasColor->color();
+	if (boxAll->isChecked()){
 		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++)
-		{
+		for (int i=0; i<allPlots.count();i++){
 			Graph* g=(Graph*)allPlots.at(i);
-			if (g)
-			{
+			if (g){
 				c.setAlpha(boxCanvasTransparency->value());
 				g->setCanvasBackground(c);
 				g->replot();
 			}
 		}
-	}
-	else
-	{
+	} else {
 		LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return;
         Graph *g = item->graph();
-		if (g)
-		{
+		if (g){
 			c.setAlpha(boxCanvasTransparency->value());
 			g->setCanvasBackground(c);
 			g->replot();
@@ -2574,34 +2545,23 @@ void PlotDialog::pickCanvasColor()
 
 void PlotDialog::pickBackgroundColor()
 {
-	QColor c = QColorDialog::getColor(boxBackgroundColor->color(), this);
-    if ( !c.isValid() || c == boxBackgroundColor->color() )
-			return;
-
-	boxBackgroundColor->setColor ( c ) ;
-
-	if (boxAll->isChecked())
-	{
+	QColor c = boxBackgroundColor->color();
+	if (boxAll->isChecked()){
 		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<(int)allPlots.count();i++)
-		{
+		for (int i=0; i<(int)allPlots.count();i++){
 			Graph* g=(Graph*)allPlots.at(i);
-			if (g)
-			{
+			if (g){
 				c.setAlpha(boxBackgroundTransparency->value());
 				g->setBackgroundColor(c);
 				g->replot();
 			}
 		}
-	}
-	else
-	{
+	} else {
 		LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return;
         Graph *g = item->graph();
-		if (g)
-		{
+		if (g){
 			c.setAlpha(boxBackgroundTransparency->value());
 			g->setBackgroundColor(c);
 			g->replot();
@@ -2611,30 +2571,20 @@ void PlotDialog::pickBackgroundColor()
 
 void PlotDialog::pickBorderColor()
 {
-	QColor c = QColorDialog::getColor(boxBorderColor->color(), this);
-	if ( !c.isValid() || c == boxBorderColor->color() )
-		return;
-
-	boxBorderColor->setColor ( c ) ;
-
-	if (boxAll->isChecked())
-	{
+	if (boxAll->isChecked()){
 		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++)
-		{
+		for (int i=0; i<allPlots.count();i++){
 			Graph* g=(Graph*)allPlots.at(i);
 			if (g)
-				g->setFrame(boxBorderWidth->value(), c);
+				g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
 		}
-	}
-	else
-	{
+	} else {
 		LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return;
         Graph *g = item->graph();
 		if (g)
-			g->setFrame(boxBorderWidth->value(), c);
+			g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
 	}
 	d_ml->notifyChanges();
 }

@@ -173,7 +173,6 @@ private slots:
 	void setWhiskersRange(int index);
 
 	//spectrograms
-  	void pickContourLinesColor();
   	void showDefaultContourLinesBox(bool show);
 	void showColorMapEditor(bool show);
 
