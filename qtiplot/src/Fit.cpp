@@ -603,7 +603,9 @@ void Fit::generateFitCurve()
 	if (!d_gen_function)
 		d_points = d_n;
 
-    double X[d_points], Y[d_points];
+	double *X = new double[d_points];
+	double *Y = new double[d_points];
+	
 	calculateFitCurveData(X, Y);
     customizeFitResults();
 
@@ -617,6 +619,8 @@ void Fit::generateFitCurve()
 		} else
         	d_output_graph->addFitCurve(addResultCurve(X, Y));
 	}
+	delete [] X;
+	delete [] Y;
 }
 
 void Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth)

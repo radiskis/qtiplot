@@ -71,19 +71,23 @@ void SigmoidalFit::init()
     initWorkspace(d_p);
 }
 
-void SigmoidalFit::calculateFitCurveData(double *par, double *X, double *Y)
+void SigmoidalFit::calculateFitCurveData(double *X, double *Y)
 {
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
         for (int i=0; i<d_points; i++){
-        	X[i] = X0+i*step;
-        	Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
+			double x = X0+i*step;
+        	X[i] = x;
+			double a2 = d_results[1];
+        	Y[i] = (d_results[0] - a2)/(1 + exp((x - d_results[2])/d_results[3])) + a2;
 		}
 	} else {
         for (int i=0; i<d_points; i++){
-        	X[i] = d_x[i];
-        	Y[i] = (par[0]-par[1])/(1+exp((X[i]-par[2])/par[3]))+par[1];
+			double x = d_x[i];
+        	X[i] = x;
+			double a2 = d_results[1];
+        	Y[i] = (d_results[0] - a2)/(1 + exp((x - d_results[2])/d_results[3])) + a2;
 		}
 	}
 }

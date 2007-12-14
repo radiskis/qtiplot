@@ -48,7 +48,7 @@ class SigmoidalFit : public Fit
 
 	private:
 		void init();
-		void calculateFitCurveData(double *par, double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y);
 
 		bool d_logistic;
 };
