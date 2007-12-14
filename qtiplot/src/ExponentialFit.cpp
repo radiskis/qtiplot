@@ -102,19 +102,22 @@ void ExponentialFit::customizeFitResults()
 
 void ExponentialFit::calculateFitCurveData(double *X, double *Y)
 {
+	double a = d_results[0];
+	double l = -d_results[1];
+	double y0 = d_results[2];
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++) {
 		    double x = X0+i*step;
 			X[i] = x;
-			Y[i] = d_results[0]*exp(-d_results[1]*x) + d_results[2];
+			Y[i] = a*exp(l*x) + y0;
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
 		    double x = d_x[i];
 			X[i] = x;
-			Y[i] = d_results[0]*exp(-d_results[1]*x) + d_results[2];
+			Y[i] = a*exp(l*x) + y0;
 		}
 	}
 }
@@ -175,19 +178,25 @@ void TwoExpFit::customizeFitResults()
 
 void TwoExpFit::calculateFitCurveData(double *X, double *Y)
 {
+	double a1 = d_results[0];
+	double l1 = -d_results[1];
+	double a2 = d_results[2];
+	double l2 = -d_results[3];
+	double y0 = d_results[4];
+	
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++){
-		    double x = X0+i*step;
+		    double x = X0 + i*step;
 			X[i] = x;
-			Y[i] = d_results[0]*exp(-d_results[1]*x)+d_results[2]*exp(-d_results[3]*x)+d_results[4];
+			Y[i] = a1*exp(l1*x) + a2*exp(l2*x) + y0;
 		}
 	} else {
 		for (int i=0; i<d_points; i++){
 		    double x = d_x[i];
 			X[i] = x;
-			Y[i] = d_results[0]*exp(-d_results[1]*x)+d_results[2]*exp(-d_results[3]*x)+d_results[4];
+			Y[i] = a1*exp(l1*x) + a2*exp(l2*x) + y0;
 		}
 	}
 }
@@ -249,19 +258,27 @@ void ThreeExpFit::customizeFitResults()
 
 void ThreeExpFit::calculateFitCurveData(double *X, double *Y)
 {
+	double a1 = d_results[0];
+	double l1 = -d_results[1];
+	double a2 = d_results[2];
+	double l2 = -d_results[3];
+	double a3 = d_results[4];
+	double l3 = -d_results[5];
+	double y0 = d_results[6];
+	
 	if (d_gen_function){
 		double X0 = d_x[0];
 		double step = (d_x[d_n-1]-X0)/(d_points-1);
 		for (int i=0; i<d_points; i++){
 		    double x = X0+i*step;
 			X[i] = x;
-			Y[i] = d_results[0]*exp(-x*d_results[1])+d_results[2]*exp(-x*d_results[3])+d_results[4]*exp(-x*d_results[5])+d_results[6];
+			Y[i] = a1*exp(x*l1) + a2*exp(x*l2) + a3*exp(x*l3) + y0;
 		}
 	} else {
 		for (int i=0; i<d_points; i++){
 		    double x = d_x[i];
 			X[i] = x;
-			Y[i] = d_results[0]*exp(-x*d_results[1])+d_results[2]*exp(-x*d_results[3])+d_results[4]*exp(-x*d_results[5])+d_results[6];
+			Y[i] = a1*exp(x*l1) + a2*exp(x*l2) + a3*exp(x*l3) + y0;
 		}
 	}
 }
