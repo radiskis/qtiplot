@@ -370,19 +370,14 @@ void MultiPeakFit::generateFitCurve()
 }
 
 double MultiPeakFit::eval(double *par, double x)
-{
+{	
 	double y = 0;
-	for (int j=0; j<d_peaks; j++){
-		double diff = x - par[3*j + 1];
-		double w = par[3*j + 2];
-		if (d_profile == Gauss)
-			y += sqrt(M_2_PI)*par[3*j]/w*exp(-2*diff*diff/(w*w));
-		else
-			y += M_2_PI*par[3*j]*w/(4*diff*diff+w*w);
-	}
+	for (int i=0; i<d_peaks; i++)
+		y += evalPeak(par, x, i);
+		
 	return y + par[d_p - 1];//add offset
 }
-
+				
 double MultiPeakFit::evalPeak(double *par, double x, int peak)
 {
 	int aux = 3*peak;
@@ -551,6 +546,9 @@ void GaussAmpFit::init()
 
 void GaussAmpFit::calculateFitCurveData(double *X, double *Y)
 {
+	double y0 = d_results[0];
+	double a = d_results[1];
+	double xc = d_results[2];
 	double w2 = d_results[3]*d_results[3];
 	if (d_gen_function){
 		double X0 = d_x[0];
@@ -558,15 +556,15 @@ void GaussAmpFit::calculateFitCurveData(double *X, double *Y)
 		for (int i=0; i<d_points; i++){
             double x = X0 + i*step;
 			X[i] = x;
-			double diff = x - d_results[2];
-			Y[i] = d_results[1]*exp(-0.5*diff*diff/w2) + d_results[0];
+			double diff = x - xc;
+			Y[i] = a*exp(-0.5*diff*diff/w2) + y0;
 		}
 	}else{
 		for (int i=0; i<d_points; i++){
 		    double x = d_x[i];
 			X[i] = x;
-			double diff = x - d_results[2];
-			Y[i] = d_results[1]*exp(-0.5*diff*diff/w2) + d_results[0];
+			double diff = x - xc;
+			Y[i] = a*exp(-0.5*diff*diff/w2) + y0;
 		}
 	}
 }
