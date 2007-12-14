@@ -46,7 +46,7 @@ class LogisticFit : public Fit
 
 	private:
 		void init();
-		void calculateFitCurveData(double *par, double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y);
 };
 
 #endif
