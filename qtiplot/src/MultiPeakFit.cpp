@@ -370,14 +370,14 @@ void MultiPeakFit::generateFitCurve()
 }
 
 double MultiPeakFit::eval(double *par, double x)
-{	
+{
 	double y = 0;
 	for (int i=0; i<d_peaks; i++)
 		y += evalPeak(par, x, i);
-		
+
 	return y + par[d_p - 1];//add offset
 }
-				
+
 double MultiPeakFit::evalPeak(double *par, double x, int peak)
 {
 	int aux = 3*peak;
@@ -591,7 +591,7 @@ void GaussAmpFit::guessInitialValues()
 	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
 
 	gsl_vector_set(d_param_init, 2, d_x[imax_temp]);
-	gsl_vector_set(d_param_init, 3, 2*gsl_stats_sd(d_y, 1, d_n));
+	gsl_vector_set(d_param_init, 3, gsl_stats_sd(d_x, 1, d_n));
 
 	if (imax_temp == imax)
 		gsl_vector_set(d_param_init, 0, min_out);
