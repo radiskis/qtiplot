@@ -318,20 +318,36 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
 <!--		Custom Curves Dialog			-->
 <!-- ************************************************** -->
 <sect1 id="custom-curves-dialog">
-  <title>Custom Curves</title>
-  <para>This dialog is activated by selecting the command <link linkend="format-plot-cmd">&format-plot-cmd;</link> from the <link linkend="sec-format-menu">Format Menu</link>. It is also activated by a double click on the plot. If there are more than one layer in the window, &appname; will select the layer which contain the plot under the mouse pointer.</para>
+  <title>Plot Details</title>
+  <para>This dialog is activated by selecting the command <link linkend="format-plot-cmd">&format-plot-cmd;</link> from the <link linkend="sec-format-menu">Format Menu</link>.
+  It is also activated by a double click on the plot. If there are more than one layer in the window,
+  &appname; will select the layer which contain the plot under the mouse pointer.</para>
   <figure id="fig-custom-curves-1">
-    <title>The Custom Curves Dialog: Line formatting.</title>
+    <title>The Plot Details Dialog: Layer properties.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The right part of the dialog box contains several tabs which depend on the kind of plot that you are using, they are described in the following subsections. The left part of the dialog window shows the curves which are plotted in the active layer. All the modifications will be done on the selected curve. You can change the columns which are used by clicking on the <emphasis>Plot Associations...</emphasis> button. This will open a dialog which can be used to select the columns of the table which are used as X and Y values.</para>
+
+<para>The second tab defines the geometry of the plot layer.</para>
+  <figure id="fig-custom-curves-pie-2">
+    <title>The Plot Details Dialog: Layer geometry.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-layer-geometry.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>The right part of the dialog box contains several tabs which depend on the kind of plot that you are
+  using, they are described in the following subsections. The left part of the dialog window shows the
+  curves which are plotted in the active layer. All the modifications will be done on the selected curve.
+  You can change the columns which are used by clicking on the <emphasis>Plot Associations...</emphasis> button. This will open a dialog which can be used to select the columns of the table which are used as X and Y values.</para>
 
   <figure id="fig-custom-curves-3">
-    <title>The Custom Curves Dialog: Plot Associations.</title>
+    <title>The Plot Details Dialog: Plot Associations.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-3.png"/>
@@ -343,47 +359,59 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
 <sect2 id="custom-curves-dialog-lines">
 <title>Custom curves for lines and scatter plots</title>
 
-  <para>This dialog box is activated for plots drawn with <emphasis>symbols</emphasis>, <emphasis>line+symbols</emphasis>, <emphasis>lines</emphasis>, <emphasis>vertical drop lines</emphasis>, <emphasis>steps</emphasis> and <emphasis>splines</emphasis>.</para>
-  <para>The first tab of the right part of the dialog window allows to modify the style of the line (color, line style, thickness). The connect button allows to change the style which is used to draw the selected curve (steps, droplines, etc). See the &plot-menu-lnk; to see the different types of plot available.</para>
+  <para>The first tab of the right part of the dialog window allows to define the pair of axes to which the curve is attached.
+  You can thus represent different curves having different x/y scales on the same plot layer.</para>
   <figure id="fig-custom-curves-line-1">
-    <title>The Custom Curves Dialog: Line formatting.</title>
+    <title>The Plot Details Dialog: assign axes.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-1.png"/>
+        <imagedata  format="PNG" fileref="pics/custom-curves-axes.png"/>
       </imageobject>
     </mediaobject>
   </figure>
 
-  <para>A second tab can be activated to select the symbol, and to modify the size, the color and the filling color of the symbols.</para>
+ <para>The second tab of the right part of the dialog window allows to modify the style of the line (color, line style, thickness). The connect button allows to change the style which is used to draw the selected curve (steps, droplines, etc). See the &plot-menu-lnk; to see the different types of plot available.</para>
+  <figure id="fig-custom-curves-line-1">
+    <title>The Plot Details Dialog: Line formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>A third tab can be activated to select the symbol, and to modify the size, the color and the filling color of the symbols.</para>
   <figure id="fig-custom-curves-line-2">
-    <title>The Custom Curves Dialog: Symbol formatting.</title>
+    <title>The Plot Details Dialog: Symbol formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
+
+    <para>The <emphasis>Labels</emphasis> tab can be used to define labels to be plotted for each data point
+    in the plot and to modify the font, the color, the rotation angle and the position of the labels.</para>
+  <figure id="fig-custom-curves-labels">
+    <title>The Plot Details Dialog: Labels formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-labels.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
 </sect2>
 
 <sect2 id="custom-curves-dialog-pie">
-<title>Custom curves for pie plots</title>
+<title>Plot Details for pie plots</title>
   <para>These commands are available for <link linkend="pie-cmd">pie plots</link>. The first tab allows the customization of the pie segments. The left fields are used to modify the border which is drawn round each segment: color, type and width of line. The default is no border (line width = 0).</para>
   <para>The right fields are used to define the filling of the plots. The color button defines the one used for the first segment, then the others segments will have colors which follow the order defined in the list. The default value for this field is black, so segment 2, 3, etc will be red, green, etc.</para>
   <para>The pattern will be used for all segments of the pie, the default value is solid filling. The last field defines the size of the pie in pixels.</para>
   <figure id="fig-custom-curves-pie-1">
-    <title>The Custom Curves Dialog for pies: pie segment formatting.</title>
+    <title>The Plot Details Dialog for pies: pie segment formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-pie-1.png"/>
-      </imageobject>
-    </mediaobject>
-  </figure>
-  <para>The second tab defines some global properties of the plot, such as the color of the background (default=none), the width and the color of the frame which is drawn around the layer (default is none). The margin is the number of pixels between the layer and the frame in which the pie plot is drawn.</para>
-  <figure id="fig-custom-curves-pie-2">
-    <title>The Custom Curves Dialog for pies: global formatting.</title>
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-pie-2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -391,9 +419,8 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
 
 <sect2 id="custom-curves-dialog-box">
 <title>Custom curves for box plots</title>
-<para>x</para>
   <figure id="fig-custom-curves-box-1">
-    <title>The Custom Curves Dialog for box: pattern formatting.</title>
+    <title>The Plot Details Dialog for box: pattern formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-box-1.png"/>
@@ -402,7 +429,7 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
   </figure>
 
   <figure id="fig-custom-curves-box-2">
-    <title>The Custom Curves Dialog for box: whiskers formatting.</title>
+    <title>The Plot Details Dialog for box: whiskers formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-box-2.png"/>
@@ -411,7 +438,7 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
   </figure>
 
   <figure id="fig-custom-curves-box-3">
-    <title>The Custom Curves Dialog for box: percentile formatting.</title>
+    <title>The Plot Details Dialog for box: percentile formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-box-3.png"/>
@@ -422,9 +449,8 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
 
 <sect2 id="custom-curves-dialog-histogram">
 <title>Custom curves for pie histogram</title>
-<para>x</para>
   <figure id="fig-custom-curves-histogram-1">
-    <title>The Custom Curves Dialog for histogram: pattern formatting.</title>
+    <title>The Plot Details Dialog for histogram: pattern formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-histogram-1.png"/>
@@ -432,7 +458,7 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
     </mediaobject>
   </figure>
   <figure id="fig-custom-curves-histogram-2">
-    <title>The Custom Curves Dialog for histogram: spacing formatting.</title>
+    <title>The Plot Details Dialog for histogram: spacing formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-histogram-2.png"/>
@@ -440,7 +466,7 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
     </mediaobject>
   </figure>
   <figure id="fig-custom-curves-histogram-3">
-    <title>The Custom Curves Dialog for histogram: data formatting.</title>
+    <title>The Plot Details Dialog for histogram: data formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-histogram-3.png"/>
