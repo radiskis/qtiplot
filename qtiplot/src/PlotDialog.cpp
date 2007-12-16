@@ -1762,7 +1762,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     }
 
     PlotCurve *c = (PlotCurve*)i;
-	
+
     //line page
     int style = c->style();
     if (curveType == Graph::Spline)
@@ -2151,13 +2151,15 @@ bool PlotDialog::acceptParams()
 		}
 	} else if (privateTabWidget->currentPage() == labelsPage){
 		DataCurve *c = (DataCurve *)plotItem;
+
+        QString text = item->text(0);
+        QStringList t = text.split(": ", QString::SkipEmptyParts);
+        QString table = t[0];
+        QStringList cols = t[1].split(",", QString::SkipEmptyParts);
+
 		if (labelsGroupBox->isChecked()){
             c->setLabelsColumnName(boxLabelsColumn->currentText());
 
-            QString text = item->text(0);
-            QStringList t = text.split(": ", QString::SkipEmptyParts);
-            QString table = t[0];
-            QStringList cols = t[1].split(",", QString::SkipEmptyParts);
             if (cols.count() == 3)
                 cols[2] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
             else if (cols.count() == 5)//vector curves
@@ -2165,8 +2167,11 @@ bool PlotDialog::acceptParams()
             else
                 cols << boxLabelsColumn->currentText().remove(table + "_") + "(L)";
             item->setText(0, table + ": " + cols.join(","));
-        } else
-            c->clearLabels();
+        } else {
+            c->setLabelsColumnName(QString());
+            cols.pop_back();
+            item->setText(0, table + ": " + cols.join(","));
+        }
 
 		c->setLabelsRotation(boxLabelsAngle->value());
 		c->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
