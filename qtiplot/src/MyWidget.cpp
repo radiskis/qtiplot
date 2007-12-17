@@ -148,8 +148,7 @@ void MyWidget::changeEvent(QEvent *event)
 	if (event->type() == QEvent::ParentChange) {
 		titleBar = 0;
 		parent()->installEventFilter(this);
-	}
-	else if (!isHidden() && event->type() == QEvent::WindowStateChange) {
+	} else if (!isHidden() && event->type() == QEvent::WindowStateChange) {
 	    if (((QWindowStateChangeEvent *)event)->oldState() == windowState())
             return;
 
@@ -169,10 +168,10 @@ bool MyWidget::eventFilter(QObject *object, QEvent *e)
 	QWidget *tmp;
 	if (titleBar)
 		titleBar->setMouseTracking(false);
-	
+
 	if (e->type() == QEvent::MouseMove && object == titleBar)
 		emit moved();
-	
+
 	if (e->type()==QEvent::ContextMenu && object == titleBar)
 	{
 		emit showTitleBarMenu();
