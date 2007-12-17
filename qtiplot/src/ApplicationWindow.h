@@ -1083,7 +1083,7 @@ public:
 	QFont tableTextFont, tableHeaderFont, plotAxesFont, plotLegendFont, plotNumbersFont, plotTitleFont;
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;
 	QString projectname,columnSeparator, helpFilePath, appLanguage;
-	QString configFilePath, logInfo, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
+	QString configFilePath, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
 	int ignoredLines, savingTimerId, plot3DResolution, recentMenuID;
 	bool renameColumns, strip_spaces, simplify_spaces;
 	QStringList recentProjects, tableWindows;

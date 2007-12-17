@@ -2,11 +2,8 @@
     File                 : Folder.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
-					  Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net, knut.franke*gmx.de
     Description          : Folder for the project explorer
 
  ***************************************************************************/
@@ -30,10 +27,13 @@
  *                                                                         *
  ***************************************************************************/
 #include "Folder.h"
+#include "ApplicationWindow.h"
 
 #include <QApplication>
 #include <QDateTime>
 #include <q3header.h>
+
+#include <QMessageBox>
 
 static const char* folder_closed_xpm[]={
     "16 16 9 1",
@@ -94,13 +94,10 @@ static const char* folder_open_xpm[]={
     "............#ee#"};
 
 Folder::Folder( Folder *parent, const QString &name )
-    : QObject(parent), d_active_window(0)
+    : QObject(parent), d_active_window(0), d_log_info(QString())
 {
 	birthdate = QDateTime::currentDateTime ().toString(Qt::LocalDate);
 	setObjectName(name);
-	
-	// FIXME: This doesn't work anymore in Qt4, need alternative method
-	// lstWindows.setAutoDelete( true );
 }
 
 QList<Folder*> Folder::folders()
@@ -132,6 +129,37 @@ QString Folder::path()
         parentFolder = (Folder *)parentFolder->parent();
 	}
     return s;
+}
+
+int Folder::depth()
+{
+	int d = 0;
+    Folder *parentFolder = (Folder *)parent();
+    while (parentFolder){
+        ++d;
+        parentFolder = (Folder *)parentFolder->parent();
+	}
+    return d;
+}
+
+Folder* Folder::folderBelow()
+{
+	QList<Folder*> lst = folders();
+	if (!lst.isEmpty())
+		return lst.first();
+	
+	Folder *parentFolder = (Folder *)parent();
+	Folder *childFolder = this;
+	while (parentFolder && childFolder){
+		lst = parentFolder->folders();
+		int pos = lst.indexOf(childFolder) + 1;
+		if (pos < lst.size())
+			return lst.at(pos);
+		
+		childFolder = parentFolder;
+		parentFolder = (Folder *)parentFolder->parent();
+	}
+	return NULL;
 }
 
 Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partialMatch)
@@ -318,6 +346,19 @@ FolderListView::FolderListView( QWidget *parent, const char *name )
 {
     setAcceptDrops( true );
     viewport()->setAcceptDrops( true );
+		
+	if (parent){
+		connect(this, SIGNAL(collapsed(Q3ListViewItem *)), (ApplicationWindow *)parent, SLOT(modifiedProject()));
+		connect(this, SIGNAL(expanded(Q3ListViewItem *)), (ApplicationWindow *)parent, SLOT(modifiedProject()));
+		connect(this, SIGNAL(expanded(Q3ListViewItem *)), this, SLOT(expandedItem(Q3ListViewItem *)));
+	}
+}
+
+void FolderListView::expandedItem(Q3ListViewItem *item)
+{	
+	Q3ListViewItem *next = item->itemBelow();
+	if (next)
+		setSelected (next, false);
 }
 
 void FolderListView::startDrag()
@@ -415,11 +456,10 @@ void FolderListView::contentsMouseDoubleClickEvent( QMouseEvent* e )
 
 void FolderListView::contentsMousePressEvent( QMouseEvent* e )
 {
-Q3ListView::contentsMousePressEvent(e);
-QPoint p( contentsToViewport( e->pos() ) );
-Q3ListViewItem *i = itemAt( p );
-
-if ( i )
+	Q3ListView::contentsMousePressEvent(e);
+	QPoint p( contentsToViewport( e->pos() ) );
+	Q3ListViewItem *i = itemAt( p );
+	if ( i )
 		{// if the user clicked into the root decoration of the item, don't try to start a drag!
 		if ( p.x() > header()->cellPos( header()->mapToActual( 0 ) ) +
 			treeStepSize() * ( i->depth() + ( rootIsDecorated() ? 1 : 0) ) + itemMargin() ||
@@ -428,7 +468,7 @@ if ( i )
 			presspos = e->pos();
 	    	mousePressed = true;
 			}
-    	}
+    	}	
 }
 
 void FolderListView::contentsMouseMoveEvent( QMouseEvent* e )

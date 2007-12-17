@@ -100,6 +100,11 @@ public:
 
 	//! The complete path of the folder in the project tree
 	QString path();
+	
+	//! The depth of the folder in the project tree
+	int depth();
+	
+	Folder *folderBelow();
 
 	//! The root of the hierarchy this folder belongs to.
 	Folder* rootFolder();
@@ -120,8 +125,13 @@ public:
     MyWidget *activeWindow(){return d_active_window;};
     void setActiveWindow(MyWidget *w){d_active_window = w;};
 
+	QString logInfo(){return d_log_info;};
+	void appendLogInfo(const QString& text){d_log_info += text;};
+	void clearLogInfo(){d_log_info = QString();};
+	
 protected:
     QString birthdate, modifDate;
+	QString d_log_info;
     QList<MyWidget *> lstWindows;
 	FolderListItem *myFolderListItem;
 
@@ -192,6 +202,9 @@ public:
 
 public slots:
 	void adjustColumns();
+
+protected slots:
+	void expandedItem(Q3ListViewItem *item);
 
 protected:
 	void startDrag();
