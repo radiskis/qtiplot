@@ -33,8 +33,6 @@
 #include <QDateTime>
 #include <q3header.h>
 
-#include <QMessageBox>
-
 static const char* folder_closed_xpm[]={
     "16 16 9 1",
     "g c #808080",
@@ -147,7 +145,7 @@ Folder* Folder::folderBelow()
 	QList<Folder*> lst = folders();
 	if (!lst.isEmpty())
 		return lst.first();
-	
+
 	Folder *parentFolder = (Folder *)parent();
 	Folder *childFolder = this;
 	while (parentFolder && childFolder){
@@ -155,7 +153,7 @@ Folder* Folder::folderBelow()
 		int pos = lst.indexOf(childFolder) + 1;
 		if (pos < lst.size())
 			return lst.at(pos);
-		
+
 		childFolder = parentFolder;
 		parentFolder = (Folder *)parentFolder->parent();
 	}
@@ -224,12 +222,12 @@ MyWidget* Folder::findWindow(const QString& s, bool windowNames, bool labels,
 }
 
 MyWidget *Folder::window(const QString &name, const char *cls, bool recursive)
-{		
+{
 	foreach (MyWidget *w, lstWindows){
 		if (w->inherits(cls) && name == w->objectName())
 			return w;
 	}
-		
+
 	if (!recursive) return NULL;
 	foreach (QObject *f, children()){
 		MyWidget *w = ((Folder*)f)->window(name, cls, true);
@@ -239,21 +237,21 @@ MyWidget *Folder::window(const QString &name, const char *cls, bool recursive)
 }
 
 void Folder::addWindow( MyWidget *w )
-{ 
+{
 	if (w) {
-		lstWindows.append( w ); 
+		lstWindows.append( w );
 		w->setFolder(this);
 	}
 }
 
 void Folder::removeWindow( MyWidget *w )
-{ 
+{
 	if (!w)
 		return;
-	
+
 	if (d_active_window && d_active_window == w)
 		d_active_window = NULL;
-	
+
 	int index = lstWindows.indexOf(w);
 	if (index >= 0 && index < lstWindows.size())
 		lstWindows.removeAt(index);
@@ -346,7 +344,7 @@ FolderListView::FolderListView( QWidget *parent, const char *name )
 {
     setAcceptDrops( true );
     viewport()->setAcceptDrops( true );
-		
+
 	if (parent){
 		connect(this, SIGNAL(collapsed(Q3ListViewItem *)), (ApplicationWindow *)parent, SLOT(modifiedProject()));
 		connect(this, SIGNAL(expanded(Q3ListViewItem *)), (ApplicationWindow *)parent, SLOT(modifiedProject()));
@@ -355,7 +353,7 @@ FolderListView::FolderListView( QWidget *parent, const char *name )
 }
 
 void FolderListView::expandedItem(Q3ListViewItem *item)
-{	
+{
 	Q3ListViewItem *next = item->itemBelow();
 	if (next)
 		setSelected (next, false);
@@ -468,7 +466,7 @@ void FolderListView::contentsMousePressEvent( QMouseEvent* e )
 			presspos = e->pos();
 	    	mousePressed = true;
 			}
-    	}	
+    	}
 }
 
 void FolderListView::contentsMouseMoveEvent( QMouseEvent* e )

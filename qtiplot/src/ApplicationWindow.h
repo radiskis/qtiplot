@@ -1140,7 +1140,7 @@ private:
 	QDockWidget *consoleWindow;
 	QTextEdit *console;
 #endif
-	QWorkspace* ws;
+	QWorkspace *ws;
     QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
 	QToolBar *formatToolBar;
 	QToolButton *btnResults;

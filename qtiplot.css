@@ -47,8 +47,14 @@ body { /* defaults */
 font-family: arial,helvetica,sans-serif;
 }
 
+h2, h3 {
+text-decoration: none;
+font-size: medium;
+}
+
 a, a.anchor {
 text-decoration: none;
+font-size: medium;
 }
 
 a:hover {
