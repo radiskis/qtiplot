@@ -184,7 +184,8 @@ void ApplicationWindow::init(bool factorySettings)
 	explorerWindow->setMinimumHeight(150);
 	addDockWidget( Qt::BottomDockWidgetArea, explorerWindow );
 
-	folders = new FolderListView();
+	actionSaveProject = NULL;
+	folders = new FolderListView(this);
 	folders->header()->setClickEnabled( false );
 	folders->addColumn( tr("Folder") );
 	folders->setRootIsDecorated( true );
@@ -363,7 +364,6 @@ void ApplicationWindow::initGlobalConstants()
 	d_arrow_copy = NULL;
 	d_image_copy = NULL;
 
-	logInfo = QString();
 	savingTimerId=0;
 
 	#ifdef QTIPLOT_DEMO
@@ -548,6 +548,8 @@ void ApplicationWindow::applyUserSettings()
 	cg.setColor(QColorGroup::WindowText, QColor(panelsTextColor) );
 	cg.setColor(QColorGroup::HighlightedText, QColor(panelsTextColor) );
 	lv->setPalette(QPalette(cg, cg, cg));
+	folders->setPalette(QPalette(cg, cg, cg));
+	
 	results->setPalette(QPalette(cg, cg, cg));
 
 	cg.setColor(QColorGroup::Text, QColor(Qt::green) );
@@ -2884,7 +2886,7 @@ void ApplicationWindow::matrixDeterminant()
 	info+= "det = " + QString::number(m->determinant()) + "\n";
 	info+="-------------------------------------------------------------\n";
 
-	logInfo+=info;
+	current_folder->appendLogInfo(info);
 
 	showResults(true);
 }
@@ -3789,6 +3791,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			f->setFolderListItem(fli);
 
 			app->current_folder = f;
+		} else if  (s.contains("<open>")) {				
+			app->current_folder->folderListItem()->setOpen(s.remove("<open>").remove("</open>").toInt());		
 		} else if  (s == "<table>") {
 			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
@@ -3860,8 +3864,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 		if  (s.left(8) == "<folder>"){
 			list = s.split("\t");
 			app->current_folder = app->current_folder->findSubfolder(list[1]);
-		} else if  (s == "<multiLayer>")
-		{//process multilayers information
+		} else if  (s == "<multiLayer>"){//process multilayers information
 			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
 			progress.setLabelText(title);
 
@@ -3940,10 +3943,9 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			s = t.readLine();
 			while ( s != "</log>" )
 			{
-				app->logInfo+= s+"\n";
+				app->current_folder->appendLogInfo(s + "\n");
 				s = t.readLine();
 			}
-			app->results->setText(app->logInfo);
 		}
 	}
 	f.close();
@@ -3955,8 +3957,6 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 		return 0;
 	}
 
-	app->logInfo=app->logInfo.remove ("</log>\n", false);
-
 	QFileInfo fi2(f);
 	QString fileName = fi2.absFilePath();
 
@@ -3964,10 +3964,13 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->recentProjects.push_front(fileName);
 	app->updateRecentProjectsList();
 
+	app->hideFolderWindows(app->projectFolder());
+
 	app->folders->setCurrentItem(cf->folderListItem());
 	app->folders->blockSignals (false);
 	//change folder to user defined current folder
 	app->changeFolder(cf, true);
+	app->results->setText(app->current_folder->logInfo());
 
 	app->blockSignals (false);
 	app->renamedTables.clear();
@@ -6859,9 +6862,8 @@ void ApplicationWindow::fitLinear()
 
 void ApplicationWindow::updateLog(const QString& result)
 {
-	if ( !result.isEmpty() )
-	{
-		logInfo+=result;
+	if ( !result.isEmpty() ){
+		current_folder->appendLogInfo(result);
 		showResults(true);
 		emit modified();
 	}
@@ -6907,8 +6909,8 @@ void ApplicationWindow::differentiate()
 void ApplicationWindow::showResults(bool ok)
 {
 	if (ok){
-		if (!logInfo.isEmpty())
-			results->setText(logInfo);
+		if (!current_folder->logInfo().isEmpty())
+			results->setText(current_folder->logInfo());
 		else
 			results->setText(tr("Sorry, there are no results to display!"));
 
@@ -6922,9 +6924,11 @@ void ApplicationWindow::showResults(bool ok)
 
 void ApplicationWindow::showResults(const QString& s, bool ok)
 {
-	logInfo += s;
+	current_folder->appendLogInfo(s);
+	
+	QString logInfo = current_folder->logInfo();
 	if (!logInfo.isEmpty())
-			results->setText(logInfo);
+		results->setText(logInfo);
 	showResults(ok);
 }
 
@@ -8077,12 +8081,9 @@ void ApplicationWindow::windowsMenuAboutToShow()
 	windowsMenu->clear();
 	foldersMenu->clear();
 
-	Folder *project_folder = projectFolder();
-	FolderListItem *item = project_folder->folderListItem();
-	int initial_depth = item->depth();
 	int folder_param = 0;
-	while (item && item->depth() >= initial_depth){
-		Folder *f = item->folder();
+	Folder *f = projectFolder();
+	while (f){				
 		int id;
 		if (folder_param < 9)
 			id = foldersMenu->insertItem("&" + QString::number(folder_param+1) + " " + f->path(), this, SLOT(foldersMenuActivated(int)));
@@ -8093,9 +8094,9 @@ void ApplicationWindow::windowsMenuAboutToShow()
 		folder_param++;
 		foldersMenu->setItemChecked(id, f == current_folder);
 
-		item = (FolderListItem *)item->itemBelow();
+		f = f->folderBelow();
 	}
-
+	
 	windowsMenu->insertItem(tr("&Folders"), foldersMenu);
 	windowsMenu->insertSeparator();
 
@@ -8202,19 +8203,16 @@ void ApplicationWindow::windowsMenuActivated( int id )
 
 void ApplicationWindow::foldersMenuActivated( int id )
 {
-	Folder *project_folder = projectFolder();
-	FolderListItem *item = project_folder->folderListItem();
-	int initial_depth = item->depth();
 	int folder_param = 0;
-	while (item && item->depth() >= initial_depth){
-		Folder *f = item->folder();
+	Folder *f = projectFolder();
+	while (f){				
 		if (folder_param == id){
 			changeFolder (f);
-			break;
+			return;
 		}
 
 		folder_param++;
-		item = (FolderListItem *)item->itemBelow();
+		f = f->folderBelow();
 	}
 }
 
@@ -8241,7 +8239,8 @@ void ApplicationWindow::modifiedProject()
 	if (saved == false)
 		return;
 
-	actionSaveProject->setEnabled(true);
+	if (actionSaveProject)
+		actionSaveProject->setEnabled(true);
 	saved = false;
 }
 
@@ -9081,10 +9080,9 @@ MultiLayer * ApplicationWindow::newFunctionPlot(QStringList &formulas, double st
 
 void ApplicationWindow::clearLogInfo()
 {
-	if (!logInfo.isEmpty())
-	{
-		logInfo="";
-		results->setText(logInfo);
+	if (!current_folder->logInfo().isEmpty()){
+		current_folder->clearLogInfo();
+		results->setText("");
 		emit modified();
 	}
 }
@@ -12386,14 +12384,12 @@ QWidgetList* ApplicationWindow::windowsList()
 {
 	QWidgetList *lst = new QWidgetList;
 
-    Folder *project_folder = projectFolder();
-	FolderListItem *item = project_folder->folderListItem();
-	int initial_depth = item->depth();
-	while (item && item->depth() >= initial_depth){
-		QList<MyWidget *> folderWindows = item->folder()->windowsList();
+    Folder *f = projectFolder();
+	while (f){
+		QList<MyWidget *> folderWindows = f->windowsList();
 		foreach(MyWidget *w, folderWindows)
 			lst->append(w);
-		item = (FolderListItem *)item->itemBelow();
+		f = f->folderBelow();
 	}
 
 	foreach(QWidget *w, *outWindows)
@@ -13182,18 +13178,17 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 		text += w->saveToString(windowGeometryInfo(w));
 		windows++;
 	}
-
-	FolderListItem *fi = folder->folderListItem();
-	FolderListItem *item = (FolderListItem *)fi->firstChild();
+	
 	int opened_folders = 0;
-	int initial_depth = fi->depth();
-	while (item && item->depth() > initial_depth){
-		Folder *dir = (Folder *)item->folder();
-		text += "<folder>\t"+QString(dir->objectName())+"\t"+dir->birthDate()+"\t"+dir->modificationDate();
+	int initial_depth = folder->depth();
+	Folder *dir = folder->folderBelow();
+	while (dir && dir->depth() > initial_depth){
+		text += "<folder>\t" + QString(dir->objectName()) + "\t" + dir->birthDate() + "\t" + dir->modificationDate();
 		if (dir == current_folder)
 			text += "\tcurrent\n";
 		else
 			text += "\n";  // FIXME: Having no 5th string here is not a good idea
+		text += "<open>" + QString::number(dir->folderListItem()->isOpen()) + "</open>\n";
 
 		lst = dir->windowsList();
 		foreach(MyWidget *w, lst){
@@ -13201,23 +13196,30 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 			windows++;
 		}
 
+		if (!dir->logInfo().isEmpty() )
+			text += "<log>\n" + dir->logInfo() + "</log>\n" ;
+		
 		if ( (dir->children()).isEmpty() )
 			text += "</folder>\n";
 		else
 			opened_folders++;
 
-		int depth = item->depth();
-		item = (FolderListItem *)item->itemBelow();
-		if (item && item->depth() < depth && item->depth() > initial_depth){
+		int depth = dir->depth();
+		dir = dir->folderBelow();
+		if (dir && dir->depth() < depth && dir->depth() > initial_depth){
 			text += "</folder>\n";
 			opened_folders--;
-		} else if (!item) {
+		} else if (!dir) {
 			for (int i = 0; i<opened_folders; i++)
 				text += "</folder>\n";
 			opened_folders = 0;
 		}
 	}
-	text += "<log>\n"+logInfo+"</log>";
+		
+	text += "<open>" + QString::number(folder->folderListItem()->isOpen()) + "</open>\n";
+	if (!folder->logInfo().isEmpty())
+		text += "<log>\n" + folder->logInfo() + "</log>" ;
+	
 	text.prepend("<windows>\t"+QString::number(windows)+"\n");
 	text.prepend("<scripting-lang>\t"+QString(scriptEnv->name())+"\n");
 	text.prepend("QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
@@ -13640,26 +13642,22 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 		foreach(MyWidget *w, f->windowsList())
             closeWindow(w);
 
-		if ( !(f->children()).isEmpty() ){
-			FolderListItem *item = (FolderListItem *)fi->firstChild();
-			int initial_depth = item->depth();
-			while (item && item->depth() >= initial_depth){
-			    Folder *subFolder = (Folder *)item->folder();
-			    if (subFolder){
-                    foreach(MyWidget *w, subFolder->windowsList()){
-                        removeWindowFromLists(w);
-                        subFolder->removeWindow(w);
-                        delete w;
-                    }
+		if (!(f->children()).isEmpty()){
+			Folder *subFolder = f->folderBelow();
+			int initial_depth = f->depth();
+			while (subFolder && subFolder->depth() > initial_depth){
+			    foreach(MyWidget *w, subFolder->windowsList()){
+					removeWindowFromLists(w);
+					subFolder->removeWindow(w);
+					delete w;
+				}
+				delete subFolder->folderListItem();
+				delete subFolder;
 
-                    FolderListItem *old_item = item;
-                    item = (FolderListItem *)item->itemBelow();
-                    delete subFolder;
-                    delete old_item;
-			    }
+				subFolder = f->folderBelow();
 			}
 		}
-
+		
 		delete f;
 		delete fi;
 
@@ -13718,14 +13716,13 @@ void ApplicationWindow::hideFolderWindows(Folder *f)
 	if ( (f->children()).isEmpty() )
 		return;
 
-	FolderListItem *fi = f->folderListItem();
-	FolderListItem *item = (FolderListItem *)fi->firstChild();
-	int initial_depth = item->depth();
-	while (item && item->depth() >= initial_depth){
-		lst = item->folder()->windowsList();
+	Folder *dir = f->folderBelow();
+	int initial_depth = f->depth();
+	while (dir && dir->depth() > initial_depth){
+		lst = dir->windowsList();
 		foreach(MyWidget *w, lst)
 			w->hide();
-		item = (FolderListItem *)item->itemBelow();
+		dir = dir->folderBelow();
 	}
 }
 
@@ -13739,7 +13736,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
     desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
-
+	
     Folder *oldFolder = current_folder;
     MyWidget::Status old_active_window_state = MyWidget::Normal;
     MyWidget *old_active_window = oldFolder->activeWindow();
@@ -13755,6 +13752,9 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
     ws->blockSignals(true);
 	hideFolderWindows(oldFolder);
 	current_folder = newFolder;
+	
+	if (results->isVisible())
+		results->setText(current_folder->logInfo());
 
 	lv->clear();
 
@@ -13780,12 +13780,10 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 	}
 
 	if (!(newFolder->children()).isEmpty()){
-        FolderListItem *fi = newFolder->folderListItem();
-        FolderListItem *item = (FolderListItem *)fi->firstChild();
-        int initial_depth = item->depth();
-        while (item && item->depth() >= initial_depth)
-        {//show/hide windows in subfolders
-            lst = ((Folder *)item->folder())->windowsList();
+        Folder *f = newFolder->folderBelow();
+        int initial_depth = newFolder->depth();
+        while (f && f->depth() > initial_depth){//show/hide windows in subfolders
+            lst = f->windowsList();
             foreach(MyWidget *w, lst){
                 if (!hiddenWindows->contains(w) && !outWindows->contains(w)){
                     if (show_windows_policy == SubFolders){
@@ -13794,14 +13792,14 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
                         else if (w->status() == MyWidget::Minimized)
                             w->showMinimized();
                     }
-				else if (w->isVisible())
+				else
 					w->hide();
                 }
             }
-		item = (FolderListItem *)item->itemBelow();
+		f = f->folderBelow();;
         }
 	}
-
+	
     ws->blockSignals(false);
 
     if (active_window){
@@ -13818,24 +13816,24 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
         current_folder->setActiveWindow(active_window);
         customMenu(active_window);
         customToolBars(active_window);
-        }
+	}
 
-     if (old_active_window){
+    if (old_active_window){
         old_active_window->setStatus(old_active_window_state);
         oldFolder->setActiveWindow(old_active_window);
-     }
+    }
 
     foreach(MyWidget *w, newFolder->windowsList())
         w->blockSignals(false);
 
+	modifiedProject();
 	return true;
 }
 
 void ApplicationWindow::desactivateFolders()
 {
 	FolderListItem *item = (FolderListItem *)folders->firstChild();
-	while (item)
-	{
+	while (item){
 		item->setActive(false);
 		item = (FolderListItem *)item->itemBelow();
 	}

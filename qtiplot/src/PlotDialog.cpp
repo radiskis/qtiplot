@@ -44,6 +44,7 @@
 #include "ColorMapEditor.h"
 #include "pixmaps.h"
 #include "DoubleSpinBox.h"
+#include "Folder.h"
 
 #include <QTreeWidget>
 #include <QLineEdit>
@@ -1253,9 +1254,8 @@ void PlotDialog::showStatistics()
 	info += tr("Maximum")+" = "+QString::number(h->maximum())+"\t";
 	info += tr("Bins")+" = "+QString::number(h->dataSize())+"\n";
 	info += "-------------------------------------------------------------\n";
-    if (!info.isEmpty())
-    {
-        app->logInfo += info;
+    if (!info.isEmpty()){
+        app->current_folder->appendLogInfo(info);
         app->showResults(true);
     }
 
