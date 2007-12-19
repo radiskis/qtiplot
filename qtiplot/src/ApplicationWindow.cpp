@@ -14038,58 +14038,66 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 void ApplicationWindow::moveFolder(FolderListItem *src, FolderListItem *dest)
 {
 	folders->blockSignals(true);
+	if (copyFolder(src->folder(), dest->folder())){
+		delete src->folder();
+		delete src;
+	}
+	folders->blockSignals(false);
+}
 
-	Folder *dest_f = dest->folder();
-	Folder *src_f = src->folder();
+bool ApplicationWindow::copyFolder(Folder *src, Folder *dest)
+{
+    if (!src || !dest)
+        return false;
 
-	dest_f = new Folder(dest_f, src_f->objectName());
-	dest_f->setBirthDate(src_f->birthDate());
-	dest_f->setModificationDate(src_f->modificationDate());
+	if (dest->subfolders().contains(src->objectName())){
+		QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
+					tr("The destination folder already contains a folder called '%1'! Folder skipped!").arg(src->objectName()));
+		return false;
+	}
 
-	FolderListItem *copy_item = new FolderListItem(dest, dest_f);
-	copy_item->setText(0, src_f->objectName());
+	Folder *dest_f = new Folder(dest, src->objectName());
+	dest_f->setBirthDate(src->birthDate());
+	dest_f->setModificationDate(src->modificationDate());
+
+	FolderListItem *copy_item = new FolderListItem(dest->folderListItem(), dest_f);
+	copy_item->setText(0, src->objectName());
+	copy_item->setOpen(src->folderListItem()->isOpen());
 	dest_f->setFolderListItem(copy_item);
 
-	QList<MyWidget *> lst = QList<MyWidget *>(src_f->windowsList());
+	QList<MyWidget *> lst = QList<MyWidget *>(src->windowsList());
 	foreach(MyWidget *w, lst)
-	{
-		src_f->removeWindow(w);
-		w->hide();
 		dest_f->addWindow(w);
-	}
 
-	if ( !(src_f->children()).isEmpty() )
-	{
-		FolderListItem *item = (FolderListItem *)src->firstChild();
-		int initial_depth = item->depth();
-		while (item && item->depth() >= initial_depth)
-		{
-			src_f = (Folder *)item->folder();
+	if (!(src->children()).isEmpty()){
+		int initial_depth = src->depth();
+		Folder *parentFolder = dest_f;
+        src = src->folderBelow();
+		while (src && parentFolder && src->depth() > initial_depth){
+			dest_f = new Folder(parentFolder, src->objectName());
+			dest_f->setBirthDate(src->birthDate());
+			dest_f->setModificationDate(src->modificationDate());
 
-			dest_f = new Folder(dest_f, src_f->objectName());
-			dest_f->setBirthDate(src_f->birthDate());
-			dest_f->setModificationDate(src_f->modificationDate());
-
-			copy_item = new FolderListItem(copy_item, dest_f);
-			copy_item->setText(0, src_f->objectName());
+			copy_item = new FolderListItem(parentFolder->folderListItem(), dest_f);
+			copy_item->setText(0, src->objectName());
 			dest_f->setFolderListItem(copy_item);
 
-			lst = QList<MyWidget *>(src_f->windowsList());
+			lst = QList<MyWidget *>(src->windowsList());
 			foreach(MyWidget *w, lst)
-			{
-				src_f->removeWindow(w);
-				w->hide();
 				dest_f->addWindow(w);
-			}
 
-			item = (FolderListItem *)item->itemBelow();
+            int depth = src->depth();
+			src = src->folderBelow();
+			if (src){
+				int next_folder_depth = src->depth();
+            	if (next_folder_depth > depth)
+                	parentFolder = dest_f;
+				else if (next_folder_depth < depth && next_folder_depth > initial_depth)
+                	parentFolder = (Folder*)parentFolder->parent();
+			}
 		}
 	}
-
-	src_f = src->folder();
-	delete src_f;
-	delete src;
-	folders->blockSignals(false);
+	return true;
 }
 
 void ApplicationWindow::searchForUpdates()
@@ -14099,8 +14107,7 @@ void ApplicationWindow::searchForUpdates()
 					tr("Do you wish to continue?"),
 					QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape);
 
-    if (choice == QMessageBox::Yes)
-    {
+    if (choice == QMessageBox::Yes){
         version_buffer.open(IO_WriteOnly);
         http.setHost("soft.proindependent.com");
         http.get("/version.txt", &version_buffer);
@@ -14110,8 +14117,7 @@ void ApplicationWindow::searchForUpdates()
 
 void ApplicationWindow::receivedVersionFile(bool error)
 {
-	if (error)
-	{
+	if (error){
 		QMessageBox::warning(this, tr("QtiPlot - HTTP get version file"),
 				tr("Error while fetching version file with HTTP: %1.").arg(http.errorString()));
 		return;

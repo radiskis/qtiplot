@@ -918,6 +918,12 @@ public slots:
 	 * \param dest destination folder item
 	 */
 	void moveFolder(FolderListItem *src, FolderListItem *dest);
+	//!  copies a folder to another
+	/**
+	 * \param src source folder
+	 * \param dest destination folder
+     */
+	bool copyFolder(Folder *src, Folder *dest);
 
 	void foldersMenuActivated( int id );
 	//@}

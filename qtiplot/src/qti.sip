@@ -861,6 +861,7 @@ public:
   Folder* addFolder(QString name, Folder* parent = 0);
   bool deleteFolder(Folder *);
   bool changeFolder(Folder *, bool force = false);
+  bool copyFolder(Folder *src, Folder *dest);
 
   MyWidget* openTemplate(const QString&);
   void saveAsTemplate(MyWidget*, const QString&);

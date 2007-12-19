@@ -241,7 +241,7 @@ appImports = (
 	"setPreferences",
 	"plot", "plot3D",
 	"activeFolder", "rootFolder",
-	"addFolder", "deleteFolder", "changeFolder",
+	"addFolder", "deleteFolder", "changeFolder", "copyFolder",
 	"saveFolder", "appendProject", "saveProjectAs"
 	)
 for name in appImports:
