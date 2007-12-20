@@ -13179,7 +13179,6 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 		windows++;
 	}
 
-	int opened_folders = 0;
 	int initial_depth = folder->depth();
 	Folder *dir = folder->folderBelow();
 	while (dir && dir->depth() > initial_depth){
@@ -13201,18 +13200,20 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 
 		if ( (dir->children()).isEmpty() )
 			text += "</folder>\n";
-		else
-			opened_folders++;
 
 		int depth = dir->depth();
 		dir = dir->folderBelow();
-		if (dir && dir->depth() < depth && dir->depth() > initial_depth){
-			text += "</folder>\n";
-			opened_folders--;
-		} else if (!dir) {
-			for (int i = 0; i<opened_folders; i++)
-				text += "</folder>\n";
-			opened_folders = 0;
+		if (dir){
+		    int next_dir_depth = dir->depth();
+		    if (next_dir_depth < depth && next_dir_depth > initial_depth){
+		        int diff = depth - next_dir_depth;
+		        for (int i = 0; i < diff; i++)
+                    text += "</folder>\n";
+		    }
+		} else {
+		    int diff = depth - initial_depth;
+            for (int i = 0; i < diff; i++)
+                text += "</folder>\n";
 		}
 	}
 
