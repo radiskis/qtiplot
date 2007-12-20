@@ -3025,8 +3025,11 @@ void Table::restore(QString& spec)
 	while (!t.atEnd () && s != "</data>"){
 		list = s.split("\t");
 		row = list[0].toInt();
-		for (int j=0; j<c; j++)
-			d_table->setText(row, j, list[j+1]);
+		for (int j=0; j<c; j++){
+			QString cell = list[j+1];
+			if (!cell.isEmpty())
+				setCell(row, j, cell.toDouble());
+		}
 
 		s = t.readLine();
 	}

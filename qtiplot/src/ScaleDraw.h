@@ -35,6 +35,44 @@
 
 #include "Plot.h"
 #include <qwt_scale_draw.h>
+#include <qwt_scale_engine.h>
+#include <qwt_scale_map.h>
+#include <float.h>
+
+class ScaleEngine: public QwtScaleEngine
+{
+public:
+	ScaleEngine(int type = 0, double left_break = -DBL_MAX, double right_break = DBL_MAX): 
+		QwtScaleEngine(), d_type(type), d_break_left(left_break), d_break_right(right_break){};
+	QwtScaleTransformation* transformation() const;
+	virtual QwtScaleDiv divideScale(double x1, double x2, int maxMajSteps,
+		int maxMinSteps, double stepSize = 0.0) const;
+	virtual void autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const;
+		
+	double axisBreakLeft(){return d_break_left;};
+	double axisBreakRight(){return d_break_right;};
+	void setAxisBreak(double from, double to){d_break_left = from; d_break_right = to;};
+	
+	int type(){return d_type;};
+	bool hasBreak(){return (d_break_left == d_break_right)?false:true;};
+
+private:
+	int d_type;
+	double d_break_left, d_break_right;
+};
+
+class ScaleTransformation: public QwtScaleTransformation
+{
+public:
+	ScaleTransformation(Type type = QwtScaleTransformation::Linear, double left_break = -DBL_MAX, double right_break = DBL_MAX): 
+		QwtScaleTransformation(Other), d_break_left(left_break), d_break_right(right_break), d_type(type){};
+	virtual double xForm(double x, double, double, double p1, double p2) const;
+	QwtScaleTransformation* copy() const;
+
+private:
+	double d_break_left, d_break_right;
+	Type d_type;
+};
 
 //! Extension to QwtScaleDraw
 class ScaleDraw: public QwtScaleDraw
@@ -64,10 +102,6 @@ public:
 
 	void setSelected(bool select = true){d_selected = select;};
 	
-	double axisBreakLowLimit(){return d_break_start;};
-	double axisBreakHighLimit(){return d_break_end;};
-	void setAxisBreak(double from, double to){d_break_start = from; d_break_end = to;};
-
 protected:
     virtual void drawLabel(QPainter *painter, double value) const;
 	virtual void drawTick(QPainter *p, double value, int len) const;
@@ -80,8 +114,6 @@ private:
     int d_prec;
 	int d_minTicks, d_majTicks;
 	bool d_selected;
-	
-	double d_break_start, d_break_end;
 };
 
 class QwtTextScaleDraw: public ScaleDraw

@@ -13205,7 +13205,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 		dir = dir->folderBelow();
 		if (dir){
 		    int next_dir_depth = dir->depth();
-		    if (next_dir_depth < depth && next_dir_depth > initial_depth){
+		    if (next_dir_depth < depth){
 		        int diff = depth - next_dir_depth;
 		        for (int i = 0; i < diff; i++)
                     text += "</folder>\n";
@@ -14053,7 +14053,7 @@ bool ApplicationWindow::copyFolder(Folder *src, Folder *dest)
 
 	if (dest->subfolders().contains(src->objectName())){
 		QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
-					tr("The destination folder already contains a folder called '%1'! Folder skipped!").arg(src->objectName()));
+		tr("The destination folder already contains a folder called '%1'! Folder skipped!").arg(src->objectName()));
 		return false;
 	}
 
@@ -14081,6 +14081,7 @@ bool ApplicationWindow::copyFolder(Folder *src, Folder *dest)
 
 			copy_item = new FolderListItem(parentFolder->folderListItem(), dest_f);
 			copy_item->setText(0, src->objectName());
+			copy_item->setOpen(src->folderListItem()->isOpen());
 			dest_f->setFolderListItem(copy_item);
 
 			lst = QList<MyWidget *>(src->windowsList());

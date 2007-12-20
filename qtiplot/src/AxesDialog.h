@@ -193,6 +193,7 @@ protected:
 	bool xAxisOn, yAxisOn, topAxisOn, rightAxisOn;
 	int xBottomLabelsRotation, xTopLabelsRotation;
 
+	QGroupBox *boxAxesBreaks;
 	DoubleSpinBox *boxBreakStart, *boxBreakEnd;
 	Graph* d_graph;
 	//! Last selected tab

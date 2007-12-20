@@ -35,8 +35,89 @@
 
 #include <qwt_painter.h>
 #include <qwt_text.h>
-#include <qwt_scale_map.h>
 
+QwtScaleTransformation* ScaleEngine::transformation() const
+{
+	ScaleTransformation *tr;
+	if (d_type)
+		tr = new ScaleTransformation(QwtScaleTransformation::Log10, d_break_left, d_break_right);
+	else
+		tr = new ScaleTransformation(QwtScaleTransformation::Linear, d_break_left, d_break_right);
+	return tr;
+}
+
+double ScaleTransformation::xForm(double x, double s1, double s2, double p1, double p2) const
+{	
+	if ((d_break_left == d_break_right) || 
+		(d_break_left == -DBL_MAX && d_break_right == DBL_MAX)){
+		QwtScaleTransformation *tr = new QwtScaleTransformation (d_type);
+		double res = tr->xForm(x, s1, s2, p1, p2);
+		delete tr;
+		return res;
+	}
+	
+	const int deco_space = 10;
+	const double pm = p1 + (p2 - p1)/2;
+	const double pml = pm - deco_space/2;
+	const double pmr = pm + deco_space/2;
+	
+	if (x > d_break_left && x < d_break_right)
+		x = d_break_left;
+
+	if (x >= s1 && x <= d_break_left)
+		return p1 + (x - s1)/(d_break_left - s1)*(pml - p1);
+               	
+	if (x >= d_break_right && x <= s2)
+		return pmr + (x - d_break_right)/(s2 - d_break_right)*(p2 - pmr);
+
+	return -DBL_MAX; // something invalid
+}
+
+QwtScaleTransformation *ScaleTransformation::copy() const
+{
+    return new ScaleTransformation(d_type, d_break_left, d_break_right);
+}
+
+QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
+		int maxMinSteps, double stepSize) const
+{
+	QwtScaleEngine *engine;
+	if (d_type)
+		engine = new QwtLog10ScaleEngine();
+	else
+		engine = new QwtLinearScaleEngine();
+
+	if ((d_break_left == d_break_right) || 
+		(d_break_left == -DBL_MAX && d_break_right == DBL_MAX)){
+		QwtScaleDiv div = engine->divideScale(x1, x2, maxMajSteps, maxMinSteps, stepSize);
+		delete engine;
+		return div;
+	}
+	
+	QwtScaleDiv div1 = engine->divideScale(x1, d_break_left, maxMajSteps, maxMinSteps, stepSize);
+    QwtScaleDiv div2 = engine->divideScale(d_break_right, x2, maxMajSteps, maxMinSteps, stepSize);
+
+    QwtValueList ticks[QwtScaleDiv::NTickTypes];
+    ticks[QwtScaleDiv::MinorTick] = div1.ticks(QwtScaleDiv::MinorTick) + div2.ticks(QwtScaleDiv::MinorTick);
+    ticks[QwtScaleDiv::MediumTick] = div1.ticks(QwtScaleDiv::MediumTick) + div2.ticks(QwtScaleDiv::MediumTick);
+    ticks[QwtScaleDiv::MajorTick] = div1.ticks(QwtScaleDiv::MajorTick) + div2.ticks(QwtScaleDiv::MajorTick);
+
+	delete engine;
+	return QwtScaleDiv(x1, x2, ticks);
+}
+	
+void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const 
+{
+	QwtScaleEngine *engine;
+	if (d_type)
+		engine = new QwtLog10ScaleEngine();
+	else
+		engine = new QwtLinearScaleEngine();
+	
+	engine->autoScale(maxNumSteps, x1, x2, stepSize);
+	delete engine;
+}
+			
 ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
 	d_plot(plot),
 	d_fmt('g'),
@@ -45,10 +126,7 @@ ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
 	d_majTicks(Out),
 	d_minTicks(Out),
 	d_selected(false)
-{
-	d_break_start = -DBL_MAX;
-	d_break_end	= DBL_MAX;
-}
+{}
 
 QwtText ScaleDraw::label(double value) const
 {
