@@ -1250,23 +1250,30 @@ void AxesDialog::initScalesPage()
 	btnInvert->setText( tr( "Inverted" ) );
 	btnInvert->setChecked(false);
 	middleLayout->addWidget( btnInvert, 3, 1 );
+	middleLayout->setRowStretch(4, 1);
 
-	/*ApplicationWindow *app = (ApplicationWindow *)parent();
-	middleLayout->addWidget(new QLabel(tr( "Axis Break From" )), 4, 0);
+	boxAxesBreaks = new QGroupBox(tr("Show Axis Break"));
+	boxAxesBreaks->setCheckable(true);
+	boxAxesBreaks->setChecked(false);
+	
+	QGridLayout * breaksLayout = new QGridLayout(boxAxesBreaks);
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	breaksLayout->addWidget(new QLabel(tr("From")), 0, 0);
 	boxBreakStart = new DoubleSpinBox('g');
 	boxBreakStart->setLocale(app->locale());
     boxBreakStart->setDecimals(app->d_decimal_digits);
+	breaksLayout->addWidget(boxBreakStart, 0, 1);
 
-	middleLayout->addWidget(boxBreakStart, 4, 1);
-
-	middleLayout->addWidget(new QLabel(tr( "Axis Break To" )), 5, 0);
+	breaksLayout->addWidget(new QLabel(tr("To")), 1, 0);
 	boxBreakEnd = new DoubleSpinBox('g');
 	boxBreakEnd->setLocale(app->locale());
     boxBreakEnd->setDecimals(app->d_decimal_digits);
-	middleLayout->addWidget(boxBreakEnd, 5, 1);*/
+	breaksLayout->addWidget(boxBreakEnd, 1, 1);
 
-	middleLayout->setRowStretch( 4, 1 );
-
+	QVBoxLayout* vl = new QVBoxLayout();
+	vl->addWidget(middleBox);
+	vl->addWidget(boxAxesBreaks);
+	
 	QGroupBox * rightBox = new QGroupBox(QString());
 	QGridLayout * rightLayout = new QGridLayout(rightBox);
 	QWidget * stepWidget = new QWidget();
@@ -1330,7 +1337,7 @@ void AxesDialog::initScalesPage()
 
 	QHBoxLayout* mainLayout = new QHBoxLayout(scalesPage);
 	mainLayout->addWidget(axesList);
-	mainLayout->addWidget(middleBox);
+	mainLayout->addLayout(vl);
 	mainLayout->addWidget(rightBox);
 
 	generalDialog->addTab(scalesPage, tr( "Scale" ));
@@ -2351,12 +2358,14 @@ bool AxesDialog::updatePlot()
 	             }
           }
 
+		double breakLeft = -DBL_MAX, breakRight = DBL_MAX;
+		if (boxAxesBreaks->isChecked()){
+			breakLeft = boxBreakStart->value();
+			breakRight = boxBreakEnd->value();
+		}
+		
 		d_graph->setScale(a, start, end, stp, boxMajorValue->value(), boxMinorValue->currentText().toInt(),
-                             boxScaleType->currentIndex(), btnInvert->isChecked());
-
-		/*ScaleDraw *sc_draw = (ScaleDraw *)d_graph->plotWidget()->axisScaleDraw(a);
-		sc_draw->setAxisBreak(boxBreakStart->value(), boxBreakEnd->value());*/
-
+                          boxScaleType->currentIndex(), btnInvert->isChecked(), breakLeft, breakRight);
 		d_graph->notifyChanges();
 	}
 	else if (generalDialog->currentWidget()==gridPage){
@@ -2542,51 +2551,49 @@ const QwtScaleDiv *scDiv=d_plot->axisScaleDiv(a);
 boxStart->setText(QString::number(QMIN(scDiv->lBound(), scDiv->hBound())));
 boxEnd->setText(QString::number(QMAX(scDiv->lBound(), scDiv->hBound())));
 
-/*ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw(a);
-boxBreakStart->setValue(sd->axisBreakLowLimit());
-boxBreakEnd->setValue(sd->axisBreakHighLimit());*/
+ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(a);
+if (sc_engine->axisBreakLeft() > -DBL_MAX)
+	boxBreakStart->setValue(sc_engine->axisBreakLeft());
+if (sc_engine->axisBreakRight() < DBL_MAX)
+	boxBreakEnd->setValue(sc_engine->axisBreakRight());
+boxAxesBreaks->setChecked(sc_engine->hasBreak());
 
 QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 boxStep->setText(QString::number(d_graph->axisStep(a)));
 boxMajorValue->setValue(lst.count());
 
-if (axesType[a] == Graph::Time){
-	boxUnit->show();
-	boxUnit->insertItem(tr("millisec."));
-	boxUnit->insertItem(tr("sec."));
-	boxUnit->insertItem(tr("min."));
-	boxUnit->insertItem(tr("hours"));
-	}
-else if (axesType[a] == Graph::Date){
-	boxUnit->show();
-	boxUnit->insertItem(tr("days"));
-	boxUnit->insertItem(tr("weeks"));
-	}
-
-if (d_graph->axisStep(a) != 0.0){
-	btnStep->setChecked(true);
-	boxStep->setEnabled(true);
-	boxUnit->setEnabled(true);
-
-	btnMajor->setChecked(false);
-	boxMajorValue->setEnabled(false);
-	}
-else{
-	btnStep->setChecked(false);
-	boxStep->setEnabled(false);
-	boxUnit->setEnabled(false);
-	btnMajor->setChecked(true);
-	boxMajorValue->setEnabled(true);
+	if (axesType[a] == Graph::Time){
+		boxUnit->show();
+		boxUnit->insertItem(tr("millisec."));
+		boxUnit->insertItem(tr("sec."));
+		boxUnit->insertItem(tr("min."));
+		boxUnit->insertItem(tr("hours"));
+	} else if (axesType[a] == Graph::Date){
+		boxUnit->show();
+		boxUnit->insertItem(tr("days"));
+		boxUnit->insertItem(tr("weeks"));
 	}
 
-const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(a);
-btnInvert->setChecked(sc_eng->testAttribute(QwtScaleEngine::Inverted));
+	if (d_graph->axisStep(a) != 0.0){
+		btnStep->setChecked(true);
+		boxStep->setEnabled(true);
+		boxUnit->setEnabled(true);
 
-QwtScaleTransformation *tr = sc_eng->transformation();
-boxScaleType->setCurrentItem((int)tr->type());
+		btnMajor->setChecked(false);
+		boxMajorValue->setEnabled(false);
+	} else{
+		btnStep->setChecked(false);
+		boxStep->setEnabled(false);
+		boxUnit->setEnabled(false);
+		btnMajor->setChecked(true);
+		boxMajorValue->setEnabled(true);
+	}
+
+btnInvert->setChecked(sc_engine->testAttribute(QwtScaleEngine::Inverted));
+boxScaleType->setCurrentItem(sc_engine->type());
 
 boxMinorValue->clear();
-if (tr->type())//log scale
+if (sc_engine->type())//log scale
 	boxMinorValue->addItems(QStringList()<<"0"<<"2"<<"4"<<"8");
 else
 	boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");

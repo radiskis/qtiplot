@@ -46,6 +46,8 @@
 #include "PlotToolInterface.h"
 #include "MultiLayer.h"
 
+#include <float.h>
+
 class QwtPlotCurve;
 class QwtPlotZoomer;
 class QwtPieCurve;
@@ -270,7 +272,8 @@ class Graph: public QWidget
 		//! Set axis scale
 		void invertScale(int axis);
 		void setScale(int axis, double start, double end, double step = 0.0,
-				int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false);
+				int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false,
+				double left_break = -DBL_MAX, double right_break = DBL_MAX);
 		double axisStep(int axis){return d_user_step[axis];};
 
 		//! \name Curves Layout
