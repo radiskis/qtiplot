@@ -129,10 +129,10 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 
 	QStringList lst = text.split(",", QString::SkipEmptyParts);
 	if (lst.count() == 1){
-		c->setTitle(lst[0]);			
-		if (graph->curveType(curve) == Graph::Box)		
+		c->setTitle(lst[0]);
+		if (graph->curveType(curve) == Graph::Box)
 			((BoxCurve*)c)->loadData();
-		else if (graph->curveType(curve) == Graph::Pie)		
+		else if (graph->curveType(curve) == Graph::Pie)
 			((QwtPieCurve*)c)->loadData();
 	} else if (lst.count() == 2){
 		c->setXColumnName(lst[0].remove("(X)"));
@@ -174,7 +174,7 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 QString AssociationsDialog::plotAssociation(const QString& text)
 {
 QString s = text;
-QStringList lst= s.split(": ", QString::SkipEmptyParts);
+QStringList lst = s.split(": ", QString::SkipEmptyParts);
 QStringList cols = lst[1].split(",", QString::SkipEmptyParts);
 
 QString tableName = lst[0];
@@ -255,6 +255,7 @@ if (n == 2){
 	xColName = cols[0].remove("(X)");
 	yColName = cols[1].remove("(Y)");
 
+    table->showColumn(1);
 	table->hideColumn(3);
 	table->hideColumn(4);
 	}
@@ -283,67 +284,53 @@ for (int i=0; i < table->rowCount(); i++ )
 
 bool xerr = false, yerr = false, vectors = false;
 QString errColName, xEndColName, yEndColName;
-if (n > 2)
-	{
+if (n > 2){
 	table->showColumn(3);
 	table->showColumn(4);
 
-	if (cols[2].contains("(xErr)") || cols[2].contains("(yErr)"))
-		{//if error bars
+	if (cols[2].contains("(xErr)") || cols[2].contains("(yErr)")){//if error bars
 		table->horizontalHeaderItem(3)->setText(tr("xErr"));
 		table->horizontalHeaderItem(4)->setText(tr("yErr"));
-		}
+    }
 
-	if (cols[2].contains("(xErr)"))
-		{
+	if (cols[2].contains("(xErr)")){
 		xerr = true;
 		errColName = cols[2].remove("(xErr)");
-		}
-	else if (cols[2].contains("(yErr)"))
-		{
+    } else if (cols[2].contains("(yErr)")){
 		yerr = true;
 		errColName = cols[2].remove("(yErr)");
-		}
-	else if (cols.count() > 3 && cols[2].contains("(X)") && cols[3].contains("(Y)"))
-		{
+    } else if (cols.count() > 3 && cols[2].contains("(X)") && cols[3].contains("(Y)")){
 		vectors = true;
 		xEndColName = cols[2].remove("(X)");
 		yEndColName = cols[3].remove("(Y)");
 		table->horizontalHeaderItem(3)->setText(tr("xEnd"));
 		table->horizontalHeaderItem(4)->setText(tr("yEnd"));
-		}
-	else if (cols.count() > 3 && cols[2].contains("(A)") && cols[3].contains("(M)"))
-		{
+    } else if (cols.count() > 3 && cols[2].contains("(A)") && cols[3].contains("(M)")){
 		vectors = true;
 		xEndColName = cols[2].remove("(A)");
 		yEndColName = cols[3].remove("(M)");
 		table->horizontalHeaderItem(3)->setText(tr("Angle"));
 		table->horizontalHeaderItem(4)->setText(tr("Magn.","Magnitude, vector length"));
-		}
-	}
+    }
+}
 
-for (int i=0; i < table->rowCount(); i++ )
-	{
+for (int i=0; i < table->rowCount(); i++){
 	it = (QCheckBox *)table->cellWidget(i, 3);
-	if (xerr || vectors)
-		{
+	if (xerr || vectors){
 		if (table->item(i,0)->text() == errColName || table->item(i,0)->text() == xEndColName)
 			it->setChecked(true);
 		else
 			it->setChecked(false);
-		}
-	else
+    } else
 		it->setChecked(false);
 
 	it = (QCheckBox *)table->cellWidget(i, 4);
-	if (yerr || vectors)
-		{
+	if (yerr || vectors){
 		if (table->item(i,0)->text() == errColName || table->item(i,0)->text() == yEndColName)
 			it->setChecked(true);
 		else
 			it->setChecked(false);
-		}
-	else
+    } else
 		it->setChecked(false);
 	}
 }
@@ -386,7 +373,7 @@ int index = associations->currentRow();
 QString text = associations->currentItem()->text();
 QStringList lst = text.split(": ", QString::SkipEmptyParts);
 QStringList cols = lst[1].split(",", QString::SkipEmptyParts);
-	
+
 if (col == 1){
 	cols[0] = table->item(row, 0)->text() + "(X)";
 	text = lst[0] + ": " + cols.join(",");
