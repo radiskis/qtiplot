@@ -2584,7 +2584,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 					s = s.stripWhiteSpace();
 				line = s.split(sep);
 				int lc = (int)line.count();
-				if (lc > cols) {
+				if (lc > cols){
 					addColumns(lc - cols);
 					cols = lc;
 				}
@@ -3027,8 +3027,12 @@ void Table::restore(QString& spec)
 		row = list[0].toInt();
 		for (int j=0; j<c; j++){
 			QString cell = list[j+1];
-			if (!cell.isEmpty())
-				setCell(row, j, cell.toDouble());
+			if (!cell.isEmpty()){
+				if (colTypes[j] == Numeric)
+					setCell(row, j, cell.toDouble());
+				else
+					d_table->setText(row, j, cell);
+			}
 		}
 
 		s = t.readLine();

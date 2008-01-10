@@ -73,6 +73,8 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 {
     setName( "PlotDialog" );
 	setWindowTitle( tr( "QtiPlot - Plot details" ) );
+	setModal(true);
+	setSizeGripEnabled(true);
 
 	listBox = new QTreeWidget();
     listBox->setColumnCount(1);
@@ -80,7 +82,6 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
     listBox->setIndentation(15);
 
     QGridLayout *gl = new QGridLayout(this);
-	gl->setSizeConstraint(QLayout::SetFixedSize);
     gl->addWidget(listBox, 0, 0);
 
 	privateTabWidget = new QTabWidget();
@@ -222,8 +223,7 @@ void PlotDialog::editCurve()
 
 	close();
 
-	if (app)
-	{
+	if (app){
 		if (curveType == Graph::Function)
 			app->showFunctionDialog(item->graph(), index);
 		else
@@ -1463,7 +1463,6 @@ void PlotDialog::insertTabs(int plot_type)
 	{
 		privateTabWidget->addTab (piePage, tr("Pie"));
 		privateTabWidget->showPage(piePage);
-		btnEditCurve->hide();
 		return;
 	}
 
@@ -1714,18 +1713,6 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 	btnWorksheet->show();
     btnEditCurve->show();
 
-    int curveType = item->plotItemType();
-    if (curveType == Graph::Pie){
-        QwtPieCurve *pie = (QwtPieCurve*)i;
-        boxRadius->setValue(pie->ray());
-        boxPiePattern->setPattern(pie->pattern());
-        boxPieLineWidth->setValue(pie->pen().width());
-        boxPieLineColor->setColor(pie->pen().color());
-        setPiePenStyle(pie->pen().style());
-        boxFirstColor->setCurrentItem(pie->firstColor());
-        return;
-    }
-
     //axes page
     boxXAxis->setCurrentItem(i->xAxis()-2);
     boxYAxis->setCurrentItem(i->yAxis());
@@ -1760,9 +1747,26 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         colorScaleWidthBox->setValue(sp->colorBarWidth());
         return;
     }
-
+	
     PlotCurve *c = (PlotCurve*)i;
+	if (c->type() == Graph::Function){
+        btnEditCurve->setText(tr("&Edit..."));
+		return;
+    } else 
+        btnEditCurve->setText(tr("&Plot Associations..."));
 
+	int curveType = item->plotItemType();
+    if (curveType == Graph::Pie){
+        QwtPieCurve *pie = (QwtPieCurve*)i;
+        boxRadius->setValue(pie->ray());
+        boxPiePattern->setPattern(pie->pattern());
+        boxPieLineWidth->setValue(pie->pen().width());
+        boxPieLineColor->setColor(pie->pen().color());
+        setPiePenStyle(pie->pen().style());
+        boxFirstColor->setCurrentItem(pie->firstColor());
+        return;
+    }
+	
     //line page
     int style = c->style();
     if (curveType == Graph::Spline)
@@ -1825,14 +1829,26 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     if (curveType == Graph::ErrorBars){
         QwtErrorPlotCurve *err = (QwtErrorPlotCurve*)i;
-        if (err){
-            xBox->setChecked(err->xErrors());
+        if (err){			
             widthBox->setEditText(QString::number(err->width()));
             capBox->setEditText(QString::number(err->capLength()));
+			
+			colorBox->blockSignals(true);
             colorBox->setColor(err->color());
+			colorBox->blockSignals(false);
+			
+			throughBox->blockSignals(true);
             throughBox->setChecked(err->throughSymbol());
+			throughBox->blockSignals(false);
+			plusBox->blockSignals(true);
             plusBox->setChecked(err->plusSide());
+			plusBox->blockSignals(false);
+			minusBox->blockSignals(true);
             minusBox->setChecked(err->minusSide());
+			minusBox->blockSignals(false);
+			xBox->blockSignals(true);
+			xBox->setChecked(err->xErrors());
+			xBox->blockSignals(false);
         }
 		return;
     }
@@ -1872,12 +1888,6 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         }
 		return;
     }
-
-	if (c->type() == Graph::Function){
-        btnEditCurve->setText(tr("&Edit..."));
-		return;
-    } else
-        btnEditCurve->setText(tr("&Plot Associations..."));
 
     DataCurve *dc = (DataCurve *)i;
     labelsGroupBox->blockSignals(true);

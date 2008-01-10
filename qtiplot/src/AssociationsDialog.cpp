@@ -30,7 +30,9 @@
 #include "Table.h"
 #include "FunctionCurve.h"
 #include "PlotCurve.h"
+#include "BoxCurve.h"
 #include "QwtErrorPlotCurve.h"
+#include "QwtPieCurve.h"
 #include "VectorCurve.h"
 
 #include <QLabel>
@@ -126,14 +128,17 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
         return;
 
 	QStringList lst = text.split(",", QString::SkipEmptyParts);
-	if (lst.count() == 2)
-	{
+	if (lst.count() == 1){
+		c->setTitle(lst[0]);			
+		if (graph->curveType(curve) == Graph::Box)		
+			((BoxCurve*)c)->loadData();
+		else if (graph->curveType(curve) == Graph::Pie)		
+			((QwtPieCurve*)c)->loadData();
+	} else if (lst.count() == 2){
 		c->setXColumnName(lst[0].remove("(X)"));
 		c->setTitle(lst[1].remove("(Y)"));
 		c->loadData();
-	}
-	else if (lst.count() == 3)
-	{//curve with error bars
+	} else if (lst.count() == 3){//curve with error bars
 		QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
 		QString xColName = lst[0].remove("(X)");
 		QString yColName = lst[1].remove("(Y)");
@@ -151,9 +156,7 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 			er->setMasterCurve(master_curve);
 		else
 			er->loadData();
-	}
-	else if (lst.count() == 4)
-	{
+	} else if (lst.count() == 4) {
 		VectorCurve *v = (VectorCurve *)c;
 		v->setXColumnName(lst[0].remove("(X)"));
 		v->setTitle(lst[1].remove("(Y)"));
@@ -209,24 +212,21 @@ Table *t = findTable(index);
 if (!t)
 	return;
 
-if (active_table != t)
-	{
+if (active_table != t){
 	active_table = t;
 	tableCaptionLabel->setText(t->objectName());
 	table->clearContents();
 	table->setRowCount(t->numCols());
 
 	QStringList colNames = t->colNames();
-	for (int i=0; i<table->rowCount(); i++ )
-	    {
+	for (int i=0; i<table->rowCount(); i++ ){
         QTableWidgetItem *cell = new QTableWidgetItem(colNames[i]);
         cell->setBackground (QBrush(Qt::lightGray));
         cell->setFlags (Qt::ItemIsEnabled);
         table->setItem(i, 0, cell);
-        }
+     	}
 
-	for (int j=1; j < table->columnCount(); j++)
-		{
+	for (int j=1; j < table->columnCount(); j++){
 		for (int i=0; i < table->rowCount(); i++ )
 			{
             QTableWidgetItem *cell = new QTableWidgetItem();
@@ -245,15 +245,22 @@ updateColumnTypes();
 void AssociationsDialog::updateColumnTypes()
 {
 QString text = associations->currentItem()->text();
-QStringList lst= text.split(": ", QString::SkipEmptyParts);
+QStringList lst = text.split(": ", QString::SkipEmptyParts);
 QStringList cols = lst[1].split(",", QString::SkipEmptyParts);
 
-QString xColName = cols[0].remove("(X)");
-QString yColName = cols[1].remove("(Y)");
+QString xColName, yColName;
 
 int n = (int)cols.count();
-if (n == 2)
-	{
+if (n == 2){
+	xColName = cols[0].remove("(X)");
+	yColName = cols[1].remove("(Y)");
+
+	table->hideColumn(3);
+	table->hideColumn(4);
+	}
+else if (n == 1){//box plots
+	yColName = cols[0];
+	table->hideColumn(1);
 	table->hideColumn(3);
 	table->hideColumn(4);
 	}
@@ -262,7 +269,7 @@ QCheckBox *it = 0;
 for (int i=0; i < table->rowCount(); i++ )
 	{
 	it = (QCheckBox *)table->cellWidget(i, 1);
-	if (table->item(i,0)->text() == xColName)
+	if (table->item(i, 0)->text() == xColName)
 		it->setChecked(true);
 	else
 		it->setChecked(false);
@@ -343,8 +350,7 @@ for (int i=0; i < table->rowCount(); i++ )
 
 void AssociationsDialog::uncheckCol(int col)
 {
-for (int i=0; i < table->rowCount(); i++ )
-	{
+for (int i=0; i < table->rowCount(); i++ ){
 	QCheckBox *it = (QCheckBox *)table->cellWidget(i, col);
 	if (it)
 		it->setChecked(false);
@@ -380,51 +386,44 @@ int index = associations->currentRow();
 QString text = associations->currentItem()->text();
 QStringList lst = text.split(": ", QString::SkipEmptyParts);
 QStringList cols = lst[1].split(",", QString::SkipEmptyParts);
-
-if (col == 1)
-	{
+	
+if (col == 1){
 	cols[0] = table->item(row, 0)->text() + "(X)";
 	text = lst[0] + ": " + cols.join(",");
 	}
-else if (col == 2)
-	{
-	cols[1] = table->item(row, 0)->text() + "(Y)";
-	text = lst[0] + ": " + cols.join(",");
+else if (col == 2){
+	if (cols.count() >= 2){
+		cols[1] = table->item(row, 0)->text() + "(Y)";
+		text = lst[0] + ": " + cols.join(",");
+	} else // box or pie plots
+		text = lst[0] + ": " + table->item(row, 0)->text();
 	}
-else if (col == 3)
-	{
-	if (text.contains("(A)"))
-		{//vect XYAM curve
+else if (col == 3){
+	if (text.contains("(A)")){//vect XYAM curve
 		cols[2] = table->item(row, 0)->text() + "(A)";
 		text = lst[0] + ": " + cols.join(",");
 		}
-	else if (!text.contains("(A)") && text.count("(X)") == 1)
-		{
+	else if (!text.contains("(A)") && text.count("(X)") == 1){
 		cols[2] = table->item(row, 0)->text() + "(xErr)";
 		text = lst[0] + ": " + cols.join(",");
 		uncheckCol(4);
 		}
-	else if (text.count("(X)") == 2)
-		{//vect XYXY curve
+	else if (text.count("(X)") == 2){//vect XYXY curve
 		cols[2] = table->item(row, 0)->text() + "(X)";
 		text = lst[0] + ": " + cols.join(",");
 		}
 	}
-else if (col == 4)
-	{
-	if (text.contains("(M)"))
-		{//vect XYAM curve
+else if (col == 4){
+	if (text.contains("(M)")){//vect XYAM curve
 		cols[3] = table->item(row, 0)->text() + "(M)";
 		text = lst[0] + ": " + cols.join(",");
 		}
-	else if (!text.contains("(M)") && text.count("(X)") == 1)
-		{
+	else if (!text.contains("(M)") && text.count("(X)") == 1){
 		cols[2] = table->item(row, 0)->text() + "(yErr)";
 		text = lst[0] + ": " + cols.join(",");
 		uncheckCol(3);
 		}
-	else if (text.count("(Y)") == 2)
-		{//vect XYXY curve
+	else if (text.count("(Y)") == 2){//vect XYXY curve
 		cols[3] = table->item(row, 0)->text() + "(Y)";
 		text = lst[0] + ": " + cols.join(",");
 		}
@@ -432,11 +431,9 @@ else if (col == 4)
 
 //change associations for error bars depending on the curve "index"
 QString old_as = plotAssociationsList[index];
-for (int i=0; i<(int)plotAssociationsList.count(); i++)
-	{
+for (int i=0; i<(int)plotAssociationsList.count(); i++){
 	QString as = plotAssociationsList[i];
-	if (as.contains(old_as) && (as.contains("(xErr)") || as.contains("(yErr)")))
-		{
+	if (as.contains(old_as) && (as.contains("(xErr)") || as.contains("(yErr)"))){
 		QStringList ls = as.split(",", QString::SkipEmptyParts);
 		as = text + "," + ls[2];
 		plotAssociationsList[i] = as;
@@ -453,19 +450,15 @@ QTableWidgetItem* it = (QTableWidgetItem*)object;
 if (!it)
 	return false;
 
-if (e->type() == QEvent::MouseButtonPress)
-    {
+if (e->type() == QEvent::MouseButtonPress){
 	if (((QCheckBox*)it)->isChecked())
 		return true;
 
 	int col = 0, row = 0;
-	for (int j=1; j<table->columnCount(); j++)
-		{
-		for (int i=0; i < table->rowCount(); i++ )
-			{
+	for (int j=1; j<table->columnCount(); j++){
+		for (int i=0; i < table->rowCount(); i++ ){
 			QCheckBox* cb = (QCheckBox*)table->cellWidget(i, j);
-			if ( cb == (QCheckBox *)object)
-				{
+			if ( cb == (QCheckBox *)object){
 				row = i;
 				col = j;
 				break;

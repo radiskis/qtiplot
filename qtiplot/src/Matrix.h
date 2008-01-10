@@ -125,10 +125,7 @@ public:
 	void flipVertically();
 	void flipHorizontally();
 	void rotate90(bool clockwise = true);
-
-#ifdef QTIPLOT_PRO
     void fft(bool inverse = false);
-#endif
 
     ColorMapType colorMapType(){return d_color_map_type;};
 	void setColorMapType(ColorMapType mapType);

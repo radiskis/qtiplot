@@ -35,9 +35,7 @@
 #include "Plot.h"
 #include "FFT.h"
 #include "Matrix.h"
-#ifdef QTIPLOT_PRO
-#include <fourier.h>
-#endif
+#include "analysis/fft2D.h"
 
 #include <QRadioButton>
 #include <QGroupBox>
@@ -252,7 +250,6 @@ void FFTDialog::setMatrix(Matrix *m)
 
 void FFTDialog::fftMatrix()
 {
-#ifdef QTIPLOT_PRO
     ApplicationWindow *app = (ApplicationWindow *)parent();
     Matrix *mReal = app->matrix(boxReal->currentText());
     if (!mReal)
@@ -354,5 +351,4 @@ void FFTDialog::fftMatrix()
     freeMatrixData(x_int_re, height);
     freeMatrixData(x_int_im, height);
     QApplication::restoreOverrideCursor();
-#endif
 }

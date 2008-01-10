@@ -60,9 +60,7 @@
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_math.h>
 
-#ifdef QTIPLOT_PRO
-#include <fourier.h>
-#endif
+#include "analysis/fft2D.h"
 
 Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
 : MyWidget(label, parent, name, f), scripted(env)
@@ -1391,7 +1389,6 @@ QwtDoubleRect Matrix::boundingRect()
 						 fabs(x_end - x_start) + dx, fabs(y_end - y_start) + dy).normalized();
 }
 
-#ifdef QTIPLOT_PRO
 void Matrix::fft(bool inverse)
 {
 	int width = numCols();
@@ -1438,4 +1435,3 @@ void Matrix::fft(bool inverse)
     resetView();
 	emit modifiedWindow(this);
 }
-#endif
