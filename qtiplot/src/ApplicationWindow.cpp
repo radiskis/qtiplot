@@ -5364,7 +5364,7 @@ void ApplicationWindow::showPlotAssociations(int curve)
 	if (!g)
 		return;
 
-	AssociationsDialog* ad=new AssociationsDialog(this, Qt::WindowStaysOnTopHint);
+	AssociationsDialog* ad = new AssociationsDialog(this, Qt::WindowStaysOnTopHint);
 	ad->setAttribute(Qt::WA_DeleteOnClose);
 	ad->setGraph(g);
 	ad->initTablesList(tableList(), curve);
@@ -6776,17 +6776,9 @@ void ApplicationWindow::showFFTDialog()
 		sd->setAttribute(Qt::WA_DeleteOnClose);
 		sd->setTable((Table*)w);
 	} else if (w->inherits("Matrix")) {
-    #ifdef QTIPLOT_PRO
 		sd = new FFTDialog(FFTDialog::onMatrix, this);
 		sd->setAttribute(Qt::WA_DeleteOnClose);
 		sd->setMatrix((Matrix*)w);
-    #else
-        QString s = tr("This feature is only available to users having subscribed for a binaries maintenance contract!");
-        s += " " + tr("Please visit the following web page for more details:");
-        s += "<p><a href = http://soft.proindependent.com/pricing.html>http://soft.proindependent.com/pricing.html</a></p>";
-        QMessageBox::critical(this, tr("QtiPlot"), s);
-        return;
-    #endif
 	}
 
 	if (sd)
@@ -10427,12 +10419,12 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 		else if (s.contains ("Legend"))
 		{// version <= 0.8.9
-			QStringList fList=QStringList::split ("\t",s, true);
+			QStringList fList = QStringList::split ("\t",s, true);
 			ag->insertLegend(fList, d_file_version);
 		}
 		else if (s.startsWith ("<legend>") && s.endsWith ("</legend>"))
 		{
-			QStringList fList=QStringList::split ("\t", s.remove("</legend>"), true);
+			QStringList fList = QStringList::split ("\t", s.remove("</legend>"), true);
 			ag->insertLegend(fList, d_file_version);
 		}
 		else if (s.contains ("textMarker"))
@@ -14642,7 +14634,6 @@ void ApplicationWindow::saveFitFunctions(const QStringList& lst)
 
 void ApplicationWindow::matrixDirectFFT()
 {
-#ifdef QTIPLOT_PRO
     Matrix* m = (Matrix*)ws->activeWindow();
 	if (!m)
 		return;
@@ -14650,18 +14641,10 @@ void ApplicationWindow::matrixDirectFFT()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->fft();
 	QApplication::restoreOverrideCursor();
-#else
-    QString s = tr("This feature is only available to users having subscribed for a binaries maintenance contract!");
-	s += " " + tr("Please visit the following web page for more details:");
-	s += "<p><a href = http://soft.proindependent.com/pricing.html>http://soft.proindependent.com/pricing.html</a></p>";
-	QMessageBox::critical(this, tr("QtiPlot"), s);
-    return;
-#endif
 }
 
 void ApplicationWindow::matrixInverseFFT()
 {
-#ifdef QTIPLOT_PRO
     Matrix* m = (Matrix*)ws->activeWindow();
 	if (!m)
 		return;
@@ -14669,13 +14652,6 @@ void ApplicationWindow::matrixInverseFFT()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->fft(true);
 	QApplication::restoreOverrideCursor();
-#else
-    QString s = tr("This feature is only available to users having subscribed for a binaries maintenance contract!");
-	s += " " + tr("Please visit the following web page for more details:");
-	s += "<p><a href = http://soft.proindependent.com/pricing.html>http://soft.proindependent.com/pricing.html</a></p>";
-	QMessageBox::critical(this, tr("QtiPlot"), s);
-    return;
-#endif
 }
 
 void ApplicationWindow::setFormatBarFont(const QFont& font)

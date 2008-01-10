@@ -2500,7 +2500,9 @@ void AxesDialog::setGraph(Graph *g)
     boxBackbones->setChecked (d_graph->axesBackbones());
 
 	boxFramed->setChecked(d_graph->canvasFrameWidth()>0);
+	boxFrameColor->blockSignals(true);
 	boxFrameColor->setColor(d_graph->canvasFrameColor());
+	boxFrameColor->blockSignals(false);
 	boxFrameWidth->setValue(d_graph->canvasFrameWidth());
 
 	boxMinorTicksLength->setValue(p->minorTickLength());
@@ -2551,12 +2553,12 @@ const QwtScaleDiv *scDiv=d_plot->axisScaleDiv(a);
 boxStart->setText(QString::number(QMIN(scDiv->lBound(), scDiv->hBound())));
 boxEnd->setText(QString::number(QMAX(scDiv->lBound(), scDiv->hBound())));
 
-ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(a);
+/*ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(a);
 if (sc_engine->axisBreakLeft() > -DBL_MAX)
 	boxBreakStart->setValue(sc_engine->axisBreakLeft());
 if (sc_engine->axisBreakRight() < DBL_MAX)
 	boxBreakEnd->setValue(sc_engine->axisBreakRight());
-boxAxesBreaks->setChecked(sc_engine->hasBreak());
+boxAxesBreaks->setChecked(sc_engine->hasBreak());*/
 
 QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 boxStep->setText(QString::number(d_graph->axisStep(a)));
@@ -2589,11 +2591,14 @@ boxMajorValue->setValue(lst.count());
 		boxMajorValue->setEnabled(true);
 	}
 
+const QwtScaleEngine *sc_engine = d_plot->axisScaleEngine(a);
 btnInvert->setChecked(sc_engine->testAttribute(QwtScaleEngine::Inverted));
-boxScaleType->setCurrentItem(sc_engine->type());
 
+QwtScaleTransformation *tr = sc_engine->transformation();
+boxScaleType->setCurrentItem((int)tr->type());
+	
 boxMinorValue->clear();
-if (sc_engine->type())//log scale
+if (tr->type())//log scale
 	boxMinorValue->addItems(QStringList()<<"0"<<"2"<<"4"<<"8");
 else
 	boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");

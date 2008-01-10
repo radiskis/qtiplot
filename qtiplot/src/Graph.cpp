@@ -1164,10 +1164,11 @@ void Graph::setScale(int axis, double start, double end, double step,
 					int majorTicks, int minorTicks, int type, bool inverted,
 					double left_break, double right_break)
 {	
-	QwtScaleEngine *sc_engine;
-	if (left_break != right_break)
+	QwtScaleEngine *sc_engine = 0;
+	/*if (left_break != right_break)
 		sc_engine = new ScaleEngine(type, left_break, right_break);
-	else if (type)
+	else */
+	if (type)
 		sc_engine = new QwtLog10ScaleEngine();
 	else
 		sc_engine = new QwtLinearScaleEngine();
@@ -1190,8 +1191,8 @@ void Graph::setScale(int axis, double start, double end, double step,
 	d_plot->setAxisScaleEngine (axis, sc_engine);
 	d_plot->setAxisScaleDiv (axis, div);
 	
-	QwtScaleWidget *scale = d_plot->axisWidget(axis);
-	scale->setScaleDiv(new ScaleTransformation((QwtScaleTransformation::Type)type, left_break, right_break), div);
+	//QwtScaleWidget *scale = d_plot->axisWidget(axis);
+	//scale->setScaleDiv(new ScaleTransformation((QwtScaleTransformation::Type)type, left_break, right_break), div);
 
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
@@ -2260,7 +2261,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 		text += fList[13];
 		for (int i=1; i<n-13; i++)
 			text += "\n" + fList[13+i];
-	} else {
+	} else {		
 		l->setTextColor(QColor(fList[9]));
 		l->setFrameStyle(fList[10].toInt());
 		QColor c = QColor(fList[12]);
@@ -2268,11 +2269,16 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 		l->setBackgroundColor(c);
 
 		int n = (int)fList.count();
-		text += fList[14];
-		for (int i=1; i<n-14; i++)
-			text += "\n" + fList[14+i];
-	}
+		if (n > 14)
+			text += fList[14];
 
+		for (int i=1; i<n-14; i++){
+			int j = 14+i;
+			if (n > j)
+				text += "\n" + fList[j];
+		}
+	}
+	
 	if (fileVersion < 91)
 		text = text.replace("\\c{", "\\l(").replace("}", ")");
 
@@ -2341,9 +2347,6 @@ LegendWidget* Graph::insertText(LegendWidget* t)
 {
 	LegendWidget* aux = new LegendWidget(d_plot);
 	d_texts_list << aux;
-
-	//if(d_markers_selector)
-		//delete d_markers_selector;
 
 	aux->setTextColor(t->textColor());
 	aux->setBackgroundColor(t->backgroundColor());
@@ -3398,6 +3401,8 @@ void Graph::zoomOut()
 
 void Graph::drawText(bool on)
 {
+	deselectMarker();
+	
 	QCursor c = QCursor(Qt::IBeamCursor);
 	if (on){
 		d_plot->canvas()->setCursor(c);
