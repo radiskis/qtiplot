@@ -42,8 +42,9 @@
 class ScaleEngine: public QwtScaleEngine
 {
 public:
-	ScaleEngine(int type = 0, double left_break = -DBL_MAX, double right_break = DBL_MAX): 
-		QwtScaleEngine(), d_type(type), d_break_left(left_break), d_break_right(right_break){};
+	ScaleEngine(QwtScaleTransformation::Type type = QwtScaleTransformation::Linear, 
+				double left_break = -DBL_MAX, double right_break = DBL_MAX): 
+				QwtScaleEngine(), d_type(type), d_break_left(left_break), d_break_right(right_break){};
 	QwtScaleTransformation* transformation() const;
 	virtual QwtScaleDiv divideScale(double x1, double x2, int maxMajSteps,
 		int maxMinSteps, double stepSize = 0.0) const;
@@ -53,11 +54,13 @@ public:
 	double axisBreakRight(){return d_break_right;};
 	void setAxisBreak(double from, double to){d_break_left = from; d_break_right = to;};
 	
-	int type(){return d_type;};
-	bool hasBreak(){return (d_break_left == d_break_right)?false:true;};
+	QwtScaleTransformation::Type type(){return d_type;};
+	void setType(QwtScaleTransformation::Type type){d_type = type;};
+	
+	bool hasBreak(){return (d_break_left == d_break_right || (d_break_left == -DBL_MAX && d_break_right == DBL_MAX))?false:true;};
 
 private:
-	int d_type;
+	QwtScaleTransformation::Type d_type;
 	double d_break_left, d_break_right;
 };
 
@@ -68,7 +71,7 @@ public:
 		QwtScaleTransformation(Other), d_break_left(left_break), d_break_right(right_break), d_type(type){};
 	virtual double xForm(double x, double, double, double p1, double p2) const;
 	QwtScaleTransformation* copy() const;
-
+			
 private:
 	double d_break_left, d_break_right;
 	Type d_type;
