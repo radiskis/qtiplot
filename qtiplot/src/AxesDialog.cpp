@@ -2553,12 +2553,12 @@ const QwtScaleDiv *scDiv=d_plot->axisScaleDiv(a);
 boxStart->setText(QString::number(QMIN(scDiv->lBound(), scDiv->hBound())));
 boxEnd->setText(QString::number(QMAX(scDiv->lBound(), scDiv->hBound())));
 
-/*ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(a);
+ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(a);
 if (sc_engine->axisBreakLeft() > -DBL_MAX)
 	boxBreakStart->setValue(sc_engine->axisBreakLeft());
 if (sc_engine->axisBreakRight() < DBL_MAX)
 	boxBreakEnd->setValue(sc_engine->axisBreakRight());
-boxAxesBreaks->setChecked(sc_engine->hasBreak());*/
+boxAxesBreaks->setChecked(sc_engine->hasBreak());
 
 QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 boxStep->setText(QString::number(d_graph->axisStep(a)));
@@ -2590,15 +2590,13 @@ boxMajorValue->setValue(lst.count());
 		btnMajor->setChecked(true);
 		boxMajorValue->setEnabled(true);
 	}
-
-const QwtScaleEngine *sc_engine = d_plot->axisScaleEngine(a);
+	
 btnInvert->setChecked(sc_engine->testAttribute(QwtScaleEngine::Inverted));
-
-QwtScaleTransformation *tr = sc_engine->transformation();
-boxScaleType->setCurrentItem((int)tr->type());
+int scale_type = (int)sc_engine->type();
+boxScaleType->setCurrentItem(scale_type);
 	
 boxMinorValue->clear();
-if (tr->type())//log scale
+if (scale_type)//log scale
 	boxMinorValue->addItems(QStringList()<<"0"<<"2"<<"4"<<"8");
 else
 	boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");

@@ -92,6 +92,7 @@ Plot::Plot(QWidget *parent, const char *)
 			sd->setTickLength(QwtScaleDiv::MajorTick, majTickLength);
 
 			setAxisScaleDraw (i, sd);
+			setAxisScaleEngine (i, new ScaleEngine());
 		}
 	}
 
@@ -186,9 +187,38 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
 
 void Plot::drawItems (QPainter *painter, const QRect &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
-{
-	QwtPlot::drawItems(painter, rect, map, pfilter);
+{	
+    for (int i=0; i<QwtPlot::axisCnt; i++){
+		if (!axisEnabled(i))
+			continue;
 
+		ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);	
+		if (!sc_engine->hasBreak())
+			continue;
+		
+		double start = sc_engine->axisBreakLeft();
+		double end = sc_engine->axisBreakRight();	                
+		QwtScaleMap m = map[i];
+		if (i == QwtPlot::xBottom || i == QwtPlot::xTop){
+			int y = rect.y();
+			int x2 = m.transform (end);
+			int h = rect.height();
+			
+			QRegion cr1(rect.x(), y, m.transform (start), h);
+			QRegion cr2(x2, y, rect.width() - x2, h);
+			painter->setClipRegion(cr1.united(cr2));
+		} else if (i == QwtPlot::yLeft || i == QwtPlot::yRight){
+			int x = rect.x();
+			int y1 = m.transform (start);
+			
+			QRegion cr1(x, rect.y(), rect.width(), m.transform (end));
+			QRegion cr2(x, y1, rect.width(), rect.height() - y1);
+			painter->setClipRegion(cr1.united(cr2));
+		}
+	}
+	
+	QwtPlot::drawItems(painter, rect, map, pfilter);
+	
 	for (int i=0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;

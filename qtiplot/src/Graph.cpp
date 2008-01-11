@@ -1163,15 +1163,13 @@ if (scaleDiv)
 void Graph::setScale(int axis, double start, double end, double step, 
 					int majorTicks, int minorTicks, int type, bool inverted,
 					double left_break, double right_break)
-{	
-	QwtScaleEngine *sc_engine = 0;
-	/*if (left_break != right_break)
-		sc_engine = new ScaleEngine(type, left_break, right_break);
-	else */
-	if (type)
-		sc_engine = new QwtLog10ScaleEngine();
+{		
+	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
+	sc_engine->setAxisBreak(left_break, right_break);
+	if (type == 1)
+		sc_engine->setType(QwtScaleTransformation::Log10);
 	else
-		sc_engine = new QwtLinearScaleEngine();
+		sc_engine->setType(QwtScaleTransformation::Linear);
 	
 	int max_min_intervals = minorTicks;
 	if (minorTicks == 1)
@@ -1187,22 +1185,17 @@ void Graph::setScale(int axis, double start, double end, double step,
 		sc_engine->setAttribute(QwtScaleEngine::Inverted);
 		div.invert();
 	}
-
-	d_plot->setAxisScaleEngine (axis, sc_engine);
 	d_plot->setAxisScaleDiv (axis, div);
 	
-	//QwtScaleWidget *scale = d_plot->axisWidget(axis);
-	//scale->setScaleDiv(new ScaleTransformation((QwtScaleTransformation::Type)type, left_break, right_break), div);
-
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 
 	d_user_step[axis] = step;
 
-	/*if (axis == QwtPlot::xBottom || axis == QwtPlot::yLeft){//FIXME: crash when axis breaks are shown!
+	if (axis == QwtPlot::xBottom || axis == QwtPlot::yLeft){
   		updateSecondaryAxis(QwtPlot::xTop);
   	    updateSecondaryAxis(QwtPlot::yRight);
-  	}*/
+  	}
 
 	d_plot->replot();
 	//keep markers on canvas area

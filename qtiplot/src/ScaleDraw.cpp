@@ -38,12 +38,7 @@
 
 QwtScaleTransformation* ScaleEngine::transformation() const
 {
-	ScaleTransformation *tr;
-	if (d_type)
-		tr = new ScaleTransformation(QwtScaleTransformation::Log10, d_break_left, d_break_right);
-	else
-		tr = new ScaleTransformation(QwtScaleTransformation::Linear, d_break_left, d_break_right);
-	return tr;
+	return new ScaleTransformation(d_type, d_break_left, d_break_right);
 }
 
 double ScaleTransformation::xForm(double x, double s1, double s2, double p1, double p2) const
@@ -56,20 +51,26 @@ double ScaleTransformation::xForm(double x, double s1, double s2, double p1, dou
 		return res;
 	}
 	
-	const int deco_space = 10;
-	const double pm = p1 + (p2 - p1)/2;
-	const double pml = pm - deco_space/2;
-	const double pmr = pm + deco_space/2;
+	const int d_space = 5;
+	const double pm = p1 + (p2 - p1)/2;	
+	double pml, pmr;
+	if (p1 < p2){
+		pml = pm - d_space;
+		pmr = pm + d_space;
+	} else {
+		pml = pm + d_space;
+		pmr = pm - d_space;
+	}
 	
 	if (x > d_break_left && x < d_break_right)
-		x = d_break_left;
+		return pm;
 
 	if (x >= s1 && x <= d_break_left)
 		return p1 + (x - s1)/(d_break_left - s1)*(pml - p1);
                	
 	if (x >= d_break_right && x <= s2)
 		return pmr + (x - d_break_right)/(s2 - d_break_right)*(p2 - pmr);
-
+	
 	return -DBL_MAX; // something invalid
 }
 
@@ -82,7 +83,7 @@ QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
 		int maxMinSteps, double stepSize) const
 {
 	QwtScaleEngine *engine;
-	if (d_type)
+	if (d_type == QwtScaleTransformation::Log10)
 		engine = new QwtLog10ScaleEngine();
 	else
 		engine = new QwtLinearScaleEngine();
@@ -109,7 +110,7 @@ QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
 void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const 
 {
 	QwtScaleEngine *engine;
-	if (d_type)
+	if (d_type == QwtScaleTransformation::Log10)
 		engine = new QwtLog10ScaleEngine();
 	else
 		engine = new QwtLinearScaleEngine();
