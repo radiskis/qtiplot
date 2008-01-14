@@ -1160,17 +1160,26 @@ if (scaleDiv)
     scaleDiv->invert();
 }
 
-void Graph::setScale(int axis, double start, double end, double step, 
+void Graph::setScale(int axis, double start, double end, double step,
 					int majorTicks, int minorTicks, int type, bool inverted,
-					double left_break, double right_break)
-{		
+					double left_break, double right_break, int breakPos,
+                    double stepBeforeBreak, double stepAfterBreak,
+                    int minTicksBeforeBreak, int minTicksAfterBreak, bool log10AfterBreak)
+{
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
 	sc_engine->setAxisBreak(left_break, right_break);
+	sc_engine->setBreakPosition(breakPos);
+	sc_engine->setStepBeforeBreak(stepBeforeBreak);
+	sc_engine->setStepAfterBreak(stepAfterBreak);
+	sc_engine->setMinTicksBeforeBreak(minTicksBeforeBreak);
+	sc_engine->setMinTicksAfterBreak(minTicksAfterBreak);
+	sc_engine->setLog10ScaleAfterBreak(log10AfterBreak);
+
 	if (type == 1)
 		sc_engine->setType(QwtScaleTransformation::Log10);
 	else
 		sc_engine->setType(QwtScaleTransformation::Linear);
-	
+
 	int max_min_intervals = minorTicks;
 	if (minorTicks == 1)
 		max_min_intervals = 3;
@@ -1186,7 +1195,7 @@ void Graph::setScale(int axis, double start, double end, double step,
 		div.invert();
 	}
 	d_plot->setAxisScaleDiv (axis, div);
-	
+
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 
@@ -1201,6 +1210,7 @@ void Graph::setScale(int axis, double start, double end, double step,
 	//keep markers on canvas area
 	updateMarkersBoundingRect();
 	d_plot->replot();
+	d_plot->axisWidget(axis)->repaint();
 }
 
 QStringList Graph::analysableCurvesList()
@@ -2254,7 +2264,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 		text += fList[13];
 		for (int i=1; i<n-13; i++)
 			text += "\n" + fList[13+i];
-	} else {		
+	} else {
 		l->setTextColor(QColor(fList[9]));
 		l->setFrameStyle(fList[10].toInt());
 		QColor c = QColor(fList[12]);
@@ -2271,7 +2281,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 				text += "\n" + fList[j];
 		}
 	}
-	
+
 	if (fileVersion < 91)
 		text = text.replace("\\c{", "\\l(").replace("}", ")");
 
@@ -3395,7 +3405,7 @@ void Graph::zoomOut()
 void Graph::drawText(bool on)
 {
 	deselectMarker();
-	
+
 	QCursor c = QCursor(Qt::IBeamCursor);
 	if (on){
 		d_plot->canvas()->setCursor(c);
@@ -4272,35 +4282,28 @@ void Graph::copy(Graph* g)
 		}
 	}
 	for (int i=0; i<QwtPlot::axisCnt; i++){//set same scales
-		const QwtScaleEngine *se = plot->axisScaleEngine(i);
+		const ScaleEngine *se = (ScaleEngine *)plot->axisScaleEngine(i);
 		if (!se)
 			continue;
 
-		QwtScaleEngine *sc_engine = 0;
-		if (se->transformation()->type() == QwtScaleTransformation::Log10)
-			sc_engine = new QwtLog10ScaleEngine();
-		else if (se->transformation()->type() == QwtScaleTransformation::Linear)
-			sc_engine = new QwtLinearScaleEngine();
+        ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(i);
+        sc_engine->clone(se);
 
 		int majorTicks = plot->axisMaxMajor(i);
   	    int minorTicks = plot->axisMaxMinor(i);
   	    d_plot->setAxisMaxMajor (i, majorTicks);
   	    d_plot->setAxisMaxMinor (i, minorTicks);
 
+        double step = g->axisStep(i);
+		d_user_step[i] = step;
 		const QwtScaleDiv *sd = plot->axisScaleDiv(i);
-		QwtValueList lst = sd->ticks (QwtScaleDiv::MajorTick);
-
-		d_user_step[i] = g->axisStep(i);
-
 		QwtScaleDiv div = sc_engine->divideScale (QMIN(sd->lBound(), sd->hBound()),
-				QMAX(sd->lBound(), sd->hBound()), majorTicks, minorTicks, d_user_step[i]);
+				QMAX(sd->lBound(), sd->hBound()), majorTicks, minorTicks, step);
 
 		if (se->testAttribute(QwtScaleEngine::Inverted)){
 			sc_engine->setAttribute(QwtScaleEngine::Inverted);
 			div.invert();
 		}
-
-		d_plot->setAxisScaleEngine (i, sc_engine);
 		d_plot->setAxisScaleDiv (i, div);
 	}
 

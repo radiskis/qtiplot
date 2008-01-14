@@ -1255,7 +1255,7 @@ void AxesDialog::initScalesPage()
 	boxAxesBreaks = new QGroupBox(tr("Show Axis Break"));
 	boxAxesBreaks->setCheckable(true);
 	boxAxesBreaks->setChecked(false);
-	
+
 	QGridLayout * breaksLayout = new QGridLayout(boxAxesBreaks);
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	breaksLayout->addWidget(new QLabel(tr("From")), 0, 0);
@@ -1270,22 +1270,54 @@ void AxesDialog::initScalesPage()
     boxBreakEnd->setDecimals(app->d_decimal_digits);
 	breaksLayout->addWidget(boxBreakEnd, 1, 1);
 
-	QVBoxLayout* vl = new QVBoxLayout();
-	vl->addWidget(middleBox);
-	vl->addWidget(boxAxesBreaks);
-	
-	QGroupBox * rightBox = new QGroupBox(QString());
-	QGridLayout * rightLayout = new QGridLayout(rightBox);
+    breaksLayout->addWidget(new QLabel(tr("Position (% of Axis Length)")), 2, 0);
+    boxBreakPosition = new QSpinBox();
+    breaksLayout->addWidget(boxBreakPosition);
+
+    boxLog10AfterBreak = new QCheckBox(tr("Log10 Scale After Break"));
+    breaksLayout->addWidget(boxLog10AfterBreak, 3, 0);
+
+    breaksLayout->addWidget(new QLabel(tr("Step Before Break")), 0, 2);
+    boxStepBeforeBreak = new DoubleSpinBox('g');
+    boxStepBeforeBreak->setMinimum(0.0);
+    boxStepBeforeBreak->setSpecialValueText(tr("Guess"));
+	boxStepBeforeBreak->setLocale(app->locale());
+    boxStepBeforeBreak->setDecimals(app->d_decimal_digits);
+	breaksLayout->addWidget(boxStepBeforeBreak, 0, 3);
+
+    breaksLayout->addWidget(new QLabel(tr("Step After Break")), 1, 2);
+    boxStepAfterBreak = new DoubleSpinBox('g');
+    boxStepAfterBreak->setMinimum(0.0);
+    boxStepAfterBreak->setSpecialValueText(tr("Guess"));
+	boxStepAfterBreak->setLocale(app->locale());
+    boxStepAfterBreak->setDecimals(app->d_decimal_digits);
+	breaksLayout->addWidget(boxStepAfterBreak, 1, 3);
+
+    breaksLayout->addWidget(new QLabel(tr("Minor Ticks Before")), 2, 2);
+    boxMinorTicksBeforeBreak = new QComboBox();
+	boxMinorTicksBeforeBreak->setEditable(true);
+	boxMinorTicksBeforeBreak->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
+    breaksLayout->addWidget(boxMinorTicksBeforeBreak, 2, 3);
+
+    breaksLayout->addWidget(new QLabel(tr("Minor Ticks After")), 3, 2);
+    boxMinorTicksAfterBreak  = new QComboBox();
+	boxMinorTicksAfterBreak->setEditable(true);
+	boxMinorTicksAfterBreak->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
+    breaksLayout->addWidget(boxMinorTicksAfterBreak, 3, 3);
+
+	QGroupBox *rightBox = new QGroupBox(QString());
+	QGridLayout *rightLayout = new QGridLayout(rightBox);
+
 	QWidget * stepWidget = new QWidget();
 	QVBoxLayout * stepWidgetLayout = new QVBoxLayout( stepWidget );
 
-	btnStep = new QCheckBox();
-	btnStep->setText( tr( "Step" ) );
+	btnStep = new QCheckBox(tr("Step"));
 	btnStep->setChecked(true);
 	rightLayout->addWidget( btnStep, 0, 0 );
 
 	boxStep = new QLineEdit();
 	stepWidgetLayout->addWidget( boxStep );
+
 	boxUnit = new QComboBox();
 	boxUnit->hide();
 	stepWidgetLayout->addWidget( boxUnit );
@@ -1309,6 +1341,14 @@ void AxesDialog::initScalesPage()
 	rightLayout->addWidget( boxMinorValue, 2, 1);
 
 	rightLayout->setRowStretch( 3, 1 );
+
+    QHBoxLayout* hl = new QHBoxLayout();
+	hl->addWidget(middleBox);
+	hl->addWidget(rightBox);
+
+    QVBoxLayout* vl = new QVBoxLayout();
+	vl->addLayout(hl);
+	vl->addWidget(boxAxesBreaks);
 
 	QPixmap image0( ( const char** ) bottom_scl_xpm );
 	QPixmap image1( ( const char** ) left_scl_xpm );
@@ -1338,7 +1378,7 @@ void AxesDialog::initScalesPage()
 	QHBoxLayout* mainLayout = new QHBoxLayout(scalesPage);
 	mainLayout->addWidget(axesList);
 	mainLayout->addLayout(vl);
-	mainLayout->addWidget(rightBox);
+	//mainLayout->addWidget(rightBox);
 
 	generalDialog->addTab(scalesPage, tr( "Scale" ));
 
@@ -2251,7 +2291,7 @@ void AxesDialog::updateAxisColor(int)
 	boxAxisColor->blockSignals(true);
     boxAxisColor->setColor(d_graph->axisColor(a));
 	boxAxisColor->blockSignals(false);
-	
+
 	boxAxisNumColor->blockSignals(true);
     boxAxisNumColor->setColor(d_graph->axisLabelsColor(a));
 	boxAxisNumColor->blockSignals(false);
@@ -2282,54 +2322,43 @@ bool AxesDialog::updatePlot()
 		QString step=boxStep->text().lower();
         int a = mapToQwtAxis(axesList->currentRow());
 		double start, end, stp = 0;
-		try
-		{
+		try {
 			MyParser parser;
 			parser.SetExpr(from.ascii());
 			start=parser.Eval();
-		}
-		catch(mu::ParserError &e)
-		{
+		} catch(mu::ParserError &e){
 			QMessageBox::critical(0, tr("QtiPlot - Start limit error"),QString::fromStdString(e.GetMsg()));
 			boxStart->setFocus();
 			return false;
 		}
-		try
-		{
+		try {
 			MyParser parser;
 			parser.SetExpr(to.ascii());
 			end=parser.Eval();
-		}
-		catch(mu::ParserError &e)
-		{
+		} catch(mu::ParserError &e){
 			QMessageBox::critical(0, tr("QtiPlot - End limit error"),QString::fromStdString(e.GetMsg()));
 			boxEnd->setFocus();
 			return false;
 		}
-        if (btnStep->isChecked())
-  	        {
-		    try
-		       {
+        if (btnStep->isChecked()){
+		    try{
 			    MyParser parser;
 			    parser.SetExpr(step.ascii());
 			    stp=parser.Eval();
 		       }
-           catch(mu::ParserError &e)
-              {
+           catch(mu::ParserError &e){
 			  QMessageBox::critical(0, tr("QtiPlot - Step input error"),QString::fromStdString(e.GetMsg()));
 			  boxStep->setFocus();
 			  return false;
 		      }
 
-		      if (stp <=0)
-		      {
+		      if (stp <=0){
 			  QMessageBox::critical(0,tr("QtiPlot - Step input error"), tr("Please enter a positive step value!"));
 			  boxStep->setFocus();
 			  return false;
 		      }
 
-           if (axesType[a] == Graph::Time)
-		      {
+           if (axesType[a] == Graph::Time){
 		      switch (boxUnit->currentIndex())
                  {
 			     case 0:
@@ -2345,8 +2374,7 @@ bool AxesDialog::updatePlot()
 		         break;
 			     }
 		      }
-	       else if (axesType[a] == Graph::Date)
-		        {
+	       else if (axesType[a] == Graph::Date){
 		        switch (boxUnit->currentIndex())
                     {
                     case 0:
@@ -2363,9 +2391,12 @@ bool AxesDialog::updatePlot()
 			breakLeft = boxBreakStart->value();
 			breakRight = boxBreakEnd->value();
 		}
-		
+
 		d_graph->setScale(a, start, end, stp, boxMajorValue->value(), boxMinorValue->currentText().toInt(),
-                          boxScaleType->currentIndex(), btnInvert->isChecked(), breakLeft, breakRight);
+                          boxScaleType->currentIndex(), btnInvert->isChecked(), breakLeft, breakRight,
+                          boxBreakPosition->value(), boxStepBeforeBreak->value(), boxStepAfterBreak->value(),
+                          boxMinorTicksBeforeBreak->currentText().toInt(), boxMinorTicksAfterBreak->currentText().toInt(),
+                          boxLog10AfterBreak->isChecked());
 		d_graph->notifyChanges();
 	}
 	else if (generalDialog->currentWidget()==gridPage){
@@ -2549,16 +2580,40 @@ boxUnit->clear();
 
 Plot *d_plot = d_graph->plotWidget();
 int a = mapToQwtAxis(axis);
-const QwtScaleDiv *scDiv=d_plot->axisScaleDiv(a);
-boxStart->setText(QString::number(QMIN(scDiv->lBound(), scDiv->hBound())));
+const QwtScaleDiv *scDiv = d_plot->axisScaleDiv(a);
+
+double start = QMIN(scDiv->lBound(), scDiv->hBound());
+boxStart->setText(QString::number(start));
 boxEnd->setText(QString::number(QMAX(scDiv->lBound(), scDiv->hBound())));
 
+double range = scDiv->range();
 ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(a);
 if (sc_engine->axisBreakLeft() > -DBL_MAX)
 	boxBreakStart->setValue(sc_engine->axisBreakLeft());
+else
+    boxBreakStart->setValue(start + 0.25*range);
+
 if (sc_engine->axisBreakRight() < DBL_MAX)
 	boxBreakEnd->setValue(sc_engine->axisBreakRight());
+else
+    boxBreakEnd->setValue(start + 0.75*range);
+
 boxAxesBreaks->setChecked(sc_engine->hasBreak());
+boxBreakPosition->setValue(sc_engine->breakPosition());
+boxStepBeforeBreak->setValue(sc_engine->stepBeforeBreak());
+boxStepAfterBreak->setValue(sc_engine->stepAfterBreak());
+
+QwtScaleTransformation::Type scale_type = sc_engine->type();
+boxMinorTicksBeforeBreak->clear();
+if (scale_type == QwtScaleTransformation::Log10)
+	boxMinorTicksBeforeBreak->addItems(QStringList()<<"0"<<"2"<<"4"<<"8");
+else
+	boxMinorTicksBeforeBreak->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
+boxMinorTicksBeforeBreak->setEditText(QString::number(sc_engine->minTicksBeforeBreak()));
+
+
+boxMinorTicksAfterBreak->setEditText(QString::number(sc_engine->minTicksAfterBreak()));
+boxLog10AfterBreak->setChecked(sc_engine->log10ScaleAfterBreak());
 
 QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 boxStep->setText(QString::number(d_graph->axisStep(a)));
@@ -2590,13 +2645,12 @@ boxMajorValue->setValue(lst.count());
 		btnMajor->setChecked(true);
 		boxMajorValue->setEnabled(true);
 	}
-	
+
 btnInvert->setChecked(sc_engine->testAttribute(QwtScaleEngine::Inverted));
-int scale_type = (int)sc_engine->type();
 boxScaleType->setCurrentItem(scale_type);
-	
+
 boxMinorValue->clear();
-if (scale_type)//log scale
+if (scale_type == QwtScaleTransformation::Log10)
 	boxMinorValue->addItems(QStringList()<<"0"<<"2"<<"4"<<"8");
 else
 	boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
@@ -2655,7 +2709,7 @@ void AxesDialog::setBaselineDist(int)
 void AxesDialog::setTicksType(int)
 {
 	int a = mapToQwtAxisId();
-	boxMajorTicksType->setCurrentIndex(majTicks[a]);	
+	boxMajorTicksType->setCurrentIndex(majTicks[a]);
 	boxMinorTicksType->setCurrentIndex(minTicks[a]);
 }
 
