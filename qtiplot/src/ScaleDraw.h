@@ -42,39 +42,69 @@
 class ScaleEngine: public QwtScaleEngine
 {
 public:
-	ScaleEngine(QwtScaleTransformation::Type type = QwtScaleTransformation::Linear, 
-				double left_break = -DBL_MAX, double right_break = DBL_MAX): 
-				QwtScaleEngine(), d_type(type), d_break_left(left_break), d_break_right(right_break){};
+	ScaleEngine(QwtScaleTransformation::Type type = QwtScaleTransformation::Linear,
+				double left_break = -DBL_MAX, double right_break = DBL_MAX);
 	QwtScaleTransformation* transformation() const;
 	virtual QwtScaleDiv divideScale(double x1, double x2, int maxMajSteps,
 		int maxMinSteps, double stepSize = 0.0) const;
 	virtual void autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const;
-		
-	double axisBreakLeft(){return d_break_left;};
-	double axisBreakRight(){return d_break_right;};
+
+    double axisBreakLeft() const;
+    double axisBreakRight() const;
 	void setAxisBreak(double from, double to){d_break_left = from; d_break_right = to;};
-	
-	QwtScaleTransformation::Type type(){return d_type;};
+
+	int breakWidth() const;
+	void setBreakWidth(int width);
+
+	int breakPosition() const;
+	void setBreakPosition(int pos);
+
+    double stepBeforeBreak() const;
+    void setStepBeforeBreak(double step);
+
+    double stepAfterBreak() const;
+    void setStepAfterBreak(double step);
+
+    int minTicksBeforeBreak() const;
+    void setMinTicksBeforeBreak(int ticks);
+
+    int minTicksAfterBreak() const;
+    void setMinTicksAfterBreak(int ticks);
+
+    bool log10ScaleAfterBreak() const;
+    void setLog10ScaleAfterBreak(bool on);
+
+	QwtScaleTransformation::Type type() const;
 	void setType(QwtScaleTransformation::Type type){d_type = type;};
-	
-	bool hasBreak(){return (d_break_left == d_break_right || (d_break_left == -DBL_MAX && d_break_right == DBL_MAX))?false:true;};
+
+	bool hasBreak() const;
+	void clone(const ScaleEngine *engine);
 
 private:
 	QwtScaleTransformation::Type d_type;
 	double d_break_left, d_break_right;
+	//! Position of axis break (% of axis length)
+	int d_break_pos;
+	//! Scale increment before and after break
+	double d_step_before, d_step_after;
+	//! Minor ticks before and after break
+	int d_minor_ticks_before, d_minor_ticks_after;
+	//! Log10 scale after break
+	bool d_log10_scale_after;
+	//! Width of the axis break in pixels
+	int d_break_width;
 };
 
 class ScaleTransformation: public QwtScaleTransformation
 {
 public:
-	ScaleTransformation(Type type = QwtScaleTransformation::Linear, double left_break = -DBL_MAX, double right_break = DBL_MAX): 
-		QwtScaleTransformation(Other), d_break_left(left_break), d_break_right(right_break), d_type(type){};
+	ScaleTransformation(const ScaleEngine *engine):QwtScaleTransformation(Other), d_engine(engine){};
 	virtual double xForm(double x, double, double, double p1, double p2) const;
 	QwtScaleTransformation* copy() const;
-			
+
 private:
-	double d_break_left, d_break_right;
-	Type d_type;
+    //! The scale engine that generates the transformation
+	const ScaleEngine* d_engine;
 };
 
 //! Extension to QwtScaleDraw
@@ -104,10 +134,11 @@ public:
 	void setMinorTicksStyle(TicksStyle type){d_minTicks = type;};
 
 	void setSelected(bool select = true){d_selected = select;};
-	
+
 protected:
     virtual void drawLabel(QPainter *painter, double value) const;
 	virtual void drawTick(QPainter *p, double value, int len) const;
+	virtual void drawBackbone(QPainter *painter) const;
 
 	Plot *d_plot;
 

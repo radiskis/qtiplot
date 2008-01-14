@@ -273,7 +273,9 @@ class Graph: public QWidget
 		void invertScale(int axis);
 		void setScale(int axis, double start, double end, double step = 0.0,
 				int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false,
-				double left_break = -DBL_MAX, double right_break = DBL_MAX);
+				double left_break = -DBL_MAX, double right_break = DBL_MAX, int pos = 50,
+				double stepBeforeBreak = 0.0, double stepAfterBreak = 0.0,
+				int minTicksBeforeBreak = 4, int minTicksAfterBreak = 4, bool log10AfterBreak = false);
 		double axisStep(int axis){return d_user_step[axis];};
 
 		//! \name Curves Layout
