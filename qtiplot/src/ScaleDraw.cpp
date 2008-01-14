@@ -397,7 +397,8 @@ void ScaleDraw::labelFormat(char &f, int &prec) const
 void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 {
     int axis = QwtPlot::xBottom;
-    switch(alignment()){
+    int align = alignment();
+    switch(align){
         case BottomScale:
         break;
         case TopScale:
@@ -412,8 +413,15 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
     }
 
     ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
-    if (sc_engine->hasBreak() && sc_engine->axisBreakLeft() == value)
-        return;
+    if (sc_engine->hasBreak()){
+        if (sc_engine->axisBreakLeft() == value || sc_engine->axisBreakRight() == value)
+            drawBreak(p, value, len);
+
+        if (sc_engine->axisBreakLeft() == value && (align == BottomScale || align == LeftScale))
+            return;
+        else if (sc_engine->axisBreakRight() == value && (align == TopScale || align == RightScale))
+            return;
+    }
 
     QwtScaleDiv scDiv = scaleDiv();
     QwtValueList majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
@@ -429,6 +437,53 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
         return;
 
     QwtScaleDraw::drawTick(p, value, len);
+}
+
+void ScaleDraw::drawBreak(QPainter *painter, double value, int len) const
+{
+    int pw2 = qwtMin((int)painter->pen().width(), len) / 2;
+
+    QwtScaleMap scaleMap = map();
+    const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
+    QPoint pos = this->pos();
+
+    if ( !metricsMap.isIdentity() ){
+        QwtPainter::resetMetricsMap();
+        pos = metricsMap.layoutToDevice(pos);
+
+        if ( orientation() == Qt::Vertical ){
+            scaleMap.setPaintInterval(
+                metricsMap.layoutToDeviceY((int)scaleMap.p1()),
+                metricsMap.layoutToDeviceY((int)scaleMap.p2()));
+            len = metricsMap.layoutToDeviceX(len);
+        } else {
+            scaleMap.setPaintInterval(
+                metricsMap.layoutToDeviceX((int)scaleMap.p1()),
+                metricsMap.layoutToDeviceX((int)scaleMap.p2()));
+            len = metricsMap.layoutToDeviceY(len);
+        }
+    }
+
+    int tval = scaleMap.transform(value);
+    switch(alignment()){
+        case LeftScale:
+            tval = tval + 1;
+            QwtPainter::drawLine(painter, pos.x() - pw2, tval, pos.x() - len, tval + len);
+        break;
+        case RightScale:
+            tval = tval - 1;
+            QwtPainter::drawLine(painter, pos.x() + pw2, tval, pos.x() + len, tval - len);
+        break;
+        case BottomScale:
+            tval = tval - 1;
+            QwtPainter::drawLine(painter, tval, pos.y() + pw2, tval - len, pos.y() + len);
+        break;
+        case TopScale:
+            tval = tval + 1;
+            QwtPainter::drawLine(painter, tval, pos.y() - pw2, tval + len, pos.y() - len);
+        break;
+    }
+    QwtPainter::setMetricsMap(metricsMap); // restore metrics map
 }
 
 void ScaleDraw::drawBackbone(QPainter *painter) const

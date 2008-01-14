@@ -111,6 +111,8 @@ protected:
 
 	void drawInwardTicks(QPainter *painter, const QRect &rect,
 							const QwtScaleMap&map, int axis, bool min, bool maj) const;
+    void drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &map, int axis) const;
+
 	Grid *d_grid;
 	QMap<int, QwtPlotItem*> d_curves;
 	QMap<int, QwtPlotMarker*> d_markers;
