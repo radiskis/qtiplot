@@ -10320,6 +10320,15 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				ag->setScale(scl[0].toInt(), scl[1].toDouble(), scl[2].toDouble(), scl[3].toDouble(),
 						scl[4].toInt(), scl[5].toInt(),  scl[6].toInt(), bool(scl[7].toInt()));
 		}
+		else if (s == "<ScaleBreak>"){
+			QStringList lst;
+			while ( s!="</ScaleBreak>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			ag->restoreAxisBreak(lst);
+		}
 		else if (s.contains ("PlotTitle")){
 			QStringList fList=s.split("\t");
 			ag->setTitle(fList[1]);
