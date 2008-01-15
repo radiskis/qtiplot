@@ -1258,52 +1258,58 @@ void AxesDialog::initScalesPage()
 
 	QGridLayout * breaksLayout = new QGridLayout(boxAxesBreaks);
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	breaksLayout->addWidget(new QLabel(tr("From")), 0, 0);
+	breaksLayout->addWidget(new QLabel(tr("From")), 1, 0);
 	boxBreakStart = new DoubleSpinBox('g');
 	boxBreakStart->setLocale(app->locale());
     boxBreakStart->setDecimals(app->d_decimal_digits);
-	breaksLayout->addWidget(boxBreakStart, 0, 1);
+	breaksLayout->addWidget(boxBreakStart, 1, 1);
 
-	breaksLayout->addWidget(new QLabel(tr("To")), 1, 0);
+	breaksLayout->addWidget(new QLabel(tr("To")), 2, 0);
 	boxBreakEnd = new DoubleSpinBox('g');
 	boxBreakEnd->setLocale(app->locale());
     boxBreakEnd->setDecimals(app->d_decimal_digits);
-	breaksLayout->addWidget(boxBreakEnd, 1, 1);
+	breaksLayout->addWidget(boxBreakEnd, 2, 1);
 
-    breaksLayout->addWidget(new QLabel(tr("Position (% of Axis Length)")), 2, 0);
+    breaksLayout->addWidget(new QLabel(tr("Position")), 3, 0);
     boxBreakPosition = new QSpinBox();
-    breaksLayout->addWidget(boxBreakPosition);
+	boxBreakPosition->setSuffix(" (" + tr("% of Axis Length") + ")");
+    breaksLayout->addWidget(boxBreakPosition, 3, 1);
 
+	breaksLayout->addWidget(new QLabel(tr("Width")), 4, 0);
+	boxBreakWidth = new QSpinBox();
+	boxBreakWidth->setSuffix(" (" + tr("pixels") + ")");
+	breaksLayout->addWidget(boxBreakWidth, 4, 1);
+	
     boxLog10AfterBreak = new QCheckBox(tr("Log10 Scale After Break"));
-    breaksLayout->addWidget(boxLog10AfterBreak, 3, 0);
+    breaksLayout->addWidget(boxLog10AfterBreak, 0, 3);
 
-    breaksLayout->addWidget(new QLabel(tr("Step Before Break")), 0, 2);
+    breaksLayout->addWidget(new QLabel(tr("Step Before Break")), 1, 2);
     boxStepBeforeBreak = new DoubleSpinBox('g');
     boxStepBeforeBreak->setMinimum(0.0);
     boxStepBeforeBreak->setSpecialValueText(tr("Guess"));
 	boxStepBeforeBreak->setLocale(app->locale());
     boxStepBeforeBreak->setDecimals(app->d_decimal_digits);
-	breaksLayout->addWidget(boxStepBeforeBreak, 0, 3);
+	breaksLayout->addWidget(boxStepBeforeBreak, 1, 3);
 
-    breaksLayout->addWidget(new QLabel(tr("Step After Break")), 1, 2);
+    breaksLayout->addWidget(new QLabel(tr("Step After Break")), 2, 2);
     boxStepAfterBreak = new DoubleSpinBox('g');
     boxStepAfterBreak->setMinimum(0.0);
     boxStepAfterBreak->setSpecialValueText(tr("Guess"));
 	boxStepAfterBreak->setLocale(app->locale());
     boxStepAfterBreak->setDecimals(app->d_decimal_digits);
-	breaksLayout->addWidget(boxStepAfterBreak, 1, 3);
+	breaksLayout->addWidget(boxStepAfterBreak, 2, 3);
 
-    breaksLayout->addWidget(new QLabel(tr("Minor Ticks Before")), 2, 2);
+    breaksLayout->addWidget(new QLabel(tr("Minor Ticks Before")), 3, 2);
     boxMinorTicksBeforeBreak = new QComboBox();
 	boxMinorTicksBeforeBreak->setEditable(true);
 	boxMinorTicksBeforeBreak->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
-    breaksLayout->addWidget(boxMinorTicksBeforeBreak, 2, 3);
+    breaksLayout->addWidget(boxMinorTicksBeforeBreak, 3, 3);
 
-    breaksLayout->addWidget(new QLabel(tr("Minor Ticks After")), 3, 2);
+    breaksLayout->addWidget(new QLabel(tr("Minor Ticks After")), 4, 2);
     boxMinorTicksAfterBreak  = new QComboBox();
 	boxMinorTicksAfterBreak->setEditable(true);
 	boxMinorTicksAfterBreak->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
-    breaksLayout->addWidget(boxMinorTicksAfterBreak, 3, 3);
+    breaksLayout->addWidget(boxMinorTicksAfterBreak, 4, 3);
 
 	QGroupBox *rightBox = new QGroupBox(QString());
 	QGridLayout *rightLayout = new QGridLayout(rightBox);
@@ -2396,7 +2402,7 @@ bool AxesDialog::updatePlot()
                           boxScaleType->currentIndex(), btnInvert->isChecked(), breakLeft, breakRight,
                           boxBreakPosition->value(), boxStepBeforeBreak->value(), boxStepAfterBreak->value(),
                           boxMinorTicksBeforeBreak->currentText().toInt(), boxMinorTicksAfterBreak->currentText().toInt(),
-                          boxLog10AfterBreak->isChecked());
+                          boxLog10AfterBreak->isChecked(), boxBreakWidth->value());
 		d_graph->notifyChanges();
 	}
 	else if (generalDialog->currentWidget()==gridPage){
@@ -2600,6 +2606,7 @@ else
 
 boxAxesBreaks->setChecked(sc_engine->hasBreak());
 boxBreakPosition->setValue(sc_engine->breakPosition());
+boxBreakWidth->setValue(sc_engine->breakWidth());
 boxStepBeforeBreak->setValue(sc_engine->stepBeforeBreak());
 boxStepAfterBreak->setValue(sc_engine->stepAfterBreak());
 

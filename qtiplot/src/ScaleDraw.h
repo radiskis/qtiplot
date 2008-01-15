@@ -51,7 +51,7 @@ public:
 
     double axisBreakLeft() const;
     double axisBreakRight() const;
-	void setAxisBreak(double from, double to){d_break_left = from; d_break_right = to;};
+	void setBreakRegion(double from, double to){d_break_left = from; d_break_right = to;};
 
 	int breakWidth() const;
 	void setBreakWidth(int width);
@@ -134,12 +134,15 @@ public:
 	void setMinorTicksStyle(TicksStyle type){d_minTicks = type;};
 
 	void setSelected(bool select = true){d_selected = select;};
+	
+	int axis() const;
 
 protected:
+	virtual void draw (QPainter *, const QPalette &) const;
     virtual void drawLabel(QPainter *painter, double value) const;
 	virtual void drawTick(QPainter *p, double value, int len) const;
 	virtual void drawBackbone(QPainter *painter) const;
-	void drawBreak(QPainter *p, double value, int len) const;
+	void drawBreak(QPainter *) const;
 
 	Plot *d_plot;
 
