@@ -195,7 +195,7 @@ protected:
 
 	QGroupBox *boxAxesBreaks;
 	DoubleSpinBox *boxBreakStart, *boxBreakEnd, *boxStepBeforeBreak, *boxStepAfterBreak;
-	QSpinBox *boxBreakPosition;
+	QSpinBox *boxBreakPosition, *boxBreakWidth;
 	QComboBox *boxMinorTicksBeforeBreak, *boxMinorTicksAfterBreak;
 	QCheckBox *boxLog10AfterBreak;
 

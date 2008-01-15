@@ -384,29 +384,30 @@ void Plot::drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &ma
     int left = map.transform(sc_engine->axisBreakLeft());
     int right = map.transform(sc_engine->axisBreakRight());
     int x, y;
+	int len = majTickLength - 1;
     switch (axis){
         case QwtPlot::yLeft:
 			x = rect.left();
-            QwtPainter::drawLine(painter, x, left, x + majTickLength, left - majTickLength);
-            QwtPainter::drawLine(painter, x, right, x + majTickLength, right - majTickLength);
+            QwtPainter::drawLine(painter, x, left, x + len, left - len);
+            QwtPainter::drawLine(painter, x, right, x + len, right - len);
         break;
 
         case QwtPlot::yRight:
             x = rect.right();
-            QwtPainter::drawLine(painter, x - majTickLength, left + majTickLength, x, left);
-            QwtPainter::drawLine(painter, x - majTickLength, right + majTickLength, x, right);
+            QwtPainter::drawLine(painter, x - len, left + len, x, left);
+            QwtPainter::drawLine(painter, x - len, right + len, x, right);
         break;
 
         case QwtPlot::xBottom:
 			y = rect.bottom();
-			QwtPainter::drawLine(painter, left, y+1, left + majTickLength, y - majTickLength);
-            QwtPainter::drawLine(painter, right, y+1, right + majTickLength, y - majTickLength);
+			QwtPainter::drawLine(painter, left, y+1, left + len, y - len);
+            QwtPainter::drawLine(painter, right, y+1, right + len, y - len);
         break;
 
         case QwtPlot::xTop:
 			y = rect.top();
-            QwtPainter::drawLine(painter, left - majTickLength, y + majTickLength, left, y);
-            QwtPainter::drawLine(painter, right - majTickLength, y + majTickLength, right, y);
+            QwtPainter::drawLine(painter, left - len, y + len, left, y);
+            QwtPainter::drawLine(painter, right - len, y + len, right, y);
         break;
     }
 	painter->restore();

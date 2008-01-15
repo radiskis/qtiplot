@@ -1163,12 +1163,13 @@ if (scaleDiv)
 void Graph::setScale(int axis, double start, double end, double step,
 					int majorTicks, int minorTicks, int type, bool inverted,
 					double left_break, double right_break, int breakPos,
-                    double stepBeforeBreak, double stepAfterBreak,
-                    int minTicksBeforeBreak, int minTicksAfterBreak, bool log10AfterBreak)
+                    double stepBeforeBreak, double stepAfterBreak, int minTicksBeforeBreak, 
+					int minTicksAfterBreak, bool log10AfterBreak, int breakWidth)
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
-	sc_engine->setAxisBreak(left_break, right_break);
+	sc_engine->setBreakRegion(left_break, right_break);
 	sc_engine->setBreakPosition(breakPos);
+	sc_engine->setBreakWidth(breakWidth);
 	sc_engine->setStepBeforeBreak(stepBeforeBreak);
 	sc_engine->setStepAfterBreak(stepAfterBreak);
 	sc_engine->setMinTicksBeforeBreak(minTicksBeforeBreak);
