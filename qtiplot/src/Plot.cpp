@@ -188,11 +188,14 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
 void Plot::drawItems (QPainter *painter, const QRect &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
 {
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing);
     for (int i=0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;
         drawBreak(painter, rect, map[i], i);
     }
+    painter->restore();
 
     for (int i=0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
