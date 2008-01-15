@@ -441,6 +441,9 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 
 void ScaleDraw::drawBreak(QPainter *painter, double value, int len) const
 {
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing);
+
     int pw2 = qwtMin((int)painter->pen().width(), len) / 2;
 
     QwtScaleMap scaleMap = map();
@@ -475,7 +478,6 @@ void ScaleDraw::drawBreak(QPainter *painter, double value, int len) const
             QwtPainter::drawLine(painter, pos.x() + pw2, tval, pos.x() + len, tval - len);
         break;
         case BottomScale:
-            tval = tval - 1;
             QwtPainter::drawLine(painter, tval, pos.y() + pw2, tval - len, pos.y() + len);
         break;
         case TopScale:
@@ -484,6 +486,7 @@ void ScaleDraw::drawBreak(QPainter *painter, double value, int len) const
         break;
     }
     QwtPainter::setMetricsMap(metricsMap); // restore metrics map
+    painter->restore();
 }
 
 void ScaleDraw::drawBackbone(QPainter *painter) const
@@ -509,20 +512,36 @@ void ScaleDraw::drawBackbone(QPainter *painter) const
         return;
     }
 
-    const int bw2 = painter->pen().width() / 2;
-    const QPoint &pos = this->pos();
-    const int len = length() - 1;
+    QwtScaleMap scaleMap = map();
+    const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
+    QPoint pos = this->pos();
 
-    const QwtScaleMap m = map();
-    const int lb = m.transform(sc_engine->axisBreakLeft());
-    const int rb = m.transform(sc_engine->axisBreakRight());
+    if ( !metricsMap.isIdentity() ){
+        QwtPainter::resetMetricsMap();
+        pos = metricsMap.layoutToDevice(pos);
+
+        if ( orientation() == Qt::Vertical ){
+            scaleMap.setPaintInterval(
+                metricsMap.layoutToDeviceY((int)scaleMap.p1()),
+                metricsMap.layoutToDeviceY((int)scaleMap.p2()));
+        } else {
+            scaleMap.setPaintInterval(
+                metricsMap.layoutToDeviceX((int)scaleMap.p1()),
+                metricsMap.layoutToDeviceX((int)scaleMap.p2()));
+        }
+    }
+
+    const int lb = scaleMap.transform(sc_engine->axisBreakLeft());
+    const int rb = scaleMap.transform(sc_engine->axisBreakRight());
+    const int bw2 = painter->pen().width() / 2;
+    const int len = length() - 1;
     int aux;
     switch(alignment())
     {
         case LeftScale:
             aux = pos.x() - bw2;
             QwtPainter::drawLine(painter, aux, pos.y(), aux, rb );
-            QwtPainter::drawLine(painter, aux, lb, aux, pos.y() + len );
+            QwtPainter::drawLine(painter, aux, lb, aux, pos.y() + len);
             break;
         case RightScale:
             aux = pos.x() + bw2;
@@ -531,12 +550,12 @@ void ScaleDraw::drawBackbone(QPainter *painter) const
             break;
         case TopScale:
             aux = pos.y() - bw2;
-            QwtPainter::drawLine(painter, pos.x(), aux, pos.x() + lb, aux);
+            QwtPainter::drawLine(painter, pos.x(), aux, lb - bw2, aux);
             QwtPainter::drawLine(painter, rb, aux, pos.x() + len, aux);
             break;
         case BottomScale:
             aux = pos.y() + bw2;
-            QwtPainter::drawLine(painter, pos.x(), aux, pos.x() + lb, aux);
+            QwtPainter::drawLine(painter, pos.x(), aux, lb - bw2, aux);
             QwtPainter::drawLine(painter, rb, aux, pos.x() + len, aux);
             break;
     }
