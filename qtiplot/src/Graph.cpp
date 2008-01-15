@@ -1163,7 +1163,7 @@ if (scaleDiv)
 void Graph::setScale(int axis, double start, double end, double step,
 					int majorTicks, int minorTicks, int type, bool inverted,
 					double left_break, double right_break, int breakPos,
-                    double stepBeforeBreak, double stepAfterBreak, int minTicksBeforeBreak, 
+                    double stepBeforeBreak, double stepAfterBreak, int minTicksBeforeBreak,
 					int minTicksAfterBreak, bool log10AfterBreak, int breakWidth)
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
@@ -1867,8 +1867,71 @@ QString Graph::saveScale()
 		QwtScaleTransformation *tr = sc_eng->transformation();
 		s += QString::number((int)tr->type())+"\t";
 		s += QString::number(sc_eng->testAttribute(QwtScaleEngine::Inverted))+"\n";
+
+		ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(i);
+        if (se->hasBreak()){
+            s += "<ScaleBreak>\n";
+            s += "\t<axis>" + QString::number(i) + "</axis>\n";
+            s += "\t<position>" + QString::number(se->breakPosition()) + "</position>\n";
+            s += "\t<width>" + QString::number(se->breakWidth()) + "</width>\n";
+            s += "\t<left>" + QString::number(se->axisBreakLeft(), 'g', 15) + "</left>\n";
+            s += "\t<right>" + QString::number(se->axisBreakRight(), 'g', 15) + "</right>\n";
+            s += "\t<stepBefore>" + QString::number(se->stepBeforeBreak(), 'g', 15) + "</stepBefore>\n";
+            s += "\t<stepAfter>" + QString::number(se->stepAfterBreak(), 'g', 15) + "</stepAfter>\n";
+            s += "\t<minTicksBefore>" + QString::number(se->minTicksBeforeBreak()) + "</minTicksBefore>\n";
+            s += "\t<minTicksAfter>" + QString::number(se->minTicksAfterBreak()) + "</minTicksAfter>\n";
+            s += "\t<log10ScaleAfter>" + QString::number(se->log10ScaleAfterBreak()) + "</log10ScaleAfter>\n";
+            s += "</ScaleBreak>\n";
+        }
 	}
 	return s;
+}
+
+void Graph::restoreAxisBreak(const QStringList& lst)
+{
+    QStringList::const_iterator line = lst.begin();
+  	QString s = (*line).stripWhiteSpace();
+  	int axis = s.remove("<axis>").remove("</axis>").toInt();
+    ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(axis);
+
+    int left = 0.0, right = 0.0;
+  	for (line++; line != lst.end(); line++){
+        QString s = *line;
+        if (s.contains("<position>")){
+            int pos = s.remove("<position>").remove("</position>").trimmed().toInt();
+            se->setBreakPosition(pos);
+        }
+        else if (s.contains("<width>")){
+            int width = s.remove("<width>").remove("</width>").trimmed().toInt();
+            se->setBreakWidth(width);
+        }
+        else if (s.contains("<left>"))
+            left = s.remove("<left>").remove("</left>").trimmed().toDouble();
+        else if (s.contains("<right>"))
+            right = s.remove("<right>").remove("</right>").trimmed().toDouble();
+        else if (s.contains("<stepBefore>")){
+            double step = s.remove("<stepBefore>").remove("</stepBefore>").trimmed().toDouble();
+            se->setStepBeforeBreak(step);
+        }
+        else if (s.contains("<stepAfter>")){
+            double step = s.remove("<stepAfter>").remove("</stepAfter>").trimmed().toDouble();
+            se->setStepAfterBreak(step);
+        }
+        else if (s.contains("<minTicksBefore>")){
+            int ticks = s.remove("<minTicksBefore>").remove("</minTicksBefore>").trimmed().toInt();
+            se->setMinTicksBeforeBreak(ticks);
+        }
+        else if (s.contains("<minTicksAfter>")){
+            int ticks = s.remove("<minTicksAfter>").remove("</minTicksAfter>").trimmed().toInt();
+            se->setMinTicksAfterBreak(ticks);
+        }
+        else if (s.contains("<log10ScaleAfter>")){
+            int on = s.remove("<log10ScaleAfter>").remove("</log10ScaleAfter>").trimmed().toInt();
+            if (on)
+                se->setLog10ScaleAfterBreak(true);
+        }
+  	}
+  	se->setBreakRegion(left, right);
 }
 
 void Graph::setXAxisTitleColor(const QColor& c)

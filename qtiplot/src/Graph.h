@@ -150,6 +150,8 @@ class Graph: public QWidget
 		DataCurve* selectedCurveLabels();
         //! Used when restoring DataCurve curveID from a project file
         void restoreCurveLabels(int curveID, const QStringList& lst);
+        //! Used when restoring scale breaks from project files
+        void restoreAxisBreak(const QStringList& lst);
 
 	public slots:
 		//! Accessor method for #d_plot.
