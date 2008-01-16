@@ -48,8 +48,6 @@ class Plot: public QwtPlot
 public:
 	Plot(QWidget *parent = 0, const char *name = 0);
 
-	enum LabelFormat{Automatic, Decimal, Scientific, Superscripts};
-
 	Grid *grid(){return (Grid *)d_grid;};
 	QList<int> curveKeys(){return d_curves.keys();};
 	QList<QwtPlotItem *> curvesList(){return d_curves.values();};
@@ -80,7 +78,6 @@ public:
 	int axesLinewidth() const;
 	void setAxesLinewidth(int width);
 
-	void setAxisLabelFormat(int axis, char f, int prec);
     void axisLabelFormat(int axis, char &f, int &prec) const;
 
 	int axisLabelFormat(int axis);

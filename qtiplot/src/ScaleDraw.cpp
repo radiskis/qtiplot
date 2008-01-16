@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "ScaleDraw.h"
 #include "MyParser.h"
+#include "plot2D/ScaleEngine.h"
 
 #include <QDateTime>
 #include <QPainter>
@@ -36,243 +37,16 @@
 #include <qwt_painter.h>
 #include <qwt_text.h>
 
-QwtScaleTransformation* ScaleEngine::transformation() const
-{
-	return new ScaleTransformation(this);
-}
-
-double ScaleTransformation::xForm(double s, double s1, double s2, double p1, double p2) const
-{
-	if (!d_engine->hasBreak()){
-		QwtScaleTransformation *tr = new QwtScaleTransformation (d_engine->type());
-		double res = tr->xForm(s, s1, s2, p1, p2);
-		delete tr;
-		return res;
-	}
-
-    const int d_break_space = d_engine->breakWidth();
-    const double d_break_left = d_engine->axisBreakLeft();
-    const double d_break_right = d_engine->axisBreakRight();
-	const double pm = p1 + (p2 - p1)*(double)d_engine->breakPosition()/100.0;
-
-	double pml, pmr;
-	if (p1 < p2){
-		pml = pm - d_break_space;
-		pmr = pm + d_break_space;
-	} else {
-		pml = pm + d_break_space;
-		pmr = pm - d_break_space;
-	}
-
-	if (s > d_break_left && s < d_break_right)
-		return pm;
-
-    QwtScaleTransformation::Type  d_type = d_engine->type();
-    if (s <= d_break_left){
-        if (d_type == QwtScaleTransformation::Linear)
-            return p1 + (s - s1)/(d_break_left - s1)*(pml - p1);
-        else if (d_type == QwtScaleTransformation::Log10)
-            return p1 + log(s/s1)/log(d_break_left/s1)*(pml - p1);
-    }
-
-	if (s >= d_break_right){
-	    if (d_engine->log10ScaleAfterBreak())
-            return pmr + log(s/d_break_right)/log(s2/d_break_right)*(p2 - pmr);
-	    else
-            return pmr + (s - d_break_right)/(s2 - d_break_right)*(p2 - pmr);
-	}
-
-	return DBL_MAX; // something invalid
-}
-
-QwtScaleTransformation *ScaleTransformation::copy() const
-{
-    return new ScaleTransformation(d_engine);
-}
-
 /*****************************************************************************
  *
- * Class ScaleEngine
+ * Class ScaleDraw
  *
  *****************************************************************************/
 
-ScaleEngine::ScaleEngine(QwtScaleTransformation::Type type,double left_break, double right_break): QwtScaleEngine(),
-d_type(type),
-d_break_left(left_break),
-d_break_right(right_break),
-d_break_width(4),
-d_break_pos(50),
-d_step_before(0.0),
-d_step_after(0.0),
-d_minor_ticks_before(1),
-d_minor_ticks_after(1),
-d_log10_scale_after(false)
-{}
-
-bool ScaleEngine::hasBreak() const
-{
-return (d_break_left == d_break_right || (d_break_left == -DBL_MAX && d_break_right == DBL_MAX))?false:true;
-}
-
-double ScaleEngine::axisBreakLeft() const
-{
-    return d_break_left;
-}
-
-double ScaleEngine::axisBreakRight() const
-{
-    return d_break_right;
-}
-
-int ScaleEngine::breakWidth() const
-{
-    return d_break_width;
-}
-
-void ScaleEngine::setBreakWidth(int width)
-{
-    d_break_width = width;
-}
-
-int ScaleEngine::breakPosition() const
-{
-    return d_break_pos;
-}
-
-void ScaleEngine::setBreakPosition(int pos)
-{
-    d_break_pos = pos;
-}
-
-double ScaleEngine::stepBeforeBreak() const
-{
-    return d_step_before;
-}
-
-void ScaleEngine::setStepBeforeBreak(double step)
-{
-    d_step_before = step;
-}
-
-double ScaleEngine::stepAfterBreak() const
-{
-    return d_step_after;
-}
-
-void ScaleEngine::setStepAfterBreak(double step)
-{
-    d_step_after = step;
-}
-
-QwtScaleTransformation::Type ScaleEngine::type() const
-{
-    return d_type;
-}
-
-int ScaleEngine::minTicksBeforeBreak() const
-{
-    return d_minor_ticks_before;
-}
-
-void ScaleEngine::setMinTicksBeforeBreak(int ticks)
-{
-    d_minor_ticks_before = ticks;
-}
-
-int ScaleEngine::minTicksAfterBreak() const
-{
-    return d_minor_ticks_after;
-}
-
-void ScaleEngine::setMinTicksAfterBreak(int ticks)
-{
-    d_minor_ticks_after = ticks;
-}
-
-bool ScaleEngine::log10ScaleAfterBreak() const
-{
-    return d_log10_scale_after;
-}
-
-void ScaleEngine::setLog10ScaleAfterBreak(bool on)
-{
-    d_log10_scale_after = on;
-}
-
-void ScaleEngine::clone(const ScaleEngine *engine)
-{
-    d_type = engine->type();
-	d_break_left = engine->axisBreakLeft();
-	d_break_right = engine->axisBreakRight();
-    d_break_pos = engine->breakPosition();
-	d_step_before = engine->stepBeforeBreak();
-	d_step_after = engine->stepAfterBreak();
-	d_minor_ticks_before = engine->minTicksBeforeBreak();
-	d_minor_ticks_after = engine->minTicksAfterBreak();
-    d_log10_scale_after = engine->log10ScaleAfterBreak();
-    d_break_width = engine->breakWidth();
-}
-
-QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
-		int maxMinSteps, double stepSize) const
-{
-	QwtScaleEngine *engine;
-	if (d_type == QwtScaleTransformation::Log10)
-		engine = new QwtLog10ScaleEngine();
-	else
-		engine = new QwtLinearScaleEngine();
-
-	if ((d_break_left == d_break_right) ||
-		(d_break_left == -DBL_MAX && d_break_right == DBL_MAX)){
-		QwtScaleDiv div = engine->divideScale(x1, x2, maxMajSteps, maxMinSteps, stepSize);
-		delete engine;
-		return div;
-	}
-
-    int max_min_intervals = d_minor_ticks_before;
-	if (d_minor_ticks_before == 1)
-		max_min_intervals = 3;
-	if (d_minor_ticks_before > 1)
-		max_min_intervals = d_minor_ticks_before + 1;
-	QwtScaleDiv div1 = engine->divideScale(x1, d_break_left, maxMajSteps/2, max_min_intervals, d_step_before);
-
-    max_min_intervals = d_minor_ticks_after;
-	if (d_minor_ticks_after == 1)
-		max_min_intervals = 3;
-	if (d_minor_ticks_after > 1)
-		max_min_intervals = d_minor_ticks_after + 1;
-
-    delete engine;
-    if (d_log10_scale_after)
-		engine = new QwtLog10ScaleEngine();
-	else
-		engine = new QwtLinearScaleEngine();
-
-    QwtScaleDiv div2 = engine->divideScale(d_break_right, x2, maxMajSteps/2, max_min_intervals, d_step_after);
-
-    QwtValueList ticks[QwtScaleDiv::NTickTypes];
-    ticks[QwtScaleDiv::MinorTick] = div1.ticks(QwtScaleDiv::MinorTick) + div2.ticks(QwtScaleDiv::MinorTick);
-    ticks[QwtScaleDiv::MediumTick] = div1.ticks(QwtScaleDiv::MediumTick) + div2.ticks(QwtScaleDiv::MediumTick);
-    ticks[QwtScaleDiv::MajorTick] = div1.ticks(QwtScaleDiv::MajorTick) + div2.ticks(QwtScaleDiv::MajorTick);
-
-	delete engine;
-	return QwtScaleDiv(x1, x2, ticks);
-}
-
-void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const
-{
-	QwtScaleEngine *engine;
-	if (d_type == QwtScaleTransformation::Log10)
-		engine = new QwtLog10ScaleEngine();
-	else
-		engine = new QwtLinearScaleEngine();
-
-	engine->autoScale(maxNumSteps, x1, x2, stepSize);
-	delete engine;
-}
-
 ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
 	d_plot(plot),
+	d_type(Numeric),
+	d_numeric_format(Automatic),
 	d_fmt('g'),
     d_prec(4),
 	formula_string (s),
@@ -283,10 +57,39 @@ ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
 
 QwtText ScaleDraw::label(double value) const
 {
-	if (d_plot)
-		return QwtText(d_plot->locale().toString(transformValue(value), d_fmt, d_prec));
-	else
-		return QwtText(QLocale::system().toString(transformValue(value), d_fmt, d_prec));
+	switch (d_type){
+		case Numeric:	
+			if (d_numeric_format == Superscripts){
+				QLocale locale = d_plot->locale();
+				QString txt = locale.toString(transformValue(value), 'e', d_prec);
+				QStringList list = txt.split("e", QString::SkipEmptyParts);
+				if (list[0].toDouble() == 0.0)
+					return QString("0");
+
+				QString s= list[1];
+				int l = s.length();
+				QChar sign = s[0];
+				s.remove (sign);
+
+				while (l>1 && s.startsWith ("0", false)){
+					s.remove ( 0, 1 );
+					l = s.length();
+				}
+
+				if (sign == '-')
+					s.prepend(sign);
+
+				if (list[0] == "1")
+					return QwtText("10<sup>" + s + "</sup>");
+				else
+					return QwtText(list[0] + "x10<sup>" + s + "</sup>");
+			}
+			else if (d_plot)
+				return QwtText(d_plot->locale().toString(transformValue(value), d_fmt, d_prec));
+			else
+				return QwtText(QLocale::system().toString(transformValue(value), d_fmt, d_prec));
+		break;
+	}
 }
 
 void ScaleDraw::drawLabel(QPainter *painter, double value) const
@@ -343,22 +146,26 @@ double ScaleDraw::transformValue(double value) const
         return value;
 }
 
-/*!
-  \brief Set the number format for the major scale labels
-
-  Format character and precision have the same meaning as for
-  sprintf().
-  \param f format character 'e', 'f', 'g'
-  \param prec
-    - for 'e', 'f': the number of digits after the radix character (point)
-    - for 'g': the maximum number of significant digits
-
-  \sa labelFormat()
-*/
-void ScaleDraw::setLabelFormat(char f, int prec)
+void ScaleDraw::setNumericFormat(NumericFormat format)
 {
-d_fmt = f;
-d_prec = prec;
+	if (d_numeric_format == format)
+		return;
+
+	d_numeric_format = format;
+	
+	switch (format){	
+		case Automatic:
+			d_fmt = 'g';
+		break;
+		case Scientific:
+			d_fmt = 'e';
+		break;
+		case Decimal:
+			d_fmt = 'f';
+		case Superscripts:
+			d_fmt = 's';
+		break;
+	}
 }
 
 /*!
@@ -401,7 +208,7 @@ int ScaleDraw::axis() const
 
 void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 {
-    ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
     if (sc_engine->hasBreak()){
 		int align = alignment();
         if (sc_engine->axisBreakLeft() == value && (align == BottomScale || align == LeftScale))
@@ -409,8 +216,8 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
         else if (sc_engine->axisBreakRight() == value && (align == TopScale || align == RightScale))
             return;
     }
-
-    QwtScaleDiv scDiv = scaleDiv();
+	
+	QwtScaleDiv scDiv = scaleDiv();
     QwtValueList majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
     if (majTicks.contains(value) && (d_majTicks == In || d_majTicks == None))
         return;
@@ -435,7 +242,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 void ScaleDraw::drawBreak(QPainter *painter) const
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-    if (!sc_engine->hasBreak())
+    if (!sc_engine->hasBreak() || !sc_engine->hasBreakDecoration())
         return;
 	
     painter->save();
@@ -705,46 +512,4 @@ switch(d_format)
 	break;
 	}
 return QwtText(day);
-}
-
-/*****************************************************************************
- *
- * Class QwtSupersciptsScaleDraw
- *
- *****************************************************************************/
-
-QwtSupersciptsScaleDraw::QwtSupersciptsScaleDraw(Plot *plot, const QString& s):
-	ScaleDraw(plot, s)
-{}
-
-QwtText QwtSupersciptsScaleDraw::label(double value) const
-{
-	char f;
-	int prec;
-	labelFormat(f, prec);
-
-	QLocale locale = d_plot->locale();
-	QString txt = locale.toString(transformValue(value), 'e', prec);
-	QStringList list = txt.split( "e", QString::SkipEmptyParts);
-	if (list[0].toDouble() == 0.0)
-		return QString("0");
-
-	QString s= list[1];
-	int l = s.length();
-	QChar sign = s[0];
-
-	s.remove (sign);
-
-	while (l>1 && s.startsWith ("0", false)){
-		s.remove ( 0, 1 );
-		l = s.length();
-	}
-
-	if (sign == '-')
-		s.prepend(sign);
-
-	if (list[0] == "1")
-		return QwtText("10<sup>" + s + "</sup>");
-	else
-		return QwtText(list[0] + "x10<sup>" + s + "</sup>");
 }

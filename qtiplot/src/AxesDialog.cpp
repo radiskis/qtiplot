@@ -58,7 +58,7 @@
 
 #include <qwt_plot.h>
 #include <qwt_scale_widget.h>
-#include <qwt_scale_engine.h>
+#include "plot2D/ScaleEngine.h"
 
 /* XPM */
 static const char* const bottom_scl_xpm[] = {
@@ -1252,12 +1252,16 @@ void AxesDialog::initScalesPage()
 	middleLayout->addWidget( btnInvert, 3, 1 );
 	middleLayout->setRowStretch(4, 1);
 
-	boxAxesBreaks = new QGroupBox(tr("Show Axis Break"));
+	boxAxesBreaks = new QGroupBox(tr("Show Axis &Break"));
 	boxAxesBreaks->setCheckable(true);
 	boxAxesBreaks->setChecked(false);
 
 	QGridLayout * breaksLayout = new QGridLayout(boxAxesBreaks);
 	ApplicationWindow *app = (ApplicationWindow *)parent();
+	
+	boxBreakDecoration = new QCheckBox(tr("Draw Break &Decoration"));
+	breaksLayout->addWidget(boxBreakDecoration, 0, 1);
+	
 	breaksLayout->addWidget(new QLabel(tr("From")), 1, 0);
 	boxBreakStart = new DoubleSpinBox('g');
 	boxBreakStart->setLocale(app->locale());
@@ -1280,7 +1284,7 @@ void AxesDialog::initScalesPage()
 	boxBreakWidth->setSuffix(" (" + tr("pixels") + ")");
 	breaksLayout->addWidget(boxBreakWidth, 4, 1);
 	
-    boxLog10AfterBreak = new QCheckBox(tr("Log10 Scale After Break"));
+    boxLog10AfterBreak = new QCheckBox(tr("&Log10 Scale After Break"));
     breaksLayout->addWidget(boxLog10AfterBreak, 0, 3);
 
     breaksLayout->addWidget(new QLabel(tr("Step Before Break")), 1, 2);
@@ -2402,7 +2406,7 @@ bool AxesDialog::updatePlot()
                           boxScaleType->currentIndex(), btnInvert->isChecked(), breakLeft, breakRight,
                           boxBreakPosition->value(), boxStepBeforeBreak->value(), boxStepAfterBreak->value(),
                           boxMinorTicksBeforeBreak->currentText().toInt(), boxMinorTicksAfterBreak->currentText().toInt(),
-                          boxLog10AfterBreak->isChecked(), boxBreakWidth->value());
+                          boxLog10AfterBreak->isChecked(), boxBreakWidth->value(), boxBreakDecoration->isChecked());
 		d_graph->notifyChanges();
 	}
 	else if (generalDialog->currentWidget()==gridPage){
@@ -2621,6 +2625,7 @@ boxMinorTicksBeforeBreak->setEditText(QString::number(sc_engine->minTicksBeforeB
 
 boxMinorTicksAfterBreak->setEditText(QString::number(sc_engine->minTicksAfterBreak()));
 boxLog10AfterBreak->setChecked(sc_engine->log10ScaleAfterBreak());
+boxBreakDecoration->setChecked(sc_engine->hasBreakDecoration());
 
 QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 boxStep->setText(QString::number(d_graph->axisStep(a)));

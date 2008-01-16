@@ -10297,9 +10297,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			lst.pop_back();
 			ag->restoreSpectrogram(app, lst);
 		}
-		else if (s.left(6)=="scale\t"){
+		else if (s.left(6) == "scale\t"){
 			QStringList scl = s.split("\t");
 			scl.pop_front();
+			int size = scl.count();
 			if (d_file_version < 88){
 				double step = scl[2].toDouble();
 				if (scl[5] == "0")
@@ -10316,18 +10317,15 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 						scl[12].toInt(), scl[14].toInt(), bool(scl[15].toInt()));
 				ag->setScale(QwtPlot::yRight, scl[8].toDouble(), scl[9].toDouble(), step, scl[11].toInt(),
 						scl[12].toInt(), scl[14].toInt(), bool(scl[15].toInt()));
-			}else
+			} else if (size == 8){
 				ag->setScale(scl[0].toInt(), scl[1].toDouble(), scl[2].toDouble(), scl[3].toDouble(),
 						scl[4].toInt(), scl[5].toInt(),  scl[6].toInt(), bool(scl[7].toInt()));
-		}
-		else if (s == "<ScaleBreak>"){
-			QStringList lst;
-			while ( s!="</ScaleBreak>" ){
-				s = list[++j];
-				lst << s;
+			} else if (size == 18){
+				ag->setScale(scl[0].toInt(), scl[1].toDouble(), scl[2].toDouble(), scl[3].toDouble(),
+					scl[4].toInt(), scl[5].toInt(), scl[6].toInt(), bool(scl[7].toInt()), scl[8].toDouble(), 
+					scl[9].toDouble(), scl[10].toInt(), scl[11].toDouble(), scl[12].toDouble(), scl[13].toInt(), 
+					scl[14].toInt(), bool(scl[15].toInt()), scl[16].toInt(), bool(scl[17].toInt()));
 			}
-			lst.pop_back();
-			ag->restoreAxisBreak(lst);
 		}
 		else if (s.contains ("PlotTitle")){
 			QStringList fList=s.split("\t");

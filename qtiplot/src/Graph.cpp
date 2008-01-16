@@ -120,6 +120,7 @@ static const char *unzoom_xpm[]={
 #include "RangeSelectorTool.h"
 #include "PlotCurve.h"
 #include "ApplicationWindow.h"
+#include "plot2D/ScaleEngine.h"
 
 #ifdef EMF_OUTPUT
 #include "EmfEngine.h"
@@ -391,27 +392,11 @@ void Graph::setLabelsNumericFormat(int axis, int format, int prec, const QString
 	axisType[axis] = Numeric;
 	axesFormulas[axis] = formula;
 
-	ScaleDraw *sd_old = (ScaleDraw *)d_plot->axisScaleDraw (axis);
-	const QwtScaleDiv div = sd_old->scaleDiv ();
-
-	if (format == Plot::Superscripts){
-		QwtSupersciptsScaleDraw *sd = new QwtSupersciptsScaleDraw(d_plot, formula.ascii());
-		sd->setLabelFormat('s', prec);
-		sd->setScaleDiv(div);
-		d_plot->setAxisScaleDraw (axis, sd);
-	} else {
-		ScaleDraw *sd = new ScaleDraw(d_plot, formula.ascii());
-		sd->setScaleDiv(div);
-
-		if (format == Plot::Automatic)
-			sd->setLabelFormat ('g', prec);
-		else if (format == Plot::Scientific )
-			sd->setLabelFormat ('e', prec);
-		else if (format == Plot::Decimal)
-			sd->setLabelFormat ('f', prec);
-
-		d_plot->setAxisScaleDraw (axis, sd);
-	}
+	ScaleDraw *sd = new ScaleDraw(d_plot, formula.ascii()); 
+	sd->setNumericFormat((ScaleDraw::NumericFormat)format);
+	sd->setNumericPrecision(prec);
+	sd->setScaleDiv(d_plot->axisScaleDraw(axis)->scaleDiv());
+	d_plot->setAxisScaleDraw (axis, sd);
 }
 
 void Graph::setLabelsNumericFormat(int axis, const QStringList& l)
@@ -420,8 +405,8 @@ void Graph::setLabelsNumericFormat(int axis, const QStringList& l)
 	if (!sd->hasComponent(QwtAbstractScaleDraw::Labels) ||
 			axisType[axis] != Numeric)	return;
 
-	int format=l[2*axis].toInt();
-	int prec=l[2*axis+1].toInt();
+	int format = l[2*axis].toInt();
+	int prec = l[2*axis+1].toInt();
 	setLabelsNumericFormat(axis, format, prec, axesFormulas[axis]);
 }
 
@@ -434,16 +419,14 @@ void Graph::setLabelsNumericFormat(const QStringList& l)
 QString Graph::saveAxesLabelsType()
 {
 	QString s="AxisType\t";
-	for (int i=0; i<4; i++)
-	{
+	for (int i=0; i<4; i++){
 		int type = axisType[i];
-		s+=QString::number(type);
+		s += QString::number(type);
 		if (type == Time || type == Date || type == Txt ||
 				type == ColHeader || type == Day || type == Month)
 			s += ";" + axesFormatInfo[i];
-		s+="\t";
-	};
-
+		s += "\t";
+	}
 	return s+"\n";
 }
 
@@ -777,12 +760,14 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 	QStringList list = formatInfo.split(";", QString::KeepEmptyParts);
 	if ((int)list.count() < 2)
 	{
-        QMessageBox::critical(this, tr("QtiPlot - Error"), "Couldn't change the axis type to the requested format!");
+        QMessageBox::critical(this, tr("QtiPlot - Error"), 
+		tr("Couldn't change the axis type to the requested format!"));
         return;
     }
     if (list[0].isEmpty() || list[1].isEmpty())
     {
-        QMessageBox::critical(this, tr("QtiPlot - Error"), "Couldn't change the axis type to the requested format!");
+        QMessageBox::critical(this, tr("QtiPlot - Error"), 
+		tr("Couldn't change the axis type to the requested format!"));
         return;
     }
 
@@ -1114,22 +1099,12 @@ void Graph::updateSecondaryAxis(int axis)
 
 	if (!d_plot->axisEnabled(a))
 		return;
+	
+	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
+	sc_engine->clone((ScaleEngine *)d_plot->axisScaleEngine(a));
 
-	QwtScaleEngine *se = d_plot->axisScaleEngine(a);
 	const QwtScaleDiv *sd = d_plot->axisScaleDiv(a);
-
-	QwtScaleEngine *sc_engine = 0;
-	if (se->transformation()->type() == QwtScaleTransformation::Log10)
-		sc_engine = new QwtLog10ScaleEngine();
-	else if (se->transformation()->type() == QwtScaleTransformation::Linear)
-		sc_engine = new QwtLinearScaleEngine();
-
-	if (se->testAttribute(QwtScaleEngine::Inverted))
-		sc_engine->setAttribute(QwtScaleEngine::Inverted);
-
-	d_plot->setAxisScaleEngine (axis, sc_engine);
 	d_plot->setAxisScaleDiv (axis, *sd);
-
 	d_user_step[axis] = d_user_step[a];
 
 	QwtScaleWidget *scale = d_plot->axisWidget(a);
@@ -1138,6 +1113,7 @@ void Graph::updateSecondaryAxis(int axis)
 
 	scale = d_plot->axisWidget(axis);
 	scale->setMinBorderDist (start, end);
+	scale->repaint();
 }
 
 void Graph::setAutoScale()
@@ -1164,12 +1140,13 @@ void Graph::setScale(int axis, double start, double end, double step,
 					int majorTicks, int minorTicks, int type, bool inverted,
 					double left_break, double right_break, int breakPos,
                     double stepBeforeBreak, double stepAfterBreak, int minTicksBeforeBreak,
-					int minTicksAfterBreak, bool log10AfterBreak, int breakWidth)
+					int minTicksAfterBreak, bool log10AfterBreak, int breakWidth, bool breakDecoration)
 {
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
 	sc_engine->setBreakRegion(left_break, right_break);
 	sc_engine->setBreakPosition(breakPos);
 	sc_engine->setBreakWidth(breakWidth);
+	sc_engine->drawBreakDecoration(breakDecoration);
 	sc_engine->setStepBeforeBreak(stepBeforeBreak);
 	sc_engine->setStepAfterBreak(stepAfterBreak);
 	sc_engine->setMinTicksBeforeBreak(minTicksBeforeBreak);
@@ -1866,72 +1843,24 @@ QString Graph::saveScale()
 		const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(i);
 		QwtScaleTransformation *tr = sc_eng->transformation();
 		s += QString::number((int)tr->type())+"\t";
-		s += QString::number(sc_eng->testAttribute(QwtScaleEngine::Inverted))+"\n";
+		s += QString::number(sc_eng->testAttribute(QwtScaleEngine::Inverted));
 
 		ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(i);
-        if (se->hasBreak()){
-            s += "<ScaleBreak>\n";
-            s += "\t<axis>" + QString::number(i) + "</axis>\n";
-            s += "\t<position>" + QString::number(se->breakPosition()) + "</position>\n";
-            s += "\t<width>" + QString::number(se->breakWidth()) + "</width>\n";
-            s += "\t<left>" + QString::number(se->axisBreakLeft(), 'g', 15) + "</left>\n";
-            s += "\t<right>" + QString::number(se->axisBreakRight(), 'g', 15) + "</right>\n";
-            s += "\t<stepBefore>" + QString::number(se->stepBeforeBreak(), 'g', 15) + "</stepBefore>\n";
-            s += "\t<stepAfter>" + QString::number(se->stepAfterBreak(), 'g', 15) + "</stepAfter>\n";
-            s += "\t<minTicksBefore>" + QString::number(se->minTicksBeforeBreak()) + "</minTicksBefore>\n";
-            s += "\t<minTicksAfter>" + QString::number(se->minTicksAfterBreak()) + "</minTicksAfter>\n";
-            s += "\t<log10ScaleAfter>" + QString::number(se->log10ScaleAfterBreak()) + "</log10ScaleAfter>\n";
-            s += "</ScaleBreak>\n";
-        }
+        if (se->hasBreak()){			
+            s += "\t" + QString::number(se->axisBreakLeft(), 'g', 15);
+            s += "\t" + QString::number(se->axisBreakRight(), 'g', 15);
+			s += "\t" + QString::number(se->breakPosition());
+            s += "\t" + QString::number(se->stepBeforeBreak(), 'g', 15);
+            s += "\t" + QString::number(se->stepAfterBreak(), 'g', 15);
+            s += "\t" + QString::number(se->minTicksBeforeBreak());
+            s += "\t" + QString::number(se->minTicksAfterBreak());
+            s += "\t" + QString::number(se->log10ScaleAfterBreak());
+			s += "\t" + QString::number(se->breakWidth());
+            s += "\t" + QString::number(se->hasBreakDecoration()) + "\n";
+        } else
+			 s += "\n";
 	}
 	return s;
-}
-
-void Graph::restoreAxisBreak(const QStringList& lst)
-{
-    QStringList::const_iterator line = lst.begin();
-  	QString s = (*line).stripWhiteSpace();
-  	int axis = s.remove("<axis>").remove("</axis>").toInt();
-    ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(axis);
-
-    int left = 0.0, right = 0.0;
-  	for (line++; line != lst.end(); line++){
-        QString s = *line;
-        if (s.contains("<position>")){
-            int pos = s.remove("<position>").remove("</position>").trimmed().toInt();
-            se->setBreakPosition(pos);
-        }
-        else if (s.contains("<width>")){
-            int width = s.remove("<width>").remove("</width>").trimmed().toInt();
-            se->setBreakWidth(width);
-        }
-        else if (s.contains("<left>"))
-            left = s.remove("<left>").remove("</left>").trimmed().toDouble();
-        else if (s.contains("<right>"))
-            right = s.remove("<right>").remove("</right>").trimmed().toDouble();
-        else if (s.contains("<stepBefore>")){
-            double step = s.remove("<stepBefore>").remove("</stepBefore>").trimmed().toDouble();
-            se->setStepBeforeBreak(step);
-        }
-        else if (s.contains("<stepAfter>")){
-            double step = s.remove("<stepAfter>").remove("</stepAfter>").trimmed().toDouble();
-            se->setStepAfterBreak(step);
-        }
-        else if (s.contains("<minTicksBefore>")){
-            int ticks = s.remove("<minTicksBefore>").remove("</minTicksBefore>").trimmed().toInt();
-            se->setMinTicksBeforeBreak(ticks);
-        }
-        else if (s.contains("<minTicksAfter>")){
-            int ticks = s.remove("<minTicksAfter>").remove("</minTicksAfter>").trimmed().toInt();
-            se->setMinTicksAfterBreak(ticks);
-        }
-        else if (s.contains("<log10ScaleAfter>")){
-            int on = s.remove("<log10ScaleAfter>").remove("</log10ScaleAfter>").trimmed().toInt();
-            if (on)
-                se->setLog10ScaleAfterBreak(true);
-        }
-  	}
-  	se->setBreakRegion(left, right);
 }
 
 void Graph::setXAxisTitleColor(const QColor& c)
@@ -4364,10 +4293,8 @@ void Graph::copy(Graph* g)
 		QwtScaleDiv div = sc_engine->divideScale (QMIN(sd->lBound(), sd->hBound()),
 				QMAX(sd->lBound(), sd->hBound()), majorTicks, minorTicks, step);
 
-		if (se->testAttribute(QwtScaleEngine::Inverted)){
-			sc_engine->setAttribute(QwtScaleEngine::Inverted);
+		if (se->testAttribute(QwtScaleEngine::Inverted))
 			div.invert();
-		}
 		d_plot->setAxisScaleDiv (i, div);
 	}
 
