@@ -197,7 +197,7 @@ protected:
 	DoubleSpinBox *boxBreakStart, *boxBreakEnd, *boxStepBeforeBreak, *boxStepAfterBreak;
 	QSpinBox *boxBreakPosition, *boxBreakWidth;
 	QComboBox *boxMinorTicksBeforeBreak, *boxMinorTicksAfterBreak;
-	QCheckBox *boxLog10AfterBreak;
+	QCheckBox *boxLog10AfterBreak, *boxBreakDecoration;
 
 	Graph* d_graph;
 	//! Last selected tab

@@ -33,6 +33,7 @@
 #include "Spectrogram.h"
 #include "PlotCurve.h"
 #include "LegendWidget.h"
+#include "plot2D/ScaleEngine.h"
 
 #include <qwt_plot.h>
 #include <qwt_painter.h>
@@ -373,7 +374,7 @@ void Plot::drawInwardTicks(QPainter *painter, const QRect &rect,
 void Plot::drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &map, int axis) const
 {
     ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(axis);
-    if (!sc_engine->hasBreak())
+    if (!sc_engine->hasBreak() || !sc_engine->hasBreakDecoration())
         return;
 
     painter->save();
@@ -625,24 +626,10 @@ void Plot::setMinorTicksType(int axis, int type)
 
 int Plot::axisLabelFormat(int axis)
 {
-	if (axisValid(axis))
-	{
-		int prec;
-		char format;
-
+	if (axisValid(axis)){
 		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (axis);
-		sd->labelFormat(format, prec);
-
-		if (format == 'g')
-			return Automatic;
-		else if (format == 'e')
-			return Scientific;
-		else if (format == 'f')
-			return Decimal;
-		else
-			return Superscripts;
+		return sd->labelNumericFormat();
 	}
-
 	return 0;
 }
 
@@ -666,31 +653,12 @@ int Plot::axisLabelPrecision(int axis)
   */
 void Plot::axisLabelFormat(int axis, char &f, int &prec) const
 {
-	if (axisValid(axis))
-	{
+	if (axisValid(axis)){
 		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (axis);
 		sd->labelFormat(f, prec);
-	}
-	else
-	{
-		//for a bad call we return the default values
+	} else {//for a bad call we return the default values
 		f = 'g';
 		prec = 4;
-	}
-}
-
-/*!
-  Change the number format for the major scale of a selected axis
-  \param axis axis index
-  \param f format
-  \param prec precision
-  */
-void Plot::setAxisLabelFormat(int axis, char f, int prec)
-{
-	if (axisValid(axis))
-	{
-		ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (axis);
-		sd->setLabelFormat(f, prec);
 	}
 }
 
