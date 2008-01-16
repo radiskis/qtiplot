@@ -41,7 +41,7 @@ QwtPieCurve::QwtPieCurve(Table *t, const QString& name, int startRow, int endRow
 	d_first_color = 0;
 	setPen(QPen(QColor(Qt::black), 1, Qt::SolidLine));
 	setBrush(QBrush(Qt::black, Qt::SolidPattern));
-
+    setStyle(QwtPlotCurve::UserCurve);
 	setType(Graph::Pie);
 }
 

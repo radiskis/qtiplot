@@ -38,6 +38,7 @@ bar_style=style;
 
 setPen(QPen(Qt::black, 1, Qt::SolidLine));
 setBrush(QBrush(Qt::red));
+setStyle(QwtPlotCurve::UserCurve);
 
 if (bar_style == Vertical)
 	setType(Graph::VerticalBars);

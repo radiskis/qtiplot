@@ -1747,12 +1747,11 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         colorScaleWidthBox->setValue(sp->colorBarWidth());
         return;
     }
-	
+
     PlotCurve *c = (PlotCurve*)i;
-	if (c->type() == Graph::Function){
+	if (c->type() == Graph::Function)
         btnEditCurve->setText(tr("&Edit..."));
-		return;
-    } else 
+    else
         btnEditCurve->setText(tr("&Plot Associations..."));
 
 	int curveType = item->plotItemType();
@@ -1766,7 +1765,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         boxFirstColor->setCurrentItem(pie->firstColor());
         return;
     }
-	
+
     //line page
     int style = c->style();
     if (curveType == Graph::Spline)
@@ -1793,6 +1792,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxFillSymbol->setChecked(s.brush() != Qt::NoBrush);
     boxFillColor->setEnabled(s.brush() != Qt::NoBrush);
     boxFillColor->setColor(s.brush().color());
+
+    if (c->type() == Graph::Function)
+        return;
 
     if (curveType == Graph::VerticalBars || curveType == Graph::HorizontalBars ||
 				curveType == Graph::Histogram){//spacing page
@@ -1829,14 +1831,14 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     if (curveType == Graph::ErrorBars){
         QwtErrorPlotCurve *err = (QwtErrorPlotCurve*)i;
-        if (err){			
+        if (err){
             widthBox->setEditText(QString::number(err->width()));
             capBox->setEditText(QString::number(err->capLength()));
-			
+
 			colorBox->blockSignals(true);
             colorBox->setColor(err->color());
 			colorBox->blockSignals(false);
-			
+
 			throughBox->blockSignals(true);
             throughBox->setChecked(err->throughSymbol());
 			throughBox->blockSignals(false);
