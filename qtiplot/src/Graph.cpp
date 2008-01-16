@@ -392,7 +392,7 @@ void Graph::setLabelsNumericFormat(int axis, int format, int prec, const QString
 	axisType[axis] = Numeric;
 	axesFormulas[axis] = formula;
 
-	ScaleDraw *sd = new ScaleDraw(d_plot, formula.ascii()); 
+	ScaleDraw *sd = new ScaleDraw(d_plot, formula.ascii());
 	sd->setNumericFormat((ScaleDraw::NumericFormat)format);
 	sd->setNumericPrecision(prec);
 	sd->setScaleDiv(d_plot->axisScaleDraw(axis)->scaleDiv());
@@ -760,13 +760,13 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 	QStringList list = formatInfo.split(";", QString::KeepEmptyParts);
 	if ((int)list.count() < 2)
 	{
-        QMessageBox::critical(this, tr("QtiPlot - Error"), 
+        QMessageBox::critical(this, tr("QtiPlot - Error"),
 		tr("Couldn't change the axis type to the requested format!"));
         return;
     }
     if (list[0].isEmpty() || list[1].isEmpty())
     {
-        QMessageBox::critical(this, tr("QtiPlot - Error"), 
+        QMessageBox::critical(this, tr("QtiPlot - Error"),
 		tr("Couldn't change the axis type to the requested format!"));
         return;
     }
@@ -1099,7 +1099,7 @@ void Graph::updateSecondaryAxis(int axis)
 
 	if (!d_plot->axisEnabled(a))
 		return;
-	
+
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
 	sc_engine->clone((ScaleEngine *)d_plot->axisScaleEngine(a));
 
@@ -1846,7 +1846,7 @@ QString Graph::saveScale()
 		s += QString::number(sc_eng->testAttribute(QwtScaleEngine::Inverted));
 
 		ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(i);
-        if (se->hasBreak()){			
+        if (se->hasBreak()){
             s += "\t" + QString::number(se->axisBreakLeft(), 'g', 15);
             s += "\t" + QString::number(se->axisBreakRight(), 'g', 15);
 			s += "\t" + QString::number(se->breakPosition());
@@ -2959,14 +2959,11 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 	DataCurve *c = 0;
 	if (style == VerticalBars){
 		c = new QwtBarCurve(QwtBarCurve::Vertical, w, xColName, yColName, startRow, endRow);
-		c->setStyle(QwtPlotCurve::UserCurve);
 	} else if (style == HorizontalBars){
 		c = new QwtBarCurve(QwtBarCurve::Horizontal, w, xColName, yColName, startRow, endRow);
-		c->setStyle(QwtPlotCurve::UserCurve);
 	} else if (style == Histogram){
 		c = new QwtHistogram(w, xColName, yColName, startRow, endRow);
 		((QwtHistogram *)c)->initData(Y.data(), size);
-		c->setStyle(QwtPlotCurve::UserCurve);
 	} else
 		c = new DataCurve(w, xColName, yColName, startRow, endRow);
 
@@ -4375,6 +4372,12 @@ void Graph::setCurveStyle(int index, int s)
 	if (!c)
 		return;
 
+    int curve_type = c_type[index];
+    if (curve_type == VerticalBars || curve_type == HorizontalBars || curve_type == Histogram ||
+        curve_type == Pie || curve_type == Box || curve_type == ErrorBars ||
+        curve_type == VectXYXY || curve_type == VectXYAM)
+        return;//these are not line styles, but distinct curve types and this function must not change the curve type
+
 	c->setCurveAttribute(QwtPlotCurve::Fitted, false);
 	c->setCurveAttribute(QwtPlotCurve::Inverted, false);
 
@@ -4384,11 +4387,12 @@ void Graph::setCurveStyle(int index, int s)
 		c_type[index] = Spline;
 	} else if (s == 6){// Vertical Steps
 		s = QwtPlotCurve::Steps;
-		c->setCurveAttribute(QwtPlotCurve::Inverted, true);
+		c->setCurveAttribute(QwtPlotCurve::Inverted, false);
 		c_type[index] = VerticalSteps;
-	} else if (s == QwtPlotCurve::Steps)// Horizontal Steps
+	} else if (s == QwtPlotCurve::Steps){// Horizontal Steps
 		c_type[index] = HorizontalSteps;
-	else if (s == QwtPlotCurve::Sticks)
+		c->setCurveAttribute(QwtPlotCurve::Inverted, true);
+	} else if (s == QwtPlotCurve::Sticks)
 		c_type[index] = VerticalDropLines;
 	else {//QwtPlotCurve::Lines || QwtPlotCurve::Dots
 		if (c->symbol().style() != QwtSymbol::NoSymbol)

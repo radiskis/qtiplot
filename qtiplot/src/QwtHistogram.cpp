@@ -38,6 +38,7 @@ QwtHistogram::QwtHistogram(Table *t, const QString& xColName, const QString& nam
 {
     d_matrix = 0;
     setType(Graph::Histogram);
+    setStyle(QwtPlotCurve::UserCurve);
 }
 
 QwtHistogram::QwtHistogram(Matrix *m):
@@ -47,6 +48,7 @@ QwtHistogram::QwtHistogram(Matrix *m):
         d_autoBin = true;
         d_matrix = m;
         setType(Graph::Histogram);
+        setStyle(QwtPlotCurve::UserCurve);
     }
 }
 

@@ -49,6 +49,7 @@ BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	b_width = 80;
 
 	setType(Graph::Box);
+    setStyle(QwtPlotCurve::UserCurve);
 }
 
 void BoxCurve::copy(const BoxCurve *b)
@@ -328,7 +329,7 @@ QwtDoubleRect BoxCurve::boundingRect() const
 }
 
 void BoxCurve::loadData()
-{	
+{
 	QVector<double> Y(abs(d_end_row - d_start_row) + 1);
     int ycol = d_table->colIndex(title().text());
 	int size = 0;

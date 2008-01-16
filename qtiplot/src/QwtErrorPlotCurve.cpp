@@ -44,6 +44,7 @@ QwtErrorPlotCurve::QwtErrorPlotCurve(int orientation, Table *t, const QString& n
 	minus = true;
 	through = false;
 	setType(Graph::ErrorBars);
+    setStyle(QwtPlotCurve::UserCurve);
 }
 
 QwtErrorPlotCurve::QwtErrorPlotCurve(Table *t, const QString& name):
@@ -56,6 +57,7 @@ QwtErrorPlotCurve::QwtErrorPlotCurve(Table *t, const QString& name):
 	minus = true;
 	through = false;
 	setType(Graph::ErrorBars);
+    setStyle(QwtPlotCurve::UserCurve);
 }
 
 void QwtErrorPlotCurve::copy(const QwtErrorPlotCurve *e)
