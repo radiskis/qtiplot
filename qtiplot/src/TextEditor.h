@@ -47,7 +47,7 @@ public slots:
 
 private:
 	void closeEvent(QCloseEvent *e);
-
+	QString d_initial_text;
 	QWidget *d_target;
 };
 

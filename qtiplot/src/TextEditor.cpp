@@ -30,6 +30,7 @@
 #include "LegendWidget.h"
 
 #include <QTextCursor>
+#include <QMessageBox>
 
 #include <qwt_text.h>
 #include <qwt_text_label.h>
@@ -87,6 +88,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g)
 
 	QTextCursor cursor = textCursor();
 	cursor.insertText(text);
+	d_initial_text = text;
 
 	show();
 	setFocus();
@@ -95,20 +97,30 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g)
 void TextEditor::closeEvent(QCloseEvent *e)
 {
     Graph *g = (Graph *)parent();
+	QString s = QString();
 	if (d_target->isA("LegendWidget")){
 		((LegendWidget*)d_target)->setText(text());
         d_target->show();
 		g->setSelectedText(NULL);
 	} else if (d_target->isA("QwtTextLabel")){
 		QwtText title = g->plotWidget()->title();
-		title.setText(text());
+		s = text();
+		if(s.isEmpty())
+			s = " ";
+		title.setText(s);			
 		g->plotWidget()->setTitle(title);
 	} else if (d_target->isA("QwtScaleWidget")){
 		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
 		QwtText title = scale->title();
-		title.setText(text());
+		s = text();
+		if(s.isEmpty())
+			s = " ";
+		title.setText(s);
 		scale->setTitle(title);
 	}
+
+	if (d_initial_text != s)
+		g->notifyChanges();
 
     d_target->repaint();
 	e->accept();

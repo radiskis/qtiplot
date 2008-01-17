@@ -62,7 +62,10 @@ Plot::Plot(QWidget *parent, const char *)
 	setGeometry(QRect(0,0,500,400));
 	setAxisTitle(QwtPlot::yLeft, tr("Y Axis Title"));
 	setAxisTitle(QwtPlot::xBottom, tr("X Axis Title"));
-
+	//due to the plot layout updates, we must always have a non empty title
+	setAxisTitle(QwtPlot::yRight, tr(" "));
+	setAxisTitle(QwtPlot::xTop, tr(" "));
+	
 	// grid
 	d_grid = new Grid;
 	d_grid->enableX(false);
