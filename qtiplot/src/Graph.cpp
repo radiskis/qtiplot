@@ -1152,6 +1152,7 @@ void Graph::setScale(int axis, double start, double end, double step,
 	sc_engine->setMinTicksBeforeBreak(minTicksBeforeBreak);
 	sc_engine->setMinTicksAfterBreak(minTicksAfterBreak);
 	sc_engine->setLog10ScaleAfterBreak(log10AfterBreak);
+	sc_engine->setAttribute(QwtScaleEngine::Inverted, inverted);
 
 	if (type == 1)
 		sc_engine->setType(QwtScaleTransformation::Log10);
@@ -1168,10 +1169,8 @@ void Graph::setScale(int axis, double start, double end, double step,
 	d_plot->setAxisMaxMajor (axis, majorTicks);
 	d_plot->setAxisMaxMinor (axis, minorTicks);
 
-	if (inverted){
-		sc_engine->setAttribute(QwtScaleEngine::Inverted);
+	if (inverted)
 		div.invert();
-	}
 	d_plot->setAxisScaleDiv (axis, div);
 
 	d_zoomer[0]->setZoomBase();

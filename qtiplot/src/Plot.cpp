@@ -207,8 +207,13 @@ void Plot::drawItems (QPainter *painter, const QRect &rect,
 			continue;
 
 		QwtScaleMap m = map[i];
-		int start = m.transform(sc_engine->axisBreakLeft());
-		int end = m.transform(sc_engine->axisBreakRight());
+		int lb = m.transform(sc_engine->axisBreakLeft());
+		int rb = m.transform(sc_engine->axisBreakRight());
+		int start = lb, end = rb;
+		if (sc_engine->testAttribute(QwtScaleEngine::Inverted)){
+			end = lb;
+			start = rb;
+		}
 		QRegion cr(rect);
 		if (i == QwtPlot::xBottom || i == QwtPlot::xTop)
 			painter->setClipRegion(cr.subtracted(QRegion(start, rect.y(), abs(end - start), rect.height())));
@@ -385,28 +390,28 @@ void Plot::drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &ma
     int left = map.transform(sc_engine->axisBreakLeft());
     int right = map.transform(sc_engine->axisBreakRight());
     int x, y;
-	int len = majTickLength - 1;
+	int len = majTickLength;
     switch (axis){
         case QwtPlot::yLeft:
-			x = rect.left();
+			x = rect.left() - 1;
             QwtPainter::drawLine(painter, x, left, x + len, left - len);
             QwtPainter::drawLine(painter, x, right, x + len, right - len);
         break;
 
         case QwtPlot::yRight:
-            x = rect.right();
+            x = rect.right() + 1;
             QwtPainter::drawLine(painter, x - len, left + len, x, left);
             QwtPainter::drawLine(painter, x - len, right + len, x, right);
         break;
 
         case QwtPlot::xBottom:
-			y = rect.bottom();
-			QwtPainter::drawLine(painter, left, y+1, left + len, y - len);
-            QwtPainter::drawLine(painter, right, y+1, right + len, y - len);
+			y = rect.bottom() + 1;
+			QwtPainter::drawLine(painter, left, y, left + len, y - len);
+            QwtPainter::drawLine(painter, right, y, right + len, y - len);
         break;
 
         case QwtPlot::xTop:
-			y = rect.top();
+			y = rect.top() - 1;
             QwtPainter::drawLine(painter, left - len, y + len, left, y);
             QwtPainter::drawLine(painter, right - len, y + len, right, y);
         break;
