@@ -1069,8 +1069,12 @@ void Graph::setScaleTitle(int axis, const QString& text)
 }
 
 void Graph::setAxisTitle(int axis, const QString& text)
-{
-	d_plot->setAxisTitle(axis, text);
+{	
+	if (text.isEmpty())//avoid empty titles due to plot layout behavior
+		d_plot->setAxisTitle(axis, " ");
+	else
+		d_plot->setAxisTitle(axis, text);
+
 	d_plot->replot();
 	emit modifiedGraph();
 }
@@ -3968,7 +3972,7 @@ void Graph::removeAxisTitle()
 {
 	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
   	//QwtScaleDraw::alignment and QwtPlot::Axis
-  	d_plot->setAxisTitle(axis, QString::null);
+  	d_plot->setAxisTitle(axis, " ");//due to the plot layout updates, we must always have a non empty title
 	d_plot->replot();
 	emit modifiedGraph();
 }
