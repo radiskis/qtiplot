@@ -30,7 +30,6 @@
 #include "LegendWidget.h"
 
 #include <QTextCursor>
-#include <QMessageBox>
 
 #include <qwt_text.h>
 #include <qwt_text_label.h>
@@ -99,7 +98,8 @@ void TextEditor::closeEvent(QCloseEvent *e)
     Graph *g = (Graph *)parent();
 	QString s = QString();
 	if (d_target->isA("LegendWidget")){
-		((LegendWidget*)d_target)->setText(text());
+		s = text();
+		((LegendWidget*)d_target)->setText(s);
         d_target->show();
 		g->setSelectedText(NULL);
 	} else if (d_target->isA("QwtTextLabel")){

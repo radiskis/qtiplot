@@ -45,6 +45,7 @@
 #include "AxesDialog.h"
 #include "PlotToolInterface.h"
 #include "MultiLayer.h"
+#include "ScaleDraw.h"
 
 #include <float.h>
 
@@ -123,7 +124,6 @@ class Graph: public QWidget
 		enum Axis{Left, Right, Bottom, Top};
 		enum ScaleType{Linear, Log10};
 		enum Ticks{NoTicks = 0, Out = 1, InOut = 2, In = 3};
-		enum AxisType{Numeric = 0, Txt = 1, Day = 2, Month = 3, Time = 4, Date = 5, ColHeader = 6};
 		enum MarkerType{None = -1, Text = 0, Arrow = 1, Image = 2};
 		enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
@@ -413,7 +413,7 @@ class Graph: public QWidget
 		QwtScaleWidget* selectedScale();
 		QRect axisTitleRect(const QwtScaleWidget *scale);
 
-		QList<int> axesType();
+		ScaleDraw::ScaleType axisType(int axis);
 
 		void setXAxisTitle(const QString& text);
 		void setYAxisTitle(const QString& text);
@@ -713,7 +713,6 @@ signals:
 		QStringList axesFormulas;
 		//! Stores columns used for axes with text labels or time/date format info
 		QStringList axesFormatInfo;
-		QList <int> axisType;
 
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;

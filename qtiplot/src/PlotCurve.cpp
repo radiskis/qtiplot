@@ -225,33 +225,33 @@ void DataCurve::loadData()
 
 		if (xColType == Table::Text){
 			if (d_type == Graph::HorizontalBars)
-				g->setLabelsTextFormat(QwtPlot::yLeft, Graph::Txt, d_x_column, xLabels);
+				g->setLabelsTextFormat(QwtPlot::yLeft, ScaleDraw::Text, d_x_column, xLabels);
 			else
-                g->setLabelsTextFormat(QwtPlot::xBottom, Graph::Txt, d_x_column, xLabels);
+                g->setLabelsTextFormat(QwtPlot::xBottom, ScaleDraw::Text, d_x_column, xLabels);
 		} else if (xColType == Table::Time ){
 			if (d_type == Graph::HorizontalBars){
 				QStringList lst = g->axisFormatInfo(QwtPlot::yLeft).split(";");
 				QString fmtInfo = time0.toString() + ";" + lst[1];
-				g->setLabelsDateTimeFormat(QwtPlot::yLeft, Graph::Time, fmtInfo);
+				g->setLabelsDateTimeFormat(QwtPlot::yLeft, ScaleDraw::Time, fmtInfo);
 			} else {
 				QStringList lst = g->axisFormatInfo(QwtPlot::xBottom).split(";");
 				QString fmtInfo = time0.toString() + ";" + lst[1];
-				g->setLabelsDateTimeFormat(QwtPlot::xBottom, Graph::Time, fmtInfo);
+				g->setLabelsDateTimeFormat(QwtPlot::xBottom, ScaleDraw::Time, fmtInfo);
 			}
 		} else if (xColType == Table::Date ) {
 			if (d_type == Graph::HorizontalBars){
 				QStringList lst = g->axisFormatInfo(QwtPlot::yLeft).split(";");
 				QString fmtInfo = date0.toString(Qt::ISODate) + ";" + lst[1];
-				g->setLabelsDateTimeFormat(QwtPlot::yLeft, Graph::Date, fmtInfo);
+				g->setLabelsDateTimeFormat(QwtPlot::yLeft, ScaleDraw::Date, fmtInfo);
 			} else {
 				QStringList lst = g->axisFormatInfo(QwtPlot::xBottom).split(";");
 				QString fmtInfo = date0.toString(Qt::ISODate) + ";" + lst[1];
-				g->setLabelsDateTimeFormat(QwtPlot::xBottom, Graph::Date, fmtInfo);
+				g->setLabelsDateTimeFormat(QwtPlot::xBottom, ScaleDraw::Date, fmtInfo);
 			}
 		}
 
 		if (yColType == Table::Text)
-            g->setLabelsTextFormat(QwtPlot::yLeft, Graph::Txt, title().text(), yLabels);
+            g->setLabelsTextFormat(QwtPlot::yLeft, ScaleDraw::Text, title().text(), yLabels);
 	}
 
     if (!d_labels_list.isEmpty()){

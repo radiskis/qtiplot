@@ -10466,11 +10466,11 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			{
 				QStringList lst = fList[i+1].split(";", QString::SkipEmptyParts);
 				int format = lst[0].toInt();
-				if (format == Graph::Day)
+				if (format == ScaleDraw::Day)
 					ag->setLabelsDayFormat(i, lst[1].toInt());
-				else if (format == Graph::Month)
+				else if (format == ScaleDraw::Month)
 					ag->setLabelsMonthFormat(i, lst[1].toInt());
-				else if (format == Graph::Time || format == Graph::Date)
+				else if (format == ScaleDraw::Time || format == ScaleDraw::Date)
 					ag->setLabelsDateTimeFormat(i, format, lst[1]+";"+lst[2]);
 				else if (lst.size() > 1)
 				{
@@ -10482,11 +10482,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		else if (d_file_version < 69 && s.contains ("AxesTickLabelsCol"))
 		{
 			QStringList fList = s.split("\t");
-			QList<int> axesTypes = ag->axesType();
 			for (int i=0; i<4; i++){
 				QString colName = fList[i+1];
 				Table *nw = app->table(colName);
-				ag->setLabelsTextFormat(i, axesTypes[i], colName, nw);
+				ag->setLabelsTextFormat(i, ag->axisType(i), colName, nw);
 			}
 		}
 	}
