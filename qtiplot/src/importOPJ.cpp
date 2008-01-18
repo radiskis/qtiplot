@@ -961,7 +961,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				switch(ticks[i].value_type)
 				{
 				case OPJFile::Numeric:
-					type=Graph::Numeric;
+					type = ScaleDraw::Numeric;
 					switch(ticks[i].value_type_specification)
 					{
 					case 0: //Decimal 1000
@@ -983,24 +983,24 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 						prec = 2;
 					break;
 				case OPJFile::Text: //Text
-					type=Graph::Txt;
+					type=ScaleDraw::Text;
 					break;
 				case 2: // Date
-					type=Graph::Date;
+					type=ScaleDraw::Date;
 					break;
 				case 3: // Time
-					type=Graph::Time;
+					type=ScaleDraw::Time;
 					break;
 				case OPJFile::Month: // Month
-					type=Graph::Month;
+					type=ScaleDraw::Month;
 					format=ticks[i].value_type_specification;
 					break;
 				case OPJFile::Day: // Day
-					type=Graph::Day;
+					type=ScaleDraw::Day;
 					format=ticks[i].value_type_specification;
 					break;
 				case OPJFile::ColumnHeading:
-					type=Graph::ColHeader;
+					type=ScaleDraw::ColHeader;
 					switch(ticks[i].value_type_specification)
 					{
 					case 0: //Decimal 1000
@@ -1017,7 +1017,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					prec=2;
 					break;
 				default:
-					type=Graph::Numeric;
+					type=ScaleDraw::Numeric;
 					format=0;
 					prec=2;
 				}

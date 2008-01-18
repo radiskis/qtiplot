@@ -52,7 +52,29 @@ ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
 	formula_string (s),
 	d_majTicks(Out),
 	d_minTicks(Out),
-	d_selected(false)
+	d_selected(false),
+	d_name_format(ShortName),
+	d_time_origin(QTime::currentTime()),
+	d_date_origin(QDate::currentDate()),
+	d_time_format("YYYY-MM-DDTHH:MM:SS"),
+	d_text_labels(QStringList())
+{}
+
+ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, ScaleType type):
+	d_plot(plot),
+	d_type(type),
+	d_numeric_format(Automatic),
+	d_fmt('g'),
+    d_prec(4),
+	formula_string(""),
+	d_majTicks(Out),
+	d_minTicks(Out),
+	d_selected(false),
+	d_name_format(ShortName),
+	d_time_origin(QTime::currentTime()),
+	d_date_origin(QDate::currentDate()),
+	d_time_format("YYYY-MM-DDTHH:MM:SS"),
+	d_text_labels(labels)
 {}
 
 QwtText ScaleDraw::label(double value) const
@@ -89,6 +111,90 @@ QwtText ScaleDraw::label(double value) const
 			else
 				return QwtText(QLocale::system().toString(transformValue(value), d_fmt, d_prec));
 		break;
+			
+		case Day:
+		{
+			int val = int(transformValue(value))%7;
+			if (val < 0)
+				val = 7 - abs(val);
+			else if (val == 0)
+				val = 7;
+
+			QString day;
+			switch(d_name_format){
+				case  ShortName:
+					day = QDate::shortDayName (val);
+				break;
+				case  LongName:
+					day = QDate::longDayName (val);
+				break;
+				case  Initial:
+					day = (QDate::shortDayName (val)).left(1);
+				break;
+			}
+			return QwtText(day);
+		break;
+		}
+		
+		case Month:
+		{
+			int val = int(transformValue(value))%12;
+			if (val < 0)
+				val = 12 - abs(val);
+			else if (val == 0)
+				val = 12;
+
+			QString day;
+			switch(d_name_format){
+				case  ShortName:
+					day = QDate::shortMonthName (val);
+				break;
+				case  LongName:
+					day = QDate::longMonthName (val);
+				break;
+				case  Initial:
+					day = (QDate::shortMonthName (val)).left(1);
+				break;
+			}
+			return QwtText(day);
+		break;
+		}
+		
+		case Time:
+			return QwtText(d_time_origin.addMSecs((int)value).toString(d_time_format));
+		break;
+		
+		case Date:
+			return QwtText(d_date_origin.addDays((int)value).toString(d_time_format));
+		break;
+		
+		case ColHeader:
+		case Text:
+		{
+			const QwtScaleDiv scDiv = scaleDiv();
+			if (!scDiv.contains (value))
+				return QwtText();
+
+			QwtValueList lst = scDiv.ticks (QwtScaleDiv::MajorTick);
+
+			int index = 0;
+			ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+			if (sc_engine->type() == QwtScaleTransformation::Linear){
+        		int step = abs(lst[1] - lst[0]);
+        		index = lst[0] + step*lst.indexOf(value) - 1;
+			} else {//QwtScaleTransformation::Log10
+	    		if (lst.count() >= 2){
+            		double step = lst[1]/lst[0];
+            		index = lst[0]*pow(step, lst.indexOf(value)) - 1;
+	    		}
+			}
+
+			if (index >= 0 && index < (int)d_text_labels.count())
+        		return QwtText(d_text_labels[index]);
+			else
+				return QwtText();
+		break;
+		}
 	}
 }
 
@@ -183,7 +289,7 @@ void ScaleDraw::setNumericFormat(NumericFormat format)
     - for 'e', 'f': the number of digits after the radix character (point)
     - for 'g': the maximum number of significant digits
 
-  \sa setLabelFormat()
+  \sa setNumericFormat()
 */
 void ScaleDraw::labelFormat(char &f, int &prec) const
 {
@@ -374,157 +480,28 @@ void ScaleDraw::drawBackbone(QPainter *painter) const
     }
 }
 
-/*****************************************************************************
- *
- * Class QwtTextScaleDraw
- *
- *****************************************************************************/
-
-QwtTextScaleDraw::QwtTextScaleDraw(const QStringList& list):
-					  labels(list)
-{}
-
-QwtText QwtTextScaleDraw::label(double value) const
+void ScaleDraw::setDayFormat(NameFormat format)
 {
-	const QwtScaleDiv scDiv = scaleDiv();
-	if (!scDiv.contains (value))
-		return QwtText();
-
-	QwtValueList lst = scDiv.ticks (QwtScaleDiv::MajorTick);
-
-	int index = 0;
-	if (map().transformation()->type() == QwtScaleTransformation::Linear){
-        int step = abs(lst[1] - lst[0]);
-        index = lst[0] + step*lst.indexOf(value) - 1;
-	}
-	else if (map().transformation()->type() == QwtScaleTransformation::Log10){
-	    if (lst.count() >= 2){
-            double step = lst[1]/lst[0];
-            index = lst[0]*pow(step, lst.indexOf(value)) - 1;
-	    }
-	}
-
-	if (index >= 0 && index < (int)labels.count())
-        return QwtText(labels[index]);
-	else
-		return QwtText();
+	d_type = Day;
+	d_name_format = format;
 }
 
-/*****************************************************************************
- *
- * Class TimeScaleDraw
- *
- *****************************************************************************/
-
-TimeScaleDraw::TimeScaleDraw(const QTime& t, const QString& format):
-		t_origin (t),
-		t_format (format)
-		{}
-
-QString TimeScaleDraw::origin()
+void ScaleDraw::setMonthFormat(NameFormat format)
 {
-return t_origin.toString ( "hh:mm:ss.zzz" );
+	d_type = Month;
+	d_name_format = format;
 }
 
-
-QwtText TimeScaleDraw::label(double value) const
+void ScaleDraw::setTimeFormat(const QTime& t, const QString& format)
 {
-QTime t = t_origin.addMSecs ( (int)value );
-return QwtText(t.toString ( t_format ));
+	d_type = Time;
+	d_time_format = format;
+	d_time_origin = t;
 }
-
-/*****************************************************************************
- *
- * Class DateScaleDraw
- *
- *****************************************************************************/
-
-DateScaleDraw::DateScaleDraw(const QDate& t, const QString& format):
-			  t_origin (t),
-			  t_format (format)
-{}
-
-QString DateScaleDraw::origin()
+	
+void ScaleDraw::setDateFormat(const QDate& d, const QString& format)
 {
-return t_origin.toString ();
-}
-
-QwtText DateScaleDraw::label(double value) const
-{
-QDate t = t_origin.addDays( (int) value );
-return QwtText(t.toString ( t_format ));
-}
-
-/*****************************************************************************
- *
- * Class WeekDayScaleDraw
- *
- *****************************************************************************/
-
-WeekDayScaleDraw:: WeekDayScaleDraw(NameFormat format):
-				d_format(format)
-{}
-
-QwtText WeekDayScaleDraw::label(double value) const
-{
-int val = int(transformValue(value))%7;
-
-if (val < 0)
-	val = 7 - abs(val);
-else if (val == 0)
-	val = 7;
-
-QString day;
-switch(d_format)
-	{
-	case  ShortName:
-		day = QDate::shortDayName (val);
-	break;
-
-	case  LongName:
-		day = QDate::longDayName (val);
-	break;
-
-	case  Initial:
-		day = (QDate::shortDayName (val)).left(1);
-	break;
-	}
-return QwtText(day);
-}
-
-/*****************************************************************************
- *
- * Class MonthScaleDraw
- *
- *****************************************************************************/
-
-MonthScaleDraw::MonthScaleDraw(NameFormat format):
-		d_format(format)
-{};
-
-QwtText MonthScaleDraw::label(double value) const
-{
-int val = int(transformValue(value))%12;
-
-if (val < 0)
-	val = 12 - abs(val);
-else if (val == 0)
-	val = 12;
-
-QString day;
-switch(d_format)
-	{
-	case  ShortName:
-		day = QDate::shortMonthName (val);
-	break;
-
-	case  LongName:
-		day = QDate::longMonthName (val);
-	break;
-
-	case  Initial:
-		day = (QDate::shortMonthName (val)).left(1);
-	break;
-	}
-return QwtText(day);
+	d_type = Date;
+	d_time_format = format;
+	d_date_origin = d;
 }

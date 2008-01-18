@@ -188,7 +188,7 @@ protected:
 
 	QStringList tickLabelsOn, formatInfo;
 	QStringList	tablesList;
-	QList<int> majTicks, minTicks, axesType, axesBaseline;
+	QList<int> majTicks, minTicks, axesBaseline;
 	QFont xBottomFont, yLeftFont, xTopFont, yRightFont;
 	bool xAxisOn, yAxisOn, topAxisOn, rightAxisOn;
 	int xBottomLabelsRotation, xTopLabelsRotation;

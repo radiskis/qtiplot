@@ -2,7 +2,7 @@
     File                 : ScaleDraw.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+    Copyright            : (C) 2006-2007 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Extension to QwtScaleDraw
 
@@ -41,10 +41,12 @@ class ScaleDraw: public QwtScaleDraw
 {
 public:
 	enum TicksStyle{None = 0, Out = 1, Both = 2, In = 3};
-	enum ScaleType{Numeric = 0, Txt = 1, Day = 2, Month = 3, Time = 4, Date = 5, ColHeader = 6};
+	enum ScaleType{Numeric = 0, Text = 1, Day = 2, Month = 3, Time = 4, Date = 5, ColHeader = 6};
 	enum NumericFormat{Automatic, Decimal, Scientific, Superscripts};
+	enum NameFormat{ShortName, LongName, Initial};
 
-	ScaleDraw(Plot *plot = 0, const QString& s = QString::null);
+	ScaleDraw(Plot *plot, const QString& s = QString::null);
+	ScaleDraw(Plot *plot, const QStringList& labels, ScaleType type = Text);
 
 	QString formulaString() {return formula_string;};
 	void setFormulaString(const QString& formula) {formula_string = formula;};
@@ -73,6 +75,13 @@ public:
 	NumericFormat labelNumericFormat(){return d_numeric_format;};
 	void setNumericFormat(NumericFormat format);
 	
+	void setDayFormat(NameFormat format);
+	void setMonthFormat(NameFormat format);
+	void setTimeFormat(const QTime& t, const QString& format);
+	void setDateFormat(const QDate& d, const QString& format);
+	
+	QStringList labelsList(){return d_text_labels;};
+
 protected:
 	virtual void draw (QPainter *, const QPalette &) const;
     virtual void drawLabel(QPainter *painter, double value) const;
@@ -80,90 +89,30 @@ protected:
 	virtual void drawBackbone(QPainter *painter) const;
 	void drawBreak(QPainter *) const;
 
-	Plot *d_plot;
-
 private:
+	//! Pointer to the parent plot
+	Plot *d_plot;
 	QString formula_string;
+	//! Numerical format specification
 	char d_fmt;
+	//! Numerical precision
     int d_prec;
 	int d_minTicks, d_majTicks;
+	//! Flag telling if the scale labels are selected (a blue frame is drawn around each labels if true)
 	bool d_selected;
-
-	//! Stores the scale type (numeric, text, etc...)
+	//! Stores the scale type (numeric, text, etc...). See: enum NumericFormat
 	ScaleType d_type;
-
 	//! Stores the scale numeric format: Automatic, Decimal, Scientific, Superscripts
 	NumericFormat d_numeric_format;
+	//! Stores the scale name format for Day and Month scales
+	NameFormat d_name_format;
+	//! Stores the time origin used to calculate labels for Time scales
+	QTime d_time_origin;
+	//! Stores the date origin used to calculate labels for Date scales
+	QDate d_date_origin;
+	//! Stores the date/time format used to calculate labels for Date/Time scales
+	QString d_time_format;
+	//! Stores the labels for Txt scales
+	QStringList d_text_labels;
 };
-
-class QwtTextScaleDraw: public ScaleDraw
-{
-public:
-	QwtTextScaleDraw(const QStringList& list);
-
-	QwtText label(double value) const;
-
-	QStringList labelsList(){return labels;};
-private:
-	QStringList labels;
-};
-
-class TimeScaleDraw: public ScaleDraw
-{
-public:
-	TimeScaleDraw(const QTime& t, const QString& format);
-
-	QString origin();
-	QString timeFormat() {return t_format;};
-
-	QwtText label(double value) const;
-
-private:
-	QTime t_origin;
-	QString t_format;
-};
-
-class DateScaleDraw: public ScaleDraw
-{
-public:
-	DateScaleDraw(const QDate& t, const QString& format);
-
-	QString origin();
-
-	QString format() {return t_format;};
-	QwtText label(double value) const;
-
-private:
-	QDate t_origin;
-	QString t_format;
-};
-
-class WeekDayScaleDraw: public ScaleDraw
-{
-public:
-	enum NameFormat{ShortName, LongName, Initial};
-
-	WeekDayScaleDraw(NameFormat format = ShortName);
-
-	NameFormat format() {return d_format;};
-	QwtText label(double value) const;
-
-private:
-	NameFormat d_format;
-};
-
-class MonthScaleDraw: public ScaleDraw
-{
-public:
-	enum NameFormat{ShortName, LongName, Initial};
-
-	MonthScaleDraw(NameFormat format = ShortName);
-
-	NameFormat format() {return d_format;};
-	QwtText label(double value) const;
-
-private:
-	NameFormat d_format;
-};
-
 #endif
