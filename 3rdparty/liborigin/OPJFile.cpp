@@ -2430,7 +2430,39 @@ void OPJFile::readGraphInfo(FILE *f, FILE *debug)
 
 		}
 		//LAYER+=0x5*0x5+0x1ED*0x12;
-		LAYER+=2*0x5;
+		//LAYER+=2*0x5;
+
+		LAYER+=0x5;
+		//read axis breaks
+		while(1)
+		{
+			fseek(f,LAYER,SEEK_SET);
+			fread(&sec_size,4,1,f);
+			if(IsBigEndian()) SwapBytes(sec_size);
+			if(sec_size == 0x2D)
+			{
+				LAYER+=0x5;
+				fseek(f,LAYER+2,SEEK_SET);
+				fread(&h,1,1,f);
+				if(h==2)
+				{
+					GRAPH.back().layer.back().xAxisBreak.minor_ticks_before = GRAPH.back().layer.back().xAxis.minorTicks;
+					GRAPH.back().layer.back().xAxisBreak.scale_increment_before = GRAPH.back().layer.back().xAxis.step;
+					readGraphAxisBreakInfo(GRAPH.back().layer.back().xAxisBreak, f, LAYER);
+				}
+				else if(h==4)
+				{
+					GRAPH.back().layer.back().yAxisBreak.minor_ticks_before = GRAPH.back().layer.back().yAxis.minorTicks;
+					GRAPH.back().layer.back().yAxisBreak.scale_increment_before = GRAPH.back().layer.back().yAxis.step;
+					readGraphAxisBreakInfo(GRAPH.back().layer.back().yAxisBreak, f, LAYER);
+				}
+				LAYER+=0x2D + 0x1;
+			}
+			else
+				break;
+		}
+		LAYER+=0x5;
+		
 
 		LAYER+=0x5;
 		readGraphGridInfo(GRAPH.back().layer.back().xAxis.minorGrid, f, LAYER);
@@ -2619,6 +2651,32 @@ void OPJFile::readGraphGridInfo(graphGrid &grid, FILE *f, int pos)
 	fread(&w,2,1,f);
 	if(IsBigEndian()) SwapBytes(w);
 	grid.width=(double)w/500.0;
+}
+
+void OPJFile::readGraphAxisBreakInfo(graphAxisBreak &axis_break, FILE *f, int pos)
+{
+	axis_break.show=true;
+
+	fseek(f,pos+0x0B,SEEK_SET);
+	fread(&axis_break.from,8,1,f);
+	if(IsBigEndian()) SwapBytes(axis_break.from);
+	
+	fread(&axis_break.to,8,1,f);
+	if(IsBigEndian()) SwapBytes(axis_break.to);
+
+	fread(&axis_break.scale_increment_after,8,1,f);
+	if(IsBigEndian()) SwapBytes(axis_break.scale_increment_after);
+
+	double position=0.0;
+	fread(&position,8,1,f);
+	if(IsBigEndian()) SwapBytes(position);
+	axis_break.position=(int)position;
+
+	unsigned char h;
+	fread(&h,1,1,f);
+	axis_break.log10=(h==1);
+
+	fread(&axis_break.minor_ticks_after,1,1,f);
 }
 
 void OPJFile::readGraphAxisFormatInfo(graphAxisFormat &format, FILE *f, int pos)
