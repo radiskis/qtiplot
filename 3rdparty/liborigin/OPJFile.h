@@ -318,6 +318,26 @@ struct graphCurve {
 
 enum AxisPosition {Left = 0, Bottom = 1, Right = 2, Top = 3};
 
+struct graphAxisBreak {
+	bool show;
+
+	bool log10;
+	double from;
+	double to;
+	int position;
+
+	double scale_increment_before;
+	double scale_increment_after;
+
+	unsigned char minor_ticks_before;
+	unsigned char minor_ticks_after;
+
+	graphAxisBreak()
+	:	show(false)
+	{
+	}
+};
+
 struct graphGrid {
 	bool hidden;
 	int color;
@@ -421,6 +441,9 @@ struct graphLayer {
 	graphAxis xAxis;
 	graphAxis yAxis;
 
+	graphAxisBreak xAxisBreak;
+	graphAxisBreak yAxisBreak;
+
 	double histogram_bin;
 	double histogram_begin;
 	double histogram_end;
@@ -429,6 +452,19 @@ struct graphLayer {
 	vector<line> lines;
 	vector<bitmap> bitmaps;
 	vector<graphCurve> curve;
+};
+
+struct graphLayerRange {
+	double min;
+	double max;
+	double step;
+
+	graphLayerRange(double _min=0.0, double _max=0.0, double _step=0.0)
+	{
+		min=_min;
+		max=_max;
+		step=_step;
+	};
 };
 
 struct graph : public originWindow {
@@ -577,22 +613,16 @@ public:
 	text layerXAxisTitle(int s, int l) const { return GRAPH[s].layer[l].xAxis.label; }		//!< get label of X-axis of layer l of graph s
 	text layerYAxisTitle(int s, int l) const { return GRAPH[s].layer[l].yAxis.label; }		//!< get label of Y-axis of layer l of graph s
 	text layerLegend(int s, int l) const { return GRAPH[s].layer[l].legend; }		//!< get legend of layer l of graph s
-	vector<text> layerTexts(int s, int l) const {	return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
-	vector<line> layerLines(int s, int l) const {	return GRAPH[s].layer[l].lines; } //!< get lines of layer l of graph s
-	vector<bitmap> layerBitmaps(int s, int l) const {	return GRAPH[s].layer[l].bitmaps; } //!< get bitmaps of layer l of graph s
-	vector<double> layerXRange(int s, int l) const {
-		vector<double> range;
-		range.push_back(GRAPH[s].layer[l].xAxis.min);
-		range.push_back(GRAPH[s].layer[l].xAxis.max);
-		range.push_back(GRAPH[s].layer[l].xAxis.step);
-		return range;
+	vector<text> layerTexts(int s, int l) const { return GRAPH[s].layer[l].texts; } //!< get texts of layer l of graph s
+	vector<line> layerLines(int s, int l) const { return GRAPH[s].layer[l].lines; } //!< get lines of layer l of graph s
+	vector<bitmap> layerBitmaps(int s, int l) const { return GRAPH[s].layer[l].bitmaps; } //!< get bitmaps of layer l of graph s
+	graphAxisBreak layerXBreak(int s, int l) const { return GRAPH[s].layer[l].xAxisBreak; } //!< get break of horizontal axis of layer l of graph s
+	graphAxisBreak layerYBreak(int s, int l) const { return GRAPH[s].layer[l].yAxisBreak; } //!< get break of vertical axis of layer l of graph s
+	graphLayerRange layerXRange(int s, int l) const {
+		return graphLayerRange(GRAPH[s].layer[l].xAxis.min, GRAPH[s].layer[l].xAxis.max, GRAPH[s].layer[l].xAxis.step);
 	} //!< get X-range of layer l of graph s
-	vector<double> layerYRange(int s, int l) const {
-		vector<double> range;
-		range.push_back(GRAPH[s].layer[l].yAxis.min);
-		range.push_back(GRAPH[s].layer[l].yAxis.max);
-		range.push_back(GRAPH[s].layer[l].yAxis.step);
-		return range;
+	graphLayerRange layerYRange(int s, int l) const {
+		return graphLayerRange(GRAPH[s].layer[l].yAxis.min, GRAPH[s].layer[l].yAxis.max, GRAPH[s].layer[l].yAxis.step);
 	} //!< get Y-range of layer l of graph s
 	vector<int> layerXTicks(int s, int l) const {
 		vector<int> tick;
@@ -694,6 +724,7 @@ private:
 	void readMatrixInfo(FILE *fopj, FILE *fdebug);
 	void readGraphInfo(FILE *fopj, FILE *fdebug);
 	void readGraphGridInfo(graphGrid &grid, FILE *fopj, int pos);
+	void readGraphAxisBreakInfo(graphAxisBreak &axis_break, FILE *fopj, int pos);
 	void readGraphAxisFormatInfo(graphAxisFormat &format, FILE *fopj, int pos);
 	void readGraphAxisTickLabelsInfo(graphAxisTick &tick, FILE *fopj, int pos);
 	void readProjectTree(FILE *f, FILE *debug);

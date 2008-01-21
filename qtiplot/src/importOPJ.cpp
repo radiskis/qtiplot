@@ -911,19 +911,39 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				{
 				}
 			}
-			vector<double> rangeX=opj.layerXRange(g,l);
+			graphLayerRange rangeX=opj.layerXRange(g,l);
 			vector<int>    ticksX=opj.layerXTicks(g,l);
-			vector<double> rangeY=opj.layerYRange(g,l);
+			graphLayerRange rangeY=opj.layerYRange(g,l);
 			vector<int>	   ticksY=opj.layerYTicks(g,l);
 			if(style == Graph::HorizontalBars)
 			{
-				graph->setScale(0,rangeX[0],rangeX[1],rangeX[2],ticksX[0],ticksX[1],opj.layerXScale(g,l));
-				graph->setScale(2,rangeY[0],rangeY[1],rangeY[2],ticksY[0],ticksY[1],opj.layerYScale(g,l));
+				graph->setScale(0,rangeX.min,rangeX.max,rangeX.step,ticksX[0],ticksX[1],opj.layerXScale(g,l));
+				graph->setScale(2,rangeY.min,rangeY.max,rangeY.step,ticksY[0],ticksY[1],opj.layerYScale(g,l));
 			}
 			else if(style != Graph::Box)
 			{
-				graph->setScale(2,rangeX[0],rangeX[1],rangeX[2],ticksX[0],ticksX[1],opj.layerXScale(g,l));
-				graph->setScale(0,rangeY[0],rangeY[1],rangeY[2],ticksY[0],ticksY[1],opj.layerYScale(g,l));
+			
+				graphAxisBreak breakX = opj.layerXBreak(g,l);
+				graphAxisBreak breakY = opj.layerYBreak(g,l);
+				if(breakX.show)
+					graph->setScale(2,rangeX.min,rangeX.max,rangeX.step,ticksX[0],ticksX[1],opj.layerXScale(g,l),
+									false,
+									breakX.from, breakX.to, 
+									breakX.position,
+									breakX.scale_increment_before, breakX.scale_increment_after, 
+									breakX.minor_ticks_before, breakX.minor_ticks_after, breakX.log10);
+				else
+					graph->setScale(2,rangeX.min,rangeX.max,rangeX.step,ticksX[0],ticksX[1],opj.layerXScale(g,l));
+				
+				if(breakY.show)
+					graph->setScale(0,rangeY.min,rangeY.max,rangeY.step,ticksY[0],ticksY[1],opj.layerXScale(g,l),
+					false,
+					breakY.from, breakY.to, 
+					breakY.position,
+					breakY.scale_increment_before, breakY.scale_increment_after, 
+					breakY.minor_ticks_before, breakY.minor_ticks_after, breakY.log10);
+				else
+					graph->setScale(0,rangeY.min,rangeY.max,rangeY.step,ticksY[0],ticksY[1],opj.layerYScale(g,l));
 			}
 
 			//grid
@@ -1144,30 +1164,30 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					case OPJFile::Frame:
 						if(bitmaps[i].width > 0)
 						{
-							left = (rangeX[1]-rangeX[0])*bitmaps[i].left + rangeX[0];
+							left = (rangeX.max-rangeX.min)*bitmaps[i].left + rangeX.min;
 							right = left + bitmaps[i].width;
 						}
 						else
 						{
-							right = (rangeX[1]-rangeX[0])*bitmaps[i].left + rangeX[0];
+							right = (rangeX.max-rangeX.min)*bitmaps[i].left + rangeX.min;
 							left = right + bitmaps[i].width;
 						}
 
 						if(bitmaps[i].height > 0)
 						{
-							top = rangeY[1] - (rangeY[1]-rangeY[0])*bitmaps[i].top;
+							top = rangeY.max - (rangeY.max-rangeY.min)*bitmaps[i].top;
 							bottom = top - bitmaps[i].height;
 						}
 						else
 						{
-							bottom = rangeY[1] - (rangeY[1]-rangeY[0])*bitmaps[i].top;
+							bottom = rangeY.max - (rangeY.max-rangeY.min)*bitmaps[i].top;
 							top = bottom - bitmaps[i].height;
 						}
 						break;
 						case OPJFile::Page:
 							//rect graphRect = opj.graphRect(g);
-							left = (rangeX[1]-rangeX[0])*(bitmaps[i].left - (double)layerRect.left/(double)graphRect.width())/((double)layerRect.width()/(double)graphRect.width()) + rangeX[0];
-							top = rangeY[1] - (rangeY[1]-rangeY[0])*(bitmaps[i].top - (double)layerRect.top/(double)graphRect.height())/((double)layerRect.height()/(double)graphRect.height());
+							left = (rangeX.max-rangeX.min)*(bitmaps[i].left - (double)layerRect.left/(double)graphRect.width())/((double)layerRect.width()/(double)graphRect.width()) + rangeX.min;
+							top = rangeY.max - (rangeY.max-rangeY.min)*(bitmaps[i].top - (double)layerRect.top/(double)graphRect.height())/((double)layerRect.height()/(double)graphRect.height());
 							right = left + bitmaps[i].width;
 							bottom = top - bitmaps[i].height;
 							break;
