@@ -64,22 +64,22 @@ public:
 	void setMinorTicksStyle(TicksStyle type){d_minTicks = type;};
 
 	void setSelected(bool select = true){d_selected = select;};
-	
+
 	int axis() const;
 
 	ScaleType scaleType(){return d_type;};
 	void setScaleType(ScaleType type){d_type = type;};
-	
+
 	void labelFormat(char &f, int &prec) const;
-	
+
 	NumericFormat labelNumericFormat(){return d_numeric_format;};
 	void setNumericFormat(NumericFormat format);
-	
+
 	void setDayFormat(NameFormat format);
 	void setMonthFormat(NameFormat format);
 	void setTimeFormat(const QTime& t, const QString& format);
 	void setDateFormat(const QDate& d, const QString& format);
-	
+
 	QStringList labelsList(){return d_text_labels;};
 
 protected:
@@ -97,6 +97,7 @@ private:
 	char d_fmt;
 	//! Numerical precision
     int d_prec;
+    //! Min and max ticks style
 	int d_minTicks, d_majTicks;
 	//! Flag telling if the scale labels are selected (a blue frame is drawn around each labels if true)
 	bool d_selected;

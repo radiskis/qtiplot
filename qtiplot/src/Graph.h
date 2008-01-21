@@ -611,7 +611,7 @@ class Graph: public QWidget
 		void notifyChanges();
 
 		void updateSecondaryAxis(int axis);
-		void enableAutoscaling(bool yes){autoscale = yes;};
+		void enableAutoscaling(bool yes){d_auto_scale = yes;};
 
 		bool autoscaleFonts(){return autoScaleFonts;};
 		void setAutoscaleFonts(bool yes){autoScaleFonts = yes;};
@@ -729,7 +729,7 @@ signals:
 
 		int n_curves, widthLine;
 		long selectedMarker;
-		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone, autoscale;
+		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone;
 
 		//! \name variables used when creating a new marker (text/line/arrow)
 		//@{
@@ -750,5 +750,7 @@ signals:
 		LegendWidget *d_selected_text;
 		//! Pointer to the current legend
 		LegendWidget *d_legend;
+        //! Flag indicating if the axes limits should be changed in order to show all data each time a curva data change occurs
+		bool d_auto_scale;
 };
 #endif // GRAPH_H

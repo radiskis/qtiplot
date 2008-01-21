@@ -176,7 +176,7 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 	drawArrowOn=false;
 	ignoreResize = true;
 	drawAxesBackbone = true;
-	autoscale = true;
+	d_auto_scale = true;
 	autoScaleFonts = false;
 	d_antialiasing = true;
 	d_scale_on_print = true;
@@ -385,7 +385,7 @@ ScaleDraw::ScaleType Graph::axisType(int axis)
 {
 	if (!d_plot->axisEnabled(axis))
 		return ScaleDraw::Numeric;
-			
+
 	return ((ScaleDraw *)d_plot->axisScaleDraw(axis))->scaleType();
 }
 
@@ -403,8 +403,8 @@ void Graph::setLabelsNumericFormat(int axis, int format, int prec, const QString
 void Graph::setLabelsNumericFormat(int axis, const QStringList& l)
 {
 	ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw (axis);
-	if (!sd->hasComponent(QwtAbstractScaleDraw::Labels) ||
-			sd->scaleType() != ScaleDraw::Numeric)	return;
+	if (!sd->hasComponent(QwtAbstractScaleDraw::Labels))
+        return;
 
 	int format = l[2*axis].toInt();
 	int prec = l[2*axis+1].toInt();
@@ -425,7 +425,7 @@ QString Graph::saveAxesLabelsType()
 			s += QString::number((int)ScaleDraw::Numeric) + "\t";
 			continue;
 		}
-		
+
 		ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw(i);
 		int type = (int) sd->scaleType();
 		s += QString::number(type);
@@ -691,7 +691,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 void Graph::setLabelsDayFormat(int axis, int format)
 {
 	axesFormatInfo[axis] = QString::number(format);
-	
+
 	ScaleDraw *sd = new ScaleDraw(d_plot);
 	sd->setDayFormat((ScaleDraw::NameFormat)format);
 	sd->setScaleDiv(d_plot->axisScaleDraw(axis)->scaleDiv());
@@ -714,7 +714,7 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& name, const Q
 		return;
 
     axesFormatInfo[axis] = name;
-		
+
 	d_plot->setAxisScaleDraw (axis, new ScaleDraw(d_plot, lst, (ScaleDraw::ScaleType)type));
 }
 
@@ -724,28 +724,26 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& labelsColName
 		return;
 
 	QStringList list;
-	if (type == ScaleDraw::Text)
-	{
+	if (type == ScaleDraw::Text){
 		if (!table)
 			return;
 
 		axesFormatInfo[axis] = labelsColName;
 		int r = table->numRows();
 		int col = table->colIndex(labelsColName);
-
-		for (int i=0; i < r; i++)
-			list<<table->text(i, col);
-	}
-	else if (type == ScaleDraw::ColHeader)
-	{
+		for (int i=0; i < r; i++){
+		    QString s = table->text(i, col);
+		    if (!s.isEmpty())
+                list << s;
+		}
+	} else if (type == ScaleDraw::ColHeader) {
 		if (!table)
 			return;
 
 		axesFormatInfo[axis] = table->objectName();
-		for (int i=0; i<table->numCols(); i++)
-		{
+		for (int i=0; i<table->numCols(); i++){
 			if (table->colPlotDesignation(i) == Table::Y)
-				list<<table->colLabel(i);
+				list << table->colLabel(i);
 		}
 	}
 
@@ -772,14 +770,14 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
     }
 
 	if (type == ScaleDraw::Time)
-	{		
+	{
 		ScaleDraw *sd = new ScaleDraw(d_plot);
 		sd->setTimeFormat(QTime::fromString (list[0]), list[1]);
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
 		d_plot->setAxisScaleDraw (axis, sd);
 	}
 	else if (type == ScaleDraw::Date)
-	{		
+	{
 		ScaleDraw *sd = new ScaleDraw(d_plot);
 		sd->setDateFormat(QDate::fromString (list[0], Qt::ISODate), list[1]);
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
@@ -1066,14 +1064,11 @@ void Graph::setScaleTitle(int axis, const QString& text)
 			a=1;
         break;
 	}
-	if (text.isEmpty())//avoid empty titles due to plot layout behavior
-		d_plot->setAxisTitle(a, " ");
-	else
-		d_plot->setAxisTitle(a, text);
+	d_plot->setAxisTitle(a, text);
 }
 
 void Graph::setAxisTitle(int axis, const QString& text)
-{	
+{
 	if (text.isEmpty())//avoid empty titles due to plot layout behavior
 		d_plot->setAxisTitle(axis, " ");
 	else
@@ -1114,14 +1109,6 @@ void Graph::updateSecondaryAxis(int axis)
 	const QwtScaleDiv *sd = d_plot->axisScaleDiv(a);
 	d_plot->setAxisScaleDiv (axis, *sd);
 	d_user_step[axis] = d_user_step[a];
-
-	QwtScaleWidget *scale = d_plot->axisWidget(a);
-	int start = scale->startBorderDist();
-	int end = scale->endBorderDist();
-
-	scale = d_plot->axisWidget(axis);
-	scale->setMinBorderDist (start, end);
-	scale->repaint();
 }
 
 void Graph::setAutoScale()
@@ -1130,10 +1117,7 @@ void Graph::setAutoScale()
 		d_plot->setAxisAutoScale(i);
 
 	d_plot->replot();
-	d_zoomer[0]->setZoomBase();
-	d_zoomer[1]->setZoomBase();
 	updateScale();
-
 	emit modifiedGraph();
 }
 
@@ -1838,7 +1822,7 @@ QString Graph::saveScale()
 	{
 		s += "scale\t" + QString::number(i)+"\t";
 
-		const QwtScaleDiv *scDiv=d_plot->axisScaleDiv(i);
+		const QwtScaleDiv *scDiv = d_plot->axisScaleDiv(i);
 		QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 
 		s += QString::number(QMIN(scDiv->lBound(), scDiv->hBound()), 'g', 15)+"\t";
@@ -1847,9 +1831,8 @@ QString Graph::saveScale()
 		s += QString::number(d_plot->axisMaxMajor(i))+"\t";
 		s += QString::number(d_plot->axisMaxMinor(i))+"\t";
 
-		const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(i);
-		QwtScaleTransformation *tr = sc_eng->transformation();
-		s += QString::number((int)tr->type())+"\t";
+		const ScaleEngine *sc_eng = (ScaleEngine *)d_plot->axisScaleEngine(i);
+		s += QString::number((int)sc_eng->type())+"\t";
 		s += QString::number(sc_eng->testAttribute(QwtScaleEngine::Inverted));
 
 		ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(i);
@@ -3114,59 +3097,39 @@ void Graph::updateVectorsLayout(int curve, const QColor& color, int width,
 
 void Graph::updatePlot()
 {
-	if (autoscale && !zoomOn() && d_active_tool==NULL){
+	if (d_auto_scale && !zoomOn() && d_active_tool==NULL){
 		for (int i = 0; i < QwtPlot::axisCnt; i++)
 			d_plot->setAxisAutoScale(i);
 	}
 	d_plot->replot();
-    updateSecondaryAxis(QwtPlot::xTop);
-	updateSecondaryAxis(QwtPlot::yRight);
+	updateScale();
+}
+
+void Graph::updateScale()
+{
+    if (!d_auto_scale){
+    //We need this hack due to the fact that in Qwt 5.0 we can't
+    //disable autoscaling in an easier way, like for example: setAxisAutoScale(axisId, false)
+        for (int i = 0; i < QwtPlot::axisCnt; i++){
+			QwtScaleDiv *sd = d_plot->axisScaleDiv(i);
+            d_plot->setAxisScaleDiv(i, *sd);
+        }
+    }
+
+    d_plot->replot();
+
 	updateMarkersBoundingRect();
+	updateSecondaryAxis(QwtPlot::xTop);
+	updateSecondaryAxis(QwtPlot::yRight);
 
     if (isPiePlot()){
         QwtPieCurve *c = (QwtPieCurve *)curve(0);
         c->updateBoundingRect();
     }
 
-    d_plot->replot();
+	d_plot->replot();//TODO: avoid 2nd replot!
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
-}
-
-void Graph::updateScale()
-{
-	if (!autoscale){
-		const QwtScaleDiv *scDiv = d_plot->axisScaleDiv(QwtPlot::xBottom);
-		QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
-
-		double step = 0.0;
-		if (lst.count() >= 2){
-			step = fabs(lst[1]-lst[0]);
-			const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(QwtPlot::xBottom);
-        	if(sc_eng->transformation()->type() == QwtScaleTransformation::Log10)
-				step = fabs(log10(lst[1]/lst[0]));
-		}
-
-		d_plot->setAxisScale (QwtPlot::xBottom, scDiv->lBound(), scDiv->hBound(), step);
-
-		scDiv = d_plot->axisScaleDiv(QwtPlot::yLeft);
-		lst = scDiv->ticks (QwtScaleDiv::MajorTick);
-		if (lst.count() >= 2){
-			step = fabs(lst[1]-lst[0]);
-			const QwtScaleEngine *sc_eng = d_plot->axisScaleEngine(QwtPlot::yLeft);
-        	if(sc_eng->transformation()->type() == QwtScaleTransformation::Log10)
-				step = fabs(log10(lst[1]/lst[0]));
-		}
-
-		d_plot->setAxisScale (QwtPlot::yLeft, scDiv->lBound(), scDiv->hBound(), step);
-		d_plot->replot();
-	}
-
-	updateMarkersBoundingRect();
-	updateSecondaryAxis(QwtPlot::xTop);
-	updateSecondaryAxis(QwtPlot::yRight);
-
-	d_plot->replot();//TODO: avoid 2nd replot!
 }
 
 void Graph::setBarsGap(int curve, int gapPercent, int offset)

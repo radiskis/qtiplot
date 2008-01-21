@@ -65,7 +65,7 @@ Plot::Plot(QWidget *parent, const char *)
 	//due to the plot layout updates, we must always have a non empty title
 	setAxisTitle(QwtPlot::yRight, tr(" "));
 	setAxisTitle(QwtPlot::xTop, tr(" "));
-	
+
 	// grid
 	d_grid = new Grid;
 	d_grid->enableX(false);
@@ -219,9 +219,9 @@ void Plot::drawItems (QPainter *painter, const QRect &rect,
 		}
 		QRegion cr(rect);
 		if (i == QwtPlot::xBottom || i == QwtPlot::xTop)
-			painter->setClipRegion(cr.subtracted(QRegion(start, rect.y(), abs(end - start), rect.height())));
+			painter->setClipRegion(cr.subtracted(QRegion(start, rect.y(), abs(end - start), rect.height())), Qt::IntersectClip);
 		else if (i == QwtPlot::yLeft || i == QwtPlot::yRight)
-			painter->setClipRegion(cr.subtracted(QRegion(rect.x(), end, rect.width(), abs(end - start))));
+			painter->setClipRegion(cr.subtracted(QRegion(rect.x(), end, rect.width(), abs(end - start))), Qt::IntersectClip);
 	}
 
 	QwtPlot::drawItems(painter, rect, map, pfilter);
