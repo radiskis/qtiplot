@@ -78,6 +78,7 @@
 #include "Folder.h"
 #include "FindDialog.h"
 #include "ScaleDraw.h"
+#include "plot2D/ScaleEngine.h"
 #include "ScriptingLangDialog.h"
 #include "ScriptWindow.h"
 #include "TableStatistics.h"
@@ -10322,8 +10323,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 						scl[4].toInt(), scl[5].toInt(),  scl[6].toInt(), bool(scl[7].toInt()));
 			} else if (size == 18){
 				ag->setScale(scl[0].toInt(), scl[1].toDouble(), scl[2].toDouble(), scl[3].toDouble(),
-					scl[4].toInt(), scl[5].toInt(), scl[6].toInt(), bool(scl[7].toInt()), scl[8].toDouble(), 
-					scl[9].toDouble(), scl[10].toInt(), scl[11].toDouble(), scl[12].toDouble(), scl[13].toInt(), 
+					scl[4].toInt(), scl[5].toInt(), scl[6].toInt(), bool(scl[7].toInt()), scl[8].toDouble(),
+					scl[9].toDouble(), scl[10].toInt(), scl[11].toDouble(), scl[12].toDouble(), scl[13].toInt(),
 					scl[14].toInt(), bool(scl[15].toInt()), scl[16].toInt(), bool(scl[17].toInt()));
 			}
 		}
@@ -10466,6 +10467,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			{
 				QStringList lst = fList[i+1].split(";", QString::SkipEmptyParts);
 				int format = lst[0].toInt();
+				if (format == ScaleDraw::Numeric)
+                    continue;
 				if (format == ScaleDraw::Day)
 					ag->setLabelsDayFormat(i, lst[1].toInt());
 				else if (format == ScaleDraw::Month)
@@ -10642,9 +10645,8 @@ void ApplicationWindow::analyzeCurve(Graph *g, const QString& whichFit, const QS
 		else if (whichFit == "fitSigmoidal"){
 			QwtPlotCurve* c = g->curve(curveTitle);
             if (c){
-            	const QwtScaleEngine *sc_eng = g->plotWidget()->axisScaleEngine(c->xAxis());
-            	QwtScaleTransformation *tr = sc_eng->transformation();
-            	if(tr->type() == QwtScaleTransformation::Log10)
+            	ScaleEngine *se = (ScaleEngine *)g->plotWidget()->axisScaleEngine(c->xAxis());
+            	if(se->type() == QwtScaleTransformation::Log10)
 					fitter = new LogisticFit (this, g);
 				else
 					fitter = new SigmoidalFit (this, g);

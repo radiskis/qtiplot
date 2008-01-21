@@ -379,7 +379,7 @@ SOURCES += ../3rdparty/liborigin/OPJFile.cpp
 
     HEADERS += src/plot2D/ScaleEngine.h
     SOURCES += src/plot2D/ScaleEngine.cpp
-	
+
 ###############################################################
 ################# Module: FFT 2D ##############################
 ###############################################################

@@ -80,7 +80,7 @@ ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, ScaleType type):
 QwtText ScaleDraw::label(double value) const
 {
 	switch (d_type){
-		case Numeric:	
+		case Numeric:
 			if (d_numeric_format == Superscripts){
 				QLocale locale = d_plot->locale();
 				QString txt = locale.toString(transformValue(value), 'e', d_prec);
@@ -111,7 +111,7 @@ QwtText ScaleDraw::label(double value) const
 			else
 				return QwtText(QLocale::system().toString(transformValue(value), d_fmt, d_prec));
 		break;
-			
+
 		case Day:
 		{
 			int val = int(transformValue(value))%7;
@@ -135,7 +135,7 @@ QwtText ScaleDraw::label(double value) const
 			return QwtText(day);
 		break;
 		}
-		
+
 		case Month:
 		{
 			int val = int(transformValue(value))%12;
@@ -159,15 +159,15 @@ QwtText ScaleDraw::label(double value) const
 			return QwtText(day);
 		break;
 		}
-		
+
 		case Time:
 			return QwtText(d_time_origin.addMSecs((int)value).toString(d_time_format));
 		break;
-		
+
 		case Date:
 			return QwtText(d_date_origin.addDays((int)value).toString(d_time_format));
 		break;
-		
+
 		case ColHeader:
 		case Text:
 		{
@@ -175,19 +175,69 @@ QwtText ScaleDraw::label(double value) const
 			if (!scDiv.contains (value))
 				return QwtText();
 
-			QwtValueList lst = scDiv.ticks (QwtScaleDiv::MajorTick);
+			QwtValueList ticks = scDiv.ticks (QwtScaleDiv::MajorTick);
 
-			int index = 0;
-			ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
-			if (sc_engine->type() == QwtScaleTransformation::Linear){
-        		int step = abs(lst[1] - lst[0]);
-        		index = lst[0] + step*lst.indexOf(value) - 1;
+			double break_offset = 0;
+			ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+			bool inverted = se->testAttribute(QwtScaleEngine::Inverted);
+			if(se->hasBreak()){
+			    double lb = se->axisBreakLeft();
+			    double rb = se->axisBreakRight();
+                if(inverted){
+                    if (value <= lb){
+                        double val0 = ticks[0];
+                        int index_left = 0;
+                        for (int i = 0; i < (int)ticks.count(); i++){
+                            double val1 = ticks[i];
+                            if(val1 < rb && val0 >= rb){
+                                index_left = i;
+                                break;
+                            }
+                            val0 = val1;
+                        }
+                        for (int i = index_left; i < (int)ticks.count(); i++){
+                            double val = ticks[i];
+                            if(val <= lb){
+                                break_offset = fabs(val - val0);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    if (value >= rb){
+                        double val0 = ticks[0];
+                        for (int i = 1; i < (int)ticks.count(); i++){
+                            double val = ticks[i];
+                            if(val0 <= lb && val >= rb){
+                                break_offset = fabs(val - val0);
+                                break;
+                            }
+                            val0 = val;
+                        }
+                    }
+			    }
+			}
+
+            double step = 0.0;
+            int index = 0;
+			if (se->type() == QwtScaleTransformation::Linear){
+        		step = ticks[1] - ticks[0];
+        		index = ticks[0] + step*ticks.indexOf(value) - 1;
 			} else {//QwtScaleTransformation::Log10
-	    		if (lst.count() >= 2){
-            		double step = lst[1]/lst[0];
-            		index = lst[0]*pow(step, lst.indexOf(value)) - 1;
+	    		if (ticks.count() >= 2){
+            		step = ticks[1]/ticks[0];
+            		index = ticks[0]*pow(step, ticks.indexOf(value)) - 1;
 	    		}
 			}
+
+            int offset = abs((int)floor(break_offset/step));
+            if (offset)
+                offset--;
+
+            if (step > 0)
+                index += offset;
+            else
+                index -= offset;
 
 			if (index >= 0 && index < (int)d_text_labels.count())
         		return QwtText(d_text_labels[index]);
@@ -259,12 +309,14 @@ double ScaleDraw::transformValue(double value) const
 
 void ScaleDraw::setNumericFormat(NumericFormat format)
 {
+    d_type = Numeric;
+
 	if (d_numeric_format == format)
 		return;
 
 	d_numeric_format = format;
-	
-	switch (format){	
+
+	switch (format){
 		case Automatic:
 			d_fmt = 'g';
 		break;
@@ -334,8 +386,8 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 			if (invertedScale && sc_engine->axisBreakLeft() == value)
             	return;
 		}
-    }	
-	
+    }
+
 	QwtScaleDiv scDiv = scaleDiv();
     QwtValueList majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
     if (majTicks.contains(value) && (d_majTicks == In || d_majTicks == None))
@@ -363,10 +415,10 @@ void ScaleDraw::drawBreak(QPainter *painter) const
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
     if (!sc_engine->hasBreak() || !sc_engine->hasBreakDecoration())
         return;
-	
+
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing);
-	
+
 	int len = majTickLength();
     int pw2 = qwtMin((int)painter->pen().width(), len) / 2;
 
@@ -411,7 +463,7 @@ void ScaleDraw::drawBreak(QPainter *painter) const
 			QwtPainter::drawLine(painter, rval, pos.y(), rval + len, pos.y() - len);
         break;
     }
-	
+
     QwtPainter::setMetricsMap(metricsMap); // restore metrics map
     painter->restore();
 }
@@ -444,17 +496,17 @@ void ScaleDraw::drawBackbone(QPainter *painter) const
     }
 
 	const int start = scaleMap.transform(sc_engine->axisBreakLeft());
-	const int end = scaleMap.transform(sc_engine->axisBreakRight());		
+	const int end = scaleMap.transform(sc_engine->axisBreakRight());
     int lb = start, rb = end;
 	if (sc_engine->testAttribute(QwtScaleEngine::Inverted)){
 		lb = end;
 		rb = start;
 	}
-	
+
 	const int bw = painter->pen().width();
     const int bw2 = bw / 2;
     const int len = length() - 1;
-    int aux;	
+    int aux;
 	switch(alignment())
     {
         case LeftScale:
@@ -498,7 +550,7 @@ void ScaleDraw::setTimeFormat(const QTime& t, const QString& format)
 	d_time_format = format;
 	d_time_origin = t;
 }
-	
+
 void ScaleDraw::setDateFormat(const QDate& d, const QString& format)
 {
 	d_type = Date;

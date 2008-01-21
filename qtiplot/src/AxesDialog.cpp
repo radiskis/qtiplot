@@ -1258,10 +1258,10 @@ void AxesDialog::initScalesPage()
 
 	QGridLayout * breaksLayout = new QGridLayout(boxAxesBreaks);
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	
+
 	boxBreakDecoration = new QCheckBox(tr("Draw Break &Decoration"));
 	breaksLayout->addWidget(boxBreakDecoration, 0, 1);
-	
+
 	breaksLayout->addWidget(new QLabel(tr("From")), 1, 0);
 	boxBreakStart = new DoubleSpinBox('g');
 	boxBreakStart->setLocale(app->locale());
@@ -1283,7 +1283,7 @@ void AxesDialog::initScalesPage()
 	boxBreakWidth = new QSpinBox();
 	boxBreakWidth->setSuffix(" (" + tr("pixels") + ")");
 	breaksLayout->addWidget(boxBreakWidth, 4, 1);
-	
+
     boxLog10AfterBreak = new QCheckBox(tr("&Log10 Scale After Break"));
     breaksLayout->addWidget(boxLog10AfterBreak, 0, 3);
 
@@ -2399,8 +2399,8 @@ bool AxesDialog::updatePlot()
 
 		double breakLeft = -DBL_MAX, breakRight = DBL_MAX;
 		if (boxAxesBreaks->isChecked()){
-			breakLeft = boxBreakStart->value();
-			breakRight = boxBreakEnd->value();
+			breakLeft = qMin(boxBreakStart->value(), boxBreakEnd->value());
+			breakRight = qMax(boxBreakStart->value(), boxBreakEnd->value());
 		}
 
 		d_graph->setScale(a, start, end, stp, boxMajorValue->value(), boxMinorValue->currentText().toInt(),
@@ -2594,7 +2594,7 @@ double start = QMIN(scDiv->lBound(), scDiv->hBound());
 boxStart->setText(QString::number(start));
 boxEnd->setText(QString::number(QMAX(scDiv->lBound(), scDiv->hBound())));
 
-double range = scDiv->range();
+double range = fabs(scDiv->range());
 ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(a);
 if (sc_engine->axisBreakLeft() > -DBL_MAX)
 	boxBreakStart->setValue(sc_engine->axisBreakLeft());

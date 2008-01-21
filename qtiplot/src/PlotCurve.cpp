@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "PlotCurve.h"
 #include "ScaleDraw.h"
+#include "plot2D/ScaleEngine.h"
 #include <QDateTime>
 #include <QMessageBox>
 #include <QPainter>
@@ -605,12 +606,12 @@ bool DataCurve::selectedLabels(const QPoint& pos)
 {
 	if (!validCurveType())
 		return false;
-	
+
     QwtPlot *d_plot = plot();
     if (!d_plot)
         return false;
 
-	
+
     bool selected = false;
 	d_selected_label = NULL;
     foreach(PlotMarker *m, d_labels_list){
@@ -714,22 +715,36 @@ QwtDoubleRect PlotCurve::boundingRect() const
     if (symbol().style() == QwtSymbol::NoSymbol || dataSize() < 2)
         return r;
 
-    int margin = 1;
-    if (symbol().style() != QwtSymbol::NoSymbol)
-        margin += symbol().size().width();
+    QwtPlot *d_plot = plot();
+    if (!d_plot)
+        return r;
+
+    int margin_h = 1;
+    int margin_v = 1;
+    if (symbol().style() != QwtSymbol::NoSymbol){
+        margin_h += symbol().size().width();
+        margin_v = margin_h;
+    }
+
+    ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(xAxis());
+    if (se->testAttribute(QwtScaleEngine::Inverted))
+        margin_h = -margin_h;
+    se = (ScaleEngine *)d_plot->axisScaleEngine(yAxis());
+    if (se->testAttribute(QwtScaleEngine::Inverted))
+        margin_v = -margin_v;
 
     const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
 	const QwtScaleMap &yMap = plot()->canvasMap(yAxis());
 
     int x_right = xMap.transform(r.right());
-    double d_x_right = xMap.invTransform(x_right + margin);
+    double d_x_right = xMap.invTransform(x_right + margin_h);
     int x_left = xMap.transform(r.left());
-    double d_x_left = xMap.invTransform(x_left - margin);
+    double d_x_left = xMap.invTransform(x_left - margin_h);
 
     int y_top = yMap.transform(r.top());
-    double d_y_top = yMap.invTransform(y_top + margin);
+    double d_y_top = yMap.invTransform(y_top + margin_v);
     int y_bottom = yMap.transform(r.bottom());
-    double d_y_bottom = yMap.invTransform(y_bottom - margin);
+    double d_y_bottom = yMap.invTransform(y_bottom - margin_v);
 
     return QwtDoubleRect(d_x_left, d_y_top, qAbs(d_x_right - d_x_left), qAbs(d_y_bottom - d_y_top));
 }

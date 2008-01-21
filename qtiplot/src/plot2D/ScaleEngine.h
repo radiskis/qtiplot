@@ -48,32 +48,32 @@ public:
 	void setBreakRegion(double from, double to){d_break_left = from; d_break_right = to;};
 
 	int breakWidth() const;
-	void setBreakWidth(int width);
+	void setBreakWidth(int width){d_break_width = width;};
 
 	int breakPosition() const;
-	void setBreakPosition(int pos);
+	void setBreakPosition(int pos){d_break_pos = pos;};
 
     double stepBeforeBreak() const;
-    void setStepBeforeBreak(double step);
+    void setStepBeforeBreak(double step){d_step_before = step;};
 
     double stepAfterBreak() const;
-    void setStepAfterBreak(double step);
+    void setStepAfterBreak(double step){d_step_after = step;};
 
     int minTicksBeforeBreak() const;
-    void setMinTicksBeforeBreak(int ticks);
+    void setMinTicksBeforeBreak(int ticks){d_minor_ticks_before = ticks;};
 
     int minTicksAfterBreak() const;
-    void setMinTicksAfterBreak(int ticks);
+    void setMinTicksAfterBreak(int ticks){d_minor_ticks_after = ticks;};
 
     bool log10ScaleAfterBreak() const;
-    void setLog10ScaleAfterBreak(bool on);
+    void setLog10ScaleAfterBreak(bool on){d_log10_scale_after = on;};
 
 	QwtScaleTransformation::Type type() const;
 	void setType(QwtScaleTransformation::Type type){d_type = type;};
 
 	bool hasBreak() const;
 	void clone(const ScaleEngine *engine);
-	
+
 	bool hasBreakDecoration() const;
 	void drawBreakDecoration(bool draw){d_break_decoration = draw;};
 
@@ -99,6 +99,7 @@ class ScaleTransformation: public QwtScaleTransformation
 public:
 	ScaleTransformation(const ScaleEngine *engine):QwtScaleTransformation(Other), d_engine(engine){};
 	virtual double xForm(double x, double, double, double p1, double p2) const;
+	virtual double invXForm(double x, double s1, double s2, double p1, double p2) const;
 	QwtScaleTransformation* copy() const;
 
 private:
