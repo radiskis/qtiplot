@@ -215,7 +215,7 @@ QwtText ScaleDraw::label(double value) const
 			}
 
         	double step = ticks[1] - ticks[0];
-        	int index = ticks[0] + step*ticks.indexOf(value) - 1;
+        	int index = int(ticks[0] + step*ticks.indexOf(value) - 1);
             int offset = abs((int)floor(break_offset/step));
             if (offset)
                 offset--;				
@@ -230,6 +230,7 @@ QwtText ScaleDraw::label(double value) const
 		break;
 		}
 	}
+	return QwtText();
 }
 
 void ScaleDraw::drawLabel(QPainter *painter, double value) const
@@ -404,7 +405,6 @@ void ScaleDraw::drawBreak(QPainter *painter) const
     painter->setRenderHint(QPainter::Antialiasing);
 
 	int len = majTickLength();
-    int pw2 = qwtMin((int)painter->pen().width(), len) / 2;
 
     QwtScaleMap scaleMap = map();
     const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
