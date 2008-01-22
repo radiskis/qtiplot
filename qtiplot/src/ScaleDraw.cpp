@@ -185,25 +185,21 @@ QwtText ScaleDraw::label(double value) const
 			    double rb = se->axisBreakRight();
                 if(inverted){
                     if (value <= lb){
+						int n_ticks = (int)ticks.count() - 1;
                         double val0 = ticks[0];
-                        int index_left = 0;
-                        for (int i = 0; i < (int)ticks.count(); i++){
-                            double val1 = ticks[i];
-                            if(val1 < rb && val0 >= rb){
-                                index_left = i;
-                                break;
+						double val1 = ticks[n_ticks];
+                        for (int i = 1; i < n_ticks; i++){
+                            double aux = ticks[i];
+                            if(aux >= rb && val0 > aux){
+                                val0 = aux;
+								continue;
                             }
-                            val0 = val1;
+							if(aux <= lb && val1 < aux)
+                                val1 = aux;
                         }
-                        for (int i = index_left; i < (int)ticks.count(); i++){
-                            double val = ticks[i];
-                            if(val <= lb){
-                                break_offset = fabs(val - val0);
-                                break;
-                            }
-                        }
+						break_offset = fabs(val1 - val0);
                     }
-                } else {
+				} else {
                     if (value >= rb){
                         double val0 = ticks[0];
                         for (int i = 1; i < (int)ticks.count(); i++){
@@ -218,27 +214,15 @@ QwtText ScaleDraw::label(double value) const
 			    }
 			}
 
-            double step = 0.0;
-            int index = 0;
-			if (se->type() == QwtScaleTransformation::Linear){
-        		step = ticks[1] - ticks[0];
-        		index = ticks[0] + step*ticks.indexOf(value) - 1;
-			} else {//QwtScaleTransformation::Log10
-	    		if (ticks.count() >= 2){
-            		step = ticks[1]/ticks[0];
-            		index = ticks[0]*pow(step, ticks.indexOf(value)) - 1;
-	    		}
-			}
-
+        	double step = ticks[1] - ticks[0];
+        	int index = ticks[0] + step*ticks.indexOf(value) - 1;
             int offset = abs((int)floor(break_offset/step));
             if (offset)
-                offset--;
-
+                offset--;				
             if (step > 0)
                 index += offset;
             else
                 index -= offset;
-
 			if (index >= 0 && index < (int)d_text_labels.count())
         		return QwtText(d_text_labels[index]);
 			else
