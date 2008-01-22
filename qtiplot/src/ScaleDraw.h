@@ -92,19 +92,21 @@ protected:
 private:
 	//! Pointer to the parent plot
 	Plot *d_plot;
-	QString formula_string;
-	//! Numerical format specification
-	char d_fmt;
-	//! Numerical precision
-    int d_prec;
-    //! Min and max ticks style
-	int d_minTicks, d_majTicks;
-	//! Flag telling if the scale labels are selected (a blue frame is drawn around each labels if true)
-	bool d_selected;
 	//! Stores the scale type (numeric, text, etc...). See: enum NumericFormat
 	ScaleType d_type;
 	//! Stores the scale numeric format: Automatic, Decimal, Scientific, Superscripts
 	NumericFormat d_numeric_format;
+	//! Numerical format specification
+	char d_fmt;
+	//! Numerical precision
+    int d_prec;
+	QString formula_string;
+    //! Max ticks style
+	int d_majTicks;
+    //! Min ticks style
+	int d_minTicks;
+	//! Flag telling if the scale labels are selected (a blue frame is drawn around each labels if true)
+	bool d_selected;
 	//! Stores the scale name format for Day and Month scales
 	NameFormat d_name_format;
 	//! Stores the time origin used to calculate labels for Time scales
