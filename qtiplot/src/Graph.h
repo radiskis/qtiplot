@@ -340,7 +340,6 @@ class Graph: public QWidget
 		void addTimeStamp();
 		void removeLegend();
 		void removeLegendItem(int index);
-		void addLegendItem(const QString& colName);
 		void insertLegend(const QStringList& lst, int fileVersion);
 
 		LegendWidget *legend(){return d_legend;};
@@ -620,7 +619,6 @@ class Graph: public QWidget
 		static QString penStyleName(Qt::PenStyle style);
 		static Qt::PenStyle getPenStyle(const QString& s);
 		static Qt::PenStyle getPenStyle(int style);
-		static Qt::BrushStyle getBrushStyle(int style);
 		static void showPlotErrorMessage(QWidget *parent, const QStringList& emptyColumns);
 		static QPrinter::PageSize minPageSize(const QPrinter& printer, const QRect& r);
 
@@ -696,6 +694,7 @@ signals:
 
 	private:
         void deselectCurves();
+		void addLegendItem();
 
         Plot *d_plot;
 		QwtPlotZoomer *d_zoomer[2];

@@ -14346,7 +14346,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
     QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
     tr("QtiPlot was not built with Python scripting support included!"));
 #endif
-
+	return 0;
 }
 
 bool ApplicationWindow::validFor2DPlot(Table *table)
@@ -14380,6 +14380,7 @@ MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
         Matrix *m = static_cast<Matrix *>(ws->activeWindow());
         return plotHistogram(m);
     }
+	return 0;
 }
 
 bool ApplicationWindow::validFor3DPlot(Table *table)

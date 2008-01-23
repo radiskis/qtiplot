@@ -1048,7 +1048,7 @@ void Graph::setRightAxisTitleAlignment(int align)
 
 void Graph::setScaleTitle(int axis, const QString& text)
 {
-	int a;
+	int a = 0;
 	switch (axis)
 	{
 		case 0:
@@ -1106,8 +1106,7 @@ void Graph::updateSecondaryAxis(int axis)
 	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
 	sc_engine->clone((ScaleEngine *)d_plot->axisScaleEngine(a));
 
-	const QwtScaleDiv *sd = d_plot->axisScaleDiv(a);
-	d_plot->setAxisScaleDiv (axis, *sd);
+	d_plot->setAxisScaleDiv (axis, *d_plot->axisScaleDiv(a));
 	d_user_step[axis] = d_user_step[a];
 }
 
@@ -1939,7 +1938,7 @@ QString Graph::saveTitle()
 
 QString Graph::saveScaleTitles()
 {
-	int a;
+	int a = 0;
 	QString s="";
 	for (int i=0; i<4; i++)
 	{
@@ -1997,39 +1996,7 @@ QString Graph::savePieCurveLayout()
 	s+=QString::number(pen.width())+"\t";
 	s+=pen.color().name()+"\t";
 	s+=penStyleName(pen.style()) + "\t";
-
-	Qt::BrushStyle pattern=pieCurve->pattern();
-	int index;
-	if (pattern == Qt::SolidPattern)
-		index=0;
-	else if (pattern == Qt::HorPattern)
-		index=1;
-	else if (pattern == Qt::VerPattern)
-		index=2;
-	else if (pattern == Qt::CrossPattern)
-		index=3;
-	else if (pattern == Qt::BDiagPattern)
-		index=4;
-	else if (pattern == Qt::FDiagPattern)
-		index=5;
-	else if (pattern == Qt::DiagCrossPattern)
-		index=6;
-	else if (pattern == Qt::Dense1Pattern)
-		index=7;
-	else if (pattern == Qt::Dense2Pattern)
-		index=8;
-	else if (pattern == Qt::Dense3Pattern)
-		index=9;
-	else if (pattern == Qt::Dense4Pattern)
-		index=10;
-	else if (pattern == Qt::Dense5Pattern)
-		index=11;
-	else if (pattern == Qt::Dense6Pattern)
-		index=12;
-	else if (pattern == Qt::Dense7Pattern)
-		index=13;
-
-	s+=QString::number(index)+"\t";
+	s+=QString::number(PatternBox::patternIndex(pieCurve->pattern()))+"\t";
 	s+=QString::number(pieCurve->ray())+"\t";
 	s+=QString::number(pieCurve->firstColor())+"\t";
 	s+=QString::number(pieCurve->startRow())+"\t"+QString::number(pieCurve->endRow())+"\t";
@@ -2588,7 +2555,7 @@ void Graph::updateCurveLayout(int index, const CurveLayout *cL)
 
 	QBrush brush = QBrush(ColorBox::color(cL->aCol));
 	if (cL->filledArea)
-		brush.setStyle(getBrushStyle(cL->aStyle));
+		brush.setStyle(PatternBox::brushStyle(cL->aStyle));
 	else
 		brush.setStyle(Qt::NoBrush);
 	c->setBrush(brush);
@@ -2683,7 +2650,7 @@ void Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
 	pieCurve->setPen(pen);
 	pieCurve->setRay(size);
 	pieCurve->setFirstColor(firstColor);
-	pieCurve->setBrushStyle(getBrushStyle(brush));
+	pieCurve->setBrushStyle(PatternBox::brushStyle(brush));
 	pieCurve->setVisible(visible);
 }
 
@@ -2782,7 +2749,7 @@ void Graph::insertPlotItem(QwtPlotItem *i, int type)
 	c_keys[n_curves-1] = d_plot->insertCurve(i);
 
 	if (i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-  		addLegendItem(i->title().text());
+  		addLegendItem();
 }
 
 bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
@@ -2999,7 +2966,7 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 		d_plot->setAxisScaleDraw (QwtPlot::yLeft, new ScaleDraw(d_plot, yLabels));
 	}
 
-	addLegendItem(yColName);
+	addLegendItem();
 	updatePlot();
 	return true;
 }
@@ -3020,7 +2987,7 @@ void Graph::addHistogram(Matrix *m)
 	c_keys.resize(n_curves);
 	c_keys[n_curves - 1] = d_plot->insertCurve(c);
 
-	addLegendItem(m->objectName());
+	addLegendItem();
 	updatePlot();
 }
 
@@ -3069,7 +3036,7 @@ void Graph::plotVectorCurve(Table* w, const QStringList& colList, int style, int
 	v->loadData();
 	v->setStyle(QwtPlotCurve::NoCurve);
 
-	addLegendItem(colList[1]);
+	addLegendItem();
 	updatePlot();
 }
 
@@ -3110,10 +3077,8 @@ void Graph::updateScale()
     if (!d_auto_scale){
     //We need this hack due to the fact that in Qwt 5.0 we can't
     //disable autoscaling in an easier way, like for example: setAxisAutoScale(axisId, false)
-        for (int i = 0; i < QwtPlot::axisCnt; i++){
-			QwtScaleDiv *sd = d_plot->axisScaleDiv(i);
-            d_plot->setAxisScaleDiv(i, *sd);
-        }
+        for (int i = 0; i < QwtPlot::axisCnt; i++)
+            d_plot->setAxisScaleDiv(i, *d_plot->axisScaleDiv(i));
     }
 
     d_plot->replot();
@@ -3276,14 +3241,14 @@ void Graph::removeLegendItem(int index)
 	d_legend->setText(text);
 }
 
-void Graph::addLegendItem(const QString& colName)
+void Graph::addLegendItem()
 {
 	if (d_legend){
 		QString text = d_legend->text();
         if (text.endsWith ("\n") || text.isEmpty())
-            text.append("\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
+            text.append("\\l("+QString::number(n_curves)+")"+"%("+QString::number(n_curves)+")");
         else
-            text.append("\n\\l("+QString::number(curves())+")"+"%("+QString::number(curves())+")");
+            text.append("\n\\l("+QString::number(n_curves)+")"+"%("+QString::number(n_curves)+")");
 
         d_legend->setText(text);
         d_legend->repaint();
@@ -3530,7 +3495,7 @@ void Graph::addFunction(const QStringList &formulas, double start, double end, i
 	guessUniqueCurveLayout(colorIndex, symbolIndex);
 	c->setPen(QPen(ColorBox::color(colorIndex), widthLine));
 
-	addLegendItem(c->legend());
+	addLegendItem();
 	updatePlot();
 
 	emit modifiedGraph();
@@ -3768,57 +3733,6 @@ void Graph::setCanvasBackground(const QColor& color)
 	emit modifiedGraph();
 }
 
-Qt::BrushStyle Graph::getBrushStyle(int style)
-{
-	Qt::BrushStyle brushStyle;
-	switch (style)
-	{
-		case 0:
-			brushStyle=Qt::SolidPattern;
-			break;
-		case 1:
-			brushStyle=Qt::HorPattern;
-			break;
-		case 2:
-			brushStyle=Qt::VerPattern;
-			break;
-		case 3:
-			brushStyle=Qt::CrossPattern;
-			break;
-		case 4:
-			brushStyle=Qt::BDiagPattern;
-			break;
-		case 5:
-			brushStyle=Qt::FDiagPattern;
-			break;
-		case 6:
-			brushStyle=Qt::DiagCrossPattern;
-			break;
-		case 7:
-			brushStyle=Qt::Dense1Pattern;
-			break;
-		case 8:
-			brushStyle=Qt::Dense2Pattern;
-			break;
-		case 9:
-			brushStyle=Qt::Dense3Pattern;
-			break;
-		case 10:
-			brushStyle=Qt::Dense4Pattern;
-			break;
-		case 11:
-			brushStyle=Qt::Dense5Pattern;
-			break;
-		case 12:
-			brushStyle=Qt::Dense6Pattern;
-			break;
-		case 13:
-			brushStyle=Qt::Dense7Pattern;
-			break;
-	}
-	return brushStyle;
-}
-
 QString Graph::penStyleName(Qt::PenStyle style)
 {
 	if (style==Qt::SolidLine)
@@ -3837,40 +3751,37 @@ QString Graph::penStyleName(Qt::PenStyle style)
 
 Qt::PenStyle Graph::getPenStyle(int style)
 {
-	Qt::PenStyle linePen;
+	Qt::PenStyle linePen = Qt::SolidLine;
 	switch (style)
 	{
 		case 0:
-			linePen=Qt::SolidLine;
-			break;
+		break;
 		case 1:
 			linePen=Qt::DashLine;
-			break;
+		break;
 		case 2:
 			linePen=Qt::DotLine;
-			break;
+		break;
 		case 3:
 			linePen=Qt::DashDotLine;
-			break;
+		break;
 		case 4:
 			linePen=Qt::DashDotDotLine;
-			break;
+		break;
 	}
 	return linePen;
 }
 
 Qt::PenStyle Graph::getPenStyle(const QString& s)
 {
-	Qt::PenStyle style;
-	if (s=="SolidLine")
-		style=Qt::SolidLine;
-	else if (s=="DashLine")
+	Qt::PenStyle style = Qt::SolidLine;
+	if (s == "DashLine")
 		style=Qt::DashLine;
-	else if (s=="DotLine")
+	else if (s == "DotLine")
 		style=Qt::DotLine;
-	else if (s=="DashDotLine")
+	else if (s == "DashDotLine")
 		style=Qt::DashDotLine;
-	else if (s=="DashDotDotLine")
+	else if (s == "DashDotDotLine")
 		style=Qt::DashDotDotLine;
 	return style;
 }
@@ -4702,7 +4613,7 @@ void Graph::restoreCurveLabels(int curveID, const QStringList& lst)
 		return;
 
     QString labelsColumn = QString();
-    double xoffset = 0.0, yoffset = 0.0;
+    int xoffset = 0, yoffset = 0;
   	QStringList::const_iterator line = lst.begin();
   	QString s = *line;
     if (s.contains("<column>"))
@@ -4729,9 +4640,9 @@ void Graph::restoreCurveLabels(int curveID, const QStringList& lst)
         else if (s.contains("<justify>"))
             c->setLabelsAlignment(s.remove("<justify>").remove("</justify>").toInt());
         else if (s.contains("<xoffset>"))
-            xoffset = s.remove("<xoffset>").remove("</xoffset>").toDouble();
+            xoffset = s.remove("<xoffset>").remove("</xoffset>").toInt();
         else if (s.contains("<yoffset>"))
-            yoffset = s.remove("<yoffset>").remove("</yoffset>").toDouble();
+            yoffset = s.remove("<yoffset>").remove("</yoffset>").toInt();
     }
     c->setLabelsOffset(xoffset, yoffset);
     c->setLabelsColumnName(labelsColumn);

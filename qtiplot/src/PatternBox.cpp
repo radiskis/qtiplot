@@ -2,8 +2,8 @@
     File                 : PatternBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Tomomasa Ohkubo, Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Pattern combox box
                            
  ***************************************************************************/
@@ -48,11 +48,6 @@ const Qt::BrushStyle PatternBox::patterns[] = {
   Qt::Dense6Pattern,
   Qt::Dense7Pattern,
 };
-
-PatternBox::PatternBox(bool rw, QWidget *parent) : QComboBox(rw, parent)
-{
-  init();
-}
 
 PatternBox::PatternBox(QWidget *parent) : QComboBox(parent)
 {
@@ -156,16 +151,24 @@ void PatternBox::setPattern(const Qt::BrushStyle& style)
 {
   const Qt::BrushStyle*ite = std::find(patterns, patterns + sizeof(patterns), style);
   if (ite == patterns + sizeof(patterns))
-    this->setCurrentItem(0); // default pattern is solid.
+    this->setCurrentIndex(0); // default pattern is solid.
   else
-    this->setCurrentItem(ite - patterns);
+    this->setCurrentIndex(ite - patterns);
+}
+
+Qt::BrushStyle PatternBox::brushStyle(int index)
+{
+  if (index < sizeof(patterns))
+    return patterns[index];
+  else
+    return Qt::SolidPattern; // default patterns is solid. 
 }
 
 Qt::BrushStyle PatternBox::getSelectedPattern() const
 {
-  size_t i = this->currentItem();
+  size_t i = this->currentIndex();
   if (i < sizeof(patterns))
-    return patterns[this->currentItem()];
+    return patterns[i];
   else
     return Qt::SolidPattern; // default patterns is solid. 
 }

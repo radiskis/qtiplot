@@ -1419,8 +1419,6 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
     if (currentItem->type() == CurveTreeItem::PlotCurveTreeItem)
     {
         CurveTreeItem *curveItem = (CurveTreeItem *)currentItem;
-        setActiveCurve(curveItem);
-
         if (previousItem->type() != CurveTreeItem::PlotCurveTreeItem ||
            ((CurveTreeItem *)previousItem)->plotItemType() != curveItem->plotItemType())
         {
@@ -1431,6 +1429,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
             if (!curvePlotTypeBox->isVisible())
                 curvePlotTypeBox->show();
         }
+		setActiveCurve(curveItem);
     }
     else if (currentItem->type() == LayerItem::LayerTreeItem)
     {
@@ -1892,9 +1891,13 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     }
 
     DataCurve *dc = (DataCurve *)i;
+	if (!dc->table()){
+		privateTabWidget->removeTab(privateTabWidget->indexOf(labelsPage));
+		return;
+	}
     labelsGroupBox->blockSignals(true);
     labelsGroupBox->setChecked(dc->hasLabels());
-
+	
     QStringList cols = dc->table()->columnsList();
     boxLabelsColumn->blockSignals(true);
     boxLabelsColumn->clear();

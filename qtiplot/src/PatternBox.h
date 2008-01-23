@@ -2,8 +2,8 @@
     File                 : PatternBox.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Tomomasa Ohkubo, Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Pattern combo box
                            
  ***************************************************************************/
@@ -35,14 +35,15 @@
 class PatternBox : public QComboBox
 {
   Q_OBJECT
+	
 public:
-  PatternBox(bool rw, QWidget *parent);
   PatternBox(QWidget *parent);
   void setPattern(const Qt::BrushStyle& c);
   Qt::BrushStyle getSelectedPattern() const;
 
   static const Qt::BrushStyle patterns[];
   static int patternIndex(const Qt::BrushStyle& style);
+  static Qt::BrushStyle brushStyle(int index);
 
 protected:
   void init();
