@@ -45,8 +45,10 @@ public:
 	enum NumericFormat{Automatic, Decimal, Scientific, Superscripts};
 	enum NameFormat{ShortName, LongName, Initial};
 
-	ScaleDraw(Plot *plot, const QString& s = QString::null);
-	ScaleDraw(Plot *plot, const QStringList& labels, ScaleType type = Text);
+	ScaleDraw(Plot *plot, const QString& formula = QString::null);
+	ScaleDraw(Plot *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
+
+    QString formatString();
 
 	QString formulaString() {return formula_string;};
 	void setFormulaString(const QString& formula) {formula_string = formula;};
@@ -82,6 +84,8 @@ public:
 
 	QStringList labelsList(){return d_text_labels;};
 
+	NameFormat nameFormat(){return d_name_format;};
+
 protected:
 	virtual void draw (QPainter *, const QPalette &) const;
     virtual void drawLabel(QPainter *painter, double value) const;
@@ -113,8 +117,11 @@ private:
 	QTime d_time_origin;
 	//! Stores the date origin used to calculate labels for Date scales
 	QDate d_date_origin;
-	//! Stores the date/time format used to calculate labels for Date/Time scales
-	QString d_time_format;
+	//! Stores extra format information:
+	/* - the date/time format used to calculate labels for Date/Time scales
+	 * - the Column/Table name in the case of Text/ColHeader scales
+	 */
+	QString d_format_info;
 	//! Stores the labels for Txt scales
 	QStringList d_text_labels;
 };
