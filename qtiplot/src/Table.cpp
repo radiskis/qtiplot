@@ -3310,7 +3310,7 @@ void Table::setReadOnlyColumn(int col, bool on)
     d_read_only[col] = on;
 }
 
-void Table::moveColumn(int section, int fromIndex, int toIndex)
+void Table::moveColumn(int, int fromIndex, int toIndex)
 {
     int to = toIndex;
     if (fromIndex < toIndex)

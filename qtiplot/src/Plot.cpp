@@ -87,7 +87,7 @@ Plot::Plot(QWidget *parent, const char *)
 
             //...same for axis color
             QPalette pal = scale->palette();
-            pal.setColor(QColorGroup::Foreground, QColor(Qt::black));
+            pal.setColor(QPalette::Foreground, QColor(Qt::black));
             scale->setPalette(pal);
 
 			ScaleDraw *sd = new ScaleDraw(this);
@@ -118,7 +118,7 @@ Plot::Plot(QWidget *parent, const char *)
     background.setAlpha(255);
 
 	QColorGroup cg;
-    cg.setColor(QColorGroup::Window, background);
+    cg.setColor(QPalette::Window, background);
     setPalette(QPalette(cg, cg, cg));
     setAutoFillBackground(true);
 
@@ -131,7 +131,7 @@ Plot::Plot(QWidget *parent, const char *)
 
 QColor Plot::frameColor()
 {
-	return palette().color(QPalette::Active, QColorGroup::Foreground);
+	return palette().color(QPalette::Active, QPalette::Foreground);
 }
 
 void Plot::printFrame(QPainter *painter, const QRect &rect) const
@@ -140,7 +140,7 @@ void Plot::printFrame(QPainter *painter, const QRect &rect) const
 
 	int lw = lineWidth();
 	if (lw){
-		QColor color = palette().color(QPalette::Active, QColorGroup::Foreground);
+		QColor color = palette().color(QPalette::Active, QPalette::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 	} else
 		painter->setPen(QPen(Qt::NoPen));

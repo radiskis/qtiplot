@@ -166,8 +166,6 @@ protected:
 
 	//! List of the text labels associated to this curve.
 	QList <PlotMarker *> d_labels_list;
-	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
-	PlotMarker *d_selected_label;
 	//! Keep track of the coordinates of the point where the user clicked when selecting the labels.
 	double d_click_pos_x, d_click_pos_y;
 
@@ -176,6 +174,8 @@ protected:
 	double d_labels_angle;
 	bool d_white_out_labels;
 	int d_labels_align, d_labels_x_offset, d_labels_y_offset;
+	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
+	PlotMarker *d_selected_label;
 };
 
 class PlotMarker: public QwtPlotMarker
