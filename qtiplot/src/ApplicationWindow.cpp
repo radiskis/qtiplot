@@ -10389,7 +10389,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			for (j++; j<(int)list.count() && list[j] != "</AxisFormula>"; j++)
 				formula += list[j] + "\n";
 			formula.truncate(formula.length()-1);
-			ag->setAxisFormula(pos,formula);
+			ag->setAxisFormula(pos, formula);
 		}
 		else if (s.contains ("LabelsFormat"))
 		{
@@ -10462,9 +10462,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 		else if (s.contains("AxisType"))
 		{
-			QStringList fList=s.split("\t");
-			for (int i=0; i<4; i++)
-			{
+			QStringList fList = s.split("\t");
+			for (int i=0; i<4; i++){
 				QStringList lst = fList[i+1].split(";", QString::SkipEmptyParts);
 				int format = lst[0].toInt();
 				if (format == ScaleDraw::Numeric)
@@ -10476,10 +10475,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				else if (format == ScaleDraw::Time || format == ScaleDraw::Date)
 					ag->setLabelsDateTimeFormat(i, format, lst[1]+";"+lst[2]);
 				else if (lst.size() > 1)
-				{
-					Table *nw = app->table(lst[1]);
-					ag->setLabelsTextFormat(i, format, lst[1], nw);
-				}
+					ag->setLabelsTextFormat(i, format, lst[1], app->table(lst[1]));
 			}
 		}
 		else if (d_file_version < 69 && s.contains ("AxesTickLabelsCol"))

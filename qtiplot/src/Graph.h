@@ -489,16 +489,14 @@ class Graph: public QWidget
 		void setAxisTicksLength(int axis, int majTicksType, int minTicksType, int minLength, int majLength);
 		void setTicksLength(int minLength, int majLength);
 		void changeTicksLength(int minLength, int majLength);
-
+        //! Used for restoring project files
 		void setLabelsNumericFormat(const QStringList& l);
-		void setLabelsNumericFormat(int axis, const QStringList& l);
 		void setLabelsNumericFormat(int axis, int format, int prec = 6, const QString& formula = QString());
 		void setLabelsDateTimeFormat(int axis, int type, const QString& formatInfo);
 		void setLabelsDayFormat(int axis, int format);
 		void setLabelsMonthFormat(int axis, int format);
 
 		QString axisFormatInfo(int axis);
-		QStringList axesLabelsFormatInfo(){return axesFormatInfo;};
 
 		void setLabelsTextFormat(int axis, int type, const QString& name, const QStringList& lst);
 		void setLabelsTextFormat(int axis, int type, const QString& labelsColName, Table *table);
@@ -710,8 +708,6 @@ signals:
 		bool d_scale_on_print, d_print_cropmarks;
 		int selectedAxis;
 		QStringList axesFormulas;
-		//! Stores columns used for axes with text labels or time/date format info
-		QStringList axesFormatInfo;
 
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;

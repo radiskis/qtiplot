@@ -43,24 +43,24 @@
  *
  *****************************************************************************/
 
-ScaleDraw::ScaleDraw(Plot *plot, const QString& s):
+ScaleDraw::ScaleDraw(Plot *plot, const QString& formula):
 	d_plot(plot),
 	d_type(Numeric),
 	d_numeric_format(Automatic),
 	d_fmt('g'),
     d_prec(4),
-	formula_string (s),
+	formula_string(formula),
 	d_majTicks(Out),
 	d_minTicks(Out),
 	d_selected(false),
 	d_name_format(ShortName),
 	d_time_origin(QTime::currentTime()),
 	d_date_origin(QDate::currentDate()),
-	d_time_format("YYYY-MM-DDTHH:MM:SS"),
+	d_format_info("YYYY-MM-DDTHH:MM:SS"),
 	d_text_labels(QStringList())
 {}
 
-ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, ScaleType type):
+ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, const QString& format, ScaleType type):
 	d_plot(plot),
 	d_type(type),
 	d_numeric_format(Automatic),
@@ -73,7 +73,7 @@ ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, ScaleType type):
 	d_name_format(ShortName),
 	d_time_origin(QTime::currentTime()),
 	d_date_origin(QDate::currentDate()),
-	d_time_format("YYYY-MM-DDTHH:MM:SS"),
+	d_format_info(format),
 	d_text_labels(labels)
 {}
 
@@ -88,7 +88,7 @@ QwtText ScaleDraw::label(double value) const
 				if (list[0].toDouble() == 0.0)
 					return QString("0");
 
-				QString s= list[1];
+				QString s = list[1];
 				int l = s.length();
 				QChar sign = s[0];
 				s.remove (sign);
@@ -161,11 +161,11 @@ QwtText ScaleDraw::label(double value) const
 		}
 
 		case Time:
-			return QwtText(d_time_origin.addMSecs((int)value).toString(d_time_format));
+			return QwtText(d_time_origin.addMSecs((int)value).toString(d_format_info));
 		break;
 
 		case Date:
-			return QwtText(d_date_origin.addDays((int)value).toString(d_time_format));
+			return QwtText(d_date_origin.addDays((int)value).toString(d_format_info));
 		break;
 
 		case ColHeader:
@@ -218,7 +218,7 @@ QwtText ScaleDraw::label(double value) const
         	int index = int(ticks[0] + step*ticks.indexOf(value) - 1);
             int offset = abs((int)floor(break_offset/step));
             if (offset)
-                offset--;				
+                offset--;
             if (step > 0)
                 index += offset;
             else
@@ -531,13 +531,23 @@ void ScaleDraw::setMonthFormat(NameFormat format)
 void ScaleDraw::setTimeFormat(const QTime& t, const QString& format)
 {
 	d_type = Time;
-	d_time_format = format;
+	d_format_info = format;
 	d_time_origin = t;
 }
 
 void ScaleDraw::setDateFormat(const QDate& d, const QString& format)
 {
 	d_type = Date;
-	d_time_format = format;
+	d_format_info = format;
 	d_date_origin = d;
+}
+
+QString ScaleDraw::formatString()
+{
+    if (d_type == Time)
+        return d_time_origin.toString() + ";" + d_format_info;
+    else if (d_type == Date)
+        return d_date_origin.toString(Qt::ISODate) + ";" + d_format_info;
+
+    return d_format_info;
 }

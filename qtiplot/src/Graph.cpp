@@ -196,7 +196,6 @@ Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
 
 	d_user_step = QVector<double>(QwtPlot::axisCnt);
 	for (int i=0; i<QwtPlot::axisCnt; i++){
-		axesFormatInfo << QString::null;
 		axesFormulas << QString::null;
 		d_user_step[i] = 0.0;
 	}
@@ -400,21 +399,16 @@ void Graph::setLabelsNumericFormat(int axis, int format, int prec, const QString
 	d_plot->setAxisScaleDraw (axis, sd);
 }
 
-void Graph::setLabelsNumericFormat(int axis, const QStringList& l)
-{
-	ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw (axis);
-	if (!sd->hasComponent(QwtAbstractScaleDraw::Labels))
-        return;
-
-	int format = l[2*axis].toInt();
-	int prec = l[2*axis+1].toInt();
-	setLabelsNumericFormat(axis, format, prec, axesFormulas[axis]);
-}
-
 void Graph::setLabelsNumericFormat(const QStringList& l)
 {
-	for (int axis = 0; axis<4; axis++)
-		setLabelsNumericFormat (axis, l);
+	for (int axis = 0; axis<4; axis++){
+        ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw (axis);
+        if (!sd->hasComponent(QwtAbstractScaleDraw::Labels))
+            continue;
+
+        int aux = 2*axis;
+        setLabelsNumericFormat(axis, l[aux].toInt(), l[aux + 1].toInt(), axesFormulas[axis]);
+	}
 }
 
 QString Graph::saveAxesLabelsType()
@@ -431,7 +425,7 @@ QString Graph::saveAxesLabelsType()
 		s += QString::number(type);
 		if (type == ScaleDraw::Time || type == ScaleDraw::Date || type == ScaleDraw::Text ||
 			type == ScaleDraw::ColHeader || type == ScaleDraw::Day || type == ScaleDraw::Month)
-			s += ";" + axesFormatInfo[i];
+			s += ";" + sd->formatString();
 		s += "\t";
 	}
 	return s+"\n";
@@ -641,7 +635,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 			format == d_plot->axisLabelFormat (axis) &&
 			labelsRotation(axis) == rotation &&
 			(int)sclDraw->scaleType() == type &&
-			axesFormatInfo[axis] == formatInfo &&
+			sclDraw->formatString() == formatInfo &&
 			axesFormulas[axis] == formula &&
 			scale->margin() == baselineDist &&
 			sclDraw->hasComponent (QwtAbstractScaleDraw::Labels) == labelsOn)
@@ -690,8 +684,6 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 
 void Graph::setLabelsDayFormat(int axis, int format)
 {
-	axesFormatInfo[axis] = QString::number(format);
-
 	ScaleDraw *sd = new ScaleDraw(d_plot);
 	sd->setDayFormat((ScaleDraw::NameFormat)format);
 	sd->setScaleDiv(d_plot->axisScaleDraw(axis)->scaleDiv());
@@ -700,8 +692,6 @@ void Graph::setLabelsDayFormat(int axis, int format)
 
 void Graph::setLabelsMonthFormat(int axis, int format)
 {
-	axesFormatInfo[axis] = QString::number(format);
-
 	ScaleDraw *sd = new ScaleDraw(d_plot);
 	sd->setMonthFormat((ScaleDraw::NameFormat)format);
 	sd->setScaleDiv(d_plot->axisScaleDraw(axis)->scaleDiv());
@@ -713,9 +703,7 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& name, const Q
 	if (type != ScaleDraw::Text && type != ScaleDraw::ColHeader)
 		return;
 
-    axesFormatInfo[axis] = name;
-
-	d_plot->setAxisScaleDraw (axis, new ScaleDraw(d_plot, lst, (ScaleDraw::ScaleType)type));
+	d_plot->setAxisScaleDraw(axis, new ScaleDraw(d_plot, lst, name, (ScaleDraw::ScaleType)type));
 }
 
 void Graph::setLabelsTextFormat(int axis, int type, const QString& labelsColName, Table *table)
@@ -723,12 +711,11 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& labelsColName
 	if (type != ScaleDraw::Text && type != ScaleDraw::ColHeader)
 		return;
 
-	QStringList list;
+	QStringList list = QStringList();
 	if (type == ScaleDraw::Text){
 		if (!table)
 			return;
 
-		axesFormatInfo[axis] = labelsColName;
 		int r = table->numRows();
 		int col = table->colIndex(labelsColName);
 		for (int i=0; i < r; i++){
@@ -736,18 +723,17 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& labelsColName
 		    if (!s.isEmpty())
                 list << s;
 		}
+        d_plot->setAxisScaleDraw(axis, new ScaleDraw(d_plot, list, labelsColName, ScaleDraw::Text));
 	} else if (type == ScaleDraw::ColHeader) {
 		if (!table)
 			return;
 
-		axesFormatInfo[axis] = table->objectName();
 		for (int i=0; i<table->numCols(); i++){
 			if (table->colPlotDesignation(i) == Table::Y)
 				list << table->colLabel(i);
 		}
+        d_plot->setAxisScaleDraw(axis, new ScaleDraw(d_plot, list, table->objectName(), ScaleDraw::ColHeader));
 	}
-
-	d_plot->setAxisScaleDraw (axis, new ScaleDraw(d_plot, list, (ScaleDraw::ScaleType)type));
 }
 
 void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInfo)
@@ -783,8 +769,6 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
 		d_plot->setAxisScaleDraw (axis, sd);
 	}
-
-	axesFormatInfo[axis] = formatInfo;
 }
 
 void Graph::setAxisLabelRotation(int axis, int rotation)
@@ -2937,15 +2921,10 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 		c->setData(X.data(), Y.data(), size);
 
 	if (xColType == Table::Text ){
-		if (style == HorizontalBars){
-			axesFormatInfo[QwtPlot::yLeft] = xColName;
-			axesFormatInfo[QwtPlot::yRight] = xColName;
-			d_plot->setAxisScaleDraw(QwtPlot::yLeft, new ScaleDraw(d_plot, xLabels));
-		} else {
-			axesFormatInfo[QwtPlot::xBottom] = xColName;
-			axesFormatInfo[QwtPlot::xTop] = xColName;
-			d_plot->setAxisScaleDraw (QwtPlot::xBottom, new ScaleDraw(d_plot, xLabels));
-		}
+		if (style == HorizontalBars)
+			d_plot->setAxisScaleDraw(QwtPlot::yLeft, new ScaleDraw(d_plot, xLabels, xColName));
+		else
+			d_plot->setAxisScaleDraw (QwtPlot::xBottom, new ScaleDraw(d_plot, xLabels, xColName));
 	} else if (xColType == Table::Time){
 		QString fmtInfo = time0.toString() + ";" + date_time_fmt;
 		if (style == HorizontalBars)
@@ -2960,11 +2939,8 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 			setLabelsDateTimeFormat(QwtPlot::xBottom, ScaleDraw::Date, fmtInfo);
 	}
 
-	if (yColType == Table::Text){
-		axesFormatInfo[QwtPlot::yLeft] = yColName;
-		axesFormatInfo[QwtPlot::yRight] = yColName;
-		d_plot->setAxisScaleDraw (QwtPlot::yLeft, new ScaleDraw(d_plot, yLabels));
-	}
+	if (yColType == Table::Text)
+		d_plot->setAxisScaleDraw (QwtPlot::yLeft, new ScaleDraw(d_plot, yLabels, yColName));
 
 	addLegendItem();
 	updatePlot();
@@ -4120,8 +4096,6 @@ void Graph::copy(Graph* g)
   	    }
 
 	axesFormulas = g->axesFormulas;
-	axesFormatInfo = g->axesFormatInfo;
-
 	for (int i=0; i<QwtPlot::axisCnt; i++){
 		QwtScaleWidget *sc = g->plotWidget()->axisWidget(i);
 		if (!sc)
@@ -4134,14 +4108,14 @@ void Graph::copy(Graph* g)
 			if (type == ScaleDraw::Numeric)
 				setLabelsNumericFormat(i, plot->axisLabelFormat(i), plot->axisLabelPrecision(i), axesFormulas[i]);
 			else if (type == ScaleDraw::Day)
-				setLabelsDayFormat(i, axesFormatInfo[i].toInt());
+				setLabelsDayFormat(i, sdg->nameFormat());
 			else if (type == ScaleDraw::Month)
-				setLabelsMonthFormat(i, axesFormatInfo[i].toInt());
+				setLabelsMonthFormat(i, sdg->nameFormat());
 			else if (type == ScaleDraw::Time || type == ScaleDraw::Date)
-				setLabelsDateTimeFormat(i, type, axesFormatInfo[i]);
+				setLabelsDateTimeFormat(i, type, sdg->formatString());
 			else{
 				ScaleDraw *sd = (ScaleDraw *)plot->axisScaleDraw(i);
-				d_plot->setAxisScaleDraw(i, new ScaleDraw(d_plot, sd->labelsList()));
+				d_plot->setAxisScaleDraw(i, new ScaleDraw(d_plot, sd->labelsList(), sd->formatString(), sd->scaleType()));
 			}
 		} else {
 			ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw (i);
@@ -4229,16 +4203,13 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 	if (d_legend)
 		d_legend->setText(legendText());
 
-	d_plot->setAxisScaleDraw (QwtPlot::xBottom, new ScaleDraw(d_plot, w->selectedYLabels(), ScaleDraw::ColHeader));
+	d_plot->setAxisScaleDraw (QwtPlot::xBottom, new ScaleDraw(d_plot, w->selectedYLabels(), w->objectName(), ScaleDraw::ColHeader));
 	d_plot->setAxisMaxMajor(QwtPlot::xBottom, names.count()+1);
 	d_plot->setAxisMaxMinor(QwtPlot::xBottom, 0);
 
-	d_plot->setAxisScaleDraw (QwtPlot::xTop, new ScaleDraw(d_plot, w->selectedYLabels(), ScaleDraw::ColHeader));
+	d_plot->setAxisScaleDraw (QwtPlot::xTop, new ScaleDraw(d_plot, w->selectedYLabels(), w->objectName(), ScaleDraw::ColHeader));
 	d_plot->setAxisMaxMajor(QwtPlot::xTop, names.count()+1);
 	d_plot->setAxisMaxMinor(QwtPlot::xTop, 0);
-
-	axesFormatInfo[QwtPlot::xBottom] = w->objectName();
-	axesFormatInfo[QwtPlot::xTop] = w->objectName();
 }
 
 void Graph::setCurveStyle(int index, int s)
@@ -4741,8 +4712,8 @@ QString Graph::axisFormatInfo(int axis)
 {
 	if (axis < 0 || axis > QwtPlot::axisCnt)
 		return QString();
-	else
-		return axesFormatInfo[axis];
+
+	return ((ScaleDraw *)d_plot->axisScaleDraw(axis))->formatString();
 }
 
 void Graph::updateCurveNames(const QString& oldName, const QString& newName, bool updateTableName)
