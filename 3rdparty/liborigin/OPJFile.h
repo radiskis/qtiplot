@@ -101,9 +101,11 @@ struct originData {
 	{};
 };
 
+enum ColumnType {X, Y, Z, XErr, YErr, Label, NONE};
+
 struct spreadColumn {
 	string name;
-	string type;
+	ColumnType type;
 	int value_type;//Numeric = 0, Text = 1, Date = 2, Time = 3, Month = 4, Day = 5, Text&Numeric = 6
 	int value_type_specification; //see above
 	int significant_digits;
@@ -524,7 +526,7 @@ public:
 
 	//spreadsheet's column properties
 	const char *colName(int s, int c) const { return SPREADSHEET[s].column[c].name.c_str(); }	//!< get name of column c of spreadsheet s
-	const char *colType(int s, int c) const { return SPREADSHEET[s].column[c].type.c_str(); }	//!< get type of column c of spreadsheet s
+	ColumnType colType(int s, int c) const { return SPREADSHEET[s].column[c].type; }	//!< get type of column c of spreadsheet s
 	const char *colCommand(int s, int c) const { return SPREADSHEET[s].column[c].command.c_str(); }	//!< get command of column c of spreadsheet s
 	const char *colComment(int s, int c) const { return SPREADSHEET[s].column[c].comment.c_str(); }	//!< get comment of column c of spreadsheet s
 	int colValueType(int s, int c) const { return SPREADSHEET[s].column[c].value_type; }	//!< get value type of column c of spreadsheet s

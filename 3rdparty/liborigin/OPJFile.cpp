@@ -35,6 +35,7 @@
 #include <algorithm> //required for std::swap
 #include "OPJFile.h"
 
+const char* colTypeNames[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
 #define MAX_LEVEL 20
 #define ERROR_MSG "Please send the OPJ file and the opjfile.log to the author of liborigin!\n"
 
@@ -201,9 +202,9 @@ void OPJFile::convertSpreadToExcel(int spread)
 // set default name for columns starting from spreadsheet spread
 void OPJFile::setColName(int spread) {
 	for(unsigned int j=spread;j<SPREADSHEET.size();j++) {
-		SPREADSHEET[j].column[0].type="X";
+		SPREADSHEET[j].column[0].type=X;
 		for (unsigned int k=1;k<SPREADSHEET[j].column.size();k++)
-			SPREADSHEET[j].column[k].type="Y";
+			SPREADSHEET[j].column[k].type=Y;
 	}
 }
 
@@ -606,15 +607,29 @@ int OPJFile::ParseFormatOld() {
 
 		fseek(f,LAYER+ATYPE+j*COL_JUMP-1, SEEK_SET);
 		fread(&c,1,1,f);
-		char type[5];
+		ColumnType type;
 		switch(c) {
-		case 3: sprintf(type,"X");break;
-		case 0: sprintf(type,"Y");break;
-		case 5: sprintf(type,"Z");break;
-		case 6: sprintf(type,"DX");break;
-		case 2: sprintf(type,"DY");break;
-		case 4: sprintf(type,"LABEL");break;
-		default: sprintf(type,"NONE");break;
+			case 3:
+				type = X;
+				break;
+			case 0:
+				type = Y;
+				break;
+			case 5:
+				type = Z;
+				break;
+			case 6:
+				type = XErr;
+				break;
+			case 2:
+				type = YErr;
+				break;
+			case 4:
+				type = Label;
+				break;
+			default:
+				type = NONE;
+				break;
 		}
 
 		SPREADSHEET[spread].column[j].type=type;
@@ -1327,15 +1342,29 @@ void OPJFile::readSpreadInfo(FILE *f, FILE *debug)
 		int col_index=compareColumnnames(spread,name);
 		if(col_index!=-1)
 		{
-			char type[5];
+			ColumnType type;
 			switch(c) {
-				case 3: sprintf(type,"X");break;
-				case 0: sprintf(type,"Y");break;
-				case 5: sprintf(type,"Z");break;
-				case 6: sprintf(type,"DX");break;
-				case 2: sprintf(type,"DY");break;
-				case 4: sprintf(type,"LABEL");break;
-				default: sprintf(type,"NONE");break;
+				case 3:
+					type = X;
+					break;
+				case 0:
+					type = Y;
+					break;
+				case 5:
+					type = Z;
+					break;
+				case 6:
+					type = XErr;
+					break;
+				case 2:
+					type = YErr;
+					break;
+				case 4:
+					type = Label;
+					break;
+				default:
+					type = NONE;
+					break;
 			}
 			SPREADSHEET[spread].column[col_index].type=type;
 			width/=0xA;
@@ -1395,7 +1424,7 @@ void OPJFile::readSpreadInfo(FILE *f, FILE *debug)
 				break;
 			}
 			fprintf(debug,"				COLUMN \"%s\" type = %s(%d) (@ 0x%X)\n",
-				SPREADSHEET[spread].column[col_index].name.c_str(),type,c,LAYER+0x11);
+				SPREADSHEET[spread].column[col_index].name.c_str(),colTypeNames[type],c,LAYER+0x11);
 			fflush(debug);
 		}
 		LAYER+=0x1E7+0x1;
@@ -1538,15 +1567,29 @@ void OPJFile::readExcelInfo(FILE *f, FILE *debug)
 			int col_index=compareExcelColumnnames(iexcel, isheet, name);
 			if(col_index!=-1)
 			{
-				char type[5];
+				ColumnType type;
 				switch(c) {
-					case 3: sprintf(type,"X");break;
-					case 0: sprintf(type,"Y");break;
-					case 5: sprintf(type,"Z");break;
-					case 6: sprintf(type,"DX");break;
-					case 2: sprintf(type,"DY");break;
-					case 4: sprintf(type,"LABEL");break;
-					default: sprintf(type,"NONE");break;
+					case 3:
+						type = X;
+						break;
+					case 0:
+						type = Y;
+						break;
+					case 5:
+						type = Z;
+						break;
+					case 6:
+						type = XErr;
+						break;
+					case 2:
+						type = YErr;
+						break;
+					case 4:
+						type = Label;
+						break;
+					default:
+						type = NONE;
+						break;
 				}
 				EXCEL[iexcel].sheet[isheet].column[col_index].type=type;
 				width/=0xA;

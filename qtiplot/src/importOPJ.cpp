@@ -171,18 +171,29 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			table->setColComment(j, QString(opj.colComment(s,j)));
 			table->changeColWidth(opj.colWidth(s,j)*QtiPlot_scaling_factor, j);
 
-			if (QString(opj.colType(s,j)) == "X")
+			switch(opj.colType(s,j))
+			{
+			case X:
 				table->setColPlotDesignation(j, Table::X);
-			else if (QString(opj.colType(s,j)) == "Y")
+				break;
+			case Y:
 				table->setColPlotDesignation(j, Table::Y);
-			else if (QString(opj.colType(s,j)) == "Z")
+				break;
+			case Z:
 				table->setColPlotDesignation(j, Table::Z);
-			else if (QString(opj.colType(s,j)) == "DX")
+				break;
+			case XErr:
 				table->setColPlotDesignation(j, Table::xErr);
-			else if (QString(opj.colType(s,j)) == "DY")
+				break;
+			case YErr:
 				table->setColPlotDesignation(j, Table::yErr);
-			else
+				break;
+			case Label:
+				table->setColPlotDesignation(j, Table::Label);
+				break;
+			default:
 				table->setColPlotDesignation(j, Table::None);
+			}
 
             table->setHeaderColType();//update header
 
@@ -191,7 +202,7 @@ bool ImportOPJ::importTables(const OPJFile& opj)
                 d_cells[i] = new double [table->numRows()];
 
 			for (int i=0; i<opj.numRows(s,j); i++){
-				if(strcmp(opj.colType(s,j),"LABEL")&&opj.colValueType(s,j)!=1){// number
+				if(opj.colType(s,j)!=Label && opj.colValueType(s,j)!=1){// number
 					double* val = (double*)opj.oData(s,j,i,true);
 					if(fabs(*val)>0 && fabs(*val)<2.0e-300)// empty entry
 						continue;
@@ -598,6 +609,9 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				case OPJFile::AreaStack:
 					style=Graph::Area;
 					break;
+				case OPJFile::TextPlot:
+					style=OPJFile::TextPlot;
+					break;
 				default:
 					continue;
 				}
@@ -646,6 +660,22 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 
 						graph->addCurves(mw->table(tableName), names, style);
 					}
+					else if(style == OPJFile::TextPlot)
+					{
+						Table* table = mw->table(tableName);
+						QString labelsCol = opj.curveYColName(g,l,c);
+						int xcol = table->colX(table->colIndex(labelsCol));
+						int ycol = table->colY(table->colIndex(labelsCol));
+						if (xcol < 0 || ycol < 0)
+							return false;
+
+						DataCurve* mc = graph->masterCurve(table->colName(xcol), table->colName(ycol));
+						if(mc)
+						{
+							graph->replot();
+							mc->setLabelsColumnName(labelsCol);
+						}
+					}
 					else
 						graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveXColName(g,l,c), tableName + "_" + opj.curveYColName(g,l,c), style);
 					break;
@@ -672,6 +702,12 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					break;
 				default:
 					continue;
+				}
+
+				//strange behavior of insert curve - legend added - need to roolback legend text
+				if(legend)
+				{
+					legend->setText(parseOriginText(QString::fromLocal8Bit(opj.layerLegend(g,l).txt.c_str())));
 				}
 
 				CurveLayout cl = graph->initCurveLayout(style, opj.numCurves(g,l));
