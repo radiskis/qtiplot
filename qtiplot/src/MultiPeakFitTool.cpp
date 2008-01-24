@@ -106,7 +106,6 @@ void MultiPeakFitTool::finalize()
 	if (d_fit->setDataFromCurve(d_curve->title().text())){
 		QApplication::setOverrideCursor(Qt::WaitCursor);
 		
-		double *x = d_fit->x();
 		double *y = d_fit->y();
 		int n = d_fit->dataSize();
 		

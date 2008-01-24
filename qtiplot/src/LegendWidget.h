@@ -54,6 +54,8 @@ public:
 
 	//! Sets the position of the top left corner in axis coordinates
 	void setOriginCoord(double x, double y);
+	//! Sets the position of the top left corner in paint coordinates
+	void setOrigin(int x, int y){move(x, y);};
 
 	QColor textColor(){return d_text->color();};
 	void setTextColor(const QColor& c);

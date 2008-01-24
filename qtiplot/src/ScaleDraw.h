@@ -50,8 +50,8 @@ public:
 
     QString formatString();
 
-	QString formulaString() {return formula_string;};
-	void setFormulaString(const QString& formula) {formula_string = formula;};
+	QString formula() {return d_formula;};
+	void setFormula(const QString& formula) {d_formula = formula;};
 
 	double transformValue(double value) const;
 	virtual QwtText label(double value) const;
@@ -104,7 +104,8 @@ private:
 	char d_fmt;
 	//! Numerical precision
     int d_prec;
-	QString formula_string;
+	//! A mathematical expression used to calculate the label values
+	QString d_formula;
     //! Max ticks style
 	int d_majTicks;
     //! Min ticks style

@@ -10380,16 +10380,17 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		{
 			QStringList fList=s.split("\t");
 			fList.remove(fList.first());
-			ag->setAxesFormulas(fList);
+			for (int i=0; i<(int)fList.count(); i++)
+				ag->setAxisFormula(i, fList[i]);
 		}
 		else if (s.startsWith("<AxisFormula "))
 		{
-			int pos = s.mid(18,s.length()-20).toInt();
+			int axis = s.mid(18,s.length()-20).toInt();
 			QString formula;
 			for (j++; j<(int)list.count() && list[j] != "</AxisFormula>"; j++)
 				formula += list[j] + "\n";
 			formula.truncate(formula.length()-1);
-			ag->setAxisFormula(pos, formula);
+			ag->setAxisFormula(axis, formula);
 		}
 		else if (s.contains ("LabelsFormat"))
 		{

@@ -2859,8 +2859,7 @@ void AxesDialog::setLabelsNumericFormat(int)
 
 void AxesDialog::showAxisFormula(int axis)
 {
-	QStringList l = d_graph->getAxesFormulas();
-    QString formula = l[axis];
+    QString formula = d_graph->axisFormula(axis);
     if (!formula.isEmpty()){
         boxShowFormula->setChecked(true);
         boxFormula->show();
@@ -2887,8 +2886,7 @@ void AxesDialog::updateLabelsFormat(int)
         else
         	boxPrecision->setEnabled(true);
 
-        QStringList l = d_graph->getAxesFormulas();
-        QString formula = l[a];
+        QString formula = d_graph->axisFormula(a);
         if (!formula.isEmpty())
         {
         	boxShowFormula->setChecked(true);
