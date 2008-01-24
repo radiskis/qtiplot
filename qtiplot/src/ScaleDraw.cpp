@@ -49,7 +49,7 @@ ScaleDraw::ScaleDraw(Plot *plot, const QString& formula):
 	d_numeric_format(Automatic),
 	d_fmt('g'),
     d_prec(4),
-	formula_string(formula),
+	d_formula(formula),
 	d_majTicks(Out),
 	d_minTicks(Out),
 	d_selected(false),
@@ -66,7 +66,7 @@ ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, const QString& forma
 	d_numeric_format(Automatic),
 	d_fmt('g'),
     d_prec(4),
-	formula_string(""),
+	d_formula(""),
 	d_majTicks(Out),
 	d_minTicks(Out),
 	d_selected(false),
@@ -272,16 +272,16 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 
 double ScaleDraw::transformValue(double value) const
 {
-	if (!formula_string.isEmpty()){
+	if (!d_formula.isEmpty()){
 		double lbl=0.0;
 		try{
 			MyParser parser;
-			if (formula_string.contains("x"))
+			if (d_formula.contains("x"))
 				parser.DefineVar("x", &value);
-			else if (formula_string.contains("y"))
+			else if (d_formula.contains("y"))
 				parser.DefineVar("y", &value);
 
-			parser.SetExpr(formula_string.ascii());
+			parser.SetExpr(d_formula.ascii());
 			lbl=parser.Eval();
         }
         catch(mu::ParserError &){

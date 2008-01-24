@@ -91,6 +91,8 @@ public:
 	QPoint origin() const { return rect().topLeft(); };
 	//! Set QwtPlotMarker::value() in paint coordinates.
 	void setOrigin(const QPoint &p);
+	//! Set QwtPlotMarker::value() in paint coordinates. Convenience function.
+	void setOrigin(int x, int y){setOrigin(QPoint(x, y));};
 
 	//! Set #d_file_name.
 	void setFileName(const QString& fn) { d_file_name = fn; };

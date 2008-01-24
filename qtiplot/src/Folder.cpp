@@ -92,7 +92,7 @@ static const char* folder_open_xpm[]={
     "............#ee#"};
 
 Folder::Folder( Folder *parent, const QString &name )
-    : QObject(parent), d_active_window(0), d_log_info(QString())
+    : QObject(parent), d_log_info(QString()), d_active_window(0)
 {
 	birthdate = QDateTime::currentDateTime ().toString(Qt::LocalDate);
 	setObjectName(name);

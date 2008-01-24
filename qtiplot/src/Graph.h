@@ -501,9 +501,8 @@ class Graph: public QWidget
 		void setLabelsTextFormat(int axis, int type, const QString& name, const QStringList& lst);
 		void setLabelsTextFormat(int axis, int type, const QString& labelsColName, Table *table);
 
-		QStringList getAxesFormulas(){return axesFormulas;};
-		void setAxesFormulas(const QStringList& l){axesFormulas = l;};
-		void setAxisFormula(int pos, const QString &f){axesFormulas[pos] = f;};
+		QString axisFormula(int axis);
+		void setAxisFormula(int axis, const QString &);
 		//@}
 
 		//! \name Canvas Frame
@@ -707,7 +706,6 @@ signals:
 		bool autoScaleFonts;
 		bool d_scale_on_print, d_print_cropmarks;
 		int selectedAxis;
-		QStringList axesFormulas;
 
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;

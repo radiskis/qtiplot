@@ -1492,7 +1492,21 @@ If you want to rescale the plot layer so that all the data points are visible, y
 l.setAutoScale()
 </programlisting>
 
-Finally, you can specify the width of all axes and enable/disable the drawing of their backbone line, using:
+The same <varname>setScale</varname> function above, with a longer list of arguments,
+can be used to define an axis break region: 
+<programlisting width="40">
+l.setScale(axis, start, end, step=0.0, majorTicks=5, minorTicks=5, type=0, inverted=False,
+	left=-DBL_MAX, right=DBL_MAX, breakPosition=50, stepBeforeBreak=0.0, stepAfterBreak=0.0,
+	minTicksBeforeBreak=4, minTicksAfterBreak=4, log10AfterBreak=False, breakWidth=4, breakDecoration=True);
+</programlisting>
+where <varname>left</varname> specifies the left limit of the break region,
+<varname>right</varname> the right limit, 
+<varname>breakPosition</varname> is the position of the break expressed as a percentage of the axis length and
+<varname>breakWidth</varname> is the width of the break region in pixels.
+The names of the other parameters should be self-explanatory.
+
+<para>Finally, you can specify the width of all axes and enable/disable the drawing of their 
+backbone line, using:</para>
 <programlisting>
 l.setAxesLinewidth(2)
 l.drawAxesBackbones(True)
@@ -1571,7 +1585,10 @@ legend.setTextColor(QtGui.QColor("red"))
 legend.setBackgroundColor(QtGui.QColor("yellow"))
 legend.setFrameStyle(Legend.Shadow)
 legend.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold, True))
-legend.setOriginCoord(200.5, 600.32)
+# set top-left position using scale coordinates:
+legend.setOriginCoord(200.5, 600.32) 
+# or set top-left position using pixel coordinates:
+legend.setOrigin(5, 10) 
 l.replot()
 </programlisting>
 
@@ -1610,6 +1627,16 @@ l.addArrow(arrow)
 l = newGraph().activeLayer()
 image = l.addImage("C:/poze/adi/PIC00074.jpg")
 image.setCoordinates(200, 800, 800, 200)
+l.replot()
+</programlisting>
+
+The <varname>setCoordinates</varname> function above can be used to set the geometry of the image using
+scale coordinates. If you need to specify the image geometry in pixel coordinates, independently of
+the plot axes values, you may use the following functions:
+<programlisting>
+image.setOrigin(x, y)
+image.setSize(width, height)
+image.setRect(x, y, width, height)
 l.replot()
 </programlisting>
 </sect3>

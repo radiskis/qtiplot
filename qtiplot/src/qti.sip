@@ -398,7 +398,8 @@ public:
 
   QSize size();
   void setSize(int, int);
-
+  void setOrigin(int, int);
+  void setRect(int, int, int, int);
   void setBoundingRect(double, double, double, double) /PyName=setCoordinates/;
 
 private:
@@ -419,6 +420,7 @@ public:
   void setBackgroundColor(const QColor&);
   void setFont(const QFont&);
   void setOriginCoord(double, double);
+  void setOrigin(int, int);
 
 private:
   LegendWidget(const LegendWidget&);
@@ -583,7 +585,10 @@ public:
   void setAxisLabelsColor(int axis, const QColor& color);
   void setLabelsNumericFormat(int axis, int format, int = 6, const QString& = QString()) /PyName=setAxisNumericFormat/;
   void setScale(int axis, double start, double end, double step = 0.0,
-                int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false);
+                int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false,
+				double left_break = -DBL_MAX, double right_break = DBL_MAX, int pos = 50,
+				double stepBeforeBreak = 0.0, double stepAfterBreak = 0.0, int minTicksBeforeBreak = 4,
+				int minTicksAfterBreak = 4, bool log10AfterBreak = false, int breakWidth = 4, bool breakDecoration = true);
   void setAutoScale();
   void setMargin(int);
   void setFrame(int width = 1, const QColor& color = QColor(Qt::black));
