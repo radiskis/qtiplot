@@ -137,9 +137,9 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 
 	connect(btnMore, SIGNAL(toggled(bool)), this, SLOT(showAll(bool)));
 
-	connect( buttonOk, SIGNAL(clicked()), this, SLOT(quit() ) );
+	connect( buttonOk, SIGNAL(clicked()), this, SLOT(quit()));
 	connect( buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
-	connect( buttonApply, SIGNAL(clicked() ), this, SLOT(acceptParams() ) );
+	connect( buttonApply, SIGNAL(clicked() ), this, SLOT(acceptParams()));
 	connect( btnWorksheet, SIGNAL(clicked()), this, SLOT(showWorksheet()));
 	connect( btnEditCurve, SIGNAL(clicked()), this, SLOT(editCurve()));
 	connect(listBox, SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int)),
@@ -1897,7 +1897,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 	}
     labelsGroupBox->blockSignals(true);
     labelsGroupBox->setChecked(dc->hasLabels());
-	
+
     QStringList cols = dc->table()->columnsList();
     boxLabelsColumn->blockSignals(true);
     boxLabelsColumn->clear();
@@ -2074,7 +2074,7 @@ bool PlotDialog::acceptParams()
             if (h->autoBinning() == automaticBox->isChecked() &&
                 h->binSize() == binSizeBox->text().toDouble() &&
                 h->begin() == histogramBeginBox->text().toDouble() &&
-                h->end() == histogramEndBox->text().toDouble()) return false;
+                h->end() == histogramEndBox->text().toDouble()) return true;
 
             h->setBinning(automaticBox->isChecked(), binSizeBox->text().toDouble(),
                          histogramBeginBox->text().toDouble(), histogramEndBox->text().toDouble());
