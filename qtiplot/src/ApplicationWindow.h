@@ -34,7 +34,6 @@
 
 #include <QMainWindow>
 #include <q3listview.h>
-#include <Q3Header>
 #include <QHttp>
 #include <QFile>
 #include <QSplitter>
@@ -55,7 +54,6 @@ class QTranslator;
 class QDockWidget;
 class QAction;
 class QActionGroup;
-class QWorkspace;
 class QLineEdit;
 class QTranslator;
 class QToolButton;
@@ -64,6 +62,7 @@ class QMenu;
 class QToolBar;
 class QAssistantClient;
 class QLocale;
+class QMdiArea;
 
 class Matrix;
 class Table;
@@ -78,7 +77,6 @@ class FolderListItem;
 class FolderListView;
 class ScriptWindow;
 class Plot3DDialog;
-class MyWidget;
 class TableStatistics;
 class CurveRangeDialog;
 class LegendWidget;
@@ -91,23 +89,23 @@ class TextEditor;
  *
  * This class contains the main part of the user interface as well as the central project management facilities.
  *
- * It manages all MyWidget MDI Windows in a project, knows about their organization in Folder objects
+ * It manages all MdiSubWindow MDI Windows in a project, knows about their organization in Folder objects
  * and contains the parts of the project explorer not implemented in Folder, FolderListItem or FolderListView.
  *
  * Furthermore, it is responsible for displaying most MDI Windows' context menus and opening all sorts of dialogs.
  *
  * \section future Future Plans
  * Split out the project management part into a new Project class.
- * If MyWidget maintains a reference to its parent Project, it should be possible to have its subclasses
+ * If MdiSubWindow maintains a reference to its parent Project, it should be possible to have its subclasses
  * display their own context menus and dialogs.
- * This is necessary for implementing new plot types or even completely new MyWidget subclasses in plug-ins.
+ * This is necessary for implementing new plot types or even completely new MdiSubWindow subclasses in plug-ins.
  * It will also make ApplicationWindow more manageable by removing those parts not directly related to the main window.
  *
  * Project would also take care of basic project file reading/writing (using Qt's XML framework), but delegate most of
- * the work to MyWidget and its subclasses. This is necessary for providing save/restore of classes implemented in
+ * the work to MdiSubWindow and its subclasses. This is necessary for providing save/restore of classes implemented in
  * plug-ins. Support for foreign formats on the other hand could go into import/export classes (which could also be
  * implemented in plug-ins). Those would interface directly with Project and the MyWidgets it manages. Thus, in addition
- * to supporting QtXML-based save/restore, Project, MyWidget and subclasses will also have to provide generalized
+ * to supporting QtXML-based save/restore, Project, MdiSubWindow and subclasses will also have to provide generalized
  * save/restore methods/constructors.
  *
  * Maybe split out the project explorer into a new ProjectExplorer class, depending on how much code is left
@@ -123,7 +121,7 @@ public:
 	~ApplicationWindow();
 
 	enum ShowWindowsPolicy{HideAll, ActiveFolder, SubFolders};
-	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow};
+	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow, Plot3DWindow};
 
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
@@ -147,6 +145,8 @@ public:
 
 	QList<QMenu *> menusList();
 	QList<QToolBar *> toolBarsList();
+
+	MdiSubWindow *activeWindow(WindowType type = NoWindow);
 
 public slots:
 	//! \name Projects and Project Files
@@ -174,7 +174,7 @@ public slots:
 	ApplicationWindow * loadScript(const QString& fn, bool execute = false, bool factorySettings = false);
 
 	QWidgetList * windowsList();
-	void updateWindowLists(MyWidget *w);
+	void updateWindowLists(MdiSubWindow *w);
 	/*!
     Arranges all the visible project windows in a cascade pattern.
     */
@@ -188,19 +188,18 @@ public slots:
 	//! Set the project status to saved (not modified)
 	void savedProject();
 	//! Set the project status to modified and save 'w' as the last modified widget
-	void modifiedProject(QWidget *w);
+	void modifiedProject(MdiSubWindow *w);
 	//@}
 
 	//! \name Settings
 	//@{
 	void readSettings();
 	void saveSettings();
-	void applyUserSettings();
 	void setSaveSettings(bool autoSaving, int min);
 	void changeAppStyle(const QString& s);
 	void changeAppFont(const QFont& f);
 	void updateAppFonts();
-	void setAppColors(const QColor& wc,const QColor& pc,const QColor& tpc);
+	void setAppColors(const QColor& wc,const QColor& pc,const QColor& tpc, bool force = false);
 
 	QLocale locale(){return d_locale;};
 	void setLocale(const QLocale& l){d_locale = l;};
@@ -263,7 +262,7 @@ public slots:
 	void newSurfacePlot();
 	void editSurfacePlot();
 	void remove3DMatrixPlots(Matrix *m);
-	void updateMatrixPlots(QWidget *);
+	void updateMatrixPlots(MdiSubWindow *);
 	void add3DData();
 	void change3DData();
 	void change3DData(const QString& colName);
@@ -347,8 +346,8 @@ public slots:
 	/**
 	 * \brief Create a Table which is initially hidden; used to return the result of an analysis operation.
 	 *
-	 * \param name window name (compare MyWidget::MyWidget)
-	 * \param label window label (compare MyWidget::MyWidget)
+	 * \param name window name (compare MdiSubWindow::MdiSubWindow)
+	 * \param label window label (compare MdiSubWindow::MdiSubWindow)
 	 * \param r number of rows
 	 * \param c number of columns
      * \param text tab/newline - seperated initial content; may be empty
@@ -358,6 +357,10 @@ public slots:
 	Table* convertMatrixToTable();
 	Table* matrixToTable(Matrix* m);
 	QWidgetList* tableList();
+    //! Returns true if the project contains tables
+	bool hasTable();
+	//! Returns a list containing the names of all tables in the project
+	QStringList tableNames();
 
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
@@ -441,7 +444,7 @@ public slots:
 
 	//! \name MDI Windows
 	//@{
-	MyWidget* clone(MyWidget* w = 0);
+	MdiSubWindow* clone(MdiSubWindow* w = 0);
 	void rename();
 	void renameWindow();
 
@@ -449,30 +452,28 @@ public slots:
 	void renameWindow(Q3ListViewItem *item, int, const QString &s);
 
 	//!  Checks weather the new window name is valid and modifies the name.
-	bool setWindowName(MyWidget *w, const QString &text);
+	bool setWindowName(MdiSubWindow *w, const QString &text);
 
-	void maximizeWindow(Q3ListViewItem * lbi);
-	void maximizeWindow(MyWidget *w);
-	void maximizeWindow();
-	void minimizeWindow(MyWidget *w);
-	void minimizeWindow();
+	void maximizeWindow(Q3ListViewItem * lbi = 0);
+	void maximizeWindow(MdiSubWindow *w);
+	void minimizeWindow(MdiSubWindow *w = 0);
     //! Changes the geometry of the active MDI window
     void setWindowGeometry(int x, int y, int w, int h);
 
-	void updateWindowStatus(MyWidget* );
+	void updateWindowStatus(MdiSubWindow* );
 
 	bool hidden(QWidget* window);
 	void closeActiveWindow();
-	void closeWindow(MyWidget* window);
+	void closeWindow(MdiSubWindow* window);
 
 	//!  Does all the cleaning work before actually deleting a window!
-	void removeWindowFromLists(MyWidget* w);
+	void removeWindowFromLists(MdiSubWindow* w);
 
-	void hideWindow(MyWidget* window);
+	void hideWindow(MdiSubWindow* window);
 	void hideWindow();
 	void hideActiveWindow();
 	void activateWindow();
-	void activateWindow(MyWidget *);
+	void activateWindow(MdiSubWindow *);
 	void printWindow();
 	//@}
 
@@ -485,12 +486,12 @@ public slots:
 	QStringList depending3DPlots(Matrix *m);
 	QStringList multilayerDependencies(QWidget *w);
 
-	void saveAsTemplate(MyWidget* w = 0, const QString& = QString());
+	void saveAsTemplate(MdiSubWindow* w = 0, const QString& = QString());
 	void openTemplate();
-	MyWidget* openTemplate(const QString& fn);
+	MdiSubWindow* openTemplate(const QString& fn);
 
-	QString windowGeometryInfo(MyWidget *w);
-	void restoreWindowGeometry(ApplicationWindow *app, MyWidget *w, const QString s);
+	QString windowGeometryInfo(MdiSubWindow *w);
+	void restoreWindowGeometry(ApplicationWindow *app, MdiSubWindow *w, const QString s);
 	void restoreApplicationGeometry();
 	void resizeActiveWindow();
 	void resizeWindow();
@@ -646,7 +647,7 @@ public slots:
 	void showGraphContextMenu();
 	void showTableContextMenu(bool selection);
 	void showWindowContextMenu();
-	void showWindowTitleBarMenu();
+	void customWindowTitleBarMenu(MdiSubWindow *w, QMenu *menu);
 	void showCurveContextMenu(int curveKey);
 	void showCurvePlotDialog();
 	void showCurveWorksheet();
@@ -758,7 +759,7 @@ public slots:
 	void pickPlotStyle( QAction* action );
 	void pickCoordSystem( QAction* action);
 	void pickFloorStyle( QAction* action);
-	void custom3DActions(QWidget *w);
+	void custom3DActions(QMdiSubWindow *w);
 	void custom3DGrids(int grids);
 	//@}
 
@@ -894,7 +895,7 @@ public slots:
 	void addFolderListViewItem(Folder *f);
 
 	//!  adds a widget list item to the list view "lv"
-	void addListViewItem(MyWidget *w);
+	void addListViewItem(MdiSubWindow *w);
 
 	//!  hides or shows windows in the current folder and changes the view windows policy
 	void setShowWindowsPolicy(int p);
@@ -968,9 +969,9 @@ private slots:
 	void disableActions();
 	void customColumnActions();
 	void disableToolbars();
-	void customToolBars(QWidget* w);
-	void customMenu(QWidget* w);
-	void windowActivated(QWidget *w);
+	void customToolBars(QMdiSubWindow* w);
+	void customMenu(QMdiSubWindow* w);
+	void windowActivated(QMdiSubWindow *w);
 	//@}
 
 	void analysisMenuAboutToShow();
@@ -1001,6 +1002,8 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	//! Flag telling if the application is opening a project file or not
+	bool d_opening_file;
     QString customActionsDirPath;
 	bool d_matrix_tool_bar, d_file_tool_bar, d_table_tool_bar, d_column_tool_bar, d_edit_tool_bar;
 	bool d_plot_tool_bar, d_plot3D_tool_bar, d_display_tool_bar, d_format_tool_bar;
@@ -1092,7 +1095,7 @@ public:
 	QString configFilePath, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
 	int ignoredLines, savingTimerId, plot3DResolution, recentMenuID;
 	bool renameColumns, strip_spaces, simplify_spaces;
-	QStringList recentProjects, tableWindows;
+	QStringList recentProjects;
 	bool saved, showPlot3DProjection, showPlot3DLegend, orthogonal3DPlots, autoscale3DPlots;
 	QStringList plot3DColors, locales;
 	QStringList functions; //user-defined functions;
@@ -1146,13 +1149,14 @@ private:
 	QDockWidget *consoleWindow;
 	QTextEdit *console;
 #endif
-	QWorkspace *ws;
+	QMdiArea *d_workspace;
+
     QToolBar *fileTools, *plotTools, *tableTools, *columnTools, *plot3DTools, *displayBar, *editTools, *plotMatrixBar;
 	QToolBar *formatToolBar;
 	QToolButton *btnResults;
-	QWidgetList *hiddenWindows, *outWindows;
+	QWidgetList *hiddenWindows;
 	QLineEdit *info;
-	QWidget *lastModified;
+	MdiSubWindow *lastModified;
 
 	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *edit, *recent;
 	QMenu *help, *plot2DMenu, *analysisMenu, *multiPeakMenu;

@@ -187,10 +187,10 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
 	return 0;
 }
 
-MyWidget* Folder::findWindow(const QString& s, bool windowNames, bool labels,
+MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels,
 							 bool caseSensitive, bool partialMatch)
 {
-	MyWidget* w;
+	MdiSubWindow* w;
 	foreach(w,lstWindows){
 		if (windowNames){
 			QString name = w->objectName();
@@ -221,22 +221,22 @@ MyWidget* Folder::findWindow(const QString& s, bool windowNames, bool labels,
 	return 0;
 }
 
-MyWidget *Folder::window(const QString &name, const char *cls, bool recursive)
+MdiSubWindow *Folder::window(const QString &name, const char *cls, bool recursive)
 {
-	foreach (MyWidget *w, lstWindows){
+	foreach (MdiSubWindow *w, lstWindows){
 		if (w->inherits(cls) && name == w->objectName())
 			return w;
 	}
 
 	if (!recursive) return NULL;
 	foreach (QObject *f, children()){
-		MyWidget *w = ((Folder*)f)->window(name, cls, true);
+		MdiSubWindow *w = ((Folder*)f)->window(name, cls, true);
 		if (w) return w;
 	}
 	return NULL;
 }
 
-void Folder::addWindow( MyWidget *w )
+void Folder::addWindow( MdiSubWindow *w )
 {
 	if (w) {
 		lstWindows.append( w );
@@ -244,7 +244,7 @@ void Folder::addWindow( MyWidget *w )
 	}
 }
 
-void Folder::removeWindow( MyWidget *w )
+void Folder::removeWindow( MdiSubWindow *w )
 {
 	if (!w)
 		return;
@@ -268,7 +268,7 @@ QString Folder::sizeToString()
 			size +=  sizeof(static_cast<Folder *>(f)); // FIXME: Doesn't this function add the size of pointers together? For what?
 	}
 
-	MyWidget * w;
+	MdiSubWindow * w;
 	foreach(w, lstWindows)
 		size += sizeof(w);
 
@@ -492,7 +492,7 @@ for (int i=0; i < columns (); i++)
  *
  *****************************************************************************/
 
-WindowListItem::WindowListItem( Q3ListView *parent, MyWidget *w )
+WindowListItem::WindowListItem( Q3ListView *parent, MdiSubWindow *w )
     : Q3ListViewItem( parent )
 {
     myWindow = w;

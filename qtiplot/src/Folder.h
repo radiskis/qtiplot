@@ -42,7 +42,7 @@
 #include <QDropEvent>
 #include <Q3PtrList>
 
-#include "MyWidget.h"
+#include "MdiSubWindow.h"
 
 class FolderListItem;
 class Table;
@@ -64,10 +64,10 @@ class Folder : public QObject
 public:
     Folder( Folder *parent, const QString &name );
 
-	QList<MyWidget *> windowsList(){return lstWindows;};
+	QList<MdiSubWindow *> windowsList(){return lstWindows;};
 
-    void addWindow( MyWidget *w );
-	void removeWindow( MyWidget *w );
+    void addWindow( MdiSubWindow *w );
+	void removeWindow( MdiSubWindow *w );
 
 	//! The list of subfolder names, including first generation children only
 	QStringList subfolders();
@@ -79,7 +79,7 @@ public:
 	Folder* findSubfolder(const QString& s, bool caseSensitive = true, bool partialMatch = false);
 
 	//! Pointer to the first window matching the search criteria
-	MyWidget* findWindow(const QString& s, bool windowNames, bool labels,
+	MdiSubWindow* findWindow(const QString& s, bool windowNames, bool labels,
 							 bool caseSensitive, bool partialMatch);
 
 	//! get a window by name
@@ -88,7 +88,7 @@ public:
 	   * NULL on failure. If recursive is true, do a depth-first recursive
 	   * search.
 	   */
-	MyWidget *window(const QString &name, const char *cls="myWidget", bool recursive=false);
+	MdiSubWindow *window(const QString &name, const char *cls="myWidget", bool recursive=false);
 	//! Return table named name or NULL
 	Table *table(const QString &name, bool recursive=false) { return (Table*) window(name, "Table", recursive); }
 	//! Return matrix named name or NULL
@@ -122,8 +122,8 @@ public:
 	FolderListItem * folderListItem(){return myFolderListItem;};
 	void setFolderListItem(FolderListItem *it){myFolderListItem = it;};
 
-    MyWidget *activeWindow(){return d_active_window;};
-    void setActiveWindow(MyWidget *w){d_active_window = w;};
+    MdiSubWindow *activeWindow(){return d_active_window;};
+    void setActiveWindow(MdiSubWindow *w){d_active_window = w;};
 
 	QString logInfo(){return d_log_info;};
 	void appendLogInfo(const QString& text){d_log_info += text;};
@@ -132,11 +132,11 @@ public:
 protected:
     QString birthdate, modifDate;
 	QString d_log_info;
-    QList<MyWidget *> lstWindows;
+    QList<MdiSubWindow *> lstWindows;
 	FolderListItem *myFolderListItem;
 
 	//! Pointer to the active window in the folder
-	MyWidget *d_active_window;
+	MdiSubWindow *d_active_window;
 };
 
 /*****************************************************************************
@@ -148,12 +148,12 @@ protected:
 class WindowListItem : public Q3ListViewItem
 {
 public:
-    WindowListItem( Q3ListView *parent, MyWidget *w );
+    WindowListItem( Q3ListView *parent, MdiSubWindow *w );
 
-    MyWidget *window() { return myWindow; };
+    MdiSubWindow *window() { return myWindow; };
 
 protected:
-    MyWidget *myWindow;
+    MdiSubWindow *myWindow;
 };
 
 /*****************************************************************************

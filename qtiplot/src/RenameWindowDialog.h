@@ -32,14 +32,14 @@
 #include <qvariant.h>
 #include <qdialog.h>
 
-#include "MyWidget.h"
+#include "MdiSubWindow.h"
 
 class QGroupBox;
 class QPushButton;
 class QLineEdit;
 class QRadioButton;
 class QTextEdit;
-class MyWidget;
+class MdiSubWindow;
 class QButtonGroup;
 
 //! Rename window dialog
@@ -62,14 +62,14 @@ private:
 	QTextEdit * boxLabelEdit;
 
 public slots:
-	void setWidget(MyWidget *w);
-	MyWidget::CaptionPolicy getCaptionPolicy();
+	void setWidget(MdiSubWindow *w);
+	MdiSubWindow::CaptionPolicy getCaptionPolicy();
 	void accept();
 
 signals:
 
 private:
-	MyWidget *window;
+	MdiSubWindow *window;
 };
 
 #endif // EXPORTDIALOG_H

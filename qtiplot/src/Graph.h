@@ -118,7 +118,7 @@ class Graph: public QWidget
 	Q_OBJECT
 
 	public:
-		Graph (QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
+		Graph (QWidget* parent=0, Qt::WFlags f=0);
 		~Graph();
 
 		enum Axis{Left, Right, Bottom, Top};
@@ -129,11 +129,8 @@ class Graph: public QWidget
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot};
 
-		//! Returns the name of the parent MultiLayer object.
-		QString parentPlotName();
-
 		//! Returns a pointer to the parent MultiLayer object.
-		MultiLayer *parentPlot(){return (MultiLayer *)(this->parent()->parent());};
+		MultiLayer *multiLayer(){return (MultiLayer *)(this->parent()->parent()->parent());};
 
 		//! Change the active tool, deleting the old one if it exists.
 		void setActiveTool(PlotToolInterface *tool);

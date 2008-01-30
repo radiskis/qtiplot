@@ -105,6 +105,7 @@
 #include "TextEditor.h"
 #include "SymbolDialog.h"
 #include "CustomActionDialog.h"
+#include "MdiSubWindow.h"
 
 // TODO: move tool-specific code to an extension manager
 #include "ScreenPickerTool.h"
@@ -119,7 +120,6 @@
 #include <stdlib.h>
 
 #include <qwt_scale_engine.h>
-#include <q3listview.h>
 
 #include <QFileDialog>
 #include <QInputDialog>
@@ -128,7 +128,6 @@
 #include <QPixmapCache>
 #include <QMenuBar>
 #include <QClipboard>
-#include <QWorkspace>
 #include <QTranslator>
 #include <QSplitter>
 #include <QSettings>
@@ -151,9 +150,10 @@
 #include <QAssistantClient>
 #include <QFontComboBox>
 #include <QSpinBox>
+#include <QMdiArea>
+#include <QMdiSubWindow>
 
 #include <zlib.h>
-
 #include <iostream>
 
 using namespace Qwt3D;
@@ -174,6 +174,7 @@ ApplicationWindow::ApplicationWindow(bool factorySettings)
 void ApplicationWindow::init(bool factorySettings)
 {
 	setWindowTitle(tr("QtiPlot - untitled"));
+	setObjectName("main application");
 	initGlobalConstants();
 	QPixmapCache::setCacheLimit(20*QPixmapCache::cacheLimit ());
 
@@ -263,13 +264,15 @@ void ApplicationWindow::init(bool factorySettings)
 	initToolBars();
 	initMainMenu();
 
-	ws = new QWorkspace( this );
-	ws->setScrollBarsEnabled (true);
-	setCentralWidget( ws );
+	d_workspace = new QMdiArea();
+	d_workspace->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
+	d_workspace->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	d_workspace->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	setCentralWidget(d_workspace);
+
 	setAcceptDrops(true);
 
 	hiddenWindows = new QList<QWidget*>();
-	outWindows = new QList<QWidget*>();
 
 	scriptWindow = 0;
     d_text_editor = NULL;
@@ -285,16 +288,17 @@ void ApplicationWindow::init(bool factorySettings)
 
 	actionNextWindow = new QAction(QIcon(QPixmap(next_xpm)), tr("&Next","next window"), this);
 	actionNextWindow->setShortcut( tr("F5","next window shortcut") );
-	connect(actionNextWindow, SIGNAL(activated()), ws, SLOT(activateNextWindow()));
+	connect(actionNextWindow, SIGNAL(activated()), d_workspace, SLOT(activateNextSubWindow()));
 
 	actionPrevWindow = new QAction(QIcon(QPixmap(prev_xpm)), tr("&Previous","previous window"), this);
 	actionPrevWindow->setShortcut( tr("F6","previous window shortcut") );
-	connect(actionPrevWindow, SIGNAL(activated()), ws, SLOT(activatePreviousWindow()));
+	connect(actionPrevWindow, SIGNAL(activated()), d_workspace, SLOT(activatePreviousSubWindow()));
 
 	connect(tablesDepend, SIGNAL(activated(int)), this, SLOT(showTable(int)));
 
 	connect(this, SIGNAL(modified()),this, SLOT(modifiedProject()));
-	connect(ws, SIGNAL(windowActivated (QWidget*)),this, SLOT(windowActivated(QWidget*)));
+	connect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)),
+			this, SLOT(windowActivated(QMdiSubWindow*)));
 	connect(lv, SIGNAL(doubleClicked(Q3ListViewItem *)),
 			this, SLOT(maximizeWindow(Q3ListViewItem *)));
 	connect(lv, SIGNAL(doubleClicked(Q3ListViewItem *)),
@@ -321,6 +325,12 @@ void ApplicationWindow::init(bool factorySettings)
 
 	// this has to be done after connecting scriptEnv
 	scriptEnv->initialize();
+
+    //apply user settings
+    updateAppFonts();
+	setScriptingLanguage(defaultScriptingLang);
+    setAppColors(workspaceColor, panelsColor, panelsTextColor, true);
+
     loadCustomActions();
 }
 
@@ -346,6 +356,8 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_opening_file = false;
+	
 	d_matrix_tool_bar = true;
 	d_file_tool_bar = true;
 	d_table_tool_bar = true;
@@ -532,31 +544,6 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_color = true;
 	d_export_vector_size = int(QPrinter::Custom);
 	d_keep_plot_aspect = true;
-}
-
-void ApplicationWindow::applyUserSettings()
-{
-	updateAppFonts();
-	setScriptingLanguage(defaultScriptingLang);
-
-	ws->setPaletteBackgroundColor (workspaceColor);
-
-	QColorGroup cg;
-	cg.setColor(QColorGroup::Base, QColor(panelsColor) );
-	qApp->setPalette(QPalette(cg, cg, cg));
-
-	cg.setColor(QColorGroup::Text, QColor(panelsTextColor) );
-	cg.setColor(QColorGroup::WindowText, QColor(panelsTextColor) );
-	cg.setColor(QColorGroup::HighlightedText, QColor(panelsTextColor) );
-	lv->setPalette(QPalette(cg, cg, cg));
-	folders->setPalette(QPalette(cg, cg, cg));
-
-	results->setPalette(QPalette(cg, cg, cg));
-
-	cg.setColor(QColorGroup::Text, QColor(Qt::green) );
-	cg.setColor(QColorGroup::HighlightedText, QColor(Qt::darkGreen) );
-	cg.setColor(QColorGroup::Base, QColor(Qt::black) );
-	info->setPalette(QPalette(cg, cg, cg));
 }
 
 void ApplicationWindow::initToolBars()
@@ -771,6 +758,11 @@ void ApplicationWindow::initToolBars()
 	info = new QLineEdit( this );
 	displayBar->addWidget( info );
 	info->setReadOnly(true);
+    QPalette palette;
+    palette.setColor(QPalette::Text, QColor(Qt::green));
+	palette.setColor(QPalette::HighlightedText, QColor(Qt::darkGreen));
+	palette.setColor(QPalette::Base, QColor(Qt::black));
+	info->setPalette(palette);
 
 	addToolBar( Qt::TopToolBarArea, displayBar );
 	displayBar->hide();
@@ -862,7 +854,7 @@ void ApplicationWindow::insertTranslatedStrings()
 	fileMenu->changeItem(recentMenuID, tr("&Recent Projects"));
 
 	translateActionsStrings();
-	customMenu(ws->activeWindow());
+	customMenu(activeWindow());
 }
 
 void ApplicationWindow::initMainMenu()
@@ -1125,7 +1117,7 @@ void ApplicationWindow::plotMenuAboutToShow()
     reloadCustomActions();
 }
 
-void ApplicationWindow::customMenu(QWidget* w)
+void ApplicationWindow::customMenu(QMdiSubWindow* w)
 {
 	menuBar()->clear();
 	menuBar()->insertItem(tr("&File"), fileMenu);
@@ -1153,7 +1145,7 @@ void ApplicationWindow::customMenu(QWidget* w)
 		actionPasteSelection->setEnabled(true);
 		actionClearSelection->setEnabled(true);
 		actionSaveTemplate->setEnabled(true);
-		if (tableWindows.count() > 0)
+		if (hasTable())
 			actionShowExportASCIIDialog->setEnabled(true);
 		else
 			actionShowExportASCIIDialog->setEnabled(false);
@@ -1247,7 +1239,8 @@ void ApplicationWindow::disableActions()
 
 void ApplicationWindow::customColumnActions()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	MdiSubWindow *w = activeWindow(TableWindow);
+    if (!w)
 		return;
 
     actionMoveColFirst->setEnabled(false);
@@ -1262,7 +1255,7 @@ void ApplicationWindow::customColumnActions()
     actionDisregardCol->setEnabled(false);
     actionSwapColumns->setEnabled(false);
 
-    Table *t = static_cast<Table*>(ws->activeWindow());
+    Table *t = static_cast<Table*>(w);
     int selectedCols = t->selectedColsNumber();
     if (selectedCols == 1){
         int col = t->selectedColumn();
@@ -1290,7 +1283,7 @@ void ApplicationWindow::customColumnActions()
 	    actionSwapColumns->setEnabled(true);
 }
 
-void ApplicationWindow::customToolBars(QWidget* w)
+void ApplicationWindow::customToolBars(QMdiSubWindow* w)
 {
     disableToolbars();
 	if (!w)
@@ -1344,10 +1337,11 @@ void ApplicationWindow::disableToolbars()
 
 void ApplicationWindow::plot3DRibbon()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	MdiSubWindow *w = activeWindow(TableWindow);
+    if (!w)
 		return;
 
-	Table *table = static_cast<Table*>(ws->activeWindow());
+	Table *table = static_cast<Table*>(w);
 	if(table->selectedColumns().count() == 1){
 		if (!validFor3DPlot(table))
 			return;
@@ -1378,8 +1372,8 @@ void ApplicationWindow::plot3DWireSurface()
 
 void ApplicationWindow::plot3DBars()
 {
-	QWidget* w = ws->activeWindow();
-	if (!w)
+	MdiSubWindow *w = activeWindow();
+    if (!w)
 		return;
 
 	if (w->inherits("Table")){
@@ -1398,7 +1392,7 @@ void ApplicationWindow::plot3DBars()
 
 void ApplicationWindow::plot3DScatter()
 {
-	QWidget* w = ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
 
@@ -1419,10 +1413,11 @@ void ApplicationWindow::plot3DScatter()
 
 void ApplicationWindow::plot3DTrajectory()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	MdiSubWindow *w = activeWindow(TableWindow);
+    if (!w)		
 		return;
 
-	Table *table = static_cast<Table *>(ws->activeWindow());
+	Table *table = static_cast<Table *>(w);
     if (!validFor3DPlot(table))
         return;
 
@@ -1455,16 +1450,14 @@ MultiLayer* ApplicationWindow::plotHistogram()
 MultiLayer* ApplicationWindow::plotHistogram(Matrix *m)
 {
 	if (!m) {
-		m = (Matrix*)ws->activeWindow();
-		if (!m || !m->isA("Matrix"))
+		m = (Matrix*)activeWindow(MatrixWindow);
+		if (!m)
 			return 0;
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	MultiLayer* g = new MultiLayer("", ws, 0);
-	g->setAttribute(Qt::WA_DeleteOnClose);
-
+	MultiLayer* g = new MultiLayer("", this, 0);
 	Graph* plot = g->addLayer();
 	setPreferences(plot);
 
@@ -1485,10 +1478,11 @@ void ApplicationWindow::plotArea()
 
 void ApplicationWindow::plotPie()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	MdiSubWindow *w = activeWindow(TableWindow);
+    if (!w)		
 		return;
 
-	Table *table = static_cast<Table *>(ws->activeWindow());
+	Table *table = static_cast<Table *>(w);
 
 	if(table->selectedColumns().count() != 1){
 		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
@@ -1541,10 +1535,11 @@ void ApplicationWindow::plotHorSteps()
 
 void ApplicationWindow::plotVectXYXY()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	MdiSubWindow *w = activeWindow(TableWindow);
+    if (!w)		
 		return;
 
-	Table * table = static_cast<Table *>(ws->activeWindow());
+	Table * table = static_cast<Table *>(w);
 	if (!validFor2DPlot(table))
 		return;
 
@@ -1558,10 +1553,11 @@ void ApplicationWindow::plotVectXYXY()
 
 void ApplicationWindow::plotVectXYAM()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+    MdiSubWindow *w = activeWindow(TableWindow);
+    if (!w)
 		return;
 
-	Table * table = static_cast<Table *>(ws->activeWindow());
+	Table * table = static_cast<Table *>(w);
 	if (!validFor2DPlot(table))
 		return;
 
@@ -1721,7 +1717,7 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 	QApplication::restoreOverrideCursor();
 }
 
-void ApplicationWindow::updateMatrixPlots(QWidget *window)
+void ApplicationWindow::updateMatrixPlots(MdiSubWindow *window)
 {
 	Matrix *m = (Matrix *)window;
 	if (!m)
@@ -1759,8 +1755,7 @@ void ApplicationWindow::updateMatrixPlots(QWidget *window)
 
 void ApplicationWindow::add3DData()
 {
-	if (tableWindows.count() <= 0)
-	{
+	if (!hasTable()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no tables available in this project.</h4>"
 					"<p><h4>Please create a table and try again!</h4>"));
@@ -1803,7 +1798,7 @@ void ApplicationWindow::change3DMatrix()
 	ad->setWindowTitle(tr("QtiPlot - Choose matrix to plot"));
 	ad->setCurveNames(matrixNames());
 
-	Graph3D* g = (Graph3D*)ws->activeWindow();
+	Graph3D* g = (Graph3D*)activeWindow(Plot3DWindow);
 	if (g && g->matrix())
 		ad->setCurentDataSet(g->matrix()->objectName());
 	ad->exec();
@@ -1811,15 +1806,16 @@ void ApplicationWindow::change3DMatrix()
 
 void ApplicationWindow::change3DMatrix(const QString& matrix_name)
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
-		Graph3D* g = (Graph3D*)ws->activeWindow();
-		Matrix *m = matrix(matrix_name);
-		if (m && g)
-			g->addMatrixData(m);
+	MdiSubWindow *w = activeWindow(Plot3DWindow);
+    if (!w)
+		return;
+	
+	Graph3D* g = (Graph3D*)w;
+	Matrix *m = matrix(matrix_name);
+	if (m && g)
+		g->addMatrixData(m);
 
-		emit modified();
-	}
+	emit modified();
 }
 
 void ApplicationWindow::add3DMatrixPlot()
@@ -1844,43 +1840,49 @@ void ApplicationWindow::add3DMatrixPlot()
 
 void ApplicationWindow::insert3DMatrixPlot(const QString& matrix_name)
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
-		((Graph3D*)ws->activeWindow())->addMatrixData(matrix(matrix_name));
-		emit modified();
-	}
+	MdiSubWindow *w = activeWindow(Plot3DWindow);
+    if (!w)
+		return;
+	
+	((Graph3D*)w)->addMatrixData(matrix(matrix_name));
+	emit modified();
 }
 
 void ApplicationWindow::insertNew3DData(const QString& colName)
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
-		((Graph3D*)ws->activeWindow())->insertNewData(table(colName),colName);
-		emit modified();
-	}
+	MdiSubWindow *w = activeWindow(Plot3DWindow);
+    if (!w)
+		return;
+
+	((Graph3D*)w)->insertNewData(table(colName),colName);
+	emit modified();
 }
 
 void ApplicationWindow::change3DData(const QString& colName)
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Graph3D")) {
-		((Graph3D*)ws->activeWindow())->changeDataColumn(table(colName), colName);
-		emit modified();
-	}
+	MdiSubWindow *w = activeWindow(Plot3DWindow);
+    if (!w)
+		return;
+	
+	((Graph3D*)w)->changeDataColumn(table(colName), colName);
+	emit modified();
 }
 
 void ApplicationWindow::editSurfacePlot()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Graph3D")){
-		Graph3D* g = (Graph3D*)ws->activeWindow();
-		SurfaceDialog* sd = new SurfaceDialog(this);
-		sd->setAttribute(Qt::WA_DeleteOnClose);
+	MdiSubWindow *w = activeWindow(Plot3DWindow);
+    if (!w)
+		return;
+	
+	Graph3D* g = (Graph3D*)w;
+	SurfaceDialog* sd = new SurfaceDialog(this);
+	sd->setAttribute(Qt::WA_DeleteOnClose);
 
-		if (g->hasData() && g->userFunction())
-			sd->setFunction(g);
-		else if (g->hasData() && g->parametricSurface())
-			sd->setParametricSurface(g);
-		sd->exec();
-	}
+	if (g->hasData() && g->userFunction())
+		sd->setFunction(g);
+	else if (g->hasData() && g->parametricSurface())
+		sd->setParametricSurface(g);
+	sd->exec();
 }
 
 void ApplicationWindow::newSurfacePlot()
@@ -1895,8 +1897,7 @@ Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, doubl
 {
 	QString label = generateUniqueName(tr("Graph"));
 
-	Graph3D *plot = new Graph3D("", ws);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
+	Graph3D *plot = new Graph3D("", this);
 	plot->resize(500,400);
 	plot->setWindowTitle(label);
 	plot->setName(label);
@@ -1915,8 +1916,7 @@ Graph3D* ApplicationWindow::plotParametricSurface(const QString& xFormula, const
 {
 	QString label = generateUniqueName(tr("Graph"));
 
-	Graph3D *plot = new Graph3D("", ws);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
+	Graph3D *plot = new Graph3D("", this);
 	plot->resize(500, 400);
 	plot->setWindowTitle(label);
 	plot->setName(label);
@@ -1953,8 +1953,7 @@ Graph3D* ApplicationWindow::dataPlot3D(const QString& caption,const QString& for
 	posX=formula.find("(",pos);
 	QString yCol=formula.mid(pos+1,posX-pos-1);
 
-	Graph3D *plot = new Graph3D("", ws, 0);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
+	Graph3D *plot = new Graph3D("", this, 0);
 	plot->addData(w, xCol, yCol, xl, xr, yl, yr, zl, zr);
 	plot->update();
 
@@ -1975,9 +1974,7 @@ Graph3D* ApplicationWindow::newPlot3D()
 
 	QString label = generateUniqueName(tr("Graph"));
 
-	Graph3D *plot = new Graph3D("", ws, 0);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
-	plot->resize(500, 400);
+	Graph3D *plot = new Graph3D("", this, 0);
 	plot->setWindowTitle(label);
 	plot->setName(label);
 
@@ -1997,8 +1994,7 @@ Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int t
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	Graph3D *plot = new Graph3D("", ws, 0);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
+	Graph3D *plot = new Graph3D("", this, 0);
 	QString label = generateUniqueName(tr("Graph"));
 	plot->setWindowTitle(label);
 	plot->setName(label);
@@ -2042,8 +2038,7 @@ Graph3D* ApplicationWindow::openPlotXYZ(const QString& caption,const QString& fo
 	int yCol=w->colIndex(yColName);
 	int zCol=w->colIndex(zColName);
 
-	Graph3D *plot=new Graph3D("", ws, 0);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
+	Graph3D *plot=new Graph3D("", this, 0);
 	plot->loadData(w, xCol, yCol, zCol, xl, xr, yl, yr, zl, zr);
 
 	QString label = caption;
@@ -2080,9 +2075,7 @@ void ApplicationWindow::customPlot3D(Graph3D *plot)
 
 void ApplicationWindow::initPlot3D(Graph3D *plot)
 {
-	current_folder->addWindow(plot);
-	plot->setFolder(current_folder);
-	ws->addWindow(plot);
+	d_workspace->addSubWindow(plot);
 	connectSurfacePlot(plot);
 
 	plot->setIcon(QPixmap(trajectory_xpm));
@@ -2103,7 +2096,7 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 
 void ApplicationWindow::exportMatrix()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2166,18 +2159,18 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    QWidget *w = ws->activeWindow();
+    MdiSubWindow *w = activeWindow(MatrixWindow);
     Matrix* m = NULL;
-    if (w && w->isA("Matrix")){
+    if (w){
         m = (Matrix *)w;
         m->setImage(image);
     } else {
-        m = new Matrix(scriptEnv, image, "", ws);
+        m = new Matrix(scriptEnv, image, "", this);
         m->setAttribute(Qt::WA_DeleteOnClose);
         initMatrix(m, generateUniqueName(tr("Matrix")));
         m->show();
         m->setWindowLabel(fn);
-        m->setCaptionPolicy(MyWidget::Both);
+        m->setCaptionPolicy(MdiSubWindow::Both);
         setListViewLabel(m->objectName(), fn);
     }
 
@@ -2210,7 +2203,7 @@ void ApplicationWindow::loadImage(const QString& fn)
 
 	MultiLayer *plot = multilayerPlot(generateUniqueName(tr("Graph")));
 	plot->setWindowLabel(fn);
-	plot->setCaptionPolicy(MyWidget::Both);
+	plot->setCaptionPolicy(MdiSubWindow::Both);
 	setListViewLabel(plot->objectName(), fn);
 
 	plot->showNormal();
@@ -2242,8 +2235,7 @@ void ApplicationWindow::polishGraph(Graph *g, int style)
 
 MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption)
 {
-	MultiLayer* ml = new MultiLayer("", ws, 0);
-	ml->setAttribute(Qt::WA_DeleteOnClose);
+	MultiLayer* ml = new MultiLayer("", this, 0);
 	QString label = caption;
 	initMultilayerPlot(ml, label.replace(QRegExp("_"),"-"));
 	return ml;
@@ -2271,9 +2263,8 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 {//used when plotting selected columns
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	MultiLayer* g = new MultiLayer("", ws, 0);
-	g->setAttribute(Qt::WA_DeleteOnClose);
-
+	MultiLayer* g = new MultiLayer("", this, 0);
+	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
 	Graph *ag = g->addLayer();
 	if (!ag)
 		return 0;
@@ -2281,12 +2272,9 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
     setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
 
-	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
-
 	polishGraph(ag, style);
 	ag->newLegend();
 	g->arrangeLayers(false, false);
-	customMenu(g);
 
 	emit modified();
 	QApplication::restoreOverrideCursor();
@@ -2295,14 +2283,14 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 
 MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 {//used when plotting from the panel menu
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+    if (!t)
 		return 0;
 
-	Table *w = (Table*)ws->activeWindow();
-	if (!validFor2DPlot(w))
+	if (!validFor2DPlot(t))
 		return 0;
 
-	QStringList list = w->selectedYColumns();
+	QStringList list = t->selectedYColumns();
 	if((int)list.count() < 1) {
 		QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
 		return 0;
@@ -2312,8 +2300,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 	if (r<0)
 		r = curves;
 
-	MultiLayer* g = new MultiLayer("", ws, 0);
-	g->setAttribute(Qt::WA_DeleteOnClose);
+	MultiLayer* g = new MultiLayer("", this, 0);
 	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
 	int layers = c*r;
 	if (curves<layers) {
@@ -2321,7 +2308,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 			Graph *ag = g->addLayer();
 			if (ag){
                 setPreferences(ag);
-				ag->addCurves(w, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
+				ag->addCurves(t, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
 				ag->newLegend();
 				ag->setAutoscaleFonts(false);//in order to avoid to small fonts
                 ag->setIgnoreResizeEvents(false);
@@ -2335,7 +2322,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 				QStringList lst;
 				lst << list[i];
                 setPreferences(ag);
-				ag->addCurves(w, lst, style, defaultCurveLineWidth, defaultSymbolSize);
+				ag->addCurves(t, lst, style, defaultCurveLineWidth, defaultSymbolSize);
 				ag->newLegend();
 				ag->setAutoscaleFonts(false);//in order to avoid to small fonts
                 ag->setIgnoreResizeEvents(false);
@@ -2353,7 +2340,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
         ag->setAutoscaleFonts(autoScaleFonts);//restore user defined fonts behaviour
         ag->setIgnoreResizeEvents(!autoResizeLayers);
     }
-	customMenu(g);
 	emit modified();
 	return g;
 }
@@ -2361,8 +2347,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 {//used when plotting from wizard
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	MultiLayer* g = new MultiLayer("", ws, 0);
-	g->setAttribute(Qt::WA_DeleteOnClose);
+	MultiLayer* g = new MultiLayer("", this, 0);
 	Graph *ag = g->addLayer();
 	setPreferences(ag);
 	polishGraph(ag, defaultCurveStyle);
@@ -2373,8 +2358,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 			errorBars++;
 	}
 
-	for (int i=0; i<curves; i++)
-	{
+	for (int i=0; i<curves; i++){
 		QString s = colList[i];
 		int pos = s.find(":", 0);
 		QString caption = s.left(pos) + "_";
@@ -2388,25 +2372,20 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 		int posY = s.find("(Y)", posX);
 		QString yColName = caption+s.mid(posX+2, posY-posX-2);
 
-		if (s.contains("(yErr)") || s.contains("(xErr)"))
-		{
+		if (s.contains("(yErr)") || s.contains("(xErr)")){
 			posY = s.find(",", posY);
 			int posErr, errType;
-			if (s.contains("(yErr)"))
-			{
+			if (s.contains("(yErr)")){
 				errType = QwtErrorPlotCurve::Vertical;
 				posErr = s.find("(yErr)", posY);
-			}
-			else
-			{
+			} else {
 				errType = QwtErrorPlotCurve::Horizontal;
 				posErr = s.find("(xErr)",posY);
 			}
 
 			QString errColName = caption+s.mid(posY+2, posErr-posY-2);
 			ag->addErrorBars(xColName, yColName, w, errColName, errType);
-		}
-		else
+		} else
             ag->insertCurve(w, xCol, yColName, defaultCurveStyle);
 
         CurveLayout cl = ag->initCurveLayout(defaultCurveStyle, curves - errorBars);
@@ -2418,7 +2397,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 	ag->updatePlot();
     initMultilayerPlot(g, generateUniqueName(tr("Graph")));
     g->arrangeLayers(true, false);
-	customMenu(g);
 	emit modified();
 	QApplication::restoreOverrideCursor();
 	return g;
@@ -2430,10 +2408,7 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 	while(alreadyUsedName(label))
 		label = generateUniqueName(tr("Graph"));
 
-	current_folder->addWindow(g);
-	g->setFolder(current_folder);
-
-	ws->addWindow(g);
+	d_workspace->addSubWindow(g);
 	connectMultilayerPlot(g);
 
 	g->setWindowTitle(label);
@@ -2443,7 +2418,6 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 	g->printCropmarks(d_print_cropmarks);
 	g->setLocale(d_locale);
 	g->show();
-	g->setFocus();
 
 	addListViewItem(g);
 }
@@ -2525,7 +2499,7 @@ Table* ApplicationWindow::newTable(const QString& fname, const QString &sep,
 		bool importComments, const QString &commentString, bool readOnly)
 {
 	Table* w = new Table(scriptEnv, fname, sep, lines, renameCols, stripSpaces,
-			simplifySpaces, importComments, commentString, readOnly, fname, ws, 0, 0);
+			simplifySpaces, importComments, commentString, readOnly, fname, this, 0, 0);
 	if (w){
 		w->setAttribute(Qt::WA_DeleteOnClose);
 		QFileInfo fi(fname);
@@ -2541,8 +2515,7 @@ Table* ApplicationWindow::newTable(const QString& fname, const QString &sep,
  */
 Table* ApplicationWindow::newTable()
 {
-	Table* w = new Table(scriptEnv, 30, 2, "", ws, 0);
-	w->setAttribute(Qt::WA_DeleteOnClose);
+	Table* w = new Table(scriptEnv, 30, 2, "", this, 0);
 	initTable(w, generateUniqueName(tr("Table")));
 	w->showNormal();
 	return w;
@@ -2553,8 +2526,7 @@ Table* ApplicationWindow::newTable()
  */
 Table* ApplicationWindow::newTable(const QString& caption, int r, int c)
 {
-	Table* w = new Table(scriptEnv, r, c, "", ws, 0);
-	w->setAttribute(Qt::WA_DeleteOnClose);
+	Table* w = new Table(scriptEnv, r, c, "", this, 0);
 	initTable(w, caption);
 	if (w->objectName() != caption){//the table was renamed
 		renamedTables << caption << w->objectName();
@@ -2569,8 +2541,7 @@ Table* ApplicationWindow::newTable(const QString& caption, int r, int c)
 
 Table* ApplicationWindow::newTable(int r, int c, const QString& name, const QString& legend)
 {
-	Table* w = new Table(scriptEnv, r, c, legend, ws, 0);
-	w->setAttribute(Qt::WA_DeleteOnClose);
+	Table* w = new Table(scriptEnv, r, c, legend, this, 0);
 	initTable(w, name);
 	return w;
 }
@@ -2582,8 +2553,7 @@ Table* ApplicationWindow::newTable(const QString& caption, int r, int c, const Q
     if (lst.count() == 2)
         legend = lst[1];
 
-	Table* w = new Table(scriptEnv, r, c, legend, ws, 0);
-	w->setAttribute(Qt::WA_DeleteOnClose);
+	Table* w = new Table(scriptEnv, r, c, legend, this, 0);
 
 	QStringList rows = text.split("\n", QString::SkipEmptyParts);
 	QString rlist = rows[0];
@@ -2605,8 +2575,7 @@ Table* ApplicationWindow::newTable(const QString& caption, int r, int c, const Q
 
 Table* ApplicationWindow::newHiddenTable(const QString& name, const QString& label, int r, int c, const QString& text)
 {
-	Table* w = new Table(scriptEnv, r, c, label, 0, 0);
-	w->setAttribute(Qt::WA_DeleteOnClose);
+	Table* w = new Table(scriptEnv, r, c, label, this, 0);
 
 	if (!text.isEmpty()) {
 		QStringList rows = text.split("\n", QString::SkipEmptyParts);
@@ -2635,14 +2604,11 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
 	while(name.isEmpty() || alreadyUsedName(name))
 		name = generateUniqueName(tr("Table"));
 
-	current_folder->addWindow(w);
-	w->setFolder(current_folder);
-	ws->addWindow(w);
+	d_workspace->addSubWindow(w);
 
 	connectTable(w);
 	customTable(w);
 
-	tableWindows << name;
 	w->setName(name);
 	w->setIcon( QPixmap(worksheet_xpm) );
 	w->setSpecifications(w->saveToString(windowGeometryInfo(w)));
@@ -2656,7 +2622,7 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
  */
 TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QList<int> target, const QString &caption)
 {
-	TableStatistics* s = new TableStatistics(scriptEnv, ws, base, (TableStatistics::Type) type, target);
+	TableStatistics* s = new TableStatistics(scriptEnv, this, base, (TableStatistics::Type) type, target);
 	if (caption.isEmpty())
 		initTable(s, s->objectName());
 	else
@@ -2673,7 +2639,7 @@ TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QL
  */
 Note* ApplicationWindow::newNote(const QString& caption)
 {
-	Note* m = new Note(scriptEnv, "", ws);
+	Note* m = new Note(scriptEnv, "", this);
 	if (caption.isEmpty())
 		initNote(m, generateUniqueName(tr("Notes")));
 	else
@@ -2691,21 +2657,18 @@ void ApplicationWindow::initNote(Note* m, const QString& caption)
 	m->setName(name);
 	m->setIcon( QPixmap(note_xpm) );
 	m->askOnCloseEvent(confirmCloseNotes);
-	m->setFolder(current_folder);
 	m->setDirPath(scriptsDirPath);
 
-	current_folder->addWindow(m);
-	ws->addWindow(m);
+	d_workspace->addSubWindow(m);
 	addListViewItem(m);
 
 	connect(m->textWidget(), SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
 	connect(m->textWidget(), SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
-	connect(m, SIGNAL(modifiedWindow(QWidget*)), this, SLOT(modifiedProject(QWidget*)));
-	connect(m, SIGNAL(resizedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
-	connect(m, SIGNAL(closedWindow(MyWidget*)), this, SLOT(closeWindow(MyWidget*)));
-	connect(m, SIGNAL(hiddenWindow(MyWidget*)), this, SLOT(hideWindow(MyWidget*)));
-	connect(m, SIGNAL(statusChanged(MyWidget*)), this, SLOT(updateWindowStatus(MyWidget*)));
-	connect(m, SIGNAL(showTitleBarMenu()), this, SLOT(showWindowTitleBarMenu()));
+	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
+	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
+	connect(m, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
+	connect(m, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
+	connect(m, SIGNAL(statusChanged(MdiSubWindow*)), this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect(m, SIGNAL(dirPathChanged(const QString&)), this, SLOT(scriptsDirPathChanged(const QString&)));
 	connect(m, SIGNAL(moved()), this, SLOT(modifiedProject()));
 
@@ -2714,18 +2677,15 @@ void ApplicationWindow::initNote(Note* m, const QString& caption)
 
 Matrix* ApplicationWindow::newMatrix(int rows, int columns)
 {
-	Matrix* m = new Matrix(scriptEnv, rows, columns, "", ws, 0);
-	m->setAttribute(Qt::WA_DeleteOnClose);
-	QString caption = generateUniqueName(tr("Matrix"));
-	initMatrix(m, caption);
+	Matrix* m = new Matrix(scriptEnv, rows, columns, "", this, 0);
+	initMatrix(m, generateUniqueName(tr("Matrix")));
 	m->showNormal();
 	return m;
 }
 
 Matrix* ApplicationWindow::newMatrix(const QString& caption, int r, int c)
 {
-	Matrix* w = new Matrix(scriptEnv, r, c, "", ws, 0);
-	w->setAttribute(Qt::WA_DeleteOnClose);
+	Matrix* w = new Matrix(scriptEnv, r, c, "", this, 0);
 	initMatrix(w, caption);
 	if (w->objectName() != caption)//the matrix was renamed
 		renamedTables << caption << w->objectName();
@@ -2736,7 +2696,7 @@ Matrix* ApplicationWindow::newMatrix(const QString& caption, int r, int c)
 
 void ApplicationWindow::viewMatrixImage()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2748,7 +2708,7 @@ void ApplicationWindow::viewMatrixImage()
 
 void ApplicationWindow::viewMatrixTable()
 {
-	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	Matrix* m = static_cast<Matrix*>(activeWindow(MatrixWindow));
 	if (!m)
 		return;
 
@@ -2760,7 +2720,7 @@ void ApplicationWindow::viewMatrixTable()
 
 void ApplicationWindow::viewMatrixXY()
 {
-    Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+    Matrix* m = static_cast<Matrix*>(activeWindow(MatrixWindow));
 	if (!m)
 		return;
 
@@ -2772,7 +2732,7 @@ void ApplicationWindow::viewMatrixXY()
 
 void ApplicationWindow::viewMatrixColumnRow()
 {
-    Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+    Matrix* m = static_cast<Matrix*>(activeWindow(MatrixWindow));
 	if (!m)
 		return;
 
@@ -2784,7 +2744,7 @@ void ApplicationWindow::viewMatrixColumnRow()
 
 void ApplicationWindow::setMatrixGrayScale()
 {
-	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	Matrix* m = static_cast<Matrix*>(activeWindow(MatrixWindow));
 	if (!m)
 		return;
 
@@ -2797,7 +2757,7 @@ void ApplicationWindow::setMatrixGrayScale()
 
 void ApplicationWindow::setMatrixRainbowScale()
 {
-	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	Matrix* m = static_cast<Matrix*>(activeWindow(MatrixWindow));
 	if (!m)
 		return;
 
@@ -2810,7 +2770,7 @@ void ApplicationWindow::setMatrixRainbowScale()
 
 void ApplicationWindow::showColorMapDialog()
 {
-	Matrix* m = static_cast<Matrix*>(ws->activeWindow());
+	Matrix* m = static_cast<Matrix*>(activeWindow(MatrixWindow));
 	if (!m)
 		return;
 
@@ -2822,7 +2782,7 @@ void ApplicationWindow::showColorMapDialog()
 
 void ApplicationWindow::transposeMatrix()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2833,7 +2793,7 @@ void ApplicationWindow::transposeMatrix()
 
 void ApplicationWindow::flipMatrixVertically()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2844,7 +2804,7 @@ void ApplicationWindow::flipMatrixVertically()
 
 void ApplicationWindow::flipMatrixHorizontally()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2855,7 +2815,7 @@ void ApplicationWindow::flipMatrixHorizontally()
 
 void ApplicationWindow::rotateMatrix90()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2866,7 +2826,7 @@ void ApplicationWindow::rotateMatrix90()
 
 void ApplicationWindow::rotateMatrixMinus90()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2877,7 +2837,7 @@ void ApplicationWindow::rotateMatrixMinus90()
 
 void ApplicationWindow::matrixDeterminant()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2894,7 +2854,7 @@ void ApplicationWindow::matrixDeterminant()
 
 void ApplicationWindow::invertMatrix()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -2903,7 +2863,7 @@ void ApplicationWindow::invertMatrix()
 
 Table* ApplicationWindow::convertMatrixToTable()
 {
-	Matrix* m = (Matrix*)ws->activeWindow();
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return 0;
 
@@ -2920,7 +2880,7 @@ Table* ApplicationWindow::matrixToTable(Matrix* m)
 	int rows = m->numRows();
 	int cols = m->numCols();
 
-	Table* w = new Table(scriptEnv, rows, cols, "", ws, 0);
+	Table* w = new Table(scriptEnv, rows, cols, "", this, 0);
 	w->setAttribute(Qt::WA_DeleteOnClose);
 	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
@@ -2947,20 +2907,17 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	m->setIcon( QPixmap(matrix_xpm) );
 	m->askOnCloseEvent(confirmCloseMatrix);
 	m->setNumericPrecision(d_decimal_digits);
-	m->setFolder(current_folder);
     m->setLocale(d_locale);
 
-	current_folder->addWindow(m);
-	ws->addWindow(m);
+	d_workspace->addSubWindow(m);
 	addListViewItem(m);
 
-	connect(m, SIGNAL(showTitleBarMenu()),this,SLOT(showWindowTitleBarMenu()));
-	connect(m, SIGNAL(modifiedWindow(QWidget*)), this, SLOT(modifiedProject(QWidget*)));
-	connect(m, SIGNAL(modifiedWindow(QWidget*)), this, SLOT(updateMatrixPlots(QWidget *)));
-	connect(m, SIGNAL(resizedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
-	connect(m, SIGNAL(closedWindow(MyWidget*)), this, SLOT(closeWindow(MyWidget*)));
-	connect(m, SIGNAL(hiddenWindow(MyWidget*)), this, SLOT(hideWindow(MyWidget*)));
-	connect(m, SIGNAL(statusChanged(MyWidget*)),this, SLOT(updateWindowStatus(MyWidget*)));
+	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
+	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(updateMatrixPlots(MdiSubWindow *)));
+	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
+	connect(m, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
+	connect(m, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
+	connect(m, SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect(m, SIGNAL(showContextMenu()), this, SLOT(showWindowContextMenu()));
 	connect(m, SIGNAL(moved()), this, SLOT(modifiedProject()));
 
@@ -2969,7 +2926,7 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 
 Matrix* ApplicationWindow::convertTableToMatrix()
 {
-	Table* t = (Table*)ws->activeWindow();
+	Table* t = (Table*)activeWindow(MatrixWindow);
 	if (!t)
 		return 0;
 
@@ -2987,7 +2944,7 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 	int cols = t->numCols();
 
 	QString caption = generateUniqueName(tr("Matrix"));
-	Matrix* m = new Matrix(scriptEnv, rows, cols, "", ws, 0);
+	Matrix* m = new Matrix(scriptEnv, rows, cols, "", this, 0);
 	initMatrix(m, caption);
 
 	m->setAttribute(Qt::WA_DeleteOnClose);
@@ -3054,27 +3011,44 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 	return  0;
 }
 
-void ApplicationWindow::windowActivated(QWidget *w)
+void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 {
-	if (!w || !w->inherits("MyWidget"))
+	if (!w && activeWindow()){// a dialog window wants to become the active window: we deny it!
+		d_workspace->setActiveSubWindow(activeWindow());
+		return;
+	}
+	
+	if (!w || !w->inherits("MdiSubWindow"))
 		return;
 
 	customToolBars(w);
 	customMenu(w);
 
-	Folder *f = ((MyWidget *)w)->folder();
+	if (d_opening_file)
+		return;
+	
+	QList<MdiSubWindow *> windows = current_folder->windowsList();
+	foreach(MdiSubWindow *ow, windows){
+		if (ow != w && ow->status() == MdiSubWindow::Maximized){
+			ow->setNormal();
+			break;
+		}
+	}
+	
+	Folder *f = ((MdiSubWindow *)w)->folder();
 	if (f)
-        f->setActiveWindow((MyWidget *)w);
+        f->setActiveWindow((MdiSubWindow *)w);
 
 	emit modified();
 }
 
 void ApplicationWindow::addErrorBars()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MdiSubWindow *w = activeWindow(MultiLayerWindow);
+    if (!w)
 		return;
 
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
+	MultiLayer* plot = (MultiLayer*)w;
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -3108,16 +3082,16 @@ void ApplicationWindow::addErrorBars()
 
 void ApplicationWindow::defineErrorBars(const QString& name, int type, const QString& percent, int direction)
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MdiSubWindow *w = activeWindow(MultiLayerWindow);
+    if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeGraph();
 	if (!g)
 		return;
 
-	Table *w = table(name);
-	if (!w)
-	{ //user defined function
+	Table *t = table(name);
+	if (!t){//user defined function
 		QMessageBox::critical(this,tr("QtiPlot - Error bars error"),
 				tr("This feature is not available for user defined function curves!"));
 		return;
@@ -3129,26 +3103,26 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 		return;
 
 	if (direction == QwtErrorPlotCurve::Horizontal)
-		w->addCol(Table::xErr);
+		t->addCol(Table::xErr);
 	else
-		w->addCol(Table::yErr);
+		t->addCol(Table::yErr);
 
-	int r=w->numRows();
-	int c=w->numCols()-1;
-	int ycol=w->colIndex(name);
+	int r=t->numRows();
+	int c=t->numCols()-1;
+	int ycol=t->colIndex(name);
 	if (!direction)
-		ycol=w->colIndex(xColName);
+		ycol=t->colIndex(xColName);
 
 	QVarLengthArray<double> Y(r);
-	Y=w->col(ycol);
-	QString errColName=w->colName(c);
+	Y=t->col(ycol);
+	QString errColName=t->colName(c);
 
 	double prc=percent.toDouble();
 	double moyenne=0.0;
 	if (type==0){
 		for (int i=0;i<r;i++){
-			if (!w->text(i,ycol).isEmpty())
-				w->setText(i, c, QString::number(Y[i]*prc/100.0,'g',15));
+			if (!t->text(i,ycol).isEmpty())
+				t->setText(i, c, QString::number(Y[i]*prc/100.0,'g',15));
 		}
 	} else if (type==1) {
 		int i;
@@ -3160,18 +3134,17 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 			dev+=(Y[i]-moyenne)*(Y[i]-moyenne);
 		dev=sqrt(dev/(r-1));
 		for (i=0;i<r;i++){
-			if (!w->table()->item(i,ycol)->text().isEmpty())
-				w->setText(i, c, QString::number(dev, 'g', 15));
+			if (!t->table()->item(i,ycol)->text().isEmpty())
+				t->setText(i, c, QString::number(dev, 'g', 15));
 		}
 	}
-	g->addErrorBars(xColName, name, w, errColName, direction);
+	g->addErrorBars(xColName, name, t, errColName, direction);
 }
 
 void ApplicationWindow::defineErrorBars(const QString& curveName, const QString& errColumnName, int direction)
 {
 	Table *w=table(curveName);
-	if (!w)
-	{//user defined function --> no worksheet available
+	if (!w){//user defined function --> no worksheet available
 		QMessageBox::critical(this,tr("QtiPlot - Error"),
 				tr("This feature is not available for user defined function curves!"));
 		return;
@@ -3194,10 +3167,11 @@ void ApplicationWindow::defineErrorBars(const QString& curveName, const QString&
 		return;
 	}
 
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+    if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -3311,7 +3285,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 		confirmCloseTable=askTables;
 		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->inherits("Table"))
-				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmCloseTable);
+				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmCloseTable);
 		}
 	}
 
@@ -3319,7 +3293,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 		confirmCloseMatrix = askMatrices;
 		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->isA("Matrix"))
-				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmCloseMatrix);
+				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmCloseMatrix);
 		}
 	}
 
@@ -3327,7 +3301,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 		confirmClosePlot2D=askPlots2D;
 		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->isA("MultiLayer"))
-				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmClosePlot2D);
+				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmClosePlot2D);
 		}
 	}
 
@@ -3335,7 +3309,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 		confirmClosePlot3D=askPlots3D;
 		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->isA("Graph3D"))
-				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmClosePlot3D);
+				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmClosePlot3D);
 		}
 	}
 
@@ -3343,7 +3317,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 		confirmCloseNotes = askNotes;
 		for (int i = 0; i < int(windows->count());i++ ){
 			if (windows->at(i)->isA("Note"))
-				((MyWidget*)windows->at(i))->askOnCloseEvent(confirmCloseNotes);
+				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmCloseNotes);
 		}
 	}
 
@@ -3452,12 +3426,11 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	ApplicationWindow *app = new ApplicationWindow();
-	app->applyUserSettings();
 	app->restoreApplicationGeometry();
 
 	Table* t = app->newTable(fn, app->columnSeparator, 0, true, app->strip_spaces, app->simplify_spaces,
                 app->d_ASCII_import_comments, app->d_ASCII_comment_string, app->d_ASCII_import_read_only);
-	t->setCaptionPolicy(MyWidget::Both);
+	t->setCaptionPolicy(MdiSubWindow::Both);
 	app->multilayerPlot(t, t->YColumns(),Graph::LineSymbols);
 	QApplication::restoreOverrideCursor();
 	return 0;
@@ -3465,7 +3438,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 
 void ApplicationWindow::importASCII()
 {
-	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(ws->activeWindow() && ws->activeWindow()->inherits("Table"), this, d_extended_import_ASCII_dialog);
+	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(activeWindow(TableWindow), this, d_extended_import_ASCII_dialog);
 	import_dialog->setDir(asciiDirPath);
 	import_dialog->selectFilter(d_ASCII_file_filter);
 	if (import_dialog->exec() != QDialog::Accepted)
@@ -3518,7 +3491,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
                                         local_rename_columns, local_strip_spaces, local_simplify_spaces,
                                         local_import_comments, local_comment_string, import_read_only);
 					if (!w) continue;
-					w->setCaptionPolicy(MyWidget::Both);
+					w->setCaptionPolicy(MdiSubWindow::Both);
 					setListViewLabel(w->objectName(), sorted_files[i]);
 					if (i==0) {
 						dx = w->verticalHeaderWidth();
@@ -3536,15 +3509,15 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 		case ImportASCIIDialog::NewColumns:
 		case ImportASCIIDialog::NewRows:
 			{
-				Table *t = (Table*) ws->activeWindow();
-				if (t && t->inherits("Table")){
+				Table *t = (Table*) activeWindow(TableWindow);
+				if (t){
 					for (int i=0; i<files.size(); i++)
                         t->importMultipleASCIIFiles(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
 							local_strip_spaces, local_simplify_spaces, local_import_comments,
 							local_comment_string, import_read_only, import_mode);
 
 					t->setWindowLabel(files.join("; "));
-					t->setCaptionPolicy(MyWidget::Name);
+					t->setCaptionPolicy(MdiSubWindow::Name);
 					if (update_dec_separators)
 						t->updateDecimalSeparators(local_separators);
 					t->notifyChanges();
@@ -3554,8 +3527,8 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 			}
 		case ImportASCIIDialog::Overwrite:
 			{
-				Table *t = (Table*) ws->activeWindow();
-				if ( t && t->inherits("Table")){
+				Table *t = (Table*) activeWindow(TableWindow);
+				if (t){
 					t->importASCII(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
                                     local_strip_spaces, local_simplify_spaces, local_import_comments, false,
                                     local_comment_string, import_read_only);
@@ -3572,7 +3545,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				}
 
 				if (t){
-					t->setCaptionPolicy(MyWidget::Both);
+					t->setCaptionPolicy(MdiSubWindow::Both);
 					setListViewLabel(t->objectName(), files[0]);
 					modifiedProject(t);
 				}
@@ -3723,11 +3696,11 @@ void ApplicationWindow::openRecentProject(int index)
 ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factorySettings)
 {
 	ApplicationWindow *app = new ApplicationWindow(factorySettings);
-	app->applyUserSettings();
 	app->projectname = fn;
 	app->d_file_version = d_file_version;
 	app->setWindowTitle(tr("QtiPlot") + " - " + fn);
-
+	app->d_opening_file = true;
+	
 	QFile f(fn);
 	QTextStream t( &f );
 	t.setEncoding(QTextStream::UnicodeUTF8);
@@ -3770,6 +3743,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	Folder *cf = app->projectFolder();
 	app->folders->blockSignals (true);
 	app->blockSignals (true);
+
 	//rename project folder item
 	FolderListItem *item = (FolderListItem *)app->folders->firstChild();
 	item->setText(0, fi.baseName());
@@ -3887,7 +3861,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 				QStringList lst=t.readLine().split("\t");
 				plot->setWindowLabel(lst[1]);
 				app->setListViewLabel(plot->objectName(),lst[1]);
-				plot->setCaptionPolicy((MyWidget::CaptionPolicy)lst[2].toInt());
+				plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
 			}
 			if (d_file_version > 83)
 			{
@@ -3931,7 +3905,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			openSurfacePlot(app,list);
 			progress.setValue(aux);
 		}
-		else if  (s == "</folder>")
+		else if (s == "</folder>")
 		{
 			Folder *parent = (Folder *)app->current_folder->parent();
 			if (!parent)
@@ -3939,14 +3913,15 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			else
 				app->current_folder = parent;
 		}
-		else if  (s.left(5)=="<log>")
+		else if (s == "<log>")
 		{//process analysis information
 			s = t.readLine();
-			while ( s != "</log>" )
-			{
-				app->current_folder->appendLogInfo(s + "\n");
+			QString log = s + "\n";
+			while(s != "</log>"){
 				s = t.readLine();
+				log += s + "\n";
 			}
+			app->current_folder->appendLogInfo(log.remove("</log>"));
 		}
 	}
 	f.close();
@@ -3971,7 +3946,6 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->folders->blockSignals (false);
 	//change folder to user defined current folder
 	app->changeFolder(cf, true);
-	app->results->setText(app->current_folder->logInfo());
 
 	app->blockSignals (false);
 	app->renamedTables.clear();
@@ -3979,13 +3953,14 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->restoreApplicationGeometry();
 	app->executeNotes();
     app->savedProject();
+	app->d_opening_file = false;
 	return app;
 }
 
 void ApplicationWindow::executeNotes()
 {
-	QList<MyWidget *> lst = projectFolder()->windowsList();
-	foreach(MyWidget *widget, lst)
+	QList<MdiSubWindow *> lst = projectFolder()->windowsList();
+	foreach(MdiSubWindow *widget, lst)
 		if (widget->isA("Note") && ((Note*)widget)->autoexec())
 			((Note*)widget)->executeAll();
 }
@@ -4071,7 +4046,7 @@ void ApplicationWindow::openTemplate()
 	}
 }
 
-MyWidget* ApplicationWindow::openTemplate(const QString& fn)
+MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 {
 	if (fn.isEmpty() || !QFile::exists(fn)){
 		QMessageBox::critical(this, tr("QtiPlot - File opening error"),
@@ -4095,7 +4070,7 @@ MyWidget* ApplicationWindow::openTemplate(const QString& fn)
 	d_file_version = 100*(vl[0]).toInt()+10*(vl[1]).toInt()+(vl[2]).toInt();
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	MyWidget *w = 0;
+	MdiSubWindow *w = 0;
 	QString templateType;
 	t>>templateType;
 
@@ -4158,8 +4133,8 @@ MyWidget* ApplicationWindow::openTemplate(const QString& fn)
 
 	f.close();
 	if (w){
-		customMenu((QWidget*)w);
-		customToolBars((QWidget*)w);
+		customMenu(w);
+		customToolBars(w);
 	}
 
 	QApplication::restoreOverrideCursor();
@@ -4786,7 +4761,7 @@ void ApplicationWindow::saveSettings()
 
 void ApplicationWindow::exportGraph()
 {
-	QWidget *w = ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
 
@@ -4852,8 +4827,8 @@ void ApplicationWindow::exportGraph()
 
 void ApplicationWindow::exportLayer()
 {
-	QWidget *w=ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MdiSubWindow *w = activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
 	Graph* g = ((MultiLayer*)w)->activeGraph();
@@ -5001,11 +4976,10 @@ void ApplicationWindow::exportAllGraphs()
 	QApplication::restoreOverrideCursor();
 }
 
-QString ApplicationWindow::windowGeometryInfo(MyWidget *w)
+QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
 {
 	QString s = "geometry\t";
-    if (w->status() == MyWidget::Maximized)
-	{
+    if (w->status() == MdiSubWindow::Maximized){
 		if (w == w->folder()->activeWindow())
 			return s + "maximized\tactive\n";
 		else
@@ -5014,16 +4988,14 @@ QString ApplicationWindow::windowGeometryInfo(MyWidget *w)
 
 	if (!w->parent())
         s+="0\t0\t500\t400\t";
-    else
-    {
-        QPoint p = w->parentWidget()->pos();// store position
-        s+=QString::number(p.x())+"\t";
-        s+=QString::number(p.y())+"\t";
-        s+=QString::number(w->parentWidget()->frameGeometry().width())+"\t";
-        s+=QString::number(w->parentWidget()->frameGeometry().height())+"\t";
+    else{
+        s += QString::number(w->x()) + "\t";
+        s += QString::number(w->y()) + "\t";
+        s += QString::number(w->width()) + "\t";
+        s += QString::number(w->height()) + "\t";
     }
 
-    if (w->status() == MyWidget::Minimized)
+    if (w->status() == MdiSubWindow::Minimized)
         s += "minimized\t";
 
     bool hide = hidden(w);
@@ -5036,27 +5008,30 @@ QString ApplicationWindow::windowGeometryInfo(MyWidget *w)
 	return s;
 }
 
-void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MyWidget *w, const QString s)
+void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWindow *w, const QString s)
 {
-	w->blockSignals (true);
+	w->blockSignals(true);
 	QString caption = w->objectName();
 	if (s.contains ("minimized")) {
 	    QStringList lst = s.split("\t");
-	    if (lst.count() > 4)
-            w->parentWidget()->setGeometry(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
-		w->setStatus(MyWidget::Minimized);
+	    if (lst.count() > 4){
+            w->resize(lst[3].toInt(), lst[4].toInt());
+            w->move(lst[1].toInt(), lst[2].toInt());
+	    }
+		w->setStatus(MdiSubWindow::Minimized);
 		app->setListView(caption, tr("Minimized"));
-	} else if (s.contains ("maximized")) {
-		w->setStatus(MyWidget::Maximized);
-		if (w->isA("MultiLayer"))
-            ((MultiLayer*)w)->setOpenMaximized();
-
+	} else if (s.contains ("maximized")){
+		w->setStatus(MdiSubWindow::Maximized);
+        if (w->isA("MultiLayer"))
+			((MultiLayer *)w)->setIgnoreResize();
 		app->setListView(caption, tr("Maximized"));
 	} else {
 		QStringList lst = s.split("\t");
-		w->parentWidget()->setGeometry(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
-		w->setStatus(MyWidget::Normal);
-
+		if (lst.count() > 4){
+            w->resize(lst[3].toInt(), lst[4].toInt());
+            w->move(lst[1].toInt(), lst[2].toInt());
+		}
+		w->setStatus(MdiSubWindow::Normal);
         if (lst.count() > 5) {
             if (lst[5] == "hidden")
                 app->hideWindow(w);
@@ -5069,7 +5044,7 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MyWidget *
             f->setActiveWindow(w);
 	}
 
-	w->blockSignals (false);
+	w->blockSignals(false);
 }
 
 Folder* ApplicationWindow::projectFolder()
@@ -5152,16 +5127,16 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 
 void ApplicationWindow::saveNoteAs()
 {
-	Note* w = (Note*)ws->activeWindow();
-	if (!w || !w->inherits("Note"))
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
 		return;
 	w->exportASCII();
 }
 
-void ApplicationWindow::saveAsTemplate(MyWidget* w, const QString& fileName)
+void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 {
 	if (!w) {
-		w = (MyWidget*)ws->activeWindow();
+		w = activeWindow();
 		if (!w)
 			return;
 	}
@@ -5213,7 +5188,7 @@ void ApplicationWindow::saveAsTemplate(MyWidget* w, const QString& fileName)
 
 void ApplicationWindow::rename()
 {
-	MyWidget* m = (MyWidget*)ws->activeWindow();
+	MdiSubWindow* m = activeWindow();
 	if (!m)
 		return;
 
@@ -5226,7 +5201,7 @@ void ApplicationWindow::rename()
 void ApplicationWindow::renameWindow()
 {
 	WindowListItem *it = (WindowListItem *)lv->currentItem();
-	MyWidget *w = it->window();
+	MdiSubWindow *w = it->window();
 	if (!w)
 		return;
 
@@ -5241,7 +5216,7 @@ void ApplicationWindow::renameWindow(Q3ListViewItem *item, int, const QString &t
 	if (!item)
 		return;
 
-	MyWidget *w = ((WindowListItem *)item)->window();
+	MdiSubWindow *w = ((WindowListItem *)item)->window();
 	if (!w || text == w->objectName())
 		return;
 
@@ -5249,7 +5224,7 @@ void ApplicationWindow::renameWindow(Q3ListViewItem *item, int, const QString &t
         item->setText(0, w->objectName());
 }
 
-bool ApplicationWindow::setWindowName(MyWidget *w, const QString &text)
+bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 {
 	if (!w)
 		return false;
@@ -5279,11 +5254,9 @@ bool ApplicationWindow::setWindowName(MyWidget *w, const QString &text)
 		return false;
 	}
 
-	if (w->inherits("Table")){
-		int id = tableWindows.findIndex(name);
-		tableWindows[id] = newName;
+	if (w->inherits("Table"))
 		updateTableNames(name, newName);
-	} else if (w->isA("Matrix"))
+	else if (w->isA("Matrix"))
 		changeMatrixName(name, newName);
 
 	w->setCaptionPolicy(w->captionPolicy());
@@ -5315,17 +5288,18 @@ QStringList ApplicationWindow::columnsList(Table::PlotDesignation plotType)
 
 void ApplicationWindow::showCurvesDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MdiSubWindow *w = activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	if (((MultiLayer*)ws->activeWindow())->isEmpty()){
+	if (((MultiLayer*)w)->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Error"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
 		return;
 	}
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeGraph();
 	if (!g)
 		return;
 
@@ -5342,23 +5316,54 @@ void ApplicationWindow::showCurvesDialog()
 	}
 }
 
+bool ApplicationWindow::hasTable()
+{
+    Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows){
+            if (w->inherits("Table"))
+                return true;
+		}
+		f = f->folderBelow();
+	}
+	return false;
+}
+
+QStringList ApplicationWindow::tableNames()
+{
+    QStringList lst = QStringList();
+    Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows){
+            if (w->inherits("Table"))
+                lst << w->objectName();
+		}
+		f = f->folderBelow();
+	}
+	return lst;
+}
+
 QList<QWidget*>* ApplicationWindow::tableList()
 {
 	QList<QWidget*>* lst = new QList<QWidget*>();
-	QList<QWidget*> *windows = windowsList();
-	for (int i = 0; i < int(windows->count());i++ )
-	{
-		if (windows->at(i)->inherits("Table"))
-			lst->append(windows->at(i));
+	Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows){
+            if (w->inherits("Table"))
+                lst->append((QWidget *)w);
+		}
+		f = f->folderBelow();
 	}
-	delete windows;
 	return lst;
 }
 
 void ApplicationWindow::showPlotAssociations(int curve)
 {
-	QWidget *w = ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MdiSubWindow* w = activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
 	Graph *g = ((MultiLayer*)w)->activeGraph();
@@ -5374,7 +5379,7 @@ void ApplicationWindow::showPlotAssociations(int curve)
 
 void ApplicationWindow::showTitleDialog()
 {
-	QWidget *w = ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
 
@@ -5404,13 +5409,14 @@ void ApplicationWindow::showTitleDialog()
 
 void ApplicationWindow::showXAxisTitleDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MdiSubWindow* w = activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeGraph();
 	if (g)
 	{
-		TextDialog* td= new TextDialog(TextDialog::AxisTitle, this,0);
+		TextDialog* td = new TextDialog(TextDialog::AxisTitle, this,0);
 		td->setAttribute(Qt::WA_DeleteOnClose);
 		connect (td,SIGNAL(changeFont(const QFont &)),g,SLOT(setXAxisTitleFont(const QFont &)));
 		connect (td,SIGNAL(changeText(const QString &)),g,SLOT(setXAxisTitle(const QString &)));
@@ -5428,10 +5434,11 @@ void ApplicationWindow::showXAxisTitleDialog()
 
 void ApplicationWindow::showYAxisTitleDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MdiSubWindow* w = activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeGraph();
 	if (g)
 	{
 		TextDialog* td= new TextDialog(TextDialog::AxisTitle, this,0);
@@ -5452,10 +5459,11 @@ void ApplicationWindow::showYAxisTitleDialog()
 
 void ApplicationWindow::showRightAxisTitleDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MdiSubWindow* w = activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeGraph();
 	if (g)
 	{
 		TextDialog* td= new TextDialog(TextDialog::AxisTitle, this, 0);
@@ -5476,10 +5484,11 @@ void ApplicationWindow::showRightAxisTitleDialog()
 
 void ApplicationWindow::showTopAxisTitleDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MdiSubWindow* w = activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeGraph();
 	if (g){
 		TextDialog* td= new TextDialog(TextDialog::AxisTitle, this, 0);
 		td->setAttribute(Qt::WA_DeleteOnClose);
@@ -5499,11 +5508,13 @@ void ApplicationWindow::showTopAxisTitleDialog()
 
 void ApplicationWindow::showExportASCIIDialog()
 {
-	if (tableWindows.count()){
+	if (hasTable()){
 		QString tableName;
-		if (ws->activeWindow() && ws->activeWindow()->inherits("Table"))
-			tableName = ws->activeWindow()->objectName();
-		ExportDialog* ed = new ExportDialog(tableName, this, Qt::WindowContextHelpButtonHint);
+		MdiSubWindow* t = activeWindow(TableWindow);
+		if (!t)
+			return;
+			
+		ExportDialog* ed = new ExportDialog(t->objectName(), this, Qt::WindowContextHelpButtonHint);
 		ed->setAttribute(Qt::WA_DeleteOnClose);
 		ed->exec();
 	}
@@ -5581,24 +5592,24 @@ void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep
 
 void ApplicationWindow::showRowsDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
 	bool ok;
 	int rows = QInputDialog::getInteger(this, tr("QtiPlot - Enter rows number"), tr("Rows"),
-			((Table*)ws->activeWindow())->numRows(), 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
+			t->numRows(), 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
 	if ( ok )
-		((Table*)ws->activeWindow())->resizeRows(rows);
+		t->resizeRows(rows);
 }
 
 void ApplicationWindow::showDeleteRowsDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+    Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-    Table *t = (Table*)ws->activeWindow();
+	
 	bool ok;
-
 	int start_row = QInputDialog::getInteger(this, tr("QtiPlot - Delete rows"), tr("Start row"),
                     1, 1, t->numRows(), 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
     if (ok){
@@ -5611,21 +5622,22 @@ void ApplicationWindow::showDeleteRowsDialog()
 
 void ApplicationWindow::showColsDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
 
 	bool ok;
 	int cols = QInputDialog::getInteger(this, tr("QtiPlot - Enter columns number"), tr("Columns"),
-			((Table*)ws->activeWindow())->numCols(), 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
+			t->numCols(), 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
 	if ( ok )
-		((Table*)ws->activeWindow())->resizeCols(cols);
+		t->resizeCols(cols);
 }
 
 void ApplicationWindow::showColumnValuesDialog()
 {
-	Table* w = (Table*)ws->activeWindow();
-	if (!w || !w->inherits("Table"))
-        return;
+	Table *w = (Table*)activeWindow(TableWindow);
+	if (!w)
+		return;
 
     if (w->selectedColumns().count()>0 || w->table()->currentSelection() >= 0){
         SetColValuesDialog* vd = new SetColValuesDialog(scriptEnv, this);
@@ -5638,7 +5650,7 @@ void ApplicationWindow::showColumnValuesDialog()
 
 void ApplicationWindow::recalculateTable()
 {
-	QWidget* w = ws->activeWindow();
+	MdiSubWindow* w = activeWindow();
 	if (!w)
 		return;
 
@@ -5650,52 +5662,55 @@ void ApplicationWindow::recalculateTable()
 
 void ApplicationWindow::sortActiveTable()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	if (int(((Table*)ws->activeWindow())->selectedColumns().count())>0)
-		((Table*)ws->activeWindow())->sortTableDialog();
+	if ((int)t->selectedColumns().count()>0)
+		t->sortTableDialog();
 	else
 		QMessageBox::warning(this, "QtiPlot - Column selection error","Please select a column first!");
 }
 
 void ApplicationWindow::sortSelection()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table*)ws->activeWindow())->sortColumnsDialog();
+	t->sortColumnsDialog();
 }
 
 void ApplicationWindow::normalizeActiveTable()
 {
-	Table* w = (Table*)ws->activeWindow();
-	if ( w && tableWindows.contains(w->objectName()))
-	{
-		if (int(w->selectedColumns().count())>0)
-			w->normalize();
-		else
-			QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
-	}
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		return;
+	
+	if (int(t->selectedColumns().count())>0)
+		t->normalize();
+	else
+		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
 }
 
 void ApplicationWindow::normalizeSelection()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	if (int(((Table*)ws->activeWindow())->selectedColumns().count())>0)
-		((Table*)ws->activeWindow())->normalizeSelection();
+	if (int(t->selectedColumns().count())>0)
+		t->normalizeSelection();
 	else
 		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
 }
 
 void ApplicationWindow::correlate()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	Table *t = (Table*)ws->activeWindow();
 	QStringList s = t->selectedColumns();
 	if ((int)s.count() != 2){
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select two columns for this operation!"));
@@ -5709,10 +5724,10 @@ void ApplicationWindow::correlate()
 
 void ApplicationWindow::autoCorrelate()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-	Table *t = (Table*)ws->activeWindow();
+	
 	QStringList s = t->selectedColumns();
 	if ((int)s.count() != 1)
 	{
@@ -5727,10 +5742,10 @@ void ApplicationWindow::autoCorrelate()
 
 void ApplicationWindow::convolute()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-	Table *t = (Table*)ws->activeWindow();
+	
 	QStringList s = t->selectedColumns();
 	if ((int)s.count() != 2)
 	{
@@ -5745,10 +5760,10 @@ void ApplicationWindow::convolute()
 
 void ApplicationWindow::deconvolute()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-	Table *t = (Table*)ws->activeWindow();
+	
 	QStringList s = t->selectedColumns();
 	if ((int)s.count() != 2)
 	{
@@ -5763,9 +5778,9 @@ void ApplicationWindow::deconvolute()
 
 void ApplicationWindow::showColStatistics()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
-	Table *t = (Table*)ws->activeWindow();
 
 	if (int(t->selectedColumns().count()) > 0)
 	{
@@ -5782,9 +5797,9 @@ void ApplicationWindow::showColStatistics()
 
 void ApplicationWindow::showRowStatistics()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
-	Table *t = (Table*)ws->activeWindow();
 
 	if (t->numSelectedRows() > 0){
 		QList<int> targets;
@@ -5799,10 +5814,9 @@ void ApplicationWindow::showRowStatistics()
 
 void ApplicationWindow::showColMenu(int c)
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *w = (Table*)activeWindow(TableWindow);
+	if (!w)
 		return;
-
-	Table* w = (Table*)ws->activeWindow();
 
 	QMenu contextMenu(this);
 	QMenu plot(this);
@@ -5900,7 +5914,7 @@ void ApplicationWindow::showColMenu(int c)
 		colType.setTitle(tr("Set As"));
 		contextMenu.addMenu(&colType);
 
-		if (ws->activeWindow()->inherits("Table")){
+		if (w){
 			contextMenu.insertSeparator();
 
 			contextMenu.addAction(actionShowColumnValuesDialog);
@@ -5978,7 +5992,7 @@ void ApplicationWindow::showColMenu(int c)
 		contextMenu.addAction(QIcon(QPixmap(paste_xpm)),tr("Past&e"), w, SLOT(pasteSelection()));
 		contextMenu.insertSeparator();
 
-		if (ws->activeWindow()->inherits("Table")){
+		if (w){
 			contextMenu.addAction(QIcon(QPixmap(erase_xpm)),tr("Clea&r"), w, SLOT(clearSelection()));
 			contextMenu.addAction(QIcon(QPixmap(close_xpm)),tr("&Delete"), w, SLOT(removeCol()));
 			contextMenu.insertSeparator();
@@ -6002,7 +6016,7 @@ void ApplicationWindow::showColMenu(int c)
 		colType.setTitle(tr("Set As"));
 		contextMenu.addMenu(&colType);
 
-		if (ws->activeWindow()->inherits("Table"))
+		if (w)
 		{
 			contextMenu.insertSeparator();
 
@@ -6055,42 +6069,45 @@ void ApplicationWindow::plotStackedHistograms()
 
 void ApplicationWindow::showMatrixDialog()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Matrix"))
-	{
-		Matrix* w = (Matrix*)ws->activeWindow();
+	Matrix *m = (Matrix*)activeWindow(MatrixWindow);
+	if (!m)
+		return;
 
-		MatrixDialog* md = new MatrixDialog(this);
-		md->setAttribute(Qt::WA_DeleteOnClose);
-		md->setMatrix (w);
-		md->exec();
-	}
+	MatrixDialog* md = new MatrixDialog(this);
+	md->setAttribute(Qt::WA_DeleteOnClose);
+	md->setMatrix (m);
+	md->exec();
 }
 
 void ApplicationWindow::showMatrixSizeDialog()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Matrix")){
-		MatrixSizeDialog* md = new MatrixSizeDialog((Matrix*)ws->activeWindow(), this);
-		md->setAttribute(Qt::WA_DeleteOnClose);
-		md->exec();
-	}
+	Matrix *m = (Matrix*)activeWindow(MatrixWindow);
+	if (!m)
+		return;
+	
+	MatrixSizeDialog* md = new MatrixSizeDialog(m, this);
+	md->setAttribute(Qt::WA_DeleteOnClose);
+	md->exec();
 }
 
 void ApplicationWindow::showMatrixValuesDialog()
 {
-	if ( ws->activeWindow() && ws->activeWindow()->isA("Matrix")){
-		MatrixValuesDialog* md = new MatrixValuesDialog(scriptEnv, this);
-		md->setAttribute(Qt::WA_DeleteOnClose);
-		md->setMatrix((Matrix*)ws->activeWindow());
-		md->exec();
-	}
+	Matrix *m = (Matrix*)activeWindow(MatrixWindow);
+	if (!m)
+		return;
+	
+	MatrixValuesDialog* md = new MatrixValuesDialog(scriptEnv, this);
+	md->setAttribute(Qt::WA_DeleteOnClose);
+	md->setMatrix(m);
+	md->exec();
 }
 
 void ApplicationWindow::showColumnOptionsDialog()
 {
-	if ( !ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-	Table *t = (Table*)ws->activeWindow();
+	
 	if(t->selectedColumns().count()>0) {
 		TableDialog* td = new TableDialog(t, this);
 		td->setAttribute(Qt::WA_DeleteOnClose);
@@ -6101,7 +6118,7 @@ void ApplicationWindow::showColumnOptionsDialog()
 
 void ApplicationWindow::showGeneralPlotDialog()
 {
-	QWidget* plot = ws->activeWindow();
+	MdiSubWindow* plot = activeWindow();
 	if (!plot)
 		return;
 
@@ -6115,7 +6132,7 @@ void ApplicationWindow::showGeneralPlotDialog()
 
 void ApplicationWindow::showAxisDialog()
 {
-	QWidget* plot = (QWidget*)ws->activeWindow();
+	MdiSubWindow* plot = activeWindow();
 	if (!plot)
 		return;
 
@@ -6135,7 +6152,7 @@ void ApplicationWindow::showGridDialog()
 
 QDialog* ApplicationWindow::showScaleDialog()
 {
-	QWidget *w = ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return 0;
 
@@ -6175,43 +6192,41 @@ AxesDialog* ApplicationWindow::showAxisPageFromAxisDialog(int axisPos)
 
 QDialog* ApplicationWindow::showPlot3dDialog()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D")){
-		Graph3D* g = (Graph3D*)ws->activeWindow();
-		if (!g->hasData()){
-			QApplication::restoreOverrideCursor();
-			QMessageBox::warning(this, tr("QtiPlot - Warning"),
+	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
+	if (!g)
+		return 0;
+			
+	if (!g->hasData()){
+		QApplication::restoreOverrideCursor();
+		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 					tr("Not available for empty 3D surface plots!"));
-			return 0;
-		}
-
-		Plot3DDialog* pd = new Plot3DDialog(this);
-		pd->setPlot(g);
-		pd->show();
-		return pd;
+		return 0;
 	}
-	else return 0;
+
+	Plot3DDialog* pd = new Plot3DDialog(this);
+	pd->setPlot(g);
+	pd->show();
+	return pd;
 }
 
 void ApplicationWindow::showPlotDialog(int curveKey)
 {
-	QWidget *w = ws->activeWindow();
+	MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer")){
-		PlotDialog* pd = new PlotDialog(d_extended_plot_dialog, this);
-        pd->setAttribute(Qt::WA_DeleteOnClose);
-        pd->insertColumnsList(columnsList(Table::All));
-        pd->setMultiLayer((MultiLayer*)w);
-        if (curveKey >= 0){
-			Graph *g = ((MultiLayer*)w)->activeGraph();
-			if (g)
-            	pd->selectCurve(g->curveIndex(curveKey));
-		}
-        pd->initFonts(plotTitleFont, plotAxesFont, plotNumbersFont, plotLegendFont);
-		pd->showAll(d_extended_plot_dialog);
-        pd->show();
+	PlotDialog* pd = new PlotDialog(d_extended_plot_dialog, this);
+	pd->setAttribute(Qt::WA_DeleteOnClose);
+	pd->insertColumnsList(columnsList(Table::All));
+	pd->setMultiLayer(w);
+    if (curveKey >= 0){
+		Graph *g = w->activeGraph();
+		if (g)
+			pd->selectCurve(g->curveIndex(curveKey));
 	}
+    pd->initFonts(plotTitleFont, plotAxesFont, plotNumbersFont, plotLegendFont);
+	pd->showAll(d_extended_plot_dialog);
+	pd->show();
 }
 
 void ApplicationWindow::showCurvePlotDialog()
@@ -6221,10 +6236,11 @@ void ApplicationWindow::showCurvePlotDialog()
 
 void ApplicationWindow::showCurveContextMenu(int curveKey)
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph *g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph *g = w->activeGraph();
 	DataCurve *c = (DataCurve *)g->curve(g->curveIndex(curveKey));
 	if (!c || !c->isVisible())
 		return;
@@ -6304,10 +6320,11 @@ void ApplicationWindow::showCurveContextMenu(int curveKey)
 
 void ApplicationWindow::showAllCurves()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = w->activeGraph();
 	if (!g)
 		return;
 
@@ -6318,10 +6335,11 @@ void ApplicationWindow::showAllCurves()
 
 void ApplicationWindow::hideOtherCurves()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = w->activeGraph();
 	if (!g)
 		return;
 
@@ -6335,10 +6353,11 @@ void ApplicationWindow::hideOtherCurves()
 
 void ApplicationWindow::hideCurve()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = w->activeGraph();
 	if (!g)
 		return;
 
@@ -6348,10 +6367,11 @@ void ApplicationWindow::hideCurve()
 
 void ApplicationWindow::removeCurve()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = w->activeGraph();
 	if (!g)
 		return;
 
@@ -6384,10 +6404,11 @@ void ApplicationWindow::showCurveWorksheet(Graph *g, int curveIndex)
 
 void ApplicationWindow::showCurveWorksheet()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = w->activeGraph();
 	if (!g)
 		return;
 
@@ -6397,10 +6418,10 @@ void ApplicationWindow::showCurveWorksheet()
 
 void ApplicationWindow::zoomIn()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
+	
 	if (plot->isEmpty())
 	{
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
@@ -6430,10 +6451,10 @@ void ApplicationWindow::zoomIn()
 
 void ApplicationWindow::zoomOut()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
+	
 	if (plot->isEmpty() || (Graph*)plot->activeGraph()->isPiePlot())
 		return;
 
@@ -6443,10 +6464,9 @@ void ApplicationWindow::zoomOut()
 
 void ApplicationWindow::setAutoScale()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"));
@@ -6462,10 +6482,9 @@ void ApplicationWindow::setAutoScale()
 
 void ApplicationWindow::removePoints()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty())
 	{
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
@@ -6509,10 +6528,9 @@ void ApplicationWindow::removePoints()
 
 void ApplicationWindow::movePoints()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -6554,11 +6572,11 @@ void ApplicationWindow::movePoints()
 
 void ApplicationWindow::exportPDF()
 {
-	QWidget* w = ws->activeWindow();
-	if (!w)
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	if (w->isA("MultiLayer") && ((MultiLayer*)w)->isEmpty())
+	if (plot->isEmpty())
 	{
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"));
@@ -6584,29 +6602,31 @@ void ApplicationWindow::exportPDF()
         }
 
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-        ((MyWidget*)w)->exportPDF(fname);
-
+        plot->exportPDF(fname);
 		QApplication::restoreOverrideCursor();
 	}
 }
 
 void ApplicationWindow::print(QWidget* w)
 {
-	if (w->isA("MultiLayer") && ((MultiLayer*)w)->isEmpty())
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+	
+	if (plot->isEmpty())
 	{
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
 	}
 
-	((MyWidget*)w)->print();
+	plot->print();
 }
 
 //print active window
 void ApplicationWindow::print()
 {
-	QWidget* w = ws->activeWindow();
+	MdiSubWindow* w = activeWindow();
 	if (!w)
 		return;
 
@@ -6617,7 +6637,7 @@ void ApplicationWindow::print()
 void ApplicationWindow::printWindow()
 {
 	WindowListItem *it = (WindowListItem *)lv->currentItem();
-	MyWidget *w= it->window();
+	MdiSubWindow *w= it->window();
 	if (!w)
 		return;
 
@@ -6670,10 +6690,11 @@ void ApplicationWindow::showExpDecayDialog()
 
 void ApplicationWindow::showExpDecayDialog(int type)
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6697,7 +6718,7 @@ void ApplicationWindow::showExpDecay3Dialog()
 
 void ApplicationWindow::showFitDialog()
 {
-	QWidget *w = ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
 
@@ -6725,10 +6746,11 @@ void ApplicationWindow::showFitDialog()
 
 void ApplicationWindow::showFilterDialog(int filter)
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if ( g && g->validCurvesDataSize())
 	{
 		FilterDialog *fd = new FilterDialog(filter, this);
@@ -6760,7 +6782,7 @@ void ApplicationWindow::bandBlockFilterDialog()
 
 void ApplicationWindow::showFFTDialog()
 {
-	QWidget *w = ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
 
@@ -6788,10 +6810,11 @@ void ApplicationWindow::showFFTDialog()
 
 void ApplicationWindow::showSmoothDialog(int m)
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6818,10 +6841,11 @@ void ApplicationWindow::showSmoothAverageDialog()
 
 void ApplicationWindow::showInterpolationDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6834,10 +6858,11 @@ void ApplicationWindow::showInterpolationDialog()
 
 void ApplicationWindow::showFitPolynomDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6864,10 +6889,11 @@ void ApplicationWindow::updateLog(const QString& result)
 
 void ApplicationWindow::showIntegrationDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6927,10 +6953,9 @@ void ApplicationWindow::showResults(const QString& s, bool ok)
 
 void ApplicationWindow::showScreenReader()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -6948,10 +6973,9 @@ void ApplicationWindow::showScreenReader()
 
 void ApplicationWindow::drawPoints()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -6969,10 +6993,9 @@ void ApplicationWindow::drawPoints()
 
 void ApplicationWindow::showRangeSelectors()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 				tr("There are no plot layers available in this window!"));
@@ -7002,10 +7025,9 @@ void ApplicationWindow::showRangeSelectors()
 
 void ApplicationWindow::showCursor()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -7032,10 +7054,9 @@ void ApplicationWindow::showCursor()
 
 void ApplicationWindow::newLegend()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -7050,10 +7071,9 @@ void ApplicationWindow::newLegend()
 
 void ApplicationWindow::addTimeStamp()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty())
 	{
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
@@ -7078,10 +7098,9 @@ void ApplicationWindow::addText()
 	if (!btnPointer->isOn())
 		btnPointer->setOn(TRUE);
 
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	Graph *g = (Graph*)plot->activeGraph();
 	if (g)
 		g->drawText(true);
@@ -7089,10 +7108,9 @@ void ApplicationWindow::addText()
 
 void ApplicationWindow::addImage()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -7126,10 +7144,9 @@ void ApplicationWindow::addImage()
 
 void ApplicationWindow::drawLine()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty())
 	{
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
@@ -7150,10 +7167,9 @@ void ApplicationWindow::drawLine()
 
 void ApplicationWindow::drawArrow()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if (plot->isEmpty())
 	{
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
@@ -7174,10 +7190,11 @@ void ApplicationWindow::drawArrow()
 
 void ApplicationWindow::showImageDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (g)
 	{
 		ImageMarker *im = (ImageMarker *) g->selectedMarkerPtr();
@@ -7197,10 +7214,9 @@ void ApplicationWindow::showImageDialog()
 
 void ApplicationWindow::showLayerDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer*)ws->activeWindow();
 	if(plot->isEmpty())
 	{
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
@@ -7216,10 +7232,11 @@ void ApplicationWindow::showLayerDialog()
 
 void ApplicationWindow::showTextDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if ( g ){
 		LegendWidget *l = (LegendWidget *) g->selectedText();
 		if (!l)
@@ -7234,10 +7251,11 @@ void ApplicationWindow::showTextDialog()
 
 void ApplicationWindow::showLineDialog()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (g){
 		ArrowMarker *lm = (ArrowMarker *) g->selectedMarkerPtr();
 		if (!lm)
@@ -7251,7 +7269,7 @@ void ApplicationWindow::showLineDialog()
 
 void ApplicationWindow::addColToTable()
 {
-	Table* m = (Table*)ws->activeWindow();
+	Table* m = (Table*)activeWindow(TableWindow);
 	if ( m )
 		m->addCol();
 }
@@ -7263,7 +7281,7 @@ void ApplicationWindow::clearSelection()
 		return;
 	}
 
-	QWidget* m = (QWidget*)ws->activeWindow();
+	MdiSubWindow* m = activeWindow();
 	if (!m)
 		return;
 
@@ -7301,7 +7319,7 @@ void ApplicationWindow::copySelection()
 		return;
 	}
 
-	QWidget* m = (QWidget*)ws->activeWindow();
+	MdiSubWindow* m = activeWindow();
 	if (!m)
 		return;
 
@@ -7336,7 +7354,7 @@ void ApplicationWindow::copySelection()
 
 void ApplicationWindow::cutSelection()
 {
-	QWidget* m = (QWidget*)ws->activeWindow();
+	MdiSubWindow* m = activeWindow();
 	if (!m)
 		return;
 
@@ -7373,9 +7391,11 @@ void ApplicationWindow::copyMarker()
 {
     lastCopiedLayer = NULL;
 
-	QWidget* m = (QWidget*)ws->activeWindow();
-	MultiLayer* plot = (MultiLayer*)m;
-	Graph* g = (Graph*)plot->activeGraph();
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+	
+	Graph* g = plot->activeGraph();
 	if (g && g->markerSelected()){
 		if (g->selectedText()){
 			d_text_copy = g->selectedText();
@@ -7395,7 +7415,7 @@ void ApplicationWindow::copyMarker()
 
 void ApplicationWindow::pasteSelection()
 {
-	QWidget* m = (QWidget*)ws->activeWindow();
+	MdiSubWindow* m = activeWindow();
 	if (!m)
 		return;
 
@@ -7456,10 +7476,10 @@ void ApplicationWindow::pasteSelection()
 	emit modified();
 }
 
-MyWidget* ApplicationWindow::clone(MyWidget* w)
+MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 {
     if (!w) {
-        w = (MyWidget*)ws->activeWindow();
+        w = activeWindow();
 		if (!w){
 			QMessageBox::critical(this,tr("QtiPlot - Duplicate window error"),
 				tr("There are no windows available in this project!"));
@@ -7467,8 +7487,8 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 		}
 	}
 
-	MyWidget* nw = 0;
-	MyWidget::Status status = w->status();
+	MdiSubWindow* nw = 0;
+	MdiSubWindow::Status status = w->status();
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	if (w->isA("MultiLayer")){
@@ -7509,10 +7529,10 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 		if (!nw)
 			return 0;
 
-        if (status == MyWidget::Maximized)
+        if (status == MdiSubWindow::Maximized)
             nw->hide();
 		((Graph3D *)nw)->copy(g);
-		customToolBars((QWidget*)nw);
+		customToolBars(nw);
 	} else if (w->isA("Matrix")){
 		nw = newMatrix(((Matrix *)w)->numRows(), ((Matrix *)w)->numCols());
     	((Matrix *)nw)->copy((Matrix *)w);
@@ -7524,11 +7544,11 @@ MyWidget* ApplicationWindow::clone(MyWidget* w)
 
 	if (nw){
 		if (w->isA("MultiLayer")){
-			if (status == MyWidget::Maximized)
+			if (status == MdiSubWindow::Maximized)
 				nw->showMaximized();
 		} else if (w->isA("Graph3D")){
             ((Graph3D*)nw)->setIgnoreFonts(true);
-			if (status != MyWidget::Maximized){
+			if (status != MdiSubWindow::Maximized){
 				nw->resize(w->size());
 				nw->showNormal();
 			} else
@@ -7562,8 +7582,6 @@ void ApplicationWindow::undo()
 		QString newCaption=t->oldCaption();
 		QString name=lastModified->objectName();
 		if (newCaption != name){
-			int id=tableWindows.findIndex(name);
-			tableWindows[id]=newCaption;
 			updateTableNames(name,newCaption);
 			renameListViewItem(name,newCaption);
 		}
@@ -7590,10 +7608,7 @@ void ApplicationWindow::redo()
 		Table *t= (Table *)lastModified;
 		QString newCaption=t->newCaption();
 		QString name=lastModified->objectName();
-		if (newCaption != name)
-		{
-			int id=tableWindows.findIndex(name);
-			tableWindows[id]=newCaption;
+		if (newCaption != name){
 			updateTableNames(name,newCaption);
 			renameListViewItem(name,newCaption);
 		}
@@ -7612,20 +7627,20 @@ void ApplicationWindow::redo()
 
 bool ApplicationWindow::hidden(QWidget* window)
 {
-	if (hiddenWindows->contains(window) || outWindows->contains(window))
+	if (hiddenWindows->contains(window))
 		return true;
 
 	return false;
 }
 
-void ApplicationWindow::updateWindowStatus(MyWidget* w)
+void ApplicationWindow::updateWindowStatus(MdiSubWindow* w)
 {
 	setListView(w->objectName(), w->aspect());
-	if (w->status() == MyWidget::Maximized){
-		QList<MyWidget *> windows = current_folder->windowsList();
-		foreach(MyWidget *oldMaxWindow, windows){
-			if (oldMaxWindow != w && oldMaxWindow->status() == MyWidget::Maximized)
-				oldMaxWindow->setStatus(MyWidget::Normal);
+	if (w->status() == MdiSubWindow::Maximized){
+		QList<MdiSubWindow *> windows = current_folder->windowsList();
+		foreach(MdiSubWindow *oldMaxWindow, windows){
+			if (oldMaxWindow != w && oldMaxWindow->status() == MdiSubWindow::Maximized)
+				oldMaxWindow->setStatus(MdiSubWindow::Normal);
 		}
 	}
 	modifiedProject();
@@ -7633,14 +7648,14 @@ void ApplicationWindow::updateWindowStatus(MyWidget* w)
 
 void ApplicationWindow::hideActiveWindow()
 {
-	MyWidget *w=(MyWidget *)ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
 
 	hideWindow(w);
 }
 
-void ApplicationWindow::hideWindow(MyWidget* w)
+void ApplicationWindow::hideWindow(MdiSubWindow* w)
 {
 	hiddenWindows->append(w);
 	w->setHidden();
@@ -7650,7 +7665,7 @@ void ApplicationWindow::hideWindow(MyWidget* w)
 void ApplicationWindow::hideWindow()
 {
 	WindowListItem *it = (WindowListItem *)lv->currentItem();
-	MyWidget *w = it->window();
+	MdiSubWindow *w = it->window();
 	if (!w)
 		return;
 
@@ -7659,7 +7674,7 @@ void ApplicationWindow::hideWindow()
 
 void ApplicationWindow::resizeActiveWindow()
 {
-	QWidget *w = (QWidget *)ws->activeWindow();
+	MdiSubWindow* w = activeWindow();
 	if (!w)
 		return;
 
@@ -7668,33 +7683,33 @@ void ApplicationWindow::resizeActiveWindow()
 	connect (id, SIGNAL(setGeometry(int,int,int,int)), this, SLOT(setWindowGeometry(int,int,int,int)));
 
 	id->setWindowTitle(tr("QtiPlot - Window Geometry"));
-	id->setOrigin(w->parentWidget()->pos());
-	id->setSize(w->parentWidget()->size());
+	id->setOrigin(w->pos());
+	id->setSize(w->size());
 	id->exec();
 }
 
 void ApplicationWindow::resizeWindow()
 {
 	WindowListItem *it = (WindowListItem *)lv->currentItem();
-	MyWidget *w = it->window();
+	MdiSubWindow *w = it->window();
 	if (!w)
 		return;
 
-	ws->setActiveWindow ( w );
+	d_workspace->setActiveSubWindow(w);
 
 	ImageDialog *id = new ImageDialog(this);
 	id->setAttribute(Qt::WA_DeleteOnClose);
 	connect (id, SIGNAL(setGeometry(int,int,int,int)), this, SLOT(setWindowGeometry(int,int,int,int)));
 
 	id->setWindowTitle(tr("QtiPlot - Window Geometry"));
-	id->setOrigin(w->parentWidget()->pos());
-	id->setSize(w->parentWidget()->size());
+	id->setOrigin(w->pos());
+	id->setSize(w->size());
 	id->exec();
 }
 
 void ApplicationWindow::setWindowGeometry(int x, int y, int w, int h)
 {
-	ws->activeWindow()->parentWidget()->setGeometry(x, y, w, h);
+	activeWindow()->setGeometry(x, y, w, h);
 }
 
 void ApplicationWindow::activateWindow()
@@ -7703,13 +7718,13 @@ void ApplicationWindow::activateWindow()
 	activateWindow(it->window());
 }
 
-void ApplicationWindow::activateWindow(MyWidget *w)
+void ApplicationWindow::activateWindow(MdiSubWindow *w)
 {
 	if (!w)
 		return;
 
 	w->setNormal();
-	ws->setActiveWindow(w);
+	d_workspace->setActiveSubWindow(w);
 
 	updateWindowLists(w);
 	emit modified();
@@ -7717,37 +7732,38 @@ void ApplicationWindow::activateWindow(MyWidget *w)
 
 void ApplicationWindow::maximizeWindow(Q3ListViewItem * lbi)
 {
+	if (!lbi)
+		lbi = lv->currentItem();
+	
 	if (!lbi || lbi->rtti() == FolderListItem::RTTI)
 		return;
+	
+	maximizeWindow(((WindowListItem*)lbi)->window());
+}
 
-	MyWidget *w = ((WindowListItem*)lbi)->window();
+void ApplicationWindow::maximizeWindow(MdiSubWindow *w)
+{
 	if (!w)
 		return;
 
+	QList<MdiSubWindow *> windows = current_folder->windowsList();
+	foreach(MdiSubWindow *ow, windows){
+		if (ow != w && ow->status() == MdiSubWindow::Maximized){
+			ow->setNormal();
+			break;
+		}
+	}
+	
 	w->setMaximized();
 	updateWindowLists(w);
 	emit modified();
 }
 
-void ApplicationWindow::maximizeWindow(MyWidget *w)
+void ApplicationWindow::minimizeWindow(MdiSubWindow *w)
 {
 	if (!w)
-		return;
-
-	w->setMaximized();
-	updateWindowLists(w);
-	emit modified();
-}
-
-void ApplicationWindow::maximizeWindow()
-{
-	maximizeWindow(lv->currentItem());
-}
-
-void ApplicationWindow::minimizeWindow()
-{
-	WindowListItem *it = (WindowListItem *)lv->currentItem();
-	MyWidget *w= it->window();
+		w = ((WindowListItem *)lv->currentItem())->window();
+	
 	if (!w)
 		return;
 
@@ -7756,39 +7772,23 @@ void ApplicationWindow::minimizeWindow()
 	emit modified();
 }
 
-void ApplicationWindow::minimizeWindow(MyWidget *w)
-{
-	if (!w)
-		return;
-
-	updateWindowLists(w);
-	w->setMinimized();
-	emit modified();
-}
-
-void ApplicationWindow::updateWindowLists(MyWidget *w)
+void ApplicationWindow::updateWindowLists(MdiSubWindow *w)
 {
 	if (!w)
 		return;
 
 	if (hiddenWindows->contains(w))
 		hiddenWindows->takeAt(hiddenWindows->indexOf(w));
-	else if (outWindows->contains(w))
-	{
-		outWindows->takeAt(outWindows->indexOf(w));
-		ws->addWindow(w);
-		w->setAttribute(Qt::WA_DeleteOnClose);
-	}
 }
 
 void ApplicationWindow::closeActiveWindow()
 {
-	QWidget *w=(QWidget *)ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (w)
 		w->close();
 }
 
-void ApplicationWindow::removeWindowFromLists(MyWidget* w)
+void ApplicationWindow::removeWindowFromLists(MdiSubWindow* w)
 {
 	if (!w)
 		return;
@@ -7800,14 +7800,11 @@ void ApplicationWindow::removeWindowFromLists(MyWidget* w)
 			QString name=m->colName(i);
 			removeCurves(name);
 		}
-		tableWindows.remove(caption);
 		if (w == lastModified){
 			actionUndo->setEnabled(false);
 			actionRedo->setEnabled(false);
 		}
 	}
-	else if (w->isA("TableStatistics"))
-		tableWindows.remove(caption);
 	else if (w->isA("MultiLayer")){
 		MultiLayer *ml =  (MultiLayer*)w;
 		Graph *g = ml->activeGraph();
@@ -7819,18 +7816,16 @@ void ApplicationWindow::removeWindowFromLists(MyWidget* w)
 
 	if (hiddenWindows->contains(w))
 		hiddenWindows->takeAt(hiddenWindows->indexOf(w));
-	else if (outWindows->contains(w))
-		outWindows->takeAt(outWindows->indexOf(w));
 }
 
-void ApplicationWindow::closeWindow(MyWidget* window)
+void ApplicationWindow::closeWindow(MdiSubWindow* window)
 {
 	if (!window)
 		return;
 
 	removeWindowFromLists(window);
 	if (window->inherits("Table")){
-		if (!tableWindows.count())
+		if (!hasTable())
 			actionShowExportASCIIDialog->setEnabled(false);
 	}
 
@@ -7842,8 +7837,6 @@ void ApplicationWindow::closeWindow(MyWidget* window)
 	if (it)
 		lv->takeItem(it);
 
-	delete window;
-
     if (show_windows_policy == ActiveFolder && !f->windowsList().count()){
         customMenu(0);
         customToolBars(0);
@@ -7853,7 +7846,7 @@ void ApplicationWindow::closeWindow(MyWidget* window)
 		int initial_depth = item->depth();
 		bool emptyFolder = true;
 		while (item && item->depth() >= initial_depth){
-			QList<MyWidget *> lst = item->folder()->windowsList();
+			QList<MdiSubWindow *> lst = item->folder()->windowsList();
 			if (lst.count() > 0){
 			    emptyFolder = false;
                 break;
@@ -7885,7 +7878,7 @@ mb->exec();
 void ApplicationWindow::analysisMenuAboutToShow()
 {
     analysisMenu->clear();
-    QWidget *w = ws->activeWindow();
+    MdiSubWindow *w = activeWindow();
     if (!w)
         return;
 
@@ -7999,10 +7992,10 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionConvertMatrix);
 
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Matrix"))
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
+	if (!m)
 		return;
-
-	Matrix* m = (Matrix*)ws->activeWindow();
+	
 	actionViewMatrixImage->setChecked(m->viewType() == Matrix::ImageView);
 	actionViewMatrix->setChecked(m->viewType() == Matrix::TableView);
 	actionMatrixColumnRow->setChecked(m->headerViewType() == Matrix::ColumnRow);
@@ -8040,7 +8033,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->addAction(actionLoadImage);
 	fileMenu->addAction(actionImportImage);
 
-	QWidget *w = ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 	if (w && w->isA("Matrix"))
 		fileMenu->addAction(actionExportMatrix);
 
@@ -8093,7 +8086,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 	windowsMenu->insertItem(tr("&Folders"), foldersMenu);
 	windowsMenu->insertSeparator();
 
-	QList<QWidget*> windows = ws->windowList();
+	QList<MdiSubWindow *> windows = current_folder->windowsList();
 	int n = int(windows.count());
 	if (!n ){
 		#ifdef SCRIPTING_PYTHON
@@ -8102,8 +8095,8 @@ void ApplicationWindow::windowsMenuAboutToShow()
 		return;
 	}
 
-	windowsMenu->insertItem(tr("&Cascade"), this, SLOT(cascade() ) );
-	windowsMenu->insertItem(tr("&Tile"), ws, SLOT(tile() ) );
+	windowsMenu->insertItem(tr("&Cascade"), this, SLOT(cascade()));
+	windowsMenu->insertItem(tr("&Tile"), d_workspace, SLOT(tileSubWindows()));
 	windowsMenu->insertSeparator();
 	windowsMenu->addAction(actionNextWindow);
 	windowsMenu->addAction(actionPrevWindow);
@@ -8128,7 +8121,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 			int id = windowsMenu->insertItem(windows.at(i)->objectName(),
 					this, SLOT( windowsMenuActivated( int ) ) );
 			windowsMenu->setItemParameter( id, i );
-			windowsMenu->setItemChecked( id, ws->activeWindow() == windows.at(i) );
+			windowsMenu->setItemChecked( id, current_folder->activeWindow() == windows.at(i));
 		}
 	} else if (n>=10) {
 		windowsMenu->insertSeparator();
@@ -8136,7 +8129,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 			int id = windowsMenu->insertItem(windows.at(i)->objectName(),
 					this, SLOT( windowsMenuActivated( int ) ) );
 			windowsMenu->setItemParameter( id, i );
-			windowsMenu->setItemChecked( id, ws->activeWindow() == windows.at(i) );
+			windowsMenu->setItemChecked( id, activeWindow() == windows.at(i) );
 		}
 		windowsMenu->insertSeparator();
 		windowsMenu->insertItem(tr("More windows..."),this, SLOT(showMoreWindows()));
@@ -8146,10 +8139,11 @@ void ApplicationWindow::windowsMenuAboutToShow()
 
 void ApplicationWindow::showMarkerPopupMenu()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	QMenu markerMenu(this);
 
 	if (g->imageMarkerSelected()){
@@ -8182,8 +8176,8 @@ void ApplicationWindow::showMoreWindows()
 
 void ApplicationWindow::windowsMenuActivated( int id )
 {
-	QList<QWidget*> windows = ws->windowList();
-	QWidget* w = windows.at( id );
+	QList<MdiSubWindow *> windows = current_folder->windowsList();
+	MdiSubWindow* w = windows.at( id );
 	if ( w ){
 		w->showNormal();
 		w->setFocus();
@@ -8191,6 +8185,7 @@ void ApplicationWindow::windowsMenuActivated( int id )
 			hiddenWindows->takeAt(hiddenWindows->indexOf(w));
 			setListView(w->objectName(), tr("Normal"));
 		}
+		d_workspace->setActiveSubWindow(w);
 	}
 }
 
@@ -8214,7 +8209,6 @@ void ApplicationWindow::newProject()
 	saveSettings();//the recent projects must be saved
 
 	ApplicationWindow *ed = new ApplicationWindow();
-	ed->applyUserSettings();
 	ed->restoreApplicationGeometry();
 	ed->initWindow();
 	ed->savedProject();
@@ -8237,7 +8231,7 @@ void ApplicationWindow::modifiedProject()
 	saved = false;
 }
 
-void ApplicationWindow::modifiedProject(QWidget *w)
+void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 {
 	modifiedProject();
 
@@ -8427,7 +8421,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 		return;
 	}
 
-	MyWidget *w= ((WindowListItem *)it)->window();
+	MdiSubWindow *w= ((WindowListItem *)it)->window();
 	if (w){
 		QMenu cm(this);
 		QMenu plots(this);
@@ -8592,7 +8586,7 @@ QStringList ApplicationWindow::multilayerDependencies(QWidget *w)
 
 void ApplicationWindow::showGraphContextMenu()
 {
-	QWidget* w = (QWidget*)ws->activeWindow();
+	MdiSubWindow* w = activeWindow();
 	if (!w)
 		return;
 
@@ -8651,7 +8645,7 @@ void ApplicationWindow::showGraphContextMenu()
 
 void ApplicationWindow::showWindowContextMenu()
 {
-	QWidget* w = (QWidget*)ws->activeWindow();
+	MdiSubWindow* w = activeWindow();
 	if (!w)
 		return;
 
@@ -8742,35 +8736,29 @@ void ApplicationWindow::showWindowContextMenu()
 	cm.exec(QCursor::pos());
 }
 
-void ApplicationWindow::showWindowTitleBarMenu()
+void ApplicationWindow::customWindowTitleBarMenu(MdiSubWindow *w, QMenu *menu)
 {
-	if (!ws->activeWindow())
-		return;
-
-	QMenu cm(this);
-
-	if (ws->activeWindow()->inherits("Table")){
-		cm.addAction(actionShowExportASCIIDialog);
-		cm.insertSeparator();
+    menu->addAction(actionHideActiveWindow);
+    menu->addSeparator();
+	if (w->inherits("Table")){
+		menu->addAction(actionShowExportASCIIDialog);
+		menu->addSeparator();
 	}
 
-	if (ws->activeWindow()->isA("Note"))
-		cm.addAction(actionSaveNote);
+	if (w->isA("Note"))
+		menu->addAction(actionSaveNote);
 	else
-		cm.addAction(actionSaveTemplate);
-	cm.addAction(actionPrint);
-	cm.insertSeparator();
-	cm.addAction(actionRename);
-	cm.addAction(actionCopyWindow);
-	cm.insertSeparator();
-	cm.addAction(actionHideActiveWindow);
-	cm.addAction(actionCloseWindow);
-	cm.exec(QCursor::pos());
+		menu->addAction(actionSaveTemplate);
+	menu->addAction(actionPrint);
+	menu->addSeparator();
+	menu->addAction(actionRename);
+	menu->addAction(actionCopyWindow);
+	menu->addSeparator();
 }
 
 void ApplicationWindow::showTableContextMenu(bool selection)
 {
-	Table *t = (Table*)ws->activeWindow();
+	Table *t = (Table*)activeWindow(TableWindow);
 	if (!t)
 		return;
 
@@ -8917,18 +8905,17 @@ void ApplicationWindow::showHelp()
 
 void ApplicationWindow::showPlotWizard()
 {
-	if (tableWindows.count()>0)
-	{
+    QStringList lst = tableNames();
+	if (lst.count() > 0){
 		PlotWizard* pw = new PlotWizard(this, 0);
 		pw->setAttribute(Qt::WA_DeleteOnClose);
 		connect (pw,SIGNAL(plot(const QStringList&)),this,SLOT(multilayerPlot(const QStringList&)));
 
-		pw->insertTablesList(tableWindows);
+		pw->insertTablesList(lst);
 		pw->setColumnsList(columnsList(Table::All));
-		pw->changeColumnsList(tableWindows[0]);
+		pw->changeColumnsList(lst[0]);
 		pw->exec();
-	}
-	else
+	} else
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no tables available in this project.</h4>"
 					"<p><h4>Please create a table and try again!</h4>"));
@@ -8936,10 +8923,11 @@ void ApplicationWindow::showPlotWizard()
 
 void ApplicationWindow::setCurveFullRange()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -8949,10 +8937,11 @@ void ApplicationWindow::setCurveFullRange()
 
 void ApplicationWindow::showCurveRangeDialog()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -8974,10 +8963,11 @@ CurveRangeDialog* ApplicationWindow::showCurveRangeDialog(Graph *g, int curve)
 
 void ApplicationWindow::showFunctionDialog()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -9011,18 +9001,18 @@ FunctionDialog* ApplicationWindow::functionDialog()
 
 void ApplicationWindow::addFunctionCurve()
 {
-	QWidget* w = ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	if (((MultiLayer*)w)->isEmpty()){
+	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
 					"<p><h4>Please add a layer and try again!</h4>"));
 		return;
 	}
 
-	Graph* g = ((MultiLayer*)w)->activeGraph();
+	Graph* g = plot->activeGraph();
 	if ( g ) {
 		FunctionDialog* fd = functionDialog();
 		if (fd)
@@ -9099,131 +9089,185 @@ void ApplicationWindow::clearSurfaceFunctionsList()
 
 void ApplicationWindow::setFramed3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
-		((Graph3D*)ws->activeWindow())->setFramed();
-		actionShowAxisDialog->setEnabled(TRUE);
-	}
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setFramed();
+	actionShowAxisDialog->setEnabled(TRUE);
 }
 
 void ApplicationWindow::setBoxed3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
-		((Graph3D*)ws->activeWindow())->setBoxed();
-		actionShowAxisDialog->setEnabled(TRUE);
-	}
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setBoxed();
+	actionShowAxisDialog->setEnabled(TRUE);
 }
 
 void ApplicationWindow::removeAxes3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-	{
-		((Graph3D*)ws->activeWindow())->setNoAxes();
-		actionShowAxisDialog->setEnabled(false);
-	}
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setNoAxes();
+	actionShowAxisDialog->setEnabled(false);
 }
 
 void ApplicationWindow::removeGrid3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setPolygonStyle();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setPolygonStyle();
 }
 
 void ApplicationWindow::setHiddenLineGrid3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setHiddenLineStyle();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setHiddenLineStyle();
 }
 
 void ApplicationWindow::setPoints3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setDotStyle();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setDotStyle();
 }
 
 void ApplicationWindow::setCones3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setConeStyle();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setConeStyle();
 }
 
 void ApplicationWindow::setCrosses3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setCrossStyle();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setCrossStyle();
 }
 
 void ApplicationWindow::setBars3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setBarStyle();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setBarStyle();
 }
 
 void ApplicationWindow::setLineGrid3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setWireframeStyle();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setWireframeStyle();
 }
 
 void ApplicationWindow::setFilledMesh3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setFilledMeshStyle();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setFilledMeshStyle();
 }
 
 void ApplicationWindow::setFloorData3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setFloorData();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setFloorData();
 }
 
 void ApplicationWindow::setFloorIso3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setFloorIsolines();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setFloorIsolines();
 }
 
 void ApplicationWindow::setEmptyFloor3DPlot()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setEmptyFloor();
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setEmptyFloor();
 }
 
 void ApplicationWindow::setFrontGrid3DPlot(bool on)
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setFrontGrid(on);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setFrontGrid(on);
 }
 
 void ApplicationWindow::setBackGrid3DPlot(bool on)
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setBackGrid(on);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setBackGrid(on);
 }
 
 void ApplicationWindow::setFloorGrid3DPlot(bool on)
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setFloorGrid(on);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setFloorGrid(on);
 }
 
 void ApplicationWindow::setCeilGrid3DPlot(bool on)
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setCeilGrid(on);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setCeilGrid(on);
 }
 
 void ApplicationWindow::setRightGrid3DPlot(bool on)
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setRightGrid(on);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setRightGrid(on);
 }
 
 void ApplicationWindow::setLeftGrid3DPlot(bool on)
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setLeftGrid(on);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setLeftGrid(on);
 }
 
 void ApplicationWindow::pickPlotStyle( QAction* action )
@@ -9289,7 +9333,7 @@ void ApplicationWindow::pickFloorStyle( QAction* action )
 	emit modified();
 }
 
-void ApplicationWindow::custom3DActions(QWidget *w)
+void ApplicationWindow::custom3DActions(QMdiSubWindow *w)
 {
 	if (w && w->isA("Graph3D"))
 	{
@@ -9630,10 +9674,11 @@ void ApplicationWindow::initPlot3DToolBar()
 
 void ApplicationWindow::pixelLineProfile()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer *)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -9650,10 +9695,11 @@ void ApplicationWindow::pixelLineProfile()
 
 void ApplicationWindow::intensityTable()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer *)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (g){
 		ImageMarker *im = (ImageMarker *) g->selectedMarkerPtr();
         if (im){
@@ -9666,10 +9712,9 @@ void ApplicationWindow::intensityTable()
 
 void ApplicationWindow::autoArrangeLayers()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer *)ws->activeWindow();
 	plot->setMargins(5, 5, 5, 5);
 	plot->setSpacing(5, 5);
 	plot->arrangeLayers(true, false);
@@ -9677,10 +9722,9 @@ void ApplicationWindow::autoArrangeLayers()
 
 void ApplicationWindow::addLayer()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer* plot = (MultiLayer *)ws->activeWindow();
 	switch(QMessageBox::information(this,
 				tr("QtiPlot - Guess best origin for the new layer?"),
 				tr("Do you want QtiPlot to guess the best position for the new layer?\n Warning: this will rearrange existing layers!"),
@@ -9705,10 +9749,11 @@ void ApplicationWindow::addLayer()
 
 void ApplicationWindow::deleteLayer()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	((MultiLayer *)ws->activeWindow())->confirmRemoveLayer();
+	plot->confirmRemoveLayer();
 }
 
 Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &flist)
@@ -9725,7 +9770,7 @@ Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &fli
 
 	lst=flist[2].split("\t");
 	w->setWindowLabel(lst[1]);
-	w->setCaptionPolicy((MyWidget::CaptionPolicy)lst[2].toInt());
+	w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
 	app->setListViewLabel(w->objectName(), lst[1]);
 	return w;
 }
@@ -9765,7 +9810,7 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 				w->setTextFormat('e', fields[2].toInt());
 		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
-			w->setCaptionPolicy((MyWidget::CaptionPolicy)fields[2].toInt());
+			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
 			app->setListViewLabel(w->objectName(), fields[1]);
 		} else if (fields[0] == "Coordinates") { // d_file_version > 81
 			w->setCoordinates(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble(), fields[4].toDouble());
@@ -9862,7 +9907,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 			w->setHeaderColType();
 		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
-			w->setCaptionPolicy((MyWidget::CaptionPolicy)fields[2].toInt());
+			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
 			app->setListViewLabel(w->objectName(), fields[1]);
 		} else if (fields[0] == "ReadOnlyColumn") { // d_file_version > 91
 			fields.pop_front();
@@ -9959,7 +10004,7 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 			w->setColComments(fields);
 		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
-			w->setCaptionPolicy((MyWidget::CaptionPolicy)fields[2].toInt());
+			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
 			setListViewLabel(w->objectName(), fields[1]);
 		}
 	}
@@ -10584,7 +10629,7 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 	if (d_file_version > 71){
 		fList=lst[20].split("\t"); // using QString::SkipEmptyParts here causes a crash for empty window labels
 		plot->setWindowLabel(fList[1]);
-		plot->setCaptionPolicy((MyWidget::CaptionPolicy)fList[2].toInt());
+		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fList[2].toInt());
 		app->setListViewLabel(plot->objectName(),fList[1]);
 	}
 
@@ -10601,12 +10646,13 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 
 void ApplicationWindow::copyActiveLayer()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph *g = ((MultiLayer *)ws->activeWindow())->activeGraph();
+	Graph *g = plot->activeGraph();
 	delete lastCopiedLayer;
-	lastCopiedLayer = new Graph (0, 0, 0);
+	lastCopiedLayer = new Graph(0);
 	lastCopiedLayer->setAttribute(Qt::WA_DeleteOnClose);
 	lastCopiedLayer->setGeometry(0, 0, g->width(), g->height());
 	lastCopiedLayer->copy(g);
@@ -10615,10 +10661,11 @@ void ApplicationWindow::copyActiveLayer()
 
 void ApplicationWindow::showDataSetDialog(const QString& whichFit)
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph *g = ((MultiLayer *)ws->activeWindow())->activeGraph();
+	Graph *g = plot->activeGraph();
 	if (!g)
         return;
 
@@ -10679,10 +10726,11 @@ void ApplicationWindow::analyzeCurve(Graph *g, const QString& whichFit, const QS
 
 void ApplicationWindow::analysis(const QString& whichFit)
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -10754,12 +10802,11 @@ void ApplicationWindow::pickDataTool( QAction* action )
 
 void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 {
-	connect (plot, SIGNAL(showTitleBarMenu()), this,SLOT(showWindowTitleBarMenu()));
 	connect (plot, SIGNAL(showContextMenu()), this,SLOT(showWindowContextMenu()));
 	connect (plot, SIGNAL(showOptionsDialog()), this,SLOT(showPlot3dDialog()));
-	connect (plot, SIGNAL(closedWindow(MyWidget*)), this, SLOT(closeWindow(MyWidget*)));
-	connect (plot, SIGNAL(hiddenWindow(MyWidget*)), this, SLOT(hideWindow(MyWidget*)));
-	connect (plot, SIGNAL(statusChanged(MyWidget*)), this, SLOT(updateWindowStatus(MyWidget*)));
+	connect (plot, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
+	connect (plot, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
+	connect (plot, SIGNAL(statusChanged(MdiSubWindow*)), this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect (plot, SIGNAL(modified()), this, SIGNAL(modified()));
 	connect (plot, SIGNAL(moved()), this, SLOT(modifiedProject()));
 
@@ -10768,13 +10815,12 @@ void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 
 void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 {
-	connect (g,SIGNAL(showTitleBarMenu()),this,SLOT(showWindowTitleBarMenu()));
 	connect (g,SIGNAL(showTextDialog()),this,SLOT(showTextDialog()));
 	connect (g,SIGNAL(showPlotDialog(int)),this,SLOT(showPlotDialog(int)));
 	connect (g,SIGNAL(showScaleDialog(int)), this, SLOT(showScalePageFromAxisDialog(int)));
 	connect (g,SIGNAL(showAxisDialog(int)), this, SLOT(showAxisPageFromAxisDialog(int)));
 	connect (g,SIGNAL(showCurveContextMenu(int)), this, SLOT(showCurveContextMenu(int)));
-	connect (g,SIGNAL(showWindowContextMenu()),this,SLOT(showWindowContextMenu()));
+	connect (g,SIGNAL(showContextMenu()),this,SLOT(showWindowContextMenu()));
 	connect (g,SIGNAL(showCurvesDialog()),this,SLOT(showCurvesDialog()));
 	connect (g,SIGNAL(drawLineEnded(bool)), btnPointer, SLOT(setOn(bool)));
 	connect (g,SIGNAL(drawTextOff()),this, SLOT(disableAddText()));
@@ -10783,15 +10829,15 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(showRightAxisTitleDialog()),this,SLOT(showRightAxisTitleDialog()));
 	connect (g,SIGNAL(showTopAxisTitleDialog()),this,SLOT(showTopAxisTitleDialog()));
 	connect (g,SIGNAL(showMarkerPopupMenu()),this,SLOT(showMarkerPopupMenu()));
-	connect (g,SIGNAL(closedWindow(MyWidget*)),this, SLOT(closeWindow(MyWidget*)));
-	connect (g,SIGNAL(hiddenWindow(MyWidget*)),this, SLOT(hideWindow(MyWidget*)));
-	connect (g,SIGNAL(statusChanged(MyWidget*)),this, SLOT(updateWindowStatus(MyWidget*)));
+	connect (g,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));
+	connect (g,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
+	connect (g,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect (g,SIGNAL(cursorInfo(const QString&)),info,SLOT(setText(const QString&)));
 	connect (g,SIGNAL(showImageDialog()),this,SLOT(showImageDialog()));
 	connect (g,SIGNAL(createTable(const QString&,int,int,const QString&)),
 			this,SLOT(newTable(const QString&,int,int,const QString&)));
 	connect (g,SIGNAL(viewTitleDialog()),this,SLOT(showTitleDialog()));
-	connect (g,SIGNAL(modifiedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
+	connect (g,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect (g,SIGNAL(modifiedPlot()),this,SLOT(modifiedProject()));
 	connect (g,SIGNAL(showLineDialog()),this,SLOT(showLineDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
@@ -10807,15 +10853,14 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 void ApplicationWindow::connectTable(Table* w)
 {
     connect (w->table(), SIGNAL(selectionChanged()), this, SLOT(customColumnActions()));
-	connect (w,SIGNAL(showTitleBarMenu()),this,SLOT(showWindowTitleBarMenu()));
-	connect (w,SIGNAL(statusChanged(MyWidget*)),this, SLOT(updateWindowStatus(MyWidget*)));
-	connect (w,SIGNAL(hiddenWindow(MyWidget*)),this, SLOT(hideWindow(MyWidget*)));
-	connect (w,SIGNAL(closedWindow(MyWidget*)),this, SLOT(closeWindow(MyWidget*)));
+	connect (w,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
+	connect (w,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
+	connect (w,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));
 	connect (w,SIGNAL(removedCol(const QString&)),this,SLOT(removeCurves(const QString&)));
 	connect (w,SIGNAL(modifiedData(Table *, const QString&)),
 			this, SLOT(updateCurves(Table *, const QString&)));
-	connect (w,SIGNAL(resizedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
-	connect (w,SIGNAL(modifiedWindow(QWidget*)),this,SLOT(modifiedProject(QWidget*)));
+	connect (w,SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
+	connect (w,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect (w,SIGNAL(optionsDialog()),this,SLOT(showColumnOptionsDialog()));
 	connect (w,SIGNAL(colValuesDialog()),this,SLOT(showColumnValuesDialog()));
 	connect (w,SIGNAL(showContextMenu(bool)),this,SLOT(showTableContextMenu(bool)));
@@ -10826,29 +10871,29 @@ void ApplicationWindow::connectTable(Table* w)
 	w->askOnCloseEvent(confirmCloseTable);
 }
 
-void ApplicationWindow::setAppColors(const QColor& wc,const QColor& pc,const QColor& tpc)
+void ApplicationWindow::setAppColors(const QColor& wc, const QColor& pc, const QColor& tpc, bool force)
 {
-	if (workspaceColor != wc)
-	{
+	if (force || workspaceColor != wc){
 		workspaceColor = wc;
-		ws->setPaletteBackgroundColor (wc);
+		d_workspace->setBackground(wc);
 	}
 
-	if (panelsColor == pc && panelsTextColor == tpc)
+	if (!force && panelsColor == pc && panelsTextColor == tpc)
 		return;
 
 	panelsColor = pc;
 	panelsTextColor = tpc;
 
-	QColorGroup cg;
-	cg.setColor(QColorGroup::Base, QColor(panelsColor) );
-	qApp->setPalette(QPalette(cg, cg, cg));
+	QPalette palette;
+	palette.setColor(QPalette::Base, QColor(panelsColor));
+	qApp->setPalette(palette);
 
-	cg.setColor(QColorGroup::Text, QColor(panelsTextColor) );
-	cg.setColor(QColorGroup::WindowText, QColor(panelsTextColor) );
-	cg.setColor(QColorGroup::HighlightedText, QColor(panelsTextColor) );
-	lv->setPalette(QPalette(cg, cg, cg));
-	results->setPalette(QPalette(cg, cg, cg));
+	palette.setColor(QPalette::Text, QColor(panelsTextColor));
+	palette.setColor(QPalette::WindowText, QColor(panelsTextColor));
+
+	lv->setPalette(palette);
+	results->setPalette(palette);
+	folders->setPalette(palette);
 }
 
 void ApplicationWindow::setPlot3DOptions()
@@ -12181,8 +12226,7 @@ Graph3D * ApplicationWindow::openMatrixPlot3D(const QString& caption, const QStr
 	if (!m)
 		return 0;
 
-	Graph3D *plot = new Graph3D("", ws, 0, 0);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
+	Graph3D *plot = new Graph3D("", this, 0, 0);
 	plot->setWindowTitle(caption);
 	plot->setName(caption);
 	plot->addMatrixData(m, xl, xr, yl, yr, zl, zr);
@@ -12195,16 +12239,15 @@ Graph3D * ApplicationWindow::openMatrixPlot3D(const QString& caption, const QStr
 Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 {
 	if (!m) {
-		m = (Matrix*)ws->activeWindow();
-		if (!m || !m->isA("Matrix"))
+		m = (Matrix*)activeWindow(MatrixWindow);
+		if (!m)
 			return 0;
 	}
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	QString label = generateUniqueName(tr("Graph"));
 
-	Graph3D *plot = new Graph3D("", ws, 0);
-	plot->setAttribute(Qt::WA_DeleteOnClose);
+	Graph3D *plot = new Graph3D("", this, 0);
 	plot->addMatrixData(m);
 	plot->customPlotStyle(style);
 	customPlot3D(plot);
@@ -12223,8 +12266,8 @@ Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 MultiLayer* ApplicationWindow::plotGrayScale(Matrix *m)
 {
 	if (!m) {
-		m = (Matrix*)ws->activeWindow();
-		if (!m || !m->isA("Matrix"))
+		m = (Matrix*)activeWindow(MatrixWindow);
+		if (!m)
 			return 0;
 	}
 
@@ -12234,8 +12277,8 @@ MultiLayer* ApplicationWindow::plotGrayScale(Matrix *m)
 MultiLayer* ApplicationWindow::plotContour(Matrix *m)
 {
 	if (!m) {
-		m = (Matrix*)ws->activeWindow();
-		if (!m || !m->isA("Matrix"))
+		m = (Matrix*)activeWindow(MatrixWindow);
+		if (!m)
 			return 0;
 	}
 
@@ -12245,8 +12288,8 @@ MultiLayer* ApplicationWindow::plotContour(Matrix *m)
 MultiLayer* ApplicationWindow::plotColorMap(Matrix *m)
 {
 	if (!m) {
-		m = (Matrix*)ws->activeWindow();
-		if (!m || !m->isA("Matrix"))
+		m = (Matrix*)activeWindow(MatrixWindow);
+		if (!m)
 			return 0;
 	}
 
@@ -12256,16 +12299,14 @@ MultiLayer* ApplicationWindow::plotColorMap(Matrix *m)
 MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 {
     if (!m) {
-		m = (Matrix*)ws->activeWindow();
-		if (!m || !m->isA("Matrix"))
+		m = (Matrix*)activeWindow(MatrixWindow);
+		if (!m)
 			return 0;
 	}
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    MultiLayer* g = new MultiLayer("", ws, 0);
-	g->setAttribute(Qt::WA_DeleteOnClose);
-
+    MultiLayer* g = new MultiLayer("", this, 0);
 	Graph* plot = g->addLayer();
 	setPreferences(plot);
 
@@ -12321,7 +12362,6 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename)
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
         ApplicationWindow *app = new ApplicationWindow();
-        app->applyUserSettings();
         app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
         app->projectname = filename;
@@ -12383,15 +12423,11 @@ QWidgetList* ApplicationWindow::windowsList()
 
     Folder *f = projectFolder();
 	while (f){
-		QList<MyWidget *> folderWindows = f->windowsList();
-		foreach(MyWidget *w, folderWindows)
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows)
 			lst->append(w);
 		f = f->folderBelow();
 	}
-
-	foreach(QWidget *w, *outWindows)
-		lst->append(w);
-
 	return lst;
 }
 
@@ -12411,11 +12447,9 @@ void ApplicationWindow::updateRecentProjectsList()
 
 void ApplicationWindow::translateCurveHor()
 {
-	QWidget *w=ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer *plot = (MultiLayer*)w;
 	if (plot->isEmpty())
 	{
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
@@ -12447,11 +12481,9 @@ void ApplicationWindow::translateCurveHor()
 
 void ApplicationWindow::translateCurveVert()
 {
-	QWidget *w=ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer *plot = (MultiLayer*)w;
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -12479,10 +12511,9 @@ void ApplicationWindow::translateCurveVert()
 
 void ApplicationWindow::setReadOnlyCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-	Table *t = (Table *)ws->activeWindow();
     QStringList list = t->selectedColumns();
 	for (int i=0; i<(int) list.count(); i++)
 		t->setReadOnlyColumn(t->colIndex(list[i]), actionReadOnlyCol->isChecked());
@@ -12490,10 +12521,9 @@ void ApplicationWindow::setReadOnlyCol()
 
 void ApplicationWindow::setReadOnlyColumns()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-	Table *t = (Table *)ws->activeWindow();
     QStringList list = t->selectedColumns();
 	for (int i=0; i<(int) list.count(); i++)
 		t->setReadOnlyColumn(t->colIndex(list[i]));
@@ -12501,10 +12531,9 @@ void ApplicationWindow::setReadOnlyColumns()
 
 void ApplicationWindow::setReadWriteColumns()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-	Table *t = (Table *)ws->activeWindow();
     QStringList list = t->selectedColumns();
 	for (int i=0; i<(int) list.count(); i++)
 		t->setReadOnlyColumn(t->colIndex(list[i]), false);
@@ -12512,74 +12541,83 @@ void ApplicationWindow::setReadWriteColumns()
 
 void ApplicationWindow::setAscValues()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setAscValues();
+	t->setAscValues();
 }
 
 void ApplicationWindow::setRandomValues()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setRandomValues();
+	t->setRandomValues();
 }
 
 void ApplicationWindow::setXErrCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setPlotDesignation(Table::xErr);
+	t->setPlotDesignation(Table::xErr);
 }
 
 void ApplicationWindow::setYErrCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setPlotDesignation(Table::yErr);
+	t->setPlotDesignation(Table::yErr);
 }
 
 void ApplicationWindow::setXCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setPlotDesignation(Table::X);
+	t->setPlotDesignation(Table::X);
 }
 
 void ApplicationWindow::setYCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setPlotDesignation(Table::Y);
+	t->setPlotDesignation(Table::Y);
 }
 
 void ApplicationWindow::setZCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setPlotDesignation(Table::Z);
+	t->setPlotDesignation(Table::Z);
 }
 
 void ApplicationWindow::setLabelCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setPlotDesignation(Table::Label);
+	t->setPlotDesignation(Table::Label);
 }
 
 void ApplicationWindow::disregardCol()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
-	((Table *)ws->activeWindow())->setPlotDesignation(Table::None);
+	t->setPlotDesignation(Table::None);
 }
 
 void ApplicationWindow::fitMultiPeakGauss()
@@ -12594,11 +12632,9 @@ void ApplicationWindow::fitMultiPeakLorentz()
 
 void ApplicationWindow::fitMultiPeak(int profile)
 {
-	QWidget *w=ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
-
-	MultiLayer *plot = (MultiLayer*)w;
 	if (plot->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"
@@ -13066,7 +13102,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					QStringList lst=t.readLine().split("\t");
 					plot->setWindowLabel(lst[1]);
 					setListViewLabel(plot->objectName(),lst[1]);
-					plot->setCaptionPolicy((MyWidget::CaptionPolicy)lst[2].toInt());
+					plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
 				}
 
 				if (d_file_version > 83){
@@ -13168,10 +13204,10 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	}
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QList<MyWidget *> lst = folder->windowsList();
+	QList<MdiSubWindow *> lst = folder->windowsList();
 	int windows = 0;
 	QString text;
-	foreach(MyWidget *w, lst){
+	foreach(MdiSubWindow *w, lst){
 		text += w->saveToString(windowGeometryInfo(w));
 		windows++;
 	}
@@ -13187,7 +13223,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 		text += "<open>" + QString::number(dir->folderListItem()->isOpen()) + "</open>\n";
 
 		lst = dir->windowsList();
-		foreach(MyWidget *w, lst){
+		foreach(MdiSubWindow *w, lst){
             text += w->saveToString(windowGeometryInfo(w));
 			windows++;
 		}
@@ -13208,7 +13244,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
                     text += "</folder>\n";
 		    }
 		} else {
-		    int diff = depth - initial_depth;
+		    int diff = depth - initial_depth - 1;
             for (int i = 0; i < diff; i++)
                 text += "</folder>\n";
 		}
@@ -13419,27 +13455,27 @@ void ApplicationWindow::renameFolder(Q3ListViewItem *it, int col, const QString 
 
 void ApplicationWindow::showAllFolderWindows()
 {
-	QList<MyWidget *> lst = current_folder->windowsList();
-	foreach(MyWidget *w, lst)
+	QList<MdiSubWindow *> lst = current_folder->windowsList();
+	foreach(MdiSubWindow *w, lst)
 	{//force show all windows in current folder
 		if (w)
 		{
 			updateWindowLists(w);
 			switch (w->status())
 			{
-				case MyWidget::Hidden:
+				case MdiSubWindow::Hidden:
 					w->showNormal();
 					break;
 
-				case MyWidget::Normal:
+				case MdiSubWindow::Normal:
 					w->showNormal();
 					break;
 
-				case MyWidget::Minimized:
+				case MdiSubWindow::Minimized:
 					w->showMinimized();
 					break;
 
-				case MyWidget::Maximized:
+				case MdiSubWindow::Maximized:
 					w->showMaximized();
 					break;
 			}
@@ -13455,24 +13491,24 @@ void ApplicationWindow::showAllFolderWindows()
 	while (item && item->depth() >= initial_depth)
 	{// show/hide windows in all subfolders
 		lst = ((Folder *)item->folder())->windowsList();
-		foreach(MyWidget *w, lst){
+		foreach(MdiSubWindow *w, lst){
 			if (w && show_windows_policy == SubFolders){
 				updateWindowLists(w);
 				switch (w->status())
 				{
-					case MyWidget::Hidden:
+					case MdiSubWindow::Hidden:
 						w->showNormal();
 						break;
 
-					case MyWidget::Normal:
+					case MdiSubWindow::Normal:
 						w->showNormal();
 						break;
 
-					case MyWidget::Minimized:
+					case MdiSubWindow::Minimized:
 						w->showMinimized();
 						break;
 
-					case MyWidget::Maximized:
+					case MdiSubWindow::Maximized:
 						w->showMaximized();
 						break;
 				}
@@ -13487,8 +13523,8 @@ void ApplicationWindow::showAllFolderWindows()
 
 void ApplicationWindow::hideAllFolderWindows()
 {
-	QList<MyWidget *> lst = current_folder->windowsList();
-	foreach(MyWidget *w, lst)
+	QList<MdiSubWindow *> lst = current_folder->windowsList();
+	foreach(MdiSubWindow *w, lst)
 		hideWindow(w);
 
 	if ( (current_folder->children()).isEmpty() )
@@ -13502,7 +13538,7 @@ void ApplicationWindow::hideAllFolderWindows()
 		while (item && item->depth() >= initial_depth)
 		{
 			lst = item->folder()->windowsList();
-			foreach(MyWidget *w, lst)
+			foreach(MdiSubWindow *w, lst)
 				hideWindow(w);
 
 			item = (FolderListItem *)item->itemBelow();
@@ -13637,14 +13673,14 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 		folders->blockSignals(true);
 
 		FolderListItem *fi = f->folderListItem();
-		foreach(MyWidget *w, f->windowsList())
+		foreach(MdiSubWindow *w, f->windowsList())
             closeWindow(w);
 
 		if (!(f->children()).isEmpty()){
 			Folder *subFolder = f->folderBelow();
 			int initial_depth = f->depth();
 			while (subFolder && subFolder->depth() > initial_depth){
-			    foreach(MyWidget *w, subFolder->windowsList()){
+			    foreach(MdiSubWindow *w, subFolder->windowsList()){
 					removeWindowFromLists(w);
 					subFolder->removeWindow(w);
 					delete w;
@@ -13707,8 +13743,8 @@ void ApplicationWindow::folderItemChanged(Q3ListViewItem *it)
 
 void ApplicationWindow::hideFolderWindows(Folder *f)
 {
-	QList<MyWidget *> lst = f->windowsList();
-	foreach(MyWidget *w, lst)
+	QList<MdiSubWindow *> lst = f->windowsList();
+	foreach(MdiSubWindow *w, lst)
 		w->hide();
 
 	if ((f->children()).isEmpty())
@@ -13718,7 +13754,7 @@ void ApplicationWindow::hideFolderWindows(Folder *f)
 	int initial_depth = f->depth();
 	while (dir && dir->depth() > initial_depth){
 		lst = dir->windowsList();
-		foreach(MyWidget *w, lst)
+		foreach(MdiSubWindow *w, lst)
 			w->hide();
 
 		dir = dir->folderBelow();
@@ -13737,22 +13773,21 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 	newFolder->folderListItem()->setActive(true);
 
     Folder *oldFolder = current_folder;
-    MyWidget::Status old_active_window_state = MyWidget::Normal;
-    MyWidget *old_active_window = oldFolder->activeWindow();
+    MdiSubWindow::Status old_active_window_state = MdiSubWindow::Normal;
+    MdiSubWindow *old_active_window = oldFolder->activeWindow();
     if (old_active_window)
         old_active_window_state = old_active_window->status();
 
-    MyWidget::Status active_window_state = MyWidget::Normal;
-    MyWidget *active_window = newFolder->activeWindow();
+    MdiSubWindow::Status active_window_state = MdiSubWindow::Normal;
+    MdiSubWindow *active_window = newFolder->activeWindow();
 
     if (active_window)
         active_window_state = active_window->status();
 
-    ws->blockSignals(true);
 	hideFolderWindows(oldFolder);
 	current_folder = newFolder;
 
-	if (results->isVisible())
+	//if (results->isVisible())
 		results->setText(current_folder->logInfo());
 
 	lv->clear();
@@ -13763,19 +13798,18 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 			addFolderListViewItem(static_cast<Folder *>(f));
 	}
 
-	QList<MyWidget *> lst = newFolder->windowsList();
-	foreach(MyWidget *w, lst){
-        w->blockSignals(true);
-        if (!hiddenWindows->contains(w) && !outWindows->contains(w) && show_windows_policy != HideAll){
+	QList<MdiSubWindow *> lst = newFolder->windowsList();
+	foreach(MdiSubWindow *w, lst){
+        if (!hiddenWindows->contains(w) && show_windows_policy != HideAll){
             //show only windows in the current folder which are not hidden by the user
-            if(w->status() == MyWidget::Normal)
+            if(w->status() == MdiSubWindow::Normal)
                 w->showNormal();
-            else if(w->status() == MyWidget::Minimized)
+            else if(w->status() == MdiSubWindow::Minimized)
                 w->showMinimized();
-            else if(w->status() == MyWidget::Maximized)
+            else if(w->status() == MdiSubWindow::Maximized)
                 w->showMaximized();
         } else
-            w->setStatus(MyWidget::Hidden);
+            w->setStatus(MdiSubWindow::Hidden);
 
         addListViewItem(w);
 	}
@@ -13785,48 +13819,41 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
         int initial_depth = newFolder->depth();
         while (f && f->depth() > initial_depth){//show/hide windows in subfolders
             lst = f->windowsList();
-            foreach(MyWidget *w, lst){
-                if (!hiddenWindows->contains(w) && !outWindows->contains(w)){
+            foreach(MdiSubWindow *w, lst){
+                if (!hiddenWindows->contains(w)){
                     if (show_windows_policy == SubFolders){
-                        if (w->status() == MyWidget::Normal || w->status() == MyWidget::Maximized)
+                        if (w->status() == MdiSubWindow::Normal || w->status() == MdiSubWindow::Maximized)
                             w->showNormal();
-                        else if (w->status() == MyWidget::Minimized)
+                        else if (w->status() == MdiSubWindow::Minimized)
                             w->showMinimized();
                     } else
                         w->hide();
                 }
             }
-		f = f->folderBelow();;
+		f = f->folderBelow();
         }
 	}
 
-    ws->blockSignals(false);
-
     if (active_window){
-        ws->setActiveWindow(active_window);
-        if (active_window_state == MyWidget::Minimized)
+        d_workspace->setActiveSubWindow(active_window);
+        if (active_window_state == MdiSubWindow::Minimized)
             active_window->showMinimized();//ws->setActiveWindow() makes minimized windows to be shown normally
-        else if (active_window_state == MyWidget::Maximized){
+        else if (active_window_state == MdiSubWindow::Maximized){
             if (active_window->isA("Graph3D"))
                 ((Graph3D *)active_window)->setIgnoreFonts(true);
             active_window->showMaximized();
             if (active_window->isA("Graph3D"))
                 ((Graph3D *)active_window)->setIgnoreFonts(false);
             }
-        current_folder->setActiveWindow(active_window);
-        customMenu(active_window);
-        customToolBars(active_window);
 	}
 
     if (old_active_window){
         old_active_window->setStatus(old_active_window_state);
         oldFolder->setActiveWindow(old_active_window);
     }
-
-    foreach(MyWidget *w, newFolder->windowsList())
-        w->blockSignals(false);
-
-	modifiedProject();
+	
+	if (d_opening_file)
+		modifiedProject();
 	return true;
 }
 
@@ -13839,7 +13866,7 @@ void ApplicationWindow::desactivateFolders()
 	}
 }
 
-void ApplicationWindow::addListViewItem(MyWidget *w)
+void ApplicationWindow::addListViewItem(MdiSubWindow *w)
 {
 	if (!w)
 		return;
@@ -13876,7 +13903,7 @@ void ApplicationWindow::addListViewItem(MyWidget *w)
 void ApplicationWindow::windowProperties()
 {
 	WindowListItem *it = (WindowListItem *)lv->currentItem();
-	MyWidget *w = it->window();
+	MdiSubWindow *w = it->window();
 	if (!w)
 		return;
 
@@ -13886,7 +13913,7 @@ void ApplicationWindow::windowProperties()
 	QString s = QString(w->objectName()) + "\n\n";
 	s += "\n\n\n";
 
-	s += tr("Label") + ": " + ((MyWidget *)w)->windowLabel() + "\n\n";
+	s += tr("Label") + ": " + ((MdiSubWindow *)w)->windowLabel() + "\n\n";
 
 	if (w->isA("Matrix")){
 		mbox->setIconPixmap(QPixmap(matrix_xpm));
@@ -13929,7 +13956,7 @@ void ApplicationWindow::find(const QString& s, bool windowNames, bool labels,
 		bool folderNames, bool caseSensitive, bool partialMatch, bool subfolders)
 {
 	if (windowNames || labels){
-		MyWidget *w = current_folder->findWindow(s, windowNames, labels, caseSensitive, partialMatch);
+		MdiSubWindow *w = current_folder->findWindow(s, windowNames, labels, caseSensitive, partialMatch);
 		if (w){
 			activateWindow(w);
 			return;
@@ -13939,7 +13966,7 @@ void ApplicationWindow::find(const QString& s, bool windowNames, bool labels,
 			FolderListItem *item = (FolderListItem *)folders->currentItem()->firstChild();
 			while (item){
 				Folder *f = item->folder();
-				MyWidget *w = f->findWindow(s,windowNames,labels,caseSensitive,partialMatch);
+				MdiSubWindow *w = f->findWindow(s,windowNames,labels,caseSensitive,partialMatch);
 				if (w){
 					folders->setCurrentItem(f->folderListItem());
 					activateWindow(w);
@@ -14016,7 +14043,7 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 			if (dest_f == current_folder)
 				return;
 
-			MyWidget *w = ((WindowListItem *)it)->window();
+			MdiSubWindow *w = ((WindowListItem *)it)->window();
 			if (w){
 				current_folder->removeWindow(w);
 				w->hide();
@@ -14063,8 +14090,8 @@ bool ApplicationWindow::copyFolder(Folder *src, Folder *dest)
 	copy_item->setOpen(src->folderListItem()->isOpen());
 	dest_f->setFolderListItem(copy_item);
 
-	QList<MyWidget *> lst = QList<MyWidget *>(src->windowsList());
-	foreach(MyWidget *w, lst)
+	QList<MdiSubWindow *> lst = QList<MdiSubWindow *>(src->windowsList());
+	foreach(MdiSubWindow *w, lst)
 		dest_f->addWindow(w);
 
 	if (!(src->children()).isEmpty()){
@@ -14081,8 +14108,8 @@ bool ApplicationWindow::copyFolder(Folder *src, Folder *dest)
 			copy_item->setOpen(src->folderListItem()->isOpen());
 			dest_f->setFolderListItem(copy_item);
 
-			lst = QList<MyWidget *>(src->windowsList());
-			foreach(MyWidget *w, lst)
+			lst = QList<MdiSubWindow *>(src->windowsList());
+			foreach(MdiSubWindow *w, lst)
 				dest_f->addWindow(w);
 
             int depth = src->depth();
@@ -14155,8 +14182,11 @@ void ApplicationWindow::receivedVersionFile(bool error)
   */
 void ApplicationWindow::toggle3DAnimation(bool on)
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->animate(on);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->animate(on);
 }
 
 QString ApplicationWindow::generateUniqueName(const QString& name, bool increment)
@@ -14185,8 +14215,8 @@ QString ApplicationWindow::generateUniqueName(const QString& name, bool incremen
 
 void ApplicationWindow::clearTable()
 {
-	Table *t = (Table*)ws->activeWindow();
-	if (!t || !t->inherits("Table"))
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
 
 	if (QMessageBox::question(this, tr("QtiPlot - Warning"),
@@ -14199,20 +14229,21 @@ void ApplicationWindow::clearTable()
 
 void ApplicationWindow::goToRow()
 {
-	if (!ws->activeWindow())
+	MdiSubWindow *w = activeWindow();
+	if (!w)
 		return;
 
-	if (ws->activeWindow()->inherits("Table") || ws->activeWindow()->isA("Matrix")){
+	if (w->inherits("Table") || w->isA("Matrix")){
 		bool ok;
 		int row = QInputDialog::getInteger(this, tr("QtiPlot - Enter row number"), tr("Row"),
 				1, 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
 		if ( !ok )
 			return;
 
-		if (ws->activeWindow()->inherits("Table"))
-			((Table *)ws->activeWindow())->goToRow(row);
-		else if (ws->activeWindow()->isA("Matrix"))
-			((Matrix *)ws->activeWindow())->goToRow(row);
+		if (w->inherits("Table"))
+			((Table *)w)->goToRow(row);
+		else if (w->isA("Matrix"))
+			((Matrix *)w)->goToRow(row);
 	}
 }
 
@@ -14241,8 +14272,11 @@ void ApplicationWindow::showScriptWindow()
   */
 void ApplicationWindow::togglePerspective(bool on)
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setOrthogonal(!on);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setOrthogonal(!on);
 }
 
 /*!
@@ -14250,8 +14284,11 @@ void ApplicationWindow::togglePerspective(bool on)
   */
 void ApplicationWindow::resetRotation()
 {
-	if (ws->activeWindow() && ws->activeWindow()->isA("Graph3D"))
-		((Graph3D*)ws->activeWindow())->setRotation(30,0,15);
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
+		return;
+		
+	g->setRotation(30, 0, 15);
 }
 
 /*!
@@ -14259,10 +14296,11 @@ void ApplicationWindow::resetRotation()
   */
 void ApplicationWindow::fitFrameToLayer()
 {
-	if (!ws->activeWindow() || !ws->activeWindow()->isA("Graph3D"))
+	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
+	if (!g)
 		return;
-
-	((Graph3D *)ws->activeWindow())->findBestLayout();
+		
+	g->findBestLayout();
 }
 
 ApplicationWindow::~ApplicationWindow()
@@ -14271,7 +14309,6 @@ ApplicationWindow::~ApplicationWindow()
 		delete lastCopiedLayer;
 
 	delete hiddenWindows;
-	delete outWindows;
 
 	if (scriptWindow)
 		scriptWindow->close();
@@ -14302,22 +14339,15 @@ int ApplicationWindow::convertOldToNewColorIndex(int cindex)
 
 void ApplicationWindow::cascade()
 {
-	QList<QWidget*> windows = ws->windowList(QWorkspace::StackingOrder);
-
     const int xoffset = 13;
     const int yoffset = 20;
-
     int x = 0;
     int y = 0;
-
-    foreach (QWidget *w, windows){
+	QList<QMdiSubWindow*> windows = d_workspace->subWindowList(QMdiArea::StackingOrder);
+    foreach (QMdiSubWindow *w, windows){
         w->setActiveWindow();
-        w->showNormal();
-        ((MyWidget *)w)->setStatus(MyWidget::Normal);
-        updateWindowStatus((MyWidget *)w);
-
-        w->parentWidget()->setGeometry(x, y, w->parentWidget()->geometry().width(),
-                                            w->parentWidget()->geometry().height());
+		((MdiSubWindow *)w)->setNormal();
+		w->setGeometry(x, y, w->geometry().width(), w->geometry().height());
         w->raise();
         x += xoffset;
         y += yoffset;
@@ -14330,7 +14360,6 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 #ifdef SCRIPTING_PYTHON
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	ApplicationWindow *app= new ApplicationWindow(factorySettings);
-	app->applyUserSettings();
 	app->setScriptingLanguage("Python");
 	app->restoreApplicationGeometry();
 	app->showScriptWindow();
@@ -14362,19 +14391,20 @@ bool ApplicationWindow::validFor2DPlot(Table *table)
 }
 
 MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
-{
-	if (!ws->activeWindow())
+{	
+	MdiSubWindow *w = activeWindow();
+	if (!w)
 		return 0;
 
-    if (ws->activeWindow()->inherits("Table")){
-        Table *table = static_cast<Table *>(ws->activeWindow());
+    if (w->inherits("Table")){
+        Table *table = static_cast<Table *>(w);
         if (!validFor2DPlot(table))
             return 0;
 
         Q3TableSelection sel = table->getSelection();
         return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
-    } else if (ws->activeWindow()->isA("Matrix")){
-        Matrix *m = static_cast<Matrix *>(ws->activeWindow());
+    } else if (w->isA("Matrix")){
+        Matrix *m = static_cast<Matrix *>(w);
         return plotHistogram(m);
     }
 	return 0;
@@ -14437,10 +14467,9 @@ void ApplicationWindow::showSelectedWindows()
 
 void ApplicationWindow::swapColumns()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
+    Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
 		return;
-
-	Table *t = static_cast<Table*>(ws->activeWindow());
 	QStringList lst = t->selectedColumns();
 	if(lst.count() != 2)
         return;
@@ -14450,40 +14479,28 @@ void ApplicationWindow::swapColumns()
 
 void ApplicationWindow::moveColumnRight()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	Table *t = static_cast<Table*>(ws->activeWindow());
+	Table *t = (Table *)activeWindow(TableWindow);
 	if (t)
     	t->moveColumnBy(1);
 }
 
 void ApplicationWindow::moveColumnLeft()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	Table *t = static_cast<Table*>(ws->activeWindow());
+    Table *t = (Table *)activeWindow(TableWindow);
 	if (t)
     	t->moveColumnBy(-1);
 }
 
 void ApplicationWindow::moveColumnFirst()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	Table *t = static_cast<Table*>(ws->activeWindow());
+	Table *t = (Table *)activeWindow(TableWindow);
 	if (t)
     	t->moveColumnBy(0 - t->selectedColumn());
 }
 
 void ApplicationWindow::moveColumnLast()
 {
-    if (!ws->activeWindow() || !ws->activeWindow()->inherits("Table"))
-		return;
-
-	Table *t = static_cast<Table*>(ws->activeWindow());
+    Table *t = (Table *)activeWindow(TableWindow);
 	if (t)
     	t->moveColumnBy(t->numCols() - t->selectedColumn() - 1);
 }
@@ -14573,7 +14590,7 @@ void ApplicationWindow::showToolBarsMenu()
 	if (!action)
 		return;
 
-	QWidget *w = ws->activeWindow();
+	MdiSubWindow *w = activeWindow();
 
 	if (action->text() == plotMatrixBar->windowTitle()){
 		d_matrix_tool_bar = action->isChecked();
@@ -14640,7 +14657,7 @@ void ApplicationWindow::saveFitFunctions(const QStringList& lst)
 
 void ApplicationWindow::matrixDirectFFT()
 {
-    Matrix* m = (Matrix*)ws->activeWindow();
+    Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -14651,7 +14668,7 @@ void ApplicationWindow::matrixDirectFFT()
 
 void ApplicationWindow::matrixInverseFFT()
 {
-    Matrix* m = (Matrix*)ws->activeWindow();
+    Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
 
@@ -14689,11 +14706,11 @@ void ApplicationWindow::setFormatBarFont(const QFont& font)
 
 void ApplicationWindow::setFontSize(int size)
 {
-	QWidget *w = ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -14706,11 +14723,11 @@ void ApplicationWindow::setFontSize(int size)
 
 void ApplicationWindow::setFontFamily(const QFont& font)
 {
-	QWidget *w = ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -14723,11 +14740,11 @@ void ApplicationWindow::setFontFamily(const QFont& font)
 
 void ApplicationWindow::setItalicFont(bool italic)
 {
-	QWidget *w = ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -14741,11 +14758,11 @@ void ApplicationWindow::setItalicFont(bool italic)
 
 void ApplicationWindow::setBoldFont(bool bold)
 {
-	QWidget *w = ws->activeWindow();
-	if (!w || !w->isA("MultiLayer"))
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
 		return;
 
-	Graph* g = ((MultiLayer*)ws->activeWindow())->activeGraph();
+	Graph* g = plot->activeGraph();
 	if (!g)
 		return;
 
@@ -14940,4 +14957,49 @@ QList<QToolBar *> ApplicationWindow::toolBarsList()
             lst << (QToolBar *)w;
     }
 	return lst;
+}
+
+MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
+{
+	MdiSubWindow *w = current_folder->activeWindow();
+	switch(type){
+		case NoWindow:
+		break;
+		
+		case TableWindow:
+			if (w->inherits("Table"))
+				return w;
+			else
+				return NULL;
+		break;
+		
+		case MatrixWindow:
+			if (w->isA("Matrix"))
+				return w;
+			else
+				return NULL;
+		break;
+		
+		case MultiLayerWindow:
+			if (w->isA("MultiLayer"))
+				return w;
+			else
+				return NULL;
+		break;			
+		
+		case NoteWindow:
+			if (w->isA("Note"))
+				return w;
+			else
+				return NULL;
+		break;
+			
+		case Plot3DWindow:
+			if (w->isA("Graph3D"))
+				return w;
+			else
+				return NULL;
+		break;
+	}
+	return w;
 }

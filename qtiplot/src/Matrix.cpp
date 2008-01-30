@@ -38,7 +38,6 @@
 #include <QVBoxLayout>
 #include <QMouseEvent>
 #include <QHeaderView>
-#include <QDateTime>
 #include <QApplication>
 #include <QMessageBox>
 #include <QVarLengthArray>
@@ -63,13 +62,13 @@
 #include "analysis/fft2D.h"
 
 Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
-: MyWidget(label, parent, name, f), scripted(env)
+: MdiSubWindow(label, parent, name, f), scripted(env)
 {
 	initTable(r, c);
 }
 
 Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
-: MyWidget(label, parent, name, f), scripted(env)
+: MdiSubWindow(label, parent, name, f), scripted(env)
 {
 	initImage(image);
 }
@@ -92,15 +91,9 @@ void Matrix::initGlobals()
 	y_start = 1.0;
 	y_end = 10.0;
 
-	QDateTime dt = QDateTime::currentDateTime();
-	setBirthDate(dt.toString(Qt::LocalDate));
-
     d_stack = new QStackedWidget();
     d_stack->setFocusPolicy(Qt::StrongFocus);
-
-	QVBoxLayout *d_main_layout = new QVBoxLayout(this);
-	d_main_layout->setMargin(0);
-    d_main_layout->addWidget(d_stack);
+	setWidget(d_stack);
 }
 
 void Matrix::initTable(int rows, int cols)
@@ -848,27 +841,10 @@ void Matrix::insertColumn()
 	emit modifiedWindow(this);
 }
 
-void Matrix::contextMenuEvent(QContextMenuEvent *e)
-{
-	emit showContextMenu();
-	e->accept();
-}
-
 void Matrix::customEvent(QEvent *e)
 {
 	if (e->type() == SCRIPTING_CHANGE_EVENT)
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
-}
-
-bool Matrix::eventFilter(QObject *object, QEvent *e)
-{
-	if (e->type()==QEvent::ContextMenu && object == titleBar){
-		emit showTitleBarMenu();
-		((QContextMenuEvent*)e)->accept();
-		return true;
-	}
-
-	return MyWidget::eventFilter(object, e);
 }
 
 void Matrix::exportRasterImage(const QString& fileName, int quality)

@@ -32,17 +32,8 @@
 #include "Note.h"
 #include "ScriptEdit.h"
 
-#include <QDateTime>
-#include <QLayout>
-#include <QApplication>
-#include <QPrinter>
-#include <QPainter>
-#include <QPaintDevice>
-#include <QVBoxLayout>
-#include <QPrintDialog>
-
 Note::Note(ScriptingEnv *env, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
-				: MyWidget(label, parent, name, f)
+		 : MdiSubWindow(label, parent, name, f)
 {
 init(env);
 }
@@ -50,14 +41,10 @@ init(env);
 void Note::init(ScriptingEnv *env)
 {
 autoExec = false;
-QDateTime dt = QDateTime::currentDateTime ();
-setBirthDate(dt.toString(Qt::LocalDate));
-
 te = new ScriptEdit(env, this, name());
 te->setContext(this);
-QVBoxLayout* hlayout = new QVBoxLayout(this,0,0, "hlayout1");
-hlayout->addWidget(te);
-
+setWidget(te);	
+	
 setGeometry(0, 0, 500, 200);
 connect(te, SIGNAL(textChanged()), this, SLOT(modifiedNote()));
 connect(te, SIGNAL(dirPathChanged(const QString& )), this, SIGNAL(dirPathChanged(const QString&)));
@@ -66,7 +53,7 @@ connect(te, SIGNAL(dirPathChanged(const QString& )), this, SIGNAL(dirPathChanged
 void Note::setName(const QString& name)
 {
 	te->setObjectName(name);
-	MyWidget::setName(name);
+	MdiSubWindow::setName(name);
 }
 
 void Note::modifiedNote()

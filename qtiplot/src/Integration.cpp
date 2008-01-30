@@ -150,7 +150,7 @@ QString Integration::logInfo()
 
 	QString logInfo = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate);
 	if (d_graph)
-		logInfo += tr("\tPlot")+ ": ''" + d_graph->parentPlotName() + "'']\n";
+		logInfo += tr("\tPlot")+ ": ''" + d_graph->multiLayer()->objectName() + "'']\n";
 	else
 		logInfo += "\n";
 

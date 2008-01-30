@@ -1,13 +1,10 @@
 /***************************************************************************
-    File                 : MyWidget.h
+    File                 : MdiSubWindow.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
-    Description          : MDI window widget
+    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
+    Description          : MDI sub window
 
  ***************************************************************************/
 
@@ -29,29 +26,29 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef MdiSubWindow_H
+#define MdiSubWindow_H
 
-#include <QWidget>
-#include <QLocale>
+#include <QMdiSubWindow>
 
 class QEvent;
 class QCloseEvent;
 class QString;
 class Folder;
+class ApplicationWindow;
 
 /**
  * \brief Base class of all MDI client windows.
  *
  * These are the main objects of every Qtiplot project.
- * All content (apart from the directory structure) is managed by subclasses of MyWidget.
+ * All content (apart from the directory structure) is managed by subclasses of MdiSubWindow.
  *
  * \section future Future Plans
  * Rename to Aspect.
  *
  * \sa Folder, ApplicationWindow
  */
-class MyWidget: public QWidget
+class MdiSubWindow: public QMdiSubWindow
 {
 	Q_OBJECT
 
@@ -65,7 +62,7 @@ public:
 	 * \param f window flags
 	 * \sa setCaptionPolicy(), captionPolicy()
 	 */
-	MyWidget(const QString& label = QString(), QWidget * parent = 0, const QString& name = QString(), Qt::WFlags f = 0);
+	MdiSubWindow(const QString& label = QString(), QWidget * parent = 0, const QString& name = QString(), Qt::WFlags f = 0);
 
 	//! Possible window captions.
 	enum CaptionPolicy{
@@ -76,9 +73,9 @@ public:
 	enum Status{Hidden = -1, Normal = 0, Minimized = 1, Maximized = 2};
 
 	//! Return the window label
-	QString windowLabel(){return QString(w_label);};
+	QString windowLabel(){return QString(d_label);};
 	//! Set the window label
-	void setWindowLabel(const QString& s) { w_label = s; updateCaption();};
+	void setWindowLabel(const QString& s) { d_label = s; updateCaption();};
 
 	//! Return the window name
 	QString name(){return objectName();};
@@ -86,19 +83,19 @@ public:
 	void setName(const QString& s){setObjectName(s); updateCaption();};
 
 	//! Return the caption policy
-	CaptionPolicy captionPolicy(){return caption_policy;};
+	CaptionPolicy captionPolicy(){return d_caption_policy;};
 	//! Set the caption policy
-	void setCaptionPolicy(CaptionPolicy policy) { caption_policy = policy; updateCaption(); }
+	void setCaptionPolicy(CaptionPolicy policy) { d_caption_policy = policy; updateCaption(); }
 
 	//! Return the creation date
-	QString birthDate(){return birthdate;};
+	QString birthDate(){return d_birthdate;};
 	//! Set the creation date
-	void setBirthDate(const QString& s){birthdate = s;};
+	void setBirthDate(const QString& s){d_birthdate = s;};
 
 	//! Return the window status as a string
 	QString aspect();
 	//! Return the window status flag (hidden, normal, minimized or maximized)
-	Status status(){return w_status;};
+	Status status(){return d_status;};
 	//! Set the window status flag (hidden, normal, minimized or maximized)
 	void setStatus(Status s);
 
@@ -129,15 +126,14 @@ public:
 	void resizeEvent( QResizeEvent* );
 
 	//! Toggle the "ask on close" flag
-	void askOnCloseEvent(bool ask){askOnClose = ask;};
+	void askOnCloseEvent(bool ask){d_confirm_close = ask;};
 	//! Filters other object's events (customizes title bar's context menu)
 	bool eventFilter(QObject *object, QEvent *e);
-
 	//! Returns the pointer to the parent folder of the window
-	Folder* folder(){return parentFolder;};
+	Folder* folder(){return d_folder;};
 
 	//! Initializes the pointer to the parent folder of the window
-	void setFolder(Folder* f){parentFolder = f;};
+	void setFolder(Folder* f){d_folder = f;};
 
 	//! Notifies the main application that the window has been modified
 	void notifyChanges(){emit modifiedWindow(this);};
@@ -146,52 +142,47 @@ public:
 	void setMinimized();
 	void setMaximized();
 
-    QLocale locale(){return d_locale;};
-    void setLocale(const QLocale & l){d_locale = l;};
-
 signals:
 	//! Emitted when the window was closed
-	void closedWindow(MyWidget *);
+	void closedWindow(MdiSubWindow *);
 	//! Emitted when the window was hidden
-	void hiddenWindow(MyWidget *);
-	void modifiedWindow(QWidget *);
-	void resizedWindow(QWidget *);
+	void hiddenWindow(MdiSubWindow *);
+	void modifiedWindow(MdiSubWindow *);
+	void resizedWindow(MdiSubWindow *);
 	//! Emitted when the window status changed
-	void statusChanged(MyWidget *);
-	//! Emitted when the title bar recieves a QContextMenuEvent
-	void showTitleBarMenu();
+	void statusChanged(MdiSubWindow *);
+	//! Show the context menu
+	void showContextMenu();
+
 	void moved();
 
 protected:
-	//! Catches parent changes (in order to gain access to the title bar)
+	//! Catches status changes
 	virtual void changeEvent(QEvent *event);
-	//! Title bar of this MDI window if it currently belongs to a QWorkspace, NULL else
-	QWidget *titleBar;
 
 private:
     //! Set caption according to current CaptionPolicy, name and label
 	void updateCaption();
-
+	//!Pointer to the application window
+    ApplicationWindow *d_app;
 	//!Pointer to the parent folder of the window
-	Folder *parentFolder;
+	Folder *d_folder;
 	//! The window label
 	/**
 	 * \sa setWindowLabel(), windowLabel(), setCaptionPolicy()
 	 */
-	QString w_label;
-	//! The creation date
-	QString birthdate;
+	QString d_label;
 	//! The window status
-	Status w_status;
+	Status d_status;
 	//! The caption policy
 	/**
 	 * \sa setCaptionPolicy(), captionPolicy()
 	 */
-	CaptionPolicy caption_policy;
+	CaptionPolicy d_caption_policy;
 	//! Toggle on/off: Ask the user "delete, hide, or cancel?" on a close event
-	bool askOnClose;
-
-    QLocale d_locale;
+	bool d_confirm_close;
+	//! The creation date
+	QString d_birthdate;
 };
 
 #endif

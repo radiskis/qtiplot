@@ -47,7 +47,7 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Table")), 0, 0);
 	boxTable = new QComboBox();
-	QStringList tables = app->tableWindows;
+	QStringList tables = app->tableNames();
 	boxTable->addItems(tables);
 	boxTable->setCurrentIndex(0);
 	if (tables.contains(tableName))

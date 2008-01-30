@@ -524,7 +524,7 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 		l = l[0].split(".");
     	if (l.count() == 2){
     		int cv = l[1].toInt() - 1;
-			Graph *layer = g->parentPlot()->layer(l[0].toInt());
+			Graph *layer = g->multiLayer()->layer(l[0].toInt());
 			if (layer && cv >= 0 && cv < layer->curves())
 				return (PlotCurve*)layer->curve(cv);
 		} else if (l.count() == 1){

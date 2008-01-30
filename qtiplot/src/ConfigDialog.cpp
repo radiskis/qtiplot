@@ -1118,7 +1118,7 @@ void ConfigDialog::apply()
     	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         QList<QWidget*> *lst = app->windowsList();
         foreach(QWidget *w, *lst){
-            ((MyWidget *)w)->setLocale(locale);
+            w->setLocale(locale);
             if(w->isA("Table"))
                 ((Table *)w)->updateDecimalSeparators();
             else if(w->isA("Matrix"))

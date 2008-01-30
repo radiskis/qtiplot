@@ -2488,7 +2488,7 @@ void AxesDialog::setGraph(Graph *g)
 	d_graph = g;
 	Plot *p = d_graph->plotWidget();
 
-	tablesList = app->tableWindows;
+	tablesList = app->tableNames();
 	boxTableName->insertStringList(tablesList);
 
 	boxColName-> insertStringList(app->columnsList(Table::All));
