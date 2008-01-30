@@ -80,12 +80,12 @@ void LayerButton::mouseDoubleClickEvent ( QMouseEvent * )
 MultiLayer::MultiLayer(const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
 : MdiSubWindow(label, parent, name, f),
 active_graph(NULL),
-graphs(0), 
+graphs(0),
 cols(1),
 rows(1),
 graph_width(500),
 graph_height(400),
-colsSpace(5), 
+colsSpace(5),
 rowsSpace(5),
 left_margin(5),
 right_margin(5),
@@ -225,12 +225,12 @@ void MultiLayer::resizeLayers (const QResizeEvent *re)
 {
 	// When restoring maximized plots from project files, 3 resize events are sent to the plot.
 	// The d_resize_count avoids the resizing of plot layers in this case.
-	if (d_resize_count >= 3)
-		d_resize_count = 3;
-		
-	if (d_resize_count < 3)
+	if (d_resize_count >= 2)
+		d_resize_count = 2;
+
+	if (d_resize_count < 2)
 		return;
-	
+
 	QSize oldSize = re->oldSize();
 	QSize size = re->size();
 
@@ -240,7 +240,7 @@ void MultiLayer::resizeLayers (const QResizeEvent *re)
                         canvas->childrenRect().height() + top_margin + bottom_margin);
 		scaleLayerFonts = true;
 	}
-	
+
 	QApplication::setOverrideCursor(Qt::waitCursor);
 
 	double w_ratio = (double)size.width()/(double)oldSize.width();
