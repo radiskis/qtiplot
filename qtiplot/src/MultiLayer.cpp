@@ -30,7 +30,6 @@
 #include <QWidgetList>
 #include <QPrinter>
 #include <QPrintDialog>
-#include <QDateTime>
 #include <QApplication>
 #include <QMessageBox>
 #include <QBitmap>
@@ -79,34 +78,27 @@ void LayerButton::mouseDoubleClickEvent ( QMouseEvent * )
 }
 
 MultiLayer::MultiLayer(const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
-: MyWidget(label,parent,name,f)
+: MdiSubWindow(label, parent, name, f),
+active_graph(NULL),
+graphs(0), 
+cols(1),
+rows(1),
+graph_width(500),
+graph_height(400),
+colsSpace(5), 
+rowsSpace(5),
+left_margin(5),
+right_margin(5),
+top_margin(5),
+bottom_margin(5),
+l_canvas_width(400),
+l_canvas_height(300),
+hor_align(HCenter),
+vert_align(VCenter),
+d_scale_on_print(true),
+d_print_cropmarks(false),
+d_resize_count(3)
 {
-	if ( !name )
-		setName( "multilayer plot" );
-
-	QPalette pal = palette();
-	pal.setColor(QPalette::Active, QPalette::Window, QColor(Qt::white));
-	pal.setColor(QPalette::Inactive, QPalette::Window, QColor(Qt::white));
-	pal.setColor(QPalette::Disabled, QPalette::Window, QColor(Qt::white));
-	setPalette(pal);
-
-	QDateTime dt = QDateTime::currentDateTime ();
-	setBirthDate(dt.toString(Qt::LocalDate));
-
-	graphs=0; cols=1; rows=1;
-	graph_width=500; graph_height=400;
-	colsSpace=5; rowsSpace=5;
-	left_margin = 5; right_margin = 5;
-	top_margin = 5; bottom_margin = 5;
-	l_canvas_width = 400; l_canvas_height = 300;
-	hor_align = HCenter;  vert_align = VCenter;
-	active_graph = 0;
-    d_open_maximized = 0;
-    d_max_size = QSize();
-    d_normal_size = QSize();
-	d_scale_on_print = true;
-	d_print_cropmarks = false;
-
 	layerButtonsBox = new QHBoxLayout();
 	QHBoxLayout *hbox = new QHBoxLayout();
 	hbox->addLayout(layerButtonsBox);
@@ -115,13 +107,23 @@ MultiLayer::MultiLayer(const QString& label, QWidget* parent, const char* name, 
 	canvas = new QWidget();
 	canvas->installEventFilter(this);
 
-	QVBoxLayout* layout = new QVBoxLayout(this);
+	QWidget *mainWidget = new QWidget();
+	mainWidget->setAutoFillBackground(true);
+	mainWidget->setBackgroundRole(QPalette::Window);
+
+	QVBoxLayout* layout = new QVBoxLayout(mainWidget);
 	layout->addLayout(hbox);
 	layout->addWidget(canvas, 1);
 	layout->setMargin(0);
 	layout->setSpacing(0);
+	setWidget(mainWidget);
+
     setGeometry(QRect( 0, 0, graph_width, graph_height ));
 	setFocusPolicy(Qt::StrongFocus);
+
+	QPalette pal = palette();
+	pal.setColor(QPalette::Window, QColor(Qt::white));
+	setPalette(pal);
 }
 
 Graph *MultiLayer::layer(int num)
@@ -219,40 +221,26 @@ void MultiLayer::setActiveGraph(Graph* g)
 	}
 }
 
-void MultiLayer::contextMenuEvent(QContextMenuEvent *e)
-{
-	emit showWindowContextMenu();
-	e->accept();
-}
-
 void MultiLayer::resizeLayers (const QResizeEvent *re)
 {
+	// When restoring maximized plots from project files, 3 resize events are sent to the plot.
+	// The d_resize_count avoids the resizing of plot layers in this case.
+	if (d_resize_count >= 3)
+		d_resize_count = 3;
+		
+	if (d_resize_count < 3)
+		return;
+	
 	QSize oldSize = re->oldSize();
 	QSize size = re->size();
 
-    if (d_open_maximized == 1)
-    {// 2 resize events are triggered for maximized windows: this hack allows to ignore the first one!
-        d_open_maximized++;
-        return;
-    }
-    else if (d_open_maximized == 2)
-    {
-        d_open_maximized = 0;
-        //TODO: for maximized windows, the size of the layers should be saved in % of the workspace area in order to restore
-        //the layers properly! For the moment just resize the layers to occupy the whole canvas, although the restored geometry might be altered!
+	bool scaleLayerFonts = false;
+	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)
         oldSize = QSize(canvas->childrenRect().width() + left_margin + right_margin,
                         canvas->childrenRect().height() + top_margin + bottom_margin);
-        //return;
-    }
-
-    if(!oldSize.isValid())
-        return;
-
-    resizeLayers(size, oldSize, false);
-}
-
-void MultiLayer::resizeLayers (const QSize& size, const QSize& oldSize, bool scaleFonts)
-{
+		scaleLayerFonts = true;
+	}
+	
 	QApplication::setOverrideCursor(Qt::waitCursor);
 
 	double w_ratio = (double)size.width()/(double)oldSize.width();
@@ -271,13 +259,13 @@ void MultiLayer::resizeLayers (const QSize& size, const QSize& oldSize, bool sca
 			gr->setGeometry(QRect(gx, gy, gw, gh));
 			gr->plotWidget()->resize(QSize(gw, gh));
 
-            if (scaleFonts)
+            if (scaleLayerFonts && gr->autoscaleFonts())
                 gr->scaleFonts(h_ratio);
 		}
 	}
 
 	emit modifiedPlot();
-	emit resizedWindow(this);
+	((QWidget *)canvas->parent())->update();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -740,12 +728,12 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
         if (page_aspect > canvas_aspect){
             y_margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
             height = printer.height() - 2*y_margin;
-            width = height*canvas_aspect;
+            width = int(height*canvas_aspect);
             x_margin = (printer.width()- width)/2;
         } else {
             x_margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
             width = printer.width() - 2*x_margin;
-            height = width/canvas_aspect;
+            height = int(width/canvas_aspect);
             y_margin = (printer.height()- height)/2;
         }
 	} else {
@@ -972,18 +960,53 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 {
 	if(e->type() == QEvent::Resize && object == (QObject *)canvas){
 		resizeLayers((const QResizeEvent *)e);
-	} else if (e->type()==QEvent::ContextMenu && object == titleBar){
-		emit showTitleBarMenu();
-		((QContextMenuEvent*)e)->accept();
-		return true;
+		d_resize_count++;
+	} else if (e->type() == QEvent::MouseButtonPress) {
+	    const QMouseEvent *me = (const QMouseEvent *)e;
+	    if (me->button() == Qt::RightButton)
+            return QMdiSubWindow::eventFilter(object, e);
+
+        QPoint pos = canvas->mapFromParent(me->pos());
+        // iterate backwards, so layers on top are preferred for selection
+        QList<QWidget*>::iterator i = graphsList.end();
+        while (i!=graphsList.begin()) {
+            --i;
+            Graph *g = (Graph*) (*i);
+            if (g->selectedText() || g->titleSelected() || g->selectedScale()){
+                g->deselect();
+                return true;
+            }
+
+            QRect igeo = (*i)->frameGeometry();
+            if (igeo.contains(pos)) {
+                if (me->modifiers() & Qt::ShiftModifier) {
+                    if (d_layers_selector)
+                        d_layers_selector->add(*i);
+                    else {
+                        d_layers_selector = new SelectionMoveResizer(*i);
+                        connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+                    }
+                } else {
+                    setActiveGraph(g);
+                    active_graph->raise();
+                    if (!d_layers_selector) {
+                        d_layers_selector = new SelectionMoveResizer(*i);
+                        connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+                    }
+                }
+                return true;
+            }
+        }
+        if (d_layers_selector)
+            delete d_layers_selector;
 	}
-	return MyWidget::eventFilter(object, e);
+
+	return MdiSubWindow::eventFilter(object, e);
 }
 
 void MultiLayer::keyPressEvent(QKeyEvent * e)
 {
-	if (e->key() == Qt::Key_F12)
-	{
+	if (e->key() == Qt::Key_F12){
 		if (d_layers_selector)
 			delete d_layers_selector;
 		int index = graphsList.indexOf((QWidget *)active_graph) + 1;
@@ -995,8 +1018,7 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 		return;
 	}
 
-	if (e->key() == Qt::Key_F10)
-	{
+	if (e->key() == Qt::Key_F10){
 		if (d_layers_selector)
 			delete d_layers_selector;
 		int index=graphsList.indexOf((QWidget *)active_graph) - 1;
@@ -1008,9 +1030,8 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 		return;
 	}
 
-	if (e->key() == Qt::Key_F11)
-	{
-		emit showWindowContextMenu();
+	if (e->key() == Qt::Key_F11){
+		emit showContextMenu();
 		return;
 	}
 }
@@ -1026,15 +1047,12 @@ void MultiLayer::wheelEvent ( QWheelEvent * e )
 	// Get the position of the mouse
 	int xMouse=e->x();
 	int yMouse=e->y();
-	for (int i=0;i<(int)graphsList.count();i++)
-	{
+	for (int i=0;i<(int)graphsList.count();i++){
 		Graph *gr=(Graph *)graphsList.at(i);
 		intSize=gr->plotWidget()->size();
 		aux=gr->pos();
-		if(xMouse>aux.x() && xMouse<(aux.x()+intSize.width()))
-		{
-			if(yMouse>aux.y() && yMouse<(aux.y()+intSize.height()))
-			{
+		if(xMouse>aux.x() && xMouse<(aux.x()+intSize.width())){
+			if(yMouse>aux.y() && yMouse<(aux.y()+intSize.height())){
 				resize_graph=gr;
 				resize=TRUE;
 			}
@@ -1042,47 +1060,28 @@ void MultiLayer::wheelEvent ( QWheelEvent * e )
 	}
 	if(resize && (e->state()==Qt::AltButton || e->state()==Qt::ControlButton || e->state()==Qt::ShiftButton))
 	{
-		intSize=resize_graph->plotWidget()->size();
-		// If alt is pressed then change the width
-		if(e->state()==Qt::AltButton)
-		{
+		intSize = resize_graph->plotWidget()->size();
+		if(e->state()==Qt::AltButton){// If alt is pressed then change the width
 			if(e->delta()>0)
-			{
 				intSize.rwidth()+=5;
-			}
 			else if(e->delta()<0)
-			{
 				intSize.rwidth()-=5;
-			}
-		}
-		// If crt is pressed then changed the height
-		else if(e->state()==Qt::ControlButton)
-		{
+		} else if(e->state()==Qt::ControlButton){// If crt is pressed then changed the height
 			if(e->delta()>0)
-			{
 				intSize.rheight()+=5;
-			}
 			else if(e->delta()<0)
-			{
 				intSize.rheight()-=5;
-			}
-		}
-		// If shift is pressed then resize
-		else if(e->state()==Qt::ShiftButton)
-		{
-			if(e->delta()>0)
-			{
+		} else if(e->state()==Qt::ShiftButton){// If shift is pressed then resize
+			if(e->delta()>0){
 				intSize.rwidth()+=5;
 				intSize.rheight()+=5;
-			}
-			else if(e->delta()<0)
-			{
+			} else if(e->delta()<0){
 				intSize.rwidth()-=5;
 				intSize.rheight()-=5;
 			}
 		}
 
-		aux=resize_graph->pos();
+		aux = resize_graph->pos();
 		resize_graph->setGeometry(QRect(QPoint(aux.x(),aux.y()),intSize));
 		resize_graph->plotWidget()->resize(intSize);
 
@@ -1128,45 +1127,6 @@ QString MultiLayer::saveToString(const QString& geometry, bool saveAsTemplate)
 QString MultiLayer::saveAsTemplate(const QString& geometryInfo)
 {
 	return saveToString(geometryInfo, true);
-}
-
-void MultiLayer::mousePressEvent ( QMouseEvent * e )
-{
-	int margin = 5;
-	QPoint pos = canvas->mapFromParent(e->pos());
-	// iterate backwards, so layers on top are preferred for selection
-	QList<QWidget*>::iterator i = graphsList.end();
-	while (i!=graphsList.begin()) {
-		--i;
-		Graph *g = (Graph*) (*i);
-		if (g->selectedText() || g->titleSelected() || g->selectedScale()){
-			g->deselect();
-			return;
-		}
-
-		QRect igeo = (*i)->frameGeometry();
-		igeo.addCoords(-margin, -margin, margin, margin);
-		if (igeo.contains(pos)) {
-			if (e->modifiers() & Qt::ShiftModifier) {
-				if (d_layers_selector)
-					d_layers_selector->add(*i);
-				else {
-					d_layers_selector = new SelectionMoveResizer(*i);
-					connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
-				}
-			} else {
-				setActiveGraph(g);
-				active_graph->raise();
-				if (!d_layers_selector) {
-					d_layers_selector = new SelectionMoveResizer(*i);
-					connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
-				}
-			}
-			return;
-		}
-	}
-	if (d_layers_selector)
-		delete d_layers_selector;
 }
 
 void MultiLayer::setMargins (int lm, int rm, int tm, int bm)
@@ -1280,30 +1240,6 @@ bool MultiLayer::focusNextPrevChild ( bool next )
 		return true;
 
 	return active_graph->focusNextPrevChild(next);
-}
-
-void MultiLayer::changeEvent(QEvent *event)
-{
-	if (event->type() == QEvent::WindowStateChange) {
-		if ( windowState() & Qt::WindowMaximized )
-	     	d_max_size = QSize(width(), height() - LayerButton::btnSize());
-        else if ( windowState() & Qt::WindowMinimized )
-        {
-            if (((QWindowStateChangeEvent*)event)->oldState() == Qt::WindowMaximized)
-                resizeLayers(d_normal_size, d_max_size, true);
-        }
-        else if ( windowState() == Qt::WindowNoState )
-            d_normal_size = QSize(width(), height() - LayerButton::btnSize());
-	}
-	MyWidget::changeEvent(event);
-}
-
-void MultiLayer::setHidden()
-{
-	if (status() == MyWidget::Maximized)
-		resizeLayers(d_normal_size, d_max_size, false);
-
-	MyWidget::setHidden();
 }
 
 bool MultiLayer::swapLayers(int src, int dest)

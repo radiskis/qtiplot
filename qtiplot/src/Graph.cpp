@@ -159,12 +159,9 @@ static const char *unzoom_xpm[]={
 #include <stdio.h>
 #include <stddef.h>
 
-Graph::Graph(QWidget* parent, const char* name, Qt::WFlags f)
-: QWidget(parent,name,f)
+Graph::Graph(QWidget* parent, Qt::WFlags f)
+: QWidget(parent, f)
 {
-	if ( !name )
-		setName( "graph" );
-
 	n_curves=0;
 	d_active_tool = NULL;
 	d_selected_text = NULL;
@@ -1788,7 +1785,7 @@ QString Graph::saveAxesFormulas()
 		ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw(i);
 		if (!sd)
 			continue;
-		
+
 		if (!sd->formula().isEmpty())
 		{
 			s += "<AxisFormula pos=\"" + QString::number(i) + "\">\n";
@@ -2507,7 +2504,7 @@ void Graph::setCurveType(int curve, int style)
 }
 
 void Graph::updateCurveLayout(int index, const CurveLayout *cL)
-{	
+{
 	DataCurve *c = (DataCurve *)this->curve(index);
 	if (!c)
 		return;
@@ -4372,12 +4369,6 @@ void Graph::setArrowDefaults(int lineWidth,  const QColor& c, Qt::PenStyle style
 	defaultArrowHeadFill = fillHead;
 }
 
-QString Graph::parentPlotName()
-{
-	QWidget *w = (QWidget *)parent()->parent();
-	return QString(w->objectName());
-}
-
 void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 {
 	colorIndex = 0;
@@ -4942,7 +4933,7 @@ QString Graph::axisFormula(int axis)
 
 	return QString();
 }
-		
+
 void Graph::setAxisFormula(int axis, const QString &formula)
 {
 	ScaleDraw *sd = (ScaleDraw *)d_plot->axisScaleDraw(axis);

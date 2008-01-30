@@ -112,8 +112,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 ###################### DOCUMENTATION ########################################
 
@@ -184,7 +184,7 @@ HEADERS  += src/ApplicationWindow.h \
             src/ColorButton.h \
             src/AssociationsDialog.h \
             src/RenameWindowDialog.h \
-            src/MyWidget.h \
+			src/MdiSubWindow.h \
             src/InterpolationDialog.h\
             src/ImportASCIIDialog.h \
             src/ImageExportDialog.h\
@@ -301,7 +301,7 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/ColorButton.cpp \
             src/AssociationsDialog.cpp \
             src/RenameWindowDialog.cpp \
-            src/MyWidget.cpp\
+			src/MdiSubWindow.cpp \
             src/InterpolationDialog.cpp\
             src/nrutil.cpp\
             src/fit_gsl.cpp\
@@ -452,7 +452,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiMultiLayer.h\
              $${SIP_DIR}/sipqtiTable.h\
              $${SIP_DIR}/sipqtiMatrix.h\
-             $${SIP_DIR}/sipqtiMyWidget.h\
+             $${SIP_DIR}/sipqtiMdiSubWindow.h\
              $${SIP_DIR}/sipqtiScriptEdit.h\
              $${SIP_DIR}/sipqtiNote.h\
              $${SIP_DIR}/sipqtiPythonScript.h\
@@ -495,7 +495,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiMultiLayer.cpp\
              $${SIP_DIR}/sipqtiTable.cpp\
              $${SIP_DIR}/sipqtiMatrix.cpp\
-             $${SIP_DIR}/sipqtiMyWidget.cpp\
+             $${SIP_DIR}/sipqtiMdiSubWindow.cpp\
              $${SIP_DIR}/sipqtiScriptEdit.cpp\
              $${SIP_DIR}/sipqtiNote.cpp\
              $${SIP_DIR}/sipqtiPythonScript.cpp\

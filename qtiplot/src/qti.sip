@@ -48,10 +48,10 @@ private:
   ScriptEdit(ScriptEdit&);
 };
 
-class MyWidget: QWidget /PyName=MDIWindow/
+class MdiSubWindow: QWidget /PyName=MDIWindow/
 {
 %TypeHeaderCode
-#include "src/MyWidget.h"
+#include "src/MdiSubWindow.h"
 %End
 public:
   enum CaptionPolicy{Name = 0, Label = 1, Both = 2};
@@ -75,12 +75,12 @@ public:
   void askOnCloseEvent(bool)/PyName=confirmClose/;
 
 private:
-  MyWidget(const MyWidget&);
+  MdiSubWindow(const MdiSubWindow&);
 };
 
-typedef QList<MyWidget*> MDIWindowList;
+typedef QList<MdiSubWindow*> MDIWindowList;
 
-class Table: MyWidget
+class Table: MdiSubWindow
 {
 %TypeHeaderCode
 #include "src/Table.h"
@@ -265,7 +265,7 @@ private:
   Table(const Table&);
 };
 
-class Matrix: MyWidget
+class Matrix: MdiSubWindow
 {
 %TypeHeaderCode
 #include "src/Matrix.h"
@@ -616,7 +616,7 @@ private:
   Graph(const Graph&);
 };
 
-class MultiLayer : MyWidget /PyName=Graph/
+class MultiLayer : MdiSubWindow /PyName=Graph/
 {
 %TypeHeaderCode
 #include "src/MultiLayer.h"
@@ -651,7 +651,7 @@ private:
   MultiLayer(const MultiLayer&);
 };
 
-class Note: MyWidget
+class Note: MdiSubWindow
 {
 %TypeHeaderCode
 #include "src/Note.h"
@@ -675,7 +675,7 @@ private:
   Note(const Note&);
 };
 
-class Graph3D: MyWidget
+class Graph3D: MdiSubWindow
 {
 %TypeHeaderCode
 #include "src/Graph3D.h"
@@ -868,14 +868,14 @@ public:
   bool changeFolder(Folder *, bool force = false);
   bool copyFolder(Folder *src, Folder *dest);
 
-  MyWidget* openTemplate(const QString&);
-  void saveAsTemplate(MyWidget*, const QString&);
+  MdiSubWindow* openTemplate(const QString&);
+  void saveAsTemplate(MdiSubWindow*, const QString&);
 
-  void setWindowName(MyWidget *, const QString &);
+  void setWindowName(MdiSubWindow *, const QString &);
   void setPreferences(Graph*);
 
   void saveProjectAs(const QString& fileName = QString(), bool = false);
-  MyWidget* clone(MyWidget*);
+  MdiSubWindow* clone(MdiSubWindow*);
 
   Matrix* tableToMatrix(Table* t);
   Table* matrixToTable(Matrix* m);
@@ -1632,9 +1632,9 @@ public:
 
   QList<Folder*> folders();
   Folder *findSubfolder(const QString&, bool=true, bool=false)  /PyName=folder/;
-  MyWidget* findWindow(const QString&, bool=true, bool=true, bool=false, bool=true);
+  MdiSubWindow* findWindow(const QString&, bool=true, bool=true, bool=false, bool=true);
 
-  MyWidget *window(const QString &name, const char *cls="MyWidget", bool recursive=false);
+  MdiSubWindow *window(const QString &name, const char *cls="MdiSubWindow", bool recursive=false);
   Table *table(const QString &name, bool recursive=false);
   Matrix *matrix(const QString &name, bool recursive=false);
   MultiLayer *graph(const QString &name, bool recursive=false);

@@ -35,7 +35,7 @@
 #include <QHeaderView>
 #include <QTableView>
 #include <QPrinter>
-#include "MyWidget.h"
+#include "MdiSubWindow.h"
 #include "ScriptingEnv.h"
 #include "Script.h"
 #include <qwt_double_rect.h>
@@ -53,7 +53,7 @@ class QStackedWidget;
 class QShortcut;
 
 //! Matrix worksheet class
-class Matrix: public MyWidget, public scripted
+class Matrix: public MdiSubWindow, public scripted
 {
     Q_OBJECT
 
@@ -104,15 +104,6 @@ public:
 	void setNumCols(int cols);
 
 	//event handlers
-	/*!
-	 * \brief Event filter
-	 *
-	 * Currently only reacts to events of the
-	 * title bar.
-	 */
-	bool eventFilter(QObject *object, QEvent *e);
-	//! Context menu event handler
-	void contextMenuEvent(QContextMenuEvent *e);
 	//! Custom event handler
 	/**
 	 * Currently handles SCRIPTING_CHANGE_EVENT only.
@@ -272,10 +263,6 @@ public slots:
 	int verticalHeaderWidth(){return d_table_view->verticalHeader()->width();}
 
     void copy(Matrix *m);
-
-signals:
-	//! Show the context menu
-	void showContextMenu();
 
 private:
 	//! Initialize the matrix

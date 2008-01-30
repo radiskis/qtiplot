@@ -59,13 +59,13 @@
 Table::Table(ScriptingEnv *env, const QString &fname,const QString &sep, int ignoredLines, bool renameCols,
 			 bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString, bool readOnly,
 			 const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
-: MyWidget(label, parent,name,f), scripted(env)
+: MdiSubWindow(label, parent,name,f), scripted(env)
 {
 	importASCII(fname, sep, ignoredLines, renameCols, stripSpaces, simplifySpaces, importComments, true, commentString, readOnly);
 }
 
 	Table::Table(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
-: MyWidget(label,parent,name,f), scripted(env)
+: MdiSubWindow(label,parent,name,f), scripted(env)
 {
 	init(r,c);
 }
@@ -76,8 +76,6 @@ void Table::init(int rows, int cols)
 	d_saved_cells = 0;
 	d_show_comments = false;
 	d_numeric_precision = 13;
-
-	setBirthDate(QDateTime::currentDateTime().toString(Qt::LocalDate));
 
 	d_table = new MyTable(rows, cols, this, "table");
 	d_table->setSelectionMode (Q3Table::Single);
@@ -92,10 +90,6 @@ void Table::init(int rows, int cols)
 
 	setFocusPolicy(Qt::StrongFocus);
 	setFocus();
-
-	QVBoxLayout* hlayout = new QVBoxLayout(this);
-	hlayout->setMargin(0);
-	hlayout->addWidget(d_table);
 
 	for (int i=0; i<cols; i++){
 		commands << "";
@@ -124,6 +118,8 @@ void Table::init(int rows, int cols)
 
 	d_table->verticalHeader()->setResizeEnabled(false);
 	d_table->verticalHeader()->installEventFilter(this);
+
+	setWidget(d_table);
 
 	QShortcut *accelTab = new QShortcut(QKeySequence(Qt::Key_Tab), this);
 	connect(accelTab, SIGNAL(activated()), this, SLOT(moveCurrentCell()));
@@ -2750,18 +2746,6 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	return true;
 }
 
-void Table::contextMenuEvent(QContextMenuEvent *e)
-{
-	e->accept();
-
-	QRect r = d_table->horizontalHeader()->sectionRect(d_table->numCols()-1);
-	setFocus();
-	if (e->pos().x() > r.right() + d_table->verticalHeader()->width())
-		emit showContextMenu(false);
-	else if (d_table->numCols() > 0 && d_table->numRows() > 0)
-		emit showContextMenu(true);
-}
-
 void Table::moveCurrentCell()
 {
 	int cols=d_table->numCols();
@@ -2829,14 +2813,17 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 			d_table->setCurrentCell (row, 0);
 			setActiveWindow();
 		}
-	} else if (e->type()==QEvent::ContextMenu && object == titleBar) {
-		emit showTitleBarMenu();
-		((QContextMenuEvent*)e)->accept();
-		setActiveWindow();
-		return true;
-	}
+	} else if (e->type() == QEvent::ContextMenu && object == (QObject*)d_table){
+        const QContextMenuEvent *ce = (const QContextMenuEvent *)e;
+        QRect r = d_table->horizontalHeader()->sectionRect(d_table->numCols()-1);
+        setFocus();
+        if (ce->pos().x() > r.right() + d_table->verticalHeader()->width())
+            emit showContextMenu(false);
+        else if (d_table->numCols() > 0 && d_table->numRows() > 0)
+            emit showContextMenu(true);
+    }
 
-	return MyWidget::eventFilter(object, e);
+	return MdiSubWindow::eventFilter(object, e);
 }
 
 void Table::customEvent(QEvent *e)
@@ -3015,7 +3002,7 @@ void Table::restore(QString& spec)
 
 	if (s.contains ("WindowLabel")){
 		setWindowLabel(list[1]);
-		setCaptionPolicy((MyWidget::CaptionPolicy)list[2].toInt());
+		setCaptionPolicy((MdiSubWindow::CaptionPolicy)list[2].toInt());
 	}
 
 	s = t.readLine();

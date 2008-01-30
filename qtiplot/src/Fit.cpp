@@ -263,7 +263,7 @@ QString Fit::logFitInfo(int iterations, int status)
 	if (!d_graphics_display)
 		info += tr("graphics display disabled") + "]\n";
 	else if (d_output_graph)
-		info += "''" + d_output_graph->parentPlotName() + "'']\n";
+		info += "''" + d_output_graph->multiLayer()->objectName() + "'']\n";
 
 	info += d_explanation + " " + tr("of dataset") + ": " + dataSet;
 	if (!d_formula.isEmpty())

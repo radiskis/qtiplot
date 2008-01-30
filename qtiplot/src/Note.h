@@ -29,7 +29,7 @@
 #ifndef NOTE_H
 #define NOTE_H
 
-#include "MyWidget.h"
+#include "MdiSubWindow.h"
 #include "ScriptEdit.h"
 #include <qtextedit.h>
 
@@ -40,7 +40,7 @@ class ScriptingEnv;
  * \section future Future Plans
  * - Search and replace
  */
-class Note: public MyWidget
+class Note: public MdiSubWindow
 {
     Q_OBJECT
 

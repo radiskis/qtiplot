@@ -39,7 +39,7 @@ TableStatistics::TableStatistics(ScriptingEnv *env, QWidget *parent, Table *base
 {
 	// FIXME: Haven't found a set read-only method in Qt4 yet
 	// d_table->setReadOnly(true);
-	setCaptionPolicy(MyWidget::Both);
+	setCaptionPolicy(MdiSubWindow::Both);
 	if (d_type == row)
 	{
 		setName(QString(d_base->objectName())+"-"+tr("RowStats"));

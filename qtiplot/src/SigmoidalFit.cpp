@@ -84,14 +84,12 @@ void SigmoidalFit::calculateFitCurveData(double *X, double *Y)
         for (int i=0; i<d_points; i++){
 			double x = X0+i*step;
         	X[i] = x;
-			double a2 = d_results[1];
         	Y[i] = (a1 - a2)/(1 + exp((x - x0)/p)) + a2;
 		}
 	} else {
         for (int i=0; i<d_points; i++){
 			double x = d_x[i];
         	X[i] = x;
-			double a2 = d_results[1];
         	Y[i] = (a1 - a2)/(1 + exp((x - x0)/p)) + a2;
 		}
 	}

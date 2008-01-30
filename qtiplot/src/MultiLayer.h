@@ -32,21 +32,19 @@
 #ifndef MULTILAYER_H
 #define MULTILAYER_H
 
-#include "MyWidget.h"
+#include "MdiSubWindow.h"
 #include "Graph.h"
 #include <QPushButton>
 #include <QLayout>
 #include <QPointer>
 
-class QWidget;
 class QLabel;
-class QWidget;
 class LayerButton;
 class SelectionMoveResizer;
 class LegendWidget;
 
 /**
- * \brief An MDI window (MyWidget) managing one or more Graph objects.
+ * \brief An MDI window (MdiSubWindow) managing one or more Graph objects.
  *
  * %Note that several parts of the code, as well as the user interface, refer to MultiLayer as "graph" or "plot",
  * practically guaranteeing confusion with the classes Graph and Plot.
@@ -62,7 +60,7 @@ class LegendWidget;
  * If MultiLayer exposes its parent Project to the widgets it manages, they could handle things like creating
  * tables by calling methods of Project instead of sending signals.
  */
-class MultiLayer: public MyWidget
+class MultiLayer: public MdiSubWindow
 {
 	Q_OBJECT
 
@@ -76,28 +74,13 @@ public:
 	enum HorAlignement{HCenter, Left, Right};
 	enum VertAlignement{VCenter, Top, Bottom};
 
-	//! \name Event Handlers
-	//@{
-	void mousePressEvent(QMouseEvent *);
-	void contextMenuEvent(QContextMenuEvent *);
-	void wheelEvent(QWheelEvent *);
-	void keyPressEvent(QKeyEvent *);
-	void changeEvent(QEvent *);
-	bool eventFilter(QObject *object, QEvent *);
-	void releaseLayer();
-
-	bool focusNextPrevChild ( bool next );
-	//@}
-
-	void setOpenMaximized(){d_open_maximized = 1;};
-
 	bool scaleLayersOnPrint(){return d_scale_on_print;};
 	void setScaleLayersOnPrint(bool on){d_scale_on_print = on;};
 
 	bool printCropmarksEnabled(){return d_print_cropmarks;};
 	void printCropmarks(bool on){d_print_cropmarks = on;};
 
-	void setHidden();
+	void setIgnoreResize(){d_resize_count = 0;};
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
@@ -176,7 +159,6 @@ signals:
 	void showScaleDialog(int);
 	void showGraphContextMenu();
 	void showCurveContextMenu(int);
-	void showWindowContextMenu();
 	void showCurvesDialog();
 	void drawTextOff();
 	void drawLineEnded(bool);
@@ -197,8 +179,15 @@ signals:
     void enableTextEditor(Graph *);
 
 private:
+	//! \name Event Handlers
+	//@{
+	void wheelEvent(QWheelEvent *);
+	void keyPressEvent(QKeyEvent *);
+	bool eventFilter(QObject *object, QEvent *);
+	void releaseLayer();
 	void resizeLayers (const QResizeEvent *re);
-	void resizeLayers (const QSize& size, const QSize& oldSize, bool scaleFonts);
+	bool focusNextPrevChild ( bool next );
+	//@}
 
 	Graph* active_graph;
 	//! Used for resizing of layers.
@@ -212,11 +201,8 @@ private:
     QWidget *canvas;
 
 	QPointer<SelectionMoveResizer> d_layers_selector;
-	int d_open_maximized;
-	//! Stores the size of the widget in the Qt::WindowMaximized state.
-	QSize d_max_size;
-	//! Stores the size of the widget in Qt::WindowNoState (normal state).
-    QSize d_normal_size;
+	//! Flag telling to ignore all resize events if lower then 3.
+    int d_resize_count;
 };
 
 
@@ -227,8 +213,6 @@ class LayerButton: public QPushButton
 
 public:
     LayerButton (const QString& text = QString::null, QWidget* parent = 0);
-	~LayerButton(){};
-
 	static int btnSize(){return 20;};
 
 protected:

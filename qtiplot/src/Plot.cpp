@@ -117,15 +117,14 @@ Plot::Plot(QWidget *parent, const char *)
     QColor background = QColor(Qt::white);
     background.setAlpha(255);
 
-	QColorGroup cg;
-    cg.setColor(QPalette::Window, background);
-    setPalette(QPalette(cg, cg, cg));
-    setAutoFillBackground(true);
-
+	QPalette palette;
+    palette.setColor(QPalette::Window, background);
+    setPalette(palette);
+	
 	setCanvasBackground (background);
 	setFocusPolicy(Qt::StrongFocus);
 	setFocusProxy(plCanvas);
-	setFrameShape (QFrame::Box);
+	setFrameShape(QFrame::Box);
 	setLineWidth(0);
 }
 

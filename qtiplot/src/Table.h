@@ -37,7 +37,7 @@
 #include <QVarLengthArray>
 
 #include "Graph.h"
-#include "MyWidget.h"
+#include "MdiSubWindow.h"
 #include "ScriptingEnv.h"
 #include "Script.h"
 
@@ -57,7 +57,7 @@ private:
  * Port to the Model/View approach used in Qt4 and get rid of the Qt3Support dependancy.
  * [ assigned to thzs ]
  */
-class Table: public MyWidget, public scripted
+class Table: public MdiSubWindow, public scripted
 {
     Q_OBJECT
 
@@ -129,7 +129,6 @@ public slots:
 	//! \name Event Handlers
 	//@{
 	bool eventFilter(QObject *object, QEvent *e);
-	void contextMenuEvent(QContextMenuEvent *e);
 	void customEvent( QEvent* e);
 	//@}v
 
