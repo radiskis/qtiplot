@@ -137,8 +137,6 @@ int main( int argc, char ** argv )
 
 		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
 		mw->restoreApplicationGeometry();
-		mw->initWindow();
-		mw->savedProject();
 		mw->showDonationDialog();
 		if (mw->autoSearchUpdates){
 			mw->autoSearchUpdatesRequest = true;

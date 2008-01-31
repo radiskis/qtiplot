@@ -140,16 +140,17 @@ return QString::number(8*sizeof(this)/1024.0, 'f', 1) + " " + tr("kB");
 void MdiSubWindow::changeEvent(QEvent *event)
 {
 	if (!isHidden() && event->type() == QEvent::WindowStateChange){
-	    /*if (((QWindowStateChangeEvent *)event)->oldState() == windowState())
-            return;*/
-
+		Status oldStatus = d_status;
+		Status newStatus = Normal;
 		if( windowState() & Qt::WindowMinimized )
-	    	d_status = Minimized;
+	    	newStatus = Minimized;
 		else if ( windowState() & Qt::WindowMaximized )
-	     	d_status = Maximized;
-		else
-	    	d_status = Normal;
-    	emit statusChanged (this);
+	     	newStatus = Maximized;
+		
+		if (newStatus != oldStatus){
+			d_status = newStatus;
+    		emit statusChanged (this);
+		}
 	}
 	QMdiSubWindow::changeEvent(event);
 }

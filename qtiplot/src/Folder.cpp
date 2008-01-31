@@ -31,7 +31,6 @@
 
 #include <QApplication>
 #include <QDateTime>
-#include <q3header.h>
 
 static const char* folder_closed_xpm[]={
     "16 16 9 1",

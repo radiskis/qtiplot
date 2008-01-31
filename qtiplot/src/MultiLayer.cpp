@@ -97,7 +97,7 @@ hor_align(HCenter),
 vert_align(VCenter),
 d_scale_on_print(true),
 d_print_cropmarks(false),
-d_resize_count(3)
+d_resize_count(1)
 {
 	layerButtonsBox = new QHBoxLayout();
 	QHBoxLayout *hbox = new QHBoxLayout();
@@ -223,12 +223,12 @@ void MultiLayer::setActiveGraph(Graph* g)
 
 void MultiLayer::resizeLayers (const QResizeEvent *re)
 {
-	// When restoring maximized plots from project files, 3 resize events are sent to the plot.
+	// When restoring maximized plots from project files, 2 resize events are sent to the plot.
 	// The d_resize_count avoids the resizing of plot layers in this case.
-	if (d_resize_count >= 2)
-		d_resize_count = 2;
+	if (d_resize_count >= 1)
+		d_resize_count = 1;
 
-	if (d_resize_count < 2)
+	if (d_resize_count < 1)
 		return;
 
 	QSize oldSize = re->oldSize();
