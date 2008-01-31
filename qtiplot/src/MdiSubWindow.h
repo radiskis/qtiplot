@@ -154,8 +154,6 @@ signals:
 	//! Show the context menu
 	void showContextMenu();
 
-	void moved();
-
 protected:
 	//! Catches status changes
 	virtual void changeEvent(QEvent *event);

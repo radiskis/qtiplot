@@ -29,18 +29,10 @@
 #ifndef FOLDER_H
 #define FOLDER_H
 
-#include <qobject.h>
+#include <QObject>
+#include <QEvent>
 #include <q3listview.h>
 #include <q3iconview.h>
-//Added by qt3to4:
-#include <QDragEnterEvent>
-#include <QMouseEvent>
-#include <QDragLeaveEvent>
-#include <QDragMoveEvent>
-#include <QKeyEvent>
-#include <QEvent>
-#include <QDropEvent>
-#include <Q3PtrList>
 
 #include "MdiSubWindow.h"
 

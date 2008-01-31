@@ -201,7 +201,7 @@ private:
     QWidget *canvas;
 
 	QPointer<SelectionMoveResizer> d_layers_selector;
-	//! Flag telling to ignore all resize events if lower then 3.
+	//! Flag telling to ignore all resize events if lower then 2.
     int d_resize_count;
 };
 

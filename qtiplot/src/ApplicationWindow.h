@@ -152,8 +152,8 @@ public slots:
 	//! \name Projects and Project Files
 	//@{
 	void open();
-	ApplicationWindow* open(const QString& fn, bool factorySettings = false);
-	ApplicationWindow* openProject(const QString& fn, bool factorySettings = false);
+	ApplicationWindow* open(const QString& fn, bool factorySettings = false, bool newProject = true);
+	ApplicationWindow* openProject(const QString& fn, bool factorySettings = false, bool newProject = true);
 	ApplicationWindow* importOPJ(const QString& filename);
 
 	/**
