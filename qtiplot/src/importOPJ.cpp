@@ -157,8 +157,8 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		if(opj.Version() == 7.5)
 		{
 			windowRect = opj.spreadWindowRect(s);
-			table->resize(windowRect.width() - (table->parentWidget()->frameGeometry().width() - table->parentWidget()->width()),
-				windowRect.height() - (table->parentWidget()->frameGeometry().height() - table->parentWidget()->height()));
+			table->resize(windowRect.width() - (table->frameGeometry().width() - table->width()),
+				windowRect.height() - (table->frameGeometry().height() - table->height()));
 		}
 
         QLocale locale = mw->locale();
@@ -386,13 +386,13 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			//cascade the tables
 			if(opj.Version() == 7.5)
 			{
-				table->parentWidget()->move(QPoint(windowRect.left, windowRect.top));
+				table->move(QPoint(windowRect.left, windowRect.top));
 			}
 			else
 			{
 				int dx=table->verticalHeaderWidth();
-				int dy=table->parentWidget()->frameGeometry().height() - table->height();
-				table->parentWidget()->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
+				int dy=table->frameGeometry().height() - table->height();
+				table->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
 				visible_count++;
 			}
 		}
@@ -415,8 +415,8 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		rect windowRect;
 		if(opj.Version() == 7.5){
 			windowRect = opj.matrixWindowRect(s);
-			matrix->resize(windowRect.width() - (matrix->parentWidget()->frameGeometry().width() - matrix->parentWidget()->width()),
-				windowRect.height() - (matrix->parentWidget()->frameGeometry().height() - matrix->parentWidget()->height()));
+			matrix->resize(windowRect.width() - (matrix->frameGeometry().width() - matrix->width()),
+				windowRect.height() - (matrix->frameGeometry().height() - matrix->height()));
 		}
 
 		matrix->setWindowLabel(opj.matrixLabel(s));
@@ -469,11 +469,11 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 
 			//cascade the matrices
 			if(opj.Version() == 7.5)
-				matrix->parentWidget()->move(QPoint(windowRect.left, windowRect.top));
+				matrix->move(QPoint(windowRect.left, windowRect.top));
 			else {
 				int dx=matrix->verticalHeaderWidth();
-				int dy=matrix->parentWidget()->frameGeometry().height() - matrix->height();
-				matrix->parentWidget()->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
+				int dy=matrix->frameGeometry().height() - matrix->height();
+				matrix->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
 				visible_count++;
 			}
 		}
@@ -506,8 +506,8 @@ bool ImportOPJ::importNotes(const OPJFile& opj)
 
 		//cascade the notes
 		int dx=20;
-		int dy=note->parentWidget()->frameGeometry().height() - note->height();
-		note->parentWidget()->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
+		int dy=note->frameGeometry().height() - note->height();
+		note->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
 		visible_count++;
 	}
 	if(visible_count>0)
@@ -535,8 +535,8 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 
 		rect graphRect = opj.graphRect(g);
 		rect graphWindowRect = opj.graphWindowRect(g);
-		ml->resize(graphWindowRect.width() - (ml->parentWidget()->frameGeometry().width() - ml->parentWidget()->width()),
-									graphWindowRect.height() - (ml->parentWidget()->frameGeometry().height() - ml->parentWidget()->height()));
+		ml->resize(graphWindowRect.width() - (ml->frameGeometry().width() - ml->width()),
+                    graphWindowRect.height() - (ml->frameGeometry().height() - ml->height()));
 
 		double fXScale = (double)ml->width()/(double)graphRect.width();
 		double fYScale = (double)ml->height()/(double)graphRect.height();
@@ -958,25 +958,25 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 			}
 			else if(style != Graph::Box)
 			{
-			
+
 				graphAxisBreak breakX = opj.layerXBreak(g,l);
 				graphAxisBreak breakY = opj.layerYBreak(g,l);
 				if(breakX.show)
 					graph->setScale(2,rangeX.min,rangeX.max,rangeX.step,ticksX[0],ticksX[1],opj.layerXScale(g,l),
 									false,
-									breakX.from, breakX.to, 
+									breakX.from, breakX.to,
 									breakX.position,
-									breakX.scale_increment_before, breakX.scale_increment_after, 
+									breakX.scale_increment_before, breakX.scale_increment_after,
 									breakX.minor_ticks_before, breakX.minor_ticks_after, breakX.log10);
 				else
 					graph->setScale(2,rangeX.min,rangeX.max,rangeX.step,ticksX[0],ticksX[1],opj.layerXScale(g,l));
-				
+
 				if(breakY.show)
 					graph->setScale(0,rangeY.min,rangeY.max,rangeY.step,ticksY[0],ticksY[1],opj.layerXScale(g,l),
 					false,
-					breakY.from, breakY.to, 
+					breakY.from, breakY.to,
 					breakY.position,
-					breakY.scale_increment_before, breakY.scale_increment_after, 
+					breakY.scale_increment_before, breakY.scale_increment_after,
 					breakY.minor_ticks_before, breakY.minor_ticks_after, breakY.log10);
 				else
 					graph->setScale(0,rangeY.min,rangeY.max,rangeY.step,ticksY[0],ticksY[1],opj.layerYScale(g,l));
@@ -1236,7 +1236,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 		//cascade the graphs
 		if(!opj.graphHidden(g))
 		{
-			ml->parentWidget()->move(QPoint(graphWindowRect.left, graphWindowRect.top));
+			ml->move(QPoint(graphWindowRect.left, graphWindowRect.top));
 
 			switch(opj.graphState(g))
 			{
