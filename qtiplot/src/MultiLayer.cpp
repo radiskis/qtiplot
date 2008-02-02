@@ -763,23 +763,21 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
 
 void MultiLayer::exportSVG(const QString& fname)
 {
-	#if QT_VERSION >= 0x040300
-		QSvgGenerator generator;
-        generator.setFileName(fname);
-        generator.setSize(canvas->size());
+	QSvgGenerator generator;
+	generator.setFileName(fname);
+	generator.setSize(canvas->size());
 
-		QPainter p(&generator);
-        for (int i=0; i<(int)graphsList.count(); i++){
-			Graph *gr = (Graph *)graphsList.at(i);
-			Plot *myPlot = (Plot *)gr->plotWidget();
+	QPainter p(&generator);
+	for (int i=0; i<(int)graphsList.count(); i++){
+		Graph *gr = (Graph *)graphsList.at(i);
+		Plot *myPlot = (Plot *)gr->plotWidget();
 
-			QPoint pos = QPoint(gr->pos().x(), gr->pos().y());
-			myPlot->setSVGMode();
-			myPlot->print(&p, QRect(pos, myPlot->size()));
-			myPlot->setSVGMode(false);
-		}
-		p.end();
-	#endif
+		QPoint pos = QPoint(gr->pos().x(), gr->pos().y());
+		myPlot->setSVGMode();
+		myPlot->print(&p, QRect(pos, myPlot->size()));
+		myPlot->setSVGMode(false);
+	}
+	p.end();
 }
 
 void MultiLayer::copyAllLayers()
@@ -961,7 +959,7 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 	if(e->type() == QEvent::Resize && object == (QObject *)canvas){
 		resizeLayers((const QResizeEvent *)e);
 		d_resize_count++;
-	} else if (e->type() == QEvent::MouseButtonPress) {
+	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)canvas){
 	    const QMouseEvent *me = (const QMouseEvent *)e;
 	    if (me->button() == Qt::RightButton)
             return QMdiSubWindow::eventFilter(object, e);

@@ -232,7 +232,9 @@ class Graph: public QWidget
 		//! Provided for convenience in scripts
 		void exportToFile(const QString& fileName);
 		void exportSVG(const QString& fname);
+#ifdef EMF_OUTPUT
 		void exportEMF(const QString& fname);
+#endif
 		void exportVector(const QString& fileName, int res = 0, bool color = true,
                         bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false);

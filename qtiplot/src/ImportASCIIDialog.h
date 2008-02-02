@@ -36,9 +36,31 @@
 #include <QSpinBox>
 #include <QLineEdit>
 
-class Table;
 class QGroupBox;
 class QPushButton;
+
+#include <q3table.h>
+#include <q3header.h>
+
+class PreviewTable : public Q3Table
+{
+public:
+    PreviewTable(int numRows, int numCols, QWidget * parent = 0, const char * name = 0);
+
+	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
+		bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString);
+
+	void resetHeader();
+	void clear();
+	void updateDecimalSeparators(const QLocale& oldSeparators);
+	void setNumericPrecision(int prec) {d_numeric_precision = prec;};
+
+private:
+	void setHeader();
+	void addColumns(int c);
+	QStringList comments, col_label;
+	int d_numeric_precision;
+};
 
 //! Import ASCII file(s) dialog
 class ImportASCIIDialog: public ExtensibleFileDialog
@@ -120,7 +142,7 @@ private:
 	QSpinBox *d_ignored_lines, *d_preview_lines_box;
 	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces, *d_import_comments;
 	QLineEdit *d_comment_string;
-	Table *d_preview_table;
+	PreviewTable *d_preview_table;
 	QCheckBox *d_preview_button;
 
 	QString d_current_path;

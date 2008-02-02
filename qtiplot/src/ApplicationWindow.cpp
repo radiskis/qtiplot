@@ -4849,8 +4849,8 @@ void ApplicationWindow::exportLayer()
 		g->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name);
-    else if (selected_filter.contains(".emf"))
-		g->exportEMF(file_name);
+    /*else if (selected_filter.contains(".emf"))
+		g->exportEMF(file_name);*/
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++)
@@ -5011,8 +5011,12 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 	} else if (s.contains ("maximized")){
 		w->setStatus(MdiSubWindow::Maximized);
         if (w->isA("MultiLayer")){
-			((MultiLayer *)w)->setIgnoreResize();
+			if (app != this)
+				((MultiLayer *)w)->setIgnoreResize(-2);
+			else
+				((MultiLayer *)w)->setIgnoreResize();
 		}
+		
 		app->setListView(caption, tr("Maximized"));
 	} else {
 		QStringList lst = s.split("\t");
