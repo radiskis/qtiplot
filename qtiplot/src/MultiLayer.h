@@ -80,7 +80,7 @@ public:
 	bool printCropmarksEnabled(){return d_print_cropmarks;};
 	void printCropmarks(bool on){d_print_cropmarks = on;};
 
-	void setIgnoreResize(){d_resize_count = 0;};
+	void setIgnoreResize(int resizeEvents = 0){d_resize_count = resizeEvents;};
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);

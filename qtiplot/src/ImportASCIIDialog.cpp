@@ -32,15 +32,15 @@
 #include "ApplicationWindow.h"
 #include "Table.h"
 
-#include <QGridLayout>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
+#include <QLayout>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QRegExp>
 #include <QMessageBox>
 #include <QTemporaryFile>
 #include <QTextStream>
+#include <QApplication>
+#include <QProgressDialog>
 #include <Q3TextStream>
 
 ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent, bool extended, Qt::WFlags flags )
@@ -65,6 +65,8 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 
 	// get rembered option values
 	ApplicationWindow *app = (ApplicationWindow *)parent;
+	setLocale(app->locale());
+	
 	d_strip_spaces->setChecked(app->strip_spaces);
 	d_simplify_spaces->setChecked(app->simplify_spaces);
 	d_ignored_lines->setValue(app->ignoredLines);
@@ -88,6 +90,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
         d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
 	d_preview_lines_box->setValue(app->d_preview_lines);
 	d_preview_button->setChecked(app->d_ASCII_import_preview);
+	d_preview_table->setNumericPrecision(app->d_decimal_digits);
 	if (!app->d_ASCII_import_preview)
 		d_preview_table->hide();
 
@@ -208,17 +211,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
 	advanced_layout->addWidget(d_help_button, 5, 3);
 
-	d_preview_table = new Table(ScriptingLangManager::newEnv((ApplicationWindow *)parent()), 30, 2, tr("Preview"), 0, 0);
-	d_preview_table->setAttribute(Qt::WA_DeleteOnClose);
-#if defined(Q_WS_MAC)//displaying comments on Mac leads to a crash
-    d_preview_table->showComments(false);
-	int height = d_preview_table->table()->horizontalHeader()->height();
-	d_preview_table->setMinimumHeight(4*height);
-#else
-    d_preview_table->showComments();
-	int height = d_preview_table->table()->horizontalHeader()->height();
-	d_preview_table->setMinimumHeight(2*height);
-#endif
+	d_preview_table = new PreviewTable(30, 2, this);
 	main_layout->addWidget(d_preview_table);
 }
 
@@ -335,13 +328,6 @@ void ImportASCIIDialog::preview()
 	if (d_current_path.trimmed().isEmpty()){
 		d_preview_table->clear();
 		d_preview_table->resetHeader();
-		#if defined(Q_WS_MAC)//displaying comments on Mac leads to a crash
-            d_preview_table->showComments(false);
-        #else
-            d_preview_table->showComments();
-        #endif
-		if (!d_preview_table->isVisible())
-			d_preview_table->show();
         return;
     }
 
@@ -365,8 +351,8 @@ void ImportASCIIDialog::preview()
 	d_preview_table->resetHeader();
 	d_preview_table->importASCII(fileName, columnSeparator(), d_ignored_lines->value(),
 							d_rename_columns->isChecked(), d_strip_spaces->isChecked(),
-							d_simplify_spaces->isChecked(), d_import_comments->isChecked(), false,
-                            d_comment_string->text(), d_read_only->isChecked());
+							d_simplify_spaces->isChecked(), d_import_comments->isChecked(),
+                            d_comment_string->text());
 
 	if (d_import_dec_separators->isChecked())
 		d_preview_table->updateDecimalSeparators(decimalSeparators());
@@ -383,4 +369,283 @@ void ImportASCIIDialog::changePreviewFile(const QString& path)
 
 	d_current_path = path;
 	preview();
+}
+
+/*****************************************************************************
+ *
+ * Class PreviewTable
+ *
+ *****************************************************************************/
+
+PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const char * name)
+:Q3Table(numRows, numCols, parent, name)
+{
+	setAttribute(Qt::WA_DeleteOnClose);	
+	setSelectionMode(Q3Table::NoSelection);
+	setReadOnly(true);
+	setRowMovingEnabled(false);
+	setColumnMovingEnabled(false);
+	verticalHeader()->setResizeEnabled(false);
+	
+	for (int i=0; i<numCols; i++){
+		comments << "";
+		col_label << QString::number(i+1);
+	}
+	setHeader();
+	setMinimumHeight(2*horizontalHeader()->height());
+}
+
+void PreviewTable::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
+    bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString)
+{
+	QFile f(fname);
+	if (f.open(QIODevice::ReadOnly)) //| QIODevice::Text | QIODevice::Unbuffered ))
+	{
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        Q3TextStream t(&f);//TODO: use QTextStream instead and find a way to make it read the end-of-line char correctly.
+                         //Opening the file with the above combination doesn't seem to help: problems on Mac OS X generated ASCII files!
+
+		int c, rows = 0, cols = 0;
+		for (int i=0; i<ignoredLines; i++)
+			t.readLine();
+
+		QString s = t.readLine();//read first line after the ignored ones
+		while (!t.atEnd()){
+            if (commentString.isEmpty() || !s.startsWith(commentString)){
+                rows++;
+                break;
+            } else
+                s = t.readLine();
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+
+		while (!t.atEnd()){
+			QString aux = t.readLine();
+			if (commentString.isEmpty() || !aux.startsWith(commentString))
+                rows++;
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+
+		if (simplifySpaces)
+			s = s.simplifyWhiteSpace();
+		else if (stripSpaces)
+			s = s.stripWhiteSpace();
+
+		QStringList line = s.split(sep);
+		cols = (int)line.count();
+
+		bool allNumbers = true;
+		for (int i=0; i<cols; i++)
+		{//verify if the strings in the line used to rename the columns are not all numbers
+			locale().toDouble(line[i], &allNumbers);
+			if (!allNumbers)
+				break;
+		}
+
+		if (renameCols && !allNumbers)
+			rows--;
+        if (importComments)
+            rows--;
+
+		int steps = int(rows/1000);
+
+		QProgressDialog progress(this);
+		progress.setWindowTitle("Qtiplot - Reading file...");
+		progress.setLabelText(fname);
+		progress.setActiveWindow();
+		progress.setAutoClose(true);
+		progress.setAutoReset(true);
+		progress.setRange(0, steps+1);
+
+		QApplication::restoreOverrideCursor();
+
+		QStringList oldHeader;
+		if (numRows() != rows)
+			setNumRows(rows);
+
+		c = numCols();
+		oldHeader = col_label;
+		if (c != cols){
+			if (c < cols)
+				addColumns(cols - c);
+			else{
+				setNumCols(cols);
+                for (int i=c-1; i>=cols; i--){
+                	comments.removeLast();            
+					col_label.removeLast();
+				}
+			}
+		}
+
+		f.reset();
+		for (int i=0; i<ignoredLines; i++)
+			t.readLine();
+
+		if (renameCols && !allNumbers){//use first line to set the table header
+			s = t.readLine();//read first line after the ignored ones
+			while (!t.atEnd()){
+            	if (commentString.isEmpty() || !s.startsWith(commentString))
+                	break;
+             	else
+                	s = t.readLine();//ignore all commented lines
+				qApp->processEvents(QEventLoop::ExcludeUserInput);
+			}
+
+			if (simplifySpaces)
+				s = s.simplifyWhiteSpace();
+			else if (stripSpaces)
+				s = s.stripWhiteSpace();
+			line = s.split(sep, QString::SkipEmptyParts);
+			for (int i=0; i<(int)line.count(); i++)
+  	        	col_label[i] = QString::null;
+
+			for (int i=0; i<(int)line.count(); i++){
+			    if (!importComments)
+                    comments[i] = line[i];
+				s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
+				int n = col_label.count(s);
+				if(n){//avoid identical col names
+					while (col_label.contains(s+QString::number(n)))
+						n++;
+					s += QString::number(n);
+				}
+				col_label[i] = s;
+			}
+		}
+
+        if (importComments){//import comments
+            s = t.readLine();//read 2nd line after the ignored ones
+            while (!t.atEnd()){
+                if (commentString.isEmpty() || !s.startsWith(commentString))
+                	break;
+             	else
+					s = t.readLine();//ignore all commented lines
+                qApp->processEvents(QEventLoop::ExcludeUserInput);
+            }
+
+            if (simplifySpaces)
+                s = s.simplifyWhiteSpace();
+            else if (stripSpaces)
+                s = s.stripWhiteSpace();
+            line = s.split(sep, QString::SkipEmptyParts);
+			for (int i=0; i<(int)line.count(); i++)
+                comments[i] = line[i];
+        }
+
+		setHeader();
+
+		int start = 0;
+		for (int i=0; i<steps; i++){
+			if (progress.wasCanceled()){
+				f.close();
+				return;
+			}
+
+			start = i*1000;
+			for (int k=0; k<1000; k++){
+				s = t.readLine();
+				if (!commentString.isEmpty() && s.startsWith(commentString)){
+				    k--;
+                    continue;
+				}
+
+				if (simplifySpaces)
+					s = s.simplifyWhiteSpace();
+				else if (stripSpaces)
+					s = s.stripWhiteSpace();
+				line = s.split(sep);
+				int lc = (int)line.count();
+				if (lc > cols){
+					addColumns(lc - cols);
+					cols = lc;
+				}
+				for (int j=0; j<cols && j<lc; j++)
+					setText(start + k, j, line[j]);
+			}
+			progress.setValue(i);
+			qApp->processEvents();
+		}
+
+		start = steps*1000;
+		for (int i=start; i<rows; i++){
+			s = t.readLine();
+			if (!commentString.isEmpty() && s.startsWith(commentString)){
+			    i--;
+                continue;
+			}
+
+			if (simplifySpaces)
+				s = s.simplifyWhiteSpace();
+			else if (stripSpaces)
+				s = s.stripWhiteSpace();
+			line = s.split(sep);
+			int lc = (int)line.count();
+			if (lc > cols) {
+				addColumns(lc - cols);
+				cols = lc;
+			}
+			for (int j=0; j<cols && j<lc; j++)
+				setText(i, j, line[j]);
+		}
+		progress.setValue(steps+1);
+		qApp->processEvents();
+		f.close();
+	}
+}
+
+void PreviewTable::resetHeader()
+{
+	for (int i=0; i<numCols(); i++){
+	    comments[i] = QString::null;
+		col_label[i] = QString::number(i+1);
+	}
+}
+
+void PreviewTable::clear()
+{
+	for (int i=0; i<numCols(); i++){
+		for (int j=0; j<numRows(); j++)
+			setText(j, i, QString::null);
+	}
+}
+
+void PreviewTable::updateDecimalSeparators(const QLocale& oldSeparators)
+{		
+	QLocale locale = ((QWidget *)parent())->locale();
+	for (int i=0; i<numCols(); i++){
+        for (int j=0; j<numRows(); j++){
+            if (!text(j, i).isEmpty()){
+				double val = oldSeparators.toDouble(text(j, i));
+                setText(j, i, locale.toString(val, 'g', d_numeric_precision));
+			}
+		}
+	}
+}
+
+void PreviewTable::setHeader()
+{
+	Q3Header *head = horizontalHeader();
+	for (int i=0; i<numCols(); i++){
+		QString s = col_label[i];
+		int lines = columnWidth(i)/head->fontMetrics().averageCharWidth();
+		head->setLabel(i, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[i]);
+	} 
+}
+
+void PreviewTable::addColumns(int c)
+{
+	int max=0, cols = numCols();
+	for (int i=0; i<cols; i++){
+		if (!col_label[i].contains(QRegExp ("\\D"))){
+			int index=col_label[i].toInt();
+			if (index>max)
+				max=index;
+		}
+	}
+	max++;
+	insertColumns(cols, c);
+	for (int i=0; i<c; i++){
+		comments << QString();
+		col_label<< QString::number(max+i);
+	}
 }

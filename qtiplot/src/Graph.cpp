@@ -1376,30 +1376,28 @@ void Graph::print()
 
 void Graph::exportSVG(const QString& fname)
 {
-	#if QT_VERSION >= 0x040300
-		QSvgGenerator svg;
-        svg.setFileName(fname);
-        svg.setSize(d_plot->size());
+	QSvgGenerator svg;
+	svg.setFileName(fname);
+	svg.setSize(d_plot->size());
 
-		QPainter p(&svg);
-		d_plot->setSVGMode();
-		d_plot->print(&p, d_plot->rect());
-		d_plot->setSVGMode(false);
-		p.end();
-	#endif
+	QPainter p(&svg);
+	d_plot->setSVGMode();
+	d_plot->print(&p, d_plot->rect());
+	d_plot->setSVGMode(false);
+	p.end();
 }
 
+#ifdef EMF_OUTPUT
 void Graph::exportEMF(const QString& fname)
 {
-#ifdef EMF_OUTPUT
 	EmfPaintDevice *emf = new EmfPaintDevice(d_plot->size(), fname);
 	QPainter paint;
 	paint.begin(emf);
 	d_plot->print(&paint, d_plot->rect());
 	paint.end();
 	delete emf;
-#endif
 }
+#endif
 
 int Graph::selectedCurveID()
 {
