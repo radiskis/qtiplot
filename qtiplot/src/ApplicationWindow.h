@@ -154,7 +154,7 @@ public slots:
 	void open();
 	ApplicationWindow* open(const QString& fn, bool factorySettings = false, bool newProject = true);
 	ApplicationWindow* openProject(const QString& fn, bool factorySettings = false, bool newProject = true);
-	ApplicationWindow* importOPJ(const QString& filename);
+	ApplicationWindow* importOPJ(const QString& fn, bool factorySettings = false, bool newProject = true);
 
 	/**
 	 * \brief Create a new project from a data file.
