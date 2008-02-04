@@ -3603,7 +3603,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 {
 	if (fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
 		fn.endsWith(".ogw", Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive))
-		return importOPJ(fn);
+		return importOPJ(fn, factorySettings, newProject);
 	else if (fn.endsWith(".py", Qt::CaseInsensitive))
 		return loadScript(fn);
 	else if (!( fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti.gz",Qt::CaseInsensitive) ||
@@ -12341,16 +12341,19 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	return g;
 }
 
-ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename)
+ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool factorySettings, bool newProject)
 {
     if (filename.endsWith(".opj", Qt::CaseInsensitive) || filename.endsWith(".ogg", Qt::CaseInsensitive))
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        ApplicationWindow *app = new ApplicationWindow();
-        app->setWindowTitle("QtiPlot - " + filename);
+		ApplicationWindow *app = this;
+		if (newProject)
+        	app = new ApplicationWindow(factorySettings);
+        	
+		app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
-        app->projectname = filename;
+		app->projectname = filename;
         app->recentProjects.remove(filename);
         app->recentProjects.push_front(filename);
         app->updateRecentProjectsList();
