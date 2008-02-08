@@ -182,10 +182,12 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
 	}
     painter->restore();
 
-	// print texts
-    QList<LegendWidget *> texts = ((Graph *)parent())->textsList();
-    foreach(LegendWidget *t, texts)
-        t->print(painter, map);
+	// print texts	
+	QObjectList lst = children();
+	foreach(QObject *o, lst){
+		if (o->isA("LegendWidget"))
+        	((LegendWidget *)o)->print(painter, map);
+	}        
 }
 
 void Plot::drawItems (QPainter *painter, const QRect &rect,
@@ -468,17 +470,22 @@ void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFil
 
 	printFrame(painter, plotRect);
 
-	QList<LegendWidget *> texts = ((Graph *)parent())->textsList();
 	if (d_SVG_mode){
-		foreach(LegendWidget *t, texts)
-			t->setSVGMode();
-	}
+		QObjectList lst = children();
+		foreach(QObject *o, lst){
+			if (o->isA("LegendWidget"))
+        		((LegendWidget *)o)->setSVGMode();
+		}
+	}        
 
 	QwtPlot::print(painter, plotRect, pfilter);
 
 	if (d_SVG_mode){
-		foreach(LegendWidget *t, texts)
-			t->setSVGMode(false);
+		QObjectList lst = children();
+		foreach(QObject *o, lst){
+			if (o->isA("LegendWidget"))
+        		((LegendWidget *)o)->setSVGMode(false);
+		}
 	}
 
 	setTitle(t);

@@ -910,7 +910,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 						break;
 					}
 					p->setPen(QPen(ColorBox::color(cl.lCol), cl.lWidth, (Qt::PenStyle)cl.lStyle));
-					p->setRay(opj.curvePieProperties(g,l,c).radius);
+					p->setRadius(opj.curvePieProperties(g,l,c).radius);
 					p->setFirstColor(opj.curveFillAreaFirstColor(g,l,c));
 				}
 				else if(style == Graph::VectXYXY || style == Graph::VectXYAM)

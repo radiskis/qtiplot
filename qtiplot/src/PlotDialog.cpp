@@ -106,6 +106,8 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initPercentilePage();
 	initSpectrogramPage();
 	initPiePage();
+	initPieGeometryPage();
+	initPieLabelsPage();
 	initLayerPage();
 	initLayerGeometryPage();
 	initFontsPage();
@@ -488,14 +490,7 @@ void PlotDialog::initPiePage()
 	gl2->addWidget(new QLabel( tr( "Pattern" )), 1, 0);
 	boxPiePattern = new PatternBox(false);
 	gl2->addWidget(boxPiePattern, 1, 1);
-	gl2->addWidget(new QLabel( tr( "Pie radius" )), 2, 0);
-
-	boxRadius = new QSpinBox();
-	boxRadius->setRange(0, 10000);
-	boxRadius->setSingleStep(10);
-
-	gl2->addWidget(boxRadius, 2, 1);
-	gl2->setRowStretch(3,1);
+	gl2->setRowStretch(2, 1);
 
 	QGroupBox *gb2 = new QGroupBox(tr( "Fill" ));
 	gb2->setLayout(gl2);
@@ -505,7 +500,105 @@ void PlotDialog::initPiePage()
 	hl->addWidget(gb2);
 	piePage->setLayout(hl);
 
-	privateTabWidget->addTab(piePage, tr( "Pie" ) );
+	privateTabWidget->addTab(piePage, tr( "Pattern" ) );
+}
+
+void PlotDialog::initPieGeometryPage()
+{
+    pieGeometryPage = new QWidget();
+
+	QLocale locale = ((ApplicationWindow *)this->parent())->locale();
+
+	QGroupBox *gb3 = new QGroupBox(tr( "3D View" ));
+	QGridLayout *gl3 = new QGridLayout(gb3);
+	gl3->addWidget(new QLabel( tr( "View Angle (deg)" )), 0, 0);
+	boxPieViewAngle = new DoubleSpinBox('f');
+	boxPieViewAngle->setWrapping(true);
+	boxPieViewAngle->setRange(0.0, 90.0);
+	boxPieViewAngle->setLocale(locale);
+	gl3->addWidget(boxPieViewAngle, 0, 1);
+
+    gl3->addWidget(new QLabel( tr( "Thickness (% of radius)" )), 1, 0);
+	boxPieThickness = new DoubleSpinBox('f');
+	boxPieThickness->setLocale(locale);
+	boxPieThickness->setRange(0.0, 300.0);
+	gl3->addWidget(boxPieThickness, 1, 1);
+	gl3->setRowStretch(2, 1);
+
+	QGroupBox *gb1 = new QGroupBox(tr( "Rotation" ));
+	QGridLayout *gl1 = new QGridLayout(gb1);
+	gl1->addWidget(new QLabel( tr( "Starting Azimuth (deg)" )), 0, 0);
+	boxPieStartAzimuth = new DoubleSpinBox('f');
+	boxPieStartAzimuth->setRange(0.0, 360.0);
+	boxPieStartAzimuth->setWrapping(true);
+	boxPieStartAzimuth->setSingleStep(10.0);
+	boxPieStartAzimuth->setLocale(locale);
+	gl1->addWidget(boxPieStartAzimuth, 0, 1);
+
+    boxPieConterClockwise = new QCheckBox(tr("Counter clockwise"));
+	gl1->addWidget(boxPieConterClockwise, 1, 0);
+	gl1->setRowStretch(2, 1);
+
+	QGroupBox *gb2 = new QGroupBox(tr( "Radius/Center" ));
+	QGridLayout *gl2 = new QGridLayout(gb2);
+	gl2->addWidget(new QLabel( tr( "Radius (% of frame)" )), 0, 0);
+	boxRadius = new QSpinBox();
+	boxRadius->setRange(0, 300);
+	boxRadius->setSingleStep(5);
+	gl2->addWidget(boxRadius, 0, 1);
+    gl2->addWidget(new QLabel( tr( "Horizontal Offset (% of frame)" )), 1, 0);
+    boxPieOffset = new QSpinBox();
+	boxPieOffset->setRange(-100, 100);
+	gl2->addWidget(boxPieOffset, 1, 1);
+	gl2->setRowStretch(2, 1);
+
+	QVBoxLayout* vl = new QVBoxLayout(pieGeometryPage);
+	vl->addWidget(gb3);
+	vl->addWidget(gb1);
+	vl->addWidget(gb2);
+
+	privateTabWidget->addTab(pieGeometryPage, tr( "Pie Geometry" ) );
+
+    connect(boxPieViewAngle, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
+    connect(boxPieThickness, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
+    connect(boxPieStartAzimuth, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
+    connect(boxRadius, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+    connect(boxPieOffset, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
+}
+
+void PlotDialog::initPieLabelsPage()
+{
+	pieLabelsPage = new QWidget();
+
+    pieAutoLabelsBox = new QGroupBox(tr("&Automatic Format"));
+	pieAutoLabelsBox->setCheckable(true);
+
+	QGridLayout *gl1 = new QGridLayout(pieAutoLabelsBox);
+	boxPieValues = new QCheckBox(tr("&Values"));
+	gl1->addWidget(boxPieValues, 0, 0);
+
+	boxPiePercentages = new QCheckBox(tr("&Percentages"));
+	gl1->addWidget(boxPiePercentages, 1, 0);
+	gl1->setRowStretch(2, 1);
+
+    boxPieWedge = new QGroupBox(tr( "Associate Position with &Wedge" ));
+	boxPieWedge->setCheckable(true);
+
+	QGridLayout *gl2 = new QGridLayout(boxPieWedge);
+	gl2->addWidget(new QLabel( tr( "Dist. from Pie Edge" )), 0, 0);
+	boxPieEdgeDist = new DoubleSpinBox('f');
+	boxPieEdgeDist->setRange(-100, 100);
+	boxPieEdgeDist->setLocale(((ApplicationWindow *)this->parent())->locale());
+	gl2->addWidget(boxPieEdgeDist, 0, 1);
+	gl2->setRowStretch(1, 1);
+
+	QVBoxLayout* vl = new QVBoxLayout(pieLabelsPage);
+	vl->addWidget(pieAutoLabelsBox);
+	vl->addWidget(boxPieWedge);
+
+	privateTabWidget->addTab(pieLabelsPage, tr( "Labels" ) );
+
+    connect(boxPieEdgeDist, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 }
 
 void PlotDialog::initPrintPage()
@@ -1460,7 +1553,9 @@ void PlotDialog::insertTabs(int plot_type)
 {
     if (plot_type == Graph::Pie)
 	{
-		privateTabWidget->addTab (piePage, tr("Pie"));
+		privateTabWidget->addTab (piePage, tr("Pattern"));
+		privateTabWidget->addTab (pieGeometryPage, tr("Pie Geometry"));
+		privateTabWidget->addTab (pieLabelsPage, tr("Labels"));
 		privateTabWidget->showPage(piePage);
 		return;
 	}
@@ -1556,7 +1651,8 @@ void PlotDialog::clearTabWidget()
 	privateTabWidget->removeTab(privateTabWidget->indexOf(percentilePage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(spectrogramPage));
     privateTabWidget->removeTab(privateTabWidget->indexOf(piePage));
-
+    privateTabWidget->removeTab(privateTabWidget->indexOf(pieGeometryPage));
+    privateTabWidget->removeTab(privateTabWidget->indexOf(pieLabelsPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(layerGeometryPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(fontsPage));
@@ -1713,8 +1809,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     btnEditCurve->show();
 
     //axes page
-    boxXAxis->setCurrentItem(i->xAxis()-2);
-    boxYAxis->setCurrentItem(i->yAxis());
+    boxXAxis->setCurrentIndex(i->xAxis()-2);
+    boxYAxis->setCurrentIndex(i->yAxis());
 
     if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
         btnEditCurve->hide();
@@ -1756,12 +1852,36 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 	int curveType = item->plotItemType();
     if (curveType == Graph::Pie){
         QwtPieCurve *pie = (QwtPieCurve*)i;
-        boxRadius->setValue(pie->ray());
         boxPiePattern->setPattern(pie->pattern());
         boxPieLineWidth->setValue(pie->pen().width());
         boxPieLineColor->setColor(pie->pen().color());
         setPiePenStyle(pie->pen().style());
-        boxFirstColor->setCurrentItem(pie->firstColor());
+        boxFirstColor->setCurrentIndex(pie->firstColor());
+
+        boxPieViewAngle->blockSignals(true);
+		boxPieViewAngle->setValue(pie->viewAngle());
+		boxPieViewAngle->blockSignals(false);
+		boxPieThickness->blockSignals(true);
+		boxPieThickness->setValue(pie->thickness());
+		boxPieThickness->blockSignals(false);
+		boxPieStartAzimuth->blockSignals(true);
+		boxPieStartAzimuth->setValue(pie->startAzimuth());
+		boxPieStartAzimuth->blockSignals(false);
+		boxPieConterClockwise->setChecked(pie->counterClockwise());
+		boxRadius->blockSignals(true);
+        boxRadius->setValue(pie->radius());
+        boxRadius->blockSignals(false);
+        boxPieOffset->blockSignals(true);
+        boxPieOffset->setValue(pie->horizontalOffset());
+        boxPieOffset->blockSignals(false);
+
+		pieAutoLabelsBox->setChecked(pie->labelsAutoFormat());
+		boxPieValues->setChecked(pie->labelsValuesFormat());
+		boxPiePercentages->setChecked(pie->labelsPercentagesFormat());
+		boxPieEdgeDist->blockSignals(true);
+		boxPieEdgeDist->setValue(pie->labelsEdgeDistance());
+		boxPieEdgeDist->blockSignals(false);
+		boxPieWedge->setChecked(pie->fixedLabelsPosition());
         return;
     }
 
@@ -2129,9 +2249,24 @@ bool PlotDialog::acceptParams()
 		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
 		pie->setPen(QPen(boxPieLineColor->color(), boxPieLineWidth->value(),
                     Graph::getPenStyle(boxPieLineStyle->currentIndex())));
-        pie->setRay(boxRadius->value());
         pie->setBrushStyle(boxPiePattern->getSelectedPattern());
         pie->setFirstColor(boxFirstColor->currentIndex());
+	} else if (privateTabWidget->currentPage() == pieGeometryPage){
+		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
+		pie->setViewAngle(boxPieViewAngle->value());
+		pie->setThickness(boxPieThickness->value());
+		pie->setRadius(boxRadius->value());
+        pie->setHorizontalOffset(boxPieOffset->value());
+        pie->setStartAzimuth(boxPieStartAzimuth->value());
+		pie->setCounterClockwise(boxPieConterClockwise->isChecked());
+	} else if (privateTabWidget->currentPage() == pieLabelsPage){
+		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
+		pie->setLabelsAutoFormat(pieAutoLabelsBox->isChecked());
+        pie->setLabelValuesFormat(boxPieValues->isChecked());
+        pie->setLabelPercentagesFormat(boxPiePercentages->isChecked());
+        pie->setFixedLabelsPosition(boxPieWedge->isChecked());
+        pie->setLabelsEdgeDistance(boxPieEdgeDist->value());
+        graph->replot();
 	} else if (privateTabWidget->currentPage() == percentilePage){
 		BoxCurve *b = (BoxCurve*)plotItem;
 		if (b){

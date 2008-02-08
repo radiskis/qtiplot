@@ -2963,7 +2963,7 @@ Table* ApplicationWindow::table(const QString& name)
 {
 	int pos = name.find("_", 0);
 	QString caption = name.left(pos);
-	
+
     Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
@@ -2973,7 +2973,7 @@ Table* ApplicationWindow::table(const QString& name)
 		}
 		f = f->folderBelow();
 	}
-	
+
 	return  0;
 }
 
@@ -2984,7 +2984,7 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 		int index = renamedTables.findIndex(caption);
 		caption = renamedTables[index+1];
 	}
-	
+
 	Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
@@ -2998,13 +2998,13 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 }
 
 void ApplicationWindow::windowActivated(QMdiSubWindow *w)
-{	
+{
 	MdiSubWindow *aw = activeWindow();
-	if (!w && aw){// a dialog window wants to become the active window: we deny it!		
+	if (!w && aw){// a dialog window wants to become the active window: we deny it!
 		d_workspace->setActiveSubWindow(aw);
 		return;
 	}
-	
+
 	if (w == aw)
 		return;
 
@@ -3577,7 +3577,7 @@ void ApplicationWindow::open()
 					}
 
 					saveSettings();//the recent projects must be saved
-						
+
 					ApplicationWindow *a = open (fn);
 					if (a){
 						a->workingDir = workingDir;
@@ -3685,7 +3685,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	ApplicationWindow *app = this;
 	if (newProject)
 		app = new ApplicationWindow(factorySettings);
-	
+
 	app->projectname = fn;
 	app->d_file_version = d_file_version;
 	app->setWindowTitle(tr("QtiPlot") + " - " + fn);
@@ -3737,7 +3737,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	FolderListItem *item = (FolderListItem *)app->folders->firstChild();
 	item->setText(0, fi.baseName());
 	item->folder()->setObjectName(fi.baseName());
-	
+
 	//process tables and matrix information
 	while ( !t.atEnd() && !progress.wasCanceled()){
 		s = t.readLine();
@@ -4998,7 +4998,7 @@ QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
 void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWindow *w, const QString s)
 {
 	w->hide();
-	
+
 	QString caption = w->objectName();
 	if (s.contains ("minimized")) {
 	    QStringList lst = s.split("\t");
@@ -5016,7 +5016,7 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 			else
 				((MultiLayer *)w)->setIgnoreResize();
 		}
-		
+
 		app->setListView(caption, tr("Maximized"));
 	} else {
 		QStringList lst = s.split("\t");
@@ -10114,14 +10114,21 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				{
 					startRow = curve[8].toInt();
 					endRow = curve[9].toInt();
-					visible = ((curve.last() == "1") ? true : false);
+					visible = curve[10].toInt();
 				}
 
 				if (d_file_version <= 89)
 					first_color = convertOldToNewColorIndex(first_color);
 
-				ag->plotPie(table, curve[1], pen, curve[5].toInt(),
-					curve[6].toInt(), first_color, startRow, endRow, visible);
+				if (curve.size() >= 21){//version 0.9.3-rc3			
+					ag->plotPie(table, curve[1], pen, curve[5].toInt(),
+						curve[6].toInt(), first_color, startRow, endRow, visible,
+						curve[11].toDouble(), curve[12].toDouble(), curve[13].toDouble(),
+						curve[14].toDouble(), curve[15].toDouble(), curve[16].toInt(),
+						curve[17].toInt(), curve[18].toInt(), curve[19].toInt(), curve[20].toInt());
+				} else
+					ag->plotPie(table, curve[1], pen, curve[5].toInt(),
+						curve[6].toInt(), first_color, startRow, endRow, visible);
 			}
 		}else if (s.left(6)=="curve\t"){
 			QStringList curve = s.split("\t", QString::SkipEmptyParts);
@@ -10481,6 +10488,11 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			QStringList fList = QStringList::split ("\t", s.remove("</text>"), true);
 			ag->insertText(fList, d_file_version);
 		}
+		else if (s.startsWith ("<PieLabel>") && s.endsWith ("</PieLabel>"))
+		{
+			QStringList fList = QStringList::split ("\t", s.remove("</PieLabel>"), true);
+			ag->insertText(fList, d_file_version);
+		}
 		else if (s.contains ("lineMarker"))
 		{// version <= 0.8.9
 			QStringList fList=s.split("\t");
@@ -10525,10 +10537,6 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 	}
 	ag->replot();
-	if (ag->isPiePlot()){
-        QwtPieCurve *c = (QwtPieCurve *)ag->curve(0);
-        if (c) c->updateBoundingRect();
-    }
 
     ag->blockSignals(false);
     ag->setIgnoreResizeEvents(!app->autoResizeLayers);
@@ -10827,7 +10835,8 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 			this,SLOT(newTable(const QString&,int,int,const QString&)));
 	connect (g,SIGNAL(viewTitleDialog()),this,SLOT(showTitleDialog()));
 	connect (g,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
-	connect (g,SIGNAL(showLineDialog()),this,SLOT(showLineDialog()));
+	connect (g,SIGNAL(modifiedPlot()), this, SLOT(modifiedProject()));
+	connect (g,SIGNAL(showLineDialog()),this, SLOT(showLineDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
 	connect (g,SIGNAL(showGraphContextMenu()),this,SLOT(showGraphContextMenu()));
 	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
@@ -12350,7 +12359,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 		ApplicationWindow *app = this;
 		if (newProject)
         	app = new ApplicationWindow(factorySettings);
-        	
+
 		app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
 		app->projectname = filename;
@@ -12792,7 +12801,7 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 	if(file_name.startsWith("-")){// no file name given
 		initWindow();
 		savedProject();
-		return; 
+		return;
 	}
 
 	if (!file_name.isEmpty()){
@@ -12813,12 +12822,12 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 
 		workingDir = fi.dirPath(true);
 		saveSettings();//the recent projects must be saved
-		
+
 		if (exec)
 			loadScript(file_name, exec, default_settings);
 		else
 			open(file_name, default_settings, false);
-	} 
+	}
 }
 
 void ApplicationWindow::createLanguagesList()
@@ -12896,7 +12905,7 @@ QStringList ApplicationWindow::matrixNames()
 }
 
 bool ApplicationWindow::alreadyUsedName(const QString& label)
-{	
+{
 	Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
@@ -13830,6 +13839,8 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
     if (active_window){
         d_workspace->setActiveSubWindow(active_window);
+		customMenu(active_window);
+		customToolBars(active_window);
         if (active_window_state == MdiSubWindow::Minimized)
             active_window->showMinimized();//ws->setActiveWindow() makes minimized windows to be shown normally
         else if (active_window_state == MdiSubWindow::Maximized){

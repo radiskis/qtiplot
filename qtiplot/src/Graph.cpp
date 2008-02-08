@@ -261,8 +261,22 @@ void Graph::deselectMarker()
 
 	cp->disableEditing();
 
-    foreach(LegendWidget *legend, d_texts_list)
-        legend->setSelected(false);
+	QObjectList lst = d_plot->children();
+	foreach(QObject *o, lst){
+		if (o->inherits("LegendWidget"))
+        	((LegendWidget *)o)->setSelected(false);
+	}
+}
+
+QList <LegendWidget *> Graph::textsList()
+{
+	QList <LegendWidget *> texts;
+	QObjectList lst = d_plot->children();
+	foreach(QObject *o, lst){
+		if (o->inherits("LegendWidget"))
+        	texts << (LegendWidget *)o;
+	}
+	return texts;
 }
 
 long Graph::selectedMarkerKey()
@@ -1451,7 +1465,6 @@ void Graph::removeMarker()
 	} else if (d_selected_text){
 	    if (d_selected_text == d_legend)
             d_legend = NULL;
-		d_texts_list.remove(d_selected_text);
 		delete d_selected_text;
 		d_selected_text = NULL;
 	}
@@ -1969,18 +1982,29 @@ QString Graph::savePieCurveLayout()
 {
 	QString s="PieCurve\t";
 
-	QwtPieCurve *pieCurve=(QwtPieCurve*)curve(0);
-	s+= pieCurve->title().text()+"\t";
-	QPen pen=pieCurve->pen();
-
+	QwtPieCurve *pie = (QwtPieCurve*)curve(0);
+	s+= pie->title().text()+"\t";
+	QPen pen = pie->pen();
 	s+=QString::number(pen.width())+"\t";
 	s+=pen.color().name()+"\t";
 	s+=penStyleName(pen.style()) + "\t";
-	s+=QString::number(PatternBox::patternIndex(pieCurve->pattern()))+"\t";
-	s+=QString::number(pieCurve->ray())+"\t";
-	s+=QString::number(pieCurve->firstColor())+"\t";
-	s+=QString::number(pieCurve->startRow())+"\t"+QString::number(pieCurve->endRow())+"\t";
-	s+=QString::number(pieCurve->isVisible())+"\n";
+	s+=QString::number(PatternBox::patternIndex(pie->pattern()))+"\t";
+	s+=QString::number(pie->radius())+"\t";
+	s+=QString::number(pie->firstColor())+"\t";
+	s+=QString::number(pie->startRow())+"\t"+QString::number(pie->endRow())+"\t";
+	s+=QString::number(pie->isVisible())+"\t";
+	
+	//Starting with version 0.9.3-rc3
+	s+=QString::number(pie->startAzimuth())+"\t";
+	s+=QString::number(pie->viewAngle())+"\t";
+	s+=QString::number(pie->thickness())+"\t";
+	s+=QString::number(pie->horizontalOffset())+"\t";
+	s+=QString::number(pie->labelsEdgeDistance())+"\t";
+	s+=QString::number(pie->counterClockwise())+"\t";
+	s+=QString::number(pie->labelsAutoFormat())+"\t";
+	s+=QString::number(pie->labelsValuesFormat())+"\t";
+	s+=QString::number(pie->labelsPercentagesFormat())+"\t";
+	s+=QString::number(pie->fixedLabelsPosition())+"\n";
 	return s;
 }
 
@@ -2129,7 +2153,6 @@ LegendWidget* Graph::newLegend(const QString& text)
 	l->setTextColor(defaultTextMarkerColor);
 	l->setBackgroundColor(defaultTextMarkerBackground);
 
-    d_texts_list << l;
     d_legend = l;
 	emit modifiedGraph();
 	return l;
@@ -2150,10 +2173,14 @@ void Graph::insertLegend(const QStringList& lst, int fileVersion)
 }
 
 LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
-{
+{	
 	QStringList fList = list;
-	LegendWidget* l = new LegendWidget(d_plot);
-	d_texts_list << l;
+	bool pieLabel = (list[0] == "<PieLabel>") ? true : false;
+	LegendWidget* l = NULL;
+	if (pieLabel)
+		l = new PieLabel(d_plot);
+	else
+		l = new LegendWidget(d_plot);
 
 	if (fileVersion < 86 || fileVersion > 91)
 		l->move(QPoint(fList[1].toInt(),fList[2].toInt()));
@@ -2216,6 +2243,11 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 		text = text.replace("\\c{", "\\l(").replace("}", ")");
 
     l->setText(text);
+	if (pieLabel){
+		QwtPieCurve *pie = (QwtPieCurve *)curve(0);
+		if(pie)
+			pie->addLabel((PieLabel *)l);
+	}
     return l;
 }
 
@@ -2279,15 +2311,7 @@ ImageMarker* Graph::imageMarker(long id)
 LegendWidget* Graph::insertText(LegendWidget* t)
 {
 	LegendWidget* aux = new LegendWidget(d_plot);
-	d_texts_list << aux;
-
-	aux->setTextColor(t->textColor());
-	aux->setBackgroundColor(t->backgroundColor());
-	aux->move(t->pos());
-	aux->setFont(t->font());
-	aux->setFrameStyle(t->frameStyle());
-	aux->setAngle(t->angle());
-	aux->setText(t->text());
+	aux->clone(t);
 	return aux;
 }
 
@@ -2327,34 +2351,45 @@ QString Graph::saveMarkers()
 		s+=QString::number(mrkL->filledArrowHead())+"</line>\n";
 	}
 
-	foreach (LegendWidget *l, d_texts_list){
-		if (l != d_legend)
-			s += "<text>\t";
-		else
-			s += "<legend>\t";
+	QObjectList lst = d_plot->children();
+	foreach(QObject *o, lst){
+		if (o->inherits("LegendWidget")){
+			LegendWidget *l = (LegendWidget *)o;
+			if (l == d_legend)
+				s += "<legend>\t";
+			else if (l->isA("PieLabel")){
+				if (l->text().isEmpty())
+					continue;
+				else
+					s += "<PieLabel>\t";
+			} else
+				s += "<text>\t";
+			
+			s += QString::number(l->x()) + "\t";
+			s += QString::number(l->y()) + "\t";
 
-		s += QString::number(l->x()) + "\t";
-		s += QString::number(l->y()) + "\t";
+			QFont f=l->font();
+			s+=f.family()+"\t";
+			s+=QString::number(f.pointSize())+"\t";
+			s+=QString::number(f.weight())+"\t";
+			s+=QString::number(f.italic())+"\t";
+			s+=QString::number(f.underline())+"\t";
+			s+=QString::number(f.strikeOut())+"\t";
+			s+=l->textColor().name()+"\t";
+			s+=QString::number(l->frameStyle())+"\t";
+			s+=QString::number(l->angle())+"\t";
+			s+=l->backgroundColor().name()+"\t";
+			s+=QString::number(l->backgroundColor().alpha())+"\t";
 
-		QFont f=l->font();
-		s+=f.family()+"\t";
-		s+=QString::number(f.pointSize())+"\t";
-		s+=QString::number(f.weight())+"\t";
-		s+=QString::number(f.italic())+"\t";
-		s+=QString::number(f.underline())+"\t";
-		s+=QString::number(f.strikeOut())+"\t";
-		s+=l->textColor().name()+"\t";
-		s+=QString::number(l->frameStyle())+"\t";
-		s+=QString::number(l->angle())+"\t";
-		s+=l->backgroundColor().name()+"\t";
-		s+=QString::number(l->backgroundColor().alpha())+"\t";
-
-		QStringList textList=l->text().split("\n", QString::KeepEmptyParts);
-		s+=textList.join ("\t");
-		if (l != d_legend)
-  	        s += "</text>\n";
-  	    else
-  	        s += "</legend>\n";
+			QStringList textList=l->text().split("\n", QString::KeepEmptyParts);
+			s+=textList.join ("\t");			
+			if (l == d_legend)
+				s += "</legend>\n";
+			else if (l->isA("PieLabel"))
+				s += "</PieLabel>\n";
+			else
+				s += "</text>\n";
+		}
 	}
 	return s;
 }
@@ -2613,25 +2648,39 @@ bool Graph::addErrorBars(const QString& xColName, const QString& yColName,
 }
 
 void Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
-					int size, int firstColor, int startRow, int endRow, bool visible)
+					int size, int firstColor, int startRow, int endRow, bool visible,
+					double d_start_azimuth, double d_view_angle, double d_thickness,
+					double d_horizontal_offset, double d_edge_dist, bool d_counter_clockwise,
+					bool d_auto_labeling, bool d_values, bool d_percentages, bool d_fixed_labels_pos)
 {
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
 
-	QwtPieCurve *pieCurve = new QwtPieCurve(w, name, startRow, endRow);
+	QwtPieCurve *pie = new QwtPieCurve(w, name, startRow, endRow);
 
     c_keys.resize(++n_curves);
-	c_keys[n_curves-1] = d_plot->insertCurve(pieCurve);
+	c_keys[n_curves-1] = d_plot->insertCurve(pie);
 
 	c_type.resize(n_curves);
 	c_type[n_curves-1] = Pie;
 
-	pieCurve->loadData();
-	pieCurve->setPen(pen);
-	pieCurve->setRay(size);
-	pieCurve->setFirstColor(firstColor);
-	pieCurve->setBrushStyle(PatternBox::brushStyle(brush));
-	pieCurve->setVisible(visible);
+	pie->loadData();
+	pie->setPen(pen);
+	pie->setRadius(size);
+	pie->setFirstColor(firstColor);
+	pie->setBrushStyle(PatternBox::brushStyle(brush));
+	pie->setVisible(visible);
+	
+	pie->setStartAzimuth(d_start_azimuth);
+	pie->setViewAngle(d_view_angle);
+	pie->setThickness(d_thickness);
+	pie->setHorizontalOffset(d_horizontal_offset);
+	pie->setLabelsEdgeDistance(d_edge_dist);
+	pie->setCounterClockwise(d_counter_clockwise);
+	pie->setLabelsAutoFormat(d_auto_labeling);
+	pie->setLabelValuesFormat(d_values);
+	pie->setLabelPercentagesFormat(d_percentages);
+	pie->setFixedLabelsPosition(d_fixed_labels_pos);
 }
 
 void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
@@ -2659,9 +2708,20 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 		return;
     Y.resize(size);
 
+	for (int i=0; i<QwtPlot::axisCnt; i++)
+		d_plot->enableAxis(i, false);
+
+	d_plot->setTitle(QString::null);
+
+	QwtPlotCanvas* canvas=(QwtPlotCanvas*) d_plot->canvas();
+	canvas->setLineWidth(1);
+
+	scalePicker->refresh();
+	/*d_plot->replot();
+
 	QwtPlotLayout *pLayout = d_plot->plotLayout();
 	pLayout->activate(d_plot, d_plot->rect(), 0);
-	const QRect rect = pLayout->canvasRect();
+	const QRect rect = pLayout->canvasRect();*/
 
 	QwtPieCurve *pieCurve = new QwtPieCurve(w, name, startRow, endRow);
 
@@ -2671,11 +2731,20 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 	c_type.resize(n_curves);
 	c_type[n_curves-1] = Pie;
 
-	pieCurve->setData(Y.data(), Y.data(), size);
+	pieCurve->loadData();
+	pieCurve->initLabels();
 
-	const int ray = 125;
-	int xc = int(rect.width()/2 + 10);
-	int yc = int(rect.y() + rect.height()/2 - 10);
+	//pieCurve->setData(Y.data(), Y.data(), size);
+
+	//const int ray = 125;
+	//int xc = int(rect.width()/2 + 10);
+	//int yc = int(rect.y() + rect.height()/2 - 10);
+
+	/*const int ray = 100;
+	QwtScaleMap xMap = d_plot->canvasMap(QwtPlot::xBottom);
+	QwtScaleMap yMap = d_plot->canvasMap(QwtPlot::yLeft);
+	int xc = x() + (xMap.p1() + xMap.p2())/2;
+	int yc = y() + (yMap.p1() + yMap.p2())/2;
 
 	double PI = 4*atan(1.0);
 	double angle = 90;
@@ -2688,12 +2757,13 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 		const int y = int(yc - ray*sin(alabel));
 
 		LegendWidget* aux = new LegendWidget(d_plot);
-		aux->move(QPoint(x,y));
+		//aux->move(QPoint(x,y));
 		aux->setFrameStyle(0);
 		aux->setText(QString::number(Y[i]/sum*100,'g',2)+"%");
+		aux->move(QPoint(x - aux->width()/2, y - aux->height()/2));
 		d_texts_list << aux;
 		angle -= value;
-	}
+	}*/
 
 	if (d_legend){
 		QString text = "";
@@ -2707,7 +2777,7 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
         d_legend->setText(text);
 	}
 
-	for (int i=0; i<QwtPlot::axisCnt; i++)
+	/*for (int i=0; i<QwtPlot::axisCnt; i++)
 		d_plot->enableAxis(i, false);
 
 	d_plot->setTitle(QString::null);
@@ -2717,7 +2787,9 @@ void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 
 	scalePicker->refresh();
 	d_plot->replot();
-	updateScale();
+	updateScale();*/
+
+	d_plot->replot();
 }
 
 void Graph::insertPlotItem(QwtPlotItem *i, int type)
@@ -2735,11 +2807,11 @@ void Graph::insertPlotItem(QwtPlotItem *i, int type)
 bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
 							int sSize, int startRow, int endRow)
 {
-	if (style==Graph::Pie)
+	if (style == Pie)
 		plotPie(w, names[0], startRow, endRow);
 	else if (style == Box)
 		plotBoxDiagram(w, names, startRow, endRow);
-	else if (style==Graph::VectXYXY || style==Graph::VectXYAM)
+	else if (style == VectXYXY || style == VectXYAM)
 		plotVectorCurve(w, names, style, startRow, endRow);
 	else{
 		int curves = (int)names.count();
@@ -3058,11 +3130,6 @@ void Graph::updateScale()
 	updateMarkersBoundingRect();
 	updateSecondaryAxis(QwtPlot::xTop);
 	updateSecondaryAxis(QwtPlot::yRight);
-
-    if (isPiePlot()){
-        QwtPieCurve *c = (QwtPieCurve *)curve(0);
-        c->updateBoundingRect();
-    }
 
 	d_plot->replot();//TODO: avoid 2nd replot!
 	d_zoomer[0]->setZoomBase();
@@ -3627,10 +3694,13 @@ void Graph::resizeEvent ( QResizeEvent *e )
 
 void Graph::scaleFonts(double factor)
 {
-	foreach (LegendWidget *l, d_texts_list){
-		QFont font = l->font();
-		font.setPointSizeFloat(factor*font.pointSizeFloat());
-		l->setFont(font);
+	QObjectList lst = d_plot->children();
+	foreach(QObject *o, lst){
+		if (o->isA("LegendWidget")){
+			QFont font = ((LegendWidget *)o)->font();
+			font.setPointSizeFloat(factor*font.pointSizeFloat());
+			((LegendWidget *)o)->setFont(font);
+		}
 	}
 
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
@@ -4006,8 +4076,6 @@ void Graph::copy(Graph* g)
 			if (style == Pie){
 				c = new QwtPieCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
 				c_keys[i] = d_plot->insertCurve(c);
-				((QwtPieCurve*)c)->setRay(((QwtPieCurve*)cv)->ray());
-                ((QwtPieCurve*)c)->setFirstColor(((QwtPieCurve*)cv)->firstColor());
 			} else if (style == Function) {
 				c = new FunctionCurve(cv->title().text());
 				c_keys[i] = d_plot->insertCurve(c);
@@ -4059,6 +4127,8 @@ void Graph::copy(Graph* g)
 				c->setData(x.data(), y.data(), n);
 				if (c->type() != Function && c->type() != Pie)
                     ((DataCurve *)c)->clone(cv);
+                else if (c->type() == Pie)
+                    ((QwtPieCurve*)c)->clone((QwtPieCurve*)cv);
 			}
 
 			c->setPen(cv->pen());
@@ -4157,6 +4227,8 @@ void Graph::copy(Graph* g)
 	foreach (LegendWidget *t, texts){
 		if (t == g->legend())
 			d_legend = insertText(t);
+		else if (t->isA("PieLabel"))
+			((QwtPieCurve*)curve(0))->addLabel((PieLabel *)t, true);
 		else
 			insertText(t);
 	}
@@ -4168,11 +4240,6 @@ void Graph::copy(Graph* g)
 			addArrow(lmrk);
 	}
 	d_plot->replot();
-
-    if (isPiePlot()){
-        QwtPieCurve *c = (QwtPieCurve *)curve(0);
-        c->updateBoundingRect();
-    }
 }
 
 void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int endRow)

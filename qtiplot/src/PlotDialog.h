@@ -217,6 +217,8 @@ private:
 	void initLayerGeometryPage();
 	void initFontsPage();
 	void initPiePage();
+	void initPieGeometryPage();
+	void initPieLabelsPage();
 	void initPrintPage();
 	void initLabelsPage();
     void contextMenuEvent(QContextMenuEvent *e);
@@ -302,6 +304,13 @@ private:
     QComboBox *boxLabelsAlign, *boxLabelsColumn;
     ColorBox* boxLabelsColor;
     QWidget *labelsPage;
+
+    QGroupBox *pieAutoLabelsBox, *boxPieWedge;
+	DoubleSpinBox *boxPieStartAzimuth, *boxPieEdgeDist, *boxPieViewAngle, *boxPieThickness;
+	QCheckBox *boxPieConterClockwise, *boxPieValues, *boxPiePercentages;
+	QWidget *pieLabelsPage;
+    QSpinBox *boxPieOffset;
+	QWidget *pieGeometryPage;
 };
 
 /*****************************************************************************

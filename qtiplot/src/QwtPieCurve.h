@@ -2,8 +2,8 @@
     File                 : QwtPieCurve.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004 - 2008 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Pie plot class
 
  ***************************************************************************/
@@ -28,18 +28,51 @@
  ***************************************************************************/
 #include <qwt_plot.h>
 #include "PlotCurve.h"
+#include "LegendWidget.h"
 
+class PieLabel;
+	
 //! Pie plot class
 class QwtPieCurve: public DataCurve
 {
 public:
 	QwtPieCurve(Table *t, const QString& name, int startRow, int endRow);
+    void clone(QwtPieCurve* c);
 
-public slots:
+    double viewAngle(){return d_view_angle;};
+    void setViewAngle(double a){d_view_angle = a;};
+
+    double thickness(){return d_thickness;};
+    void setThickness(double t){d_thickness = t;};
+
+    double horizontalOffset(){return d_horizontal_offset;};
+    void setHorizontalOffset(double d){d_horizontal_offset = d;};
+
+	bool counterClockwise(){return d_counter_clockwise;};
+	void setCounterClockwise(bool on){d_counter_clockwise = on;};
+
+	double startAzimuth(){return d_start_azimuth;};
+	void setStartAzimuth(double angle){d_start_azimuth = angle;};
+
+    double labelsEdgeDistance(){return d_edge_dist;};
+    void setLabelsEdgeDistance(double d){d_edge_dist = d;};
+
+    bool labelsAutoFormat(){return d_auto_labeling;};
+    void setLabelsAutoFormat(bool on){d_auto_labeling = on;};
+
+    bool labelsValuesFormat(){return d_values;};
+    void setLabelValuesFormat(bool on){d_values = on;};
+
+    bool labelsPercentagesFormat(){return d_percentages;};
+    void setLabelPercentagesFormat(bool on){d_percentages = on;};
+
+    bool fixedLabelsPosition(){return d_fixed_labels_pos;};
+    void setFixedLabelsPosition(bool on){d_fixed_labels_pos = on;};
+
 	QColor color(int i) const;
 
-	int ray(){return d_pie_ray;};
-	void setRay(int size){d_pie_ray = size; updateBoundingRect();};
+	int radius(){return d_pie_ray;};
+	void setRadius(int size){d_pie_ray = size;};
 
 	Qt::BrushStyle pattern(){return QwtPlotCurve::brush().style();};
 	void setBrushStyle(const Qt::BrushStyle& style);
@@ -48,16 +81,47 @@ public slots:
 	int firstColor(){return d_first_color;};
 
 	void loadData();
-	void updateBoundingRect();
+	void initLabels();
+	
+	void addLabel(PieLabel *l, bool clone = false);
+	void removeLabel(PieLabel *l);
 
 private:
 	void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
-
-	void drawPie(QPainter *painter, const QwtScaleMap &xMap,
+	void drawSlices(QPainter *painter, const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
+	void drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap) const;
 
-	int d_pie_ray, d_first_color;
-	//! Keeps track of the left side position of the pie bounding rectangle in scale coordinates.
-	double d_left_coord;
+	int d_pie_ray;
+	int d_first_color;
+	double d_start_azimuth;
+	double d_view_angle;
+	double d_thickness;
+	double d_horizontal_offset;
+	double d_edge_dist;
+	bool d_counter_clockwise;
+	bool d_auto_labeling;
+	bool d_values;
+	bool d_percentages;
+	bool d_fixed_labels_pos;
+	QList <PieLabel *> d_texts_list;
+};
+
+class PieLabel: public LegendWidget
+{
+	Q_OBJECT
+
+public:
+    PieLabel(Plot *);
+
+	QString customText();
+	void setCustomText(const QString& s){d_custom_text = s; setText(s);};
+	
+	QPoint customPosition(){return d_custom_position;};
+	void setCustomPosition(const QPoint& p);
+
+private:
+	QString d_custom_text;
+	QPoint d_custom_position;
 };
