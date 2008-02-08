@@ -44,6 +44,7 @@ public:
     LegendWidget(Plot *);
 	~LegendWidget();
 
+	void clone(LegendWidget* t);
 	QwtPlot *plot(){return d_plot;};
 
 	//! The kinds of frame a LegendWidget can draw around the Text.

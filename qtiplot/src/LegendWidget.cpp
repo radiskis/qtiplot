@@ -100,7 +100,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 {	
 	int x = map[QwtPlot::xBottom].transform(xValue());
 	int y = map[QwtPlot::yLeft].transform(yValue());
-	
+		
     const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
 	QwtArray<long> heights = itemsHeight(y, symbolLineLength, width, height);
@@ -562,7 +562,8 @@ void LegendWidget::setSelected(bool on)
 			((Graph *)d_plot->parent())->setSelectedText(this);
 		}
 	} else if (d_selector){
-        delete d_selector;
+        //delete d_selector;
+		d_selector->close();
 		d_selector = NULL;
 		((Graph *)d_plot->parent())->setSelectedText(NULL);
 	}
@@ -576,6 +577,18 @@ void LegendWidget::showTextEditor()
 	}
 	
 	enableEditor();
+}
+
+void LegendWidget::clone(LegendWidget* t)
+{
+	d_frame = t->frameStyle();
+	d_angle = t->angle();
+
+	setTextColor(t->textColor());
+	setBackgroundColor(t->backgroundColor());
+	setFont(t->font());
+	setText(t->text());
+	move(t->pos());
 }
 
 LegendWidget::~LegendWidget()

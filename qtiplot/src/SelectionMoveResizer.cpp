@@ -92,6 +92,8 @@ void SelectionMoveResizer::add(LegendWidget *target)
 		return;
 	d_legend_markers << target;
 	target->installEventFilter(this);
+	connect(target, SIGNAL(destroyed(QObject*)), this, SLOT(removeLegend(QObject*)));
+
 	if (d_bounding_rect.isValid())
 		d_bounding_rect |= target->geometry();
 	else

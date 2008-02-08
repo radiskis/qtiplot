@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "TextEditor.h"
 #include "LegendWidget.h"
+#include "QwtPieCurve.h"
 
 #include <QTextCursor>
 
@@ -100,6 +101,11 @@ void TextEditor::closeEvent(QCloseEvent *e)
 	if (d_target->isA("LegendWidget")){
 		s = text();
 		((LegendWidget*)d_target)->setText(s);
+        d_target->show();
+		g->setSelectedText(NULL);
+	} else if (d_target->isA("PieLabel")){
+		s = text();
+		((PieLabel*)d_target)->setCustomText(s);
         d_target->show();
 		g->setSelectedText(NULL);
 	} else if (d_target->isA("QwtTextLabel")){

@@ -139,7 +139,7 @@ class Graph: public QWidget
 
 		Grid *grid(){return d_plot->grid();};
 
-		QList <LegendWidget *> textsList(){return d_texts_list;};
+		QList <LegendWidget *> textsList();
 		LegendWidget *selectedText(){return d_selected_text;};
 		void setSelectedText(LegendWidget *l);
 
@@ -159,7 +159,13 @@ class Graph: public QWidget
 		bool isPiePlot(){return (c_type.count() == 1 && c_type[0] == Pie);};
 		void plotPie(Table* w,const QString& name, int startRow = 0, int endRow = -1);
 		//! Used when restoring a pie plot from a project file
-		void plotPie(Table* w,const QString& name, const QPen& pen, int brush, int size, int firstColor, int startRow = 0, int endRow = -1, bool visible = true);
+		void plotPie(Table* w, const QString& name, const QPen& pen, int brush, int size, 
+			int firstColor, int startRow = 0, int endRow = -1, bool visible = true,
+			double d_start_azimuth = 270, double d_view_angle = 90, double d_thickness = 33,
+			double d_horizontal_offset = 0.0, double d_edge_dist = 25, bool d_counter_clockwise = false,
+			bool d_auto_labeling = true, bool d_values = false, bool d_percentages = true,
+			bool d_fixed_labels_pos = true);
+		
 		void removePie();
 		QString pieLegendText();
 		QString savePieCurveLayout();
@@ -716,8 +722,6 @@ signals:
 		QVector<int> d_lines;
 		//! Images on plot keys
 		QVector<int> d_images;
-		//! Stores pointers to the text objects on the plot
-		QList <LegendWidget *> d_texts_list;
 
 		int n_curves, widthLine;
 		long selectedMarker;

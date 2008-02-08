@@ -206,6 +206,7 @@ class SelectionMoveResizer : public QWidget
 	private slots:
 		//! A non-typesafe version of remvoveAll(QWidget*) needed for QObject::destroyed().
 		void removeWidget(QObject* w) { removeAll((QWidget*) w); }
+		void removeLegend(QObject* w) { removeAll((LegendWidget*) w); };
 };
 
 #endif // ifndef SELECTION_MOVE_RESIZER_H
