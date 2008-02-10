@@ -144,32 +144,28 @@ vector<string> OPJFile::findDataByIndex(int index) const {
 	return str;
 }
 
-string OPJFile::findObjectByIndex(int index, string folder) {
+string OPJFile::findObjectByIndex(int index) {
 	for(unsigned int i=0;i<SPREADSHEET.size();i++)
 		if (SPREADSHEET[i].objectID == index)
 		{
-			SPREADSHEET[i].parentFolder=folder;
 			return SPREADSHEET[i].name;
 		}
 
 	for(unsigned int i=0;i<MATRIX.size();i++)
 		if (MATRIX[i].objectID == index)
 		{
-			MATRIX[i].parentFolder=folder;
 			return MATRIX[i].name;
 		}
 
 	for(unsigned int i=0;i<EXCEL.size();i++)
 		if (EXCEL[i].objectID == index)
 		{
-			EXCEL[i].parentFolder=folder;
 			return EXCEL[i].name;
 		}
 
 	for(unsigned int i=0;i<GRAPH.size();i++)
 		if (GRAPH[i].objectID == index)
 		{
-			GRAPH[i].parentFolder=folder;
 			return GRAPH[i].name;
 		}
 
@@ -1225,7 +1221,8 @@ int OPJFile::ParseFormatNew() {
 	}
 
 	fseek(f,1+4*5+0x10+1,SEEK_CUR);
-	try{
+	try
+	{
 		readProjectTree(f, debug);
 	}
 	catch(...)
@@ -2912,11 +2909,10 @@ void OPJFile::readProjectTreeFolder(FILE *f, FILE *debug, tree<projectNode>::ite
 		if(IsBigEndian()) SwapBytes(objectID);
 		if(c==0x10)
 		{
-			NOTE[objectID].parentFolder=current_folder->name;
 			projectTree.append_child(current_folder, projectNode(NOTE[objectID].name, 0));
 		}
 		else
-			projectTree.append_child(current_folder, projectNode(findObjectByIndex(objectID, current_folder->name), 0));
+			projectTree.append_child(current_folder, projectNode(findObjectByIndex(objectID), 0));
 		POS+=8+1+5+5;
 	}
 	fseek(f,POS,SEEK_SET);
