@@ -80,7 +80,7 @@ public:
 	   * NULL on failure. If recursive is true, do a depth-first recursive
 	   * search.
 	   */
-	MdiSubWindow *window(const QString &name, const char *cls="myWidget", bool recursive=false);
+	MdiSubWindow *window(const QString &name, const char *cls="MdiSubWindow", bool recursive=false);
 	//! Return table named name or NULL
 	Table *table(const QString &name, bool recursive=false) { return (Table*) window(name, "Table", recursive); }
 	//! Return matrix named name or NULL
