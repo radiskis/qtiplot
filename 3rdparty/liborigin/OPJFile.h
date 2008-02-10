@@ -73,7 +73,6 @@ struct originWindow {
 	string name;
 	string label;
 	int objectID;
-	string parentFolder;
 	bool bHidden;
 	State state;
 	rect clientRect;
@@ -514,7 +513,6 @@ public:
 	//spreadsheet properties
 	int numSpreads() const { return SPREADSHEET.size(); }			//!< get number of spreadsheets
 	const char *spreadName(int s) const { return SPREADSHEET[s].name.c_str(); }	//!< get name of spreadsheet s
-	const char *spreadParentFolder(int s) const { return SPREADSHEET[s].parentFolder.c_str(); }	//!< get parent folder of spreadsheet s
 	bool spreadHidden(int s) const { return SPREADSHEET[s].bHidden; }	//!< is spreadsheet s hidden
 	bool spreadLoose(int s) const { return SPREADSHEET[s].bLoose; }	//!< is spreadsheet s loose
 	rect spreadWindowRect(int s) const { return SPREADSHEET[s].clientRect; }		//!< get window rectangle of spreadsheet s
@@ -547,7 +545,6 @@ public:
 	//matrix properties
 	int numMatrices() const { return MATRIX.size(); }			//!< get number of matrices
 	const char *matrixName(int m) const { return MATRIX[m].name.c_str(); }	//!< get name of matrix m
-	const char *matrixParentFolder(int m) const { return MATRIX[m].parentFolder.c_str(); }	//!< get parent folder of matrix m
 	bool matrixHidden(int m) const { return MATRIX[m].bHidden; }	//!< is matrix m hidden
 	rect matrixWindowRect(int m) const { return MATRIX[m].clientRect; }		//!< get window rectangle of matrix m
 	const char *matrixLabel(int m) const { return MATRIX[m].label.c_str(); }	//!< get label of matrix m
@@ -604,7 +601,6 @@ public:
 
 	int numGraphs() const { return GRAPH.size(); }			//!< get number of graphs
 	const char *graphName(int s) const { return GRAPH[s].name.c_str(); }	//!< get name of graph s
-	const char *graphParentFolder(int s) const { return GRAPH[s].parentFolder.c_str(); }	//!< get parent folder of graph s
 	const char *graphLabel(int s) const { return GRAPH[s].label.c_str(); }	//!< get name of graph s
 	originWindow::State graphState(int s) const { return GRAPH[s].state; }	//!< get window state of graph s
 	bool graphHidden(int s) const { return GRAPH[s].bHidden; }	//!< is graph s hidden
@@ -702,7 +698,6 @@ public:
 
 	int numNotes() const { return NOTE.size(); }			//!< get number of notes
 	const char *noteName(int n) const { return NOTE[n].name.c_str(); }	//!< get name of note n
-	const char *noteParentFolder(int n) const { return NOTE[n].parentFolder.c_str(); }	//!< get parent folder of note n
 	const char *noteLabel(int n) const { return NOTE[n].label.c_str(); }	//!< get label of note n
 	const char *noteText(int n) const { return NOTE[n].text.c_str(); }	//!< get text of note n
 
@@ -720,7 +715,7 @@ private:
 	int compareMatrixnames(char *sname) const;				//!< returns matching matrix index
 	int compareFunctionnames(const char *sname) const;				//!< returns matching function index
 	vector<string> findDataByIndex(int index) const;
-	string findObjectByIndex(int index, string folder);
+	string findObjectByIndex(int index);
 	void readSpreadInfo(FILE *fopj, FILE *fdebug);
 	void readExcelInfo(FILE *f, FILE *debug);
 	void readMatrixInfo(FILE *fopj, FILE *fdebug);
