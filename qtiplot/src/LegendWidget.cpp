@@ -50,6 +50,8 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 	d_frame (0),
 	d_angle(0)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+	
 	d_text = new QwtText(QString::null, QwtText::RichText);
 	d_text->setFont(QFont("Arial", 12, QFont::Normal, false));
 	d_text->setRenderFlags(Qt::AlignTop|Qt::AlignLeft);

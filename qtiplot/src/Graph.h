@@ -157,14 +157,15 @@ class Graph: public QWidget
 		//@{
 		//! Returns true if this Graph is a pie plot, false otherwise.
 		bool isPiePlot(){return (c_type.count() == 1 && c_type[0] == Pie);};
+		//! Used when creating a pie plot.
 		void plotPie(Table* w,const QString& name, int startRow = 0, int endRow = -1);
-		//! Used when restoring a pie plot from a project file
+		//! Used when restoring a pie plot from a project file.
 		void plotPie(Table* w, const QString& name, const QPen& pen, int brush, int size, 
 			int firstColor, int startRow = 0, int endRow = -1, bool visible = true,
 			double d_start_azimuth = 270, double d_view_angle = 90, double d_thickness = 33,
 			double d_horizontal_offset = 0.0, double d_edge_dist = 25, bool d_counter_clockwise = false,
 			bool d_auto_labeling = true, bool d_values = false, bool d_percentages = true,
-			bool d_fixed_labels_pos = true);
+			bool d_categories = false, bool d_fixed_labels_pos = true);
 		
 		void removePie();
 		QString pieLegendText();
@@ -414,6 +415,7 @@ class Graph: public QWidget
 
 		//! \name Axes
 		//@{
+		QwtScaleWidget* currentScale();
 		QwtScaleWidget* selectedScale();
 		QRect axisTitleRect(const QwtScaleWidget *scale);
 
@@ -430,10 +432,6 @@ class Graph: public QWidget
 		void setScaleTitle(int axis, const QString& text);
 
 		QFont axisTitleFont(int axis);
-		void setXAxisTitleFont(const QFont &fnt);
-		void setYAxisTitleFont(const QFont &fnt);
-		void setRightAxisTitleFont(const QFont &fnt);
-		void setTopAxisTitleFont(const QFont &fnt);
 		void setAxisTitleFont(int axis,const QFont &fnt);
 
 		void setAxisFont(int axis, const QFont &fnt);
@@ -443,18 +441,8 @@ class Graph: public QWidget
 		QColor axisTitleColor(int axis);
 		void setAxisTitleColor(int axis, const QColor& c);
 
-		void setXAxisTitleColor(const QColor& c);
-		void setYAxisTitleColor(const QColor& c);
-		void setRightAxisTitleColor(const QColor& c);
-		void setTopAxisTitleColor(const QColor& c);
-
 		int axisTitleAlignment (int axis);
 		void setAxisTitleAlignment(int axis, int align);
-
-		void setXAxisTitleAlignment(int align);
-		void setYAxisTitleAlignment(int align);
-		void setTopAxisTitleAlignment(int align);
-		void setRightAxisTitleAlignment(int align);
 
         QColor axisColor(int axis);
 		void setAxisColor(int axis, const QColor& color);
@@ -631,7 +619,7 @@ class Graph: public QWidget
 		void removeAxisTitle();
 		void cutAxisTitle();
 		void copyAxisTitle();
-		void showAxisTitleMenu(int axis);
+		void showAxisTitleMenu();
 		void showAxisContextMenu(int axis);
 		void hideSelectedAxis();
 		void showGrids();
@@ -684,11 +672,8 @@ signals:
 		void showAxisDialog(int);
 		void axisDblClicked(int);
 
-		void xAxisTitleDblClicked();
-		void yAxisTitleDblClicked();
-		void rightAxisTitleDblClicked();
-		void topAxisTitleDblClicked();
-
+		void showAxisTitleDialog();
+		
 		void dataRangeChanged();
 		void showFitResults(const QString&);
 		void currentFontChanged(const QFont&);
@@ -710,7 +695,6 @@ signals:
 		bool d_antialiasing;
 		bool autoScaleFonts;
 		bool d_scale_on_print, d_print_cropmarks;
-		int selectedAxis;
 
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;

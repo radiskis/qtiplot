@@ -185,7 +185,7 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
 	// print texts	
 	QObjectList lst = children();
 	foreach(QObject *o, lst){
-		if (o->isA("LegendWidget"))
+		if (o->inherits("LegendWidget") && !((QWidget *)o)->isHidden())
         	((LegendWidget *)o)->print(painter, map);
 	}        
 }
@@ -473,7 +473,7 @@ void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFil
 	if (d_SVG_mode){
 		QObjectList lst = children();
 		foreach(QObject *o, lst){
-			if (o->isA("LegendWidget"))
+			if (o->inherits("LegendWidget"))
         		((LegendWidget *)o)->setSVGMode();
 		}
 	}        
@@ -483,7 +483,7 @@ void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFil
 	if (d_SVG_mode){
 		QObjectList lst = children();
 		foreach(QObject *o, lst){
-			if (o->isA("LegendWidget"))
+			if (o->inherits("LegendWidget"))
         		((LegendWidget *)o)->setSVGMode(false);
 		}
 	}

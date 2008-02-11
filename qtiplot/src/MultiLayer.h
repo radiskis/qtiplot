@@ -162,10 +162,7 @@ signals:
 	void showCurvesDialog();
 	void drawTextOff();
 	void drawLineEnded(bool);
-	void showXAxisTitleDialog();
-	void showYAxisTitleDialog();
-	void showTopAxisTitleDialog();
-	void showRightAxisTitleDialog();
+	void showAxisTitleDialog();
 	void showMarkerPopupMenu();
 	void modifiedPlot();
 	void cursorInfo(const QString&);

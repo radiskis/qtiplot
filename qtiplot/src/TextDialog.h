@@ -37,7 +37,10 @@ class QTextCursor;
 class QComboBox;
 class QLabel;
 class QSpinBox;
+class QCheckBox;
 class LegendWidget;
+class Graph;
+class QwtScaleWidget;
 
 #include "ColorButton.h"
 #include "TextFormatButtons.h"
@@ -51,7 +54,8 @@ public:
 	//! Label types
 	enum TextType{
 		TextMarker, /*!< normal text label */
-		AxisTitle   /*!< axis label */
+		AxisTitle,   /*!< axis label */
+		LayerTitle
 	};
 
 	//! Constructor
@@ -61,34 +65,14 @@ public:
 	 * \param fl window flags
 	 */
 	TextDialog(TextType type, QWidget* parent = 0, Qt::WFlags fl = 0 );
-	//! Destructor
-	~TextDialog(){};
 
 	//! Return axis label alignment
 	/**
 	 * \sa setAlignment()
 	 */
 	int alignment();
-	//! Return rotation angle (not yet implemented)
-	int angle();
 
 public slots:
-	//! Set label background type
-	/**
-	 * \param bkg label background type
-	 * 0 -> plain, no border
-	 * 1 -> with border
-	 * 2 -> border + shadow
-	 */
-	void setBackgroundType(int bkg);
-	//! Set rotation angle (not yet implemented)
-	void setAngle(int angle);
-	//! Set the background color to 'c'
-	void setBackgroundColor(QColor c);
-	//! Set the text color to 'c'
-	void setTextColor(QColor c);
-	//! Set the current font to 'fnt'
-	void setFont(const QFont& fnt);
 	//! Set the contents of the text editor box
 	void setText(const QString & t);
 	//! Set axis label alignment
@@ -97,6 +81,7 @@ public slots:
 	 *  Qt::AlignHCenter, Qt::AlignLeft, or Qt::AlignRight)
 	 */
 	void setAlignment(int align);
+	void setGraph(Graph *g);
 	void setLegendWidget(LegendWidget *);
 
 private slots:
@@ -110,17 +95,9 @@ private slots:
 
 	void updateTransparency(int alpha);
 
-signals:
-	//! Signal for axes labels: change text
-	void changeText(const QString &);
-	//! Signal for axes labels: change text color
-	void changeColor(const QColor &);
-	//! Signal for axes labels: change text alignment
-	void changeAlignment(int);
-	//! Signal for axes labels: change font
-	void changeFont(const QFont &);
-
 protected:
+	void formatAllLabels();
+
 	//! current font
 	QFont selectedFont;
 	TextType textType;
@@ -138,8 +115,11 @@ protected:
 	QComboBox *alignmentBox;
 	TextFormatButtons *formatButtons;
 	QSpinBox *boxBackgroundTransparency;
+	QCheckBox *boxApplyToAll;
 
 	LegendWidget *d_legend;
+	Graph *d_graph;
+	QwtScaleWidget *d_scale;
 };
 
 #endif // TEXTDLG_H

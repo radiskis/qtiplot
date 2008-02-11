@@ -40,20 +40,22 @@ QwtPieCurve::QwtPieCurve(Table *t, const QString& name, int startRow, int endRow
 	d_pie_ray(50),
 	d_first_color(0),
 	d_start_azimuth(270),
-	d_view_angle(30),
-	d_thickness(30),
+	d_view_angle(33),
+	d_thickness(33),
 	d_horizontal_offset(0),
 	d_edge_dist(25),
 	d_counter_clockwise(false),
 	d_auto_labeling(true),
 	d_values(false),
 	d_percentages(true),
+	d_categories(false),
 	d_fixed_labels_pos(true)
 {
 	setPen(QPen(QColor(Qt::black), 1, Qt::SolidLine));
-	setBrush(QBrush(Qt::black, Qt::SolidPattern));
+	setBrush(QBrush(Qt::SolidPattern));
     setStyle(QwtPlotCurve::UserCurve);
 	setType(Graph::Pie);
+	d_table_rows = QVarLengthArray<int>(0);
 }
 
 void QwtPieCurve::clone(QwtPieCurve* c)
@@ -72,7 +74,10 @@ void QwtPieCurve::clone(QwtPieCurve* c)
 	d_auto_labeling = c->labelsAutoFormat();
 	d_values = c->labelsValuesFormat();
 	d_percentages = c->labelsPercentagesFormat();
+	d_categories = c->labelCategories();
 	d_fixed_labels_pos = c->fixedLabelsPosition();
+	
+	d_table_rows = c->d_table_rows;
 }
 
 void QwtPieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
@@ -92,21 +97,21 @@ void QwtPieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScal
 
 void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap) const
 {
-    const int x_width = abs(xMap.p1() - xMap.p2());
-	const int x_center = int((xMap.p1() + xMap.p2())/2 + d_horizontal_offset*0.01*x_width);
-	const int y_center = int((yMap.p1() + yMap.p2())/2);
-	const int ray_x = int(d_pie_ray*0.005*qMin(x_width, abs(yMap.p1() - yMap.p2())));
+    const double x_width = fabs(xMap.p1() - xMap.p2());
+	const double x_center = (xMap.p1() + xMap.p2())*0.5 + d_horizontal_offset*0.01*x_width;
+	const double y_center = (yMap.p1() + yMap.p2())*0.5;
+	const double ray_x = d_pie_ray*0.005*qMin(x_width, fabs(yMap.p1() - yMap.p2()));
 	const double view_angle_rad = d_view_angle*M_PI/180.0;
-	const int ray_y = ray_x*sin(view_angle_rad);
+	const double ray_y = ray_x*sin(view_angle_rad);
 	const double thick = 0.01*d_thickness*ray_x*cos(view_angle_rad);
 
-	QRect pieRect;
+	QRectF pieRect;
 	pieRect.setX(x_center - ray_x);
 	pieRect.setY(y_center - ray_y);
 	pieRect.setWidth(2*ray_x);
 	pieRect.setHeight(2*ray_y);
 
-	QRect pieRect2 = pieRect;
+	QRectF pieRect2 = pieRect;
     pieRect2.translate(0, thick);
 
     painter->save();
@@ -126,10 +131,13 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
     painter->drawEllipse(pieRect);
 
     if (d_texts_list.size() > 0){
-        LegendWidget* l = d_texts_list[0];
+        PieLabel* l = d_texts_list[0];
         if (l){
             QString s;
             if (d_auto_labeling){
+				if (d_categories)
+					s += QString::number(d_table_rows[0]) + "\n";
+				
                 if (d_values && d_percentages)
                     s += ((Plot *)plot())->locale().toString(y(0), 'g', 4) + " (100%)";
                 else if (d_values)
@@ -137,16 +145,20 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
                 else if (d_percentages)
                     s += "100%";
                 l->setText(s);
-            }
+				if (l->isHidden())
+					l->show();
+            } else
+				l->setText(l->customText());
+						
             if (d_fixed_labels_pos){
                 double a_deg = d_start_azimuth + 180.0;
                 if (a_deg > 360)
                     a_deg -= 360;
                 double a_rad = a_deg*M_PI/180.0;
                 double rx = ray_x*(1 + 0.01*d_edge_dist);
-                const int x = int(x_center + rx*cos(a_rad));
+                const double x = x_center + rx*cos(a_rad);
                 double ry = ray_y*(1 + 0.01*d_edge_dist);
-                int y = int(y_center + ry*sin(a_rad));
+                double y = y_center + ry*sin(a_rad);
                 if (a_deg > 0 && a_deg < 180)
                     y += thick;
 
@@ -156,27 +168,26 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
             }
         }
     }
-
     painter->restore();
 }
 
 void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
-{
-    const int x_width = abs(xMap.p1() - xMap.p2());
-	const int x_center = int((xMap.p1() + xMap.p2())/2 + d_horizontal_offset*0.01*x_width);
-	const int y_center = int((yMap.p1() + yMap.p2())/2);
-	const int ray_x = int(d_pie_ray*0.005*qMin(x_width, abs(yMap.p1() - yMap.p2())));
+{	
+    const double x_width = fabs(xMap.p1() - xMap.p2());
+	const double x_center = (xMap.p1() + xMap.p2())*0.5 + d_horizontal_offset*0.01*x_width;
+	const double y_center = (yMap.p1() + yMap.p2())*0.5;
+	const double ray_x = d_pie_ray*0.005*qMin(x_width, fabs(yMap.p1() - yMap.p2()));
 	const double view_angle_rad = d_view_angle*M_PI/180.0;
-	const int ray_y = ray_x*sin(view_angle_rad);
+	const double ray_y = ray_x*sin(view_angle_rad);
 	const double thick = 0.01*d_thickness*ray_x*cos(view_angle_rad);
 
-	QRect pieRect;
+	QRectF pieRect;
 	pieRect.setX(x_center - ray_x);
 	pieRect.setY(y_center - ray_y);
 	pieRect.setWidth(2*ray_x);
 	pieRect.setHeight(2*ray_y);
 
-	QRect pieRect2 = pieRect;
+	QRectF pieRect2 = pieRect;
     pieRect2.translate(0, thick);
 
 	double sum = 0.0;
@@ -295,6 +306,8 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
 		if (l){
 			QString s;
 			if (d_auto_labeling){
+				if (d_categories)
+					s += QString::number(d_table_rows[i]) + "\n";
 				if (d_values && d_percentages)
 					s += locale.toString(yi, 'g', 4) + " (" + locale.toString(q*100, 'g', 4) + "%)";
 				else if (d_values)
@@ -302,9 +315,11 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
 				else if (d_percentages)
 					s += locale.toString(q*100, 'g', 4) + "%";
                 l->setText(s);
-			} else
-				l->setCustomText(l->customText());
-			
+				if (l->isHidden())
+					l->show();
+			} else 
+				l->setText(l->customText());
+						
             if (d_fixed_labels_pos){
                 double a_deg = start_angle[i] - sign*q*180.0;
                 if (a_deg > 360)
@@ -312,10 +327,10 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
                 double a_rad = a_deg*M_PI/180.0;
 
                 double rx = ray_x*(1 + 0.01*d_edge_dist);
-                const int x = int(x_center + rx*cos(a_rad));
+                const double x = x_center + rx*cos(a_rad);
 
                 double ry = ray_y*(1 + 0.01*d_edge_dist);
-                int y = int(y_center + ry*sin(a_rad));
+                double y = y_center + ry*sin(a_rad);
                 if (a_deg > 0 && a_deg < 180)
                     y += thick;
 
@@ -347,8 +362,11 @@ void QwtPieCurve::setBrushStyle(const Qt::BrushStyle& style)
 
 void QwtPieCurve::loadData()
 {
-	QLocale locale = ((Plot *)plot())->locale();
+	Plot *d_plot = (Plot *)plot();
+	QLocale locale = d_plot->locale();
 	QVarLengthArray<double> X(abs(d_end_row - d_start_row) + 1);
+	d_table_rows.resize(abs(d_end_row - d_start_row) + 1);
+	
 	int size = 0;
 	int ycol = d_table->colIndex(title().text());
 	for (int i = d_start_row; i <= d_end_row; i++ ){
@@ -357,28 +375,60 @@ void QwtPieCurve::loadData()
 		if (!xval.isEmpty()){
             X[size] = locale.toDouble(xval, &valid_data);
             if (valid_data){
+				d_table_rows[size] = i + 1;
                 size++;
 			}
 		}
 	}
 	X.resize(size);
+	d_table_rows.resize(size);
 	setData(X.data(), X.data(), size);
+	
+	int labels = d_texts_list.size();
+	//If there are no labels (initLabels() wasn't called yet) or if we have enough labels: do nothing!
+	if(d_texts_list.isEmpty() || labels == size)
+		return;
+	
+	//Else add new pie labels.
+	for (int i = labels; i < size; i++ ){
+		PieLabel* l = new PieLabel(d_plot, this);
+		d_texts_list << l;
+		l->hide();
+	}
 }
 
 void QwtPieCurve::addLabel(PieLabel *l, bool clone)
 {
+	if (!l)
+		return;
+	
 	if (clone){
-		PieLabel *newLabel = new PieLabel((Plot *)plot());
+		PieLabel *newLabel = new PieLabel((Plot *)plot(), this);
 		newLabel->clone(l);
 		newLabel->setCustomText(l->customText());
 		d_texts_list << newLabel;	
-	} else
+	} else {
+		l->setPieCurve(this);
 		d_texts_list << l;
+	}
 }
 
 void QwtPieCurve::removeLabel(PieLabel *l)
 {
+	if (!l)
+		return;
 	
+	int index = d_texts_list.indexOf(l);
+	if (index < 0 || index >= d_texts_list.size())
+		return;
+	
+	PieLabel *newLabel = new PieLabel((Plot *)plot(), this);
+	newLabel->clone(l);
+	newLabel->setCustomText(l->customText());
+	newLabel->hide();
+	
+	d_texts_list.removeAt(index);
+	d_texts_list.insert(index, newLabel);	
 }
 
 void QwtPieCurve::initLabels()
@@ -391,18 +441,21 @@ void QwtPieCurve::initLabels()
     Plot *d_plot = (Plot *)plot();
 	QLocale locale = d_plot->locale();
 	for (int i = 0; i <size; i++ ){
-		PieLabel* l = new PieLabel(d_plot);
-		l->setFrameStyle(0);
+		PieLabel* l = new PieLabel(d_plot, this);		
 		d_texts_list << l;
 		if (i < dataSize())
             l->setText(locale.toString(y(i)/sum*100, 'g', 4) + "%");
+		else
+			l->hide();
 	}
 }
 
-PieLabel::PieLabel(Plot *plot):LegendWidget(plot),
-	d_custom_text(QString::null),
-	d_custom_position(QPoint())
+PieLabel::PieLabel(Plot *plot, QwtPieCurve *pie):LegendWidget(plot),
+	d_pie_curve(pie),
+	d_custom_text(QString::null)
 {
+	setBackgroundColor(QColor(255, 255, 255, 0));
+	setFrameStyle(0);
 }
 
 QString PieLabel::customText()
@@ -413,7 +466,9 @@ QString PieLabel::customText()
 	return d_custom_text;
 }
 
-void PieLabel::setCustomPosition(const QPoint& p)
+void PieLabel::closeEvent(QCloseEvent* e)
 {
-	d_custom_position = p;
+	if(d_pie_curve)
+		d_pie_curve->removeLabel(this);
+	e->accept();
 }
