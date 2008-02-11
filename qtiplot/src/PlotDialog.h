@@ -307,7 +307,7 @@ private:
 
     QGroupBox *pieAutoLabelsBox, *boxPieWedge;
 	DoubleSpinBox *boxPieStartAzimuth, *boxPieEdgeDist, *boxPieViewAngle, *boxPieThickness;
-	QCheckBox *boxPieConterClockwise, *boxPieValues, *boxPiePercentages;
+	QCheckBox *boxPieConterClockwise, *boxPieValues, *boxPiePercentages, *boxPieCategories;
 	QWidget *pieLabelsPage;
     QSpinBox *boxPieOffset;
 	QWidget *pieGeometryPage;

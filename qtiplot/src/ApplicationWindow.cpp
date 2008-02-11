@@ -5377,18 +5377,8 @@ void ApplicationWindow::showTitleDialog()
 	if (w->isA("MultiLayer")){
 		Graph* g = ((MultiLayer*)w)->activeGraph();
 		if (g){
-			TextDialog* td= new TextDialog(TextDialog::AxisTitle, this,0);
-			td->setAttribute(Qt::WA_DeleteOnClose);
-			connect (td,SIGNAL(changeFont(const QFont &)),g,SLOT(setTitleFont(const QFont &)));
-			connect (td,SIGNAL(changeText(const QString &)),g,SLOT(setTitle(const QString &)));
-			connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setTitleColor(const QColor &)));
-			connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setTitleAlignment(int)));
-
-			QwtText t = g->plotWidget()->title();
-			td->setText(t.text());
-			td->setFont(t.font());
-			td->setTextColor(t.color());
-			td->setAlignment(t.renderFlags());
+			TextDialog* td= new TextDialog(TextDialog::LayerTitle, this,0);
+			td->setGraph(g);
 			td->exec();
 		}
 	} else if (w->isA("Graph3D")) {
@@ -5398,103 +5388,19 @@ void ApplicationWindow::showTitleDialog()
 	}
 }
 
-void ApplicationWindow::showXAxisTitleDialog()
+void ApplicationWindow::showAxisTitleDialog()
 {
 	MdiSubWindow* w = activeWindow(MultiLayerWindow);
 	if (!w)
 		return;
 
 	Graph* g = ((MultiLayer*)w)->activeGraph();
-	if (g)
-	{
-		TextDialog* td = new TextDialog(TextDialog::AxisTitle, this,0);
-		td->setAttribute(Qt::WA_DeleteOnClose);
-		connect (td,SIGNAL(changeFont(const QFont &)),g,SLOT(setXAxisTitleFont(const QFont &)));
-		connect (td,SIGNAL(changeText(const QString &)),g,SLOT(setXAxisTitle(const QString &)));
-		connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setXAxisTitleColor(const QColor &)));
-		connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setXAxisTitleAlignment(int)));
-
-		td->setText(g->axisTitle(QwtPlot::xBottom));
-		td->setFont(g->axisTitleFont(2));
-		td->setTextColor(g->axisTitleColor(2));
-		td->setAlignment(g->axisTitleAlignment(2));
-		td->setWindowTitle(tr("QtiPlot - X Axis Title"));
-		td->exec();
-	}
-}
-
-void ApplicationWindow::showYAxisTitleDialog()
-{
-	MdiSubWindow* w = activeWindow(MultiLayerWindow);
-	if (!w)
+	if (!g)
 		return;
-
-	Graph* g = ((MultiLayer*)w)->activeGraph();
-	if (g)
-	{
-		TextDialog* td= new TextDialog(TextDialog::AxisTitle, this,0);
-		td->setAttribute(Qt::WA_DeleteOnClose);
-		connect (td,SIGNAL(changeFont(const QFont &)),g,SLOT(setYAxisTitleFont(const QFont &)));
-		connect (td,SIGNAL(changeText(const QString &)),g,SLOT(setYAxisTitle(const QString &)));
-		connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setYAxisTitleColor(const QColor &)));
-		connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setYAxisTitleAlignment(int)));
-
-		td->setText(g->axisTitle(QwtPlot::yLeft));
-		td->setFont(g->axisTitleFont(0));
-		td->setTextColor(g->axisTitleColor(0));
-		td->setAlignment(g->axisTitleAlignment(0));
-		td->setWindowTitle(tr("QtiPlot - Y Axis Title"));
-		td->exec();
-	}
-}
-
-void ApplicationWindow::showRightAxisTitleDialog()
-{
-	MdiSubWindow* w = activeWindow(MultiLayerWindow);
-	if (!w)
-		return;
-
-	Graph* g = ((MultiLayer*)w)->activeGraph();
-	if (g)
-	{
-		TextDialog* td= new TextDialog(TextDialog::AxisTitle, this, 0);
-		td->setAttribute(Qt::WA_DeleteOnClose);
-		connect (td,SIGNAL(changeFont(const QFont &)),g,SLOT(setRightAxisTitleFont(const QFont &)));
-		connect (td,SIGNAL(changeText(const QString &)),g,SLOT(setRightAxisTitle(const QString &)));
-		connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setRightAxisTitleColor(const QColor &)));
-		connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setRightAxisTitleAlignment(int)));
-
-		td->setText(g->axisTitle(QwtPlot::yRight));
-		td->setFont(g->axisTitleFont(1));
-		td->setTextColor(g->axisTitleColor(1));
-		td->setAlignment(g->axisTitleAlignment(1));
-		td->setWindowTitle(tr("QtiPlot - Right Axis Title"));
-		td->exec();
-	}
-}
-
-void ApplicationWindow::showTopAxisTitleDialog()
-{
-	MdiSubWindow* w = activeWindow(MultiLayerWindow);
-	if (!w)
-		return;
-
-	Graph* g = ((MultiLayer*)w)->activeGraph();
-	if (g){
-		TextDialog* td= new TextDialog(TextDialog::AxisTitle, this, 0);
-		td->setAttribute(Qt::WA_DeleteOnClose);
-		connect (td,SIGNAL(changeFont(const QFont &)),g,SLOT(setTopAxisTitleFont(const QFont &)));
-		connect (td,SIGNAL(changeText(const QString &)),g,SLOT(setTopAxisTitle(const QString &)));
-		connect (td,SIGNAL(changeColor(const QColor &)),g,SLOT(setTopAxisTitleColor(const QColor &)));
-		connect (td,SIGNAL(changeAlignment(int)),g,SLOT(setTopAxisTitleAlignment(int)));
-
-		td->setText(g->axisTitle(QwtPlot::xTop));
-		td->setFont(g->axisTitleFont(3));
-		td->setTextColor(g->axisTitleColor(3));
-		td->setAlignment(g->axisTitleAlignment(3));
-		td->setWindowTitle(tr("QtiPLot - Top Axis Title"));
-		td->exec();
-	}
+	
+	TextDialog* td = new TextDialog(TextDialog::AxisTitle, this, 0);
+	td->setGraph(g);
+	td->exec();
 }
 
 void ApplicationWindow::showExportASCIIDialog()
@@ -7234,7 +7140,6 @@ void ApplicationWindow::showTextDialog()
 			return;
 
 		TextDialog *td = new TextDialog(TextDialog::TextMarker, this, 0);
-		td->setAttribute(Qt::WA_DeleteOnClose);
 		td->setLegendWidget(l);
 		td->exec();
 	}
@@ -10120,12 +10025,13 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				if (d_file_version <= 89)
 					first_color = convertOldToNewColorIndex(first_color);
 
-				if (curve.size() >= 21){//version 0.9.3-rc3			
+				if (curve.size() >= 22){//version 0.9.3-rc3			
 					ag->plotPie(table, curve[1], pen, curve[5].toInt(),
 						curve[6].toInt(), first_color, startRow, endRow, visible,
 						curve[11].toDouble(), curve[12].toDouble(), curve[13].toDouble(),
 						curve[14].toDouble(), curve[15].toDouble(), curve[16].toInt(),
-						curve[17].toInt(), curve[18].toInt(), curve[19].toInt(), curve[20].toInt());
+						curve[17].toInt(), curve[18].toInt(), curve[19].toInt(), 
+						curve[20].toInt(), curve[21].toInt());
 				} else
 					ag->plotPie(table, curve[1], pen, curve[5].toInt(),
 						curve[6].toInt(), first_color, startRow, endRow, visible);
@@ -10821,10 +10727,8 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(showCurvesDialog()),this,SLOT(showCurvesDialog()));
 	connect (g,SIGNAL(drawLineEnded(bool)), btnPointer, SLOT(setOn(bool)));
 	connect (g,SIGNAL(drawTextOff()),this, SLOT(disableAddText()));
-	connect (g,SIGNAL(showXAxisTitleDialog()),this,SLOT(showXAxisTitleDialog()));
-	connect (g,SIGNAL(showYAxisTitleDialog()),this,SLOT(showYAxisTitleDialog()));
-	connect (g,SIGNAL(showRightAxisTitleDialog()),this,SLOT(showRightAxisTitleDialog()));
-	connect (g,SIGNAL(showTopAxisTitleDialog()),this,SLOT(showTopAxisTitleDialog()));
+	connect (g, SIGNAL(showAxisTitleDialog()), this, SLOT(showAxisTitleDialog()));
+
 	connect (g,SIGNAL(showMarkerPopupMenu()),this,SLOT(showMarkerPopupMenu()));
 	connect (g,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));
 	connect (g,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));

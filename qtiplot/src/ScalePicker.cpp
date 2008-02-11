@@ -36,14 +36,14 @@
 
 #include <QMouseEvent>
 #include <QPen>
-#include <QMessageBox>
 
 ScalePicker::ScalePicker(QwtPlot *plot):
-    QObject(plot)
+    QObject(plot),
+	d_title_selected(false),
+	d_labels_selected(false),
+    d_selected_axis(NULL),
+	d_current_axis(NULL)
 {
-    d_title_selected = false;
-	d_labels_selected = false;
-    d_selected_axis = NULL;
 	refresh();
 }
 
@@ -53,6 +53,7 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 		return QObject::eventFilter(object, e);
 
 	QwtScaleWidget *scale = (QwtScaleWidget *)object;
+	d_current_axis = scale;
 
 	if ( e->type() == QEvent::MouseButtonDblClick ){
 		mouseDblClicked(scale, ((QMouseEvent *)e)->pos());
@@ -95,7 +96,7 @@ void ScalePicker::mouseRightClicked(const QwtScaleWidget *scale, const QPoint &p
 if (scaleRect(scale).contains(pos))
 	emit axisRightClicked(scale->alignment());
 else
-	emit axisTitleRightClicked(scale->alignment());
+	emit axisTitleRightClicked();
 }
 
 // The rect of a scale without the title

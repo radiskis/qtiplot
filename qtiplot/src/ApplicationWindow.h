@@ -633,10 +633,7 @@ public slots:
 	CurveRangeDialog* showCurveRangeDialog(Graph *g, int curve);
 	void showPlotAssociations(int curve);
 
-	void showXAxisTitleDialog();
-	void showYAxisTitleDialog();
-	void showRightAxisTitleDialog();
-	void showTopAxisTitleDialog();
+	void showAxisTitleDialog();
 	void showColumnOptionsDialog();
 	void showRowsDialog();
 	void showDeleteRowsDialog();

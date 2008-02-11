@@ -559,6 +559,7 @@ void PlotDialog::initPieGeometryPage()
 
 	privateTabWidget->addTab(pieGeometryPage, tr( "Pie Geometry" ) );
 
+    connect(boxPieConterClockwise, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
     connect(boxPieViewAngle, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
     connect(boxPieThickness, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
     connect(boxPieStartAzimuth, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
@@ -570,7 +571,7 @@ void PlotDialog::initPieLabelsPage()
 {
 	pieLabelsPage = new QWidget();
 
-    pieAutoLabelsBox = new QGroupBox(tr("&Automatic Format"));
+    pieAutoLabelsBox = new QGroupBox(tr("Automatic &Format"));
 	pieAutoLabelsBox->setCheckable(true);
 
 	QGridLayout *gl1 = new QGridLayout(pieAutoLabelsBox);
@@ -579,7 +580,11 @@ void PlotDialog::initPieLabelsPage()
 
 	boxPiePercentages = new QCheckBox(tr("&Percentages"));
 	gl1->addWidget(boxPiePercentages, 1, 0);
-	gl1->setRowStretch(2, 1);
+	
+	boxPieCategories = new QCheckBox(tr("Categories/&Rows"));
+	gl1->addWidget(boxPieCategories, 2, 0);
+	
+	gl1->setRowStretch(3, 1);
 
     boxPieWedge = new QGroupBox(tr( "Associate Position with &Wedge" ));
 	boxPieWedge->setCheckable(true);
@@ -1867,17 +1872,20 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 		boxPieStartAzimuth->blockSignals(true);
 		boxPieStartAzimuth->setValue(pie->startAzimuth());
 		boxPieStartAzimuth->blockSignals(false);
+		boxPieConterClockwise->blockSignals(true);
 		boxPieConterClockwise->setChecked(pie->counterClockwise());
+		boxPieConterClockwise->blockSignals(false);
 		boxRadius->blockSignals(true);
         boxRadius->setValue(pie->radius());
         boxRadius->blockSignals(false);
         boxPieOffset->blockSignals(true);
-        boxPieOffset->setValue(pie->horizontalOffset());
+        boxPieOffset->setValue((int)pie->horizontalOffset());
         boxPieOffset->blockSignals(false);
 
 		pieAutoLabelsBox->setChecked(pie->labelsAutoFormat());
 		boxPieValues->setChecked(pie->labelsValuesFormat());
 		boxPiePercentages->setChecked(pie->labelsPercentagesFormat());
+		boxPieCategories->setChecked(pie->labelCategories());
 		boxPieEdgeDist->blockSignals(true);
 		boxPieEdgeDist->setValue(pie->labelsEdgeDistance());
 		boxPieEdgeDist->blockSignals(false);
@@ -2264,6 +2272,7 @@ bool PlotDialog::acceptParams()
 		pie->setLabelsAutoFormat(pieAutoLabelsBox->isChecked());
         pie->setLabelValuesFormat(boxPieValues->isChecked());
         pie->setLabelPercentagesFormat(boxPiePercentages->isChecked());
+		pie->setLabelCategories(boxPieCategories->isChecked());
         pie->setFixedLabelsPosition(boxPieWedge->isChecked());
         pie->setLabelsEdgeDistance(boxPieEdgeDist->value());
         graph->replot();

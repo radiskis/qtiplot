@@ -66,6 +66,9 @@ public:
     bool labelsPercentagesFormat(){return d_percentages;};
     void setLabelPercentagesFormat(bool on){d_percentages = on;};
 
+	bool labelCategories(){return d_categories;};
+    void setLabelCategories(bool on){d_categories = on;};
+	
     bool fixedLabelsPosition(){return d_fixed_labels_pos;};
     void setFixedLabelsPosition(bool on){d_fixed_labels_pos = on;};
 
@@ -85,6 +88,8 @@ public:
 	
 	void addLabel(PieLabel *l, bool clone = false);
 	void removeLabel(PieLabel *l);
+	
+	QList <PieLabel *> labelsList(){return d_texts_list;};
 
 private:
 	void draw(QPainter *painter,const QwtScaleMap &xMap,
@@ -104,8 +109,11 @@ private:
 	bool d_auto_labeling;
 	bool d_values;
 	bool d_percentages;
+	bool d_categories;
 	bool d_fixed_labels_pos;
 	QList <PieLabel *> d_texts_list;
+	//! Stores table row indices to be displayed in PieLabels if d_categories is true.
+	QVarLengthArray<int> d_table_rows;
 };
 
 class PieLabel: public LegendWidget
@@ -113,15 +121,16 @@ class PieLabel: public LegendWidget
 	Q_OBJECT
 
 public:
-    PieLabel(Plot *);
+    PieLabel(Plot *, QwtPieCurve *pie = 0);
 
 	QString customText();
-	void setCustomText(const QString& s){d_custom_text = s; setText(s);};
+	void setCustomText(const QString& s){d_custom_text = s;};
 	
-	QPoint customPosition(){return d_custom_position;};
-	void setCustomPosition(const QPoint& p);
-
+	void setPieCurve(QwtPieCurve *pie){d_pie_curve = pie;};
+	
 private:
+	void closeEvent(QCloseEvent* e);
+
+	QwtPieCurve *d_pie_curve;
 	QString d_custom_text;
-	QPoint d_custom_position;
 };

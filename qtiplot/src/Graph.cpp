@@ -234,7 +234,7 @@ Graph::Graph(QWidget* parent, Qt::WFlags f)
 	connect (scalePicker,SIGNAL(clicked()),this,SLOT(deselectMarker()));
 	connect (scalePicker,SIGNAL(axisDblClicked(int)),this,SIGNAL(axisDblClicked(int)));
 	connect (scalePicker, SIGNAL(axisTitleDblClicked()), this, SLOT(enableTextEditor()));
-	connect (scalePicker,SIGNAL(axisTitleRightClicked(int)),this,SLOT(showAxisTitleMenu(int)));
+	connect (scalePicker,SIGNAL(axisTitleRightClicked()),this,SLOT(showAxisTitleMenu()));
 	connect (scalePicker,SIGNAL(axisRightClicked(int)),this,SLOT(showAxisContextMenu(int)));
 
 	connect (d_zoomer[0],SIGNAL(zoomed (const QwtDoubleRect &)),this,SLOT(zoomed (const QwtDoubleRect &)));
@@ -807,42 +807,6 @@ int Graph::labelsRotation(int axis)
 	return (int)sclDraw->labelRotation();
 }
 
-void Graph::setYAxisTitleFont(const QFont &fnt)
-{
-	QwtText t = d_plot->axisTitle (QwtPlot::yLeft);
-	t.setFont (fnt);
-	d_plot->setAxisTitle (QwtPlot::yLeft, t);
-	d_plot->replot();
-	emit modifiedGraph();
-}
-
-void Graph::setXAxisTitleFont(const QFont &fnt)
-{
-	QwtText t = d_plot->axisTitle (QwtPlot::xBottom);
-	t.setFont (fnt);
-	d_plot->setAxisTitle (QwtPlot::xBottom, t);
-	d_plot->replot();
-	emit modifiedGraph();
-}
-
-void Graph::setRightAxisTitleFont(const QFont &fnt)
-{
-	QwtText t = d_plot->axisTitle (QwtPlot::yRight);
-	t.setFont (fnt);
-	d_plot->setAxisTitle (QwtPlot::yRight, t);
-	d_plot->replot();
-	emit modifiedGraph();
-}
-
-void Graph::setTopAxisTitleFont(const QFont &fnt)
-{
-	QwtText t = d_plot->axisTitle (QwtPlot::xTop);
-	t.setFont (fnt);
-	d_plot->setAxisTitle (QwtPlot::xTop, t);
-	d_plot->replot();
-	emit modifiedGraph();
-}
-
 void Graph::setAxisTitleFont(int axis,const QFont &fnt)
 {
 	QwtText t = d_plot->axisTitle (axis);
@@ -996,45 +960,6 @@ void Graph::setAxisTitleAlignment(int axis, int align)
 	QwtText t = d_plot->axisTitle(axis);
 	t.setRenderFlags(align);
 	d_plot->setAxisTitle (axis, t);
-}
-
-void Graph::setXAxisTitleAlignment(int align)
-{
-	QwtText t = d_plot->axisTitle(QwtPlot::xBottom);
-	t.setRenderFlags(align);
-	d_plot->setAxisTitle (QwtPlot::xBottom, t);
-
-	d_plot->replot();
-	emit modifiedGraph();
-}
-
-void Graph::setYAxisTitleAlignment(int align)
-{
-	QwtText t = d_plot->axisTitle(QwtPlot::yLeft);
-	t.setRenderFlags(align);
-	d_plot->setAxisTitle (QwtPlot::yLeft, t);
-
-	d_plot->replot();
-	emit modifiedGraph();
-}
-
-void Graph::setTopAxisTitleAlignment(int align)
-{
-	QwtText t = d_plot->axisTitle(QwtPlot::xTop);
-	t.setRenderFlags(align);
-	d_plot->setAxisTitle (QwtPlot::xTop, t);
-	d_plot->replot();
-	emit modifiedGraph();
-}
-
-void Graph::setRightAxisTitleAlignment(int align)
-{
-	QwtText t = d_plot->axisTitle(QwtPlot::yRight);
-	t.setRenderFlags(align);
-	d_plot->setAxisTitle (QwtPlot::yRight, t);
-
-	d_plot->replot();
-	emit modifiedGraph();
 }
 
 void Graph::setScaleTitle(int axis, const QString& text)
@@ -1465,7 +1390,7 @@ void Graph::removeMarker()
 	} else if (d_selected_text){
 	    if (d_selected_text == d_legend)
             d_legend = NULL;
-		delete d_selected_text;
+		d_selected_text->close();
 		d_selected_text = NULL;
 	}
 }
@@ -1845,54 +1770,6 @@ QString Graph::saveScale()
 	return s;
 }
 
-void Graph::setXAxisTitleColor(const QColor& c)
-{
-	QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(QwtPlot::xBottom);
-	if (scale)
-	{
-		QwtText t = scale->title();
-		t.setColor (c);
-		scale->setTitle (t);
-		emit modifiedGraph();
-	}
-}
-
-void Graph::setYAxisTitleColor(const QColor& c)
-{
-	QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(QwtPlot::yLeft);
-	if (scale)
-	{
-		QwtText t = scale->title();
-		t.setColor (c);
-		scale->setTitle (t);
-		emit modifiedGraph();
-	}
-}
-
-void Graph::setRightAxisTitleColor(const QColor& c)
-{
-	QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(QwtPlot::yRight);
-	if (scale)
-	{
-		QwtText t = scale->title();
-		t.setColor (c);
-		scale->setTitle (t);
-		emit modifiedGraph();
-	}
-}
-
-void Graph::setTopAxisTitleColor(const QColor& c)
-{
-	QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(QwtPlot::xTop);
-	if (scale)
-	{
-		QwtText t = scale->title();
-		t.setColor (c);
-		scale->setTitle (t);
-		emit modifiedGraph();
-	}
-}
-
 void Graph::setAxisTitleColor(int axis, const QColor& c)
 {
 	QwtScaleWidget *scale = (QwtScaleWidget *)d_plot->axisWidget(axis);
@@ -2004,6 +1881,7 @@ QString Graph::savePieCurveLayout()
 	s+=QString::number(pie->labelsAutoFormat())+"\t";
 	s+=QString::number(pie->labelsValuesFormat())+"\t";
 	s+=QString::number(pie->labelsPercentagesFormat())+"\t";
+	s+=QString::number(pie->labelCategories())+"\t";
 	s+=QString::number(pie->fixedLabelsPosition())+"\n";
 	return s;
 }
@@ -2651,7 +2529,8 @@ void Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
 					int size, int firstColor, int startRow, int endRow, bool visible,
 					double d_start_azimuth, double d_view_angle, double d_thickness,
 					double d_horizontal_offset, double d_edge_dist, bool d_counter_clockwise,
-					bool d_auto_labeling, bool d_values, bool d_percentages, bool d_fixed_labels_pos)
+					bool d_auto_labeling, bool d_values, bool d_percentages, 
+					bool d_categories, bool d_fixed_labels_pos)
 {
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
@@ -2680,114 +2559,31 @@ void Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
 	pie->setLabelsAutoFormat(d_auto_labeling);
 	pie->setLabelValuesFormat(d_values);
 	pie->setLabelPercentagesFormat(d_percentages);
+	pie->setLabelCategories(d_categories);
 	pie->setFixedLabelsPosition(d_fixed_labels_pos);
 }
 
 void Graph::plotPie(Table* w, const QString& name, int startRow, int endRow)
 {
-	int ycol = w->colIndex(name);
-	int size = 0;
-	double sum = 0.0;
-
-	if (endRow < 0)
-		endRow = w->numRows() - 1;
-
-	QVarLengthArray<double> Y(abs(endRow - startRow) + 1);
-	for (int i = startRow; i<= endRow; i++){
-		QString yval = w->text(i,ycol);
-		if (!yval.isEmpty()){
-		    bool valid_data = true;
-			Y[size] = d_plot->locale().toDouble(yval, &valid_data);
-			if (valid_data){
-                sum += Y[size];
-                size++;
-			}
-		}
-	}
-	if (!size)
-		return;
-    Y.resize(size);
-
 	for (int i=0; i<QwtPlot::axisCnt; i++)
 		d_plot->enableAxis(i, false);
+	scalePicker->refresh();
 
 	d_plot->setTitle(QString::null);
 
 	QwtPlotCanvas* canvas=(QwtPlotCanvas*) d_plot->canvas();
 	canvas->setLineWidth(1);
 
-	scalePicker->refresh();
-	/*d_plot->replot();
-
-	QwtPlotLayout *pLayout = d_plot->plotLayout();
-	pLayout->activate(d_plot, d_plot->rect(), 0);
-	const QRect rect = pLayout->canvasRect();*/
-
-	QwtPieCurve *pieCurve = new QwtPieCurve(w, name, startRow, endRow);
+	QwtPieCurve *pie = new QwtPieCurve(w, name, startRow, endRow);
 
     c_keys.resize(++n_curves);
-	c_keys[n_curves-1] = d_plot->insertCurve(pieCurve);
+	c_keys[n_curves-1] = d_plot->insertCurve(pie);
 
 	c_type.resize(n_curves);
 	c_type[n_curves-1] = Pie;
 
-	pieCurve->loadData();
-	pieCurve->initLabels();
-
-	//pieCurve->setData(Y.data(), Y.data(), size);
-
-	//const int ray = 125;
-	//int xc = int(rect.width()/2 + 10);
-	//int yc = int(rect.y() + rect.height()/2 - 10);
-
-	/*const int ray = 100;
-	QwtScaleMap xMap = d_plot->canvasMap(QwtPlot::xBottom);
-	QwtScaleMap yMap = d_plot->canvasMap(QwtPlot::yLeft);
-	int xc = x() + (xMap.p1() + xMap.p2())/2;
-	int yc = y() + (yMap.p1() + yMap.p2())/2;
-
-	double PI = 4*atan(1.0);
-	double angle = 90;
-
-	for (int i = 0; i<size; i++ ){
-		const double value = Y[i]/sum*360;
-		double alabel = (angle - value*0.5)*PI/180.0;
-
-		const int x = int(xc + ray*cos(alabel));
-		const int y = int(yc - ray*sin(alabel));
-
-		LegendWidget* aux = new LegendWidget(d_plot);
-		//aux->move(QPoint(x,y));
-		aux->setFrameStyle(0);
-		aux->setText(QString::number(Y[i]/sum*100,'g',2)+"%");
-		aux->move(QPoint(x - aux->width()/2, y - aux->height()/2));
-		d_texts_list << aux;
-		angle -= value;
-	}*/
-
-	if (d_legend){
-		QString text = "";
-        for (int i=0; i<size; i++){
-            text += "\\p{";
-            text += QString::number(i+1);
-            text += "} ";
-            text += QString::number(i+1);
-            text += "\n";
-			}
-        d_legend->setText(text);
-	}
-
-	/*for (int i=0; i<QwtPlot::axisCnt; i++)
-		d_plot->enableAxis(i, false);
-
-	d_plot->setTitle(QString::null);
-
-	QwtPlotCanvas* canvas=(QwtPlotCanvas*) d_plot->canvas();
-	canvas->setLineWidth(1);
-
-	scalePicker->refresh();
-	d_plot->replot();
-	updateScale();*/
+	pie->loadData();
+	pie->initLabels();
 
 	d_plot->replot();
 }
@@ -3154,6 +2950,10 @@ void Graph::removePie()
 	if (d_legend)
         d_legend->setText(QString::null);
 
+	QList <PieLabel *> labels = ((QwtPieCurve *)curve(0))->labelsList();
+	foreach(PieLabel *l, labels)
+		l->setPieCurve(0);
+	
 	d_plot->removeCurve(c_keys[0]);
 	d_plot->replot();
 
@@ -3696,7 +3496,7 @@ void Graph::scaleFonts(double factor)
 {
 	QObjectList lst = d_plot->children();
 	foreach(QObject *o, lst){
-		if (o->isA("LegendWidget")){
+		if (o->inherits("LegendWidget")){
 			QFont font = ((LegendWidget *)o)->font();
 			font.setPointSizeFloat(factor*font.pointSizeFloat());
 			((LegendWidget *)o)->setFont(font);
@@ -3887,6 +3687,7 @@ void Graph::copyTitle()
 
 void Graph::removeAxisTitle()
 {
+	int selectedAxis = scalePicker->currentAxis()->alignment();
 	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
   	//QwtScaleDraw::alignment and QwtPlot::Axis
   	d_plot->setAxisTitle(axis, " ");//due to the plot layout updates, we must always have a non empty title
@@ -3902,46 +3703,25 @@ void Graph::cutAxisTitle()
 
 void Graph::copyAxisTitle()
 {
+	int selectedAxis = scalePicker->currentAxis()->alignment();
 	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
   	//QwtScaleDraw::alignment and QwtPlot::Axis
   	QApplication::clipboard()->setText(d_plot->axisTitle(axis).text(), QClipboard::Clipboard);
 	}
 
-void Graph::showAxisTitleMenu(int axis)
+void Graph::showAxisTitleMenu()
 {
-	selectedAxis = axis;
-
 	QMenu titleMenu(this);
 	titleMenu.insertItem(QPixmap(cut_xpm), tr("&Cut"), this, SLOT(cutAxisTitle()));
 	titleMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"), this, SLOT(copyAxisTitle()));
 	titleMenu.insertItem(tr("&Delete"),this, SLOT(removeAxisTitle()));
 	titleMenu.insertSeparator();
-	switch (axis)
-	{
-		case QwtScaleDraw::BottomScale:
-			titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(xAxisTitleDblClicked()));
-			break;
-
-		case QwtScaleDraw::LeftScale:
-			titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(yAxisTitleDblClicked()));
-			break;
-
-		case QwtScaleDraw::TopScale:
-			titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(topAxisTitleDblClicked()));
-			break;
-
-		case QwtScaleDraw::RightScale:
-			titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(rightAxisTitleDblClicked()));
-			break;
-	}
-
+	titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(showAxisTitleDialog()));
 	titleMenu.exec(QCursor::pos());
 }
 
 void Graph::showAxisContextMenu(int axis)
 {
-	selectedAxis = axis;
-
 	QMenu menu(this);
 	menu.setCheckable(true);
 	menu.insertItem(QPixmap(unzoom_xpm), tr("&Rescale to show all"), this, SLOT(setAutoScale()), tr("Ctrl+Shift+R"));
@@ -3965,17 +3745,20 @@ void Graph::showAxisContextMenu(int axis)
 
 void Graph::showAxisDialog()
 {
-	emit showAxisDialog(selectedAxis);
+	QwtScaleWidget *scale = scalePicker->currentAxis();
+	if (scale)
+		emit showAxisDialog(scale->alignment());
 }
 
 void Graph::showScaleDialog()
 {
-	emit axisDblClicked(selectedAxis);
+	emit axisDblClicked(scalePicker->currentAxis()->alignment());
 }
 
 void Graph::hideSelectedAxis()
 {
 	int axis = -1;
+	int selectedAxis = scalePicker->currentAxis()->alignment();
 	if (selectedAxis == QwtScaleDraw::LeftScale || selectedAxis == QwtScaleDraw::RightScale)
 		axis = selectedAxis - 2;
 	else
@@ -3988,7 +3771,7 @@ void Graph::hideSelectedAxis()
 
 void Graph::showGrids()
 {
-	showGrid (selectedAxis);
+	showGrid (scalePicker->currentAxis()->alignment());
 }
 
 void Graph::showGrid()
@@ -4227,9 +4010,13 @@ void Graph::copy(Graph* g)
 	foreach (LegendWidget *t, texts){
 		if (t == g->legend())
 			d_legend = insertText(t);
-		else if (t->isA("PieLabel"))
-			((QwtPieCurve*)curve(0))->addLabel((PieLabel *)t, true);
-		else
+		else if (t->isA("PieLabel")){
+			QwtPieCurve *pie = (QwtPieCurve*)curve(0);
+			if (pie)
+				pie->addLabel((PieLabel *)t, true);
+			else
+				insertText(t);
+		} else
 			insertText(t);
 	}
 
@@ -4944,6 +4731,11 @@ QPrinter::PageSize Graph::minPageSize(const QPrinter& printer, const QRect& r)
 QwtScaleWidget* Graph::selectedScale()
 {
 	return scalePicker->selectedAxis();
+}
+
+QwtScaleWidget* Graph::currentScale()
+{
+	return scalePicker->currentAxis();
 }
 
 QRect Graph::axisTitleRect(const QwtScaleWidget *scale)

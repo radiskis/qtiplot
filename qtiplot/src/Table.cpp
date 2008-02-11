@@ -517,6 +517,11 @@ bool Table::calculate(int col, int startRow, int endRow)
         return false;
     }
 
+	if (startRow < 0)
+		startRow = 0;
+	if (endRow >= numRows())
+		resizeRows(endRow + 1);
+
 	QString cmd = commands[col];
 	if (cmd.isEmpty() || colTypes[col] != Numeric){
 		for (int i=startRow; i<=endRow; i++)
@@ -536,11 +541,6 @@ bool Table::calculate(int col, int startRow, int endRow)
 		QApplication::restoreOverrideCursor();
 		return false;
 	}
-
-	if (startRow < 0)
-		startRow = 0;
-	if (endRow >= numRows())
-		resizeRows(endRow + 1);
 
 	colscript->setInt(col+1, "j");
 	colscript->setInt(startRow+1, "sr");
