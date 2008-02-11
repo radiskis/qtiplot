@@ -2944,6 +2944,13 @@ void OPJFile::readWindowProperties(originWindow& window, FILE *f, FILE *debug, i
 	fseek(f,POS + 0x69,SEEK_SET);
 	fread(&c,1,1,f);
 
+	if(c&0x01)
+		window.title = originWindow::Label;
+	else if(c&0x02)
+		window.title = originWindow::Name;
+	else
+		window.title = originWindow::Both;
+
 	window.bHidden = (c&0x08);
 	if(window.bHidden)
 	{

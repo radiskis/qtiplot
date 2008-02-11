@@ -69,12 +69,14 @@ struct rect {
 
 struct originWindow {
 	enum State {Normal, Minimized, Maximized};
+	enum Title {Name, Label, Both};
 
 	string name;
 	string label;
 	int objectID;
 	bool bHidden;
 	State state;
+	Title title;
 	rect clientRect;
 
 	originWindow(string _name="", string _label="", bool _bHidden=false)
@@ -82,6 +84,7 @@ struct originWindow {
 	,	label(_label)
 	,	bHidden(_bHidden)
 	,	state(Normal)
+	,	title(Both)
 	{};
 };
 struct originData {
@@ -518,6 +521,7 @@ public:
 	rect spreadWindowRect(int s) const { return SPREADSHEET[s].clientRect; }		//!< get window rectangle of spreadsheet s
 	const char *spreadLabel(int s) const { return SPREADSHEET[s].label.c_str(); }	//!< get label of spreadsheet s
 	originWindow::State spreadState(int s) const { return SPREADSHEET[s].state; }	//!< get window state of spreadsheet s
+	originWindow::Title spreadTitle(int s) const { return SPREADSHEET[s].title; }	//!< get window state of spreadsheet s
 	int numCols(int s) const { return SPREADSHEET[s].column.size(); }		//!< get number of columns of spreadsheet s
 	int numRows(int s,int c) const { return SPREADSHEET[s].column[c].odata.size(); }	//!< get number of rows of column c of spreadsheet s
 	int maxRows(int s) const { return SPREADSHEET[s].maxRows; }		//!< get maximum number of rows of spreadsheet s
@@ -549,6 +553,7 @@ public:
 	rect matrixWindowRect(int m) const { return MATRIX[m].clientRect; }		//!< get window rectangle of matrix m
 	const char *matrixLabel(int m) const { return MATRIX[m].label.c_str(); }	//!< get label of matrix m
 	originWindow::State matrixState(int m) const { return MATRIX[m].state; }	//!< get window state of matrix m
+	originWindow::Title matrixTitle(int m) const { return MATRIX[m].title; }	//!< get window state of matrix m
 	int numMatrixCols(int m) const { return MATRIX[m].nr_cols; }		//!< get number of columns of matrix m
 	int numMatrixRows(int m) const { return MATRIX[m].nr_rows; }	//!< get number of rows of matrix m
 	const char *matrixFormula(int m) const { return MATRIX[m].command.c_str(); }	//!< get formula of matrix m
@@ -603,6 +608,7 @@ public:
 	const char *graphName(int s) const { return GRAPH[s].name.c_str(); }	//!< get name of graph s
 	const char *graphLabel(int s) const { return GRAPH[s].label.c_str(); }	//!< get name of graph s
 	originWindow::State graphState(int s) const { return GRAPH[s].state; }	//!< get window state of graph s
+	originWindow::Title graphTitle(int s) const { return GRAPH[s].title; }	//!< get window state of graph s
 	bool graphHidden(int s) const { return GRAPH[s].bHidden; }	//!< is graph s hidden
 	rect graphRect(int s) const { return rect(GRAPH[s].width, GRAPH[s].height); }		//!< get rectangle of graph s
 	rect graphWindowRect(int s) const { return GRAPH[s].clientRect; }		//!< get window rectangle of graph s
@@ -700,6 +706,8 @@ public:
 	const char *noteName(int n) const { return NOTE[n].name.c_str(); }	//!< get name of note n
 	const char *noteLabel(int n) const { return NOTE[n].label.c_str(); }	//!< get label of note n
 	const char *noteText(int n) const { return NOTE[n].text.c_str(); }	//!< get text of note n
+	originWindow::State noteState(int n) const { return NOTE[n].state; }	//!< get window state of note n
+	originWindow::Title noteTitle(int n) const { return NOTE[n].title; }	//!< get window state of note n
 
 	const char* resultsLogString() const { return resultsLog.c_str();}		//!< get Results Log
 

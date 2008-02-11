@@ -88,21 +88,19 @@ inline uint qHash(const tree<projectNode>::iterator &key)
 
 bool ImportOPJ::createProjectTree(const OPJFile& opj)
 {
-	const tree<projectNode>* projectTree=opj.project();
-	tree<projectNode>::iterator root=projectTree->begin(projectTree->begin());
+	const tree<projectNode>* projectTree = opj.project();
+	tree<projectNode>::iterator root = projectTree->begin(projectTree->begin());
 	if(!root.node)
 		return false;
-	FolderListItem *item = (FolderListItem *)mw->folders->firstChild();
+	FolderListItem* item = (FolderListItem*)mw->folders->firstChild();
 	item->setText(0, root->name.c_str());
 	item->folder()->setName(root->name.c_str());
-	Folder* projectFolder=mw->projectFolder();
-	tree<projectNode>::iterator sib=projectTree->begin(root);
-	tree<projectNode>::iterator end=projectTree->end(root);
+	Folder* projectFolder = mw->projectFolder();
 	QHash< tree<projectNode>::iterator, Folder*> parent;
 	parent[root] = projectFolder;
-	while(sib!=end)
+	for(tree<projectNode>::iterator sib = projectTree->begin(root); sib != projectTree->end(root); ++sib)
 	{
-		if(sib->type==1)
+		if(sib->type == 1)
 		{
 			parent[sib] = mw->addFolder(sib->name.c_str(), parent.value(projectTree->parent(sib)));
 		}
@@ -115,7 +113,6 @@ bool ImportOPJ::createProjectTree(const OPJFile& opj)
 				projectFolder->removeWindow(w);
 			}
 		}
-		++sib;
 	}
 	mw->changeFolder(projectFolder, true);
 	return true;
@@ -170,6 +167,8 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			table->resize(windowRect.width() - (table->frameGeometry().width() - table->width()),
 				windowRect.height() - (table->frameGeometry().height() - table->height()));
 		}
+
+		table->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.spreadTitle(s));
 
         QLocale locale = mw->locale();
 		table->setWindowLabel(opj.spreadLabel(s));
@@ -425,6 +424,8 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 				windowRect.height() - (matrix->frameGeometry().height() - matrix->height()));
 		}
 
+		matrix->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.matrixTitle(s));
+
 		matrix->setWindowLabel(opj.matrixLabel(s));
 		matrix->setFormula(opj.matrixFormula(s));
 		matrix->setColumnsWidth(opj.matrixWidth(s)*QtiPlot_scaling_factor);
@@ -528,6 +529,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 		if (!ml)
 			return false;
 
+		ml->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.graphTitle(g));
 		ml->hide();//!hack used in order to avoid resize and repaint events
 		ml->setWindowLabel(opj.graphLabel(g));
 
