@@ -160,13 +160,13 @@ class Graph: public QWidget
 		//! Used when creating a pie plot.
 		void plotPie(Table* w,const QString& name, int startRow = 0, int endRow = -1);
 		//! Used when restoring a pie plot from a project file.
-		void plotPie(Table* w, const QString& name, const QPen& pen, int brush, int size, 
+		void plotPie(Table* w, const QString& name, const QPen& pen, int brush, int size,
 			int firstColor, int startRow = 0, int endRow = -1, bool visible = true,
 			double d_start_azimuth = 270, double d_view_angle = 90, double d_thickness = 33,
 			double d_horizontal_offset = 0.0, double d_edge_dist = 25, bool d_counter_clockwise = false,
 			bool d_auto_labeling = true, bool d_values = false, bool d_percentages = true,
 			bool d_categories = false, bool d_fixed_labels_pos = true);
-		
+
 		void removePie();
 		QString pieLegendText();
 		QString savePieCurveLayout();
@@ -673,13 +673,15 @@ signals:
 		void axisDblClicked(int);
 
 		void showAxisTitleDialog();
-		
+
 		void dataRangeChanged();
 		void showFitResults(const QString&);
 		void currentFontChanged(const QFont&);
         void enableTextEditor(Graph *);
 
 	private:
+        //! Finds bounding interval of the plot data.
+        QwtDoubleInterval axisBoundingInterval(int axis);
         void deselectCurves();
 		void addLegendItem();
 

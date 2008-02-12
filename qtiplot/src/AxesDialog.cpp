@@ -1388,7 +1388,6 @@ void AxesDialog::initScalesPage()
 	QHBoxLayout* mainLayout = new QHBoxLayout(scalesPage);
 	mainLayout->addWidget(axesList);
 	mainLayout->addLayout(vl);
-	//mainLayout->addWidget(rightBox);
 
 	generalDialog->addTab(scalesPage, tr( "Scale" ));
 

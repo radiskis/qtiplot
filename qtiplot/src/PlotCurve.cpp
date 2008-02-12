@@ -709,6 +709,11 @@ void DataCurve::moveLabels(const QPoint& pos)
 	d_click_pos_y = d_plot->invTransform(yAxis(), pos.y());
 }
 
+QwtDoubleRect PlotCurve::valuesBoundingRect() const
+{
+    return QwtPlotCurve::boundingRect();
+}
+
 QwtDoubleRect PlotCurve::boundingRect() const
 {
     QwtDoubleRect r = QwtPlotCurve::boundingRect();
@@ -719,10 +724,9 @@ QwtDoubleRect PlotCurve::boundingRect() const
     if (!d_plot)
         return r;
 
-    int margin_h = 1;
-    int margin_v = 1;
+    int margin_h = 0, margin_v = 0;
     if (symbol().style() != QwtSymbol::NoSymbol){
-        margin_h += symbol().size().width();
+        margin_h += symbol().size().width()/2;
         margin_v = margin_h;
     }
 
@@ -736,14 +740,14 @@ QwtDoubleRect PlotCurve::boundingRect() const
     const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
 	const QwtScaleMap &yMap = plot()->canvasMap(yAxis());
 
-    int x_right = xMap.transform(r.right());
+    double x_right = xMap.xTransform(r.right());
     double d_x_right = xMap.invTransform(x_right + margin_h);
-    int x_left = xMap.transform(r.left());
+    double x_left = xMap.xTransform(r.left());
     double d_x_left = xMap.invTransform(x_left - margin_h);
 
-    int y_top = yMap.transform(r.top());
+    double y_top = yMap.xTransform(r.top());
     double d_y_top = yMap.invTransform(y_top + margin_v);
-    int y_bottom = yMap.transform(r.bottom());
+    double y_bottom = yMap.xTransform(r.bottom());
     double d_y_bottom = yMap.invTransform(y_bottom - margin_v);
 
     return QwtDoubleRect(d_x_left, d_y_top, qAbs(d_x_right - d_x_left), qAbs(d_y_bottom - d_y_top));

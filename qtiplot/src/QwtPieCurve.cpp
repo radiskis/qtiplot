@@ -76,7 +76,7 @@ void QwtPieCurve::clone(QwtPieCurve* c)
 	d_percentages = c->labelsPercentagesFormat();
 	d_categories = c->labelCategories();
 	d_fixed_labels_pos = c->fixedLabelsPosition();
-	
+
 	d_table_rows = c->d_table_rows;
 }
 
@@ -137,7 +137,7 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
             if (d_auto_labeling){
 				if (d_categories)
 					s += QString::number(d_table_rows[0]) + "\n";
-				
+
                 if (d_values && d_percentages)
                     s += ((Plot *)plot())->locale().toString(y(0), 'g', 4) + " (100%)";
                 else if (d_values)
@@ -149,7 +149,7 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
 					l->show();
             } else
 				l->setText(l->customText());
-						
+
             if (d_fixed_labels_pos){
                 double a_deg = d_start_azimuth + 180.0;
                 if (a_deg > 360)
@@ -172,7 +172,7 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
 }
 
 void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
-{	
+{
     const double x_width = fabs(xMap.p1() - xMap.p2());
 	const double x_center = (xMap.p1() + xMap.p2())*0.5 + d_horizontal_offset*0.01*x_width;
 	const double y_center = (yMap.p1() + yMap.p2())*0.5;
@@ -298,11 +298,10 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
 		painter->drawPie(pieRect, sign*angle, sign*value);
 		angle += value;
 
-		int li = i - from;
-		if (li >= d_texts_list.size())
+		if (i >= d_texts_list.size())
 			continue;
 
-		PieLabel* l = d_texts_list[li];
+		PieLabel* l = d_texts_list[i];
 		if (l){
 			QString s;
 			if (d_auto_labeling){
@@ -317,9 +316,9 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
                 l->setText(s);
 				if (l->isHidden())
 					l->show();
-			} else 
+			} else
 				l->setText(l->customText());
-						
+
             if (d_fixed_labels_pos){
                 double a_deg = start_angle[i] - sign*q*180.0;
                 if (a_deg > 360)
@@ -366,7 +365,7 @@ void QwtPieCurve::loadData()
 	QLocale locale = d_plot->locale();
 	QVarLengthArray<double> X(abs(d_end_row - d_start_row) + 1);
 	d_table_rows.resize(abs(d_end_row - d_start_row) + 1);
-	
+
 	int size = 0;
 	int ycol = d_table->colIndex(title().text());
 	for (int i = d_start_row; i <= d_end_row; i++ ){
@@ -383,12 +382,12 @@ void QwtPieCurve::loadData()
 	X.resize(size);
 	d_table_rows.resize(size);
 	setData(X.data(), X.data(), size);
-	
+
 	int labels = d_texts_list.size();
 	//If there are no labels (initLabels() wasn't called yet) or if we have enough labels: do nothing!
 	if(d_texts_list.isEmpty() || labels == size)
 		return;
-	
+
 	//Else add new pie labels.
 	for (int i = labels; i < size; i++ ){
 		PieLabel* l = new PieLabel(d_plot, this);
@@ -401,12 +400,12 @@ void QwtPieCurve::addLabel(PieLabel *l, bool clone)
 {
 	if (!l)
 		return;
-	
+
 	if (clone){
 		PieLabel *newLabel = new PieLabel((Plot *)plot(), this);
 		newLabel->clone(l);
 		newLabel->setCustomText(l->customText());
-		d_texts_list << newLabel;	
+		d_texts_list << newLabel;
 	} else {
 		l->setPieCurve(this);
 		d_texts_list << l;
@@ -417,18 +416,18 @@ void QwtPieCurve::removeLabel(PieLabel *l)
 {
 	if (!l)
 		return;
-	
+
 	int index = d_texts_list.indexOf(l);
 	if (index < 0 || index >= d_texts_list.size())
 		return;
-	
+
 	PieLabel *newLabel = new PieLabel((Plot *)plot(), this);
 	newLabel->clone(l);
 	newLabel->setCustomText(l->customText());
 	newLabel->hide();
-	
+
 	d_texts_list.removeAt(index);
-	d_texts_list.insert(index, newLabel);	
+	d_texts_list.insert(index, newLabel);
 }
 
 void QwtPieCurve::initLabels()
@@ -441,7 +440,7 @@ void QwtPieCurve::initLabels()
     Plot *d_plot = (Plot *)plot();
 	QLocale locale = d_plot->locale();
 	for (int i = 0; i <size; i++ ){
-		PieLabel* l = new PieLabel(d_plot, this);		
+		PieLabel* l = new PieLabel(d_plot, this);
 		d_texts_list << l;
 		if (i < dataSize())
             l->setText(locale.toString(y(i)/sum*100, 'g', 4) + "%");
@@ -462,7 +461,7 @@ QString PieLabel::customText()
 {
 	if (d_custom_text.isEmpty())
 		return text();
-	
+
 	return d_custom_text;
 }
 
