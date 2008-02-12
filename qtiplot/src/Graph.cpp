@@ -1043,6 +1043,28 @@ if (scaleDiv)
     scaleDiv->invert();
 }
 
+QwtDoubleInterval Graph::axisBoundingInterval(int axis)
+{
+    // Find bounding interval of the plot data
+
+    QwtDoubleInterval intv;
+    const QwtPlotItemList& itmList = d_plot->itemList();
+    QwtPlotItemIterator it;
+    for ( it = itmList.begin(); it != itmList.end(); ++it ){
+        const QwtPlotItem *item = *it;
+        if (item->rtti() != QwtPlotItem::Rtti_PlotCurve)
+            continue;
+
+        const QwtDoubleRect rect = ((PlotCurve *)item)->valuesBoundingRect();
+
+        if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
+            intv |= QwtDoubleInterval(rect.left(), rect.right());
+        else
+            intv |= QwtDoubleInterval(rect.top(), rect.bottom());
+    }
+    return intv;
+}
+
 void Graph::setScale(int axis, double start, double end, double step,
 					int majorTicks, int minorTicks, int type, bool inverted,
 					double left_break, double right_break, int breakPos,
@@ -1061,9 +1083,16 @@ void Graph::setScale(int axis, double start, double end, double step,
 	sc_engine->setLog10ScaleAfterBreak(log10AfterBreak);
 	sc_engine->setAttribute(QwtScaleEngine::Inverted, inverted);
 
-	if (type == 1)
+	if (type == 1){
 		sc_engine->setType(QwtScaleTransformation::Log10);
-	else
+		if (start <= 0 || end <= 0){
+            QwtDoubleInterval intv = axisBoundingInterval(axis);
+            if (start < end)
+                start = intv.minValue();
+            else
+                end = intv.minValue();
+		}
+	} else
 		sc_engine->setType(QwtScaleTransformation::Linear);
 
 	int max_min_intervals = minorTicks;
@@ -1870,7 +1899,7 @@ QString Graph::savePieCurveLayout()
 	s+=QString::number(pie->firstColor())+"\t";
 	s+=QString::number(pie->startRow())+"\t"+QString::number(pie->endRow())+"\t";
 	s+=QString::number(pie->isVisible())+"\t";
-	
+
 	//Starting with version 0.9.3-rc3
 	s+=QString::number(pie->startAzimuth())+"\t";
 	s+=QString::number(pie->viewAngle())+"\t";
@@ -2051,7 +2080,7 @@ void Graph::insertLegend(const QStringList& lst, int fileVersion)
 }
 
 LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
-{	
+{
 	QStringList fList = list;
 	bool pieLabel = (list[0] == "<PieLabel>") ? true : false;
 	LegendWidget* l = NULL;
@@ -2242,7 +2271,7 @@ QString Graph::saveMarkers()
 					s += "<PieLabel>\t";
 			} else
 				s += "<text>\t";
-			
+
 			s += QString::number(l->x()) + "\t";
 			s += QString::number(l->y()) + "\t";
 
@@ -2260,7 +2289,7 @@ QString Graph::saveMarkers()
 			s+=QString::number(l->backgroundColor().alpha())+"\t";
 
 			QStringList textList=l->text().split("\n", QString::KeepEmptyParts);
-			s+=textList.join ("\t");			
+			s+=textList.join ("\t");
 			if (l == d_legend)
 				s += "</legend>\n";
 			else if (l->isA("PieLabel"))
@@ -2529,7 +2558,7 @@ void Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
 					int size, int firstColor, int startRow, int endRow, bool visible,
 					double d_start_azimuth, double d_view_angle, double d_thickness,
 					double d_horizontal_offset, double d_edge_dist, bool d_counter_clockwise,
-					bool d_auto_labeling, bool d_values, bool d_percentages, 
+					bool d_auto_labeling, bool d_values, bool d_percentages,
 					bool d_categories, bool d_fixed_labels_pos)
 {
 	if (endRow < 0)
@@ -2549,7 +2578,7 @@ void Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
 	pie->setFirstColor(firstColor);
 	pie->setBrushStyle(PatternBox::brushStyle(brush));
 	pie->setVisible(visible);
-	
+
 	pie->setStartAzimuth(d_start_azimuth);
 	pie->setViewAngle(d_view_angle);
 	pie->setThickness(d_thickness);
@@ -2953,7 +2982,7 @@ void Graph::removePie()
 	QList <PieLabel *> labels = ((QwtPieCurve *)curve(0))->labelsList();
 	foreach(PieLabel *l, labels)
 		l->setPieCurve(0);
-	
+
 	d_plot->removeCurve(c_keys[0]);
 	d_plot->replot();
 
@@ -3533,8 +3562,7 @@ void Graph::scaleFonts(double factor)
                 notifyFontChange(font);
         }
     }
-
-	d_plot->replot();
+    d_plot->replot();
 }
 
 void Graph::setMargin (int d)

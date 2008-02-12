@@ -52,6 +52,7 @@ public:
 	void setYOffset(double dy){d_y_offset = dy;};
 
 	QwtDoubleRect boundingRect() const;
+	QwtDoubleRect valuesBoundingRect() const;
 
 protected:
 	int d_type;
