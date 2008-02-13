@@ -1166,7 +1166,17 @@ int OPJFile::ParseFormatNew() {
 		if(IsBigEndian()) SwapBytes(size);
 		if(size!=0x40)
 			break;
-		fseek(f,1+0x40-4,SEEK_CUR);
+
+		double creation_date, modification_date;
+
+		fseek(f,1+0x20,SEEK_CUR);
+		fread(&creation_date,8,1,f);
+		if(IsBigEndian()) SwapBytes(creation_date);
+
+		fread(&modification_date,8,1,f);
+		if(IsBigEndian()) SwapBytes(modification_date);
+
+		fseek(f,0x10-4,SEEK_CUR);
 		unsigned char labellen;
 		fread(&labellen,1,1,f);
 
@@ -1194,6 +1204,8 @@ int OPJFile::ParseFormatNew() {
 		{
 			NOTE.push_back(note(stmp));
 			NOTE.back().objectID=objectIndex;
+			NOTE.back().creation_date=creation_date;
+			NOTE.back().modification_date=modification_date;
 			objectIndex++;
 			delete stmp;
 			fseek(f,1,SEEK_CUR);
@@ -2874,7 +2886,17 @@ void OPJFile::readProjectTreeFolder(FILE *f, FILE *debug, tree<projectNode>::ite
 {
 	int POS=ftell(f);
 
-	POS+=5+0x20+1+5;
+	double creation_date, modification_date;
+
+	POS+=5;
+	fseek(f,POS+0x10,SEEK_SET);
+	fread(&creation_date,8,1,f);
+	if(IsBigEndian()) SwapBytes(creation_date);
+
+	fread(&modification_date,8,1,f);
+	if(IsBigEndian()) SwapBytes(modification_date);
+
+	POS+=0x20+1+5;
 	fseek(f,POS,SEEK_SET);
 
 	int namesize;
@@ -2888,7 +2910,7 @@ void OPJFile::readProjectTreeFolder(FILE *f, FILE *debug, tree<projectNode>::ite
 	name[namesize]='\0';
 	fseek(f,POS,SEEK_SET);
 	fread(name,namesize,1,f);
-	tree<projectNode>::iterator current_folder=projectTree.append_child(parent, projectNode(name, 1));
+	tree<projectNode>::iterator current_folder=projectTree.append_child(parent, projectNode(name, 1, creation_date, modification_date));
 	POS+=namesize+1+5+5;
 
 	int objectcount;
@@ -2957,6 +2979,13 @@ void OPJFile::readWindowProperties(originWindow& window, FILE *f, FILE *debug, i
 		fprintf(debug,"			WINDOW %d NAME : %s	is hidden\n", objectIndex, window.name.c_str());
 		fflush(debug);
 	}
+
+	fseek(f,POS + 0x73,SEEK_SET);
+	fread(&window.creation_date,8,1,f);
+	if(IsBigEndian()) SwapBytes(window.creation_date);
+
+	fread(&window.modification_date,8,1,f);
+	if(IsBigEndian()) SwapBytes(window.modification_date);
 	
 	if(headersize > 0xC3)
 	{

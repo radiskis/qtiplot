@@ -78,6 +78,8 @@ struct originWindow {
 	State state;
 	Title title;
 	rect clientRect;
+	double creation_date;	  // Julian date/time
+	double modification_date; // Julian date/time
 
 	originWindow(string _name="", string _label="", bool _bHidden=false)
 	:	name(_name)
@@ -85,6 +87,8 @@ struct originWindow {
 	,	bHidden(_bHidden)
 	,	state(Normal)
 	,	title(Both)
+	,	creation_date(0.0)
+	,	modification_date(0.0)
 	{};
 };
 struct originData {
@@ -491,9 +495,14 @@ struct note : public originWindow {
 struct projectNode {
 	int type; // 0 - object, 1 - folder
 	string name;
-	projectNode(string _name="", int _type=0)
+	double creation_date;	  // Julian date/time
+	double modification_date; // Julian date/time
+
+	projectNode(string _name="", int _type=0, double _creation_date=0.0, double _modification_date=0.0)
 	:	name(_name)
 	,	type(_type)
+	,	creation_date(_creation_date)
+	,	modification_date(_modification_date)
 	{};
 };
 
@@ -520,6 +529,8 @@ public:
 	bool spreadLoose(int s) const { return SPREADSHEET[s].bLoose; }	//!< is spreadsheet s loose
 	rect spreadWindowRect(int s) const { return SPREADSHEET[s].clientRect; }		//!< get window rectangle of spreadsheet s
 	const char *spreadLabel(int s) const { return SPREADSHEET[s].label.c_str(); }	//!< get label of spreadsheet s
+	double spreadCreationDate(int s) const { return SPREADSHEET[s].creation_date; }	//!< get creation date of spreadsheet s
+	double spreadModificationDate(int s) const { return SPREADSHEET[s].modification_date; }	//!< get modification date of spreadsheet s
 	originWindow::State spreadState(int s) const { return SPREADSHEET[s].state; }	//!< get window state of spreadsheet s
 	originWindow::Title spreadTitle(int s) const { return SPREADSHEET[s].title; }	//!< get window state of spreadsheet s
 	int numCols(int s) const { return SPREADSHEET[s].column.size(); }		//!< get number of columns of spreadsheet s
@@ -552,6 +563,8 @@ public:
 	bool matrixHidden(int m) const { return MATRIX[m].bHidden; }	//!< is matrix m hidden
 	rect matrixWindowRect(int m) const { return MATRIX[m].clientRect; }		//!< get window rectangle of matrix m
 	const char *matrixLabel(int m) const { return MATRIX[m].label.c_str(); }	//!< get label of matrix m
+	double matrixCreationDate(int m) const { return MATRIX[m].creation_date; }	//!< get creation date of matrix m
+	double matrixModificationDate(int m) const { return MATRIX[m].modification_date; }	//!< get modification date of matrix m
 	originWindow::State matrixState(int m) const { return MATRIX[m].state; }	//!< get window state of matrix m
 	originWindow::Title matrixTitle(int m) const { return MATRIX[m].title; }	//!< get window state of matrix m
 	int numMatrixCols(int m) const { return MATRIX[m].nr_cols; }		//!< get number of columns of matrix m
@@ -607,6 +620,8 @@ public:
 	int numGraphs() const { return GRAPH.size(); }			//!< get number of graphs
 	const char *graphName(int s) const { return GRAPH[s].name.c_str(); }	//!< get name of graph s
 	const char *graphLabel(int s) const { return GRAPH[s].label.c_str(); }	//!< get name of graph s
+	double graphCreationDate(int s) const { return GRAPH[s].creation_date; }	//!< get creation date of graph s
+	double graphModificationDate(int s) const { return GRAPH[s].modification_date; }	//!< get modification date of graph s
 	originWindow::State graphState(int s) const { return GRAPH[s].state; }	//!< get window state of graph s
 	originWindow::Title graphTitle(int s) const { return GRAPH[s].title; }	//!< get window state of graph s
 	bool graphHidden(int s) const { return GRAPH[s].bHidden; }	//!< is graph s hidden
@@ -706,6 +721,8 @@ public:
 	const char *noteName(int n) const { return NOTE[n].name.c_str(); }	//!< get name of note n
 	const char *noteLabel(int n) const { return NOTE[n].label.c_str(); }	//!< get label of note n
 	const char *noteText(int n) const { return NOTE[n].text.c_str(); }	//!< get text of note n
+	double noteCreationDate(int n) const { return NOTE[n].creation_date; }	//!< get creation date of note n
+	double noteModificationDate(int n) const { return NOTE[n].modification_date; }	//!< get modification date of note n
 	originWindow::State noteState(int n) const { return NOTE[n].state; }	//!< get window state of note n
 	originWindow::Title noteTitle(int n) const { return NOTE[n].title; }	//!< get window state of note n
 
