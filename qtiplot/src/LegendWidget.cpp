@@ -198,9 +198,13 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 
 	VectorCurve *v = (VectorCurve*)c;
 	p->save();
+	
+	if (((Graph *)d_plot->parent())->antialiasing())
+		p->setRenderHints(QPainter::Antialiasing);
+
 	QPen pen(v->color(), v->width(), Qt::SolidLine);
 	p->setPen(pen);
-	QwtPainter::drawLine(p, x, y, x + l, y);
+	p->drawLine(x, y, x + l, y);
 
 	p->translate(x+l, y);
 
@@ -216,7 +220,7 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	if (v->filledArrowHead())
 		p->setBrush(QBrush(pen.color(), Qt::SolidPattern));
 
-	QwtPainter::drawPolygon(p,endArray);
+	p->drawPolygon(endArray);
 	p->restore();
 }
 
@@ -229,13 +233,13 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
         drawVector(c, p, x, y, l);
         return;
     }
-
+	
 	if (c->type() == Graph::Pie){
 		QwtPieCurve *pie = (QwtPieCurve *)c;
 		const QBrush br = QBrush(pie->color(point), pie->pattern());
 		QPen pen = pie->pen();
 		p->save();
-		p->setPen (QPen(pen.color(), 1, Qt::SolidLine));
+		p->setPen (QPen(pen.color(), pen.widthF(), Qt::SolidLine));
 		QRect lr = QRect(x, y - 4, l, 10);
 		p->setBrush(br);
 		QwtPainter::drawRect(p, lr);

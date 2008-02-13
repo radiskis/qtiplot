@@ -36,10 +36,16 @@
 
 #include <QPainter>
 
-Grid::Grid() : QwtPlotGrid(), mrkX(-1), mrkY(-1)
+Grid::Grid() : QwtPlotGrid(),
+d_maj_pen_y(QPen(Qt::blue, 0.5, Qt::SolidLine)),
+d_min_pen_y(QPen(Qt::gray, 0.5, Qt::DotLine)),
+mrkX(-1), 
+mrkY(-1)
 {
-d_maj_pen_y = QPen(Qt::blue, 0, Qt::SolidLine);
-d_min_pen_y = QPen(Qt::gray, 0, Qt::DotLine);
+	setMajPen(QPen(Qt::blue, 0.5, Qt::SolidLine));
+	setMinPen(QPen(Qt::gray, 0.5, Qt::DotLine));
+	enableX(false);
+	enableY(false);
 }
 
 /*!
@@ -133,18 +139,18 @@ void Grid::load(const QStringList& grid)
 
     QPen majPenX, minPenX, majPenY, minPenY;
 	if (grid.count() == 21){ // since 0.9 final
-		majPenX = QPen(QColor(grid[5]), grid[7].toInt(), Graph::getPenStyle(grid[6].toInt()));
-		minPenX = QPen(QColor(grid[8]), grid[10].toInt(), Graph::getPenStyle(grid[9].toInt()));
-		majPenY = QPen(QColor(grid[11]), grid[13].toInt(), Graph::getPenStyle(grid[12].toInt()));
-		minPenY = QPen(QColor(grid[14]), grid[16].toInt(), Graph::getPenStyle(grid[15].toInt()));
+		majPenX = QPen(QColor(grid[5]), grid[7].toDouble(), Graph::getPenStyle(grid[6].toInt()));
+		minPenX = QPen(QColor(grid[8]), grid[10].toDouble(), Graph::getPenStyle(grid[9].toInt()));
+		majPenY = QPen(QColor(grid[11]), grid[13].toDouble(), Graph::getPenStyle(grid[12].toInt()));
+		minPenY = QPen(QColor(grid[14]), grid[16].toDouble(), Graph::getPenStyle(grid[15].toInt()));
 
 		xZeroOn = grid[17].toInt();
 		yZeroOn = grid[18].toInt();
         xAxis = grid[19].toInt();
         yAxis = grid[20].toInt();
 	} else { // older versions of QtiPlot (<= 0.9rc3)
-		majPenX = QPen(ColorBox::color(grid[5].toInt()), grid[7].toInt(), Graph::getPenStyle(grid[6].toInt()));
-		minPenX = QPen(ColorBox::color(grid[8].toInt()), grid[10].toInt(), Graph::getPenStyle(grid[9].toInt()));
+		majPenX = QPen(ColorBox::color(grid[5].toInt()), grid[7].toDouble(), Graph::getPenStyle(grid[6].toInt()));
+		minPenX = QPen(ColorBox::color(grid[8].toInt()), grid[10].toDouble(), Graph::getPenStyle(grid[9].toInt()));
 		majPenY = majPenX;
 		minPenY = minPenX;
 
@@ -187,7 +193,7 @@ void Grid::enableZeroLineX(bool enable)
 		m->setLineStyle(QwtPlotMarker::VLine);
 		m->setValue(0.0, 0.0);
 
-		int width = 1;
+		double width = 1;
 		if (d_plot->canvas()->lineWidth())
 			width = d_plot->canvas()->lineWidth();
 		else if (d_plot->axisEnabled (QwtPlot::yLeft) || d_plot->axisEnabled (QwtPlot::yRight))
@@ -214,7 +220,7 @@ void Grid::enableZeroLineY(bool enable)
 		m->setLineStyle(QwtPlotMarker::HLine);
 		m->setValue(0.0, 0.0);
 
-		int width = 1;
+		double width = 1;
 		if (d_plot->canvas()->lineWidth())
 			width = d_plot->canvas()->lineWidth();
 		else if (d_plot->axisEnabled (QwtPlot::xBottom) || d_plot->axisEnabled (QwtPlot::xTop))
@@ -258,19 +264,19 @@ QString Grid::saveToString()
 
 	s += majPenX().color().name()+"\t";
 	s += QString::number(majPenX().style() - 1)+"\t";
-	s += QString::number(majPenX().width())+"\t";
+	s += QString::number(majPenX().widthF())+"\t";
 
 	s += minPenX().color().name()+"\t";
 	s += QString::number(minPenX().style() - 1)+"\t";
-	s += QString::number(minPenX().width())+"\t";
+	s += QString::number(minPenX().widthF())+"\t";
 
     s += majPenY().color().name()+"\t";
 	s += QString::number(majPenY().style() - 1)+"\t";
-	s += QString::number(majPenY().width())+"\t";
+	s += QString::number(majPenY().widthF())+"\t";
 
 	s += minPenY().color().name()+"\t";
 	s += QString::number(minPenY().style() - 1)+"\t";
-	s += QString::number(minPenY().width())+"\t";
+	s += QString::number(minPenY().widthF())+"\t";
 
 	s += QString::number(xZeroLineEnabled())+"\t";
 	s += QString::number(yZeroLineEnabled())+"\t";

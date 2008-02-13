@@ -193,14 +193,14 @@ void VectorCurve::setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&
     vectorEnd=new QwtArrayData(x, y);
 }
 
-int VectorCurve::width()
+double VectorCurve::width()
 {
-return pen.width ();
+return pen.widthF();
 }
 
-void VectorCurve::setWidth(int w)
+void VectorCurve::setWidth(double w)
 {
-pen.setWidth (w);
+pen.setWidthF(w);
 }
 
 QColor VectorCurve::color()

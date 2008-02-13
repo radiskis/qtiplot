@@ -175,7 +175,7 @@ Graph::Graph(QWidget* parent, Qt::WFlags f)
 	drawAxesBackbone = true;
 	d_auto_scale = true;
 	autoScaleFonts = false;
-	d_antialiasing = true;
+	d_antialiasing = false;
 	d_scale_on_print = true;
 	d_print_cropmarks = false;
 
@@ -1891,7 +1891,7 @@ QString Graph::savePieCurveLayout()
 	QwtPieCurve *pie = (QwtPieCurve*)curve(0);
 	s+= pie->title().text()+"\t";
 	QPen pen = pie->pen();
-	s+=QString::number(pen.width())+"\t";
+	s+=QString::number(pen.widthF())+"\t";
 	s+=pen.color().name()+"\t";
 	s+=penStyleName(pen.style()) + "\t";
 	s+=QString::number(PatternBox::patternIndex(pie->pattern()))+"\t";
@@ -1930,7 +1930,7 @@ QString Graph::saveCurveLayout(int index)
 			s+=QString::number(c->style())+"\t";
 		s+=QString::number(ColorBox::colorIndex(c->pen().color()))+"\t";
 		s+=QString::number(c->pen().style()-1)+"\t";
-		s+=QString::number(c->pen().width())+"\t";
+		s+=QString::number(c->pen().widthF())+"\t";
 
 		const QwtSymbol symbol = c->symbol();
 		s+=QString::number(symbol.size().width())+"\t";
@@ -1947,7 +1947,7 @@ QString Graph::saveCurveLayout(int index)
 		s+=QString::number(ColorBox::colorIndex(c->brush().color()))+"\t";
 		s+=QString::number(PatternBox::patternIndex(c->brush().style()))+"\t";
 		if (style <= LineSymbols || style == Box)
-			s+=QString::number(symbol.pen().width())+"\t";
+			s+=QString::number(symbol.pen().widthF())+"\t";
 	}
 
 	if(style == VerticalBars||style == HorizontalBars||style == Histogram){
@@ -2173,7 +2173,7 @@ void Graph::addArrow(QStringList list, int fileVersion)
 		mrk->setBoundingRect(list[1].toDouble(), list[2].toDouble(),
 							list[3].toDouble(), list[4].toDouble());
 
-	mrk->setWidth(list[5].toInt());
+	mrk->setWidth(list[5].toDouble());
 	mrk->setColor(QColor(list[6]));
 	mrk->setStyle(getPenStyle(list[7]));
 	mrk->drawEndArrow(list[8]=="1");
@@ -2483,19 +2483,15 @@ void Graph::updateCurveLayout(int index, const CurveLayout *cL)
 	c->setBrush(brush);
 }
 
-void Graph::updateErrorBars(QwtErrorPlotCurve *er, bool xErr, int width, int cap, const QColor& c,
+void Graph::updateErrorBars(QwtErrorPlotCurve *er, bool xErr, double width, int cap, const QColor& c,
 		bool plus, bool minus, bool through)
 {
 	if (!er)
 		return;
 
-	if (er->width() == width &&
-			er->capLength() == cap &&
-			er->color() == c &&
-			er->plusSide() == plus &&
-			er->minusSide() == minus &&
-			er->throughSymbol() == through &&
-			er->xErrors() == xErr)
+	if (er->width() == width && er->capLength() == cap &&
+		er->color() == c && er->plusSide() == plus &&
+		er->minusSide() == minus && er->throughSymbol() == through && er->xErrors() == xErr)
 		return;
 
 	er->setWidth(width);
@@ -2511,7 +2507,7 @@ void Graph::updateErrorBars(QwtErrorPlotCurve *er, bool xErr, int width, int cap
 }
 
 bool Graph::addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
-		int type, int width, int cap, const QColor& color, bool through, bool minus, bool plus)
+		int type, double width, int cap, const QColor& color, bool through, bool minus, bool plus)
 {
 	QList<int> keys = d_plot->curveKeys();
 	for (int i = 0; i<n_curves; i++ )
@@ -2527,7 +2523,7 @@ bool Graph::addErrorBars(const QString& yColName, Table *errTable, const QString
 }
 
 bool Graph::addErrorBars(const QString& xColName, const QString& yColName,
-		Table *errTable, const QString& errColName, int type, int width, int cap,
+		Table *errTable, const QString& errColName, int type, double width, int cap,
 		const QColor& color, bool through, bool minus, bool plus)
 {
 	DataCurve *master_curve = masterCurve(xColName, yColName);
@@ -2629,7 +2625,7 @@ void Graph::insertPlotItem(QwtPlotItem *i, int type)
   		addLegendItem();
 }
 
-bool Graph::addCurves(Table* w, const QStringList& names, int style, int lWidth,
+bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWidth,
 							int sSize, int startRow, int endRow)
 {
 	if (style == Pie)
@@ -2909,7 +2905,7 @@ void Graph::plotVectorCurve(Table* w, const QStringList& colList, int style, int
 	updatePlot();
 }
 
-void Graph::updateVectorsLayout(int curve, const QColor& color, int width,
+void Graph::updateVectorsLayout(int curve, const QColor& color, double width,
 		int arrowLength, int arrowAngle, bool filled, int position,
 		const QString& xEndColName, const QString& yEndColName)
 {
@@ -3491,16 +3487,21 @@ QString Graph::saveToString(bool saveAsTemplate)
 
 void Graph::updateMarkersBoundingRect()
 {
-	for (int i=0;i<(int)d_lines.size();i++){
-		ArrowMarker* mrkL = (ArrowMarker*)d_plot->marker(d_lines[i]);
-		if (mrkL)
-			mrkL->updateBoundingRect();
+	int lines = d_lines.size();
+	int images = d_images.size();
+	if (!lines && !images)
+		return;
+	
+	for (int i=0; i<lines; i++){
+		ArrowMarker* a = (ArrowMarker*)d_plot->marker(d_lines[i]);
+		if (a)
+			a->updateBoundingRect();
 	}
 
-	for (int i=0;i<(int)d_images.size();i++){
-		ImageMarker* mrk = (ImageMarker*) d_plot->marker(d_images[i]);
-		if (mrk)
-			mrk->updateBoundingRect();
+	for (int i=0; i<images; i++){
+		ImageMarker* im = (ImageMarker*) d_plot->marker(d_images[i]);
+		if (im)
+			im->updateBoundingRect();
 	}
 	d_plot->replot();
 }
@@ -3831,7 +3832,6 @@ void Graph::copy(Graph* g)
 {
 	Plot *plot = g->plotWidget();
 	d_plot->setMargin(plot->margin());
-	setAntialiasing(g->antialiasing());
 	setBackgroundColor(plot->paletteBackgroundColor());
 	setFrame(plot->lineWidth(), plot->frameColor());
 	setCanvasBackground(plot->canvasBackground());
@@ -4054,6 +4054,7 @@ void Graph::copy(Graph* g)
 		if (lmrk)
 			addArrow(lmrk);
 	}
+	setAntialiasing(g->antialiasing(), true);
 	d_plot->replot();
 }
 
@@ -4238,7 +4239,7 @@ void Graph::setTextMarkerDefaults(int f, const QFont& font,
 	defaultTextMarkerBackground = backgroundCol;
 }
 
-void Graph::setArrowDefaults(int lineWidth,  const QColor& c, Qt::PenStyle style,
+void Graph::setArrowDefaults(double lineWidth,  const QColor& c, Qt::PenStyle style,
 		int headLength, int headAngle, bool fillHead)
 {
 	defaultArrowLineWidth = lineWidth;
@@ -4418,7 +4419,7 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                     s = (*(++line)).stripWhiteSpace();
                     QColor c = QColor(s.remove("<PenColor>").remove("</PenColor>"));
                     s = (*(++line)).stripWhiteSpace();
-                    int width = s.remove("<PenWidth>").remove("</PenWidth>").toInt();
+                    double width = s.remove("<PenWidth>").remove("</PenWidth>").toDouble();
                     s = (*(++line)).stripWhiteSpace();
                     int style = s.remove("<PenStyle>").remove("</PenStyle>").toInt();
                     sp->setDefaultContourPen(QPen(c, width, Graph::getPenStyle(style)));
@@ -4544,6 +4545,8 @@ void Graph::setAntialiasing(bool on, bool update)
 			if (m)
 				m->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		}
+		
+		d_plot->grid()->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		d_plot->replot();
 	}
 }

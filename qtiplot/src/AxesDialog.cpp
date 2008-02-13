@@ -1445,13 +1445,17 @@ void AxesDialog::initGridPage()
 
     rightLayout->addWidget( new QLabel(tr( "Thickness" )), 3, 0 );
 
-    boxWidthMajor = new QSpinBox();
-    boxWidthMajor->setRange(1,20);
+    boxWidthMajor = new DoubleSpinBox('f');
+	boxWidthMajor->setLocale(((ApplicationWindow *)parent())->locale());
+	boxWidthMajor->setSingleStep(0.1);
+    boxWidthMajor->setRange(0.1, 20);
     boxWidthMajor->setValue(1);
     rightLayout->addWidget( boxWidthMajor, 3, 1);
 
-    boxWidthMinor = new QSpinBox();
-    boxWidthMinor->setRange(1,20);
+    boxWidthMinor = new DoubleSpinBox('f');
+	boxWidthMinor->setLocale(((ApplicationWindow *)parent())->locale());
+	boxWidthMinor->setSingleStep(0.1);
+    boxWidthMinor->setRange(0.1, 20);
     boxWidthMinor->setValue(1);
     boxWidthMinor->setDisabled(true);
     rightLayout->addWidget( boxWidthMinor, 3, 2);
@@ -1518,8 +1522,8 @@ void AxesDialog::initGridPage()
 	connect(boxColorMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
 	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
 	connect(boxTypeMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
-	connect(boxWidthMajor,SIGNAL(valueChanged (int)),this, SLOT(updateGrid()));
-	connect(boxWidthMinor,SIGNAL(valueChanged (int)),this, SLOT(updateGrid()));
+	connect(boxWidthMajor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
+	connect(boxWidthMinor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
 	connect(boxXLine,SIGNAL(clicked()),this, SLOT(updatePlot()));
 	connect(boxYLine,SIGNAL(clicked()),this, SLOT(updatePlot()));
 }
@@ -2205,7 +2209,13 @@ void AxesDialog::showGridOptions(int axis)
     Grid *grd = (Grid *)d_graph->plotWidget()->grid();
     if (!grd)
         return;
-
+	
+	boxWidthMajor->blockSignals(true);
+	boxWidthMinor->blockSignals(true);
+	boxColorMajor->blockSignals(true);
+	boxColorMinor->blockSignals(true);
+	boxTypeMajor->blockSignals(true);
+	boxTypeMinor->blockSignals(true);
 	disconnect(boxMajorGrid, SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
 	disconnect(boxMinorGrid, SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
 
@@ -2222,12 +2232,12 @@ void AxesDialog::showGridOptions(int axis)
 		QPen majPenX = grd->majPenX();
 		boxTypeMajor->setCurrentIndex(majPenX.style() - 1);
     	boxColorMajor->setColor(majPenX.color());
-    	boxWidthMajor->setValue(majPenX.width());
+    	boxWidthMajor->setValue(majPenX.widthF());
 
 		QPen minPenX = grd->minPenX();
     	boxTypeMinor->setCurrentItem(minPenX.style() - 1);
     	boxColorMinor->setColor(minPenX.color());
-    	boxWidthMinor->setValue(minPenX.width());
+    	boxWidthMinor->setValue(minPenX.widthF());
     } else if (axis == 0) {
         boxMajorGrid->setChecked(grd->yEnabled());
         boxMinorGrid->setChecked(grd->yMinEnabled());
@@ -2241,12 +2251,12 @@ void AxesDialog::showGridOptions(int axis)
 		QPen majPenY = grd->majPenY();
 		boxTypeMajor->setCurrentIndex(majPenY.style() - 1);
     	boxColorMajor->setColor(majPenY.color());
-    	boxWidthMajor->setValue(majPenY.width());
+    	boxWidthMajor->setValue(majPenY.widthF());
 
 		QPen minPenY = grd->minPenY();
     	boxTypeMinor->setCurrentItem(minPenY.style() - 1);
     	boxColorMinor->setColor(minPenY.color());
-    	boxWidthMinor->setValue(minPenY.width());
+    	boxWidthMinor->setValue(minPenY.widthF());
 	}
 
     bool majorOn = boxMajorGrid->isChecked();
@@ -2265,6 +2275,12 @@ void AxesDialog::showGridOptions(int axis)
     boxXLine->setChecked(grd->xZeroLineEnabled());
     boxYLine->setChecked(grd->yZeroLineEnabled());
 
+	boxWidthMajor->blockSignals(false);
+	boxWidthMinor->blockSignals(false);
+	boxColorMajor->blockSignals(false);
+	boxColorMinor->blockSignals(false);
+	boxTypeMajor->blockSignals(false);
+	boxTypeMinor->blockSignals(false);
 	connect(boxMajorGrid, SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
 	connect(boxMinorGrid, SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
 }

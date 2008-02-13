@@ -474,7 +474,9 @@ void PlotDialog::initPiePage()
 	gl1->addWidget(boxPieLineStyle);
 
 	gl1->addWidget(new QLabel(tr( "Width")), 2, 0);
-	boxPieLineWidth = new QSpinBox();
+	boxPieLineWidth = new DoubleSpinBox('f');
+	boxPieLineWidth->setSingleStep(0.1);
+	boxPieLineWidth->setLocale(((ApplicationWindow *)this->parent())->locale());
 	gl1->addWidget(boxPieLineWidth, 2, 1);
 	gl1->setRowStretch(3,1);
 
@@ -736,8 +738,10 @@ void PlotDialog::initLinePage()
 	gl1->addWidget(boxLineStyle, 1, 1);
 
 	gl1->addWidget(new QLabel(tr( "Width" )), 2, 0);
-	boxLineWidth = new QSpinBox();
-	boxLineWidth->setMinValue( 1 );
+	boxLineWidth = new DoubleSpinBox('f');
+	boxLineWidth->setLocale(((ApplicationWindow *)this->parent())->locale());
+	boxLineWidth->setSingleStep(0.1);
+	boxLineWidth->setMinimum(0.1);
 	boxLineWidth->setValue( 1 );
 	gl1->addWidget(boxLineWidth, 2, 1);
 
@@ -763,6 +767,7 @@ void PlotDialog::initLinePage()
 	hlayout->addWidget(fillGroupBox);
 	privateTabWidget->addTab( linePage, tr( "Line" ) );
 
+	connect(boxLineWidth, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 	connect(boxLineColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(boxConnect, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(boxLineStyle, SIGNAL(activated(int)), this, SLOT(acceptParams()));
@@ -792,8 +797,10 @@ void PlotDialog::initSymbolsPage()
 	boxSymbolColor = new ColorBox( false);
     gl->addWidget(boxSymbolColor, 3, 1);
     gl->addWidget(new QLabel(tr( "Edge Width" )), 4, 0);
-	boxPenWidth = new QSpinBox();
-    boxPenWidth->setRange(1, 100);
+	boxPenWidth = new DoubleSpinBox('f');
+	boxPenWidth->setLocale(((ApplicationWindow *)this->parent())->locale());
+	boxPenWidth->setSingleStep(0.1);
+    boxPenWidth->setRange(0.1, 100);
     gl->addWidget(boxPenWidth, 4, 1);
     gl->setRowStretch (5, 1);
 
@@ -955,7 +962,9 @@ void PlotDialog::initPercentilePage()
     gl2->addWidget(boxEdgeColor, 2, 1);
 
     gl2->addWidget(new QLabel(tr( "Edge Width" )), 3, 0);
-	boxEdgeWidth = new QSpinBox();
+	boxEdgeWidth = new DoubleSpinBox('f');
+	boxEdgeWidth->setLocale(((ApplicationWindow *)parent())->locale());
+	boxEdgeWidth->setSingleStep(0.1);
     boxEdgeWidth->setRange(0, 100);
     gl2->addWidget(boxEdgeWidth, 3, 1);
     gl2->setRowStretch(4, 1);
@@ -1033,7 +1042,10 @@ void PlotDialog::initSpectrogramPage()
     gl1->addWidget(levelsColorBox, 0, 1);
 
     gl1->addWidget(new QLabel(tr( "Width" )), 1, 0);
-  	contourWidthBox = new QSpinBox();
+  	contourWidthBox = new DoubleSpinBox('f');
+	contourWidthBox->setLocale(((ApplicationWindow *)parent())->locale());
+	contourWidthBox->setSingleStep(0.1);
+    contourWidthBox->setRange(0, 100);
     gl1->addWidget(contourWidthBox, 1, 1);
 
     gl1->addWidget(new QLabel(tr( "Style" )), 2, 0);
@@ -1108,13 +1120,10 @@ void PlotDialog::initErrorsPage()
     gl->addWidget(colorBox, 0, 1);
 
     gl->addWidget(new QLabel(tr( "Line Width" )), 1, 0);
-	widthBox = new QComboBox();
-	widthBox->addItem( tr( "1" ) );
-	widthBox->addItem( tr( "2" ) );
-	widthBox->addItem( tr( "3" ) );
-	widthBox->addItem( tr( "4" ) );
-	widthBox->addItem( tr( "5" ) );
-	widthBox->setEditable (true);
+	widthBox = new DoubleSpinBox('f');
+	widthBox->setLocale(((ApplicationWindow *)parent())->locale());
+	widthBox->setSingleStep(0.1);
+    widthBox->setRange(0, 100);
     gl->addWidget(widthBox, 1, 1);
 
     gl->addWidget(new QLabel(tr( "Cap Width" )), 2, 0);
@@ -1137,6 +1146,7 @@ void PlotDialog::initErrorsPage()
 	hl->addWidget(gb2);
     privateTabWidget->insertTab( errorsPage, tr( "Error Bars" ) );
 
+	connect(widthBox, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 	connect(colorBox, SIGNAL(colorChanged()), this, SLOT(pickErrorBarsColor()));
 	connect(xBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsType()));
 	connect(plusBox, SIGNAL(clicked()), this, SLOT(changeErrorBarsPlus()));
@@ -1205,7 +1215,9 @@ void PlotDialog::initVectPage()
 	vectColorBox = new ColorBox(false);
     gl1->addWidget(vectColorBox, 0, 1);
     gl1->addWidget(new QLabel(tr( "Line Width" )), 1, 0);
-	vectWidthBox = new QSpinBox();
+	vectWidthBox = new DoubleSpinBox('f');
+	vectWidthBox->setLocale(((ApplicationWindow *)parent())->locale());
+	vectWidthBox->setSingleStep(0.1);
     vectWidthBox->setRange(0, 100);
     gl1->addWidget(vectWidthBox, 1, 1);
 
@@ -1423,7 +1435,7 @@ void PlotDialog::changeErrorBarsPlus()
     if (!graph)
         return;
 
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->currentText().toInt(),
+	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->value(),
 			capBox->currentText().toInt(),colorBox->color(), plusBox->isChecked(),minusBox->isChecked(),
 			throughBox->isChecked());
 }
@@ -1440,7 +1452,7 @@ void PlotDialog::changeErrorBarsMinus()
     if (!graph)
         return;
 
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->currentText().toInt(),
+	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->value(),
 			capBox->currentText().toInt(), colorBox->color(),plusBox->isChecked(),minusBox->isChecked(),
 			throughBox->isChecked());
 }
@@ -1457,7 +1469,7 @@ void PlotDialog::changeErrorBarsThrough()
     if (!graph)
         return;
 
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->currentText().toInt(),
+	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->value(),
 			capBox->currentText().toInt(), colorBox->color(),plusBox->isChecked(),minusBox->isChecked(),
 			throughBox->isChecked());
 }
@@ -1474,7 +1486,7 @@ void PlotDialog::changeErrorBarsType()
     if (!graph)
         return;
 
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->currentText().toInt(),
+	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
 			capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
 			throughBox->isChecked());
 }
@@ -1491,7 +1503,7 @@ void PlotDialog::pickErrorBarsColor()
     if (!graph)
         return;
 
-	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(),widthBox->currentText().toInt(),
+	graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
 			capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
 			throughBox->isChecked());
 }
@@ -1836,7 +1848,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         defaultContourBox->setChecked(sp->defaultContourPen().style() != Qt::NoPen);
 
         levelsColorBox->setColor(sp->defaultContourPen().color());
-        contourWidthBox->setValue(sp->defaultContourPen().width());
+        contourWidthBox->setValue(sp->defaultContourPen().widthF());
         if (sp->defaultContourPen().style() != Qt::NoPen)
             boxContourStyle->setCurrentIndex(sp->defaultContourPen().style() - 1);
         else
@@ -1858,7 +1870,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     if (curveType == Graph::Pie){
         QwtPieCurve *pie = (QwtPieCurve*)i;
         boxPiePattern->setPattern(pie->pattern());
-        boxPieLineWidth->setValue(pie->pen().width());
+        boxPieLineWidth->setValue(pie->pen().widthF());
         boxPieLineColor->setColor(pie->pen().color());
         setPiePenStyle(pie->pen().style());
         boxFirstColor->setCurrentIndex(pie->firstColor());
@@ -1903,7 +1915,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     setPenStyle(c->pen().style());
     boxLineColor->setColor(c->pen().color());
-    boxLineWidth->setValue(c->pen().width());
+	boxLineWidth->blockSignals(true);
+    boxLineWidth->setValue(c->pen().widthF());
+	boxLineWidth->blockSignals(false);
     fillGroupBox->blockSignals(true);
     fillGroupBox->setChecked(c->brush().style() != Qt::NoBrush );
     fillGroupBox->blockSignals(false);
@@ -1915,7 +1929,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxSymbolSize->setValue(s.size().width()/2);
     boxSymbolStyle->setStyle(s.style());
     boxSymbolColor->setColor(s.pen().color());
-    boxPenWidth->setValue(s.pen().width());
+    boxPenWidth->setValue(s.pen().widthF());
     boxFillSymbol->setChecked(s.brush() != Qt::NoBrush);
     boxFillColor->setEnabled(s.brush() != Qt::NoBrush);
     boxFillColor->setColor(s.brush().color());
@@ -1959,7 +1973,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     if (curveType == Graph::ErrorBars){
         QwtErrorPlotCurve *err = (QwtErrorPlotCurve*)i;
         if (err){
-            widthBox->setEditText(QString::number(err->width()));
+			widthBox->blockSignals(true);
+            widthBox->setValue(err->width());
+			widthBox->blockSignals(false);
             capBox->setEditText(QString::number(err->capLength()));
 
 			colorBox->blockSignals(true);
@@ -1996,7 +2012,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             boxPercFillColor->setEnabled(s.brush() != Qt::NoBrush);
             boxPercFillColor->setColor(s.brush().color());
             boxEdgeColor->setColor(s.pen().color());
-            boxEdgeWidth->setValue(s.pen().width());
+            boxEdgeWidth->setValue(s.pen().widthF());
 
             boxRange->setCurrentIndex (b->boxRangeType()-1);
             boxType->setCurrentIndex (b->boxStyle());
@@ -2249,7 +2265,7 @@ bool PlotDialog::acceptParams()
 		}
 		return true;
 	} else if (privateTabWidget->currentPage() == errorsPage){
-		graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->currentText().toInt(),
+		graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
 				capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
 				throughBox->isChecked());
         return true;

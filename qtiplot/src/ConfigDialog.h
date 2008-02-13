@@ -32,6 +32,7 @@
 #include <QDialog>
 #include <QCheckBox>
 
+class QLineEdit;
 class QGroupBox;
 class QPushButton;
 class QTabWidget;
@@ -44,7 +45,8 @@ class QRadioButton;
 class QListWidget;
 class ColorButton;
 class ColorBox;
-
+class DoubleSpinBox;
+	
 //! Preferences dialog
 class ConfigDialog : public QDialog
 {
@@ -57,8 +59,9 @@ public:
 	 * \param fl window flags
 	 */
     ConfigDialog( QWidget* parent, Qt::WFlags fl = 0 );
+	void setColumnSeparator(const QString& sep);
 
-public slots:
+private slots:
     virtual void languageChange();
 	void insertLanguagesList();
 
@@ -66,7 +69,6 @@ public slots:
 	void apply();
 
 	void setCurrentPage(int index);
-	void setColumnSeparator(const QString& sep);
 
 	//table fonts
 	void pickTextFont();
@@ -94,6 +96,9 @@ public slots:
 	void showPointsBox(bool);
 
 	void switchToLanguage(int param);
+	
+	void chooseTranslationsFolder();
+	void chooseHelpFolder();
 
 private:
 	void initPlotsPage();
@@ -102,6 +107,7 @@ private:
 	void initPlots3DPage();
 	void initTablesPage();
 	void initConfirmationsPage();
+	void initFileLocationsPage();
 	void initFittingPage();
 
 	QFont textFont, headerFont, axesFont, numbersFont, legendFont, titleFont, appFont;
@@ -125,7 +131,8 @@ private:
 	QCheckBox *boxAutoscaling, *boxShowProjection, *boxMatrices, *boxScaleFonts, *boxResize;
 	QComboBox *boxMajTicks, *boxMinTicks, *boxStyle, *boxCurveStyle, *boxSeparator, *boxLanguage, *boxDecimalSeparator;
 	QSpinBox *boxMinutes, *boxLineWidth, *boxFrameWidth, *boxResolution, *boxMargin, *boxPrecision, *boxAppPrecision;
-	QSpinBox *boxCurveLineWidth, *boxSymbolSize, *boxMinTicksLength, *boxMajTicksLength, *generatePointsBox;
+	QSpinBox *boxSymbolSize, *boxMinTicksLength, *boxMajTicksLength, *generatePointsBox;
+	DoubleSpinBox *boxCurveLineWidth;
 	ColorButton *btnWorkspace, *btnPanels, *btnPanelsText;
 	QListWidget * itemsList;
 	QLabel *labelFrameWidth, *lblLanguage, *lblWorkspace, *lblPanels, *lblPageHeader;
@@ -144,6 +151,9 @@ private:
 	QComboBox *boxScriptingLanguage, *boxInitWindow;
 	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
 	QCheckBox *boxPromptRenameTables, *boxBackupProject;
+	QWidget *fileLocationsPage;
+	QLabel *lblTranslationsPath, *lblHelpPath;
+	QLineEdit *translationsPathLine, *helpPathLine;
 };
 
 #endif // CONFIGDIALOG_H

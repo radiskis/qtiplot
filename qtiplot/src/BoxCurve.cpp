@@ -79,8 +79,8 @@ void BoxCurve::draw(QPainter *painter,
 		to = size - 1;
 
 	painter->save();
-	painter->setPen(QwtPlotCurve::pen());
-
+	painter->setPen(pen());
+	
 	double *dat = new double[size];
 	for (int i = from; i<= to; i++)
 		dat[i] = y(i);

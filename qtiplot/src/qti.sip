@@ -375,7 +375,7 @@ public:
 
   void setStyle(Qt::PenStyle);
   void setColor(const QColor&);
-  void setWidth(int);
+  void setWidth(double);
   void drawStartArrow(bool = true);
   void drawEndArrow(bool = true);
   void setHeadLength(int);
@@ -487,7 +487,7 @@ public:
 %End
 
   bool insertCurve(Table*, const QString&, const QString&, int=1);
-  bool addCurves(Table*, SIP_PYTUPLE, int=0, int=1, int=3, int=0, int=-1)/PyName=addCurves/;
+  bool addCurves(Table*, SIP_PYTUPLE, int=0, double=1, int=3, int=0, int=-1)/PyName=addCurves/;
 %MethodCode
   QStringList l;
   int n = PyTuple_Size(a1);
@@ -503,7 +503,7 @@ public:
   }
   sipRes = sipCpp->addCurves(a0, l, a2, a3, a4, a5, a6);
 %End
-  bool addCurve(Table*, const QString&, int=0, int=1, int=3, int=0, int=-1);
+  bool addCurve(Table*, const QString&, int=0, double=1, int=3, int=0, int=-1);
 %MethodCode
   QStringList l;
   l << *a1;
@@ -536,7 +536,7 @@ public:
 %End
 
   void addErrorBars(const QString&, Table *, const QString&,
-		  int type = 1, int width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+		  int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 		  bool through = true, bool minus = true, bool plus = true);
 
   void addHistogram(Matrix*);
