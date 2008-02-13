@@ -203,13 +203,13 @@ pen.setColor(c);
 setLinePen(pen);
 }
 
-void ArrowMarker::setWidth(int w)
+void ArrowMarker::setWidth(double w)
 {
 if (linePen().width() == w)
 	return;
 
 QPen pen = linePen();
-pen.setWidth (w);
+pen.setWidthF(w);
 setLinePen(pen);
 }
 
@@ -482,8 +482,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 				const QMouseEvent *me = (const QMouseEvent *)e;
 				if (me->button() != Qt::LeftButton)
 					return false;
-				LineDialog *ld = new LineDialog(this, plot()->window(), Qt::Tool);
-				ld->setAttribute(Qt::WA_DeleteOnClose);
+				LineDialog *ld = new LineDialog(this, plot()->window());
 				ld->exec();
 				return true;
 			}

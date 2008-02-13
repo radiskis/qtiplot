@@ -72,14 +72,14 @@ class Spectrogram;
 //! Structure containing curve layout parameters
 typedef struct{
   int lCol;        //!< line color
-  int lWidth;      //!< line width
+  float lWidth;    //!< line width
   int lStyle;      //!< line style
   int filledArea;  //!< flag: toggles area filling under curve
   int aCol;        //!< curve area color
   int aStyle;      //!< area filling style
   int symCol;      //!< symbol outline color
   int fillCol;     //!< symbol fill color
-  int penWidth;    //!< symbol outline width
+  float penWidth;  //!< symbol outline width
   int sSize;       //!< symbol size
   int sType;       //!< symbol type (shape)
   int connectType; //!< symbol connection type
@@ -172,7 +172,7 @@ class Graph: public QWidget
 		QString savePieCurveLayout();
 		//@}
 
-		bool addCurves(Table* w, const QStringList& names, int style = 0, int lWidth = 1, int sSize = 3, int startRow = 0, int endRow = -1);
+		bool addCurves(Table* w, const QStringList& names, int style = 0, double lWidth = 1, int sSize = 3, int startRow = 0, int endRow = -1);
 		bool insertCurve(Table* w, const QString& name, int style, int startRow = 0, int endRow = -1);
 		bool insertCurve(Table* w, int xcol, const QString& name, int style);
 		bool insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow = 0, int endRow = -1);
@@ -253,14 +253,14 @@ class Graph: public QWidget
 		//! \name Error Bars
 		//@{
 		bool addErrorBars(const QString& xColName, const QString& yColName, Table *errTable,
-				const QString& errColName, int type = 1, int width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+				const QString& errColName, int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
 		bool addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
-				int type = 1, int width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+				int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
-		void updateErrorBars(QwtErrorPlotCurve *er, bool xErr,int width, int cap, const QColor& c, bool plus, bool minus, bool through);
+		void updateErrorBars(QwtErrorPlotCurve *er, bool xErr, double width, int cap, const QColor& c, bool plus, bool minus, bool through);
 
 		//! Returns a valid master curve for the error bars curve.
 		DataCurve* masterCurve(QwtErrorPlotCurve *er);
@@ -371,12 +371,12 @@ class Graph: public QWidget
 
 		Qt::PenStyle arrowLineDefaultStyle(){return defaultArrowLineStyle;};
 		bool arrowHeadDefaultFill(){return defaultArrowHeadFill;};
-		int arrowDefaultWidth(){return defaultArrowLineWidth;};
+		double arrowDefaultWidth(){return defaultArrowLineWidth;};
 		int arrowHeadDefaultLength(){return defaultArrowHeadLength;};
 		int arrowHeadDefaultAngle(){return defaultArrowHeadAngle;};
 		QColor arrowDefaultColor(){return defaultArrowColor;};
 
-		void setArrowDefaults(int lineWidth,  const QColor& c, Qt::PenStyle style,
+		void setArrowDefaults(double lineWidth,  const QColor& c, Qt::PenStyle style,
 				int headLength, int headAngle, bool fillHead);
         bool arrowMarkerSelected();
 		//@}
@@ -574,7 +574,7 @@ class Graph: public QWidget
 		//! \name Vector Curves
 		//@{
 		void plotVectorCurve(Table* w, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
-		void updateVectorsLayout(int curve, const QColor& color, int width, int arrowLength, int arrowAngle, bool filled, int position,
+		void updateVectorsLayout(int curve, const QColor& color, double width, int arrowLength, int arrowAngle, bool filled, int position,
 				const QString& xEndColName = QString(), const QString& yEndColName = QString());
 		//@}
 
@@ -717,7 +717,8 @@ signals:
 		//@{
 		QFont defaultMarkerFont;
 		QColor defaultArrowColor, defaultTextMarkerColor, defaultTextMarkerBackground;
-		int defaultMarkerFrame, defaultArrowLineWidth, defaultArrowHeadLength, defaultArrowHeadAngle;
+		double defaultArrowLineWidth;
+		int defaultMarkerFrame, defaultArrowHeadLength, defaultArrowHeadAngle;
 		bool defaultArrowHeadFill;
 		Qt::PenStyle defaultArrowLineStyle;
 		//@}

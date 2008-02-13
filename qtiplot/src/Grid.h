@@ -38,10 +38,6 @@ class Grid : public QwtPlotGrid
 public:
     Grid();
 
-	void draw (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &rect) const;
-	void drawLines(QPainter *painter, const QRect &rect, Qt::Orientation orientation, const QwtScaleMap &map,
-    	const QwtValueList &values) const;
-
     bool xZeroLineEnabled(){return (mrkX >= 0)?true:false;};
     void enableZeroLineX(bool enable = true);
     bool yZeroLineEnabled(){return (mrkY >= 0)?true:false;};
@@ -64,6 +60,10 @@ public:
 	QString saveToString();
 
 private:
+	void draw (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &rect) const;
+	void drawLines(QPainter *painter, const QRect &rect, Qt::Orientation orientation, const QwtScaleMap &map,
+    	const QwtValueList &values) const;
+
 	QPen d_maj_pen_y;
 	QPen d_min_pen_y;
 

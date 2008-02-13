@@ -168,10 +168,10 @@ void QwtErrorPlotCurve::setXErrors(bool yes)
 		type = Vertical;
 }
 
-void QwtErrorPlotCurve::setWidth(int w)
+void QwtErrorPlotCurve::setWidth(double w)
 {
 	QPen p = pen();
- 	p.setWidth (w);
+ 	p.setWidthF(w);
   	setPen(p);
 }
 

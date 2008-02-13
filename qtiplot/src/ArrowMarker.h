@@ -70,9 +70,9 @@ public:
 	QColor color(){return linePen().color();};
 
 	//! Sets the width of the arrow line
-	void setWidth(int w);
+	void setWidth(double w);
 	//! The width of the arrow line
-	int width(){return linePen().width();};
+	double width(){return linePen().widthF();};
 
 	//! Sets the pen style for the arrow line
 	void setStyle(Qt::PenStyle s);

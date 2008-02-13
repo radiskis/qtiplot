@@ -717,6 +717,8 @@ QwtDoubleRect PlotCurve::valuesBoundingRect() const
 QwtDoubleRect PlotCurve::boundingRect() const
 {
     QwtDoubleRect r = QwtPlotCurve::boundingRect();
+	return r;	//TODO: find another solution, the code bellow causes crashes!!
+	
     if (symbol().style() == QwtSymbol::NoSymbol || dataSize() < 2)
         return r;
 
@@ -750,7 +752,7 @@ QwtDoubleRect PlotCurve::boundingRect() const
     double y_bottom = yMap.xTransform(r.bottom());
     double d_y_bottom = yMap.invTransform(y_bottom - margin_v);
 
-    return QwtDoubleRect(d_x_left, d_y_top, qAbs(d_x_right - d_x_left), qAbs(d_y_bottom - d_y_top));
+	return QwtDoubleRect(d_x_left, d_y_top, qAbs(d_x_right - d_x_left), qAbs(d_y_bottom - d_y_top)).normalized();
 }
 
 PlotMarker::PlotMarker(int index, double angle):QwtPlotMarker(),

@@ -67,11 +67,7 @@ Plot::Plot(QWidget *parent, const char *)
 	setAxisTitle(QwtPlot::xTop, tr(" "));
 
 	// grid
-	d_grid = new Grid;
-	d_grid->enableX(false);
-	d_grid->enableY(false);
-	d_grid->setMajPenX(QPen(Qt::blue, 0, Qt::SolidLine));
-	d_grid->setMinPenX(QPen(Qt::gray, 0, Qt::DotLine));
+	d_grid = new Grid();
 	d_grid->attach(this);
 
 	//custom scale

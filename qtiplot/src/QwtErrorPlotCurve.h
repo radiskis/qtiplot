@@ -52,8 +52,8 @@ public:
 	int capLength(){return cap;};
 	void setCapLength(int t){cap=t;};
 
-	int width(){return pen().width ();};
-	void setWidth(int w);
+	double width(){return pen().widthF();};
+	void setWidth(double w);
 
 	QColor color(){return pen().color();};
 	void setColor(const QColor& c);

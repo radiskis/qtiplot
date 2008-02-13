@@ -69,7 +69,6 @@ private:
     QSize sizeHint() const;
     void contextMenuEvent(QContextMenuEvent *);
 
-	int defaultCurveLineWidth, defaultSymbolSize;
 	Graph *d_graph;
 
     QPushButton* btnAdd;

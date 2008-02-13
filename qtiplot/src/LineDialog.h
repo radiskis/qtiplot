@@ -40,6 +40,7 @@ class QSpinBox;
 class QLineEdit;
 class ColorButton;
 class ArrowMarker;
+class DoubleSpinBox;
 
 //! Line options dialog
 class LineDialog : public QDialog
@@ -68,7 +69,7 @@ private:
 
     ColorButton* colorBox;
     QComboBox* styleBox;
-    QComboBox* widthBox;
+    DoubleSpinBox* widthBox;
 	QComboBox* unitBox;
     QPushButton* btnOk;
     QPushButton* btnApply;

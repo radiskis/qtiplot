@@ -391,6 +391,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_init_window_type = TableWindow;
 
 	QString aux = qApp->applicationDirPath();
+	d_translations_folder = aux + "/translations";
     workingDir = aux;
 	helpFilePath = aux + "/manual/index.html";
 	fitPluginsPath = aux + "fitPlugins";
@@ -3374,15 +3375,15 @@ void ApplicationWindow::setLegendDefaultSettings(int frame, const QFont& font,
 	saveSettings();
 }
 
-void ApplicationWindow::setArrowDefaultSettings(int lineWidth,  const QColor& c, Qt::PenStyle style,
+void ApplicationWindow::setArrowDefaultSettings(double lineWidth,  const QColor& c, Qt::PenStyle style,
 		int headLength, int headAngle, bool fillHead)
 {
 	if (defaultArrowLineWidth == lineWidth &&
-			defaultArrowColor == c &&
-			defaultArrowLineStyle == style &&
-			defaultArrowHeadLength == headLength &&
-			defaultArrowHeadAngle == headAngle &&
-			defaultArrowHeadFill == fillHead)
+		defaultArrowColor == c &&
+		defaultArrowLineStyle == style &&
+		defaultArrowHeadLength == headLength &&
+		defaultArrowHeadAngle == headAngle &&
+		defaultArrowHeadFill == fillHead)
 		return;
 
 	defaultArrowLineWidth = lineWidth;
@@ -4250,6 +4251,7 @@ void ApplicationWindow::readSettings()
 	scriptsDirPath = settings.value("/ScriptsDir", qApp->applicationDirPath()).toString();
 	fitModelsPath = settings.value("/FitModelsDir", "").toString();
 	customActionsDirPath = settings.value("/CustomActionsDir", "").toString();
+	d_translations_folder = settings.value("/Translations", qApp->applicationDirPath() + "/translations").toString();
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ------------- end group General ------------------- */
@@ -4324,7 +4326,7 @@ void ApplicationWindow::readSettings()
 
 	settings.beginGroup("/Curves");
 	defaultCurveStyle = settings.value("/Style", Graph::LineSymbols).toInt();
-	defaultCurveLineWidth = settings.value("/LineWidth", 1).toInt();
+	defaultCurveLineWidth = settings.value("/LineWidth", 1).toDouble();
 	defaultSymbolSize = settings.value("/SymbolSize", 7).toInt();
 	settings.endGroup(); // Curves
 
@@ -4528,6 +4530,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ScriptsDir", scriptsDirPath);
     settings.setValue("/FitModelsDir", fitModelsPath);
     settings.setValue("/CustomActionsDir", customActionsDirPath);
+	settings.setValue("/Translations", d_translations_folder);
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ---------------- end group General --------------- */
@@ -7157,8 +7160,7 @@ void ApplicationWindow::showLineDialog()
 		if (!lm)
 			return;
 
-		LineDialog *ld = new LineDialog(lm, this, Qt::Tool);
-		ld->setAttribute(Qt::WA_DeleteOnClose);
+		LineDialog *ld = new LineDialog(lm, this);
 		ld->exec();
 	}
 }
@@ -8707,16 +8709,15 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 
 void ApplicationWindow::chooseHelpFolder()
 {
+	QFileInfo hfi(helpFilePath);	
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
-			qApp->applicationDirPath());
+			hfi.dir().absolutePath());
 
-	if (!dir.isEmpty())
-	{
-		helpFilePath = dir + "/index.html";
+	if (!dir.isEmpty()){
+		helpFilePath = dir + "index.html";
 
 		QFile helpFile(helpFilePath);
-		if (!helpFile.exists())
-		{
+		if (!helpFile.exists()){
 			QMessageBox::critical(this, tr("QtiPlot - index.html File Not Found!"),
 					tr("There is no file called <b>index.html</b> in this folder.<br>Please choose another folder!"));
 		}
@@ -9994,7 +9995,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 		else if (s.startsWith ("<Antialiasing>") && s.endsWith ("</Antialiasing>")){
 			bool antialiasing = s.remove("<Antialiasing>").remove("</Antialiasing>").toInt();
-			ag->setAntialiasing(antialiasing, false);
+			ag->setAntialiasing(antialiasing);
 		}
 		else if (s.contains ("PieCurve")){
 			QStringList curve=s.split("\t");
@@ -10007,7 +10008,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 					curve.replaceInStrings(caption+"_", newCaption+"_");
 				}
 			}
-			QPen pen = QPen(QColor(curve[3]),curve[2].toInt(),Graph::getPenStyle(curve[4]));
+			QPen pen = QPen(QColor(curve[3]), curve[2].toDouble(),Graph::getPenStyle(curve[4]));
 
 			Table *table = app->table(curve[1]);
 			if (table){
@@ -10054,7 +10055,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			if (d_file_version <= 89)
 				cl.lCol = convertOldToNewColorIndex(cl.lCol);
 			cl.lStyle=curve[6].toInt();
-			cl.lWidth=curve[7].toInt();
+			cl.lWidth=curve[7].toDouble();
 			cl.sSize=curve[8].toInt();
 			if (d_file_version <= 78)
 				cl.sType=Graph::obsoleteSymbolStyle(curve[9].toInt());
@@ -10075,9 +10076,9 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			if(curve.count() < 16)
 				cl.penWidth = cl.lWidth;
 			else if ((d_file_version >= 79) && (curve[3].toInt() == Graph::Box))
-				cl.penWidth = curve[15].toInt();
+				cl.penWidth = curve[15].toDouble();
 			else if ((d_file_version >= 78) && (curve[3].toInt() <= Graph::LineSymbols))
-				cl.penWidth = curve[15].toInt();
+				cl.penWidth = curve[15].toDouble();
 			else
 				cl.penWidth = cl.lWidth;
 
@@ -10103,14 +10104,14 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 
 					if (d_file_version <= 77){
 						int temp_index = convertOldToNewColorIndex(curve[15].toInt());
-						ag->updateVectorsLayout(curveID, ColorBox::color(temp_index), curve[16].toInt(), curve[17].toInt(),
+						ag->updateVectorsLayout(curveID, ColorBox::color(temp_index), curve[16].toDouble(), curve[17].toInt(),
 								curve[18].toInt(), curve[19].toInt(), 0, curve[20], curve[21]);
 					} else {
 						if(plotType == Graph::VectXYXY)
-							ag->updateVectorsLayout(curveID, curve[15], curve[16].toInt(),
+							ag->updateVectorsLayout(curveID, curve[15], curve[16].toDouble(),
 								curve[17].toInt(), curve[18].toInt(), curve[19].toInt(), 0);
 						else
-							ag->updateVectorsLayout(curveID, curve[15], curve[16].toInt(), curve[17].toInt(),
+							ag->updateVectorsLayout(curveID, curve[15], curve[16].toDouble(), curve[17].toInt(),
 									curve[18].toInt(), curve[19].toInt(), curve[22].toInt());
 					}
 				} else if(plotType == Graph::Box)
@@ -10175,7 +10176,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			cl.connectType=curve[6].toInt();
 			cl.lCol=curve[7].toInt();
 			cl.lStyle=curve[8].toInt();
-			cl.lWidth=curve[9].toInt();
+			cl.lWidth=curve[9].toDouble();
 			cl.sSize=curve[10].toInt();
 			cl.sType=curve[11].toInt();
 			cl.symCol=curve[12].toInt();
@@ -10188,12 +10189,12 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				cl.penWidth = cl.lWidth;
 			else if ((d_file_version >= 79) && (curve[5].toInt() == Graph::Box))
 				{
-					cl.penWidth = curve[17].toInt();
+					cl.penWidth = curve[17].toDouble();
 					current_index++;
 				}
 			else if ((d_file_version >= 78) && (curve[5].toInt() <= Graph::LineSymbols))
 				{
-					cl.penWidth = curve[17].toInt();
+					cl.penWidth = curve[17].toDouble();
 					current_index++;
 				}
 			else
@@ -10231,7 +10232,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			Table *errTable = app->table(curve[4]);
 			if (w && errTable){
 				ag->addErrorBars(curve[2], curve[3], errTable, curve[4], curve[1].toInt(),
-						curve[5].toInt(), curve[6].toInt(), QColor(curve[7]),
+						curve[5].toDouble(), curve[6].toInt(), QColor(curve[7]),
 						curve[8].toInt(), curve[10].toInt(), curve[9].toInt());
 			}
 			curveID++;
@@ -12736,12 +12737,14 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 
 void ApplicationWindow::createLanguagesList()
 {
+	locales.clear();
+
 	appTranslator = new QTranslator(this);
 	qtTranslator = new QTranslator(this);
 	qApp->installTranslator(appTranslator);
 	qApp->installTranslator(qtTranslator);
 
-	QString qmPath = qApp->applicationDirPath() + "/translations";
+	QString qmPath = d_translations_folder;
 	QDir dir(qmPath);
 	QStringList fileNames = dir.entryList("qtiplot_*.qm");
 	for (int i=0; i < (int)fileNames.size(); i++)
@@ -12786,7 +12789,7 @@ void ApplicationWindow::switchToLanguage(const QString& locale)
 	}
 	else
 	{
-		QString qmPath = qApp->applicationDirPath() + "/translations";
+		QString qmPath = d_translations_folder;
 		appTranslator->load("qtiplot_" + locale, qmPath);
 		qtTranslator->load("qt_" + locale, qmPath+"/qt");
 	}

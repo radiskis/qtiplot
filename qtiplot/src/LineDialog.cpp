@@ -32,6 +32,7 @@
 #include "Graph.h"
 #include "Plot.h"
 #include "ApplicationWindow.h"
+#include "DoubleSpinBox.h"
 
 #include <qwt_plot.h>
 
@@ -50,7 +51,8 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
     : QDialog( parent, fl )
 {
     setWindowTitle( tr( "QtiPlot - Line options" ) );
-
+	setAttribute(Qt::WA_DeleteOnClose);
+	
 	lm = line;
 
 	QGroupBox *gb1 = new QGroupBox();
@@ -73,15 +75,11 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
 	setLineStyle(lm->style());
 
 	gl1->addWidget(new QLabel(tr("Line width")), 2, 0);
-    widthBox = new QComboBox( FALSE );
-	widthBox->insertItem( tr( "1" ) );
-    widthBox->insertItem( tr( "2" ) );
-    widthBox->insertItem( tr( "3" ) );
-    widthBox->insertItem( tr( "4" ) );
-    widthBox->insertItem( tr( "5" ) );
-	widthBox->setEditable (true);
-	widthBox->setCurrentItem(0);
-	widthBox->setEditText(QString::number(lm->width()));
+    widthBox = new DoubleSpinBox('f');
+	widthBox->setLocale(((ApplicationWindow *)parent)->locale());
+	widthBox->setSingleStep(0.1);
+    widthBox->setRange(0, 100);
+	widthBox->setValue(lm->width());
 	gl1->addWidget(widthBox, 2, 1);
 
 	startBox = new QCheckBox();
@@ -254,7 +252,7 @@ void LineDialog::apply()
     if (tw->currentPage()==(QWidget *)options){
         lm->setStyle(Graph::getPenStyle(styleBox->currentItem()));
         lm->setColor(colorBox->color());
-        lm->setWidth(widthBox->currentText().toInt());
+        lm->setWidth(widthBox->value());
         lm->drawEndArrow(endBox->isChecked());
         lm->drawStartArrow(startBox->isChecked());
 	}
@@ -313,7 +311,7 @@ ApplicationWindow *app = (ApplicationWindow *)this->parent();
 if (!app)
 	return;
 
-app->setArrowDefaultSettings(widthBox->currentText().toInt(), colorBox->color(),
+app->setArrowDefaultSettings(widthBox->value(), colorBox->color(),
 							Graph::getPenStyle(styleBox->currentItem()),
 							boxHeadLength->value(), boxHeadAngle->value(), filledBox->isChecked());
 }
@@ -325,4 +323,3 @@ if (w == geometry)
 else
 	buttonDefault->setEnabled(true);
 }
-

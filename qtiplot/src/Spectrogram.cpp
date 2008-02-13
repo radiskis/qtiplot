@@ -275,7 +275,7 @@ if (contourLines)
 	if (defaultPen)
 		{
 		s += "\t\t\t<PenColor>"+defaultContourPen().color().name()+"</PenColor>\n";
-		s += "\t\t\t<PenWidth>"+QString::number(defaultContourPen().width())+"</PenWidth>\n";
+		s += "\t\t\t<PenWidth>"+QString::number(defaultContourPen().widthF())+"</PenWidth>\n";
 		s += "\t\t\t<PenStyle>"+QString::number(defaultContourPen().style() - 1)+"</PenStyle>\n";
 		}
 	}

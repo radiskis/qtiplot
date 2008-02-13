@@ -64,8 +64,8 @@ public:
 	void setVectorEnd(const QString& xColName, const QString& yColName);
 	void setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&y);
 
-	int width();
-	void setWidth(int w);
+	double width();
+	void setWidth(double w);
 
 	QColor color();
 	void setColor(const QColor& c);

@@ -389,7 +389,7 @@ public slots:
 	void setGraphDefaultSettings(bool autoscale,bool scaleFonts,bool resizeLayers,bool antialiasing);
 	void setLegendDefaultSettings(int frame, const QFont& font,
 							 const QColor& textCol, const QColor& backgroundCol);
-	void setArrowDefaultSettings(int lineWidth,  const QColor& c, Qt::PenStyle style,
+	void setArrowDefaultSettings(double lineWidth,  const QColor& c, Qt::PenStyle style,
 								int headLength, int headAngle, bool fillHead);
 
 	void plotL();
@@ -999,6 +999,7 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	QString d_translations_folder;
 	//! Flag telling if the application is opening a project file or not
 	bool d_opening_file;
     QString customActionsDirPath;
@@ -1080,11 +1081,12 @@ public:
 	bool titleOn, autoSave, drawBackbones, allAxesOn, autoscale2DPlots, antialiasing2DPlots;
 	int majTicksStyle, minTicksStyle, legendFrameStyle, autoSaveTime, axesLineWidth, canvasFrameWidth;
 	QColor legendBackground, legendTextColor, defaultArrowColor;
-	int defaultArrowLineWidth, defaultArrowHeadLength, defaultArrowHeadAngle;
+	int defaultArrowHeadLength, defaultArrowHeadAngle;
+	double defaultArrowLineWidth, defaultCurveLineWidth;
 	bool defaultArrowHeadFill;
 	Qt::PenStyle defaultArrowLineStyle;
 	int majTicksLength, minTicksLength, defaultPlotMargin;
-	int defaultCurveStyle, defaultCurveLineWidth, defaultSymbolSize;
+	int defaultCurveStyle, defaultSymbolSize;
 	QFont appFont, plot3DTitleFont, plot3DNumbersFont, plot3DAxesFont;
 	QFont tableTextFont, tableHeaderFont, plotAxesFont, plotLegendFont, plotNumbersFont, plotTitleFont;
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;

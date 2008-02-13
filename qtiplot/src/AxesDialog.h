@@ -160,9 +160,9 @@ protected:
     ColorBox* boxColorMinor;
     ColorBox* boxColorMajor;
 	ColorButton *boxCanvasColor;
-    QSpinBox* boxWidthMajor;
+    DoubleSpinBox* boxWidthMajor;
     QComboBox* boxTypeMinor;
-    QSpinBox* boxWidthMinor;
+    DoubleSpinBox* boxWidthMinor;
     QCheckBox* boxXLine;
     QCheckBox* boxYLine;
     QListWidget* axesGridList;

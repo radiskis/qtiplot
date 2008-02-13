@@ -240,7 +240,8 @@ private:
     QCheckBox *boxAntialiasing, *boxAll, *boxScaleLayers, *boxPrintCrops;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxMargin;
-	QSpinBox *boxRadius, *boxPieLineWidth;
+	QSpinBox *boxRadius;
+	DoubleSpinBox *boxPieLineWidth;
     ColorBox *boxFirstColor, *boxPieLineColor;
     PatternBox *boxPiePattern;
     QComboBox* boxPieLineStyle;
@@ -252,7 +253,7 @@ private:
     QWidget* linePage;
     QComboBox* boxConnect;
     QComboBox* boxLineStyle;
-    QSpinBox* boxLineWidth, *boxPenWidth;
+    DoubleSpinBox *boxLineWidth, *boxPenWidth;
     ColorBox* boxLineColor, *boxAreaColor;
     QWidget* symbolPage;
     QSpinBox* boxSymbolSize;
@@ -267,7 +268,7 @@ private:
     QCheckBox* xBox;
     ColorButton *colorBox, *levelsColorBox;
 	ColorBox* vectColorBox;
-    QComboBox* widthBox;
+    DoubleSpinBox* widthBox;
     QComboBox* capBox;
     QCheckBox* throughBox;
 	QLabel *labelPosition, *labelXEnd, *labelYEnd;
@@ -279,7 +280,8 @@ private:
 	QSpinBox* gapBox, *offsetBox, *boxWidth;
 	QWidget *vectPage, *boxPage, *percentilePage, *axesPage;
 	QComboBox *xEndBox, *yEndBox, *boxType, *boxWhiskersType, *boxWhiskersRange, *boxRange;
-	QSpinBox* headAngleBox, *headLengthBox, *vectWidthBox, *boxPercSize, *boxEdgeWidth;
+	QSpinBox* headAngleBox, *headLengthBox, *boxPercSize;
+	DoubleSpinBox *vectWidthBox, *boxEdgeWidth;
 	QCheckBox *filledHeadBox;
 	QSpinBox *boxCoef, *boxWhiskersCoef;
 	QCheckBox *boxFillSymbols, *boxFillSymbol;
@@ -288,7 +290,8 @@ private:
 	QLabel *boxRangeLabel, *whiskerCntLabel, *boxCntLabel;
 	QGroupBox *GroupBoxVectEnd;
 	QComboBox *vectPosBox, *boxXAxis, *boxYAxis, *colorScaleBox, *boxContourStyle;
-  	QSpinBox *levelsBox, *contourWidthBox, *colorScaleWidthBox;
+  	QSpinBox *levelsBox, *colorScaleWidthBox;
+	DoubleSpinBox *contourWidthBox;
   	QGroupBox *levelsGroupBox, *axisScaleBox, *imageGroupBox;
   	QGroupBox *defaultPenBox;
   	QRadioButton *defaultScaleBox, *grayScaleBox, *customScaleBox, *defaultContourBox, *autoContourBox;

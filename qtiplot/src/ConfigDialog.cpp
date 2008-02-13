@@ -34,10 +34,12 @@
 #include "ColorButton.h"
 #include "ColorBox.h"
 #include "pixmaps.h"
+#include "DoubleSpinBox.h"
 
 #include <QLocale>
 #include <QPushButton>
 #include <QLabel>
+#include <QLineEdit>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QFont>
@@ -59,6 +61,7 @@
 #include <QVBoxLayout>
 #include <QListWidget>
 #include <QFontMetrics>
+#include <QFileDialog>
 
 ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
@@ -490,6 +493,7 @@ void ConfigDialog::initAppPage()
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 
 	appTabWidget = new QTabWidget(generalDialog);
+	appTabWidget->setUsesScrollButtons(false);
 
 	application = new QWidget();
 	QVBoxLayout * applicationLayout = new QVBoxLayout( application );
@@ -617,6 +621,8 @@ void ConfigDialog::initAppPage()
 	numericFormatLayout->setRowStretch(4, 1);
 
 	appTabWidget->addTab( numericFormatPage, QString() );
+	
+	initFileLocationsPage();
 
 	connect( boxLanguage, SIGNAL( activated(int) ), this, SLOT( switchToLanguage(int) ) );
 	connect( fontsBtn, SIGNAL( clicked() ), this, SLOT( pickApplicationFont() ) );
@@ -714,8 +720,10 @@ void ConfigDialog::initCurvesPage()
 
 	lblLineWidth = new QLabel();
 	curvesBoxLayout->addWidget( lblLineWidth, 1, 0 );
-	boxCurveLineWidth = new QSpinBox();
-	boxCurveLineWidth->setRange(1,100);
+	boxCurveLineWidth = new DoubleSpinBox('f');
+	boxCurveLineWidth->setLocale(app->locale());
+	boxCurveLineWidth->setSingleStep(0.1);
+	boxCurveLineWidth->setRange(0.1, 100);
 	boxCurveLineWidth->setValue(app->defaultCurveLineWidth);
 	curvesBoxLayout->addWidget( boxCurveLineWidth, 1, 1 );
 
@@ -772,6 +780,44 @@ void ConfigDialog::initConfirmationsPage()
 	confirmPageLayout->addWidget(groupBoxConfirm);
 	confirmPageLayout->addWidget(boxPromptRenameTables);
 	confirmPageLayout->addStretch();
+}
+
+void ConfigDialog::initFileLocationsPage()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	fileLocationsPage = new QWidget();
+
+	QGroupBox *gb = new QGroupBox();
+	QGridLayout *gl = new QGridLayout(gb);
+
+	lblTranslationsPath = new QLabel("Translations");
+	gl->addWidget(lblTranslationsPath , 0, 0);
+	
+	translationsPathLine = new QLineEdit();
+	translationsPathLine->setText(app->d_translations_folder);
+	gl->addWidget(translationsPathLine, 0, 1);
+	
+	QPushButton *browseTranslationsBtn = new QPushButton("...");
+	gl->addWidget(browseTranslationsBtn, 0, 2);
+	
+	lblHelpPath = new QLabel("Help");
+	gl->addWidget(lblHelpPath, 1, 0 );
+	
+	QFileInfo hfi(app->helpFilePath);	
+	helpPathLine = new QLineEdit(hfi.dir().absolutePath());
+	gl->addWidget( helpPathLine, 1, 1);
+	
+	QPushButton *browseHelpBtn = new QPushButton("...");
+	gl->addWidget(browseHelpBtn, 1, 2);
+	gl->setRowStretch(2, 1);
+	
+	QVBoxLayout *vl = new QVBoxLayout(fileLocationsPage);
+	vl->addWidget(gb);
+	
+	appTabWidget->addTab(fileLocationsPage, QString());
+	
+	connect(browseTranslationsBtn, SIGNAL(clicked()), this, SLOT(chooseTranslationsFolder()));
+	connect(browseHelpBtn, SIGNAL(clicked()), this, SLOT(chooseHelpFolder()));
 }
 
 void ConfigDialog::languageChange()
@@ -873,6 +919,7 @@ void ConfigDialog::languageChange()
 	appTabWidget->setTabText(appTabWidget->indexOf(confirm), tr("Confirmations"));
 	appTabWidget->setTabText(appTabWidget->indexOf(appColors), tr("Colors"));
 	appTabWidget->setTabText(appTabWidget->indexOf(numericFormatPage), tr("Numeric Format"));
+	appTabWidget->setTabText(appTabWidget->indexOf(fileLocationsPage), tr("File Locations"));
 
 	lblLanguage->setText(tr("Language"));
 	lblStyle->setText(tr("Style"));
@@ -913,6 +960,9 @@ void ConfigDialog::languageChange()
     else if (locale.name() == QLocale(QLocale::French).name())
         boxDecimalSeparator->setCurrentIndex(3);
 
+	lblTranslationsPath->setText("Translations");
+	lblHelpPath->setText("Help");
+	
 	//tables page
 	boxTableComments->setText(tr("&Display Comments in Header"));
 	groupBoxTableCol->setTitle(tr("Colors"));
@@ -1362,7 +1412,11 @@ void ConfigDialog::switchToLanguage(int param)
 void ConfigDialog::insertLanguagesList()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	QString qmPath = qApp->applicationDirPath() + "/translations";
+	if(!app)
+		return;
+	
+	boxLanguage->clear();
+	QString qmPath = app->d_translations_folder;
 	QDir dir(qmPath);
 	QStringList locales = app->locales;
 	QStringList languages;
@@ -1405,4 +1459,34 @@ void ConfigDialog::showPointsBox(bool)
 		generatePointsBox->hide();
 		linearFit2PointsBox->hide();
 	}
+}
+
+void ConfigDialog::chooseTranslationsFolder()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QFileInfo tfi(app->d_translations_folder);	
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot translations folder!"),
+			tfi.dir().absolutePath());
+
+	if (!dir.isEmpty()){
+		app->d_translations_folder = dir;
+		translationsPathLine->setText(dir);
+		app->createLanguagesList();
+		insertLanguagesList();
+	}
+}
+	
+void ConfigDialog::chooseHelpFolder()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+		
+	app->chooseHelpFolder();
+	
+	QFileInfo hfi(app->helpFilePath);	
+	helpPathLine->setText(hfi.dir().absolutePath());
 }
