@@ -67,6 +67,14 @@ QString strreverse(const QString &str) //QString reversing
 	return out;
 }
 
+QString JulianDateTime2String(double jdt)
+{
+	QTime time(0,0,0,0);
+	time = time.addSecs((jdt-(int)jdt)*86400);
+	QDateTime dt(QDate::fromJulianDay(jdt + 1), time);
+	return dt.toString("dd.MM.yyyy hh:mm:ss");
+}
+
 ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 		mw(app)
 {
@@ -103,6 +111,8 @@ bool ImportOPJ::createProjectTree(const OPJFile& opj)
 		if(sib->type == 1)
 		{
 			parent[sib] = mw->addFolder(sib->name.c_str(), parent.value(projectTree->parent(sib)));
+			parent[sib]->setBirthDate(JulianDateTime2String(sib->creation_date));
+			parent[sib]->setModificationDate(JulianDateTime2String(sib->modification_date));
 		}
 		else
 		{
@@ -169,6 +179,7 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		}
 
 		table->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.spreadTitle(s));
+		table->setBirthDate(JulianDateTime2String(opj.spreadCreationDate(s)));
 
         QLocale locale = mw->locale();
 		table->setWindowLabel(opj.spreadLabel(s));
@@ -425,6 +436,7 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		}
 
 		matrix->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.matrixTitle(s));
+		matrix->setBirthDate(JulianDateTime2String(opj.matrixCreationDate(s)));
 
 		matrix->setWindowLabel(opj.matrixLabel(s));
 		matrix->setFormula(opj.matrixFormula(s));
@@ -506,6 +518,7 @@ bool ImportOPJ::importNotes(const OPJFile& opj)
 			return false;
 		note->setWindowLabel(opj.noteLabel(n));
 		note->setText(opj.noteText(n));
+		note->setBirthDate(JulianDateTime2String(opj.noteCreationDate(n)));
 
 		//cascade the notes
 		int dx=20;
@@ -530,6 +543,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 			return false;
 
 		ml->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.graphTitle(g));
+		ml->setBirthDate(JulianDateTime2String(opj.graphCreationDate(g)));
 		ml->hide();//!hack used in order to avoid resize and repaint events
 		ml->setWindowLabel(opj.graphLabel(g));
 
