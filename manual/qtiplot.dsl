@@ -6,8 +6,7 @@
 <!DOCTYPE style-sheet PUBLIC "-//James Clark//DTD DSSSL Style Sheet//EN" [
 
 <!-- Path to main Docbook->html stylesheet. You have to adapt this to your installation. -->
-<!ENTITY docbook-html-stylesheet SYSTEM "/usr/share/sgml/docbook/stylesheet/dsssl/modular/html/docbook.dsl" CDATA DSSSL>
-<!--ENTITY docbook-html-stylesheet SYSTEM "/usr/share/sgml/docbook/dsssl-stylesheets-1.79/html/docbook.dsl" CDATA DSSSL-->
+<!ENTITY docbook-html-stylesheet SYSTEM "/usr/share/sgml/docbook/dsssl-stylesheets-1.79/html/docbook.dsl" CDATA DSSSL>
 
 <!-- Stylesheet function library for creating Windows HTML help and Qt Assistant profiles. -->
 <!ENTITY docbook-help-stylesheet SYSTEM "./help.dsl" CDATA DSSSL>
@@ -27,20 +26,14 @@
 
 (define %stylesheet%
 	;; CSS stylesheet to be used in HTML pages
-	"html/qtiplot.css")
+	"qtiplot.css")
 
-(define %css-decoration%
-	;; Active l'utilisation des CSS dans le code HTML g���
-	;; Notament les param�res CLASS= des principales balises
-	#t)
+(define %css-decoration% #t)
 
 (define %body-attr% 
-	;; Attribut utilis�dans la balise BODY
-	;; Ici on laisse faire la feuille de style CSS
 	(list))
 
 (define use-output-dir
-	;; D�init si le r�ertoire de destination %output-dir% doit �re utilis�pour les fichiers HTML
 	#t)
 
 (define %output-dir%

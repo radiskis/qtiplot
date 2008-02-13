@@ -500,7 +500,7 @@ for i in (1,4,5):
 	print(x)
 	</programlisting> will do what you would expect: it prints out the numbers 1, 16 and
       25; each on a line of its own. Deleting just a bit of space will change
-      the functionality of your program: <programlisting width="40">
+      the functionality of your program: <programlisting>
 x=23
 for i in (1,4,5):
 	x=i**2
@@ -527,7 +527,7 @@ print(x)
       <title>Defining Functions and Control Flow</title>
 
       <para>The basic syntax for defining a function (for use within one
-      particular note, for example) is <programlisting width="40">
+      particular note, for example) is <programlisting>
 def answer():
 	return 42
 	</programlisting> If you want your function to be accessible from the rest of your
@@ -538,7 +538,7 @@ def answer():
 	return 42
 	</programlisting> You can add your own function to QtiPlot's function list. We'll
       also provide a documentation string that will show up, for example, in
-      the "set column values" dialog: <programlisting width="40">
+      the "set column values" dialog: <programlisting>
 global answer
 def answer():
 	"Return the answer to the ultimate question about life, the universe and everything."
@@ -554,14 +554,14 @@ del qti.mathFunctions["answer"]
       access (neither reading nor writing) Note-local variables from within
       the function. However, you can access global variables as usual.</para>
 
-      <para>If-then-else decisions are entered as follows: <programlisting width="40">
+      <para>If-then-else decisions are entered as follows: <programlisting>
 if x&gt;23:
 	print(x)
 else:
 	print("The value is too small.")
 	</programlisting></para>
 
-      <para>You can do loops, too: <programlisting width="40">
+      <para>You can do loops, too: <programlisting>
 for i in range(1, 11):
 	print(i)
 	</programlisting> This will print out the numbers between 1 and 10 inclusively (the
@@ -758,12 +758,12 @@ for i in range(1, 11):
       <para>We will assume that you are using the <link
       linkend="Python-init">initialization file</link> shipped with
       QtiPlot. Accessing the objects in your project is straight-forward,
-        <programlisting width="40">
+        <programlisting>
 t = table("Table1")
 m = matrix("Matrix1")
 g = graph("Graph1")
 n = note("Notes1")
-	  </programlisting> as is creating new objects: <programlisting width="40">
+	  </programlisting> as is creating new objects: <programlisting>
 # create an empty table named "tony" with 5 rows and 2 columns:
 t = newTable("tony", 5, 2)
 # use defaults
@@ -786,7 +786,7 @@ function <userinput>col("t")</userinput>.</para>
 
 Once you have established contact with a MDI window, you can modify some of it's properties, like the name, the window label, the geometry, etc..
 For example, here's how to rename a window, change it's label and the way they are displayed in the window title bar, the so called caption policy:
-<programlisting width="40">
+<programlisting>
 t = table("Table1")
 setWindowName(t, "toto")
 t.setWindowLabel("tutu")
@@ -827,11 +827,11 @@ f = activeFolder()
 </programlisting>
 The functions table, matrix, graph and note will start searching in the active folder and, failing this,
 will continue with a depth-first recursive search of the project's root folder, given by:
-<programlisting width="40">
+<programlisting>
 f = rootFolder()
 </programlisting>
 In order to access subfolders and windows, there are the following functions:
-<programlisting width="40">
+<programlisting>
 f2 = f.folders()[number]
 f2 = f.folder(name, caseSensitive=True, partialMatch=False)
 t = f.table(name, recursive=False)
@@ -876,7 +876,7 @@ concerning prompting of warning messages, using the <link linkend="fig-preferenc
 <title>Working with Tables</title>
 We'll assume that you have assigned some table to the variable
 <varname>t</varname>. You can access its numeric cell values with
-<programlisting width="40">
+<programlisting>
 t.cell(col, row)
 # and
 t.setCell(col, row, value)
@@ -886,13 +886,13 @@ column name (as a string) or the consecutive column number (starting
 with 1). Row numbers also start with 1, just as they are displayed. If
 you want to work with arbitrary texts or the textual representations
 of numeric values, you can use:
-<programlisting width="40">
+<programlisting>
 t.text(col, row)
 # and
 t.setText(col, row, string)
 </programlisting>
 The number of columns and rows is accessed via:
-<programlisting width="40">
+<programlisting>
 t.numRows()
 t.numCols()
 t.setNumRows(number)
@@ -903,7 +903,7 @@ You can delete a range of rows using:
 t.deleteRows(startRowNumber, endRowNumber)
 </programlisting>
 Column names can be read and written with:
-<programlisting width="40">
+<programlisting>
 t.colName(number)
 t.setColName(col, newName, enumerateRight=False)
 </programlisting>
@@ -954,15 +954,21 @@ where <varname>role</varname> specifies the desired column role:
                 <para>Table.yErr</para>
               </listitem>
             </varlistentry>
+			<varlistentry>
+              <term>6.</term>
+              <listitem>
+                <para>Table.Label</para>
+              </listitem>
+            </varlistentry>
 </variablelist>
 
 <para>You can normalize a single column or all columns in a table:</para>
-<programlisting width="40">
+<programlisting>
 t.normalize(col)
 t.normalize()
 </programlisting>
 Sort a single or all columns:
-<programlisting width="40">
+<programlisting>
 t.sortColumn(col, order = 0);
 t.sort(type = 0, order = 0, leadingColumnName)
 </programlisting>
@@ -970,14 +976,14 @@ t.sort(type = 0, order = 0, leadingColumnName)
 Import values from <varname>file</varname>, using <varname>sep</varname> as separator char, ignoring
 <varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string.
 The other flags should be self-explanatory.
-<programlisting width="40">
+<programlisting>
 t.importASCII(file, sep="\t", ignore=0, renameCols=False, stripSpaces=True, simplifySpace=False, importComments=False, newTable=False, comment="#", readOnly=False)
 </programlisting>
 
 As you see from the above list of import options, you have the possibility to set the new columns as read-only.
 This will prevent the imported data from beeing modified. You have the possibility to remove this protection
 at any time, by using:
-<programlisting width="40">
+<programlisting>
 t.setReadOnlyColumn(col, False)
 </programlisting>
 
@@ -998,12 +1004,12 @@ t.setCommand(col, newExpression)
 </programlisting>
 
 After having changed some table values from a script, you will likely want to update dependent Graphs:
-<programlisting width="40">
+<programlisting>
 t.notifyChanges()
 </programlisting>
 
 As a simple example, let's set some column values without using the dialog.
-<programlisting width="40">
+<programlisting>
 t = table("table1")
 for i in range(1, t.numRows()+1):
 	t.setCell(1, i, i**2)
@@ -1031,7 +1037,7 @@ m.setRainbowColorMap()
 Accessing cell values is very similar to Table,
 but since Matrix doesn't use column logic, row arguments are specified
 before columns and obviously you can't use column name.
-<programlisting width="40">
+<programlisting>
 m.cell(row, col)
 m.setCell(row, col, value)
 m.text(row, col)
@@ -1150,7 +1156,7 @@ g3 = plot(m, Layer.GrayScale)
 </programlisting>
 
 If you want to create a new Graph window for some data in table Table1, you can use the plot command:
-<programlisting width="40">
+<programlisting>
 t = table("Table1")
 g = plot(t, column, type)
 </programlisting>
@@ -1263,7 +1269,7 @@ g = plot(t, column, type)
 
 You can plot more than one column at once by giving a Python tuple (see the <ulink url="http://docs.python.org/tut">Python
 Tutorial</ulink>) as an argument:
-<programlisting width="40">
+<programlisting>
 g1 = plot(table("Table1"), (2,4,7), 2)
 g2 = plot(table("Table1"), ("Table1_2","Table1_3"), Layer.LineSymbols)
 </programlisting>
@@ -1278,18 +1284,18 @@ g = plot(table("Table1"), (2,3,4,5), Layer.VectXYXY)
 
 If you want to add a curve to an existing Graph window, you have
 to choose the destination layer. Usually,
-<programlisting width="40">
+<programlisting>
 l = g.activeLayer()
 </programlisting>
 will do the trick, but you can also select a layer by its number:
-<programlisting width="40">
+<programlisting>
 l = g.layer(num)
 </programlisting>
 
 <sect3 id="Python-Curves">
 <title>Working with curves</title>
 You can then add or remove curves to or from this layer:
-<programlisting width="40">
+<programlisting>
 l.insertCurve(table, Xcolumn, Ycolumn, type=Layer.Scatter)
 l.addCurve(table, column, type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)
 l.addCurves(table, (2,4), type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)
@@ -1303,7 +1309,7 @@ l.addFunction("x*sin(x)", 0, 3*pi, points = 100);
 l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
 l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
 </programlisting>
-In case you need the number of curves on a layer, you can get it with <programlisting width="40">
+In case you need the number of curves on a layer, you can get it with <programlisting>
 l.numCurves()
 </programlisting>
 </sect3>
@@ -1459,7 +1465,7 @@ desired orientation for the major and minor ticks, respectively:
 <varname>minLength</varname> specifies the length of the minor ticks, in pixels and
 <varname>majLength</varname> the length of the major ticks.
 
-<para>You can also customize the scales of the different axes using: <programlisting width="40">
+<para>You can also customize the scales of the different axes using: <programlisting>
 l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False);
 </programlisting>
 where <varname>type</varname> specifies the desired scale type: <variablelist spacing="compact">
@@ -1494,7 +1500,7 @@ l.setAutoScale()
 
 The same <varname>setScale</varname> function above, with a longer list of arguments,
 can be used to define an axis break region: 
-<programlisting width="40">
+<programlisting>
 l.setScale(axis, start, end, step=0.0, majorTicks=5, minorTicks=5, type=0, inverted=False,
 	left=-DBL_MAX, right=DBL_MAX, breakPosition=50, stepBeforeBreak=0.0, stepAfterBreak=0.0,
 	minTicksBeforeBreak=4, minTicksAfterBreak=4, log10AfterBreak=False, breakWidth=4, breakDecoration=True);
@@ -2215,7 +2221,7 @@ and band block (<varname>FFTFilter.BandBlock</varname>).
 <title>Fitting</title>
         Assuming you have a graph named "Graph1" with a curve entitled
         "Table1_2" (on its active layer), a minimal Fit example would be:
-        <programlisting width="40">
+        <programlisting>
 f = GaussFit(graph("Graph1").activeLayer(), "Table1_2")
 f.guessInitialValues()
 f.fit()
@@ -2260,7 +2266,7 @@ f.fit()
             </listitem>
             <listitem>
               <para>NonLinearFit(layer, curve)</para>
-		    <programlisting width="40">
+		    <programlisting>
 f = NonLinearFit(layer, curve)
 f.setParameters(name1, ...)
 f.setFormula(formula_string)
@@ -2269,19 +2275,19 @@ f.save(fileName)
             </listitem>
             <listitem>
 		    <para>PluginFit(layer, curve)</para>
-		    <programlisting width="40">
+		    <programlisting>
 f = PluginFit(layer, curve)
 f.load(pluginName)
 		    </programlisting>
             </listitem>
           </itemizedlist> For each of these, you can optionally restrict the X
-        range that will be used for the fit, like in <programlisting width="40">
+        range that will be used for the fit, like in <programlisting>
 f = LinearFit(graph("Graph1").activeLayer(), "Table1_2", 2, 7)
 f.fit()
 	  </programlisting>
 
 You can also restrict the search range for any of the fit parameters:
-<programlisting width="40">
+<programlisting>
 f = NonLinearFit(graph("Graph1").activeLayer(), "Table1_2")
 f.setParameters("a0", "a1", "a2")
 f.setFormula("a0+a1*x+a2*x*x")
@@ -2302,7 +2308,7 @@ f.fit()
 
         <para>After creating the Fit object and before calling its fit()
         method, you can set a number of parameters that influence the fit:
-        <programlisting width="80">
+        <programlisting>
 f.setDataFromTable(table("Table4"), "w", "energy", 10, 200) <lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curve)			<lineannotation>change data source</lineannotation>
 f.setDataFromCurve(curve, graph)		<lineannotation>change data source</lineannotation>
@@ -2322,7 +2328,7 @@ f.setColor("green")			<lineannotation>change the color of the result fit curve t
 	  </programlisting></para>
 
 After you've called fit(), you have a number of possibilities
-for extracting the results: <programlisting width="40">
+for extracting the results: <programlisting>
 f.results()
 f.errors()
 f.chiSquare()

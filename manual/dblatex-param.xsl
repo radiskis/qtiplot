@@ -6,7 +6,7 @@
 -->
 <xsl:import href="qtiplot-style.xsl"/>
 
-<xsl:param name="imagedata.default.scale">scale=0.4</xsl:param>
+<xsl:param name="imagedata.default.scale">scale=0.6</xsl:param>
 
 <xsl:param name="qandaset.default.label" value="number"></xsl:param>
 

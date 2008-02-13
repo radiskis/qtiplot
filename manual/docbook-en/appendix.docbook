@@ -117,24 +117,24 @@ Each version of the License is given a distinguishing version number. If the Doc
 <sect1 id="getting-qtiplot">
 <title>How to obtain &appname;</title>
 
-The &appname; home page can be found at <ulink url="&homepage;">&homepage;</ulink>.
+<para>The &appname; home page can be found at <ulink url="&homepage;">&homepage;</ulink>.
 Updates and news can be found there. &appname; is distributed as a package with sources which have to be compiled. 
 
-<para>Precompiled packages for most Linux distributions, Mac OS X 10.4 and for Windows can 
+Precompiled packages for most Linux distributions, Mac OS X 10.4 and for Windows can 
 also be obtained from the same address.</para>
 </sect1>
 
 <sect1 id="installation-from-binary">
 <title>Installation from binary packages</title>
 
-Ion Vasilief, the founder and main developer of &appname;, 
+<para>Ion Vasilief, the founder and main developer of &appname;, 
 distributes precompiled packages for Windows, Mac OS X 10.4 and 
 for the main Linux distributions: a <ulink url="http://www.debian.org/">Debian</ulink> package 
 and a <ulink url="http://www.rpm.org/">RPM</ulink> package.
 Several types of binaries maintainance contracts are available, please check the 
 <ulink url="http://soft.proindependent.com/pricing.html">pricing details</ulink>,
 or <ulink url="http://soft.proindependent.com/proforma.html">request an invoice</ulink>.
-The fees include technical support and access to all updates available during one year.
+The fees include technical support and access to all updates available during one year.</para>
 
 <para>On Windows, you need to download the <ulink url="&kappdownload;">qtiplot-&kappversion;.exe</ulink> file. 
 To install, open a Windows Explorer window, double click on the 'qtiplot-&kappversion;.exe' icon and 
@@ -167,9 +167,9 @@ The RPM package was created on an <ulink url="http://www.ubuntulinux.org/">Ubunt
 If you want to build &appname; from sources, you need the following libraries: 
 <variablelist>
 <varlistentry>
-  <term>Qt (>= 4.2)</term>
+  <term>Qt (>= 4.3.1)</term>
   <listitem>
-    <para>&appname; works best with the 4.2.3 version of the 
+    <para>&appname; works best with the 4.3.3 version of the 
 	<ulink url="http://trolltech.com/products/qt">Qt</ulink> library</para>
   </listitem>
 </varlistentry>

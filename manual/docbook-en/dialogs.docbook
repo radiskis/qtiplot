@@ -984,8 +984,7 @@ This dialog is activated by selecting the command
 from the <link linkend="sec-file-menu">File Menu</link>. It can be used to select several
 files at a time. The files are imported using a set of default options. You can
 display and edit these options by pressing the <emphasis>Advanced</emphasis> button.
-Your changes to the default import parameters will be saved only if you check
-the box <emphasis>Remember the above options</emphasis> before pressing the <emphasis>Open</emphasis> button.
+All your changes to the default import parameters will be saved.
 
 <figure id="fig-set-import-options">
     <title>The dialog box.</title>
@@ -1014,7 +1013,7 @@ to be displayed in the table header, you must use the same separator between the
 and between the data columns.</para>
 
 <para>Finally, assuming that the data files you want to import were created
-using different decimal separators conventions than the ones you're using, like for example
+using different decimal separator conventions than the ones you're using, like for example
 a comma character for the decimal point instead of a dot character, you have the possibility
 to convert the data to your current settings, by checking the
 <emphasis>Import decimal separators</emphasis> option and by specifying the
