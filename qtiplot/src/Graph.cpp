@@ -1038,6 +1038,73 @@ void Graph::setAutoScale()
 	emit modifiedGraph();
 }
 
+void Graph::findBestLimits()
+{//We call this function the first time we add curves to a plot in order to avoid curves with cut symbols.
+	d_plot->replot();
+	
+	QwtDoubleInterval intv[QwtPlot::axisCnt];
+    const QwtPlotItemList& itmList = d_plot->itemList();
+    QwtPlotItemIterator it;
+	double maxSymbolSize = 0;
+    for ( it = itmList.begin(); it != itmList.end(); ++it ){
+        const QwtPlotItem *item = *it;
+        if (item->rtti() != QwtPlotItem::Rtti_PlotCurve)
+            continue;
+
+		const QwtPlotCurve *c = (QwtPlotCurve *)item;
+		const QwtSymbol s = c->symbol();
+		if (s.style() != QwtSymbol::NoSymbol && s.size().width() >= maxSymbolSize)
+			maxSymbolSize = s.size().width();
+		
+        const QwtDoubleRect rect = item->boundingRect();
+        intv[item->xAxis()] |= QwtDoubleInterval(rect.left(), rect.right());
+        intv[item->yAxis()] |= QwtDoubleInterval(rect.top(), rect.bottom());
+    }
+	
+	if (maxSymbolSize == 0.0)
+		return;
+		
+	maxSymbolSize *= 0.5;
+	
+	QwtScaleDiv *div = d_plot->axisScaleDiv(QwtPlot::xBottom);
+	double start = div->lBound();
+	double end = div->hBound();
+	QwtValueList majTicksLst = div->ticks(QwtScaleDiv::MajorTick);
+	int ticks = majTicksLst.size();
+	double step = fabs(end - start)/(double)(ticks - 1.0); 
+	
+	const QwtScaleMap &xMap = d_plot->canvasMap(QwtPlot::xBottom);
+    double x_left = xMap.xTransform(intv[QwtPlot::xBottom].minValue());
+	
+	if (start >= xMap.invTransform(x_left - maxSymbolSize))
+		start = div->lBound() - step;
+	
+	double x_right = xMap.xTransform(intv[QwtPlot::xBottom].maxValue());
+	if (end <= xMap.invTransform(x_right + maxSymbolSize))
+		end = div->hBound() + step;
+	
+	d_plot->setAxisScale(QwtPlot::xBottom, start, end, step);
+	
+	div = d_plot->axisScaleDiv(QwtPlot::yLeft);
+	start = div->lBound();
+	end = div->hBound();
+	majTicksLst = div->ticks(QwtScaleDiv::MajorTick);
+	ticks = majTicksLst.size();
+	step = fabs(end - start)/(double)(ticks - 1.0); 
+	
+	const QwtScaleMap &yMap = d_plot->canvasMap(QwtPlot::yLeft);
+    double y_bottom = yMap.xTransform(intv[QwtPlot::yLeft].minValue());
+	if (start >= yMap.invTransform(y_bottom + maxSymbolSize))
+		start = div->lBound() - step;
+	
+	double y_top = yMap.xTransform(intv[QwtPlot::yLeft].maxValue());
+	if (end <= yMap.invTransform(y_top - maxSymbolSize))
+		end = div->hBound() + step;
+		
+	d_plot->setAxisScale(QwtPlot::yLeft, start, end, step);
+	d_plot->replot();
+}
+
 void Graph::invertScale(int axis)
 {
 QwtScaleDiv *scaleDiv = d_plot->axisScaleDiv(axis);
@@ -1057,7 +1124,10 @@ QwtDoubleInterval Graph::axisBoundingInterval(int axis)
         if (item->rtti() != QwtPlotItem::Rtti_PlotCurve)
             continue;
 
-        const QwtDoubleRect rect = ((PlotCurve *)item)->valuesBoundingRect();
+		if(axis != item->xAxis() && axis != item->yAxis())
+            continue;
+		
+        const QwtDoubleRect rect = item->boundingRect();
 
         if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
             intv |= QwtDoubleInterval(rect.left(), rect.right());
@@ -2692,7 +2762,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 			}
 		}
 	}
-	updatePlot();
+	findBestLimits();
 	return true;
 }
 
@@ -2837,7 +2907,8 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 		d_plot->setAxisScaleDraw (QwtPlot::yLeft, new ScaleDraw(d_plot, yLabels, yColName));
 
 	addLegendItem();
-	updatePlot();
+	//updatePlot();
+	
 	return true;
 }
 

@@ -709,52 +709,6 @@ void DataCurve::moveLabels(const QPoint& pos)
 	d_click_pos_y = d_plot->invTransform(yAxis(), pos.y());
 }
 
-QwtDoubleRect PlotCurve::valuesBoundingRect() const
-{
-    return QwtPlotCurve::boundingRect();
-}
-
-QwtDoubleRect PlotCurve::boundingRect() const
-{
-    QwtDoubleRect r = QwtPlotCurve::boundingRect();
-	return r;	//TODO: find another solution, the code bellow causes crashes!!
-	
-    if (symbol().style() == QwtSymbol::NoSymbol || dataSize() < 2)
-        return r;
-
-    QwtPlot *d_plot = plot();
-    if (!d_plot)
-        return r;
-
-    int margin_h = 0, margin_v = 0;
-    if (symbol().style() != QwtSymbol::NoSymbol){
-        margin_h += symbol().size().width()/2;
-        margin_v = margin_h;
-    }
-
-    ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(xAxis());
-    if (se->testAttribute(QwtScaleEngine::Inverted))
-        margin_h = -margin_h;
-    se = (ScaleEngine *)d_plot->axisScaleEngine(yAxis());
-    if (se->testAttribute(QwtScaleEngine::Inverted))
-        margin_v = -margin_v;
-
-    const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
-	const QwtScaleMap &yMap = plot()->canvasMap(yAxis());
-
-    double x_right = xMap.xTransform(r.right());
-    double d_x_right = xMap.invTransform(x_right + margin_h);
-    double x_left = xMap.xTransform(r.left());
-    double d_x_left = xMap.invTransform(x_left - margin_h);
-
-    double y_top = yMap.xTransform(r.top());
-    double d_y_top = yMap.invTransform(y_top + margin_v);
-    double y_bottom = yMap.xTransform(r.bottom());
-    double d_y_bottom = yMap.invTransform(y_bottom - margin_v);
-
-	return QwtDoubleRect(d_x_left, d_y_top, qAbs(d_x_right - d_x_left), qAbs(d_y_bottom - d_y_top)).normalized();
-}
-
 PlotMarker::PlotMarker(int index, double angle):QwtPlotMarker(),
 	d_index(index),
 	d_angle(angle)
