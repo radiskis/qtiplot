@@ -32,9 +32,11 @@
 #include "SymbolDialog.h"
 #include "ApplicationWindow.h"
 #include "ColorButton.h"
+#include "TextFormatButtons.h"
 
 #include <QListWidget>
 #include <QLineEdit>
+#include <QTextEdit>
 #include <QLayout>
 #include <QSpinBox>
 #include <QDoubleSpinBox>
@@ -152,17 +154,20 @@ void Plot3DDialog::initAxesPage()
 
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Title")), 0, 0);
-	boxLabel = new QLineEdit();
+	boxLabel = new QTextEdit();
+	boxLabel->setMaximumHeight(60);
     gl1->addWidget(boxLabel, 0, 1);
     gl1->addWidget(new QLabel(tr("Axis Font")), 1, 0);
 
     QHBoxLayout* hb1 = new QHBoxLayout();
 	btnLabelFont = new QPushButton(tr( "&Choose font" ));
     hb1->addWidget(btnLabelFont);
-	buttonAxisLowerGreek = new QPushButton(QChar(0x3B1));
-    hb1->addWidget(buttonAxisLowerGreek);
-	buttonAxisUpperGreek = new QPushButton(QChar(0x393));
-    hb1->addWidget(buttonAxisUpperGreek);
+	
+	axisTitleFormatButtons = new TextFormatButtons(boxLabel);
+	axisTitleFormatButtons->toggleCurveButton(false);
+	axisTitleFormatButtons->toggleFontButtons(false);
+	hb1->addWidget(axisTitleFormatButtons);
+
     hb1->addStretch();
     gl1->addLayout(hb1, 1, 1);
 
@@ -185,8 +190,6 @@ void Plot3DDialog::initAxesPage()
     axes->setLayout(hb2);
 	generalDialog->insertTab(axes, tr( "&Axis" ) );
 
-	connect( buttonAxisLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()));
-	connect( buttonAxisUpperGreek, SIGNAL(clicked()), this, SLOT(showUpperGreek()));
 	connect( axesList2, SIGNAL(currentRowChanged(int)), this, SLOT(viewAxisOptions(int)));
 	connect( axesList, SIGNAL(currentRowChanged(int)), this, SLOT(viewScaleLimits(int)));
 	connect( btnLabelFont, SIGNAL(clicked()), this, SLOT(pickAxisLabelFont()));
@@ -204,17 +207,18 @@ void Plot3DDialog::initTitlePage()
 
     btnTitleFont = new QPushButton(tr( "&Font" ));
     hb1->addWidget(btnTitleFont);
-
-	buttonLowerGreek = new QPushButton(QChar(0x3B1));
-    hb1->addWidget(buttonLowerGreek);
-	buttonUpperGreek = new QPushButton(QChar(0x393));
-    hb1->addWidget(buttonUpperGreek);
-
+	
+	QVBoxLayout* vl = new QVBoxLayout();
+	boxTitle = new QTextEdit();
+	boxTitle->setMaximumHeight(80);
+	vl->addWidget(boxTitle);
+	
+	titleFormatButtons = new TextFormatButtons(boxTitle);
+	titleFormatButtons->toggleCurveButton(false);
+	titleFormatButtons->toggleFontButtons(false);
+	hb1->addWidget(titleFormatButtons);
     hb1->addStretch();
 
-	QVBoxLayout* vl = new QVBoxLayout();
-	boxTitle = new QLineEdit();
-	vl->addWidget(boxTitle);
     vl->addLayout(hb1);
     vl->addStretch();
 
@@ -223,8 +227,6 @@ void Plot3DDialog::initTitlePage()
 	generalDialog->insertTab(title, tr( "&Title" ) );
 
 	connect( btnTitleFont, SIGNAL(clicked()), this, SLOT(pickTitleFont() ) );
-	connect( buttonLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()));
-	connect( buttonUpperGreek, SIGNAL(clicked()), this, SLOT(showUpperGreek()));
 }
 
 void Plot3DDialog::initColorsPage()
@@ -588,32 +590,6 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	connect( boxDistance, SIGNAL(valueChanged(int)), d_plot, SLOT(setLabelsDistance(int)));
 };
 
-void Plot3DDialog::showLowerGreek()
-{
-	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::lowerGreek, this, Qt::Tool);
-	greekLetters->setAttribute(Qt::WA_DeleteOnClose);
-	connect(greekLetters, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
-	greekLetters->show();
-	greekLetters->setActiveWindow();
-}
-
-void Plot3DDialog::showUpperGreek()
-{
-	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::upperGreek, this, Qt::Tool);
-	greekLetters->setAttribute(Qt::WA_DeleteOnClose);
-	connect(greekLetters, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
-	greekLetters->show();
-	greekLetters->setActiveWindow();
-}
-
-void Plot3DDialog::addSymbol(const QString& letter)
-{
-	if (generalDialog->currentPage()==(QWidget*)title)
-		boxTitle->insert(letter);
-	else if (generalDialog->currentPage()==(QWidget*)axes)
-		boxLabel->insert(letter);
-}
-
 void Plot3DDialog::worksheet()
 {
 	d_plot->showWorksheet();
@@ -766,7 +742,7 @@ bool Plot3DDialog::updatePlot()
 
         app->custom3DActions(d_plot);
 	} else if (generalDialog->currentPage()==(QWidget*)title){
-		d_plot->setTitle(boxTitle->text(), btnTitleColor->color(), titleFont);
+		d_plot->setTitle(boxTitle->text().remove("\n"), btnTitleColor->color(), titleFont);
 	} else if (generalDialog->currentPage()==(QWidget*)colors){
 		d_plot->changeTransparency(boxTransparency->value()*0.01);
 		d_plot->setDataColors(btnFromColor->color(), btnToColor->color());
@@ -817,17 +793,17 @@ bool Plot3DDialog::updatePlot()
 		switch(axis)
 		{
 		case 0:
-			d_plot->setXAxisLabel(boxLabel->text());
+			d_plot->setXAxisLabel(boxLabel->text().remove("\n"));
 			d_plot->setXAxisLabelFont(axisFont(axis));
 			d_plot->setXAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
 		break;
 		case 1:
-			d_plot->setYAxisLabel(boxLabel->text());
+			d_plot->setYAxisLabel(boxLabel->text().remove("\n"));
 			d_plot->setYAxisLabelFont(axisFont(axis));
 			d_plot->setYAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
 		break;
 		case 2:
-			d_plot->setZAxisLabel(boxLabel->text());
+			d_plot->setZAxisLabel(boxLabel->text().remove("\n"));
 			d_plot->setZAxisLabelFont(axisFont(axis));
 			d_plot->setZAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
 		break;

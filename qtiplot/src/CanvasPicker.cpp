@@ -33,6 +33,7 @@
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "PlotCurve.h"
+#include "ApplicationWindow.h"
 
 #include <QVector>
 #include <qwt_text_label.h>
@@ -155,16 +156,20 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				Graph *g = plot();
 
 				if (g->drawLineActive()) {
+					ApplicationWindow *app = g->multiLayer()->applicationWindow();
+					if (!app)
+						return true;
+					
 					ArrowMarker mrk;
 					mrk.attach(g->plotWidget());
 					mrk.setStartPoint(startLinePoint);
 					mrk.setEndPoint(QPoint(me->x(), me->y()));
-					mrk.setColor(g->arrowDefaultColor());
-					mrk.setWidth(g->arrowDefaultWidth());
-					mrk.setStyle(g->arrowLineDefaultStyle());
-					mrk.setHeadLength(g->arrowHeadDefaultLength());
-					mrk.setHeadAngle(g->arrowHeadDefaultAngle());
-					mrk.fillArrowHead(g->arrowHeadDefaultFill());
+					mrk.setColor(app->defaultArrowColor);
+					mrk.setWidth(app->defaultArrowLineWidth);
+					mrk.setStyle(app->defaultArrowLineStyle);
+					mrk.setHeadLength(app->defaultArrowHeadLength);
+					mrk.setHeadAngle(app->defaultArrowHeadAngle);
+					mrk.fillArrowHead(app->defaultArrowHeadFill);
 					mrk.drawEndArrow(g->drawArrow());
 					mrk.drawStartArrow(false);
 
@@ -217,11 +222,15 @@ void CanvasPicker::drawTextMarker(const QPoint& point)
 {
 	LegendWidget t(plotWidget);
 	t.move(point);
-	t.setFrameStyle(plot()->textMarkerDefaultFrame());
-	t.setFont(plot()->defaultTextMarkerFont());
-	t.setTextColor(plot()->textMarkerDefaultColor());
-	t.setBackgroundColor(plot()->textMarkerDefaultBackground());
 	t.setText(tr("enter your text here"));
+
+	ApplicationWindow *app = plot()->multiLayer()->applicationWindow();
+	if (app){		
+		t.setFrameStyle(app->legendFrameStyle);
+		t.setFont(app->plotLegendFont);
+		t.setTextColor(app->legendTextColor);
+		t.setBackgroundColor(app->legendBackground);
+	}
 
 	LegendWidget *l = plot()->insertText(&t);
 	l->setSelected();

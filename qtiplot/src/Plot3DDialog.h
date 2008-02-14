@@ -35,6 +35,7 @@
 class QComboBox;
 class QLabel;
 class QLineEdit;
+class QTextEdit;
 class QListWidget;
 class QPushButton;
 class QRadioButton;
@@ -45,6 +46,7 @@ class QStringList;
 class QStackedWidget;
 class QDoubleSpinBox;
 class ColorButton;
+class TextFormatButtons;
 
 using namespace Qwt3D;
 
@@ -85,10 +87,6 @@ private slots:
 	void initPointsOptionsStack();
 	void changeZoom(int);
 	void changeTransparency(int val);
-
-	void showLowerGreek();
-	void showUpperGreek();
-	void addSymbol(const QString& letter);
     void pickDataColorMap();
 
 private:
@@ -104,15 +102,15 @@ private:
     QDoubleSpinBox *boxMeshLineWidth;
     QPushButton* buttonApply;
     QPushButton* buttonOk;
-    QPushButton* buttonCancel, *buttonLowerGreek, *buttonUpperGreek;
+    QPushButton* buttonCancel;
 	QPushButton *btnTitleFont, *btnLabelFont;
     QPushButton *btnNumbersFont, *btnTable, *btnColorMap;
 	ColorButton *btnBackground, *btnMesh, *btnAxes, *btnTitleColor, *btnLabels;
 	ColorButton *btnFromColor, *btnToColor, *btnNumbers, *btnGrid;
-	QPushButton *buttonAxisLowerGreek, *buttonAxisUpperGreek;
     QTabWidget* generalDialog;
 	QWidget *scale, *colors, *general, *axes, *title, *bars, *points;
-	QLineEdit *boxTitle, *boxFrom, *boxTo, *boxLabel;
+	QLineEdit *boxFrom, *boxTo;
+	QTextEdit *boxTitle, *boxLabel;
 	QSpinBox *boxMajors, *boxMinors;
 	QGroupBox *TicksGroupBox, *AxesColorGroupBox;
 	QSpinBox *boxResolution, *boxDistance, *boxTransparency;
@@ -124,6 +122,7 @@ private:
 	QLineEdit *boxSize, *boxBarsRad, *boxCrossRad, *boxCrossLinewidth;
 	QStackedWidget *optionStack;
 	QWidget *dotsPage, *conesPage, *crossPage;
+	TextFormatButtons *titleFormatButtons, *axisTitleFormatButtons;
 };
 
 #endif

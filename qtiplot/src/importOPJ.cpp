@@ -1297,7 +1297,7 @@ void ImportOPJ::addText(const text& _text, Graph* graph, LegendWidget* txt, cons
 	if(!txt)
 		txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(_text.txt.c_str())));
 
-	QFont font(graph->defaultTextMarkerFont());
+	QFont font(mw->plotLegendFont);
 	font.setPointSize(floor(_text.fontsize*fFontScaleFactor + 0.5));
 	txt->setAngle(_text.rotation);
 	txt->setTextColor(ColorBox::color(_text.color));

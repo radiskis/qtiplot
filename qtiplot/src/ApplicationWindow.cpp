@@ -2466,9 +2466,6 @@ void ApplicationWindow::setPreferences(Graph* g)
 	}
 
 	g->initFonts(plotAxesFont, plotNumbersFont);
-	g->setTextMarkerDefaults(legendFrameStyle, plotLegendFont, legendTextColor, legendBackground);
-	g->setArrowDefaults(defaultArrowLineWidth, defaultArrowColor, defaultArrowLineStyle,
-			defaultArrowHeadLength, defaultArrowHeadAngle, defaultArrowHeadFill);
 	g->initTitle(titleOn, plotTitleFont);
 	g->setCanvasFrame(canvasFrameWidth);
 	g->plotWidget()->setMargin(defaultPlotMargin);
@@ -3361,18 +3358,6 @@ void ApplicationWindow::setLegendDefaultSettings(int frame, const QFont& font,
 	legendTextColor = textCol;
 	legendBackground = backgroundCol;
 	plotLegendFont = font;
-
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows)
-	{
-		if (w->isA("MultiLayer"))
-		{
-			QWidgetList graphsList = ((MultiLayer*)w)->graphPtrs();
-			foreach(QWidget *widget, graphsList)
-				((Graph *)widget)->setTextMarkerDefaults(frame, font, textCol, backgroundCol);
-		}
-	}
-	delete windows;
 	saveSettings();
 }
 
@@ -3393,21 +3378,6 @@ void ApplicationWindow::setArrowDefaultSettings(double lineWidth,  const QColor&
 	defaultArrowHeadLength = headLength;
 	defaultArrowHeadAngle = headAngle;
 	defaultArrowHeadFill = fillHead;
-
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows)
-	{
-		if (w->isA("MultiLayer"))
-		{
-			QWidgetList graphsList = ((MultiLayer*)w)->graphPtrs();
-			foreach(QWidget *widget, graphsList)
-				((Graph *)widget)->setArrowDefaults(defaultArrowLineWidth, defaultArrowColor,
-
-					defaultArrowLineStyle, defaultArrowHeadLength,
-					defaultArrowHeadAngle, defaultArrowHeadFill);
-		}
-	}
-	delete windows;
 	saveSettings();
 }
 
@@ -4347,7 +4317,7 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); // Legend
 
 	settings.beginGroup("/Arrows");
-	defaultArrowLineWidth = settings.value("/Width", 1).toInt();
+	defaultArrowLineWidth = settings.value("/Width", 1).toDouble();
 	defaultArrowColor = settings.value("/Color", "#000000").value<QColor>();//default color Qt::black
 	defaultArrowHeadLength = settings.value("/HeadLength", 4).toInt();
 	defaultArrowHeadAngle = settings.value("/HeadAngle", 45).toInt();
@@ -10450,9 +10420,6 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
     ag->blockSignals(false);
     ag->setIgnoreResizeEvents(!app->autoResizeLayers);
     ag->setAutoscaleFonts(app->autoScaleFonts);
-	ag->setTextMarkerDefaults(app->legendFrameStyle, app->plotLegendFont, app->legendTextColor, app->legendBackground);
-	ag->setArrowDefaults(app->defaultArrowLineWidth, app->defaultArrowColor, app->defaultArrowLineStyle,
-			app->defaultArrowHeadLength, app->defaultArrowHeadAngle, app->defaultArrowHeadFill);
     return ag;
 }
 
