@@ -44,7 +44,7 @@ class TableStatistics : public Table
 	public:
 		//! supported statistics types
 		enum Type { row, column };
-		TableStatistics(ScriptingEnv *env, QWidget *parent, Table *base, Type, QList<int> targets);
+		TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type, QList<int> targets);
 		//! return the type of statistics
 		Type type() const { return d_type; }
 		//! return the base table of which statistics are displayed
@@ -52,9 +52,9 @@ class TableStatistics : public Table
 		// saving
 		virtual QString saveToString(const QString &geometry, bool = false);
 
-		public slots:
-			//! update statistics after a column has changed (to be connected with Table::modifiedData)
-			void update(Table*, const QString& colName);
+    public slots:
+        //! update statistics after a column has changed (to be connected with Table::modifiedData)
+        void update(Table*, const QString& colName);
 		//! handle renaming of columns (to be connected with Table::changedColHeader)
 		void renameCol(const QString&, const QString&);
 		//! remove statistics of removed columns (to be connected with Table::removedCol)

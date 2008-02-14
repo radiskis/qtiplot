@@ -61,13 +61,13 @@
 
 #include "analysis/fft2D.h"
 
-Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
+Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 : MdiSubWindow(label, parent, name, f), scripted(env)
 {
 	initTable(r, c);
 }
 
-Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
+Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 : MdiSubWindow(label, parent, name, f), scripted(env)
 {
 	initImage(image);

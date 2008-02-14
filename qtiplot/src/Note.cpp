@@ -32,7 +32,7 @@
 #include "Note.h"
 #include "ScriptEdit.h"
 
-Note::Note(ScriptingEnv *env, const QString& label, QWidget* parent, const QString& name, Qt::WFlags f)
+Note::Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 		 : MdiSubWindow(label, parent, name, f)
 {
 init(env);
@@ -43,8 +43,8 @@ void Note::init(ScriptingEnv *env)
 autoExec = false;
 te = new ScriptEdit(env, this, name());
 te->setContext(this);
-setWidget(te);	
-	
+setWidget(te);
+
 setGeometry(0, 0, 500, 200);
 connect(te, SIGNAL(textChanged()), this, SLOT(modifiedNote()));
 connect(te, SIGNAL(dirPathChanged(const QString& )), this, SIGNAL(dirPathChanged(const QString&)));

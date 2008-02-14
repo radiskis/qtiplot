@@ -62,7 +62,7 @@ public:
 	 * \param f window flags
 	 * \sa setCaptionPolicy(), captionPolicy()
 	 */
-	MdiSubWindow(const QString& label = QString(), QWidget * parent = 0, const QString& name = QString(), Qt::WFlags f = 0);
+	MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = 0, const QString& name = QString(), Qt::WFlags f = 0);
 
 	//! Possible window captions.
 	enum CaptionPolicy{
@@ -71,6 +71,9 @@ public:
 		Both = 2 //!< caption = "name - label"
 	};
 	enum Status{Hidden = -1, Normal = 0, Minimized = 1, Maximized = 2};
+
+    //! Returns a pointer to the parent application
+    ApplicationWindow *applicationWindow(){return d_app;};
 
 	//! Return the window label
 	QString windowLabel(){return QString(d_label);};
@@ -142,6 +145,9 @@ public:
 	void setMinimized();
 	void setMaximized();
 
+    //! Returns the size the window had before a change state event to minimized.
+    QSize minRestoreSize(){return d_min_restore_size;};
+
 signals:
 	//! Emitted when the window was closed
 	void closedWindow(MdiSubWindow *);
@@ -181,6 +187,8 @@ private:
 	bool d_confirm_close;
 	//! The creation date
 	QString d_birthdate;
+    //! Stores the size the window had before a change state event to minimized.
+	QSize d_min_restore_size;
 };
 
 #endif

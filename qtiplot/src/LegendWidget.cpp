@@ -30,6 +30,7 @@
 #include "QwtPieCurve.h"
 #include "VectorCurve.h"
 #include "SelectionMoveResizer.h"
+#include "ApplicationWindow.h"
 
 #include <QPainter>
 #include <QPolygon>
@@ -51,7 +52,7 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 	d_angle(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	
+
 	d_text = new QwtText(QString::null, QwtText::RichText);
 	d_text->setFont(QFont("Arial", 12, QFont::Normal, false));
 	d_text->setRenderFlags(Qt::AlignTop|Qt::AlignLeft);
@@ -99,10 +100,10 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 }
 
 void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
-{	
+{
 	int x = map[QwtPlot::xBottom].transform(xValue());
 	int y = map[QwtPlot::yLeft].transform(yValue());
-		
+
     const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
 	QwtArray<long> heights = itemsHeight(y, symbolLineLength, width, height);
@@ -198,7 +199,7 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 
 	VectorCurve *v = (VectorCurve*)c;
 	p->save();
-	
+
 	if (((Graph *)d_plot->parent())->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
 
@@ -233,7 +234,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
         drawVector(c, p, x, y, l);
         return;
     }
-	
+
 	if (c->type() == Graph::Pie){
 		QwtPieCurve *pie = (QwtPieCurve *)c;
 		const QBrush br = QBrush(pie->color(point), pie->pattern());
@@ -276,13 +277,13 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	p->save();
 	if (((Graph *)d_plot->parent())->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
-		
+
 	int l = symbolLineLength;
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 
 	QFontMetrics fm(d_text->font());
-	
+
 	for (int i=0; i<(int)titles.count(); i++){
         int w = rect.x() + left_margin;
 		QString s = titles[i];
@@ -298,7 +299,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 					size = fm.size(Qt::TextSingleLine, aux.text());
 					aux.setRenderFlags(Qt::AlignLeft | Qt::AlignVCenter);
 				}
-				
+
                 QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
                 aux.draw(p, tr);
                 w += size.width();
@@ -325,7 +326,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                     QSize size = aux.textSize();
 					if (d_SVG_mode)
 						size = fm.size(Qt::TextSingleLine, aux.text());
-					
+
                     QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
                     aux.draw(p, tr);
                     w += size.width();
@@ -350,7 +351,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 				size = fm.size(Qt::TextSingleLine, aux.text());
 				aux.setRenderFlags(Qt::AlignLeft | Qt::AlignVCenter);
 			}
-			
+
 			QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
 			aux.draw(p, tr);
 		}
@@ -366,7 +367,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 	QwtArray<long> heights(n);
 
 	QFontMetrics fm(d_text->font());
-	
+
 	width = 0;
 	height = 0;
 	int maxL = 0;
@@ -379,7 +380,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 			if (pos >= 0){
                 QwtText aux(parse(s.left(pos)));
                 aux.setFont(d_text->font());
-                QSize size = aux.textSize(); 
+                QSize size = aux.textSize();
 				if (d_SVG_mode)
 					size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
                 textL += size.width();
@@ -400,7 +401,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
                 if (pos >= 0){
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
-                    QSize size = aux.textSize(); 
+                    QSize size = aux.textSize();
 					if (d_SVG_mode)
 						size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
                     textL += size.width();
@@ -412,7 +413,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 
 		QwtText aux(parse(s));
 		aux.setFont(d_text->font());
-		QSize size = aux.textSize(); 
+		QSize size = aux.textSize();
 		if (d_SVG_mode)
 			size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
 		textL += size.width();
@@ -551,7 +552,7 @@ void LegendWidget::mousePressEvent (QMouseEvent *)
 
 	((Graph *)d_plot->parent())->activateGraph();
 	((Graph *)d_plot->parent())->deselectMarker();
-	
+
     d_selector = new SelectionMoveResizer(this);
 	connect(d_selector, SIGNAL(targetsChanged()), (Graph*)d_plot->parent(), SIGNAL(modifiedGraph()));
 	((Graph *)d_plot->parent())->setSelectedText(this);
@@ -568,7 +569,6 @@ void LegendWidget::setSelected(bool on)
 			((Graph *)d_plot->parent())->setSelectedText(this);
 		}
 	} else if (d_selector){
-        //delete d_selector;
 		d_selector->close();
 		d_selector = NULL;
 		((Graph *)d_plot->parent())->setSelectedText(NULL);
@@ -581,8 +581,15 @@ void LegendWidget::showTextEditor()
         delete d_selector;
 		d_selector = NULL;
 	}
-	
-	enableEditor();
+
+    ApplicationWindow *app = ((Graph *)d_plot->parent())->multiLayer()->applicationWindow();
+    if (!app)
+        return;
+
+	if (app->d_in_place_editing)
+        enableEditor();
+    else
+        showDialog();
 }
 
 void LegendWidget::clone(LegendWidget* t)

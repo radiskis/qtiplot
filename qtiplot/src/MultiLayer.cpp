@@ -77,7 +77,7 @@ void LayerButton::mouseDoubleClickEvent ( QMouseEvent * )
 	emit showCurvesDialog();
 }
 
-MultiLayer::MultiLayer(const QString& label, QWidget* parent, const char* name, Qt::WFlags f)
+MultiLayer::MultiLayer(const QString& label, ApplicationWindow* parent, const char* name, Qt::WFlags f)
 : MdiSubWindow(label, parent, name, f),
 active_graph(NULL),
 graphs(0),

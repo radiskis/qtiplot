@@ -71,8 +71,8 @@ public:
 	 * \param name window name
 	 * \param f window flags
 	 */
-	Matrix(ScriptingEnv *env, int r, int c, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
-    Matrix(ScriptingEnv *env, const QImage& image, const QString& label, QWidget* parent=0, const QString& name = QString(), Qt::WFlags f=0);
+	Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
+    Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
 
     enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};

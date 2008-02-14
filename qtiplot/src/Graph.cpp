@@ -268,6 +268,20 @@ void Graph::deselectMarker()
 	}
 }
 
+void Graph::enableTextEditor()
+{
+    ApplicationWindow *app = multiLayer()->applicationWindow();
+    if (!app)
+        return;
+
+	if (app->d_in_place_editing)
+        emit enableTextEditor(this);
+    else if (titlePicker->selected())
+        viewTitleDialog();
+    else
+        showAxisTitleDialog();
+}
+
 QList <LegendWidget *> Graph::textsList()
 {
 	QList <LegendWidget *> texts;
@@ -3491,7 +3505,7 @@ void Graph::updateMarkersBoundingRect()
 	int images = d_images.size();
 	if (!lines && !images)
 		return;
-	
+
 	for (int i=0; i<lines; i++){
 		ArrowMarker* a = (ArrowMarker*)d_plot->marker(d_lines[i]);
 		if (a)
@@ -4545,7 +4559,7 @@ void Graph::setAntialiasing(bool on, bool update)
 			if (m)
 				m->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		}
-		
+
 		d_plot->grid()->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		d_plot->replot();
 	}

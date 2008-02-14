@@ -357,6 +357,7 @@ void ApplicationWindow::initWindow()
 void ApplicationWindow::initGlobalConstants()
 {
 	d_opening_file = false;
+    d_in_place_editing = true;
 
 	d_matrix_tool_bar = true;
 	d_file_tool_bar = true;
@@ -4322,6 +4323,7 @@ void ApplicationWindow::readSettings()
 		plotLegendFont=QFont (graphFonts[8],graphFonts[9].toInt(),graphFonts[10].toInt(),graphFonts[11].toInt());
 		plotTitleFont=QFont (graphFonts[12],graphFonts[13].toInt(),graphFonts[14].toInt(),graphFonts[15].toInt());
 	}
+	d_in_place_editing = settings.value("/InPlaceEditing", true).toBool();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -4610,6 +4612,9 @@ void ApplicationWindow::saveSettings()
 	graphFonts<<QString::number(plotTitleFont.weight());
 	graphFonts<<QString::number(plotTitleFont.italic());
 	settings.setValue("/Fonts", graphFonts);
+
+
+	settings.setValue("/InPlaceEditing", d_in_place_editing);
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -4976,17 +4981,16 @@ QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
 			return s + "maximized\n";
 	}
 
-	if (!w->parent())
-        s+="0\t0\t500\t400\t";
-    else{
-        s += QString::number(w->x()) + "\t";
-        s += QString::number(w->y()) + "\t";
+    s += QString::number(w->x()) + "\t";
+    s += QString::number(w->y()) + "\t";
+	if (w->status() != MdiSubWindow::Minimized){
         s += QString::number(w->width()) + "\t";
         s += QString::number(w->height()) + "\t";
-    }
-
-    if (w->status() == MdiSubWindow::Minimized)
+    } else {
+        s += QString::number(w->minRestoreSize().width()) + "\t";
+        s += QString::number(w->minRestoreSize().height()) + "\t";
         s += "minimized\t";
+    }
 
     bool hide = hidden(w);
     if (w == w->folder()->activeWindow() && !hide)
@@ -5005,10 +5009,8 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 	QString caption = w->objectName();
 	if (s.contains ("minimized")) {
 	    QStringList lst = s.split("\t");
-	    if (lst.count() > 4){
+	    if (lst.count() > 4)
             w->resize(lst[3].toInt(), lst[4].toInt());
-            w->move(lst[1].toInt(), lst[2].toInt());
-	    }
 		w->setStatus(MdiSubWindow::Minimized);
 		app->setListView(caption, tr("Minimized"));
 	} else if (s.contains ("maximized")){
@@ -5400,7 +5402,7 @@ void ApplicationWindow::showAxisTitleDialog()
 	Graph* g = ((MultiLayer*)w)->activeGraph();
 	if (!g)
 		return;
-	
+
 	TextDialog* td = new TextDialog(TextDialog::AxisTitle, this, 0);
 	td->setGraph(g);
 	td->exec();
@@ -8709,7 +8711,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 
 void ApplicationWindow::chooseHelpFolder()
 {
-	QFileInfo hfi(helpFilePath);	
+	QFileInfo hfi(helpFilePath);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
 			hfi.dir().absolutePath());
 
@@ -10026,12 +10028,12 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				if (d_file_version <= 89)
 					first_color = convertOldToNewColorIndex(first_color);
 
-				if (curve.size() >= 22){//version 0.9.3-rc3			
+				if (curve.size() >= 22){//version 0.9.3-rc3
 					ag->plotPie(table, curve[1], pen, curve[5].toInt(),
 						curve[6].toInt(), first_color, startRow, endRow, visible,
 						curve[11].toDouble(), curve[12].toDouble(), curve[13].toDouble(),
 						curve[14].toDouble(), curve[15].toDouble(), curve[16].toInt(),
-						curve[17].toInt(), curve[18].toInt(), curve[19].toInt(), 
+						curve[17].toInt(), curve[18].toInt(), curve[19].toInt(),
 						curve[20].toInt(), curve[21].toInt());
 				} else
 					ag->plotPie(table, curve[1], pen, curve[5].toInt(),

@@ -18,7 +18,7 @@ DEFINES         += SCRIPTING_DIALOG
 
 CONFIG          += release
 #CONFIG          += debug
-#win32: CONFIG   += console
+win32: CONFIG   += console
 
 # what to install and where
 INSTALLS        += target

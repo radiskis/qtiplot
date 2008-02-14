@@ -74,6 +74,7 @@ void SelectionMoveResizer::init()
 	d_op_start = QPoint(0,0);
 	d_op_dp = QPoint(0,0);
 
+    setAttribute(Qt::WA_DeleteOnClose);
 	setGeometry(0, 0, parentWidget()->width(), parentWidget()->height());
 	setMouseTracking(true);
 	parentWidget()->installEventFilter(this);

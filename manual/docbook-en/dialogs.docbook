@@ -406,12 +406,30 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
 <title>Plot Details for pie plots</title>
   <para>These commands are available for <link linkend="pie-cmd">pie plots</link>. The first tab allows the customization of the pie segments. The left fields are used to modify the border which is drawn round each segment: color, type and width of line. The default is no border (line width = 0).</para>
   <para>The right fields are used to define the filling of the plots. The color button defines the one used for the first segment, then the others segments will have colors which follow the order defined in the list. The default value for this field is black, so segment 2, 3, etc will be red, green, etc.</para>
-  <para>The pattern will be used for all segments of the pie, the default value is solid filling. The last field defines the size of the pie in pixels.</para>
+  <para>The pattern will be used for all segments of the pie, the default value is solid filling.</para>
   <figure id="fig-custom-curves-pie-1">
     <title>The Plot Details Dialog for pies: pie segment formatting.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/custom-curves-pie-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-pie-2">
+    <title>The Plot Details Dialog for pies: pie geometry.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-pie-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-pie-3">
+    <title>The Plot Details Dialog for pies: pie labels formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-pie-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1146,7 +1164,11 @@ to convert the data to your current settings, by checking the
   <title>Text options</title>
   <para>This dialog can be opened by several commands such as &format-title-lnk;
   or when you double click on an axis title in your plot.
-  The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis> commands allow the modification of the general settings of the text label.</para>
+  The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis>
+  commands allow the modification of the general settings of the text label.
+  By checking the box <emphasis>Apply format to all labels in layer</emphasis>,
+  the formating will be applied to all texts in the plot layer, including the plot title and
+  the axes labels.</para>
 
   <figure id="fig-text-options">
     <title>The axis title options dialog.</title>
@@ -1161,7 +1183,7 @@ to convert the data to your current settings, by checking the
   When the text object is a legend, listing the curves plotted on the layer, the curve symbols and
   lines are also drawn in the text box, in front of the curve names.
   In order to display the symbol of a curve and the name of the data set,
-  the follwing synthax is used: <emphasis>\c{2}%(2)</emphasis>. Here the number 2, refers to the index
+  the follwing synthax is used: <emphasis>\l(2)%(2)</emphasis>. Here the number 2, refers to the index
   of the curve and the % character is an alias for the name of the data set. </para>
 
   <para>The <emphasis>Opacity</emphasis> of the <emphasis>Background color</emphasis> can have a value
