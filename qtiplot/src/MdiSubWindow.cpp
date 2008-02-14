@@ -37,15 +37,16 @@
 #include <QDateTime>
 #include <QMenu>
 
-MdiSubWindow::MdiSubWindow(const QString& label, QWidget * parent, const QString& name, Qt::WFlags f):
-		QMdiSubWindow (parent, f),
-		d_app((ApplicationWindow *)parent),
-		d_folder(((ApplicationWindow *)parent)->currentFolder()),
+MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const QString& name, Qt::WFlags f):
+		QMdiSubWindow (app, f),
+		d_app(app),
+		d_folder(app->currentFolder()),
 		d_label(label),
 		d_status(Normal),
 		d_caption_policy(Both),
 		d_confirm_close(true),
-		d_birthdate(QDateTime::currentDateTime ().toString(Qt::LocalDate))
+		d_birthdate(QDateTime::currentDateTime ().toString(Qt::LocalDate)),
+		d_min_restore_size(QSize())
 {
 	setObjectName(name);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -142,11 +143,13 @@ void MdiSubWindow::changeEvent(QEvent *event)
 	if (!isHidden() && event->type() == QEvent::WindowStateChange){
 		Status oldStatus = d_status;
 		Status newStatus = Normal;
-		if( windowState() & Qt::WindowMinimized )
+		if( windowState() & Qt::WindowMinimized ){
+		    if (oldStatus != Minimized)
+                d_min_restore_size = frameSize();
 	    	newStatus = Minimized;
-		else if ( windowState() & Qt::WindowMaximized )
+		} else if ( windowState() & Qt::WindowMaximized )
 	     	newStatus = Maximized;
-		
+
 		if (newStatus != oldStatus){
 			d_status = newStatus;
     		emit statusChanged (this);

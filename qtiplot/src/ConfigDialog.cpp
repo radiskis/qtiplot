@@ -300,6 +300,10 @@ void ConfigDialog::initPlotsPage()
 
 	optionsTabLayout->addWidget( boxResize );
 
+    boxLabelsEditing = new QCheckBox();
+    boxLabelsEditing->setChecked(!app->d_in_place_editing);
+    optionsTabLayout->addWidget(boxLabelsEditing);
+
 	plotsTabWidget->addTab( plotOptions, QString() );
 
 	initCurvesPage();
@@ -440,9 +444,9 @@ void ConfigDialog::initPlots3DPage()
 
 	groupBox3DCol = new QGroupBox();
 	QGridLayout * middleLayout = new QGridLayout( groupBox3DCol );
-	
-	QStringList plot3DColors = app->plot3DColors; 
-	
+
+	QStringList plot3DColors = app->plot3DColors;
+
 	btnFromColor = new ColorButton();
 	btnFromColor->setColor(QColor(plot3DColors[4]));
 	middleLayout->addWidget( btnFromColor, 0, 0 );
@@ -482,7 +486,7 @@ void ConfigDialog::initPlots3DPage()
 	plots3DPageLayout->addWidget(groupBox3DCol);
 	plots3DPageLayout->addWidget(groupBox3DFonts);
 	plots3DPageLayout->addStretch();
-	
+
 	connect( btnNumFnt, SIGNAL( clicked() ), this, SLOT(pick3DNumbersFont() ) );
 	connect( btnTitleFnt, SIGNAL( clicked() ), this, SLOT(pick3DTitleFont() ) );
 	connect( btnLabelsFnt, SIGNAL( clicked() ), this, SLOT(pick3DAxesFont() ) );
@@ -621,7 +625,7 @@ void ConfigDialog::initAppPage()
 	numericFormatLayout->setRowStretch(4, 1);
 
 	appTabWidget->addTab( numericFormatPage, QString() );
-	
+
 	initFileLocationsPage();
 
 	connect( boxLanguage, SIGNAL( activated(int) ), this, SLOT( switchToLanguage(int) ) );
@@ -792,30 +796,30 @@ void ConfigDialog::initFileLocationsPage()
 
 	lblTranslationsPath = new QLabel("Translations");
 	gl->addWidget(lblTranslationsPath , 0, 0);
-	
+
 	translationsPathLine = new QLineEdit();
 	translationsPathLine->setText(app->d_translations_folder);
 	gl->addWidget(translationsPathLine, 0, 1);
-	
+
 	QPushButton *browseTranslationsBtn = new QPushButton("...");
 	gl->addWidget(browseTranslationsBtn, 0, 2);
-	
+
 	lblHelpPath = new QLabel("Help");
 	gl->addWidget(lblHelpPath, 1, 0 );
-	
-	QFileInfo hfi(app->helpFilePath);	
+
+	QFileInfo hfi(app->helpFilePath);
 	helpPathLine = new QLineEdit(hfi.dir().absolutePath());
 	gl->addWidget( helpPathLine, 1, 1);
-	
+
 	QPushButton *browseHelpBtn = new QPushButton("...");
 	gl->addWidget(browseHelpBtn, 1, 2);
 	gl->setRowStretch(2, 1);
-	
+
 	QVBoxLayout *vl = new QVBoxLayout(fileLocationsPage);
 	vl->addWidget(gb);
-	
+
 	appTabWidget->addTab(fileLocationsPage, QString());
-	
+
 	connect(browseTranslationsBtn, SIGNAL(clicked()), this, SLOT(chooseTranslationsFolder()));
 	connect(browseHelpBtn, SIGNAL(clicked()), this, SLOT(chooseHelpFolder()));
 }
@@ -857,7 +861,7 @@ void ConfigDialog::languageChange()
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotFonts), tr("Fonts"));
 
 	boxResize->setText(tr("Do not &resize layers when window size changes"));
-
+    boxLabelsEditing->setText(tr("&Disable in-place editing"));
 	lblMinTicksLength->setText(tr("Length"));
 
 	lblAxesLineWidth->setText(tr("Axes linewidth" ));
@@ -962,7 +966,7 @@ void ConfigDialog::languageChange()
 
 	lblTranslationsPath->setText("Translations");
 	lblHelpPath->setText("Help");
-	
+
 	//tables page
 	boxTableComments->setText(tr("&Display Comments in Header"));
 	groupBoxTableCol->setTitle(tr("Colors"));
@@ -1091,6 +1095,7 @@ void ConfigDialog::apply()
 	app->customizeTables(buttonBackground->color(), buttonText->color(),
 			buttonHeader->color(), textFont, headerFont, boxTableComments->isChecked());
 	// 2D plots page: options tab
+	app->d_in_place_editing = !boxLabelsEditing->isChecked();
 	app->titleOn=boxTitle->isChecked();
 	app->allAxesOn = boxAllAxes->isChecked();
 
@@ -1196,7 +1201,7 @@ void ConfigDialog::apply()
 	plot3DColors << btnMesh->color().name() << btnGrid->color().name() << btnFromColor->color().name();
 	plot3DColors << btnNumbers->color().name() << btnAxes->color().name() << btnBackground3D->color().name();
 	app->plot3DColors = plot3DColors;
-	
+
 	app->showPlot3DLegend = boxShowLegend->isChecked();
 	app->showPlot3DProjection = boxShowProjection->isChecked();
 	app->plot3DResolution = boxResolution->value();
@@ -1414,7 +1419,7 @@ void ConfigDialog::insertLanguagesList()
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	if(!app)
 		return;
-	
+
 	boxLanguage->clear();
 	QString qmPath = app->d_translations_folder;
 	QDir dir(qmPath);
@@ -1467,7 +1472,7 @@ void ConfigDialog::chooseTranslationsFolder()
 	if (!app)
 		return;
 
-	QFileInfo tfi(app->d_translations_folder);	
+	QFileInfo tfi(app->d_translations_folder);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot translations folder!"),
 			tfi.dir().absolutePath());
 
@@ -1478,15 +1483,15 @@ void ConfigDialog::chooseTranslationsFolder()
 		insertLanguagesList();
 	}
 }
-	
+
 void ConfigDialog::chooseHelpFolder()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	if (!app)
 		return;
-		
+
 	app->chooseHelpFolder();
-	
-	QFileInfo hfi(app->helpFilePath);	
+
+	QFileInfo hfi(app->helpFilePath);
 	helpPathLine->setText(hfi.dir().absolutePath());
 }

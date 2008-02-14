@@ -46,7 +46,7 @@ class QListWidget;
 class ColorButton;
 class ColorBox;
 class DoubleSpinBox;
-	
+
 //! Preferences dialog
 class ConfigDialog : public QDialog
 {
@@ -96,7 +96,7 @@ private slots:
 	void showPointsBox(bool);
 
 	void switchToLanguage(int param);
-	
+
 	void chooseTranslationsFolder();
 	void chooseHelpFolder();
 
@@ -150,7 +150,7 @@ private:
 	QLabel *lblScriptingLanguage, *lblInitWindow;
 	QComboBox *boxScriptingLanguage, *boxInitWindow;
 	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
-	QCheckBox *boxPromptRenameTables, *boxBackupProject;
+	QCheckBox *boxPromptRenameTables, *boxBackupProject, *boxLabelsEditing;
 	QWidget *fileLocationsPage;
 	QLabel *lblTranslationsPath, *lblHelpPath;
 	QLineEdit *translationsPathLine, *helpPathLine;

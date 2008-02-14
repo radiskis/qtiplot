@@ -537,7 +537,7 @@ void PlotDialog::initPieGeometryPage()
 	boxPieStartAzimuth->setLocale(locale);
 	gl1->addWidget(boxPieStartAzimuth, 0, 1);
 
-    boxPieConterClockwise = new QCheckBox(tr("Counter clockwise"));
+    boxPieConterClockwise = new QCheckBox(tr("Counter cloc&kwise"));
 	gl1->addWidget(boxPieConterClockwise, 1, 0);
 	gl1->setRowStretch(2, 1);
 
@@ -582,10 +582,10 @@ void PlotDialog::initPieLabelsPage()
 
 	boxPiePercentages = new QCheckBox(tr("&Percentages"));
 	gl1->addWidget(boxPiePercentages, 1, 0);
-	
+
 	boxPieCategories = new QCheckBox(tr("Categories/&Rows"));
 	gl1->addWidget(boxPieCategories, 2, 0);
-	
+
 	gl1->setRowStretch(3, 1);
 
     boxPieWedge = new QGroupBox(tr( "Associate Position with &Wedge" ));

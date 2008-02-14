@@ -647,7 +647,7 @@ class Graph: public QWidget
 
 		void setCurrentFont(const QFont& f);
 		void notifyFontChange(const QFont& f){emit currentFontChanged(f);};
-        void enableTextEditor(){emit enableTextEditor(this);};
+        void enableTextEditor();
 
 signals:
 		void selectedGraph (Graph*);

@@ -48,7 +48,7 @@
 #include <qwt_scale_widget.h>
 
 TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
-	: QDialog( parent, fl)	
+	: QDialog( parent, fl)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle( tr( "QtiPlot - Text options" ) );
@@ -57,9 +57,9 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	d_graph = NULL;
 	d_scale = NULL;
 	d_legend = NULL;
-	
+
 	textType = type;
-	
+
 	// top groupbox
 	groupBox1 = new QGroupBox(QString());
 	QGridLayout * topLayout = new QGridLayout(groupBox1);
@@ -89,8 +89,8 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 		alignmentBox->addItem( tr( "Left" ) );
 		alignmentBox->addItem( tr( "Right" ) );
 		topLayout->addWidget(alignmentBox, 2, 1);
-		
-		boxApplyToAll = new QCheckBox(tr("Apply &format to all labels in layer"));
+
+		boxApplyToAll = new QCheckBox(tr("Apply format to all &labels in layer"));
 		topLayout->addWidget(boxApplyToAll, 3, 0 );
 	} else {
 		topLayout->addWidget(new QLabel(tr("Frame")), 2, 0);
@@ -121,7 +121,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 
 		connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)),
 				this, SLOT(updateTransparency(int)));
-		
+
 		boxApplyToAll = new QCheckBox(tr("Apply format to all &labels in layer"));
 		topLayout->addWidget(boxApplyToAll, 5, 0 );
 
@@ -167,7 +167,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	mainLayout->addWidget(formatButtons);
 	mainLayout->addWidget(textEditBox);
 	setLayout( mainLayout );
-	
+
 	// signals and slots connections
 	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
@@ -188,7 +188,7 @@ void TextDialog::setGraph(Graph *g)
 		d_scale = g->currentScale();
 		if (!d_scale)
 			return;
-	
+
 		l =	d_scale->title();
 		switch(d_scale->alignment()){
 			case QwtScaleDraw::BottomScale:
@@ -205,8 +205,8 @@ void TextDialog::setGraph(Graph *g)
 			break;
 		}
 	}
-	
-	setAlignment(l.renderFlags());	
+
+	setAlignment(l.renderFlags());
 	setText(l.text());
 	selectedFont = l.font();
 	colorBtn->setColor(l.color());
@@ -223,12 +223,12 @@ void TextDialog::setLegendWidget(LegendWidget *l)
 	setText(l->text());
 	selectedFont = l->font();
 	colorBtn->setColor(l->textColor());
-	
+
 	QColor bc = l->backgroundColor();
 	boxBackgroundTransparency->setValue(bc.alpha());
 	backgroundBtn->setEnabled(bc.alpha());
 	backgroundBtn->setColor(bc);
-	
+
 	backgroundBox->setCurrentIndex(l->frameStyle());
 
 	d_legend->setSelected(false);
@@ -236,15 +236,15 @@ void TextDialog::setLegendWidget(LegendWidget *l)
 
 void TextDialog::apply()
 {
-	if (textType == AxisTitle){		
+	if (textType == AxisTitle){
 		if (!d_graph || !d_scale)
 			return;
-		
+
 		QwtText t =	d_scale->title();
 		t.setRenderFlags(alignment());
 		t.setText(textEditBox->toPlainText());
 		d_scale->setTitle(t);
-		
+
 		if (boxApplyToAll->isChecked())
 			formatAllLabels();
 		else {
@@ -268,16 +268,16 @@ void TextDialog::apply()
 			d_legend->setFont(selectedFont);
 			d_legend->repaint();
 		}
-	} else if (textType == LayerTitle){		
+	} else if (textType == LayerTitle){
 		if (!d_graph)
 			return;
-		
+
 		Plot *plot = d_graph->plotWidget();
 		QwtText t =	plot->title();
 		t.setRenderFlags(alignment());
 		t.setText(textEditBox->toPlainText());
 		plot->setTitle(t);
-		
+
 		if (boxApplyToAll->isChecked())
 			formatAllLabels();
 		else {
@@ -286,21 +286,21 @@ void TextDialog::apply()
 			plot->setTitle(t);
 			plot->replot();
 		}
-	} 
-	
+	}
+
 	if (d_graph)
 		d_graph->notifyChanges();
 }
 
 void TextDialog::formatAllLabels()
-{	
+{
 	if (!d_graph)
 		return;
-	
+
 	Plot *plot = d_graph->plotWidget();
 	if (!plot)
 		return;
-	
+
 	QColor tc = colorBtn->color();
 	QObjectList lst = plot->children();
 	foreach(QObject *o, lst){
@@ -316,7 +316,7 @@ void TextDialog::formatAllLabels()
 			}
 		}
 	}
-	
+
 	for (int i=0; i < QwtPlot::axisCnt; i++){
 		QwtScaleWidget *scale = (QwtScaleWidget *)plot->axisWidget(i);
 		if (scale){
@@ -326,7 +326,7 @@ void TextDialog::formatAllLabels()
 			scale->setTitle(t);
 		}
 	}
-	
+
 	QwtText t = plot->title();
 	t.setColor(tc);
 	t.setFont(selectedFont);
