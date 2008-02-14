@@ -179,18 +179,6 @@ Graph::Graph(QWidget* parent, Qt::WFlags f)
 	d_scale_on_print = true;
 	d_print_cropmarks = false;
 
-	defaultArrowLineWidth = 1;
-	defaultArrowColor = QColor(Qt::black);
-	defaultArrowLineStyle = Qt::SolidLine;
-	defaultArrowHeadLength = 4;
-	defaultArrowHeadAngle = 45;
-	defaultArrowHeadFill = true;
-
-	defaultMarkerFont = QFont();
-	defaultMarkerFrame = 1;
-	defaultTextMarkerColor = QColor(Qt::black);
-	defaultTextMarkerBackground = QColor(Qt::white);
-
 	d_user_step = QVector<double>(QwtPlot::axisCnt);
 	for (int i=0; i<QwtPlot::axisCnt; i++)
 		d_user_step[i] = 0.0;
@@ -2069,10 +2057,13 @@ LegendWidget* Graph::newLegend(const QString& text)
 			s = legendText();
 	}
 	l->setText(s);
-	l->setFrameStyle(defaultMarkerFrame);
-	l->setFont(defaultMarkerFont);
-	l->setTextColor(defaultTextMarkerColor);
-	l->setBackgroundColor(defaultTextMarkerBackground);
+	ApplicationWindow *app = multiLayer()->applicationWindow();
+	if (app){
+		l->setFrameStyle(app->legendFrameStyle);
+		l->setFont(app->plotLegendFont);
+		l->setTextColor(app->legendTextColor);
+		l->setBackgroundColor(app->legendBackground);
+	}
 
     d_legend = l;
 	emit modifiedGraph();
@@ -4242,26 +4233,6 @@ bool Graph::enableRangeSelectors(const QObject *status_target, const char *statu
 	setActiveTool(d_range_selector);
 	connect(d_range_selector, SIGNAL(changed()), this, SIGNAL(dataRangeChanged()));
 	return true;
-}
-
-void Graph::setTextMarkerDefaults(int f, const QFont& font,
-		const QColor& textCol, const QColor& backgroundCol)
-{
-	defaultMarkerFont = font;
-	defaultMarkerFrame = f;
-	defaultTextMarkerColor = textCol;
-	defaultTextMarkerBackground = backgroundCol;
-}
-
-void Graph::setArrowDefaults(double lineWidth,  const QColor& c, Qt::PenStyle style,
-		int headLength, int headAngle, bool fillHead)
-{
-	defaultArrowLineWidth = lineWidth;
-	defaultArrowColor = c;
-	defaultArrowLineStyle = style;
-	defaultArrowHeadLength = headLength;
-	defaultArrowHeadAngle = headAngle;
-	defaultArrowHeadFill = fillHead;
 }
 
 void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)

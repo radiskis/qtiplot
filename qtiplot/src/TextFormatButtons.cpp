@@ -261,3 +261,12 @@ void TextFormatButtons::toggleCurveButton(bool enable)
 {
 	buttonCurve->setVisible(enable);
 }
+
+void TextFormatButtons::toggleFontButtons(bool enable)
+{
+	buttonBold->setVisible(enable);
+	buttonItalics->setVisible(enable);
+	buttonUnderline->setVisible(enable);
+	buttonSubscript->setVisible(enable);
+	buttonSuperscript->setVisible(enable);
+}

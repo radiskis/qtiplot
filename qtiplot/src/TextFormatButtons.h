@@ -48,6 +48,8 @@ public:
 	TextFormatButtons(QTextEdit * textEdit, QWidget * parent=0);
 	//! Show/Hide the "add curve" button
 	void toggleCurveButton(bool enable);
+	//! Show/Hide the buttons linked to rich text formating: bold, italic, underline.
+	void toggleFontButtons(bool enable);
 
 private:
 	QTextEdit *connectedTextEdit;

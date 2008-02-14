@@ -337,12 +337,6 @@ class Graph: public QWidget
 		//! Used when opening a project file
 		LegendWidget* insertText(const QStringList& list, int fileVersion);
 
-		QFont defaultTextMarkerFont(){return defaultMarkerFont;};
-		QColor textMarkerDefaultColor(){return defaultTextMarkerColor;};
-		QColor textMarkerDefaultBackground(){return defaultTextMarkerBackground;};
-		int textMarkerDefaultFrame(){return defaultMarkerFrame;};
-		void setTextMarkerDefaults(int f, const QFont &font, const QColor& textCol, const QColor& backgroundCol);
-
 		void addTimeStamp();
 		void removeLegend();
 		void removeLegendItem(int index);
@@ -369,15 +363,6 @@ class Graph: public QWidget
 		bool drawArrow(){return drawArrowOn;};
 		bool drawLineActive(){return drawLineOn;};
 
-		Qt::PenStyle arrowLineDefaultStyle(){return defaultArrowLineStyle;};
-		bool arrowHeadDefaultFill(){return defaultArrowHeadFill;};
-		double arrowDefaultWidth(){return defaultArrowLineWidth;};
-		int arrowHeadDefaultLength(){return defaultArrowHeadLength;};
-		int arrowHeadDefaultAngle(){return defaultArrowHeadAngle;};
-		QColor arrowDefaultColor(){return defaultArrowColor;};
-
-		void setArrowDefaults(double lineWidth,  const QColor& c, Qt::PenStyle style,
-				int headLength, int headAngle, bool fillHead);
         bool arrowMarkerSelected();
 		//@}
 
@@ -712,16 +697,6 @@ signals:
 		int n_curves, widthLine;
 		long selectedMarker;
 		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone;
-
-		//! \name variables used when creating a new marker (text/line/arrow)
-		//@{
-		QFont defaultMarkerFont;
-		QColor defaultArrowColor, defaultTextMarkerColor, defaultTextMarkerBackground;
-		double defaultArrowLineWidth;
-		int defaultMarkerFrame, defaultArrowHeadLength, defaultArrowHeadAngle;
-		bool defaultArrowHeadFill;
-		Qt::PenStyle defaultArrowLineStyle;
-		//@}
 
 		//! The markers selected for move/resize operations or NULL if none are selected.
 		QPointer<SelectionMoveResizer> d_markers_selector;
