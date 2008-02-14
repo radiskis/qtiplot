@@ -2383,7 +2383,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
         ag->updateCurveLayout(i, &cl);
 	}
 	ag->newLegend();
-	ag->updatePlot();
+	ag->findBestLimits();
     initMultilayerPlot(g, generateUniqueName(tr("Graph")));
     g->arrangeLayers(true, false);
 	QApplication::restoreOverrideCursor();
@@ -6346,10 +6346,8 @@ void ApplicationWindow::setAutoScale()
 	}
 
 	Graph *g = (Graph*)plot->activeGraph();
-	if (g){
+	if (g)
 		g->setAutoScale();
-		emit modified();
-	}
 }
 
 void ApplicationWindow::removePoints()
