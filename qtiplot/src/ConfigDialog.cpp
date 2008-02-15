@@ -1179,9 +1179,9 @@ void ConfigDialog::apply()
             else if(w->isA("Matrix"))
                 ((Matrix *)w)->resetView();
             else if (w->isA("MultiLayer")){
-                QWidgetList gr_lst = ((MultiLayer*)w)->graphPtrs();
-                foreach(QWidget *g, gr_lst)
-                    ((Graph *)g)->plotWidget()->setLocale(locale);
+                QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+                foreach(Graph *g, layers)
+                    g->plotWidget()->setLocale(locale);
             }
         }
         delete lst;

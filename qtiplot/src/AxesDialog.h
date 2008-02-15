@@ -52,6 +52,7 @@ class ColorButton;
 class Graph;
 class TextFormatButtons;
 class DoubleSpinBox;
+class Grid;
 
 //! General plot options dialog
 /**
@@ -138,6 +139,8 @@ protected:
 	void initGridPage();
 	//! generate UI for the general page
 	void initFramePage();
+	//! Modifies the grid
+	void applyChangesToGrid(Grid *grid);
 
     QPushButton* buttonApply;
     QPushButton* buttonOk;
@@ -196,8 +199,8 @@ protected:
 	DoubleSpinBox *boxBreakStart, *boxBreakEnd, *boxStepBeforeBreak, *boxStepAfterBreak;
 	QSpinBox *boxBreakPosition, *boxBreakWidth;
 	QComboBox *boxMinorTicksBeforeBreak, *boxMinorTicksAfterBreak;
-	QCheckBox *boxLog10AfterBreak, *boxBreakDecoration;
-
+	QCheckBox *boxLog10AfterBreak, *boxBreakDecoration, *boxAntialiseGrid;
+    QComboBox *boxApplyGridFormat;
 	Graph* d_graph;
 	//! Last selected tab
   	QWidget* lastPage;

@@ -963,10 +963,10 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 
         QPoint pos = canvas->mapFromParent(me->pos());
         // iterate backwards, so layers on top are preferred for selection
-        QList<QWidget*>::iterator i = graphsList.end();
-        while (i!=graphsList.begin()) {
+        QList<Graph*>::iterator i = graphsList.end();
+        while (i != graphsList.begin()) {
             --i;
-            Graph *g = (Graph*) (*i);
+            Graph *g = *i;
             if (g->selectedText() || g->titleSelected() || g->selectedScale()){
                 g->deselect();
                 return true;
@@ -1004,10 +1004,10 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 	if (e->key() == Qt::Key_F12){
 		if (d_layers_selector)
 			delete d_layers_selector;
-		int index = graphsList.indexOf((QWidget *)active_graph) + 1;
+		int index = graphsList.indexOf(active_graph) + 1;
 		if (index >= graphsList.size())
 			index = 0;
-		Graph *g=(Graph *)graphsList.at(index);
+		Graph *g = (Graph *)graphsList.at(index);
 		if (g)
 			setActiveGraph(g);
 		return;
@@ -1016,10 +1016,10 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 	if (e->key() == Qt::Key_F10){
 		if (d_layers_selector)
 			delete d_layers_selector;
-		int index=graphsList.indexOf((QWidget *)active_graph) - 1;
+		int index = graphsList.indexOf(active_graph) - 1;
 		if (index < 0)
 			index = graphsList.size() - 1;
-		Graph *g=(Graph *)graphsList.at(index);
+		Graph *g = (Graph *)graphsList.at(index);
 		if (g)
 			setActiveGraph(g);
 		return;
@@ -1218,9 +1218,8 @@ void MultiLayer::copy(MultiLayer* ml)
 	setAlignement(ml->horizontalAlignement(), ml->verticalAlignement());
 	setMargins(ml->leftMargin(), ml->rightMargin(), ml->topMargin(), ml->bottomMargin());
 
-	QWidgetList graphsList = ml->graphPtrs();
-	for (int i=0; i<graphsList.count(); i++){
-		Graph* g = (Graph*)graphsList.at(i);
+	QList<Graph *> layers = ml->layersList();
+	foreach(Graph *g, layers){
 		Graph* g2 = addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		g2->copy(g);
 		g2->setIgnoreResizeEvents(g->ignoresResizeEvents());

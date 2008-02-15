@@ -2,7 +2,7 @@
     File                 : Grid.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+    Copyright            : (C) 2007-2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : 2D Grid class
 
@@ -39,13 +39,14 @@
 Grid::Grid() : QwtPlotGrid(),
 d_maj_pen_y(QPen(Qt::blue, 0.5, Qt::SolidLine)),
 d_min_pen_y(QPen(Qt::gray, 0.5, Qt::DotLine)),
-mrkX(-1), 
+mrkX(-1),
 mrkY(-1)
 {
 	setMajPen(QPen(Qt::blue, 0.5, Qt::SolidLine));
 	setMinPen(QPen(Qt::gray, 0.5, Qt::DotLine));
 	enableX(false);
 	enableY(false);
+    setRenderHint(QwtPlotItem::RenderAntialiased, false);
 }
 
 /*!
@@ -138,7 +139,7 @@ void Grid::load(const QStringList& grid)
 	int yAxis = QwtPlot::yLeft;
 
     QPen majPenX, minPenX, majPenY, minPenY;
-	if (grid.count() == 21){ // since 0.9 final
+	if (grid.count() >= 21){ // since 0.9 final
 		majPenX = QPen(QColor(grid[5]), grid[7].toDouble(), Graph::getPenStyle(grid[6].toInt()));
 		minPenX = QPen(QColor(grid[8]), grid[10].toDouble(), Graph::getPenStyle(grid[9].toInt()));
 		majPenY = QPen(QColor(grid[11]), grid[13].toDouble(), Graph::getPenStyle(grid[12].toInt()));
@@ -148,6 +149,9 @@ void Grid::load(const QStringList& grid)
 		yZeroOn = grid[18].toInt();
         xAxis = grid[19].toInt();
         yAxis = grid[20].toInt();
+        if (grid.count() >= 22)
+            setRenderHint(QwtPlotItem::RenderAntialiased, grid[21].toInt());
+
 	} else { // older versions of QtiPlot (<= 0.9rc3)
 		majPenX = QPen(ColorBox::color(grid[5].toInt()), grid[7].toDouble(), Graph::getPenStyle(grid[6].toInt()));
 		minPenX = QPen(ColorBox::color(grid[8].toInt()), grid[10].toDouble(), Graph::getPenStyle(grid[9].toInt()));
@@ -252,6 +256,7 @@ void Grid::copy(Grid *grid)
 
 	enableZeroLineX(grid->xZeroLineEnabled());
 	enableZeroLineY(grid->yZeroLineEnabled());
+	setRenderHint(QwtPlotItem::RenderAntialiased, grid->testRenderHint(QwtPlotItem::RenderAntialiased));
 }
 
 QString Grid::saveToString()
@@ -281,6 +286,7 @@ QString Grid::saveToString()
 	s += QString::number(xZeroLineEnabled())+"\t";
 	s += QString::number(yZeroLineEnabled())+"\t";
 	s += QString::number(xAxis())+"\t";
-	s += QString::number(yAxis())+"\n";
+	s += QString::number(yAxis())+"\t";
+	s += QString::number(testRenderHint(QwtPlotItem::RenderAntialiased))+"\n";
 	return s;
 }
