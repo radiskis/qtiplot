@@ -4,7 +4,7 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-#SCRIPTING_LANGS += Python
+SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -445,6 +445,14 @@ contains(SCRIPTING_LANGS, muParser) {
 ##################### PYTHON + SIP + PyQT #####################
 
 contains(SCRIPTING_LANGS, Python) {
+  INSTALLS += pythonconfig
+  pythonconfig.files += qtiplotrc.py \
+  						qtiUtil.py
+  
+  unix: pythonconfig.path = /etc
+  win32: pythonconfig.path = $$INSTALLBASE
+  
+  DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
   DEFINES += SCRIPTING_PYTHON
   HEADERS += src/PythonScript.h src/PythonScripting.h
   SOURCES += src/PythonScript.cpp src/PythonScripting.cpp

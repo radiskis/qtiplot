@@ -31,7 +31,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
-
+#include <cstring>
 #include <algorithm> //required for std::swap
 #include "OPJFile.h"
 

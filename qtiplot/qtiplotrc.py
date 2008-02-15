@@ -250,4 +250,8 @@ for name in appImports:
 # import utility module
 import sys
 sys.path.append(".")
-import_to_global("qtiUtil")
+try:
+	import_to_global("qtiUtil")
+	print "qtiUtil file successfully imported!"
+except(ImportError):
+	print "Failed to import qtiUtil file!"

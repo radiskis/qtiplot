@@ -2630,22 +2630,13 @@ TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QL
 Note* ApplicationWindow::newNote(const QString& caption)
 {
 	Note* m = new Note(scriptEnv, "", this);
-	if (caption.isEmpty())
-		initNote(m, generateUniqueName(tr("Notes")));
-	else
-		initNote(m, caption);
-	m->showNormal();
-	return m;
-}
-
-void ApplicationWindow::initNote(Note* m, const QString& caption)
-{
-	QString name=caption;
+	
+	QString name = caption;
 	while(name.isEmpty() || alreadyUsedName(name))
 		name = generateUniqueName(tr("Notes"));
 
 	m->setName(name);
-	m->setIcon( QPixmap(note_xpm) );
+	m->setIcon(QPixmap(note_xpm));
 	m->askOnCloseEvent(confirmCloseNotes);
 	m->setDirPath(scriptsDirPath);
 
@@ -2660,8 +2651,9 @@ void ApplicationWindow::initNote(Note* m, const QString& caption)
 	connect(m, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
 	connect(m, SIGNAL(statusChanged(MdiSubWindow*)), this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect(m, SIGNAL(dirPathChanged(const QString&)), this, SLOT(scriptsDirPathChanged(const QString&)));
-
-	emit modified();
+	
+	m->showNormal();
+	return m;
 }
 
 Matrix* ApplicationWindow::newMatrix(int rows, int columns)
@@ -4197,22 +4189,6 @@ void ApplicationWindow::readSettings()
 	asciiDirPath = settings.value("/ASCII", appPath).toString();
 	imagesDirPath = settings.value("/Images", appPath).toString();
 #else
-	/*QVariant help_file_setting = settings.value("/HelpFile");
-	if (help_file_setting.isValid())
-		helpFilePath = help_file_setting.toString();
-	else {
-		QString locale = QLocale().name(); // language_country according to ISO 639 and 3166, respectively
-		QStringList help_dir_suffixes;
-		help_dir_suffixes << locale << locale.section('_',0,0) << appLanguage << "en";
-		QFileInfo help_file_info;
-		foreach (QString suffix, help_dir_suffixes) {
-			help_file_info.setFile(QString("/usr/share/doc/qtiplot/manual-%1/index.html").arg(suffix));
-			if (help_file_info.exists())
-				break;
-		}
-		// intentionally defaults to .../manual-en/index.html even if it doesn't exist
-		helpFilePath = help_file_info.absoluteFilePath();
-	}*/
 	fitPluginsPath = settings.value("/FitPlugins", "/usr/lib/qtiplot/plugins").toString();
 	templatesDir = settings.value("/TemplatesDir", QDir::homePath()).toString();
 	asciiDirPath = settings.value("/ASCII", QDir::homePath()).toString();
@@ -9625,11 +9601,10 @@ void ApplicationWindow::deleteLayer()
 
 Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &flist)
 {
-	QStringList lst=flist[0].split("\t", QString::SkipEmptyParts);
+	QStringList lst = flist[0].split("\t", QString::SkipEmptyParts);
 	QString caption = lst[0];
 	Note* w = app->newNote(caption);
-	if (lst.count() == 2)
-	{
+	if (lst.count() == 2){
 		app->setListViewDate(caption, lst[1]);
 		w->setBirthDate(lst[1]);
 	}
