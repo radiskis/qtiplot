@@ -22,13 +22,23 @@ win32: CONFIG   += console
 
 # what to install and where
 INSTALLS        += target
+INSTALLS        += translations
+INSTALLS        += manual
 INSTALLS        += documentation
+unix:INSTALLS        += man
+
 unix: INSTALLBASE = /usr
 win32: INSTALLBASE = c:/QtiPlot
 
 unix: target.path = $$INSTALLBASE/bin
+unix: translations.path = $$INSTALLBASE/share/qtiplot/translations
+unix: manual.path = $$INSTALLBASE/share/doc/qtiplot/manual
 unix: documentation.path = $$INSTALLBASE/share/doc/qtiplot
+unix: man.path = $$INSTALLBASE/share/man/man1/
+
 win32: target.path = $$INSTALLBASE
+win32: translations.path = $$INSTALLBASE/translations
+win32: manual.path = $$INSTALLBASE/manual
 win32: documentation.path = $$INSTALLBASE/doc
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
@@ -86,6 +96,8 @@ CONFIG        += qt warn_on exceptions opengl thread
 CONFIG        += assistant
 
 DEFINES       += QT_PLUGIN
+DEFINES       += TRANSLATIONS_PATH="\\\"$$replace(translations.path," ","\ ")\\\"
+DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\"
 win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
 QT            += opengl qt3support network svg xml
 
@@ -115,11 +127,22 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
 system(lupdate -verbose qtiplot.pro)
 system(lrelease -verbose qtiplot.pro)
 
+translations.files += translations/qtiplot_de.qm \
+                  translations/qtiplot_es.qm \
+                  translations/qtiplot_fr.qm \
+                  translations/qtiplot_ru.qm \
+                  translations/qtiplot_ja.qm \
+                  translations/qtiplot_sv.qm
+					   
 ###################### DOCUMENTATION ########################################
 
-documentation.files += ../manual/html \
-                       ../README.html \
-                       ../gpl_licence.txt \
+manual.files += ../manual/html \
+				../manual/qtiplot-manual-en.pdf
+
+documentation.files += ../README.html \
+                       ../gpl_licence.txt
+
+unix: man.files += ../qtiplot.1
 
 ###################### HEADERS ##############################################
 
