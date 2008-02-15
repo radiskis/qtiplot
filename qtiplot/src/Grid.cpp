@@ -38,12 +38,12 @@
 
 Grid::Grid() : QwtPlotGrid(),
 d_maj_pen_y(QPen(Qt::blue, 0.5, Qt::SolidLine)),
-d_min_pen_y(QPen(Qt::gray, 0.5, Qt::DotLine)),
+d_min_pen_y(QPen(Qt::gray, 0.4, Qt::DotLine)),
 mrkX(-1),
 mrkY(-1)
 {
 	setMajPen(QPen(Qt::blue, 0.5, Qt::SolidLine));
-	setMinPen(QPen(Qt::gray, 0.5, Qt::DotLine));
+	setMinPen(QPen(Qt::gray, 0.4, Qt::DotLine));
 	enableX(false);
 	enableY(false);
     setRenderHint(QwtPlotItem::RenderAntialiased, false);

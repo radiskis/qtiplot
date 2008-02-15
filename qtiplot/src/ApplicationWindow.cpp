@@ -4,7 +4,7 @@
 --------------------------------------------------------------------
 	Copyright            : (C) 2006 by Ion Vasilief,
 	                       Tilman Hoener zu Siederdissen,
-                          Knut Franke
+                           Knut Franke
 	Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
 	                       knut.franke*gmx.de
 	Description          : QtiPlot's main window
@@ -392,9 +392,21 @@ void ApplicationWindow::initGlobalConstants()
 	d_init_window_type = TableWindow;
 
 	QString aux = qApp->applicationDirPath();
+	workingDir = aux;
+	
+#ifdef TRANSLATIONS_PATH
+	d_translations_folder = TRANSLATIONS_PATH;
+#else
 	d_translations_folder = aux + "/translations";
-    workingDir = aux;
+#endif
+	
+#ifdef MANUAL_PATH
+	helpFilePath = MANUAL_PATH;
+	helpFilePath += "/html/index.html";
+#else
 	helpFilePath = aux + "/manual/index.html";
+#endif
+
 	fitPluginsPath = aux + "fitPlugins";
 	fitModelsPath = QString::null;
 	templatesDir = aux;
@@ -4177,15 +4189,15 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); // Colors
 
 	settings.beginGroup("/Paths");
-    workingDir = settings.value("/WorkingDir", qApp->applicationDirPath()).toString();
+	QString appPath = qApp->applicationDirPath();
+    workingDir = settings.value("/WorkingDir", appPath).toString();
 #ifdef Q_OS_WIN
-	helpFilePath = settings.value("/HelpFile", qApp->applicationDirPath()+"/manual/index.html").toString();
 	fitPluginsPath = settings.value("/FitPlugins", "fitPlugins").toString();
-	templatesDir = settings.value("/TemplatesDir", qApp->applicationDirPath()).toString();
-	asciiDirPath = settings.value("/ASCII", qApp->applicationDirPath()).toString();
-	imagesDirPath = settings.value("/Images", qApp->applicationDirPath()).toString();
+	templatesDir = settings.value("/TemplatesDir", appPath).toString();
+	asciiDirPath = settings.value("/ASCII", appPath).toString();
+	imagesDirPath = settings.value("/Images", appPath).toString();
 #else
-	QVariant help_file_setting = settings.value("/HelpFile");
+	/*QVariant help_file_setting = settings.value("/HelpFile");
 	if (help_file_setting.isValid())
 		helpFilePath = help_file_setting.toString();
 	else {
@@ -4200,17 +4212,18 @@ void ApplicationWindow::readSettings()
 		}
 		// intentionally defaults to .../manual-en/index.html even if it doesn't exist
 		helpFilePath = help_file_info.absoluteFilePath();
-	}
+	}*/
 	fitPluginsPath = settings.value("/FitPlugins", "/usr/lib/qtiplot/plugins").toString();
 	templatesDir = settings.value("/TemplatesDir", QDir::homePath()).toString();
 	asciiDirPath = settings.value("/ASCII", QDir::homePath()).toString();
 	imagesDirPath = settings.value("/Images", QDir::homePath()).toString();
     workingDir = settings.value("/WorkingDir", QDir::homePath()).toString();
 #endif
-	scriptsDirPath = settings.value("/ScriptsDir", qApp->applicationDirPath()).toString();
+	scriptsDirPath = settings.value("/ScriptsDir", appPath).toString();
 	fitModelsPath = settings.value("/FitModelsDir", "").toString();
 	customActionsDirPath = settings.value("/CustomActionsDir", "").toString();
-	d_translations_folder = settings.value("/Translations", qApp->applicationDirPath() + "/translations").toString();
+	helpFilePath = settings.value("/HelpFile", helpFilePath).toString();
+	d_translations_folder = settings.value("/Translations", d_translations_folder).toString();
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ------------- end group General ------------------- */
