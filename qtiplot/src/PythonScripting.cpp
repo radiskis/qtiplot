@@ -252,15 +252,30 @@ bool PythonScripting::initialize()
 	setQObject(this, "stdout", sys);
 	setQObject(this, "stderr", sys);
 
-#ifdef Q_WS_WIN
+/*#ifdef Q_WS_WIN
 	loadInitFile(QDir::homeDirPath()+"/qtiplotrc") ||
 		loadInitFile(QCoreApplication::instance()->applicationDirPath()+"/qtiplotrc") ||
 #else
 	loadInitFile(QDir::homeDirPath()+"/.qtiplotrc") ||
 		loadInitFile(QDir::rootDirPath()+"etc/qtiplotrc") ||
 #endif
-		loadInitFile("qtiplotrc");
-
+		loadInitFile("qtiplotrc");*/
+	
+#ifdef PYTHON_CONFIG_PATH
+	bool initialized = loadInitFile(PYTHON_CONFIG_PATH"/qtiplotrc");
+	if(!initialized) 
+		initialized = loadInitFile(PYTHON_CONFIG_PATH"/.qtiplotrc");
+#else
+	bool initialized = loadInitFile(QDir::homeDirPath()+"/qtiplotrc");
+	if(!initialized)
+		initialized = loadInitFile(QDir::homeDirPath()+"/.qtiplotrc");
+	if(!initialized)
+		initialized = loadInitFile(QDir::rootDirPath()+"etc/qtiplotrc");
+	if(!initialized)
+		initialized = loadInitFile(QCoreApplication::instance()->applicationDirPath()+"/qtiplotrc");
+	if(!initialized)
+		initialized = loadInitFile("qtiplotrc");
+#endif
 //	PyEval_ReleaseLock();
 	return true;
 }
@@ -273,7 +288,7 @@ PythonScripting::~PythonScripting()
 }
 
 bool PythonScripting::loadInitFile(const QString &path)
-{
+{	
 	QFileInfo pyFile(path+".py"), pycFile(path+".pyc");
 	bool success = false;
 	if (pycFile.isReadable() && (pycFile.lastModified() >= pyFile.lastModified())) {
@@ -420,5 +435,3 @@ const QStringList PythonScripting::fileExtensions() const
 	extensions << "py" << "PY";
 	return extensions;
 }
-
-
