@@ -1470,21 +1470,29 @@ void AxesDialog::initGridPage()
     boxGridYAxis = new QComboBox();
     boxGridYAxis->insertItem(tr("Left"));
     boxGridYAxis->insertItem(tr("Right"));
-    rightLayout->addWidget( boxGridYAxis, 4, 2);
+    rightLayout->addWidget(boxGridYAxis, 4, 2);
 
     rightLayout->addWidget( new QLabel(tr( "Additional lines" )), 5, 0);
 
-    boxXLine = new QCheckBox();
-    boxXLine->setText( tr( "X=0" ) );
+    boxXLine = new QCheckBox(tr( "X=0" ));
     boxXLine->setDisabled(true);
     rightLayout->addWidget( boxXLine, 5, 1);
 
-    boxYLine = new QCheckBox();
-    boxYLine->setText( tr( "Y=0" ) );
-    rightLayout->addWidget( boxYLine, 5, 2);
+    boxYLine = new QCheckBox(tr( "Y=0" ));
+    rightLayout->addWidget(boxYLine, 5, 2);
 
-    rightLayout->setRowStretch( 6, 1 );
-    rightLayout->setColumnStretch( 4, 1 );
+    rightLayout->addWidget( new QLabel(tr( "Apply To" )), 6, 0);
+    boxApplyGridFormat = new QComboBox();
+    boxApplyGridFormat->insertItem(tr("This Layer"));
+    boxApplyGridFormat->insertItem(tr("This Window"));
+    boxApplyGridFormat->insertItem(tr("All Windows"));
+    rightLayout->addWidget(boxApplyGridFormat, 6, 1);
+
+    boxAntialiseGrid = new QCheckBox(tr("An&tialised"));
+    rightLayout->addWidget(boxAntialiseGrid, 6, 2);
+
+    rightLayout->setRowStretch(7, 1);
+    rightLayout->setColumnStretch(4, 1);
 
     QPixmap image2( ( const char** ) image2_data );
     QPixmap image3( ( const char** ) image3_data );
@@ -1518,6 +1526,7 @@ void AxesDialog::initGridPage()
 
 	connect(boxMajorGrid,SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
 	connect(boxMinorGrid,SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
+	connect(boxAntialiseGrid,SIGNAL(toggled(bool)), this, SLOT(updateGrid()));
 	connect(boxColorMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
 	connect(boxColorMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
 	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
@@ -2174,11 +2183,64 @@ void AxesDialog::updateGrid()
 	if (generalDialog->currentWidget() != gridPage)
 		return;
 
-	Grid *grid = (Grid *)d_graph->plotWidget()->grid();
+    switch(boxApplyGridFormat->currentIndex()){
+        case 0:
+        {
+            applyChangesToGrid(d_graph->plotWidget()->grid());
+            d_graph->replot();
+            d_graph->notifyChanges();
+        }
+        break;
+
+        case 1:
+        {
+            MultiLayer *plot = d_graph->multiLayer();
+            if (!plot)
+                return;
+
+            QList<Graph *> layers = plot->layersList();
+			foreach(Graph *g, layers){
+                if (g->isPiePlot())
+                    continue;
+
+                applyChangesToGrid(g->plotWidget()->grid());
+                g->replot();
+            }
+            plot->applicationWindow()->modifiedProject();
+        }
+        break;
+
+        case 2:
+        {
+            ApplicationWindow *app = (ApplicationWindow *)parent();
+            if (!app)
+                return;
+
+            QWidgetList *windows = app->windowsList();
+            foreach(QWidget *w, *windows){
+                if (w->isA("MultiLayer")){
+                    QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+                    foreach(Graph *g, layers){
+                        if (g->isPiePlot())
+                            continue;
+                        applyChangesToGrid(g->plotWidget()->grid());
+                        g->replot();
+                    }
+                }
+            }
+            delete windows;
+            app->modifiedProject();
+        }
+        break;
+    }
+}
+
+void AxesDialog::applyChangesToGrid(Grid *grid)
+{
     if (!grid)
         return;
 
-	if (axesGridList->currentRow()==1){
+	if (axesGridList->currentRow() == 1){
 		grid->enableX(boxMajorGrid->isChecked());
 		grid->enableXMin(boxMinorGrid->isChecked());
 
@@ -2198,10 +2260,8 @@ void AxesDialog::updateGrid()
 
 	grid->enableZeroLineX(boxXLine->isChecked());
 	grid->enableZeroLineY(boxYLine->isChecked());
-
 	grid->setAxis(boxGridXAxis->currentIndex() + 2, boxGridYAxis->currentIndex());
-	d_graph->replot();
-	d_graph->notifyChanges();
+	grid->setRenderHint(QwtPlotItem::RenderAntialiased, boxAntialiseGrid->isChecked());
 }
 
 void AxesDialog::showGridOptions(int axis)
@@ -2209,15 +2269,16 @@ void AxesDialog::showGridOptions(int axis)
     Grid *grd = (Grid *)d_graph->plotWidget()->grid();
     if (!grd)
         return;
-	
+
+    boxMajorGrid->blockSignals(true);
+	boxMinorGrid->blockSignals(true);
 	boxWidthMajor->blockSignals(true);
 	boxWidthMinor->blockSignals(true);
 	boxColorMajor->blockSignals(true);
 	boxColorMinor->blockSignals(true);
 	boxTypeMajor->blockSignals(true);
 	boxTypeMinor->blockSignals(true);
-	disconnect(boxMajorGrid, SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
-	disconnect(boxMinorGrid, SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
+    boxAntialiseGrid->blockSignals(true);
 
     if (axis == 1) {
         boxMajorGrid->setChecked(grd->xEnabled());
@@ -2275,14 +2336,17 @@ void AxesDialog::showGridOptions(int axis)
     boxXLine->setChecked(grd->xZeroLineEnabled());
     boxYLine->setChecked(grd->yZeroLineEnabled());
 
+    boxAntialiseGrid->setChecked(grd->testRenderHint(QwtPlotItem::RenderAntialiased));
+
+    boxAntialiseGrid->blockSignals(false);
 	boxWidthMajor->blockSignals(false);
 	boxWidthMinor->blockSignals(false);
 	boxColorMajor->blockSignals(false);
 	boxColorMinor->blockSignals(false);
 	boxTypeMajor->blockSignals(false);
 	boxTypeMinor->blockSignals(false);
-	connect(boxMajorGrid, SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
-	connect(boxMinorGrid, SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
+	boxMajorGrid->blockSignals(false);
+	boxMinorGrid->blockSignals(false);
 }
 
 void AxesDialog::stepEnabled()

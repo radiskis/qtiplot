@@ -66,7 +66,7 @@ class MultiLayer: public MdiSubWindow
 
 public:
     MultiLayer (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WFlags f=0);
-	QWidgetList graphPtrs(){return graphsList;};
+	QList<Graph *> layersList(){return graphsList;};
 	Graph *layer(int num);
 	LayerButton* addLayerButton();
 	void copy(MultiLayer* ml);
@@ -193,7 +193,8 @@ private:
 	int l_canvas_width, l_canvas_height, hor_align, vert_align;
 	bool d_scale_on_print, d_print_cropmarks;
 
-    QWidgetList buttonsList, graphsList;
+    QWidgetList buttonsList;
+    QList<Graph *> graphsList;
 	QHBoxLayout *layerButtonsBox;
     QWidget *canvas;
 

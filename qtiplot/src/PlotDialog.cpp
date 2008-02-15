@@ -1284,13 +1284,10 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
     listBox->addTopLevelItem(item);
     listBox->setCurrentItem(item);
 
-    QWidgetList plots = ml->graphPtrs();
-    for (int i = 0; i < plots.count(); ++i){
-        Graph* g = (Graph*)plots.at(i);
-        if (!g)
-            continue;
-
-        LayerItem *layer = new LayerItem(g, item, tr("Layer") + QString::number(i+1));
+    QList<Graph *> layers = ml->layersList();
+    int i = 0;
+    foreach(Graph *g, layers){
+        LayerItem *layer = new LayerItem(g, item, tr("Layer") + QString::number(++i));
         item->addChild(layer);
 
         if (g == ml->activeGraph()){
@@ -2105,23 +2102,20 @@ bool PlotDialog::acceptParams()
 		if (!boxAll->isChecked())
 			return true;
 
-		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++){
-			Graph* g = (Graph*)allPlots.at(i);
-			if (g){
-				g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
-				g->setMargin(boxMargin->value());
+		QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers){
+            g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
+            g->setMargin(boxMargin->value());
 
-				QColor c = boxBackgroundColor->color();
-				c.setAlpha(boxBackgroundTransparency->value());
-				g->setBackgroundColor(c);
+            QColor c = boxBackgroundColor->color();
+            c.setAlpha(boxBackgroundTransparency->value());
+            g->setBackgroundColor(c);
 
-				c = boxCanvasColor->color();
-				c.setAlpha(boxCanvasTransparency->value());
-				g->setCanvasBackground(c);
+            c = boxCanvasColor->color();
+            c.setAlpha(boxCanvasTransparency->value());
+            g->setCanvasBackground(c);
 
-				g->setAntialiasing(boxAntialiasing->isChecked());
-			}
+            g->setAntialiasing(boxAntialiasing->isChecked());
 		}
 		return true;
 	} else if (privateTabWidget->currentWidget() == layerGeometryPage){
@@ -2634,89 +2628,60 @@ void PlotDialog::updateTreeWidgetItem(QTreeWidgetItem *item)
 void PlotDialog::updateBackgroundTransparency(int alpha)
 {
 	boxBackgroundColor->setEnabled(alpha);
+    QColor c = boxBackgroundColor->color();
+    c.setAlpha(boxBackgroundTransparency->value());
 
-	if (boxAll->isChecked())
-	{
-		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++)
-		{
-			Graph* g = (Graph*)allPlots.at(i);
-			if (g)
-			{
-				QColor c = boxBackgroundColor->color();
-				c.setAlpha(boxBackgroundTransparency->value());
-				g->setBackgroundColor(c);
-			}
-		}
-	}
-	else
-	{
+	if (boxAll->isChecked()){
+		QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers)
+            g->setBackgroundColor(c);
+	} else {
 	    LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return;
         Graph *g = item->graph();
 		if (g)
-		{
-			QColor c = boxBackgroundColor->color();
-			c.setAlpha(boxBackgroundTransparency->value());
 			g->setBackgroundColor(c);
-		}
 	}
 }
 
 void PlotDialog::updateCanvasTransparency(int alpha)
 {
     boxCanvasColor->setEnabled(alpha);
+    QColor c = boxCanvasColor->color();
+    c.setAlpha(boxCanvasTransparency->value());
 
-	if (boxAll->isChecked())
-	{
-		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++)
-		{
-			Graph* g = (Graph*)allPlots.at(i);
-			if (g)
-			{
-				QColor c = boxCanvasColor->color();
-				c.setAlpha(boxCanvasTransparency->value());
-				g->setCanvasBackground(c);
-			}
-		}
-	}
-	else
-	{
+	if (boxAll->isChecked()){
+		QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers)
+            g->setCanvasBackground(c);
+	} else {
 		LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return;
         Graph *g = item->graph();
 		if (g)
-		{
-			QColor c = boxCanvasColor->color();
-			c.setAlpha(boxCanvasTransparency->value());
 			g->setCanvasBackground(c);
-		}
 	}
 }
 
 void PlotDialog::pickCanvasColor()
 {
 	QColor c = boxCanvasColor->color();
+    c.setAlpha(boxCanvasTransparency->value());
+
 	if (boxAll->isChecked()){
-		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++){
-			Graph* g=(Graph*)allPlots.at(i);
-			if (g){
-				c.setAlpha(boxCanvasTransparency->value());
-				g->setCanvasBackground(c);
-				g->replot();
-			}
-		}
+		QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers){
+            g->setCanvasBackground(c);
+            g->replot();
+        }
 	} else {
 		LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return;
         Graph *g = item->graph();
 		if (g){
-			c.setAlpha(boxCanvasTransparency->value());
 			g->setCanvasBackground(c);
 			g->replot();
 		}
@@ -2726,15 +2691,13 @@ void PlotDialog::pickCanvasColor()
 void PlotDialog::pickBackgroundColor()
 {
 	QColor c = boxBackgroundColor->color();
+    c.setAlpha(boxBackgroundTransparency->value());
+
 	if (boxAll->isChecked()){
-		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<(int)allPlots.count();i++){
-			Graph* g=(Graph*)allPlots.at(i);
-			if (g){
-				c.setAlpha(boxBackgroundTransparency->value());
-				g->setBackgroundColor(c);
-				g->replot();
-			}
+		QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers){
+            g->setBackgroundColor(c);
+            g->replot();
 		}
 	} else {
 		LayerItem *item = (LayerItem *)listBox->currentItem();
@@ -2742,7 +2705,6 @@ void PlotDialog::pickBackgroundColor()
             return;
         Graph *g = item->graph();
 		if (g){
-			c.setAlpha(boxBackgroundTransparency->value());
 			g->setBackgroundColor(c);
 			g->replot();
 		}
@@ -2752,12 +2714,9 @@ void PlotDialog::pickBackgroundColor()
 void PlotDialog::pickBorderColor()
 {
 	if (boxAll->isChecked()){
-		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++){
-			Graph* g=(Graph*)allPlots.at(i);
-			if (g)
-				g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
-		}
+		QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers)
+            g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
 	} else {
 		LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
@@ -2776,13 +2735,9 @@ void PlotDialog::updateAntialiasing(bool on)
 
 	if (boxAll->isChecked())
 	{
-		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++)
-		{
-			Graph* g = (Graph*)allPlots.at(i);
-			if (g)
-				g->setAntialiasing(on);
-		}
+		QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers)
+            g->setAntialiasing(on);
 	}
 	else
 	{
@@ -2802,13 +2757,9 @@ void PlotDialog::updateBorder(int width)
 
 	if (boxAll->isChecked())
 	{
-		QWidgetList allPlots = d_ml->graphPtrs();
-		for (int i=0; i<allPlots.count();i++)
-		{
-			Graph* g=(Graph*)allPlots.at(i);
-			if (g)
-				g->setFrame(width, boxBorderColor->color());
-		}
+		QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers)
+            g->setFrame(width, boxBorderColor->color());
 	}
 	else
 	{
@@ -2829,13 +2780,9 @@ void PlotDialog::changeMargin(int width)
 
     if (boxAll->isChecked())
     {
-        QWidgetList allPlots = d_ml->graphPtrs();
-        for (int i=0; i<allPlots.count();i++)
-        {
-            Graph* g=(Graph*)allPlots.at(i);
-            if (g)
-                g->setMargin(width);
-        }
+        QList<Graph *> layers = d_ml->layersList();
+        foreach(Graph *g, layers)
+            g->setMargin(width);
     }
     else
     {

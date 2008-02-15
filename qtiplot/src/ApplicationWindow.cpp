@@ -1611,9 +1611,9 @@ void ApplicationWindow::updateTableNames(const QString& oldName, const QString& 
 	QWidgetList *windows = windowsList();
 	foreach (QWidget *w, *windows) {
 		if (w->isA("MultiLayer")) {
-			QWidgetList gr_lst = ((MultiLayer*)w)->graphPtrs();
-			foreach(QWidget *widget, gr_lst)
-				((Graph *)widget)->updateCurveNames(oldName, newName);
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers)
+				g->updateCurveNames(oldName, newName);
 		} else if (w->isA("Graph3D")) {
 			QString name = ((Graph3D*)w)->formula();
 			if (name.contains(oldName, true)) {
@@ -1630,9 +1630,9 @@ void ApplicationWindow::updateColNames(const QString& oldName, const QString& ne
 	QWidgetList *windows = windowsList();
 	foreach (QWidget *w, *windows){
 		if (w->isA("MultiLayer")){
-			QWidgetList gr_lst = ((MultiLayer*)w)->graphPtrs();
-			foreach (QWidget *widget, gr_lst)
-                ((Graph *)widget)->updateCurveNames(oldName, newName, false);
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers)
+                g->updateCurveNames(oldName, newName, false);
 		}
 		else if (w->isA("Graph3D")){
 			QString name = ((Graph3D*)w)->formula();
@@ -1661,12 +1661,9 @@ void ApplicationWindow::changeMatrixName(const QString& oldName, const QString& 
 		}
 		else if (w->isA("MultiLayer"))
 		{
-			QWidgetList graphsList = ((MultiLayer*)w)->graphPtrs();
-			foreach (QWidget *gr_widget, graphsList)
-			{
-				Graph* g = (Graph*)gr_widget;
-				for (int i=0; i<g->curves(); i++)
-				{
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers){
+				for (int i=0; i<g->curves(); i++){
 					QwtPlotItem *sp = (QwtPlotItem *)g->plotItem(i);
 					if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->title().text() == oldName)
 						sp->setTitle(newName);
@@ -1689,9 +1686,8 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 		if (w->isA("Graph3D") && ((Graph3D*)w)->matrix() == m)
 			((Graph3D*)w)->clearData();
 		else if (w->isA("MultiLayer")){
-			QWidgetList graphsList = ((MultiLayer*)w)->graphPtrs();
-			for (int j=0; j<(int)graphsList.count(); j++){
-				Graph* g = (Graph*)graphsList.at(j);
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers){
 				for (int i=0; i<g->curves(); i++){
 				    if (g->curveType(i) == Graph::Histogram){
                         QwtHistogram *h = (QwtHistogram *)g->plotItem(i);
@@ -1723,9 +1719,8 @@ void ApplicationWindow::updateMatrixPlots(MdiSubWindow *window)
 		if (w->isA("Graph3D") && ((Graph3D*)w)->matrix() == m)
 			((Graph3D*)w)->updateMatrixData(m);
 		else if (w->isA("MultiLayer")){
-			QWidgetList graphsList = ((MultiLayer*)w)->graphPtrs();
-			for (int j=0; j<(int)graphsList.count(); j++){
-				Graph* g = (Graph*)graphsList.at(j);
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers){
 				for (int i=0; i<g->curves(); i++){
 				    if (g->curveType(i) == Graph::Histogram){
                         QwtHistogram *h = (QwtHistogram *)g->plotItem(i);
@@ -2324,9 +2319,8 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 	g->setCols(c);
 	g->arrangeLayers(false, false);
     g->adjustSize();
-    QWidgetList lst = g->graphPtrs();
-	foreach(QWidget *widget, lst) {
-        Graph *ag = (Graph *)widget;
+    QList<Graph *> layersList = g->layersList();
+    foreach(Graph *ag, layersList){
         ag->setAutoscaleFonts(autoScaleFonts);//restore user defined fonts behaviour
         ag->setIgnoreResizeEvents(!autoResizeLayers);
     }
@@ -3174,9 +3168,9 @@ void ApplicationWindow::removeCurves(const QString& name)
 	{
 		if (w->isA("MultiLayer"))
 		{
-			QWidgetList lst= ((MultiLayer*)w)->graphPtrs();
-			foreach(QWidget *widget, lst)
-                ((Graph *)widget)->removeCurves(name);
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers)
+                g->removeCurves(name);
 		}
 		else if (w->isA("Graph3D"))
 		{
@@ -3193,12 +3187,9 @@ void ApplicationWindow::updateCurves(Table *t, const QString& name)
 	QWidgetList *windows = windowsList();
 	foreach(QWidget *w, *windows){
 		if (w->isA("MultiLayer")){
-			QWidgetList graphsList = ((MultiLayer*)w)->graphPtrs();
-			for (int k=0; k<(int)graphsList.count(); k++){
-				Graph* g = (Graph*)graphsList.at(k);
-                if (g)
-                    g->updateCurvesData(t, name);
-			}
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers)
+                g->updateCurvesData(t, name);
 		} else if (w->isA("Graph3D")){
 			Graph3D* g = (Graph3D*)w;
 			if ((g->formula()).contains(name))
@@ -3329,11 +3320,8 @@ void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 	{
 		if (w->isA("MultiLayer"))
 		{
-			QWidgetList lst = ((MultiLayer*)w)->graphPtrs();
-			Graph *g;
-			foreach(QWidget *widget, lst)
-			{
-				g = (Graph *)widget;
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers){
 				g->enableAutoscaling(autoscale2DPlots);
 				g->updateScale();
 				g->setIgnoreResizeEvents(!autoResizeLayers);
@@ -6033,6 +6021,11 @@ QDialog* ApplicationWindow::showScaleDialog()
 			return 0;
 
 		Graph* g = ((MultiLayer*)w)->activeGraph();
+		if (g->isPiePlot()){
+            QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
+		    return 0;
+		}
+
 		AxesDialog* ad = new AxesDialog(this);
         ad->setGraph(g);
         ad->exec();
@@ -6312,10 +6305,8 @@ void ApplicationWindow::zoomIn()
 		return;
 	}
 
-	QWidgetList graphsList=plot->graphPtrs();
-	foreach(QWidget *widget, graphsList)
-	{
-		Graph *g = (Graph *)widget;
+	QList<Graph *> layers = plot->layersList();
+    foreach(Graph *g, layers){
 		if (!g->isPiePlot())
 			g->zoom(true);
 	}
@@ -6834,9 +6825,9 @@ void ApplicationWindow::showScreenReader()
 		return;
 	}
 
-	QWidgetList graphsList=plot->graphPtrs();
-	foreach(QWidget *w, graphsList)
-		((Graph *)w)->setActiveTool(new ScreenPickerTool((Graph*)w, info, SLOT(setText(const QString&))));
+	QList<Graph *> layers = plot->layersList();
+    foreach(Graph *g, layers)
+		g->setActiveTool(new ScreenPickerTool(g, info, SLOT(setText(const QString&))));
 
 	displayBar->show();
 }
@@ -6854,9 +6845,9 @@ void ApplicationWindow::drawPoints()
 		return;
 	}
 
-	QWidgetList graphsList=plot->graphPtrs();
-	foreach(QWidget *w, graphsList)
-		((Graph *)w)->setActiveTool(new DrawPointTool(this, (Graph*)w, info, SLOT(setText(const QString&))));
+	QList<Graph *> layers = plot->layersList();
+    foreach(Graph *g, layers)
+        g->setActiveTool(new DrawPointTool(this, g, info, SLOT(setText(const QString&))));
 
 	displayBar->show();
 }
@@ -6914,10 +6905,10 @@ void ApplicationWindow::showCursor()
 		return;
 	}
 
-	QWidgetList graphsList=plot->graphPtrs();
-	foreach(QWidget *w, graphsList)
-		if (!((Graph *)w)->isPiePlot() && ((Graph *)w)->validCurvesDataSize())
-			((Graph *)w)->setActiveTool(new DataPickerTool((Graph*)w, this, DataPickerTool::Display, info, SLOT(setText(const QString&))));
+	QList<Graph *> layers = plot->layersList();
+    foreach(Graph *g, layers)
+		if (!g->isPiePlot() && g->validCurvesDataSize())
+			g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Display, info, SLOT(setText(const QString&))));
 
 	displayBar->show();
 }
@@ -8418,9 +8409,8 @@ QStringList ApplicationWindow::dependingPlots(const QString& name)
 	for (int i=0; i<(int)windows->count(); i++){
 		QWidget *w = windows->at(i);
 		if (w->isA("MultiLayer")){
-			QWidgetList lst= ((MultiLayer*)w)->graphPtrs();
-			foreach(QWidget *widget, lst){
-				Graph *g = (Graph *)widget;
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers){
 				onPlot = g->curvesList();
 				onPlot = onPlot.grep (name,TRUE);
 				if (int(onPlot.count()) && plots.contains(w->objectName())<=0)
@@ -8439,10 +8429,8 @@ QStringList ApplicationWindow::multilayerDependencies(QWidget *w)
 {
 	QStringList tables;
 	MultiLayer *g=(MultiLayer*)w;
-	QWidgetList graphsList = g->graphPtrs();
-	for (int i=0; i<graphsList.count(); i++)
-	{
-		Graph* ag=(Graph*)graphsList.at(i);
+	QList<Graph *> layers = g->layersList();
+    foreach(Graph *ag, layers){
 		QStringList onPlot=ag->curvesList();
 		for (int j=0; j<onPlot.count(); j++)
 		{
@@ -10635,9 +10623,9 @@ void ApplicationWindow::disableTools()
 	QWidgetList *windows = windowsList();
 	foreach(QWidget *w, *windows){
 		if (w->isA("MultiLayer")){
-			QWidgetList lst= ((MultiLayer *)w)->graphPtrs();
-			foreach(QWidget *widget, lst)
-				((Graph *)widget)->disableTools();
+			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+			foreach(Graph *g, layers)
+                g->disableTools();
 		}
 	}
 	delete windows;
@@ -12268,9 +12256,9 @@ void ApplicationWindow::deleteFitTables()
 
 	foreach(QWidget *ml, *mLst){
 		if (ml->isA("MultiLayer")){
-			QWidgetList lst = ((MultiLayer*)ml)->graphPtrs();
-			foreach(QWidget *widget, lst){
-				QList<QwtPlotCurve *> curves = ((Graph *)widget)->fitCurvesList();
+			QList<Graph *> layers = ((MultiLayer*)ml)->layersList();
+			foreach(Graph *g, layers){
+				QList<QwtPlotCurve *> curves = g->fitCurvesList();
 				foreach(QwtPlotCurve *c, curves){
 					if (((PlotCurve *)c)->type() != Graph::Function){
 						Table *t = ((DataCurve *)c)->table();
