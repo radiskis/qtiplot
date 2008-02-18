@@ -18,7 +18,7 @@ DEFINES         += SCRIPTING_DIALOG
 
 CONFIG          += release
 #CONFIG          += debug
-win32: CONFIG   += console
+#win32: CONFIG   += console
 
 # what to install and where
 INSTALLS        += target
@@ -133,7 +133,7 @@ translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_ru.qm \
                   translations/qtiplot_ja.qm \
                   translations/qtiplot_sv.qm
-					   
+
 ###################### DOCUMENTATION ########################################
 
 manual.files += ../manual/html \
@@ -448,10 +448,10 @@ contains(SCRIPTING_LANGS, Python) {
   INSTALLS += pythonconfig
   pythonconfig.files += qtiplotrc.py \
   						qtiUtil.py
-  
+
   unix: pythonconfig.path = /etc
   win32: pythonconfig.path = $$INSTALLBASE
-  
+
   DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
   DEFINES += SCRIPTING_PYTHON
   HEADERS += src/PythonScript.h src/PythonScripting.h

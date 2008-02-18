@@ -1038,7 +1038,7 @@ void Graph::setAutoScale()
 	emit modifiedGraph();
 }
 
-void Graph::findBestLimits()
+void Graph::initScaleLimits()
 {//We call this function the first time we add curves to a plot in order to avoid curves with cut symbols.
 	d_plot->replot();
 
@@ -1072,6 +1072,8 @@ void Graph::findBestLimits()
 	QwtValueList majTicksLst = div->ticks(QwtScaleDiv::MajorTick);
 	int ticks = majTicksLst.size();
 	double step = fabs(end - start)/(double)(ticks - 1.0);
+    d_user_step[QwtPlot::xBottom] = step;
+    d_user_step[QwtPlot::xTop] = step;
 
 	const QwtScaleMap &xMap = d_plot->canvasMap(QwtPlot::xBottom);
     double x_left = xMap.xTransform(intv[QwtPlot::xBottom].minValue());
@@ -1084,6 +1086,7 @@ void Graph::findBestLimits()
 		end = div->hBound() + step;
 
 	d_plot->setAxisScale(QwtPlot::xBottom, start, end, step);
+	d_plot->setAxisScale(QwtPlot::xTop, start, end, step);
 
 	div = d_plot->axisScaleDiv(QwtPlot::yLeft);
 	start = div->lBound();
@@ -1091,6 +1094,8 @@ void Graph::findBestLimits()
 	majTicksLst = div->ticks(QwtScaleDiv::MajorTick);
 	ticks = majTicksLst.size();
 	step = fabs(end - start)/(double)(ticks - 1.0);
+    d_user_step[QwtPlot::yLeft] = step;
+    d_user_step[QwtPlot::yRight] = step;
 
 	const QwtScaleMap &yMap = d_plot->canvasMap(QwtPlot::yLeft);
     double y_bottom = yMap.xTransform(intv[QwtPlot::yLeft].minValue());
@@ -1102,6 +1107,7 @@ void Graph::findBestLimits()
 		end = div->hBound() + step;
 
 	d_plot->setAxisScale(QwtPlot::yLeft, start, end, step);
+	d_plot->setAxisScale(QwtPlot::yRight, start, end, step);
 	d_plot->replot();
 }
 
@@ -2762,7 +2768,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 			}
 		}
 	}
-	findBestLimits();
+	initScaleLimits();
 	return true;
 }
 

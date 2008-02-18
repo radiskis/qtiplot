@@ -393,13 +393,13 @@ void ApplicationWindow::initGlobalConstants()
 
 	QString aux = qApp->applicationDirPath();
 	workingDir = aux;
-	
+
 #ifdef TRANSLATIONS_PATH
 	d_translations_folder = TRANSLATIONS_PATH;
 #else
 	d_translations_folder = aux + "/translations";
 #endif
-	
+
 #ifdef MANUAL_PATH
 	helpFilePath = MANUAL_PATH;
 	helpFilePath += "/html/index.html";
@@ -2389,7 +2389,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
         ag->updateCurveLayout(i, &cl);
 	}
 	ag->newLegend();
-	ag->findBestLimits();
+	ag->initScaleLimits();
     initMultilayerPlot(g, generateUniqueName(tr("Graph")));
     g->arrangeLayers(true, false);
 	QApplication::restoreOverrideCursor();
@@ -2630,7 +2630,7 @@ TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QL
 Note* ApplicationWindow::newNote(const QString& caption)
 {
 	Note* m = new Note(scriptEnv, "", this);
-	
+
 	QString name = caption;
 	while(name.isEmpty() || alreadyUsedName(name))
 		name = generateUniqueName(tr("Notes"));
@@ -2651,7 +2651,7 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	connect(m, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
 	connect(m, SIGNAL(statusChanged(MdiSubWindow*)), this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect(m, SIGNAL(dirPathChanged(const QString&)), this, SLOT(scriptsDirPathChanged(const QString&)));
-	
+
 	m->showNormal();
 	return m;
 }
