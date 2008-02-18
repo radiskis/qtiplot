@@ -148,7 +148,7 @@ class Graph: public QWidget
         //! Used when restoring DataCurve curveID from a project file
         void restoreCurveLabels(int curveID, const QStringList& lst);
 		//! Called first time we add curves in order to determine the best plot limits.
-		void findBestLimits();
+		void initScaleLimits();
 
 	public slots:
 		//! Accessor method for #d_plot.
@@ -302,7 +302,7 @@ class Graph: public QWidget
 		void zoomOut();
 		bool zoomOn();
 		//@}
-		
+
 		void setAutoScale();
 		void updateScale();
 

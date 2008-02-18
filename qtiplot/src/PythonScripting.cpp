@@ -252,18 +252,9 @@ bool PythonScripting::initialize()
 	setQObject(this, "stdout", sys);
 	setQObject(this, "stderr", sys);
 
-/*#ifdef Q_WS_WIN
-	loadInitFile(QDir::homeDirPath()+"/qtiplotrc") ||
-		loadInitFile(QCoreApplication::instance()->applicationDirPath()+"/qtiplotrc") ||
-#else
-	loadInitFile(QDir::homeDirPath()+"/.qtiplotrc") ||
-		loadInitFile(QDir::rootDirPath()+"etc/qtiplotrc") ||
-#endif
-		loadInitFile("qtiplotrc");*/
-	
 #ifdef PYTHON_CONFIG_PATH
 	bool initialized = loadInitFile(PYTHON_CONFIG_PATH"/qtiplotrc");
-	if(!initialized) 
+	if(!initialized)
 		initialized = loadInitFile(PYTHON_CONFIG_PATH"/.qtiplotrc");
 #else
 	bool initialized = loadInitFile(QDir::homeDirPath()+"/qtiplotrc");
@@ -288,7 +279,7 @@ PythonScripting::~PythonScripting()
 }
 
 bool PythonScripting::loadInitFile(const QString &path)
-{	
+{
 	QFileInfo pyFile(path+".py"), pycFile(path+".pyc");
 	bool success = false;
 	if (pycFile.isReadable() && (pycFile.lastModified() >= pyFile.lastModified())) {
@@ -368,7 +359,7 @@ bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 					if (!pyobj) return false;
 					break;
 				}
-	} 
+	}
 	if (!pyobj) return false;
 
 	if (dict)
