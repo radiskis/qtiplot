@@ -259,11 +259,11 @@ bool PythonScripting::initialize()
 #else
 	bool initialized = loadInitFile(QDir::homeDirPath()+"/qtiplotrc");
 	if(!initialized)
+		initialized = loadInitFile(QCoreApplication::instance()->applicationDirPath()+"/qtiplotrc");
+	if(!initialized)
 		initialized = loadInitFile(QDir::homeDirPath()+"/.qtiplotrc");
 	if(!initialized)
 		initialized = loadInitFile(QDir::rootDirPath()+"etc/qtiplotrc");
-	if(!initialized)
-		initialized = loadInitFile(QCoreApplication::instance()->applicationDirPath()+"/qtiplotrc");
 	if(!initialized)
 		initialized = loadInitFile("qtiplotrc");
 #endif
