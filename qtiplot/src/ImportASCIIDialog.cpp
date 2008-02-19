@@ -392,7 +392,11 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 		col_label << QString::number(i+1);
 	}
 	setHeader();
+#ifdef Q_OS_MAC
+	setMinimumHeight(4*horizontalHeader()->height());
+#else
 	setMinimumHeight(2*horizontalHeader()->height());
+#endif
 }
 
 void PreviewTable::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
@@ -628,7 +632,11 @@ void PreviewTable::setHeader()
 	for (int i=0; i<numCols(); i++){
 		QString s = col_label[i];
 		int lines = columnWidth(i)/head->fontMetrics().averageCharWidth();
+	#ifdef Q_OS_MAC
+		head->setLabel(i, s.remove("\n"));
+	#else
 		head->setLabel(i, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[i]);
+	#endif
 	} 
 }
 
