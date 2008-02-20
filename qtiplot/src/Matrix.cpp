@@ -1227,7 +1227,7 @@ void Matrix::initTableView()
 
 	QHeaderView* vHeader = (QHeaderView*)d_table_view->verticalHeader();
 	vHeader->setMovable(false);
-	vHeader->setResizeMode(QHeaderView::Fixed);
+	vHeader->setResizeMode(QHeaderView::ResizeToContents);
 
     d_stack->addWidget(d_table_view);
 
@@ -1340,7 +1340,12 @@ void Matrix::resetView()
     else if (d_view_type == TableView){
         d_table_view->setModel(d_matrix_model);
         d_table_view->horizontalHeader()->setDefaultSectionSize(d_column_width);
+        d_table_view->horizontalHeader()->reset();
+        d_table_view->verticalHeader()->reset();
         d_table_view->reset();
+        QSize size = this->size();
+        this->resize(QSize(size.width() + 1, size.height()));
+        this->resize(size);
     }
 }
 
