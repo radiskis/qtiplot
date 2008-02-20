@@ -356,6 +356,7 @@ public:
 	void exportRasterImage(const QString&, int = 100);
 	void exportToFile(const QString&)  /PyName=export/;
 	void exportVector(const QString&, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize = QPrinter::Custom);
+    bool exportASCII(const QString&, const QString&="\t", bool=false);
 
 private:
   Matrix(const Matrix&);
@@ -778,6 +779,8 @@ sipTypeDef *t;
 %End
 
 public:
+  enum MatrixToTableConversion{Direct, XYZ, YXZ};
+  
   Table* table(const QString&);
 %MethodCode
   sipRes = sipCpp->current_folder->table(*a0, false);
@@ -878,7 +881,7 @@ public:
   MdiSubWindow* clone(MdiSubWindow*);
 
   Matrix* tableToMatrix(Table* t);
-  Table* matrixToTable(Matrix* m);
+  Table* matrixToTable(Matrix* m, MatrixToTableConversion = Direct);
 
 private:
   ApplicationWindow(const ApplicationWindow&);

@@ -4295,17 +4295,19 @@ void Graph::disableTools()
 
     if(d_active_tool)
         delete d_active_tool;
-
     d_active_tool = NULL;
 
 	if (d_range_selector)
 		delete d_range_selector;
+	d_range_selector = NULL;
 }
 
 bool Graph::enableRangeSelectors(const QObject *status_target, const char *status_slot)
 {
-	/*if (d_range_selector)
-		delete d_range_selector;*/
+	if (d_range_selector){
+		delete d_range_selector;
+		d_range_selector = NULL;
+	}
 	d_range_selector = new RangeSelectorTool(this, status_target, status_slot);
 	setActiveTool(d_range_selector);
 	connect(d_range_selector, SIGNAL(changed()), this, SIGNAL(dataRangeChanged()));

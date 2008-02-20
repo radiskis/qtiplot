@@ -67,7 +67,7 @@ void Filter::init()
 	d_curve = 0;
 	d_prec = ((ApplicationWindow *)parent())->fit_output_precision;
 	d_init_err = false;
-    d_sort_data = false;
+    d_sort_data = true;
     d_min_points = 2;
     d_explanation = objectName();
     d_graph = 0;

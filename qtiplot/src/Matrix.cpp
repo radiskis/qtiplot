@@ -52,6 +52,7 @@
 #include <QStackedWidget>
 #include <QImageWriter>
 #include <QSvgGenerator>
+#include <QFile>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -1410,4 +1411,57 @@ void Matrix::fft(bool inverse)
 
     resetView();
 	emit modifiedWindow(this);
+}
+
+bool Matrix::exportASCII(const QString& fname, const QString& separator, bool exportSelection)
+{
+	QFile f(fname);
+	if ( !f.open( QIODevice::WriteOnly ) ){
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - ASCII Export Error"),
+				tr("Could not write to file: <br><h4>%1</h4><p>Please verify that you have the right to write to this location!").arg(fname));
+		return false;
+	}
+
+	QString text;
+	int rows = numRows();
+	int cols = numCols();
+
+	if (exportSelection && d_view_type == TableView){
+        QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
+        int topRow = selectedIndexes[0].row();
+        int bottomRow = topRow;
+        int leftCol = selectedIndexes[0].column();
+        int rightCol = leftCol;
+        foreach(QModelIndex index, selectedIndexes){
+            int row = index.row();
+            if (row < topRow)
+                topRow = row;
+            if (row > bottomRow)
+                bottomRow = row;
+
+            int col = index.column();
+            if (col < leftCol)
+                leftCol = col;
+            if (col > rightCol)
+                rightCol = col;
+        }
+
+		for (int i = topRow; i <= bottomRow; i++){
+			for (int j = leftCol; j < rightCol; j++)
+				text += d_matrix_model->text(i, j) + separator;
+
+			text += d_matrix_model->text(i, rightCol) + "\n";
+		}
+	} else {
+		for (int i=0; i<rows; i++) {
+			for (int j=0; j<cols-1; j++)
+				text += d_matrix_model->text(i,j) + separator;
+			text += d_matrix_model->text(i, cols-1) + "\n";
+		}
+	}
+	QTextStream t( &f );
+	t << text;
+	f.close();
+	return true;
 }

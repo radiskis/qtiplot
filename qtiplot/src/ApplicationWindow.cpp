@@ -64,6 +64,7 @@
 #include "MatrixDialog.h"
 #include "MatrixSizeDialog.h"
 #include "MatrixValuesDialog.h"
+#include "MatrixModel.h"
 #include "importOPJ.h"
 #include "AssociationsDialog.h"
 #include "RenameWindowDialog.h"
@@ -1159,7 +1160,8 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 		actionPasteSelection->setEnabled(true);
 		actionClearSelection->setEnabled(true);
 		actionSaveTemplate->setEnabled(true);
-		if (hasTable())
+		QStringList tables = tableNames() + matrixNames();
+		if (!tables.isEmpty())
 			actionShowExportASCIIDialog->setEnabled(true);
 		else
 			actionShowExportASCIIDialog->setEnabled(false);
@@ -2842,16 +2844,34 @@ void ApplicationWindow::invertMatrix()
 	m->invert();
 }
 
-Table* ApplicationWindow::convertMatrixToTable()
+Table* ApplicationWindow::convertMatrixToTableDirect()
 {
 	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return 0;
 
-	return matrixToTable(m);
+	return matrixToTable(m, Direct);
 }
 
-Table* ApplicationWindow::matrixToTable(Matrix* m)
+Table* ApplicationWindow::convertMatrixToTableXYZ()
+{
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
+	if (!m)
+		return 0;
+
+	return matrixToTable(m, XYZ);
+}
+
+Table* ApplicationWindow::convertMatrixToTableYXZ()
+{
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
+	if (!m)
+		return 0;
+
+	return matrixToTable(m, YXZ);
+}
+
+Table* ApplicationWindow::matrixToTable(Matrix* m, MatrixToTableConversion conversionType)
 {
 	if (!m)
 		return 0;
@@ -2860,13 +2880,39 @@ Table* ApplicationWindow::matrixToTable(Matrix* m)
 
 	int rows = m->numRows();
 	int cols = m->numCols();
+	MatrixModel *mModel = m->matrixModel();
 
-	Table* w = new Table(scriptEnv, rows, cols, "", this, 0);
-	w->setAttribute(Qt::WA_DeleteOnClose);
-	for (int i = 0; i<rows; i++){
-		for (int j = 0; j<cols; j++)
-			w->setCell(i, j, m->cell(i,j));
+	Table* w = NULL;
+	if (conversionType == Direct){
+		w = new Table(scriptEnv, rows, cols, "", this, 0);
+		for (int i = 0; i<rows; i++){
+			for (int j = 0; j<cols; j++)
+				w->setCell(i, j, m->cell(i,j));
+		}
+	} else if (conversionType == XYZ){
+		int tableRows = rows*cols;
+		w = new Table(scriptEnv, tableRows, 3, "", this, 0);
+		for (int i = 0; i<rows; i++){
+			for (int j = 0; j<cols; j++){
+				int cell = i*cols + j;
+				w->setCell(cell, 0, mModel->x(j));
+				w->setCell(cell, 1, mModel->y(i));
+				w->setCell(cell, 2, mModel->cell(i, j));
+			}
+		}
+	} else if (conversionType == YXZ){
+		int tableRows = rows*cols;
+		w = new Table(scriptEnv, tableRows, 3, "", this, 0);
+		for (int i = 0; i<cols; i++){
+			for (int j = 0; j<rows; j++){
+				int cell = i*rows + j;
+				w->setCell(cell, 0, mModel->x(i));
+				w->setCell(cell, 1, mModel->y(j));
+				w->setCell(cell, 2, mModel->cell(i, j));
+			}
+		}
 	}
+
 
 	initTable(w, generateUniqueName(tr("Table")));
 	w->setWindowLabel(m->windowLabel());
@@ -2906,7 +2952,7 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 
 Matrix* ApplicationWindow::convertTableToMatrix()
 {
-	Table* t = (Table*)activeWindow(MatrixWindow);
+	Table* t = (Table*)activeWindow(TableWindow);
 	if (!t)
 		return 0;
 
@@ -2927,7 +2973,6 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 	Matrix* m = new Matrix(scriptEnv, rows, cols, "", this, 0);
 	initMatrix(m, caption);
 
-	m->setAttribute(Qt::WA_DeleteOnClose);
 	for (int i = 0; i<rows; i++){
 		for (int j = 0; j<cols; j++)
 			m->setCell(i, j, t->cell(i, j));
@@ -5357,16 +5402,14 @@ void ApplicationWindow::showAxisTitleDialog()
 
 void ApplicationWindow::showExportASCIIDialog()
 {
-	if (hasTable()){
-		QString tableName;
-		MdiSubWindow* t = activeWindow(TableWindow);
-		if (!t)
-			return;
+    QString tableName = QString::null;
+    MdiSubWindow* t = activeWindow();
+    if (t && (t->isA("Matrix") || t->inherits("Table")))
+        tableName = t->objectName();
 
-		ExportDialog* ed = new ExportDialog(t->objectName(), this, Qt::WindowContextHelpButtonHint);
-		ed->setAttribute(Qt::WA_DeleteOnClose);
-		ed->exec();
-	}
+    ExportDialog* ed = new ExportDialog(tableName, this, Qt::WindowContextHelpButtonHint);
+    ed->setAttribute(Qt::WA_DeleteOnClose);
+    ed->exec();
 }
 
 void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool colComments, bool expSelection)
@@ -5381,8 +5424,7 @@ void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool 
 		bool success = true;
 		QWidget *w;
 		foreach(w, *windows){
-			if (w->inherits("Table")){
-				Table *t = (Table*)w;
+			if (w->inherits("Table") || w->isA("Matrix")){
 				QString fileName = dir + "/" + w->objectName() + ".txt";
 				QFile f(fileName);
 				if (f.exists(fileName) && confirmOverwrite){
@@ -5392,20 +5434,28 @@ void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool 
 									"Do you want to overwrite it?").arg(fileName), tr("&Yes"), tr("&All"), tr("&Cancel"), 0, 1))
 					{
 						case 0:
-							success = t->exportASCII(fileName, sep, colNames, colComments, expSelection);
+                            if (w->inherits("Table"))
+                                success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
+							else if (w->isA("Matrix"))
+                                success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
 							break;
 
 						case 1:
 							confirmOverwrite = false;
-							success = t->exportASCII(fileName, sep, colNames, colComments, expSelection);
+							if (w->inherits("Table"))
+                                success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
+                            else if (w->isA("Matrix"))
+                                success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
 							break;
 
 						case 2:
 							return;
 							break;
 					}
-				} else
-					success = t->exportASCII(fileName, sep, colNames, colComments, expSelection);
+				} else if (w->inherits("Table"))
+					success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
+                  else if (w->isA("Matrix"))
+                    success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
 
 				if (!success)
 					break;
@@ -5419,12 +5469,13 @@ void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool 
 void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep,
                         bool colNames, bool colComments, bool expSelection)
 {
-	Table* t = table(tableName);
-	if (!t)
+    QWidget* w = window(tableName);
+    if (!w || !(w->isA("Matrix") || w->inherits("Table")))
 		return;
 
 	QString selectedFilter;
-	QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"), asciiDirPath, "*.txt;;*.dat;;*.DAT", &selectedFilter);
+	QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"),
+                    asciiDirPath + "/" + w->objectName(), "*.txt;;*.dat;;*.DAT", &selectedFilter);
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
 		QString baseName = fi.fileName();
@@ -5434,7 +5485,10 @@ void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep
 		asciiDirPath = fi.dirPath(true);
 
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		t->exportASCII(fname, sep, colNames, colComments, expSelection);
+		if (w->inherits("Table"))
+            ((Table *)w)->exportASCII(fname, sep, colNames, colComments, expSelection);
+        else if (w->isA("Matrix"))
+            ((Matrix *)w)->exportASCII(fname, sep, expSelection);
 		QApplication::restoreOverrideCursor();
 	}
 }
@@ -6847,8 +6901,7 @@ void ApplicationWindow::showRangeSelectors()
 	if (!plot)
 		return;
 	if (plot->isEmpty()){
-		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-				tr("There are no plot layers available in this window!"));
+		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no plot layers available in this window!"));
 		btnPointer->setChecked(true);
 		return;
 	}
@@ -6858,13 +6911,11 @@ void ApplicationWindow::showRangeSelectors()
 		return;
 
 	if (!g->curves()){
-		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-				tr("There are no curves available on this plot!"));
+		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		btnPointer->setChecked(true);
 		return;
 	} else if (g->isPiePlot()) {
-		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-				tr("This functionality is not available for pie plots!"));
+		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
 		btnPointer->setChecked(true);
 		return;
 	}
@@ -7838,8 +7889,11 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	matrixMenu->addAction(actionMatrixColumnRow);
     matrixMenu->addAction(actionMatrixXY);
 	matrixMenu->insertSeparator();
-	matrixMenu->addAction(actionConvertMatrix);
-
+	QMenu *convertToTableMenu = matrixMenu->addMenu (tr("&Convert to Spreadsheet"));
+	convertToTableMenu->addAction(actionConvertMatrixDirect);
+	convertToTableMenu->addAction(actionConvertMatrixXYZ);
+	convertToTableMenu->addAction(actionConvertMatrixYXZ);
+	
 	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
@@ -11280,8 +11334,14 @@ void ApplicationWindow::createActions()
 	actionExportMatrix = new QAction(tr("&Export Image ..."), this);
 	connect(actionExportMatrix, SIGNAL(activated()), this, SLOT(exportMatrix()));
 
-	actionConvertMatrix = new QAction(tr("&Convert to Spreadsheet"), this);
-	connect(actionConvertMatrix, SIGNAL(activated()), this, SLOT(convertMatrixToTable()));
+	actionConvertMatrixDirect = new QAction(tr("&Direct"), this);
+	connect(actionConvertMatrixDirect, SIGNAL(activated()), this, SLOT(convertMatrixToTableDirect()));
+	
+	actionConvertMatrixXYZ = new QAction(tr("&XYZ"), this);
+	connect(actionConvertMatrixXYZ, SIGNAL(activated()), this, SLOT(convertMatrixToTableXYZ()));
+
+	actionConvertMatrixYXZ = new QAction(tr("&YXZ"), this);
+	connect(actionConvertMatrixYXZ, SIGNAL(activated()), this, SLOT(convertMatrixToTableYXZ()));
 
     actionMatrixFFTDirect = new QAction(tr("&Forward FFT"), this);
 	connect(actionMatrixFFTDirect, SIGNAL(activated()), this, SLOT(matrixDirectFFT()));
@@ -11863,7 +11923,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionMatrixCustomScale->setMenuText(tr("&Custom"));
 	actionInvertMatrix->setMenuText(tr("&Invert"));
 	actionMatrixDeterminant->setMenuText(tr("&Determinant"));
-	actionConvertMatrix->setMenuText(tr("&Convert to Spreadsheet"));
+	actionConvertMatrixDirect->setMenuText(tr("&Direct"));
+	actionConvertMatrixXYZ->setMenuText(tr("&XYZ"));
+	actionConvertMatrixYXZ->setMenuText(tr("&YXZ"));
 	actionExportMatrix->setMenuText(tr("&Export Image ..."));
 
 	actionConvertTable->setMenuText(tr("Convert to &Matrix"));

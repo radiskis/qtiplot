@@ -125,6 +125,36 @@ double MatrixModel::data(int row, int col) const
 	return d_data[i];
 }
 
+double MatrixModel::x(int col) const
+{
+	if (col < 0 || col >= d_cols)
+        return 0.0;
+	
+	double start = d_matrix->xStart();
+	double end = d_matrix->xEnd();
+	if (start < end)
+		return start + col*d_matrix->dx();
+	else
+		return start - col*d_matrix->dx();
+
+	return 0.0;
+}
+
+double MatrixModel::y(int row) const
+{
+	if (row < 0 || row >= d_rows)
+        return 0.0;
+	
+	double start = d_matrix->yStart();
+	double end = d_matrix->yEnd();
+	if (start < end)
+		return start + row*d_matrix->dy();
+	else
+		return start - row*d_matrix->dy();
+
+	return 0.0;
+}
+
 QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int role) const
 {
     if (d_matrix->headerViewType() == Matrix::ColumnRow)
