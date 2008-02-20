@@ -53,6 +53,9 @@ public:
 	bool removeColumns ( int column, int count, const QModelIndex & parent = QModelIndex());
 	bool insertColumns ( int column, int count, const QModelIndex & parent = QModelIndex());
 
+	double x(int col) const;
+	double y(int row) const;
+
 	double cell(int row, int col);
 	void setCell(int row, int col, double val);
 

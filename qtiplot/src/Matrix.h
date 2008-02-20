@@ -129,6 +129,8 @@ public:
 	void setGrayScale();
 	void setRainbowColorMap();
 
+	bool exportASCII(const QString& fname, const QString& separator, bool exportSelection);
+
 public slots:
 	void exportPDF(const QString& fileName);
 	//! Print the Matrix

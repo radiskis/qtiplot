@@ -73,6 +73,9 @@ private slots:
 	 */
 	void enableTableName(bool ok);
 
+	//! Enable/disable export options depending if the selected window is a Table or a Matrix.
+	void updateOptions(const QString & name);
+
 protected slots:
 	//! Accept changes
 	void accept();

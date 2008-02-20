@@ -122,7 +122,8 @@ public:
 
 	enum ShowWindowsPolicy{HideAll, ActiveFolder, SubFolders};
 	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow, Plot3DWindow};
-
+	enum MatrixToTableConversion{Direct, XYZ, YXZ};
+	
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
 
@@ -354,8 +355,10 @@ public slots:
 	 */
 	Table* newHiddenTable(const QString& name, const QString& label, int r, int c, const QString& text=QString());
 	Table* table(const QString& name);
-	Table* convertMatrixToTable();
-	Table* matrixToTable(Matrix* m);
+	Table* convertMatrixToTableDirect();
+	Table* convertMatrixToTableXYZ();
+	Table* convertMatrixToTableYXZ();
+	Table* matrixToTable(Matrix* m, MatrixToTableConversion conversionType = Direct);
 	QWidgetList* tableList();
     //! Returns true if the project contains tables
 	bool hasTable();
@@ -1200,8 +1203,8 @@ private:
     QAction *actionShowLineDialog, *actionShowImageDialog, *actionShowTextDialog;
     QAction *actionActivateWindow, *actionMinimizeWindow, *actionMaximizeWindow, *actionHideWindow, *actionResizeWindow, *actionPrintWindow;
     QAction *actionEditSurfacePlot, *actionAdd3DData;
-	QAction *actionMatrixDeterminant, *actionSetMatrixProperties;
-	QAction *actionSetMatrixDimensions, *actionConvertMatrix, *actionSetMatrixValues, *actionTransposeMatrix, *actionInvertMatrix;
+	QAction *actionMatrixDeterminant, *actionSetMatrixProperties, *actionConvertMatrixXYZ, *actionConvertMatrixYXZ;
+	QAction *actionSetMatrixDimensions, *actionConvertMatrixDirect, *actionSetMatrixValues, *actionTransposeMatrix, *actionInvertMatrix;
 	QAction *actionPlot3DWireFrame, *actionPlot3DHiddenLine, *actionPlot3DPolygons, *actionPlot3DWireSurface;
 	QAction *actionColorMap, *actionContourMap, *actionGrayMap;
 	QAction *actionDeleteFitTables, *actionShowGridDialog, *actionTimeStamp;

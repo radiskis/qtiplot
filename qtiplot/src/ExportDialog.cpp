@@ -47,11 +47,10 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("Table")), 0, 0);
 	boxTable = new QComboBox();
-	QStringList tables = app->tableNames();
+	QStringList tables = app->tableNames() + app->matrixNames();
 	boxTable->addItems(tables);
 	boxTable->setCurrentIndex(0);
-	if (tables.contains(tableName))
-		boxTable->setCurrentIndex(boxTable->findText(tableName));
+
 	boxTable->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	gl1->addWidget(boxTable, 0, 1);
 
@@ -115,10 +114,16 @@ ExportDialog::ExportDialog(const QString& tableName, QWidget* parent, Qt::WFlags
 	vl->addLayout(hbox3);
 
     // signals and slots connections
+    connect( boxTable, SIGNAL(activated(const QString &)), this, SLOT(updateOptions(const QString &)));
     connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
 	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
     connect( buttonHelp, SIGNAL( clicked() ), this, SLOT( help() ) );
 	connect( boxAllTables, SIGNAL( toggled(bool) ), this, SLOT( enableTableName(bool) ) );
+
+    if (tables.contains(tableName)){
+		boxTable->setCurrentIndex(boxTable->findText(tableName));
+		updateOptions(tableName);
+    }
 }
 
 void ExportDialog::help()
@@ -200,4 +205,18 @@ void ExportDialog::closeEvent(QCloseEvent* e)
 	}
 
 	e->accept();
+}
+
+void ExportDialog::updateOptions(const QString & name)
+{
+    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+        return;
+
+    QWidget* w = app->window(name);
+    if (!w)
+		return;
+
+    boxComments->setEnabled(w->inherits("Table"));
+    boxNames->setEnabled(w->inherits("Table"));
 }
