@@ -285,7 +285,8 @@ class Matrix: MdiSubWindow
 public:
   enum HeaderViewType{ColumnRow, XY};
   enum ViewType{TableView, ImageView};
-
+  enum ImportMode{NewColumns, NewRows, Overwrite};
+  
   int numRows();
   void setNumRows(int);
   int numCols();
@@ -356,7 +357,10 @@ public:
 	void exportRasterImage(const QString&, int = 100);
 	void exportToFile(const QString&)  /PyName=export/;
 	void exportVector(const QString&, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize = QPrinter::Custom);
-    bool exportASCII(const QString&, const QString&="\t", bool=false);
+    
+	void importASCII(const QString&, const QString&="\t", int=0, bool=false, bool=false, 
+			const QString&="#", ImportMode = Overwrite, const QLocale& = QLocale());
+	bool exportASCII(const QString&, const QString&="\t", bool=false);
 
 private:
   Matrix(const Matrix&);
@@ -854,7 +858,7 @@ public:
     Graph3D* plotParametricSurface(const QString&, const QString&, const QString&,
             double, double, double, double, int=40, int=40, bool=true, bool=true) /PyName=plot3D/;
 
-  QWidgetList *windowsList() /PyName=windows/;
+  MDIWindowList windowsList() /PyName=windows/;
 
   // folders
   Folder *activeFolder() /NoDerived/;

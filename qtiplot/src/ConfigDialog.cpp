@@ -1126,14 +1126,13 @@ void ConfigDialog::apply()
 	// 2D plots page: print tab
 	app->d_print_cropmarks = boxPrintCropmarks->isChecked();
 	app->d_scale_plots_on_print = boxScaleLayersOnPrint->isChecked();
-	QWidgetList *windows = app->windowsList();
-	foreach(QWidget *w, *windows){
+	QList<MdiSubWindow*> windows = app->windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			((MultiLayer*)w)->setScaleLayersOnPrint(boxScaleLayersOnPrint->isChecked());
 			((MultiLayer*)w)->printCropmarks(boxPrintCropmarks->isChecked());
 		}
 	}
-	delete windows;
 	// general page: application tab
 	app->changeAppFont(appFont);
 	setFont(appFont);
@@ -1171,8 +1170,8 @@ void ConfigDialog::apply()
 		appTabWidget->currentWidget() == numericFormatPage &&
 		boxUpdateSeparators->isChecked()){
     	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        QList<QWidget*> *lst = app->windowsList();
-        foreach(QWidget *w, *lst){
+        QList<MdiSubWindow *> windows = app->windowsList();
+        foreach(MdiSubWindow *w, windows){
             w->setLocale(locale);
             if(w->isA("Table"))
                 ((Table *)w)->updateDecimalSeparators();
@@ -1184,7 +1183,6 @@ void ConfigDialog::apply()
                     g->plotWidget()->setLocale(locale);
             }
         }
-        delete lst;
         app->modifiedProject();
     	QApplication::restoreOverrideCursor();
 	}

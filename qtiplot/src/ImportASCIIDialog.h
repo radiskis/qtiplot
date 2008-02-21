@@ -35,10 +35,14 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QLineEdit>
+#include <QTableView>
 
 class QGroupBox;
 class QPushButton;
-
+class QStackedWidget;
+class Matrix;
+class MatrixModel;
+	
 #include <q3table.h>
 #include <q3header.h>
 
@@ -62,6 +66,21 @@ private:
 	int d_numeric_precision;
 };
 
+class PreviewMatrix : public QTableView
+{
+public:
+    PreviewMatrix(QWidget *parent, Matrix * m = 0);
+
+	void importASCII(const QString &fname, const QString &sep, int ignoredLines,
+		bool stripSpaces, bool simplifySpaces, const QString& commentString, 
+		int importAs, const QLocale& locale);
+
+	void clear();
+
+private:
+	 MatrixModel *d_matrix_model;
+};
+
 //! Import ASCII file(s) dialog
 class ImportASCIIDialog: public ExtensibleFileDialog
 {
@@ -74,6 +93,7 @@ public:
 	 */
 	enum ImportMode {
 		NewTables, //!< create a new table for each file (default)
+		NewMatrices, //!< create a new matrix for each file
 		NewColumns, //!< add each file as new columns to the current table
 		NewRows, //!< add each file as new rows to the current table
 		Overwrite //!< replace content of current table with the selected file (like importing a single file in previous versions of QtiPlot)
@@ -86,7 +106,7 @@ public:
 	 * \param extended flag: show/hide the advanced options on start-up
 	 * \param flags window flags
 	 */
-	ImportASCIIDialog(bool importModeEnabled, QWidget * parent = 0, bool extended = true, Qt::WFlags flags = 0 );
+	ImportASCIIDialog(bool new_windows_only, QWidget * parent = 0, bool extended = true, Qt::WFlags flags = 0 );
 
 	//! Return the selected import mode
 	/**
@@ -129,9 +149,14 @@ private slots:
 	void changePreviewFile(const QString& path);
 
 private:
+	void initPreview(int previewMode);
+	void previewTable();
+	void previewMatrix();
+
 	void closeEvent(QCloseEvent*);
 	//! Initialise #d_advanced_options and everything it contains.
 	void initAdvancedOptions();
+	void setNewWindowsOnly(bool on);
 
 	//! Container widget for all advanced options.
 	QGroupBox *d_advanced_options;
@@ -143,8 +168,9 @@ private:
 	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces, *d_import_comments;
 	QLineEdit *d_comment_string;
 	PreviewTable *d_preview_table;
+	PreviewMatrix *d_preview_matrix;
 	QCheckBox *d_preview_button;
-
+	QStackedWidget *d_preview_stack;
 	QString d_current_path;
 };
 

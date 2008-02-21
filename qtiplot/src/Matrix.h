@@ -35,9 +35,12 @@
 #include <QHeaderView>
 #include <QTableView>
 #include <QPrinter>
+
+#include "MatrixModel.h"
 #include "MdiSubWindow.h"
 #include "ScriptingEnv.h"
 #include "Script.h"
+
 #include <qwt_double_rect.h>
 #include <qwt_color_map.h>
 
@@ -47,7 +50,6 @@
 #define _Matrix_initial_rows_ 10
 #define _Matrix_initial_columns_ 3
 
-class MatrixModel;
 class QLabel;
 class QStackedWidget;
 class QShortcut;
@@ -77,7 +79,12 @@ public:
     enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};
 	enum ColorMapType{GrayScale, Rainbow, Custom};
-
+	enum ImportMode {
+		NewColumns, //!< add file as new columns to the current matrix
+		NewRows, //!< add file as new rows to the current matrix
+		Overwrite //!< replace content of current matrix with the imported file
+	};
+	
 	void setViewType(ViewType);
 	ViewType viewType(){return d_view_type;};
 
@@ -96,12 +103,12 @@ public:
 	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
 
 	//! Return the number of rows
-	int numRows();
-	void setNumRows(int rows);
+	int numRows(){return d_matrix_model->rowCount();};
+	void setNumRows(int rows){d_matrix_model->setRowCount(rows);};
 
 	//! Return the number of columns
-	int numCols();
-	void setNumCols(int cols);
+	int numCols(){return d_matrix_model->columnCount();};
+	void setNumCols(int cols){d_matrix_model->setColumnCount(cols);};
 
 	//event handlers
 	//! Custom event handler
@@ -130,6 +137,9 @@ public:
 	void setRainbowColorMap();
 
 	bool exportASCII(const QString& fname, const QString& separator, bool exportSelection);
+	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces, 
+					bool simplifySpaces, const QString& commentString, 
+					ImportMode importAs = Overwrite, const QLocale& l = QLocale());
 
 public slots:
 	void exportPDF(const QString& fileName);

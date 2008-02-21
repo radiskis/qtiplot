@@ -27,14 +27,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMAGEMODEL_H
-#define IMAGEMODEL_H
+#ifndef MATRIXMODEL_H
+#define MATRIXMODEL_H
 
 #include <QAbstractTableModel>
 #include <QVector>
+#include <QLocale>
 
 class Matrix;
-
+	
 class MatrixModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -46,7 +47,10 @@ public:
 	Qt::ItemFlags flags( const QModelIndex & index ) const;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	void setRowCount(int rows);
+
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	void setColumnCount(int cols);
 
 	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 	bool insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
@@ -72,11 +76,23 @@ public:
     double* dataVector(){return d_data.data();};
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	void setDataVector(const QVector<double>& data);
+	
+	bool importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces, 
+					bool simplifySpaces, const QString& commentString, int importAs, const QLocale& locale);
 
+	void setLocale(const QLocale& locale){d_locale = locale;};
+	void setNumericFormat(char f, int prec);
+	
 private:
     int d_rows, d_cols;
     QVector<double> d_data;
 	Matrix *d_matrix;
+	//! Format code for displaying numbers
+	char d_txt_format;
+	//! Number of significant digits
+	int d_num_precision;
+	//! Locale used to display data
+	QLocale d_locale;
 };
 
 #endif

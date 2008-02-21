@@ -1622,8 +1622,8 @@ QString ApplicationWindow::listViewDate(const QString& caption)
 
 void ApplicationWindow::updateTableNames(const QString& oldName, const QString& newName)
 {
-	QWidgetList *windows = windowsList();
-	foreach (QWidget *w, *windows) {
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach (MdiSubWindow *w, windows) {
 		if (w->isA("MultiLayer")) {
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
@@ -1636,13 +1636,12 @@ void ApplicationWindow::updateTableNames(const QString& oldName, const QString& 
 			}
 		}
 	}
-	delete windows;
 }
 
 void ApplicationWindow::updateColNames(const QString& oldName, const QString& newName)
 {
-	QWidgetList *windows = windowsList();
-	foreach (QWidget *w, *windows){
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach (MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
@@ -1656,14 +1655,12 @@ void ApplicationWindow::updateColNames(const QString& oldName, const QString& ne
 			}
 		}
 	}
-	delete windows;
 }
 
 void ApplicationWindow::changeMatrixName(const QString& oldName, const QString& newName)
 {
-	QWidgetList *lst = windowsList();
-	foreach(QWidget *w, *lst)
-	{
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("Graph3D"))
 		{
 			QString s = ((Graph3D*)w)->formula();
@@ -1685,7 +1682,6 @@ void ApplicationWindow::changeMatrixName(const QString& oldName, const QString& 
 			}
 		}
 	}
-	delete lst;
 }
 
 void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
@@ -1695,8 +1691,8 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows){
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("Graph3D") && ((Graph3D*)w)->matrix() == m)
 			((Graph3D*)w)->clearData();
 		else if (w->isA("MultiLayer")){
@@ -1716,7 +1712,6 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 			}
 		}
 	}
-	delete windows;
 	QApplication::restoreOverrideCursor();
 }
 
@@ -1728,8 +1723,8 @@ void ApplicationWindow::updateMatrixPlots(MdiSubWindow *window)
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows){
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("Graph3D") && ((Graph3D*)w)->matrix() == m)
 			((Graph3D*)w)->updateMatrixData(m);
 		else if (w->isA("MultiLayer")){
@@ -1750,8 +1745,6 @@ void ApplicationWindow::updateMatrixPlots(MdiSubWindow *window)
 			}
 		}
 	}
-
-	delete windows;
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2428,12 +2421,11 @@ void ApplicationWindow::customizeTables(const QColor& bgColor,const QColor& text
 	tableHeaderFont = headerFont;
 	d_show_table_comments = showComments;
 
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows){
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->inherits("Table"))
 			customTable((Table*)w);
 	}
-	delete windows;
 }
 
 void ApplicationWindow::customTable(Table* w)
@@ -2989,16 +2981,12 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 
 QWidget* ApplicationWindow::window(const QString& name)
 {
-	QWidget* w = 0;
-	QWidgetList *windows = windowsList();
-	for (int i = 0; i < int(windows->count());i++ ){
-		if (windows->at(i)->objectName() == name){
-			w = windows->at(i);
-			break;
-		}
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
+		if (w->objectName() == name)
+			return w;
 	}
-	delete windows;
-	return  w;
+	return  NULL;
 }
 
 Table* ApplicationWindow::table(const QString& name)
@@ -3212,9 +3200,8 @@ void ApplicationWindow::removeCurves(const QString& name)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows)
-	{
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer"))
 		{
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
@@ -3227,14 +3214,13 @@ void ApplicationWindow::removeCurves(const QString& name)
 				((Graph3D*)w)->clearData();
 		}
 	}
-	delete windows;
 	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::updateCurves(Table *t, const QString& name)
 {
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows){
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
@@ -3245,7 +3231,6 @@ void ApplicationWindow::updateCurves(Table *t, const QString& name)
 				g->updateData(t);
 		}
 	}
-	delete windows;
 }
 
 void ApplicationWindow::showPreferencesDialog()
@@ -3306,48 +3291,48 @@ void ApplicationWindow::updateAppFonts()
 void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, bool askPlots2D,
 		bool askPlots3D, bool askNotes)
 {
-	QList<QWidget*> *windows = windowsList();
+	QList<MdiSubWindow *> windows = windowsList();
+	
+		
 	if (confirmCloseTable != askTables){
 		confirmCloseTable=askTables;
-		for (int i = 0; i < int(windows->count());i++ ){
-			if (windows->at(i)->inherits("Table"))
-				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmCloseTable);
+		foreach(MdiSubWindow *w, windows){
+			if (w->inherits("Table"))
+				w->askOnCloseEvent(confirmCloseTable);
 		}
 	}
 
 	if (confirmCloseMatrix != askMatrices){
 		confirmCloseMatrix = askMatrices;
-		for (int i = 0; i < int(windows->count());i++ ){
-			if (windows->at(i)->isA("Matrix"))
-				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmCloseMatrix);
+		foreach(MdiSubWindow *w, windows){
+			if (w->isA("Matrix"))
+				w->askOnCloseEvent(confirmCloseMatrix);
 		}
 	}
 
 	if (confirmClosePlot2D != askPlots2D){
 		confirmClosePlot2D=askPlots2D;
-		for (int i = 0; i < int(windows->count());i++ ){
-			if (windows->at(i)->isA("MultiLayer"))
-				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmClosePlot2D);
+		foreach(MdiSubWindow *w, windows){
+			if (w->isA("MultiLayer"))
+				w->askOnCloseEvent(confirmClosePlot2D);
 		}
 	}
 
 	if (confirmClosePlot3D != askPlots3D){
 		confirmClosePlot3D=askPlots3D;
-		for (int i = 0; i < int(windows->count());i++ ){
-			if (windows->at(i)->isA("Graph3D"))
-				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmClosePlot3D);
+		foreach(MdiSubWindow *w, windows){
+			if (w->isA("Graph3D"))
+				w->askOnCloseEvent(confirmClosePlot3D);
 		}
 	}
 
 	if (confirmCloseNotes != askNotes){
 		confirmCloseNotes = askNotes;
-		for (int i = 0; i < int(windows->count());i++ ){
-			if (windows->at(i)->isA("Note"))
-				((MdiSubWindow*)windows->at(i))->askOnCloseEvent(confirmCloseNotes);
+		foreach(MdiSubWindow *w, windows){
+			if (w->isA("Note"))
+				w->askOnCloseEvent(confirmCloseNotes);
 		}
 	}
-
-	delete windows;
 }
 
 void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
@@ -3364,11 +3349,9 @@ void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 	autoResizeLayers = !resizeLayers;
 	antialiasing2DPlots = antialiasing;
 
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows)
-	{
-		if (w->isA("MultiLayer"))
-		{
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
+		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
 				g->enableAutoscaling(autoscale2DPlots);
@@ -3379,7 +3362,6 @@ void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 			}
 		}
 	}
-	delete windows;
 }
 
 void ApplicationWindow::setLegendDefaultSettings(int frame, const QFont& font,
@@ -3434,7 +3416,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 
 void ApplicationWindow::importASCII()
 {
-	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(activeWindow(TableWindow), this, d_extended_import_ASCII_dialog);
+	ImportASCIIDialog *import_dialog = new ImportASCIIDialog(!activeWindow(TableWindow) && !activeWindow(MatrixWindow), this, d_extended_import_ASCII_dialog);
 	import_dialog->setDir(asciiDirPath);
 	import_dialog->selectFilter(d_ASCII_file_filter);
 	if (import_dialog->exec() != QDialog::Accepted)
@@ -3482,19 +3464,20 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				int dx, dy;
 				QStringList sorted_files = files;
 				sorted_files.sort();
-				for (int i=0; i<sorted_files.size(); i++){
+				int filesCount = sorted_files.size();
+				for (int i=0; i<filesCount; i++){
 					Table *w = newTable(sorted_files[i], local_column_separator, local_ignored_lines,
                                         local_rename_columns, local_strip_spaces, local_simplify_spaces,
                                         local_import_comments, local_comment_string, import_read_only);
 					if (!w) continue;
 					w->setCaptionPolicy(MdiSubWindow::Both);
 					setListViewLabel(w->objectName(), sorted_files[i]);
-					if (i==0) {
+					if (i == 0){
 						dx = w->verticalHeaderWidth();
-						dy = w->parentWidget()->frameGeometry().height() - w->height();
-						w->parentWidget()->move(QPoint(0,0));
-					} else
-						w->parentWidget()->move(QPoint(i*dx,i*dy));
+						dy = w->frameGeometry().height() - w->widget()->height();
+					}
+					if (filesCount > 1)
+						w->move(QPoint(i*dx, i*dy));
 
 					if (update_dec_separators)
 						w->updateDecimalSeparators(local_separators);
@@ -3502,49 +3485,87 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				modifiedProject();
 				break;
 			}
+        case ImportASCIIDialog::NewMatrices:
+			{
+				int dx, dy;
+				QStringList sorted_files = files;
+				sorted_files.sort();
+				int filesCount = sorted_files.size();
+				for (int i=0; i<filesCount; i++){
+					Matrix *w = newMatrix();
+					if (!w)
+                        continue;
+					w->importASCII(sorted_files[i], local_column_separator, local_ignored_lines,
+                                local_strip_spaces, local_simplify_spaces, local_comment_string,
+								Matrix::Overwrite, local_separators);
+					w->setCaptionPolicy(MdiSubWindow::Both);
+					setListViewLabel(w->objectName(), sorted_files[i]);
+					if (i == 0){
+						dx = w->verticalHeaderWidth();
+						dy = w->frameGeometry().height() - w->widget()->height();
+					}
+					if (filesCount > 1)
+						w->move(QPoint(i*dx,i*dy));
+				}
+				modifiedProject();
+				break;
+			}
+
 		case ImportASCIIDialog::NewColumns:
 		case ImportASCIIDialog::NewRows:
 			{
-				Table *t = (Table*) activeWindow(TableWindow);
-				if (t){
+				MdiSubWindow *w = activeWindow();
+				if (!w)
+                    return;
+				
+				if (w->inherits("Table")){
+					Table *t = (Table*)w;
 					for (int i=0; i<files.size(); i++)
                         t->importMultipleASCIIFiles(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
 							local_strip_spaces, local_simplify_spaces, local_import_comments,
 							local_comment_string, import_read_only, import_mode);
 
-					t->setWindowLabel(files.join("; "));
-					t->setCaptionPolicy(MdiSubWindow::Name);
 					if (update_dec_separators)
 						t->updateDecimalSeparators(local_separators);
 					t->notifyChanges();
 					emit modifiedProject(t);
+				} else if (w->isA("Matrix")){
+					Matrix *m = (Matrix *)w;
+					for (int i=0; i<files.size(); i++){
+						m->importASCII(files[i], local_column_separator, local_ignored_lines,
+                         local_strip_spaces, local_simplify_spaces, local_comment_string, 
+						 (Matrix::ImportMode)(import_mode - 2), local_separators);
+					}
 				}
+				w->setWindowLabel(files.join("; "));
+				w->setCaptionPolicy(MdiSubWindow::Name);
 				break;
 			}
 		case ImportASCIIDialog::Overwrite:
 			{
-				Table *t = (Table*) activeWindow(TableWindow);
-				if (t){
+				MdiSubWindow *w = activeWindow();
+				if (!w)
+                    return;
+
+				if (w->inherits("Table")){
+				    Table *t = (Table *)w;
 					t->importASCII(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
                                     local_strip_spaces, local_simplify_spaces, local_import_comments, false,
                                     local_comment_string, import_read_only);
 					if (update_dec_separators)
 						t->updateDecimalSeparators(local_separators);
-					t->setWindowLabel(files[0]);
 					t->notifyChanges();
-				} else {
-					t = newTable(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
-                                 local_strip_spaces, local_simplify_spaces, local_import_comments,
-                                 local_comment_string, import_read_only);
-					if (update_dec_separators)
-						t->updateDecimalSeparators(local_separators);
+				} else if (w->isA("Matrix")){
+				    Matrix *m = (Matrix *)w;
+					m->importASCII(files[0], local_column_separator, local_ignored_lines,
+                          local_strip_spaces, local_simplify_spaces, local_comment_string, 
+						  Matrix::Overwrite, local_separators);
 				}
 
-				if (t){
-					t->setCaptionPolicy(MdiSubWindow::Both);
-					setListViewLabel(t->objectName(), files[0]);
-					modifiedProject(t);
-				}
+                w->setWindowLabel(files[0]);
+				w->setCaptionPolicy(MdiSubWindow::Both);
+                setListViewLabel(w->objectName(), files[0]);
+                modifiedProject();
 				break;
 			}
 	}
@@ -4885,13 +4906,12 @@ void ApplicationWindow::exportAllGraphs()
 	file_suffix.lower();
 	file_suffix.remove("*");
 
-	QWidgetList *windows = windowsList();
 	bool confirm_overwrite = true;
 	MultiLayer *plot2D;
 	Graph3D *plot3D;
-
-	foreach (QWidget *w, *windows)
-	{
+	
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")) {
 			plot3D = 0;
 			plot2D = (MultiLayer *)w;
@@ -4922,7 +4942,6 @@ void ApplicationWindow::exportAllGraphs()
 					QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 					break;
 				case 2:
-					delete windows;
 					return;
 			}
 		}
@@ -4931,7 +4950,6 @@ void ApplicationWindow::exportAllGraphs()
 			QMessageBox::critical(this, tr("QtiPlot - Export error"),
 					tr("Could not write to file: <br><h4>%1</h4><p>"
 						"Please verify that you have the right to write to this location!").arg(file_name));
-			delete windows;
 			return;
 		}
 		f.close();
@@ -4958,8 +4976,6 @@ void ApplicationWindow::exportAllGraphs()
 			}
 		}
 	}
-
-	delete windows;
 	QApplication::restoreOverrideCursor();
 }
 
@@ -5255,10 +5271,9 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 
 QStringList ApplicationWindow::columnsList(Table::PlotDesignation plotType)
 {
-	QList<QWidget*> *windows = windowsList();
 	QStringList list;
-	foreach (QWidget *w, *windows)
-	{
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (!w->inherits("Table"))
 			continue;
 
@@ -5269,8 +5284,6 @@ QStringList ApplicationWindow::columnsList(Table::PlotDesignation plotType)
 				list << QString(t->objectName()) + "_" + t->colLabel(i);
 		}
 	}
-
-	delete windows;
 	return list;
 }
 
@@ -5417,13 +5430,12 @@ void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool 
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose a directory to export the tables to"), workingDir, QFileDialog::ShowDirsOnly);
 	if (!dir.isEmpty()){
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		QWidgetList *windows = windowsList();
 		workingDir = dir;
 
 		bool confirmOverwrite = true;
 		bool success = true;
-		QWidget *w;
-		foreach(w, *windows){
+		QList<MdiSubWindow *> windows = windowsList();
+		foreach(MdiSubWindow *w, windows){
 			if (w->inherits("Table") || w->isA("Matrix")){
 				QString fileName = dir + "/" + w->objectName() + ".txt";
 				QFile f(fileName);
@@ -5461,7 +5473,6 @@ void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool 
 					break;
 			}
 		}
-		delete windows;
 		QApplication::restoreOverrideCursor();
 	}
 }
@@ -6558,12 +6569,10 @@ void ApplicationWindow::printAllPlots()
 	if (printer.setup())
 	{
 		QPainter *paint = new QPainter (&printer);
-		QWidgetList *windows = windowsList();
 
 		int plots = 0;
-		QWidget *w = 0;
-		foreach(w, *windows)
-		{
+		QList<MdiSubWindow *> windows = windowsList();
+		foreach(MdiSubWindow *w, windows){
 			if (w->isA("MultiLayer"))
 				plots++;
 		}
@@ -6571,14 +6580,12 @@ void ApplicationWindow::printAllPlots()
 		printer.setMinMax (0, plots);
 		printer.setFromTo (0, plots);
 
-		foreach(w, *windows)
-		{
+		foreach(MdiSubWindow *w, windows){
 			if (w->isA("MultiLayer") && printer.newPage())
 				((MultiLayer*)w)->printAllLayers(paint);
 		}
 		paint->end();
 		delete paint;
-		delete windows;
 	}
 }
 
@@ -7893,7 +7900,7 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	convertToTableMenu->addAction(actionConvertMatrixDirect);
 	convertToTableMenu->addAction(actionConvertMatrixXYZ);
 	convertToTableMenu->addAction(actionConvertMatrixYXZ);
-	
+
 	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
 		return;
@@ -8432,25 +8439,21 @@ void ApplicationWindow::showTable(const QString& curve)
 
 QStringList ApplicationWindow::depending3DPlots(Matrix *m)
 {
-	QWidgetList *windows = windowsList();
 	QStringList plots;
-	for (int i=0; i<(int)windows->count(); i++)
-	{
-		QWidget *w = windows->at(i);
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("Graph3D") && ((Graph3D *)w)->matrix() == m)
 			plots << w->objectName();
 	}
-	delete windows;
 	return plots;
 }
 
 QStringList ApplicationWindow::dependingPlots(const QString& name)
 {
-	QWidgetList *windows = windowsList();
 	QStringList onPlot, plots;
 
-	for (int i=0; i<(int)windows->count(); i++){
-		QWidget *w = windows->at(i);
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
@@ -8464,7 +8467,6 @@ QStringList ApplicationWindow::dependingPlots(const QString& name)
 				plots << w->objectName();
 		}
 	}
-	delete windows;
 	return plots;
 }
 
@@ -10662,15 +10664,14 @@ void ApplicationWindow::disableTools()
 	if (displayBar->isVisible())
 		displayBar->hide();
 
-	QWidgetList *windows = windowsList();
-	foreach(QWidget *w, *windows){
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
                 g->disableTools();
 		}
 	}
-	delete windows;
 }
 
 void ApplicationWindow::pickDataTool( QAction* action )
@@ -10795,8 +10796,8 @@ void ApplicationWindow::setAppColors(const QColor& wc, const QColor& pc, const Q
 
 void ApplicationWindow::setPlot3DOptions()
 {
-	QList<QWidget*> *windows = windowsList();
-	foreach (QWidget *w, *windows){
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("Graph3D")){
 			Graph3D *g = (Graph3D*)w;
 			g->setOrthogonal(orthogonal3DPlots);
@@ -10804,7 +10805,6 @@ void ApplicationWindow::setPlot3DOptions()
 			g->setAntialiasing(smooth3DMesh);
 		}
 	}
-	delete windows;
 }
 
 void ApplicationWindow::createActions()
@@ -11336,11 +11336,11 @@ void ApplicationWindow::createActions()
 
 	actionConvertMatrixDirect = new QAction(tr("&Direct"), this);
 	connect(actionConvertMatrixDirect, SIGNAL(activated()), this, SLOT(convertMatrixToTableDirect()));
-	
-	actionConvertMatrixXYZ = new QAction(tr("&XYZ"), this);
+
+	actionConvertMatrixXYZ = new QAction(tr("&XYZ Columns"), this);
 	connect(actionConvertMatrixXYZ, SIGNAL(activated()), this, SLOT(convertMatrixToTableXYZ()));
 
-	actionConvertMatrixYXZ = new QAction(tr("&YXZ"), this);
+	actionConvertMatrixYXZ = new QAction(tr("&YXZ Columns"), this);
 	connect(actionConvertMatrixYXZ, SIGNAL(activated()), this, SLOT(convertMatrixToTableYXZ()));
 
     actionMatrixFFTDirect = new QAction(tr("&Forward FFT"), this);
@@ -11924,8 +11924,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionInvertMatrix->setMenuText(tr("&Invert"));
 	actionMatrixDeterminant->setMenuText(tr("&Determinant"));
 	actionConvertMatrixDirect->setMenuText(tr("&Direct"));
-	actionConvertMatrixXYZ->setMenuText(tr("&XYZ"));
-	actionConvertMatrixYXZ->setMenuText(tr("&YXZ"));
+	actionConvertMatrixXYZ->setMenuText(tr("&XYZ Columns"));
+	actionConvertMatrixYXZ->setMenuText(tr("&YXZ Columns"));
 	actionExportMatrix->setMenuText(tr("&Export Image ..."));
 
 	actionConvertTable->setMenuText(tr("Convert to &Matrix"));
@@ -12296,13 +12296,11 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 void ApplicationWindow::deleteFitTables()
 {
 	QList<QWidget*>* mLst = new QList<QWidget*>();
-	QList<QWidget*> *windows = windowsList();
-	for (int i = 0; i < int(windows->count());i++ )
-	{
-		if (windows->at(i)->isA("MultiLayer"))
-			mLst->append(windows->at(i));
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
+		if (w->isA("MultiLayer"))
+			mLst->append(w);
 	}
-	delete windows;
 
 	foreach(QWidget *ml, *mLst){
 		if (ml->isA("MultiLayer")){
@@ -12325,15 +12323,15 @@ void ApplicationWindow::deleteFitTables()
 	delete mLst;
 }
 
-QWidgetList* ApplicationWindow::windowsList()
+QList<MdiSubWindow *> ApplicationWindow::windowsList()
 {
-	QWidgetList *lst = new QWidgetList;
+	QList<MdiSubWindow *> lst;
 
     Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows)
-			lst->append(w);
+			lst << w;
 		f = f->folderBelow();
 	}
 	return lst;
@@ -13285,13 +13283,12 @@ void ApplicationWindow::setShowWindowsPolicy(int p)
 
 	show_windows_policy = (ShowWindowsPolicy)p;
 	if (show_windows_policy == HideAll){
-		QList<QWidget*> *lst = windowsList();
-		foreach(QWidget *w, *lst){
+		QList<MdiSubWindow *> windows = windowsList();
+		foreach(MdiSubWindow *w, windows){
 			hiddenWindows->append(w);
 			w->hide();
 			setListView(w->objectName(), tr("Hidden"));
 		}
-		delete lst;
 	} else
 		showAllFolderWindows();
 }
@@ -13474,10 +13471,7 @@ void ApplicationWindow::projectProperties()
 		s += tr("Size") + ": " + QString::number(fi.size()) + " " + tr("bytes")+ "\n\n";
 	}
 
-	QList<QWidget*> *lst = windowsList();
-	s += tr("Contents") + ": " + QString::number(lst->count()) + " " + tr("windows");
-	delete lst;
-
+	s += tr("Contents") + ": " + QString::number(windowsList().size()) + " " + tr("windows");
 	s += ", " + QString::number(current_folder->subfolders().count()) + " " + tr("folders") + "\n\n";
 	s += "\n\n\n";
 
@@ -14440,12 +14434,11 @@ void ApplicationWindow::scriptsDirPathChanged(const QString& path)
 {
 	scriptsDirPath = path;
 
-	QList<QWidget*> *lst = windowsList();
-	foreach(QWidget *w, *lst){
+	QList<MdiSubWindow*> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
 		if (w->isA("Note"))
 			((Note*)w)->setDirPath(path);
 	}
-	delete lst;
 }
 
 void ApplicationWindow::showToolBarsMenu()
