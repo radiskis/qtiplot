@@ -2216,8 +2216,8 @@ void AxesDialog::updateGrid()
             if (!app)
                 return;
 
-            QWidgetList *windows = app->windowsList();
-            foreach(QWidget *w, *windows){
+            QList<MdiSubWindow *> windows = app->windowsList();
+            foreach(MdiSubWindow *w, windows){
                 if (w->isA("MultiLayer")){
                     QList<Graph *> layers = ((MultiLayer*)w)->layersList();
                     foreach(Graph *g, layers){
@@ -2228,7 +2228,6 @@ void AxesDialog::updateGrid()
                     }
                 }
             }
-            delete windows;
             app->modifiedProject();
         }
         break;

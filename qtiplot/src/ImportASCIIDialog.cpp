@@ -31,6 +31,8 @@
 #include "ImportASCIIDialog.h"
 #include "ApplicationWindow.h"
 #include "Table.h"
+#include "Matrix.h"
+#include "MatrixModel.h"
 
 #include <QLayout>
 #include <QGroupBox>
@@ -41,9 +43,14 @@
 #include <QTextStream>
 #include <QApplication>
 #include <QProgressDialog>
+#include <QStackedWidget>
+#include <QHeaderView>
+
 #include <Q3TextStream>
 
-ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent, bool extended, Qt::WFlags flags )
+#include <gsl/gsl_math.h>
+
+ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bool extended, Qt::WFlags flags )
 : ExtensibleFileDialog(parent, extended, flags )
 {
 	setWindowTitle(tr("QtiPlot - Import ASCII File(s)"));
@@ -60,13 +67,13 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	d_current_path = QString::null;
 
 	initAdvancedOptions();
-	d_import_mode->setEnabled(import_mode_enabled);
+	setNewWindowsOnly(new_windows_only);
 	setExtensionWidget(d_advanced_options);
 
 	// get rembered option values
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 	setLocale(app->locale());
-	
+
 	d_strip_spaces->setChecked(app->strip_spaces);
 	d_simplify_spaces->setChecked(app->simplify_spaces);
 	d_ignored_lines->setValue(app->ignoredLines);
@@ -86,14 +93,16 @@ ImportASCIIDialog::ImportASCIIDialog(bool import_mode_enabled, QWidget * parent,
 	d_import_dec_separators->setChecked(app->d_import_dec_separators);
 
 	connect(d_import_mode, SIGNAL(currentIndexChanged(int)), this, SLOT(updateImportMode(int)));
-	if (import_mode_enabled)
-        d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
+
+	d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
 	d_preview_lines_box->setValue(app->d_preview_lines);
 	d_preview_button->setChecked(app->d_ASCII_import_preview);
-	d_preview_table->setNumericPrecision(app->d_decimal_digits);
+		
 	if (!app->d_ASCII_import_preview)
-		d_preview_table->hide();
+		d_preview_stack->hide();
 
+	initPreview(app->d_ASCII_import_mode);
+	
     connect(d_preview_lines_box, SIGNAL(valueChanged(int)), this, SLOT(preview()));
     connect(d_rename_columns, SIGNAL(clicked()), this, SLOT(preview()));
     connect(d_import_comments, SIGNAL(clicked()), this, SLOT(preview()));
@@ -118,9 +127,10 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_import_mode = new QComboBox();
 	// Important: Keep this in sync with the ImportMode enum.
 	d_import_mode->addItem(tr("New Table"));
+	d_import_mode->addItem(tr("New Matrice"));
 	d_import_mode->addItem(tr("New Columns"));
 	d_import_mode->addItem(tr("New Rows"));
-	d_import_mode->addItem(tr("Overwrite Current Table"));
+	d_import_mode->addItem(tr("Overwrite Current Window"));
 	advanced_layout->addWidget(d_import_mode, 0, 1);
 
 	QLabel *label_column_separator = new QLabel(tr("Separator:"));
@@ -210,9 +220,62 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_help_button = new QPushButton(tr("&Help"));
 	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
 	advanced_layout->addWidget(d_help_button, 5, 3);
+	
+	d_preview_table = NULL;
+	d_preview_matrix = NULL;
+	d_preview_stack = new QStackedWidget();
+	main_layout->addWidget(d_preview_stack);
+}
 
-	d_preview_table = new PreviewTable(30, 2, this);
-	main_layout->addWidget(d_preview_table);
+void ImportASCIIDialog::initPreview(int previewMode)
+{
+	if (previewMode < NewTables || previewMode > Overwrite)
+		return;
+	
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (!app)
+		return;
+
+	if (d_preview_table){
+		delete d_preview_table;
+		d_preview_table = NULL;
+	}
+	
+	if (d_preview_matrix){
+		delete d_preview_matrix;
+		d_preview_matrix = NULL;
+	}
+	
+	switch(previewMode){
+		case NewTables:
+			d_preview_table = new PreviewTable(30, 2, this);
+			d_preview_table->setNumericPrecision(app->d_decimal_digits);
+			d_preview_stack->addWidget(d_preview_table);
+		break;
+		
+		case NewMatrices:
+			d_preview_matrix = new PreviewMatrix(app);
+			d_preview_stack->addWidget(d_preview_matrix);
+		break;
+		
+		case NewColumns:
+		case NewRows:
+		case Overwrite:
+			MdiSubWindow *w = app->activeWindow();
+			if (!w)
+				return;
+			
+			if (w->inherits("Table")){
+				d_preview_table = new PreviewTable(30, 2, this);
+				d_preview_table->setNumericPrecision(app->d_decimal_digits);
+				d_preview_stack->addWidget(d_preview_table);
+			} else if (w->isA("Matrix")){
+				d_preview_matrix = new PreviewMatrix(app, (Matrix *)w);
+				d_preview_stack->addWidget(d_preview_matrix);
+			}
+		break;
+	}
+	preview();
 }
 
 void ImportASCIIDialog::setColumnSeparator(const QString& sep)
@@ -283,6 +346,8 @@ void ImportASCIIDialog::updateImportMode(int mode)
 		setFileMode( QFileDialog::ExistingFile );
 	else
 		setFileMode( QFileDialog::ExistingFiles );
+	
+	initPreview(mode);
 }
 
 void ImportASCIIDialog::closeEvent(QCloseEvent* e)
@@ -321,10 +386,25 @@ QLocale ImportASCIIDialog::decimalSeparators()
 void ImportASCIIDialog::preview()
 {
     if (!d_preview_button->isChecked()){
-        d_preview_table->hide();
+		d_preview_stack->hide();
         return;
-    }
+    } else
+		d_preview_stack->show();
 
+	if (d_preview_table)
+		previewTable();
+	else if (d_preview_matrix)
+		previewMatrix();
+}
+
+void ImportASCIIDialog::previewTable()
+{
+	if (!d_preview_table)
+		return;
+	
+	if (!d_preview_table->isVisible())
+		d_preview_table->show();
+	
 	if (d_current_path.trimmed().isEmpty()){
 		d_preview_table->clear();
 		d_preview_table->resetHeader();
@@ -362,13 +442,79 @@ void ImportASCIIDialog::preview()
 	tempFile.close();
 }
 
+void ImportASCIIDialog::previewMatrix()
+{
+	if (!d_preview_matrix)
+		return;
+	
+	if (d_current_path.trimmed().isEmpty()){
+		d_preview_matrix->clear();
+        return;
+    }
+
+	QString fileName = d_current_path;
+	QTemporaryFile tempFile;
+	int rows = d_preview_lines_box->value();
+	if (rows){
+		QFile dataFile(fileName);
+		if(tempFile.open() && dataFile.open(QIODevice::ReadOnly)){
+			QTextStream t(&dataFile);
+			QTextStream tt(&tempFile);
+			int i = 0;
+			while(i<rows && !t.atEnd()){
+				tt << t.readLine() + "\n";
+				i++;
+			}
+			fileName = tempFile.fileName();
+		}
+	}
+	
+	int importMode = d_import_mode->currentIndex();
+	if (importMode == NewMatrices)
+		importMode = Matrix::Overwrite;
+	else 
+		importMode -= 2;
+		
+	QLocale locale = d_preview_matrix->locale();
+	if(d_import_dec_separators->isChecked())
+		locale = decimalSeparators();
+	
+	d_preview_matrix->importASCII(fileName, columnSeparator(), d_ignored_lines->value(),
+							d_strip_spaces->isChecked(), d_simplify_spaces->isChecked(),
+                            d_comment_string->text(), importMode, locale);
+	d_preview_matrix->resizeColumnsToContents();
+	
+	tempFile.close();
+}
+
 void ImportASCIIDialog::changePreviewFile(const QString& path)
 {
-	if (path.isEmpty() || !QFileInfo(path).exists())
+	if (path.isEmpty())
 		return;
 
+	QFileInfo fi(path);
+	if (!fi.exists() || fi.isDir() || !fi.isFile())
+		return;
+	
+	if (!fi.isReadable()){
+		QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+		tr("You don't have the permission to open this file: <b>%1</b>").arg(path));
+		return;
+	}
+	
 	d_current_path = path;
 	preview();
+}
+
+void ImportASCIIDialog::setNewWindowsOnly(bool on)
+{
+    if (on){
+        d_import_mode->clear();
+        d_import_mode->addItem(tr("New Table"));
+        d_import_mode->addItem(tr("New Matrice"));
+    }
+
+    d_preview_button->setChecked(false);
 }
 
 /*****************************************************************************
@@ -380,13 +526,13 @@ void ImportASCIIDialog::changePreviewFile(const QString& path)
 PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const char * name)
 :Q3Table(numRows, numCols, parent, name)
 {
-	setAttribute(Qt::WA_DeleteOnClose);	
+	setAttribute(Qt::WA_DeleteOnClose);
 	setSelectionMode(Q3Table::NoSelection);
 	setReadOnly(true);
 	setRowMovingEnabled(false);
 	setColumnMovingEnabled(false);
 	verticalHeader()->setResizeEnabled(false);
-	
+
 	for (int i=0; i<numCols; i++){
 		comments << "";
 		col_label << QString::number(i+1);
@@ -475,7 +621,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			else{
 				setNumCols(cols);
                 for (int i=c-1; i>=cols; i--){
-                	comments.removeLast();            
+                	comments.removeLast();
 					col_label.removeLast();
 				}
 			}
@@ -614,7 +760,7 @@ void PreviewTable::clear()
 }
 
 void PreviewTable::updateDecimalSeparators(const QLocale& oldSeparators)
-{		
+{
 	QLocale locale = ((QWidget *)parent())->locale();
 	for (int i=0; i<numCols(); i++){
         for (int j=0; j<numRows(); j++){
@@ -637,7 +783,7 @@ void PreviewTable::setHeader()
 	#else
 		head->setLabel(i, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[i]);
 	#endif
-	} 
+	}
 }
 
 void PreviewTable::addColumns(int c)
@@ -656,4 +802,59 @@ void PreviewTable::addColumns(int c)
 		comments << QString();
 		col_label<< QString::number(max+i);
 	}
+}
+
+/*****************************************************************************
+ *
+ * Class PreviewMatrix
+ *
+ *****************************************************************************/
+
+PreviewMatrix::PreviewMatrix(QWidget *parent, Matrix * m):QTableView(parent)
+{
+	d_matrix_model = new MatrixModel(32, 32, m);
+	if (!m){
+		ApplicationWindow *app = (ApplicationWindow *)parent;
+		if (app){
+			d_matrix_model->setLocale(app->locale());
+			d_matrix_model->setNumericFormat('f', app->d_decimal_digits);
+		}
+	}
+	setModel(d_matrix_model);
+
+	setAttribute(Qt::WA_DeleteOnClose);
+	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    setSelectionMode(QAbstractItemView::NoSelection);
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
+    setFocusPolicy(Qt::NoFocus);
+
+    QPalette pal = palette();
+	pal.setColor(QColorGroup::Base, QColor(255, 255, 128));
+	setPalette(pal);
+
+	// set header properties
+	horizontalHeader()->setMovable(false);
+	horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+	for(int i=0; i<d_matrix_model->columnCount(); i++)
+		setColumnWidth(i, 100);
+	
+	verticalHeader()->setMovable(false);
+	verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+}
+
+void PreviewMatrix::importASCII(const QString &fname, const QString &sep, int ignoredLines,
+    				bool stripSpaces, bool simplifySpaces, const QString& commentString, 
+					int importAs, const QLocale& locale)
+{
+	if (d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces, 
+		simplifySpaces, commentString, importAs, locale))
+		reset();
+}
+
+void PreviewMatrix::clear()
+{
+	QVector <double> d_data_new(d_matrix_model->rowCount()*d_matrix_model->columnCount());
+	d_data_new.fill(GSL_NAN);
+	d_matrix_model->setDataVector(d_data_new);
+	reset();
 }

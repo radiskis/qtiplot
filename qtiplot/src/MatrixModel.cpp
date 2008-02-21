@@ -27,6 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
+#include <QFile>
+#include <QTextStream>
 
 #include "Matrix.h"
 #include "MatrixModel.h"
@@ -35,21 +37,32 @@
 
 MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
      : QAbstractTableModel(parent),
-	 d_matrix((Matrix*)parent),
      d_rows(rows),
      d_cols(cols),
-	 d_data(d_rows*d_cols, GSL_NAN)
+	 d_data(d_rows*d_cols, GSL_NAN),
+	 d_matrix((Matrix*)parent),
+	 d_txt_format('g'),
+	 d_num_precision(6),
+	 d_locale(QLocale())
 {
+	if (d_matrix){
+		d_txt_format = d_matrix->textFormat().toAscii();
+		d_num_precision = d_matrix->precision();
+		d_locale = d_matrix->locale();
+	}
 }
 
 MatrixModel::MatrixModel(const QImage& image, QObject *parent)
      : QAbstractTableModel(parent),
-	 d_matrix((Matrix*)parent)
+	 d_matrix((Matrix*)parent),
+	 d_txt_format('g'),
+	 d_num_precision(6),
+	 d_locale(QLocale())
 {
     d_rows = image.height();
     d_cols = image.width();
     d_data.resize(d_rows*d_cols);
-
+	
     for (int i=0; i<d_rows; i++ ){
 		for (int j=0; j<d_cols; j++){
 		    int index = i*d_cols + j;
@@ -76,6 +89,39 @@ int MatrixModel::columnCount(const QModelIndex & /* parent */) const
     return d_cols;
 }
 
+void MatrixModel::setRowCount(int rows)
+{
+	if (d_rows == rows)
+		return;
+
+   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	int diff = abs(rows - d_rows);
+	if (rows > d_rows )
+		insertRows(d_rows, diff);
+    else if (rows < d_rows )
+		removeRows(rows, diff);
+
+	QApplication::restoreOverrideCursor();
+	
+}
+
+void MatrixModel::setColumnCount(int cols)
+{
+	if (d_cols == cols)
+		return;
+
+   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	int diff = abs(cols - d_cols);
+	if (cols > d_cols )
+		insertColumns(d_cols, diff);
+    else if (cols < d_cols )
+		removeColumns(cols, diff);
+
+	QApplication::restoreOverrideCursor();
+}
+
 double MatrixModel::cell(int row, int col)
 {
     int i = d_cols*row + col;
@@ -100,8 +146,11 @@ QString MatrixModel::text(int row, int col)
     if (i < 0 || i>= d_data.size() || gsl_isnan (d_data[i]))
         return "";
 
-	QLocale locale = d_matrix->locale();
-	return locale.toString(d_data[i], d_matrix->textFormat().toAscii(), d_matrix->precision());
+	if (d_matrix){
+		QLocale locale = d_matrix->locale();
+		return locale.toString(d_data[i], d_matrix->textFormat().toAscii(), d_matrix->precision());	
+	} 
+	return d_locale.toString(d_data[i], d_txt_format, d_num_precision);
 }
 
 void MatrixModel::setText(int row, int col, const QString& text)
@@ -112,8 +161,12 @@ void MatrixModel::setText(int row, int col, const QString& text)
 
  	if (text.isEmpty())
 		d_data[i] = GSL_NAN;
-	else
-		d_data[i] = text.toDouble();
+	else {
+		if (d_matrix)
+			d_data[i] = d_matrix->locale().toDouble(text);
+		else
+			d_data[i] = d_locale.toDouble(text);
+	}
 }
 
 double MatrixModel::data(int row, int col) const
@@ -157,30 +210,38 @@ double MatrixModel::y(int row) const
 
 QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int role) const
 {
-    if (d_matrix->headerViewType() == Matrix::ColumnRow)
+    if (!d_matrix || d_matrix->headerViewType() == Matrix::ColumnRow)
         return QAbstractItemModel::headerData(section, orientation, role);
 
-    QLocale locale = d_matrix->locale();
+    QLocale locale = d_locale;
+	int prec = d_num_precision;
+	char fmt = d_txt_format;
+	if (d_matrix){
+		locale = d_matrix->locale();
+		fmt = d_matrix->textFormat().toAscii();
+		prec = d_matrix->precision();
+	}
+	
     if (role == Qt::DisplayRole || role == Qt::EditRole){
         if (orientation == Qt::Horizontal){
             double start = d_matrix->xStart();
             double end = d_matrix->xEnd();
             double dx = d_matrix->dx();
             if (start < end)
-                return QVariant(locale.toString(start + section*dx, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+                return QVariant(locale.toString(start + section*dx, fmt, prec));
             else
-                return QVariant(locale.toString(start - section*dx, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+                return QVariant(locale.toString(start - section*dx, fmt, prec));
         } else if (orientation == Qt::Vertical){
             double start = d_matrix->yStart();
             double end = d_matrix->yEnd();
             double dy = d_matrix->dy();
             if (start < end)
-                return QVariant(locale.toString(start + section*dy, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+                return QVariant(locale.toString(start + section*dy, fmt, prec));
             else
-                return QVariant(locale.toString(start - section*dy, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+                return QVariant(locale.toString(start - section*dy, fmt, prec));
         }
-    } else
-        return QAbstractItemModel::headerData(section, orientation, role);
+    }    
+	return QAbstractItemModel::headerData(section, orientation, role);
 }
 
 QVariant MatrixModel::data(const QModelIndex &index, int role) const
@@ -193,9 +254,11 @@ QVariant MatrixModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole){
-		QLocale locale = d_matrix->locale();
-		return QVariant(locale.toString(d_data[i], d_matrix->textFormat().toAscii(), d_matrix->precision()));
-	}else
+		if (d_matrix)
+			return QVariant(d_matrix->locale().toString(d_data[i], d_matrix->textFormat().toAscii(), d_matrix->precision()));
+		else
+			return QVariant(d_locale.toString(d_data[i], d_txt_format, d_num_precision));
+	} else
 		return QVariant();
 }
 
@@ -349,4 +412,113 @@ QImage MatrixModel::renderImage()
 void MatrixModel::setDataVector(const QVector<double>& data)
 {
 	d_data = data;
+}
+
+bool MatrixModel::importASCII(const QString &fname, const QString &sep, int ignoredLines,
+    bool stripSpaces, bool simplifySpaces, const QString& commentString, int importAs, const QLocale& locale)
+{
+	QFile f(fname);
+	if (f.open(QIODevice::ReadOnly)){
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        QTextStream t(&f);
+		
+		QLocale l = d_locale;
+		if (d_matrix)
+			l = d_matrix->locale();
+		bool updateDecimalSeparators = (l != locale) ? true : false;	
+		
+		int rows = 0, cols = 0;
+		for (int i=0; i<ignoredLines; i++)
+			t.readLine();
+
+		QString s = t.readLine();//read first line after the ignored ones
+		bool emptyCommentString = commentString.isEmpty();
+		while (!t.atEnd()){
+            if (emptyCommentString || !s.startsWith(commentString)){
+                rows++;
+                break;
+            } else
+                s = t.readLine();
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+		while (!t.atEnd()){
+			QString aux = t.readLine();
+			if (emptyCommentString || !aux.startsWith(commentString))
+                rows++;
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+
+		if (simplifySpaces)
+			s = s.simplifyWhiteSpace();
+		else if (stripSpaces)
+			s = s.stripWhiteSpace();
+
+		QStringList line = s.split(sep);
+		cols = (int)line.count();
+
+		int startRow = 0, startCol = 0;
+		if (importAs == Matrix::Overwrite){
+			if (d_rows != rows)
+				setRowCount(rows);
+			if (d_cols != cols)
+				setColumnCount(cols);
+		} else if (importAs == Matrix::NewColumns){
+			startCol = d_cols;
+			setColumnCount(d_cols + cols);
+			if (d_rows < rows)
+				setRowCount(rows);
+		} else if (importAs == Matrix::NewRows){
+			startRow = d_rows;
+			if (d_cols < cols)
+				setColumnCount(cols);
+			setRowCount(d_rows + rows);
+		}
+		
+		f.reset();
+		for (int i=0; i<ignoredLines; i++)
+			t.readLine();
+		
+		bool validCommentString = !emptyCommentString;
+		for (int i = startRow; i<d_rows; i++){
+			s = t.readLine();
+			if (validCommentString && s.startsWith(commentString)){
+			    i--;
+                continue;
+			}
+
+			if (simplifySpaces)
+				s = s.simplifyWhiteSpace();
+			else if (stripSpaces)
+				s = s.stripWhiteSpace();
+			line = s.split(sep);
+			int lc = line.size();
+			if (lc > cols)
+				setColumnCount(d_cols + lc - cols);
+		
+			for (int j = startCol; j<d_cols; j++){
+				int aux = j - startCol;
+			    if (lc > aux){
+					if (updateDecimalSeparators)
+						setCell(i, j, locale.toDouble(line[aux]));
+					else
+						setText(i, j, line[aux]);
+				}
+			}
+		}
+		qApp->processEvents();
+		f.close();
+
+		QApplication::restoreOverrideCursor();
+		return true;
+	}
+	return false;
+}
+
+void MatrixModel::setNumericFormat(char f, int prec)
+{
+	if (d_txt_format == f && d_num_precision == prec)
+		return;
+
+	d_txt_format = f;
+	d_num_precision = prec;
 }

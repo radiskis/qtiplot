@@ -27,7 +27,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "Matrix.h"
-#include "MatrixModel.h"
 #include "Graph.h"
 
 #include <QtGlobal>
@@ -323,9 +322,9 @@ void Matrix::setDimensions(int rows, int cols)
 			case 0: // Yes
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 				if (cols != c)
-					setNumCols(cols);
+					d_matrix_model->setColumnCount(cols);
 				if (rows != r)
-					setNumRows(rows);
+					d_matrix_model->setRowCount(rows);
 
                 resetView();
 				QApplication::restoreOverrideCursor();
@@ -339,58 +338,14 @@ void Matrix::setDimensions(int rows, int cols)
 	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		if (cols != c)
-			setNumCols(cols);
+			d_matrix_model->setColumnCount(cols);
 		if (rows != r)
-			setNumRows(rows);
+			d_matrix_model->setRowCount(rows);
 
         resetView();
 		QApplication::restoreOverrideCursor();
 		emit modifiedWindow(this);
 	}
-}
-
-int Matrix::numRows()
-{
-	return d_matrix_model->rowCount();
-}
-
-void Matrix::setNumRows(int rows)
-{
-	int old_rows = numRows();
-	if (old_rows == rows)
-		return;
-
-   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	int diff = abs(rows - old_rows);
-	if (rows > old_rows )
-		d_matrix_model->insertRows(old_rows, diff);
-    else if (rows < old_rows )
-		d_matrix_model->removeRows(rows, diff);
-
-	QApplication::restoreOverrideCursor();
-}
-
-int Matrix::numCols()
-{
-	return d_matrix_model->columnCount();
-}
-
-void Matrix::setNumCols(int cols)
-{
-	int old_cols = numCols();
-	if (old_cols == cols)
-		return;
-
-   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	int diff = abs(cols - old_cols);
-	if (cols > old_cols )
-		d_matrix_model->insertColumns(old_cols, diff);
-    else if (cols < old_cols )
-		d_matrix_model->removeColumns(cols, diff);
-
-	QApplication::restoreOverrideCursor();
 }
 
 double Matrix::determinant()
@@ -572,9 +527,9 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol)
 	if (endCol < 0)
 		endCol = cols - 1;
 	if (endCol >= cols)
-		setNumCols(endCol+1);
+		d_matrix_model->setColumnCount(endCol+1);
 	if (endRow >= rows)
-		setNumRows(endRow+1);
+		d_matrix_model->setRowCount(endRow+1);
 
 	QVariant ret;
 	double dx = fabs(x_end-x_start)/(double)(numRows()-1);
@@ -698,9 +653,9 @@ void Matrix::pasteSelection()
 	QTextStream ts2(&text, QIODevice::ReadOnly);
 
 	if (top + rows > numRows())
-        setNumRows(top + rows);
+        d_matrix_model->setRowCount(top + rows);
     if (left + cols > numCols())
-        setNumCols(left + cols);
+        d_matrix_model->setColumnCount(left + cols);
 
 	bool numeric;
 	QLocale system_locale = QLocale::system();
@@ -1428,9 +1383,9 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		return false;
 	}
 
-	QString text;
 	int rows = numRows();
 	int cols = numCols();
+	QTextStream t( &f );
 
 	if (exportSelection && d_view_type == TableView){
         QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
@@ -1453,20 +1408,34 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
         }
 
 		for (int i = topRow; i <= bottomRow; i++){
-			for (int j = leftCol; j < rightCol; j++)
-				text += d_matrix_model->text(i, j) + separator;
-
-			text += d_matrix_model->text(i, rightCol) + "\n";
+			for (int j = leftCol; j < rightCol; j++){
+				t << d_matrix_model->text(i, j);
+				t << separator;
+			}
+			t << d_matrix_model->text(i, rightCol);
+			t << "\n";
 		}
 	} else {
 		for (int i=0; i<rows; i++) {
-			for (int j=0; j<cols-1; j++)
-				text += d_matrix_model->text(i,j) + separator;
-			text += d_matrix_model->text(i, cols-1) + "\n";
+			for (int j=0; j<cols-1; j++){
+				t << d_matrix_model->text(i,j);
+				t << separator;
+			}
+			t << d_matrix_model->text(i, cols-1);
+			t << "\n";
 		}
 	}
-	QTextStream t( &f );
-	t << text;
 	f.close();
 	return true;
+}
+
+void Matrix::importASCII(const QString &fname, const QString &sep, int ignoredLines,
+    	bool stripSpaces, bool simplifySpaces, const QString& commentString, 
+		ImportMode importAs, const QLocale& locale)
+{
+	if (d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces, 
+		simplifySpaces, commentString, importAs, locale)){
+		resetView();
+		emit modifiedWindow(this);
+	}
 }

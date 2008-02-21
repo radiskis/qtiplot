@@ -31,6 +31,7 @@
  ***************************************************************************/
 #include "Table.h"
 #include "SortDialog.h"
+#include "ImportASCIIDialog.h"
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -2268,17 +2269,17 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 
 		QApplication::restoreOverrideCursor();
 
-		if (!importFileAs){
+		if (importFileAs == ImportASCIIDialog::NewTables){
 			init (rows, cols);
 			if (readOnly){
                 for (i=0; i<cols; i++)
                     d_read_only[i] = true;
             }
-		} else if (importFileAs == 1){//new cols
+		} else if (importFileAs == ImportASCIIDialog::NewColumns){
 			addColumns(cols, readOnly);
 			if (r < rows)
 				d_table->setNumRows(rows);
-		} else if (importFileAs == 2){//new rows
+		} else if (importFileAs == ImportASCIIDialog::NewRows){
 			if (c < cols)
 				addColumns(cols-c, readOnly);
 			d_table->setNumRows(r+rows);
@@ -2293,9 +2294,9 @@ void Table::importMultipleASCIIFiles(const QString &fname, const QString &sep, i
 			t.readLine();
 
 		int startRow = 0, startCol = 0;
-		if (importFileAs == 2)
+		if (importFileAs == ImportASCIIDialog::NewRows)
 			startRow = r;
-		else if (importFileAs == 1)
+		else if (importFileAs == ImportASCIIDialog::NewColumns)
 			startCol = c;
 
 		if (renameCols && !allNumbers){//use first line to set the table header
@@ -2423,9 +2424,10 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		for (i=0; i<ignoredLines; i++)
 			t.readLine();
 
+		bool emptyCommentString = commentString.isEmpty();
 		QString s = t.readLine();//read first line after the ignored ones
 		while (!t.atEnd()){
-            if (commentString.isEmpty() || !s.startsWith(commentString)){
+            if (emptyCommentString || !s.startsWith(commentString)){
                 rows++;
                 break;
             } else
@@ -2435,7 +2437,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 
 		while (!t.atEnd()){
 			QString aux = t.readLine();
-			if (commentString.isEmpty() || !aux.startsWith(commentString))
+			if (emptyCommentString || !aux.startsWith(commentString))
                 rows++;
 			qApp->processEvents(QEventLoop::ExcludeUserInput);
 		}
@@ -2505,10 +2507,11 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		for (i=0; i<ignoredLines; i++)
 			t.readLine();
 
+		bool validCommentString = !emptyCommentString;
 		if (renameCols && !allNumbers){//use first line to set the table header
 			s = t.readLine();//read first line after the ignored ones
 			while (!t.atEnd()){
-            	if (commentString.isEmpty() || !s.startsWith(commentString))
+            	if (validCommentString || !s.startsWith(commentString))
                 	break;
              	else
                 	s = t.readLine();//ignore all commented lines
@@ -2540,7 +2543,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
         if (importComments){//import comments
             s = t.readLine();//read 2nd line after the ignored ones
             while (!t.atEnd()){
-                if (commentString.isEmpty() || !s.startsWith(commentString))
+                if (validCommentString || !s.startsWith(commentString))
                 	break;
              	else
 					s = t.readLine();//ignore all commented lines
@@ -2569,7 +2572,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			start = i*1000;
 			for (int k=0; k<1000; k++){
 				s = t.readLine();
-				if (!commentString.isEmpty() && s.startsWith(commentString)){
+				if (validCommentString && s.startsWith(commentString)){
 				    k--;
                     continue;
 				}
@@ -2594,7 +2597,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		start = steps*1000;
 		for (i=start; i<rows; i++){
 			s = t.readLine();
-			if (!commentString.isEmpty() && s.startsWith(commentString)){
+			if (validCommentString && s.startsWith(commentString)){
 			    i--;
                 continue;
 			}

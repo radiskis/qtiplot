@@ -174,7 +174,7 @@ public slots:
 	 */
 	ApplicationWindow * loadScript(const QString& fn, bool execute = false, bool factorySettings = false);
 
-	QWidgetList * windowsList();
+	QList<MdiSubWindow *> windowsList();
 	void updateWindowLists(MdiSubWindow *w);
 	/*!
     Arranges all the visible project windows in a cascade pattern.

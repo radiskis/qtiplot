@@ -1142,6 +1142,44 @@ If you need more control over the export parameters you must use one of the foll
 m1.exportRasterImage(fileName, quality = 100)
 m2.exportVector(fileName, resolution, color = true, keepAspect = true, pageSize = QPrinter::Custom)
 </programlisting>
+
+<para>You can also import an ASCII data <varname>file</varname>, using <varname>sep</varname> as separator characters, ignoring
+<varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string:
+</para>
+<programlisting>
+m.importASCII(file, sep="\t", ignore=0, stripSpaces=True, simplifySpace=False, comment="#", importMode=Matrix.Overwrite, locale=QLocale())
+</programlisting>
+
+<para>The <varname>importMode</varname> flag can have the following values: 
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Matrix.NewColumns: data values are added as new columns.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Matrix.NewRows: data values are added as new rows.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Matrix.Overwrite: all existing values are overwritten (default value).</para>
+              </listitem>
+            </varlistentry>
+</variablelist>
+
+The <varname>locale</varname> parameter can be used to specify the convention for decimal separators used in your ASCII file.</para>
+
+<para>Also, you can export values from a matrix to an ASCII <varname>file</varname>, using
+<varname>sep</varname> as separator chararacters. The <varname>SelectionOnly</varname> option makes
+possible to export only the selected cells of the matrix.</para>
+<programlisting>
+m.exportASCII(file, sep="\t", SelectionOnly=False)
+</programlisting>
 </sect2>
 
 <sect2 id = "Python-Plots2D">
