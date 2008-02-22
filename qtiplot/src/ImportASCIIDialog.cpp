@@ -46,8 +46,6 @@
 #include <QStackedWidget>
 #include <QHeaderView>
 
-#include <Q3TextStream>
-
 #include <gsl/gsl_math.h>
 
 ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bool extended, Qt::WFlags flags )
@@ -94,14 +92,16 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 
 	connect(d_import_mode, SIGNAL(currentIndexChanged(int)), this, SLOT(updateImportMode(int)));
 
-	d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
+	if (app->d_ASCII_import_mode < d_import_mode->count())
+		d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
+	
 	d_preview_lines_box->setValue(app->d_preview_lines);
 	d_preview_button->setChecked(app->d_ASCII_import_preview);
 		
 	if (!app->d_ASCII_import_preview)
 		d_preview_stack->hide();
 
-	initPreview(app->d_ASCII_import_mode);
+	initPreview(d_import_mode->currentIndex());
 	
     connect(d_preview_lines_box, SIGNAL(valueChanged(int)), this, SLOT(preview()));
     connect(d_rename_columns, SIGNAL(clicked()), this, SLOT(preview()));
@@ -411,13 +411,13 @@ void ImportASCIIDialog::previewTable()
         return;
     }
 
-	QString fileName = d_current_path;
+	QString fileName = MdiSubWindow::unixEndLineFilePath(d_current_path);
 	QTemporaryFile tempFile;
 	int rows = d_preview_lines_box->value();
 	if (rows){
 		QFile dataFile(fileName);
 		if(tempFile.open() && dataFile.open(QIODevice::ReadOnly)){
-			Q3TextStream t(&dataFile);
+			QTextStream t(&dataFile);
 			QTextStream tt(&tempFile);
 			int i = 0;
 			while(i<rows && !t.atEnd()){
@@ -452,7 +452,7 @@ void ImportASCIIDialog::previewMatrix()
         return;
     }
 
-	QString fileName = d_current_path;
+	QString fileName = MdiSubWindow::unixEndLineFilePath(d_current_path);
 	QTemporaryFile tempFile;
 	int rows = d_preview_lines_box->value();
 	if (rows){
@@ -548,13 +548,15 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 void PreviewTable::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
     bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString)
 {
-	QFile f(fname);
-	if (f.open(QIODevice::ReadOnly)) //| QIODevice::Text | QIODevice::Unbuffered ))
+	QString name = MdiSubWindow::unixEndLineFilePath(fname);
+	if (name.isEmpty())
+		return;
+	
+	QFile f(name);
+	if (f.open(QIODevice::ReadOnly))
 	{
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        Q3TextStream t(&f);//TODO: use QTextStream instead and find a way to make it read the end-of-line char correctly.
-                         //Opening the file with the above combination doesn't seem to help: problems on Mac OS X generated ASCII files!
-
+        QTextStream t(&f);
 		int c, rows = 0, cols = 0;
 		for (int i=0; i<ignoredLines; i++)
 			t.readLine();
@@ -740,6 +742,8 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		progress.setValue(steps+1);
 		qApp->processEvents();
 		f.close();
+		if (name != fname)//remove possible temp file
+			f.remove();
 	}
 }
 
