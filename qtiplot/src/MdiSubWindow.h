@@ -147,6 +147,12 @@ public:
 
     //! Returns the size the window had before a change state event to minimized.
     QSize minRestoreSize(){return d_min_restore_size;};
+	
+	//! Static function used as a workaround for ASCII files having Mac OS X end line char ('\r').
+	/*
+	 * QTextStram::readLine() doesn't work correctly in this case. Bug in Qt 4.3.2?
+	 */
+	static QString unixEndLineFilePath(const QString& fname);
 
 signals:
 	//! Emitted when the window was closed

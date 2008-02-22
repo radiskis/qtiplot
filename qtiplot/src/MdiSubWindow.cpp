@@ -36,6 +36,14 @@
 #include <QString>
 #include <QDateTime>
 #include <QMenu>
+#include <QTextStream>
+#include <QTemporaryFile>
+
+#include <fstream>
+#include <string>
+
+using std::ifstream;
+using std::string;
 
 MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const QString& name, Qt::WFlags f):
 		QMdiSubWindow (app, f),
@@ -212,4 +220,36 @@ void MdiSubWindow::setMaximized()
 	showMaximized();
 	d_status = Maximized;
 	emit statusChanged (this);
+}
+
+QString MdiSubWindow::unixEndLineFilePath(const QString& fname)
+{
+	QFile f(fname);	
+	if (!f.open(QIODevice::ReadOnly))
+		return QString::null;
+	
+	QTextStream t(&f);
+	QString aux = t.readLine();
+	f.close();
+	if (!aux.contains('\r'))
+		return fname;
+		
+	ifstream fin;
+ 	fin.open(fname.toAscii());
+ 	if(!fin)
+  		return QString::null;
+	
+	QTemporaryFile tempFile;
+	tempFile.open();
+	QTextStream temp(&tempFile);
+	while(!fin.eof()){
+		string s;
+ 		getline(fin, s, '\r');
+		temp << QString(s.c_str()) + "\n";	
+	}
+	
+	tempFile.setAutoRemove(false);
+	QString s = tempFile.fileName();
+	tempFile.close();
+	return s;
 }

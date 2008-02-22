@@ -32,6 +32,7 @@
 
 #include "Matrix.h"
 #include "MatrixModel.h"
+
 #include <gsl/gsl_math.h>
 #include <qwt_color_map.h>
 
@@ -416,102 +417,111 @@ void MatrixModel::setDataVector(const QVector<double>& data)
 
 bool MatrixModel::importASCII(const QString &fname, const QString &sep, int ignoredLines,
     bool stripSpaces, bool simplifySpaces, const QString& commentString, int importAs, const QLocale& locale)
-{
-	QFile f(fname);
-	if (f.open(QIODevice::ReadOnly)){
-		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        QTextStream t(&f);
+{	
+	QString name = MdiSubWindow::unixEndLineFilePath(fname);
+	if (name.isEmpty())
+		return false;
+	QFile f(name);
+	if (!f.open(QIODevice::ReadOnly))
+		return false;
+	
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	
+    QTextStream t(&f);	
+	QLocale l = d_locale;
+	if (d_matrix)
+		l = d_matrix->locale();
+	bool updateDecimalSeparators = (l != locale) ? true : false;	
 		
-		QLocale l = d_locale;
-		if (d_matrix)
-			l = d_matrix->locale();
-		bool updateDecimalSeparators = (l != locale) ? true : false;	
-		
-		int rows = 0, cols = 0;
-		for (int i=0; i<ignoredLines; i++)
-			t.readLine();
+	int rows = 0, cols = 0;
+	for (int i=0; i<ignoredLines; i++)
+		t.readLine();
 
-		QString s = t.readLine();//read first line after the ignored ones
-		bool emptyCommentString = commentString.isEmpty();
-		while (!t.atEnd()){
-            if (emptyCommentString || !s.startsWith(commentString)){
-                rows++;
-                break;
-            } else
-                s = t.readLine();
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
-		}
-		while (!t.atEnd()){
-			QString aux = t.readLine();
-			if (emptyCommentString || !aux.startsWith(commentString))
-                rows++;
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
+	QString s = t.readLine();//read first line after the ignored ones			
+	bool emptyCommentString = commentString.isEmpty();
+	while (!t.atEnd()){//find first valid line: used to compute the number of columns 
+		if (emptyCommentString || !s.startsWith(commentString)){
+			rows++;
+			break;
+		} else
+			s = t.readLine();
+		qApp->processEvents(QEventLoop::ExcludeUserInput);
+	}
+	
+	while (!t.atEnd()){//count valid lines
+		QString aux = t.readLine();
+		if (emptyCommentString || !aux.startsWith(commentString))
+			rows++;
+		qApp->processEvents(QEventLoop::ExcludeUserInput);
+	}
+
+	if (simplifySpaces)
+		s = s.simplifyWhiteSpace();
+	else if (stripSpaces)
+		s = s.stripWhiteSpace();
+
+	QStringList line = s.split(sep);
+	cols = (int)line.count();
+
+	int startRow = 0, startCol = 0;
+	switch(importAs){
+		case Matrix::Overwrite:
+			if (d_rows != rows)
+				setRowCount(rows);
+			if (d_cols != cols)
+				setColumnCount(cols);
+		break;
+		case Matrix::NewColumns:
+			startCol = d_cols;
+			setColumnCount(d_cols + cols);
+			if (d_rows < rows)
+				setRowCount(rows);
+		break;
+		case Matrix::NewRows:
+			startRow = d_rows;
+			if (d_cols < cols)
+				setColumnCount(cols);
+			setRowCount(d_rows + rows);
+		break;
+	}
+		
+	f.reset();
+	for (int i=0; i<ignoredLines; i++)
+		t.readLine();
+		
+	bool validCommentString = !emptyCommentString;
+	for (int i = startRow; i<d_rows; i++){
+		s = t.readLine();
+		if (validCommentString && s.startsWith(commentString)){
+		    i--;
+			continue;
 		}
 
 		if (simplifySpaces)
 			s = s.simplifyWhiteSpace();
 		else if (stripSpaces)
 			s = s.stripWhiteSpace();
-
-		QStringList line = s.split(sep);
-		cols = (int)line.count();
-
-		int startRow = 0, startCol = 0;
-		if (importAs == Matrix::Overwrite){
-			if (d_rows != rows)
-				setRowCount(rows);
-			if (d_cols != cols)
-				setColumnCount(cols);
-		} else if (importAs == Matrix::NewColumns){
-			startCol = d_cols;
-			setColumnCount(d_cols + cols);
-			if (d_rows < rows)
-				setRowCount(rows);
-		} else if (importAs == Matrix::NewRows){
-			startRow = d_rows;
-			if (d_cols < cols)
-				setColumnCount(cols);
-			setRowCount(d_rows + rows);
-		}
+		line = s.split(sep);
+		int lc = line.size();
+		if (lc > cols)
+			setColumnCount(d_cols + lc - cols);
 		
-		f.reset();
-		for (int i=0; i<ignoredLines; i++)
-			t.readLine();
-		
-		bool validCommentString = !emptyCommentString;
-		for (int i = startRow; i<d_rows; i++){
-			s = t.readLine();
-			if (validCommentString && s.startsWith(commentString)){
-			    i--;
-                continue;
-			}
-
-			if (simplifySpaces)
-				s = s.simplifyWhiteSpace();
-			else if (stripSpaces)
-				s = s.stripWhiteSpace();
-			line = s.split(sep);
-			int lc = line.size();
-			if (lc > cols)
-				setColumnCount(d_cols + lc - cols);
-		
-			for (int j = startCol; j<d_cols; j++){
-				int aux = j - startCol;
-			    if (lc > aux){
-					if (updateDecimalSeparators)
-						setCell(i, j, locale.toDouble(line[aux]));
-					else
-						setText(i, j, line[aux]);
-				}
+		for (int j = startCol; j<d_cols; j++){
+			int aux = j - startCol;
+		    if (lc > aux){
+				if (updateDecimalSeparators)
+					setCell(i, j, locale.toDouble(line[aux]));
+				else
+					setText(i, j, line[aux]);
 			}
 		}
-		qApp->processEvents();
-		f.close();
-
-		QApplication::restoreOverrideCursor();
-		return true;
 	}
-	return false;
+	qApp->processEvents();
+	f.close();
+	if (name != fname)//remove possible temp file
+		f.remove();
+	QApplication::restoreOverrideCursor();
+	return true;
 }
 
 void MatrixModel::setNumericFormat(char f, int prec)

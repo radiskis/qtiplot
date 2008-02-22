@@ -33,6 +33,7 @@
 #include <QAbstractTableModel>
 #include <QVector>
 #include <QLocale>
+#include <QFile>
 
 class Matrix;
 	
