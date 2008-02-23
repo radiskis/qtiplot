@@ -38,7 +38,7 @@ class QLineEdit;
 class QPushButton;
 class QGroupBox;
 class QButtonGroup;
-class QWidget;
+class MdiSubWindow;
 	
 //! Add error bars dialog
 class ErrDialog : public QDialog
@@ -66,7 +66,7 @@ private:
     QRadioButton* yErrBox;
 	QPushButton* buttonAdd;
     QPushButton* buttonCancel;
-	QList<QWidget*> *srcTables;
+	QList<MdiSubWindow*> srcTables;
 
 protected slots:
 	//! Set all string in the current language
@@ -78,7 +78,7 @@ public slots:
 	//! Supply the dialog with a curves list
 	void setCurveNames(const QStringList& names);
 	//! Supply the dialog with a tables list
-	void setSrcTables(QWidgetList* tables);
+	void setSrcTables(QList<MdiSubWindow *> tables);
 	//! Select a table
 	void selectSrcTable(int tabnr);
 

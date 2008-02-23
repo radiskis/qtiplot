@@ -33,10 +33,9 @@
 #include <QAbstractTableModel>
 #include <QVector>
 #include <QLocale>
-#include <QFile>
 
 class Matrix;
-	
+
 class MatrixModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -69,7 +68,7 @@ public:
 
 	QString saveToString();
 	QImage renderImage();
-	
+
 	double data(int row, int col) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);
@@ -77,13 +76,14 @@ public:
     double* dataVector(){return d_data.data();};
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	void setDataVector(const QVector<double>& data);
-	
-	bool importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces, 
-					bool simplifySpaces, const QString& commentString, int importAs, const QLocale& locale);
+
+	bool importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces,
+					bool simplifySpaces, const QString& commentString, int importAs,
+					const QLocale& locale, int endLineChar = 0, int maxRows = -1);
 
 	void setLocale(const QLocale& locale){d_locale = locale;};
 	void setNumericFormat(char f, int prec);
-	
+
 private:
     int d_rows, d_cols;
     QVector<double> d_data;

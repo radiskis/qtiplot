@@ -546,6 +546,10 @@ void ApplicationWindow::initGlobalConstants()
 	d_ASCII_import_read_only = false;
 	d_ASCII_import_preview = true;
 	d_preview_lines = 100;
+    d_ASCII_end_line = LF;
+#ifdef Q_OS_MAC
+    d_ASCII_end_line = CR;
+#endif
 
 	d_export_col_separator = "\t";
 	d_export_col_names = false;
@@ -2477,25 +2481,6 @@ void ApplicationWindow::setPreferences(Graph* g)
 }
 
 /*
- *used when importing an ASCII file
- */
-Table* ApplicationWindow::newTable(const QString& fname, const QString &sep,
-		int lines, bool renameCols, bool stripSpaces, bool simplifySpaces,
-		bool importComments, const QString &commentString, bool readOnly)
-{
-	Table* w = new Table(scriptEnv, fname, sep, lines, renameCols, stripSpaces,
-			simplifySpaces, importComments, commentString, readOnly, fname, this, 0, 0);
-	if (w){
-		w->setAttribute(Qt::WA_DeleteOnClose);
-		QFileInfo fi(fname);
-		QString tableName = fi.baseName().remove(QRegExp("\\s")).replace("_", "-");
-		initTable(w, generateUniqueName(tableName, false));
-		w->show();
-	}
-	return w;
-}
-
-/*
  *creates a new empty table
  */
 Table* ApplicationWindow::newTable()
@@ -2979,7 +2964,7 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
 	return m;
 }
 
-QWidget* ApplicationWindow::window(const QString& name)
+MdiSubWindow* ApplicationWindow::window(const QString& name)
 {
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
@@ -3292,8 +3277,8 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 		bool askPlots3D, bool askNotes)
 {
 	QList<MdiSubWindow *> windows = windowsList();
-	
-		
+
+
 	if (confirmCloseTable != askTables){
 		confirmCloseTable=askTables;
 		foreach(MdiSubWindow *w, windows){
@@ -3406,8 +3391,13 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	ApplicationWindow *app = new ApplicationWindow();
 	app->restoreApplicationGeometry();
 
-	Table* t = app->newTable(fn, app->columnSeparator, 0, true, app->strip_spaces, app->simplify_spaces,
-                app->d_ASCII_import_comments, app->d_ASCII_comment_string, app->d_ASCII_import_read_only);
+	Table* t = app->newTable();
+	if (!t)
+		return NULL;
+
+	t->importASCII(fn, app->columnSeparator, 0, app->renameColumns, app->strip_spaces, app->simplify_spaces,
+                app->d_ASCII_import_comments, app->d_ASCII_comment_string,
+				app->d_ASCII_import_read_only, Table::Overwrite, app->d_ASCII_end_line);
 	t->setCaptionPolicy(MdiSubWindow::Both);
 	app->multilayerPlot(t, t->YColumns(),Graph::LineSymbols);
 	QApplication::restoreOverrideCursor();
@@ -3434,6 +3424,7 @@ void ApplicationWindow::importASCII()
     d_ASCII_comment_string = import_dialog->commentString();
     d_ASCII_import_comments = import_dialog->importComments();
     d_ASCII_import_read_only = import_dialog->readOnly();
+	d_ASCII_end_line = (EndLineChar)import_dialog->endLineChar();
     saveSettings();
 
 	importASCII(import_dialog->selectedFiles(),
@@ -3447,13 +3438,14 @@ void ApplicationWindow::importASCII()
 			import_dialog->updateDecimalSeparators(),
 			import_dialog->decimalSeparators(),
 			import_dialog->commentString(),
-			import_dialog->readOnly());
+			import_dialog->readOnly(),
+			import_dialog->endLineChar());
 }
 
 void ApplicationWindow::importASCII(const QStringList& files, int import_mode, const QString& local_column_separator,
         int local_ignored_lines, bool local_rename_columns, bool local_strip_spaces, bool local_simplify_spaces,
         bool local_import_comments, bool update_dec_separators, QLocale local_separators, const QString& local_comment_string,
-		bool import_read_only)
+		bool import_read_only, int endLineChar)
 {
 	if (files.isEmpty())
 		return;
@@ -3466,9 +3458,14 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				sorted_files.sort();
 				int filesCount = sorted_files.size();
 				for (int i=0; i<filesCount; i++){
-					Table *w = newTable(sorted_files[i], local_column_separator, local_ignored_lines,
-                                        local_rename_columns, local_strip_spaces, local_simplify_spaces,
-                                        local_import_comments, local_comment_string, import_read_only);
+					Table *w = newTable();
+					if (!w)
+						continue;
+
+					w->importASCII(sorted_files[i], local_column_separator, local_ignored_lines,
+                                   local_rename_columns, local_strip_spaces, local_simplify_spaces,
+                                   local_import_comments, local_comment_string, import_read_only,
+								   Table::Overwrite, endLineChar);
 					if (!w) continue;
 					w->setCaptionPolicy(MdiSubWindow::Both);
 					setListViewLabel(w->objectName(), sorted_files[i]);
@@ -3497,7 +3494,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
                         continue;
 					w->importASCII(sorted_files[i], local_column_separator, local_ignored_lines,
                                 local_strip_spaces, local_simplify_spaces, local_comment_string,
-								Matrix::Overwrite, local_separators);
+								Matrix::Overwrite, local_separators, endLineChar);
 					w->setCaptionPolicy(MdiSubWindow::Both);
 					setListViewLabel(w->objectName(), sorted_files[i]);
 					if (i == 0){
@@ -3517,13 +3514,13 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				MdiSubWindow *w = activeWindow();
 				if (!w)
                     return;
-				
+
 				if (w->inherits("Table")){
 					Table *t = (Table*)w;
 					for (int i=0; i<files.size(); i++)
-                        t->importMultipleASCIIFiles(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
+                        t->importASCII(files[i], local_column_separator, local_ignored_lines, local_rename_columns,
 							local_strip_spaces, local_simplify_spaces, local_import_comments,
-							local_comment_string, import_read_only, import_mode);
+							local_comment_string, import_read_only, (Table::ImportMode)(import_mode - 2), endLineChar);
 
 					if (update_dec_separators)
 						t->updateDecimalSeparators(local_separators);
@@ -3533,8 +3530,8 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					Matrix *m = (Matrix *)w;
 					for (int i=0; i<files.size(); i++){
 						m->importASCII(files[i], local_column_separator, local_ignored_lines,
-                         local_strip_spaces, local_simplify_spaces, local_comment_string, 
-						 (Matrix::ImportMode)(import_mode - 2), local_separators);
+                         local_strip_spaces, local_simplify_spaces, local_comment_string,
+						 (Matrix::ImportMode)(import_mode - 2), local_separators, endLineChar);
 					}
 				}
 				w->setWindowLabel(files.join("; "));
@@ -3550,16 +3547,16 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				if (w->inherits("Table")){
 				    Table *t = (Table *)w;
 					t->importASCII(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
-                                    local_strip_spaces, local_simplify_spaces, local_import_comments, false,
-                                    local_comment_string, import_read_only);
+                                    local_strip_spaces, local_simplify_spaces, local_import_comments,
+                                    local_comment_string, import_read_only, Table::Overwrite, endLineChar);
 					if (update_dec_separators)
 						t->updateDecimalSeparators(local_separators);
 					t->notifyChanges();
 				} else if (w->isA("Matrix")){
 				    Matrix *m = (Matrix *)w;
 					m->importASCII(files[0], local_column_separator, local_ignored_lines,
-                          local_strip_spaces, local_simplify_spaces, local_comment_string, 
-						  Matrix::Overwrite, local_separators);
+                          local_strip_spaces, local_simplify_spaces, local_comment_string,
+						  Matrix::Overwrite, local_separators, endLineChar);
 				}
 
                 w->setWindowLabel(files[0]);
@@ -4428,6 +4425,7 @@ void ApplicationWindow::readSettings()
     d_ASCII_import_read_only = settings.value("/ImportReadOnly", false).toBool();
 	d_ASCII_import_preview = settings.value("/Preview", true).toBool();
 	d_preview_lines = settings.value("/PreviewLines", 100).toInt();
+    d_ASCII_end_line = (EndLineChar)settings.value("/EndLineCharacter", d_ASCII_end_line).toInt();
 	settings.endGroup(); // Import ASCII
 
 	settings.beginGroup("/ExportASCII");
@@ -4726,6 +4724,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/ImportReadOnly", d_ASCII_import_read_only);
 	settings.setValue("/Preview", d_ASCII_import_preview);
 	settings.setValue("/PreviewLines", d_preview_lines);
+	settings.setValue("/EndLineCharacter", (int)d_ASCII_end_line);
 	settings.endGroup(); // ImportASCII
 
 	settings.beginGroup("/ExportASCII");
@@ -4909,7 +4908,7 @@ void ApplicationWindow::exportAllGraphs()
 	bool confirm_overwrite = true;
 	MultiLayer *plot2D;
 	Graph3D *plot3D;
-	
+
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")) {
@@ -5346,15 +5345,15 @@ QStringList ApplicationWindow::tableNames()
 	return lst;
 }
 
-QList<QWidget*>* ApplicationWindow::tableList()
+QList<MdiSubWindow*> ApplicationWindow::tableList()
 {
-	QList<QWidget*>* lst = new QList<QWidget*>();
+	QList<MdiSubWindow*> lst;
 	Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
             if (w->inherits("Table"))
-                lst->append((QWidget *)w);
+                lst << w;
 		}
 		f = f->folderBelow();
 	}
@@ -5480,7 +5479,7 @@ void ApplicationWindow::exportAllTables(const QString& sep, bool colNames, bool 
 void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep,
                         bool colNames, bool colComments, bool expSelection)
 {
-    QWidget* w = window(tableName);
+    MdiSubWindow* w = window(tableName);
     if (!w || !(w->isA("Matrix") || w->inherits("Table")))
 		return;
 
@@ -8194,7 +8193,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 		importASCII(asciiFiles, ImportASCIIDialog::NewTables, columnSeparator, ignoredLines,
                     renameColumns, strip_spaces, simplify_spaces, d_ASCII_import_comments,
                     d_import_dec_separators, d_ASCII_import_locale, d_ASCII_comment_string,
-                    d_ASCII_import_read_only);
+                    d_ASCII_import_read_only, d_ASCII_end_line);
 	}
 }
 

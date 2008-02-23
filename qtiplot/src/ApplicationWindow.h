@@ -123,7 +123,8 @@ public:
 	enum ShowWindowsPolicy{HideAll, ActiveFolder, SubFolders};
 	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow, Plot3DWindow};
 	enum MatrixToTableConversion{Direct, XYZ, YXZ};
-	
+	enum EndLineChar{LF, CRLF, CR};
+
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
 
@@ -337,9 +338,6 @@ public slots:
 	//@{
 	//! Creates an empty table
 	Table* newTable();
-	//! Used when importing an ASCII file
-	Table* newTable(const QString& fname, const QString &sep, int lines, bool renameCols, bool stripSpaces,
-                    bool simplifySpaces, bool importComments, const QString &commentString, bool readOnly);
 	//! Used when loading a table from a project file
 	Table* newTable(const QString& caption,int r, int c);
 	Table* newTable(int r, int c, const QString& name = QString(),const QString& legend = QString());
@@ -359,7 +357,7 @@ public slots:
 	Table* convertMatrixToTableXYZ();
 	Table* convertMatrixToTableYXZ();
 	Table* matrixToTable(Matrix* m, MatrixToTableConversion conversionType = Direct);
-	QWidgetList* tableList();
+	QList<MdiSubWindow *> tableList();
     //! Returns true if the project contains tables
 	bool hasTable();
 	//! Returns a list containing the names of all tables in the project
@@ -375,7 +373,7 @@ public slots:
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
         bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments, bool update_dec_separators,
-        QLocale local_separators, const QString& local_comment_string, bool import_read_only);
+        QLocale local_separators, const QString& local_comment_string, bool import_read_only, int endLineChar);
 	void exportAllTables(const QString& sep, bool colNames, bool colComments, bool expSelection);
 	void exportASCII(const QString& tableName, const QString& sep, bool colNames, bool colComments, bool expSelection);
 
@@ -799,7 +797,7 @@ public slots:
 	bool projectHas2DPlots();
 
 	//! Returns a pointer to the window named "name"
-	QWidget* window(const QString& name);
+	MdiSubWindow* window(const QString& name);
 
 	//! Returns a list with the names of all the matrices in the project
 	QStringList matrixNames();
@@ -1028,6 +1026,8 @@ public:
     bool d_export_color;
 	//! Locale used to specify the decimal separators in imported ASCII files
 	QLocale d_ASCII_import_locale;
+	//! End of line convention used to import ASCII files.
+	EndLineChar d_ASCII_end_line;
     //! Last selected filter in import ASCII dialog
     QString d_ASCII_file_filter, d_ASCII_comment_string;
 	bool d_import_dec_separators, d_ASCII_import_comments, d_ASCII_import_read_only, d_ASCII_import_preview;

@@ -147,12 +147,15 @@ public:
 
     //! Returns the size the window had before a change state event to minimized.
     QSize minRestoreSize(){return d_min_restore_size;};
-	
-	//! Static function used as a workaround for ASCII files having Mac OS X end line char ('\r').
+
+	//! Static function used as a workaround for ASCII files having end line char != '\n'.
 	/*
-	 * QTextStram::readLine() doesn't work correctly in this case. Bug in Qt 4.3.2?
+	 * It counts the number of valid rows to be imported and the number of first lines to be ignored.
+	 * It creates a temporary file with '\n' terminated lines which can be correctly read by QTextStream
+	 * and returnes a path to this file.
 	 */
-	static QString unixEndLineFilePath(const QString& fname);
+	static QString parseAsciiFile(const QString& fname, const QString &commentString, int endLine,
+                                  int ignoreFirstLines, int maxRows, int& rows);
 
 signals:
 	//! Emitted when the window was closed
@@ -171,6 +174,9 @@ protected:
 	virtual void changeEvent(QEvent *event);
 
 private:
+	//! Used to parse ASCII files with carriage return ('\r') endline.
+	static QString parseMacAsciiFile(const QString& fname, const QString &commentString,
+                        	 int ignoreFirstLines, int maxRows, int& rows);
     //! Set caption according to current CaptionPolicy, name and label
 	void updateCaption();
 	//!Pointer to the application window

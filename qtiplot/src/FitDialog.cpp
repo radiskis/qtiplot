@@ -1150,9 +1150,9 @@ void FitDialog::changeDataRange()
 	boxTo->setValue(QMAX(start, end));
 }
 
-void FitDialog::setSrcTables(QWidgetList* tables)
+void FitDialog::setSrcTables(QList<MdiSubWindow*> tables)
 {
-	if (tables->isEmpty()){
+	if (tables.isEmpty()){
 		tableNamesBox->addItem(tr("No data tables"));
 		colNamesBox->addItem(tr("No data tables"));
 		return;
@@ -1160,8 +1160,8 @@ void FitDialog::setSrcTables(QWidgetList* tables)
 
 	srcTables = tables;
 	tableNamesBox->clear();
-	foreach(QWidget *i, *srcTables)
-		tableNamesBox->addItem(i->objectName());
+	foreach(MdiSubWindow *w, srcTables)
+		tableNamesBox->addItem(w->objectName());
 
 	tableNamesBox->setCurrentIndex(tableNamesBox->findText(boxCurve->currentText().split("_", QString::SkipEmptyParts)[0]));
 	selectSrcTable(tableNamesBox->currentIndex());
@@ -1171,8 +1171,8 @@ void FitDialog::selectSrcTable(int tabnr)
 {
 	colNamesBox->clear();
 
-	if (tabnr >= 0 && tabnr < srcTables->count()){
-		Table *t = (Table*)srcTables->at(tabnr);
+	if (tabnr >= 0 && tabnr < srcTables.count()){
+		Table *t = (Table*)srcTables.at(tabnr);
 		if (t)
 			colNamesBox->addItems(t->colNames());
 	}

@@ -39,7 +39,6 @@
 #include <QPushButton>
 #include <QRegExp>
 #include <QMessageBox>
-#include <QTemporaryFile>
 #include <QTextStream>
 #include <QApplication>
 #include <QProgressDialog>
@@ -94,15 +93,27 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 
 	if (app->d_ASCII_import_mode < d_import_mode->count())
 		d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
-	
+
 	d_preview_lines_box->setValue(app->d_preview_lines);
 	d_preview_button->setChecked(app->d_ASCII_import_preview);
-		
+
+    switch(app->d_ASCII_end_line){
+		case ApplicationWindow::LF:
+        	boxEndLine->setCurrentIndex(0);
+    	break;
+		case ApplicationWindow::CRLF:
+        	boxEndLine->setCurrentIndex(1);
+		break;
+		case ApplicationWindow::CR:
+			boxEndLine->setCurrentIndex(2);
+		break;
+	}
+
 	if (!app->d_ASCII_import_preview)
 		d_preview_stack->hide();
 
 	initPreview(d_import_mode->currentIndex());
-	
+
     connect(d_preview_lines_box, SIGNAL(valueChanged(int)), this, SLOT(preview()));
     connect(d_rename_columns, SIGNAL(clicked()), this, SLOT(preview()));
     connect(d_import_comments, SIGNAL(clicked()), this, SLOT(preview()));
@@ -172,6 +183,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 
     d_import_comments = new QCheckBox(tr("Use second row as &comments"));
 	advanced_layout->addWidget(d_import_comments, 1, 2, 1, 2);
+	connect(d_rename_columns, SIGNAL(toggled(bool)), d_import_comments, SLOT(setEnabled(bool)));
 
 	d_strip_spaces = new QCheckBox(tr("&Remove white spaces from line ends"));
 	advanced_layout->addWidget(d_strip_spaces, 2, 2, 1, 2);
@@ -203,24 +215,32 @@ void ImportASCIIDialog::initAdvancedOptions()
 	connect(d_import_dec_separators, SIGNAL(toggled(bool)), boxDecimalSeparator, SLOT(setEnabled(bool)));
 	advanced_layout->addWidget(d_import_dec_separators, 4, 2, 1, 2);
 
+	advanced_layout->addWidget(new QLabel(tr("Endline character")), 5, 0);
+	boxEndLine = new QComboBox();
+	boxEndLine->addItem(tr("LF (Unix)"));
+	boxEndLine->addItem(tr("CRLF (Windows)"));
+	boxEndLine->addItem(tr("CR (Mac)"));
+    connect(boxEndLine, SIGNAL(activated(int)), this, SLOT(preview()));
+	advanced_layout->addWidget(boxEndLine, 5, 1);
+
+    d_read_only = new QCheckBox(tr("Import as &read-only"));
+	advanced_layout->addWidget(d_read_only, 5, 2);
+
 	d_preview_button = new QCheckBox(tr("&Preview Lines"));
 	connect(d_preview_button, SIGNAL(clicked()), this, SLOT(preview()));
-	advanced_layout->addWidget(d_preview_button, 5, 0);
+	advanced_layout->addWidget(d_preview_button, 6, 0);
 
 	d_preview_lines_box = new QSpinBox();
 	d_preview_lines_box->setMaximum (INT_MAX);
 	d_preview_lines_box->setValue(100);
 	d_preview_lines_box->setSingleStep(10);
 	d_preview_lines_box->setSpecialValueText(tr("All"));
-	advanced_layout->addWidget(d_preview_lines_box, 5, 1);
-
-    d_read_only = new QCheckBox(tr("Import as &read-only"));
-	advanced_layout->addWidget(d_read_only, 5, 2);
+	advanced_layout->addWidget(d_preview_lines_box, 6, 1);
 
 	d_help_button = new QPushButton(tr("&Help"));
 	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
-	advanced_layout->addWidget(d_help_button, 5, 3);
-	
+	advanced_layout->addWidget(d_help_button, 6, 2);
+
 	d_preview_table = NULL;
 	d_preview_matrix = NULL;
 	d_preview_stack = new QStackedWidget();
@@ -231,7 +251,7 @@ void ImportASCIIDialog::initPreview(int previewMode)
 {
 	if (previewMode < NewTables || previewMode > Overwrite)
 		return;
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (!app)
 		return;
@@ -240,42 +260,53 @@ void ImportASCIIDialog::initPreview(int previewMode)
 		delete d_preview_table;
 		d_preview_table = NULL;
 	}
-	
+
 	if (d_preview_matrix){
 		delete d_preview_matrix;
 		d_preview_matrix = NULL;
 	}
-	
+
 	switch(previewMode){
 		case NewTables:
 			d_preview_table = new PreviewTable(30, 2, this);
 			d_preview_table->setNumericPrecision(app->d_decimal_digits);
 			d_preview_stack->addWidget(d_preview_table);
+			enableTableOptions(true);
 		break;
-		
+
 		case NewMatrices:
 			d_preview_matrix = new PreviewMatrix(app);
 			d_preview_stack->addWidget(d_preview_matrix);
+			enableTableOptions(false);
 		break;
-		
+
 		case NewColumns:
 		case NewRows:
 		case Overwrite:
 			MdiSubWindow *w = app->activeWindow();
 			if (!w)
 				return;
-			
+
 			if (w->inherits("Table")){
 				d_preview_table = new PreviewTable(30, 2, this);
 				d_preview_table->setNumericPrecision(app->d_decimal_digits);
 				d_preview_stack->addWidget(d_preview_table);
+				enableTableOptions(true);
 			} else if (w->isA("Matrix")){
 				d_preview_matrix = new PreviewMatrix(app, (Matrix *)w);
 				d_preview_stack->addWidget(d_preview_matrix);
+				enableTableOptions(false);
 			}
 		break;
 	}
 	preview();
+}
+
+void ImportASCIIDialog::enableTableOptions(bool on)
+{
+	d_rename_columns->setEnabled(on);
+	d_import_comments->setEnabled(on && d_rename_columns->isChecked());
+	d_read_only->setEnabled(on);
 }
 
 void ImportASCIIDialog::setColumnSeparator(const QString& sep)
@@ -346,7 +377,7 @@ void ImportASCIIDialog::updateImportMode(int mode)
 		setFileMode( QFileDialog::ExistingFile );
 	else
 		setFileMode( QFileDialog::ExistingFiles );
-	
+
 	initPreview(mode);
 }
 
@@ -401,90 +432,60 @@ void ImportASCIIDialog::previewTable()
 {
 	if (!d_preview_table)
 		return;
-	
+
 	if (!d_preview_table->isVisible())
 		d_preview_table->show();
-	
+
 	if (d_current_path.trimmed().isEmpty()){
 		d_preview_table->clear();
 		d_preview_table->resetHeader();
         return;
     }
 
-	QString fileName = MdiSubWindow::unixEndLineFilePath(d_current_path);
-	QTemporaryFile tempFile;
-	int rows = d_preview_lines_box->value();
-	if (rows){
-		QFile dataFile(fileName);
-		if(tempFile.open() && dataFile.open(QIODevice::ReadOnly)){
-			QTextStream t(&dataFile);
-			QTextStream tt(&tempFile);
-			int i = 0;
-			while(i<rows && !t.atEnd()){
-				tt << t.readLine() + "\n";
-				i++;
-			}
-			fileName = tempFile.fileName();
-		}
-	}
+	int importMode = d_import_mode->currentIndex();
+	if (importMode == NewTables)
+		importMode = Table::Overwrite;
+	else
+		importMode -= 2;
 
 	d_preview_table->resetHeader();
-	d_preview_table->importASCII(fileName, columnSeparator(), d_ignored_lines->value(),
+	d_preview_table->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
 							d_rename_columns->isChecked(), d_strip_spaces->isChecked(),
 							d_simplify_spaces->isChecked(), d_import_comments->isChecked(),
-                            d_comment_string->text());
+                            d_comment_string->text(), (Table::ImportMode)importMode, 
+                            boxEndLine->currentIndex(), d_preview_lines_box->value());
 
 	if (d_import_dec_separators->isChecked())
 		d_preview_table->updateDecimalSeparators(decimalSeparators());
     if (!d_preview_table->isVisible())
         d_preview_table->show();
-
-	tempFile.close();
 }
 
 void ImportASCIIDialog::previewMatrix()
 {
 	if (!d_preview_matrix)
 		return;
-	
+
 	if (d_current_path.trimmed().isEmpty()){
 		d_preview_matrix->clear();
         return;
     }
 
-	QString fileName = MdiSubWindow::unixEndLineFilePath(d_current_path);
-	QTemporaryFile tempFile;
-	int rows = d_preview_lines_box->value();
-	if (rows){
-		QFile dataFile(fileName);
-		if(tempFile.open() && dataFile.open(QIODevice::ReadOnly)){
-			QTextStream t(&dataFile);
-			QTextStream tt(&tempFile);
-			int i = 0;
-			while(i<rows && !t.atEnd()){
-				tt << t.readLine() + "\n";
-				i++;
-			}
-			fileName = tempFile.fileName();
-		}
-	}
-	
 	int importMode = d_import_mode->currentIndex();
 	if (importMode == NewMatrices)
 		importMode = Matrix::Overwrite;
-	else 
+	else
 		importMode -= 2;
-		
+
 	QLocale locale = d_preview_matrix->locale();
 	if(d_import_dec_separators->isChecked())
 		locale = decimalSeparators();
-	
-	d_preview_matrix->importASCII(fileName, columnSeparator(), d_ignored_lines->value(),
+
+	d_preview_matrix->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
 							d_strip_spaces->isChecked(), d_simplify_spaces->isChecked(),
-                            d_comment_string->text(), importMode, locale);
+                            d_comment_string->text(), importMode, locale,
+                            boxEndLine->currentIndex(), d_preview_lines_box->value());
 	d_preview_matrix->resizeColumnsToContents();
-	
-	tempFile.close();
 }
 
 void ImportASCIIDialog::changePreviewFile(const QString& path)
@@ -495,13 +496,13 @@ void ImportASCIIDialog::changePreviewFile(const QString& path)
 	QFileInfo fi(path);
 	if (!fi.exists() || fi.isDir() || !fi.isFile())
 		return;
-	
+
 	if (!fi.isReadable()){
 		QMessageBox::critical(this, tr("QtiPlot - File openning error"),
 		tr("You don't have the permission to open this file: <b>%1</b>").arg(path));
 		return;
 	}
-	
+
 	d_current_path = path;
 	preview();
 }
@@ -546,45 +547,27 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 }
 
 void PreviewTable::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
-    bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString)
+    bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
+	int importMode, int endLine, int maxRows)
 {
-	QString name = MdiSubWindow::unixEndLineFilePath(fname);
+	int rows;
+	QString name = MdiSubWindow::parseAsciiFile(fname, commentString, endLine, ignoredLines, maxRows, rows);
 	if (name.isEmpty())
 		return;
 	
 	QFile f(name);
-	if (f.open(QIODevice::ReadOnly))
-	{
-		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	if (f.open(QIODevice::ReadOnly)){
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
         QTextStream t(&f);
-		int c, rows = 0, cols = 0;
-		for (int i=0; i<ignoredLines; i++)
-			t.readLine();
-
-		QString s = t.readLine();//read first line after the ignored ones
-		while (!t.atEnd()){
-            if (commentString.isEmpty() || !s.startsWith(commentString)){
-                rows++;
-                break;
-            } else
-                s = t.readLine();
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
-		}
-
-		while (!t.atEnd()){
-			QString aux = t.readLine();
-			if (commentString.isEmpty() || !aux.startsWith(commentString))
-                rows++;
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
-		}
-
+		QString s = t.readLine();//read first line
 		if (simplifySpaces)
 			s = s.simplifyWhiteSpace();
 		else if (stripSpaces)
 			s = s.stripWhiteSpace();
 
 		QStringList line = s.split(sep);
-		cols = (int)line.count();
+		int cols = line.size();
 
 		bool allNumbers = true;
 		for (int i=0; i<cols; i++)
@@ -593,157 +576,101 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			if (!allNumbers)
 				break;
 		}
-
-		if (renameCols && !allNumbers)
-			rows--;
-        if (importComments)
+        if (renameCols && !allNumbers){
             rows--;
+            if (importComments)
+                rows--;
+        }
 
-		int steps = int(rows/1000);
+        int startRow = 0, startCol = 0;
+        int c = numCols();
+        int r = numRows();
+		switch(importMode){
+			case Table::Overwrite:
+                if (numRows() != rows)
+                    setNumRows(rows);
 
-		QProgressDialog progress(this);
-		progress.setWindowTitle("Qtiplot - Reading file...");
-		progress.setLabelText(fname);
-		progress.setActiveWindow();
-		progress.setAutoClose(true);
-		progress.setAutoReset(true);
-		progress.setRange(0, steps+1);
-
-		QApplication::restoreOverrideCursor();
-
-		QStringList oldHeader;
-		if (numRows() != rows)
-			setNumRows(rows);
-
-		c = numCols();
-		oldHeader = col_label;
-		if (c != cols){
-			if (c < cols)
-				addColumns(cols - c);
-			else{
-				setNumCols(cols);
-                for (int i=c-1; i>=cols; i--){
-                	comments.removeLast();
-					col_label.removeLast();
-				}
-			}
+                if (c != cols){
+                    if (c < cols)
+                        addColumns(cols - c);
+                    else
+                        setNumCols(cols);
+                }
+			break;
+			case Table::NewColumns:
+                startCol = c;
+                addColumns(cols);
+                if (r < rows)
+                    setNumRows(rows);
+			break;
+			case Table::NewRows:
+                startRow = r;
+                if (c < cols)
+                    addColumns(cols - c);
+                setNumRows(r + rows);
+			break;
 		}
 
-		f.reset();
-		for (int i=0; i<ignoredLines; i++)
-			t.readLine();
-
 		if (renameCols && !allNumbers){//use first line to set the table header
-			s = t.readLine();//read first line after the ignored ones
-			while (!t.atEnd()){
-            	if (commentString.isEmpty() || !s.startsWith(commentString))
-                	break;
-             	else
-                	s = t.readLine();//ignore all commented lines
-				qApp->processEvents(QEventLoop::ExcludeUserInput);
-			}
-
-			if (simplifySpaces)
-				s = s.simplifyWhiteSpace();
-			else if (stripSpaces)
-				s = s.stripWhiteSpace();
-			line = s.split(sep, QString::SkipEmptyParts);
-			for (int i=0; i<(int)line.count(); i++)
-  	        	col_label[i] = QString::null;
-
-			for (int i=0; i<(int)line.count(); i++){
+			for (int i = 0; i<cols; i++){
+			    int aux = i + startCol;
+                col_label[aux] = QString::null;
 			    if (!importComments)
-                    comments[i] = line[i];
+                    comments[aux] = line[i];
 				s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
 				int n = col_label.count(s);
 				if(n){//avoid identical col names
-					while (col_label.contains(s+QString::number(n)))
+					while (col_label.contains(s + QString::number(n)))
 						n++;
 					s += QString::number(n);
 				}
-				col_label[i] = s;
+				col_label[aux] = s;
 			}
-		}
 
-        if (importComments){//import comments
-            s = t.readLine();//read 2nd line after the ignored ones
-            while (!t.atEnd()){
-                if (commentString.isEmpty() || !s.startsWith(commentString))
-                	break;
-             	else
-					s = t.readLine();//ignore all commented lines
+            if (importComments){//import comments
+                s = t.readLine();//read 2nd line
+                if (simplifySpaces)
+                    s = s.simplifyWhiteSpace();
+                else if (stripSpaces)
+                    s = s.stripWhiteSpace();
+                line = s.split(sep, QString::SkipEmptyParts);
+                for (int i=0; i<line.size(); i++)
+                    comments[startCol + i] = line[i];
                 qApp->processEvents(QEventLoop::ExcludeUserInput);
             }
-
-            if (simplifySpaces)
-                s = s.simplifyWhiteSpace();
-            else if (stripSpaces)
-                s = s.stripWhiteSpace();
-            line = s.split(sep, QString::SkipEmptyParts);
-			for (int i=0; i<(int)line.count(); i++)
-                comments[i] = line[i];
+        } else if (rows > 0){//put values in the first line of the table
+            for (int i = 0; i<cols; i++)
+				setText(startRow, startCol + i, line[i]);
+            startRow++;
         }
 
+        blockSignals(true);
 		setHeader();
 
-		int start = 0;
-		for (int i=0; i<steps; i++){
-			if (progress.wasCanceled()){
-				f.close();
-				return;
-			}
+        QApplication::restoreOverrideCursor();
 
-			start = i*1000;
-			for (int k=0; k<1000; k++){
-				s = t.readLine();
-				if (!commentString.isEmpty() && s.startsWith(commentString)){
-				    k--;
-                    continue;
-				}
-
-				if (simplifySpaces)
-					s = s.simplifyWhiteSpace();
-				else if (stripSpaces)
-					s = s.stripWhiteSpace();
-				line = s.split(sep);
-				int lc = (int)line.count();
-				if (lc > cols){
-					addColumns(lc - cols);
-					cols = lc;
-				}
-				for (int j=0; j<cols && j<lc; j++)
-					setText(start + k, j, line[j]);
-			}
-			progress.setValue(i);
-			qApp->processEvents();
-		}
-
-		start = steps*1000;
-		for (int i=start; i<rows; i++){
-			s = t.readLine();
-			if (!commentString.isEmpty() && s.startsWith(commentString)){
-			    i--;
-                continue;
-			}
-
+		int row = startRow;
+		rows = numRows();
+		while (!t.atEnd() && row < rows){
+		    s = t.readLine();
 			if (simplifySpaces)
 				s = s.simplifyWhiteSpace();
 			else if (stripSpaces)
 				s = s.stripWhiteSpace();
 			line = s.split(sep);
-			int lc = (int)line.count();
+			int lc = line.size();
 			if (lc > cols) {
 				addColumns(lc - cols);
 				cols = lc;
 			}
 			for (int j=0; j<cols && j<lc; j++)
-				setText(i, j, line[j]);
+				setText(row, startCol + j, line[j]);
+
+            row++;
+            qApp->processEvents(QEventLoop::ExcludeUserInput);
 		}
-		progress.setValue(steps+1);
-		qApp->processEvents();
-		f.close();
-		if (name != fname)//remove possible temp file
-			f.remove();
+		blockSignals(false);
+		f.remove();
 	}
 }
 
@@ -841,17 +768,17 @@ PreviewMatrix::PreviewMatrix(QWidget *parent, Matrix * m):QTableView(parent)
 	horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 	for(int i=0; i<d_matrix_model->columnCount(); i++)
 		setColumnWidth(i, 100);
-	
+
 	verticalHeader()->setMovable(false);
 	verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 }
 
 void PreviewMatrix::importASCII(const QString &fname, const QString &sep, int ignoredLines,
-    				bool stripSpaces, bool simplifySpaces, const QString& commentString, 
-					int importAs, const QLocale& locale)
+    				bool stripSpaces, bool simplifySpaces, const QString& commentString,
+					int importAs, const QLocale& locale, int endLine, int maxRows)
 {
-	if (d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces, 
-		simplifySpaces, commentString, importAs, locale))
+	if (d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces,
+		simplifySpaces, commentString, importAs, locale, endLine, maxRows))
 		reset();
 }
 

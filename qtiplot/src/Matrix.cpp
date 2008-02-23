@@ -1430,11 +1430,11 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 }
 
 void Matrix::importASCII(const QString &fname, const QString &sep, int ignoredLines,
-    	bool stripSpaces, bool simplifySpaces, const QString& commentString, 
-		ImportMode importAs, const QLocale& locale)
+    	bool stripSpaces, bool simplifySpaces, const QString& commentString,
+		ImportMode importAs, const QLocale& locale, int endLineChar, int maxRows)
 {
-	if (d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces, 
-		simplifySpaces, commentString, importAs, locale)){
+	if (d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces,
+		simplifySpaces, commentString, importAs, locale, endLineChar)){
 		resetView();
 		emit modifiedWindow(this);
 	}

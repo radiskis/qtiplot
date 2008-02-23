@@ -59,7 +59,7 @@ class FitDialog : public QDialog
 public:
     FitDialog(Graph *g, QWidget* parent = 0, Qt::WFlags fl = 0 );
 
-    void setSrcTables(QWidgetList* tables);
+    void setSrcTables(QList<MdiSubWindow*> tables);
 
 protected:
 	void closeEvent (QCloseEvent * e );
@@ -120,7 +120,7 @@ private:
 	Graph *d_graph;
 	Table *d_param_table;
 	QList <Fit*> d_user_functions, d_built_in_functions, d_plugins;
-	QWidgetList *srcTables;
+	QList <MdiSubWindow*> srcTables;
 	QwtPlotCurve *d_preview_curve;
 
     QCheckBox* boxUseBuiltIn;
