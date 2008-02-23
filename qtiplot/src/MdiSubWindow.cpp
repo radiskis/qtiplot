@@ -30,6 +30,7 @@
 #include "Folder.h"
 #include "ApplicationWindow.h"
 
+#include <QApplication>
 #include <QMessageBox>
 #include <QEvent>
 #include <QCloseEvent>
@@ -222,34 +223,113 @@ void MdiSubWindow::setMaximized()
 	emit statusChanged (this);
 }
 
-QString MdiSubWindow::unixEndLineFilePath(const QString& fname)
+QString MdiSubWindow::parseAsciiFile(const QString& fname, const QString &commentString,
+                        int endLine, int ignoreFirstLines, int maxRows, int& rows)
 {
-	QFile f(fname);	
-	if (!f.open(QIODevice::ReadOnly))
-		return QString::null;
+	if (endLine == ApplicationWindow::CR)
+		return parseMacAsciiFile(fname, commentString, ignoreFirstLines, maxRows, rows);
 	
-	QTextStream t(&f);
-	QString aux = t.readLine();
-	f.close();
-	if (!aux.contains('\r'))
-		return fname;
-		
-	ifstream fin;
- 	fin.open(fname.toAscii());
- 	if(!fin)
+	//QTextStream replaces '\r\n' with '\n', therefore we don't need a special treatement in this case!
+	
+	QFile f(fname);
+ 	if(!f.open(QIODevice::ReadOnly))
   		return QString::null;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	QTextStream t(&f);
 	
 	QTemporaryFile tempFile;
 	tempFile.open();
 	QTextStream temp(&tempFile);
-	while(!fin.eof()){
-		string s;
- 		getline(fin, s, '\r');
-		temp << QString(s.c_str()) + "\n";	
+
+	for (int i = 0; i < ignoreFirstLines; i++)//skip first 'ignoreFirstLines' lines
+		t.readLine();
+
+	bool validCommentString = !commentString.isEmpty();
+	rows = 0;
+	if (maxRows <= 0){//read all valid lines
+        while(!t.atEnd()){//count the number of valid rows
+            QString s = t.readLine();
+            if (validCommentString && s.startsWith(commentString))
+                continue;
+
+            rows++;
+            temp << s + "\n";
+            qApp->processEvents(QEventLoop::ExcludeUserInput);
+        }
+	} else {//we write only 'maxRows' valid rows to the temp file
+        while(!t.atEnd() && rows < maxRows){
+            QString s = t.readLine();
+            if (validCommentString && s.startsWith(commentString))
+                continue;
+
+            rows++;
+            temp << s + "\n";
+            qApp->processEvents(QEventLoop::ExcludeUserInput);
+        }
 	}
-	
+	f.close();
+
 	tempFile.setAutoRemove(false);
-	QString s = tempFile.fileName();
+	QString path = tempFile.fileName();
 	tempFile.close();
-	return s;
+
+	QApplication::restoreOverrideCursor();
+	return path;
+}
+
+QString MdiSubWindow::parseMacAsciiFile(const QString& fname, const QString &commentString,
+                        				int ignoreFirstLines, int maxRows, int& rows)
+{
+	ifstream f;
+ 	f.open(fname.toAscii());
+ 	if(!f)
+  		return QString::null;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QTemporaryFile tempFile;
+	tempFile.open();
+	QTextStream temp(&tempFile);
+
+	for (int i = 0; i < ignoreFirstLines; i++){//skip first 'ignoreFirstLines' lines
+		string s;
+		getline(f, s, '\r');
+	}
+
+	bool validCommentString = !commentString.isEmpty();
+	string comment = commentString.ascii();
+	int commentLength = comment.size();
+	rows = 0;
+	if (maxRows <= 0){//read all valid lines
+        while(f.good() && !f.eof()){//count the number of valid rows
+            string s;
+            getline(f, s, '\r');
+            if (validCommentString && s.compare(0, commentLength, comment) == 0)
+                continue;
+
+            rows++;
+            temp << QString(s.c_str()) + "\n";
+            qApp->processEvents(QEventLoop::ExcludeUserInput);
+        }
+	} else {//we write only 'maxRows' valid rows to the temp file
+        while(f.good() && !f.eof() && rows < maxRows){
+            string s;
+            getline(f, s, '\r');
+            if (validCommentString && s.compare(0, commentLength, comment) == 0)
+                continue;
+
+            rows++;
+            temp << QString(s.c_str()) + "\n";
+            qApp->processEvents(QEventLoop::ExcludeUserInput);
+        }
+	}
+	f.close();
+
+	tempFile.setAutoRemove(false);
+	QString path = tempFile.fileName();
+	tempFile.close();
+
+	QApplication::restoreOverrideCursor();
+	return path;
 }

@@ -143,17 +143,16 @@ void ErrDialog::setCurveNames(const QStringList& names)
 	nameLabel->addItems(names);
 }
 
-void ErrDialog::setSrcTables(QWidgetList* tables)
+void ErrDialog::setSrcTables(QList<MdiSubWindow *> tables)
 {
-	if (!tables->size())
+	if (tables.isEmpty())
 		return;
 	
 	srcTables = tables;
 	tableNamesBox->clear();
 
-	QList<QWidget *>::const_iterator i;
-    for (i = srcTables->begin(); i != srcTables->end(); i++)
-		tableNamesBox->insertItem((*i)->objectName());
+    foreach(MdiSubWindow *w, tables)
+		tableNamesBox->insertItem(w->objectName());
 
 	if (!nameLabel->currentText().contains("="))
 		tableNamesBox->setCurrentIndex(tableNamesBox->findText(nameLabel->currentText().split("_", QString::SkipEmptyParts)[0]));
@@ -163,7 +162,7 @@ void ErrDialog::setSrcTables(QWidgetList* tables)
 void ErrDialog::selectSrcTable(int tabnr)
 {
 	colNamesBox->clear();
-	colNamesBox->addItems(((Table*)srcTables->at(tabnr))->colNames());
+	colNamesBox->addItems(((Table*)srcTables.at(tabnr))->colNames());
 }
 
 void ErrDialog::add()

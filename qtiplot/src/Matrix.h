@@ -84,7 +84,7 @@ public:
 		NewRows, //!< add file as new rows to the current matrix
 		Overwrite //!< replace content of current matrix with the imported file
 	};
-	
+
 	void setViewType(ViewType);
 	ViewType viewType(){return d_view_type;};
 
@@ -137,9 +137,9 @@ public:
 	void setRainbowColorMap();
 
 	bool exportASCII(const QString& fname, const QString& separator, bool exportSelection);
-	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces, 
-					bool simplifySpaces, const QString& commentString, 
-					ImportMode importAs = Overwrite, const QLocale& l = QLocale());
+	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces,
+					bool simplifySpaces, const QString& commentString, ImportMode importAs = Overwrite,
+					const QLocale& l = QLocale(), int endLineChar = 0, int maxRows = -1);
 
 public slots:
 	void exportPDF(const QString& fileName);

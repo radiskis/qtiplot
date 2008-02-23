@@ -42,7 +42,7 @@ class QPushButton;
 class QStackedWidget;
 class Matrix;
 class MatrixModel;
-	
+
 #include <q3table.h>
 #include <q3header.h>
 
@@ -52,7 +52,8 @@ public:
     PreviewTable(int numRows, int numCols, QWidget * parent = 0, const char * name = 0);
 
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
-		bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString);
+		bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
+		int importMode, int endLine, int maxRows);
 
 	void resetHeader();
 	void clear();
@@ -72,8 +73,8 @@ public:
     PreviewMatrix(QWidget *parent, Matrix * m = 0);
 
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines,
-		bool stripSpaces, bool simplifySpaces, const QString& commentString, 
-		int importAs, const QLocale& locale);
+		bool stripSpaces, bool simplifySpaces, const QString& commentString,
+		int importAs, const QLocale& locale, int endLine, int maxRows);
 
 	void clear();
 
@@ -139,7 +140,10 @@ public:
 
     //! Returns true if the second line of the ASCII file should be used to set comments in table
     bool importComments(){return d_import_comments->isChecked();};
-
+	
+	//! Returns the convention used for the end line character!
+	inline int endLineChar(){return boxEndLine->currentIndex();};
+		
 private slots:
 	//! Display help for advanced options.
 	void displayHelp();
@@ -147,6 +151,8 @@ private slots:
 	void updateImportMode(int mode);
 	void preview();
 	void changePreviewFile(const QString& path);
+	//! Enable/Disable options which are only available for tables.
+	void enableTableOptions(bool on);
 
 private:
 	void initPreview(int previewMode);
@@ -163,7 +169,7 @@ private:
 	QCheckBox *d_read_only, *d_import_dec_separators;
 	QPushButton *d_help_button;
 	// the actual options
-	QComboBox *d_import_mode, *d_column_separator, *boxDecimalSeparator;
+	QComboBox *d_import_mode, *d_column_separator, *boxDecimalSeparator, *boxEndLine;
 	QSpinBox *d_ignored_lines, *d_preview_lines_box;
 	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces, *d_import_comments;
 	QLineEdit *d_comment_string;

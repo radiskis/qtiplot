@@ -63,7 +63,7 @@ MatrixModel::MatrixModel(const QImage& image, QObject *parent)
     d_rows = image.height();
     d_cols = image.width();
     d_data.resize(d_rows*d_cols);
-	
+
     for (int i=0; i<d_rows; i++ ){
 		for (int j=0; j<d_cols; j++){
 		    int index = i*d_cols + j;
@@ -104,7 +104,7 @@ void MatrixModel::setRowCount(int rows)
 		removeRows(rows, diff);
 
 	QApplication::restoreOverrideCursor();
-	
+
 }
 
 void MatrixModel::setColumnCount(int cols)
@@ -149,8 +149,8 @@ QString MatrixModel::text(int row, int col)
 
 	if (d_matrix){
 		QLocale locale = d_matrix->locale();
-		return locale.toString(d_data[i], d_matrix->textFormat().toAscii(), d_matrix->precision());	
-	} 
+		return locale.toString(d_data[i], d_matrix->textFormat().toAscii(), d_matrix->precision());
+	}
 	return d_locale.toString(d_data[i], d_txt_format, d_num_precision);
 }
 
@@ -183,7 +183,7 @@ double MatrixModel::x(int col) const
 {
 	if (col < 0 || col >= d_cols)
         return 0.0;
-	
+
 	double start = d_matrix->xStart();
 	double end = d_matrix->xEnd();
 	if (start < end)
@@ -198,7 +198,7 @@ double MatrixModel::y(int row) const
 {
 	if (row < 0 || row >= d_rows)
         return 0.0;
-	
+
 	double start = d_matrix->yStart();
 	double end = d_matrix->yEnd();
 	if (start < end)
@@ -222,7 +222,7 @@ QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int
 		fmt = d_matrix->textFormat().toAscii();
 		prec = d_matrix->precision();
 	}
-	
+
     if (role == Qt::DisplayRole || role == Qt::EditRole){
         if (orientation == Qt::Horizontal){
             double start = d_matrix->xStart();
@@ -241,7 +241,7 @@ QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int
             else
                 return QVariant(locale.toString(start - section*dy, fmt, prec));
         }
-    }    
+    }
 	return QAbstractItemModel::headerData(section, orientation, role);
 }
 
@@ -416,54 +416,35 @@ void MatrixModel::setDataVector(const QVector<double>& data)
 }
 
 bool MatrixModel::importASCII(const QString &fname, const QString &sep, int ignoredLines,
-    bool stripSpaces, bool simplifySpaces, const QString& commentString, int importAs, const QLocale& locale)
-{	
-	QString name = MdiSubWindow::unixEndLineFilePath(fname);
+    bool stripSpaces, bool simplifySpaces, const QString& commentString, int importAs,
+	const QLocale& locale, int endLineChar, int maxRows)
+{
+	int rows = 0;
+	QString name = MdiSubWindow::parseAsciiFile(fname, commentString, endLineChar, ignoredLines, maxRows, rows);
 	if (name.isEmpty())
 		return false;
 	QFile f(name);
 	if (!f.open(QIODevice::ReadOnly))
 		return false;
-	
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	
-    QTextStream t(&f);	
+
+    QTextStream t(&f);
 	QLocale l = d_locale;
 	if (d_matrix)
 		l = d_matrix->locale();
-	bool updateDecimalSeparators = (l != locale) ? true : false;	
-		
-	int rows = 0, cols = 0;
-	for (int i=0; i<ignoredLines; i++)
-		t.readLine();
+	bool updateDecimalSeparators = (l != locale) ? true : false;
 
-	QString s = t.readLine();//read first line after the ignored ones			
-	bool emptyCommentString = commentString.isEmpty();
-	while (!t.atEnd()){//find first valid line: used to compute the number of columns 
-		if (emptyCommentString || !s.startsWith(commentString)){
-			rows++;
-			break;
-		} else
-			s = t.readLine();
-		qApp->processEvents(QEventLoop::ExcludeUserInput);
-	}
-	
-	while (!t.atEnd()){//count valid lines
-		QString aux = t.readLine();
-		if (emptyCommentString || !aux.startsWith(commentString))
-			rows++;
-		qApp->processEvents(QEventLoop::ExcludeUserInput);
-	}
-
+	QString s = t.readLine();
 	if (simplifySpaces)
 		s = s.simplifyWhiteSpace();
 	else if (stripSpaces)
 		s = s.stripWhiteSpace();
 
 	QStringList line = s.split(sep);
-	cols = (int)line.count();
+	int cols = line.size();
 
-	int startRow = 0, startCol = 0;
+	int startRow = 1, startCol = 0;
 	switch(importAs){
 		case Matrix::Overwrite:
 			if (d_rows != rows)
@@ -484,19 +465,20 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 			setRowCount(d_rows + rows);
 		break;
 	}
-		
-	f.reset();
-	for (int i=0; i<ignoredLines; i++)
-		t.readLine();
-		
-	bool validCommentString = !emptyCommentString;
+
+	for (int j = startCol; j<d_cols; j++){
+		int aux = j - startCol;
+		if (cols > aux){
+			if (updateDecimalSeparators)
+				setCell(0, j, locale.toDouble(line[aux]));
+			else
+				setText(0, j, line[aux]);
+		}
+	}
+
+	qApp->processEvents(QEventLoop::ExcludeUserInput);
 	for (int i = startRow; i<d_rows; i++){
 		s = t.readLine();
-		if (validCommentString && s.startsWith(commentString)){
-		    i--;
-			continue;
-		}
-
 		if (simplifySpaces)
 			s = s.simplifyWhiteSpace();
 		else if (stripSpaces)
@@ -505,7 +487,7 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 		int lc = line.size();
 		if (lc > cols)
 			setColumnCount(d_cols + lc - cols);
-		
+
 		for (int j = startCol; j<d_cols; j++){
 			int aux = j - startCol;
 		    if (lc > aux){
@@ -516,10 +498,7 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 			}
 		}
 	}
-	qApp->processEvents();
-	f.close();
-	if (name != fname)//remove possible temp file
-		f.remove();
+    f.remove();	//remove temp file
 	QApplication::restoreOverrideCursor();
 	return true;
 }

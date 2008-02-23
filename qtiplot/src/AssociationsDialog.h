@@ -38,6 +38,7 @@ class QTableWidget;
 class QStringList;
 class Table;
 class Graph;
+class MdiSubWindow;
 
 //! Plot associations dialog
 class AssociationsDialog : public QDialog
@@ -46,9 +47,8 @@ class AssociationsDialog : public QDialog
 
 public:
     AssociationsDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
-    ~AssociationsDialog();
 
-    void initTablesList(QWidgetList* lst, int curve);
+    void initTablesList(QList<MdiSubWindow *> lst, int curve);
 	void setGraph(Graph *g);
 
 private slots:
@@ -65,7 +65,7 @@ private:
     Table *findTable(int index);
     bool eventFilter(QObject *object, QEvent *e);
 
-	QWidgetList* tables;
+	QList <MdiSubWindow*> tables;
 	Table *active_table;
 	Graph *graph;
 	QStringList plotAssociationsList;

@@ -184,7 +184,7 @@ for (int i=1; i < (int)cols.count(); i++ )
 return s;
 }
 
-void AssociationsDialog::initTablesList(QWidgetList* lst, int curve)
+void AssociationsDialog::initTablesList(QList<MdiSubWindow *> lst, int curve)
 {
 tables = lst;
 active_table = 0;
@@ -199,9 +199,9 @@ Table * AssociationsDialog::findTable(int index)
 {
 	QString text = associations->item(index)->text();
 	QStringList lst= text.split(":", QString::SkipEmptyParts);
-	for (int i=0; i < (int)tables->count(); i++ ){
-		if (tables->at(i)->objectName() == lst[0])
-			return (Table *)tables->at(i);
+	foreach(MdiSubWindow *w, tables){
+		if (w->objectName() == lst[0])
+			return (Table *)w;
 	}
 	return 0;
 }
@@ -463,9 +463,4 @@ else if (e->type() == QEvent::MouseButtonDblClick)
 	return true;
 else
 	return false;
-}
-
-AssociationsDialog::~AssociationsDialog()
-{
-delete tables;
 }

@@ -974,10 +974,10 @@ t.sort(type = 0, order = 0, leadingColumnName)
 </programlisting>
 
 Import values from <varname>file</varname>, using <varname>sep</varname> as separator char, ignoring
-<varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string.
-The other flags should be self-explanatory.
+<varname>ignoreLines</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string.
 <programlisting>
-t.importASCII(file, sep="\t", ignore=0, renameCols=False, stripSpaces=True, simplifySpace=False, importComments=False, newTable=False, comment="#", readOnly=False)
+t.importASCII(file, sep="\t",ignoreLines=0,renameCols=False,stripSpaces=True,simplifySpace=False, 
+importComments=False,comment="#",readOnly=False,importAs=Table.Overwrite,endLine=0,maxRows=-1)
 </programlisting>
 
 As you see from the above list of import options, you have the possibility to set the new columns as read-only.
@@ -987,13 +987,42 @@ at any time, by using:
 t.setReadOnlyColumn(col, False)
 </programlisting>
 
-You can export values from a table to an ASCII <varname>file</varname>, using
+<para>The <varname>importAs</varname> flag can have the following values: 
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Table.NewColumns: data values are added as new columns.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Table.NewRows: data values are added as new rows.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Table.Overwrite: all existing values are overwritten (default value).</para>
+              </listitem>
+            </varlistentry>
+</variablelist></para>
+
+<para>The <varname>endLine</varname> flag specifies the end line character convention used in the ascii file.
+Possible values are: 0 for line feed (LF), which is the default value, 
+1 for carriage return + line feed (CRLF) and 2 for carriage return only (usually on Mac computers).</para>
+
+<para>The last parameter <varname>maxRows</varname> allows you to specify a maximum number of imported 
+lines. Negative values mean that all data lines must be imported.</para>
+
+<para>You can export values from a table to an ASCII <varname>file</varname>, using
 <varname>sep</varname> as separator chararacter. The <varname>ColumnLabels</varname> option
 allows you to export or ignore the column labels, <varname>ColumnComments</varname> does the same for the comments
 displayed in the table header and the <varname>SelectionOnly</varname> option makes
-possible to export only the selected cells of the table.
+possible to export only the selected cells of the table.</para>
 <programlisting>
-t.exportASCII(file, sep="\t", ignore=0, ColumnLabels=False, ColumnComments=False, SelectionOnly=False)
+t.exportASCII(file,sep="\t",ignore=0,ColumnLabels=False,ColumnComments=False,SelectionOnly=False)
 </programlisting>
  Other settings that you can modify are the text displayed as a comment in the header of a column
 or the expression used to calculate the column values. Please beware that changing the command doesn't automatically
@@ -1140,17 +1169,18 @@ This is a shortcut function which uses some default parameters in order to gener
 If you need more control over the export parameters you must use one of the following functions:
 <programlisting>
 m1.exportRasterImage(fileName, quality = 100)
-m2.exportVector(fileName, resolution, color = true, keepAspect = true, pageSize = QPrinter::Custom)
+m2.exportVector(fileName,resolution,color = true,keepAspect = true,pageSize = QPrinter::Custom)
 </programlisting>
 
 <para>You can also import an ASCII data <varname>file</varname>, using <varname>sep</varname> as separator characters, ignoring
 <varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string:
 </para>
 <programlisting>
-m.importASCII(file, sep="\t", ignore=0, stripSpaces=True, simplifySpace=False, comment="#", importMode=Matrix.Overwrite, locale=QLocale())
+m.importASCII(file, sep="\t", ignore=0, stripSpaces=True, simplifySpace=False, comment="#", 
+				importAs=Matrix.Overwrite, locale=QLocale(), endLine=0, maxRows=-1)
 </programlisting>
 
-<para>The <varname>importMode</varname> flag can have the following values: 
+<para>The <varname>importAs</varname> flag can have the following values: 
 <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
@@ -1173,6 +1203,13 @@ m.importASCII(file, sep="\t", ignore=0, stripSpaces=True, simplifySpace=False, c
 </variablelist>
 
 The <varname>locale</varname> parameter can be used to specify the convention for decimal separators used in your ASCII file.</para>
+
+<para>The <varname>endLine</varname> flag specifies the end line character convention used in the ascii file.
+Possible values are: 0 for line feed (LF), which is the default value, 
+1 for carriage return + line feed (CRLF) and 2 for carriage return only (usually on Mac computers).</para>
+
+<para>The last parameter <varname>maxRows</varname> allows you to specify a maximum number of imported 
+lines. Negative values mean that all data lines must be imported.</para>
 
 <para>Also, you can export values from a matrix to an ASCII <varname>file</varname>, using
 <varname>sep</varname> as separator chararacters. The <varname>SelectionOnly</varname> option makes

@@ -213,7 +213,7 @@ void ExportDialog::updateOptions(const QString & name)
 	if (!app)
         return;
 
-    QWidget* w = app->window(name);
+    MdiSubWindow* w = app->window(name);
     if (!w)
 		return;
 

@@ -64,10 +64,12 @@ class Table: public MdiSubWindow, public scripted
 public:
 	enum PlotDesignation{All = -1, None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5, Label = 6};
 	enum ColType{Numeric = 0, Text = 1, Date = 2, Time = 3, Month = 4, Day = 5};
+	enum ImportMode {
+		NewColumns, //!< add file as new columns to this table
+		NewRows, //!< add file as new rows to this table
+		Overwrite //!< replace content of table with the imported file
+	};
 
-   	Table(ScriptingEnv *env, const QString &fname,const QString &sep, int ignoredLines, bool renameCols,
-		 bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString, bool readOnly,
-         const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
 	Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
 
 	Q3TableSelection getSelection();
@@ -281,11 +283,9 @@ public slots:
 	bool exportASCII(const QString& fname, const QString& separator, bool withLabels = false,
                      bool exportComments = false, bool exportSelection = false);
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
-                    bool stripSpaces, bool simplifySpaces, bool importComments, bool newTable,
-                    const QString& commentString, bool readOnly = false);
-	void importMultipleASCIIFiles(const QString &fname, const QString &sep, int ignoredLines,
-					bool renameCols, bool stripSpaces, bool simplifySpaces, bool importComments,
-					const QString &commentString, bool readOnly, int importFileAs);
+                    bool stripSpaces, bool simplifySpaces, bool importComments,
+                    const QString& commentString, bool readOnly = false,
+					ImportMode importAs = Overwrite, int endLine = 0, int maxRows = -1);
 
 	//! \name Saving and Restoring
 	//@{
