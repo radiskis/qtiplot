@@ -434,7 +434,6 @@ public slots:
 	void exportAllGraphs();
 	void exportPDF();
 	void print();
-	void print(QWidget* w);
 	void printAllPlots();
 	//@}
 
@@ -475,7 +474,6 @@ public slots:
 	void hideActiveWindow();
 	void activateWindow();
 	void activateWindow(MdiSubWindow *);
-	void printWindow();
 	//@}
 
 	//! Show about dialog
@@ -1201,7 +1199,7 @@ private:
     QAction *actionResizeActiveWindow, *actionHideActiveWindow;
     QAction *actionShowMoreWindows, *actionPixelLineProfile, *actionIntensityTable;
     QAction *actionShowLineDialog, *actionShowImageDialog, *actionShowTextDialog;
-    QAction *actionActivateWindow, *actionMinimizeWindow, *actionMaximizeWindow, *actionHideWindow, *actionResizeWindow, *actionPrintWindow;
+    QAction *actionActivateWindow, *actionMinimizeWindow, *actionMaximizeWindow, *actionHideWindow, *actionResizeWindow;
     QAction *actionEditSurfacePlot, *actionAdd3DData;
 	QAction *actionMatrixDeterminant, *actionSetMatrixProperties, *actionConvertMatrixXYZ, *actionConvertMatrixYXZ;
 	QAction *actionSetMatrixDimensions, *actionConvertMatrixDirect, *actionSetMatrixValues, *actionTransposeMatrix, *actionInvertMatrix;

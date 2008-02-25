@@ -924,8 +924,21 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 						break;
 					}
 					p->setPen(QPen(ColorBox::color(cl.lCol), cl.lWidth, (Qt::PenStyle)cl.lStyle));
-					p->setRadius(opj.curvePieProperties(g,l,c).radius);
 					p->setFirstColor(opj.curveFillAreaFirstColor(g,l,c));
+					//geometry
+                    p->setRadius(opj.curvePieProperties(g,l,c).radius);
+                    p->setThickness(opj.curvePieProperties(g,l,c).thickness);
+					p->setViewAngle(opj.curvePieProperties(g,l,c).view_angle);
+					p->setStartAzimuth(opj.curvePieProperties(g,l,c).rotation);
+					p->setCounterClockwise(opj.curvePieProperties(g,l,c).clockwise_rotation);
+                    p->setHorizontalOffset(opj.curvePieProperties(g,l,c).horizontal_offset);
+					//labels
+					p->setLabelsEdgeDistance(opj.curvePieProperties(g,l,c).distance);
+					p->setLabelsAutoFormat(opj.curvePieProperties(g,l,c).format_automatic);
+					p->setLabelPercentagesFormat(opj.curvePieProperties(g,l,c).format_percentages);
+                    p->setLabelValuesFormat(opj.curvePieProperties(g,l,c).format_values);
+                    p->setLabelCategories(opj.curvePieProperties(g,l,c).format_categories);
+                    p->setFixedLabelsPosition(opj.curvePieProperties(g,l,c).position_associate);
 				}
 				else if(style == Graph::VectXYXY || style == Graph::VectXYAM)
 				{

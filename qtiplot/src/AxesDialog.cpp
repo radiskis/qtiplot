@@ -2458,9 +2458,10 @@ bool AxesDialog::updatePlot()
 		        switch (boxUnit->currentIndex())
                     {
                     case 0:
+						stp *= 86400;
                     break;
                     case 1:
-                         stp *= 7;
+                         stp *= 604800;
                     break;
                     }
 	             }
@@ -2690,9 +2691,9 @@ boxMinorTicksAfterBreak->setEditText(QString::number(sc_engine->minTicksAfterBre
 boxLog10AfterBreak->setChecked(sc_engine->log10ScaleAfterBreak());
 boxBreakDecoration->setChecked(sc_engine->hasBreakDecoration());
 
-QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
-boxStep->setText(QString::number(d_graph->axisStep(a)));
-boxMajorValue->setValue(lst.count());
+	QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
+	boxStep->setText(QString::number(d_graph->axisStep(a)));
+	boxMajorValue->setValue(lst.count());
 
 	ScaleDraw::ScaleType type = d_graph->axisType(a);
 	if (type == ScaleDraw::Time){
@@ -2705,8 +2706,10 @@ boxMajorValue->setValue(lst.count());
 		boxUnit->show();
 		boxUnit->insertItem(tr("days"));
 		boxUnit->insertItem(tr("weeks"));
-	}
-
+		int days = (int)(d_graph->axisStep(a)/86400.0);
+		boxStep->setText(QString::number(days));
+	} 
+	
 	if (d_graph->axisStep(a) != 0.0){
 		btnStep->setChecked(true);
 		boxStep->setEnabled(true);

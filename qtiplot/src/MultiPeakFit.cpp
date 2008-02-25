@@ -194,7 +194,7 @@ void MultiPeakFit::guessInitialValues()
 	double width = 2*gsl_stats_sd(d_x, 1, d_n);
 
 	if (d_profile == Lorentz)
-		area = M_2_PI*width*fabs(max_out - min_out);
+		area = M_PI_2*width*fabs(max_out - min_out);
 	else
 		area = sqrt(M_PI_2)*width*fabs(max_out - min_out);
 

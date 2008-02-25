@@ -424,13 +424,26 @@ void TableDialog::updateDisplay(int item)
 		break;
 
 		case 2:
-            formatBox->setEditable ( true );
-
+            formatBox->setEditable(true);
 			formatBox->addItem(tr("dd/MM/yyyy"));
+			formatBox->addItem(tr("dd/MM/yyyy HH:mm"));
+			formatBox->addItem(tr("dd/MM/yyyy HH:mm:ss"));
+
 			formatBox->addItem(tr("dd.MM.yyyy"));
+			formatBox->addItem(tr("dd.MM.yyyy HH:mm"));
+			formatBox->addItem(tr("dd.MM.yyyy HH:mm:ss"));
+
 			formatBox->addItem(tr("dd MM yyyy"));
-			formatBox->addItem(tr("yyyyMMdd"));
+			formatBox->addItem(tr("dd MM yyyy HH:mm"));
+			formatBox->addItem(tr("dd MM yyyy HH:mm:ss"));
+
 			formatBox->addItem(tr("yyyy-MM-dd"));
+			formatBox->addItem(tr("yyyy-MM-dd HH:mm"));
+			formatBox->addItem(tr("yyyy-MM-dd HH:mm:ss"));
+
+			formatBox->addItem(tr("yyyyMMdd"));
+			formatBox->addItem(tr("yyyyMMdd HH:mm"));
+			formatBox->addItem(tr("yyyyMMdd HH:mm:ss"));
 		break;
 
 		case 3:

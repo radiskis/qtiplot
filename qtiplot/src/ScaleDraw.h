@@ -45,6 +45,8 @@ public:
 	enum NumericFormat{Automatic, Decimal, Scientific, Superscripts};
 	enum NameFormat{ShortName, LongName, Initial};
 
+    //! Constructs a new scale draw which is a clone of sd.
+    ScaleDraw(Plot *plot, ScaleDraw *sd);
 	ScaleDraw(Plot *plot, const QString& formula = QString::null);
 	ScaleDraw(Plot *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
 
@@ -80,7 +82,8 @@ public:
 	void setDayFormat(NameFormat format);
 	void setMonthFormat(NameFormat format);
 	void setTimeFormat(const QTime& t, const QString& format);
-	void setDateFormat(const QDate& d, const QString& format);
+	void setDateFormat(const QDateTime& d, const QString& format);
+    void setDateTimeOrigin(const QDateTime& d){d_date_time_origin = d;};
 
 	QStringList labelsList(){return d_text_labels;};
 
@@ -114,10 +117,8 @@ private:
 	bool d_selected;
 	//! Stores the scale name format for Day and Month scales
 	NameFormat d_name_format;
-	//! Stores the time origin used to calculate labels for Time scales
-	QTime d_time_origin;
-	//! Stores the date origin used to calculate labels for Date scales
-	QDate d_date_origin;
+	//! Stores the date-time origin used to calculate labels for Date/Time scales
+	QDateTime d_date_time_origin;
 	//! Stores extra format information:
 	/* - the date/time format used to calculate labels for Date/Time scales
 	 * - the Column/Table name in the case of Text/ColHeader scales

@@ -774,7 +774,7 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 	else if (type == ScaleDraw::Date)
 	{
 		ScaleDraw *sd = new ScaleDraw(d_plot);
-		sd->setDateFormat(QDate::fromString (list[0], Qt::ISODate), list[1]);
+		sd->setDateFormat(QDateTime::fromString (list[0], Qt::ISODate), list[1]);
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
 		d_plot->setAxisScaleDraw (axis, sd);
 	}
@@ -2801,7 +2801,7 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 	QString date_time_fmt = w->columnFormat(xcol);
 	QStringList xLabels, yLabels;// store text labels
 	QTime time0;
-	QDate date0;
+	QDateTime date0;
 
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
@@ -2821,7 +2821,7 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 		for (int i = startRow; i<=endRow; i++ ){
 			QString xval=w->text(i,xcol);
 			if (!xval.isEmpty()){
-				date0 = QDate::fromString(xval, date_time_fmt);
+				date0 = QDateTime::fromString(xval, date_time_fmt);
 				if (date0.isValid())
 					break;
 			}
@@ -2844,9 +2844,9 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 				else
 					X[size] = 0;
 			} else if (xColType == Table::Date){
-				QDate d = QDate::fromString (xval, date_time_fmt);
+				QDateTime d = QDateTime::fromString (xval, date_time_fmt);
 				if (d.isValid())
-					X[size] = (double) date0.daysTo(d);
+					X[size] = (double) date0.secsTo(d);
 			} else
                 X[size] = d_plot->locale().toDouble(xval, &valid_data);
 
@@ -2913,8 +2913,6 @@ bool Graph::insertCurve(Table* w, const QString& xColName, const QString& yColNa
 		d_plot->setAxisScaleDraw (QwtPlot::yLeft, new ScaleDraw(d_plot, yLabels, yColName));
 
 	addLegendItem();
-	//updatePlot();
-
 	return true;
 }
 

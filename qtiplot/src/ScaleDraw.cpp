@@ -54,8 +54,7 @@ ScaleDraw::ScaleDraw(Plot *plot, const QString& formula):
 	d_minTicks(Out),
 	d_selected(false),
 	d_name_format(ShortName),
-	d_time_origin(QTime::currentTime()),
-	d_date_origin(QDate::currentDate()),
+	d_date_time_origin(QDateTime::currentDateTime()),
 	d_format_info("YYYY-MM-DDTHH:MM:SS"),
 	d_text_labels(QStringList())
 {}
@@ -71,11 +70,30 @@ ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, const QString& forma
 	d_minTicks(Out),
 	d_selected(false),
 	d_name_format(ShortName),
-	d_time_origin(QTime::currentTime()),
-	d_date_origin(QDate::currentDate()),
+	d_date_time_origin(QDateTime::currentDateTime()),
 	d_format_info(format),
 	d_text_labels(labels)
 {}
+
+ScaleDraw::ScaleDraw(Plot *plot, ScaleDraw* sd):
+	d_plot(plot)
+{
+	d_type = sd->d_type;
+	d_numeric_format = sd->d_numeric_format;
+	d_fmt = sd->d_fmt;
+    d_prec = sd->d_prec;
+	d_formula = sd->d_formula;
+	d_majTicks = sd->d_majTicks;
+	d_minTicks = sd->d_minTicks;
+	d_selected = sd->d_selected;
+	d_name_format = sd->d_name_format;
+	d_date_time_origin = sd->d_date_time_origin;
+	d_format_info = sd->d_format_info;
+	d_text_labels = sd->d_text_labels;
+
+	setLabelAlignment(sd->labelAlignment());
+	setLabelRotation(sd->labelRotation());
+}
 
 QwtText ScaleDraw::label(double value) const
 {
@@ -161,11 +179,11 @@ QwtText ScaleDraw::label(double value) const
 		}
 
 		case Time:
-			return QwtText(d_time_origin.addMSecs((int)value).toString(d_format_info));
+			return QwtText(d_date_time_origin.time().addMSecs((int)value).toString(d_format_info));
 		break;
 
 		case Date:
-			return QwtText(d_date_origin.addDays((int)value).toString(d_format_info));
+            return QwtText(d_date_time_origin.addSecs((int)value).toString(d_format_info));
 		break;
 
 		case ColHeader:
@@ -532,22 +550,22 @@ void ScaleDraw::setTimeFormat(const QTime& t, const QString& format)
 {
 	d_type = Time;
 	d_format_info = format;
-	d_time_origin = t;
+	d_date_time_origin.setTime(t);
 }
 
-void ScaleDraw::setDateFormat(const QDate& d, const QString& format)
+void ScaleDraw::setDateFormat(const QDateTime& d, const QString& format)
 {
 	d_type = Date;
 	d_format_info = format;
-	d_date_origin = d;
+	d_date_time_origin = d;
 }
 
 QString ScaleDraw::formatString()
 {
     if (d_type == Time)
-        return d_time_origin.toString() + ";" + d_format_info;
+        return d_date_time_origin.time().toString() + ";" + d_format_info;
     else if (d_type == Date)
-        return d_date_origin.toString(Qt::ISODate) + ";" + d_format_info;
+        return d_date_time_origin.toString(Qt::ISODate) + ";" + d_format_info;
 
     return d_format_info;
 }
