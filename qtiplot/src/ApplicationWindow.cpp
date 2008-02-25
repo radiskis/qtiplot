@@ -1312,7 +1312,6 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
         if(!plotTools->isVisible())
             plotTools->show();
         plotTools->setEnabled (true);
-
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
             formatToolBar->show();
@@ -3717,6 +3716,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->d_file_version = d_file_version;
 	app->setWindowTitle(tr("QtiPlot") + " - " + fn);
 	app->d_opening_file = true;
+	app->d_workspace->blockSignals(true);
 
 	QFile f(fn);
 	QTextStream t( &f );
@@ -3968,6 +3968,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->executeNotes();
     app->savedProject();
 	app->d_opening_file = false;
+	app->d_workspace->blockSignals(false);
 	return app;
 }
 
@@ -6486,20 +6487,18 @@ void ApplicationWindow::movePoints()
 
 void ApplicationWindow::exportPDF()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
+	MdiSubWindow *w = activeWindow();
+	if (!w)
 		return;
 
-	if (plot->isEmpty())
-	{
+	if (w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
 	}
 
     QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"), workingDir, "*.pdf");
-	if (!fname.isEmpty() )
-	{
+	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
 		QString baseName = fi.fileName();
 		if (!baseName.contains("."))
@@ -6508,33 +6507,16 @@ void ApplicationWindow::exportPDF()
         workingDir = fi.dirPath(true);
 
         QFile f(fname);
-        if ( !f.open( QIODevice::WriteOnly ) )
-        {
+        if (!f.open(QIODevice::WriteOnly)){
             QMessageBox::critical(this, tr("QtiPlot - Export error"),
             tr("Could not write to file: <h4>%1</h4><p>Please verify that you have the right to write to this location or that the file is not being used by another application!").arg(fname));
             return;
         }
 
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        plot->exportPDF(fname);
+        w->exportPDF(fname);
 		QApplication::restoreOverrideCursor();
 	}
-}
-
-void ApplicationWindow::print(QWidget* w)
-{
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	if (plot->isEmpty())
-	{
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"));
-		return;
-	}
-
-	plot->print();
 }
 
 //print active window
@@ -6544,18 +6526,12 @@ void ApplicationWindow::print()
 	if (!w)
 		return;
 
-	print(w);
-}
-
-// print window from project explorer
-void ApplicationWindow::printWindow()
-{
-	WindowListItem *it = (WindowListItem *)lv->currentItem();
-	MdiSubWindow *w= it->window();
-	if (!w)
+    if (w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
+		QMessageBox::warning(this,tr("QtiPlot - Warning"),
+				tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
-
-	print(w);
+	}
+	w->print();
 }
 
 void ApplicationWindow::printAllPlots()
@@ -8347,7 +8323,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 		cm.insertItem(tr("&Rename Window"), this, SLOT(renameWindow()), Qt::Key_F2);
 		cm.addAction(actionResizeWindow);
 		cm.insertSeparator();
-		cm.addAction(actionPrintWindow);
+        cm.insertItem(QPixmap(fileprint_xpm), tr("&Print Window"), w, SLOT(print()));
 		cm.insertSeparator();
 		cm.insertItem(tr("&Properties..."), this, SLOT(windowProperties()));
 
@@ -11252,9 +11228,6 @@ void ApplicationWindow::createActions()
 	actionResizeWindow = new QAction(QIcon(QPixmap(resize_xpm)), tr("Re&size Window..."), this);
 	connect(actionResizeWindow, SIGNAL(activated()), this, SLOT(resizeWindow()));
 
-	actionPrintWindow = new QAction(QIcon(QPixmap(fileprint_xpm)),tr("&Print Window"), this);
-	connect(actionPrintWindow, SIGNAL(activated()), this, SLOT(printWindow()));
-
 	actionEditSurfacePlot = new QAction(tr("&Surface..."), this);
 	connect(actionEditSurfacePlot, SIGNAL(activated()), this, SLOT(editSurfacePlot()));
 
@@ -11901,7 +11874,6 @@ void ApplicationWindow::translateActionsStrings()
 	actionMaximizeWindow->setMenuText(tr("Ma&ximize Window"));
 	actionHideWindow->setMenuText(tr("&Hide Window"));
 	actionResizeWindow->setMenuText(tr("Re&size Window..."));
-	actionPrintWindow->setMenuText(tr("&Print Window"));
 	actionEditSurfacePlot->setMenuText(tr("&Surface..."));
 	actionAdd3DData->setMenuText(tr("&Data Set..."));
 	actionSetMatrixProperties->setMenuText(tr("Set &Properties..."));

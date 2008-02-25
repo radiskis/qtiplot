@@ -1896,27 +1896,17 @@ void Graph3D::setBackGrid(bool b)
 void Graph3D::print()
 {
 	QPrinter printer;
-	printer.setOrientation(QPrinter::Landscape);
+	if (width() > height())
+        printer.setOrientation(QPrinter::Landscape);
+    else
+        printer.setOrientation(QPrinter::Portrait);
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(false);
-
-	if (printer.setup())
-	{
-		if (IO::save (sp,"qtiplot.png","PNG"))
-		{
-			QPixmap p;
-			p.load ("qtiplot.png","PNG", QPixmap::Color );
-
-			QPainter paint(&printer);
-			paint.drawPixmap(QPoint(0,0),p);
-			paint.end();
-
-			QFile f("qtiplot.png");
-			f.remove();
-		}
-		else
-			QMessageBox::about(0,tr("QtiPlot - IO Error"),
-					tr("Could not print: <h4>" + QString(name()) + "</h4>."));
+	if (printer.setup()){
+        QImage im = sp->grabFrameBuffer(true);
+        QPainter paint(&printer);
+        paint.drawImage(printer.pageRect(), im);
+        paint.end();
 	}
 }
 

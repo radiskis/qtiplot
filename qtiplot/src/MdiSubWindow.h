@@ -107,7 +107,6 @@ public:
 	//! Not implemented yet
 	virtual void restore(const QStringList& ){};
 
-	virtual void print(){};
 	virtual void exportPDF(const QString&){};
 
 	virtual QString saveToString(const QString &, bool = false){return QString();};
@@ -156,6 +155,9 @@ public:
 	 */
 	static QString parseAsciiFile(const QString& fname, const QString &commentString, int endLine,
                                   int ignoreFirstLines, int maxRows, int& rows);
+
+public slots:
+	virtual void print(){};
 
 signals:
 	//! Emitted when the window was closed
