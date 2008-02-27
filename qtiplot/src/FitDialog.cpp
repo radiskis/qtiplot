@@ -719,6 +719,9 @@ void FitDialog::showFitPage()
 		d_current_fit->setFormula(formula);
     }
 
+	if (d_current_fit->error())
+		return;
+
     if (d_current_fit->type() == Fit::BuiltIn && d_current_fit->objectName() == tr("Polynomial")){
         btnParamRange->setEnabled(false);
         boxAlgorithm->setEnabled(false);
