@@ -704,8 +704,14 @@ void FitDialog::removeUserFunction()
 
 void FitDialog::showFitPage()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QString formula = editBox->text().simplified();
+	if (formula.isEmpty()){
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), tr("Please enter a valid function!"));
+		editBox->setFocus();
+		return;
+	}
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
     if (!boxUseBuiltIn->isChecked()){
         d_current_fit = new NonLinearFit(app, d_graph);
 		d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
