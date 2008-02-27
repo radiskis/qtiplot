@@ -264,6 +264,22 @@ public:
 	}
 %End
 
+	void setColumnWidth(SIP_PYOBJECT, int);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setColumnWidth(col, a1);
+%End
+
+	void hideColumn(SIP_PYOBJECT, bool = true);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->hideColumn(col, a1);
+%End
+
 private:
   Table(const Table&);
 };

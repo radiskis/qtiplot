@@ -145,6 +145,10 @@ public slots:
 	void moveColumn(int, int, int);
 	void swapColumns(int, int);
 	void moveColumnBy(int cols);
+	void hideSelectedColumns();
+	void showAllColumns();
+	void hideColumn(int col, bool = true);
+	bool isColumnHidden(int col){return d_table->isColumnHidden(col);};
 	//@}
 
 	//! \name Sorting
@@ -238,8 +242,8 @@ public slots:
 	QStringList YColumns();
 	int selectedColsNumber();
 
-	void changeColWidth(int width, bool allCols);
-	void changeColWidth(int width, int col);
+	void setColumnWidth(int width, bool allCols);
+	void setColumnWidth(int col, int width);
 	int columnWidth(int col);
 	QStringList columnWidths();
 	void setColWidths(const QStringList& widths);
@@ -296,6 +300,7 @@ public slots:
 	QString saveColumnWidths();
 	QString saveColumnTypes();
 	QString saveReadOnlyInfo();
+	QString saveHiddenColumnsInfo();
 
 	void setSpecifications(const QString& s);
 	QString& getSpecifications();
@@ -356,7 +361,6 @@ private:
 	QString specifications, newSpecifications;
 	QStringList commands, col_format, comments, col_label;
 	QList<int> colTypes, col_plot_type;
-	QList<bool> d_read_only;
 	int selectedCol;
 	int d_numeric_precision;
 	double **d_saved_cells;

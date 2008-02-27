@@ -51,7 +51,7 @@ private slots:
 	void prevColumn();
 	void nextColumn();
 	void updateColumn(int);
-	void changeColWidth(int width);
+	void setColumnWidth(int width);
 	void showPrecisionBox(int item);
 	void updatePrecision(int prec);
 	void setPlotDesignation(int i);
@@ -90,7 +90,7 @@ private:
     QSpinBox* colWidth, *precisionBox;
 	QLabel *labelNumeric, *labelFormat;
 	QTextEdit *comments;
-	QCheckBox *boxShowTableComments, *boxReadOnly;
+	QCheckBox *boxShowTableComments, *boxReadOnly, *boxHideColumn;
 };
 
 #endif // TABLEDIALOG_H
