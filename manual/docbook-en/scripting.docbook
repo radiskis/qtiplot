@@ -1037,6 +1037,13 @@ After having changed some table values from a script, you will likely want to up
 t.notifyChanges()
 </programlisting>
 
+You can also modify the width of a column (in pixels) or hide/show table columns:
+<programlisting>
+t.setColumnWidth(col, width)
+t.hideColumn(col, True)
+</programlisting>
+
+
 As a simple example, let's set some column values without using the dialog.
 <programlisting>
 t = table("table1")

@@ -1060,6 +1060,9 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->addAction(actionAddColToTable);
 	tableMenu->addAction(actionShowColsDialog);
 	tableMenu->insertSeparator();
+	tableMenu->addAction(actionHideSelectedColumns);
+	tableMenu->addAction(actionShowAllColumns);
+	tableMenu->insertSeparator();		
 	tableMenu->addAction(actionMoveColFirst);
 	tableMenu->addAction(actionMoveColLeft);
 	tableMenu->addAction(actionMoveColRight);
@@ -5850,6 +5853,9 @@ void ApplicationWindow::showColMenu(int c)
 
 			contextMenu.addAction(QIcon(QPixmap(erase_xpm)), tr("Clea&r"), w, SLOT(clearCol()));
 			contextMenu.addAction(QIcon(QPixmap(close_xpm)), tr("&Delete"), w, SLOT(removeCol()));
+			contextMenu.addAction(actionHideSelectedColumns);
+			contextMenu.addAction(actionShowAllColumns);
+			contextMenu.insertSeparator();
 			contextMenu.addAction(tr("&Insert"), w, SLOT(insertCol()));
 			contextMenu.addAction(tr("&Add Column"),w, SLOT(addCol()));
 			contextMenu.insertSeparator();
@@ -5909,6 +5915,8 @@ void ApplicationWindow::showColMenu(int c)
 		if (w){
 			contextMenu.addAction(QIcon(QPixmap(erase_xpm)),tr("Clea&r"), w, SLOT(clearSelection()));
 			contextMenu.addAction(QIcon(QPixmap(close_xpm)),tr("&Delete"), w, SLOT(removeCol()));
+			contextMenu.addAction(actionHideSelectedColumns);
+			contextMenu.addAction(actionShowAllColumns);
 			contextMenu.insertSeparator();
 			contextMenu.addAction(tr("&Insert"), w, SLOT(insertCol()));
 			contextMenu.addAction(tr("&Add Column"),w, SLOT(addCol()));
@@ -9786,6 +9794,10 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 			fields.pop_front();
 			for (int i=0; i < w->numCols(); i++)
 				w->setReadOnlyColumn(i, fields[i] == "1");
+		} else if (fields[0] == "HiddenColumn") { // d_file_version >= 93
+			fields.pop_front();
+			for (int i=0; i < w->numCols(); i++)
+				w->hideColumn(i, fields[i] == "1");
 		} else // <data> or values
 			break;
 	}
@@ -11133,6 +11145,12 @@ void ApplicationWindow::createActions()
 	actionTableRecalculate->setShortcut(tr("Ctrl+Return"));
 	connect(actionTableRecalculate, SIGNAL(activated()), this, SLOT(recalculateTable()));
 
+	actionHideSelectedColumns = new QAction(tr("&Hide Selected"), this);
+	connect(actionHideSelectedColumns, SIGNAL(activated()), this, SLOT(hideSelectedColumns()));
+	
+	actionShowAllColumns = new QAction(tr("Sho&w All Columns"), this);
+	connect(actionShowAllColumns, SIGNAL(activated()), this, SLOT(showAllColumns()));
+	
     actionSwapColumns = new QAction(QIcon(QPixmap(swap_columns_xpm)), tr("&Swap columns"), this);
 	connect(actionSwapColumns, SIGNAL(activated()), this, SLOT(swapColumns()));
 
@@ -11826,6 +11844,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowColumnValuesDialog->setShortcut(tr("Alt+Q"));
 	actionTableRecalculate->setMenuText(tr("Recalculate"));
 	actionTableRecalculate->setShortcut(tr("Ctrl+Return"));
+	actionHideSelectedColumns->setMenuText(tr("&Hide Selected"));
+	actionHideSelectedColumns->setToolTip(tr("Hide selected columns"));
+	actionShowAllColumns->setMenuText(tr("Sho&w All Columns"));
+	actionHideSelectedColumns->setToolTip(tr("Show all table columns"));
 	actionSwapColumns->setMenuText(tr("&Swap columns"));
 	actionSwapColumns->setToolTip(tr("Swap selected columns"));
 	actionMoveColRight->setMenuText(tr("Move &Right"));
@@ -14889,4 +14911,18 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 		break;
 	}
 	return w;
+}
+
+void ApplicationWindow::hideSelectedColumns()
+{
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (t)
+		t->hideSelectedColumns();
+}
+	
+void ApplicationWindow::showAllColumns()
+{
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (t)
+		t->showAllColumns();
 }

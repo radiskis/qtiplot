@@ -273,6 +273,8 @@ QString TableStatistics::saveToString(const QString &geometry, bool)
 	s += saveColumnWidths();
 	s += saveCommands();
 	s += saveColumnTypes();
+	s += saveReadOnlyInfo();
+	s += saveHiddenColumnsInfo();
 	s += saveComments();
 	s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	return s + "</TableStatistics>\n";

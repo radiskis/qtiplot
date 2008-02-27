@@ -994,6 +994,9 @@ private slots:
 
 	void showCustomActionDialog();
 	void performCustomAction(QAction *);
+	
+	void hideSelectedColumns();
+	void showAllColumns();
 
 // TODO: a lot of this stuff should be private
 public:
@@ -1170,7 +1173,7 @@ private:
     QAction *actionNewSurfacePlot, *actionNewMatrix, *actionNewGraph, *actionNewFolder;
     QAction *actionOpen, *actionLoadImage, *actionSaveProject, *actionSaveProjectAs, *actionImportImage;
     QAction *actionLoad, *actionUndo, *actionRedo;
-    QAction *actionCopyWindow;
+    QAction *actionCopyWindow, *actionShowAllColumns, *actionHideSelectedColumns;
     QAction *actionCutSelection, *actionCopySelection, *actionPasteSelection, *actionClearSelection;
     QAction *actionShowExplorer, *actionShowLog, *actionAddLayer, *actionShowLayerDialog, *actionAutomaticLayout;
 #ifdef SCRIPTING_CONSOLE

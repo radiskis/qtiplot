@@ -189,7 +189,7 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			table->setColName(j, name.replace(QRegExp(".*_"),""));
 			table->setCommand(j, QString(opj.colCommand(s,j)));
 			table->setColComment(j, QString(opj.colComment(s,j)));
-			table->changeColWidth(opj.colWidth(s,j)*QtiPlot_scaling_factor, j);
+			table->setColumnWidth(j, opj.colWidth(s,j)*QtiPlot_scaling_factor);
 
 			switch(opj.colType(s,j))
 			{

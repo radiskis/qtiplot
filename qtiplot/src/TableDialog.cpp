@@ -137,6 +137,9 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     boxReadOnly = new QCheckBox(tr("&Read-only" ));
     gl1->addWidget(boxReadOnly, 4, 0);
 
+	boxHideColumn = new QCheckBox(tr("&Hidden" ));
+    gl1->addWidget(boxHideColumn, 4, 1);
+	
 	applyToRightCols = new QCheckBox(tr( "Apply to all columns to the right" ));
 
     QVBoxLayout *vbox3 = new QVBoxLayout();
@@ -176,7 +179,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     updateColumn(d_table->selectedColumn());
 
    // signals and slots connections
-	connect(colWidth, SIGNAL(valueChanged(int)), this, SLOT(changeColWidth(int)));
+	connect(colWidth, SIGNAL(valueChanged(int)), this, SLOT(setColumnWidth(int)));
 	connect(buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
     connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
     connect(buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
@@ -243,12 +246,16 @@ void TableDialog::updateColumn(int sc)
     colName->selectAll();
 
     comments->setText(d_table->colComment(sc));
-    colWidth->setValue(d_table->columnWidth(sc));
-
     displayBox->setCurrentIndex(colType);
     updateDisplay(colType);
 
     boxReadOnly->setChecked(d_table->isReadOnlyColumn(sc));
+	bool hidden = d_table->isColumnHidden(sc);
+	boxHideColumn->setChecked(hidden);
+	if (hidden)
+		colWidth->setValue(100);
+	else
+		colWidth->setValue(d_table->columnWidth(sc));
 
     d_table->saveToMemory();
 
@@ -284,9 +291,9 @@ void TableDialog::updateColumn(int sc)
     }
 }
 
-void TableDialog::changeColWidth(int width)
+void TableDialog::setColumnWidth(int width)
 {
-d_table->changeColWidth(width, applyToAllBox->isChecked());
+d_table->setColumnWidth(width, applyToAllBox->isChecked());
 d_table->setHeaderColType();
 }
 
@@ -303,17 +310,21 @@ void TableDialog::apply()
 	}
 
     int sc = d_table->selectedColumn();
-    d_table->changeColWidth(colWidth->value(), applyToAllBox->isChecked());
+    d_table->setColumnWidth(colWidth->value(), applyToAllBox->isChecked());
     d_table->setColComment(sc, comments->text().replace("\n", " ").replace("\t", " "));
     d_table->setColName(sc, name.replace("_", "-"), enumerateAllBox->isChecked());
 
     bool rightColumns = applyToRightCols->isChecked();
     if (rightColumns){
         bool readOnly = boxReadOnly->isChecked();
-		for (int i = sc; i<d_table->numCols(); i++)
+		for (int i = sc; i<d_table->numCols(); i++){
             d_table->setReadOnlyColumn(i, readOnly);
-    } else
+			d_table->hideColumn(i, boxHideColumn->isChecked());
+		}
+    } else {
         d_table->setReadOnlyColumn(sc, boxReadOnly->isChecked());
+		d_table->hideColumn(sc, boxHideColumn->isChecked());
+	}
 
     int format = formatBox->currentIndex();
     int colType = displayBox->currentIndex();
@@ -526,12 +537,10 @@ void TableDialog::setNumericFormat(int type, int prec, bool allRightColumns)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	int sc = d_table->selectedColumn();
-	if (allRightColumns)
-	{
+	if (allRightColumns){
 		for (int i = sc; i<d_table->numCols(); i++)
 			d_table->setColNumericFormat(type, prec, i);
-	}
-	else
+	} else
 		d_table->setColNumericFormat(type, prec, sc);
 
 	d_table->notifyChanges();
@@ -544,8 +553,7 @@ void TableDialog::setTextFormat(bool allRightColumns)
 	if (allRightColumns){
 		for (int i = sc; i<d_table->numCols(); i++)
 			d_table->setTextFormat(i);
-	}
-	else
+	} else
 		d_table->setTextFormat(sc);
 }
 
@@ -556,8 +564,7 @@ void TableDialog::setDayFormat(const QString& format, bool allRightColumns)
 	if (allRightColumns){
 		for (int i = sc; i<d_table->numCols(); i++)
             d_table->setDayFormat(format, i);
-	}
-	else
+	} else
         d_table->setDayFormat(format, sc);
 
 	QApplication::restoreOverrideCursor();
@@ -571,8 +578,7 @@ void TableDialog::setMonthFormat(const QString& format, bool allRightColumns)
 	if (allRightColumns){
 		for (int i = sc; i<d_table->numCols(); i++)
             d_table->setMonthFormat(format, i);
-	}
-	else
+	} else
         d_table->setMonthFormat(format, sc);
 
 	QApplication::restoreOverrideCursor();

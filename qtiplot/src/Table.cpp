@@ -90,7 +90,6 @@ void Table::init(int rows, int cols)
 		comments << "";
 		col_label << QString::number(i+1);
 		col_plot_type << Y;
-		d_read_only << false;
 	}
 
 	Q3Header* head=(Q3Header*)d_table->horizontalHeader();
@@ -431,8 +430,8 @@ QStringList Table::columnWidths()
 
 void Table::setColWidths(const QStringList& widths)
 {
-	for (int i=0;i<(int)widths.count();i++)
-		d_table->setColumnWidth (i, widths[i].toInt() );
+	for (int i=0; i<(int)widths.count(); i++)
+		d_table->setColumnWidth(i, widths[i].toInt());
 }
 
 void Table::setColumnTypes(const QStringList& ctl)
@@ -503,7 +502,7 @@ bool Table::calculate(int col, int startRow, int endRow)
 	if (col < 0 || col >= d_table->numCols())
 		return false;
 
-    if (d_read_only[col]){
+    if (d_table->isColumnReadOnly(col)){
         QMessageBox::warning(this, tr("QtiPlot - Error"),
         tr("Column '%1' is read only!").arg(col_label[col]));
         return false;
@@ -617,6 +616,7 @@ QString Table::saveToString(const QString& geometry, bool saveAsTemplate)
 	s += saveCommands();
 	s += saveColumnTypes();
 	s += saveReadOnlyInfo();
+	s += saveHiddenColumnsInfo();
 	s += saveComments();
 	if (!saveAsTemplate){
         s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
@@ -656,7 +656,15 @@ QString Table::saveReadOnlyInfo()
 {
 	QString s = "ReadOnlyColumn";
 	for (int i=0; i<d_table->numCols(); i++)
-		s += "\t" + QString::number(d_read_only[i]);
+		s += "\t" + QString::number(d_table->isColumnReadOnly(i));
+	return s += "\n";
+}
+
+QString Table::saveHiddenColumnsInfo()
+{
+	QString s = "HiddenColumn";
+	for (int i=0; i<d_table->numCols(); i++)
+		s += "\t" + QString::number(d_table->isColumnHidden(i));
 	return s += "\n";
 }
 
@@ -685,7 +693,7 @@ void Table::setColComment(int col, const QString& s)
 		setHeaderColType();
 }
 
-void Table::changeColWidth(int width, bool allCols)
+void Table::setColumnWidth(int width, bool allCols)
 {
 	int cols=d_table->numCols();
 	if (allCols)
@@ -705,7 +713,7 @@ void Table::changeColWidth(int width, bool allCols)
 	}
 }
 
-void Table::changeColWidth(int width, int col)
+void Table::setColumnWidth(int col, int width)
 {
 
 	if (d_table->columnWidth(col) == width)
@@ -920,7 +928,6 @@ void Table::insertCols(int start, int count)
 		col_label.insert(j, QString::number(max + i));
 		colTypes.insert(j, Numeric);
 		col_plot_type.insert(j, Y);
-		d_read_only.insert(j, false);
 	}
 	setHeaderColType();
 	emit modifiedWindow(this);
@@ -961,7 +968,6 @@ void Table::addCol(PlotDesignation pd)
 	col_format << "0/" + QString::number(d_numeric_precision);
 	col_label << QString::number(max+1);
 	col_plot_type << pd;
-	d_read_only << false;
 
 	setHeaderColType();
 	emit modifiedWindow(this);
@@ -986,13 +992,12 @@ void Table::addColumns(int c, bool readOnly)
 		col_format<<"0/" + QString::number(d_numeric_precision);
 		col_label<< QString::number(max+i);
 		col_plot_type << Y;
-		d_read_only << readOnly;
 	}
 }
 
 void Table::clearCol()
 {
-	if (d_read_only[selectedCol])
+	if (d_table->isColumnReadOnly(selectedCol))
 		return;
 
 	for (int i=0; i<d_table->numRows(); i++){
@@ -1009,7 +1014,7 @@ void Table::clearCell(int row, int col)
 	if (col < 0 || col >= d_table->numCols())
         return;
 
-	if (d_read_only[col]){
+	if (d_table->isColumnReadOnly(col)){
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Column '%1' is read only!").arg(colName(col)));
         return;
 	}
@@ -1029,7 +1034,7 @@ void Table::deleteSelectedRows()
 void Table::deleteRows(int startRow, int endRow)
 {
 	for(int i=0; i<d_table->numCols(); i++){
-        if (d_read_only[i]){
+        if (d_table->isColumnReadOnly(i)){
 			QMessageBox::warning(this, tr("QtiPlot - Error"),
         	tr("The table '%1' contains read-only columns! Operation aborted!").arg(objectName()));
 			return;
@@ -1081,7 +1086,7 @@ void Table::clearSelection()
 		for (int i=0; i<list.count(); i++){
 			QString name = list[i];
 			int col = colIndex(name);
-			if (d_read_only[col])
+			if (d_table->isColumnReadOnly(col))
 				lstReadOnly << name;
 		}
 		if (lstReadOnly.count() > 0){
@@ -1104,7 +1109,7 @@ void Table::clearSelection()
 		if (sel.isEmpty ()){
 			int col = d_table->currentColumn();
 			QString name = colName(col);
-			if (d_read_only[col]){
+			if (d_table->isColumnReadOnly(col)){
 				QMessageBox::warning(this, tr("QtiPlot - Error"),
        			tr("Column '%1' is read only!").arg(name));
 				return;
@@ -1115,7 +1120,7 @@ void Table::clearSelection()
 			QStringList lstReadOnly;
 			for (int i=left; i<=right; i++){
 				QString name = col_label[i];
-				if (d_read_only[i])
+				if (d_table->isColumnReadOnly(i))
 					lstReadOnly << name;
 			}
 			if (lstReadOnly.count() > 0){
@@ -1124,7 +1129,7 @@ void Table::clearSelection()
     		}
 
 			for (int i=left; i<=right; i++){
-				if (d_read_only[i])
+				if (d_table->isColumnReadOnly(i))
 					continue;
 
 				for (int j=top; j<=bottom; j++)
@@ -1225,7 +1230,7 @@ void Table::pasteSelection()
 	QStringList lstReadOnly;
 	for (int i = left; i<left+cols; i++){
 		QString name = colName(i);
-		if (d_read_only[i])
+		if (d_table->isColumnReadOnly(i))
 			lstReadOnly << name;
 	}
 	if (lstReadOnly.count() > 0){
@@ -1241,7 +1246,7 @@ void Table::pasteSelection()
 		s = ts2.readLine();
 		cellTexts = s.split("\t");
 		for (int j=left; j<left+cols; j++){
-			if (d_read_only[j])
+			if (d_table->isColumnReadOnly(j))
 				continue;
 
             int colIndex = j-left;
@@ -1260,7 +1265,7 @@ void Table::pasteSelection()
 	}
 
 	for (int i=left; i<left+cols; i++){
-		if (!d_read_only[i])
+		if (!d_table->isColumnReadOnly(i))
 			emit modifiedData(this, colName(i));
 	}
 	emit modifiedWindow(this);
@@ -1279,7 +1284,7 @@ void Table::removeCol(const QStringList& list)
 	for (int i=0; i<list.count(); i++){
 		QString name = list[i];
 		int col = colIndex(name);
-		if (d_read_only[col])
+		if (d_table->isColumnReadOnly(col))
 			lstReadOnly << name;
 	}
 
@@ -1293,7 +1298,7 @@ void Table::removeCol(const QStringList& list)
 		QString name = list[i];
 		int id = colIndex(name);
 		if (id >= 0){
-			if (d_read_only[id])
+			if (d_table->isColumnReadOnly(id))
 				continue;
 
 			if ( id < commands.size() )
@@ -1314,9 +1319,6 @@ void Table::removeCol(const QStringList& list)
 			if ( id < col_plot_type.size() )
 				col_plot_type.removeAt(id);
 
-            if ( id < d_read_only.size() )
-				d_read_only.removeAt(id);
-
 			d_table->removeColumn(id);
 			emit removedCol(name);
 		}
@@ -1331,7 +1333,7 @@ void Table::normalizeSelection()
 	QStringList lstReadOnly;
 	for (int i=0; i<(int)s.count(); i++){
 		int col = colIndex(s[i]);
-		if (d_read_only[col])
+		if (d_table->isColumnReadOnly(col))
 			lstReadOnly << col_label[col];
 	}
 
@@ -1352,7 +1354,7 @@ void Table::normalize()
 {
 	QStringList lstReadOnly;
 	for (int i=0; i<d_table->numCols(); i++){
-		if (d_read_only[i])
+		if (d_table->isColumnReadOnly(i))
 			lstReadOnly << col_label[i];
 	}
 
@@ -1371,7 +1373,7 @@ void Table::normalize()
 void Table::normalizeCol(int col)
 {
 	if (col<0) col = selectedCol;
-	if (d_read_only[col])
+	if (d_table->isColumnReadOnly(col))
 	    return;
 
 	double max=d_table->text(0,col).toDouble();
@@ -1481,7 +1483,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 
 		for(int i=0;i<cols;i++){// Since we have the permutation index, sort all the columns
             int col=colIndex(s[i]);
-            if (d_read_only[col])
+            if (d_table->isColumnReadOnly(col))
                 continue;
 
             if (columnType(col) == Text){
@@ -1518,7 +1520,7 @@ void Table::sortColumn(int col, int order)
 	if (col < 0)
 		col = d_table->currentColumn();
 
-    if (d_read_only[col])
+    if (d_table->isColumnReadOnly(col))
         return;
 
 	int rows=d_table->numRows();
@@ -1985,7 +1987,7 @@ void Table::setRandomValues()
 	for (int i=0; i<list.count(); i++){
 		QString name = list[i];
 		int col = colIndex(name);
-		if (d_read_only[col])
+		if (d_table->isColumnReadOnly(col))
 			lstReadOnly << name;
 	}
 
@@ -2002,7 +2004,7 @@ void Table::setRandomValues()
 	for (int j=0; j<(int) list.count(); j++){
 		QString name=list[j];
 		selectedCol=colIndex(name);
-        if (d_read_only[selectedCol])
+        if (d_table->isColumnReadOnly(selectedCol))
             continue;
 
 		int prec;
@@ -2142,7 +2144,7 @@ void Table::setAscValues()
 	for (int i=0; i<list.count(); i++){
 		QString name = list[i];
 		int col = colIndex(name);
-		if (d_read_only[col])
+		if (d_table->isColumnReadOnly(col))
 			lstReadOnly << name;
 	}
 
@@ -2157,7 +2159,7 @@ void Table::setAscValues()
 		QString name = list[j];
 		selectedCol = colIndex(name);
 
-        if (d_read_only[selectedCol])
+        if (d_table->isColumnReadOnly(selectedCol))
             continue;
 
 		if (columnType(selectedCol) != Numeric){
@@ -2257,7 +2259,6 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
                             col_label.removeLast();
                             colTypes.removeLast();
                             col_plot_type.removeLast();
-                            d_read_only.removeLast();
                         }
                     }
                 }
@@ -2273,10 +2274,6 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
                 if (c < cols)
                     addColumns(cols - c, readOnly);
                 d_table->setNumRows(r + rows);
-                if (readOnly){
-                    for (int i = 0; i<c; i++)
-                        d_read_only[i] = true;
-                }
 			break;
 		}
 
@@ -2361,7 +2358,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 
         if (readOnly){
             for (int i = 0; i<cols; i++)
-				d_read_only[startCol + i] = true;
+				d_table->setColumnReadOnly(startCol + i, true);
         }
 
 		if (importAs == Overwrite || importAs == NewRows){
@@ -2392,7 +2389,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	int cols=d_table->numCols();
 	int selectedCols = 0;
 	int topRow = 0, bottomRow = 0;
-	int *sCols;
+	int *sCols = 0;
 	if (exportSelection){
 		for (int i=0; i<cols; i++){
 			if (d_table->isColumnSelected(i))
@@ -2729,9 +2726,21 @@ void Table::restore(QString& spec)
 	if (s.contains ("ReadOnlyColumn")){
 		list.remove(list.first());
 		for (int i=0; i<c; i++)
-			d_read_only[i] = (list[i] == "1")?true:false;
+			d_table->setColumnReadOnly(i, list[i] == "1");
 	}
 
+	s = t.readLine();	//hidden columns line
+	list = s.split("\t");
+	if (s.contains ("HiddenColumn")){
+		list.remove(list.first());
+		for (int i=0; i<c; i++){
+			if (list[i] == "1")
+				d_table->hideColumn(i);
+			else
+				d_table->showColumn(i);
+		}
+	}
+	
 	s = t.readLine();	//comments line ?
 	list = s.split("\t");
 	if (s.contains ("Comments")){
@@ -2867,10 +2876,13 @@ void Table::copy(Table *m)
 			d_table->setText(i, j, m->text(i, j));
 	}
 
-	for (int i=0; i<d_table->numCols(); i++)
-		d_read_only[i] = m->isReadOnlyColumn(i);
-
-	setColWidths(m->columnWidths());
+	for (int i=0; i<d_table->numCols(); i++){
+		d_table->setColumnReadOnly(i, m->isReadOnlyColumn(i));
+		d_table->setColumnWidth(i, m->columnWidth(i));
+		if (m->isColumnHidden(i))
+			d_table->hideColumn(i);
+	}
+	
 	col_label = m->colNames();
 	col_plot_type = m->plotDesignations();
 	d_show_comments = m->commentsEnabled();
@@ -3028,7 +3040,7 @@ bool Table::isReadOnlyColumn(int col)
     if (col < 0 || col >= d_table->numCols())
         return false;
 
-    return d_read_only[col];
+    return d_table->isColumnReadOnly(col);
 }
 
 void Table::setReadOnlyColumn(int col, bool on)
@@ -3036,7 +3048,7 @@ void Table::setReadOnlyColumn(int col, bool on)
     if (col < 0 || col >= d_table->numCols())
         return;
 
-    d_read_only[col] = on;
+	d_table->setColumnReadOnly(col, on);
 }
 
 void Table::moveColumn(int, int fromIndex, int toIndex)
@@ -3051,8 +3063,6 @@ void Table::moveColumn(int, int fromIndex, int toIndex)
 	colTypes.move(fromIndex, to);
 	col_format.move(fromIndex, to);
 	col_plot_type.move(fromIndex, to);
-	d_read_only.move(fromIndex, to);
-
 	setHeaderColType();
 }
 
@@ -3071,7 +3081,6 @@ void Table::swapColumns(int col1, int col2)
     colTypes.swap (col1, col2);
     col_format.swap (col1, col2);
     col_plot_type.swap (col1, col2);
-    d_read_only.swap (col1, col2);
 
     d_table->setColumnWidth(col1, width2);
     d_table->setColumnWidth(col2, width1);
@@ -3102,7 +3111,6 @@ void Table::moveColumnBy(int cols)
 		colTypes.move(oldPos, newPos);
 		col_format.move(oldPos, newPos);
 		col_plot_type.move(oldPos, newPos);
-		d_read_only.move(oldPos, newPos);
 	} else
 		swapColumns(oldPos, newPos);
 
@@ -3111,6 +3119,30 @@ void Table::moveColumnBy(int cols)
 	setSelectedCol(newPos);
     d_table->clearSelection();
     d_table->selectColumn(newPos);
+}
+
+void Table::hideColumn(int col, bool hide)
+{
+	if(hide)
+		d_table->hideColumn(col);
+	else
+		d_table->showColumn(col);
+}
+
+void Table::hideSelectedColumns()
+{
+	for(int i = 0; i<d_table->numCols(); i++){
+		if (d_table->isColumnSelected(i, true))
+			d_table->hideColumn(i);
+	}
+}
+	
+void Table::showAllColumns()
+{
+	for(int i = 0; i<d_table->numCols(); i++){
+		if (d_table->isColumnHidden(i))
+			d_table->showColumn(i);
+	}
 }
 
 /*****************************************************************************
