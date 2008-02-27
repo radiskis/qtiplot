@@ -757,7 +757,7 @@ void FitDialog::showFitPage()
 		rbl->setDecimals(prec);
 		boxParams->setCellWidget(i, 1, rbl);
 
-		DoubleSpinBox *sb = new DoubleSpinBox('f');
+		DoubleSpinBox *sb = new DoubleSpinBox('g');
 		sb->setLocale(locale);
 		sb->setDecimals(prec);
 		sb->setValue(d_current_fit->initialGuess(i));
