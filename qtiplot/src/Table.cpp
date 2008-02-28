@@ -973,7 +973,7 @@ void Table::addCol(PlotDesignation pd)
 	emit modifiedWindow(this);
 }
 
-void Table::addColumns(int c, bool readOnly)
+void Table::addColumns(int c)
 {
 	int max=0, cols=d_table->numCols();
 	for (int i=0; i<cols; i++){
@@ -1006,7 +1006,6 @@ void Table::clearCol()
 	}
 
 	emit modifiedData(this, colName(selectedCol));
-	emit modifiedWindow(this);
 }
 
 void Table::clearCell(int row, int col)
@@ -2265,14 +2264,14 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			break;
 			case NewColumns:
                 startCol = c;
-                addColumns(cols, readOnly);
+                addColumns(cols);
                 if (r < rows)
                     d_table->setNumRows(rows);
 			break;
 			case NewRows:
                 startRow = r;
                 if (c < cols)
-                    addColumns(cols - c, readOnly);
+                    addColumns(cols - c);
                 d_table->setNumRows(r + rows);
 			break;
 		}
@@ -2620,9 +2619,8 @@ void Table::restore(QString& spec)
 	int cols=d_table->numCols();
 	int rows=d_table->numRows();
 
-	QString specCopy = spec;
-
-	QTextStream t(&specCopy, QIODevice::ReadOnly);
+	QTextStream t(&spec, QIODevice::ReadOnly);
+	
 	t.readLine();	//table tag
 	QString s = t.readLine();
 	QStringList list = s.split("\t");

@@ -137,11 +137,10 @@ public slots:
 	//@{
 	void removeCol();
 	void removeCol(const QStringList& list);
-	void clearCol();
 	void insertCol();
 	void insertCols(int start, int count);
 	void addCol(PlotDesignation pd = Y);
-	void addColumns(int c, bool readOnly = false);
+	void addColumns(int c);
 	void moveColumn(int, int, int);
 	void swapColumns(int, int);
 	void moveColumnBy(int cols);
@@ -357,6 +356,8 @@ protected:
 	MyTable *d_table;
 
 private:
+	void clearCol();
+
 	bool d_show_comments;
 	QString specifications, newSpecifications;
 	QStringList commands, col_format, comments, col_label;

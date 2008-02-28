@@ -3591,6 +3591,15 @@ void Graph::resizeEvent ( QResizeEvent *e )
 	if (ignoreResize || !this->isVisible())
 		return;
 
+	QObjectList lst = d_plot->children();
+	QList<double> lCoord;
+	foreach(QObject *o, lst){// store legends original positions to a list
+		if (o->isA("LegendWidget")){
+			lCoord << ((LegendWidget *)o)->xValue();
+			lCoord << ((LegendWidget *)o)->yValue();
+		}
+	}
+	
 	if (autoScaleFonts){
 		QSize oldSize = e->oldSize();
 		QSize size = e->size();
@@ -3599,6 +3608,14 @@ void Graph::resizeEvent ( QResizeEvent *e )
 	} else {
         d_plot->resize(e->size());
         d_plot->updateCurveLabels();
+	}
+	
+	int aux = 0;
+	foreach(QObject *o, lst){// try to keep legends to original positions on the plot
+		if (o->isA("LegendWidget")){
+			((LegendWidget *)o)->setOriginCoord(lCoord[aux], lCoord[aux+1]);
+			aux++;
+		}
 	}
 }
 
