@@ -122,8 +122,6 @@ private:
 	//! Length of the symbol line
 	int line_length;
 
-	double d_x, d_y;
-
 	SelectionMoveResizer *d_selector;
 	
 	//! Introduced as a work-around for bugs in exporting to SVG

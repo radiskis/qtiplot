@@ -5851,7 +5851,7 @@ void ApplicationWindow::showColMenu(int c)
 
 			contextMenu.insertSeparator();
 
-			contextMenu.addAction(QIcon(QPixmap(erase_xpm)), tr("Clea&r"), w, SLOT(clearCol()));
+			contextMenu.addAction(QIcon(QPixmap(erase_xpm)), tr("Clea&r"), w, SLOT(clearSelection()));
 			contextMenu.addAction(QIcon(QPixmap(close_xpm)), tr("&Delete"), w, SLOT(removeCol()));
 			contextMenu.addAction(actionHideSelectedColumns);
 			contextMenu.addAction(actionShowAllColumns);
@@ -8130,7 +8130,7 @@ void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 	modifiedProject();
 
 	actionUndo->setEnabled(true);
-	lastModified=w;
+	lastModified = w;
 }
 
 void ApplicationWindow::timerEvent ( QTimerEvent *e)
@@ -13114,7 +13114,10 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	int windows = 0;
 	QString text;
 	foreach(MdiSubWindow *w, lst){
-		text += w->saveToString(windowGeometryInfo(w));
+		QString aux = w->saveToString(windowGeometryInfo(w));
+		if (w->inherits("Table"))
+			((Table *)w)->setSpecifications(aux);
+        text += aux;
 		windows++;
 	}
 
@@ -13130,7 +13133,10 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 
 		lst = dir->windowsList();
 		foreach(MdiSubWindow *w, lst){
-            text += w->saveToString(windowGeometryInfo(w));
+			QString aux = w->saveToString(windowGeometryInfo(w));
+			if (w->inherits("Table"))
+				((Table *)w)->setSpecifications(aux);
+            text += aux;
 			windows++;
 		}
 
