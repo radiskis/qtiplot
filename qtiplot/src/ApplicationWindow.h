@@ -474,6 +474,7 @@ public slots:
 	void hideActiveWindow();
 	void activateWindow();
 	void activateWindow(MdiSubWindow *);
+	void repaintWindows();
 	//@}
 
 	//! Show about dialog
@@ -994,7 +995,7 @@ private slots:
 
 	void showCustomActionDialog();
 	void performCustomAction(QAction *);
-	
+
 	void hideSelectedColumns();
 	void showAllColumns();
 

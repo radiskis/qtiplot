@@ -94,8 +94,6 @@ public:
     QLocale locale(){return d_locale;};
     void setLocale(const QLocale & l){d_locale = l;};
 
-	void setSVGMode(bool on = true){d_SVG_mode = on;};
-
     void updateCurveLabels();
 
 protected:
@@ -118,8 +116,5 @@ protected:
 	int marker_key;
 	int curve_key;
 	QLocale d_locale;
-
-	//! Introduced as a work-around for bugs in exporting to SVG
-	bool d_SVG_mode;
 };
 #endif

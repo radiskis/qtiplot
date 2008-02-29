@@ -49,7 +49,8 @@
 LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 	d_plot(plot),
 	d_frame (0),
-	d_angle(0)
+	d_angle(0),
+	d_fixed_coordinates(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -71,7 +72,6 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 	move(pos);
 
     d_selector = NULL;
-	d_SVG_mode = false;
 
 	connect (this, SIGNAL(showDialog()), plot->parent(), SIGNAL(viewTextDialog()));
 	connect (this, SIGNAL(showMenu()), plot->parent(), SIGNAL(showMarkerPopupMenu()));
@@ -84,6 +84,9 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 
 void LegendWidget::paintEvent(QPaintEvent *e)
 {
+	if (d_fixed_coordinates)
+		setOriginCoord(d_x, d_y);
+	
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
 	QwtArray<long> heights = itemsHeight(0, symbolLineLength, width, height);
@@ -295,11 +298,6 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                 aux.setColor(d_text->color());
 
                 QSize size = aux.textSize();
-				if (d_SVG_mode){
-					size = fm.size(Qt::TextSingleLine, aux.text());
-					aux.setRenderFlags(Qt::AlignLeft | Qt::AlignVCenter);
-				}
-
                 QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
                 aux.draw(p, tr);
                 w += size.width();
@@ -324,9 +322,6 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                     aux.setColor(d_text->color());
 
                     QSize size = aux.textSize();
-					if (d_SVG_mode)
-						size = fm.size(Qt::TextSingleLine, aux.text());
-
                     QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
                     aux.draw(p, tr);
                     w += size.width();
@@ -347,11 +342,6 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 			aux.setFont(d_text->font());
 			aux.setColor(d_text->color());
 			QSize size = aux.textSize();
-			if (d_SVG_mode){
-				size = fm.size(Qt::TextSingleLine, aux.text());
-				aux.setRenderFlags(Qt::AlignLeft | Qt::AlignVCenter);
-			}
-
 			QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
 			aux.draw(p, tr);
 		}
@@ -381,8 +371,6 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
                 QwtText aux(parse(s.left(pos)));
                 aux.setFont(d_text->font());
                 QSize size = aux.textSize();
-				if (d_SVG_mode)
-					size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
                 textL += size.width();
 
                 int pos1 = s.indexOf("(", pos);
@@ -402,8 +390,6 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
                     QSize size = aux.textSize();
-					if (d_SVG_mode)
-						size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
                     textL += size.width();
                     textL += symbolLineLength;
                     s = s.right(s.length() - s.indexOf("}", pos) - 1);
@@ -414,8 +400,6 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 		QwtText aux(parse(s));
 		aux.setFont(d_text->font());
 		QSize size = aux.textSize();
-		if (d_SVG_mode)
-			size = fm.size(Qt::TextSingleLine, parseSVG(aux.text()));
 		textL += size.width();
 
 		if (textL > maxL)
@@ -473,14 +457,6 @@ int LegendWidget::symbolsMaxWidth()
 			maxL = 10;
 	}
 	return maxL;
-}
-
-QString LegendWidget::parseSVG(const QString& str)
-{
-	QString s = str;
-    s.remove("<sub>").remove("</sub>");
-    s.remove("<sup>").remove("</sup>");
-	return s;
 }
 
 QString LegendWidget::parse(const QString& str)
@@ -602,6 +578,16 @@ void LegendWidget::clone(LegendWidget* t)
 	setFont(t->font());
 	setText(t->text());
 	move(t->pos());
+}
+
+void LegendWidget::setFixedCoordinatesMode(bool on)
+{
+	d_fixed_coordinates = on;
+	
+	if(on){
+		d_x = xValue();
+		d_y = yValue();
+	}
 }
 
 LegendWidget::~LegendWidget()
