@@ -171,7 +171,7 @@ Graph::Graph(QWidget* parent, Qt::WFlags f)
 	drawTextOn=false;
 	drawLineOn=false;
 	drawArrowOn=false;
-	ignoreResize = true;
+	ignoreResize = false;
 	drawAxesBackbone = true;
 	d_auto_scale = true;
 	autoScaleFonts = false;
@@ -1427,9 +1427,7 @@ void Graph::exportSVG(const QString& fname)
 	svg.setSize(d_plot->size());
 
 	QPainter p(&svg);
-	d_plot->setSVGMode();
 	d_plot->print(&p, d_plot->rect());
-	d_plot->setSVGMode(false);
 	p.end();
 }
 
@@ -3447,10 +3445,10 @@ void Graph::addFunction(const QStringList &formulas, double start, double end, i
 
 void Graph::insertFunctionCurve(const QString& formula, int points, int fileVersion)
 {
-	int type;
+	int type = 0;
 	QStringList formulas;
 	QString var, name = QString::null;
-	double start, end;
+	double start = 0.0, end = 0.0;
 
 	QStringList curve = formula.split(",");
 	if (fileVersion < 87) {
@@ -3590,16 +3588,13 @@ void Graph::resizeEvent ( QResizeEvent *e )
 {
 	if (ignoreResize || !this->isVisible())
 		return;
-
-	QObjectList lst = d_plot->children();
-	QList<double> lCoord;
-	foreach(QObject *o, lst){// store legends original positions to a list
-		if (o->isA("LegendWidget")){
-			lCoord << ((LegendWidget *)o)->xValue();
-			lCoord << ((LegendWidget *)o)->yValue();
-		}
-	}
 	
+	QObjectList lst = d_plot->children();
+	foreach(QObject *o, lst){
+		if (o->isA("LegendWidget"))
+			((LegendWidget *)o)->setFixedCoordinatesMode();
+	}
+
 	if (autoScaleFonts){
 		QSize oldSize = e->oldSize();
 		QSize size = e->size();
@@ -3608,14 +3603,6 @@ void Graph::resizeEvent ( QResizeEvent *e )
 	} else {
         d_plot->resize(e->size());
         d_plot->updateCurveLabels();
-	}
-	
-	int aux = 0;
-	foreach(QObject *o, lst){// try to keep legends to original positions on the plot
-		if (o->isA("LegendWidget")){
-			((LegendWidget *)o)->setOriginCoord(lCoord[aux], lCoord[aux+1]);
-			aux++;
-		}
 	}
 }
 

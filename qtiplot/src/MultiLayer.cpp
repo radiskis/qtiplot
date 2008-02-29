@@ -221,7 +221,7 @@ void MultiLayer::setActiveGraph(Graph* g)
 	}
 }
 
-void MultiLayer::resizeLayers (const QResizeEvent *re)
+void MultiLayer::resizeLayers (QResizeEvent *re)
 {
 	// When restoring maximized plots from project files, 2 resize events are sent to the plot.
 	// The d_resize_count avoids the resizing of plot layers in this case.
@@ -240,33 +240,41 @@ void MultiLayer::resizeLayers (const QResizeEvent *re)
                         canvas->childrenRect().height() + top_margin + bottom_margin);
 		scaleLayerFonts = true;
 	}
-
+	
 	QApplication::setOverrideCursor(Qt::waitCursor);
-
+	
 	double w_ratio = (double)size.width()/(double)oldSize.width();
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
-	for (int i=0;i<graphsList.count();i++)
-	{
-		Graph *gr = (Graph *)graphsList.at(i);
-		if (gr && !gr->ignoresResizeEvents())
-		{
+	foreach (Graph *gr, graphsList){
+		if (!gr->ignoresResizeEvents()){
 			int gx = qRound(gr->x()*w_ratio);
 			int gy = qRound(gr->y()*h_ratio);
 			int gw = qRound(gr->width()*w_ratio);
 			int gh = qRound(gr->height()*h_ratio);
-
+						
 			gr->setGeometry(QRect(gx, gy, gw, gh));
 			gr->plotWidget()->resize(QSize(gw, gh));
 
             if (scaleLayerFonts && gr->autoscaleFonts())
-                gr->scaleFonts(h_ratio);
+                gr->scaleFonts(h_ratio);			
 		}
 	}
 
 	emit modifiedPlot();
-	((QWidget *)canvas->parent())->update();
+	repaint();
+	
 	QApplication::restoreOverrideCursor();
+	
+	foreach (Graph *gr, graphsList){
+		if (!gr->ignoresResizeEvents()){
+			QObjectList lst = gr->plotWidget()->children();
+			foreach(QObject *o, lst){
+				if (o->isA("LegendWidget"))
+					((LegendWidget *)o)->setFixedCoordinatesMode(false);
+			}
+		}
+	}
 }
 
 void MultiLayer::confirmRemoveLayer()
@@ -773,9 +781,7 @@ void MultiLayer::exportSVG(const QString& fname)
 		Plot *myPlot = (Plot *)gr->plotWidget();
 
 		QPoint pos = QPoint(gr->pos().x(), gr->pos().y());
-		myPlot->setSVGMode();
 		myPlot->print(&p, QRect(pos, myPlot->size()));
-		myPlot->setSVGMode(false);
 	}
 	p.end();
 }
@@ -954,7 +960,7 @@ void MultiLayer::connectLayer(Graph *g)
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 {
 	if(e->type() == QEvent::Resize && object == (QObject *)canvas){
-		resizeLayers((const QResizeEvent *)e);
+		resizeLayers((QResizeEvent *)e);
 		d_resize_count++;
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)canvas){
 	    const QMouseEvent *me = (const QMouseEvent *)e;

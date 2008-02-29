@@ -51,7 +51,6 @@ Plot::Plot(QWidget *parent, const char *)
 {
 	setAutoReplot (false);
     d_locale = QLocale::c();
-	d_SVG_mode = false;
 
 	marker_key = 0;
 	curve_key = 0;
@@ -116,7 +115,7 @@ Plot::Plot(QWidget *parent, const char *)
 	QPalette palette;
     palette.setColor(QPalette::Window, background);
     setPalette(palette);
-	
+
 	setCanvasBackground (background);
 	setFocusPolicy(Qt::StrongFocus);
 	setFocusProxy(plCanvas);
@@ -178,12 +177,12 @@ void Plot::printCanvas(QPainter *painter, const QRect &canvasRect,
 	}
     painter->restore();
 
-	// print texts	
+	// print texts
 	QObjectList lst = children();
 	foreach(QObject *o, lst){
 		if (o->inherits("LegendWidget") && !((QWidget *)o)->isHidden())
         	((LegendWidget *)o)->print(painter, map);
-	}        
+	}
 }
 
 void Plot::drawItems (QPainter *painter, const QRect &rect,
@@ -463,27 +462,8 @@ void Plot::setTickLength (int minLength, int majLength)
 void Plot::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &pfilter)
 {
     QwtText t = title();
-
 	printFrame(painter, plotRect);
-
-	if (d_SVG_mode){
-		QObjectList lst = children();
-		foreach(QObject *o, lst){
-			if (o->inherits("LegendWidget"))
-        		((LegendWidget *)o)->setSVGMode();
-		}
-	}        
-
 	QwtPlot::print(painter, plotRect, pfilter);
-
-	if (d_SVG_mode){
-		QObjectList lst = children();
-		foreach(QObject *o, lst){
-			if (o->inherits("LegendWidget"))
-        		((LegendWidget *)o)->setSVGMode(false);
-		}
-	}
-
 	setTitle(t);
 }
 

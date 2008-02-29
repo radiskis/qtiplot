@@ -1405,7 +1405,7 @@ void Table::normalizeCol(int col)
 
 void Table::sortColumnsDialog()
 {
-	SortDialog *sortd = new SortDialog(this);
+	SortDialog *sortd = new SortDialog((QWidget*)applicationWindow());
 	sortd->setAttribute(Qt::WA_DeleteOnClose);
 	connect (sortd, SIGNAL(sort(int, int, const QString&)), this, SLOT(sortColumns(int, int, const QString&)));
 	sortd->insertColumnsList(selectedColumns());
@@ -1414,7 +1414,7 @@ void Table::sortColumnsDialog()
 
 void Table::sortTableDialog()
 {
-	SortDialog *sortd = new SortDialog(this);
+	SortDialog *sortd = new SortDialog((QWidget*)applicationWindow());
 	sortd->setAttribute(Qt::WA_DeleteOnClose);
 	connect (sortd, SIGNAL(sort(int, int, const QString&)), this, SLOT(sort(int, int, const QString&)));
 	sortd->insertColumnsList(colNames());

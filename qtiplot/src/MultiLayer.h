@@ -182,7 +182,7 @@ private:
 	void keyPressEvent(QKeyEvent *);
 	bool eventFilter(QObject *object, QEvent *);
 	void releaseLayer();
-	void resizeLayers (const QResizeEvent *re);
+	void resizeLayers(QResizeEvent *re);
 	bool focusNextPrevChild ( bool next );
 	//@}
 

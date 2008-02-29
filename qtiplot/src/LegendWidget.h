@@ -83,8 +83,8 @@ public:
 	void showContextMenu(){emit showMenu();};
 
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
-	void setSVGMode(bool on = true){d_SVG_mode = on;};
-
+	void setFixedCoordinatesMode(bool on = true);
+	
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
 	void drawFrame(QPainter *p, const QRect& rect);
@@ -95,7 +95,6 @@ private:
 	QwtArray<long> itemsHeight(int y, int symbolLineLength, int &width, int &height);
 	int symbolsMaxWidth();
 	QString parse(const QString& str);
-	QString parseSVG(const QString& str);
 
 	virtual void paintEvent(QPaintEvent *e);
     void mousePressEvent(QMouseEvent *);
@@ -124,8 +123,8 @@ private:
 
 	SelectionMoveResizer *d_selector;
 	
-	//! Introduced as a work-around for bugs in exporting to SVG
-	bool d_SVG_mode;
+	double d_x, d_y;
+	bool d_fixed_coordinates;
 
 signals:
 	void showDialog();

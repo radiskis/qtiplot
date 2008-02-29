@@ -1062,7 +1062,7 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionHideSelectedColumns);
 	tableMenu->addAction(actionShowAllColumns);
-	tableMenu->insertSeparator();		
+	tableMenu->insertSeparator();
 	tableMenu->addAction(actionMoveColFirst);
 	tableMenu->addAction(actionMoveColLeft);
 	tableMenu->addAction(actionMoveColRight);
@@ -3455,7 +3455,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 	switch(import_mode) {
 		case ImportASCIIDialog::NewTables:
 			{
-				int dx, dy;
+				int dx = 0, dy = 0;
 				QStringList sorted_files = files;
 				sorted_files.sort();
 				int filesCount = sorted_files.size();
@@ -3486,7 +3486,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 			}
         case ImportASCIIDialog::NewMatrices:
 			{
-				int dx, dy;
+				int dx = 0, dy = 0;
 				QStringList sorted_files = files;
 				sorted_files.sort();
 				int filesCount = sorted_files.size();
@@ -5027,9 +5027,13 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 	} else if (s.contains ("maximized")){
 		w->setStatus(MdiSubWindow::Maximized);
         if (w->isA("MultiLayer")){
-			if (app != this)
+			if (app != this){
+            #ifdef Q_OS_WIN
+			    ((MultiLayer *)w)->setIgnoreResize(-1);
+            #else
 				((MultiLayer *)w)->setIgnoreResize(-2);
-			else
+            #endif
+			} else
 				((MultiLayer *)w)->setIgnoreResize();
 		}
 
@@ -10725,6 +10729,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 			this,SLOT(newTable(const QString&,int,int,const QString&)));
 	connect (g,SIGNAL(viewTitleDialog()),this,SLOT(showTitleDialog()));
 	connect (g,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
+    connect (g,SIGNAL(resizedWindow(MdiSubWindow*)), this, SLOT(repaintWindows()));
 	connect (g,SIGNAL(modifiedPlot()), this, SLOT(modifiedProject()));
 	connect (g,SIGNAL(showLineDialog()),this, SLOT(showLineDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
@@ -11147,10 +11152,10 @@ void ApplicationWindow::createActions()
 
 	actionHideSelectedColumns = new QAction(tr("&Hide Selected"), this);
 	connect(actionHideSelectedColumns, SIGNAL(activated()), this, SLOT(hideSelectedColumns()));
-	
+
 	actionShowAllColumns = new QAction(tr("Sho&w All Columns"), this);
 	connect(actionShowAllColumns, SIGNAL(activated()), this, SLOT(showAllColumns()));
-	
+
     actionSwapColumns = new QAction(QIcon(QPixmap(swap_columns_xpm)), tr("&Swap columns"), this);
 	connect(actionSwapColumns, SIGNAL(activated()), this, SLOT(swapColumns()));
 
@@ -14925,10 +14930,31 @@ void ApplicationWindow::hideSelectedColumns()
 	if (t)
 		t->hideSelectedColumns();
 }
-	
+
 void ApplicationWindow::showAllColumns()
 {
 	Table *t = (Table *)activeWindow(TableWindow);
 	if (t)
 		t->showAllColumns();
+}
+
+//! This is a dirty hack: sometimes the workspace area and the windows are not redrawn properly
+// after a MultiLayer plot window is resized by the user: Qt bug?
+void ApplicationWindow::repaintWindows()
+{
+	if (d_opening_file)
+		return;
+	
+    d_workspace->update();
+
+    MdiSubWindow *aw = activeWindow();
+	if (!aw || aw->status() == MdiSubWindow::Maximized)
+		return;
+	
+    QList<MdiSubWindow *> windows = current_folder->windowsList();
+    foreach(MdiSubWindow *w, windows){
+        if (w != aw)
+            w->setFocus();//repaint() or update() don't work
+    }
+    aw->setFocus();
 }

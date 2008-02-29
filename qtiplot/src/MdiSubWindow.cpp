@@ -58,6 +58,7 @@ MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const Q
 		d_min_restore_size(QSize())
 {
 	setObjectName(name);
+	setOption(QMdiSubWindow::RubberBandResize);
 	setAttribute(Qt::WA_DeleteOnClose);
 	if (d_folder)
 		d_folder->addWindow(this);
@@ -228,16 +229,16 @@ QString MdiSubWindow::parseAsciiFile(const QString& fname, const QString &commen
 {
 	if (endLine == ApplicationWindow::CR)
 		return parseMacAsciiFile(fname, commentString, ignoreFirstLines, maxRows, rows);
-	
+
 	//QTextStream replaces '\r\n' with '\n', therefore we don't need a special treatement in this case!
-	
+
 	QFile f(fname);
  	if(!f.open(QIODevice::ReadOnly))
   		return QString::null;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	QTextStream t(&f);
-	
+
 	QTemporaryFile tempFile;
 	tempFile.open();
 	QTextStream temp(&tempFile);

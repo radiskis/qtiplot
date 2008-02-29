@@ -38,7 +38,6 @@
 SortDialog::SortDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
-    setWindowIcon(qApp->windowIcon());
 	setWindowTitle(tr("QtiPlot - Sorting Options"));
 	setSizeGripEnabled(true);
 
