@@ -382,7 +382,7 @@ void QwtPieCurve::loadData()
 	X.resize(size);
 	d_table_rows.resize(size);
 	setData(X.data(), X.data(), size);
-
+	
 	int labels = d_texts_list.size();
 	//If there are no labels (initLabels() wasn't called yet) or if we have enough labels: do nothing!
 	if(d_texts_list.isEmpty() || labels == size)
@@ -433,8 +433,9 @@ void QwtPieCurve::removeLabel(PieLabel *l)
 void QwtPieCurve::initLabels()
 {
 	int size = abs(d_end_row - d_start_row) + 1;
+	int dataPoints = dataSize();
 	double sum = 0.0;
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < dataPoints; i++)
 		sum += y(i);
 
     Plot *d_plot = (Plot *)plot();
@@ -442,7 +443,7 @@ void QwtPieCurve::initLabels()
 	for (int i = 0; i <size; i++ ){
 		PieLabel* l = new PieLabel(d_plot, this);
 		d_texts_list << l;
-		if (i < dataSize())
+		if (i < dataPoints)
             l->setText(locale.toString(y(i)/sum*100, 'g', 4) + "%");
 		else
 			l->hide();

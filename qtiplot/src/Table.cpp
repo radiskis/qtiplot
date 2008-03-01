@@ -1341,10 +1341,8 @@ void Table::normalizeSelection()
         tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     }
 
-	for (int i=0; i<(int)s.count(); i++){
-		selectedCol=colIndex(s[i]);
-		normalizeCol();
-	}
+	for (int i=0; i<(int)s.count(); i++)
+		normalizeCol(colIndex(s[i]));
 
 	emit modifiedWindow(this);
 }
@@ -1362,29 +1360,24 @@ void Table::normalize()
         tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     }
 
-	for (int i=0; i<d_table->numCols(); i++){
-		selectedCol = i;
-		normalizeCol();
-	}
+	for (int i=0; i<d_table->numCols(); i++)
+		normalizeCol(i);
+	
 	emit modifiedWindow(this);
 }
 
 void Table::normalizeCol(int col)
 {
 	if (col<0) col = selectedCol;
-	if (d_table->isColumnReadOnly(col))
+	if (d_table->isColumnReadOnly(col) || colTypes[col] == Table::Text)
 	    return;
 
-	double max=d_table->text(0,col).toDouble();
-	double aux=0.0;
-	int rows=d_table->numRows();
-	for (int i=0; i<rows; i++){
-		QString text=this->text(i,col);
-		aux=text.toDouble();
-		if (!text.isEmpty() && fabs(aux)>fabs(max))
-			max=aux;
-	}
+	int rows = d_table->numRows();
+	gsl_vector *data = gsl_vector_alloc(rows);
+	for (int i=0; i<rows; i++)
+		gsl_vector_set(data, i, cell(i, col));
 
+	double max = gsl_vector_max(data);
 	if (max == 1.0)
 		return;
 
@@ -1393,14 +1386,12 @@ void Table::normalizeCol(int col)
     columnNumericFormat(col, &f, &prec);
 
 	for (int i=0; i<rows; i++){
-		QString text = this->text(i, col);
-		aux=text.toDouble();
-		if ( !text.isEmpty() )
-			d_table->setText(i, col, locale().toString(aux/max, f, prec));
+		if ( !d_table->text(i, col).isEmpty() )
+			d_table->setText(i, col, locale().toString(gsl_vector_get(data, i)/max, f, prec));
 	}
 
-	QString name=colName(col);
-	emit modifiedData(this, name);
+	gsl_vector_free(data);
+	emit modifiedData(this, colName(col));
 }
 
 void Table::sortColumnsDialog()
@@ -1460,7 +1451,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		QVarLengthArray<double> data_double(rows);
 		for (int j = 0; j <rows; j++){
 			if (!d_table->text(j, leadcol).isEmpty()){
-				data_double[non_empty_cells] = cell(j,leadcol);
+				data_double[non_empty_cells] = cell(j, leadcol);
 				valid_cell[non_empty_cells] = j;
 				non_empty_cells++;
 			}
@@ -1532,7 +1523,7 @@ void Table::sortColumn(int col, int order)
             if (columnType(col) == Table::Text)
                 text_cells << d_table->text(i, col);
             else
-			    r[non_empty_cells] = this->text(i,col).toDouble();
+			    r[non_empty_cells] = cell(i, col);
 			valid_cell[non_empty_cells] = i;
 			non_empty_cells++;
 		}
