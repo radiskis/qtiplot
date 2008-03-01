@@ -5020,8 +5020,12 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 	QString caption = w->objectName();
 	if (s.contains ("minimized")) {
 	    QStringList lst = s.split("\t");
-	    if (lst.count() > 4)
-            w->resize(lst[3].toInt(), lst[4].toInt());
+	    if (lst.count() > 4){
+			int width = lst[3].toInt();
+			int height = lst[4].toInt();
+			if(width > 0 && height > 0)
+            	w->resize(width, height);
+		}
 		w->setStatus(MdiSubWindow::Minimized);
 		app->setListView(caption, tr("Minimized"));
 	} else if (s.contains ("maximized")){
