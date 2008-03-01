@@ -60,8 +60,6 @@ ScreenPickerTool::~ScreenPickerTool()
 
 void ScreenPickerTool::append(const QPoint &point)
 {
-//	QwtPlotPicker::append(point);
-
 	QwtDoublePoint pos = invTransform(point);
 	QString info;
 	info.sprintf("x=%g; y=%g", pos.x(), pos.y());

@@ -5030,17 +5030,6 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 		app->setListView(caption, tr("Minimized"));
 	} else if (s.contains ("maximized")){
 		w->setStatus(MdiSubWindow::Maximized);
-        if (w->isA("MultiLayer")){
-			if (app != this){
-            #ifdef Q_OS_WIN
-			    ((MultiLayer *)w)->setIgnoreResize(-1);
-            #else
-				((MultiLayer *)w)->setIgnoreResize(-2);
-            #endif
-			} else
-				((MultiLayer *)w)->setIgnoreResize();
-		}
-
 		app->setListView(caption, tr("Maximized"));
 	} else {
 		QStringList lst = s.split("\t");
@@ -14950,7 +14939,7 @@ void ApplicationWindow::repaintWindows()
 		return;
 	
     d_workspace->update();
-
+	
     MdiSubWindow *aw = activeWindow();
 	if (!aw || aw->status() == MdiSubWindow::Maximized)
 		return;
