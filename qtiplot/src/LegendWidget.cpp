@@ -84,8 +84,10 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 
 void LegendWidget::paintEvent(QPaintEvent *e)
 {
-	if (d_fixed_coordinates)
+	if (d_fixed_coordinates){
 		setOriginCoord(d_x, d_y);
+		d_fixed_coordinates = false;
+	}
 	
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
@@ -582,6 +584,9 @@ void LegendWidget::clone(LegendWidget* t)
 
 void LegendWidget::setFixedCoordinatesMode(bool on)
 {
+	if (d_fixed_coordinates == on)
+		return;
+	
 	d_fixed_coordinates = on;
 	
 	if(on){

@@ -80,8 +80,6 @@ public:
 	bool printCropmarksEnabled(){return d_print_cropmarks;};
 	void printCropmarks(bool on){d_print_cropmarks = on;};
 
-	void setIgnoreResize(int resizeEvents = 0){d_resize_count = resizeEvents;};
-
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
 	void setLayersNumber(int n);
@@ -199,10 +197,7 @@ private:
     QWidget *canvas;
 
 	QPointer<SelectionMoveResizer> d_layers_selector;
-	//! Flag telling to ignore all resize events if lower then 2.
-    int d_resize_count;
 };
-
 
 //! Button with layer number
 class LayerButton: public QPushButton

@@ -52,6 +52,7 @@
 #include "Plot.h"
 #include "LegendWidget.h"
 #include "SelectionMoveResizer.h"
+#include "ApplicationWindow.h"
 
 #include <gsl/gsl_vector.h>
 
@@ -96,8 +97,7 @@ l_canvas_height(300),
 hor_align(HCenter),
 vert_align(VCenter),
 d_scale_on_print(true),
-d_print_cropmarks(false),
-d_resize_count(1)
+d_print_cropmarks(false)
 {
 	layerButtonsBox = new QHBoxLayout();
 	QHBoxLayout *hbox = new QHBoxLayout();
@@ -223,14 +223,9 @@ void MultiLayer::setActiveGraph(Graph* g)
 
 void MultiLayer::resizeLayers (QResizeEvent *re)
 {
-	// When restoring maximized plots from project files, 2 resize events are sent to the plot.
-	// The d_resize_count avoids the resizing of plot layers in this case.
-	if (d_resize_count >= 1)
-		d_resize_count = 1;
-
-	if (d_resize_count < 1)
+	if (applicationWindow()->d_opening_file)
 		return;
-
+	
 	QSize oldSize = re->oldSize();
 	QSize size = re->size();
 
@@ -248,33 +243,28 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 
 	foreach (Graph *gr, graphsList){
 		if (!gr->ignoresResizeEvents()){
+			QObjectList lst = gr->plotWidget()->children();
+			foreach(QObject *o, lst){
+				if (o->isA("LegendWidget"))
+					((LegendWidget *)o)->setFixedCoordinatesMode();
+			}
+
 			int gx = qRound(gr->x()*w_ratio);
 			int gy = qRound(gr->y()*h_ratio);
 			int gw = qRound(gr->width()*w_ratio);
 			int gh = qRound(gr->height()*h_ratio);
-						
 			gr->setGeometry(QRect(gx, gy, gw, gh));
 			gr->plotWidget()->resize(QSize(gw, gh));
 
             if (scaleLayerFonts && gr->autoscaleFonts())
-                gr->scaleFonts(h_ratio);			
+                gr->scaleFonts(h_ratio);	
 		}
 	}
 
 	emit modifiedPlot();
 	repaint();
 	
-	QApplication::restoreOverrideCursor();
-	
-	foreach (Graph *gr, graphsList){
-		if (!gr->ignoresResizeEvents()){
-			QObjectList lst = gr->plotWidget()->children();
-			foreach(QObject *o, lst){
-				if (o->isA("LegendWidget"))
-					((LegendWidget *)o)->setFixedCoordinatesMode(false);
-			}
-		}
-	}
+	QApplication::restoreOverrideCursor();			
 }
 
 void MultiLayer::confirmRemoveLayer()
@@ -959,10 +949,9 @@ void MultiLayer::connectLayer(Graph *g)
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 {
-	if(e->type() == QEvent::Resize && object == (QObject *)canvas){
+	if(e->type() == QEvent::Resize && object == (QObject *)canvas)
 		resizeLayers((QResizeEvent *)e);
-		d_resize_count++;
-	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)canvas){
+	else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)canvas){
 	    const QMouseEvent *me = (const QMouseEvent *)e;
 	    if (me->button() == Qt::RightButton)
             return QMdiSubWindow::eventFilter(object, e);

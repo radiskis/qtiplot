@@ -3581,6 +3581,7 @@ void Graph::updateMarkersBoundingRect()
 		if (im)
 			im->updateBoundingRect();
 	}
+
 	d_plot->replot();
 }
 
@@ -3588,12 +3589,6 @@ void Graph::resizeEvent ( QResizeEvent *e )
 {
 	if (ignoreResize || !this->isVisible())
 		return;
-	
-	QObjectList lst = d_plot->children();
-	foreach(QObject *o, lst){
-		if (o->isA("LegendWidget"))
-			((LegendWidget *)o)->setFixedCoordinatesMode();
-	}
 
 	if (autoScaleFonts){
 		QSize oldSize = e->oldSize();
