@@ -185,7 +185,7 @@ void FitDialog::initFitPage()
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel(tr("From x=")), 0, 0);
 
-	boxFrom = new DoubleSpinBox('g');
+	boxFrom = new DoubleSpinBox();
     boxFrom->setLocale(app->locale());
     boxFrom->setDecimals(app->d_decimal_digits);
     connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
@@ -193,7 +193,7 @@ void FitDialog::initFitPage()
 
 	gl2->addWidget(new QLabel( tr("To x=")), 1, 0);
 
-	boxTo = new DoubleSpinBox('g');
+	boxTo = new DoubleSpinBox();
     boxTo->setLocale(app->locale());
     boxTo->setDecimals(app->d_decimal_digits);
     connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
@@ -211,7 +211,7 @@ void FitDialog::initFitPage()
     gl3->addWidget(boxPoints, 0, 1);
 	gl3->addWidget(new QLabel( tr("Tolerance")), 1, 0);
 
-	boxTolerance = new DoubleSpinBox('g');
+	boxTolerance = new DoubleSpinBox();
 	boxTolerance->setRange(0.0, 1.0);
 	boxTolerance->setSingleStep(1e-4);
     boxTolerance->setLocale(app->locale());
@@ -759,7 +759,7 @@ void FitDialog::showFitPage()
 		rbl->setDecimals(prec);
 		boxParams->setCellWidget(i, 1, rbl);
 
-		DoubleSpinBox *sb = new DoubleSpinBox('g');
+		DoubleSpinBox *sb = new DoubleSpinBox();
 		sb->setLocale(locale);
 		sb->setDecimals(prec);
 		sb->setValue(d_current_fit->initialGuess(i));
