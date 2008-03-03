@@ -34,14 +34,9 @@ QUndoCommand(text)
 {
     setText(modelBefore->matrix()->objectName() + ": " + text);
 
-    d_model_before = new MatrixModel(modelBefore);
+    d_model_before = modelBefore->copy();
     delete modelBefore;
-    d_model_after = new MatrixModel(modelAfter);
-}
-
-int MatrixCommand::id() const
-{
-    return -1;
+    d_model_after = modelAfter->copy();
 }
 
 void MatrixCommand::redo()
@@ -64,14 +59,6 @@ void MatrixCommand::undo()
         m->setMatrixModel(d_model_before);
 }
 
-MatrixCommand::~MatrixCommand()
-{
-    if (d_model_before)
-        delete d_model_before;
-    if (d_model_after)
-        delete d_model_after;
-}
-
 /*************************************************************************/
 /*           Class MatrixEditCellCommand                                 */
 /*************************************************************************/
@@ -84,11 +71,6 @@ d_val_before(valBefore),
 d_val_after(valAfter)
 {
     setText(model->matrix()->objectName() + ": " + text);
-}
-
-int MatrixEditCellCommand::id() const
-{
-    return -1;
 }
 
 void MatrixEditCellCommand::redo()
@@ -130,11 +112,6 @@ d_new_formula(newFormula)
     setText(m->objectName() + ": " + text);
 }
 
-int MatrixSetFormulaCommand::id() const
-{
-    return -1;
-}
-
 void MatrixSetFormulaCommand::redo()
 {
     if (!d_matrix)
@@ -162,11 +139,6 @@ d_old_view(oldView),
 d_new_view(newView)
 {
     setText(m->objectName() + ": " + text);
-}
-
-int MatrixSetViewCommand::id() const
-{
-    return -1;
 }
 
 void MatrixSetViewCommand::redo()
@@ -198,11 +170,6 @@ d_new_view(newView)
     setText(m->objectName() + ": " + text);
 }
 
-int MatrixSetHeaderViewCommand::id() const
-{
-    return -1;
-}
-
 void MatrixSetHeaderViewCommand::redo()
 {
     if (!d_matrix)
@@ -229,11 +196,6 @@ d_old_width(oldWidth),
 d_new_width(newWidth)
 {
     setText(m->objectName() + ": " + text);
-}
-
-int MatrixSetColWidthCommand::id() const
-{
-    return -1;
 }
 
 void MatrixSetColWidthCommand::redo()
@@ -265,11 +227,6 @@ d_old_prec(oldPrec),
 d_new_prec(newPrec)
 {
     setText(m->objectName() + ": " + text);
-}
-
-int MatrixSetPrecisionCommand::id() const
-{
-    return -1;
 }
 
 void MatrixSetPrecisionCommand::redo()
@@ -307,11 +264,6 @@ d_new_ye(nye)
     setText(m->objectName() + ": " + text);
 }
 
-int MatrixSetCoordinatesCommand::id() const
-{
-    return -1;
-}
-
 void MatrixSetCoordinatesCommand::redo()
 {
     if (!d_matrix)
@@ -343,11 +295,6 @@ d_map_type_after(type_after)
 	
 	d_map_before = QwtLinearColorMap(map_before);
 	d_map_after = QwtLinearColorMap(map_after);
-}
-
-int MatrixSetColorMapCommand::id() const
-{
-    return -1;
 }
 
 void MatrixSetColorMapCommand::redo()

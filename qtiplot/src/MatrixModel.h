@@ -43,7 +43,7 @@ class MatrixModel : public QAbstractTableModel
 public:
     MatrixModel(int rows = 32, int cols = 32, QObject *parent = 0);
     MatrixModel(const QImage& image, QObject *parent);
-    MatrixModel(const MatrixModel* m);
+    MatrixModel* copy();
 
     Matrix *matrix(){return d_matrix;};
 
@@ -76,7 +76,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);
 
-    double* dataVector() const;
+    double* dataVector();
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	void setDataVector(const QVector<double>& data);
 

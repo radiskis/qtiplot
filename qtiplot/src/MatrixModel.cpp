@@ -73,22 +73,16 @@ MatrixModel::MatrixModel(const QImage& image, QObject *parent)
     }
 }
 
-MatrixModel::MatrixModel(const MatrixModel* m)
-    : QAbstractTableModel(),
-     d_rows(m->d_rows),
-     d_cols(m->d_cols),
-	 d_data(m->d_rows*m->d_cols, GSL_NAN),
-	 d_matrix(m->d_matrix),
-	 d_txt_format(m->d_txt_format),
-	 d_num_precision(m->d_num_precision),
-	 d_locale(m->d_locale)
+MatrixModel* MatrixModel::copy()
 {
-    const double *data = (const double *)m->dataVector();
+	MatrixModel* m = new MatrixModel(d_rows, d_cols, d_matrix);
+    double *data = m->dataVector();
     if (data){
         int size = d_rows*d_cols;
         for (int i = 0; i < size; i++)
-            d_data[i] = data[i];
+            data[i] = d_data[i];
     }
+	return m;
 }
 
 Qt::ItemFlags MatrixModel::flags(const QModelIndex & index ) const
@@ -189,7 +183,7 @@ void MatrixModel::setText(int row, int col, const QString& text)
 	}
 }
 
-double* MatrixModel::dataVector() const
+double* MatrixModel::dataVector()
 {
     return (double *)d_data.data();
 }
