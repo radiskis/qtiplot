@@ -2406,6 +2406,9 @@ QwtPlotItem* Graph::plotItem(int index)
 
 int Graph::plotItemIndex(QwtPlotItem *it) const
 {
+	if (!it)
+		return -1;
+	
 	for (int i = 0; i < n_curves; i++){
 		if (d_plot->plotItem(c_keys[i]) == it)
 			return i;
@@ -3170,14 +3173,31 @@ void Graph::removeLegendItem(int index)
 
 	items.remove(l[0]);//remove the corresponding legend string
 
-	int cv=0;
 	for (int i=0; i<items.count(); i++){//set new curves indexes in legend text
-		QString item = (items[i]).stripWhiteSpace();
-		if (item.startsWith("\\l(", true)){
-			item.remove(0, item.find(")", 0));
-			item.prepend("\\l(" + QString::number(++cv));
+		QString item = items[i];
+		int pos1 = item.indexOf("\\l(");
+		int pos2 = item.indexOf(")", pos1);
+		int pos = pos1 + 3;
+		int n = pos2 - pos;
+		int cv = item.mid(pos, n).toInt();
+		if (cv > index){
+			int id = cv - 1;
+			if (!id)
+				id = 1;
+			item.replace(pos, n, QString::number(id));
 		}
-		items[i]=item;
+		pos1 = item.indexOf("%(", pos2);
+		pos2 = item.indexOf(")", pos1);
+		pos = pos1 + 2;
+		n = pos2 - pos;
+		cv = item.mid(pos, n).toInt();
+		if (cv > index){
+			int id = cv - 1;
+			if (!id)
+				id = 1;
+			item.replace(pos, n, QString::number(id));
+		}
+		items[i] = item;
 	}
 	text = items.join ( "\n" );
 	d_legend->setText(text);
@@ -4170,7 +4190,7 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 }
 
 void Graph::setCurveStyle(int index, int s)
-{
+{	
 	QwtPlotCurve *c = curve(index);
 	if (!c)
 		return;
@@ -4198,10 +4218,12 @@ void Graph::setCurveStyle(int index, int s)
 	} else if (s == QwtPlotCurve::Sticks)
 		c_type[index] = VerticalDropLines;
 	else {//QwtPlotCurve::Lines || QwtPlotCurve::Dots
-		if (c->symbol().style() != QwtSymbol::NoSymbol)
-			c_type[index] = LineSymbols;
-		else
+		if (c->symbol().style() == QwtSymbol::NoSymbol)
 			c_type[index] = Line;
+		else if (c->symbol().style() != QwtSymbol::NoSymbol && (QwtPlotCurve::CurveStyle)s == QwtPlotCurve::NoCurve)
+			c_type[index] = Scatter;
+		else
+			c_type[index] = LineSymbols;
 	}
 
 	c->setStyle((QwtPlotCurve::CurveStyle)s);

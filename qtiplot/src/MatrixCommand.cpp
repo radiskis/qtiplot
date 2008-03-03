@@ -332,16 +332,17 @@ void MatrixSetCoordinatesCommand::undo()
 /*           Class MatrixSetColorMapCommand                              */
 /*************************************************************************/
 MatrixSetColorMapCommand::MatrixSetColorMapCommand(Matrix *m, Matrix::ColorMapType type_before, 
-							QwtLinearColorMap map_before, Matrix::ColorMapType type_after, 
-							QwtLinearColorMap map_after, const QString & text):
+							const QwtLinearColorMap& map_before, Matrix::ColorMapType type_after, 
+							const QwtLinearColorMap& map_after, const QString & text):
 QUndoCommand(text),
 d_matrix(m),
 d_map_type_before(type_before),
-d_map_type_after(type_after),
-d_map_before(map_before),
-d_map_after(map_after)
+d_map_type_after(type_after)
 {
     setText(m->objectName() + ": " + text);
+	
+	d_map_before = QwtLinearColorMap(map_before);
+	d_map_after = QwtLinearColorMap(map_after);
 }
 
 int MatrixSetColorMapCommand::id() const

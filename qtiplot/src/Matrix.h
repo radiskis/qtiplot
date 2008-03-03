@@ -310,13 +310,12 @@ private:
 	ViewType d_view_type;
 	//! Keeps track of the header view type;
 	HeaderViewType d_header_view_type;
-
+	//! The color map used to display images.
 	QwtLinearColorMap d_color_map;
+	//! The color map type.
 	ColorMapType d_color_map_type;
-
 	//! Column width in pixels;
 	int d_column_width;
-
 	QShortcut *d_select_all_shortcut;
     //! Undo/Redo commands stack
 	QUndoStack *d_undo_stack;

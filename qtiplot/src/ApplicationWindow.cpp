@@ -268,7 +268,6 @@ void ApplicationWindow::init(bool factorySettings)
 	addDockWidget(Qt::RightDockWidgetArea, undoStackWindow);
 
 	d_undo_view = new QUndoView(undoStackWindow);
-	d_undo_view->setEmptyLabel(tr("Unmodified"));
 	d_undo_view->setCleanIcon(QIcon(QPixmap(filesave_xpm)));
 	undoStackWindow->setWidget(d_undo_view);
 	undoStackWindow->hide();
@@ -389,7 +388,6 @@ void ApplicationWindow::initGlobalConstants()
 	appStyle = qApp->style()->objectName();
 	d_app_rect = QRect();
 	projectname = "untitled";
-	lastModified = 0;
 	lastCopiedLayer = 0;
 	d_text_copy = NULL;
 	d_arrow_copy = NULL;
@@ -1175,6 +1173,11 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
+	
+	// clear undo stack view (in case window is not a matrix)
+	d_undo_view->setStack(0);
+	actionUndo->setEnabled(false);
+	actionRedo->setEnabled(false);
 
 	if(w){
 		actionPrintAllPlots->setEnabled(projectHas2DPlots());
@@ -1229,6 +1232,10 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
             menuBar()->insertItem(tr("&Table"), tableMenu);
 			tableMenuAboutToShow();
 			actionTableRecalculate->setEnabled(true);
+			if (!saved){
+				actionUndo->setEnabled(true);
+				actionRedo->setEnabled(true);
+			}
 		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
@@ -1236,6 +1243,12 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			matrixMenuAboutToShow();
 			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
 			analysisMenuAboutToShow();
+			
+			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Unmodified"));
+			QUndoStack *stack = ((Matrix *)w)->undoStack();
+			d_undo_view->setStack(stack);
+			actionUndo->setEnabled(stack->canUndo());
+			actionRedo->setEnabled(stack->canRedo());
 		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
@@ -1351,8 +1364,6 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
     } else if (w->isA("Matrix") && d_matrix_tool_bar){
          if(!plotMatrixBar->isVisible())
             plotMatrixBar->show();
-
-        d_undo_view->setStack(((Matrix *)w)->undoStack());
         plotMatrixBar->setEnabled (true);
     } else if (w->isA("Graph3D") && d_plot3D_tool_bar){
         if(!plot3DTools->isVisible())
@@ -2684,7 +2695,6 @@ void ApplicationWindow::viewMatrixImage()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->undoStack()->push(new MatrixSetViewCommand(m, m->viewType(), Matrix::ImageView, tr("Set Image Mode")));
 	m->setViewType(Matrix::ImageView);
-	modifiedProject();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2697,7 +2707,6 @@ void ApplicationWindow::viewMatrixTable()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     m->undoStack()->push(new MatrixSetViewCommand(m, m->viewType(), Matrix::TableView, tr("Set Data Mode")));
 	m->setViewType(Matrix::TableView);
-	modifiedProject();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2710,7 +2719,6 @@ void ApplicationWindow::viewMatrixXY()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     m->undoStack()->push(new MatrixSetHeaderViewCommand(m, m->headerViewType(), Matrix::XY, tr("Show X/Y")));
 	m->setHeaderViewType(Matrix::XY);
-	modifiedProject();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2723,7 +2731,6 @@ void ApplicationWindow::viewMatrixColumnRow()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     m->undoStack()->push(new MatrixSetHeaderViewCommand(m, m->headerViewType(), Matrix::ColumnRow, tr("Show Column/Row")));
 	m->setHeaderViewType(Matrix::ColumnRow);
-	modifiedProject();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -2738,8 +2745,6 @@ void ApplicationWindow::setMatrixGrayScale()
 						Matrix::GrayScale, QwtLinearColorMap(), tr("Set Gray Scale Palette")));
 	m->setGrayScale();
 	QApplication::restoreOverrideCursor();
-
-	modifiedProject();
 }
 
 void ApplicationWindow::setMatrixRainbowScale()
@@ -2753,8 +2758,6 @@ void ApplicationWindow::setMatrixRainbowScale()
 						Matrix::Rainbow, QwtLinearColorMap(), tr("Set Rainbow Palette")));
 	m->setRainbowColorMap();
 	QApplication::restoreOverrideCursor();
-
-	modifiedProject();
 }
 
 void ApplicationWindow::showColorMapDialog()
@@ -3051,7 +3054,7 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 
 	if (w == aw)
 		return;
-
+	
 	customToolBars(w);
 	customMenu(w);
 
@@ -5104,8 +5107,6 @@ bool ApplicationWindow::saveProject(bool compress)
 
 	setWindowTitle("QtiPlot - " + projectname);
 	savedProject();
-	actionUndo->setEnabled(false);
-	actionRedo->setEnabled(false);
 
 	if (autoSave){
 		if (savingTimerId)
@@ -5390,21 +5391,22 @@ QList<MdiSubWindow*> ApplicationWindow::tableList()
 	return lst;
 }
 
-void ApplicationWindow::showPlotAssociations(int curve)
+AssociationsDialog* ApplicationWindow::showPlotAssociations(int curve)
 {
 	MdiSubWindow* w = activeWindow(MultiLayerWindow);
 	if (!w)
-		return;
+		return 0;
 
 	Graph *g = ((MultiLayer*)w)->activeGraph();
 	if (!g)
-		return;
+		return 0;
 
-	AssociationsDialog* ad = new AssociationsDialog(this, Qt::WindowStaysOnTopHint);
+	AssociationsDialog* ad = new AssociationsDialog(this);
 	ad->setAttribute(Qt::WA_DeleteOnClose);
 	ad->setGraph(g);
 	ad->initTablesList(tableList(), curve);
-	ad->exec();
+	ad->show();
+	return ad;
 }
 
 void ApplicationWindow::showTitleDialog()
@@ -7486,29 +7488,30 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 
 void ApplicationWindow::undo()
 {
-	if (!lastModified)
+	MdiSubWindow *w = activeWindow();
+	if (!w)
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	if (lastModified->inherits("Table")){
-		Table *t = (Table *)lastModified;
+	if (w->inherits("Table")){
+		Table *t = (Table *)w;
 		t->setNewSpecifications();
-		QString newCaption=t->oldCaption();
-		QString name=lastModified->objectName();
+		QString newCaption = t->oldCaption();
+		QString name = w->objectName();
 		if (newCaption != name){
-			updateTableNames(name,newCaption);
-			renameListViewItem(name,newCaption);
+			updateTableNames(name, newCaption);
+			renameListViewItem(name, newCaption);
 		}
 		t->restore(t->getSpecifications());
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(true);
-	} else if (lastModified->isA("Note")) {
-		((Note*)lastModified)->textWidget()->undo();
+	} else if (w->isA("Note")) {
+		((Note*)w)->textWidget()->undo();
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(true);
-	} else if (lastModified->isA("Matrix")){
-	    QUndoStack *stack = ((Matrix *)lastModified)->undoStack();
+	} else if (w->isA("Matrix")){
+	    QUndoStack *stack = ((Matrix *)w)->undoStack();
 	    if (stack){
             if (stack->canUndo())
                 stack->undo();
@@ -7521,14 +7524,15 @@ void ApplicationWindow::undo()
 
 void ApplicationWindow::redo()
 {
-	if (!lastModified)
+	MdiSubWindow *w = activeWindow();
+	if (!w)
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	if (lastModified->inherits("Table")){
-		Table *t = (Table *)lastModified;
-		QString newCaption=t->newCaption();
-		QString name=lastModified->objectName();
+	if (w->inherits("Table")){
+		Table *t = (Table *)w;
+		QString newCaption = t->newCaption();
+		QString name = w->objectName();
 		if (newCaption != name){
 			updateTableNames(name,newCaption);
 			renameListViewItem(name,newCaption);
@@ -7536,12 +7540,12 @@ void ApplicationWindow::redo()
 		t->restore(t->getNewSpecifications());
 		actionUndo->setEnabled(true);
 		actionRedo->setEnabled(false);
-	} else if (lastModified->isA("Note")){
-		((Note*)lastModified)->textWidget()->redo();
+	} else if (w->isA("Note")){
+		((Note*)w)->textWidget()->redo();
 		actionUndo->setEnabled(true);
 		actionRedo->setEnabled(false);
-	} else if (lastModified->isA("Matrix")){
-	    QUndoStack *stack = ((Matrix *)lastModified)->undoStack();
+	} else if (w->isA("Matrix")){
+	    QUndoStack *stack = ((Matrix *)w)->undoStack();
 	    if (stack){
             if (stack->canRedo())
                 stack->redo();
@@ -7727,18 +7731,12 @@ void ApplicationWindow::removeWindowFromLists(MdiSubWindow* w)
 			QString name=m->colName(i);
 			removeCurves(name);
 		}
-		if (w == lastModified){
-			actionUndo->setEnabled(false);
-			actionRedo->setEnabled(false);
-		}
-	}
-	else if (w->isA("MultiLayer")){
+	} else if (w->isA("MultiLayer")){
 		MultiLayer *ml =  (MultiLayer*)w;
 		Graph *g = ml->activeGraph();
 		if (g)
 			btnPointer->setChecked(true);
-	}
-	else if (w->isA("Matrix"))
+	} else if (w->isA("Matrix"))
 		remove3DMatrixPlots((Matrix*)w);
 
 	if (hiddenWindows->contains(w))
@@ -8152,7 +8150,18 @@ void ApplicationWindow::savedProject()
 	actionSaveProject->setEnabled(false);
 	actionUndo->setEnabled(false);
 	actionRedo->setEnabled(false);
+
 	saved = true;
+	
+	Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows){
+		    if (w->isA("Matrix"))
+                ((Matrix *)w)->undoStack()->clear();
+		}
+		f = f->folderBelow();
+	}
 }
 
 void ApplicationWindow::modifiedProject()
@@ -8169,8 +8178,12 @@ void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 {
 	modifiedProject();
 
-	actionUndo->setEnabled(true);
-	lastModified = w;
+	if (w->isA("Matrix") || w->inherits("Table") || w->isA("Note"))
+		actionUndo->setEnabled(true);
+	else {
+		actionUndo->setEnabled(false);
+		actionRedo->setEnabled(false);
+	}
 }
 
 void ApplicationWindow::timerEvent ( QTimerEvent *e)
@@ -8883,28 +8896,29 @@ CurveRangeDialog* ApplicationWindow::showCurveRangeDialog(Graph *g, int curve)
 	return crd;
 }
 
-void ApplicationWindow::showFunctionDialog()
+FunctionDialog* ApplicationWindow::showFunctionDialog()
 {
     MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
-		return;
+		return 0;
 
 	Graph* g = plot->activeGraph();
 	if (!g)
-		return;
+		return 0;
 
 	int curveKey = actionEditFunction->data().toInt();
-	showFunctionDialog(g, g->curveIndex(curveKey));
+	return showFunctionDialog(g, g->curveIndex(curveKey));
 }
 
-void ApplicationWindow::showFunctionDialog(Graph *g, int curve)
+FunctionDialog* ApplicationWindow::showFunctionDialog(Graph *g, int curve)
 {
 	if ( !g )
-		return;
+		return 0;
 
 	FunctionDialog* fd = functionDialog();
 	fd->setWindowTitle(tr("QtiPlot - Edit function"));
 	fd->setCurveToModify(g, curve);
+	return fd;
 }
 
 FunctionDialog* ApplicationWindow::functionDialog()

@@ -1166,6 +1166,7 @@ void Matrix::setViewType(ViewType type)
 	    initTableView();
 	    d_stack->setCurrentWidget(d_table_view);
 	}
+	emit modifiedWindow(this);
 }
 
 void Matrix::initImageView()
@@ -1249,6 +1250,7 @@ void Matrix::setGrayScale()
 	d_color_map = QwtLinearColorMap(Qt::black, Qt::white);
 	if (d_view_type == ImageView)
 		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+	emit modifiedWindow(this);
 }
 
 void Matrix::setRainbowColorMap()
@@ -1262,6 +1264,7 @@ void Matrix::setRainbowColorMap()
 
 	if (d_view_type == ImageView)
 		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+	emit modifiedWindow(this);
 }
 
 void Matrix::setColorMap(const QwtLinearColorMap& map)
@@ -1334,6 +1337,7 @@ void Matrix::setHeaderViewType(HeaderViewType type)
 
     if (d_view_type == TableView)
         resetView();
+	emit modifiedWindow(this);
 }
 
 QwtDoubleRect Matrix::boundingRect()
@@ -1459,7 +1463,7 @@ void Matrix::importASCII(const QString &fname, const QString &sep, int ignoredLi
 {
     MatrixModel *new_model = new MatrixModel(numRows(), numCols(), this);
     if (new_model->importASCII(fname, sep, ignoredLines, stripSpaces,
-		simplifySpaces, commentString, importAs, locale, endLineChar)){
+		simplifySpaces, commentString, importAs, locale, endLineChar, maxRows)){
         d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model,
                     tr("Import ASCII File") + " \"" + fname + "\""));
 		setMatrixModel(new_model);

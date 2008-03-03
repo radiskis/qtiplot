@@ -54,7 +54,6 @@ class MatrixEditCellCommand: public QUndoCommand
 public:
     MatrixEditCellCommand(MatrixModel *model, const QModelIndex & index, double valBefore,
                             double valAfter, const QString & text);
-
     virtual int id () const;
     virtual void redo();
     virtual void undo();
@@ -69,8 +68,8 @@ private:
 class MatrixSetFormulaCommand: public QUndoCommand
 {
 public:
-    MatrixSetFormulaCommand(Matrix *m, const QString& oldFormula, const QString& newFormula, const QString & text);
-    virtual int id () const;
+    MatrixSetFormulaCommand(Matrix *m, const QString& oldFormula, const QString& newFormula, const QString & text);    
+	virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -84,7 +83,7 @@ class MatrixSetViewCommand: public QUndoCommand
 {
 public:
     MatrixSetViewCommand(Matrix *m, Matrix::ViewType oldView, Matrix::ViewType newView, const QString & text);
-    virtual int id () const;
+	virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -158,9 +157,10 @@ private:
 class MatrixSetColorMapCommand: public QUndoCommand
 {
 public:
-    MatrixSetColorMapCommand(Matrix *, Matrix::ColorMapType d_map_type_before, QwtLinearColorMap d_map_before,
-                    Matrix::ColorMapType d_map_type_after, QwtLinearColorMap d_map_after, const QString &);
-    virtual int id () const;
+    MatrixSetColorMapCommand(Matrix *m, Matrix::ColorMapType d_map_type_before, 
+					const QwtLinearColorMap& d_map_before, Matrix::ColorMapType d_map_type_after, 
+					const QwtLinearColorMap& d_map_after, const QString& text);
+	virtual int id () const;
     virtual void redo();
     virtual void undo();
 

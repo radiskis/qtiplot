@@ -84,7 +84,8 @@ class LegendWidget;
 class ArrowMarker;
 class ImageMarker;
 class TextEditor;
-
+class AssociationsDialog;
+	
 /**
  * \brief QtiPlot's main window.
  *
@@ -299,8 +300,8 @@ public slots:
 	MultiLayer * newFunctionPlot(QStringList &formulas, double start, double end, int points = 100, const QString& var = "x", int type = 0);
 
 	FunctionDialog* functionDialog();
-	void showFunctionDialog();
-	void showFunctionDialog(Graph * g, int curve);
+	FunctionDialog* showFunctionDialog();
+	FunctionDialog* showFunctionDialog(Graph * g, int curve);
 	void addFunctionCurve();
 	void clearSurfaceFunctionsList();
 	void clearLogInfo();
@@ -635,7 +636,7 @@ public slots:
 	void showCurvesDialog();
 	void showCurveRangeDialog();
 	CurveRangeDialog* showCurveRangeDialog(Graph *g, int curve);
-	void showPlotAssociations(int curve);
+	AssociationsDialog* showPlotAssociations(int curve);
 
 	void showAxisTitleDialog();
 	void showColumnOptionsDialog();
@@ -1166,7 +1167,6 @@ private:
 	QToolButton *btnResults;
 	QWidgetList *hiddenWindows;
 	QLineEdit *info;
-	MdiSubWindow *lastModified;
 
 	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *edit, *recent;
 	QMenu *help, *plot2DMenu, *analysisMenu, *multiPeakMenu;

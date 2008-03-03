@@ -16,8 +16,8 @@ DEFINES         += SCRIPTING_DIALOG
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
 #RESTRICTED_MODULES += EMF
 
-CONFIG          += release
-#CONFIG          += debug
+#CONFIG          += release
+CONFIG          += debug
 #win32: CONFIG   += console
 
 # what to install and where
