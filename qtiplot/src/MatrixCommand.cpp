@@ -1,0 +1,390 @@
+/***************************************************************************
+    File                 : MatrixCommand.cpp
+    Project              : QtiPlot
+    --------------------------------------------------------------------
+    Copyright            : (C) 2008 by Ion Vasilief,
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+    Description          : Matrix undo/redo commands
+
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *  This program is free software; you can redistribute it and/or modify   *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation; either version 2 of the License, or      *
+ *  (at your option) any later version.                                    *
+ *                                                                         *
+ *  This program is distributed in the hope that it will be useful,        *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the Free Software           *
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor,                    *
+ *   Boston, MA  02110-1301  USA                                           *
+ *                                                                         *
+ ***************************************************************************/
+
+#include "MatrixCommand.h"
+
+MatrixCommand::MatrixCommand(MatrixModel *modelBefore, MatrixModel *modelAfter, const QString & text):
+QUndoCommand(text)
+{
+    setText(modelBefore->matrix()->objectName() + ": " + text);
+
+    d_model_before = new MatrixModel(modelBefore);
+    delete modelBefore;
+    d_model_after = new MatrixModel(modelAfter);
+}
+
+int MatrixCommand::id() const
+{
+    return -1;
+}
+
+void MatrixCommand::redo()
+{
+    if (!d_model_after)
+        return;
+
+    Matrix *m = d_model_after->matrix();
+    if (m)
+        m->setMatrixModel(d_model_after);
+}
+
+void MatrixCommand::undo()
+{
+    if (!d_model_before)
+        return;
+
+    Matrix *m = d_model_before->matrix();
+    if (m)
+        m->setMatrixModel(d_model_before);
+}
+
+MatrixCommand::~MatrixCommand()
+{
+    if (d_model_before)
+        delete d_model_before;
+    if (d_model_after)
+        delete d_model_after;
+}
+
+/*************************************************************************/
+/*           Class MatrixEditCellCommand                                 */
+/*************************************************************************/
+MatrixEditCellCommand::MatrixEditCellCommand(MatrixModel *model, const QModelIndex & index,
+                        double valBefore, double valAfter, const QString & text):
+QUndoCommand(text),
+d_model(model),
+d_index(index),
+d_val_before(valBefore),
+d_val_after(valAfter)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+int MatrixEditCellCommand::id() const
+{
+    return -1;
+}
+
+void MatrixEditCellCommand::redo()
+{
+    if (!d_model)
+        return;
+
+    Matrix *m = d_model->matrix();
+    if (m){
+        d_model->setCell(d_index.row(), d_index.column(), d_val_after);
+        m->resetView();
+        m->notifyChanges();
+    }
+}
+
+void MatrixEditCellCommand::undo()
+{
+    if (!d_model)
+        return;
+
+    Matrix *m = d_model->matrix();
+    if (m){
+        d_model->setCell(d_index.row(), d_index.column(), d_val_before);
+        m->resetView();
+        m->notifyChanges();
+    }
+}
+
+/*************************************************************************/
+/*           Class MatrixSetFormulaCommand                               */
+/*************************************************************************/
+MatrixSetFormulaCommand::MatrixSetFormulaCommand(Matrix *m, const QString& oldFormula,
+                        const QString& newFormula, const QString & text):
+QUndoCommand(text),
+d_matrix(m),
+d_old_formula(oldFormula),
+d_new_formula(newFormula)
+{
+    setText(m->objectName() + ": " + text);
+}
+
+int MatrixSetFormulaCommand::id() const
+{
+    return -1;
+}
+
+void MatrixSetFormulaCommand::redo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setFormula(d_new_formula);
+}
+
+void MatrixSetFormulaCommand::undo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setFormula(d_old_formula);
+}
+
+/*************************************************************************/
+/*           Class MatrixSetViewCommand                                  */
+/*************************************************************************/
+MatrixSetViewCommand::MatrixSetViewCommand(Matrix *m, Matrix::ViewType oldView,
+                    Matrix::ViewType newView, const QString & text):
+QUndoCommand(text),
+d_matrix(m),
+d_old_view(oldView),
+d_new_view(newView)
+{
+    setText(m->objectName() + ": " + text);
+}
+
+int MatrixSetViewCommand::id() const
+{
+    return -1;
+}
+
+void MatrixSetViewCommand::redo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setViewType(d_new_view);
+}
+
+void MatrixSetViewCommand::undo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setViewType(d_old_view);
+}
+
+/*************************************************************************/
+/*           Class MatrixSetHeaderViewCommand                            */
+/*************************************************************************/
+MatrixSetHeaderViewCommand::MatrixSetHeaderViewCommand(Matrix *m, Matrix::HeaderViewType oldView,
+                    Matrix::HeaderViewType newView, const QString & text):
+QUndoCommand(text),
+d_matrix(m),
+d_old_view(oldView),
+d_new_view(newView)
+{
+    setText(m->objectName() + ": " + text);
+}
+
+int MatrixSetHeaderViewCommand::id() const
+{
+    return -1;
+}
+
+void MatrixSetHeaderViewCommand::redo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setHeaderViewType(d_new_view);
+}
+
+void MatrixSetHeaderViewCommand::undo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setHeaderViewType(d_old_view);
+}
+
+/*************************************************************************/
+/*           Class MatrixSetColWidthCommand                              */
+/*************************************************************************/
+MatrixSetColWidthCommand::MatrixSetColWidthCommand(Matrix *m, int oldWidth, int newWidth, const QString & text):
+QUndoCommand(text),
+d_matrix(m),
+d_old_width(oldWidth),
+d_new_width(newWidth)
+{
+    setText(m->objectName() + ": " + text);
+}
+
+int MatrixSetColWidthCommand::id() const
+{
+    return -1;
+}
+
+void MatrixSetColWidthCommand::redo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setColumnsWidth(d_new_width);
+}
+
+void MatrixSetColWidthCommand::undo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setColumnsWidth(d_old_width);
+}
+
+/*************************************************************************/
+/*           Class MatrixSetPrecisionCommand                             */
+/*************************************************************************/
+MatrixSetPrecisionCommand::MatrixSetPrecisionCommand(Matrix *m, const QChar& oldFormat,
+                const QChar& newFormat, int oldPrec, int newPrec, const QString & text):
+QUndoCommand(text),
+d_matrix(m),
+d_old_format(oldFormat),
+d_new_format(newFormat),
+d_old_prec(oldPrec),
+d_new_prec(newPrec)
+{
+    setText(m->objectName() + ": " + text);
+}
+
+int MatrixSetPrecisionCommand::id() const
+{
+    return -1;
+}
+
+void MatrixSetPrecisionCommand::redo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setNumericFormat(d_new_format, d_new_prec);
+}
+
+void MatrixSetPrecisionCommand::undo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setNumericFormat(d_old_format, d_old_prec);
+}
+
+/*************************************************************************/
+/*           Class MatrixSetCoordinatesCommand                           */
+/*************************************************************************/
+MatrixSetCoordinatesCommand::MatrixSetCoordinatesCommand(Matrix *m, double oxs, double oxe,
+    double oys, double oye, double nxs, double nxe, double nys, double nye, const QString & text):
+QUndoCommand(text),
+d_matrix(m),
+d_old_xs(oxs),
+d_old_xe(oxe),
+d_old_ys(oys),
+d_old_ye(oye),
+d_new_xs(nxs),
+d_new_xe(nxe),
+d_new_ys(nys),
+d_new_ye(nye)
+{
+    setText(m->objectName() + ": " + text);
+}
+
+int MatrixSetCoordinatesCommand::id() const
+{
+    return -1;
+}
+
+void MatrixSetCoordinatesCommand::redo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setCoordinates(d_new_xs, d_new_xe, d_new_ys, d_new_ye);
+}
+
+void MatrixSetCoordinatesCommand::undo()
+{
+    if (!d_matrix)
+        return;
+
+    d_matrix->setCoordinates(d_old_xs, d_old_xe, d_old_ys, d_old_ye);
+}
+
+/*************************************************************************/
+/*           Class MatrixSetColorMapCommand                              */
+/*************************************************************************/
+MatrixSetColorMapCommand::MatrixSetColorMapCommand(Matrix *m, Matrix::ColorMapType type_before, 
+							QwtLinearColorMap map_before, Matrix::ColorMapType type_after, 
+							QwtLinearColorMap map_after, const QString & text):
+QUndoCommand(text),
+d_matrix(m),
+d_map_type_before(type_before),
+d_map_type_after(type_after),
+d_map_before(map_before),
+d_map_after(map_after)
+{
+    setText(m->objectName() + ": " + text);
+}
+
+int MatrixSetColorMapCommand::id() const
+{
+    return -1;
+}
+
+void MatrixSetColorMapCommand::redo()
+{
+    if (!d_matrix)
+        return;
+
+	switch(d_map_type_after){
+		case Matrix::GrayScale:
+			d_matrix->setGrayScale();
+		break;
+		
+		case Matrix::Rainbow:
+			d_matrix->setRainbowColorMap();
+		break;
+		
+		case Matrix::Custom:
+			d_matrix->setColorMap(d_map_after);
+		break;
+	}
+}
+
+void MatrixSetColorMapCommand::undo()
+{
+    if (!d_matrix)
+        return;
+
+    	switch(d_map_type_before){
+		case Matrix::GrayScale:
+			d_matrix->setGrayScale();
+		break;
+		
+		case Matrix::Rainbow:
+			d_matrix->setRainbowColorMap();
+		break;
+		
+		case Matrix::Custom:
+			d_matrix->setColorMap(d_map_before);
+		break;
+	}
+}
