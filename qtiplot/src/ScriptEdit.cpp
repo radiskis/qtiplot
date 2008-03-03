@@ -46,6 +46,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
 	setLineWrapMode(NoWrap);
+	setUndoRedoEnabled(true);
 	setTextFormat(Qt::PlainText);
 	setAcceptRichText (false);
 	setFamily("Monospace");

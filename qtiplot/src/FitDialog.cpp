@@ -586,6 +586,8 @@ void FitDialog::activateCurve(const QString& curveName)
     d_graph->range(d_graph->curveIndex(curveName), &start, &end);
     boxFrom->setValue(QMIN(start, end));
     boxTo->setValue(QMAX(start, end));
+	//Set the same color as the data curve chosen for fit (Feature Request #4031)
+	boxColor->setColor(c->pen().color());
 };
 
 void FitDialog::saveUserFunction()

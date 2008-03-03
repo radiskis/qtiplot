@@ -198,15 +198,15 @@ void PlotDialog::showPlotAssociations(QTreeWidgetItem *item, int)
         return;
     }
 
-	if (((PlotCurve *)it)->type() == Graph::Function)
-	{
-	    close();
-  	    app->showFunctionDialog(((CurveTreeItem *)item)->graph(), ((CurveTreeItem *)item)->plotItemIndex());
-	}
-	else
-	{
-	    close();
-        app->showPlotAssociations(((CurveTreeItem *)item)->plotItemIndex());
+	hide();
+	if (((PlotCurve *)it)->type() == Graph::Function){
+  	    FunctionDialog *fd = app->showFunctionDialog(((CurveTreeItem *)item)->graph(), ((CurveTreeItem *)item)->plotItemIndex());
+		if (fd)
+			connect((QObject *)fd, SIGNAL(destroyed()), this, SLOT(show()));
+	} else {
+        AssociationsDialog* ad = app->showPlotAssociations(((CurveTreeItem *)item)->plotItemIndex());
+		if (ad)
+			connect((QObject *)ad, SIGNAL(destroyed()), this, SLOT(show()));
 	}
 }
 
@@ -223,13 +223,18 @@ void PlotDialog::editCurve()
 	int index = item->plotItemIndex();
 	int curveType = ((PlotCurve *)item->plotItem())->type();
 
-	close();
+	hide();
 
 	if (app){
-		if (curveType == Graph::Function)
-			app->showFunctionDialog(item->graph(), index);
-		else
-			app->showPlotAssociations(index);
+		if (curveType == Graph::Function){
+			FunctionDialog *fd = app->showFunctionDialog(item->graph(), index);
+			if (fd)
+				connect((QObject *)fd, SIGNAL(destroyed()), this, SLOT(show()));
+		} else {
+			AssociationsDialog* ad = app->showPlotAssociations(index);
+			if (ad)
+				connect((QObject *)ad, SIGNAL(destroyed()), this, SLOT(show()));
+		}
 	}
 }
 
@@ -1525,7 +1530,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
 
     if (currentItem->type() == CurveTreeItem::PlotCurveTreeItem)
     {
-        CurveTreeItem *curveItem = (CurveTreeItem *)currentItem;
+        CurveTreeItem *curveItem = (CurveTreeItem *)currentItem;		
         if (previousItem->type() != CurveTreeItem::PlotCurveTreeItem ||
            ((CurveTreeItem *)previousItem)->plotItemType() != curveItem->plotItemType())
         {
@@ -1698,8 +1703,7 @@ void PlotDialog::showWorksheet()
 int PlotDialog::setPlotType(CurveTreeItem *item)
 {
 	int curveType = item->plotItemType();
-	if (curveType >= 0)
-	{
+	if (curveType >= 0){
 		boxPlotType->clear();
 
 		if (curveType == Graph::ErrorBars)
@@ -1712,19 +1716,16 @@ int PlotDialog::setPlotType(CurveTreeItem *item)
 			boxPlotType->addItem( tr( "Horizontal Bars" ) );
 		else if (curveType == Graph::Histogram)
 			boxPlotType->addItem( tr( "Histogram" ) );
-		else if (curveType == Graph::VectXYXY || curveType == Graph::VectXYAM)
-		{
+		else if (curveType == Graph::VectXYXY || curveType == Graph::VectXYAM){
 			boxPlotType->addItem( tr( "Vector XYXY" ) );
 			boxPlotType->addItem( tr( "Vector XYAM" ) );
 			if (curveType == Graph::VectXYAM)
 				boxPlotType->setCurrentIndex(1);
-		}
-		else if (curveType == Graph::Box)
+		} else if (curveType == Graph::Box)
 			boxPlotType->addItem( tr( "Box" ) );
 		else if (curveType == Graph::ColorMap || curveType == Graph::GrayScale || curveType == Graph::Contour)
   	    	boxPlotType->insertItem(tr("Contour") + " / " + tr("Image"));
-		else
-		{
+		else {
 			boxPlotType->addItem( tr( "Line" ) );
 			boxPlotType->addItem( tr( "Scatter" ) );
 			boxPlotType->addItem( tr( "Line + Symbol" ) );
@@ -1734,18 +1735,13 @@ int PlotDialog::setPlotType(CurveTreeItem *item)
 				return -1;
 
 			QwtSymbol s = c->symbol();
-			if (s.style() == QwtSymbol::NoSymbol)
-			{
+			if (s.style() == QwtSymbol::NoSymbol){
 				boxPlotType->setCurrentIndex(0);
 				return Graph::Line;
-			}
-			else if (c->style() == QwtPlotCurve::NoCurve)
-			{
+			} else if (c->style() == QwtPlotCurve::NoCurve) {
 				boxPlotType->setCurrentIndex(1);
 				return Graph::Scatter;
-			}
-			else
-			{
+			} else {
 				boxPlotType->setCurrentIndex(2);
 				return Graph::LineSymbols;
 			}
