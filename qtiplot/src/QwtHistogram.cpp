@@ -202,7 +202,7 @@ void QwtHistogram::loadDataFromMatrix()
         return;
 
    int size = d_matrix->numRows()*d_matrix->numCols();
-   double *data = d_matrix->matrixModel()->dataVector();
+   const double *data = d_matrix->matrixModel()->dataVector();
 
 	int n;
 	gsl_histogram *h;

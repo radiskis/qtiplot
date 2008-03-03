@@ -533,30 +533,36 @@ void ConfigDialog::initAppPage()
 	boxScriptingLanguage->setCurrentItem(llist.findIndex(app->defaultScriptingLang));
 	topBoxLayout->addWidget( boxScriptingLanguage, 3, 1 );
 
+    lblUndoStackSize = new QLabel();
+	topBoxLayout->addWidget( lblUndoStackSize, 4, 0 );
+    undoStackSizeBox = new QSpinBox();
+    undoStackSizeBox->setValue(app->matrixUndoStackSize());
+    topBoxLayout->addWidget( undoStackSizeBox, 4, 1 );
+
 	lblInitWindow = new QLabel();
-	topBoxLayout->addWidget( lblInitWindow, 4, 0 );
+	topBoxLayout->addWidget( lblInitWindow, 5, 0 );
 	boxInitWindow = new QComboBox();
-	topBoxLayout->addWidget( boxInitWindow, 4, 1 );
+	topBoxLayout->addWidget( boxInitWindow, 5, 1 );
 
     boxSave= new QCheckBox();
 	boxSave->setChecked(app->autoSave);
-	topBoxLayout->addWidget( boxSave, 5, 0 );
+	topBoxLayout->addWidget( boxSave, 6, 0 );
 
 	boxMinutes = new QSpinBox();
 	boxMinutes->setRange(1, 100);
 	boxMinutes->setValue(app->autoSaveTime);
 	boxMinutes->setEnabled(app->autoSave);
-	topBoxLayout->addWidget( boxMinutes, 5, 1 );
+	topBoxLayout->addWidget( boxMinutes, 6, 1 );
 
     boxBackupProject = new QCheckBox();
 	boxBackupProject->setChecked(app->d_backup_files);
-	topBoxLayout->addWidget( boxBackupProject, 6, 0, 1, 2 );
+	topBoxLayout->addWidget( boxBackupProject, 7, 0, 1, 2 );
 
 	boxSearchUpdates = new QCheckBox();
 	boxSearchUpdates->setChecked(app->autoSearchUpdates);
-	topBoxLayout->addWidget( boxSearchUpdates, 7, 0, 1, 2 );
+	topBoxLayout->addWidget( boxSearchUpdates, 8, 0, 1, 2 );
 
-	topBoxLayout->setRowStretch( 8, 1 );
+	topBoxLayout->setRowStretch( 9, 1 );
 
 	appTabWidget->addTab( application, QString() );
 
@@ -937,6 +943,7 @@ void ConfigDialog::languageChange()
 	boxSearchUpdates->setText(tr("Check for new versions at startup"));
 	boxMinutes->setSuffix(tr(" minutes"));
 	lblScriptingLanguage->setText(tr("Default scripting language"));
+	lblUndoStackSize->setText(tr("Matrix Undo Stack Size"));
 	lblInitWindow->setText(tr("Start New Project"));
 	boxInitWindow->clear();
 	boxInitWindow->addItem(tr("Empty"));
@@ -1142,6 +1149,7 @@ void ConfigDialog::apply()
 	app->d_backup_files = boxBackupProject->isChecked();
 	app->defaultScriptingLang = boxScriptingLanguage->currentText();
 	app->d_init_window_type = (ApplicationWindow::WindowType)boxInitWindow->currentIndex();
+	app->setMatrixUndoStackSize(undoStackSizeBox->value());
 
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();

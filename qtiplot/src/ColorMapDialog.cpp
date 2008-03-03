@@ -28,6 +28,7 @@
 #include "ColorMapDialog.h"
 #include "ColorMapEditor.h"
 #include "Matrix.h"
+#include "MatrixCommand.h"
 
 #include <QPushButton>
 #include <QLayout>
@@ -76,5 +77,7 @@ void ColorMapDialog::setMatrix(Matrix *m)
 
 void ColorMapDialog::apply()
 {
+	d_matrix->undoStack()->push(new MatrixSetColorMapCommand(d_matrix, d_matrix->colorMapType(), 
+						d_matrix->colorMap(), Matrix::Custom, editor->colorMap(), tr("Set Custom Palette")));
 	d_matrix->setColorMap(editor->colorMap());
 }

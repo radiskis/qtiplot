@@ -263,7 +263,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/FitModelHandler.h \
             src/TextEditor.h \
             src/CustomActionDialog.h \
-            src/DoubleSpinBox.h
+            src/DoubleSpinBox.h\
+            src/MatrixCommand.h
 
 ###################### SOURCES ##############################################
 
@@ -381,7 +382,8 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/FitModelHandler.cpp \
             src/TextEditor.cpp \
             src/CustomActionDialog.cpp \
-            src/DoubleSpinBox.cpp
+            src/DoubleSpinBox.cpp\
+            src/MatrixCommand.cpp
 
 ###############################################################
 ##################### Compression (zlib123) ###################

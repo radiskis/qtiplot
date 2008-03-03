@@ -65,6 +65,7 @@
 #include "MatrixSizeDialog.h"
 #include "MatrixValuesDialog.h"
 #include "MatrixModel.h"
+#include "MatrixCommand.h"
 #include "importOPJ.h"
 #include "AssociationsDialog.h"
 #include "RenameWindowDialog.h"
@@ -153,6 +154,8 @@
 #include <QSpinBox>
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include <QUndoStack>
+#include <QUndoView>
 
 #include <zlib.h>
 #include <iostream>
@@ -259,6 +262,17 @@ void ApplicationWindow::init(bool factorySettings)
 	consoleWindow->hide();
 #endif
 
+	undoStackWindow = new QDockWidget(this);
+	undoStackWindow->setObjectName("undoStackWindow"); // this is needed for QMainWindow::restoreState()
+	undoStackWindow->setWindowTitle(tr("Undo Stack"));
+	addDockWidget(Qt::RightDockWidgetArea, undoStackWindow);
+
+	d_undo_view = new QUndoView(undoStackWindow);
+	d_undo_view->setEmptyLabel(tr("Unmodified"));
+	d_undo_view->setCleanIcon(QIcon(QPixmap(filesave_xpm)));
+	undoStackWindow->setWidget(d_undo_view);
+	undoStackWindow->hide();
+
 	// Needs to be done after initialization of dock windows,
 	// because we now use QDockWidget::toggleViewAction()
 	createActions();
@@ -357,6 +371,8 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+    d_matrix_undo_stack_size = 10;
+
 	d_opening_file = false;
     d_in_place_editing = true;
 
@@ -373,7 +389,7 @@ void ApplicationWindow::initGlobalConstants()
 	appStyle = qApp->style()->objectName();
 	d_app_rect = QRect();
 	projectname = "untitled";
-	lastModified=0;
+	lastModified = 0;
 	lastCopiedLayer = 0;
 	d_text_copy = NULL;
 	d_arrow_copy = NULL;
@@ -810,7 +826,6 @@ void ApplicationWindow::initToolBars()
 	actionImagePlot->addTo(plotMatrixBar);
 	plotMatrixBar->addSeparator();
 	actionPlotHistogram->addTo(plotMatrixBar);
-
 	plotMatrixBar->hide();
 
 	formatToolBar = new QToolBar(tr( "Format" ), this);
@@ -857,6 +872,7 @@ void ApplicationWindow::insertTranslatedStrings()
 		scriptWindow->setWindowTitle(tr("QtiPlot - Script Window"));
 	explorerWindow->setWindowTitle(tr("Project Explorer"));
 	logWindow->setWindowTitle(tr("Results Log"));
+	undoStackWindow->setWindowTitle(tr("Undo Stack"));
 #ifdef SCRIPTING_CONSOLE
 	consoleWindow->setWindowTitle(tr("Scripting Console"));
 #endif
@@ -909,6 +925,7 @@ void ApplicationWindow::initMainMenu()
 	view->addAction(actionShowPlotWizard);
 	view->addAction(actionShowExplorer);
 	view->addAction(actionShowLog);
+	view->addAction(actionShowUndoStack);
 #ifdef SCRIPTING_CONSOLE
 	view->addAction(actionShowConsole);
 #endif
@@ -1334,6 +1351,8 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
     } else if (w->isA("Matrix") && d_matrix_tool_bar){
          if(!plotMatrixBar->isVisible())
             plotMatrixBar->show();
+
+        d_undo_view->setStack(((Matrix *)w)->undoStack());
         plotMatrixBar->setEnabled (true);
     } else if (w->isA("Graph3D") && d_plot3D_tool_bar){
         if(!plot3DTools->isVisible())
@@ -2663,6 +2682,7 @@ void ApplicationWindow::viewMatrixImage()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->undoStack()->push(new MatrixSetViewCommand(m, m->viewType(), Matrix::ImageView, tr("Set Image Mode")));
 	m->setViewType(Matrix::ImageView);
 	modifiedProject();
 	QApplication::restoreOverrideCursor();
@@ -2675,6 +2695,7 @@ void ApplicationWindow::viewMatrixTable()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    m->undoStack()->push(new MatrixSetViewCommand(m, m->viewType(), Matrix::TableView, tr("Set Data Mode")));
 	m->setViewType(Matrix::TableView);
 	modifiedProject();
 	QApplication::restoreOverrideCursor();
@@ -2687,6 +2708,7 @@ void ApplicationWindow::viewMatrixXY()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    m->undoStack()->push(new MatrixSetHeaderViewCommand(m, m->headerViewType(), Matrix::XY, tr("Show X/Y")));
 	m->setHeaderViewType(Matrix::XY);
 	modifiedProject();
 	QApplication::restoreOverrideCursor();
@@ -2699,6 +2721,7 @@ void ApplicationWindow::viewMatrixColumnRow()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    m->undoStack()->push(new MatrixSetHeaderViewCommand(m, m->headerViewType(), Matrix::ColumnRow, tr("Show Column/Row")));
 	m->setHeaderViewType(Matrix::ColumnRow);
 	modifiedProject();
 	QApplication::restoreOverrideCursor();
@@ -2711,6 +2734,8 @@ void ApplicationWindow::setMatrixGrayScale()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(), 
+						Matrix::GrayScale, QwtLinearColorMap(), tr("Set Gray Scale Palette")));
 	m->setGrayScale();
 	QApplication::restoreOverrideCursor();
 
@@ -2724,6 +2749,8 @@ void ApplicationWindow::setMatrixRainbowScale()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(), 
+						Matrix::Rainbow, QwtLinearColorMap(), tr("Set Rainbow Palette")));
 	m->setRainbowColorMap();
 	QApplication::restoreOverrideCursor();
 
@@ -4211,6 +4238,7 @@ void ApplicationWindow::readSettings()
         d_locale.setNumberOptions(QLocale::OmitGroupSeparator);
 
 	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
+    d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
 
 	//restore dock windows and tool bars
 	restoreState(settings.value("/DockWindows").toByteArray());
@@ -4508,6 +4536,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/ThousandsSeparator", d_thousands_sep);
 	settings.setValue("/Locale", d_locale.name());
 	settings.setValue("/DecimalDigits", d_decimal_digits);
+    settings.setValue("/MatrixUndoStackSize", d_matrix_undo_stack_size);
 
 	settings.setValue("/DockWindows", saveState());
 	settings.setValue("/ExplorerSplitter", explorerSplitter->saveState());
@@ -7478,8 +7507,15 @@ void ApplicationWindow::undo()
 		((Note*)lastModified)->textWidget()->undo();
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(true);
+	} else if (lastModified->isA("Matrix")){
+	    QUndoStack *stack = ((Matrix *)lastModified)->undoStack();
+	    if (stack){
+            if (stack->canUndo())
+                stack->undo();
+            actionUndo->setEnabled(stack->canUndo());
+            actionRedo->setEnabled(stack->canRedo());
+	    }
 	}
-
 	QApplication::restoreOverrideCursor();
 }
 
@@ -7489,9 +7525,8 @@ void ApplicationWindow::redo()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	if (lastModified->inherits("Table"))
-	{
-		Table *t= (Table *)lastModified;
+	if (lastModified->inherits("Table")){
+		Table *t = (Table *)lastModified;
 		QString newCaption=t->newCaption();
 		QString name=lastModified->objectName();
 		if (newCaption != name){
@@ -7501,12 +7536,18 @@ void ApplicationWindow::redo()
 		t->restore(t->getNewSpecifications());
 		actionUndo->setEnabled(true);
 		actionRedo->setEnabled(false);
-	}
-	else if (lastModified->isA("Note"))
-	{
+	} else if (lastModified->isA("Note")){
 		((Note*)lastModified)->textWidget()->redo();
 		actionUndo->setEnabled(true);
 		actionRedo->setEnabled(false);
+	} else if (lastModified->isA("Matrix")){
+	    QUndoStack *stack = ((Matrix *)lastModified)->undoStack();
+	    if (stack){
+            if (stack->canRedo())
+                stack->redo();
+            actionUndo->setEnabled(stack->canUndo());
+            actionRedo->setEnabled(stack->canRedo());
+	    }
 	}
 	QApplication::restoreOverrideCursor();
 }
@@ -8109,6 +8150,8 @@ void ApplicationWindow::savedProject()
 	QCoreApplication::processEvents();
 
 	actionSaveProject->setEnabled(false);
+	actionUndo->setEnabled(false);
+	actionRedo->setEnabled(false);
 	saved = true;
 }
 
@@ -10842,7 +10885,6 @@ void ApplicationWindow::createActions()
 	actionSaveProject = new QAction(QIcon(QPixmap(filesave_xpm)), tr("&Save Project"), this);
 	actionSaveProject->setShortcut( tr("Ctrl+S") );
 	connect(actionSaveProject, SIGNAL(activated()), this, SLOT(saveProject()));
-	savedProject();
 
 	actionSaveProjectAs = new QAction(tr("Save Project &As..."), this);
 	connect(actionSaveProjectAs, SIGNAL(activated()), this, SLOT(saveProjectAs()));
@@ -10894,6 +10936,8 @@ void ApplicationWindow::createActions()
 
 	actionShowLog = logWindow->toggleViewAction();
 	actionShowLog->setIcon(QPixmap(log_xpm));
+
+    actionShowUndoStack = undoStackWindow->toggleViewAction();
 
 #ifdef SCRIPTING_CONSOLE
 	actionShowConsole = consoleWindow->toggleViewAction();
@@ -11655,6 +11699,9 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionShowLog->setMenuText(tr("Results &Log"));
 	actionShowLog->setToolTip(tr("Show analysis results"));
+
+    actionShowUndoStack->setMenuText(tr("Undo/Redo Stack"));
+	actionShowUndoStack->setToolTip(tr("Show available undo/redo commands"));
 
 #ifdef SCRIPTING_CONSOLE
 	actionShowConsole->setMenuText(tr("&Console"));
@@ -14931,19 +14978,36 @@ void ApplicationWindow::showAllColumns()
 		t->showAllColumns();
 }
 
+void ApplicationWindow::setMatrixUndoStackSize(int size)
+{
+    if (d_matrix_undo_stack_size == size)
+        return;
+
+    d_matrix_undo_stack_size = size;
+    Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows){
+		    if (w->isA("Matrix"))
+                ((Matrix *)w)->undoStack()->setUndoLimit(size);
+		}
+		f = f->folderBelow();
+	}
+}
+
 //! This is a dirty hack: sometimes the workspace area and the windows are not redrawn properly
 // after a MultiLayer plot window is resized by the user: Qt bug?
 void ApplicationWindow::repaintWindows()
 {
 	if (d_opening_file)
 		return;
-	
+
     d_workspace->update();
 	
     MdiSubWindow *aw = activeWindow();
 	if (!aw || aw->status() == MdiSubWindow::Maximized)
 		return;
-	
+
     QList<MdiSubWindow *> windows = current_folder->windowsList();
     foreach(MdiSubWindow *w, windows){
         if (w != aw)

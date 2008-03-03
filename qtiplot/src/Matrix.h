@@ -53,6 +53,7 @@
 class QLabel;
 class QStackedWidget;
 class QShortcut;
+class QUndoStack;
 
 //! Matrix worksheet class
 class Matrix: public MdiSubWindow, public scripted
@@ -75,6 +76,7 @@ public:
 	 */
 	Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
     Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
+    ~Matrix();
 
     enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};
@@ -100,6 +102,9 @@ public:
 	void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
 
 	MatrixModel * matrixModel(){return d_matrix_model;};
+	void setMatrixModel(MatrixModel *model);
+    QUndoStack *undoStack(){return d_undo_stack;};
+
 	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
 
 	//! Return the number of rows
@@ -313,6 +318,8 @@ private:
 	int d_column_width;
 
 	QShortcut *d_select_all_shortcut;
+    //! Undo/Redo commands stack
+	QUndoStack *d_undo_stack;
 };
 
 #endif
