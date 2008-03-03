@@ -30,6 +30,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "MatrixValuesDialog.h"
+#include "MatrixCommand.h"
 
 #include <QLayout>
 #include <QSpinBox>
@@ -141,8 +142,11 @@ bool MatrixValuesDialog::apply()
 	QString oldFormula = matrix->formula();
 
 	matrix->setFormula(formula);
-	if (matrix->calculate(startRow->value()-1, endRow->value()-1, startCol->value()-1, endCol->value()-1))
+	if (matrix->calculate(startRow->value()-1, endRow->value()-1, startCol->value()-1, endCol->value()-1)){
+	    matrix->undoStack()->push(new MatrixSetFormulaCommand(matrix, oldFormula, formula,
+                                tr("Set New Formula") + " " + formula));
 		return true;
+	}
 	matrix->setFormula(oldFormula);
 	return false;
 }

@@ -32,6 +32,7 @@
 
 #include "Matrix.h"
 #include "MatrixModel.h"
+#include "MatrixCommand.h"
 
 #include <gsl/gsl_math.h>
 #include <qwt_color_map.h>
@@ -69,6 +70,24 @@ MatrixModel::MatrixModel(const QImage& image, QObject *parent)
 		    int index = i*d_cols + j;
             d_data[index] = qGray(image.pixel (j, i));
 		}
+    }
+}
+
+MatrixModel::MatrixModel(const MatrixModel* m)
+    : QAbstractTableModel(),
+     d_rows(m->d_rows),
+     d_cols(m->d_cols),
+	 d_data(m->d_rows*m->d_cols, GSL_NAN),
+	 d_matrix(m->d_matrix),
+	 d_txt_format(m->d_txt_format),
+	 d_num_precision(m->d_num_precision),
+	 d_locale(m->d_locale)
+{
+    const double *data = (const double *)m->dataVector();
+    if (data){
+        int size = d_rows*d_cols;
+        for (int i = 0; i < size; i++)
+            d_data[i] = data[i];
     }
 }
 
@@ -170,6 +189,11 @@ void MatrixModel::setText(int row, int col, const QString& text)
 	}
 }
 
+double* MatrixModel::dataVector() const
+{
+    return (double *)d_data.data();
+}
+
 double MatrixModel::data(int row, int col) const
 {
     int i = d_cols*row + col;
@@ -269,6 +293,7 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
 		return false;
 
 	int i = d_cols*index.row() + index.column();
+	double valBefore = d_data[i];
  	if(role == Qt::EditRole){
 		if (value.toString().isEmpty())
 			d_data[i] = GSL_NAN;
@@ -281,6 +306,10 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
 		d_matrix->resetView();
 	}
 
+    d_matrix->undoStack()->push(new MatrixEditCellCommand(this, index, valBefore, d_data[i],
+                                tr("Edited cell") + " (" + QString::number(index.row() + 1) + "," +
+                                QString::number(index.column() + 1) + ")"));
+    d_matrix->notifyChanges();
 	d_matrix->moveCell(index);
 	return false;
 }

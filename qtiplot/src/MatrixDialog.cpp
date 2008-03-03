@@ -2,8 +2,8 @@
     File                 : MatrixDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 - 2008 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix properties dialog
 
  ***************************************************************************/
@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "MatrixDialog.h"
 #include "Matrix.h"
+#include "MatrixCommand.h"
 
 #include <QPushButton>
 #include <QLabel>
@@ -87,35 +88,47 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
 	mainLayout->addLayout(bottomLayout);
 
 	// signals and slots connections
-	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
-	connect( boxNumericDisplay, SIGNAL( activated(int) ), this, SLOT( showPrecisionBox(int) ) );
-	connect( boxPrecision, SIGNAL( valueChanged(int) ), this, SLOT( changePrecision(int) ) );
-}
-
-void MatrixDialog::changePrecision(int precision)
-{
-    if (boxFormat->currentIndex())
-		d_matrix->setNumericFormat('e', precision);
-	else
-		d_matrix->setNumericFormat('f', precision);
+	connect(buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
+	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(boxNumericDisplay, SIGNAL(activated(int)), this, SLOT(showPrecisionBox(int)));
 }
 
 void MatrixDialog::showPrecisionBox(int item)
 {
 	if (item)
-		boxPrecision->setEnabled( true );
-	else{
+		boxPrecision->setEnabled(true);
+	else {
 		boxPrecision->setValue(6);
-		boxPrecision->setEnabled( false );
+		boxPrecision->setEnabled(false);
 	}
 }
 
 void MatrixDialog::apply()
 {
-	d_matrix->setColumnsWidth(boxColWidth->value());
-    changePrecision(boxPrecision->value());
+    int width = boxColWidth->value();
+    if (d_matrix->columnsWidth() != width){
+        d_matrix->undoStack()->push(new MatrixSetColWidthCommand(d_matrix, d_matrix->columnsWidth(),
+                        width, tr("Set Columns Width") + " " + QString::number(width)));
+        d_matrix->setColumnsWidth(width);
+    }
+
+    int prec = boxPrecision->value();
+    QChar format = 'f';
+    QString fmtName = tr("Decimal");
+    if (boxFormat->currentIndex()){
+        format = 'e';
+        fmtName = tr("Scientific");
+    }
+
+    QChar oldFormat = d_matrix->textFormat();
+    int oldPrec = d_matrix->precision();
+    if (oldFormat != format || oldPrec != prec){
+        d_matrix->undoStack()->push(new MatrixSetPrecisionCommand(d_matrix, oldFormat, format,
+                        oldPrec, prec, tr("Set Data Format %1").arg(fmtName) + " - " +
+                        tr("Precision %1 digits").arg(prec)));
+        d_matrix->setNumericFormat(format, prec);
+    }
 }
 
 void MatrixDialog::setMatrix(Matrix *m)
@@ -136,8 +149,6 @@ void MatrixDialog::setMatrix(Matrix *m)
 		boxPrecision->setEnabled( true );
 		boxNumericDisplay->setCurrentIndex(1);
 	}
-
-    connect(boxColWidth, SIGNAL(valueChanged(int)), d_matrix, SLOT(setColumnsWidth(int)));
 }
 
 void MatrixDialog::accept()

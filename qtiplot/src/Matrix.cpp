@@ -27,7 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "Matrix.h"
+#include "MatrixCommand.h"
 #include "Graph.h"
+#include "ApplicationWindow.h"
 
 #include <QtGlobal>
 #include <QTextStream>
@@ -52,6 +54,7 @@
 #include <QImageWriter>
 #include <QSvgGenerator>
 #include <QFile>
+#include <QUndoStack>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -94,6 +97,9 @@ void Matrix::initGlobals()
     d_stack = new QStackedWidget();
     d_stack->setFocusPolicy(Qt::StrongFocus);
 	setWidget(d_stack);
+
+	d_undo_stack = new QUndoStack();
+	d_undo_stack->setUndoLimit(applicationWindow()->matrixUndoStackSize());
 }
 
 void Matrix::initTable(int rows, int cols)
@@ -317,34 +323,38 @@ void Matrix::setDimensions(int rows, int cols)
 	if (rows < r || cols < c){
 		QString msg_text = tr("Deleting rows/columns from the matrix!","set matrix dimensions");
 		msg_text += tr("<p>Do you really want to continue?","set matrix dimensions");
-		switch( QMessageBox::information(0, tr("QtiPlot"), msg_text,tr("Yes"), tr("Cancel"), 0, 1 ) )
+		switch( QMessageBox::information(0, tr("QtiPlot"), msg_text, tr("Yes"), tr("Cancel"), 0, 1 ) )
 		{
-			case 0: // Yes
+			case 0: {// Yes
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+				MatrixModel *new_model = new MatrixModel(d_matrix_model);
 				if (cols != c)
-					d_matrix_model->setColumnCount(cols);
+					new_model->setColumnCount(cols);
 				if (rows != r)
-					d_matrix_model->setRowCount(rows);
+					new_model->setRowCount(rows);
 
-                resetView();
+                d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Set Dimensions") +
+                " " + QString::number(rows) + "x" + QString::number(cols)));
+                setMatrixModel(new_model);
 				QApplication::restoreOverrideCursor();
-				emit modifiedWindow(this);
 				break;
-
+			}
 			case 1: // Cancel
 				return;
 				break;
 		}
 	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		if (cols != c)
-			d_matrix_model->setColumnCount(cols);
-		if (rows != r)
-			d_matrix_model->setRowCount(rows);
+		MatrixModel *new_model = new MatrixModel(d_matrix_model);
+        if (cols != c)
+            new_model->setColumnCount(cols);
+        if (rows != r)
+            new_model->setRowCount(rows);
 
-        resetView();
-		QApplication::restoreOverrideCursor();
-		emit modifiedWindow(this);
+        d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Set Dimensions") +
+                " " + QString::number(rows) + "x" + QString::number(cols)));
+        setMatrixModel(new_model);
+        QApplication::restoreOverrideCursor();
 	}
 }
 
@@ -408,16 +418,18 @@ void Matrix::invert()
 	gsl_matrix_free(A);
 	gsl_permutation_free(p);
 
+    MatrixModel *new_matrix_model = new MatrixModel(rows, cols, this);
 	for(i=0; i<rows; i++){
 		for(int j=0; j<cols; j++)
-			d_matrix_model->setCell(i, j, gsl_matrix_get(inverse, i, j));
+			new_matrix_model->setCell(i, j, gsl_matrix_get(inverse, i, j));
 	}
 
 	gsl_matrix_free(inverse);
 
-	resetView();
+    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Invert")));
+    setMatrixModel(new_matrix_model);
+
 	QApplication::restoreOverrideCursor();
-	emit modifiedWindow(this);
 }
 
 void Matrix::transpose()
@@ -431,11 +443,8 @@ void Matrix::transpose()
 			new_matrix_model->setCell(i, j, d_matrix_model->data(j, i));
 	}
 
-	delete d_matrix_model;
-	d_matrix_model = new_matrix_model;
-
-	resetView();
-	emit modifiedWindow(this);
+    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Transpose")));
+    setMatrixModel(new_matrix_model);
 }
 
 void Matrix::flipVertically()
@@ -450,11 +459,8 @@ void Matrix::flipVertically()
 			new_matrix_model->setCell(i, j, d_matrix_model->data(row, j));
 	}
 
-	delete d_matrix_model;
-	d_matrix_model = new_matrix_model;
-
-	resetView();
-	emit modifiedWindow(this);
+    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Flip Vertically")));
+    setMatrixModel(new_matrix_model);
 }
 
 void Matrix::flipHorizontally()
@@ -469,11 +475,8 @@ void Matrix::flipHorizontally()
 			new_matrix_model->setCell(j, i, d_matrix_model->data(j, col));
 	}
 
-	delete d_matrix_model;
-	d_matrix_model = new_matrix_model;
-
-	resetView();
-	emit modifiedWindow(this);
+    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Flip Horizontally")));
+    setMatrixModel(new_matrix_model);
 }
 
 void Matrix::rotate90(bool clockwise)
@@ -498,18 +501,13 @@ void Matrix::rotate90(bool clockwise)
                 new_matrix_model->setCell(i, j, d_matrix_model->data(j, col));
         }
 	}
-
-	delete d_matrix_model;
-	d_matrix_model = new_matrix_model;
-
-	resetView();
-	emit modifiedWindow(this);
+    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Rotate 90°")));
+    setMatrixModel(new_matrix_model);
 }
 
 bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
 
 	Script *script = scriptEnv->newScript(formula_str, this, QString("<%1>").arg(objectName()));
 	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
@@ -526,10 +524,12 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol)
 		endRow = rows - 1;
 	if (endCol < 0)
 		endCol = cols - 1;
-	if (endCol >= cols)
-		d_matrix_model->setColumnCount(endCol+1);
+    if (endCol >= cols)
+		cols = endCol + 1;
 	if (endRow >= rows)
-		d_matrix_model->setRowCount(endRow+1);
+        rows = endRow + 1;
+
+    MatrixModel *new_model = new MatrixModel(rows, cols, this);
 
 	QVariant ret;
 	double dx = fabs(x_end-x_start)/(double)(numRows()-1);
@@ -548,17 +548,18 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol)
 				setCell(row, col, ret.toDouble());
 			else */
 			if (ret.canConvert(QVariant::Double))
-				d_matrix_model->setCell(row, col, ret.toDouble());
+				new_model->setCell(row, col, ret.toDouble());
 			else {
-				d_matrix_model->setText(row, col, "");
+				new_model->setText(row, col, "");
 				QApplication::restoreOverrideCursor();
 				return false;
 			}
 		}
 	}
 
-	resetView();
-	emit modifiedWindow(this);
+    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Calculate Values")));
+    setMatrixModel(new_model);
+
 	QApplication::restoreOverrideCursor();
 	return true;
 }
@@ -572,12 +573,16 @@ void Matrix::clearSelection()
 	if (!selModel || !selModel->hasSelection())
 		return;
 
+    MatrixModel *old_model = new MatrixModel(d_matrix_model);
+
 	QModelIndexList lst = selModel->selection().indexes();
-	foreach(QModelIndex index, lst)
+    foreach(QModelIndex index, lst)
 		d_matrix_model->setText(index.row(), index.column(), "");
 
+	d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Clear Selection")));
+
 	d_table_view->reset();
-	emit modifiedWindow(this);
+    emit modifiedWindow(this);
 }
 
 
@@ -652,10 +657,11 @@ void Matrix::pasteSelection()
 
 	QTextStream ts2(&text, QIODevice::ReadOnly);
 
-	if (top + rows > numRows())
-        d_matrix_model->setRowCount(top + rows);
+    MatrixModel *new_model = new MatrixModel(d_matrix_model);
+    if (top + rows > numRows())
+        new_model->setRowCount(top + rows);
     if (left + cols > numCols())
-        d_matrix_model->setColumnCount(left + cols);
+        new_model->setColumnCount(left + cols);
 
 	bool numeric;
 	QLocale system_locale = QLocale::system();
@@ -669,13 +675,13 @@ void Matrix::pasteSelection()
 
 			double value = system_locale.toDouble(cellTexts[colIndex], &numeric);
 			if (numeric)
-				d_matrix_model->setCell(i, j, value);
+				new_model->setCell(i, j, value);
 			else
-				d_matrix_model->setText(i, j, cellTexts[colIndex]);
+				new_model->setText(i, j, cellTexts[colIndex]);
 		}
 	}
-	d_table_view->reset();
-	emit modifiedWindow(this);
+	d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Paste")));
+    setMatrixModel(new_model);
 	QApplication::restoreOverrideCursor();
 }
 
@@ -706,7 +712,10 @@ void Matrix::deleteSelectedRows()
 			count++;
 	}
 
+    MatrixModel *old_model = new MatrixModel(d_matrix_model);
 	d_matrix_model->removeRows(startRow, count, QModelIndex());
+	d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Delete Rows") + " " +
+                      QString::number(startRow + 1) + " - " + QString::number(startRow + count)));
 	d_table_view->reset();
 	emit modifiedWindow(this);
 }
@@ -732,7 +741,11 @@ void Matrix::deleteSelectedColumns()
 			count++;
 	}
 
+    MatrixModel *old_model = new MatrixModel(d_matrix_model);
 	d_matrix_model->removeColumns(startCol, count, QModelIndex());
+	d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Delete Columns") + " " +
+                      QString::number(startCol + 1) + " - " + QString::number(startCol + count)));
+
 	d_table_view->reset();
 	emit modifiedWindow(this);
 }
@@ -777,9 +790,13 @@ void Matrix::insertRow()
 	if (!index.isValid())
 		return;
 
+    MatrixModel *old_model = new MatrixModel(d_matrix_model);
 	d_matrix_model->insertRows(index.row(), 1);
 	d_table_view->reset();
 	emit modifiedWindow(this);
+
+    d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Insert Row") + " " +
+                      QString::number(index.row() + 1)));
 }
 
 void Matrix::insertColumn()
@@ -792,9 +809,13 @@ void Matrix::insertColumn()
 	if (!index.isValid())
 		return;
 
+    MatrixModel *old_model = new MatrixModel(d_matrix_model);
 	d_matrix_model->insertColumns(index.column(), 1);
 	d_table_view->reset();
 	emit modifiedWindow(this);
+
+    d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Insert Column") + " " +
+                      QString::number(index.column() + 1)));
 }
 
 void Matrix::customEvent(QEvent *e)
@@ -1203,10 +1224,10 @@ void Matrix::setImage(const QImage& image)
 
     d_view_type = ImageView;
     initImageView();
-    if (d_matrix_model)
-        delete d_matrix_model;
 
-    d_matrix_model = new MatrixModel(image, this);
+    MatrixModel *new_model = new MatrixModel(image, this);
+    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Import Image")));
+    d_matrix_model = new_model;
 
     imageLabel->setPixmap(QPixmap::fromImage(image));
     d_stack->setCurrentWidget(imageLabel);
@@ -1331,6 +1352,7 @@ void Matrix::fft(bool inverse)
 	int width = numCols();
     int height = numRows();
 
+    MatrixModel *new_model = new MatrixModel(height, width, this);
     double **x_int_re = allocateMatrixData(height, width); /* real coeff matrix */
     double **x_int_im = allocateMatrixData(height, width); /* imaginary coeff  matrix*/
     for (int i = 0; i < height; i++){
@@ -1340,6 +1362,7 @@ void Matrix::fft(bool inverse)
         }
     }
 
+    QString commandText = tr("Forward FFT");
     if (inverse){
         double **x_fin_re = allocateMatrixData(height, width);
         double **x_fin_im = allocateMatrixData(height, width);
@@ -1349,11 +1372,12 @@ void Matrix::fft(bool inverse)
             for (int j = 0; j < width; j++){
                 double re = x_fin_re[i][j];
                 double im = x_fin_im[i][j];
-                setCell(i, j, sqrt(re*re + im*im));
+                new_model->setCell(i, j, sqrt(re*re + im*im));
             }
         }
         freeMatrixData(x_fin_re, height);
         freeMatrixData(x_fin_im, height);
+        commandText = tr("Inverse FFT");
     } else {
         fft2d(x_int_re, x_int_im, width, height);
 
@@ -1361,7 +1385,7 @@ void Matrix::fft(bool inverse)
             for (int j = 0; j < width; j++){
                 double re = x_int_re[i][j];
                 double im = x_int_im[i][j];
-                setCell(i, j, sqrt(re*re + im*im));
+                new_model->setCell(i, j, sqrt(re*re + im*im));
             }
         }
     }
@@ -1369,8 +1393,8 @@ void Matrix::fft(bool inverse)
     freeMatrixData(x_int_re, height);
     freeMatrixData(x_int_im, height);
 
-    resetView();
-	emit modifiedWindow(this);
+    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, commandText));
+    setMatrixModel(new_model);
 }
 
 bool Matrix::exportASCII(const QString& fname, const QString& separator, bool exportSelection)
@@ -1433,9 +1457,27 @@ void Matrix::importASCII(const QString &fname, const QString &sep, int ignoredLi
     	bool stripSpaces, bool simplifySpaces, const QString& commentString,
 		ImportMode importAs, const QLocale& locale, int endLineChar, int maxRows)
 {
-	if (d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces,
+    MatrixModel *new_model = new MatrixModel(numRows(), numCols(), this);
+    if (new_model->importASCII(fname, sep, ignoredLines, stripSpaces,
 		simplifySpaces, commentString, importAs, locale, endLineChar)){
-		resetView();
-		emit modifiedWindow(this);
-	}
+        d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model,
+                    tr("Import ASCII File") + " \"" + fname + "\""));
+		setMatrixModel(new_model);
+	} else
+        delete new_model;
+}
+
+void Matrix::setMatrixModel(MatrixModel *model)
+{
+    if(!model)
+        return;
+
+	d_matrix_model = model;
+	resetView();
+	emit modifiedWindow(this);
+}
+
+Matrix::~Matrix()
+{
+    delete d_undo_stack;
 }

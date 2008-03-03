@@ -2,7 +2,7 @@
     File                 : MatrixSizeDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
+    Copyright            : (C) 2004-2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix dimensions dialog
 
@@ -35,7 +35,7 @@
 class QGroupBox;
 class QPushButton;
 class QSpinBox;
-class QLineEdit;
+class DoubleSpinBox;
 
 //! Matrix dimensions dialog
 class MatrixSizeDialog : public QDialog
@@ -59,7 +59,7 @@ private:
 	QPushButton* buttonCancel;
     QGroupBox* groupBox1, *groupBox2;
 	QSpinBox *boxCols, *boxRows;
-	QLineEdit *boxXStart, *boxYStart, *boxXEnd, *boxYEnd;
+	DoubleSpinBox *boxXStart, *boxYStart, *boxXEnd, *boxYEnd;
 	Matrix *d_matrix;
 };
 

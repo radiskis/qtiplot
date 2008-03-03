@@ -2,8 +2,8 @@
     File                 : MatrixDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 - 2008 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix properties dialog
 
  ***************************************************************************/
@@ -57,8 +57,6 @@ private slots:
 	void apply();
 	//! Activate the numeric precision choice box
 	void showPrecisionBox(int item);
-	//! Change the numeric precision (emits changeTextFormat)
-	void changePrecision(int precision);
 
 private:
     Matrix *d_matrix;

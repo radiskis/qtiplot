@@ -63,6 +63,7 @@ class QToolBar;
 class QAssistantClient;
 class QLocale;
 class QMdiArea;
+class QUndoView;
 
 class Matrix;
 class Table;
@@ -149,6 +150,9 @@ public:
 	QList<QToolBar *> toolBarsList();
 
 	MdiSubWindow *activeWindow(WindowType type = NoWindow);
+
+	int matrixUndoStackSize(){return d_matrix_undo_stack_size;};
+	void setMatrixUndoStackSize(int size);
 
 public slots:
 	//! \name Projects and Project Files
@@ -1127,6 +1131,7 @@ private:
     TextEditor *d_text_editor;
     QLocale d_locale;
 
+    int d_matrix_undo_stack_size;
 #ifdef QTIPLOT_DEMO
 	int demoCloseTimerId;
 #endif
@@ -1148,7 +1153,7 @@ private:
 	QAssistantClient *assistant;
 	ScriptWindow *scriptWindow;
 	QTranslator *appTranslator, *qtTranslator;
-	QDockWidget *explorerWindow;
+	QDockWidget *explorerWindow, *undoStackWindow;
 	QTextEdit *results;
 #ifdef SCRIPTING_CONSOLE
 	QDockWidget *consoleWindow;
@@ -1264,5 +1269,7 @@ private:
 	QAction* barstyle;
 	QAction *conestyle, *crossHairStyle;
     QList<QAction *> d_user_actions;
+    QAction *actionShowUndoStack;
+    QUndoView *d_undo_view;
 };
 #endif
