@@ -63,20 +63,20 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
 	centerLayout->addWidget( new QLabel(tr( "First" )), 1, 0 );
 
 	QLocale locale = m->locale();
-    boxXStart = new DoubleSpinBox('g');
+    boxXStart = new DoubleSpinBox();
     boxXStart->setLocale(locale);
     centerLayout->addWidget( boxXStart, 1, 1 );
 
-    boxYStart = new DoubleSpinBox('g');
+    boxYStart = new DoubleSpinBox();
     boxYStart->setLocale(locale);
 	centerLayout->addWidget( boxYStart, 1, 2 );
 
 	centerLayout->addWidget( new QLabel(tr( "Last" )), 2, 0 );
-    boxXEnd = new DoubleSpinBox('g');
+    boxXEnd = new DoubleSpinBox();
     boxXEnd->setLocale(locale);
     centerLayout->addWidget( boxXEnd, 2, 1 );
 
-    boxYEnd = new DoubleSpinBox('g');
+    boxYEnd = new DoubleSpinBox();
     boxYEnd->setLocale(locale);
 	centerLayout->addWidget( boxYEnd, 2, 2 );
 	centerLayout->setRowStretch(3, 1);

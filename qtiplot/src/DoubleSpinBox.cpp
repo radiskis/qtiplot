@@ -61,7 +61,7 @@ RangeLimitBox::RangeLimitBox(LimitType type, QWidget * parent)
 d_type(type)
 {
     d_checkbox = new QCheckBox();
-	d_spin_box = new DoubleSpinBox('g');
+	d_spin_box = new DoubleSpinBox();
 	d_spin_box->setSpecialValueText(" ");
 	d_spin_box->setValue(-DBL_MAX);
 	d_spin_box->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);

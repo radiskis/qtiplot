@@ -35,7 +35,7 @@
 class DoubleSpinBox : public QDoubleSpinBox
 {
 public:
-    DoubleSpinBox(const char format, QWidget * parent = 0);
+    DoubleSpinBox(const char format = 'g', QWidget * parent = 0);
 	virtual QString textFromValue ( double value ) const {return locale().toString(value, d_format, decimals());};
 	virtual double valueFromText ( const QString & text ) const {return locale().toDouble(text);};
 	virtual QValidator::State validate ( QString & input, int & pos ) const;

@@ -1263,13 +1263,13 @@ void AxesDialog::initScalesPage()
 	breaksLayout->addWidget(boxBreakDecoration, 0, 1);
 
 	breaksLayout->addWidget(new QLabel(tr("From")), 1, 0);
-	boxBreakStart = new DoubleSpinBox('g');
+	boxBreakStart = new DoubleSpinBox();
 	boxBreakStart->setLocale(app->locale());
     boxBreakStart->setDecimals(app->d_decimal_digits);
 	breaksLayout->addWidget(boxBreakStart, 1, 1);
 
 	breaksLayout->addWidget(new QLabel(tr("To")), 2, 0);
-	boxBreakEnd = new DoubleSpinBox('g');
+	boxBreakEnd = new DoubleSpinBox();
 	boxBreakEnd->setLocale(app->locale());
     boxBreakEnd->setDecimals(app->d_decimal_digits);
 	breaksLayout->addWidget(boxBreakEnd, 2, 1);
@@ -1288,7 +1288,7 @@ void AxesDialog::initScalesPage()
     breaksLayout->addWidget(boxLog10AfterBreak, 0, 3);
 
     breaksLayout->addWidget(new QLabel(tr("Step Before Break")), 1, 2);
-    boxStepBeforeBreak = new DoubleSpinBox('g');
+    boxStepBeforeBreak = new DoubleSpinBox();
     boxStepBeforeBreak->setMinimum(0.0);
     boxStepBeforeBreak->setSpecialValueText(tr("Guess"));
 	boxStepBeforeBreak->setLocale(app->locale());
@@ -1296,7 +1296,7 @@ void AxesDialog::initScalesPage()
 	breaksLayout->addWidget(boxStepBeforeBreak, 1, 3);
 
     breaksLayout->addWidget(new QLabel(tr("Step After Break")), 2, 2);
-    boxStepAfterBreak = new DoubleSpinBox('g');
+    boxStepAfterBreak = new DoubleSpinBox();
     boxStepAfterBreak->setMinimum(0.0);
     boxStepAfterBreak->setSpecialValueText(tr("Guess"));
 	boxStepAfterBreak->setLocale(app->locale());
@@ -2708,8 +2708,8 @@ boxBreakDecoration->setChecked(sc_engine->hasBreakDecoration());
 		boxUnit->insertItem(tr("weeks"));
 		int days = (int)(d_graph->axisStep(a)/86400.0);
 		boxStep->setText(QString::number(days));
-	} 
-	
+	}
+
 	if (d_graph->axisStep(a) != 0.0){
 		btnStep->setChecked(true);
 		boxStep->setEnabled(true);
