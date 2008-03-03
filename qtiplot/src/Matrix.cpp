@@ -327,7 +327,7 @@ void Matrix::setDimensions(int rows, int cols)
 		{
 			case 0: {// Yes
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-				MatrixModel *new_model = new MatrixModel(d_matrix_model);
+				MatrixModel *new_model = d_matrix_model->copy();
 				if (cols != c)
 					new_model->setColumnCount(cols);
 				if (rows != r)
@@ -345,7 +345,7 @@ void Matrix::setDimensions(int rows, int cols)
 		}
 	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		MatrixModel *new_model = new MatrixModel(d_matrix_model);
+		MatrixModel *new_model = d_matrix_model->copy();
         if (cols != c)
             new_model->setColumnCount(cols);
         if (rows != r)
@@ -573,7 +573,7 @@ void Matrix::clearSelection()
 	if (!selModel || !selModel->hasSelection())
 		return;
 
-    MatrixModel *old_model = new MatrixModel(d_matrix_model);
+    MatrixModel *old_model = d_matrix_model->copy();
 
 	QModelIndexList lst = selModel->selection().indexes();
     foreach(QModelIndex index, lst)
@@ -657,7 +657,7 @@ void Matrix::pasteSelection()
 
 	QTextStream ts2(&text, QIODevice::ReadOnly);
 
-    MatrixModel *new_model = new MatrixModel(d_matrix_model);
+    MatrixModel *new_model = d_matrix_model->copy();
     if (top + rows > numRows())
         new_model->setRowCount(top + rows);
     if (left + cols > numCols())
@@ -712,7 +712,7 @@ void Matrix::deleteSelectedRows()
 			count++;
 	}
 
-    MatrixModel *old_model = new MatrixModel(d_matrix_model);
+    MatrixModel *old_model = d_matrix_model->copy();
 	d_matrix_model->removeRows(startRow, count, QModelIndex());
 	d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Delete Rows") + " " +
                       QString::number(startRow + 1) + " - " + QString::number(startRow + count)));
@@ -741,7 +741,7 @@ void Matrix::deleteSelectedColumns()
 			count++;
 	}
 
-    MatrixModel *old_model = new MatrixModel(d_matrix_model);
+    MatrixModel *old_model = d_matrix_model->copy();
 	d_matrix_model->removeColumns(startCol, count, QModelIndex());
 	d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Delete Columns") + " " +
                       QString::number(startCol + 1) + " - " + QString::number(startCol + count)));
@@ -790,7 +790,7 @@ void Matrix::insertRow()
 	if (!index.isValid())
 		return;
 
-    MatrixModel *old_model = new MatrixModel(d_matrix_model);
+    MatrixModel *old_model = d_matrix_model->copy();
 	d_matrix_model->insertRows(index.row(), 1);
 	d_table_view->reset();
 	emit modifiedWindow(this);
@@ -809,7 +809,7 @@ void Matrix::insertColumn()
 	if (!index.isValid())
 		return;
 
-    MatrixModel *old_model = new MatrixModel(d_matrix_model);
+    MatrixModel *old_model = d_matrix_model->copy();
 	d_matrix_model->insertColumns(index.column(), 1);
 	d_table_view->reset();
 	emit modifiedWindow(this);

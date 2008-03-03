@@ -1244,7 +1244,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
 			analysisMenuAboutToShow();
 			
-			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Unmodified"));
+			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Empty Stack"));
 			QUndoStack *stack = ((Matrix *)w)->undoStack();
 			d_undo_view->setStack(stack);
 			actionUndo->setEnabled(stack->canUndo());
@@ -8158,7 +8158,7 @@ void ApplicationWindow::savedProject()
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
 		    if (w->isA("Matrix"))
-                ((Matrix *)w)->undoStack()->clear();
+                ((Matrix *)w)->undoStack()->setClean();
 		}
 		f = f->folderBelow();
 	}
@@ -15002,8 +15002,11 @@ void ApplicationWindow::setMatrixUndoStackSize(int size)
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
-		    if (w->isA("Matrix"))
-                ((Matrix *)w)->undoStack()->setUndoLimit(size);
+		    if (w->isA("Matrix")){
+				QUndoStack *stack = ((Matrix *)w)->undoStack();
+				if (!stack->count())// undo limit can only be changed for empty stacks
+                	stack->setUndoLimit(size);
+			}
 		}
 		f = f->folderBelow();
 	}

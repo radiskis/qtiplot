@@ -38,9 +38,7 @@ class MatrixCommand: public QUndoCommand
 {
 public:
     MatrixCommand(MatrixModel *modelBefore, MatrixModel *modelAfter, const QString & text);
-    ~MatrixCommand();
 
-    virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -54,7 +52,6 @@ class MatrixEditCellCommand: public QUndoCommand
 public:
     MatrixEditCellCommand(MatrixModel *model, const QModelIndex & index, double valBefore,
                             double valAfter, const QString & text);
-    virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -69,7 +66,6 @@ class MatrixSetFormulaCommand: public QUndoCommand
 {
 public:
     MatrixSetFormulaCommand(Matrix *m, const QString& oldFormula, const QString& newFormula, const QString & text);    
-	virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -83,7 +79,6 @@ class MatrixSetViewCommand: public QUndoCommand
 {
 public:
     MatrixSetViewCommand(Matrix *m, Matrix::ViewType oldView, Matrix::ViewType newView, const QString & text);
-	virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -98,7 +93,6 @@ class MatrixSetHeaderViewCommand: public QUndoCommand
 public:
     MatrixSetHeaderViewCommand(Matrix *m, Matrix::HeaderViewType oldView,
                             Matrix::HeaderViewType newView, const QString & text);
-    virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -112,7 +106,6 @@ class MatrixSetColWidthCommand: public QUndoCommand
 {
 public:
     MatrixSetColWidthCommand(Matrix *m, int oldWidth, int newWidth, const QString & text);
-    virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -127,7 +120,6 @@ class MatrixSetPrecisionCommand: public QUndoCommand
 public:
     MatrixSetPrecisionCommand(Matrix *m, const QChar& oldFormat, const QChar& newFormat,
                     int oldPrec, int newPrec, const QString & text);
-    virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -144,7 +136,6 @@ class MatrixSetCoordinatesCommand: public QUndoCommand
 public:
     MatrixSetCoordinatesCommand(Matrix *, double, double, double, double,
                     double, double, double, double, const QString &);
-    virtual int id () const;
     virtual void redo();
     virtual void undo();
 
@@ -160,7 +151,6 @@ public:
     MatrixSetColorMapCommand(Matrix *m, Matrix::ColorMapType d_map_type_before, 
 					const QwtLinearColorMap& d_map_before, Matrix::ColorMapType d_map_type_after, 
 					const QwtLinearColorMap& d_map_after, const QString& text);
-	virtual int id () const;
     virtual void redo();
     virtual void undo();
 
