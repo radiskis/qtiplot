@@ -38,7 +38,6 @@ class MatrixCommand: public QUndoCommand
 {
 public:
     MatrixCommand(MatrixModel *modelBefore, MatrixModel *modelAfter, const QString & text);
-
     virtual void redo();
     virtual void undo();
 
