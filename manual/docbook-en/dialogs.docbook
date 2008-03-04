@@ -978,8 +978,10 @@ which opens a dialog allowing to edit the plot range.</para>
 <sect1 id="set-dimensions-dialog">
   <title>Set Matrix Dimensions</title>
       <indexterm><primary>matrix</primary></indexterm>
-  <para>This command is in the &matrix-menu-lnk;. It allows to specify the number of rows and columns of a matrix</para>
-  <para>In this window, you can also define X-values and Y-values. These X and Y ranges will only be used by the 3D-plot, they are not known if you choose to define the content of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
+  <para>This command is in the &matrix-menu-lnk;. It allows to specify the number of rows and columns of a matrix.
+In this window, you can also define a range for X-values and Y-values. These X and Y ranges will be used in plots as initial scale ranges.
+They are also available via the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables 
+if you choose to define the content of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
   <figure id="fig-set-dimensions-dialog">
     <title>The &set-dimensions-cmd; dialog for matrix.</title>
     <mediaobject>

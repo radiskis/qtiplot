@@ -30,13 +30,11 @@
 #include "MatrixCommand.h"
 
 MatrixCommand::MatrixCommand(MatrixModel *modelBefore, MatrixModel *modelAfter, const QString & text):
-QUndoCommand(text)
+QUndoCommand(text),
+d_model_before(modelBefore),
+d_model_after(modelAfter)
 {
     setText(modelBefore->matrix()->objectName() + ": " + text);
-
-    d_model_before = modelBefore->copy();
-    delete modelBefore;
-    d_model_after = modelAfter->copy();
 }
 
 void MatrixCommand::redo()
