@@ -41,6 +41,9 @@
 #include <QTextEdit>
 #include <QTableWidget>
 #include <QTableWidgetSelectionRange>
+#ifdef SCRIPTING_PYTHON
+#include <QCheckBox>
+#endif
 
 MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl ), scripted(env)
@@ -95,7 +98,6 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	hbox2->addWidget(gb);
 
 	QHBoxLayout *hbox3 = new QHBoxLayout();
-	hbox3->addWidget(new QLabel(tr( "Cell(i,j)=" )));
 
 	commands = new ScriptEdit( scriptEnv);
 	commands->setFocus();
@@ -110,10 +112,15 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 
 	hbox3->addLayout(vbox2);
 
-	QVBoxLayout* vbox3 = new QVBoxLayout();
+	QVBoxLayout* vbox3 = new QVBoxLayout(this);
 	vbox3->addLayout(hbox2);
+#ifdef SCRIPTING_PYTHON
+	boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
+	boxMuParser->setChecked(true);
+	vbox3->addWidget(boxMuParser);
+#endif
+	vbox3->addWidget(new QLabel(tr( "Cell(i,j)=" )));
 	vbox3->addLayout(hbox3);
-    setLayout(vbox3);
 
 	functions->insertStringList(scriptEnv->mathFunctions(), -1);
 	insertExplain(0);
@@ -142,7 +149,13 @@ bool MatrixValuesDialog::apply()
 	QString oldFormula = matrix->formula();
 
 	matrix->setFormula(formula);
+	
+#ifdef SCRIPTING_PYTHON
+	if (matrix->calculate(startRow->value()-1, endRow->value()-1, 
+		startCol->value()-1, endCol->value()-1, boxMuParser->isChecked())){
+#else
 	if (matrix->calculate(startRow->value()-1, endRow->value()-1, startCol->value()-1, endCol->value()-1)){
+#endif
 	    matrix->undoStack()->push(new MatrixSetFormulaCommand(matrix, oldFormula, formula,
                                 tr("Set New Formula") + " " + formula));
 		return true;

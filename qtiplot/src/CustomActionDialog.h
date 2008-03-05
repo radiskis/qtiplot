@@ -60,10 +60,12 @@ private slots:
 	QAction* addAction();
 	void removeAction();
 	void setCurrentAction(int);
+	void saveCurrentAction();
 
 private:
 	void init();
 	void updateDisplayList();
+	QAction* actionAt(int row);
 	void saveAction(QAction *action);
 	void customizeAction(QAction *action);
 	bool validUserInput();
@@ -73,7 +75,7 @@ private:
 	QList<QToolBar *> d_app_toolbars;
 
     QListWidget *itemsList;
-    QPushButton *buttonCancel, *buttonAdd, *buttonRemove;
+    QPushButton *buttonCancel, *buttonAdd, *buttonRemove, *buttonSave;
     QPushButton *folderBtn, *fileBtn, *iconBtn;
     QLineEdit *folderBox, *fileBox, *iconBox, *textBox, *toolTipBox, *shortcutBox;
     QRadioButton *menuBtn, *toolBarBtn;

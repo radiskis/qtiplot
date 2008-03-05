@@ -32,6 +32,7 @@
 #include "Table.h"
 #include "SortDialog.h"
 #include "ImportASCIIDialog.h"
+#include "MyParser.h"
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -497,7 +498,59 @@ bool Table::calculate()
 	return success;
 }
 
-bool Table::calculate(int col, int startRow, int endRow)
+bool Table::muParserCalculate(int col, int startRow, int endRow)
+{
+	if (startRow < 0)
+		startRow = 0;
+	if (endRow >= numRows())
+		resizeRows(endRow + 1);
+	
+	QString cmd = commands[col];
+	if (cmd.isEmpty() || colTypes[col] != Numeric){
+		for (int i = startRow; i <= endRow; i++)
+			d_table->setText(i, col, cmd);
+        emit modifiedData(this, colName(col));
+        emit modifiedWindow(this);
+        return true;
+	}
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	
+	MyParser parser;
+	parser.SetExpr(cmd.ascii());
+	double r = startRow + 1.0;
+	parser.DefineVar("i", &r);
+	parser.DefineVar("row", &r);
+	double c = col + 1.0;
+	parser.DefineVar("j", &c);
+	double sr = startRow + 1.0;
+	parser.DefineVar("sr", &sr);
+	double er = endRow + 1.0;
+	parser.DefineVar("er", &er);
+	
+	try {
+		parser.Eval();
+	} catch(mu::ParserError &e) {
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - Input error"), QString::fromStdString(e.GetMsg()));
+		return false;		
+	}
+	
+	int prec;
+	char f;
+	columnNumericFormat(col, &f, &prec);
+	for (int i = startRow; i <= endRow; i++){
+		d_table->setText(i, col, locale().toString(parser.Eval(), f, prec));
+		++r;
+	}
+
+	emit modifiedData(this, colName(col));
+	emit modifiedWindow(this);
+	QApplication::restoreOverrideCursor();
+	return true;
+}
+
+bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser)
 {
 	if (col < 0 || col >= d_table->numCols())
 		return false;
@@ -507,6 +560,9 @@ bool Table::calculate(int col, int startRow, int endRow)
         tr("Column '%1' is read only!").arg(col_label[col]));
         return false;
     }
+
+	if (QString(scriptEnv->name()) == "muParser" || forceMuParser)
+		return muParserCalculate(col, startRow, endRow);
 
 	if (startRow < 0)
 		startRow = 0;

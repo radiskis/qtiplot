@@ -38,13 +38,15 @@
 #include <QList>
 #include <QLayout>
 #include <QSpinBox>
-#include <QCheckBox>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QLabel>
 #include <QComboBox>
 #include <QTextEdit>
 #include <QTextCursor>
+#ifdef SCRIPTING_PYTHON
+#include <QCheckBox>
+#endif
 
 SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ), scripted(env)
@@ -129,6 +131,12 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 
 	QVBoxLayout* vbox3 = new QVBoxLayout();
 	vbox3->addLayout(hbox2);
+#ifdef SCRIPTING_PYTHON
+	boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
+	boxMuParser->setChecked(true);
+	vbox3->addWidget(boxMuParser);
+#endif
+
 	colNameLabel = new QLabel();
 	vbox3->addWidget(colNameLabel);
 	vbox3->addLayout(hbox4);
@@ -210,8 +218,13 @@ bool SetColValuesDialog::apply()
 	QString oldFormula = table->getCommands()[col];
 
 	table->setCommand(col,formula);
+#ifdef SCRIPTING_PYTHON
+	if(table->calculate(col, start->value()-1, end->value()-1, boxMuParser->isChecked()))
+#else
 	if(table->calculate(col, start->value()-1, end->value()-1))
+#endif
 		return true;
+	
 	table->setCommand(col, oldFormula);
 	return false;
 }
