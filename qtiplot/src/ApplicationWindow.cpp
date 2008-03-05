@@ -1173,7 +1173,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	// these use the same keyboard shortcut (Ctrl+Return) and should not be enabled at the same time
 	actionNoteEvaluate->setEnabled(false);
 	actionTableRecalculate->setEnabled(false);
-	
+
 	// clear undo stack view (in case window is not a matrix)
 	d_undo_view->setStack(0);
 	actionUndo->setEnabled(false);
@@ -1243,7 +1243,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			matrixMenuAboutToShow();
 			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
 			analysisMenuAboutToShow();
-			
+
 			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Empty Stack"));
 			QUndoStack *stack = ((Matrix *)w)->undoStack();
 			d_undo_view->setStack(stack);
@@ -2741,7 +2741,7 @@ void ApplicationWindow::setMatrixGrayScale()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(), 
+	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(),
 						Matrix::GrayScale, QwtLinearColorMap(), tr("Set Gray Scale Palette")));
 	m->setGrayScale();
 	QApplication::restoreOverrideCursor();
@@ -2754,7 +2754,7 @@ void ApplicationWindow::setMatrixRainbowScale()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(), 
+	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(),
 						Matrix::Rainbow, QwtLinearColorMap(), tr("Set Rainbow Palette")));
 	m->setRainbowColorMap();
 	QApplication::restoreOverrideCursor();
@@ -3054,7 +3054,7 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 
 	if (w == aw)
 		return;
-	
+
 	customToolBars(w);
 	customMenu(w);
 
@@ -8152,7 +8152,7 @@ void ApplicationWindow::savedProject()
 	actionRedo->setEnabled(false);
 
 	saved = true;
-	
+
 	Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
@@ -14856,17 +14856,16 @@ void ApplicationWindow::removeCustomAction(QAction *action)
 
 void ApplicationWindow::performCustomAction(QAction *action)
 {
-	if (!d_user_actions.contains(action))
+	if (!action || !d_user_actions.contains(action))
 		return;
 
 #ifdef SCRIPTING_PYTHON
 	setScriptingLanguage("Python");
 
-    QString fileName = action->data().toString();
-    Note* n = new Note(scriptEnv, "", 0);
-    n->importASCII(fileName);
-    n->executeAll();
-    delete n;
+    ScriptEdit *script = new ScriptEdit(scriptEnv, 0);
+    script->importASCII(action->data().toString());
+    script->executeAll();
+    delete script;
 #else
     QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
     tr("QtiPlot was not built with Python scripting support included!"));
@@ -15020,7 +15019,7 @@ void ApplicationWindow::repaintWindows()
 		return;
 
     d_workspace->update();
-	
+
     MdiSubWindow *aw = activeWindow();
 	if (!aw || aw->status() == MdiSubWindow::Maximized)
 		return;
