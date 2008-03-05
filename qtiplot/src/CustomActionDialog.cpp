@@ -109,6 +109,10 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 
 	QHBoxLayout * bottomButtons = new QHBoxLayout();
 	bottomButtons->addStretch();
+	buttonSave = new QPushButton(tr("&Save"));
+	buttonSave->setAutoDefault( true );
+	bottomButtons->addWidget(buttonSave);
+	
 	buttonAdd = new QPushButton(tr("&Add"));
 	buttonAdd->setAutoDefault( true );
 	bottomButtons->addWidget(buttonAdd);
@@ -134,6 +138,7 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 	QShortcut *accelRemove = new QShortcut(QKeySequence(Qt::Key_Delete), this);
 	connect(accelRemove, SIGNAL(activated()), this, SLOT(removeAction()));
 
+	connect(buttonSave, SIGNAL(clicked()), this, SLOT(saveCurrentAction()));
 	connect(buttonAdd, SIGNAL(clicked()), this, SLOT(addAction()));
 	connect(buttonRemove, SIGNAL(clicked()), this, SLOT(removeAction()));
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
@@ -332,6 +337,9 @@ bool CustomActionDialog::validUserInput()
 
 void CustomActionDialog::customizeAction(QAction *action)
 {
+	if (!action)
+		return;
+	
 	action->setText(textBox->text().remove(".").simplified());
     action->setData(QFileInfo(fileBox->text()).absoluteFilePath());
 
@@ -353,32 +361,64 @@ void CustomActionDialog::customizeAction(QAction *action)
 
 void CustomActionDialog::removeAction()
 {
-	int row = itemsList->currentRow();
-
-	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	QList<QAction *>actions = app->customActionsList();
-	if (actions.isEmpty() || row < 0 || row >= actions.count())
-        return;
-
-    QString s = tr("Are you sure you want to remove this action?");
+	QString s = tr("Are you sure you want to remove this action?");
     if (QMessageBox::Yes != QMessageBox::question(this, tr("QtiPlot") + " - " + tr("Remove Action"), s, QMessageBox::Yes, QMessageBox::Cancel))
         return;
 
-    QAction *action = actions.at(row);
-
+	int row = itemsList->currentRow();
+    QAction *action = actionAt(row);
+	if (!action)
+		return;
+	
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
     QFile f(app->customActionsDirPath + "/" + action->text() + ".qca");
     f.remove();
-
-    QList<QAction *> actionsList = app->customActionsList();
-    foreach (QAction *a, actionsList){
-        if(a->text() == action->text()){
-            app->removeCustomAction(a);
-            break;
-        }
-    }
+	
+	app->removeCustomAction(action);
+	
     itemsList->takeItem(row);
 	if (itemsList->count())
 		setCurrentAction(0);
+}
+
+void CustomActionDialog::saveCurrentAction()
+{
+	int row = itemsList->currentRow(); 
+	QAction *action = actionAt(row);
+	if (!action)
+		return;
+	
+	QList<QWidget *> list = action->associatedWidgets();
+    QWidget *w = list[0];
+   	QString parentName = w->objectName();
+	if ((toolBarBtn->isChecked() && w->objectName() != toolBarBox->currentText()) || 
+		(menuBtn->isChecked() && w->objectName() != menuBox->currentText())){
+		//relocate action: create a new one and delete the old
+		ApplicationWindow *app = (ApplicationWindow *)parent();
+		QAction *newAction = new QAction(app);
+		customizeAction(newAction);			
+		if (toolBarBtn->isChecked()){
+            foreach (QToolBar *t, d_app_toolbars){
+                if (t->windowTitle() == toolBarBox->currentText()){
+                    app->addCustomAction(newAction, t->objectName(), row);
+                    break;
+                }
+            }
+        } else {
+            foreach (QMenu *m, d_menus){
+                if (m->title().remove("&") == menuBox->currentText()){
+                    action->setStatusTip(m->objectName());
+                    app->addCustomAction(newAction, m->objectName(), row);
+                    break;
+                }
+            }
+        }
+		saveAction(newAction);
+		delete action;
+	} else {
+		customizeAction(action);
+		saveAction(action);
+	}
 }
 
 void CustomActionDialog::saveAction(QAction *action)
@@ -454,14 +494,19 @@ void CustomActionDialog::chooseFolder()
     }
 }
 
-void CustomActionDialog::setCurrentAction(int row)
+QAction * CustomActionDialog::actionAt(int row)
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	QList<QAction *>actions = app->customActionsList();
 	if (actions.isEmpty() || row < 0 || row >= actions.count())
-        return;
+        return 0;
 
-    QAction *action = actions.at(row);
+    return actions.at(row);
+}
+
+void CustomActionDialog::setCurrentAction(int row)
+{
+    QAction *action = actionAt(row);
     if (!action)
         return;
 

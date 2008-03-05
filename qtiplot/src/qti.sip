@@ -354,7 +354,7 @@ public:
     void setCoordinates(double xs, double xe, double ys, double ye);
 
     void setFormula(const QString &);
-    bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
+    bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1, bool muParser = true);
 
     void setNumericPrecision(int prec);
 

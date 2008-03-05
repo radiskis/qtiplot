@@ -5543,7 +5543,7 @@ void ApplicationWindow::showRowsDialog()
 
 	bool ok;
 	int rows = QInputDialog::getInteger(this, tr("QtiPlot - Enter rows number"), tr("Rows"),
-			t->numRows(), 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
+			t->numRows(), 0, 1000000, 1, &ok);
 	if ( ok )
 		t->resizeRows(rows);
 }
@@ -5556,10 +5556,10 @@ void ApplicationWindow::showDeleteRowsDialog()
 
 	bool ok;
 	int start_row = QInputDialog::getInteger(this, tr("QtiPlot - Delete rows"), tr("Start row"),
-                    1, 1, t->numRows(), 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
+                    1, 1, t->numRows(), 1, &ok);
     if (ok){
         int end_row = QInputDialog::getInteger(this, tr("QtiPlot - Delete rows"), tr("End row"),
-                        t->numRows(), 1, t->numRows(), 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
+                        t->numRows(), 1, t->numRows(), 1, &ok);
         if (ok)
             t->deleteRows(start_row, end_row);
 	}
@@ -5573,7 +5573,7 @@ void ApplicationWindow::showColsDialog()
 
 	bool ok;
 	int cols = QInputDialog::getInteger(this, tr("QtiPlot - Enter columns number"), tr("Columns"),
-			t->numCols(), 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint);
+			t->numCols(), 0, 1000000, 1, &ok);
 	if ( ok )
 		t->resizeCols(cols);
 }
@@ -14805,7 +14805,7 @@ void ApplicationWindow::showCustomActionDialog()
 	ad->setFocus();
 }
 
-void ApplicationWindow::addCustomAction(QAction *action, const QString& parentName)
+void ApplicationWindow::addCustomAction(QAction *action, const QString& parentName, int index)
 {
     if (!action)
         return;
@@ -14814,7 +14814,10 @@ void ApplicationWindow::addCustomAction(QAction *action, const QString& parentNa
     foreach (QToolBar *t, toolBars){
         if (t->objectName() == parentName){
             t->addAction(action);
-            d_user_actions << action;
+			if (index < 0)
+            	d_user_actions << action;
+			else if (index >= 0 && index < d_user_actions.size())
+				d_user_actions.replace(index, action);
             return;
         }
     }
@@ -14823,7 +14826,10 @@ void ApplicationWindow::addCustomAction(QAction *action, const QString& parentNa
     foreach (QMenu *m, menus){
         if (m->objectName() == parentName){
             m->addAction(action);
-            d_user_actions << action;
+			if (index < 0)
+            	d_user_actions << action;
+			else if (index >= 0 && index < d_user_actions.size())
+				d_user_actions.replace(index, action);
             return;
         }
     }

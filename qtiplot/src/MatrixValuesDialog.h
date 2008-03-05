@@ -36,6 +36,9 @@
 #include "ScriptEdit.h"
 #include "Matrix.h"
 
+#ifdef SCRIPTING_PYTHON
+class QCheckBox;
+#endif
 class QComboBox;
 class QTextEdit;
 class QSpinBox;
@@ -72,6 +75,9 @@ private:
     QTextEdit* explain;
 	QSpinBox *startRow, *endRow, *startCol, *endCol;
 	QPushButton *btnApply;
+#ifdef SCRIPTING_PYTHON
+	QCheckBox *boxMuParser;
+#endif
 };
 
 #endif //

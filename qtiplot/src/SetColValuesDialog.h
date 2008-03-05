@@ -41,7 +41,9 @@ class QTextEdit;
 class QSpinBox;
 class QPushButton;
 class QLabel;
-
+#ifdef SCRIPTING_PYTHON
+class QCheckBox;
+#endif
 class Table;
 class ScriptingEnv;
 class ScriptEdit;
@@ -85,6 +87,9 @@ private:
     QTextEdit* explain;
 	QSpinBox* start, *end;
 	QLabel *colNameLabel;
+#ifdef SCRIPTING_PYTHON
+	QCheckBox *boxMuParser;
+#endif
 };
 
 #endif //

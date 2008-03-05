@@ -210,7 +210,9 @@ public slots:
 	//! Set formula for column col.
 	void setCommand(int col, const QString& com);
 	//! Compute specified cells from column formula.
-	bool calculate(int col, int startRow, int endRow);
+	bool calculate(int col, int startRow, int endRow, bool forceMuParser = true);
+	//! Compute specified cells from column formula (optimized for muParser).
+	bool muParserCalculate(int col, int startRow, int endRow);
 	//! Compute selected cells from column formulae; use current cell if there's no selection.
 	bool calculate();
 
