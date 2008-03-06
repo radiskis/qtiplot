@@ -2948,6 +2948,10 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	d_workspace->addSubWindow(m);
 	addListViewItem(m);
 
+	QUndoStack *stack = m->undoStack();
+	connect(stack, SIGNAL(canUndoChanged(bool)), actionUndo, SLOT(setEnabled(bool)));
+	connect(stack, SIGNAL(canRedoChanged(bool)), actionRedo, SLOT(setEnabled(bool)));
+
 	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
 	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(updateMatrixPlots(MdiSubWindow *)));
 	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
@@ -7512,12 +7516,8 @@ void ApplicationWindow::undo()
 		actionRedo->setEnabled(true);
 	} else if (w->isA("Matrix")){
 	    QUndoStack *stack = ((Matrix *)w)->undoStack();
-	    if (stack){
-            if (stack->canUndo())
-                stack->undo();
-            actionUndo->setEnabled(stack->canUndo());
-            actionRedo->setEnabled(stack->canRedo());
-	    }
+	    if (stack && stack->canUndo())
+			stack->undo();
 	}
 	QApplication::restoreOverrideCursor();
 }
@@ -7546,12 +7546,8 @@ void ApplicationWindow::redo()
 		actionRedo->setEnabled(false);
 	} else if (w->isA("Matrix")){
 	    QUndoStack *stack = ((Matrix *)w)->undoStack();
-	    if (stack){
-            if (stack->canRedo())
-                stack->redo();
-            actionUndo->setEnabled(stack->canUndo());
-            actionRedo->setEnabled(stack->canRedo());
-	    }
+	    if (stack && stack->canRedo())
+			stack->redo();
 	}
 	QApplication::restoreOverrideCursor();
 }
