@@ -16,8 +16,8 @@ DEFINES         += SCRIPTING_DIALOG
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
 #RESTRICTED_MODULES += EMF
 
-CONFIG          += release
-#CONFIG          += debug
+#CONFIG          += release
+CONFIG          += debug
 #win32: CONFIG   += console
 
 # what to install and where
@@ -124,8 +124,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-#system(lupdate -verbose qtiplot.pro)
-#system(lrelease -verbose qtiplot.pro)
+system(lupdate -verbose qtiplot.pro)
+system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \

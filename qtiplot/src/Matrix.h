@@ -140,6 +140,19 @@ public:
 
 	void setGrayScale();
 	void setRainbowColorMap();
+	//! Calculate the volume integral
+	double integrate();
+	//! Calculate the determinant of the matrix
+	double determinant();
+	//! Transpose the matrix
+	void transpose();
+	//! Invert the matrix
+	void invert();
+
+	//! Calculate matrix values using the #formula_str.
+	bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1, bool forceMuParser = true);
+	//! Calculate matrix values using the #formula_str (optimization for muParser).
+	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 
 	bool exportASCII(const QString& fname, const QString& separator, bool exportSelection);
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces,
@@ -160,17 +173,6 @@ public slots:
 
 	//! Set the Matrix size
 	void setDimensions(int rows, int cols);
-	//! Transpose the matrix
-	void transpose();
-	//! Invert the matrix
-	void invert();
-	//! Calculate the determinant of the matrix
-	double determinant();
-
-	//! Calculate matrix values using the #formula_str.
-	bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1, bool forceMuParser = true);
-	//! Calculate matrix values using the #formula_str (optimization for muParser).
-	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 
 	//! Return the content of the cell as a string
 	QString text(int row, int col);

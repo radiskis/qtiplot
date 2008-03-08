@@ -30,13 +30,13 @@
 #define DATASETDIALOG_H
 
 #include <QDialog>
+#include "ApplicationWindow.h"
 
 class QGroupBox;
 class QPushButton;
 class QCheckBox;
 class QLineEdit;
 class QComboBox;
-
 class Graph;
 
 //! Multi purpose dialog for choosing a data set
@@ -50,7 +50,7 @@ public:
 public slots:
 	void accept();
 	void setCurveNames(const QStringList& names);
-	void setOperationType(const QString& s){operation=s;};
+	void setOperationType(ApplicationWindow::Analysis operation){d_operation = operation;};
 	void setCurentDataSet(const QString& s);
 	void setGraph(Graph *g);
 
@@ -58,7 +58,7 @@ signals:
 	void options(const QString&);
 
 private:
-	QString operation;
+	ApplicationWindow::Analysis d_operation;
 	QString windowTitle;
 	Graph *d_graph;
 

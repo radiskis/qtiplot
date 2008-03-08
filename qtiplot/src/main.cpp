@@ -45,7 +45,7 @@ If you want to contribute code, please read the notes on \ref style "coding styl
 <br>
 
  The QtiPlot web page can be found at<br>
- <a href="http://soft.proindependent.com/qtiPlot.html">http://soft.proindependent.com/qtiPlot.html</a><br>
+ <a href="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</a><br>
 
   \section libs QtiPlot uses the following libraries:
   <a href="http://www.trolltech.com/products/qt/index.html">Qt</a>,

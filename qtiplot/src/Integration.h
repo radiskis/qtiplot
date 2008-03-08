@@ -36,29 +36,43 @@ class Integration : public Filter
 Q_OBJECT
 
 public:
+	enum Integrand{DataSet, AnalyticalFunction};
+
 	Integration(ApplicationWindow *parent, Graph *g);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 	Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end);
+	Integration(const QString& formula, const QString& var, ApplicationWindow *parent,
+                Graph *g, double start, double end);
 
     int method(){return d_method;};
     void setMethodOrder(int n);
 
     double area(){return d_area;};
-	
-	virtual void enableGraphicsDisplay(bool = true, Graph* = 0){};
 
 private:
     void init();
-    //!Uses code originally written by Vasileios Gkanis. It needs some more checking.
     QString logInfo();
-    void output(){};
+
+    void output();
+
+	double trapez();
+	double trapezf(int n);
+    //! Returns the number of iterations used to calculate the area if d_integrand = AnalyticalFunction.
+    int romberg();
 
     //! the integration method: 1 = trapezoidal, max = 5!
     int d_method;
 
     //! the value of the integral
     double d_area;
+
+	//! the type of the integrand
+	Integrand d_integrand;
+	//! Analytical function to be integrated
+	QString d_formula;
+	//! Variable name for the function to be integrated
+	QString d_variable;
 };
 
 #endif

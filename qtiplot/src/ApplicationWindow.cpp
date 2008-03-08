@@ -6799,11 +6799,6 @@ void ApplicationWindow::showFitPolynomDialog()
 	pfd->show();
 }
 
-void ApplicationWindow::fitLinear()
-{
-	analysis("fitLinear");
-}
-
 void ApplicationWindow::updateLog(const QString& result)
 {
 	if ( !result.isEmpty() ){
@@ -6820,35 +6815,11 @@ void ApplicationWindow::showIntegrationDialog()
 		return;
 
 	Graph* g = plot->activeGraph();
-	if (!g || !g->validCurvesDataSize())
+	if (!g)
 		return;
 
-	IntDialog *id = new IntDialog(this);
-	id->setAttribute(Qt::WA_DeleteOnClose);
-	connect (g, SIGNAL(destroyed()), id, SLOT(close()));
-	id->setGraph(g);
-	id->show();
-}
-
-void ApplicationWindow::fitSigmoidal()
-{
-	analysis("fitSigmoidal");
-}
-
-void ApplicationWindow::fitGauss()
-{
-	analysis("fitGauss");
-}
-
-void ApplicationWindow::fitLorentz()
-
-{
-	analysis("fitLorentz");
-}
-
-void ApplicationWindow::differentiate()
-{
-	analysis("differentiate");
+	IntDialog *id = new IntDialog(this, g);
+	id->exec();
 }
 
 void ApplicationWindow::showResults(bool ok)
@@ -7809,6 +7780,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         translateMenu->addAction(actionTranslateHor);
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionDifferentiate);
+		analysisMenu->addAction(actionIntegrate);
         analysisMenu->addAction(actionShowIntDialog);
         analysisMenu->insertSeparator();
 
@@ -7897,6 +7869,7 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	matrixMenu->addAction(actionTransposeMatrix);
 	matrixMenu->addAction(actionInvertMatrix);
 	matrixMenu->addAction(actionMatrixDeterminant);
+	matrixMenu->addAction(actionIntegrate);
 	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionGoToRow);
 	matrixMenu->insertSeparator();
@@ -10600,7 +10573,7 @@ void ApplicationWindow::copyActiveLayer()
 	g->copyImage();
 }
 
-void ApplicationWindow::showDataSetDialog(const QString& whichFit)
+void ApplicationWindow::showDataSetDialog(Analysis operation)
 {
     MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -10611,23 +10584,44 @@ void ApplicationWindow::showDataSetDialog(const QString& whichFit)
         return;
 
 	DataSetDialog *ad = new DataSetDialog(tr("Curve") + ": ", this);
-	ad->setAttribute(Qt::WA_DeleteOnClose);
 	ad->setGraph(g);
-	ad->setOperationType(whichFit);
+	ad->setOperationType(operation);
 	ad->exec();
 }
 
-void ApplicationWindow::analyzeCurve(Graph *g, const QString& whichFit, const QString& curveTitle)
+void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString& curveTitle)
 {
 	if (!g)
 		return;
-
-	if(whichFit=="fitLinear" || whichFit=="fitSigmoidal" || whichFit=="fitGauss" || whichFit=="fitLorentz")
-	{
-		Fit *fitter = 0;
-		if (whichFit == "fitLinear")
+	
+	Fit *fitter = 0;
+	switch(operation){
+		case Integrate:
+		{
+			Integration *i = new Integration(this, g, curveTitle);
+			i->run();
+			delete i;
+		}
+		break;	
+		case Diff:
+		{
+			Differentiation *diff = new Differentiation(this, g, curveTitle);
+			diff->enableGraphicsDisplay(true);
+			diff->run();
+			delete diff;
+		}
+		break;
+		case FitLinear:
 			fitter = new LinearFit (this, g);
-		else if (whichFit == "fitSigmoidal"){
+		break;
+		case FitLorentz:
+			fitter = new LorentzFit(this, g);
+		break;
+		case FitGauss:
+			fitter = new GaussFit(this, g);
+		break;
+		case FitSigmoidal:
+		{
 			QwtPlotCurve* c = g->curve(curveTitle);
             if (c){
             	ScaleEngine *se = (ScaleEngine *)g->plotWidget()->axisScaleEngine(c->xAxis());
@@ -10636,36 +10630,29 @@ void ApplicationWindow::analyzeCurve(Graph *g, const QString& whichFit, const QS
 				else
 					fitter = new SigmoidalFit (this, g);
             }
-		} else if(whichFit == "fitGauss")
-			fitter = new GaussFit(this, g);
-		else if(whichFit == "fitLorentz")
-			fitter = new LorentzFit(this, g);
-
-		if (fitter->setDataFromCurve(curveTitle)){
-			if (whichFit != "fitLinear")
-				fitter->guessInitialValues();
-
-            fitter->scaleErrors(fit_scale_errors);
-            fitter->setOutputPrecision(fit_output_precision);
-
-            if (whichFit == "fitLinear" && d_2_linear_fit_points)
-                fitter->generateFunction(generateUniformFitPoints, 2);
-            else
-                fitter->generateFunction(generateUniformFitPoints, fitPoints);
-			fitter->fit();
-			if (pasteFitResultsToPlot)
-                fitter->showLegend();
-			delete fitter;
 		}
-	} else if(whichFit == "differentiate"){
-		Differentiation *diff = new Differentiation(this, g, curveTitle);
-		diff->enableGraphicsDisplay(true);
-		diff->run();
-		delete diff;
+		break;
+	}
+	
+	if (!fitter)
+		return;
+	
+	if (fitter->setDataFromCurve(curveTitle)){
+		if (operation != FitLinear){
+			fitter->guessInitialValues();
+			fitter->generateFunction(generateUniformFitPoints, fitPoints);
+		} else if (d_2_linear_fit_points)
+			fitter->generateFunction(generateUniformFitPoints, 2);
+		fitter->scaleErrors(fit_scale_errors);
+		fitter->setOutputPrecision(fit_output_precision);		
+		fitter->fit();
+		if (pasteFitResultsToPlot)
+			fitter->showLegend();
+		delete fitter;
 	}
 }
 
-void ApplicationWindow::analysis(const QString& whichFit)
+void ApplicationWindow::analysis(Analysis operation)
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -10677,7 +10664,7 @@ void ApplicationWindow::analysis(const QString& whichFit)
 
 	QString curve_title = g->selectedCurveTitle();
 	if (!curve_title.isNull()) {
-		analyzeCurve(g, whichFit, curve_title);
+		analyzeCurve(g, operation, curve_title);
 		return;
 	}
 
@@ -10685,10 +10672,54 @@ void ApplicationWindow::analysis(const QString& whichFit)
 	if (lst.count() == 1){
 		const QwtPlotCurve *c = g->curve(lst[0]);
 		if (c)
-			analyzeCurve(g, whichFit, lst[0]);
+			analyzeCurve(g, operation, lst[0]);
+	} else
+		showDataSetDialog(operation);
+}
+
+void ApplicationWindow::integrate()
+{
+	MdiSubWindow *w = activeWindow();
+	if (!w)
+		return;
+	
+	if (w->isA("MultiLayer"))
+		analysis(Integrate);
+	else if (w->isA("Matrix")){		
+		QDateTime dt = QDateTime::currentDateTime ();
+		QString info = dt.toString(Qt::LocalDate);
+		info += "\n" + tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
+		info += QString::number(((Matrix *)w)->integrate()) + "\n";
+		info += "-------------------------------------------------------------\n";
+		current_folder->appendLogInfo(info);
+		showResults(true);
 	}
-	else
-		showDataSetDialog(whichFit);
+}
+
+void ApplicationWindow::differentiate()
+{
+	analysis(Diff);
+}
+
+void ApplicationWindow::fitLinear()
+{
+	analysis(FitLinear);
+}
+
+void ApplicationWindow::fitSigmoidal()
+{
+	analysis(FitSigmoidal);
+}
+
+void ApplicationWindow::fitGauss()
+{
+	analysis(FitGauss);
+}
+
+void ApplicationWindow::fitLorentz()
+
+{
+	analysis(FitLorentz);
 }
 
 void ApplicationWindow::pickPointerCursor()
@@ -11106,7 +11137,10 @@ void ApplicationWindow::createActions()
 	actionShowRowStatistics = new QAction(QIcon(QPixmap(stat_rows_xpm)), tr("Statistics on &Rows"), this);
 	connect(actionShowRowStatistics, SIGNAL(activated()), this, SLOT(showRowStatistics()));
 
-	actionShowIntDialog = new QAction(tr("&Integrate ..."), this);
+	actionIntegrate = new QAction(tr("&Integrate"), this);
+	connect(actionIntegrate, SIGNAL(activated()), this, SLOT(integrate()));
+	
+	actionShowIntDialog = new QAction(tr("Integr&ate Function..."), this);
 	connect(actionShowIntDialog, SIGNAL(activated()), this, SLOT(showIntegrationDialog()));
 
 	actionInterpolate = new QAction(tr("Inte&rpolate ..."), this);
@@ -11864,7 +11898,8 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionShowRowStatistics->setMenuText(tr("Statistics on &Rows"));
 	actionShowRowStatistics->setToolTip(tr("Selected rows statistics"));
-	actionShowIntDialog->setMenuText(tr("&Integrate ..."));
+	actionShowIntDialog->setMenuText(tr("Integr&ate Function..."));
+	actionIntegrate->setMenuText(tr("&Integrate"));
 	actionInterpolate->setMenuText(tr("Inte&rpolate ..."));
 	actionLowPassFilter->setMenuText(tr("&Low Pass..."));
 	actionHighPassFilter->setMenuText(tr("&High Pass..."));
