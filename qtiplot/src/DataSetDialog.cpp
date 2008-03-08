@@ -27,7 +27,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "DataSetDialog.h"
-#include "ApplicationWindow.h"
 #include "Graph.h"
 
 #include <QPushButton>
@@ -42,9 +41,10 @@
 DataSetDialog::DataSetDialog( const QString& text, QWidget* parent,  Qt::WFlags fl )
 : QDialog( parent, fl )
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("QtiPlot - Select data set"));
 
-	operation = QString();
+	d_operation = ApplicationWindow::NoAnalysis;
 	d_graph = 0;
 
 	QVBoxLayout * mainLayout = new QVBoxLayout( this );
@@ -76,13 +76,12 @@ DataSetDialog::DataSetDialog( const QString& text, QWidget* parent,  Qt::WFlags 
 
 void DataSetDialog::accept()
 {
-	if (operation.isEmpty())
+	if (d_operation == ApplicationWindow::NoAnalysis)
 		emit options(boxName->currentText());
-	else if (d_graph)
-	{
+	else if (d_graph){
 	    ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	    if (app)
-            app->analyzeCurve(d_graph, operation, boxName->currentText());
+            app->analyzeCurve(d_graph, d_operation, boxName->currentText());
 	}
 	close();
 }

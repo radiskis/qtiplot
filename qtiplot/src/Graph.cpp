@@ -2408,7 +2408,7 @@ int Graph::plotItemIndex(QwtPlotItem *it) const
 {
 	if (!it)
 		return -1;
-	
+
 	for (int i = 0; i < n_curves; i++){
 		if (d_plot->plotItem(c_keys[i]) == it)
 			return i;
@@ -3433,7 +3433,7 @@ QString Graph::generateFunctionName(const QString& name)
   	return newName;
 }
 
-void Graph::addFunction(const QStringList &formulas, double start, double end, int points, const QString &var, int type, const QString& title)
+FunctionCurve* Graph::addFunction(const QStringList &formulas, double start, double end, int points, const QString &var, int type, const QString& title)
 {
 	QString name;
 	if (!title.isEmpty())
@@ -3461,6 +3461,7 @@ void Graph::addFunction(const QStringList &formulas, double start, double end, i
 	updatePlot();
 
 	emit modifiedGraph();
+	return c;
 }
 
 void Graph::insertFunctionCurve(const QString& formula, int points, int fileVersion)
@@ -4190,7 +4191,7 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 }
 
 void Graph::setCurveStyle(int index, int s)
-{	
+{
 	QwtPlotCurve *c = curve(index);
 	if (!c)
 		return;

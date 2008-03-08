@@ -126,6 +126,7 @@ public:
 	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow, Plot3DWindow};
 	enum MatrixToTableConversion{Direct, XYZ, YXZ};
 	enum EndLineChar{LF, CRLF, CR};
+	enum Analysis{NoAnalysis, Integrate, Diff, FitLinear, FitGauss, FitLorentz, FitSigmoidal};
 
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
@@ -594,10 +595,11 @@ public slots:
 
 	//! \name Calculus
 	//@{
+	void integrate();
 	void differentiate();
-	void analysis(const QString& whichFit);
-	void analyzeCurve(Graph *g, const QString& whichFit, const QString& curveTitle);
-	void showDataSetDialog(const QString& whichFit);
+	void analysis(Analysis operation);
+	void analyzeCurve(Graph *g, Analysis operation, const QString& curveTitle);
+	void showDataSetDialog(Analysis operation);
 	//@}
 
 	void addErrorBars();
@@ -1195,7 +1197,7 @@ private:
 	QAction *actionPlotHorizontalBars, *actionPlotArea, *actionPlotPie, *actionPlotVectXYAM, *actionPlotVectXYXY;
     QAction *actionPlotHistogram, *actionPlotStackedHistograms, *actionPlot2VerticalLayers, *actionPlot2HorizontalLayers, *actionPlot4Layers, *actionPlotStackedLayers;
     QAction *actionPlot3DRibbon, *actionPlot3DBars, *actionPlot3DScatter, *actionPlot3DTrajectory;
-    QAction *actionShowColStatistics, *actionShowRowStatistics, *actionShowIntDialog;
+    QAction *actionShowColStatistics, *actionShowRowStatistics, *actionShowIntDialog, *actionIntegrate;
     QAction *actionDifferentiate, *actionFitLinear, *actionShowFitPolynomDialog;
     QAction *actionShowExpDecayDialog, *actionShowTwoExpDecayDialog, *actionShowExpDecay3Dialog;
     QAction *actionFitExpGrowth, *actionFitSigmoidal, *actionFitGauss, *actionFitLorentz, *actionShowFitDialog;

@@ -359,6 +359,22 @@ void Matrix::setDimensions(int rows, int cols)
 	}
 }
 
+double Matrix::integrate()
+{
+	int rows = numRows() - 1;
+	int cols = numCols() - 1;
+	double sum = 0.0;
+	for(int i=0; i<rows; i++){
+		int i1 = i+1;  
+		for(int j=0; j<cols; j++){
+			int j1 = j + 1;
+			sum += 0.25*(d_matrix_model->cell(i, j) + d_matrix_model->cell(i, j1) + 
+						d_matrix_model->cell(i1, j) + d_matrix_model->cell(i1, j1));
+		}
+	}	
+	return sum*dx()*dy();	
+}
+
 double Matrix::determinant()
 {
 	int rows = numRows();

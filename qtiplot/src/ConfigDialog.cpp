@@ -800,7 +800,7 @@ void ConfigDialog::initFileLocationsPage()
 	QGroupBox *gb = new QGroupBox();
 	QGridLayout *gl = new QGridLayout(gb);
 
-	lblTranslationsPath = new QLabel("Translations");
+	lblTranslationsPath = new QLabel(tr("Translations"));
 	gl->addWidget(lblTranslationsPath , 0, 0);
 
 	translationsPathLine = new QLineEdit();
@@ -810,7 +810,7 @@ void ConfigDialog::initFileLocationsPage()
 	QPushButton *browseTranslationsBtn = new QPushButton("...");
 	gl->addWidget(browseTranslationsBtn, 0, 2);
 
-	lblHelpPath = new QLabel("Help");
+	lblHelpPath = new QLabel(tr("Help"));
 	gl->addWidget(lblHelpPath, 1, 0 );
 
 	QFileInfo hfi(app->helpFilePath);
@@ -971,8 +971,8 @@ void ConfigDialog::languageChange()
     else if (locale.name() == QLocale(QLocale::French).name())
         boxDecimalSeparator->setCurrentIndex(3);
 
-	lblTranslationsPath->setText("Translations");
-	lblHelpPath->setText("Help");
+	lblTranslationsPath->setText(tr("Translations"));
+	lblHelpPath->setText(tr("Help"));
 
 	//tables page
 	boxTableComments->setText(tr("&Display Comments in Header"));

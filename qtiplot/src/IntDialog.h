@@ -34,8 +34,9 @@
 class QPushButton;
 class QCheckBox;
 class QLineEdit;
-class QComboBox;
+class QTextEdit;
 class QSpinBox;
+class DoubleSpinBox;
 class Graph;
 
 //! Integration options dialog
@@ -44,33 +45,24 @@ class IntDialog : public QDialog
     Q_OBJECT
 
 public:
-    IntDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    IntDialog(QWidget* parent = 0, Graph *g = 0, Qt::WFlags fl = 0 );
 
 public slots:
 	void accept();
-	void setGraph(Graph *g);
-	void activateCurve(const QString& curveName);
-	void help();
-	void changeDataRange();
-
-signals:
-	void integrate(int,int,int,double,double,double);
 
 private:
-	Graph *graph;
+	Graph *d_graph;
 
     QPushButton* buttonOk;
 	QPushButton* buttonCancel;
-	QPushButton* buttonHelp;
-    QCheckBox* boxShowFormula;
-	QComboBox* boxName;
+    QCheckBox* boxPlot;
+	QTextEdit* boxName;
+	QLineEdit* boxVariable;
 	QSpinBox* boxOrder;
 	QSpinBox* boxSteps;
-	QLineEdit* boxStart;
-	QLineEdit* boxEnd;
-	QLineEdit* boxTol;
+	DoubleSpinBox* boxStart;
+	DoubleSpinBox* boxEnd;
+	DoubleSpinBox* boxTol;
 };
 
 #endif
-
-
