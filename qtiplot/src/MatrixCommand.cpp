@@ -28,6 +28,7 @@
  ***************************************************************************/
 
 #include "MatrixCommand.h"
+#include <QApplication>
 
 MatrixCommand::MatrixCommand(MatrixModel *modelBefore, MatrixModel *modelAfter, const QString & text):
 QUndoCommand(text),
@@ -333,4 +334,151 @@ void MatrixSetColorMapCommand::undo()
 			d_matrix->setColorMap(d_map_before);
 		break;
 	}
+}
+
+/*************************************************************************/
+/*           Class MatrixDeleteRowsCommand                               */
+/*************************************************************************/
+MatrixDeleteRowsCommand::MatrixDeleteRowsCommand(MatrixModel *model, int startRow, int count, QVector<double> data, const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_start_row(startRow),
+d_count(count),
+d_data(data)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixDeleteRowsCommand::redo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    d_model->removeRows(d_start_row, d_count);
+	QApplication::restoreOverrideCursor();
+}
+
+void MatrixDeleteRowsCommand::undo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    d_model->insertRows(d_start_row, d_count);
+	double *data = d_model->dataVector();
+	int cols = d_model->columnCount();
+	int size = cols * d_count;
+	int aux = d_start_row*cols;
+	for (int i = 0; i<size; i++){
+		data[aux] = d_data.at(i);
+		++aux;
+	}
+	QApplication::restoreOverrideCursor();
+}
+
+/*************************************************************************/
+/*           Class MatrixInsertRowCommand                                */
+/*************************************************************************/
+MatrixInsertRowCommand::MatrixInsertRowCommand(MatrixModel *model, int startRow, const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_start_row(startRow)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixInsertRowCommand::redo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    d_model->insertRows(d_start_row, 1);
+	QApplication::restoreOverrideCursor();
+}
+
+void MatrixInsertRowCommand::undo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    d_model->removeRows(d_start_row, 1);
+	QApplication::restoreOverrideCursor();
+}
+
+/*************************************************************************/
+/*           Class MatrixDeleteColsCommand                               */
+/*************************************************************************/
+MatrixDeleteColsCommand::MatrixDeleteColsCommand(MatrixModel *model, int startCol, int count, QVector<double> data, const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_start_col(startCol),
+d_count(count),
+d_data(data)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixDeleteColsCommand::redo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    d_model->removeColumns(d_start_col, d_count);
+	QApplication::restoreOverrideCursor();
+}
+
+void MatrixDeleteColsCommand::undo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    d_model->insertColumns(d_start_col, d_count);
+	double *data = d_model->dataVector();
+	int rows = d_model->rowCount();	
+	int cols = d_model->columnCount();	
+	for (int i = 0; i<rows; i++){
+		int aux = i*cols + d_start_col;
+		int aux2 = i*d_count;
+		for (int j = 0; j<d_count; j++)
+			data[aux++] = d_data.at(aux2++);
+	}
+	QApplication::restoreOverrideCursor();
+}
+
+/*************************************************************************/
+/*           Class MatrixInsertColCommand                                */
+/*************************************************************************/
+MatrixInsertColCommand::MatrixInsertColCommand(MatrixModel *model, int startCol, const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_start_col(startCol)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixInsertColCommand::redo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    d_model->insertColumns(d_start_col, 1);
+	QApplication::restoreOverrideCursor();
+}
+
+void MatrixInsertColCommand::undo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    d_model->removeColumns(d_start_col, 1);
+	QApplication::restoreOverrideCursor();
 }
