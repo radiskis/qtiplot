@@ -393,10 +393,10 @@ void ApplicationWindow::initGlobalConstants()
 	d_arrow_copy = NULL;
 	d_image_copy = NULL;
 
-	savingTimerId=0;
+	savingTimerId = 0;
 
 	#ifdef QTIPLOT_DEMO
-        demoCloseTimerId = startTimer(10*60000);
+        QTimer::singleShot(600000, this, SLOT(close()));
     #endif
 
 	autoSearchUpdatesRequest = false;
@@ -7823,6 +7823,8 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionShowFitDialog);
 	} else if (w->isA("Matrix")){
+        analysisMenu->addAction(actionIntegrate);
+        analysisMenu->insertSeparator();
         analysisMenu->addAction(actionFFT);
         analysisMenu->addAction(actionMatrixFFTDirect);
         analysisMenu->addAction(actionMatrixFFTInverse);
@@ -7869,7 +7871,6 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	matrixMenu->addAction(actionTransposeMatrix);
 	matrixMenu->addAction(actionInvertMatrix);
 	matrixMenu->addAction(actionMatrixDeterminant);
-	matrixMenu->addAction(actionIntegrate);
 	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionGoToRow);
 	matrixMenu->insertSeparator();
@@ -8157,14 +8158,6 @@ void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 
 void ApplicationWindow::timerEvent ( QTimerEvent *e)
 {
-    #ifdef QTIPLOT_DEMO
-        if (e->timerId() == demoCloseTimerId){
-            saved = true;
-            showDemoVersionMessage();
-            qApp->closeAllWindows();
-        }
-    #endif
-
 	if (e->timerId() == savingTimerId)
 		saveProject();
 	else
@@ -8215,23 +8208,26 @@ void ApplicationWindow::dragEnterEvent( QDragEnterEvent* e )
 
 void ApplicationWindow::closeEvent( QCloseEvent* ce )
 {
+    #ifdef QTIPLOT_DEMO
+        showDemoVersionMessage();
+    #endif
+
 	if (!saved){
 		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
 		switch( QMessageBox::information(this, tr("QtiPlot"), s, tr("Yes"), tr("No"),
-					tr("Cancel"), 0, 2 ) )
-		{
+					tr("Cancel"), 0, 2 ) ){
 			case 0:
 				if (!saveProject()){
 					ce->ignore();
 					break;
 				}
-				saveSettings();//the recent projects must be saved
+				saveSettings();
 				ce->accept();
 				break;
 
 			case 1:
 			default:
-				saveSettings();//the recent projects must be saved
+				saveSettings();
 				ce->accept();
 				break;
 
@@ -8240,7 +8236,7 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
 				break;
 		}
 	} else {
-		saveSettings();//the recent projects must be saved
+		saveSettings();
 		ce->accept();
 	}
 }
@@ -10593,16 +10589,18 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 {
 	if (!g)
 		return;
-	
+
 	Fit *fitter = 0;
 	switch(operation){
+	    case NoAnalysis:
+	    break;
 		case Integrate:
 		{
 			Integration *i = new Integration(this, g, curveTitle);
 			i->run();
 			delete i;
 		}
-		break;	
+		break;
 		case Diff:
 		{
 			Differentiation *diff = new Differentiation(this, g, curveTitle);
@@ -10633,10 +10631,10 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 		}
 		break;
 	}
-	
+
 	if (!fitter)
 		return;
-	
+
 	if (fitter->setDataFromCurve(curveTitle)){
 		if (operation != FitLinear){
 			fitter->guessInitialValues();
@@ -10644,7 +10642,7 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 		} else if (d_2_linear_fit_points)
 			fitter->generateFunction(generateUniformFitPoints, 2);
 		fitter->scaleErrors(fit_scale_errors);
-		fitter->setOutputPrecision(fit_output_precision);		
+		fitter->setOutputPrecision(fit_output_precision);
 		fitter->fit();
 		if (pasteFitResultsToPlot)
 			fitter->showLegend();
@@ -10682,10 +10680,10 @@ void ApplicationWindow::integrate()
 	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
-	
+
 	if (w->isA("MultiLayer"))
 		analysis(Integrate);
-	else if (w->isA("Matrix")){		
+	else if (w->isA("Matrix")){
 		QDateTime dt = QDateTime::currentDateTime ();
 		QString info = dt.toString(Qt::LocalDate);
 		info += "\n" + tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
@@ -11139,7 +11137,7 @@ void ApplicationWindow::createActions()
 
 	actionIntegrate = new QAction(tr("&Integrate"), this);
 	connect(actionIntegrate, SIGNAL(activated()), this, SLOT(integrate()));
-	
+
 	actionShowIntDialog = new QAction(tr("Integr&ate Function..."), this);
 	connect(actionShowIntDialog, SIGNAL(activated()), this, SLOT(showIntegrationDialog()));
 
@@ -11343,9 +11341,11 @@ void ApplicationWindow::createActions()
 
 	actionSetMatrixDimensions = new QAction(tr("Set &Dimensions..."), this);
 	connect(actionSetMatrixDimensions, SIGNAL(activated()), this, SLOT(showMatrixSizeDialog()));
+	actionSetMatrixDimensions->setShortcut(tr("Ctrl+D"));
 
 	actionSetMatrixValues = new QAction(tr("Set &Values..."), this);
 	connect(actionSetMatrixValues, SIGNAL(activated()), this, SLOT(showMatrixValuesDialog()));
+	actionSetMatrixValues->setShortcut(tr("Alt+Q"));
 
     actionImagePlot =  new QAction(QIcon(QPixmap(image_plot_xpm)),tr("&Image Plot"), this);
 	connect(actionImagePlot, SIGNAL(activated()), this, SLOT(plotImage()));
@@ -11593,7 +11593,7 @@ void ApplicationWindow::createActions()
 	actionEditFunction = new QAction(tr("&Edit Function..."), this);
 	connect(actionEditFunction, SIGNAL(activated()), this, SLOT(showFunctionDialog()));
 
-	actionToolBars = new QAction(tr("Toolbars..."), this);
+	actionToolBars = new QAction(tr("&Toolbars..."), this);
 	actionToolBars->setShortcut(tr("Ctrl+Shift+T"));
 	connect(actionToolBars, SIGNAL(activated()), this, SLOT(showToolBarsMenu()));
 
@@ -11744,7 +11744,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowLog->setMenuText(tr("Results &Log"));
 	actionShowLog->setToolTip(tr("Show analysis results"));
 
-    actionShowUndoStack->setMenuText(tr("Undo/Redo Stack"));
+    actionShowUndoStack->setMenuText(tr("&Undo/Redo Stack"));
 	actionShowUndoStack->setToolTip(tr("Show available undo/redo commands"));
 
 #ifdef SCRIPTING_CONSOLE
@@ -11796,7 +11796,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionClearLogInfo->setMenuText(tr("Clear &Log Information"));
 	actionDeleteFitTables->setMenuText(tr("Delete &Fit Tables"));
 
-    actionToolBars->setMenuText(tr("Toolbars..."));
+    actionToolBars->setMenuText(tr("&Toolbars..."));
 	actionToolBars->setShortcut(tr("Ctrl+Shift+T"));
 
 	actionShowPlotWizard->setMenuText(tr("Plot &Wizard"));
@@ -11990,7 +11990,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionAdd3DData->setMenuText(tr("&Data Set..."));
 	actionSetMatrixProperties->setMenuText(tr("Set &Properties..."));
 	actionSetMatrixDimensions->setMenuText(tr("Set &Dimensions..."));
+	actionSetMatrixDimensions->setShortcut(tr("Ctrl+D"));
 	actionSetMatrixValues->setMenuText(tr("Set &Values..."));
+    actionSetMatrixValues->setShortcut(tr("Alt+Q"));
     actionImagePlot->setMenuText(tr("&Image Plot"));
 	actionTransposeMatrix->setMenuText(tr("&Transpose"));
 	actionRotateMatrix->setMenuText(tr("R&otate 90"));
@@ -13154,6 +13156,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 #ifdef QTIPLOT_DEMO
 void ApplicationWindow::showDemoVersionMessage()
 {
+    saved = true;
 	QMessageBox::critical(this, tr("QtiPlot - Demo Version"),
 			tr("You are using the demonstration version of Qtiplot.\
 				It is identical with the full version, except that you can't save your work to project files and you can't use it for more than 10 minutes per session.\

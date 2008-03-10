@@ -112,7 +112,8 @@ void MatrixModel::setRowCount(int rows)
 
 	int diff = abs(rows - d_rows);
 	if (rows > d_rows )
-		insertRows(d_rows, diff);
+		//insertRows(d_rows, diff);
+		appendRows(diff);
     else if (rows < d_rows )
 		removeRows(rows, diff);
 
@@ -139,10 +140,11 @@ void MatrixModel::setColumnCount(int cols)
 double MatrixModel::cell(int row, int col)
 {
     int i = d_cols*row + col;
-    if (i < 0 || i>= d_data.size() || gsl_isnan (d_data[i]))
+    double val = d_data.at(i);
+    if (i < 0 || i>= d_data.size() || gsl_isnan (val))
         return 0.0;
 
-	return d_data[i];
+	return val;
 }
 
 void MatrixModel::setCell(int row, int col, double val)
@@ -157,14 +159,15 @@ void MatrixModel::setCell(int row, int col, double val)
 QString MatrixModel::text(int row, int col)
 {
 	int i = d_cols*row + col;
-    if (i < 0 || i>= d_data.size() || gsl_isnan (d_data[i]))
+	double val = d_data.at(i);
+    if (i < 0 || i>= d_data.size() || gsl_isnan(val))
         return "";
 
 	if (d_matrix){
 		QLocale locale = d_matrix->locale();
-		return locale.toString(d_data[i], d_matrix->textFormat().toAscii(), d_matrix->precision());
+		return locale.toString(val, d_matrix->textFormat().toAscii(), d_matrix->precision());
 	}
-	return d_locale.toString(d_data[i], d_txt_format, d_num_precision);
+	return d_locale.toString(val, d_txt_format, d_num_precision);
 }
 
 void MatrixModel::setText(int row, int col, const QString& text)
@@ -194,7 +197,7 @@ double MatrixModel::data(int row, int col) const
     if (i < 0 || i>= d_data.size())
         return 0.0;
 
-	return d_data[i];
+	return d_data.at(i);
 }
 
 double MatrixModel::x(int col) const
@@ -338,18 +341,17 @@ bool MatrixModel::insertColumns(int column, int count, const QModelIndex & paren
 	beginInsertColumns(parent, column, column + count - 1);
 
 	int new_cols = d_cols + count;
-	QVector <double> d_data_new(d_rows*new_cols);
-	d_data_new.fill(GSL_NAN);
+	QVector <double> d_data_new(d_rows*new_cols, GSL_NAN);
 
 	for (int i=0; i <d_rows; i++){
 		int aux1 = d_cols * i;
 		int aux2 = new_cols * i;
 		for (int j=0; j < column; j++)
-			d_data_new[aux2 + j] = d_data[aux1 + j];
+			d_data_new[aux2 + j] = d_data.at(aux1 + j);
 
 		aux2 += count;
 		for (int j = column; j < d_cols; j++)
-			d_data_new[aux2 + j] = d_data[aux1 + j];
+			d_data_new[aux2 + j] = d_data.at(aux1 + j);
 	}
 
 	d_data.resize(0);
@@ -360,11 +362,30 @@ bool MatrixModel::insertColumns(int column, int count, const QModelIndex & paren
 	return true;
 }
 
+bool MatrixModel::appendRows(int count, const QModelIndex & parent)
+{
+    int new_cells = count*d_cols;
+    d_data.reserve(d_cols*d_rows + new_cells);
+
+    beginInsertRows(parent, d_rows, d_rows + count - 1);
+
+	d_rows += count;
+	for (int i = 0; i < new_cells; i++)
+        d_data.append(GSL_NAN);
+
+	endInsertRows();
+	return true;
+}
+
 bool MatrixModel::insertRows(int row, int count, const QModelIndex & parent)
 {
 	beginInsertRows(parent, row, row + count - 1);
 
-	d_data.insert(row * d_cols, count*d_cols, GSL_NAN);
+    int size = d_cols*d_rows;
+    int new_cells = count*d_cols;
+    d_data.reserve(size + new_cells);
+
+	d_data.insert(row * d_cols, new_cells, GSL_NAN);
 	d_rows += count;
 
 	endInsertRows();
@@ -415,6 +436,8 @@ QString MatrixModel::saveToString()
 
 QImage MatrixModel::renderImage()
 {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 	int size = QMAX(d_cols, d_rows);
 	QImage image(QSize(size, size), QImage::Format_RGB32);
 	image.fill(0);
@@ -426,10 +449,12 @@ QImage MatrixModel::renderImage()
     for ( int i = 0; i < d_rows; i++ ){
     	QRgb *line = (QRgb *)image.scanLine(i);
 		for ( int j = 0; j < d_cols; j++){
-			if(fabs(d_data[i*d_cols + j]) < HUGE_VAL)
-				*line++ = color_map.rgb(intensityRange, d_data[i*d_cols + j]);
+		    double val = d_data.at(i*d_cols + j);
+			if(fabs(val) < HUGE_VAL)
+				*line++ = color_map.rgb(intensityRange, val);
 		}
      }
+     QApplication::restoreOverrideCursor();
 	 return image;
 }
 

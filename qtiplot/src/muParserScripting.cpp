@@ -3,13 +3,10 @@
     Project              : QtiPlot
     --------------------------------------------------------------------
 
-    Copyright            : (C) 2006 by Ion Vasilief, 
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Evaluate mathematical expression using muParser
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -91,7 +88,7 @@ const muParserScripting::mathFunction muParserScripting::math_functions[] = {
   { "wm1", 1, lambert_Wm1, NULL, NULL, "wm1(x):\n Compute the secondary branch of Lambert's W function, W_{-1}(x).\n W is defined as a solution to the equation W(x)*exp(W(x))=x.\n For x<0, there are two real-valued branches; this function computes the one where W<-1 for x<0. (also see w0(x))." },
   {0,0,NULL,NULL,NULL,0}
 };
-  
+
 const QStringList muParserScripting::mathFunctions() const
 {
   QStringList l;

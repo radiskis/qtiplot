@@ -3,10 +3,8 @@
     Project              : QtiPlot
     --------------------------------------------------------------------
 
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Evaluate mathematical expressions using muParser
 
  ***************************************************************************/
@@ -36,11 +34,16 @@
 #include "Folder.h"
 
 #include <QStringList>
+#include <QApplication>
+#include <QMessageBox>
+
+#include <gsl/gsl_math.h>
 
 using namespace mu;
 
 muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *context, const QString &name)
-  : Script(env, code, context, name)
+  : Script(env, code, context, name),
+  d_init_error(false)
 {
   variables.setAutoDelete(true);
   rvariables.setAutoDelete(true);
@@ -67,8 +70,22 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 	  parser.DefineFun("cell", mu_cell);
 
   rparser = parser;
-  parser.SetVarFactory(mu_addVariable);
-  rparser.SetVarFactory(mu_addVariableR);
+  if (Context->isA("Table") || Context->isA("Matrix")){
+    if (code.count("\n") > 0){//only autodetect new variables for a script which has min 2 lines
+        QApplication::restoreOverrideCursor();
+        QString mess = tr("Multiline expressions take much more time to evaluate! Do you want to continue anyways?");
+        if (QMessageBox::Yes == QMessageBox::warning((QWidget *)Context, tr("QtiPlot") + " - " + tr("Warning"), mess,
+                            QMessageBox::Yes, QMessageBox::Cancel)){
+            parser.SetVarFactory(mu_addVariable);
+            rparser.SetVarFactory(mu_addVariableR);
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        } else
+            d_init_error = true;
+    }
+  } else {
+      parser.SetVarFactory(mu_addVariable);
+      rparser.SetVarFactory(mu_addVariableR);
+  }
 }
 
 double muParserScript::col(const QString &arg)
@@ -77,6 +94,7 @@ double muParserScript::col(const QString &arg)
 		throw Parser::exception_type(tr("col() works only on tables!").ascii());
 	QStringList items;
 	QString item = "";
+
 	for (int i=0; i < arg.size(); i++) {
 		if (arg[i] == '"') {
 			item += "\"";
@@ -94,6 +112,7 @@ double muParserScript::col(const QString &arg)
 			item += arg[i];
 	}
 	items << item;
+
 	Table *table = (Table*) Context;
 	int col, row;
 	Parser local_parser(rparser);
@@ -102,14 +121,14 @@ double muParserScript::col(const QString &arg)
 		if (col<0)
 			throw Parser::exception_type(tr("There's no column named %1 in table %2!").
 					arg(items[0]).arg(Context->name()).ascii());
-	} else {
-		// for backwards compatibility
+	} else {// for backwards compatibility
 		col = table->colNames().findIndex(items[0]);
 		if (col<0) {
 			local_parser.SetExpr(items[0].ascii());
 			col = qRound(local_parser.Eval()) - 1;
 		}
 	}
+
 	if (items.count() == 2)
 	{
 		local_parser.SetExpr(items[1].ascii());
@@ -125,7 +144,7 @@ double muParserScript::col(const QString &arg)
 	if (col < 0 || col >= table->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in table %2!").
 				arg(col+1).arg(Context->name()).ascii());
-	if (table->text(row,col).isEmpty())
+	if (table->text(row, col).isEmpty())
 		throw new EmptySourceError();
 	else
 		return table->cell(row,col);
@@ -245,6 +264,31 @@ double *muParserScript::addVariableR(const char *name)
 	return valptr;
 }
 
+double* muParserScript::defineVariable(const char *name, double val)
+{
+  double *valptr = variables[name];
+  if (!valptr)
+  {
+    valptr = new double;
+    if (!valptr)
+    {
+      emit_error(tr("Out of memory"), 0);
+      return 0;
+    }
+    try {
+      parser.DefineVar(name, valptr);
+      rparser.DefineVar(name, valptr);
+      variables.insert(name, valptr);
+    } catch (mu::ParserError &e) {
+      delete valptr;
+      emit_error(QString(e.GetMsg().c_str()), 0);
+      return valptr;
+    }
+  }
+  *valptr = val;
+  return valptr;
+}
+
 bool muParserScript::setDouble(double val, const char *name)
 {
   double *valptr = variables[name];
@@ -322,6 +366,9 @@ QString muParserScript::compileColArg(const QString &in)
 
 bool muParserScript::compile(bool)
 {
+    if (d_init_error)
+        return false;
+
 	muCode.clear();
 	QString muCodeLine = "";
 	for (int i=0; i < Code.size(); i++)
@@ -364,7 +411,50 @@ bool muParserScript::compile(bool)
 	if (!muCodeLine.isEmpty())
 		muCode += muCodeLine;
 	compiled = Script::isCompiled;
+
+	if (muCode.size() == 1){
+	    current = this;
+        parser.SetExpr(muCode[0].ascii());
+        try {
+			parser.Eval();
+		} catch (EmptySourceError *e) {
+		    QApplication::restoreOverrideCursor();
+            return false;
+        } catch (mu::ParserError &e) {
+            if (e.GetCode() != ecVAL_EXPECTED){
+                QApplication::restoreOverrideCursor();
+                emit_error(e.GetMsg().c_str(), 0);
+                return false;
+            }
+        }
+	}
 	return true;
+}
+
+QString muParserScript::evalSingleLineToString(const QLocale& locale, char f, int prec)
+{
+    double val = 0.0;
+    try {
+        val = parser.Eval();
+    } catch (EmptySourceError *e) {
+        return "";
+    } catch (ParserError &e) {
+		return "";
+	}
+    return locale.toString(val, f, prec);
+}
+
+double muParserScript::evalSingleLine()
+{
+    double val = 0.0;
+    try {
+        val = parser.Eval();
+    } catch (EmptySourceError *e) {
+        return GSL_NAN;
+    } catch (ParserError &e) {
+		return GSL_NAN;
+	}
+    return val;
 }
 
 muParserScript *muParserScript::current = NULL;
@@ -373,7 +463,7 @@ QVariant muParserScript::eval()
 {
 	if (compiled != Script::isCompiled && !compile())
 		return QVariant();
-	double val;
+	double val = 0.0;
 	try {
 		current = this;
 		for (QStringList::iterator i=muCode.begin(); i != muCode.end(); i++) {

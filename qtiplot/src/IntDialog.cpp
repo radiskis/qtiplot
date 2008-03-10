@@ -93,7 +93,7 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WFlags fl )
 	boxEnd->setValue(1.0);
 	gl1->addWidget(boxEnd, 6, 1);
 
-    boxPlot = new QCheckBox(tr("Plot area"));
+    boxPlot = new QCheckBox(tr("&Plot area"));
 	boxPlot->setChecked(true);
     gl1->addWidget(boxPlot, 7, 1);
     gl1->setRowStretch(8, 1);
