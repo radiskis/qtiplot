@@ -32,7 +32,7 @@
 #include "Table.h"
 #include "SortDialog.h"
 #include "ImportASCIIDialog.h"
-#include "MyParser.h"
+#include "muParserScript.h"
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -478,7 +478,7 @@ void Table::setCommands(const QStringList& com)
 void Table::setCommand(int col, const QString& com)
 {
 	if(col<(int)commands.size())
-		commands[col]=com.stripWhiteSpace();
+		commands[col] = com.stripWhiteSpace();
 }
 
 void Table::setCommands(const QString& com)
@@ -504,7 +504,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow)
 		startRow = 0;
 	if (endRow >= numRows())
 		resizeRows(endRow + 1);
-	
+
 	QString cmd = commands[col];
 	if (cmd.isEmpty() || colTypes[col] != Numeric){
 		for (int i = startRow; i <= endRow; i++)
@@ -515,35 +515,46 @@ bool Table::muParserCalculate(int col, int startRow, int endRow)
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	
-	MyParser parser;
-	parser.SetExpr(cmd.ascii());
-	double r = startRow + 1.0;
-	parser.DefineVar("i", &r);
-	parser.DefineVar("row", &r);
-	double c = col + 1.0;
-	parser.DefineVar("j", &c);
-	double sr = startRow + 1.0;
-	parser.DefineVar("sr", &sr);
-	double er = endRow + 1.0;
-	parser.DefineVar("er", &er);
-	
-	try {
-		parser.Eval();
-	} catch(mu::ParserError &e) {
+
+    muParserScript *mup = new muParserScript(scriptEnv, cmd, this,  QString("<%1>").arg(colName(col)));
+	connect(mup, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
+	connect(mup, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
+
+    double *r = mup->defineVariable("i");
+    mup->defineVariable("j", (double)col);
+    mup->defineVariable("sr", startRow + 1.0);
+    mup->defineVariable("er", endRow + 1.0);
+
+	if (!mup->compile()){
 		QApplication::restoreOverrideCursor();
-		QMessageBox::critical(this, tr("QtiPlot - Input error"), QString::fromStdString(e.GetMsg()));
-		return false;		
-	}
-	
-	int prec;
-	char f;
-	columnNumericFormat(col, &f, &prec);
-	for (int i = startRow; i <= endRow; i++){
-		d_table->setText(i, col, locale().toString(parser.Eval(), f, prec));
-		++r;
+		return false;
 	}
 
+    QLocale loc = locale();
+    int prec;
+    char f;
+    columnNumericFormat(col, &f, &prec);
+
+    if (mup->codeLines() == 1){
+        for (int i = startRow; i <= endRow; i++){
+            *r = i + 1.0;
+            d_table->setText(i, col, mup->evalSingleLineToString(loc, f, prec));
+        }
+	} else {
+        QVariant ret;
+        for (int i = startRow; i <= endRow; i++){
+            *r = i + 1.0;
+            ret = mup->eval();
+            if(ret.type() == QVariant::Double) {
+                d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
+            } else if(ret.canConvert(QVariant::String))
+                d_table->setText(i, col, ret.toString());
+            else {
+                QApplication::restoreOverrideCursor();
+                return false;
+            }
+		}
+	}
 	emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
@@ -589,26 +600,27 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser)
 		return false;
 	}
 
-	colscript->setInt(col+1, "j");
-	colscript->setInt(startRow+1, "sr");
-	colscript->setInt(endRow+1, "er");
+    QLocale loc = locale();
+    int prec;
+    char f;
+    columnNumericFormat(col, &f, &prec);
+
+	colscript->setDouble(col + 1.0, "j");
+	colscript->setDouble(startRow + 1.0, "sr");
+	colscript->setDouble(endRow + 1.0, "er");
 	QVariant ret;
-	for (int i=startRow; i<=endRow; i++){
-		colscript->setInt(i+1, "i");
+	for (int i = startRow; i <= endRow; i++){
+		colscript->setDouble(i + 1.0, "i");
 		ret = colscript->eval();
-		if(ret.type()==QVariant::Double) {
-			int prec;
-			char f;
-			columnNumericFormat(col, &f, &prec);
-			d_table->setText(i, col, locale().toString(ret.toDouble(), f, prec));
-		} else if(ret.canConvert(QVariant::String))
+		if(ret.type() == QVariant::Double)
+			d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
+		else if(ret.canConvert(QVariant::String))
 			d_table->setText(i, col, ret.toString());
 		else {
 			QApplication::restoreOverrideCursor();
 			return false;
 		}
 	}
-
 	emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
@@ -1418,7 +1430,7 @@ void Table::normalize()
 
 	for (int i=0; i<d_table->numCols(); i++)
 		normalizeCol(i);
-	
+
 	emit modifiedWindow(this);
 }
 
@@ -2667,7 +2679,7 @@ void Table::restore(QString& spec)
 	int rows=d_table->numRows();
 
 	QTextStream t(&spec, QIODevice::ReadOnly);
-	
+
 	t.readLine();	//table tag
 	QString s = t.readLine();
 	QStringList list = s.split("\t");
@@ -2785,7 +2797,7 @@ void Table::restore(QString& spec)
 				d_table->showColumn(i);
 		}
 	}
-	
+
 	s = t.readLine();	//comments line ?
 	list = s.split("\t");
 	if (s.contains ("Comments")){
@@ -2927,7 +2939,7 @@ void Table::copy(Table *m)
 		if (m->isColumnHidden(i))
 			d_table->hideColumn(i);
 	}
-	
+
 	col_label = m->colNames();
 	col_plot_type = m->plotDesignations();
 	d_show_comments = m->commentsEnabled();
@@ -3181,7 +3193,7 @@ void Table::hideSelectedColumns()
 			d_table->hideColumn(i);
 	}
 }
-	
+
 void Table::showAllColumns()
 {
 	for(int i = 0; i<d_table->numCols(); i++){

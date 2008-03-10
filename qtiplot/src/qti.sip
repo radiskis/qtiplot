@@ -120,7 +120,7 @@ class Table: MdiSubWindow
 public:
   enum PlotDesignation{None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5, Label = 6};
   enum ImportMode{NewColumns, NewRows, Overwrite};
-  
+
   int numRows() /PyName=numRows/;
   int numCols() /PyName=numCols/;
   void resizeRows(int) /PyName=setNumRows/;
@@ -192,7 +192,7 @@ public:
 %End
   void notifyChanges();
 
-  void importASCII(const QString&, const QString&="\t", int=0, bool=false, 
+  void importASCII(const QString&, const QString&="\t", int=0, bool=false,
   					bool=true, bool=false, bool=false, const QString&="#", bool=false,
 					ImportMode = Overwrite, int = 0, int = -1);
   bool exportASCII(const QString&, const QString&="\t", bool=false, bool=false, bool=false);
@@ -305,7 +305,7 @@ public:
   enum HeaderViewType{ColumnRow, XY};
   enum ViewType{TableView, ImageView};
   enum ImportMode{NewColumns, NewRows, Overwrite};
-  
+
   int numRows();
   void setNumRows(int);
   int numCols();
@@ -364,6 +364,7 @@ public:
 	void flipHorizontally();
 	void rotate90(bool = true);
 	double determinant();
+	double integrate();
 
 	void setViewType(ViewType);
 	void setHeaderViewType(HeaderViewType);
@@ -376,8 +377,8 @@ public:
 	void exportRasterImage(const QString&, int = 100);
 	void exportToFile(const QString&)  /PyName=export/;
 	void exportVector(const QString&, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize = QPrinter::Custom);
-    
-	void importASCII(const QString&, const QString&="\t", int=0, bool=false, bool=false, 
+
+	void importASCII(const QString&, const QString&="\t", int=0, bool=false, bool=false,
 			const QString&="#", ImportMode = Overwrite, const QLocale& = QLocale(), int = 0, int = -1);
 	bool exportASCII(const QString&, const QString&="\t", bool=false);
 
@@ -803,7 +804,7 @@ sipTypeDef *t;
 
 public:
   enum MatrixToTableConversion{Direct, XYZ, YXZ};
-  
+
   Table* table(const QString&);
 %MethodCode
   sipRes = sipCpp->current_folder->table(*a0, false);

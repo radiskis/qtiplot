@@ -85,7 +85,7 @@ class ArrowMarker;
 class ImageMarker;
 class TextEditor;
 class AssociationsDialog;
-	
+
 /**
  * \brief QtiPlot's main window.
  *
@@ -1135,9 +1135,6 @@ private:
     QLocale d_locale;
 
     int d_matrix_undo_stack_size;
-#ifdef QTIPLOT_DEMO
-	int demoCloseTimerId;
-#endif
 
 	//! Workaround for the new colors introduced in rev 447
 	int convertOldToNewColorIndex(int cindex);

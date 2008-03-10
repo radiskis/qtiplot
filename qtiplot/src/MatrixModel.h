@@ -57,6 +57,8 @@ public:
 
 	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 	bool insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
+	bool appendRows(int count, const QModelIndex & parent = QModelIndex());
+
 	bool removeColumns ( int column, int count, const QModelIndex & parent = QModelIndex());
 	bool insertColumns ( int column, int count, const QModelIndex & parent = QModelIndex());
 

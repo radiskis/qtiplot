@@ -30,7 +30,7 @@
 #include "MatrixCommand.h"
 #include "Graph.h"
 #include "ApplicationWindow.h"
-#include "MyParser.h"
+#include "muParserScript.h"
 
 #include <QtGlobal>
 #include <QTextStream>
@@ -321,10 +321,19 @@ void Matrix::setDimensions(int rows, int cols)
 	if (r == rows && c == cols)
 		return;
 
+    double maxSize = 1e8;
+    if (rows*cols > (int)maxSize){
+        QApplication::restoreOverrideCursor();
+        QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot") + " - " + tr("Error"),
+        tr("The number of cells in a matrix (rows x columns) must not exceed %L1.").arg(maxSize, 0, 'f', 0) + "\n" +
+        tr("Please re-enter your matrix row and column dimensions accordingly."));
+        return;
+    }
+
 	if (rows < r || cols < c){
 		QString msg_text = tr("Deleting rows/columns from the matrix!","set matrix dimensions");
 		msg_text += tr("<p>Do you really want to continue?","set matrix dimensions");
-		switch( QMessageBox::information(0, tr("QtiPlot"), msg_text, tr("Yes"), tr("Cancel"), 0, 1 ) )
+		switch( QMessageBox::information((ApplicationWindow *)applicationWindow(), tr("QtiPlot"), msg_text, tr("Yes"), tr("Cancel"), 0, 1 ) )
 		{
 			case 0: {// Yes
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -365,14 +374,14 @@ double Matrix::integrate()
 	int cols = numCols() - 1;
 	double sum = 0.0;
 	for(int i=0; i<rows; i++){
-		int i1 = i+1;  
+		int i1 = i + 1;
 		for(int j=0; j<cols; j++){
 			int j1 = j + 1;
-			sum += 0.25*(d_matrix_model->cell(i, j) + d_matrix_model->cell(i, j1) + 
+			sum += 0.25*(d_matrix_model->cell(i, j) + d_matrix_model->cell(i, j1) +
 						d_matrix_model->cell(i1, j) + d_matrix_model->cell(i1, j1));
 		}
-	}	
-	return sum*dx()*dy();	
+	}
+	return sum*dx()*dy();
 }
 
 double Matrix::determinant()
@@ -526,32 +535,12 @@ bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCo
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	double dx = fabs(x_end-x_start)/(double)(numRows()-1);
-	double dy = fabs(y_end-y_start)/(double)(numCols()-1);
-	double r = startRow + 1.0;
-	double c = startCol + 1.0;
-	double x = x_start + startCol*dx;
-	double y = y_start + startRow*dy;
+    muParserScript *mup = new muParserScript(scriptEnv, formula_str, this, QString("<%1>").arg(objectName()));
+	connect(mup, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
+	connect(mup, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
 
-	MyParser parser;
-	parser.SetExpr(formula_str.ascii());
-	parser.DefineVar("i", &r);
-	parser.DefineVar("row", &r);
-	parser.DefineVar("y", &y);
-	parser.DefineVar("j", &c);
-	parser.DefineVar("col", &c);
-	parser.DefineVar("x", &x);
-	try {
-		parser.Eval();
-	} catch(mu::ParserError &e){
-		QApplication::restoreOverrideCursor();
-		QMessageBox::critical(this, tr("QtiPlot - Input error"), QString::fromStdString(e.GetMsg()));
-		return false;		
-	}
-
-	int rows = numRows();
+    int rows = numRows();
 	int cols = numCols();
-
 	if (endRow < 0)
 		endRow = rows - 1;
 	if (endCol < 0)
@@ -561,20 +550,63 @@ bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCo
 	if (endRow >= rows)
         rows = endRow + 1;
 
+	double dx = fabs(x_end - x_start)/(double)(rows - 1);
+	double dy = fabs(y_end - y_start)/(double)(cols - 1);
+
+    double *ri = mup->defineVariable("i");
+    double *rr = mup->defineVariable("row");
+    double *cj = mup->defineVariable("j");
+    double *cc = mup->defineVariable("col");
+    double *x = mup->defineVariable("x");
+    double *y = mup->defineVariable("y");
+
+	if (!mup->compile()){
+		QApplication::restoreOverrideCursor();
+		return false;
+	}
+
     MatrixModel *new_model = new MatrixModel(rows, cols, this);
-	double *data = new_model->dataVector();		
-	for(int row = startRow; row <= endRow; row++){
-		r = row + 1.0;
-		y = y_start + row*dy;
-		int aux = cols*row + startCol;
-		for(int col = startCol; col <= endCol; col++){
-			c = col + 1.0;
-			x = x_start + col*dx;
-			data[aux] = parser.Eval();
-			++aux;
+	double *data = new_model->dataVector();
+
+    if (mup->codeLines() == 1){
+        for(int row = startRow; row <= endRow; row++){
+            double r = row + 1.0;
+            *ri = r; *rr = r;
+            *y = y_start + row*dy;
+            int aux = cols*row + startCol;
+            for(int col = startCol; col <= endCol; col++){
+                double c = col + 1.0;
+                *cj = c; *cc = c;
+                *x = x_start + col*dx;
+                data[aux] = mup->evalSingleLine();
+                ++aux;
+            }
+        }
+    } else {
+        QVariant res;
+        for(int row = startRow; row <= endRow; row++){
+            double r = row + 1.0;
+            *ri = r; *rr = r;
+            *y = y_start + row*dy;
+            int aux = cols*row + startCol;
+            for(int col = startCol; col <= endCol; col++){
+                double c = col + 1.0;
+                *cj = c; *cc = c;
+                *x = x_start + col*dx;
+                res = mup->eval();
+                if (res.canConvert(QVariant::Double))
+                     data[aux] = res.toDouble();
+                else {
+                    data[aux] = GSL_NAN;
+                    QApplication::restoreOverrideCursor();
+                    return false;
+                }
+                ++aux;
+                qApp->processEvents();
+            }
 		}
 	}
-			
+
     d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Calculate Values")));
     setMatrixModel(new_model);
 
@@ -586,9 +618,9 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 {
 	if (QString(scriptEnv->name()) == "muParser" || forceMuParser)
 		return muParserCalculate(startRow, endRow, startCol, endCol);
-	
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	
+
 	Script *script = scriptEnv->newScript(formula_str, this, QString("<%1>").arg(objectName()));
 	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 	connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
@@ -610,18 +642,21 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
         rows = endRow + 1;
 
     MatrixModel *new_model = new MatrixModel(rows, cols, this);
-	
+
 	QVariant ret;
-	double dx = fabs(x_end-x_start)/(double)(numRows()-1);
-	double dy = fabs(y_end-y_start)/(double)(numCols()-1);
+	double dx = fabs(x_end - x_start)/(double)(rows - 1);
+	double dy = fabs(y_end - y_start)/(double)(cols - 1);
+	double r = 0.0, c = 0.0;
 	for(int row = startRow; row <= endRow; row++){
-		script->setInt(row+1, "i");
-		script->setInt(row+1, "row");
-		script->setDouble(y_start+row*dy, "y");
+	    r = row + 1.0;
+		script->setDouble(r, "i");
+		script->setDouble(r, "row");
+		script->setDouble(y_start + row*dy, "y");
 		for(int col = startCol; col <= endCol; col++){
-			script->setInt(col+1, "j");
-			script->setInt(col+1, "col");
-			script->setDouble(x_start+col*dx, "x");
+		    c = col + 1.0;
+			script->setDouble(c, "j");
+			script->setDouble(c, "col");
+			script->setDouble(x_start + col*dx, "x");
 			ret = script->eval();
 			if (ret.canConvert(QVariant::Double))
 				new_model->setCell(row, col, ret.toDouble());
@@ -632,7 +667,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 			}
 		}
 	}
-			
+
     d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Calculate Values")));
     setMatrixModel(new_model);
 
@@ -649,13 +684,31 @@ void Matrix::clearSelection()
 	if (!selModel || !selModel->hasSelection())
 		return;
 
-    MatrixModel *old_model = d_matrix_model->copy();
-
-	QModelIndexList lst = selModel->selection().indexes();
-    foreach(QModelIndex index, lst)
+    int cols = numCols();
+    if (selModel->isColumnSelected(0, QModelIndex()) &&
+        selModel->isColumnSelected(cols - 1, QModelIndex())){//all cells are selected
+        double *data = d_matrix_model->dataVector();
+        int cells = cols*numRows();
+        if (cells > 35000000 &&
+            QMessageBox::Yes == QMessageBox::warning((ApplicationWindow *)applicationWindow(),
+            tr("QtiPlot") + " - " + tr("Warning"),
+            tr("It will not be possible to undo this change. Do you want to continue anyways?"),
+            QMessageBox::Yes, QMessageBox::Cancel)){
+            for (int i = 0; i < cells; i++)
+                data[i] = GSL_NAN;
+        } else {
+            MatrixModel *old_model = d_matrix_model->copy();
+            for (int i = 0; i < cells; i++)
+                data[i] = GSL_NAN;
+            d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Clear Selection")));
+        }
+    } else {
+        MatrixModel *old_model = d_matrix_model->copy();
+        QModelIndexList lst = selModel->selection().indexes();
+        foreach(QModelIndex index, lst)
 		d_matrix_model->setText(index.row(), index.column(), "");
-
-	d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Clear Selection")));
+        d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Clear Selection")));
+    }
 
 	d_table_view->reset();
     emit modifiedWindow(this);

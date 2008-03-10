@@ -3,13 +3,10 @@
 	Project              : QtiPlot
     --------------------------------------------------------------------
 
-    Copyright            : (C) 2006 by Ion Vasilief, 
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Evaluate mathematical expressions using muParser
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -33,7 +30,7 @@
 #ifndef MUPARSER_SCRIPT_H
 #define MUPARSER_SCRIPT_H
 
-#include "ScriptingEnv.h" 
+#include "ScriptingEnv.h"
 #include "Script.h"
 
 #include <muParser.h>
@@ -45,23 +42,27 @@
 class muParserScript: public Script
 {
   Q_OBJECT
-    
+
   public:
     muParserScript(ScriptingEnv *env, const QString &code, QObject *context=0, const QString &name="<input>");
-	
+
   public slots:
     bool compile(bool asFunction=true);
     QVariant eval();
+    double evalSingleLine();
+    QString evalSingleLineToString(const QLocale& locale, char f, int prec);
     bool exec();
     bool setQObject(QObject *val, const char *name);
     bool setInt(int val, const char* name);
     bool setDouble(double val, const char* name);
+    double* defineVariable(const char *name, double val = 0.0);
+    int codeLines(){return muCode.size();};
 
   private:
     double col(const QString &arg);
-	 double tablecol(const QString &arg);
+    double tablecol(const QString &arg);
     double cell(int row, int col);
-	 double tableCell(int col, int row);
+    double tableCell(int col, int row);
     double *addVariable(const char *name);
     double *addVariableR(const char *name);
     static double *mu_addVariableR(const char *name) { return current->addVariableR(name); }
@@ -76,6 +77,7 @@ class muParserScript: public Script
     mu::Parser parser, rparser;
     Q3AsciiDict<double> variables, rvariables;
     QStringList muCode;
+    bool d_init_error;
 
   public:
     static muParserScript *current;
