@@ -158,4 +158,54 @@ private:
     Matrix::ColorMapType d_map_type_before, d_map_type_after;
     QwtLinearColorMap d_map_before, d_map_after;
 };
+
+class MatrixDeleteRowsCommand: public QUndoCommand
+{
+public:
+    MatrixDeleteRowsCommand(MatrixModel *model, int startRow, int count, QVector<double> data, const QString& text);
+    virtual void redo();
+    virtual void undo();
+
+private:
+    MatrixModel *d_model;
+    int d_start_row, d_count;
+	QVector<double> d_data;
+};
+
+class MatrixInsertRowCommand: public QUndoCommand
+{
+public:
+    MatrixInsertRowCommand(MatrixModel *model, int startRow, const QString& text);
+    virtual void redo();
+    virtual void undo();
+
+private:
+    MatrixModel *d_model;
+    int d_start_row;
+};
+
+class MatrixDeleteColsCommand: public QUndoCommand
+{
+public:
+    MatrixDeleteColsCommand(MatrixModel *model, int startCol, int count, QVector<double> data, const QString& text);
+    virtual void redo();
+    virtual void undo();
+
+private:
+    MatrixModel *d_model;
+    int d_start_col, d_count;
+	QVector<double> d_data;
+};
+
+class MatrixInsertColCommand: public QUndoCommand
+{
+public:
+    MatrixInsertColCommand(MatrixModel *model, int startCol, const QString& text);
+    virtual void redo();
+    virtual void undo();
+
+private:
+    MatrixModel *d_model;
+    int d_start_col;
+};
 #endif
