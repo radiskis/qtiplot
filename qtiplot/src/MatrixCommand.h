@@ -64,7 +64,7 @@ private:
 class MatrixSetFormulaCommand: public QUndoCommand
 {
 public:
-    MatrixSetFormulaCommand(Matrix *m, const QString& oldFormula, const QString& newFormula, const QString & text);    
+    MatrixSetFormulaCommand(Matrix *m, const QString& oldFormula, const QString& newFormula, const QString & text);
     virtual void redo();
     virtual void undo();
 
@@ -147,8 +147,8 @@ private:
 class MatrixSetColorMapCommand: public QUndoCommand
 {
 public:
-    MatrixSetColorMapCommand(Matrix *m, Matrix::ColorMapType d_map_type_before, 
-					const QwtLinearColorMap& d_map_before, Matrix::ColorMapType d_map_type_after, 
+    MatrixSetColorMapCommand(Matrix *m, Matrix::ColorMapType d_map_type_before,
+					const QwtLinearColorMap& d_map_before, Matrix::ColorMapType d_map_type_after,
 					const QwtLinearColorMap& d_map_after, const QString& text);
     virtual void redo();
     virtual void undo();
@@ -207,5 +207,31 @@ public:
 private:
     MatrixModel *d_model;
     int d_start_col;
+};
+
+class MatrixClearSelectionCommand: public QUndoCommand
+{
+public:
+    MatrixClearSelectionCommand(MatrixModel *model, const QItemSelectionRange& selection, double *data, const QString& text);
+	~MatrixClearSelectionCommand(){free(d_data);};
+    virtual void redo();
+    virtual void undo();
+
+private:
+    MatrixModel *d_model;
+    int d_start_row, d_end_row, d_start_col, d_end_col;
+    double* d_data;
+};
+
+class MatrixUndoOperationCommand: public QUndoCommand
+{
+public:
+    MatrixUndoOperationCommand(MatrixModel *model, Matrix::Operation op, const QString& text);
+    virtual void redo();
+    virtual void undo();
+
+private:
+    MatrixModel *d_model;
+    Matrix::Operation d_operation;
 };
 #endif

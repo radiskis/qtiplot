@@ -57,10 +57,9 @@ public:
 
 	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 	bool insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
-	bool appendRows(int count, const QModelIndex & parent = QModelIndex());
 
-	bool removeColumns ( int column, int count, const QModelIndex & parent = QModelIndex());
-	bool insertColumns ( int column, int count, const QModelIndex & parent = QModelIndex());
+	bool removeColumns(int column, int count, const QModelIndex & parent = QModelIndex());
+	bool insertColumns(int column, int count, const QModelIndex & parent = QModelIndex());
 
 	double x(int col) const;
 	double y(int row) const;
@@ -89,7 +88,16 @@ public:
 	void setLocale(const QLocale& locale){d_locale = locale;};
 	void setNumericFormat(char f, int prec);
 
+	void invert();
+	void transpose();
+	void flipVertically();
+	void flipHorizontally();
+	void rotate90(bool clockwise);
+	void clear(int startRow, int endRow, int startCol, int endCol);
+	
 private:
+	double* secureAllocBuffer(int size);
+
     int d_rows, d_cols;
     QVector<double> d_data;
 	Matrix *d_matrix;

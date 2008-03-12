@@ -29,6 +29,7 @@
 
 #include "MatrixCommand.h"
 #include <QApplication>
+#include <gsl/gsl_math.h>
 
 MatrixCommand::MatrixCommand(MatrixModel *modelBefore, MatrixModel *modelAfter, const QString & text):
 QUndoCommand(text),
@@ -282,8 +283,8 @@ void MatrixSetCoordinatesCommand::undo()
 /*************************************************************************/
 /*           Class MatrixSetColorMapCommand                              */
 /*************************************************************************/
-MatrixSetColorMapCommand::MatrixSetColorMapCommand(Matrix *m, Matrix::ColorMapType type_before, 
-							const QwtLinearColorMap& map_before, Matrix::ColorMapType type_after, 
+MatrixSetColorMapCommand::MatrixSetColorMapCommand(Matrix *m, Matrix::ColorMapType type_before,
+							const QwtLinearColorMap& map_before, Matrix::ColorMapType type_after,
 							const QwtLinearColorMap& map_after, const QString & text):
 QUndoCommand(text),
 d_matrix(m),
@@ -291,7 +292,7 @@ d_map_type_before(type_before),
 d_map_type_after(type_after)
 {
     setText(m->objectName() + ": " + text);
-	
+
 	d_map_before = QwtLinearColorMap(map_before);
 	d_map_after = QwtLinearColorMap(map_after);
 }
@@ -305,11 +306,11 @@ void MatrixSetColorMapCommand::redo()
 		case Matrix::GrayScale:
 			d_matrix->setGrayScale();
 		break;
-		
+
 		case Matrix::Rainbow:
 			d_matrix->setRainbowColorMap();
 		break;
-		
+
 		case Matrix::Custom:
 			d_matrix->setColorMap(d_map_after);
 		break;
@@ -325,11 +326,11 @@ void MatrixSetColorMapCommand::undo()
 		case Matrix::GrayScale:
 			d_matrix->setGrayScale();
 		break;
-		
+
 		case Matrix::Rainbow:
 			d_matrix->setRainbowColorMap();
 		break;
-		
+
 		case Matrix::Custom:
 			d_matrix->setColorMap(d_map_before);
 		break;
@@ -441,8 +442,8 @@ void MatrixDeleteColsCommand::undo()
 
     d_model->insertColumns(d_start_col, d_count);
 	double *data = d_model->dataVector();
-	int rows = d_model->rowCount();	
-	int cols = d_model->columnCount();	
+	int rows = d_model->rowCount();
+	int cols = d_model->columnCount();
 	for (int i = 0; i<rows; i++){
 		int aux = i*cols + d_start_col;
 		int aux2 = i*d_count;
@@ -481,4 +482,117 @@ void MatrixInsertColCommand::undo()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     d_model->removeColumns(d_start_col, 1);
 	QApplication::restoreOverrideCursor();
+}
+
+/*************************************************************************/
+/*           Class MatrixClearSelectionCommand                           */
+/*************************************************************************/
+MatrixClearSelectionCommand::MatrixClearSelectionCommand(MatrixModel *model, const QItemSelectionRange& selection, double *data, const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_start_row(selection.top()),
+d_end_row(selection.bottom()),
+d_start_col(selection.left()),
+d_end_col(selection.right()),
+d_data(data)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixClearSelectionCommand::redo()
+{
+    if (!d_model)
+        return;
+
+	d_model->clear(d_start_row, d_end_row, d_start_col, d_end_col);
+    d_model->matrix()->resetView();
+}
+
+void MatrixClearSelectionCommand::undo()
+{
+    if (!d_model)
+        return;
+
+    double *data = d_model->dataVector();
+    if (!data)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    int cols = d_model->columnCount();
+	int aux = 0;
+    for (int i = d_start_row; i <= d_end_row; i++){
+        int row = i*cols + d_start_col;
+        for (int j = d_start_col; j <= d_end_col; j++)
+            data[row++] = d_data[aux++];
+    }
+    d_model->matrix()->resetView();
+	QApplication::restoreOverrideCursor();
+}
+
+/*************************************************************************/
+/*           Class MatrixUndoOperationCommand                                */
+/*************************************************************************/
+MatrixUndoOperationCommand::MatrixUndoOperationCommand(MatrixModel *model, Matrix::Operation op, const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_operation(op)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixUndoOperationCommand::redo()
+{
+    if (!d_model)
+        return;
+
+    switch(d_operation){
+		case Matrix::Transpose:
+			d_model->transpose();
+		break;
+		case Matrix::Invert:
+			d_model->invert();
+		break;
+		case Matrix::FlipVertically:
+			d_model->flipVertically();
+		break;
+		case Matrix::FlipHorizontally:
+			d_model->flipHorizontally();
+		break;
+		case Matrix::RotateClockwise:
+			d_model->rotate90(true);
+		break;
+		case Matrix::RotateCounterClockwise:
+			d_model->rotate90(false);
+		break;
+	}
+	d_model->matrix()->resetView();
+}
+
+void MatrixUndoOperationCommand::undo()
+{
+    if (!d_model)
+        return;
+
+    switch(d_operation){
+		case Matrix::Transpose:
+			d_model->transpose();
+		break;
+		case Matrix::Invert:
+			d_model->invert();
+		break;
+		case Matrix::FlipVertically:
+			d_model->flipVertically();
+		break;
+		case Matrix::FlipHorizontally:
+			d_model->flipHorizontally();
+		break;
+		case Matrix::RotateClockwise:
+			d_model->rotate90(false);
+		break;
+		case Matrix::RotateCounterClockwise:
+			d_model->rotate90(true);
+		break;
+	}
+	d_model->matrix()->resetView();
 }
