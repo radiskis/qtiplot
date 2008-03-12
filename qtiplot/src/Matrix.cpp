@@ -60,8 +60,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <gsl/gsl_linalg.h>
 #include <gsl/gsl_math.h>
+#include <gsl/gsl_linalg.h>
 
 #include "analysis/fft2D.h"
 
@@ -337,7 +337,7 @@ void Matrix::setDimensions(int rows, int cols)
 		{
 			case 0: {// Yes
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-				MatrixModel *new_model = d_matrix_model->copy();
+				/*MatrixModel *new_model = d_matrix_model->copy();
 				if (cols != c)
 					new_model->setColumnCount(cols);
 				if (rows != r)
@@ -345,7 +345,12 @@ void Matrix::setDimensions(int rows, int cols)
 
                 d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Set Dimensions") +
                 " " + QString::number(rows) + "x" + QString::number(cols)));
-                setMatrixModel(new_model);
+                setMatrixModel(new_model);*/
+                if (cols != c)
+                    d_matrix_model->setColumnCount(cols);
+                if (rows != r)
+                    d_matrix_model->setRowCount(rows);
+                resetView();
 				QApplication::restoreOverrideCursor();
 				break;
 			}
@@ -355,7 +360,7 @@ void Matrix::setDimensions(int rows, int cols)
 		}
 	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		MatrixModel *new_model = d_matrix_model->copy();
+		/*MatrixModel *new_model = d_matrix_model->copy();
         if (cols != c)
             new_model->setColumnCount(cols);
         if (rows != r)
@@ -363,7 +368,13 @@ void Matrix::setDimensions(int rows, int cols)
 
         d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Set Dimensions") +
                 " " + QString::number(rows) + "x" + QString::number(cols)));
-        setMatrixModel(new_model);
+        setMatrixModel(new_model);*/
+
+        if (cols != c)
+            d_matrix_model->setColumnCount(cols);
+        if (rows != r)
+            d_matrix_model->setRowCount(rows);
+        resetView();
         QApplication::restoreOverrideCursor();
 	}
 }
@@ -390,7 +401,7 @@ double Matrix::determinant()
 	int cols = numCols();
 
 	if (rows != cols){
-		QMessageBox::critical(0,tr("QtiPlot - Error"),
+		QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot - Error"),
 				tr("Calculation failed, the matrix is not square!"));
 		return GSL_POSINF;
 	}
@@ -398,10 +409,11 @@ double Matrix::determinant()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	gsl_matrix *A = gsl_matrix_alloc(rows, cols);
-	int i;
+	double *data = d_matrix_model->dataVector();
+	int i, cell = 0;
 	for(i=0; i<rows; i++)
 		for(int j=0; j<cols; j++)
-			gsl_matrix_set(A, i, j, d_matrix_model->cell(i, j));
+			gsl_matrix_set(A, i, j, data[cell++]);
 
 	gsl_permutation * p = gsl_permutation_alloc(rows);
 	gsl_linalg_LU_decomp(A, p, &i);
@@ -417,118 +429,35 @@ double Matrix::determinant()
 
 void Matrix::invert()
 {
-	int rows = numRows();
-	int cols = numCols();
-
-	if (rows != cols){
-		QMessageBox::critical(0,tr("QtiPlot - Error"),
-				tr("Inversion failed, the matrix is not square!"));
+	if (numRows() != numCols()){
+		QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot - Error"), 
+		tr("Inversion failed, the matrix is not square!"));
 		return;
 	}
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	gsl_matrix *A = gsl_matrix_alloc(rows, cols);
-	int i;
-	for(i=0; i<rows; i++){
-		for(int j=0; j<cols; j++)
-			gsl_matrix_set(A, i, j, d_matrix_model->cell(i, j));
-	}
-
-	gsl_permutation * p = gsl_permutation_alloc(cols);
-	gsl_linalg_LU_decomp(A, p, &i);
-
-	gsl_matrix *inverse = gsl_matrix_alloc(rows, cols);
-	gsl_linalg_LU_invert(A, p, inverse);
-
-	gsl_matrix_free(A);
-	gsl_permutation_free(p);
-
-    MatrixModel *new_matrix_model = new MatrixModel(rows, cols, this);
-	for(i=0; i<rows; i++){
-		for(int j=0; j<cols; j++)
-			new_matrix_model->setCell(i, j, gsl_matrix_get(inverse, i, j));
-	}
-
-	gsl_matrix_free(inverse);
-
-    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Invert")));
-    setMatrixModel(new_matrix_model);
-
-	QApplication::restoreOverrideCursor();
+	d_undo_stack->push(new MatrixUndoOperationCommand(d_matrix_model, Invert, tr("Invert")));
 }
 
 void Matrix::transpose()
 {
-	int rows = numRows();
-	int cols = numCols();
-
-	MatrixModel *new_matrix_model = new MatrixModel(cols, rows, this);
-	for(int i = 0; i < cols; i++){
-		for(int j = 0; j < rows; j++)
-			new_matrix_model->setCell(i, j, d_matrix_model->data(j, i));
-	}
-
-    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Transpose")));
-    setMatrixModel(new_matrix_model);
+	d_undo_stack->push(new MatrixUndoOperationCommand(d_matrix_model, Transpose, tr("Transpose")));
 }
 
 void Matrix::flipVertically()
 {
-	int rows = numRows();
-	int cols = numCols();
-
-	MatrixModel *new_matrix_model = new MatrixModel(rows, cols, this);
-	for(int i = 0; i < rows; i++){
-		int row = rows - i - 1;
-		for(int j = 0; j < cols; j++)
-			new_matrix_model->setCell(i, j, d_matrix_model->data(row, j));
-	}
-
-    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Flip Vertically")));
-    setMatrixModel(new_matrix_model);
+	d_undo_stack->push(new MatrixUndoOperationCommand(d_matrix_model, FlipVertically, tr("Flip Vertically")));
 }
 
 void Matrix::flipHorizontally()
 {
-	int rows = numRows();
-	int cols = numCols();
-
-	MatrixModel *new_matrix_model = new MatrixModel(rows, cols, this);
-	for(int i = 0; i < cols; i++){
-		int col = cols - i - 1;
-		for(int j = 0; j < rows; j++)
-			new_matrix_model->setCell(j, i, d_matrix_model->data(j, col));
-	}
-
-    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Flip Horizontally")));
-    setMatrixModel(new_matrix_model);
+	d_undo_stack->push(new MatrixUndoOperationCommand(d_matrix_model, FlipHorizontally, tr("Flip Horizontally")));
 }
 
 void Matrix::rotate90(bool clockwise)
 {
-	int rows = numRows();
-	int cols = numCols();
-
-	MatrixModel *new_matrix_model = new MatrixModel(cols, rows, this);
-
-	if (clockwise){
-        int aux = rows - 1;
-        for(int i = 0; i < rows; i++){
-            int row = aux - i;
-            for(int j = 0; j < cols; j++)
-                new_matrix_model->setCell(j, i, d_matrix_model->data(row, j));
-        }
-	} else {
-	    int aux = cols - 1;
-        for(int i = 0; i < cols; i++){
-            int col = aux - i;
-            for(int j = 0; j < rows; j++)
-                new_matrix_model->setCell(i, j, d_matrix_model->data(j, col));
-        }
-	}
-    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_matrix_model, tr("Rotate 90°")));
-    setMatrixModel(new_matrix_model);
+	if (clockwise)
+		d_undo_stack->push(new MatrixUndoOperationCommand(d_matrix_model, RotateClockwise, tr("Rotate 90°")));
+	else
+		d_undo_stack->push(new MatrixUndoOperationCommand(d_matrix_model, RotateCounterClockwise, tr("Rotate -90°")));
 }
 
 bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCol)
@@ -565,8 +494,8 @@ bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCo
 		return false;
 	}
 
-    MatrixModel *new_model = new MatrixModel(rows, cols, this);
-	double *data = new_model->dataVector();
+    //MatrixModel *new_model = new MatrixModel(rows, cols, this);
+	double *data = d_matrix_model->dataVector();
 
     if (mup->codeLines() == 1){
         for(int row = startRow; row <= endRow; row++){
@@ -607,9 +536,11 @@ bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCo
 		}
 	}
 
-    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Calculate Values")));
-    setMatrixModel(new_model);
+    //d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Calculate Values")));
+    //setMatrixModel(new_model);
 
+    resetView();
+    emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
 	return true;
 }
@@ -618,7 +549,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 {
 	if (formula_str.isEmpty())
 		return false;
-	
+
 	if (QString(scriptEnv->name()) == "muParser" || forceMuParser)
 		return muParserCalculate(startRow, endRow, startCol, endCol);
 
@@ -687,36 +618,39 @@ void Matrix::clearSelection()
 	if (!selModel || !selModel->hasSelection())
 		return;
 
-    int cols = numCols();
-    if (selModel->isColumnSelected(0, QModelIndex()) &&
-        selModel->isColumnSelected(cols - 1, QModelIndex())){//all cells are selected
-        double *data = d_matrix_model->dataVector();
-        int cells = cols*numRows();
-        if (cells > 35000000 &&
-            QMessageBox::Yes == QMessageBox::warning((ApplicationWindow *)applicationWindow(),
-            tr("QtiPlot") + " - " + tr("Warning"),
-            tr("It will not be possible to undo this change. Do you want to continue anyways?"),
-            QMessageBox::Yes, QMessageBox::Cancel)){
-            for (int i = 0; i < cells; i++)
-                data[i] = GSL_NAN;
-        } else {
-            MatrixModel *old_model = d_matrix_model->copy();
-            for (int i = 0; i < cells; i++)
-                data[i] = GSL_NAN;
-            d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Clear Selection")));
-        }
-    } else {
-        MatrixModel *old_model = d_matrix_model->copy();
-        QModelIndexList lst = selModel->selection().indexes();
-        foreach(QModelIndex index, lst)
-		d_matrix_model->setText(index.row(), index.column(), "");
-        d_undo_stack->push(new MatrixCommand(old_model, d_matrix_model, tr("Clear Selection")));
-    }
-
-	d_table_view->reset();
-    emit modifiedWindow(this);
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	
+	const QItemSelectionRange sel = selModel->selection()[0];
+	int startRow = sel.top();
+	int endRow = sel.bottom();
+	int startCol = sel.left();
+	int endCol = sel.right();
+	double *buffer = (double *)malloc((endRow - startRow + 1)*(endCol - startCol + 1) * sizeof (double));
+	if (buffer == NULL){
+		QApplication::restoreOverrideCursor();
+		if(QMessageBox::Yes == QMessageBox::warning((ApplicationWindow *)applicationWindow(),
+		tr("QtiPlot") + " - " + tr("Warning"), tr("Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?"),
+		QMessageBox::Yes, QMessageBox::Cancel)){
+			d_matrix_model->clear(startRow, endRow, startCol, endCol);
+			d_table_view->reset();
+			emit modifiedWindow(this);
+		} else
+			return;
+	} else {
+		double *data = d_matrix_model->dataVector();
+    	int cols = numCols();
+		int aux = 0;
+    	for (int i = startRow; i <= endRow; i++){
+        	int row = i*cols + startCol;
+       		for (int j = startCol; j <= endCol; j++){
+            	buffer[aux++] = data[row++];
+        	}
+    	}
+    	d_undo_stack->push(new MatrixClearSelectionCommand(d_matrix_model, sel, buffer, tr("Clear Selection")));
+    	emit modifiedWindow(this);
+	}
+	QApplication::restoreOverrideCursor();
 }
-
 
 void Matrix::copySelection()
 {
@@ -841,7 +775,7 @@ void Matrix::deleteSelectedRows()
 	}
 	if (startRow < 0 || !count)
 		return;
-	
+
 	int cols = numCols();
 	QVector<double> data(count*cols);
 	int aux = 0;
@@ -849,7 +783,7 @@ void Matrix::deleteSelectedRows()
 		for (int j = 0; j<cols; j++)
 			data[aux++] = d_matrix_model->cell(startRow + i, j);
 	}
-	
+
 	d_undo_stack->push(new MatrixDeleteRowsCommand(d_matrix_model, startRow, count, data, tr("Delete Rows") + " " +
                       QString::number(startRow + 1) + " - " + QString::number(startRow + count)));
 	d_table_view->reset();
@@ -874,7 +808,7 @@ void Matrix::deleteSelectedColumns()
 	}
 	if (startCol < 0 || !count)
 		return;
-	
+
 	int rows = numRows();
 	QVector<double> data(count*rows);
 	int aux = 0;
@@ -1241,6 +1175,10 @@ void Matrix::copy(Matrix *m)
 	if (!m)
         return;
 
+    MatrixModel *mModel = m->matrixModel();
+	if (!mModel)
+		return;
+
 	x_start = m->xStart();
 	x_end = m->xEnd();
 	y_start = m->yStart();
@@ -1249,16 +1187,14 @@ void Matrix::copy(Matrix *m)
 	int rows = numRows();
 	int cols = numCols();
 
-	MatrixModel *mModel = m->matrixModel();
-	if (!mModel)
-		return;
-
     txt_format = m->textFormat();
 	num_precision = m->precision();
 
-    for (int i=0; i<rows; i++)
-        for (int j=0; j<cols; j++)
-            d_matrix_model->setCell(i, j, mModel->data(i, j));
+    double *data = d_matrix_model->dataVector();
+    double *m_data = mModel->dataVector();
+    int size = rows*cols;
+    for (int i=0; i<size; i++)
+        data[i] = m_data[i];
 
 	d_header_view_type = m->headerViewType();
     d_view_type = m->viewType();
@@ -1286,16 +1222,13 @@ void Matrix::setViewType(ViewType type)
 	d_view_type = type;
 
 	if (d_view_type == ImageView){
-	    if (d_table_view)
-            delete d_table_view;
-        if (d_select_all_shortcut)
-            delete d_select_all_shortcut;
+		delete d_table_view;
+		delete d_select_all_shortcut;
 	    initImageView();
 		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
 		d_stack->setCurrentWidget(imageLabel);
 	} else if (d_view_type == TableView){
-	    if (imageLabel)
-            delete imageLabel;
+		delete imageLabel;
 	    initTableView();
 	    d_stack->setCurrentWidget(d_table_view);
 	}
@@ -1617,4 +1550,5 @@ void Matrix::setMatrixModel(MatrixModel *model)
 Matrix::~Matrix()
 {
     delete d_undo_stack;
+	delete d_matrix_model;
 }

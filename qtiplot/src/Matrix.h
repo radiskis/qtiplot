@@ -78,6 +78,7 @@ public:
     Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
     ~Matrix();
 
+	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise, RotateCounterClockwise};
     enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};
 	enum ColorMapType{GrayScale, Rainbow, Custom};
