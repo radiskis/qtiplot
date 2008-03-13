@@ -43,7 +43,6 @@ class MatrixModel : public QAbstractTableModel
 public:
     MatrixModel(int rows = 32, int cols = 32, QObject *parent = 0);
     MatrixModel(const QImage& image, QObject *parent);
-    MatrixModel* copy();
 
     Matrix *matrix(){return d_matrix;};
 
@@ -81,6 +80,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	void setDataVector(const QVector<double>& data);
 
+	void setImage(const QImage& image);
+	
 	bool importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces,
 					bool simplifySpaces, const QString& commentString, int importAs,
 					const QLocale& locale, int endLineChar = 0, int maxRows = -1);
@@ -93,7 +94,12 @@ public:
 	void flipVertically();
 	void flipHorizontally();
 	void rotate90(bool clockwise);
-	void clear(int startRow, int endRow, int startCol, int endCol);
+	void fft(bool inverse);
+	void clear(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
+	bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
+	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
+	double* dataCopy(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
+	void pasteData(double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
 	
 private:
 	double* secureAllocBuffer(int size);

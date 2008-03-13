@@ -34,18 +34,6 @@
 #include <QUndoCommand>
 
 //! Matrix commands used by the undo/redo framework
-class MatrixCommand: public QUndoCommand
-{
-public:
-    MatrixCommand(MatrixModel *modelBefore, MatrixModel *modelAfter, const QString & text);
-    virtual void redo();
-    virtual void undo();
-
-private:
-    MatrixModel *d_model_before;
-    MatrixModel *d_model_after;
-};
-
 class MatrixEditCellCommand: public QUndoCommand
 {
 public:
@@ -209,29 +197,90 @@ private:
     int d_start_col;
 };
 
-class MatrixClearSelectionCommand: public QUndoCommand
+class MatrixUndoCommand: public QUndoCommand
 {
 public:
-    MatrixClearSelectionCommand(MatrixModel *model, const QItemSelectionRange& selection, double *data, const QString& text);
-	~MatrixClearSelectionCommand(){free(d_data);};
+    MatrixUndoCommand(MatrixModel *model, Matrix::Operation op, int startRow, int endRow, int startCol, int endCol,
+						double *data, const QString& text);
+	~MatrixUndoCommand(){free(d_data);};
     virtual void redo();
     virtual void undo();
 
+protected:
+	MatrixModel *d_model;
 private:
-    MatrixModel *d_model;
+	Matrix::Operation d_operation;
     int d_start_row, d_end_row, d_start_col, d_end_col;
     double* d_data;
 };
 
-class MatrixUndoOperationCommand: public QUndoCommand
+class MatrixFftCommand: public MatrixUndoCommand
 {
 public:
-    MatrixUndoOperationCommand(MatrixModel *model, Matrix::Operation op, const QString& text);
+    MatrixFftCommand(bool inverse, MatrixModel *model, int startRow, int endRow, 
+					int startCol, int endCol, double *data, const QString& text);
+    virtual void redo();
+
+private:
+    bool d_inverse;
+};
+
+class MatrixSetImageCommand: public MatrixUndoCommand
+{
+public:
+    MatrixSetImageCommand(MatrixModel *model, const QImage& image, Matrix::ViewType oldView, 
+						int startRow, int endRow, int startCol, int endCol, double *data, const QString& text);
+    virtual void redo();
+    virtual void undo();
+
+private:
+    QImage d_image;
+	Matrix::ViewType d_old_view;
+};
+
+class MatrixImportAsciiCommand: public MatrixUndoCommand
+{
+public:
+    MatrixImportAsciiCommand(const QString &fname, const QString &sep, 
+						int ignoredLines, bool stripSpaces, bool simplifySpaces, 
+						const QString& commentString, Matrix::ImportMode importAs, const QLocale& locale, 
+						int endLineChar, int maxRows, MatrixModel *model, int startRow, int endRow, 
+						int startCol, int endCol, double *data, const QString& text);
+    virtual void redo();
+
+private:
+	QString d_path, d_sep, d_comment;
+	int d_ignore_lines, d_end_line, d_max_rows;
+	bool d_strip_spaces, d_simplify_spaces;
+	Matrix::ImportMode d_mode;
+	QLocale d_locale;
+};
+
+class MatrixSymmetryOperation: public QUndoCommand
+{
+public:
+    MatrixSymmetryOperation(MatrixModel *model, Matrix::Operation op, const QString& text);
     virtual void redo();
     virtual void undo();
 
 private:
     MatrixModel *d_model;
     Matrix::Operation d_operation;
+};
+
+class MatrixPasteCommand: public QUndoCommand
+{
+public:
+    MatrixPasteCommand(MatrixModel *model, int startRow, int endRow, int startCol, int endCol,
+					double *clipboardData, int rows, int cols, double *backupData, 
+					int oldRows, int oldCols, const QString& text);
+	~MatrixPasteCommand(){free(d_clipboard_data); free(d_backup_data);};
+    virtual void redo();
+    virtual void undo();
+
+private:
+	MatrixModel *d_model;
+    int d_start_row, d_end_row, d_start_col, d_end_col, d_rows, d_cols, d_old_rows, d_old_cols;
+	double *d_clipboard_data, *d_backup_data;
 };
 #endif
