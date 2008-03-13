@@ -2778,9 +2778,7 @@ void ApplicationWindow::transposeMatrix()
 	if (!m)
 		return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->transpose();
-	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::flipMatrixVertically()
@@ -2789,9 +2787,7 @@ void ApplicationWindow::flipMatrixVertically()
 	if (!m)
 		return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->flipVertically();
-	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::flipMatrixHorizontally()
@@ -2800,9 +2796,7 @@ void ApplicationWindow::flipMatrixHorizontally()
 	if (!m)
 		return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->flipHorizontally();
-	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::rotateMatrix90()
@@ -2811,9 +2805,7 @@ void ApplicationWindow::rotateMatrix90()
 	if (!m)
 		return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->rotate90();
-	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::rotateMatrixMinus90()
@@ -2822,9 +2814,7 @@ void ApplicationWindow::rotateMatrixMinus90()
 	if (!m)
 		return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->rotate90(false);
-	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::matrixDeterminant()
@@ -14666,9 +14656,7 @@ void ApplicationWindow::matrixDirectFFT()
 	if (!m)
 		return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->fft();
-	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::matrixInverseFFT()
@@ -14677,9 +14665,7 @@ void ApplicationWindow::matrixInverseFFT()
 	if (!m)
 		return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	m->fft(true);
-	QApplication::restoreOverrideCursor();
 }
 
 void ApplicationWindow::setFormatBarFont(const QFont& font)

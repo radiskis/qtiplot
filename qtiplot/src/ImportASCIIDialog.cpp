@@ -777,15 +777,12 @@ void PreviewMatrix::importASCII(const QString &fname, const QString &sep, int ig
     				bool stripSpaces, bool simplifySpaces, const QString& commentString,
 					int importAs, const QLocale& locale, int endLine, int maxRows)
 {
-	if (d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces,
-		simplifySpaces, commentString, importAs, locale, endLine, maxRows))
-		reset();
+	d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces,
+		simplifySpaces, commentString, importAs, locale, endLine, maxRows);
 }
 
 void PreviewMatrix::clear()
 {
-	QVector <double> d_data_new(d_matrix_model->rowCount()*d_matrix_model->columnCount());
-	d_data_new.fill(GSL_NAN);
-	d_matrix_model->setDataVector(d_data_new);
+	d_matrix_model->clear();
 	reset();
 }

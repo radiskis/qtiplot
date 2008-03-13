@@ -31,34 +31,6 @@
 #include <QApplication>
 #include <gsl/gsl_math.h>
 
-MatrixCommand::MatrixCommand(MatrixModel *modelBefore, MatrixModel *modelAfter, const QString & text):
-QUndoCommand(text),
-d_model_before(modelBefore),
-d_model_after(modelAfter)
-{
-    setText(modelBefore->matrix()->objectName() + ": " + text);
-}
-
-void MatrixCommand::redo()
-{
-    if (!d_model_after)
-        return;
-
-    Matrix *m = d_model_after->matrix();
-    if (m)
-        m->setMatrixModel(d_model_after);
-}
-
-void MatrixCommand::undo()
-{
-    if (!d_model_before)
-        return;
-
-    Matrix *m = d_model_before->matrix();
-    if (m)
-        m->setMatrixModel(d_model_before);
-}
-
 /*************************************************************************/
 /*           Class MatrixEditCellCommand                                 */
 /*************************************************************************/
@@ -485,30 +457,44 @@ void MatrixInsertColCommand::undo()
 }
 
 /*************************************************************************/
-/*           Class MatrixClearSelectionCommand                           */
+/*           Class MatrixUndoCommand                           */
 /*************************************************************************/
-MatrixClearSelectionCommand::MatrixClearSelectionCommand(MatrixModel *model, const QItemSelectionRange& selection, double *data, const QString& text):
+MatrixUndoCommand::MatrixUndoCommand(MatrixModel *model, Matrix::Operation op, int startRow, int endRow, int startCol, int endCol,
+									double *data, const QString& text):
 QUndoCommand(text),
 d_model(model),
-d_start_row(selection.top()),
-d_end_row(selection.bottom()),
-d_start_col(selection.left()),
-d_end_col(selection.right()),
+d_operation(op),
+d_start_row(startRow),
+d_end_row(endRow),
+d_start_col(startCol),
+d_end_col(endCol),
 d_data(data)
 {
     setText(model->matrix()->objectName() + ": " + text);
 }
 
-void MatrixClearSelectionCommand::redo()
+void MatrixUndoCommand::redo()
 {
     if (!d_model)
         return;
 
-	d_model->clear(d_start_row, d_end_row, d_start_col, d_end_col);
+	switch(d_operation){
+		case Matrix::Clear:
+			d_model->clear(d_start_row, d_end_row, d_start_col, d_end_col);
+		break;
+		case Matrix::Calculate:
+			d_model->calculate(d_start_row, d_end_row, d_start_col, d_end_col);
+		break;
+		case Matrix::MuParserCalculate:
+			d_model->muParserCalculate(d_start_row, d_end_row, d_start_col, d_end_col);
+		break;
+		default:
+		break;
+	}
     d_model->matrix()->resetView();
 }
 
-void MatrixClearSelectionCommand::undo()
+void MatrixUndoCommand::undo()
 {
     if (!d_model)
         return;
@@ -531,9 +517,87 @@ void MatrixClearSelectionCommand::undo()
 }
 
 /*************************************************************************/
-/*           Class MatrixUndoOperationCommand                                */
+/*           Class MatrixFftCommand                                      */
 /*************************************************************************/
-MatrixUndoOperationCommand::MatrixUndoOperationCommand(MatrixModel *model, Matrix::Operation op, const QString& text):
+MatrixFftCommand::MatrixFftCommand(bool inverse, MatrixModel *model, int startRow, int endRow, 
+									int startCol, int endCol, double *data, const QString& text):
+MatrixUndoCommand(model, Matrix::FFT, startRow, endRow, startCol, endCol, data, text),
+d_inverse(inverse)
+{
+}
+
+void MatrixFftCommand::redo()
+{
+    if (!d_model)
+        return;
+
+    d_model->fft(d_inverse);
+}
+
+/*************************************************************************/
+/*           Class MatrixSetImageCommand                           */
+/*************************************************************************/
+MatrixSetImageCommand::MatrixSetImageCommand(MatrixModel *model, const QImage& image, Matrix::ViewType oldView, 
+						int startRow, int endRow, int startCol, int endCol, double *data, const QString& text):
+MatrixUndoCommand(model, Matrix::SetImage, startRow, endRow, startCol, endCol, data, text),
+d_image(image),
+d_old_view(oldView)
+{
+}
+
+void MatrixSetImageCommand::undo()
+{
+    if (!d_model)
+        return;
+
+	d_model->matrix()->setViewType(d_old_view);
+	MatrixUndoCommand::undo();
+}
+
+void MatrixSetImageCommand::redo()
+{
+    if (!d_model)
+        return;
+
+    d_model->setImage(d_image);
+	d_model->matrix()->setViewType(Matrix::ImageView, d_image);
+}
+
+/*************************************************************************/
+/*           Class MatrixImportAsciiCommand                              */
+/*************************************************************************/
+MatrixImportAsciiCommand::MatrixImportAsciiCommand(const QString &fname, const QString &sep, 
+						int ignoredLines, bool stripSpaces, bool simplifySpaces, 
+						const QString& commentString, Matrix::ImportMode importAs, const QLocale& locale, 
+						int endLineChar, int maxRows, MatrixModel *model, int startRow, int endRow, 
+						int startCol, int endCol, double *data, const QString& text):
+MatrixUndoCommand(model, Matrix::ImportAscii, startRow, endRow, startCol, endCol, data, text),
+d_path(fname), 
+d_sep(sep), 
+d_comment(commentString),
+d_ignore_lines(ignoredLines), 
+d_end_line(endLineChar), 
+d_max_rows(maxRows),
+d_strip_spaces(stripSpaces), 
+d_simplify_spaces(simplifySpaces),
+d_mode(importAs),
+d_locale(locale)
+{
+}
+
+void MatrixImportAsciiCommand::redo()
+{
+    if (!d_model)
+        return;
+
+	d_model->importASCII(d_path, d_sep, d_ignore_lines, d_strip_spaces, d_simplify_spaces,
+						d_comment, d_mode, d_locale, d_end_line, d_max_rows);
+}
+
+/*************************************************************************/
+/*           Class MatrixSymmetryOperation                                */
+/*************************************************************************/
+MatrixSymmetryOperation::MatrixSymmetryOperation(MatrixModel *model, Matrix::Operation op, const QString& text):
 QUndoCommand(text),
 d_model(model),
 d_operation(op)
@@ -541,7 +605,7 @@ d_operation(op)
     setText(model->matrix()->objectName() + ": " + text);
 }
 
-void MatrixUndoOperationCommand::redo()
+void MatrixSymmetryOperation::redo()
 {
     if (!d_model)
         return;
@@ -564,12 +628,14 @@ void MatrixUndoOperationCommand::redo()
 		break;
 		case Matrix::RotateCounterClockwise:
 			d_model->rotate90(false);
+		break;
+		default:
 		break;
 	}
 	d_model->matrix()->resetView();
 }
 
-void MatrixUndoOperationCommand::undo()
+void MatrixSymmetryOperation::undo()
 {
     if (!d_model)
         return;
@@ -593,6 +659,68 @@ void MatrixUndoOperationCommand::undo()
 		case Matrix::RotateCounterClockwise:
 			d_model->rotate90(true);
 		break;
+		default:
+		break;
 	}
 	d_model->matrix()->resetView();
+}
+
+/*************************************************************************/
+/*           Class MatrixPasteCommand                               	 */
+/*************************************************************************/
+MatrixPasteCommand::MatrixPasteCommand(MatrixModel *model, int startRow, int endRow, int startCol, int endCol,
+					double *clipboardData, int rows, int cols, double *backupData, int oldRows, int oldCols,
+					const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_start_row(startRow),
+d_end_row(endRow),
+d_start_col(startCol),
+d_end_col(endCol),
+d_rows(rows),
+d_cols(cols),
+d_old_rows(oldRows),
+d_old_cols(oldCols),
+d_clipboard_data(clipboardData),
+d_backup_data(backupData)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixPasteCommand::redo()
+{
+    if (!d_model)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    d_model->pasteData(d_clipboard_data, d_start_row, d_start_col, d_rows, d_cols);
+	d_model->matrix()->resetView();
+	QApplication::restoreOverrideCursor();
+}
+
+void MatrixPasteCommand::undo()
+{
+	if (!d_model)
+        return;
+	
+ 	double *data = d_model->dataVector();
+    if (!data)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	if (d_old_rows != d_model->rowCount())
+		d_model->setRowCount(d_old_rows);
+	if (d_old_cols != d_model->columnCount())
+		d_model->setColumnCount(d_old_cols);
+	
+    int cols = d_model->columnCount();
+	int aux = 0;
+    for (int i = d_start_row; i <= d_end_row; i++){
+        int row = i*cols + d_start_col;
+        for (int j = d_start_col; j <= d_end_col; j++)
+            data[row++] = d_backup_data[aux++];
+    }
+    d_model->matrix()->resetView();
+	QApplication::restoreOverrideCursor();
 }

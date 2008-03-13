@@ -35,6 +35,7 @@
 #include <QHeaderView>
 #include <QTableView>
 #include <QPrinter>
+#include <QMessageBox>
 
 #include "MatrixModel.h"
 #include "MdiSubWindow.h"
@@ -78,7 +79,8 @@ public:
     Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
     ~Matrix();
 
-	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise, RotateCounterClockwise};
+	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise, 
+				  RotateCounterClockwise, FFT, Clear, Calculate, MuParserCalculate, SetImage, ImportAscii};
     enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};
 	enum ColorMapType{GrayScale, Rainbow, Custom};
@@ -88,7 +90,7 @@ public:
 		Overwrite //!< replace content of current matrix with the imported file
 	};
 
-	void setViewType(ViewType);
+	void setViewType(ViewType, const QImage& image = QImage());
 	ViewType viewType(){return d_view_type;};
 
     HeaderViewType headerViewType(){return d_header_view_type;};
@@ -103,7 +105,6 @@ public:
 	void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
 
 	MatrixModel * matrixModel(){return d_matrix_model;};
-	void setMatrixModel(MatrixModel *model);
     QUndoStack *undoStack(){return d_undo_stack;};
 
 	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
@@ -293,6 +294,7 @@ private:
 	void initImageView();
 	void initTableView();
     void initGlobals();
+	QMessageBox::StandardButton ignoreUndo();
 
     QStackedWidget *d_stack;
     MatrixModel *d_matrix_model;

@@ -154,9 +154,10 @@ class scripted
    scripted(ScriptingEnv* env);
    ~scripted();
    void scriptingChangeEvent(ScriptingChangeEvent*);
+   ScriptingEnv *scriptingEnv(){return scriptEnv;};
+  
   protected:
     ScriptingEnv *scriptEnv;
 };
 
 #endif
-

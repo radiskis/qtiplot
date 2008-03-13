@@ -149,15 +149,15 @@ bool MatrixValuesDialog::apply()
 	QString oldFormula = matrix->formula();
 
 	matrix->setFormula(formula);
-	
+	matrix->undoStack()->push(new MatrixSetFormulaCommand(matrix, oldFormula, formula,
+								tr("Set New Formula") + " " + formula));
+
 #ifdef SCRIPTING_PYTHON
 	if (matrix->calculate(startRow->value()-1, endRow->value()-1, 
 		startCol->value()-1, endCol->value()-1, boxMuParser->isChecked())){
 #else
 	if (matrix->calculate(startRow->value()-1, endRow->value()-1, startCol->value()-1, endCol->value()-1)){
 #endif
-	    matrix->undoStack()->push(new MatrixSetFormulaCommand(matrix, oldFormula, formula,
-                                tr("Set New Formula") + " " + formula));
 		return true;
 	}
 	matrix->setFormula(oldFormula);
