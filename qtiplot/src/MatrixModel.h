@@ -34,6 +34,9 @@
 #include <QVector>
 #include <QLocale>
 
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_permutation.h>
+
 class Matrix;
 
 class MatrixModel : public QAbstractTableModel
@@ -89,6 +92,7 @@ public:
 	void setLocale(const QLocale& locale){d_locale = locale;};
 	void setNumericFormat(char f, int prec);
 
+	bool initWorkspace();
 	void invert();
 	void transpose();
 	void flipVertically();
@@ -111,6 +115,11 @@ private:
 	int d_num_precision;
 	//! Locale used to display data
 	QLocale d_locale;
+
+	//! Pointers to GSL matrices used during inversion operations
+	gsl_matrix *d_direct_matrix, *d_inv_matrix;
+	//! Pointer to a GSL permutation used during inversion operations
+	gsl_permutation *d_inv_perm;
 };
 
 #endif

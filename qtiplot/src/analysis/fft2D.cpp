@@ -27,24 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "fft2D.h"
+#include "../Matrix.h"
+
 #include <math.h>
-
-double** allocateMatrixData(int rows, int columns)
-{
-	double** data = new double* [rows];
-	for ( int i = 0; i < rows; ++i)
-		data[i] = new double [columns];
-
-	return data;
-}
-
-void freeMatrixData(double **data, int rows)
-{
-	for ( int i = 0; i < rows; i++)
-		delete [] data[i];
-
-	delete [] data;
-}
 
 void fft(double* x_int_re, double* x_int_im, unsigned int taille)
 {
@@ -108,8 +93,8 @@ void fft_inv(double* x_int_re, double* x_int_im, unsigned int taille)
 
 void fft2d(double **xtre, double **xtim, unsigned int width, unsigned int height)
 {
-    double **xint_re = allocateMatrixData(height, width);
-    double **xint_im = allocateMatrixData(height, width);
+    double **xint_re = Matrix::allocateMatrixData(height, width);
+    double **xint_im = Matrix::allocateMatrixData(height, width);
     double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
     for(int k=0; k<height; k++){
         for(int j=0; j<width; j++){
@@ -137,14 +122,14 @@ void fft2d(double **xtre, double **xtim, unsigned int width, unsigned int height
             xtim[(i+(height>>1))%height][(k+(width>>1))%width]=x_int2_c[i];
         }
     }
-    freeMatrixData(xint_re, height);
-    freeMatrixData(xint_im, height);
+    Matrix::freeMatrixData(xint_re, height);
+    Matrix::freeMatrixData(xint_im, height);
 }
 
 void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im, unsigned int width, unsigned int height)
 {
-    double **xint_re = allocateMatrixData(height, width);
-    double **xint_im = allocateMatrixData(height, width);
+    double **xint_re = Matrix::allocateMatrixData(height, width);
+    double **xint_im = Matrix::allocateMatrixData(height, width);
     double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
     for(int k=0; k<height; k++){
         for(int j=0; j<width; j++){
@@ -168,6 +153,6 @@ void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im,
             xrec_im[i][k] = x_int2_c[i];
         }
     }
-    freeMatrixData(xint_re, height);
-    freeMatrixData(xint_im, height);
+    Matrix::freeMatrixData(xint_re, height);
+    Matrix::freeMatrixData(xint_im, height);
 }

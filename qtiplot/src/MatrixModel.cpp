@@ -52,7 +52,10 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
 	 d_matrix((Matrix*)parent),
 	 d_txt_format('g'),
 	 d_num_precision(6),
-	 d_locale(QLocale())
+	 d_locale(QLocale()),
+	 d_direct_matrix(NULL), 
+	 d_inv_matrix(NULL),
+	 d_inv_perm(NULL)
 {
 	if (d_matrix){
 		d_txt_format = d_matrix->textFormat().toAscii();
@@ -66,7 +69,10 @@ MatrixModel::MatrixModel(const QImage& image, QObject *parent)
 	 d_matrix((Matrix*)parent),
 	 d_txt_format('g'),
 	 d_num_precision(6),
-	 d_locale(QLocale())
+	 d_locale(QLocale()),
+	 d_direct_matrix(NULL), 
+	 d_inv_matrix(NULL),
+	 d_inv_perm(NULL)
 {
     setImage(image);
 }
@@ -630,40 +636,54 @@ void MatrixModel::rotate90(bool clockwise)
 	QApplication::restoreOverrideCursor();
 }
 
-void MatrixModel::invert()
+bool MatrixModel::initWorkspace()
 {
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
 	gsl_set_error_handler_off();
 	
-	gsl_matrix *A = gsl_matrix_alloc(d_rows, d_cols);
-	gsl_matrix *inverse = gsl_matrix_alloc(d_rows, d_cols);
-    gsl_permutation *p = gsl_permutation_alloc(d_cols);
-	if (A == NULL || inverse == NULL || p == NULL){
+	if (!d_direct_matrix)
+		d_direct_matrix = gsl_matrix_alloc(d_rows, d_cols);
+	if (!d_inv_matrix)
+		d_inv_matrix = gsl_matrix_alloc(d_rows, d_cols);
+	if (!d_inv_perm)
+    	d_inv_perm = gsl_permutation_alloc(d_cols);
+	if (!d_direct_matrix || !d_inv_matrix || !d_inv_perm){
 		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));
-		return;
+		return false;
 	}
+	return true;
+}
+
+void MatrixModel::invert()
+{
+	initWorkspace();
+	if(!d_direct_matrix || !d_inv_matrix || !d_inv_perm)
+		return;
 	
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 	int i, aux = 0;
 	for(i=0; i<d_rows; i++){
 		for(int j=0; j<d_cols; j++)
-			gsl_matrix_set(A, i, j, d_data[aux++]);
+			gsl_matrix_set(d_direct_matrix, i, j, d_data[aux++]);
 	}
 
-	gsl_linalg_LU_decomp(A, p, &i);
-	gsl_linalg_LU_invert(A, p, inverse);
+	gsl_linalg_LU_decomp(d_direct_matrix, d_inv_perm, &i);
+	gsl_linalg_LU_invert(d_direct_matrix, d_inv_perm, d_inv_matrix);
 
-	gsl_matrix_free(A);
-	gsl_permutation_free(p);
+	gsl_matrix_free(d_direct_matrix);
+	d_direct_matrix = NULL;
+	gsl_permutation_free(d_inv_perm);
+	d_inv_perm = NULL;
 
     aux = 0;
 	for(int i=0; i<d_rows; i++){
 		for(int j=0; j<d_cols; j++)
-			d_data[aux++] = gsl_matrix_get(inverse, i, j);
+			d_data[aux++] = gsl_matrix_get(d_inv_matrix, i, j);
 	}
-	gsl_matrix_free(inverse);
+	gsl_matrix_free(d_inv_matrix);
+	d_inv_matrix = NULL;
 	QApplication::restoreOverrideCursor();
 }
 
@@ -834,13 +854,16 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 
 void MatrixModel::fft(bool inverse)
 {
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
 	int width = d_cols;
     int height = d_rows;
 
     double **x_int_re = Matrix::allocateMatrixData(height, width); /* real coeff matrix */
     double **x_int_im = Matrix::allocateMatrixData(height, width); /* imaginary coeff  matrix*/
+	if (!x_int_re || !x_int_im)
+		return;
+	
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	
 	int cell = 0;
     for (int i = 0; i < height; i++){
         for (int j = 0; j < width; j++){
@@ -850,8 +873,13 @@ void MatrixModel::fft(bool inverse)
     }
 
     if (inverse){
-        double **x_fin_re = allocateMatrixData(height, width);
-        double **x_fin_im = allocateMatrixData(height, width);
+        double **x_fin_re = Matrix::allocateMatrixData(height, width);
+        double **x_fin_im = Matrix::allocateMatrixData(height, width);
+		if (!x_fin_re || !x_fin_im){
+			QApplication::restoreOverrideCursor();
+			return;
+		}
+		
         fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
 		cell = 0;
         for (int i = 0; i < height; i++){
@@ -861,8 +889,8 @@ void MatrixModel::fft(bool inverse)
                 d_data[cell++] = sqrt(re*re + im*im);
             }
         }
-        freeMatrixData(x_fin_re, height);
-        freeMatrixData(x_fin_im, height);
+        Matrix::freeMatrixData(x_fin_re, height);
+        Matrix::freeMatrixData(x_fin_im, height);
     } else {
         fft2d(x_int_re, x_int_im, width, height);
 		cell = 0;
@@ -874,8 +902,8 @@ void MatrixModel::fft(bool inverse)
             }
         }
     }
-    freeMatrixData(x_int_re, height);
-    freeMatrixData(x_int_im, height);
+    Matrix::freeMatrixData(x_int_re, height);
+    Matrix::freeMatrixData(x_int_im, height);
 	
 	d_matrix->resetView();
 	QApplication::restoreOverrideCursor();
