@@ -3735,12 +3735,12 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="873"/>
         <source>Undo Stack</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>История действий</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="1247"/>
         <source>Empty Stack</source>
-        <translation type="unfinished">Очистить</translation>
+        <translation>Начальное состояние</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="2696"/>
@@ -3800,7 +3800,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11738"/>
         <source>Show available undo/redo commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать доступные действия</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11928"/>
@@ -3815,7 +3815,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="10679"/>
         <source>Integration of %1 from zero is</source>
-        <translation type="unfinished">Интеграл %1 от нуля равен</translation>
+        <translation>Интеграл %1 от нуля равен</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11892"/>
@@ -5235,7 +5235,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="870"/>
         <source>&amp;Disable in-place editing</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Отменить WYSIWYG для подписей</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="932"/>
@@ -6239,32 +6239,32 @@ The following special codes can be used:
         <translation>Две матрицы различных размеров, мнимая часть будет игнорирована!</translation>
     </message>
     <message>
-        <location filename="../src/FFTDialog.cpp" line="295"/>
+        <location filename="../src/FFTDialog.cpp" line="303"/>
         <source>RealMatrixFFT</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/FFTDialog.cpp" line="297"/>
+        <location filename="../src/FFTDialog.cpp" line="305"/>
         <source>Real part of the FFT transform of</source>
         <translation>Действительная часть БПФ</translation>
     </message>
     <message>
-        <location filename="../src/FFTDialog.cpp" line="300"/>
+        <location filename="../src/FFTDialog.cpp" line="308"/>
         <source>ImagMatrixFFT</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/FFTDialog.cpp" line="302"/>
+        <location filename="../src/FFTDialog.cpp" line="310"/>
         <source>Imaginary part of the FFT transform of</source>
         <translation>Мнимая часть БПФ</translation>
     </message>
     <message>
-        <location filename="../src/FFTDialog.cpp" line="305"/>
+        <location filename="../src/FFTDialog.cpp" line="313"/>
         <source>AmplitudeMatrixFFT</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/FFTDialog.cpp" line="307"/>
+        <location filename="../src/FFTDialog.cpp" line="315"/>
         <source>Amplitudes of the FFT transform of</source>
         <translation>Амплитуды БПФ</translation>
     </message>
@@ -7819,12 +7819,12 @@ be replaced with a single space.</source>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="143"/>
         <source>New Rows</source>
-        <translation>Новую строку</translation>
+        <translation>Новая строка</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="514"/>
         <source>New Table</source>
-        <translation>Новую таблицу</translation>
+        <translation>Новая таблица</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="371"/>
@@ -7926,7 +7926,7 @@ SPACE characters.</source>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="369"/>
         <source>To avoid this problem you should precisely define the column separator using TAB and SPACE characters.</source>
-        <translation>Во избежания этой проблемы, вы должны точно указать разделитель, используя символы табуляции и пробела.</translation>
+        <translation>Во избежания этой проблемы вы должны точно указать разделитель, используя символы табуляции и пробела.</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="181"/>
@@ -8786,190 +8786,190 @@ have the same number of rows.</source>
 <context>
     <name>Matrix</name>
     <message>
-        <location filename="../src/Matrix.cpp" line="331"/>
+        <location filename="../src/Matrix.cpp" line="338"/>
         <source>&lt;p&gt;Do you really want to continue?</source>
         <comment>set matrix dimensions</comment>
         <translation>&lt;p&gt;Вы действительно хотите продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="401"/>
+        <location filename="../src/Matrix.cpp" line="408"/>
         <source>Calculation failed, the matrix is not square!</source>
         <translation>Вычисление завершилось неудачей - матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="332"/>
+        <location filename="../src/Matrix.cpp" line="339"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1170"/>
+        <location filename="../src/Matrix.cpp" line="1205"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="330"/>
+        <location filename="../src/Matrix.cpp" line="337"/>
         <source>Deleting rows/columns from the matrix!</source>
         <comment>set matrix dimensions</comment>
         <translation>Удаляются строки/столбцы из матрицы!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="440"/>
+        <location filename="../src/Matrix.cpp" line="447"/>
         <source>Inversion failed, the matrix is not square!</source>
         <translation>Ошибка обращения, матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1448"/>
+        <location filename="../src/Matrix.cpp" line="1445"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="946"/>
+        <location filename="../src/Matrix.cpp" line="970"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="332"/>
+        <location filename="../src/Matrix.cpp" line="339"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="946"/>
+        <location filename="../src/Matrix.cpp" line="970"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="809"/>
+        <location filename="../src/Matrix.cpp" line="833"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1375"/>
+        <location filename="../src/Matrix.cpp" line="1363"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ошибка при экспортировании в ASCII</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1376"/>
+        <location filename="../src/Matrix.cpp" line="1364"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Невозможно выполнить записать в файл: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Пожалуйста, проверьте, есть ли у Вас права на запись в данное место!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="443"/>
+        <location filename="../src/Matrix.cpp" line="451"/>
         <source>Invert</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="448"/>
+        <location filename="../src/Matrix.cpp" line="460"/>
         <source>Transpose</source>
         <translation>Транспонировать</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="453"/>
+        <location filename="../src/Matrix.cpp" line="469"/>
         <source>Flip Vertically</source>
         <translation>Отразить вертикально</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="458"/>
+        <location filename="../src/Matrix.cpp" line="478"/>
         <source>Flip Horizontally</source>
         <translation>Отразить горизонтально</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="464"/>
+        <location filename="../src/Matrix.cpp" line="488"/>
         <source>Rotate 90&#xb0;</source>
         <translation>Повернуть на 90°</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="493"/>
+        <location filename="../src/Matrix.cpp" line="517"/>
         <source>Calculate Values</source>
         <translation>Расчитать значения</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="520"/>
+        <location filename="../src/Matrix.cpp" line="544"/>
         <source>Clear Selection</source>
         <translation>Очистить выделенное</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="635"/>
+        <location filename="../src/Matrix.cpp" line="659"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="676"/>
+        <location filename="../src/Matrix.cpp" line="700"/>
         <source>Delete Rows</source>
         <translation>Удалить строки</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="709"/>
+        <location filename="../src/Matrix.cpp" line="733"/>
         <source>Delete Columns</source>
         <translation>Удалить столбцы</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="755"/>
+        <location filename="../src/Matrix.cpp" line="779"/>
         <source>Insert Row</source>
         <translation>Вставить строку</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="771"/>
+        <location filename="../src/Matrix.cpp" line="795"/>
         <source>Insert Column</source>
         <translation>Вставить столбец</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1184"/>
+        <location filename="../src/Matrix.cpp" line="1219"/>
         <source>Import Image</source>
         <translation>Импорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1313"/>
+        <location filename="../src/Matrix.cpp" line="1348"/>
         <source>Forward FFT</source>
         <translation>Прямое БПФ</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1313"/>
+        <location filename="../src/Matrix.cpp" line="1348"/>
         <source>Inverse FFT</source>
         <translation>Обратное БПФ</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1435"/>
+        <location filename="../src/Matrix.cpp" line="1423"/>
         <source>Import ASCII File</source>
         <translation>Импорт файла ASCII</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="323"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="obsolete">Ошибка</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="324"/>
         <source>The number of cells in a matrix (rows x columns) must not exceed %L1.</source>
-        <translation>Число ячеек в матрице не может превышать %L1.</translation>
+        <translation type="obsolete">Число ячеек в матрице не может превышать %L1.</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="325"/>
         <source>Please re-enter your matrix row and column dimensions accordingly.</source>
-        <translation>Пожалуйста, введите размерности матрицы.</translation>
+        <translation type="obsolete">Пожалуйста, введите размерности матрицы.</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="604"/>
+        <location filename="../src/Matrix.cpp" line="1445"/>
         <source>Memory Allocation Error</source>
         <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="605"/>
+        <location filename="../src/Matrix.cpp" line="1446"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="466"/>
+        <location filename="../src/Matrix.cpp" line="490"/>
         <source>Rotate -90&#xb0;</source>
         <translation>Повернуть на -90°</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1446"/>
+        <location filename="../src/Matrix.cpp" line="1434"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
         <translation>Из-за ограниченой памяти невозможно будет отменить эти изменения. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1448"/>
+        <location filename="../src/Matrix.cpp" line="1436"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
@@ -9060,22 +9060,22 @@ have the same number of rows.</source>
 <context>
     <name>MatrixModel</name>
     <message>
-        <location filename="../src/MatrixModel.cpp" line="310"/>
+        <location filename="../src/MatrixModel.cpp" line="316"/>
         <source>Edited cell</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактирование ячейки</translation>
     </message>
     <message>
-        <location filename="../src/MatrixModel.cpp" line="654"/>
+        <location filename="../src/MatrixModel.cpp" line="651"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/MatrixModel.cpp" line="654"/>
+        <location filename="../src/MatrixModel.cpp" line="651"/>
         <source>Memory Allocation Error</source>
         <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
-        <location filename="../src/MatrixModel.cpp" line="655"/>
+        <location filename="../src/MatrixModel.cpp" line="652"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
@@ -9083,7 +9083,7 @@ have the same number of rows.</source>
 <context>
     <name>MatrixSizeDialog</name>
     <message>
-        <location filename="../src/MatrixSizeDialog.cpp" line="89"/>
+        <location filename="../src/MatrixSizeDialog.cpp" line="91"/>
         <source>&amp;Cancel</source>
         <translation>О&amp;тмена</translation>
     </message>
@@ -9113,7 +9113,7 @@ have the same number of rows.</source>
         <translation>Последняя</translation>
     </message>
     <message>
-        <location filename="../src/MatrixSizeDialog.cpp" line="86"/>
+        <location filename="../src/MatrixSizeDialog.cpp" line="89"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
@@ -9138,9 +9138,14 @@ have the same number of rows.</source>
         <translation>Y (Строки)</translation>
     </message>
     <message>
-        <location filename="../src/MatrixSizeDialog.cpp" line="122"/>
+        <location filename="../src/MatrixSizeDialog.cpp" line="125"/>
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
         <translation>Задать координаты x[%1 : %2], y[%3 : %4]</translation>
+    </message>
+    <message>
+        <location filename="../src/MatrixSizeDialog.cpp" line="86"/>
+        <source>&amp;Apply</source>
+        <translation>&amp;Применить</translation>
     </message>
 </context>
 <context>
