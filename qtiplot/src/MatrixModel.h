@@ -102,8 +102,6 @@ public:
 	void pasteData(double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
 	
 private:
-	double* secureAllocBuffer(int size);
-
     int d_rows, d_cols;
     QVector<double> d_data;
 	Matrix *d_matrix;

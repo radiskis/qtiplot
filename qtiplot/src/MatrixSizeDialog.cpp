@@ -83,8 +83,10 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
 
     QHBoxLayout *bottomLayout = new QHBoxLayout();
     bottomLayout->addStretch();
+	buttonApply = new QPushButton(tr("&Apply"));
+	buttonApply->setDefault( true );
+	bottomLayout->addWidget(buttonApply);
 	buttonOk = new QPushButton(tr("&OK"));
-    buttonOk->setDefault( true );
 	bottomLayout->addWidget( buttonOk );
     buttonCancel = new QPushButton(tr("&Cancel"));
 	bottomLayout->addWidget( buttonCancel );
@@ -102,11 +104,12 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
 	boxXEnd->setValue(m->xEnd());
 	boxYEnd->setValue(m->yEnd());
 
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect( buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
+    connect( buttonOk, SIGNAL(clicked()), this, SLOT(accept() ));
+    connect( buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
-void MatrixSizeDialog::accept()
+void MatrixSizeDialog::apply()
 {
 	double fromX = boxXStart->value();
 	double toX = boxXEnd->value();
@@ -123,5 +126,10 @@ void MatrixSizeDialog::accept()
         d_matrix->setCoordinates(fromX, toX, fromY, toY);
     }
 	d_matrix->setDimensions(boxRows->value(), boxCols->value());
+}
+
+void MatrixSizeDialog::accept()
+{
+	apply();
 	close();
 }

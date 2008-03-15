@@ -530,20 +530,10 @@ void MatrixModel::setNumericFormat(char f, int prec)
 	d_num_precision = prec;
 }
 
-double* MatrixModel::secureAllocBuffer(int size)
-{
-	double *data = (double *)malloc(size * sizeof (double));
-	if (!data){
-		QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
-		tr("Not enough memory, operation aborted!"));
-	}
-	return data;
-}
-
 void MatrixModel::transpose()
 {
 	int size = d_rows*d_cols;
-	double *data = secureAllocBuffer(size);
+	double *data = d_matrix->initWorkspace(size);
 	if (!data)
 		return;
 
@@ -559,14 +549,14 @@ void MatrixModel::transpose()
 		for(int j = 0; j < d_cols; j++)
 			d_data[aux++] = data[j*old_cols + i];
 	}
-	free(data);
+	d_matrix->freeWorkspace();
 	QApplication::restoreOverrideCursor();
 }
 
 void MatrixModel::flipVertically()
 {
 	int size = d_rows*d_cols;
-	double *data = secureAllocBuffer(size);
+	double *data = d_matrix->initWorkspace(size);
 	if (!data)
 		return;
 
@@ -580,14 +570,14 @@ void MatrixModel::flipVertically()
 		for(int j = 0; j < d_cols; j++)
 			d_data[aux++] = data[row++];
 	}
-	free(data);
+	d_matrix->freeWorkspace();
 	QApplication::restoreOverrideCursor();
 }
 
 void MatrixModel::flipHorizontally()
 {
 	int size = d_rows*d_cols;
-	double *data = secureAllocBuffer(size);
+	double *data = d_matrix->initWorkspace(size);
 	if (!data)
 		return;
 
@@ -601,14 +591,14 @@ void MatrixModel::flipHorizontally()
 		for(int j = d_cols - 1; j >= 0; j--)
 			d_data[aux++] = data[row + j];
 	}
-	free(data);
+	d_matrix->freeWorkspace();
 	QApplication::restoreOverrideCursor();
 }
 
 void MatrixModel::rotate90(bool clockwise)
 {
 	int size = d_rows*d_cols;
-	double *data = secureAllocBuffer(size);
+	double *data = d_matrix->initWorkspace(size);
 	if (!data)
 		return;
 
@@ -636,7 +626,7 @@ void MatrixModel::rotate90(bool clockwise)
                 d_data[cell++] = data[j*old_cols + k];
         }
 	}
-	free(data);
+	d_matrix->freeWorkspace();
 	QApplication::restoreOverrideCursor();
 }
 

@@ -286,6 +286,9 @@ public slots:
 	int verticalHeaderWidth(){return d_table_view->verticalHeader()->width();}
 
     void copy(Matrix *m);
+	//! Tries to allocate memory for the workspace. Returns a NULL pointer if failure.
+	double *initWorkspace(int size);
+	void freeWorkspace(){free(d_workspace); d_workspace = NULL;};
 
 private:
 	//! Initialize the matrix
@@ -294,7 +297,7 @@ private:
 	void initImageView();
 	void initTableView();
     void initGlobals();
-	QMessageBox::StandardButton ignoreUndo();
+	bool ignoreUndo();
 
     QStackedWidget *d_stack;
     MatrixModel *d_matrix_model;
@@ -326,6 +329,8 @@ private:
 	QShortcut *d_select_all_shortcut;
     //! Undo/Redo commands stack
 	QUndoStack *d_undo_stack;
+	//! Pointer to a data buffer used for matrix operations.
+	double *d_workspace;
 };
 
 #endif
