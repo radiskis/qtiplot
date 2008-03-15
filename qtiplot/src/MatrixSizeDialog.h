@@ -50,12 +50,14 @@ public:
 	 */
     MatrixSizeDialog(Matrix *m, QWidget* parent = 0, Qt::WFlags fl = 0);
 
-public slots:
+private slots:
 	//! Accept changes and quit
 	void accept();
+	//! Apply changes
+	void apply();
 
 private:
-    QPushButton* buttonOk;
+    QPushButton* buttonOk, *buttonApply;
 	QPushButton* buttonCancel;
     QGroupBox* groupBox1, *groupBox2;
 	QSpinBox *boxCols, *boxRows;

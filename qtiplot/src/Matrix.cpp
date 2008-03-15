@@ -75,6 +75,7 @@ Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, App
 
 void Matrix::initGlobals()
 {
+	d_workspace = NULL;
     d_table_view = NULL;
     imageLabel = NULL;
 
@@ -317,14 +318,20 @@ void Matrix::setDimensions(int rows, int cols)
 	if (r == rows && c == cols)
 		return;
 
-    double maxSize = 1e8;
+	int size = rows*cols;
+	initWorkspace(size);
+	if(!d_workspace)
+		return;
+	
+	freeWorkspace();
+    /*double maxSize = 2e8;
     if (rows*cols > (int)maxSize){
         QApplication::restoreOverrideCursor();
         QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot") + " - " + tr("Error"),
         tr("The number of cells in a matrix (rows x columns) must not exceed %L1.").arg(maxSize, 0, 'f', 0) + "\n" +
         tr("Please re-enter your matrix row and column dimensions accordingly."));
         return;
-    }
+    }*/
 
 	if (rows < r || cols < c){
 		QString msg_text = tr("Deleting rows/columns from the matrix!","set matrix dimensions");
@@ -342,7 +349,7 @@ void Matrix::setDimensions(int rows, int cols)
                 d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Set Dimensions") +
                 " " + QString::number(rows) + "x" + QString::number(cols)));
                 setMatrixModel(new_model);*/
-                if (cols != c)
+               if (cols != c)
                     d_matrix_model->setColumnCount(cols);
                 if (rows != r)
                     d_matrix_model->setRowCount(rows);
@@ -445,21 +452,37 @@ void Matrix::invert()
 
 void Matrix::transpose()
 {
+	initWorkspace(numRows()*numCols());
+	if (!d_workspace)
+		return;
+		
 	d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, Transpose, tr("Transpose")));
 }
 
 void Matrix::flipVertically()
 {
+	initWorkspace(numRows()*numCols());
+	if (!d_workspace)
+		return;
+	
 	d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, FlipVertically, tr("Flip Vertically")));
 }
 
 void Matrix::flipHorizontally()
 {
+	initWorkspace(numRows()*numCols());
+	if (!d_workspace)
+		return;
+	
 	d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, FlipHorizontally, tr("Flip Horizontally")));
 }
 
 void Matrix::rotate90(bool clockwise)
 {
+	initWorkspace(numRows()*numCols());
+	if (!d_workspace)
+		return;
+	
 	if (clockwise)
 		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, RotateClockwise, tr("Rotate 90°")));
 	else
@@ -474,7 +497,7 @@ bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCo
 												startCol, endCol, buffer, tr("Calculate Values")));
 		emit modifiedWindow(this);
 		return true;
-	} else if(ignoreUndo() == QMessageBox::Yes){
+	} else if(ignoreUndo()){
 		d_matrix_model->muParserCalculate(startRow, endRow, startCol, endCol);
 		emit modifiedWindow(this);
 		return true;
@@ -493,7 +516,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 												startCol, endCol, buffer, tr("Calculate Values")));
 		emit modifiedWindow(this);
 		return true;
-	} else if(ignoreUndo() == QMessageBox::Yes){
+	} else if(ignoreUndo()){
 		d_matrix_model->calculate(startRow, endRow, startCol, endCol);
 		emit modifiedWindow(this);
 		return true;
@@ -519,7 +542,7 @@ void Matrix::clearSelection()
 	if (buffer){
     	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Clear, startRow, endRow, startCol, endCol, buffer, tr("Clear Selection")));
     	emit modifiedWindow(this);
-	} else if (ignoreUndo() == QMessageBox::Yes){
+	} else if (ignoreUndo()){
 		d_matrix_model->clear(startRow, endRow, startCol, endCol);
 		emit modifiedWindow(this);
 	} 
@@ -634,7 +657,7 @@ void Matrix::pasteSelection()
 					leftCol, rightCol, clipboardBuffer, rows, cols, backupBuffer, oldRows,
 					oldCols, tr("Paste")));
 		emit modifiedWindow(this);
-	} else if (ignoreUndo() == QMessageBox::Yes){
+	} else if (ignoreUndo()){
 		d_matrix_model->pasteData(clipboardBuffer, topRow, leftCol, rows, cols);
 		emit modifiedWindow(this);
 	}
@@ -1183,7 +1206,7 @@ void Matrix::setImage(const QImage& image)
     	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0, 
 							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image")));
 		emit modifiedWindow(this);
-	} else if (ignoreUndo() == QMessageBox::Yes){
+	} else if (ignoreUndo()){
 		d_matrix_model->setImage(image);
 		setViewType(ImageView, image);
 		emit modifiedWindow(this);
@@ -1314,57 +1337,10 @@ void Matrix::fft(bool inverse)
     	d_undo_stack->push(new MatrixFftCommand(inverse, d_matrix_model, 0, numRows() - 1, 
 							0, numCols() - 1, buffer, commandText));	
 		emit modifiedWindow(this);
-	} else if (ignoreUndo() == QMessageBox::Yes){
+	} else if (ignoreUndo()){
 		d_matrix_model->fft(inverse);		
 		emit modifiedWindow(this);
 	}
-		
-	/*int width = numCols();
-    int height = numRows();
-
-    MatrixModel *new_model = new MatrixModel(height, width, this);
-    double **x_int_re = allocateMatrixData(height, width);
-    double **x_int_im = allocateMatrixData(height, width);
-    for (int i = 0; i < height; i++){
-        for (int j = 0; j < width; j++){
-            x_int_re[i][j] = cell(i, j);
-            x_int_im[i][j] = 0.0;
-        }
-    }
-
-    QString commandText = tr("Forward FFT");
-    if (inverse){
-        double **x_fin_re = allocateMatrixData(height, width);
-        double **x_fin_im = allocateMatrixData(height, width);
-        fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
-
-        for (int i = 0; i < height; i++){
-            for (int j = 0; j < width; j++){
-                double re = x_fin_re[i][j];
-                double im = x_fin_im[i][j];
-                new_model->setCell(i, j, sqrt(re*re + im*im));
-            }
-        }
-        freeMatrixData(x_fin_re, height);
-        freeMatrixData(x_fin_im, height);
-        commandText = tr("Inverse FFT");
-    } else {
-        fft2d(x_int_re, x_int_im, width, height);
-
-        for (int i = 0; i < height; i++){
-            for (int j = 0; j < width; j++){
-                double re = x_int_re[i][j];
-                double im = x_int_im[i][j];
-                new_model->setCell(i, j, sqrt(re*re + im*im));
-            }
-        }
-    }
-
-    freeMatrixData(x_int_re, height);
-    freeMatrixData(x_int_im, height);
-
-    d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, commandText));
-    setMatrixModel(new_model);*/
 }
 
 bool Matrix::exportASCII(const QString& fname, const QString& separator, bool exportSelection)
@@ -1434,18 +1410,30 @@ void Matrix::importASCII(const QString &fname, const QString &sep, int ignoredLi
 							d_matrix_model, 0, numRows() - 1, 0, numCols() - 1, buffer, 
 							tr("Import ASCII File") + " \"" + fname + "\""));	
 		emit modifiedWindow(this);
-	} else if (ignoreUndo() == QMessageBox::Yes){
+	} else if (ignoreUndo()){
 		d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces, simplifySpaces, 
 									commentString, importAs, locale, endLineChar, maxRows);		
 		emit modifiedWindow(this);
 	}
 }
 
-QMessageBox::StandardButton Matrix::ignoreUndo()
+bool Matrix::ignoreUndo()
 {
 	QString msg = tr("Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?");
-	return (QMessageBox::StandardButton)QMessageBox::warning((ApplicationWindow *)applicationWindow(),
-		tr("QtiPlot") + " - " + tr("Warning"), msg, QMessageBox::Yes, QMessageBox::Cancel);
+	return (QMessageBox::Yes == QMessageBox::warning((ApplicationWindow *)applicationWindow(),
+		tr("QtiPlot") + " - " + tr("Warning"), msg, QMessageBox::Yes, QMessageBox::Cancel));
+}
+
+double* Matrix::initWorkspace(int size)
+{
+	if (!d_workspace)
+		d_workspace = (double *)malloc(size * sizeof (double));
+	
+	if (!d_workspace)
+		QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+		tr("Not enough memory, operation aborted!"));
+
+	return d_workspace;
 }
 
 Matrix::~Matrix()
