@@ -447,7 +447,8 @@ void Matrix::invert()
 		tr("Inversion failed, the matrix is not square!"));
 		return;
 	}
-	d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, Invert, tr("Invert")));
+	if(d_matrix_model->initWorkspace())
+		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, Invert, tr("Invert")));
 }
 
 void Matrix::transpose()
@@ -1051,19 +1052,30 @@ void Matrix::range(double *min, double *max)
 
 double** Matrix::allocateMatrixData(int rows, int columns)
 {
-	double** data = new double* [rows];
-	for ( int i = 0; i < rows; ++i)
-		data[i] = new double [columns];
-
+	double** data = (double **)malloc(rows * sizeof (double*));
+	if(!data){
+		QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+		tr("Not enough memory, operation aborted!"));
+		return data;
+	}
+	
+	for ( int i = 0; i < rows; ++i){
+		data[i] = (double *)malloc(columns * sizeof (double));
+		if(!data[i]){
+			QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+			tr("Not enough memory, operation aborted!"));
+			return data;
+		}
+	}
 	return data;
 }
 
 void Matrix::freeMatrixData(double **data, int rows)
 {
 	for ( int i = 0; i < rows; i++)
-		delete [] data[i];
+		free(data[i]);
 
-	delete [] data;
+	free(data);
 }
 
 void Matrix::goToRow(int row)

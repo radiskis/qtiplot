@@ -269,10 +269,13 @@ void FFTDialog::fftMatrix()
         tr("The two matrices have different dimensions, the imaginary part will be neglected!"));
     }
 
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    double **x_int_re = Matrix::allocateMatrixData(height, width); /* real coeff matrix */
+    double **x_int_im = Matrix::allocateMatrixData(height, width); /* imaginary coeff  matrix*/
+	if (!x_int_re || !x_int_im)
+		return;
+		
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    double **x_int_re = allocateMatrixData(height, width); /* real coeff matrix */
-    double **x_int_im = allocateMatrixData(height, width); /* imaginary coeff  matrix*/
     for (int i = 0; i < height; i++){
         for (int j = 0; j < width; j++){
             x_int_re[i][j] = mReal->cell(i, j);
@@ -285,8 +288,13 @@ void FFTDialog::fftMatrix()
 
     double **x_fin_re, **x_fin_im;
     if (inverse){
-        x_fin_re = allocateMatrixData(height, width); /* coeff de l'image de départ */
-        x_fin_im = allocateMatrixData(height, width); /*normalement remplie de 0 si tout a bien fonctionné */
+        x_fin_re = Matrix::allocateMatrixData(height, width); /* coeff de l'image de départ */
+        x_fin_im = Matrix::allocateMatrixData(height, width); /*normalement remplie de 0 si tout a bien fonctionné */
+		if (!x_fin_re || !x_fin_im){
+			QApplication::restoreOverrideCursor();
+			return;
+		}
+		
         fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
     } else
         fft2d(x_int_re, x_int_im, width, height);
@@ -316,8 +324,8 @@ void FFTDialog::fftMatrix()
                 ampMatrix->setCell(i, j, sqrt(re*re + im*im));
             }
         }
-        freeMatrixData(x_fin_re, height);
-        freeMatrixData(x_fin_im, height);
+        Matrix::freeMatrixData(x_fin_re, height);
+        Matrix::freeMatrixData(x_fin_im, height);
     } else {
         for (int i = 0; i < height; i++){
             for (int j = 0; j < width; j++){
@@ -348,7 +356,7 @@ void FFTDialog::fftMatrix()
     }
     ampMatrix->setViewType(Matrix::ImageView);
 
-    freeMatrixData(x_int_re, height);
-    freeMatrixData(x_int_im, height);
+    Matrix::freeMatrixData(x_int_re, height);
+    Matrix::freeMatrixData(x_int_im, height);
     QApplication::restoreOverrideCursor();
 }
