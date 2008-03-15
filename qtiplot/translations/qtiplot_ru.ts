@@ -1518,11 +1518,6 @@
         <translation>&amp;Вставить строку</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11871"/>
-        <source>&amp;Integrate ...</source>
-        <translation type="obsolete">&amp;Интегрирование...</translation>
-    </message>
-    <message>
         <location filename="../src/ApplicationWindow.cpp" line="8039"/>
         <source>&amp;Intensity Matrix</source>
         <translation>Матрица &amp;интенсивности</translation>
@@ -2162,11 +2157,6 @@
         <translation>QtiPLot - Ошибка построения</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5495"/>
-        <source>QtiPLot - Top Axis Title</source>
-        <translation type="obsolete">QtiPlot - Заголовок верхней оси</translation>
-    </message>
-    <message>
         <location filename="../src/ApplicationWindow.cpp" line="14896"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
@@ -2352,11 +2342,6 @@
         <translation>QtiPlot - переименованное окно</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5472"/>
-        <source>QtiPlot - Right Axis Title</source>
-        <translation type="obsolete">QtiPlot - Заголовок правой оси</translation>
-    </message>
-    <message>
         <location filename="../src/ApplicationWindow.cpp" line="5750"/>
         <source>QtiPlot - Row selection error</source>
         <translation>QtiPlot - Ошибка выделения строки</translation>
@@ -2390,16 +2375,6 @@
         <location filename="../src/ApplicationWindow.cpp" line="7592"/>
         <source>QtiPlot - Window Geometry</source>
         <translation>QtiPlot - Геометрия окна</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5424"/>
-        <source>QtiPlot - X Axis Title</source>
-        <translation type="obsolete">QtiPlot - Заголовок оси X</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5448"/>
-        <source>QtiPlot - Y Axis Title</source>
-        <translation type="obsolete">QtiPlot - Заголовок оси Y</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8715"/>
@@ -3658,11 +3633,6 @@ Are you sure you want to continue?</source>
         <translation>Нарисовать &amp;ломаную</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11799"/>
-        <source>Toolbars...</source>
-        <translation type="obsolete">Панели инструментов...</translation>
-    </message>
-    <message>
         <location filename="../src/ApplicationWindow.cpp" line="11790"/>
         <source>Ctrl+Shift+T</source>
         <translation>Ctrl+Shift+T</translation>
@@ -3765,67 +3735,67 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="873"/>
         <source>Undo Stack</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Отменить</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="1247"/>
         <source>Empty Stack</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Очистить</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="2696"/>
         <source>Set Image Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим изображения</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="2708"/>
         <source>Set Data Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим данных</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="2720"/>
         <source>Show X/Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать X/Y</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="2732"/>
         <source>Show Column/Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать столбец/строку</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="2745"/>
         <source>Set Gray Scale Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Шкала уровней серого</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="2758"/>
         <source>Set Rainbow Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Радуга</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11927"/>
         <source>&amp;Hide Selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Ск&amp;рыть столбцы</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11929"/>
         <source>Sho&amp;w All Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать &amp;все столбцы</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12001"/>
         <source>&amp;Direct</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Непосредственно</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12002"/>
         <source>&amp;XYZ Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;XYZ столбцы</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12003"/>
         <source>&amp;YXZ Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;YXZ столбцы</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11738"/>
@@ -3835,42 +3805,42 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11928"/>
         <source>Hide selected columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрыть столбцы</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11930"/>
         <source>Show all table columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать все столбцы</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="10679"/>
         <source>Integration of %1 from zero is</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Интеграл %1 от нуля равен</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11892"/>
         <source>&amp;Integrate</source>
-        <translation type="unfinished">&amp;Интегрировать</translation>
+        <translation>&amp;Интегрировать</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11891"/>
         <source>Integr&amp;ate Function...</source>
-        <translation type="unfinished"></translation>
+        <translation>И&amp;нтегрировать функцию...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11983"/>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11789"/>
         <source>&amp;Toolbars...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Панели инструментов...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11737"/>
         <source>&amp;Undo/Redo Stack</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;История действий</translation>
     </message>
 </context>
 <context>
@@ -4402,27 +4372,27 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/AxesDialog.cpp" line="1484"/>
         <source>Apply To</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить к</translation>
     </message>
     <message>
         <location filename="../src/AxesDialog.cpp" line="1486"/>
         <source>This Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>слою</translation>
     </message>
     <message>
         <location filename="../src/AxesDialog.cpp" line="1487"/>
         <source>This Window</source>
-        <translation type="unfinished"></translation>
+        <translation>окну</translation>
     </message>
     <message>
         <location filename="../src/AxesDialog.cpp" line="1488"/>
         <source>All Windows</source>
-        <translation type="unfinished"></translation>
+        <translation>всем окнам</translation>
     </message>
     <message>
         <location filename="../src/AxesDialog.cpp" line="1491"/>
         <source>An&amp;tialised</source>
-        <translation type="unfinished"></translation>
+        <translation>Сгла&amp;живание</translation>
     </message>
 </context>
 <context>
@@ -4581,7 +4551,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/ColorMapDialog.cpp" line="81"/>
         <source>Set Custom Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользовательская палитра</translation>
     </message>
 </context>
 <context>
@@ -5270,27 +5240,27 @@ The following special codes can be used:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="932"/>
         <source>File Locations</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение файлов</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1482"/>
         <source>Choose the location of the QtiPlot translations folder!</source>
-        <translation type="unfinished"></translation>
+        <translation>Указать местоположение папки переводов QtiPlot!</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="946"/>
         <source>Matrix Undo Stack Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер истории для матриц</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="974"/>
         <source>Translations</source>
-        <translation type="unfinished"></translation>
+        <translation>Переводы</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="975"/>
         <source>Help</source>
-        <translation type="unfinished">Справка</translation>
+        <translation>Справка</translation>
     </message>
 </context>
 <context>
@@ -5720,7 +5690,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="112"/>
         <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Сохранить</translation>
+        <translation>&amp;Сохранить</translation>
     </message>
 </context>
 <context>
@@ -7624,11 +7594,6 @@ The following special codes can be used:
 <context>
     <name>Graph3D</name>
     <message>
-        <location filename="../src/Graph3D.cpp" line="1919"/>
-        <source>Could not print: &lt;h4&gt;</source>
-        <translation type="obsolete">Не удается напечатать: &lt;h4&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/Graph3D.cpp" line="1998"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
@@ -7642,11 +7607,6 @@ The following special codes can be used:
         <location filename="../src/Graph3D.cpp" line="1998"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
-    </message>
-    <message>
-        <location filename="../src/Graph3D.cpp" line="1918"/>
-        <source>QtiPlot - IO Error</source>
-        <translation type="obsolete">QtiPlot - Ошибка Ввода/Вывода</translation>
     </message>
     <message>
         <location filename="../src/Graph3D.cpp" line="232"/>
@@ -7867,11 +7827,6 @@ be replaced with a single space.</source>
         <translation>Новую таблицу</translation>
     </message>
     <message>
-        <location filename="../src/ImportASCIIDialog.cpp" line="123"/>
-        <source>Overwrite Current Table</source>
-        <translation type="obsolete">Поверх текущей таблицы</translation>
-    </message>
-    <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="371"/>
         <source>QtiPlot - Help</source>
         <translation>QtiPlot - Справка</translation>
@@ -8018,11 +7973,6 @@ have the same number of rows.</source>
         <translation>Импортировать только для &amp;чтения</translation>
     </message>
     <message>
-        <location filename="../src/ImportASCIIDialog.cpp" line="211"/>
-        <source>Preview</source>
-        <translation type="obsolete">Просмотр</translation>
-    </message>
-    <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="237"/>
         <source>All</source>
         <translation>Все</translation>
@@ -8035,42 +7985,42 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="515"/>
         <source>New Matrice</source>
-        <translation type="unfinished"></translation>
+        <translation>Новая матрица</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="144"/>
         <source>Overwrite Current Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Поверх текущего окна</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="218"/>
         <source>Endline character</source>
-        <translation type="unfinished"></translation>
+        <translation>Конец строки</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="220"/>
         <source>LF (Unix)</source>
-        <translation type="unfinished"></translation>
+        <translation>LF (Unix)</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="221"/>
         <source>CRLF (Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation>CRLF (Windows)</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="222"/>
         <source>CR (Mac)</source>
-        <translation type="unfinished"></translation>
+        <translation>CR (Mac)</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="501"/>
         <source>QtiPlot - File openning error</source>
-        <translation type="unfinished">QtiPlot - ошибка при открытии файла</translation>
+        <translation>QtiPlot - ошибка при открытии файла</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="502"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished">У вас нет прав доступа на открытие файла &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>У вас нет прав доступа на открытие файла &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -8081,19 +8031,9 @@ have the same number of rows.</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/IntDialog.cpp" line="86"/>
-        <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Справка</translation>
-    </message>
-    <message>
         <location filename="../src/IntDialog.cpp" line="101"/>
         <source>&amp;Integrate</source>
         <translation>&amp;Интегрировать</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="55"/>
-        <source>Integration of</source>
-        <translation type="obsolete">Интегрирование</translation>
     </message>
     <message>
         <location filename="../src/IntDialog.cpp" line="85"/>
@@ -8101,100 +8041,9 @@ have the same number of rows.</source>
         <translation>Нижний предел</translation>
     </message>
     <message>
-        <location filename="../src/IntDialog.cpp" line="64"/>
-        <source>Number of iterations (Max=40)</source>
-        <translation type="obsolete">Число итераций (максимум=40)</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="59"/>
-        <source>Order (1 - 5, 1 = Trapezoid Rule)</source>
-        <translation type="obsolete">Порядок (1 - 5, 1 = метод трапеций)</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="160"/>
-        <source>Please give a number larger or equal to the minimum value of X, for the lower limit.
- If you do not know that value, type min in the box.</source>
-        <translation type="obsolete">Пожалуйста, укажите для нижнего предела число, большее или равное минимальному значению X.
- Либо введите &quot;min&quot; в строке ввода.</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="216"/>
-        <source>Please give a number larger or equal to the minimum value of X, for the upper limit.
- If you do not know that value, type min in the box.</source>
-        <translation type="obsolete">Пожалуйста, укажите для верхнего предела число, большее или равное минимальному значению X.
-Либо введите &quot;min&quot; в строке ввода.</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="168"/>
-        <source>Please give a number smaller or equal to the maximum value of X, for the lower limit.
- If you do not know that value, type max in the box.</source>
-        <translation type="obsolete">Пожалуйста, укажите для верхнего предела число, меньшее или равное максимальному значению X.
- Либо введите &quot;max&quot; в строке ввода.</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="112"/>
-        <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="224"/>
-        <source>QtiPlot - End limit error</source>
-        <translation type="obsolete">QtiPlot - Ошибка выбора верхнего предела</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="287"/>
-        <source>QtiPlot - Help for Integration</source>
-        <translation type="obsolete">QtiPlot - Справка по интегрированию</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="215"/>
-        <source>QtiPlot - Input error</source>
-        <translation type="obsolete">QtiPlot - Ошибка ввода</translation>
-    </message>
-    <message>
         <location filename="../src/IntDialog.cpp" line="50"/>
         <source>QtiPlot - Integration Options</source>
         <translation>QtiPlot - Параметры интегрирования</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="176"/>
-        <source>QtiPlot - Start limit error</source>
-        <translation type="obsolete">QtiPlot - Ошибка выбора нижнего предела</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="127"/>
-        <source>QtiPlot - Tolerance value error</source>
-        <translation type="obsolete">QtiPlot - Ошибка в значении допуска</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="113"/>
-        <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
-        <translation type="obsolete">Кривая &lt;b&gt; %1 &lt;/b&gt; больше не существует! Операция отменена!</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="288"/>
-        <source>The integration of a curve consists of the following five steps:
- 1) Choose which curve you want to integrate
- 2) Set the order of the integration. The higher it is the more accurate the calculation is
- 3) Choose the number of iterations 
- 4) Choose the tolerance 
- 5) Choose the lower and the upper limit.
- The code integrates the curve with an iterative algorithm. The tolerance determines the termination criteria for the solver.
- Because, sometimes we ask for too much accuracy, the number of iterations makes sure that the solver will not work for ever.
- IMPORTANT 
-The limits must be within the range of x; If you do not know the maximum (minimum) value of x, type max (min) in the boxes.</source>
-        <translation type="obsolete">Интегрирование кривой включает в себя следующие пять шагов:
- 1) Выбор кривой для интегрирования
- 2) Установка порядка интегрирования. Чем выше порядок, тем точнее вычисления
- 3) Выбор числа итераций
- 4) Выбор допустимого отклонения
- 5) Выбор нижнего и верхнего пределов.
-Программный код выполняет интегрирование по итеративному алгоритму. Критерий завершения работы
-алгоритма определяется заданным допустимым отклонением. Так как часто задаётся слишком высокая точность, то
-задание числа итераций позволяет избежать зацикливания в работе алгоритма. 
- ВАЖНО!
-Пределы должны находится в пределах изменения X; если вы не знаете максимального (минимального) значения x, 
-то укажите max (min)  в соответствующих полях.</translation>
     </message>
     <message>
         <location filename="../src/IntDialog.cpp" line="77"/>
@@ -8207,39 +8056,29 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation>Верхняя граница</translation>
     </message>
     <message>
-        <location filename="../src/IntDialog.cpp" line="112"/>
-        <source>Warning</source>
-        <translation type="obsolete">Предупреждение</translation>
-    </message>
-    <message>
         <location filename="../src/IntDialog.cpp" line="55"/>
         <source>Function</source>
-        <translation type="unfinished">Функция</translation>
+        <translation>Функция</translation>
     </message>
     <message>
         <location filename="../src/IntDialog.cpp" line="60"/>
         <source>Variable</source>
-        <translation type="unfinished"></translation>
+        <translation>Переменная</translation>
     </message>
     <message>
         <location filename="../src/IntDialog.cpp" line="65"/>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation type="unfinished"></translation>
+        <translation>Порядок (1 - 5, 1 = метод трапеций)</translation>
     </message>
     <message>
         <location filename="../src/IntDialog.cpp" line="70"/>
         <source>Number of iterations (Max=20)</source>
-        <translation type="unfinished">Число итераций (максимум=40) {20)?}</translation>
-    </message>
-    <message>
-        <location filename="../src/IntDialog.cpp" line="96"/>
-        <source>Plot area</source>
-        <translation type="obsolete">Построить область</translation>
+        <translation>Число итераций (максимум=20)</translation>
     </message>
     <message>
         <location filename="../src/IntDialog.cpp" line="96"/>
         <source>&amp;Plot area</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Построить область</translation>
     </message>
 </context>
 <context>
@@ -8300,11 +8139,6 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation>от</translation>
     </message>
     <message>
-        <location filename="../src/Integration.cpp" line="166"/>
-        <source>max</source>
-        <translation type="obsolete">max</translation>
-    </message>
-    <message>
         <location filename="../src/Integration.cpp" line="201"/>
         <source>to</source>
         <translation>до</translation>
@@ -8317,17 +8151,17 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/Integration.cpp" line="60"/>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Ошибка ввода</translation>
+        <translation>QtiPlot - Ошибка ввода</translation>
     </message>
     <message>
         <location filename="../src/Integration.cpp" line="184"/>
         <source>From</source>
-        <translation type="unfinished">От</translation>
+        <translation>От</translation>
     </message>
     <message>
         <location filename="../src/Integration.cpp" line="199"/>
         <source>using the Trapezoidal Rule</source>
-        <translation type="unfinished"></translation>
+        <translation>методом трапеций</translation>
     </message>
 </context>
 <context>
@@ -8707,31 +8541,6 @@ The limits must be within the range of x; If you do not know the maximum (minimu
 <context>
     <name>LineDialog</name>
     <message>
-        <location filename="../src/LineDialog.cpp" line="77"/>
-        <source>1</source>
-        <translation type="obsolete">1</translation>
-    </message>
-    <message>
-        <location filename="../src/LineDialog.cpp" line="78"/>
-        <source>2</source>
-        <translation type="obsolete">2</translation>
-    </message>
-    <message>
-        <location filename="../src/LineDialog.cpp" line="79"/>
-        <source>3</source>
-        <translation type="obsolete">3</translation>
-    </message>
-    <message>
-        <location filename="../src/LineDialog.cpp" line="80"/>
-        <source>4</source>
-        <translation type="obsolete">4</translation>
-    </message>
-    <message>
-        <location filename="../src/LineDialog.cpp" line="81"/>
-        <source>5</source>
-        <translation type="obsolete">5</translation>
-    </message>
-    <message>
         <location filename="../src/LineDialog.cpp" line="114"/>
         <source>Angle</source>
         <translation>Угол</translation>
@@ -8993,7 +8802,7 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1193"/>
+        <location filename="../src/Matrix.cpp" line="1170"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
@@ -9010,12 +8819,12 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation>Ошибка обращения, матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1471"/>
+        <location filename="../src/Matrix.cpp" line="1448"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="969"/>
+        <location filename="../src/Matrix.cpp" line="946"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
@@ -9025,149 +8834,144 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="969"/>
+        <location filename="../src/Matrix.cpp" line="946"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="832"/>
+        <location filename="../src/Matrix.cpp" line="809"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1398"/>
+        <location filename="../src/Matrix.cpp" line="1375"/>
         <source>QtiPlot - ASCII Export Error</source>
-        <translation type="unfinished">QtiPlot - ошибка при экспортировании в ASCII</translation>
+        <translation>QtiPlot - ошибка при экспортировании в ASCII</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1399"/>
+        <location filename="../src/Matrix.cpp" line="1376"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
-        <translation type="unfinished">Невозможно выполнить записать в файл: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Пожалуйста, проверьте, есть ли у Вас права на запись в данное место!</translation>
+        <translation>Невозможно выполнить записать в файл: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Пожалуйста, проверьте, есть ли у Вас права на запись в данное место!</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="443"/>
         <source>Invert</source>
-        <translation type="unfinished"></translation>
+        <translation>Инвертировать</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="448"/>
         <source>Transpose</source>
-        <translation type="unfinished"></translation>
+        <translation>Транспонировать</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="453"/>
         <source>Flip Vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>Отразить вертикально</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="458"/>
         <source>Flip Horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation>Отразить горизонтально</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="464"/>
         <source>Rotate 90&#xb0;</source>
-        <translation type="unfinished"></translation>
+        <translation>Повернуть на 90°</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="493"/>
         <source>Calculate Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Расчитать значения</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="520"/>
         <source>Clear Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить выделенное</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="635"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="699"/>
+        <location filename="../src/Matrix.cpp" line="676"/>
         <source>Delete Rows</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить строки</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="732"/>
+        <location filename="../src/Matrix.cpp" line="709"/>
         <source>Delete Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить столбцы</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="778"/>
+        <location filename="../src/Matrix.cpp" line="755"/>
         <source>Insert Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить строку</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="794"/>
+        <location filename="../src/Matrix.cpp" line="771"/>
         <source>Insert Column</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить столбец</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1207"/>
+        <location filename="../src/Matrix.cpp" line="1184"/>
         <source>Import Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1336"/>
+        <location filename="../src/Matrix.cpp" line="1313"/>
         <source>Forward FFT</source>
-        <translation type="unfinished"></translation>
+        <translation>Прямое БПФ</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1336"/>
+        <location filename="../src/Matrix.cpp" line="1313"/>
         <source>Inverse FFT</source>
-        <translation type="unfinished"></translation>
+        <translation>Обратное БПФ</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1458"/>
+        <location filename="../src/Matrix.cpp" line="1435"/>
         <source>Import ASCII File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Matrix.cpp" line="548"/>
-        <source>QtiPlot - Input error</source>
-        <translation type="obsolete">QtiPlot - Ошибка ввода</translation>
+        <translation>Импорт файла ASCII</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="323"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="324"/>
         <source>The number of cells in a matrix (rows x columns) must not exceed %L1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Число ячеек в матрице не может превышать %L1.</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="325"/>
         <source>Please re-enter your matrix row and column dimensions accordingly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста, введите размерности матрицы.</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="604"/>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="605"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="466"/>
         <source>Rotate -90&#xb0;</source>
-        <translation type="unfinished"></translation>
+        <translation>Повернуть на -90°</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1469"/>
+        <location filename="../src/Matrix.cpp" line="1446"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
-        <translation type="unfinished"></translation>
+        <translation>Из-за ограниченой памяти невозможно будет отменить эти изменения. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/Matrix.cpp" line="1471"/>
+        <location filename="../src/Matrix.cpp" line="1448"/>
         <source>Warning</source>
-        <translation type="unfinished">Предупреждение</translation>
+        <translation>Предупреждение</translation>
     </message>
 </context>
 <context>
@@ -9230,27 +9034,27 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/MatrixDialog.cpp" line="112"/>
         <source>Set Columns Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Ширина столбца</translation>
     </message>
     <message>
         <location filename="../src/MatrixDialog.cpp" line="118"/>
         <source>Decimal</source>
-        <translation type="unfinished"></translation>
+        <translation>Десятичный</translation>
     </message>
     <message>
         <location filename="../src/MatrixDialog.cpp" line="121"/>
         <source>Scientific</source>
-        <translation type="unfinished"></translation>
+        <translation>Научный</translation>
     </message>
     <message>
         <location filename="../src/MatrixDialog.cpp" line="128"/>
         <source>Set Data Format %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат данных %1</translation>
     </message>
     <message>
         <location filename="../src/MatrixDialog.cpp" line="129"/>
         <source>Precision %1 digits</source>
-        <translation type="unfinished"></translation>
+        <translation>Точность %1</translation>
     </message>
 </context>
 <context>
@@ -9263,17 +9067,17 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/MatrixModel.cpp" line="654"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/MatrixModel.cpp" line="654"/>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
         <location filename="../src/MatrixModel.cpp" line="655"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
 </context>
 <context>
@@ -9314,11 +9118,6 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/MatrixSizeDialog.cpp" line="145"/>
-        <source>QtiPlot - Input error</source>
-        <translation type="obsolete">QtiPlot - Ошибка ввода</translation>
-    </message>
-    <message>
         <location filename="../src/MatrixSizeDialog.cpp" line="44"/>
         <source>QtiPlot - Matrix Dimensions</source>
         <translation>QtiPlot - Размерность матрицы</translation>
@@ -9341,7 +9140,7 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/MatrixSizeDialog.cpp" line="122"/>
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
-        <translation type="unfinished"></translation>
+        <translation>Задать координаты x[%1 : %2], y[%3 : %4]</translation>
     </message>
 </context>
 <context>
@@ -9394,12 +9193,12 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/MatrixValuesDialog.cpp" line="153"/>
         <source>Set New Formula</source>
-        <translation type="unfinished"></translation>
+        <translation>Новая формула</translation>
     </message>
     <message>
         <location filename="../src/MatrixValuesDialog.cpp" line="118"/>
         <source>Use built-in muParser (much faster)</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать встроенный muParser (значительно быстрее)</translation>
     </message>
 </context>
 <context>
@@ -9407,52 +9206,52 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="100"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="101"/>
         <source>Do you want to hide or delete</source>
-        <translation type="unfinished">Вы хотите удалить или скрыть</translation>
+        <translation>Вы хотите удалить или скрыть</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="102"/>
         <source>Delete</source>
-        <translation type="unfinished">Удалить</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="102"/>
         <source>Hide</source>
-        <translation type="unfinished">Скрыть</translation>
+        <translation>Скрыть</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="102"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="125"/>
         <source>Normal</source>
-        <translation type="unfinished">Нормальный</translation>
+        <translation>Нормальный</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="132"/>
         <source>Minimized</source>
-        <translation type="unfinished">Свёрнутый</translation>
+        <translation>Свёрнутый</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="136"/>
         <source>Maximized</source>
-        <translation type="unfinished">Развёрнутый</translation>
+        <translation>Развёрнутый</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="140"/>
         <source>Hidden</source>
-        <translation type="unfinished">Скрытый</translation>
+        <translation>Скрытый</translation>
     </message>
     <message>
         <location filename="../src/MdiSubWindow.cpp" line="148"/>
         <source>kB</source>
-        <translation type="unfinished"></translation>
+        <translation>кб</translation>
     </message>
 </context>
 <context>
@@ -9607,59 +9406,6 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <location filename="../src/MultiPeakFitTool.cpp" line="98"/>
         <source>Peak %1 selected! Click to select a point and double-click/press &apos;Enter&apos; to set the position of the next peak!</source>
         <translation>Пик %1 выбран! Один щелчок для выбора точки и двойной щелчок или &apos;Enter&apos;, для указания положения следующего пика!</translation>
-    </message>
-</context>
-<context>
-    <name>MyWidget</name>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="89"/>
-        <source>Cancel</source>
-        <translation type="obsolete">Отмена</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="89"/>
-        <source>Delete</source>
-        <translation type="obsolete">Удалить</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="88"/>
-        <source>Do you want to hide or delete</source>
-        <translation type="obsolete">Вы хотите удалить или скрыть</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="119"/>
-        <source>Hidden</source>
-        <translation type="obsolete">Скрытый</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="89"/>
-        <source>Hide</source>
-        <translation type="obsolete">Скрыть</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="130"/>
-        <source>Maximized</source>
-        <translation type="obsolete">Развёрнутый</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="126"/>
-        <source>Minimized</source>
-        <translation type="obsolete">Свёрнутый</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="115"/>
-        <source>Normal</source>
-        <translation type="obsolete">Нормальный</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="87"/>
-        <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
-    </message>
-    <message>
-        <location filename="../src/MyWidget.cpp" line="138"/>
-        <source>kB</source>
-        <translation type="obsolete">кБ</translation>
     </message>
 </context>
 <context>
@@ -10200,11 +9946,6 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation> точек</translation>
     </message>
     <message>
-        <location filename="../src/PlotDialog.cpp" line="1112"/>
-        <source>1</source>
-        <translation type="obsolete">1</translation>
-    </message>
-    <message>
         <location filename="../src/PlotDialog.cpp" line="943"/>
         <source>1%</source>
         <translation>1%</translation>
@@ -10225,29 +9966,9 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../src/PlotDialog.cpp" line="1113"/>
-        <source>2</source>
-        <translation type="obsolete">2</translation>
-    </message>
-    <message>
         <location filename="../src/PlotDialog.cpp" line="1140"/>
         <source>20</source>
         <translation>20</translation>
-    </message>
-    <message>
-        <location filename="../src/PlotDialog.cpp" line="1114"/>
-        <source>3</source>
-        <translation type="obsolete">3</translation>
-    </message>
-    <message>
-        <location filename="../src/PlotDialog.cpp" line="1115"/>
-        <source>4</source>
-        <translation type="obsolete">4</translation>
-    </message>
-    <message>
-        <location filename="../src/PlotDialog.cpp" line="1116"/>
-        <source>5</source>
-        <translation type="obsolete">5</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="884"/>
@@ -10780,11 +10501,6 @@ The limits must be within the range of x; If you do not know the maximum (minimu
         <translation>Круговая диаграмма</translation>
     </message>
     <message>
-        <location filename="../src/PlotDialog.cpp" line="491"/>
-        <source>Pie radius</source>
-        <translation type="obsolete">Радиус круговой диаграммы</translation>
-    </message>
-    <message>
         <location filename="../src/PlotDialog.cpp" line="2465"/>
         <source>Please enter a positive bin size value!</source>
         <translation>Пожалуйста введите положительное значение размера столбика!</translation>
@@ -11127,82 +10843,82 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/PlotDialog.cpp" line="519"/>
         <source>3D View</source>
-        <translation type="unfinished"></translation>
+        <translation>3D Вид</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="521"/>
         <source>View Angle (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Угол обзора</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="528"/>
         <source>Thickness (% of radius)</source>
-        <translation type="unfinished"></translation>
+        <translation>Толщина (% от радиуса)</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="535"/>
         <source>Rotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Вращение</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="537"/>
         <source>Starting Azimuth (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Угол поворота</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="549"/>
         <source>Radius/Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Радиус/Центр</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="551"/>
         <source>Radius (% of frame)</source>
-        <translation type="unfinished"></translation>
+        <translation>Радиус (% от рамки)</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="556"/>
         <source>Horizontal Offset (% of frame)</source>
-        <translation type="unfinished"></translation>
+        <translation>Горизонтальное смещение (% от рамки)</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="1576"/>
         <source>Pie Geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Круговая диаграмма</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="581"/>
         <source>Automatic &amp;Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Авто&amp;формат</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="585"/>
         <source>&amp;Values</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Значения</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="588"/>
         <source>&amp;Percentages</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Проценты</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="591"/>
         <source>Categories/&amp;Rows</source>
-        <translation type="unfinished"></translation>
+        <translation>Категории/&amp;Строки</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="596"/>
         <source>Associate Position with &amp;Wedge</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Расположение</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="600"/>
         <source>Dist. from Pie Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Расстояние от края диаграммы</translation>
     </message>
     <message>
         <location filename="../src/PlotDialog.cpp" line="545"/>
         <source>Counter cloc&amp;kwise</source>
-        <translation type="unfinished"></translation>
+        <translation>Против &amp;часовой стрелки</translation>
     </message>
 </context>
 <context>
@@ -11911,7 +11627,7 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/SetColValuesDialog.cpp" line="135"/>
         <source>Use built-in muParser (much faster)</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать встроенный muParser (значительно быстрее)</translation>
     </message>
 </context>
 <context>
@@ -12495,17 +12211,12 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/Table.cpp" line="2376"/>
         <source>Qtiplot</source>
-        <translation type="unfinished"></translation>
+        <translation>Qtiplot</translation>
     </message>
     <message>
         <location filename="../src/Table.cpp" line="2376"/>
         <source>Reading file...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/Table.cpp" line="535"/>
-        <source>QtiPlot - Input error</source>
-        <translation type="obsolete">QtiPlot - Ошибка ввода</translation>
+        <translation>Читается файл...</translation>
     </message>
 </context>
 <context>
@@ -12798,57 +12509,57 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/TableDialog.cpp" line="140"/>
         <source>&amp;Hidden</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Скрытый</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="440"/>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>дд/ММ/гггг ЧЧ:мм</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="441"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>дд/ММ/гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="444"/>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>дд.ММ.гггг ЧЧ:мм</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="445"/>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>дд.ММ.гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="448"/>
         <source>dd MM yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>дд ММ гггг ЧЧ:мм</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="449"/>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>дд ММ гггг ЧЧ:мм:cc</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="452"/>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>гггг-ММ-дд ЧЧ:мм</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="453"/>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>гггг-ММ-дд ЧЧ:мм:cc</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="456"/>
         <source>yyyyMMdd HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>ггггММдд ЧЧ:мм</translation>
     </message>
     <message>
         <location filename="../src/TableDialog.cpp" line="457"/>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>ггггММдд ЧЧ:мм:сс</translation>
     </message>
 </context>
 <context>
@@ -13034,32 +12745,32 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/TextDialog.cpp" line="125"/>
         <source>Apply format to all &amp;labels in layer</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Применить форматирование ко всем подписям в слое</translation>
     </message>
     <message>
         <location filename="../src/TextDialog.cpp" line="204"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/TextDialog.cpp" line="195"/>
         <source>X Axis Title</source>
-        <translation type="unfinished">Подпись оси X</translation>
+        <translation>Подпись оси X</translation>
     </message>
     <message>
         <location filename="../src/TextDialog.cpp" line="198"/>
         <source>Y Axis Title</source>
-        <translation type="unfinished">Подпись оси Y</translation>
+        <translation>Подпись оси Y</translation>
     </message>
     <message>
         <location filename="../src/TextDialog.cpp" line="201"/>
         <source>Top Axis Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Подпись верхней оси</translation>
     </message>
     <message>
         <location filename="../src/TextDialog.cpp" line="204"/>
         <source>Right Axis Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Подпись правой оси</translation>
     </message>
 </context>
 <context>
@@ -13262,17 +12973,17 @@ The limits must be within the range of x; If you do not know the maximum (minimu
     <message>
         <location filename="../src/muParserScript.cpp" line="76"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
-        <translation type="unfinished"></translation>
+        <translation>Многострочные выражения требуют намного больше времени для вычисления! Продолжить?</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="77"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="77"/>
         <source>Warning</source>
-        <translation type="unfinished">Предупреждение</translation>
+        <translation>Предупреждение</translation>
     </message>
 </context>
 </TS>
