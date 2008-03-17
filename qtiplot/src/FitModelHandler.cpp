@@ -69,7 +69,7 @@ bool FitModelHandler::endElement(const QString & /* namespaceURI */,
     else if (qName == "type")
         d_fit->setType((Fit::FitType)currentText.toInt());
     else if (qName == "function")
-        d_formula = currentText;
+        d_formula = currentText.replace("&lt;", "<").replace("&gt;", ">");
     else if (qName == "name" && !currentText.isEmpty())
         d_parameters << currentText;
     else if (qName == "explanation")

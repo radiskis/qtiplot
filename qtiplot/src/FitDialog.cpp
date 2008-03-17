@@ -635,7 +635,6 @@ void FitDialog::saveUserFunction()
 
 		if (funcBox->currentItem()->text() == name)
 			showExpression(index);
-
 	} else {
 	    ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		QString filter = tr("QtiPlot fit model")+" (*.fit);;";
@@ -969,7 +968,7 @@ void FitDialog::showExpression(int function)
 		explainBox->setText(d_current_fit->formula());
 		setFunction(boxUseBuiltIn->isChecked());
 	} else if (categoryBox->currentRow() == 0){
-		if (d_user_functions.size() > function) {
+		if (d_user_functions.size() > function){
 			d_current_fit = d_user_functions[function];
 			explainBox->setText(d_current_fit->formula());
 		} else
