@@ -79,7 +79,7 @@ public:
     Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
     ~Matrix();
 
-	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise, 
+	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise,
 				  RotateCounterClockwise, FFT, Clear, Calculate, MuParserCalculate, SetImage, ImportAscii};
     enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};
@@ -90,14 +90,14 @@ public:
 		Overwrite //!< replace content of current matrix with the imported file
 	};
 
-	void setViewType(ViewType, const QImage& image = QImage());
+	void setViewType(ViewType, bool renderImage = true);
 	ViewType viewType(){return d_view_type;};
 
     HeaderViewType headerViewType(){return d_header_view_type;};
     void setHeaderViewType(HeaderViewType type);
 
 	QImage image();
-	void setImage(const QImage& image);
+	void displayImage(const QImage& image);
 	void importImage(const QString& fn);
 	void exportRasterImage(const QString& fileName, int quality = 100);
 	void exportSVG(const QString& fileName);
@@ -277,6 +277,8 @@ public slots:
 
 	//! Scroll to row (row starts with 1)
 	void goToRow(int row);
+	//! Scroll to column (column starts with 1)
+	void goToColumn(int col);
 
 	//! Allocate memory for a matrix buffer
 	static double** allocateMatrixData(int rows, int columns);

@@ -3022,6 +3022,14 @@ void Table::goToRow(int row)
 	d_table->selectRow(row-1);
 }
 
+void Table::goToColumn(int col)
+{
+	if( (col < 1) || (col > numCols()) ) return;
+
+	d_table->ensureCellVisible (0, col - 1);
+	d_table->selectColumn(col - 1);
+}
+
 void Table::setColumnHeader(int index, const QString& label)
 {
 	Q3Header *head = d_table->horizontalHeader();

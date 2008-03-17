@@ -454,7 +454,7 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 			}
 		}
 
-		matrix->matrixModel()->setDataVector(QVector<double>::fromStdVector(data));
+		//matrix->matrixModel()->setDataVector(QVector<double>::fromStdVector(data));
 
 		QChar format;
 		switch(opj.matrixValueTypeSpec(s))

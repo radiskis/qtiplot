@@ -312,7 +312,7 @@ void MatrixSetColorMapCommand::undo()
 /*************************************************************************/
 /*           Class MatrixDeleteRowsCommand                               */
 /*************************************************************************/
-MatrixDeleteRowsCommand::MatrixDeleteRowsCommand(MatrixModel *model, int startRow, int count, QVector<double> data, const QString& text):
+MatrixDeleteRowsCommand::MatrixDeleteRowsCommand(MatrixModel *model, int startRow, int count, double* data, const QString& text):
 QUndoCommand(text),
 d_model(model),
 d_start_row(startRow),
@@ -343,11 +343,10 @@ void MatrixDeleteRowsCommand::undo()
 	double *data = d_model->dataVector();
 	int cols = d_model->columnCount();
 	int size = cols * d_count;
-	int aux = d_start_row*cols;
-	for (int i = 0; i<size; i++){
-		data[aux] = d_data.at(i);
-		++aux;
-	}
+	int cell = d_start_row*cols;
+	for (int i = 0; i<size; i++)
+		data[cell++] = d_data[i];
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -385,7 +384,7 @@ void MatrixInsertRowCommand::undo()
 /*************************************************************************/
 /*           Class MatrixDeleteColsCommand                               */
 /*************************************************************************/
-MatrixDeleteColsCommand::MatrixDeleteColsCommand(MatrixModel *model, int startCol, int count, QVector<double> data, const QString& text):
+MatrixDeleteColsCommand::MatrixDeleteColsCommand(MatrixModel *model, int startCol, int count, double* data, const QString& text):
 QUndoCommand(text),
 d_model(model),
 d_start_col(startCol),
@@ -420,7 +419,7 @@ void MatrixDeleteColsCommand::undo()
 		int aux = i*cols + d_start_col;
 		int aux2 = i*d_count;
 		for (int j = 0; j<d_count; j++)
-			data[aux++] = d_data.at(aux2++);
+			data[aux++] = d_data[aux2++];
 	}
 	QApplication::restoreOverrideCursor();
 }
@@ -453,6 +452,53 @@ void MatrixInsertColCommand::undo()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     d_model->removeColumns(d_start_col, 1);
+	QApplication::restoreOverrideCursor();
+}
+
+/*************************************************************************/
+/*           Class MatrixSetSizeCommand                                */
+/*************************************************************************/
+MatrixSetSizeCommand::MatrixSetSizeCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, double *data, const QString& text):
+QUndoCommand(text),
+d_model(model),
+d_old_size(oldSize),
+d_new_size(newSize),
+d_backup(data)
+{
+    setText(model->matrix()->objectName() + ": " + text);
+}
+
+void MatrixSetSizeCommand::redo()
+{
+    if (!d_model)
+        return;
+
+    d_model->setDimensions(d_new_size.width(), d_new_size.height());
+	d_model->matrix()->resetView();
+}
+
+void MatrixSetSizeCommand::undo()
+{
+    if (!d_model)
+        return;
+	
+	int rows = d_old_size.width();
+	int cols = d_old_size.height();
+    d_model->setDimensions(rows, cols);
+	
+	double *data = d_model->dataVector();
+    if (!data)
+        return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	int cell = 0;
+    for (int i = 0; i < rows; i++){
+        for (int j = 0; j < cols; j++){
+            data[cell] = d_backup[cell];
+			cell++;
+		}
+    }
+	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -519,7 +565,7 @@ void MatrixUndoCommand::undo()
 /*************************************************************************/
 /*           Class MatrixFftCommand                                      */
 /*************************************************************************/
-MatrixFftCommand::MatrixFftCommand(bool inverse, MatrixModel *model, int startRow, int endRow, 
+MatrixFftCommand::MatrixFftCommand(bool inverse, MatrixModel *model, int startRow, int endRow,
 									int startCol, int endCol, double *data, const QString& text):
 MatrixUndoCommand(model, Matrix::FFT, startRow, endRow, startCol, endCol, data, text),
 d_inverse(inverse)
@@ -537,7 +583,7 @@ void MatrixFftCommand::redo()
 /*************************************************************************/
 /*           Class MatrixSetImageCommand                           */
 /*************************************************************************/
-MatrixSetImageCommand::MatrixSetImageCommand(MatrixModel *model, const QImage& image, Matrix::ViewType oldView, 
+MatrixSetImageCommand::MatrixSetImageCommand(MatrixModel *model, const QImage& image, Matrix::ViewType oldView,
 						int startRow, int endRow, int startCol, int endCol, double *data, const QString& text):
 MatrixUndoCommand(model, Matrix::SetImage, startRow, endRow, startCol, endCol, data, text),
 d_image(image),
@@ -550,6 +596,7 @@ void MatrixSetImageCommand::undo()
     if (!d_model)
         return;
 
+    d_model->setDimensions(d_end_row - d_start_row + 1, d_end_col - d_start_col + 1);
 	d_model->matrix()->setViewType(d_old_view);
 	MatrixUndoCommand::undo();
 }
@@ -560,25 +607,27 @@ void MatrixSetImageCommand::redo()
         return;
 
     d_model->setImage(d_image);
-	d_model->matrix()->setViewType(Matrix::ImageView, d_image);
+    Matrix *m = d_model->matrix();
+	m->setViewType(Matrix::ImageView, false);
+	m->displayImage(d_image);
 }
 
 /*************************************************************************/
 /*           Class MatrixImportAsciiCommand                              */
 /*************************************************************************/
-MatrixImportAsciiCommand::MatrixImportAsciiCommand(const QString &fname, const QString &sep, 
-						int ignoredLines, bool stripSpaces, bool simplifySpaces, 
-						const QString& commentString, Matrix::ImportMode importAs, const QLocale& locale, 
-						int endLineChar, int maxRows, MatrixModel *model, int startRow, int endRow, 
+MatrixImportAsciiCommand::MatrixImportAsciiCommand(const QString &fname, const QString &sep,
+						int ignoredLines, bool stripSpaces, bool simplifySpaces,
+						const QString& commentString, Matrix::ImportMode importAs, const QLocale& locale,
+						int endLineChar, int maxRows, MatrixModel *model, int startRow, int endRow,
 						int startCol, int endCol, double *data, const QString& text):
 MatrixUndoCommand(model, Matrix::ImportAscii, startRow, endRow, startCol, endCol, data, text),
-d_path(fname), 
-d_sep(sep), 
+d_path(fname),
+d_sep(sep),
 d_comment(commentString),
-d_ignore_lines(ignoredLines), 
-d_end_line(endLineChar), 
+d_ignore_lines(ignoredLines),
+d_end_line(endLineChar),
 d_max_rows(maxRows),
-d_strip_spaces(stripSpaces), 
+d_strip_spaces(stripSpaces),
 d_simplify_spaces(simplifySpaces),
 d_mode(importAs),
 d_locale(locale)
@@ -702,7 +751,7 @@ void MatrixPasteCommand::undo()
 {
 	if (!d_model)
         return;
-	
+
  	double *data = d_model->dataVector();
     if (!data)
         return;
@@ -713,7 +762,7 @@ void MatrixPasteCommand::undo()
 		d_model->setRowCount(d_old_rows);
 	if (d_old_cols != d_model->columnCount())
 		d_model->setColumnCount(d_old_cols);
-	
+
     int cols = d_model->columnCount();
 	int aux = 0;
     for (int i = d_start_row; i <= d_end_row; i++){

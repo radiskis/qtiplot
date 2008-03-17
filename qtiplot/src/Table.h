@@ -257,6 +257,8 @@ public slots:
 	bool isColumnSelected(int col, bool full=false) { return d_table->isColumnSelected(col, full); }
 	//! Scroll to row (row starts with 1)
 	void goToRow(int row);
+	//! Scroll to column (column starts with 1)
+	void goToColumn(int col);
 
 	void columnNumericFormat(int col, char *f, int *precision);
 	void columnNumericFormat(int col, int *f, int *precision);

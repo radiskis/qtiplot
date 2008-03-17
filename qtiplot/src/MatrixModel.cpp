@@ -48,15 +48,28 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
      : QAbstractTableModel(parent),
      d_rows(rows),
      d_cols(cols),
-	 d_data(d_rows*d_cols, GSL_NAN),
 	 d_matrix((Matrix*)parent),
 	 d_txt_format('g'),
 	 d_num_precision(6),
 	 d_locale(QLocale()),
-	 d_direct_matrix(NULL), 
+	 d_direct_matrix(NULL),
 	 d_inv_matrix(NULL),
-	 d_inv_perm(NULL)
+	 d_inv_perm(NULL),
+	 d_data_block_size(QSize())
 {
+    d_data = (double *)malloc(d_rows * d_cols * sizeof (double));
+	if (!d_data){
+	    QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+		tr("Not enough memory, operation aborted!"));
+		return;
+	}
+	
+	d_data_block_size = QSize(d_rows, d_cols);
+	int cell = 0;
+	for (int i = 0; i < d_rows; i++)
+        for (int j = 0; j < d_cols; j++)
+            d_data[cell++] = GSL_NAN;
+
 	if (d_matrix){
 		d_txt_format = d_matrix->textFormat().toAscii();
 		d_num_precision = d_matrix->precision();
@@ -66,27 +79,31 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
 
 MatrixModel::MatrixModel(const QImage& image, QObject *parent)
      : QAbstractTableModel(parent),
+     d_data(NULL),
 	 d_matrix((Matrix*)parent),
 	 d_txt_format('g'),
 	 d_num_precision(6),
 	 d_locale(QLocale()),
-	 d_direct_matrix(NULL), 
+	 d_direct_matrix(NULL),
 	 d_inv_matrix(NULL),
-	 d_inv_perm(NULL)
+	 d_inv_perm(NULL),
+	 d_data_block_size(QSize())
 {
     setImage(image);
 }
 
 void MatrixModel::setImage(const QImage& image)
 {
+	if (!canResize(image.height(), image.width()))
+		return;
+
     d_rows = image.height();
     d_cols = image.width();
-    d_data.resize(d_rows*d_cols);
-
-	int aux = 0;
+	d_data_block_size = QSize(d_rows, d_cols);
+	int cell = 0;
     for (int i=0; i<d_rows; i++ ){
 		for (int j=0; j<d_cols; j++)
-            d_data[aux++] = qGray(image.pixel (j, i));
+            d_data[cell++] = qGray(image.pixel (j, i));
     }
 }
 
@@ -115,18 +132,11 @@ void MatrixModel::setRowCount(int rows)
 
    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    /*if (rows > d_rows){
-        d_data.reserve(rows*d_cols);
-		d_data.insert(d_rows*d_cols, (rows - d_rows)*d_cols, GSL_NAN);
-    } else
-        d_data.resize(rows*d_cols);
-    d_rows = rows;*/
-	
-	int diff = abs(rows - d_rows);
 	if (rows > d_rows )
-		insertRows(d_rows, diff);
+		insertRows(d_rows, rows - d_rows);
     else if (rows < d_rows )
-		removeRows(rows, diff);
+		removeRows(rows, d_rows - rows);
+	
 	QApplication::restoreOverrideCursor();
 }
 
@@ -137,20 +147,35 @@ void MatrixModel::setColumnCount(int cols)
 
    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	int diff = abs(cols - d_cols);
 	if (cols > d_cols )
-		insertColumns(d_cols, diff);
+		insertColumns(d_cols, cols - d_cols);
     else if (cols < d_cols )
-		removeColumns(cols, diff);
+		removeColumns(cols, d_cols - cols);
 
+	QApplication::restoreOverrideCursor();
+}
+
+void MatrixModel::setDimensions(int rows, int cols)
+{
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	
+	if (rows < d_rows){//first remove rows (faster)
+		removeRows(rows, d_rows - rows);
+		setColumnCount(cols);
+	} else {
+		setColumnCount(cols);
+		if (rows > d_rows )
+			insertRows(d_rows, rows - d_rows);
+	}
+			
 	QApplication::restoreOverrideCursor();
 }
 
 double MatrixModel::cell(int row, int col)
 {
     int i = d_cols*row + col;
-    double val = d_data.at(i);
-    if (i < 0 || i>= d_data.size() || gsl_isnan (val))
+    double val = d_data[i];
+    if (i < 0 || i>= d_rows*d_cols || gsl_isnan (val))
         return 0.0;
 
 	return val;
@@ -159,7 +184,7 @@ double MatrixModel::cell(int row, int col)
 void MatrixModel::setCell(int row, int col, double val)
 {
 	int i = d_cols*row + col;
-    if (i < 0 || i>= d_data.size())
+    if (i < 0 || i>= d_rows*d_cols)
 		return;
 
     d_data[i] = val;
@@ -168,8 +193,8 @@ void MatrixModel::setCell(int row, int col, double val)
 QString MatrixModel::text(int row, int col)
 {
 	int i = d_cols*row + col;
-	double val = d_data.at(i);
-    if (i < 0 || i>= d_data.size() || gsl_isnan(val))
+	double val = d_data[i];
+    if (i < 0 || i>= d_rows*d_cols || gsl_isnan(val))
         return "";
 
 	if (d_matrix){
@@ -182,7 +207,7 @@ QString MatrixModel::text(int row, int col)
 void MatrixModel::setText(int row, int col, const QString& text)
 {
 	int i = d_cols*row + col;
-    if (i < 0 || i>= d_data.size())
+    if (i < 0 || i>= d_rows*d_cols)
 		return;
 
  	if (text.isEmpty())
@@ -195,18 +220,13 @@ void MatrixModel::setText(int row, int col, const QString& text)
 	}
 }
 
-double* MatrixModel::dataVector()
-{
-    return (double *)d_data.data();
-}
-
 double MatrixModel::data(int row, int col) const
 {
     int i = d_cols*row + col;
-    if (i < 0 || i>= d_data.size())
+    if (i < 0 || i>= d_rows*d_cols)
         return 0.0;
 
-	return d_data.at(i);
+	return d_data[i];
 }
 
 double MatrixModel::x(int col) const
@@ -320,16 +340,38 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
 	return false;
 }
 
-bool MatrixModel::removeColumns(int column, int count, const QModelIndex & parent)
+bool MatrixModel::canResize(int rows, int cols)
 {
+	if (d_data_block_size == QSize(rows, cols))
+		return true;
+	
+    double *new_data = (double *)realloc(d_data, rows*cols*sizeof(double));
+    if (new_data){
+        d_data = new_data;
+		d_data_block_size = QSize(rows, cols);
+        return true;
+    }
+
+    QApplication::restoreOverrideCursor();
+    QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+    tr("Not enough memory, operation aborted!"));
+    return false;
+}
+
+bool MatrixModel::removeColumns(int column, int count, const QModelIndex & parent)
+{	
 	beginRemoveColumns(parent, column, column + count - 1);
 
-	column--;
-	for (int i = d_rows - 1; i >= 0; i--){
-	    int cell = i*d_cols + column;
-        d_data.remove(cell, count);
-	}
     d_cols -= count;
+	d_data_block_size = QSize(d_rows, d_cols);
+
+    int size = d_rows*d_cols;
+    for (int i = column; i < size; i++){
+	    int aux = (i - column)/d_cols + 1;
+        d_data[i] = d_data[i + aux*count];
+	}
+
+    d_data = (double *)realloc (d_data, size*sizeof(double));
 
 	endRemoveColumns();
 	return true;
@@ -337,16 +379,25 @@ bool MatrixModel::removeColumns(int column, int count, const QModelIndex & paren
 
 bool MatrixModel::insertColumns(int column, int count, const QModelIndex & parent)
 {
+    if (!canResize(d_rows, d_cols + count))
+        return false;
+
 	beginInsertColumns(parent, column, column + count - 1);
 
-    int new_cols = d_cols + count;
-    d_data.reserve(d_rows*new_cols);
-	for (int i = d_rows - 1; i >= 0; i--){
-	    int col = i*d_cols + column;
-        d_data.insert(col, count, GSL_NAN);
-	}
+    int offset = column + count;
+    int oldCell = d_rows*d_cols - 1;
+	d_cols += count;
+    int cell = d_rows*d_cols - 1;
+    for (int i = d_rows - 1; i >= 0; i--){
+        for (int j = d_cols - 1; j >= offset; j--)
+            d_data[cell--] = d_data[oldCell--];
 
-	d_cols = new_cols;
+        for (int j = offset - 1; j >= column; j--)
+            d_data[cell--] = GSL_NAN;
+
+        for (int j = column - 1; j >= 0; j--)
+            d_data[cell--] = d_data[oldCell--];
+    }
 
 	endInsertColumns();
 	return true;
@@ -354,14 +405,21 @@ bool MatrixModel::insertColumns(int column, int count, const QModelIndex & paren
 
 bool MatrixModel::insertRows(int row, int count, const QModelIndex & parent)
 {
+    if (!canResize(d_rows + count, d_cols))
+        return false;
+
 	beginInsertRows(parent, row, row + count - 1);
 
-    int size = d_cols*d_rows;
-    int new_cells = count*d_cols;
-    d_data.reserve(size + new_cells);
-
-	d_data.insert(row * d_cols, new_cells, GSL_NAN);
+    int oldSize = d_rows*d_cols;
 	d_rows += count;
+
+    int insertedCells = count*d_cols;
+    int startCell = row*d_cols;
+    for (int i = oldSize - 1; i >= startCell; i--)
+        d_data[i + insertedCells] = d_data[i];
+
+    for (int i = 0; i < insertedCells; i++)
+        d_data[startCell++] = GSL_NAN;
 
 	endInsertRows();
 	return true;
@@ -371,9 +429,16 @@ bool MatrixModel::removeRows(int row, int count, const QModelIndex & parent)
 {
 	beginRemoveRows(parent, row, row + count - 1);
 
-	d_data.remove(row * d_cols, count*d_cols);
-	d_rows -= count;
+    d_rows -= count;
+	d_data_block_size = QSize(d_rows, d_cols);
 
+	int removedCells = count*d_cols;
+	int size = d_rows*d_cols;
+	for (int i = row*d_cols; i < size; i++)
+        d_data[i] = d_data[i + removedCells];
+
+    d_data = (double *)realloc(d_data, size * sizeof(double));
+	
 	endRemoveRows();
 	return true;
 }
@@ -424,18 +489,15 @@ QImage MatrixModel::renderImage()
     for ( int i = 0; i < d_rows; i++ ){
     	QRgb *line = (QRgb *)image.scanLine(i);
 		for ( int j = 0; j < d_cols; j++){
-		    double val = d_data.at(i*d_cols + j);
-			if(fabs(val) < HUGE_VAL)
+		    double val = d_data[i*d_cols + j];
+		    if (gsl_isnan (val))
+                *line++ = color_map.rgb(intensityRange, 0.0);
+			else if(fabs(val) < HUGE_VAL)
 				*line++ = color_map.rgb(intensityRange, val);
 		}
      }
      QApplication::restoreOverrideCursor();
 	 return image;
-}
-
-void MatrixModel::setDataVector(const QVector<double>& data)
-{
-	d_data = data;
 }
 
 bool MatrixModel::importASCII(const QString &fname, const QString &sep, int ignoredLines,
@@ -545,7 +607,7 @@ void MatrixModel::transpose()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	for(int i = 0; i < size; i++)
-		data[i] = d_data.at(i);
+		data[i] = d_data[i];
 
 	int old_cols = d_cols;
 	d_cols = d_rows;
@@ -568,7 +630,7 @@ void MatrixModel::flipVertically()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	for(int i = 0; i < size; i++)
-		data[i] = d_data.at(i);
+		data[i] = d_data[i];
 
 	int aux = 0;
 	for(int i = 0; i < d_rows; i++){
@@ -589,7 +651,7 @@ void MatrixModel::flipHorizontally()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	for(int i = 0; i < size; i++)
-		data[i] = d_data.at(i);
+		data[i] = d_data[i];
 
 	int aux = 0;
 	for(int i = 0; i < d_rows; i++){
@@ -610,7 +672,7 @@ void MatrixModel::rotate90(bool clockwise)
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	for(int i = 0; i < size; i++)
-		data[i] = d_data.at(i);
+		data[i] = d_data[i];
 
     int old_rows = d_rows;
     int old_cols = d_cols;
@@ -639,7 +701,7 @@ void MatrixModel::rotate90(bool clockwise)
 bool MatrixModel::initWorkspace()
 {
 	gsl_set_error_handler_off();
-	
+
 	if (!d_direct_matrix)
 		d_direct_matrix = gsl_matrix_alloc(d_rows, d_cols);
 	if (!d_inv_matrix)
@@ -660,7 +722,7 @@ void MatrixModel::invert()
 	initWorkspace();
 	if(!d_direct_matrix || !d_inv_matrix || !d_inv_perm)
 		return;
-	
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	int i, aux = 0;
@@ -710,11 +772,11 @@ double * MatrixModel::dataCopy(int startRow, int endRow, int startCol, int endCo
 		endRow = d_rows - 1;
 	if (endCol < 0)
 		endCol = d_cols - 1;
-	
+
     double *buffer = (double *)malloc((endRow - startRow + 1)*(endCol - startCol + 1) * sizeof (double));
 	if (!buffer)
 		return NULL;
-	
+
 	int aux = 0;
     for (int i = startRow; i <= endRow; i++){
         int row = i*d_cols + startCol;
@@ -858,12 +920,16 @@ void MatrixModel::fft(bool inverse)
     int height = d_rows;
 
     double **x_int_re = Matrix::allocateMatrixData(height, width); /* real coeff matrix */
+    if (!x_int_re)
+        return;
     double **x_int_im = Matrix::allocateMatrixData(height, width); /* imaginary coeff  matrix*/
-	if (!x_int_re || !x_int_im)
-		return;
-	
+	if (!x_int_im){
+        Matrix::freeMatrixData(x_int_re, height);
+        return;
+	}
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	
+
 	int cell = 0;
     for (int i = 0; i < height; i++){
         for (int j = 0; j < width; j++){
@@ -876,10 +942,12 @@ void MatrixModel::fft(bool inverse)
         double **x_fin_re = Matrix::allocateMatrixData(height, width);
         double **x_fin_im = Matrix::allocateMatrixData(height, width);
 		if (!x_fin_re || !x_fin_im){
+		    Matrix::freeMatrixData(x_int_re, height);
+            Matrix::freeMatrixData(x_int_im, height);
 			QApplication::restoreOverrideCursor();
 			return;
 		}
-		
+
         fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
 		cell = 0;
         for (int i = 0; i < height; i++){
@@ -904,7 +972,7 @@ void MatrixModel::fft(bool inverse)
     }
     Matrix::freeMatrixData(x_int_re, height);
     Matrix::freeMatrixData(x_int_im, height);
-	
+
 	d_matrix->resetView();
 	QApplication::restoreOverrideCursor();
 }
@@ -915,7 +983,7 @@ void MatrixModel::pasteData(double *clipboardBuffer, int topRow, int leftCol, in
 		setRowCount(topRow + rows);
 	if (leftCol + cols > d_cols)
 		setColumnCount(leftCol + cols);
-	
+
 	int cell = 0;
 	int bottomRow = topRow + rows - 1;
 	int rightCol = leftCol + cols - 1;
