@@ -666,7 +666,9 @@ bool Fit::save(const QString& fileName)
 
      out << "<model>" + objectName() + "</model>\n";
      out << "<type>" + QString::number(d_fit_type) + "</type>\n";
-     out << "<function>" + d_formula + "</function>\n";
+	
+	 QString function = d_formula;
+     out << "<function>" + function.replace("<", "&lt;").replace(">", "&gt;") + "</function>\n";
 
      QString indent = QString(4, ' ');
      for (int i=0; i< d_p; i++){
