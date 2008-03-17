@@ -63,7 +63,7 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
 		tr("Not enough memory, operation aborted!"));
 		return;
 	}
-	
+
 	d_data_block_size = QSize(d_rows, d_cols);
 	int cell = 0;
 	for (int i = 0; i < d_rows; i++)
@@ -136,7 +136,7 @@ void MatrixModel::setRowCount(int rows)
 		insertRows(d_rows, rows - d_rows);
     else if (rows < d_rows )
 		removeRows(rows, d_rows - rows);
-	
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -158,7 +158,7 @@ void MatrixModel::setColumnCount(int cols)
 void MatrixModel::setDimensions(int rows, int cols)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	
+
 	if (rows < d_rows){//first remove rows (faster)
 		removeRows(rows, d_rows - rows);
 		setColumnCount(cols);
@@ -167,7 +167,7 @@ void MatrixModel::setDimensions(int rows, int cols)
 		if (rows > d_rows )
 			insertRows(d_rows, rows - d_rows);
 	}
-			
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -301,14 +301,15 @@ QVariant MatrixModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 
     int i = d_cols*index.row() + index.column();
-    if (gsl_isnan (d_data[i]))
+	double val = d_data[i];
+    if (gsl_isnan (val) || val < 2.0e-300)
         return QVariant();
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole){
 		if (d_matrix)
-			return QVariant(d_matrix->locale().toString(d_data[i], d_matrix->textFormat().toAscii(), d_matrix->precision()));
+			return QVariant(d_matrix->locale().toString(val, d_matrix->textFormat().toAscii(), d_matrix->precision()));
 		else
-			return QVariant(d_locale.toString(d_data[i], d_txt_format, d_num_precision));
+			return QVariant(d_locale.toString(val, d_txt_format, d_num_precision));
 	} else
 		return QVariant();
 }
@@ -342,9 +343,9 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
 
 bool MatrixModel::canResize(int rows, int cols)
 {
-	if (d_data_block_size == QSize(rows, cols))
+    if (d_data_block_size.width()*d_data_block_size.width() >= rows*cols)
 		return true;
-	
+
     double *new_data = (double *)realloc(d_data, rows*cols*sizeof(double));
     if (new_data){
         d_data = new_data;
@@ -359,7 +360,7 @@ bool MatrixModel::canResize(int rows, int cols)
 }
 
 bool MatrixModel::removeColumns(int column, int count, const QModelIndex & parent)
-{	
+{
 	beginRemoveColumns(parent, column, column + count - 1);
 
     d_cols -= count;
@@ -438,7 +439,7 @@ bool MatrixModel::removeRows(int row, int count, const QModelIndex & parent)
         d_data[i] = d_data[i + removedCells];
 
     d_data = (double *)realloc(d_data, size * sizeof(double));
-	
+
 	endRemoveRows();
 	return true;
 }
@@ -777,6 +778,8 @@ double * MatrixModel::dataCopy(int startRow, int endRow, int startCol, int endCo
 	if (!buffer)
 		return NULL;
 
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 	int aux = 0;
     for (int i = startRow; i <= endRow; i++){
         int row = i*d_cols + startCol;
@@ -784,6 +787,8 @@ double * MatrixModel::dataCopy(int startRow, int endRow, int startCol, int endCo
             buffer[aux++] = d_data[row++];
         }
     }
+
+	QApplication::restoreOverrideCursor();
 	return buffer;
 }
 
