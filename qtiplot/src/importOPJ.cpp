@@ -446,15 +446,13 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		if(opj.matrixHeaderViewType(s) == matrix::XY)
 			matrix->setHeaderViewType(Matrix::XY);
 		vector<double> data = opj.matrixData(s);
-		for(int i=0; i<nr_rows; i++){
-			for (int j=0; j<nr_cols; j++){
-				double val = data[i*nr_cols+j];
-				if(fabs(val)>0 && fabs(val)<2.0e-300)// empty entry
-					data[i*nr_cols+j] = GSL_NAN;
-			}
+		double *matrix_data = matrix->matrixModel()->dataVector();
+		int size = matrix->numRows()*matrix->numCols();
+		int cell = 0;
+		for(int i=0; i<size; i++){
+			matrix_data[cell] = data[cell];
+            cell++;
 		}
-
-		//matrix->matrixModel()->setDataVector(QVector<double>::fromStdVector(data));
 
 		QChar format;
 		switch(opj.matrixValueTypeSpec(s))

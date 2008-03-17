@@ -4963,16 +4963,28 @@ void ApplicationWindow::exportAllGraphs()
 		QFile f(file_name);
 		if (f.exists() && confirm_overwrite) {
 			QApplication::restoreOverrideCursor();
-			switch(QMessageBox::question(this, tr("QtiPlot - Overwrite file?"),
-						tr("A file called: <p><b>%1</b><p>already exists. "
-							"Do you want to overwrite it?") .arg(file_name), tr("&Yes"), tr("&All"), tr("&Cancel"), 0, 1)) {
-				case 1:
-					confirm_overwrite = false;
-				case 0:
+			
+			QString msg = tr("A file called: <p><b>%1</b><p>already exists. ""Do you want to overwrite it?").arg(file_name);
+			QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot - Overwrite file?"), msg, 
+							  QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel,
+							  (ApplicationWindow *)this);
+ 			msgBox.exec();     
+			switch(msgBox.standardButton(msgBox.clickedButton())){
+				case QMessageBox::Yes:
 					QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-					break;
-				case 2:
+				break;
+				case QMessageBox::YesToAll:
+					confirm_overwrite = false;
+				break;
+				case QMessageBox::No:
+					confirm_overwrite = true;
+					continue;
+				break;
+				case QMessageBox::Cancel:
 					return;
+				break;
+				default:
+					break;
 			}
 		}
 		if ( !f.open( QIODevice::WriteOnly ) ) {
@@ -13788,8 +13800,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 	hideFolderWindows(oldFolder);
 	current_folder = newFolder;
 
-	//if (results->isVisible())
-		results->setText(current_folder->logInfo());
+    results->setText(current_folder->logInfo());
 
 	lv->clear();
 
@@ -14989,7 +15000,7 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 {
 	MdiSubWindow *w = current_folder->activeWindow();
 	if (!w)
-		return NULL;
+        return NULL;
 
 	switch(type){
 		case NoWindow:
