@@ -1086,7 +1086,9 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionShowRowsDialog);
 	tableMenu->addAction(actionDeleteRows);
+	tableMenu->insertSeparator();
 	tableMenu->addAction(actionGoToRow);
+	tableMenu->addAction(actionGoToColumn);
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionConvertTable);
 
@@ -2194,10 +2196,9 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
     Matrix* m = NULL;
     if (w){
         m = (Matrix *)w;
-        m->setImage(image);
+        m->importImage(fn);
     } else {
         m = new Matrix(scriptEnv, image, "", this);
-        m->setAttribute(Qt::WA_DeleteOnClose);
         initMatrix(m, generateUniqueName(tr("Matrix")));
         m->show();
         m->setWindowLabel(fn);
@@ -7863,6 +7864,7 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	matrixMenu->addAction(actionMatrixDeterminant);
 	matrixMenu->insertSeparator();
 	matrixMenu->addAction(actionGoToRow);
+	matrixMenu->addAction(actionGoToColumn);
 	matrixMenu->insertSeparator();
 	QMenu *matrixViewMenu = matrixMenu->addMenu (tr("Vie&w"));
 	matrixViewMenu->addAction(actionViewMatrixImage);
@@ -8697,6 +8699,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 		cm.addAction(actionClearTable);
 		cm.insertSeparator();
 		cm.addAction(actionGoToRow);
+		cm.addAction(actionGoToColumn);
 	}
 	cm.exec(QCursor::pos());
 }
@@ -11274,6 +11277,10 @@ void ApplicationWindow::createActions()
 	actionGoToRow->setShortcut(tr("Ctrl+Alt+G"));
 	connect(actionGoToRow, SIGNAL(activated()), this, SLOT(goToRow()));
 
+    actionGoToColumn = new QAction(tr("Go to Colum&n..."), this);
+	actionGoToColumn->setShortcut(tr("Ctrl+Alt+C"));
+	connect(actionGoToColumn, SIGNAL(activated()), this, SLOT(goToColumn()));
+
 	actionClearTable = new QAction(QPixmap(erase_xpm), tr("Clear"), this);
 	connect(actionClearTable, SIGNAL(activated()), this, SLOT(clearTable()));
 
@@ -11959,6 +11966,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionClearTable->setMenuText(tr("Clear"));
 	actionGoToRow->setMenuText(tr("&Go to Row..."));
 	actionGoToRow->setShortcut(tr("Ctrl+Alt+G"));
+
+    actionGoToColumn->setMenuText(tr("Go to Colum&n..."));
+	actionGoToColumn->setShortcut(tr("Ctrl+Alt+C"));
 
 	actionDeleteLayer->setMenuText(tr("&Remove Layer"));
 	actionDeleteLayer->setShortcut(tr("Alt+R"));
@@ -14240,6 +14250,26 @@ void ApplicationWindow::goToRow()
 			((Table *)w)->goToRow(row);
 		else if (w->isA("Matrix"))
 			((Matrix *)w)->goToRow(row);
+	}
+}
+
+void ApplicationWindow::goToColumn()
+{
+	MdiSubWindow *w = activeWindow();
+	if (!w)
+		return;
+
+	if (w->inherits("Table") || w->isA("Matrix")){
+		bool ok;
+		int col = QInputDialog::getInteger(this, tr("QtiPlot - Enter column number"), tr("Column"),
+				1, 0, 1000000, 1, &ok, windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMinMaxButtonsHint );
+		if ( !ok )
+			return;
+
+		if (w->inherits("Table"))
+			((Table *)w)->goToColumn(col);
+		else if (w->isA("Matrix"))
+			((Matrix *)w)->goToColumn(col);
 	}
 }
 

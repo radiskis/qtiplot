@@ -556,6 +556,7 @@ public slots:
 	void deconvolute();
 	void clearTable();
 	void goToRow();
+	void goToColumn();
 	//@}
 
 	//! \name Plot Tools
@@ -1225,7 +1226,7 @@ private:
 	QAction *actionHelpForums, *actionHelpBugReports;
 	QAction *actionShowPlotDialog, *actionShowScaleDialog, *actionOpenTemplate, *actionSaveTemplate;
 	QAction *actionNextWindow, *actionPrevWindow;
-	QAction *actionScriptingLang, *actionRestartScripting, *actionClearTable, *actionGoToRow;
+	QAction *actionScriptingLang, *actionRestartScripting, *actionClearTable, *actionGoToRow, *actionGoToColumn;
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote;
 	QAction *actionShowScriptWindow;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;

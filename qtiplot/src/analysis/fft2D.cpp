@@ -31,9 +31,9 @@
 
 #include <math.h>
 
-void fft(double* x_int_re, double* x_int_im, unsigned int taille)
+void fft(double* x_int_re, double* x_int_im, int taille)
 {
-    unsigned int size_2=taille>>1,tmp1;
+    int size_2=taille>>1,tmp1;
     double tmp, tmpcos, tmpsin, base = 2*M_PI/taille;
     const double SQ_2=sqrt(2);
     double pair_re[size_2], pair_im[size_2], impair_re[size_2], impair_im[size_2];
@@ -61,9 +61,9 @@ void fft(double* x_int_re, double* x_int_im, unsigned int taille)
     }
 }
 
-void fft_inv(double* x_int_re, double* x_int_im, unsigned int taille)
+void fft_inv(double* x_int_re, double* x_int_im, int taille)
 {
-    unsigned int size_2=taille>>1, tmp1;
+    int size_2=taille>>1, tmp1;
     double tmp, tmpcos, tmpsin, base=2*M_PI/taille;
     const double SQ_2=sqrt(2);
     double pair_re[size_2], pair_im[size_2], impair_re[size_2], impair_im[size_2];
@@ -91,10 +91,17 @@ void fft_inv(double* x_int_re, double* x_int_im, unsigned int taille)
     }
 }
 
-void fft2d(double **xtre, double **xtim, unsigned int width, unsigned int height)
+void fft2d(double **xtre, double **xtim, int width, int height)
 {
     double **xint_re = Matrix::allocateMatrixData(height, width);
+    if (!xint_re)
+        return;
     double **xint_im = Matrix::allocateMatrixData(height, width);
+    if (!xint_im){
+        Matrix::freeMatrixData(xint_re, height);
+        return;
+    }
+
     double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
     for(int k=0; k<height; k++){
         for(int j=0; j<width; j++){
@@ -126,10 +133,17 @@ void fft2d(double **xtre, double **xtim, unsigned int width, unsigned int height
     Matrix::freeMatrixData(xint_im, height);
 }
 
-void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im, unsigned int width, unsigned int height)
+void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im, int width, int height)
 {
     double **xint_re = Matrix::allocateMatrixData(height, width);
+    if (!xint_re)
+        return;
     double **xint_im = Matrix::allocateMatrixData(height, width);
+    if (!xint_im){
+        Matrix::freeMatrixData(xint_re, height);
+        return;
+    }
+
     double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
     for(int k=0; k<height; k++){
         for(int j=0; j<width; j++){

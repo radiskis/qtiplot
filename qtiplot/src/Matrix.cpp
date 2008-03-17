@@ -129,7 +129,7 @@ void Matrix::initImage(const QImage& image)
     } else
 		resize(500, 500);
 
-	imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+	imageLabel->setPixmap(QPixmap::fromImage(image));
 }
 
 double Matrix::cell(int row, int col)
@@ -314,72 +314,24 @@ void Matrix::setDimensions(int rows, int cols)
 {
 	int r = numRows();
 	int c = numCols();
-
 	if (r == rows && c == cols)
 		return;
 
-	int size = rows*cols;
-	initWorkspace(size);
-	if(!d_workspace)
+	if (rows < 0 || cols < 0 || INT_MAX/rows < cols) //avoid integer overflow
 		return;
 	
-	freeWorkspace();
-    /*double maxSize = 2e8;
-    if (rows*cols > (int)maxSize){
-        QApplication::restoreOverrideCursor();
-        QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot") + " - " + tr("Error"),
-        tr("The number of cells in a matrix (rows x columns) must not exceed %L1.").arg(maxSize, 0, 'f', 0) + "\n" +
-        tr("Please re-enter your matrix row and column dimensions accordingly."));
-        return;
-    }*/
-
-	if (rows < r || cols < c){
-		QString msg_text = tr("Deleting rows/columns from the matrix!","set matrix dimensions");
-		msg_text += tr("<p>Do you really want to continue?","set matrix dimensions");
-		switch( QMessageBox::information((ApplicationWindow *)applicationWindow(), tr("QtiPlot"), msg_text, tr("Yes"), tr("Cancel"), 0, 1 ) )
-		{
-			case 0: {// Yes
-				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-				/*MatrixModel *new_model = d_matrix_model->copy();
-				if (cols != c)
-					new_model->setColumnCount(cols);
-				if (rows != r)
-					new_model->setRowCount(rows);
-
-                d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Set Dimensions") +
-                " " + QString::number(rows) + "x" + QString::number(cols)));
-                setMatrixModel(new_model);*/
-               if (cols != c)
-                    d_matrix_model->setColumnCount(cols);
-                if (rows != r)
-                    d_matrix_model->setRowCount(rows);
-                resetView();
-				QApplication::restoreOverrideCursor();
-				break;
-			}
-			case 1: // Cancel
-				return;
-				break;
-		}
-	} else {
-		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		/*MatrixModel *new_model = d_matrix_model->copy();
-        if (cols != c)
-            new_model->setColumnCount(cols);
-        if (rows != r)
-            new_model->setRowCount(rows);
-
-        d_undo_stack->push(new MatrixCommand(d_matrix_model, new_model, tr("Set Dimensions") +
-                " " + QString::number(rows) + "x" + QString::number(cols)));
-        setMatrixModel(new_model);*/
-
-        if (cols != c)
-            d_matrix_model->setColumnCount(cols);
-        if (rows != r)
-            d_matrix_model->setRowCount(rows);
-        resetView();
-        QApplication::restoreOverrideCursor();
+	if(rows*cols > r*c && !d_matrix_model->canResize(rows, cols))
+		return;
+	
+	double *buffer = d_matrix_model->dataCopy();
+	if (buffer)
+		d_undo_stack->push(new MatrixSetSizeCommand(d_matrix_model, QSize(r, c), QSize(rows, cols), buffer, 
+						tr("Set Dimensions") + " " + QString::number(rows) + "x" + QString::number(cols)));
+	else if(ignoreUndo()){
+		d_matrix_model->setDimensions(rows, cols);
+		resetView();
 	}
+	emit modifiedWindow(this);
 }
 
 double Matrix::integrate()
@@ -410,17 +362,17 @@ double Matrix::determinant()
 	}
 
 	gsl_set_error_handler_off();
-	
+
 	gsl_matrix *A = gsl_matrix_alloc(rows, cols);
     gsl_permutation * p = gsl_permutation_alloc(rows);
 	if (!A || !p){
 		QApplication::restoreOverrideCursor();
-		QMessageBox::critical((ApplicationWindow *)applicationWindow(), 
+		QMessageBox::critical((ApplicationWindow *)applicationWindow(),
 				tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 				tr("Not enough memory, operation aborted!"));
 		return 0.0;
 	}
-	
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	double *data = d_matrix_model->dataVector();
@@ -429,7 +381,7 @@ double Matrix::determinant()
 		for(int j=0; j<cols; j++)
 			gsl_matrix_set(A, i, j, data[cell++]);
 
-	
+
 	gsl_linalg_LU_decomp(A, p, &i);
 	double det = gsl_linalg_LU_det(A, i);
 
@@ -443,7 +395,7 @@ double Matrix::determinant()
 void Matrix::invert()
 {
 	if (numRows() != numCols()){
-		QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot - Error"), 
+		QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot - Error"),
 		tr("Inversion failed, the matrix is not square!"));
 		return;
 	}
@@ -456,7 +408,7 @@ void Matrix::transpose()
 	initWorkspace(numRows()*numCols());
 	if (!d_workspace)
 		return;
-		
+
 	d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, Transpose, tr("Transpose")));
 }
 
@@ -465,7 +417,7 @@ void Matrix::flipVertically()
 	initWorkspace(numRows()*numCols());
 	if (!d_workspace)
 		return;
-	
+
 	d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, FlipVertically, tr("Flip Vertically")));
 }
 
@@ -474,7 +426,7 @@ void Matrix::flipHorizontally()
 	initWorkspace(numRows()*numCols());
 	if (!d_workspace)
 		return;
-	
+
 	d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, FlipHorizontally, tr("Flip Horizontally")));
 }
 
@@ -483,7 +435,7 @@ void Matrix::rotate90(bool clockwise)
 	initWorkspace(numRows()*numCols());
 	if (!d_workspace)
 		return;
-	
+
 	if (clockwise)
 		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, RotateClockwise, tr("Rotate 90°")));
 	else
@@ -494,7 +446,7 @@ bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCo
 {
 	double *buffer = d_matrix_model->dataCopy(startRow, endRow, startCol, endCol);
 	if (buffer){
-		d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, MuParserCalculate, startRow, endRow, 
+		d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, MuParserCalculate, startRow, endRow,
 												startCol, endCol, buffer, tr("Calculate Values")));
 		emit modifiedWindow(this);
 		return true;
@@ -513,7 +465,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 
 	double *buffer = d_matrix_model->dataCopy(startRow, endRow, startCol, endCol);
 	if (buffer){
-    	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Calculate, startRow, endRow, 
+    	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Calculate, startRow, endRow,
 												startCol, endCol, buffer, tr("Calculate Values")));
 		emit modifiedWindow(this);
 		return true;
@@ -522,7 +474,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 		emit modifiedWindow(this);
 		return true;
 	}
-	return false;	
+	return false;
 }
 
 void Matrix::clearSelection()
@@ -533,7 +485,7 @@ void Matrix::clearSelection()
 	QItemSelectionModel *selModel = d_table_view->selectionModel();
 	if (!selModel || !selModel->hasSelection())
 		return;
-	
+
 	const QItemSelectionRange sel = selModel->selection()[0];
 	int startRow = sel.top();
 	int endRow = sel.bottom();
@@ -546,7 +498,7 @@ void Matrix::clearSelection()
 	} else if (ignoreUndo()){
 		d_matrix_model->clear(startRow, endRow, startCol, endCol);
 		emit modifiedWindow(this);
-	} 
+	}
 }
 
 void Matrix::copySelection()
@@ -617,12 +569,12 @@ void Matrix::pasteSelection()
 	int bottomRow = topRow + rows - 1;
 	if (bottomRow > oldRows - 1)
 		bottomRow = oldRows - 1;
-	
+
 	int oldCols = numCols();
 	int rightCol = leftCol + cols - 1;
 	if (rightCol > oldCols - 1)
 		rightCol = oldCols - 1;
-	
+
 	double *clipboardBuffer = (double *)malloc(rows*cols*sizeof(double));
 	if (!clipboardBuffer){
 		QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
@@ -630,7 +582,7 @@ void Matrix::pasteSelection()
 		QApplication::restoreOverrideCursor();
 		return;
 	}
-	
+
 	QLocale locale = this->locale(); //Better use QLocale::system() ??
 	QTextStream ts2(&text, QIODevice::ReadOnly);
 	int cell = 0;
@@ -642,16 +594,16 @@ void Matrix::pasteSelection()
 			if (j >= size)
 				continue;
 			bool numeric = true;
-			double value = locale.toDouble(cellTexts[j], &numeric);			
+			double value = locale.toDouble(cellTexts[j], &numeric);
 			if (numeric)
 				clipboardBuffer[cell++] = value;
 			else
 				clipboardBuffer[cell++] = GSL_NAN;
 		}
 	}
-	
+
 	QApplication::restoreOverrideCursor();
-	
+
 	double *backupBuffer = d_matrix_model->dataCopy(topRow, bottomRow, leftCol, rightCol);
 	if (backupBuffer){
 		d_undo_stack->push(new MatrixPasteCommand(d_matrix_model, topRow, bottomRow,
@@ -689,18 +641,16 @@ void Matrix::deleteSelectedRows()
 	if (startRow < 0 || !count)
 		return;
 
-	int cols = numCols();
-	QVector<double> data(count*cols);
-	int aux = 0;
-	for (int i = 0; i<count; i++){
-		for (int j = 0; j<cols; j++)
-			data[aux++] = d_matrix_model->cell(startRow + i, j);
-	}
-
-	d_undo_stack->push(new MatrixDeleteRowsCommand(d_matrix_model, startRow, count, data, tr("Delete Rows") + " " +
+	double *buffer = d_matrix_model->dataCopy(startRow, startRow + count - 1, 0, numCols() - 1);
+	if (buffer){
+    	d_undo_stack->push(new MatrixDeleteRowsCommand(d_matrix_model, startRow, count, buffer, tr("Delete Rows") + " " +
                       QString::number(startRow + 1) + " - " + QString::number(startRow + count)));
-	d_table_view->reset();
-	emit modifiedWindow(this);
+    	emit modifiedWindow(this);
+	} else if (ignoreUndo()){
+		d_matrix_model->removeRows(startRow, count);
+		d_table_view->reset();
+		emit modifiedWindow(this);
+	}
 }
 
 void Matrix::deleteSelectedColumns()
@@ -722,18 +672,16 @@ void Matrix::deleteSelectedColumns()
 	if (startCol < 0 || !count)
 		return;
 
-	int rows = numRows();
-	QVector<double> data(count*rows);
-	int aux = 0;
-	for (int i = 0; i<rows; i++){
-		for (int j = 0; j<count; j++)
-			data[aux++] = d_matrix_model->cell(i, startCol + j);
-	}
-
-	d_undo_stack->push(new MatrixDeleteColsCommand(d_matrix_model, startCol, count, data, tr("Delete Columns") + " " +
+	double *buffer = d_matrix_model->dataCopy(0, numRows() - 1, startCol, startCol + count - 1);
+	if (buffer){
+    	d_undo_stack->push(new MatrixDeleteColsCommand(d_matrix_model, startCol, count, buffer, tr("Delete Columns") + " " +
                       QString::number(startCol + 1) + " - " + QString::number(startCol + count)));
-	d_table_view->reset();
-	emit modifiedWindow(this);
+    	emit modifiedWindow(this);
+	} else if (ignoreUndo()){
+		d_matrix_model->removeColumns(startCol, count);
+		d_table_view->reset();
+		emit modifiedWindow(this);
+	}
 }
 
 int Matrix::numSelectedRows()
@@ -776,6 +724,9 @@ void Matrix::insertRow()
 	if (!index.isValid())
 		return;
 
+    if (!d_matrix_model->canResize(numRows() + 1, numCols()))
+        return;
+
 	d_undo_stack->push(new MatrixInsertRowCommand(d_matrix_model, index.row(), tr("Insert Row") + " " +
                       QString::number(index.row() + 1)));
 	d_table_view->reset();
@@ -791,6 +742,9 @@ void Matrix::insertColumn()
 	QModelIndex index = selModel->currentIndex();
 	if (!index.isValid())
 		return;
+
+    if (!d_matrix_model->canResize(numRows(), numCols() + 1))
+        return;
 
 	d_undo_stack->push(new MatrixInsertColCommand(d_matrix_model, index.column(), tr("Insert Column") + " " +
                       QString::number(index.column() + 1)));
@@ -1056,15 +1010,19 @@ double** Matrix::allocateMatrixData(int rows, int columns)
 	if(!data){
 		QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));
-		return data;
+		return NULL;
 	}
-	
+
 	for ( int i = 0; i < rows; ++i){
 		data[i] = (double *)malloc(columns * sizeof (double));
 		if(!data[i]){
+		    for ( int j = 0; j < i; j++)
+                free(data[j]);
+		    free(data);
+
 			QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 			tr("Not enough memory, operation aborted!"));
-			return data;
+			return NULL;
 		}
 	}
 	return data;
@@ -1083,7 +1041,21 @@ void Matrix::goToRow(int row)
 	if(row < 1 || row > numRows())
 		return;
 
+    if (d_view_type == ImageView)
+        d_undo_stack->push(new MatrixSetViewCommand(this, d_view_type, TableView, tr("Set Data Mode")));
 	d_table_view->selectRow(row - 1);
+	d_table_view->scrollTo(d_matrix_model->index(row - 1, 0), QAbstractItemView::PositionAtTop);
+}
+
+void Matrix::goToColumn(int col)
+{
+	if(col < 1 || col > numCols())
+		return;
+
+    if (d_view_type == ImageView)
+        d_undo_stack->push(new MatrixSetViewCommand(this, d_view_type, TableView, tr("Set Data Mode")));
+	d_table_view->selectColumn(col - 1);
+	d_table_view->scrollTo(d_matrix_model->index(0, col - 1), QAbstractItemView::PositionAtCenter);
 }
 
 void Matrix::moveCell(const QModelIndex& index)
@@ -1138,7 +1110,13 @@ void Matrix::copy(Matrix *m)
 	resetView();
 }
 
-void Matrix::setViewType(ViewType type, const QImage& image)
+void Matrix::displayImage(const QImage& image)
+{
+    if (imageLabel)
+        imageLabel->setPixmap(QPixmap::fromImage(image));
+}
+
+void Matrix::setViewType(ViewType type, bool renderImage)
 {
 	if (d_view_type == type)
 		return;
@@ -1149,10 +1127,8 @@ void Matrix::setViewType(ViewType type, const QImage& image)
 		delete d_table_view;
 		delete d_select_all_shortcut;
 	    initImageView();
-		if (image.isNull())
+		if (renderImage)
 			imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
-		else
-			imageLabel->setPixmap(QPixmap::fromImage(image));
 		d_stack->setCurrentWidget(imageLabel);
 	} else if (d_view_type == TableView){
 		delete imageLabel;
@@ -1211,27 +1187,25 @@ QImage Matrix::image()
 	return d_matrix_model->renderImage();
 }
 
-void Matrix::setImage(const QImage& image)
-{
-	double *buffer = d_matrix_model->dataCopy();
-	if (buffer){
-    	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0, 
-							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image")));
-		emit modifiedWindow(this);
-	} else if (ignoreUndo()){
-		d_matrix_model->setImage(image);
-		setViewType(ImageView, image);
-		emit modifiedWindow(this);
-	}
-}
-
 void Matrix::importImage(const QString& fn)
 {
 	QImage image(fn);
     if (image.isNull())
         return;
 
-	setImage(image);
+	double *buffer = d_matrix_model->dataCopy();
+	if (buffer){
+    	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
+							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image") + " \"" + fn + "\""));
+        setWindowLabel(fn);
+		emit modifiedWindow(this);
+	} else if (ignoreUndo()){
+		d_matrix_model->setImage(image);
+		setViewType(ImageView, false);
+		displayImage(image);
+		setWindowLabel(fn);
+		emit modifiedWindow(this);
+	}
 }
 
 void Matrix::setGrayScale()
@@ -1346,11 +1320,11 @@ void Matrix::fft(bool inverse)
 	double *buffer = d_matrix_model->dataCopy();
 	if (buffer){
 		QString commandText = inverse ? tr("Inverse FFT") : tr("Forward FFT");
-    	d_undo_stack->push(new MatrixFftCommand(inverse, d_matrix_model, 0, numRows() - 1, 
-							0, numCols() - 1, buffer, commandText));	
+    	d_undo_stack->push(new MatrixFftCommand(inverse, d_matrix_model, 0, numRows() - 1,
+							0, numCols() - 1, buffer, commandText));
 		emit modifiedWindow(this);
 	} else if (ignoreUndo()){
-		d_matrix_model->fft(inverse);		
+		d_matrix_model->fft(inverse);
 		emit modifiedWindow(this);
 	}
 }
@@ -1414,17 +1388,17 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 void Matrix::importASCII(const QString &fname, const QString &sep, int ignoredLines,
     	bool stripSpaces, bool simplifySpaces, const QString& commentString,
 		ImportMode importAs, const QLocale& locale, int endLineChar, int maxRows)
-{	
+{
 	double *buffer = d_matrix_model->dataCopy();
 	if (buffer){
-    	d_undo_stack->push(new MatrixImportAsciiCommand(fname, sep, ignoredLines, stripSpaces, 
-							simplifySpaces, commentString, importAs, locale, endLineChar, maxRows, 
-							d_matrix_model, 0, numRows() - 1, 0, numCols() - 1, buffer, 
-							tr("Import ASCII File") + " \"" + fname + "\""));	
+    	d_undo_stack->push(new MatrixImportAsciiCommand(fname, sep, ignoredLines, stripSpaces,
+							simplifySpaces, commentString, importAs, locale, endLineChar, maxRows,
+							d_matrix_model, 0, numRows() - 1, 0, numCols() - 1, buffer,
+							tr("Import ASCII File") + " \"" + fname + "\""));
 		emit modifiedWindow(this);
 	} else if (ignoreUndo()){
-		d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces, simplifySpaces, 
-									commentString, importAs, locale, endLineChar, maxRows);		
+		d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces, simplifySpaces,
+									commentString, importAs, locale, endLineChar, maxRows);
 		emit modifiedWindow(this);
 	}
 }
@@ -1440,7 +1414,7 @@ double* Matrix::initWorkspace(int size)
 {
 	if (!d_workspace)
 		d_workspace = (double *)malloc(size * sizeof (double));
-	
+
 	if (!d_workspace)
 		QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));

@@ -33,6 +33,7 @@
 #include <QAbstractTableModel>
 #include <QVector>
 #include <QLocale>
+#include <QSize>
 
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_permutation.h>
@@ -46,10 +47,14 @@ class MatrixModel : public QAbstractTableModel
 public:
     MatrixModel(int rows = 32, int cols = 32, QObject *parent = 0);
     MatrixModel(const QImage& image, QObject *parent);
+    ~MatrixModel(){free(d_data);};
 
     Matrix *matrix(){return d_matrix;};
 
 	Qt::ItemFlags flags( const QModelIndex & index ) const;
+
+    bool canResize(int rows, int cols);
+	void setDimensions(int rows, int cols);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	void setRowCount(int rows);
@@ -79,12 +84,11 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);
 
-    double* dataVector();
+    double* dataVector(){return d_data;};
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	void setDataVector(const QVector<double>& data);
 
 	void setImage(const QImage& image);
-	
+
 	bool importASCII(const QString &fname, const QString &sep, int ignoredLines, bool stripSpaces,
 					bool simplifySpaces, const QString& commentString, int importAs,
 					const QLocale& locale, int endLineChar = 0, int maxRows = -1);
@@ -104,10 +108,10 @@ public:
 	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 	double* dataCopy(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 	void pasteData(double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
-	
+
 private:
     int d_rows, d_cols;
-    QVector<double> d_data;
+    double *d_data;
 	Matrix *d_matrix;
 	//! Format code for displaying numbers
 	char d_txt_format;
@@ -120,6 +124,7 @@ private:
 	gsl_matrix *d_direct_matrix, *d_inv_matrix;
 	//! Pointer to a GSL permutation used during inversion operations
 	gsl_permutation *d_inv_perm;
+	QSize d_data_block_size;
 };
 
 #endif

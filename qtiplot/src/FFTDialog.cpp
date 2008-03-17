@@ -270,10 +270,14 @@ void FFTDialog::fftMatrix()
     }
 
     double **x_int_re = Matrix::allocateMatrixData(height, width); /* real coeff matrix */
-    double **x_int_im = Matrix::allocateMatrixData(height, width); /* imaginary coeff  matrix*/
-	if (!x_int_re || !x_int_im)
+    if (!x_int_re)
 		return;
-		
+    double **x_int_im = Matrix::allocateMatrixData(height, width); /* imaginary coeff  matrix*/
+	if (!x_int_im){
+	    Matrix::freeMatrixData(x_int_re, height);
+		return;
+	}
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     for (int i = 0; i < height; i++){
@@ -288,13 +292,15 @@ void FFTDialog::fftMatrix()
 
     double **x_fin_re, **x_fin_im;
     if (inverse){
-        x_fin_re = Matrix::allocateMatrixData(height, width); /* coeff de l'image de départ */
-        x_fin_im = Matrix::allocateMatrixData(height, width); /*normalement remplie de 0 si tout a bien fonctionné */
+        x_fin_re = Matrix::allocateMatrixData(height, width); // coeff of the initial image
+        x_fin_im = Matrix::allocateMatrixData(height, width); // filled with 0 if everythng OK
 		if (!x_fin_re || !x_fin_im){
+		    Matrix::freeMatrixData(x_int_re, height);
+		    Matrix::freeMatrixData(x_int_im, height);
 			QApplication::restoreOverrideCursor();
 			return;
 		}
-		
+
         fft2d_inv(x_int_re, x_int_im, x_fin_re, x_fin_im, width, height);
     } else
         fft2d(x_int_re, x_int_im, width, height);
