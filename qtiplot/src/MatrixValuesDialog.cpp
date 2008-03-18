@@ -114,10 +114,13 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 
 	QVBoxLayout* vbox3 = new QVBoxLayout(this);
 	vbox3->addLayout(hbox2);
-#ifdef SCRIPTING_PYTHON
-	boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
-	boxMuParser->setChecked(true);
-	vbox3->addWidget(boxMuParser);
+#ifdef SCRIPTING_PYTHON	
+	boxMuParser = NULL;
+	if (scriptEnv->name() != QString("muParser")){
+		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
+		boxMuParser->setChecked(true);
+		vbox3->addWidget(boxMuParser);
+	}
 #endif
 	vbox3->addWidget(new QLabel(tr( "Cell(i,j)=" )));
 	vbox3->addLayout(hbox3);
@@ -149,16 +152,20 @@ bool MatrixValuesDialog::apply()
 	QString oldFormula = matrix->formula();
 
 	matrix->setFormula(formula);
-	matrix->undoStack()->push(new MatrixSetFormulaCommand(matrix, oldFormula, formula,
-								tr("Set New Formula") + " " + formula));
-
+	
+	bool useMuParser = true;
 #ifdef SCRIPTING_PYTHON
-	if (matrix->calculate(startRow->value()-1, endRow->value()-1, 
-		startCol->value()-1, endCol->value()-1, boxMuParser->isChecked())){
-#else
-	if (matrix->calculate(startRow->value()-1, endRow->value()-1, startCol->value()-1, endCol->value()-1)){
+	if (boxMuParser)
+		useMuParser = boxMuParser->isChecked();
 #endif
-		return true;
+	
+	if (matrix->canCalculate(useMuParser)){
+		matrix->undoStack()->push(new MatrixSetFormulaCommand(matrix, oldFormula, formula,
+							tr("Set New Formula") + " \"" + formula + "\""));
+
+		if (matrix->calculate(startRow->value()-1, endRow->value()-1, 
+			startCol->value()-1, endCol->value()-1, useMuParser))
+			return true;
 	}
 	matrix->setFormula(oldFormula);
 	return false;

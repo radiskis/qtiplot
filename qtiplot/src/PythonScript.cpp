@@ -154,10 +154,11 @@ bool PythonScript::compile(bool for_eval)
 }
 
 QVariant PythonScript::eval()
-{
+{	
 	if (!isFunction) compiled = notCompiled;
 	if (compiled != isCompiled && !compile(true))
 		return QVariant();
+	
 	PyObject *pyret;
 	beginStdoutRedirect();
 	if (PyCallable_Check(PyCode)){

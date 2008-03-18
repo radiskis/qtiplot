@@ -291,6 +291,8 @@ public slots:
 	//! Tries to allocate memory for the workspace. Returns a NULL pointer if failure.
 	double *initWorkspace(int size);
 	void freeWorkspace(){free(d_workspace); d_workspace = NULL;};
+	
+	bool canCalculate(bool useMuParser = true);
 
 private:
 	//! Initialize the matrix

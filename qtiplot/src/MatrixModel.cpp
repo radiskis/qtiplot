@@ -46,50 +46,47 @@
 
 MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
      : QAbstractTableModel(parent),
-     d_rows(rows),
-     d_cols(cols),
-	 d_matrix((Matrix*)parent),
-	 d_txt_format('g'),
-	 d_num_precision(6),
-	 d_locale(QLocale()),
-	 d_direct_matrix(NULL),
-	 d_inv_matrix(NULL),
-	 d_inv_perm(NULL),
-	 d_data_block_size(QSize())
+	 d_matrix((Matrix*)parent)
 {
-    d_data = (double *)malloc(d_rows * d_cols * sizeof (double));
-	if (!d_data){
-	    QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
-		tr("Not enough memory, operation aborted!"));
-		return;
-	}
-
-	d_data_block_size = QSize(d_rows, d_cols);
-	int cell = 0;
-	for (int i = 0; i < d_rows; i++)
-        for (int j = 0; j < d_cols; j++)
-            d_data[cell++] = GSL_NAN;
-
+	init();
+	
 	if (d_matrix){
 		d_txt_format = d_matrix->textFormat().toAscii();
 		d_num_precision = d_matrix->precision();
 		d_locale = d_matrix->locale();
 	}
+
+	if (canResize(rows, cols)){
+		d_rows = rows;
+		d_cols = cols;
+		int cell = 0;
+		int size = rows*cols;
+		for (int i = 0; i < size; i++)
+            d_data[cell++] = GSL_NAN;
+	}
 }
 
 MatrixModel::MatrixModel(const QImage& image, QObject *parent)
      : QAbstractTableModel(parent),
-     d_data(NULL),
-	 d_matrix((Matrix*)parent),
-	 d_txt_format('g'),
-	 d_num_precision(6),
-	 d_locale(QLocale()),
-	 d_direct_matrix(NULL),
-	 d_inv_matrix(NULL),
-	 d_inv_perm(NULL),
-	 d_data_block_size(QSize())
+	 d_matrix((Matrix*)parent)
 {
+	init();
     setImage(image);
+}
+
+void MatrixModel::init()
+{
+	d_txt_format = 'g';
+	d_num_precision = 6;
+	d_locale = QLocale();
+	d_direct_matrix = NULL;
+	d_inv_matrix = NULL;
+	d_inv_perm = NULL;
+	
+	d_rows = 1;
+	d_cols = 1;
+	d_data_block_size = QSize(1, 1);
+	d_data = (double *)malloc(sizeof(double));
 }
 
 void MatrixModel::setImage(const QImage& image)
@@ -99,7 +96,6 @@ void MatrixModel::setImage(const QImage& image)
 
     d_rows = image.height();
     d_cols = image.width();
-	d_data_block_size = QSize(d_rows, d_cols);
 	int cell = 0;
     for (int i=0; i<d_rows; i++ ){
 		for (int j=0; j<d_cols; j++)
@@ -302,7 +298,7 @@ QVariant MatrixModel::data(const QModelIndex &index, int role) const
 
     int i = d_cols*index.row() + index.column();
 	double val = d_data[i];
-    if (gsl_isnan (val) || val < 2.0e-300)
+    if (gsl_isnan (val))
         return QVariant();
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole){
@@ -343,6 +339,14 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
 
 bool MatrixModel::canResize(int rows, int cols)
 {
+	if (rows <= 0 || cols <= 0 || INT_MAX/rows < cols){ //avoid integer overflow
+		QApplication::restoreOverrideCursor();
+    	QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Input Size Error"),
+    	tr("The dimensions you have specified are not acceptable!") + "\n" +
+		tr("Please enter positive values for which the product rows*columns does not exceed the maximum integer value available on your system!"));
+		return false;
+	}
+
     if (d_data_block_size.width()*d_data_block_size.width() >= rows*cols)
 		return true;
 
@@ -875,6 +879,7 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 	Script *script = scriptEnv->newScript(formula, this, QString("<%1>").arg(objectName()));
 	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 	connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
+	
 	if (!script->compile()){
 		QApplication::restoreOverrideCursor();
 		return false;
@@ -909,8 +914,11 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 			res = script->eval();
 			if (res.canConvert(QVariant::Double))
 				d_data[aux++] = res.toDouble();
-			else
+			else {
+				QApplication::restoreOverrideCursor();
 				d_data[aux++] = GSL_NAN;
+				return false;
+			}
 		}
 		qApp->processEvents();
 	}

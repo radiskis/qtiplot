@@ -41,9 +41,10 @@
 
 using namespace mu;
 
-muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *context, const QString &name)
+muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *context, 
+							const QString &name, bool checkMultilineCode)
   : Script(env, code, context, name),
-  d_init_error(false)
+  d_warn_multiline_code(checkMultilineCode)
 {
   variables.setAutoDelete(true);
   rvariables.setAutoDelete(true);
@@ -72,16 +73,19 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
   rparser = parser;
   if (Context->isA("Table") || Context->isA("Matrix")){
     if (code.count("\n") > 0){//only autodetect new variables for a script which has min 2 lines
-        QApplication::restoreOverrideCursor();
-        QString mess = tr("Multiline expressions take much more time to evaluate! Do you want to continue anyways?");
-        if (QMessageBox::Yes == QMessageBox::warning((QWidget *)Context, tr("QtiPlot") + " - " + tr("Warning"), mess,
-                            QMessageBox::Yes, QMessageBox::Cancel)){
+		if (d_warn_multiline_code){
+        	QApplication::restoreOverrideCursor();
+        	QString mess = tr("Multiline expressions take much more time to evaluate! Do you want to continue anyways?");
+        	if (QMessageBox::Yes == QMessageBox::warning((QWidget *)Context, tr("QtiPlot") + " - " + tr("Warning"), mess,
+                           QMessageBox::Yes, QMessageBox::Cancel)){
+           		parser.SetVarFactory(mu_addVariable);
+            	rparser.SetVarFactory(mu_addVariableR);
+			}
+		} else {
             parser.SetVarFactory(mu_addVariable);
             rparser.SetVarFactory(mu_addVariableR);
-            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        } else
-            d_init_error = true;
-    }
+		}
+	}
   } else {
       parser.SetVarFactory(mu_addVariable);
       rparser.SetVarFactory(mu_addVariableR);
@@ -366,9 +370,6 @@ QString muParserScript::compileColArg(const QString &in)
 
 bool muParserScript::compile(bool)
 {
-    if (d_init_error)
-        return false;
-
 	muCode.clear();
 	QString muCodeLine = "";
 	for (int i=0; i < Code.size(); i++)
@@ -412,7 +413,7 @@ bool muParserScript::compile(bool)
 		muCode += muCodeLine;
 	compiled = Script::isCompiled;
 
-	if (muCode.size() == 1){
+	if (muCode.size() == 1){		
 	    current = this;
         parser.SetExpr(muCode[0].ascii());
         try {
