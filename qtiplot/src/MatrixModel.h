@@ -110,6 +110,7 @@ public:
 	void pasteData(double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
 
 private:
+	void init();
     int d_rows, d_cols;
     double *d_data;
 	Matrix *d_matrix;

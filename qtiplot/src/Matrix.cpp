@@ -30,6 +30,8 @@
 #include "MatrixCommand.h"
 #include "Graph.h"
 #include "ApplicationWindow.h"
+#include "muParserScript.h"
+#include "ScriptingEnv.h"
 
 #include <QtGlobal>
 #include <QTextStream>
@@ -317,7 +319,7 @@ void Matrix::setDimensions(int rows, int cols)
 	if (r == rows && c == cols)
 		return;
 
-	if (rows < 0 || cols < 0 || INT_MAX/rows < cols) //avoid integer overflow
+	if (rows <= 0 || cols <= 0 || INT_MAX/rows < cols) //avoid integer overflow
 		return;
 	
 	if(rows*cols > r*c && !d_matrix_model->canResize(rows, cols))
@@ -442,6 +444,61 @@ void Matrix::rotate90(bool clockwise)
 		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, RotateCounterClockwise, tr("Rotate -90°")));
 }
 
+bool Matrix::canCalculate(bool useMuParser)
+{
+	if (formula_str.isEmpty())
+		return false;
+	
+	if (useMuParser){
+    	muParserScript *mup = new muParserScript(scriptEnv, formula_str, this, QString("<%1>").arg(objectName()), false);
+		connect(mup, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&, const QString&,int)));
+
+    	double *ri = mup->defineVariable("i");
+    	double *rr = mup->defineVariable("row");
+    	double *cj = mup->defineVariable("j");
+    	double *cc = mup->defineVariable("col");
+    	double *x = mup->defineVariable("x");
+    	double *y = mup->defineVariable("y");
+
+		if (!mup->compile())
+			return false;
+		
+		double r = 1.0;
+        *ri = r; *rr = r; *y = r;
+        double c = 1.0; *cj = c; *cc = c; *x = c;
+		int codeLines = mup->codeLines();
+		if (codeLines == 1 && gsl_isnan(mup->evalSingleLine()))
+			return false;
+        else if (codeLines > 1){
+        	QVariant res = mup->eval();
+			if (!res.canConvert(QVariant::Double))
+				return false;
+		}
+	} else {
+		Script *script = scriptEnv->newScript(formula_str, this, QString("<%1>").arg(objectName()));
+		connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
+		connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
+		if (!script->compile())
+			return false;
+		
+		double r = 1.0;
+		script->setDouble(r, "i");
+		script->setDouble(r, "row");
+		double c = 1.0;
+		script->setDouble(c, "j");
+		script->setDouble(c, "col");
+		double x = 1.0;
+		script->setDouble(x, "x");
+		double y = 1.0;
+		script->setDouble(y, "y");
+		
+		QVariant res = script->eval();
+		if (!res.canConvert(QVariant::Double))
+			return false;
+	}
+	return true;
+}
+
 bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCol)
 {
 	double *buffer = d_matrix_model->dataCopy(startRow, endRow, startCol, endCol);
@@ -462,7 +519,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 {
 	if (QString(scriptEnv->name()) == "muParser" || forceMuParser)
 		return muParserCalculate(startRow, endRow, startCol, endCol);
-
+		
 	double *buffer = d_matrix_model->dataCopy(startRow, endRow, startCol, endCol);
 	if (buffer){
     	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Calculate, startRow, endRow,

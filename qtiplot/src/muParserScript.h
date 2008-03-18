@@ -44,7 +44,7 @@ class muParserScript: public Script
   Q_OBJECT
 
   public:
-    muParserScript(ScriptingEnv *env, const QString &code, QObject *context=0, const QString &name="<input>");
+    muParserScript(ScriptingEnv *env, const QString &code, QObject *context=0, const QString &name="<input>", bool checkMultilineCode = true);
 
   public slots:
     bool compile(bool asFunction=true);
@@ -77,7 +77,8 @@ class muParserScript: public Script
     mu::Parser parser, rparser;
     Q3AsciiDict<double> variables, rvariables;
     QStringList muCode;
-    bool d_init_error;
+	//! Flag telling is the parser should warn users on multiline code input
+	bool d_warn_multiline_code;
 
   public:
     static muParserScript *current;

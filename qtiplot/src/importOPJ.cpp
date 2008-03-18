@@ -450,7 +450,10 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		int size = matrix->numRows()*matrix->numCols();
 		int cell = 0;
 		for(int i=0; i<size; i++){
-			matrix_data[cell] = data[cell];
+			double val = data[cell];
+			if (val < 2.0e-300)
+				val = GSL_NAN;
+			matrix_data[cell] = val;
             cell++;
 		}
 
