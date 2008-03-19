@@ -152,9 +152,10 @@ private:
 	QCheckBox *boxAntialiasing, *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
 	QCheckBox *boxPromptRenameTables, *boxBackupProject, *boxLabelsEditing;
 	QWidget *fileLocationsPage;
-	QLabel *lblTranslationsPath, *lblHelpPath, *lblUndoStackSize;
+	QLabel *lblTranslationsPath, *lblHelpPath, *lblUndoStackSize, *lblEndOfLine;
 	QLineEdit *translationsPathLine, *helpPathLine;
 	QSpinBox *undoStackSizeBox;
+	QComboBox *boxEndLine;
 };
 
 #endif // CONFIGDIALOG_H

@@ -565,6 +565,7 @@ void Matrix::copySelection()
 
 	QItemSelectionModel *selModel = d_table_view->selectionModel();
 	QString s = "";
+	QString eol = applicationWindow()->endOfLine();
 	if (!selModel->hasSelection()){
 		QModelIndex index = selModel->currentIndex();
 		s = text(index.row(), index.column());
@@ -582,7 +583,7 @@ void Matrix::copySelection()
 		for(int i=top; i<=bottom; i++){
 			for(int j=left; j<right; j++)
 				s += d_matrix_model->text(i, j) + "\t";
-			s += d_matrix_model->text(i,right) + "\n";
+			s += d_matrix_model->text(i,right) + eol;
 		}
 	}
 	// Copy text into the clipboard
@@ -600,33 +601,31 @@ void Matrix::pasteSelection()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QTextStream ts( &text, QIODevice::ReadOnly );
-	QString s = ts.readLine();
-	QStringList cellTexts = s.split("\t");
-	int cols = cellTexts.count();
-	int rows = 1;
-	while(!ts.atEnd()){
-		rows++;
-		s = ts.readLine();
-		int aux = s.split("\t").count();
+	QStringList linesList = text.split(applicationWindow()->endOfLine(), QString::SkipEmptyParts);
+	int rows = linesList.size();
+	if (!rows)
+		return;
+
+	int cols = linesList[0].split("\t").count();
+	for (int i = 1; i < rows; i++){
+		int aux = linesList[i].split("\t").count();
 		if (aux > cols)
             cols = aux;
 	}
-	ts.reset();
-
-    int topRow = 0, leftCol = 0;
+	
+	int topRow = 0, leftCol = 0;
 	QItemSelectionModel *selModel = d_table_view->selectionModel();
 	if (selModel->hasSelection()){
 		QItemSelectionRange sel = selModel->selection()[0];
 		topRow = sel.top();
 		leftCol = sel.left();
 	}
-
+	
 	int oldRows = numRows();
 	int bottomRow = topRow + rows - 1;
 	if (bottomRow > oldRows - 1)
 		bottomRow = oldRows - 1;
-
+	
 	int oldCols = numCols();
 	int rightCol = leftCol + cols - 1;
 	if (rightCol > oldCols - 1)
@@ -641,17 +640,15 @@ void Matrix::pasteSelection()
 	}
 
 	QLocale locale = this->locale(); //Better use QLocale::system() ??
-	QTextStream ts2(&text, QIODevice::ReadOnly);
 	int cell = 0;
 	for(int i = 0; i < rows; i++){
-		s = ts2.readLine();
-		cellTexts = s.split("\t");
-		int size = cellTexts.count();
+		QStringList cells = linesList[i].split("\t");
+		int size = cells.count();
 		for(int j = 0; j<cols; j++){
 			if (j >= size)
 				continue;
 			bool numeric = true;
-			double value = locale.toDouble(cellTexts[j], &numeric);
+			double value = locale.toDouble(cells[j], &numeric);
 			if (numeric)
 				clipboardBuffer[cell++] = value;
 			else
@@ -1399,7 +1396,7 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 	int rows = numRows();
 	int cols = numCols();
 	QTextStream t( &f );
-
+	QString eol = applicationWindow()->endOfLine();
 	if (exportSelection && d_view_type == TableView){
         QModelIndexList selectedIndexes = d_table_view->selectionModel()->selectedIndexes();
         int topRow = selectedIndexes[0].row();
@@ -1426,7 +1423,7 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 				t << separator;
 			}
 			t << d_matrix_model->text(i, rightCol);
-			t << "\n";
+			t << eol;
 		}
 	} else {
 		for (int i=0; i<rows; i++) {
@@ -1435,7 +1432,7 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 				t << separator;
 			}
 			t << d_matrix_model->text(i, cols-1);
-			t << "\n";
+			t << eol;
 		}
 	}
 	f.close();

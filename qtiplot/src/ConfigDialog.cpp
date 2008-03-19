@@ -539,32 +539,41 @@ void ConfigDialog::initAppPage()
     undoStackSizeBox->setValue(app->matrixUndoStackSize());
     topBoxLayout->addWidget( undoStackSizeBox, 4, 1 );
 
+	lblEndOfLine = new QLabel();
+	topBoxLayout->addWidget(lblEndOfLine, 5, 0 );
+	boxEndLine = new QComboBox();
+	boxEndLine->addItem(tr("LF (Unix)"));
+	boxEndLine->addItem(tr("CRLF (Windows)"));
+	boxEndLine->addItem(tr("CR (Mac)"));
+	boxEndLine->setCurrentIndex((int)app->d_eol);
+	topBoxLayout->addWidget(boxEndLine, 5, 1);
+	
 	lblInitWindow = new QLabel();
-	topBoxLayout->addWidget( lblInitWindow, 5, 0 );
+	topBoxLayout->addWidget( lblInitWindow, 6, 0 );
 	boxInitWindow = new QComboBox();
-	topBoxLayout->addWidget( boxInitWindow, 5, 1 );
+	topBoxLayout->addWidget( boxInitWindow, 6, 1 );
 
     boxSave= new QCheckBox();
 	boxSave->setChecked(app->autoSave);
-	topBoxLayout->addWidget( boxSave, 6, 0 );
+	topBoxLayout->addWidget( boxSave, 7, 0 );
 
 	boxMinutes = new QSpinBox();
 	boxMinutes->setRange(1, 100);
 	boxMinutes->setValue(app->autoSaveTime);
 	boxMinutes->setEnabled(app->autoSave);
-	topBoxLayout->addWidget( boxMinutes, 6, 1 );
+	topBoxLayout->addWidget( boxMinutes, 7, 1 );
 
     boxBackupProject = new QCheckBox();
 	boxBackupProject->setChecked(app->d_backup_files);
-	topBoxLayout->addWidget( boxBackupProject, 7, 0, 1, 2 );
+	topBoxLayout->addWidget( boxBackupProject, 8, 0, 1, 2 );
 
 	boxSearchUpdates = new QCheckBox();
 	boxSearchUpdates->setChecked(app->autoSearchUpdates);
-	topBoxLayout->addWidget( boxSearchUpdates, 8, 0, 1, 2 );
+	topBoxLayout->addWidget( boxSearchUpdates, 9, 0, 1, 2 );
 
-	topBoxLayout->setRowStretch( 9, 1 );
+	topBoxLayout->setRowStretch(10, 1);
 
-	appTabWidget->addTab( application, QString() );
+	appTabWidget->addTab(application, QString());
 
 	initConfirmationsPage();
 
@@ -944,6 +953,7 @@ void ConfigDialog::languageChange()
 	boxMinutes->setSuffix(tr(" minutes"));
 	lblScriptingLanguage->setText(tr("Default scripting language"));
 	lblUndoStackSize->setText(tr("Matrix Undo Stack Size"));
+	lblEndOfLine->setText(tr("Endline character"));
 	lblInitWindow->setText(tr("Start New Project"));
 	boxInitWindow->clear();
 	boxInitWindow->addItem(tr("Empty"));
@@ -1150,6 +1160,7 @@ void ConfigDialog::apply()
 	app->defaultScriptingLang = boxScriptingLanguage->currentText();
 	app->d_init_window_type = (ApplicationWindow::WindowType)boxInitWindow->currentIndex();
 	app->setMatrixUndoStackSize(undoStackSizeBox->value());
+	app->d_eol = (ApplicationWindow::EndLineChar)boxEndLine->currentIndex();
 
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();

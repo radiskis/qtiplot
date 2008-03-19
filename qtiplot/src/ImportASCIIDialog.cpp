@@ -97,17 +97,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 	d_preview_lines_box->setValue(app->d_preview_lines);
 	d_preview_button->setChecked(app->d_ASCII_import_preview);
 
-    switch(app->d_ASCII_end_line){
-		case ApplicationWindow::LF:
-        	boxEndLine->setCurrentIndex(0);
-    	break;
-		case ApplicationWindow::CRLF:
-        	boxEndLine->setCurrentIndex(1);
-		break;
-		case ApplicationWindow::CR:
-			boxEndLine->setCurrentIndex(2);
-		break;
-	}
+    boxEndLine->setCurrentIndex((int)app->d_ASCII_end_line);
 
 	if (!app->d_ASCII_import_preview)
 		d_preview_stack->hide();
