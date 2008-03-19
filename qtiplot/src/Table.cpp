@@ -33,6 +33,7 @@
 #include "SortDialog.h"
 #include "ImportASCIIDialog.h"
 #include "muParserScript.h"
+#include "ApplicationWindow.h"
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -1216,7 +1217,8 @@ void Table::copySelection()
 	int i,j;
 	int rows=d_table->numRows();
 	int cols=d_table->numCols();
-
+	QString eol = applicationWindow()->endOfLine();
+	
 	QVarLengthArray<int> selection(1);
 	int c=0;
 	for (i=0;i<cols;i++){
@@ -1229,8 +1231,8 @@ void Table::copySelection()
 	if (c>0){
 		for (i=0; i<rows; i++){
 			for (j=0;j<c-1;j++)
-				text+=d_table->text(i,selection[j])+"\t";
-			text+=d_table->text(i,selection[c-1])+"\n";
+				text += d_table->text(i,selection[j]) + "\t";
+			text += d_table->text(i,selection[c-1]) + eol;
 		}
 	} else {
 		Q3TableSelection sel = d_table->selection(0);
@@ -1238,8 +1240,8 @@ void Table::copySelection()
 		int bottom=sel.bottomRow();
 		for (i=sel.topRow(); i<=bottom; i++){
 			for (j=sel.leftCol(); j<right; j++)
-				text+=d_table->text(i,j)+"\t";
-			text+=d_table->text(i,right)+"\n";
+				text += d_table->text(i,j) + "\t";
+			text += d_table->text(i,right) + eol;
 		}
 	}
 
@@ -1253,39 +1255,33 @@ void Table::pasteSelection()
 	QString text = QApplication::clipboard()->text();
 	if (text.isEmpty())
 		return;
-
-	QTextStream ts( &text, QIODevice::ReadOnly );
-	QString s = ts.readLine();
-	QStringList cellTexts = s.split("\t");
-	int cols = cellTexts.count();
-	int rows = 1;
-	while(!ts.atEnd()){
-		rows++;
-		s = ts.readLine();
-		int aux = s.split("\t").count();
+	
+	QStringList linesList = text.split(applicationWindow()->endOfLine(), QString::SkipEmptyParts);
+	int rows = linesList.size();
+	if (!rows)
+		return;
+	
+	int cols = linesList[0].split("\t").count();
+	for (int i = 1; i < rows; i++){
+		int aux = linesList[i].split("\t").count();
 		if (aux > cols)
             cols = aux;
 	}
-	ts.reset();
 
 	int top, left, firstCol = firstSelectedColumn();
 	Q3TableSelection sel = d_table->selection(0);
 	if (!sel.isEmpty()){// not columns but only cells are selected
 		top = sel.topRow();
 		left = sel.leftCol();
+	} else if(cols == 1 && rows == 1){
+		top = d_table->currentRow();
+		left = d_table->currentColumn();
 	} else {
-		if(cols == 1 && rows == 1){
-			top = d_table->currentRow();
-			left = d_table->currentColumn();
-		} else {
-			top = 0;
-			left = 0;
-			if (firstCol >= 0)// columns are selected
-				left = firstCol;
-		}
+		top = 0;
+		left = 0;
+		if (firstCol >= 0)// columns are selected
+			left = firstCol;
 	}
-
-	QTextStream ts2( &text, QIODevice::ReadOnly );
 
     if (top + rows > d_table->numRows())
         d_table->setNumRows(top + rows);
@@ -1295,7 +1291,7 @@ void Table::pasteSelection()
     }
 
 	QStringList lstReadOnly;
-	for (int i = left; i<left+cols; i++){
+	for (int i = left; i < left + cols; i++){
 		QString name = colName(i);
 		if (d_table->isColumnReadOnly(i))
 			lstReadOnly << name;
@@ -1309,29 +1305,29 @@ void Table::pasteSelection()
 
 	bool numeric;
 	QLocale system_locale = QLocale::system();
-	for (int i=top; i<top+rows; i++){
-		s = ts2.readLine();
-		cellTexts = s.split("\t");
-		for (int j=left; j<left+cols; j++){
+	for (int i=0; i < rows; i++){
+		int row = top + i;
+		QStringList cells = linesList[i].split("\t");
+		for (int j = left; j< left + cols; j++){
 			if (d_table->isColumnReadOnly(j))
 				continue;
 
             int colIndex = j-left;
-            if (colIndex >= cellTexts.count())
+            if (colIndex >= cells.count())
                 break;
 
-			double value = system_locale.toDouble(cellTexts[colIndex], &numeric);
+			double value = system_locale.toDouble(cells[colIndex], &numeric);
 			if (numeric){
 			    int prec;
                 char f;
 				columnNumericFormat(j, &f, &prec);
-				d_table->setText(i, j, locale().toString(value, f, prec));
+				d_table->setText(row, j, locale().toString(value, f, prec));
 			} else
-				d_table->setText(i, j, cellTexts[colIndex]);
+				d_table->setText(row, j, cells[colIndex]);
 		}
 	}
 
-	for (int i=left; i<left+cols; i++){
+	for (int i = left; i< left + cols; i++){
 		if (!d_table->isColumnReadOnly(i))
 			emit modifiedData(this, colName(i));
 	}
@@ -2443,6 +2439,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 	}
 
 	QString text;
+	QString eol = applicationWindow()->endOfLine();
 	int rows=d_table->numRows();
 	int cols=d_table->numCols();
 	int selectedCols = 0;
@@ -2492,19 +2489,19 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 
 			if (aux >= 0){
 				if (ls.count()>0)
-					text += header[sCols[aux]] + "\n";
+					text += header[sCols[aux]] + eol;
 				else
-					text += "C" + header[sCols[aux]] + "\n";
+					text += "C" + header[sCols[aux]] + eol;
 			}
 		} else {
 			if (ls.count()>0){
 				for (int j=0; j<cols-1; j++)
 					text += header[j] + separator;
-				text += header[cols-1] + "\n";
+				text += header[cols-1] + eol;
 			} else {
 				for (int j=0; j<cols-1; j++)
 					text += "C" + header[j] + separator;
-				text += "C" + header[cols-1] + "\n";
+				text += "C" + header[cols-1] + eol;
 			}
 		}
 	}// finished writting labels
@@ -2514,11 +2511,11 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 			for (int i=0; i<aux; i++)
                 text += comments[sCols[i]] + separator;
 			if (aux >= 0)
-				text += comments[sCols[aux]] + "\n";
+				text += comments[sCols[aux]] + eol;
 		} else {
             for (int i=0; i<cols-1; i++)
                 text += comments[i] + separator;
-            text += comments[cols-1] + "\n";
+            text += comments[cols-1] + eol;
         }
 	}
 
@@ -2527,14 +2524,14 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 			for (int j=0; j<aux; j++)
 				text += d_table->text(i, sCols[j]) + separator;
 			if (aux >= 0)
-				text += d_table->text(i, sCols[aux]) + "\n";
+				text += d_table->text(i, sCols[aux]) + eol;
 		}
 		delete [] sCols;
 	} else {
 		for (int i=0;i<rows;i++) {
 			for (int j=0; j<cols-1; j++)
 				text += d_table->text(i,j) + separator;
-			text += d_table->text(i, cols-1)+"\n";
+			text += d_table->text(i, cols-1) + eol;
 		}
 	}
 	QTextStream t( &f );

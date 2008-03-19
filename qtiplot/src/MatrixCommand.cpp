@@ -741,7 +741,7 @@ void MatrixPasteCommand::redo()
     if (!d_model)
         return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));	
     d_model->pasteData(d_clipboard_data, d_start_row, d_start_col, d_rows, d_cols);
 	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();

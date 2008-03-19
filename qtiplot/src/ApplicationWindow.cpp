@@ -561,8 +561,10 @@ void ApplicationWindow::initGlobalConstants()
 	d_ASCII_import_preview = true;
 	d_preview_lines = 100;
     d_ASCII_end_line = LF;
+	d_eol = LF;
 #ifdef Q_OS_MAC
     d_ASCII_end_line = CR;
+	d_eol = CR;
 #endif
 
 	d_export_col_separator = "\t";
@@ -4237,7 +4239,8 @@ void ApplicationWindow::readSettings()
 
 	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
-
+	d_eol = (EndLineChar)settings.value("/EndOfLine", d_eol).toInt();
+	
 	//restore dock windows and tool bars
 	restoreState(settings.value("/DockWindows").toByteArray());
 	explorerSplitter->restoreState(settings.value("/ExplorerSplitter").toByteArray());
@@ -4535,7 +4538,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Locale", d_locale.name());
 	settings.setValue("/DecimalDigits", d_decimal_digits);
     settings.setValue("/MatrixUndoStackSize", d_matrix_undo_stack_size);
-
+	settings.setValue("/EndOfLine", (int)d_eol);
 	settings.setValue("/DockWindows", saveState());
 	settings.setValue("/ExplorerSplitter", explorerSplitter->saveState());
 
@@ -15095,4 +15098,20 @@ void ApplicationWindow::repaintWindows()
             w->setFocus();//repaint() or update() don't work
     }
     aw->setFocus();
+}
+
+QString ApplicationWindow::endOfLine()
+{
+	switch(d_eol){
+		case LF:
+			return "\n";
+		break;
+		case CRLF:
+			return "\r\n";
+		break;
+		case CR:
+			return "\r";
+		break;
+	}
+	return "\n";
 }

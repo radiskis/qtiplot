@@ -155,6 +155,8 @@ public:
 
 	int matrixUndoStackSize(){return d_matrix_undo_stack_size;};
 	void setMatrixUndoStackSize(int size);
+	
+	QString endOfLine();
 
 public slots:
 	//! \name Projects and Project Files
@@ -1009,6 +1011,8 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	//! End of line convention used for copy/paste operations and when exporting tables/matrices to ASCII files.
+	EndLineChar d_eol;
     //! Flag telling if the in-place editing of 2D plot labels is enabled
     bool d_in_place_editing;
 	QString d_translations_folder;

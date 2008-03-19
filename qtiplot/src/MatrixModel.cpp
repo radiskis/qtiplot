@@ -346,8 +346,8 @@ bool MatrixModel::canResize(int rows, int cols)
 		tr("Please enter positive values for which the product rows*columns does not exceed the maximum integer value available on your system!"));
 		return false;
 	}
-
-    if (d_data_block_size.width()*d_data_block_size.width() >= rows*cols)
+	
+    if (d_data_block_size.width()*d_data_block_size.height() >= rows*cols)
 		return true;
 
     double *new_data = (double *)realloc(d_data, rows*cols*sizeof(double));
@@ -422,7 +422,6 @@ bool MatrixModel::insertRows(int row, int count, const QModelIndex & parent)
     int startCell = row*d_cols;
     for (int i = oldSize - 1; i >= startCell; i--)
         d_data[i + insertedCells] = d_data[i];
-
     for (int i = 0; i < insertedCells; i++)
         d_data[startCell++] = GSL_NAN;
 
@@ -992,14 +991,17 @@ void MatrixModel::fft(bool inverse)
 
 void MatrixModel::pasteData(double *clipboardBuffer, int topRow, int leftCol, int rows, int cols)
 {
-	if (topRow + rows > d_rows)
-		setRowCount(topRow + rows);
-	if (leftCol + cols > d_cols)
-		setColumnCount(leftCol + cols);
-
+	int newCols = leftCol + cols;
+	if (newCols > d_cols)
+		insertColumns(d_cols, newCols - d_cols);
+	
+	int newRows = topRow + rows;
+	if (newRows > d_rows)
+		insertRows(d_rows, newRows - d_rows);
+		
 	int cell = 0;
-	int bottomRow = topRow + rows - 1;
-	int rightCol = leftCol + cols - 1;
+	int bottomRow = newRows - 1;
+	int rightCol = newCols - 1;
     for (int i = topRow; i <= bottomRow; i++){
         int row = i*d_cols + leftCol;
         for (int j = leftCol; j <= rightCol; j++)
