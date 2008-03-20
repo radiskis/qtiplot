@@ -1015,6 +1015,7 @@ public:
 	EndLineChar d_eol;
     //! Flag telling if the in-place editing of 2D plot labels is enabled
     bool d_in_place_editing;
+	QString d_python_config_folder;
 	QString d_translations_folder;
 	//! Flag telling if the application is opening a project file or not
 	bool d_opening_file;

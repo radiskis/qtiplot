@@ -454,8 +454,9 @@ contains(SCRIPTING_LANGS, Python) {
   unix: pythonconfig.path = /etc
   win32: pythonconfig.path = $$INSTALLBASE
 
-  DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
   DEFINES += SCRIPTING_PYTHON
+  DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
+  
   HEADERS += src/PythonScript.h src/PythonScripting.h
   SOURCES += src/PythonScript.cpp src/PythonScripting.cpp
 

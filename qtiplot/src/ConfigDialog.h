@@ -99,6 +99,9 @@ private slots:
 
 	void chooseTranslationsFolder();
 	void chooseHelpFolder();
+#ifdef SCRIPTING_PYTHON
+	void choosePythonConfigFolder();
+#endif
 
 private:
 	void initPlotsPage();
@@ -156,6 +159,10 @@ private:
 	QLineEdit *translationsPathLine, *helpPathLine;
 	QSpinBox *undoStackSizeBox;
 	QComboBox *boxEndLine;
+#ifdef SCRIPTING_PYTHON
+	QLabel *lblPythonConfigDir;
+	QLineEdit *pythonConfigDirLine;
+#endif
 };
 
 #endif // CONFIGDIALOG_H

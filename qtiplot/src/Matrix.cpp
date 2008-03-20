@@ -131,7 +131,7 @@ void Matrix::initImage(const QImage& image)
     } else
 		resize(500, 500);
 
-	imageLabel->setPixmap(QPixmap::fromImage(image));
+	displayImage(image);
 }
 
 double Matrix::cell(int row, int col)
@@ -1168,8 +1168,15 @@ void Matrix::copy(Matrix *m)
 
 void Matrix::displayImage(const QImage& image)
 {
-    if (imageLabel)
-        imageLabel->setPixmap(QPixmap::fromImage(image));
+    if (!imageLabel)
+		return;
+	
+	QImage im(imageLabel->size(), QImage::Format_RGB32);
+	im.fill(0);
+	QPainter p(&im);
+	p.drawImage(0, 0, image.scaled(imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	p.end();
+    imageLabel->setPixmap(QPixmap::fromImage(im));
 }
 
 void Matrix::setViewType(ViewType type, bool renderImage)
@@ -1184,7 +1191,7 @@ void Matrix::setViewType(ViewType type, bool renderImage)
 		delete d_select_all_shortcut;
 	    initImageView();
 		if (renderImage)
-			imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+			displayImage(d_matrix_model->renderImage());
 		d_stack->setCurrentWidget(imageLabel);
 	} else if (d_view_type == TableView){
 		delete imageLabel;
@@ -1269,7 +1276,7 @@ void Matrix::setGrayScale()
     d_color_map_type = GrayScale;
 	d_color_map = QwtLinearColorMap(Qt::black, Qt::white);
 	if (d_view_type == ImageView)
-		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+		displayImage(d_matrix_model->renderImage());
 	emit modifiedWindow(this);
 }
 
@@ -1283,7 +1290,7 @@ void Matrix::setRainbowColorMap()
 	d_color_map.addColorStop(0.75, Qt::yellow);
 
 	if (d_view_type == ImageView)
-		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+		displayImage(d_matrix_model->renderImage());
 	emit modifiedWindow(this);
 }
 
@@ -1292,7 +1299,7 @@ void Matrix::setColorMap(const QwtLinearColorMap& map)
 	d_color_map_type = Custom;
 	d_color_map = map;
 	if (d_view_type == ImageView)
-		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+		displayImage(d_matrix_model->renderImage());
 
 	emit modifiedWindow(this);
 }
@@ -1335,7 +1342,7 @@ void Matrix::setColorMapType(ColorMapType mapType)
 void Matrix::resetView()
 {
     if (d_view_type == ImageView)
-		imageLabel->setPixmap(QPixmap::fromImage(d_matrix_model->renderImage()));
+		displayImage(d_matrix_model->renderImage());
     else if (d_view_type == TableView){
         d_table_view->setModel(d_matrix_model);
         d_table_view->horizontalHeader()->setDefaultSectionSize(d_column_width);
