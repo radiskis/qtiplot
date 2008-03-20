@@ -824,8 +824,13 @@ void ApplicationWindow::initToolBars()
 	actionContourMap->addTo(plotMatrixBar);
 	actionGrayMap->addTo(plotMatrixBar);
 	actionImagePlot->addTo(plotMatrixBar);
-	plotMatrixBar->addSeparator();
 	actionPlotHistogram->addTo(plotMatrixBar);
+	plotMatrixBar->addSeparator();
+	actionSetMatrixValues->addTo(plotMatrixBar);
+	actionFlipMatrixHorizontally->addTo(plotMatrixBar);
+	actionFlipMatrixVertically->addTo(plotMatrixBar);
+	actionRotateMatrix->addTo(plotMatrixBar);
+	actionRotateMatrixMinus->addTo(plotMatrixBar);
 	plotMatrixBar->hide();
 
 	formatToolBar = new QToolBar(tr( "Format" ), this);
@@ -4240,7 +4245,7 @@ void ApplicationWindow::readSettings()
 	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
 	d_eol = (EndLineChar)settings.value("/EndOfLine", d_eol).toInt();
-	
+
 	//restore dock windows and tool bars
 	restoreState(settings.value("/DockWindows").toByteArray());
 	explorerSplitter->restoreState(settings.value("/ExplorerSplitter").toByteArray());
@@ -4966,12 +4971,12 @@ void ApplicationWindow::exportAllGraphs()
 		QFile f(file_name);
 		if (f.exists() && confirm_overwrite) {
 			QApplication::restoreOverrideCursor();
-			
+
 			QString msg = tr("A file called: <p><b>%1</b><p>already exists. ""Do you want to overwrite it?").arg(file_name);
-			QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot - Overwrite file?"), msg, 
+			QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot - Overwrite file?"), msg,
 							  QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel,
 							  (ApplicationWindow *)this);
- 			msgBox.exec();     
+ 			msgBox.exec();
 			switch(msgBox.standardButton(msgBox.clickedButton())){
 				case QMessageBox::Yes:
 					QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -5890,16 +5895,16 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.insertSeparator();
 
 			contextMenu.addAction(QIcon(QPixmap(erase_xpm)), tr("Clea&r"), w, SLOT(clearSelection()));
-			contextMenu.addAction(QIcon(QPixmap(close_xpm)), tr("&Delete"), w, SLOT(removeCol()));
+			contextMenu.addAction(QIcon(QPixmap(delete_column_xpm)), tr("&Delete"), w, SLOT(removeCol()));
 			contextMenu.addAction(actionHideSelectedColumns);
 			contextMenu.addAction(actionShowAllColumns);
 			contextMenu.insertSeparator();
-			contextMenu.addAction(tr("&Insert"), w, SLOT(insertCol()));
+			contextMenu.addAction(QPixmap(insert_column_xpm), tr("&Insert"), w, SLOT(insertCol()));
 			contextMenu.addAction(tr("&Add Column"),w, SLOT(addCol()));
 			contextMenu.insertSeparator();
 
-			sorting.addAction(tr("&Ascending"),w, SLOT(sortColAsc()));
-			sorting.addAction(tr("&Descending"),w, SLOT(sortColDesc()));
+			sorting.addAction(QIcon(QPixmap(sort_ascending_xpm)), tr("&Ascending"), w, SLOT(sortColAsc()));
+			sorting.addAction(QIcon(QPixmap(sort_descending_xpm)), tr("&Descending"), w, SLOT(sortColDesc()));
 			sorting.setTitle(tr("Sort Colu&mn"));
 			contextMenu.addMenu(&sorting);
 
@@ -8611,12 +8616,12 @@ void ApplicationWindow::showWindowContextMenu()
             cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
             cm.insertItem(QPixmap(paste_xpm),tr("&Paste"), t, SLOT(pasteSelection()));
             cm.insertSeparator();
-            cm.insertItem(tr("&Insert Row"), t, SLOT(insertRow()));
-            cm.insertItem(tr("&Insert Column"), t, SLOT(insertColumn()));
+            cm.insertItem(QPixmap(insert_row_xpm), tr("&Insert Row"), t, SLOT(insertRow()));
+            cm.insertItem(QPixmap(insert_column_xpm), tr("&Insert Column"), t, SLOT(insertColumn()));
             if (t->numSelectedRows() > 0)
-                cm.insertItem(QPixmap(close_xpm), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
+                cm.insertItem(QPixmap(delete_row_xpm), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
             else if (t->numSelectedColumns() > 0)
-                cm.insertItem(QPixmap(close_xpm), tr("&Delete Columns"), t, SLOT(deleteSelectedColumns()));
+                cm.insertItem(QPixmap(delete_column_xpm), tr("&Delete Columns"), t, SLOT(deleteSelectedColumns()));
 
             cm.insertItem(QPixmap(erase_xpm),tr("Clea&r"), t, SLOT(clearSelection()));
 		} else if (t->viewType() == Matrix::ImageView){
@@ -8680,8 +8685,8 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.insertItem(QPixmap(paste_xpm),tr("&Paste"), t, SLOT(pasteSelection()));
 			cm.insertSeparator();
 			cm.addAction(actionTableRecalculate);
-			cm.insertItem(tr("&Insert Row"), t, SLOT(insertRow()));
-			cm.insertItem(QPixmap(close_xpm), tr("&Delete Row"), t, SLOT(deleteSelectedRows()));
+			cm.insertItem(QPixmap(insert_row_xpm), tr("&Insert Row"), t, SLOT(insertRow()));
+			cm.insertItem(QPixmap(delete_row_xpm), tr("&Delete Row"), t, SLOT(deleteSelectedRows()));
 			cm.insertItem(QPixmap(erase_xpm), tr("Clea&r Row"), t, SLOT(clearSelection()));
 			cm.insertSeparator();
 			cm.addAction(actionShowRowStatistics);
@@ -8692,7 +8697,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.insertItem(QPixmap(paste_xpm),tr("&Paste"), t, SLOT(pasteSelection()));
 			cm.insertSeparator();
 			cm.addAction(actionTableRecalculate);
-			cm.insertItem(QPixmap(close_xpm), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
+			cm.insertItem(QPixmap(delete_row_xpm), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
 			cm.insertItem(QPixmap(erase_xpm),tr("Clea&r Rows"), t, SLOT(clearSelection()));
 			cm.insertSeparator();
 			cm.addAction(actionShowRowStatistics);
@@ -11227,7 +11232,7 @@ void ApplicationWindow::createActions()
 	actionShowColumnOptionsDialog->setShortcut(tr("Ctrl+Alt+O"));
 	connect(actionShowColumnOptionsDialog, SIGNAL(activated()), this, SLOT(showColumnOptionsDialog()));
 
-	actionShowColumnValuesDialog = new QAction(tr("Set Column &Values ..."), this);
+	actionShowColumnValuesDialog = new QAction(QIcon(QPixmap(formula_xpm)), tr("Set Column &Values ..."), this);
 	connect(actionShowColumnValuesDialog, SIGNAL(activated()), this, SLOT(showColumnValuesDialog()));
 	actionShowColumnValuesDialog->setShortcut(tr("Alt+Q"));
 
@@ -11353,29 +11358,29 @@ void ApplicationWindow::createActions()
 	connect(actionSetMatrixDimensions, SIGNAL(activated()), this, SLOT(showMatrixSizeDialog()));
 	actionSetMatrixDimensions->setShortcut(tr("Ctrl+D"));
 
-	actionSetMatrixValues = new QAction(tr("Set &Values..."), this);
+	actionSetMatrixValues = new QAction(QIcon(QPixmap(formula_xpm)), tr("Set &Values..."), this);
 	connect(actionSetMatrixValues, SIGNAL(activated()), this, SLOT(showMatrixValuesDialog()));
 	actionSetMatrixValues->setShortcut(tr("Alt+Q"));
 
-    actionImagePlot =  new QAction(QIcon(QPixmap(image_plot_xpm)),tr("&Image Plot"), this);
+    actionImagePlot =  new QAction(QIcon(QPixmap(image_plot_xpm)), tr("&Image Plot"), this);
 	connect(actionImagePlot, SIGNAL(activated()), this, SLOT(plotImage()));
 
 	actionTransposeMatrix = new QAction(tr("&Transpose"), this);
 	connect(actionTransposeMatrix, SIGNAL(activated()), this, SLOT(transposeMatrix()));
 
-	actionFlipMatrixVertically = new QAction(tr("Flip &V"), this);
+	actionFlipMatrixVertically = new QAction(QIcon(QPixmap(flip_vertical_xpm)), tr("Flip &V"), this);
 	actionFlipMatrixVertically->setShortcut(tr("Ctrl+Shift+V"));
 	connect(actionFlipMatrixVertically, SIGNAL(activated()), this, SLOT(flipMatrixVertically()));
 
-	actionFlipMatrixHorizontally = new QAction(tr("Flip &H"), this);
+	actionFlipMatrixHorizontally = new QAction(QIcon(QPixmap(flip_horizontal_xpm)), tr("Flip &H"), this);
 	actionFlipMatrixHorizontally->setShortcut(tr("Ctrl+Shift+H"));
 	connect(actionFlipMatrixHorizontally, SIGNAL(activated()), this, SLOT(flipMatrixHorizontally()));
 
-	actionRotateMatrix = new QAction(tr("R&otate 90"), this);
+	actionRotateMatrix = new QAction(QIcon(QPixmap(rotate_clockwise_xpm)), tr("R&otate 90"), this);
 	actionRotateMatrix->setShortcut(tr("Ctrl+Shift+R"));
 	connect(actionRotateMatrix, SIGNAL(activated()), this, SLOT(rotateMatrix90()));
 
-    actionRotateMatrixMinus = new QAction(tr("Rotate &-90"), this);
+    actionRotateMatrixMinus = new QAction(QIcon(QPixmap(rotate_counterclockwise_xpm)), tr("Rotate &-90"), this);
 	actionRotateMatrixMinus->setShortcut(tr("Ctrl+Alt+R"));
 	connect(actionRotateMatrixMinus, SIGNAL(activated()), this, SLOT(rotateMatrixMinus90()));
 

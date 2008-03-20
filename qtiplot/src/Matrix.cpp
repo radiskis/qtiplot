@@ -321,13 +321,13 @@ void Matrix::setDimensions(int rows, int cols)
 
 	if (rows <= 0 || cols <= 0 || INT_MAX/rows < cols) //avoid integer overflow
 		return;
-	
+
 	if(rows*cols > r*c && !d_matrix_model->canResize(rows, cols))
 		return;
-	
+
 	double *buffer = d_matrix_model->dataCopy();
 	if (buffer)
-		d_undo_stack->push(new MatrixSetSizeCommand(d_matrix_model, QSize(r, c), QSize(rows, cols), buffer, 
+		d_undo_stack->push(new MatrixSetSizeCommand(d_matrix_model, QSize(r, c), QSize(rows, cols), buffer,
 						tr("Set Dimensions") + " " + QString::number(rows) + "x" + QString::number(cols)));
 	else if(ignoreUndo()){
 		d_matrix_model->setDimensions(rows, cols);
@@ -448,7 +448,7 @@ bool Matrix::canCalculate(bool useMuParser)
 {
 	if (formula_str.isEmpty())
 		return false;
-	
+
 	if (useMuParser){
     	muParserScript *mup = new muParserScript(scriptEnv, formula_str, this, QString("<%1>").arg(objectName()), false);
 		connect(mup, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&, const QString&,int)));
@@ -462,7 +462,7 @@ bool Matrix::canCalculate(bool useMuParser)
 
 		if (!mup->compile())
 			return false;
-		
+
 		double r = 1.0;
         *ri = r; *rr = r; *y = r;
         double c = 1.0; *cj = c; *cc = c; *x = c;
@@ -480,7 +480,7 @@ bool Matrix::canCalculate(bool useMuParser)
 		connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
 		if (!script->compile())
 			return false;
-		
+
 		double r = 1.0;
 		script->setDouble(r, "i");
 		script->setDouble(r, "row");
@@ -491,7 +491,7 @@ bool Matrix::canCalculate(bool useMuParser)
 		script->setDouble(x, "x");
 		double y = 1.0;
 		script->setDouble(y, "y");
-		
+
 		QVariant res = script->eval();
 		if (!res.canConvert(QVariant::Double))
 			return false;
@@ -519,7 +519,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 {
 	if (QString(scriptEnv->name()) == "muParser" || forceMuParser)
 		return muParserCalculate(startRow, endRow, startCol, endCol);
-		
+
 	double *buffer = d_matrix_model->dataCopy(startRow, endRow, startCol, endCol);
 	if (buffer){
     	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Calculate, startRow, endRow,
@@ -612,7 +612,7 @@ void Matrix::pasteSelection()
 		if (aux > cols)
             cols = aux;
 	}
-	
+
 	int topRow = 0, leftCol = 0;
 	QItemSelectionModel *selModel = d_table_view->selectionModel();
 	if (selModel->hasSelection()){
@@ -620,12 +620,12 @@ void Matrix::pasteSelection()
 		topRow = sel.top();
 		leftCol = sel.left();
 	}
-	
+
 	int oldRows = numRows();
 	int bottomRow = topRow + rows - 1;
 	if (bottomRow > oldRows - 1)
 		bottomRow = oldRows - 1;
-	
+
 	int oldCols = numCols();
 	int rightCol = leftCol + cols - 1;
 	if (rightCol > oldCols - 1)
@@ -645,8 +645,10 @@ void Matrix::pasteSelection()
 		QStringList cells = linesList[i].split("\t");
 		int size = cells.count();
 		for(int j = 0; j<cols; j++){
-			if (j >= size)
+			if (j >= size){
+                clipboardBuffer[cell++] = GSL_NAN;
 				continue;
+			}
 			bool numeric = true;
 			double value = locale.toDouble(cells[j], &numeric);
 			if (numeric)
