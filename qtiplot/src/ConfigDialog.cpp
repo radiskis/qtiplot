@@ -830,6 +830,19 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(browseHelpBtn, 1, 2);
 	gl->setRowStretch(2, 1);
 
+#ifdef SCRIPTING_PYTHON
+	lblPythonConfigDir = new QLabel(tr("Python Configuration Files"));
+	gl->addWidget(lblPythonConfigDir, 2, 0);
+	
+	pythonConfigDirLine = new QLineEdit(app->d_python_config_folder);
+	gl->addWidget(pythonConfigDirLine, 2, 1);
+
+	QPushButton *browsePythonConfigBtn = new QPushButton("...");
+	connect(browsePythonConfigBtn, SIGNAL(clicked()), this, SLOT(choosePythonConfigFolder()));
+	gl->addWidget(browsePythonConfigBtn, 2, 2);
+	gl->setRowStretch(3, 1);
+#endif
+
 	QVBoxLayout *vl = new QVBoxLayout(fileLocationsPage);
 	vl->addWidget(gb);
 
@@ -983,6 +996,9 @@ void ConfigDialog::languageChange()
 
 	lblTranslationsPath->setText(tr("Translations"));
 	lblHelpPath->setText(tr("Help"));
+#ifdef SCRIPTING_PYTHON
+	lblPythonConfigDir->setText(tr("Python Configuration Files"));
+#endif
 
 	//tables page
 	boxTableComments->setText(tr("&Display Comments in Header"));
@@ -1491,7 +1507,7 @@ void ConfigDialog::chooseTranslationsFolder()
 
 	QFileInfo tfi(app->d_translations_folder);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot translations folder!"),
-			tfi.dir().absolutePath());
+			tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
 
 	if (!dir.isEmpty()){
 		app->d_translations_folder = dir;
@@ -1512,3 +1528,24 @@ void ConfigDialog::chooseHelpFolder()
 	QFileInfo hfi(app->helpFilePath);
 	helpPathLine->setText(hfi.dir().absolutePath());
 }
+
+#ifdef SCRIPTING_PYTHON
+void ConfigDialog::choosePythonConfigFolder()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QFileInfo tfi(app->d_python_config_folder);
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the Python configuration files!"),
+			tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
+
+	if (!dir.isEmpty()){
+		app->d_python_config_folder = dir;
+		pythonConfigDirLine->setText(dir);
+		
+		if (app->scriptingEnv()->name() == QString("Python"))
+			app->setScriptingLanguage(QString("Python"), true);
+	}
+}
+#endif

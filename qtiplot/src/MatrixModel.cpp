@@ -481,10 +481,8 @@ QString MatrixModel::saveToString()
 QImage MatrixModel::renderImage()
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	int size = QMAX(d_cols, d_rows);
-	QImage image(QSize(size, size), QImage::Format_RGB32);
-	image.fill(0);
+	
+	QImage image(QSize(d_cols, d_rows), QImage::Format_RGB32);
 	QwtLinearColorMap color_map = d_matrix->colorMap();
 
 	double minValue = 0.0, maxValue = 0.0;

@@ -252,23 +252,12 @@ bool PythonScripting::initialize()
 	setQObject(this, "stdout", sys);
 	setQObject(this, "stderr", sys);
 
-#ifdef PYTHON_CONFIG_PATH
-	bool initialized = loadInitFile(PYTHON_CONFIG_PATH"/qtiplotrc");
+	bool initialized = loadInitFile(d_parent->d_python_config_folder + "/qtiplotrc");
 	if(!initialized)
-		initialized = loadInitFile(PYTHON_CONFIG_PATH"/.qtiplotrc");
-#else
-	bool initialized = loadInitFile(QDir::homeDirPath()+"/qtiplotrc");
-	if(!initialized)
-		initialized = loadInitFile(QCoreApplication::instance()->applicationDirPath()+"/qtiplotrc");
-	if(!initialized)
-		initialized = loadInitFile(QDir::homeDirPath()+"/.qtiplotrc");
-	if(!initialized)
-		initialized = loadInitFile(QDir::rootDirPath()+"etc/qtiplotrc");
-	if(!initialized)
-		initialized = loadInitFile("qtiplotrc");
-#endif
+		initialized = loadInitFile(d_parent->d_python_config_folder + "/.qtiplotrc");
+	return initialized;
+
 //	PyEval_ReleaseLock();
-	return true;
 }
 
 PythonScripting::~PythonScripting()

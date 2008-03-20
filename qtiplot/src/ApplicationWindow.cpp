@@ -422,6 +422,12 @@ void ApplicationWindow::initGlobalConstants()
 	helpFilePath = aux + "/manual/index.html";
 #endif
 
+#ifdef PYTHON_CONFIG_PATH
+	d_python_config_folder = PYTHON_CONFIG_PATH;
+#else
+	d_python_config_folder = aux;
+#endif
+
 	fitPluginsPath = aux + "fitPlugins";
 	fitModelsPath = QString::null;
 	templatesDir = aux;
@@ -4301,6 +4307,7 @@ void ApplicationWindow::readSettings()
 	customActionsDirPath = settings.value("/CustomActionsDir", "").toString();
 	helpFilePath = settings.value("/HelpFile", helpFilePath).toString();
 	d_translations_folder = settings.value("/Translations", d_translations_folder).toString();
+	d_python_config_folder = settings.value("/PythonConfigDir", d_python_config_folder).toString();
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ------------- end group General ------------------- */
@@ -4583,6 +4590,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/FitModelsDir", fitModelsPath);
     settings.setValue("/CustomActionsDir", customActionsDirPath);
 	settings.setValue("/Translations", d_translations_folder);
+	settings.setValue("/PythonConfigDir", d_python_config_folder);
 	settings.endGroup(); // Paths
 	settings.endGroup();
 	/* ---------------- end group General --------------- */
@@ -8726,7 +8734,7 @@ void ApplicationWindow::chooseHelpFolder()
 {
 	QFileInfo hfi(helpFilePath);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
-			hfi.dir().absolutePath());
+			hfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
 
 	if (!dir.isEmpty()){
 		helpFilePath = dir + "index.html";
