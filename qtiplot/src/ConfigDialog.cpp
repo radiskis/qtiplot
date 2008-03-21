@@ -63,6 +63,36 @@
 #include <QFontMetrics>
 #include <QFileDialog>
 
+static const char* choose_folder_xpm[]={
+    "16 16 11 1",
+    "# c #000000",
+    "g c #c0c0c0",
+    "e c #303030",
+    "a c #ffa858",
+    "b c #808080",
+    "d c #a0a0a4",
+    "f c #585858",
+    "c c #ffdca8",
+    "h c #dcdcdc",
+    "i c #ffffff",
+    ". c None",
+    "....###.........",
+    "....#ab##.......",
+    "....#acab####...",
+    "###.#acccccca#..",
+    "#ddefaaaccccca#.",
+    "#bdddbaaaacccab#",
+    ".eddddbbaaaacab#",
+    ".#bddggdbbaaaab#",
+    "..edgdggggbbaab#",
+    "..#bgggghghdaab#",
+    "...ebhggghicfab#",
+    "....#edhhiiidab#",
+    "......#egiiicfb#",
+    "........#egiibb#",
+    "..........#egib#",
+    "............#ee#"};
+
 ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
@@ -547,7 +577,7 @@ void ConfigDialog::initAppPage()
 	boxEndLine->addItem(tr("CR (Mac)"));
 	boxEndLine->setCurrentIndex((int)app->d_eol);
 	topBoxLayout->addWidget(boxEndLine, 5, 1);
-	
+
 	lblInitWindow = new QLabel();
 	topBoxLayout->addWidget( lblInitWindow, 6, 0 );
 	boxInitWindow = new QComboBox();
@@ -816,7 +846,8 @@ void ConfigDialog::initFileLocationsPage()
 	translationsPathLine->setText(app->d_translations_folder);
 	gl->addWidget(translationsPathLine, 0, 1);
 
-	QPushButton *browseTranslationsBtn = new QPushButton("...");
+	QPushButton *browseTranslationsBtn = new QPushButton();
+	browseTranslationsBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
 	gl->addWidget(browseTranslationsBtn, 0, 2);
 
 	lblHelpPath = new QLabel(tr("Help"));
@@ -826,18 +857,20 @@ void ConfigDialog::initFileLocationsPage()
 	helpPathLine = new QLineEdit(hfi.dir().absolutePath());
 	gl->addWidget( helpPathLine, 1, 1);
 
-	QPushButton *browseHelpBtn = new QPushButton("...");
+	QPushButton *browseHelpBtn = new QPushButton();
+	browseHelpBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
 	gl->addWidget(browseHelpBtn, 1, 2);
 	gl->setRowStretch(2, 1);
 
 #ifdef SCRIPTING_PYTHON
 	lblPythonConfigDir = new QLabel(tr("Python Configuration Files"));
 	gl->addWidget(lblPythonConfigDir, 2, 0);
-	
+
 	pythonConfigDirLine = new QLineEdit(app->d_python_config_folder);
 	gl->addWidget(pythonConfigDirLine, 2, 1);
 
-	QPushButton *browsePythonConfigBtn = new QPushButton("...");
+	QPushButton *browsePythonConfigBtn = new QPushButton();
+	browsePythonConfigBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
 	connect(browsePythonConfigBtn, SIGNAL(clicked()), this, SLOT(choosePythonConfigFolder()));
 	gl->addWidget(browsePythonConfigBtn, 2, 2);
 	gl->setRowStretch(3, 1);
@@ -1543,7 +1576,7 @@ void ConfigDialog::choosePythonConfigFolder()
 	if (!dir.isEmpty()){
 		app->d_python_config_folder = dir;
 		pythonConfigDirLine->setText(dir);
-		
+
 		if (app->scriptingEnv()->name() == QString("Python"))
 			app->setScriptingLanguage(QString("Python"), true);
 	}

@@ -28,7 +28,7 @@ INSTALLS        += documentation
 unix:INSTALLS        += man
 
 unix: INSTALLBASE = /usr
-win32: INSTALLBASE = c:/QtiPlot
+win32: INSTALLBASE = C:/QtiPlot
 
 unix: target.path = $$INSTALLBASE/bin
 unix: translations.path = $$INSTALLBASE/share/qtiplot/translations
@@ -456,7 +456,7 @@ contains(SCRIPTING_LANGS, Python) {
 
   DEFINES += SCRIPTING_PYTHON
   DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
-  
+
   HEADERS += src/PythonScript.h src/PythonScripting.h
   SOURCES += src/PythonScript.cpp src/PythonScripting.cpp
 

@@ -5908,7 +5908,7 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addAction(actionShowAllColumns);
 			contextMenu.insertSeparator();
 			contextMenu.addAction(QPixmap(insert_column_xpm), tr("&Insert"), w, SLOT(insertCol()));
-			contextMenu.addAction(tr("&Add Column"),w, SLOT(addCol()));
+			contextMenu.addAction(actionAddColToTable);
 			contextMenu.insertSeparator();
 
 			sorting.addAction(QIcon(QPixmap(sort_ascending_xpm)), tr("&Ascending"), w, SLOT(sortColAsc()));
@@ -5970,7 +5970,7 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addAction(actionShowAllColumns);
 			contextMenu.insertSeparator();
 			contextMenu.addAction(tr("&Insert"), w, SLOT(insertCol()));
-			contextMenu.addAction(tr("&Add Column"),w, SLOT(addCol()));
+			contextMenu.addAction(actionAddColToTable);
 			contextMenu.insertSeparator();
 		}
 
@@ -12018,13 +12018,20 @@ void ApplicationWindow::translateActionsStrings()
 	actionSetMatrixDimensions->setMenuText(tr("Set &Dimensions..."));
 	actionSetMatrixDimensions->setShortcut(tr("Ctrl+D"));
 	actionSetMatrixValues->setMenuText(tr("Set &Values..."));
+	actionSetMatrixValues->setToolTip(tr("Set Matrix Values"));
     actionSetMatrixValues->setShortcut(tr("Alt+Q"));
     actionImagePlot->setMenuText(tr("&Image Plot"));
+    actionImagePlot->setToolTip(tr("Image Plot"));
 	actionTransposeMatrix->setMenuText(tr("&Transpose"));
 	actionRotateMatrix->setMenuText(tr("R&otate 90"));
+    actionRotateMatrix->setToolTip(tr("Rotate 90° Clockwise"));
     actionRotateMatrixMinus->setMenuText(tr("Rotate &-90"));
+    actionRotateMatrixMinus->setToolTip(tr("Rotate 90° Counterclockwise"));
 	actionFlipMatrixVertically->setMenuText(tr("Flip &V"));
+	actionFlipMatrixVertically->setToolTip(tr("Flip Vertically"));
 	actionFlipMatrixHorizontally->setMenuText(tr("Flip &H"));
+	actionFlipMatrixHorizontally->setToolTip(tr("Flip Horizontally"));
+
     actionMatrixXY->setMenuText(tr("Show &X/Y"));
     actionMatrixColumnRow->setMenuText(tr("Show &Column/Row"));
 	actionViewMatrix->setMenuText(tr("&Data mode"));
