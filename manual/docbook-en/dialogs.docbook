@@ -801,7 +801,16 @@ which opens a dialog allowing to edit the plot range.</para>
 <sect1 id="preferences-dialog">
   <title>Preferences Dialog</title>
   <para>The preference dialog is used to customize the application. It has six different tabs. If you confirm your changes to the default behaviour of the application, the changes are saved and stored imediatelly.</para>
-  <para>The first icon can be selected to change the <emphasis>General</emphasis> options of the application. In the first tab:  <emphasis>Application</emphasis>, the style is the general decoration used for the windows. It defines the aspect of the buttons and dialog boxes, as an example all screenshots presented in this manual have been done with the Keramik style available in KDE. The available styles are part of the Qt library. The font is the general font used for the GUI (menus, dialogs, etc), it doesn't apply to the plots. You can select the language of the application in the corresponding combo-box. All the available translations can be downloaded from the following address: <ulink url="http://soft.proindependent.com/translations.html">http://soft.proindependent.com/translations.html</ulink> and must be placed in a folder called <emphasis>translations</emphasis>, situated in the same location as the QtiPlot executable, in order to be loaded by the application.</para>
+  <para>The first icon can be selected to change the <emphasis>General</emphasis> options of the application.
+  In the first tab:  <emphasis>Application</emphasis>, the style is the general decoration used for the windows.
+  It defines the aspect of the buttons and dialog boxes. The available styles are part of the Qt library.
+  The font is the general font used for the GUI (menus, dialogs, etc), it doesn't apply to the plots.
+  You can select the language of the application in the corresponding combo-box.
+  All translations available can be downloaded from the following address:
+  <ulink url="http://soft.proindependent.com/translations.html">http://soft.proindependent.com/translations.html</ulink>.
+  By default the translations must be place in a folder called <emphasis>translations</emphasis>,
+  situated in the same location as the &appname; executable, in order to be loaded by the application, but you
+  can specify a different folder via the <emphasis>File Locations</emphasis> tab.</para>
   <figure id="fig-preferences-dialog-1">
     <title>The preferences dialog: general parameters for the application.</title>
     <mediaobject>
@@ -810,6 +819,16 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </figure>
+
+  <para>The <emphasis>Matrix Undo Stack Size</emphasis> is the number of operations that can be undone/redone
+  when working on a matrix. By default it is set to ten operations. A high value for this parameter can be very costly in
+  terms of memory consumption, especially for large matrices.</para>
+
+  <para>The <emphasis>Endline character</emphasis> defines the end of line convention used by &appname; for
+  copy/paste operations and for exporting matrices/tables to ASCII files. The end of line convention can be:
+  <emphasis>Line Feed (LF)</emphasis>, <emphasis>Carriage Return + Line Feed (CRLF)</emphasis> or
+  <emphasis>Carriage Return (CR)</emphasis> only.</para>
+
   <para>The second tab of the <emphasis>General</emphasis> option set is used to disable the prompting on deleting
   project windows. Also you can disable the warnings prompted by default when renaming
   new table windows with names already used in the current project.</para>
@@ -830,15 +849,27 @@ which opens a dialog allowing to edit the plot range.</para>
   </informalfigure>
 
   <para>The <emphasis>Numeric Format</emphasis> tab allows you to customize the
-  characters used as decimal point and as thousands separator. By default, QtiPlot uses the
+  characters used as decimal point and as thousands separator. By default, &appname; uses the
   locale settings detected on your system. If the <emphasis>Update separators in Tables/Matrices</emphasis>
-  is checked, QtiPlot will try to convert all the existing data in your project to these new settings
+  is checked, &appname; will try to convert all the existing data in your project to these new settings
   when you click the <emphasis>Apply</emphasis> button. The <emphasis>Number of Decimal Digits</emphasis>
   specifies the default precision used for any calculations operated on your data in Tables/Matrices.</para>
   <informalfigure id="fig-preferences-dialog-11">
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/preferences-dialog11.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+
+   <para>The <emphasis>File Locations</emphasis> tab allows you to define custom locations for the
+folders containing the translation files, the manual files and the Python configuration files,
+<emphasis>qtiplotrc.py</emphasis> and <emphasis>qtiUtil.py</emphasis>, in case &appname; was built with Python
+scripting support.</para>
+  <informalfigure id="fig-preferences-dialog-13">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog13.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -955,7 +986,16 @@ which opens a dialog allowing to edit the plot range.</para>
   <para>The variables <code>i</code> and <code>j</code> can be used to access the current row and column numbers.
 	  Similarly, <code>sr</code> and <code>er</code> represent the selected start and end row, respectively.
   </para>
-  <para>Using Python as scripting language gives you even more possibilities, since you can not only use arbitrary Python code in the function body, but also access other objects within your project. For details, see <link linkend="Python">here</link>.</para>
+  <para>Using Python as scripting language gives you even more possibilities, since you can not
+  only use arbitrary Python code in the function body, but also access other objects within
+  your project. For details, see <link linkend="Python">here</link>.
+
+  Nevertheless, even if Python allows for a more powerfull synthax,
+  it can be quite slow for very large tables.
+  Therefore you have the possibility to use muParser instead, even if Python is
+  set as the default script engine for your current project, by checking the box
+  <emphasis>Use built-in muParser</emphasis>. Using muParser as scripting engine
+  higly increases the speed of the evaluation for single line expressions.</para>
 
   <figure id="fig-sec-column-values">
     <title>The &set-column-values-cmd; dialog.</title>
@@ -966,8 +1006,8 @@ which opens a dialog allowing to edit the plot range.</para>
     </mediaobject>
   </figure>
 
-  <para>If you make some changes in the table, the values are not computed again.
-	  You have to explicitly tell QtiPlot to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or pressing Control+Return.
+  <para>Warning: If you make some changes in the table, the values are not computed again.
+	  You have to explicitly tell QtiPlot to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing Control+Return.
   </para>
 
 </sect1>
@@ -980,7 +1020,7 @@ which opens a dialog allowing to edit the plot range.</para>
       <indexterm><primary>matrix</primary></indexterm>
   <para>This command is in the &matrix-menu-lnk;. It allows to specify the number of rows and columns of a matrix.
 In this window, you can also define a range for X-values and Y-values. These X and Y ranges will be used in plots as initial scale ranges.
-They are also available via the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables 
+They are also available via the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables
 if you choose to define the content of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
   <figure id="fig-set-dimensions-dialog">
     <title>The &set-dimensions-cmd; dialog for matrix.</title>
@@ -1065,7 +1105,9 @@ to convert the data to your current settings, by checking the
   <para>This command is in the &matrix-menu-lnk;. It allows to fill in a matrix with the results of a function z=f(i,j) in which i and j are the row and column numbers.</para>
   <para>You can use the X-values and Y-values defined with the &set-dimensions-lnk; command, and also define your functions based on the
   <emphasis>x</emphasis> and <emphasis>y</emphasis> variables.</para>
-  <para>The functions can be written on several lines, and the intrinsic functions which are available are listed in the <link linkend="sec-muParser">appendix</link> .</para>
+  <para>The functions can be written on several lines, and the intrinsic functions which
+  are available are listed in the <link linkend="sec-muParser">appendix</link> .</para>
+
   <figure id="fig-set-values-dialog">
     <title>The &set-values-cmd; dialog for matrix.</title>
     <mediaobject>
@@ -1074,6 +1116,23 @@ to convert the data to your current settings, by checking the
       </imageobject>
     </mediaobject>
   </figure>
+
+<para>Using Python as scripting engine for the calculation of matrix values has the drawback
+  that even if it allows a more powerfull synthax, it can be quite slow for large matrices.
+  Therefore you have the possibility to use muParser instead, even if Python is
+  set as the default script engine for your QtiPlot project, by checking the box
+  <emphasis>Use built-in muParser</emphasis>. Warning: muParser is very fast for the
+  evaluation of single line expressions only, therefore try to avoid a synthax like:
+<programlisting>
+    a = cell(1, 1)
+    b = cell(2, 2)
+    a*b*x + b*x*x + a
+</programlisting>
+and prefer the following one:
+<programlisting>
+    cell(1, 1)*cell(2, 2)*x + cell(2, 2)*x*x + cell(1, 1)
+</programlisting>
+which will highly increase the speed of the evaluation!</para>
 </sect1>
 
 <!-- ************************************************** -->

@@ -3,8 +3,8 @@
 
   <!ENTITY appname "QtiPlot">
   <!ENTITY kappname "&appname;">
-  <!ENTITY kappversion "0.9.3">
-  <!ENTITY version "0.9.3">
+  <!ENTITY kappversion "0.9.4">
+  <!ENTITY version "0.9.4">
   <!ENTITY kappdirectory "qtiplot">
   <!ENTITY kappdownload "http://soft.proindependent.com/download.html" >
   <!ENTITY pic-dir "pics/" >
@@ -821,7 +821,7 @@
 </authorgroup>
 
 <copyright>
-  <year>2004 - 2007</year>
+  <year>2004 - 2008</year>
   <holder>&ion;</holder>
 </copyright>
 <copyright>

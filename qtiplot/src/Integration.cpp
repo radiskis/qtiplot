@@ -146,7 +146,6 @@ double Integration::trapezf(int n)
 }
 
 // Using Numerical Recipes. This is Romberg Integration method.
-// This method uses the Nevilles' algorithm for interpollation;
 int Integration::romberg()
 {
     d_area = 0.0;
