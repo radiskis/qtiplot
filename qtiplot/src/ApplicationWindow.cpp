@@ -778,6 +778,10 @@ void ApplicationWindow::initToolBars()
 	columnTools->setIconSize(QSize(16, 20));
 	addToolBar(Qt::TopToolBarArea, columnTools);
 
+	columnTools->addAction(actionShowColumnValuesDialog);
+	columnTools->addAction(actionSetAscValues);
+	columnTools->addAction(actionSetRandomValues);
+	columnTools->addSeparator();
 	columnTools->addAction(actionSetXCol);
 	columnTools->addAction(actionSetYCol);
 	columnTools->addAction(actionSetZCol);
@@ -1307,10 +1311,6 @@ void ApplicationWindow::disableActions()
 
 void ApplicationWindow::customColumnActions()
 {
-	Table *t = (Table*)activeWindow(TableWindow);
-    if (!t)
-		return;
-
     actionMoveColFirst->setEnabled(false);
     actionMoveColLeft->setEnabled(false);
     actionMoveColRight->setEnabled(false);
@@ -1322,6 +1322,12 @@ void ApplicationWindow::customColumnActions()
     actionSetYErrCol->setEnabled(false);
     actionDisregardCol->setEnabled(false);
     actionSwapColumns->setEnabled(false);
+    actionSetAscValues->setEnabled(false);
+    actionSetRandomValues->setEnabled(false);
+
+	Table *t = (Table*)activeWindow(TableWindow);
+    if (!t)
+		return;
 
     int selectedCols = t->selectedColsNumber();
     if (selectedCols == 1){
@@ -1338,6 +1344,8 @@ void ApplicationWindow::customColumnActions()
 	}
 
 	if (selectedCols >= 1){
+	    actionSetAscValues->setEnabled(true);
+        actionSetRandomValues->setEnabled(true);
         actionSetXCol->setEnabled(true);
         actionSetYCol->setEnabled(true);
         actionSetZCol->setEnabled(true);
@@ -6952,16 +6960,17 @@ void ApplicationWindow::showCursor()
 	if ((Graph*)plot->activeGraph()->isPiePlot()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("This functionality is not available for pie plots!"));
-
 		btnPointer->setChecked(true);
 		return;
 	}
 
 	QList<Graph *> layers = plot->layersList();
-    foreach(Graph *g, layers)
-		if (!g->isPiePlot() && g->validCurvesDataSize())
+    foreach(Graph *g, layers){
+		if (g->isPiePlot() || !g->curves())
+            continue;
+        if (g->validCurvesDataSize())
 			g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Display, info, SLOT(setText(const QString&))));
-
+    }
 	displayBar->show();
 }
 
@@ -12062,14 +12071,22 @@ void ApplicationWindow::translateActionsStrings()
 	actionTranslateHor->setMenuText(tr("&Horizontal"));
 	actionTranslateVert->setMenuText(tr("&Vertical"));
 	actionSetAscValues->setMenuText(tr("Ro&w Numbers"));
+	actionSetAscValues->setToolTip(tr("Fill selected columns with row numbers"));
 	actionSetRandomValues->setMenuText(tr("&Random Values"));
+	actionSetRandomValues->setToolTip(tr("Fill selected columns with random numbers"));
 	actionSetXCol->setMenuText(tr("&X"));
+	actionSetXCol->setToolTip(tr("Set column as X"));
 	actionSetYCol->setMenuText(tr("&Y"));
+	actionSetYCol->setToolTip(tr("Set column as Y"));
 	actionSetZCol->setMenuText(tr("&Z"));
+	actionSetZCol->setToolTip(tr("Set column as Z"));
 	actionSetXErrCol->setMenuText(tr("X E&rror"));
 	actionSetYErrCol->setMenuText(tr("Y &Error"));
+	actionSetYErrCol->setToolTip(tr("Set as Y Error Bars"));
 	actionSetLabelCol->setMenuText(tr("&Label"));
+	actionSetLabelCol->setToolTip(tr("Set as Labels"));
 	actionDisregardCol->setMenuText(tr("&Disregard"));
+	actionDisregardCol->setToolTip(tr("Disregard Columns"));
 	actionReadOnlyCol->setMenuText(tr("&Read Only"));
 
 	actionBoxPlot->setMenuText(tr("&Box Plot"));
@@ -12569,7 +12586,7 @@ void ApplicationWindow::setAscValues()
 	if (!t)
 		return;
 
-	t->setAscValues();
+    t->setAscValues();
 }
 
 void ApplicationWindow::setRandomValues()
@@ -12578,7 +12595,7 @@ void ApplicationWindow::setRandomValues()
 	if (!t)
 		return;
 
-	t->setRandomValues();
+    t->setRandomValues();
 }
 
 void ApplicationWindow::setXErrCol()

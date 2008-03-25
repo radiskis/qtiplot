@@ -474,7 +474,28 @@ void ScaleDraw::drawBackbone(QPainter *painter) const
 {
     ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
     if (!sc_engine->hasBreak()){
-        QwtScaleDraw::drawBackbone(painter);
+        const int len = length();
+        const int bw = painter->pen().width();
+        const int bw2 = bw / 2;
+        QPoint pos = this->pos();
+        switch(alignment()){
+            case LeftScale:
+                QwtPainter::drawLine(painter, pos.x() - bw2,
+                pos.y(), pos.x() - bw2, pos.y() + len );
+            break;
+            case RightScale:
+                QwtPainter::drawLine(painter, pos.x() + bw2,
+                pos.y(), pos.x() + bw2, pos.y() + len);
+            break;
+            case TopScale:
+                QwtPainter::drawLine(painter, pos.x(), pos.y() - bw2,
+                pos.x() + len, pos.y() - bw2);
+            break;
+            case BottomScale:
+                QwtPainter::drawLine(painter, pos.x(), pos.y() + bw2,
+                pos.x() + len, pos.y() + bw2);
+            break;
+        }
         return;
     }
 

@@ -1280,13 +1280,15 @@ void Graph::exportToFile(const QString& fileName)
 
 void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 {
-	QPixmap pic = graphPixmap();
+    QPixmap pic(d_plot->size());
+    QPainter p(&pic);
+    d_plot->print(&p, d_plot->rect());
+    p.end();
 
 	if (transparent){
 		QBitmap mask(pic.size());
 		mask.fill(Qt::color1);
-		QPainter p;
-		p.begin(&mask);
+		QPainter p(&mask);
 		p.setPen(Qt::color0);
 
         QColor background = QColor (Qt::white);
@@ -1302,7 +1304,6 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 		p.end();
 		pic.setMask(mask);
 	}
-
 	pic.save(fileName, 0, quality);
 }
 

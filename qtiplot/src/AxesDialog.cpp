@@ -2542,7 +2542,7 @@ bool AxesDialog::updatePlot()
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color());
 	}
-	else if (generalDialog->currentWidget()==(QWidget*)frame) {
+	else if (generalDialog->currentWidget()==(QWidget*)frame){
 		d_graph->setAxesLinewidth(boxAxesLinewidth->value());
         d_graph->changeTicksLength(boxMinorTicksLength->value(), boxMajorTicksLength->value());
 		if (boxFramed->isChecked())
@@ -2550,6 +2550,7 @@ bool AxesDialog::updatePlot()
 		else
 			d_graph->setCanvasFrame(0);
         d_graph->drawAxesBackbones(boxBackbones->isChecked());
+        d_graph->replot();
 	}
 
 	return true;

@@ -83,8 +83,6 @@ public:
 	int axisLabelFormat(int axis);
 	int axisLabelPrecision(int axis);
 
-	void printFrame(QPainter *painter, const QRect &rect) const;
-
 	QColor frameColor();
 	const QColor & paletteBackgroundColor() const;
 
@@ -98,9 +96,9 @@ public:
 
 protected:
     void showEvent (QShowEvent * event);
+    void printFrame(QPainter *painter, const QRect &rect) const;
 	void printCanvas(QPainter *painter, const QRect &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
-
 	virtual void drawItems (QPainter *painter, const QRect &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 

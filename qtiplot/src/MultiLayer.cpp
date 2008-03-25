@@ -225,7 +225,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 {
 	if (applicationWindow()->d_opening_file)
 		return;
-	
+
 	QSize oldSize = re->oldSize();
 	QSize size = re->size();
 
@@ -235,9 +235,9 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
                         canvas->childrenRect().height() + top_margin + bottom_margin);
 		scaleLayerFonts = true;
 	}
-	
+
 	QApplication::setOverrideCursor(Qt::waitCursor);
-	
+
 	double w_ratio = (double)size.width()/(double)oldSize.width();
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
@@ -257,14 +257,14 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 			gr->plotWidget()->resize(QSize(gw, gh));
 
             if (scaleLayerFonts && gr->autoscaleFonts())
-                gr->scaleFonts(h_ratio);	
+                gr->scaleFonts(h_ratio);
 		}
 	}
 
 	emit modifiedPlot();
 	repaint();
-	
-	QApplication::restoreOverrideCursor();			
+
+	QApplication::restoreOverrideCursor();
 }
 
 void MultiLayer::confirmRemoveLayer()
@@ -621,7 +621,15 @@ void MultiLayer::setRows(int r)
 
 QPixmap MultiLayer::canvasPixmap()
 {
-    return QPixmap::grabWidget(canvas);
+    QPixmap pic(canvas->size());
+    pic.fill();
+    QPainter p(&pic);
+	foreach (Graph *g, graphsList){
+		Plot *plot = (Plot *)g->plotWidget();
+		plot->print(&p, QRect(g->pos(), plot->size()));
+	}
+	p.end();
+	return pic;
 }
 
 void MultiLayer::exportToFile(const QString& fileName)
@@ -745,17 +753,16 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
     double scaleFactorY = (double)(height)/(double)canvasRect.height();
 
     QPainter paint(&printer);
-	for (int i=0; i<(int)graphsList.count(); i++){
-        Graph *gr = (Graph *)graphsList.at(i);
-        Plot *myPlot = (Plot *)gr->plotWidget();
+	foreach (Graph *g, graphsList){
+        Plot *plot = (Plot *)g->plotWidget();
 
-        QPoint pos = gr->pos();
+        QPoint pos = g->pos();
         pos = QPoint(int(x_margin + pos.x()*scaleFactorX), int(y_margin + pos.y()*scaleFactorY));
 
-        int layer_width = int(myPlot->frameGeometry().width()*scaleFactorX);
-        int layer_height = int(myPlot->frameGeometry().height()*scaleFactorY);
+        int layer_width = int(plot->frameGeometry().width()*scaleFactorX);
+        int layer_height = int(plot->frameGeometry().height()*scaleFactorY);
 
-        myPlot->print(&paint, QRect(pos, QSize(layer_width, layer_height)));
+        plot->print(&paint, QRect(pos, QSize(layer_width, layer_height)));
     }
 }
 
@@ -766,12 +773,9 @@ void MultiLayer::exportSVG(const QString& fname)
 	generator.setSize(canvas->size());
 
 	QPainter p(&generator);
-	for (int i=0; i<(int)graphsList.count(); i++){
-		Graph *gr = (Graph *)graphsList.at(i);
-		Plot *myPlot = (Plot *)gr->plotWidget();
-
-		QPoint pos = QPoint(gr->pos().x(), gr->pos().y());
-		myPlot->print(&p, QRect(pos, myPlot->size()));
+	foreach (Graph *g, graphsList){
+		Plot *plot = (Plot *)g->plotWidget();
+		plot->print(&p, QRect(g->pos(), plot->size()));
 	}
 	p.end();
 }
@@ -788,7 +792,7 @@ void MultiLayer::copyAllLayers()
 		((Graph *)g)->deselectMarker();
 
 	QPixmap pic = canvasPixmap();
-	QImage image= pic.convertToImage();
+	QImage image = pic.convertToImage();
 	QApplication::clipboard()->setImage(image);
 
 	if (selectionOn)
