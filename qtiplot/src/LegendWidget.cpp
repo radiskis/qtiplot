@@ -88,7 +88,7 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 		setOriginCoord(d_x, d_y);
 		d_fixed_coordinates = false;
 	}
-	
+
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
 	QwtArray<long> heights = itemsHeight(0, symbolLineLength, width, height);
@@ -97,7 +97,7 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 	else
     	resize(width, height);
 
-	QRect rect = QRect(0, 0, width, height);
+	QRect rect = QRect(0, 0, width - 1, height - 1);
     QPainter p(this);
 	drawFrame(&p, rect);
 	drawText(&p, rect, heights, symbolLineLength);
@@ -185,8 +185,8 @@ void LegendWidget::drawFrame(QPainter *p, const QRect& rect)
 		p->setBrush(d_text->backgroundBrush());
 		QwtPainter::drawRect(p, rect);
 	} else if (d_frame == Shadow) {
-		QRect shadow_right = QRect(rect.right(), rect.y() + 5, 5, rect.height()-1);
-		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom(), rect.width()-1, 5);
+		QRect shadow_right = QRect(rect.right() + 1, rect.y() + 5, 5, rect.height());
+		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom() + 1, rect.width(), 5);
 		p->setBrush(QBrush(Qt::black));
 		p->drawRect(shadow_right);
 		p->drawRect(shadow_bottom);
@@ -287,8 +287,6 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 
-	QFontMetrics fm(d_text->font());
-
 	for (int i=0; i<(int)titles.count(); i++){
         int w = rect.x() + left_margin;
 		QString s = titles[i];
@@ -357,8 +355,6 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 	int n = (int)titles.count();
 	QwtArray<long> heights(n);
-
-	QFontMetrics fm(d_text->font());
 
 	width = 0;
 	height = 0;
@@ -586,9 +582,9 @@ void LegendWidget::setFixedCoordinatesMode(bool on)
 {
 	if (d_fixed_coordinates == on)
 		return;
-	
+
 	d_fixed_coordinates = on;
-	
+
 	if(on){
 		d_x = xValue();
 		d_y = yValue();
