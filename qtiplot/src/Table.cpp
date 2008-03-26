@@ -3053,8 +3053,10 @@ void Table::showComments(bool on)
 void Table::setNumericPrecision(int prec)
 {
 	d_numeric_precision = prec;
-	for (int i=0; i<d_table->numCols(); i++)
-        col_format[i] = "0/"+QString::number(prec);
+	for (int i=0; i<d_table->numCols(); i++){
+		if (colTypes[i] == Numeric)
+        	col_format[i] = "0/" + QString::number(prec);
+	}
 }
 
 void Table::updateDecimalSeparators(const QLocale& oldSeparators)
