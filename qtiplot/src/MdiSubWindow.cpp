@@ -86,6 +86,8 @@ switch (d_caption_policy)
             setWindowTitle(objectName());
 	break;
 	}
+	
+	d_app->setListViewLabel(objectName(), d_label);
 };
 
 void MdiSubWindow::resizeEvent( QResizeEvent* e )

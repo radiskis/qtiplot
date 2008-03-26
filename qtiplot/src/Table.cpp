@@ -991,8 +991,8 @@ void Table::insertCols(int start, int count)
 
 	for(int i = 0; i<count; i++ ){
         int j = start + i;
-		commands.insert(j, QString());
-		col_format.insert(j, "0/6");
+		commands.insert(j, QString());		
+		col_format.insert(j, "0/" + QString::number(d_numeric_precision));
 		comments.insert(j, QString());
 		col_label.insert(j, QString::number(max + i));
 		colTypes.insert(j, Numeric);

@@ -241,29 +241,28 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	double w_ratio = (double)size.width()/(double)oldSize.width();
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
-	foreach (Graph *gr, graphsList){
-		if (!gr->ignoresResizeEvents()){
-			QObjectList lst = gr->plotWidget()->children();
+	foreach (Graph *g, graphsList){
+		if (!g->ignoresResizeEvents()){
+			QObjectList lst = g->plotWidget()->children();
 			foreach(QObject *o, lst){
 				if (o->isA("LegendWidget"))
 					((LegendWidget *)o)->setFixedCoordinatesMode();
 			}
 
-			int gx = qRound(gr->x()*w_ratio);
-			int gy = qRound(gr->y()*h_ratio);
-			int gw = qRound(gr->width()*w_ratio);
-			int gh = qRound(gr->height()*h_ratio);
-			gr->setGeometry(QRect(gx, gy, gw, gh));
-			gr->plotWidget()->resize(QSize(gw, gh));
+			int gx = qRound(g->x()*w_ratio);
+			int gy = qRound(g->y()*h_ratio);
+			int gw = qRound(g->width()*w_ratio);
+			int gh = qRound(g->height()*h_ratio);
+			g->setGeometry(QRect(gx, gy, gw, gh));
+			g->plotWidget()->resize(QSize(gw, gh));
 
-            if (scaleLayerFonts && gr->autoscaleFonts())
-                gr->scaleFonts(h_ratio);
+            if (scaleLayerFonts && g->autoscaleFonts())
+                g->scaleFonts(h_ratio);			
 		}
 	}
 
 	emit modifiedPlot();
 	repaint();
-
 	QApplication::restoreOverrideCursor();
 }
 
