@@ -708,8 +708,8 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
     if (fileName.contains(".eps"))
     	printer.setOutputFormat(QPrinter::PostScriptFormat);
 
-	if (res)
-		printer.setResolution(res);
+	//if (res) //only printing with screen resolution works correctly for the moment
+		//printer.setResolution(res);
 
 	QRect canvasRect = canvas->rect();
     if (pageSize == QPrinter::Custom)

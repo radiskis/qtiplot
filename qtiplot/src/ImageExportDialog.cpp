@@ -92,11 +92,16 @@ void ImageExportDialog::initAdvancedOptions()
 	QGridLayout *vector_layout = new QGridLayout(d_vector_options);
 	d_advanced_options->addWidget(d_vector_options);
 
-	vector_layout->addWidget(new QLabel(tr("Resolution (DPI)")), 1, 0);
+    QLabel *resLabel = new QLabel(tr("Resolution (DPI)"));
+	vector_layout->addWidget(resLabel, 1, 0);
+	resLabel->hide();
 	d_resolution = new QSpinBox();
 	d_resolution->setRange(0, 1000);
-	d_resolution->setValue(app->d_export_resolution);
+	//d_resolution->setValue(app->d_export_resolution);
+	//only printing with screen resolution works correctly for the moment
+	d_resolution->setValue(QPrinter().resolution());
 	vector_layout->addWidget(d_resolution, 1, 1);
+	d_resolution->hide();
 
 	d_color = new QCheckBox();
 	d_color->setText(tr("&Export in &color"));

@@ -862,6 +862,8 @@ void ApplicationWindow::initToolBars()
 	actionSuperscript->addTo(formatToolBar);
 	actionSubscript->addTo(formatToolBar);
 	actionGreekSymbol->addTo(formatToolBar);
+	actionGreekMajSymbol->addTo(formatToolBar);
+	actionMathSymbol->addTo(formatToolBar);
 
 	formatToolBar->setEnabled(false);
 	formatToolBar->hide();
@@ -11665,6 +11667,14 @@ void ApplicationWindow::createActions()
 	actionGreekSymbol = new QAction(QString(QChar(0x3B1)) + QString(QChar(0x3B2)), this);
 	actionGreekSymbol->setToolTip(tr("Greek"));
 	connect(actionGreekSymbol, SIGNAL(activated()), this, SLOT(insertGreekSymbol()));
+
+    actionGreekMajSymbol = new QAction(QString(QChar(0x393)), this);
+	actionGreekMajSymbol->setToolTip(tr("Greek"));
+	connect(actionGreekMajSymbol, SIGNAL(activated()), this, SLOT(insertGreekMajSymbol()));
+
+	actionMathSymbol = new QAction(QString(QChar(0x222B)), this);
+	actionMathSymbol->setToolTip(tr("Mathematical Symbols"));
+	connect(actionMathSymbol, SIGNAL(activated()), this, SLOT(insertMathSymbol()));
 }
 
 void ApplicationWindow::translateActionsStrings()
@@ -11674,6 +11684,8 @@ void ApplicationWindow::translateActionsStrings()
     actionUnderline->setStatusTip(tr("Underline (Ctrl+U)"));
 	actionUnderline->setShortcut(tr("Ctrl+U"));
 	actionGreekSymbol->setToolTip(tr("Greek"));
+	actionGreekMajSymbol->setToolTip(tr("Greek"));
+	actionMathSymbol->setToolTip(tr("Mathematical Symbols"));
 
 	actionShowCurvePlotDialog->setMenuText(tr("&Plot details..."));
 	actionShowCurveWorksheet->setMenuText(tr("&Worksheet"));
@@ -14772,6 +14784,9 @@ void ApplicationWindow::setFormatBarFont(const QFont& font)
     actionSubscript->setEnabled(false);
     actionSuperscript->setEnabled(false);
     actionUnderline->setEnabled(false);
+    actionGreekSymbol->setEnabled(false);
+    actionGreekMajSymbol->setEnabled(false);
+    actionMathSymbol->setEnabled(false);
 }
 
 void ApplicationWindow::setFontSize(int size)
@@ -14854,9 +14869,14 @@ void ApplicationWindow::enableTextEditor(Graph *g)
 	    }
 	} else if (g) {
         d_text_editor = new TextEditor(g);
+
+        formatToolBar->setEnabled(true);
         actionSubscript->setEnabled(true);
         actionSuperscript->setEnabled(true);
         actionUnderline->setEnabled(true);
+        actionGreekSymbol->setEnabled(true);
+        actionGreekMajSymbol->setEnabled(true);
+        actionMathSymbol->setEnabled(true);
 	}
 }
 
@@ -14889,11 +14909,29 @@ void ApplicationWindow::insertGreekSymbol()
     if (!d_text_editor)
         return;
 
-    SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::lowerGreek, this, Qt::Tool);
-	greekLetters->setAttribute(Qt::WA_DeleteOnClose);
+    SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::lowerGreek, this);
 	connect(greekLetters, SIGNAL(addLetter(const QString&)), d_text_editor, SLOT(addSymbol(const QString&)));
-	greekLetters->show();
-	greekLetters->setFocus();
+	greekLetters->exec();
+}
+
+void ApplicationWindow::insertGreekMajSymbol()
+{
+    if (!d_text_editor)
+        return;
+
+    SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::upperGreek, this);
+	connect(greekLetters, SIGNAL(addLetter(const QString&)), d_text_editor, SLOT(addSymbol(const QString&)));
+	greekLetters->exec();
+}
+
+void ApplicationWindow::insertMathSymbol()
+{
+    if (!d_text_editor)
+        return;
+
+    SymbolDialog *ms = new SymbolDialog(SymbolDialog::mathSymbols, this);
+	connect(ms, SIGNAL(addLetter(const QString&)), d_text_editor, SLOT(addSymbol(const QString&)));
+	ms->exec();
 }
 
 void ApplicationWindow::showCustomActionDialog()

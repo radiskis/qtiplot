@@ -1317,8 +1317,8 @@ void Graph::exportVector(const QString& fileName, int res, bool color, bool keep
 	QPrinter printer;
     printer.setCreator("QtiPlot");
 	printer.setFullPage(true);
-	if (res)
-		printer.setResolution(res);
+	//if (res) //only printing with screen resolution works correctly for the moment
+		//printer.setResolution(res);
 
     printer.setOutputFileName(fileName);
     if (fileName.contains(".eps"))
@@ -1393,8 +1393,7 @@ void Graph::print()
 			int x=qRound(abs(printer.width()- width)*0.5);
 
 			plotRect = QRect(x, margin, width, printer.height() - 2*margin);
-			if (x < margin)
-			{
+			if (x < margin){
 				plotRect.setLeft(margin);
 				plotRect.setWidth(printer.width() - 2*margin);
 			}
@@ -1551,13 +1550,13 @@ bool Graph::titleSelected()
 
 void Graph::selectTitle(bool select)
 {
+    titlePicker->setSelected(select);
+
     if (select){
         deselect();
+        emit selectedGraph(this);
 		emit currentFontChanged(d_plot->title().font());
     }
-
-    titlePicker->setSelected(select);
-	emit selectedGraph(this);
 }
 
 void Graph::setTitle(const QString& t)
