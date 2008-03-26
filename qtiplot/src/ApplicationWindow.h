@@ -155,7 +155,7 @@ public:
 
 	int matrixUndoStackSize(){return d_matrix_undo_stack_size;};
 	void setMatrixUndoStackSize(int size);
-	
+
 	QString endOfLine();
 
 public slots:
@@ -1001,6 +1001,8 @@ private slots:
     void insertSubscript();
     void underline();
     void insertGreekSymbol();
+    void insertGreekMajSymbol();
+    void insertMathSymbol();
 	//@}
 
 	void showCustomActionDialog();
@@ -1236,7 +1238,6 @@ private:
 	QAction *actionShowScriptWindow;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
     QAction *actionDeleteRows, *actionDrawPoints;
-	QActionGroup* dataTools;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints;
 	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
@@ -1246,35 +1247,13 @@ private:
     QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;
 	QAction *actionFontBold, *actionFontItalic, *actionFontBox, *actionFontSize;
 	QAction *actionSuperscript, *actionSubscript, *actionUnderline, *actionGreekSymbol, *actionCustomActionDialog;
-
-	QActionGroup* coord;
-	QAction* Box;
-    QAction* Frame;
-    QAction* None;
-
-	QActionGroup* grids;
-    QAction* front;
-    QAction* back;
-    QAction* right;
-    QAction* left;
-    QAction* ceil;
-    QAction* floor;
-
-	QActionGroup* floorstyle;
-    QAction* floordata;
-    QAction* flooriso;
-    QAction* floornone;
-
-	QActionGroup* plotstyle;
-    QAction* wireframe;
-    QAction* hiddenline;
-    QAction* polygon;
-    QAction* filledmesh;
-    QAction* pointstyle;
-	QAction* barstyle;
-	QAction *conestyle, *crossHairStyle;
-    QList<QAction *> d_user_actions;
+	QAction *actionGreekMajSymbol, *actionMathSymbol;
+	QAction *Box, *Frame, *None;
+    QAction *front, *back, *right, *left, *ceil, *floor, *floordata, *flooriso, *floornone;
+    QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
     QAction *actionShowUndoStack;
+    QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
+    QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
 };
 #endif
