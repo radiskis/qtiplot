@@ -1139,6 +1139,7 @@ public:
 	QString defaultScriptingLang;
 
 private:
+	MdiSubWindow *d_active_window;
     TextEditor *d_text_editor;
     QLocale d_locale;
 

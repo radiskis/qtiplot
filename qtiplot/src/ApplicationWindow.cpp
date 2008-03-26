@@ -370,6 +370,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_active_window = NULL;
     d_matrix_undo_stack_size = 10;
 
 	d_opening_file = false;
@@ -2226,7 +2227,6 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
         m->show();
         m->setWindowLabel(fn);
         m->setCaptionPolicy(MdiSubWindow::Both);
-        setListViewLabel(m->objectName(), fn);
     }
 
     QApplication::restoreOverrideCursor();
@@ -2259,7 +2259,6 @@ void ApplicationWindow::loadImage(const QString& fn)
 	MultiLayer *plot = multilayerPlot(generateUniqueName(tr("Graph")));
 	plot->setWindowLabel(fn);
 	plot->setCaptionPolicy(MdiSubWindow::Both);
-	setListViewLabel(plot->objectName(), fn);
 
 	plot->showNormal();
 	Graph *g = plot->addLayer(0, 0, plot->width(), plot->height()-20);
@@ -3062,22 +3061,70 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 	return  0;
 }
 
-void ApplicationWindow::windowActivated(QMdiSubWindow *w)
+MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 {
-	MdiSubWindow *aw = activeWindow();
-	if (!w && aw){// a dialog window wants to become the active window: we deny it!
-		d_workspace->setActiveSubWindow(aw);
-		return;
+	if (!d_active_window){
+		QMdiSubWindow *w = d_workspace->activeSubWindow();
+		if (!w || !w->inherits("MdiSubWindow"))
+        	return NULL;
+		
+		d_active_window = (MdiSubWindow*)w;
 	}
 
-	if (w == aw)
-		return;
+	switch(type){
+		case NoWindow:
+		break;
 
+		case TableWindow:
+			if (d_active_window->inherits("Table"))
+				return d_active_window;
+			else
+				return NULL;
+		break;
+
+		case MatrixWindow:
+			if (d_active_window->isA("Matrix"))
+				return d_active_window;
+			else
+				return NULL;
+		break;
+
+		case MultiLayerWindow:
+			if (d_active_window->isA("MultiLayer"))
+				return d_active_window;
+			else
+				return NULL;
+		break;
+
+		case NoteWindow:
+			if (d_active_window->isA("Note"))
+				return d_active_window;
+			else
+				return NULL;
+		break;
+
+		case Plot3DWindow:
+			if (d_active_window->isA("Graph3D"))
+				return d_active_window;
+			else
+				return NULL;
+		break;
+	}
+	return d_active_window;
+}
+
+void ApplicationWindow::windowActivated(QMdiSubWindow *w)
+{
+	if (w && !w->inherits("MdiSubWindow"))
+        return;
+	
 	customToolBars(w);
 	customMenu(w);
-
-	if (d_opening_file)
+	
+	if (!w || d_opening_file)
 		return;
+
+	d_active_window = (MdiSubWindow *)w;
 
 	QList<MdiSubWindow *> windows = current_folder->windowsList();
 	foreach(MdiSubWindow *ow, windows){
@@ -3517,8 +3564,8 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
                                    local_import_comments, local_comment_string, import_read_only,
 								   Table::Overwrite, endLineChar);
 					if (!w) continue;
+					w->setWindowLabel(sorted_files[i]);
 					w->setCaptionPolicy(MdiSubWindow::Both);
-					setListViewLabel(w->objectName(), sorted_files[i]);
 					if (i == 0){
 						dx = w->verticalHeaderWidth();
 						dy = w->frameGeometry().height() - w->widget()->height();
@@ -3545,8 +3592,8 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					w->importASCII(sorted_files[i], local_column_separator, local_ignored_lines,
                                 local_strip_spaces, local_simplify_spaces, local_comment_string,
 								Matrix::Overwrite, local_separators, endLineChar);
+					w->setWindowLabel(sorted_files[i]);
 					w->setCaptionPolicy(MdiSubWindow::Both);
-					setListViewLabel(w->objectName(), sorted_files[i]);
 					if (i == 0){
 						dx = w->verticalHeaderWidth();
 						dy = w->frameGeometry().height() - w->widget()->height();
@@ -3611,7 +3658,6 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 
                 w->setWindowLabel(files[0]);
 				w->setCaptionPolicy(MdiSubWindow::Both);
-                setListViewLabel(w->objectName(), files[0]);
                 modifiedProject();
 				break;
 			}
@@ -3927,7 +3973,6 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			{
 				QStringList lst=t.readLine().split("\t");
 				plot->setWindowLabel(lst[1]);
-				app->setListViewLabel(plot->objectName(),lst[1]);
 				plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
 			}
 			if (d_file_version > 83)
@@ -7483,7 +7528,6 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 
 		nw->setWindowLabel(w->windowLabel());
 		nw->setCaptionPolicy(w->captionPolicy());
-		setListViewLabel(nw->objectName(), w->windowLabel());
 		setListViewSize(nw->objectName(), w->sizeToString());
 	}
 	QApplication::restoreOverrideCursor();
@@ -9701,7 +9745,6 @@ Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &fli
 	lst=flist[2].split("\t");
 	w->setWindowLabel(lst[1]);
 	w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
-	app->setListViewLabel(w->objectName(), lst[1]);
 	return w;
 }
 
@@ -9741,7 +9784,6 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
 			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
-			app->setListViewLabel(w->objectName(), fields[1]);
 		} else if (fields[0] == "Coordinates") { // d_file_version > 81
 			w->setCoordinates(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble(), fields[4].toDouble());
 		} else if (fields[0] == "ViewType") { // d_file_version > 90
@@ -9838,7 +9880,6 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
 			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
-			app->setListViewLabel(w->objectName(), fields[1]);
 		} else if (fields[0] == "ReadOnlyColumn") { // d_file_version > 91
 			fields.pop_front();
 			for (int i=0; i < w->numCols(); i++)
@@ -9939,7 +9980,6 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 		} else if (fields[0] == "WindowLabel") { // d_file_version > 71
 			w->setWindowLabel(fields[1]);
 			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
-			setListViewLabel(w->objectName(), fields[1]);
 		}
 	}
 	return w;
@@ -10570,7 +10610,6 @@ Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStrin
 		fList=lst[20].split("\t"); // using QString::SkipEmptyParts here causes a crash for empty window labels
 		plot->setWindowLabel(fList[1]);
 		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fList[2].toInt());
-		app->setListViewLabel(plot->objectName(),fList[1]);
 	}
 
 	if (d_file_version >= 88){
@@ -13161,7 +13200,6 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				if (d_file_version > 71){
 					QStringList lst=t.readLine().split("\t");
 					plot->setWindowLabel(lst[1]);
-					setListViewLabel(plot->objectName(),lst[1]);
 					plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
 				}
 
@@ -15070,54 +15108,6 @@ QList<QToolBar *> ApplicationWindow::toolBarsList()
             lst << (QToolBar *)w;
     }
 	return lst;
-}
-
-MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
-{
-	MdiSubWindow *w = current_folder->activeWindow();
-	if (!w)
-        return NULL;
-
-	switch(type){
-		case NoWindow:
-		break;
-
-		case TableWindow:
-			if (w->inherits("Table"))
-				return w;
-			else
-				return NULL;
-		break;
-
-		case MatrixWindow:
-			if (w->isA("Matrix"))
-				return w;
-			else
-				return NULL;
-		break;
-
-		case MultiLayerWindow:
-			if (w->isA("MultiLayer"))
-				return w;
-			else
-				return NULL;
-		break;
-
-		case NoteWindow:
-			if (w->isA("Note"))
-				return w;
-			else
-				return NULL;
-		break;
-
-		case Plot3DWindow:
-			if (w->isA("Graph3D"))
-				return w;
-			else
-				return NULL;
-		break;
-	}
-	return w;
 }
 
 void ApplicationWindow::hideSelectedColumns()

@@ -150,7 +150,6 @@ void RenameWindowDialog::accept()
 	label.replace("\n"," ").replace("\t"," ");
 	window->setWindowLabel(label);
 	window->setCaptionPolicy(policy);
-	app->setListViewLabel(window->name(), label);
 	app->modifiedProject(window);
 	close();
 }

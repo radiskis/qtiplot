@@ -643,27 +643,21 @@ void Plot::updateLayout()
 {
     plotLayout()->activate(this, contentsRect());
 
-    //
     // resize and show the visible widgets
-    //
-    if (!titleLabel()->text().isEmpty())
-    {
+	
+    if (!titleLabel()->text().isEmpty()){
         titleLabel()->setGeometry(plotLayout()->titleRect());
         if (!titleLabel()->isVisible())
             titleLabel()->show();
-    }
-    else
+    } else
 		titleLabel()->hide();
 
-    for (int axisId = 0; axisId < axisCnt; axisId++ )
-    {
-        if (axisEnabled(axisId) )
-        {
+    for (int axisId = 0; axisId < axisCnt; axisId++ ){
+        if (axisEnabled(axisId) ){
             axisWidget(axisId)->setGeometry(plotLayout()->scaleRect(axisId));
             if (!axisWidget(axisId)->isVisible())
                 axisWidget(axisId)->show();
-        }
-        else
+        } else
             axisWidget(axisId)->hide();
     }
 
