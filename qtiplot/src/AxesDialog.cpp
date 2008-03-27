@@ -2425,8 +2425,9 @@ bool AxesDialog::updatePlot()
             end = boxEnd->value();
 		}
 		
-		double step = boxStep->value();
+		double step = 0.0;
         if (btnStep->isChecked()){
+			step = boxStep->value();
         	if (type == ScaleDraw::Time){
 		      switch (boxUnit->currentIndex())
                  {
