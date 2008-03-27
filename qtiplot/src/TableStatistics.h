@@ -60,6 +60,9 @@ class TableStatistics : public Table
 		//! remove statistics of removed columns (to be connected with Table::removedCol)
 		void removeCol(const QString&);
 
+	private slots:
+		void closedBase();
+	
 	private:
 		Table *d_base;
 		Type d_type;
@@ -67,4 +70,3 @@ class TableStatistics : public Table
 };
 
 #endif
-

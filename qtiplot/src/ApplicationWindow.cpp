@@ -2651,9 +2651,6 @@ TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QL
 		initTable(s, s->objectName());
 	else
 		initTable(s, caption);
-	connect(base, SIGNAL(modifiedData(Table*,const QString&)), s, SLOT(update(Table*,const QString&)));
-	connect(base, SIGNAL(changedColHeader(const QString&, const QString&)), s, SLOT(renameCol(const QString&, const QString&)));
-	connect(base, SIGNAL(removedCol(const QString&)), s, SLOT(removeCol(const QString&)));
 	s->showNormal();
 	return s;
 }
@@ -3121,11 +3118,14 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 	customToolBars(w);
 	customMenu(w);
 	
-	if (!w || d_opening_file)
+	if (d_opening_file)
 		return;
 
 	d_active_window = (MdiSubWindow *)w;
 
+	if (!w)
+		return;
+	
 	QList<MdiSubWindow *> windows = current_folder->windowsList();
 	foreach(MdiSubWindow *ow, windows){
 		if (ow != w && ow->status() == MdiSubWindow::Maximized){
@@ -7793,10 +7793,6 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 		return;
 
 	removeWindowFromLists(window);
-	if (window->inherits("Table")){
-		if (!hasTable())
-			actionShowExportASCIIDialog->setEnabled(false);
-	}
 
 	Folder *f = window->folder();
 	f->removeWindow(window);
