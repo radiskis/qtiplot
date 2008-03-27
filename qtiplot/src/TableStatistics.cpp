@@ -100,10 +100,23 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 
 	setColPlotDesignation(0, Table::X);
 	setHeaderColType();
+	
+	connect(d_base, SIGNAL(modifiedData(Table*,const QString&)), this, SLOT(update(Table*,const QString&)));
+	connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
+	connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
+	connect (d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
+}
+
+void TableStatistics::closedBase()
+{
+	d_base = NULL;
 }
 
 void TableStatistics::update(Table *t, const QString& colName)
 {
+	if (!d_base)
+		return;
+	
 	if (t != d_base) return;
 
 	int j;
@@ -232,6 +245,9 @@ void TableStatistics::update(Table *t, const QString& colName)
 
 void TableStatistics::renameCol(const QString &from, const QString &to)
 {
+	if (!d_base)
+		return;
+	
 	if (d_type == row) return;
 	for (int c=0; c < d_targets.size(); c++)
 		if (from == QString(d_base->objectName())+"_"+text(c, 0))
@@ -243,6 +259,9 @@ void TableStatistics::renameCol(const QString &from, const QString &to)
 
 void TableStatistics::removeCol(const QString &col)
 {
+	if (!d_base)
+		return;
+	
 	if (d_type == row)
 	{
 		update(d_base, col);
@@ -259,9 +278,12 @@ void TableStatistics::removeCol(const QString &col)
 
 QString TableStatistics::saveToString(const QString &geometry, bool)
 {
+	if (!d_base)
+		return Table::saveToString(geometry, false);
+		
 	QString s = "<TableStatistics>\n";
 	s += QString(objectName())+"\t";
-	s += QString(d_base->objectName())+"\t";
+	s += QString(d_base->objectName()) + "\t";
 	s += QString(d_type == row ? "row" : "col") + "\t";
 	s += birthDate()+"\n";
 	s += "Targets";
