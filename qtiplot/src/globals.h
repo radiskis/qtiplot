@@ -39,4 +39,4 @@ const char * extra_version = "";
 //! Copyright string containing the author names
 const char * copyright_string = "Copyright (C) 2004-2008 Ion Vasilief";
 //! Release date as a string
-const char * release_date = " 2008/03/26";
+const char * release_date = " 2008/03/27";

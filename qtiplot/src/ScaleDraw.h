@@ -51,6 +51,7 @@ public:
 	ScaleDraw(Plot *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
 
     QString formatString();
+    QString format(){return d_format_info;};
 
 	QString formula() {return d_formula;};
 	void setFormula(const QString& formula) {d_formula = formula;};
@@ -83,6 +84,8 @@ public:
 	void setMonthFormat(NameFormat format);
 	void setTimeFormat(const QTime& t, const QString& format);
 	void setDateFormat(const QDateTime& d, const QString& format);
+
+	QDateTime dateTimeOrigin(){return d_date_time_origin;};
     void setDateTimeOrigin(const QDateTime& d){d_date_time_origin = d;};
 
 	QStringList labelsList(){return d_text_labels;};
