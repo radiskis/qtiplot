@@ -3796,10 +3796,13 @@ void ApplicationWindow::openRecentProject(int index)
 
 	if (!fn.isEmpty()){
 		saveSettings();//the recent projects must be saved
+		bool isSaved = saved;
 		ApplicationWindow * a = open (fn);
 		if (a && (fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti~",Qt::CaseInsensitive) ||
             fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive)))
-			this->close();
+			if (isSaved)
+				savedProject();//force saved state
+			close();
 	}
 }
 
@@ -8180,12 +8183,13 @@ void ApplicationWindow::foldersMenuActivated( int id )
 void ApplicationWindow::newProject()
 {
 	saveSettings();//the recent projects must be saved
-
+	
 	ApplicationWindow *ed = new ApplicationWindow();
 	ed->restoreApplicationGeometry();
 	ed->initWindow();
 	ed->savedProject();
-	this->close();
+	
+	close();
 }
 
 void ApplicationWindow::savedProject()

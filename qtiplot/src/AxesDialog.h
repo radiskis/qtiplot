@@ -34,13 +34,13 @@
 #include <QList>
 #include <QTextEdit>
 
+class QDateTimeEdit;
 class QListWidget;
 class QListWidgetItem;
 class QCheckBox;
 class QGroupBox;
 class QComboBox;
 class QLabel;
-class QLineEdit;
 class QPushButton;
 class QRadioButton;
 class QSpinBox;
@@ -147,11 +147,11 @@ protected:
     QPushButton* buttonCancel;
     QTabWidget* generalDialog;
     QWidget* scalesPage;
-    QLineEdit* boxEnd;
-    QLineEdit* boxStart;
+    DoubleSpinBox* boxEnd;
+    DoubleSpinBox* boxStart;
     QComboBox* boxScaleType;
     QComboBox* boxMinorValue;
-    QLineEdit* boxStep;
+    DoubleSpinBox* boxStep;
     QCheckBox* btnStep, *btnInvert;
     QSpinBox* boxMajorValue;
     QCheckBox* btnMajor;
@@ -204,6 +204,7 @@ protected:
 	Graph* d_graph;
 	//! Last selected tab
   	QWidget* lastPage;
+    QDateTimeEdit *boxStartDateTime, *boxEndDateTime;
 };
 
 #endif
