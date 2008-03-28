@@ -7710,7 +7710,7 @@ void ApplicationWindow::maximizeWindow(Q3ListViewItem * lbi)
 
 void ApplicationWindow::maximizeWindow(MdiSubWindow *w)
 {
-	if (!w)
+	if (!w || w->status() == MdiSubWindow::Maximized)
 		return;
 
 	QList<MdiSubWindow *> windows = current_folder->windowsList();
@@ -15148,16 +15148,15 @@ void ApplicationWindow::repaintWindows()
 
     d_workspace->update();
 
-    MdiSubWindow *aw = activeWindow();
-	if (!aw || aw->status() == MdiSubWindow::Maximized)
+	if (!d_active_window || d_active_window->status() == MdiSubWindow::Maximized)
 		return;
 
     QList<MdiSubWindow *> windows = current_folder->windowsList();
     foreach(MdiSubWindow *w, windows){
-        if (w != aw)
+        if (w != d_active_window)
             w->setFocus();//repaint() or update() don't work
     }
-    aw->setFocus();
+    d_active_window->setFocus();
 }
 
 QString ApplicationWindow::endOfLine()
