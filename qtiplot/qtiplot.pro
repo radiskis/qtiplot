@@ -96,8 +96,8 @@ CONFIG        += qt warn_on exceptions opengl thread
 CONFIG        += assistant
 
 DEFINES       += QT_PLUGIN
-#DEFINES       += TRANSLATIONS_PATH="\\\"$$replace(translations.path," ","\ ")\\\"
-#DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\"
+DEFINES       += TRANSLATIONS_PATH="\\\"$$replace(translations.path," ","\ ")\\\"
+DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\"
 win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
 QT            += opengl qt3support network svg xml
 
@@ -451,11 +451,11 @@ contains(SCRIPTING_LANGS, Python) {
   pythonconfig.files += qtiplotrc.py \
   						qtiUtil.py
 
-  unix: pythonconfig.path = /etc
+  unix: pythonconfig.path = /usr/local/qtiplot
   win32: pythonconfig.path = $$INSTALLBASE
 
   DEFINES += SCRIPTING_PYTHON
-  #DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
+  DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
 
   HEADERS += src/PythonScript.h src/PythonScripting.h
   SOURCES += src/PythonScript.cpp src/PythonScripting.cpp

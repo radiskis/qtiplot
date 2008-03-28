@@ -1256,7 +1256,7 @@ void Table::pasteSelection()
 	if (text.isEmpty())
 		return;
 	
-	QStringList linesList = text.split(applicationWindow()->endOfLine(), QString::SkipEmptyParts);
+	QStringList linesList = text.split(applicationWindow()->endOfLine());
 	int rows = linesList.size();
 	if (!rows)
 		return;
