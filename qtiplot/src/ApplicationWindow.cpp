@@ -3060,13 +3060,8 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 
 MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 {
-	if (!d_active_window){
-		QMdiSubWindow *w = d_workspace->activeSubWindow();
-		if (!w || !w->inherits("MdiSubWindow"))
-        	return NULL;
-		
-		d_active_window = (MdiSubWindow*)w;
-	}
+	if (!d_active_window)
+        return NULL;
 
 	switch(type){
 		case NoWindow:
@@ -3111,19 +3106,16 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 }
 
 void ApplicationWindow::windowActivated(QMdiSubWindow *w)
-{
-	if (w && !w->inherits("MdiSubWindow"))
-        return;
+{	
+	if (!w || (d_active_window && d_active_window == (MdiSubWindow *)w))
+		return;
+	
+	d_active_window = (MdiSubWindow *)w;
 	
 	customToolBars(w);
 	customMenu(w);
 	
 	if (d_opening_file)
-		return;
-
-	d_active_window = (MdiSubWindow *)w;
-
-	if (!w)
 		return;
 	
 	QList<MdiSubWindow *> windows = current_folder->windowsList();
@@ -7792,6 +7784,9 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 	if (!window)
 		return;
 
+	if (d_active_window == window)
+		d_active_window = NULL;
+	
 	removeWindowFromLists(window);
 
 	Folder *f = window->folder();

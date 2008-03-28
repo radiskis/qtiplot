@@ -586,7 +586,8 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 		}
 	}
     f.remove();	//remove temp file
-	d_matrix->resetView();
+	if (d_matrix)
+		d_matrix->resetView();
 	QApplication::restoreOverrideCursor();
 	return true;
 }

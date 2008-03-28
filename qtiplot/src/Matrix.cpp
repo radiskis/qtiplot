@@ -127,9 +127,9 @@ void Matrix::initImage(const QImage& image)
 	int h = image.height();
 	if (w <= 500 && h <= 400){
 		int size = QMAX(w, h);
-        resize(size, size);
+        imageLabel->resize(size, size);
     } else
-		resize(500, 500);
+		imageLabel->resize(500, 500);
 
 	displayImage(image);
 }
@@ -1344,7 +1344,6 @@ void Matrix::resetView()
     if (d_view_type == ImageView)
 		displayImage(d_matrix_model->renderImage());
     else if (d_view_type == TableView){
-        d_table_view->setModel(d_matrix_model);
         d_table_view->horizontalHeader()->setDefaultSectionSize(d_column_width);
         d_table_view->horizontalHeader()->reset();
         d_table_view->verticalHeader()->reset();
