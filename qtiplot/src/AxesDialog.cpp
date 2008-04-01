@@ -1339,7 +1339,7 @@ void AxesDialog::initScalesPage()
 	rightLayout->addWidget( btnStep, 0, 0 );
 
 	boxStep = new DoubleSpinBox();
-	boxStep->setMinimum(DBL_MIN);
+	boxStep->setMinimum(0.0);
 	boxStep->setLocale(app->locale());
     boxStep->setDecimals(app->d_decimal_digits);
 	stepWidgetLayout->addWidget(boxStep);

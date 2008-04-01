@@ -13930,6 +13930,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 	}
 
     if (active_window){
+		d_active_window = active_window;
         d_workspace->setActiveSubWindow(active_window);
 		customMenu(active_window);
 		customToolBars(active_window);
@@ -15143,20 +15144,13 @@ void ApplicationWindow::setMatrixUndoStackSize(int size)
 // after a MultiLayer plot window is resized by the user: Qt bug?
 void ApplicationWindow::repaintWindows()
 {
-	if (d_opening_file)
+	if (d_opening_file || (d_active_window && d_active_window->status() == MdiSubWindow::Maximized))
 		return;
 
-    d_workspace->update();
-
-	if (!d_active_window || d_active_window->status() == MdiSubWindow::Maximized)
-		return;
-
-    QList<MdiSubWindow *> windows = current_folder->windowsList();
-    foreach(MdiSubWindow *w, windows){
-        if (w != d_active_window)
-            w->setFocus();//repaint() or update() don't work
-    }
-    d_active_window->setFocus();
+	QWidget *viewPort = d_workspace->viewport();
+	QSize size = viewPort->size();
+    viewPort->resize(QSize(size.width() + 1, size.height() + 1));
+	viewPort->resize(size);
 }
 
 QString ApplicationWindow::endOfLine()
