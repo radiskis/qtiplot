@@ -2424,7 +2424,7 @@ bool AxesDialog::updatePlot()
             start = boxStart->value();
             end = boxEnd->value();
 		}
-		
+
 		double step = 0.0;
         if (btnStep->isChecked()){
 			step = boxStep->value();
