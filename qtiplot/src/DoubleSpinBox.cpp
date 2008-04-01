@@ -2,9 +2,9 @@
     File                 : DoubleSpinBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+    Copyright            : (C) 2007-2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A Customized Double Spin Box
+    Description          : A Double Spin Box
 
  ***************************************************************************/
 
@@ -27,27 +27,105 @@
  *                                                                         *
  ***************************************************************************/
 #include "DoubleSpinBox.h"
+#include <QLineEdit>
 #include <QHBoxLayout>
 #include <float.h>
 
 DoubleSpinBox::DoubleSpinBox(const char format, QWidget * parent)
-:QDoubleSpinBox(parent),
-d_format(format)
+:QAbstractSpinBox(parent),
+d_format(format),
+d_min_val(-DBL_MAX),
+d_max_val(DBL_MAX),
+d_value(0.0),
+d_step(0.1),
+d_prec(1)
 {
-    setRange(-DBL_MAX, DBL_MAX);
+    lineEdit()->setText(locale().toString(d_value, d_format, d_prec));
+	setKeyboardTracking(false);
+	setWrapping(false);
+	connect(this, SIGNAL(editingFinished()), this, SLOT(interpretText()));
+}
+
+void DoubleSpinBox::setSingleStep(double val)
+{
+    if (d_step != val && val < d_max_val)
+        d_step = val;
+}
+
+void DoubleSpinBox::setMaximum(double max)
+{
+	if (max == d_max_val || max > DBL_MAX)
+		return;
+
+	d_max_val = max;
+}
+
+void DoubleSpinBox::setMinimum(double min)
+{
+	if (min == d_min_val || min < -DBL_MAX)
+		return;
+
+	d_min_val = min;
+}
+
+void DoubleSpinBox::setRange(double min, double max)
+{
+	setMinimum(min);
+	setMaximum(max);
+}
+
+void DoubleSpinBox::interpretText()
+{
+	bool ok = false;
+	double value = locale().toDouble(text(), &ok);
+	if (ok && setValue(value))
+        emit valueChanged(d_value);
+    else
+        lineEdit()->setText(textFromValue(d_value));
+}
+
+void DoubleSpinBox::stepBy ( int steps )
+{
+	if (setValue(d_value + steps * d_step))
+        emit valueChanged(d_value);
+}
+
+QAbstractSpinBox::StepEnabled DoubleSpinBox::stepEnabled () const
+{
+	QAbstractSpinBox::StepEnabled stepDown = QAbstractSpinBox::StepNone;
+	if (d_value > d_min_val)
+		stepDown = StepDownEnabled;
+
+	QAbstractSpinBox::StepEnabled stepUp = QAbstractSpinBox::StepNone;
+	if (d_value < d_max_val)
+		stepUp = StepUpEnabled;
+
+	return stepDown | stepUp;
+}
+
+bool DoubleSpinBox::setValue(double val)
+{
+	if (val < d_min_val || val > d_max_val){
+        lineEdit()->setText(textFromValue(d_value));
+        return false;
+	}
+
+    d_value = val;
+	lineEdit()->setText(textFromValue(d_value));
+	return true;
+}
+
+QString DoubleSpinBox::textFromValue ( double value) const
+{
+	if (d_prec < 14)
+		return locale().toString(value, d_format, d_prec);
+
+	return locale().toString(value, d_format, 6);
 }
 
 QValidator::State DoubleSpinBox::validate(QString & input, int & ) const
 {
-	if (input.lower().contains("e"))
-		return QValidator::Acceptable;
-
-	bool ok = false;
-	locale().toDouble (input, &ok);
-	if (ok)
-		return QValidator::Acceptable;
-	else
-		return QValidator::Invalid;
+	return QValidator::Acceptable;
 }
 
 /*****************************************************************************

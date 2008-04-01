@@ -2,8 +2,8 @@
     File                 : Fit.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Fit base class
 
  ***************************************************************************/
@@ -133,7 +133,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 		for (int i=0; i<d_p; i++)
 			d_results[i] = gsl_vector_get(s->x, i);
 
-		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);		
+		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
 	} while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	gsl_multifit_covar (s->J, 0.0, covar);
@@ -605,7 +605,7 @@ void Fit::generateFitCurve()
 
 	double *X = new double[d_points];
 	double *Y = new double[d_points];
-	
+
 	calculateFitCurveData(X, Y);
     customizeFitResults();
 
@@ -666,7 +666,7 @@ bool Fit::save(const QString& fileName)
 
      out << "<model>" + objectName() + "</model>\n";
      out << "<type>" + QString::number(d_fit_type) + "</type>\n";
-	
+
 	 QString function = d_formula;
      out << "<function>" + function.replace("<", "&lt;").replace(">", "&gt;") + "</function>\n";
 

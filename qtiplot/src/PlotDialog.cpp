@@ -481,6 +481,7 @@ void PlotDialog::initPiePage()
 	gl1->addWidget(new QLabel(tr( "Width")), 2, 0);
 	boxPieLineWidth = new DoubleSpinBox('f');
 	boxPieLineWidth->setSingleStep(0.1);
+	boxPieLineWidth->setMinimum(0.0);
 	boxPieLineWidth->setLocale(((ApplicationWindow *)this->parent())->locale());
 	gl1->addWidget(boxPieLineWidth, 2, 1);
 	gl1->setRowStretch(3,1);
@@ -1530,7 +1531,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
 
     if (currentItem->type() == CurveTreeItem::PlotCurveTreeItem)
     {
-        CurveTreeItem *curveItem = (CurveTreeItem *)currentItem;		
+        CurveTreeItem *curveItem = (CurveTreeItem *)currentItem;
         if (previousItem->type() != CurveTreeItem::PlotCurveTreeItem ||
            ((CurveTreeItem *)previousItem)->plotItemType() != curveItem->plotItemType())
         {
