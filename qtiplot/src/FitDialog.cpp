@@ -89,7 +89,7 @@ static const char * param_range_btn_xpm[] = {
 FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
-    setName("FitDialog");
+    setObjectName("FitDialog");
 	setWindowTitle(tr("QtiPlot - Fit Wizard"));
 	setSizeGripEnabled(true);
 
@@ -495,9 +495,11 @@ void FitDialog::applyChanges()
 	if (d_current_fit)
 		d_current_fit->setOutputPrecision(prec);
 	for (int i=0; i<boxParams->rowCount(); i++){
-		((RangeLimitBox*)boxParams->cellWidget(i, 1))->setDecimals(prec);
-		((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->setDecimals(prec);
-		((RangeLimitBox*)boxParams->cellWidget(i, 3))->setDecimals(prec);
+		((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setDecimals(prec);
+		if (d_current_fit->type() != Fit::BuiltIn){
+			((RangeLimitBox*)boxParams->cellWidget(i, 1))->setDecimals(prec);
+			((RangeLimitBox*)boxParams->cellWidget(i, 3))->setDecimals(prec);
+		}
 	}
 
 	app->pasteFitResultsToPlot = plotLabelBox->isChecked();
@@ -733,6 +735,7 @@ void FitDialog::showFitPage()
 
 	QStringList paramList = d_current_fit->parameterNames();
 	int parameters = d_current_fit->numParameters();
+	boxParams->clearContents();
 	boxParams->setRowCount(parameters);
     boxParams->hideColumn(4);
 
@@ -753,10 +756,17 @@ void FitDialog::showFitPage()
         it->setFont(font);
         boxParams->setItem(i, 0, it);
 
-		RangeLimitBox *rbl = new RangeLimitBox(RangeLimitBox::LeftLimit);
-		rbl->setLocale(locale);
-		rbl->setDecimals(prec);
-		boxParams->setCellWidget(i, 1, rbl);
+		if (d_current_fit->type() != Fit::BuiltIn){
+			RangeLimitBox *rbl = new RangeLimitBox(RangeLimitBox::LeftLimit);
+			rbl->setLocale(locale);
+			rbl->setDecimals(prec);
+			boxParams->setCellWidget(i, 1, rbl);
+			
+			RangeLimitBox *rbr = new RangeLimitBox(RangeLimitBox::RightLimit);
+			rbr->setLocale(locale);
+			rbr->setDecimals(prec);
+			boxParams->setCellWidget(i, 3, rbr);
+		}
 
 		DoubleSpinBox *sb = new DoubleSpinBox();
 		sb->setLocale(locale);
@@ -764,11 +774,6 @@ void FitDialog::showFitPage()
 		sb->setValue(d_current_fit->initialGuess(i));
         connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
         boxParams->setCellWidget(i, 2, sb);
-
-		RangeLimitBox *rbr = new RangeLimitBox(RangeLimitBox::RightLimit);
-		rbr->setLocale(locale);
-		rbr->setDecimals(prec);
-		boxParams->setCellWidget(i, 3, rbr);
 	}
     for (int i = 0; i<parameters; i++)
         boxParams->item (i, 0)->setText(paramList[i]);
@@ -979,7 +984,7 @@ void FitDialog::showExpression(int function)
 		    d_current_fit = d_plugins[function];
 			explainBox->setText(d_current_fit->formula());
 			setFunction(boxUseBuiltIn->isChecked());
-		}else
+		} else
 			explainBox->clear();
 	}
 }
@@ -1058,9 +1063,11 @@ void FitDialog::accept()
 					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
 					parameters << boxParams->item(i, 0)->text();
 
-					double left = ((RangeLimitBox*)boxParams->cellWidget(j, 1))->value();
-					double right = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
-					d_current_fit->setParameterRange(j, left, right);
+					if (d_current_fit->type() != Fit::BuiltIn){
+						double left = ((RangeLimitBox*)boxParams->cellWidget(j, 1))->value();
+						double right = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
+						d_current_fit->setParameterRange(j, left, right);
+					}
 					j++;
 				} else {
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
@@ -1069,13 +1076,15 @@ void FitDialog::accept()
 			}
 		} else {
 			for (int i=0; i<n; i++) {
-				paramsInit[i] = ((QDoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
+				paramsInit[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 				parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[i]);
 				parameters << boxParams->item(i, 0)->text();
 
-				double left = ((RangeLimitBox*)boxParams->cellWidget(i, 1))->value();
-				double right = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
-				d_current_fit->setParameterRange(i, left, right);
+				if (d_current_fit->type() != Fit::BuiltIn){
+					double left = ((RangeLimitBox*)boxParams->cellWidget(i, 1))->value();
+					double right = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
+					d_current_fit->setParameterRange(i, left, right);
+				}
 			}
 		}
 
@@ -1199,8 +1208,8 @@ void FitDialog::enableWeightingParameters(int index)
 	}
 }
 
-void FitDialog::closeEvent (QCloseEvent * e )
-{
+void FitDialog::closeEvent (QCloseEvent * e)
+{							
     if (d_preview_curve){
         d_preview_curve->detach();
         d_graph->replot();
@@ -1376,7 +1385,7 @@ QStringList FitDialog::plugInNames()
 void FitDialog::returnToFitPage()
 {
 	applyChanges();
-	tw->setCurrentWidget (fitPage);
+	tw->setCurrentWidget(fitPage);
 }
 
 void FitDialog::updatePreview()
