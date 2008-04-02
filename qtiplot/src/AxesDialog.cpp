@@ -55,6 +55,7 @@
 #include <QVector>
 #include <QGroupBox>
 #include <QDateTimeEdit>
+#include <QTimeEdit>
 
 #include <qwt_plot.h>
 #include <qwt_scale_widget.h>
@@ -1243,15 +1244,24 @@ void AxesDialog::initScalesPage()
 	middleLayout->addWidget( boxStartDateTime, 0, 1 );
 	boxStartDateTime->hide();
 
+	boxStartTime = new QTimeEdit();
+	middleLayout->addWidget(boxStartTime, 0, 1 );
+	boxStartTime->hide();
+
 	middleLayout->addWidget(new QLabel(tr( "To" )), 1, 0);
 	boxEnd = new DoubleSpinBox();
 	boxEnd->setLocale(app->locale());
     boxEnd->setDecimals(app->d_decimal_digits);
 	middleLayout->addWidget( boxEnd, 1, 1);
+
     boxEndDateTime = new QDateTimeEdit();
     boxEndDateTime->setCalendarPopup(true);
     middleLayout->addWidget(boxEndDateTime, 1, 1);
     boxEndDateTime->hide();
+
+    boxEndTime = new QTimeEdit();
+    middleLayout->addWidget(boxEndTime, 1, 1);
+    boxEndTime->hide();
 
 	boxScaleTypeLabel = new QLabel(tr( "Type" ));
 	boxScaleType = new QComboBox();
@@ -1386,6 +1396,7 @@ void AxesDialog::initScalesPage()
 	axesList->addItem( new QListWidgetItem(image1, tr( "Left" )));
 	axesList->addItem( new QListWidgetItem(image2, tr( "Top" )));
 	axesList->addItem( new QListWidgetItem(image3,  tr( "Right" )));
+    axesList->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding));
 	axesList->setIconSize(image0.size());
 	axesList->setCurrentRow(-1);
 
@@ -2420,6 +2431,11 @@ bool AxesDialog::updatePlot()
             QDateTime origin = sclDraw->dateTimeOrigin();
             start = (double)origin.secsTo(boxStartDateTime->dateTime());
             end = (double)origin.secsTo(boxEndDateTime->dateTime());
+		} else if (type == ScaleDraw::Time){
+            ScaleDraw *sclDraw = (ScaleDraw *)d_graph->plotWidget()->axisScaleDraw(a);
+            QTime origin = sclDraw->dateTimeOrigin().time();
+            start = (double)origin.msecsTo(boxStartTime->time());
+            end = (double)origin.msecsTo(boxEndTime->time());
 		} else {
             start = boxStart->value();
             end = boxEnd->value();
@@ -2654,10 +2670,13 @@ void AxesDialog::updateScale()
         QDateTime origin = sclDraw->dateTimeOrigin();
 
 	    boxStart->hide();
+	    boxStartTime->hide();
         boxStartDateTime->show();
         boxStartDateTime->setDisplayFormat(sclDraw->format());
         boxStartDateTime->setDateTime(origin.addSecs((int)start));
+
         boxEnd->hide();
+        boxEndTime->hide();
         boxEndDateTime->show();
         boxEndDateTime->setDisplayFormat(sclDraw->format());
         boxEndDateTime->setDateTime(origin.addSecs((int)end));
@@ -2666,22 +2685,42 @@ void AxesDialog::updateScale()
 		boxUnit->insertItem(tr("days"));
 		boxUnit->insertItem(tr("weeks"));
 		boxStep->setValue(d_graph->axisStep(a)/86400.0);
+		boxStep->setSingleStep(1);
+	} else if (type == ScaleDraw::Time){
+	    ScaleDraw *sclDraw = (ScaleDraw *)d_plot->axisScaleDraw(a);
+        QTime origin = sclDraw->dateTimeOrigin().time();
+
+	    boxStart->hide();
+	    boxStartDateTime->hide();
+        boxStartTime->show();
+        boxStartTime->setDisplayFormat(sclDraw->format());
+        boxStartTime->setTime(origin.addMSecs((int)start));
+
+        boxEnd->hide();
+        boxEndDateTime->hide();
+        boxEndTime->show();
+        boxEndTime->setDisplayFormat(sclDraw->format());
+        boxEndTime->setTime(origin.addMSecs((int)end));
+
+        boxUnit->show();
+        boxUnit->insertItem(tr("millisec."));
+        boxUnit->insertItem(tr("sec."));
+        boxUnit->insertItem(tr("min."));
+        boxUnit->insertItem(tr("hours"));
+        boxUnit->setCurrentIndex(1);
+        boxStep->setValue(d_graph->axisStep(a)/1e3);
+        boxStep->setSingleStep(1000);
 	} else {
 	    boxStart->show();
         boxStart->setValue(start);
+        boxStartTime->hide();
         boxStartDateTime->hide();
         boxEnd->show();
         boxEnd->setValue(end);
+        boxEndTime->hide();
         boxEndDateTime->hide();
         boxStep->setValue(d_graph->axisStep(a));
-
-	    if (type == ScaleDraw::Time){
-            boxUnit->show();
-            boxUnit->insertItem(tr("millisec."));
-            boxUnit->insertItem(tr("sec."));
-            boxUnit->insertItem(tr("min."));
-            boxUnit->insertItem(tr("hours"));
-	    }
+        boxStep->setSingleStep(0.1);
 	}
 
     double range = fabs(scDiv->range());

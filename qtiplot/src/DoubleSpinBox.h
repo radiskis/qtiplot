@@ -77,7 +77,7 @@ class RangeLimitBox : public QWidget
 public:
 	enum LimitType{LeftLimit, RightLimit};
 
-    RangeLimitBox(LimitType type, QWidget * parent = 0);
+    RangeLimitBox(LimitType type, QWidget * parent = 0);	
 	void setDecimals(int prec){d_spin_box->setDecimals(prec);};
 	double value();
 	bool isChecked(){return d_checkbox->isChecked();};

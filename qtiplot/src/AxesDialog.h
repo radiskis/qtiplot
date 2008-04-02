@@ -34,6 +34,7 @@
 #include <QList>
 #include <QTextEdit>
 
+class QTimeEdit;
 class QDateTimeEdit;
 class QListWidget;
 class QListWidgetItem;
@@ -205,6 +206,7 @@ protected:
 	//! Last selected tab
   	QWidget* lastPage;
     QDateTimeEdit *boxStartDateTime, *boxEndDateTime;
+    QTimeEdit *boxStartTime, *boxEndTime;
 };
 
 #endif

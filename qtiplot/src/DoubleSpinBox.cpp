@@ -29,6 +29,7 @@
 #include "DoubleSpinBox.h"
 #include <QLineEdit>
 #include <QHBoxLayout>
+#include <QCloseEvent>
 #include <float.h>
 
 DoubleSpinBox::DoubleSpinBox(const char format, QWidget * parent)
@@ -123,7 +124,7 @@ QString DoubleSpinBox::textFromValue ( double value) const
 	return locale().toString(value, d_format, 6);
 }
 
-QValidator::State DoubleSpinBox::validate(QString & input, int & ) const
+QValidator::State DoubleSpinBox::validate(QString & , int & ) const
 {
 	return QValidator::Acceptable;
 }
