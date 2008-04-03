@@ -46,7 +46,7 @@ class Plot: public QwtPlot
     Q_OBJECT
 
 public:
-	Plot(QWidget *parent = 0, const char *name = 0);
+	Plot(int width = 500, int height = 400, QWidget *parent = 0, const char *name = 0);
 
 	Grid *grid(){return (Grid *)d_grid;};
 	QList<int> curveKeys(){return d_curves.keys();};
@@ -89,9 +89,6 @@ public:
     void print(QPainter *, const QRect &rect, const QwtPlotPrintFilter & = QwtPlotPrintFilter());
 	void updateLayout();
 
-    QLocale locale(){return d_locale;};
-    void setLocale(const QLocale & l){d_locale = l;};
-
     void updateCurveLabels();
 
 protected:
@@ -113,6 +110,5 @@ protected:
 	int minTickLength, majTickLength;
 	int marker_key;
 	int curve_key;
-	QLocale d_locale;
 };
 #endif

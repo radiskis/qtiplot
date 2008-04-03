@@ -29,6 +29,7 @@
 #include "ScaleDraw.h"
 #include "MyParser.h"
 #include "plot2D/ScaleEngine.h"
+#include "Graph.h"
 
 #include <QDateTime>
 #include <QPainter>
@@ -99,8 +100,9 @@ QwtText ScaleDraw::label(double value) const
 {
 	switch (d_type){
 		case Numeric:
+		{
+            QLocale locale = ((Graph *)d_plot->parent())->multiLayer()->locale();
 			if (d_numeric_format == Superscripts){
-				QLocale locale = d_plot->locale();
 				QString txt = locale.toString(transformValue(value), 'e', d_prec);
 				QStringList list = txt.split("e", QString::SkipEmptyParts);
 				if (list[0].toDouble() == 0.0)
@@ -123,12 +125,10 @@ QwtText ScaleDraw::label(double value) const
 					return QwtText("10<sup>" + s + "</sup>");
 				else
 					return QwtText(list[0] + "x10<sup>" + s + "</sup>");
-			}
-			else if (d_plot)
-				return QwtText(d_plot->locale().toString(transformValue(value), d_fmt, d_prec));
-			else
-				return QwtText(QLocale::system().toString(transformValue(value), d_fmt, d_prec));
+			} else
+				return QwtText(locale.toString(transformValue(value), d_fmt, d_prec));
 		break;
+		}
 
 		case Day:
 		{

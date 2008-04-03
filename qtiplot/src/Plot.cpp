@@ -46,11 +46,10 @@
 #include <QPainter>
 #include <QMessageBox>
 
-Plot::Plot(QWidget *parent, const char *)
+Plot::Plot(int width, int height, QWidget *parent, const char *)
 : QwtPlot(parent)
 {
 	setAutoReplot (false);
-    d_locale = QLocale::c();
 
 	marker_key = 0;
 	curve_key = 0;
@@ -58,7 +57,7 @@ Plot::Plot(QWidget *parent, const char *)
 	minTickLength = 5;
 	majTickLength = 9;
 
-	setGeometry(QRect(0,0,500,400));
+	setGeometry(QRect(0, 0, width, height));
 	setAxisTitle(QwtPlot::yLeft, tr("Y Axis Title"));
 	setAxisTitle(QwtPlot::xBottom, tr("X Axis Title"));
 	//due to the plot layout updates, we must always have a non empty title
@@ -644,7 +643,7 @@ void Plot::updateLayout()
     plotLayout()->activate(this, contentsRect());
 
     // resize and show the visible widgets
-	
+
     if (!titleLabel()->text().isEmpty()){
         titleLabel()->setGeometry(plotLayout()->titleRect());
         if (!titleLabel()->isVisible())

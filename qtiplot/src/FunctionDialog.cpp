@@ -46,7 +46,7 @@
 FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
-    setName( "FunctionDialog" );
+    setObjectName( "FunctionDialog" );
 	setWindowTitle( tr( "QtiPlot - Add function curve" ) );
 	setSizeGripEnabled(true);
 
@@ -329,8 +329,7 @@ void FunctionDialog::acceptFunction()
 		app->updateFunctionLists(type,formulas);
 		if (!graph)
 			app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
-		else
-		{
+		else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, "x", start, end, boxPoints->value());
 			else
@@ -430,8 +429,7 @@ void FunctionDialog::acceptParametric()
 		app->updateFunctionLists(type,formulas);
 		if (!graph)
 			app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
-		else
-		{
+		else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(), start, end, boxParPoints->value());
 			else
@@ -532,8 +530,7 @@ void FunctionDialog::acceptPolar()
 
 		if (!graph)
 			app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
-		else
-		{
+		else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(), start, end, boxPolarPoints->value());
 			else

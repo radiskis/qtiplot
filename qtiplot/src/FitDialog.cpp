@@ -506,7 +506,8 @@ void FitDialog::applyChanges()
 	app->writeFitResultsToLog = logBox->isChecked();
 	app->fitPoints = generatePointsBox->value();
 	app->generateUniformFitPoints = generatePointsBtn->isChecked();
-	app->fit_scale_errors = scaleErrorsBox->isChecked();
+	if (d_current_fit && !d_current_fit->isA("PolynomialFit"))
+		app->fit_scale_errors = scaleErrorsBox->isChecked();
 	app->saveSettings();
 	btnApply->setEnabled(false);
 }
@@ -809,6 +810,15 @@ void FitDialog::showEditPage()
 void FitDialog::showAdvancedPage()
 {
 	tw->setCurrentWidget (advancedPage);
+	if (d_current_fit && d_current_fit->isA("PolynomialFit")){
+		scaleErrorsBox->setChecked(false);
+		scaleErrorsBox->setEnabled(false);
+	} else {
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		if (app)
+			scaleErrorsBox->setChecked(app->fit_scale_errors);
+		scaleErrorsBox->setEnabled(true);
+	}
 }
 
 void FitDialog::setFunction(bool ok)
@@ -1121,7 +1131,8 @@ void FitDialog::accept()
 		d_current_fit->setColor(boxColor->currentIndex());
 		d_current_fit->generateFunction(generatePointsBtn->isChecked(), generatePointsBox->value());
 		d_current_fit->setMaximumIterations(boxPoints->value());
-		d_current_fit->scaleErrors(scaleErrorsBox->isChecked());
+		if (!d_current_fit->isA("PolynomialFit"))
+			d_current_fit->scaleErrors(scaleErrorsBox->isChecked());
 		d_current_fit->fit();
 		double *res = d_current_fit->results();
 		if (!boxParams->isColumnHidden(4)){

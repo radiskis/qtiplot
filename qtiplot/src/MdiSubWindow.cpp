@@ -60,6 +60,7 @@ MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const Q
 	setObjectName(name);
 	setOption(QMdiSubWindow::RubberBandResize);
 	setAttribute(Qt::WA_DeleteOnClose);
+	setLocale(app->locale());
 	if (d_folder)
 		d_folder->addWindow(this);
 }
@@ -86,7 +87,7 @@ switch (d_caption_policy)
             setWindowTitle(objectName());
 	break;
 	}
-	
+
 	d_app->setListViewLabel(objectName(), d_label);
 };
 

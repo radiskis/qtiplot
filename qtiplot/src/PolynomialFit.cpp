@@ -67,6 +67,7 @@ void PolynomialFit::init()
 	is_non_linear = false;
 	d_explanation = tr("Polynomial Fit");
 	setOrder(d_order);
+	d_scale_errors = false;
 }
 
 void PolynomialFit::setOrder(int order)
@@ -242,6 +243,8 @@ LinearFit::LinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, c
 
 void LinearFit::init()
 {
+	d_scale_errors = false;
+	
 	d_p = 2;
     d_min_points = d_p;
 
