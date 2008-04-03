@@ -539,7 +539,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 	int tickTypeMap[]={0,3,1,2};
 	for (int g=0; g<opj.numGraphs(); ++g)
 	{
-		MultiLayer *ml = mw->multilayerPlot(opj.graphName(g));
+		MultiLayer *ml = mw->multilayerPlot(opj.graphName(g), 0, 0, 0);
 		if (!ml)
 			return false;
 

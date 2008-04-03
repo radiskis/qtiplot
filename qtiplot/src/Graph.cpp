@@ -159,7 +159,7 @@ static const char *unzoom_xpm[]={
 #include <stdio.h>
 #include <stddef.h>
 
-Graph::Graph(QWidget* parent, Qt::WFlags f)
+Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 : QWidget(parent, f)
 {
 	n_curves=0;
@@ -183,7 +183,10 @@ Graph::Graph(QWidget* parent, Qt::WFlags f)
 	for (int i=0; i<QwtPlot::axisCnt; i++)
 		d_user_step[i] = 0.0;
 
-	d_plot = new Plot(this);
+	setGeometry(x, y, width, height);
+	setAttribute(Qt::WA_DeleteOnClose);
+
+	d_plot = new Plot(width, height, this);
 	cp = new CanvasPicker(this);
 
 	titlePicker = new TitlePicker(d_plot);
@@ -197,14 +200,13 @@ Graph::Graph(QWidget* parent, Qt::WFlags f)
 			QwtPicker::AlwaysOff, d_plot->canvas());
 	zoom(false);
 
-	setGeometry(0, 0, 500, 400);
-	setFocusPolicy(Qt::StrongFocus);
-	setFocusProxy(d_plot);
-	setMouseTracking(true );
-
 	c_type = QVector<int>();
 	c_keys = QVector<int>();
 
+	setFocusPolicy(Qt::StrongFocus);
+	setFocusProxy(d_plot);
+	setMouseTracking(true );
+	
 	connect (cp,SIGNAL(selectPlot()),this,SLOT(activateGraph()));
 	connect (cp,SIGNAL(drawTextOff()),this,SIGNAL(drawTextOff()));
 	connect (cp,SIGNAL(viewImageDialog()),this,SIGNAL(viewImageDialog()));

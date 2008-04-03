@@ -65,7 +65,7 @@ class MultiLayer: public MdiSubWindow
 	Q_OBJECT
 
 public:
-    MultiLayer (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WFlags f=0);
+    MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WFlags f=0);
 	QList<Graph *> layersList(){return graphsList;};
 	Graph *layer(int num);
 	LayerButton* addLayerButton();
@@ -101,10 +101,10 @@ public slots:
 	bool swapLayers(int src, int dest);
     void adjustSize();
 
-	int getRows(){return rows;};
+	int getRows(){return d_rows;};
 	void setRows(int r);
 
-	int getCols(){return cols;};
+	int getCols(){return d_cols;};
 	void setCols(int c);
 
 	int colsSpacing(){return colsSpace;};
@@ -124,7 +124,7 @@ public slots:
 	int verticalAlignement(){return vert_align;};
 	void setAlignement (int ha, int va);
 
-	int layers(){return graphs;};
+	int layers(){return graphsList.size();};
 
 	//! \name Print and Export
 	//@{
@@ -186,12 +186,12 @@ private:
 
 	Graph* active_graph;
 	//! Used for resizing of layers.
-	int graphs, cols, rows, graph_width, graph_height, colsSpace, rowsSpace;
+	int d_cols, d_rows, graph_width, graph_height, colsSpace, rowsSpace;
 	int left_margin, right_margin, top_margin, bottom_margin;
 	int l_canvas_width, l_canvas_height, hor_align, vert_align;
 	bool d_scale_on_print, d_print_cropmarks;
 
-    QWidgetList buttonsList;
+    QList<LayerButton *> buttonsList;
     QList<Graph *> graphsList;
 	QHBoxLayout *layerButtonsBox;
     QWidget *canvas;

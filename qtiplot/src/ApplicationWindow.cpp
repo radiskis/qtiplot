@@ -1532,15 +1532,12 @@ MultiLayer* ApplicationWindow::plotHistogram(Matrix *m)
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	MultiLayer* g = new MultiLayer("", this, 0);
+	MultiLayer* g = new MultiLayer(this);
     initMultilayerPlot(g, generateUniqueName(tr("Graph")));
 
-	Graph* plot = g->addLayer();
+	Graph* plot = g->activeGraph();
 	setPreferences(plot);
-
 	plot->addHistogram(m);
-	g->setMargins(5, 5, 5, 5);
-	g->arrangeLayers(true, false);
 
 	QApplication::restoreOverrideCursor();
 	return g;
@@ -2260,9 +2257,7 @@ void ApplicationWindow::loadImage(const QString& fn)
 	plot->setWindowLabel(fn);
 	plot->setCaptionPolicy(MdiSubWindow::Both);
 
-	plot->showNormal();
-	Graph *g = plot->addLayer(0, 0, plot->width(), plot->height()-20);
-
+	Graph *g = plot->activeGraph();
 	g->setTitle("");
 	for (int i=0; i<4; i++)
 		g->enableAxis(i, false);
@@ -2287,26 +2282,21 @@ void ApplicationWindow::polishGraph(Graph *g, int style)
 	}
 }
 
-MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption)
+MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption, int layers, int rows, int cols)
 {
-	MultiLayer* ml = new MultiLayer("", this, 0);
+	MultiLayer* ml = new MultiLayer(this, layers, rows, cols);
 	QString label = caption;
-	initMultilayerPlot(ml, label.replace(QRegExp("_"),"-"));
+	initMultilayerPlot(ml, label.replace(QRegExp("_"), "-"));
 	return ml;
 }
 
 MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 {
 	MultiLayer *ml = multilayerPlot(generateUniqueName(caption));
-	if (ml) {
-        Graph *g = ml->addLayer();
+	if (ml){
+		Graph *g = ml->activeGraph();
 		setPreferences(g);
         g->newLegend();
-        g->setAutoscaleFonts(false);
-        g->setIgnoreResizeEvents(false);
-        ml->arrangeLayers(false, false);
-        g->setAutoscaleFonts(autoScaleFonts);//restore user defined fonts behaviour
-        g->setIgnoreResizeEvents(!autoResizeLayers);
     }
 	return ml;
 }
@@ -2315,9 +2305,8 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 {//used when plotting selected columns
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	MultiLayer* g = new MultiLayer("", this, 0);
-	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
-	Graph *ag = g->addLayer();
+	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
+	Graph *ag = g->activeGraph();
 	if (!ag)
 		return 0;
 
@@ -2326,7 +2315,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 
 	polishGraph(ag, style);
 	ag->newLegend();
-	g->arrangeLayers(false, false);
 
 	QApplication::restoreOverrideCursor();
 	return g;
@@ -2347,57 +2335,31 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 		return 0;
 	}
 
-	int curves = (int)list.count();
-	if (r<0)
+	int curves = list.count();
+	if (r < 0)
 		r = curves;
 
-	MultiLayer* g = new MultiLayer("", this, 0);
-	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
 	int layers = c*r;
-	if (curves<layers) {
-		for (int i=0; i<curves; i++) {
-			Graph *ag = g->addLayer();
-			if (ag){
-                setPreferences(ag);
-				ag->addCurves(t, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
-				ag->newLegend();
-				ag->setAutoscaleFonts(false);//in order to avoid to small fonts
-                ag->setIgnoreResizeEvents(false);
-				polishGraph(ag, style);
-			}
-		}
-	} else {
-		for (int i=0; i<layers; i++) {
-			Graph *ag = g->addLayer();
-			if (ag) {
-				QStringList lst;
-				lst << list[i];
-                setPreferences(ag);
-				ag->addCurves(t, lst, style, defaultCurveLineWidth, defaultSymbolSize);
-				ag->newLegend();
-				ag->setAutoscaleFonts(false);//in order to avoid to small fonts
-                ag->setIgnoreResizeEvents(false);
-				polishGraph(ag, style);
-			}
-		}
+	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")), layers, r, c);
+	QList<Graph *> layersList = g->layersList();
+	int i = 0;
+	foreach(Graph *ag, layersList){
+		setPreferences(ag);
+		if (i < curves)
+			ag->addCurves(t, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
+		ag->newLegend();
+		polishGraph(ag, style);
+		i++;
 	}
-	g->setRows(r);
-	g->setCols(c);
 	g->arrangeLayers(false, false);
-    g->adjustSize();
-    QList<Graph *> layersList = g->layersList();
-    foreach(Graph *ag, layersList){
-        ag->setAutoscaleFonts(autoScaleFonts);//restore user defined fonts behaviour
-        ag->setIgnoreResizeEvents(!autoResizeLayers);
-    }
 	return g;
 }
 
 MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 {//used when plotting from wizard
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	MultiLayer* g = new MultiLayer("", this, 0);
-	Graph *ag = g->addLayer();
+	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
+	Graph *ag = g->activeGraph();
 	setPreferences(ag);
 	polishGraph(ag, defaultCurveStyle);
 	int curves = (int)colList.count();
@@ -2444,8 +2406,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 	}
 	ag->newLegend();
 	ag->initScaleLimits();
-    initMultilayerPlot(g, generateUniqueName(tr("Graph")));
-    g->arrangeLayers(true, false);
 	QApplication::restoreOverrideCursor();
 	return g;
 }
@@ -2456,16 +2416,15 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 	while(alreadyUsedName(label))
 		label = generateUniqueName(tr("Graph"));
 
-	d_workspace->addSubWindow(g);
-	connectMultilayerPlot(g);
-
 	g->setWindowTitle(label);
 	g->setName(label);
 	g->setIcon(QPixmap(graph_xpm));
 	g->setScaleLayersOnPrint(d_scale_plots_on_print);
 	g->printCropmarks(d_print_cropmarks);
-	g->setLocale(d_locale);
-	g->show();
+	
+	d_workspace->addSubWindow(g);
+	connectMultilayerPlot(g);
+	g->showNormal();
 
 	addListViewItem(g);
 }
@@ -2499,7 +2458,6 @@ void ApplicationWindow::customTable(Table* w)
 	w->setHeaderFont(tableHeaderFont);
 	w->showComments(d_show_table_comments);
 	w->setNumericPrecision(d_decimal_digits);
-	w->setLocale(d_locale);
 }
 
 void ApplicationWindow::setPreferences(Graph* g)
@@ -2532,7 +2490,6 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->setAutoscaleFonts(autoScaleFonts);
     g->setIgnoreResizeEvents(!autoResizeLayers);
 	g->setAntialiasing(antialiasing2DPlots);
-	g->plotWidget()->setLocale(d_locale);
 }
 
 /*
@@ -2953,7 +2910,6 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	m->setIcon( QPixmap(matrix_xpm) );
 	m->askOnCloseEvent(confirmCloseMatrix);
 	m->setNumericPrecision(d_decimal_digits);
-    m->setLocale(d_locale);
 
 	d_workspace->addSubWindow(m);
 	addListViewItem(m);
@@ -3109,15 +3065,15 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 {	
 	if (!w || (d_active_window && d_active_window == (MdiSubWindow *)w))
 		return;
-	
+
 	d_active_window = (MdiSubWindow *)w;
-	
+
 	customToolBars(w);
 	customMenu(w);
-	
+
 	if (d_opening_file)
 		return;
-	
+
 	QList<MdiSubWindow *> windows = current_folder->windowsList();
 	foreach(MdiSubWindow *ow, windows){
 		if (ow != w && ow->status() == MdiSubWindow::Maximized){
@@ -3954,9 +3910,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			s=t.readLine();
 			QStringList graph=s.split("\t");
 			QString caption=graph[0];
-			plot = app->multilayerPlot(caption);
-			plot->setCols(graph[1].toInt());
-			plot->setRows(graph[2].toInt());
+			plot = app->multilayerPlot(caption, 0,  graph[2].toInt(), graph[1].toInt());
 
 			app->setListViewDate(caption, graph[3]);
 			plot->setBirthDate(graph[3]);
@@ -7454,8 +7408,9 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	if (w->isA("MultiLayer")){
-		nw = multilayerPlot(generateUniqueName(tr("Graph")));
-		((MultiLayer *)nw)->copy((MultiLayer *)w);
+		MultiLayer *g = (MultiLayer *)w;
+		nw = multilayerPlot(generateUniqueName(tr("Graph")), 0, g->getRows(), g->getCols());
+		((MultiLayer *)nw)->copy(g);
 	} else if (w->inherits("Table")){
 		Table *t = (Table *)w;
 		QString caption = generateUniqueName(tr("Table"));
@@ -7786,7 +7741,7 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 
 	if (d_active_window == window)
 		d_active_window = NULL;
-	
+
 	removeWindowFromLists(window);
 
 	Folder *f = window->folder();
@@ -8174,12 +8129,12 @@ void ApplicationWindow::foldersMenuActivated( int id )
 void ApplicationWindow::newProject()
 {
 	saveSettings();//the recent projects must be saved
-	
+
 	ApplicationWindow *ed = new ApplicationWindow();
 	ed->restoreApplicationGeometry();
 	ed->initWindow();
 	ed->savedProject();
-	
+
 	close();
 }
 
@@ -10702,10 +10657,10 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 	if (fitter->setDataFromCurve(curveTitle)){
 		if (operation != FitLinear){
 			fitter->guessInitialValues();
+			fitter->scaleErrors(fit_scale_errors);
 			fitter->generateFunction(generateUniformFitPoints, fitPoints);
 		} else if (d_2_linear_fit_points)
 			fitter->generateFunction(generateUniformFitPoints, 2);
-		fitter->scaleErrors(fit_scale_errors);
 		fitter->setOutputPrecision(fit_output_precision);
 		fitter->fit();
 		if (pasteFitResultsToPlot)
@@ -12392,9 +12347,8 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    MultiLayer* g = new MultiLayer("", this, 0);
-	initMultilayerPlot(g, generateUniqueName(tr("Graph")));
-	Graph* plot = g->addLayer();
+    MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
+	Graph* plot = g->activeGraph();
 	setPreferences(plot);
 
 	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
@@ -12412,9 +12366,6 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 	plot->setAxisTitle(QwtPlot::xTop, QString::null);
 	plot->setTitle(QString::null);
 
-    g->setMargins(5, 5, 5, 5);
-	g->arrangeLayers(true, false);
-
 	emit modified();
 	QApplication::restoreOverrideCursor();
 	return g;
@@ -12430,13 +12381,10 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph* plot = g->addLayer();
+	Graph* plot = g->activeGraph();
 	setPreferences(plot);
 
 	plot->plotSpectrogram(m, type);
-	g->arrangeLayers(false, false);
-	g->showNormal();
-
 	QApplication::restoreOverrideCursor();
 	return g;
 }

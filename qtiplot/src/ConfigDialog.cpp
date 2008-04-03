@@ -1245,11 +1245,6 @@ void ConfigDialog::apply()
                 ((Table *)w)->updateDecimalSeparators();
             else if(w->isA("Matrix"))
                 ((Matrix *)w)->resetView();
-            else if (w->isA("MultiLayer")){
-                QList<Graph *> layers = ((MultiLayer*)w)->layersList();
-                foreach(Graph *g, layers)
-                    g->plotWidget()->setLocale(locale);
-            }
         }
         app->modifiedProject();
     	QApplication::restoreOverrideCursor();
