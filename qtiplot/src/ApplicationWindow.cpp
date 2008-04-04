@@ -10198,6 +10198,15 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			ag->restoreCurveLabels(curveID - 1, lst);
+		} else if (s == "<Function>"){//version 0.9.5 
+			curveID++;
+			QStringList lst;
+			while ( s != "</Function>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			ag->restoreFunction(lst);
 		} else if (s.contains ("FunctionCurve")){
 			QStringList curve = s.split("\t");
 			CurveLayout cl;

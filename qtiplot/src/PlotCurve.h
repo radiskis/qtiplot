@@ -51,6 +51,9 @@ public:
 	double yOffset(){return d_y_offset;};
 	void setYOffset(double dy){d_y_offset = dy;};
 
+	QString saveCurveLayout();
+	void restoreCurveLayout(const QStringList& lst);
+
 protected:
 	int d_type;
 	double d_x_offset, d_y_offset;
