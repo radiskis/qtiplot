@@ -548,8 +548,11 @@ class Graph: public QWidget
 		//@{
 		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var, double start, double end, int points);
 		FunctionCurve* addFunction(const QStringList &formulas, double start, double end, int points = 100, const QString &var = "x", int type = 0, const QString& title = QString::null);
-		//! Used when reading from a project file.
+		//! Used when reading from a project file with version < 0.9.5.
 		void insertFunctionCurve(const QString& formula, int points, int fileVersion);
+		//! Used when reading from a project file with version >= 0.9.5.
+		void restoreFunction(const QStringList& lst);
+		
 		//! Returns an unique function name
         QString generateFunctionName(const QString& name = tr("F"));
 		//@}

@@ -1999,7 +1999,7 @@ QString Graph::saveCurveLayout(int index)
 	int style = c_type[index];
 	QwtPlotCurve *c = (QwtPlotCurve*)curve(index);
 	if (c){
-		s+=QString::number(style)+"\t";
+		s += QString::number(style)+"\t";
 		if (style == Spline)
 			s+="5\t";
 		else if (style == VerticalSteps)
@@ -2028,19 +2028,19 @@ QString Graph::saveCurveLayout(int index)
 			s+=QString::number(symbol.pen().widthF())+"\t";
 	}
 
-	if(style == VerticalBars||style == HorizontalBars||style == Histogram){
+	if(style == VerticalBars || style == HorizontalBars || style == Histogram){
 		QwtBarCurve *b = (QwtBarCurve*)c;
 		s+=QString::number(b->gap())+"\t";
 		s+=QString::number(b->offset())+"\t";
 	}
 
-	if(style == Histogram){
+	if (style == Histogram){
 		QwtHistogram *h = (QwtHistogram*)c;
 		s+=QString::number(h->autoBinning())+"\t";
 		s+=QString::number(h->binSize())+"\t";
 		s+=QString::number(h->begin())+"\t";
 		s+=QString::number(h->end())+"\t";
-	}else if(style == VectXYXY || style == VectXYAM){
+	} else if(style == VectXYXY || style == VectXYAM){
 		VectorCurve *v = (VectorCurve*)c;
 		s+=v->color().name()+"\t";
 		s+=QString::number(v->width())+"\t";
@@ -2054,7 +2054,7 @@ QString Graph::saveCurveLayout(int index)
 		if (style == VectXYAM)
 			s+="\t"+QString::number(v->position());
 		s+="\t";
-	}else if(style == Box){
+	} else if(style == Box){
 		BoxCurve *b = (BoxCurve*)c;
 		s+=QString::number(SymbolBox::symbolIndex(b->maxStyle()))+"\t";
 		s+=QString::number(SymbolBox::symbolIndex(b->p99Style()))+"\t";
@@ -2068,7 +2068,6 @@ QString Graph::saveCurveLayout(int index)
 		s+=QString::number(b->whiskersRangeType())+"\t";
 		s+=QString::number(b->whiskersRange())+"\t";
 	}
-
 	return s;
 }
 
@@ -2090,9 +2089,10 @@ QString Graph::saveCurves()
 
             DataCurve *c = (DataCurve *)it;
 			if (c->type() != ErrorBars){
-				if (c->type() == Function)
+				if (c->type() == Function){
 					s += ((FunctionCurve *)c)->saveToString();
-				else if (c->type() == Box)
+					continue;
+				} else if (c->type() == Box)
 					s += "curve\t" + QString::number(c->x(0)) + "\t" + c->title().text() + "\t";
 				else
 					s += "curve\t" + c->xColumnName() + "\t" + c->title().text() + "\t";
@@ -2102,7 +2102,7 @@ QString Graph::saveCurves()
 				s += QString::number(c->startRow())+"\t"+QString::number(c->endRow())+"\t";
 				s += QString::number(c->isVisible())+"\n";
 				s += c->saveToString();
-			}else if (c->type() == ErrorBars){
+			} else if (c->type() == ErrorBars){
   	        	QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)it;
   	            s += "ErrorBars\t";
   	            s += QString::number(er->direction())+"\t";
@@ -3514,6 +3514,59 @@ void Graph::insertFunctionCurve(const QString& formula, int points, int fileVers
 		}
 	}
 	addFunction(formulas, start, end, points,  var, type, name);
+}
+
+void Graph::restoreFunction(const QStringList& lst)
+{	
+	FunctionCurve::FunctionType type = FunctionCurve::Normal;
+	int points = 0, style = 0;
+	QStringList formulas;
+	QString var, title = QString::null;
+	double start = 0.0, end = 0.0;
+	
+	QStringList::const_iterator line = lst.begin();
+	for (line++; line != lst.end(); line++){
+        QString s = *line;
+        if (s.contains("<Type>"))
+			type = (FunctionCurve::FunctionType)s.remove("<Type>").remove("</Type>").stripWhiteSpace().toInt();
+		else if (s.contains("<Title>"))
+			title = s.remove("<Title>").remove("</Title>").stripWhiteSpace();
+		else if (s.contains("<Expression>"))
+			formulas = s.remove("<Expression>").remove("</Expression>").split("\t");
+		else if (s.contains("<Variable>"))
+			var = s.remove("<Variable>").remove("</Variable>").stripWhiteSpace();
+		else if (s.contains("<Range>")){
+			QStringList l = s.remove("<Range>").remove("</Range>").split("\t");
+			if (l.size() == 2){
+				start = l[0].toDouble();
+				end = l[1].toDouble();
+			}
+		} else if (s.contains("<Points>"))
+			points = s.remove("<Points>").remove("</Points>").stripWhiteSpace().toInt();
+		else if (s.contains("<Style>")){
+			style = s.remove("<Style>").remove("</Style>").stripWhiteSpace().toInt();
+			break;
+		}
+	}
+	
+	FunctionCurve *c = new FunctionCurve(type, title);
+	c->setRange(start, end);
+	c->setFormulas(formulas);
+	c->setVariable(var);
+	c->loadData(points);
+
+	c_type.resize(++n_curves);
+	c_type[n_curves-1] = style;
+	c_keys.resize(n_curves);
+	c_keys[n_curves-1] = d_plot->insertCurve(c);
+		
+	QStringList l;
+	for (line++; line != lst.end(); line++)
+        l << *line;
+	c->restoreCurveLayout(l);
+	
+	addLegendItem();
+	updatePlot();
 }
 
 void Graph::createTable(const QString& curveName)

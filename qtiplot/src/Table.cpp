@@ -1214,34 +1214,33 @@ void Table::clearSelection()
 void Table::copySelection()
 {
 	QString text;
-	int i,j;
-	int rows=d_table->numRows();
-	int cols=d_table->numCols();
+	int rows = d_table->numRows();
+	int cols = d_table->numCols();
 	QString eol = applicationWindow()->endOfLine();
 	
 	QVarLengthArray<int> selection(1);
-	int c=0;
-	for (i=0;i<cols;i++){
+	int c = 0;
+	for (int i = 0; i<cols; i++){
 		if (d_table->isColumnSelected(i,true)){
 			c++;
 			selection.resize(c);
-			selection[c-1]=i;
+			selection[c-1] = i;
 		}
 	}
-	if (c>0){
-		for (i=0; i<rows; i++){
-			for (j=0;j<c-1;j++)
-				text += d_table->text(i,selection[j]) + "\t";
-			text += d_table->text(i,selection[c-1]) + eol;
+	if (c > 0){
+		for (int i = 0; i<rows; i++){
+			for (int j = 0; j<c-1; j++)
+				text += d_table->text(i, selection[j]) + "\t";
+			text += d_table->text(i, selection[c-1]) + eol;
 		}
 	} else {
 		Q3TableSelection sel = d_table->selection(0);
-		int right=sel.rightCol();
-		int bottom=sel.bottomRow();
-		for (i=sel.topRow(); i<=bottom; i++){
-			for (j=sel.leftCol(); j<right; j++)
-				text += d_table->text(i,j) + "\t";
-			text += d_table->text(i,right) + eol;
+		int right = sel.rightCol();
+		int bottom = sel.bottomRow();
+		for (int i = sel.topRow(); i<=bottom; i++){
+			for (int j = sel.leftCol(); j<right; j++)
+				text += d_table->text(i, j) + "\t";
+			text += d_table->text(i, right) + eol;
 		}
 	}
 
@@ -1257,10 +1256,10 @@ void Table::pasteSelection()
 		return;
 	
 	QStringList linesList = text.split(applicationWindow()->endOfLine());
-	int rows = linesList.size();
-	if (!rows)
+	int rows = linesList.size() - 1;
+	if (rows < 1)
 		return;
-	
+		
 	int cols = linesList[0].split("\t").count();
 	for (int i = 1; i < rows; i++){
 		int aux = linesList[i].split("\t").count();

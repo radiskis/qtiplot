@@ -28,11 +28,141 @@
  ***************************************************************************/
 #include "PlotCurve.h"
 #include "ScaleDraw.h"
+#include "SymbolBox.h"
+#include "PatternBox.h"
 #include "plot2D/ScaleEngine.h"
 #include <QDateTime>
 #include <QMessageBox>
 #include <QPainter>
 #include <qwt_symbol.h>
+
+QString PlotCurve::saveCurveLayout()
+{		
+	Plot *plot = (Plot *)this->plot();
+	Graph *g = (Graph *)plot->parent();
+	
+	int index = g->curveIndex((QwtPlotCurve *)this);
+	int style = g->curveType(index);
+	QString s = "<Style>" + QString::number(style) + "</Style>\n";
+	
+	if (style == Graph::Spline)
+		s += "<LineStyle>5</LineStyle>\n";
+	else if (style == Graph::VerticalSteps)
+		s += "<LineStyle>6</LineStyle>\n";
+	else
+		s += "<LineStyle>" + QString::number(this->style()) + "</LineStyle>\n";
+			
+	QPen pen = this->pen();
+	if (pen.style() != Qt::NoPen){
+		s += "<Pen>\n";
+		s += "\t<Color>" + pen.color().name() + "</Color>\n";
+		s += "\t<Style>" + QString::number(pen.style()-1) + "</Style>\n";
+		s += "\t<Width>" + QString::number(pen.widthF()) + "</Width>\n";
+		s += "</Pen>\n";
+	}
+	
+	QBrush brush = this->brush();
+	if (brush.style() != Qt::NoBrush){
+		s += "<Brush>\n";
+		s += "\t<Color>" + brush.color().name() + "</Color>\n";
+		s += "\t<Style>" + QString::number(PatternBox::patternIndex(brush.style())) + "</Style>\n";
+		s += "</Brush>\n";
+	}
+	
+	const QwtSymbol symbol = this->symbol();
+	if (symbol.style() != QwtSymbol::NoSymbol){
+		s += "<Symbol>\n";
+		s += "\t<Style>" + QString::number(SymbolBox::symbolIndex(symbol.style())) + "</Style>\n";
+		s += "\t<Size>" + QString::number(symbol.size().width()) + "</Size>\n";
+	
+		s += "\t<SymbolPen>\n";
+		s += "\t\t<Color>" + symbol.pen().color().name() + "</Color>\n";
+		s += "\t\t<Width>" + QString::number(symbol.pen().widthF()) + "</Width>\n";
+		s += "\t</SymbolPen>\n";
+	
+		brush = this->brush();
+		if (brush.style() != Qt::NoBrush){
+			s += "\t<SymbolBrush>\n";
+			s += "\t\t<Color>" + symbol.brush().color().name() + "</Color>\n";
+			s += "\t\t<Style>" + QString::number(PatternBox::patternIndex(symbol.brush().style())) + "</Style>\n";
+			s += "\t</SymbolBrush>\n";
+		}
+		s += "</Symbol>\n";
+	}
+	s += "<xAxis>" + QString::number(xAxis()) + "</xAxis>\n";
+	s += "<yAxis>" + QString::number(yAxis()) + "</yAxis>\n";
+	s += "<Visible>" + QString::number(isVisible()) + "</Visible>\n";
+	return s;
+}
+
+void PlotCurve::restoreCurveLayout(const QStringList& lst)
+{
+	QStringList::const_iterator line = lst.begin();
+	for (line++; line != lst.end(); line++){
+        QString s = *line;
+        if (s == "<Pen>"){
+			QPen pen;
+			while(s != "</Pen>"){
+				s = (*(++line)).stripWhiteSpace();
+				if (s.contains("<Color>"))
+					pen.setColor(QColor(s.remove("<Color>").remove("</Color>")));
+				else if (s.contains("<Style>"))
+					pen.setStyle(Graph::getPenStyle(s.remove("<Style>").remove("</Style>").toInt()));
+				else if (s.contains("<Width>"))
+					pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());	
+			}
+			setPen(pen);
+		} else if (s == "<Brush>"){
+			QBrush brush;
+			while(s != "</Brush>"){
+				s = (*(++line)).stripWhiteSpace();
+				if (s.contains("<Color>"))
+					brush.setColor(QColor(s.remove("<Color>").remove("</Color>")));
+				else if (s.contains("<Style>"))
+					brush.setStyle(PatternBox::brushStyle(s.remove("<Style>").remove("</Style>").toInt()));
+			}
+			setBrush(brush);
+		} else if (s == "<Symbol>"){
+			QwtSymbol symbol;
+			while(s != "</Symbol>"){
+				s = (*(++line)).stripWhiteSpace();
+				if (s.contains("<Style>"))
+					symbol.setStyle(SymbolBox::style(s.remove("<Style>").remove("</Style>").toInt()));
+				else if (s.contains("<Size>"))
+					symbol.setSize((QwtSymbol::Style)s.remove("<Size>").remove("</Size>").toInt());
+				else if (s == "<SymbolPen>"){
+					QPen pen;
+					while(s != "</SymbolPen>"){
+						s = (*(++line)).stripWhiteSpace();
+						if (s.contains("<Color>"))
+							pen.setColor(QColor(s.remove("<Color>").remove("</Color>")));
+						else if (s.contains("<Style>"))
+							pen.setStyle(Graph::getPenStyle(s.remove("<Style>").remove("</Style>").toInt()));
+						else if (s.contains("<Width>"))
+							pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());	
+					}
+				symbol.setPen(pen);
+				} else if (s == "<SymbolBrush>"){
+					QBrush brush;
+					while(s != "</SymbolBrush>"){
+						s = (*(++line)).stripWhiteSpace();
+						if (s.contains("<Color>"))
+							brush.setColor(QColor(s.remove("<Color>").remove("</Color>")));
+						else if (s.contains("<Style>"))
+							brush.setStyle(PatternBox::brushStyle(s.remove("<Style>").remove("</Style>").toInt()));
+					}
+					symbol.setBrush(brush);
+				}
+				setSymbol(symbol);
+			}		
+		} else if (s.contains("<xAxis>"))
+			setXAxis(s.remove("<xAxis>").remove("</xAxis>").toInt());
+		else if (s.contains("<yAxis>"))
+			setYAxis(s.remove("<yAxis>").remove("</yAxis>").toInt());
+		else if (s.contains("<Visible>"))
+			setVisible(s.remove("<Visible>").remove("</Visible>").toInt());
+	}
+}
 
 DataCurve::DataCurve(Table *t, const QString& xColName, const QString& name, int startRow, int endRow):
     PlotCurve(name),

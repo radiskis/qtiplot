@@ -63,15 +63,16 @@ void FunctionCurve::copy(FunctionCurve* f)
 }
 
 QString FunctionCurve::saveToString()
-{
-	QString s = "FunctionCurve\t";
-	s += QString::number(d_function_type) + ",";
-	s += title().text() + ",";
-	s += d_formulas.join(",") + "," + d_variable + ",";
-	s += QString::number(d_from,'g',15)+",";
-	s += QString::number(d_to,'g',15)+"\t";
-	s += QString::number(dataSize())+"\t\t\t";
-	//the 2 last tabs are legacy code, kept for compatibility with old project files
+{	
+	QString s = "<Function>\n";
+	s += "<Type>" + QString::number(d_function_type) + "</Type>\n";
+	s += "<Title>" + title().text() + "</Title>\n";
+	s += "<Expression>" + d_formulas.join("\t") + "</Expression>\n";
+	s += "<Variable>" + d_variable + "</Variable>\n";
+	s += "<Range>" + QString::number(d_from,'g',15) + "\t" + QString::number(d_to,'g',15) + "</Range>\n";
+	s += "<Points>" + QString::number(dataSize()) + "</Points>\n";
+	s += saveCurveLayout();
+	s += "</Function>\n";
 	return s;
 }
 
