@@ -69,6 +69,9 @@ class QwtErrorPlotCurve;
 class MultiLayer;
 class Spectrogram;
 class FunctionCurve;
+class VectorCurve;
+class BoxCurve;
+class QwtHistogram;
 
 //! Structure containing curve layout parameters
 typedef struct{
@@ -161,9 +164,9 @@ class Graph: public QWidget
 		//! Returns true if this Graph is a pie plot, false otherwise.
 		bool isPiePlot(){return (c_type.count() == 1 && c_type[0] == Pie);};
 		//! Used when creating a pie plot.
-		void plotPie(Table* w,const QString& name, int startRow = 0, int endRow = -1);
+		QwtPieCurve* plotPie(Table* w,const QString& name, int startRow = 0, int endRow = -1);
 		//! Used when restoring a pie plot from a project file.
-		void plotPie(Table* w, const QString& name, const QPen& pen, int brush, int size,
+		QwtPieCurve* plotPie(Table* w, const QString& name, const QPen& pen, int brush, int size,
 			int firstColor, int startRow = 0, int endRow = -1, bool visible = true,
 			double d_start_azimuth = 270, double d_view_angle = 90, double d_thickness = 33,
 			double d_horizontal_offset = 0.0, double d_edge_dist = 25, bool d_counter_clockwise = false,
@@ -176,9 +179,9 @@ class Graph: public QWidget
 		//@}
 
 		bool addCurves(Table* w, const QStringList& names, int style = 0, double lWidth = 1, int sSize = 3, int startRow = 0, int endRow = -1);
-		bool insertCurve(Table* w, const QString& name, int style, int startRow = 0, int endRow = -1);
-		bool insertCurve(Table* w, int xcol, const QString& name, int style);
-		bool insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow = 0, int endRow = -1);
+		PlotCurve* insertCurve(Table* w, const QString& name, int style, int startRow = 0, int endRow = -1);
+		PlotCurve* insertCurve(Table* w, int xcol, const QString& name, int style);
+		PlotCurve* insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow = 0, int endRow = -1);
 		void insertPlotItem(QwtPlotItem *i, int type);
 
 		//! Shows/Hides a curve defined by its index.
@@ -255,11 +258,11 @@ class Graph: public QWidget
 
 		//! \name Error Bars
 		//@{
-		bool addErrorBars(const QString& xColName, const QString& yColName, Table *errTable,
+		QwtErrorPlotCurve* addErrorBars(const QString& xColName, const QString& yColName, Table *errTable,
 				const QString& errColName, int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
-		bool addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
+		QwtErrorPlotCurve* addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
 				int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
@@ -291,7 +294,7 @@ class Graph: public QWidget
 		//@{
 		CurveLayout initCurveLayout(int style, int curves = 0);
 		static CurveLayout initCurveLayout();
-		void updateCurveLayout(int index,const CurveLayout *cL);
+		void updateCurveLayout(PlotCurve* c, const CurveLayout *cL);
 		//! Tries to guess not already used curve color and symbol style
 		void guessUniqueCurveLayout(int& colorIndex, int& symbolIndex);
 		//@}
@@ -549,7 +552,7 @@ class Graph: public QWidget
 		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var, double start, double end, int points);
 		FunctionCurve* addFunction(const QStringList &formulas, double start, double end, int points = 100, const QString &var = "x", int type = 0, const QString& title = QString::null);
 		//! Used when reading from a project file with version < 0.9.5.
-		void insertFunctionCurve(const QString& formula, int points, int fileVersion);
+		FunctionCurve* insertFunctionCurve(const QString& formula, int points, int fileVersion);
 		//! Used when reading from a project file with version >= 0.9.5.
 		void restoreFunction(const QStringList& lst);
 		
@@ -564,14 +567,14 @@ class Graph: public QWidget
 
 		//! \name Vector Curves
 		//@{
-		void plotVectorCurve(Table* w, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
+		VectorCurve* plotVectorCurve(Table* w, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
 		void updateVectorsLayout(int curve, const QColor& color, double width, int arrowLength, int arrowAngle, bool filled, int position,
 				const QString& xEndColName = QString(), const QString& yEndColName = QString());
 		//@}
 
 		//! \name Box Plots
 		//@{
-		void openBoxDiagram(Table *w, const QStringList& l, int fileVersion);
+		BoxCurve* openBoxDiagram(Table *w, const QStringList& l, int fileVersion);
 		void plotBoxDiagram(Table *w, const QStringList& names, int startRow = 0, int endRow = -1);
 		//@}
 
@@ -628,9 +631,9 @@ class Graph: public QWidget
 		//! Restores a spectrogram. Used when opening a project file.
   		void restoreSpectrogram(ApplicationWindow *app, const QStringList& lst);
         //! Add a matrix histogram  to the graph
-        void addHistogram(Matrix *m);
+        QwtHistogram* addHistogram(Matrix *m);
         //! Restores a histogram from a project file.
-        void restoreHistogram(Matrix *m, const QStringList& l);
+        QwtHistogram* restoreHistogram(Matrix *m, const QStringList& l);
 
 		bool antialiasing(){return d_antialiasing;};
 		//! Enables/Disables antialiasing of plot items.

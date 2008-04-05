@@ -634,6 +634,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				QStringList formulas;
 				double start, end;
 				int s;
+				PlotCurve *curve = NULL;
 				switch(data[0].toAscii())
 				{
 				case 'T':
@@ -641,12 +642,12 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					if(style==Graph::ErrorBars)
 					{
 						int flags=opj.curveSymbolType(g,l,c);
-						graph->addErrorBars(tableName + "_" + opj.curveXColName(g,l,c), mw->table(tableName), tableName + "_" + opj.curveYColName(g,l,c),
+						curve = (PlotCurve *)graph->addErrorBars(tableName + "_" + opj.curveXColName(g,l,c), mw->table(tableName), tableName + "_" + opj.curveYColName(g,l,c),
 							((flags&0x10)==0x10?0:1), ceil(opj.curveLineWidth(g,l,c)), ceil(opj.curveSymbolSize(g,l,c)), QColor(Qt::black),
 							(flags&0x40)==0x40, (flags&2)==2, (flags&1)==1);
 					}
 					else if(style==Graph::Histogram)
-						graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveYColName(g,l,c), style);
+						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveYColName(g,l,c), style);
 					else if(style==Graph::Pie || style==Graph::Box)
 					{
 						QStringList names;
@@ -692,7 +693,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 						}
 					}
 					else
-						graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveXColName(g,l,c), tableName + "_" + opj.curveYColName(g,l,c), style);
+						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveXColName(g,l,c), tableName + "_" + opj.curveYColName(g,l,c), style);
 					break;
 				case 'F':
 					s=opj.functionIndex(data.right(data.length()-2).toStdString().c_str());
@@ -711,7 +712,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 						start = opj.functionBegin(s);
 						end = opj.functionEnd(s);
 					}
-					graph->addFunction(formulas, start, end, opj.functionPoints(s), "x", type, opj.functionName(s));
+					curve = (PlotCurve *)graph->addFunction(formulas, start, end, opj.functionPoints(s), "x", type, opj.functionName(s));
 
 					mw->updateFunctionLists(type, formulas);
 					break;
@@ -882,7 +883,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 						break;
 				}
 
-				graph->updateCurveLayout(c, &cl);
+				graph->updateCurveLayout(curve, &cl);
 				if (style == Graph::VerticalBars || style == Graph::HorizontalBars)
 				{
 					QwtBarCurve *b = (QwtBarCurve*)graph->curve(c);

@@ -369,7 +369,8 @@ bool CurvesDialog::addCurve(const QString& name)
 
 	int style = curveStyle();
 	Table* t = app->table(name);
-	if (t && d_graph->insertCurve(t, name, style)){
+	if (t){
+		PlotCurve *c = d_graph->insertCurve(t, name, style);
 		CurveLayout cl = Graph::initCurveLayout();
 		int color, symbol;
 		d_graph->guessUniqueCurveLayout(color, symbol);
@@ -388,19 +389,19 @@ bool CurvesDialog::addCurve(const QString& name)
 			cl.lCol=0;
 			cl.aCol=color;
 			cl.sType = 0;
-		}else if (style==Graph::Area ){
+		} else if (style==Graph::Area ){
 			cl.filledArea=1;
 			cl.aCol=color;
 			cl.sType = 0;
-		}else if (style == Graph::VerticalDropLines)
+		} else if (style == Graph::VerticalDropLines)
 			cl.connectType=2;
 		else if (style == Graph::VerticalSteps || style == Graph::HorizontalSteps){
 			cl.connectType=3;
 			cl.sType = 0;
-		}else if (style == Graph::Spline)
+		} else if (style == Graph::Spline)
 			cl.connectType=5;
 
-		d_graph->updateCurveLayout(d_graph->curves() - 1, &cl);
+		d_graph->updateCurveLayout(c, &cl);
 		contents->addItem(name);
 		return true;
 	}
