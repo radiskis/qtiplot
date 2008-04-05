@@ -512,7 +512,7 @@ public:
 %End
 
   bool insertCurve(Table*, const QString&, const QString&, int=1);
-  bool addCurves(Table*, SIP_PYTUPLE, int=0, double=1, int=3, int=0, int=-1)/PyName=addCurves/;
+  bool addCurves(Table*, SIP_PYTUPLE, int=0, double=1, int=3, int=0, int=-1);
 %MethodCode
   QStringList l;
   int n = PyTuple_Size(a1);

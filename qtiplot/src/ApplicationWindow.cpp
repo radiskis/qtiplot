@@ -11992,6 +11992,7 @@ void ApplicationWindow::translateActionsStrings()
     actionMoveColLast->setToolTip(tr("Move to Last"));
 	actionShowColsDialog->setMenuText(tr("&Columns..."));
 	actionShowRowsDialog->setMenuText(tr("&Rows..."));
+	actionDeleteRows->setMenuText(tr("&Delete Rows Interval..."));
 
 	actionAbout->setMenuText(tr("&About QtiPlot"));
 	actionAbout->setShortcut(tr("F1"));
@@ -13140,9 +13141,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				s=t.readLine();
 				QStringList graph=s.split("\t");
 				QString caption=graph[0];
-				plot=multilayerPlot(caption);
-				plot->setCols(graph[1].toInt());
-				plot->setRows(graph[2].toInt());
+				plot = multilayerPlot(caption, 0, graph[2].toInt(), graph[1].toInt());
 				setListViewDate(caption, graph[3]);
 				plot->setBirthDate(graph[3]);
 				plot->blockSignals(true);
@@ -14436,16 +14435,15 @@ void ApplicationWindow::cascade()
 ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute, bool factorySettings)
 {
 #ifdef SCRIPTING_PYTHON
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	ApplicationWindow *app= new ApplicationWindow(factorySettings);
-	app->setScriptingLanguage("Python");
-	app->restoreApplicationGeometry();
-	app->showScriptWindow();
-	app->scriptWindow->open(fn);
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));	
+	setScriptingLanguage("Python");
+	restoreApplicationGeometry();
+	showScriptWindow();
+	scriptWindow->open(fn);
 	QApplication::restoreOverrideCursor();
 	if (execute)
-		app->scriptWindow->executeAll();
-	return app;
+		scriptWindow->executeAll();
+	return this;
 #else
     QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
     tr("QtiPlot was not built with Python scripting support included!"));
