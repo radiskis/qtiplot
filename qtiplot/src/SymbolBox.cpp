@@ -65,7 +65,7 @@ void SymbolBox::init()
 {
 	QPixmap icon = QPixmap(14, 14);
 	icon.fill ( QColor (Qt::gray) );
-	const QRect r= QRect(0, 0, 14, 14);
+	const QRect r = QRect(0, 0, 14, 14);
 	QPainter p(&icon);
 	p.setBackgroundColor(QColor(Qt::gray));
 	QwtSymbol symb;
@@ -79,7 +79,7 @@ void SymbolBox::init()
 
 	symb.setStyle (QwtSymbol::Rect);
 	p.eraseRect ( r );
-	symb.draw(&p, r);
+	symb.draw(&p, r.adjusted(0, 0, -1, -1));
     this->insertItem(icon,tr("Rectangle"));
 
 	symb.setStyle (QwtSymbol::Diamond);

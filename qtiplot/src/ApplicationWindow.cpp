@@ -2383,6 +2383,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 		int posY = s.find("(Y)", posX);
 		QString yColName = caption+s.mid(posX+2, posY-posX-2);
 
+		PlotCurve *c = NULL;
 		if (s.contains("(yErr)") || s.contains("(xErr)")){
 			posY = s.find(",", posY);
 			int posErr, errType;
@@ -2395,14 +2396,14 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 			}
 
 			QString errColName = caption+s.mid(posY+2, posErr-posY-2);
-			ag->addErrorBars(xColName, yColName, w, errColName, errType);
+			c = (PlotCurve *)ag->addErrorBars(xColName, yColName, w, errColName, errType);
 		} else
-            ag->insertCurve(w, xCol, yColName, defaultCurveStyle);
+            c = (PlotCurve *)ag->insertCurve(w, xCol, yColName, defaultCurveStyle);
 
         CurveLayout cl = ag->initCurveLayout(defaultCurveStyle, curves - errorBars);
         cl.lWidth = defaultCurveLineWidth;
         cl.sSize = defaultSymbolSize;
-        ag->updateCurveLayout(i, &cl);
+        ag->updateCurveLayout(c, &cl);
 	}
 	ag->newLegend();
 	ag->initScaleLimits();
@@ -10112,6 +10113,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 
             int plotType = curve[3].toInt();
 			Table *w = app->table(curve[2]);
+			PlotCurve *c = NULL;
 			if (w){
 				if(plotType == Graph::VectXYXY || plotType == Graph::VectXYAM){
 					QStringList colsList;
@@ -10128,7 +10130,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 						endRow = curve[curve.count()-2].toInt();
 					}
 
-					ag->plotVectorCurve(w, colsList, plotType, startRow, endRow);
+					c = (PlotCurve *)ag->plotVectorCurve(w, colsList, plotType, startRow, endRow);
 
 					if (d_file_version <= 77){
 						int temp_index = convertOldToNewColorIndex(curve[15].toInt());
@@ -10142,17 +10144,17 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 							ag->updateVectorsLayout(curveID, curve[15], curve[16].toDouble(), curve[17].toInt(),
 									curve[18].toInt(), curve[19].toInt(), curve[22].toInt());
 					}
-				} else if(plotType == Graph::Box)
-					ag->openBoxDiagram(w, curve, d_file_version);
+				} else if (plotType == Graph::Box)
+					c = (PlotCurve *)ag->openBoxDiagram(w, curve, d_file_version);
 				else {
 					if (d_file_version < 72)
-						ag->insertCurve(w, curve[1].toInt(), curve[2], plotType);
+						c = (PlotCurve *)ag->insertCurve(w, curve[1].toInt(), curve[2], plotType);
 					else if (d_file_version < 90)
-						ag->insertCurve(w, curve[1], curve[2], plotType);
+						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType);
 					else{
 						int startRow = curve[curve.count()-3].toInt();
 						int endRow = curve[curve.count()-2].toInt();
-						ag->insertCurve(w, curve[1], curve[2], plotType, startRow, endRow);
+						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType, startRow, endRow);
 					}
 				}
 
@@ -10172,9 +10174,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 					else
 						ag->setBarsGap(curveID, curve[15].toInt(), curve[16].toInt());
 				}
-				ag->updateCurveLayout(curveID, &cl);
+				ag->updateCurveLayout(c, &cl);
 				if (d_file_version >= 88){
-					QwtPlotCurve *c = ag->curve(curveID);
 					if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve){
 						if (d_file_version < 90)
 							c->setAxis(curve[curve.count()-2].toInt(), curve[curve.count()-1].toInt());
@@ -10186,8 +10187,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				}
 			} else if(plotType == Graph::Histogram){//histograms from matrices
                 Matrix *m = app->matrix(curve[2]);
-                ag->restoreHistogram(m, curve);
-                ag->updateCurveLayout(curveID, &cl);
+                QwtHistogram *h = ag->restoreHistogram(m, curve);
+                ag->updateCurveLayout(h, &cl);
 			}
 			curveID++;
 		} else if (s == "<CurveLabels>"){
@@ -10237,9 +10238,9 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			else
 				cl.penWidth = cl.lWidth;
 
-			ag->insertFunctionCurve(curve[1], curve[2].toInt(), d_file_version);
+			PlotCurve *c = (PlotCurve *)ag->insertFunctionCurve(curve[1], curve[2].toInt(), d_file_version);
 			ag->setCurveType(curveID, curve[5].toInt());
-			ag->updateCurveLayout(curveID, &cl);
+			ag->updateCurveLayout(c, &cl);
 			if (d_file_version >= 88){
 				QwtPlotCurve *c = ag->curve(curveID);
 				if (c){
