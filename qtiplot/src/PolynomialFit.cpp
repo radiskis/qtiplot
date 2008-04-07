@@ -312,3 +312,104 @@ void LinearFit::calculateFitCurveData(double *X, double *Y)
 		}
 	}
 }
+
+
+/*****************************************************************************
+ *
+ * Class LinearSlopeFit
+ *
+ *****************************************************************************/
+
+LinearSlopeFit::LinearSlopeFit(ApplicationWindow *parent, Graph *g)
+: Fit(parent, g)
+{
+	init();
+}
+
+LinearSlopeFit::LinearSlopeFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle)
+: Fit(parent, g)
+{
+	init();
+	setDataFromCurve(curveTitle);
+}
+
+LinearSlopeFit::LinearSlopeFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end)
+: Fit(parent, g)
+{
+	init();
+	setDataFromCurve(curveTitle, start, end);
+}
+
+LinearSlopeFit::LinearSlopeFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow, int endRow)
+: Fit(parent, t)
+{
+	init();
+	setDataFromTable(t, xCol, yCol, startRow, endRow);
+}
+
+void LinearSlopeFit::init()
+{
+	d_scale_errors = false;
+	
+	d_p = 1;
+    d_min_points = d_p;
+
+	covar = gsl_matrix_alloc (d_p, d_p);
+	d_results = new double[d_p];
+
+    d_param_init = gsl_vector_alloc(d_p);
+	gsl_vector_set_all (d_param_init, 1.0);
+
+	is_non_linear = false;
+	d_formula = "A*x";
+	d_param_names << "A";
+	d_param_explain << "slope";
+	d_explanation = tr("Linear Regression");
+	setObjectName(tr("LinearSlope"));
+}
+
+void LinearSlopeFit::fit()
+{
+    if (d_init_err)
+        return;
+
+	if (d_p > d_n){
+  		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+  	    tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p));
+  		return;
+  	}
+
+	double c1, cov11;
+	if (d_weighting == NoWeighting)
+		gsl_fit_mul(d_x, 1, d_y, 1, d_n, &c1, &cov11, &chi_2);
+	else
+		gsl_fit_wmul(d_x, 1, d_w, 1, d_y, 1, d_n, &c1, &cov11, &chi_2);
+
+	d_results[0] = c1;
+
+	gsl_matrix_set(covar, 0, 0, cov11);
+	generateFitCurve();
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (app->writeFitResultsToLog)
+		app->updateLog(logFitInfo(0, 0));
+}
+
+void LinearSlopeFit::calculateFitCurveData(double *X, double *Y)
+{
+	if (d_gen_function){
+		double X0 = d_x[0];
+		double step = (d_x[d_n-1] - X0)/(d_points - 1);
+		for (int i=0; i<d_points; i++){
+		    double x = X0 + i*step;
+			X[i] = x;
+			Y[i] = d_results[0]*x;
+		}
+	} else {
+		for (int i=0; i<d_points; i++) {
+		    double x = d_x[i];
+			X[i] = x;
+			Y[i] = d_results[0]*x;
+		}
+	}
+}

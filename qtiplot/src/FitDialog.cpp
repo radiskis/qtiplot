@@ -368,17 +368,17 @@ void FitDialog::initEditPage()
     editPage->setLayout(vbox2);
     tw->addWidget(editPage);
 
-	connect( buttonPlugins, SIGNAL( clicked() ), this, SLOT(chooseFolder()));
-    connect( buttonClear, SIGNAL( clicked() ), this, SLOT(resetFunction()));
-	connect( categoryBox, SIGNAL(currentRowChanged (int)), this, SLOT(showFunctionsList(int) ) );
+	connect( buttonPlugins, SIGNAL(clicked()), this, SLOT(chooseFolder()));
+    connect( buttonClear, SIGNAL(clicked()), this, SLOT(resetFunction()));
+	connect( categoryBox, SIGNAL(currentRowChanged (int)), this, SLOT(showFunctionsList(int)));
 	connect( funcBox, SIGNAL(currentRowChanged(int)), this, SLOT(showExpression(int)));
-	connect( boxUseBuiltIn, SIGNAL(toggled(bool)), this, SLOT(setFunction(bool) ) );
-	connect( btnAddName, SIGNAL(clicked()), this, SLOT(addFunctionName() ) );
-	connect( btnAddTxt, SIGNAL(clicked()), this, SLOT(addFunction() ) );
-	connect( btnContinue, SIGNAL(clicked()), this, SLOT(showFitPage() ) );
+	connect( boxUseBuiltIn, SIGNAL(toggled(bool)), this, SLOT(setFunction(bool)));
+	connect( btnAddName, SIGNAL(clicked()), this, SLOT(addFunctionName()));
+	connect( btnAddTxt, SIGNAL(clicked()), this, SLOT(addFunction()));
+	connect( btnContinue, SIGNAL(clicked()), this, SLOT(showFitPage()));
 	connect( btnAddFunc, SIGNAL(clicked()), this, SLOT(saveUserFunction()));
 	connect( btnDelFunc, SIGNAL(clicked()), this, SLOT(removeUserFunction()));
-	connect( buttonCancel2, SIGNAL(clicked()), this, SLOT(close()) );
+	connect( buttonCancel2, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 
@@ -506,7 +506,8 @@ void FitDialog::applyChanges()
 	app->writeFitResultsToLog = logBox->isChecked();
 	app->fitPoints = generatePointsBox->value();
 	app->generateUniformFitPoints = generatePointsBtn->isChecked();
-	if (d_current_fit && !d_current_fit->isA("PolynomialFit"))
+	if (d_current_fit && !d_current_fit->isA("PolynomialFit") && 
+		!d_current_fit->isA("LinearFit") && !d_current_fit->isA("LinearSlopeFit"))
 		app->fit_scale_errors = scaleErrorsBox->isChecked();
 	app->saveSettings();
 	btnApply->setEnabled(false);
@@ -726,7 +727,9 @@ void FitDialog::showFitPage()
 	if (d_current_fit->error())
 		return;
 
-    if (d_current_fit->type() == Fit::BuiltIn && d_current_fit->objectName() == tr("Polynomial")){
+    if (d_current_fit->type() == Fit::BuiltIn && 
+		(d_current_fit->isA("PolynomialFit") || d_current_fit->isA("LinearFit")
+		|| d_current_fit->isA("LinearSlopeFit"))){
         btnParamRange->setEnabled(false);
         boxAlgorithm->setEnabled(false);
     } else {
@@ -810,7 +813,8 @@ void FitDialog::showEditPage()
 void FitDialog::showAdvancedPage()
 {
 	tw->setCurrentWidget (advancedPage);
-	if (d_current_fit && d_current_fit->isA("PolynomialFit")){
+	if (d_current_fit && (d_current_fit->isA("PolynomialFit") || 
+		d_current_fit->isA("LinearFit") || d_current_fit->isA("LinearSlopeFit"))){
 		scaleErrorsBox->setChecked(false);
 		scaleErrorsBox->setEnabled(false);
 	} else {
@@ -1131,7 +1135,7 @@ void FitDialog::accept()
 		d_current_fit->setColor(boxColor->currentIndex());
 		d_current_fit->generateFunction(generatePointsBtn->isChecked(), generatePointsBox->value());
 		d_current_fit->setMaximumIterations(boxPoints->value());
-		if (!d_current_fit->isA("PolynomialFit"))
+		if (!d_current_fit->isA("PolynomialFit") && !d_current_fit->isA("LinearFit") && !d_current_fit->isA("LinearSlopeFit"))
 			d_current_fit->scaleErrors(scaleErrorsBox->isChecked());
 		d_current_fit->fit();
 		double *res = d_current_fit->results();
@@ -1268,6 +1272,8 @@ void FitDialog::initBuiltInFunctions()
 	d_built_in_functions << fit;
 
 	d_built_in_functions << new GaussAmpFit(app, d_graph);
+	d_built_in_functions << new LinearFit(app, d_graph);
+	d_built_in_functions << new LinearSlopeFit(app, d_graph);
 	d_built_in_functions << new LogisticFit(app, d_graph);
 
 	fit = new MultiPeakFit(app, d_graph, MultiPeakFit::Lorentz);

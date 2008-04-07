@@ -59,7 +59,7 @@ void PatternBox::init()
 
   QPixmap icon = QPixmap(28, 14);
   icon.fill ( QColor (Qt::white) );
-  const QRect r= QRect(0, 0, 28, 14);
+  const QRect r = QRect(0, 0, 27, 13);
   QPainter p(&icon);
   QBrush br = QBrush(QColor(Qt::darkGray), Qt::SolidPattern);
   p.fillRect(r, br);
@@ -158,7 +158,7 @@ void PatternBox::setPattern(const Qt::BrushStyle& style)
 
 Qt::BrushStyle PatternBox::brushStyle(int index)
 {
-  if (index < sizeof(patterns))
+  if (index < (int)sizeof(patterns))
     return patterns[index];
   else
     return Qt::SolidPattern; // default patterns is solid. 
