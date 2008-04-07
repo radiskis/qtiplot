@@ -370,6 +370,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_auto_update_table_values = true;
 	d_active_window = NULL;
     d_matrix_undo_stack_size = 10;
 
@@ -2447,6 +2448,24 @@ void ApplicationWindow::customizeTables(const QColor& bgColor,const QColor& text
 	}
 }
 
+void ApplicationWindow::setAutoUpdateTableValues(bool on)
+{
+	if (d_auto_update_table_values == on)
+		return;
+	
+	d_auto_update_table_values = on;
+	
+	Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows){
+            if (w->inherits("Table"))
+            	((Table *)w)->setAutoUpdateValues(d_auto_update_table_values);
+		}
+		f = f->folderBelow();
+	}
+}
+
 void ApplicationWindow::customTable(Table* w)
 {
 	QColorGroup cg;
@@ -2454,7 +2473,7 @@ void ApplicationWindow::customTable(Table* w)
 	cg.setColor(QColorGroup::Text, QColor(tableTextColor));
 	w->setPalette(QPalette(cg, cg, cg));
 
-	w->setHeaderColor (tableHeaderColor);
+	w->setHeaderColor(tableHeaderColor);
 	w->setTextFont(tableTextFont);
 	w->setHeaderFont(tableHeaderFont);
 	w->showComments(d_show_table_comments);
@@ -4345,6 +4364,8 @@ void ApplicationWindow::readSettings()
 	/* ---------------- group Tables --------------- */
 	settings.beginGroup("/Tables");
 	d_show_table_comments = settings.value("/DisplayComments", false).toBool();
+	d_auto_update_table_values = settings.value("/AutoUpdateValues", true).toBool();
+
 	QStringList tableFonts = settings.value("/Fonts").toStringList();
 	if (tableFonts.size() == 8)
 	{
@@ -4622,6 +4643,7 @@ void ApplicationWindow::saveSettings()
 	/* ----------------- group Tables -------------- */
 	settings.beginGroup("/Tables");
 	settings.setValue("/DisplayComments", d_show_table_comments);
+	settings.setValue("/AutoUpdateValues", d_auto_update_table_values);
 	QStringList tableFonts;
 	tableFonts<<tableTextFont.family();
 	tableFonts<<QString::number(tableTextFont.pointSize());

@@ -80,6 +80,7 @@ public:
 	void updateDecimalSeparators();
 	//! Updates the decimal separators when importing ASCII files on user request
 	void updateDecimalSeparators(const QLocale& oldSeparators);
+	void setAutoUpdateValues(bool on = true);
 
 public slots:
 	MyTable* table(){return d_table;};
@@ -210,11 +211,13 @@ public slots:
 	//! Set formula for column col.
 	void setCommand(int col, const QString& com);
 	//! Compute specified cells from column formula.
-	bool calculate(int col, int startRow, int endRow, bool forceMuParser = true);
+	bool calculate(int col, int startRow, int endRow, bool forceMuParser = true, bool notifyChanges = true);
 	//! Compute specified cells from column formula (optimized for muParser).
-	bool muParserCalculate(int col, int startRow, int endRow);
+	bool muParserCalculate(int col, int startRow, int endRow, bool notifyChanges = true);
 	//! Compute selected cells from column formulae; use current cell if there's no selection.
 	bool calculate();
+	//! Recalculates values in all columns with formulas containing \param columnName
+	void updateValues(Table*, const QString& columnName);
 
 	//! \name Row Operations
 	//@{

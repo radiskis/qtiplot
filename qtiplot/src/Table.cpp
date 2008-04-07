@@ -121,6 +121,19 @@ void Table::init(int rows, int cols)
 	connect(accelAll, SIGNAL(activated()), this, SLOT(selectAllTable()));
 
 	connect(d_table, SIGNAL(valueChanged(int, int)), this, SLOT(cellEdited(int, int)));
+	
+	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+}
+
+void Table::setAutoUpdateValues(bool on)
+{
+	if (on){
+		connect(this, SIGNAL(modifiedData(Table *, const QString&)),
+            	this, SLOT(updateValues(Table*, const QString&)));
+	} else {
+		disconnect(this, SIGNAL(modifiedData(Table *, const QString&)),
+            	this, SLOT(updateValues(Table*, const QString&)));
+	}
 }
 
 void Table::colWidthModified(int, int, int)
@@ -499,7 +512,7 @@ bool Table::calculate()
 	return success;
 }
 
-bool Table::muParserCalculate(int col, int startRow, int endRow)
+bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChanges)
 {
 	if (startRow < 0)
 		startRow = 0;
@@ -510,7 +523,8 @@ bool Table::muParserCalculate(int col, int startRow, int endRow)
 	if (cmd.isEmpty() || colTypes[col] != Numeric){
 		for (int i = startRow; i <= endRow; i++)
 			d_table->setText(i, col, cmd);
-        emit modifiedData(this, colName(col));
+        if (notifyChanges)
+            emit modifiedData(this, colName(col));
         emit modifiedWindow(this);
         return true;
 	}
@@ -556,13 +570,14 @@ bool Table::muParserCalculate(int col, int startRow, int endRow)
             }
 		}
 	}
-	emit modifiedData(this, colName(col));
+	if (notifyChanges)
+        emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
 	return true;
 }
 
-bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser)
+bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, bool notifyChanges)
 {
 	if (col < 0 || col >= d_table->numCols())
 		return false;
@@ -574,7 +589,7 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser)
     }
 
 	if (QString(scriptEnv->name()) == "muParser" || forceMuParser)
-		return muParserCalculate(col, startRow, endRow);
+		return muParserCalculate(col, startRow, endRow, notifyChanges);
 
 	if (startRow < 0)
 		startRow = 0;
@@ -585,7 +600,8 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser)
 	if (cmd.isEmpty() || colTypes[col] != Numeric){
 		for (int i=startRow; i<=endRow; i++)
 			d_table->setText(i, col, cmd);
-        emit modifiedData(this, colName(col));
+        if (notifyChanges)
+            emit modifiedData(this, colName(col));
         emit modifiedWindow(this);
         return true;
 	}
@@ -622,10 +638,30 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser)
 			return false;
 		}
 	}
-	emit modifiedData(this, colName(col));
+	if (notifyChanges)
+        emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
 	return true;
+}
+
+void Table::updateValues(Table* t, const QString& columnName)
+{
+    if (!t || t != this)
+        return;
+
+    QString colLabel = columnName;
+    colLabel.remove(this->objectName()).remove("_");
+
+	int cols = numCols();
+	int endRow = numRows() - 1;
+    for (int i = 0; i < cols; i++){
+		QString cmd = commands[i];
+        if (cmd.isEmpty() || colTypes[i] != Numeric || !cmd.contains("\"" + colLabel + "\""))
+            continue;
+
+        calculate(i, 0, endRow, false, false);
+	}
 }
 
 Q3TableSelection Table::getSelection()
@@ -991,7 +1027,7 @@ void Table::insertCols(int start, int count)
 
 	for(int i = 0; i<count; i++ ){
         int j = start + i;
-		commands.insert(j, QString());		
+		commands.insert(j, QString());
 		col_format.insert(j, "0/" + QString::number(d_numeric_precision));
 		comments.insert(j, QString());
 		col_label.insert(j, QString::number(max + i));
@@ -1217,7 +1253,7 @@ void Table::copySelection()
 	int rows = d_table->numRows();
 	int cols = d_table->numCols();
 	QString eol = applicationWindow()->endOfLine();
-	
+
 	QVarLengthArray<int> selection(1);
 	int c = 0;
 	for (int i = 0; i<cols; i++){
@@ -1254,12 +1290,12 @@ void Table::pasteSelection()
 	QString text = QApplication::clipboard()->text();
 	if (text.isEmpty())
 		return;
-	
+
 	QStringList linesList = text.split(applicationWindow()->endOfLine());
 	int rows = linesList.size() - 1;
 	if (rows < 1)
 		return;
-		
+
 	int cols = linesList[0].split("\t").count();
 	for (int i = 1; i < rows; i++){
 		int aux = linesList[i].split("\t").count();
@@ -2131,8 +2167,8 @@ void Table::setHeader(QStringList header)
 
 int Table::colIndex(const QString& name)
 {
-	int pos=name.find("_",false);
-	QString label=name.right(name.length()-pos-1);
+	int pos = name.find("_",false);
+	QString label = name.right(name.length()-pos-1);
 	return col_label.findIndex(label);
 }
 

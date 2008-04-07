@@ -243,11 +243,15 @@ void ConfigDialog::initTablesPage()
 	boxTableComments = new QCheckBox();
 	boxTableComments->setChecked(app->d_show_table_comments);
 
+	boxUpdateTableValues = new QCheckBox();
+	boxUpdateTableValues->setChecked(app->autoUpdateTableValues());
+	
 	QVBoxLayout * tablesPageLayout = new QVBoxLayout( tables );
 	tablesPageLayout->addLayout(topLayout,1);
 	tablesPageLayout->addWidget(groupBoxTableCol);
 	tablesPageLayout->addWidget(groupBoxTableFonts);
     tablesPageLayout->addWidget(boxTableComments);
+	tablesPageLayout->addWidget(boxUpdateTableValues);
 	tablesPageLayout->addStretch();
 }
 
@@ -1034,6 +1038,7 @@ void ConfigDialog::languageChange()
 #endif
 
 	//tables page
+	boxUpdateTableValues->setText(tr("Automatically &Recalculate Column Values"));
 	boxTableComments->setText(tr("&Display Comments in Header"));
 	groupBoxTableCol->setTitle(tr("Colors"));
 	lblSeparator->setText(tr("Default Column Separator"));
@@ -1158,6 +1163,7 @@ void ConfigDialog::apply()
 	}
 
 	app->columnSeparator = sep;
+	app->setAutoUpdateTableValues(boxUpdateTableValues->isChecked());
 	app->customizeTables(buttonBackground->color(), buttonText->color(),
 			buttonHeader->color(), textFont, headerFont, boxTableComments->isChecked());
 	// 2D plots page: options tab
