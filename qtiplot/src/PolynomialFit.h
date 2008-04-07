@@ -71,7 +71,25 @@ class LinearFit : public Fit
 		LinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
 
 		void fit();
-	    virtual double eval(double *par, double x){return par[0]+par[1]*x;};
+	    virtual double eval(double *par, double x){return par[0] + par[1]*x;};
+
+	private:
+		void init();
+		void calculateFitCurveData(double *X, double *Y);
+};
+
+class LinearSlopeFit : public Fit
+{
+	Q_OBJECT
+
+	public:
+		LinearSlopeFit(ApplicationWindow *parent, Graph *g);
+		LinearSlopeFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
+		LinearSlopeFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
+		LinearSlopeFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
+
+		void fit();
+	    virtual double eval(double *par, double x){return par[0]*x;};
 
 	private:
 		void init();
