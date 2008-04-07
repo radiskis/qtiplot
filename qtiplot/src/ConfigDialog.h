@@ -163,6 +163,7 @@ private:
 	QLabel *lblPythonConfigDir;
 	QLineEdit *pythonConfigDirLine;
 #endif
+	QCheckBox *boxUpdateTableValues;
 };
 
 #endif // CONFIGDIALOG_H

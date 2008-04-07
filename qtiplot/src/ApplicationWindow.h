@@ -157,6 +157,8 @@ public:
 	void setMatrixUndoStackSize(int size);
 
 	QString endOfLine();
+	bool autoUpdateTableValues(){return d_auto_update_table_values;};
+	void setAutoUpdateTableValues(bool on = true);
 
 public slots:
 	//! \name Projects and Project Files
@@ -1142,7 +1144,8 @@ private:
 	MdiSubWindow *d_active_window;
     TextEditor *d_text_editor;
     QLocale d_locale;
-
+	// Flag telling if table values should be automatically recalculated when values in a column are modified.
+	bool d_auto_update_table_values;
     int d_matrix_undo_stack_size;
 
 	//! Workaround for the new colors introduced in rev 447
