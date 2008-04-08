@@ -732,9 +732,13 @@ void FitDialog::showFitPage()
 		|| d_current_fit->isA("LinearSlopeFit"))){
         btnParamRange->setEnabled(false);
         boxAlgorithm->setEnabled(false);
+		boxPoints->setEnabled(false);
+		boxTolerance->setEnabled(false);
     } else {
         btnParamRange->setEnabled(true);
         boxAlgorithm->setEnabled(true);
+		boxPoints->setEnabled(true);
+		boxTolerance->setEnabled(true);
     }
 
 	QStringList paramList = d_current_fit->parameterNames();

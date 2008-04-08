@@ -233,10 +233,10 @@ d_head_length=l;
 
 void ArrowMarker::setHeadAngle(int a)
 {
-if (d_head_angle == a)
-	return;
+	if (d_head_angle == a)
+		return;
 
-d_head_angle=a;
+	d_head_angle = a;
 }
 
 void ArrowMarker::fillArrowHead(bool fill)
@@ -417,7 +417,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 					d_op = MoveEnd;
 					return true;
 				}
-				int d = width()+(int)floor(headLength()*tan(M_PI*headAngle()/180.0)+0.5);
+				int d = qRound(width() + (int)floor(headLength()*tan(M_PI*headAngle()/180.0) + 0.5));
 				if (dist(me->pos().x(),me->pos().y()) <= d)
 				{
 					QApplication::setOverrideCursor(QCursor(Qt::SizeAllCursor), true);

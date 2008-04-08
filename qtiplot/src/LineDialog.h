@@ -37,7 +37,7 @@ class QPushButton;
 class QTabWidget;
 class QWidget;
 class QSpinBox;
-class QLineEdit;
+class DoubleSpinBox;
 class ColorButton;
 class ArrowMarker;
 class DoubleSpinBox;
@@ -78,7 +78,8 @@ private:
     QCheckBox* startBox,  *filledBox;
 	QTabWidget* tw;
 	QWidget *options, *geometry, *head;
-	QLineEdit *xStartBox, *yStartBox, *xEndBox, *yEndBox;
+	DoubleSpinBox *xStartBox, *yStartBox, *xEndBox, *yEndBox;
+	QSpinBox *xStartPixelBox, *yStartPixelBox, *xEndPixelBox, *yEndPixelBox;
 	QSpinBox *boxHeadAngle, *boxHeadLength;
 };
 

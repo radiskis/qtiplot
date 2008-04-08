@@ -43,7 +43,6 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QLabel>
-#include <QLineEdit>
 #include <QComboBox>
 #include <QTabWidget>
 
@@ -91,6 +90,7 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
     endBox->setText( tr( "Arrow at &end" ) );
 	endBox->setChecked(lm->hasEndArrow());
 	gl1->addWidget(endBox, 3, 1);
+	gl1->setRowStretch(4, 1);
 
 	gb1->setLayout(gl1);
 
@@ -122,6 +122,7 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
     filledBox->setText( tr( "&Filled" ) );
 	filledBox->setChecked(lm->filledArrowHead());
 	gl2->addWidget(filledBox, 2, 1);
+	gl2->setRowStretch(3, 1);
 
 	gb2->setLayout(gl2);
 
@@ -168,26 +169,58 @@ void LineDialog::initGeometryTab()
 	bl1->addWidget(new QLabel(tr( "Unit" )));
 	bl1->addWidget(unitBox);
 
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+	if (app)
+		locale = app->locale();
+	
     QGroupBox *gb1 = new QGroupBox(tr("Start Point"));
-	xStartBox = new QLineEdit();
-	yStartBox = new QLineEdit();
+	xStartBox = new DoubleSpinBox();
+	xStartBox->setLocale(locale);
+	xStartBox->setDecimals(6);
+	yStartBox = new DoubleSpinBox();
+	yStartBox->setLocale(locale);
+	yStartBox->setDecimals(6);
+	
+	xStartPixelBox = new QSpinBox();
+	xStartPixelBox->setRange(-INT_MAX, INT_MAX);
+	yStartPixelBox = new QSpinBox();
+	yStartPixelBox->setRange(-INT_MAX, INT_MAX);
 
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel( tr("X")), 0, 0);
     gl1->addWidget(xStartBox, 0, 1);
+	gl1->addWidget(xStartPixelBox, 0, 1);
     gl1->addWidget(new QLabel(tr("To")), 1, 0);
     gl1->addWidget(yStartBox, 1, 1);
+	gl1->addWidget(yStartPixelBox, 1, 1);
+	gl1->setColumnStretch(1, 10);
+	gl1->setRowStretch(2, 1);
     gb1->setLayout(gl1);
 
     QGroupBox *gb2 = new QGroupBox(tr("End Point"));
-    xEndBox = new QLineEdit();
-	yEndBox = new QLineEdit();
-
+    xEndBox = new DoubleSpinBox();
+	xEndBox->setLocale(locale);
+	xEndBox->setDecimals(6);
+	yEndBox = new DoubleSpinBox();
+	yEndBox->setLocale(locale);
+	yEndBox->setDecimals(6);
+	
+	xEndPixelBox = new QSpinBox();
+	xEndPixelBox->setRange(-INT_MAX, INT_MAX);
+	yEndPixelBox = new QSpinBox();
+	yEndPixelBox->setRange(-INT_MAX, INT_MAX);
+	
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel( tr("X")), 0, 0);
     gl2->addWidget(xEndBox, 0, 1);
+	gl2->addWidget(xEndPixelBox, 0, 1);
+	
     gl2->addWidget(new QLabel(tr("To")), 1, 0);
     gl2->addWidget(yEndBox, 1, 1);
+	gl2->addWidget(yEndPixelBox, 1, 1);
+	gl2->setColumnStretch(1, 10);
+	gl2->setRowStretch(2, 1);
     gb2->setLayout(gl2);
 
     QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
@@ -202,48 +235,58 @@ void LineDialog::initGeometryTab()
     geometry->setLayout(vl);
 	tw->addTab(geometry, tr( "&Geometry" ) );
 
-	connect( unitBox, SIGNAL( activated(int) ), this, SLOT(displayCoordinates(int) ) );
+	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
 	displayCoordinates(0);
 }
 
 void LineDialog::displayCoordinates(int unit)
 {
-if (unit == ScaleCoordinates)
-	{
-	QwtDoublePoint sp = lm->startPointCoord();
-	xStartBox->setText(QString::number(sp.x()));
-	yStartBox->setText(QString::number(sp.y()));
+	if (unit == ScaleCoordinates){
+		QwtDoublePoint sp = lm->startPointCoord();
+		xStartBox->setValue(sp.x());
+		xStartBox->show();
+		xStartPixelBox->hide();
+		yStartBox->setValue(sp.y());
+		yStartBox->show();
+		yStartPixelBox->hide();
 
-	QwtDoublePoint ep = lm->endPointCoord();
-	xEndBox->setText(QString::number(ep.x()));
-	yEndBox->setText(QString::number(ep.y()));
-	}
-else
-	{
-	QPoint startPoint = lm->startPoint();
-	QPoint endPoint = lm->endPoint();
+		QwtDoublePoint ep = lm->endPointCoord();
+		xEndBox->setValue(ep.x());
+		xEndBox->show();
+		xEndPixelBox->hide();
+		yEndBox->setValue(ep.y());
+		yEndBox->show();
+		yEndPixelBox->hide();
+	} else {
+		QPoint startPoint = lm->startPoint();
+		QPoint endPoint = lm->endPoint();
 
-	xStartBox->setText(QString::number(startPoint.x()));
-	yStartBox->setText(QString::number(startPoint.y()));
-
-	xEndBox->setText(QString::number(endPoint.x()));
-	yEndBox->setText(QString::number(endPoint.y()));
+		xStartBox->hide();	
+		xStartPixelBox->setValue(startPoint.x());
+		xStartPixelBox->show();
+		
+		yStartBox->hide();
+		yStartPixelBox->setValue(startPoint.y());
+		yStartPixelBox->show();
+		
+		xEndBox->hide();
+		xEndPixelBox->setValue(endPoint.x());
+		xEndPixelBox->show();
+		
+		yEndBox->hide();
+		yEndPixelBox->setValue(endPoint.y());
+		yEndPixelBox->show();
 	}
 }
 
 void LineDialog::setCoordinates(int unit)
 {
-if (unit == ScaleCoordinates)
-	{
-	lm->setStartPoint(xStartBox->text().replace(",", ".").toDouble(),
-							yStartBox->text().replace(",", ".").toDouble());
-	lm->setEndPoint(xEndBox->text().replace(",", ".").toDouble(),
-						yEndBox->text().replace(",", ".").toDouble());
-	}
-else
-	{
-	lm->setStartPoint(QPoint(xStartBox->text().toInt(), yStartBox->text().toInt()));
-	lm->setEndPoint(QPoint(xEndBox->text().toInt(), yEndBox->text().toInt()));
+	if (unit == ScaleCoordinates){
+		lm->setStartPoint(xStartBox->value(), yStartBox->value());
+		lm->setEndPoint(xEndBox->value(), yEndBox->value());
+	} else {
+		lm->setStartPoint(QPoint(xStartPixelBox->value(), yStartPixelBox->value()));
+		lm->setEndPoint(QPoint(xEndPixelBox->value(), yEndPixelBox->value()));
 	}
 }
 
@@ -255,8 +298,7 @@ void LineDialog::apply()
         lm->setWidth(widthBox->value());
         lm->drawEndArrow(endBox->isChecked());
         lm->drawStartArrow(startBox->isChecked());
-	}
-    else if (tw->currentPage()==(QWidget *)head){
+	} else if (tw->currentPage()==(QWidget *)head){
         if (lm->headLength() != boxHeadLength->value())
             lm->setHeadLength( boxHeadLength->value() );
 
@@ -265,22 +307,21 @@ void LineDialog::apply()
 
         if (lm->filledArrowHead() != filledBox->isChecked())
             lm->fillArrowHead( filledBox->isChecked() );
-	}
-    else if (tw->currentPage()==(QWidget *)geometry)
+	} else if (tw->currentPage()==(QWidget *)geometry)
         setCoordinates(unitBox->currentItem());
 
-QwtPlot *plot = lm->plot();
-Graph *g = (Graph *)plot->parent();
-plot->replot();
-g->notifyChanges();
+	QwtPlot *plot = lm->plot();
+	Graph *g = (Graph *)plot->parent();
+	plot->replot();
+	g->notifyChanges();
 
-enableHeadTab();
+	enableHeadTab();
 }
 
 void LineDialog::accept()
 {
-apply();
-close();
+	apply();
+	close();
 }
 
 void LineDialog::setLineStyle(Qt::PenStyle style)
