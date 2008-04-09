@@ -4086,7 +4086,7 @@ bool ApplicationWindow::setScriptingLanguage(const QString &lang, bool force)
 	if (scriptWindow)
 		foreach(QObject *i, scriptWindow->findChildren<QObject*>())
 			QApplication::postEvent(i, new ScriptingChangeEvent(newEnv));
-
+	
 	return true;
 }
 

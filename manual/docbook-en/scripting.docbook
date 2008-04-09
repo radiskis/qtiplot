@@ -774,6 +774,8 @@ m = newMatrix("gina", 42, 23)
 m = newMatrix()
 # create an empty graph window
 g = newGraph()
+# create a graph window named "test" with two layers disposed on a 2 rows x 1 column grid
+g = newGraph("test", 2, 2, 1)
 # create an empty note named "momo"
 n = note("momo")
 # use defaults
@@ -1786,10 +1788,9 @@ automatically manage the layout of the plot window.
 For example, here's how you can create a two rows by two columns matrix of layers,
 each plot layer having a canvas size (the drawing area) of 400 pixels wide and 300 pixels in height:
 <programlisting>
-g=newGraph()
-g.setNumLayers(4)
+g = newGraph("Test", 4, 2, 2)
 g.setLayerCanvasSize(400, 300)
-g.arrangeLayers(True, True)
+g.arrangeLayers(False, True)
 </programlisting>
 
 The <varname>arrangeLayers()</varname> function takes two parameters. The first one specifies

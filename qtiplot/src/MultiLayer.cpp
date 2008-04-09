@@ -161,11 +161,13 @@ LayerButton* MultiLayer::addLayerButton()
 Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 {
 	addLayerButton();
-	if (!width && !height){
-	    x = left_margin;
-	    y = top_margin;
+	if (!width && !height){		
 		width =	canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace; 
 		height = canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace;
+		
+		int layers = graphsList.size();
+		x = left_margin + (layers % d_cols)*(width + colsSpace);
+	    y = top_margin + (layers / d_cols)*(height + rowsSpace);
 	}
 
 	Graph* g = new Graph(x, y, width, height, canvas);
@@ -442,8 +444,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		c_widths += 1 + gsl_vector_get(maxYLeftWidth, i) + gsl_vector_get(maxYRightWidth, i);
 	}
 
-	if (!userSize)
-	{
+	if (!userSize){
 		l_canvas_width = int((rect.width()-(d_cols-1)*colsSpace - right_margin - left_margin)/c_widths);
 		l_canvas_height = int((rect.height()-(d_rows-1)*rowsSpace - top_margin - bottom_margin)/c_heights);
 	}
@@ -482,8 +483,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		//resizes and moves layers
 		Graph *gr = (Graph *)graphsList.at(i);
 		bool autoscaleFonts = false;
-		if (!userSize)
-		{//When the user specifies the layer canvas size, the window is resized
+		if (!userSize){//When the user specifies the layer canvas size, the window is resized
 			//and the fonts must be scaled accordingly. If the size is calculated
 			//automatically we don't rescale the fonts in order to prevent problems
 			//with too small fonts when the user adds new layers or when removing layers
@@ -570,9 +570,9 @@ void MultiLayer::arrangeLayers(bool fit, bool userSize)
 
 		this->showNormal();
 		QSize size = canvas->childrenRect().size();
-		this->resize(QSize(size.width() + right_margin,
-					size.height() + bottom_margin + LayerButton::btnSize()));
-
+		this->resize(canvas->x() + size.width() + left_margin + 2*right_margin, 
+					canvas->y() + size.height() + bottom_margin + 2*LayerButton::btnSize());
+		
 		foreach (Graph *gr, graphsList)
 			gr->setIgnoreResizeEvents(ignoreResize);
 	}
