@@ -79,12 +79,12 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
                 int dist, point;
                 plotWidget->closestCurve(me->pos().x(), me->pos().y(), dist, point);
 
-				if (me->button()==Qt::LeftButton && (plot()->drawLineActive())){
+				if (me->button() == Qt::LeftButton && (plot()->drawLineActive())){
 					startLinePoint = me->pos();
 					return true;
 				}
 
-				if (me->button()==Qt::LeftButton && plot()->drawTextActive()){
+				if (me->button() == Qt::LeftButton && plot()->drawTextActive()){
 					drawTextMarker(me->pos());
 					return true;
 				}
@@ -279,8 +279,8 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 		ArrowMarker* mrkL=(ArrowMarker*) plotWidget->marker(i);
 		if (!mrkL)
 			return false;
-		int d=mrkL->width()+(int)floor(mrkL->headLength()*tan(M_PI*mrkL->headAngle()/180.0)+0.5);
-		double dist=mrkL->dist(point.x(),point.y());
+		int d = qRound(mrkL->width() + floor(mrkL->headLength()*tan(M_PI*mrkL->headAngle()/180.0)+0.5));
+		double dist = mrkL->dist(point.x(),point.y());
 		if (dist <= d){
 			disableEditing();
 			if (e->modifiers() & Qt::ShiftModifier) {
