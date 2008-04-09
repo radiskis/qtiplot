@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ru">
+<defaultcodec></defaultcodec>
 <context>
     <name>ApplicationWindow</name>
     <message>
@@ -3890,47 +3891,47 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="11708"/>
         <source>Mathematical Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Математические символы</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12107"/>
         <source>Fill selected columns with row numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Заполнить выбранные столбцы номерами строк</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12109"/>
         <source>Fill selected columns with random numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Заполнить выбранные столбцы случайными значениями</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12111"/>
         <source>Set column as X</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить столбец как X</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12113"/>
         <source>Set column as Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить столбец как Y</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12115"/>
         <source>Set column as Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить столбец как Z</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12118"/>
         <source>Set as Y Error Bars</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить как погрешность по Y</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12120"/>
         <source>Set as Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить как подписи</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12122"/>
         <source>Disregard Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать</translation>
     </message>
 </context>
 <context>
@@ -5385,7 +5386,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1041"/>
         <source>Automatically &amp;Recalculate Column Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматически пе&amp;рерасчитывать значения столбцов </translation>
     </message>
 </context>
 <context>
@@ -8847,22 +8848,22 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/PolynomialFit.cpp" line="367"/>
         <source>Linear Regression</source>
-        <translation type="unfinished">Линейная регрессия</translation>
+        <translation>Линейная регрессия</translation>
     </message>
     <message>
         <location filename="../src/PolynomialFit.cpp" line="368"/>
         <source>LinearSlope</source>
-        <translation type="unfinished"></translation>
+        <translation>Наклон</translation>
     </message>
     <message>
         <location filename="../src/PolynomialFit.cpp" line="377"/>
         <source>QtiPlot - Fit Error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Ошибка аппроксимации</translation>
     </message>
     <message>
         <location filename="../src/PolynomialFit.cpp" line="378"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
-        <translation type="unfinished">Необходимо как минимум %1 точек данных для аппроксимации. Операция прервана!</translation>
+        <translation>Необходимо как минимум %1 точек данных для аппроксимации. Операция прервана!</translation>
     </message>
 </context>
 <context>
@@ -9606,7 +9607,7 @@ have the same number of rows.</source>
     <message>
         <location filename="../src/NonLinearFit.cpp" line="122"/>
         <source>QtiPlot - Fit Error</source>
-        <translation>QtiPlot - Ошибка апппроксимации</translation>
+        <translation>QtiPlot - Ошибка аппроксимации</translation>
     </message>
     <message>
         <location filename="../src/NonLinearFit.cpp" line="110"/>
