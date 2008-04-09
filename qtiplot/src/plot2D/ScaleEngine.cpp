@@ -41,7 +41,7 @@ double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, 
         delete tr;
         return res;
     }
-
+	
     const int d_break_space = d_engine->breakWidth();
 	const double lb = d_engine->axisBreakLeft();
     const double rb = d_engine->axisBreakRight();
@@ -57,19 +57,19 @@ double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, 
 
 	if (p > pml && p < pmr)
 		return pm;
-
+	
 	bool invertedScale = d_engine->testAttribute(QwtScaleEngine::Inverted);
 	QwtScaleTransformation::Type d_type = d_engine->type();
 
 	if (invertedScale){
-		if (p <= pml){
+		if ((p2 > p1 && p <= pml) || (p2 < p1 && p >= pml)){
 			if (d_engine->log10ScaleAfterBreak())
 				return s1*exp((p - p1)/(pml - p1)*log(rb/s1));
-            else
+            else 
 				return s1 + (rb - s1)/(pml - p1)*(p - p1);
 		}
 		
-		if (p >= pmr){
+		if ((p2 > p1 && p >= pmr) || (p2 < p1 && p <= pmr)){
 			if (d_type == QwtScaleTransformation::Log10)
 				return lb * exp((p - pmr)/(p2 - pmr)*log(s2/lb));
 			else if (d_type == QwtScaleTransformation::Linear)
@@ -78,14 +78,14 @@ double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, 
 
 	}
 
-    if (p <= pml){
+    if ((p2 > p1 && p <= pml) || (p2 < p1 && p >= pml)){
         if (d_type == QwtScaleTransformation::Linear)
             return s1 + (lb - s1)*(p - p1)/(pml - p1);
         else if (d_type == QwtScaleTransformation::Log10)
             return s1 * exp((p - p1)/(pml - p1)*log(lb/s1));
     }
 
-	if (p >= pmr){
+	if ((p2 > p1 && p >= pmr) || (p2 < p1 && p <= pmr)){
 	    if (d_engine->log10ScaleAfterBreak())
             return rb * exp((p - pmr)/(p2 - pmr)*log(s2/rb));
 	    else

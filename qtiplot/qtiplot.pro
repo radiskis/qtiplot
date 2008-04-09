@@ -16,30 +16,15 @@ DEFINES         += SCRIPTING_DIALOG
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
 #RESTRICTED_MODULES += EMF
 
-#CONFIG          += release
-CONFIG          += debug
+######################################################################################
+# Uncomment the following line if you want to perform a custom installation using 
+# the *.path variables defined bellow. 
+######################################################################################
+#CONFIG          += CustomInstall
+
+CONFIG          += release
+#CONFIG          += debug
 #win32: CONFIG   += console
-
-# what to install and where
-INSTALLS        += target
-INSTALLS        += translations
-INSTALLS        += manual
-INSTALLS        += documentation
-unix:INSTALLS        += man
-
-unix: INSTALLBASE = /usr
-win32: INSTALLBASE = C:/QtiPlot
-
-unix: target.path = $$INSTALLBASE/bin
-unix: translations.path = $$INSTALLBASE/share/qtiplot/translations
-unix: manual.path = $$INSTALLBASE/share/doc/qtiplot/manual
-unix: documentation.path = $$INSTALLBASE/share/doc/qtiplot
-unix: man.path = $$INSTALLBASE/share/man/man1/
-
-win32: target.path = $$INSTALLBASE
-win32: translations.path = $$INSTALLBASE/translations
-win32: manual.path = $$INSTALLBASE/manual
-win32: documentation.path = $$INSTALLBASE/doc
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -96,8 +81,31 @@ CONFIG        += qt warn_on exceptions opengl thread
 CONFIG        += assistant
 
 DEFINES       += QT_PLUGIN
-DEFINES       += TRANSLATIONS_PATH="\\\"$$replace(translations.path," ","\ ")\\\"
-DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\"
+contains(CONFIG, CustomInstall){
+	INSTALLS        += target
+	INSTALLS        += translations
+	INSTALLS        += manual
+	INSTALLS        += documentation
+	unix:INSTALLS        += man
+
+	unix: INSTALLBASE = /usr
+	win32: INSTALLBASE = C:/QtiPlot
+
+	unix: target.path = $$INSTALLBASE/bin
+	unix: translations.path = $$INSTALLBASE/share/qtiplot/translations
+	unix: manual.path = $$INSTALLBASE/share/doc/qtiplot/manual
+	unix: documentation.path = $$INSTALLBASE/share/doc/qtiplot
+	unix: man.path = $$INSTALLBASE/share/man/man1/
+
+	win32: target.path = $$INSTALLBASE
+	win32: translations.path = $$INSTALLBASE/translations
+	win32: manual.path = $$INSTALLBASE/manual
+	win32: documentation.path = $$INSTALLBASE/doc
+
+	DEFINES       += TRANSLATIONS_PATH="\\\"$$replace(translations.path," ","\ ")\\\"
+	DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\"
+	}
+	
 win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
 QT            += opengl qt3support network svg xml
 
@@ -447,15 +455,18 @@ contains(SCRIPTING_LANGS, muParser) {
 ##################### PYTHON + SIP + PyQT #####################
 
 contains(SCRIPTING_LANGS, Python) {
-  INSTALLS += pythonconfig
-  pythonconfig.files += qtiplotrc.py \
+ 
+  contains(CONFIG, CustomInstall){
+  	INSTALLS += pythonconfig
+  	pythonconfig.files += qtiplotrc.py \
   						qtiUtil.py
 
-  unix: pythonconfig.path = /usr/local/qtiplot
-  win32: pythonconfig.path = $$INSTALLBASE
-
+  	unix: pythonconfig.path = /usr/local/qtiplot
+  	win32: pythonconfig.path = $$INSTALLBASE
+  	DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
+  }
+  
   DEFINES += SCRIPTING_PYTHON
-  DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
 
   HEADERS += src/PythonScript.h src/PythonScripting.h
   SOURCES += src/PythonScript.cpp src/PythonScripting.cpp
