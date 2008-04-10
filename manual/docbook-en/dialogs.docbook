@@ -876,7 +876,10 @@ scripting support.</para>
 
   <para>The second set of option allows to customize the defaut aspect of <link linkend="sec-intro-table">tables</link>: background, text colors, and fonts for tables and labels.
   By checking the <emphasis>Display Comments in Header</emphasis> option, the column comments will also be
-  displayed in the table header, bellow the column names.</para>
+  displayed in the table header, bellow the column names.
+  If the <emphasis>Automatically Recalculate Column Values</emphasis> option is checked, all modifications in the values
+  of a column trigger a recalculation of all columns with formulas depending on the modified column.
+  </para>
   <figure id="fig-preferences-dialog-4">
     <title>The preferences dialog: table options.</title>
     <mediaobject>
