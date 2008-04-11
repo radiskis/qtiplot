@@ -30,6 +30,7 @@
 #include "MyParser.h"
 #include "ApplicationWindow.h"
 #include "FunctionCurve.h"
+#include "DoubleSpinBox.h"
 
 #include <QTextEdit>
 #include <QLineEdit>
@@ -46,6 +47,14 @@
 FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
+	ApplicationWindow *app = (ApplicationWindow *)parent;
+	QLocale locale = QLocale();
+	int prec = 6;
+	if (app){
+		locale = app->locale();
+		prec = app->d_decimal_digits;
+	}
+	
     setObjectName( "FunctionDialog" );
 	setWindowTitle( tr( "QtiPlot - Add function curve" ) );
 	setSizeGripEnabled(true);
@@ -68,12 +77,16 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	boxFunction->setMinimumWidth(350);
 	gl1->addWidget(boxFunction, 0, 1);
 	gl1->addWidget(new QLabel(tr( "From x= " )), 1, 0);
-	boxFrom = new QLineEdit();
-	boxFrom->setText("0");
+	boxFrom = new DoubleSpinBox();
+	boxFrom->setValue(0);
+	boxFrom->setLocale(locale);
+	boxFrom->setDecimals(prec);
 	gl1->addWidget(boxFrom, 1, 1);
 	gl1->addWidget(new QLabel(tr( "To x= " )), 2, 0);
-	boxTo = new QLineEdit();
-	boxTo->setText("1");
+	boxTo = new DoubleSpinBox();
+	boxTo->setValue(1);
+	boxTo->setLocale(locale);
+	boxTo->setDecimals(prec);
 	gl1->addWidget(boxTo, 2, 1);
 	gl1->addWidget(new QLabel(tr( "Points" )), 3, 0);
 	boxPoints = new QSpinBox();
@@ -152,11 +165,11 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	polarPage->setLayout(gl3);
 	optionStack->addWidget( polarPage );
 
-	buttonClear = new QPushButton(tr( "Clear Function" ));
+	buttonClear = new QPushButton(tr( "Clea&r Function" ));
 	buttonClear->setAutoDefault(false);
-	buttonOk = new QPushButton(tr( "Ok" ));
+	buttonOk = new QPushButton(tr( "&Ok" ));
 	buttonOk->setDefault(true);
-	buttonCancel = new QPushButton(tr( "Close" ));
+	buttonCancel = new QPushButton(tr( "&Close" ));
 	buttonCancel->setAutoDefault(false);
 
 	QHBoxLayout *hbox2 = new QHBoxLayout();
@@ -208,8 +221,8 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 
 	if (c->functionType() == FunctionCurve::Normal){
 		boxFunction->setText(formulas[0]);
-		boxFrom->setText(QString::number(c->startRange(), 'g', 15));
-		boxTo->setText(QString::number(c->endRange(), 'g', 15));
+		boxFrom->setValue(c->startRange());
+		boxTo->setValue(c->endRange());
 		boxPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Polar) {
 		optionStack->setCurrentIndex(2);
@@ -259,62 +272,27 @@ void FunctionDialog::clearList()
 
 void FunctionDialog::acceptFunction()
 {
-	QString from=boxFrom->text().lower();
-	QString to=boxTo->text().lower();
-	QString points=boxPoints->text().lower();
-
-	double start, end;
-	try
-	{
-		MyParser parser;
-		parser.SetExpr(from.ascii());
-		start=parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
-		QMessageBox::critical(0, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
-		boxFrom->setFocus();
-		return;
-	}
-	try
-	{
-		MyParser parser;
-		parser.SetExpr(to.ascii());
-		end=parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
-		QMessageBox::critical(0, tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
+	double start = boxFrom->value();
+	double end = boxTo->value();
+	if (start >= end){
+		QMessageBox::critical(this, tr("QtiPlot - Input error"), tr("Please enter x limits that satisfy: from < end!"));
 		boxTo->setFocus();
 		return;
 	}
 
-	if (start>=end)
-	{
-		QMessageBox::critical(0, tr("QtiPlot - Input error"),
-				tr("Please enter x limits that satisfy: from < end!"));
-		boxTo->setFocus();
-		return;
-	}
-
-	double x;
 	QString formula = boxFunction->text().simplified();
-	bool error=false;
-
-	try
-	{
+	bool error = false;
+	try {
+		double x = start;
 		MyParser parser;
 		parser.DefineVar("x", &x);
 		parser.SetExpr(formula.ascii());
 
-		x=start;
 		parser.Eval();
-		x=end;
+		x = end;
 		parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
-		QMessageBox::critical(0, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+	} catch(mu::ParserError &e) {
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxFunction->setFocus();
 		error=true;
 	}
@@ -322,14 +300,15 @@ void FunctionDialog::acceptFunction()
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
-	formulas+=formula;
-	if (!error)
-	{
+	formulas += formula;
+	if (!error){
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		app->updateFunctionLists(type,formulas);
-		if (!graph)
-			app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
-		else {
+		if (!graph){
+			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
+			if (plot)
+				graph = plot->activeGraph();
+		} else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, "x", start, end, boxPoints->value());
 			else
@@ -353,7 +332,7 @@ void FunctionDialog::acceptParametric()
 	}
 	catch(mu::ParserError &e)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
 		boxParFrom->setFocus();
 		return;
 	}
@@ -366,14 +345,14 @@ void FunctionDialog::acceptParametric()
 	}
 	catch(mu::ParserError &e)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
 		boxParTo->setFocus();
 		return;
 	}
 
 	if (start>=end)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Input error"),
+		QMessageBox::critical(this, tr("QtiPlot - Input error"),
 				tr("Please enter parameter limits that satisfy: from < end!"));
 		boxParTo->setFocus();
 		return;
@@ -397,7 +376,7 @@ void FunctionDialog::acceptParametric()
 	}
 	catch(mu::ParserError &e)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxXFunction->setFocus();
 		error=true;
 	}
@@ -414,22 +393,23 @@ void FunctionDialog::acceptParametric()
 	}
 	catch(mu::ParserError &e)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxYFunction->setFocus();
 		error=true;
 	}
 	// Collecting all the information
 	int type = boxType->currentItem();
 	QStringList formulas;
-	formulas+=xformula;
-	formulas+=yformula;
-	if (!error)
-	{
+	formulas += xformula;
+	formulas += yformula;
+	if (!error){
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		app->updateFunctionLists(type,formulas);
-		if (!graph)
-			app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
-		else {
+		if (!graph){
+			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
+			if (plot)
+				graph = plot->activeGraph();
+		} else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(), start, end, boxParPoints->value());
 			else
@@ -453,7 +433,7 @@ void FunctionDialog::acceptPolar()
 	}
 	catch(mu::ParserError &e)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Start limit error"), QString::fromStdString(e.GetMsg()));
 		boxPolarFrom->setFocus();
 		return;
 	}
@@ -466,14 +446,14 @@ void FunctionDialog::acceptPolar()
 	}
 	catch(mu::ParserError &e)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
 		boxPolarTo->setFocus();
 		return;
 	}
 
 	if (start>=end)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Input error"),
+		QMessageBox::critical(this, tr("QtiPlot - Input error"),
 				tr("Please enter parameter limits that satisfy: from < end!"));
 		boxPolarTo->setFocus();
 		return;
@@ -497,7 +477,7 @@ void FunctionDialog::acceptPolar()
 	}
 	catch(mu::ParserError &e)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxPolarRadius->setFocus();
 		error=true;
 	}
@@ -514,7 +494,7 @@ void FunctionDialog::acceptPolar()
 	}
 	catch(mu::ParserError &e)
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		boxPolarTheta->setFocus();
 		error=true;
 	}
@@ -523,14 +503,15 @@ void FunctionDialog::acceptPolar()
 	QStringList formulas;
 	formulas+=rformula;
 	formulas+=tformula;
-	if (!error)
-	{
+	if (!error){
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		app->updateFunctionLists(type,formulas);
 
-		if (!graph)
-			app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
-		else {
+		if (!graph){
+			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
+			if (plot)
+				graph = plot->activeGraph();
+		} else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(), start, end, boxPolarPoints->value());
 			else
@@ -555,7 +536,6 @@ void FunctionDialog::accept()
 			acceptPolar();
 			break;
 	}
-	close();
 }
 
 void FunctionDialog::insertParamFunctionsList(const QStringList& xList, const QStringList& yList)
