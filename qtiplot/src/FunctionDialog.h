@@ -39,6 +39,7 @@ class QPushButton;
 class QSpinBox;
 class QLabel;
 class QTextEdit;
+class DoubleSpinBox;
 
 //! Function dialog
 class FunctionDialog : public QDialog
@@ -55,8 +56,8 @@ protected:
     QComboBox* boxPolarTheta;
     QComboBox* boxType;
     QLabel* textFunction;
-    QLineEdit* boxFrom;
-    QLineEdit* boxTo;
+    DoubleSpinBox* boxFrom;
+    DoubleSpinBox* boxTo;
 	QLineEdit* boxParameter;
     QLineEdit* boxParFrom;
     QLineEdit* boxParTo;
