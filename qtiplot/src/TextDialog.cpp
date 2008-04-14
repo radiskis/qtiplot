@@ -183,7 +183,7 @@ void TextDialog::setGraph(Graph *g)
 	d_graph = g;
 	QwtText l;
 	if (textType == LayerTitle)
-		l = d_graph->plotWidget()->title();
+		l = d_graph->title();
 	else if (textType == AxisTitle){
 		d_scale = g->currentScale();
 		if (!d_scale)
@@ -272,19 +272,18 @@ void TextDialog::apply()
 		if (!d_graph)
 			return;
 
-		Plot *plot = d_graph->plotWidget();
-		QwtText t =	plot->title();
+		QwtText t =	d_graph->title();
 		t.setRenderFlags(alignment());
 		t.setText(textEditBox->toPlainText());
-		plot->setTitle(t);
+		((QwtPlot *)d_graph)->setTitle(t);
 
 		if (boxApplyToAll->isChecked())
 			formatAllLabels();
 		else {
 			t.setFont(selectedFont);
 			t.setColor(colorBtn->color());
-			plot->setTitle(t);
-			plot->replot();
+			((QwtPlot *)d_graph)->setTitle(t);
+			d_graph->replot();
 		}
 	}
 
@@ -297,12 +296,8 @@ void TextDialog::formatAllLabels()
 	if (!d_graph)
 		return;
 
-	Plot *plot = d_graph->plotWidget();
-	if (!plot)
-		return;
-
 	QColor tc = colorBtn->color();
-	QObjectList lst = plot->children();
+	QObjectList lst = d_graph->children();
 	foreach(QObject *o, lst){
 		if (o->inherits("LegendWidget")){
 			LegendWidget *l = (LegendWidget *)o;
@@ -318,7 +313,7 @@ void TextDialog::formatAllLabels()
 	}
 
 	for (int i=0; i < QwtPlot::axisCnt; i++){
-		QwtScaleWidget *scale = (QwtScaleWidget *)plot->axisWidget(i);
+		QwtScaleWidget *scale = (QwtScaleWidget *)d_graph->axisWidget(i);
 		if (scale){
 			QwtText t = scale->title();
 			t.setColor(tc);
@@ -327,11 +322,11 @@ void TextDialog::formatAllLabels()
 		}
 	}
 
-	QwtText t = plot->title();
+	QwtText t = d_graph->title();
 	t.setColor(tc);
 	t.setFont(selectedFont);
-	plot->setTitle (t);
-	plot->replot();
+	((QwtPlot *)d_graph)->setTitle (t);
+	d_graph->replot();
 }
 
 void TextDialog::setDefaultValues()

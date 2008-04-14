@@ -264,7 +264,7 @@ void QwtErrorPlotCurve::loadData()
     int r = abs(d_end_row - d_start_row) + 1;
 	QVector<double> X(r), Y(r), err(r);
     int data_size = 0;
-    QLocale locale = ((Plot *)plot())->locale();
+    QLocale locale = ((Graph *)plot())->locale();
 	for (int i = d_start_row; i <= d_end_row; i++){
 		QString xval = mt->text(i, xcol);
 		QString yval = mt->text(i, ycol);

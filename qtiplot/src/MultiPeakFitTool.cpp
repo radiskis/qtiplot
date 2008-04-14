@@ -32,7 +32,6 @@
 #include "RangeSelectorTool.h"
 #include "ApplicationWindow.h"
 #include "DataPickerTool.h"
-#include "Plot.h"
 #include "cursors.h"
 
 #include <qwt_plot_curve.h>
@@ -56,10 +55,10 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	d_picker_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
-    d_graph->plotWidget()->canvas()->setCursor(QCursor(QPixmap(cursor_xpm), -1, -1));
+    d_graph->canvas()->setCursor(QCursor(QPixmap(cursor_xpm), -1, -1));
 
 	connect(d_picker_tool, SIGNAL(selected(QwtPlotCurve*,int)), this, SLOT(selectPeak(QwtPlotCurve*,int)));
-	d_graph->plotWidget()->canvas()->grabMouse();
+	d_graph->canvas()->grabMouse();
 
 	emit statusText(tr("Move cursor and click to select a point and double-click/press 'Enter' to set the position of a peak!"));
 }
@@ -86,8 +85,8 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 	m->setLineStyle(QwtPlotMarker::VLine);
 	m->setLinePen(QPen(Qt::green, 2, Qt::DashLine));
 	m->setXValue(curve->x(point_index));
-	d_graph->plotWidget()->insertMarker(m);
-	d_graph->plotWidget()->replot();
+	d_graph->insertMarker(m);
+	d_graph->replot();
 
 	d_selected_peaks++;
 	if (d_selected_peaks == d_num_peaks)
@@ -101,7 +100,7 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 void MultiPeakFitTool::finalize()
 {
 	delete d_picker_tool; d_picker_tool = NULL;
-	d_graph->plotWidget()->canvas()->releaseMouse();
+	d_graph->canvas()->releaseMouse();
 
 	if (d_fit->setDataFromCurve(d_curve->title().text())){
 		QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -139,15 +138,15 @@ void MultiPeakFitTool::finalize()
 	}
 
 	//remove peak line markers
-	QList<int>mrks = d_graph->plotWidget()->markerKeys();
+	QList<int>mrks = d_graph->markerKeys();
 	int n=(int)mrks.count();
 	for (int i=0; i<d_num_peaks; i++)
-		d_graph->plotWidget()->removeMarker(mrks[n-i-1]);
+		d_graph->removeMarker(mrks[n-i-1]);
 
-	d_graph->plotWidget()->replot();
+	d_graph->replot();
     if (d_graph->activeTool() && d_graph->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
         ((RangeSelectorTool *)d_graph->activeTool())->setEnabled();
     } else
-        d_graph->plotWidget()->canvas()->unsetCursor();
+        d_graph->canvas()->unsetCursor();
     delete this;
 }

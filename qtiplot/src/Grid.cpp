@@ -26,7 +26,6 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "Plot.h"
 #include "Graph.h"
 #include "Grid.h"
 #include "ColorBox.h"
@@ -125,7 +124,7 @@ void Grid::drawLines(QPainter *painter, const QRect &rect,
 
 void Grid::load(const QStringList& grid)
 {
-	Plot *d_plot = (Plot *)plot();
+	Graph *d_plot = (Graph *)plot();
 	if (!d_plot)
 		return;
 
@@ -185,7 +184,7 @@ void Grid::load(const QStringList& grid)
 
 void Grid::enableZeroLineX(bool enable)
 {
-	Plot *d_plot = (Plot *)plot();
+	Graph *d_plot = (Graph *)plot();
 	if (!d_plot)
 		return;
 
@@ -212,7 +211,7 @@ void Grid::enableZeroLineX(bool enable)
 
 void Grid::enableZeroLineY(bool enable)
 {
-	Plot *d_plot = (Plot *)plot();
+	Graph *d_plot = (Graph *)plot();
 	if (!d_plot)
 		return;
 

@@ -348,7 +348,7 @@ void AssociationsDialog::setGraph(Graph *g)
 {
     graph = g;
 
-    for (int i=0; i<graph->curves(); i++){
+    for (int i=0; i<graph->curveCount(); i++){
         const QwtPlotItem *it = (QwtPlotItem *)graph->plotItem(i);
         if (!it)
             continue;

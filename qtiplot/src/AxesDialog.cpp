@@ -32,7 +32,6 @@
 #include "ColorBox.h"
 #include "Graph.h"
 #include "Grid.h"
-#include "Plot.h"
 #include "MyParser.h"
 #include "ColorButton.h"
 #include "TextFormatButtons.h"
@@ -1911,7 +1910,7 @@ void AxesDialog::showAxisFormatOptions(int format)
 			boxFormat->insertItem(tr( "Decimal: 100.0" ) );
 			boxFormat->insertItem(tr( "Scientific: 1e2" ) );
 			boxFormat->insertItem(tr( "Scientific: 10^2" ) );
-			boxFormat->setCurrentIndex(d_graph->plotWidget()->axisLabelFormat(axis));
+			boxFormat->setCurrentIndex(d_graph->axisLabelFormat(axis));
 
 			label3->show();
 			boxPrecision->show();
@@ -2212,7 +2211,7 @@ void AxesDialog::updateGrid()
     switch(boxApplyGridFormat->currentIndex()){
         case 0:
         {
-            applyChangesToGrid(d_graph->plotWidget()->grid());
+            applyChangesToGrid(d_graph->grid());
             d_graph->replot();
             d_graph->notifyChanges();
         }
@@ -2229,7 +2228,7 @@ void AxesDialog::updateGrid()
                 if (g->isPiePlot())
                     continue;
 
-                applyChangesToGrid(g->plotWidget()->grid());
+                applyChangesToGrid(g->grid());
                 g->replot();
             }
             plot->applicationWindow()->modifiedProject();
@@ -2249,7 +2248,7 @@ void AxesDialog::updateGrid()
                     foreach(Graph *g, layers){
                         if (g->isPiePlot())
                             continue;
-                        applyChangesToGrid(g->plotWidget()->grid());
+                        applyChangesToGrid(g->grid());
                         g->replot();
                     }
                 }
@@ -2291,7 +2290,7 @@ void AxesDialog::applyChangesToGrid(Grid *grid)
 
 void AxesDialog::showGridOptions(int axis)
 {
-    Grid *grd = (Grid *)d_graph->plotWidget()->grid();
+    Grid *grd = (Grid *)d_graph->grid();
     if (!grd)
         return;
 
@@ -2407,7 +2406,7 @@ void AxesDialog::changeBaselineDist(int baseline)
 	int axis = mapToQwtAxisId();
 	axesBaseline[axis] = baseline;
 
-	if (d_graph->axisTitle(axis) != boxTitle->text())
+	if (d_graph->axisTitleString(axis) != boxTitle->text())
 		d_graph->setAxisTitle(axis, boxTitle->text());
 
 	QString formula = boxFormula->text();
@@ -2427,12 +2426,12 @@ bool AxesDialog::updatePlot()
 
 		double start = 0.0, end = 0.0;
 		if (type == ScaleDraw::Date){
-            ScaleDraw *sclDraw = (ScaleDraw *)d_graph->plotWidget()->axisScaleDraw(a);
+            ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
             QDateTime origin = sclDraw->dateTimeOrigin();
             start = (double)origin.secsTo(boxStartDateTime->dateTime());
             end = (double)origin.secsTo(boxEndDateTime->dateTime());
 		} else if (type == ScaleDraw::Time){
-            ScaleDraw *sclDraw = (ScaleDraw *)d_graph->plotWidget()->axisScaleDraw(a);
+            ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
             QTime origin = sclDraw->dateTimeOrigin().time();
             start = (double)origin.msecsTo(boxStartTime->time());
             end = (double)origin.msecsTo(boxEndTime->time());
@@ -2532,7 +2531,7 @@ bool AxesDialog::updatePlot()
           else
             formatInfo = boxColName->currentText();
 
-		if (d_graph->axisTitle(axis) != boxTitle->text())
+		if (d_graph->axisTitleString(axis) != boxTitle->text())
 			d_graph->setAxisTitle(axis, boxTitle->text());
 
 		if (axis == QwtPlot::xBottom)
@@ -2571,25 +2570,24 @@ void AxesDialog::setGraph(Graph *g)
         return;
 
 	d_graph = g;
-	Plot *p = d_graph->plotWidget();
 
 	tablesList = app->tableNames();
 	boxTableName->insertStringList(tablesList);
 
 	boxColName-> insertStringList(app->columnsList(Table::All));
 
-	xAxisOn = p->axisEnabled(QwtPlot::xBottom);
-	yAxisOn = p->axisEnabled(QwtPlot::yLeft);
-	topAxisOn = p->axisEnabled(QwtPlot::xTop);
-	rightAxisOn = p->axisEnabled(QwtPlot::yRight);
+	xAxisOn = g->axisEnabled(QwtPlot::xBottom);
+	yAxisOn = g->axisEnabled(QwtPlot::yLeft);
+	topAxisOn = g->axisEnabled(QwtPlot::xTop);
+	rightAxisOn = g->axisEnabled(QwtPlot::yRight);
 
-	xBottomFont = p->axisFont(QwtPlot::xBottom);
-	yLeftFont = p->axisFont(QwtPlot::yLeft);
-	xTopFont = p->axisFont(QwtPlot::xTop);
-	yRightFont = p->axisFont(QwtPlot::yRight);
+	xBottomFont = g->axisFont(QwtPlot::xBottom);
+	yLeftFont = g->axisFont(QwtPlot::yLeft);
+	xTopFont = g->axisFont(QwtPlot::xTop);
+	yRightFont = g->axisFont(QwtPlot::yRight);
 
-	majTicks = p->getMajorTicksType();
-	minTicks = p->getMinorTicksType();
+	majTicks = g->getMajorTicksType();
+	minTicks = g->getMinorTicksType();
 
 	updateTitleBox(0);
 
@@ -2597,17 +2595,17 @@ void AxesDialog::setGraph(Graph *g)
 	xTopLabelsRotation = g->labelsRotation(QwtPlot::xTop);
 
 	for (int axis=0; axis<QwtPlot::axisCnt; axis++){
-		const QwtScaleDraw *sd = p->axisScaleDraw (axis);
+		const QwtScaleDraw *sd = g->axisScaleDraw (axis);
 		tickLabelsOn << QString::number(sd->hasComponent(QwtAbstractScaleDraw::Labels));
 
-		QwtScaleWidget *scale = (QwtScaleWidget *)p->axisWidget(axis);
+		QwtScaleWidget *scale = (QwtScaleWidget *)g->axisWidget(axis);
 		if (scale)
 			axesBaseline << scale->margin();
 		else
 			axesBaseline << 0;
 	}
 
-	boxAxesLinewidth->setValue(p->axesLinewidth());
+	boxAxesLinewidth->setValue(g->axesLinewidth());
     boxBackbones->setChecked (d_graph->axesBackbones());
 
 	boxFramed->setChecked(d_graph->canvasFrameWidth()>0);
@@ -2616,8 +2614,8 @@ void AxesDialog::setGraph(Graph *g)
 	boxFrameColor->blockSignals(false);
 	boxFrameWidth->setValue(d_graph->canvasFrameWidth());
 
-	boxMinorTicksLength->setValue(p->minorTickLength());
-	boxMajorTicksLength->setValue(p->majorTickLength());
+	boxMinorTicksLength->setValue(g->minorTickLength());
+	boxMajorTicksLength->setValue(g->majorTickLength());
 
 	showGridOptions(axesGridList->currentRow());
 }
@@ -2658,15 +2656,14 @@ void AxesDialog::updateScale()
     boxUnit->hide();
     boxUnit->clear();
 
-    Plot *d_plot = d_graph->plotWidget();
     int a = mapToQwtAxis(axis);
-    const QwtScaleDiv *scDiv = d_plot->axisScaleDiv(a);
+    const QwtScaleDiv *scDiv = d_graph->axisScaleDiv(a);
     double start = QMIN(scDiv->lBound(), scDiv->hBound());
     double end = QMAX(scDiv->lBound(), scDiv->hBound());
 
     ScaleDraw::ScaleType type = d_graph->axisType(a);
 	if (type == ScaleDraw::Date){
-	    ScaleDraw *sclDraw = (ScaleDraw *)d_plot->axisScaleDraw(a);
+	    ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
         QDateTime origin = sclDraw->dateTimeOrigin();
 
 	    boxStart->hide();
@@ -2687,7 +2684,7 @@ void AxesDialog::updateScale()
 		boxStep->setValue(d_graph->axisStep(a)/86400.0);
 		boxStep->setSingleStep(1);
 	} else if (type == ScaleDraw::Time){
-	    ScaleDraw *sclDraw = (ScaleDraw *)d_plot->axisScaleDraw(a);
+	    ScaleDraw *sclDraw = (ScaleDraw *)d_graph->axisScaleDraw(a);
         QTime origin = sclDraw->dateTimeOrigin().time();
 
 	    boxStart->hide();
@@ -2724,7 +2721,7 @@ void AxesDialog::updateScale()
 	}
 
     double range = fabs(scDiv->range());
-    ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(a);
+    ScaleEngine *sc_engine = (ScaleEngine *)d_graph->axisScaleEngine(a);
     if (sc_engine->axisBreakLeft() > -DBL_MAX)
         boxBreakStart->setValue(sc_engine->axisBreakLeft());
     else
@@ -2781,13 +2778,13 @@ void AxesDialog::updateScale()
     else
         boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
 
-    boxMinorValue->setEditText(QString::number(d_plot->axisMaxMinor(a)));
+    boxMinorValue->setEditText(QString::number(d_graph->axisMaxMinor(a)));
 }
 
 void AxesDialog::updateTitleBox(int axis)
 {
 	int axisId = mapToQwtAxis(axis);
-	boxTitle->setText(d_graph->axisTitle(axisId));
+	boxTitle->setText(d_graph->axisTitleString(axisId));
 }
 
 void AxesDialog::pickAxisColor()
@@ -2955,12 +2952,10 @@ void AxesDialog::setLabelsNumericFormat(int)
 	int prec = boxPrecision->value();
 	int format = boxFormat->currentIndex();
 
-	Plot *plot = d_graph->plotWidget();
-
     QString formatInfo = QString::null;
 	if (type == ScaleDraw::Numeric){
-		if (plot->axisLabelFormat(axis) == format &&
-			plot->axisLabelPrecision(axis) == prec)
+		if (d_graph->axisLabelFormat(axis) == format &&
+			d_graph->axisLabelPrecision(axis) == prec)
 			return;
 
 		if (format == 0)
@@ -3005,9 +3000,9 @@ void AxesDialog::updateLabelsFormat(int)
         	return;
 
 		int a = mapToQwtAxisId();
-		int format = d_graph->plotWidget()->axisLabelFormat(a);
+		int format = d_graph->axisLabelFormat(a);
         boxFormat->setCurrentIndex(format);
-		boxPrecision->setValue(d_graph->plotWidget()->axisLabelPrecision(a));
+		boxPrecision->setValue(d_graph->axisLabelPrecision(a));
 
         if (format == 0)
         	boxPrecision->setEnabled(false);
@@ -3085,7 +3080,7 @@ void AxesDialog::updateMinorTicksList(int scaleType)
 		boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
 
 	int a = mapToQwtAxis(axesList->currentRow());
-	boxMinorValue->setEditText(QString::number(d_graph->plotWidget()->axisMaxMinor(a)));
+	boxMinorValue->setEditText(QString::number(d_graph->axisMaxMinor(a)));
 }
 
 void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool axisOn,

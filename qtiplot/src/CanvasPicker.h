@@ -27,7 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include <QObject>
-#include "Plot.h"
+#include <QPoint>
+#include <QMouseEvent>
 
 class Graph;
 class ArrowMarker;
@@ -35,8 +36,6 @@ class ArrowMarker;
 /**
  * \brief Handles parts of the user interaction for a Plot by registering itself as an event filter for its QwtPlotCanvas.
  *
- * CanvasPicker relies heavily on its parent being the Graph that owns the Plot it operates on.
- * Additionally, parts of the code use Graph::plotWidget instead of CanvasPicker::plotWidget.
  */
 class CanvasPicker: public QObject
 {
@@ -64,17 +63,9 @@ private:
 
 	/**
 	 * \brief Return my parent as a Graph.
-	 *
-	 * %Note that contrary to the method name, this does NOT return the Plot I operate on.
 	 */
-	Graph *plot() { return (Graph *)parent(); }
+	Graph *plot(){return (Graph *)parent();};
 
-	/**
-	 * \brief The Plot I handle user interaction for.
-	 *
-	 * %Note that this has to be owned by my parent Graph.
-	 */
-	Plot* plotWidget;
 	QPoint startLinePoint, endLinePoint;
 
 signals:

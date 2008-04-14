@@ -498,7 +498,7 @@ class Graph : QWidget /PyName=Layer/
 #include "src/LegendWidget.h"
 %End
 public:
-  enum ScaleType{Linear, Log10};
+  enum Scale{Linear, Log10};
   enum Axis{Left, Right, Bottom, Top};
   enum TicksStyle{NoTicks = 0, Out = 1, InOut = 2, In = 3};
   enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
@@ -537,7 +537,7 @@ public:
   void removeCurve(int);
   void removeCurve(const QString&);
   void deleteFitCurves();
-  int curves() /PyName=numCurves/;
+  int curveCount() /PyName=numCurves/;
 
 	void addFunction(const QString&, double, double, int=100);
 %MethodCode

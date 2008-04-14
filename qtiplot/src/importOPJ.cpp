@@ -1137,9 +1137,9 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 			graph->setAutoscaleFonts(true);
         	graph->setIgnoreResizeEvents(!mw->autoResizeLayers);
 
-			int nXDelta = graph->plotWidget()->width() - graph->plotWidget()->canvas()->width();
-			int nYDelta = graph->plotWidget()->height() - graph->plotWidget()->canvas()->height();
-			QPoint posCanvas =  graph->plotWidget()->canvas()->pos();
+			int nXDelta = graph->width() - graph->canvas()->width();
+			int nYDelta = graph->height() - graph->canvas()->height();
+			QPoint posCanvas =  graph->canvas()->pos();
 
 			graph->resize(layerRect.width()*fXScale + nXDelta,
 				layerRect.height()*fYScale + nYDelta);
@@ -1148,7 +1148,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 			int newYGraphPos = layerRect.top*fYScale - posCanvas.y() - ml->y();
 			graph->move((newXGraphPos > 0 ? newXGraphPos : 0), (newYGraphPos > 0 ? newYGraphPos : 0));
 
-			graph->plotWidget()->resize(layerRect.width()*fXScale + nXDelta,
+			graph->resize(layerRect.width()*fXScale + nXDelta,
 				layerRect.height()*fYScale + nYDelta);
 
 			//add texts
@@ -1324,7 +1324,7 @@ void ImportOPJ::addText(const text& _text, Graph* graph, LegendWidget* txt, cons
 	int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
 	txt->move(QPoint(x*fXScale, y*fYScale));
 
-	/*QRect qtiRect=graph->plotWidget()->canvas()->geometry();
+	/*QRect qtiRect=graph->canvas()->geometry();
 	txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),
 		y*qtiRect.height()/layerRect.height()));*/
 }

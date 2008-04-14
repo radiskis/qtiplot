@@ -139,9 +139,9 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
 					s += QString::number(d_table_rows[0]) + "\n";
 
                 if (d_values && d_percentages)
-                    s += ((Plot *)plot())->locale().toString(y(0), 'g', 4) + " (100%)";
+                    s += ((Graph *)plot())->locale().toString(y(0), 'g', 4) + " (100%)";
                 else if (d_values)
-                    s += ((Plot *)plot())->locale().toString(y(0), 'g', 4);
+                    s += ((Graph *)plot())->locale().toString(y(0), 'g', 4);
                 else if (d_percentages)
                     s += "100%";
                 l->setText(s);
@@ -220,7 +220,7 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
 
 	painter->save();
 
-	QLocale locale = ((Plot *)plot())->locale();
+	QLocale locale = ((Graph *)plot())->locale();
 	for (int i = from; i <= to; i++){
 		const double yi = y(i);
 		const double q = yi/sum;
@@ -361,7 +361,7 @@ void QwtPieCurve::setBrushStyle(const Qt::BrushStyle& style)
 
 void QwtPieCurve::loadData()
 {
-	Plot *d_plot = (Plot *)plot();
+	Graph *d_plot = (Graph *)plot();
 	QLocale locale = d_plot->locale();
 	QVarLengthArray<double> X(abs(d_end_row - d_start_row) + 1);
 	d_table_rows.resize(abs(d_end_row - d_start_row) + 1);
@@ -402,7 +402,7 @@ void QwtPieCurve::addLabel(PieLabel *l, bool clone)
 		return;
 
 	if (clone){
-		PieLabel *newLabel = new PieLabel((Plot *)plot(), this);
+		PieLabel *newLabel = new PieLabel((Graph *)plot(), this);
 		newLabel->clone(l);
 		newLabel->setCustomText(l->customText());
 		d_texts_list << newLabel;
@@ -421,7 +421,7 @@ void QwtPieCurve::removeLabel(PieLabel *l)
 	if (index < 0 || index >= d_texts_list.size())
 		return;
 
-	PieLabel *newLabel = new PieLabel((Plot *)plot(), this);
+	PieLabel *newLabel = new PieLabel((Graph *)plot(), this);
 	newLabel->clone(l);
 	newLabel->setCustomText(l->customText());
 	newLabel->hide();
@@ -438,7 +438,7 @@ void QwtPieCurve::initLabels()
 	for (int i = 0; i < dataPoints; i++)
 		sum += y(i);
 
-    Plot *d_plot = (Plot *)plot();
+    Graph *d_plot = (Graph *)plot();
 	QLocale locale = d_plot->locale();
 	for (int i = 0; i <size; i++ ){
 		PieLabel* l = new PieLabel(d_plot, this);
@@ -450,7 +450,7 @@ void QwtPieCurve::initLabels()
 	}
 }
 
-PieLabel::PieLabel(Plot *plot, QwtPieCurve *pie):LegendWidget(plot),
+PieLabel::PieLabel(Graph *plot, QwtPieCurve *pie):LegendWidget(plot),
 	d_pie_curve(pie),
 	d_custom_text(QString::null)
 {

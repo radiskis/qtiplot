@@ -38,8 +38,7 @@
 
 QString PlotCurve::saveCurveLayout()
 {		
-	Plot *plot = (Plot *)this->plot();
-	Graph *g = (Graph *)plot->parent();
+	Graph *g = (Graph *)plot();
 	
 	int index = g->curveIndex((QwtPlotCurve *)this);
 	int style = g->curveType(index);
@@ -264,8 +263,7 @@ bool DataCurve::updateData(Table *t, const QString& colName)
 
 void DataCurve::loadData()
 {
-    Plot *plot = (Plot *)this->plot();
-	Graph *g = (Graph *)plot->parent();
+	Graph *g = (Graph *)plot();
 	if (!g)
 		return;
 
@@ -325,13 +323,13 @@ void DataCurve::loadData()
 				if (d.isValid())
 					X[size] = (double) date0.secsTo(d);
 			} else
-				X[size] = plot->locale().toDouble(xval, &valid_data);
+				X[size] = g->locale().toDouble(xval, &valid_data);
 
 			if (yColType == Table::Text){
 				yLabels << yval;
 				Y[size] = (double)(size + 1);
 			} else
-				Y[size] = plot->locale().toDouble(yval, &valid_data);
+				Y[size] = g->locale().toDouble(yval, &valid_data);
 
             if (valid_data)
                 size++;
@@ -364,13 +362,13 @@ void DataCurve::loadData()
 			int axis = QwtPlot::xBottom;
 			if (d_type == Graph::HorizontalBars)
                 axis = QwtPlot::yLeft;
-            ScaleDraw *old_sd = (ScaleDraw *)plot->axisScaleDraw(axis);
-            ScaleDraw *sd = new ScaleDraw(plot, old_sd);
+            ScaleDraw *old_sd = (ScaleDraw *)g->axisScaleDraw(axis);
+            ScaleDraw *sd = new ScaleDraw(g, old_sd);
             if (xColType == Table::Date)
                 sd->setDateTimeOrigin(date0);
             else
                 sd->setDateTimeOrigin(QDateTime(QDate::currentDate(), time0));
-            plot->setAxisScaleDraw(axis, sd);
+            g->setAxisScaleDraw(axis, sd);
 		}
 
 		if (yColType == Table::Text)
@@ -378,7 +376,7 @@ void DataCurve::loadData()
 	}
 
     if (!d_labels_list.isEmpty()){
-        ((Graph*)plot->parent())->updatePlot();
+        ((Graph*)plot())->updatePlot();
         loadLabels();
     }
 }

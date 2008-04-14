@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "Convolution.h"
 #include "MultiLayer.h"
-#include "Plot.h"
 #include "PlotCurve.h"
 #include "ColorBox.h"
 

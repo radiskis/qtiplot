@@ -45,7 +45,6 @@
 #include "ArrowMarker.h"
 #include "ImageMarker.h"
 #include "Graph.h"
-#include "Plot.h"
 #include "Grid.h"
 #include "PlotWizard.h"
 #include "PolynomFitDialog.h"
@@ -1734,7 +1733,7 @@ void ApplicationWindow::changeMatrixName(const QString& oldName, const QString& 
 		{
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
-				for (int i=0; i<g->curves(); i++){
+				for (int i=0; i<g->curveCount(); i++){
 					QwtPlotItem *sp = (QwtPlotItem *)g->plotItem(i);
 					if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->title().text() == oldName)
 						sp->setTitle(newName);
@@ -1758,7 +1757,7 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 		else if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
-				for (int i=0; i<g->curves(); i++){
+				for (int i=0; i<g->curveCount(); i++){
 				    if (g->curveType(i) == Graph::Histogram){
                         QwtHistogram *h = (QwtHistogram *)g->plotItem(i);
                         if (h && h->matrix() == m)
@@ -1790,7 +1789,7 @@ void ApplicationWindow::updateMatrixPlots(MdiSubWindow *window)
 		else if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
-				for (int i=0; i<g->curves(); i++){
+				for (int i=0; i<g->curveCount(); i++){
 				    if (g->curveType(i) == Graph::Histogram){
                         QwtHistogram *h = (QwtHistogram *)g->plotItem(i);
                         if (h && h->matrix() == m)
@@ -2505,7 +2504,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->initFonts(plotAxesFont, plotNumbersFont);
 	g->initTitle(titleOn, plotTitleFont);
 	g->setCanvasFrame(canvasFrameWidth);
-	g->plotWidget()->setMargin(defaultPlotMargin);
+	g->setMargin(defaultPlotMargin);
 	g->enableAutoscaling(autoscale2DPlots);
 	g->setAutoscaleFonts(autoScaleFonts);
     g->setIgnoreResizeEvents(!autoResizeLayers);
@@ -3127,7 +3126,7 @@ void ApplicationWindow::addErrorBars()
 	if (!g)
         return;
 
-    if (!g->curves()){
+    if (!g->curveCount()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		return;
 	}
@@ -6267,7 +6266,7 @@ void ApplicationWindow::showCurveContextMenu(int curveKey)
         }
     }
 
-	if (g->visibleCurves() != g->curves())
+	if (g->visibleCurves() != g->curveCount())
 		curveMenu.addAction(actionShowAllCurves);
 	curveMenu.insertSeparator();
 
@@ -6333,7 +6332,7 @@ void ApplicationWindow::showAllCurves()
 	if (!g)
 		return;
 
-	for(int i=0; i< g->curves(); i++)
+	for(int i=0; i< g->curveCount(); i++)
 		g->showCurve(i);
 	g->replot();
 }
@@ -6349,7 +6348,7 @@ void ApplicationWindow::hideOtherCurves()
 		return;
 
 	int curveKey = actionHideOtherCurves->data().toInt();
-	for(int i=0; i< g->curves(); i++)
+	for(int i=0; i< g->curveCount(); i++)
 		g->showCurve(i, false);
 
 	g->showCurve(g->curveIndex(curveKey));
@@ -6949,7 +6948,7 @@ void ApplicationWindow::showRangeSelectors()
 	if (!g)
 		return;
 
-	if (!g->curves()){
+	if (!g->curveCount()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		btnPointer->setChecked(true);
 		return;
@@ -6985,7 +6984,7 @@ void ApplicationWindow::showCursor()
 
 	QList<Graph *> layers = plot->layersList();
     foreach(Graph *g, layers){
-		if (g->isPiePlot() || !g->curves())
+		if (g->isPiePlot() || !g->curveCount())
             continue;
         if (g->validCurvesDataSize())
 			g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Display, info, SLOT(setText(const QString&))));
@@ -7404,7 +7403,7 @@ void ApplicationWindow::pasteSelection()
                 g->deselectMarker();
 			} else if (d_image_copy){
                 ImageMarker *i = g->addImage(d_image_copy);
-				QPoint pos = g->plotWidget()->canvas()->mapFromGlobal(QCursor::pos());
+				QPoint pos = g->canvas()->mapFromGlobal(QCursor::pos());
 				QSize size = d_image_copy->size();
 				i->setRect(pos.x(), pos.y(), size.width(), size.height());
                 g->replot();
@@ -8497,14 +8496,14 @@ QStringList ApplicationWindow::depending3DPlots(Matrix *m)
 
 QStringList ApplicationWindow::dependingPlots(const QString& name)
 {
-	QStringList onPlot, plots;
+	QStringList plots;
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
-				onPlot = g->curvesList();
+				QStringList onPlot = g->curveNamesList();
 				onPlot = onPlot.grep (name,TRUE);
 				if (int(onPlot.count()) && plots.contains(w->objectName())<=0)
 					plots << w->objectName();
@@ -8523,7 +8522,7 @@ QStringList ApplicationWindow::multilayerDependencies(QWidget *w)
 	MultiLayer *g=(MultiLayer*)w;
 	QList<Graph *> layers = g->layersList();
     foreach(Graph *ag, layers){
-		QStringList onPlot=ag->curvesList();
+		QStringList onPlot = ag->curveNamesList();
 		for (int j=0; j<onPlot.count(); j++)
 		{
 			QStringList tl = onPlot[j].split("_", QString::SkipEmptyParts);
@@ -8549,7 +8548,7 @@ void ApplicationWindow::showGraphContextMenu()
 	if (ag->isPiePlot())
 		cm.insertItem(tr("Re&move Pie Curve"),ag, SLOT(removePie()));
 	else {
-		if (ag->visibleCurves() != ag->curves()){
+		if (ag->visibleCurves() != ag->curveCount()){
 			cm.addAction(actionShowAllCurves);
 			cm.insertSeparator();
 		}
@@ -9981,7 +9980,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		}
 		else if (s.contains ("Margin")){
 			QStringList fList=s.split("\t");
-			ag->plotWidget()->setMargin(fList[1].toInt());
+			ag->setMargin(fList[1].toInt());
 		}
 		else if (s.contains ("Border")){
 			QStringList fList=s.split("\t");
@@ -10042,7 +10041,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				ag->setAxisLabelsColor(i, QColor(fList[i]));
 		}
 		else if (s.left(5)=="grid\t"){
-			ag->plotWidget()->grid()->load(s.split("\t"));
+			ag->grid()->load(s.split("\t"));
 		}
 		else if (s.startsWith ("<Antialiasing>") && s.endsWith ("</Antialiasing>")){
 			bool antialiasing = s.remove("<Antialiasing>").remove("</Antialiasing>").toInt();
@@ -10673,7 +10672,7 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
 		{
 			QwtPlotCurve* c = g->curve(curveTitle);
             if (c){
-            	ScaleEngine *se = (ScaleEngine *)g->plotWidget()->axisScaleEngine(c->xAxis());
+            	ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(c->xAxis());
             	if(se->type() == QwtScaleTransformation::Log10)
 					fitter = new LogisticFit (this, g);
 				else

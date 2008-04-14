@@ -480,7 +480,7 @@ void CurvesDialog::showCurveRange(bool on )
     contents->clear();
     if (on){
         QStringList lst = QStringList();
-        for (int i=0; i<d_graph->curves(); i++){
+        for (int i=0; i<d_graph->curveCount(); i++){
             QwtPlotItem *it = d_graph->plotItem(i);
             if (!it)
                 continue;

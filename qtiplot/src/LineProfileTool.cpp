@@ -43,7 +43,7 @@
 #include <qwt_plot_canvas.h>
 
 LineProfileTool::LineProfileTool(Graph *graph, ApplicationWindow *app, int average_pixels)
-	: QWidget(graph->plotWidget()->canvas()),
+	: QWidget(graph->canvas()),
 	PlotToolInterface(graph),
 	d_app(app)
 {
@@ -174,7 +174,7 @@ int LineProfileTool::averageImagePixel(const QImage& image, int px, int py, bool
 void LineProfileTool::addLineMarker(const QPoint &start, const QPoint &end)
 {
 	ArrowMarker *mrk = new ArrowMarker();
-	mrk->attach(d_graph->plotWidget());
+	mrk->attach(d_graph);
 
 	mrk->setStartPoint(start);
 	mrk->setEndPoint(end);

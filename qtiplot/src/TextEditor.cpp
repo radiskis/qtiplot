@@ -56,8 +56,8 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g)
 		text = ((LegendWidget*)d_target)->text();
 		d_target->hide();
 	} else if (g->titleSelected()){
-		d_target = g->plotWidget()->titleLabel();
-		QwtText t = g->plotWidget()->title();
+		d_target = g->titleLabel();
+		QwtText t = g->title();
 		text = t.text();
 		setAlignment((Qt::Alignment)t.renderFlags());
 		setGeometry(d_target->geometry());
@@ -109,12 +109,12 @@ void TextEditor::closeEvent(QCloseEvent *e)
         d_target->show();
 		g->setSelectedText(NULL);
 	} else if (d_target->isA("QwtTextLabel")){
-		QwtText title = g->plotWidget()->title();
+		QwtText title = g->title();
 		s = text();
 		if(s.isEmpty())
 			s = " ";
 		title.setText(s);			
-		g->plotWidget()->setTitle(title);
+		((QwtPlot *)g)->setTitle(title);
 	} else if (d_target->isA("QwtScaleWidget")){
 		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
 		QwtText title = scale->title();

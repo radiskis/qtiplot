@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include <QObject>
 
-class QwtPlot;
+class Graph;
 class QwtTextLabel;
 
 class TitlePicker: public QObject
@@ -36,7 +36,7 @@ class TitlePicker: public QObject
     Q_OBJECT
 
 public:
-    TitlePicker(QwtPlot *plot);
+    TitlePicker(Graph *plot);
     void setSelected(bool select = true);
 	bool selected(){return d_selected;};
 
