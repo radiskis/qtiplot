@@ -220,7 +220,7 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
 
 	painter->save();
 
-	QLocale locale = ((Graph *)plot())->locale();
+	QLocale locale = ((Graph *)plot())->multiLayer()->locale();
 	for (int i = from; i <= to; i++){
 		const double yi = y(i);
 		const double q = yi/sum;
@@ -362,7 +362,7 @@ void QwtPieCurve::setBrushStyle(const Qt::BrushStyle& style)
 void QwtPieCurve::loadData()
 {
 	Graph *d_plot = (Graph *)plot();
-	QLocale locale = d_plot->locale();
+	QLocale locale = d_plot->multiLayer()->locale();
 	QVarLengthArray<double> X(abs(d_end_row - d_start_row) + 1);
 	d_table_rows.resize(abs(d_end_row - d_start_row) + 1);
 
@@ -439,7 +439,7 @@ void QwtPieCurve::initLabels()
 		sum += y(i);
 
     Graph *d_plot = (Graph *)plot();
-	QLocale locale = d_plot->locale();
+	QLocale locale = d_plot->multiLayer()->locale();
 	for (int i = 0; i <size; i++ ){
 		PieLabel* l = new PieLabel(d_plot, this);
 		d_texts_list << l;
