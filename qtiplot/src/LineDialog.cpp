@@ -30,7 +30,6 @@
 #include "ColorButton.h"
 #include "ArrowMarker.h"
 #include "Graph.h"
-#include "Plot.h"
 #include "ApplicationWindow.h"
 #include "DoubleSpinBox.h"
 

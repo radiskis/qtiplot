@@ -214,7 +214,7 @@ void MultiPeakFit::customizeFitResults()
 
 void MultiPeakFit::insertPeakFunctionCurve(double *x, double *y, int peak)
 {
-	QStringList curves = d_output_graph->curvesList();
+	QStringList curves = d_output_graph->curveNamesList();
 	int index = 0;
 	for (int i = 0; i<(int)curves.count(); i++ ){
 		if (curves[i].startsWith(tr("Peak")))

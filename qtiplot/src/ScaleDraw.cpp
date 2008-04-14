@@ -27,9 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "ScaleDraw.h"
+#include "Graph.h"
 #include "MyParser.h"
 #include "plot2D/ScaleEngine.h"
-#include "Graph.h"
 
 #include <QDateTime>
 #include <QPainter>
@@ -44,7 +44,7 @@
  *
  *****************************************************************************/
 
-ScaleDraw::ScaleDraw(Plot *plot, const QString& formula):
+ScaleDraw::ScaleDraw(Graph *plot, const QString& formula):
 	d_plot(plot),
 	d_type(Numeric),
 	d_numeric_format(Automatic),
@@ -60,7 +60,7 @@ ScaleDraw::ScaleDraw(Plot *plot, const QString& formula):
 	d_text_labels(QStringList())
 {}
 
-ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, const QString& format, ScaleType type):
+ScaleDraw::ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type):
 	d_plot(plot),
 	d_type(type),
 	d_numeric_format(Automatic),
@@ -76,7 +76,7 @@ ScaleDraw::ScaleDraw(Plot *plot, const QStringList& labels, const QString& forma
 	d_text_labels(labels)
 {}
 
-ScaleDraw::ScaleDraw(Plot *plot, ScaleDraw* sd):
+ScaleDraw::ScaleDraw(Graph *plot, ScaleDraw* sd):
 	d_plot(plot)
 {
 	d_type = sd->d_type;
@@ -101,7 +101,7 @@ QwtText ScaleDraw::label(double value) const
 	switch (d_type){
 		case Numeric:
 		{
-            QLocale locale = ((Graph *)d_plot->parent())->multiLayer()->locale();
+            QLocale locale = d_plot->multiLayer()->locale();
 			if (d_numeric_format == Superscripts){
 				QString txt = locale.toString(transformValue(value), 'e', d_prec);
 				QStringList list = txt.split("e", QString::SkipEmptyParts);

@@ -34,18 +34,17 @@
 #include <qwt_text.h>
 
 #include "Graph.h"
-#include "Plot.h"
 
 class LegendWidget: public QWidget
 {
 	Q_OBJECT
 
 public:
-    LegendWidget(Plot *);
+    LegendWidget(Graph *);
 	~LegendWidget();
 
 	void clone(LegendWidget* t);
-	QwtPlot *plot(){return d_plot;};
+	Graph *plot(){return d_plot;};
 
 	//! The kinds of frame a LegendWidget can draw around the Text.
 	enum FrameStyle{None = 0, Line = 1, Shadow = 2};
@@ -101,7 +100,7 @@ private:
 	void contextMenuEvent(QContextMenuEvent * ){emit showMenu();};
 
 	//! Parent plot
-	Plot *d_plot;
+	Graph *d_plot;
 
 	//! Frame type
 	int d_frame;

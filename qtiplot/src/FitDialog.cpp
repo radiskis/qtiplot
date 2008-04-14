@@ -1036,7 +1036,7 @@ void FitDialog::accept()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 
 	QString curve = boxCurve->currentText();
-	QStringList curvesList = d_graph->curvesList();
+	QStringList curvesList = d_graph->curveNamesList();
 	if (curvesList.contains(curve) <= 0){
 		QMessageBox::critical(app, tr("QtiPlot - Warning"),
 				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curve));
@@ -1250,7 +1250,7 @@ void FitDialog::deleteFitCurves()
 {
 	d_graph->deleteFitCurves();
 	boxCurve->clear();
-	boxCurve->addItems(d_graph->curvesList());
+	boxCurve->addItems(d_graph->curveNamesList());
 }
 
 void FitDialog::resetFunction()
@@ -1442,7 +1442,7 @@ void FitDialog::updatePreview()
 	if (!d_preview_curve){
         d_preview_curve = new QwtPlotCurve();
 		d_preview_curve->setRenderHint(QwtPlotItem::RenderAntialiased, d_graph->antialiasing());
-        d_preview_curve->attach(d_graph->plotWidget());
+        d_preview_curve->attach(d_graph);
 	}
 
     d_preview_curve->setPen(QPen(ColorBox::color(boxColor->currentIndex()), 1));

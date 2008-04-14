@@ -32,7 +32,6 @@
 #include "ApplicationWindow.h"
 #include "MultiLayer.h"
 #include "Table.h"
-#include "Plot.h"
 #include "FFT.h"
 #include "Matrix.h"
 #include "analysis/fft2D.h"

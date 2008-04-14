@@ -1769,18 +1769,17 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxCanvasTransparency->blockSignals(true);
     boxBorderWidth->blockSignals(true);
 
-    Plot *p = g->plotWidget();
-    boxMargin->setValue(p->margin());
-	boxBorderWidth->setValue(p->lineWidth());
-	boxBorderColor->setColor(p->frameColor());
+    boxMargin->setValue(g->margin());
+	boxBorderWidth->setValue(g->lineWidth());
+	boxBorderColor->setColor(g->frameColor());
 
-	QColor c = p->paletteBackgroundColor();
+	QColor c = g->paletteBackgroundColor();
 	boxBackgroundTransparency->setValue(c.alpha());
 	boxBackgroundColor->setEnabled(c.alpha());
 	c.setAlpha(255);
 	boxBackgroundColor->setColor(c);
 
-	c = p->canvasBackground();
+	c = g->canvasBackground();
 	boxCanvasTransparency->setValue(c.alpha());
 	boxCanvasColor->setEnabled(c.alpha());
 	c.setAlpha(255);
@@ -1796,14 +1795,14 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxY->setValue(g->pos().y());
 
 	boxLayerWidth->blockSignals(true);
-	boxLayerWidth->setValue(p->size().width());
+	boxLayerWidth->setValue(g->width());
 	boxLayerWidth->blockSignals(false);
 
 	boxLayerHeight->blockSignals(true);
-	boxLayerHeight->setValue(p->size().height());
+	boxLayerHeight->setValue(g->height());
 	boxLayerHeight->blockSignals(false);
 
-	aspect_ratio = (double)p->size().width()/(double)p->size().height();
+	aspect_ratio = (double)g->width()/(double)g->height();
 }
 
 void PlotDialog::setActiveCurve(CurveTreeItem *item)
@@ -2129,7 +2128,6 @@ bool PlotDialog::acceptParams()
 			return true;
 
 		g->setGeometry(QRect(pos, size));
-    	g->plotWidget()->resize(size);
 		d_ml->repaint();
 		return true;
 	}
@@ -2939,7 +2937,7 @@ void LayerItem::setActive(bool on)
 
 void LayerItem::insertCurvesList()
 {
-	for (int i=0; i<d_graph->curves(); i++){
+	for (int i=0; i<d_graph->curveCount(); i++){
         QString plotAssociation = QString();
         const QwtPlotItem *it = (QwtPlotItem *)d_graph->plotItem(i);
         if (!it)

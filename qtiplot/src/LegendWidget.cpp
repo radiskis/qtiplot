@@ -46,7 +46,7 @@
 
 #include <iostream>
 
-LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
+LegendWidget::LegendWidget(Graph *plot):QWidget(plot),
 	d_plot(plot),
 	d_frame (0),
 	d_angle(0),
@@ -73,9 +73,9 @@ LegendWidget::LegendWidget(Plot *plot):QWidget(plot),
 
     d_selector = NULL;
 
-	connect (this, SIGNAL(showDialog()), plot->parent(), SIGNAL(viewTextDialog()));
-	connect (this, SIGNAL(showMenu()), plot->parent(), SIGNAL(showMarkerPopupMenu()));
-	connect (this, SIGNAL(enableEditor()), plot->parent(), SLOT(enableTextEditor()));
+	connect (this, SIGNAL(showDialog()), plot, SIGNAL(viewTextDialog()));
+	connect (this, SIGNAL(showMenu()), plot, SIGNAL(showMarkerPopupMenu()));
+	connect (this, SIGNAL(enableEditor()), plot, SLOT(enableTextEditor()));
 
 	setMouseTracking(true);
 	show();
@@ -205,7 +205,7 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	VectorCurve *v = (VectorCurve*)c;
 	p->save();
 
-	if (((Graph *)d_plot->parent())->antialiasing())
+	if (d_plot->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
 
 	QPen pen(v->color(), v->width(), Qt::SolidLine);
@@ -280,7 +280,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 		QwtArray<long> height, int symbolLineLength)
 {
 	p->save();
-	if (((Graph *)d_plot->parent())->antialiasing())
+	if (d_plot->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
 
 	int l = symbolLineLength;
@@ -471,9 +471,8 @@ QString LegendWidget::parse(const QString& str)
 		QStringList lst = spec.split(",");
 		if (!lst.isEmpty()){
         	int cv = lst[0].toInt() - 1;
-			Graph *g = (Graph *)d_plot->parent();
-        	if (g && cv >= 0 && cv < g->curves()){
-				PlotCurve *c = (PlotCurve *)g->curve(cv);
+        	if (d_plot && cv >= 0 && cv < d_plot->curveCount()){
+				PlotCurve *c = (PlotCurve *)d_plot->curve(cv);
             	if (c){
 					if (lst.count() == 1)
 						s = s.replace(pos, pos2-pos+1, c->title().text());
@@ -495,7 +494,6 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 {
 	point = -1;
 	PlotCurve *curve = 0;
-	Graph *g = (Graph *)d_plot->parent();
 
 	QStringList l = s.split(",");
     if (l.count() == 2)
@@ -505,13 +503,13 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 		l = l[0].split(".");
     	if (l.count() == 2){
     		int cv = l[1].toInt() - 1;
-			Graph *layer = g->multiLayer()->layer(l[0].toInt());
-			if (layer && cv >= 0 && cv < layer->curves())
+			Graph *layer = d_plot->multiLayer()->layer(l[0].toInt());
+			if (layer && cv >= 0 && cv < layer->curveCount())
 				return (PlotCurve*)layer->curve(cv);
 		} else if (l.count() == 1){
 			int cv = l[0].toInt() - 1;
-			if (cv >= 0 || cv < g->curves())
-				return (PlotCurve*)g->curve(cv);
+			if (cv >= 0 || cv < d_plot->curveCount())
+				return (PlotCurve*)d_plot->curve(cv);
 		}
 	}
 	return curve;
@@ -524,12 +522,12 @@ void LegendWidget::mousePressEvent (QMouseEvent *)
 		d_selector = NULL;
 	}
 
-	((Graph *)d_plot->parent())->activateGraph();
-	((Graph *)d_plot->parent())->deselectMarker();
+	d_plot->activateGraph();
+	d_plot->deselectMarker();
 
     d_selector = new SelectionMoveResizer(this);
-	connect(d_selector, SIGNAL(targetsChanged()), (Graph*)d_plot->parent(), SIGNAL(modifiedGraph()));
-	((Graph *)d_plot->parent())->setSelectedText(this);
+	connect(d_selector, SIGNAL(targetsChanged()), d_plot, SIGNAL(modifiedGraph()));
+	d_plot->setSelectedText(this);
 }
 
 void LegendWidget::setSelected(bool on)
@@ -539,13 +537,13 @@ void LegendWidget::setSelected(bool on)
 			return;
 		else {
 			d_selector = new SelectionMoveResizer(this);
-			connect(d_selector, SIGNAL(targetsChanged()), (Graph*)d_plot->parent(), SIGNAL(modifiedGraph()));
-			((Graph *)d_plot->parent())->setSelectedText(this);
+			connect(d_selector, SIGNAL(targetsChanged()), d_plot, SIGNAL(modifiedGraph()));
+			d_plot->setSelectedText(this);
 		}
 	} else if (d_selector){
 		d_selector->close();
 		d_selector = NULL;
-		((Graph *)d_plot->parent())->setSelectedText(NULL);
+		d_plot->setSelectedText(NULL);
 	}
 }
 
@@ -556,7 +554,7 @@ void LegendWidget::showTextEditor()
 		d_selector = NULL;
 	}
 
-    ApplicationWindow *app = ((Graph *)d_plot->parent())->multiLayer()->applicationWindow();
+    ApplicationWindow *app = d_plot->multiLayer()->applicationWindow();
     if (!app)
         return;
 

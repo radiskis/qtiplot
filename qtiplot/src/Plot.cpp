@@ -26,7 +26,6 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "Plot.h"
 #include "Graph.h"
 #include "Grid.h"
 #include "ScaleDraw.h"

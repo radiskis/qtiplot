@@ -30,9 +30,9 @@
 
 class QRect;
 class QPoint;
-class QwtPlot;
 class QwtScaleWidget;
-
+class Graph;
+	
 /*!\brief Handles user interaction with a QwtScaleWidget.
  *
  * This class is used by Graph to catch events for the scales on its Plot.
@@ -42,7 +42,7 @@ class ScalePicker: public QObject
 {
     Q_OBJECT
 public:
-    ScalePicker(QwtPlot *plot);
+    ScalePicker(Graph *plot);
 
 	//! Returns the bounding rectangle of a scale without the title.
 	QRect scaleRect(const QwtScaleWidget *) const;
@@ -59,8 +59,8 @@ public:
 	 */
 	void refresh();
 
-	//! Return my parent casted to QwtPlot.
-	QwtPlot *plot() { return (QwtPlot *)parent(); }
+	//! Return my parent casted to Graph.
+	Graph *plot() {return (Graph *)parent();};
 
 	void deselect();
 	

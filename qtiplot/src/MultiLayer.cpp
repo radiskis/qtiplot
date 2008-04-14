@@ -49,7 +49,6 @@
 #include <qwt_text_label.h>
 
 #include "MultiLayer.h"
-#include "Plot.h"
 #include "LegendWidget.h"
 #include "SelectionMoveResizer.h"
 #include "ApplicationWindow.h"
@@ -249,7 +248,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 
 	foreach (Graph *g, graphsList){
 		if (!g->ignoresResizeEvents()){
-			QObjectList lst = g->plotWidget()->children();
+			QObjectList lst = g->children();
 			foreach(QObject *o, lst){
 				if (o->isA("LegendWidget"))
 					((LegendWidget *)o)->setFixedCoordinatesMode();
@@ -260,7 +259,6 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 			int gw = qRound(g->width()*w_ratio);
 			int gh = qRound(g->height()*h_ratio);
 			g->setGeometry(QRect(gx, gy, gw, gh));
-			g->plotWidget()->resize(QSize(gw, gh));
 
             if (scaleLayerFonts && g->autoscaleFonts())
                 g->scaleFonts(h_ratio);
@@ -348,7 +346,6 @@ void MultiLayer::setGraphGeometry(int x, int y, int w, int h)
 		return;
 
 	active_graph->setGeometry(QRect(QPoint(x,y),QSize(w,h)));
-    active_graph->plotWidget()->resize(QSize(w, h));
 	emit modifiedPlot();
 }
 
@@ -370,15 +367,14 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 	for (int i=0; i<layers; i++)
 	{//calculate scales/canvas dimensions reports for each layer and stores them in the above vectors
-		Graph *gr = (Graph *)graphsList.at(i);
-		QwtPlot *plot = gr->plotWidget();
-		QwtPlotLayout *plotLayout=plot->plotLayout();
-		QRect cRect=plotLayout->canvasRect();
+		Graph *g = (Graph *)graphsList.at(i);
+		QwtPlotLayout *plotLayout = g->plotLayout();
+		QRect cRect = plotLayout->canvasRect();
 		double ch = (double) cRect.height();
 		double cw = (double) cRect.width();
 
 		QRect tRect=plotLayout->titleRect ();
-		QwtScaleWidget *scale=(QwtScaleWidget *) plot->axisWidget (QwtPlot::xTop);
+		QwtScaleWidget *scale=(QwtScaleWidget *) g->axisWidget (QwtPlot::xTop);
 
 		int topHeight = 0;
 		if (!tRect.isNull())
@@ -389,19 +385,19 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		}
 		gsl_vector_set (xTopR, i, double(topHeight)/ch);
 
-		scale=(QwtScaleWidget *) plot->axisWidget (QwtPlot::xBottom);
+		scale=(QwtScaleWidget *) g->axisWidget (QwtPlot::xBottom);
 		if (scale){
 			QRect sRect = plotLayout->scaleRect (QwtPlot::xBottom);
 			gsl_vector_set (xBottomR, i, double(sRect.height())/ch);
 		}
 
-		scale=(QwtScaleWidget *) plot->axisWidget (QwtPlot::yLeft);
+		scale=(QwtScaleWidget *) g->axisWidget (QwtPlot::yLeft);
 		if (scale){
 			QRect sRect = plotLayout->scaleRect (QwtPlot::yLeft);
 			gsl_vector_set (yLeftR, i, double(sRect.width())/cw);
 		}
 
-		scale=(QwtScaleWidget *) plot->axisWidget (QwtPlot::yRight);
+		scale=(QwtScaleWidget *) g->axisWidget (QwtPlot::yRight);
 		if (scale){
 			QRect sRect = plotLayout->scaleRect (QwtPlot::yRight);
 			gsl_vector_set (yRightR, i, double(sRect.width())/cw);
@@ -481,22 +477,20 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 						+ gsl_vector_get(maxXBottomHeight, row) - gsl_vector_get(xBottomR, i)));
 
 		//resizes and moves layers
-		Graph *gr = (Graph *)graphsList.at(i);
+		Graph *g = (Graph *)graphsList.at(i);
 		bool autoscaleFonts = false;
 		if (!userSize){//When the user specifies the layer canvas size, the window is resized
 			//and the fonts must be scaled accordingly. If the size is calculated
 			//automatically we don't rescale the fonts in order to prevent problems
 			//with too small fonts when the user adds new layers or when removing layers
 
-			autoscaleFonts = gr->autoscaleFonts();//save user settings
-			gr->setAutoscaleFonts(false);
+			autoscaleFonts = g->autoscaleFonts();//save user settings
+			g->setAutoscaleFonts(false);
 		}
 
-		gr->setGeometry(QRect(x, y, w, h));
-		gr->plotWidget()->resize(QSize(w, h));
-
+		g->setGeometry(QRect(x, y, w, h));
 		if (!userSize)
-			gr->setAutoscaleFonts(autoscaleFonts);//restore user settings
+			g->setAutoscaleFonts(autoscaleFonts);//restore user settings
 	}
 
 	//free memory
@@ -598,10 +592,9 @@ QPixmap MultiLayer::canvasPixmap()
     QPixmap pic(canvas->size());
     pic.fill();
     QPainter p(&pic);
-	foreach (Graph *g, graphsList){
-		Plot *plot = (Plot *)g->plotWidget();
-		plot->print(&p, QRect(g->pos(), plot->size()));
-	}
+	foreach (Graph *g, graphsList)
+		g->print(&p, g->geometry());
+	
 	p.end();
 	return pic;
 }
@@ -728,15 +721,13 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
 
     QPainter paint(&printer);
 	foreach (Graph *g, graphsList){
-        Plot *plot = (Plot *)g->plotWidget();
-
         QPoint pos = g->pos();
         pos = QPoint(qRound(x_margin + pos.x()*scaleFactorX), qRound(y_margin + pos.y()*scaleFactorY));
 
-        int layer_width = qRound(plot->frameGeometry().width()*scaleFactorX);
-        int layer_height = qRound(plot->frameGeometry().height()*scaleFactorY);
+        int layer_width = qRound(g->frameGeometry().width()*scaleFactorX);
+        int layer_height = qRound(g->frameGeometry().height()*scaleFactorY);
 
-        plot->print(&paint, QRect(pos, QSize(layer_width, layer_height)));
+        g->print(&paint, QRect(pos, QSize(layer_width, layer_height)));
     }
 }
 
@@ -747,10 +738,9 @@ void MultiLayer::exportSVG(const QString& fname)
 	generator.setSize(canvas->size());
 
 	QPainter p(&generator);
-	foreach (Graph *g, graphsList){
-		Plot *plot = (Plot *)g->plotWidget();
-		plot->print(&p, QRect(g->pos(), plot->size()));
-	}
+	foreach (Graph *g, graphsList)
+		g->print(&p, g->geometry());
+	
 	p.end();
 }
 
@@ -814,54 +804,42 @@ void MultiLayer::printAllLayers(QPainter *painter)
 	QRect pageRect = printer->pageRect();
 	QRect cr = canvasRect; // cropmarks rectangle
 
-	if (d_scale_on_print)
-	{
+	if (d_scale_on_print){
         int margin = (int)((1/2.54)*printer->logicalDpiY()); // 1 cm margins
 		double scaleFactorX=(double)(paperRect.width()-2*margin)/(double)canvasRect.width();
 		double scaleFactorY=(double)(paperRect.height()-2*margin)/(double)canvasRect.height();
 
-        if (d_print_cropmarks)
-        {
+        if (d_print_cropmarks){
 			cr.moveTo(QPoint(margin + int(cr.x()*scaleFactorX),
 							 margin + int(cr.y()*scaleFactorY)));
 			cr.setWidth(int(cr.width()*scaleFactorX));
 			cr.setHeight(int(cr.height()*scaleFactorX));
         }
 
-		for (int i=0; i<(int)graphsList.count(); i++)
-		{
-			Graph *gr=(Graph *)graphsList.at(i);
-			Plot *myPlot= gr->plotWidget();
-
-			QPoint pos=gr->pos();
+		foreach (Graph *g, graphsList){
+			QPoint pos = g->pos();
 			pos=QPoint(margin + int(pos.x()*scaleFactorX), margin + int(pos.y()*scaleFactorY));
 
-			int width=int(myPlot->frameGeometry().width()*scaleFactorX);
-			int height=int(myPlot->frameGeometry().height()*scaleFactorY);
+			int width = int(g->frameGeometry().width()*scaleFactorX);
+			int height = int(g->frameGeometry().height()*scaleFactorY);
 
-			myPlot->print(painter, QRect(pos, QSize(width,height)));
+			g->print(painter, QRect(pos, QSize(width,height)));
 		}
-	}
-	else
-	{
+	} else {
     	int x_margin = (pageRect.width() - canvasRect.width())/2;
     	int y_margin = (pageRect.height() - canvasRect.height())/2;
 
         if (d_print_cropmarks)
             cr.moveTo(x_margin, y_margin);
 
-		for (int i=0; i<(int)graphsList.count(); i++)
-		{
-			Graph *gr = (Graph *)graphsList.at(i);
-			Plot *myPlot = (Plot *)gr->plotWidget();
-
-			QPoint pos = gr->pos();
+		foreach (Graph *g, graphsList){
+			QPoint pos = g->pos();
 			pos = QPoint(x_margin + pos.x(), y_margin + pos.y());
-			myPlot->print(painter, QRect(pos, myPlot->size()));
+			g->print(painter, QRect(pos, g->size()));
 		}
 	}
-	if (d_print_cropmarks)
-    {
+	
+	if (d_print_cropmarks){
 		cr.addCoords(-1, -1, 2, 2);
     	painter->save();
 		painter->setPen(QPen(QColor(Qt::black), 0.5, Qt::DashLine));
@@ -877,26 +855,23 @@ void MultiLayer::printAllLayers(QPainter *painter)
 void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 		const QFont& numbersFnt, const QFont& legendFnt)
 {
-	for (int i=0;i<(int)graphsList.count();i++){
-		Graph *gr=(Graph *)graphsList.at(i);
-		QwtPlot *plot=gr->plotWidget();
-
-		QwtText text = plot->title();
+	foreach (Graph *g, graphsList){
+		QwtText text = g->title();
   	    text.setFont(titleFnt);
-  	    plot->setTitle(text);
-		for (int j= 0;j<QwtPlot::axisCnt;j++){
-			plot->setAxisFont (j,numbersFnt);
-
-			text = plot->axisTitle(j );
+  	    ((QwtPlot *)g)->setTitle(text);
+		
+		for (int j= 0; j<QwtPlot::axisCnt; j++){
+			g->setAxisFont(j, numbersFnt);
+			text = g->axisTitle(j);
   	        text.setFont(scaleFnt);
-  	        plot->setAxisTitle(j, text);
+  	        ((QwtPlot *)g)->setAxisTitle(j, text);
 		}
 
-		QList <LegendWidget *> texts = gr->textsList();
+		QList <LegendWidget *> texts = g->textsList();
 		foreach (LegendWidget *l, texts)
 			l->setFont(legendFnt);
 
-		plot->replot();
+		g->replot();
 	}
 	emit modifiedPlot();
 }
@@ -1013,22 +988,21 @@ void MultiLayer::wheelEvent ( QWheelEvent * e )
 	QSize intSize;
 	Graph *resize_graph = 0;
 	// Get the position of the mouse
-	int xMouse=e->x();
-	int yMouse=e->y();
-	for (int i=0;i<(int)graphsList.count();i++){
-		Graph *gr=(Graph *)graphsList.at(i);
-		intSize=gr->plotWidget()->size();
-		aux=gr->pos();
+	int xMouse = e->x();
+	int yMouse = e->y();
+	foreach (Graph *g, graphsList){
+		intSize = g->size();
+		aux = g->pos();
 		if(xMouse>aux.x() && xMouse<(aux.x()+intSize.width())){
 			if(yMouse>aux.y() && yMouse<(aux.y()+intSize.height())){
-				resize_graph=gr;
-				resize=TRUE;
+				resize_graph = g;
+				resize = true;
 			}
 		}
 	}
 	if(resize && (e->state()==Qt::AltButton || e->state()==Qt::ControlButton || e->state()==Qt::ShiftButton))
 	{
-		intSize = resize_graph->plotWidget()->size();
+		intSize = resize_graph->size();
 		if(e->state()==Qt::AltButton){// If alt is pressed then change the width
 			if(e->delta()>0)
 				intSize.rwidth()+=5;
@@ -1051,8 +1025,6 @@ void MultiLayer::wheelEvent ( QWheelEvent * e )
 
 		aux = resize_graph->pos();
 		resize_graph->setGeometry(QRect(QPoint(aux.x(),aux.y()),intSize));
-		resize_graph->plotWidget()->resize(intSize);
-
 		emit modifiedPlot();
 	}
 	QApplication::restoreOverrideCursor();
@@ -1219,10 +1191,7 @@ bool MultiLayer::swapLayers(int src, int dest)
 	QRect rectDest = layerDest->geometry();
 
 	layerSrc->setGeometry(rectDest);
-    layerSrc->plotWidget()->resize(rectDest.size());
-
 	layerDest->setGeometry(rectSrc);
-    layerDest->plotWidget()->resize(rectSrc.size());
 
 	graphsList[src-1] = layerDest;
 	graphsList[dest-1] = layerSrc;

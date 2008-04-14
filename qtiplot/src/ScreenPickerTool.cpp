@@ -31,20 +31,19 @@
 #include "SymbolBox.h"
 #include "Table.h"
 #include "Graph.h"
-#include "Plot.h"
 #include "PlotCurve.h"
 #include "cursors.h"
 #include <qwt_symbol.h>
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
-	: QwtPlotPicker(graph->plotWidget()->canvas()),
+	: QwtPlotPicker(graph->canvas()),
 	PlotToolInterface(graph)
 {
 	d_selection_marker.setLineStyle(QwtPlotMarker::Cross);
 	d_selection_marker.setLinePen(QPen(Qt::red,1));
 	setTrackerMode(QwtPicker::AlwaysOn);
 	setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
-	d_graph->plotWidget()->canvas()->setCursor(QCursor(QPixmap(cursor_xpm), -1, -1));
+	d_graph->canvas()->setCursor(QCursor(QPixmap(cursor_xpm), -1, -1));
 
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
@@ -54,8 +53,8 @@ ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, c
 ScreenPickerTool::~ScreenPickerTool()
 {
 	d_selection_marker.detach();
-	d_graph->plotWidget()->canvas()->unsetCursor();
-	d_graph->plotWidget()->replot();
+	d_graph->canvas()->unsetCursor();
+	d_graph->replot();
 }
 
 void ScreenPickerTool::append(const QPoint &point)
@@ -67,8 +66,8 @@ void ScreenPickerTool::append(const QPoint &point)
 
 	d_selection_marker.setValue(pos);
 	if (d_selection_marker.plot() == NULL)
-		d_selection_marker.attach(d_graph->plotWidget());
-	d_graph->plotWidget()->replot();
+		d_selection_marker.attach(d_graph);
+	d_graph->replot();
 }
 
 bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
@@ -87,8 +86,8 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
                         QwtDoublePoint pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
                         d_selection_marker.setValue(pos);
                         if (d_selection_marker.plot() == NULL)
-                            d_selection_marker.attach(d_graph->plotWidget());
-                        d_graph->plotWidget()->replot();
+                            d_selection_marker.attach(d_graph);
+                        d_graph->replot();
 						emit selected(d_selection_marker.value());
 						QString info;
                         emit statusText(info.sprintf("x=%g; y=%g", pos.x(), pos.y()));
@@ -165,8 +164,8 @@ bool DrawPointTool::eventFilter(QObject *obj, QEvent *event)
                         QwtDoublePoint pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
                         d_selection_marker.setValue(pos);
                         if (d_selection_marker.plot() == NULL)
-                            d_selection_marker.attach(d_graph->plotWidget());
-                        d_graph->plotWidget()->replot();
+                            d_selection_marker.attach(d_graph);
+                        d_graph->replot();
 						emit selected(d_selection_marker.value());
 
 						appendPoint(pos);

@@ -34,13 +34,13 @@
 #include <QPrinter>
 #include <QVector>
 #include <QEvent>
+#include <QMap>
 
 #include <qwt_text.h>
 #include <qwt_plot.h>
 #include <qwt_plot_marker.h>
 #include <qwt_plot_curve.h>
 
-#include "Plot.h"
 #include "Table.h"
 #include "AxesDialog.h"
 #include "PlotToolInterface.h"
@@ -72,6 +72,7 @@ class FunctionCurve;
 class VectorCurve;
 class BoxCurve;
 class QwtHistogram;
+class Grid;
 
 //! Structure containing curve layout parameters
 typedef struct{
@@ -117,7 +118,7 @@ typedef struct{
  * [ Framework needs to support plug-ins; assigned to ion ]
  */
 
-class Graph: public QWidget
+class Graph: public QwtPlot
 {
 	Q_OBJECT
 
@@ -126,7 +127,7 @@ class Graph: public QWidget
 		~Graph();
 
 		enum Axis{Left, Right, Bottom, Top};
-		enum ScaleType{Linear, Log10};
+		enum Scale{Linear, Log10};
 		enum Ticks{NoTicks = 0, Out = 1, InOut = 2, In = 3};
 		enum MarkerType{None = -1, Text = 0, Arrow = 1, Image = 2};
 		enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
@@ -141,8 +142,6 @@ class Graph: public QWidget
 		//! Return the active tool, or NULL if none is active.
 		PlotToolInterface* activeTool() const { return d_active_tool; }
 
-		Grid *grid(){return d_plot->grid();};
-
 		QList <LegendWidget *> textsList();
 		LegendWidget *selectedText(){return d_selected_text;};
 		void setSelectedText(LegendWidget *l);
@@ -153,10 +152,46 @@ class Graph: public QWidget
         void restoreCurveLabels(int curveID, const QStringList& lst);
 		//! Called first time we add curves in order to determine the best plot limits.
 		void initScaleLimits();
+		
+		Grid *grid(){return (Grid *)d_grid;};
+		QList<int> curveKeys(){return d_curves.keys();};
+		QList<QwtPlotItem *> curvesList(){return d_curves.values();};
+
+		int closestCurve(int xpos, int ypos, int &dist, int &point);
+		QMap<int, QwtPlotItem*> curves(){return d_curves;};
+
+		QwtPlotMarker* marker(int index){return d_markers.value(index);};
+		QList<int> markerKeys(){return d_markers.keys();};
+		int insertMarker(QwtPlotMarker *m);
+		void removeMarker(int index);
+
+		QList<int> getMajorTicksType();
+		void setMajorTicksType(int axis, int type);
+
+		QList<int> getMinorTicksType();
+		void setMinorTicksType(int axis, int type);
+
+		int minorTickLength() const;
+		int majorTickLength() const;
+		void setTickLength (int minLength, int majLength);
+
+		int axesLinewidth() const;
+		void setAxesLinewidth(int width);
+
+    	void axisLabelFormat(int axis, char &f, int &prec) const;
+
+		int axisLabelFormat(int axis);
+		int axisLabelPrecision(int axis);
+
+		QColor frameColor();
+		const QColor & paletteBackgroundColor() const;
+
+    	void print(QPainter *, const QRect &rect, const QwtPlotPrintFilter & = QwtPlotPrintFilter());
+		void updateLayout();
+
+    	void updateCurveLabels();
 
 	public slots:
-		//! Accessor method for #d_plot.
-		Plot* plotWidget(){return d_plot;};
 		void copy(Graph* g);
 
 		//! \name Pie Curves
@@ -201,7 +236,7 @@ class Graph: public QWidget
 
 		void updateCurvesData(Table* w, const QString& yColName);
 
-		int curves(){return n_curves;};
+		int curveCount(){return n_curves;};
 		bool validCurvesDataSize();
 		double selectedXStartValue();
 		double selectedXEndValue();
@@ -209,7 +244,7 @@ class Graph: public QWidget
         long curveKey(int curve){return c_keys[curve];}
 		int curveIndex(long key){return c_keys.indexOf(key);};
 		//! Map curve pointer to index.
-		int curveIndex(QwtPlotCurve *c) const;
+		int curveIndex(QwtPlotCurve *c);
 		//! map curve title to index
   	    int curveIndex(const QString &title){return plotItemsList().findIndex(title);}
   	    //! get curve by index
@@ -220,13 +255,13 @@ class Graph: public QWidget
 		//! Returns the names of all the curves suitable for data analysis, as a string list. The list excludes error bars and spectrograms.
 		QStringList analysableCurvesList();
 		//! Returns the names of all the QwtPlotCurve items on the plot, as a string list
-  		QStringList curvesList();
+  		QStringList curveNamesList();
   	    //! Returns the names of all plot items, including spectrograms, as a string list
   		QStringList plotItemsList();
   		 //! get plotted item by index
   	    QwtPlotItem* plotItem(int index);
   	    //! get plot item by index
-  	    int plotItemIndex(QwtPlotItem *it) const;
+  	    int plotItemIndex(QwtPlotItem *it);
 
         void updateCurveNames(const QString& oldName, const QString& newName, bool updateTableName = true);
 
@@ -253,7 +288,6 @@ class Graph: public QWidget
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 		//@}
 
-		void replot(){d_plot->replot();};
 		void updatePlot();
 
 		//! \name Error Bars
@@ -417,7 +451,7 @@ class Graph: public QWidget
 		void setRightAxisTitle(const QString& text);
 		void setTopAxisTitle(const QString& text);
 
-		QString axisTitle(int axis){return d_plot->axisTitle(axis).text();};
+		QString axisTitleString(int axis){return axisTitle(axis).text();};
 		void setAxisTitle(int axis, const QString& text);
 		//! TODO: eliminate this function in version 0.9.1 (used only when restoring project files)
 		void setScaleTitle(int axis, const QString& text);
@@ -426,7 +460,6 @@ class Graph: public QWidget
 		void setAxisTitleFont(int axis,const QFont &fnt);
 
 		void setAxisFont(int axis, const QFont &fnt);
-		QFont axisFont(int axis);
 		void initFonts(const QFont &scaleTitleFnt,const QFont &numbersFnt);
 
 		QColor axisTitleColor(int axis);
@@ -451,7 +484,6 @@ class Graph: public QWidget
 		int labelsRotation(int axis);
 		void setAxisLabelRotation(int axis, int rotation);
 
-		void setAxesLinewidth(int width);
 		//! used when opening a project file
 		void loadAxesLinewidth(int width);
 
@@ -468,8 +500,6 @@ class Graph: public QWidget
 		void setMinorTicksType(const QList<int>& lst);
 		void setMinorTicksType(const QStringList& lst);
 
-		int minorTickLength();
-		int majorTickLength();
 		void setAxisTicksLength(int axis, int majTicksType, int minTicksType, int minLength, int majLength);
 		void setTicksLength(int minLength, int majLength);
 		void changeTicksLength(int minLength, int majLength);
@@ -532,7 +562,6 @@ class Graph: public QWidget
 		void setMargin (int d);
 		void setFrame(int width = 1, const QColor& color = QColor(Qt::black));
 		void setBackgroundColor(const QColor& color);
-		void setCanvasBackground(const QColor& color);
 		//@}
 
 		void addFitCurve(QwtPlotCurve *c);
@@ -674,12 +703,25 @@ signals:
         void enableTextEditor(Graph *);
 
 	private:
+		int insertCurve(QwtPlotItem *c);
+		void detachCurve(int index);
+	
         //! Finds bounding interval of the plot data.
         QwtDoubleInterval axisBoundingInterval(int axis);
         void deselectCurves();
 		void addLegendItem();
+	
+		void showEvent (QShowEvent * event);
+    	void printFrame(QPainter *painter, const QRect &rect) const;
+		void printCanvas(QPainter *painter, const QRect &canvasRect,
+   			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
+		virtual void drawItems (QPainter *painter, const QRect &rect,
+			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 
-        Plot *d_plot;
+		void drawInwardTicks(QPainter *painter, const QRect &rect,
+							const QwtScaleMap&map, int axis, bool min, bool maj) const;
+   	 	void drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &map, int axis) const;
+
 		QwtPlotZoomer *d_zoomer[2];
 		TitlePicker *titlePicker;
 		ScalePicker *scalePicker;
@@ -719,5 +761,13 @@ signals:
 		LegendWidget *d_legend;
         //! Flag indicating if the axes limits should be changed in order to show all data each time a curva data change occurs
 		bool d_auto_scale;
+		
+		Grid *d_grid;
+		QMap<int, QwtPlotItem*> d_curves;
+		QMap<int, QwtPlotMarker*> d_markers;
+
+		int minTickLength, majTickLength;
+		int marker_key;
+		int curve_key;
 };
 #endif // GRAPH_H

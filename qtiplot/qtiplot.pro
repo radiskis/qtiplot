@@ -4,7 +4,7 @@
 
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-SCRIPTING_LANGS += Python
+#SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -211,7 +211,6 @@ HEADERS  += src/ApplicationWindow.h \
             src/PatternBox.h \
             src/importOPJ.h\
             src/SymbolDialog.h \
-            src/Plot.h \
             src/ColorButton.h \
             src/AssociationsDialog.h \
             src/RenameWindowDialog.h \
@@ -329,7 +328,6 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/importOPJ.cpp\
             src/main.cpp \
             src/SymbolDialog.cpp \
-            src/Plot.cpp \
             src/ColorButton.cpp \
             src/AssociationsDialog.cpp \
             src/RenameWindowDialog.cpp \

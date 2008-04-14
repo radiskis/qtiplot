@@ -124,7 +124,7 @@ void QwtHistogram::loadData()
 		QString yval = d_table->text(i, ycol);
 		if (!yval.isEmpty()){
 		    bool valid_data = true;
-            Y[size] = ((Plot *)plot())->locale().toDouble(yval, &valid_data);
+            Y[size] = ((Graph *)plot())->locale().toDouble(yval, &valid_data);
             if (valid_data)
                 size++;
 		}
@@ -213,7 +213,7 @@ void QwtHistogram::loadDataFromMatrix()
 		d_end = ceil(max);
 		d_bin_size = 1.0;
 
-		n = (int)(d_end - d_begin)/d_bin_size;
+		n = qRound((d_end - d_begin)/d_bin_size);
 		if (!n)
             return;
 

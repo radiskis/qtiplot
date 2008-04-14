@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "DataPickerTool.h"
 #include "Graph.h"
-#include "Plot.h"
 #include "cursors.h"
 #include "FunctionCurve.h"
 #include "PlotCurve.h"
@@ -45,7 +44,7 @@
 #include <QTextStream>
 
 DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, const QObject *status_target, const char *status_slot) :
-	QwtPlotPicker(graph->plotWidget()->canvas()),
+	QwtPlotPicker(graph->canvas()),
 	PlotToolInterface(graph),
 	d_app(app),
 	d_mode(mode),
@@ -60,10 +59,10 @@ DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, 
 	setTrackerMode(QwtPicker::AlwaysOn);
 	if (d_mode == Move) {
 		setSelectionFlags(QwtPicker::PointSelection | QwtPicker::DragSelection);
-		d_graph->plotWidget()->canvas()->setCursor(Qt::pointingHandCursor);
+		d_graph->canvas()->setCursor(Qt::pointingHandCursor);
 	} else {
 		setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
-		d_graph->plotWidget()->canvas()->setCursor(QCursor(QPixmap(vizor_xpm), -1, -1));
+		d_graph->canvas()->setCursor(QCursor(QPixmap(vizor_xpm), -1, -1));
 	}
 
 	if (status_target)
@@ -84,18 +83,18 @@ DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, 
 DataPickerTool::~DataPickerTool()
 {
 	d_selection_marker.detach();
-	d_graph->plotWidget()->canvas()->unsetCursor();
+	d_graph->canvas()->unsetCursor();
 }
 
 void DataPickerTool::append(const QPoint &pos)
 {
 	int dist, point_index;
-	const int curve = d_graph->plotWidget()->closestCurve(pos.x(), pos.y(), dist, point_index);
+	const int curve = d_graph->closestCurve(pos.x(), pos.y(), dist, point_index);
 	if (curve <= 0 || dist >= 5) { // 5 pixels tolerance
 		setSelection(NULL, 0);
 		return;
 	}
-	setSelection((QwtPlotCurve *)d_graph->plotWidget()->curve(curve), point_index);
+	setSelection((QwtPlotCurve *)d_graph->curve(curve), point_index);
 	if (!d_selected_curve) return;
 
 	QwtPlotPicker::append(transform(QwtDoublePoint(d_selected_curve->x(d_selected_point),
@@ -112,7 +111,7 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
 
 	if (!d_selected_curve) {
 		d_selection_marker.detach();
-		d_graph->plotWidget()->replot();
+		d_graph->replot();
 		return;
 	}
 
@@ -145,8 +144,8 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
 	QwtDoublePoint selected_point_value(d_selected_curve->x(d_selected_point), d_selected_curve->y(d_selected_point));
 	d_selection_marker.setValue(selected_point_value);
 	if (d_selection_marker.plot() == NULL)
-		d_selection_marker.attach(d_graph->plotWidget());
-	d_graph->plotWidget()->replot();
+		d_selection_marker.attach(d_graph);
+	d_graph->replot();
 }
 
 bool DataPickerTool::eventFilter(QObject *obj, QEvent *event)
@@ -200,7 +199,7 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 
 		case Qt::Key_Up:
 			{
-				int n_curves = d_graph->curves();
+				int n_curves = d_graph->curveCount();
 				int start = d_graph->curveIndex(d_selected_curve) + 1;
 				for (int i = start; i < start + n_curves; ++i)
 					if (d_graph->curve(i % n_curves)->dataSize() > 0) {
@@ -209,13 +208,13 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
                             setSelection(c, findClosestPoint(c, d_selected_curve->x(d_selected_point), true));
 						break;
 					}
-				d_graph->plotWidget()->replot();
+				d_graph->replot();
 				return true;
 			}
 
 		case Qt::Key_Down:
 			{
-				int n_curves = d_graph->curves();
+				int n_curves = d_graph->curveCount();
 				int start = d_graph->curveIndex(d_selected_curve) + n_curves - 1;
 				for (int i = start; i > start - n_curves; --i)
 					if (d_graph->curve(i % n_curves)->dataSize() > 0) {
@@ -225,7 +224,7 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 
 						break;
 					}
-				d_graph->plotWidget()->replot();
+				d_graph->replot();
 				return true;
 			}
 
@@ -237,7 +236,7 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
                     setSelection(d_selected_curve, (d_selected_point + 10) % n_points);
                 else if (ke->modifiers () == Qt::NoModifier)
                     setSelection(d_selected_curve, (d_selected_point + 1) % n_points);
-				d_graph->plotWidget()->replot();
+				d_graph->replot();
 			} else
 				setSelection(d_graph->curve(0), 0);
 			return true;
@@ -250,9 +249,9 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
                     setSelection(d_selected_curve, (d_selected_point - 10 + n_points) % n_points);
                 else if (ke->modifiers () == Qt::NoModifier)
                     setSelection(d_selected_curve, (d_selected_point - 1 + n_points) % n_points);
-				d_graph->plotWidget()->replot();
+				d_graph->replot();
 			} else
-				setSelection(d_graph->curve(d_graph->curves()-1), 0);
+				setSelection(d_graph->curve(d_graph->curveCount()-1), 0);
 			return true;
 
 		// The following keys represent a direction, they are
@@ -334,7 +333,7 @@ void DataPickerTool::removePoint()
 	}
 
 	d_selection_marker.detach();
-	d_graph->plotWidget()->replot();
+	d_graph->replot();
 	d_graph->setFocus();
 	d_selected_curve = NULL;
 }
@@ -362,8 +361,8 @@ void DataPickerTool::movePoint(const QPoint &pos)
 		return;
     } 
 
-	double new_x_val = d_graph->plotWidget()->invTransform(d_selected_curve->xAxis(), pos.x());
-	double new_y_val = d_graph->plotWidget()->invTransform(d_selected_curve->yAxis(), pos.y());
+	double new_x_val = d_graph->invTransform(d_selected_curve->xAxis(), pos.x());
+	double new_y_val = d_graph->invTransform(d_selected_curve->yAxis(), pos.y());
 
 	switch (d_move_mode){
         case Free:
@@ -379,7 +378,7 @@ void DataPickerTool::movePoint(const QPoint &pos)
 
     d_selection_marker.setValue(new_x_val, new_y_val);
 	if (d_selection_marker.plot() == NULL)
-		d_selection_marker.attach(d_graph->plotWidget());
+		d_selection_marker.attach(d_graph);
 
     QLocale locale = d_app->locale();
 	int row = ((DataCurve *)d_selected_curve)->tableRow(d_selected_point);
@@ -488,7 +487,7 @@ void DataPickerTool::pasteSelection()
             double x_val = d_selected_curve->x(d_selected_point);
             d_selection_marker.setValue(x_val, value);
             if (d_selection_marker.plot() == NULL)
-                d_selection_marker.attach(d_graph->plotWidget());
+                d_selection_marker.attach(d_graph);
 
             t->notifyChanges();
 

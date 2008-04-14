@@ -33,9 +33,10 @@
 #include <QStringList>
 #include <QLocale>
 
-#include "Plot.h"
 #include <qwt_scale_draw.h>
 
+class Graph;
+	
 //! Extension to QwtScaleDraw
 class ScaleDraw: public QwtScaleDraw
 {
@@ -46,9 +47,9 @@ public:
 	enum NameFormat{ShortName, LongName, Initial};
 
     //! Constructs a new scale draw which is a clone of sd.
-    ScaleDraw(Plot *plot, ScaleDraw *sd);
-	ScaleDraw(Plot *plot, const QString& formula = QString::null);
-	ScaleDraw(Plot *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
+    ScaleDraw(Graph *plot, ScaleDraw *sd);
+	ScaleDraw(Graph *plot, const QString& formula = QString::null);
+	ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
 
     QString formatString();
     QString format(){return d_format_info;};
@@ -101,7 +102,7 @@ protected:
 
 private:
 	//! Pointer to the parent plot
-	Plot *d_plot;
+	Graph *d_plot;
 	//! Stores the scale type (numeric, text, etc...). See: enum NumericFormat
 	ScaleType d_type;
 	//! Stores the scale numeric format: Automatic, Decimal, Scientific, Superscripts

@@ -37,7 +37,7 @@
 #include <QMouseEvent>
 #include <QPen>
 
-ScalePicker::ScalePicker(QwtPlot *plot):
+ScalePicker::ScalePicker(Graph *plot):
     QObject(plot),
 	d_title_selected(false),
 	d_labels_selected(false),
@@ -211,7 +211,7 @@ void ScalePicker::selectTitle(QwtScaleWidget *scale, bool select)
     if (d_title_selected == select && d_selected_axis == scale)
         return;
 
-    Graph *g = (Graph *)plot()->parent();
+    Graph *g = plot();
     g->deselect();
 
     d_title_selected = select;
@@ -236,7 +236,7 @@ void ScalePicker::selectLabels(QwtScaleWidget *scale, bool select)
     if (d_labels_selected == select && d_selected_axis == scale)
         return;
 
-	Graph *g = (Graph *)plot()->parent();
+	Graph *g = plot();
     g->deselect();
 
 	d_labels_selected = select;

@@ -27,14 +27,14 @@
  *                                                                         *
  ***************************************************************************/
 #include "TitlePicker.h"
+#include "Graph.h"
 
-#include <qwt_plot.h>
 #include <qwt_text_label.h>
 
 #include <QMouseEvent>
 #include <QPen>
 
-TitlePicker::TitlePicker(QwtPlot *plot):
+TitlePicker::TitlePicker(Graph *plot):
 	QObject(plot)
 {
     d_selected = false;
