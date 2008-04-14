@@ -148,7 +148,7 @@ void RangeSelectorTool::setActivePoint(int point)
 
 void RangeSelectorTool::emitStatusText()
 {
-    QLocale locale = d_graph->locale();
+    QLocale locale = d_graph->multiLayer()->locale();
     if (((PlotCurve *)d_selected_curve)->type() == Graph::Function){
          emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
@@ -266,7 +266,7 @@ void RangeSelectorTool::copySelection()
 
     int start_point = QMIN(d_active_point, d_inactive_point);
     int end_point = QMAX(d_active_point, d_inactive_point);
-    QLocale locale = d_graph->locale();
+    QLocale locale = d_graph->multiLayer()->locale();
     QString text;
     for (int i = start_point; i <= end_point; i++){
         text += locale.toString(d_selected_curve->x(i), 'G', 16) + "\t";
@@ -353,7 +353,7 @@ void RangeSelectorTool::pasteSelection()
 
     int prec; char f;
     t->columnNumericFormat(col, &f, &prec);
-    QLocale locale = d_graph->locale();
+    QLocale locale = d_graph->multiLayer()->locale();
     for (int i = start_row; i <= end_row; i++){
         QString s = ts.readLine();
         if (s.isEmpty())
