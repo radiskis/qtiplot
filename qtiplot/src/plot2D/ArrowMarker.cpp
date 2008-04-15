@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ArrowMarker.h"
-#include "LineDialog.h"
+#include "../LineDialog.h"
 
 #include <QPainter>
 #include <QMouseEvent>

@@ -29,7 +29,7 @@
 #include "RangeSelectorTool.h"
 #include "Graph.h"
 #include "PlotCurve.h"
-#include "cursors.h"
+#include "../cursors.h"
 
 #include <qwt_symbol.h>
 #include <QPoint>

@@ -33,7 +33,7 @@
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "PlotCurve.h"
-#include "ApplicationWindow.h"
+#include "../ApplicationWindow.h"
 
 #include <QVector>
 #include <qwt_text_label.h>

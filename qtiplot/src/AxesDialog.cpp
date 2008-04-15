@@ -30,14 +30,14 @@
 #include "ApplicationWindow.h"
 #include "TextDialog.h"
 #include "ColorBox.h"
-#include "Graph.h"
-#include "Grid.h"
+#include "plot2D/Graph.h"
+#include "plot2D/Grid.h"
 #include "MyParser.h"
 #include "ColorButton.h"
 #include "TextFormatButtons.h"
 #include "Table.h"
 #include "DoubleSpinBox.h"
-#include "ScaleDraw.h"
+#include "plot2D/ScaleDraw.h"
 
 #include <QCheckBox>
 #include <QComboBox>

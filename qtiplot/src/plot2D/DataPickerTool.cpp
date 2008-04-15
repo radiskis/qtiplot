@@ -28,11 +28,11 @@
  ***************************************************************************/
 #include "DataPickerTool.h"
 #include "Graph.h"
-#include "cursors.h"
+#include "../cursors.h"
 #include "FunctionCurve.h"
 #include "PlotCurve.h"
 #include "QwtErrorPlotCurve.h"
-#include "ApplicationWindow.h"
+#include "../ApplicationWindow.h"
 #include <QClipboard>
 
 #include <qwt_symbol.h>

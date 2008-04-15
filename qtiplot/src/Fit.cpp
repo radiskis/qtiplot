@@ -30,10 +30,10 @@
 #include "fit_gsl.h"
 #include "Table.h"
 #include "Matrix.h"
-#include "QwtErrorPlotCurve.h"
-#include "FunctionCurve.h"
+#include "plot2D/QwtErrorPlotCurve.h"
+#include "plot2D/FunctionCurve.h"
 #include "ColorBox.h"
-#include "MultiLayer.h"
+#include "plot2D/MultiLayer.h"
 #include "FitModelHandler.h"
 
 #include <gsl/gsl_statistics.h>

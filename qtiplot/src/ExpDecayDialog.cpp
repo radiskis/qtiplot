@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ExpDecayDialog.h"
-#include "Graph.h"
+#include "plot2D/Graph.h"
 #include "ColorBox.h"
 #include "ApplicationWindow.h"
 #include "Fit.h"

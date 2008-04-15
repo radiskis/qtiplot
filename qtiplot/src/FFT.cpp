@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "FFT.h"
-#include "MultiLayer.h"
+#include "plot2D/MultiLayer.h"
 #include "ColorBox.h"
 
 #include <QMessageBox>

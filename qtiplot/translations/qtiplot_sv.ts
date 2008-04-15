@@ -6205,7 +6205,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
 <context>
     <name>CanvasPicker</name>
     <message>
-        <location filename="../src/CanvasPicker.cpp" line="223"/>
+        <location filename="../src/plot2D/CanvasPicker.cpp" line="223"/>
         <source>enter your text here</source>
         <translation>&amp;Importera ASCII</translation>
     </message>
@@ -7558,52 +7558,52 @@ Följande specialkoder kan användas:
 <context>
     <name>DataPickerTool</name>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="72"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="72"/>
         <source>Click on plot or move cursor to display coordinates!</source>
         <translation>Klicka på diagram eller fluytta markör för att visa upp koordinater!</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="75"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="75"/>
         <source>Please, click on plot and move cursor!</source>
         <translation>Klicka på diagrammet och flytta markören!</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="78"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="78"/>
         <source>Select point and double click to remove it!</source>
         <translation>Välj en punkt och dubbelklicka för att flytta den!</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="318"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="318"/>
         <source>QtiPlot - Remove point error</source>
         <translation>QtiPlot - Tag bort punktfel</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="319"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="319"/>
         <source>Sorry, but removing points of a function is not possible.</source>
         <translation>Det går tyvärr inte att ta bort punkter hos en funktion.</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="346"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="346"/>
         <source>QtiPlot - Move point error</source>
         <translation>QtiPlot - Flytta punktfel</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="347"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="347"/>
         <source>Sorry, but moving points of a function is not possible.</source>
         <translation>Det går tyvärr inte att flytta punkter hos en funktion.</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="393"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="393"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="394"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="394"/>
         <source>This operation cannot be performed on curves plotted from columns having a non-numerical format.</source>
         <translation>Denna åtgärd kan ej utföras på kurvor ritade från kolumner med ett icke-numeriskt format.</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="360"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="360"/>
         <source>The column &apos;%1&apos; is read-only! Please choose another curve!</source>
         <translation>Kolumnen &apos;%1&apos; är skrivskyddat! Välj en anna kurva!</translation>
     </message>
@@ -7656,7 +7656,7 @@ Följande specialkoder kan användas:
 <context>
     <name>DrawPointTool</name>
     <message>
-        <location filename="../src/ScreenPickerTool.cpp" line="123"/>
+        <location filename="../src/plot2D/ScreenPickerTool.cpp" line="123"/>
         <source>Draw</source>
         <translation>Rita</translation>
     </message>
@@ -9541,7 +9541,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Höger</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="4674"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4676"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
@@ -9561,7 +9561,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Topp %1 vald! Klicka för att välja punkt och dubbelklicka/tryck &apos;Retur&apos; för att ställa in position för nästa punkt!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="1634"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1634"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
@@ -9581,12 +9581,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Flytta punktfel</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3402"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3402"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3403"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3403"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Bildfil: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; finns inte längre!</translation>
     </message>
@@ -9596,67 +9596,67 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Fel i indatafuktion</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3885"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3887"/>
         <source>The columns</source>
         <translation>Kolumnerna</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3885"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3887"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>är tomma och kommer ej att läggas till diagrammet!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3889"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3891"/>
         <source>The column</source>
         <translation>Kolumnen</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3889"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3891"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>är tom och kommer ej att läggas till diagrammet!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3941"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3943"/>
         <source>&amp;Cut</source>
         <translation>Klipp &amp;ut</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3942"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3944"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiera</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3943"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3945"/>
         <source>&amp;Delete</source>
         <translation>&amp;Tag bort</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3968"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3970"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Egenskaper...</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3953"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3955"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Skala om för att visa allt</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3953"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3955"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3955"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3957"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Dölj axlar</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3957"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3959"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Visa rutnät</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3967"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3969"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Skala...</translation>
     </message>
@@ -9998,17 +9998,17 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Bandsspärr-FFT-filter av </translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="4674"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4676"/>
         <source>There are no curves available on this plot!</source>
         <translation>Det finns inga kurvor tillgängliga på detta diagram!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="4685"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4687"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="4686"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4688"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Det finns inga kurvor med mer än två punkter i detta diagram. Åtgärd avbruten!</translation>
     </message>
@@ -10098,47 +10098,47 @@ Följande specialkoder kan användas:
         <translation type="obsolete">medelvärdesutjämning av</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="1366"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1366"/>
         <source>Please provide a valid file name!</source>
         <translation>Ange ett giltigt filnamn!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="1330"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1330"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Filformatet hanteras ej, avbryts!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3644"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3644"/>
         <source>Data set generated from curve</source>
         <translation>Datamängd genererad från kurva</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3645"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3645"/>
         <source>Table</source>
         <translation>Tabell</translation>
     </message>
     <message>
-        <location filename="../src/Graph.h" line="589"/>
+        <location filename="../src/plot2D/Graph.h" line="589"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="817"/>
+        <location filename="../src/plot2D/Graph.cpp" line="817"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Kunde inte ändra axeltyp till det begärda formatet!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="198"/>
+        <location filename="../src/plot2D/Graph.cpp" line="198"/>
         <source>Y Axis Title</source>
         <translation type="unfinished">Y-axeltitel</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="199"/>
+        <location filename="../src/plot2D/Graph.cpp" line="199"/>
         <source>X Axis Title</source>
         <translation type="unfinished">X-axeltitel</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="202"/>
+        <location filename="../src/plot2D/Graph.cpp" line="202"/>
         <source> </source>
         <translation type="unfinished"> </translation>
     </message>
@@ -11802,42 +11802,42 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
 <context>
     <name>LineProfileTool</name>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="67"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="67"/>
         <source>QtiPlot - Pixel selection warning</source>
         <translation>QtiPlot - Pixel-valsvarning</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="56"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="56"/>
         <source>Please select an image marker first.</source>
         <translation>Välj en bildmarkering först.</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="68"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="68"/>
         <source>Please select the end line point inside the image rectangle!</source>
         <translation>Välj linjens slutpunkt innanför bildrektangeln!</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="93"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="93"/>
         <source>pixel</source>
         <translation>pixel</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="93"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="93"/>
         <source>intensity</source>
         <translation>intensitet</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="142"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="142"/>
         <source>Table</source>
         <translation>Tabell</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="147"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="147"/>
         <source>pixels</source>
         <translation>pixlar</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="148"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="148"/>
         <source>pixel intensity (a.u.)</source>
         <translation>pixelintensitet (&quot;a.u.&quot;)</translation>
     </message>
@@ -12526,22 +12526,22 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">QtiPlot - Gissa bästa ursprung för det nya lagret?</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="278"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="278"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Vill du att QtiPlit skall arrangera om de återstående lagren?</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="279"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="279"/>
         <source>&amp;Yes</source>
         <translation>&amp;Ja</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="279"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="279"/>
         <source>&amp;No</source>
         <translation>&amp;Nej</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="279"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="279"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Avbryt</translation>
     </message>
@@ -12551,22 +12551,22 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">mata in din text här</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="277"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="277"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot - Gissa bästa layout?</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="665"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="665"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="666"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="666"/>
         <source>Please provide a valid file name!</source>
         <translation>Ange ett giltigt filnamn!</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="623"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="623"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Filformatet hanteras ej, avbryts!</translation>
     </message>
@@ -12677,12 +12677,12 @@ Vill du skjuta in celler?</translation>
 <context>
     <name>MultiPeakFitTool</name>
     <message>
-        <location filename="../src/MultiPeakFitTool.cpp" line="63"/>
+        <location filename="../src/plot2D/MultiPeakFitTool.cpp" line="63"/>
         <source>Move cursor and click to select a point and double-click/press &apos;Enter&apos; to set the position of a peak!</source>
         <translation>Flytta markör och klicka för att välja en punkt och dubbelklicka/tryck vagnretur för att markera platsen för en topp!</translation>
     </message>
     <message>
-        <location filename="../src/MultiPeakFitTool.cpp" line="97"/>
+        <location filename="../src/plot2D/MultiPeakFitTool.cpp" line="97"/>
         <source>Peak %1 selected! Click to select a point and double-click/press &apos;Enter&apos; to set the position of the next peak!</source>
         <translation>Topp %1 vald! Klicka för att välja punkt och dubbelklicka/tryck &apos;Retur&apos; för att ställa in position för nästa punkt!</translation>
     </message>
@@ -14746,27 +14746,27 @@ Vill du skjuta in celler?</translation>
 <context>
     <name>RangeSelectorTool</name>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="340"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="340"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="57"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="57"/>
         <source>All the curves on this plot are empty!</source>
         <translation>Alla kurvor på detta diagram är tomma!</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="89"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="89"/>
         <source>Click or use Ctrl+arrow key to select range (arrows select active cursor)!</source>
         <translation>Klicka eller använd Crrl+pil-tangent för att välja område (pilar väljer aktiv markör)!</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="167"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="167"/>
         <source>Right</source>
         <translation>Höger</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="167"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="167"/>
         <source>Left</source>
         <translation>Vänster</translation>
     </message>
@@ -14783,7 +14783,7 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Delta_y</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="341"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="341"/>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
         <translation>Kolumnen &apos;%1&apos; är skrivskydad! Åtgärd avbruten!</translation>
     </message>
@@ -14839,7 +14839,7 @@ Vill du skjuta in celler?</translation>
 <context>
     <name>ScreenPickerTool</name>
     <message>
-        <location filename="../src/ScreenPickerTool.cpp" line="50"/>
+        <location filename="../src/plot2D/ScreenPickerTool.cpp" line="50"/>
         <source>Click on plot or move cursor to display coordinates!</source>
         <translation>Klicka på diagram eller fluytta markör för att visa upp koordinater!</translation>
     </message>
@@ -16716,27 +16716,27 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
 <context>
     <name>TranslateCurveTool</name>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="88"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="88"/>
         <source>Curve selected! Move cursor and click to choose a point and double-click/press &apos;Enter&apos; to finish!</source>
         <translation>Kurva vald! Flytta markör och klicka för att välja punkt samt dubbelklicka/tryck &apos;Retur&apos; för att avsluta!</translation>
     </message>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="139"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="139"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="102"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="102"/>
         <source>This operation cannot be performed on function curves.</source>
         <translation>Denna operation kan ej utföras på funktionskurvor.</translation>
     </message>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="140"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="140"/>
         <source>This operation cannot be performed on curves plotted from columns having a non-numerical format.</source>
         <translation>Denna åtgärd kan ej utföras på kurvor ritade från kolumner med ett icke-numeriskt format.</translation>
     </message>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="74"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="74"/>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
         <translation>Kolumnen &apos;%1&apos; är skrivskydad! Åtgärd avbruten!</translation>
     </message>

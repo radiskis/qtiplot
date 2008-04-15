@@ -29,7 +29,7 @@
 #include "FunctionDialog.h"
 #include "MyParser.h"
 #include "ApplicationWindow.h"
-#include "FunctionCurve.h"
+#include "plot2D/FunctionCurve.h"
 #include "DoubleSpinBox.h"
 
 #include <QTextEdit>

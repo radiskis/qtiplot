@@ -29,7 +29,7 @@
 #ifndef LAYERDIALOG_H
 #define LAYERDIALOG_H
 
-#include "MultiLayer.h"
+#include "plot2D/MultiLayer.h"
 
 class QGroupBox;
 class QPushButton;

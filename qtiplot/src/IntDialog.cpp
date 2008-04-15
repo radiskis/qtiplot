@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "IntDialog.h"
 #include "ApplicationWindow.h"
-#include "Graph.h"
+#include "plot2D/Graph.h"
 #include "Integration.h"
 #include "DoubleSpinBox.h"
 

@@ -27,11 +27,11 @@
  *                                                                         *
  ***************************************************************************/
 #include "CurvesDialog.h"
-#include "Graph.h"
+#include "plot2D/Graph.h"
 #include "Table.h"
 #include "Matrix.h"
-#include "FunctionCurve.h"
-#include "PlotCurve.h"
+#include "plot2D/FunctionCurve.h"
+#include "plot2D/PlotCurve.h"
 #include "ApplicationWindow.h"
 #include "Folder.h"
 #include "pixmaps.h"

@@ -41,8 +41,8 @@
 #include <qwt_plot_marker.h>
 #include <qwt_plot_curve.h>
 
-#include "Table.h"
-#include "AxesDialog.h"
+#include "../Table.h"
+#include "../AxesDialog.h"
 #include "PlotToolInterface.h"
 #include "MultiLayer.h"
 #include "ScaleDraw.h"

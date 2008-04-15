@@ -132,8 +132,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
@@ -156,7 +156,6 @@ unix: man.files += ../qtiplot.1
 
 HEADERS  += src/ApplicationWindow.h \
             src/globals.h\
-            src/Graph.h \
             src/Graph3D.h \
             src/Table.h \
             src/CurvesDialog.h \
@@ -174,32 +173,17 @@ HEADERS  += src/ApplicationWindow.h \
             src/TableDialog.h \
             src/TextDialog.h \
             src/LineDialog.h \
-            src/ScalePicker.h \
-            src/TitlePicker.h \
-            src/CanvasPicker.h \
-            src/PlotCurve.h \
-            src/QwtErrorPlotCurve.h \
-            src/QwtPieCurve.h \
             src/ErrDialog.h \
-            src/LegendWidget.h \
-            src/ArrowMarker.h \
-            src/ImageMarker.h \
             src/ImageDialog.h \
             src/fit_gsl.h \
             src/nrutil.h\
             src/pixmaps.h\
-            src/MultiLayer.h\
             src/LayerDialog.h \
             src/IntDialog.h \
             src/SortDialog.h\
             src/Bar.h \
             src/Cone3D.h \
             src/ConfigDialog.h \
-            src/QwtBarCurve.h \
-            src/BoxCurve.h \
-            src/QwtHistogram.h \
-            src/VectorCurve.h \
-            src/ScaleDraw.h \
             src/Matrix.h \
             src/MatrixDialog.h \
             src/MatrixSizeDialog.h \
@@ -227,7 +211,6 @@ HEADERS  += src/ApplicationWindow.h \
             src/ScriptingEnv.h\
             src/Script.h\
             src/ScriptEdit.h\
-            src/FunctionCurve.h\
             src/Fit.h\
             src/MultiPeakFit.h\
             src/ExponentialFit.h\
@@ -241,10 +224,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/ScriptWindow.h\
             src/TextFormatButtons.h\
             src/TableStatistics.h\
-            src/Spectrogram.h\
             src/ColorMapEditor.h\
 			src/ColorMapDialog.h\
-            src/SelectionMoveResizer.h\
             src/Filter.h\
             src/Differentiation.h\
             src/Integration.h\
@@ -254,116 +235,88 @@ HEADERS  += src/ApplicationWindow.h \
             src/FFT.h\
             src/Convolution.h\
             src/Correlation.h\
-            src/PlotToolInterface.h\
-            src/ScreenPickerTool.h\
-            src/DataPickerTool.h\
-            src/RangeSelectorTool.h\
-            src/TranslateCurveTool.h\
-            src/MultiPeakFitTool.h\
             src/CurveRangeDialog.h\
-            src/LineProfileTool.h\
-            src/PlotEnrichement.h\
             src/ExtensibleFileDialog.h\
             src/OpenProjectDialog.h\
-            src/Grid.h\
             src/MatrixModel.h\
             src/FitModelHandler.h \
             src/TextEditor.h \
             src/CustomActionDialog.h \
-            src/DoubleSpinBox.h\
-            src/MatrixCommand.h
+            src/DoubleSpinBox.h \
+            src/MatrixCommand.h \
 
 ###################### SOURCES ##############################################
 
-SOURCES  += src/ApplicationWindow.cpp \
-            src/Graph.cpp \
+SOURCES  += src/main.cpp \
+			src/ApplicationWindow.cpp \
             src/Graph3D.cpp \
             src/Table.cpp \
-            src/SetColValuesDialog.cpp \
             src/CurvesDialog.cpp \
+            src/SetColValuesDialog.cpp \
             src/PlotDialog.cpp \
             src/Plot3DDialog.cpp \
             src/PlotWizard.cpp \
             src/ExportDialog.cpp \
             src/AxesDialog.cpp \
             src/PolynomFitDialog.cpp \
-            src/TableDialog.cpp \
-            src/TextDialog.cpp \
-            src/ScalePicker.cpp\
-            src/TitlePicker.cpp \
-            src/CanvasPicker.cpp \
             src/ExpDecayDialog.cpp \
             src/FunctionDialog.cpp \
             src/FitDialog.cpp \
             src/SurfaceDialog.cpp \
+            src/TableDialog.cpp \
+            src/TextDialog.cpp \
             src/LineDialog.cpp \
-            src/PlotCurve.cpp \
-            src/QwtErrorPlotCurve.cpp \
-            src/QwtPieCurve.cpp \
             src/ErrDialog.cpp \
-            src/LegendWidget.cpp \
-            src/ArrowMarker.cpp \
-            src/ImageMarker.cpp \
             src/ImageDialog.cpp \
-            src/MultiLayer.cpp\
+            src/fit_gsl.cpp \
+            src/nrutil.cpp\
             src/LayerDialog.cpp \
             src/IntDialog.cpp \
             src/SortDialog.cpp\
             src/Bar.cpp \
             src/Cone3D.cpp \
-            src/DataSetDialog.cpp \
             src/ConfigDialog.cpp \
-            src/QwtBarCurve.cpp \
-            src/BoxCurve.cpp \
-            src/QwtHistogram.cpp \
-            src/VectorCurve.cpp \
             src/Matrix.cpp \
             src/MatrixDialog.cpp \
             src/MatrixSizeDialog.cpp \
             src/MatrixValuesDialog.cpp \
-            src/MyParser.cpp\
+            src/DataSetDialog.cpp \
+            src/MyParser.cpp \
             src/ColorBox.cpp \
             src/SymbolBox.cpp \
             src/PatternBox.cpp \
             src/importOPJ.cpp\
-            src/main.cpp \
             src/SymbolDialog.cpp \
             src/ColorButton.cpp \
             src/AssociationsDialog.cpp \
             src/RenameWindowDialog.cpp \
 			src/MdiSubWindow.cpp \
             src/InterpolationDialog.cpp\
-            src/nrutil.cpp\
-            src/fit_gsl.cpp\
+            src/ImportASCIIDialog.cpp \
+            src/ImageExportDialog.cpp\
             src/SmoothCurveDialog.cpp\
             src/FilterDialog.cpp\
             src/FFTDialog.cpp\
             src/Note.cpp\
             src/Folder.cpp\
             src/FindDialog.cpp\
-            src/TextFormatButtons.cpp\
+            src/ScriptingEnv.cpp\
+            src/Script.cpp\
             src/ScriptEdit.cpp\
-            src/ImportASCIIDialog.cpp\
-            src/ImageExportDialog.cpp\
-            src/ScaleDraw.cpp\
-            src/FunctionCurve.cpp\
             src/Fit.cpp\
             src/MultiPeakFit.cpp\
             src/ExponentialFit.cpp\
             src/PolynomialFit.cpp\
-            src/PluginFit.cpp\
             src/NonLinearFit.cpp\
+            src/PluginFit.cpp\
             src/SigmoidalFit.cpp\
 			src/LogisticFit.cpp\
-            src/ScriptingEnv.cpp\
-            src/Script.cpp\
             src/ScriptingLangDialog.cpp\
             src/ScriptWindow.cpp\
+            src/TextFormatButtons.cpp\
             src/TableStatistics.cpp\
-            src/Spectrogram.cpp\
             src/ColorMapEditor.cpp\
 			src/ColorMapDialog.cpp\
-            src/SelectionMoveResizer.cpp\
             src/Filter.cpp\
             src/Differentiation.cpp\
             src/Integration.cpp\
@@ -373,23 +326,15 @@ SOURCES  += src/ApplicationWindow.cpp \
             src/FFT.cpp\
             src/Convolution.cpp\
             src/Correlation.cpp\
-            src/ScreenPickerTool.cpp\
-            src/DataPickerTool.cpp\
-            src/RangeSelectorTool.cpp\
-            src/TranslateCurveTool.cpp\
-            src/MultiPeakFitTool.cpp\
             src/CurveRangeDialog.cpp\
-            src/LineProfileTool.cpp\
-            src/PlotEnrichement.cpp\
             src/ExtensibleFileDialog.cpp\
             src/OpenProjectDialog.cpp\
-            src/Grid.cpp\
             src/MatrixModel.cpp\
             src/FitModelHandler.cpp \
             src/TextEditor.cpp \
             src/CustomActionDialog.cpp \
-            src/DoubleSpinBox.cpp\
-            src/MatrixCommand.cpp
+            src/DoubleSpinBox.cpp \
+            src/MatrixCommand.cpp \
 
 ###############################################################
 ##################### Compression (zlib123) ###################
@@ -408,8 +353,64 @@ SOURCES += ../3rdparty/liborigin/OPJFile.cpp
 ################# Module: Plot 2D #############################
 ###############################################################
 
-    HEADERS += src/plot2D/ScaleEngine.h
-    SOURCES += src/plot2D/ScaleEngine.cpp
+    HEADERS += src/plot2D/ArrowMarker.h \
+			   src/plot2D/BoxCurve.h \
+			   src/plot2D/CanvasPicker.h \
+			   src/plot2D/DataPickerTool.h \
+			   src/plot2D/FunctionCurve.h \
+			   src/plot2D/Graph.h \
+			   src/plot2D/Grid.h \
+			   src/plot2D/ImageMarker.h \
+			   src/plot2D/LegendWidget.h \
+			   src/plot2D/LineProfileTool.h \
+			   src/plot2D/MultiLayer.h \
+			   src/plot2D/MultiPeakFitTool.h \
+			   src/plot2D/PlotCurve.h \
+			   src/plot2D/PlotEnrichement.h \
+			   src/plot2D/PlotToolInterface.h \
+			   src/plot2D/QwtBarCurve.h \
+               src/plot2D/QwtErrorPlotCurve.h \
+			   src/plot2D/QwtHistogram.h \
+               src/plot2D/QwtPieCurve.h \
+			   src/plot2D/RangeSelectorTool.h \
+			   src/plot2D/ScaleDraw.h \
+			   src/plot2D/ScaleEngine.h \
+			   src/plot2D/ScalePicker.h \
+			   src/plot2D/ScreenPickerTool.h \
+			   src/plot2D/SelectionMoveResizer.h \
+			   src/plot2D/Spectrogram.h \
+			   src/plot2D/TitlePicker.h \
+			   src/plot2D/TranslateCurveTool.h \			   
+			   src/plot2D/VectorCurve.h \
+			          			   		   
+    SOURCES += src/plot2D/ArrowMarker.cpp \
+			   src/plot2D/BoxCurve.cpp \
+			   src/plot2D/CanvasPicker.cpp \
+			   src/plot2D/DataPickerTool.cpp \
+			   src/plot2D/FunctionCurve.cpp \
+			   src/plot2D/Graph.cpp \
+			   src/plot2D/Grid.cpp \
+			   src/plot2D/ImageMarker.cpp \
+			   src/plot2D/LegendWidget.cpp \
+			   src/plot2D/LineProfileTool.cpp \
+			   src/plot2D/MultiLayer.cpp \
+			   src/plot2D/MultiPeakFitTool.cpp \
+			   src/plot2D/PlotCurve.cpp \
+			   src/plot2D/PlotEnrichement.cpp \
+			   src/plot2D/QwtBarCurve.cpp \
+               src/plot2D/QwtErrorPlotCurve.cpp \
+			   src/plot2D/QwtHistogram.cpp \
+               src/plot2D/QwtPieCurve.cpp \
+			   src/plot2D/RangeSelectorTool.cpp \
+			   src/plot2D/ScaleDraw.cpp \
+			   src/plot2D/ScaleEngine.cpp \
+			   src/plot2D/ScalePicker.cpp \
+			   src/plot2D/ScreenPickerTool.cpp \
+			   src/plot2D/SelectionMoveResizer.cpp \
+			   src/plot2D/Spectrogram.cpp \
+			   src/plot2D/TitlePicker.cpp \
+			   src/plot2D/TranslateCurveTool.cpp \			   
+			   src/plot2D/VectorCurve.cpp \
 
 ###############################################################
 ################# Module: FFT 2D ##############################

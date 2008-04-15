@@ -28,8 +28,8 @@
  ***************************************************************************/
 #include "ConfigDialog.h"
 #include "ApplicationWindow.h"
-#include "MultiLayer.h"
-#include "Graph.h"
+#include "plot2D/MultiLayer.h"
+#include "plot2D/Graph.h"
 #include "Matrix.h"
 #include "ColorButton.h"
 #include "ColorBox.h"

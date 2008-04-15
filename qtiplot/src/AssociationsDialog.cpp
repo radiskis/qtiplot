@@ -28,12 +28,12 @@
  ***************************************************************************/
 #include "AssociationsDialog.h"
 #include "Table.h"
-#include "FunctionCurve.h"
-#include "PlotCurve.h"
-#include "BoxCurve.h"
-#include "QwtErrorPlotCurve.h"
-#include "QwtPieCurve.h"
-#include "VectorCurve.h"
+#include "plot2D/FunctionCurve.h"
+#include "plot2D/PlotCurve.h"
+#include "plot2D/BoxCurve.h"
+#include "plot2D/QwtErrorPlotCurve.h"
+#include "plot2D/QwtPieCurve.h"
+#include "plot2D/VectorCurve.h"
 
 #include <QLabel>
 #include <QListWidget>

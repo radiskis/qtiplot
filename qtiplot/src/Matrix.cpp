@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "Matrix.h"
 #include "MatrixCommand.h"
-#include "Graph.h"
+#include "plot2D/Graph.h"
 #include "ApplicationWindow.h"
 #include "muParserScript.h"
 #include "ScriptingEnv.h"
