@@ -27,11 +27,11 @@
  *                                                                         *
  ***************************************************************************/
 #include "LineDialog.h"
-#include "ColorButton.h"
-#include "plot2D/ArrowMarker.h"
-#include "plot2D/Graph.h"
-#include "ApplicationWindow.h"
-#include "DoubleSpinBox.h"
+#include "../../ColorButton.h"
+#include "../ArrowMarker.h"
+#include "../Graph.h"
+#include "../../ApplicationWindow.h"
+#include "../../DoubleSpinBox.h"
 
 #include <qwt_plot.h>
 

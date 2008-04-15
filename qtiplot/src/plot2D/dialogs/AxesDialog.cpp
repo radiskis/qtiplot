@@ -27,17 +27,18 @@
  *                                                                         *
  ***************************************************************************/
 #include "AxesDialog.h"
-#include "ApplicationWindow.h"
-#include "TextDialog.h"
-#include "ColorBox.h"
-#include "plot2D/Graph.h"
-#include "plot2D/Grid.h"
-#include "MyParser.h"
-#include "ColorButton.h"
-#include "TextFormatButtons.h"
-#include "Table.h"
-#include "DoubleSpinBox.h"
-#include "plot2D/ScaleDraw.h"
+#include "../../ApplicationWindow.h"
+#include "../../MyParser.h"
+#include "../../ColorButton.h"
+#include "../../TextFormatButtons.h"
+#include "../../Table.h"
+#include "../../DoubleSpinBox.h"
+#include "../../ColorBox.h"
+#include "../../TextDialog.h"
+#include "../Graph.h"
+#include "../Grid.h"
+#include "../ScaleDraw.h"
+#include "../ScaleEngine.h"
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -58,7 +59,6 @@
 
 #include <qwt_plot.h>
 #include <qwt_scale_widget.h>
-#include "plot2D/ScaleEngine.h"
 
 /* XPM */
 static const char* const bottom_scl_xpm[] = {
