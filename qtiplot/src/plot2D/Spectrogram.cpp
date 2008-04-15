@@ -118,18 +118,15 @@ colorAxis->setColorBarEnabled(false);
 color_axis = axis;
 
 // We must switch main and the color scale axes and their respective scales
-int xAxis = this->xAxis();
-int yAxis = this->yAxis();
-int oldMainAxis;
-if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
-	{
-	oldMainAxis = xAxis;
-	xAxis = 5 - color_axis;
-	}
-else if (axis == QwtPlot::yLeft || axis == QwtPlot::yRight)
-	{
-	oldMainAxis = yAxis;
-	yAxis = 1 - color_axis;
+	int xAxis = this->xAxis();
+	int yAxis = this->yAxis();
+	int oldMainAxis = QwtPlot::xBottom;
+	if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop){
+		oldMainAxis = xAxis;
+		xAxis = 5 - color_axis;
+	} else if (axis == QwtPlot::yLeft || axis == QwtPlot::yRight){
+		oldMainAxis = yAxis;
+		yAxis = 1 - color_axis;
 	}
 
 // First we switch axes

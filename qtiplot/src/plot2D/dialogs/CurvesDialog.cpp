@@ -29,7 +29,7 @@
 #include "CurvesDialog.h"
 #include "../Graph.h"
 #include "../../Table.h"
-#include "../../Matrix.h"
+#include "../../matrix/Matrix.h"
 #include "../FunctionCurve.h"
 #include "../PlotCurve.h"
 #include "../../ApplicationWindow.h"

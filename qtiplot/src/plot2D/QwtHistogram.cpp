@@ -27,8 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "QwtHistogram.h"
-#include "../Matrix.h"
-#include "../MatrixModel.h"
+#include "../matrix/Matrix.h"
+#include "../matrix/MatrixModel.h"
 #include <QPainter>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_histogram.h>

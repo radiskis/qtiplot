@@ -29,8 +29,6 @@
  ***************************************************************************/
 #include "muParserScript.h"
 #include "muParserScripting.h"
-#include "Table.h"
-#include "Matrix.h"
 
 #include <qstringlist.h>
 

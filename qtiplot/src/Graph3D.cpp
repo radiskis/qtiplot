@@ -30,7 +30,7 @@
 #include "Bar.h"
 #include "Cone3D.h"
 #include "MyParser.h"
-#include "MatrixModel.h"
+#include "matrix/MatrixModel.h"
 
 #include <QApplication>
 #include <QMessageBox>

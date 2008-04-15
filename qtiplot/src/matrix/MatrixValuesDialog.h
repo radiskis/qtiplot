@@ -31,9 +31,9 @@
 #define MVALUESDIALOG_H
 
 #include <QDialog>
-#include "ScriptingEnv.h"
-#include "Script.h"
-#include "ScriptEdit.h"
+#include "../ScriptingEnv.h"
+#include "../Script.h"
+#include "../ScriptEdit.h"
 #include "Matrix.h"
 
 #ifdef SCRIPTING_PYTHON

@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "fft2D.h"
-#include "../Matrix.h"
+#include "../matrix/Matrix.h"
 
 #include <math.h>
 
