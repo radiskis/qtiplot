@@ -116,7 +116,7 @@ void TranslateCurveTool::selectDestination(const QwtDoublePoint &point)
 	    return;
     } else {
     	DataCurve *c = (DataCurve *)d_selected_curve;
-		double d;
+		double d = 0.0;
 		QString col_name;
 		switch(d_dir) {
 			case Vertical:
