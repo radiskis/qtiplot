@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "Graph.h"
 #include "Grid.h"
-#include "ColorBox.h"
+#include "../ColorBox.h"
 
 #include <qwt_plot_canvas.h>
 #include <qwt_painter.h>

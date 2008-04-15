@@ -27,8 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "CurveRangeDialog.h"
-#include "PlotCurve.h"
-#include "Graph.h"
+#include "plot2D/PlotCurve.h"
+#include "plot2D/Graph.h"
 #include "Table.h"
 
 #include <QGroupBox>

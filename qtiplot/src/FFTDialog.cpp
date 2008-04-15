@@ -27,10 +27,10 @@
  *                                                                         *
  ***************************************************************************/
 #include "FFTDialog.h"
-#include "Graph.h"
+#include "plot2D/Graph.h"
 #include "MyParser.h"
 #include "ApplicationWindow.h"
-#include "MultiLayer.h"
+#include "plot2D/MultiLayer.h"
 #include "Table.h"
 #include "FFT.h"
 #include "Matrix.h"

@@ -28,10 +28,10 @@
  ***************************************************************************/
 #include "MultiPeakFit.h"
 #include "fit_gsl.h"
-#include "PlotCurve.h"
-#include "FunctionCurve.h"
+#include "plot2D/PlotCurve.h"
+#include "plot2D/FunctionCurve.h"
 #include "ColorBox.h"
-#include "MultiLayer.h"
+#include "plot2D/MultiLayer.h"
 
 #include <gsl/gsl_statistics.h>
 

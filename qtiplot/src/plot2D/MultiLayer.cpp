@@ -51,7 +51,7 @@
 #include "MultiLayer.h"
 #include "LegendWidget.h"
 #include "SelectionMoveResizer.h"
-#include "ApplicationWindow.h"
+#include "../ApplicationWindow.h"
 
 #include <gsl/gsl_vector.h>
 

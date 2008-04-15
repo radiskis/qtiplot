@@ -30,7 +30,7 @@
 #include "QwtPieCurve.h"
 #include "VectorCurve.h"
 #include "SelectionMoveResizer.h"
-#include "ApplicationWindow.h"
+#include "../ApplicationWindow.h"
 
 #include <QPainter>
 #include <QPolygon>

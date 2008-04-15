@@ -29,7 +29,7 @@
 #ifndef FITDIALOG_H
 #define FITDIALOG_H
 
-#include "Graph.h"
+#include "plot2D/Graph.h"
 #include <QDoubleSpinBox>
 #include <QCheckBox>
 

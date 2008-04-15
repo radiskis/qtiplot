@@ -4488,7 +4488,7 @@ Are you sure you want to continue?</source>
 <context>
     <name>CanvasPicker</name>
     <message>
-        <location filename="../src/CanvasPicker.cpp" line="223"/>
+        <location filename="../src/plot2D/CanvasPicker.cpp" line="223"/>
         <source>enter your text here</source>
         <translation>вводите свой текст здесь</translation>
     </message>
@@ -5821,52 +5821,52 @@ The following special codes can be used:
 <context>
     <name>DataPickerTool</name>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="72"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="72"/>
         <source>Click on plot or move cursor to display coordinates!</source>
         <translation>Щёлкните на графике или переместите курсор для отображения координат!</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="75"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="75"/>
         <source>Please, click on plot and move cursor!</source>
         <translation>Пожалуйста, щёлкните на графике и переместите курсор!</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="346"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="346"/>
         <source>QtiPlot - Move point error</source>
         <translation>QtiPlot - Ошибка перемещения данных</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="318"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="318"/>
         <source>QtiPlot - Remove point error</source>
         <translation>QtiPlot - Ошибка удаления данных</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="393"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="393"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="78"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="78"/>
         <source>Select point and double click to remove it!</source>
         <translation>Выберите точку и дважды щёлкните на ней для её удаления!</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="347"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="347"/>
         <source>Sorry, but moving points of a function is not possible.</source>
         <translation>Извините, перемещение точек функции невозможно.</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="319"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="319"/>
         <source>Sorry, but removing points of a function is not possible.</source>
         <translation>Извините, удаление точек функции невозможно.</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="394"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="394"/>
         <source>This operation cannot be performed on curves plotted from columns having a non-numerical format.</source>
         <translation>Эта операция не может быть выполнена над кривыми, построенными для столбцов с нечисловым форматом данных.</translation>
     </message>
     <message>
-        <location filename="../src/DataPickerTool.cpp" line="360"/>
+        <location filename="../src/plot2D/DataPickerTool.cpp" line="360"/>
         <source>The column &apos;%1&apos; is read-only! Please choose another curve!</source>
         <translation>Столбец &apos;%1&apos; - только для чтения! Пожалуйста, выберите другую кривую!</translation>
     </message>
@@ -5914,7 +5914,7 @@ The following special codes can be used:
 <context>
     <name>DrawPointTool</name>
     <message>
-        <location filename="../src/ScreenPickerTool.cpp" line="123"/>
+        <location filename="../src/plot2D/ScreenPickerTool.cpp" line="123"/>
         <source>Draw</source>
         <translation>Рисование</translation>
     </message>
@@ -7601,147 +7601,147 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="../src/Graph.cpp" line="3942"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3944"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копировать</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3953"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3955"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3941"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3943"/>
         <source>&amp;Cut</source>
         <translation>&amp;Вырезать</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3644"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3644"/>
         <source>Data set generated from curve</source>
         <translation>Набор данных, полученных из кривой</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3943"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3945"/>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
     </message>
     <message>
-        <location filename="../src/Graph.h" line="589"/>
+        <location filename="../src/plot2D/Graph.h" line="589"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="1330"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1330"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3955"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3957"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Скрыть оси</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3403"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3403"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Файл изображения: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;больше не существует!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="1366"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1366"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3968"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3970"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Свойства...</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="4685"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4687"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3402"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3402"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="4674"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4676"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3953"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3955"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Перерисовать и отобразить всё</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3967"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3969"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Масштаб...</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3957"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3959"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Показать сетку</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3645"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3645"/>
         <source>Table</source>
         <translation>Таблица</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3889"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3891"/>
         <source>The column</source>
         <translation>Столбец</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3885"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3887"/>
         <source>The columns</source>
         <translation>Столбцы</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="4674"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4676"/>
         <source>There are no curves available on this plot!</source>
         <translation>На данном графике нет доступных кривых!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="4686"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4688"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>На данном графике нет кривых с более чем двумя точками. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="1634"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1634"/>
         <source>Title</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3885"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3887"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>являются пустыми и их содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="3889"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3891"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>явлется пустой и её содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="817"/>
+        <location filename="../src/plot2D/Graph.cpp" line="817"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Невозможно изменить тип оси на требуемый!</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="198"/>
+        <location filename="../src/plot2D/Graph.cpp" line="198"/>
         <source>Y Axis Title</source>
         <translation type="unfinished">Подпись оси Y</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="199"/>
+        <location filename="../src/plot2D/Graph.cpp" line="199"/>
         <source>X Axis Title</source>
         <translation type="unfinished">Подпись оси X</translation>
     </message>
     <message>
-        <location filename="../src/Graph.cpp" line="202"/>
+        <location filename="../src/plot2D/Graph.cpp" line="202"/>
         <source> </source>
         <translation type="unfinished"> </translation>
     </message>
@@ -8809,42 +8809,42 @@ have the same number of rows.</source>
 <context>
     <name>LineProfileTool</name>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="56"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="56"/>
         <source>Please select an image marker first.</source>
         <translation>Пожалуйста, укажите сначала маркер изображения.</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="68"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="68"/>
         <source>Please select the end line point inside the image rectangle!</source>
         <translation>Пожалуйста, укажите конечную точку линии в пределах изображения!</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="67"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="67"/>
         <source>QtiPlot - Pixel selection warning</source>
         <translation>QtiPlot - Предупреждение при выборе точки</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="142"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="142"/>
         <source>Table</source>
         <translation>Таблица</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="93"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="93"/>
         <source>intensity</source>
         <translation>интенсивность</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="93"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="93"/>
         <source>pixel</source>
         <translation>точка</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="148"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="148"/>
         <source>pixel intensity (a.u.)</source>
         <translation>интенсивность точек (отн. ед.)</translation>
     </message>
     <message>
-        <location filename="../src/LineProfileTool.cpp" line="147"/>
+        <location filename="../src/plot2D/LineProfileTool.cpp" line="147"/>
         <source>pixels</source>
         <translation>точки</translation>
     </message>
@@ -9465,42 +9465,42 @@ have the same number of rows.</source>
 <context>
     <name>MultiLayer</name>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="279"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="279"/>
         <source>&amp;Cancel</source>
         <translation>О&amp;тмена</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="278"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="278"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Вы хотите, чтобы QtiPlot перегруппировал оставшиеся слои?</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="623"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="623"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена.</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="279"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="279"/>
         <source>&amp;No</source>
         <translation>&amp;Нет</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="666"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="666"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла.</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="665"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="665"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="277"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="277"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot - Наилучшая по Гауссу схема?</translation>
     </message>
     <message>
-        <location filename="../src/MultiLayer.cpp" line="279"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="279"/>
         <source>&amp;Yes</source>
         <translation>&amp;Да</translation>
     </message>
@@ -9606,12 +9606,12 @@ have the same number of rows.</source>
 <context>
     <name>MultiPeakFitTool</name>
     <message>
-        <location filename="../src/MultiPeakFitTool.cpp" line="63"/>
+        <location filename="../src/plot2D/MultiPeakFitTool.cpp" line="63"/>
         <source>Move cursor and click to select a point and double-click/press &apos;Enter&apos; to set the position of a peak!</source>
         <translation>Для выделения точки подведите к ней указатель и щёлкните, двойной щелчок или &apos;Enter&apos; для установки положения вершины!</translation>
     </message>
     <message>
-        <location filename="../src/MultiPeakFitTool.cpp" line="97"/>
+        <location filename="../src/plot2D/MultiPeakFitTool.cpp" line="97"/>
         <source>Peak %1 selected! Click to select a point and double-click/press &apos;Enter&apos; to set the position of the next peak!</source>
         <translation>Пик %1 выбран! Один щелчок для выбора точки и двойной щелчок или &apos;Enter&apos;, для указания положения следующего пика!</translation>
     </message>
@@ -11392,32 +11392,32 @@ have the same number of rows.</source>
 <context>
     <name>RangeSelectorTool</name>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="57"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="57"/>
         <source>All the curves on this plot are empty!</source>
         <translation>Все кривые на этом графике пустые!</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="89"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="89"/>
         <source>Click or use Ctrl+arrow key to select range (arrows select active cursor)!</source>
         <translation>Щелкните или используйте сочетание клавиш Ctrl+стрелки для выбора диапазона (стрелки выбирают активный курсор)!</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="167"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="167"/>
         <source>Left</source>
         <translation>По левому краю</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="340"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="340"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="167"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="167"/>
         <source>Right</source>
         <translation>По правому краю</translation>
     </message>
     <message>
-        <location filename="../src/RangeSelectorTool.cpp" line="341"/>
+        <location filename="../src/plot2D/RangeSelectorTool.cpp" line="341"/>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
         <translation>Столбец &apos;%1&apos; - только для чтения! Операция прервана!</translation>
     </message>
@@ -11473,7 +11473,7 @@ have the same number of rows.</source>
 <context>
     <name>ScreenPickerTool</name>
     <message>
-        <location filename="../src/ScreenPickerTool.cpp" line="50"/>
+        <location filename="../src/plot2D/ScreenPickerTool.cpp" line="50"/>
         <source>Click on plot or move cursor to display coordinates!</source>
         <translation>Щёлкните на графике и переместите курсор для отображения координат!</translation>
     </message>
@@ -13053,27 +13053,27 @@ have the same number of rows.</source>
 <context>
     <name>TranslateCurveTool</name>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="88"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="88"/>
         <source>Curve selected! Move cursor and click to choose a point and double-click/press &apos;Enter&apos; to finish!</source>
         <translation>Кривая выбрана! Для выбора точки подведите указатель и сделайте щелчок, двойной щелчок или &apos;Enter&apos; для завершения!</translation>
     </message>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="139"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="139"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="140"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="140"/>
         <source>This operation cannot be performed on curves plotted from columns having a non-numerical format.</source>
         <translation>Эта операция не может быть выполнена над кривыми построенными для колонок с нецифровым форматом данных.</translation>
     </message>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="102"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="102"/>
         <source>This operation cannot be performed on function curves.</source>
         <translation>Эта операция не может быть выполнена на функциональных кривых.</translation>
     </message>
     <message>
-        <location filename="../src/TranslateCurveTool.cpp" line="74"/>
+        <location filename="../src/plot2D/TranslateCurveTool.cpp" line="74"/>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
         <translation>Столбец &apos;%1&apos; - только для чтения! Операция прервана!</translation>
     </message>

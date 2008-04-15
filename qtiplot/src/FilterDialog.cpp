@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "FilterDialog.h"
-#include "Graph.h"
+#include "plot2D/Graph.h"
 #include "MyParser.h"
 #include "ColorBox.h"
 #include "FFTFilter.h"

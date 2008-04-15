@@ -29,7 +29,7 @@
 
 #include "TextDialog.h"
 #include "ApplicationWindow.h"
-#include "LegendWidget.h"
+#include "plot2D/LegendWidget.h"
 
 #include <QFontDialog>
 #include <QFont>

@@ -28,9 +28,9 @@
  ***************************************************************************/
 #include "Integration.h"
 #include "nrutil.h"
-#include "MultiLayer.h"
+#include "plot2D/MultiLayer.h"
 #include "MyParser.h"
-#include "FunctionCurve.h"
+#include "plot2D/FunctionCurve.h"
 
 #include <QMessageBox>
 #include <QDateTime>

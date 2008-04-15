@@ -33,7 +33,7 @@
 #include "ImageMarker.h"
 #include "ArrowMarker.h"
 #include "Graph.h"
-#include "ApplicationWindow.h"
+#include "../ApplicationWindow.h"
 #include "MultiLayer.h"
 
 #include <QPoint>

@@ -32,7 +32,7 @@
 #ifndef MULTILAYER_H
 #define MULTILAYER_H
 
-#include "MdiSubWindow.h"
+#include "../MdiSubWindow.h"
 #include "Graph.h"
 #include <QPushButton>
 #include <QLayout>

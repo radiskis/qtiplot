@@ -29,7 +29,7 @@
 #ifndef FUNCTIONDIALOG_H
 #define FUNCTIONDIALOG_H
 
-#include "Graph.h"
+#include "plot2D/Graph.h"
 
 class QStackedWidget;
 class QWidget;

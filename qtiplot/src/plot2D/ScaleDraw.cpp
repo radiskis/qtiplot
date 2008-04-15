@@ -28,8 +28,8 @@
  ***************************************************************************/
 #include "ScaleDraw.h"
 #include "Graph.h"
-#include "MyParser.h"
-#include "plot2D/ScaleEngine.h"
+#include "../MyParser.h"
+#include "ScaleEngine.h"
 
 #include <QDateTime>
 #include <QPainter>
