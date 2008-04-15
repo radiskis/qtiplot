@@ -29,7 +29,7 @@
 #include "Fit.h"
 #include "fit_gsl.h"
 #include "Table.h"
-#include "Matrix.h"
+#include "matrix/Matrix.h"
 #include "plot2D/QwtErrorPlotCurve.h"
 #include "plot2D/FunctionCurve.h"
 #include "ColorBox.h"

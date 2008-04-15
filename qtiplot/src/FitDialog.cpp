@@ -38,7 +38,6 @@
 #include "NonLinearFit.h"
 #include "SigmoidalFit.h"
 #include "LogisticFit.h"
-#include "Matrix.h"
 #include "DoubleSpinBox.h"
 
 #include <QListWidget>

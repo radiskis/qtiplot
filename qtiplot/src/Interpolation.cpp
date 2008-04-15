@@ -122,7 +122,7 @@ if (d_n < min_points){
 void Interpolation::calculateOutputData(double *x, double *y)
 {
 	gsl_interp_accel *acc = gsl_interp_accel_alloc ();
-	const gsl_interp_type *method;
+	const gsl_interp_type *method = NULL;
 	switch(d_method)
 	{
 		case 0:
@@ -172,7 +172,7 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
     double *xtemp = new double[n];
     double *ytemp = new double[n];
 
-	double pr_x;
+	double pr_x = 0.0;
   	int j=0;
     for (int i = i_start; i <= i_end; i++){
         xtemp[j] = c->x(i);

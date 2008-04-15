@@ -38,9 +38,9 @@
 #include <QMessageBox>
 
 #include "MatrixModel.h"
-#include "MdiSubWindow.h"
-#include "ScriptingEnv.h"
-#include "Script.h"
+#include "../MdiSubWindow.h"
+#include "../ScriptingEnv.h"
+#include "../Script.h"
 
 #include <qwt_double_rect.h>
 #include <qwt_color_map.h>

@@ -28,10 +28,10 @@
  ***************************************************************************/
 #include "Matrix.h"
 #include "MatrixCommand.h"
-#include "plot2D/Graph.h"
-#include "ApplicationWindow.h"
-#include "muParserScript.h"
-#include "ScriptingEnv.h"
+#include "../plot2D/Graph.h"
+#include "../ApplicationWindow.h"
+#include "../muParserScript.h"
+#include "../ScriptingEnv.h"
 
 #include <QtGlobal>
 #include <QTextStream>

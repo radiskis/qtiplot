@@ -174,10 +174,6 @@ HEADERS  += src/ApplicationWindow.h \
             src/Bar.h \
             src/Cone3D.h \
             src/ConfigDialog.h \
-            src/Matrix.h \
-            src/MatrixDialog.h \
-            src/MatrixSizeDialog.h \
-            src/MatrixValuesDialog.h \
             src/DataSetDialog.h \
             src/MyParser.h \
             src/ColorBox.h \
@@ -225,11 +221,9 @@ HEADERS  += src/ApplicationWindow.h \
             src/Correlation.h\
             src/ExtensibleFileDialog.h\
             src/OpenProjectDialog.h\
-            src/MatrixModel.h\
             src/FitModelHandler.h \
             src/CustomActionDialog.h \
             src/DoubleSpinBox.h \
-            src/MatrixCommand.h \
 			src/TextDialog.h \
 			src/PlotWizard.h \
 
@@ -254,10 +248,6 @@ SOURCES  += src/main.cpp \
             src/Bar.cpp \
             src/Cone3D.cpp \
             src/ConfigDialog.cpp \
-            src/Matrix.cpp \
-            src/MatrixDialog.cpp \
-            src/MatrixSizeDialog.cpp \
-            src/MatrixValuesDialog.cpp \
             src/DataSetDialog.cpp \
             src/MyParser.cpp \
             src/ColorBox.cpp \
@@ -304,11 +294,9 @@ SOURCES  += src/main.cpp \
             src/Correlation.cpp\
             src/ExtensibleFileDialog.cpp\
             src/OpenProjectDialog.cpp\
-            src/MatrixModel.cpp\
             src/FitModelHandler.cpp \
             src/CustomActionDialog.cpp \
             src/DoubleSpinBox.cpp \
-            src/MatrixCommand.cpp \
 			src/TextDialog.cpp \
 			src/PlotWizard.cpp \
 
@@ -325,6 +313,24 @@ SOURCES  += src/main.cpp \
 	HEADERS += ../3rdparty/liborigin/OPJFile.h
 	SOURCES += ../3rdparty/liborigin/OPJFile.cpp
 
+###############################################################
+################# Module: Matrix ##############################
+###############################################################
+
+	HEADERS += src/matrix/Matrix.h \
+			   src/matrix/MatrixCommand.h \
+               src/matrix/MatrixDialog.h \
+			   src/matrix/MatrixModel.h \
+               src/matrix/MatrixSizeDialog.h \
+               src/matrix/MatrixValuesDialog.h \
+			   
+	SOURCES += src/matrix/Matrix.cpp \   
+			   src/matrix/MatrixCommand.cpp \
+               src/matrix/MatrixDialog.cpp \
+			   src/matrix/MatrixModel.cpp \
+               src/matrix/MatrixSizeDialog.cpp \
+               src/matrix/MatrixValuesDialog.cpp \
+	
 ###############################################################
 ################# Module: Plot 2D #############################
 ###############################################################
