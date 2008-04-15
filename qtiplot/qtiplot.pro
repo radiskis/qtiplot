@@ -158,27 +158,17 @@ HEADERS  += src/ApplicationWindow.h \
             src/globals.h\
             src/Graph3D.h \
             src/Table.h \
-            src/CurvesDialog.h \
             src/SetColValuesDialog.h \
-            src/PlotDialog.h \
             src/Plot3DDialog.h \
-            src/PlotWizard.h \
             src/ExportDialog.h \
-            src/AxesDialog.h \
             src/PolynomFitDialog.h \
             src/ExpDecayDialog.h \
-            src/FunctionDialog.h \
             src/FitDialog.h \
             src/SurfaceDialog.h \
             src/TableDialog.h \
-            src/TextDialog.h \
-            src/LineDialog.h \
-            src/ErrDialog.h \
-            src/ImageDialog.h \
             src/fit_gsl.h \
             src/nrutil.h\
             src/pixmaps.h\
-            src/LayerDialog.h \
             src/IntDialog.h \
             src/SortDialog.h\
             src/Bar.h \
@@ -196,12 +186,10 @@ HEADERS  += src/ApplicationWindow.h \
             src/importOPJ.h\
             src/SymbolDialog.h \
             src/ColorButton.h \
-            src/AssociationsDialog.h \
             src/RenameWindowDialog.h \
 			src/MdiSubWindow.h \
             src/InterpolationDialog.h\
             src/ImportASCIIDialog.h \
-            src/ImageExportDialog.h\
             src/SmoothCurveDialog.h\
             src/FilterDialog.h\
             src/FFTDialog.h\
@@ -235,15 +223,15 @@ HEADERS  += src/ApplicationWindow.h \
             src/FFT.h\
             src/Convolution.h\
             src/Correlation.h\
-            src/CurveRangeDialog.h\
             src/ExtensibleFileDialog.h\
             src/OpenProjectDialog.h\
             src/MatrixModel.h\
             src/FitModelHandler.h \
-            src/TextEditor.h \
             src/CustomActionDialog.h \
             src/DoubleSpinBox.h \
             src/MatrixCommand.h \
+			src/TextDialog.h \
+			src/PlotWizard.h \
 
 ###################### SOURCES ##############################################
 
@@ -251,26 +239,16 @@ SOURCES  += src/main.cpp \
 			src/ApplicationWindow.cpp \
             src/Graph3D.cpp \
             src/Table.cpp \
-            src/CurvesDialog.cpp \
             src/SetColValuesDialog.cpp \
-            src/PlotDialog.cpp \
             src/Plot3DDialog.cpp \
-            src/PlotWizard.cpp \
             src/ExportDialog.cpp \
-            src/AxesDialog.cpp \
             src/PolynomFitDialog.cpp \
             src/ExpDecayDialog.cpp \
-            src/FunctionDialog.cpp \
             src/FitDialog.cpp \
             src/SurfaceDialog.cpp \
             src/TableDialog.cpp \
-            src/TextDialog.cpp \
-            src/LineDialog.cpp \
-            src/ErrDialog.cpp \
-            src/ImageDialog.cpp \
             src/fit_gsl.cpp \
             src/nrutil.cpp\
-            src/LayerDialog.cpp \
             src/IntDialog.cpp \
             src/SortDialog.cpp\
             src/Bar.cpp \
@@ -288,12 +266,10 @@ SOURCES  += src/main.cpp \
             src/importOPJ.cpp\
             src/SymbolDialog.cpp \
             src/ColorButton.cpp \
-            src/AssociationsDialog.cpp \
             src/RenameWindowDialog.cpp \
 			src/MdiSubWindow.cpp \
             src/InterpolationDialog.cpp\
             src/ImportASCIIDialog.cpp \
-            src/ImageExportDialog.cpp\
             src/SmoothCurveDialog.cpp\
             src/FilterDialog.cpp\
             src/FFTDialog.cpp\
@@ -326,33 +302,33 @@ SOURCES  += src/main.cpp \
             src/FFT.cpp\
             src/Convolution.cpp\
             src/Correlation.cpp\
-            src/CurveRangeDialog.cpp\
             src/ExtensibleFileDialog.cpp\
             src/OpenProjectDialog.cpp\
             src/MatrixModel.cpp\
             src/FitModelHandler.cpp \
-            src/TextEditor.cpp \
             src/CustomActionDialog.cpp \
             src/DoubleSpinBox.cpp \
             src/MatrixCommand.cpp \
+			src/TextDialog.cpp \
+			src/PlotWizard.cpp \
 
 ###############################################################
 ##################### Compression (zlib123) ###################
 ###############################################################
 
-SOURCES += ../3rdparty/zlib123/minigzip.c
+	SOURCES += ../3rdparty/zlib123/minigzip.c
 
 ###############################################################
 ################# Origin Import (liborigin) ###################
 ###############################################################
 
-HEADERS += ../3rdparty/liborigin/OPJFile.h
-SOURCES += ../3rdparty/liborigin/OPJFile.cpp
+	HEADERS += ../3rdparty/liborigin/OPJFile.h
+	SOURCES += ../3rdparty/liborigin/OPJFile.cpp
 
 ###############################################################
 ################# Module: Plot 2D #############################
 ###############################################################
-
+	
     HEADERS += src/plot2D/ArrowMarker.h \
 			   src/plot2D/BoxCurve.h \
 			   src/plot2D/CanvasPicker.h \
@@ -412,6 +388,32 @@ SOURCES += ../3rdparty/liborigin/OPJFile.cpp
 			   src/plot2D/TranslateCurveTool.cpp \			   
 			   src/plot2D/VectorCurve.cpp \
 
+	HEADERS += src/plot2D/dialogs/AssociationsDialog.h \
+			   src/plot2D/dialogs/AxesDialog.h \
+			   src/plot2D/dialogs/CurvesDialog.h \
+			   src/plot2D/dialogs/CurveRangeDialog.h \
+			   src/plot2D/dialogs/ErrDialog.h \
+			   src/plot2D/dialogs/FunctionDialog.h \
+			   src/plot2D/dialogs/ImageDialog.h \
+			   src/plot2D/dialogs/ImageExportDialog.h \
+			   src/plot2D/dialogs/LayerDialog.h \
+			   src/plot2D/dialogs/LineDialog.h \
+		       src/plot2D/dialogs/PlotDialog.h \
+			   src/plot2D/dialogs/TextEditor.h \
+	
+	SOURCES += src/plot2D/dialogs/AssociationsDialog.cpp \
+			   src/plot2D/dialogs/AxesDialog.cpp \
+			   src/plot2D/dialogs/CurvesDialog.cpp \
+			   src/plot2D/dialogs/CurveRangeDialog.cpp \
+			   src/plot2D/dialogs/ErrDialog.cpp \
+			   src/plot2D/dialogs/FunctionDialog.cpp \
+			   src/plot2D/dialogs/ImageDialog.cpp \
+			   src/plot2D/dialogs/ImageExportDialog.cpp \
+			   src/plot2D/dialogs/LayerDialog.cpp \
+			   src/plot2D/dialogs/LineDialog.cpp \
+		       src/plot2D/dialogs/PlotDialog.cpp \
+			   src/plot2D/dialogs/TextEditor.cpp \
+			   
 ###############################################################
 ################# Module: FFT 2D ##############################
 ###############################################################
