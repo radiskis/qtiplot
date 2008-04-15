@@ -27,8 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "TextEditor.h"
-#include "plot2D/LegendWidget.h"
-#include "plot2D/QwtPieCurve.h"
+#include "../LegendWidget.h"
+#include "../QwtPieCurve.h"
 
 #include <QTextCursor>
 

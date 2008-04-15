@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : LayerDialog.h
+    File                 : FunctionDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Arrange layers dialog
+    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Description          : Function dialog
 
  ***************************************************************************/
 
@@ -26,46 +26,77 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef LAYERDIALOG_H
-#define LAYERDIALOG_H
+#ifndef FUNCTIONDIALOG_H
+#define FUNCTIONDIALOG_H
 
-#include "plot2D/MultiLayer.h"
+#include "../Graph.h"
 
-class QGroupBox;
+class QStackedWidget;
+class QWidget;
+class QLineEdit;
+class QComboBox;
 class QPushButton;
 class QSpinBox;
-class QCheckBox;
-class QComboBox;
+class QLabel;
+class QTextEdit;
+class DoubleSpinBox;
 
-//! Arrange layers dialog
-class LayerDialog : public QDialog
+//! Function dialog
+class FunctionDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    LayerDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
-	void setMultiLayer(MultiLayer *g);
+    FunctionDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+
+protected:
+	QComboBox* boxXFunction;
+    QComboBox* boxYFunction;
+    QComboBox* boxPolarRadius;
+    QComboBox* boxPolarTheta;
+    QComboBox* boxType;
+    QLabel* textFunction;
+    DoubleSpinBox* boxFrom;
+    DoubleSpinBox* boxTo;
+	QLineEdit* boxParameter;
+    QLineEdit* boxParFrom;
+    QLineEdit* boxParTo;
+	QLineEdit* boxPolarParameter;
+    QLineEdit* boxPolarFrom;
+    QLineEdit* boxPolarTo;
+    QPushButton* buttonClear;
+    QPushButton* buttonCancel;
+    QPushButton* buttonOk;
+	QSpinBox* boxPoints;
+	QSpinBox* boxParPoints;
+	QSpinBox* boxPolarPoints;
+	QStackedWidget* optionStack;
+    QTextEdit* boxFunction;
+	QWidget* functionPage;
+	QWidget* polarPage;
+	QWidget* parametricPage;
 
 protected slots:
+	void raiseWidget(int index);
+
+public slots:
 	void accept();
-	void update();
-	void enableLayoutOptions(bool ok);
-	void swapLayers();
+	void acceptFunction();
+	void acceptParametric();
+	void acceptPolar();
+	void setCurveToModify(Graph *g, int curve);
+	void insertParamFunctionsList(const QStringList& xList, const QStringList& yList);
+	void insertPolarFunctionsList(const QStringList& rList, const QStringList& thetaList);
+	void clearList();
+	void setGraph(Graph *g){graph = g;};
+
+signals:
+	void clearParamFunctionsList();
+	void clearPolarFunctionsList();
 
 private:
-	MultiLayer *multi_layer;
-
-	QPushButton* buttonOk;
-	QPushButton* buttonCancel;
-	QPushButton* buttonApply;
-	QPushButton* buttonSwapLayers;
-    QGroupBox *GroupCanvasSize, *GroupGrid;
-    QSpinBox *boxX, *boxY, *boxColsGap, *boxRowsGap;
-	QSpinBox *boxRightSpace, *boxLeftSpace, *boxTopSpace, *boxBottomSpace;
-	QSpinBox *boxCanvasWidth, *boxCanvasHeight, *layersBox;
-	QSpinBox *boxLayerDest, *boxLayerSrc;
-	QCheckBox *fitBox;
-	QComboBox *alignHorBox, *alignVertBox;
+	Graph *graph;
+	int curveID;
 };
 
-#endif
+#endif // FUNCTIONDIALOG_H

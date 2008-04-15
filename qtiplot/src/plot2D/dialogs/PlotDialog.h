@@ -31,7 +31,7 @@
 
 #include <QDialog>
 #include <QTreeWidgetItem>
-#include "plot2D/MultiLayer.h"
+#include "../MultiLayer.h"
 
 class QCheckBox;
 class QComboBox;

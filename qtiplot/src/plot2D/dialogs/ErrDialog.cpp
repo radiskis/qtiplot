@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ErrDialog.h"
-#include "Table.h"
+#include "../../Table.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
