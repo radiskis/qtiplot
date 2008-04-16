@@ -156,7 +156,7 @@ signals:
 	void showAxisDialog(int);
 	void showScaleDialog(int);
 	void showGraphContextMenu();
-	void showCurveContextMenu(int);
+	void showCurveContextMenu(QwtPlotCurve *);
 	void showCurvesDialog();
 	void drawTextOff();
 	void drawLineEnded(bool);

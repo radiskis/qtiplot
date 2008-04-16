@@ -89,12 +89,12 @@ DataPickerTool::~DataPickerTool()
 void DataPickerTool::append(const QPoint &pos)
 {
 	int dist, point_index;
-	const int curve = d_graph->closestCurve(pos.x(), pos.y(), dist, point_index);
-	if (curve <= 0 || dist >= 5) { // 5 pixels tolerance
+	PlotCurve *c = d_graph->closestCurve(pos.x(), pos.y(), dist, point_index);
+	if (!c || dist >= 5) { // 5 pixels tolerance
 		setSelection(NULL, 0);
 		return;
 	}
-	setSelection((QwtPlotCurve *)d_graph->curve(curve), point_index);
+	setSelection((QwtPlotCurve *)c, point_index);
 	if (!d_selected_curve) return;
 
 	QwtPlotPicker::append(transform(QwtDoublePoint(d_selected_curve->x(d_selected_point),

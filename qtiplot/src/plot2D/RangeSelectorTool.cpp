@@ -100,11 +100,8 @@ RangeSelectorTool::~RangeSelectorTool()
 void RangeSelectorTool::pointSelected(const QPoint &pos)
 {
 	int dist, point;
-	const int curve_key = d_graph->closestCurve(pos.x(), pos.y(), dist, point);
-	if (curve_key < 0 || dist >= 5) // 5 pixels tolerance
-		return;
-	QwtPlotCurve *curve = (QwtPlotCurve *)d_graph->curve(curve_key);
-	if (!curve)
+	QwtPlotCurve *curve = d_graph->closestCurve(pos.x(), pos.y(), dist, point);
+	if (!curve || dist >= 5) // 5 pixels tolerance
 		return;
 
 	if (curve == d_selected_curve)
