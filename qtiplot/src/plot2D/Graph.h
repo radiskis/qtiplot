@@ -157,7 +157,7 @@ class Graph: public QwtPlot
 		QList<int> curveKeys(){return d_curves.keys();};
 		QList<QwtPlotItem *> curvesList(){return d_curves.values();};
 
-		int closestCurve(int xpos, int ypos, int &dist, int &point);
+		PlotCurve* closestCurve(int xpos, int ypos, int &dist, int &point);
 		QMap<int, QwtPlotItem*> curves(){return d_curves;};
 
 		QwtPlotMarker* marker(int index){return d_markers.value(index);};
@@ -241,7 +241,6 @@ class Graph: public QwtPlot
 		double selectedXStartValue();
 		double selectedXEndValue();
 
-        long curveKey(int curve){return c_keys[curve];}
 		int curveIndex(long key){return c_keys.indexOf(key);};
 		//! Map curve pointer to index.
 		int curveIndex(QwtPlotCurve *c);
@@ -528,7 +527,6 @@ class Graph: public QwtPlot
 
 		//! \name Plot Title
 		//@{
-		void setTitle(const QString& t);
 		void setTitleFont(const QFont &fnt);
 		void setTitleColor(const QColor &c);
 		void setTitleAlignment(int align);
@@ -542,8 +540,6 @@ class Graph: public QwtPlot
 
 		//! \name Modifing insertCurve Data
 		//@{
-		int selectedCurveID();
-		int selectedCurveIndex() { return curveIndex(selectedCurveID()); }
 		QString selectedCurveTitle();
 		//@}
 
@@ -689,7 +685,7 @@ signals:
 		void hiddenPlot(QWidget*);
 
 		void showContextMenu();
-		void showCurveContextMenu(int);
+		void showCurveContextMenu(QwtPlotCurve *);
 		void showMarkerPopupMenu();
 
 		void showAxisDialog(int);

@@ -1260,39 +1260,36 @@ void Graph::setScale(int axis, double start, double end, double step,
 
 QStringList Graph::analysableCurvesList()
 {
-	QStringList cList;
-	QList<int> keys = curveKeys();
-	for (int i=0; i<(int)keys.count(); i++)
-	{
-		QwtPlotCurve *c = curve(keys[i]);
-  	    if (c && c_type[i] != ErrorBars)
-  	        cList << c->title().text();
-  	 }
-return cList;
+	QStringList cList;	
+	QList<QwtPlotItem *> itemsList = d_curves.values();
+	foreach(QwtPlotItem *it, itemsList){
+    	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
+			PlotCurve *c = (PlotCurve*)it;
+        	if (c->type() != ErrorBars)
+				cList << c->title().text();
+		}
+	}
+	
+	return cList;
 }
 
 QStringList Graph::curveNamesList()
 {
-	QStringList cList;
-	QList<int> keys = curveKeys();
-	for (int i=0; i<(int)keys.count(); i++){
-		QwtPlotCurve *c = curve(keys[i]);
-  	    if (c)
-  	        cList << c->title().text();
-  	 }
+	QStringList cList;	
+	QList<QwtPlotItem *> itemsList = d_curves.values();
+	foreach(QwtPlotItem *it, itemsList){
+    	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+			cList << it->title().text();
+	}
 	return cList;
 }
 
 QStringList Graph::plotItemsList()
 {
   	QStringList cList;
-  	QList<int> keys = curveKeys();
-  	for (int i=0; i<(int)keys.count(); i++)
-  	{
-  		QwtPlotItem *it = plotItem(keys[i]);
-		if (it)
-			cList << it->title().text();
-	}
+	QList<QwtPlotItem *> itemsList = d_curves.values();
+	foreach(QwtPlotItem *it, itemsList)
+    	cList << it->title().text();
 	return cList;
 }
 
@@ -1496,14 +1493,6 @@ void Graph::exportEMF(const QString& fname)
 }
 #endif
 
-int Graph::selectedCurveID()
-{
-	if (d_range_selector)
-		return curveKey(curveIndex(d_range_selector->selectedCurve()));
-	else
-		return -1;
-}
-
 QString Graph::selectedCurveTitle()
 {
 	if (d_range_selector)
@@ -1610,12 +1599,6 @@ void Graph::selectTitle(bool select)
         emit selectedGraph(this);
 		emit currentFontChanged(title().font());
     }
-}
-
-void Graph::setTitle(const QString& t)
-{
-	setTitle (t);
-	emit modifiedGraph();
 }
 
 void Graph::removeTitle()
@@ -3276,11 +3259,9 @@ void Graph::contextMenuEvent(QContextMenuEvent *e)
 
 	QPoint pos = canvas()->mapFrom(this, e->pos());
 	int dist, point;
-	const long curveKey = closestCurve(pos.x(), pos.y(), dist, point);
-	const QwtPlotCurve *c = (QwtPlotCurve *)curve(curveKey);
-
+	QwtPlotCurve *c = closestCurve(pos.x(), pos.y(), dist, point);
 	if (c && dist < 10)//10 pixels tolerance
-		emit showCurveContextMenu(curveKey);
+		emit showCurveContextMenu(c);
 	else
 		emit showContextMenu();
 
@@ -3291,7 +3272,6 @@ void Graph::closeEvent(QCloseEvent *e)
 {
 	emit closedGraph();
 	e->accept();
-
 }
 
 bool Graph::zoomOn()
@@ -5321,46 +5301,42 @@ void Graph::setTickLength (int minLength, int majLength)
 	minTickLength = minLength;
 }
 
-int Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
+PlotCurve* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 {
 	QwtScaleMap map[QwtPlot::axisCnt];
 	for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
 		map[axis] = canvasMap(axis);
 
 	double dmin = 1.0e10;
-	int key = -1;
-	for (QMap<int, QwtPlotItem *>::iterator iter = d_curves.begin(); iter != d_curves.end(); ++iter )
-	{
+	PlotCurve *curve = NULL;
+	for (QMap<int, QwtPlotItem *>::iterator iter = d_curves.begin(); iter != d_curves.end(); ++iter ){
 		QwtPlotItem *item = (QwtPlotItem *)iter.data();
 		if (!item)
 			continue;
 
-		if(item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-		{
+		if(item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
 			PlotCurve *c = (PlotCurve *)item;
 			if (c->type() != Graph::Function && ((DataCurve *)c)->hasLabels() &&
                 ((DataCurve *)c)->selectedLabels(QPoint(xpos, ypos))){
                 dist = 0;
-			    return iter.key();
+			    return c;
             } else
                 ((DataCurve *)c)->setLabelsSelected(false);
 
-			for (int i=0; i<c->dataSize(); i++)
-			{
+			for (int i=0; i<c->dataSize(); i++){
 				double cx = map[c->xAxis()].xTransform(c->x(i)) - double(xpos);
 				double cy = map[c->yAxis()].xTransform(c->y(i)) - double(ypos);
 				double f = qwtSqr(cx) + qwtSqr(cy);
-				if (f < dmin && c->type() != Graph::ErrorBars)
-				{
+				if (f < dmin && c->type() != Graph::ErrorBars){
 					dmin = f;
-					key = iter.key();
+					curve = c;
 					point = i;
 				}
 			}
 		}
 	}
-	dist = int(sqrt(dmin));
-	return key;
+	dist = qRound(sqrt(dmin));
+	return curve;
 }
 
 void Graph::removeMarker(int index)

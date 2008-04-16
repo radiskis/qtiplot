@@ -6213,7 +6213,7 @@ QDialog* ApplicationWindow::showPlot3dDialog()
 	return pd;
 }
 
-void ApplicationWindow::showPlotDialog(int curveKey)
+void ApplicationWindow::showPlotDialog(int curveIndex)
 {
 	MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!w)
@@ -6223,10 +6223,10 @@ void ApplicationWindow::showPlotDialog(int curveKey)
 	pd->setAttribute(Qt::WA_DeleteOnClose);
 	pd->insertColumnsList(columnsList(Table::All));
 	pd->setMultiLayer(w);
-    if (curveKey >= 0){
+    if (curveIndex >= 0){
 		Graph *g = w->activeGraph();
 		if (g)
-			pd->selectCurve(g->curveIndex(curveKey));
+			pd->selectCurve(curveIndex);
 	}
     pd->initFonts(plotTitleFont, plotAxesFont, plotNumbersFont, plotLegendFont);
 	pd->showAll(d_extended_plot_dialog);
@@ -6238,31 +6238,39 @@ void ApplicationWindow::showCurvePlotDialog()
 	showPlotDialog(actionShowCurvePlotDialog->data().toInt());
 }
 
-void ApplicationWindow::showCurveContextMenu(int curveKey)
+void ApplicationWindow::showCurveContextMenu(QwtPlotCurve *cv)
 {
+	if (!cv || !cv->isVisible())
+		return;
+	
 	MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!w)
 		return;
 
 	Graph *g = w->activeGraph();
-	DataCurve *c = (DataCurve *)g->curve(g->curveIndex(curveKey));
-	if (!c || !c->isVisible())
+	if (!g)
+		return;
+		
+	int curveIndex = g->curveIndex(cv);
+	if (curveIndex < 0 || curveIndex >= g->curveCount())
 		return;
 
+	DataCurve *c = (DataCurve *)cv;
 	QMenu curveMenu(this);
 	curveMenu.addAction(c->title().text(), this, SLOT(showCurvePlotDialog()));
 	curveMenu.insertSeparator();
 
 	curveMenu.addAction(actionHideCurve);
-	actionHideCurve->setData(curveKey);
+	actionHideCurve->setData(curveIndex);
 
-    if (g->visibleCurves() > 1 && c->type() == Graph::Function){
+	int type = ((PlotCurve *)c)->type();
+    if (g->visibleCurves() > 1 && type == Graph::Function){
         curveMenu.addAction(actionHideOtherCurves);
-        actionHideOtherCurves->setData(curveKey);
-    } else if (c->type() != Graph::Function) {
+        actionHideOtherCurves->setData(curveIndex);
+    } else if (type != Graph::Function) {
         if ((g->visibleCurves() - c->errorBarsList().count()) > 1) {
             curveMenu.addAction(actionHideOtherCurves);
-            actionHideOtherCurves->setData(curveKey);
+            actionHideOtherCurves->setData(curveIndex);
         }
     }
 
@@ -6276,11 +6284,11 @@ void ApplicationWindow::showCurveContextMenu(int curveKey)
             curveMenu.addAction(actionCopySelection);
     }
 
-	if (c->type() == Graph::Function){
+	if (type == Graph::Function){
         curveMenu.insertSeparator();
 		curveMenu.addAction(actionEditFunction);
-		actionEditFunction->setData(curveKey);
-	} else if (c->type() != Graph::ErrorBars){
+		actionEditFunction->setData(curveIndex);
+	} else if (type != Graph::ErrorBars){
         if (g->activeTool()){
             if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector ||
                 g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker){
@@ -6297,28 +6305,28 @@ void ApplicationWindow::showCurveContextMenu(int curveKey)
         }
 
 		curveMenu.addAction(actionEditCurveRange);
-		actionEditCurveRange->setData(curveKey);
+		actionEditCurveRange->setData(curveIndex);
 
 		curveMenu.addAction(actionCurveFullRange);
 		if (c->isFullRange())
 			actionCurveFullRange->setDisabled(true);
 		else
 			actionCurveFullRange->setEnabled(true);
-		actionCurveFullRange->setData(curveKey);
+		actionCurveFullRange->setData(curveIndex);
 
 		curveMenu.insertSeparator();
 	}
 
 	curveMenu.addAction(actionShowCurveWorksheet);
-	actionShowCurveWorksheet->setData(curveKey);
+	actionShowCurveWorksheet->setData(curveIndex);
 
 	curveMenu.addAction(actionShowCurvePlotDialog);
-	actionShowCurvePlotDialog->setData(curveKey);
+	actionShowCurvePlotDialog->setData(curveIndex);
 
 	curveMenu.insertSeparator();
 
 	curveMenu.addAction(actionRemoveCurve);
-	actionRemoveCurve->setData(curveKey);
+	actionRemoveCurve->setData(curveIndex);
 	curveMenu.exec(QCursor::pos());
 }
 
@@ -6347,11 +6355,10 @@ void ApplicationWindow::hideOtherCurves()
 	if (!g)
 		return;
 
-	int curveKey = actionHideOtherCurves->data().toInt();
 	for(int i=0; i< g->curveCount(); i++)
 		g->showCurve(i, false);
 
-	g->showCurve(g->curveIndex(curveKey));
+	g->showCurve(actionHideOtherCurves->data().toInt());
 	g->replot();
 }
 
@@ -6365,8 +6372,7 @@ void ApplicationWindow::hideCurve()
 	if (!g)
 		return;
 
-	int curveKey = actionHideCurve->data().toInt();
-	g->showCurve(g->curveIndex(curveKey), false);
+	g->showCurve(actionHideCurve->data().toInt(), false);
 }
 
 void ApplicationWindow::removeCurve()
@@ -6379,8 +6385,7 @@ void ApplicationWindow::removeCurve()
 	if (!g)
 		return;
 
-	int curveKey = actionRemoveCurve->data().toInt();
-	g->removeCurve(g->curveIndex(curveKey));
+	g->removeCurve(actionRemoveCurve->data().toInt());
 	g->updatePlot();
 }
 
@@ -6416,8 +6421,7 @@ void ApplicationWindow::showCurveWorksheet()
 	if (!g)
 		return;
 
-	int curveKey = actionShowCurveWorksheet->data().toInt();
-	showCurveWorksheet(g, g->curveIndex(curveKey));
+	showCurveWorksheet(g, actionShowCurveWorksheet->data().toInt());
 }
 
 void ApplicationWindow::zoomIn()
@@ -7279,14 +7283,13 @@ void ApplicationWindow::copySelection()
                 ((RangeSelectorTool *)g->activeTool())->copySelection();
             else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
                 ((DataPickerTool *)g->activeTool())->copySelection();
-		} else if (g->markerSelected()){
+		} else if (g->markerSelected())
 			copyMarker();
-		} else
+		 else
 			copyActiveLayer();
 
 		plot->copyAllLayers();
-	}
-	else if (m->isA("Note"))
+	} else if (m->isA("Note"))
 		((Note*)m)->textWidget()->copy();
 }
 
@@ -7318,8 +7321,7 @@ void ApplicationWindow::cutSelection()
             copyMarker();
             g->removeMarker();
         }
-	}
-	else if (m->isA("Note"))
+	} else if (m->isA("Note"))
 		((Note*)m)->textWidget()->cut();
 
 	emit modified();
@@ -8877,8 +8879,7 @@ void ApplicationWindow::setCurveFullRange()
 	if (!g)
 		return;
 
-	int curveKey = actionCurveFullRange->data().toInt();
-	g->setCurveFullRange(g->curveIndex(curveKey));
+	g->setCurveFullRange(actionCurveFullRange->data().toInt());
 }
 
 void ApplicationWindow::showCurveRangeDialog()
@@ -8891,8 +8892,7 @@ void ApplicationWindow::showCurveRangeDialog()
 	if (!g)
 		return;
 
-	int curveKey = actionEditCurveRange->data().toInt();
-	showCurveRangeDialog(g, g->curveIndex(curveKey));
+	showCurveRangeDialog(g, actionEditCurveRange->data().toInt());
 }
 
 CurveRangeDialog* ApplicationWindow::showCurveRangeDialog(Graph *g, int curve)
@@ -8917,8 +8917,7 @@ FunctionDialog* ApplicationWindow::showFunctionDialog()
 	if (!g)
 		return 0;
 
-	int curveKey = actionEditFunction->data().toInt();
-	return showFunctionDialog(g, g->curveIndex(curveKey));
+	return showFunctionDialog(g, actionEditFunction->data().toInt());
 }
 
 FunctionDialog* ApplicationWindow::showFunctionDialog(Graph *g, int curve)
@@ -10502,7 +10501,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 		}
 	}
-	ag->replot();
+	ag->updateLayout();
 
     ag->blockSignals(false);
     ag->setIgnoreResizeEvents(!app->autoResizeLayers);
@@ -10611,10 +10610,12 @@ void ApplicationWindow::copyActiveLayer()
 		return;
 
 	Graph *g = plot->activeGraph();
+	if (!g)
+		return;
+	
 	delete lastCopiedLayer;
-	lastCopiedLayer = new Graph(0);
+	lastCopiedLayer = new Graph(0, 0, g->width(), g->height());
 	lastCopiedLayer->setAttribute(Qt::WA_DeleteOnClose);
-	lastCopiedLayer->setGeometry(0, 0, g->width(), g->height());
 	lastCopiedLayer->copy(g);
 	g->copyImage();
 }
@@ -10837,7 +10838,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(showPlotDialog(int)),this,SLOT(showPlotDialog(int)));
 	connect (g,SIGNAL(showScaleDialog(int)), this, SLOT(showScalePageFromAxisDialog(int)));
 	connect (g,SIGNAL(showAxisDialog(int)), this, SLOT(showAxisPageFromAxisDialog(int)));
-	connect (g,SIGNAL(showCurveContextMenu(int)), this, SLOT(showCurveContextMenu(int)));
+	connect (g,SIGNAL(showCurveContextMenu(QwtPlotCurve *)), this, SLOT(showCurveContextMenu(QwtPlotCurve *)));
 	connect (g,SIGNAL(showContextMenu()),this,SLOT(showWindowContextMenu()));
 	connect (g,SIGNAL(showCurvesDialog()),this,SLOT(showCurvesDialog()));
 	connect (g,SIGNAL(drawLineEnded(bool)), btnPointer, SLOT(setOn(bool)));

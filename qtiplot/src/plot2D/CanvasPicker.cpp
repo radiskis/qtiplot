@@ -110,14 +110,14 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 						return true;
 					}
 				} else if (plot()->isPiePlot()){
-                        emit showPlotDialog(plot()->curveKey(0));
-                        return true;
+                	emit showPlotDialog(0);
+                    return true;
 				} else {
 					const QMouseEvent *me = (const QMouseEvent *)e;
                     int dist, point;
-                    int curveKey = plot()->closestCurve(me->pos().x(), me->pos().y(), dist, point);
-                    if (dist < 10)
-                        emit showPlotDialog(curveKey);
+                    QwtPlotCurve *c = plot()->closestCurve(me->pos().x(), me->pos().y(), dist, point);
+                    if (c && dist < 10)
+                        emit showPlotDialog(plot()->curveIndex(c));
                     else
                         emit showPlotDialog(-1);
 					return true;

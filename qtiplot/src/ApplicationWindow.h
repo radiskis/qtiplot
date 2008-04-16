@@ -657,7 +657,7 @@ public slots:
 	void showTableContextMenu(bool selection);
 	void showWindowContextMenu();
 	void customWindowTitleBarMenu(MdiSubWindow *w, QMenu *menu);
-	void showCurveContextMenu(int curveKey);
+	void showCurveContextMenu(QwtPlotCurve *);
 	void showCurvePlotDialog();
 	void showCurveWorksheet();
     void showCurveWorksheet(Graph *g, int curveIndex);

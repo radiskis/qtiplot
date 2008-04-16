@@ -302,7 +302,7 @@ QString Fit::logFitInfo(int iterations, int status)
 		info+=tr(" algorithm with tolerance = ") + locale.toString(d_tolerance)+"\n";
 	}
 
-	info+=tr("From x")+" = "+locale.toString(d_x[0], 'e', d_prec)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'e', d_prec)+"\n";
+	info += tr("From x")+" = "+locale.toString(d_x[0], 'e', d_prec)+" "+tr("to x")+" = "+locale.toString(d_x[d_n-1], 'e', d_prec)+"\n";
 	double chi_2_dof = chi_2/(d_n - d_p);
 	for (int i=0; i<d_p; i++){
 		info += d_param_names[i];
@@ -316,9 +316,7 @@ QString Fit::logFitInfo(int iterations, int status)
 	}
 	info += "--------------------------------------------------------------------------------------\n";
 	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
-
-	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
-	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'e', d_prec) + "\n";
+	info += tr("R^2") + " = " + locale.toString(rSquare(), 'e', d_prec) + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
 	if (is_non_linear){
 		info += tr("Iterations")+ " = " + QString::number(iterations) + "\n";
@@ -330,7 +328,9 @@ QString Fit::logFitInfo(int iterations, int status)
 
 double Fit::rSquare()
 {
-	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
+	//double sst = (d_n - 1)*gsl_stats_variance(d_y, 1, d_n);
+	
+	double sst = gsl_stats_wtss (d_w, 1, d_y, 1, d_n);
 	return 1 - chi_2/sst;
 }
 
@@ -350,8 +350,7 @@ QString Fit::legendInfo()
 
 	double chi_2_dof = chi_2/(d_n - d_p);
 	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
-	double sst = (d_n-1)*gsl_stats_variance(d_y, 1, d_n);
-	info += tr("R^2") + " = " + locale.toString(1 - chi_2/sst, 'e', d_prec) + "\n";
+	info += tr("R^2") + " = " + locale.toString(rSquare(), 'e', d_prec) + "\n";
 
 	for (int i=0; i<d_p; i++){
 		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'e', d_prec) + " +/- ";
