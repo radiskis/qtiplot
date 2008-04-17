@@ -784,7 +784,7 @@ void DataCurve::setLabelsSelected(bool on)
     if (on){
         Graph *g = (Graph *)plot()->parent();
         g->selectTitle(false);
-        g->deselectMarker();
+        //g->deselectMarker();
         g->notifyFontChange(d_labels_font);
     }
     plot()->replot();

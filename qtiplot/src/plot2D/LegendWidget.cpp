@@ -329,7 +329,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                     int pos1 = s.indexOf("{", pos);
                     int pos2 = s.indexOf("}", pos1);
                     int point = s.mid(pos1 + 1, pos2 - pos1 - 1).toInt() - 1;
-					drawSymbol((PlotCurve*)d_plot->curve(1), point, p, w, height[i], l);
+					drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
                 	w += l;
                 	s = s.right(s.length() - pos2 - 1);
                 }
@@ -418,8 +418,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 
 int LegendWidget::symbolsMaxWidth()
 {
-	QList<int> cvs = d_plot->curveKeys();
-	int curves = cvs.count();
+	int curves = d_plot->curveCount();
 	if (!curves)
 		return 0;
 
@@ -438,7 +437,7 @@ int LegendWidget::symbolsMaxWidth()
 				continue;
 			}
 
-			const QwtPlotCurve *c = (QwtPlotCurve *)d_plot->curve(cvs[cv]);
+			const QwtPlotCurve *c = (QwtPlotCurve *)d_plot->curve(cv);
 			if (c && c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram) {
 				int l = c->symbol().size().width();
 				if (l < 3)
