@@ -2939,7 +2939,7 @@ void LayerItem::insertCurvesList()
 {
 	for (int i=0; i<d_graph->curveCount(); i++){
         QString plotAssociation = QString();
-        const QwtPlotItem *it = (QwtPlotItem *)d_graph->plotItem(i);
+        QwtPlotItem *it = (QwtPlotItem *)d_graph->plotItem(i);
         if (!it)
             continue;
 
@@ -2964,7 +2964,7 @@ void LayerItem::insertCurvesList()
  *
  *****************************************************************************/
 
-CurveTreeItem::CurveTreeItem(const QwtPlotItem *curve, LayerItem *parent, const QString& s)
+CurveTreeItem::CurveTreeItem(QwtPlotItem *curve, LayerItem *parent, const QString& s)
     : QTreeWidgetItem( parent, QStringList(s), PlotCurveTreeItem ),
       d_curve(curve)
 {
@@ -2981,19 +2981,20 @@ void CurveTreeItem::setActive(bool on)
 
 int CurveTreeItem::plotItemIndex()
 {
-Graph *g = graph();
-if (!g)
-    return -1;
+	Graph *g = graph();
+	if (!g)
+    	return -1;
 
-return g->plotItemIndex((QwtPlotItem *)d_curve);
+	QList<QwtPlotItem *> itemsList = g->curvesList();
+	return itemsList.indexOf(d_curve);
 }
 
 int CurveTreeItem::plotItemType()
 {
-Graph *g = graph();
-if (!g)
-    return -1;
-
-int index = g->plotItemIndex((QwtPlotItem *)d_curve);
-return g->curveType(index);
+	Graph *g = graph();
+	if (!g)
+    	return -1;
+	
+	QList<QwtPlotItem *> itemsList = g->curvesList();
+	return g->curveType(itemsList.indexOf(d_curve));
 }
