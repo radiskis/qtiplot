@@ -154,7 +154,6 @@ class Graph: public QwtPlot
 		void initScaleLimits();
 		
 		Grid *grid(){return (Grid *)d_grid;};
-		QList<int> curveKeys(){return d_curves.keys();};
 		QList<QwtPlotItem *> curvesList(){return d_curves.values();};
 
 		PlotCurve* closestCurve(int xpos, int ypos, int &dist, int &point);
@@ -241,7 +240,6 @@ class Graph: public QwtPlot
 		double selectedXStartValue();
 		double selectedXEndValue();
 
-		int curveIndex(long key){return c_keys.indexOf(key);};
 		//! Map curve pointer to index.
 		int curveIndex(QwtPlotCurve *c);
 		//! map curve title to index
