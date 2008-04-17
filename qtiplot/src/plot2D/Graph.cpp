@@ -2,8 +2,8 @@
     File                 : Graph.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2008 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Graph widget
 
  ***************************************************************************/
@@ -164,15 +164,14 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 {
 	setWindowFlags(f);
 	
-	n_curves=0;
+	n_curves = 0;
 	d_active_tool = NULL;
 	d_selected_text = NULL;
 	d_legend = NULL; // no legend for an empty graph
-	widthLine=1;
-	selectedMarker=-1;
-	drawTextOn=false;
-	drawLineOn=false;
-	drawArrowOn=false;
+	d_selected_marker = NULL;
+	drawTextOn = false;
+	drawLineOn = false;
+	drawArrowOn = false;
 	ignoreResize = false;
 	drawAxesBackbone = true;
 	d_auto_scale = true;
@@ -189,7 +188,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	setAttribute(Qt::WA_DeleteOnClose);
 	setAutoReplot (false);
 
-	marker_key = 0;
 	minTickLength = 5;
 	majTickLength = 9;
 
@@ -308,7 +306,7 @@ void Graph::activateGraph()
 
 void Graph::deselectMarker()
 {
-	selectedMarker = -1;
+	d_selected_marker = NULL;
 	if (d_markers_selector)
 		delete d_markers_selector;
 
@@ -348,16 +346,6 @@ QList <LegendWidget *> Graph::textsList()
 	return texts;
 }
 
-long Graph::selectedMarkerKey()
-{
-	return selectedMarker;
-}
-
-QwtPlotMarker* Graph::selectedMarkerPtr()
-{
-	return marker(selectedMarker);
-}
-
 void Graph::setSelectedText(LegendWidget *l)
 {
     if (l){
@@ -370,27 +358,28 @@ void Graph::setSelectedText(LegendWidget *l)
     d_selected_text = l;
 }
 
-void Graph::setSelectedMarker(long mrk, bool add)
+void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
 {
-    if (mrk >= 0){
-        selectTitle(false);
-        scalePicker->deselect();
-    }
+	if (!mrk)
+		return;
+	
+    selectTitle(false);
+	scalePicker->deselect();
 
-	selectedMarker = mrk;
+	d_selected_marker = mrk;
 	if (add) {
 		if (d_markers_selector) {
 			if (d_lines.contains(mrk))
-				d_markers_selector->add((ArrowMarker*)marker(mrk));
+				d_markers_selector->add((ArrowMarker*)mrk);
 			else if (d_images.contains(mrk))
-				d_markers_selector->add((ImageMarker*)marker(mrk));
+				d_markers_selector->add((ImageMarker*)mrk);
 			else
 				return;
 		} else {
 			if (d_lines.contains(mrk))
-				d_markers_selector = new SelectionMoveResizer((ArrowMarker*)marker(mrk));
+				d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
 			else if (d_images.contains(mrk))
-				d_markers_selector = new SelectionMoveResizer((ImageMarker*)marker(mrk));
+				d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
 			else
 				return;
 
@@ -399,18 +388,18 @@ void Graph::setSelectedMarker(long mrk, bool add)
 	} else {
 		if (d_lines.contains(mrk)) {
 			if (d_markers_selector) {
-				if (d_markers_selector->contains((ArrowMarker*)marker(mrk)))
+				if (d_markers_selector->contains((ArrowMarker*)mrk))
 					return;
 				delete d_markers_selector;
 			}
-			d_markers_selector = new SelectionMoveResizer((ArrowMarker*)marker(mrk));
+			d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
 		} else if (d_images.contains(mrk)) {
 			if (d_markers_selector) {
-				if (d_markers_selector->contains((ImageMarker*)marker(mrk)))
+				if (d_markers_selector->contains((ImageMarker*)mrk))
 					return;
 				delete d_markers_selector;
 			}
-			d_markers_selector = new SelectionMoveResizer((ImageMarker*)marker(mrk));
+			d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
 		} else
             return;
 
@@ -1500,37 +1489,29 @@ QString Graph::selectedCurveTitle()
 
 bool Graph::markerSelected()
 {
-	return (selectedMarker >= 0 || d_selected_text);
+	return (d_selected_marker || d_selected_text);
 }
 
 void Graph::removeMarker()
 {
-	if (selectedMarker>=0){
+	if (d_selected_marker){
 		if (d_markers_selector) {
-			if (d_lines.contains(selectedMarker))
-				d_markers_selector->removeAll((ArrowMarker*)marker(selectedMarker));
-			else if (d_images.contains(selectedMarker))
-				d_markers_selector->removeAll((ImageMarker*)marker(selectedMarker));
+			if (d_lines.contains(d_selected_marker))
+				d_markers_selector->removeAll((ArrowMarker*)d_selected_marker);
+			else if (d_images.contains(d_selected_marker))
+				d_markers_selector->removeAll((ImageMarker*)d_selected_marker);
 		}
-		removeMarker(selectedMarker);
+		if (d_lines.contains(d_selected_marker)){
+			int index = d_lines.indexOf(d_selected_marker);
+			d_lines.removeAt(index);
+		} else if(d_images.contains(d_selected_marker)){
+			int index = d_images.indexOf(d_selected_marker);
+			d_images.removeAt(index);
+		}
+		d_selected_marker->detach();
+		d_selected_marker = NULL;
 		replot();
 		emit modifiedGraph();
-
-		if (d_lines.contains(selectedMarker)>0)
-		{
-			int index = d_lines.indexOf(selectedMarker);
-            int last_line_marker = (int)d_lines.size() - 1;
-			for (int i=index; i < last_line_marker; i++)
-				d_lines[i]=d_lines[i+1];
-			d_lines.resize(last_line_marker);
-		} else if(d_images.contains(selectedMarker)>0){
-			int index=d_images.indexOf(selectedMarker);
-			int last_image_marker = d_images.size() - 1;
-			for (int i=index; i < last_image_marker; i++)
-				d_images[i]=d_images[i+1];
-			d_images.resize(last_image_marker);
-		}
-		selectedMarker=-1;
 	} else if (d_selected_text){
 	    if (d_selected_text == d_legend)
             d_legend = NULL;
@@ -1541,12 +1522,12 @@ void Graph::removeMarker()
 
 bool Graph::arrowMarkerSelected()
 {
-	return (d_lines.contains(selectedMarker));
+	return (d_selected_marker && d_lines.contains(d_selected_marker));
 }
 
 bool Graph::imageMarkerSelected()
 {
-	return (d_images.contains(selectedMarker));
+	return (d_selected_marker && d_images.contains(d_selected_marker));
 }
 
 void Graph::deselect()
@@ -1626,8 +1607,10 @@ void Graph::removeLegend()
 
 void Graph::updateImageMarker(int x, int y, int w, int h)
 {
-	ImageMarker* mrk = (ImageMarker*) marker(selectedMarker);
-	mrk->setRect(x, y, w, h);
+	if (!d_selected_marker)
+		return;
+	
+	((ImageMarker*)d_selected_marker)->setRect(x, y, w, h);
 	replot();
 	emit modifiedGraph();
 }
@@ -2267,10 +2250,11 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 void Graph::addArrow(QStringList list, int fileVersion)
 {
 	ArrowMarker* mrk = new ArrowMarker();
-	long mrkID=insertMarker(mrk);
-    int linesOnPlot = (int)d_lines.size();
-	d_lines.resize(++linesOnPlot);
-	d_lines[linesOnPlot-1]=mrkID;
+	if(!mrk)
+		return;
+	
+	insertMarker(mrk);
+    d_lines.append(mrk);
 
 	if (fileVersion < 86){
 		mrk->setStartPoint(QPoint(list[1].toInt(), list[2].toInt()));
@@ -2294,31 +2278,38 @@ void Graph::addArrow(QStringList list, int fileVersion)
 ArrowMarker* Graph::addArrow(ArrowMarker* mrk)
 {
 	ArrowMarker* aux = new ArrowMarker();
-    int linesOnPlot = (int)d_lines.size();
-	d_lines.resize(++linesOnPlot);
-	d_lines[linesOnPlot-1] = insertMarker(aux);
+	if (aux){
+		d_lines.append(aux);
+		insertMarker(aux);
 
-	aux->setBoundingRect(mrk->startPointCoord().x(), mrk->startPointCoord().y(),
+		aux->setBoundingRect(mrk->startPointCoord().x(), mrk->startPointCoord().y(),
 						 mrk->endPointCoord().x(), mrk->endPointCoord().y());
-	aux->setWidth(mrk->width());
-	aux->setColor(mrk->color());
-	aux->setStyle(mrk->style());
-	aux->drawEndArrow(mrk->hasEndArrow());
-	aux->drawStartArrow(mrk->hasStartArrow());
-	aux->setHeadLength(mrk->headLength());
-	aux->setHeadAngle(mrk->headAngle());
-	aux->fillArrowHead(mrk->filledArrowHead());
+		aux->setWidth(mrk->width());
+		aux->setColor(mrk->color());
+		aux->setStyle(mrk->style());
+		aux->drawEndArrow(mrk->hasEndArrow());
+		aux->drawStartArrow(mrk->hasStartArrow());
+		aux->setHeadLength(mrk->headLength());
+		aux->setHeadAngle(mrk->headAngle());
+		aux->fillArrowHead(mrk->filledArrowHead());
+	}
 	return aux;
 }
 
 ArrowMarker* Graph::arrow(long id)
 {
-	return (ArrowMarker*)marker(id);
+	if (id < 0 || id >= d_lines.size())
+		return NULL;
+	
+	return (ArrowMarker*)d_lines.at(id);
 }
 
 ImageMarker* Graph::imageMarker(long id)
 {
-	return (ImageMarker*)marker(id);
+	if (id < 0 || id >= d_images.size())
+		return NULL;
+	
+	return (ImageMarker*)d_lines.at(id);
 }
 
 LegendWidget* Graph::insertText(LegendWidget* t)
@@ -2331,9 +2322,8 @@ LegendWidget* Graph::insertText(LegendWidget* t)
 QString Graph::saveMarkers()
 {
 	QString s;
-	int l = d_lines.size(), im = d_images.size();
-	for (int i=0; i<im; i++){
-		ImageMarker* mrkI=(ImageMarker*) marker(d_images[i]);
+	foreach (QwtPlotMarker *i, d_images){
+		ImageMarker* mrkI = (ImageMarker*)i;
 		s += "<image>\t";
 		s += mrkI->fileName()+"\t";
 		s += QString::number(mrkI->xValue(), 'g', 15)+"\t";
@@ -2342,8 +2332,8 @@ QString Graph::saveMarkers()
 		s += QString::number(mrkI->bottom(), 'g', 15)+"</image>\n";
 	}
 
-	for (int i=0; i<l; i++){
-		ArrowMarker* mrkL=(ArrowMarker*) marker(d_lines[i]);
+	foreach (QwtPlotMarker *i, d_lines){
+		ArrowMarker* mrkL = (ArrowMarker*)i;
 		s+="<line>\t";
 
 		QwtDoublePoint sp = mrkL->startPointCoord();
@@ -2889,7 +2879,7 @@ PlotCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	
 	insertCurve(c);
 
-	c->setPen(QPen(Qt::black, widthLine));
+	c->setPen(QPen(Qt::black, 1.0));
 
 	if (style == HorizontalBars)
 		c->setData(Y.data(), X.data(), size);
@@ -2929,7 +2919,7 @@ QwtHistogram* Graph::addHistogram(Matrix *m)
 
 	QwtHistogram *c = new QwtHistogram(m);
     c->setStyle(QwtPlotCurve::UserCurve);
-	c->setPen(QPen(Qt::black, widthLine));
+	c->setPen(QPen(Qt::black, 1.0));
 	c->setBrush(QBrush(Qt::black));
 	c->loadData();
 
@@ -3212,7 +3202,7 @@ void Graph::addLegendItem()
 
 void Graph::contextMenuEvent(QContextMenuEvent *e)
 {
-	if (selectedMarker>=0) {
+	if (d_selected_marker) {
 		emit showMarkerPopupMenu();
 		return;
 	}
@@ -3297,12 +3287,11 @@ ImageMarker* Graph::addImage(ImageMarker* mrk)
 		return 0;
 
 	ImageMarker* mrk2 = new ImageMarker(mrk->fileName());
-
-	int imagesOnPlot = d_images.size();
-	d_images.resize(++imagesOnPlot);
-	d_images[imagesOnPlot-1]=insertMarker(mrk2);
-
-	mrk2->setBoundingRect(mrk->xValue(), mrk->yValue(), mrk->right(), mrk->bottom());
+	if (mrk2){
+		d_images.append(mrk2);
+		insertMarker(mrk2);
+		mrk2->setBoundingRect(mrk->xValue(), mrk->yValue(), mrk->right(), mrk->bottom());
+	}
 	return mrk2;
 }
 
@@ -3315,23 +3304,24 @@ ImageMarker* Graph::addImage(const QString& fileName)
 	}
 
 	ImageMarker* mrk = new ImageMarker(fileName);
-	int imagesOnPlot = d_images.size();
-	d_images.resize(++imagesOnPlot);
-	d_images[imagesOnPlot-1] = insertMarker(mrk);
+	if (mrk){
+		d_images.append(mrk);
+		insertMarker(mrk);
 
-	QSize picSize = mrk->pixmap().size();
-	int w = canvas()->width();
-	if (picSize.width()>w)
-		picSize.setWidth(w);
+		QSize picSize = mrk->pixmap().size();
+		int w = canvas()->width();
+		if (picSize.width()>w)
+			picSize.setWidth(w);
 
-	int h=canvas()->height();
-	if (picSize.height()>h)
-		picSize.setHeight(h);
+		int h=canvas()->height();
+		if (picSize.height()>h)
+			picSize.setHeight(h);
 
-	mrk->setSize(picSize);
-	replot();
+		mrk->setSize(picSize);
+		replot();
 
-	emit modifiedGraph();
+		emit modifiedGraph();
+	}
 	return mrk;
 }
 
@@ -3346,9 +3336,8 @@ void Graph::insertImageMarker(const QStringList& lst, int fileVersion)
 		if (!mrk)
 			return;
 
-        int imagesOnPlot = d_images.size();
-		d_images.resize(++imagesOnPlot);
-		d_images[imagesOnPlot-1] = insertMarker(mrk);
+		d_images.append(mrk); 
+		insertMarker(mrk);
 
 		if (fileVersion < 86){
 			mrk->setOrigin(QPoint(lst[2].toInt(), lst[3].toInt()));
@@ -3444,7 +3433,7 @@ FunctionCurve* Graph::addFunction(const QStringList &formulas, double start, dou
 
 	int colorIndex = 0, symbolIndex;
 	guessUniqueCurveLayout(colorIndex, symbolIndex);
-	c->setPen(QPen(ColorBox::color(colorIndex), widthLine));
+	c->setPen(QPen(ColorBox::color(colorIndex), 1.0));
 
 	addLegendItem();
 	updatePlot();
@@ -3633,17 +3622,11 @@ void Graph::updateMarkersBoundingRect()
 	if (!lines && !images)
 		return;
 
-	for (int i=0; i<lines; i++){
-		ArrowMarker* a = (ArrowMarker*)marker(d_lines[i]);
-		if (a)
-			a->updateBoundingRect();
-	}
+	foreach (QwtPlotMarker *i, d_lines)
+		((ArrowMarker*)i)->updateBoundingRect();
 
-	for (int i=0; i<images; i++){
-		ImageMarker* im = (ImageMarker*) marker(d_images[i]);
-		if (im)
-			im->updateBoundingRect();
-	}
+	foreach (QwtPlotMarker *i, d_images)
+		((ImageMarker*)i)->updateBoundingRect();
 
 	replot();
 }
@@ -4164,9 +4147,9 @@ void Graph::copy(Graph* g)
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
 
-	QVector<int> imag = g->imageMarkerKeys();
-	for (int i=0; i<(int)imag.size(); i++)
-		addImage((ImageMarker*)g->imageMarker(imag[i]));
+	QList<QwtPlotMarker *> images = g->imagesList();
+	foreach (QwtPlotMarker *i, images)
+		addImage((ImageMarker*)i);
 
 	QList<LegendWidget *> texts = g->textsList();
 	foreach (LegendWidget *t, texts){
@@ -4182,12 +4165,10 @@ void Graph::copy(Graph* g)
 			insertText(t);
 	}
 
-	QVector<int> l = g->lineMarkerKeys();
-	for (int i=0; i<(int)l.size(); i++){
-		ArrowMarker* lmrk=(ArrowMarker*)g->arrow(l[i]);
-		if (lmrk)
-			addArrow(lmrk);
-	}
+	QList<QwtPlotMarker *> lines = g->linesList();
+	foreach (QwtPlotMarker *i, lines)
+		addArrow((ArrowMarker*)i);
+
 	setAntialiasing(g->antialiasing(), true);
 	updateLayout();
 }
@@ -4642,46 +4623,34 @@ void Graph::setAntialiasing(bool on, bool update)
 	if (update){
 		foreach(QwtPlotItem *it, d_curves)
 			it->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
-		
-		QList<int> marker_keys = markerKeys();
-  		for (int i=0; i<(int)marker_keys.count(); i++){
-  			QwtPlotMarker *m = marker(marker_keys[i]);
-			if (m)
-				m->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
-		}
-
+		foreach (QwtPlotMarker *i, d_lines)
+			i->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
+		foreach (QwtPlotMarker *i, d_images)
+			i->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		replot();
 	}
 }
 
 bool Graph::focusNextPrevChild ( bool )
 {
-	QList<int> mrkKeys = markerKeys();
-	int n = mrkKeys.size();
-	if (n < 2)
+	QList<QwtPlotMarker *> lst;
+	foreach(QwtPlotMarker *l, d_lines)
+		lst << l;
+	foreach(QwtPlotMarker *i, d_images)
+		lst << i;
+	
+	int markers = lst.size();
+	if (markers < 2)
 		return false;
-
-	int min_key = mrkKeys[0], max_key = mrkKeys[0];
-	for (int i = 0; i<n; i++ )
-	{
-		if (mrkKeys[i] >= max_key)
-			max_key = mrkKeys[i];
-		if (mrkKeys[i] <= min_key)
-			min_key = mrkKeys[i];
-	}
-
-	int key = selectedMarker;
-	if (key >= 0)
-	{
-		key++;
-		if ( key > max_key )
-			key = min_key;
-	} else
-		key = min_key;
-
+	
+	int next = 0;
+	if (d_selected_marker)
+		next = lst.indexOf(d_selected_marker) + 1;
+	if (next >= markers)
+		next = 0;
+	
 	cp->disableEditing();
-
-	setSelectedMarker(key);
+	setSelectedMarker(lst.at(next));
 	return true;
 }
 
@@ -5265,23 +5234,10 @@ PlotCurve* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 	return curve;
 }
 
-void Graph::removeMarker(int index)
+void Graph::insertMarker(QwtPlotMarker *m)
 {
-	QwtPlotMarker *m = d_markers[index];
-	if(!m)
-		return;
-	m->detach();
-	d_markers.remove (index);
-}
-
-int Graph::insertMarker(QwtPlotMarker *m)
-{
-	marker_key++;
-	if (!d_markers.contains(marker_key))
-		d_markers.insert (marker_key, m);
 	m->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 	m->attach(((QwtPlot *)this));
-	return marker_key;
 }
 
 void Graph::insertCurve(QwtPlotItem *c)

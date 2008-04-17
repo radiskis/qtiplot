@@ -2,10 +2,8 @@
     File                 : MultiPeakFitTool.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for doing multi-peak fitting.
 
  ***************************************************************************/
@@ -35,6 +33,7 @@
 #include "../cursors.h"
 
 #include <qwt_plot_curve.h>
+#include <qwt_plot_marker.h>
 #include <QApplication>
 
 #include <gsl/gsl_statistics.h>
@@ -86,6 +85,7 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 	m->setLinePen(QPen(Qt::green, 2, Qt::DashLine));
 	m->setXValue(curve->x(point_index));
 	d_graph->insertMarker(m);
+	d_lines.append(m);
 	d_graph->replot();
 
 	d_selected_peaks++;
@@ -138,10 +138,8 @@ void MultiPeakFitTool::finalize()
 	}
 
 	//remove peak line markers
-	QList<int>mrks = d_graph->markerKeys();
-	int n=(int)mrks.count();
-	for (int i=0; i<d_num_peaks; i++)
-		d_graph->removeMarker(mrks[n-i-1]);
+	foreach(QwtPlotMarker *m, d_lines)
+		m->detach();
 
 	d_graph->replot();
     if (d_graph->activeTool() && d_graph->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){

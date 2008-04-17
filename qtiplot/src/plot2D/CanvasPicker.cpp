@@ -51,43 +51,43 @@ CanvasPicker::CanvasPicker(Graph *graph):
 
 bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 {
-	QVector<int> images = plot()->imageMarkerKeys();
-	QVector<int> lines = plot()->lineMarkerKeys();
-
 	if (object != (QObject *)plot()->canvas())
 		return false;
 
+	Graph *g = plot();
+	QList<QwtPlotMarker *> images = g->imagesList();
+	QList<QwtPlotMarker *> lines = g->linesList();
 	switch(e->type())
 	{
 		case QEvent::MouseButtonPress:
 			{
-				plot()->deselect();
+				g->deselect();
 				emit selectPlot();
 
 				const QMouseEvent *me = (const QMouseEvent *)e;
 
 				bool allAxisDisabled = true;
 				for (int i=0; i < QwtPlot::axisCnt; i++){
-					if (plot()->axisEnabled(i)){
+					if (g->axisEnabled(i)){
 						allAxisDisabled = false;
 						break;
 					}
 				}
 
                 int dist, point;
-                plot()->closestCurve(me->pos().x(), me->pos().y(), dist, point);
+                g->closestCurve(me->pos().x(), me->pos().y(), dist, point);
 
-				if (me->button() == Qt::LeftButton && (plot()->drawLineActive())){
+				if (me->button() == Qt::LeftButton && (g->drawLineActive())){
 					startLinePoint = me->pos();
 					return true;
 				}
 
-				if (me->button() == Qt::LeftButton && plot()->drawTextActive()){
+				if (me->button() == Qt::LeftButton && g->drawTextActive()){
 					drawTextMarker(me->pos());
 					return true;
 				}
 
-				if (!plot()->zoomOn() && selectMarker(me)){
+				if (!g->zoomOn() && selectMarker(me)){
 					if (me->button() == Qt::RightButton)
 						emit showMarkerPopupMenu();
 					return true;
@@ -100,24 +100,24 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 		case QEvent::MouseButtonDblClick:
 			{
 				if (d_editing_marker) {
-					return d_editing_marker->eventFilter(plot()->canvas(), e);
-				} else if (plot()->selectedMarkerKey() >= 0) {
-					if (lines.contains(plot()->selectedMarkerKey())){
+					return d_editing_marker->eventFilter(g->canvas(), e);
+				} else if (g->selectedMarker()) {
+					if (lines.contains(g->selectedMarker())){
 						emit viewLineDialog();
 						return true;
-					} else if (images.contains(plot()->selectedMarkerKey())){
+					} else if (images.contains(g->selectedMarker())){
 						emit viewImageDialog();
 						return true;
 					}
-				} else if (plot()->isPiePlot()){
+				} else if (g->isPiePlot()){
                 	emit showPlotDialog(0);
                     return true;
 				} else {
 					const QMouseEvent *me = (const QMouseEvent *)e;
                     int dist, point;
-                    QwtPlotCurve *c = plot()->closestCurve(me->pos().x(), me->pos().y(), dist, point);
+                    QwtPlotCurve *c = g->closestCurve(me->pos().x(), me->pos().y(), dist, point);
                     if (c && dist < 10)
-                        emit showPlotDialog(plot()->curveIndex(c));
+                        emit showPlotDialog(g->curveIndex(c));
                     else
                         emit showPlotDialog(-1);
 					return true;
@@ -133,14 +133,14 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				QPoint pos = me->pos();
 
-				DataCurve *c = plot()->selectedCurveLabels();
+				DataCurve *c = g->selectedCurveLabels();
 				if (c){
 					c->moveLabels(pos);
 					return true;
 				}
 
 				if (plot()->drawLineActive()) {
-					drawLineMarker(pos, plot()->drawArrow());
+					drawLineMarker(pos, g->drawArrow());
 					return true;
 				}
 
@@ -151,8 +151,6 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 		case QEvent::MouseButtonRelease:
 			{
 				const QMouseEvent *me = (const QMouseEvent *)e;
-				Graph *g = plot();
-
 				if (g->drawLineActive()) {
 					ApplicationWindow *app = g->multiLayer()->applicationWindow();
 					if (!app)
@@ -184,18 +182,16 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 		case QEvent::KeyPress:
 			{
-				int key=((const QKeyEvent *)e)->key();
+				int key = ((const QKeyEvent *)e)->key();
 
-				long selectedMarker = plot()->selectedMarkerKey();
+				QwtPlotMarker *selectedMarker = g->selectedMarker();
 				if (lines.contains(selectedMarker) &&
-						(key==Qt::Key_Enter || key==Qt::Key_Return))
-				{
+					(key == Qt::Key_Enter || key == Qt::Key_Return)){
 					emit viewLineDialog();
 					return true;
 				}
 				if (images.contains(selectedMarker) &&
-						(key==Qt::Key_Enter || key==Qt::Key_Return))
-				{
+					(key == Qt::Key_Enter || key == Qt::Key_Return)){
 					emit viewImageDialog();
 					return true;
 				}
@@ -266,19 +262,18 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 {
 	Graph *g = plot();
 	const QPoint point = e->pos();
-	foreach(long i, g->imageMarkerKeys()) {
-		ImageMarker* m=(ImageMarker*)g->marker(i);
-		if (!m) return false;
+	QList<QwtPlotMarker *> images = g->imagesList();
+	foreach(QwtPlotMarker *i, images){
+		ImageMarker* m = (ImageMarker*)i;
 		if (m->rect().contains(point)) {
 			disableEditing();
 			plot()->setSelectedMarker(i, e->modifiers() & Qt::ShiftModifier);
 			return true;
 		}
 	}
-	foreach(long i, g->lineMarkerKeys()) {
-		ArrowMarker* mrkL=(ArrowMarker*) g->marker(i);
-		if (!mrkL)
-			return false;
+	QList<QwtPlotMarker *> lines = g->linesList();
+	foreach(QwtPlotMarker *i, lines){
+		ArrowMarker* mrkL = (ArrowMarker*)i;
 		int d = qRound(mrkL->width() + floor(mrkL->headLength()*tan(M_PI*mrkL->headAngle()/180.0)+0.5));
 		double dist = mrkL->dist(point.x(),point.y());
 		if (dist <= d){
