@@ -402,7 +402,7 @@ void DataCurve::clearErrorBars()
 
 void DataCurve::remove()
 {
-	Graph *g = (Graph *)plot()->parent();
+	Graph *g = (Graph *)plot();
 	if (!g)
 		return;
 
@@ -782,9 +782,9 @@ void DataCurve::setLabelsSelected(bool on)
         m->setLabel(t);
     }
     if (on){
-        Graph *g = (Graph *)plot()->parent();
+        Graph *g = (Graph *)plot();
         g->selectTitle(false);
-        //g->deselectMarker();
+        g->deselectMarker();
         g->notifyFontChange(d_labels_font);
     }
     plot()->replot();

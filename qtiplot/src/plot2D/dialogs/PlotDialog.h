@@ -346,7 +346,7 @@ class CurveTreeItem : public QTreeWidgetItem
 {
 public:
     enum {PlotCurveTreeItem = 1002};
-    CurveTreeItem(const QwtPlotItem *curve, LayerItem *parent, const QString& s);
+    CurveTreeItem(QwtPlotItem *curve, LayerItem *parent, const QString& s);
 
     Graph* graph(){return ((LayerItem *)parent())->graph();};
     void setActive(bool on);
@@ -356,7 +356,7 @@ public:
     int plotItemIndex();
 
 protected:
-    const QwtPlotItem *d_curve;
+    QwtPlotItem *d_curve;
 };
 
 #endif

@@ -217,7 +217,7 @@ void TextDialog::setLegendWidget(LegendWidget *l)
 	if (!l)
 		return;
 
-	d_graph = (Graph *)(l->plot()->parent());
+	d_graph = l->plot();
 	d_legend = l;
 
 	setText(l->text());

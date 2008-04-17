@@ -154,10 +154,9 @@ class Graph: public QwtPlot
 		void initScaleLimits();
 		
 		Grid *grid(){return (Grid *)d_grid;};
-		QList<QwtPlotItem *> curvesList(){return d_curves.values();};
+		QList<QwtPlotItem *> curvesList(){return d_curves;};
 
 		PlotCurve* closestCurve(int xpos, int ypos, int &dist, int &point);
-		QMap<int, QwtPlotItem*> curves(){return d_curves;};
 
 		QwtPlotMarker* marker(int index){return d_markers.value(index);};
 		QList<int> markerKeys(){return d_markers.keys();};
@@ -241,7 +240,7 @@ class Graph: public QwtPlot
 		double selectedXEndValue();
 
 		//! Map curve pointer to index.
-		int curveIndex(QwtPlotCurve *c);
+		int curveIndex(QwtPlotCurve *c){return d_curves.indexOf(c);};
 		//! map curve title to index
   	    int curveIndex(const QString &title){return plotItemsList().findIndex(title);}
   	    //! get curve by index
@@ -257,8 +256,6 @@ class Graph: public QwtPlot
   		QStringList plotItemsList();
   		 //! get plotted item by index
   	    QwtPlotItem* plotItem(int index);
-  	    //! get plot item by index
-  	    int plotItemIndex(QwtPlotItem *it);
 
         void updateCurveNames(const QString& oldName, const QString& newName, bool updateTableName = true);
 
@@ -697,7 +694,7 @@ signals:
         void enableTextEditor(Graph *);
 
 	private:
-		int insertCurve(QwtPlotItem *c);
+		void insertCurve(QwtPlotItem *c);
 		void detachCurve(int index);
 	
         //! Finds bounding interval of the plot data.
@@ -732,8 +729,6 @@ signals:
 		QVector<double> d_user_step;
 		//! Curve types
 		QVector<int> c_type;
-		//! Curves on plot keys
-		QVector<int> c_keys;
 		//! Arrows/lines on plot keys
 		QVector<int> d_lines;
 		//! Images on plot keys
@@ -757,11 +752,10 @@ signals:
 		bool d_auto_scale;
 		
 		Grid *d_grid;
-		QMap<int, QwtPlotItem*> d_curves;
+		QList<QwtPlotItem*> d_curves;
 		QMap<int, QwtPlotMarker*> d_markers;
 
 		int minTickLength, majTickLength;
 		int marker_key;
-		int curve_key;
 };
 #endif // GRAPH_H
