@@ -7141,7 +7141,7 @@ void ApplicationWindow::showImageDialog()
 	Graph* g = plot->activeGraph();
 	if (g)
 	{
-		ImageMarker *im = (ImageMarker *) g->selectedMarkerPtr();
+		ImageMarker *im = (ImageMarker *) g->selectedMarker();
 		if (!im)
 			return;
 
@@ -7200,7 +7200,7 @@ void ApplicationWindow::showLineDialog()
 
 	Graph* g = plot->activeGraph();
 	if (g){
-		ArrowMarker *lm = (ArrowMarker *) g->selectedMarkerPtr();
+		ArrowMarker *lm = (ArrowMarker *) g->selectedMarker();
 		if (!lm)
 			return;
 
@@ -7342,11 +7342,11 @@ void ApplicationWindow::copyMarker()
 			d_image_copy = NULL;
 			d_arrow_copy = NULL;
 		} else if (g->arrowMarkerSelected()){
-			d_arrow_copy = (ArrowMarker *) g->selectedMarkerPtr();
+			d_arrow_copy = (ArrowMarker *) g->selectedMarker();
             d_image_copy = NULL;
 			d_text_copy = NULL;
 		} else if (g->imageMarkerSelected()){
-			d_image_copy = (ImageMarker *) g->selectedMarkerPtr();
+			d_image_copy = (ImageMarker *) g->selectedMarker();
 			d_text_copy = NULL;
 			d_arrow_copy = NULL;
 		}
@@ -9647,7 +9647,7 @@ void ApplicationWindow::intensityTable()
 
 	Graph* g = plot->activeGraph();
 	if (g){
-		ImageMarker *im = (ImageMarker *) g->selectedMarkerPtr();
+		ImageMarker *im = (ImageMarker *) g->selectedMarker();
         if (im){
             QString fn = im->fileName();
             if (!fn.isEmpty())

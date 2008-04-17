@@ -38,9 +38,9 @@ class Grid : public QwtPlotGrid
 public:
     Grid();
 
-    bool xZeroLineEnabled(){return (mrkX >= 0)?true:false;};
+    bool xZeroLineEnabled(){return (mrkX != NULL)?true:false;};
     void enableZeroLineX(bool enable = true);
-    bool yZeroLineEnabled(){return (mrkY >= 0)?true:false;};
+    bool yZeroLineEnabled(){return (mrkY != NULL)?true:false;};
     void enableZeroLineY(bool enable = true);
 
 	void setMajPenX(const QPen &p){	setMajPen(p);};
@@ -67,7 +67,7 @@ private:
 	QPen d_maj_pen_y;
 	QPen d_min_pen_y;
 
-	long mrkX, mrkY;//x=0 et y=0 line markers keys
+	QwtPlotMarker *mrkX, *mrkY;//x=0 et y=0 line markers
 };
 
 #endif

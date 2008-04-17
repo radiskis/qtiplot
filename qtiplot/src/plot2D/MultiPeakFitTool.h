@@ -36,6 +36,7 @@
 class DataPickerTool;
 class ApplicationWindow;
 class QwtPlotCurve;
+class QwtPlotMarker;
 
 /*! Plot tool for doing multi-peak fitting.
  *
@@ -68,6 +69,7 @@ class MultiPeakFitTool : public QObject, public PlotToolInterface
 		DataPickerTool *d_picker_tool;
 		MultiPeakFit *d_fit;
 		QwtPlotCurve *d_curve;
+		QList<QwtPlotMarker *> d_lines;
 };
 
 #endif // ifndef MULTI_PEAK_FIT_TOOL

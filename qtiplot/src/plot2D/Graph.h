@@ -2,8 +2,8 @@
     File                 : Graph.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2004-2008 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Graph widget
 
  ***************************************************************************/
@@ -158,10 +158,7 @@ class Graph: public QwtPlot
 
 		PlotCurve* closestCurve(int xpos, int ypos, int &dist, int &point);
 
-		QwtPlotMarker* marker(int index){return d_markers.value(index);};
-		QList<int> markerKeys(){return d_markers.keys();};
-		int insertMarker(QwtPlotMarker *m);
-		void removeMarker(int index);
+		void insertMarker(QwtPlotMarker *m);
 
 		QList<int> getMajorTicksType();
 		void setMajorTicksType(int axis, int type);
@@ -390,20 +387,19 @@ class Graph: public QwtPlot
 
 		//! Used when opening a project file
 		void addArrow(QStringList list, int fileVersion);
-		QVector<int> lineMarkerKeys(){return d_lines;};
+		QList<QwtPlotMarker *> linesList(){return d_lines;};
 
 		//!Draws a line/arrow depending on the value of "arrow"
-		void drawLine(bool on, bool arrow = FALSE);
+		void drawLine(bool on, bool arrow = false);
 		bool drawArrow(){return drawArrowOn;};
 		bool drawLineActive(){return drawLineOn;};
-
         bool arrowMarkerSelected();
 		//@}
 
 		//! \name Image Markers
 		//@{
 		ImageMarker* imageMarker(long id);
-		QVector<int> imageMarkerKeys(){return d_images;};
+		QList<QwtPlotMarker *> imagesList(){return d_images;};
 		ImageMarker* addImage(ImageMarker* mrk);
 		ImageMarker* addImage(const QString& fileName);
 
@@ -418,15 +414,14 @@ class Graph: public QwtPlot
 		//! Keep the markers on screen each time the scales are modified by adding/removing curves
 		void updateMarkersBoundingRect();
 
-		long selectedMarkerKey();
 		/*!\brief Set the selected marker.
 		 * \param mrk key of the marker to be selected.
 		 * \param add whether the marker is to be added to an existing selection.
 		 * If <i>add</i> is false (the default) or there is no existing selection, a new SelectionMoveResizer is
 		 * created and stored in #d_markers_selector.
 		 */
-		void setSelectedMarker(long mrk, bool add=false);
-		QwtPlotMarker* selectedMarkerPtr();
+		void setSelectedMarker(QwtPlotMarker* mrk, bool add = false);
+		QwtPlotMarker* selectedMarker(){return d_selected_marker;};
 		bool markerSelected();
 		//! Reset any selection states on markers.
 		void deselectMarker();
@@ -717,7 +712,10 @@ signals:
 		TitlePicker *titlePicker;
 		ScalePicker *scalePicker;
 		CanvasPicker* cp;
-
+		//! Pointer to the grid
+		Grid *d_grid;
+		//! List storing pointers to the curves on the plot.
+		QList<QwtPlotItem*> d_curves;
 		//! List storing pointers to the curves resulting after a fit session, in case the user wants to delete them later on.
 		QList<QwtPlotCurve *>d_fit_curves;
 		//! Render hint for plot items.
@@ -729,13 +727,14 @@ signals:
 		QVector<double> d_user_step;
 		//! Curve types
 		QVector<int> c_type;
-		//! Arrows/lines on plot keys
-		QVector<int> d_lines;
-		//! Images on plot keys
-		QVector<int> d_images;
+		//! Arrows/lines on plot
+		QList<QwtPlotMarker*> d_lines;
+		//! Images on plot
+		QList<QwtPlotMarker*> d_images;
+		//! Pointer to the currently selected line/image		
+		QwtPlotMarker* d_selected_marker;
 
-		int n_curves, widthLine;
-		long selectedMarker;
+		int n_curves;
 		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone;
 
 		//! The markers selected for move/resize operations or NULL if none are selected.
@@ -751,11 +750,6 @@ signals:
         //! Flag indicating if the axes limits should be changed in order to show all data each time a curva data change occurs
 		bool d_auto_scale;
 		
-		Grid *d_grid;
-		QList<QwtPlotItem*> d_curves;
-		QMap<int, QwtPlotMarker*> d_markers;
-
 		int minTickLength, majTickLength;
-		int marker_key;
 };
 #endif // GRAPH_H

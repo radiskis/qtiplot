@@ -38,8 +38,8 @@
 Grid::Grid() : QwtPlotGrid(),
 d_maj_pen_y(QPen(Qt::blue, 0.5, Qt::SolidLine)),
 d_min_pen_y(QPen(Qt::gray, 0.4, Qt::DotLine)),
-mrkX(-1),
-mrkY(-1)
+mrkX(NULL),
+mrkY(NULL)
 {
 	setMajPen(QPen(Qt::blue, 0.5, Qt::SolidLine));
 	setMinPen(QPen(Qt::gray, 0.4, Qt::DotLine));
@@ -188,13 +188,13 @@ void Grid::enableZeroLineX(bool enable)
 	if (!d_plot)
 		return;
 
-	if (mrkX<0 && enable){
-		QwtPlotMarker *m = new QwtPlotMarker();
-		mrkX = d_plot->insertMarker(m);
-		m->setRenderHint(QwtPlotItem::RenderAntialiased, false);
-		m->setAxis(xAxis(), yAxis());
-		m->setLineStyle(QwtPlotMarker::VLine);
-		m->setValue(0.0, 0.0);
+	if (!mrkX && enable){
+		mrkX = new QwtPlotMarker();
+		d_plot->insertMarker(mrkX);
+		mrkX->setRenderHint(QwtPlotItem::RenderAntialiased, false);
+		mrkX->setAxis(xAxis(), yAxis());
+		mrkX->setLineStyle(QwtPlotMarker::VLine);
+		mrkX->setValue(0.0, 0.0);
 
 		double width = 1;
 		if (d_plot->canvas()->lineWidth())
@@ -202,10 +202,11 @@ void Grid::enableZeroLineX(bool enable)
 		else if (d_plot->axisEnabled (QwtPlot::yLeft) || d_plot->axisEnabled (QwtPlot::yRight))
 			width =  d_plot->axesLinewidth();
 
-		m->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
-	} else if (mrkX >= 0 && !enable) {
-		d_plot->removeMarker(mrkX);
-		mrkX=-1;
+		mrkX->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
+	} else if (mrkX && !enable) {
+		mrkX->detach();
+		d_plot->replot();
+		mrkX = NULL;
 	}
 }
 
@@ -215,13 +216,13 @@ void Grid::enableZeroLineY(bool enable)
 	if (!d_plot)
 		return;
 
-	if (mrkY<0 && enable) {
-		QwtPlotMarker *m = new QwtPlotMarker();
-		mrkY = d_plot->insertMarker(m);
-		m->setRenderHint(QwtPlotItem::RenderAntialiased, false);
-		m->setAxis(xAxis(), yAxis());
-		m->setLineStyle(QwtPlotMarker::HLine);
-		m->setValue(0.0, 0.0);
+	if (!mrkY && enable) {
+		mrkY = new QwtPlotMarker();
+		d_plot->insertMarker(mrkY);
+		mrkY->setRenderHint(QwtPlotItem::RenderAntialiased, false);
+		mrkY->setAxis(xAxis(), yAxis());
+		mrkY->setLineStyle(QwtPlotMarker::HLine);
+		mrkY->setValue(0.0, 0.0);
 
 		double width = 1;
 		if (d_plot->canvas()->lineWidth())
@@ -229,10 +230,11 @@ void Grid::enableZeroLineY(bool enable)
 		else if (d_plot->axisEnabled (QwtPlot::xBottom) || d_plot->axisEnabled (QwtPlot::xTop))
 			width =  d_plot->axesLinewidth();
 
-		m->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
-	} else if (mrkY>=0 && !enable){
-		d_plot->removeMarker(mrkY);
-		mrkY=-1;
+		mrkY->setLinePen(QPen(Qt::black, width, Qt::SolidLine));
+	} else if (mrkY && !enable){
+		mrkY->detach();
+		d_plot->replot();
+		mrkY = NULL;
 	}
 }
 
