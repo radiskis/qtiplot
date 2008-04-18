@@ -192,7 +192,7 @@ class Graph: public QwtPlot
 		//! \name Pie Curves
 		//@{
 		//! Returns true if this Graph is a pie plot, false otherwise.
-		bool isPiePlot(){return (c_type.count() == 1 && c_type[0] == Pie);};
+		bool isPiePlot();
 		//! Used when creating a pie plot.
 		QwtPieCurve* plotPie(Table* w,const QString& name, int startRow = 0, int endRow = -1);
 		//! Used when restoring a pie plot from a project file.
@@ -218,6 +218,7 @@ class Graph: public QwtPlot
 		void showCurve(int index, bool visible = true);
 		int visibleCurves();
 
+		void removeCurve(QwtPlotItem *it);
 		//! Removes a curve defined by its index.
 		void removeCurve(int index);
 		/**
@@ -231,7 +232,7 @@ class Graph: public QwtPlot
 
 		void updateCurvesData(Table* w, const QString& yColName);
 
-		int curveCount(){return n_curves;};
+		int curveCount(){return d_curves.size();};
 		bool validCurvesDataSize();
 		double selectedXStartValue();
 		double selectedXEndValue();
@@ -256,8 +257,7 @@ class Graph: public QwtPlot
 
         void updateCurveNames(const QString& oldName, const QString& newName, bool updateTableName = true);
 
-		int curveType(int curveIndex);
-		void setCurveType(int curve, int style);
+		void setCurveStyle(int index, int s);
 		void setCurveFullRange(int curveIndex);
 
 		//! \name Output: Copy/Export/Print
@@ -593,11 +593,6 @@ class Graph: public QwtPlot
 		void plotBoxDiagram(Table *w, const QStringList& names, int startRow = 0, int endRow = -1);
 		//@}
 
-		void setCurveSymbol(int index, const QwtSymbol& s);
-		void setCurvePen(int index, const QPen& p);
-		void setCurveBrush(int index, const QBrush& b);
-		void setCurveStyle(int index, int s);
-
 		//! \name Resizing
 		//@{
 		bool ignoresResizeEvents(){return ignoreResize;};
@@ -690,7 +685,6 @@ signals:
 
 	private:
 		void insertCurve(QwtPlotItem *c);
-		void detachCurve(int index);
 	
         //! Finds bounding interval of the plot data.
         QwtDoubleInterval axisBoundingInterval(int axis);
@@ -722,21 +716,15 @@ signals:
 		bool d_antialiasing;
 		bool autoScaleFonts;
 		bool d_scale_on_print, d_print_cropmarks;
-
+		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone;
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
-		//! Curve types
-		QVector<int> c_type;
 		//! Arrows/lines on plot
 		QList<QwtPlotMarker*> d_lines;
 		//! Images on plot
 		QList<QwtPlotMarker*> d_images;
 		//! Pointer to the currently selected line/image		
 		QwtPlotMarker* d_selected_marker;
-
-		int n_curves;
-		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone;
-
 		//! The markers selected for move/resize operations or NULL if none are selected.
 		QPointer<SelectionMoveResizer> d_markers_selector;
 		//! The current curve selection, or NULL if none is active.
@@ -749,7 +737,7 @@ signals:
 		LegendWidget *d_legend;
         //! Flag indicating if the axes limits should be changed in order to show all data each time a curva data change occurs
 		bool d_auto_scale;
-		
-		int minTickLength, majTickLength;
+		//! Axes tick lengths 
+		int d_min_tick_length, d_maj_tick_length;
 };
 #endif // GRAPH_H

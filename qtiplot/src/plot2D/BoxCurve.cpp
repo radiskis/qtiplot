@@ -49,6 +49,7 @@ BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	b_width = 80;
 
 	setType(Graph::Box);
+	setPlotStyle(Graph::Box);
     setStyle(QwtPlotCurve::UserCurve);
 }
 

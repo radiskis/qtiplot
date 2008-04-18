@@ -255,8 +255,7 @@ void PlotDialog::changePlotType(int plotType)
 	int curveType = item->plotItemType();
 	if (curveType == Graph::ColorMap || curveType == Graph::Contour || curveType == Graph::GrayScale)
   		clearTabWidget();
-  	else if (curveType == Graph::VectXYAM || curveType == Graph::VectXYXY)
-	{
+  	else if (curveType == Graph::VectXYAM || curveType == Graph::VectXYXY){
 		if ((plotType && curveType == Graph::VectXYAM) ||
             (!plotType && curveType == Graph::VectXYXY))
 			return;
@@ -266,23 +265,16 @@ void PlotDialog::changePlotType(int plotType)
 
 		VectorCurve *v = (VectorCurve*)item->plotItem();
 		if (plotType)
-		{
-			graph->setCurveType(item->plotItemIndex(), Graph::VectXYAM);
 			v->setVectorStyle(VectorCurve::XYAM);
-		}
-		else
-		{
-			graph->setCurveType(item->plotItemIndex(), Graph::VectXYXY);
+		else 
 			v->setVectorStyle(VectorCurve::XYXY);
-		}
 		customVectorsPage(plotType);
-	}
-	else
-	{
+	} else {
 		clearTabWidget();
 		insertTabs(plotType);
 
-		graph->setCurveType(item->plotItemIndex(), plotType);
+		PlotCurve *c = (PlotCurve*)item->plotItem();
+		c->setPlotStyle(plotType);
 
 		boxConnect->setCurrentIndex(1);//show line for Line and LineSymbol plots
 
@@ -294,10 +286,9 @@ void PlotDialog::changePlotType(int plotType)
 		else if (plotType == Graph::LineSymbols)
 			graph->setCurveStyle(item->plotItemIndex(), QwtPlotCurve::Lines);
 
-        graph->setCurveSymbol(item->plotItemIndex(), s);
+        c->setSymbol(s);
 
-		if (plotType)
-		{
+		if (plotType){
 			boxSymbolStyle->setCurrentIndex(1);
 			boxFillSymbol->setChecked(true);
 			boxFillColor->setEnabled(true);
@@ -1388,13 +1379,10 @@ void PlotDialog::contextMenuEvent(QContextMenuEvent *e)
 
 	QPoint pos = listBox->viewport()->mapFromGlobal(QCursor::pos());
 	QRect rect = listBox->visualItemRect(listBox->currentItem());
-	if (rect.contains(pos))
-	{
+	if (rect.contains(pos)){
 	   QMenu contextMenu(this);
 	   contextMenu.insertItem(tr("&Delete"), this, SLOT(removeSelectedCurve()));
-
-	   if (it->rtti() == QwtPlotItem::Rtti_PlotCurve)
-	   {
+	   if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
             if (((PlotCurve *)it)->type() == Graph::Function)
                 contextMenu.insertItem(tr("&Edit..."), this, SLOT(editCurve()));
             else
@@ -1414,15 +1402,36 @@ void PlotDialog::removeSelectedCurve()
         return;
 
     Graph *graph = item->graph();
-    if (graph)
-    {
+    if (graph){
         graph->removeCurve(item->plotItemIndex());
         graph->updatePlot();
 
-        int index = item->parent()->indexOfChild (item);
-        QTreeWidgetItem *it = item->parent()->takeChild(index);
-        if (it)
-            delete it;
+		LayerItem *layerItem = (LayerItem *)item->parent();
+		QTreeWidgetItem *rootItem = layerItem->parent();
+		
+		int index = rootItem->indexOfChild (layerItem);
+		rootItem->takeChild(index);
+        delete layerItem;
+		
+		layerItem = new LayerItem(graph, rootItem, tr("Layer") + QString::number(d_ml->layerIndex(graph) + 1));
+        rootItem->addChild(layerItem);
+		if (graph->curveCount() > 0){
+        	layerItem->setExpanded(true);
+			CurveTreeItem *it = (CurveTreeItem *)layerItem->child(0);
+			if (it){
+        		listBox->setCurrentItem(it);
+				setActiveCurve(it);
+			}
+		} else {
+        	listBox->setCurrentItem(layerItem);
+
+			clearTabWidget();
+            privateTabWidget->addTab (layerPage, tr("Layer"));
+			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
+            privateTabWidget->showPage(layerPage);
+			
+			setActiveLayer(layerItem);
+		}
     }
 }
 
@@ -2180,15 +2189,14 @@ bool PlotDialog::acceptParams()
   	   boxXAxis->setCurrentItem(sp->xAxis()-2);
   	   boxYAxis->setCurrentItem(sp->yAxis());
   	} else if (privateTabWidget->currentPage() == linePage){
-		int index = item->plotItemIndex();
-		graph->setCurveStyle(index, boxConnect->currentIndex());
+		graph->setCurveStyle(item->plotItemIndex(), boxConnect->currentIndex());
 		QBrush br = QBrush(boxAreaColor->color(), boxPattern->getSelectedPattern());
 		if (!fillGroupBox->isChecked())
 			br = QBrush();
-		graph->setCurveBrush(index, br);
 		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(), Graph::getPenStyle(boxLineStyle->currentIndex()));
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setPen(pen);
+		curve->setBrush(br);
 	} else if (privateTabWidget->currentPage() == symbolPage){
 		int size = 2*boxSymbolSize->value()+1;
 		QBrush br = QBrush(boxFillColor->color(), Qt::SolidPattern);
@@ -2219,7 +2227,6 @@ bool PlotDialog::acceptParams()
 	} else if (privateTabWidget->currentPage() == spacingPage)
 		graph->setBarsGap(item->plotItemIndex(), gapBox->value(), offsetBox->value());
 	else if (privateTabWidget->currentPage() == vectPage){
-		int index = item->plotItemIndex();
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		if (!app)
 			return false;
@@ -2230,8 +2237,8 @@ bool PlotDialog::acceptParams()
 		if (!w)
 			return false;
 
-		graph->updateVectorsLayout(index, vectColorBox->color(), vectWidthBox->value(),
-				headLengthBox->value(), headAngleBox->value(),
+		graph->updateVectorsLayout(item->plotItemIndex(), vectColorBox->color(), 
+				vectWidthBox->value(), headLengthBox->value(), headAngleBox->value(),
 				filledHeadBox->isChecked(), vectPosBox->currentIndex(), xEndCol, yEndCol);
 
 		QString text = item->text(0);
@@ -2239,7 +2246,7 @@ bool PlotDialog::acceptParams()
 		QString table = t[0];
 
 		QStringList cols = t[1].split(",", QString::SkipEmptyParts);
-		if (graph->curveType(index) == Graph::VectXYXY){
+		if (((VectorCurve *)plotItem)->type() == Graph::VectXYXY){
 			xEndCol = xEndCol.remove(table + "_") + "(X)";
 			yEndCol = yEndCol.remove(table + "_") + "(Y)";
 		} else {
@@ -2500,6 +2507,8 @@ void PlotDialog::setPenStyle(Qt::PenStyle style)
 			break;
 		case Qt::DashDotDotLine:
 			boxLineStyle->setCurrentIndex(4);
+			break;
+		default:
 			break;
 	}
 }
@@ -2991,10 +3000,10 @@ int CurveTreeItem::plotItemIndex()
 
 int CurveTreeItem::plotItemType()
 {
-	Graph *g = graph();
-	if (!g)
-    	return -1;
+	if (d_curve->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+		return ((PlotCurve *)d_curve)->plotStyle();
+	else 
+		return Graph::ColorMap;
 	
-	QList<QwtPlotItem *> itemsList = g->curvesList();
-	return g->curveType(itemsList.indexOf(d_curve));
+	return -1;
 }

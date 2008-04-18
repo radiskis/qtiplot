@@ -1757,17 +1757,17 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 		else if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
-				for (int i=0; i<g->curveCount(); i++){
-				    if (g->curveType(i) == Graph::Histogram){
-                        QwtHistogram *h = (QwtHistogram *)g->plotItem(i);
-                        if (h && h->matrix() == m)
-                            g->removeCurve(i);
-				    } else {
-                        Spectrogram *sp = (Spectrogram *)g->plotItem(i);
-                        if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->matrix() == m)
-                            g->removeCurve(i);
-				    }
+				QList<QwtPlotItem *> curvesList = g->curvesList();
+				foreach (QwtPlotItem *it, curvesList){
+					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+						if (((Spectrogram *)it)->matrix() == m)
+                            g->removeCurve(it);
+					} else if (((PlotCurve *)it)->type() == Graph::Histogram){
+                        if (((QwtHistogram *)it)->matrix() == m)
+                            g->removeCurve(it);
+					}
 				}
+				g->updatePlot();
 			}
 		}
 	}
@@ -1789,16 +1789,17 @@ void ApplicationWindow::updateMatrixPlots(MdiSubWindow *window)
 		else if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
-				for (int i=0; i<g->curveCount(); i++){
-				    if (g->curveType(i) == Graph::Histogram){
-                        QwtHistogram *h = (QwtHistogram *)g->plotItem(i);
-                        if (h && h->matrix() == m)
-                            h->loadData();
-				    } else {
-                        Spectrogram *sp = (Spectrogram *)g->plotItem(i);
-                        if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->matrix() == m)
+				QList<QwtPlotItem *> curvesList = g->curvesList();
+				foreach (QwtPlotItem *it, curvesList){
+					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+                        Spectrogram *sp = (Spectrogram *)it;
+                        if (sp->matrix() == m)
                             sp->updateData(m);
-				    }
+				    } else if (((PlotCurve *)it)->type() == Graph::Histogram){
+						QwtHistogram *h = (QwtHistogram *)it;
+                        if (h->matrix() == m)
+                            h->loadData();
+					}
 				}
                 g->updatePlot();
 			}
@@ -10259,7 +10260,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				cl.penWidth = cl.lWidth;
 
 			PlotCurve *c = (PlotCurve *)ag->insertFunctionCurve(curve[1], curve[2].toInt(), d_file_version);
-			ag->setCurveType(curveID, curve[5].toInt());
+			c->setPlotStyle(curve[5].toInt());
 			ag->updateCurveLayout(c, &cl);
 			if (d_file_version >= 88){
 				QwtPlotCurve *c = ag->curve(curveID);

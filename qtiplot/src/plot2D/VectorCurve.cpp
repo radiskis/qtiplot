@@ -44,10 +44,13 @@ VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, c
 	d_end_x_a (endCol1),
 	d_end_y_m (endCol2)
 {
-	if (style == XYXY)
+	if (style == XYXY){
 		setType(Graph::VectXYXY);
-	else if (style == XYAM)
+		setPlotStyle(Graph::VectXYXY);
+	} else if (style == XYAM) {
 		setType(Graph::VectXYAM);
+		setPlotStyle(Graph::VectXYAM);
+	}
 }
 
 void VectorCurve::copy(const VectorCurve *vc)

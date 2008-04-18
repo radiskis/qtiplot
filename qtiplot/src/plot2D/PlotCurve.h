@@ -40,10 +40,17 @@ class PlotCurve: public QwtPlotCurve
 {
 
 public:
-	PlotCurve(const QString& name = QString()): QwtPlotCurve(name), d_type(0), d_x_offset(0.0), d_y_offset(0.0){};
+	PlotCurve(const QString& name = QString()): QwtPlotCurve(name), d_type(0), d_plot_style(0), d_x_offset(0.0), d_y_offset(0.0){};
 
+	//! Sort of rtti()
 	int type(){return d_type;};
 	void setType(int t){d_type = t;};
+	
+	/*!\brief The plot style of the curve.
+	 * \sa Graph::CurveType
+	 */
+	int plotStyle(){return d_plot_style;};
+	void setPlotStyle(int s){d_plot_style = s;};
 
 	double xOffset(){return d_x_offset;};
 	void setXOffset(double dx){d_x_offset = dx;};
@@ -55,7 +62,10 @@ public:
 	void restoreCurveLayout(const QStringList& lst);
 
 protected:
+	// Rtti
 	int d_type;
+	// The plot style of the curve
+	int d_plot_style;
 	double d_x_offset, d_y_offset;
 };
 

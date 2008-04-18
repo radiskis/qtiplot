@@ -120,7 +120,7 @@ void AssociationsDialog::updateCurves()
 
 void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 {
-	DataCurve *c = (DataCurve *)graph->curve(curve); //c_keys[curve]);
+	DataCurve *c = (DataCurve *)graph->curve(curve);
 	if (!c)
         return;
 
@@ -130,9 +130,9 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 	QStringList lst = text.split(",", QString::SkipEmptyParts);
 	if (lst.count() == 1){
 		c->setTitle(lst[0]);
-		if (graph->curveType(curve) == Graph::Box)
+		if (c->type() == Graph::Box)
 			((BoxCurve*)c)->loadData();
-		else if (graph->curveType(curve) == Graph::Pie)
+		else if (c->type() == Graph::Pie)
 			((QwtPieCurve*)c)->loadData();
 	} else if (lst.count() == 2){
 		c->setXColumnName(lst[0].remove("(X)"));

@@ -55,6 +55,7 @@ QwtPieCurve::QwtPieCurve(Table *t, const QString& name, int startRow, int endRow
 	setBrush(QBrush(Qt::SolidPattern));
     setStyle(QwtPlotCurve::UserCurve);
 	setType(Graph::Pie);
+	setPlotStyle(Graph::Pie);
 	d_table_rows = QVarLengthArray<int>(0);
 }
 

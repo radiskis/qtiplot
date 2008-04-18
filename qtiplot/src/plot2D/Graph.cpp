@@ -164,7 +164,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 {
 	setWindowFlags(f);
 	
-	n_curves = 0;
 	d_active_tool = NULL;
 	d_selected_text = NULL;
 	d_legend = NULL; // no legend for an empty graph
@@ -188,8 +187,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	setAttribute(Qt::WA_DeleteOnClose);
 	setAutoReplot (false);
 
-	minTickLength = 5;
-	majTickLength = 9;
+	d_min_tick_length = 5;
+	d_maj_tick_length = 9;
 
 	setAxisTitle(QwtPlot::yLeft, tr("Y Axis Title"));
 	setAxisTitle(QwtPlot::xBottom, tr("X Axis Title"));
@@ -218,9 +217,9 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
             scale->setPalette(pal);
 
 			ScaleDraw *sd = new ScaleDraw(this);
-			sd->setTickLength(QwtScaleDiv::MinorTick, minTickLength);
-			sd->setTickLength(QwtScaleDiv::MediumTick, minTickLength);
-			sd->setTickLength(QwtScaleDiv::MajorTick, majTickLength);
+			sd->setTickLength(QwtScaleDiv::MinorTick, d_min_tick_length);
+			sd->setTickLength(QwtScaleDiv::MediumTick, d_min_tick_length);
+			sd->setTickLength(QwtScaleDiv::MajorTick, d_maj_tick_length);
 
 			setAxisScaleDraw (i, sd);
 			setAxisScaleEngine (i, new ScaleEngine());
@@ -267,8 +266,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 			QwtPicker::DragSelection | QwtPicker::CornerToCorner,
 			QwtPicker::AlwaysOff, canvas());
 	zoom(false);
-
-	c_type = QVector<int>();
 	
 	connect (cp,SIGNAL(selectPlot()),this,SLOT(activateGraph()));
 	connect (cp,SIGNAL(drawTextOff()),this,SIGNAL(drawTextOff()));
@@ -1038,11 +1035,7 @@ void Graph::setAxisTitle(int axis, const QString& text)
 
 void Graph::updateSecondaryAxis(int axis)
 {
-	for (int i=0; i<n_curves; i++){
-		QwtPlotItem *it = plotItem(i);
-		if (!it)
-			continue;
-
+	foreach (QwtPlotItem *it, d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
             Spectrogram *sp = (Spectrogram *)it;
             if (sp->colorScaleAxis() == axis)
@@ -1617,15 +1610,19 @@ void Graph::updateImageMarker(int x, int y, int w, int h)
 
 QString Graph::legendText()
 {
-	QString text="";
-	for (int i=0; i<n_curves; i++){
-		const QwtPlotCurve *c = curve(i);
-		if (c && c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram && c_type[i] != ErrorBars ){
-			text+="\\l(";
-			text+=QString::number(i+1);
-			text+=")%(";
-			text+=QString::number(i+1);
-			text+=")\n";
+	QString text;
+	int i = 0;
+	foreach (QwtPlotItem *it, d_curves){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+			
+		if (((PlotCurve *)it)->type() != ErrorBars ){
+			text += "\\l(";
+			text += QString::number(i + 1);
+			text += ")%(";
+			text += QString::number(i + 1);
+			text += ")\n";
+			i++;
 		}
 	}
 	return text.trimmed();
@@ -2004,8 +2001,8 @@ QString Graph::savePieCurveLayout()
 QString Graph::saveCurveLayout(int index)
 {
 	QString s = QString::null;
-	int style = c_type[index];
-	QwtPlotCurve *c = (QwtPlotCurve*)curve(index);
+	PlotCurve *c = (PlotCurve*)curve(index);
+	int style = c->plotStyle();
 	if (c){
 		s += QString::number(style)+"\t";
 		if (style == Spline)
@@ -2085,11 +2082,9 @@ QString Graph::saveCurves()
 	if (isPiePlot())
 		s += savePieCurveLayout();
 	else {
-		for (int i=0; i<n_curves; i++){
-			QwtPlotItem *it = plotItem(i);
-			if (!it)
-  	        	continue;
-
+		int i = -1;
+		foreach (QwtPlotItem *it, d_curves){
+			i++;
             if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
                 s += ((Spectrogram *)it)->saveToString();
                 continue;
@@ -2415,7 +2410,8 @@ double Graph::selectedXEndValue()
 
 QwtPlotItem* Graph::plotItem(int index)
 {
-    if (!n_curves || index >= n_curves || index < 0)
+	int curves = d_curves.size();
+    if (!curves || index >= curves || index < 0)
 		return 0;
 
 	return d_curves.at(index);
@@ -2423,7 +2419,8 @@ QwtPlotItem* Graph::plotItem(int index)
 
 QwtPlotCurve *Graph::curve(int index)
 {
-	if (!n_curves || index >= n_curves || index < 0)
+	int curves = d_curves.size();
+    if (!curves || index >= curves || index < 0)
 		return 0;
 	
 	QwtPlotItem *it = d_curves.at(index);
@@ -2470,7 +2467,7 @@ CurveLayout Graph::initCurveLayout()
 
 CurveLayout Graph::initCurveLayout(int style, int curves)
 {
-    int i = n_curves - 1;
+    int i = d_curves.size() - 1;
 
 	CurveLayout cl = initCurveLayout();	
 	int color;
@@ -2496,12 +2493,10 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 		cl.lCol = 0;//black color pen
 		cl.aCol = i + 1;
 		cl.sType = 0;
-		if (c_type[i] == Graph::VerticalBars || style == Graph::HorizontalBars){
-			QwtBarCurve *b = (QwtBarCurve*)curve(i);
-			if (b){
-				b->setGap(qRound(100*(1-1.0/(double)curves)));
-				b->setOffset(-50*(curves-1) + i*100);
-			}
+		QwtBarCurve *b = (QwtBarCurve*)curve(i);
+		if (b){
+			b->setGap(qRound(100*(1-1.0/(double)curves)));
+			b->setOffset(-50*(curves-1) + i*100);
 		}
 	} else if (style == Graph::Histogram){
 		cl.filledArea = 1;
@@ -2518,18 +2513,13 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 	return cl;
 }
 
-void Graph::setCurveType(int curve, int style)
-{
-	c_type[curve] = style;
-}
-
 void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 {	
-	if (!c || c_type.isEmpty())
+	if (!c)
 		return;
 	
 	int index = curveIndex(c);
-	if (c_type.size() < index)
+	if (d_curves.size() < index)
 		return;
 		
 	QPen pen = QPen(ColorBox::color(cL->symCol), cL->penWidth, Qt::SolidLine);
@@ -2540,7 +2530,7 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 
 	c->setPen(QPen(ColorBox::color(cL->lCol), cL->lWidth, getPenStyle(cL->lStyle)));
 	
-	switch (c_type[index]){
+	switch (c->type()){
 		case Scatter:
 			c->setStyle(QwtPlotCurve::NoCurve);
 		break;
@@ -2614,10 +2604,6 @@ QwtErrorPlotCurve* Graph::addErrorBars(const QString& xColName, const QString& y
 		return NULL;
 
 	QwtErrorPlotCurve *er = new QwtErrorPlotCurve(type, errTable, errColName);
-
-    c_type.resize(++n_curves);
-	c_type[n_curves-1] = ErrorBars;
-
 	insertCurve(er);
 
 	er->setMasterCurve(master_curve);
@@ -2632,6 +2618,21 @@ QwtErrorPlotCurve* Graph::addErrorBars(const QString& xColName, const QString& y
 	return er;
 }
 
+bool Graph::isPiePlot()
+{
+	if (d_curves.size() != 1)
+		return false;
+	
+	QwtPlotItem *it = d_curves.first();
+	if (it->rtti() != QwtPlotItem::Rtti_PlotCurve)
+		return false;
+	
+	if (((PlotCurve *)it)->type() == Pie)
+		return true;
+	
+	return false;
+}
+
 QwtPieCurve* Graph::plotPie(Table* w, const QString& name, const QPen& pen, int brush,
 					int size, int firstColor, int startRow, int endRow, bool visible,
 					double d_start_azimuth, double d_view_angle, double d_thickness,
@@ -2644,10 +2645,7 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, const QPen& pen, int 
 
 	QwtPieCurve *pie = new QwtPieCurve(w, name, startRow, endRow);
 	insertCurve(pie);
-
-	c_type.resize(++n_curves);
-	c_type[n_curves-1] = Pie;
-
+	
 	pie->loadData();
 	pie->setPen(pen);
 	pie->setRadius(size);
@@ -2682,10 +2680,6 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, int startRow, int end
 
 	QwtPieCurve *pie = new QwtPieCurve(w, name, startRow, endRow);
     insertCurve(pie);
-
-	c_type.resize(++n_curves);
-	c_type[n_curves-1] = Pie;
-
 	pie->loadData();
 	pie->initLabels();
 
@@ -2695,13 +2689,12 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, int startRow, int end
 
 void Graph::insertPlotItem(QwtPlotItem *i, int type)
 {
-	c_type.resize(++n_curves);
-	c_type[n_curves-1] = type;
-
 	insertCurve(i);
 
-	if (i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+	if (i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
+		((PlotCurve *)i)->setPlotStyle(type);
   		addLegendItem();
+	}
 }
 
 bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWidth,
@@ -2873,12 +2866,9 @@ PlotCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		((QwtHistogram *)c)->initData(Y.data(), size);
 	} else
 		c = new DataCurve(w, xColName, yColName, startRow, endRow);
-
-	c_type.resize(++n_curves);
-	c_type[n_curves - 1] = style;	
 	
 	insertCurve(c);
-
+	c->setPlotStyle(style);
 	c->setPen(QPen(Qt::black, 1.0));
 
 	if (style == HorizontalBars)
@@ -2921,11 +2911,7 @@ QwtHistogram* Graph::addHistogram(Matrix *m)
     c->setStyle(QwtPlotCurve::UserCurve);
 	c->setPen(QPen(Qt::black, 1.0));
 	c->setBrush(QBrush(Qt::black));
-	c->loadData();
-
-	c_type.resize(++n_curves);
-	c_type[n_curves - 1] = Histogram;
-	
+	c->loadData();	
 	insertCurve(c);
 
 	addLegendItem();
@@ -2945,9 +2931,6 @@ QwtHistogram* Graph::restoreHistogram(Matrix *m, const QStringList& l)
     h->loadData();
     h->setAxis(l[l.count()-5].toInt(), l[l.count()-4].toInt());
     h->setVisible(l.last().toInt());
-
-	c_type.resize(++n_curves);
-	c_type[n_curves - 1] = Histogram;
 	
 	insertCurve(h);
 	return h;
@@ -2970,11 +2953,8 @@ VectorCurve* Graph::plotVectorCurve(Table* w, const QStringList& colList, int st
 	if (!v)
 		return NULL;
 
-    c_type.resize(++n_curves);
-	c_type[n_curves-1] = style;
-
 	insertCurve(v);
-
+	v->setPlotStyle(style);
 	v->loadData();
 	v->setStyle(QwtPlotCurve::NoCurve);
 
@@ -3060,8 +3040,6 @@ void Graph::removePie()
 	removeCurve(0);
 	replot();
 
-	c_type.resize(0);
-	n_curves=0;
 	emit modifiedGraph();
 }
 
@@ -3091,13 +3069,18 @@ void Graph::removeCurve(const QString& s)
 
 void Graph::removeCurve(int index)
 {
-	if (index < 0 || index >= n_curves)
+	if (index < 0 || index >= d_curves.size())
 		return;
 
-	QwtPlotItem *it = d_curves.at(index);
+	removeCurve(d_curves.at(index));
+}
+
+void Graph::removeCurve(QwtPlotItem *it)
+{
 	if (!it)
 		return;
 
+	int index = d_curves.indexOf(it);
 	removeLegendItem(index);
 
 	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
@@ -3113,32 +3096,39 @@ void Graph::removeCurve(int index)
 			if (i >= 0 && i < d_fit_curves.size())
 				d_fit_curves.removeAt(i);
 		}
-	}
+	} else {
+  	    QwtScaleWidget *colorAxis = axisWidget(((Spectrogram *)it)->colorScaleAxis());
+  	    if (colorAxis)
+  	    	colorAxis->setColorBarEnabled(false);
+  	}
 
     if (d_range_selector && curve(index) == d_range_selector->selectedCurve()){
-        if (n_curves > 1 && (index - 1) >= 0)
+		int curves = d_curves.size();
+        if (curves > 1 && (index - 1) >= 0)
             d_range_selector->setSelectedCurve(curve(index - 1));
-        else if (n_curves > 1 && index + 1 < n_curves)
+        else if (curves > 1 && index + 1 < curves)
             d_range_selector->setSelectedCurve(curve(index + 1));
         else
             disableTools();
     }
 
-	detachCurve(index);
-	n_curves--;
-
-	for (int i=index; i<n_curves; i++)
-        c_type[i] = c_type[i+1];
-        
-    c_type.resize(n_curves);
+	it->detach();
+	d_curves.removeAt(index);
 	emit modifiedGraph();
 }
 
 void Graph::removeLegendItem(int index)
 {
-	if (!d_legend || c_type[index] == ErrorBars)
+	if (!d_legend || index < 0 || index >= d_curves.size())
 		return;
 
+	QwtPlotItem *it = d_curves.at(index);
+	if (!it || it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+		return;
+	
+	if (((PlotCurve *)it)->type() == ErrorBars)
+		return;
+	
 	if (isPiePlot()){
 		d_legend->setText(QString::null);
 		return;
@@ -3190,10 +3180,11 @@ void Graph::addLegendItem()
 {
 	if (d_legend){
 		QString text = d_legend->text();
+		int curves = d_curves.size();
         if (text.endsWith ("\n") || text.isEmpty())
-            text.append("\\l("+QString::number(n_curves)+")"+"%("+QString::number(n_curves)+")");
+            text.append("\\l("+QString::number(curves)+")"+"%("+QString::number(curves)+")");
         else
-            text.append("\n\\l("+QString::number(n_curves)+")"+"%("+QString::number(n_curves)+")");
+            text.append("\n\\l("+QString::number(curves)+")"+"%("+QString::number(curves)+")");
 
         d_legend->setText(text);
         d_legend->repaint();
@@ -3238,12 +3229,10 @@ void Graph::zoom(bool on)
 {
 	d_zoomer[0]->setEnabled(on);
 	d_zoomer[1]->setEnabled(on);
-	for (int i=0; i<n_curves; i++)
-  	{
-  		Spectrogram *sp = (Spectrogram *)this->curve(i);
-  	    if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-  	    {
-  	     	if (sp->colorScaleAxis() == QwtPlot::xBottom || sp->colorScaleAxis() == QwtPlot::yLeft)
+	foreach(QwtPlotItem *it, d_curves){
+  	    if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+  	     	if (((Spectrogram *)it)->colorScaleAxis() == QwtPlot::xBottom || 
+				((Spectrogram *)it)->colorScaleAxis() == QwtPlot::yLeft)
   	        	d_zoomer[0]->setEnabled(false);
   	        else
   	        	d_zoomer[1]->setEnabled(false);
@@ -3398,11 +3387,11 @@ QString Graph::generateFunctionName(const QString& name)
   	QString newName = name + QString::number(index);
 
   	QStringList lst;
-  	for (int i=0; i<n_curves; i++){
-  		PlotCurve *c = (PlotCurve*)this->curve(i);
-  		if (!c)
-            continue;
-
+  	foreach(QwtPlotItem *it, d_curves){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+		
+  		PlotCurve *c = (PlotCurve*)it;
   	    if (c->type() == Function)
   	    	lst << c->title().text();
 	}
@@ -3425,9 +3414,6 @@ FunctionCurve* Graph::addFunction(const QStringList &formulas, double start, dou
 	c->setFormulas(formulas);
 	c->setVariable(var);
 	c->loadData(points);
-
-	c_type.resize(++n_curves);
-	c_type[n_curves-1] = Line;
 
 	insertCurve(c);
 
@@ -3530,9 +3516,7 @@ void Graph::restoreFunction(const QStringList& lst)
 	c->setFormulas(formulas);
 	c->setVariable(var);
 	c->loadData(points);
-
-	c_type.resize(++n_curves);
-	c_type[n_curves-1] = style;
+	c->setPlotStyle(style);
 	
 	insertCurve(c);
 		
@@ -3781,17 +3765,9 @@ Qt::PenStyle Graph::getPenStyle(const QString& s)
 int Graph::obsoleteSymbolStyle(int type)
 {
 	if (type <= 4)
-		return type+1;
+		return type + 1;
 	else
-		return type+2;
-}
-
-int Graph::curveType(int curveIndex)
-{
-	if (curveIndex < (int)c_type.size() && curveIndex >= 0)
-		return c_type[curveIndex];
-	else
-		return -1;
+		return type + 2;
 }
 
 void Graph::showPlotErrorMessage(QWidget *parent, const QStringList& emptyColumns)
@@ -3985,8 +3961,8 @@ void Graph::copy(Graph* g)
 	setAxesLinewidth(g->axesLinewidth());
 	removeLegend();
 
-    for (int i=0; i<g->curveCount(); i++){
-        QwtPlotItem *it = (QwtPlotItem *)g->plotItem(i);
+	QList<QwtPlotItem *> curvesList = g->curvesList();
+    foreach (QwtPlotItem *it, curvesList){
         if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
   	        DataCurve *cv = (DataCurve *)it;
 			int n = cv->dataSize();
@@ -3999,9 +3975,6 @@ void Graph::copy(Graph* g)
 			}
 
 			PlotCurve *c = 0;
-			c_type.resize(++n_curves);
-			c_type[i] = g->curveType(i);
-
 			if (style == Pie){
 				c = new QwtPieCurve(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
@@ -4051,8 +4024,7 @@ void Graph::copy(Graph* g)
 				c = new DataCurve(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
                 insertCurve(c);
 			}
-
-			if (c_type[i] != Box && c_type[i] != ErrorBars){
+			if (c->type() != Box && c->type() != ErrorBars){
 				c->setData(x.data(), y.data(), n);
 				if (c->type() != Function && c->type() != Pie)
                     ((DataCurve *)c)->clone(cv);
@@ -4072,20 +4044,18 @@ void Graph::copy(Graph* g)
 
 			c->setAxis(cv->xAxis(), cv->yAxis());
 			c->setVisible(cv->isVisible());
+			c->setPlotStyle(((PlotCurve *)it)->plotStyle());
 
 			QList<QwtPlotCurve *>lst = g->fitCurvesList();
 			if (lst.contains((QwtPlotCurve *)it))
 				d_fit_curves << c;
-		}else if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+		} else if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
   	     	Spectrogram *sp = ((Spectrogram *)it)->copy();
   	        insertCurve(sp);
 
   	        sp->showColorScale(((Spectrogram *)it)->colorScaleAxis(), ((Spectrogram *)it)->hasColorScale());
   	        sp->setColorBarWidth(((Spectrogram *)it)->colorBarWidth());
 			sp->setVisible(it->isVisible());
-
-  	        c_type.resize(++n_curves);
-  	        c_type[i] = g->curveType(i);
   	        }
   	    }
 
@@ -4181,12 +4151,9 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 	for (int j = 0; j <(int)names.count(); j++){
         BoxCurve *c = new BoxCurve(w, names[j], startRow, endRow);
 		insertCurve(c);
-        c_type.resize(++n_curves);
-        c_type[n_curves-1] = Box;
 
         c->setData(QwtSingleArrayData(double(j+1), QwtArray<double>(), 0));
         c->loadData();
-
         c->setPen(QPen(ColorBox::color(j), 1));
         c->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(ColorBox::color(j), 1), QSize(7,7)));
 	}
@@ -4205,11 +4172,11 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 
 void Graph::setCurveStyle(int index, int s)
 {
-	QwtPlotCurve *c = curve(index);
+	PlotCurve *c = (PlotCurve *)curve(index);
 	if (!c)
 		return;
 
-    int curve_type = c_type[index];
+    int curve_type = c->plotStyle();
     if (curve_type == VerticalBars || curve_type == HorizontalBars || curve_type == Histogram ||
         curve_type == Pie || curve_type == Box || curve_type == ErrorBars ||
         curve_type == VectXYXY || curve_type == VectXYAM)
@@ -4221,53 +4188,26 @@ void Graph::setCurveStyle(int index, int s)
 	if (s == 5){//ancient spline style in Qwt 4.2.0
 		s = QwtPlotCurve::Lines;
 		c->setCurveAttribute(QwtPlotCurve::Fitted, true);
-		c_type[index] = Spline;
+		c->setPlotStyle(Spline);
 	} else if (s == 6){// Vertical Steps
 		s = QwtPlotCurve::Steps;
 		c->setCurveAttribute(QwtPlotCurve::Inverted, false);
-		c_type[index] = VerticalSteps;
+		c->setPlotStyle(VerticalSteps);
 	} else if (s == QwtPlotCurve::Steps){// Horizontal Steps
-		c_type[index] = HorizontalSteps;
+		c->setPlotStyle(HorizontalSteps);
 		c->setCurveAttribute(QwtPlotCurve::Inverted, true);
 	} else if (s == QwtPlotCurve::Sticks)
-		c_type[index] = VerticalDropLines;
+		c->setPlotStyle(VerticalDropLines);
 	else {//QwtPlotCurve::Lines || QwtPlotCurve::Dots
 		if (c->symbol().style() == QwtSymbol::NoSymbol)
-			c_type[index] = Line;
+			c->setPlotStyle(Line);
 		else if (c->symbol().style() != QwtSymbol::NoSymbol && (QwtPlotCurve::CurveStyle)s == QwtPlotCurve::NoCurve)
-			c_type[index] = Scatter;
+			c->setPlotStyle(Scatter);
 		else
-			c_type[index] = LineSymbols;
+			c->setPlotStyle(LineSymbols);
 	}
-
+	
 	c->setStyle((QwtPlotCurve::CurveStyle)s);
-}
-
-void Graph::setCurveSymbol(int index, const QwtSymbol& s)
-{
-	QwtPlotCurve *c = curve(index);
-	if (!c)
-		return;
-
-	c->setSymbol(s);
-}
-
-void Graph::setCurvePen(int index, const QPen& p)
-{
-	QwtPlotCurve *c = curve(index);
-	if (!c)
-		return;
-
-	c->setPen(p);
-}
-
-void Graph::setCurveBrush(int index, const QBrush& b)
-{
-	QwtPlotCurve *c = curve(index);
-	if (!c)
-		return;
-
-	c->setBrush(b);
 }
 
 BoxCurve* Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
@@ -4285,9 +4225,6 @@ BoxCurve* Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
 	BoxCurve *c = new BoxCurve(w, l[2], startRow, endRow);
 	insertCurve(c);
 	
-	c_type.resize(++n_curves);
-	c_type[n_curves-1] = Box;
-
 	c->setData(QwtSingleArrayData(l[1].toDouble(), QwtArray<double>(), 0));
 	c->setData(QwtSingleArrayData(l[1].toDouble(), QwtArray<double>(), 0));
 	c->loadData();
@@ -4352,20 +4289,22 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 	colorIndex = 0;
 	symbolIndex = 0;
 
-	int curve_index = n_curves - 1;
-	if (curve_index >= 0 && c_type[curve_index] == ErrorBars)
-	{// find out the pen color of the master curve
-		QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)curve(curve_index);
-		DataCurve *master_curve = er->masterCurve();
-		if (master_curve){
-			colorIndex = ColorBox::colorIndex(master_curve->pen().color());
-			return;
+	int curve_index = d_curves.size() - 1;
+	if (curve_index >= 0){// find out the pen color of the master curve
+		PlotCurve *c = (PlotCurve *)curve(curve_index);
+		if (c && c->type() == ErrorBars){
+			QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
+			DataCurve *master_curve = er->masterCurve();
+			if (master_curve){
+				colorIndex = ColorBox::colorIndex(master_curve->pen().color());
+				return;
+			}
 		}
 	}
 
-	for (int i=0; i<n_curves; i++){
-		const QwtPlotCurve *c = curve(i);
-		if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve){
+	foreach (QwtPlotItem *it, d_curves){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
+			const QwtPlotCurve *c = (QwtPlotCurve *)it;
 			int index = ColorBox::colorIndex(c->pen().color());
 			if (index > colorIndex)
 				colorIndex = index;
@@ -4376,7 +4315,7 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 				symbolIndex = index;
 		}
 	}
-	if (n_curves > 1)
+	if (d_curves.size() > 1)
 		colorIndex = (++colorIndex)%16;
 	if (colorIndex == 13) //avoid white invisible curves
 		colorIndex = 0;
@@ -4408,21 +4347,15 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
   	Spectrogram *d_spectrogram = new Spectrogram(m);
   	if (type == GrayScale)
   		d_spectrogram->setGrayScale();
-  	else if (type == Contour)
-  		{
+  	else if (type == Contour){
   	    d_spectrogram->setDisplayMode(QwtPlotSpectrogram::ImageMode, false);
   	    d_spectrogram->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
-  	    }
-  	else if (type == ColorMap)
-  	    {
+    } else if (type == ColorMap){
   	    d_spectrogram->setDefaultColorMap();
   	    d_spectrogram->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
-  	    }
+	}
 
   	insertCurve(d_spectrogram);
-
-  	c_type.resize(++n_curves);
-  	c_type[n_curves-1] = type;
 
   	QwtScaleWidget *rightAxis = axisWidget(QwtPlot::yRight);
   	rightAxis->setColorBarEnabled(type != Contour);
@@ -4446,11 +4379,7 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
   	if (!m)
         return;
 
-  	Spectrogram *sp = new Spectrogram(m);
-
-	c_type.resize(++n_curves);
-	c_type[n_curves-1] = Graph::ColorMap;
-	
+  	Spectrogram *sp = new Spectrogram(m);	
 	insertCurve(sp);
 
   	for (line++; line != lst.end(); line++)
@@ -4585,12 +4514,11 @@ void Graph::restoreCurveLabels(int curveID, const QStringList& lst)
 
 bool Graph::validCurvesDataSize()
 {
-	if (!n_curves){
+	if (d_curves.size() == 0){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		return false;
 	} else {
-		for (int i=0; i < n_curves; i++){
-			 QwtPlotItem *item = curve(i);
+		foreach (QwtPlotItem *item, d_curves){
   	         if(item && item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
   	             QwtPlotCurve *c = (QwtPlotCurve *)item;
   	             if (c->dataSize() >= 2)
@@ -5019,18 +4947,18 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	{
 		case QwtPlot::yLeft:
 			x=x1;
-			low=y1+majTickLength;
-			high=y2-majTickLength;
+			low=y1+d_maj_tick_length;
+			high=y2-d_maj_tick_length;
 			if (min){
 				for (j = 0; j < minTicks; j++){
 					y = map.transform(minTickList[j]);
 					if (y>low && y< high)
-						QwtPainter::drawLine(painter, x, y, x+minTickLength, y);
+						QwtPainter::drawLine(painter, x, y, x+d_min_tick_length, y);
 				}
 				for (j = 0; j < medTicks; j++){
 					y = map.transform(medTickList[j]);
 					if (y>low && y< high)
-						QwtPainter::drawLine(painter, x, y, x+minTickLength, y);
+						QwtPainter::drawLine(painter, x, y, x+d_min_tick_length, y);
 				}
 			}
 
@@ -5038,7 +4966,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 				for (j = 0; j < majTicks; j++){
 					y = map.transform(majTickList[j]);
 					if (y>low && y< high)
-						QwtPainter::drawLine(painter, x, y, x+majTickLength, y);
+						QwtPainter::drawLine(painter, x, y, x+d_maj_tick_length, y);
 				}
 			}
 			break;
@@ -5046,18 +4974,18 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 		case QwtPlot::yRight:
 			{
 				x=x2;
-				low=y1+majTickLength;
-				high=y2-majTickLength;
+				low=y1+d_maj_tick_length;
+				high=y2-d_maj_tick_length;
 				if (min){
 					for (j = 0; j < minTicks; j++){
 						y = map.transform(minTickList[j]);
 						if (y>low && y< high)
-							QwtPainter::drawLine(painter, x+1, y, x-minTickLength, y);
+							QwtPainter::drawLine(painter, x+1, y, x-d_min_tick_length, y);
 					}
 					for (j = 0; j < medTicks; j++){
 						y = map.transform(medTickList[j]);
 						if (y>low && y< high)
-							QwtPainter::drawLine(painter, x+1, y, x-minTickLength, y);
+							QwtPainter::drawLine(painter, x+1, y, x-d_min_tick_length, y);
 					}
 				}
 
@@ -5065,7 +4993,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 					for (j = 0; j <majTicks; j++){
 						y = map.transform(majTickList[j]);
 						if (y>low && y< high)
-							QwtPainter::drawLine(painter, x+1, y, x-majTickLength, y);
+							QwtPainter::drawLine(painter, x+1, y, x-d_maj_tick_length, y);
 					}
 				}
 			}
@@ -5073,18 +5001,18 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 
 		case QwtPlot::xBottom:
 			y=y2;
-			low=x1+majTickLength;
-			high=x2-majTickLength;
+			low=x1+d_maj_tick_length;
+			high=x2-d_maj_tick_length;
 			if (min){
 				for (j = 0; j < minTicks; j++){
 					x = map.transform(minTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y+1, x, y-minTickLength);
+						QwtPainter::drawLine(painter, x, y+1, x, y-d_min_tick_length);
 				}
 				for (j = 0; j < medTicks; j++){
 					x = map.transform(medTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y+1, x, y-minTickLength);
+						QwtPainter::drawLine(painter, x, y+1, x, y-d_min_tick_length);
 				}
 			}
 
@@ -5092,26 +5020,26 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 				for (j = 0; j < majTicks; j++){
 					x = map.transform(majTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y+1, x, y-majTickLength);
+						QwtPainter::drawLine(painter, x, y+1, x, y-d_maj_tick_length);
 				}
 			}
 			break;
 
 		case QwtPlot::xTop:
 			y=y1;
-			low=x1+majTickLength;
-			high=x2-majTickLength;
+			low=x1+d_maj_tick_length;
+			high=x2-d_maj_tick_length;
 
 			if (min){
 				for (j = 0; j < minTicks; j++){
 					x = map.transform(minTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y, x, y + minTickLength);
+						QwtPainter::drawLine(painter, x, y, x, y + d_min_tick_length);
 				}
 				for (j = 0; j < medTicks; j++){
 					x = map.transform(medTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y, x, y + minTickLength);
+						QwtPainter::drawLine(painter, x, y, x, y + d_min_tick_length);
 				}
 			}
 
@@ -5119,7 +5047,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 				for (j = 0; j <majTicks; j++){
 					x = map.transform(majTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y, x, y + majTickLength);
+						QwtPainter::drawLine(painter, x, y, x, y + d_maj_tick_length);
 				}
 			}
 			break;
@@ -5141,7 +5069,7 @@ void Graph::drawBreak(QPainter *painter, const QRect &rect, const QwtScaleMap &m
     int left = map.transform(sc_engine->axisBreakLeft());
     int right = map.transform(sc_engine->axisBreakRight());
     int x, y;
-	int len = majTickLength;
+	int len = d_maj_tick_length;
     switch (axis){
         case QwtPlot::yLeft:
 			x = rect.left() - 1;
@@ -5182,22 +5110,22 @@ int Graph::axesLinewidth() const
 
 int Graph::minorTickLength() const
 {
-	return minTickLength;
+	return d_min_tick_length;
 }
 
 int Graph::majorTickLength() const
 {
-	return majTickLength;
+	return d_maj_tick_length;
 }
 
 void Graph::setTickLength (int minLength, int majLength)
 {
-	if (majTickLength == majLength &&
-			minTickLength == minLength)
+	if (d_maj_tick_length == majLength &&
+			d_min_tick_length == minLength)
 		return;
 
-	majTickLength = majLength;
-	minTickLength = minLength;
+	d_maj_tick_length = majLength;
+	d_min_tick_length = minLength;
 }
 
 PlotCurve* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
@@ -5253,26 +5181,6 @@ void Graph::insertCurve(QwtPlotItem *c)
 
 	c->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 	c->attach(this);
-}
-
-void Graph::detachCurve(int index)
-{
-	if (index < 0 || index >= d_curves.size())
-		return;
-	
-	QwtPlotItem *c = d_curves.at(index);
-  	if (!c)
-  		return;
-
-  	if (c->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-  		Spectrogram *sp = (Spectrogram *)c;
-  	    QwtScaleWidget *colorAxis = axisWidget(sp->colorScaleAxis());
-  	    if (colorAxis)
-  	    	colorAxis->setColorBarEnabled(false);
-  	}
-
-	c->detach();
-	d_curves.removeAt(index);
 }
 
 QList<int> Graph::getMajorTicksType()
