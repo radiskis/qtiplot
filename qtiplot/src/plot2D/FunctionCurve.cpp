@@ -36,6 +36,7 @@ FunctionCurve::FunctionCurve(const QString& name):
 {
 	d_variable = "x";
 	setType(Graph::Function);
+	setPlotStyle(Graph::Line);
 	d_formulas = QStringList();
 }
 
@@ -45,6 +46,7 @@ FunctionCurve::FunctionCurve(const FunctionType& t, const QString& name):
 {
 	d_variable = "x";
 	setType(Graph::Function);
+	setPlotStyle(Graph::Line);
 }
 
 void FunctionCurve::setRange(double from, double to)

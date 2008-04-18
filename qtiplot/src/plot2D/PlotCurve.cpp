@@ -37,16 +37,11 @@
 #include <qwt_symbol.h>
 
 QString PlotCurve::saveCurveLayout()
-{		
-	Graph *g = (Graph *)plot();
-	
-	int index = g->curveIndex((QwtPlotCurve *)this);
-	int style = g->curveType(index);
-	QString s = "<Style>" + QString::number(style) + "</Style>\n";
-	
-	if (style == Graph::Spline)
+{			
+	QString s = "<Style>" + QString::number(d_plot_style) + "</Style>\n";
+	if (d_plot_style == Graph::Spline)
 		s += "<LineStyle>5</LineStyle>\n";
-	else if (style == Graph::VerticalSteps)
+	else if (d_plot_style == Graph::VerticalSteps)
 		s += "<LineStyle>6</LineStyle>\n";
 	else
 		s += "<LineStyle>" + QString::number(this->style()) + "</LineStyle>\n";

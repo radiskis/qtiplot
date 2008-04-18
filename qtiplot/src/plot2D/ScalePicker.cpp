@@ -149,20 +149,19 @@ QRect ScalePicker::scaleTicksRect(const QwtScaleWidget *scale) const
 {
 	int majTickLength = scale->scaleDraw()->majTickLength();
 	QRect rect = scale->rect();
-	switch(scale->alignment())
-	{
-	case QwtScaleDraw::LeftScale:
-		rect.setLeft(rect.right() - majTickLength);
-	break;
-	case QwtScaleDraw::RightScale:
-		rect.setRight(rect.left() + majTickLength);
-	break;
-	case QwtScaleDraw::TopScale:
-		rect.setTop(rect.bottom() - majTickLength);
-	break;
-	case QwtScaleDraw::BottomScale:
-		rect.setBottom(rect.top() + majTickLength);
-	break;
+	switch(scale->alignment()){
+		case QwtScaleDraw::LeftScale:
+			rect.setLeft(rect.right() - majTickLength);
+		break;
+		case QwtScaleDraw::RightScale:
+			rect.setRight(rect.left() + majTickLength);
+		break;
+		case QwtScaleDraw::TopScale:
+			rect.setTop(rect.bottom() - majTickLength);
+		break;
+		case QwtScaleDraw::BottomScale:
+			rect.setBottom(rect.top() + majTickLength);
+		break;
 	}
 	return rect;
 }

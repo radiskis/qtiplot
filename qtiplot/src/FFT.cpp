@@ -27,8 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "FFT.h"
-#include "plot2D/MultiLayer.h"
 #include "ColorBox.h"
+#include "plot2D/MultiLayer.h"
+#include "plot2D/PlotCurve.h"
 
 #include <QMessageBox>
 #include <QLocale>
@@ -274,8 +275,8 @@ void FFT::output(const QString &text)
 			d_output_graph->setXAxisTitle(tr("Time") + + " (" + tr("s") + ")");
 		d_output_graph->setYAxisTitle(tr("Amplitude"));
 
-        d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
-		d_output_graph->setCurvePen(d_output_graph->curveCount() - 1, QPen(ColorBox::color(d_curveColorIndex), 1));
+        PlotCurve *c = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
+		c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
         d_output_graph->replot();
 
         if (ml)

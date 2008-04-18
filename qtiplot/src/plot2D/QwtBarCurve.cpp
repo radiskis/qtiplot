@@ -36,14 +36,17 @@ bar_offset=0;
 bar_gap=0;
 bar_style=style;
 
-setPen(QPen(Qt::black, 1, Qt::SolidLine));
-setBrush(QBrush(Qt::red));
-setStyle(QwtPlotCurve::UserCurve);
+	setPen(QPen(Qt::black, 1, Qt::SolidLine));
+	setBrush(QBrush(Qt::red));
+	setStyle(QwtPlotCurve::UserCurve);
 
-if (bar_style == Vertical)
-	setType(Graph::VerticalBars);
-else
-	setType(Graph::HorizontalBars);
+	if (bar_style == Vertical){
+		setType(Graph::VerticalBars);
+		setPlotStyle(Graph::VerticalBars);
+	} else {
+		setType(Graph::HorizontalBars);
+		setPlotStyle(Graph::HorizontalBars);
+	}
 }
 
 void QwtBarCurve::copy(const QwtBarCurve *b)
