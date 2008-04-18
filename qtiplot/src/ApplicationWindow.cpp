@@ -7777,6 +7777,8 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 	if (it)
 		lv->takeItem(it);
 
+	delete window;
+	
     if (show_windows_policy == ActiveFolder && !f->windowsList().count()){
         customMenu(0);
         customToolBars(0);
@@ -9913,17 +9915,19 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 	setListViewDate(caption,list[3]);
 	w->setBirthDate(list[3]);
 
-	for (line++; line!=flist.end(); line++)
-	{
+	for (line++; line!=flist.end(); line++){
 		QStringList fields = (*line).split("\t");
 		if (fields[0] == "geometry"){
 			restoreWindowGeometry(this, w, *line);}
-		else if (fields[0] == "header") {
+		else if (fields[0] == "header"){
 			fields.pop_front();
+			
+			if (w->numCols() != fields.size())
+				w->setNumCols(fields.size());
+			
 			if (d_file_version >= 78)
 				w->loadHeader(fields);
-			else
-			{
+			else {
 				w->setColPlotDesignation(list[4].toInt(), Table::X);
 				w->setColPlotDesignation(list[6].toInt(), Table::Y);
 				w->setHeader(fields);

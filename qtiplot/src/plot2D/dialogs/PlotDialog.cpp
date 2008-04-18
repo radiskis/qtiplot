@@ -42,7 +42,6 @@
 #include "../Spectrogram.h"
 #include "../QwtPieCurve.h"
 #include "../../ColorMapEditor.h"
-#include "../../pixmaps.h"
 #include "../../DoubleSpinBox.h"
 #include "../../Folder.h"
 
@@ -2983,7 +2982,7 @@ CurveTreeItem::CurveTreeItem(QwtPlotItem *curve, LayerItem *parent, const QStrin
 void CurveTreeItem::setActive(bool on)
 {
     if (on)
-		setIcon(0, QPixmap(graph_xpm));
+		setIcon(0, QPixmap(graph_enabled_xpm));
     else
 		setIcon(0, QPixmap(graph_disabled_xpm));
 }

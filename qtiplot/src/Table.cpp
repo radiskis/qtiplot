@@ -2174,15 +2174,15 @@ int Table::colIndex(const QString& name)
 
 void Table::setHeaderColType()
 {
-	int xcols=0;
-	for (int j=0;j<(int)d_table->numCols();j++){
+	int xcols = 0;
+	for (int j=0; j < d_table->numCols(); j++){
 		if (col_plot_type[j] == X)
 			xcols++;
 	}
 
-	if (xcols>1){
+	if (xcols > 1){
 		xcols = 0;
-		for (int i=0; i<(int)d_table->numCols(); i++){
+		for (int i=0; i < d_table->numCols(); i++){
 			if (col_plot_type[i] == X)
 				setColumnHeader(i, col_label[i]+"[X" + QString::number(++xcols) +"]");
 			else if (col_plot_type[i] == Y){
@@ -2190,14 +2190,12 @@ void Table::setHeaderColType()
 					setColumnHeader(i, col_label[i]+"[Y"+ QString::number(xcols) +"]");
 				else
 					setColumnHeader(i, col_label[i]+"[Y]");
-			}
-			else if (col_plot_type[i] == Z){
+			} else if (col_plot_type[i] == Z){
 				if(xcols>0)
 					setColumnHeader(i, col_label[i]+"[Z"+ QString::number(xcols) +"]");
 				else
 					setColumnHeader(i, col_label[i]+"[Z]");
-			}
-			else if (col_plot_type[i] == xErr)
+			} else if (col_plot_type[i] == xErr)
 				setColumnHeader(i, col_label[i]+"[xEr]");
 			else if (col_plot_type[i] == yErr)
 				setColumnHeader(i, col_label[i]+"[yEr]");
@@ -2207,7 +2205,7 @@ void Table::setHeaderColType()
 				setColumnHeader(i, col_label[i]);
 		}
 	} else {
-		for (int i=0; i<(int)d_table->numCols(); i++){
+		for (int i=0; i < d_table->numCols(); i++){
 			if (col_plot_type[i] == X)
 				setColumnHeader(i, col_label[i]+"[X]");
 			else if (col_plot_type[i] == Y)
@@ -2874,9 +2872,26 @@ void Table::setNumRows(int rows)
 	d_table->setNumRows(rows);
 }
 
-void Table::setNumCols(int cols)
-{
-	d_table->setNumCols(cols);
+void Table::setNumCols(int c)
+{		
+	int cols = d_table->numCols();
+	if (cols == c)
+		return;
+
+	if (cols > c){
+		d_table->setNumCols(c);
+		for (int i = cols - 1; i >= c; i--){
+			commands.removeLast();
+			comments.removeLast();
+			col_format.removeLast();
+			col_label.removeLast();
+			colTypes.removeLast();
+			col_plot_type.removeLast();
+		}
+	} else {
+		addColumns(c - cols);
+		setHeaderColType();
+	}
 }
 
 void Table::resizeRows(int r)
@@ -3063,7 +3078,7 @@ void Table::goToColumn(int col)
 }
 
 void Table::setColumnHeader(int index, const QString& label)
-{
+{	
 	Q3Header *head = d_table->horizontalHeader();
 	if (d_show_comments){
 		QString s = label;

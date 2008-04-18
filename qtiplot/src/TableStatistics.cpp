@@ -84,8 +84,7 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 		for (int i=0; i < 11; i++)
 			setColumnType(i, Text);
 
-		for (int i=0; i < d_targets.size(); i++)
-		{
+		for (int i=0; i < d_targets.size(); i++){
 			setText(i, 0, d_base->colLabel(d_targets[i]));
 			update(d_base, d_base->colName(d_targets[i]));
 		}
