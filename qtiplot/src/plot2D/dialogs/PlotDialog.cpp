@@ -2054,8 +2054,13 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
     boxLabelsAngle->setValue(dc->labelsRotation());
     boxLabelsColor->setColor(dc->labelsColor());
+	boxLabelsXOffset->blockSignals(true);
     boxLabelsXOffset->setValue(dc->labelsXOffset());
+	boxLabelsXOffset->blockSignals(false);
+	
+	boxLabelsYOffset->blockSignals(true);
     boxLabelsYOffset->setValue(dc->labelsYOffset());
+	boxLabelsYOffset->blockSignals(false);
     boxLabelsWhiteOut->setChecked(dc->labelsWhiteOut());
     switch(dc->labelsAlignment()){
 		case Qt::AlignHCenter:

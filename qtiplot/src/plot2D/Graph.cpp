@@ -1063,8 +1063,10 @@ void Graph::updateSecondaryAxis(int axis)
 
 void Graph::setAutoScale()
 {
-	for (int i = 0; i < QwtPlot::axisCnt; i++)
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		setAxisAutoScale(i);
+		d_user_step[i] = 0.0;
+	}
 
 	replot();
 	updateScale();
@@ -1181,7 +1183,7 @@ void Graph::setScale(int axis, double start, double end, double step,
 					double left_break, double right_break, int breakPos,
                     double stepBeforeBreak, double stepAfterBreak, int minTicksBeforeBreak,
 					int minTicksAfterBreak, bool log10AfterBreak, int breakWidth, bool breakDecoration)
-{
+{	
 	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(axis);
 	sc_engine->setBreakRegion(left_break, right_break);
 	sc_engine->setBreakPosition(breakPos);
