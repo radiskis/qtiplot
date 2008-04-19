@@ -484,7 +484,6 @@ public slots:
 	void hideActiveWindow();
 	void activateWindow();
 	void activateWindow(MdiSubWindow *);
-	void repaintWindows();
 	//@}
 
 	//! Show about dialog

@@ -3631,6 +3631,12 @@ void Graph::resizeEvent ( QResizeEvent *e )
 		updateLayout();
         updateCurveLabels();
 	}
+	
+	QObjectList lst = children();
+	foreach(QObject *o, lst){
+		if (o->isA("LegendWidget"))
+			((LegendWidget *)o)->setFixedCoordinatesMode(false);
+	}
 }
 
 void Graph::scaleFonts(double factor)

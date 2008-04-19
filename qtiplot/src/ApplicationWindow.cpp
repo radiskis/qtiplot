@@ -7773,11 +7773,11 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 	f->removeWindow(window);
 
 	//update list view in project explorer
-	Q3ListViewItem *it=lv->findItem (window->objectName(), 0, Q3ListView::ExactMatch|Q3ListView::CaseSensitive);
+	Q3ListViewItem *it = lv->findItem (window->objectName(), 0, Q3ListView::ExactMatch|Q3ListView::CaseSensitive);
 	if (it)
 		lv->takeItem(it);
 
-	delete window;
+	window->close();
 	
     if (show_windows_policy == ActiveFolder && !f->windowsList().count()){
         customMenu(0);
@@ -10860,7 +10860,6 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 			this,SLOT(newTable(const QString&,int,int,const QString&)));
 	connect (g,SIGNAL(viewTitleDialog()),this,SLOT(showTitleDialog()));
 	connect (g,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
-    connect (g,SIGNAL(resizedWindow(MdiSubWindow*)), this, SLOT(repaintWindows()));
 	connect (g,SIGNAL(modifiedPlot()), this, SLOT(modifiedProject()));
 	connect (g,SIGNAL(showLineDialog()),this, SLOT(showLineDialog()));
 	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
@@ -13753,8 +13752,10 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 		folders->blockSignals(true);
 
 		FolderListItem *fi = f->folderListItem();
-		foreach(MdiSubWindow *w, f->windowsList())
+		foreach(MdiSubWindow *w, f->windowsList()){
+			w->askOnCloseEvent(false);
             closeWindow(w);
+		}
 
 		if (!(f->children()).isEmpty()){
 			Folder *subFolder = f->folderBelow();
@@ -14450,6 +14451,9 @@ void ApplicationWindow::cascade()
     int y = 0;
 	QList<QMdiSubWindow*> windows = d_workspace->subWindowList(QMdiArea::StackingOrder);
     foreach (QMdiSubWindow *w, windows){
+		if (!w->isVisible())
+			continue;
+		
         w->setActiveWindow();
 		((MdiSubWindow *)w)->setNormal();
 		w->setGeometry(x, y, w->geometry().width(), w->geometry().height());
@@ -15121,19 +15125,6 @@ void ApplicationWindow::setMatrixUndoStackSize(int size)
 		}
 		f = f->folderBelow();
 	}
-}
-
-//! This is a dirty hack: sometimes the workspace area and the windows are not redrawn properly
-// after a MultiLayer plot window is resized by the user: Qt bug?
-void ApplicationWindow::repaintWindows()
-{
-	if (d_opening_file || (d_active_window && d_active_window->status() == MdiSubWindow::Maximized))
-		return;
-
-	QWidget *viewPort = d_workspace->viewport();
-	QSize size = viewPort->size();
-    viewPort->resize(QSize(size.width() + 1, size.height() + 1));
-	viewPort->resize(size);
 }
 
 QString ApplicationWindow::endOfLine()

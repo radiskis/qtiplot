@@ -182,8 +182,8 @@ private:
 	void keyPressEvent(QKeyEvent *);
 	bool eventFilter(QObject *object, QEvent *);
 	void releaseLayer();
-	void resizeLayers(QResizeEvent *re);
-	bool focusNextPrevChild ( bool next );
+	void resizeLayers(QResizeEvent *);
+	bool focusNextPrevChild(bool next);
 	//@}
 
 	Graph* active_graph;

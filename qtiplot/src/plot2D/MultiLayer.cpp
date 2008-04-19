@@ -241,8 +241,6 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 		scaleLayerFonts = true;
 	}
 
-	QApplication::setOverrideCursor(Qt::waitCursor);
-
 	double w_ratio = (double)size.width()/(double)oldSize.width();
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
@@ -264,10 +262,8 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
                 g->scaleFonts(h_ratio);
 		}
 	}
-
+	
 	emit modifiedPlot();
-	repaint();
-	QApplication::restoreOverrideCursor();
 }
 
 void MultiLayer::confirmRemoveLayer()
@@ -902,9 +898,11 @@ void MultiLayer::connectLayer(Graph *g)
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 {
-	if(e->type() == QEvent::Resize && object == (QObject *)canvas)
+	if(e->type() == QEvent::Resize && object == (QObject *)canvas){
+		canvas->setUpdatesEnabled(false);
 		resizeLayers((QResizeEvent *)e);
-	else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)canvas){
+		canvas->setUpdatesEnabled(true);
+	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)canvas){
 	    const QMouseEvent *me = (const QMouseEvent *)e;
 	    if (me->button() == Qt::RightButton)
             return QMdiSubWindow::eventFilter(object, e);
@@ -1174,6 +1172,8 @@ void MultiLayer::copy(MultiLayer* ml)
 
 bool MultiLayer::focusNextPrevChild ( bool next )
 {
+	return false;
+	
 	if (!active_graph)
 		return true;
 
