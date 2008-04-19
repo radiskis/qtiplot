@@ -326,12 +326,23 @@ QString Fit::logFitInfo(int iterations, int status)
 	return info;
 }
 
+/*
+* For details, see: http://www.mathworks.com/access/helpdesk_r13/help/toolbox/curvefit/ch_fitt9.html
+*/
 double Fit::rSquare()
-{
-	//double sst = (d_n - 1)*gsl_stats_variance(d_y, 1, d_n);
-	
-	double sst = gsl_stats_wtss (d_w, 1, d_y, 1, d_n);
-	return 1 - chi_2/sst;
+{	
+	//double sst = gsl_stats_wtss_m (d_w, 1, d_y, 1, d_n, gsl_stats_mean (d_y, 1, d_n));
+	double mean = gsl_stats_mean (d_y, 1, d_n);
+	double sse = 0.0, sst = 0.0;
+	for (int i = 0; i<d_n; i++){
+		double w = d_w[i];
+		double y = d_y[i];
+		double dy = y - eval(d_results, d_x[i]);
+		sse += w*dy*dy;
+		dy = y - mean;
+		sst += w*dy*dy;
+	}
+	return 1 - sse/sst;
 }
 
 QString Fit::legendInfo()
