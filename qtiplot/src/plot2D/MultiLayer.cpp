@@ -262,7 +262,6 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
                 g->scaleFonts(h_ratio);
 		}
 	}
-	
 	emit modifiedPlot();
 }
 
@@ -273,8 +272,7 @@ void MultiLayer::confirmRemoveLayer()
 					tr("QtiPlot - Guess best layout?"),
 					tr("Do you want QtiPlot to rearrange the remaining layers?"),
 					tr("&Yes"), tr("&No"), tr("&Cancel"),
-					0, 2) )
-		{
+					0, 2) ){
 			case 0:
 				removeLayer();
 				arrangeLayers(true, false);

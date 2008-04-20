@@ -135,7 +135,7 @@ class Graph: public QwtPlot
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot};
 
 		//! Returns a pointer to the parent MultiLayer object.
-		MultiLayer *multiLayer(){return (MultiLayer *)(this->parent()->parent()->parent());};
+		MultiLayer *multiLayer();
 
 		//! Change the active tool, deleting the old one if it exists.
 		void setActiveTool(PlotToolInterface *tool);

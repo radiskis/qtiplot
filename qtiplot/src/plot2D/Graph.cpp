@@ -290,6 +290,14 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	connect (d_zoomer[0],SIGNAL(zoomed (const QwtDoubleRect &)),this,SLOT(zoomed (const QwtDoubleRect &)));
 }
 
+MultiLayer* Graph::multiLayer()
+{
+	if (!parent())
+		return NULL;
+	
+	return (MultiLayer *)(this->parent()->parent()->parent());
+}
+
 void Graph::notifyChanges()
 {
 	emit modifiedGraph();
@@ -1281,7 +1289,11 @@ void Graph::copyImage()
 
 QPixmap Graph::graphPixmap()
 {
-	return QPixmap::grabWidget(this);
+	QPixmap pixmap(size());
+    QPainter p(&pixmap);
+    print(&p, rect());
+    p.end();
+	return pixmap;
 }
 
 void Graph::exportToFile(const QString& fileName)
@@ -3621,7 +3633,13 @@ void Graph::resizeEvent ( QResizeEvent *e )
 {
 	if (ignoreResize || !this->isVisible())
 		return;
-
+	
+	QObjectList lst = children();
+	foreach(QObject *o, lst){
+		if (o->isA("LegendWidget"))
+			((LegendWidget *)o)->setFixedCoordinatesMode();
+	}
+	
 	if (autoScaleFonts){
 		QSize oldSize = e->oldSize();
 		QSize size = e->size();
@@ -3632,12 +3650,6 @@ void Graph::resizeEvent ( QResizeEvent *e )
         resize(e->size());
 		updateLayout();
         updateCurveLabels();
-	}
-	
-	QObjectList lst = children();
-	foreach(QObject *o, lst){
-		if (o->isA("LegendWidget"))
-			((LegendWidget *)o)->setFixedCoordinatesMode(false);
 	}
 }
 

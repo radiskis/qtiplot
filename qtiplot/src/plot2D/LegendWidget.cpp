@@ -86,7 +86,9 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 {
 	if (d_fixed_coordinates){
 		setOriginCoord(d_x, d_y);
+		hide();
 		d_fixed_coordinates = false;
+		show();
 	}
 
 	const int symbolLineLength = line_length + symbolsMaxWidth();

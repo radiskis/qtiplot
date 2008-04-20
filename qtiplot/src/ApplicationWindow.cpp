@@ -10620,7 +10620,7 @@ void ApplicationWindow::copyActiveLayer()
 	
 	delete lastCopiedLayer;
 	lastCopiedLayer = new Graph(0, 0, g->width(), g->height());
-	lastCopiedLayer->setAttribute(Qt::WA_DeleteOnClose);
+	lastCopiedLayer->setLocale(locale());
 	lastCopiedLayer->copy(g);
 	g->copyImage();
 }
