@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "QwtErrorPlotCurve.h"
 #include "QwtBarCurve.h"
+#include "ScaleEngine.h"
 
 #include <qwt_painter.h>
 #include <qwt_symbol.h>
@@ -105,39 +106,42 @@ void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 	else if (d_master_curve->type() == Graph::HorizontalBars)
 		d_yOffset = ((QwtBarCurve *)d_master_curve)->dataOffset();
 
+	ScaleEngine *yScaleEngine = (ScaleEngine *)plot()->axisScaleEngine(yAxis());
+	bool logYScale = (yScaleEngine->type() == QwtScaleTransformation::Log10) ? true : false;
+	
 	for (int i = from; i <= to; i++){
 		const int xi = xMap.transform(x(i) + d_xOffset);
 		const int yi = yMap.transform(y(i) + d_yOffset);
 
 		if (type == Vertical){
-			const int yh = yMap.transform(y(i)+err[i]);
-			const int yl = yMap.transform(y(i)-err[i]);
+			const int yh = yMap.transform(y(i) + err[i]);
+			const int yl = yMap.transform(y(i) - err[i]);
 			const int yhl = yi - sh/2;
 			const int ylh = yi + sh/2;
 
 			if (plus){
 				QwtPainter::drawLine(painter, xi, yhl, xi, yh);
-				QwtPainter::drawLine(painter, xi-cap/2, yh, xi+cap/2, yh);
+				QwtPainter::drawLine(painter, xi - cap/2, yh, xi + cap/2, yh);
 			}
-			if (minus){
+			if (minus && (!logYScale || (logYScale && yl > 0))){
 				QwtPainter::drawLine(painter, xi, ylh, xi, yl);
-				QwtPainter::drawLine(painter, xi-cap/2, yl, xi+cap/2, yl);
+				QwtPainter::drawLine(painter, xi - cap/2, yl, xi + cap/2, yl);
 			}
 			if (through)
 				QwtPainter::drawLine(painter, xi, yhl, xi, ylh);
 		} else if (type == Horizontal) {
-			const int xp = xMap.transform(x(i)+err[i]);
-			const int xm = xMap.transform(x(i)-err[i]);
+			const int xp = xMap.transform(x(i) + err[i]);
+			const int xm = xMap.transform(x(i) - err[i]);
   			const int xpm = xi + sw/2;
   	        const int xmp = xi - sw/2;
 
 			if (plus){
 				QwtPainter::drawLine(painter, xp, yi, xpm, yi);
-				QwtPainter::drawLine(painter, xp, yi-cap/2, xp, yi+cap/2);
+				QwtPainter::drawLine(painter, xp, yi - cap/2, xp, yi + cap/2);
 			}
 			if (minus){
 				QwtPainter::drawLine(painter, xm, yi, xmp, yi);
-				QwtPainter::drawLine(painter, xm, yi-cap/2, xm, yi+cap/2);
+				QwtPainter::drawLine(painter, xm, yi - cap/2, xm, yi + cap/2);
 			}
 			if (through)
 				QwtPainter::drawLine(painter, xmp, yi, xpm, yi);
