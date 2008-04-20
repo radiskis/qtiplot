@@ -1,10 +1,6 @@
-#############################################################################
-###################### USER-SERVICEABLE PART ################################
-#############################################################################
-
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-#SCRIPTING_LANGS += Python
+SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -64,10 +60,6 @@ win32:LIBS        += ../3rdparty/qwt/lib/libqwt.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgsl.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgslcblas.a
 win32:LIBS        += ../3rdparty/zlib123/lib/zdll.lib
-
-#############################################################################
-###################### END OF USER-SERVICEABLE PART #########################
-#############################################################################
 
 #############################################################################
 ###################### BASIC PROJECT PROPERTIES #############################
@@ -156,23 +148,18 @@ unix: man.files += ../qtiplot.1
 
 HEADERS  += src/ApplicationWindow.h \
             src/globals.h\
-            src/Graph3D.h \
             src/Table.h \
             src/SetColValuesDialog.h \
-            src/Plot3DDialog.h \
             src/ExportDialog.h \
             src/PolynomFitDialog.h \
             src/ExpDecayDialog.h \
             src/FitDialog.h \
-            src/SurfaceDialog.h \
             src/TableDialog.h \
             src/fit_gsl.h \
             src/nrutil.h\
             src/pixmaps.h\
             src/IntDialog.h \
             src/SortDialog.h\
-            src/Bar.h \
-            src/Cone3D.h \
             src/ConfigDialog.h \
             src/DataSetDialog.h \
             src/MyParser.h \
@@ -231,22 +218,17 @@ HEADERS  += src/ApplicationWindow.h \
 
 SOURCES  += src/main.cpp \
 			src/ApplicationWindow.cpp \
-            src/Graph3D.cpp \
             src/Table.cpp \
             src/SetColValuesDialog.cpp \
-            src/Plot3DDialog.cpp \
             src/ExportDialog.cpp \
             src/PolynomFitDialog.cpp \
             src/ExpDecayDialog.cpp \
             src/FitDialog.cpp \
-            src/SurfaceDialog.cpp \
             src/TableDialog.cpp \
             src/fit_gsl.cpp \
             src/nrutil.cpp\
             src/IntDialog.cpp \
             src/SortDialog.cpp\
-            src/Bar.cpp \
-            src/Cone3D.cpp \
             src/ConfigDialog.cpp \
             src/DataSetDialog.cpp \
             src/MyParser.cpp \
@@ -419,6 +401,22 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LineDialog.cpp \
 		       src/plot2D/dialogs/PlotDialog.cpp \
 			   src/plot2D/dialogs/TextEditor.cpp \
+
+###############################################################
+################# Module: Plot 3D #############################
+###############################################################
+
+    HEADERS += src/plot3D/Bar.h \
+               src/plot3D/Cone3D.h \
+			   src/plot3D/Graph3D.h \
+			   src/plot3D/Plot3DDialog.h \
+			   src/plot3D/SurfaceDialog.h \
+	
+	SOURCES += src/plot3D/Bar.cpp \
+               src/plot3D/Cone3D.cpp \
+			   src/plot3D/Graph3D.cpp \
+			   src/plot3D/Plot3DDialog.cpp \
+			   src/plot3D/SurfaceDialog.cpp \
 
 ###############################################################
 ################# Module: FFT 2D ##############################

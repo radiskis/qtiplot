@@ -29,8 +29,8 @@
 #include "Graph3D.h"
 #include "Bar.h"
 #include "Cone3D.h"
-#include "MyParser.h"
-#include "matrix/MatrixModel.h"
+#include "../MyParser.h"
+#include "../matrix/MatrixModel.h"
 
 #include <QApplication>
 #include <QMessageBox>

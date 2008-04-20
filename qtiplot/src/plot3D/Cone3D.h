@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : Bar.h
+    File                 : Cone3D.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : 3D bars (modifed enrichment from QwtPlot3D)
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+    Description          : 3D cone class (code from Cone class in QwtPlot3D library with modified destructor)
                            
  ***************************************************************************/
 
@@ -26,29 +26,30 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef BARS_H
-#define BARS_H
+#ifndef MYCONES_H
+#define MYCONES_H
 
 #include <qwt3d_plot.h>
 
-//! 3D bars (modifed enrichment from QwtPlot3D)
-class Bar : public Qwt3D::VertexEnrichment
+//! 3D cone class (based on QwtPlot3D)
+class Cone3D : public Qwt3D::VertexEnrichment
 {
 public:
-  Bar();
-  Bar(double rad);
+  Cone3D();
+  Cone3D(double rad, unsigned quality);
+  ~Cone3D();
 
-  Qwt3D::Enrichment* clone() const {return new Bar(*this);}
+  Qwt3D::Enrichment* clone() const {return new Cone3D(*this);}
   
-  void configure(double rad);
-  void drawBegin();
-  void drawEnd();
+  void configure(double rad, unsigned quality);
   void draw(Qwt3D::Triple const&);
 
 private:
-  double radius_;
-  double diag_;
+  	GLUquadricObj *hat;
+	GLUquadricObj *disk;
+	unsigned quality_;
+	double radius_;
+	GLboolean oldstate_;
 };
-
 
 #endif

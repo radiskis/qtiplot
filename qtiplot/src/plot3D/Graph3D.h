@@ -37,8 +37,8 @@
 #include <QVector>
 #include <QEvent>
 
-#include "Table.h"
-#include "matrix/Matrix.h"
+#include "../Table.h"
+#include "../matrix/Matrix.h"
 
 using namespace Qwt3D;
 
