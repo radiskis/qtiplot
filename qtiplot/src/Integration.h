@@ -41,7 +41,7 @@ public:
 	Integration(ApplicationWindow *parent, Graph *g);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
-	Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start, int end);
+	Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start = 0, int end = -1);
 	Integration(const QString& formula, const QString& var, ApplicationWindow *parent,
                 Graph *g, double start, double end);
 
