@@ -77,7 +77,7 @@ void LayerButton::mouseDoubleClickEvent ( QMouseEvent * )
 	emit showCurvesDialog();
 }
 
-MultiLayer::MultiLayer(ApplicationWindow* parent, int layers, int rows, int cols, 
+MultiLayer::MultiLayer(ApplicationWindow* parent, int layers, int rows, int cols,
 			const QString& label, const char* name, Qt::WFlags f)
 : MdiSubWindow(label, parent, name, f),
 active_graph(NULL),
@@ -129,7 +129,7 @@ d_print_cropmarks(false)
 
 	for (int i = 0; i < layers; i++)
 		addLayer();
-		
+
 	setFocusPolicy(Qt::StrongFocus);
 	setFocus();
 }
@@ -160,10 +160,10 @@ LayerButton* MultiLayer::addLayerButton()
 Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 {
 	addLayerButton();
-	if (!width && !height){		
-		width =	canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace; 
+	if (!width && !height){
+		width =	canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace;
 		height = canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace;
-		
+
 		int layers = graphsList.size();
 		x = left_margin + (layers % d_cols)*(width + colsSpace);
 	    y = top_margin + (layers / d_cols)*(height + rowsSpace);
@@ -558,9 +558,9 @@ void MultiLayer::arrangeLayers(bool fit, bool userSize)
 
 		this->showNormal();
 		QSize size = canvas->childrenRect().size();
-		this->resize(canvas->x() + size.width() + left_margin + 2*right_margin, 
+		this->resize(canvas->x() + size.width() + left_margin + 2*right_margin,
 					canvas->y() + size.height() + bottom_margin + 2*LayerButton::btnSize());
-		
+
 		foreach (Graph *gr, graphsList)
 			gr->setIgnoreResizeEvents(ignoreResize);
 	}
@@ -588,7 +588,7 @@ QPixmap MultiLayer::canvasPixmap()
     QPainter p(&pic);
 	foreach (Graph *g, graphsList)
 		g->print(&p, g->geometry());
-	
+
 	p.end();
 	return pic;
 }
@@ -734,7 +734,7 @@ void MultiLayer::exportSVG(const QString& fname)
 	QPainter p(&generator);
 	foreach (Graph *g, graphsList)
 		g->print(&p, g->geometry());
-	
+
 	p.end();
 }
 
@@ -832,7 +832,7 @@ void MultiLayer::printAllLayers(QPainter *painter)
 			g->print(painter, QRect(pos, g->size()));
 		}
 	}
-	
+
 	if (d_print_cropmarks){
 		cr.addCoords(-1, -1, 2, 2);
     	painter->save();
@@ -853,7 +853,7 @@ void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 		QwtText text = g->title();
   	    text.setFont(titleFnt);
   	    ((QwtPlot *)g)->setTitle(text);
-		
+
 		for (int j= 0; j<QwtPlot::axisCnt; j++){
 			g->setAxisFont(j, numbersFnt);
 			text = g->axisTitle(j);
@@ -1171,7 +1171,7 @@ void MultiLayer::copy(MultiLayer* ml)
 bool MultiLayer::focusNextPrevChild ( bool next )
 {
 	return false;
-	
+
 	if (!active_graph)
 		return true;
 
