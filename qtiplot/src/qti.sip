@@ -287,7 +287,7 @@ private:
 class Matrix: MdiSubWindow
 {
 %TypeHeaderCode
-#include "src/Matrix.h"
+#include "src/matrix/Matrix.h"
 #define CHECK_MATRIX_COL(arg)\
 	int col = arg-1;\
    if (col < 0 || col >= sipCpp->numCols()) {\
@@ -389,7 +389,7 @@ private:
 class ArrowMarker // : QwtPlotMarker
 {
 %TypeHeaderCode
-#include "src/ArrowMarker.h"
+#include "src/plot2D/ArrowMarker.h"
 %End
 public:
 
@@ -414,7 +414,7 @@ private:
 class ImageMarker // : QwtPlotMarker
 {
 %TypeHeaderCode
-#include "src/ImageMarker.h"
+#include "src/plot2D/ImageMarker.h"
 %End
 public:
 
@@ -434,7 +434,7 @@ private:
 class LegendWidget // : QWidget /PyName=Legend/
 {
 %TypeHeaderCode
-#include "src/LegendWidget.h"
+#include "src/plot2D/LegendWidget.h"
 %End
 public:
     enum FrameStyle{None = 0, Line = 1, Shadow=2};
@@ -454,7 +454,7 @@ private:
 class Grid // : QwtPlotGrid
 {
 %TypeHeaderCode
-#include "src/Grid.h"
+#include "src/plot2D/Grid.h"
 %End
 public:
 
@@ -494,8 +494,8 @@ private:
 class Graph : QWidget /PyName=Layer/
 {
 %TypeHeaderCode
-#include "src/Graph.h"
-#include "src/LegendWidget.h"
+#include "src/plot2D/Graph.h"
+#include "src/plot2D/LegendWidget.h"
 %End
 public:
   enum Scale{Linear, Log10};
@@ -644,7 +644,7 @@ private:
 class MultiLayer : MdiSubWindow /PyName=Graph/
 {
 %TypeHeaderCode
-#include "src/MultiLayer.h"
+#include "src/plot2D/MultiLayer.h"
 %End
 public:
 
@@ -703,7 +703,7 @@ private:
 class Graph3D: MdiSubWindow
 {
 %TypeHeaderCode
-#include "src/Graph3D.h"
+#include "src/plot3D/Graph3D.h"
 %End
 public:
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon = 3};
