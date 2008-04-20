@@ -17,8 +17,8 @@ DEFINES         += SCRIPTING_DIALOG
 #RESTRICTED_MODULES += EMF
 
 ######################################################################################
-# Uncomment the following line if you want to perform a custom installation using 
-# the *.path variables defined bellow. 
+# Uncomment the following line if you want to perform a custom installation using
+# the *.path variables defined bellow.
 ######################################################################################
 #CONFIG          += CustomInstall
 
@@ -105,7 +105,7 @@ contains(CONFIG, CustomInstall){
 	DEFINES       += TRANSLATIONS_PATH="\\\"$$replace(translations.path," ","\ ")\\\"
 	DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\"
 	}
-	
+
 win32:DEFINES += QT_DLL QT_THREAD_SUPPORT
 QT            += opengl qt3support network svg xml
 
@@ -323,18 +323,18 @@ SOURCES  += src/main.cpp \
 			   src/matrix/MatrixModel.h \
                src/matrix/MatrixSizeDialog.h \
                src/matrix/MatrixValuesDialog.h \
-			   
-	SOURCES += src/matrix/Matrix.cpp \   
+
+	SOURCES += src/matrix/Matrix.cpp \
 			   src/matrix/MatrixCommand.cpp \
                src/matrix/MatrixDialog.cpp \
 			   src/matrix/MatrixModel.cpp \
                src/matrix/MatrixSizeDialog.cpp \
                src/matrix/MatrixValuesDialog.cpp \
-	
+
 ###############################################################
 ################# Module: Plot 2D #############################
 ###############################################################
-	
+
     HEADERS += src/plot2D/ArrowMarker.h \
 			   src/plot2D/BoxCurve.h \
 			   src/plot2D/CanvasPicker.h \
@@ -362,9 +362,9 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/SelectionMoveResizer.h \
 			   src/plot2D/Spectrogram.h \
 			   src/plot2D/TitlePicker.h \
-			   src/plot2D/TranslateCurveTool.h \			   
+			   src/plot2D/TranslateCurveTool.h \
 			   src/plot2D/VectorCurve.h \
-			          			   		   
+
     SOURCES += src/plot2D/ArrowMarker.cpp \
 			   src/plot2D/BoxCurve.cpp \
 			   src/plot2D/CanvasPicker.cpp \
@@ -391,7 +391,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/SelectionMoveResizer.cpp \
 			   src/plot2D/Spectrogram.cpp \
 			   src/plot2D/TitlePicker.cpp \
-			   src/plot2D/TranslateCurveTool.cpp \			   
+			   src/plot2D/TranslateCurveTool.cpp \
 			   src/plot2D/VectorCurve.cpp \
 
 	HEADERS += src/plot2D/dialogs/AssociationsDialog.h \
@@ -406,7 +406,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LineDialog.h \
 		       src/plot2D/dialogs/PlotDialog.h \
 			   src/plot2D/dialogs/TextEditor.h \
-	
+
 	SOURCES += src/plot2D/dialogs/AssociationsDialog.cpp \
 			   src/plot2D/dialogs/AxesDialog.cpp \
 			   src/plot2D/dialogs/CurvesDialog.cpp \
@@ -419,7 +419,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LineDialog.cpp \
 		       src/plot2D/dialogs/PlotDialog.cpp \
 			   src/plot2D/dialogs/TextEditor.cpp \
-			   
+
 ###############################################################
 ################# Module: FFT 2D ##############################
 ###############################################################
@@ -462,7 +462,7 @@ contains(SCRIPTING_LANGS, muParser) {
 ##################### PYTHON + SIP + PyQT #####################
 
 contains(SCRIPTING_LANGS, Python) {
- 
+
   contains(CONFIG, CustomInstall){
   	INSTALLS += pythonconfig
   	pythonconfig.files += qtiplotrc.py \
@@ -472,7 +472,7 @@ contains(SCRIPTING_LANGS, Python) {
   	win32: pythonconfig.path = $$INSTALLBASE
   	DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
   }
-  
+
   DEFINES += SCRIPTING_PYTHON
 
   HEADERS += src/PythonScript.h src/PythonScripting.h
