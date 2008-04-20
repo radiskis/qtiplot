@@ -7892,6 +7892,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
 
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionFFT);
+		analysisMenu->addAction(actionIntegrate);
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionCorrelate);
         analysisMenu->addAction(actionAutoCorrelate);
@@ -10747,6 +10748,29 @@ void ApplicationWindow::integrate()
 		info += "-------------------------------------------------------------\n";
 		current_folder->appendLogInfo(info);
 		showResults(true);
+	} else if (w->inherits("Table")){
+		Table *t = (Table *)w;
+		QStringList lst = t->selectedColumns();
+		int cols = lst.size();
+		if (!cols){
+        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
+			return;
+		}
+		
+		Table *result = newTable(cols, 2, "", tr("Integration of %1").arg(t->objectName()));
+		result->setColName(0, tr("Column"));
+		result->setColName(1, tr("Area"));
+		int aux = 0;
+		foreach (QString yCol, lst){
+			int xCol = t->colX(t->colIndex(yCol));
+			Integration *i = new Integration(this, t, t->colName(xCol), yCol);
+			i->run();
+			result->setText(aux, 0, yCol);
+			result->setCell(aux, 1, i->area());
+			aux++;
+			delete i;
+		}
+		result->show();
 	}
 }
 
