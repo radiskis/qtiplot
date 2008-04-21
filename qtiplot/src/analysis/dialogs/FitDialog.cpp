@@ -27,18 +27,18 @@
  *                                                                         *
  ***************************************************************************/
 #include "FitDialog.h"
-#include "MyParser.h"
-#include "ApplicationWindow.h"
-#include "ColorBox.h"
-#include "Fit.h"
-#include "MultiPeakFit.h"
-#include "ExponentialFit.h"
-#include "PolynomialFit.h"
-#include "PluginFit.h"
-#include "NonLinearFit.h"
-#include "SigmoidalFit.h"
-#include "LogisticFit.h"
-#include "DoubleSpinBox.h"
+#include "../Fit.h"
+#include "../MultiPeakFit.h"
+#include "../ExponentialFit.h"
+#include "../PolynomialFit.h"
+#include "../PluginFit.h"
+#include "../NonLinearFit.h"
+#include "../SigmoidalFit.h"
+#include "../LogisticFit.h"
+#include "../../MyParser.h"
+#include "../../ApplicationWindow.h"
+#include "../../ColorBox.h"
+#include "../../DoubleSpinBox.h"
 
 #include <QListWidget>
 #include <QTableWidget>
@@ -436,7 +436,7 @@ void FitDialog::initAdvancedPage()
 	covMatrixName = new QLineEdit( tr( "CovMatrix" ) );
     gl2->addWidget(covMatrixName, 2, 2);
 	
-	btnResiduals = new QPushButton(tr( "Plot &Residuals" )); 
+	btnResiduals = new QPushButton(tr( "&Residuals Plot" )); 
 	connect(btnResiduals, SIGNAL(clicked()), this, SLOT(showResiduals()));
 	gl2->addWidget(btnResiduals, 3, 0);
 	

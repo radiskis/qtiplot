@@ -27,9 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "Correlation.h"
-#include "plot2D/MultiLayer.h"
-#include "plot2D/PlotCurve.h"
-#include "ColorBox.h"
+#include "../ColorBox.h"
+#include "../plot2D/MultiLayer.h"
+#include "../plot2D/PlotCurve.h"
 #include <QMessageBox>
 #include <QLocale>
 
