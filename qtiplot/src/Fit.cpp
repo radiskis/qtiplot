@@ -78,6 +78,7 @@ void Fit::init()
 	is_non_linear = true;
 	d_results = 0;
 	d_errors = 0;
+	d_residuals = NULL;
 	d_init_err = false;
 	chi_2 = -1;
 	d_scale_errors = false;
@@ -531,6 +532,59 @@ double *Fit::errors()
 		}
 	}
 	return d_errors;
+}
+
+double* Fit::residuals()
+{
+	if (!d_residuals){
+		if (!d_n || error())
+			return NULL;
+		
+		d_residuals = new double[d_n];
+		for (int i=0; i<d_n; i++)
+			d_residuals[i] = d_y[i] - eval(d_results, d_x[i]);
+	}
+	return d_residuals;
+}
+			
+QwtPlotCurve* Fit::showResiduals()
+{
+	if (!d_residuals)
+		residuals();
+	if (!d_residuals){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+				tr("Please perform a fit first!"));
+		return NULL;
+	}
+		
+	if (!d_graphics_display)
+		return NULL;
+	
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	Table *outputTable = app->newTable(d_n, 2, tr("Residuals"), tr("Residuals of %1").arg(d_explanation));
+	if (!outputTable)
+		return NULL;
+	
+	outputTable->setColName(1, tr("residue"));
+	for (int i = 0; i < d_n; i++){
+		outputTable->setCell(i, 0, d_x[i]);
+		outputTable->setCell(i, 1, d_residuals[i]);
+	}
+	for (int i = 0; i < outputTable->numCols(); i++)
+		outputTable->table()->adjustColumn(i);
+	outputTable->show();
+		
+	if (!d_output_graph)
+		d_output_graph = createOutputGraph()->activeGraph();
+
+	QString tableName = outputTable->objectName();
+	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_residue");
+	c->setData(d_x, d_residuals, d_n);
+    c->setPen(QPen(ColorBox::color(d_curveColorIndex + 1), 1));
+
+	d_output_graph->insertPlotItem(c, Graph::Line);
+    d_output_graph->updatePlot();
+	return (QwtPlotCurve*)c;
 }
 
 void Fit::fit()

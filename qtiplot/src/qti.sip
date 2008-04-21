@@ -1000,6 +1000,19 @@ if(sipRes)
   sipIsErr = 1;
 %End
 
+	SIP_PYTUPLE residuals();
+%MethodCode
+double *residuals = sipCpp->residuals();
+int size = sipCpp->dataSize();
+sipRes = PyTuple_New(size);
+if(sipRes)
+{
+  for(int i=0; i<size; i++)
+    PyTuple_SET_ITEM(sipRes, i, PyFloat_FromDouble(residuals[i]));
+} else
+  sipIsErr = 1;
+%End
+
   //! Returns the sum of squares of the residuals from the best-fit line
   double chiSquare();
 

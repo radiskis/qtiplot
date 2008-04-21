@@ -91,7 +91,8 @@ private slots:
 	void showPointsBox(bool);
 	void showParametersTable();
 	void showCovarianceMatrix();
-
+	void showResiduals();
+	
 	//! Applies the user changes to the numerical format of the output results
 	void applyChanges();
 
@@ -151,7 +152,7 @@ private:
 	ColorBox* boxColor;
 	QComboBox *boxWeighting, *tableNamesBox, *colNamesBox;
 	QRadioButton *generatePointsBtn, *samePointsBtn;
-	QPushButton *btnParamTable, *btnCovMatrix, *btnParamRange;
+	QPushButton *btnParamTable, *btnCovMatrix, *btnParamRange, *btnResiduals;
 	QLineEdit *covMatrixName, *paramTableName;
 	QCheckBox *plotLabelBox, *logBox, *scaleErrorsBox, *globalParamTableBox;
 	QCheckBox *previewBox;

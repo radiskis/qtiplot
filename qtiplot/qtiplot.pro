@@ -8,6 +8,7 @@ DEFINES         += SCRIPTING_CONSOLE
 # a dialog for selecting the scripting language on a per-project basis
 DEFINES         += SCRIPTING_DIALOG
 #DEFINES         += QTIPLOT_DEMO
+DEFINES         += QTIPLOT_SUPPORT
 
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
 #RESTRICTED_MODULES += EMF

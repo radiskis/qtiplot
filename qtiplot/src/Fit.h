@@ -97,6 +97,12 @@ class Fit : public Filter
 		//! Returns a vector with the fit results
 		double* results(){return d_results;};
 
+		//! Returns a vector with the fit residuals
+		double* residuals();
+			
+		//! Plot residuals and display data values in a column
+		QwtPlotCurve* showResiduals();
+		
 		//! Returns a vector with the standard deviations of the results
 		double* errors();
 
@@ -210,6 +216,9 @@ class Fit : public Filter
 		//! Stores standard deviations of the result parameters
 		double *d_errors;
 
+		//! Stores fit residuals
+		double *d_residuals;
+		
 		//! The sum of squares of the residuals from the best-fit line
 		double chi_2;
 
