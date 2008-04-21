@@ -137,7 +137,9 @@ int main( int argc, char ** argv )
 
 		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
 		mw->restoreApplicationGeometry();
+	#ifdef QTIPLOT_SUPPORT
 		mw->showDonationDialog();
+	#endif
 		if (mw->autoSearchUpdates){
 			mw->autoSearchUpdatesRequest = true;
 			mw->searchForUpdates();

@@ -2414,6 +2414,7 @@ After you've called fit(), you have a number of possibilities
 for extracting the results: <programlisting>
 f.results()
 f.errors()
+f.residuals()
 f.chiSquare()
 f.rSquare()
 f.dataSize()

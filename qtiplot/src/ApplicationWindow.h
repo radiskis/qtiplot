@@ -777,8 +777,9 @@ public slots:
 	void receivedVersionFile(bool error);
 	//!  called when the user presses the actionCheckUpdates
 	void searchForUpdates();
-
+#ifdef QTIPLOT_SUPPORT
 	void showDonationDialog();
+#endif
 	//! Open support page in external browser
 	void showSupportPage();
 	//! Open donation page in external browser
@@ -1097,7 +1098,7 @@ public:
 
 	//! Path to the folder where the last template file was opened/saved
 	QString templatesDir;
-	bool smooth3DMesh, autoScaleFonts, autoResizeLayers, askForSupport, autoSearchUpdates;
+	bool smooth3DMesh, autoScaleFonts, autoResizeLayers, autoSearchUpdates;
 	bool confirmCloseTable, confirmCloseMatrix, confirmClosePlot2D, confirmClosePlot3D;
 	bool confirmCloseFolder, confirmCloseNotes;
 	bool titleOn, autoSave, drawBackbones, allAxesOn, autoscale2DPlots, antialiasing2DPlots;

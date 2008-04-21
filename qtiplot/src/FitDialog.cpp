@@ -435,7 +435,11 @@ void FitDialog::initAdvancedPage()
     gl2->addWidget(new QLabel( tr("Name: ")), 2, 1);
 	covMatrixName = new QLineEdit( tr( "CovMatrix" ) );
     gl2->addWidget(covMatrixName, 2, 2);
-
+	
+	btnResiduals = new QPushButton(tr( "Plot &Residuals" )); 
+	connect(btnResiduals, SIGNAL(clicked()), this, SLOT(showResiduals()));
+	gl2->addWidget(btnResiduals, 3, 0);
+	
 	scaleErrorsBox = new QCheckBox(tr("Scale Errors with sqrt(Chi^2/doF)"));
 	scaleErrorsBox->setChecked(app->fit_scale_errors);
 	connect( scaleErrorsBox, SIGNAL(stateChanged (int)), this, SLOT(enableApplyChanges(int)));
@@ -1478,4 +1482,12 @@ QString FitDialog::parseFormula(const QString& s)
 		}
 	}
 	return formula;
+}
+
+void FitDialog::showResiduals()
+{
+	if (!d_current_fit)
+		return;
+	
+	d_current_fit->showResiduals();
 }
