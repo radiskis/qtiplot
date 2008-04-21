@@ -316,7 +316,7 @@ QString Fit::logFitInfo(int iterations, int status)
 	}
 	info += "--------------------------------------------------------------------------------------\n";
 	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
-	info += tr("R^2") + " = " + locale.toString(rSquare(), 'e', d_prec) + "\n";
+	info += tr("R^2") + " = " + locale.toString(rSquare(), 'g', d_prec) + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
 	if (is_non_linear){
 		info += tr("Iterations")+ " = " + QString::number(iterations) + "\n";
@@ -361,7 +361,7 @@ QString Fit::legendInfo()
 
 	double chi_2_dof = chi_2/(d_n - d_p);
 	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
-	info += tr("R^2") + " = " + locale.toString(rSquare(), 'e', d_prec) + "\n";
+	info += tr("R^2") + " = " + locale.toString(rSquare(), 'g', d_prec) + "\n";
 
 	for (int i=0; i<d_p; i++){
 		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'e', d_prec) + " +/- ";

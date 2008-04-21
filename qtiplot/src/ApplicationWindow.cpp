@@ -7900,6 +7900,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionConvolute);
         analysisMenu->addAction(actionDeconvolute);
         analysisMenu->insertSeparator();
+		analysisMenu->addAction(actionFitLinear);
         analysisMenu->addAction(actionShowFitDialog);
 	}
     reloadCustomActions();
@@ -10763,6 +10764,8 @@ void ApplicationWindow::integrate()
 		int aux = 0;
 		foreach (QString yCol, lst){
 			int xCol = t->colX(t->colIndex(yCol));
+			
+			
 			Integration *i = new Integration(this, t, t->colName(xCol), yCol);
 			i->run();
 			result->setText(aux, 0, yCol);
@@ -10781,7 +10784,60 @@ void ApplicationWindow::differentiate()
 
 void ApplicationWindow::fitLinear()
 {
-	analysis(FitLinear);
+	MdiSubWindow *w = activeWindow();
+	if (!w)
+		return;
+
+	if (w->isA("MultiLayer"))
+		analysis(FitLinear);
+	else if (w->inherits("Table")){
+		Table *t = (Table *)w;
+		QStringList lst = t->selectedYColumns();
+		int cols = lst.size();
+		if (!cols){
+        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
+			return;
+		}
+		
+		MultiLayer* g = multilayerPlot(t, t->drawableColumnSelection(), Graph::LineSymbols);
+		if (!g)
+			return;
+
+		QString legend = tr("Linear Regression of %1").arg(t->objectName());
+		g->setWindowLabel(legend);
+		
+		Table *result = newTable(cols, 5, "", legend);
+		result->setColName(0, tr("Column"));
+		result->setColName(1, tr("Slope"));
+		result->setColName(2, tr("Intercept"));
+		result->setColName(3, tr("Chi^2"));
+		result->setColName(4, tr("R^2"));
+		
+		LinearFit *lf = new LinearFit (this, g->activeGraph());
+		if (d_2_linear_fit_points)
+			lf->generateFunction(generateUniformFitPoints, 2);
+		lf->setOutputPrecision(fit_output_precision);
+		
+		int aux = 0;
+		foreach (QString yCol, lst){	
+			if (!lf->setDataFromCurve(yCol))
+				continue;
+							
+			lf->setColor(aux);
+			lf->fit();
+			double *res = lf->results();
+			result->setText(aux, 0, yCol);
+			result->setCell(aux, 1, res[1]);
+			result->setCell(aux, 2, res[0]);
+			result->setCell(aux, 3, lf->chiSquare());
+			result->setCell(aux, 4, lf->rSquare());
+			aux++;
+		}
+		for (int i = 0; i < result->numCols(); i++)
+			result->table()->adjustColumn(i);
+		result->show();
+		delete lf;
+	}
 }
 
 void ApplicationWindow::fitSigmoidal()
