@@ -1,6 +1,6 @@
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-#SCRIPTING_LANGS += Python
+SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -9,7 +9,7 @@ DEFINES         += SCRIPTING_CONSOLE
 DEFINES         += SCRIPTING_DIALOG
 #DEFINES         += QTIPLOT_DEMO
 # comment the following lines to disable donations start-up message
-DEFINES         += QTIPLOT_SUPPORT
+#DEFINES         += QTIPLOT_SUPPORT
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
 #RESTRICTED_MODULES += EMF
 
