@@ -27,10 +27,10 @@
  *                                                                         *
  ***************************************************************************/
 #include "IntDialog.h"
-#include "ApplicationWindow.h"
-#include "plot2D/Graph.h"
-#include "Integration.h"
-#include "DoubleSpinBox.h"
+#include "../Integration.h"
+#include "../../ApplicationWindow.h"
+#include "../../plot2D/Graph.h"
+#include "../../DoubleSpinBox.h"
 
 #include <QGroupBox>
 #include <QSpinBox>

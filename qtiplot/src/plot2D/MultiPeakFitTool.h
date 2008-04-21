@@ -30,7 +30,7 @@
 #define MULTI_PEAK_FIT_TOOL
 
 #include "PlotToolInterface.h"
-#include "../MultiPeakFit.h"
+#include "../analysis/MultiPeakFit.h"
 #include <QObject>
 
 class DataPickerTool;

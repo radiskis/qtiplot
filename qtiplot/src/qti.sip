@@ -48,7 +48,7 @@ private:
   ScriptEdit(ScriptEdit&);
 };
 
-class MdiSubWindow: QWidget /PyName=MDIWindow/
+class MdiSubWindow: QMdiSubWindow /PyName=MDIWindow/
 {
 %TypeHeaderCode
 #include "src/MdiSubWindow.h"
@@ -916,7 +916,7 @@ private:
 class Fit : Filter
 {
 %TypeHeaderCode
-#include "src/Fit.h"
+#include "src/analysis/Fit.h"
 %End
 public:
   enum Algorithm{ScaledLevenbergMarquardt, UnscaledLevenbergMarquardt, NelderMeadSimplex};
@@ -1046,7 +1046,7 @@ else { sipCpp = NULL; }
 class ExponentialFit : Fit
 {
 %TypeHeaderCode
-#include "src/ExponentialFit.h"
+#include "src/analysis/ExponentialFit.h"
 %End
 public:
   ExponentialFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, bool);
@@ -1070,7 +1070,7 @@ public:
 class TwoExpFit : Fit
 {
 %TypeHeaderCode
-#include "src/ExponentialFit.h"
+#include "src/analysis/ExponentialFit.h"
 %End
 public:
   TwoExpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1094,7 +1094,7 @@ public:
 class ThreeExpFit : Fit
 {
 %TypeHeaderCode
-#include "src/ExponentialFit.h"
+#include "src/analysis/ExponentialFit.h"
 %End
 public:
   ThreeExpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1118,7 +1118,7 @@ public:
 class SigmoidalFit : Fit
 {
 %TypeHeaderCode
-#include "src/SigmoidalFit.h"
+#include "src/analysis/SigmoidalFit.h"
 %End
 public:
   SigmoidalFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1144,7 +1144,7 @@ public:
 class LogisticFit : Fit
 {
 %TypeHeaderCode
-#include "src/LogisticFit.h"
+#include "src/analysis/LogisticFit.h"
 %End
 public:
   LogisticFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1170,7 +1170,7 @@ public:
 class GaussAmpFit : Fit
 {
 %TypeHeaderCode
-#include "src/MultiPeakFit.h"
+#include "src/analysis/MultiPeakFit.h"
 %End
 public:
   GaussAmpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1196,7 +1196,7 @@ public:
 class NonLinearFit : Fit
 {
 %TypeHeaderCode
-#include "src/NonLinearFit.h"
+#include "src/analysis/NonLinearFit.h"
 %End
 public:
   NonLinearFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1236,7 +1236,7 @@ public:
 class PluginFit : Fit
 {
 %TypeHeaderCode
-#include "src/PluginFit.h"
+#include "src/analysis/PluginFit.h"
 %End
 public:
   PluginFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1261,7 +1261,7 @@ public:
 class MultiPeakFit : Fit
 {
 %TypeHeaderCode
-#include "src/MultiPeakFit.h"
+#include "src/analysis/MultiPeakFit.h"
 %End
 public:
   enum PeakProfile{Gauss, Lorentz};
@@ -1282,7 +1282,7 @@ public:
 class LorentzFit : MultiPeakFit
 {
 %TypeHeaderCode
-#include "src/MultiPeakFit.h"
+#include "src/analysis/MultiPeakFit.h"
 %End
 public:
   LorentzFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1306,7 +1306,7 @@ public:
 class GaussFit : MultiPeakFit
 {
 %TypeHeaderCode
-#include "src/MultiPeakFit.h"
+#include "src/analysis/MultiPeakFit.h"
 %End
 public:
   GaussFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1330,7 +1330,7 @@ public:
 class PolynomialFit : Fit
 {
 %TypeHeaderCode
-#include "src/PolynomialFit.h"
+#include "src/analysis/PolynomialFit.h"
 %End
 public:
   PolynomialFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int, bool);
@@ -1360,7 +1360,7 @@ public:
 class LinearFit : Fit
 {
 %TypeHeaderCode
-#include "src/PolynomialFit.h"
+#include "src/analysis/PolynomialFit.h"
 %End
 public:
   LinearFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1385,7 +1385,7 @@ public:
 class Filter : QObject
 {
 %TypeHeaderCode
-#include "src/Filter.h"
+#include "src/analysis/Filter.h"
 %End
 public:
   Filter(ApplicationWindow* /TransferThis/, Graph*=0, const char*=0);
@@ -1410,7 +1410,7 @@ public:
 class Differentiation : Filter
 {
 %TypeHeaderCode
-#include "src/Differentiation.h"
+#include "src/analysis/Differentiation.h"
 %End
 public:
   Differentiation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1435,7 +1435,7 @@ public:
 class Integration : Filter
 {
 %TypeHeaderCode
-#include "src/Integration.h"
+#include "src/analysis/Integration.h"
 %End
 public:
   Integration(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
@@ -1465,7 +1465,7 @@ public:
 class Interpolation : Filter
 {
 %TypeHeaderCode
-#include "src/Interpolation.h"
+#include "src/analysis/Interpolation.h"
 %End
 public:
   enum InterpolationMethod{Linear, Cubic, Akima};
@@ -1494,7 +1494,7 @@ public:
 class SmoothFilter : Filter
 {
 %TypeHeaderCode
-#include "src/SmoothFilter.h"
+#include "src/analysis/SmoothFilter.h"
 %End
 public:
   enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3};
@@ -1525,7 +1525,7 @@ public:
 class FFTFilter : Filter
 {
 %TypeHeaderCode
-#include "src/FFTFilter.h"
+#include "src/analysis/FFTFilter.h"
 %End
 public:
   enum FilterType{LowPass = 1, HighPass = 2, BandPass = 3, BandBlock = 4};
@@ -1558,7 +1558,7 @@ public:
 class FFT : Filter
 {
 %TypeHeaderCode
-#include "src/FFT.h"
+#include "src/analysis/FFT.h"
 %End
 public:
 
@@ -1590,7 +1590,7 @@ public:
 class Correlation : Filter
 {
 %TypeHeaderCode
-#include "src/Correlation.h"
+#include "src/analysis/Correlation.h"
 %End
 public:
 
@@ -1607,7 +1607,7 @@ public:
 class Convolution : Filter
 {
 %TypeHeaderCode
-#include "src/Convolution.h"
+#include "src/analysis/Convolution.h"
 %End
 public:
 
@@ -1624,7 +1624,7 @@ public:
 class Deconvolution : Filter
 {
 %TypeHeaderCode
-#include "src/Convolution.h"
+#include "src/analysis/Convolution.h"
 %End
 public:
 

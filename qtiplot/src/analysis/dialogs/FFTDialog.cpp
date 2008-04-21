@@ -27,14 +27,14 @@
  *                                                                         *
  ***************************************************************************/
 #include "FFTDialog.h"
-#include "plot2D/Graph.h"
-#include "MyParser.h"
-#include "ApplicationWindow.h"
-#include "plot2D/MultiLayer.h"
-#include "Table.h"
-#include "FFT.h"
-#include "matrix/Matrix.h"
-#include "analysis/fft2D.h"
+#include "../FFT.h"
+#include "../fft2D.h"
+#include "../../MyParser.h"
+#include "../../ApplicationWindow.h"
+#include "../../Table.h"
+#include "../../plot2D/Graph.h"
+#include "../../plot2D/MultiLayer.h"
+#include "../../matrix/Matrix.h"
 
 #include <QRadioButton>
 #include <QGroupBox>

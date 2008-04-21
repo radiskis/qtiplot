@@ -27,14 +27,14 @@
  *                                                                         *
  ***************************************************************************/
 #include "Fit.h"
-#include "fit_gsl.h"
-#include "Table.h"
-#include "matrix/Matrix.h"
-#include "plot2D/QwtErrorPlotCurve.h"
-#include "plot2D/FunctionCurve.h"
-#include "ColorBox.h"
-#include "plot2D/MultiLayer.h"
 #include "FitModelHandler.h"
+#include "fit_gsl.h"
+#include "../ColorBox.h"
+#include "../Table.h"
+#include "../matrix/Matrix.h"
+#include "../plot2D/QwtErrorPlotCurve.h"
+#include "../plot2D/FunctionCurve.h"
+#include "../plot2D/MultiLayer.h"
 
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_blas.h>
@@ -332,14 +332,19 @@ QString Fit::logFitInfo(int iterations, int status)
 */
 double Fit::rSquare()
 {	
+	if (!d_residuals)
+		d_residuals = new double[d_n];
+	
 	//double sst = gsl_stats_wtss_m (d_w, 1, d_y, 1, d_n, gsl_stats_mean (d_y, 1, d_n));
 	double mean = gsl_stats_mean (d_y, 1, d_n);
 	double sse = 0.0, sst = 0.0;
-	for (int i = 0; i<d_n; i++){
+	for (int i = 0; i < d_n; i++){
 		double w = d_w[i];
 		double y = d_y[i];
 		double dy = y - eval(d_results, d_x[i]);
+		d_residuals[i] = dy;
 		sse += w*dy*dy;
+		
 		dy = y - mean;
 		sst += w*dy*dy;
 	}
@@ -549,8 +554,6 @@ double* Fit::residuals()
 			
 QwtPlotCurve* Fit::showResiduals()
 {
-	if (!d_residuals)
-		residuals();
 	if (!d_residuals){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("Please perform a fit first!"));
@@ -572,7 +575,7 @@ QwtPlotCurve* Fit::showResiduals()
 	}
 	for (int i = 0; i < outputTable->numCols(); i++)
 		outputTable->table()->adjustColumn(i);
-	outputTable->show();
+	app->hideWindow(outputTable);
 		
 	if (!d_output_graph)
 		d_output_graph = createOutputGraph()->activeGraph();
@@ -802,6 +805,7 @@ void Fit::freeWorkspace()
 	if (covar) gsl_matrix_free (covar);
 	if (d_results) delete[] d_results;
 	if (d_errors) delete[] d_errors;
+	if (d_residuals) delete[] d_residuals;
 	if (d_param_range_left) delete[] d_param_range_left;
 	if (d_param_range_right) delete[] d_param_range_right;
 }

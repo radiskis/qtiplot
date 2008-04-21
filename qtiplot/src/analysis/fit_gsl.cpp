@@ -1,3 +1,6 @@
+#include "fit_gsl.h"
+#include "../MyParser.h"
+
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -5,8 +8,7 @@
 #include <qmessagebox.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_math.h>
-#include "fit_gsl.h"
-#include "MyParser.h"
+
 int expd3_f (const gsl_vector * x, void *params, gsl_vector * f) {
     size_t n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;

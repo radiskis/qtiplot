@@ -1,6 +1,6 @@
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-SCRIPTING_LANGS += Python
+#SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -8,8 +8,8 @@ DEFINES         += SCRIPTING_CONSOLE
 # a dialog for selecting the scripting language on a per-project basis
 DEFINES         += SCRIPTING_DIALOG
 #DEFINES         += QTIPLOT_DEMO
+# comment the following lines to disable donations start-up message
 DEFINES         += QTIPLOT_SUPPORT
-
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
 #RESTRICTED_MODULES += EMF
 
@@ -152,14 +152,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/Table.h \
             src/SetColValuesDialog.h \
             src/ExportDialog.h \
-            src/PolynomFitDialog.h \
-            src/ExpDecayDialog.h \
-            src/FitDialog.h \
             src/TableDialog.h \
-            src/fit_gsl.h \
-            src/nrutil.h\
             src/pixmaps.h\
-            src/IntDialog.h \
             src/SortDialog.h\
             src/ConfigDialog.h \
             src/DataSetDialog.h \
@@ -172,25 +166,13 @@ HEADERS  += src/ApplicationWindow.h \
             src/ColorButton.h \
             src/RenameWindowDialog.h \
 			src/MdiSubWindow.h \
-            src/InterpolationDialog.h\
             src/ImportASCIIDialog.h \
-            src/SmoothCurveDialog.h\
-            src/FilterDialog.h\
-            src/FFTDialog.h\
             src/Note.h\
             src/Folder.h\
             src/FindDialog.h\
             src/ScriptingEnv.h\
             src/Script.h\
             src/ScriptEdit.h\
-            src/Fit.h\
-            src/MultiPeakFit.h\
-            src/ExponentialFit.h\
-            src/PolynomialFit.h\
-            src/NonLinearFit.h\
-            src/PluginFit.h\
-            src/SigmoidalFit.h\
-			src/LogisticFit.h\
             src/customevents.h\
             src/ScriptingLangDialog.h\
             src/ScriptWindow.h\
@@ -198,18 +180,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/TableStatistics.h\
             src/ColorMapEditor.h\
 			src/ColorMapDialog.h\
-            src/Filter.h\
-            src/Differentiation.h\
-            src/Integration.h\
-            src/Interpolation.h\
-            src/SmoothFilter.h\
-            src/FFTFilter.h\
-            src/FFT.h\
-            src/Convolution.h\
-            src/Correlation.h\
             src/ExtensibleFileDialog.h\
             src/OpenProjectDialog.h\
-            src/FitModelHandler.h \
             src/CustomActionDialog.h \
             src/DoubleSpinBox.h \
 			src/TextDialog.h \
@@ -222,13 +194,7 @@ SOURCES  += src/main.cpp \
             src/Table.cpp \
             src/SetColValuesDialog.cpp \
             src/ExportDialog.cpp \
-            src/PolynomFitDialog.cpp \
-            src/ExpDecayDialog.cpp \
-            src/FitDialog.cpp \
             src/TableDialog.cpp \
-            src/fit_gsl.cpp \
-            src/nrutil.cpp\
-            src/IntDialog.cpp \
             src/SortDialog.cpp\
             src/ConfigDialog.cpp \
             src/DataSetDialog.cpp \
@@ -241,43 +207,21 @@ SOURCES  += src/main.cpp \
             src/ColorButton.cpp \
             src/RenameWindowDialog.cpp \
 			src/MdiSubWindow.cpp \
-            src/InterpolationDialog.cpp\
-            src/ImportASCIIDialog.cpp \
-            src/SmoothCurveDialog.cpp\
-            src/FilterDialog.cpp\
-            src/FFTDialog.cpp\
+            src/ImportASCIIDialog.cpp \            
             src/Note.cpp\
             src/Folder.cpp\
             src/FindDialog.cpp\
             src/ScriptingEnv.cpp\
             src/Script.cpp\
             src/ScriptEdit.cpp\
-            src/Fit.cpp\
-            src/MultiPeakFit.cpp\
-            src/ExponentialFit.cpp\
-            src/PolynomialFit.cpp\
-            src/NonLinearFit.cpp\
-            src/PluginFit.cpp\
-            src/SigmoidalFit.cpp\
-			src/LogisticFit.cpp\
             src/ScriptingLangDialog.cpp\
             src/ScriptWindow.cpp\
             src/TextFormatButtons.cpp\
             src/TableStatistics.cpp\
             src/ColorMapEditor.cpp\
 			src/ColorMapDialog.cpp\
-            src/Filter.cpp\
-            src/Differentiation.cpp\
-            src/Integration.cpp\
-            src/Interpolation.cpp\
-            src/SmoothFilter.cpp\
-            src/FFTFilter.cpp\
-            src/FFT.cpp\
-            src/Convolution.cpp\
-            src/Correlation.cpp\
             src/ExtensibleFileDialog.cpp\
             src/OpenProjectDialog.cpp\
-            src/FitModelHandler.cpp \
             src/CustomActionDialog.cpp \
             src/DoubleSpinBox.cpp \
 			src/TextDialog.cpp \
@@ -420,11 +364,70 @@ SOURCES  += src/main.cpp \
 			   src/plot3D/SurfaceDialog.cpp \
 
 ###############################################################
-################# Module: FFT 2D ##############################
+################# Module: Analysis ##############################
 ###############################################################
 
-    HEADERS += src/analysis/fft2D.h
-    SOURCES += src/analysis/fft2D.cpp
+    HEADERS += src/analysis/Convolution.h \
+			   src/analysis/Correlation.h \
+			   src/analysis/Differentiation.h \
+			   src/analysis/ExponentialFit.h \
+			   src/analysis/FFTFilter.h \
+			   src/analysis/FFT.h \
+			   src/analysis/Filter.h \
+			   src/analysis/Fit.h \
+			   src/analysis/FitModelHandler.h \
+			   src/analysis/Integration.h \
+			   src/analysis/Interpolation.h \
+			   src/analysis/LogisticFit.h \
+			   src/analysis/MultiPeakFit.h \
+			   src/analysis/NonLinearFit.h \
+			   src/analysis/PluginFit.h \
+			   src/analysis/PolynomialFit.h \
+			   src/analysis/SigmoidalFit.h \
+			   src/analysis/SmoothFilter.h \
+			   src/analysis/fft2D.h \
+               src/analysis/fit_gsl.h \
+			   src/analysis/nrutil.h \
+		
+	SOURCES += src/analysis/Convolution.cpp \
+			   src/analysis/Correlation.cpp \
+			   src/analysis/Differentiation.cpp \
+			   src/analysis/ExponentialFit.cpp \
+			   src/analysis/FFTFilter.cpp \
+			   src/analysis/FFT.cpp \
+			   src/analysis/Filter.cpp \
+			   src/analysis/Fit.cpp \
+			   src/analysis/FitModelHandler.cpp \
+			   src/analysis/Integration.cpp \
+			   src/analysis/Interpolation.cpp \
+			   src/analysis/LogisticFit.cpp \
+			   src/analysis/MultiPeakFit.cpp \
+			   src/analysis/NonLinearFit.cpp \
+			   src/analysis/PluginFit.cpp \
+			   src/analysis/PolynomialFit.cpp \
+			   src/analysis/SigmoidalFit.cpp \
+			   src/analysis/SmoothFilter.cpp \
+			   src/analysis/fft2D.cpp \
+               src/analysis/fit_gsl.cpp \
+			   src/analysis/nrutil.cpp \
+		
+    HEADERS += src/analysis/dialogs/ExpDecayDialog.h \
+			   src/analysis/dialogs/FFTDialog.h \
+			   src/analysis/dialogs/FitDialog.h \
+			   src/analysis/dialogs/FilterDialog.h \
+			   src/analysis/dialogs/IntDialog.h \
+			   src/analysis/dialogs/InterpolationDialog.h \
+			   src/analysis/dialogs/PolynomFitDialog.h \
+			   src/analysis/dialogs/SmoothCurveDialog.h \
+
+	SOURCES += src/analysis/dialogs/ExpDecayDialog.cpp \
+			   src/analysis/dialogs/FFTDialog.cpp \
+			   src/analysis/dialogs/FitDialog.cpp \
+			   src/analysis/dialogs/FilterDialog.cpp \
+			   src/analysis/dialogs/IntDialog.cpp \
+			   src/analysis/dialogs/InterpolationDialog.cpp \
+			   src/analysis/dialogs/PolynomFitDialog.cpp \
+			   src/analysis/dialogs/SmoothCurveDialog.cpp \			
 
 ###############################################################
 ################# Restricted Module: EmfEngine ################
