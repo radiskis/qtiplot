@@ -48,7 +48,7 @@ private:
   ScriptEdit(ScriptEdit&);
 };
 
-class MdiSubWindow: QMdiSubWindow /PyName=MDIWindow/
+class MdiSubWindow: QWidget /PyName=MDIWindow/
 {
 %TypeHeaderCode
 #include "src/MdiSubWindow.h"
