@@ -70,7 +70,6 @@ public:
 	Graph *layer(int num);
 	int layerIndex(Graph *g){return graphsList.indexOf(g);};
 	
-	LayerButton* addLayerButton();
 	void copy(MultiLayer* ml);
 
 	enum HorAlignement{HCenter, Left, Right};
@@ -82,6 +81,8 @@ public:
 	bool printCropmarksEnabled(){return d_print_cropmarks;};
 	void printCropmarks(bool on){d_print_cropmarks = on;};
 
+	QRect canvasRect(){return canvas->rect();};
+		
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
 	void setLayersNumber(int n);
@@ -185,6 +186,8 @@ private:
 	void resizeLayers(QResizeEvent *);
 	bool focusNextPrevChild(bool next);
 	//@}
+
+	LayerButton* addLayerButton();
 
 	Graph* active_graph;
 	//! Used for resizing of layers.

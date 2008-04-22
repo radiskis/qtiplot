@@ -539,7 +539,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 	int tickTypeMap[]={0,3,1,2};
 	for (int g=0; g<opj.numGraphs(); ++g)
 	{
-		MultiLayer *ml = mw->multilayerPlot(opj.graphName(g), 0, 0, 0);
+		MultiLayer *ml = mw->multilayerPlot(opj.graphName(g), 0);
 		if (!ml)
 			return false;
 
@@ -563,11 +563,11 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 
 		for(int l=0; l<opj.numLayers(g); ++l)
 		{
-			Graph *graph=ml->addLayer();
+			Graph *graph = ml->addLayer();
 			if(!graph)
 				return false;
 
-			rect layerRect=opj.layerRect(g,l);
+			rect layerRect = opj.layerRect(g,l);
 
 			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerXAxisTitle(g,l).txt.c_str())));
 			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerYAxisTitle(g,l).txt.c_str())));

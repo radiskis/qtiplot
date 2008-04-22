@@ -164,9 +164,11 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 		width =	canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace;
 		height = canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace;
 
-		int layers = graphsList.size();
+		int layers = graphsList.size();		
 		x = left_margin + (layers % d_cols)*(width + colsSpace);
 	    y = top_margin + (layers / d_cols)*(height + rowsSpace);
+		//printf("after: x=%d y=%d width=%d height=%d\n", x, y, width, height);
+		//printf("rows=%d, cols=%d\n", d_rows, d_cols);
 	}
 
 	Graph* g = new Graph(x, y, width, height, canvas);

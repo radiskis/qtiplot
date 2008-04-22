@@ -9672,18 +9672,15 @@ void ApplicationWindow::addLayer()
 	switch(QMessageBox::information(this,
 				tr("QtiPlot - Guess best origin for the new layer?"),
 				tr("Do you want QtiPlot to guess the best position for the new layer?\n Warning: this will rearrange existing layers!"),
-				tr("&Guess"), tr("&Top-left corner"), tr("&Cancel"), 0, 2 ) )
-	{
+				tr("&Guess"), tr("&Top-left corner"), tr("&Cancel"), 0, 2 ) ){
 		case 0:
-			{
 				setPreferences(plot->addLayer());
 				plot->arrangeLayers(true, false);
-			}
-			break;
+		break;
 
 		case 1:
-			setPreferences(plot->addLayer(0, 0, plot->size().width(), plot->size().height()));
-			break;
+			setPreferences(plot->addLayer(0, 0, plot->canvasRect().width(), plot->canvasRect().height()));
+		break;
 
 		case 2:
 			return;
@@ -14532,8 +14529,11 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	showScriptWindow();
 	scriptWindow->open(fn);
 	QApplication::restoreOverrideCursor();
-	if (execute)
+	if (execute){
 		scriptWindow->executeAll();
+		if (!scriptWindow->editor()->error())
+			scriptWindow->hide();
+	}
 	return this;
 #else
     QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),

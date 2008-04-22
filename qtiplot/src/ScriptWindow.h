@@ -57,6 +57,7 @@ public slots:
 		void languageChange();
 		virtual void setVisible(bool visible);
 
+		ScriptEdit* editor(){return te;};
 		void executeAll(){te->executeAll();};
 		
 private slots:
