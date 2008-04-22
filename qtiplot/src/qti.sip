@@ -48,7 +48,7 @@ private:
   ScriptEdit(ScriptEdit&);
 };
 
-class MdiSubWindow: QWidget /PyName=MDIWindow/
+class MdiSubWindow: QMdiSubWindow /PyName=MDIWindow/
 {
 %TypeHeaderCode
 #include "src/MdiSubWindow.h"
@@ -491,7 +491,17 @@ private:
 	Grid(const Grid&);
 };
 
-class Graph : QWidget /PyName=Layer/
+class QwtPlot : QFrame
+{
+%TypeHeaderCode
+#include "qwt_plot.h"
+%End
+
+private:
+  QwtPlot(const QwtPlot&);
+};
+
+class Graph : QwtPlot /PyName=Layer/
 {
 %TypeHeaderCode
 #include "src/plot2D/Graph.h"
