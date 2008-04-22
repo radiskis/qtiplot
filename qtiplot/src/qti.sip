@@ -840,8 +840,8 @@ public:
   if(!sipRes)
     sipRes = sipCpp->projectFolder()->graph(*a0, true);
 %End
-  MultiLayer* newGraph();
-  MultiLayer* multilayerPlot(const QString&, int, int, int)/PyName=newGraph/;
+  
+  MultiLayer* multilayerPlot(const QString& = "Graph1", int = 1, int = 1, int = 1)/PyName=newGraph/;
 
   Note *note(const QString&);
 %MethodCode

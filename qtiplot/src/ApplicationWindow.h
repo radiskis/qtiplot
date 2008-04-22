@@ -221,6 +221,8 @@ public slots:
 
 	//! \name Multilayer Plots
 	//@{
+	//! Creates a new empty multilayer plot
+	MultiLayer* newGraph(const QString& caption = tr("Graph"));
 	MultiLayer* multilayerPlot(int c, int r, int style);
 	MultiLayer* multilayerPlot(Table* w, const QStringList& colList, int style, int startRow = 0, int endRow = -1);
 	//! used when restoring a plot from a project file
@@ -532,9 +534,6 @@ public slots:
 	void copyActiveLayer();
 
 	void newProject();
-
-	//! Creates a new empty multilayer plot
-	MultiLayer* newGraph(const QString& caption = tr("Graph"));
 
 	//! \name Reading from a Project File
 	//@{

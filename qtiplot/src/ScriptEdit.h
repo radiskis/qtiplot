@@ -54,7 +54,8 @@ class ScriptEdit: public QTextEdit, public scripted
     void customEvent(QEvent*);
   	//! Map cursor positions to line numbers.
     int lineNumber(int pos) const;
-
+	bool error(){return d_error;};
+	
   public slots:
     void execute();
     void executeAll();

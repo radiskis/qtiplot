@@ -253,7 +253,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	setFrameShape(QFrame::Box);
 	setLineWidth(0);
 	setMouseTracking(true );
-
+	
 	cp = new CanvasPicker(this);
 
 	titlePicker = new TitlePicker(this);
@@ -3631,8 +3631,8 @@ void Graph::updateMarkersBoundingRect()
 
 void Graph::resizeEvent ( QResizeEvent *e )
 {
-	if (ignoreResize || !this->isVisible())
-		return;
+	//if (ignoreResize || !this->isVisible())
+		//return;
 
 	QObjectList lst = children();
 	foreach(QObject *o, lst){
@@ -3645,7 +3645,8 @@ void Graph::resizeEvent ( QResizeEvent *e )
 		QSize size = e->size();
 		resize(e->size());
 		updateLayout();
-		scaleFonts((double)size.height()/(double)oldSize.height());
+		if(oldSize.isValid() && size.isValid())	
+			scaleFonts((double)size.height()/(double)oldSize.height());
 	} else {
         resize(e->size());
 		updateLayout();
