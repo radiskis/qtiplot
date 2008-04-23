@@ -14533,6 +14533,8 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		scriptWindow->executeAll();
 		if (!scriptWindow->editor()->error())
 			scriptWindow->hide();
+		else
+			scriptWindow->raise();			
 	}
 	return this;
 #else

@@ -1527,9 +1527,15 @@ void PlotDialog::showAreaColor(bool show)
 
 void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *previousItem)
 {
-    if (!previousItem || !currentItem)
+	if (!currentItem)
         return;
-
+	
+	bool forceClearTabs = false;
+	if (!previousItem){
+		previousItem = currentItem;
+		forceClearTabs = true;
+	}
+	
     if (previousItem->type() == CurveTreeItem::PlotCurveTreeItem)
         ((CurveTreeItem *)previousItem)->setActive(false);
     else if (previousItem->type() == LayerItem::LayerTreeItem)
@@ -1537,12 +1543,11 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
 
     boxPlotType->blockSignals(true);
 
-    if (currentItem->type() == CurveTreeItem::PlotCurveTreeItem)
-    {
+    if (currentItem->type() == CurveTreeItem::PlotCurveTreeItem){
         CurveTreeItem *curveItem = (CurveTreeItem *)currentItem;
         if (previousItem->type() != CurveTreeItem::PlotCurveTreeItem ||
-           ((CurveTreeItem *)previousItem)->plotItemType() != curveItem->plotItemType())
-        {
+           ((CurveTreeItem *)previousItem)->plotItemType() != curveItem->plotItemType() ||
+			forceClearTabs){
             clearTabWidget();
             int plot_type = setPlotType(curveItem);
 			if (plot_type >= 0)
@@ -1551,20 +1556,15 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
                 curvePlotTypeBox->show();
         }
 		setActiveCurve(curveItem);
-    }
-    else if (currentItem->type() == LayerItem::LayerTreeItem)
-    {
-        if (previousItem->type() != LayerItem::LayerTreeItem)
-        {
+    } else if (currentItem->type() == LayerItem::LayerTreeItem){
+        if (previousItem->type() != LayerItem::LayerTreeItem){
             clearTabWidget();
             privateTabWidget->addTab (layerPage, tr("Layer"));
 			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
             privateTabWidget->showPage(layerPage);
         }
         setActiveLayer((LayerItem *)currentItem);
-    }
-    else
-    {
+    } else {
         clearTabWidget();
 		privateTabWidget->addTab(printPage, tr("Print"));
         privateTabWidget->addTab(fontsPage, tr("Fonts"));

@@ -883,7 +883,7 @@ void Matrix::print(const QString& fileName)
 	    printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(fileName);
 	} else {
-        QPrintDialog printDialog(&printer);
+        QPrintDialog printDialog(&printer, applicationWindow());
         if (printDialog.exec() != QDialog::Accepted)
             return;
     }

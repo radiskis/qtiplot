@@ -1424,7 +1424,7 @@ void Graph::print()
 	else
 		printer.setOrientation(QPrinter::Landscape);
 
-	QPrintDialog printDialog(&printer);
+	QPrintDialog printDialog(&printer, multiLayer()->applicationWindow());
     if (printDialog.exec() == QDialog::Accepted){
 		QRect plotRect = rect();
 		QRect paperRect = printer.paperRect();
@@ -2544,7 +2544,7 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 
 	c->setPen(QPen(ColorBox::color(cL->lCol), cL->lWidth, getPenStyle(cL->lStyle)));
 
-	switch (c->type()){
+	switch (c->plotStyle()){
 		case Scatter:
 			c->setStyle(QwtPlotCurve::NoCurve);
 		break;
