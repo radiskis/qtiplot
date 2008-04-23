@@ -272,66 +272,109 @@ void ConfigDialog::initPlotsPage()
 
 	boxAutoscaling = new QCheckBox();
 	boxAutoscaling->setChecked(app->autoscale2DPlots);
-	optionsLayout->addWidget( boxAutoscaling, 0, 0 );
+	optionsLayout->addWidget( boxAutoscaling, 0, 0);
 
 	boxScaleFonts = new QCheckBox();
 	boxScaleFonts->setChecked(app->autoScaleFonts);
-	optionsLayout->addWidget( boxScaleFonts, 0, 1 );
-
-	boxTitle = new QCheckBox();
-	boxTitle->setChecked(app->titleOn);
-	optionsLayout->addWidget( boxTitle, 1, 0 );
-
-	boxAllAxes = new QCheckBox();
-	boxAllAxes->setChecked (app->allAxesOn);
-	optionsLayout->addWidget( boxAllAxes, 1, 1 );
+	optionsLayout->addWidget( boxScaleFonts, 0, 1);
 
 	boxAntialiasing = new QCheckBox();
 	boxAntialiasing->setChecked(app->antialiasing2DPlots);
-	optionsLayout->addWidget( boxAntialiasing, 2, 0 );
+	optionsLayout->addWidget( boxAntialiasing, 0, 2);
+	
+	boxTitle = new QCheckBox();
+	boxTitle->setChecked(app->titleOn);
+	optionsLayout->addWidget(boxTitle, 1, 0);
+
+	boxAllAxes = new QCheckBox();
+	boxAllAxes->setChecked (app->allAxesOn);
+	optionsLayout->addWidget(boxAllAxes, 1, 1);
 
 	boxBackbones= new QCheckBox();
 	boxBackbones->setChecked(app->drawBackbones);
-	optionsLayout->addWidget( boxBackbones, 2, 1 );
+	optionsLayout->addWidget(boxBackbones, 1, 2);
 
 	boxFrame = new QCheckBox();
 	boxFrame->setChecked(app->canvasFrameWidth > 0);
-	optionsLayout->addWidget( boxFrame, 3, 0 );
+	optionsLayout->addWidget(boxFrame, 3, 0 );
 
 	labelFrameWidth = new QLabel();
-	optionsLayout->addWidget( labelFrameWidth, 4, 0 );
+	optionsLayout->addWidget(labelFrameWidth, 4, 0);
 	boxFrameWidth= new QSpinBox();
-	optionsLayout->addWidget( boxFrameWidth, 4, 1 );
+	optionsLayout->addWidget(boxFrameWidth, 4, 1 );
 	boxFrameWidth->setRange(1, 100);
 	boxFrameWidth->setValue(app->canvasFrameWidth);
-	if (!app->canvasFrameWidth)
-	{
+	if (!app->canvasFrameWidth){
 		labelFrameWidth->hide();
 		boxFrameWidth->hide();
 	}
 
 	lblAxesLineWidth = new QLabel();
-	optionsLayout->addWidget( lblAxesLineWidth, 5, 0 );
+	optionsLayout->addWidget(lblAxesLineWidth, 5, 0);
 	boxLineWidth= new QSpinBox();
 	boxLineWidth->setRange(0, 100);
 	boxLineWidth->setValue(app->axesLineWidth);
-	optionsLayout->addWidget( boxLineWidth, 5, 1 );
+	optionsLayout->addWidget(boxLineWidth, 5, 1);
 
 	lblMargin = new QLabel();
-	optionsLayout->addWidget( lblMargin, 6, 0 );
+	optionsLayout->addWidget(lblMargin, 6, 0);
 	boxMargin= new QSpinBox();
 	boxMargin->setRange(0, 1000);
 	boxMargin->setSingleStep(5);
 	boxMargin->setValue(app->defaultPlotMargin);
-	optionsLayout->addWidget( boxMargin, 6, 1 );
+	optionsLayout->addWidget(boxMargin, 6, 1);
+	optionsLayout->setRowStretch(7, 1);
 
-	optionsLayout->setRowStretch( 7, 1 );
+	groupBackgroundOptions = new QGroupBox(tr("Background"));
+	optionsTabLayout->addWidget( groupBackgroundOptions );
+	QGridLayout *graphBackgroundLayout = new QGridLayout( groupBackgroundOptions );
+	
+	labelGraphBkgColor = new QLabel(tr("Background Color"));
+    graphBackgroundLayout->addWidget(labelGraphBkgColor, 0, 0 );
+    boxBackgroundColor = new ColorButton();
+	boxBackgroundColor->setColor(app->d_graph_background_color);
+    graphBackgroundLayout->addWidget(boxBackgroundColor, 0, 1 );
+	
+	labelGraphBkgOpacity = new QLabel(tr( "Opacity" ));
+    graphBackgroundLayout->addWidget(labelGraphBkgOpacity, 0, 2 );
+    boxBackgroundTransparency = new QSpinBox();
+    boxBackgroundTransparency->setRange(0, 255);
+    boxBackgroundTransparency->setSingleStep(5);
+    boxBackgroundTransparency->setWrapping(true);
+	boxBackgroundTransparency->setValue(app->d_graph_background_opacity);
+    graphBackgroundLayout->addWidget(boxBackgroundTransparency, 0, 3 );
+
+	labelGraphCanvasColor = new QLabel(tr("Canvas Color" ));
+    graphBackgroundLayout->addWidget(labelGraphCanvasColor, 1, 0);
+    boxCanvasColor = new ColorButton();
+	boxCanvasColor->setColor(app->d_graph_canvas_color);
+    graphBackgroundLayout->addWidget( boxCanvasColor, 1, 1 );
+	
+	labelGraphCanvasOpacity = new QLabel(tr("Opacity"));
+    graphBackgroundLayout->addWidget(labelGraphCanvasOpacity, 1, 2 );
+    boxCanvasTransparency = new QSpinBox();
+    boxCanvasTransparency->setRange(0, 255);
+    boxCanvasTransparency->setSingleStep(5);
+    boxCanvasTransparency->setWrapping(true);
+	boxCanvasTransparency->setValue(app->d_graph_canvas_opacity);	
+    graphBackgroundLayout->addWidget(boxCanvasTransparency, 1, 3 );
+
+	labelGraphFrameColor = new QLabel(tr("Border Color"));
+    graphBackgroundLayout->addWidget(labelGraphFrameColor, 2, 0);
+    boxBorderColor = new ColorButton();
+	boxBorderColor->setColor(app->d_graph_border_color);
+    graphBackgroundLayout->addWidget(boxBorderColor, 2, 1);
+
+	labelGraphFrameWidth = new QLabel(tr( "Width" ));
+    graphBackgroundLayout->addWidget(labelGraphFrameWidth, 2, 2);
+    boxBorderWidth = new QSpinBox();
+	boxBorderWidth->setValue(app->d_graph_border_width);
+    graphBackgroundLayout->addWidget(boxBorderWidth, 2, 3);
+	
+	graphBackgroundLayout->setRowStretch(4, 1);
 
 	boxResize = new QCheckBox();
 	boxResize->setChecked(!app->autoResizeLayers);
-	if(boxResize->isChecked())
-		boxScaleFonts->setEnabled(false);
-
 	optionsTabLayout->addWidget( boxResize );
 
     boxLabelsEditing = new QCheckBox();
@@ -410,20 +453,11 @@ void ConfigDialog::initPlotsPage()
 	printLayout->addStretch();
 	plotsTabWidget->addTab(plotPrint, QString());
 
-	connect( boxResize, SIGNAL( clicked() ), this, SLOT( enableScaleFonts() ) );
 	connect( boxFrame, SIGNAL( toggled(bool) ), this, SLOT( showFrameWidth(bool) ) );
 	connect( buttonAxesFont, SIGNAL( clicked() ), this, SLOT( pickAxesFont() ) );
 	connect( buttonNumbersFont, SIGNAL( clicked() ), this, SLOT( pickNumbersFont() ) );
 	connect( buttonLegendFont, SIGNAL( clicked() ), this, SLOT( pickLegendFont() ) );
 	connect( buttonTitleFont, SIGNAL( clicked() ), this, SLOT( pickTitleFont() ) );
-}
-
-void ConfigDialog::enableScaleFonts()
-{
-	if(boxResize->isChecked())
-		boxScaleFonts->setEnabled(false);
-	else
-		boxScaleFonts->setEnabled(true);
 }
 
 void ConfigDialog::showFrameWidth(bool ok)
@@ -944,6 +978,16 @@ void ConfigDialog::languageChange()
 	boxAutoscaling->setText(tr("Auto&scaling"));
 	boxAntialiasing->setText(tr("Antia&liasing"));
 
+	groupBackgroundOptions->setTitle(tr("Background"));
+	labelGraphBkgColor->setText(tr("Background Color"));	
+	labelGraphBkgOpacity->setText(tr( "Opacity" ));
+	labelGraphCanvasColor->setText(tr("Canvas Color" ));	
+	labelGraphCanvasOpacity->setText(tr("Opacity"));
+	labelGraphFrameColor->setText(tr("Border Color"));
+	labelGraphFrameWidth->setText(tr( "Width" ));
+	boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
+	boxCanvasTransparency->setSpecialValueText(tr("Transparent"));
+	
 	boxMajTicks->clear();
 	boxMajTicks->addItem(tr("None"));
 	boxMajTicks->addItem(tr("Out"));
@@ -1166,6 +1210,14 @@ void ConfigDialog::apply()
 	app->setAutoUpdateTableValues(boxUpdateTableValues->isChecked());
 	app->customizeTables(buttonBackground->color(), buttonText->color(),
 			buttonHeader->color(), textFont, headerFont, boxTableComments->isChecked());
+	
+	app->d_graph_background_color = boxBackgroundColor->color();
+	app->d_graph_background_opacity = boxBackgroundTransparency->value();
+	app->d_graph_canvas_color = boxCanvasColor->color();
+	app->d_graph_canvas_opacity = boxCanvasTransparency->value();
+	app->d_graph_border_color = boxBorderColor->color();
+	app->d_graph_border_width = boxBorderWidth->value();
+	
 	// 2D plots page: options tab
 	app->d_in_place_editing = !boxLabelsEditing->isChecked();
 	app->titleOn=boxTitle->isChecked();

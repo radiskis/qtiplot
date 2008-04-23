@@ -463,6 +463,13 @@ void ApplicationWindow::initGlobalConstants()
 	tableTextColor = QColor("#000000");
 	tableHeaderColor = QColor("#000000");
 
+	d_graph_background_color = Qt::white;
+	d_graph_canvas_color = Qt::white;
+	d_graph_border_color = Qt::black;
+	d_graph_background_opacity = 255;
+	d_graph_canvas_opacity = 255;
+	d_graph_border_width = 0;
+
 	plot3DColors = QStringList();
 	plot3DColors << "blue";
 	plot3DColors << "#000000";
@@ -2510,6 +2517,15 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->setAutoscaleFonts(autoScaleFonts);
     g->setIgnoreResizeEvents(!autoResizeLayers);
 	g->setAntialiasing(antialiasing2DPlots);
+	g->setFrame (d_graph_border_width, d_graph_border_color);
+	
+	QColor c = d_graph_background_color;
+	c.setAlpha(d_graph_background_opacity);
+	g->setBackgroundColor(c);
+	
+	c = d_graph_canvas_color;
+	c.setAlpha(d_graph_canvas_opacity);
+	g->setCanvasBackground(c);
 }
 
 /*
@@ -4399,6 +4415,12 @@ void ApplicationWindow::readSettings()
 		plotTitleFont=QFont (graphFonts[12],graphFonts[13].toInt(),graphFonts[14].toInt(),graphFonts[15].toInt());
 	}
 	d_in_place_editing = settings.value("/InPlaceEditing", true).toBool();
+	d_graph_background_color = settings.value("/BackgroundColor", d_graph_background_color).value<QColor>();
+	d_graph_canvas_color = settings.value("/CanvasColor", d_graph_canvas_color).value<QColor>();
+	d_graph_border_color = settings.value("/FrameColor", d_graph_border_color).value<QColor>();
+	d_graph_background_opacity = settings.value("/BackgroundOpacity", d_graph_background_opacity).toInt();
+	d_graph_canvas_opacity = settings.value("/BackgroundOpacity", d_graph_canvas_opacity).toInt();
+	d_graph_border_width = settings.value("/FrameWidth", d_graph_border_width).toInt();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -4691,8 +4713,14 @@ void ApplicationWindow::saveSettings()
 	graphFonts<<QString::number(plotTitleFont.italic());
 	settings.setValue("/Fonts", graphFonts);
 
-
 	settings.setValue("/InPlaceEditing", d_in_place_editing);
+	settings.setValue("/InPlaceEditing", d_in_place_editing);
+	settings.setValue("/BackgroundColor", d_graph_background_color);
+	settings.setValue("/CanvasColor", d_graph_canvas_color);
+	settings.setValue("/FrameColor", d_graph_border_color);
+	settings.setValue("/BackgroundOpacity", d_graph_background_opacity);
+	settings.setValue("/BackgroundOpacity", d_graph_canvas_opacity);
+	settings.setValue("/FrameWidth", d_graph_border_width);
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
