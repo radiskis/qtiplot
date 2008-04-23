@@ -80,7 +80,6 @@ private slots:
 	void pickLegendFont();
 	void pickTitleFont();
 
-	void enableScaleFonts();
 	void showFrameWidth(bool ok);
 
 	//application
@@ -164,6 +163,12 @@ private:
 	QLineEdit *pythonConfigDirLine;
 #endif
 	QCheckBox *boxUpdateTableValues;
+	QGroupBox *groupBackgroundOptions;
+	QLabel *labelGraphFrameColor, *labelGraphFrameWidth; 
+	QLabel *labelGraphBkgColor, *labelGraphCanvasColor;
+	QLabel *labelGraphBkgOpacity, *labelGraphCanvasOpacity;
+	ColorButton *boxBackgroundColor, *boxCanvasColor, *boxBorderColor;
+	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth;
 };
 
 #endif // CONFIGDIALOG_H

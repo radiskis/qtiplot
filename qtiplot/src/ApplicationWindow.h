@@ -1093,6 +1093,8 @@ public:
 	int d_file_version;
 
 	QColor workspaceColor, panelsColor, panelsTextColor;
+	QColor d_graph_background_color, d_graph_canvas_color, d_graph_border_color;
+	int d_graph_background_opacity, d_graph_canvas_opacity, d_graph_border_width;
 	QString appStyle, workingDir;
 
 	//! Path to the folder where the last template file was opened/saved
