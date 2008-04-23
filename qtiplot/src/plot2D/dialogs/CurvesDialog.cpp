@@ -347,8 +347,7 @@ bool CurvesDialog::addCurve(const QString& name)
         if (!m)
             return false;
 
-        switch (boxMatrixStyle->currentIndex())
-        {
+        switch (boxMatrixStyle->currentIndex()){
             case 0:
                 d_graph->plotSpectrogram(m, Graph::ColorMap);
             break;
@@ -384,22 +383,22 @@ bool CurvesDialog::addCurve(const QString& name)
 
 		if (style == Graph::Line)
 			cl.sType = 0;
-		else if (style==Graph::VerticalBars || style==Graph::HorizontalBars ){
-			cl.filledArea=1;
-			cl.lCol=0;
-			cl.aCol=color;
+		else if (style == Graph::VerticalBars || style == Graph::HorizontalBars ){
+			cl.filledArea = 1;
+			cl.lCol = 0;
+			cl.aCol = color;
 			cl.sType = 0;
-		} else if (style==Graph::Area ){
-			cl.filledArea=1;
-			cl.aCol=color;
+		} else if (style == Graph::Area ){
+			cl.filledArea = 1;
+			cl.aCol = color;
 			cl.sType = 0;
 		} else if (style == Graph::VerticalDropLines)
-			cl.connectType=2;
+			cl.connectType = 2;
 		else if (style == Graph::VerticalSteps || style == Graph::HorizontalSteps){
-			cl.connectType=3;
+			cl.connectType = 3;
 			cl.sType = 0;
 		} else if (style == Graph::Spline)
-			cl.connectType=5;
+			cl.connectType = 5;
 
 		d_graph->updateCurveLayout(c, &cl);
 		contents->addItem(name);

@@ -183,15 +183,12 @@ void Table::print(const QString& fileName)
 {
 	QPrinter printer;
 	printer.setColorMode (QPrinter::GrayScale);
-	if (!fileName.isEmpty())
-	{
+	if (!fileName.isEmpty()){
 	    printer.setCreator("QtiPlot");
 	    printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(fileName);
-	}
-	else
-    {
-        QPrintDialog printDialog(&printer);
+	} else {
+        QPrintDialog printDialog(&printer, applicationWindow());
         if (printDialog.exec() != QDialog::Accepted)
             return;
     }

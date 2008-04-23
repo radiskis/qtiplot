@@ -780,9 +780,8 @@ void MultiLayer::print()
     else
         printer.setOrientation(QPrinter::Landscape);
 
-    QPrintDialog printDialog(&printer);
-    if (printDialog.exec() == QDialog::Accepted)
-	{
+    QPrintDialog printDialog(&printer, applicationWindow());
+    if (printDialog.exec() == QDialog::Accepted){
 		QPainter paint(&printer);
 		printAllLayers(&paint);
 		paint.end();
