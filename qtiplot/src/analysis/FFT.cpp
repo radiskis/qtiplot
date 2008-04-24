@@ -265,7 +265,7 @@ void FFT::output(const QString &text)
 	    MultiLayer *ml = 0;
 	    if (!d_output_graph){
             ml = createOutputGraph();
-            d_output_graph = ml->activeGraph();
+            d_output_graph = ml->activeLayer();
 	    }
 
 		d_output_graph->setTitle(QString());

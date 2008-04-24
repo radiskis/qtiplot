@@ -85,14 +85,14 @@ public:
 		
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
-	void setLayersNumber(int n);
+	void setNumLayers(int n);
 
 	bool isEmpty();
     void removeLayer();
 	void confirmRemoveLayer();
 
-	Graph* activeGraph(){return active_graph;};
-	void setActiveGraph(Graph* g);
+	Graph* activeLayer(){return active_graph;};
+	void setActiveLayer(Graph* g);
 	void activateGraph(LayerButton* button);
 
 	void setGraphGeometry(int x, int y, int w, int h);
@@ -127,7 +127,7 @@ public slots:
 	int verticalAlignement(){return vert_align;};
 	void setAlignement (int ha, int va);
 
-	int layers(){return graphsList.size();};
+	int numLayers(){return graphsList.size();};
 
 	//! \name Print and Export
 	//@{
