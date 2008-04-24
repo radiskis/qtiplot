@@ -37,6 +37,7 @@
 #include <muParser.h>
 #include "math.h"
 #include <gsl/gsl_sf.h>
+#include <gsl/gsl_cdf.h>
 #include <q3asciidict.h>
 
 //! TODO
@@ -113,10 +114,12 @@ class muParserScripting: public ScriptingEnv
       { return gsl_sf_lngamma (x); }
     static double hazard(double x)
       { return gsl_sf_hazard (x); }
-	 static double lambert_W0(double x)
+	static double lambert_W0(double x)
 	   { return gsl_sf_lambert_W0(x); }
-	 static double lambert_Wm1(double x)
+	static double lambert_Wm1(double x)
 	   { return gsl_sf_lambert_Wm1(x); }
+	static double ttable(double x, double n)
+	   { return gsl_cdf_tdist_Pinv(x, n); }
 };
 
 class EmptySourceError : public mu::ParserError

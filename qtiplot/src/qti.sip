@@ -643,7 +643,6 @@ public:
   void exportToFile(const QString& fileName) /PyName=export/;
 
   void enableAutoscaling(bool = true);
-  void setIgnoreResizeEvents(bool = true)/PyName=setIgnoreResize/;
   void setAutoscaleFonts(bool = true);
   void setAntialiasing(bool on = true, bool update = true);
 
@@ -676,6 +675,8 @@ public:
   void setAlignement (int, int);
   void arrangeLayers(bool fit = true, bool userSize = false);
   bool swapLayers(int, int);
+
+  void setScaleLayersOnResize(bool = true);
 
   void exportToFile(const QString& fileName) /PyName=export/;
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);

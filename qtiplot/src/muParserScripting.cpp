@@ -82,6 +82,7 @@ const muParserScripting::mathFunction muParserScripting::math_functions[] = {
   { "sum", -1, NULL,NULL,NULL, "sum(x,y,...):\n Calculate sum of all arguments." },
   { "tan", 1, NULL,NULL,NULL, "tan(x):\n Calculate tangent function." },
   { "tanh", 1, NULL,NULL,NULL, "tanh(x):\n Hyperbolic tan function." },
+  { "ttable", 2, NULL,ttable,NULL, "ttable(x, n):\n Student's t-distribution with n degrees of freedom." },
   { "w0", 1, lambert_W0, NULL, NULL, "w0(x):\n Compute the principal branch of Lambert's W function, W_0(x).\n W is defined as a solution to the equation W(x)*exp(W(x))=x.\n For x<0, there are two real-valued branches; this function computes the one where W>-1 for x<0 (also see wm1(x))." },
   { "wm1", 1, lambert_Wm1, NULL, NULL, "wm1(x):\n Compute the secondary branch of Lambert's W function, W_{-1}(x).\n W is defined as a solution to the equation W(x)*exp(W(x))=x.\n For x<0, there are two real-valued branches; this function computes the one where W<-1 for x<0. (also see w0(x))." },
   {0,0,NULL,NULL,NULL,0}

@@ -595,8 +595,6 @@ class Graph: public QwtPlot
 
 		//! \name Resizing
 		//@{
-		bool ignoresResizeEvents(){return ignoreResize;};
-		void setIgnoreResizeEvents(bool ok){ignoreResize=ok;};
 		void resizeEvent(QResizeEvent *e);
 		void scaleFonts(double factor);
 		//@}
@@ -716,7 +714,7 @@ signals:
 		bool d_antialiasing;
 		bool autoScaleFonts;
 		bool d_scale_on_print, d_print_cropmarks;
-		bool drawTextOn, drawLineOn, drawArrowOn, ignoreResize, drawAxesBackbone;
+		bool drawTextOn, drawLineOn, drawArrowOn, drawAxesBackbone;
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
 		//! Arrows/lines on plot

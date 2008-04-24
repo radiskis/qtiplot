@@ -103,6 +103,12 @@ class Fit : public Filter
 		//! Plot residuals and display data values in a column
 		QwtPlotCurve* showResiduals();
 		
+		void showConfidenceLimits(double confidenceLevel);
+		//! Lower Confidence Limit
+		double lcl(int parIndex, double confidenceLevel);
+		//! Upper Confidence Limit
+		double ucl(int parIndex, double confidenceLevel);
+		
 		//! Returns a vector with the standard deviations of the results
 		double* errors();
 

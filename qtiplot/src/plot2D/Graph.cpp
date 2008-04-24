@@ -171,7 +171,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	drawTextOn = false;
 	drawLineOn = false;
 	drawArrowOn = false;
-	ignoreResize = false;
 	drawAxesBackbone = true;
 	d_auto_scale = true;
 	autoScaleFonts = false;
@@ -3631,9 +3630,6 @@ void Graph::updateMarkersBoundingRect()
 
 void Graph::resizeEvent ( QResizeEvent *e )
 {
-	//if (ignoreResize || !this->isVisible())
-		//return;
-
 	QObjectList lst = children();
 	foreach(QObject *o, lst){
 		if (o->isA("LegendWidget"))

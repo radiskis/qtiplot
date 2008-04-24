@@ -1531,21 +1531,16 @@ MultiLayer* ApplicationWindow::plotHistogram()
 
 MultiLayer* ApplicationWindow::plotHistogram(Matrix *m)
 {
-	if (!m) {
+	if (!m){
 		m = (Matrix*)activeWindow(MatrixWindow);
 		if (!m)
 			return 0;
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	MultiLayer* g = new MultiLayer(this);
-    initMultilayerPlot(g, generateUniqueName(tr("Graph")));
-
-	Graph* plot = g->activeLayer();
-	setPreferences(plot);
-	plot->addHistogram(m);
-
+	MultiLayer* g = newGraph();
+	if (g)
+		g->activeLayer()->addHistogram(m);
 	QApplication::restoreOverrideCursor();
 	return g;
 }
@@ -2295,6 +2290,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption, int layers
 	MultiLayer* ml = new MultiLayer(this, layers, rows, cols);
 	QString label = caption;
 	initMultilayerPlot(ml, label.replace(QRegExp("_"), "-"));
+	ml->arrangeLayers(false, false);
 	return ml;
 }
 
@@ -2359,7 +2355,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 		polishGraph(ag, style);
 		i++;
 	}
-	g->arrangeLayers(false, false);
 	return g;
 }
 
@@ -2515,7 +2510,6 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->setMargin(defaultPlotMargin);
 	g->enableAutoscaling(autoscale2DPlots);
 	g->setAutoscaleFonts(autoScaleFonts);
-    g->setIgnoreResizeEvents(!autoResizeLayers);
 	g->setAntialiasing(antialiasing2DPlots);
 	g->setFrame (d_graph_border_width, d_graph_border_color);
 	
@@ -3418,11 +3412,11 @@ void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
+			((MultiLayer*)w)->setScaleLayersOnResize(autoResizeLayers);
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
 				g->enableAutoscaling(autoscale2DPlots);
 				g->updateScale();
-				g->setIgnoreResizeEvents(!autoResizeLayers);
 				g->setAutoscaleFonts(autoScaleFonts);
 				g->setAntialiasing(antialiasing2DPlots);
 			}
@@ -10529,7 +10523,6 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 	ag->updateLayout();
 
     ag->blockSignals(false);
-    ag->setIgnoreResizeEvents(!app->autoResizeLayers);
     ag->setAutoscaleFonts(app->autoScaleFonts);
     return ag;
 }
