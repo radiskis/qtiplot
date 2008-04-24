@@ -307,7 +307,7 @@ void FunctionDialog::acceptFunction()
 		if (!graph){
 			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
 			if (plot)
-				graph = plot->activeGraph();
+				graph = plot->activeLayer();
 		} else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, "x", start, end, boxPoints->value());
@@ -408,7 +408,7 @@ void FunctionDialog::acceptParametric()
 		if (!graph){
 			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
 			if (plot)
-				graph = plot->activeGraph();
+				graph = plot->activeLayer();
 		} else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(), start, end, boxParPoints->value());
@@ -510,7 +510,7 @@ void FunctionDialog::acceptPolar()
 		if (!graph){
 			MultiLayer *plot = app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
 			if (plot)
-				graph = plot->activeGraph();
+				graph = plot->activeLayer();
 		} else {
 			if (curveID >= 0)
 				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(), start, end, boxPolarPoints->value());

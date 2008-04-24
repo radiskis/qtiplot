@@ -177,7 +177,7 @@ void Correlation::addResultCurve()
 
 	if (d_graphics_display){
 		if (!d_output_graph)
-			d_output_graph = createOutputGraph()->activeGraph();
+			d_output_graph = createOutputGraph()->activeLayer();
 
     	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
 		c->setData(x_temp, y_temp, d_n);

@@ -276,7 +276,7 @@ void MultiPeakFit::generateFitCurve()
 
 		if (d_graphics_display){
 			if (!d_output_graph)
-				d_output_graph = createOutputGraph()->activeGraph();
+				d_output_graph = createOutputGraph()->activeLayer();
 
 			if (d_peaks > 1)
 				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y, 2);
@@ -338,7 +338,7 @@ void MultiPeakFit::generateFitCurve()
 
 		if (d_graphics_display){
 			if (!d_output_graph)
-				d_output_graph = createOutputGraph()->activeGraph();
+				d_output_graph = createOutputGraph()->activeLayer();
 
 			label = tableName + "_2";
 			DataCurve *c = new DataCurve(d_result_table, tableName + "_1", label);

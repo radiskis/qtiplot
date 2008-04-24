@@ -203,7 +203,7 @@ void MultiLayer::activateGraph(LayerButton* button)
 	}
 }
 
-void MultiLayer::setActiveGraph(Graph* g)
+void MultiLayer::setActiveLayer(Graph* g)
 {
 	if (!g || active_graph == g)
 		return;
@@ -889,7 +889,7 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(viewImageDialog()),this,SIGNAL(showImageDialog()));
 	connect (g,SIGNAL(viewTitleDialog()),this,SIGNAL(viewTitleDialog()));
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
-	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveGraph(Graph*)));
+	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveLayer(Graph*)));
 	connect (g,SIGNAL(viewTextDialog()),this,SIGNAL(showTextDialog()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
     connect (g,SIGNAL(enableTextEditor(Graph *)), this, SIGNAL(enableTextEditor(Graph *)));
@@ -927,7 +927,7 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
                         connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
                     }
                 } else {
-                    setActiveGraph(g);
+                    setActiveLayer(g);
                     active_graph->raise();
                     if (!d_layers_selector) {
                         d_layers_selector = new SelectionMoveResizer(*i);
@@ -954,7 +954,7 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 			index = 0;
 		Graph *g = (Graph *)graphsList.at(index);
 		if (g)
-			setActiveGraph(g);
+			setActiveLayer(g);
 		return;
 	}
 
@@ -966,7 +966,7 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 			index = graphsList.size() - 1;
 		Graph *g = (Graph *)graphsList.at(index);
 		if (g)
-			setActiveGraph(g);
+			setActiveLayer(g);
 		return;
 	}
 
@@ -1103,7 +1103,7 @@ void MultiLayer::setAlignement (int ha, int va)
 		vert_align = va;
 }
 
-void MultiLayer::setLayersNumber(int n)
+void MultiLayer::setNumLayers(int n)
 {
 	if (graphsList.size() == n)
 		return;

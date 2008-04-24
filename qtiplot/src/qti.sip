@@ -121,8 +121,8 @@ public:
   enum PlotDesignation{None = 0, X = 1, Y = 2, Z = 3, xErr = 4, yErr = 5, Label = 6};
   enum ImportMode{NewColumns, NewRows, Overwrite};
 
-  int numRows() /PyName=numRows/;
-  int numCols() /PyName=numCols/;
+  int numRows();
+  int numCols();
   void resizeRows(int) /PyName=setNumRows/;
   void resizeCols(int) /PyName=setNumCols/;
 
@@ -661,10 +661,10 @@ public:
   enum HorAlignement{HCenter, Left, Right};
   enum VertAlignement{VCenter, Top, Bottom};
 
-  Graph *activeGraph() /PyName=activeLayer/;
-  void setActiveGraph(Graph*) /PyName=setActiveLayer/;
-  int layers() /PyName=numLayers/;
-  void setLayersNumber(int n) /PyName=setNumLayers/;
+  Graph *activeLayer();
+  void setActiveLayer(Graph*);
+  int numLayers();
+  void setNumLayers(int n);
   Graph* layer(int num);
   Graph* addLayer(int = 0, int = 0, int = 0, int = 0);
 

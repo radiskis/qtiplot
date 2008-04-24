@@ -1286,7 +1286,7 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
         LayerItem *layer = new LayerItem(g, item, tr("Layer") + QString::number(++i));
         item->addChild(layer);
 
-        if (g == ml->activeGraph()){
+        if (g == ml->activeLayer()){
             layer->setExpanded(true);
         	layer->setActive(true);
         	listBox->setCurrentItem(layer);

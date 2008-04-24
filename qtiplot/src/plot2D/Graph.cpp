@@ -4850,7 +4850,7 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 		painter->setPen(QPen(Qt::NoPen));
 
     painter->setBrush(paletteBackgroundColor());
-    QwtPainter::drawRect(painter, rect);
+    QwtPainter::drawRect(painter, rect.adjusted(0, 0, -1, -1));
 	painter->restore();
 }
 
@@ -4860,7 +4860,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	painter->save();
 
 	const QwtPlotCanvas* plotCanvas = canvas();
-	QRect rect = canvasRect.adjusted(1, 1, -1, -1);
+	QRect rect = canvasRect.adjusted(1, 1, -2, -2);//FIXME: change this to canvasRect.adjusted(1, 1, -1, -1) as soon as Qt 4.4 is released!!!	
     QwtPainter::fillRect(painter, rect, canvasBackground());
 
 	painter->setClipping(true);

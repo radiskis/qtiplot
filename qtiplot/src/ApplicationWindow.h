@@ -623,7 +623,7 @@ public slots:
 	//! \name Dialogs
 	//@{
 	void showFindDialogue();
-	//! Show plot style dialog for the active MultiLayer / activeGraph / specified curve or the activeGraph options dialog if no curve is specified (curveKey = -1).
+	//! Show plot style dialog for the active MultiLayer / activeLayer / specified curve or the activeLayer options dialog if no curve is specified (curveKey = -1).
 	void showPlotDialog(int curveKey = -1);
 	QDialog* showScaleDialog();
 	QDialog* showPlot3dDialog();

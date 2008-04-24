@@ -578,7 +578,7 @@ QwtPlotCurve* Fit::showResiduals()
 	app->hideWindow(outputTable);
 		
 	if (!d_output_graph)
-		d_output_graph = createOutputGraph()->activeGraph();
+		d_output_graph = createOutputGraph()->activeLayer();
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_residue");
@@ -678,7 +678,7 @@ void Fit::generateFitCurve()
 
 	if (d_graphics_display){
 		if (!d_output_graph)
-			d_output_graph = createOutputGraph()->activeGraph();
+			d_output_graph = createOutputGraph()->activeLayer();
 
 		if (d_gen_function){
 			insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y);

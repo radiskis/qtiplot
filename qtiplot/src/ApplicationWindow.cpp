@@ -1542,7 +1542,7 @@ MultiLayer* ApplicationWindow::plotHistogram(Matrix *m)
 	MultiLayer* g = new MultiLayer(this);
     initMultilayerPlot(g, generateUniqueName(tr("Graph")));
 
-	Graph* plot = g->activeGraph();
+	Graph* plot = g->activeLayer();
 	setPreferences(plot);
 	plot->addHistogram(m);
 
@@ -2265,7 +2265,7 @@ void ApplicationWindow::loadImage(const QString& fn)
 	plot->setWindowLabel(fn);
 	plot->setCaptionPolicy(MdiSubWindow::Both);
 
-	Graph *g = plot->activeGraph();
+	Graph *g = plot->activeLayer();
 	g->setTitle("");
 	for (int i=0; i<4; i++)
 		g->enableAxis(i, false);
@@ -2302,7 +2302,7 @@ MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 {
 	MultiLayer *ml = multilayerPlot(generateUniqueName(caption));
 	if (ml){
-		Graph *g = ml->activeGraph();
+		Graph *g = ml->activeLayer();
 		setPreferences(g);
         g->newLegend();
     }
@@ -2314,7 +2314,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph *ag = g->activeGraph();
+	Graph *ag = g->activeLayer();
 	if (!ag)
 		return 0;
 
@@ -2367,7 +2367,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 {//used when plotting from wizard
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph *ag = g->activeGraph();
+	Graph *ag = g->activeLayer();
 	setPreferences(ag);
 	polishGraph(ag, defaultCurveStyle);
 	int curves = (int)colList.count();
@@ -3139,7 +3139,7 @@ void ApplicationWindow::addErrorBars()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g)
         return;
 
@@ -3169,7 +3169,7 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
     if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)w)->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeLayer();
 	if (!g)
 		return;
 
@@ -3254,7 +3254,7 @@ void ApplicationWindow::defineErrorBars(const QString& curveName, const QString&
     if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 
@@ -4933,7 +4933,7 @@ void ApplicationWindow::exportLayer()
 	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)w)->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeLayer();
 	if (!g)
 		return;
 
@@ -5401,7 +5401,7 @@ void ApplicationWindow::showCurvesDialog()
 		return;
 	}
 
-	Graph* g = ((MultiLayer*)w)->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeLayer();
 	if (!g)
 		return;
 
@@ -5468,7 +5468,7 @@ AssociationsDialog* ApplicationWindow::showPlotAssociations(int curve)
 	if (!w)
 		return 0;
 
-	Graph *g = ((MultiLayer*)w)->activeGraph();
+	Graph *g = ((MultiLayer*)w)->activeLayer();
 	if (!g)
 		return 0;
 
@@ -5487,7 +5487,7 @@ void ApplicationWindow::showTitleDialog()
 		return;
 
 	if (w->isA("MultiLayer")){
-		Graph* g = ((MultiLayer*)w)->activeGraph();
+		Graph* g = ((MultiLayer*)w)->activeLayer();
 		if (g){
 			TextDialog* td= new TextDialog(TextDialog::LayerTitle, this,0);
 			td->setGraph(g);
@@ -5506,7 +5506,7 @@ void ApplicationWindow::showAxisTitleDialog()
 	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)w)->activeGraph();
+	Graph* g = ((MultiLayer*)w)->activeLayer();
 	if (!g)
 		return;
 
@@ -6143,7 +6143,7 @@ void ApplicationWindow::showGeneralPlotDialog()
 	if (!plot)
 		return;
 
-	if (plot->isA("MultiLayer") && ((MultiLayer*)plot)->layers())
+	if (plot->isA("MultiLayer") && ((MultiLayer*)plot)->numLayers())
 		showPlotDialog();
 	else if (plot->isA("Graph3D")){
 	    QDialog* gd = showScaleDialog();
@@ -6158,7 +6158,7 @@ void ApplicationWindow::showAxisDialog()
 		return;
 
 	QDialog* gd = showScaleDialog();
-	if (gd && plot->isA("MultiLayer") && ((MultiLayer*)plot)->layers())
+	if (gd && plot->isA("MultiLayer") && ((MultiLayer*)plot)->numLayers())
 		((AxesDialog*)gd)->showAxesPage();
 	else if (gd && plot->isA("Graph3D"))
 		((Plot3DDialog*)gd)->showAxisTab();
@@ -6181,7 +6181,7 @@ QDialog* ApplicationWindow::showScaleDialog()
 		if (((MultiLayer*)w)->isEmpty())
 			return 0;
 
-		Graph* g = ((MultiLayer*)w)->activeGraph();
+		Graph* g = ((MultiLayer*)w)->activeLayer();
 		if (g->isPiePlot()){
             QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
 		    return 0;
@@ -6246,7 +6246,7 @@ void ApplicationWindow::showPlotDialog(int curveIndex)
 	pd->insertColumnsList(columnsList(Table::All));
 	pd->setMultiLayer(w);
     if (curveIndex >= 0){
-		Graph *g = w->activeGraph();
+		Graph *g = w->activeLayer();
 		if (g)
 			pd->selectCurve(curveIndex);
 	}
@@ -6269,7 +6269,7 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotCurve *cv)
 	if (!w)
 		return;
 
-	Graph *g = w->activeGraph();
+	Graph *g = w->activeLayer();
 	if (!g)
 		return;
 		
@@ -6358,7 +6358,7 @@ void ApplicationWindow::showAllCurves()
 	if (!w)
 		return;
 
-	Graph* g = w->activeGraph();
+	Graph* g = w->activeLayer();
 	if (!g)
 		return;
 
@@ -6373,7 +6373,7 @@ void ApplicationWindow::hideOtherCurves()
 	if (!w)
 		return;
 
-	Graph* g = w->activeGraph();
+	Graph* g = w->activeLayer();
 	if (!g)
 		return;
 
@@ -6390,7 +6390,7 @@ void ApplicationWindow::hideCurve()
 	if (!w)
 		return;
 
-	Graph* g = w->activeGraph();
+	Graph* g = w->activeLayer();
 	if (!g)
 		return;
 
@@ -6403,7 +6403,7 @@ void ApplicationWindow::removeCurve()
 	if (!w)
 		return;
 
-	Graph* g = w->activeGraph();
+	Graph* g = w->activeLayer();
 	if (!g)
 		return;
 
@@ -6439,7 +6439,7 @@ void ApplicationWindow::showCurveWorksheet()
 	if (!w)
 		return;
 
-	Graph* g = w->activeGraph();
+	Graph* g = w->activeLayer();
 	if (!g)
 		return;
 
@@ -6461,7 +6461,7 @@ void ApplicationWindow::zoomIn()
 		return;
 	}
 
-	if ((Graph*)plot->activeGraph()->isPiePlot())
+	if ((Graph*)plot->activeLayer()->isPiePlot())
 	{
 		if (btnZoomIn->isOn())
 			QMessageBox::warning(this,tr("QtiPlot - Warning"),
@@ -6483,10 +6483,10 @@ void ApplicationWindow::zoomOut()
 	if (!plot)
 		return;
 
-	if (plot->isEmpty() || (Graph*)plot->activeGraph()->isPiePlot())
+	if (plot->isEmpty() || (Graph*)plot->activeLayer()->isPiePlot())
 		return;
 
-	((Graph*)plot->activeGraph())->zoomOut();
+	((Graph*)plot->activeLayer())->zoomOut();
 	btnPointer->setOn(true);
 }
 
@@ -6501,7 +6501,7 @@ void ApplicationWindow::setAutoScale()
 		return;
 	}
 
-	Graph *g = (Graph*)plot->activeGraph();
+	Graph *g = (Graph*)plot->activeLayer();
 	if (g)
 		g->setAutoScale();
 }
@@ -6520,7 +6520,7 @@ void ApplicationWindow::removePoints()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 	{
 		btnPointer->setChecked(true);
@@ -6565,7 +6565,7 @@ void ApplicationWindow::movePoints()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g || !g->validCurvesDataSize()){
 		btnPointer->setChecked(true);
 		return;
@@ -6691,7 +6691,7 @@ void ApplicationWindow::showExpDecayDialog(int type)
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6728,7 +6728,7 @@ void ApplicationWindow::showFitDialog()
 	if (!plot)
 		return;
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6747,7 +6747,7 @@ void ApplicationWindow::showFilterDialog(int filter)
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if ( g && g->validCurvesDataSize())
 	{
 		FilterDialog *fd = new FilterDialog(filter, this);
@@ -6785,7 +6785,7 @@ void ApplicationWindow::showFFTDialog()
 
 	FFTDialog *sd = 0;
 	if (w->isA("MultiLayer")) {
-		Graph* g = ((MultiLayer*)w)->activeGraph();
+		Graph* g = ((MultiLayer*)w)->activeLayer();
 		if ( g && g->validCurvesDataSize() ){
 			sd = new FFTDialog(FFTDialog::onGraph, this);
 			sd->setAttribute(Qt::WA_DeleteOnClose);
@@ -6811,7 +6811,7 @@ void ApplicationWindow::showSmoothDialog(int m)
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6842,7 +6842,7 @@ void ApplicationWindow::showInterpolationDialog()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6859,7 +6859,7 @@ void ApplicationWindow::showFitPolynomDialog()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -6885,7 +6885,7 @@ void ApplicationWindow::showIntegrationDialog()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 
@@ -6970,7 +6970,7 @@ void ApplicationWindow::showRangeSelectors()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g)
 		return;
 
@@ -7001,7 +7001,7 @@ void ApplicationWindow::showCursor()
 		return;
 	}
 
-	if ((Graph*)plot->activeGraph()->isPiePlot()){
+	if ((Graph*)plot->activeLayer()->isPiePlot()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("This functionality is not available for pie plots!"));
 		btnPointer->setChecked(true);
@@ -7030,7 +7030,7 @@ void ApplicationWindow::newLegend()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if ( g )
 		g->newLegend();
 }
@@ -7048,7 +7048,7 @@ void ApplicationWindow::addTimeStamp()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if ( g )
 		g->addTimeStamp();
 }
@@ -7067,7 +7067,7 @@ void ApplicationWindow::addText()
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
-	Graph *g = (Graph*)plot->activeGraph();
+	Graph *g = (Graph*)plot->activeLayer();
 	if (g)
 		g->drawText(true);
 }
@@ -7084,7 +7084,7 @@ void ApplicationWindow::addImage()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g)
 		return;
 
@@ -7123,7 +7123,7 @@ void ApplicationWindow::drawLine()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (g)
 	{
 		g->drawLine(true);
@@ -7146,7 +7146,7 @@ void ApplicationWindow::drawArrow()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (g)
 	{
 		g->drawLine(true, 1);
@@ -7160,7 +7160,7 @@ void ApplicationWindow::showImageDialog()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (g)
 	{
 		ImageMarker *im = (ImageMarker *) g->selectedMarker();
@@ -7202,7 +7202,7 @@ void ApplicationWindow::showTextDialog()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if ( g ){
 		LegendWidget *l = (LegendWidget *) g->selectedText();
 		if (!l)
@@ -7220,7 +7220,7 @@ void ApplicationWindow::showLineDialog()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (g){
 		ArrowMarker *lm = (ArrowMarker *) g->selectedMarker();
 		if (!lm)
@@ -7254,7 +7254,7 @@ void ApplicationWindow::clearSelection()
 	else if (m->isA("Matrix"))
 		((Matrix*)m)->clearSelection();
 	else if (m->isA("MultiLayer")){
-		Graph* g = ((MultiLayer*)m)->activeGraph();
+		Graph* g = ((MultiLayer*)m)->activeLayer();
 		if (!g)
 			return;
 
@@ -7293,10 +7293,10 @@ void ApplicationWindow::copySelection()
 		((Matrix*)m)->copySelection();
 	else if (m->isA("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
-		if (!plot || plot->layers() == 0)
+		if (!plot || plot->numLayers() == 0)
 			return;
 
-		Graph* g = (Graph*)plot->activeGraph();
+		Graph* g = (Graph*)plot->activeLayer();
 		if (!g)
             return;
 
@@ -7327,10 +7327,10 @@ void ApplicationWindow::cutSelection()
 		((Matrix*)m)->cutSelection();
 	else if(m->isA("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
-		if (!plot || plot->layers() == 0)
+		if (!plot || plot->numLayers() == 0)
 			return;
 
-		Graph* g = (Graph*)plot->activeGraph();
+		Graph* g = (Graph*)plot->activeLayer();
 		if (!g)
             return;
 
@@ -7357,7 +7357,7 @@ void ApplicationWindow::copyMarker()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (g && g->markerSelected()){
 		if (g->selectedText()){
 			d_text_copy = g->selectedText();
@@ -7402,10 +7402,10 @@ void ApplicationWindow::pasteSelection()
 
 			QApplication::restoreOverrideCursor();
 		} else {
-			if (plot->layers() == 0)
+			if (plot->numLayers() == 0)
 				return;
 
-			Graph* g = (Graph*)plot->activeGraph();
+			Graph* g = (Graph*)plot->activeLayer();
 			if (!g)
 				return;
 
@@ -7770,7 +7770,7 @@ void ApplicationWindow::removeWindowFromLists(MdiSubWindow* w)
 		}
 	} else if (w->isA("MultiLayer")){
 		MultiLayer *ml =  (MultiLayer*)w;
-		Graph *g = ml->activeGraph();
+		Graph *g = ml->activeLayer();
 		if (g)
 			btnPointer->setChecked(true);
 	} else if (w->isA("Matrix"))
@@ -8115,7 +8115,7 @@ void ApplicationWindow::showMarkerPopupMenu()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	QMenu markerMenu(this);
 
 	if (g->imageMarkerSelected()){
@@ -8571,7 +8571,7 @@ void ApplicationWindow::showGraphContextMenu()
 	QMenu exports(this);
 	QMenu copy(this);
 	QMenu prints(this);
-	Graph* ag = (Graph*)plot->activeGraph();
+	Graph* ag = (Graph*)plot->activeLayer();
 
 	if (ag->isPiePlot())
 		cm.insertItem(tr("Re&move Pie Curve"),ag, SLOT(removePie()));
@@ -8633,7 +8633,7 @@ void ApplicationWindow::showWindowContextMenu()
 		}
 
 		cm.addAction(actionAddLayer);
-		if (g->layers() != 0)
+		if (g->numLayers() != 0)
 			cm.addAction(actionDeleteLayer);
 
 		cm.addAction(actionShowLayerDialog);
@@ -8901,7 +8901,7 @@ void ApplicationWindow::setCurveFullRange()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 
@@ -8914,7 +8914,7 @@ void ApplicationWindow::showCurveRangeDialog()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 
@@ -8939,7 +8939,7 @@ FunctionDialog* ApplicationWindow::showFunctionDialog()
 	if (!plot)
 		return 0;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return 0;
 
@@ -8984,7 +8984,7 @@ void ApplicationWindow::addFunctionCurve()
 		return;
 	}
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if ( g ) {
 		FunctionDialog* fd = functionDialog();
 		if (fd)
@@ -9027,7 +9027,7 @@ MultiLayer * ApplicationWindow::newFunctionPlot(QStringList &formulas, double st
 {
     MultiLayer *ml = newGraph();
     if (ml)
-        ml->activeGraph()->addFunction(formulas, start, end, points, var, type);
+        ml->activeLayer()->addFunction(formulas, start, end, points, var, type);
 
 	updateFunctionLists(type, formulas);
 	return ml;
@@ -9650,7 +9650,7 @@ void ApplicationWindow::pixelLineProfile()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 
@@ -9671,7 +9671,7 @@ void ApplicationWindow::intensityTable()
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (g){
 		ImageMarker *im = (ImageMarker *) g->selectedMarker();
         if (im){
@@ -10634,7 +10634,7 @@ void ApplicationWindow::copyActiveLayer()
 	if (!plot)
 		return;
 
-	Graph *g = plot->activeGraph();
+	Graph *g = plot->activeLayer();
 	if (!g)
 		return;
 	
@@ -10651,7 +10651,7 @@ void ApplicationWindow::showDataSetDialog(Analysis operation)
 	if (!plot)
 		return;
 
-	Graph *g = plot->activeGraph();
+	Graph *g = plot->activeLayer();
 	if (!g)
         return;
 
@@ -10732,7 +10732,7 @@ void ApplicationWindow::analysis(Analysis operation)
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -10831,7 +10831,7 @@ void ApplicationWindow::fitLinear()
 		result->setColName(3, tr("Chi^2"));
 		result->setColName(4, tr("R^2"));
 		
-		LinearFit *lf = new LinearFit (this, g->activeGraph());
+		LinearFit *lf = new LinearFit (this, g->activeLayer());
 		if (d_2_linear_fit_points)
 			lf->generateFunction(generateUniformFitPoints, 2);
 		lf->setOutputPrecision(fit_output_precision);
@@ -12483,7 +12483,7 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph* plot = g->activeGraph();
+	Graph* plot = g->activeLayer();
 	setPreferences(plot);
 
 	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
@@ -12516,7 +12516,7 @@ MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph* plot = g->activeGraph();
+	Graph* plot = g->activeLayer();
 	setPreferences(plot);
 
 	plot->plotSpectrogram(m, type);
@@ -12629,7 +12629,7 @@ void ApplicationWindow::translateCurveHor()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g)
 		return;
 
@@ -12662,7 +12662,7 @@ void ApplicationWindow::translateCurveVert()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g)
 		return;
 
@@ -12813,7 +12813,7 @@ void ApplicationWindow::fitMultiPeak(int profile)
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeGraph();
+	Graph* g = (Graph*)plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -14905,7 +14905,7 @@ void ApplicationWindow::setFontSize(int size)
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 
@@ -14922,7 +14922,7 @@ void ApplicationWindow::setFontFamily(const QFont& font)
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 
@@ -14939,7 +14939,7 @@ void ApplicationWindow::setItalicFont(bool italic)
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 
@@ -14957,7 +14957,7 @@ void ApplicationWindow::setBoldFont(bool bold)
 	if (!plot)
 		return;
 
-	Graph* g = plot->activeGraph();
+	Graph* g = plot->activeLayer();
 	if (!g)
 		return;
 

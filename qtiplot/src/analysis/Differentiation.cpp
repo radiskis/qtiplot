@@ -89,7 +89,7 @@ void Differentiation::output()
 
 	if (d_graphics_display){
 		if (!d_output_graph)
-			d_output_graph = createOutputGraph()->activeGraph();
+			d_output_graph = createOutputGraph()->activeLayer();
 
     	d_output_graph->insertCurve(d_result_table, tableName + "_2", 0);
     	QString legend = "\\l(1)" + tr("Derivative") + " " + tr("of","Derivative of") + " " + dataSet;
