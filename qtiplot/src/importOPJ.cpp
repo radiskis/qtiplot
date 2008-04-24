@@ -1135,7 +1135,6 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 			}
 
 			graph->setAutoscaleFonts(true);
-        	graph->setIgnoreResizeEvents(!mw->autoResizeLayers);
 
 			int nXDelta = graph->width() - graph->canvas()->width();
 			int nYDelta = graph->height() - graph->canvas()->height();

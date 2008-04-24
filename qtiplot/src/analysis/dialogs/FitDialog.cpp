@@ -436,9 +436,21 @@ void FitDialog::initAdvancedPage()
 	covMatrixName = new QLineEdit( tr( "CovMatrix" ) );
     gl2->addWidget(covMatrixName, 2, 2);
 	
+	btnConfidenceLimits = new QPushButton(tr( "&Conf. Bands" )); 
+	connect(btnConfidenceLimits, SIGNAL(clicked()), this, SLOT(showConfidenceLimits()));
+	gl2->addWidget(btnConfidenceLimits, 3, 0);
+	
+	boxConfidenceLevel = new DoubleSpinBox();
+	boxConfidenceLevel->setLocale(app->locale());
+	boxConfidenceLevel->setDecimals(2);
+	boxConfidenceLevel->setRange(0.0, 1.0);
+	boxConfidenceLevel->setValue(0.95);
+	boxConfidenceLevel->setSingleStep(0.01);
+	gl2->addWidget(boxConfidenceLevel, 3, 1);
+	
 	btnResiduals = new QPushButton(tr( "&Residuals Plot" )); 
 	connect(btnResiduals, SIGNAL(clicked()), this, SLOT(showResiduals()));
-	gl2->addWidget(btnResiduals, 3, 0);
+	gl2->addWidget(btnResiduals, 4, 0);
 	
 	scaleErrorsBox = new QCheckBox(tr("Scale Errors with sqrt(Chi^2/doF)"));
 	scaleErrorsBox->setChecked(app->fit_scale_errors);
@@ -1490,4 +1502,12 @@ void FitDialog::showResiduals()
 		return;
 	
 	d_current_fit->showResiduals();
+}
+
+void FitDialog::showConfidenceLimits()
+{
+	if (!d_current_fit)
+		return;
+	
+	d_current_fit->showConfidenceLimits(boxConfidenceLevel->value());
 }

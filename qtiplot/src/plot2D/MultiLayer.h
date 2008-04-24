@@ -81,6 +81,9 @@ public:
 	bool printCropmarksEnabled(){return d_print_cropmarks;};
 	void printCropmarks(bool on){d_print_cropmarks = on;};
 
+	bool scaleLayersOnResize(){return d_scale_layers;};
+	void setScaleLayersOnResize(bool ok){d_scale_layers = ok;};
+
 	QRect canvasRect(){return canvas->rect();};
 		
 public slots:
@@ -195,6 +198,8 @@ private:
 	int left_margin, right_margin, top_margin, bottom_margin;
 	int l_canvas_width, l_canvas_height, hor_align, vert_align;
 	bool d_scale_on_print, d_print_cropmarks;
+    //! Flag telling if layers should be rescaled on the plot window is resized by the user.
+	bool d_scale_layers;
 
     QList<LayerButton *> buttonsList;
     QList<Graph *> graphsList;

@@ -38,6 +38,7 @@
 
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_blas.h>
+#include <gsl/gsl_cdf.h>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -588,6 +589,82 @@ QwtPlotCurve* Fit::showResiduals()
 	d_output_graph->insertPlotItem(c, Graph::Line);
     d_output_graph->updatePlot();
 	return (QwtPlotCurve*)c;
+}
+
+void Fit::showConfidenceLimits(double confidenceLevel)
+{
+	if (!d_graphics_display)
+		return;
+	
+	double *lcl = new double[d_n];
+	if (!lcl)
+		return;
+	double *ucl = new double[d_n];
+	if (!ucl)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	Table *outputTable = app->newTable(d_n, 3, tr("ConfBands"), tr("Confidence Limits of %1").arg(d_explanation));
+	if (!outputTable)
+		return;
+	
+	outputTable->setColComment(0, tr("Independent Variable"));
+	outputTable->setColName(1, tr("LCL"));
+	outputTable->setColComment(1, tr("Lower %1 Confidence Limit").arg(confidenceLevel));
+	outputTable->setColName(2, tr("UCL"));
+	outputTable->setColComment(2, tr("Upper %1 Confidence Limit").arg(confidenceLevel));
+	
+	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
+	for (int i = 0; i < d_n; i++){
+		double x = d_x[i];
+		outputTable->setCell(i, 0, x);
+		double y = eval(d_results, x);
+		double lowLimit = y*(1 - t);
+		outputTable->setCell(i, 1, lowLimit);
+		lcl[i] = lowLimit;
+		double upLimit = y*(1 + t);
+		outputTable->setCell(i, 2, upLimit);
+		ucl[i] = upLimit;
+	}
+	for (int i = 0; i < outputTable->numCols(); i++)
+		outputTable->table()->adjustColumn(i);
+	app->hideWindow(outputTable);
+		
+	if (!d_output_graph)
+		d_output_graph = createOutputGraph()->activeLayer();
+
+	QString tableName = outputTable->objectName();
+	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LCL");
+	c->setData(d_x, lcl, d_n);
+    c->setPen(QPen(ColorBox::color(d_curveColorIndex + 2), 1));
+	d_output_graph->insertPlotItem(c, Graph::Line);
+	
+	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UCL");
+	c->setData(d_x, ucl, d_n);
+    c->setPen(QPen(ColorBox::color(d_curveColorIndex + 2), 1));
+	d_output_graph->insertPlotItem(c, Graph::Line);
+	
+    d_output_graph->updatePlot();
+	delete [] lcl;
+	delete [] ucl;
+}
+
+double Fit::lcl(int parIndex, double confidenceLevel)
+{
+	if (parIndex < 0 || parIndex >= d_p)
+		return GSL_NAN;
+	
+	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
+	return d_results[parIndex] - t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
+}
+
+double Fit::ucl(int parIndex, double confidenceLevel)
+{
+	if (parIndex < 0 || parIndex >= d_p)
+		return GSL_NAN;
+	
+	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
+	return d_results[parIndex] + t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
 }
 
 void Fit::fit()

@@ -96,7 +96,8 @@ l_canvas_height(300),
 hor_align(HCenter),
 vert_align(VCenter),
 d_scale_on_print(true),
-d_print_cropmarks(false)
+d_print_cropmarks(false),
+d_scale_layers(parent->autoResizeLayers)
 {
 	layerButtonsBox = new QHBoxLayout();
 	QHBoxLayout *hbox = new QHBoxLayout();
@@ -167,8 +168,6 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 		int layers = graphsList.size();		
 		x = left_margin + (layers % d_cols)*(width + colsSpace);
 	    y = top_margin + (layers / d_cols)*(height + rowsSpace);
-		//printf("after: x=%d y=%d width=%d height=%d\n", x, y, width, height);
-		//printf("rows=%d, cols=%d\n", d_rows, d_cols);
 	}
 
 	Graph* g = new Graph(x, y, width, height, canvas);
@@ -230,7 +229,7 @@ void MultiLayer::setActiveLayer(Graph* g)
 
 void MultiLayer::resizeLayers (QResizeEvent *re)
 {
-	if (applicationWindow()->d_opening_file)
+	if (!d_scale_layers || applicationWindow()->d_opening_file)
 		return;
 
 	QSize oldSize = re->oldSize();
@@ -247,22 +246,20 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
 	foreach (Graph *g, graphsList){
-		if (!g->ignoresResizeEvents()){
-			QObjectList lst = g->children();
-			foreach(QObject *o, lst){
-				if (o->isA("LegendWidget"))
-					((LegendWidget *)o)->setFixedCoordinatesMode();
-			}
-
-			int gx = qRound(g->x()*w_ratio);
-			int gy = qRound(g->y()*h_ratio);
-			int gw = qRound(g->width()*w_ratio);
-			int gh = qRound(g->height()*h_ratio);
-			g->setGeometry(QRect(gx, gy, gw, gh));
-
-            if (scaleLayerFonts && g->autoscaleFonts())
-                g->scaleFonts(h_ratio);
+		QObjectList lst = g->children();
+		foreach(QObject *o, lst){
+			if (o->isA("LegendWidget"))
+				((LegendWidget *)o)->setFixedCoordinatesMode();
 		}
+
+		int gx = qRound(g->x()*w_ratio);
+		int gy = qRound(g->y()*h_ratio);
+		int gw = qRound(g->width()*w_ratio);
+		int gh = qRound(g->height()*h_ratio);
+		g->setGeometry(QRect(gx, gy, gw, gh));
+
+		if (scaleLayerFonts && g->autoscaleFonts())
+			g->scaleFonts(h_ratio);
 	}
 	emit modifiedPlot();
 }
@@ -554,17 +551,10 @@ void MultiLayer::arrangeLayers(bool fit, bool userSize)
 	}
 
 	if (userSize){//resize window
-		bool ignoreResize = active_graph->ignoresResizeEvents();
-		foreach (Graph *gr, graphsList)
-			gr->setIgnoreResizeEvents(true);
-
 		this->showNormal();
 		QSize size = canvas->childrenRect().size();
 		this->resize(canvas->x() + size.width() + left_margin + 2*right_margin,
 					canvas->y() + size.height() + bottom_margin + 2*LayerButton::btnSize());
-
-		foreach (Graph *gr, graphsList)
-			gr->setIgnoreResizeEvents(ignoreResize);
 	}
 
 	emit modifiedPlot();
@@ -1163,7 +1153,6 @@ void MultiLayer::copy(MultiLayer* ml)
 	foreach(Graph *g, layers){
 		Graph* g2 = addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		g2->copy(g);
-		g2->setIgnoreResizeEvents(g->ignoresResizeEvents());
 		g2->setAutoscaleFonts(g->autoscaleFonts());
 	}
 	show();
