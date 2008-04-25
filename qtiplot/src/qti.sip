@@ -1024,9 +1024,17 @@ if(sipRes)
   sipIsErr = 1;
 %End
 
-  //! Returns the sum of squares of the residuals from the best-fit line
   double chiSquare();
+  double rSquare();
+  double adjustedRSquare();
+  double rss();
+  double rmse();
 
+  void showPredictionLimits(double);
+  void showConfidenceLimits(double);
+  double lcl(int, double);
+  double ucl(int, double);
+  
   Table* parametersTable(const QString&);
   Matrix* covarianceMatrix(const QString&);
 };

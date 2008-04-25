@@ -212,3 +212,12 @@ def exportAllTablesToTeX(folder, dir, recurs=True):
 		for f in folder.folders():
 			exportAllTablesToTeX(f, dir, True)
 
+global factor
+def factor(n):
+	"Calculates factorial"
+	f = 1
+	while (n > 0):
+		f = f * n
+		n = n - 1
+	return f
+qti.mathFunctions["factor"] = factor

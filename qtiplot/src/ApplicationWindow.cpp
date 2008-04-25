@@ -11140,7 +11140,7 @@ void ApplicationWindow::createActions()
 	connect(actionAutomaticLayout, SIGNAL(activated()), this, SLOT(autoArrangeLayers()));
 
 	actionExportGraph = new QAction(tr("&Current"), this);
-	actionExportGraph->setShortcut( tr("Alt+G") );
+	actionExportGraph->setShortcut( tr("Ctrl+Alt+G") );
 	connect(actionExportGraph, SIGNAL(activated()), this, SLOT(exportGraph()));
 
 	actionExportAllGraphs = new QAction(tr("&All"), this);
@@ -11932,7 +11932,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionAutomaticLayout->setToolTip(tr("Automatic Layout"));
 
 	actionExportGraph->setMenuText(tr("&Current"));
-	actionExportGraph->setShortcut(tr("Alt+G"));
+	actionExportGraph->setShortcut(tr("Ctrl+Alt+G"));
 	actionExportGraph->setToolTip(tr("Export current graph"));
 
 	actionExportAllGraphs->setMenuText(tr("&All"));
