@@ -448,9 +448,13 @@ void FitDialog::initAdvancedPage()
 	boxConfidenceLevel->setSingleStep(0.01);
 	gl2->addWidget(boxConfidenceLevel, 3, 1);
 	
+	btnPredictionLimits = new QPushButton(tr( "&Pred. Bands" )); 
+	connect(btnPredictionLimits, SIGNAL(clicked()), this, SLOT(showPredictionLimits()));
+	gl2->addWidget(btnPredictionLimits, 3, 2); 
+	
 	btnResiduals = new QPushButton(tr( "&Residuals Plot" )); 
 	connect(btnResiduals, SIGNAL(clicked()), this, SLOT(showResiduals()));
-	gl2->addWidget(btnResiduals, 4, 0);
+	gl2->addWidget(btnResiduals, 3, 3);
 	
 	scaleErrorsBox = new QCheckBox(tr("Scale Errors with sqrt(Chi^2/doF)"));
 	scaleErrorsBox->setChecked(app->fit_scale_errors);
@@ -1510,4 +1514,12 @@ void FitDialog::showConfidenceLimits()
 		return;
 	
 	d_current_fit->showConfidenceLimits(boxConfidenceLevel->value());
+}
+
+void FitDialog::showPredictionLimits()
+{
+	if (!d_current_fit)
+		return;
+	
+	d_current_fit->showPredictionLimits(boxConfidenceLevel->value());
 }

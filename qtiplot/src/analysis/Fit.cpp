@@ -82,6 +82,8 @@ void Fit::init()
 	d_residuals = NULL;
 	d_init_err = false;
 	chi_2 = -1;
+	d_rss = 0.0;
+	d_adjusted_r_square = GSL_NAN;
 	d_scale_errors = false;
 	d_sort_data = false;
 	d_prec = (((ApplicationWindow *)parent())->fit_output_precision);
@@ -319,6 +321,9 @@ QString Fit::logFitInfo(int iterations, int status)
 	info += "--------------------------------------------------------------------------------------\n";
 	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
 	info += tr("R^2") + " = " + locale.toString(rSquare(), 'g', d_prec) + "\n";
+	info += tr("Adjusted R^2") + " = " + locale.toString(d_adjusted_r_square, 'g', d_prec) + "\n";
+	info += tr("RMSE (Root Mean Squared Error)") + " = " + locale.toString(sqrt(d_rss/(d_n - d_p)), 'g', d_prec) + "\n";
+	info += tr("RSS (Residual Sum of Squares)") + " = " + locale.toString(d_rss, 'g', d_prec) + "\n";
 	info += "---------------------------------------------------------------------------------------\n";
 	if (is_non_linear){
 		info += tr("Iterations")+ " = " + QString::number(iterations) + "\n";
@@ -338,18 +343,19 @@ double Fit::rSquare()
 	
 	//double sst = gsl_stats_wtss_m (d_w, 1, d_y, 1, d_n, gsl_stats_mean (d_y, 1, d_n));
 	double mean = gsl_stats_mean (d_y, 1, d_n);
-	double sse = 0.0, sst = 0.0;
+	double sst = 0.0;
 	for (int i = 0; i < d_n; i++){
 		double w = d_w[i];
 		double y = d_y[i];
 		double dy = y - eval(d_results, d_x[i]);
 		d_residuals[i] = dy;
-		sse += w*dy*dy;
+		d_rss += w*dy*dy;
 		
 		dy = y - mean;
 		sst += w*dy*dy;
 	}
-	return 1 - sse/sst;
+	d_adjusted_r_square = 1 - d_rss*(d_n - 1)/(sst*(d_n - d_p - 1));
+	return 1 - d_rss/sst;
 }
 
 QString Fit::legendInfo()
@@ -565,7 +571,7 @@ QwtPlotCurve* Fit::showResiduals()
 		return NULL;
 	
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	Table *outputTable = app->newTable(d_n, 2, tr("Residuals"), tr("Residuals of %1").arg(d_explanation));
+	Table *outputTable = app->newTable(d_n, 2, app->generateUniqueName(tr("FitResiduals"), true), tr("Residuals of %1").arg(d_explanation));
 	if (!outputTable)
 		return NULL;
 	
@@ -596,6 +602,12 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	if (!d_graphics_display)
 		return;
 	
+	if (!d_n){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+				tr("Please perform a fit first!"));
+		return;
+	}
+	
 	double *lcl = new double[d_n];
 	if (!lcl)
 		return;
@@ -604,7 +616,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		return;
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	Table *outputTable = app->newTable(d_n, 3, tr("ConfBands"), tr("Confidence Limits of %1").arg(d_explanation));
+	Table *outputTable = app->newTable(d_n, 3, app->generateUniqueName(tr("FitStats"), true), tr("Confidence Limits of %1").arg(d_explanation));
 	if (!outputTable)
 		return;
 	
@@ -615,14 +627,26 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	outputTable->setColComment(2, tr("Upper %1 Confidence Limit").arg(confidenceLevel));
 	
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
+	double x_mean = gsl_stats_mean(d_x, 1, d_n);
+	double sxx = 0.0;//gsl_stats_tss (d_x, 1, d_n);
+	for (int i = 0; i < d_n; i++){
+		double dx = d_x[i] - x_mean;
+		sxx += dx*dx;
+	}
+	
+	double mse = d_rss/double(d_n - d_p);
+	
 	for (int i = 0; i < d_n; i++){
 		double x = d_x[i];
+		double dx = x - x_mean;
+		double aux = t*sqrt(mse*(1.0/(double)d_n + dx*dx/sxx));
+		
 		outputTable->setCell(i, 0, x);
 		double y = eval(d_results, x);
-		double lowLimit = y*(1 - t);
+		double lowLimit = y - aux;
 		outputTable->setCell(i, 1, lowLimit);
 		lcl[i] = lowLimit;
-		double upLimit = y*(1 + t);
+		double upLimit = y + aux;
 		outputTable->setCell(i, 2, upLimit);
 		ucl[i] = upLimit;
 	}
@@ -665,6 +689,81 @@ double Fit::ucl(int parIndex, double confidenceLevel)
 	
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
 	return d_results[parIndex] + t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
+}
+
+void Fit::showPredictionLimits(double confidenceLevel)
+{
+	if (!d_graphics_display)
+		return;
+	
+	if (!d_n){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+				tr("Please perform a fit first!"));
+		return;
+	}
+	
+	double *lcl = new double[d_n];
+	if (!lcl)
+		return;
+	double *ucl = new double[d_n];
+	if (!ucl)
+		return;
+
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	Table *outputTable = app->newTable(d_n, 3, app->generateUniqueName(tr("FitStats"), true), tr("Prediction Limits of %1").arg(d_explanation));
+	if (!outputTable)
+		return;
+	
+	outputTable->setColComment(0, tr("Independent Variable"));
+	outputTable->setColName(1, tr("LPL"));
+	outputTable->setColComment(1, tr("Lower %1 Prediction Limit").arg(confidenceLevel));
+	outputTable->setColName(2, tr("UPL"));
+	outputTable->setColComment(2, tr("Upper %1 Prediction Limit").arg(confidenceLevel));
+	
+	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
+	double x_mean = gsl_stats_mean(d_x, 1, d_n);
+	double sxx = 0.0;//gsl_stats_tss (d_x, 1, d_n);
+	for (int i = 0; i < d_n; i++){
+		double dx = d_x[i] - x_mean;
+		sxx += dx*dx;
+	}
+	
+	double mse = d_rss/double(d_n - d_p);
+	for (int i = 0; i < d_n; i++){
+		double x = d_x[i];
+		double dx = x - x_mean;
+		double aux = t*sqrt(mse*(1 + 1.0/(double)d_n + dx*dx/sxx));
+		
+		outputTable->setCell(i, 0, x);
+		double y = eval(d_results, x);
+		double lowLimit = y - aux;
+		outputTable->setCell(i, 1, lowLimit);
+		lcl[i] = lowLimit;
+		double upLimit = y + aux;
+		outputTable->setCell(i, 2, upLimit);
+		ucl[i] = upLimit;
+	}
+	for (int i = 0; i < outputTable->numCols(); i++)
+		outputTable->table()->adjustColumn(i);
+	app->hideWindow(outputTable);
+		
+	if (!d_output_graph)
+		d_output_graph = createOutputGraph()->activeLayer();
+
+	QString tableName = outputTable->objectName();
+	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LPL");
+	c->setData(d_x, lcl, d_n);
+    c->setPen(QPen(ColorBox::color(d_curveColorIndex + 3), 1));
+	d_output_graph->insertPlotItem(c, Graph::Line);
+	
+	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UPL");
+	c->setData(d_x, ucl, d_n);
+    c->setPen(QPen(ColorBox::color(d_curveColorIndex + 3), 1));
+	d_output_graph->insertPlotItem(c, Graph::Line);
+	
+    d_output_graph->updatePlot();
+	delete [] lcl;
+	delete [] ucl;
 }
 
 void Fit::fit()
