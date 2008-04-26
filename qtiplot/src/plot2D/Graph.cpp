@@ -252,7 +252,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	setFrameShape(QFrame::Box);
 	setLineWidth(0);
 	setMouseTracking(true );
-	
+
 	cp = new CanvasPicker(this);
 
 	titlePicker = new TitlePicker(this);
@@ -2186,10 +2186,12 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 	else
 		l = new LegendWidget(this);
 
-	if (fileVersion < 86 || fileVersion > 91)
+	if (fileVersion < 86 || (fileVersion > 91 && fileVersion < 96))
 		l->move(QPoint(fList[1].toInt(),fList[2].toInt()));
-	else
+	else {
+	    updateLayout();
 		l->setOriginCoord(fList[1].toDouble(), fList[2].toDouble());
+	}
 
 	QFont fnt=QFont (fList[3],fList[4].toInt(),fList[5].toInt(),fList[6].toInt());
 	fnt.setUnderline(fList[7].toInt());
@@ -2376,24 +2378,24 @@ QString Graph::saveMarkers()
 			} else
 				s += "<text>\t";
 
-			s += QString::number(l->x()) + "\t";
-			s += QString::number(l->y()) + "\t";
+			s += QString::number(l->xValue(), 'g', 15) + "\t";
+			s += QString::number(l->yValue(), 'g', 15) + "\t";
 
-			QFont f=l->font();
-			s+=f.family()+"\t";
-			s+=QString::number(f.pointSize())+"\t";
-			s+=QString::number(f.weight())+"\t";
-			s+=QString::number(f.italic())+"\t";
-			s+=QString::number(f.underline())+"\t";
-			s+=QString::number(f.strikeOut())+"\t";
-			s+=l->textColor().name()+"\t";
-			s+=QString::number(l->frameStyle())+"\t";
-			s+=QString::number(l->angle())+"\t";
-			s+=l->backgroundColor().name()+"\t";
-			s+=QString::number(l->backgroundColor().alpha())+"\t";
+			QFont f = l->font();
+			s += f.family() + "\t";
+			s += QString::number(f.pointSize())+"\t";
+			s += QString::number(f.weight())+"\t";
+			s += QString::number(f.italic())+"\t";
+			s += QString::number(f.underline())+"\t";
+			s += QString::number(f.strikeOut())+"\t";
+			s += l->textColor().name()+"\t";
+			s += QString::number(l->frameStyle())+"\t";
+			s += QString::number(l->angle())+"\t";
+			s += l->backgroundColor().name()+"\t";
+			s += QString::number(l->backgroundColor().alpha())+"\t";
 
 			QStringList textList=l->text().split("\n", QString::KeepEmptyParts);
-			s+=textList.join ("\t");
+			s += textList.join ("\t");
 			if (l == d_legend)
 				s += "</legend>\n";
 			else if (l->isA("PieLabel"))
@@ -3641,7 +3643,7 @@ void Graph::resizeEvent ( QResizeEvent *e )
 		QSize size = e->size();
 		resize(e->size());
 		updateLayout();
-		if(oldSize.isValid() && size.isValid())	
+		if(oldSize.isValid() && size.isValid())
 			scaleFonts((double)size.height()/(double)oldSize.height());
 	} else {
         resize(e->size());
@@ -4856,7 +4858,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	painter->save();
 
 	const QwtPlotCanvas* plotCanvas = canvas();
-	QRect rect = canvasRect.adjusted(1, 1, -2, -2);//FIXME: change this to canvasRect.adjusted(1, 1, -1, -1) as soon as Qt 4.4 is released!!!	
+	QRect rect = canvasRect.adjusted(1, 1, -2, -2);//FIXME: change this to canvasRect.adjusted(1, 1, -1, -1) as soon as Qt 4.4 is released!!!
     QwtPainter::fillRect(painter, rect, canvasBackground());
 
 	painter->setClipping(true);

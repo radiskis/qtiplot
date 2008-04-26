@@ -337,20 +337,21 @@ QString Fit::logFitInfo(int iterations, int status)
 * For details, see: http://www.mathworks.com/access/helpdesk_r13/help/toolbox/curvefit/ch_fitt9.html
 */
 double Fit::rSquare()
-{	
+{
 	if (!d_residuals)
 		d_residuals = new double[d_n];
-	
+
 	//double sst = gsl_stats_wtss_m (d_w, 1, d_y, 1, d_n, gsl_stats_mean (d_y, 1, d_n));
 	double mean = gsl_stats_mean (d_y, 1, d_n);
 	double sst = 0.0;
+	d_rss = 0.0;
 	for (int i = 0; i < d_n; i++){
 		double w = d_w[i];
 		double y = d_y[i];
 		double dy = y - eval(d_results, d_x[i]);
 		d_residuals[i] = dy;
 		d_rss += w*dy*dy;
-		
+
 		dy = y - mean;
 		sst += w*dy*dy;
 	}
@@ -551,14 +552,14 @@ double* Fit::residuals()
 	if (!d_residuals){
 		if (!d_n || error())
 			return NULL;
-		
+
 		d_residuals = new double[d_n];
 		for (int i=0; i<d_n; i++)
 			d_residuals[i] = d_y[i] - eval(d_results, d_x[i]);
 	}
 	return d_residuals;
 }
-			
+
 QwtPlotCurve* Fit::showResiduals()
 {
 	if (!d_residuals){
@@ -566,15 +567,15 @@ QwtPlotCurve* Fit::showResiduals()
 				tr("Please perform a fit first!"));
 		return NULL;
 	}
-		
+
 	if (!d_graphics_display)
 		return NULL;
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	Table *outputTable = app->newTable(d_n, 2, app->generateUniqueName(tr("FitResiduals"), true), tr("Residuals of %1").arg(d_explanation));
 	if (!outputTable)
 		return NULL;
-	
+
 	outputTable->setColName(1, tr("residue"));
 	for (int i = 0; i < d_n; i++){
 		outputTable->setCell(i, 0, d_x[i]);
@@ -583,7 +584,7 @@ QwtPlotCurve* Fit::showResiduals()
 	for (int i = 0; i < outputTable->numCols(); i++)
 		outputTable->table()->adjustColumn(i);
 	app->hideWindow(outputTable);
-		
+
 	if (!d_output_graph)
 		d_output_graph = createOutputGraph()->activeLayer();
 
@@ -601,13 +602,13 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 {
 	if (!d_graphics_display)
 		return;
-	
+
 	if (!d_n){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("Please perform a fit first!"));
 		return;
 	}
-	
+
 	double *lcl = new double[d_n];
 	if (!lcl)
 		return;
@@ -619,13 +620,13 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	Table *outputTable = app->newTable(d_n, 3, app->generateUniqueName(tr("FitStats"), true), tr("Confidence Limits of %1").arg(d_explanation));
 	if (!outputTable)
 		return;
-	
+
 	outputTable->setColComment(0, tr("Independent Variable"));
 	outputTable->setColName(1, tr("LCL"));
 	outputTable->setColComment(1, tr("Lower %1 Confidence Limit").arg(confidenceLevel));
 	outputTable->setColName(2, tr("UCL"));
 	outputTable->setColComment(2, tr("Upper %1 Confidence Limit").arg(confidenceLevel));
-	
+
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
 	double x_mean = gsl_stats_mean(d_x, 1, d_n);
 	double sxx = 0.0;//gsl_stats_tss (d_x, 1, d_n);
@@ -633,14 +634,14 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		double dx = d_x[i] - x_mean;
 		sxx += dx*dx;
 	}
-	
+
 	double mse = d_rss/double(d_n - d_p);
-	
+
 	for (int i = 0; i < d_n; i++){
 		double x = d_x[i];
 		double dx = x - x_mean;
 		double aux = t*sqrt(mse*(1.0/(double)d_n + dx*dx/sxx));
-		
+
 		outputTable->setCell(i, 0, x);
 		double y = eval(d_results, x);
 		double lowLimit = y - aux;
@@ -653,7 +654,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	for (int i = 0; i < outputTable->numCols(); i++)
 		outputTable->table()->adjustColumn(i);
 	app->hideWindow(outputTable);
-		
+
 	if (!d_output_graph)
 		d_output_graph = createOutputGraph()->activeLayer();
 
@@ -662,12 +663,12 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	c->setData(d_x, lcl, d_n);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex + 2), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
-	
+
 	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UCL");
 	c->setData(d_x, ucl, d_n);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex + 2), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
-	
+
     d_output_graph->updatePlot();
 	delete [] lcl;
 	delete [] ucl;
@@ -677,7 +678,7 @@ double Fit::lcl(int parIndex, double confidenceLevel)
 {
 	if (parIndex < 0 || parIndex >= d_p)
 		return GSL_NAN;
-	
+
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
 	return d_results[parIndex] - t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
 }
@@ -686,7 +687,7 @@ double Fit::ucl(int parIndex, double confidenceLevel)
 {
 	if (parIndex < 0 || parIndex >= d_p)
 		return GSL_NAN;
-	
+
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
 	return d_results[parIndex] + t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
 }
@@ -695,13 +696,13 @@ void Fit::showPredictionLimits(double confidenceLevel)
 {
 	if (!d_graphics_display)
 		return;
-	
+
 	if (!d_n){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("Please perform a fit first!"));
 		return;
 	}
-	
+
 	double *lcl = new double[d_n];
 	if (!lcl)
 		return;
@@ -713,13 +714,13 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	Table *outputTable = app->newTable(d_n, 3, app->generateUniqueName(tr("FitStats"), true), tr("Prediction Limits of %1").arg(d_explanation));
 	if (!outputTable)
 		return;
-	
+
 	outputTable->setColComment(0, tr("Independent Variable"));
 	outputTable->setColName(1, tr("LPL"));
 	outputTable->setColComment(1, tr("Lower %1 Prediction Limit").arg(confidenceLevel));
 	outputTable->setColName(2, tr("UPL"));
 	outputTable->setColComment(2, tr("Upper %1 Prediction Limit").arg(confidenceLevel));
-	
+
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
 	double x_mean = gsl_stats_mean(d_x, 1, d_n);
 	double sxx = 0.0;//gsl_stats_tss (d_x, 1, d_n);
@@ -727,13 +728,13 @@ void Fit::showPredictionLimits(double confidenceLevel)
 		double dx = d_x[i] - x_mean;
 		sxx += dx*dx;
 	}
-	
+
 	double mse = d_rss/double(d_n - d_p);
 	for (int i = 0; i < d_n; i++){
 		double x = d_x[i];
 		double dx = x - x_mean;
 		double aux = t*sqrt(mse*(1 + 1.0/(double)d_n + dx*dx/sxx));
-		
+
 		outputTable->setCell(i, 0, x);
 		double y = eval(d_results, x);
 		double lowLimit = y - aux;
@@ -746,7 +747,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	for (int i = 0; i < outputTable->numCols(); i++)
 		outputTable->table()->adjustColumn(i);
 	app->hideWindow(outputTable);
-		
+
 	if (!d_output_graph)
 		d_output_graph = createOutputGraph()->activeLayer();
 
@@ -755,12 +756,12 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	c->setData(d_x, lcl, d_n);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex + 3), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
-	
+
 	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UPL");
 	c->setData(d_x, ucl, d_n);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex + 3), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
-	
+
     d_output_graph->updatePlot();
 	delete [] lcl;
 	delete [] ucl;
