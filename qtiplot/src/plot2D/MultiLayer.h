@@ -69,7 +69,10 @@ public:
 	QList<Graph *> layersList(){return graphsList;};
 	Graph *layer(int num);
 	int layerIndex(Graph *g){return graphsList.indexOf(g);};
-	
+
+    int numLayers(){return graphsList.size();};
+    void setNumLayers(int n);
+
 	void copy(MultiLayer* ml);
 
 	enum HorAlignement{HCenter, Left, Right};
@@ -85,10 +88,9 @@ public:
 	void setScaleLayersOnResize(bool ok){d_scale_layers = ok;};
 
 	QRect canvasRect(){return canvas->rect();};
-		
+
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
-	void setNumLayers(int n);
 
 	bool isEmpty();
     void removeLayer();
@@ -129,8 +131,6 @@ public slots:
 	int horizontalAlignement(){return hor_align;};
 	int verticalAlignement(){return vert_align;};
 	void setAlignement (int ha, int va);
-
-	int numLayers(){return graphsList.size();};
 
 	//! \name Print and Export
 	//@{

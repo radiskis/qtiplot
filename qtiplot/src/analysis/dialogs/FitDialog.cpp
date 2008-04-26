@@ -435,11 +435,11 @@ void FitDialog::initAdvancedPage()
     gl2->addWidget(new QLabel( tr("Name: ")), 2, 1);
 	covMatrixName = new QLineEdit( tr( "CovMatrix" ) );
     gl2->addWidget(covMatrixName, 2, 2);
-	
-	btnConfidenceLimits = new QPushButton(tr( "&Conf. Bands" )); 
+
+	btnConfidenceLimits = new QPushButton(tr( "Co&nf. Bands" ));
 	connect(btnConfidenceLimits, SIGNAL(clicked()), this, SLOT(showConfidenceLimits()));
 	gl2->addWidget(btnConfidenceLimits, 3, 0);
-	
+
 	boxConfidenceLevel = new DoubleSpinBox();
 	boxConfidenceLevel->setLocale(app->locale());
 	boxConfidenceLevel->setDecimals(2);
@@ -447,16 +447,16 @@ void FitDialog::initAdvancedPage()
 	boxConfidenceLevel->setValue(0.95);
 	boxConfidenceLevel->setSingleStep(0.01);
 	gl2->addWidget(boxConfidenceLevel, 3, 1);
-	
-	btnPredictionLimits = new QPushButton(tr( "&Pred. Bands" )); 
+
+	btnPredictionLimits = new QPushButton(tr( "Pred. &Bands" ));
 	connect(btnPredictionLimits, SIGNAL(clicked()), this, SLOT(showPredictionLimits()));
-	gl2->addWidget(btnPredictionLimits, 3, 2); 
-	
-	btnResiduals = new QPushButton(tr( "&Residuals Plot" )); 
+	gl2->addWidget(btnPredictionLimits, 3, 2);
+
+	btnResiduals = new QPushButton(tr( "&Residuals Plot" ));
 	connect(btnResiduals, SIGNAL(clicked()), this, SLOT(showResiduals()));
 	gl2->addWidget(btnResiduals, 3, 3);
-	
-	scaleErrorsBox = new QCheckBox(tr("Scale Errors with sqrt(Chi^2/doF)"));
+
+	scaleErrorsBox = new QCheckBox(tr("&Scale Errors with sqrt(Chi^2/doF)"));
 	scaleErrorsBox->setChecked(app->fit_scale_errors);
 	connect( scaleErrorsBox, SIGNAL(stateChanged (int)), this, SLOT(enableApplyChanges(int)));
 
@@ -525,7 +525,7 @@ void FitDialog::applyChanges()
 	app->writeFitResultsToLog = logBox->isChecked();
 	app->fitPoints = generatePointsBox->value();
 	app->generateUniformFitPoints = generatePointsBtn->isChecked();
-	if (d_current_fit && !d_current_fit->isA("PolynomialFit") && 
+	if (d_current_fit && !d_current_fit->isA("PolynomialFit") &&
 		!d_current_fit->isA("LinearFit") && !d_current_fit->isA("LinearSlopeFit"))
 		app->fit_scale_errors = scaleErrorsBox->isChecked();
 	app->saveSettings();
@@ -541,7 +541,7 @@ void FitDialog::showParametersTable()
 		return;
 	}
 
-	if (!d_current_fit){
+	if (!d_current_fit || !d_current_fit->dataSize()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("Please perform a fit first and try again."));
 		return;
@@ -559,7 +559,7 @@ void FitDialog::showCovarianceMatrix()
 		return;
 	}
 
-	if (!d_current_fit){
+	if (!d_current_fit || !d_current_fit->dataSize()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("Please perform a fit first and try again."));
 		return;
@@ -746,7 +746,7 @@ void FitDialog::showFitPage()
 	if (d_current_fit->error())
 		return;
 
-    if (d_current_fit->type() == Fit::BuiltIn && 
+    if (d_current_fit->type() == Fit::BuiltIn &&
 		(d_current_fit->isA("PolynomialFit") || d_current_fit->isA("LinearFit")
 		|| d_current_fit->isA("LinearSlopeFit"))){
         btnParamRange->setEnabled(false);
@@ -788,7 +788,7 @@ void FitDialog::showFitPage()
 			rbl->setLocale(locale);
 			rbl->setDecimals(prec);
 			boxParams->setCellWidget(i, 1, rbl);
-			
+
 			RangeLimitBox *rbr = new RangeLimitBox(RangeLimitBox::RightLimit);
 			rbr->setLocale(locale);
 			rbr->setDecimals(prec);
@@ -836,7 +836,7 @@ void FitDialog::showEditPage()
 void FitDialog::showAdvancedPage()
 {
 	tw->setCurrentWidget (advancedPage);
-	if (d_current_fit && (d_current_fit->isA("PolynomialFit") || 
+	if (d_current_fit && (d_current_fit->isA("PolynomialFit") ||
 		d_current_fit->isA("LinearFit") || d_current_fit->isA("LinearSlopeFit"))){
 		scaleErrorsBox->setChecked(false);
 		scaleErrorsBox->setEnabled(false);
@@ -1247,14 +1247,14 @@ void FitDialog::enableWeightingParameters(int index)
 }
 
 void FitDialog::closeEvent (QCloseEvent * e)
-{							
+{
     if (d_preview_curve){
         d_preview_curve->detach();
         d_graph->replot();
         delete d_preview_curve;
     }
 
-	if(d_current_fit && plotLabelBox->isChecked())
+	if(d_current_fit && d_current_fit->dataSize() && plotLabelBox->isChecked())
 		d_current_fit->showLegend();
 
 	e->accept();
@@ -1502,24 +1502,33 @@ QString FitDialog::parseFormula(const QString& s)
 
 void FitDialog::showResiduals()
 {
-	if (!d_current_fit)
+	if (!d_current_fit || !d_current_fit->dataSize()){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+				tr("Please perform a fit first and try again."));
 		return;
-	
+	}
+
 	d_current_fit->showResiduals();
 }
 
 void FitDialog::showConfidenceLimits()
 {
-	if (!d_current_fit)
+	if (!d_current_fit || !d_current_fit->dataSize()){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+				tr("Please perform a fit first and try again."));
 		return;
-	
+	}
+
 	d_current_fit->showConfidenceLimits(boxConfidenceLevel->value());
 }
 
 void FitDialog::showPredictionLimits()
 {
-	if (!d_current_fit)
+	if (!d_current_fit || !d_current_fit->dataSize()){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+				tr("Please perform a fit first and try again."));
 		return;
-	
+	}
+
 	d_current_fit->showPredictionLimits(boxConfidenceLevel->value());
 }
