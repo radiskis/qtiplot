@@ -13901,6 +13901,9 @@ void ApplicationWindow::folderItemChanged(Q3ListViewItem *it)
 
 void ApplicationWindow::hideFolderWindows(Folder *f)
 {
+	if (!f)
+		return;
+	
 	QList<MdiSubWindow *> lst = f->windowsList();
 	foreach(MdiSubWindow *w, lst)
 		w->hide();
@@ -13927,10 +13930,13 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 	if (current_folder == newFolder && !force)
 		return false;
 
+	disconnect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)),
+			this, SLOT(windowActivated(QMdiSubWindow*)));
+
     desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
 
-    Folder *oldFolder = current_folder;
+    Folder *oldFolder = current_folder;	
     MdiSubWindow::Status old_active_window_state = MdiSubWindow::Normal;
     MdiSubWindow *old_active_window = oldFolder->activeWindow();
     if (old_active_window)
@@ -13970,7 +13976,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
         addListViewItem(w);
 	}
-
+	
 	if (!(newFolder->children()).isEmpty()){
         Folder *f = newFolder->folderBelow();
         int initial_depth = newFolder->depth();
@@ -14011,6 +14017,9 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
         old_active_window->setStatus(old_active_window_state);
         oldFolder->setActiveWindow(old_active_window);
     }
+
+	connect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)),
+		this, SLOT(windowActivated(QMdiSubWindow*)));
 
 	if (d_opening_file)
 		modifiedProject();
@@ -14203,6 +14212,8 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 			if (dest_f == current_folder)
 				return;
 
+			hideFolderWindows(current_folder);
+			
 			MdiSubWindow *w = ((WindowListItem *)it)->window();
 			if (w){
 				current_folder->removeWindow(w);
