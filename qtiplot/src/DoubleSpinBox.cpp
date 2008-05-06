@@ -118,6 +118,9 @@ bool DoubleSpinBox::setValue(double val)
 
 QString DoubleSpinBox::textFromValue ( double value) const
 {
+	if (!specialValueText().isEmpty() && value == d_min_val)
+		return specialValueText();
+	
 	if (d_prec < 14)
 		return locale().toString(value, d_format, d_prec);
 
