@@ -123,9 +123,9 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 		status = gsl_multifit_fdfsolver_iterate (s);
 		if (status)
 			break;
-
+		
 		for (int i=0; i<d_p; i++){
-			double p = gsl_vector_get(s->x, i);
+			double p = gsl_vector_get(s->x, i);			
 			if (p < d_param_range_left[i] || p > d_param_range_right[i]){
 				inRange = false;
 				break;
@@ -955,7 +955,7 @@ void Fit::setParameterRange(int parIndex, double left, double right)
 {
 	if (parIndex < 0 || parIndex >= d_p)
 		return;
-
+	
 	d_param_range_left[parIndex] = left;
 	d_param_range_right[parIndex] = right;
 }
@@ -978,13 +978,35 @@ void Fit::initWorkspace(int par)
 
 void Fit::freeWorkspace()
 {
-	if (d_param_init) gsl_vector_free(d_param_init);
-	if (covar) gsl_matrix_free (covar);
-	if (d_results) delete[] d_results;
-	if (d_errors) delete[] d_errors;
-	if (d_residuals) delete[] d_residuals;
-	if (d_param_range_left) delete[] d_param_range_left;
-	if (d_param_range_right) delete[] d_param_range_right;
+	if (d_param_init){
+		gsl_vector_free(d_param_init);
+		d_param_init = NULL;
+	}
+	
+	if (covar){
+		gsl_matrix_free (covar);
+		covar = NULL;
+	}
+	
+	if (d_results){
+		delete[] d_results;
+		d_results = NULL;
+	}
+	
+	if (d_errors){
+		delete[] d_errors;
+		d_errors = NULL;
+	}
+		
+	if (d_param_range_left){
+		delete[] d_param_range_left;
+		d_param_range_left = NULL;
+	}
+	
+	if (d_param_range_right){
+		delete[] d_param_range_right;
+		d_param_range_right = NULL;
+	}
 }
 
 void Fit::freeMemory()
@@ -1008,4 +1030,6 @@ Fit::~Fit()
 		return;
 
 	freeWorkspace();
+	if (d_residuals) 
+		delete[] d_residuals;
 }

@@ -90,10 +90,9 @@ void Filter::setInterval(double from, double to)
 
 void Filter::setDataCurve(int curve, double start, double end)
 {
-	if (d_n > 0)
-	{//delete previousely allocated memory
-		delete[] d_x;
-		delete[] d_y;
+	if (d_n > 0){//delete previousely allocated memory
+		if (d_x) delete[] d_x;
+		if (d_y) delete[] d_y;
 	}
 
 	d_init_err = false;

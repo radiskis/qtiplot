@@ -515,10 +515,8 @@ void FitDialog::applyChanges()
 		d_current_fit->setOutputPrecision(prec);
 	for (int i=0; i<boxParams->rowCount(); i++){
 		((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setDecimals(prec);
-		if (d_current_fit->type() != Fit::BuiltIn){
-			((RangeLimitBox*)boxParams->cellWidget(i, 1))->setDecimals(prec);
-			((RangeLimitBox*)boxParams->cellWidget(i, 3))->setDecimals(prec);
-		}
+		((RangeLimitBox*)boxParams->cellWidget(i, 1))->setDecimals(prec);
+		((RangeLimitBox*)boxParams->cellWidget(i, 3))->setDecimals(prec);
 	}
 
 	app->pasteFitResultsToPlot = plotLabelBox->isChecked();
@@ -749,7 +747,9 @@ void FitDialog::showFitPage()
     if (d_current_fit->type() == Fit::BuiltIn &&
 		(d_current_fit->isA("PolynomialFit") || d_current_fit->isA("LinearFit")
 		|| d_current_fit->isA("LinearSlopeFit"))){
-        btnParamRange->setEnabled(false);
+		btnParamRange->setChecked(false);
+		btnParamRange->setEnabled(false);
+		showParameterRange(false);
         boxAlgorithm->setEnabled(false);
 		boxPoints->setEnabled(false);
 		boxTolerance->setEnabled(false);
@@ -783,17 +783,15 @@ void FitDialog::showFitPage()
         it->setFont(font);
         boxParams->setItem(i, 0, it);
 
-		if (d_current_fit->type() != Fit::BuiltIn){
-			RangeLimitBox *rbl = new RangeLimitBox(RangeLimitBox::LeftLimit);
-			rbl->setLocale(locale);
-			rbl->setDecimals(prec);
-			boxParams->setCellWidget(i, 1, rbl);
+		RangeLimitBox *rbl = new RangeLimitBox(RangeLimitBox::LeftLimit);
+		rbl->setLocale(locale);
+		rbl->setDecimals(prec);
+		boxParams->setCellWidget(i, 1, rbl);
 
-			RangeLimitBox *rbr = new RangeLimitBox(RangeLimitBox::RightLimit);
-			rbr->setLocale(locale);
-			rbr->setDecimals(prec);
-			boxParams->setCellWidget(i, 3, rbr);
-		}
+		RangeLimitBox *rbr = new RangeLimitBox(RangeLimitBox::RightLimit);
+		rbr->setLocale(locale);
+		rbr->setDecimals(prec);
+		boxParams->setCellWidget(i, 3, rbr);
 
 		DoubleSpinBox *sb = new DoubleSpinBox();
 		sb->setLocale(locale);
@@ -1088,7 +1086,7 @@ void FitDialog::accept()
 	QStringList parameters = QStringList();
 	MyParser parser;
 	bool error = false;
-	double paramsInit[n];
+	double paramsInit[n], paramRangeLeft[n], paramRangeRight[n];
 	QString formula = boxFunction->text();
 	try {
 		if (!boxParams->isColumnHidden(4)){
@@ -1096,15 +1094,11 @@ void FitDialog::accept()
 			for (int i=0; i<rows; i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
 				if (!cb->isChecked()){
+					paramRangeLeft[j] = ((RangeLimitBox*)boxParams->cellWidget(j, 1))->value();
+					paramRangeRight[j] = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
 					paramsInit[j] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
 					parameters << boxParams->item(i, 0)->text();
-
-					if (d_current_fit->type() != Fit::BuiltIn){
-						double left = ((RangeLimitBox*)boxParams->cellWidget(j, 1))->value();
-						double right = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
-						d_current_fit->setParameterRange(j, left, right);
-					}
 					j++;
 				} else {
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
@@ -1113,15 +1107,11 @@ void FitDialog::accept()
 			}
 		} else {
 			for (int i=0; i<n; i++) {
+				paramRangeLeft[i] = ((RangeLimitBox*)boxParams->cellWidget(i, 1))->value();
+				paramRangeRight[i] = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
 				paramsInit[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 				parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[i]);
 				parameters << boxParams->item(i, 0)->text();
-
-				if (d_current_fit->type() != Fit::BuiltIn){
-					double left = ((RangeLimitBox*)boxParams->cellWidget(i, 1))->value();
-					double right = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
-					d_current_fit->setParameterRange(i, left, right);
-				}
 			}
 		}
 
@@ -1151,7 +1141,10 @@ void FitDialog::accept()
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
-
+			
+		for (int i=0; i<n; i++)
+			d_current_fit->setParameterRange(i, paramRangeLeft[i], paramRangeRight[i]);
+		
 		d_current_fit->setTolerance(eps);
 		d_current_fit->setOutputPrecision(app->fit_output_precision);
 		d_current_fit->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
