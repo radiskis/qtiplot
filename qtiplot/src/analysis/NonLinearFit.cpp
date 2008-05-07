@@ -133,6 +133,7 @@ void NonLinearFit::setParametersList(const QStringList& lst)
 	d_p = (int)lst.count();
 	initWorkspace(d_p);
 
+	d_param_explain.clear();
 	for (int i=0; i<d_p; i++)
 		d_param_explain << "";
 }
