@@ -7265,7 +7265,7 @@ void ApplicationWindow::clearSelection()
 		Graph* g = ((MultiLayer*)m)->activeLayer();
 		if (!g)
 			return;
-
+		
         if (g->activeTool()){
             if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
                 ((RangeSelectorTool *)g->activeTool())->clearSelection();
@@ -7273,7 +7273,7 @@ void ApplicationWindow::clearSelection()
                 ((DataPickerTool *)g->activeTool())->removePoint();
         } else if (g->titleSelected())
 			g->removeTitle();
-		else if (g->markerSelected())
+		else //if (g->markerSelected())
 			g->removeMarker();
 	}
 	else if (m->isA("Note"))

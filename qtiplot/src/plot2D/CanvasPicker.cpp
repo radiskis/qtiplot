@@ -208,7 +208,7 @@ void CanvasPicker::disableEditing()
 {
 	if (d_editing_marker) {
 		d_editing_marker->setEditable(false);
-		d_editing_marker = 0;
+		d_editing_marker = NULL;
 	}
 }
 
@@ -275,19 +275,20 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 	foreach(QwtPlotMarker *i, lines){
 		ArrowMarker* mrkL = (ArrowMarker*)i;
 		int d = qRound(mrkL->width() + floor(mrkL->headLength()*tan(M_PI*mrkL->headAngle()/180.0)+0.5));
-		double dist = mrkL->dist(point.x(),point.y());
+		double dist = mrkL->dist(point.x(), point.y());
 		if (dist <= d){
 			disableEditing();
 			if (e->modifiers() & Qt::ShiftModifier) {
-				plot()->setSelectedMarker(i, true);
+				plot()->setSelectedMarker(i);
 				return true;
 			} else if (e->button() == Qt::RightButton) {
 				mrkL->setEditable(false);
-				g->setSelectedMarker(i, false);
+				g->setSelectedMarker(i);
 				return true;
-			}
+			} 
 			g->deselectMarker();
 			mrkL->setEditable(true);
+			g->setSelectedMarker(i, false);
 			d_editing_marker = mrkL;
 			return true;
 		}

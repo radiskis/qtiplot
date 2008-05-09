@@ -310,6 +310,11 @@ void Graph::activateGraph()
 
 void Graph::deselectMarker()
 {
+	if (d_selected_marker && d_lines.contains(d_selected_marker)){
+		ArrowMarker *a = (ArrowMarker *)d_selected_marker;
+		a->setEditable(false);
+	}
+	
 	d_selected_marker = NULL;
 	if (d_markers_selector)
 		delete d_markers_selector;
@@ -371,44 +376,48 @@ void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
 	scalePicker->deselect();
 
 	d_selected_marker = mrk;
-	if (add) {
-		if (d_markers_selector) {
-			if (d_lines.contains(mrk))
-				d_markers_selector->add((ArrowMarker*)mrk);
-			else if (d_images.contains(mrk))
-				d_markers_selector->add((ImageMarker*)mrk);
-			else
-				return;
-		} else {
-			if (d_lines.contains(mrk))
-				d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
-			else if (d_images.contains(mrk))
-				d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
-			else
-				return;
-
-			connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+	if (add){
+		// "add" it's more like a highlight flag in this implementation
+		// TODO: implement multiple selection, see commented code bellow
+		if (d_lines.contains(mrk)){
+			if (d_markers_selector){
+            	if (d_markers_selector->contains((ArrowMarker*)mrk))
+                	return;
+                delete d_markers_selector;
 		}
-	} else {
-		if (d_lines.contains(mrk)) {
-			if (d_markers_selector) {
-				if (d_markers_selector->contains((ArrowMarker*)mrk))
-					return;
-				delete d_markers_selector;
-			}
-			d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
-		} else if (d_images.contains(mrk)) {
-			if (d_markers_selector) {
-				if (d_markers_selector->contains((ImageMarker*)mrk))
-					return;
-				delete d_markers_selector;
-			}
-			d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
-		} else
-            return;
+		d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
+	} else if (d_images.contains(mrk)){
+		if (d_markers_selector){
+			if (d_markers_selector->contains((ImageMarker*)mrk))
+				return;
+			delete d_markers_selector;
+		}
+		d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
+	} else
+		return;
 
-		connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
-	}
+	connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+	} 
+	
+	/*if (add) {
+                if (d_markers_selector) {
+                        if (d_lines.contains(mrk))
+                                d_markers_selector->add((ArrowMarker*)mrk);
+                        else if (d_images.contains(mrk))
+                                d_markers_selector->add((ImageMarker*)mrk);
+                        else
+                                return;
+                } else {
+                        if (d_lines.contains(mrk))
+                                d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
+                        else if (d_images.contains(mrk))
+                                d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
+                        else
+                                return;
+
+                        connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+                }
+        }*/
 }
 
 void Graph::initFonts(const QFont &scaleTitleFnt, const QFont &numbersFnt)
@@ -1495,35 +1504,73 @@ QString Graph::selectedCurveTitle()
 
 bool Graph::markerSelected()
 {
-	return (d_selected_marker || d_selected_text);
+	if (d_selected_marker)
+		return true;
+	if (d_selected_text)
+		return true;
+	return false;
 }
 
 void Graph::removeMarker()
 {
 	if (d_selected_marker){
-		if (d_markers_selector) {
-			if (d_lines.contains(d_selected_marker))
-				d_markers_selector->removeAll((ArrowMarker*)d_selected_marker);
-			else if (d_images.contains(d_selected_marker))
-				d_markers_selector->removeAll((ImageMarker*)d_selected_marker);
-		}
-		if (d_lines.contains(d_selected_marker)){
-			int index = d_lines.indexOf(d_selected_marker);
-			d_lines.removeAt(index);
-		} else if(d_images.contains(d_selected_marker)){
-			int index = d_images.indexOf(d_selected_marker);
-			d_images.removeAt(index);
-		}
-		d_selected_marker->detach();
-		d_selected_marker = NULL;
-		replot();
-		emit modifiedGraph();
+		if (d_lines.contains(d_selected_marker))
+			removeArrow((ArrowMarker*)d_selected_marker);
+		else if (d_images.contains(d_selected_marker))
+			removeImage((ImageMarker*)d_selected_marker);
 	} else if (d_selected_text){
 	    if (d_selected_text == d_legend)
             d_legend = NULL;
 		d_selected_text->close();
 		d_selected_text = NULL;
 	}
+}
+
+void Graph::removeArrow(ArrowMarker* arrow)
+{
+	if (!arrow)
+		return;
+		
+	if (d_markers_selector && d_images.contains(arrow))
+		d_markers_selector->removeAll(arrow);
+				
+	if (d_lines.contains(arrow)){
+		cp->disableEditing();
+		
+		int index = d_lines.indexOf(arrow);
+		if (index >= 0 && index < d_lines.size())
+			d_lines.removeAt(index);
+	}
+		
+	if (arrow == d_selected_marker)
+		d_selected_marker = NULL;
+	
+	arrow->detach();
+	replot();
+	
+	emit modifiedGraph();
+}
+
+void Graph::removeImage(ImageMarker* im)
+{
+	if (!im)
+		return;
+	
+	if (d_markers_selector && d_images.contains(im))
+		d_markers_selector->removeAll(im);
+				
+	if (d_images.contains(im)){
+		int index = d_images.indexOf(im);
+		if (index >= 0 && index < d_images.size())
+			d_images.removeAt(index);
+	}
+		
+	if (im == d_selected_marker)
+		d_selected_marker = NULL;
+	
+	im->detach();
+	replot();
+	emit modifiedGraph();
 }
 
 bool Graph::arrowMarkerSelected()
@@ -2306,7 +2353,7 @@ ArrowMarker* Graph::addArrow(ArrowMarker* mrk)
 	return aux;
 }
 
-ArrowMarker* Graph::arrow(long id)
+ArrowMarker* Graph::arrow(int id)
 {
 	if (id < 0 || id >= d_lines.size())
 		return NULL;
@@ -2314,7 +2361,7 @@ ArrowMarker* Graph::arrow(long id)
 	return (ArrowMarker*)d_lines.at(id);
 }
 
-ImageMarker* Graph::imageMarker(long id)
+ImageMarker* Graph::image(int id)
 {
 	if (id < 0 || id >= d_images.size())
 		return NULL;
@@ -4587,7 +4634,7 @@ bool Graph::focusNextPrevChild ( bool )
 		lst << i;
 
 	int markers = lst.size();
-	if (markers < 2)
+	if (markers < 1)
 		return false;
 
 	int next = 0;

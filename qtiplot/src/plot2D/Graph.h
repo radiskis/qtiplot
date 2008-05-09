@@ -382,8 +382,9 @@ class Graph: public QwtPlot
 
 		//! \name Line Markers
 		//@{
-		ArrowMarker* arrow(long id);
+		ArrowMarker* arrow(int id);
 		ArrowMarker* addArrow(ArrowMarker* mrk);
+		void removeArrow(ArrowMarker* arrow);
 
 		//! Used when opening a project file
 		void addArrow(QStringList list, int fileVersion);
@@ -398,10 +399,11 @@ class Graph: public QwtPlot
 
 		//! \name Image Markers
 		//@{
-		ImageMarker* imageMarker(long id);
+		ImageMarker* image(int id);
 		QList<QwtPlotMarker *> imagesList(){return d_images;};
 		ImageMarker* addImage(ImageMarker* mrk);
 		ImageMarker* addImage(const QString& fileName);
+		void removeImage(ImageMarker* im);
 
 		void insertImageMarker(const QStringList& lst, int fileVersion);
 		bool imageMarkerSelected();
@@ -420,7 +422,7 @@ class Graph: public QwtPlot
 		 * If <i>add</i> is false (the default) or there is no existing selection, a new SelectionMoveResizer is
 		 * created and stored in #d_markers_selector.
 		 */
-		void setSelectedMarker(QwtPlotMarker* mrk, bool add = false);
+		void setSelectedMarker(QwtPlotMarker* mrk, bool add = true);
 		QwtPlotMarker* selectedMarker(){return d_selected_marker;};
 		bool markerSelected();
 		//! Reset any selection states on markers.
