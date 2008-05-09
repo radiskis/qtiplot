@@ -575,10 +575,15 @@ public:
 		  bool through = true, bool minus = true, bool plus = true);
 
   void addHistogram(Matrix*);
-  void addArrow(ArrowMarker*);
+  
+  ArrowMarker* arrow(int);
+  ArrowMarker* addArrow(ArrowMarker*);
+  void removeArrow(ArrowMarker*);
 
+  ImageMarker* image(int id);
   ImageMarker* addImage(ImageMarker*);
   ImageMarker* addImage(const QString& fileName);
+  void removeImage(ImageMarker*);
 
   void setTitle(const QString& t);
   void setTitleFont(const QFont &fnt);
@@ -706,6 +711,8 @@ public:
   void exportPDF(const QString& fileName);
   QString exportASCII(const QString &file=QString::null);
   QString importASCII(const QString &file=QString::null);
+  
+  void showLineNumbers(bool = true);
 
 private:
   Note(const Note&);
