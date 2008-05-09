@@ -38,6 +38,7 @@
 #include <QCloseEvent>
 class ScriptingEnv;
 class ApplicationWindow;
+class LineNumberDisplay;
 class QAction;
 
 //! Python script window
@@ -60,6 +61,9 @@ public slots:
 		ScriptEdit* editor(){return te;};
 		void executeAll(){te->executeAll();};
 		
+		//! Enables/Disables the line number display	
+		void showLineNumbers(bool show = true);
+		
 private slots:
 		void setAlwaysOnTop(bool on);
 
@@ -74,6 +78,8 @@ private:
 		void initActions();
 		ScriptEdit *te;
 		ApplicationWindow *d_app;
+		LineNumberDisplay *d_line_number;
+		QWidget *d_frame;
 
 		QString fileName;
 
@@ -81,7 +87,7 @@ private:
 		QAction *actionNew, *actionUndo, *actionRedo, *actionCut, *actionCopy, *actionPaste;
 		QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionOpen;
 		QAction *actionSave, *actionSaveAs;
-		QAction *actionAlwaysOnTop, *actionHide;
+		QAction *actionAlwaysOnTop, *actionHide, *actionShowLineNumbers;
 };
 
 #endif

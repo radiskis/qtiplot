@@ -45,6 +45,8 @@ return m;
 
 void free_matrix(double **m, long nrl, long nrh, long ncl, long nch)
 {//free a double matrix allocated by matrix()
+(void)nrh;
+(void)nch;
 free((FREE_ARG) (m[nrl]+ncl-NR_END));
 free((FREE_ARG) (m+nrl-NR_END));
 }
@@ -61,6 +63,7 @@ return v-nl+NR_END;
 
 void free_vector(double *v, long nl, long nh)
 {// free a double vector allocated with vector()
+(void)nh;
 free((FREE_ARG) (v+nl-NR_END));
 }
 
@@ -74,6 +77,7 @@ return v-nl+NR_END;
 
 void free_ivector(size_t *v, long nl, long nh)
 {
+(void)nh;
 free((FREE_ARG) (v+nl-NR_END));
 }
 

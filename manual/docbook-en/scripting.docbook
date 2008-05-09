@@ -921,43 +921,43 @@ t.setColumnRole(col, role)
 where <varname>role</varname> specifies the desired column role:
 <variablelist spacing="compact">
             <varlistentry>
-              <term>0.</term>
+              <term></term>
               <listitem>
                 <para>Table.None</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>1.</term>
+              <term></term>
               <listitem>
                 <para>Table.X</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>2.</term>
+              <term></term>
               <listitem>
                 <para>Table.Y</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>3.</term>
+              <term></term>
               <listitem>
                 <para>Table.Z</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>4.</term>
+              <term></term>
               <listitem>
                 <para>Table.xErr</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>5.</term>
+              <term></term>
               <listitem>
                 <para>Table.yErr</para>
               </listitem>
             </varlistentry>
 			<varlistentry>
-              <term>6.</term>
+              <term></term>
               <listitem>
                 <para>Table.Label</para>
               </listitem>

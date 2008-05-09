@@ -818,6 +818,7 @@ public slots:
 	Note* newNote(const QString& caption = QString());
 	Note* openNote(ApplicationWindow* app, const QStringList &flist);
 	void saveNoteAs();
+	void showNoteLineNumbers(bool show = true);
 	//@}
 
 	//! \name Folders
@@ -1256,7 +1257,7 @@ private:
 	QAction *Box, *Frame, *None;
     QAction *front, *back, *right, *left, *ceil, *floor, *floordata, *flooriso, *floornone;
     QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
-    QAction *actionShowUndoStack;
+    QAction *actionShowUndoStack, *actionShowNoteLineNumbers;
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;

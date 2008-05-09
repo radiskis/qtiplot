@@ -31,6 +31,7 @@
 #include "ScriptWindow.h"
 #include "ApplicationWindow.h"
 #include "ScriptEdit.h"
+#include "LineNumberDisplay.h"
 #include "pixmaps.h"
 
 #include <QMenuBar>
@@ -54,14 +55,24 @@ d_app(app)
 	te->setContext(this);
 	te->setDirPath(d_app->scriptsDirPath);
 	connect(te, SIGNAL(dirPathChanged(const QString& )), d_app, SLOT(scriptsDirPathChanged(const QString&)));
-	setCentralWidget(te);
+
+	d_line_number = new LineNumberDisplay(te, this);		
+	d_frame = new QWidget(this);
+	
+	QHBoxLayout *hbox = new QHBoxLayout(d_frame);
+	hbox->setMargin(0);
+	hbox->setSpacing(0);	
+	hbox->addWidget(d_line_number);
+	hbox->addWidget(te);
+	
+	setCentralWidget(d_frame);
 
 	initActions();
 	setIcon(QPixmap(logo_xpm));
 	setWindowTitle(tr("QtiPlot - Script Window"));
 	setFocusProxy(te);
 	setFocusPolicy(Qt::StrongFocus);
-	resize(QSize(500, 300));
+	resize(QSize(500, 300));	
 }
 
 void ScriptWindow::initMenu()
@@ -135,6 +146,14 @@ void ScriptWindow::initActions()
 	connect(actionPaste, SIGNAL(activated()), te, SLOT(paste()));	
 	edit->addAction(actionPaste);
 
+	edit->insertSeparator();
+	
+	actionShowLineNumbers = new QAction(tr("Show &Line Numbers"), this);
+	actionShowLineNumbers->setCheckable(true);
+	actionShowLineNumbers->setChecked(true);
+	connect(actionShowLineNumbers, SIGNAL(toggled(bool)), d_line_number, SLOT(setVisible(bool)));
+	edit->addAction(actionShowLineNumbers);
+
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("CTRL+J") );
 	connect(actionExecute, SIGNAL(activated()), te, SLOT(execute()));
@@ -156,7 +175,7 @@ void ScriptWindow::initActions()
 		actionAlwaysOnTop->setChecked (d_app->d_script_win_on_top);
 	windowMenu->addAction(actionAlwaysOnTop);
 	connect(actionAlwaysOnTop, SIGNAL(toggled(bool)), this, SLOT(setAlwaysOnTop(bool)));
-
+	
 	actionHide = new QAction(tr("&Hide"), this);
 	connect(actionHide, SIGNAL(activated()), this, SLOT(close()));
 	windowMenu->addAction(actionHide);
@@ -289,4 +308,11 @@ void ScriptWindow::resizeEvent( QResizeEvent* e )
 {
 	d_app->d_script_win_rect = QRect(geometry().topLeft(), size());
 	e->accept();
+}
+
+void ScriptWindow::showLineNumbers(bool show)
+{
+	d_line_number->setVisible(show);
+	if (show)
+		d_line_number->updateLineNumbers();
 }
