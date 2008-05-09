@@ -49,8 +49,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	setUndoRedoEnabled(true);
 	setTextFormat(Qt::PlainText);
 	setAcceptRichText (false);
-	setFamily("Monospace");
-
+	
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 	d_fmt_success.setBackground(QBrush(QColor(128, 255, 128)));
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
@@ -340,9 +339,8 @@ QString ScriptEdit::importASCII(const QString &filename)
 	
 	clear();
 	QTextStream s(&file);
-	s.setEncoding(QTextStream::UnicodeUTF8);
-	while (!s.atEnd())
-		insert(s.readLine()+"\n");
+	s.setEncoding(QTextStream::UnicodeUTF8);	
+	insertPlainText(s.readAll());
 	file.close();
 	return f;
 }

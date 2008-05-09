@@ -32,6 +32,8 @@
 #include "Note.h"
 #include "ScriptEdit.h"
 
+#include <QLayout>
+
 Note::Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 		 : MdiSubWindow(label, parent, name, f)
 {
@@ -43,7 +45,17 @@ void Note::init(ScriptingEnv *env)
 autoExec = false;
 te = new ScriptEdit(env, this, name());
 te->setContext(this);
-setWidget(te);
+		
+d_line_number = new LineNumberDisplay(te, this);	
+d_frame = new QWidget(this);
+	
+QHBoxLayout *hbox = new QHBoxLayout(d_frame);
+hbox->setMargin(0);
+hbox->setSpacing(0);	
+hbox->addWidget(d_line_number);
+hbox->addWidget(te);
+	
+setWidget(d_frame);
 
 setGeometry(0, 0, 500, 200);
 connect(te, SIGNAL(textChanged()), this, SLOT(modifiedNote()));
@@ -57,19 +69,20 @@ void Note::setName(const QString& name)
 }
 
 void Note::modifiedNote()
-{
-emit modifiedWindow(this);
+{	
+	emit modifiedWindow(this);
 }
 
 QString Note::saveToString(const QString &info, bool)
 {
 QString s= "<note>\n";
-s+= QString(name()) + "\t" + birthDate() + "\n";
-s+= info;
-s+= "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-s+= "AutoExec\t" + QString(autoExec ? "1" : "0") + "\n";
-s+= "<content>\n"+te->text().stripWhiteSpace()+"\n</content>";
-s+="\n</note>\n";
+s += QString(name()) + "\t" + birthDate() + "\n";
+s += info;
+s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+s += "AutoExec\t" + QString(autoExec ? "1" : "0") + "\n";
+s += "<LineNumbers>" + QString::number(d_line_number->isVisible()) + "</LineNumbers>\n";
+s += "<content>\n" + te->text().stripWhiteSpace() + "\n</content>";
+s +="\n</note>\n";
 return s;
 }
 
@@ -84,9 +97,19 @@ void Note::restore(const QStringList& data)
     line++;
   }
 
+  bool lineNumbers = true;
+  if ((*line).startsWith("<LineNumbers>")){
+	  QString s = *line;
+	  lineNumbers = s.remove("<LineNumbers>").remove("</LineNumbers>").toInt();
+	  line++;
+  }
+	  
   if (*line == "<content>") line++;
   while (line != data.end() && *line != "</content>")
     te->insertPlainText((*line++)+"\n");
+  
+  d_line_number->setVisible(lineNumbers);
+  te->moveCursor(QTextCursor::Start); 
 }
 
 void Note::setAutoexec(bool exec)

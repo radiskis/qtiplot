@@ -577,7 +577,6 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				legend = graph->newLegend(parseOriginText(QString::fromLocal8Bit(opj.layerLegend(g,l).txt.c_str())));
 			}
 			int auto_color=0;
-			int auto_color1=0;
 			int style=0;
 			for(int c=0; c<opj.numCurves(g,l); c++)
 			{
@@ -1040,9 +1039,9 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				QString tableName=data.right(data.length()-2) + "_" + ticks[i].colName.c_str();
 
 				QString formatInfo;
-				int format;
-				int type;
-				int prec=ticks[i].decimal_places;
+				int format = 0;
+				int type = 0;
+				int prec = ticks[i].decimal_places;
 				switch(ticks[i].value_type)
 				{
 				case OPJFile::Numeric:
@@ -1113,7 +1112,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 					ticks[i].rotation, 0, "", (ticks[i].color==0xF7 ? ColorBox::color(formats[i].color) : ColorBox::color(ticks[i].color)));
 
 				QFont fnt = graph->axisTitleFont(i);
-				int fontsize;
+				int fontsize = 0;
 				switch(i)
 				{
 				case 0:

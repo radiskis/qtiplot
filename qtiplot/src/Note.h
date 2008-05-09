@@ -31,10 +31,11 @@
 
 #include "MdiSubWindow.h"
 #include "ScriptEdit.h"
-#include <qtextedit.h>
+#include "LineNumberDisplay.h"
+#include <QTextEdit>
 
 class ScriptingEnv;
-
+	
 /*!\brief Notes window class.
  *
  * \section future Future Plans
@@ -73,11 +74,17 @@ public slots:
 	void evaluate() { te->evaluate(); };
 	void setDirPath(const QString& path){te->setDirPath(path);};
 
+	//! Enables/Disables the line number display	
+	void showLineNumbers(bool show = true){d_line_number->setVisible(show);};
+	bool hasLineNumbers(){return d_line_number->isVisible();};
+
  signals:
 	void dirPathChanged(const QString& path);
 
 private:
 	ScriptEdit *te;
+	LineNumberDisplay *d_line_number;
+	QWidget *d_frame;
 	bool autoExec;
 };
 

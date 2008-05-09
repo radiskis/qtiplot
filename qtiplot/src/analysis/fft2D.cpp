@@ -33,7 +33,7 @@
 
 void fft(double* x_int_re, double* x_int_im, int taille)
 {
-    int size_2=taille>>1,tmp1;
+    int size_2 = taille >> 1, tmp1 = 0;
     double tmp, tmpcos, tmpsin, base = 2*M_PI/taille;
     const double SQ_2=sqrt(2);
     double pair_re[size_2], pair_im[size_2], impair_re[size_2], impair_im[size_2];
@@ -63,7 +63,7 @@ void fft(double* x_int_re, double* x_int_im, int taille)
 
 void fft_inv(double* x_int_re, double* x_int_im, int taille)
 {
-    int size_2=taille>>1, tmp1;
+    int size_2 = taille >> 1, tmp1 = 0;
     double tmp, tmpcos, tmpsin, base=2*M_PI/taille;
     const double SQ_2=sqrt(2);
     double pair_re[size_2], pair_im[size_2], impair_re[size_2], impair_im[size_2];

@@ -1190,7 +1190,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	fileMenuAboutToShow();
 	menuBar()->insertItem(tr("&Edit"), edit);
 	menuBar()->insertItem(tr("&View"), view);
-	menuBar()->insertItem(tr("Scripting"), scriptingMenu);
+	menuBar()->insertItem(tr("&Scripting"), scriptingMenu);
 
 	scriptingMenu->clear();
 #ifdef SCRIPTING_DIALOG
@@ -1285,7 +1285,10 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			scriptingMenu->addAction(actionNoteExecute);
 			scriptingMenu->addAction(actionNoteExecuteAll);
 			scriptingMenu->addAction(actionNoteEvaluate);
-
+			scriptingMenu->insertSeparator();
+			actionShowNoteLineNumbers->setChecked(((Note *)w)->hasLineNumbers());
+			scriptingMenu->addAction(actionShowNoteLineNumbers);
+			
 			actionNoteExecute->disconnect(SIGNAL(activated()));
 			actionNoteExecuteAll->disconnect(SIGNAL(activated()));
 			actionNoteEvaluate->disconnect(SIGNAL(activated()));
@@ -3184,35 +3187,34 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 	else
 		t->addCol(Table::yErr);
 
-	int r=t->numRows();
-	int c=t->numCols()-1;
-	int ycol=t->colIndex(name);
+	int r = t->numRows();
+	int c = t->numCols()-1;
+	int ycol = t->colIndex(name);
 	if (!direction)
-		ycol=t->colIndex(xColName);
+		ycol = t->colIndex(xColName);
 
 	QVarLengthArray<double> Y(r);
-	Y=t->col(ycol);
-	QString errColName=t->colName(c);
+	Y = t->col(ycol);
+	QString errColName = t->colName(c);
 
-	double prc=percent.toDouble();
-	double moyenne=0.0;
-	if (type==0){
-		for (int i=0;i<r;i++){
-			if (!t->text(i,ycol).isEmpty())
-				t->setText(i, c, QString::number(Y[i]*prc/100.0,'g',15));
+	double prc = percent.toDouble();
+	double moyenne = 0.0;
+	if (type == 0){
+		for (int i=0; i<r; i++){
+			if (!t->text(i, ycol).isEmpty())
+				t->setCell(i, c, Y[i]*prc/100.0);
 		}
-	} else if (type==1) {
-		int i;
-		double dev=0.0;
-		for (i=0;i<r;i++)
-			moyenne+=Y[i];
-		moyenne/=r;
-		for (i=0;i<r;i++)
-			dev+=(Y[i]-moyenne)*(Y[i]-moyenne);
-		dev=sqrt(dev/(r-1));
-		for (i=0;i<r;i++){
-			if (!t->table()->item(i,ycol)->text().isEmpty())
-				t->setText(i, c, QString::number(dev, 'g', 15));
+	} else if (type == 1) {
+		double dev = 0.0;
+		for (int i = 0; i<r; i++)
+			moyenne += Y[i];
+		moyenne /= r;
+		for (int i=0; i<r; i++)
+			dev += (Y[i]-moyenne)*(Y[i] - moyenne);
+		dev = sqrt(dev/(r-1));
+		for (int i = 0; i<r; i++){
+			if (!t->table()->item(i, ycol)->text().isEmpty())
+				t->setCell(i, c, dev);
 		}
 	}
 	g->addErrorBars(xColName, name, t, errColName, direction);
@@ -4057,6 +4059,9 @@ void ApplicationWindow::executeNotes()
 
 void ApplicationWindow::scriptError(const QString &message, const QString &scriptName, int lineNumber)
 {
+	Q_UNUSED(scriptName);
+	Q_UNUSED(lineNumber);
+
 	QMessageBox::critical(this, tr("QtiPlot") + " - "+ tr("Script Error"), message);
 }
 
@@ -5230,6 +5235,15 @@ void ApplicationWindow::saveNoteAs()
 	if (!w)
 		return;
 	w->exportASCII();
+}
+
+void ApplicationWindow::showNoteLineNumbers(bool show)
+{
+	Note* w = (Note*)activeWindow(NoteWindow);
+	if (!w)
+		return;
+	w->showLineNumbers(show);
+	modifiedProject();
 }
 
 void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
@@ -7495,8 +7509,10 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
     	((Matrix *)nw)->copy((Matrix *)w);
 	} else if (w->isA("Note")){
 		nw = newNote();
-		if (nw)
+		if (nw){
 			((Note*)nw)->setText(((Note*)w)->text());
+			((Note*)nw)->showLineNumbers(((Note*)w)->hasLineNumbers());
+		}
 	}
 
 	if (nw){
@@ -11709,6 +11725,10 @@ void ApplicationWindow::createActions()
 	actionNoteEvaluate = new QAction(tr("&Evaluate Expression"), this);
 	actionNoteEvaluate->setShortcut(tr("Ctrl+Return"));
 
+	actionShowNoteLineNumbers = new QAction(tr("Show Line &Numbers"), this);
+	actionShowNoteLineNumbers->setCheckable(true);
+	connect(actionShowNoteLineNumbers, SIGNAL(toggled(bool)), this, SLOT(showNoteLineNumbers(bool)));
+
 #ifdef SCRIPTING_PYTHON
 	actionShowScriptWindow = new QAction(QPixmap(python_xpm), tr("&Script Window"), this);
 	actionShowScriptWindow->setShortcut(tr("F3"));
@@ -12246,6 +12266,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionNoteEvaluate->setMenuText(tr("&Evaluate Expression"));
 	actionNoteEvaluate->setShortcut(tr("Ctrl+Return"));
 
+	actionShowNoteLineNumbers->setMenuText(tr("Show Line &Numbers"));
+	
 	btnPointer->setMenuText(tr("Disable &tools"));
 	btnPointer->setToolTip( tr( "Pointer" ) );
 

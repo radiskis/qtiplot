@@ -186,6 +186,7 @@ HEADERS  += src/ApplicationWindow.h \
             src/DoubleSpinBox.h \
 			src/TextDialog.h \
 			src/PlotWizard.h \
+			src/LineNumberDisplay.h \
 
 ###################### SOURCES ##############################################
 
@@ -226,6 +227,7 @@ SOURCES  += src/main.cpp \
             src/DoubleSpinBox.cpp \
 			src/TextDialog.cpp \
 			src/PlotWizard.cpp \
+			src/LineNumberDisplay.cpp \
 
 ###############################################################
 ##################### Compression (zlib123) ###################
