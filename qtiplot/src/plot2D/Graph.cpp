@@ -3495,17 +3495,17 @@ FunctionCurve* Graph::insertFunctionCurve(const QString& formula, int points, in
 
 void Graph::restoreFunction(const QStringList& lst)
 {
-	FunctionCurve::FunctionType type = FunctionCurve::Normal;
+	int type = 0;
 	int points = 0, style = 0;
 	QStringList formulas;
 	QString var, title = QString::null;
 	double start = 0.0, end = 0.0;
 
-	QStringList::const_iterator line = lst.begin();
-	for (line++; line != lst.end(); line++){
+	QStringList::const_iterator line;
+	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;
         if (s.contains("<Type>"))
-			type = (FunctionCurve::FunctionType)s.remove("<Type>").remove("</Type>").stripWhiteSpace().toInt();
+			type = s.remove("<Type>").remove("</Type>").stripWhiteSpace().toInt();
 		else if (s.contains("<Title>"))
 			title = s.remove("<Title>").remove("</Title>").stripWhiteSpace();
 		else if (s.contains("<Expression>"))
@@ -3525,8 +3525,8 @@ void Graph::restoreFunction(const QStringList& lst)
 			break;
 		}
 	}
-
-	FunctionCurve *c = new FunctionCurve(type, title);
+	
+	FunctionCurve *c = new FunctionCurve((FunctionCurve::FunctionType)type, title);
 	c->setRange(start, end);
 	c->setFormulas(formulas);
 	c->setVariable(var);
