@@ -119,7 +119,7 @@ void Table::init(int rows, int cols)
 	connect(accelAll, SIGNAL(activated()), this, SLOT(selectAllTable()));
 
 	connect(d_table, SIGNAL(valueChanged(int, int)), this, SLOT(cellEdited(int, int)));
-	
+
 	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
 }
 
@@ -989,16 +989,17 @@ int Table::selectedColsNumber()
 	return c;
 }
 
-QVarLengthArray<double> Table::col(int ycol)
+QVarLengthArray<double> Table::col(int c)
 {
-	int i;
-	int rows=d_table->numRows();
-	int cols=d_table->numCols();
+	int rows = d_table->numRows();
 	QVarLengthArray<double> Y(rows);
-	if (ycol<=cols)
-	{
-		for (i=0;i<rows;i++)
-			Y[i]=d_table->text(i,ycol).toDouble();
+	if (c >= 0 && c <= d_table->numCols()){
+        char format;
+        int prec;
+        columnNumericFormat(c, &format, &prec);
+        QLocale l = locale();
+		for (int i=0; i<rows; i++)
+			Y[i] = l.toDouble(d_table->text(i, c));
 	}
 	return Y;
 }
@@ -2868,7 +2869,7 @@ void Table::setNumRows(int rows)
 }
 
 void Table::setNumCols(int c)
-{		
+{
 	int cols = d_table->numCols();
 	if (cols == c)
 		return;
@@ -3073,7 +3074,7 @@ void Table::goToColumn(int col)
 }
 
 void Table::setColumnHeader(int index, const QString& label)
-{	
+{
 	Q3Header *head = d_table->horizontalHeader();
 	if (d_show_comments){
 		QString s = label;

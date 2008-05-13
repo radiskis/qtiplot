@@ -143,16 +143,19 @@ class Graph: public QwtPlot
 		PlotToolInterface* activeTool() const { return d_active_tool; }
 
 		QList <LegendWidget *> textsList();
-		LegendWidget *selectedText(){return d_selected_text;};
-		void setSelectedText(LegendWidget *l);
+		LegendWidget *activeText(){return d_active_text;};
+		void setActiveText(LegendWidget *l){d_active_text = l;};
+		void select(LegendWidget *l, bool add = false);
 
 		void deselect();
+		void deselect(LegendWidget *);
+
 		DataCurve* selectedCurveLabels();
         //! Used when restoring DataCurve curveID from a project file
         void restoreCurveLabels(int curveID, const QStringList& lst);
 		//! Called first time we add curves in order to determine the best plot limits.
 		void initScaleLimits();
-		
+
 		Grid *grid(){return (Grid *)d_grid;};
 		QList<QwtPlotItem *> curvesList(){return d_curves;};
 
@@ -363,12 +366,13 @@ class Graph: public QwtPlot
 		//@{
 		void drawText(bool on);
 		bool drawTextActive(){return drawTextOn;};
-		LegendWidget* insertText(LegendWidget*);
+		LegendWidget* addText(LegendWidget*);
+		void remove(LegendWidget*);
 
 		//! Used when opening a project file
 		LegendWidget* insertText(const QStringList& list, int fileVersion);
 
-		void addTimeStamp();
+		LegendWidget* addTimeStamp();
 		void removeLegend();
 		void removeLegendItem(int index);
 		void insertLegend(const QStringList& lst, int fileVersion);
@@ -382,9 +386,8 @@ class Graph: public QwtPlot
 
 		//! \name Line Markers
 		//@{
-		ArrowMarker* arrow(int id);
 		ArrowMarker* addArrow(ArrowMarker* mrk);
-		void removeArrow(ArrowMarker* arrow);
+		void remove(ArrowMarker* arrow);
 
 		//! Used when opening a project file
 		void addArrow(QStringList list, int fileVersion);
@@ -399,11 +402,10 @@ class Graph: public QwtPlot
 
 		//! \name Image Markers
 		//@{
-		ImageMarker* image(int id);
 		QList<QwtPlotMarker *> imagesList(){return d_images;};
 		ImageMarker* addImage(ImageMarker* mrk);
 		ImageMarker* addImage(const QString& fileName);
-		void removeImage(ImageMarker* im);
+		void remove(ImageMarker* im);
 
 		void insertImageMarker(const QStringList& lst, int fileVersion);
 		bool imageMarkerSelected();
@@ -422,7 +424,7 @@ class Graph: public QwtPlot
 		 * If <i>add</i> is false (the default) or there is no existing selection, a new SelectionMoveResizer is
 		 * created and stored in #d_markers_selector.
 		 */
-		void setSelectedMarker(QwtPlotMarker* mrk, bool add = true);
+		void setSelectedMarker(QwtPlotMarker* mrk, bool add = false);
 		QwtPlotMarker* selectedMarker(){return d_selected_marker;};
 		bool markerSelected();
 		//! Reset any selection states on markers.
@@ -572,7 +574,7 @@ class Graph: public QwtPlot
 		FunctionCurve* insertFunctionCurve(const QString& formula, int points, int fileVersion);
 		//! Used when reading from a project file with version >= 0.9.5.
 		void restoreFunction(const QStringList& lst);
-		
+
 		//! Returns an unique function name
         QString generateFunctionName(const QString& name = tr("F"));
 		//@}
@@ -685,12 +687,12 @@ signals:
 
 	private:
 		void insertCurve(QwtPlotItem *c);
-	
+
         //! Finds bounding interval of the plot data.
         QwtDoubleInterval axisBoundingInterval(int axis);
         void deselectCurves();
 		void addLegendItem();
-	
+
 		void showEvent (QShowEvent * event);
     	void printFrame(QPainter *painter, const QRect &rect) const;
 		void printCanvas(QPainter *painter, const QRect &canvasRect,
@@ -723,7 +725,7 @@ signals:
 		QList<QwtPlotMarker*> d_lines;
 		//! Images on plot
 		QList<QwtPlotMarker*> d_images;
-		//! Pointer to the currently selected line/image		
+		//! Pointer to the currently selected line/image
 		QwtPlotMarker* d_selected_marker;
 		//! The markers selected for move/resize operations or NULL if none are selected.
 		QPointer<SelectionMoveResizer> d_markers_selector;
@@ -732,12 +734,12 @@ signals:
 		//! The currently active tool, or NULL for default (pointer).
 		PlotToolInterface *d_active_tool;
 		//! Pointer to the currently selected text/legend
-		LegendWidget *d_selected_text;
+		LegendWidget *d_active_text;
 		//! Pointer to the current legend
 		LegendWidget *d_legend;
         //! Flag indicating if the axes limits should be changed in order to show all data each time a curva data change occurs
 		bool d_auto_scale;
-		//! Axes tick lengths 
+		//! Axes tick lengths
 		int d_min_tick_length, d_maj_tick_length;
 };
 #endif // GRAPH_H

@@ -35,7 +35,7 @@
 #include <QTextEdit>
 
 class ScriptingEnv;
-	
+
 /*!\brief Notes window class.
  *
  * \section future Future Plans
@@ -57,7 +57,7 @@ public slots:
 	QString saveToString(const QString &info, bool = false);
 	void restore(const QStringList&);
 
-	QTextEdit* textWidget(){return (QTextEdit*)te;};
+	ScriptEdit* editor(){return te;};
 	bool autoexec() const { return autoExec; }
 	void setAutoexec(bool);
 	void modifiedNote();
@@ -74,7 +74,7 @@ public slots:
 	void evaluate() { te->evaluate(); };
 	void setDirPath(const QString& path){te->setDirPath(path);};
 
-	//! Enables/Disables the line number display	
+	//! Enables/Disables the line number display
 	void showLineNumbers(bool show = true){d_line_number->setVisible(show);};
 	bool hasLineNumbers(){return d_line_number->isVisible();};
 

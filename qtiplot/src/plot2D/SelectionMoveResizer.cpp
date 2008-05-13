@@ -160,6 +160,7 @@ int SelectionMoveResizer::removeAll(LegendWidget *target)
 		recalcBoundingRect();
 	return result;
 }
+
 int SelectionMoveResizer::removeAll(ArrowMarker *target)
 {
 	int result = d_line_markers.removeAll(target);
@@ -169,6 +170,7 @@ int SelectionMoveResizer::removeAll(ArrowMarker *target)
 		recalcBoundingRect();
 	return result;
 }
+
 int SelectionMoveResizer::removeAll(ImageMarker *target)
 {
 	int result = d_image_markers.removeAll(target);

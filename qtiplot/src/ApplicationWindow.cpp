@@ -156,9 +156,13 @@
 #include <QMdiSubWindow>
 #include <QUndoStack>
 #include <QUndoView>
+#include <QCompleter>
+#include <QStringListModel>
 
 #include <zlib.h>
 #include <iostream>
+
+#include <gsl/gsl_statistics.h>
 
 using namespace Qwt3D;
 
@@ -346,6 +350,7 @@ void ApplicationWindow::init(bool factorySettings)
     setAppColors(workspaceColor, panelsColor, panelsTextColor, true);
 
     loadCustomActions();
+    initCompleter();
 }
 
 void ApplicationWindow::initWindow()
@@ -370,6 +375,10 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+    d_completer = NULL;
+    d_completion = true;
+    d_note_line_numbers = true;
+
 	d_auto_update_table_values = true;
 	d_active_window = NULL;
     d_matrix_undo_stack_size = 10;
@@ -1288,7 +1297,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			scriptingMenu->insertSeparator();
 			actionShowNoteLineNumbers->setChecked(((Note *)w)->hasLineNumbers());
 			scriptingMenu->addAction(actionShowNoteLineNumbers);
-			
+
 			actionNoteExecute->disconnect(SIGNAL(activated()));
 			actionNoteExecuteAll->disconnect(SIGNAL(activated()));
 			actionNoteEvaluate->disconnect(SIGNAL(activated()));
@@ -2428,7 +2437,7 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 	g->setIcon(QPixmap(graph_xpm));
 	g->setScaleLayersOnPrint(d_scale_plots_on_print);
 	g->printCropmarks(d_print_cropmarks);
-	
+
 	d_workspace->addSubWindow(g);
 	connectMultilayerPlot(g);
 	g->showNormal();
@@ -2457,9 +2466,9 @@ void ApplicationWindow::setAutoUpdateTableValues(bool on)
 {
 	if (d_auto_update_table_values == on)
 		return;
-	
+
 	d_auto_update_table_values = on;
-	
+
 	Folder *f = projectFolder();
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
@@ -2515,11 +2524,11 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->setAutoscaleFonts(autoScaleFonts);
 	g->setAntialiasing(antialiasing2DPlots);
 	g->setFrame (d_graph_border_width, d_graph_border_color);
-	
+
 	QColor c = d_graph_background_color;
 	c.setAlpha(d_graph_background_opacity);
 	g->setBackgroundColor(c);
-	
+
 	c = d_graph_canvas_color;
 	c.setAlpha(d_graph_canvas_opacity);
 	g->setCanvasBackground(c);
@@ -2660,12 +2669,15 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	m->setIcon(QPixmap(note_xpm));
 	m->askOnCloseEvent(confirmCloseNotes);
 	m->setDirPath(scriptsDirPath);
+    m->showLineNumbers(d_note_line_numbers);
+	if (d_completer && d_completion)
+        m->editor()->setCompleter(d_completer);
 
 	d_workspace->addSubWindow(m);
 	addListViewItem(m);
 
-	connect(m->textWidget(), SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
-	connect(m->textWidget(), SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
+	connect(m->editor(), SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
+	connect(m->editor(), SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
 	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
 	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect(m, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
@@ -3095,7 +3107,7 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 }
 
 void ApplicationWindow::windowActivated(QMdiSubWindow *w)
-{	
+{
 	if (!w || (d_active_window && d_active_window == (MdiSubWindow *)w))
 		return;
 
@@ -3197,24 +3209,17 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 	Y = t->col(ycol);
 	QString errColName = t->colName(c);
 
-	double prc = percent.toDouble();
-	double moyenne = 0.0;
 	if (type == 0){
+        double prc = 0.01*percent.toDouble();
 		for (int i=0; i<r; i++){
 			if (!t->text(i, ycol).isEmpty())
-				t->setCell(i, c, Y[i]*prc/100.0);
+				t->setCell(i, c, Y[i]*prc);
 		}
 	} else if (type == 1) {
-		double dev = 0.0;
-		for (int i = 0; i<r; i++)
-			moyenne += Y[i];
-		moyenne /= r;
-		for (int i=0; i<r; i++)
-			dev += (Y[i]-moyenne)*(Y[i] - moyenne);
-		dev = sqrt(dev/(r-1));
+		double sd = gsl_stats_sd(Y.data(), 1, r);
 		for (int i = 0; i<r; i++){
-			if (!t->table()->item(i, ycol)->text().isEmpty())
-				t->setCell(i, c, dev);
+			if (!t->text(i, ycol).isEmpty())
+				t->setCell(i, c, sd);
 		}
 	}
 	g->addErrorBars(xColName, name, t, errColName, direction);
@@ -4101,7 +4106,7 @@ bool ApplicationWindow::setScriptingLanguage(const QString &lang, bool force)
 	if (scriptWindow)
 		foreach(QObject *i, scriptWindow->findChildren<QObject*>())
 			QApplication::postEvent(i, new ScriptingChangeEvent(newEnv));
-	
+
 	return true;
 }
 
@@ -4275,6 +4280,8 @@ void ApplicationWindow::readSettings()
 	autoSaveTime = settings.value("/AutoSaveTime",15).toInt();
     d_backup_files = settings.value("/BackupProjects", true).toBool();
 	d_init_window_type = (WindowType)settings.value("/InitWindow", TableWindow).toInt();
+    d_completion = settings.value("/Completion", true).toBool();
+    d_note_line_numbers = settings.value("/LineNumbers", true).toBool();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
 	d_thousands_sep = settings.value("/ThousandsSeparator", true).toBool();
 	d_locale = QLocale(settings.value("/Locale", QLocale::system().name()).toString());
@@ -4584,7 +4591,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/AutoSaveTime", autoSaveTime);
 	settings.setValue("/BackupProjects", d_backup_files);
 	settings.setValue("/InitWindow", int(d_init_window_type));
-
+    settings.setValue("/Completion", d_completion);
+    settings.setValue("/LineNumbers", d_note_line_numbers);
 	settings.setValue("/ScriptingLang", defaultScriptingLang);
     settings.setValue("/ThousandsSeparator", d_thousands_sep);
 	settings.setValue("/Locale", d_locale.name());
@@ -5665,8 +5673,9 @@ void ApplicationWindow::showColumnValuesDialog()
 
     if (w->selectedColumns().count()>0 || w->table()->currentSelection() >= 0){
         SetColValuesDialog* vd = new SetColValuesDialog(scriptEnv, this);
-        vd->setAttribute(Qt::WA_DeleteOnClose);
         vd->setTable(w);
+        if (d_completion)
+            vd->setCompleter(d_completer);
         vd->exec();
     } else
         QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
@@ -6126,8 +6135,9 @@ void ApplicationWindow::showMatrixValuesDialog()
 		return;
 
 	MatrixValuesDialog* md = new MatrixValuesDialog(scriptEnv, this);
-	md->setAttribute(Qt::WA_DeleteOnClose);
 	md->setMatrix(m);
+    if (d_completion)
+        md->setCompleter(d_completer);
 	md->exec();
 }
 
@@ -6272,7 +6282,7 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotCurve *cv)
 {
 	if (!cv || !cv->isVisible())
 		return;
-	
+
 	MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!w)
 		return;
@@ -6280,7 +6290,7 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotCurve *cv)
 	Graph *g = w->activeLayer();
 	if (!g)
 		return;
-		
+
 	int curveIndex = g->curveIndex(cv);
 	if (curveIndex < 0 || curveIndex >= g->curveCount())
 		return;
@@ -7212,7 +7222,7 @@ void ApplicationWindow::showTextDialog()
 
 	Graph* g = plot->activeLayer();
 	if ( g ){
-		LegendWidget *l = (LegendWidget *) g->selectedText();
+		LegendWidget *l = (LegendWidget *) g->activeText();
 		if (!l)
 			return;
 
@@ -7265,7 +7275,7 @@ void ApplicationWindow::clearSelection()
 		Graph* g = ((MultiLayer*)m)->activeLayer();
 		if (!g)
 			return;
-		
+
         if (g->activeTool()){
             if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
                 ((RangeSelectorTool *)g->activeTool())->clearSelection();
@@ -7277,7 +7287,7 @@ void ApplicationWindow::clearSelection()
 			g->removeMarker();
 	}
 	else if (m->isA("Note"))
-		((Note*)m)->textWidget()->clear();
+		((Note*)m)->editor()->clear();
 	emit modified();
 }
 
@@ -7320,7 +7330,7 @@ void ApplicationWindow::copySelection()
 
 		plot->copyAllLayers();
 	} else if (m->isA("Note"))
-		((Note*)m)->textWidget()->copy();
+		((Note*)m)->editor()->copy();
 }
 
 void ApplicationWindow::cutSelection()
@@ -7352,7 +7362,7 @@ void ApplicationWindow::cutSelection()
             g->removeMarker();
         }
 	} else if (m->isA("Note"))
-		((Note*)m)->textWidget()->cut();
+		((Note*)m)->editor()->cut();
 
 	emit modified();
 }
@@ -7367,8 +7377,8 @@ void ApplicationWindow::copyMarker()
 
 	Graph* g = plot->activeLayer();
 	if (g && g->markerSelected()){
-		if (g->selectedText()){
-			d_text_copy = g->selectedText();
+		if (g->activeText()){
+			d_text_copy = g->activeText();
 			d_image_copy = NULL;
 			d_arrow_copy = NULL;
 		} else if (g->arrowMarkerSelected()){
@@ -7394,7 +7404,7 @@ void ApplicationWindow::pasteSelection()
 	else if (m->isA("Matrix"))
 		((Matrix*)m)->pasteSelection();
 	else if (m->isA("Note"))
-		((Note*)m)->textWidget()->paste();
+		((Note*)m)->editor()->paste();
 	else if (m->isA("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot)
@@ -7423,14 +7433,15 @@ void ApplicationWindow::pasteSelection()
                 else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
                     ((DataPickerTool *)g->activeTool())->pasteSelection();
             } else if (d_text_copy){
-				LegendWidget *t = g->insertText(d_text_copy);
+				LegendWidget *t = g->addText(d_text_copy);
 				t->move(g->mapFromGlobal(QCursor::pos()));
 			} else if (d_arrow_copy){
                 ArrowMarker *a = g->addArrow(d_arrow_copy);
-                a->setStartPoint(QPoint(d_arrow_copy->startPoint().x() + 10,
-                                        d_arrow_copy->startPoint().y() + 10));
-                a->setEndPoint(QPoint(d_arrow_copy->endPoint().x() + 10,
-                                      d_arrow_copy->endPoint().y() + 10));
+                a->setStartPoint(d_arrow_copy->startPointCoord().x(), d_arrow_copy->startPointCoord().y());
+                a->setEndPoint(d_arrow_copy->endPointCoord().x(), d_arrow_copy->endPointCoord().y());
+                //translate the new arrow 10 pixels to the right;
+                a->setStartPoint(a->startPoint() + QPoint(10, 0));
+                a->setEndPoint(a->endPoint() + QPoint(10, 0));
                 g->replot();
                 g->deselectMarker();
 			} else if (d_image_copy){
@@ -7562,7 +7573,7 @@ void ApplicationWindow::undo()
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(true);
 	} else if (w->isA("Note")) {
-		((Note*)w)->textWidget()->undo();
+		((Note*)w)->editor()->undo();
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(true);
 	} else if (w->isA("Matrix")){
@@ -7592,7 +7603,7 @@ void ApplicationWindow::redo()
 		actionUndo->setEnabled(true);
 		actionRedo->setEnabled(false);
 	} else if (w->isA("Note")){
-		((Note*)w)->textWidget()->redo();
+		((Note*)w)->editor()->redo();
 		actionUndo->setEnabled(true);
 		actionRedo->setEnabled(false);
 	} else if (w->isA("Matrix")){
@@ -7809,7 +7820,7 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 		lv->takeItem(it);
 
 	window->close();
-	
+
     if (show_windows_policy == ActiveFolder && !f->windowsList().count()){
         customMenu(0);
         customToolBars(0);
@@ -9835,8 +9846,8 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 {
 	QStringList::const_iterator line = flist.begin();
 
-	QStringList list=(*line).split("\t");
-	QString caption=list[0];
+	QStringList list = (*line).split("\t");
+	QString caption = list[0];
 	int rows = list[1].toInt();
 	int cols = list[2].toInt();
 
@@ -9951,10 +9962,10 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 			restoreWindowGeometry(this, w, *line);}
 		else if (fields[0] == "header"){
 			fields.pop_front();
-			
+
 			if (w->numCols() != fields.size())
 				w->setNumCols(fields.size());
-			
+
 			if (d_file_version >= 78)
 				w->loadHeader(fields);
 			else {
@@ -10254,7 +10265,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			ag->restoreCurveLabels(curveID - 1, lst);
-		} else if (s == "<Function>"){//version 0.9.5 
+		} else if (s == "<Function>"){//version 0.9.5
 			curveID++;
 			QStringList lst;
 			while ( s != "</Function>" ){
@@ -10646,7 +10657,7 @@ void ApplicationWindow::copyActiveLayer()
 	Graph *g = plot->activeLayer();
 	if (!g)
 		return;
-	
+
 	delete lastCopiedLayer;
 	lastCopiedLayer = new Graph(0, 0, g->width(), g->height());
 	lastCopiedLayer->setLocale(locale());
@@ -10784,15 +10795,15 @@ void ApplicationWindow::integrate()
         	QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
 			return;
 		}
-		
+
 		Table *result = newTable(cols, 2, "", tr("Integration of %1").arg(t->objectName()));
 		result->setColName(0, tr("Column"));
 		result->setColName(1, tr("Area"));
 		int aux = 0;
 		foreach (QString yCol, lst){
 			int xCol = t->colX(t->colIndex(yCol));
-			
-			
+
+
 			Integration *i = new Integration(this, t, t->colName(xCol), yCol);
 			i->run();
 			result->setText(aux, 0, yCol);
@@ -10825,31 +10836,31 @@ void ApplicationWindow::fitLinear()
         	QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a 'Y' column first!"));
 			return;
 		}
-		
+
 		MultiLayer* g = multilayerPlot(t, t->drawableColumnSelection(), Graph::LineSymbols);
 		if (!g)
 			return;
 
 		QString legend = tr("Linear Regression of %1").arg(t->objectName());
 		g->setWindowLabel(legend);
-		
+
 		Table *result = newTable(cols, 5, "", legend);
 		result->setColName(0, tr("Column"));
 		result->setColName(1, tr("Slope"));
 		result->setColName(2, tr("Intercept"));
 		result->setColName(3, tr("Chi^2"));
 		result->setColName(4, tr("R^2"));
-		
+
 		LinearFit *lf = new LinearFit (this, g->activeLayer());
 		if (d_2_linear_fit_points)
 			lf->generateFunction(generateUniformFitPoints, 2);
 		lf->setOutputPrecision(fit_output_precision);
-		
+
 		int aux = 0;
-		foreach (QString yCol, lst){	
+		foreach (QString yCol, lst){
 			if (!lf->setDataFromCurve(yCol))
 				continue;
-							
+
 			lf->setColor(aux);
 			lf->fit();
 			double *res = lf->results();
@@ -12267,7 +12278,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionNoteEvaluate->setShortcut(tr("Ctrl+Return"));
 
 	actionShowNoteLineNumbers->setMenuText(tr("Show Line &Numbers"));
-	
+
 	btnPointer->setMenuText(tr("Disable &tools"));
 	btnPointer->setToolTip( tr( "Pointer" ) );
 
@@ -13925,7 +13936,7 @@ void ApplicationWindow::hideFolderWindows(Folder *f)
 {
 	if (!f)
 		return;
-	
+
 	QList<MdiSubWindow *> lst = f->windowsList();
 	foreach(MdiSubWindow *w, lst)
 		w->hide();
@@ -13958,7 +13969,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
     desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
 
-    Folder *oldFolder = current_folder;	
+    Folder *oldFolder = current_folder;
     MdiSubWindow::Status old_active_window_state = MdiSubWindow::Normal;
     MdiSubWindow *old_active_window = oldFolder->activeWindow();
     if (old_active_window)
@@ -13998,7 +14009,7 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
         addListViewItem(w);
 	}
-	
+
 	if (!(newFolder->children()).isEmpty()){
         Folder *f = newFolder->folderBelow();
         int initial_depth = newFolder->depth();
@@ -14235,7 +14246,7 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 				return;
 
 			hideFolderWindows(current_folder);
-			
+
 			MdiSubWindow *w = ((WindowListItem *)it)->window();
 			if (w){
 				current_folder->removeWindow(w);
@@ -14467,6 +14478,9 @@ void ApplicationWindow::showScriptWindow()
 {
 	if (!scriptWindow){
 		scriptWindow = new ScriptWindow(scriptEnv, this);
+		if (d_completion && d_completer)
+            scriptWindow->editor()->setCompleter(d_completer);
+        scriptWindow->showLineNumbers(d_note_line_numbers);
 		scriptWindow->resize(d_script_win_rect.size());
 		scriptWindow->move(d_script_win_rect.topLeft());
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
@@ -14563,7 +14577,7 @@ void ApplicationWindow::cascade()
     foreach (QMdiSubWindow *w, windows){
 		if (!w->isVisible())
 			continue;
-		
+
         w->setActiveWindow();
 		((MdiSubWindow *)w)->setNormal();
 		w->setGeometry(x, y, w->geometry().width(), w->geometry().height());
@@ -14577,7 +14591,7 @@ void ApplicationWindow::cascade()
 ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute, bool factorySettings)
 {
 #ifdef SCRIPTING_PYTHON
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));	
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	setScriptingLanguage("Python");
 	restoreApplicationGeometry();
 	showScriptWindow();
@@ -14588,7 +14602,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		if (!scriptWindow->editor()->error())
 			scriptWindow->hide();
 		else
-			scriptWindow->raise();			
+			scriptWindow->raise();
 	}
 	return this;
 #else
@@ -14903,11 +14917,13 @@ void ApplicationWindow::setFormatBarFont(const QFont& font)
 	fb->blockSignals(true);
 	fb->setCurrentFont(font);
 	fb->blockSignals(false);
+	fb->setEnabled(true);
 
 	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
 	sb->blockSignals(true);
 	sb->setValue(font.pointSize());
 	sb->blockSignals(false);
+	sb->setEnabled(true);
 
     actionFontBold->blockSignals(true);
 	actionFontBold->setChecked(font.bold());
@@ -15004,6 +15020,9 @@ void ApplicationWindow::enableTextEditor(Graph *g)
             d_text_editor = NULL;
 	    }
 	} else if (g) {
+	    if (!g->activeText() && !g->selectedScale() && !g->titleSelected())
+            return;
+
         d_text_editor = new TextEditor(g);
 
         formatToolBar->setEnabled(true);
@@ -15256,4 +15275,68 @@ QString ApplicationWindow::endOfLine()
 		break;
 	}
 	return "\n";
+}
+
+void ApplicationWindow::initCompleter()
+{
+    QString fn = d_python_config_folder + "/qti_wordlist.txt";
+    QFile file(fn);
+    if (!file.open(QFile::ReadOnly)){
+        QMessageBox::critical(this, tr("QtiPlot - Warning"),
+				tr("Couldn't load file: %1.\nAutocompletion will not be available!").arg(fn));
+        return;
+    }
+
+ #ifndef QT_NO_CURSOR
+     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+ #endif
+
+    QStringList words;
+    while (!file.atEnd()){
+        QByteArray line = file.readLine();
+        if (!line.isEmpty()){
+            QString s = line.trimmed();
+            if (!words.contains(s))
+                words << s;
+        }
+    }
+    words.sort();
+
+ #ifndef QT_NO_CURSOR
+     QApplication::restoreOverrideCursor();
+ #endif
+
+    d_completer = new QCompleter(this);
+    d_completer->setModel(new QStringListModel(words, d_completer));
+    d_completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+    d_completer->setCompletionMode(QCompleter::PopupCompletion);
+}
+
+void ApplicationWindow::enableCompletion(bool on)
+{
+    if (!d_completer || d_completion == on)
+        return;
+
+    d_completion = on;
+
+    if (scriptWindow){
+		if (d_completion)
+            scriptWindow->editor()->setCompleter(d_completer);
+        else
+            scriptWindow->editor()->setCompleter(0);
+    }
+
+    Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		foreach(MdiSubWindow *w, folderWindows){
+			if(w->isA("Note")){
+                if (d_completion)
+                    ((Note *)w)->editor()->setCompleter(d_completer);
+                else
+                    ((Note *)w)->editor()->setCompleter(0);
+			}
+        }
+		f = f->folderBelow();
+	}
 }

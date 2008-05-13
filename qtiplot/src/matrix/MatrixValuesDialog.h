@@ -41,6 +41,7 @@ class QCheckBox;
 #endif
 class QComboBox;
 class QTextEdit;
+class QCompleter;
 class QSpinBox;
 class QPushButton;
 class ScriptEdit;
@@ -54,6 +55,7 @@ class MatrixValuesDialog : public QDialog, public scripted
 public:
     MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
 	void setMatrix(Matrix *m);
+    void setCompleter(QCompleter *);
 
 private slots:
 	bool apply();

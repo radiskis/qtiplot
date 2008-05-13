@@ -131,7 +131,9 @@ You must take care of the format of the ASCII file because it will be read with 
   <varlistentry>
     <term><link linkend="sec-intro-note">A Note</link></term>
     <listitem>
-      <para>This window is a text container which can simply be used to insert comments into a project, but is really far more powerfull than that. It can be used as a calculator, for executing single commands and for writing scripts.</para>
+      <para>This window is a text container which can simply be used to insert comments
+      into a project, but is really far more powerfull than that.
+      It can be used as a calculator, for executing single commands and for writing scripts.</para>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -193,7 +195,20 @@ The table is the main part of QtiPlot when working with data. For controlling an
 <title>Matrix</title>
 
       <indexterm><primary>matrix</primary></indexterm>
-<para>The matrix is a special table which is used for data which depends on two variables. This special table is used to store data for 3D-plots. The difference between a table and a matrix is that there is no special column nor special row for X or Y labels or values. Nevertheless, you can specify an X-scale and an Y-scale with the &set-dimensions-lnk;.</para>
+<para>The matrix is a special table which is used for data depending on two variables.
+This special table can be used to create 3D plots as well as 2D image/contour plots
+via the &plot3d-menu-lnk; and the &plot3d-toolbar-lnk;.
+
+The difference between a table and a matrix is that matrices have a dual functioning mode:
+they can display data in a table form or they can display an image.
+
+Therefore matrices can be used as a basic image viewer and also as an image editor,
+since they implement some image manipulation funcions like: 90 degrees rotation, horizontal
+and vertical mirroring, etc...</para>
+
+<para>In matrices there is no special column
+nor special row for X or Y labels or values. Nevertheless,
+you can specify an X-scale and an Y-scale with the &set-dimensions-lnk;.</para>
 
 <figure id="fig-matrix">
   <title>The &appname; matrix</title>
@@ -204,8 +219,11 @@ The table is the main part of QtiPlot when working with data. For controlling an
   </mediaobject>
 </figure>
 
-<para>The values which are stored in a matrix can be obtained from a function of the form z=(i,j) with the &set-values-lnk;, i and j beeing the column and row numbers. They can also be read from a file with the &import-ascii-lnk; which allows to read a file in a table, then the table can be converted to a matrix with the &convert-to-matrix-lnk; of the &matrix-menu-lnk;.</para>
-<para>The operations which can be done on a matrix are limited changes in number presentation and matrix size. The data of a matrix can be used to build a 3D plot with the commands present in the &plot3d-menu-lnk; and in &plot3d-toolbar-lnk;.</para>
+<para>The values which are stored in a matrix can be obtained from a function of the form
+z=f(i, j, x, y) with the &set-values-lnk;,
+i and j beeing the column and row numbers and x and y the corresponding coordinates.
+
+They can also be read directly from an ASCII file with the &import-ascii-lnk; or from an image file.</para>
 
 </sect2>
 
@@ -254,10 +272,10 @@ The table is the main part of QtiPlot when working with data. For controlling an
 
 <para>A note can simply be used to insert text (comments, notes, etc) into a project,
   but is really far more powerfull than that. It can be used as a calculator,
-  for executing single commands and for writing scripts.</para>
-<para>Evaluation of mathematical expressions and execution of code is done via a note's context menu,
-  the Scripting menu or the convenient keyboard shortcuts.</para>
-<para>For information on expression syntax, supported mathematical functions and how to write scripts,
+  for executing single commands and for writing scripts.
+  Evaluation of mathematical expressions and execution of code is done via a note's context menu,
+  the Scripting menu or the convenient keyboard shortcuts.
+  For information on expression syntax, supported mathematical functions and how to write scripts,
   see <link linkend="scripting">here</link>.</para>
 
 <figure id="fig-note-window">
@@ -268,6 +286,10 @@ The table is the main part of QtiPlot when working with data. For controlling an
     </imageobject>
   </mediaobject>
 </figure>
+
+<para>Note windows also provide some basic text editor functionality, particularly helpful
+when writing scripts: they can display the line numbers and pop-up autocompletion suggestions
+for words that have more than two characters. You can trigger autocompletion using Ctrl+U.</para>
 
 <para>You can also change the text input method. <emphasis>Simple Composing Input Method</emphasis> is the standard method to enter text in QT applications. <emphasis>Xim</emphasis> is the X input method, it is the legacy system of the X window environment to support localized text input. The default choice is the second one, it allows to enter special characters and accents from your localised environment.</para>
 

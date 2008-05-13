@@ -44,6 +44,7 @@
 #include <QComboBox>
 #include <QTextEdit>
 #include <QTextCursor>
+#include <QCompleter>
 #ifdef SCRIPTING_PYTHON
 #include <QCheckBox>
 #endif
@@ -54,29 +55,21 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
     setName( "SetColValuesDialog" );
 	setWindowTitle( tr( "QtiPlot - Set column values" ) );
 	setSizeGripEnabled(true);
+    setAttribute(Qt::WA_DeleteOnClose);
 
 	QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addWidget(new QLabel(tr("For row (i)")));
 	start = new QSpinBox();
 	start->setMinValue(1);
+    start->setMaxValue(INT_MAX);
 	hbox1->addWidget(start);
 
 	hbox1->addWidget(new QLabel(tr("to")));
 
 	end = new QSpinBox();
 	end->setMinValue(1);
+    end->setMaxValue(INT_MAX);
 	hbox1->addWidget(end);
-
-	if (sizeof(int)==2)
-	{ // 16 bit signed integer
-		start->setMaxValue(0x7fff);
-		end->setMaxValue(0x7fff);
-	}
-	else
-	{ // 32 bit signed integer
-		start->setMaxValue(0x7fffffff);
-		end->setMaxValue(0x7fffffff);
-	}
 
 	QGridLayout *gl1 = new QGridLayout();
 	functions = new QComboBox(false);
@@ -228,7 +221,7 @@ bool SetColValuesDialog::apply()
 #endif
 	if(table->calculate(col, start->value()-1, end->value()-1, useMuParser))
 		return true;
-	
+
 	table->setCommand(col, oldFormula);
 	return false;
 }
@@ -276,4 +269,12 @@ void SetColValuesDialog::setTable(Table* w)
 
 	updateColumn(w->selectedColumn());
 	commands->setContext(w);
+}
+
+void SetColValuesDialog::setCompleter(QCompleter *completer)
+{
+    if (!completer)
+        return;
+
+    commands->setCompleter(completer);
 }

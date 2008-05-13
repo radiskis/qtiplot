@@ -164,11 +164,12 @@ private:
 #endif
 	QCheckBox *boxUpdateTableValues;
 	QGroupBox *groupBackgroundOptions;
-	QLabel *labelGraphFrameColor, *labelGraphFrameWidth; 
+	QLabel *labelGraphFrameColor, *labelGraphFrameWidth;
 	QLabel *labelGraphBkgColor, *labelGraphCanvasColor;
 	QLabel *labelGraphBkgOpacity, *labelGraphCanvasOpacity;
 	ColorButton *boxBackgroundColor, *boxCanvasColor, *boxBorderColor;
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth;
+	QCheckBox *completionBox, *lineNumbersBox;
 };
 
 #endif // CONFIGDIALOG_H

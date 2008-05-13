@@ -41,6 +41,7 @@ class QTextEdit;
 class QSpinBox;
 class QPushButton;
 class QLabel;
+class QCompleter;
 #ifdef SCRIPTING_PYTHON
 class QCheckBox;
 #endif
@@ -57,6 +58,7 @@ class SetColValuesDialog : public QDialog, public scripted
 public:
     SetColValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
 	void setTable(Table* w);
+	void setCompleter(QCompleter *);
 
 private slots:
 	bool apply();
@@ -70,7 +72,7 @@ private slots:
 
 private:
 	Table* table;
-	
+
 	QSize sizeHint() const ;
 	void customEvent( QEvent *e );
 

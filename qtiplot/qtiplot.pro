@@ -21,7 +21,7 @@ DEFINES         += SCRIPTING_DIALOG
 
 #CONFIG          += release
 CONFIG          += debug
-#win32: CONFIG   += console
+win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -208,7 +208,7 @@ SOURCES  += src/main.cpp \
             src/ColorButton.cpp \
             src/RenameWindowDialog.cpp \
 			src/MdiSubWindow.cpp \
-            src/ImportASCIIDialog.cpp \            
+            src/ImportASCIIDialog.cpp \
             src/Note.cpp\
             src/Folder.cpp\
             src/FindDialog.cpp\
@@ -358,7 +358,7 @@ SOURCES  += src/main.cpp \
 			   src/plot3D/Graph3D.h \
 			   src/plot3D/Plot3DDialog.h \
 			   src/plot3D/SurfaceDialog.h \
-	
+
 	SOURCES += src/plot3D/Bar.cpp \
                src/plot3D/Cone3D.cpp \
 			   src/plot3D/Graph3D.cpp \
@@ -390,7 +390,7 @@ SOURCES  += src/main.cpp \
 			   src/analysis/fft2D.h \
                src/analysis/fit_gsl.h \
 			   src/analysis/nrutil.h \
-		
+
 	SOURCES += src/analysis/Convolution.cpp \
 			   src/analysis/Correlation.cpp \
 			   src/analysis/Differentiation.cpp \
@@ -412,7 +412,7 @@ SOURCES  += src/main.cpp \
 			   src/analysis/fft2D.cpp \
                src/analysis/fit_gsl.cpp \
 			   src/analysis/nrutil.cpp \
-		
+
     HEADERS += src/analysis/dialogs/ExpDecayDialog.h \
 			   src/analysis/dialogs/FFTDialog.h \
 			   src/analysis/dialogs/FitDialog.h \
@@ -429,7 +429,7 @@ SOURCES  += src/main.cpp \
 			   src/analysis/dialogs/IntDialog.cpp \
 			   src/analysis/dialogs/InterpolationDialog.cpp \
 			   src/analysis/dialogs/PolynomFitDialog.cpp \
-			   src/analysis/dialogs/SmoothCurveDialog.cpp \			
+			   src/analysis/dialogs/SmoothCurveDialog.cpp \
 
 ###############################################################
 ################# Restricted Module: EmfEngine ################
@@ -470,7 +470,8 @@ contains(SCRIPTING_LANGS, Python) {
   contains(CONFIG, CustomInstall){
   	INSTALLS += pythonconfig
   	pythonconfig.files += qtiplotrc.py \
-  						qtiUtil.py
+  						qtiUtil.py \
+  						qti_wordlist.txt \
 
   	unix: pythonconfig.path = /usr/local/qtiplot
   	win32: pythonconfig.path = $$INSTALLBASE

@@ -575,15 +575,13 @@ public:
 		  bool through = true, bool minus = true, bool plus = true);
 
   void addHistogram(Matrix*);
-  
-  ArrowMarker* arrow(int);
-  ArrowMarker* addArrow(ArrowMarker*);
-  void removeArrow(ArrowMarker*);
 
-  ImageMarker* image(int id);
+  ArrowMarker* addArrow(ArrowMarker*);
+  void remove(ArrowMarker*);
+
   ImageMarker* addImage(ImageMarker*);
   ImageMarker* addImage(const QString& fileName);
-  void removeImage(ImageMarker*);
+  void remove(ImageMarker*);
 
   void setTitle(const QString& t);
   void setTitleFont(const QFont &fnt);
@@ -598,9 +596,12 @@ public:
 %End
 
   LegendWidget* legend();
-
   void removeLegend();
-  void addTimeStamp();
+
+  LegendWidget* addText(LegendWidget*);
+  void remove(LegendWidget*);
+
+  LegendWidget* addTimeStamp();
 
   void setXAxisTitle(const QString& text) /PyName=setXTitle/;
   void setYAxisTitle(const QString& text) /PyName=setYTitle/;
@@ -711,7 +712,7 @@ public:
   void exportPDF(const QString& fileName);
   QString exportASCII(const QString &file=QString::null);
   QString importASCII(const QString &file=QString::null);
-  
+
   void showLineNumbers(bool = true);
 
 private:
@@ -848,7 +849,7 @@ public:
   if(!sipRes)
     sipRes = sipCpp->projectFolder()->graph(*a0, true);
 %End
-  
+
   MultiLayer* multilayerPlot(const QString& = "Graph1", int = 1, int = 1, int = 1)/PyName=newGraph/;
 
   Note *note(const QString&);
@@ -1041,7 +1042,7 @@ if(sipRes)
   void showConfidenceLimits(double);
   double lcl(int, double);
   double ucl(int, double);
-  
+
   Table* parametersTable(const QString&);
   Matrix* covarianceMatrix(const QString&);
 };

@@ -75,15 +75,13 @@ public:
 	double xValue();
 	double yValue();
 
-	void setSelected(bool on = true);
-
 	void showTextEditor();
 	void showTextDialog(){emit showDialog();};
 	void showContextMenu(){emit showMenu();};
 
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
 	void setFixedCoordinatesMode(bool on = true);
-	
+
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
 	void drawFrame(QPainter *p, const QRect& rect);
@@ -120,8 +118,6 @@ private:
 	//! Length of the symbol line
 	int line_length;
 
-	SelectionMoveResizer *d_selector;
-	
 	double d_x, d_y;
 	bool d_fixed_coordinates;
 

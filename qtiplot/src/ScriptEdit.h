@@ -37,6 +37,7 @@
 
 class QAction;
 class QMenu;
+class QCompleter;
 
 /*!\brief Editor widget with support for evaluating expressions and executing code.
  *
@@ -55,7 +56,9 @@ class ScriptEdit: public QTextEdit, public scripted
   	//! Map cursor positions to line numbers.
     int lineNumber(int pos) const;
 	bool error(){return d_error;};
-	
+
+    void setCompleter(QCompleter *c);
+
   public slots:
     void execute();
     void executeAll();
@@ -73,20 +76,21 @@ class ScriptEdit: public QTextEdit, public scripted
 
   signals:
 	void dirPathChanged(const QString& path);
-	
+
   protected:
     virtual void contextMenuEvent(QContextMenuEvent *e);
     virtual void keyPressEvent(QKeyEvent *e);
+    void focusInEvent(QFocusEvent *e);
 
   private:
     Script *myScript;
     QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionImport, *actionExport;
     //! Submenu of context menu with mathematical functions.
   	QMenu *functionsMenu;
-  	//! Cursor used for output of evaluation results and error messages.  
+  	//! Cursor used for output of evaluation results and error messages.
   	QTextCursor printCursor;
   	QString scriptsDirPath;
-  
+
    //! Format used for resetting success/failure markers.
 	QTextBlockFormat d_fmt_default;
 	//! Format used for marking code that was executed or evaluated successfully.
@@ -98,6 +102,8 @@ class ScriptEdit: public QTextEdit, public scripted
 	//! True if the text is programmatically changed and handleContentsChange() should do nothing.
 	bool d_changing_fmt;
 
+	QCompleter *d_completer;
+
   private slots:
 	  //! Insert an error message from the scripting system at printCursor.
 		/**
@@ -107,6 +113,11 @@ class ScriptEdit: public QTextEdit, public scripted
     void insertErrorMsg(const QString &message);
   	//! Called whenever the contents of the text document changes.
 	void handleContentsChange(int position, int chars_removed, int chars_added);
+
+	void insertCompletion(const QString &completion);
+
+  private:
+    QString textUnderCursor() const;
 };
 
 #endif

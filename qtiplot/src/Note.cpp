@@ -45,16 +45,16 @@ void Note::init(ScriptingEnv *env)
 autoExec = false;
 te = new ScriptEdit(env, this, name());
 te->setContext(this);
-		
-d_line_number = new LineNumberDisplay(te, this);	
+
+d_line_number = new LineNumberDisplay(te, this);
 d_frame = new QWidget(this);
-	
+
 QHBoxLayout *hbox = new QHBoxLayout(d_frame);
 hbox->setMargin(0);
-hbox->setSpacing(0);	
+hbox->setSpacing(0);
 hbox->addWidget(d_line_number);
 hbox->addWidget(te);
-	
+
 setWidget(d_frame);
 
 setGeometry(0, 0, 500, 200);
@@ -69,7 +69,7 @@ void Note::setName(const QString& name)
 }
 
 void Note::modifiedNote()
-{	
+{
 	emit modifiedWindow(this);
 }
 
@@ -103,13 +103,13 @@ void Note::restore(const QStringList& data)
 	  lineNumbers = s.remove("<LineNumbers>").remove("</LineNumbers>").toInt();
 	  line++;
   }
-	  
+
   if (*line == "<content>") line++;
   while (line != data.end() && *line != "</content>")
     te->insertPlainText((*line++)+"\n");
-  
+
   d_line_number->setVisible(lineNumbers);
-  te->moveCursor(QTextCursor::Start); 
+  te->moveCursor(QTextCursor::Start);
 }
 
 void Note::setAutoexec(bool exec)

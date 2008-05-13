@@ -3,8 +3,8 @@
 
   <!ENTITY appname "QtiPlot">
   <!ENTITY kappname "&appname;">
-  <!ENTITY kappversion "0.9.5">
-  <!ENTITY version "0.9.5">
+  <!ENTITY kappversion "0.9.6">
+  <!ENTITY version "0.9.6">
   <!ENTITY kappdirectory "qtiplot">
   <!ENTITY kappdownload "http://soft.proindependent.com/download.html" >
   <!ENTITY pic-dir "pics/" >
@@ -247,7 +247,7 @@
 <!--
               menu: Plot3d
 -->
-<!ENTITY plot3d-menu-lnk '<link linkend="sec-plot3d-menu">Plot3d menu</link>'>
+<!ENTITY plot3d-menu-lnk '<link linkend="sec-plot3d-menu">Plot 3D menu</link>'>
 <!ENTITY mesh-cmd "<command>3D Wire Frame</command>">
 <!ENTITY mesh-lnk '<link linkend="mesh-cmd"><command>3D Wire Frame</command> command</link>'>
   <!ENTITY mesh-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lineMesh.png"/></imageobject></inlinemediaobject>'>
@@ -705,9 +705,9 @@
 <!ENTITY about-lnk '<link linkend="about-cmd"><command>About Qtiplot</command> command</link>'>
   <!ENTITY about-key "<keycode>F1</keycode>">
 <!--
-              toolbar: 3d plot
+              toolbar: 3D plot
 -->
-<!ENTITY plot3d-toolbar-lnk '<link linkend="sec-plot3d-toolbar">3d plot toolbar</link>'>
+<!ENTITY plot3d-toolbar-lnk '<link linkend="sec-plot3d-toolbar">3D plot toolbar</link>'>
 <!ENTITY frame-cmd "<command>Frame</command>">
 <!ENTITY frame-lnk '<link linkend="frame-cmd"><command>Frame</command> command</link>'>
   <!ENTITY frame-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/free_axes.png"/></imageobject></inlinemediaobject>'>

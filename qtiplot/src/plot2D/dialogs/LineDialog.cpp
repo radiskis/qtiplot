@@ -190,7 +190,7 @@ void LineDialog::initGeometryTab()
     gl1->addWidget(new QLabel( tr("X")), 0, 0);
     gl1->addWidget(xStartBox, 0, 1);
 	gl1->addWidget(xStartPixelBox, 0, 1);
-    gl1->addWidget(new QLabel(tr("To")), 1, 0);
+    gl1->addWidget(new QLabel(tr("Y")), 1, 0);
     gl1->addWidget(yStartBox, 1, 1);
 	gl1->addWidget(yStartPixelBox, 1, 1);
 	gl1->setColumnStretch(1, 10);
@@ -215,7 +215,7 @@ void LineDialog::initGeometryTab()
     gl2->addWidget(xEndBox, 0, 1);
 	gl2->addWidget(xEndPixelBox, 0, 1);
 	
-    gl2->addWidget(new QLabel(tr("To")), 1, 0);
+    gl2->addWidget(new QLabel(tr("Y")), 1, 0);
     gl2->addWidget(yEndBox, 1, 1);
 	gl2->addWidget(yEndPixelBox, 1, 1);
 	gl2->setColumnStretch(1, 10);

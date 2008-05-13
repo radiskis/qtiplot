@@ -165,7 +165,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	setWindowFlags(f);
 
 	d_active_tool = NULL;
-	d_selected_text = NULL;
+	d_active_text = NULL;
 	d_legend = NULL; // no legend for an empty graph
 	d_selected_marker = NULL;
 	drawTextOn = false;
@@ -314,7 +314,7 @@ void Graph::deselectMarker()
 		ArrowMarker *a = (ArrowMarker *)d_selected_marker;
 		a->setEditable(false);
 	}
-	
+
 	d_selected_marker = NULL;
 	if (d_markers_selector)
 		delete d_markers_selector;
@@ -323,11 +323,8 @@ void Graph::deselectMarker()
 
 	cp->disableEditing();
 
-	QObjectList lst = children();
-	foreach(QObject *o, lst){
-		if (o->inherits("LegendWidget"))
-        	((LegendWidget *)o)->setSelected(false);
-	}
+	deselect(d_active_text);
+	d_active_text = NULL;
 }
 
 void Graph::enableTextEditor()
@@ -355,16 +352,45 @@ QList <LegendWidget *> Graph::textsList()
 	return texts;
 }
 
-void Graph::setSelectedText(LegendWidget *l)
+void Graph::select(LegendWidget *l, bool add)
 {
-    if (l){
-        selectTitle(false);
-        scalePicker->deselect();
-        deselectCurves();
-		emit currentFontChanged(l->font());
+    if (!l){
+        d_active_text = NULL;
+        return;
     }
 
-    d_selected_text = l;
+    selectTitle(false);
+    scalePicker->deselect();
+    deselectCurves();
+    emit currentFontChanged(l->font());
+
+    d_active_text = l;
+
+    if (add){
+        if (d_markers_selector && d_markers_selector->contains(l))
+            return;
+        else if (d_markers_selector)
+            d_markers_selector->add(l);
+        else {
+            d_markers_selector = new SelectionMoveResizer(l);
+            connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+        }
+    } else {
+        if (d_markers_selector)
+            delete d_markers_selector;
+
+        d_markers_selector = new SelectionMoveResizer(l);
+        connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+    }
+}
+
+void Graph::deselect(LegendWidget *l)
+{
+    if(!l)
+        return;
+
+    if (d_markers_selector && d_markers_selector->contains(l))
+        d_markers_selector->removeAll(l);
 }
 
 void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
@@ -377,47 +403,46 @@ void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
 
 	d_selected_marker = mrk;
 	if (add){
-		// "add" it's more like a highlight flag in this implementation
-		// TODO: implement multiple selection, see commented code bellow
-		if (d_lines.contains(mrk)){
-			if (d_markers_selector){
-            	if (d_markers_selector->contains((ArrowMarker*)mrk))
-                	return;
-                delete d_markers_selector;
-		}
-		d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
-	} else if (d_images.contains(mrk)){
-		if (d_markers_selector){
-			if (d_markers_selector->contains((ImageMarker*)mrk))
-				return;
-			delete d_markers_selector;
-		}
-		d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
-	} else
-		return;
+	    if (d_markers_selector){
+            if (d_lines.contains(mrk))
+                d_markers_selector->add((ArrowMarker*)mrk);
+            else if (d_images.contains(mrk))
+                d_markers_selector->add((ImageMarker*)mrk);
+            else
+                return;
+        } else {
+            if (d_lines.contains(mrk))
+                d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
+            else if (d_images.contains(mrk))
+                d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
+            else
+                return;
 
-	connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
-	} 
-	
-	/*if (add) {
-                if (d_markers_selector) {
-                        if (d_lines.contains(mrk))
-                                d_markers_selector->add((ArrowMarker*)mrk);
-                        else if (d_images.contains(mrk))
-                                d_markers_selector->add((ImageMarker*)mrk);
-                        else
-                                return;
-                } else {
-                        if (d_lines.contains(mrk))
-                                d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
-                        else if (d_images.contains(mrk))
-                                d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
-                        else
-                                return;
+            connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+        }
+	} else {
+	    if (d_lines.contains(mrk)){
+	        if (((ArrowMarker*)mrk)->editable()){
+	            if (d_markers_selector){
+	                delete d_markers_selector;
+	            }
+                return;
+	        }
 
-                        connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
-                }
-        }*/
+			if (d_markers_selector && d_markers_selector->contains((ArrowMarker*)mrk))
+                return;
+            else
+                d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
+        } else if (d_images.contains(mrk)){
+            if (d_markers_selector && d_markers_selector->contains((ImageMarker*)mrk))
+                return;
+            else
+                d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
+        } else
+            return;
+
+        connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+	}
 }
 
 void Graph::initFonts(const QFont &scaleTitleFnt, const QFont &numbersFnt)
@@ -532,8 +557,7 @@ QString Graph::saveEnabledTickLabels()
 QString Graph::saveLabelsFormat()
 {
 	QString s="LabelsFormat\t";
-	for (int axis=0; axis<QwtPlot::axisCnt; axis++)
-	{
+	for (int axis=0; axis<QwtPlot::axisCnt; axis++){
 		s += QString::number(axisLabelFormat(axis))+"\t";
 		s += QString::number(axisLabelPrecision(axis))+"\t";
 	}
@@ -1506,7 +1530,7 @@ bool Graph::markerSelected()
 {
 	if (d_selected_marker)
 		return true;
-	if (d_selected_text)
+	if (d_active_text)
 		return true;
 	return false;
 }
@@ -1515,59 +1539,59 @@ void Graph::removeMarker()
 {
 	if (d_selected_marker){
 		if (d_lines.contains(d_selected_marker))
-			removeArrow((ArrowMarker*)d_selected_marker);
+			remove((ArrowMarker*)d_selected_marker);
 		else if (d_images.contains(d_selected_marker))
-			removeImage((ImageMarker*)d_selected_marker);
-	} else if (d_selected_text){
-	    if (d_selected_text == d_legend)
+			remove((ImageMarker*)d_selected_marker);
+	} else if (d_active_text){
+	    if (d_active_text == d_legend)
             d_legend = NULL;
-		d_selected_text->close();
-		d_selected_text = NULL;
+		delete d_active_text;
+		d_active_text = NULL;
 	}
 }
 
-void Graph::removeArrow(ArrowMarker* arrow)
+void Graph::remove(ArrowMarker* arrow)
 {
 	if (!arrow)
 		return;
-		
+
 	if (d_markers_selector && d_images.contains(arrow))
 		d_markers_selector->removeAll(arrow);
-				
+
 	if (d_lines.contains(arrow)){
 		cp->disableEditing();
-		
+
 		int index = d_lines.indexOf(arrow);
 		if (index >= 0 && index < d_lines.size())
 			d_lines.removeAt(index);
 	}
-		
+
 	if (arrow == d_selected_marker)
 		d_selected_marker = NULL;
-	
+
 	arrow->detach();
 	replot();
-	
+
 	emit modifiedGraph();
 }
 
-void Graph::removeImage(ImageMarker* im)
+void Graph::remove(ImageMarker* im)
 {
 	if (!im)
 		return;
-	
+
 	if (d_markers_selector && d_images.contains(im))
 		d_markers_selector->removeAll(im);
-				
+
 	if (d_images.contains(im)){
 		int index = d_images.indexOf(im);
 		if (index >= 0 && index < d_images.size())
 			d_images.removeAt(index);
 	}
-		
+
 	if (im == d_selected_marker)
 		d_selected_marker = NULL;
-	
+
 	im->detach();
 	replot();
 	emit modifiedGraph();
@@ -2209,13 +2233,14 @@ LegendWidget* Graph::newLegend(const QString& text)
 	return l;
 }
 
-void Graph::addTimeStamp()
+LegendWidget* Graph::addTimeStamp()
 {
 	LegendWidget* l = newLegend(QDateTime::currentDateTime().toString(Qt::LocalDate));
 
 	QPoint p = canvas()->pos();
 	l->move(QPoint(p.x() + canvas()->width()/2, p.y() + 10));
 	emit modifiedGraph();
+	return l;
 }
 
 void Graph::insertLegend(const QStringList& lst, int fileVersion)
@@ -2353,27 +2378,26 @@ ArrowMarker* Graph::addArrow(ArrowMarker* mrk)
 	return aux;
 }
 
-ArrowMarker* Graph::arrow(int id)
-{
-	if (id < 0 || id >= d_lines.size())
-		return NULL;
-
-	return (ArrowMarker*)d_lines.at(id);
-}
-
-ImageMarker* Graph::image(int id)
-{
-	if (id < 0 || id >= d_images.size())
-		return NULL;
-
-	return (ImageMarker*)d_lines.at(id);
-}
-
-LegendWidget* Graph::insertText(LegendWidget* t)
+LegendWidget* Graph::addText(LegendWidget* t)
 {
 	LegendWidget* aux = new LegendWidget(this);
 	aux->clone(t);
+	d_active_text = aux;
 	return aux;
+}
+
+void Graph::remove(LegendWidget* t)
+{
+    if (!t)
+        return;
+
+    if (d_legend == t)
+        d_legend = NULL;
+
+    if (d_active_text == t)
+        d_active_text = NULL;
+
+    delete t;
 }
 
 QString Graph::saveMarkers()
@@ -3572,7 +3596,7 @@ void Graph::restoreFunction(const QStringList& lst)
 			break;
 		}
 	}
-	
+
 	FunctionCurve *c = new FunctionCurve((FunctionCurve::FunctionType)type, title);
 	c->setRange(start, end);
 	c->setFormulas(formulas);
@@ -4190,15 +4214,15 @@ void Graph::copy(Graph* g)
 	QList<LegendWidget *> texts = g->textsList();
 	foreach (LegendWidget *t, texts){
 		if (t == g->legend())
-			d_legend = insertText(t);
+			d_legend = addText(t);
 		else if (t->isA("PieLabel")){
 			QwtPieCurve *pie = (QwtPieCurve*)curve(0);
 			if (pie)
 				pie->addLabel((PieLabel *)t, true);
 			else
-				insertText(t);
+				addText(t);
 		} else
-			insertText(t);
+			addText(t);
 	}
 
 	QList<QwtPlotMarker *> lines = g->linesList();
@@ -4644,6 +4668,7 @@ bool Graph::focusNextPrevChild ( bool )
 		next = 0;
 
 	cp->disableEditing();
+	deselectMarker();
 	setSelectedMarker(lst.at(next));
 	return true;
 }
@@ -4703,9 +4728,8 @@ DataCurve* Graph::masterCurve(const QString& xColName, const QString& yColName)
         if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
             continue;
         if (((PlotCurve *)it)->type() == Function)
-            continue;
-
-        if (((DataCurve *)it)->plotAssociation() == master_curve)
+            continue;		
+		if (((DataCurve *)it)->xColumnName() == xColName && it->title().text() == yColName)
 			return (DataCurve *)it;
 	}
 	return NULL;
@@ -4837,9 +4861,9 @@ void Graph::setCurrentFont(const QFont& f)
 		} else if (scalePicker->labelsSelected())
 			axis->setFont(f);
 		emit modifiedGraph();
-	} else if (d_selected_text){
-		d_selected_text->setFont(f);
-		d_selected_text->repaint();
+	} else if (d_active_text){
+		d_active_text->setFont(f);
+		d_active_text->repaint();
 		emit modifiedGraph();
 	} else if (titlePicker->selected()){
 		QwtText t = title();

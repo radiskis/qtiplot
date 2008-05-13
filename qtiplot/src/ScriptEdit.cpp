@@ -37,9 +37,13 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QApplication>
+#include <QCompleter>
+#include <QAbstractItemView>
+#include <QScrollBar>
+#include <QStringListModel>
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
-  : QTextEdit(parent, name), scripted(env), d_error(false)
+  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0)
 {
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&,const QString&,int)), this, SLOT(insertErrorMsg(const QString&)));
@@ -49,14 +53,14 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	setUndoRedoEnabled(true);
 	setTextFormat(Qt::PlainText);
 	setAcceptRichText (false);
-	
+
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 	d_fmt_success.setBackground(QBrush(QColor(128, 255, 128)));
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
-	
+
 	printCursor = textCursor();
 	scriptsDirPath = qApp->applicationDirPath();
-	
+
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("Ctrl+J") );
 	connect(actionExecute, SIGNAL(activated()), this, SLOT(execute()));
@@ -96,11 +100,58 @@ void ScriptEdit::customEvent(QEvent *e)
 	}
 }
 
+void ScriptEdit::focusInEvent(QFocusEvent *e)
+{
+     if (d_completer)
+         d_completer->setWidget(this);
+     QTextEdit::focusInEvent(e);
+}
+
 void ScriptEdit::keyPressEvent(QKeyEvent *e)
 {
 	QTextEdit::keyPressEvent(e);
-	if (e->key() == Qt::Key_Return)
+	if (d_completer && !d_completer->popup()->isVisible() && e->key() == Qt::Key_Return)
 		updateIndentation();
+
+    if (d_completer && d_completer->popup()->isVisible()) {
+         // The following keys are forwarded by the completer to the widget
+        switch (e->key()) {
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+        case Qt::Key_Escape:
+        case Qt::Key_Tab:
+        case Qt::Key_Backtab:
+             e->ignore();
+             return; // let the completer do default behavior
+        default:
+            break;
+        }
+     }
+
+     bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_U); // CTRL+U
+     const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+     if (!d_completer || (ctrlOrShift && e->text().isEmpty()))
+         return;
+
+     static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
+     bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+     QString completionPrefix = textUnderCursor();
+
+     if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 2
+                       || eow.contains(e->text().right(1)))) {
+         d_completer->popup()->hide();
+         return;
+     }
+
+     if (completionPrefix != d_completer->completionPrefix()) {
+         d_completer->setCompletionPrefix(completionPrefix);
+         d_completer->popup()->setCurrentIndex(d_completer->completionModel()->index(0, 0));
+     }
+
+     QRect cr = cursorRect();
+     cr.setWidth(d_completer->popup()->sizeHintForColumn(0)
+                 + d_completer->popup()->verticalScrollBar()->sizeHint().width());
+     d_completer->complete(cr); // popup it up!
 }
 
 void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
@@ -116,7 +167,6 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 	menu->addAction(actionExecute);
 	menu->addAction(actionExecuteAll);
 	menu->addAction(actionEval);
-
 	if (parent()->isA("Note")){
 		Note *sp = (Note*) parent();
 		QAction *actionAutoexec = new QAction(tr("Auto&exec"), menu);
@@ -231,7 +281,7 @@ void ScriptEdit::execute()
 	printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
 	printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	myScript->exec();
-	
+
 	d_changing_fmt = true;
 	if (d_error)
 		codeCursor.mergeBlockFormat(d_fmt_failure);
@@ -267,7 +317,7 @@ void ScriptEdit::evaluate()
 	printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
 	printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	QVariant res = myScript->eval();
-	
+
 	d_changing_fmt = true;
 	if (d_error)
 		codeCursor.mergeBlockFormat(d_fmt_failure);
@@ -278,7 +328,7 @@ void ScriptEdit::evaluate()
 		if (!res.isNull() && res.canConvert(QVariant::String)){
 			QString strVal = res.toString();
 			strVal.replace("\n", "\n#> ");
-		
+
 			printCursor.insertText("\n");
 			printCursor.mergeBlockFormat(d_fmt_default);
 			if (!strVal.isEmpty())
@@ -324,22 +374,22 @@ QString ScriptEdit::importASCII(const QString &filename)
 	else
 		f = filename;
 	if (f.isEmpty()) return QString::null;
-		
+
 	QFile file(f);
 	if (!file.open(IO_ReadOnly)){
 		QMessageBox::critical(this, tr("QtiPlot - Error Opening File"), tr("Could not open file \"%1\" for reading.").arg(f));
 		return QString::null;
 	}
-	
+
 	QFileInfo fi(f);
 	if (scriptsDirPath != fi.absolutePath()){
 		scriptsDirPath = fi.absolutePath();
 		emit dirPathChanged(scriptsDirPath);
 	}
-	
+
 	clear();
 	QTextStream s(&file);
-	s.setEncoding(QTextStream::UnicodeUTF8);	
+	s.setEncoding(QTextStream::UnicodeUTF8);
 	insertPlainText(s.readAll());
 	file.close();
 	return f;
@@ -361,7 +411,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		scriptsDirPath = fi.absolutePath();
-		
+
 		QString baseName = fi.fileName();
 		if (!baseName.contains(".")){
 			if (selectedFilter.contains(".txt"))
@@ -402,6 +452,40 @@ void ScriptEdit::setDirPath(const QString& path)
 	QFileInfo fi(path);
 	if (!fi.exists() || !fi.isDir())
 		return;
-	
+
 	scriptsDirPath = path;
 }
+
+ void ScriptEdit::setCompleter(QCompleter *completer)
+ {
+     if (d_completer)
+         QObject::disconnect(d_completer, 0, this, 0);
+
+     d_completer = completer;
+
+     if (!d_completer)
+         return;
+
+     d_completer->setWidget(this);
+     QObject::connect(d_completer, SIGNAL(activated(const QString&)),
+                      this, SLOT(insertCompletion(const QString&)));
+ }
+
+ void ScriptEdit::insertCompletion(const QString& completion)
+ {
+     if (d_completer->widget() != this)
+         return;
+     QTextCursor tc = textCursor();
+     int extra = completion.length() - d_completer->completionPrefix().length();
+     tc.movePosition(QTextCursor::Left);
+     tc.movePosition(QTextCursor::EndOfWord);
+     tc.insertText(completion.right(extra));
+     setTextCursor(tc);
+ }
+
+ QString ScriptEdit::textUnderCursor() const
+ {
+     QTextCursor tc = textCursor();
+     tc.select(QTextCursor::WordUnderCursor);
+     return tc.selectedText();
+ }
