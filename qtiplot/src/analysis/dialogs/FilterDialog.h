@@ -32,11 +32,11 @@
 #include <QDialog>
 
 class QPushButton;
-class QLineEdit;
 class QComboBox;
 class QCheckBox;
 class Graph;
 class ColorBox;
+class DoubleSpinBox;
 
 //! Filter options dialog
 class FilterDialog : public QDialog
@@ -58,12 +58,9 @@ private:
 	QPushButton* buttonCancel;
 	QComboBox* boxName;
 	QCheckBox* boxOffset;
-	QLineEdit* boxStart;
-	QLineEdit* boxEnd;
+	DoubleSpinBox* boxStart;
+	DoubleSpinBox* boxEnd;
 	ColorBox* boxColor;
 };
 
 #endif
-
-
-

@@ -557,11 +557,11 @@ class Graph: public QwtPlot
 		void addFitCurve(QwtPlotCurve *c);
 		void deleteFitCurves();
 		QList<QwtPlotCurve *> fitCurvesList(){return d_fit_curves;};
-		/*! Set start and end to selected X range of curve index or, if there's no selection, to the curve's total range.
+		/*! Set start and end to selected X range of curve "curveTitle" or, if there's no selection, to the curve's total range.
 		 *
 		 * \return the number of selected or total points
 		 */
-		int range(int index, double *start, double *end);
+		int range(const QString& curveTitle, double *start, double *end);
 
 		//!  Used for VerticalBars, HorizontalBars and Histograms
 		void setBarsGap(int curve, int gapPercent, int offset);

@@ -32,13 +32,13 @@
 #include <QDialog>
 
 class QPushButton;
-class QLineEdit;
 class QComboBox;
 class QLabel;
 class Graph;
 class ColorBox;
 class Fit;
-
+class DoubleSpinBox;
+	
 //! Fit exponential decay dialog
 class ExpDecayDialog : public QDialog
 {
@@ -70,16 +70,14 @@ private:
 	QPushButton* buttonFit;
 	QPushButton* buttonCancel;
 	QComboBox* boxName;
-	QLineEdit* boxAmplitude;
-	QLineEdit* boxFirst;
-	QLineEdit* boxSecond;
-	QLineEdit* boxThird;
-	QLineEdit* boxStart;
-	QLineEdit* boxYOffset;
+	DoubleSpinBox* boxAmplitude;
+	DoubleSpinBox* boxFirst;
+	DoubleSpinBox* boxSecond;
+	DoubleSpinBox* boxThird;
+	DoubleSpinBox* boxStart;
+	DoubleSpinBox* boxYOffset;
 	QLabel* thirdLabel, *dampingLabel;
 	ColorBox* boxColor;
 };
 
 #endif
-
-

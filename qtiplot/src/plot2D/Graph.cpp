@@ -2516,19 +2516,19 @@ QwtPlotCurve *Graph::curve(int index)
 	return 0;
 }
 
-int Graph::range(int index, double *start, double *end)
+int Graph::range(const QString& curveTitle, double *start, double *end)
 {
-	if (d_range_selector && d_range_selector->selectedCurve() == curve(index)) {
+	if (d_range_selector && d_range_selector->selectedCurve() == curve(curveTitle)) {
 		*start = d_range_selector->minXValue();
 		*end = d_range_selector->maxXValue();
 		return d_range_selector->dataSize();
 	} else {
-		QwtPlotCurve *c = curve(index);
+		QwtPlotCurve *c = curve(curveTitle);
 		if (!c)
 			return 0;
 
-		*start = c->x(0);
-		*end = c->x(c->dataSize() - 1);
+		*start = c->minXValue();
+		*end = c->maxXValue();
 		return c->dataSize();
 	}
 }

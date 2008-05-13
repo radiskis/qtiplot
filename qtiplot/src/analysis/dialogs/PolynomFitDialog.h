@@ -34,10 +34,10 @@
 class QCheckBox;
 class QSpinBox;
 class QPushButton;
-class QLineEdit;
 class QComboBox;
 class Graph;
 class ColorBox;
+class DoubleSpinBox;
 
 //! Fit polynomial dialog
 class PolynomFitDialog : public QDialog
@@ -62,10 +62,9 @@ private:
 	QComboBox* boxName;
 	QSpinBox* boxOrder;
 	QSpinBox* boxPoints;
-	QLineEdit* boxStart;
-	QLineEdit* boxEnd;
+	DoubleSpinBox* boxStart;
+	DoubleSpinBox* boxEnd;
 	ColorBox* boxColor;
 };
 
 #endif
-

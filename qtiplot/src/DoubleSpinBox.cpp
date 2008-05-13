@@ -41,6 +41,7 @@ d_value(0.0),
 d_step(0.1),
 d_prec(1)
 {
+	setFocusPolicy(Qt::StrongFocus);
     lineEdit()->setText(locale().toString(d_value, d_format, d_prec));
 	setKeyboardTracking(false);
 	setWrapping(false);

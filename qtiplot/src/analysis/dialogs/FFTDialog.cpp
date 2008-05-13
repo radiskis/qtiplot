@@ -29,8 +29,8 @@
 #include "FFTDialog.h"
 #include "../FFT.h"
 #include "../fft2D.h"
-#include "../../MyParser.h"
 #include "../../ApplicationWindow.h"
+#include "../../DoubleSpinBox.h"
 #include "../../Table.h"
 #include "../../plot2D/Graph.h"
 #include "../../plot2D/MultiLayer.h"
@@ -51,7 +51,8 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
 	setWindowTitle(tr("QtiPlot - FFT Options"));
-
+	setSizeGripEnabled( true );
+	
     d_matrix = 0;
 	d_table = 0;
 	graph = 0;
@@ -64,7 +65,8 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
 	QHBoxLayout *hbox1 = new QHBoxLayout();
     hbox1->addWidget(forwardBtn);
     hbox1->addWidget(backwardBtn);
-
+	hbox1->addStretch();
+	
 	QGroupBox *gb1 = new QGroupBox();
     gb1->setLayout(hbox1);
 
@@ -81,7 +83,10 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
         setFocusProxy(boxName);
     }
 
-    boxSampling = new QLineEdit();
+    boxSampling = new DoubleSpinBox();
+	boxSampling->setDecimals(((ApplicationWindow *)parent)->d_decimal_digits);
+	boxSampling->setLocale(((ApplicationWindow *)parent)->locale());
+	
 	if (d_type == onTable || d_type == onMatrix){
 		gl1->addWidget(new QLabel(tr("Real")), 1, 0);
 		boxReal = new QComboBox();
@@ -145,20 +150,6 @@ void FFTDialog::accept()
         return;
     }
 
-	double sampling;
-	try
-	{
-		MyParser parser;
-		parser.SetExpr(boxSampling->text().ascii());
-		sampling=parser.Eval();
-	}
-	catch(mu::ParserError &e)
-	{
-		QMessageBox::critical(this, tr("QtiPlot - Sampling value error"), QString::fromStdString(e.GetMsg()));
-		boxSampling->setFocus();
-		return;
-	}
-
 	ApplicationWindow *app = (ApplicationWindow *)parent();
     FFT *fft = NULL;
 	if (graph)
@@ -172,7 +163,7 @@ void FFTDialog::accept()
         fft = new FFT(app, d_table, boxReal->currentText(), boxImaginary->currentText());
 	}
     fft->setInverseFFT(backwardBtn->isChecked());
-    fft->setSampling(sampling);
+    fft->setSampling(boxSampling->value());
     fft->normalizeAmplitudes(boxNormalize->isChecked());
     fft->shiftFrequencies(boxOrder->isChecked());
     fft->run();
@@ -194,14 +185,12 @@ void FFTDialog::activateCurve(const QString& curveName)
 		if (!c)
 			return;
 
-		boxSampling->setText(QString::number(c->x(1) - c->x(0)));
+		boxSampling->setValue(c->x(1) - c->x(0));
 	} else if (d_table) {
 	    int col = d_table->colIndex(curveName);
-		double x0 = d_table->text(0, col).toDouble();
-		double x1 = d_table->text(1, col).toDouble();
-		boxSampling->setText(QString::number(x1 - x0));
+		boxSampling->setValue(d_table->cell(1, col) - d_table->cell(0, col));
 	}
-};
+}
 
 void FFTDialog::setTable(Table *t)
 {
@@ -214,10 +203,7 @@ void FFTDialog::setTable(Table *t)
 	int xcol = t->firstXCol();
 	if (xcol >= 0){
 		boxName->setCurrentItem(xcol);
-
-		double x0 = t->text(0, xcol).toDouble();
-		double x1 = t->text(1, xcol).toDouble();
-		boxSampling->setText(QString::number(x1 - x0));
+		boxSampling->setValue(d_table->cell(1, xcol) - d_table->cell(0, xcol));
 	}
 
 	l = t->selectedColumns();

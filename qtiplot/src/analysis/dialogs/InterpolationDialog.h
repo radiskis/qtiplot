@@ -32,11 +32,11 @@
 #include <QDialog>
 
 class QPushButton;
-class QLineEdit;
 class QComboBox;
 class QSpinBox;
 class Graph;
 class ColorBox;
+class DoubleSpinBox;
 
 //! Interpolation options dialog
 class InterpolationDialog : public QDialog
@@ -59,12 +59,9 @@ private:
 	QComboBox* boxName;
 	QComboBox* boxMethod;
 	QSpinBox* boxPoints;
-	QLineEdit* boxStart;
-	QLineEdit* boxEnd;
+	DoubleSpinBox* boxStart;
+	DoubleSpinBox* boxEnd;
 	ColorBox* boxColor;
 };
 
 #endif
-
-
-
