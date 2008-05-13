@@ -6865,7 +6865,6 @@ void ApplicationWindow::showInterpolationDialog()
 		return;
 
 	InterpolationDialog *id = new InterpolationDialog(this);
-	id->setAttribute(Qt::WA_DeleteOnClose);
 	connect (g, SIGNAL(destroyed()), id, SLOT(close()));
 	id->setGraph(g);
 	id->show();
@@ -6882,7 +6881,6 @@ void ApplicationWindow::showFitPolynomDialog()
 		return;
 
 	PolynomFitDialog *pfd = new PolynomFitDialog(this);
-	pfd->setAttribute(Qt::WA_DeleteOnClose);
 	connect(g, SIGNAL(destroyed()), pfd, SLOT(close()));
 	pfd->setGraph(g);
 	pfd->show();

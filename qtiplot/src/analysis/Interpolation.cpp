@@ -140,8 +140,7 @@ void Interpolation::calculateOutputData(double *x, double *y)
 	gsl_spline_init (interp, d_x, d_y, d_n);
 
     double step = (d_to - d_from)/(double)(d_points - 1);
-    for (int j = 0; j < d_points; j++)
-	{
+    for (int j = 0; j < d_points; j++){
 	   x[j] = d_from + j*step;
 	   y[j] = gsl_spline_eval (interp, x[j], acc);
 	}
@@ -154,44 +153,57 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
 {
     if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
         return 0;
-
-    int i_start = 0, i_end = c->dataSize();
-    for (int i = 0; i < i_end; i++)
-  	    if (c->x(i) > start && i){
-  	      i_start = i - 1;
-          break;
-        }
-    for (int i = i_end-1; i >= 0; i--)
-  	    if (c->x(i) < end && i < c->dataSize()){
-  	      i_end = i + 1;
-          break;
-        }
-    int n = i_end - i_start + 1;
-    (*x) = new double[n];
-    (*y) = new double[n];
-    double *xtemp = new double[n];
+	
+	int n = c->dataSize();
+	double *xtemp = new double[n];
     double *ytemp = new double[n];
 
 	double pr_x = 0.0;
   	int j=0;
-    for (int i = i_start; i <= i_end; i++){
+    for (int i = 0; i <= n; i++){
         xtemp[j] = c->x(i);
         if (xtemp[j] == pr_x){
-            delete (*x);
-            delete (*y);
+            delete xtemp;
+            delete ytemp;
             return -1;//this kind of data causes division by zero in GSL interpolation routines
         }
         pr_x = xtemp[j];
         ytemp[j++] = c->y(i);
     }
-    size_t *p = new size_t[n];
+	
+	size_t *p = new size_t[n];
     gsl_sort_index(p, xtemp, 1, n);
-    for (int i=0; i<n; i++){
-        (*x)[i] = xtemp[p[i]];
-  	    (*y)[i] = ytemp[p[i]];
+	
+	double *xtemp2 = new double[n];
+    double *ytemp2 = new double[n];
+	for (int i=0; i<n; i++){
+        xtemp2[i] = xtemp[p[i]];
+  	    ytemp2[i] = ytemp[p[i]];
     }
     delete[] xtemp;
     delete[] ytemp;
     delete[] p;
-    return n;
+	
+	int i_start = 0, i_end = n;
+    for (int i = 0; i < i_end; i++)
+  	    if (xtemp2[i] > start && i){
+  	      i_start = i - 1;
+          break;
+        }
+    for (int i = i_end-1; i >= 0; i--)
+  	    if (xtemp2[i] < end && i < n){
+  	      i_end = i + 1;
+          break;
+        }
+		
+    n = i_end - i_start + 1;
+    (*x) = new double[n];
+    (*y) = new double[n];
+	for (int i=0; i<n; i++){
+        (*x)[i] = xtemp2[i];
+  	    (*y)[i] = ytemp2[i];
+    }
+    delete[] xtemp2;
+    delete[] ytemp2;
+	return n;
 }

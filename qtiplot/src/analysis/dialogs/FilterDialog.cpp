@@ -29,8 +29,8 @@
 #include "FilterDialog.h"
 #include "../FFTFilter.h"
 #include "../../plot2D/Graph.h"
-#include "../../MyParser.h"
 #include "../../ColorBox.h"
+#include "../../DoubleSpinBox.h"
 
 #include <QGroupBox>
 #include <QCheckBox>
@@ -38,17 +38,15 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QLabel>
-#include <QLineEdit>
 #include <QComboBox>
 
 FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
-    : QDialog( parent, fl )
+    : QDialog( parent, fl ), filter_type(type)
 {
+	setObjectName( "FilterDialog" );
 	setWindowTitle(tr("QtiPlot - Filter options"));
-    filter_type = type;
-
-    setName( "FilterDialog" );
-
+	setSizeGripEnabled( true );
+	
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);
 	gl1->addWidget(new QLabel(tr("Filter curve: ")), 0, 0);
@@ -61,18 +59,25 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
 	else
 		gl1->addWidget(new QLabel(tr("Low Frequency (Hz)")), 1, 0);
 
-	boxStart = new QLineEdit();
-	boxStart->setText(tr("0"));
+	ApplicationWindow *app = (ApplicationWindow *)parent;
+	
+	boxStart = new DoubleSpinBox();
+	boxStart->setValue(0.0);
+	boxStart->setDecimals(app->d_decimal_digits);
+	boxStart->setLocale(app->locale());
+	boxStart->setMinimum(0.0);
 	gl1->addWidget(boxStart, 1, 1);
 
 	boxColor = new ColorBox(false);
 	boxColor->setColor(QColor(Qt::red));
-	if (type >= FFTFilter::BandPass)
-		{
+	if (type >= FFTFilter::BandPass){
 	    gl1->addWidget(new QLabel(tr("High Frequency (Hz)")), 2, 0);
 
-		boxEnd = new QLineEdit();
-		boxEnd->setText(tr("0"));
+		boxEnd = new DoubleSpinBox();
+		boxEnd->setValue(0.0);
+		boxEnd->setDecimals(app->d_decimal_digits);
+		boxEnd->setLocale(app->locale());
+		boxEnd->setMinimum(0.0);
         gl1->addWidget(boxEnd, 2, 1);
 
 		if (type == FFTFilter::BandPass)
@@ -86,14 +91,13 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
 		gl1->addWidget(new QLabel(tr("Color")), 4, 0);
 		gl1->addWidget(boxColor, 4, 1);
         gl1->setRowStretch(5, 1);
-		}
-    else
-        {
+	} else {
         gl1->addWidget(new QLabel(tr("Color")), 2, 0);
 		gl1->addWidget(boxColor, 2, 1);
         gl1->setRowStretch(3, 1);
-        }
-
+	}
+	gl1->setColumnStretch(1, 1);
+	
 	buttonFilter = new QPushButton(tr( "&Filter" ));
     buttonFilter->setDefault( true );
     buttonCancel = new QPushButton(tr( "&Close" ));
@@ -104,7 +108,7 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
     vl->addStretch();
 
     QHBoxLayout *hb = new QHBoxLayout(this);
-    hb->addWidget(gb1);
+    hb->addWidget(gb1, 1);
     hb->addLayout(vl);
 
 	connect( buttonFilter, SIGNAL( clicked() ), this, SLOT( filter() ) );
@@ -113,81 +117,35 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
 
 void FilterDialog::filter()
 {
-double from = 0.0, to = 0.0;
-try
-	{
-	MyParser parser;
-	parser.SetExpr(boxStart->text().replace(",", ".").ascii());
-	from = parser.Eval();
-	}
-catch(mu::ParserError &e)
-	{
-	QMessageBox::critical(this, tr("QtiPlot - Frequency input error"), QString::fromStdString(e.GetMsg()));
-	boxStart->setFocus();
-	return;
-	}
-
-if (from < 0)
-		{
-		QMessageBox::critical(this, tr("QtiPlot - Frequency input error"),
-				tr("Please enter positive frequency values!"));
-		boxStart->setFocus();
-		return;
-		}
-
-if (filter_type >= FFTFilter::BandPass)
-	{
-	try
-		{
-		MyParser parser;
-		parser.SetExpr(boxEnd->text().replace(",", ".").ascii());
-		to=parser.Eval();
-		}
-	catch(mu::ParserError &e)
-		{
-		QMessageBox::critical(this, tr("QtiPlot - High Frequency input error"), QString::fromStdString(e.GetMsg()));
-		boxEnd->setFocus();
-		return;
-		}
-
-	if (to < 0)
-		{
-		QMessageBox::critical(this, tr("QtiPlot - High Frequency input error"),
-				tr("Please enter positive frequency values!"));
-		boxEnd->setFocus();
-		return;
-		}
-
-	if (from>=to)
-		{
-		QMessageBox::critical(this, tr("QtiPlot - Frequency input error"),
+	double from = boxStart->value();
+	double to = 0.0;
+	if (filter_type >= FFTFilter::BandPass){
+		to = boxEnd->value();
+		if (from >= to){
+			QMessageBox::critical(this, tr("QtiPlot - Frequency input error"),
 				tr("Please enter frequency limits that satisfy: Low < High !"));
-		boxEnd->setFocus();
-		return;
+			boxEnd->setFocus();
+			return;
 		}
 	}
 
-FFTFilter *f = new FFTFilter((ApplicationWindow *)this->parent(), graph, boxName->currentText(), filter_type);
-if (filter_type == FFTFilter::BandPass)
-    {
-    f->setBand(from, to);
-    f->enableOffset(boxOffset->isChecked());
-    }
-else if (filter_type == FFTFilter::BandBlock)
-    {
-    f->setBand(from, to);
-    f->enableOffset(!boxOffset->isChecked());
-    }
-else
-    f->setCutoff(from);
+	FFTFilter *f = new FFTFilter((ApplicationWindow *)this->parent(), graph, boxName->currentText(), filter_type);
+	if (filter_type == FFTFilter::BandPass){
+    	f->setBand(from, to);
+    	f->enableOffset(boxOffset->isChecked());
+    } else if (filter_type == FFTFilter::BandBlock){
+    	f->setBand(from, to);
+    	f->enableOffset(!boxOffset->isChecked());
+    } else
+    	f->setCutoff(from);
 
-f->setColor(boxColor->currentIndex());
-f->run();
-delete f;
+	f->setColor(boxColor->currentIndex());
+	f->run();
+	delete f;
 }
 
 void FilterDialog::setGraph(Graph *g)
 {
-graph = g;
-boxName->addItems (g->analysableCurvesList());
-};
+	graph = g;
+	boxName->addItems (g->analysableCurvesList());
+}

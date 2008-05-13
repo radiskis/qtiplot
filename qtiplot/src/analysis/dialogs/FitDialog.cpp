@@ -276,6 +276,7 @@ void FitDialog::initFitPage()
 	connect( buttonAdvanced, SIGNAL(clicked()), this, SLOT(showAdvancedPage() ) );
     connect( tableNamesBox, SIGNAL( activated(int) ), this, SLOT( selectSrcTable(int) ) );
 
+	connect(boxColor, SIGNAL(activated(int)), this, SLOT(updatePreview()));
 	setFocusProxy(boxFunction);
 }
 
@@ -398,8 +399,9 @@ void FitDialog::initAdvancedPage()
     generatePointsBox->setRange(0, 1000000);
 	generatePointsBox->setSingleStep(10);
 	generatePointsBox->setValue(app->fitPoints);
-	connect( generatePointsBox, SIGNAL(valueChanged(int)), this, SLOT(enableApplyChanges(int)));
-    showPointsBox(!app->generateUniformFitPoints);
+	connect(generatePointsBox, SIGNAL(valueChanged(int)), this, SLOT(enableApplyChanges(int)));
+    connect(generatePointsBox, SIGNAL(valueChanged(int)), this, SLOT(updatePreview()));
+	showPointsBox(!app->generateUniformFitPoints);
 
     QHBoxLayout *hb = new QHBoxLayout();
     hb->addStretch();
@@ -604,7 +606,7 @@ void FitDialog::activateCurve(const QString& curveName)
 		return;
 
 	double start, end;
-    d_graph->range(d_graph->curveIndex(curveName), &start, &end);
+    d_graph->range(curveName, &start, &end);
     boxFrom->setValue(QMIN(start, end));
     boxTo->setValue(QMAX(start, end));
 	//Set the same color as the data curve chosen for fit (Feature Request #4031)
@@ -1169,6 +1171,9 @@ void FitDialog::accept()
 
 		if (globalParamTableBox->isChecked() && d_param_table)
 			d_current_fit->writeParametersToTable(d_param_table, true);
+		
+		if (previewBox->isChecked())
+			updatePreview();
 	}
 }
 

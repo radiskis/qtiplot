@@ -42,12 +42,11 @@
 #include <QLayout>
 
 SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl )
-    : QDialog( parent, fl )
+    : QDialog( parent, fl ), smooth_method(method)
 {
-	smooth_method = method;
-
-    setName( "SmoothCurveDialog" );
+    setObjectName( "SmoothCurveDialog" );
 	setWindowTitle(tr("QtiPlot - Smoothing Options"));
+	setSizeGripEnabled( true );
 
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);
@@ -96,7 +95,7 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
 		gl1->addWidget(boxColor, 2, 1);
         gl1->setRowStretch(3, 1);
 		}
-    gl1->setColStretch(2, 1);
+    gl1->setColStretch(1, 1);
 
 	btnSmooth = new QPushButton(tr( "&Smooth" ));
     btnSmooth->setDefault(true);

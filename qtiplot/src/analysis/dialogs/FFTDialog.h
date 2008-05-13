@@ -33,7 +33,7 @@
 
 class QPushButton;
 class QRadioButton;
-class QLineEdit;
+class DoubleSpinBox;
 class QComboBox;
 class QCheckBox;
 class Graph;
@@ -69,11 +69,8 @@ private:
 	QPushButton* buttonCancel;
 	QRadioButton *forwardBtn, *backwardBtn;
 	QComboBox* boxName, *boxReal, *boxImaginary;
-	QLineEdit* boxSampling;
+	DoubleSpinBox* boxSampling;
 	QCheckBox* boxNormalize, *boxOrder;
 };
 
 #endif
-
-
-

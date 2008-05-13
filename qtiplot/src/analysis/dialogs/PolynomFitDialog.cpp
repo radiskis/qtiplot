@@ -31,6 +31,7 @@
 #include "../../plot2D/Graph.h"
 #include "../../ColorBox.h"
 #include "../../ApplicationWindow.h"
+#include "../../DoubleSpinBox.h"
 
 #include <QSpinBox>
 #include <QCheckBox>
@@ -39,14 +40,14 @@
 #include <QGroupBox>
 #include <QPushButton>
 #include <QLabel>
-#include <QLineEdit>
 #include <QComboBox>
 
 PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
-    setName( "PolynomFitDialog" );
+    setObjectName( "PolynomFitDialog" );
 	setWindowTitle(tr("QtiPlot - Polynomial Fit Options"));
+	setAttribute(Qt::WA_DeleteOnClose);
     setSizeGripEnabled( true );
 
     QGroupBox *gb1 = new QGroupBox();
@@ -69,12 +70,18 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
     boxPoints->setSpecialValueText(tr("Not enough points"));
     gl1->addWidget(boxPoints, 2, 1);
 
+	ApplicationWindow *app = (ApplicationWindow *)parent;
+
     gl1->addWidget(new QLabel( tr("Fit curve Xmin")), 3, 0);
-	boxStart = new QLineEdit(tr("0"));
+	boxStart = new DoubleSpinBox();
+	boxStart->setDecimals(app->d_decimal_digits);
+	boxStart->setLocale(app->locale());
     gl1->addWidget(boxStart, 3, 1);
 
     gl1->addWidget(	new QLabel( tr("Fit curve Xmax")), 4, 0);
-	boxEnd = new QLineEdit();
+	boxEnd = new DoubleSpinBox();
+	boxEnd->setDecimals(app->d_decimal_digits);
+	boxEnd->setLocale(app->locale());
     gl1->addWidget(boxEnd, 4, 1);
 
     gl1->addWidget(new QLabel( tr("Color")), 5, 0);
@@ -86,6 +93,7 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
 	boxShowFormula->setChecked( false );
     gl1->addWidget(boxShowFormula, 6, 1);
     gl1->setRowStretch(7, 1);
+	gl1->setColumnStretch(1, 1);
 
 	buttonFit = new QPushButton(tr( "&Fit" ));
 	buttonFit->setDefault( true );
@@ -98,7 +106,7 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
     vl->addStretch();
 
 	QHBoxLayout* hlayout = new QHBoxLayout(this);
-	hlayout->addWidget(gb1);
+	hlayout->addWidget(gb1, 1);
 	hlayout->addLayout(vl);
 
 	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( fit() ) );
@@ -121,7 +129,7 @@ void PolynomFitDialog::fit()
 
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
     PolynomialFit *fitter = new PolynomialFit(app, graph, boxOrder->value(), boxShowFormula->isChecked());
-    if (fitter->setDataFromCurve(curveName, boxStart->text().toDouble(), boxEnd->text().toDouble()))
+    if (fitter->setDataFromCurve(curveName, boxStart->value(), boxEnd->value()))
     {
         fitter->setColor(boxColor->currentItem());
         fitter->setOutputPrecision(app->fit_output_precision);
@@ -137,8 +145,7 @@ void PolynomFitDialog::setGraph(Graph *g)
 	boxName->addItems (g->analysableCurvesList());
 
 	QString selectedCurve = g->selectedCurveTitle();
-	if (!selectedCurve.isEmpty())
-	{
+	if (!selectedCurve.isEmpty()){
 	    int index = boxName->findText (selectedCurve);
 		boxName->setCurrentItem(index);
 	}
@@ -151,10 +158,10 @@ void PolynomFitDialog::setGraph(Graph *g)
 void PolynomFitDialog::activateCurve(const QString& curveName)
 {
 	double start, end;
-	int n_points = graph->range(graph->curveIndex(curveName), &start, &end);
+	int n_points = graph->range(curveName, &start, &end);
 
-	boxStart->setText(QString::number(start, 'g', 15));
-	boxEnd->setText(QString::number(end, 'g', 15));
+	boxStart->setValue(start);
+	boxEnd->setValue(end);
 	boxPoints->setValue(QMAX(n_points, 100));
 };
 
@@ -162,6 +169,6 @@ void PolynomFitDialog::changeDataRange()
 {
 	double start = graph->selectedXStartValue();
 	double end = graph->selectedXEndValue();
-	boxStart->setText(QString::number(QMIN(start, end), 'g', 15));
-	boxEnd->setText(QString::number(QMAX(start, end), 'g', 15));
+	boxStart->setValue(QMIN(start, end));
+	boxEnd->setValue(QMAX(start, end));
 }
