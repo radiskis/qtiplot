@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "ConfigDialog.h"
 #include "ApplicationWindow.h"
+#include "Note.h"
 #include "plot2D/MultiLayer.h"
 #include "plot2D/Graph.h"
 #include "matrix/Matrix.h"
@@ -245,7 +246,7 @@ void ConfigDialog::initTablesPage()
 
 	boxUpdateTableValues = new QCheckBox();
 	boxUpdateTableValues->setChecked(app->autoUpdateTableValues());
-	
+
 	QVBoxLayout * tablesPageLayout = new QVBoxLayout( tables );
 	tablesPageLayout->addLayout(topLayout,1);
 	tablesPageLayout->addWidget(groupBoxTableCol);
@@ -281,7 +282,7 @@ void ConfigDialog::initPlotsPage()
 	boxAntialiasing = new QCheckBox();
 	boxAntialiasing->setChecked(app->antialiasing2DPlots);
 	optionsLayout->addWidget( boxAntialiasing, 0, 2);
-	
+
 	boxTitle = new QCheckBox();
 	boxTitle->setChecked(app->titleOn);
 	optionsLayout->addWidget(boxTitle, 1, 0);
@@ -328,13 +329,13 @@ void ConfigDialog::initPlotsPage()
 	groupBackgroundOptions = new QGroupBox(tr("Background"));
 	optionsTabLayout->addWidget( groupBackgroundOptions );
 	QGridLayout *graphBackgroundLayout = new QGridLayout( groupBackgroundOptions );
-	
+
 	labelGraphBkgColor = new QLabel(tr("Background Color"));
     graphBackgroundLayout->addWidget(labelGraphBkgColor, 0, 0 );
     boxBackgroundColor = new ColorButton();
 	boxBackgroundColor->setColor(app->d_graph_background_color);
     graphBackgroundLayout->addWidget(boxBackgroundColor, 0, 1 );
-	
+
 	labelGraphBkgOpacity = new QLabel(tr( "Opacity" ));
     graphBackgroundLayout->addWidget(labelGraphBkgOpacity, 0, 2 );
     boxBackgroundTransparency = new QSpinBox();
@@ -349,14 +350,14 @@ void ConfigDialog::initPlotsPage()
     boxCanvasColor = new ColorButton();
 	boxCanvasColor->setColor(app->d_graph_canvas_color);
     graphBackgroundLayout->addWidget( boxCanvasColor, 1, 1 );
-	
+
 	labelGraphCanvasOpacity = new QLabel(tr("Opacity"));
     graphBackgroundLayout->addWidget(labelGraphCanvasOpacity, 1, 2 );
     boxCanvasTransparency = new QSpinBox();
     boxCanvasTransparency->setRange(0, 255);
     boxCanvasTransparency->setSingleStep(5);
     boxCanvasTransparency->setWrapping(true);
-	boxCanvasTransparency->setValue(app->d_graph_canvas_opacity);	
+	boxCanvasTransparency->setValue(app->d_graph_canvas_opacity);
     graphBackgroundLayout->addWidget(boxCanvasTransparency, 1, 3 );
 
 	labelGraphFrameColor = new QLabel(tr("Border Color"));
@@ -370,7 +371,7 @@ void ConfigDialog::initPlotsPage()
     boxBorderWidth = new QSpinBox();
 	boxBorderWidth->setValue(app->d_graph_border_width);
     graphBackgroundLayout->addWidget(boxBorderWidth, 2, 3);
-	
+
 	graphBackgroundLayout->setRowStretch(4, 1);
 
 	boxResize = new QCheckBox();
@@ -639,7 +640,15 @@ void ConfigDialog::initAppPage()
 	boxSearchUpdates->setChecked(app->autoSearchUpdates);
 	topBoxLayout->addWidget( boxSearchUpdates, 9, 0, 1, 2 );
 
-	topBoxLayout->setRowStretch(10, 1);
+    completionBox = new QCheckBox();
+	completionBox->setChecked(app->d_completion);
+	topBoxLayout->addWidget(completionBox, 10, 0);
+
+	lineNumbersBox = new QCheckBox();
+	lineNumbersBox->setChecked(app->d_note_line_numbers);
+	topBoxLayout->addWidget(lineNumbersBox, 11, 0);
+
+	topBoxLayout->setRowStretch(12, 1);
 
 	appTabWidget->addTab(application, QString());
 
@@ -979,15 +988,15 @@ void ConfigDialog::languageChange()
 	boxAntialiasing->setText(tr("Antia&liasing"));
 
 	groupBackgroundOptions->setTitle(tr("Background"));
-	labelGraphBkgColor->setText(tr("Background Color"));	
+	labelGraphBkgColor->setText(tr("Background Color"));
 	labelGraphBkgOpacity->setText(tr( "Opacity" ));
-	labelGraphCanvasColor->setText(tr("Canvas Color" ));	
+	labelGraphCanvasColor->setText(tr("Canvas Color" ));
 	labelGraphCanvasOpacity->setText(tr("Opacity"));
 	labelGraphFrameColor->setText(tr("Border Color"));
 	labelGraphFrameWidth->setText(tr( "Width" ));
 	boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
 	boxCanvasTransparency->setSpecialValueText(tr("Transparent"));
-	
+
 	boxMajTicks->clear();
 	boxMajTicks->addItem(tr("None"));
 	boxMajTicks->addItem(tr("Out"));
@@ -1056,6 +1065,8 @@ void ConfigDialog::languageChange()
 	boxInitWindow->addItem(tr("Empty Graph"));
 	boxInitWindow->addItem(tr("Note"));
 	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
+    completionBox->setText(tr("&Enable autocompletion (Ctrl+U)"));
+    lineNumbersBox->setText(tr("&Display line numbers in Notes"));
 
     boxUpdateSeparators->setText(tr("Update separators in Tables/Matrices"));
 	lblAppPrecision->setText(tr("Number of Decimal Digits"));
@@ -1210,14 +1221,14 @@ void ConfigDialog::apply()
 	app->setAutoUpdateTableValues(boxUpdateTableValues->isChecked());
 	app->customizeTables(buttonBackground->color(), buttonText->color(),
 			buttonHeader->color(), textFont, headerFont, boxTableComments->isChecked());
-	
+
 	app->d_graph_background_color = boxBackgroundColor->color();
 	app->d_graph_background_opacity = boxBackgroundTransparency->value();
 	app->d_graph_canvas_color = boxCanvasColor->color();
 	app->d_graph_canvas_opacity = boxCanvasTransparency->value();
 	app->d_graph_border_color = boxBorderColor->color();
 	app->d_graph_border_width = boxBorderWidth->value();
-	
+
 	// 2D plots page: options tab
 	app->d_in_place_editing = !boxLabelsEditing->isChecked();
 	app->titleOn=boxTitle->isChecked();
@@ -1268,6 +1279,13 @@ void ConfigDialog::apply()
 	app->d_init_window_type = (ApplicationWindow::WindowType)boxInitWindow->currentIndex();
 	app->setMatrixUndoStackSize(undoStackSizeBox->value());
 	app->d_eol = (ApplicationWindow::EndLineChar)boxEndLine->currentIndex();
+    app->enableCompletion(completionBox->isChecked());
+
+    app->d_note_line_numbers = lineNumbersBox->isChecked();
+    foreach(MdiSubWindow *w, windows){
+        if(w->isA("Note"))
+            ((Note *)w)->showLineNumbers(app->d_note_line_numbers);
+    }
 
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();

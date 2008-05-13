@@ -2,12 +2,12 @@
     File                 : ScriptWindow.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, 
+    Copyright            : (C) 2006 by Ion Vasilief,
                            Tilman Hoener zu Siederdissen,
                            Knut Franke
     Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
     Description          : Python script window
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -46,9 +46,9 @@
 ScriptWindow::ScriptWindow(ScriptingEnv *env, ApplicationWindow *app)
 : QMainWindow(),
 d_app(app)
-{	
+{
 	initMenu();
-	
+
 	fileName = QString::null;
 
 	te = new ScriptEdit(env, this, name());
@@ -56,15 +56,15 @@ d_app(app)
 	te->setDirPath(d_app->scriptsDirPath);
 	connect(te, SIGNAL(dirPathChanged(const QString& )), d_app, SLOT(scriptsDirPathChanged(const QString&)));
 
-	d_line_number = new LineNumberDisplay(te, this);		
+	d_line_number = new LineNumberDisplay(te, this);
 	d_frame = new QWidget(this);
-	
+
 	QHBoxLayout *hbox = new QHBoxLayout(d_frame);
 	hbox->setMargin(0);
-	hbox->setSpacing(0);	
+	hbox->setSpacing(0);
 	hbox->addWidget(d_line_number);
 	hbox->addWidget(te);
-	
+
 	setCentralWidget(d_frame);
 
 	initActions();
@@ -72,7 +72,7 @@ d_app(app)
 	setWindowTitle(tr("QtiPlot - Script Window"));
 	setFocusProxy(te);
 	setFocusPolicy(Qt::StrongFocus);
-	resize(QSize(500, 300));	
+	resize(QSize(500, 300));
 }
 
 void ScriptWindow::initMenu()
@@ -87,7 +87,7 @@ void ScriptWindow::initMenu()
 	menuBar()->addMenu(run);
 
 	windowMenu = new QMenu(tr("&Window"), this);
-	menuBar()->addMenu(windowMenu);	
+	menuBar()->addMenu(windowMenu);
 }
 
 void ScriptWindow::initActions()
@@ -118,39 +118,39 @@ void ScriptWindow::initActions()
 
 	actionUndo = new QAction(QPixmap(undo_xpm), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
-	connect(actionUndo, SIGNAL(activated()), te, SLOT(undo()));	
+	connect(actionUndo, SIGNAL(activated()), te, SLOT(undo()));
 	edit->addAction(actionUndo);
 	actionUndo->setEnabled(false);
 
 	actionRedo = new QAction(QPixmap(redo_xpm), tr("&Redo"), this);
 	actionRedo->setShortcut( tr("Ctrl+Y") );
-	connect(actionRedo, SIGNAL(activated()), te, SLOT(redo()));	
+	connect(actionRedo, SIGNAL(activated()), te, SLOT(redo()));
 	edit->addAction(actionRedo);
 	actionRedo->setEnabled(false);
 	edit->insertSeparator();
 
 	actionCut = new QAction(QPixmap(cut_xpm), tr("&Cut"), this);
 	actionCut->setShortcut( tr("Ctrl+x") );
-	connect(actionCut, SIGNAL(activated()), te, SLOT(cut()));	
+	connect(actionCut, SIGNAL(activated()), te, SLOT(cut()));
 	edit->addAction(actionCut);
 	actionCut->setEnabled(false);
 
 	actionCopy = new QAction(QPixmap(copy_xpm), tr("&Copy"), this);
 	actionCopy->setShortcut( tr("Ctrl+C") );
-	connect(actionCopy, SIGNAL(activated()), te, SLOT(copy()));	
+	connect(actionCopy, SIGNAL(activated()), te, SLOT(copy()));
 	edit->addAction(actionCopy);
 	actionCopy->setEnabled(false);
 
 	actionPaste = new QAction(QPixmap(paste_xpm), tr("&Paste"), this);
 	actionPaste->setShortcut( tr("Ctrl+V") );
-	connect(actionPaste, SIGNAL(activated()), te, SLOT(paste()));	
+	connect(actionPaste, SIGNAL(activated()), te, SLOT(paste()));
 	edit->addAction(actionPaste);
 
 	edit->insertSeparator();
-	
+
 	actionShowLineNumbers = new QAction(tr("Show &Line Numbers"), this);
 	actionShowLineNumbers->setCheckable(true);
-	actionShowLineNumbers->setChecked(true);
+	actionShowLineNumbers->setChecked(d_app->d_note_line_numbers);
 	connect(actionShowLineNumbers, SIGNAL(toggled(bool)), d_line_number, SLOT(setVisible(bool)));
 	edit->addAction(actionShowLineNumbers);
 
@@ -175,11 +175,11 @@ void ScriptWindow::initActions()
 		actionAlwaysOnTop->setChecked (d_app->d_script_win_on_top);
 	windowMenu->addAction(actionAlwaysOnTop);
 	connect(actionAlwaysOnTop, SIGNAL(toggled(bool)), this, SLOT(setAlwaysOnTop(bool)));
-	
+
 	actionHide = new QAction(tr("&Hide"), this);
 	connect(actionHide, SIGNAL(activated()), this, SLOT(close()));
 	windowMenu->addAction(actionHide);
-	
+
 	connect(te, SIGNAL(copyAvailable(bool)), actionCut, SLOT(setEnabled(bool)));
 	connect(te, SIGNAL(copyAvailable(bool)), actionCopy, SLOT(setEnabled(bool)));
 	connect(te, SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
@@ -287,12 +287,12 @@ void ScriptWindow::setVisible(bool visible)
 }
 
 void ScriptWindow::setAlwaysOnTop(bool on)
-{	
+{
 	if (!d_app)
 		return;
-	
+
 	d_app->d_script_win_on_top = on;
-	
+
 	QString msg = tr("You need to close and reopen the script window before your changes become effective! Do you want to close it now?");
 	if (QMessageBox::question(this, tr("QtiPlot"), msg, QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok)
 		this->close();

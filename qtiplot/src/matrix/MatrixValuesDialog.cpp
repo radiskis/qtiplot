@@ -51,23 +51,24 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
     setName( "MatrixValuesDialog" );
 	setWindowTitle( tr( "QtiPlot - Set Matrix Values" ) );
 	setSizeGripEnabled(true);
+    setAttribute(Qt::WA_DeleteOnClose);
 
 	QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("For row (i)")), 0, 0);
 	startRow = new QSpinBox();
-	startRow->setRange(1, 1000000);
+	startRow->setRange(1, INT_MAX);
     gl1->addWidget(startRow, 0, 1);
 	gl1->addWidget(new QLabel(tr("to")), 0, 2);
 	endRow =  new QSpinBox();
-	endRow->setRange(1, 1000000);
+	endRow->setRange(1, INT_MAX);
 	gl1->addWidget(endRow, 0, 3);
 	gl1->addWidget(new QLabel(tr("For col (j)")), 1, 0);
 	startCol = new QSpinBox();
-	startCol->setRange(1, 1000000);
+	startCol->setRange(1, INT_MAX);
 	gl1->addWidget(startCol, 1, 1);
 	gl1->addWidget(new QLabel(tr("to")), 1, 2);
 	endCol = new QSpinBox();
-	endCol->setRange(1, 1000000);
+	endCol->setRange(1, INT_MAX);
 	gl1->addWidget(endCol, 1, 3);
 
 	functions = new QComboBox(false);
@@ -114,7 +115,7 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 
 	QVBoxLayout* vbox3 = new QVBoxLayout(this);
 	vbox3->addLayout(hbox2);
-#ifdef SCRIPTING_PYTHON	
+#ifdef SCRIPTING_PYTHON
 	boxMuParser = NULL;
 	if (scriptEnv->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
@@ -152,18 +153,18 @@ bool MatrixValuesDialog::apply()
 	QString oldFormula = matrix->formula();
 
 	matrix->setFormula(formula);
-	
+
 	bool useMuParser = true;
 #ifdef SCRIPTING_PYTHON
 	if (boxMuParser)
 		useMuParser = boxMuParser->isChecked();
 #endif
-	
+
 	if (matrix->canCalculate(useMuParser)){
 		matrix->undoStack()->push(new MatrixSetFormulaCommand(matrix, oldFormula, formula,
 							tr("Set New Formula") + " \"" + formula + "\""));
 
-		if (matrix->calculate(startRow->value()-1, endRow->value()-1, 
+		if (matrix->calculate(startRow->value()-1, endRow->value()-1,
 			startCol->value()-1, endCol->value()-1, useMuParser))
 			return true;
 	}
@@ -210,4 +211,12 @@ void MatrixValuesDialog::insertFunction()
 void MatrixValuesDialog::addCell()
 {
 	commands->insert("cell(i, j)");
+}
+
+void MatrixValuesDialog::setCompleter(QCompleter *completer)
+{
+    if (!completer)
+        return;
+
+    commands->setCompleter(completer);
 }

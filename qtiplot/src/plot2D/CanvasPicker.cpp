@@ -36,6 +36,8 @@
 #include "../ApplicationWindow.h"
 
 #include <QVector>
+#include <QMessageBox>
+
 #include <qwt_text_label.h>
 #include <qwt_plot_canvas.h>
 
@@ -61,10 +63,11 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 	{
 		case QEvent::MouseButtonPress:
 			{
-				g->deselect();
-				emit selectPlot();
+                const QMouseEvent *me = (const QMouseEvent *)e;
+				if (!(me->modifiers() & Qt::ShiftModifier))
+                    g->deselect();
 
-				const QMouseEvent *me = (const QMouseEvent *)e;
+				emit selectPlot();
 
 				bool allAxisDisabled = true;
 				for (int i=0; i < QwtPlot::axisCnt; i++){
@@ -155,7 +158,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					ApplicationWindow *app = g->multiLayer()->applicationWindow();
 					if (!app)
 						return true;
-					
+
 					ArrowMarker mrk;
 					mrk.attach(g);
 					mrk.setStartPoint(startLinePoint);
@@ -214,23 +217,22 @@ void CanvasPicker::disableEditing()
 
 void CanvasPicker::drawTextMarker(const QPoint& point)
 {
-	LegendWidget t(plot());
-	t.move(point);
-	t.setText(tr("enter your text here"));
+	LegendWidget *aux = new LegendWidget(plot());
+	aux->move(point);
 
+	LegendWidget *l = plot()->addText(aux);
+	l->setText(tr("enter your text here"));
 	ApplicationWindow *app = plot()->multiLayer()->applicationWindow();
-	if (app){		
-		t.setFrameStyle(app->legendFrameStyle);
-		t.setFont(app->plotLegendFont);
-		t.setTextColor(app->legendTextColor);
-		t.setBackgroundColor(app->legendBackground);
+	if (app){
+		l->setFrameStyle(app->legendFrameStyle);
+		l->setFont(app->plotLegendFont);
+		l->setTextColor(app->legendTextColor);
+		l->setBackgroundColor(app->legendBackground);
 	}
+    l->showTextDialog();
 
-	LegendWidget *l = plot()->insertText(&t);
-	l->setSelected();
-	l->showTextDialog();
-
-	plot()->drawText(FALSE);
+    delete aux;
+	plot()->drawText(false);
 	emit drawTextOff();
 }
 
@@ -279,13 +281,13 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 		if (dist <= d){
 			disableEditing();
 			if (e->modifiers() & Qt::ShiftModifier) {
-				plot()->setSelectedMarker(i);
+				plot()->setSelectedMarker(i, true);
 				return true;
 			} else if (e->button() == Qt::RightButton) {
 				mrkL->setEditable(false);
-				g->setSelectedMarker(i);
+				g->setSelectedMarker(i, true);
 				return true;
-			} 
+			}
 			g->deselectMarker();
 			mrkL->setEditable(true);
 			g->setSelectedMarker(i, false);

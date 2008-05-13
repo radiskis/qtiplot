@@ -230,8 +230,6 @@ void TextDialog::setLegendWidget(LegendWidget *l)
 	backgroundBtn->setColor(bc);
 
 	backgroundBox->setCurrentIndex(l->frameStyle());
-
-	d_legend->setSelected(false);
 }
 
 void TextDialog::apply()
@@ -262,10 +260,10 @@ void TextDialog::apply()
 		if (boxApplyToAll->isChecked())
 			formatAllLabels();
 		else {
-			d_legend->setBackgroundColor(c);
 			d_legend->setTextColor(colorBtn->color());
 			d_legend->setFrameStyle(backgroundBox->currentIndex());
 			d_legend->setFont(selectedFont);
+			d_legend->setBackgroundColor(c);
 			d_legend->repaint();
 		}
 	} else if (textType == LayerTitle){

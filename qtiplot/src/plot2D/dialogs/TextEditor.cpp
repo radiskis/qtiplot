@@ -50,8 +50,8 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g)
 	setPalette(palette);
 
 	QString text;
-	if (g->selectedText()){
-		d_target = g->selectedText();
+	if (g->activeText()){
+		d_target = g->activeText();
 		setGeometry(d_target->geometry());
 		text = ((LegendWidget*)d_target)->text();
 		d_target->hide();
@@ -102,18 +102,18 @@ void TextEditor::closeEvent(QCloseEvent *e)
 		s = text();
 		((LegendWidget*)d_target)->setText(s);
         d_target->show();
-		g->setSelectedText(NULL);
+		g->setActiveText(NULL);
 	} else if (d_target->isA("PieLabel")){
 		s = text();
 		((PieLabel*)d_target)->setCustomText(s);
         d_target->show();
-		g->setSelectedText(NULL);
+		g->setActiveText(NULL);
 	} else if (d_target->isA("QwtTextLabel")){
 		QwtText title = g->title();
 		s = text();
 		if(s.isEmpty())
 			s = " ";
-		title.setText(s);			
+		title.setText(s);
 		((QwtPlot *)g)->setTitle(title);
 	} else if (d_target->isA("QwtScaleWidget")){
 		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;

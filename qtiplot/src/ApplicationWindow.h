@@ -64,6 +64,7 @@ class QAssistantClient;
 class QLocale;
 class QMdiArea;
 class QUndoView;
+class QCompleter;
 
 class Matrix;
 class Table;
@@ -159,6 +160,9 @@ public:
 	QString endOfLine();
 	bool autoUpdateTableValues(){return d_auto_update_table_values;};
 	void setAutoUpdateTableValues(bool on = true);
+
+	QCompleter* completer(){return d_completer;};
+	void enableCompletion(bool on = true);
 
 public slots:
 	//! \name Projects and Project Files
@@ -961,6 +965,7 @@ signals:
 	void modified();
 
 private:
+    void initCompleter();
 	virtual QMenu * createPopupMenu(){return NULL;};
 
 private slots:
@@ -1019,6 +1024,10 @@ public:
 	EndLineChar d_eol;
     //! Flag telling if the in-place editing of 2D plot labels is enabled
     bool d_in_place_editing;
+    //! Flag telling if completion hints are enabled
+    bool d_completion;
+    //! Flag telling if line numbers are displayed in note windows
+    bool d_note_line_numbers;
 	QString d_python_config_folder;
 	QString d_translations_folder;
 	//! Flag telling if the application is opening a project file or not
@@ -1180,6 +1189,8 @@ private:
 	QToolButton *btnResults;
 	QWidgetList *hiddenWindows;
 	QLineEdit *info;
+	//! Completer used in notes and in the script window
+	QCompleter *d_completer;
 
 	QMenu *windowsMenu, *foldersMenu, *view, *graph, *fileMenu, *format, *edit, *recent;
 	QMenu *help, *plot2DMenu, *analysisMenu, *multiPeakMenu;

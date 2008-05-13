@@ -71,8 +71,6 @@ LegendWidget::LegendWidget(Graph *plot):QWidget(plot),
 	pos = QPoint(pos.x() + 10, pos.y() + 10);
 	move(pos);
 
-    d_selector = NULL;
-
 	connect (this, SIGNAL(showDialog()), plot, SIGNAL(viewTextDialog()));
 	connect (this, SIGNAL(showMenu()), plot, SIGNAL(showMarkerPopupMenu()));
 	connect (this, SIGNAL(enableEditor()), plot, SLOT(enableTextEditor()));
@@ -516,48 +514,25 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 	return curve;
 }
 
-void LegendWidget::mousePressEvent (QMouseEvent *)
+void LegendWidget::mousePressEvent (QMouseEvent *e)
 {
-    if (d_selector){
-        delete d_selector;
-		d_selector = NULL;
-	}
-
 	d_plot->activateGraph();
+	/*bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
+	if (!shiftPressed)
+        d_plot->deselectMarker();
+	d_plot->select(this, shiftPressed);*/
+
 	d_plot->deselectMarker();
-
-    d_selector = new SelectionMoveResizer(this);
-	connect(d_selector, SIGNAL(targetsChanged()), d_plot, SIGNAL(modifiedGraph()));
-	d_plot->setSelectedText(this);
-}
-
-void LegendWidget::setSelected(bool on)
-{
-	if (on){
-		if (d_selector)
-			return;
-		else {
-			d_selector = new SelectionMoveResizer(this);
-			connect(d_selector, SIGNAL(targetsChanged()), d_plot, SIGNAL(modifiedGraph()));
-			d_plot->setSelectedText(this);
-		}
-	} else if (d_selector){
-		d_selector->close();
-		d_selector = NULL;
-		d_plot->setSelectedText(NULL);
-	}
+	d_plot->select(this);
 }
 
 void LegendWidget::showTextEditor()
 {
-	if (d_selector){
-        delete d_selector;
-		d_selector = NULL;
-	}
-
     ApplicationWindow *app = d_plot->multiLayer()->applicationWindow();
     if (!app)
         return;
+
+	d_plot->deselect(this);
 
 	if (app->d_in_place_editing)
         enableEditor();
@@ -593,6 +568,4 @@ void LegendWidget::setFixedCoordinatesMode(bool on)
 LegendWidget::~LegendWidget()
 {
 	delete d_text;
-	if (d_selector)
-        delete d_selector;
 }
