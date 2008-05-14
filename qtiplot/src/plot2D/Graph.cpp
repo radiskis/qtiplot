@@ -1399,6 +1399,11 @@ void Graph::exportVector(const QString& fileName, int res, bool color, bool keep
     if (fileName.contains(".eps"))
     	printer.setOutputFormat(QPrinter::PostScriptFormat);
 
+#ifdef Q_OS_MAC
+    if (fileName.contains(".pdf"))
+    	printer.setOutputFormat(QPrinter::NativeFormat);
+#endif
+
     if (color)
 		printer.setColorMode(QPrinter::Color);
 	else
@@ -4728,7 +4733,7 @@ DataCurve* Graph::masterCurve(const QString& xColName, const QString& yColName)
         if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
             continue;
         if (((PlotCurve *)it)->type() == Function)
-            continue;		
+            continue;
 		if (((DataCurve *)it)->xColumnName() == xColName && it->title().text() == yColName)
 			return (DataCurve *)it;
 	}

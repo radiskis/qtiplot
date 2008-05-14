@@ -153,14 +153,21 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
 {
     if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
         return 0;
-	
+
 	int n = c->dataSize();
-	double *xtemp = new double[n];
-    double *ytemp = new double[n];
+	double *xtemp = (double *)malloc(n*sizeof(double));
+	if (!xtemp)
+        memoryErrorMessage();
+
+    double *ytemp = (double *)malloc(n*sizeof(double));
+    if (!ytemp){
+        free(xtemp);
+        memoryErrorMessage();
+    }
 
 	double pr_x = 0.0;
   	int j=0;
-    for (int i = 0; i <= n; i++){
+    for (int i = 0; i < n; i++){
         xtemp[j] = c->x(i);
         if (xtemp[j] == pr_x){
             delete xtemp;
@@ -170,20 +177,34 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
         pr_x = xtemp[j];
         ytemp[j++] = c->y(i);
     }
-	
-	size_t *p = new size_t[n];
+
+	size_t *p = (size_t *)malloc(n*sizeof(size_t));
+	if (!p){
+        free(xtemp); free(ytemp);
+        memoryErrorMessage();
+    }
     gsl_sort_index(p, xtemp, 1, n);
-	
-	double *xtemp2 = new double[n];
-    double *ytemp2 = new double[n];
-	for (int i=0; i<n; i++){
+
+	double *xtemp2 = (double *)malloc(n*sizeof(double));
+    if (!xtemp2){
+        free(xtemp); free(ytemp); free(p);
+        memoryErrorMessage();
+    }
+
+    double *ytemp2 = (double *)malloc(n*sizeof(double));
+    if (!ytemp2){
+        free(xtemp); free(ytemp); free(p); free(xtemp2);
+        memoryErrorMessage();
+    }
+
+    for (int i=0; i<n; i++){
         xtemp2[i] = xtemp[p[i]];
   	    ytemp2[i] = ytemp[p[i]];
     }
-    delete[] xtemp;
-    delete[] ytemp;
-    delete[] p;
-	
+    free(xtemp);
+    free(ytemp);
+    free(p);
+
 	int i_start = 0, i_end = n;
     for (int i = 0; i < i_end; i++)
   	    if (xtemp2[i] > start && i){
@@ -195,15 +216,17 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
   	      i_end = i + 1;
           break;
         }
-		
+
     n = i_end - i_start + 1;
     (*x) = new double[n];
     (*y) = new double[n];
-	for (int i=0; i<n; i++){
-        (*x)[i] = xtemp2[i];
-  	    (*y)[i] = ytemp2[i];
+    j = 0;
+	for (int i = i_start; i <= i_end; i++){
+        (*x)[j] = xtemp2[i];
+  	    (*y)[j] = ytemp2[i];
+  	    j++;
     }
-    delete[] xtemp2;
-    delete[] ytemp2;
+    free(xtemp2);
+    free(ytemp2);
 	return n;
 }

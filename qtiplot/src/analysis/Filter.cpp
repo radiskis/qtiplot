@@ -444,6 +444,13 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	return true;
 }
 
+void Filter::memoryErrorMessage()
+{
+    QMessageBox::critical((ApplicationWindow *)parent(),
+        tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+        tr("Not enough memory, operation aborted!"));
+}
+
 Filter::~Filter()
 {
 	if (d_n > 0){//delete the memory allocated for the data

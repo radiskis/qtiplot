@@ -257,9 +257,21 @@ They can also be read directly from an ASCII file with the &import-ascii-lnk; or
 <para>The axes or the axes labels: this will open the <link linkend="plot-options-dialog">General Plot Options Dialog</link>. It is used to customize the axes, the numbers and labels of the axes, and the grid.</para>
 </listitem>
 <listitem>
-<para>Any other text item, including the legend of the plot: this will open the <link linkend="text-options-dialog">Text Options Dialog</link> which allows to customize the font of the label and the frame in which it is drawn.</para>
+<para>Text items, including the legend of the plot: this will open the <link linkend="text-options-dialog">Text Options Dialog</link> which allows to customize the font of the label and the frame in which it is drawn.</para>
+</listitem>
+<listitem>
+<para>Arrow/Line items: this will open the <link linkend="arrow-dialog">Line Options Dialog</link>.</para>
+</listitem>
+<listitem>
+<para>Image items: this will open a dialog allowing to customize the geometry and the position of the image.</para>
 </listitem>
 </itemizedlist>
+
+<para>A right click on a plot element pops-up a context menu allowing fast access to its properties dialog.</para>
+<para>Last but not least, you should know that QtiPlot provides multiple selection for arrows and images.
+In order to add an arrow or an image to an existing selection keep the <emphasis>Shift</emphasis> 
+key pressed and click on the element you want to add to the selection. 
+Elements in a multiple selection can be moved and resized together with the mouse.</para>
 
 </sect2>
 
