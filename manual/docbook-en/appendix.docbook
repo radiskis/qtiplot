@@ -169,14 +169,14 @@ If you want to build &appname; from sources, you need the following libraries:
 <varlistentry>
   <term>Qt (>= 4.3.1)</term>
   <listitem>
-    <para>&appname; works best with the 4.3.3 version of the 
+    <para>&appname; works best with the 4.4.0 version of the 
 	<ulink url="http://trolltech.com/products/qt">Qt</ulink> library</para>
   </listitem>
 </varlistentry>
 <varlistentry>
   <term>Qwt</term>
   <listitem>
-    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.0.2</ulink> library.</para>
+    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.1</ulink> library.</para>
   </listitem>
 </varlistentry>
 <varlistentry>

@@ -15280,8 +15280,9 @@ void ApplicationWindow::initCompleter()
     QString fn = d_python_config_folder + "/qti_wordlist.txt";
     QFile file(fn);
     if (!file.open(QFile::ReadOnly)){
+        QFileInfo fi(file);
         QMessageBox::critical(this, tr("QtiPlot - Warning"),
-				tr("Couldn't load file: %1.\nAutocompletion will not be available!").arg(fn));
+				tr("Couldn't load file: %1.\nAutocompletion will not be available!").arg(fi.absoluteFilePath()));
         return;
     }
 

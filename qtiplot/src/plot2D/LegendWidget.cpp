@@ -514,7 +514,7 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 	return curve;
 }
 
-void LegendWidget::mousePressEvent (QMouseEvent *e)
+void LegendWidget::mousePressEvent (QMouseEvent *)
 {
 	d_plot->activateGraph();
 	/*bool shiftPressed = e->modifiers() & Qt::ShiftModifier;

@@ -211,7 +211,7 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
 <!--		Arrow Dialog				-->
 <!-- ************************************************** -->
 <sect1 id="arrow-dialog">
-  <title>Add Arrow</title>
+  <title>Line Options</title>
   <para>This dialog allows to modify a line or an arrow which has been created by the command <emphasis>&draw-arrow-cmd;</emphasis> from the <link linkend="sec-graph-menu">Graph Menu</link> or with &draw-arrow-key;. One can also open it with a double click on an arrow or a line, or by selecting an arrow or a line and selecting <emphasis>Properties...</emphasis> with the right button of the mouse.</para>
   <para>The first tab allows to change the color, the line type and the line width. This last parameter is set in pixels. It is possible to define a default style for all the new lines by pressing the <emphasis>Set Default</emphasis> button.</para>
   <figure id="fig-line-options-1">
@@ -694,7 +694,10 @@ which opens a dialog allowing to edit the plot range.</para>
   	  </listitem>
   	</orderedlist>
   <para>After the fit, the log window is opened to show the results of the fitting process.</para>
-  <para>Depending on the settings in the <emphasis>Custom Output</emphasis> tab, a function curve (option <emphasis>Uniform X Function</emphasis>) or a new table (if you choose the option <emphasis>Same X as Fitting Data</emphasis>) will be created for each fit. The new table includes all the X and Y values used to compute and to plot the fitted function and is hidden by default, but it can be found and viewed with the <link linkend="project-explorer-dialog">project explorer</link>.</para>
+  <para>Depending on the settings in the <emphasis>Custom Output</emphasis> tab, a function curve (option <emphasis>Uniform X Function</emphasis>) 
+  or a new table (if you choose the option <emphasis>Same X as Fitting Data</emphasis>) will be created for each fit. 
+  The new table includes all the X and Y values used to compute and to plot the fitted function and is 
+  hidden by default, but it can be found and viewed with the <link linkend="project-explorer-dialog">project explorer</link>.</para>
 
   <figure id="fig-non-linear-curve-fit-4">
     <title>The third step of the &non-linear-curve-fit-cmd; dialog box.</title>
@@ -707,10 +710,32 @@ which opens a dialog allowing to edit the plot range.</para>
       </imageobject>
     </mediaobject>
   </figure>
+	
+<para>This dialog tab provides controls that can be used to evaluate the goodness of fit.
+The first one is the <emphasis>Residuals Plot</emphasis> button which can be used to display the curve of 
+the plot residuals. The <emphasis>Conf. Bands</emphasis> and <emphasis>Pred. Bands</emphasis> buttons can be used to 
+generate confidence and prediction limits for the current fit, based on the user input confidence value.
+</para>
 
-    <para>By default, the reported errors are not automatically scaled with the square root of the
-    reduced chi-squared value. You can choose to enable this option by checking the
-    <emphasis>Scale errors with sqrt(Chi^2/doF)</emphasis> box.</para>
+<para>
+After the fit, a series of fit statistics are displayed in the log window
+allowing to evaluate the goodness of fit. This values are:
+<orderedlist>
+  	  <listitem>Chi^2/doF </listitem>
+  	  <listitem>R-square</listitem>
+  	  <listitem>Adjusted R-square</listitem>
+  	  <listitem>RMSE (Root Mean Squared Error)</listitem>
+  	  <listitem>RSS (Residual Sum of Squares)</listitem>
+</orderedlist>
+
+For detailed explanations about the meaning of this statistical values, please visit the following 
+<ulink url="http://www.mathworks.com/access/helpdesk_r13/help/toolbox/curvefit/ch_fitt9.html">link</ulink>.
+</para>
+
+<para>By default, the reported errors are not automatically scaled with the square root of the
+reduced chi-squared value. You can choose to enable this option by checking the
+<emphasis>Scale errors with sqrt(Chi^2/doF)</emphasis> box.</para>
+
 </sect1>
 
 <!-- ************************************************** -->
@@ -828,6 +853,20 @@ which opens a dialog allowing to edit the plot range.</para>
   copy/paste operations and for exporting matrices/tables to ASCII files. The end of line convention can be:
   <emphasis>Line Feed (LF)</emphasis>, <emphasis>Carriage Return + Line Feed (CRLF)</emphasis> or
   <emphasis>Carriage Return (CR)</emphasis> only.</para>
+
+<para>Starting with version 0.9.6, autocompletion is enabled by default in all QtiPlot
+editors: in Notes, in the Script Window and in the values dialogs for matrices and tables.
+The autocompletion mechanism is based on a list of words provided by the
+<emphasis>qti_wordlist.txt</emphasis> file. This file, which is shipped with
+the source archive, must be placed in the same folder as the Python configuration files
+(see <emphasis>File Locations</emphasis> tab bellow), and is automatically loaded by
+QtiPlot on start-up. You can edit this file and add your own key words:
+one word per line.
+
+Completion suggestions are automatically poped-up for words that have more than two
+characters, but you can trigger autocompletion at any time using the shortcut Ctrl+U.
+Autocompletion can be disabled by unchecking the <emphasis>Enable autocompletion</emphasis>
+option.</para>
 
   <para>The second tab of the <emphasis>General</emphasis> option set is used to disable the prompting on deleting
   project windows. Also you can disable the warnings prompted by default when renaming
