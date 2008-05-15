@@ -2445,23 +2445,6 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 	addListViewItem(g);
 }
 
-void ApplicationWindow::customizeTables(const QColor& bgColor,const QColor& textColor,
-		const QColor& headerColor,const QFont& textFont, const QFont& headerFont, bool showComments)
-{
-	tableBkgdColor = bgColor;
-	tableTextColor = textColor;
-	tableHeaderColor = headerColor;
-	tableTextFont = textFont;
-	tableHeaderFont = headerFont;
-	d_show_table_comments = showComments;
-
-	QList<MdiSubWindow *> windows = windowsList();
-	foreach(MdiSubWindow *w, windows){
-		if (w->inherits("Table"))
-			customTable((Table*)w);
-	}
-}
-
 void ApplicationWindow::setAutoUpdateTableValues(bool on)
 {
 	if (d_auto_update_table_values == on)
@@ -2483,8 +2466,8 @@ void ApplicationWindow::setAutoUpdateTableValues(bool on)
 void ApplicationWindow::customTable(Table* w)
 {
 	QColorGroup cg;
-	cg.setColor(QColorGroup::Base, QColor(tableBkgdColor));
-	cg.setColor(QColorGroup::Text, QColor(tableTextColor));
+	cg.setColor(QColorGroup::Base, tableBkgdColor);
+	cg.setColor(QColorGroup::Text, tableTextColor);
 	w->setPalette(QPalette(cg, cg, cg));
 
 	w->setHeaderColor(tableHeaderColor);

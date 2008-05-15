@@ -77,6 +77,8 @@ Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, App
 
 void Matrix::initGlobals()
 {
+    setGeometry(0, 0, 500, 500);
+
 	d_workspace = NULL;
     d_table_view = NULL;
     imageLabel = NULL;
@@ -1170,7 +1172,7 @@ void Matrix::displayImage(const QImage& image)
 {
     if (!imageLabel)
 		return;
-	
+
 	QImage im(imageLabel->size(), QImage::Format_RGB32);
 	im.fill(0);
 	QPainter p(&im);

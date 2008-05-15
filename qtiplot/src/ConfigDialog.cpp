@@ -711,11 +711,7 @@ void ConfigDialog::initAppPage()
     boxThousandsSeparator->setChecked(app->locale().numberOptions() & QLocale::OmitGroupSeparator);
     numericFormatLayout->addWidget(boxThousandsSeparator, 2, 0);
 
-    boxUpdateSeparators = new QCheckBox();
-    boxUpdateSeparators->setChecked(true);
-    numericFormatLayout->addWidget(boxUpdateSeparators, 3, 0);
-	numericFormatLayout->setRowStretch(4, 1);
-
+	numericFormatLayout->setRowStretch(3, 1);
 	appTabWidget->addTab( numericFormatPage, QString() );
 
 	initFileLocationsPage();
@@ -1068,7 +1064,6 @@ void ConfigDialog::languageChange()
     completionBox->setText(tr("&Enable autocompletion (Ctrl+U)"));
     lineNumbersBox->setText(tr("&Display line numbers in Notes"));
 
-    boxUpdateSeparators->setText(tr("Update separators in Tables/Matrices"));
 	lblAppPrecision->setText(tr("Number of Decimal Digits"));
 	lblDecimalSeparator->setText(tr("Decimal Separators"));
 	boxDecimalSeparator->clear();
@@ -1076,7 +1071,7 @@ void ConfigDialog::languageChange()
 	boxDecimalSeparator->addItem("1,000.0");
 	boxDecimalSeparator->addItem("1.000,0");
 	boxDecimalSeparator->addItem("1 000,0");
-	boxThousandsSeparator->setText(tr("Omit Thousands Separator"));
+	boxThousandsSeparator->setText(tr("Omit &Thousands Separator"));
 
     QLocale locale = app->locale();
     if (locale.name() == QLocale::c().name())
@@ -1219,8 +1214,30 @@ void ConfigDialog::apply()
 
 	app->columnSeparator = sep;
 	app->setAutoUpdateTableValues(boxUpdateTableValues->isChecked());
-	app->customizeTables(buttonBackground->color(), buttonText->color(),
-			buttonHeader->color(), textFont, headerFont, boxTableComments->isChecked());
+
+	app->tableBkgdColor = buttonBackground->color();
+	app->tableTextColor = buttonText->color();
+	app->tableHeaderColor = buttonHeader->color();
+	app->tableTextFont = textFont;
+	app->tableHeaderFont = headerFont;
+	app->d_show_table_comments = boxTableComments->isChecked();
+
+    QColorGroup cg;
+	cg.setColor(QColorGroup::Base, buttonBackground->color());
+	cg.setColor(QColorGroup::Text, buttonText->color());
+	QPalette palette(cg, cg, cg);
+
+	QList<MdiSubWindow *> windows = app->windowsList();
+	foreach(MdiSubWindow *w, windows){
+		if (w->inherits("Table")){
+			Table *t = (Table*)w;
+            w->setPalette(palette);
+			t->setHeaderColor(buttonHeader->color());
+            t->setTextFont(textFont);
+            t->setHeaderFont(headerFont);
+            t->showComments(boxTableComments->isChecked());
+		}
+	}
 
 	app->d_graph_background_color = boxBackgroundColor->color();
 	app->d_graph_background_opacity = boxBackgroundTransparency->value();
@@ -1261,7 +1278,6 @@ void ConfigDialog::apply()
 	// 2D plots page: print tab
 	app->d_print_cropmarks = boxPrintCropmarks->isChecked();
 	app->d_scale_plots_on_print = boxScaleLayersOnPrint->isChecked();
-	QList<MdiSubWindow*> windows = app->windowsList();
 	foreach(MdiSubWindow *w, windows){
 		if (w->isA("MultiLayer")){
 			((MultiLayer*)w)->setScaleLayersOnPrint(boxScaleLayersOnPrint->isChecked());
@@ -1308,17 +1324,18 @@ void ConfigDialog::apply()
         locale.setNumberOptions(QLocale::OmitGroupSeparator);
 
     app->d_thousands_sep = !boxThousandsSeparator->isChecked();
+    QLocale oldLocale = app->locale();
     app->setLocale(locale);
 
 	if (generalDialog->currentWidget() == appTabWidget &&
-		appTabWidget->currentWidget() == numericFormatPage &&
-		boxUpdateSeparators->isChecked()){
+		appTabWidget->currentWidget() == numericFormatPage){
     	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         QList<MdiSubWindow *> windows = app->windowsList();
         foreach(MdiSubWindow *w, windows){
             w->setLocale(locale);
+
             if(w->isA("Table"))
-                ((Table *)w)->updateDecimalSeparators();
+                ((Table *)w)->updateDecimalSeparators(oldLocale);
             else if(w->isA("Matrix"))
                 ((Matrix *)w)->resetView();
         }

@@ -87,6 +87,21 @@
   </answer>
 </qandaentry>
 
+<qandaentry>
+  <question>
+    <para>How can I make a graph that has one x-axis, but two y-axes with different orders of magnitude?</para>
+  </question>
+  <answer>
+    <para> 
+	In QtiPlot the procedure is very simple, no need for two plot layers like in Origin.
+First of all select two columns that you want to display and plot them in the same layer.
+Add a right axis to the newly created plot layer, via the "Format | Axes" dialog.
+Double-click on the plot and from the pop-up dialog select one of the two curves.
+Go to the "Axes" tab of the dialog and from the "y Axes" box, select "Right" and click apply. 
+It's done!
+	</para>
+  </answer>
+</qandaentry>
 </qandaset>
 
 </chapter>

@@ -39,8 +39,11 @@ d_min_val(-DBL_MAX),
 d_max_val(DBL_MAX),
 d_value(0.0),
 d_step(0.1),
-d_prec(1)
+d_prec(14)
 {
+    if (format == 'f')
+        d_prec = 1;
+
 	setFocusPolicy(Qt::StrongFocus);
     lineEdit()->setText(locale().toString(d_value, d_format, d_prec));
 	setKeyboardTracking(false);
@@ -121,8 +124,8 @@ QString DoubleSpinBox::textFromValue ( double value) const
 {
 	if (!specialValueText().isEmpty() && value == d_min_val)
 		return specialValueText();
-	
-	if (d_prec < 14)
+
+	if (d_prec <= 14)
 		return locale().toString(value, d_format, d_prec);
 
 	return locale().toString(value, d_format, 6);
