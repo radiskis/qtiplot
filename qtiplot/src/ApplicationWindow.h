@@ -382,9 +382,6 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
-	void customizeTables(const QColor& bgColor,const QColor& textColor,
-						const QColor& headerColor,const QFont& textFont,
-						const QFont& headerFont, bool showComments);
 
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,

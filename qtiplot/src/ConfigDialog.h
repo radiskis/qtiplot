@@ -115,7 +115,7 @@ private:
 	QFont textFont, headerFont, axesFont, numbersFont, legendFont, titleFont, appFont;
 	QFont plot3DTitleFont, plot3DNumbersFont, plot3DAxesFont;
 
-	QCheckBox *boxScaleLayersOnPrint, *boxPrintCropmarks, *boxUpdateSeparators, *linearFit2PointsBox;
+	QCheckBox *boxScaleLayersOnPrint, *boxPrintCropmarks, *linearFit2PointsBox;
 	QTabWidget *plotsTabWidget, *appTabWidget;
 	ColorButton *btnBackground3D, *btnMesh, *btnAxes, *btnLabels, *btnNumbers;
 	ColorButton *btnFromColor, *btnToColor, *btnGrid;

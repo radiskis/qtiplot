@@ -1760,105 +1760,43 @@ void Table::setText (int row, int col, const QString & text )
 
 void Table::saveToMemory()
 {
-    d_saved_cells = new double* [d_table->numCols()];
-	for ( int i = 0; i < d_table->numCols(); ++i)
-		d_saved_cells[i] = new double [d_table->numRows()];
+    int rows = d_table->numRows();
+    int cols = d_table->numCols();
 
-    for (int col = 0; col<d_table->numCols(); col++){// initialize the matrix to zero
-        for (int row=0; row<d_table->numRows(); row++)
+    d_saved_cells = new double* [cols];
+	for ( int i = 0; i < cols; ++i)
+		d_saved_cells[i] = new double [rows];
+
+    for (int col = 0; col < cols; col++){// initialize the matrix to zero
+        for (int row = 0; row < rows; row++)
             d_saved_cells[col][row] = 0.0;}
 
-	for (int col = 0; col<d_table->numCols(); col++){
+	for (int col = 0; col < cols; col++){
 		if (colTypes[col] == Time){
 			QTime ref = QTime(0, 0);
-			for (int row=0; row<d_table->numRows(); row++){
+			for (int row = 0; row <rows; row++){
 				QTime t = QTime::fromString(d_table->text(row, col), col_format[col]);
                 d_saved_cells[col][row] = ref.msecsTo(t);
 				}
             }
 		else if (colTypes[col] == Date){
 			QTime ref = QTime(0, 0);
-			for (int row=0; row<d_table->numRows(); row++){
+			for (int row = 0; row < rows; row++){
 				QDateTime dt = QDateTime::fromString(d_table->text(row, col), col_format[col]);
 				d_saved_cells[col][row] = dt.date().toJulianDay() - 1 + (double)ref.msecsTo(dt.time())/864.0e5;
 				}
             }
         }
 
-    bool wrongLocale = false;
-	for (int col = 0; col<d_table->numCols(); col++){
+    QLocale l = locale();
+	for (int col = 0; col < cols; col++){
 	    if (colTypes[col] == Numeric){
-            bool ok = false;
-            for (int row=0; row<d_table->numRows(); row++){
-                if (!d_table->text(row, col).isEmpty()){
-                    d_saved_cells[col][row] = locale().toDouble(d_table->text(row, col), &ok);
-                    if (!ok){
-                        wrongLocale = true;
-                        break;
-                    }
-                }
+            for (int row=0; row < rows; row++){
+                QString s = d_table->text(row, col);
+                if (!s.isEmpty())
+                    d_saved_cells[col][row] = l.toDouble(s);
             }
-            if (wrongLocale)
-                break;
 	    }
-	}
-
-	if (wrongLocale){// fall back to C locale
-	    wrongLocale = false;
-        for (int col = 0; col<d_table->numCols(); col++){
-            if (colTypes[col] == Numeric){
-                bool ok = false;
-                for (int row=0; row<d_table->numRows(); row++){
-                    if (!d_table->text(row, col).isEmpty()){
-                        d_saved_cells[col][row] = QLocale::c().toDouble(d_table->text(row, col), &ok);
-                        if (!ok){
-                            wrongLocale = true;
-                            break;
-                        }
-                    }
-                }
-            if (wrongLocale)
-                break;
-            }
-        }
-	}
-	if (wrongLocale){// fall back to German locale
-	    wrongLocale = false;
-        for (int col = 0; col<d_table->numCols(); col++){
-            if (colTypes[col] == Numeric){
-                bool ok = false;
-                for (int row=0; row<d_table->numRows(); row++){
-                    if (!d_table->text(row, col).isEmpty()){
-                        d_saved_cells[col][row] = QLocale(QLocale::German).toDouble(d_table->text(row, col), &ok);
-                        if (!ok){
-                            wrongLocale = true;
-                            break;
-                        }
-                    }
-                }
-            if (wrongLocale)
-                break;
-            }
-        }
-	}
-	if (wrongLocale){// fall back to French locale
-	    wrongLocale = false;
-        for (int col = 0; col<d_table->numCols(); col++){
-            if (colTypes[col] == Numeric){
-                bool ok = false;
-                for (int row=0; row<d_table->numRows(); row++){
-                    if (!d_table->text(row, col).isEmpty()){
-                        d_saved_cells[col][row] = QLocale(QLocale::French).toDouble(d_table->text(row, col), &ok);
-                        if (!ok){
-                            wrongLocale = true;
-                            break;
-                        }
-                    }
-                }
-            if (wrongLocale)
-                break;
-            }
-        }
 	}
 }
 
@@ -2971,12 +2909,14 @@ void Table::resizeCols(int c)
 
 void Table::copy(Table *m)
 {
-	for (int i=0; i<d_table->numRows(); i++){
-		for (int j=0; j<d_table->numCols(); j++)
+	int rows = d_table->numRows();
+	int cols = d_table->numCols();
+	for (int i=0; i<rows; i++){
+		for (int j=0; j<cols; j++)
 			d_table->setText(i, j, m->text(i, j));
 	}
 
-	for (int i=0; i<d_table->numCols(); i++){
+	for (int i=0; i<cols; i++){
 		d_table->setColumnReadOnly(i, m->isReadOnlyColumn(i));
 		d_table->setColumnWidth(i, m->columnWidth(i));
 		if (m->isColumnHidden(i))
@@ -3107,6 +3047,8 @@ void Table::setNumericPrecision(int prec)
 
 void Table::updateDecimalSeparators(const QLocale& oldSeparators)
 {
+    QLocale l = locale();
+    int rows = d_table->numRows();
 	for (int i=0; i<d_table->numCols(); i++){
 	    if (colTypes[i] != Numeric)
             continue;
@@ -3115,34 +3057,14 @@ void Table::updateDecimalSeparators(const QLocale& oldSeparators)
         int prec;
         columnNumericFormat(i, &format, &prec);
 
-        for (int j=0; j<d_table->numRows(); j++){
-            if (!d_table->text(j, i).isEmpty()){
-				double val = oldSeparators.toDouble(d_table->text(j, i));
-                d_table->setText(j, i, locale().toString(val, format, prec));
+        for (int j = 0; j<rows; j++){
+            QString s = d_table->text(j, i);
+            if (!s.isEmpty()){
+				double val = oldSeparators.toDouble(s);
+                d_table->setText(j, i, l.toString(val, format, prec));
 			}
 		}
 	}
-}
-
-void Table::updateDecimalSeparators()
-{
-    saveToMemory();
-
-    for (int i=0; i<d_table->numCols(); i++){
-	    if (colTypes[i] != Numeric)
-            continue;
-
-        char format;
-        int prec;
-        columnNumericFormat(i, &format, &prec);
-
-        for (int j=0; j<d_table->numRows(); j++){
-            if (!d_table->text(j, i).isEmpty())
-                d_table->setText(j, i, locale().toString(d_saved_cells[i][j], format, prec));
-		}
-	}
-
-    freeMemory();
 }
 
 bool Table::isReadOnlyColumn(int col)
