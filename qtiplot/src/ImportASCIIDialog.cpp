@@ -86,11 +86,11 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
         boxDecimalSeparator->setCurrentIndex(2);
     else if (app->d_ASCII_import_locale.name() == QLocale(QLocale::French).name())
         boxDecimalSeparator->setCurrentIndex(3);
-	boxDecimalSeparator->setEnabled(app->d_import_dec_separators);
-	d_import_dec_separators->setChecked(app->d_import_dec_separators);
+
+	QLocale::NumberOptions groupSep = app->d_ASCII_import_locale.numberOptions();
+	d_omit_thousands_sep->setChecked(groupSep & QLocale::OmitGroupSeparator);
 
 	connect(d_import_mode, SIGNAL(currentIndexChanged(int)), this, SLOT(updateImportMode(int)));
-
 	if (app->d_ASCII_import_mode < d_import_mode->count())
 		d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
 
@@ -110,7 +110,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
     connect(d_strip_spaces, SIGNAL(clicked()), this, SLOT(preview()));
     connect(d_simplify_spaces, SIGNAL(clicked()), this, SLOT(preview()));
     connect(d_ignored_lines, SIGNAL(valueChanged(int)), this, SLOT(preview()));
-    connect(d_import_dec_separators, SIGNAL(clicked()), this, SLOT(preview()));
+    connect(d_omit_thousands_sep, SIGNAL(clicked()), this, SLOT(preview()));
     connect(d_column_separator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
     connect(boxDecimalSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
     connect(d_comment_string, SIGNAL(textChanged(const QString&)), this, SLOT(preview()));
@@ -201,9 +201,8 @@ void ImportASCIIDialog::initAdvancedOptions()
 	boxDecimalSeparator->addItem("1 000,0");
 	advanced_layout->addWidget(boxDecimalSeparator, 4, 1);
 
-	d_import_dec_separators = new QCheckBox(tr("Import &decimal separators"));
-	connect(d_import_dec_separators, SIGNAL(toggled(bool)), boxDecimalSeparator, SLOT(setEnabled(bool)));
-	advanced_layout->addWidget(d_import_dec_separators, 4, 2, 1, 2);
+	d_omit_thousands_sep = new QCheckBox(tr("Omit &Thousands Separator"));
+	advanced_layout->addWidget(d_omit_thousands_sep, 4, 2, 1, 2);
 
 	advanced_layout->addWidget(new QLabel(tr("Endline character")), 5, 0);
 	boxEndLine = new QComboBox();
@@ -401,6 +400,10 @@ QLocale ImportASCIIDialog::decimalSeparators()
             locale = QLocale(QLocale::French);
         break;
     }
+	
+	if (d_omit_thousands_sep->isChecked())
+		locale.setNumberOptions(QLocale::OmitGroupSeparator);
+	
 	return locale;
 }
 
@@ -445,8 +448,8 @@ void ImportASCIIDialog::previewTable()
                             d_comment_string->text(), (Table::ImportMode)importMode, 
                             boxEndLine->currentIndex(), d_preview_lines_box->value());
 
-	if (d_import_dec_separators->isChecked())
-		d_preview_table->updateDecimalSeparators(decimalSeparators());
+	d_preview_table->updateDecimalSeparators(decimalSeparators());
+	
     if (!d_preview_table->isVisible())
         d_preview_table->show();
 }
@@ -467,13 +470,9 @@ void ImportASCIIDialog::previewMatrix()
 	else
 		importMode -= 2;
 
-	QLocale locale = d_preview_matrix->locale();
-	if(d_import_dec_separators->isChecked())
-		locale = decimalSeparators();
-
 	d_preview_matrix->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
 							d_strip_spaces->isChecked(), d_simplify_spaces->isChecked(),
-                            d_comment_string->text(), importMode, locale,
+                            d_comment_string->text(), importMode, decimalSeparators(),
                             boxEndLine->currentIndex(), d_preview_lines_box->value());
 	d_preview_matrix->resizeColumnsToContents();
 }

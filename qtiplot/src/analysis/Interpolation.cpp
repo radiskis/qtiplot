@@ -64,44 +64,74 @@ void Interpolation::init(int m)
         d_init_err = true;
         return;
     }
-    d_method = m;
+    
+	d_method = m;
+	const gsl_interp_type *method = NULL;
 	switch(d_method)
 	{
 		case 0:
+			method = gsl_interp_linear;
 			setObjectName(tr("Linear") + tr("Int"));
 			d_explanation = tr("Linear") + " " + tr("Interpolation");
 			break;
 		case 1:
+			method = gsl_interp_cspline;
 			setObjectName(tr("Cubic") + tr("Int"));
 			d_explanation = tr("Cubic") + " " + tr("Interpolation");
 			break;
 		case 2:
+			method = gsl_interp_akima;
 			setObjectName(tr("Akima") + tr("Int"));
 			d_explanation = tr("Akima") + " " + tr("Interpolation");
 			break;
 	}
     d_sort_data = true;
-    d_min_points = d_method + 3;
+	d_min_points = d_method + 3; //Guess a min number of points
+	//Get the exact number of min points from GSL
+	//TODO: add a feature request to GSL developers so that we could use:
+	//d_min_points = gsl_interp_min_size(gsl_interp_type *method);
+	//It makes more sense than creating a dummy gsl_interp object and get the info from it!
+	gsl_interp *interp = gsl_interp_alloc(method, d_min_points);
+	d_min_points = gsl_interp_min_size(interp);
+	gsl_interp_free (interp);
 }
 
 
 void Interpolation::setMethod(int m)
 {
-if (m < 0 || m > 2){
-    QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
-    tr("Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima."));
-    d_init_err = true;
-    return;
+	if (m < 0 || m > 2){
+    	QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
+    	tr("Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima."));
+    	d_init_err = true;
+    	return;
     }
-int min_points = m + 3;
-if (d_n < min_points){
-    QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-    tr("You need at least %1 points in order to perform this operation!").arg(min_points));
-    d_init_err = true;
-    return;
+	int min_points = m + 3;
+	const gsl_interp_type *method = NULL;
+	switch(m){
+		case 0:
+			method = gsl_interp_linear;
+			break;
+		case 1:
+			method = gsl_interp_cspline;
+			break;
+		case 2:
+			method = gsl_interp_akima;
+			break;
 	}
+	gsl_interp *interp = gsl_interp_alloc(method, min_points);
+	min_points = gsl_interp_min_size(interp);
+	gsl_interp_free (interp);
+
+	if (d_n < min_points){
+    	QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+    	tr("You need at least %1 points in order to perform this operation!").arg(min_points));
+    	d_init_err = true;
+    	return;
+	}
+	
     d_method = m;
     d_min_points = min_points;
+	
 	switch(d_method)
 	{
 		case 0:

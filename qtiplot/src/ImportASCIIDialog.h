@@ -132,8 +132,6 @@ public:
 
 	//! Returns a locale having the decimal separators set to user custom settings.
 	QLocale decimalSeparators();
-	//! Whether the user wants the decimal separators to be changed to application settings.
-	bool updateDecimalSeparators() const { return d_import_dec_separators->isChecked(); };
 
     //! Returns a string used to comment lines when importing ASCII files
 	QString commentString(){return d_comment_string->text();};
@@ -143,7 +141,7 @@ public:
 	
 	//! Returns the convention used for the end line character!
 	inline int endLineChar(){return boxEndLine->currentIndex();};
-		
+			
 private slots:
 	//! Display help for advanced options.
 	void displayHelp();
@@ -166,7 +164,7 @@ private:
 
 	//! Container widget for all advanced options.
 	QGroupBox *d_advanced_options;
-	QCheckBox *d_read_only, *d_import_dec_separators;
+	QCheckBox *d_read_only, *d_omit_thousands_sep;
 	QPushButton *d_help_button;
 	// the actual options
 	QComboBox *d_import_mode, *d_column_separator, *boxDecimalSeparator, *boxEndLine;
