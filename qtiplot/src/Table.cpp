@@ -1334,8 +1334,7 @@ void Table::pasteSelection()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	bool numeric;
-	QLocale system_locale = QLocale::system();
+	QLocale l = locale();
 	for (int i=0; i < rows; i++){
 		int row = top + i;
 		QStringList cells = linesList[i].split("\t");
@@ -1347,12 +1346,13 @@ void Table::pasteSelection()
             if (colIndex >= cells.count())
                 break;
 
-			double value = system_locale.toDouble(cells[colIndex], &numeric);
+			bool numeric;
+			double value = l.toDouble(cells[colIndex], &numeric);
 			if (numeric){
 			    int prec;
                 char f;
 				columnNumericFormat(j, &f, &prec);
-				d_table->setText(row, j, locale().toString(value, f, prec));
+				d_table->setText(row, j, l.toString(value, f, prec));
 			} else
 				d_table->setText(row, j, cells[colIndex]);
 		}

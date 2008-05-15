@@ -385,7 +385,7 @@ public slots:
 
 	void importASCII();
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
-        bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments, bool update_dec_separators,
+        bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
         QLocale local_separators, const QString& local_comment_string, bool import_read_only, int endLineChar);
 	void exportAllTables(const QString& sep, bool colNames, bool colComments, bool expSelection);
 	void exportASCII(const QString& tableName, const QString& sep, bool colNames, bool colComments, bool expSelection);
@@ -1055,7 +1055,7 @@ public:
 	EndLineChar d_ASCII_end_line;
     //! Last selected filter in import ASCII dialog
     QString d_ASCII_file_filter, d_ASCII_comment_string;
-	bool d_import_dec_separators, d_ASCII_import_comments, d_ASCII_import_read_only, d_ASCII_import_preview;
+	bool d_ASCII_import_comments, d_ASCII_import_read_only, d_ASCII_import_preview;
 	int d_ASCII_import_mode, d_preview_lines;
 	//! Specifies if only the Tables/Matrices in the current folder should be displayed in the Add/remove curve dialog.
 	bool d_show_current_folder;

@@ -576,7 +576,6 @@ void ApplicationWindow::initGlobalConstants()
 	simplify_spaces = false;
 	d_ASCII_file_filter = "*";
 	d_ASCII_import_locale = QLocale::system().name();
-	d_import_dec_separators = true;
 	d_ASCII_import_mode = int(ImportASCIIDialog::NewTables);
 	d_ASCII_comment_string = "#";
 	d_ASCII_import_comments = false;
@@ -3485,7 +3484,6 @@ void ApplicationWindow::importASCII()
     strip_spaces = import_dialog->stripSpaces();
     simplify_spaces = import_dialog->simplifySpaces();
     d_ASCII_import_locale = import_dialog->decimalSeparators();
-    d_import_dec_separators = import_dialog->updateDecimalSeparators();
     d_ASCII_comment_string = import_dialog->commentString();
     d_ASCII_import_comments = import_dialog->importComments();
     d_ASCII_import_read_only = import_dialog->readOnly();
@@ -3500,7 +3498,6 @@ void ApplicationWindow::importASCII()
 			import_dialog->stripSpaces(),
 			import_dialog->simplifySpaces(),
 			import_dialog->importComments(),
-			import_dialog->updateDecimalSeparators(),
 			import_dialog->decimalSeparators(),
 			import_dialog->commentString(),
 			import_dialog->readOnly(),
@@ -3509,7 +3506,7 @@ void ApplicationWindow::importASCII()
 
 void ApplicationWindow::importASCII(const QStringList& files, int import_mode, const QString& local_column_separator,
         int local_ignored_lines, bool local_rename_columns, bool local_strip_spaces, bool local_simplify_spaces,
-        bool local_import_comments, bool update_dec_separators, QLocale local_separators, const QString& local_comment_string,
+        bool local_import_comments, QLocale local_separators, const QString& local_comment_string,
 		bool import_read_only, int endLineChar)
 {
 	if (files.isEmpty())
@@ -3541,8 +3538,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					if (filesCount > 1)
 						w->move(QPoint(i*dx, i*dy));
 
-					if (update_dec_separators)
-						w->updateDecimalSeparators(local_separators);
+					w->updateDecimalSeparators(local_separators);
 				}
 				modifiedProject();
 				break;
@@ -3587,8 +3583,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 							local_strip_spaces, local_simplify_spaces, local_import_comments,
 							local_comment_string, import_read_only, (Table::ImportMode)(import_mode - 2), endLineChar);
 
-					if (update_dec_separators)
-						t->updateDecimalSeparators(local_separators);
+					t->updateDecimalSeparators(local_separators);
 					t->notifyChanges();
 					emit modifiedProject(t);
 				} else if (w->isA("Matrix")){
@@ -3614,8 +3609,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					t->importASCII(files[0], local_column_separator, local_ignored_lines, local_rename_columns,
                                     local_strip_spaces, local_simplify_spaces, local_import_comments,
                                     local_comment_string, import_read_only, Table::Overwrite, endLineChar);
-					if (update_dec_separators)
-						t->updateDecimalSeparators(local_separators);
+					t->updateDecimalSeparators(local_separators);
 					t->notifyChanges();
 				} else if (w->isA("Matrix")){
 				    Matrix *m = (Matrix *)w;
@@ -4494,7 +4488,9 @@ void ApplicationWindow::readSettings()
 	simplify_spaces = settings.value("/SimplifySpaces", false).toBool();
 	d_ASCII_file_filter = settings.value("/AsciiFileTypeFilter", "*").toString();
 	d_ASCII_import_locale = settings.value("/AsciiImportLocale", QLocale::system().name()).toString();
-	d_import_dec_separators = settings.value("/UpdateDecSeparators", true).toBool();
+	if (settings.value("/OmitGroupSeparator", false).toBool())
+		d_ASCII_import_locale.setNumberOptions(QLocale::OmitGroupSeparator);
+	
 	d_ASCII_import_mode = settings.value("/ImportMode", ImportASCIIDialog::NewTables).toInt();
 	d_ASCII_comment_string = settings.value("/CommentString", "#").toString();
 	d_ASCII_import_comments = settings.value("/ImportComments", false).toBool();
@@ -4802,7 +4798,10 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/SimplifySpaces", simplify_spaces);
     settings.setValue("/AsciiFileTypeFilter", d_ASCII_file_filter);
 	settings.setValue("/AsciiImportLocale", d_ASCII_import_locale.name());
-	settings.setValue("/UpdateDecSeparators", d_import_dec_separators);
+	
+	bool omitGroupSep = (d_ASCII_import_locale.numberOptions() & QLocale::OmitGroupSeparator) ? true : false;
+	settings.setValue("/OmitGroupSeparator", omitGroupSep);
+	
     settings.setValue("/ImportMode", d_ASCII_import_mode);
     settings.setValue("/CommentString", d_ASCII_comment_string);
     settings.setValue("/ImportComments", d_ASCII_import_comments);
@@ -8268,8 +8267,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 
 		importASCII(asciiFiles, ImportASCIIDialog::NewTables, columnSeparator, ignoredLines,
                     renameColumns, strip_spaces, simplify_spaces, d_ASCII_import_comments,
-                    d_import_dec_separators, d_ASCII_import_locale, d_ASCII_comment_string,
-                    d_ASCII_import_read_only, d_ASCII_end_line);
+                    d_ASCII_import_locale, d_ASCII_comment_string, d_ASCII_import_read_only, d_ASCII_end_line);
 	}
 }
 
