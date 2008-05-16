@@ -652,7 +652,8 @@ void Table::updateValues(Table* t, const QString& columnName)
 	int endRow = numRows() - 1;
     for (int i = 0; i < cols; i++){
 		QString cmd = commands[i];
-        if (cmd.isEmpty() || colTypes[i] != Numeric || !cmd.contains("\"" + colLabel + "\""))
+        if (cmd.isEmpty() || colTypes[i] != Numeric || !cmd.contains("\"" + colLabel + "\"") ||
+			cmd.contains("\"" + col_label[i] + "\""))
             continue;
 
         calculate(i, 0, endRow, false, false);
@@ -3048,6 +3049,9 @@ void Table::setNumericPrecision(int prec)
 void Table::updateDecimalSeparators(const QLocale& oldSeparators)
 {
     QLocale l = locale();
+    if (l == oldSeparators)
+        return;
+
     int rows = d_table->numRows();
 	for (int i=0; i<d_table->numCols(); i++){
 	    if (colTypes[i] != Numeric)
