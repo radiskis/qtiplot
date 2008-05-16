@@ -48,7 +48,7 @@ private:
   ScriptEdit(ScriptEdit&);
 };
 
-class MdiSubWindow: QMdiSubWindow /PyName=MDIWindow/
+class MdiSubWindow: QWidget /PyName=MDIWindow/
 {
 %TypeHeaderCode
 #include "src/MdiSubWindow.h"
@@ -831,6 +831,7 @@ public:
     sipRes = sipCpp->projectFolder()->table(*a0, true);
 %End
   Table* newTable();
+  Table* getCurrentTable();
   Table* newTable(const QString&, int=30, int=2);
 %MethodCode
   sipRes = sipCpp->newTable(*a0, a1, a2);
@@ -842,6 +843,7 @@ public:
     sipRes = sipCpp->projectFolder()->matrix(*a0, true);
 %End
   Matrix* newMatrix();
+  Matrix* getCurrentMatrix();
   Matrix* newMatrix(const QString&, int=32, int=32);
   MultiLayer *plot(const QString&) /PyName=graph/;
 %MethodCode
@@ -849,7 +851,7 @@ public:
   if(!sipRes)
     sipRes = sipCpp->projectFolder()->graph(*a0, true);
 %End
-
+  MultiLayer* getCurrentPlot() /PyName=getCurrentGraph/;
   MultiLayer* multilayerPlot(const QString& = "Graph1", int = 1, int = 1, int = 1)/PyName=newGraph/;
 
   Note *note(const QString&);
@@ -859,6 +861,7 @@ public:
     sipRes = sipCpp->projectFolder()->note(*a0, true);
 %End
   Note* newNote(const QString& = QString::null);
+  Note* getCurrentNote();
   MultiLayer *multilayerPlot(Table*, SIP_PYTUPLE, int=1) /PyName=plot/;
 %MethodCode
   QStringList l;
