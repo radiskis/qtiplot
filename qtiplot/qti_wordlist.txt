@@ -456,3 +456,7 @@ window
 table
 matrix
 graph
+getCurrentTable
+getCurrentMatrix
+getCurrentGraph
+getCurrentNote

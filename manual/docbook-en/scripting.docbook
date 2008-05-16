@@ -780,7 +780,16 @@ g = newGraph("test", 2, 2, 1)
 n = note("momo")
 # use defaults
 n = note()
-</programlisting></para>
+</programlisting>The currently selected Table/Matrix etc. can be accessed with the follwing commands:
+<programlisting>
+t = getCurrentTable()
+m = getCurrentMatrix()
+g = getCurrentGraph()
+n = getCurrentNote()
+</programlisting>
+The functions will only return a valid object if a window of the wanted type is actualyl selected.
+You can check if the object is valid with a simple if clause:
+<programlisting>if isinstance(t,qti.Table): print "t is a table"</programlisting></para>
 <para>Every piece of code is executed in the context of an
 object which you can access via the <varname>self</varname> variable. For example,
 entering <userinput>self.cell("t",i)</userinput> as a column formula is equivalent to the convenience
