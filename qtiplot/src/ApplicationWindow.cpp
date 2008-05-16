@@ -2517,6 +2517,24 @@ void ApplicationWindow::setPreferences(Graph* g)
 }
 
 /*
+ * return the current Plot (used for the Python interface)
+ */
+MultiLayer* ApplicationWindow::getCurrentPlot()
+{
+	MultiLayer* p = (MultiLayer*)activeWindow(MultiLayerWindow);
+	return p;
+}
+
+/*
+ * return the current Table (used for the Python interface)
+ */
+Table* ApplicationWindow::getCurrentTable()
+{
+	Table* w = (Table*)activeWindow(TableWindow);
+	return w;
+}
+
+/*
  *creates a new empty table
  */
 Table* ApplicationWindow::newTable()
@@ -2637,6 +2655,15 @@ TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QL
 }
 
 /*
+ * return the current note (used for the Python interface)
+ */
+Note* ApplicationWindow::getCurrentNote()
+{
+	Note* m = (Note*)activeWindow(NoteWindow);
+	return m;
+}
+
+/*
  *creates a new empty note window
  */
 Note* ApplicationWindow::newNote(const QString& caption)
@@ -2668,6 +2695,14 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	connect(m, SIGNAL(dirPathChanged(const QString&)), this, SLOT(scriptsDirPathChanged(const QString&)));
 
 	m->showNormal();
+	return m;
+}
+/*
+ * return the current Matrix (used for the Python interface)
+ */
+Matrix* ApplicationWindow::getCurrentMatrix()
+{
+	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	return m;
 }
 
