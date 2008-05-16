@@ -201,7 +201,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	boxDecimalSeparator->addItem("1 000,0");
 	advanced_layout->addWidget(boxDecimalSeparator, 4, 1);
 
-	d_omit_thousands_sep = new QCheckBox(tr("Omit &Thousands Separator"));
+	d_omit_thousands_sep = new QCheckBox(tr("Omit &thousands separator"));
 	advanced_layout->addWidget(d_omit_thousands_sep, 4, 2, 1, 2);
 
 	advanced_layout->addWidget(new QLabel(tr("Endline character")), 5, 0);
@@ -400,10 +400,10 @@ QLocale ImportASCIIDialog::decimalSeparators()
             locale = QLocale(QLocale::French);
         break;
     }
-	
+
 	if (d_omit_thousands_sep->isChecked())
 		locale.setNumberOptions(QLocale::OmitGroupSeparator);
-	
+
 	return locale;
 }
 
@@ -445,11 +445,11 @@ void ImportASCIIDialog::previewTable()
 	d_preview_table->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
 							d_rename_columns->isChecked(), d_strip_spaces->isChecked(),
 							d_simplify_spaces->isChecked(), d_import_comments->isChecked(),
-                            d_comment_string->text(), (Table::ImportMode)importMode, 
+                            d_comment_string->text(), (Table::ImportMode)importMode,
                             boxEndLine->currentIndex(), d_preview_lines_box->value());
 
 	d_preview_table->updateDecimalSeparators(decimalSeparators());
-	
+
     if (!d_preview_table->isVisible())
         d_preview_table->show();
 }
@@ -543,7 +543,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 	QString name = MdiSubWindow::parseAsciiFile(fname, commentString, endLine, ignoredLines, maxRows, rows);
 	if (name.isEmpty())
 		return;
-	
+
 	QFile f(name);
 	if (f.open(QIODevice::ReadOnly)){
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -682,6 +682,9 @@ void PreviewTable::clear()
 void PreviewTable::updateDecimalSeparators(const QLocale& oldSeparators)
 {
 	QLocale locale = ((QWidget *)parent())->locale();
+	if (locale == oldSeparators)
+        return;
+
 	for (int i=0; i<numCols(); i++){
         for (int j=0; j<numRows(); j++){
             if (!text(j, i).isEmpty()){
