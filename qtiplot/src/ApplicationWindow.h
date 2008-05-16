@@ -354,6 +354,13 @@ public slots:
 	//@{
 	//! Creates an empty table
 	Table* newTable();
+
+    // getCurrent... functions for python interface
+	Table* getCurrentTable();
+	MultiLayer* getCurrentPlot();
+	Note* getCurrentNote();
+	Matrix* getCurrentMatrix();
+	
 	//! Used when loading a table from a project file
 	Table* newTable(const QString& caption,int r, int c);
 	Table* newTable(int r, int c, const QString& name = QString(),const QString& legend = QString());
