@@ -49,8 +49,7 @@
 LegendWidget::LegendWidget(Graph *plot):QWidget(plot),
 	d_plot(plot),
 	d_frame (0),
-	d_angle(0),
-	d_fixed_coordinates(false)
+	d_angle(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -82,13 +81,6 @@ LegendWidget::LegendWidget(Graph *plot):QWidget(plot),
 
 void LegendWidget::paintEvent(QPaintEvent *e)
 {
-	if (d_fixed_coordinates){
-		setOriginCoord(d_x, d_y);
-		hide();
-		d_fixed_coordinates = false;
-		show();
-	}
-
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
 	QwtArray<long> heights = itemsHeight(0, symbolLineLength, width, height);
@@ -106,8 +98,8 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 
 void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
 {
-	int x = map[QwtPlot::xBottom].transform(xValue());
-	int y = map[QwtPlot::yLeft].transform(yValue());
+	int x = map[QwtPlot::xBottom].transform(calculateXValue());
+	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
     const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
@@ -147,22 +139,37 @@ void LegendWidget::setTextColor(const QColor& c)
 	d_text->setColor(c);
 }
 
+void LegendWidget::updateCoordinates()
+{
+    d_x = calculateXValue();
+    d_y = calculateYValue();
+}
+
 void LegendWidget::setOriginCoord(double x, double y)
 {
 	QPoint pos(d_plot->transform(QwtPlot::xBottom, x), d_plot->transform(QwtPlot::yLeft, y));
 	pos = d_plot->canvas()->mapToParent(pos);
-	move(pos);
+	QWidget::move(pos);
+	
+	d_x = x;
+	d_y = y;
 }
 
-double LegendWidget::xValue()
+void LegendWidget::move(const QPoint& pos)
 {
-	QPoint d_pos = d_plot->canvas()->mapFromParent(geometry().topLeft());
+	QWidget::move(pos);
+	updateCoordinates();
+}
+
+double LegendWidget::calculateXValue()
+{
+	QPoint d_pos = d_plot->canvas()->mapFromParent(pos());
 	return d_plot->invTransform(QwtPlot::xBottom, d_pos.x());
 }
 
-double LegendWidget::yValue()
+double LegendWidget::calculateYValue()
 {
-	QPoint d_pos = d_plot->canvas()->mapFromParent(geometry().topLeft());
+	QPoint d_pos = d_plot->canvas()->mapFromParent(pos());
 	return d_plot->invTransform(QwtPlot::yLeft, d_pos.y());
 }
 
@@ -178,13 +185,11 @@ void LegendWidget::drawFrame(QPainter *p, const QRect& rect)
 {
 	p->save();
 	p->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-	if (d_frame == None)
-		p->fillRect (rect, d_text->backgroundBrush());
+    p->fillRect (rect, d_text->backgroundBrush());
 
-	if (d_frame == Line){
-		p->setBrush(d_text->backgroundBrush());
-		QwtPainter::drawRect(p, rect);
-	} else if (d_frame == Shadow) {
+	if (d_frame == Line)
+        QwtPainter::drawRect(p, rect);
+	else if (d_frame == Shadow) {
 		QRect shadow_right = QRect(rect.right() + 1, rect.y() + 5, 5, rect.height());
 		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom() + 1, rect.width(), 5);
 		p->setBrush(QBrush(Qt::black));
@@ -549,20 +554,7 @@ void LegendWidget::clone(LegendWidget* t)
 	setBackgroundColor(t->backgroundColor());
 	setFont(t->font());
 	setText(t->text());
-	move(t->pos());
-}
-
-void LegendWidget::setFixedCoordinatesMode(bool on)
-{
-	if (d_fixed_coordinates == on)
-		return;
-
-	d_fixed_coordinates = on;
-
-	if(on){
-		d_x = xValue();
-		d_y = yValue();
-	}
+	setOriginCoord(t->xValue(), t->yValue());
 }
 
 LegendWidget::~LegendWidget()

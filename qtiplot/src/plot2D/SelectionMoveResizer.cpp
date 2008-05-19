@@ -308,7 +308,6 @@ void SelectionMoveResizer::operateOnTargets()
 {
 	foreach(LegendWidget *i, d_legend_markers) {
 		QRect new_rect = operateOn(i->geometry());
-		i->setFixedCoordinatesMode(false);//make sure that we could move the legend by hand
 		i->move(new_rect.topLeft());
 		if (!i->text().isEmpty()){
             QFont f = i->font();

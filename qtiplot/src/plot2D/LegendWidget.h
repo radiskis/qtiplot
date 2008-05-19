@@ -52,10 +52,15 @@ public:
 	QString text(){return d_text->text();};
 	void setText(const QString& s);
 
+    //! Returns the x axis coordiante of the top left corner
+    double xValue(){return d_x;};
+    //! Returns the y axis coordiante of the top left corner
+	double yValue(){return d_y;};
 	//! Sets the position of the top left corner in axis coordinates
 	void setOriginCoord(double x, double y);
 	//! Sets the position of the top left corner in paint coordinates
-	void setOrigin(int x, int y){move(x, y);};
+	void setOrigin(int x, int y){move(QPoint(x, y));};
+	void move(const QPoint& pos);
 
 	QColor textColor(){return d_text->color();};
 	void setTextColor(const QColor& c);
@@ -72,17 +77,20 @@ public:
 	int angle(){return d_angle;};
 	void setAngle(int ang){d_angle = ang;};
 
-	double xValue();
-	double yValue();
-
 	void showTextEditor();
 	void showTextDialog(){emit showDialog();};
 	void showContextMenu(){emit showMenu();};
 
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
-	void setFixedCoordinatesMode(bool on = true);
+    void resetOrigin(){setOriginCoord(d_x, d_y);};
+    void updateCoordinates();
 
 private:
+    //! Returns the x axis coordinate of the top left corner based on the pixel value
+    double calculateXValue();
+    //! Returns the y axis coordinate of the top left corner based on the pixel value
+    double calculateYValue();
+
 	PlotCurve* getCurve(const QString& s, int &point);
 	void drawFrame(QPainter *p, const QRect& rect);
 	void drawVector(PlotCurve *c, QPainter *p, int x, int y, int l);
@@ -118,8 +126,10 @@ private:
 	//! Length of the symbol line
 	int line_length;
 
-	double d_x, d_y;
-	bool d_fixed_coordinates;
+    //! X axis coordinate of the top left corner
+	double d_x;
+	//! Y axis coordinate of the top left corner
+	double d_y;
 
 signals:
 	void showDialog();

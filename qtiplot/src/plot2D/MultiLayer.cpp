@@ -246,12 +246,6 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	double h_ratio = (double)(size.height())/(double)(oldSize.height());
 
 	foreach (Graph *g, graphsList){
-		QObjectList lst = g->children();
-		foreach(QObject *o, lst){
-			if (o->isA("LegendWidget"))
-				((LegendWidget *)o)->setFixedCoordinatesMode();
-		}
-
 		int gx = qRound(g->x()*w_ratio);
 		int gy = qRound(g->y()*h_ratio);
 		int gw = qRound(g->width()*w_ratio);
@@ -994,28 +988,26 @@ void MultiLayer::wheelEvent ( QWheelEvent * e )
 	if(resize && (e->state()==Qt::AltButton || e->state()==Qt::ControlButton || e->state()==Qt::ShiftButton))
 	{
 		intSize = resize_graph->size();
-		if(e->state()==Qt::AltButton){// If alt is pressed then change the width
-			if(e->delta()>0)
-				intSize.rwidth()+=5;
-			else if(e->delta()<0)
-				intSize.rwidth()-=5;
-		} else if(e->state()==Qt::ControlButton){// If crt is pressed then changed the height
-			if(e->delta()>0)
-				intSize.rheight()+=5;
-			else if(e->delta()<0)
-				intSize.rheight()-=5;
-		} else if(e->state()==Qt::ShiftButton){// If shift is pressed then resize
-			if(e->delta()>0){
-				intSize.rwidth()+=5;
-				intSize.rheight()+=5;
-			} else if(e->delta()<0){
-				intSize.rwidth()-=5;
-				intSize.rheight()-=5;
+		if(e->state() == Qt::AltButton){// If alt is pressed then change the width
+			if(e->delta() > 0)
+				intSize.rwidth() += 5;
+			else if(e->delta() < 0)
+				intSize.rwidth() -= 5;
+		} else if(e->state() == Qt::ControlButton){// If crt is pressed then changed the height
+			if(e->delta() > 0)
+				intSize.rheight() += 5;
+			else if(e->delta() < 0)
+				intSize.rheight() -= 5;
+		} else if(e->state() == Qt::ShiftButton){// If shift is pressed then resize
+			if(e->delta() > 0){
+				intSize.rwidth() += 5;
+				intSize.rheight() += 5;
+			} else if(e->delta() < 0){
+				intSize.rwidth() -= 5;
+				intSize.rheight() -= 5;
 			}
 		}
-
-		aux = resize_graph->pos();
-		resize_graph->setGeometry(QRect(QPoint(aux.x(),aux.y()),intSize));
+		resize_graph->resize(intSize);
 		emit modifiedPlot();
 	}
 	QApplication::restoreOverrideCursor();

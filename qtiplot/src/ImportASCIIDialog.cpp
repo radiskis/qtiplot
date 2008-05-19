@@ -763,6 +763,8 @@ PreviewMatrix::PreviewMatrix(QWidget *parent, Matrix * m):QTableView(parent)
 
 	verticalHeader()->setMovable(false);
 	verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
+	setMinimumHeight(4*horizontalHeader()->height());
 }
 
 void PreviewMatrix::importASCII(const QString &fname, const QString &sep, int ignoredLines,

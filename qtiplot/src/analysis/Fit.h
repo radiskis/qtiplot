@@ -99,17 +99,17 @@ class Fit : public Filter
 
 		//! Returns a vector with the fit residuals
 		double* residuals();
-			
+
 		//! Plot residuals and display data values in a column
 		QwtPlotCurve* showResiduals();
-		
+
 		void showPredictionLimits(double confidenceLevel);
 		void showConfidenceLimits(double confidenceLevel);
 		//! Lower Confidence Limit
 		double lcl(int parIndex, double confidenceLevel);
 		//! Upper Confidence Limit
 		double ucl(int parIndex, double confidenceLevel);
-		
+
 		//! Returns a vector with the standard deviations of the results
 		double* errors();
 
@@ -118,16 +118,16 @@ class Fit : public Filter
 
 		//! Returns R^2
 		double rSquare();
-		
+
 		//! Returns adjusted R^2
 		double adjustedRSquare(){return d_adjusted_r_square;};
 
 		//! Returns the Residual Sum of Squares
 		double rss(){return d_rss;};
-		
+
 		//! Returns the Root Mean Squared Error
 		double rmse(){return sqrt(d_rss/(d_n - d_p));};
-		
+
 		//! Specifies wheather the errors must be scaled with sqrt(chi_2/dof)
 		void scaleErrors(bool yes = true){d_scale_errors = yes;};
 
@@ -234,13 +234,13 @@ class Fit : public Filter
 
 		//! Stores fit residuals
 		double *d_residuals;
-		
+
 		//! The sum of squares of the residuals from the best-fit line
 		double chi_2;
-		
+
 		//! Residual sum of squares
 		double d_rss;
-		
+
 		//! Adjusted R^2
 		double d_adjusted_r_square;
 

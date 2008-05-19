@@ -782,12 +782,12 @@ n = note("momo")
 n = note()
 </programlisting>The currently selected Table/Matrix etc. can be accessed with the follwing commands:
 <programlisting>
-t = getCurrentTable()
-m = getCurrentMatrix()
-g = getCurrentGraph()
-n = getCurrentNote()
+t = currentTable()
+m = currentMatrix()
+g = currentGraph()
+n = currentNote()
 </programlisting>
-The functions will only return a valid object if a window of the wanted type is actualyl selected.
+The functions will only return a valid object if a window of the wanted type is actually selected.
 You can check if the object is valid with a simple if clause:
 <programlisting>if isinstance(t,qti.Table): print "t is a table"</programlisting></para>
 <para>Every piece of code is executed in the context of an
@@ -795,8 +795,8 @@ object which you can access via the <varname>self</varname> variable. For exampl
 entering <userinput>self.cell("t",i)</userinput> as a column formula is equivalent to the convenience
 function <userinput>col("t")</userinput>.</para>
 
-Once you have established contact with a MDI window, you can modify some of it's properties, like the name, the window label, the geometry, etc..
-For example, here's how to rename a window, change it's label and the way they are displayed in the window title bar, the so called caption policy:
+Once you have established contact with a MDI window, you can modify some of its properties, like the name, the window label, the geometry, etc..
+For example, here's how to rename a window, change its label and the way they are displayed in the window title bar, the so called caption policy:
 <programlisting>
 t = table("Table1")
 setWindowName(t, "toto")
@@ -980,14 +980,14 @@ t.normalize()
 </programlisting>
 Sort a single or all columns:
 <programlisting>
-t.sortColumn(col, order = 0);
+t.sortColumn(col, order = 0)
 t.sort(type = 0, order = 0, leadingColumnName)
 </programlisting>
 
 Import values from <varname>file</varname>, using <varname>sep</varname> as separator char, ignoring
 <varname>ignoreLines</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string.
 <programlisting>
-t.importASCII(file, sep="\t",ignoreLines=0,renameCols=False,stripSpaces=True,simplifySpace=False, 
+t.importASCII(file, sep="\t",ignoreLines=0,renameCols=False,stripSpaces=True,simplifySpace=False,
 importComments=False,comment="#",readOnly=False,importAs=Table.Overwrite,endLine=0,maxRows=-1)
 </programlisting>
 
@@ -998,7 +998,7 @@ at any time, by using:
 t.setReadOnlyColumn(col, False)
 </programlisting>
 
-<para>The <varname>importAs</varname> flag can have the following values: 
+<para>The <varname>importAs</varname> flag can have the following values:
 <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
@@ -1021,10 +1021,10 @@ t.setReadOnlyColumn(col, False)
 </variablelist></para>
 
 <para>The <varname>endLine</varname> flag specifies the end line character convention used in the ascii file.
-Possible values are: 0 for line feed (LF), which is the default value, 
+Possible values are: 0 for line feed (LF), which is the default value,
 1 for carriage return + line feed (CRLF) and 2 for carriage return only (usually on Mac computers).</para>
 
-<para>The last parameter <varname>maxRows</varname> allows you to specify a maximum number of imported 
+<para>The last parameter <varname>maxRows</varname> allows you to specify a maximum number of imported
 lines. Negative values mean that all data lines must be imported.</para>
 
 <para>You can export values from a table to an ASCII <varname>file</varname>, using
@@ -1068,7 +1068,7 @@ t.notifyChanges()
 <title>Working with Matrices</title>
 Matrix objects have a dual view mode: either as images or as data tables.
 Assuming that you have assigned some matrix to the variable
-<varname>m</varname>, you can change it's display mode via the following function:
+<varname>m</varname>, you can change its display mode via the following function:
 <programlisting>
 m.setViewType(Matrix.TableView)
 m.setViewType(Matrix.ImageView)
@@ -1177,8 +1177,8 @@ corresponding to each pixel. The gray value is calculated using the formula: (r 
 image = m.image()
 </programlisting>
 
-You can export matrices to all raster image formats supported by Qt or to any of the following vectorial image format: 
-EPS, PS, PDF or SVG using: 
+You can export matrices to all raster image formats supported by Qt or to any of the following vectorial image format:
+EPS, PS, PDF or SVG using:
 <programlisting>
 m.export(fileName)
 </programlisting>
@@ -1194,11 +1194,11 @@ m2.exportVector(fileName,resolution,color = true,keepAspect = true,pageSize = QP
 <varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string:
 </para>
 <programlisting>
-m.importASCII(file, sep="\t", ignore=0, stripSpaces=True, simplifySpace=False, comment="#", 
+m.importASCII(file, sep="\t", ignore=0, stripSpaces=True, simplifySpace=False, comment="#",
 				importAs=Matrix.Overwrite, locale=QLocale(), endLine=0, maxRows=-1)
 </programlisting>
 
-<para>The <varname>importAs</varname> flag can have the following values: 
+<para>The <varname>importAs</varname> flag can have the following values:
 <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
@@ -1223,10 +1223,10 @@ m.importASCII(file, sep="\t", ignore=0, stripSpaces=True, simplifySpace=False, c
 The <varname>locale</varname> parameter can be used to specify the convention for decimal separators used in your ASCII file.</para>
 
 <para>The <varname>endLine</varname> flag specifies the end line character convention used in the ascii file.
-Possible values are: 0 for line feed (LF), which is the default value, 
+Possible values are: 0 for line feed (LF), which is the default value,
 1 for carriage return + line feed (CRLF) and 2 for carriage return only (usually on Mac computers).</para>
 
-<para>The last parameter <varname>maxRows</varname> allows you to specify a maximum number of imported 
+<para>The last parameter <varname>maxRows</varname> allows you to specify a maximum number of imported
 lines. Negative values mean that all data lines must be imported.</para>
 
 <para>Also, you can export values from a matrix to an ASCII <varname>file</varname>, using
@@ -1398,7 +1398,7 @@ l.deleteFitCurves()
 </programlisting>
 You can also add analytical function curves to a plot layer:
 <programlisting>
-l.addFunction("x*sin(x)", 0, 3*pi, points = 100);
+l.addFunction("x*sin(x)", 0, 3*pi, points = 100)
 l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
 l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
 </programlisting>
@@ -1459,14 +1459,14 @@ where <varname>axis</varname> can be any integer value between 0 and 3 or the eq
           </variablelist>
 
 If an axis is enabled, you can fully customize it via a Python script.
-For example you can set it's title:
+For example you can set its title:
 <programlisting>
 l.setAxisTitle(axis, "My axis title")
 l.setAxisTitleFont(axis, QtGui.QFont("Arial", 11))
 l.setAxisTitleColor(axis, QtGui.QColor("blue"))
 l.setAxisTitleAlignment(axis, alignFlags)
 </programlisting>
-it's color and the font used for the tick labels:
+its color and the font used for the tick labels:
 <programlisting>
 l.setAxisColor(axis, QtGui.QColor("green"))
 l.setAxisFont(axis, QtGui.QFont("Arial", 10))
@@ -1559,7 +1559,7 @@ desired orientation for the major and minor ticks, respectively:
 <varname>majLength</varname> the length of the major ticks.
 
 <para>You can also customize the scales of the different axes using: <programlisting>
-l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False);
+l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False)
 </programlisting>
 where <varname>type</varname> specifies the desired scale type: <variablelist spacing="compact">
             <varlistentry>
@@ -1592,19 +1592,19 @@ l.setAutoScale()
 </programlisting>
 
 The same <varname>setScale</varname> function above, with a longer list of arguments,
-can be used to define an axis break region: 
+can be used to define an axis break region:
 <programlisting>
 l.setScale(axis, start, end, step=0.0, majorTicks=5, minorTicks=5, type=0, inverted=False,
 	left=-DBL_MAX, right=DBL_MAX, breakPosition=50, stepBeforeBreak=0.0, stepAfterBreak=0.0,
-	minTicksBeforeBreak=4, minTicksAfterBreak=4, log10AfterBreak=False, breakWidth=4, breakDecoration=True);
+	minTicksBeforeBreak=4, minTicksAfterBreak=4, log10AfterBreak=False, breakWidth=4, breakDecoration=True)
 </programlisting>
 where <varname>left</varname> specifies the left limit of the break region,
-<varname>right</varname> the right limit, 
+<varname>right</varname> the right limit,
 <varname>breakPosition</varname> is the position of the break expressed as a percentage of the axis length and
 <varname>breakWidth</varname> is the width of the break region in pixels.
 The names of the other parameters should be self-explanatory.
 
-<para>Finally, you can specify the width of all axes and enable/disable the drawing of their 
+<para>Finally, you can specify the width of all axes and enable/disable the drawing of their
 backbone line, using:</para>
 <programlisting>
 l.setAxesLinewidth(2)
@@ -1665,13 +1665,31 @@ Also, the <varname>Maj</varname> word refers to the main grid lines and <varname
 
 <sect3 id="Python-Legends">
 <title>The plot legend</title>
+You need to know that in a plot layer, there's a special text object, the legend,
+which is updated each time you add or remove a curve from the layer.
 You can add a new legend to a plot using: <programlisting>
 legend = l.newLegend()
 #or
 legend = l.newLegend("enter your text here")
 </programlisting>
+If the layer already has a legend when you execute the above code,
+the new text object becomes the default legend and the old one returns to the
+condition of common text. You can add common texts like this:
+<programlisting>
+text = l.addText(legend)
+text.setOrigin(legend.x(), legend.y()+50)
+</programlisting>
+Please notice that the <varname>addText</varname> function returns a different reference
+to the new text object. You can use this new reference later on in order to remove the text:
+<programlisting>
+l.remove(text)
+</programlisting>
+If you want to remove the default legend, there's the convenience function:
+<programlisting>
+l.removeLegend()
+</programlisting>
 
-Once you have created a legend, it's very easy to customize it.
+Once you have created a legend/text, it's very easy to customize it.
 If you want to modify the text you can use:<programlisting>
 l.setLegend("enter your text here")
 #or
@@ -1685,18 +1703,18 @@ legend.setBackgroundColor(QtGui.QColor("yellow"))
 legend.setFrameStyle(Legend.Shadow)
 legend.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold, True))
 # set top-left position using scale coordinates:
-legend.setOriginCoord(200.5, 600.32) 
+legend.setOriginCoord(200.5, 600.32)
 # or set top-left position using pixel coordinates:
-legend.setOrigin(5, 10) 
+legend.setOrigin(5, 10)
 l.replot()
 </programlisting>
 
 Other frame styles available for legends are: <varname>Legend.Line</varname>, which draws a rectangle around the text
-and <varname>Legend.None</varname> (no frame at all). There are also functions allowing you to remove
-the default legend or to add an automatically built time stamp:
+and <varname>Legend.None</varname> (no frame at all).
+
+There is also a function allowing you to add an automatically built time stamp:
 <programlisting>
-l.removeLegend()
-l.addTimeStamp()
+timeStamp = l.addTimeStamp()
 </programlisting>
 </sect3>
 
@@ -1716,8 +1734,18 @@ arrow.setHeadAngle(35)
 arrow.fillArrowHead(True)
 
 l = newGraph().activeLayer()
-l.addArrow(arrow)
+arrow1 = l.addArrow(arrow)
+
+arrow.setStart(120.5, 320.5)
+arrow.setColor(QtGui.QColor("blue"))
+arrow2 = l.addArrow(arrow)
+
+l.remove(arrow1)
 </programlisting>
+
+As you might notice from the sample code above, the <varname>addArrow</varname> function
+returns a reference to a new arrow object that can be used later on to modify this
+new arrow or to delete it with the <varname>remove</varname> function.
 </sect3>
 
 <sect3 id="Python-Images">
@@ -1738,6 +1766,12 @@ image.setSize(width, height)
 image.setRect(x, y, width, height)
 l.replot()
 </programlisting>
+
+You can remove an image using its reference:
+<programlisting>
+l.remove(image)
+</programlisting>
+
 </sect3>
 
 <sect3 id="Python-Antialiasing">
@@ -1751,10 +1785,9 @@ l.setAntialiasing(True, bool update = True)
 <sect3 id="Python-Resizing">
 <title>Resize events</title>
 The default behaviour of 2D plot layers, with respect to the resizing of the graph window
-is to adapt their size and the sizes of the fonts used for the various texts, to the new size
-of the plot window. You can override this behaviour and make the layers ignore any resize events coming from the
-parent window: <programlisting>
-l.setIgnoreResize(True)
+is to adapt the sizes of the fonts used for the various texts, to the new size
+of the plot window. You can override this behaviour and keep the size of the fonts unchanged: 
+<programlisting>
 l.setAutoscaleFonts(False)
 </programlisting>
 </sect3>
@@ -1769,7 +1802,7 @@ l.export(fileName)
 This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
-l.exportVector(fileName, resolution = 96, color = True, keepAspect = True, pageSize = QtGui.QPrinter.Custom);
+l.exportVector(fileName, resolution = 96, color = True, keepAspect = True, pageSize = QtGui.QPrinter.Custom)
 l.exportImage(filename, quality=100, transparent=False)</programlisting>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
@@ -2172,7 +2205,7 @@ Not all operations support curves as data sources, like for example:
 convolution/deconvolution and correlation. For these operations only table columns can be used
 as data sources for the moment.
 
-<para>Once you have initialized an operation, you can still chage it's input data via
+<para>Once you have initialized an operation, you can still chage its input data via
 the following functions:</para>
 <programlisting>
 op.setDataFromCurve("Table1_energy", 10.5, 20.1, graph("Graph2").activeLayer())
@@ -2222,7 +2255,7 @@ For data fitting operations, there's an alias for the run() function which is: f
 
 <sect3 id="Python-Correlation">
 <title>Correlation, Convolution/Deconvolution</title>
-Assuming you have a table named "Table1", here's how you can calculate the convolution of two of it's columns,
+Assuming you have a table named "Table1", here's how you can calculate the convolution of two of its columns,
 "Table1_B" and "Table1_C":
 <programlisting>
 conv = Convolution(table("Table1"),  "B", "C")
@@ -2257,7 +2290,7 @@ The numerical derivative is calculated using a five terms formula.
 <title>FFT</title>
 Assuming you have a graph named "Graph1" with a curve entitled
 "Table1_2" (on its active layer), having a periodicity of 0.1 in the time domain,
-a FFT will allow you to extract it's characteristic frequencies.
+a FFT will allow you to extract its characteristic frequencies.
 The results will be stored in a hidden table named "FFT1".
 
 <programlisting>
@@ -2424,20 +2457,42 @@ for extracting the results: <programlisting>
 f.results()
 f.errors()
 f.residuals()
-f.chiSquare()
-f.rSquare()
 f.dataSize()
 f.numParameters()
 f.parametersTable("params")
 f.covarianceMatrix("cov")
 </programlisting>
 
-It is important to know that QtiPlot can generate an analytical formula
+There are a number of statistical functions allowing you to test the goodness of the fit:
+<programlisting>
+f.chiSquare()
+f.rSquare()
+f.adjustedRSquare()
+f.rmse() # Root Mean Squared Error
+f.rss()  # Residual Sum of Squares
+</programlisting>
+
+Also you can display the confidence and the prediction limits for the fit, using
+a custom confidence level:
+<programlisting>
+f.showPredictionLimits(0.95)
+f.showConfidenceLimits(0.95)
+</programlisting>
+
+Confidence limits for individual fit parameters can be calculated using:
+<programlisting>
+f.lcl(parameterIndex, confidenceLevel)
+f.ucl(parameterIndex, confidenceLevel)
+</programlisting>
+where <varname>parameterIndex</varname> is a value between zero and f.numParameters() - 1.
+
+<para>It is important to know that QtiPlot can generate an analytical formula
 for the resulting fit curve or a normal plot curve with data stored in a hidden table.
 You can choose either of these two output options, before calling the fit() instruction, using:
 <programlisting>
 f.generateFunction(True, points=100)
 </programlisting>
+</para>
 
 If the first parameter of the above function is set to True,
 QtiPlot will generate an analytical function curve. If the <varname>points</varname> parameter

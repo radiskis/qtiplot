@@ -243,7 +243,7 @@ appImports = (
 	"activeFolder", "rootFolder",
 	"addFolder", "deleteFolder", "changeFolder", "copyFolder",
 	"saveFolder", "appendProject", "saveProjectAs",
-        "getCurrentTable","getCurrentMatrix","getCurrentGraph","getCurrentNote"
+	"currentTable","currentMatrix","currentGraph","currentNote"
 	)
 for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))
