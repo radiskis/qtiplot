@@ -118,7 +118,7 @@ setFrameStyle
 setBackgroundColor
 setFont
 setOriginCoord
-setOrigin(
+setOrigin
 Grid
 enableXMax
 xMaxEnabled
@@ -456,7 +456,7 @@ window
 table
 matrix
 graph
-getCurrentTable
-getCurrentMatrix
-getCurrentGraph
-getCurrentNote
+currentTable
+currentMatrix
+currentGraph
+currentNote

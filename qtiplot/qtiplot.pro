@@ -19,9 +19,9 @@ DEFINES         += SCRIPTING_DIALOG
 ######################################################################################
 #CONFIG          += CustomInstall
 
-#CONFIG          += release
-CONFIG          += debug
-win32: CONFIG   += console
+CONFIG          += release
+#CONFIG          += debug
+#win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -125,8 +125,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-#system(lupdate -verbose qtiplot.pro)
-#system(lrelease -verbose qtiplot.pro)
+system(lupdate -verbose qtiplot.pro)
+system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \

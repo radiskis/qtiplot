@@ -3692,9 +3692,13 @@ QString Graph::saveToString(bool saveAsTemplate)
 
 void Graph::updateMarkersBoundingRect()
 {
-	int lines = d_lines.size();
-	int images = d_images.size();
-	if (!lines && !images)
+    QObjectList lst = children();
+    foreach(QObject *o, lst){
+		if (o->isA("LegendWidget"))
+			((LegendWidget *)o)->updateCoordinates();
+	}
+
+	if (!d_lines.size() && !d_images.size())
 		return;
 
 	foreach (QwtPlotMarker *i, d_lines)
@@ -3703,17 +3707,11 @@ void Graph::updateMarkersBoundingRect()
 	foreach (QwtPlotMarker *i, d_images)
 		((ImageMarker*)i)->updateBoundingRect();
 
-	replot();
+    replot();
 }
 
 void Graph::resizeEvent ( QResizeEvent *e )
 {
-	QObjectList lst = children();
-	foreach(QObject *o, lst){
-		if (o->isA("LegendWidget"))
-			((LegendWidget *)o)->setFixedCoordinatesMode();
-	}
-
 	if (autoScaleFonts){
 		QSize oldSize = e->oldSize();
 		QSize size = e->size();
@@ -3725,6 +3723,12 @@ void Graph::resizeEvent ( QResizeEvent *e )
         resize(e->size());
 		updateLayout();
         updateCurveLabels();
+	}
+
+    QObjectList lst = children();
+	foreach(QObject *o, lst){
+		if (o->isA("LegendWidget"))
+			((LegendWidget *)o)->resetOrigin();
 	}
 }
 
@@ -4216,6 +4220,8 @@ void Graph::copy(Graph* g)
 	foreach (QwtPlotMarker *i, images)
 		addImage((ImageMarker*)i);
 
+    updateLayout();
+
 	QList<LegendWidget *> texts = g->textsList();
 	foreach (LegendWidget *t, texts){
 		if (t == g->legend())
@@ -4235,7 +4241,7 @@ void Graph::copy(Graph* g)
 		addArrow((ArrowMarker*)i);
 
 	setAntialiasing(g->antialiasing(), true);
-	updateLayout();
+	//updateLayout();
 }
 
 void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int endRow)

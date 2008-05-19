@@ -388,10 +388,19 @@ QString ScriptEdit::importASCII(const QString &filename)
 	}
 
 	clear();
-	QTextStream s(&file);
-	s.setEncoding(QTextStream::UnicodeUTF8);
-	insertPlainText(s.readAll());
+	QTextStream ts(&file);
+	ts.setEncoding(QTextStream::UnicodeUTF8);
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    qApp->processEvents(QEventLoop::ExcludeUserInput);
+
+    blockSignals(true);
+    insertPlainText(ts.readAll());
+    blockSignals(false);
+    textChanged();
+
 	file.close();
+	QApplication::restoreOverrideCursor();
 	return f;
 }
 

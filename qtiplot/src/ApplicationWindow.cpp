@@ -428,7 +428,7 @@ void ApplicationWindow::initGlobalConstants()
 
 #ifdef MANUAL_PATH
 	helpFilePath = MANUAL_PATH;
-	helpFilePath += "/html/index.html";
+	helpFilePath += "/index.html";
 #else
 	helpFilePath = aux + "/manual/index.html";
 #endif
@@ -2519,7 +2519,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 /*
  * return the current Plot (used for the Python interface)
  */
-MultiLayer* ApplicationWindow::getCurrentPlot()
+MultiLayer* ApplicationWindow::currentPlot()
 {
 	MultiLayer* p = (MultiLayer*)activeWindow(MultiLayerWindow);
 	return p;
@@ -2528,7 +2528,7 @@ MultiLayer* ApplicationWindow::getCurrentPlot()
 /*
  * return the current Table (used for the Python interface)
  */
-Table* ApplicationWindow::getCurrentTable()
+Table* ApplicationWindow::currentTable()
 {
 	Table* w = (Table*)activeWindow(TableWindow);
 	return w;
@@ -2657,7 +2657,7 @@ TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QL
 /*
  * return the current note (used for the Python interface)
  */
-Note* ApplicationWindow::getCurrentNote()
+Note* ApplicationWindow::currentNote()
 {
 	Note* m = (Note*)activeWindow(NoteWindow);
 	return m;
@@ -2700,7 +2700,7 @@ Note* ApplicationWindow::newNote(const QString& caption)
 /*
  * return the current Matrix (used for the Python interface)
  */
-Matrix* ApplicationWindow::getCurrentMatrix()
+Matrix* ApplicationWindow::currentMatrix()
 {
 	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	return m;
@@ -4525,7 +4525,7 @@ void ApplicationWindow::readSettings()
 	d_ASCII_import_locale = settings.value("/AsciiImportLocale", QLocale::system().name()).toString();
 	if (settings.value("/OmitGroupSeparator", false).toBool())
 		d_ASCII_import_locale.setNumberOptions(QLocale::OmitGroupSeparator);
-	
+
 	d_ASCII_import_mode = settings.value("/ImportMode", ImportASCIIDialog::NewTables).toInt();
 	d_ASCII_comment_string = settings.value("/CommentString", "#").toString();
 	d_ASCII_import_comments = settings.value("/ImportComments", false).toBool();
@@ -4833,10 +4833,10 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/SimplifySpaces", simplify_spaces);
     settings.setValue("/AsciiFileTypeFilter", d_ASCII_file_filter);
 	settings.setValue("/AsciiImportLocale", d_ASCII_import_locale.name());
-	
+
 	bool omitGroupSep = (d_ASCII_import_locale.numberOptions() & QLocale::OmitGroupSeparator) ? true : false;
 	settings.setValue("/OmitGroupSeparator", omitGroupSep);
-	
+
     settings.setValue("/ImportMode", d_ASCII_import_mode);
     settings.setValue("/CommentString", d_ASCII_comment_string);
     settings.setValue("/ImportComments", d_ASCII_import_comments);
@@ -8749,7 +8749,8 @@ void ApplicationWindow::customWindowTitleBarMenu(MdiSubWindow *w, QMenu *menu)
 {
     menu->addAction(actionHideActiveWindow);
     menu->addSeparator();
-	if (w->inherits("Table")){
+	if (w->inherits("Table") || w->isA("Matrix")){
+	    menu->addAction(actionLoad);
 		menu->addAction(actionShowExportASCIIDialog);
 		menu->addSeparator();
 	}
