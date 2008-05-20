@@ -3323,7 +3323,7 @@ void Graph::zoom(bool on)
 	d_zoomer[0]->setEnabled(on);
 	d_zoomer[1]->setEnabled(on);
 	foreach(QwtPlotItem *it, d_curves){
-  	    if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+  	    if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)it)->hasColorScale()){
   	     	if (((Spectrogram *)it)->colorScaleAxis() == QwtPlot::xBottom ||
 				((Spectrogram *)it)->colorScaleAxis() == QwtPlot::yLeft)
   	        	d_zoomer[0]->setEnabled(false);
@@ -3332,9 +3332,8 @@ void Graph::zoom(bool on)
   	    }
   	}
 
-	QCursor cursor=QCursor (QPixmap(lens_xpm),-1,-1);
 	if (on)
-		canvas()->setCursor(cursor);
+		canvas()->setCursor(QCursor(QPixmap(lens_xpm), -1, -1));
 	else
 		canvas()->setCursor(Qt::arrowCursor);
 }
