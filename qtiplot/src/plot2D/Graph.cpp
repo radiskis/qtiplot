@@ -1101,18 +1101,6 @@ void Graph::updateSecondaryAxis(int axis)
 	d_user_step[axis] = d_user_step[a];
 }
 
-void Graph::setAutoScale()
-{
-	for (int i = 0; i < QwtPlot::axisCnt; i++){
-		setAxisAutoScale(i);
-		d_user_step[i] = 0.0;
-	}
-
-	replot();
-	updateScale();
-	emit modifiedGraph();
-}
-
 void Graph::initScaleLimits()
 {//We call this function the first time we add curves to a plot in order to avoid curves with cut symbols.
 	replot();
@@ -3076,11 +3064,25 @@ void Graph::updateVectorsLayout(int curve, const QColor& color, double width,
 	emit modifiedGraph();
 }
 
+void Graph::setAutoScale()
+{
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		setAxisAutoScale(i);
+		d_user_step[i] = 0.0;
+	}
+
+	replot();
+	updateScale();
+	emit modifiedGraph();
+}
+
 void Graph::updatePlot()
 {
-	if (d_auto_scale && !zoomOn() && d_active_tool==NULL){
-		for (int i = 0; i < QwtPlot::axisCnt; i++)
+	if (d_auto_scale && !zoomOn() && d_active_tool == NULL){
+		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			setAxisAutoScale(i);
+			d_user_step[i] = 0.0;
+		}
 	}
 	replot();
 	updateScale();
