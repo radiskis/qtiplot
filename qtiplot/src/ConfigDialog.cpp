@@ -1323,7 +1323,6 @@ void ConfigDialog::apply()
     if (boxThousandsSeparator->isChecked())
         locale.setNumberOptions(QLocale::OmitGroupSeparator);
 
-    app->d_thousands_sep = !boxThousandsSeparator->isChecked();
     QLocale oldLocale = app->locale();
     app->setLocale(locale);
 
