@@ -217,9 +217,6 @@ public slots:
 	void updateAppFonts();
 	void setAppColors(const QColor& wc,const QColor& pc,const QColor& tpc, bool force = false);
 
-	QLocale locale(){return d_locale;};
-	void setLocale(const QLocale& l){d_locale = l;};
-
 	void initWindow();
 	//@}
 
@@ -1046,8 +1043,6 @@ public:
 	bool d_inform_rename_table;
 	QString d_export_col_separator;
 	bool d_export_col_names, d_export_table_selection, d_export_col_comment;
-
-    bool d_thousands_sep;
     //! Last selected filter in export image dialog
     QString d_image_export_filter;
     bool d_keep_plot_aspect;
@@ -1158,7 +1153,6 @@ public:
 private:
 	MdiSubWindow *d_active_window;
     TextEditor *d_text_editor;
-    QLocale d_locale;
 	// Flag telling if table values should be automatically recalculated when values in a column are modified.
 	bool d_auto_update_table_values;
     int d_matrix_undo_stack_size;

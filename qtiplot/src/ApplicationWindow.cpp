@@ -493,11 +493,8 @@ void ApplicationWindow::initGlobalConstants()
 	autoSaveTime = 15;
 	d_backup_files = true;
 	defaultScriptingLang = "muParser";
-	d_thousands_sep = true;
-	d_locale = QLocale::system().name();
-	if (!d_thousands_sep)
-        d_locale.setNumberOptions(QLocale::OmitGroupSeparator);
-
+	//d_locale = QLocale::system().name();
+		
 	d_decimal_digits = 13;
 
 	d_extended_open_dialog = true;
@@ -4295,10 +4292,12 @@ void ApplicationWindow::readSettings()
     d_completion = settings.value("/Completion", true).toBool();
     d_note_line_numbers = settings.value("/LineNumbers", true).toBool();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
-	d_thousands_sep = settings.value("/ThousandsSeparator", true).toBool();
-	d_locale = QLocale(settings.value("/Locale", QLocale::system().name()).toString());
-	if (!d_thousands_sep)
-        d_locale.setNumberOptions(QLocale::OmitGroupSeparator);
+	
+	bool thousandsSep = settings.value("/ThousandsSeparator", true).toBool();	
+	QLocale loc = QLocale(settings.value("/Locale", QLocale::system().name()).toString());
+	if (!thousandsSep)
+        loc.setNumberOptions(QLocale::OmitGroupSeparator);
+	setLocale(loc);
 
 	d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
@@ -4608,8 +4607,11 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/Completion", d_completion);
     settings.setValue("/LineNumbers", d_note_line_numbers);
 	settings.setValue("/ScriptingLang", defaultScriptingLang);
-    settings.setValue("/ThousandsSeparator", d_thousands_sep);
-	settings.setValue("/Locale", d_locale.name());
+	
+	bool thousandsSep = (locale().numberOptions() & QLocale::OmitGroupSeparator) ? false : true;
+	settings.setValue("/ThousandsSeparator", thousandsSep);
+
+	settings.setValue("/Locale", locale().name());
 	settings.setValue("/DecimalDigits", d_decimal_digits);
     settings.setValue("/MatrixUndoStackSize", d_matrix_undo_stack_size);
 	settings.setValue("/EndOfLine", (int)d_eol);
