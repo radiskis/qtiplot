@@ -64,6 +64,12 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 
 MultiPeakFitTool::~MultiPeakFitTool()
 {
+	d_graph->canvas()->releaseMouse();
+	
+	foreach(QwtPlotMarker *m, d_lines)
+		m->detach();//remove peak line markers
+	d_lines.clear();
+	
 	if (d_picker_tool)
 		delete d_picker_tool;
 	if (d_fit)
@@ -140,11 +146,13 @@ void MultiPeakFitTool::finalize()
 	//remove peak line markers
 	foreach(QwtPlotMarker *m, d_lines)
 		m->detach();
-
+	d_lines.clear();
+	
 	d_graph->replot();
     if (d_graph->activeTool() && d_graph->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
         ((RangeSelectorTool *)d_graph->activeTool())->setEnabled();
     } else
         d_graph->canvas()->unsetCursor();
-    delete this;
+	
+	d_graph->setActiveTool(NULL);
 }

@@ -165,6 +165,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	setWindowFlags(f);
 
 	d_active_tool = NULL;
+	d_peak_fit_tool = NULL;
 	d_active_text = NULL;
 	d_legend = NULL; // no legend for an empty graph
 	d_selected_marker = NULL;
@@ -1441,6 +1442,7 @@ void Graph::print()
 	QPrinter printer;
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(true);
+	printer.setOutputFileName(multiLayer()->objectName());
 
 	//printing should preserve plot aspect ratio, if possible
 	double aspect = double(width())/double(height());
@@ -1451,6 +1453,14 @@ void Graph::print()
 
 	QPrintDialog printDialog(&printer, multiLayer()->applicationWindow());
     if (printDialog.exec() == QDialog::Accepted){
+		if (printDialog.enabledOptions() & QAbstractPrintDialog::PrintToFile){
+			QString fn = printer.outputFileName();
+			if (printer.outputFormat() == QPrinter::PostScriptFormat && !fn.contains(".ps"))
+				printer.setOutputFileName(fn + ".ps");
+			else if (printer.outputFormat() == QPrinter::PdfFormat && !fn.contains(".pdf"))
+				printer.setOutputFileName(fn + ".pdf");
+		}
+		
 		QRect plotRect = rect();
 		QRect paperRect = printer.paperRect();
 		if (d_scale_on_print){
@@ -3285,7 +3295,7 @@ void Graph::addLegendItem()
 }
 
 void Graph::contextMenuEvent(QContextMenuEvent *e)
-{
+{	
 	if (d_selected_marker) {
 		emit showMarkerPopupMenu();
 		return;
@@ -3296,7 +3306,7 @@ void Graph::contextMenuEvent(QContextMenuEvent *e)
 	QwtPlotCurve *c = closestCurve(pos.x(), pos.y(), dist, point);
 	if (c && dist < 10)//10 pixels tolerance
 		emit showCurveContextMenu(c);
-	else
+	else 
 		emit showContextMenu();
 
 	e->accept();
@@ -4346,7 +4356,15 @@ BoxCurve* Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
 
 void Graph::setActiveTool(PlotToolInterface *tool)
 {
-    if (tool && tool->rtti() == PlotToolInterface::Rtti_MultiPeakFitTool){
+	if (!tool && d_peak_fit_tool){
+		delete d_peak_fit_tool;
+		d_peak_fit_tool = NULL;
+		return;
+	}
+	
+    if (tool && tool->rtti() == PlotToolInterface::Rtti_MultiPeakFitTool){	
+		d_peak_fit_tool = tool;
+		
         if (d_range_selector)
             d_range_selector->setEnabled(false);
         return;
@@ -4355,7 +4373,7 @@ void Graph::setActiveTool(PlotToolInterface *tool)
     if(d_active_tool)
         delete d_active_tool;
 
-    d_active_tool=tool;
+    d_active_tool = tool;
 }
 
 void Graph::disableTools()
@@ -4369,6 +4387,10 @@ void Graph::disableTools()
         delete d_active_tool;
     d_active_tool = NULL;
 
+	if (d_peak_fit_tool)
+		delete d_peak_fit_tool;
+	d_peak_fit_tool = NULL;
+	
 	if (d_range_selector)
 		delete d_range_selector;
 	d_range_selector = NULL;
@@ -4635,7 +4657,10 @@ bool Graph::validCurvesDataSize()
 
 Graph::~Graph()
 {
-	setActiveTool(NULL);
+	if(d_peak_fit_tool)
+        delete d_peak_fit_tool;
+	if(d_active_tool)
+        delete d_active_tool;
 	if (d_range_selector)
 		delete d_range_selector;
 	delete titlePicker;
