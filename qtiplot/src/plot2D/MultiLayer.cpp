@@ -761,6 +761,8 @@ void MultiLayer::print()
 	QPrinter printer;
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(true);
+	printer.setOutputFileName(objectName());
+
     QRect canvasRect = canvas->rect();
     double aspect = double(canvasRect.width())/double(canvasRect.height());
     if (aspect < 1)
@@ -770,6 +772,14 @@ void MultiLayer::print()
 
     QPrintDialog printDialog(&printer, applicationWindow());
     if (printDialog.exec() == QDialog::Accepted){
+		if (printDialog.enabledOptions() & QAbstractPrintDialog::PrintToFile){
+			QString fn = printer.outputFileName();
+			if (printer.outputFormat() == QPrinter::PostScriptFormat && !fn.contains(".ps"))
+				printer.setOutputFileName(fn + ".ps");
+			else if (printer.outputFormat() == QPrinter::PdfFormat && !fn.contains(".pdf"))
+				printer.setOutputFileName(fn + ".pdf");
+		}
+		
 		QPainter paint(&printer);
 		printAllLayers(&paint);
 		paint.end();

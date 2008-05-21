@@ -732,7 +732,7 @@ signals:
 		//! The current curve selection, or NULL if none is active.
 		QPointer<RangeSelectorTool> d_range_selector;
 		//! The currently active tool, or NULL for default (pointer).
-		PlotToolInterface *d_active_tool;
+		PlotToolInterface *d_active_tool, *d_peak_fit_tool;
 		//! Pointer to the currently selected text/legend
 		LegendWidget *d_active_text;
 		//! Pointer to the current legend

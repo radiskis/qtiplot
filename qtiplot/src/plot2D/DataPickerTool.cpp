@@ -184,6 +184,11 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 {
 	const int delta = 5;
 	switch(ke->key()) {
+		case Qt::Key_Escape:
+			d_graph->setActiveTool(NULL);
+			d_graph->multiLayer()->applicationWindow()->pickPointerCursor();
+			return true;
+		
 		case Qt::Key_Enter:
 		case Qt::Key_Return:
 			emit selected(d_selected_curve, d_selected_point);

@@ -1341,6 +1341,36 @@ void ConfigDialog::apply()
         app->modifiedProject();
     	QApplication::restoreOverrideCursor();
 	}
+	
+	// general page: file locations tab	
+	if (generalDialog->currentWidget() == appTabWidget &&
+		appTabWidget->currentWidget() == fileLocationsPage){
+		QString path = translationsPathLine->text();
+		if (path != app->d_translations_folder){
+			QFileInfo fi(path);
+			if (fi.exists() && fi.isDir()){
+				app->d_translations_folder = fi.absoluteFilePath();
+				app->createLanguagesList();
+				insertLanguagesList();
+			}
+		}
+	
+		path = helpPathLine->text() + "/index.html";
+		if (path != app->helpFilePath){
+			QFileInfo fi(path);
+			if (fi.exists() && fi.isFile())
+				app->helpFilePath = fi.absoluteFilePath();
+		}
+
+		path = pythonConfigDirLine->text();
+		if (path != app->d_python_config_folder){
+			QFileInfo fi(path);
+			if (fi.exists() && fi.isDir())
+				app->d_python_config_folder = fi.absoluteFilePath();
+		}
+	}
+
+	
 	// general page: confirmations tab
 	app->d_inform_rename_table = boxPromptRenameTables->isChecked();
 	app->confirmCloseFolder = boxFolders->isChecked();
