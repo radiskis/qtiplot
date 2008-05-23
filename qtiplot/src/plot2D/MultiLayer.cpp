@@ -910,7 +910,8 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
         while (i != graphsList.begin()) {
             --i;
             Graph *g = *i;
-            if (g->activeText() || g->titleSelected() || g->selectedScale()){
+            if (g->hasSeletedItems()){
+				//(g->activeText() || g->titleSelected() || g->selectedScale()){
                 g->deselect();
                 return true;
             }

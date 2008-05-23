@@ -99,7 +99,9 @@ static const char *unzoom_xpm[]={
 #include "Grid.h"
 #include "CanvasPicker.h"
 #include "QwtErrorPlotCurve.h"
+#include "FrameWidget.h"
 #include "LegendWidget.h"
+#include "TexWidget.h"
 #include "ArrowMarker.h"
 #include "../cursors.h"
 #include "ScalePicker.h"
@@ -353,7 +355,7 @@ QList <LegendWidget *> Graph::textsList()
 	return texts;
 }
 
-void Graph::select(LegendWidget *l, bool add)
+void Graph::select(QWidget *l, bool add)
 {
     if (!l){
         d_active_text = NULL;
@@ -365,7 +367,7 @@ void Graph::select(LegendWidget *l, bool add)
     deselectCurves();
     emit currentFontChanged(l->font());
 
-    d_active_text = l;
+    d_active_text = qobject_cast<LegendWidget *>(l);
 
     if (add){
         if (d_markers_selector && d_markers_selector->contains(l))
@@ -385,7 +387,14 @@ void Graph::select(LegendWidget *l, bool add)
     }
 }
 
-void Graph::deselect(LegendWidget *l)
+bool Graph::hasSeletedItems()
+{
+	if (d_markers_selector || titlePicker->selected() || scalePicker->selectedAxis())
+		return true;
+	return false;
+}
+
+void Graph::deselect(QWidget *l)
 {
     if(!l)
         return;
@@ -2478,6 +2487,10 @@ QString Graph::saveMarkers()
 				s += "</text>\n";
 		}
 	}
+	
+	foreach(FrameWidget *f, d_enrichements)
+		s += f->saveToString();
+	
 	return s;
 }
 
@@ -5614,4 +5627,11 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
     pfilter.reset((QwtPlot *)this);
     painter->restore();
     ((QwtPlot *)this)->setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
+}
+
+TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
+{
+	TexWidget *t = new TexWidget(this, s, pix);
+	d_enrichements << t;
+	return t;
 }
