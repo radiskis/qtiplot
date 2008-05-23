@@ -73,6 +73,8 @@ class VectorCurve;
 class BoxCurve;
 class QwtHistogram;
 class Grid;
+class FrameWidget;
+class TexWidget;
 
 //! Structure containing curve layout parameters
 typedef struct{
@@ -145,10 +147,11 @@ class Graph: public QwtPlot
 		QList <LegendWidget *> textsList();
 		LegendWidget *activeText(){return d_active_text;};
 		void setActiveText(LegendWidget *l){d_active_text = l;};
-		void select(LegendWidget *l, bool add = false);
+		void select(QWidget *l, bool add = false);
 
+		bool hasSeletedItems();
 		void deselect();
-		void deselect(LegendWidget *);
+		void deselect(QWidget *);
 
 		DataCurve* selectedCurveLabels();
         //! Used when restoring DataCurve curveID from a project file
@@ -188,6 +191,8 @@ class Graph: public QwtPlot
 		void updateLayout();
 
     	void updateCurveLabels();
+
+		TexWidget* addTexFormula(const QString& s, const QPixmap& pix);
 
 	public slots:
 		void copy(Graph* g);
@@ -741,5 +746,6 @@ signals:
 		bool d_auto_scale;
 		//! Axes tick lengths
 		int d_min_tick_length, d_maj_tick_length;
+		QList<FrameWidget*> d_enrichements;
 };
 #endif // GRAPH_H

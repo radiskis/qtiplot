@@ -32,58 +32,25 @@
 #include "globals.h"
 #include "ApplicationWindow.h"
 #include "pixmaps.h"
-#include "plot2D/dialogs/CurvesDialog.h"
-#include "plot2D/dialogs/PlotDialog.h"
-#include "plot2D/dialogs/AxesDialog.h"
-#include "plot2D/dialogs/LineDialog.h"
 #include "TextDialog.h"
 #include "ExportDialog.h"
 #include "TableDialog.h"
 #include "SetColValuesDialog.h"
-#include "plot2D/dialogs/ErrDialog.h"
-#include "plot2D/LegendWidget.h"
-#include "plot2D/ArrowMarker.h"
-#include "plot2D/ImageMarker.h"
-#include "plot2D/Graph.h"
-#include "plot2D/Grid.h"
 #include "PlotWizard.h"
-#include "plot2D/dialogs/FunctionDialog.h"
-#include "plot3D/SurfaceDialog.h"
-#include "plot3D/Graph3D.h"
-#include "plot3D/Plot3DDialog.h"
-#include "plot2D/dialogs/ImageDialog.h"
-#include "plot2D/MultiLayer.h"
-#include "plot2D/dialogs/LayerDialog.h"
 #include "DataSetDialog.h"
 #include "ConfigDialog.h"
-#include "matrix/MatrixDialog.h"
-#include "matrix/MatrixSizeDialog.h"
-#include "matrix/MatrixValuesDialog.h"
-#include "matrix/MatrixModel.h"
-#include "matrix/MatrixCommand.h"
 #include "importOPJ.h"
-#include "plot2D/dialogs/AssociationsDialog.h"
 #include "RenameWindowDialog.h"
-#include "plot2D/QwtErrorPlotCurve.h"
 #include "ImportASCIIDialog.h"
-#include "plot2D/dialogs/ImageExportDialog.h"
 #include "Note.h"
 #include "Folder.h"
 #include "FindDialog.h"
-#include "plot2D/ScaleDraw.h"
-#include "plot2D/ScaleEngine.h"
 #include "ScriptingLangDialog.h"
 #include "ScriptWindow.h"
 #include "TableStatistics.h"
-#include "plot2D/FunctionCurve.h"
-#include "plot2D/QwtPieCurve.h"
-#include "plot2D/Spectrogram.h"
-#include "plot2D/dialogs/CurveRangeDialog.h"
 #include "ColorBox.h"
-#include "plot2D/QwtHistogram.h"
 #include "OpenProjectDialog.h"
 #include "ColorMapDialog.h"
-#include "plot2D/dialogs/TextEditor.h"
 #include "SymbolDialog.h"
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
@@ -109,6 +76,35 @@
 #include "analysis/dialogs/FilterDialog.h"
 #include "analysis/dialogs/FFTDialog.h"
 
+#include "plot2D/QwtErrorPlotCurve.h"
+#include "plot2D/MultiLayer.h"
+#include "plot2D/LegendWidget.h"
+#include "plot2D/TexWidget.h"
+#include "plot2D/ArrowMarker.h"
+#include "plot2D/ImageMarker.h"
+#include "plot2D/Graph.h"
+#include "plot2D/Grid.h"
+#include "plot2D/ScaleDraw.h"
+#include "plot2D/ScaleEngine.h"
+#include "plot2D/QwtHistogram.h"
+#include "plot2D/FunctionCurve.h"
+#include "plot2D/QwtPieCurve.h"
+#include "plot2D/Spectrogram.h"
+
+#include "plot2D/dialogs/TexWidgetDialog.h"
+#include "plot2D/dialogs/TextEditor.h"
+#include "plot2D/dialogs/CurvesDialog.h"
+#include "plot2D/dialogs/PlotDialog.h"
+#include "plot2D/dialogs/AxesDialog.h"
+#include "plot2D/dialogs/LineDialog.h"
+#include "plot2D/dialogs/ErrDialog.h"
+#include "plot2D/dialogs/ImageDialog.h"
+#include "plot2D/dialogs/FunctionDialog.h"
+#include "plot2D/dialogs/AssociationsDialog.h"
+#include "plot2D/dialogs/ImageExportDialog.h"
+#include "plot2D/dialogs/CurveRangeDialog.h"
+#include "plot2D/dialogs/LayerDialog.h"
+
 // TODO: move tool-specific code to an extension manager
 #include "plot2D/ScreenPickerTool.h"
 #include "plot2D/DataPickerTool.h"
@@ -117,6 +113,16 @@
 #include "plot2D/LineProfileTool.h"
 #include "plot2D/RangeSelectorTool.h"
 #include "plot2D/PlotToolInterface.h"
+
+#include "plot3D/SurfaceDialog.h"
+#include "plot3D/Graph3D.h"
+#include "plot3D/Plot3DDialog.h"
+
+#include "matrix/MatrixDialog.h"
+#include "matrix/MatrixSizeDialog.h"
+#include "matrix/MatrixValuesDialog.h"
+#include "matrix/MatrixModel.h"
+#include "matrix/MatrixCommand.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -733,6 +739,12 @@ void ApplicationWindow::initToolBars()
 	connect( dataTools, SIGNAL( triggered( QAction* ) ), this, SLOT( pickDataTool( QAction* ) ) );
 	plotTools->addSeparator ();
 
+	actionAddFormula = new QAction(tr("Add &Formula"), this);
+	actionAddFormula->setShortcut( tr("ALT+F") );
+	actionAddFormula->setIcon(QIcon(QPixmap(add_formula_xpm)));
+	connect(actionAddFormula, SIGNAL(activated()), this, SLOT(addTexFormula()));
+	plotTools->addAction(actionAddFormula);
+	
 	actionAddText = new QAction(tr("Add &Text"), this);
 	actionAddText->setShortcut( tr("ALT+T") );
 	actionAddText->setIcon(QIcon(QPixmap(text_xpm)));
@@ -7094,6 +7106,24 @@ void ApplicationWindow::disableAddText()
 	showTextDialog();
 }
 
+void ApplicationWindow::addTexFormula()
+{
+	if (!btnPointer->isOn())
+		btnPointer->setOn(TRUE);
+
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+	
+	Graph *g = (Graph*)plot->activeLayer();
+	if (!g)
+		return;
+	
+	//g->setCursor(QCursor(Qt::IBeamCursor));
+	TexWidgetDialog *twd = new TexWidgetDialog(g, this);
+	twd->exec();
+}
+
 void ApplicationWindow::addText()
 {
 	if (!btnPointer->isOn())
@@ -10535,7 +10565,15 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		{
 			QStringList fList=s.remove("</image>").split("\t");
 			ag->insertImageMarker(fList, d_file_version);
-		}
+		} else if (s == "<TexFormula>"){//version 0.9.7
+			QStringList lst;
+			while ( s != "</TexFormula>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			TexWidget::restore(ag, lst);
+		} 
 		else if (s.contains("AxisType"))
 		{
 			QStringList fList = s.split("\t");
@@ -12333,6 +12371,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionAddText->setToolTip(tr("Add Text"));
 	actionAddText->setShortcut(tr("ALT+T"));
 
+	actionAddFormula->setMenuText(tr("Add &Formula"));
+	actionAddFormula->setToolTip(tr("Add Formula"));
+	actionAddFormula->setShortcut( tr("ALT+F") );
+	
 	btnArrow->setMenuText(tr("Draw &Arrow"));
 	btnArrow->setShortcut(tr("CTRL+ALT+A"));
 	btnArrow->setToolTip(tr("Draw arrow"));

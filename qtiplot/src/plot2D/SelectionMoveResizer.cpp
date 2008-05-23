@@ -36,17 +36,12 @@
 #include <qwt_plot.h>
 #include <qwt_plot_canvas.h>
 
+#include "FrameWidget.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "ImageMarker.h"
 #include "PlotEnrichement.h"
 
-SelectionMoveResizer::SelectionMoveResizer(LegendWidget *target)
-	: QWidget(target->parentWidget())
-{
-	init();
-	add(target);
-}
 SelectionMoveResizer::SelectionMoveResizer(ArrowMarker *target)
 	: QWidget(target->plot()->canvas())
 {
@@ -85,22 +80,6 @@ void SelectionMoveResizer::init()
 SelectionMoveResizer::~SelectionMoveResizer()
 {
 	parentWidget()->removeEventFilter(this);
-}
-
-void SelectionMoveResizer::add(LegendWidget *target)
-{
-	if ((QWidget*)target->parentWidget() != parent())
-		return;
-	d_legend_markers << target;
-	target->installEventFilter(this);
-	connect(target, SIGNAL(destroyed(QObject*)), this, SLOT(removeLegend(QObject*)));
-
-	if (d_bounding_rect.isValid())
-		d_bounding_rect |= target->geometry();
-	else
-		d_bounding_rect = target->geometry();
-
-	update();
 }
 
 void SelectionMoveResizer::add(ArrowMarker *target)
@@ -151,20 +130,10 @@ QRect SelectionMoveResizer::boundingRectOf(QwtPlotMarker *target) const
 	return ((PlotEnrichement *)target)->rect();
 }
 
-int SelectionMoveResizer::removeAll(LegendWidget *target)
-{
-	int result = d_legend_markers.removeAll(target);
-	if (d_legend_markers.isEmpty() && d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
-		delete this;
-	else
-		recalcBoundingRect();
-	return result;
-}
-
 int SelectionMoveResizer::removeAll(ArrowMarker *target)
 {
 	int result = d_line_markers.removeAll(target);
-	if (d_legend_markers.isEmpty() && d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
+	if (d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
 		delete this;
 	else
 		recalcBoundingRect();
@@ -174,7 +143,7 @@ int SelectionMoveResizer::removeAll(ArrowMarker *target)
 int SelectionMoveResizer::removeAll(ImageMarker *target)
 {
 	int result = d_image_markers.removeAll(target);
-	if (d_legend_markers.isEmpty() && d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
+	if (d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
 		delete this;
 	else
 		recalcBoundingRect();
@@ -184,7 +153,7 @@ int SelectionMoveResizer::removeAll(ImageMarker *target)
 int SelectionMoveResizer::removeAll(QWidget *target)
 {
 	int result = d_widgets.removeAll(target);
-	if (d_legend_markers.isEmpty() && d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
+	if (d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
 		delete this;
 	else
 		recalcBoundingRect();
@@ -195,12 +164,6 @@ void SelectionMoveResizer::recalcBoundingRect()
 {
 	d_bounding_rect = QRect(0, 0, -1, -1);
 
-	foreach(LegendWidget *i, d_legend_markers) {
-		if(d_bounding_rect.isValid())
-			d_bounding_rect |= i->geometry();
-		else
-			d_bounding_rect = i->geometry();
-	}
 	foreach(ArrowMarker *i, d_line_markers) {
 		if(d_bounding_rect.isValid())
 			d_bounding_rect |= boundingRectOf(i);
@@ -306,18 +269,6 @@ QRect SelectionMoveResizer::operateOn(const QRect in)
 
 void SelectionMoveResizer::operateOnTargets()
 {
-	foreach(LegendWidget *i, d_legend_markers) {
-		QRect new_rect = operateOn(i->geometry());
-		i->move(new_rect.topLeft());
-		if (!i->text().isEmpty()){
-            QFont f = i->font();
-            f.setPointSize(f.pointSize() * new_rect.width() * new_rect.height()/(i->rect().width() * i->rect().height()));
-            i->setFont(f);
-            i->repaint();
-            ((Graph *)i->parent()->parent())->notifyFontChange(f);
-		}
-	}
-
 	foreach(ArrowMarker *i, d_line_markers) {
 		QPoint p1 = i->startPoint();
 		QPoint p2 = i->endPoint();
@@ -336,8 +287,29 @@ void SelectionMoveResizer::operateOnTargets()
 		i->setSize(new_rect.size());
 	}
 
-	foreach(QWidget *i, d_widgets)
-		i->setGeometry(operateOn(i->geometry()));
+	foreach(QWidget *i, d_widgets){
+		LegendWidget *l = qobject_cast<LegendWidget *>(i);
+		if (!l){	
+			QRect r = operateOn(i->geometry());
+			i->setGeometry(r);
+
+			FrameWidget *f = qobject_cast<FrameWidget *>(i);
+			if (f)
+				f->updateCoordinates();
+				
+			continue;
+		}
+		
+		QRect new_rect = operateOn(l->geometry());
+		l->move(new_rect.topLeft());
+		if (!l->text().isEmpty()){
+            QFont f = l->font();
+            f.setPointSize(f.pointSize() * new_rect.width() * new_rect.height()/(l->rect().width() * l->rect().height()));
+            l->setFont(f);
+            l->repaint();
+            ((Graph *)l->parent()->parent())->notifyFontChange(f);
+		}
+	}
 
 	recalcBoundingRect();
 
@@ -370,7 +342,10 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 {
 	if (me->button() == Qt::RightButton) {
 		// If one of the parents' event handlers deletes me, Qt crashes while trying to send the QContextMenuEvent.
-		foreach(LegendWidget *l, d_legend_markers){
+		foreach(QWidget *w, d_widgets) {
+			LegendWidget *l = qobject_cast<LegendWidget *>(w);
+			if (!l)
+				continue;
 			if(l->geometry().contains(me->pos()))
 				return l->showContextMenu();
 		}
@@ -420,7 +395,10 @@ void SelectionMoveResizer::mouseMoveEvent(QMouseEvent *me)
 
 void SelectionMoveResizer::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	foreach(LegendWidget *l, d_legend_markers) {
+	foreach(QWidget *w, d_widgets) {
+		LegendWidget *l = qobject_cast<LegendWidget *>(w);
+		if (!l)
+			continue;
 		if(l->geometry().contains(e->pos()))
 			return l->showTextEditor();
 	}

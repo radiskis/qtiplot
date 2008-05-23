@@ -574,6 +574,7 @@ public slots:
 	void drawArrow();
 	void drawPoints();
 	void addText();
+	void addTexFormula();
 	void disableAddText();
 	void addImage();
 	void zoomIn();
@@ -1266,7 +1267,7 @@ private:
 	QAction *Box, *Frame, *None;
     QAction *front, *back, *right, *left, *ceil, *floor, *floordata, *flooriso, *floornone;
     QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
-    QAction *actionShowUndoStack, *actionShowNoteLineNumbers;
+    QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula;
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;

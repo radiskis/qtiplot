@@ -268,6 +268,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/BoxCurve.h \
 			   src/plot2D/CanvasPicker.h \
 			   src/plot2D/DataPickerTool.h \
+			   src/plot2D/FrameWidget.h \
 			   src/plot2D/FunctionCurve.h \
 			   src/plot2D/Graph.h \
 			   src/plot2D/Grid.h \
@@ -290,6 +291,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/ScreenPickerTool.h \
 			   src/plot2D/SelectionMoveResizer.h \
 			   src/plot2D/Spectrogram.h \
+			   src/plot2D/TexWidget.h \
 			   src/plot2D/TitlePicker.h \
 			   src/plot2D/TranslateCurveTool.h \
 			   src/plot2D/VectorCurve.h \
@@ -298,6 +300,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/BoxCurve.cpp \
 			   src/plot2D/CanvasPicker.cpp \
 			   src/plot2D/DataPickerTool.cpp \
+			   src/plot2D/FrameWidget.cpp \			   
 			   src/plot2D/FunctionCurve.cpp \
 			   src/plot2D/Graph.cpp \
 			   src/plot2D/Grid.cpp \
@@ -319,6 +322,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/ScreenPickerTool.cpp \
 			   src/plot2D/SelectionMoveResizer.cpp \
 			   src/plot2D/Spectrogram.cpp \
+			   src/plot2D/TexWidget.cpp \
 			   src/plot2D/TitlePicker.cpp \
 			   src/plot2D/TranslateCurveTool.cpp \
 			   src/plot2D/VectorCurve.cpp \
@@ -335,6 +339,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LineDialog.h \
 		       src/plot2D/dialogs/PlotDialog.h \
 			   src/plot2D/dialogs/TextEditor.h \
+			   src/plot2D/dialogs/TexWidgetDialog.h \
 
 	SOURCES += src/plot2D/dialogs/AssociationsDialog.cpp \
 			   src/plot2D/dialogs/AxesDialog.cpp \
@@ -348,6 +353,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LineDialog.cpp \
 		       src/plot2D/dialogs/PlotDialog.cpp \
 			   src/plot2D/dialogs/TextEditor.cpp \
+			   src/plot2D/dialogs/TexWidgetDialog.cpp \
 
 ###############################################################
 ################# Module: Plot 3D #############################

@@ -92,8 +92,6 @@ class SelectionMoveResizer : public QWidget
 
 	public:
 		//! Construct a new MoveResizer with the given marker as the only target.
-		SelectionMoveResizer(LegendWidget *target);
-		//! Construct a new MoveResizer with the given marker as the only target.
 		SelectionMoveResizer(ArrowMarker *target);
 		//! Construct a new MoveResizer with the given marker as the only target.
 		SelectionMoveResizer(ImageMarker *target);
@@ -107,23 +105,17 @@ class SelectionMoveResizer : public QWidget
 		//! Returns true if w is one of targets, false else.
 		bool contains(QWidget *w) const { return d_widgets.contains(w); };
 		//! Returns true if m is one of targets, false else.
-		bool contains(LegendWidget *m) const { return d_legend_markers.contains(m); };
-		//! Returns true if m is one of targets, false else.
 		bool contains(ArrowMarker *m) const { return d_line_markers.contains(m); };
 		//! Returns true if m is one of targets, false else.
 		bool contains(ImageMarker *m) const { return d_image_markers.contains(m); };
 
 	public slots:
 		//! Add target to the list of items to be moved/resized together.
-		void add(LegendWidget *target);
-		//! Add target to the list of items to be moved/resized together.
 		void add(ArrowMarker *target);
 		//! Add target to the list of items to be moved/resized together.
 		void add(ImageMarker *target);
 		//! Add target to the list of items to be moved/resized together.
 		void add(QWidget *target);
-		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
-		int removeAll(LegendWidget *target);
 		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
 		int removeAll(ArrowMarker *target);
 		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
@@ -187,8 +179,6 @@ class SelectionMoveResizer : public QWidget
 		QRect boundingRectOf(QwtPlotMarker *target) const;
 
 		//! Target markers I'm handling.
-		QList <LegendWidget *> d_legend_markers;
-		//! Target markers I'm handling.
 		QList <ArrowMarker *> d_line_markers;
 		//! Target markers I'm handling.
 		QList <ImageMarker *> d_image_markers;
@@ -206,7 +196,6 @@ class SelectionMoveResizer : public QWidget
 	private slots:
 		//! A non-typesafe version of remvoveAll(QWidget*) needed for QObject::destroyed().
 		void removeWidget(QObject* w) { removeAll((QWidget*) w); }
-		void removeLegend(QObject* w) { removeAll((LegendWidget*) w); };
 };
 
 #endif // ifndef SELECTION_MOVE_RESIZER_H
