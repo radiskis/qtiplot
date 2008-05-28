@@ -79,6 +79,7 @@ public:
 	//! Updates the decimal separators when importing ASCII files on user request
 	void updateDecimalSeparators(const QLocale& oldSeparators);
 	void setAutoUpdateValues(bool on = true);
+	virtual QString sizeToString();
 
 public slots:
 	MyTable* table(){return d_table;};
@@ -117,7 +118,6 @@ public slots:
 	void cellEdited(int,int col);
 	void moveCurrentCell();
 	void clearCell(int row, int col);
-	QString saveText();
 	bool isEmptyRow(int row);
 	bool isEmptyColumn(int col);
 	int nonEmptyRows();
@@ -297,7 +297,9 @@ public slots:
 
 	//! \name Saving and Restoring
 	//@{
-	virtual QString saveToString(const QString& geometry, bool = false);
+	virtual void save(const QString &fn, const QString& geometry, bool = false);
+	void restore(const QStringList& lst);
+
 	QString saveHeader();
 	QString saveComments();
 	QString saveCommands();
@@ -305,23 +307,6 @@ public slots:
 	QString saveColumnTypes();
 	QString saveReadOnlyInfo();
 	QString saveHiddenColumnsInfo();
-
-	void setSpecifications(const QString& s);
-	QString& getSpecifications();
-	void restore(QString& spec);
-	QString& getNewSpecifications();
-	void setNewSpecifications();
-
-	/*!
-	 *used for restoring the table old caption stored in specifications string
-	 */
-	QString oldCaption();
-
-	/*!
-	 *used for restoring the table caption stored in new specifications string
-	 */
-	QString newCaption();
-	//@}
 
 	void setBackgroundColor(const QColor& col);
 	void setTextColor(const QColor& col);
@@ -337,9 +322,6 @@ public slots:
 	void setColComments(const QStringList& lst){comments = lst;};
 	void showComments(bool on = true);
 	bool commentsEnabled(){return d_show_comments;}
-
-	QString saveAsTemplate(const QString& geometryInfo);
-	void restore(const QStringList& lst);
 
 	//! This slot notifies the main application that the table has been modified. Triggers the update of 2D plots.
 	void notifyChanges();
@@ -364,7 +346,6 @@ private:
 	void clearCol();
 
 	bool d_show_comments;
-	QString specifications, newSpecifications;
 	QStringList commands, col_format, comments, col_label;
 	QList<int> colTypes, col_plot_type;
 	int selectedCol;

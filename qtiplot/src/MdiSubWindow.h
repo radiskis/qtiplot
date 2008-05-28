@@ -102,14 +102,11 @@ public:
 	//! Set the window status flag (hidden, normal, minimized or maximized)
 	void setStatus(Status s);
 
-	virtual QString saveAsTemplate(const QString& ){return QString();};
 	// TODO:
 	//! Not implemented yet
 	virtual void restore(const QStringList& ){};
-
+	virtual void save(const QString&, const QString &, bool = false){};
 	virtual void exportPDF(const QString&){};
-
-	virtual QString saveToString(const QString &, bool = false){return QString();};
 
 	// TODO: make this return something useful
 	//! Size of the widget as a string
@@ -137,9 +134,6 @@ public:
 	//! Initializes the pointer to the parent folder of the window
 	void setFolder(Folder* f){d_folder = f;};
 
-	//! Notifies the main application that the window has been modified
-	void notifyChanges(){emit modifiedWindow(this);};
-
 	void setNormal();
 	void setMinimized();
 	void setMaximized();
@@ -158,6 +152,8 @@ public:
 
 public slots:
 	virtual void print(){};
+	//! Notifies the main application that the window has been modified
+	void notifyChanges(){emit modifiedWindow(this);};
 
 signals:
 	//! Emitted when the window was closed

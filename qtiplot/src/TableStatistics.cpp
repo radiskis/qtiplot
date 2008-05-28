@@ -2,8 +2,8 @@
 	File                 : TableStatistics.cpp
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2006 by Knut Franke
-	Email (use @ for *)  : knut.franke*gmx.de
+	Copyright            : (C) 2006 by Knut Franke, 2008 by Ion Vasilief
+	Email (use @ for *)  : knut.franke*gmx.de, ion_vasilief*yahoo.fr
 	Description          : Table subclass that displays statistics on
 	                       columns or rows of another table
 
@@ -30,6 +30,9 @@
 #include "TableStatistics.h"
 
 #include <QList>
+#include <QFile>
+#include <QTextStream>
+
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_statistics.h>
 
@@ -275,28 +278,37 @@ void TableStatistics::removeCol(const QString &col)
 		}
 }
 
-QString TableStatistics::saveToString(const QString &geometry, bool)
+void TableStatistics::save(const QString& fn, const QString &geometry, bool)
 {
 	if (!d_base)
-		return Table::saveToString(geometry, false);
+		Table::save(fn, geometry, false);
 		
-	QString s = "<TableStatistics>\n";
-	s += QString(objectName())+"\t";
-	s += QString(d_base->objectName()) + "\t";
-	s += QString(d_type == row ? "row" : "col") + "\t";
-	s += birthDate()+"\n";
-	s += "Targets";
+	QFile f(fn);
+	if (!f.isOpen()){
+		if (!f.open(QIODevice::Append))
+			return;
+	}
+	
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << "<TableStatistics>\n";
+	t << QString(objectName())+"\t";
+	t << QString(d_base->objectName()) + "\t";
+	t << QString(d_type == row ? "row" : "col") + "\t";
+	t << birthDate()+"\n";
+	t << "Targets";
 	for (QList<int>::iterator i=d_targets.begin(); i!=d_targets.end(); ++i)
-		s += "\t" + QString::number(*i);
-	s += "\n";
-	s += geometry;
-	s += saveHeader();
-	s += saveColumnWidths();
-	s += saveCommands();
-	s += saveColumnTypes();
-	s += saveReadOnlyInfo();
-	s += saveHiddenColumnsInfo();
-	s += saveComments();
-	s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-	return s + "</TableStatistics>\n";
+		t << "\t" + QString::number(*i);
+	t << "\n";
+	t << geometry;
+	t << saveHeader();
+	t << saveColumnWidths();
+	t << saveCommands();
+	t << saveColumnTypes();
+	t << saveReadOnlyInfo();
+	t << saveHiddenColumnsInfo();
+	t << saveComments();
+	t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+	t << "</TableStatistics>\n";
+	f.close();
 }

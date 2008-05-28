@@ -169,54 +169,56 @@ void Matrix::setCoordinates(double xs, double xe, double ys, double ye)
 	emit modifiedWindow(this);
 }
 
-QString Matrix::saveToString(const QString &info, bool saveAsTemplate)
+void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 {
-    bool notTemplate = !saveAsTemplate;
-	QString s = "<matrix>\n";
+	QFile f(fn);
+	if (!f.isOpen()){
+		if (!f.open(QIODevice::Append))
+			return;
+	}	
+	bool notTemplate = !saveAsTemplate;
+	
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << "<matrix>\n";
 	if (notTemplate)
-        s += QString(objectName()) + "\t";
-	s += QString::number(numRows())+"\t";
-	s += QString::number(numCols())+"\t";
+        t << QString(objectName()) + "\t";
+	t << QString::number(numRows())+"\t";
+	t << QString::number(numCols())+"\t";
 	if (notTemplate)
-        s += birthDate() + "\n";
-	s += info;
-	s += "ColWidth\t" + QString::number(d_column_width)+"\n";
-	s += "<formula>\n" + formula_str + "\n</formula>\n";
-	s += "TextFormat\t" + QString(txt_format) + "\t" + QString::number(num_precision) + "\n";
+        t << birthDate() + "\n";
+	t << info;
+	t << "ColWidth\t" + QString::number(d_column_width)+"\n";
+	t << "<formula>\n" + formula_str + "\n</formula>\n";
+	t << "TextFormat\t" + QString(txt_format) + "\t" + QString::number(num_precision) + "\n";
 	if (notTemplate)
-        s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-	s += "Coordinates\t" + QString::number(x_start,'g',15) + "\t" +QString::number(x_end,'g',15) + "\t";
-	s += QString::number(y_start,'g',15) + "\t" + QString::number(y_end,'g',15) + "\n";
-	s += "ViewType\t" + QString::number((int)d_view_type) + "\n";
-    s += "HeaderViewType\t" + QString::number((int)d_header_view_type) + "\n";
+        t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+	t << "Coordinates\t" + QString::number(x_start,'g',15) + "\t" +QString::number(x_end,'g',15) + "\t";
+	t << QString::number(y_start,'g',15) + "\t" + QString::number(y_end,'g',15) + "\n";
+	t << "ViewType\t" + QString::number((int)d_view_type) + "\n";
+    t << "HeaderViewType\t" + QString::number((int)d_header_view_type) + "\n";
 
 	if (d_color_map_type != Custom)
-		s += "ColorPolicy\t" + QString::number(d_color_map_type) + "\n";
+		t << "ColorPolicy\t" + QString::number(d_color_map_type) + "\n";
 	else {
-		s += "<ColorMap>\n";
-		s += "\t<Mode>" + QString::number(d_color_map.mode()) + "</Mode>\n";
-		s += "\t<MinColor>" + d_color_map.color1().name() + "</MinColor>\n";
-		s += "\t<MaxColor>" + d_color_map.color2().name() + "</MaxColor>\n";
+		t << "<ColorMap>\n";
+		t << "\t<Mode>" + QString::number(d_color_map.mode()) + "</Mode>\n";
+		t << "\t<MinColor>" + d_color_map.color1().name() + "</MinColor>\n";
+		t << "\t<MaxColor>" + d_color_map.color2().name() + "</MaxColor>\n";
 		QwtArray <double> colors = d_color_map.colorStops();
 		int stops = (int)colors.size();
-		s += "\t<ColorStops>" + QString::number(stops - 2) + "</ColorStops>\n";
+		t << "\t<ColorStops>" + QString::number(stops - 2) + "</ColorStops>\n";
 		for (int i = 1; i < stops - 1; i++){
-			s += "\t<Stop>" + QString::number(colors[i]) + "\t";
-			s += QColor(d_color_map.rgb(QwtDoubleInterval(0,1), colors[i])).name();
-			s += "</Stop>\n";
+			t << "\t<Stop>" + QString::number(colors[i]) + "\t";
+			t << QColor(d_color_map.rgb(QwtDoubleInterval(0,1), colors[i])).name();
+			t << "</Stop>\n";
 		}
-		s += "</ColorMap>\n";
+		t << "</ColorMap>\n";
 	}
 
     if (notTemplate)
-        s += d_matrix_model->saveToString();
-    s +="</matrix>\n";
-	return s;
-}
-
-QString Matrix::saveAsTemplate(const QString &info)
-{
-	return saveToString(info, true);
+        t << d_matrix_model->saveToString();
+    t <<"</matrix>\n";
 }
 
 void Matrix::restore(const QStringList &lst)
@@ -1484,6 +1486,12 @@ double* Matrix::initWorkspace(int size)
 		tr("Not enough memory, operation aborted!"));
 
 	return d_workspace;
+}
+
+QString Matrix::sizeToString()
+{
+	int size = d_matrix_model->rowCount() * d_matrix_model->columnCount();
+	return QString::number((sizeof(Matrix) + size*sizeof(double))/1024.0, 'f', 1) + " " + tr("kB");
 }
 
 Matrix::~Matrix()

@@ -161,6 +161,8 @@ public:
 					bool simplifySpaces, const QString& commentString, ImportMode importAs = Overwrite,
 					const QLocale& l = QLocale(), int endLineChar = 0, int maxRows = -1);
 
+	virtual QString sizeToString();
+
 public slots:
 	void exportPDF(const QString& fileName);
 	//! Print the Matrix
@@ -224,10 +226,8 @@ public slots:
 	//! Load the matrix from a string list (i.e. lines from a project file)
 	void restore(const QStringList &l);
 	//! Format the matrix format in a string to save it in a template file
-	QString saveAsTemplate(const QString &info);
-
 	//! Return a string to save the matrix in a project file (\<matrix\> section)
-	QString saveToString(const QString &info, bool saveAsTemplate = false);
+	void save(const QString &, const QString &, bool saveAsTemplate = false);
 
 	// selection operations
 	//! Standard cut operation

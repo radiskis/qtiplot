@@ -90,7 +90,7 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	gl1->addWidget(boxTo, 2, 1);
 	gl1->addWidget(new QLabel(tr( "Points" )), 3, 0);
 	boxPoints = new QSpinBox();
-	boxPoints->setRange(2, 1000000);
+	boxPoints->setRange(2, INT_MAX);
 	boxPoints->setSingleStep(100);
 	boxPoints->setValue(100);
 	gl1->addWidget(boxPoints, 3, 1);

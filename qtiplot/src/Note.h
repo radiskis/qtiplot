@@ -54,7 +54,7 @@ public:
 	void setName(const QString& name);
 
 public slots:
-	QString saveToString(const QString &info, bool = false);
+	void save(const QString& fn, const QString &info, bool = false);
 	void restore(const QStringList&);
 
 	ScriptEdit* editor(){return te;};

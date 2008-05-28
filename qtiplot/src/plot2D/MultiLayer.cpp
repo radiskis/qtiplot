@@ -37,6 +37,7 @@
 #include <QPainter>
 #include <QPicture>
 #include <QClipboard>
+#include <QTextStream>
 
 #if QT_VERSION >= 0x040300
 	#include <QSvgGenerator>
@@ -50,6 +51,7 @@
 
 #include "MultiLayer.h"
 #include "LegendWidget.h"
+#include "Spectrogram.h"
 #include "SelectionMoveResizer.h"
 #include "../ApplicationWindow.h"
 
@@ -296,7 +298,7 @@ void MultiLayer::removeLayer()
 
 	int i = 0;
 	foreach(LayerButton* btn, buttonsList)//update the texts of the buttons
-		btn->setText(QString::number(i + 1));
+		btn->setText(QString::number(++i));
 
 	if (active_graph->zoomOn() || active_graph->activeTool())
 		emit setPointerCursor();
@@ -314,8 +316,8 @@ void MultiLayer::removeLayer()
 
 	active_graph=(Graph*) graphsList.at(index);
 
-	for (i=0;i<(int)graphsList.count();i++){
-		Graph *gr=(Graph *)graphsList.at(i);
+	for (i=0; i<(int)graphsList.count(); i++){
+		Graph *gr = (Graph *)graphsList.at(i);
 		if (gr == active_graph){
 			LayerButton *button = (LayerButton *)buttonsList.at(i);
 			button->setOn(TRUE);
@@ -323,7 +325,7 @@ void MultiLayer::removeLayer()
 		}
 	}
 
-	emit modifiedPlot();
+	emit modifiedWindow(this);
 }
 
 void MultiLayer::setGraphGeometry(int x, int y, int w, int h)
@@ -887,8 +889,9 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(viewImageDialog()),this,SIGNAL(showImageDialog()));
 	connect (g,SIGNAL(viewTitleDialog()),this,SIGNAL(viewTitleDialog()));
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
+	connect (g,SIGNAL(modifiedGraph()),this,SLOT(notifyChanges()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveLayer(Graph*)));
-	connect (g,SIGNAL(viewTextDialog()),this,SIGNAL(showTextDialog()));
+	connect (g,SIGNAL(viewTextDialog()),this, SIGNAL(showTextDialog()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
     connect (g,SIGNAL(enableTextEditor(Graph *)), this, SIGNAL(enableTextEditor(Graph *)));
 }
@@ -1032,35 +1035,38 @@ bool MultiLayer::isEmpty ()
 		return false;
 }
 
-QString MultiLayer::saveToString(const QString& geometry, bool saveAsTemplate)
+void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTemplate)
 {
+	QFile f(fn);
+	if (!f.isOpen()){
+		if (!f.open(QIODevice::Append))
+			return;
+	}	
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << "<multiLayer>\n";
+	
     bool notTemplate = !saveAsTemplate;
-	QString s="<multiLayer>\n";
 	if (notTemplate)
-        s+=QString(objectName())+"\t";
-	s+=QString::number(d_cols)+"\t";
-	s+=QString::number(d_rows)+"\t";
+        t << QString(objectName())+"\t";
+	t << QString::number(d_cols)+"\t";
+	t << QString::number(d_rows)+"\t";
 	if (notTemplate)
-        s+=birthDate()+"\n";
-	s+=geometry;
+        t << birthDate()+"\n";
+	t << geometry;
 	if (notTemplate)
-        s+="WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-	s+="Margins\t"+QString::number(left_margin)+"\t"+QString::number(right_margin)+"\t"+
+        t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+	t << "Margins\t"+QString::number(left_margin)+"\t"+QString::number(right_margin)+"\t"+
 		QString::number(top_margin)+"\t"+QString::number(bottom_margin)+"\n";
-	s+="Spacing\t"+QString::number(rowsSpace)+"\t"+QString::number(colsSpace)+"\n";
-	s+="LayerCanvasSize\t"+QString::number(l_canvas_width)+"\t"+QString::number(l_canvas_height)+"\n";
-	s+="Alignement\t"+QString::number(hor_align)+"\t"+QString::number(vert_align)+"\n";
+	t << "Spacing\t"+QString::number(rowsSpace)+"\t"+QString::number(colsSpace)+"\n";
+	t << "LayerCanvasSize\t"+QString::number(l_canvas_width)+"\t"+QString::number(l_canvas_height)+"\n";
+	t << "Alignement\t"+QString::number(hor_align)+"\t"+QString::number(vert_align)+"\n";
 
 	for (int i=0; i<(int)graphsList.count(); i++){
 		Graph* ag=(Graph*)graphsList.at(i);
-		s += ag->saveToString(saveAsTemplate);
+		t << ag->saveToString(saveAsTemplate);
 	}
-	return s+"</multiLayer>\n";
-}
-
-QString MultiLayer::saveAsTemplate(const QString& geometryInfo)
-{
-	return saveToString(geometryInfo, true);
+	t << "</multiLayer>\n";
 }
 
 void MultiLayer::setMargins (int lm, int rm, int tm, int bm)
@@ -1144,7 +1150,7 @@ void MultiLayer::setNumLayers(int n)
 			addLayer();
 	}
 
-	emit modifiedPlot();
+	emit modifiedWindow(this);
 }
 
 void MultiLayer::copy(MultiLayer* ml)
@@ -1193,4 +1199,22 @@ bool MultiLayer::swapLayers(int src, int dest)
 
 	emit modifiedPlot();
 	return true;
+}
+
+QString MultiLayer::sizeToString()
+{
+	int layers = graphsList.size();
+	int size = sizeof(MultiLayer) + layers*sizeof(Graph);
+	foreach(Graph *g, graphsList){
+		QList<QwtPlotItem *> items = g->curvesList();
+		foreach(QwtPlotItem *i, items){
+			if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+            	Spectrogram *sp = (Spectrogram *)i;
+				int cells = sp->matrix()->numRows() * sp->matrix()->numCols();
+            	size += cells*sizeof(double);
+        	} else
+				size += ((QwtPlotCurve *)i)->dataSize()*sizeof(double);
+		}
+	}
+	return QString::number((double)size/1024.0, 'f', 1) + " " + tr("kB");
 }

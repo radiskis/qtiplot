@@ -41,6 +41,7 @@
 #include <QBitmap>
 #include <QCursor>
 #include <QImageWriter>
+#include <QTextStream>
 
 #include <qwt3d_io_gl2ps.h>
 #include <qwt3d_coordsys.h>
@@ -2214,51 +2215,59 @@ QString Graph3D::formula()
 		return plotAssociation;
 }
 
-QString Graph3D::saveToString(const QString& geometry, bool)
+void Graph3D::save(const QString &fn, const QString &geometry, bool)
 {
-	QString s="<SurfacePlot>\n";
-	s+= QString(name())+"\t";
-	s+= birthDate() + "\n";
-	s+= geometry;
-	s+= "SurfaceFunction\t";
+	QFile f(fn);
+	if (!f.isOpen()){
+		if (!f.open(QIODevice::Append))
+			return;
+	}	
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << "<SurfacePlot>\n";
+	t << QString(name())+"\t";
+	t << birthDate() + "\n";
+	t << geometry;
+	t << "SurfaceFunction\t";
 
 	sp->makeCurrent();
 	if (d_func)
-		s += d_func->function() + ";" + QString::number(d_func->columns()) + ";" + QString::number(d_func->rows()) + "\t";
+		t << d_func->function() + ";" + QString::number(d_func->columns()) + ";" + QString::number(d_func->rows()) + "\t";
 	else if (d_surface){
-		s += d_surface->xFormula() + "," + d_surface->yFormula() + "," + d_surface->zFormula() + ",";
-		s += QString::number(d_surface->uStart(), 'e', 15) + ",";
-		s += QString::number(d_surface->uEnd(), 'e', 15) + ",";
-		s += QString::number(d_surface->vStart(), 'e', 15) + ",";
-		s += QString::number(d_surface->vEnd(), 'e', 15) + ",";
-		s += QString::number(d_surface->columns()) + ",";
-		s += QString::number(d_surface->rows()) + ",";
-		s += QString::number(d_surface->uPeriodic()) + ",";
-		s += QString::number(d_surface->vPeriodic());
+		t << d_surface->xFormula() + "," + d_surface->yFormula() + "," + d_surface->zFormula() + ",";
+		t << QString::number(d_surface->uStart(), 'e', 15) + ",";
+		t << QString::number(d_surface->uEnd(), 'e', 15) + ",";
+		t << QString::number(d_surface->vStart(), 'e', 15) + ",";
+		t << QString::number(d_surface->vEnd(), 'e', 15) + ",";
+		t << QString::number(d_surface->columns()) + ",";
+		t << QString::number(d_surface->rows()) + ",";
+		t << QString::number(d_surface->uPeriodic()) + ",";
+		t << QString::number(d_surface->vPeriodic());
 	} else {
-		s += plotAssociation;
-		s += "\t";
+		t << plotAssociation;
+		t << "\t";
 	}
-
+	
 	double start,stop;
 	sp->coordinates()->axes[X1].limits(start,stop);
-	s+=QString::number(start)+"\t";
-	s+=QString::number(stop)+"\t";
+	t << QString::number(start)+"\t";
+	t << QString::number(stop)+"\t";
 	sp->coordinates()->axes[Y1].limits(start,stop);
-	s+=QString::number(start)+"\t";
-	s+=QString::number(stop)+"\t";
+	t << QString::number(start)+"\t";
+	t << QString::number(stop)+"\t";
 	sp->coordinates()->axes[Z1].limits(start,stop);
-	s+=QString::number(start)+"\t";
-	s+=QString::number(stop)+"\n";
+	t << QString::number(start)+"\t";
+	t << QString::number(stop)+"\n";
 
 	QString st;
+	
 	if (sp->coordinates()->style() == Qwt3D::NOCOORD)
 		st="nocoord";
 	else if (sp->coordinates()->style() == Qwt3D::BOX)
 		st="box";
 	else
 		st="frame";
-	s+="Style\t"+st+"\t";
+	t << "Style\t" + st + "\t";
 
 	switch(sp->floorStyle ())
 	{
@@ -2274,7 +2283,7 @@ QString Graph3D::saveToString(const QString& geometry, bool)
 			st="floordata";
 			break;
 	}
-	s+=st+"\t";
+	t << st+"\t";
 
 	switch(sp->plotStyle())
 	{
@@ -2314,108 +2323,96 @@ QString Graph3D::saveToString(const QString& geometry, bool)
 		default:
 			;
 	}
-	s+=st+"\n";
+	t << st + "\n";
+	t << "grids\t";
+	t << QString::number(sp->coordinates()->grids())+"\n";
 
-	s+="grids\t";
-	s+=QString::number(sp->coordinates()->grids())+"\n";
+	t << "title\t";
+	t << title+"\t";
+	t << titleCol.name()+"\t";
+	t << titleFnt.family()+"\t";
+	t << QString::number(titleFnt.pointSize())+"\t";
+	t << QString::number(titleFnt.weight())+"\t";
+	t << QString::number(titleFnt.italic())+"\n";
 
-	s+="title\t";
-	s+=title+"\t";
-	s+=titleCol.name()+"\t";
-	s+=titleFnt.family()+"\t";
-	s+=QString::number(titleFnt.pointSize())+"\t";
-	s+=QString::number(titleFnt.weight())+"\t";
-	s+=QString::number(titleFnt.italic())+"\n";
+	t << "colors\t";
+	t << meshCol.name()+"\t";
+	t << axesCol.name()+"\t";
+	t << numCol.name()+"\t";
+	t << labelsCol.name()+"\t";
+	t << bgCol.name()+"\t";
+	t << gridCol.name()+"\t";
+	t << fromColor.name()+"\t";
+	t << toColor.name()+"\t";
+	t << QString::number(alpha) + "\t" + color_map + "\n";
 
-	s+="colors\t";
-	s+=meshCol.name()+"\t";
-	s+=axesCol.name()+"\t";
-	s+=numCol.name()+"\t";
-	s+=labelsCol.name()+"\t";
-	s+=bgCol.name()+"\t";
-	s+=gridCol.name()+"\t";
-	s+=fromColor.name()+"\t";
-	s+=toColor.name()+"\t";
-	s+=QString::number(alpha) + "\t" + color_map + "\n";
+	t << "axesLabels\t";
+	t << labels.join("\t")+"\n";
 
-	s+="axesLabels\t";
-	s+=labels.join("\t")+"\n";
-
-	s+="tics\t";
+	t << "tics\t";
 	QStringList tl=scaleTicks();
-	s+=tl.join("\t")+"\n";
+	t << tl.join("\t")+"\n";
 
-	s+="tickLengths\t";
+	t << "tickLengths\t";
 	tl=axisTickLengths();
-	s+=tl.join("\t")+"\n";
+	t << tl.join("\t")+"\n";
 
-	s+="options\t";
-	s+=QString::number(legendOn)+"\t";
-	s+=QString::number(sp->resolution())+"\t";
-	s+=QString::number(labelsDist)+"\n";
+	t << "options\t";
+	t << QString::number(legendOn)+"\t";
+	t << QString::number(sp->resolution())+"\t";
+	t << QString::number(labelsDist)+"\n";
 
-	s+="numbersFont\t";
+	t << "numbersFont\t";
 	QFont fnt=sp->coordinates()->axes[X1].numberFont();
-	s+=fnt.family()+"\t";
-	s+=QString::number(fnt.pointSize())+"\t";
-	s+=QString::number(fnt.weight())+"\t";
-	s+=QString::number(fnt.italic())+"\n";
+	t << fnt.family()+"\t";
+	t << QString::number(fnt.pointSize())+"\t";
+	t << QString::number(fnt.weight())+"\t";
+	t << QString::number(fnt.italic())+"\n";
 
-	s+="xAxisLabelFont\t";
+	t << "xAxisLabelFont\t";
 	fnt=sp->coordinates()->axes[X1].labelFont();
-	s+=fnt.family()+"\t";
-	s+=QString::number(fnt.pointSize())+"\t";
-	s+=QString::number(fnt.weight())+"\t";
-	s+=QString::number(fnt.italic())+"\n";
+	t << fnt.family()+"\t";
+	t << QString::number(fnt.pointSize())+"\t";
+	t << QString::number(fnt.weight())+"\t";
+	t << QString::number(fnt.italic())+"\n";
 
-	s+="yAxisLabelFont\t";
+	t << "yAxisLabelFont\t";
 	fnt=sp->coordinates()->axes[Y1].labelFont();
-	s+=fnt.family()+"\t";
-	s+=QString::number(fnt.pointSize())+"\t";
-	s+=QString::number(fnt.weight())+"\t";
-	s+=QString::number(fnt.italic())+"\n";
+	t << fnt.family()+"\t";
+	t << QString::number(fnt.pointSize())+"\t";
+	t << QString::number(fnt.weight())+"\t";
+	t << QString::number(fnt.italic())+"\n";
 
-	s+="zAxisLabelFont\t";
+	t << "zAxisLabelFont\t";
 	fnt=sp->coordinates()->axes[Z1].labelFont();
-	s+=fnt.family()+"\t";
-	s+=QString::number(fnt.pointSize())+"\t";
-	s+=QString::number(fnt.weight())+"\t";
-	s+=QString::number(fnt.italic())+"\n";
+	t << fnt.family()+"\t";
+	t << QString::number(fnt.pointSize())+"\t";
+	t << QString::number(fnt.weight())+"\t";
+	t << QString::number(fnt.italic())+"\n";
 
-	s+="rotation\t";
-	s+=QString::number(sp->xRotation())+"\t";
-	s+=QString::number(sp->yRotation())+"\t";
-	s+=QString::number(sp->zRotation())+"\n";
+	t << "rotation\t";
+	t << QString::number(sp->xRotation())+"\t";
+	t << QString::number(sp->yRotation())+"\t";
+	t << QString::number(sp->zRotation())+"\n";
 
-	s+="zoom\t";
-	s+=QString::number(sp->zoom())+"\n";
+	t << "zoom\t";
+	t << QString::number(sp->zoom())+"\n";
 
-	s+="scaling\t";
-	s+=QString::number(sp->xScale())+"\t";
-	s+=QString::number(sp->yScale())+"\t";
-	s+=QString::number(sp->zScale())+"\n";
+	t << "scaling\t";
+	t << QString::number(sp->xScale())+"\t";
+	t << QString::number(sp->yScale())+"\t";
+	t << QString::number(sp->zScale())+"\n";
 
-	s+="shift\t";
-	s+=QString::number(sp->xShift())+"\t";
-	s+=QString::number(sp->yShift())+"\t";
-	s+=QString::number(sp->zShift())+"\n";
+	t << "shift\t";
+	t << QString::number(sp->xShift())+"\t";
+	t << QString::number(sp->yShift())+"\t";
+	t << QString::number(sp->zShift())+"\n";
 
-	s+="LineWidth\t";
-	s+=QString::number(sp->meshLineWidth())+"\n";
-	s+="WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-	s+="Orthogonal\t" + QString::number(sp->ortho())+"\n";
-	s+="</SurfacePlot>\n";
-	return s;
-}
-
-QString Graph3D::saveAsTemplate(const QString& geometryInfo)
-{
-	QString s = saveToString(geometryInfo);
-	QStringList lst = s.split("\n", QString::SkipEmptyParts);
-	QStringList l = lst[3].split("\t");
-	l[1] = QString();
-	lst[3] = l.join("\t");
-	return lst.join("\n");
+	t << "LineWidth\t";
+	t << QString::number(sp->meshLineWidth())+"\n";
+	t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+	t << "Orthogonal\t" + QString::number(sp->ortho())+"\n";
+	t << "</SurfacePlot>\n";
 }
 
 void Graph3D::showColorLegend(bool show)

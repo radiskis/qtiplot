@@ -88,6 +88,7 @@ public:
 	void setScaleLayersOnResize(bool ok){d_scale_layers = ok;};
 
 	QRect canvasRect(){return canvas->rect();};
+	virtual QString sizeToString();
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
@@ -153,8 +154,7 @@ public slots:
 
 	void connectLayer(Graph *g);
 
-	QString saveToString(const QString& geometry, bool = false);
-	QString saveAsTemplate(const QString& geometryInfo);
+	void save(const QString& fn, const QString& geometry, bool = false);
 
 signals:
 	void showTextDialog();

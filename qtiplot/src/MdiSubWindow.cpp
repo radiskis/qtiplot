@@ -148,7 +148,7 @@ return s;
 
 QString MdiSubWindow::sizeToString()
 {
-return QString::number(8*sizeof(this)/1024.0, 'f', 1) + " " + tr("kB");
+return QString::number(sizeof(MdiSubWindow), 'f', 1) + " " + tr("B");
 }
 
 void MdiSubWindow::changeEvent(QEvent *event)

@@ -240,8 +240,7 @@ public slots:
     void exportVector(const QString& fileName);
     void exportToFile(const QString& fileName);
 
-	QString saveToString(const QString& geometry, bool = false);
-	QString saveAsTemplate(const QString& geometryInfo);
+	void save(const QString& fn, const QString& geometry, bool = false);
 
 	void zoomChanged(double);
 	void rotationChanged(double, double, double);
