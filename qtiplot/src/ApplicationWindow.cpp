@@ -2644,7 +2644,7 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
 
 	w->setName(name);
 	w->setIcon( QPixmap(worksheet_xpm) );
-	w->setSpecifications(w->saveToString(windowGeometryInfo(w)));
+//	w->setSpecifications(w->saveToString(windowGeometryInfo(w)));
 
 	addListViewItem(w);
 }
@@ -3295,14 +3295,11 @@ void ApplicationWindow::removeCurves(const QString& name)
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer"))
-		{
+		if (w->isA("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
                 g->removeCurves(name);
-		}
-		else if (w->isA("Graph3D"))
-		{
+		} else if (w->isA("Graph3D")){
 			if ( (((Graph3D*)w)->formula()).contains(name) )
 				((Graph3D*)w)->clearData();
 		}
@@ -4200,7 +4197,7 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 		QStringList lst;
 		while (!t.atEnd())
 			lst << t.readLine();
-		w = openSurfacePlot(this,lst);
+		w = openSurfacePlot(this, lst);
 		if (w)
 			((Graph3D *)w)->clearData();
 	} else {
@@ -4254,6 +4251,7 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 
 	f.close();
 	if (w){
+		w->show();
 		customMenu(w);
 		customToolBars(w);
 	}
@@ -5328,13 +5326,12 @@ void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	QString text = "QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
-				QString::number(patch_version) + " template file\n";
-	text += w->saveAsTemplate(windowGeometryInfo(w));
 	QTextStream t( &f );
 	t.setEncoding(QTextStream::UnicodeUTF8);
-	t << text;
+	t << "QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
+				QString::number(patch_version) + " template file\n";
 	f.close();
+	w->save(fn, windowGeometryInfo(w), true);
 	QApplication::restoreOverrideCursor();
 }
 
@@ -7528,8 +7525,8 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 		QString caption = generateUniqueName(tr("Table"));
     	nw = newTable(caption, t->numRows(), t->numCols());
     	((Table *)nw)->copy(t);
-    	QString spec = t->saveToString("geometry\n");
-    	((Table *)nw)->setSpecifications(spec.replace(t->objectName(), caption));
+    	//QString spec = t->saveToString("geometry\n");
+    	//((Table *)nw)->setSpecifications(spec.replace(t->objectName(), caption));
 	} else if (w->isA("Graph3D")){
 		Graph3D *g = (Graph3D *)w;
 		if (!g->hasData()){
@@ -7608,17 +7605,8 @@ void ApplicationWindow::undo()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	if (w->inherits("Table")){
-		Table *t = (Table *)w;
-		t->setNewSpecifications();
-		QString newCaption = t->oldCaption();
-		QString name = w->objectName();
-		if (newCaption != name){
-			updateTableNames(name, newCaption);
-			renameListViewItem(name, newCaption);
-		}
-		t->restore(t->getSpecifications());
 		actionUndo->setEnabled(false);
-		actionRedo->setEnabled(true);
+		actionRedo->setEnabled(false);
 	} else if (w->isA("Note")) {
 		((Note*)w)->editor()->undo();
 		actionUndo->setEnabled(false);
@@ -7639,15 +7627,7 @@ void ApplicationWindow::redo()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	if (w->inherits("Table")){
-		Table *t = (Table *)w;
-		QString newCaption = t->newCaption();
-		QString name = w->objectName();
-		if (newCaption != name){
-			updateTableNames(name,newCaption);
-			renameListViewItem(name,newCaption);
-		}
-		t->restore(t->getNewSpecifications());
-		actionUndo->setEnabled(true);
+		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(false);
 	} else if (w->isA("Note")){
 		((Note*)w)->editor()->redo();
@@ -8289,14 +8269,21 @@ void ApplicationWindow::modifiedProject()
 
 void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 {
+	if (!w)
+		return;
+	
 	modifiedProject();
 
-	if (w->isA("Matrix") || w->inherits("Table") || w->isA("Note"))
+	if (w->isA("Matrix") || w->isA("Note"))
 		actionUndo->setEnabled(true);
 	else {
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(false);
 	}
+	
+	Q3ListViewItem *it = lv->findItem (w->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
+	if (it)
+		it->setText(3, w->sizeToString());
 }
 
 void ApplicationWindow::timerEvent ( QTimerEvent *e)
@@ -9981,7 +9968,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 	}
     QApplication::restoreOverrideCursor();
 
-	w->setSpecifications(w->saveToString("geometry\n"));
+//	w->setSpecifications(w->saveToString("geometry\n"));
 	w->table()->blockSignals(false);
 	return w;
 }
@@ -13421,7 +13408,7 @@ void ApplicationWindow::showDemoVersionMessage()
 }
 #endif
 
-void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
+/*void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
 {
 	QFile f( fn );
 	if (d_backup_files && f.exists())
@@ -13514,6 +13501,112 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	QTextStream t( &f );
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	t << text;
+	f.close();
+
+	if (compress)
+		file_compress((char *)fn.ascii(), "wb9");
+
+	QApplication::restoreOverrideCursor();
+}*/
+
+void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
+{
+	QFile f( fn );
+	if (d_backup_files && f.exists())
+	{// make byte-copy of current file so that there's always a copy of the data on disk
+		while (!f.open(QIODevice::ReadOnly)){
+			if (f.isOpen())
+				f.close();
+			int choice = QMessageBox::warning(this, tr("QtiPlot - File backup error"),
+					tr("Cannot make a backup copy of <b>%1</b> (to %2).<br>If you ignore this, you run the risk of <b>data loss</b>.").arg(projectname).arg(projectname+"~"),
+					QMessageBox::Retry|QMessageBox::Default, QMessageBox::Abort|QMessageBox::Escape, QMessageBox::Ignore);
+			if (choice == QMessageBox::Abort)
+				return;
+			if (choice == QMessageBox::Ignore)
+				break;
+		}
+
+		if (f.isOpen()){
+			QString bfn = fn + "~";
+			QFile::remove(bfn);//remove any existing backup
+            QFile::copy(fn, bfn);
+			f.close();
+		}
+	}
+
+	if ( !f.open( QIODevice::WriteOnly ) ){
+		QMessageBox::about(this, tr("QtiPlot - File save error"), tr("The file: <br><b>%1</b> is opened in read-only mode").arg(fn));
+		return;
+	}
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QList<MdiSubWindow *> lst = folder->windowsList();
+	int windows = lst.count();
+	int initial_depth = folder->depth();
+	Folder *dir = folder->folderBelow();
+	while (dir && dir->depth() > initial_depth){
+		windows += dir->windowsList().count();
+		dir = dir->folderBelow();
+	}
+
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << "QtiPlot " + QString::number(maj_version) + "." + QString::number(min_version) + "."+
+			QString::number(patch_version) + " project file\n";
+	t << "<scripting-lang>\t" + QString(scriptEnv->name()) + "\n";
+	t << "<windows>\t" + QString::number(windows) + "\n";
+	f.close();
+	
+	foreach(MdiSubWindow *w, lst)
+		w->save(fn, windowGeometryInfo(w));
+
+	initial_depth = folder->depth();
+	dir = folder->folderBelow();
+	while (dir && dir->depth() > initial_depth){
+		if (!f.isOpen())
+			f.open(QIODevice::Append);
+		
+		t << "<folder>\t" + QString(dir->objectName()) + "\t" + dir->birthDate() + "\t" + dir->modificationDate();
+		if (dir == current_folder)
+			t << "\tcurrent\n";
+		else
+			t << "\n";  // FIXME: Having no 5th string here is not a good idea
+		t << "<open>" + QString::number(dir->folderListItem()->isOpen()) + "</open>\n";
+		f.close();
+		
+		lst = dir->windowsList();
+		foreach(MdiSubWindow *w, lst)
+			w->save(fn, windowGeometryInfo(w));
+
+		if (!f.isOpen())
+			f.open(QIODevice::Append);
+					
+		if (!dir->logInfo().isEmpty() )
+			t << "<log>\n" + dir->logInfo() + "</log>\n" ;
+
+		if ( (dir->children()).isEmpty() )
+			t << "</folder>\n";
+
+		int depth = dir->depth();
+		dir = dir->folderBelow();
+		if (dir){
+		    int next_dir_depth = dir->depth();
+		    if (next_dir_depth < depth){
+		        int diff = depth - next_dir_depth;
+		        for (int i = 0; i < diff; i++)
+                    t << "</folder>\n";
+		    }
+		} else {
+		    int diff = depth - initial_depth - 1;
+            for (int i = 0; i < diff; i++)
+                t << "</folder>\n";
+		}
+	}
+
+	t << "<open>" + QString::number(folder->folderListItem()->isOpen()) + "</open>\n";
+	if (!folder->logInfo().isEmpty())
+		t << "<log>\n" + folder->logInfo() + "</log>" ;
+
 	f.close();
 
 	if (compress)

@@ -33,6 +33,8 @@
 #include "ScriptEdit.h"
 
 #include <QLayout>
+#include <QFile>
+#include <QTextStream>
 
 Note::Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 		 : MdiSubWindow(label, parent, name, f)
@@ -73,17 +75,23 @@ void Note::modifiedNote()
 	emit modifiedWindow(this);
 }
 
-QString Note::saveToString(const QString &info, bool)
+void Note::save(const QString &fn, const QString &info, bool)
 {
-QString s= "<note>\n";
-s += QString(name()) + "\t" + birthDate() + "\n";
-s += info;
-s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-s += "AutoExec\t" + QString(autoExec ? "1" : "0") + "\n";
-s += "<LineNumbers>" + QString::number(d_line_number->isVisible()) + "</LineNumbers>\n";
-s += "<content>\n" + te->text().stripWhiteSpace() + "\n</content>";
-s +="\n</note>\n";
-return s;
+	QFile f(fn);
+	if (!f.isOpen()){
+		if (!f.open(QIODevice::Append))
+			return;
+	}	
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << "<note>\n";
+	t << QString(name()) + "\t" + birthDate() + "\n";
+	t << info;
+	t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+	t << "AutoExec\t" + QString(autoExec ? "1" : "0") + "\n";
+	t << "<LineNumbers>" + QString::number(d_line_number->isVisible()) + "</LineNumbers>\n";
+	t << "<content>\n" + te->text().stripWhiteSpace() + "\n</content>";
+	t << "\n</note>\n";
 }
 
 void Note::restore(const QStringList& data)

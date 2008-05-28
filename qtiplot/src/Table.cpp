@@ -459,24 +459,6 @@ void Table::setColumnTypes(const QStringList& ctl)
 	}
 }
 
-QString Table::saveColumnWidths()
-{
-	QString s="ColWidth\t";
-	for (int i=0;i<d_table->numCols();i++)
-		s+=QString::number(d_table->columnWidth (i))+"\t";
-
-	return s+"\n";
-}
-
-QString Table::saveColumnTypes()
-{
-	QString s="ColType";
-	for (int i=0; i<d_table->numCols(); i++)
-		s += "\t"+QString::number(colTypes[i])+";"+col_format[i];
-
-	return s+"\n";
-}
-
 void Table::setCommands(const QStringList& com)
 {
 	commands.clear();
@@ -673,100 +655,136 @@ Q3TableSelection Table::getSelection()
 	return sel;
 }
 
+QString Table::saveColumnWidths()
+{
+        QString s="ColWidth\t";
+        for (int i=0;i<d_table->numCols();i++)
+                s+=QString::number(d_table->columnWidth (i))+"\t";
+        return s+"\n";
+}
+
+QString Table::saveColumnTypes()
+{
+        QString s="ColType";
+        for (int i=0; i<d_table->numCols(); i++)
+                s += "\t"+QString::number(colTypes[i])+";"+col_format[i];
+        return s+"\n";
+}
+
 QString Table::saveCommands()
 {
-	QString s="<com>\n";
-	for (int col=0; col<numCols(); col++)
-		if (!commands[col].isEmpty())
-		{
-			s += "<col nr=\""+QString::number(col)+"\">\n";
-			s += commands[col];
-			s += "\n</col>\n";
-		}
-	s += "</com>\n";
-	return s;
+        QString s="<com>\n";
+        for (int col=0; col<numCols(); col++)
+                if (!commands[col].isEmpty()){
+                        s += "<col nr=\""+QString::number(col)+"\">\n";
+                        s += commands[col];
+                        s += "\n</col>\n";
+                }
+        s += "</com>\n";
+        return s;
 }
 
 QString Table::saveComments()
 {
-	QString s = "Comments\t";
-	for (int i=0; i<d_table->numCols(); i++){
-		if (comments.count() > i)
-			s += comments[i] + "\t";
-		else
-			s += "\t";
-	}
-	return s + "\n";
-}
-
-QString Table::saveToString(const QString& geometry, bool saveAsTemplate)
-{
-	QString s = "<table>";
-	if (saveAsTemplate){
-	    s += "\t" + QString::number(d_table->numRows()) + "\t";
-        s += QString::number(d_table->numCols()) + "\n";
-	} else {
-	    s += "\n" + QString(objectName()) + "\t";
-        s += QString::number(d_table->numRows()) + "\t";
-        s += QString::number(d_table->numCols()) + "\t";
-        s += birthDate() + "\n";
-	}
-	s += geometry;
-	s += saveHeader();
-	s += saveColumnWidths();
-	s += saveCommands();
-	s += saveColumnTypes();
-	s += saveReadOnlyInfo();
-	s += saveHiddenColumnsInfo();
-	s += saveComments();
-	if (!saveAsTemplate){
-        s += "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-        s += saveText();
-	}
-	return s += "</table>\n";
-}
-
-QString Table::saveAsTemplate(const QString& geometryInfo)
-{
-	return saveToString(geometryInfo, true);
+        QString s = "Comments\t";
+        for (int i=0; i<d_table->numCols(); i++){
+                if (comments.count() > i)
+                        s += comments[i] + "\t";
+                else
+                        s += "\t";
+        }
+        return s + "\n";
 }
 
 QString Table::saveHeader()
 {
-	QString s = "header";
-	for (int j=0; j<d_table->numCols(); j++){
-		if (col_plot_type[j] == X)
-			s += "\t" + colLabel(j) + "[X]";
-		else if (col_plot_type[j] == Y)
-			s += "\t" + colLabel(j) + "[Y]";
-		else if (col_plot_type[j] == Z)
-			s += "\t" + colLabel(j) + "[Z]";
-		else if (col_plot_type[j] == xErr)
-			s += "\t" + colLabel(j) + "[xEr]";
-		else if (col_plot_type[j] == yErr)
-			s += "\t" + colLabel(j) + "[yEr]";
-		else if (col_plot_type[j] == Label)
-			s += "\t" + colLabel(j) + "[L]";
-		else
-			s += "\t" + colLabel(j);
-	}
-	return s += "\n";
+        QString s = "header";
+        for (int j=0; j<d_table->numCols(); j++){
+                if (col_plot_type[j] == X)
+                        s += "\t" + colLabel(j) + "[X]";
+                else if (col_plot_type[j] == Y)
+                        s += "\t" + colLabel(j) + "[Y]";
+                else if (col_plot_type[j] == Z)
+                        s += "\t" + colLabel(j) + "[Z]";
+                else if (col_plot_type[j] == xErr)
+                        s += "\t" + colLabel(j) + "[xEr]";
+                else if (col_plot_type[j] == yErr)
+                        s += "\t" + colLabel(j) + "[yEr]";
+                else if (col_plot_type[j] == Label)
+                        s += "\t" + colLabel(j) + "[L]";
+                else
+                        s += "\t" + colLabel(j);
+        }
+        return s += "\n";
 }
 
 QString Table::saveReadOnlyInfo()
 {
-	QString s = "ReadOnlyColumn";
-	for (int i=0; i<d_table->numCols(); i++)
-		s += "\t" + QString::number(d_table->isColumnReadOnly(i));
-	return s += "\n";
+        QString s = "ReadOnlyColumn";
+        for (int i=0; i<d_table->numCols(); i++)
+                s += "\t" + QString::number(d_table->isColumnReadOnly(i));
+        return s += "\n";
 }
 
 QString Table::saveHiddenColumnsInfo()
 {
-	QString s = "HiddenColumn";
-	for (int i=0; i<d_table->numCols(); i++)
-		s += "\t" + QString::number(d_table->isColumnHidden(i));
-	return s += "\n";
+        QString s = "HiddenColumn";
+        for (int i=0; i<d_table->numCols(); i++)
+                s += "\t" + QString::number(d_table->isColumnHidden(i));
+        return s += "\n";
+}
+
+void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate)
+{
+	QFile f(fn);
+	if (!f.isOpen()){
+		if (!f.open(QIODevice::Append))
+			return;
+	}	
+	QTextStream t( &f );
+	t.setEncoding(QTextStream::UnicodeUTF8);
+	t << "<table>";
+	if (saveAsTemplate){
+	    t << "\t" + QString::number(d_table->numRows()) + "\t";
+        t << QString::number(d_table->numCols()) + "\n";
+	} else {
+	    t << "\n" + QString(objectName()) + "\t";
+        t << QString::number(d_table->numRows()) + "\t";
+        t << QString::number(d_table->numCols()) + "\t";
+        t << birthDate() + "\n";
+	}
+	t << geometry;
+	t << saveHeader();
+	t << saveColumnWidths();
+	t << saveCommands();
+	t << saveColumnTypes();
+	t << saveReadOnlyInfo();
+	t << saveHiddenColumnsInfo();
+	t << saveComments();
+	
+	if (!saveAsTemplate){
+        t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
+        t << "<data>\n";
+		int cols = d_table->numCols() - 1;
+		int rows = d_table->numRows();
+		for (int i=0; i<rows; i++){
+			if (!isEmptyRow(i)){
+				t << QString::number(i) + "\t";
+				for (int j=0; j<cols; j++){
+			    	if (colTypes[j] == Numeric && !d_table->text(i, j).isEmpty())
+                    	t << QString::number(cell(i, j), 'e', 14) + "\t";
+					else
+						t << d_table->text(i, j) + "\t";
+				}
+            	if (colTypes[cols] == Numeric && !d_table->text(i, cols).isEmpty())
+                	t << QString::number(cell(i, cols), 'e', 14) + "\n";
+				else
+					t << d_table->text(i, cols) + "\n";
+			}
+		}
+		t << "</data>\n";
+	}
+	t << "</table>\n";
 }
 
 int Table::firstXCol()
@@ -1703,29 +1721,6 @@ bool Table::isEmptyColumn(int col)
 	return true;
 }
 
-QString Table::saveText()
-{
-	QString text = "<data>\n";
-	int cols = d_table->numCols() - 1;
-	int rows = d_table->numRows();
-	for (int i=0; i<rows; i++){
-		if (!isEmptyRow(i)){
-			text += QString::number(i) + "\t";
-			for (int j=0; j<cols; j++){
-			    if (colTypes[j] == Numeric && !d_table->text(i, j).isEmpty())
-                    text += QString::number(cell(i, j), 'e', 14) + "\t";
-				else
-					text += d_table->text(i, j) + "\t";
-			}
-            if (colTypes[cols] == Numeric && !d_table->text(i, cols).isEmpty())
-                text += QString::number(cell(i, cols), 'e', 14) + "\n";
-			else
-				text += d_table->text(i, cols) + "\n";
-		}
-	}
-	return text + "</data>\n";
-}
-
 int Table::nonEmptyRows()
 {
 	int r=0;
@@ -2594,214 +2589,6 @@ void Table::customEvent(QEvent *e)
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
 }
 
-QString& Table::getSpecifications()
-{
-	return specifications;
-}
-
-void Table::setSpecifications(const QString& s)
-{
-	if (specifications == s)
-		return;
-
-	specifications=s;
-}
-
-void Table::setNewSpecifications()
-{
-
-	newSpecifications = saveToString("geometry\n");
-}
-
-QString& Table::getNewSpecifications()
-{
-	return newSpecifications;
-}
-
-QString Table::oldCaption()
-{
-	QTextStream ts( &specifications, QIODevice::ReadOnly );
-	ts.readLine();
-	QString s=ts.readLine();
-	int pos=s.find("\t",0);
-	return s.left(pos);
-}
-
-QString Table::newCaption()
-{
-	QTextStream ts(&newSpecifications, QIODevice::ReadOnly );
-	ts.readLine();
-	QString s=ts.readLine();
-	int pos=s.find("\t",0);
-	return s.left(pos);
-}
-
-// TODO: This should probably be changed to restore(QString * spec)
-void Table::restore(QString& spec)
-{
-	int row;
-	int cols=d_table->numCols();
-	int rows=d_table->numRows();
-
-	QTextStream t(&spec, QIODevice::ReadOnly);
-
-	t.readLine();	//table tag
-	QString s = t.readLine();
-	QStringList list = s.split("\t");
-
-	QString oldCaption = objectName();
-	QString newCaption=list[0];
-	if (oldCaption != newCaption)
-		this->setName(newCaption);
-
-	int r=list[1].toInt();
-	if (rows != r)
-		d_table->setNumRows(r);
-
-	int c = list[2].toInt();
-	if (cols != c)
-		d_table->setNumCols(c);
-
-	//clear all cells
-	for (int i=0; i<r; i++){
-		for (int j=0; j<c; j++)
-			d_table->setText(i, j, "");
-	}
-
-	t.readLine();	//table geometry useless info when restoring
-	s = t.readLine();//header line
-
-	list = s.split("\t");
-	list.remove(list.first());
-
-	if (col_label != list){
-		loadHeader(list);
-		list.replaceInStrings("[X]","");
-		list.replaceInStrings("[Y]","");
-		list.replaceInStrings("[Z]","");
-		list.replaceInStrings("[xEr]","");
-		list.replaceInStrings("[yEr]","");
-
-		for (int j=0; j<c; j++){
-			if (!list.contains(col_label[j]))
-				emit changedColHeader(newCaption + "_"+col_label[j], newCaption+"_"+list[j]);
-		}
-
-		if (c<cols){
-			for (int j=0; j<c; j++){
-				if (!list.contains(col_label[j]))
-					emit removedCol(oldCaption + "_" + col_label[j]);
-			}
-		}
-	}
-
-	s = t.readLine();	//colWidth line
-	list = s.split("\t");
-	list.remove(list.first());
-	if (columnWidths() != list)
-		setColWidths(list);
-
-	s = t.readLine();
-	list = s.split("\t");
-	if (list[0] == "com"){ //commands line
-		list.remove(list.first());
-		if (list != commands)
-			commands = list;
-	} else { // commands block
-		commands.clear();
-		for (int i=0; i<numCols(); i++)
-			commands << "";
-		for (s=t.readLine(); s != "</com>"; s=t.readLine()){
-			int col = s.mid(9,s.length()-11).toInt();
-			QString formula;
-			for (s=t.readLine(); s != "</col>"; s=t.readLine())
-				formula += s + "\n";
-			formula.truncate(formula.length()-1);
-			setCommand(col,formula);
-		}
-	}
-
-	s = t.readLine();	//colType line ?
-	list = s.split("\t");
-	colTypes.clear();
-	col_format.clear();
-	if (s.contains ("ColType")){
-		list.remove(list.first());
-		for (int i=0; i<list.count(); i++){
-			colTypes << Numeric;
-			col_format << "0/16";
-
-			QStringList l = list[i].split(";");
-			if (l.count() >= 1)
-				colTypes[i] = l[0].toInt();
-			if (l.count() >= 2)
-				col_format[i] = l[1];
-		}
-	} else {//if fileVersion < 65 set table values
-		row = list[0].toInt();
-		for (int j=0; j<cols; j++)
-			d_table->setText(row, j, list[j+1]);
-	}
-
-	s = t.readLine();	//read-only columns line
-	list = s.split("\t");
-	if (s.contains ("ReadOnlyColumn")){
-		list.remove(list.first());
-		for (int i=0; i<c; i++)
-			d_table->setColumnReadOnly(i, list[i] == "1");
-	}
-
-	s = t.readLine();	//hidden columns line
-	list = s.split("\t");
-	if (s.contains ("HiddenColumn")){
-		list.remove(list.first());
-		for (int i=0; i<c; i++){
-			if (list[i] == "1")
-				d_table->hideColumn(i);
-			else
-				d_table->showColumn(i);
-		}
-	}
-
-	s = t.readLine();	//comments line ?
-	list = s.split("\t");
-	if (s.contains ("Comments")){
-		list.remove(list.first());
-		comments = list;
-	}
-
-	s = t.readLine();
-	list = s.split("\t");
-
-	if (s.contains ("WindowLabel")){
-		setWindowLabel(list[1]);
-		setCaptionPolicy((MdiSubWindow::CaptionPolicy)list[2].toInt());
-	}
-
-	s = t.readLine();
-	if (s == "<data>")
-		s = t.readLine();
-
-	while (!t.atEnd () && s != "</data>"){
-		list = s.split("\t");
-		row = list[0].toInt();
-		for (int j=0; j<c; j++){
-			QString cell = list[j+1];
-			if (!cell.isEmpty()){
-				if (colTypes[j] == Numeric)
-					setCell(row, j, cell.toDouble());
-				else
-					d_table->setText(row, j, cell);
-			}
-		}
-
-		s = t.readLine();
-	}
-
-	for (int j=0; j<c; j++)
-		emit modifiedData(this, colName(j));
-}
-
 void Table::setNumRows(int rows)
 {
 	d_table->setNumRows(rows);
@@ -3179,6 +2966,12 @@ void Table::showAllColumns()
 		if (d_table->isColumnHidden(i))
 			d_table->showColumn(i);
 	}
+}
+
+QString Table::sizeToString()
+{
+	int size = d_table->numRows() * d_table->numCols();
+	return QString::number((sizeof(Table) + size*sizeof(Q3TableItem))/1024.0, 'f', 1) + " " + tr("kB");
 }
 
 /*****************************************************************************
