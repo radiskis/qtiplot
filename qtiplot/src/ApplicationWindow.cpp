@@ -13408,107 +13408,6 @@ void ApplicationWindow::showDemoVersionMessage()
 }
 #endif
 
-/*void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
-{
-	QFile f( fn );
-	if (d_backup_files && f.exists())
-	{// make byte-copy of current file so that there's always a copy of the data on disk
-		while (!f.open(QIODevice::ReadOnly)){
-			if (f.isOpen())
-				f.close();
-			int choice = QMessageBox::warning(this, tr("QtiPlot - File backup error"),
-					tr("Cannot make a backup copy of <b>%1</b> (to %2).<br>If you ignore this, you run the risk of <b>data loss</b>.").arg(projectname).arg(projectname+"~"),
-					QMessageBox::Retry|QMessageBox::Default, QMessageBox::Abort|QMessageBox::Escape, QMessageBox::Ignore);
-			if (choice == QMessageBox::Abort)
-				return;
-			if (choice == QMessageBox::Ignore)
-				break;
-		}
-
-		if (f.isOpen()){
-            QFile::copy (fn, fn + "~");
-			f.close();
-		}
-	}
-
-	if ( !f.open( QIODevice::WriteOnly ) ){
-		QMessageBox::about(this, tr("QtiPlot - File save error"), tr("The file: <br><b>%1</b> is opened in read-only mode").arg(fn));
-		return;
-	}
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	QList<MdiSubWindow *> lst = folder->windowsList();
-	int windows = 0;
-	QString text;
-	foreach(MdiSubWindow *w, lst){
-		QString aux = w->saveToString(windowGeometryInfo(w));
-		if (w->inherits("Table"))
-			((Table *)w)->setSpecifications(aux);
-        text += aux;
-		windows++;
-	}
-
-	int initial_depth = folder->depth();
-	Folder *dir = folder->folderBelow();
-	while (dir && dir->depth() > initial_depth){
-		text += "<folder>\t" + QString(dir->objectName()) + "\t" + dir->birthDate() + "\t" + dir->modificationDate();
-		if (dir == current_folder)
-			text += "\tcurrent\n";
-		else
-			text += "\n";  // FIXME: Having no 5th string here is not a good idea
-		text += "<open>" + QString::number(dir->folderListItem()->isOpen()) + "</open>\n";
-
-		lst = dir->windowsList();
-		foreach(MdiSubWindow *w, lst){
-			QString aux = w->saveToString(windowGeometryInfo(w));
-			if (w->inherits("Table"))
-				((Table *)w)->setSpecifications(aux);
-            text += aux;
-			windows++;
-		}
-
-		if (!dir->logInfo().isEmpty() )
-			text += "<log>\n" + dir->logInfo() + "</log>\n" ;
-
-		if ( (dir->children()).isEmpty() )
-			text += "</folder>\n";
-
-		int depth = dir->depth();
-		dir = dir->folderBelow();
-		if (dir){
-		    int next_dir_depth = dir->depth();
-		    if (next_dir_depth < depth){
-		        int diff = depth - next_dir_depth;
-		        for (int i = 0; i < diff; i++)
-                    text += "</folder>\n";
-		    }
-		} else {
-		    int diff = depth - initial_depth - 1;
-            for (int i = 0; i < diff; i++)
-                text += "</folder>\n";
-		}
-	}
-
-	text += "<open>" + QString::number(folder->folderListItem()->isOpen()) + "</open>\n";
-	if (!folder->logInfo().isEmpty())
-		text += "<log>\n" + folder->logInfo() + "</log>" ;
-
-	text.prepend("<windows>\t"+QString::number(windows)+"\n");
-	text.prepend("<scripting-lang>\t"+QString(scriptEnv->name())+"\n");
-	text.prepend("QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
-			QString::number(patch_version)+" project file\n");
-
-	QTextStream t( &f );
-	t.setEncoding(QTextStream::UnicodeUTF8);
-	t << text;
-	f.close();
-
-	if (compress)
-		file_compress((char *)fn.ascii(), "wb9");
-
-	QApplication::restoreOverrideCursor();
-}*/
-
 void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
 {
 	QFile f( fn );
@@ -13764,15 +13663,14 @@ void ApplicationWindow::renameFolder(Q3ListViewItem *it, int col, const QString 
 {
 	Q_UNUSED(col)
 
-		if (!it)
-			return;
+	if (!it)
+		return;
 
 	Folder *parent = (Folder *)current_folder->parent();
 	if (!parent)//the parent folder is the project folder (it always exists)
 		parent = projectFolder();
 
-	while(text.isEmpty())
-	{
+	while(text.isEmpty()){
 		QMessageBox::critical(this,tr("QtiPlot - Error"), tr("Please enter a valid name!"));
 		it->setRenameEnabled (0, true);
 		it->startRename (0);
@@ -14078,7 +13976,7 @@ void ApplicationWindow::folderItemChanged(Q3ListViewItem *it)
 {
 	if (!it)
 		return;
-
+	
 	it->setOpen(true);
 	changeFolder (((FolderListItem *)it)->folder());
 	folders->setFocus();
@@ -15257,6 +15155,20 @@ void ApplicationWindow::addCustomAction(QAction *action, const QString& parentNa
 	QList<QToolBar *> toolBars = toolBarsList();
     foreach (QToolBar *t, toolBars){
         if (t->objectName() == parentName){
+			if (action->icon().isNull()){
+				QPixmap icon = QPixmap(16, 16);
+				QRect r = QRect(0, 0, 15, 15);
+				icon.fill (Qt::white);
+				QPainter p;
+				p.begin(&icon);
+				p.setPen(QPen(Qt::red, 2));
+				p.drawLine(0, 0, 15, 15);
+				p.drawLine(0, 15, 15, 0);
+				p.setPen(QPen(Qt::black));
+				p.drawRect(r);
+				action->setIcon(QIcon(icon));
+				action->setIconText(tr("No Icon"));
+			}
             t->addAction(action);
 			if (index < 0)
             	d_user_actions << action;
@@ -15269,6 +15181,8 @@ void ApplicationWindow::addCustomAction(QAction *action, const QString& parentNa
     QList<QMenu *> menus = customizableMenusList();
     foreach (QMenu *m, menus){
         if (m->objectName() == parentName){
+			if (action->icon().isNull())
+				action->setIconText(tr("No Icon"));
             m->addAction(action);
 			if (index < 0)
             	d_user_actions << action;

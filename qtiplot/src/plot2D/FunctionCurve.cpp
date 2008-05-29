@@ -101,13 +101,13 @@ void FunctionCurve::loadData(int points)
     if (!points)
         points = dataSize();
 	
-	double *X = (double *)malloc(points * sizeof (double));
+	double *X = (double *)malloc(points*sizeof(double));
 	if (!X){
 		QMessageBox::critical(0, "QtiPlot - Memory Allocation Error",
 		"Not enough memory, operation aborted!");
 		return;
 	}
-	double *Y = (double *)malloc(points * sizeof (double));
+	double *Y = (double *)malloc(points*sizeof(double));
 	if (!Y){
 		QMessageBox::critical(0, "QtiPlot  - Memory Allocation Error",
 		"Not enough memory, operation aborted!");

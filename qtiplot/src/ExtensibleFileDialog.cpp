@@ -29,6 +29,8 @@
 
 #include "ExtensibleFileDialog.h"
 #include <QGridLayout>
+#include <QDesktopServices>
+#include <QUrl>
 
 ExtensibleFileDialog::ExtensibleFileDialog(QWidget *parent, bool extended, Qt::WFlags flags)
 	: QFileDialog(parent, flags)
@@ -52,6 +54,13 @@ ExtensibleFileDialog::ExtensibleFileDialog(QWidget *parent, bool extended, Qt::W
 		// would probably look a mess, but at least all functions would be accessible
 		layout()->addWidget(d_extension_toggle);
 	}
+
+    QList<QUrl> urls;
+    urls << QUrl::fromLocalFile("");
+    urls << QUrl::fromLocalFile(QDir::homePath());
+	urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+	setSidebarUrls(urls);
 
 	connect(this, SIGNAL(accepted()), this, SLOT(close()));
     connect(this, SIGNAL(rejected()), this, SLOT(close()));
