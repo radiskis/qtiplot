@@ -1462,6 +1462,7 @@ void Graph::print()
 
 	QPrintDialog printDialog(&printer, multiLayer()->applicationWindow());
     if (printDialog.exec() == QDialog::Accepted){
+	#ifdef Q_OS_LINUX
 		if (printDialog.enabledOptions() & QAbstractPrintDialog::PrintToFile){
 			QString fn = printer.outputFileName();
 			if (printer.outputFormat() == QPrinter::PostScriptFormat && !fn.contains(".ps"))
@@ -1469,6 +1470,7 @@ void Graph::print()
 			else if (printer.outputFormat() == QPrinter::PdfFormat && !fn.contains(".pdf"))
 				printer.setOutputFileName(fn + ".pdf");
 		}
+	#endif
 		
 		QRect plotRect = rect();
 		QRect paperRect = printer.paperRect();

@@ -343,14 +343,14 @@ void CustomActionDialog::customizeAction(QAction *action)
 	action->setText(textBox->text().remove(".").simplified());
     action->setData(QFileInfo(fileBox->text()).absoluteFilePath());
 
-    QIcon icon = QIcon();
-	QString iconPath = iconBox->text();
+	QString iconPath = iconBox->text();	
 	QFileInfo iconInfo(iconPath);
-    if (!iconPath.isEmpty() && iconInfo.exists()){
-        icon = QIcon(iconPath);
-        action->setIcon(icon);
+    if (!iconPath.isEmpty() && iconInfo.exists() && iconInfo.isFile()){
+        action->setIcon(QIcon(iconPath));
         action->setIconText(iconInfo.absoluteFilePath());
-    }
+    } else {
+
+	}
 
     if (!toolTipBox->text().isEmpty())
         action->setToolTip(toolTipBox->text().simplified());
@@ -407,18 +407,22 @@ void CustomActionDialog::saveCurrentAction()
         } else {
             foreach (QMenu *m, d_menus){
                 if (m->title().remove("&") == menuBox->currentText()){
-                    action->setStatusTip(m->objectName());
+                    newAction->setStatusTip(m->objectName());
                     app->addCustomAction(newAction, m->objectName(), row);
                     break;
                 }
             }
         }
 		saveAction(newAction);
+		app->removeCustomAction(action);
 		delete action;
 	} else {
 		customizeAction(action);
 		saveAction(action);
-	}
+	} 	
+	
+	updateDisplayList();
+	itemsList->setCurrentRow(row);
 }
 
 void CustomActionDialog::saveAction(QAction *action)
@@ -583,7 +587,7 @@ bool CustomActionHandler::endElement(const QString & /* namespaceURI */,
         d_action->setText(currentText);
     else if (qName == "file")
         filePath = currentText;
-    else if (qName == "icon" && !currentText.isEmpty()){
+    else if (qName == "icon" && !currentText.isEmpty() && QFile::exists(currentText)){
         d_action->setIcon(QIcon(currentText));
         d_action->setIconText(currentText);
     } else if (qName == "tooltip")
@@ -596,6 +600,6 @@ bool CustomActionHandler::endElement(const QString & /* namespaceURI */,
         d_action->setStatusTip(currentText);
     } else if (qName == "action")
         d_action->setData(filePath);
-
+	
     return true;
 }

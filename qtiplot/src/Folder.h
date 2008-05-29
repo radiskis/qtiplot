@@ -163,7 +163,6 @@ public:
 	enum {RTTI = 1001};
 
 	void setActive( bool o );
-	void cancelRename(int){return;};
 
 	virtual int rtti() const {return (int)RTTI;};
 

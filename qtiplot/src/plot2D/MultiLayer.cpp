@@ -774,6 +774,7 @@ void MultiLayer::print()
 
     QPrintDialog printDialog(&printer, applicationWindow());
     if (printDialog.exec() == QDialog::Accepted){
+	#ifdef Q_OS_LINUX
 		if (printDialog.enabledOptions() & QAbstractPrintDialog::PrintToFile){
 			QString fn = printer.outputFileName();
 			if (printer.outputFormat() == QPrinter::PostScriptFormat && !fn.contains(".ps"))
@@ -781,6 +782,7 @@ void MultiLayer::print()
 			else if (printer.outputFormat() == QPrinter::PdfFormat && !fn.contains(".pdf"))
 				printer.setOutputFileName(fn + ".pdf");
 		}
+	#endif
 		
 		QPainter paint(&printer);
 		printAllLayers(&paint);
