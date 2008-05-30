@@ -1451,8 +1451,9 @@ void Graph::print()
 	QPrinter printer;
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(true);
+#ifdef Q_OS_LINUX
 	printer.setOutputFileName(multiLayer()->objectName());
-
+#endif
 	//printing should preserve plot aspect ratio, if possible
 	double aspect = double(width())/double(height());
 	if (aspect < 1)
@@ -1471,7 +1472,7 @@ void Graph::print()
 				printer.setOutputFileName(fn + ".pdf");
 		}
 	#endif
-		
+
 		QRect plotRect = rect();
 		QRect paperRect = printer.paperRect();
 		if (d_scale_on_print){
@@ -2489,10 +2490,10 @@ QString Graph::saveMarkers()
 				s += "</text>\n";
 		}
 	}
-	
+
 	foreach(FrameWidget *f, d_enrichements)
 		s += f->saveToString();
-	
+
 	return s;
 }
 
@@ -3310,7 +3311,7 @@ void Graph::addLegendItem()
 }
 
 void Graph::contextMenuEvent(QContextMenuEvent *e)
-{	
+{
 	if (d_selected_marker) {
 		emit showMarkerPopupMenu();
 		return;
@@ -3321,7 +3322,7 @@ void Graph::contextMenuEvent(QContextMenuEvent *e)
 	QwtPlotCurve *c = closestCurve(pos.x(), pos.y(), dist, point);
 	if (c && dist < 10)//10 pixels tolerance
 		emit showCurveContextMenu(c);
-	else 
+	else
 		emit showContextMenu();
 
 	e->accept();
@@ -4376,10 +4377,10 @@ void Graph::setActiveTool(PlotToolInterface *tool)
 		d_peak_fit_tool = NULL;
 		return;
 	}
-	
-    if (tool && tool->rtti() == PlotToolInterface::Rtti_MultiPeakFitTool){	
+
+    if (tool && tool->rtti() == PlotToolInterface::Rtti_MultiPeakFitTool){
 		d_peak_fit_tool = tool;
-		
+
         if (d_range_selector)
             d_range_selector->setEnabled(false);
         return;
@@ -4405,7 +4406,7 @@ void Graph::disableTools()
 	if (d_peak_fit_tool)
 		delete d_peak_fit_tool;
 	d_peak_fit_tool = NULL;
-	
+
 	if (d_range_selector)
 		delete d_range_selector;
 	d_range_selector = NULL;

@@ -500,7 +500,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_backup_files = true;
 	defaultScriptingLang = "muParser";
 	//d_locale = QLocale::system().name();
-		
+
 	d_decimal_digits = 13;
 
 	d_extended_open_dialog = true;
@@ -744,7 +744,7 @@ void ApplicationWindow::initToolBars()
 	actionAddFormula->setIcon(QIcon(QPixmap(add_formula_xpm)));
 	connect(actionAddFormula, SIGNAL(activated()), this, SLOT(addTexFormula()));
 	plotTools->addAction(actionAddFormula);
-	
+
 	actionAddText = new QAction(tr("Add &Text"), this);
 	actionAddText->setShortcut( tr("ALT+T") );
 	actionAddText->setIcon(QIcon(QPixmap(text_xpm)));
@@ -4207,10 +4207,8 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 		QString geometry = t.readLine();
 
 		if (templateType == "<multiLayer>"){
-			w = multilayerPlot(generateUniqueName(tr("Graph")));
+			w = multilayerPlot(generateUniqueName(tr("Graph")), 0, rows, cols);
 			if (w){
-				((MultiLayer*)w)->setCols(cols);
-				((MultiLayer*)w)->setRows(rows);
 				restoreWindowGeometry(this, w, geometry);
 				if (d_file_version > 83){
 					QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
@@ -4302,8 +4300,8 @@ void ApplicationWindow::readSettings()
     d_completion = settings.value("/Completion", true).toBool();
     d_note_line_numbers = settings.value("/LineNumbers", true).toBool();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
-	
-	bool thousandsSep = settings.value("/ThousandsSeparator", true).toBool();	
+
+	bool thousandsSep = settings.value("/ThousandsSeparator", true).toBool();
 	QLocale loc = QLocale(settings.value("/Locale", QLocale::system().name()).toString());
 	if (!thousandsSep)
         loc.setNumberOptions(QLocale::OmitGroupSeparator);
@@ -4617,7 +4615,7 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/Completion", d_completion);
     settings.setValue("/LineNumbers", d_note_line_numbers);
 	settings.setValue("/ScriptingLang", defaultScriptingLang);
-	
+
 	bool thousandsSep = (locale().numberOptions() & QLocale::OmitGroupSeparator) ? false : true;
 	settings.setValue("/ThousandsSeparator", thousandsSep);
 
@@ -5133,22 +5131,30 @@ QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
 
     s += QString::number(w->x()) + "\t";
     s += QString::number(w->y()) + "\t";
-	if (w->status() != MdiSubWindow::Minimized){
+
+    QSize minRestoreSize = w->minRestoreSize();
+    if (w->status() == MdiSubWindow::Hidden &&
+        minRestoreSize.width() > w->width() &&
+        minRestoreSize.height() > w->height()){
+        // the window was minimized and afterwards hidden
+        s += QString::number(minRestoreSize.width()) + "\t";
+        s += QString::number(minRestoreSize.height()) + "\t";
+	} else if (w->status() != MdiSubWindow::Minimized){
         s += QString::number(w->width()) + "\t";
         s += QString::number(w->height()) + "\t";
     } else {
-        s += QString::number(w->minRestoreSize().width()) + "\t";
-        s += QString::number(w->minRestoreSize().height()) + "\t";
+        s += QString::number(minRestoreSize.width()) + "\t";
+        s += QString::number(minRestoreSize.height()) + "\t";
         s += "minimized\t";
     }
 
     bool hide = hidden(w);
     if (w == w->folder()->activeWindow() && !hide)
-        s+="active\n";
+        s += "active\n";
     else if(hide)
-        s+="hidden\n";
+        s += "hidden\n";
     else
-        s+="\n";
+        s += "\n";
 	return s;
 }
 
@@ -7111,11 +7117,11 @@ void ApplicationWindow::addTexFormula()
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
-	
+
 	Graph *g = (Graph*)plot->activeLayer();
 	if (!g)
 		return;
-	
+
 	//g->setCursor(QCursor(Qt::IBeamCursor));
 	TexWidgetDialog *twd = new TexWidgetDialog(g, this);
 	twd->exec();
@@ -8271,7 +8277,7 @@ void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 {
 	if (!w)
 		return;
-	
+
 	modifiedProject();
 
 	if (w->isA("Matrix") || w->isA("Note"))
@@ -8280,7 +8286,7 @@ void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(false);
 	}
-	
+
 	Q3ListViewItem *it = lv->findItem (w->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
 		it->setText(3, w->sizeToString());
@@ -10560,7 +10566,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			TexWidget::restore(ag, lst);
-		} 
+		}
 		else if (s.contains("AxisType"))
 		{
 			QStringList fList = s.split("\t");
@@ -12361,7 +12367,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionAddFormula->setMenuText(tr("Add &Formula"));
 	actionAddFormula->setToolTip(tr("Add Formula"));
 	actionAddFormula->setShortcut( tr("ALT+F") );
-	
+
 	btnArrow->setMenuText(tr("Draw &Arrow"));
 	btnArrow->setShortcut(tr("CTRL+ALT+A"));
 	btnArrow->setToolTip(tr("Draw arrow"));
@@ -13455,7 +13461,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	t << "<scripting-lang>\t" + QString(scriptEnv->name()) + "\n";
 	t << "<windows>\t" + QString::number(windows) + "\n";
 	f.close();
-	
+
 	foreach(MdiSubWindow *w, lst)
 		w->save(fn, windowGeometryInfo(w));
 
@@ -13464,7 +13470,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	while (dir && dir->depth() > initial_depth){
 		if (!f.isOpen())
 			f.open(QIODevice::Append);
-		
+
 		t << "<folder>\t" + QString(dir->objectName()) + "\t" + dir->birthDate() + "\t" + dir->modificationDate();
 		if (dir == current_folder)
 			t << "\tcurrent\n";
@@ -13472,14 +13478,14 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 			t << "\n";  // FIXME: Having no 5th string here is not a good idea
 		t << "<open>" + QString::number(dir->folderListItem()->isOpen()) + "</open>\n";
 		f.close();
-		
+
 		lst = dir->windowsList();
 		foreach(MdiSubWindow *w, lst)
 			w->save(fn, windowGeometryInfo(w));
 
 		if (!f.isOpen())
 			f.open(QIODevice::Append);
-					
+
 		if (!dir->logInfo().isEmpty() )
 			t << "<log>\n" + dir->logInfo() + "</log>\n" ;
 
@@ -13672,8 +13678,8 @@ void ApplicationWindow::renameFolder(Q3ListViewItem *it, int col, const QString 
 
 	while(text.isEmpty()){
 		QMessageBox::critical(this,tr("QtiPlot - Error"), tr("Please enter a valid name!"));
-		it->setRenameEnabled (0, true);
-		it->startRename (0);
+		it->setRenameEnabled (0, false);
+		it->setText(0, ((FolderListItem*)it)->folder()->objectName());
 		return;
 	}
 
@@ -13683,8 +13689,8 @@ void ApplicationWindow::renameFolder(Q3ListViewItem *it, int col, const QString 
 		QMessageBox::critical(this,tr("QtiPlot - Error"),
 				tr("Name already exists!")+"\n"+tr("Please choose another name!"));
 
-		it->setRenameEnabled (0, true);
-		it->startRename (0);
+		it->setRenameEnabled (0, false);
+		it->setText(0, ((FolderListItem*)it)->folder()->objectName());
 		return;
 	}
 
@@ -13976,7 +13982,7 @@ void ApplicationWindow::folderItemChanged(Q3ListViewItem *it)
 {
 	if (!it)
 		return;
-	
+
 	it->setOpen(true);
 	changeFolder (((FolderListItem *)it)->folder());
 	folders->setFocus();

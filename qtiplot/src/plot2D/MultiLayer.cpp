@@ -763,7 +763,9 @@ void MultiLayer::print()
 	QPrinter printer;
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(true);
-	printer.setOutputFileName(objectName());
+#ifdef Q_OS_LINUX
+	printer.setOutputFileName(multiLayer()->objectName());
+#endif
 
     QRect canvasRect = canvas->rect();
     double aspect = double(canvasRect.width())/double(canvasRect.height());
@@ -783,7 +785,7 @@ void MultiLayer::print()
 				printer.setOutputFileName(fn + ".pdf");
 		}
 	#endif
-		
+
 		QPainter paint(&printer);
 		printAllLayers(&paint);
 		paint.end();
@@ -1043,11 +1045,11 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
 			return;
-	}	
+	}
 	QTextStream t( &f );
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	t << "<multiLayer>\n";
-	
+
     bool notTemplate = !saveAsTemplate;
 	if (notTemplate)
         t << QString(objectName())+"\t";

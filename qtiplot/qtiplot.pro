@@ -21,7 +21,7 @@ DEFINES         += SCRIPTING_DIALOG
 
 CONFIG          += release
 #CONFIG          += debug
-#win32: CONFIG   += console
+win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -300,7 +300,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/BoxCurve.cpp \
 			   src/plot2D/CanvasPicker.cpp \
 			   src/plot2D/DataPickerTool.cpp \
-			   src/plot2D/FrameWidget.cpp \			   
+			   src/plot2D/FrameWidget.cpp \
 			   src/plot2D/FunctionCurve.cpp \
 			   src/plot2D/Graph.cpp \
 			   src/plot2D/Grid.cpp \
