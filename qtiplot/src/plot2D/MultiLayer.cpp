@@ -641,7 +641,8 @@ void MultiLayer::exportPDF(const QString& fname)
 	exportVector(fname);
 }
 
-void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool keepAspect, QPrinter::PageSize pageSize)
+void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool keepAspect, 
+			QPrinter::PageSize pageSize)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
@@ -664,23 +665,25 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
 	//if (res) //only printing with screen resolution works correctly for the moment
 		//printer.setResolution(res);
 
-	QRect canvasRect = canvas->rect();
-    if (pageSize == QPrinter::Custom)
-        printer.setPageSize(Graph::minPageSize(printer, canvasRect));
-    else
-        printer.setPageSize(pageSize);
-
-	double canvas_aspect = double(canvasRect.width())/double(canvasRect.height());
-	if (canvas_aspect < 1)
-		printer.setOrientation(QPrinter::Portrait);
-	else
-		printer.setOrientation(QPrinter::Landscape);
-
 	if (color)
 		printer.setColorMode(QPrinter::Color);
 	else
 		printer.setColorMode(QPrinter::GrayScale);
 
+	printer.setOrientation(QPrinter::Portrait);
+	
+	QRect canvasRect = canvas->rect();
+    if (pageSize == QPrinter::Custom){
+		printer.setPaperSize(QSizeF(canvas->width(), canvas->height()), QPrinter::DevicePixel);
+        QPainter paint(&printer);
+		foreach (Graph *g, graphsList)
+        	g->print(&paint, g->geometry());
+		return;
+    } 
+	
+	printer.setPageSize(pageSize);
+
+	double canvas_aspect = double(canvasRect.width())/double(canvasRect.height());
     double x_margin = 0, y_margin = 0, width = 0, height = 0;
     if (keepAspect){// export should preserve plot aspect ratio
         double page_aspect = double(printer.width())/double(printer.height());
@@ -764,7 +767,7 @@ void MultiLayer::print()
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(true);
 #ifdef Q_OS_LINUX
-	printer.setOutputFileName(multiLayer()->objectName());
+	printer.setOutputFileName(objectName());
 #endif
 
     QRect canvasRect = canvas->rect();

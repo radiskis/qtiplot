@@ -107,7 +107,7 @@ void ImageExportDialog::initAdvancedOptions()
 	d_color->setText(tr("&Export in &color"));
 	d_color->setChecked(app->d_export_color);
 	vector_layout->addWidget(d_color, 2, 0, 1, 2);
-
+	
     d_standard_page = new QCheckBox();
 	d_standard_page->setText(tr("Custom &page size"));
 	vector_layout->addWidget(d_standard_page, 3, 0, 1, 2);

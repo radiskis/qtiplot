@@ -372,7 +372,7 @@ public:
 	void importImage(const QString&);
 	void exportRasterImage(const QString&, int = 100);
 	void exportToFile(const QString&)  /PyName=export/;
-	void exportVector(const QString&, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize = QPrinter::Custom);
+	void exportVector(const QString&, int = 0, bool = true, bool = true, QPrinter::PageSize = QPrinter::Custom);
 
 	void importASCII(const QString&, const QString&="\t", int=0, bool=false, bool=false,
 			const QString&="#", ImportMode = Overwrite, const QLocale& = QLocale(), int = 0, int = -1);
@@ -640,8 +640,7 @@ public:
   void replot();
 
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
-  void exportVector(const QString& fileName, int res = 0, bool color = true,
-                    bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
+  void exportVector(const QString&, int = 0, bool = true, bool = true, QPrinter::PageSize = QPrinter::Custom);
   void exportToFile(const QString& fileName) /PyName=export/;
 
   void enableAutoscaling(bool = true);
@@ -682,8 +681,7 @@ public:
 
   void exportToFile(const QString& fileName) /PyName=export/;
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
-  void exportVector(const QString& fileName, int res = 0, bool color = true,
-                    bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
+  void exportVector(const QString&, int = 0, bool = true, bool = true, QPrinter::PageSize = QPrinter::Custom);
 
 private:
   MultiLayer(const MultiLayer&);
