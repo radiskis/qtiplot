@@ -1380,7 +1380,8 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 	pic.save(fileName, 0, quality);
 }
 
-void Graph::exportVector(const QString& fileName, int res, bool color, bool keepAspect, QPrinter::PageSize pageSize)
+void Graph::exportVector(const QString& fileName, int res, bool color, bool keepAspect, 
+					QPrinter::PageSize pageSize)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
@@ -1407,39 +1408,36 @@ void Graph::exportVector(const QString& fileName, int res, bool color, bool keep
 	else
 		printer.setColorMode(QPrinter::GrayScale);
 
-    QRect plotRect = rect();
-    if (pageSize == QPrinter::Custom)
-        printer.setPageSize(minPageSize(printer, plotRect));
-    else
+	printer.setOrientation(QPrinter::Portrait);
+	
+	QRect plotRect = rect();
+	if (pageSize == QPrinter::Custom)
+        printer.setPaperSize (QSizeF(width(), height()), QPrinter::DevicePixel);
+    else {
         printer.setPageSize(pageSize);
-
-    double plot_aspect = double(frameGeometry().width())/double(frameGeometry().height());
-	if (plot_aspect < 1)
-		printer.setOrientation(QPrinter::Portrait);
-	else
-		printer.setOrientation(QPrinter::Landscape);
-
-    if (keepAspect){// export should preserve plot aspect ratio
+		double plot_aspect = double(frameGeometry().width())/double(frameGeometry().height());
+		if (keepAspect){// export should preserve plot aspect ratio
         double page_aspect = double(printer.width())/double(printer.height());
-        if (page_aspect > plot_aspect){
-            int margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
-            int height = printer.height() - 2*margin;
-            int width = int(height*plot_aspect);
-            int x = (printer.width()- width)/2;
-            plotRect = QRect(x, margin, width, height);
-        } else if (plot_aspect >= page_aspect){
-            int margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
-            int width = printer.width() - 2*margin;
-            int height = int(width/plot_aspect);
-            int y = (printer.height()- height)/2;
-            plotRect = QRect(margin, y, width, height);
-        }
-	} else {
-	    int x_margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
-        int y_margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
-        int width = printer.width() - 2*x_margin;
-        int height = printer.height() - 2*y_margin;
-        plotRect = QRect(x_margin, y_margin, width, height);
+        	if (page_aspect > plot_aspect){
+            	int margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
+            	int height = printer.height() - 2*margin;
+            	int width = int(height*plot_aspect);
+            	int x = (printer.width()- width)/2;
+            	plotRect = QRect(x, margin, width, height);
+        	} else if (plot_aspect >= page_aspect){
+           		int margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
+            	int width = printer.width() - 2*margin;
+            	int height = int(width/plot_aspect);
+            	int y = (printer.height()- height)/2;
+            	plotRect = QRect(margin, y, width, height);
+        	}
+		} else {
+	    	int x_margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
+        	int y_margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
+        	int width = printer.width() - 2*x_margin;
+        	int height = printer.height() - 2*y_margin;
+        	plotRect = QRect(x_margin, y_margin, width, height);
+		}
 	}
 
     QPainter paint(&printer);
@@ -4805,84 +4803,6 @@ int Graph::visibleCurves()
             c++;
 	}
 	return c;
-}
-
-QPrinter::PageSize Graph::minPageSize(const QPrinter& printer, const QRect& r)
-{
-	double x_margin = 0.2/2.54*printer.logicalDpiX(); // 2 mm margins
-	double y_margin = 0.2/2.54*printer.logicalDpiY();
-    double w_mm = 2*x_margin + (double)(r.width())/(double)printer.logicalDpiX() * 25.4;
-    double h_mm = 2*y_margin + (double)(r.height())/(double)printer.logicalDpiY() * 25.4;
-
-    int w, h;
-    if (w_mm/h_mm > 1)
-    {
-        w = (int)ceil(w_mm);
-        h = (int)ceil(h_mm);
-    }
-    else
-    {
-        h = (int)ceil(w_mm);
-        w = (int)ceil(h_mm);
-    }
-
-	QPrinter::PageSize size = QPrinter::A5;
-	if (w < 45 && h < 32)
-        size =  QPrinter::B10;
-	else if (w < 52 && h < 37)
-        size =  QPrinter::A9;
-    else if (w < 64 && h < 45)
-        size =  QPrinter::B9;
-    else if (w < 74 && h < 52)
-        size =  QPrinter::A8;
-    else if (w < 91 && h < 64)
-        size =  QPrinter::B8;
-    else if (w < 105 && h < 74)
-        size =  QPrinter::A7;
-    else if (w < 128 && h < 91)
-        size =  QPrinter::B7;
-    else if (w < 148 && h < 105)
-        size =  QPrinter::A6;
-    else if (w < 182 && h < 128)
-        size =  QPrinter::B6;
-    else if (w < 210 && h < 148)
-        size =  QPrinter::A5;
-	else if (w < 220 && h < 110)
-        size =  QPrinter::DLE;
-	else if (w < 229 && h < 163)
-        size =  QPrinter::C5E;
-	else if (w < 241 && h < 105)
-        size =  QPrinter::Comm10E;
-    else if (w < 257 && h < 182)
-        size =  QPrinter::B5;
-	else if (w < 279 && h < 216)
-        size =  QPrinter::Letter;
-    else if (w < 297 && h < 210)
-        size =  QPrinter::A4;
-	else if (w < 330 && h < 210)
-        size =  QPrinter::Folio;
-	else if (w < 356 && h < 216)
-        size =  QPrinter::Legal;
-    else if (w < 364 && h < 257)
-        size =  QPrinter::B4;
-    else if (w < 420 && h < 297)
-        size =  QPrinter::A3;
-    else if (w < 515 && h < 364)
-        size =  QPrinter::B3;
-    else if (w < 594 && h < 420)
-        size =  QPrinter::A2;
-    else if (w < 728 && h < 515)
-        size =  QPrinter::B2;
-	else if (w < 841 && h < 594)
-        size =  QPrinter::A1;
-    else if (w < 1030 && h < 728)
-        size =  QPrinter::B1;
-	else if (w < 1189 && h < 841)
-        size =  QPrinter::A0;
-    else if (w < 1456 && h < 1030)
-        size =  QPrinter::B0;
-
-	return size;
 }
 
 QwtScaleWidget* Graph::selectedScale()

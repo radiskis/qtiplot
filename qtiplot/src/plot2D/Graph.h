@@ -282,8 +282,8 @@ class Graph: public QwtPlot
 #ifdef EMF_OUTPUT
 		void exportEMF(const QString& fname);
 #endif
-		void exportVector(const QString& fileName, int res = 0, bool color = true,
-                        bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
+		void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true, 
+			QPrinter::PageSize pageSize = QPrinter::Custom);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 		//@}
 
@@ -621,7 +621,6 @@ class Graph: public QwtPlot
 		static Qt::PenStyle getPenStyle(const QString& s);
 		static Qt::PenStyle getPenStyle(int style);
 		static void showPlotErrorMessage(QWidget *parent, const QStringList& emptyColumns);
-		static QPrinter::PageSize minPageSize(const QPrinter& printer, const QRect& r);
 
 		void showTitleContextMenu();
 		void copyTitle();
