@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS><TS version="1.1" language="sv">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -10,7 +11,7 @@
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14680"/>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Fel</translation>
+        <translation>QtiPlot - Fel</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -25,12 +26,12 @@
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13492"/>
         <source>QtiPlot project</source>
-        <translation type="unfinished">QtiPlot-projekt</translation>
+        <translation>QtiPlot-projekt</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13493"/>
         <source>Compressed QtiPlot project</source>
-        <translation type="unfinished">Komprimerat QtiPlot-projekt</translation>
+        <translation>Komprimerat QtiPlot-projekt</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -45,17 +46,17 @@
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13017"/>
         <source>QtiPlot - File openning error</source>
-        <translation type="unfinished">QtiPlot - Filöppningsfel</translation>
+        <translation>QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13161"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
-        <translation type="unfinished">Filen: &lt;b&gt;&gt;%1&lt;/b&gt; saknas!</translation>
+        <translation>Filen: &lt;b&gt;&gt;%1&lt;/b&gt; saknas!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13166"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
-        <translation type="unfinished">Filen: &lt;b&gt;%1&lt;/b&gt;är inte en QtiPLot- eller Origin-projektfil!!</translation>
+        <translation>Filen: &lt;b&gt;%1&lt;/b&gt;är inte en QtiPLot- eller Origin-projektfil!!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -65,7 +66,7 @@
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13389"/>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
-        <translation type="unfinished">Kan ej göra säkerhetskopiering av &lt;b&gt;%1&lt;/b&gt; (till %2).&lt;br&gt;Om du ignorerar detta, riskerar du &lt;b&gt;dataförlust&lt;/b&gt;.</translation>
+        <translation>Kan ej göra säkerhetskopiering av &lt;b&gt;%1&lt;/b&gt; (till %2).&lt;br&gt;Om du ignorerar detta, riskerar du &lt;b&gt;dataförlust&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -75,7 +76,7 @@
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13404"/>
         <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
-        <translation type="unfinished">Filen: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; är redan öppnad i skrivskyddat läge</translation>
+        <translation>Filen: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; är redan öppnad i skrivskyddat läge</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -97,137 +98,137 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14446"/>
         <source>&amp;Yes</source>
-        <translation type="unfinished">&amp;Ja</translation>
+        <translation>&amp;Ja</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14446"/>
         <source>&amp;No</source>
-        <translation type="unfinished">&amp;Nej</translation>
+        <translation>&amp;Nej</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13523"/>
         <source>&amp;Find...</source>
-        <translation type="unfinished">&amp;Leta...</translation>
+        <translation>&amp;Leta...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13525"/>
         <source>App&amp;end Project...</source>
-        <translation type="unfinished">Lägg till proj&amp;ekt...</translation>
+        <translation>Lägg till proj&amp;ekt...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13527"/>
         <source>Save &amp;As Project...</source>
-        <translation type="unfinished">Sp&amp;ara som projekt...</translation>
+        <translation>Sp&amp;ara som projekt...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13529"/>
         <source>Save Project &amp;As...</source>
-        <translation type="unfinished">Sp&amp;ara projekt som...</translation>
+        <translation>Sp&amp;ara projekt som...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13534"/>
         <source>&amp;Show All Windows</source>
-        <translation type="unfinished">&amp;Visa alla fönster</translation>
+        <translation>&amp;Visa alla fönster</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13535"/>
         <source>&amp;Hide All Windows</source>
-        <translation type="unfinished">&amp;Göm alla fönster</translation>
+        <translation>&amp;Göm alla fönster</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13541"/>
         <source>&amp;Delete Folder</source>
-        <translation type="unfinished">&amp;Tag bort mapp</translation>
+        <translation>&amp;Tag bort mapp</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13542"/>
         <source>&amp;Rename</source>
-        <translation type="unfinished">&amp;Döp om</translation>
+        <translation>&amp;Döp om</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13554"/>
         <source>New &amp;Window</source>
-        <translation type="unfinished">Nytt &amp;fönster</translation>
+        <translation>Nytt &amp;fönster</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13557"/>
         <source>New F&amp;older</source>
-        <translation type="unfinished">Ny m&amp;app</translation>
+        <translation>Ny m&amp;app</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13561"/>
         <source>&amp;None</source>
-        <translation type="unfinished">&amp;Inget</translation>
+        <translation>&amp;Inget</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13561"/>
         <source>&amp;Windows in Active Folder</source>
-        <translation type="unfinished">&amp;Fönster i aktiv mapp</translation>
+        <translation>&amp;Fönster i aktiv mapp</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13561"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
-        <translation type="unfinished">&amp;Fönster i aktiv mapp &amp;&amp; undermappar</translation>
+        <translation>&amp;Fönster i aktiv mapp &amp;&amp; undermappar</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13568"/>
         <source>&amp;View Windows</source>
-        <translation type="unfinished">&amp;Visa fönster</translation>
+        <translation>&amp;Visa fönster</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13570"/>
         <source>&amp;Properties...</source>
-        <translation type="unfinished">&amp;Egenskaper...</translation>
+        <translation>&amp;Egenskaper...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13585"/>
         <source>Hidden</source>
-        <translation type="unfinished">Dold</translation>
+        <translation>Dold</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13639"/>
         <source>Please enter a valid name!</source>
-        <translation type="unfinished">Mata in ett giltigt namn!</translation>
+        <translation>Mata in ett giltigt namn!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13649"/>
         <source>Name already exists!</source>
-        <translation type="unfinished">Namnet finns redan!</translation>
+        <translation>Namnet finns redan!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13649"/>
         <source>Please choose another name!</source>
-        <translation type="unfinished">Mata in ett annat namn!</translation>
+        <translation>Mata in ett annat namn!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14149"/>
         <source>Type</source>
-        <translation type="unfinished">Typ</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13760"/>
         <source>Project</source>
-        <translation type="unfinished">Projekt</translation>
+        <translation>Projekt</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14151"/>
         <source>Path</source>
-        <translation type="unfinished">Sökväg</translation>
+        <translation>Sökväg</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14152"/>
         <source>Size</source>
-        <translation type="unfinished">Storlek</translation>
+        <translation>Storlek</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13766"/>
         <source>bytes</source>
-        <translation type="unfinished">byte</translation>
+        <translation>byte</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13802"/>
         <source>Contents</source>
-        <translation type="unfinished">Innehåll</translation>
+        <translation>Innehåll</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -242,67 +243,67 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14153"/>
         <source>Created</source>
-        <translation type="unfinished">Skapad</translation>
+        <translation>Skapad</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13777"/>
         <source>Modified</source>
-        <translation type="unfinished">Ändrad</translation>
+        <translation>Ändrad</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14127"/>
         <source>Properties</source>
-        <translation type="unfinished">Egenskaper</translation>
+        <translation>Egenskaper</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14167"/>
         <source>Folder</source>
-        <translation type="unfinished">Mapp</translation>
+        <translation>Mapp</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13821"/>
         <source>New Folder</source>
-        <translation type="unfinished">Ny mapp</translation>
+        <translation>Ny mapp</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13866"/>
         <source>QtiPlot - Delete folder?</source>
-        <translation type="unfinished">QtiPlot - Tag bort mapp?</translation>
+        <translation>QtiPlot - Tag bort mapp?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13867"/>
         <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
-        <translation type="unfinished">Tag bort mapp &apos;%1&apos; och alla fönster den innehåller?</translation>
+        <translation>Tag bort mapp &apos;%1&apos; och alla fönster den innehåller?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13868"/>
         <source>Yes</source>
-        <translation type="unfinished">Ja</translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13868"/>
         <source>No</source>
-        <translation type="unfinished">Nej</translation>
+        <translation>Nej</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14137"/>
         <source>Matrix</source>
-        <translation type="unfinished">Matris</translation>
+        <translation>Matris</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14140"/>
         <source>Table</source>
-        <translation type="unfinished">Tabell</translation>
+        <translation>Tabell</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14143"/>
         <source>Note</source>
-        <translation type="unfinished">Notera</translation>
+        <translation>Notera</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14146"/>
         <source>Graph</source>
-        <translation type="unfinished">Diagram</translation>
+        <translation>Diagram</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -312,37 +313,37 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14133"/>
         <source>Label</source>
-        <translation type="unfinished">Etikett</translation>
+        <translation>Etikett</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14154"/>
         <source>Status</source>
-        <translation type="unfinished">Status</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14218"/>
         <source>QtiPlot - No match found</source>
-        <translation type="unfinished">QtiPlot - Ingen matchning hittad</translation>
+        <translation>QtiPlot - Ingen matchning hittad</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14219"/>
         <source>Sorry, no match found for string: &apos;%1&apos;</source>
-        <translation type="unfinished">Ingen matchning hittad för strängen: &apos;%1&apos;</translation>
+        <translation>Ingen matchning hittad för strängen: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14237"/>
         <source>Cannot move an object to itself!</source>
-        <translation type="unfinished">Kan ej flytta ett objekt till sig självt!</translation>
+        <translation>Kan ej flytta ett objekt till sig självt!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14242"/>
         <source>Cannot move a parent folder into a child folder!</source>
-        <translation type="unfinished">Kan ej flytta en mapp till en av dess undermappar!</translation>
+        <translation>Kan ej flytta en mapp till en av dess undermappar!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="15183"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -352,7 +353,7 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14299"/>
         <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
-        <translation type="unfinished">Målmappen innehåller redan en mapp kallad &apos;%1*! Mappen hoppas över!</translation>
+        <translation>Målmappen innehåller redan en mapp kallad &apos;%1*! Mappen hoppas över!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -369,47 +370,47 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14367"/>
         <source>Error while fetching version file with HTTP: %1.</source>
-        <translation type="unfinished">Fel vid hämtning av versionsfil HTTP: %1.</translation>
+        <translation>Fel vid hämtning av versionsfil HTTP: %1.</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14385"/>
         <source>QtiPlot - Updates Available</source>
-        <translation type="unfinished">QtiPlot - Uppdateringar finns</translation>
+        <translation>QtiPlot - Uppdateringar finns</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14386"/>
         <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
-        <translation type="unfinished">Det finns en nyare version av QtiPlot (%1) tillgänglig för nerladdning. Vill du ladda ner den?</translation>
+        <translation>Det finns en nyare version av QtiPlot (%1) tillgänglig för nerladdning. Vill du ladda ner den?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14392"/>
         <source>QtiPlot - No Updates Available</source>
-        <translation type="unfinished">QtiPlot - Ingen uppdatering tillgänglig</translation>
+        <translation>QtiPlot - Ingen uppdatering tillgänglig</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14393"/>
         <source>No updates available. Your current version %1 is the last version available!</source>
-        <translation type="unfinished">Ingen uppdatering tillgänglig. Din aktuella version %1 är den senaste!</translation>
+        <translation>Ingen uppdatering tillgänglig. Din aktuella version %1 är den senaste!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="15301"/>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Varning</translation>
+        <translation>QtiPlot - Varning</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14445"/>
         <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
-        <translation type="unfinished">Detta kommer att rensa innehållet i alla data kopplat till tabellen. Är du säker?</translation>
+        <translation>Detta kommer att rensa innehållet i alla data kopplat till tabellen. Är du säker?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14460"/>
         <source>QtiPlot - Enter row number</source>
-        <translation type="unfinished">QtiPlot - Mata in radnummer</translation>
+        <translation>QtiPlot - Mata in radnummer</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14460"/>
         <source>Row</source>
-        <translation type="unfinished">Rad</translation>
+        <translation>Rad</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -429,12 +430,12 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14633"/>
         <source>Please select a Y column to plot!</source>
-        <translation type="unfinished">Välj en Y-kolumn för plottning!</translation>
+        <translation>Välj en Y-kolumn för plottning!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14639"/>
         <source>Please set a default X column for this table, first!</source>
-        <translation type="unfinished">Bestäm en standard X-kolumn till denna tabell först!</translation>
+        <translation>Bestäm en standard X-kolumn till denna tabell först!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -449,22 +450,22 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14668"/>
         <source>You need at least two columns for this operation!</source>
-        <translation type="unfinished">Du behöver minst två kolumner för denna åtgärd!</translation>
+        <translation>Du behöver minst två kolumner för denna åtgärd!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14672"/>
         <source>Please select a Z column for this operation!</source>
-        <translation type="unfinished">Välj en Z-kolumn för denna åtgärd!</translation>
+        <translation>Välj en Z-kolumn för denna åtgärd!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14676"/>
         <source>You need to define a X column first!</source>
-        <translation type="unfinished">Du måste definiera en X-kolumn först!</translation>
+        <translation>Du måste definiera en X-kolumn först!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14680"/>
         <source>You need to define a Y column first!</source>
-        <translation type="unfinished">Du måste definiera en Y-kolumn först!</translation>
+        <translation>Du måste definiera en Y-kolumn först!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -656,58 +657,58 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13165"/>
         <source>QtiPlot - File opening error</source>
-        <translation type="unfinished">QtiPlot - Filöppningsfel</translation>
+        <translation>QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13363"/>
         <source>QtiPlot - Demo Version</source>
-        <translation type="unfinished">QtiPlot - Demoversion</translation>
+        <translation>QtiPlot - Demoversion</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13365"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="xd"/></source>
-        <translation type="unfinished">Du använder demoversionen av QtiPlot.
+        <translation>Du använder demoversionen av QtiPlot.
 </translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13388"/>
         <source>QtiPlot - File backup error</source>
-        <translation type="unfinished">QtiPlot - Filbackuppfel</translation>
+        <translation>QtiPlot - Filbackuppfel</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13404"/>
         <source>QtiPlot - File save error</source>
-        <translation type="unfinished">QtiPlot - Filsparningsfel</translation>
+        <translation>QtiPlot - Filsparningsfel</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13496"/>
         <source>Save project as</source>
-        <translation type="unfinished">Spara projekt som</translation>
+        <translation>Spara projekt som</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13802"/>
         <source>windows</source>
-        <translation type="unfinished">fönster</translation>
+        <translation>fönster</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13803"/>
         <source>folders</source>
-        <translation type="unfinished">mapp</translation>
+        <translation>mapp</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14149"/>
         <source>3D Graph</source>
-        <translation type="unfinished">3D-diagram</translation>
+        <translation>3D-diagram</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14255"/>
         <source>Skipped moving folder</source>
-        <translation type="unfinished">Hoppande över att flytta mapp</translation>
+        <translation>Hoppande över att flytta mapp</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14366"/>
         <source>QtiPlot - HTTP get version file</source>
-        <translation type="unfinished">QtiPlot - HTTP hämta versionsfil</translation>
+        <translation>QtiPlot - HTTP hämta versionsfil</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -727,58 +728,59 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="15183"/>
         <source>Error</source>
-        <translation type="unfinished">Fel</translation>
+        <translation>Fel</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14351"/>
         <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
-        <translation type="unfinished">QtiPlot kommer att försöka matt ladda ner nödvändig information om senaste tillgängliga uppdatering. Justera din brandvägg till att tillåta QtiPlot att kontakta Internet!</translation>
+        <translation>QtiPlot kommer att försöka matt ladda ner nödvändig information om senaste tillgängliga uppdatering. Justera din brandvägg till att tillåta QtiPlot att kontakta Internet!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14352"/>
         <source>Do you wish to continue?</source>
-        <translation type="unfinished">Vill du fortsätta?</translation>
+        <translation>Vill du fortsätta?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14480"/>
         <source>QtiPlot - Enter column number</source>
-        <translation type="unfinished">QtiPlot - mata in kolumnnummer</translation>
+        <translation>QtiPlot - mata in kolumnnummer</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14480"/>
         <source>Column</source>
-        <translation type="unfinished">Kolumn</translation>
+        <translation>Kolumn</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="15184"/>
         <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation type="unfinished">QtoPlot skapades inte med Python-skroptmimg inkluderat!</translation>
+        <translation>QtoPlot skapades inte med Python-skriptning inkluderat!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14877"/>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
-        <translation type="unfinished">Med början av version lagrar 0.9.1 QtiPlot användardefinierade anpassningsmodeller på en anna plats. </translation>
+        <translation>Med början av version lagrar 0.9.1 QtiPlot användardefinierade anpassningsmodeller på en anna plats. </translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14878"/>
         <source>If you want to save your already defined models, please choose a destination folder.</source>
-        <translation type="unfinished">Om du vill spara dina befitliga modeller, välj en målmapp.</translation>
+        <translation>Om du vill spara dina befitliga modeller, välj en målmapp.</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14879"/>
         <source>Import fit models</source>
-        <translation type="unfinished">Importera anpassningsmodeller</translation>
+        <translation>Importera anpassningsmodeller</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14882"/>
         <source>Choose a directory to export the fit models to</source>
-        <translation type="unfinished">Väl en mapp att exportera anpassningsmodellerna till</translation>
+        <translation>Väl en mapp att exportera anpassningsmodellerna till</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="15302"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte ladda fil: %1.
+Automatisk komplettering ej tillgängligt!</translation>
     </message>
 </context>
 <context>
@@ -4250,7 +4252,7 @@ Delar av denna fil kanske inte visas som väntat.</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12916"/>
         <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;<byte value="xd"/></source>
-        <translation type="unfinished">&lt;font size=+2, color=darkBlue&gt;&lt;b&gt;QtiPlot är öppenkällprogramvara och utvecklingen av den har krävt hundratals timmars arbete.&lt;br&gt;&lt;br&gt;
+        <translation>&lt;font size=+2, color=darkBlue&gt;&lt;b&gt;QtiPlot är öppenkällprogramvara och utvecklingen av den har krävt hundratals timmars arbete.&lt;br&gt;&lt;br&gt;
 </translation>
     </message>
     <message>
@@ -5703,12 +5705,12 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="1201"/>
         <source>&amp;Scripting</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Skriptning</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12295"/>
         <source>Show Line &amp;Numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa rad&amp;nummer</translation>
     </message>
 </context>
 <context>
@@ -7223,47 +7225,47 @@ Följande specialkoder kan användas:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="987"/>
         <source>Background Color</source>
-        <translation type="unfinished">Bakgrundsfärg</translation>
+        <translation>Bakgrundsfärg</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="990"/>
         <source>Opacity</source>
-        <translation type="unfinished">Genomskinlighet</translation>
+        <translation>Genomskinlighet</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="989"/>
         <source>Canvas Color</source>
-        <translation type="unfinished">Dukfärg</translation>
+        <translation>Dukfärg</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="991"/>
         <source>Border Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kantfärg</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="992"/>
         <source>Width</source>
-        <translation type="unfinished">Bredd</translation>
+        <translation>Bredd</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="994"/>
         <source>Transparent</source>
-        <translation type="unfinished">Transparent</translation>
+        <translation>Transparent</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1064"/>
         <source>&amp;Enable autocompletion (Ctrl+U)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tillåt automatisk komplettering (Ctrl+U)</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1065"/>
         <source>&amp;Display line numbers in Notes</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Visa radnummer i anteckningar</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1074"/>
         <source>Omit &amp;Thousands Separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Uteslut &amp;tusentalsåtskiljare</translation>
     </message>
 </context>
 <context>
@@ -8483,12 +8485,12 @@ Följande specialkoder kan användas:
     <message>
         <location filename="../src/analysis/Filter.cpp" line="450"/>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished">Minnesallokeringsfel</translation>
+        <translation>Minnesallokeringsfel</translation>
     </message>
     <message>
         <location filename="../src/analysis/Filter.cpp" line="451"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished">Ej tillräckligt med minne, uppgiften avbruten!</translation>
+        <translation>Ej tillräckligt med minne, uppgiften avbruten!</translation>
     </message>
 </context>
 <context>
@@ -8889,82 +8891,82 @@ Följande specialkoder kan användas:
     <message>
         <location filename="../src/analysis/Fit.cpp" line="324"/>
         <source>Adjusted R^2</source>
-        <translation type="unfinished"></translation>
+        <translation>Justerad R²</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="325"/>
         <source>RMSE (Root Mean Squared Error)</source>
-        <translation type="unfinished"></translation>
+        <translation>RMSE (Root Mean Squared Error)</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="326"/>
         <source>RSS (Residual Sum of Squares)</source>
-        <translation type="unfinished"></translation>
+        <translation>RSS (Residual summa av kvadrater)</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="575"/>
         <source>FitResiduals</source>
-        <translation type="unfinished"></translation>
+        <translation>FitResiduals</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="714"/>
         <source>FitStats</source>
-        <translation type="unfinished"></translation>
+        <translation>FitStats</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="620"/>
         <source>Confidence Limits of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfidensgränser för %1</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="718"/>
         <source>Independent Variable</source>
-        <translation type="unfinished"></translation>
+        <translation>Oberoende variabel</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="625"/>
         <source>LCL</source>
-        <translation type="unfinished"></translation>
+        <translation>LCL</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="626"/>
         <source>Lower %1 Confidence Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägra %1 konfidensgräns</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="627"/>
         <source>UCL</source>
-        <translation type="unfinished"></translation>
+        <translation>UCL</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="628"/>
         <source>Upper %1 Confidence Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Övre %1 konfidensgräns</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="714"/>
         <source>Prediction Limits of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Prediktionsgränser för %1</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="719"/>
         <source>LPL</source>
-        <translation type="unfinished"></translation>
+        <translation>LPL</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="720"/>
         <source>Lower %1 Prediction Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägre %1 prediktionsgräns</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="721"/>
         <source>UPL</source>
-        <translation type="unfinished"></translation>
+        <translation>UPL</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="722"/>
         <source>Upper %1 Prediction Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Övre %1 prediktionsgräns</translation>
     </message>
 </context>
 <context>
@@ -9529,17 +9531,17 @@ Följande specialkoder kan användas:
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="441"/>
         <source>Co&amp;nf. Bands</source>
-        <translation type="unfinished"></translation>
+        <translation>Ko&amp;nf. band</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="453"/>
         <source>Pred. &amp;Bands</source>
-        <translation type="unfinished"></translation>
+        <translation>Pred. &amp;band</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="461"/>
         <source>&amp;Scale Errors with sqrt(Chi^2/doF)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Skalfel med sqrt(Chi^2/doF)</translation>
     </message>
 </context>
 <context>
@@ -10990,7 +10992,7 @@ har samma antal rader.</translation>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="204"/>
         <source>Omit &amp;thousands separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Uteslut &amp;tusentalsåtskiljare</translation>
     </message>
 </context>
 <context>
@@ -12087,7 +12089,7 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
     <message>
         <location filename="../src/plot2D/dialogs/LineDialog.cpp" line="218"/>
         <source>Y</source>
-        <translation type="unfinished">Y</translation>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
@@ -15455,7 +15457,7 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="../src/ScriptWindow.cpp" line="151"/>
         <source>Show &amp;Line Numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa rad&amp;nummer</translation>
     </message>
 </context>
 <context>
