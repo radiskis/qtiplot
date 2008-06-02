@@ -39,7 +39,6 @@
 #include <QSplitter>
 #include <QDesktopServices>
 #include <QBuffer>
-#include <QLocale>
 
 #include "Table.h"
 #include "ScriptingEnv.h"
@@ -163,6 +162,9 @@ public:
 
 	QCompleter* completer(){return d_completer;};
 	void enableCompletion(bool on = true);
+	
+	QLocale clipboardLocale(){return d_clipboard_locale;};
+	void setClipboardLocale(const QLocale& locale){d_clipboard_locale = locale;};
 
 public slots:
 	//! \name Projects and Project Files
@@ -1053,6 +1055,8 @@ public:
     int d_export_quality;
     int d_export_resolution;
     bool d_export_color;
+	//! Locale used to specify the decimal separators in imported ASCII files
+	QLocale d_clipboard_locale;
 	//! Locale used to specify the decimal separators in imported ASCII files
 	QLocale d_ASCII_import_locale;
 	//! End of line convention used to import ASCII files.

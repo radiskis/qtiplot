@@ -709,8 +709,17 @@ void ConfigDialog::initAppPage()
 
     boxThousandsSeparator = new QCheckBox();
     boxThousandsSeparator->setChecked(app->locale().numberOptions() & QLocale::OmitGroupSeparator);
-    numericFormatLayout->addWidget(boxThousandsSeparator, 2, 0);
+    numericFormatLayout->addWidget(boxThousandsSeparator, 1, 2);
 
+	lblClipboardSeparator = new QLabel();
+    numericFormatLayout->addWidget(lblClipboardSeparator, 2, 0 );
+	boxClipboardLocale = new QComboBox();
+	boxClipboardLocale->addItem(tr("System Locale Setting"));
+	boxClipboardLocale->addItem("1,000.0");
+	boxClipboardLocale->addItem("1.000,0");
+	boxClipboardLocale->addItem("1 000,0");
+	numericFormatLayout->addWidget(boxClipboardLocale, 2, 1);
+	
 	numericFormatLayout->setRowStretch(3, 1);
 	appTabWidget->addTab( numericFormatPage, QString() );
 
@@ -1081,6 +1090,20 @@ void ConfigDialog::languageChange()
     else if (locale.name() == QLocale(QLocale::French).name())
         boxDecimalSeparator->setCurrentIndex(3);
 
+	lblClipboardSeparator->setText(tr("Clipboard Decimal Separators"));
+	boxClipboardLocale->clear();
+	boxClipboardLocale->addItem(tr("System Locale Setting"));
+	boxClipboardLocale->addItem("1,000.0");
+	boxClipboardLocale->addItem("1.000,0");
+	boxClipboardLocale->addItem("1 000,0");
+	
+    if (app->clipboardLocale().name() == QLocale::c().name())
+        boxClipboardLocale->setCurrentIndex(1);
+    else if (app->clipboardLocale().name() == QLocale(QLocale::German).name())
+        boxClipboardLocale->setCurrentIndex(2);
+    else if (app->clipboardLocale().name() == QLocale(QLocale::French).name())
+        boxClipboardLocale->setCurrentIndex(3);
+	
 	lblTranslationsPath->setText(tr("Translations"));
 	lblHelpPath->setText(tr("Help"));
 #ifdef SCRIPTING_PYTHON
@@ -1338,6 +1361,22 @@ void ConfigDialog::apply()
             else if(w->isA("Matrix"))
                 ((Matrix *)w)->resetView();
         }
+		
+		switch (boxClipboardLocale->currentIndex()){
+        	case 0:
+            	app->setClipboardLocale(QLocale::system());
+        	break;
+        	case 1:
+            	app->setClipboardLocale(QLocale::c());
+        	break;
+        	case 2:
+            	app->setClipboardLocale(QLocale(QLocale::German));
+        	break;
+        	case 3:
+            	app->setClipboardLocale(QLocale(QLocale::French));
+        	break;
+    	}
+		
         app->modifiedProject();
     	QApplication::restoreOverrideCursor();
 	}
