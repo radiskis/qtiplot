@@ -37,12 +37,15 @@
 #include <QPushButton>
 #include <QLabel>
 
+#include <gsl/gsl_histogram.h>
+
 FrequencyCountDialog::FrequencyCountDialog(Table *t, const QString& colName, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ),
     d_source_table(t),
     d_result_table(NULL),
     d_col_name(colName),
-    d_col_values(NULL)
+    d_col_values(NULL),
+	d_bins(10)
 {
 	setObjectName( "FrequencyCountDialog" );
 	setWindowTitle(tr("QtiPlot - Frequency count"));
@@ -55,42 +58,42 @@ FrequencyCountDialog::FrequencyCountDialog(Table *t, const QString& colName, QWi
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 	double min = 0.0, max = 0.0, step = 0.0;
 	if (t){
-        QVarLengthArray<double> values = t->col(t->colIndex(colName));
+        int col = t->colIndex(colName);
         int rows = t->numRows();
-        gsl_vector *d_col_values = gsl_vector_alloc(rows);
+        d_col_values = gsl_vector_alloc(rows);
         if (d_col_values){
             for (int i=0; i<rows; i++)
-                gsl_vector_set(d_col_values, i, values[i]);
+                gsl_vector_set(d_col_values, i, t->cell(i, col));
 
             gsl_vector_minmax (d_col_values, &min, &max);
             min = floor(min);
             max = ceil(max);
-            step = (max - min)/10.0;
+            step = (max - min)/(double)d_bins;
         }
 	}
 
     gl1->addWidget(new QLabel(tr("From Minimum")), 0, 0);
 
 	boxStart = new DoubleSpinBox();
+	boxStart->setLocale(app->locale());
 	boxStart->setValue(min);
 	boxStart->setDecimals(app->d_decimal_digits);
-	boxStart->setLocale(app->locale());
 	gl1->addWidget(boxStart, 0, 1);
 
     gl1->addWidget(new QLabel(tr("To Maximum")), 1, 0);
 
     boxEnd = new DoubleSpinBox();
+	boxEnd->setLocale(app->locale());
     boxEnd->setValue(max);
     boxEnd->setDecimals(app->d_decimal_digits);
-    boxEnd->setLocale(app->locale());
     gl1->addWidget(boxEnd, 1, 1);
 
     gl1->addWidget(new QLabel(tr("Step Size")), 2, 0);
 
     boxStep = new DoubleSpinBox();
+	boxStep->setLocale(app->locale());
     boxStep->setValue(step);
     boxStep->setDecimals(app->d_decimal_digits);
-    boxStep->setLocale(app->locale());
     gl1->addWidget(boxStep, 2, 1);
 
     gl1->setRowStretch(3, 1);
@@ -127,6 +130,12 @@ bool FrequencyCountDialog::apply()
         return false;
 	}
 
+	int old_bins = d_bins;
+	double bin_size = boxStep->value();
+	d_bins = int((to - from)/bin_size + 1);
+	if (!d_bins)
+		return false;
+		
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (!app)
         return false;
@@ -141,6 +150,43 @@ bool FrequencyCountDialog::apply()
         d_result_table->showMaximized();
     }
 
+	gsl_histogram *h = gsl_histogram_alloc(d_bins);
+	if (!h)
+		return false;
+		
+	double *range = (double *) malloc((d_bins + 2)*sizeof(double));
+	if (!range)
+		return false;
+	for (int i = 0; i <= d_bins + 1; i++)
+		range[i] = from + i*bin_size;
+	gsl_histogram_set_ranges (h, range, d_bins + 1);
+	free(range);
+
+	int rows = d_source_table->numRows();
+	for (int i = 0; i<rows; i++ )
+		gsl_histogram_increment (h, gsl_vector_get(d_col_values, i));
+	
+	if (d_bins > d_result_table->numRows())
+		d_result_table->setNumRows(d_bins);
+	
+	for(int i = d_bins; i < old_bins; i++){
+		d_result_table->setText(i, 0, "");
+		d_result_table->setText(i, 1, "");
+		d_result_table->setText(i, 2, "");
+		d_result_table->setText(i, 3, "");
+	}
+	
+	double sum = 0.0;
+	for (int i = 0; i<d_bins; i++ ){
+		double aux = gsl_histogram_get (h, i);
+		sum += aux;
+		double lower, upper;
+		gsl_histogram_get_range (h, i, &lower, &upper);
+		d_result_table->setCell(i, 0, 0.5*(lower + upper));
+		d_result_table->setCell(i, 1, aux);
+		d_result_table->setCell(i, 2, upper);
+		d_result_table->setCell(i, 3, sum);
+	}
 	return true;
 }
 
