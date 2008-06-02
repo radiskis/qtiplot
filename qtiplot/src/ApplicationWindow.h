@@ -681,6 +681,7 @@ public slots:
 	void chooseHelpFolder();
 	void showPlotWizard();
 	void showFitPolynomDialog();
+    void showFrequencyCountDialog();
 	void showIntegrationDialog();
 	void showInterpolationDialog();
 	void showExpGrowthDialog();
@@ -1251,7 +1252,7 @@ private:
 	QAction *actionNextWindow, *actionPrevWindow;
 	QAction *actionScriptingLang, *actionRestartScripting, *actionClearTable, *actionGoToRow, *actionGoToColumn;
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote;
-	QAction *actionShowScriptWindow;
+	QAction *actionShowScriptWindow, *actionFrequencyCount;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
     QAction *actionDeleteRows, *actionDrawPoints;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints;

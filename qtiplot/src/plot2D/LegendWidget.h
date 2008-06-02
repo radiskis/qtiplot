@@ -29,13 +29,12 @@
 #ifndef LEGENDWIDGET_H
 #define LEGENDWIDGET_H
 
-#include <QWidget>
+#include "FrameWidget.h"
+#include "Graph.h"
 #include <qwt_plot.h>
 #include <qwt_text.h>
 
-#include "Graph.h"
-
-class LegendWidget: public QWidget
+class LegendWidget: public FrameWidget
 {
 	Q_OBJECT
 
@@ -44,23 +43,9 @@ public:
 	~LegendWidget();
 
 	void clone(LegendWidget* t);
-	Graph *plot(){return d_plot;};
-
-	//! The kinds of frame a LegendWidget can draw around the Text.
-	enum FrameStyle{None = 0, Line = 1, Shadow = 2};
 
 	QString text(){return d_text->text();};
 	void setText(const QString& s);
-
-    //! Returns the x axis coordiante of the top left corner
-    double xValue(){return d_x;};
-    //! Returns the y axis coordiante of the top left corner
-	double yValue(){return d_y;};
-	//! Sets the position of the top left corner in axis coordinates
-	void setOriginCoord(double x, double y);
-	//! Sets the position of the top left corner in paint coordinates
-	void setOrigin(int x, int y){move(QPoint(x, y));};
-	void move(const QPoint& pos);
 
 	QColor textColor(){return d_text->color();};
 	void setTextColor(const QColor& c);
@@ -68,29 +53,16 @@ public:
 	QColor backgroundColor(){return d_text->backgroundBrush().color();};
 	void setBackgroundColor(const QColor& c);
 
-	int frameStyle(){return d_frame;};
-	void setFrameStyle(int style);
-
 	QFont font(){return d_text->font();};
 	void setFont(const QFont& font);
-
-	int angle(){return d_angle;};
-	void setAngle(int ang){d_angle = ang;};
 
 	void showTextEditor();
 	void showTextDialog(){emit showDialog();};
 	void showContextMenu(){emit showMenu();};
 
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
-    void resetOrigin(){setOriginCoord(d_x, d_y);};
-    void updateCoordinates();
 
 private:
-    //! Returns the x axis coordinate of the top left corner based on the pixel value
-    double calculateXValue();
-    //! Returns the y axis coordinate of the top left corner based on the pixel value
-    double calculateYValue();
-
 	PlotCurve* getCurve(const QString& s, int &point);
 	void drawFrame(QPainter *p, const QRect& rect);
 	void drawVector(PlotCurve *c, QPainter *p, int x, int y, int l);
@@ -105,15 +77,6 @@ private:
     void mousePressEvent(QMouseEvent *);
 	void contextMenuEvent(QContextMenuEvent * ){emit showMenu();};
 
-	//! Parent plot
-	Graph *d_plot;
-
-	//! Frame type
-	int d_frame;
-
-	//! Rotation angle: not implemented yet
-	int d_angle;
-
 	//! Pointer to the QwtText object
 	QwtText* d_text;
 
@@ -126,14 +89,8 @@ private:
 	//! Length of the symbol line
 	int line_length;
 
-    //! X axis coordinate of the top left corner
-	double d_x;
-	//! Y axis coordinate of the top left corner
-	double d_y;
-
 signals:
 	void showDialog();
-	void showMenu();
 	void enableEditor();
 };
 

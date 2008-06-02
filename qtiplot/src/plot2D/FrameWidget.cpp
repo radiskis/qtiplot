@@ -93,7 +93,7 @@ void FrameWidget::setOriginCoord(double x, double y)
 	QPoint pos(d_plot->transform(QwtPlot::xBottom, x), d_plot->transform(QwtPlot::yLeft, y));
 	pos = d_plot->canvas()->mapToParent(pos);
 	QWidget::move(pos);
-	
+
 	d_x = x;
 	d_y = y;
 }
@@ -129,7 +129,6 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 		p->setBrush(QBrush(Qt::black));
 		p->drawRect(shadow_right);
 		p->drawRect(shadow_bottom);
-
 		//p->setBrush(d_text->backgroundBrush());
 		QwtPainter::drawRect(p,rect);
 	}
