@@ -43,7 +43,7 @@ public:
 
 	Graph *plot(){return d_plot;};
 
-	//! The kinds of frame a FrameWidget can draw around the Text.
+	//! The kinds of frame a FrameWidget can draw around.
 	enum FrameStyle{None = 0, Line = 1, Shadow = 2};
 
     //! Returns the x axis coordiante of the top left corner
@@ -67,10 +67,10 @@ public:
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
     void resetOrigin(){setOriginCoord(d_x, d_y);};
     void updateCoordinates();
-	
+
 	virtual QString saveToString();
 
-private:
+protected:
     //! Returns the x axis coordinate of the top left corner based on the pixel value
     double calculateXValue();
     //! Returns the y axis coordinate of the top left corner based on the pixel value

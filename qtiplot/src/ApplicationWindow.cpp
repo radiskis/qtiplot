@@ -75,6 +75,7 @@
 #include "analysis/dialogs/SmoothCurveDialog.h"
 #include "analysis/dialogs/FilterDialog.h"
 #include "analysis/dialogs/FFTDialog.h"
+#include "analysis/dialogs/FrequencyCountDialog.h"
 
 #include "plot2D/QwtErrorPlotCurve.h"
 #include "plot2D/MultiLayer.h"
@@ -5997,6 +5998,7 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addMenu(& norm);
 
 			contextMenu.insertSeparator();
+			contextMenu.addAction(actionFrequencyCount);
 			contextMenu.addAction(actionShowColStatistics);
 
 			contextMenu.insertSeparator();
@@ -7954,6 +7956,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionMatrixFFTDirect);
         analysisMenu->addAction(actionMatrixFFTInverse);
 	} else if (w->inherits("Table")){
+	    analysisMenu->addAction(actionFrequencyCount);
         analysisMenu->addAction(actionShowColStatistics);
         analysisMenu->addAction(actionShowRowStatistics);
         analysisMenu->insertSeparator();
@@ -11710,6 +11713,9 @@ void ApplicationWindow::createActions()
 	actionSetRandomValues = new QAction(QIcon(QPixmap(randomNumbers_xpm)),tr("&Random Values"), this);
 	connect(actionSetRandomValues, SIGNAL(activated()), this, SLOT(setRandomValues()));
 
+	actionFrequencyCount = new QAction(tr("&Frequency Count ..."), this);
+	connect(actionFrequencyCount, SIGNAL(activated()), this, SLOT(showFrequencyCountDialog()));
+
     actionReadOnlyCol = new QAction(tr("&Read Only"), this);
     connect(actionReadOnlyCol, SIGNAL(activated()), this, SLOT(setReadOnlyCol()));
 
@@ -15412,4 +15418,21 @@ void ApplicationWindow::enableCompletion(bool on)
         }
 		f = f->folderBelow();
 	}
+}
+
+void ApplicationWindow::showFrequencyCountDialog()
+{
+    Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+    QStringList lst = t->selectedColumns();
+    if (lst.count() != 1){
+        QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
+            tr("Please select a single column!"));
+        return;
+    }
+
+	FrequencyCountDialog *fcd = new FrequencyCountDialog(t, lst[0], this);
+	fcd->exec();
 }

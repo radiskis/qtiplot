@@ -46,10 +46,7 @@
 
 #include <iostream>
 
-LegendWidget::LegendWidget(Graph *plot):QWidget(plot),
-	d_plot(plot),
-	d_frame (0),
-	d_angle(0)
+LegendWidget::LegendWidget(Graph *plot):FrameWidget(plot)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -115,14 +112,6 @@ void LegendWidget::setText(const QString& s)
 	d_text->setText(s);
 }
 
-void LegendWidget::setFrameStyle(int style)
-{
-	if (d_frame == style)
-		return;
-
-	d_frame = style;
-}
-
 void LegendWidget::setBackgroundColor(const QColor& c)
 {
 	if (d_text->backgroundBrush().color() == c)
@@ -137,40 +126,6 @@ void LegendWidget::setTextColor(const QColor& c)
 		return;
 
 	d_text->setColor(c);
-}
-
-void LegendWidget::updateCoordinates()
-{
-    d_x = calculateXValue();
-    d_y = calculateYValue();
-}
-
-void LegendWidget::setOriginCoord(double x, double y)
-{
-	QPoint pos(d_plot->transform(QwtPlot::xBottom, x), d_plot->transform(QwtPlot::yLeft, y));
-	pos = d_plot->canvas()->mapToParent(pos);
-	QWidget::move(pos);
-	
-	d_x = x;
-	d_y = y;
-}
-
-void LegendWidget::move(const QPoint& pos)
-{
-	QWidget::move(pos);
-	updateCoordinates();
-}
-
-double LegendWidget::calculateXValue()
-{
-	QPoint d_pos = d_plot->canvas()->mapFromParent(pos());
-	return d_plot->invTransform(QwtPlot::xBottom, d_pos.x());
-}
-
-double LegendWidget::calculateYValue()
-{
-	QPoint d_pos = d_plot->canvas()->mapFromParent(pos());
-	return d_plot->invTransform(QwtPlot::yLeft, d_pos.y());
 }
 
 void LegendWidget::setFont(const QFont& font)
@@ -548,7 +503,6 @@ void LegendWidget::showTextEditor()
 void LegendWidget::clone(LegendWidget* t)
 {
 	d_frame = t->frameStyle();
-	d_angle = t->angle();
 
 	setTextColor(t->textColor());
 	setBackgroundColor(t->backgroundColor());
