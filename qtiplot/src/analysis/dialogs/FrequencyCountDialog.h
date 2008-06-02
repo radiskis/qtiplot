@@ -54,6 +54,7 @@ private:
     Table *d_result_table;
     QString d_col_name;
     gsl_vector *d_col_values;
+	int d_bins;
 
     QPushButton* buttonApply;
 	QPushButton* buttonCancel;
