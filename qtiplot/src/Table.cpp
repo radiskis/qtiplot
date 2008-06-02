@@ -292,20 +292,19 @@ void Table::cellEdited(int row, int col)
   	double res = locale().toDouble(text, &ok);
   	if (ok)
   		d_table->setText(row, col, locale().toString(res, f, precision));
-  	else
-  	{
-  	Script *script = scriptEnv->newScript(d_table->text(row,col),this,QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
-  	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
+  	else {
+  		Script *script = scriptEnv->newScript(d_table->text(row,col),this,QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
+  		connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 
-  	script->setInt(row+1, "i");
-  	script->setInt(col+1, "j");
-  	QVariant ret = script->eval();
-  	if(ret.type()==QVariant::Int || ret.type()==QVariant::UInt || ret.type()==QVariant::LongLong || ret.type()==QVariant::ULongLong)
-  		d_table->setText(row, col, ret.toString());
-  	else if(ret.canCast(QVariant::Double))
-  		d_table->setText(row, col, locale().toString(ret.toDouble(), f, precision));
-  	else
-  		d_table->setText(row, col, "");
+  		script->setInt(row+1, "i");
+  		script->setInt(col+1, "j");
+  		QVariant ret = script->eval();
+  		if(ret.type()==QVariant::Int || ret.type()==QVariant::UInt || ret.type()==QVariant::LongLong || ret.type()==QVariant::ULongLong)
+  			d_table->setText(row, col, ret.toString());
+  		else if(ret.canCast(QVariant::Double))
+  			d_table->setText(row, col, locale().toString(ret.toDouble(), f, precision));
+  		else
+  			d_table->setText(row, col, "");
   	}
 
   	emit modifiedData(this, colName(col));
@@ -1305,9 +1304,9 @@ void Table::pasteSelection()
 	QString text = QApplication::clipboard()->text();
 	if (text.isEmpty())
 		return;
-
+	
 	QStringList linesList = text.split(applicationWindow()->endOfLine());
-	int rows = linesList.size() - 1;
+	int rows = linesList.size();
 	if (rows < 1)
 		return;
 
@@ -1354,6 +1353,7 @@ void Table::pasteSelection()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QLocale l = locale();
+	QLocale clipboardLocale = applicationWindow()->clipboardLocale();
 	for (int i=0; i < rows; i++){
 		int row = top + i;
 		QStringList cells = linesList[i].split("\t");
@@ -1365,8 +1365,8 @@ void Table::pasteSelection()
             if (colIndex >= cells.count())
                 break;
 
-			bool numeric;
-			double value = l.toDouble(cells[colIndex], &numeric);
+			bool numeric = false;
+			double value = clipboardLocale.toDouble(cells[colIndex], &numeric);
 			if (numeric){
 			    int prec;
                 char f;

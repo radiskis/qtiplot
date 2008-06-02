@@ -643,7 +643,7 @@ void Matrix::pasteSelection()
 		return;
 	}
 
-	QLocale locale = this->locale(); //Better use QLocale::system() ??
+	QLocale locale = applicationWindow()->clipboardLocale();
 	int cell = 0;
 	for(int i = 0; i < rows; i++){
 		QStringList cells = linesList[i].split("\t");
