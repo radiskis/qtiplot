@@ -80,10 +80,12 @@ void Differentiation::output()
 	else
 		dataSet = d_y_col_name;
 
+    int prec = app->d_decimal_digits;
     d_result_table = app->newHiddenTable(tableName, tr("Derivative") + " " + tr("of","Derivative of")  + " " + dataSet, d_n-2, 2);
 	for (int i = 1; i < d_n-1; i++) {
-		d_result_table->setText(i-1, 0, locale.toString(d_x[i], 'g', app->d_decimal_digits));
-		d_result_table->setText(i-1, 1, locale.toString(result[i], 'g', app->d_decimal_digits));
+	    int aux = i - 1;
+		d_result_table->setText(aux, 0, locale.toString(d_x[i], 'g', prec));
+		d_result_table->setText(aux, 1, locale.toString(result[i], 'g', prec));
 	}
     delete[] result;
 

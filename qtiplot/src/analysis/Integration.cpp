@@ -31,6 +31,7 @@
 #include "../MyParser.h"
 #include "../plot2D/MultiLayer.h"
 #include "../plot2D/FunctionCurve.h"
+#include "../plot2D/LegendWidget.h"
 
 #include <QMessageBox>
 #include <QDateTime>
@@ -107,11 +108,22 @@ void Integration::init()
 double Integration::trapez()
 {
 	double sum = 0.0;
+	double *result = (double *)malloc(d_n*sizeof(double));
 	int size = d_n - 1;
 	for(int i=0; i < size; i++){
 		int j = i + 1;
+		if (result)
+            result[i] = sum;
 		sum += 0.5*(d_y[j] + d_y[i])*(d_x[j] - d_x[i]);
 	}
+
+    if (result){
+        result[size] = sum;
+        d_points = d_n;
+        d_output_graph = NULL;
+        addResultCurve(d_x, result);
+        free(result);
+    }
     return sum;
 }
 

@@ -243,8 +243,7 @@ void SetColValuesDialog::insertCol()
 
 void SetColValuesDialog::insertCell()
 {
-	QString f=boxColumn->currentText().remove(")")+", i)";
-	commands->insert(f);
+	commands->insert(boxColumn->currentText().remove(")")+", i)");
 }
 
 void SetColValuesDialog::setTable(Table* w)

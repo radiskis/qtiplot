@@ -7959,9 +7959,9 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionMatrixFFTDirect);
         analysisMenu->addAction(actionMatrixFFTInverse);
 	} else if (w->inherits("Table")){
-	    analysisMenu->addAction(actionFrequencyCount);
         analysisMenu->addAction(actionShowColStatistics);
         analysisMenu->addAction(actionShowRowStatistics);
+        analysisMenu->addAction(actionFrequencyCount);
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionSortSelection);
         analysisMenu->addAction(actionSortTable);
@@ -10843,10 +10843,11 @@ void ApplicationWindow::integrate()
 		showResults(true);
 	} else if (w->inherits("Table")){
 		Table *t = (Table *)w;
-		QStringList lst = t->selectedColumns();
+		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		if (!cols){
-        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
+        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
+        	tr("Please select a 'Y' column first!"));
 			return;
 		}
 
@@ -10856,8 +10857,6 @@ void ApplicationWindow::integrate()
 		int aux = 0;
 		foreach (QString yCol, lst){
 			int xCol = t->colX(t->colIndex(yCol));
-
-
 			Integration *i = new Integration(this, t, t->colName(xCol), yCol);
 			i->run();
 			result->setText(aux, 0, yCol);
@@ -15429,13 +15428,24 @@ void ApplicationWindow::showFrequencyCountDialog()
 	if (!t)
 		return;
 
-    QStringList lst = t->selectedColumns();
-    if (lst.count() != 1){
-        QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-            tr("Please select a single column!"));
-        return;
+    int validRows = 0;
+    int ts = t->table()->currentSelection();
+    if (ts >= 0){
+        Q3TableSelection sel = t->table()->selection(ts);
+        if (sel.numRows() > 1 && sel.numCols() == 1){
+            int col = sel.leftCol();
+            for (int i = sel.topRow(); i <= sel.bottomRow(); i++){
+                if (!t->text(i, col).isEmpty())
+                   validRows++;
+                if (validRows > 1){
+                    FrequencyCountDialog *fcd = new FrequencyCountDialog(t, this);
+                    fcd->exec();
+                    break;
+                }
+            }
+        }
     }
-
-	FrequencyCountDialog *fcd = new FrequencyCountDialog(t, lst[0], this);
-	fcd->exec();
+    if (validRows < 2)
+        QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
+        tr("Please select exactly one column and more than one non empty cell!"));
 }
