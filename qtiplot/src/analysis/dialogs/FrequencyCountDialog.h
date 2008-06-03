@@ -42,7 +42,7 @@ class FrequencyCountDialog : public QDialog
     Q_OBJECT
 
 public:
-    FrequencyCountDialog(Table *t, const QString& colName, QWidget* parent = 0, Qt::WFlags fl = 0 );
+    FrequencyCountDialog(Table *t, QWidget* parent = 0, Qt::WFlags fl = 0 );
     ~FrequencyCountDialog();
 
 private slots:

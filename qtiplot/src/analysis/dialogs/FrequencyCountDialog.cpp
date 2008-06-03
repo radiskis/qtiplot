@@ -29,6 +29,7 @@
 #include "FrequencyCountDialog.h"
 #include "../../ApplicationWindow.h"
 #include "../../DoubleSpinBox.h"
+#include "../../Folder.h"
 #include "../../Table.h"
 
 #include <QGroupBox>
@@ -36,14 +37,17 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QLabel>
+#include <QDateTime>
 
 #include <gsl/gsl_histogram.h>
+#include <gsl/gsl_statistics.h>
+#include <gsl/gsl_sort_vector.h>
 
-FrequencyCountDialog::FrequencyCountDialog(Table *t, const QString& colName, QWidget* parent, Qt::WFlags fl )
+FrequencyCountDialog::FrequencyCountDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl ),
     d_source_table(t),
     d_result_table(NULL),
-    d_col_name(colName),
+    d_col_name(""),
     d_col_values(NULL),
 	d_bins(10)
 {
@@ -58,17 +62,52 @@ FrequencyCountDialog::FrequencyCountDialog(Table *t, const QString& colName, QWi
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 	double min = 0.0, max = 0.0, step = 0.0;
 	if (t){
-        int col = t->colIndex(colName);
-        int rows = t->numRows();
-        d_col_values = gsl_vector_alloc(rows);
-        if (d_col_values){
-            for (int i=0; i<rows; i++)
-                gsl_vector_set(d_col_values, i, t->cell(i, col));
+        int col = -1;
+        int sr = 0;
+        int er = t->numRows();
+        int ts = t->table()->currentSelection();
+        if (ts >= 0){
+            Q3TableSelection sel = t->table()->selection(ts);
+            sr = sel.topRow();
+            er = sel.bottomRow() + 1;
+            col = sel.leftCol();
+            d_col_name = t->colName(col);
+        }
+        int size = 0;
+        for (int i = sr; i < er; i++){
+            if (!t->text(i, col).isEmpty())
+                size++;
+        }
 
-            gsl_vector_minmax (d_col_values, &min, &max);
-            min = floor(min);
-            max = ceil(max);
+        if (size > 1)
+            d_col_values = gsl_vector_alloc(size);
+
+        if (d_col_values){
+            int aux = 0;
+            for (int i = sr; i < er; i++){
+                if (!t->text(i, col).isEmpty()){
+                    gsl_vector_set(d_col_values, aux, t->cell(i, col));
+                    aux++;
+                }
+            }
+
+            gsl_sort_vector(d_col_values);
+
+            min = floor(gsl_vector_get(d_col_values, 0));
+            max = ceil(gsl_vector_get(d_col_values, size - 1));
             step = (max - min)/(double)d_bins;
+
+            int p = app->d_decimal_digits;
+            double *data = d_col_values->data;
+            QLocale l = app->locale();
+            QString s = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate)+ " \"" + t->objectName() + "\"]\n";
+            s += tr("Statistics on %1").arg(d_col_name) + ":\n";
+            s += tr("Mean") + " = " + l.toString(gsl_stats_mean (data, 1, size), 'f', p) + "\n";
+            s += tr("Standard Deviation") + " = " + l.toString(gsl_stats_sd(data, 1, size), 'f', p) + "\n";
+            s += tr("Median") + " = " + l.toString(gsl_stats_median_from_sorted_data(data, 1, size), 'f', p) + "\n";
+            s += tr("Size") + " = " + QString::number(size) + "\n";
+            s += "--------------------------------------------------------------------------------------\n";
+            app->updateLog(s);
         }
 	}
 
@@ -121,6 +160,12 @@ FrequencyCountDialog::FrequencyCountDialog(Table *t, const QString& colName, QWi
 
 bool FrequencyCountDialog::apply()
 {
+    if (!d_col_values){
+        QMessageBox::critical(this, tr("QtiPlot - Error"),
+            tr("Not enough data points, operation aborted!"));
+        return false;
+	}
+
 	double from = boxStart->value();
 	double to = boxEnd->value();
     if (from >= to){
@@ -135,7 +180,7 @@ bool FrequencyCountDialog::apply()
 	d_bins = int((to - from)/bin_size + 1);
 	if (!d_bins)
 		return false;
-		
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (!app)
         return false;
@@ -153,7 +198,7 @@ bool FrequencyCountDialog::apply()
 	gsl_histogram *h = gsl_histogram_alloc(d_bins);
 	if (!h)
 		return false;
-		
+
 	double *range = (double *) malloc((d_bins + 2)*sizeof(double));
 	if (!range)
 		return false;
@@ -162,20 +207,20 @@ bool FrequencyCountDialog::apply()
 	gsl_histogram_set_ranges (h, range, d_bins + 1);
 	free(range);
 
-	int rows = d_source_table->numRows();
-	for (int i = 0; i<rows; i++ )
+	int dataSize = d_col_values->size;
+	for (int i = 0; i < dataSize; i++ )
 		gsl_histogram_increment (h, gsl_vector_get(d_col_values, i));
-	
+
 	if (d_bins > d_result_table->numRows())
 		d_result_table->setNumRows(d_bins);
-	
+
 	for(int i = d_bins; i < old_bins; i++){
 		d_result_table->setText(i, 0, "");
 		d_result_table->setText(i, 1, "");
 		d_result_table->setText(i, 2, "");
 		d_result_table->setText(i, 3, "");
 	}
-	
+
 	double sum = 0.0;
 	for (int i = 0; i<d_bins; i++ ){
 		double aux = gsl_histogram_get (h, i);
