@@ -33,10 +33,13 @@
 
 #include <QDialog>
 
+class QComboBox;
 class QHttp;
 class QLabel;
 class QPushButton;
 class QTextEdit;
+class QTabWidget;
+	
 class Graph;
 class TexWidget;
 	
@@ -46,20 +49,29 @@ class TexWidgetDialog : public QDialog
 
 public:
     TexWidgetDialog(Graph *g, QWidget *parent = 0);
+	void setTexWidget(TexWidget *tw);
 
 public slots:
     void clearForm();
     void fetchImage();
     void updateForm(bool error);
 	void addImage();
+	void apply();
 
 private:
+	void initEditorPage();
+	void initGeometryPage();
+
     QHttp *http;
     QLabel *outputLabel;
 	QPushButton *addButton;
     QPushButton *clearButton;
     QPushButton *updateButton;
+	QPushButton *cancelButton;
     QTextEdit *equationEditor;
+	QComboBox *frameBox;
+	QTabWidget* tabWidget;
+	QWidget *editPage, *geometryPage;
 
 	Graph *d_plot;
 	TexWidget *d_tex_widget;

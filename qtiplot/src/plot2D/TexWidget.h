@@ -55,6 +55,7 @@ private:
 	void paintEvent(QPaintEvent *e);
 	QPixmap d_pix;
 	QString d_formula;
+	int d_margin;
 };
 
 #endif

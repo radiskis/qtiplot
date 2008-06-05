@@ -7111,7 +7111,7 @@ void ApplicationWindow::addTimeStamp()
 void ApplicationWindow::disableAddText()
 {
 	actionAddText->setChecked(false);
-	showTextDialog();
+	showEnrichementDialog();
 }
 
 void ApplicationWindow::addTexFormula()
@@ -7127,7 +7127,6 @@ void ApplicationWindow::addTexFormula()
 	if (!g)
 		return;
 
-	//g->setCursor(QCursor(Qt::IBeamCursor));
 	TexWidgetDialog *twd = new TexWidgetDialog(g, this);
 	twd->exec();
 }
@@ -7269,21 +7268,28 @@ void ApplicationWindow::showLayerDialog()
 	id->exec();
 }
 
-void ApplicationWindow::showTextDialog()
+void ApplicationWindow::showEnrichementDialog()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
 
 	Graph* g = plot->activeLayer();
-	if ( g ){
-		LegendWidget *l = (LegendWidget *) g->activeText();
-		if (!l)
-			return;
-
+	if ( !g )
+		return;
+	
+	LegendWidget *l = (LegendWidget *)g->activeText();
+	if (l){
 		TextDialog *td = new TextDialog(TextDialog::TextMarker, this, 0);
 		td->setLegendWidget(l);
 		td->exec();
+	} else {
+		TexWidget *tw = qobject_cast<TexWidget *>(g->activeEnrichement());
+		if (tw){
+			TexWidgetDialog *twd = new TexWidgetDialog(g, this);
+			twd->setTexWidget(tw);
+			twd->exec();
+		}
 	}
 }
 
@@ -8193,7 +8199,7 @@ void ApplicationWindow::showMarkerPopupMenu()
 	else if (g->imageMarkerSelected())
 		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showImageDialog()));
 	else
-		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showTextDialog()));
+		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showEnrichementDialog()));
 
 	markerMenu.exec(QCursor::pos());
 }
@@ -11010,7 +11016,7 @@ void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 
 void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 {
-	connect (g,SIGNAL(showTextDialog()),this,SLOT(showTextDialog()));
+	connect (g,SIGNAL(showEnrichementDialog()),this,SLOT(showEnrichementDialog()));
 	connect (g,SIGNAL(showPlotDialog(int)),this,SLOT(showPlotDialog(int)));
 	connect (g,SIGNAL(showScaleDialog(int)), this, SLOT(showScalePageFromAxisDialog(int)));
 	connect (g,SIGNAL(showAxisDialog(int)), this, SLOT(showAxisPageFromAxisDialog(int)));
@@ -11543,7 +11549,7 @@ void ApplicationWindow::createActions()
 	connect(actionShowImageDialog, SIGNAL(activated()), this, SLOT(showImageDialog()));
 
 	actionShowTextDialog = new QAction(tr("&Properties"), this);
-	connect(actionShowTextDialog, SIGNAL(activated()), this, SLOT(showTextDialog()));
+	connect(actionShowTextDialog, SIGNAL(activated()), this, SLOT(showEnrichementDialog()));
 
 	actionActivateWindow = new QAction(tr("&Activate Window"), this);
 	connect(actionActivateWindow, SIGNAL(activated()), this, SLOT(activateWindow()));

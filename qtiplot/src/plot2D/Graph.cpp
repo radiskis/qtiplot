@@ -99,9 +99,9 @@ static const char *unzoom_xpm[]={
 #include "Grid.h"
 #include "CanvasPicker.h"
 #include "QwtErrorPlotCurve.h"
-#include "FrameWidget.h"
-#include "LegendWidget.h"
 #include "TexWidget.h"
+#include "LegendWidget.h"
+#include "FrameWidget.h"
 #include "ArrowMarker.h"
 #include "../cursors.h"
 #include "ScalePicker.h"
@@ -168,7 +168,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 
 	d_active_tool = NULL;
 	d_peak_fit_tool = NULL;
-	d_active_text = NULL;
+	d_active_enrichement = NULL;
 	d_legend = NULL; // no legend for an empty graph
 	d_selected_marker = NULL;
 	drawTextOn = false;
@@ -326,8 +326,8 @@ void Graph::deselectMarker()
 
 	cp->disableEditing();
 
-	deselect(d_active_text);
-	d_active_text = NULL;
+	deselect(d_active_enrichement);
+	d_active_enrichement = NULL;
 }
 
 void Graph::enableTextEditor()
@@ -358,7 +358,7 @@ QList <LegendWidget *> Graph::textsList()
 void Graph::select(QWidget *l, bool add)
 {
     if (!l){
-        d_active_text = NULL;
+        d_active_enrichement = NULL;
         return;
     }
 
@@ -367,7 +367,7 @@ void Graph::select(QWidget *l, bool add)
     deselectCurves();
     emit currentFontChanged(l->font());
 
-    d_active_text = qobject_cast<LegendWidget *>(l);
+    d_active_enrichement = qobject_cast<FrameWidget *>(l);
 
     if (add){
         if (d_markers_selector && d_markers_selector->contains(l))
@@ -1543,7 +1543,7 @@ bool Graph::markerSelected()
 {
 	if (d_selected_marker)
 		return true;
-	if (d_active_text)
+	if (d_active_enrichement)
 		return true;
 	return false;
 }
@@ -1555,11 +1555,11 @@ void Graph::removeMarker()
 			remove((ArrowMarker*)d_selected_marker);
 		else if (d_images.contains(d_selected_marker))
 			remove((ImageMarker*)d_selected_marker);
-	} else if (d_active_text){
-	    if (d_active_text == d_legend)
+	} else if (d_active_enrichement){
+	    if (d_active_enrichement == d_legend)
             d_legend = NULL;
-		delete d_active_text;
-		d_active_text = NULL;
+		delete d_active_enrichement;
+		d_active_enrichement = NULL;
 	}
 }
 
@@ -2395,7 +2395,7 @@ LegendWidget* Graph::addText(LegendWidget* t)
 {
 	LegendWidget* aux = new LegendWidget(this);
 	aux->clone(t);
-	d_active_text = aux;
+	d_active_enrichement = aux;
 	return aux;
 }
 
@@ -2407,8 +2407,8 @@ void Graph::remove(LegendWidget* t)
     if (d_legend == t)
         d_legend = NULL;
 
-    if (d_active_text == t)
-        d_active_text = NULL;
+    if (d_active_enrichement == t)
+        d_active_enrichement = NULL;
 
     delete t;
 }
@@ -4834,10 +4834,13 @@ void Graph::setCurrentFont(const QFont& f)
 		} else if (scalePicker->labelsSelected())
 			axis->setFont(f);
 		emit modifiedGraph();
-	} else if (d_active_text){
-		d_active_text->setFont(f);
-		d_active_text->repaint();
-		emit modifiedGraph();
+	} else if (d_active_enrichement){
+		LegendWidget *l = qobject_cast<LegendWidget *>(d_active_enrichement);
+		if (l){
+			l->setFont(f);
+			l->repaint();
+			emit modifiedGraph();
+		}
 	} else if (titlePicker->selected()){
 		QwtText t = title();
 		t.setFont(f);
@@ -5557,4 +5560,9 @@ TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
 	TexWidget *t = new TexWidget(this, s, pix);
 	d_enrichements << t;
 	return t;
+}
+
+LegendWidget* Graph::activeText()
+{
+	return qobject_cast<LegendWidget *>(d_active_enrichement);
 }

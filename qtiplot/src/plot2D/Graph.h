@@ -53,7 +53,6 @@ class QwtPlotCurve;
 class QwtPlotZoomer;
 class QwtPieCurve;
 class Table;
-class LegendWidget;
 class ArrowMarker;
 class ImageMarker;
 class TitlePicker;
@@ -73,8 +72,9 @@ class VectorCurve;
 class BoxCurve;
 class QwtHistogram;
 class Grid;
-class FrameWidget;
 class TexWidget;
+class FrameWidget;
+class LegendWidget;
 
 //! Structure containing curve layout parameters
 typedef struct{
@@ -145,9 +145,11 @@ class Graph: public QwtPlot
 		PlotToolInterface* activeTool() const { return d_active_tool; }
 
 		QList <LegendWidget *> textsList();
-		LegendWidget *activeText(){return d_active_text;};
-		void setActiveText(LegendWidget *l){d_active_text = l;};
+		LegendWidget *activeText();
+		void setActiveText(LegendWidget *l){d_active_enrichement = (FrameWidget *)l;};
 		void select(QWidget *l, bool add = false);
+
+		FrameWidget *activeEnrichement(){return d_active_enrichement;};
 
 		bool hasSeletedItems();
 		void deselect();
@@ -669,7 +671,6 @@ signals:
 		void createTable(const QString&,int,int,const QString&);
 
 		void viewImageDialog();
-		void viewTextDialog();
 		void viewLineDialog();
 		void viewTitleDialog();
 		void modifiedGraph();
@@ -738,7 +739,7 @@ signals:
 		//! The currently active tool, or NULL for default (pointer).
 		PlotToolInterface *d_active_tool, *d_peak_fit_tool;
 		//! Pointer to the currently selected text/legend
-		LegendWidget *d_active_text;
+		FrameWidget *d_active_enrichement;
 		//! Pointer to the current legend
 		LegendWidget *d_legend;
         //! Flag indicating if the axes limits should be changed in order to show all data each time a curva data change occurs

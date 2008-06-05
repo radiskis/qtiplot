@@ -33,10 +33,11 @@
 
 TexWidget::TexWidget(Graph *plot, const QString& s, const QPixmap& pix):FrameWidget(plot),
 d_pix(pix),
-d_formula(s)
+d_formula(s),
+d_margin(5)
 {
 	if (!d_pix.isNull())
-		resize(pix.size());
+		resize(QSize(pix.width() + 2*d_margin, pix.height() + 2*d_margin));
 }
 
 void TexWidget::paintEvent(QPaintEvent *e)
@@ -45,8 +46,11 @@ void TexWidget::paintEvent(QPaintEvent *e)
 		return;
 	
 	QPainter p(this);
-	//drawFrame(p, rect());
-	p.drawPixmap(rect(), d_pix);
+	drawFrame(&p, rect());
+	
+	QRect pixRect = QRect (d_margin, d_margin, d_pix.width(), d_pix.height());
+	p.drawPixmap(pixRect, d_pix);
+	
 	e->accept();
 }
 
@@ -58,7 +62,7 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 void TexWidget::setPixmap(const QPixmap& pix)
 {
 	d_pix = pix;
-	resize(pix.size());
+	resize(QSize(pix.width() + 2*d_margin, pix.height() + 2*d_margin));
 	repaint();
 }
 

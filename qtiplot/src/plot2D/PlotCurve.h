@@ -34,6 +34,7 @@
 #include "../Table.h"
 
 class PlotMarker;
+class Table;
 
 //! Abstract 2D plot curve class
 class PlotCurve: public QwtPlotCurve

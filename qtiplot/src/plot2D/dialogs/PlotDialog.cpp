@@ -1303,6 +1303,7 @@ void PlotDialog::selectCurve(int index)
         return;
 	QTreeWidgetItem *item = layerItem->child(index);
 	if (item){
+		listBox->scrollToItem(item);
 	    ((CurveTreeItem *)item)->setActive(true);
         listBox->setCurrentItem(item);
 	}
@@ -1823,6 +1824,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         return;
 
 	item->setActive(true);
+	listBox->scrollToItem(item);
 	btnWorksheet->show();
     btnEditCurve->show();
 

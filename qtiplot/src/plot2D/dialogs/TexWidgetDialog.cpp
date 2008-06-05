@@ -43,35 +43,94 @@ TexWidgetDialog::TexWidgetDialog(Graph *g, QWidget *parent)
 	
     http = new QHttp(this);
     connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
-
-    outputLabel = new QLabel;
-    outputLabel->setFrameShape(QFrame::StyledPanel);
-    equationEditor = new QTextEdit;
-
+	
     QDialogButtonBox *buttonBox = new QDialogButtonBox;
-    clearButton = buttonBox->addButton(tr("&Clear"), QDialogButtonBox::ResetRole);
+    clearButton = buttonBox->addButton(tr("Clea&r"), QDialogButtonBox::ResetRole);
 	addButton = buttonBox->addButton(tr("&Add"), QDialogButtonBox::AcceptRole);
 	addButton->setEnabled(false);
 		
     updateButton = buttonBox->addButton(tr("&Update"), QDialogButtonBox::ApplyRole);
-
+	cancelButton = buttonBox->addButton(tr("&Cancel"), QDialogButtonBox::RejectRole);
+	
     connect(clearButton, SIGNAL(clicked()), this, SLOT(clearForm()));
 	connect(addButton, SIGNAL(clicked()), this, SLOT(addImage()));		
-    connect(updateButton, SIGNAL(clicked()), this, SLOT(fetchImage()));
+    connect(updateButton, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
+	tabWidget = new QTabWidget();
+	initEditorPage();
+	initGeometryPage();
+	
     QVBoxLayout *layout = new QVBoxLayout;
+    layout->setMargin(4);
+    layout->setSpacing(4);
+
+	layout->addWidget(tabWidget);
+    layout->addWidget(buttonBox);
+    setLayout(layout);
+}
+
+void TexWidgetDialog::initEditorPage()
+{
+	editPage = new QWidget();
+	
+	outputLabel = new QLabel;
+    outputLabel->setFrameShape(QFrame::StyledPanel);
+    equationEditor = new QTextEdit;
+
+	QVBoxLayout *layout = new QVBoxLayout(editPage);
     layout->setMargin(4);
     layout->setSpacing(4);
     layout->addWidget(outputLabel, 1);
     layout->addWidget(equationEditor);
-    layout->addWidget(buttonBox);
-    setLayout(layout);
+	
+	tabWidget->addTab(editPage, tr( "&Text" ) );
+}
+
+void TexWidgetDialog::initGeometryPage()
+{
+    geometryPage = new QWidget();
+    
+	frameBox = new QComboBox();
+	frameBox->addItem( tr( "None" ) );
+	frameBox->addItem( tr( "Rectangle" ) );
+	frameBox->addItem( tr( "Shadow" ) );
+
+	QHBoxLayout *layout = new QHBoxLayout(geometryPage);
+    layout->setMargin(4);
+    layout->setSpacing(4);
+    layout->addWidget(new QLabel(tr("Frame")));
+    layout->addWidget(frameBox, 1);
+	
+	tabWidget->addTab(geometryPage, tr( "&Frame/Geometry" ) );
+}
+
+void TexWidgetDialog::setTexWidget(TexWidget *tw)
+{
+	if (!tw)
+		return;
+	
+	d_tex_widget = tw;
+	
+	equationEditor->setText(tw->formula());
+	outputLabel->setPixmap(tw->pixmap());
+	frameBox->setCurrentIndex(tw->frameStyle());
 }
 
 void TexWidgetDialog::clearForm()
 {
     outputLabel->setPixmap(QPixmap());
     equationEditor->clear();
+}
+
+void TexWidgetDialog::apply()
+{
+	if (tabWidget->currentPage() == editPage)
+		fetchImage();
+	else if (tabWidget->currentPage() == geometryPage){
+		if (d_tex_widget)
+			d_tex_widget->setFrameStyle(frameBox->currentIndex());
+	}
 }
 
 void TexWidgetDialog::fetchImage()

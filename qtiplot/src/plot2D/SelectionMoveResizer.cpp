@@ -343,7 +343,7 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 	if (me->button() == Qt::RightButton) {
 		// If one of the parents' event handlers deletes me, Qt crashes while trying to send the QContextMenuEvent.
 		foreach(QWidget *w, d_widgets) {
-			LegendWidget *l = qobject_cast<LegendWidget *>(w);
+			FrameWidget *l = qobject_cast<FrameWidget *>(w);
 			if (!l)
 				continue;
 			if(l->geometry().contains(me->pos()))
@@ -396,11 +396,16 @@ void SelectionMoveResizer::mouseMoveEvent(QMouseEvent *me)
 void SelectionMoveResizer::mouseDoubleClickEvent(QMouseEvent *e)
 {
 	foreach(QWidget *w, d_widgets) {
-		LegendWidget *l = qobject_cast<LegendWidget *>(w);
+		FrameWidget *l = qobject_cast<FrameWidget *>(w);
 		if (!l)
 			continue;
-		if(l->geometry().contains(e->pos()))
-			return l->showTextEditor();
+		if(l->geometry().contains(e->pos())){
+			LegendWidget *lw = qobject_cast<LegendWidget *>(w);
+			if (lw)
+				return lw->showTextEditor();
+			else
+				return l->showPropertiesDialog();
+		}
 	}
 
 	e->ignore();

@@ -898,7 +898,6 @@ void MultiLayer::connectLayer(Graph *g)
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
 	connect (g,SIGNAL(modifiedGraph()),this,SLOT(notifyChanges()));
 	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveLayer(Graph*)));
-	connect (g,SIGNAL(viewTextDialog()),this, SIGNAL(showTextDialog()));
 	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
     connect (g,SIGNAL(enableTextEditor(Graph *)), this, SIGNAL(enableTextEditor(Graph *)));
 }
@@ -921,7 +920,6 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
             --i;
             Graph *g = *i;
             if (g->hasSeletedItems()){
-				//(g->activeText() || g->titleSelected() || g->selectedScale()){
                 g->deselect();
                 return true;
             }

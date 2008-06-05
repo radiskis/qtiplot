@@ -31,9 +31,14 @@
 
 #include "FrameWidget.h"
 #include "Graph.h"
+
 #include <qwt_plot.h>
 #include <qwt_text.h>
+	
+#include <QWidget>
 
+class PlotCurve;
+	
 class LegendWidget: public FrameWidget
 {
 	Q_OBJECT
@@ -74,8 +79,6 @@ private:
 	QString parse(const QString& str);
 
 	virtual void paintEvent(QPaintEvent *e);
-    void mousePressEvent(QMouseEvent *);
-	void contextMenuEvent(QContextMenuEvent * ){emit showMenu();};
 
 	//! Pointer to the QwtText object
 	QwtText* d_text;
@@ -90,7 +93,6 @@ private:
 	int line_length;
 
 signals:
-	void showDialog();
 	void enableEditor();
 };
 
