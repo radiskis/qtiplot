@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "LegendWidget.h"
+#include "PlotCurve.h"
 #include "QwtPieCurve.h"
 #include "VectorCurve.h"
 #include "SelectionMoveResizer.h"
@@ -67,8 +68,6 @@ LegendWidget::LegendWidget(Graph *plot):FrameWidget(plot)
 	pos = QPoint(pos.x() + 10, pos.y() + 10);
 	move(pos);
 
-	connect (this, SIGNAL(showDialog()), plot, SIGNAL(viewTextDialog()));
-	connect (this, SIGNAL(showMenu()), plot, SIGNAL(showMarkerPopupMenu()));
 	connect (this, SIGNAL(enableEditor()), plot, SLOT(enableTextEditor()));
 
 	setMouseTracking(true);
@@ -472,18 +471,6 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 		}
 	}
 	return curve;
-}
-
-void LegendWidget::mousePressEvent (QMouseEvent *)
-{
-	d_plot->activateGraph();
-	/*bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
-	if (!shiftPressed)
-        d_plot->deselectMarker();
-	d_plot->select(this, shiftPressed);*/
-
-	d_plot->deselectMarker();
-	d_plot->select(this);
 }
 
 void LegendWidget::showTextEditor()

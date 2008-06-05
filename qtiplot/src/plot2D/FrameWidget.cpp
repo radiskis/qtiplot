@@ -49,7 +49,8 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot),
 	pos = QPoint(pos.x() + 10, pos.y() + 10);
 	move(pos);
 
-	connect (this, SIGNAL(showMenu()), plot, SIGNAL(showMarkerPopupMenu()));
+	connect (this, SIGNAL(showMenu()), plot->multiLayer(), SIGNAL(showMarkerPopupMenu()));
+	connect (this, SIGNAL(showDialog()), plot->multiLayer(), SIGNAL(showEnrichementDialog()));
 
 	setMouseTracking(true);
 	show();
@@ -58,11 +59,8 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot),
 
 void FrameWidget::paintEvent(QPaintEvent *e)
 {
-	if (d_frame == Shadow)
-		resize(width() + 5, height() + 5);
-
     QPainter p(this);
-	//drawFrame(&p, QRect(0, 0, width - 1, height - 1));
+	drawFrame(&p, rect());
 	e->accept();
 }
 
@@ -79,7 +77,13 @@ void FrameWidget::setFrameStyle(int style)
 	if (d_frame == style)
 		return;
 
+	int old_frame_style = d_frame;
 	d_frame = style;
+	
+	if (d_frame == Shadow) 
+		resize(width() + 5, height() + 5);
+	else if (old_frame_style == Shadow)
+		resize(width() - 5, height() - 5);
 }
 
 void FrameWidget::updateCoordinates()
@@ -122,15 +126,14 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 	p->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 
 	if (d_frame == Line)
-        QwtPainter::drawRect(p, rect);
+        QwtPainter::drawRect(p, rect.adjusted(0, 0, -1, -1));
 	else if (d_frame == Shadow) {
-		QRect shadow_right = QRect(rect.right() + 1, rect.y() + 5, 5, rect.height());
-		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom() + 1, rect.width(), 5);
+		QwtPainter::drawRect(p, rect.adjusted(0, 0, -6, -6));
+		QRect shadow_right = QRect(rect.right() - 5, rect.y() + 5, 5, rect.height());
+		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom() - 5, rect.width(), 5);
 		p->setBrush(QBrush(Qt::black));
 		p->drawRect(shadow_right);
 		p->drawRect(shadow_bottom);
-		//p->setBrush(d_text->backgroundBrush());
-		QwtPainter::drawRect(p,rect);
 	}
 	p->restore();
 }

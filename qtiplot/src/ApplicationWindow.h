@@ -642,7 +642,7 @@ public slots:
 	void showGeneralPlotDialog();
 	void showResults(bool ok);
 	void showResults(const QString& s, bool ok=true);
-	void showTextDialog();
+	void showEnrichementDialog();
 	void showLineDialog();
 	void showTitleDialog();
 	void showExportASCIIDialog();

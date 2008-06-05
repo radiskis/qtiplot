@@ -157,7 +157,7 @@ public slots:
 	void save(const QString& fn, const QString& geometry, bool = false);
 
 signals:
-	void showTextDialog();
+	void showEnrichementDialog();
 	void showPlotDialog(int);
 	void showAxisDialog(int);
 	void showScaleDialog(int);

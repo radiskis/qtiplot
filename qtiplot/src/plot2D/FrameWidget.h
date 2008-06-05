@@ -63,6 +63,7 @@ public:
 	void setAngle(int ang){d_angle = ang;};
 
 	void showContextMenu(){emit showMenu();};
+	void showPropertiesDialog(){emit showDialog();};
 
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
     void resetOrigin(){setOriginCoord(d_x, d_y);};
@@ -70,6 +71,10 @@ public:
 
 	virtual QString saveToString();
 
+signals:
+	void showDialog();
+	void showMenu();
+	
 protected:
     //! Returns the x axis coordinate of the top left corner based on the pixel value
     double calculateXValue();
@@ -94,9 +99,6 @@ protected:
 	double d_x;
 	//! Y axis coordinate of the top left corner
 	double d_y;
-
-signals:
-	void showMenu();
 };
 
 #endif
