@@ -39,13 +39,13 @@ d_margin(5)
 	if (!d_pix.isNull())
 		resize(QSize(pix.width() + 2*d_margin, pix.height() + 2*d_margin));
 }
-
+	
 void TexWidget::paintEvent(QPaintEvent *e)
 {
 	if (d_pix.isNull())
 		return;
 	
-	QPainter p(this);
+	QPainter p(this);	
 	drawFrame(&p, rect());
 	
 	QRect pixRect = QRect (d_margin, d_margin, d_pix.width(), d_pix.height());
@@ -56,14 +56,35 @@ void TexWidget::paintEvent(QPaintEvent *e)
 
 void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
 {
+	int x = map[QwtPlot::xBottom].transform(calculateXValue());
+	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
+	QRect rect = QRect(x, y, width(), height());
+	drawFrame(painter, rect);
+	
+	QRect pixRect = QRect (x + d_margin, y + d_margin, d_pix.width(), d_pix.height());
+	painter->drawPixmap(pixRect, d_pix);
 }
 
 void TexWidget::setPixmap(const QPixmap& pix)
 {
 	d_pix = pix;
-	resize(QSize(pix.width() + 2*d_margin, pix.height() + 2*d_margin));
+	int width = pix.width() + 2*d_margin;
+	int height = pix.height() + 2*d_margin;
+	if (d_frame == Shadow){
+		width += d_margin;
+		height += d_margin;
+	}
+	resize(QSize(width, height));
 	repaint();
+}
+
+void TexWidget::clone(TexWidget* t)
+{
+	d_frame = t->frameStyle();
+	d_color = t->frameColor();
+	setPixmap(t->pixmap());
+	setOriginCoord(t->xValue(), t->yValue());
 }
 
 QString TexWidget::saveToString()
@@ -84,6 +105,7 @@ QString TexWidget::saveToString()
 void TexWidget::restore(Graph *g, const QStringList& lst)
 {	
 	int frameStyle = 0;
+	QColor frameColor = Qt::black;
 	double x = 0.0, y = 0.0;
 	QPixmap pix;
 	QStringList::const_iterator line;
@@ -92,6 +114,8 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
         QString s = *line;
         if (s.contains("<Frame>"))
 			frameStyle = s.remove("<Frame>").remove("</Frame>").toInt();
+		else if (s.contains("<Color>"))
+			frameColor = QColor(s.remove("<Color>").remove("</Color>"));
 		else if (s.contains("<x>"))
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
@@ -111,5 +135,6 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 	}
 	TexWidget *t = g->addTexFormula(formula, pix);
 	t->setFrameStyle(frameStyle);
+	t->setFrameColor(frameColor);
 	t->setOriginCoord(x, y);
 }

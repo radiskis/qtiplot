@@ -407,7 +407,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_app_rect = QRect();
 	projectname = "untitled";
 	lastCopiedLayer = 0;
-	d_text_copy = NULL;
+	d_enrichement_copy = NULL;
 	d_arrow_copy = NULL;
 	d_image_copy = NULL;
 
@@ -7117,7 +7117,7 @@ void ApplicationWindow::disableAddText()
 void ApplicationWindow::addTexFormula()
 {
 	if (!btnPointer->isOn())
-		btnPointer->setOn(TRUE);
+		btnPointer->setOn(true);
 
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -7134,7 +7134,7 @@ void ApplicationWindow::addTexFormula()
 void ApplicationWindow::addText()
 {
 	if (!btnPointer->isOn())
-		btnPointer->setOn(TRUE);
+		btnPointer->setOn(true);
 
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -7344,7 +7344,7 @@ void ApplicationWindow::clearSelection()
                 ((DataPickerTool *)g->activeTool())->removePoint();
         } else if (g->titleSelected())
 			g->removeTitle();
-		else //if (g->markerSelected())
+		else
 			g->removeMarker();
 	}
 	else if (m->isA("Note"))
@@ -7438,19 +7438,15 @@ void ApplicationWindow::copyMarker()
 
 	Graph* g = plot->activeLayer();
 	if (g && g->markerSelected()){
-		if (g->activeText()){
-			d_text_copy = g->activeText();
-			d_image_copy = NULL;
-			d_arrow_copy = NULL;
-		} else if (g->arrowMarkerSelected()){
+		d_enrichement_copy = NULL;
+		d_image_copy = NULL;
+		d_arrow_copy = NULL;
+		if (g->activeEnrichement())			
+			d_enrichement_copy = g->activeEnrichement();	
+		else if (g->arrowMarkerSelected())
 			d_arrow_copy = (ArrowMarker *) g->selectedMarker();
-            d_image_copy = NULL;
-			d_text_copy = NULL;
-		} else if (g->imageMarkerSelected()){
+		else if (g->imageMarkerSelected())
 			d_image_copy = (ImageMarker *) g->selectedMarker();
-			d_text_copy = NULL;
-			d_arrow_copy = NULL;
-		}
 	}
 }
 
@@ -7493,9 +7489,9 @@ void ApplicationWindow::pasteSelection()
                     ((RangeSelectorTool *)g->activeTool())->pasteSelection();
                 else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
                     ((DataPickerTool *)g->activeTool())->pasteSelection();
-            } else if (d_text_copy){
-				LegendWidget *t = g->addText(d_text_copy);
-				t->move(g->mapFromGlobal(QCursor::pos()));
+            } else if (d_enrichement_copy){
+				FrameWidget *t = g->add(d_enrichement_copy);
+				t->move(g->mapFromGlobal(QCursor::pos()));	
 			} else if (d_arrow_copy){
                 ArrowMarker *a = g->addArrow(d_arrow_copy);
                 a->setStartPoint(d_arrow_copy->startPointCoord().x(), d_arrow_copy->startPointCoord().y());
@@ -7542,8 +7538,6 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 		QString caption = generateUniqueName(tr("Table"));
     	nw = newTable(caption, t->numRows(), t->numCols());
     	((Table *)nw)->copy(t);
-    	//QString spec = t->saveToString("geometry\n");
-    	//((Table *)nw)->setSpecifications(spec.replace(t->objectName(), caption));
 	} else if (w->isA("Graph3D")){
 		Graph3D *g = (Graph3D *)w;
 		if (!g->hasData()){
@@ -8189,8 +8183,8 @@ void ApplicationWindow::showMarkerPopupMenu()
 		markerMenu.insertItem(tr("&Intensity Matrix"),this, SLOT(intensityTable()));
 		markerMenu.insertSeparator();
 	}
-
-	markerMenu.insertItem(QPixmap(cut_xpm),tr("&Cut"),this, SLOT(cutSelection()));
+	if (!g->activeEnrichement())
+		markerMenu.insertItem(QPixmap(cut_xpm),tr("&Cut"),this, SLOT(cutSelection()));
 	markerMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"),this, SLOT(copySelection()));
 	markerMenu.insertItem(QPixmap(erase_xpm), tr("&Delete"),this, SLOT(clearSelection()));
 	markerMenu.insertSeparator();
@@ -8660,9 +8654,12 @@ void ApplicationWindow::showGraphContextMenu()
 	if (lastCopiedLayer){
 		cm.insertSeparator();
 		cm.insertItem(QPixmap(paste_xpm), tr("&Paste Layer"), this, SLOT(pasteSelection()));
-	} else if (d_text_copy){
+	} else if (d_enrichement_copy){
 		cm.insertSeparator();
-		cm.insertItem(QPixmap(paste_xpm), tr("&Paste Text"), plot, SIGNAL(pasteMarker()));
+		if (d_enrichement_copy->isA("LegendWidget"))
+			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Text"), plot, SIGNAL(pasteMarker()));
+		else if (d_enrichement_copy->isA("TexWidget"))
+			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Tex Formula"), plot, SIGNAL(pasteMarker()));
 	} else if (d_arrow_copy){
 		cm.insertSeparator();
 		cm.insertItem(QPixmap(paste_xpm), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));

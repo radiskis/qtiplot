@@ -42,6 +42,7 @@ class QTabWidget;
 	
 class Graph;
 class TexWidget;
+class ColorButton;
 	
 class TexWidgetDialog : public QDialog
 {
@@ -57,6 +58,7 @@ public slots:
     void updateForm(bool error);
 	void addImage();
 	void apply();
+	void customButtons(QWidget *w);
 
 private:
 	void initEditorPage();
@@ -71,7 +73,8 @@ private:
     QTextEdit *equationEditor;
 	QComboBox *frameBox;
 	QTabWidget* tabWidget;
-	QWidget *editPage, *geometryPage;
+	QWidget *editPage, *framePage;
+	ColorButton *frameColorBtn;
 
 	Graph *d_plot;
 	TexWidget *d_tex_widget;

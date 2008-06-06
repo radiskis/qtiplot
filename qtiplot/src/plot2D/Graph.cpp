@@ -3755,6 +3755,8 @@ void Graph::resizeEvent ( QResizeEvent *e )
 		if (o->isA("LegendWidget"))
 			((LegendWidget *)o)->resetOrigin();
 	}
+	foreach(FrameWidget *f, d_enrichements)
+		f->resetOrigin();
 }
 
 void Graph::scaleFonts(double factor)
@@ -4261,6 +4263,10 @@ void Graph::copy(Graph* g)
 			addText(t);
 	}
 
+	QList<FrameWidget *> enrichements = g->enrichementsList();
+	foreach (FrameWidget *e, enrichements)
+		add(e);
+	
 	QList<QwtPlotMarker *> lines = g->linesList();
 	foreach (QwtPlotMarker *i, lines)
 		addArrow((ArrowMarker*)i);
@@ -4929,6 +4935,8 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 		if (o->inherits("LegendWidget") && !((QWidget *)o)->isHidden())
         	((LegendWidget *)o)->print(painter, map);
 	}
+	foreach(FrameWidget *f, d_enrichements)
+		f->print(painter, map);
 }
 
 void Graph::drawItems (QPainter *painter, const QRect &rect,
@@ -5559,7 +5567,30 @@ TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
 {
 	TexWidget *t = new TexWidget(this, s, pix);
 	d_enrichements << t;
+	emit modifiedGraph();
 	return t;
+}
+
+FrameWidget* Graph::add(FrameWidget* fw)
+{	
+	if (!fw)
+		return NULL;
+	
+	LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+	if (l){
+		LegendWidget* aux = new LegendWidget(this);
+		aux->clone(l);
+		d_active_enrichement = (FrameWidget*)aux;
+	}
+	
+	TexWidget *t = qobject_cast<TexWidget *>(fw);
+	if (t){
+		TexWidget* aux = new TexWidget(this);
+		aux->clone(t);
+		d_enrichements << aux;
+		d_active_enrichement = (FrameWidget*)aux;
+	}
+	return d_active_enrichement;
 }
 
 LegendWidget* Graph::activeText()

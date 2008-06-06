@@ -41,6 +41,7 @@
 FrameWidget::FrameWidget(Graph *plot):QWidget(plot),
 	d_plot(plot),
 	d_frame (0),
+	d_color(Qt::black),
 	d_angle(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -122,19 +123,21 @@ double FrameWidget::calculateYValue()
 
 void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 {
-	p->save();
-	p->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-
-	if (d_frame == Line)
+	p->save();	
+	if (d_frame == Line){
+		p->setPen(QPen(d_color, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
+		p->setBrush(QBrush(Qt::white));
         QwtPainter::drawRect(p, rect.adjusted(0, 0, -1, -1));
-	else if (d_frame == Shadow) {
-		QwtPainter::drawRect(p, rect.adjusted(0, 0, -6, -6));
-		QRect shadow_right = QRect(rect.right() - 5, rect.y() + 5, 5, rect.height());
-		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom() - 5, rect.width(), 5);
+	} else if (d_frame == Shadow){		
+		p->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 		p->setBrush(QBrush(Qt::black));
-		p->drawRect(shadow_right);
-		p->drawRect(shadow_bottom);
-	}
+		p->drawRect(rect.adjusted(5, 5, 0, 0));
+		p->setPen(QPen(d_color, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
+		p->setBrush(QBrush(Qt::white));
+		QwtPainter::drawRect(p, rect.adjusted(0, 0, -5, -5));
+	} else
+		p->fillRect(rect, Qt::white);
+	
 	p->restore();
 }
 
@@ -153,6 +156,7 @@ void FrameWidget::mousePressEvent (QMouseEvent *)
 QString FrameWidget::saveToString()
 {
 	QString s = "<Frame>" + QString::number(d_frame) + "</Frame>\n";
+	s += "<Color>" + d_color.name() + "</Color>\n";
 	s += "<x>" + QString::number(d_x, 'g', 14) + "</x>\n";
 	s += "<y>" + QString::number(d_y, 'g', 14) + "</y>\n";
 	return s;
