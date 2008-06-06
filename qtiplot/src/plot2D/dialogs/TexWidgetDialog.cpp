@@ -50,7 +50,7 @@ TexWidgetDialog::TexWidgetDialog(Graph *g, QWidget *parent)
 	addButton = buttonBox->addButton(tr("&Add"), QDialogButtonBox::AcceptRole);
 	addButton->setEnabled(false);
 		
-    updateButton = buttonBox->addButton(tr("&Update Preview"), QDialogButtonBox::ApplyRole);
+    updateButton = buttonBox->addButton(tr("&Update"), QDialogButtonBox::ApplyRole);
 	cancelButton = buttonBox->addButton(tr("&Cancel"), QDialogButtonBox::RejectRole);
 	
     connect(clearButton, SIGNAL(clicked()), this, SLOT(clearForm()));
@@ -86,7 +86,7 @@ void TexWidgetDialog::initEditorPage()
     layout->setMargin(4);
     layout->setSpacing(4);
     layout->addWidget(equationEditor, 1);
-	layout->addWidget(new QLabel(tr("Preview")));
+	layout->addWidget(new QLabel(tr("Preview:")));
 	layout->addWidget(outputLabel);
 	
 	tabWidget->addTab(editPage, tr( "&Text" ) );
@@ -123,10 +123,11 @@ void TexWidgetDialog::initGeometryPage()
 void TexWidgetDialog::customButtons(QWidget *w)
 {
 	if (w == editPage){
-		updateButton->setText(tr("&Update Preview"));
+		updateButton->setText(tr("&Update"));
 		clearButton->setEnabled(true);
 	} else if (w == framePage){
 		updateButton->setText(tr("&Apply"));
+		updateButton->setEnabled(true);
 		clearButton->setEnabled(false);
 	}
 }
@@ -166,7 +167,10 @@ void TexWidgetDialog::apply()
 
 void TexWidgetDialog::fetchImage()
 {
-    clearButton->setEnabled(false);
+	if (d_tex_widget && d_tex_widget->formula() == equationEditor->toPlainText())
+		return;
+		
+	clearButton->setEnabled(false);
     updateButton->setEnabled(false);
     equationEditor->setReadOnly(true);
 
