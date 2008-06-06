@@ -83,6 +83,7 @@ void TexWidget::clone(TexWidget* t)
 {
 	d_frame = t->frameStyle();
 	d_color = t->frameColor();
+	d_formula = t->formula();
 	setPixmap(t->pixmap());
 	setOriginCoord(t->xValue(), t->yValue());
 }
