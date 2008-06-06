@@ -150,7 +150,8 @@ class Graph: public QwtPlot
 		void select(QWidget *l, bool add = false);
 
 		FrameWidget *activeEnrichement(){return d_active_enrichement;};
-
+		QList <FrameWidget *> enrichementsList(){return d_enrichements;};
+		
 		bool hasSeletedItems();
 		void deselect();
 		void deselect(QWidget *);
@@ -195,6 +196,7 @@ class Graph: public QwtPlot
     	void updateCurveLabels();
 
 		TexWidget* addTexFormula(const QString& s, const QPixmap& pix);
+		FrameWidget* add(FrameWidget* fw);
 
 	public slots:
 		void copy(Graph* g);

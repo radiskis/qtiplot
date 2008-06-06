@@ -1145,7 +1145,7 @@ public:
 
 	//! \name variables used when user copy/paste markers
 	//@{
-	LegendWidget *d_text_copy;
+	FrameWidget *d_enrichement_copy;
 	ArrowMarker *d_arrow_copy;
 	ImageMarker *d_image_copy;
 	//@}

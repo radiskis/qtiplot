@@ -42,7 +42,7 @@ public:
     FrameWidget(Graph *);
 
 	Graph *plot(){return d_plot;};
-
+	
 	//! The kinds of frame a FrameWidget can draw around.
 	enum FrameStyle{None = 0, Line = 1, Shadow = 2};
 
@@ -58,14 +58,17 @@ public:
 
 	int frameStyle(){return d_frame;};
 	void setFrameStyle(int style);
-
+	
+	QColor frameColor(){return d_color;};
+	void setFrameColor(const QColor& c){d_color = c;};
+	
 	int angle(){return d_angle;};
 	void setAngle(int ang){d_angle = ang;};
 
 	void showContextMenu(){emit showMenu();};
 	void showPropertiesDialog(){emit showDialog();};
 
-    void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
+    virtual void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
     void resetOrigin(){setOriginCoord(d_x, d_y);};
     void updateCoordinates();
 
@@ -91,6 +94,8 @@ protected:
 
 	//! Frame type
 	int d_frame;
+	//! Frame color
+	QColor d_color;
 
 	//! Rotation angle: not implemented yet
 	int d_angle;

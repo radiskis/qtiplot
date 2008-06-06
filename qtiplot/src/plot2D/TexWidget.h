@@ -49,6 +49,7 @@ public:
 	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
 	virtual QString saveToString();
 	
+	void clone(TexWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
 
 private:

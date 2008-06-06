@@ -35,6 +35,7 @@
 #include "TexWidgetDialog.h"
 #include "../Graph.h"
 #include "../TexWidget.h"
+#include "../../ColorButton.h"
 
 TexWidgetDialog::TexWidgetDialog(Graph *g, QWidget *parent)
     : QDialog(parent), d_plot(g), d_tex_widget(NULL)
@@ -49,7 +50,7 @@ TexWidgetDialog::TexWidgetDialog(Graph *g, QWidget *parent)
 	addButton = buttonBox->addButton(tr("&Add"), QDialogButtonBox::AcceptRole);
 	addButton->setEnabled(false);
 		
-    updateButton = buttonBox->addButton(tr("&Update"), QDialogButtonBox::ApplyRole);
+    updateButton = buttonBox->addButton(tr("&Update Preview"), QDialogButtonBox::ApplyRole);
 	cancelButton = buttonBox->addButton(tr("&Cancel"), QDialogButtonBox::RejectRole);
 	
     connect(clearButton, SIGNAL(clicked()), this, SLOT(clearForm()));
@@ -68,41 +69,66 @@ TexWidgetDialog::TexWidgetDialog(Graph *g, QWidget *parent)
 	layout->addWidget(tabWidget);
     layout->addWidget(buttonBox);
     setLayout(layout);
+	
+	connect(tabWidget, SIGNAL(currentChanged (QWidget *)), 
+			this, SLOT(customButtons(QWidget *)));
 }
 
 void TexWidgetDialog::initEditorPage()
 {
 	editPage = new QWidget();
 	
+    equationEditor = new QTextEdit;
 	outputLabel = new QLabel;
     outputLabel->setFrameShape(QFrame::StyledPanel);
-    equationEditor = new QTextEdit;
-
+	
 	QVBoxLayout *layout = new QVBoxLayout(editPage);
     layout->setMargin(4);
     layout->setSpacing(4);
-    layout->addWidget(outputLabel, 1);
-    layout->addWidget(equationEditor);
+    layout->addWidget(equationEditor, 1);
+	layout->addWidget(new QLabel(tr("Preview")));
+	layout->addWidget(outputLabel);
 	
 	tabWidget->addTab(editPage, tr( "&Text" ) );
 }
 
 void TexWidgetDialog::initGeometryPage()
 {
-    geometryPage = new QWidget();
+    framePage = new QWidget();
     
+	QGroupBox *gb = new QGroupBox();
+	QGridLayout *gl = new QGridLayout(gb);
+    gl->addWidget(new QLabel( tr("Shape")), 0, 0);
+	
 	frameBox = new QComboBox();
 	frameBox->addItem( tr( "None" ) );
 	frameBox->addItem( tr( "Rectangle" ) );
 	frameBox->addItem( tr( "Shadow" ) );
+    gl->addWidget(frameBox, 0, 1);
+	
+    gl->addWidget(new QLabel(tr("Color")), 1, 0);
+	frameColorBtn = new ColorButton();
+    gl->addWidget(frameColorBtn, 1, 1);
+	gl->setColumnStretch(1, 1);
+	gl->setRowStretch(2, 1);
 
-	QHBoxLayout *layout = new QHBoxLayout(geometryPage);
+	QVBoxLayout *layout = new QVBoxLayout(framePage);
     layout->setMargin(4);
     layout->setSpacing(4);
-    layout->addWidget(new QLabel(tr("Frame")));
-    layout->addWidget(frameBox, 1);
+    layout->addWidget(gb);
 	
-	tabWidget->addTab(geometryPage, tr( "&Frame/Geometry" ) );
+	tabWidget->addTab(framePage, tr( "&Frame" ) );
+}
+
+void TexWidgetDialog::customButtons(QWidget *w)
+{
+	if (w == editPage){
+		updateButton->setText(tr("&Update Preview"));
+		clearButton->setEnabled(true);
+	} else if (w == framePage){
+		updateButton->setText(tr("&Apply"));
+		clearButton->setEnabled(false);
+	}
 }
 
 void TexWidgetDialog::setTexWidget(TexWidget *tw)
@@ -115,6 +141,7 @@ void TexWidgetDialog::setTexWidget(TexWidget *tw)
 	equationEditor->setText(tw->formula());
 	outputLabel->setPixmap(tw->pixmap());
 	frameBox->setCurrentIndex(tw->frameStyle());
+	frameColorBtn->setColor(tw->frameColor());
 }
 
 void TexWidgetDialog::clearForm()
@@ -127,10 +154,14 @@ void TexWidgetDialog::apply()
 {
 	if (tabWidget->currentPage() == editPage)
 		fetchImage();
-	else if (tabWidget->currentPage() == geometryPage){
-		if (d_tex_widget)
+	else if (tabWidget->currentPage() == framePage){
+		if (d_tex_widget){
 			d_tex_widget->setFrameStyle(frameBox->currentIndex());
+			d_tex_widget->setFrameColor(frameColorBtn->color());
+			d_plot->multiLayer()->notifyChanges();
+		}
 	}
+	
 }
 
 void TexWidgetDialog::fetchImage()
@@ -164,6 +195,7 @@ void TexWidgetDialog::updateForm(bool error)
 			if (d_tex_widget){
 				d_tex_widget->setPixmap(pixmap);
 				d_tex_widget->setFormula(equationEditor->toPlainText());
+				d_plot->multiLayer()->notifyChanges();
 			}	
         }
     } else {
@@ -178,20 +210,6 @@ void TexWidgetDialog::updateForm(bool error)
     updateButton->setEnabled(true);
     equationEditor->setReadOnly(false);
 }
-
-/*void TexWidgetDialog::saveImage()
-{
-	QString fn = QFileDialog::getSaveFileName(this, tr("Save Image to File"), "");
-	
-	QFile f(fn);
-	if (!f.open(QIODevice::WriteOnly)){
-		QMessageBox::critical(0, tr("QtiPlot - File Save Error"),
-					tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
-		return;
-	}
-	
-	outputLabel->pixmap()->save(fn, 0, 100);
-}*/
 
 void TexWidgetDialog::addImage()
 {
