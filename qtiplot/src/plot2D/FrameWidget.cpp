@@ -91,6 +91,8 @@ void FrameWidget::updateCoordinates()
 {
     d_x = calculateXValue();
     d_y = calculateYValue();
+	d_x_right = calculateRightValue();
+	d_y_bottom = calculateBottomValue();
 }
 
 void FrameWidget::setOriginCoord(double x, double y)
@@ -109,6 +111,30 @@ void FrameWidget::move(const QPoint& pos)
 	updateCoordinates();
 }
 
+void FrameWidget::setBoundingRect(double left, double top, double right, double bottom)
+{
+    if (d_x == left && d_y == top && d_x_right == right && d_y_bottom == bottom)
+        return;
+
+    d_x = left;
+    d_y = top;
+    d_x_right = right;
+    d_y_bottom = bottom;
+
+    if (!d_plot)
+        return;
+
+	QPoint pos(d_plot->transform(QwtPlot::xBottom, d_x), d_plot->transform(QwtPlot::yLeft, d_y));
+	pos = d_plot->canvas()->mapToParent(pos);
+	
+	QPoint bottomRight(d_plot->transform(QwtPlot::xBottom, d_x_right), 
+						d_plot->transform(QwtPlot::yLeft, d_y_bottom));
+	bottomRight = d_plot->canvas()->mapToParent(bottomRight);
+	
+    resize(QSize(abs(bottomRight.x() - pos.x() + 1), abs(bottomRight.y() - pos.y() + 1)));
+	QWidget::move(pos);
+}
+
 double FrameWidget::calculateXValue()
 {
 	QPoint d_pos = d_plot->canvas()->mapFromParent(pos());
@@ -119,6 +145,23 @@ double FrameWidget::calculateYValue()
 {
 	QPoint d_pos = d_plot->canvas()->mapFromParent(pos());
 	return d_plot->invTransform(QwtPlot::yLeft, d_pos.y());
+}
+
+double FrameWidget::calculateRightValue()
+{
+	QPoint d_pos = d_plot->canvas()->mapFromParent(geometry().bottomRight());
+	return d_plot->invTransform(QwtPlot::xBottom, d_pos.x());
+}
+
+double FrameWidget::calculateBottomValue()
+{
+	QPoint d_pos = d_plot->canvas()->mapFromParent(geometry().bottomRight());
+	return d_plot->invTransform(QwtPlot::yLeft, d_pos.y());
+}
+
+QwtDoubleRect FrameWidget::boundingRect() const
+{
+    return QwtDoubleRect(d_x, d_y, qAbs(d_x_right - d_x), qAbs(d_y_bottom - d_y));
 }
 
 void FrameWidget::drawFrame(QPainter *p, const QRect& rect)

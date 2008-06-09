@@ -197,7 +197,9 @@ class Graph: public QwtPlot
     	void updateCurveLabels();
 
 		TexWidget* addTexFormula(const QString& s, const QPixmap& pix);
+		
 		FrameWidget* add(FrameWidget* fw);
+		void remove(FrameWidget*);
 
 	public slots:
 		void copy(Graph* g);
@@ -414,11 +416,9 @@ class Graph: public QwtPlot
 		//@{
 		ImageWidget* addImage(ImageWidget* i);
 		ImageWidget* addImage(const QString& fileName);
-		void remove(ImageMarker* im);
 
 		void insertImageMarker(const QStringList& lst, int fileVersion);
 		bool imageMarkerSelected();
-		void updateImageMarker(int x, int y, int width, int height);
 		//@}
 
 		//! \name Common to all Markers

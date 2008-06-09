@@ -56,6 +56,14 @@ public:
 	void setOrigin(int x, int y){move(QPoint(x, y));};
 	void move(const QPoint& pos);
 
+	//! Return bounding rectangle in plot coordinates.
+	virtual QwtDoubleRect boundingRect() const;
+	//! Set position (xValue() and yValue()), right and bottom values giving everything in plot coordinates.
+	void setBoundingRect(double left, double top, double right, double bottom);
+
+	double right(){return d_x_right;};
+	double bottom(){return d_y_bottom;};
+	
 	int frameStyle(){return d_frame;};
 	void setFrameStyle(int style);
 	
@@ -70,8 +78,8 @@ public:
 
     virtual void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
     void resetOrigin(){setOriginCoord(d_x, d_y);};
-    void updateCoordinates();
-
+	
+    virtual void updateCoordinates();
 	virtual QString saveToString();
 
 signals:
@@ -83,6 +91,10 @@ protected:
     double calculateXValue();
     //! Returns the y axis coordinate of the top left corner based on the pixel value
     double calculateYValue();
+	//! Returns the x axis coordinate of the bottom right corner based on the pixel value
+    double calculateRightValue();
+    //! Returns the y axis coordinate of the bottom right corner based on the pixel value
+    double calculateBottomValue();
 
 	void drawFrame(QPainter *p, const QRect& rect);
 	virtual void paintEvent(QPaintEvent *e);
@@ -104,6 +116,10 @@ protected:
 	double d_x;
 	//! Y axis coordinate of the top left corner
 	double d_y;
+	//! The right side position in scale coordinates.
+	double d_x_right;
+    //! The bottom side position in scale coordinates.
+    double d_y_bottom;
 };
 
 #endif

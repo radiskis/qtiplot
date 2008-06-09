@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
     Copyright            : (C) 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A widget displaying Tex content as image in 2D plots
+    Description          : A widget displaying images in 2D plots
 
  ***************************************************************************/
 
@@ -32,9 +32,7 @@
 #include <QImageReader>
 
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
-d_file_name(fn),
-d_x_right(0),
-d_y_bottom(0)
+d_file_name(fn)
 {
     QList<QByteArray> lst = QImageReader::supportedImageFormats();
 	for (int i=0; i<(int)lst.count(); i++){
@@ -88,32 +86,9 @@ void ImageWidget::clone(ImageWidget* t)
 	d_color = t->frameColor();
 	d_file_name = t->fileName();
 	setPixmap(t->pixmap());
+	resize(t->size());
 	setOriginCoord(t->xValue(), t->yValue());
-}
-
-QwtDoubleRect ImageWidget::boundingRect() const
-{
-    return QwtDoubleRect(d_x, d_y, qAbs(d_x_right - d_x), qAbs(d_y_bottom - d_y));
-}
-
-void ImageWidget::setBoundingRect(double left, double top, double right, double bottom)
-{
-    if (d_x == left && d_y == top && d_x_right == right && d_y_bottom == bottom)
-        return;
-
-    d_x = left;
-    d_y = top;
-    d_x_right = right;
-    d_y_bottom = bottom;
-
-    if (!plot())
-        return;
-
-    plot()->updateLayout();
-
-    /*QRect r = this->rect();
-    d_pos = r.topLeft();
-    d_size = r.size();*/
+	updateCoordinates();
 }
 
 QString ImageWidget::saveToString()
@@ -131,7 +106,7 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 {
 	int frameStyle = 0;
 	QColor frameColor = Qt::black;
-	double x = 0.0, y = 0.0;
+	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
 	QStringList::const_iterator line;
 	QString fn;
 	for (line = lst.begin(); line != lst.end(); line++){
@@ -144,11 +119,15 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
 			y = s.remove("<y>").remove("</y>").toDouble();
+		else if (s.contains("<right>"))
+			right = s.remove("<right>").remove("</right>").toDouble();
+		else if (s.contains("<bottom>"))
+			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
 		else if (s.contains("<path>"))
 			fn = s.remove("<path>").remove("</path>");
 	}
 	ImageWidget *t = g->addImage(fn);
 	t->setFrameStyle(frameStyle);
 	t->setFrameColor(frameColor);
-	t->setOriginCoord(x, y);
+	t->setBoundingRect(x, y, right, bottom);
 }

@@ -577,7 +577,7 @@ public:
 
   //ImageMarker* addImage(ImageMarker*);
   //ImageMarker* addImage(const QString& fileName);
-  void remove(ImageMarker*);
+  //void remove(ImageMarker*);
 
   void setTitle(const QString& t);
   void setTitleFont(const QFont &fnt);

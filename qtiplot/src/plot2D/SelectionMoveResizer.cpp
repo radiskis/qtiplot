@@ -245,12 +245,6 @@ void SelectionMoveResizer::operateOnTargets()
 					p2.y()<p1.y() ? new_rect.top() : new_rect.bottom() ));
 	}
 
-	/*foreach(ImageMarker *i, d_image_markers) {
-		QRect new_rect = operateOn(i->rect());
-		i->setOrigin(new_rect.topLeft());
-		i->setSize(new_rect.size());
-	}*/
-
 	foreach(QWidget *i, d_widgets){
 		LegendWidget *l = qobject_cast<LegendWidget *>(i);
 		if (!l){
