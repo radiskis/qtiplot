@@ -29,7 +29,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "CanvasPicker.h"
-#include "ImageMarker.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "PlotCurve.h"
@@ -57,7 +56,6 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 		return false;
 
 	Graph *g = plot();
-	QList<QwtPlotMarker *> images = g->imagesList();
 	QList<QwtPlotMarker *> lines = g->linesList();
 	switch(e->type())
 	{
@@ -107,9 +105,6 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				} else if (g->selectedMarker()) {
 					if (lines.contains(g->selectedMarker())){
 						emit viewLineDialog();
-						return true;
-					} else if (images.contains(g->selectedMarker())){
-						emit viewImageDialog();
 						return true;
 					}
 				} else if (g->isPiePlot()){
@@ -193,11 +188,6 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					emit viewLineDialog();
 					return true;
 				}
-				if (images.contains(selectedMarker) &&
-					(key == Qt::Key_Enter || key == Qt::Key_Return)){
-					emit viewImageDialog();
-					return true;
-				}
 			}
 			break;
 
@@ -264,15 +254,6 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 {
 	Graph *g = plot();
 	const QPoint point = e->pos();
-	QList<QwtPlotMarker *> images = g->imagesList();
-	foreach(QwtPlotMarker *i, images){
-		ImageMarker* m = (ImageMarker*)i;
-		if (m->rect().contains(point)) {
-			disableEditing();
-			plot()->setSelectedMarker(i, e->modifiers() & Qt::ShiftModifier);
-			return true;
-		}
-	}
 	QList<QwtPlotMarker *> lines = g->linesList();
 	foreach(QwtPlotMarker *i, lines){
 		ArrowMarker* mrkL = (ArrowMarker*)i;

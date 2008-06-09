@@ -162,7 +162,7 @@ public:
 
 	QCompleter* completer(){return d_completer;};
 	void enableCompletion(bool on = true);
-	
+
 	QLocale clipboardLocale(){return d_clipboard_locale;};
 	void setClipboardLocale(const QLocale& locale){d_clipboard_locale = locale;};
 
@@ -443,7 +443,7 @@ public slots:
 	void pixelLineProfile();
 	void loadImage();
 	void loadImage(const QString& fn);
-  	Matrix* importImage(const QString& = QString());
+  	Matrix* importImage(const QString& = QString(), bool newWindow = false);
 	//@}
 
 	//! \name Export and Print

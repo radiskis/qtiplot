@@ -641,7 +641,7 @@ void MultiLayer::exportPDF(const QString& fname)
 	exportVector(fname);
 }
 
-void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool keepAspect, 
+void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool keepAspect,
 			QPrinter::PageSize pageSize)
 {
 	if ( fileName.isEmpty() ){
@@ -671,7 +671,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-	
+
 	QRect canvasRect = canvas->rect();
     if (pageSize == QPrinter::Custom){
 		printer.setPaperSize(QSizeF(canvas->width(), canvas->height()), QPrinter::DevicePixel);
@@ -679,8 +679,8 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
 		foreach (Graph *g, graphsList)
         	g->print(&paint, g->geometry());
 		return;
-    } 
-	
+    }
+
 	printer.setPageSize(pageSize);
 
 	double canvas_aspect = double(canvasRect.width())/double(canvasRect.height());
@@ -1222,4 +1222,13 @@ QString MultiLayer::sizeToString()
 		}
 	}
 	return QString::number((double)size/1024.0, 'f', 1) + " " + tr("kB");
+}
+
+Graph* MultiLayer::layerAt(const QPoint& pos)
+{
+    foreach(Graph *g, graphsList){
+		if (g->geometry().contains(pos))
+            return g;
+	}
+	return NULL;
 }

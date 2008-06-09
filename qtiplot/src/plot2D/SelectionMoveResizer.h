@@ -2,8 +2,8 @@
     File                 : SelectionMoveResizer.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Knut Franke
-    Email (use @ for *)  : knut.franke*gmx.de
+    Copyright            : (C) 2007 by Knut Franke, 2008 by Ion Vasilief
+    Email (use @ for *)  : knut.franke*gmx.de, ion_vasilief*yahoo.fr
     Description          : Selection of Widgets and QwtPlotMarkers
 
  ***************************************************************************/
@@ -93,8 +93,6 @@ class SelectionMoveResizer : public QWidget
 	public:
 		//! Construct a new MoveResizer with the given marker as the only target.
 		SelectionMoveResizer(ArrowMarker *target);
-		//! Construct a new MoveResizer with the given marker as the only target.
-		SelectionMoveResizer(ImageMarker *target);
 		//! Construct a new MoveResizer with the given widget as the only target.
 		SelectionMoveResizer(QWidget *target);
 		//! Clean up after myself.
@@ -106,20 +104,14 @@ class SelectionMoveResizer : public QWidget
 		bool contains(QWidget *w) const { return d_widgets.contains(w); };
 		//! Returns true if m is one of targets, false else.
 		bool contains(ArrowMarker *m) const { return d_line_markers.contains(m); };
-		//! Returns true if m is one of targets, false else.
-		bool contains(ImageMarker *m) const { return d_image_markers.contains(m); };
 
 	public slots:
 		//! Add target to the list of items to be moved/resized together.
 		void add(ArrowMarker *target);
 		//! Add target to the list of items to be moved/resized together.
-		void add(ImageMarker *target);
-		//! Add target to the list of items to be moved/resized together.
 		void add(QWidget *target);
 		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
 		int removeAll(ArrowMarker *target);
-		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
-		int removeAll(ImageMarker *target);
 		//! Remove target from the list of items to be moved/resized together and returns the number of occurences removed.
 		int removeAll(QWidget *target);
 		//! Calculate #d_bounding_rect based on the bounding rectangles of all targets.
@@ -180,8 +172,6 @@ class SelectionMoveResizer : public QWidget
 
 		//! Target markers I'm handling.
 		QList <ArrowMarker *> d_line_markers;
-		//! Target markers I'm handling.
-		QList <ImageMarker *> d_image_markers;
 		//! Target widgets I'm handling.
 		QList <QWidget *> d_widgets;
 		//! Bounding rectangle of all targets taken together, in drawing coordinates.

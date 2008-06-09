@@ -575,8 +575,8 @@ public:
   ArrowMarker* addArrow(ArrowMarker*);
   void remove(ArrowMarker*);
 
-  ImageMarker* addImage(ImageMarker*);
-  ImageMarker* addImage(const QString& fileName);
+  //ImageMarker* addImage(ImageMarker*);
+  //ImageMarker* addImage(const QString& fileName);
   void remove(ImageMarker*);
 
   void setTitle(const QString& t);
@@ -879,7 +879,7 @@ public:
   sipRes = sipCpp->multilayerPlot(a0, l, a2);
 %End
 
-	Matrix* importImage(const QString&);
+	Matrix* importImage(const QString&, bool);
 	MultiLayer* plotSpectrogram(Matrix*, Graph::CurveType = Graph::ColorMap) /PyName=plot/;
 	MultiLayer* plot(const QString&, double, double, int = 100);
 %MethodCode

@@ -55,6 +55,7 @@ class QwtPieCurve;
 class Table;
 class ArrowMarker;
 class ImageMarker;
+class ImageWidget;
 class TitlePicker;
 class ScalePicker;
 class CanvasPicker;
@@ -151,7 +152,7 @@ class Graph: public QwtPlot
 
 		FrameWidget *activeEnrichement(){return d_active_enrichement;};
 		QList <FrameWidget *> enrichementsList(){return d_enrichements;};
-		
+
 		bool hasSeletedItems();
 		void deselect();
 		void deselect(QWidget *);
@@ -286,7 +287,7 @@ class Graph: public QwtPlot
 #ifdef EMF_OUTPUT
 		void exportEMF(const QString& fname);
 #endif
-		void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true, 
+		void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true,
 			QPrinter::PageSize pageSize = QPrinter::Custom);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 		//@}
@@ -411,9 +412,8 @@ class Graph: public QwtPlot
 
 		//! \name Image Markers
 		//@{
-		QList<QwtPlotMarker *> imagesList(){return d_images;};
-		ImageMarker* addImage(ImageMarker* mrk);
-		ImageMarker* addImage(const QString& fileName);
+		ImageWidget* addImage(ImageWidget* i);
+		ImageWidget* addImage(const QString& fileName);
 		void remove(ImageMarker* im);
 
 		void insertImageMarker(const QStringList& lst, int fileVersion);
@@ -730,8 +730,6 @@ signals:
 		QVector<double> d_user_step;
 		//! Arrows/lines on plot
 		QList<QwtPlotMarker*> d_lines;
-		//! Images on plot
-		QList<QwtPlotMarker*> d_images;
 		//! Pointer to the currently selected line/image
 		QwtPlotMarker* d_selected_marker;
 		//! The markers selected for move/resize operations or NULL if none are selected.
