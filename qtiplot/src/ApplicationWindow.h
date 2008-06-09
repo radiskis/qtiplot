@@ -82,7 +82,6 @@ class TableStatistics;
 class CurveRangeDialog;
 class LegendWidget;
 class ArrowMarker;
-class ImageMarker;
 class TextEditor;
 class AssociationsDialog;
 
@@ -1147,7 +1146,6 @@ public:
 	//@{
 	FrameWidget *d_enrichement_copy;
 	ArrowMarker *d_arrow_copy;
-	ImageMarker *d_image_copy;
 	//@}
 
 	//! Equals true if an automatical search for updates was performed on start-up otherwise is set to false;

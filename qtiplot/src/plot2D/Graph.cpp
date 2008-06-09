@@ -107,7 +107,6 @@ static const char *unzoom_xpm[]={
 #include "ScalePicker.h"
 #include "TitlePicker.h"
 #include "QwtPieCurve.h"
-#include "ImageMarker.h"
 #include "ImageWidget.h"
 #include "QwtBarCurve.h"
 #include "BoxCurve.h"
@@ -1545,10 +1544,15 @@ void Graph::removeMarker()
 	if (d_selected_marker && d_lines.contains(d_selected_marker))
 			remove((ArrowMarker*)d_selected_marker);
 	else if (d_active_enrichement){
+		/*int index = d_enrichements.indexOf (d_active_enrichement);
+		if (index >= 0 && index < d_enrichements.size())
+			d_enrichements.removeAt(index);
+		
 	    if (d_active_enrichement == d_legend)
             d_legend = NULL;
 		delete d_active_enrichement;
-		d_active_enrichement = NULL;
+		d_active_enrichement = NULL;*/
+		remove(d_active_enrichement);
 	}
 }
 
@@ -1577,25 +1581,21 @@ void Graph::remove(ArrowMarker* arrow)
 	emit modifiedGraph();
 }
 
-void Graph::remove(ImageMarker* im)
+void Graph::remove(FrameWidget* f)
 {
-	if (!im)
+	if (!f)
 		return;
 
-	/*if (d_markers_selector && d_images.contains(im))
-		d_markers_selector->removeAll(im);
-
-	if (d_images.contains(im)){
-		int index = d_images.indexOf(im);
-		if (index >= 0 && index < d_images.size())
-			d_images.removeAt(index);
-	}*/
-
-	if (im == d_selected_marker)
-		d_selected_marker = NULL;
-
-	im->detach();
-	replot();
+	int index = d_enrichements.indexOf (f);
+	if (index >= 0 && index < d_enrichements.size())
+		d_enrichements.removeAt(index);
+		
+	if (f == d_legend)
+		d_legend = NULL;	
+	if (f == d_active_enrichement)
+		d_active_enrichement = NULL;
+	
+	delete f;	
 	emit modifiedGraph();
 }
 
@@ -1606,7 +1606,10 @@ bool Graph::arrowMarkerSelected()
 
 bool Graph::imageMarkerSelected()
 {
-	return false;//(d_selected_marker && d_images.contains(d_selected_marker));
+	ImageWidget *i = qobject_cast<ImageWidget *>(d_active_enrichement);
+	if (i)
+		return true;
+	return false;
 }
 
 void Graph::deselect()
@@ -1682,16 +1685,6 @@ void Graph::removeLegend()
 	    delete d_legend;
 	    d_legend = NULL;
 	}
-}
-
-void Graph::updateImageMarker(int x, int y, int w, int h)
-{
-	if (!d_selected_marker)
-		return;
-
-	((ImageMarker*)d_selected_marker)->setRect(x, y, w, h);
-	replot();
-	emit modifiedGraph();
 }
 
 QString Graph::legendText()
@@ -4215,10 +4208,6 @@ void Graph::copy(Graph* g)
 
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
-
-	//QList<QwtPlotMarker *> images = g->imagesList();
-	//foreach (QwtPlotMarker *i, images)
-		//addImage((ImageMarker*)i);
 
     updateLayout();
 

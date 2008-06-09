@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
     Copyright            : (C) 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A widget displaying Tex content as image in 2D plots
+    Description          : A widget displaying images in 2D plots
 
  ***************************************************************************/
 
@@ -49,14 +49,6 @@ public:
 	//! Return #d_file_name.
 	QString fileName(){return d_file_name;};
 
-	//! Return bounding rectangle in plot coordinates.
-	virtual QwtDoubleRect boundingRect() const;
-	//! Set position (xValue() and yValue()), right and bottom values giving everything in plot coordinates.
-	void setBoundingRect(double left, double top, double right, double bottom);
-
-	double right(){return d_x_right;};
-	double bottom(){return d_y_bottom;};
-
 	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
 	virtual QString saveToString();
 
@@ -68,10 +60,6 @@ private:
 	QPixmap d_pix;
 	//! The file from which the image was loaded.
 	QString d_file_name;
-	//! The right side position in scale coordinates.
-	double d_x_right;
-    //! The bottom side position in scale coordinates.
-    double d_y_bottom;
 };
 
 #endif
