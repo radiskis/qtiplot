@@ -67,8 +67,7 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 	QwtPainter::drawLine(p,x0,y0,x1,y1);
 	p->restore();
 
-	if (d_end_arrow)
-		{
+	if (d_end_arrow){
 		p->save();
 		p->translate(x1,y1);
 		const double t = theta(x0, y0, x1, y1);
@@ -87,10 +86,9 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 
 		QwtPainter::drawPolygon(p,endArray);
 		p->restore();
-		}
+    }
 
-	if (d_start_arrow)
-		{
+	if (d_start_arrow){
 		p->save();
 		p->translate(x0,y0);
 		const double t = theta(x0, y0, x1, y1);
@@ -108,7 +106,7 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 			p->setBrush(brush);
 		QwtPainter::drawPolygon(p,startArray);
 		p->restore();
-		}
+    }
 
 	if (d_editable) {
 		p->save();
@@ -124,21 +122,18 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 
 double ArrowMarker::theta(int xs, int ys, int xe, int ye) const
 {
-double t;
-if (xe == xs)
-	{
-	if (ys > ye)
-		t = 90;
-	else
-		t = 270;
+    double t = 0.0;
+    if (xe == xs){
+        if (ys > ye)
+            t = 90;
+        else
+            t = 270;
+	} else {
+        t = atan2((ye - ys)*1.0,(xe - xs)*1.0)*45/atan(-1.0);
+        if (t < 0)
+            t = 360 + t;
 	}
-else
-	{
-	t = atan2((ye-ys)*1.0,(xe-xs)*1.0)*45/atan(-1.0);
-	if (t<0)
-		t = 360+t;
-	}
-return t;
+    return t;
 }
 
 double ArrowMarker::length()

@@ -273,6 +273,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/Graph.h \
 			   src/plot2D/Grid.h \
 			   src/plot2D/ImageMarker.h \
+			   src/plot2D/ImageWidget.h \
 			   src/plot2D/LegendWidget.h \
 			   src/plot2D/LineProfileTool.h \
 			   src/plot2D/MultiLayer.h \
@@ -305,6 +306,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/Graph.cpp \
 			   src/plot2D/Grid.cpp \
 			   src/plot2D/ImageMarker.cpp \
+			   src/plot2D/ImageWidget.cpp \
 			   src/plot2D/LegendWidget.cpp \
 			   src/plot2D/LineProfileTool.cpp \
 			   src/plot2D/MultiLayer.cpp \

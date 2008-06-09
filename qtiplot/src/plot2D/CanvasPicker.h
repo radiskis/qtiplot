@@ -71,7 +71,6 @@ private:
 signals:
 	void showPlotDialog(int);
 	void viewLineDialog();
-	void viewImageDialog();
 	void drawTextOff();
 	void showMarkerPopupMenu();
 	void modified();

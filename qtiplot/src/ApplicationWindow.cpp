@@ -82,7 +82,7 @@
 #include "plot2D/LegendWidget.h"
 #include "plot2D/TexWidget.h"
 #include "plot2D/ArrowMarker.h"
-#include "plot2D/ImageMarker.h"
+#include "plot2D/ImageWidget.h"
 #include "plot2D/Graph.h"
 #include "plot2D/Grid.h"
 #include "plot2D/ScaleDraw.h"
@@ -2211,7 +2211,7 @@ void ApplicationWindow::exportMatrix()
 	}
 }
 
-Matrix* ApplicationWindow::importImage(const QString& fileName)
+Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
 {
 	QString fn = fileName;
 	if (fn.isEmpty()){
@@ -2239,7 +2239,7 @@ Matrix* ApplicationWindow::importImage(const QString& fileName)
 
     MdiSubWindow *w = activeWindow(MatrixWindow);
     Matrix* m = NULL;
-    if (w){
+    if (w && !newWindow){
         m = (Matrix *)w;
         m->importImage(fn);
     } else {
@@ -3497,17 +3497,32 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 	ApplicationWindow *app = new ApplicationWindow();
 	app->restoreApplicationGeometry();
 
-	Table* t = app->newTable();
-	if (!t)
-		return NULL;
+    QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
+    QStringList tempList;
+    foreach(QByteArray temp,lst)// convert QList<QByteArray> to QStringList to be able to 'filter'
+        tempList.append(QString(temp));
 
-	t->importASCII(fn, app->columnSeparator, 0, app->renameColumns, app->strip_spaces, app->simplify_spaces,
+    QFileInfo fi(fn);
+    QStringList l = tempList.filter(fi.suffix(), Qt::CaseInsensitive);
+    if (l.count() > 0)
+        app->importImage(fn);
+    else {
+        Table* t = app->newTable();
+        if (!t) {
+            QApplication::restoreOverrideCursor();
+            return NULL;
+        }
+        t->importASCII(fn, app->columnSeparator, 0, app->renameColumns, app->strip_spaces, app->simplify_spaces,
                 app->d_ASCII_import_comments, app->d_ASCII_comment_string,
 				app->d_ASCII_import_read_only, Table::Overwrite, app->d_ASCII_end_line);
-	t->setCaptionPolicy(MdiSubWindow::Both);
-	app->multilayerPlot(t, t->YColumns(),Graph::LineSymbols);
+        t->setCaptionPolicy(MdiSubWindow::Both);
+        app->multilayerPlot(t, t->YColumns(),Graph::LineSymbols);
+    }
+
 	QApplication::restoreOverrideCursor();
-	return 0;
+    savedProject();//force saved state
+    close();
+	return app;
 }
 
 void ApplicationWindow::importASCII()
@@ -3728,6 +3743,13 @@ void ApplicationWindow::open()
 
 ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettings, bool newProject)
 {
+    QFileInfo fi(fn);
+    if (!fi.isReadable()){
+        QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+        tr("You don't have the permission to open this file: <b>%1</b>").arg(fn));
+        return NULL;
+    }
+
 	if (fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
 		fn.endsWith(".ogw", Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive))
 		return importOPJ(fn, factorySettings, newProject);
@@ -7235,7 +7257,7 @@ void ApplicationWindow::showImageDialog()
 	Graph* g = plot->activeLayer();
 	if (g)
 	{
-		ImageMarker *im = (ImageMarker *) g->selectedMarker();
+		/*ImageMarker *im = (ImageMarker *) g->selectedMarker();
 		if (!im)
 			return;
 
@@ -7246,7 +7268,7 @@ void ApplicationWindow::showImageDialog()
 		id->setIcon(QPixmap(logo_xpm));
 		id->setOrigin(im->origin());
 		id->setSize(im->size());
-		id->exec();
+		id->exec();*/
 	}
 }
 
@@ -7277,7 +7299,7 @@ void ApplicationWindow::showEnrichementDialog()
 	Graph* g = plot->activeLayer();
 	if ( !g )
 		return;
-	
+
 	LegendWidget *l = (LegendWidget *)g->activeText();
 	if (l){
 		TextDialog *td = new TextDialog(TextDialog::TextMarker, this, 0);
@@ -7441,8 +7463,8 @@ void ApplicationWindow::copyMarker()
 		d_enrichement_copy = NULL;
 		d_image_copy = NULL;
 		d_arrow_copy = NULL;
-		if (g->activeEnrichement())			
-			d_enrichement_copy = g->activeEnrichement();	
+		if (g->activeEnrichement())
+			d_enrichement_copy = g->activeEnrichement();
 		else if (g->arrowMarkerSelected())
 			d_arrow_copy = (ArrowMarker *) g->selectedMarker();
 		else if (g->imageMarkerSelected())
@@ -7491,7 +7513,7 @@ void ApplicationWindow::pasteSelection()
                     ((DataPickerTool *)g->activeTool())->pasteSelection();
             } else if (d_enrichement_copy){
 				FrameWidget *t = g->add(d_enrichement_copy);
-				t->move(g->mapFromGlobal(QCursor::pos()));	
+				t->move(g->mapFromGlobal(QCursor::pos()));
 			} else if (d_arrow_copy){
                 ArrowMarker *a = g->addArrow(d_arrow_copy);
                 a->setStartPoint(d_arrow_copy->startPointCoord().x(), d_arrow_copy->startPointCoord().y());
@@ -7501,14 +7523,14 @@ void ApplicationWindow::pasteSelection()
                 a->setEndPoint(a->endPoint() + QPoint(10, 0));
                 g->replot();
                 g->deselectMarker();
-			} else if (d_image_copy){
+			} /*else if (d_image_copy){
                 ImageMarker *i = g->addImage(d_image_copy);
 				QPoint pos = g->canvas()->mapFromGlobal(QCursor::pos());
 				QSize size = d_image_copy->size();
 				i->setRect(pos.x(), pos.y(), size.width(), size.height());
                 g->replot();
                 g->deselectMarker();
-            }
+            }*/
 		}
 	}
 	emit modified();
@@ -8313,19 +8335,43 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 		QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 		QStringList asciiFiles;
 
+        QPoint pos = e->pos();
+        MdiSubWindow *destWindow = NULL;
+        QList<MdiSubWindow *> windows = current_folder->windowsList();
+		foreach(MdiSubWindow *w, windows){
+		    if (w->geometry().contains(pos)){
+		        destWindow = w;
+		        break;
+		    }
+		}
+
 		for(int i = 0; i<(int)fileNames.count(); i++){
 			QString fn = fileNames[i];
 			QFileInfo fi (fn);
 			QString ext = fi.extension().lower();
 			QStringList tempList;
-			QByteArray temp;
 			// convert QList<QByteArray> to QStringList to be able to 'filter'
-			foreach(temp,lst)
+			foreach(QByteArray temp,lst)
 				tempList.append(QString(temp));
 			QStringList l = tempList.filter(ext, Qt::CaseInsensitive);
-			if (l.count()>0)
-				loadImage(fn);
-			else if ( ext == "opj" || ext == "qti")
+			if (l.count() > 0){
+			    MultiLayer *ml = qobject_cast<MultiLayer *>(destWindow);
+			    if (ml){
+			        Graph *l = ml->layerAt(pos);
+			        if (l)
+                        l->addImage(fn);
+			        else if (ml->activeLayer())
+                        ml->activeLayer()->addImage(fn);
+                    else
+                        ml->addLayer()->addImage(fn);
+			    } else {
+			        Matrix *m = qobject_cast<Matrix *>(destWindow);
+                    if (m)
+                        m->importImage(fn);
+                    else
+                        importImage(fn, true);
+			    }
+			} else if ( ext == "opj" || ext == "qti")
 				open(fn);
 			else
 				asciiFiles << fn;
@@ -9743,12 +9789,12 @@ void ApplicationWindow::intensityTable()
 
 	Graph* g = plot->activeLayer();
 	if (g){
-		ImageMarker *im = (ImageMarker *) g->selectedMarker();
+		/*ImageMarker *im = (ImageMarker *) g->selectedMarker();
         if (im){
             QString fn = im->fileName();
             if (!fn.isEmpty())
                 importImage(fn);
-        }
+        }*/
 	}
 }
 
@@ -10575,6 +10621,14 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			TexWidget::restore(ag, lst);
+		} else if (s == "<Image>"){//version 0.9.7
+			QStringList lst;
+			while ( s != "</Image>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			ImageWidget::restore(ag, lst);
 		}
 		else if (s.contains("AxisType"))
 		{

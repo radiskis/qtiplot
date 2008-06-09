@@ -108,6 +108,7 @@ static const char *unzoom_xpm[]={
 #include "TitlePicker.h"
 #include "QwtPieCurve.h"
 #include "ImageMarker.h"
+#include "ImageWidget.h"
 #include "QwtBarCurve.h"
 #include "BoxCurve.h"
 #include "QwtHistogram.h"
@@ -271,7 +272,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 
 	connect (cp,SIGNAL(selectPlot()),this,SLOT(activateGraph()));
 	connect (cp,SIGNAL(drawTextOff()),this,SIGNAL(drawTextOff()));
-	connect (cp,SIGNAL(viewImageDialog()),this,SIGNAL(viewImageDialog()));
 	connect (cp,SIGNAL(viewLineDialog()),this,SIGNAL(viewLineDialog()));
 	connect (cp,SIGNAL(showPlotDialog(int)),this,SIGNAL(showPlotDialog(int)));
 	connect (cp,SIGNAL(showMarkerPopupMenu()),this,SIGNAL(showMarkerPopupMenu()));
@@ -365,9 +365,12 @@ void Graph::select(QWidget *l, bool add)
     selectTitle(false);
     scalePicker->deselect();
     deselectCurves();
-    emit currentFontChanged(l->font());
 
-    d_active_enrichement = qobject_cast<FrameWidget *>(l);
+    d_active_enrichement = qobject_cast<LegendWidget *>(l);
+    if (d_active_enrichement)
+        emit currentFontChanged(((LegendWidget *)l)->font());
+    else
+        d_active_enrichement = qobject_cast<FrameWidget *>(l);
 
     if (add){
         if (d_markers_selector && d_markers_selector->contains(l))
@@ -416,18 +419,13 @@ void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
 	    if (d_markers_selector){
             if (d_lines.contains(mrk))
                 d_markers_selector->add((ArrowMarker*)mrk);
-            else if (d_images.contains(mrk))
-                d_markers_selector->add((ImageMarker*)mrk);
             else
                 return;
         } else {
             if (d_lines.contains(mrk))
                 d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
-            else if (d_images.contains(mrk))
-                d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
             else
                 return;
-
             connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
         }
 	} else {
@@ -443,14 +441,8 @@ void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
                 return;
             else
                 d_markers_selector = new SelectionMoveResizer((ArrowMarker*)mrk);
-        } else if (d_images.contains(mrk)){
-            if (d_markers_selector && d_markers_selector->contains((ImageMarker*)mrk))
-                return;
-            else
-                d_markers_selector = new SelectionMoveResizer((ImageMarker*)mrk);
         } else
             return;
-
         connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
 	}
 }
@@ -1380,7 +1372,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 	pic.save(fileName, 0, quality);
 }
 
-void Graph::exportVector(const QString& fileName, int res, bool color, bool keepAspect, 
+void Graph::exportVector(const QString& fileName, int res, bool color, bool keepAspect,
 					QPrinter::PageSize pageSize)
 {
 	if ( fileName.isEmpty() ){
@@ -1409,7 +1401,7 @@ void Graph::exportVector(const QString& fileName, int res, bool color, bool keep
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-	
+
 	QRect plotRect = rect();
 	if (pageSize == QPrinter::Custom)
         printer.setPaperSize (QSizeF(width(), height()), QPrinter::DevicePixel);
@@ -1550,12 +1542,9 @@ bool Graph::markerSelected()
 
 void Graph::removeMarker()
 {
-	if (d_selected_marker){
-		if (d_lines.contains(d_selected_marker))
+	if (d_selected_marker && d_lines.contains(d_selected_marker))
 			remove((ArrowMarker*)d_selected_marker);
-		else if (d_images.contains(d_selected_marker))
-			remove((ImageMarker*)d_selected_marker);
-	} else if (d_active_enrichement){
+	else if (d_active_enrichement){
 	    if (d_active_enrichement == d_legend)
             d_legend = NULL;
 		delete d_active_enrichement;
@@ -1568,7 +1557,7 @@ void Graph::remove(ArrowMarker* arrow)
 	if (!arrow)
 		return;
 
-	if (d_markers_selector && d_images.contains(arrow))
+	if (d_markers_selector && d_lines.contains(arrow))
 		d_markers_selector->removeAll(arrow);
 
 	if (d_lines.contains(arrow)){
@@ -1593,14 +1582,14 @@ void Graph::remove(ImageMarker* im)
 	if (!im)
 		return;
 
-	if (d_markers_selector && d_images.contains(im))
+	/*if (d_markers_selector && d_images.contains(im))
 		d_markers_selector->removeAll(im);
 
 	if (d_images.contains(im)){
 		int index = d_images.indexOf(im);
 		if (index >= 0 && index < d_images.size())
 			d_images.removeAt(index);
-	}
+	}*/
 
 	if (im == d_selected_marker)
 		d_selected_marker = NULL;
@@ -1617,7 +1606,7 @@ bool Graph::arrowMarkerSelected()
 
 bool Graph::imageMarkerSelected()
 {
-	return (d_selected_marker && d_images.contains(d_selected_marker));
+	return false;//(d_selected_marker && d_images.contains(d_selected_marker));
 }
 
 void Graph::deselect()
@@ -2416,16 +2405,6 @@ void Graph::remove(LegendWidget* t)
 QString Graph::saveMarkers()
 {
 	QString s;
-	foreach (QwtPlotMarker *i, d_images){
-		ImageMarker* mrkI = (ImageMarker*)i;
-		s += "<image>\t";
-		s += mrkI->fileName()+"\t";
-		s += QString::number(mrkI->xValue(), 'g', 15)+"\t";
-		s += QString::number(mrkI->yValue(), 'g', 15)+"\t";
-		s += QString::number(mrkI->right(), 'g', 15)+"\t";
-		s += QString::number(mrkI->bottom(), 'g', 15)+"</image>\n";
-	}
-
 	foreach (QwtPlotMarker *i, d_lines){
 		ArrowMarker* mrkL = (ArrowMarker*)i;
 		s+="<line>\t";
@@ -3386,21 +3365,20 @@ void Graph::drawText(bool on)
 	drawTextOn = on;
 }
 
-ImageMarker* Graph::addImage(ImageMarker* mrk)
+ImageWidget* Graph::addImage(ImageWidget* i)
 {
-	if (!mrk)
+	if (!i)
 		return 0;
 
-	ImageMarker* mrk2 = new ImageMarker(mrk->fileName());
-	if (mrk2){
-		d_images.append(mrk2);
-		insertMarker(mrk2);
-		mrk2->setBoundingRect(mrk->xValue(), mrk->yValue(), mrk->right(), mrk->bottom());
+	ImageWidget* i2 = new ImageWidget(this, i->fileName());
+	if (i2){
+		d_enrichements << i2;
+		i2->setBoundingRect(i->xValue(), i->yValue(), i->right(), i->bottom());
 	}
-	return mrk2;
+	return i2;
 }
 
-ImageMarker* Graph::addImage(const QString& fileName)
+ImageWidget* Graph::addImage(const QString& fileName)
 {
 	if (fileName.isEmpty() || !QFile::exists(fileName)){
 		QMessageBox::warning(0, tr("QtiPlot - File open error"),
@@ -3408,26 +3386,25 @@ ImageMarker* Graph::addImage(const QString& fileName)
 		return 0;
 	}
 
-	ImageMarker* mrk = new ImageMarker(fileName);
-	if (mrk){
-		d_images.append(mrk);
-		insertMarker(mrk);
+	ImageWidget* i = new ImageWidget(this, fileName);
+	if (i){
+		d_enrichements << i;
 
-		QSize picSize = mrk->pixmap().size();
+		QSize picSize = i->pixmap().size();
 		int w = canvas()->width();
-		if (picSize.width()>w)
+		if (picSize.width() > w)
 			picSize.setWidth(w);
 
-		int h=canvas()->height();
-		if (picSize.height()>h)
+		int h = canvas()->height();
+		if (picSize.height() > h)
 			picSize.setHeight(h);
 
-		mrk->setSize(picSize);
+		i->resize(picSize);
 		replot();
 
 		emit modifiedGraph();
 	}
-	return mrk;
+	return i;
 }
 
 void Graph::insertImageMarker(const QStringList& lst, int fileVersion)
@@ -3437,16 +3414,15 @@ void Graph::insertImageMarker(const QStringList& lst, int fileVersion)
 		QMessageBox::warning(0, tr("QtiPlot - File open error"),
 				tr("Image file: <p><b> %1 </b><p>does not exist anymore!").arg(fn));
 	} else {
-		ImageMarker* mrk = new ImageMarker(fn);
+		ImageWidget* mrk = new ImageWidget(this, fn);
 		if (!mrk)
 			return;
 
-		d_images.append(mrk);
-		insertMarker(mrk);
+        d_enrichements << mrk;
 
 		if (fileVersion < 86){
-			mrk->setOrigin(QPoint(lst[2].toInt(), lst[3].toInt()));
-			mrk->setSize(QSize(lst[4].toInt(), lst[5].toInt()));
+			mrk->setOrigin(lst[2].toInt(), lst[3].toInt());
+			mrk->resize(QSize(lst[4].toInt(), lst[5].toInt()));
 		} else if (fileVersion < 90) {
 		    double left = lst[2].toDouble();
 		    double right = left + lst[4].toDouble();
@@ -3723,14 +3699,11 @@ void Graph::updateMarkersBoundingRect()
 			((LegendWidget *)o)->updateCoordinates();
 	}
 
-	if (!d_lines.size() && !d_images.size())
+	if (!d_lines.size())
 		return;
 
 	foreach (QwtPlotMarker *i, d_lines)
 		((ArrowMarker*)i)->updateBoundingRect();
-
-	foreach (QwtPlotMarker *i, d_images)
-		((ImageMarker*)i)->updateBoundingRect();
 
     replot();
 }
@@ -4243,9 +4216,9 @@ void Graph::copy(Graph* g)
 	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
 
-	QList<QwtPlotMarker *> images = g->imagesList();
-	foreach (QwtPlotMarker *i, images)
-		addImage((ImageMarker*)i);
+	//QList<QwtPlotMarker *> images = g->imagesList();
+	//foreach (QwtPlotMarker *i, images)
+		//addImage((ImageMarker*)i);
 
     updateLayout();
 
@@ -4266,7 +4239,7 @@ void Graph::copy(Graph* g)
 	QList<FrameWidget *> enrichements = g->enrichementsList();
 	foreach (FrameWidget *e, enrichements)
 		add(e);
-	
+
 	QList<QwtPlotMarker *> lines = g->linesList();
 	foreach (QwtPlotMarker *i, lines)
 		addArrow((ArrowMarker*)i);
@@ -4700,8 +4673,6 @@ void Graph::setAntialiasing(bool on, bool update)
 			it->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		foreach (QwtPlotMarker *i, d_lines)
 			i->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
-		foreach (QwtPlotMarker *i, d_images)
-			i->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		replot();
 	}
 }
@@ -4711,8 +4682,6 @@ bool Graph::focusNextPrevChild ( bool )
 	QList<QwtPlotMarker *> lst;
 	foreach(QwtPlotMarker *l, d_lines)
 		lst << l;
-	foreach(QwtPlotMarker *i, d_images)
-		lst << i;
 
 	int markers = lst.size();
 	if (markers < 1)
@@ -5572,21 +5541,29 @@ TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
 }
 
 FrameWidget* Graph::add(FrameWidget* fw)
-{	
+{
 	if (!fw)
 		return NULL;
-	
+
 	LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 	if (l){
 		LegendWidget* aux = new LegendWidget(this);
 		aux->clone(l);
 		d_active_enrichement = (FrameWidget*)aux;
 	}
-	
+
 	TexWidget *t = qobject_cast<TexWidget *>(fw);
 	if (t){
 		TexWidget* aux = new TexWidget(this);
 		aux->clone(t);
+		d_enrichements << aux;
+		d_active_enrichement = (FrameWidget*)aux;
+	}
+
+	ImageWidget *i = qobject_cast<ImageWidget *>(fw);
+	if (i){
+		ImageWidget* aux = new ImageWidget(this);
+		aux->clone(i);
 		d_enrichements << aux;
 		d_active_enrichement = (FrameWidget*)aux;
 	}

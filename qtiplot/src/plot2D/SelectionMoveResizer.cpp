@@ -2,8 +2,8 @@
     File                 : SelectionMoveResizer.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Knut Franke
-    Email (use @ for *)  : knut.franke*gmx.de
+    Copyright            : (C) 2007 by Knut Franke, 2008 by Ion Vasilief
+    Email (use @ for *)  : knut.franke*gmx.de, ion_vasilief*yahoo.fr
     Description          : Selection of Widgets and QwtPlotMarkers
 
  ***************************************************************************/
@@ -39,16 +39,9 @@
 #include "FrameWidget.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
-#include "ImageMarker.h"
 #include "PlotEnrichement.h"
 
 SelectionMoveResizer::SelectionMoveResizer(ArrowMarker *target)
-	: QWidget(target->plot()->canvas())
-{
-	init();
-	add(target);
-}
-SelectionMoveResizer::SelectionMoveResizer(ImageMarker *target)
 	: QWidget(target->plot()->canvas())
 {
 	init();
@@ -95,19 +88,6 @@ void SelectionMoveResizer::add(ArrowMarker *target)
 
 	update();
 }
-void SelectionMoveResizer::add(ImageMarker *target)
-{
-	if ((QWidget*)target->plot()->canvas() != parent())
-		return;
-	d_image_markers << target;
-
-	if (d_bounding_rect.isValid())
-		d_bounding_rect |= boundingRectOf(target);
-	else
-		d_bounding_rect = boundingRectOf(target);
-
-	update();
-}
 
 void SelectionMoveResizer::add(QWidget *target)
 {
@@ -133,17 +113,7 @@ QRect SelectionMoveResizer::boundingRectOf(QwtPlotMarker *target) const
 int SelectionMoveResizer::removeAll(ArrowMarker *target)
 {
 	int result = d_line_markers.removeAll(target);
-	if (d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
-		delete this;
-	else
-		recalcBoundingRect();
-	return result;
-}
-
-int SelectionMoveResizer::removeAll(ImageMarker *target)
-{
-	int result = d_image_markers.removeAll(target);
-	if (d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
+	if (d_line_markers.isEmpty() && d_widgets.isEmpty())
 		delete this;
 	else
 		recalcBoundingRect();
@@ -153,7 +123,7 @@ int SelectionMoveResizer::removeAll(ImageMarker *target)
 int SelectionMoveResizer::removeAll(QWidget *target)
 {
 	int result = d_widgets.removeAll(target);
-	if (d_line_markers.isEmpty() && d_image_markers.isEmpty() && d_widgets.isEmpty())
+	if (d_line_markers.isEmpty() && d_widgets.isEmpty())
 		delete this;
 	else
 		recalcBoundingRect();
@@ -165,12 +135,6 @@ void SelectionMoveResizer::recalcBoundingRect()
 	d_bounding_rect = QRect(0, 0, -1, -1);
 
 	foreach(ArrowMarker *i, d_line_markers) {
-		if(d_bounding_rect.isValid())
-			d_bounding_rect |= boundingRectOf(i);
-		else
-			d_bounding_rect = boundingRectOf(i);
-	}
-	foreach(ImageMarker *i, d_image_markers) {
 		if(d_bounding_rect.isValid())
 			d_bounding_rect |= boundingRectOf(i);
 		else
@@ -281,25 +245,25 @@ void SelectionMoveResizer::operateOnTargets()
 					p2.y()<p1.y() ? new_rect.top() : new_rect.bottom() ));
 	}
 
-	foreach(ImageMarker *i, d_image_markers) {
+	/*foreach(ImageMarker *i, d_image_markers) {
 		QRect new_rect = operateOn(i->rect());
 		i->setOrigin(new_rect.topLeft());
 		i->setSize(new_rect.size());
-	}
+	}*/
 
 	foreach(QWidget *i, d_widgets){
 		LegendWidget *l = qobject_cast<LegendWidget *>(i);
-		if (!l){	
+		if (!l){
 			QRect r = operateOn(i->geometry());
 			i->setGeometry(r);
 
 			FrameWidget *f = qobject_cast<FrameWidget *>(i);
 			if (f)
 				f->updateCoordinates();
-				
+
 			continue;
 		}
-		
+
 		QRect new_rect = operateOn(l->geometry());
 		l->move(new_rect.topLeft());
 		if (!l->text().isEmpty()){

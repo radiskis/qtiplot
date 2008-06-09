@@ -47,7 +47,7 @@
 #include "plot2D/LegendWidget.h"
 #include "plot2D/Grid.h"
 #include "plot2D/ArrowMarker.h"
-#include "plot2D/ImageMarker.h"
+#include "plot2D/ImageWidget.h"
 
 #include "qwt_plot_canvas.h"
 #include "qwt_plot_layout.h"
@@ -1213,7 +1213,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 				if (file.open())
 				{
 					bmp.save(file.fileName(), "BMP");
-					ImageMarker *mrk = graph->addImage(file.fileName());
+					ImageWidget *mrk = graph->addImage(file.fileName());
 					double left, top, right, bottom;
 					left = top = right = bottom = 0.0;
 					switch(bitmaps[i].attach)

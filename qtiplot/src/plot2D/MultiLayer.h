@@ -101,6 +101,8 @@ public slots:
 	void setActiveLayer(Graph* g);
 	void activateGraph(LayerButton* button);
 
+    //! Returns the layer at the given position; returns 0 if there is no such layer.
+	Graph* layerAt(const QPoint& pos);
 	void setGraphGeometry(int x, int y, int w, int h);
 
 	void findBestLayout(int &rows, int &cols);
@@ -140,7 +142,7 @@ public slots:
 	void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 	void exportSVG(const QString& fname);
     void exportPDF(const QString& fname);
-	void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true, 
+	void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true,
 			QPrinter::PageSize pageSize = QPrinter::Custom);
 
 	void copyAllLayers();
