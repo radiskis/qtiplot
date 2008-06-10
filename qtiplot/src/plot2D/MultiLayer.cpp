@@ -893,7 +893,6 @@ void MultiLayer::connectLayer(Graph *g)
 		connect (g,SIGNAL(showMarkerPopupMenu()),this,SIGNAL(showMarkerPopupMenu()));
 	connect (g,SIGNAL(showCurveContextMenu(QwtPlotCurve *)),this,SIGNAL(showCurveContextMenu(QwtPlotCurve *)));
 	connect (g,SIGNAL(cursorInfo(const QString&)),this,SIGNAL(cursorInfo(const QString&)));
-	connect (g,SIGNAL(viewImageDialog()),this,SIGNAL(showImageDialog()));
 	connect (g,SIGNAL(viewTitleDialog()),this,SIGNAL(viewTitleDialog()));
 	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
 	connect (g,SIGNAL(modifiedGraph()),this,SLOT(notifyChanges()));

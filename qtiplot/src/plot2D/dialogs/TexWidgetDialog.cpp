@@ -35,31 +35,79 @@
 #include "TexWidgetDialog.h"
 #include "../Graph.h"
 #include "../TexWidget.h"
+#include "../FrameWidget.h"
+#include "../ImageWidget.h"
 #include "../../ColorButton.h"
+#include "../../ApplicationWindow.h"
 
-TexWidgetDialog::TexWidgetDialog(Graph *g, QWidget *parent)
-    : QDialog(parent), d_plot(g), d_tex_widget(NULL)
-{
-	setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
+static const char* choose_folder_xpm[]={
+    "16 16 11 1",
+    "# c #000000",
+    "g c #c0c0c0",
+    "e c #303030",
+    "a c #ffa858",
+    "b c #808080",
+    "d c #a0a0a4",
+    "f c #585858",
+    "c c #ffdca8",
+    "h c #dcdcdc",
+    "i c #ffffff",
+    ". c None",
+    "....###.........",
+    "....#ab##.......",
+    "....#acab####...",
+    "###.#acccccca#..",
+    "#ddefaaaccccca#.",
+    "#bdddbaaaacccab#",
+    ".eddddbbaaaacab#",
+    ".#bddggdbbaaaab#",
+    "..edgdggggbbaab#",
+    "..#bgggghghdaab#",
+    "...ebhggghicfab#",
+    "....#edhhiiidab#",
+    "......#egiiicfb#",
+    "........#egiibb#",
+    "..........#egib#",
+    "............#ee#"};
 	
+TexWidgetDialog::TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent)
+    : QDialog(parent), d_plot(g), d_widget(NULL), d_widget_type(wt)
+{	
     http = new QHttp(this);
     connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
 	
     QDialogButtonBox *buttonBox = new QDialogButtonBox;
-    clearButton = buttonBox->addButton(tr("Clea&r"), QDialogButtonBox::ResetRole);
-	addButton = buttonBox->addButton(tr("&Add"), QDialogButtonBox::AcceptRole);
-	addButton->setEnabled(false);
+	clearButton = NULL;
+	editPage = NULL;
+	imagePage = NULL;
+	if (wt == Tex){
+		setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
 		
-    updateButton = buttonBox->addButton(tr("&Update"), QDialogButtonBox::ApplyRole);
-	cancelButton = buttonBox->addButton(tr("&Cancel"), QDialogButtonBox::RejectRole);
+    	clearButton = buttonBox->addButton(tr("Clea&r"), QDialogButtonBox::ResetRole);
+		connect(clearButton, SIGNAL(clicked()), this, SLOT(clearForm()));
+		
+		addButton = buttonBox->addButton(tr("&Add"), QDialogButtonBox::AcceptRole);
+		addButton->setEnabled(false);
+		connect(addButton, SIGNAL(clicked()), this, SLOT(addImage()));	
+		
+		updateButton = buttonBox->addButton(tr("&Update"), QDialogButtonBox::ApplyRole);
+	} else {
+		setWindowTitle(tr("QtiPlot") + " - " + tr("Properties Editor"));
+    	updateButton = buttonBox->addButton(tr("&Apply"), QDialogButtonBox::ApplyRole);
+	}
 	
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(clearForm()));
-	connect(addButton, SIGNAL(clicked()), this, SLOT(addImage()));		
-    connect(updateButton, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(updateButton, SIGNAL(clicked()), this, SLOT(apply()));
+	
+	cancelButton = buttonBox->addButton(tr("&Cancel"), QDialogButtonBox::RejectRole);
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
 	tabWidget = new QTabWidget();
-	initEditorPage();
+	if (wt == Tex)
+		initEditorPage();
+	else if (wt == Image)
+		initImagePage();
+	
+	initFramePage();
 	initGeometryPage();
 	
     QVBoxLayout *layout = new QVBoxLayout;
@@ -92,7 +140,35 @@ void TexWidgetDialog::initEditorPage()
 	tabWidget->addTab(editPage, tr( "&Text" ) );
 }
 
-void TexWidgetDialog::initGeometryPage()
+void TexWidgetDialog::initImagePage()
+{
+	imagePage = new QWidget();
+
+    QGroupBox *gb = new QGroupBox();
+	QGridLayout *gl = new QGridLayout(gb);
+    gl->addWidget(new QLabel( tr("File")), 0, 0);
+	
+	imagePathBox = new QLineEdit();
+	gl->addWidget(imagePathBox, 0, 1);
+	
+	QPushButton *browseBtn = new QPushButton();
+	connect(browseBtn, SIGNAL(clicked()), this, SLOT(chooseImageFile()));
+	browseBtn->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	gl->addWidget(browseBtn, 0, 2);
+	
+	boxSaveImagesInternally = new QCheckBox(tr("&Save internally"));
+	gl->addWidget(boxSaveImagesInternally, 1, 1);
+	gl->setColumnStretch(1, 1);
+	gl->setRowStretch(2, 1);
+	
+	QVBoxLayout *layout = new QVBoxLayout(imagePage);
+    layout->setMargin(4);
+    layout->setSpacing(4);
+    layout->addWidget(gb);
+	tabWidget->addTab(imagePage, tr( "&Image" ) );
+}
+
+void TexWidgetDialog::initFramePage()
 {
     framePage = new QWidget();
     
@@ -120,29 +196,72 @@ void TexWidgetDialog::initGeometryPage()
 	tabWidget->addTab(framePage, tr( "&Frame" ) );
 }
 
+void TexWidgetDialog::initGeometryPage()
+{
+    geometryPage = new QWidget();
+    
+	QGroupBox *gb = new QGroupBox();
+	QGridLayout *gl = new QGridLayout(gb);
+    /*gl->addWidget(new QLabel( tr("Shape")), 0, 0);
+	
+	frameBox = new QComboBox();
+	frameBox->addItem( tr( "None" ) );
+	frameBox->addItem( tr( "Rectangle" ) );
+	frameBox->addItem( tr( "Shadow" ) );
+    gl->addWidget(frameBox, 0, 1);
+	
+    gl->addWidget(new QLabel(tr("Color")), 1, 0);
+	frameColorBtn = new ColorButton();
+    gl->addWidget(frameColorBtn, 1, 1);
+	gl->setColumnStretch(1, 1);
+	gl->setRowStretch(2, 1);*/
+
+	QVBoxLayout *layout = new QVBoxLayout(geometryPage);
+    layout->setMargin(4);
+    layout->setSpacing(4);
+    layout->addWidget(gb);
+	
+	tabWidget->addTab(geometryPage, tr( "&Geometry" ) );
+}
+
 void TexWidgetDialog::customButtons(QWidget *w)
 {
-	if (w == editPage){
-		updateButton->setText(tr("&Update"));
-		clearButton->setEnabled(true);
-	} else if (w == framePage){
-		updateButton->setText(tr("&Apply"));
+	if (editPage && w == editPage){
+		if (clearButton)
+			clearButton->setEnabled(true);
+		return;
+	}
+	
+	if (w == framePage){
 		updateButton->setEnabled(true);
-		clearButton->setEnabled(false);
+		if (clearButton)
+			clearButton->setEnabled(false);
+		return;
 	}
 }
 
-void TexWidgetDialog::setTexWidget(TexWidget *tw)
+void TexWidgetDialog::setWidget(FrameWidget *w)
 {
-	if (!tw)
+	if (!w)
 		return;
 	
-	d_tex_widget = tw;
+	d_widget = w;
 	
-	equationEditor->setText(tw->formula());
-	outputLabel->setPixmap(tw->pixmap());
-	frameBox->setCurrentIndex(tw->frameStyle());
-	frameColorBtn->setColor(tw->frameColor());
+	frameBox->setCurrentIndex(w->frameStyle());
+	frameColorBtn->setColor(w->frameColor());
+	
+	if (d_widget_type == Tex){
+		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
+		if (tw){
+			equationEditor->setText(tw->formula());
+			outputLabel->setPixmap(tw->pixmap());
+		}
+		return;
+	} else if (d_widget_type == Image){
+		ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
+		if (i)			
+			imagePathBox->setText(i->fileName());
+	}
 }
 
 void TexWidgetDialog::clearForm()
@@ -156,18 +275,20 @@ void TexWidgetDialog::apply()
 	if (tabWidget->currentPage() == editPage)
 		fetchImage();
 	else if (tabWidget->currentPage() == framePage){
-		if (d_tex_widget){
-			d_tex_widget->setFrameStyle(frameBox->currentIndex());
-			d_tex_widget->setFrameColor(frameColorBtn->color());
+		if (d_widget){
+			d_widget->setFrameStyle(frameBox->currentIndex());
+			d_widget->setFrameColor(frameColorBtn->color());
 			d_plot->multiLayer()->notifyChanges();
 		}
+	} else if (imagePage && tabWidget->currentPage() == imagePage){
+		chooseImageFile(imagePathBox->text());
 	}
-	
 }
 
 void TexWidgetDialog::fetchImage()
 {
-	if (d_tex_widget && d_tex_widget->formula() == equationEditor->toPlainText())
+	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
+	if (tw && tw->formula() == equationEditor->toPlainText())
 		return;
 		
 	clearButton->setEnabled(false);
@@ -196,9 +317,10 @@ void TexWidgetDialog::updateForm(bool error)
         if (image.loadFromData(http->readAll())) {
             QPixmap pixmap = QPixmap::fromImage(image);
             outputLabel->setPixmap(pixmap);
-			if (d_tex_widget){
-				d_tex_widget->setPixmap(pixmap);
-				d_tex_widget->setFormula(equationEditor->toPlainText());
+			TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
+			if (tw){
+				tw->setPixmap(pixmap);
+				tw->setFormula(equationEditor->toPlainText());
 				d_plot->multiLayer()->notifyChanges();
 			}	
         }
@@ -226,5 +348,36 @@ void TexWidgetDialog::addImage()
 	if (!pix)
 		return;
 	
-	d_tex_widget = d_plot->addTexFormula(equationEditor->text(), *pix);
+	d_widget = (FrameWidget *)d_plot->addTexFormula(equationEditor->text(), *pix);
+}
+
+void TexWidgetDialog::chooseImageFile(const QString& fn)
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	QString path = fn;
+	if (path.isEmpty())
+		path = QFileDialog::getOpenFileName(this, tr("QtiPlot - Import image from file"), app->imagesDirPath);
+	
+	if (!path.isEmpty()){
+		QFileInfo fi(path);
+		if (!fi.exists ()){
+			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+			tr("The file: <b>%1</b> doesn't exist!").arg(path));
+			return;
+		}
+		if (!fi.isReadable()){
+			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+			tr("You don't have the permission to open this file: <b>%1</b>").arg(path));
+			return;
+		}
+		
+		ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
+		if (i && i->setFileName(path)){			
+			imagePathBox->setText(path);
+			app->imagesDirPath = fi.dirPath(true);
+		}
+	}
 }

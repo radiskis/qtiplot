@@ -39,9 +39,11 @@ class QLabel;
 class QPushButton;
 class QTextEdit;
 class QTabWidget;
+class QCheckBox;
+class QLineEdit;
 	
 class Graph;
-class TexWidget;
+class FrameWidget;
 class ColorButton;
 	
 class TexWidgetDialog : public QDialog
@@ -49,19 +51,24 @@ class TexWidgetDialog : public QDialog
     Q_OBJECT
 
 public:
-    TexWidgetDialog(Graph *g, QWidget *parent = 0);
-	void setTexWidget(TexWidget *tw);
+	enum WidgetType{Frame, Text, Image, Tex};
+	
+    TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent = 0);
+	void setWidget(FrameWidget *w);
 
-public slots:
+private slots:
     void clearForm();
     void fetchImage();
     void updateForm(bool error);
 	void addImage();
 	void apply();
 	void customButtons(QWidget *w);
+	void chooseImageFile(const QString& fn = QString::null);
 
 private:
 	void initEditorPage();
+	void initImagePage();
+	void initFramePage();
 	void initGeometryPage();
 
     QHttp *http;
@@ -73,11 +80,14 @@ private:
     QTextEdit *equationEditor;
 	QComboBox *frameBox;
 	QTabWidget* tabWidget;
-	QWidget *editPage, *framePage;
+	QWidget *editPage, *framePage, *geometryPage, *imagePage;
 	ColorButton *frameColorBtn;
+	QCheckBox *boxSaveImagesInternally;
+	QLineEdit *imagePathBox;
 
 	Graph *d_plot;
-	TexWidget *d_tex_widget;
+	FrameWidget *d_widget;
+	WidgetType d_widget_type;
 };
 
 #endif

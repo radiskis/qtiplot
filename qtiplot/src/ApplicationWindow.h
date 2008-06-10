@@ -693,7 +693,6 @@ public slots:
 	void showRowStatistics();
 	void showColStatistics();
 	void showFitDialog();
-	void showImageDialog();
 	void showLayerDialog();
 	void showPreferencesDialog();
 	void showMatrixDialog();
@@ -1233,7 +1232,7 @@ private:
     QAction *actionAddColToTable, *actionDeleteLayer, *actionInterpolate;
     QAction *actionResizeActiveWindow, *actionHideActiveWindow;
     QAction *actionShowMoreWindows, *actionPixelLineProfile, *actionIntensityTable;
-    QAction *actionShowLineDialog, *actionShowImageDialog, *actionShowTextDialog;
+    QAction *actionShowLineDialog, *actionShowTextDialog;
     QAction *actionActivateWindow, *actionMinimizeWindow, *actionMaximizeWindow, *actionHideWindow, *actionResizeWindow;
     QAction *actionEditSurfacePlot, *actionAdd3DData;
 	QAction *actionMatrixDeterminant, *actionSetMatrixProperties, *actionConvertMatrixXYZ, *actionConvertMatrixYXZ;

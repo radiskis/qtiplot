@@ -172,7 +172,6 @@ signals:
 	void showMarkerPopupMenu();
 	void modifiedPlot();
 	void cursorInfo(const QString&);
-	void showImageDialog();
 	void showLineDialog();
 	void viewTitleDialog();
 	void createTable(const QString&,int,int,const QString&);

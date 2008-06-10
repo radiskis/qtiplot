@@ -42,7 +42,8 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot),
 	d_plot(plot),
 	d_frame (0),
 	d_color(Qt::black),
-	d_angle(0)
+	d_angle(0),
+	d_frame_width(5)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -82,9 +83,9 @@ void FrameWidget::setFrameStyle(int style)
 	d_frame = style;
 
 	if (d_frame == Shadow)
-		resize(width() + 5, height() + 5);
+		resize(width() + d_frame_width, height() + d_frame_width);
 	else if (old_frame_style == Shadow)
-		resize(width() - 5, height() - 5);
+		resize(width() - d_frame_width, height() - d_frame_width);
 }
 
 void FrameWidget::updateCoordinates()
@@ -111,11 +112,8 @@ void FrameWidget::move(const QPoint& pos)
 	updateCoordinates();
 }
 
-void FrameWidget::setBoundingRect(double left, double top, double right, double bottom)
+void FrameWidget::setCoordinates(double left, double top, double right, double bottom)
 {
-    if (d_x == left && d_y == top && d_x_right == right && d_y_bottom == bottom)
-        return;
-
     d_x = left;
     d_y = top;
     d_x_right = right;
