@@ -45,6 +45,11 @@ d_file_name(fn)
 	}
 }
 
+void ImageWidget::setFileName(const QString& fn)
+{
+    d_file_name = fn;
+}
+
 void ImageWidget::paintEvent(QPaintEvent *e)
 {
 	if (d_pix.isNull())

@@ -45,7 +45,7 @@ public:
 	void setPixmap(const QPixmap&);
 
     //! Set #d_file_name.
-	void setFileName(const QString& fn) { d_file_name = fn; };
+	void setFileName(const QString& fn);
 	//! Return #d_file_name.
 	QString fileName(){return d_file_name;};
 

@@ -42,7 +42,7 @@ public:
     FrameWidget(Graph *);
 
 	Graph *plot(){return d_plot;};
-	
+
 	//! The kinds of frame a FrameWidget can draw around.
 	enum FrameStyle{None = 0, Line = 1, Shadow = 2};
 
@@ -60,16 +60,20 @@ public:
 	virtual QwtDoubleRect boundingRect() const;
 	//! Set position (xValue() and yValue()), right and bottom values giving everything in plot coordinates.
 	void setBoundingRect(double left, double top, double right, double bottom);
+	//! Set size in paint coordinates.
+    void setSize(int w, int h);
+    //! Set geometry, giving everything in paint coordinates.
+	void setRect(int x, int y, int w, int h);
 
 	double right(){return d_x_right;};
 	double bottom(){return d_y_bottom;};
-	
+
 	int frameStyle(){return d_frame;};
 	void setFrameStyle(int style);
-	
+
 	QColor frameColor(){return d_color;};
 	void setFrameColor(const QColor& c){d_color = c;};
-	
+
 	int angle(){return d_angle;};
 	void setAngle(int ang){d_angle = ang;};
 
@@ -78,14 +82,14 @@ public:
 
     virtual void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
     void resetOrigin(){setOriginCoord(d_x, d_y);};
-	
+
     virtual void updateCoordinates();
 	virtual QString saveToString();
 
 signals:
 	void showDialog();
 	void showMenu();
-	
+
 protected:
     //! Returns the x axis coordinate of the top left corner based on the pixel value
     double calculateXValue();

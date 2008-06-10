@@ -54,7 +54,6 @@ class QwtPlotZoomer;
 class QwtPieCurve;
 class Table;
 class ArrowMarker;
-class ImageMarker;
 class ImageWidget;
 class TitlePicker;
 class ScalePicker;
@@ -197,7 +196,7 @@ class Graph: public QwtPlot
     	void updateCurveLabels();
 
 		TexWidget* addTexFormula(const QString& s, const QPixmap& pix);
-		
+
 		FrameWidget* add(FrameWidget* fw);
 		void remove(FrameWidget*);
 

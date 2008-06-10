@@ -36,7 +36,7 @@
 
 class QPoint;
 class QImage;
-class ImageMarker;
+class ImageWidget;
 class ApplicationWindow;
 
 /*!\brief Plot tool for calculating intensity profiles of image markers along a line.
@@ -78,8 +78,7 @@ class LineProfileTool : public QWidget, public PlotToolInterface
 
 	protected:
 		int averageImagePixel(const QImage &image, int px, int py, bool moreHorizontal);
-		void addLineMarker(const QPoint &start, const QPoint &end);
-		/*!\brief Draw line during operation (replaced by a LineMarker at the end).
+		/*!\brief Draw line during operation.
 		 */
 		virtual void paintEvent(QPaintEvent *e);
 		/*!\brief Pressing the left mouse button starts line selection.
@@ -98,8 +97,8 @@ class LineProfileTool : public QWidget, public PlotToolInterface
         ApplicationWindow *d_app;
 		//! Number of image pixels over which to average.
 		int d_average_pixels;
-		//! The image marker to operate on.
-		ImageMarker *d_target;
+		//! The image to operate on.
+		ImageWidget *d_target;
 		/*!\brief Mouse position where an operation started.
 		 */
 		QPoint d_op_start;

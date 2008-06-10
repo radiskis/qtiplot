@@ -80,8 +80,8 @@ void FrameWidget::setFrameStyle(int style)
 
 	int old_frame_style = d_frame;
 	d_frame = style;
-	
-	if (d_frame == Shadow) 
+
+	if (d_frame == Shadow)
 		resize(width() + 5, height() + 5);
 	else if (old_frame_style == Shadow)
 		resize(width() - 5, height() - 5);
@@ -126,13 +126,32 @@ void FrameWidget::setBoundingRect(double left, double top, double right, double 
 
 	QPoint pos(d_plot->transform(QwtPlot::xBottom, d_x), d_plot->transform(QwtPlot::yLeft, d_y));
 	pos = d_plot->canvas()->mapToParent(pos);
-	
-	QPoint bottomRight(d_plot->transform(QwtPlot::xBottom, d_x_right), 
+
+	QPoint bottomRight(d_plot->transform(QwtPlot::xBottom, d_x_right),
 						d_plot->transform(QwtPlot::yLeft, d_y_bottom));
 	bottomRight = d_plot->canvas()->mapToParent(bottomRight);
-	
+
     resize(QSize(abs(bottomRight.x() - pos.x() + 1), abs(bottomRight.y() - pos.y() + 1)));
 	QWidget::move(pos);
+}
+
+void FrameWidget::setRect(int x, int y, int w, int h)
+{
+    if (pos() == QPoint(x, y) && size() == QSize(w, h))
+        return;
+
+    resize(QSize(w, h));
+    move(QPoint(x, y));
+}
+
+void FrameWidget::setSize(int w, int h)
+{
+    if (size() == QSize(w, h))
+        return;
+
+    resize(QSize(w, h));
+    d_x_right = calculateRightValue();
+	d_y_bottom = calculateBottomValue();
 }
 
 double FrameWidget::calculateXValue()
@@ -166,12 +185,12 @@ QwtDoubleRect FrameWidget::boundingRect() const
 
 void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 {
-	p->save();	
+	p->save();
 	if (d_frame == Line){
 		p->setPen(QPen(d_color, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 		p->setBrush(QBrush(Qt::white));
         QwtPainter::drawRect(p, rect.adjusted(0, 0, -1, -1));
-	} else if (d_frame == Shadow){		
+	} else if (d_frame == Shadow){
 		p->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 		p->setBrush(QBrush(Qt::black));
 		p->drawRect(rect.adjusted(5, 5, 0, 0));
@@ -180,7 +199,7 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 		QwtPainter::drawRect(p, rect.adjusted(0, 0, -5, -5));
 	} else
 		p->fillRect(rect, Qt::white);
-	
+
 	p->restore();
 }
 

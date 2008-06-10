@@ -38,7 +38,6 @@ class QPoint;
 class QwtPlotMarker;
 class LegendWidget;
 class ArrowMarker;
-class ImageMarker;
 
 /*!\brief Handler for modifying one or more QWidget and/or QwtPlotMarker with mouse or keyboard.
  *
