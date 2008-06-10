@@ -272,14 +272,12 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/FunctionCurve.h \
 			   src/plot2D/Graph.h \
 			   src/plot2D/Grid.h \
-			   src/plot2D/ImageMarker.h \
 			   src/plot2D/ImageWidget.h \
 			   src/plot2D/LegendWidget.h \
 			   src/plot2D/LineProfileTool.h \
 			   src/plot2D/MultiLayer.h \
 			   src/plot2D/MultiPeakFitTool.h \
 			   src/plot2D/PlotCurve.h \
-			   src/plot2D/PlotEnrichement.h \
 			   src/plot2D/PlotToolInterface.h \
 			   src/plot2D/QwtBarCurve.h \
                src/plot2D/QwtErrorPlotCurve.h \
@@ -305,14 +303,12 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/FunctionCurve.cpp \
 			   src/plot2D/Graph.cpp \
 			   src/plot2D/Grid.cpp \
-			   src/plot2D/ImageMarker.cpp \
 			   src/plot2D/ImageWidget.cpp \
 			   src/plot2D/LegendWidget.cpp \
 			   src/plot2D/LineProfileTool.cpp \
 			   src/plot2D/MultiLayer.cpp \
 			   src/plot2D/MultiPeakFitTool.cpp \
 			   src/plot2D/PlotCurve.cpp \
-			   src/plot2D/PlotEnrichement.cpp \
 			   src/plot2D/QwtBarCurve.cpp \
                src/plot2D/QwtErrorPlotCurve.cpp \
 			   src/plot2D/QwtHistogram.cpp \
@@ -515,7 +511,8 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiGraph.cpp\
              $${SIP_DIR}/sipqtiGraph3D.cpp\
              $${SIP_DIR}/sipqtiArrowMarker.cpp\
-			 $${SIP_DIR}/sipqtiImageMarker.cpp\
+             $${SIP_DIR}/sipqtiFrameWidget.cpp\
+			 $${SIP_DIR}/sipqtiImageWidget.cpp\
 			 $${SIP_DIR}/sipqtiLegendWidget.cpp\
 			 $${SIP_DIR}/sipqtiGrid.cpp\
              $${SIP_DIR}/sipqtiMultiLayer.cpp\

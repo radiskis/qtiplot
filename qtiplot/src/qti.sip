@@ -407,27 +407,36 @@ private:
   ArrowMarker(const ArrowMarker&);
 };
 
-class ImageMarker // : QwtPlotMarker
+class FrameWidget : QWidget
 {
 %TypeHeaderCode
-#include "src/plot2D/ImageMarker.h"
+#include "src/plot2D/FrameWidget.h"
+%End
+
+private:
+  FrameWidget(const FrameWidget&);
+};
+
+class ImageWidget : FrameWidget /PyName=Image/
+{
+%TypeHeaderCode
+#include "src/plot2D/ImageWidget.h"
 %End
 public:
 
-  ImageMarker(const QString&);
+  ImageWidget(Graph *, const QString&);
   QString fileName();
 
-  QSize size();
-  void setSize(int, int);
   void setOrigin(int, int);
+  void setSize(int, int);
   void setRect(int, int, int, int);
   void setBoundingRect(double, double, double, double) /PyName=setCoordinates/;
 
 private:
-  ImageMarker(const ImageMarker&);
+  ImageWidget(const ImageWidget&);
 };
 
-class LegendWidget : QWidget /PyName=Legend/
+class LegendWidget : FrameWidget /PyName=Legend/
 {
 %TypeHeaderCode
 #include "src/plot2D/LegendWidget.h"
@@ -575,9 +584,9 @@ public:
   ArrowMarker* addArrow(ArrowMarker*);
   void remove(ArrowMarker*);
 
-  //ImageMarker* addImage(ImageMarker*);
-  //ImageMarker* addImage(const QString& fileName);
-  //void remove(ImageMarker*);
+  ImageWidget* addImage(ImageWidget*);
+  ImageWidget* addImage(const QString& fileName);
+  void remove(ImageWidget*);
 
   void setTitle(const QString& t);
   void setTitleFont(const QFont &fnt);

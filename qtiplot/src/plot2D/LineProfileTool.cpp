@@ -2,10 +2,8 @@
     File                 : LineProfileTool.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for calculating intensity profiles of
                            image markers.
 
@@ -30,8 +28,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "LineProfileTool.h"
-#include "ImageMarker.h"
-#include "ArrowMarker.h"
+#include "ImageWidget.h"
 #include "Graph.h"
 #include "../ApplicationWindow.h"
 #include "MultiLayer.h"
@@ -43,14 +40,14 @@
 #include <qwt_plot_canvas.h>
 
 LineProfileTool::LineProfileTool(Graph *graph, ApplicationWindow *app, int average_pixels)
-	: QWidget(graph->canvas()),
+	: QWidget(graph),
 	PlotToolInterface(graph),
 	d_app(app)
 {
 	d_op_start = d_op_dp = QPoint(0,0);
 	// make sure we average over an odd number of pixels
 	d_average_pixels = (average_pixels % 2) ? average_pixels : average_pixels + 1;
-	d_target = dynamic_cast<ImageMarker*>(d_graph->selectedMarker());
+	d_target = qobject_cast<ImageWidget*>(d_graph->activeEnrichement());
 	if (!d_target)
 		QMessageBox::critical(d_graph->window(), tr("QtiPlot - Pixel selection warning"),
 				tr("Please select an image marker first."));
@@ -62,14 +59,14 @@ LineProfileTool::LineProfileTool(Graph *graph, ApplicationWindow *app, int avera
 
 void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& end)
 {
-	QRect rect = d_target->rect();
+	QRect rect = d_target->geometry();
 	if (!rect.contains(start) || !rect.contains(end)){
 		QMessageBox::warning(d_graph, tr("QtiPlot - Pixel selection warning"),
 				tr("Please select the end line point inside the image rectangle!"));
 		return;
 	}
 
-	QPoint o = d_target->origin();
+	QPoint o = d_target->pos();
 	QPixmap pic = d_target->pixmap();
 	QImage image = pic.convertToImage();
 
@@ -170,24 +167,6 @@ int LineProfileTool::averageImagePixel(const QImage& image, int px, int py, bool
 	return sum/d_average_pixels;
 }
 
-void LineProfileTool::addLineMarker(const QPoint &start, const QPoint &end)
-{
-	ArrowMarker *mrk = new ArrowMarker();
-	mrk->attach(d_graph);
-
-	mrk->setStartPoint(start);
-	mrk->setEndPoint(end);
-	mrk->setColor(Qt::red);
-	mrk->setWidth(1);
-	mrk->setStyle(Qt::SolidLine);
-	mrk->drawEndArrow(false);
-	mrk->drawStartArrow(false);
-
-	d_graph->addArrow(mrk);
-	mrk->detach();
-	d_graph->replot();
-}
-
 void LineProfileTool::paintEvent(QPaintEvent *)
 {
 	QPainter p(this);
@@ -213,7 +192,5 @@ void LineProfileTool::mouseMoveEvent(QMouseEvent *e)
 void LineProfileTool::mouseReleaseEvent(QMouseEvent *e)
 {
 	calculateLineProfile(d_op_start, e->pos());
-	addLineMarker(d_op_start, e->pos());
-	d_graph->setActiveTool(NULL);
-	// attention: I'm now deleted
+	d_graph->setActiveTool(NULL);// attention: I'm now deleted
 }

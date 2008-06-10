@@ -39,7 +39,6 @@
 #include "FrameWidget.h"
 #include "LegendWidget.h"
 #include "ArrowMarker.h"
-#include "PlotEnrichement.h"
 
 SelectionMoveResizer::SelectionMoveResizer(ArrowMarker *target)
 	: QWidget(target->plot()->canvas())
@@ -107,7 +106,7 @@ void SelectionMoveResizer::add(QWidget *target)
 
 QRect SelectionMoveResizer::boundingRectOf(QwtPlotMarker *target) const
 {
-	return ((PlotEnrichement *)target)->rect();
+	return ((ArrowMarker *)target)->rect();
 }
 
 int SelectionMoveResizer::removeAll(ArrowMarker *target)

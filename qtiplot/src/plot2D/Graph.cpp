@@ -1547,7 +1547,7 @@ void Graph::removeMarker()
 		/*int index = d_enrichements.indexOf (d_active_enrichement);
 		if (index >= 0 && index < d_enrichements.size())
 			d_enrichements.removeAt(index);
-		
+
 	    if (d_active_enrichement == d_legend)
             d_legend = NULL;
 		delete d_active_enrichement;
@@ -1589,13 +1589,13 @@ void Graph::remove(FrameWidget* f)
 	int index = d_enrichements.indexOf (f);
 	if (index >= 0 && index < d_enrichements.size())
 		d_enrichements.removeAt(index);
-		
+
 	if (f == d_legend)
-		d_legend = NULL;	
+		d_legend = NULL;
 	if (f == d_active_enrichement)
 		d_active_enrichement = NULL;
-	
-	delete f;	
+
+	delete f;
 	emit modifiedGraph();
 }
 
