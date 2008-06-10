@@ -430,7 +430,7 @@ public:
   void setOrigin(int, int);
   void setSize(int, int);
   void setRect(int, int, int, int);
-  void setBoundingRect(double, double, double, double) /PyName=setCoordinates/;
+  void setCoordinates(double, double, double, double);
 
 private:
   ImageWidget(const ImageWidget&);

@@ -45,7 +45,7 @@ public:
 	void setPixmap(const QPixmap&);
 
     //! Set #d_file_name.
-	void setFileName(const QString& fn);
+	bool setFileName(const QString& fn);
 	//! Return #d_file_name.
 	QString fileName(){return d_file_name;};
 
@@ -60,6 +60,8 @@ private:
 	QPixmap d_pix;
 	//! The file from which the image was loaded.
 	QString d_file_name;
+	//! Flag telling if the pixmap must be saved in the .qti project as XPM
+	bool d_save_xpm;
 };
 
 #endif

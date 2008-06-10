@@ -671,7 +671,6 @@ signals:
 		void showPlotDialog(int);
 		void createTable(const QString&,int,int,const QString&);
 
-		void viewImageDialog();
 		void viewLineDialog();
 		void viewTitleDialog();
 		void modifiedGraph();

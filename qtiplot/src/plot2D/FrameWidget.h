@@ -59,7 +59,7 @@ public:
 	//! Return bounding rectangle in plot coordinates.
 	virtual QwtDoubleRect boundingRect() const;
 	//! Set position (xValue() and yValue()), right and bottom values giving everything in plot coordinates.
-	void setBoundingRect(double left, double top, double right, double bottom);
+	void setCoordinates(double left, double top, double right, double bottom);
 	//! Set size in paint coordinates.
     void setSize(int w, int h);
     //! Set geometry, giving everything in paint coordinates.
@@ -70,7 +70,7 @@ public:
 
 	int frameStyle(){return d_frame;};
 	void setFrameStyle(int style);
-
+	
 	QColor frameColor(){return d_color;};
 	void setFrameColor(const QColor& c){d_color = c;};
 
@@ -82,6 +82,7 @@ public:
 
     virtual void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
     void resetOrigin(){setOriginCoord(d_x, d_y);};
+	void resetCoordinates(){setCoordinates(d_x, d_y, d_x_right, d_y_bottom);};
 
     virtual void updateCoordinates();
 	virtual QString saveToString();
@@ -124,6 +125,8 @@ protected:
 	double d_x_right;
     //! The bottom side position in scale coordinates.
     double d_y_bottom;
+	//! Frame width in pixels
+	int d_frame_width;
 };
 
 #endif

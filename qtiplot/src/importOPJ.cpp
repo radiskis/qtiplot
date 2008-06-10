@@ -1256,7 +1256,7 @@ bool ImportOPJ::importGraphs(const OPJFile& opj)
 							break;
 					}
 
-					mrk->setBoundingRect(left, top, right, bottom);
+					mrk->setCoordinates(left, top, right, bottom);
 				}
 			}
 		}

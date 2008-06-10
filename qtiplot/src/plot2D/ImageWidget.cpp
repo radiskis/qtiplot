@@ -31,23 +31,28 @@
 #include <QBuffer>
 #include <QImageReader>
 
+#include <qwt_plot_canvas.h>
+
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
-d_file_name(fn)
+d_save_xpm(false)
 {
-    QList<QByteArray> lst = QImageReader::supportedImageFormats();
+	if (setFileName(fn))
+		resize(d_pix.size());
+	move(plot->canvas()->pos());
+}
+
+bool ImageWidget::setFileName(const QString& fn)
+{
+	QList<QByteArray> lst = QImageReader::supportedImageFormats();
 	for (int i=0; i<(int)lst.count(); i++){
 		if (fn.contains("." + lst[i])){
 			d_pix.load(fn, lst[i], QPixmap::Auto);
-			resize(d_pix.size());
 			d_file_name = fn;
-			break;
+			repaint();
+			return true;
 		}
 	}
-}
-
-void ImageWidget::setFileName(const QString& fn)
-{
-    d_file_name = fn;
+	return false;
 }
 
 void ImageWidget::paintEvent(QPaintEvent *e)
@@ -56,9 +61,19 @@ void ImageWidget::paintEvent(QPaintEvent *e)
 		return;
 
 	QPainter p(this);
-	drawFrame(&p, rect());
-	p.drawPixmap(rect(), d_pix);
-
+	QRect r = rect();
+	drawFrame(&p, r);
+	switch(d_frame){
+		case None:
+			break;
+		case Line:
+			r.adjust(1, 1, -1, -1);
+		break;
+		case Shadow:
+			r.adjust(1, 1, -d_frame_width, -d_frame_width);
+		break;
+	}
+	p.drawPixmap(r, d_pix);
 	e->accept();
 }
 
@@ -67,9 +82,19 @@ void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
-	QRect rect = QRect(x, y, width(), height());
-	drawFrame(painter, rect);
-	painter->drawPixmap(rect, d_pix);
+	QRect r = QRect(x, y, width(), height());
+	drawFrame(painter, r);
+	switch(d_frame){
+		case None:
+			break;
+		case Line:
+			r.adjust(1, 1, -1, -1);
+		break;
+		case Shadow:
+			r.adjust(1, 1, -d_frame_width, -d_frame_width);
+		break;
+	}
+	painter->drawPixmap(r, d_pix);
 }
 
 void ImageWidget::setPixmap(const QPixmap& pix)
@@ -78,8 +103,8 @@ void ImageWidget::setPixmap(const QPixmap& pix)
 	int width = pix.width();
 	int height = pix.height();
 	if (d_frame == Shadow){
-		width += 5;
-		height += 5;
+		width += d_frame_width;
+		height += d_frame_width;
 	}
 	resize(QSize(width, height));
 	repaint();
@@ -104,6 +129,15 @@ QString ImageWidget::saveToString()
     s += "<right>" + QString::number(d_x_right, 'g', 15) + "</right>\n";
     s += "<bottom>" + QString::number(d_y_bottom, 'g', 15) + "</bottom>\n";
 	s += "<path>" + d_file_name + "</path>\n";
+	if (d_save_xpm){
+		s += "<xpm>\n";
+		QByteArray bytes;
+		QBuffer buffer(&bytes);
+		buffer.open(QIODevice::WriteOnly);
+		d_pix.save(&buffer, "XPM");
+		s += QString(bytes);
+		s += "</xpm>\n";
+	}
 	return s + "</Image>\n";
 }
 
@@ -134,5 +168,5 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 	ImageWidget *t = g->addImage(fn);
 	t->setFrameStyle(frameStyle);
 	t->setFrameColor(frameColor);
-	t->setBoundingRect(x, y, right, bottom);
+	t->setCoordinates(x, y, right, bottom);
 }

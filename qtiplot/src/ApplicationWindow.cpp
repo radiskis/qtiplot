@@ -7148,7 +7148,7 @@ void ApplicationWindow::addTexFormula()
 	if (!g)
 		return;
 
-	TexWidgetDialog *twd = new TexWidgetDialog(g, this);
+	TexWidgetDialog *twd = new TexWidgetDialog(TexWidgetDialog::Tex, g, this);
 	twd->exec();
 }
 
@@ -7247,30 +7247,6 @@ void ApplicationWindow::drawArrow()
 	}
 }
 
-void ApplicationWindow::showImageDialog()
-{
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (g)
-	{
-		/*ImageMarker *im = (ImageMarker *) g->selectedMarker();
-		if (!im)
-			return;
-
-		ImageDialog *id = new ImageDialog(this);
-		id->setAttribute(Qt::WA_DeleteOnClose);
-		connect (id, SIGNAL(setGeometry(int, int, int, int)),
-				g, SLOT(updateImageMarker(int, int, int, int)));
-		id->setIcon(QPixmap(logo_xpm));
-		id->setOrigin(im->origin());
-		id->setSize(im->size());
-		id->exec();*/
-	}
-}
-
 void ApplicationWindow::showLayerDialog()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
@@ -7305,12 +7281,14 @@ void ApplicationWindow::showEnrichementDialog()
 		td->setLegendWidget(l);
 		td->exec();
 	} else {
-		TexWidget *tw = qobject_cast<TexWidget *>(g->activeEnrichement());
-		if (tw){
-			TexWidgetDialog *twd = new TexWidgetDialog(g, this);
-			twd->setTexWidget(tw);
-			twd->exec();
-		}
+		TexWidgetDialog::WidgetType wt = TexWidgetDialog::Tex;
+		ImageWidget *iw = qobject_cast<ImageWidget *>(g->activeEnrichement());
+		if (iw)
+			wt = TexWidgetDialog::Image;
+			
+		TexWidgetDialog *twd = new TexWidgetDialog(wt, g, this);
+		twd->setWidget(g->activeEnrichement());
+		twd->exec();
 	}
 }
 
@@ -8201,8 +8179,6 @@ void ApplicationWindow::showMarkerPopupMenu()
 	markerMenu.insertSeparator();
 	if (g->arrowMarkerSelected())
 		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showLineDialog()));
-	else if (g->imageMarkerSelected())
-		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showImageDialog()));
 	else
 		markerMenu.insertItem(tr("&Properties..."),this, SLOT(showEnrichementDialog()));
 
@@ -11071,7 +11047,6 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
 	connect (g,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect (g,SIGNAL(cursorInfo(const QString&)),info,SLOT(setText(const QString&)));
-	connect (g,SIGNAL(showImageDialog()),this,SLOT(showImageDialog()));
 	connect (g,SIGNAL(createTable(const QString&,int,int,const QString&)),
 			this,SLOT(newTable(const QString&,int,int,const QString&)));
 	connect (g,SIGNAL(viewTitleDialog()),this,SLOT(showTitleDialog()));
@@ -11583,9 +11558,6 @@ void ApplicationWindow::createActions()
 
 	actionShowLineDialog = new QAction(tr("&Properties"), this);
 	connect(actionShowLineDialog, SIGNAL(activated()), this, SLOT(showLineDialog()));
-
-	actionShowImageDialog = new QAction(tr("&Properties"), this);
-	connect(actionShowImageDialog, SIGNAL(activated()), this, SLOT(showImageDialog()));
 
 	actionShowTextDialog = new QAction(tr("&Properties"), this);
 	connect(actionShowTextDialog, SIGNAL(activated()), this, SLOT(showEnrichementDialog()));
@@ -12275,7 +12247,6 @@ void ApplicationWindow::translateActionsStrings()
 	actionPixelLineProfile->setMenuText(tr("&View Pixel Line Profile"));
 	actionIntensityTable->setMenuText(tr("&Intensity Table"));
 	actionShowLineDialog->setMenuText(tr("&Properties"));
-	actionShowImageDialog->setMenuText(tr("&Properties"));
 	actionShowTextDialog->setMenuText(tr("&Properties"));
 	actionActivateWindow->setMenuText(tr("&Activate Window"));
 	actionMinimizeWindow->setMenuText(tr("Mi&nimize Window"));

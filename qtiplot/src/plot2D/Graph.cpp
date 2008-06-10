@@ -1543,17 +1543,8 @@ void Graph::removeMarker()
 {
 	if (d_selected_marker && d_lines.contains(d_selected_marker))
 			remove((ArrowMarker*)d_selected_marker);
-	else if (d_active_enrichement){
-		/*int index = d_enrichements.indexOf (d_active_enrichement);
-		if (index >= 0 && index < d_enrichements.size())
-			d_enrichements.removeAt(index);
-
-	    if (d_active_enrichement == d_legend)
-            d_legend = NULL;
-		delete d_active_enrichement;
-		d_active_enrichement = NULL;*/
+	else if (d_active_enrichement)
 		remove(d_active_enrichement);
-	}
 }
 
 void Graph::remove(ArrowMarker* arrow)
@@ -3366,7 +3357,7 @@ ImageWidget* Graph::addImage(ImageWidget* i)
 	ImageWidget* i2 = new ImageWidget(this, i->fileName());
 	if (i2){
 		d_enrichements << i2;
-		i2->setBoundingRect(i->xValue(), i->yValue(), i->right(), i->bottom());
+		i2->setCoordinates(i->xValue(), i->yValue(), i->right(), i->bottom());
 	}
 	return i2;
 }
@@ -3421,9 +3412,9 @@ void Graph::insertImageMarker(const QStringList& lst, int fileVersion)
 		    double right = left + lst[4].toDouble();
 		    double top = lst[3].toDouble();
 		    double bottom = top - lst[5].toDouble();
-			mrk->setBoundingRect(left, top, right, bottom);
+			mrk->setCoordinates(left, top, right, bottom);
 		} else
-			mrk->setBoundingRect(lst[2].toDouble(), lst[3].toDouble(), lst[4].toDouble(), lst[5].toDouble());
+			mrk->setCoordinates(lst[2].toDouble(), lst[3].toDouble(), lst[4].toDouble(), lst[5].toDouble());
 	}
 }
 
@@ -3691,7 +3682,7 @@ void Graph::updateMarkersBoundingRect()
 		if (o->isA("LegendWidget"))
 			((LegendWidget *)o)->updateCoordinates();
 	}
-
+	
 	if (!d_lines.size())
 		return;
 
@@ -3721,8 +3712,14 @@ void Graph::resizeEvent ( QResizeEvent *e )
 		if (o->isA("LegendWidget"))
 			((LegendWidget *)o)->resetOrigin();
 	}
-	foreach(FrameWidget *f, d_enrichements)
-		f->resetOrigin();
+	
+	foreach(FrameWidget *f, d_enrichements){
+		ImageWidget *i = qobject_cast<ImageWidget *>(f);
+		if (i)
+			i->resetCoordinates();
+		else
+			f->resetOrigin();
+	}
 }
 
 void Graph::scaleFonts(double factor)
