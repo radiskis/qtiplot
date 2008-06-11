@@ -103,7 +103,7 @@ drawEndArrow
 setHeadLength
 setHeadAngle
 fillArrowHead
-ImageMarker
+Image
 fileName
 size
 setSize

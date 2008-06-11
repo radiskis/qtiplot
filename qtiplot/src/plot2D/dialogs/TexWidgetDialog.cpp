@@ -363,7 +363,7 @@ void TexWidgetDialog::chooseImageFile(const QString& fn)
 
 	if (!path.isEmpty()){
 		ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
-		if (i && i->setFileName(path)){
+		if (i && i->load(path)){
 			imagePathBox->setText(path);
 			QFileInfo fi(path);
 			app->imagesDirPath = fi.dirPath(true);
