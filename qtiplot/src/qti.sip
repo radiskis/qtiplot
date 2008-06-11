@@ -4,8 +4,8 @@
 	File                 : qti.sip
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2006 by Knut Franke, Ion Vasilief
-	Email                : knut.franke@gmx.de, ion_vasilief@yahoo.fr
+	Copyright            : (C) 2006 by Knut Franke, Ion Vasilief, Michael Roemer
+	Email                : knut.franke*gmx.de, ion_vasilief*yahoo.fr, roemer*nano.uni-hannover.de
 	Description          : Specifications for Python bindings
 
  ***************************************************************************/
@@ -687,7 +687,7 @@ public:
   void setAutoscaleFonts(bool = true);
   void setAntialiasing(bool on = true, bool update = true);
 
-    void setCurveAxisAttachment(int,int,int);
+    void setCurveAxes(int,int,int);
 %MethodCode
 	sipIsErr = 0;
 	if ((a1)>1 || (a1<0) || (a2>1) || (a2<0))
