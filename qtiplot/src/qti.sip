@@ -276,6 +276,36 @@ public:
 		sipCpp->hideColumn(col, a1);
 %End
 
+	bool isRowSelected(int, bool = false);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_ROW(a0);
+	if (sipIsErr == 0)
+		return Py_BuildValue("b",sipCpp->isRowSelected(row, a1));
+ 
+%End
+
+	bool isColumnSelected(SIP_PYOBJECT, bool = false)/PyName=isColSelected/;
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		return Py_BuildValue("b",sipCpp->isColumnSelected(col, a1));
+%End
+
+    int firstSelectedColumn();
+	int numSelectedRows();
+	
+	void setSelectedCol(SIP_PYOBJECT);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->setSelectedCol(col);
+%End
+	
+	int selectedColumn();
+
 private:
   Table(const Table&);
 };
@@ -655,6 +685,28 @@ public:
   void enableAutoscaling(bool = true);
   void setAutoscaleFonts(bool = true);
   void setAntialiasing(bool on = true, bool update = true);
+
+    void setCurveAxisAttachment(int,int,int);
+%MethodCode
+	sipIsErr = 0;
+	if ((a1)>1 || (a1<0) || (a2>1) || (a2<0))
+    {
+         sipIsErr=1;
+         PyErr_Format(PyExc_ValueError, "Invalid axis attachment!");\
+    }
+	if (a0>=sipCpp->curveCount())
+	{
+         sipIsErr=1;
+         PyErr_Format(PyExc_ValueError, "Invalid curve index! is %d, should be less than %d",a0,sipCpp->curveCount());\	
+	}
+	if (sipIsErr == 0)
+	{
+        QwtPlotItem* pItem;
+		pItem = sipCpp->plotItem(a0);
+		pItem->setAxis(a1 + 2, a2);
+		sipCpp->setAutoScale();
+	}
+%End
 
 private:
   Graph(const Graph&);

@@ -460,3 +460,10 @@ currentTable
 currentMatrix
 currentGraph
 currentNote
+isRowSelected
+isColSelected
+firstSelectedColumn
+numSelectedRows
+setSelectedCol
+selectedColumn
+setCurveAxisAttachment
