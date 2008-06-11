@@ -3383,7 +3383,7 @@ ImageWidget* Graph::addImage(const QString& fileName)
 		if (picSize.height() > h)
 			picSize.setHeight(h);
 
-		i->resize(picSize);
+		i->setSize(picSize);
 		replot();
 
 		emit modifiedGraph();
@@ -3682,7 +3682,7 @@ void Graph::updateMarkersBoundingRect()
 		if (o->isA("LegendWidget"))
 			((LegendWidget *)o)->updateCoordinates();
 	}
-	
+
 	if (!d_lines.size())
 		return;
 
@@ -3712,7 +3712,7 @@ void Graph::resizeEvent ( QResizeEvent *e )
 		if (o->isA("LegendWidget"))
 			((LegendWidget *)o)->resetOrigin();
 	}
-	
+
 	foreach(FrameWidget *f, d_enrichements){
 		ImageWidget *i = qobject_cast<ImageWidget *>(f);
 		if (i)

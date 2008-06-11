@@ -30,6 +30,8 @@
 #include <QPainter>
 #include <QBuffer>
 #include <QImageReader>
+#include <QFileInfo>
+#include <QMessageBox>
 
 #include <qwt_plot_canvas.h>
 
@@ -43,6 +45,23 @@ d_save_xpm(false)
 
 bool ImageWidget::setFileName(const QString& fn)
 {
+    if (fn.isEmpty())
+        return false;
+
+    QFileInfo fi(fn);
+    if (!fi.exists ()){
+        QMessageBox::critical((QWidget *)plot()->multiLayer()->applicationWindow(),
+        tr("QtiPlot - File openning error"),
+        tr("The file: <b>%1</b> doesn't exist!").arg(fn));
+        return false;
+    }
+    if (!fi.isReadable()){
+        QMessageBox::critical((QWidget *)plot()->multiLayer()->applicationWindow(),
+        tr("QtiPlot - File openning error"),
+        tr("You don't have the permission to open this file: <b>%1</b>").arg(fn));
+        return false;
+    }
+
 	QList<QByteArray> lst = QImageReader::supportedImageFormats();
 	for (int i=0; i<(int)lst.count(); i++){
 		if (fn.contains("." + lst[i])){

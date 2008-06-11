@@ -142,12 +142,12 @@ void FrameWidget::setRect(int x, int y, int w, int h)
     move(QPoint(x, y));
 }
 
-void FrameWidget::setSize(int w, int h)
+void FrameWidget::setSize(const QSize& newSize)
 {
-    if (size() == QSize(w, h))
+    if (size() == newSize)
         return;
 
-    resize(QSize(w, h));
+    resize(newSize);
     d_x_right = calculateRightValue();
 	d_y_bottom = calculateBottomValue();
 }
