@@ -456,6 +456,7 @@ public:
 
   ImageWidget(Graph *, const QString&);
   QString fileName();
+  bool load(const QString& fn);
 
   void setOrigin(int, int);
   void setSize(int, int);

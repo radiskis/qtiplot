@@ -5205,8 +5205,8 @@ void Graph::insertCurve(QwtPlotItem *c)
 	if (!d_curves.contains(c))
 		d_curves.append(c);
 
-	if (c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-		((QwtPlotCurve *)c)->setPaintAttribute(QwtPlotCurve::PaintFiltered);
+	//if (c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+		//((QwtPlotCurve *)c)->setPaintAttribute(QwtPlotCurve::PaintFiltered);
 
 	c->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 	c->attach(this);

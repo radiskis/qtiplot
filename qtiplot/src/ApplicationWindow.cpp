@@ -8295,8 +8295,20 @@ void ApplicationWindow::timerEvent ( QTimerEvent *e)
 
 void ApplicationWindow::dropEvent( QDropEvent* e )
 {
-	QStringList fileNames;
-	if (Q3UriDrag::decodeLocalFiles(e, fileNames)){
+	if (e->mimeData()->hasImage()){		
+		QImage image = qvariant_cast<QImage>(e->mimeData()->imageData());
+		Matrix *m = new Matrix(scriptEnv, image, "", this);
+        initMatrix(m, generateUniqueName(tr("Matrix")));
+        m->show();
+		return;
+	}
+	
+	if (e->mimeData()->hasUrls()){
+		QList<QUrl> urls = e->mimeData()->urls();
+		QStringList fileNames;
+		foreach(QUrl url, urls)
+			fileNames << url.toLocalFile();
+		
 		QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 		QStringList asciiFiles;
 
@@ -8313,7 +8325,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 		for(int i = 0; i<(int)fileNames.count(); i++){
 			QString fn = fileNames[i];
 			QFileInfo fi (fn);
-			QString ext = fi.extension().lower();
+			QString ext = fi.extension();
 			QStringList tempList;
 			// convert QList<QByteArray> to QStringList to be able to 'filter'
 			foreach(QByteArray temp,lst)

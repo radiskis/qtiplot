@@ -44,8 +44,8 @@ public:
 	QPixmap pixmap() const {return d_pix;};
 	void setPixmap(const QPixmap&);
 
-    //! Set #d_file_name.
-	bool setFileName(const QString& fn);
+    //! Import image from #d_file_name. Returns true if successful.
+	bool load(const QString& fn);
 	//! Return #d_file_name.
 	QString fileName(){return d_file_name;};
 

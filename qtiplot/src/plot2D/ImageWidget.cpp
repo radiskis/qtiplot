@@ -38,12 +38,12 @@
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
 d_save_xpm(false)
 {
-	if (setFileName(fn))
+	if (load(fn))
 		resize(d_pix.size());
 	move(plot->canvas()->pos());
 }
 
-bool ImageWidget::setFileName(const QString& fn)
+bool ImageWidget::load(const QString& fn)
 {
     if (fn.isEmpty())
         return false;
@@ -62,7 +62,7 @@ bool ImageWidget::setFileName(const QString& fn)
         return false;
     }
 
-	QList<QByteArray> lst = QImageReader::supportedImageFormats();
+	QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 	for (int i=0; i<(int)lst.count(); i++){
 		if (fn.contains("." + lst[i])){
 			d_pix.load(fn, lst[i], QPixmap::Auto);
