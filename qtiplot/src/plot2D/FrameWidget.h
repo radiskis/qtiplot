@@ -61,7 +61,9 @@ public:
 	//! Set position (xValue() and yValue()), right and bottom values giving everything in plot coordinates.
 	void setCoordinates(double left, double top, double right, double bottom);
 	//! Set size in paint coordinates.
-    void setSize(int w, int h);
+    void setSize(int w, int h){setSize(QSize(w, h));};
+    //! Set size in paint coordinates.
+    void setSize(const QSize& newSize);
     //! Set geometry, giving everything in paint coordinates.
 	void setRect(int x, int y, int w, int h);
 
@@ -70,7 +72,7 @@ public:
 
 	int frameStyle(){return d_frame;};
 	void setFrameStyle(int style);
-	
+
 	QColor frameColor(){return d_color;};
 	void setFrameColor(const QColor& c){d_color = c;};
 
