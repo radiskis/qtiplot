@@ -466,4 +466,4 @@ firstSelectedColumn
 numSelectedRows
 setSelectedCol
 selectedColumn
-setCurveAxisAttachment
+setCurveAxes

@@ -1405,9 +1405,9 @@ l.deleteFitCurves()
 </programlisting>
 Use the following function to change the axis attachment of a curve:
 <programlisting>
-l.setCurveAxisAttachment(number,x-attachment,y-attachment)
+l.setCurveAxes(number, x-axis, y-axis)
 </programlisting>
-<para>where number is the curve's number, x-attachment is either 0 or 1 (bottom or top) and y-attachment is either 0 or 1 (left or right).</para>
+<para>where number is the curve's number, x-axis is either 0 or 1 (bottom or top) and y-axis is either 0 or 1 (left or right).</para>
 You can also add analytical function curves to a plot layer:
 <programlisting>
 l.addFunction("x*sin(x)", 0, 3*pi, points = 100)

@@ -1172,7 +1172,11 @@ void Graph::initScaleLimits()
 
 	setAxisScale(QwtPlot::yLeft, start, end, step);
 	setAxisScale(QwtPlot::yRight, start, end, step);
+	
 	replot();
+
+	d_zoomer[0]->setZoomBase();
+	d_zoomer[1]->setZoomBase();
 }
 
 void Graph::invertScale(int axis)
@@ -4207,6 +4211,8 @@ void Graph::copy(Graph* g)
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
 
     updateLayout();
+	d_zoomer[0]->setZoomBase();
+	d_zoomer[1]->setZoomBase();
 
 	QList<LegendWidget *> texts = g->textsList();
 	foreach (LegendWidget *t, texts){
@@ -5205,8 +5211,8 @@ void Graph::insertCurve(QwtPlotItem *c)
 	if (!d_curves.contains(c))
 		d_curves.append(c);
 
-	//if (c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-		//((QwtPlotCurve *)c)->setPaintAttribute(QwtPlotCurve::PaintFiltered);
+	if (c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+		((QwtPlotCurve *)c)->setPaintAttribute(QwtPlotCurve::PaintFiltered);
 
 	c->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 	c->attach(this);
