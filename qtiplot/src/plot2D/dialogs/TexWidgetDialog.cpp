@@ -39,6 +39,7 @@
 #include "../ImageWidget.h"
 #include "../../ColorButton.h"
 #include "../../ApplicationWindow.h"
+#include "../../DoubleSpinBox.h"
 
 static const char* choose_folder_xpm[]={
     "16 16 11 1",
@@ -73,9 +74,9 @@ static const char* choose_folder_xpm[]={
 TexWidgetDialog::TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent)
     : QDialog(parent), d_plot(g), d_widget(NULL), d_widget_type(wt)
 {
-    http = new QHttp(this);
-    connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
-
+	setSizeGripEnabled( true );
+	setAttribute(Qt::WA_DeleteOnClose);
+	
     QDialogButtonBox *buttonBox = new QDialogButtonBox;
 	clearButton = NULL;
 	editPage = NULL;
@@ -111,9 +112,6 @@ TexWidgetDialog::TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent)
 	initGeometryPage();
 
     QVBoxLayout *layout = new QVBoxLayout;
-    layout->setMargin(4);
-    layout->setSpacing(4);
-
 	layout->addWidget(tabWidget);
     layout->addWidget(buttonBox);
     setLayout(layout);
@@ -124,6 +122,9 @@ TexWidgetDialog::TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent)
 
 void TexWidgetDialog::initEditorPage()
 {
+	http = new QHttp(this);
+    connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
+
 	editPage = new QWidget();
 
     equationEditor = new QTextEdit;
@@ -131,8 +132,6 @@ void TexWidgetDialog::initEditorPage()
     outputLabel->setFrameShape(QFrame::StyledPanel);
 
 	QVBoxLayout *layout = new QVBoxLayout(editPage);
-    layout->setMargin(4);
-    layout->setSpacing(4);
     layout->addWidget(equationEditor, 1);
 	layout->addWidget(new QLabel(tr("Preview:")));
 	layout->addWidget(outputLabel);
@@ -162,8 +161,6 @@ void TexWidgetDialog::initImagePage()
 	gl->setRowStretch(2, 1);
 
 	QVBoxLayout *layout = new QVBoxLayout(imagePage);
-    layout->setMargin(4);
-    layout->setSpacing(4);
     layout->addWidget(gb);
 	tabWidget->addTab(imagePage, tr( "&Image" ) );
 }
@@ -189,8 +186,6 @@ void TexWidgetDialog::initFramePage()
 	gl->setRowStretch(2, 1);
 
 	QVBoxLayout *layout = new QVBoxLayout(framePage);
-    layout->setMargin(4);
-    layout->setSpacing(4);
     layout->addWidget(gb);
 
 	tabWidget->addTab(framePage, tr( "&Frame" ) );
@@ -200,27 +195,63 @@ void TexWidgetDialog::initGeometryPage()
 {
     geometryPage = new QWidget();
 
-	QGroupBox *gb = new QGroupBox();
-	QGridLayout *gl = new QGridLayout(gb);
-    /*gl->addWidget(new QLabel( tr("Shape")), 0, 0);
+	unitBox = new QComboBox();
+	unitBox->insertItem(tr("Scale Coordinates"));
+	unitBox->insertItem(tr("Pixels"));
 
-	frameBox = new QComboBox();
-	frameBox->addItem( tr( "None" ) );
-	frameBox->addItem( tr( "Rectangle" ) );
-	frameBox->addItem( tr( "Shadow" ) );
-    gl->addWidget(frameBox, 0, 1);
+	QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
+	bl1->addWidget(new QLabel(tr( "Unit" )));
+	bl1->addWidget(unitBox);
 
-    gl->addWidget(new QLabel(tr("Color")), 1, 0);
-	frameColorBtn = new ColorButton();
-    gl->addWidget(frameColorBtn, 1, 1);
-	gl->setColumnStretch(1, 1);
-	gl->setRowStretch(2, 1);*/
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+	if (app)
+		locale = app->locale();
+	
+    QGroupBox *gb1 = new QGroupBox(tr("Position"));
+	xBox = new DoubleSpinBox();
+	xBox->setLocale(locale);
+	xBox->setDecimals(6);
+	yBox = new DoubleSpinBox();
+	yBox->setLocale(locale);
+	yBox->setDecimals(6);
+	
+    QGridLayout *gl1 = new QGridLayout();
+    gl1->addWidget(new QLabel( tr("X")), 0, 0);
+    gl1->addWidget(xBox, 0, 1);
+    gl1->addWidget(new QLabel(tr("Y")), 1, 0);
+    gl1->addWidget(yBox, 1, 1);
+	gl1->setColumnStretch(1, 10);
+	gl1->setRowStretch(2, 1);
+    gb1->setLayout(gl1);
 
-	QVBoxLayout *layout = new QVBoxLayout(geometryPage);
-    layout->setMargin(4);
-    layout->setSpacing(4);
-    layout->addWidget(gb);
+    QGroupBox *gb2 = new QGroupBox(tr("Size"));
+    widthBox = new DoubleSpinBox();
+	widthBox->setLocale(locale);
+	widthBox->setDecimals(6);
+	heightBox = new DoubleSpinBox();
+	heightBox->setLocale(locale);
+	heightBox->setDecimals(6);
+	
+    QGridLayout *gl2 = new QGridLayout();
+    gl2->addWidget(new QLabel( tr("Width")), 0, 0);
+    gl2->addWidget(widthBox, 0, 1);
+	
+    gl2->addWidget(new QLabel(tr("Height")), 1, 0);
+    gl2->addWidget(heightBox, 1, 1);
+	gl2->setColumnStretch(1, 10);
+	gl2->setRowStretch(2, 1);
+    gb2->setLayout(gl2);
 
+    QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
+	bl2->addWidget(gb1);
+	bl2->addWidget(gb2);
+
+	QVBoxLayout* vl = new QVBoxLayout(geometryPage);
+    vl->addLayout(bl1);
+    vl->addLayout(bl2);
+
+	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
 	tabWidget->addTab(geometryPage, tr( "&Geometry" ) );
 }
 
@@ -249,6 +280,8 @@ void TexWidgetDialog::setWidget(FrameWidget *w)
 
 	frameBox->setCurrentIndex(w->frameStyle());
 	frameColorBtn->setColor(w->frameColor());
+	
+	displayCoordinates(0);
 
 	if (d_widget_type == Tex){
 		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
@@ -282,7 +315,8 @@ void TexWidgetDialog::apply()
 		}
 	} else if (imagePage && tabWidget->currentPage() == imagePage){
 		chooseImageFile(imagePathBox->text());
-	}
+	} else if (tabWidget->currentPage() == geometryPage)
+		setCoordinates(unitBox->currentIndex());
 }
 
 void TexWidgetDialog::fetchImage()
@@ -368,5 +402,48 @@ void TexWidgetDialog::chooseImageFile(const QString& fn)
 			QFileInfo fi(path);
 			app->imagesDirPath = fi.dirPath(true);
 		}
+	}
+}
+
+void TexWidgetDialog::setCoordinates(int unit)
+{
+	if (!d_widget)
+		return;
+	
+	if (unit == 0){//ScaleCoordinates
+		double left = xBox->value();
+		double top = yBox->value();
+		d_widget->setCoordinates(left, top, left + widthBox->value(), top + heightBox->value());
+	} else
+		d_widget->setRect((int)xBox->value(), (int)yBox->value(), (int)widthBox->value(), (int)heightBox->value());
+}
+
+void TexWidgetDialog::displayCoordinates(int unit)
+{
+	if (!d_widget)
+		return;
+	
+	if (unit == 0){//ScaleCoordinates
+		xBox->setSingleStep(0.1);
+		yBox->setSingleStep(0.1);
+		widthBox->setSingleStep(0.1);
+		heightBox->setSingleStep(0.1);
+		
+		xBox->setValue(d_widget->xValue());
+		yBox->setValue(d_widget->yValue());
+
+		QRectF r = d_widget->boundingRect();
+		widthBox->setValue(r.width());
+		heightBox->setValue(r.height());
+	} else {
+		xBox->setSingleStep(1.0);
+		yBox->setSingleStep(1.0);
+		widthBox->setSingleStep(1.0);
+		heightBox->setSingleStep(1.0);
+		
+		xBox->setValue(d_widget->x());
+		yBox->setValue(d_widget->y());
+		widthBox->setValue(d_widget->width());
+		heightBox->setValue(d_widget->height());
 	}
 }

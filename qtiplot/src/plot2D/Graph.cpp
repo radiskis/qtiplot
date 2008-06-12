@@ -2539,7 +2539,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 {
     int i = d_curves.size() - 1;
 
-	CurveLayout cl = initCurveLayout();
+	CurveLayout cl = initCurveLayout();	
 	int color;
 	guessUniqueCurveLayout(color, cl.sType);
 
@@ -2564,7 +2564,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 		cl.aCol = i + 1;
 		cl.sType = 0;
 		QwtBarCurve *b = (QwtBarCurve*)curve(i);
-		if (b){
+		if (b && (b->type() == VerticalBars || b->type() == HorizontalBars)){
 			b->setGap(qRound(100*(1-1.0/(double)curves)));
 			b->setOffset(-50*(curves-1) + i*100);
 		}
@@ -2584,7 +2584,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 }
 
 void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
-{
+{	
 	if (!c)
 		return;
 
@@ -2819,7 +2819,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 			} else
                 c = (PlotCurve *)insertCurve(w, names[i], style, startRow, endRow);
 
-            if (c){
+            if (c && c->type() != ErrorBars){
 				CurveLayout cl = initCurveLayout(style, curves - errCurves);
 				cl.sSize = sSize;
 				cl.lWidth = lWidth;
@@ -4211,6 +4211,8 @@ void Graph::copy(Graph* g)
   	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
 
     updateLayout();
+	d_auto_scale = g->isAutoscalingEnabled();
+	
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 

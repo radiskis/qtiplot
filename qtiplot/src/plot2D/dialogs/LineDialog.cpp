@@ -50,6 +50,7 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
 {
     setWindowTitle( tr( "QtiPlot - Line options" ) );
 	setAttribute(Qt::WA_DeleteOnClose);
+	setSizeGripEnabled( true );
 	
 	lm = line;
 

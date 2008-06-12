@@ -99,8 +99,8 @@ double ScaleTransformation::xForm(double s, double s1, double s2, double p1, dou
 {
 	if (d_engine->type() == QwtScaleTransformation::Log10 && s <= 0.0){
 		if (d_engine->testAttribute(QwtScaleEngine::Inverted))
-			return QMIN(p1, p2);
-		return QMAX(p1, p2);
+			return -INT_MAX;
+		return INT_MAX;
 	}
 
 	if (!d_engine->hasBreak()){			

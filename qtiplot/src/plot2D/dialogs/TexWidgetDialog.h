@@ -45,6 +45,7 @@ class QLineEdit;
 class Graph;
 class FrameWidget;
 class ColorButton;
+class DoubleSpinBox;
 	
 class TexWidgetDialog : public QDialog
 {
@@ -64,12 +65,14 @@ private slots:
 	void apply();
 	void customButtons(QWidget *w);
 	void chooseImageFile(const QString& fn = QString::null);
+	void displayCoordinates(int unit);
 
 private:
 	void initEditorPage();
 	void initImagePage();
 	void initFramePage();
 	void initGeometryPage();
+	void setCoordinates(int unit);
 
     QHttp *http;
     QLabel *outputLabel;
@@ -84,6 +87,8 @@ private:
 	ColorButton *frameColorBtn;
 	QCheckBox *boxSaveImagesInternally;
 	QLineEdit *imagePathBox;
+	DoubleSpinBox *xBox, *yBox, *widthBox, *heightBox;
+	QComboBox *unitBox;
 
 	Graph *d_plot;
 	FrameWidget *d_widget;
