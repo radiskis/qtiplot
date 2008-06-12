@@ -3705,32 +3705,20 @@ void ApplicationWindow::open()
 						return;
 					}
 				}
-
-				if (fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti~",Qt::CaseInsensitive) ||
-					fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogm",Qt::CaseInsensitive) ||
-					fn.endsWith(".ogw",Qt::CaseInsensitive) || fn.endsWith(".ogg",Qt::CaseInsensitive) ||
-					fn.endsWith(".qti.gz",Qt::CaseInsensitive))
-				{
-					if (!fi.exists ()){
-						QMessageBox::critical(this, tr("QtiPlot - File openning error"),
-								tr("The file: <b>%1</b> doesn't exist!").arg(fn));
-						return;
-					}
-
-					saveSettings();//the recent projects must be saved
-
-					ApplicationWindow *a = open (fn);
-					if (a){
-						a->workingDir = workingDir;
-						if (fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti~",Qt::CaseInsensitive) ||
-                            fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive) ||
-							fn.endsWith(".qti.gz",Qt::CaseInsensitive))
-                            this->close();
-					}
-				} else {
-					QMessageBox::critical(this,tr("QtiPlot - File openning error"),
-							tr("The file: <b>%1</b> is not a QtiPlot or Origin project file!").arg(fn));
+				
+				if (!fi.exists ()){
+					QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+					tr("The file: <b>%1</b> doesn't exist!").arg(fn));
 					return;
+				}
+
+				saveSettings();//the recent projects must be saved
+
+				ApplicationWindow *a = open (fn);
+				if (a){
+					a->workingDir = workingDir;
+					if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) || 
+						fn.endsWith(".ogw",Qt::CaseInsensitive))) this->close();
 				}
 				break;
 			}
@@ -3754,24 +3742,18 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return importOPJ(fn, factorySettings, newProject);
 	else if (fn.endsWith(".py", Qt::CaseInsensitive))
 		return loadScript(fn);
-	else if (!( fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti.gz",Qt::CaseInsensitive) ||
-                fn.endsWith(".qti~",Qt::CaseInsensitive)))
-		return plotFile(fn);
-
+		
 	QString fname = fn;
-	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive)){//decompress using zlib
-		file_uncompress((char *)fname.ascii());
-		fname = fname.left(fname.size() - 3);
-	}
-
 	QFile f(fname);
 	QTextStream t( &f );
 	f.open(QIODevice::ReadOnly);
 	QString s = t.readLine();
-    QStringList list = s.split(QRegExp("\\s"), QString::SkipEmptyParts);
-    if (list.count() < 2 || list[0] != "QtiPlot"){
-        f.close();
-        if (QFile::exists(fname + "~")){
+	f.close();
+	
+    QStringList lst = s.split(QRegExp("\\s"), QString::SkipEmptyParts);
+	bool qtiProject = (lst.count() < 2 || lst[0] != "QtiPlot") ? false : true;
+	if (!qtiProject){
+		if (QFile::exists(fname + "~")){
             int choice = QMessageBox::question(this, tr("QtiPlot - File opening error"),
 					tr("The file <b>%1</b> is corrupted, but there exists a backup copy.<br>Do you want to open the backup instead?").arg(fn),
 					QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape);
@@ -3781,9 +3763,16 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
                 QMessageBox::critical(this, tr("QtiPlot - File opening error"),  tr("The file: <b> %1 </b> was not created using QtiPlot!").arg(fn));
             return 0;
 		}
-    }
+		
+		return plotFile(fn);
+	}
 
-    QStringList vl = list[1].split(".", QString::SkipEmptyParts);
+	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive)){//decompress using zlib
+		file_uncompress((char *)fname.ascii());
+		fname = fname.left(fname.size() - 3);
+	}
+
+    QStringList vl = lst[1].split(".", QString::SkipEmptyParts);
     d_file_version = 100*(vl[0]).toInt()+10*(vl[1]).toInt()+(vl[2]).toInt();
 
 	ApplicationWindow* app = openProject(fname, factorySettings, newProject);
@@ -3823,11 +3812,14 @@ void ApplicationWindow::openRecentProject(int index)
 		saveSettings();//the recent projects must be saved
 		bool isSaved = saved;
 		ApplicationWindow * a = open (fn);
-		if (a && (fn.endsWith(".qti",Qt::CaseInsensitive) || fn.endsWith(".qti~",Qt::CaseInsensitive) ||
-            fn.endsWith(".opj",Qt::CaseInsensitive) || fn.endsWith(".ogg", Qt::CaseInsensitive)))
+		if (a){
 			if (isSaved)
 				savedProject();//force saved state
-			close();
+			if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive))) 
+				close();
+			else
+				modifiedProject();
+		}
 	}
 }
 

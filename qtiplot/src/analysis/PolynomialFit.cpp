@@ -247,7 +247,7 @@ void LinearFit::init()
 	
 	d_p = 2;
     d_min_points = d_p;
-
+	
 	covar = gsl_matrix_alloc (d_p, d_p);
 	d_results = new double[d_p];
 

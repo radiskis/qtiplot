@@ -953,7 +953,7 @@ bool Fit::load(const QString& fileName)
 
 void Fit::setParameterRange(int parIndex, double left, double right)
 {
-	if (parIndex < 0 || parIndex >= d_p)
+	if (!d_param_range_left || !d_param_range_right || parIndex < 0 || parIndex >= d_p)
 		return;
 	
 	d_param_range_left[parIndex] = left;
