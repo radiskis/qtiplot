@@ -176,9 +176,9 @@ double FrameWidget::calculateBottomValue()
 	return d_plot->invTransform(QwtPlot::yLeft, d_pos.y());
 }
 
-QwtDoubleRect FrameWidget::boundingRect() const
+QRectF FrameWidget::boundingRect() const
 {
-    return QwtDoubleRect(d_x, d_y, qAbs(d_x_right - d_x), qAbs(d_y_bottom - d_y));
+    return QRectF(d_x, d_y, qAbs(d_x_right - d_x), qAbs(d_y_bottom - d_y));
 }
 
 void FrameWidget::drawFrame(QPainter *p, const QRect& rect)

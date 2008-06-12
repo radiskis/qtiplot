@@ -57,7 +57,7 @@ public:
 	void move(const QPoint& pos);
 
 	//! Return bounding rectangle in plot coordinates.
-	virtual QwtDoubleRect boundingRect() const;
+	QRectF boundingRect() const;
 	//! Set position (xValue() and yValue()), right and bottom values giving everything in plot coordinates.
 	void setCoordinates(double left, double top, double right, double bottom);
 	//! Set size in paint coordinates.

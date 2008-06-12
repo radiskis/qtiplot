@@ -614,10 +614,12 @@ class Graph: public QwtPlot
 		void notifyChanges();
 
 		void updateSecondaryAxis(int axis);
-		void enableAutoscaling(bool yes){d_auto_scale = yes;};
+		
+		bool isAutoscalingEnabled(){return d_auto_scale;};
+		void enableAutoscaling(bool on = true){d_auto_scale = on;};
 
 		bool autoscaleFonts(){return autoScaleFonts;};
-		void setAutoscaleFonts(bool yes){autoScaleFonts = yes;};
+		void setAutoscaleFonts(bool on = true){autoScaleFonts = on;};
 
 		static int obsoleteSymbolStyle(int type);
 		static QString penStyleName(Qt::PenStyle style);
