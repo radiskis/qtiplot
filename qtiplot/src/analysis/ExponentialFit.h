@@ -43,6 +43,7 @@ class ExponentialFit : public Fit
 		ExponentialFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1, bool expGrowth = false);
 
         double eval(double *par, double x){return par[0]*exp(-par[1]*x) + par[2];};
+		bool isExponentialGrowth(){return is_exp_growth;};
 
 	private:
 		void init();

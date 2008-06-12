@@ -1144,8 +1144,10 @@ void FitDialog::accept()
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
 			
-		for (int i=0; i<n; i++)
-			d_current_fit->setParameterRange(i, paramRangeLeft[i], paramRangeRight[i]);
+		if (btnParamRange->isEnabled()){
+			for (int i=0; i<n; i++)
+				d_current_fit->setParameterRange(i, paramRangeLeft[i], paramRangeRight[i]);
+		}
 		
 		d_current_fit->setTolerance(eps);
 		d_current_fit->setOutputPrecision(app->fit_output_precision);
@@ -1182,15 +1184,24 @@ void FitDialog::modifyGuesses(double* initVal)
 	if (!d_current_fit)
 		return;
 
-	QString fitName = d_current_fit->objectName();
-	if (fitName == tr("ExpDecay1"))
-		initVal[1] = 1/initVal[1];
-	else if (fitName == tr("ExpGrowth"))
-		initVal[1] = -1/initVal[1];
-	else if (fitName == tr("ExpDecay2")){
+	ExponentialFit *ef = qobject_cast<ExponentialFit *>(d_current_fit);
+	if (ef){
+		if (ef->isExponentialGrowth())
+			initVal[1] = -1/initVal[1];
+		else 
+			initVal[1] = 1/initVal[1];
+		return;
+	}
+	
+	TwoExpFit *two_ef = qobject_cast<TwoExpFit *>(d_current_fit);
+	if (two_ef){
 		initVal[1] = 1/initVal[1];
 		initVal[3] = 1/initVal[3];
-	} else if (fitName == tr("ExpDecay3")){
+		return;
+	}
+	
+	ThreeExpFit *three_ef = qobject_cast<ThreeExpFit *>(d_current_fit);
+	if (three_ef){
 		initVal[1] = 1/initVal[1];
 		initVal[3] = 1/initVal[3];
 		initVal[5] = 1/initVal[5];
