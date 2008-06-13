@@ -415,6 +415,7 @@ class Graph: public QwtPlot
 		//@{
 		ImageWidget* addImage(ImageWidget* i);
 		ImageWidget* addImage(const QString& fileName);
+		ImageWidget* addImage(const QImage& image);
 
 		void insertImageMarker(const QStringList& lst, int fileVersion);
 		bool imageMarkerSelected();

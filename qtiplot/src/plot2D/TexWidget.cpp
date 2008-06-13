@@ -37,7 +37,7 @@ d_formula(s),
 d_margin(5)
 {
 	if (!d_pix.isNull())
-		resize(QSize(pix.width() + 2*d_margin, pix.height() + 2*d_margin));
+		setSize(QSize(pix.width() + 2*d_margin, pix.height() + 2*d_margin));
 }
 	
 void TexWidget::paintEvent(QPaintEvent *e)
@@ -75,7 +75,7 @@ void TexWidget::setPixmap(const QPixmap& pix)
 		width += d_margin;
 		height += d_margin;
 	}
-	resize(QSize(width, height));
+	setSize(QSize(width, height));
 	repaint();
 }
 
@@ -84,8 +84,11 @@ void TexWidget::clone(TexWidget* t)
 	d_frame = t->frameStyle();
 	d_color = t->frameColor();
 	d_formula = t->formula();
-	setPixmap(t->pixmap());
+	d_pix = t->pixmap();
+	resize(t->size());
 	setOriginCoord(t->xValue(), t->yValue());
+	d_x_right = t->right();
+	d_y_bottom = t->bottom();
 }
 
 QString TexWidget::saveToString()
@@ -107,7 +110,7 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 {	
 	int frameStyle = 0;
 	QColor frameColor = Qt::black;
-	double x = 0.0, y = 0.0;
+	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
 	QPixmap pix;
 	QStringList::const_iterator line;
 	QString formula;
@@ -121,6 +124,10 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
 			y = s.remove("<y>").remove("</y>").toDouble();
+		else if (s.contains("<right>"))
+			right = s.remove("<right>").remove("</right>").toDouble();
+		else if (s.contains("<bottom>"))
+			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
 		else if (s.contains("<tex>"))
 			formula = s.remove("<tex>").remove("</tex>");
 		else if (s.contains("<xpm>")){
@@ -137,5 +144,5 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 	TexWidget *t = g->addTexFormula(formula, pix);
 	t->setFrameStyle(frameStyle);
 	t->setFrameColor(frameColor);
-	t->setOriginCoord(x, y);
+	t->setCoordinates(x, y, right, bottom);
 }

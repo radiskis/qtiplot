@@ -3368,28 +3368,22 @@ ImageWidget* Graph::addImage(ImageWidget* i)
 
 ImageWidget* Graph::addImage(const QString& fileName)
 {
-	if (fileName.isEmpty() || !QFile::exists(fileName)){
-		QMessageBox::warning(0, tr("QtiPlot - File open error"),
-				tr("Image file: <p><b> %1 </b><p>does not exist anymore!").arg(fileName));
+	if (fileName.isEmpty() || !QFile::exists(fileName))
 		return 0;
-	}
 
 	ImageWidget* i = new ImageWidget(this, fileName);
 	if (i){
 		d_enrichements << i;
+		emit modifiedGraph();
+	}
+	return i;
+}
 
-		QSize picSize = i->pixmap().size();
-		int w = canvas()->width();
-		if (picSize.width() > w)
-			picSize.setWidth(w);
-
-		int h = canvas()->height();
-		if (picSize.height() > h)
-			picSize.setHeight(h);
-
-		i->setSize(picSize);
-		replot();
-
+ImageWidget* Graph::addImage(const QImage& image)
+{
+	ImageWidget* i = new ImageWidget(this, image);
+	if (i){
+		d_enrichements << i;
 		emit modifiedGraph();
 	}
 	return i;

@@ -81,6 +81,7 @@ TexWidgetDialog::TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent)
 	clearButton = NULL;
 	editPage = NULL;
 	imagePage = NULL;
+		
 	if (wt == Tex){
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
 
@@ -156,6 +157,8 @@ void TexWidgetDialog::initImagePage()
 	gl->addWidget(browseBtn, 0, 2);
 
 	boxSaveImagesInternally = new QCheckBox(tr("&Save internally"));
+	connect(boxSaveImagesInternally, SIGNAL(toggled(bool)), this, SLOT(saveImagesInternally(bool)));
+	
 	gl->addWidget(boxSaveImagesInternally, 1, 1);
 	gl->setColumnStretch(1, 1);
 	gl->setRowStretch(2, 1);
@@ -239,8 +242,12 @@ void TexWidgetDialog::initGeometryPage()
 	
     gl2->addWidget(new QLabel(tr("Height")), 1, 0);
     gl2->addWidget(heightBox, 1, 1);
+	
+	keepAspectBox = new QCheckBox(tr("&Keep aspect ratio"));
+	gl2->addWidget(keepAspectBox, 2, 1);
+		
 	gl2->setColumnStretch(1, 10);
-	gl2->setRowStretch(2, 1);
+	gl2->setRowStretch(3, 1);
     gb2->setLayout(gl2);
 
     QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
@@ -252,6 +259,9 @@ void TexWidgetDialog::initGeometryPage()
     vl->addLayout(bl2);
 
 	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
+	connect(widthBox, SIGNAL(valueChanged(double)), this, SLOT(adjustHeight(double)));
+	connect(heightBox, SIGNAL(valueChanged(double)), this, SLOT(adjustWidth(double)));
+
 	tabWidget->addTab(geometryPage, tr( "&Geometry" ) );
 }
 
@@ -292,8 +302,10 @@ void TexWidgetDialog::setWidget(FrameWidget *w)
 		return;
 	} else if (d_widget_type == Image){
 		ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
-		if (i)
+		if (i){
 			imagePathBox->setText(i->fileName());
+			boxSaveImagesInternally->setChecked(i->saveInternally());
+		}
 	}
 }
 
@@ -313,10 +325,12 @@ void TexWidgetDialog::apply()
 			d_widget->setFrameColor(frameColorBtn->color());
 			d_plot->multiLayer()->notifyChanges();
 		}
-	} else if (imagePage && tabWidget->currentPage() == imagePage){
-		chooseImageFile(imagePathBox->text());
-	} else if (tabWidget->currentPage() == geometryPage)
+	} else if (imagePage && tabWidget->currentPage() == imagePage)
+		chooseImageFile(imagePathBox->text());	
+	else if (tabWidget->currentPage() == geometryPage){
 		setCoordinates(unitBox->currentIndex());
+		d_plot->multiLayer()->notifyChanges();
+	}
 }
 
 void TexWidgetDialog::fetchImage()
@@ -401,7 +415,27 @@ void TexWidgetDialog::chooseImageFile(const QString& fn)
 			imagePathBox->setText(path);
 			QFileInfo fi(path);
 			app->imagesDirPath = fi.dirPath(true);
+			app->modifiedProject();
 		}
+	}
+}
+
+void TexWidgetDialog::saveImagesInternally(bool save)
+{
+	ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
+	if (i)
+		i->setSaveInternally(boxSaveImagesInternally->isChecked());
+		
+	d_plot->multiLayer()->notifyChanges();
+	
+	if (save)
+		return;
+	
+	QString fn = imagePathBox->text();	
+	if (fn.isEmpty() || !QFile::exists(fn)){
+		QMessageBox::warning((ApplicationWindow *)parentWidget(), tr("QtiPlot - Warning"),
+		tr("The file %1 doesn't exist. The image cannot be restored when reloading the project file!").arg(fn));
+		chooseImageFile();
 	}
 }
 
@@ -409,11 +443,11 @@ void TexWidgetDialog::setCoordinates(int unit)
 {
 	if (!d_widget)
 		return;
-	
+		
 	if (unit == 0){//ScaleCoordinates
 		double left = xBox->value();
 		double top = yBox->value();
-		d_widget->setCoordinates(left, top, left + widthBox->value(), top + heightBox->value());
+		d_widget->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
 	} else
 		d_widget->setRect((int)xBox->value(), (int)yBox->value(), (int)widthBox->value(), (int)heightBox->value());
 }
@@ -424,11 +458,16 @@ void TexWidgetDialog::displayCoordinates(int unit)
 		return;
 	
 	if (unit == 0){//ScaleCoordinates
+		xBox->setFormat('g', 6);
+		yBox->setFormat('g', 6);
+		widthBox->setFormat('g', 6);
+		heightBox->setFormat('g', 6);
+
 		xBox->setSingleStep(0.1);
 		yBox->setSingleStep(0.1);
 		widthBox->setSingleStep(0.1);
 		heightBox->setSingleStep(0.1);
-		
+				
 		xBox->setValue(d_widget->xValue());
 		yBox->setValue(d_widget->yValue());
 
@@ -436,6 +475,11 @@ void TexWidgetDialog::displayCoordinates(int unit)
 		widthBox->setValue(r.width());
 		heightBox->setValue(r.height());
 	} else {
+		xBox->setFormat('f', 0);
+		yBox->setFormat('f', 0);
+		widthBox->setFormat('f', 0);
+		heightBox->setFormat('f', 0);
+		
 		xBox->setSingleStep(1.0);
 		yBox->setSingleStep(1.0);
 		widthBox->setSingleStep(1.0);
@@ -446,4 +490,26 @@ void TexWidgetDialog::displayCoordinates(int unit)
 		widthBox->setValue(d_widget->width());
 		heightBox->setValue(d_widget->height());
 	}
+	
+	aspect_ratio = widthBox->value()/heightBox->value();
+}
+
+void TexWidgetDialog::adjustHeight(double width)
+{
+	if (keepAspectBox->isChecked()){
+		heightBox->blockSignals(true);
+		heightBox->setValue(width/aspect_ratio);
+		heightBox->blockSignals(false);
+	} else
+		aspect_ratio = width/heightBox->value();
+}
+
+void TexWidgetDialog::adjustWidth(double height)
+{
+	if (keepAspectBox->isChecked()){
+		widthBox->blockSignals(true);
+		widthBox->setValue(height*aspect_ratio);
+		widthBox->blockSignals(false);
+	} else
+		aspect_ratio = widthBox->value()/height;
 }

@@ -38,12 +38,41 @@
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
 d_save_xpm(false)
 {
-	if (load(fn))
-		resize(d_pix.size());
+	if (load(fn, false)){
+		QSize picSize = d_pix.size();
+		int w = plot->canvas()->width();
+		if (picSize.width() > w)
+			picSize.setWidth(w);
+
+		int h = plot->canvas()->height();
+		if (picSize.height() > h)
+			picSize.setHeight(h);
+
+		setSize(picSize);
+	}
 	move(plot->canvas()->pos());
 }
 
-bool ImageWidget::load(const QString& fn)
+ImageWidget::ImageWidget(Graph *plot, const QImage& image):FrameWidget(plot),
+d_save_xpm(true)
+{
+	
+	d_pix = QPixmap::fromImage(image);
+	
+	QSize picSize = image.size();
+	int w = plot->canvas()->width();
+	if (picSize.width() > w)
+		picSize.setWidth(w);
+
+	int h = plot->canvas()->height();
+	if (picSize.height() > h)
+		picSize.setHeight(h);
+
+	setSize(picSize);
+	move(plot->canvas()->pos());
+}
+
+bool ImageWidget::load(const QString& fn, bool update)
 {
     if (fn.isEmpty())
         return false;
@@ -67,7 +96,8 @@ bool ImageWidget::load(const QString& fn)
 		if (fn.contains("." + lst[i])){
 			d_pix.load(fn, lst[i], QPixmap::Auto);
 			d_file_name = fn;
-			repaint();
+			if (update)
+				repaint();
 			return true;
 		}
 	}
@@ -134,19 +164,15 @@ void ImageWidget::clone(ImageWidget* t)
 	d_frame = t->frameStyle();
 	d_color = t->frameColor();
 	d_file_name = t->fileName();
+	d_save_xpm = t->saveInternally();
 	setPixmap(t->pixmap());
-	resize(t->size());
-	setOriginCoord(t->xValue(), t->yValue());
-	updateCoordinates();
+	setCoordinates(t->xValue(), t->yValue(), t->right(), t->bottom());
 }
 
 QString ImageWidget::saveToString()
 {
 	QString s = "<Image>\n";
 	s += FrameWidget::saveToString();
-
-    s += "<right>" + QString::number(d_x_right, 'g', 15) + "</right>\n";
-    s += "<bottom>" + QString::number(d_y_bottom, 'g', 15) + "</bottom>\n";
 	s += "<path>" + d_file_name + "</path>\n";
 	if (d_save_xpm){
 		s += "<xpm>\n";
@@ -167,6 +193,8 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
 	QStringList::const_iterator line;
 	QString fn;
+	bool save_xpm = false;
+	ImageWidget *i = NULL;
 	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;
         if (s.contains("<Frame>"))
@@ -182,10 +210,26 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
 		else if (s.contains("<path>"))
-			fn = s.remove("<path>").remove("</path>");
+			i = g->addImage(s.remove("<path>").remove("</path>"));
+		else if (s.contains("<xpm>")){
+			save_xpm = true;	
+			if (!i){			
+				QString xpm;
+				while ( s != "</xpm>" ){
+					s = *(++line);
+					xpm += s + "\n";
+				}
+				QImage image;
+    			if (image.loadFromData(xpm.toAscii()))
+					i = g->addImage(image);
+			}
+		}
 	}
-	ImageWidget *t = g->addImage(fn);
-	t->setFrameStyle(frameStyle);
-	t->setFrameColor(frameColor);
-	t->setCoordinates(x, y, right, bottom);
+	
+	if (i){
+		i->setFrameStyle(frameStyle);
+		i->setFrameColor(frameColor);
+		i->setCoordinates(x, y, right, bottom);
+		i->setSaveInternally(save_xpm);
+	}
 }

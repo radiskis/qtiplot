@@ -616,7 +616,8 @@ public:
   void remove(ArrowMarker*);
 
   ImageWidget* addImage(ImageWidget*);
-  ImageWidget* addImage(const QString& fileName);
+  ImageWidget* addImage(const QString&);
+  ImageWidget* addImage(const QImage&);
   void remove(ImageWidget*);
 
   void setTitle(const QString& t);
