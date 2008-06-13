@@ -37,17 +37,22 @@ class ImageWidget: public FrameWidget
 	Q_OBJECT
 
 public:
-    //! Construct an image marker from a file name.
+    //! Construct an image widget from a file name.
 	ImageWidget(Graph *, const QString& fn = QString::null);
+	//! Construct an image widget from a QImage.
+	ImageWidget(Graph *, const QImage& image);
 
 	//! Return the pixmap to be drawn.
 	QPixmap pixmap() const {return d_pix;};
 	void setPixmap(const QPixmap&);
 
     //! Import image from #d_file_name. Returns true if successful.
-	bool load(const QString& fn);
+	bool load(const QString& fn, bool update = true);
 	//! Return #d_file_name.
 	QString fileName(){return d_file_name;};
+	
+	bool saveInternally(){return d_save_xpm;};
+	void setSaveInternally(bool save = true){d_save_xpm = save;};
 
 	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
 	virtual QString saveToString();

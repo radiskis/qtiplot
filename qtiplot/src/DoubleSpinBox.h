@@ -49,6 +49,8 @@ public:
 
 	double value(){return d_value;};
 	bool setValue(double val);
+	
+	void setFormat(const char format, int prec = 1){d_format = format; setDecimals(prec);};
 
 	QString textFromValue ( double value ) const;
 	virtual QValidator::State validate ( QString & input, int & pos ) const;
@@ -64,7 +66,7 @@ protected:
 	StepEnabled stepEnabled () const;
 
 private:
-    const char d_format;
+    char d_format;
 	double d_min_val;
 	double d_max_val;
 	double d_value;

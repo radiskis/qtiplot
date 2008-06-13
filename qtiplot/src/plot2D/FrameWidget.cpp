@@ -86,6 +86,9 @@ void FrameWidget::setFrameStyle(int style)
 		resize(width() + d_frame_width, height() + d_frame_width);
 	else if (old_frame_style == Shadow)
 		resize(width() - d_frame_width, height() - d_frame_width);
+	
+	d_x_right = calculateRightValue();
+	d_y_bottom = calculateBottomValue();
 }
 
 void FrameWidget::updateCoordinates()
@@ -178,7 +181,7 @@ double FrameWidget::calculateBottomValue()
 
 QRectF FrameWidget::boundingRect() const
 {
-    return QRectF(d_x, d_y, qAbs(d_x_right - d_x), qAbs(d_y_bottom - d_y));
+    return QRectF(d_x, d_y, fabs(d_x_right - d_x), fabs(d_y_bottom - d_y));
 }
 
 void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
@@ -219,5 +222,7 @@ QString FrameWidget::saveToString()
 	s += "<Color>" + d_color.name() + "</Color>\n";
 	s += "<x>" + QString::number(d_x, 'g', 14) + "</x>\n";
 	s += "<y>" + QString::number(d_y, 'g', 14) + "</y>\n";
+	s += "<right>" + QString::number(d_x_right, 'g', 15) + "</right>\n";
+    s += "<bottom>" + QString::number(d_y_bottom, 'g', 15) + "</bottom>\n";
 	return s;
 }

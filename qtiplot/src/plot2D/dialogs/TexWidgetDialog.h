@@ -41,6 +41,7 @@ class QTextEdit;
 class QTabWidget;
 class QCheckBox;
 class QLineEdit;
+class QCheckBox;
 	
 class Graph;
 class FrameWidget;
@@ -66,6 +67,9 @@ private slots:
 	void customButtons(QWidget *w);
 	void chooseImageFile(const QString& fn = QString::null);
 	void displayCoordinates(int unit);
+	void adjustHeight(double width);
+	void adjustWidth(double height);
+	void saveImagesInternally(bool save);
 
 private:
 	void initEditorPage();
@@ -89,10 +93,12 @@ private:
 	QLineEdit *imagePathBox;
 	DoubleSpinBox *xBox, *yBox, *widthBox, *heightBox;
 	QComboBox *unitBox;
+	QCheckBox *keepAspectBox;
 
 	Graph *d_plot;
 	FrameWidget *d_widget;
 	WidgetType d_widget_type;
+	double aspect_ratio;
 };
 
 #endif
