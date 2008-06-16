@@ -70,6 +70,7 @@ private slots:
 	void adjustHeight(double width);
 	void adjustWidth(double height);
 	void saveImagesInternally(bool save);
+	void setBestSize();
 
 private:
 	void initEditorPage();
@@ -84,6 +85,7 @@ private:
     QPushButton *clearButton;
     QPushButton *updateButton;
 	QPushButton *cancelButton;
+	QPushButton *bestSizeButton;
     QTextEdit *equationEditor;
 	QComboBox *frameBox;
 	QTabWidget* tabWidget;
