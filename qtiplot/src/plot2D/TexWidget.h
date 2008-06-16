@@ -51,6 +51,8 @@ public:
 	
 	void clone(TexWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
+	
+	void setBestSize();
 
 private:
 	void paintEvent(QPaintEvent *e);

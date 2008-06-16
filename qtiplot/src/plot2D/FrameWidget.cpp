@@ -207,11 +207,6 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 void FrameWidget::mousePressEvent (QMouseEvent *)
 {
 	d_plot->activateGraph();
-	/*bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
-	if (!shiftPressed)
-        d_plot->deselectMarker();
-	d_plot->select(this, shiftPressed);*/
-
 	d_plot->deselectMarker();
 	d_plot->select(this);
 }

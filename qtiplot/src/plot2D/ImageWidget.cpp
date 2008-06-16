@@ -122,7 +122,7 @@ void ImageWidget::paintEvent(QPaintEvent *e)
 			r.adjust(1, 1, -d_frame_width, -d_frame_width);
 		break;
 	}
-	p.drawPixmap(r, d_pix);
+	p.drawPixmap(r, d_pix);	
 	e->accept();
 }
 
@@ -221,7 +221,7 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 				}
 				QImage image;
     			if (image.loadFromData(xpm.toAscii()))
-					i = g->addImage(image);
+					i = g->addImage(image);	
 			}
 		}
 	}

@@ -246,8 +246,12 @@ void TexWidgetDialog::initGeometryPage()
 	keepAspectBox = new QCheckBox(tr("&Keep aspect ratio"));
 	gl2->addWidget(keepAspectBox, 2, 1);
 		
+	bestSizeButton = new QPushButton(tr("&Best size"));
+	bestSizeButton->hide();
+	gl2->addWidget(bestSizeButton, 3, 1);
+	
 	gl2->setColumnStretch(1, 10);
-	gl2->setRowStretch(3, 1);
+	gl2->setRowStretch(4, 1);
     gb2->setLayout(gl2);
 
     QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
@@ -261,6 +265,7 @@ void TexWidgetDialog::initGeometryPage()
 	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
 	connect(widthBox, SIGNAL(valueChanged(double)), this, SLOT(adjustHeight(double)));
 	connect(heightBox, SIGNAL(valueChanged(double)), this, SLOT(adjustWidth(double)));
+	connect(bestSizeButton, SIGNAL(clicked()), this, SLOT(setBestSize()));
 
 	tabWidget->addTab(geometryPage, tr( "&Geometry" ) );
 }
@@ -298,13 +303,16 @@ void TexWidgetDialog::setWidget(FrameWidget *w)
 		if (tw){
 			equationEditor->setText(tw->formula());
 			outputLabel->setPixmap(tw->pixmap());
+			bestSizeButton->show();
 		}
 		return;
 	} else if (d_widget_type == Image){
 		ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
 		if (i){
 			imagePathBox->setText(i->fileName());
+			boxSaveImagesInternally->blockSignals(true);
 			boxSaveImagesInternally->setChecked(i->saveInternally());
+			boxSaveImagesInternally->blockSignals(false);
 		}
 	}
 }
@@ -512,4 +520,11 @@ void TexWidgetDialog::adjustWidth(double height)
 		widthBox->blockSignals(false);
 	} else
 		aspect_ratio = widthBox->value()/height;
+}
+
+void TexWidgetDialog::setBestSize()
+{
+	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
+	if (tw)
+		tw->setBestSize();
 }

@@ -346,10 +346,10 @@ void Graph::enableTextEditor()
 QList <LegendWidget *> Graph::textsList()
 {
 	QList <LegendWidget *> texts;
-	QObjectList lst = children();
-	foreach(QObject *o, lst){
-		if (o->inherits("LegendWidget"))
-        	texts << (LegendWidget *)o;
+	foreach(FrameWidget *f, d_enrichements){
+		LegendWidget *l = qobject_cast<LegendWidget *>(f);
+		if (l)
+			texts << l;
 	}
 	return texts;
 }
@@ -1590,7 +1590,7 @@ void Graph::remove(FrameWidget* f)
 	if (f == d_active_enrichement)
 		d_active_enrichement = NULL;
 
-	delete f;
+	f->close();
 	emit modifiedGraph();
 }
 
@@ -2201,6 +2201,8 @@ QString Graph::saveCurves()
 LegendWidget* Graph::newLegend(const QString& text)
 {
 	LegendWidget* l = new LegendWidget(this);
+	if (!l)
+		return NULL;
 
 	QString s = text;
 	if (s.isEmpty()){
@@ -2219,6 +2221,7 @@ LegendWidget* Graph::newLegend(const QString& text)
 	}
 
     d_legend = l;
+	d_enrichements << l;
 	emit modifiedGraph();
 	return l;
 }
@@ -2373,21 +2376,8 @@ LegendWidget* Graph::addText(LegendWidget* t)
 	LegendWidget* aux = new LegendWidget(this);
 	aux->clone(t);
 	d_active_enrichement = aux;
+	d_enrichements << aux;
 	return aux;
-}
-
-void Graph::remove(LegendWidget* t)
-{
-    if (!t)
-        return;
-
-    if (d_legend == t)
-        d_legend = NULL;
-
-    if (d_active_enrichement == t)
-        d_active_enrichement = NULL;
-
-    delete t;
 }
 
 QString Graph::saveMarkers()
@@ -3675,11 +3665,8 @@ QString Graph::saveToString(bool saveAsTemplate)
 
 void Graph::updateMarkersBoundingRect()
 {
-    QObjectList lst = children();
-    foreach(QObject *o, lst){
-		if (o->isA("LegendWidget"))
-			((LegendWidget *)o)->updateCoordinates();
-	}
+    foreach(FrameWidget *f, d_enrichements)
+		f->updateCoordinates();
 
 	if (!d_lines.size())
 		return;
@@ -3705,12 +3692,6 @@ void Graph::resizeEvent ( QResizeEvent *e )
         updateCurveLabels();
 	}
 
-    QObjectList lst = children();
-	foreach(QObject *o, lst){
-		if (o->isA("LegendWidget"))
-			((LegendWidget *)o)->resetOrigin();
-	}
-
 	foreach(FrameWidget *f, d_enrichements){
 		ImageWidget *i = qobject_cast<ImageWidget *>(f);
 		if (i)
@@ -3730,7 +3711,7 @@ void Graph::scaleFonts(double factor)
 			((LegendWidget *)o)->setFont(font);
 		}
 	}
-
+			
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		QFont font = axisFont(i);
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
@@ -4210,30 +4191,20 @@ void Graph::copy(Graph* g)
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 
-	QList<LegendWidget *> texts = g->textsList();
-	foreach (LegendWidget *t, texts){
-		if (t == g->legend())
-			d_legend = addText(t);
-		else if (t->isA("PieLabel")){
-			QwtPieCurve *pie = (QwtPieCurve*)curve(0);
-			if (pie)
-				pie->addLabel((PieLabel *)t, true);
-			else
-				addText(t);
-		} else
-			addText(t);
-	}
-
 	QList<FrameWidget *> enrichements = g->enrichementsList();
-	foreach (FrameWidget *e, enrichements)
-		add(e);
+	foreach (FrameWidget *e, enrichements){
+		LegendWidget *l = qobject_cast<LegendWidget *>(e);
+		if (l && l == g->legend())
+			d_legend = addText(l);
+		else
+			add(e);
+	}
 
 	QList<QwtPlotMarker *> lines = g->linesList();
 	foreach (QwtPlotMarker *i, lines)
 		addArrow((ArrowMarker*)i);
 
 	setAntialiasing(g->antialiasing(), true);
-	//updateLayout();
 }
 
 void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int endRow)
@@ -4886,14 +4857,10 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	}
     painter->restore();
 
-	// print texts
-	QObjectList lst = children();
-	foreach(QObject *o, lst){
-		if (o->inherits("LegendWidget") && !((QWidget *)o)->isHidden())
-        	((LegendWidget *)o)->print(painter, map);
+	foreach(FrameWidget *f, d_enrichements){
+		if (f->isVisible())
+			f->print(painter, map);
 	}
-	foreach(FrameWidget *f, d_enrichements)
-		f->print(painter, map);
 }
 
 void Graph::drawItems (QPainter *painter, const QRect &rect,
@@ -5537,24 +5504,22 @@ FrameWidget* Graph::add(FrameWidget* fw)
 	if (l){
 		LegendWidget* aux = new LegendWidget(this);
 		aux->clone(l);
-		d_active_enrichement = (FrameWidget*)aux;
 	}
 
 	TexWidget *t = qobject_cast<TexWidget *>(fw);
 	if (t){
 		TexWidget* aux = new TexWidget(this);
 		aux->clone(t);
-		d_enrichements << aux;
-		d_active_enrichement = (FrameWidget*)aux;
 	}
 
 	ImageWidget *i = qobject_cast<ImageWidget *>(fw);
 	if (i){
 		ImageWidget* aux = new ImageWidget(this);
 		aux->clone(i);
-		d_enrichements << aux;
-		d_active_enrichement = (FrameWidget*)aux;
 	}
+	
+	d_enrichements << fw;
+	d_active_enrichement = fw;
 	return d_active_enrichement;
 }
 

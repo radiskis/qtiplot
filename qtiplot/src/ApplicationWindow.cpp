@@ -7124,7 +7124,6 @@ void ApplicationWindow::addTimeStamp()
 void ApplicationWindow::disableAddText()
 {
 	actionAddText->setChecked(false);
-	showEnrichementDialog();
 }
 
 void ApplicationWindow::addTexFormula()

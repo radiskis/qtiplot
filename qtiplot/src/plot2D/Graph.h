@@ -378,7 +378,6 @@ class Graph: public QwtPlot
 		void drawText(bool on);
 		bool drawTextActive(){return drawTextOn;};
 		LegendWidget* addText(LegendWidget*);
-		void remove(LegendWidget*);
 
 		//! Used when opening a project file
 		LegendWidget* insertText(const QStringList& list, int fileVersion);

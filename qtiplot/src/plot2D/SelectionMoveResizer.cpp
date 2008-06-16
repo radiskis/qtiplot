@@ -296,10 +296,10 @@ void SelectionMoveResizer::paintEvent(QPaintEvent *e)
 }
 
 void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
-{
-	if (me->button() == Qt::RightButton) {
+{	
+	if (me->button() == Qt::RightButton){
 		// If one of the parents' event handlers deletes me, Qt crashes while trying to send the QContextMenuEvent.
-		foreach(QWidget *w, d_widgets) {
+		foreach(QWidget *w, d_widgets){
 			FrameWidget *l = qobject_cast<FrameWidget *>(w);
 			if (!l)
 				continue;
@@ -309,6 +309,18 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 		me->accept();
 		return;
 	}
+	
+	if (me->button() == Qt::LeftButton){
+		Graph *plot = qobject_cast<Graph *>(parentWidget());
+		if (plot){
+			QList <FrameWidget *> lst = plot->enrichementsList();
+			foreach(FrameWidget *f, lst){
+				if(!d_widgets.contains(f) && f->geometry().contains(me->pos()))
+					return plot->select(f, me->modifiers() & Qt::ShiftModifier);
+			}
+		}
+	}
+	
 	if (me->button() != Qt::LeftButton || !d_bounding_rect.contains(me->pos())) {
 		me->ignore();
 		return;

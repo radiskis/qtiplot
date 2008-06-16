@@ -79,6 +79,10 @@ void QwtPieCurve::clone(QwtPieCurve* c)
 	d_fixed_labels_pos = c->fixedLabelsPosition();
 
 	d_table_rows = c->d_table_rows;
+	
+	QList <PieLabel *> lst = c->labelsList();
+	foreach(PieLabel *t, lst)
+		addLabel(t, true);
 }
 
 void QwtPieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const

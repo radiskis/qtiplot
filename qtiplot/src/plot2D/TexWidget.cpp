@@ -48,7 +48,13 @@ void TexWidget::paintEvent(QPaintEvent *e)
 	QPainter p(this);	
 	drawFrame(&p, rect());
 	
-	QRect pixRect = QRect (d_margin, d_margin, d_pix.width(), d_pix.height());
+	int w = width() - 2*d_margin;
+	int h = height() - 2*d_margin;
+	if (d_frame == Shadow){
+		w -= d_margin;
+		h -= d_margin;
+	}
+	QRect pixRect = QRect (d_margin, d_margin, w, h);
 	p.drawPixmap(pixRect, d_pix);
 	
 	e->accept();
@@ -62,7 +68,13 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 	QRect rect = QRect(x, y, width(), height());
 	drawFrame(painter, rect);
 	
-	QRect pixRect = QRect (x + d_margin, y + d_margin, d_pix.width(), d_pix.height());
+	int w = width() - 2*d_margin;
+	int h = height() - 2*d_margin;
+	if (d_frame == Shadow){
+		w -= d_margin;
+		h -= d_margin;
+	}
+	QRect pixRect = QRect (x + d_margin, y + d_margin, w, h);
 	painter->drawPixmap(pixRect, d_pix);
 }
 
@@ -77,6 +89,20 @@ void TexWidget::setPixmap(const QPixmap& pix)
 	}
 	setSize(QSize(width, height));
 	repaint();
+}
+
+void TexWidget::setBestSize()
+{
+	int w = d_pix.width() + 2*d_margin;
+	int h = d_pix.height() + 2*d_margin;
+	if (d_frame == Shadow){
+		w += d_margin;
+		h += d_margin;
+	}
+	if (size() == QSize(w,h))
+		return;
+	
+	setSize(QSize(w,h));
 }
 
 void TexWidget::clone(TexWidget* t)
