@@ -2505,11 +2505,12 @@ void ApplicationWindow::setPreferences(Graph* g)
 		g->setTicksLength (minTicksLength, majTicksLength);
 		g->setAxesLinewidth(axesLineWidth);
 		g->drawAxesBackbones(drawBackbones);
+		g->setCanvasFrame(canvasFrameWidth);
 	}
 
 	g->initFonts(plotAxesFont, plotNumbersFont);
 	g->initTitle(titleOn, plotTitleFont);
-	g->setCanvasFrame(canvasFrameWidth);
+	
 	g->setMargin(defaultPlotMargin);
 	g->enableAutoscaling(autoscale2DPlots);
 	g->setAutoscaleFonts(autoScaleFonts);

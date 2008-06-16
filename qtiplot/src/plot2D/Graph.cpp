@@ -1348,13 +1348,13 @@ void Graph::exportToFile(const QString& fileName)
 
 void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 {
-    QPixmap pic(size());
+    QPixmap pic(frameGeometry().size());
     QPainter p(&pic);
     print(&p, rect());
     p.end();
 
 	if (transparent){
-		QBitmap mask(pic.size());
+		QBitmap mask(frameGeometry().size());
 		mask.fill(Qt::color1);
 		QPainter p(&mask);
 		p.setPen(Qt::color0);
@@ -1362,8 +1362,8 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent)
         QColor background = QColor (Qt::white);
 		QRgb backgroundPixel = background.rgb ();
 		QImage image = pic.convertToImage();
-		for (int y=0; y<image.height(); y++){
-			for ( int x=0; x<image.width(); x++ ){
+		for (int y=0; y < image.height(); y++){
+			for (int x=0; x < image.width(); x++){
 				QRgb rgb = image.pixel(x, y);
 				if (rgb == backgroundPixel) // we want the frame transparent
 					p.drawPoint(x, y);
@@ -2735,8 +2735,9 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, int startRow, int end
 
 	setTitle(QString::null);
 
-	QwtPlotCanvas* canvas =(QwtPlotCanvas*)this->canvas();
-	canvas->setLineWidth(1);
+	QwtPlotCanvas* canvas = (QwtPlotCanvas*)this->canvas();
+	canvas->setLineWidth(0);
+	setFrame(1, Qt::black);
 
 	QwtPieCurve *pie = new QwtPieCurve(w, name, startRow, endRow);
     insertCurve(pie);
@@ -4822,6 +4823,19 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 	painter->save();
 
 	int lw = lineWidth();
+	/*if (lw){
+		QColor color = palette().color(QPalette::Active, QPalette::Foreground);
+		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
+	} else
+		painter->setPen(QPen(Qt::NoPen));
+
+	int lw2 = lw/2;
+    painter->setBrush(paletteBackgroundColor());
+	if (lw % 2)
+		painter->drawRect(rect.adjusted(lw2, lw2, -(lw2 + 1), -(lw2 + 1)));
+	else
+		painter->drawRect(rect.adjusted(lw2, lw2, -lw2, -lw2));*/
+	
 	if (lw){
 		QColor color = palette().color(QPalette::Active, QPalette::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
@@ -4830,6 +4844,7 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 
     painter->setBrush(paletteBackgroundColor());
     QwtPainter::drawRect(painter, rect.adjusted(0, 0, -1, -1));
+	
 	painter->restore();
 }
 
@@ -4839,7 +4854,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	painter->save();
 
 	const QwtPlotCanvas* plotCanvas = canvas();
-	QRect rect = canvasRect.adjusted(1, 1, -2, -2);//FIXME: change this to canvasRect.adjusted(1, 1, -1, -1) as soon as Qt 4.4 is released!!!
+	QRect rect = canvasRect.adjusted(1, 1, -1, -1);
     QwtPainter::fillRect(painter, rect, canvasBackground());
 
 	painter->setClipping(true);
@@ -4857,6 +4872,14 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	}
     painter->restore();
 
+	// print pie curve labels  	 	 
+	QObjectList lst = children();
+	foreach(QObject *o, lst){  
+		PieLabel *l = qobject_cast<PieLabel *>(o);
+		if (l && !l->isHidden()) 		 
+			l->print(painter, map); 		 
+	}
+	
 	foreach(FrameWidget *f, d_enrichements){
 		if (f->isVisible())
 			f->print(painter, map);
