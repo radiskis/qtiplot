@@ -555,10 +555,9 @@ class Graph: public QwtPlot
 		 */
 		bool enableRangeSelectors(const QObject *status_target=NULL, const char *status_slot="");
 
-		//! \name Border and Margin
+		//! \name Border and background
 		//@{
-		void setMargin (int d);
-		void setFrame(int width = 1, const QColor& color = QColor(Qt::black));
+		void setFrame(int width = 1, const QColor& color = Qt::black);
 		void setBackgroundColor(const QColor& color);
 		//@}
 
@@ -614,7 +613,7 @@ class Graph: public QwtPlot
 		void notifyChanges();
 
 		void updateSecondaryAxis(int axis);
-		
+
 		bool isAutoscalingEnabled(){return d_auto_scale;};
 		void enableAutoscaling(bool on = true){d_auto_scale = on;};
 

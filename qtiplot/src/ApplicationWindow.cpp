@@ -2510,7 +2510,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 
 	g->initFonts(plotAxesFont, plotNumbersFont);
 	g->initTitle(titleOn, plotTitleFont);
-	
+
 	g->setMargin(defaultPlotMargin);
 	g->enableAutoscaling(autoscale2DPlots);
 	g->setAutoscaleFonts(autoScaleFonts);
@@ -3706,7 +3706,7 @@ void ApplicationWindow::open()
 						return;
 					}
 				}
-				
+
 				if (!fi.exists ()){
 					QMessageBox::critical(this, tr("QtiPlot - File openning error"),
 					tr("The file: <b>%1</b> doesn't exist!").arg(fn));
@@ -3718,7 +3718,7 @@ void ApplicationWindow::open()
 				ApplicationWindow *a = open (fn);
 				if (a){
 					a->workingDir = workingDir;
-					if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) || 
+					if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) ||
 						fn.endsWith(".ogw",Qt::CaseInsensitive))) this->close();
 				}
 				break;
@@ -3743,14 +3743,14 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return importOPJ(fn, factorySettings, newProject);
 	else if (fn.endsWith(".py", Qt::CaseInsensitive))
 		return loadScript(fn);
-		
+
 	QString fname = fn;
 	QFile f(fname);
 	QTextStream t( &f );
 	f.open(QIODevice::ReadOnly);
 	QString s = t.readLine();
 	f.close();
-	
+
     QStringList lst = s.split(QRegExp("\\s"), QString::SkipEmptyParts);
 	bool qtiProject = (lst.count() < 2 || lst[0] != "QtiPlot") ? false : true;
 	if (!qtiProject){
@@ -3764,7 +3764,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
                 QMessageBox::critical(this, tr("QtiPlot - File opening error"),  tr("The file: <b> %1 </b> was not created using QtiPlot!").arg(fn));
             return 0;
 		}
-		
+
 		return plotFile(fn);
 	}
 
@@ -3816,7 +3816,7 @@ void ApplicationWindow::openRecentProject(int index)
 		if (a){
 			if (isSaved)
 				savedProject();//force saved state
-			if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive))) 
+			if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive)))
 				close();
 			else
 				modifiedProject();
@@ -6313,7 +6313,6 @@ void ApplicationWindow::showPlotDialog(int curveIndex)
 		return;
 
 	PlotDialog* pd = new PlotDialog(d_extended_plot_dialog, this);
-	pd->setAttribute(Qt::WA_DeleteOnClose);
 	pd->insertColumnsList(columnsList(Table::All));
 	pd->setMultiLayer(w);
     if (curveIndex >= 0){
@@ -6324,6 +6323,7 @@ void ApplicationWindow::showPlotDialog(int curveIndex)
     pd->initFonts(plotTitleFont, plotAxesFont, plotNumbersFont, plotLegendFont);
 	pd->showAll(d_extended_plot_dialog);
 	pd->show();
+
 }
 
 void ApplicationWindow::showCurvePlotDialog()
@@ -7277,7 +7277,7 @@ void ApplicationWindow::showEnrichementDialog()
 		ImageWidget *iw = qobject_cast<ImageWidget *>(g->activeEnrichement());
 		if (iw)
 			wt = TexWidgetDialog::Image;
-			
+
 		TexWidgetDialog *twd = new TexWidgetDialog(wt, g, this);
 		twd->setWidget(g->activeEnrichement());
 		twd->exec();
@@ -8287,20 +8287,20 @@ void ApplicationWindow::timerEvent ( QTimerEvent *e)
 
 void ApplicationWindow::dropEvent( QDropEvent* e )
 {
-	if (e->mimeData()->hasImage()){		
+	if (e->mimeData()->hasImage()){
 		QImage image = qvariant_cast<QImage>(e->mimeData()->imageData());
 		Matrix *m = new Matrix(scriptEnv, image, "", this);
         initMatrix(m, generateUniqueName(tr("Matrix")));
         m->show();
 		return;
 	}
-	
+
 	if (e->mimeData()->hasUrls()){
 		QList<QUrl> urls = e->mimeData()->urls();
 		QStringList fileNames;
 		foreach(QUrl url, urls)
 			fileNames << url.toLocalFile();
-		
+
 		QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 		QStringList asciiFiles;
 
@@ -8680,7 +8680,7 @@ void ApplicationWindow::showGraphContextMenu()
 	} else if (d_arrow_copy){
 		cm.insertSeparator();
 		cm.insertItem(QPixmap(paste_xpm), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));
-	} 
+	}
 	cm.insertSeparator();
 	copy.insertItem(tr("&Layer"), this, SLOT(copyActiveLayer()));
 	copy.insertItem(tr("&Window"), plot, SLOT(copyAllLayers()));
@@ -12718,7 +12718,7 @@ void ApplicationWindow::updateRecentProjectsList()
 	recent->clear();
 
 	for (int i = 0; i<(int)recentProjects.size(); i++ )
-		recent->insertItem("&" + QString::number(i+1) + " " + recentProjects[i]);
+        recent->insertItem("&" + QString::number(i+1) + " " + recentProjects[i]);
 }
 
 void ApplicationWindow::translateCurveHor()

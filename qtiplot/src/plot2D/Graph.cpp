@@ -1172,7 +1172,7 @@ void Graph::initScaleLimits()
 
 	setAxisScale(QwtPlot::yLeft, start, end, step);
 	setAxisScale(QwtPlot::yRight, start, end, step);
-	
+
 	replot();
 
 	d_zoomer[0]->setZoomBase();
@@ -2529,7 +2529,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 {
     int i = d_curves.size() - 1;
 
-	CurveLayout cl = initCurveLayout();	
+	CurveLayout cl = initCurveLayout();
 	int color;
 	guessUniqueCurveLayout(color, cl.sType);
 
@@ -2574,7 +2574,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 }
 
 void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
-{	
+{
 	if (!c)
 		return;
 
@@ -3712,7 +3712,7 @@ void Graph::scaleFonts(double factor)
 			((LegendWidget *)o)->setFont(font);
 		}
 	}
-			
+
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		QFont font = axisFont(i);
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
@@ -3744,15 +3744,6 @@ void Graph::scaleFonts(double factor)
         }
     }
     replot();
-}
-
-void Graph::setMargin (int d)
-{
-	if (margin() == d)
-		return;
-
-	setMargin(d);
-	emit modifiedGraph();
 }
 
 void Graph::setFrame (int width, const QColor& color)
@@ -4188,7 +4179,7 @@ void Graph::copy(Graph* g)
 
     updateLayout();
 	d_auto_scale = g->isAutoscalingEnabled();
-	
+
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 
@@ -4823,19 +4814,14 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 	painter->save();
 
 	int lw = lineWidth();
-	/*if (lw){
-		QColor color = palette().color(QPalette::Active, QPalette::Foreground);
-		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-	} else
-		painter->setPen(QPen(Qt::NoPen));
 
-	int lw2 = lw/2;
+	/*int lw2 = lw/2;
     painter->setBrush(paletteBackgroundColor());
 	if (lw % 2)
 		painter->drawRect(rect.adjusted(lw2, lw2, -(lw2 + 1), -(lw2 + 1)));
 	else
 		painter->drawRect(rect.adjusted(lw2, lw2, -lw2, -lw2));*/
-	
+
 	if (lw){
 		QColor color = palette().color(QPalette::Active, QPalette::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
@@ -4844,7 +4830,7 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 
     painter->setBrush(paletteBackgroundColor());
     QwtPainter::drawRect(painter, rect.adjusted(0, 0, -1, -1));
-	
+
 	painter->restore();
 }
 
@@ -4870,16 +4856,17 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 		QwtPainter::drawRect(painter, canvasRect.adjusted(0, 0, -1, -1));
 	}
+
     painter->restore();
 
-	// print pie curve labels  	 	 
+	// print pie curve labels
 	QObjectList lst = children();
-	foreach(QObject *o, lst){  
+	foreach(QObject *o, lst){
 		PieLabel *l = qobject_cast<PieLabel *>(o);
-		if (l && !l->isHidden()) 		 
-			l->print(painter, map); 		 
+		if (l && !l->isHidden())
+			l->print(painter, map);
 	}
-	
+
 	foreach(FrameWidget *f, d_enrichements){
 		if (f->isVisible())
 			f->print(painter, map);
@@ -5540,7 +5527,7 @@ FrameWidget* Graph::add(FrameWidget* fw)
 		ImageWidget* aux = new ImageWidget(this);
 		aux->clone(i);
 	}
-	
+
 	d_enrichements << fw;
 	d_active_enrichement = fw;
 	return d_active_enrichement;
