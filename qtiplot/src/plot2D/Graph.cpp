@@ -1348,13 +1348,13 @@ void Graph::exportToFile(const QString& fileName)
 
 void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 {
-    QPixmap pic(frameGeometry().size());
+    QPixmap pic(size());
     QPainter p(&pic);
     print(&p, rect());
     p.end();
 
 	if (transparent){
-		QBitmap mask(frameGeometry().size());
+		QBitmap mask(size());
 		mask.fill(Qt::color1);
 		QPainter p(&mask);
 		p.setPen(Qt::color0);
@@ -2248,8 +2248,11 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 	LegendWidget* l = NULL;
 	if (pieLabel)
 		l = new PieLabel(this);
-	else
+	else {
 		l = new LegendWidget(this);
+		d_enrichements << l;
+		d_active_enrichement = l;
+	}
 
 	if (fileVersion < 86 || (fileVersion > 91 && fileVersion < 96))
 		l->move(QPoint(fList[1].toInt(),fList[2].toInt()));
@@ -4814,23 +4817,20 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 	painter->save();
 
 	int lw = lineWidth();
-
-	/*int lw2 = lw/2;
-    painter->setBrush(paletteBackgroundColor());
-	if (lw % 2)
-		painter->drawRect(rect.adjusted(lw2, lw2, -(lw2 + 1), -(lw2 + 1)));
-	else
-		painter->drawRect(rect.adjusted(lw2, lw2, -lw2, -lw2));*/
-
 	if (lw){
 		QColor color = palette().color(QPalette::Active, QPalette::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 	} else
 		painter->setPen(QPen(Qt::NoPen));
 
-    painter->setBrush(paletteBackgroundColor());
-    QwtPainter::drawRect(painter, rect.adjusted(0, 0, -1, -1));
-
+    painter->setBrush(paletteBackgroundColor());	
+	
+	int lw2 = lw/2;
+	if (lw % 2)
+		painter->drawRect(rect.adjusted(lw2, lw2, -(lw2 + 1), -(lw2 + 1)));
+	else
+		painter->drawRect(rect.adjusted(lw2, lw2, -lw2, -lw2));
+	
 	painter->restore();
 }
 
@@ -4838,23 +4838,30 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
 {
 	painter->save();
-
+	
+	QRect rect = canvasRect;
 	const QwtPlotCanvas* plotCanvas = canvas();
-	QRect rect = canvasRect.adjusted(1, 1, -1, -1);
-    QwtPainter::fillRect(painter, rect, canvasBackground());
-
+	int lw = plotCanvas->lineWidth();
+	int lw2 = lw/2;	
+	if (lw % 2)
+		rect = rect.adjusted(-lw2, -lw2, (lw2 + 1), (lw2 + 1));
+	else
+		rect = rect.adjusted(-lw2, -lw2, lw2, lw2);
+	
+	QRect fillRect = rect.adjusted(1, 1, -2, -2);
+	QwtPainter::fillRect(painter, fillRect, canvasBackground());
+	
 	painter->setClipping(true);
-	QwtPainter::setClipRect(painter, rect);
+	painter->setClipRect(fillRect);
 
     drawItems(painter, canvasRect, map, pfilter);
     painter->restore();
 
     painter->save();
-	int lw = plotCanvas->lineWidth();
 	if(lw > 0){
 		QColor color = plotCanvas->palette().color(QPalette::Active, QColorGroup::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-		QwtPainter::drawRect(painter, canvasRect.adjusted(0, 0, -1, -1));
+		painter->drawRect(rect.adjusted(0, 0, -2, -2));
 	}
 
     painter->restore();
@@ -5377,16 +5384,16 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
         }
     }
     // Calculate the layout for the print.
-
-    int layoutOptions = QwtPlotLayout::IgnoreScrollbars
-        | QwtPlotLayout::IgnoreFrames;
+	
+    int layoutOptions = QwtPlotLayout::IgnoreScrollbars;
     if ( !(pfilter.options() & QwtPlotPrintFilter::PrintMargin) )
         layoutOptions |= QwtPlotLayout::IgnoreMargin;
     if ( !(pfilter.options() & QwtPlotPrintFilter::PrintLegend) )
         layoutOptions |= QwtPlotLayout::IgnoreLegend;
 
+	int bw = lineWidth();
     ((QwtPlot *)this)->plotLayout()->activate(this,
-        QwtPainter::metricsMap().deviceToLayout(plotRect),
+        QwtPainter::metricsMap().deviceToLayout(plotRect.adjusted(bw, bw, -bw, -bw)),
         layoutOptions);
 
     if ((pfilter.options() & QwtPlotPrintFilter::PrintTitle)
@@ -5394,8 +5401,9 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
         printTitle(painter, plotLayout()->titleRect());
     }
 
-    QRect canvasRect = plotLayout()->canvasRect();
-
+	bw = canvas()->lineWidth();
+    QRect canvasRect = plotLayout()->canvasRect().adjusted(bw, bw, -bw, -bw);
+	
     for ( axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
         QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
         if (scaleWidget){
