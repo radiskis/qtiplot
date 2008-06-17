@@ -74,6 +74,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	setWindowTitle( tr( "QtiPlot - Plot details" ) );
 	setModal(true);
 	setSizeGripEnabled(true);
+    setAttribute(Qt::WA_DeleteOnClose);
 
 	listBox = new QTreeWidget();
     listBox->setColumnCount(1);
@@ -265,7 +266,7 @@ void PlotDialog::changePlotType(int plotType)
 		VectorCurve *v = (VectorCurve*)item->plotItem();
 		if (plotType)
 			v->setVectorStyle(VectorCurve::XYAM);
-		else 
+		else
 			v->setVectorStyle(VectorCurve::XYXY);
 		customVectorsPage(plotType);
 	} else {
@@ -1272,6 +1273,7 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
         return;
 
     d_ml = ml;
+
 	boxScaleLayers->setChecked(d_ml->scaleLayersOnPrint());
 	boxPrintCrops->setChecked(d_ml->printCropmarksEnabled());
 
@@ -1408,11 +1410,11 @@ void PlotDialog::removeSelectedCurve()
 
 		LayerItem *layerItem = (LayerItem *)item->parent();
 		QTreeWidgetItem *rootItem = layerItem->parent();
-		
+
 		int index = rootItem->indexOfChild (layerItem);
 		rootItem->takeChild(index);
         delete layerItem;
-		
+
 		layerItem = new LayerItem(graph, rootItem, tr("Layer") + QString::number(d_ml->layerIndex(graph) + 1));
         rootItem->addChild(layerItem);
 		if (graph->curveCount() > 0){
@@ -1429,7 +1431,7 @@ void PlotDialog::removeSelectedCurve()
             privateTabWidget->addTab (layerPage, tr("Layer"));
 			privateTabWidget->addTab (layerGeometryPage, tr("Geometry"));
             privateTabWidget->showPage(layerPage);
-			
+
 			setActiveLayer(layerItem);
 		}
     }
@@ -1530,13 +1532,13 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
 {
 	if (!currentItem)
         return;
-	
+
 	bool forceClearTabs = false;
 	if (!previousItem){
 		previousItem = currentItem;
 		forceClearTabs = true;
 	}
-	
+
     if (previousItem->type() == CurveTreeItem::PlotCurveTreeItem)
         ((CurveTreeItem *)previousItem)->setActive(false);
     else if (previousItem->type() == LayerItem::LayerTreeItem)
@@ -1774,6 +1776,11 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     btnWorksheet->hide();
     btnEditCurve->hide();
 
+    boxBorderColor->blockSignals(true);
+    boxBackgroundColor->blockSignals(true);
+    boxCanvasColor->blockSignals(true);
+    boxAntialiasing->blockSignals(true);
+    boxMargin->blockSignals(true);
     boxBackgroundTransparency->blockSignals(true);
     boxCanvasTransparency->blockSignals(true);
     boxBorderWidth->blockSignals(true);
@@ -1796,10 +1803,6 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 
 	boxAntialiasing->setChecked(g->antialiasing());
 
-    boxBackgroundTransparency->blockSignals(false);
-    boxCanvasTransparency->blockSignals(false);
-    boxBorderWidth->blockSignals(false);
-
 	boxX->setValue(g->pos().x());
 	boxY->setValue(g->pos().y());
 
@@ -1812,6 +1815,15 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxLayerHeight->blockSignals(false);
 
 	aspect_ratio = (double)g->width()/(double)g->height();
+
+    boxBackgroundTransparency->blockSignals(false);
+    boxCanvasTransparency->blockSignals(false);
+    boxBorderWidth->blockSignals(false);
+    boxBorderColor->blockSignals(false);
+    boxBackgroundColor->blockSignals(false);
+    boxCanvasColor->blockSignals(false);
+    boxAntialiasing->blockSignals(false);
+    boxMargin->blockSignals(false);
 }
 
 void PlotDialog::setActiveCurve(CurveTreeItem *item)
@@ -2059,7 +2071,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 	boxLabelsXOffset->blockSignals(true);
     boxLabelsXOffset->setValue(dc->labelsXOffset());
 	boxLabelsXOffset->blockSignals(false);
-	
+
 	boxLabelsYOffset->blockSignals(true);
     boxLabelsYOffset->setValue(dc->labelsYOffset());
 	boxLabelsYOffset->blockSignals(false);
@@ -2243,7 +2255,7 @@ bool PlotDialog::acceptParams()
 		if (!w)
 			return false;
 
-		graph->updateVectorsLayout(item->plotItemIndex(), vectColorBox->color(), 
+		graph->updateVectorsLayout(item->plotItemIndex(), vectColorBox->color(),
 				vectWidthBox->value(), headLengthBox->value(), headAngleBox->value(),
 				filledHeadBox->isChecked(), vectPosBox->currentIndex(), xEndCol, yEndCol);
 
@@ -2788,21 +2800,20 @@ void PlotDialog::changeMargin(int width)
 	if (privateTabWidget->currentWidget() != layerPage)
 		return;
 
-    if (boxAll->isChecked())
-    {
+    if (boxAll->isChecked()){
         QList<Graph *> layers = d_ml->layersList();
         foreach(Graph *g, layers)
             g->setMargin(width);
-    }
-    else
-    {
+    } else {
         LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return;
+
         Graph *g = item->graph();
         if (g)
             g->setMargin(width);
     }
+    d_ml->notifyChanges();
 }
 
 void PlotDialog::setTitlesFont()
@@ -3008,8 +3019,8 @@ int CurveTreeItem::plotItemType()
 {
 	if (d_curve->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
 		return ((PlotCurve *)d_curve)->plotStyle();
-	else 
+	else
 		return Graph::ColorMap;
-	
+
 	return -1;
 }
