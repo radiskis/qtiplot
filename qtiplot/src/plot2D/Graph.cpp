@@ -2410,43 +2410,9 @@ QString Graph::saveMarkers()
 
 	QObjectList lst = children();
 	foreach(QObject *o, lst){
-		if (o->inherits("LegendWidget")){
-			LegendWidget *l = (LegendWidget *)o;
-			if (l == d_legend)
-				s += "<legend>\t";
-			else if (l->isA("PieLabel")){
-				if (l->text().isEmpty())
-					continue;
-				else
-					s += "<PieLabel>\t";
-			} else
-				s += "<text>\t";
-
-			s += QString::number(l->xValue(), 'g', 15) + "\t";
-			s += QString::number(l->yValue(), 'g', 15) + "\t";
-
-			QFont f = l->font();
-			s += f.family() + "\t";
-			s += QString::number(f.pointSize())+"\t";
-			s += QString::number(f.weight())+"\t";
-			s += QString::number(f.italic())+"\t";
-			s += QString::number(f.underline())+"\t";
-			s += QString::number(f.strikeOut())+"\t";
-			s += l->textColor().name()+"\t";
-			s += QString::number(l->frameStyle())+"\t";
-			s += QString::number(l->angle())+"\t";
-			s += l->backgroundColor().name()+"\t";
-			s += QString::number(l->backgroundColor().alpha())+"\t";
-
-			QStringList textList=l->text().split("\n", QString::KeepEmptyParts);
-			s += textList.join ("\t");
-			if (l == d_legend)
-				s += "</legend>\n";
-			else if (l->isA("PieLabel"))
-				s += "</PieLabel>\n";
-			else
-				s += "</text>\n";
-		}
+		PieLabel *l = qobject_cast<PieLabel *>(o);
+		if (l)
+			s += l->saveToString();
 	}
 
 	foreach(FrameWidget *f, d_enrichements)
@@ -5513,32 +5479,39 @@ TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
 	return t;
 }
 
-FrameWidget* Graph::add(FrameWidget* fw)
+FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 {
 	if (!fw)
 		return NULL;
 
+	if (!copy){
+		d_enrichements << fw;
+		d_active_enrichement = fw;
+		return fw;
+	}
+	
+	FrameWidget *aux = NULL;
 	LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 	if (l){
-		LegendWidget* aux = new LegendWidget(this);
-		aux->clone(l);
+		aux = new LegendWidget(this);
+		((LegendWidget *)aux)->clone(l);
 	}
 
 	TexWidget *t = qobject_cast<TexWidget *>(fw);
 	if (t){
-		TexWidget* aux = new TexWidget(this);
-		aux->clone(t);
+		aux = new TexWidget(this);
+		((TexWidget *)aux)->clone(t);
 	}
 
 	ImageWidget *i = qobject_cast<ImageWidget *>(fw);
 	if (i){
-		ImageWidget* aux = new ImageWidget(this);
-		aux->clone(i);
+		aux = new ImageWidget(this);
+		((ImageWidget *)aux)->clone(i);
 	}
 
-	d_enrichements << fw;
-	d_active_enrichement = fw;
-	return d_active_enrichement;
+	d_enrichements << aux;
+	d_active_enrichement = aux;
+	return aux;
 }
 
 LegendWidget* Graph::activeText()

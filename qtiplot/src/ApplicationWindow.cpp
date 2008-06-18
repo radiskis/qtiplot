@@ -10542,7 +10542,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				c.setAlpha(list[2].toInt());
 			ag->setCanvasBackground(c);
 		}
-		else if (s.contains ("Legend"))
+		else if (s.startsWith ("Legend"))
 		{// version <= 0.8.9
 			QStringList fList = QStringList::split ("\t",s, true);
 			ag->insertLegend(fList, d_file_version);
@@ -10597,6 +10597,14 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			ImageWidget::restore(ag, lst);
+		} else if (s == "<Legend>"){//version 0.9.7
+			QStringList lst;
+			while ( s != "</Legend>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			LegendWidget::restore(ag, lst);
 		}
 		else if (s.contains("AxisType"))
 		{

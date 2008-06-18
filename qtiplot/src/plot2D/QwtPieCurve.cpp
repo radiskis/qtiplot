@@ -477,3 +477,30 @@ void PieLabel::closeEvent(QCloseEvent* e)
 		d_pie_curve->removeLabel(this);
 	e->accept();
 }
+
+QString PieLabel::saveToString()
+{
+	if (text().isEmpty())
+		return "";
+	
+	QString s = "<PieLabel>\t";
+	s += QString::number(xValue(), 'g', 15) + "\t";
+	s += QString::number(yValue(), 'g', 15) + "\t";
+
+	QFont f = font();
+	s += f.family() + "\t";
+	s += QString::number(f.pointSize())+"\t";
+	s += QString::number(f.weight())+"\t";
+	s += QString::number(f.italic())+"\t";
+	s += QString::number(f.underline())+"\t";
+	s += QString::number(f.strikeOut())+"\t";
+	s += textColor().name()+"\t";
+	s += QString::number(frameStyle())+"\t";
+	s += QString::number(angle())+"\t";
+	s += backgroundColor().name()+"\t";
+	s += QString::number(backgroundColor().alpha())+"\t";
+
+	QStringList textList = text().split("\n", QString::KeepEmptyParts);
+	s += textList.join ("\t");			
+	return s + "</PieLabel>\n";
+}
