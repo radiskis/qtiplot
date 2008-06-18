@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "ImageWidget.h"
 #include <QPainter>
+#include <QPaintEngine>
 #include <QBuffer>
 #include <QImageReader>
 #include <QFileInfo>
@@ -110,19 +111,7 @@ void ImageWidget::paintEvent(QPaintEvent *e)
 		return;
 
 	QPainter p(this);
-	QRect r = rect();
-	drawFrame(&p, r);
-	switch(d_frame){
-		case None:
-			break;
-		case Line:
-			r.adjust(1, 1, -1, -1);
-		break;
-		case Shadow:
-			r.adjust(1, 1, -d_frame_width, -d_frame_width);
-		break;
-	}
-	p.drawPixmap(r, d_pix);	
+	draw(&p, rect());
 	e->accept();
 }
 
@@ -131,7 +120,12 @@ void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
-	QRect r = QRect(x, y, width(), height());
+	draw(painter, QRect(x, y, width(), height()));
+}
+
+void ImageWidget::draw(QPainter *painter, const QRect& rect)
+{
+	QRect r = rect;
 	drawFrame(painter, r);
 	switch(d_frame){
 		case None:
@@ -143,6 +137,11 @@ void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 			r.adjust(1, 1, -d_frame_width, -d_frame_width);
 		break;
 	}
+	
+	QPaintEngine::Type type = painter->paintEngine()->type();
+	if (d_frame != None && (type == QPaintEngine::PostScript || type == QPaintEngine::SVG))
+		r.adjust(-1, -1, 0, 0);
+		
 	painter->drawPixmap(r, d_pix);
 }
 
