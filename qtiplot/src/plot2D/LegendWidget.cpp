@@ -498,6 +498,81 @@ void LegendWidget::clone(LegendWidget* t)
 	setOriginCoord(t->xValue(), t->yValue());
 }
 
+QString LegendWidget::saveToString()
+{
+	QString s = "<Legend>\n";
+	s += FrameWidget::saveToString();
+	s += "<Text>\n" + d_text->text() + "\n</Text>\n";
+	
+	QFont f = d_text->font();
+	s += "<Font>" + f.family() + "\t";
+	s += QString::number(f.pointSize())+"\t";
+	s += QString::number(f.weight())+"\t";
+	s += QString::number(f.italic())+"\t";
+	s += QString::number(f.underline())+"\t";
+	s += QString::number(f.strikeOut())+"</Font>\n";
+	
+	s += "<TextColor>" + d_text->color().name()+"</TextColor>\n";	
+	QColor bc = backgroundColor();
+	s += "<Background>" + bc.name() + "</Background>\n";
+	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
+
+	if (this == plot()->legend())
+		s += "<AutoUpdate>1</AutoUpdate>\n";
+	
+	return s + "</Legend>\n";
+}
+
+void LegendWidget::restore(Graph *g, const QStringList& lst)
+{
+	QColor backgroundColor = Qt::white;
+	double x = 0.0, y = 0.0;
+	QStringList::const_iterator line;
+	bool legend = false;
+	LegendWidget *l = new LegendWidget(g);	
+	for (line = lst.begin(); line != lst.end(); line++){
+        QString s = *line;		
+        if (s.contains("<Frame>"))
+			l->setFrameStyle((s.remove("<Frame>").remove("</Frame>").toInt()));
+		else if (s.contains("<Color>"))
+			l->setFrameColor(QColor(s.remove("<Color>").remove("</Color>")));
+		else if (s.contains("<x>"))
+			x = s.remove("<x>").remove("</x>").toDouble();
+		else if (s.contains("<y>"))
+			y = s.remove("<y>").remove("</y>").toDouble();
+		else if (s.contains("<Text>")){
+			QStringList txt;
+			while ( s != "</Text>" ){
+				s = *(++line);
+				txt << s;
+			}
+			txt.pop_back();
+			l->setText(txt.join("\n"));
+		} else if (s.contains("<Font>")){
+			QStringList lst = s.remove("<Font>").remove("</Font>").split("\t");
+			QFont f = QFont(lst[0], lst[1].toInt(), lst[2].toInt(), lst[3].toInt());
+			f.setUnderline(lst[4].toInt());
+			f.setStrikeOut(lst[5].toInt());
+			l->setFont(f);
+		} else if (s.contains("<TextColor>"))
+			l->setTextColor(QColor(s.remove("<TextColor>").remove("</TextColor>")));
+		else if (s.contains("<Background>"))
+			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
+		else if (s.contains("<Alpha>"))
+			backgroundColor.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+		else if (s.contains("<AutoUpdate>"))
+			legend = s.remove("<AutoUpdate>").remove("</AutoUpdate>").toInt();
+	}
+	
+	if (l){
+		l->setBackgroundColor(backgroundColor);
+		l->setOriginCoord(x, y);
+		g->add(l, false);
+		if (legend)
+			g->setLegend(l);
+	}
+}
+
 LegendWidget::~LegendWidget()
 {
 	delete d_text;

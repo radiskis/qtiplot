@@ -66,6 +66,9 @@ public:
 	void showContextMenu(){emit showMenu();};
 
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
+	
+	QString saveToString();	
+	static void restore(Graph *g, const QStringList& lst);
 
 private:
 	PlotCurve* getCurve(const QString& s, int &point);

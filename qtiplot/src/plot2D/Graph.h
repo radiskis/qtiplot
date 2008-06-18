@@ -197,7 +197,7 @@ class Graph: public QwtPlot
 
 		TexWidget* addTexFormula(const QString& s, const QPixmap& pix);
 
-		FrameWidget* add(FrameWidget* fw);
+		FrameWidget* add(FrameWidget* fw, bool copy = true);
 		void remove(FrameWidget*);
 
 	public slots:
@@ -388,6 +388,8 @@ class Graph: public QwtPlot
 		void insertLegend(const QStringList& lst, int fileVersion);
 
 		LegendWidget *legend(){return d_legend;};
+		void setLegend(LegendWidget *l){d_legend = l;};
+		
 		LegendWidget* newLegend(const QString& text = QString());
 
 		//! Creates a new legend text using the curves titles

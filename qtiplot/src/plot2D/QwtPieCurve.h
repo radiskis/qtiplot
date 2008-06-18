@@ -128,6 +128,8 @@ public:
 	
 	void setPieCurve(QwtPieCurve *pie){d_pie_curve = pie;};
 	
+	QString saveToString();
+	
 private:
 	void closeEvent(QCloseEvent* e);
 

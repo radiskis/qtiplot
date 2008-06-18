@@ -335,10 +335,8 @@ void TexWidgetDialog::apply()
 		}
 	} else if (imagePage && tabWidget->currentPage() == imagePage)
 		chooseImageFile(imagePathBox->text());	
-	else if (tabWidget->currentPage() == geometryPage){
+	else if (tabWidget->currentPage() == geometryPage)
 		setCoordinates(unitBox->currentIndex());
-		d_plot->multiLayer()->notifyChanges();
-	}
 }
 
 void TexWidgetDialog::fetchImage()
@@ -458,6 +456,8 @@ void TexWidgetDialog::setCoordinates(int unit)
 		d_widget->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
 	} else
 		d_widget->setRect((int)xBox->value(), (int)yBox->value(), (int)widthBox->value(), (int)heightBox->value());
+	
+	d_plot->multiLayer()->notifyChanges();
 }
 
 void TexWidgetDialog::displayCoordinates(int unit)
@@ -525,6 +525,8 @@ void TexWidgetDialog::adjustWidth(double height)
 void TexWidgetDialog::setBestSize()
 {
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
-	if (tw)
+	if (tw){
 		tw->setBestSize();
+		d_plot->multiLayer()->notifyChanges();
+	}
 }
