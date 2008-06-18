@@ -61,6 +61,7 @@ public:
 	static void restore(Graph *g, const QStringList& lst);
 
 private:
+	void draw(QPainter *painter, const QRect& r);
 	void paintEvent(QPaintEvent *e);
 	QPixmap d_pix;
 	//! The file from which the image was loaded.
