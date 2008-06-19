@@ -375,8 +375,6 @@ class Graph: public QwtPlot
 
 		//! \name Text Markers
 		//@{
-		void drawText(bool on);
-		bool drawTextActive(){return drawTextOn;};
 		LegendWidget* addText(LegendWidget*);
 
 		//! Used when opening a project file
@@ -668,7 +666,6 @@ class Graph: public QwtPlot
 signals:
 		void selectedGraph (Graph*);
 		void closedGraph();
-		void drawTextOff();
 		void drawLineEnded(bool);
 		void cursorInfo(const QString&);
 		void showPlotDialog(int);
@@ -726,7 +723,7 @@ signals:
 		bool d_antialiasing;
 		bool autoScaleFonts;
 		bool d_scale_on_print, d_print_cropmarks;
-		bool drawTextOn, drawLineOn, drawArrowOn, drawAxesBackbone;
+		bool drawLineOn, drawArrowOn, drawAxesBackbone;
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
 		//! Arrows/lines on plot

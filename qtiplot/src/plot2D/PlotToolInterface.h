@@ -69,7 +69,8 @@ class PlotToolInterface
         Rtti_TranslateCurveTool,
         Rtti_MultiPeakFitTool,
         Rtti_LineProfileTool,
-
+		Rtti_AddWidgetTool,
+		
         Rtti_PlotUserTool = 1000
     };
 

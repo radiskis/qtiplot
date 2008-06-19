@@ -264,7 +264,8 @@ SOURCES  += src/main.cpp \
 ################# Module: Plot 2D #############################
 ###############################################################
 
-    HEADERS += src/plot2D/ArrowMarker.h \
+    HEADERS += src/plot2D/AddWidgetTool.h \
+			   src/plot2D/ArrowMarker.h \
 			   src/plot2D/BoxCurve.h \
 			   src/plot2D/CanvasPicker.h \
 			   src/plot2D/DataPickerTool.h \
@@ -295,7 +296,8 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/TranslateCurveTool.h \
 			   src/plot2D/VectorCurve.h \
 
-    SOURCES += src/plot2D/ArrowMarker.cpp \
+    SOURCES += src/plot2D/AddWidgetTool.cpp \
+			   src/plot2D/ArrowMarker.cpp \
 			   src/plot2D/BoxCurve.cpp \
 			   src/plot2D/CanvasPicker.cpp \
 			   src/plot2D/DataPickerTool.cpp \

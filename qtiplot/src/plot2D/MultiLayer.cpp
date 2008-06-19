@@ -881,7 +881,6 @@ void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 void MultiLayer::connectLayer(Graph *g)
 {
 	connect (g,SIGNAL(drawLineEnded(bool)), this, SIGNAL(drawLineEnded(bool)));
-	connect (g,SIGNAL(drawTextOff()),this,SIGNAL(drawTextOff()));
 	connect (g,SIGNAL(showPlotDialog(int)),this,SIGNAL(showPlotDialog(int)));
 	connect (g,SIGNAL(createTable(const QString&,int,int,const QString&)),
 			this,SIGNAL(createTable(const QString&,int,int,const QString&)));
