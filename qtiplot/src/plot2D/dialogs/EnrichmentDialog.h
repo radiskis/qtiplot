@@ -1,5 +1,5 @@
 /***************************************************************************
-    File                 : TexWidgetDialog.h
+    File                 : EnrichmentDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2008 by Ion Vasilief
@@ -48,14 +48,16 @@ class FrameWidget;
 class ColorButton;
 class DoubleSpinBox;
 	
-class TexWidgetDialog : public QDialog
+class EnrichmentDialog : public QDialog
 {
     Q_OBJECT
 
 public:
 	enum WidgetType{Frame, Text, Image, Tex};
 	
-    TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent = 0);
+    EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent = 0);
+	~EnrichmentDialog();
+	
 	void setWidget(FrameWidget *w);
 
 private slots:
@@ -63,7 +65,6 @@ private slots:
     void fetchImage();
     void updateForm(bool error);
 	void apply();
-	void reject();
 	void customButtons(QWidget *w);
 	void chooseImageFile(const QString& fn = QString::null);
 	void displayCoordinates(int unit);

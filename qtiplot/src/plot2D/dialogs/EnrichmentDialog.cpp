@@ -1,5 +1,5 @@
 /***************************************************************************
-    File                 : TexWidgetDialog.cpp
+    File                 : EnrichmentDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2008 by Ion Vasilief
@@ -32,7 +32,7 @@
 #include <QHttp>
 #include <QIODevice>
 
-#include "TexWidgetDialog.h"
+#include "EnrichmentDialog.h"
 #include "../Graph.h"
 #include "../TexWidget.h"
 #include "../FrameWidget.h"
@@ -71,7 +71,7 @@ static const char* choose_folder_xpm[]={
     "..........#egib#",
     "............#ee#"};
 
-TexWidgetDialog::TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent)
+EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
     : QDialog(parent), d_plot(g), d_widget(NULL), d_widget_type(wt)
 {
 	setSizeGripEnabled( true );
@@ -116,7 +116,7 @@ TexWidgetDialog::TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent)
 			this, SLOT(customButtons(QWidget *)));
 }
 
-void TexWidgetDialog::initEditorPage()
+void EnrichmentDialog::initEditorPage()
 {
 	http = new QHttp(this);
     connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
@@ -135,7 +135,7 @@ void TexWidgetDialog::initEditorPage()
 	tabWidget->addTab(editPage, tr( "&Text" ) );
 }
 
-void TexWidgetDialog::initImagePage()
+void EnrichmentDialog::initImagePage()
 {
 	imagePage = new QWidget();
 
@@ -163,7 +163,7 @@ void TexWidgetDialog::initImagePage()
 	tabWidget->addTab(imagePage, tr( "&Image" ) );
 }
 
-void TexWidgetDialog::initFramePage()
+void EnrichmentDialog::initFramePage()
 {
     framePage = new QWidget();
 
@@ -189,7 +189,7 @@ void TexWidgetDialog::initFramePage()
 	tabWidget->addTab(framePage, tr( "&Frame" ) );
 }
 
-void TexWidgetDialog::initGeometryPage()
+void EnrichmentDialog::initGeometryPage()
 {
     geometryPage = new QWidget();
 
@@ -265,7 +265,7 @@ void TexWidgetDialog::initGeometryPage()
 	tabWidget->addTab(geometryPage, tr( "&Geometry" ) );
 }
 
-void TexWidgetDialog::customButtons(QWidget *w)
+void EnrichmentDialog::customButtons(QWidget *w)
 {
 	if (editPage && w == editPage){
 		if (clearButton)
@@ -281,7 +281,7 @@ void TexWidgetDialog::customButtons(QWidget *w)
 	}
 }
 
-void TexWidgetDialog::setWidget(FrameWidget *w)
+void EnrichmentDialog::setWidget(FrameWidget *w)
 {
 	if (!w)
 		return;
@@ -312,13 +312,13 @@ void TexWidgetDialog::setWidget(FrameWidget *w)
 	}
 }
 
-void TexWidgetDialog::clearForm()
+void EnrichmentDialog::clearForm()
 {
     outputLabel->setPixmap(QPixmap());
     equationEditor->clear();
 }
 
-void TexWidgetDialog::apply()
+void EnrichmentDialog::apply()
 {
 	if (tabWidget->currentPage() == editPage)
 		fetchImage();
@@ -335,18 +335,7 @@ void TexWidgetDialog::apply()
 		setCoordinates(unitBox->currentIndex());
 }
 
-void TexWidgetDialog::reject()
-{
-	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
-	if (tw && (tw->formula().isEmpty() || tw->pixmap().isNull())){
-		d_plot->remove(d_widget);
-		d_widget->close();
-		d_widget = NULL;
-	}
-	QDialog::reject();
-}
-
-void TexWidgetDialog::fetchImage()
+void EnrichmentDialog::fetchImage()
 {
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
 	if (tw && tw->formula() == equationEditor->toPlainText() && !tw->pixmap().isNull())
@@ -369,7 +358,7 @@ void TexWidgetDialog::fetchImage()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 }
 
-void TexWidgetDialog::updateForm(bool error)
+void EnrichmentDialog::updateForm(bool error)
 {
 	QApplication::restoreOverrideCursor();
 
@@ -396,7 +385,7 @@ void TexWidgetDialog::updateForm(bool error)
     equationEditor->setReadOnly(false);
 }
 
-void TexWidgetDialog::chooseImageFile(const QString& fn)
+void EnrichmentDialog::chooseImageFile(const QString& fn)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	if (!app)
@@ -417,7 +406,7 @@ void TexWidgetDialog::chooseImageFile(const QString& fn)
 	}
 }
 
-void TexWidgetDialog::saveImagesInternally(bool save)
+void EnrichmentDialog::saveImagesInternally(bool save)
 {
 	ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
 	if (i)
@@ -436,7 +425,7 @@ void TexWidgetDialog::saveImagesInternally(bool save)
 	}
 }
 
-void TexWidgetDialog::setCoordinates(int unit)
+void EnrichmentDialog::setCoordinates(int unit)
 {
 	if (!d_widget)
 		return;
@@ -451,7 +440,7 @@ void TexWidgetDialog::setCoordinates(int unit)
 	d_plot->multiLayer()->notifyChanges();
 }
 
-void TexWidgetDialog::displayCoordinates(int unit)
+void EnrichmentDialog::displayCoordinates(int unit)
 {
 	if (!d_widget)
 		return;
@@ -493,7 +482,7 @@ void TexWidgetDialog::displayCoordinates(int unit)
 	aspect_ratio = widthBox->value()/heightBox->value();
 }
 
-void TexWidgetDialog::adjustHeight(double width)
+void EnrichmentDialog::adjustHeight(double width)
 {
 	if (keepAspectBox->isChecked()){
 		heightBox->blockSignals(true);
@@ -503,7 +492,7 @@ void TexWidgetDialog::adjustHeight(double width)
 		aspect_ratio = width/heightBox->value();
 }
 
-void TexWidgetDialog::adjustWidth(double height)
+void EnrichmentDialog::adjustWidth(double height)
 {
 	if (keepAspectBox->isChecked()){
 		widthBox->blockSignals(true);
@@ -513,12 +502,25 @@ void TexWidgetDialog::adjustWidth(double height)
 		aspect_ratio = widthBox->value()/height;
 }
 
-void TexWidgetDialog::setBestSize()
+void EnrichmentDialog::setBestSize()
 {
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
 	if (tw){
 		tw->setBestSize();
 		displayCoordinates(unitBox->currentIndex());
 		d_plot->multiLayer()->notifyChanges();
+	}
+}
+
+EnrichmentDialog::~EnrichmentDialog()
+{
+	QApplication::restoreOverrideCursor();
+	
+	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
+	if (tw && (tw->formula().isEmpty() || tw->pixmap().isNull())){
+		d_plot->remove(d_widget);
+		d_plot->setActiveTool(NULL);
+		d_widget->close();
+		d_widget = NULL;
 	}
 }
