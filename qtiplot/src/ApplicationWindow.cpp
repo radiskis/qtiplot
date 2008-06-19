@@ -92,7 +92,7 @@
 #include "plot2D/QwtPieCurve.h"
 #include "plot2D/Spectrogram.h"
 
-#include "plot2D/dialogs/TexWidgetDialog.h"
+#include "plot2D/dialogs/EnrichmentDialog.h"
 #include "plot2D/dialogs/TextEditor.h"
 #include "plot2D/dialogs/CurvesDialog.h"
 #include "plot2D/dialogs/PlotDialog.h"
@@ -7131,8 +7131,11 @@ void ApplicationWindow::addTexFormula()
 		return;
 
 	Graph *g = (Graph*)plot->activeLayer();
-	if (!g)
+	if (!g){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+		tr("There are no layers available on this plot. Operation aborted!"));
 		return;
+	}
 
 	g->setActiveTool(new AddWidgetTool(AddWidgetTool::TexEquation, g, actionAddFormula, info, SLOT(setText(const QString&))));
 	displayBar->show();
@@ -7267,14 +7270,14 @@ void ApplicationWindow::showEnrichementDialog()
 		td->setLegendWidget(l);
 		td->exec();
 	} else {
-		TexWidgetDialog::WidgetType wt = TexWidgetDialog::Tex;
+		EnrichmentDialog::WidgetType wt = EnrichmentDialog::Tex;
 		ImageWidget *iw = qobject_cast<ImageWidget *>(g->activeEnrichement());
 		if (iw)
-			wt = TexWidgetDialog::Image;
+			wt = EnrichmentDialog::Image;
 
-		TexWidgetDialog *twd = new TexWidgetDialog(wt, g, this);
-		twd->setWidget(g->activeEnrichement());
-		twd->exec();
+		EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
+		ed->setWidget(g->activeEnrichement());
+		ed->exec();
 	}
 }
 

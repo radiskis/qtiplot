@@ -331,6 +331,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/AxesDialog.h \
 			   src/plot2D/dialogs/CurvesDialog.h \
 			   src/plot2D/dialogs/CurveRangeDialog.h \
+			   src/plot2D/dialogs/EnrichmentDialog.h \
 			   src/plot2D/dialogs/ErrDialog.h \
 			   src/plot2D/dialogs/FunctionDialog.h \
 			   src/plot2D/dialogs/ImageDialog.h \
@@ -339,12 +340,12 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LineDialog.h \
 		       src/plot2D/dialogs/PlotDialog.h \
 			   src/plot2D/dialogs/TextEditor.h \
-			   src/plot2D/dialogs/TexWidgetDialog.h \
 
 	SOURCES += src/plot2D/dialogs/AssociationsDialog.cpp \
 			   src/plot2D/dialogs/AxesDialog.cpp \
 			   src/plot2D/dialogs/CurvesDialog.cpp \
 			   src/plot2D/dialogs/CurveRangeDialog.cpp \
+			   src/plot2D/dialogs/EnrichmentDialog.cpp \
 			   src/plot2D/dialogs/ErrDialog.cpp \
 			   src/plot2D/dialogs/FunctionDialog.cpp \
 			   src/plot2D/dialogs/ImageDialog.cpp \
@@ -353,7 +354,6 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LineDialog.cpp \
 		       src/plot2D/dialogs/PlotDialog.cpp \
 			   src/plot2D/dialogs/TextEditor.cpp \
-			   src/plot2D/dialogs/TexWidgetDialog.cpp \
 
 ###############################################################
 ################# Module: Plot 3D #############################
