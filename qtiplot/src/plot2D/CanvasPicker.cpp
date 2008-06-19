@@ -29,7 +29,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "CanvasPicker.h"
-#include "LegendWidget.h"
 #include "ArrowMarker.h"
 #include "PlotCurve.h"
 #include "../ApplicationWindow.h"
@@ -80,11 +79,6 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				if (me->button() == Qt::LeftButton && (g->drawLineActive())){
 					startLinePoint = me->pos();
-					return true;
-				}
-
-				if (me->button() == Qt::LeftButton && g->drawTextActive()){
-					drawTextMarker(me->pos());
 					return true;
 				}
 
@@ -203,27 +197,6 @@ void CanvasPicker::disableEditing()
 		d_editing_marker->setEditable(false);
 		d_editing_marker = NULL;
 	}
-}
-
-void CanvasPicker::drawTextMarker(const QPoint& point)
-{
-	LegendWidget *aux = new LegendWidget(plot());
-	aux->move(point);
-
-	LegendWidget *l = plot()->addText(aux);
-	l->setText(tr("enter your text here"));
-	ApplicationWindow *app = plot()->multiLayer()->applicationWindow();
-	if (app){
-		l->setFrameStyle(app->legendFrameStyle);
-		l->setFont(app->plotLegendFont);
-		l->setTextColor(app->legendTextColor);
-		l->setBackgroundColor(app->legendBackground);
-	}
-    l->showTextDialog();
-
-    delete aux;
-	plot()->drawText(false);
-	emit drawTextOff();
 }
 
 void CanvasPicker::drawLineMarker(const QPoint& point, bool endArrow)

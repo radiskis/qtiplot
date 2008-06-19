@@ -171,7 +171,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_active_enrichement = NULL;
 	d_legend = NULL; // no legend for an empty graph
 	d_selected_marker = NULL;
-	drawTextOn = false;
 	drawLineOn = false;
 	drawArrowOn = false;
 	drawAxesBackbone = true;
@@ -270,7 +269,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	zoom(false);
 
 	connect (cp,SIGNAL(selectPlot()),this,SLOT(activateGraph()));
-	connect (cp,SIGNAL(drawTextOff()),this,SIGNAL(drawTextOff()));
 	connect (cp,SIGNAL(viewLineDialog()),this,SIGNAL(viewLineDialog()));
 	connect (cp,SIGNAL(showPlotDialog(int)),this,SIGNAL(showPlotDialog(int)));
 	connect (cp,SIGNAL(showMarkerPopupMenu()),this,SIGNAL(showMarkerPopupMenu()));
@@ -3296,21 +3294,6 @@ void Graph::zoomOut()
 
 	updateSecondaryAxis(QwtPlot::xTop);
   	updateSecondaryAxis(QwtPlot::yRight);
-}
-
-void Graph::drawText(bool on)
-{
-	deselectMarker();
-
-	QCursor c = QCursor(Qt::IBeamCursor);
-	if (on){
-		canvas()->setCursor(c);
-		//setCursor(c);
-	} else {
-		canvas()->setCursor(Qt::arrowCursor);
-		//setCursor(Qt::arrowCursor);
-	}
-	drawTextOn = on;
 }
 
 ImageWidget* Graph::addImage(ImageWidget* i)

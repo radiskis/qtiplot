@@ -114,6 +114,7 @@
 #include "plot2D/LineProfileTool.h"
 #include "plot2D/RangeSelectorTool.h"
 #include "plot2D/PlotToolInterface.h"
+#include "plot2D/AddWidgetTool.h"
 
 #include "plot3D/SurfaceDialog.h"
 #include "plot3D/Graph3D.h"
@@ -741,15 +742,16 @@ void ApplicationWindow::initToolBars()
 
 	actionAddFormula = new QAction(tr("Add &Formula"), this);
 	actionAddFormula->setShortcut( tr("ALT+F") );
+	actionAddFormula->setCheckable(true);
 	actionAddFormula->setIcon(QIcon(QPixmap(add_formula_xpm)));
-	connect(actionAddFormula, SIGNAL(activated()), this, SLOT(addTexFormula()));
+	connect(actionAddFormula, SIGNAL(triggered()), this, SLOT(addTexFormula()));
 	plotTools->addAction(actionAddFormula);
 
 	actionAddText = new QAction(tr("Add &Text"), this);
 	actionAddText->setShortcut( tr("ALT+T") );
 	actionAddText->setIcon(QIcon(QPixmap(text_xpm)));
 	actionAddText->setCheckable(true);
-	connect(actionAddText, SIGNAL(activated()), this, SLOT(addText()));
+	connect(actionAddText, SIGNAL(triggered()), this, SLOT(addText()));
 	plotTools->addAction(actionAddText);
 
 	btnArrow = new QAction(tr("Draw &Arrow"), this);
@@ -7122,16 +7124,8 @@ void ApplicationWindow::addTimeStamp()
 		g->addTimeStamp();
 }
 
-void ApplicationWindow::disableAddText()
-{
-	actionAddText->setChecked(false);
-}
-
 void ApplicationWindow::addTexFormula()
 {
-	if (!btnPointer->isOn())
-		btnPointer->setOn(true);
-
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
@@ -7140,21 +7134,22 @@ void ApplicationWindow::addTexFormula()
 	if (!g)
 		return;
 
-	TexWidgetDialog *twd = new TexWidgetDialog(TexWidgetDialog::Tex, g, this);
-	twd->exec();
+	g->setActiveTool(new AddWidgetTool(AddWidgetTool::TexEquation, g, actionAddFormula, info, SLOT(setText(const QString&))));
+	displayBar->show();
+	btnPointer->setOn(false);
 }
 
 void ApplicationWindow::addText()
-{
-	if (!btnPointer->isOn())
-		btnPointer->setOn(true);
-
+{	
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
 	Graph *g = (Graph*)plot->activeLayer();
-	if (g)
-		g->drawText(true);
+	if (g){
+		g->setActiveTool(new AddWidgetTool(AddWidgetTool::Text, g, actionAddText, info, SLOT(setText(const QString&))));
+		displayBar->show();
+		btnPointer->setOn(false);
+	}
 }
 
 void ApplicationWindow::addImage()
@@ -7232,8 +7227,7 @@ void ApplicationWindow::drawArrow()
 	}
 
 	Graph* g = (Graph*)plot->activeLayer();
-	if (g)
-	{
+	if (g){
 		g->drawLine(true, 1);
 		emit modified();
 	}
@@ -11051,7 +11045,6 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(showContextMenu()),this,SLOT(showWindowContextMenu()));
 	connect (g,SIGNAL(showCurvesDialog()),this,SLOT(showCurvesDialog()));
 	connect (g,SIGNAL(drawLineEnded(bool)), btnPointer, SLOT(setOn(bool)));
-	connect (g,SIGNAL(drawTextOff()),this, SLOT(disableAddText()));
 	connect (g, SIGNAL(showAxisTitleDialog()), this, SLOT(showAxisTitleDialog()));
 
 	connect (g,SIGNAL(showMarkerPopupMenu()),this,SLOT(showMarkerPopupMenu()));

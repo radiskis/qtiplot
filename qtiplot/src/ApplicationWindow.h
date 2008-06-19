@@ -576,7 +576,6 @@ public slots:
 	void drawPoints();
 	void addText();
 	void addTexFormula();
-	void disableAddText();
 	void addImage();
 	void zoomIn();
 	void zoomOut();

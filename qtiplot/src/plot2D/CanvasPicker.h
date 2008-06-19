@@ -52,7 +52,6 @@ public:
 	void disableEditing();
 
 private:
-	void drawTextMarker(const QPoint&);
 	void drawLineMarker(const QPoint&, bool endArrow);
 
 	//! Selects and highlights the marker at the given position.
@@ -71,7 +70,6 @@ private:
 signals:
 	void showPlotDialog(int);
 	void viewLineDialog();
-	void drawTextOff();
 	void showMarkerPopupMenu();
 	void modified();
 	void selectPlot();

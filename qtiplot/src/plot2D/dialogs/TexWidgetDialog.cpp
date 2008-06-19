@@ -87,11 +87,6 @@ TexWidgetDialog::TexWidgetDialog(WidgetType wt, Graph *g, QWidget *parent)
 
     	clearButton = buttonBox->addButton(tr("Clea&r"), QDialogButtonBox::ResetRole);
 		connect(clearButton, SIGNAL(clicked()), this, SLOT(clearForm()));
-
-		addButton = buttonBox->addButton(tr("&Add"), QDialogButtonBox::AcceptRole);
-		addButton->setEnabled(false);
-		connect(addButton, SIGNAL(clicked()), this, SLOT(addImage()));
-
 		updateButton = buttonBox->addButton(tr("&Update"), QDialogButtonBox::ApplyRole);
 	} else {
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Properties Editor"));
@@ -331,6 +326,7 @@ void TexWidgetDialog::apply()
 		if (d_widget){
 			d_widget->setFrameStyle(frameBox->currentIndex());
 			d_widget->setFrameColor(frameColorBtn->color());
+			d_widget->repaint();
 			d_plot->multiLayer()->notifyChanges();
 		}
 	} else if (imagePage && tabWidget->currentPage() == imagePage)
@@ -339,10 +335,21 @@ void TexWidgetDialog::apply()
 		setCoordinates(unitBox->currentIndex());
 }
 
+void TexWidgetDialog::reject()
+{
+	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
+	if (tw && (tw->formula().isEmpty() || tw->pixmap().isNull())){
+		d_plot->remove(d_widget);
+		d_widget->close();
+		d_widget = NULL;
+	}
+	QDialog::reject();
+}
+
 void TexWidgetDialog::fetchImage()
 {
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
-	if (tw && tw->formula() == equationEditor->toPlainText())
+	if (tw && tw->formula() == equationEditor->toPlainText() && !tw->pixmap().isNull())
 		return;
 
 	clearButton->setEnabled(false);
@@ -384,25 +391,9 @@ void TexWidgetDialog::updateForm(bool error)
 		http->errorString() + "'\n\n" + tr("Please verify your network connection!"));
 	}
 
-	addButton->setEnabled(!error);
-
     clearButton->setEnabled(true);
     updateButton->setEnabled(true);
     equationEditor->setReadOnly(false);
-}
-
-void TexWidgetDialog::addImage()
-{
-	const QPixmap *pix = outputLabel->pixmap();
-	if (!pix){
-		fetchImage();
-		pix = outputLabel->pixmap();
-	}
-
-	if (!pix)
-		return;
-
-	d_widget = (FrameWidget *)d_plot->addTexFormula(equationEditor->text(), *pix);
 }
 
 void TexWidgetDialog::chooseImageFile(const QString& fn)
@@ -527,6 +518,7 @@ void TexWidgetDialog::setBestSize()
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
 	if (tw){
 		tw->setBestSize();
+		displayCoordinates(unitBox->currentIndex());
 		d_plot->multiLayer()->notifyChanges();
 	}
 }

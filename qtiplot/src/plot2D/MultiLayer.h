@@ -166,7 +166,6 @@ signals:
 	void showGraphContextMenu();
 	void showCurveContextMenu(QwtPlotCurve *);
 	void showCurvesDialog();
-	void drawTextOff();
 	void drawLineEnded(bool);
 	void showAxisTitleDialog();
 	void showMarkerPopupMenu();

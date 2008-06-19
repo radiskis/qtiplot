@@ -62,8 +62,8 @@ private slots:
     void clearForm();
     void fetchImage();
     void updateForm(bool error);
-	void addImage();
 	void apply();
+	void reject();
 	void customButtons(QWidget *w);
 	void chooseImageFile(const QString& fn = QString::null);
 	void displayCoordinates(int unit);
@@ -81,7 +81,6 @@ private:
 
     QHttp *http;
     QLabel *outputLabel;
-	QPushButton *addButton;
     QPushButton *clearButton;
     QPushButton *updateButton;
 	QPushButton *cancelButton;
