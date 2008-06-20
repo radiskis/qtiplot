@@ -54,6 +54,7 @@
 #include "SymbolDialog.h"
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
+#include "WindowGeometryDialog.h"
 
 #include "analysis/Fit.h"
 #include "analysis/MultiPeakFit.h"
@@ -99,7 +100,6 @@
 #include "plot2D/dialogs/AxesDialog.h"
 #include "plot2D/dialogs/LineDialog.h"
 #include "plot2D/dialogs/ErrDialog.h"
-#include "plot2D/dialogs/ImageDialog.h"
 #include "plot2D/dialogs/FunctionDialog.h"
 #include "plot2D/dialogs/AssociationsDialog.h"
 #include "plot2D/dialogs/ImageExportDialog.h"
@@ -7688,7 +7688,7 @@ void ApplicationWindow::resizeActiveWindow()
 	if (!w)
 		return;
 
-	ImageDialog *id = new ImageDialog(this);
+	WindowGeometryDialog *id = new WindowGeometryDialog(this);
 	id->setAttribute(Qt::WA_DeleteOnClose);
 	connect (id, SIGNAL(setGeometry(int,int,int,int)), this, SLOT(setWindowGeometry(int,int,int,int)));
 
@@ -7707,7 +7707,7 @@ void ApplicationWindow::resizeWindow()
 
 	d_workspace->setActiveSubWindow(w);
 
-	ImageDialog *id = new ImageDialog(this);
+	WindowGeometryDialog *id = new WindowGeometryDialog(this);
 	id->setAttribute(Qt::WA_DeleteOnClose);
 	connect (id, SIGNAL(setGeometry(int,int,int,int)), this, SLOT(setWindowGeometry(int,int,int,int)));
 

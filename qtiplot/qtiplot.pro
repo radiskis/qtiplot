@@ -19,8 +19,8 @@ DEFINES         += SCRIPTING_DIALOG
 ######################################################################################
 #CONFIG          += CustomInstall
 
-CONFIG          += release
-#CONFIG          += debug
+#CONFIG          += release
+CONFIG          += debug
 win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
@@ -187,6 +187,7 @@ HEADERS  += src/ApplicationWindow.h \
 			src/TextDialog.h \
 			src/PlotWizard.h \
 			src/LineNumberDisplay.h \
+			src/WindowGeometryDialog.h \
 
 ###################### SOURCES ##############################################
 
@@ -228,6 +229,7 @@ SOURCES  += src/main.cpp \
 			src/TextDialog.cpp \
 			src/PlotWizard.cpp \
 			src/LineNumberDisplay.cpp \
+			src/WindowGeometryDialog.cpp \
 
 ###############################################################
 ##################### Compression (zlib123) ###################
@@ -334,7 +336,6 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/EnrichmentDialog.h \
 			   src/plot2D/dialogs/ErrDialog.h \
 			   src/plot2D/dialogs/FunctionDialog.h \
-			   src/plot2D/dialogs/ImageDialog.h \
 			   src/plot2D/dialogs/ImageExportDialog.h \
 			   src/plot2D/dialogs/LayerDialog.h \
 			   src/plot2D/dialogs/LineDialog.h \
@@ -348,7 +349,6 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/EnrichmentDialog.cpp \
 			   src/plot2D/dialogs/ErrDialog.cpp \
 			   src/plot2D/dialogs/FunctionDialog.cpp \
-			   src/plot2D/dialogs/ImageDialog.cpp \
 			   src/plot2D/dialogs/ImageExportDialog.cpp \
 			   src/plot2D/dialogs/LayerDialog.cpp \
 			   src/plot2D/dialogs/LineDialog.cpp \

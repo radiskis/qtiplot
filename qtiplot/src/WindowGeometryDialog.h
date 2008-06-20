@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : ImageDialog.h
+    File                 : WindowGeometryDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : Image geometry dialog
+    Copyright            : (C) 2006 - 2008 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+    Description          : ImageDialog geometry dialog
 
  ***************************************************************************/
 
@@ -26,21 +26,21 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef IMAGEDIALOG_H
-#define IMAGEDIALOG_H
+#ifndef WINDOW_GEOMETRY_DIALOG_H
+#define WINDOW_GEOMETRY_DIALOG_H
 
 #include <QDialog>
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QPushButton>
 
-//! Image geometry dialog
-class ImageDialog : public QDialog
+//! MDI Window geometry dialog
+class WindowGeometryDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    ImageDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    WindowGeometryDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
 	void setOrigin(const QPoint& o);
 	void setSize(const QSize& size);
@@ -66,4 +66,4 @@ private:
 };
 
 
-#endif // IMAGEDIALOG_H
+#endif
