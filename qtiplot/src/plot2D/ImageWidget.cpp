@@ -57,9 +57,9 @@ d_save_xpm(false)
 ImageWidget::ImageWidget(Graph *plot, const QImage& image):FrameWidget(plot),
 d_save_xpm(true)
 {
-	
+
 	d_pix = QPixmap::fromImage(image);
-	
+
 	QSize picSize = image.size();
 	int w = plot->canvas()->width();
 	if (picSize.width() > w)
@@ -127,21 +127,22 @@ void ImageWidget::draw(QPainter *painter, const QRect& rect)
 {
 	QRect r = rect;
 	drawFrame(painter, r);
-	switch(d_frame){
+
+    switch(d_frame){
 		case None:
 			break;
 		case Line:
-			r.adjust(1, 1, -1, -1);
+			r.adjust(0, 0, -1, -1);
 		break;
 		case Shadow:
-			r.adjust(1, 1, -d_frame_width, -d_frame_width);
+			r.adjust(0, 0, -d_frame_width, -d_frame_width);
 		break;
 	}
-	
-	QPaintEngine::Type type = painter->paintEngine()->type();
-	if (d_frame != None && (type == QPaintEngine::PostScript || type == QPaintEngine::SVG))
-		r.adjust(-1, -1, 0, 0);
-		
+
+    if (d_frame != None && (painter->device()->devType() == QInternal::Widget ||
+        painter->device()->devType() == QInternal::Pixmap))
+        r.adjust(1, 1, 0, 0);
+
 	painter->drawPixmap(r, d_pix);
 }
 
@@ -211,8 +212,8 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 		else if (s.contains("<path>"))
 			i = g->addImage(s.remove("<path>").remove("</path>"));
 		else if (s.contains("<xpm>")){
-			save_xpm = true;	
-			if (!i){			
+			save_xpm = true;
+			if (!i){
 				QString xpm;
 				while ( s != "</xpm>" ){
 					s = *(++line);
@@ -220,11 +221,11 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 				}
 				QImage image;
     			if (image.loadFromData(xpm.toAscii()))
-					i = g->addImage(image);	
+					i = g->addImage(image);
 			}
 		}
 	}
-	
+
 	if (i){
 		i->setFrameStyle(frameStyle);
 		i->setFrameColor(frameColor);

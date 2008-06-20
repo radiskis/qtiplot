@@ -740,10 +740,10 @@ void ApplicationWindow::initToolBars()
 	connect( dataTools, SIGNAL( triggered( QAction* ) ), this, SLOT( pickDataTool( QAction* ) ) );
 	plotTools->addSeparator ();
 
-	actionAddFormula = new QAction(tr("Add &Formula"), this);
-	actionAddFormula->setShortcut( tr("ALT+F") );
+	actionAddFormula = new QAction(tr("Add E&quation"), this);
+	actionAddFormula->setShortcut( tr("ALT+Q") );
 	actionAddFormula->setCheckable(true);
-	actionAddFormula->setIcon(QIcon(QPixmap(add_formula_xpm)));
+	actionAddFormula->setIcon(QIcon(QPixmap(equation_xpm)));
 	connect(actionAddFormula, SIGNAL(triggered()), this, SLOT(addTexFormula()));
 	plotTools->addAction(actionAddFormula);
 
@@ -983,6 +983,7 @@ void ApplicationWindow::initMainMenu()
 	graph->addAction(actionAddFunctionCurve);
 	graph->addAction(actionNewLegend);
 	graph->insertSeparator();
+	graph->addAction(actionAddFormula);
 	graph->addAction(actionAddText);
 	graph->addAction(btnArrow);
 	graph->addAction(btnLine);
@@ -7143,7 +7144,7 @@ void ApplicationWindow::addTexFormula()
 }
 
 void ApplicationWindow::addText()
-{	
+{
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
@@ -7271,14 +7272,16 @@ void ApplicationWindow::showEnrichementDialog()
 		td->exec();
 	} else {
 		EnrichmentDialog::WidgetType wt = EnrichmentDialog::Tex;
-		ImageWidget *iw = qobject_cast<ImageWidget *>(g->activeEnrichement());
+		ImageWidget *iw = qobject_cast<ImageWidget *>(g->activeEnrichment());
 		if (iw)
 			wt = EnrichmentDialog::Image;
 
 		EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
-		ed->setWidget(g->activeEnrichement());
+		ed->setWidget(g->activeEnrichment());
 		ed->exec();
 	}
+
+    g->deselectMarker();
 }
 
 void ApplicationWindow::showLineDialog()
@@ -7295,6 +7298,8 @@ void ApplicationWindow::showLineDialog()
 
 		LineDialog *ld = new LineDialog(lm, this);
 		ld->exec();
+
+		g->deselectMarker();
 	}
 }
 
@@ -7428,8 +7433,8 @@ void ApplicationWindow::copyMarker()
 	if (g && g->markerSelected()){
 		d_enrichement_copy = NULL;
 		d_arrow_copy = NULL;
-		if (g->activeEnrichement())
-			d_enrichement_copy = g->activeEnrichement();
+		if (g->activeEnrichment())
+			d_enrichement_copy = g->activeEnrichment();
 		else if (g->arrowMarkerSelected())
 			d_arrow_copy = (ArrowMarker *) g->selectedMarker();
 	}
@@ -8161,7 +8166,7 @@ void ApplicationWindow::showMarkerPopupMenu()
 		markerMenu.insertItem(tr("&Intensity Matrix"),this, SLOT(intensityTable()));
 		markerMenu.insertSeparator();
 	}
-	if (!g->activeEnrichement())
+	if (!g->activeEnrichment())
 		markerMenu.insertItem(QPixmap(cut_xpm),tr("&Cut"),this, SLOT(cutSelection()));
 	markerMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"),this, SLOT(copySelection()));
 	markerMenu.insertItem(QPixmap(erase_xpm), tr("&Delete"),this, SLOT(clearSelection()));
@@ -9754,7 +9759,7 @@ void ApplicationWindow::intensityTable()
 
 	Graph* g = plot->activeLayer();
 	if (g){
-		ImageWidget *im = qobject_cast<ImageWidget *>(g->activeEnrichement());
+		ImageWidget *im = qobject_cast<ImageWidget *>(g->activeEnrichment());
         if (im){
             QString fn = im->fileName();
             if (!fn.isEmpty())
@@ -12396,9 +12401,9 @@ void ApplicationWindow::translateActionsStrings()
 	actionAddText->setToolTip(tr("Add Text"));
 	actionAddText->setShortcut(tr("ALT+T"));
 
-	actionAddFormula->setMenuText(tr("Add &Formula"));
-	actionAddFormula->setToolTip(tr("Add Formula"));
-	actionAddFormula->setShortcut( tr("ALT+F") );
+	actionAddFormula->setMenuText(tr("Add E&quation"));
+	actionAddFormula->setToolTip(tr("Add Equation"));
+	actionAddFormula->setShortcut( tr("ALT+Q") );
 
 	btnArrow->setMenuText(tr("Draw &Arrow"));
 	btnArrow->setShortcut(tr("CTRL+ALT+A"));
@@ -14623,6 +14628,8 @@ void ApplicationWindow::fitFrameToLayer()
 
 ApplicationWindow::~ApplicationWindow()
 {
+    disableTools();//avoids crash if a plot tol is still active
+
 	if (lastCopiedLayer)
 		delete lastCopiedLayer;
 
@@ -14635,6 +14642,7 @@ ApplicationWindow::~ApplicationWindow()
 		delete d_text_editor;
 
 	QApplication::clipboard()->clear(QClipboard::Clipboard);
+	QApplication::restoreOverrideCursor();
 }
 
 QString ApplicationWindow::versionString()

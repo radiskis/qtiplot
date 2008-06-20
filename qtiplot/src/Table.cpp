@@ -739,7 +739,7 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
 			return;
-	}	
+	}
 	QTextStream t( &f );
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	t << "<table>";
@@ -760,7 +760,7 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 	t << saveReadOnlyInfo();
 	t << saveHiddenColumnsInfo();
 	t << saveComments();
-	
+
 	if (!saveAsTemplate){
         t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
         t << "<data>\n";
@@ -1271,7 +1271,7 @@ void Table::copySelection()
 	QVarLengthArray<int> selection(1);
 	int c = 0;
 	for (int i = 0; i<cols; i++){
-		if (d_table->isColumnSelected(i,true)){
+		if (d_table->isColumnSelected(i, true)){
 			c++;
 			selection.resize(c);
 			selection[c-1] = i;
@@ -1287,11 +1287,14 @@ void Table::copySelection()
 		Q3TableSelection sel = d_table->selection(0);
 		int right = sel.rightCol();
 		int bottom = sel.bottomRow();
-		for (int i = sel.topRow(); i<=bottom; i++){
+		for (int i = sel.topRow(); i<bottom; i++){
 			for (int j = sel.leftCol(); j<right; j++)
 				text += d_table->text(i, j) + "\t";
 			text += d_table->text(i, right) + eol;
 		}
+		for (int j = sel.leftCol(); j<right; j++)
+				text += d_table->text(bottom, j) + "\t";
+			text += d_table->text(bottom, right);
 	}
 
 	// Copy text into the clipboard
@@ -1304,7 +1307,7 @@ void Table::pasteSelection()
 	QString text = QApplication::clipboard()->text();
 	if (text.isEmpty())
 		return;
-	
+
 	QStringList linesList = text.split(applicationWindow()->endOfLine());
 	int rows = linesList.size();
 	if (rows < 1)
@@ -2548,9 +2551,25 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject*)hheader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		if (me->button() == Qt::LeftButton && me->state() == Qt::ControlButton) {
-			selectedCol = hheader->sectionAt (me->pos().x() + hheader->offset());
-			d_table->selectColumn (selectedCol);
-			d_table->setCurrentCell (0, selectedCol);
+			int col = hheader->sectionAt (me->pos().x() + hheader->offset());
+			if (!d_table->isColumnSelected(col, true)){
+			    selectedCol = col;
+                d_table->selectColumn (col);
+                d_table->setCurrentCell (0, col);
+			} else {//deselect already selected column: dirty hack to be modified when porting Table to Qt4
+			    QVector<int> sel;
+			    int cols = 0;
+			    for (int i = 0; i < d_table->numCols(); i++){
+                    if(d_table->isColumnSelected (i, true) && i != col){
+                        sel << i;
+                        cols++;
+                    }
+                }
+                sel.resize(cols);
+                d_table->clearSelection();
+                for (int i = 0; i < cols; i++)
+                    d_table->selectColumn (sel[i]);
+			}
 			setActiveWindow();
 			return true;
 		} else if (selectedColsNumber() <= 1) {

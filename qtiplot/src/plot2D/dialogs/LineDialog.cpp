@@ -51,7 +51,7 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
     setWindowTitle( tr( "QtiPlot - Line options" ) );
 	setAttribute(Qt::WA_DeleteOnClose);
 	setSizeGripEnabled( true );
-	
+
 	lm = line;
 
 	QGroupBox *gb1 = new QGroupBox();
@@ -62,7 +62,7 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
 	colorBox->setColor(lm->color());
 	gl1->addWidget(colorBox, 0, 1);
 
-	gl1->addWidget(new QLabel(tr("Line type")), 1, 0);
+	gl1->addWidget(new QLabel(tr("Type")), 1, 0);
     styleBox = new QComboBox( FALSE);
 	styleBox->insertItem("_____");
 	styleBox->insertItem("- - -");
@@ -73,7 +73,7 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
 
 	setLineStyle(lm->style());
 
-	gl1->addWidget(new QLabel(tr("Line width")), 2, 0);
+	gl1->addWidget(new QLabel(tr("Width")), 2, 0);
     widthBox = new DoubleSpinBox('f');
 	widthBox->setLocale(((ApplicationWindow *)parent)->locale());
 	widthBox->setSingleStep(0.1);
@@ -101,7 +101,7 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
     options->setLayout(hl1);
 
 	tw = new QTabWidget();
-	tw->addTab(options, tr( "Opti&ons" ) );
+	tw->addTab(options, tr( "&Line" ) );
 
     QGroupBox *gb2 = new QGroupBox();
     QGridLayout *gl2 = new QGridLayout();
@@ -173,7 +173,7 @@ void LineDialog::initGeometryTab()
 	QLocale locale = QLocale();
 	if (app)
 		locale = app->locale();
-	
+
     QGroupBox *gb1 = new QGroupBox(tr("Start Point"));
 	xStartBox = new DoubleSpinBox();
 	xStartBox->setLocale(locale);
@@ -181,7 +181,7 @@ void LineDialog::initGeometryTab()
 	yStartBox = new DoubleSpinBox();
 	yStartBox->setLocale(locale);
 	yStartBox->setDecimals(6);
-	
+
 	xStartPixelBox = new QSpinBox();
 	xStartPixelBox->setRange(-INT_MAX, INT_MAX);
 	yStartPixelBox = new QSpinBox();
@@ -205,17 +205,17 @@ void LineDialog::initGeometryTab()
 	yEndBox = new DoubleSpinBox();
 	yEndBox->setLocale(locale);
 	yEndBox->setDecimals(6);
-	
+
 	xEndPixelBox = new QSpinBox();
 	xEndPixelBox->setRange(-INT_MAX, INT_MAX);
 	yEndPixelBox = new QSpinBox();
 	yEndPixelBox->setRange(-INT_MAX, INT_MAX);
-	
+
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel( tr("X")), 0, 0);
     gl2->addWidget(xEndBox, 0, 1);
 	gl2->addWidget(xEndPixelBox, 0, 1);
-	
+
     gl2->addWidget(new QLabel(tr("Y")), 1, 0);
     gl2->addWidget(yEndBox, 1, 1);
 	gl2->addWidget(yEndPixelBox, 1, 1);
@@ -261,18 +261,18 @@ void LineDialog::displayCoordinates(int unit)
 		QPoint startPoint = lm->startPoint();
 		QPoint endPoint = lm->endPoint();
 
-		xStartBox->hide();	
+		xStartBox->hide();
 		xStartPixelBox->setValue(startPoint.x());
 		xStartPixelBox->show();
-		
+
 		yStartBox->hide();
 		yStartPixelBox->setValue(startPoint.y());
 		yStartPixelBox->show();
-		
+
 		xEndBox->hide();
 		xEndPixelBox->setValue(endPoint.x());
 		xEndPixelBox->show();
-		
+
 		yEndBox->hide();
 		yEndPixelBox->setValue(endPoint.y());
 		yEndPixelBox->show();

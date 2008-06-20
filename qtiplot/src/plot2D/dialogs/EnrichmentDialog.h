@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
     Copyright            : (C) 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A dialog for the TextWidget, based on article 
+    Description          : A general properties dialog for the FrameWidget, using article
 						  "Using a Simple Web Service with Qt" in Qt Quaterly, Issue 23, Q3 2007
 
  ***************************************************************************/
@@ -42,22 +42,22 @@ class QTabWidget;
 class QCheckBox;
 class QLineEdit;
 class QCheckBox;
-	
+
 class Graph;
 class FrameWidget;
 class ColorButton;
 class DoubleSpinBox;
-	
+
 class EnrichmentDialog : public QDialog
 {
     Q_OBJECT
 
 public:
 	enum WidgetType{Frame, Text, Image, Tex};
-	
+
     EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent = 0);
 	~EnrichmentDialog();
-	
+
 	void setWidget(FrameWidget *w);
 
 private slots:
