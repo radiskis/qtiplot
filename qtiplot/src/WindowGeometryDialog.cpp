@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : ImageDialog.cpp
+    File                 : WindowGeometryDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Image geometry dialog
+    Description          : MDI Window geometry dialog
 
  ***************************************************************************/
 
@@ -26,17 +26,17 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "ImageDialog.h"
+#include "WindowGeometryDialog.h"
 
 #include <QLayout>
 #include <QGroupBox>
 #include <QLabel>
 
-ImageDialog::ImageDialog( QWidget* parent, Qt::WFlags fl )
+WindowGeometryDialog::WindowGeometryDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
-	setName( "ImageDialog" );
-	setWindowTitle( tr( "QtiPlot - Image Geometry" ) );
+	setName( "WindowGeometryDialog" );
+	setWindowTitle( tr( "QtiPlot - Window Geometry" ) );
 
 	QGroupBox *gb1 = new QGroupBox(tr("Origin"));
 	boxX = new QSpinBox();
@@ -99,13 +99,13 @@ ImageDialog::ImageDialog( QWidget* parent, Qt::WFlags fl )
     connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
 }
 
-void ImageDialog::setOrigin(const QPoint& o)
+void WindowGeometryDialog::setOrigin(const QPoint& o)
 {
 boxX->setValue(o.x());
 boxY->setValue(o.y());
 }
 
-void ImageDialog::setSize(const QSize& size)
+void WindowGeometryDialog::setSize(const QSize& size)
 {
 boxWidth->setValue(size.width());
 boxHeight->setValue(size.height());
@@ -115,7 +115,7 @@ connect( boxWidth, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustHeight(int)
 connect( boxHeight, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustWidth(int) ) );
 }
 
-void ImageDialog::adjustHeight(int width)
+void WindowGeometryDialog::adjustHeight(int width)
 {
 if (keepRatioBox->isChecked())
 	{
@@ -127,7 +127,7 @@ else
 	aspect_ratio = (double)width/double(boxHeight->value());
 }
 
-void ImageDialog::adjustWidth(int height)
+void WindowGeometryDialog::adjustWidth(int height)
 {
 if (keepRatioBox->isChecked())
 	{
@@ -139,12 +139,12 @@ else
 	aspect_ratio = double(boxWidth->value())/(double)height;
 }
 
-void ImageDialog::update()
+void WindowGeometryDialog::update()
 {
 emit setGeometry(boxX->value(), boxY->value(), boxWidth->value(), boxHeight->value());
 }
 
-void ImageDialog::accept()
+void WindowGeometryDialog::accept()
 {
 update();
 close();
