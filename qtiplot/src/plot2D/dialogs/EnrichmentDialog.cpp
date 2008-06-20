@@ -95,7 +95,7 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 
 	connect(updateButton, SIGNAL(clicked()), this, SLOT(apply()));
 
-	cancelButton = buttonBox->addButton(tr("&Cancel"), QDialogButtonBox::RejectRole);
+	cancelButton = buttonBox->addButton(tr("&Close"), QDialogButtonBox::RejectRole);
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
 	tabWidget = new QTabWidget();
@@ -112,8 +112,7 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
     layout->addWidget(buttonBox);
     setLayout(layout);
 
-	connect(tabWidget, SIGNAL(currentChanged (QWidget *)),
-			this, SLOT(customButtons(QWidget *)));
+	connect(tabWidget, SIGNAL(currentChanged (QWidget *)), this, SLOT(customButtons(QWidget *)));
 }
 
 void EnrichmentDialog::initEditorPage()
@@ -194,8 +193,12 @@ void EnrichmentDialog::initGeometryPage()
     geometryPage = new QWidget();
 
 	unitBox = new QComboBox();
-	unitBox->insertItem(tr("Scale Coordinates"));
-	unitBox->insertItem(tr("Pixels"));
+	unitBox->insertItem(tr("Inch"));
+	unitBox->insertItem(tr("Millimeter"));
+	unitBox->insertItem(tr("Centimeter"));
+	unitBox->insertItem(tr("Point"));
+	unitBox->insertItem(tr("Pixel"));
+	unitBox->insertItem(tr("Scale Coordinate"));
 
 	QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl1->addWidget(new QLabel(tr( "Unit" )));
@@ -210,6 +213,7 @@ void EnrichmentDialog::initGeometryPage()
 	xBox = new DoubleSpinBox();
 	xBox->setLocale(locale);
 	xBox->setDecimals(6);
+	xBox->setMinimumWidth(80);
 	yBox = new DoubleSpinBox();
 	yBox->setLocale(locale);
 	yBox->setDecimals(6);
@@ -267,18 +271,14 @@ void EnrichmentDialog::initGeometryPage()
 
 void EnrichmentDialog::customButtons(QWidget *w)
 {
-	if (editPage && w == editPage){
-		if (clearButton)
-			clearButton->setEnabled(true);
+	if (d_widget_type == Tex && editPage && w == editPage && clearButton){
+		clearButton->show();
 		return;
-	}
+	} else if (clearButton)
+		clearButton->hide();
 
-	if (w == framePage){
+	if (w == framePage)
 		updateButton->setEnabled(true);
-		if (clearButton)
-			clearButton->setEnabled(false);
-		return;
-	}
 }
 
 void EnrichmentDialog::setWidget(FrameWidget *w)
@@ -430,12 +430,12 @@ void EnrichmentDialog::setCoordinates(int unit)
 	if (!d_widget)
 		return;
 
-	if (unit == 0){//ScaleCoordinates
+	if (unit == FrameWidget::Scale){//ScaleCoordinates
 		double left = xBox->value();
 		double top = yBox->value();
 		d_widget->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
 	} else
-		d_widget->setRect((int)xBox->value(), (int)yBox->value(), (int)widthBox->value(), (int)heightBox->value());
+		d_widget->setRect(xBox->value(), yBox->value(), widthBox->value(), heightBox->value(), (FrameWidget::Unit)unit);
 
 	d_plot->multiLayer()->notifyChanges();
 }
@@ -445,24 +445,7 @@ void EnrichmentDialog::displayCoordinates(int unit)
 	if (!d_widget)
 		return;
 
-	if (unit == 0){//ScaleCoordinates
-		xBox->setFormat('g', 6);
-		yBox->setFormat('g', 6);
-		widthBox->setFormat('g', 6);
-		heightBox->setFormat('g', 6);
-
-		xBox->setSingleStep(0.1);
-		yBox->setSingleStep(0.1);
-		widthBox->setSingleStep(0.1);
-		heightBox->setSingleStep(0.1);
-
-		xBox->setValue(d_widget->xValue());
-		yBox->setValue(d_widget->yValue());
-
-		QRectF r = d_widget->boundingRect();
-		widthBox->setValue(r.width());
-		heightBox->setValue(r.height());
-	} else {
+	if (unit == FrameWidget::Pixel || unit == FrameWidget::Point){
 		xBox->setFormat('f', 0);
 		yBox->setFormat('f', 0);
 		widthBox->setFormat('f', 0);
@@ -472,13 +455,23 @@ void EnrichmentDialog::displayCoordinates(int unit)
 		yBox->setSingleStep(1.0);
 		widthBox->setSingleStep(1.0);
 		heightBox->setSingleStep(1.0);
+	} else {
+		xBox->setFormat('g', 6);
+		yBox->setFormat('g', 6);
+		widthBox->setFormat('g', 6);
+		heightBox->setFormat('g', 6);
 
-		xBox->setValue(d_widget->x());
-		yBox->setValue(d_widget->y());
-		widthBox->setValue(d_widget->width());
-		heightBox->setValue(d_widget->height());
-	}
+		xBox->setSingleStep(0.1);
+		yBox->setSingleStep(0.1);
+		widthBox->setSingleStep(0.1);
+		heightBox->setSingleStep(0.1);
+	}  
 
+	xBox->setValue(FrameWidget::xIn(d_widget, (FrameWidget::Unit)unit));
+	yBox->setValue(FrameWidget::yIn(d_widget, (FrameWidget::Unit)unit));
+	widthBox->setValue(FrameWidget::widthIn(d_widget, (FrameWidget::Unit)unit));
+	heightBox->setValue(FrameWidget::heightIn(d_widget, (FrameWidget::Unit)unit));
+	
 	aspect_ratio = widthBox->value()/heightBox->value();
 }
 

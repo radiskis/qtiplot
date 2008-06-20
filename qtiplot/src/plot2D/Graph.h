@@ -73,9 +73,9 @@ class BoxCurve;
 class QwtHistogram;
 class Grid;
 class TexWidget;
-class FrameWidget;
 class LegendWidget;
-
+class FrameWidget;
+	
 //! Structure containing curve layout parameters
 typedef struct{
   int lCol;        //!< line color
@@ -128,6 +128,7 @@ class Graph: public QwtPlot
 		Graph (int x = 0, int y = 0, int width = 500, int height = 400, QWidget* parent=0, Qt::WFlags f=0);
 		~Graph();
 
+		enum Unit{Inch, Millimeter, Centimeter, Point, Pixel};
 		enum Axis{Left, Right, Bottom, Top};
 		enum Scale{Linear, Log10};
 		enum Ticks{NoTicks = 0, Out = 1, InOut = 2, In = 3};
@@ -135,7 +136,7 @@ class Graph: public QwtPlot
 		enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot};
-
+		
 		//! Returns a pointer to the parent MultiLayer object.
 		MultiLayer *multiLayer();
 
@@ -199,6 +200,8 @@ class Graph: public QwtPlot
 
 		FrameWidget* add(FrameWidget* fw, bool copy = true);
 		void remove(FrameWidget*);
+		//! Set geometry in arbitrary units.
+		void setRect(double x, double y, double w, double h, Unit unit);
 
 	public slots:
 		void copy(Graph* g);

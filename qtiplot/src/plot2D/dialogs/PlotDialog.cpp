@@ -399,14 +399,30 @@ void PlotDialog::initLayerGeometryPage()
 {
     layerGeometryPage = new QWidget();
 
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+	if (app)
+		locale = app->locale();
+	
+	unitBox = new QComboBox();
+	unitBox->insertItem(tr("Inch"));
+	unitBox->insertItem(tr("Millimeter"));
+	unitBox->insertItem(tr("Centimeter"));
+	unitBox->insertItem(tr("Point"));
+	unitBox->insertItem(tr("Pixel"));
+	
+	QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
+	bl1->addWidget(new QLabel(tr( "Unit" )));
+	bl1->addWidget(unitBox);
+	
 	QGroupBox *gb1 = new QGroupBox(tr("Origin"));
-	boxX = new QSpinBox();
-	boxX->setRange(0, 2000);
-	boxX->setSuffix(tr(" pixels"));
+	boxX = new DoubleSpinBox();
+	boxX->setLocale(locale);
+	boxX->setDecimals(6);
 
-	boxY = new QSpinBox();
-	boxY->setRange(0, 2000);
-	boxY->setSuffix(tr(" pixels"));
+	boxY = new DoubleSpinBox();
+	boxY->setLocale(locale);
+	boxY->setDecimals(6);
 
     QGridLayout *gl1 = new QGridLayout(gb1);
     gl1->addWidget(new QLabel( tr("X= ")), 0, 0);
@@ -416,13 +432,15 @@ void PlotDialog::initLayerGeometryPage()
     gl1->setRowStretch(2, 1);
 
     QGroupBox *gb2 = new QGroupBox(tr("Size"));
-    boxLayerWidth = new QSpinBox();
-	boxLayerWidth->setRange(0, 2000);
-	boxLayerWidth->setSuffix(tr(" pixels"));
+    boxLayerWidth = new DoubleSpinBox();
+	boxLayerWidth->setMinimum(0);
+	boxLayerWidth->setLocale(locale);
+	boxLayerWidth->setDecimals(6);
 
-	boxLayerHeight = new QSpinBox();
-	boxLayerHeight->setRange(0, 2000);
-	boxLayerHeight->setSuffix(tr(" pixels"));
+	boxLayerHeight = new DoubleSpinBox();
+	boxLayerHeight->setMinimum(0);
+	boxLayerHeight->setLocale(locale);
+	boxLayerHeight->setDecimals(6);
 
     QGridLayout *gl2 = new QGridLayout(gb2);
     gl2->addWidget(new QLabel( tr("width= ")), 0, 0);
@@ -437,17 +455,19 @@ void PlotDialog::initLayerGeometryPage()
 
     gl2->setRowStretch(4, 1);
 
-    QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
-	bl1->addWidget(gb1);
-	bl1->addWidget(gb2);
+    QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
+	bl2->addWidget(gb1);
+	bl2->addWidget(gb2);
 
-    QHBoxLayout * hl = new QHBoxLayout( layerGeometryPage );
-    hl->addLayout(bl1);
+    QVBoxLayout * vl = new QVBoxLayout( layerGeometryPage );
+    vl->addLayout(bl1);
+	vl->addLayout(bl2);
 
     privateTabWidget->addTab(layerGeometryPage, tr("Geometry"));
 
-	connect( boxLayerWidth, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerHeight(int) ) );
-	connect( boxLayerHeight, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerWidth(int) ) );
+	connect(boxLayerWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustLayerHeight(double)));
+	connect(boxLayerHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustLayerWidth(double)));
+	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
 }
 
 void PlotDialog::initPiePage()
@@ -1803,15 +1823,12 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 
 	boxAntialiasing->setChecked(g->antialiasing());
 
-	boxX->setValue(g->pos().x());
-	boxY->setValue(g->pos().y());
-
 	boxLayerWidth->blockSignals(true);
-	boxLayerWidth->setValue(g->width());
-	boxLayerWidth->blockSignals(false);
-
 	boxLayerHeight->blockSignals(true);
-	boxLayerHeight->setValue(g->height());
+
+	displayCoordinates(unitBox->currentIndex(), g);
+	
+	boxLayerWidth->blockSignals(false);
 	boxLayerHeight->blockSignals(false);
 
 	aspect_ratio = (double)g->width()/(double)g->height();
@@ -2149,12 +2166,15 @@ bool PlotDialog::acceptParams()
 		if (!g)
 			return false;
 
-		QPoint pos = QPoint(boxX->value(), boxY->value());
+		/*QPoint pos = QPoint(boxX->value(), boxY->value());
 		QSize size = QSize(boxLayerWidth->value(), boxLayerHeight->value());
 		if (g->pos() == pos && g->size() == size)
 			return true;
 
-		g->setGeometry(QRect(pos, size));
+		g->setGeometry(QRect(pos, size));*/
+		
+		g->setRect(boxX->value(), boxY->value(), boxLayerWidth->value(), 
+					boxLayerHeight->value(), (Graph::Unit)unitBox->currentIndex());
 		d_ml->repaint();
 		return true;
 	}
@@ -2868,24 +2888,24 @@ void PlotDialog::initFonts(const QFont& titlefont, const QFont& axesfont, const 
 	legendFont = legendfont;
 }
 
-void PlotDialog::adjustLayerHeight(int width)
+void PlotDialog::adjustLayerHeight(double width)
 {
 	if (keepRatioBox->isChecked()){
-		disconnect( boxLayerHeight, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerWidth(int) ) );
-		boxLayerHeight->setValue(int(width/aspect_ratio));
-		connect( boxLayerHeight, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerWidth(int) ) );
+		boxLayerHeight->blockSignals(true);
+		boxLayerHeight->setValue(width/aspect_ratio);
+		boxLayerHeight->blockSignals(false);
 	} else
-		aspect_ratio = (double)width/double(boxLayerHeight->value());
+		aspect_ratio = width/boxLayerHeight->value();
 }
 
-void PlotDialog::adjustLayerWidth(int height)
+void PlotDialog::adjustLayerWidth(double height)
 {
 	if (keepRatioBox->isChecked()){
-		disconnect( boxLayerWidth, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerHeight(int) ) );
-		boxLayerWidth->setValue(int(height*aspect_ratio));
-		connect( boxLayerWidth, SIGNAL( valueChanged ( int ) ), this, SLOT( adjustLayerHeight(int) ) );
+		boxLayerWidth->blockSignals(true);
+		boxLayerWidth->setValue(height*aspect_ratio);
+		boxLayerWidth->blockSignals(false);
 	} else
-		aspect_ratio = double(boxLayerWidth->value())/(double)height;
+		aspect_ratio = boxLayerWidth->value()/height;
 }
 
 void PlotDialog::closeEvent(QCloseEvent* e)
@@ -2938,6 +2958,46 @@ int PlotDialog::labelsAlignment()
 	return align;
 }
 
+void PlotDialog::displayCoordinates(int unit, Graph *g)
+{
+	if (!g){
+		QTreeWidgetItem *item = listBox->currentItem();
+    	if (item){
+        	g = ((LayerItem *)item)->graph();
+			if (!g)
+				return;
+		}
+	}
+
+	if (unit == FrameWidget::Pixel || unit == FrameWidget::Point){
+		boxX->setFormat('f', 0);
+		boxY->setFormat('f', 0);
+		boxLayerWidth->setFormat('f', 0);
+		boxLayerHeight->setFormat('f', 0);
+
+		boxX->setSingleStep(1.0);
+		boxY->setSingleStep(1.0);
+		boxLayerWidth->setSingleStep(1.0);
+		boxLayerHeight->setSingleStep(1.0);
+	} else {
+		boxX->setFormat('g', 6);
+		boxY->setFormat('g', 6);
+		boxLayerWidth->setFormat('g', 6);
+		boxLayerHeight->setFormat('g', 6);
+
+		boxX->setSingleStep(0.1);
+		boxY->setSingleStep(0.1);
+		boxLayerWidth->setSingleStep(0.1);
+		boxLayerHeight->setSingleStep(0.1);
+	}  
+
+	boxX->setValue(FrameWidget::xIn(g, (FrameWidget::Unit)unit));
+	boxY->setValue(FrameWidget::yIn(g, (FrameWidget::Unit)unit));
+	boxLayerWidth->setValue(FrameWidget::widthIn(g, (FrameWidget::Unit)unit));
+	boxLayerHeight->setValue(FrameWidget::heightIn(g, (FrameWidget::Unit)unit));
+	
+	aspect_ratio = boxLayerWidth->value()/boxLayerHeight->value();
+}
 /*****************************************************************************
  *
  * Class LayerItem
