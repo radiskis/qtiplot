@@ -264,8 +264,9 @@ private slots:
 	void showColorMapEditor(bool show);
 
 	//layer geometry
-	void adjustLayerHeight(int width);
-	void adjustLayerWidth(int height);
+	void adjustLayerHeight(double width);
+	void adjustLayerWidth(double height);
+	void displayCoordinates(int unit, Graph *g = 0);
 
 protected slots:
     void setActiveLayer(LayerItem *item);
@@ -317,7 +318,7 @@ private:
     MultiLayer *d_ml;
 	QStringList columnNames;
 
-	QSpinBox* boxX, *boxY, *boxLayerWidth, *boxLayerHeight;
+	DoubleSpinBox* boxX, *boxY, *boxLayerWidth, *boxLayerHeight;
 	QCheckBox *keepRatioBox;
 
     QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
@@ -401,6 +402,8 @@ private:
 	QWidget *pieLabelsPage;
     QSpinBox *boxPieOffset;
 	QWidget *pieGeometryPage;
+	
+	QComboBox *unitBox;
 };
 
 /*****************************************************************************

@@ -221,3 +221,145 @@ QString FrameWidget::saveToString()
     s += "<bottom>" + QString::number(d_y_bottom, 'g', 15) + "</bottom>\n";
 	return s;
 }
+
+double FrameWidget::xIn(QWidget *w, Unit unit)
+{
+	double dpi = (double)w->logicalDpiX();
+	double val = 0.0;
+	switch(unit){
+		case Pixel:
+			val = (double)w->x();
+		break;
+		case Inch:
+			val = w->x()/dpi;
+		break;
+		case Millimeter:
+			val = 25.4*w->x()/dpi;
+		break;
+		case Centimeter:
+			val = 2.54*w->x()/dpi;
+		break;
+		case Point:
+			val = 72.0*w->x()/dpi;
+		break;
+		case Scale:
+			FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+			if (fw)
+				val = fw->xValue();
+		break;
+	}
+	return val;
+}
+
+double FrameWidget::yIn(QWidget *w, Unit unit)
+{
+	double dpi = (double)w->logicalDpiY();
+	double val;
+	switch(unit){
+		case Pixel:
+			val = (double)w->y();
+		break;
+		case Inch:
+			val = w->y()/dpi;
+		break;
+		case Millimeter:
+			val = 25.4*w->y()/dpi;
+		break;
+		case Centimeter:
+			val = 2.54*w->y()/dpi;
+		break;
+		case Point:
+			val = 72.0*w->y()/dpi;
+		break;
+		case Scale:
+			FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+			if (fw)
+				val = fw->yValue();
+		break;
+	}
+	return val;
+}
+
+double FrameWidget::widthIn(QWidget *w, Unit unit)
+{
+	double dpi = (double)w->physicalDpiX();
+	double val;
+	switch(unit){
+		case Pixel:
+			val = (double)w->width();
+		break;
+		case Inch:
+			val = (double)w->width()/dpi;
+		break;
+		case Millimeter:
+			val = 25.4*w->width()/dpi;
+		break;
+		case Centimeter:
+			val = 2.54*w->width()/dpi;
+		break;
+		case Point:
+			val = 72.0*w->width()/dpi;
+		break;
+		case Scale:
+			FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+			if (fw)
+				val = fabs(fw->right() - fw->xValue());
+		break;
+	}
+	return val;
+}
+
+double FrameWidget::heightIn(QWidget *w, Unit unit)
+{
+	double dpi = (double)w->physicalDpiY();
+	double val;
+	switch(unit){
+		case Pixel:
+			val = (double)w->height();
+		break;
+		case Inch:
+			val = (double)w->height()/dpi;
+		break;
+		case Millimeter:
+			val = 25.4*w->height()/dpi;
+		break;
+		case Centimeter:
+			val = 2.54*w->height()/dpi;
+		break;
+		case Point:
+			val = 72.0*w->height()/dpi;
+		break;
+		case Scale:
+			FrameWidget *fw = qobject_cast<FrameWidget *>(w);
+			if (fw)
+				val = fabs(fw->bottom() - fw->yValue());
+		break;
+	}
+	return val;
+}
+
+void FrameWidget::setRect(double x, double y, double w, double h, Unit unit)
+{
+	int dpiX = logicalDpiX();
+	int dpiY = logicalDpiY();
+	switch(unit){
+		case Pixel:
+			setRect((int)x, (int)y, (int)w, (int)h);
+		break;
+		case Inch:
+			setRect(int(x*dpiX), int(y*dpiY), int(w*dpiX), int(h*dpiY));
+		break;
+		case Millimeter:
+			setRect(int(x*dpiX/25.4), int(y*dpiY/25.4), int(w*dpiX/25.4), int(h*dpiY/25.4));
+		break;
+		case Centimeter:
+			setRect(int(x*dpiX/2.54), int(y*dpiY/2.54), int(w*dpiX/2.54), int(h*dpiY/2.54));
+		break;
+		case Point:
+			setRect(int(x*dpiX/72.0), int(y*dpiY/72.0), int(w*dpiX/72.0), int(h*dpiY/72.0));
+		break;
+		case Scale:
+			setCoordinates(x, y, x + w, y + h);
+		break;
+	}
+}

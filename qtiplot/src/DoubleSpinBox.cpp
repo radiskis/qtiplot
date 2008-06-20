@@ -44,7 +44,7 @@ d_prec(14)
     if (format == 'f')
         d_prec = 1;
 
-	setFocusPolicy(Qt::StrongFocus);
+	setFocusPolicy(Qt::StrongFocus);	
     lineEdit()->setText(locale().toString(d_value, d_format, d_prec));
 	setKeyboardTracking(false);
 	setWrapping(false);
