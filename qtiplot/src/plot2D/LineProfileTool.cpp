@@ -47,7 +47,7 @@ LineProfileTool::LineProfileTool(Graph *graph, ApplicationWindow *app, int avera
 	d_op_start = d_op_dp = QPoint(0,0);
 	// make sure we average over an odd number of pixels
 	d_average_pixels = (average_pixels % 2) ? average_pixels : average_pixels + 1;
-	d_target = qobject_cast<ImageWidget*>(d_graph->activeEnrichement());
+	d_target = qobject_cast<ImageWidget*>(d_graph->activeEnrichment());
 	if (!d_target)
 		QMessageBox::critical(d_graph->window(), tr("QtiPlot - Pixel selection warning"),
 				tr("Please select an image marker first."));

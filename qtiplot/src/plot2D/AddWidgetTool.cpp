@@ -34,36 +34,35 @@
 
 #include <QAction>
 #include <QCursor>
-#include <QMessageBox>
 
 #include <qwt_plot_canvas.h>
 #include <qwt_scale_widget.h>
 #include <qwt_text_label.h>
 
 AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, const QObject *status_target, const char *status_slot)
-	: QwtPicker(graph), 
+	: QwtPicker(graph),
 	PlotToolInterface(graph),
 	d_action(action),
 	d_widget_type(type)
-{	
+{
 	setTrackerMode(QwtPicker::AlwaysOff);
 	setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
 	graph->setCursor(QCursor(Qt::IBeamCursor));
-	
+
 	QwtPlotCanvas *canvas = graph->canvas();
 	canvas->setCursor(QCursor(Qt::IBeamCursor));
 	canvas->installEventFilter(this);
-	
+
 	QwtTextLabel *title = graph->titleLabel();
 	if (title)
 		title->installEventFilter(this);
-	
+
 	for ( uint i = 0; i < QwtPlot::axisCnt; i++ ){
         QwtScaleWidget *scale = graph->axisWidget(i);
         if (scale)
             scale->installEventFilter(this);
     }
-		
+
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	emit statusText(tr("Click on plot to choose the position of the new object!"));
@@ -72,33 +71,35 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, con
 AddWidgetTool::~AddWidgetTool()
 {
 	d_graph->unsetCursor();
-	
+
 	QwtPlotCanvas *canvas = d_graph->canvas();
 	canvas->unsetCursor();
 	canvas->removeEventFilter(this);
-	
+
 	QwtTextLabel *title = d_graph->titleLabel();
 	if (title)
 		title->removeEventFilter(this);
-	
+
 	for ( uint i = 0; i < QwtPlot::axisCnt; i++ ){
         QwtScaleWidget *scale = d_graph->axisWidget(i);
         if (scale)
             scale->removeEventFilter(this);
     }
-	
+
 	ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
 	if (app)
 		app->pickPointerCursor();
+
 	d_action->setChecked(false);
+    emit statusText("");
 }
 
 void AddWidgetTool::addEquation(const QPoint& point)
-{		
+{
 	TexWidget *t = new TexWidget(d_graph);
 	if (!t)
 		return;
-	
+
 	t->setFormula(tr("enter your text here"));
 	t->move(point);
 	t->setFrameStyle(1);
@@ -111,7 +112,7 @@ void AddWidgetTool::addText(const QPoint& point)
 	LegendWidget *l = new LegendWidget(d_graph);
 	if (!l)
 		return;
-	
+
 	l->move(point);
 
 	d_graph->add(l, false);
@@ -144,7 +145,7 @@ void AddWidgetTool::addWidget(const QPoint& point)
 bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
 {
 	switch(event->type()) {
-		case QEvent::MouseButtonPress:								
+		case QEvent::MouseButtonPress:
 			addWidget(d_graph->mapFromGlobal(QCursor::pos()));
 			return true;
 		default:

@@ -165,10 +165,11 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 : QwtPlot(parent)
 {
 	setWindowFlags(f);
+    setAttribute(Qt::WA_DeleteOnClose);
 
 	d_active_tool = NULL;
 	d_peak_fit_tool = NULL;
-	d_active_enrichement = NULL;
+	d_active_enrichment = NULL;
 	d_legend = NULL; // no legend for an empty graph
 	d_selected_marker = NULL;
 	drawLineOn = false;
@@ -323,8 +324,9 @@ void Graph::deselectMarker()
 
 	cp->disableEditing();
 
-	deselect(d_active_enrichement);
-	d_active_enrichement = NULL;
+	deselect(d_active_enrichment);
+	d_active_enrichment = NULL;
+	setFocus();
 }
 
 void Graph::enableTextEditor()
@@ -344,7 +346,7 @@ void Graph::enableTextEditor()
 QList <LegendWidget *> Graph::textsList()
 {
 	QList <LegendWidget *> texts;
-	foreach(FrameWidget *f, d_enrichements){
+	foreach(FrameWidget *f, d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(f);
 		if (l)
 			texts << l;
@@ -355,7 +357,7 @@ QList <LegendWidget *> Graph::textsList()
 void Graph::select(QWidget *l, bool add)
 {
     if (!l){
-        d_active_enrichement = NULL;
+        d_active_enrichment = NULL;
         return;
     }
 
@@ -363,11 +365,11 @@ void Graph::select(QWidget *l, bool add)
     scalePicker->deselect();
     deselectCurves();
 
-    d_active_enrichement = qobject_cast<LegendWidget *>(l);
-    if (d_active_enrichement)
+    d_active_enrichment = qobject_cast<LegendWidget *>(l);
+    if (d_active_enrichment)
         emit currentFontChanged(((LegendWidget *)l)->font());
     else
-        d_active_enrichement = qobject_cast<FrameWidget *>(l);
+        d_active_enrichment = qobject_cast<FrameWidget *>(l);
 
     if (add){
         if (d_markers_selector && d_markers_selector->contains(l))
@@ -1346,10 +1348,7 @@ void Graph::exportToFile(const QString& fileName)
 
 void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 {
-    QPixmap pic(size());
-    QPainter p(&pic);
-    print(&p, rect());
-    p.end();
+    QPixmap pic = graphPixmap();
 
 	if (transparent){
 		QBitmap mask(size());
@@ -1536,7 +1535,7 @@ bool Graph::markerSelected()
 {
 	if (d_selected_marker)
 		return true;
-	if (d_active_enrichement)
+	if (d_active_enrichment)
 		return true;
 	return false;
 }
@@ -1545,8 +1544,8 @@ void Graph::removeMarker()
 {
 	if (d_selected_marker && d_lines.contains(d_selected_marker))
 			remove((ArrowMarker*)d_selected_marker);
-	else if (d_active_enrichement)
-		remove(d_active_enrichement);
+	else if (d_active_enrichment)
+		remove(d_active_enrichment);
 }
 
 void Graph::remove(ArrowMarker* arrow)
@@ -1579,14 +1578,14 @@ void Graph::remove(FrameWidget* f)
 	if (!f)
 		return;
 
-	int index = d_enrichements.indexOf (f);
-	if (index >= 0 && index < d_enrichements.size())
-		d_enrichements.removeAt(index);
+	int index = d_enrichments.indexOf (f);
+	if (index >= 0 && index < d_enrichments.size())
+		d_enrichments.removeAt(index);
 
 	if (f == d_legend)
 		d_legend = NULL;
-	if (f == d_active_enrichement)
-		d_active_enrichement = NULL;
+	if (f == d_active_enrichment)
+		d_active_enrichment = NULL;
 
 	f->close();
 	emit modifiedGraph();
@@ -1599,7 +1598,7 @@ bool Graph::arrowMarkerSelected()
 
 bool Graph::imageMarkerSelected()
 {
-	ImageWidget *i = qobject_cast<ImageWidget *>(d_active_enrichement);
+	ImageWidget *i = qobject_cast<ImageWidget *>(d_active_enrichment);
 	if (i)
 		return true;
 	return false;
@@ -2219,7 +2218,7 @@ LegendWidget* Graph::newLegend(const QString& text)
 	}
 
     d_legend = l;
-	d_enrichements << l;
+	d_enrichments << l;
 	emit modifiedGraph();
 	return l;
 }
@@ -2248,8 +2247,8 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 		l = new PieLabel(this);
 	else {
 		l = new LegendWidget(this);
-		d_enrichements << l;
-		d_active_enrichement = l;
+		d_enrichments << l;
+		d_active_enrichment = l;
 	}
 
 	if (fileVersion < 86 || (fileVersion > 91 && fileVersion < 96))
@@ -2376,8 +2375,8 @@ LegendWidget* Graph::addText(LegendWidget* t)
 {
 	LegendWidget* aux = new LegendWidget(this);
 	aux->clone(t);
-	d_active_enrichement = aux;
-	d_enrichements << aux;
+	d_active_enrichment = aux;
+	d_enrichments << aux;
 	return aux;
 }
 
@@ -2413,7 +2412,7 @@ QString Graph::saveMarkers()
 			s += l->saveToString();
 	}
 
-	foreach(FrameWidget *f, d_enrichements)
+	foreach(FrameWidget *f, d_enrichments)
 		s += f->saveToString();
 
 	return s;
@@ -3303,7 +3302,7 @@ ImageWidget* Graph::addImage(ImageWidget* i)
 
 	ImageWidget* i2 = new ImageWidget(this, i->fileName());
 	if (i2){
-		d_enrichements << i2;
+		d_enrichments << i2;
 		i2->setCoordinates(i->xValue(), i->yValue(), i->right(), i->bottom());
 	}
 	return i2;
@@ -3316,7 +3315,7 @@ ImageWidget* Graph::addImage(const QString& fileName)
 
 	ImageWidget* i = new ImageWidget(this, fileName);
 	if (i){
-		d_enrichements << i;
+		d_enrichments << i;
 		emit modifiedGraph();
 	}
 	return i;
@@ -3326,7 +3325,7 @@ ImageWidget* Graph::addImage(const QImage& image)
 {
 	ImageWidget* i = new ImageWidget(this, image);
 	if (i){
-		d_enrichements << i;
+		d_enrichments << i;
 		emit modifiedGraph();
 	}
 	return i;
@@ -3343,7 +3342,7 @@ void Graph::insertImageMarker(const QStringList& lst, int fileVersion)
 		if (!mrk)
 			return;
 
-        d_enrichements << mrk;
+        d_enrichments << mrk;
 
 		if (fileVersion < 86){
 			mrk->setOrigin(lst[2].toInt(), lst[3].toInt());
@@ -3618,7 +3617,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 
 void Graph::updateMarkersBoundingRect()
 {
-    foreach(FrameWidget *f, d_enrichements)
+    foreach(FrameWidget *f, d_enrichments)
 		f->updateCoordinates();
 
 	if (!d_lines.size())
@@ -3645,7 +3644,7 @@ void Graph::resizeEvent ( QResizeEvent *e )
         updateCurveLabels();
 	}
 
-	foreach(FrameWidget *f, d_enrichements){
+	foreach(FrameWidget *f, d_enrichments){
 		ImageWidget *i = qobject_cast<ImageWidget *>(f);
 		if (i)
 			i->resetCoordinates();
@@ -4135,7 +4134,7 @@ void Graph::copy(Graph* g)
 	d_zoomer[0]->setZoomBase();
 	d_zoomer[1]->setZoomBase();
 
-	QList<FrameWidget *> enrichements = g->enrichementsList();
+	QList<FrameWidget *> enrichements = g->enrichmentsList();
 	foreach (FrameWidget *e, enrichements){
 		LegendWidget *l = qobject_cast<LegendWidget *>(e);
 		if (l && l == g->legend())
@@ -4562,6 +4561,9 @@ Graph::~Graph()
 	delete titlePicker;
 	delete scalePicker;
 	delete cp;
+
+	foreach(FrameWidget *fw, d_enrichments)
+        fw->close();
 }
 
 void Graph::setAntialiasing(bool on, bool update)
@@ -4582,24 +4584,51 @@ void Graph::setAntialiasing(bool on, bool update)
 
 bool Graph::focusNextPrevChild ( bool )
 {
-	QList<QwtPlotMarker *> lst;
-	foreach(QwtPlotMarker *l, d_lines)
-		lst << l;
-
-	int markers = lst.size();
-	if (markers < 1)
+	int markers = d_lines.size();
+	int enrichments = d_enrichments.size();
+	if (markers < 1 && enrichments < 1)
 		return false;
 
-	int next = 0;
-	if (d_selected_marker)
-		next = lst.indexOf(d_selected_marker) + 1;
-	if (next >= markers)
-		next = 0;
+    if (d_selected_marker){
+        int next = d_lines.indexOf(d_selected_marker) + 1;
+        if (next >= 0 && next < markers){//select next arrow
+            cp->disableEditing();
+            deselectMarker();
+            setSelectedMarker(d_lines.at(next));
+            return true;
+        } else if (enrichments){ //select first enrichment
+            cp->disableEditing();
+            deselectMarker();
+            select(d_enrichments[0]);
+            return true;
+        }
+    }
 
-	cp->disableEditing();
-	deselectMarker();
-	setSelectedMarker(lst.at(next));
-	return true;
+    if (d_active_enrichment){
+        int next = d_enrichments.indexOf(d_active_enrichment) + 1;
+        if (next >= 0 && next < enrichments){//select next enrichment
+            cp->disableEditing();
+            deselectMarker();
+            select(d_enrichments[next]);
+            return true;
+        } else if (markers){//select first arrow
+            deselectMarker();
+            setSelectedMarker(d_lines.at(0));
+            return true;
+        }
+    }
+
+    if (enrichments) { //select first enrichment
+        select(d_enrichments[0]);
+        return true;
+    }
+
+    if (markers){//select first arrow
+        deselectMarker();
+        setSelectedMarker(d_lines.at(0));
+        return true;
+    }
+	return false;
 }
 
 QString Graph::axisFormatInfo(int axis)
@@ -4712,8 +4741,8 @@ void Graph::setCurrentFont(const QFont& f)
 		} else if (scalePicker->labelsSelected())
 			axis->setFont(f);
 		emit modifiedGraph();
-	} else if (d_active_enrichement){
-		LegendWidget *l = qobject_cast<LegendWidget *>(d_active_enrichement);
+	} else if (d_active_enrichment){
+		LegendWidget *l = qobject_cast<LegendWidget *>(d_active_enrichment);
 		if (l){
 			l->setFont(f);
 			l->repaint();
@@ -4772,14 +4801,14 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 	} else
 		painter->setPen(QPen(Qt::NoPen));
 
-    painter->setBrush(paletteBackgroundColor());	
-	
+    painter->setBrush(paletteBackgroundColor());
+
 	int lw2 = lw/2;
 	if (lw % 2)
 		painter->drawRect(rect.adjusted(lw2, lw2, -(lw2 + 1), -(lw2 + 1)));
 	else
 		painter->drawRect(rect.adjusted(lw2, lw2, -lw2, -lw2));
-	
+
 	painter->restore();
 }
 
@@ -4787,19 +4816,19 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
 {
 	painter->save();
-	
+
 	QRect rect = canvasRect;
 	const QwtPlotCanvas* plotCanvas = canvas();
 	int lw = plotCanvas->lineWidth();
-	int lw2 = lw/2;	
+	int lw2 = lw/2;
 	if (lw % 2)
 		rect = rect.adjusted(-lw2, -lw2, (lw2 + 1), (lw2 + 1));
 	else
 		rect = rect.adjusted(-lw2, -lw2, lw2, lw2);
-	
+
 	QRect fillRect = rect.adjusted(1, 1, -2, -2);
 	QwtPainter::fillRect(painter, fillRect, canvasBackground());
-	
+
 	painter->setClipping(true);
 	painter->setClipRect(fillRect);
 
@@ -4823,7 +4852,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 			l->print(painter, map);
 	}
 
-	foreach(FrameWidget *f, d_enrichements){
+	foreach(FrameWidget *f, d_enrichments){
 		if (f->isVisible())
 			f->print(painter, map);
 	}
@@ -5333,7 +5362,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
         }
     }
     // Calculate the layout for the print.
-	
+
     int layoutOptions = QwtPlotLayout::IgnoreScrollbars;
     if ( !(pfilter.options() & QwtPlotPrintFilter::PrintMargin) )
         layoutOptions |= QwtPlotLayout::IgnoreMargin;
@@ -5352,7 +5381,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 
 	bw = canvas()->lineWidth();
     QRect canvasRect = plotLayout()->canvasRect().adjusted(bw, bw, -bw, -bw);
-	
+
     for ( axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
         QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
         if (scaleWidget){
@@ -5457,7 +5486,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
 {
 	TexWidget *t = new TexWidget(this, s, pix);
-	d_enrichements << t;
+	d_enrichments << t;
 	emit modifiedGraph();
 	return t;
 }
@@ -5468,11 +5497,11 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 		return NULL;
 
 	if (!copy){
-		d_enrichements << fw;
-		d_active_enrichement = fw;
+		d_enrichments << fw;
+		d_active_enrichment = fw;
 		return fw;
 	}
-	
+
 	FrameWidget *aux = NULL;
 	LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 	if (l){
@@ -5492,12 +5521,12 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 		((ImageWidget *)aux)->clone(i);
 	}
 
-	d_enrichements << aux;
-	d_active_enrichement = aux;
+	d_enrichments << aux;
+	d_active_enrichment = aux;
 	return aux;
 }
 
 LegendWidget* Graph::activeText()
 {
-	return qobject_cast<LegendWidget *>(d_active_enrichement);
+	return qobject_cast<LegendWidget *>(d_active_enrichment);
 }

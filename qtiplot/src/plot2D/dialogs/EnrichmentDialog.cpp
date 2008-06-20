@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
     Copyright            : (C) 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A dialog for the TextWidget, based on article
+    Description          : A general properties dialog for the FrameWidget, using article
 						  "Using a Simple Web Service with Qt" in Qt Quaterly, Issue 23, Q3 2007
 
  ***************************************************************************/
@@ -76,12 +76,12 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 {
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
-	
+
     QDialogButtonBox *buttonBox = new QDialogButtonBox;
 	clearButton = NULL;
 	editPage = NULL;
 	imagePage = NULL;
-		
+
 	if (wt == Tex){
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
 
@@ -153,7 +153,7 @@ void EnrichmentDialog::initImagePage()
 
 	boxSaveImagesInternally = new QCheckBox(tr("&Save internally"));
 	connect(boxSaveImagesInternally, SIGNAL(toggled(bool)), this, SLOT(saveImagesInternally(bool)));
-	
+
 	gl->addWidget(boxSaveImagesInternally, 1, 1);
 	gl->setColumnStretch(1, 1);
 	gl->setRowStretch(2, 1);
@@ -205,7 +205,7 @@ void EnrichmentDialog::initGeometryPage()
 	QLocale locale = QLocale();
 	if (app)
 		locale = app->locale();
-	
+
     QGroupBox *gb1 = new QGroupBox(tr("Position"));
 	xBox = new DoubleSpinBox();
 	xBox->setLocale(locale);
@@ -213,7 +213,7 @@ void EnrichmentDialog::initGeometryPage()
 	yBox = new DoubleSpinBox();
 	yBox->setLocale(locale);
 	yBox->setDecimals(6);
-	
+
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel( tr("X")), 0, 0);
     gl1->addWidget(xBox, 0, 1);
@@ -230,21 +230,21 @@ void EnrichmentDialog::initGeometryPage()
 	heightBox = new DoubleSpinBox();
 	heightBox->setLocale(locale);
 	heightBox->setDecimals(6);
-	
+
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel( tr("Width")), 0, 0);
     gl2->addWidget(widthBox, 0, 1);
-	
+
     gl2->addWidget(new QLabel(tr("Height")), 1, 0);
     gl2->addWidget(heightBox, 1, 1);
-	
+
 	keepAspectBox = new QCheckBox(tr("&Keep aspect ratio"));
 	gl2->addWidget(keepAspectBox, 2, 1);
-		
+
 	bestSizeButton = new QPushButton(tr("&Best size"));
 	bestSizeButton->hide();
 	gl2->addWidget(bestSizeButton, 3, 1);
-	
+
 	gl2->setColumnStretch(1, 10);
 	gl2->setRowStretch(4, 1);
     gb2->setLayout(gl2);
@@ -290,7 +290,7 @@ void EnrichmentDialog::setWidget(FrameWidget *w)
 
 	frameBox->setCurrentIndex(w->frameStyle());
 	frameColorBtn->setColor(w->frameColor());
-	
+
 	displayCoordinates(0);
 
 	if (d_widget_type == Tex){
@@ -330,7 +330,7 @@ void EnrichmentDialog::apply()
 			d_plot->multiLayer()->notifyChanges();
 		}
 	} else if (imagePage && tabWidget->currentPage() == imagePage)
-		chooseImageFile(imagePathBox->text());	
+		chooseImageFile(imagePathBox->text());
 	else if (tabWidget->currentPage() == geometryPage)
 		setCoordinates(unitBox->currentIndex());
 }
@@ -411,13 +411,13 @@ void EnrichmentDialog::saveImagesInternally(bool save)
 	ImageWidget *i = qobject_cast<ImageWidget *>(d_widget);
 	if (i)
 		i->setSaveInternally(boxSaveImagesInternally->isChecked());
-		
+
 	d_plot->multiLayer()->notifyChanges();
-	
+
 	if (save)
 		return;
-	
-	QString fn = imagePathBox->text();	
+
+	QString fn = imagePathBox->text();
 	if (fn.isEmpty() || !QFile::exists(fn)){
 		QMessageBox::warning((ApplicationWindow *)parentWidget(), tr("QtiPlot - Warning"),
 		tr("The file %1 doesn't exist. The image cannot be restored when reloading the project file!").arg(fn));
@@ -429,14 +429,14 @@ void EnrichmentDialog::setCoordinates(int unit)
 {
 	if (!d_widget)
 		return;
-		
+
 	if (unit == 0){//ScaleCoordinates
 		double left = xBox->value();
 		double top = yBox->value();
 		d_widget->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
 	} else
 		d_widget->setRect((int)xBox->value(), (int)yBox->value(), (int)widthBox->value(), (int)heightBox->value());
-	
+
 	d_plot->multiLayer()->notifyChanges();
 }
 
@@ -444,7 +444,7 @@ void EnrichmentDialog::displayCoordinates(int unit)
 {
 	if (!d_widget)
 		return;
-	
+
 	if (unit == 0){//ScaleCoordinates
 		xBox->setFormat('g', 6);
 		yBox->setFormat('g', 6);
@@ -455,7 +455,7 @@ void EnrichmentDialog::displayCoordinates(int unit)
 		yBox->setSingleStep(0.1);
 		widthBox->setSingleStep(0.1);
 		heightBox->setSingleStep(0.1);
-				
+
 		xBox->setValue(d_widget->xValue());
 		yBox->setValue(d_widget->yValue());
 
@@ -467,18 +467,18 @@ void EnrichmentDialog::displayCoordinates(int unit)
 		yBox->setFormat('f', 0);
 		widthBox->setFormat('f', 0);
 		heightBox->setFormat('f', 0);
-		
+
 		xBox->setSingleStep(1.0);
 		yBox->setSingleStep(1.0);
 		widthBox->setSingleStep(1.0);
 		heightBox->setSingleStep(1.0);
-		
+
 		xBox->setValue(d_widget->x());
 		yBox->setValue(d_widget->y());
 		widthBox->setValue(d_widget->width());
 		heightBox->setValue(d_widget->height());
 	}
-	
+
 	aspect_ratio = widthBox->value()/heightBox->value();
 }
 
@@ -515,7 +515,7 @@ void EnrichmentDialog::setBestSize()
 EnrichmentDialog::~EnrichmentDialog()
 {
 	QApplication::restoreOverrideCursor();
-	
+
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
 	if (tw && (tw->formula().isEmpty() || tw->pixmap().isNull())){
 		d_plot->remove(d_widget);

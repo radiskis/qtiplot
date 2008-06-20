@@ -146,11 +146,11 @@ class Graph: public QwtPlot
 
 		QList <LegendWidget *> textsList();
 		LegendWidget *activeText();
-		void setActiveText(LegendWidget *l){d_active_enrichement = (FrameWidget *)l;};
+		void setActiveText(LegendWidget *l){d_active_enrichment = (FrameWidget *)l;};
 		void select(QWidget *l, bool add = false);
 
-		FrameWidget *activeEnrichement(){return d_active_enrichement;};
-		QList <FrameWidget *> enrichementsList(){return d_enrichements;};
+		FrameWidget *activeEnrichment(){return d_active_enrichment;};
+		QList <FrameWidget *> enrichmentsList(){return d_enrichments;};
 
 		bool hasSeletedItems();
 		void deselect();
@@ -387,7 +387,7 @@ class Graph: public QwtPlot
 
 		LegendWidget *legend(){return d_legend;};
 		void setLegend(LegendWidget *l){d_legend = l;};
-		
+
 		LegendWidget* newLegend(const QString& text = QString());
 
 		//! Creates a new legend text using the curves titles
@@ -737,13 +737,13 @@ signals:
 		//! The currently active tool, or NULL for default (pointer).
 		PlotToolInterface *d_active_tool, *d_peak_fit_tool;
 		//! Pointer to the currently selected text/legend
-		FrameWidget *d_active_enrichement;
+		FrameWidget *d_active_enrichment;
 		//! Pointer to the current legend
 		LegendWidget *d_legend;
         //! Flag indicating if the axes limits should be changed in order to show all data each time a curva data change occurs
 		bool d_auto_scale;
 		//! Axes tick lengths
 		int d_min_tick_length, d_maj_tick_length;
-		QList<FrameWidget*> d_enrichements;
+		QList<FrameWidget*> d_enrichments;
 };
 #endif // GRAPH_H
