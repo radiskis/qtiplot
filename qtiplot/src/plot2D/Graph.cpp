@@ -123,6 +123,7 @@ static const char *unzoom_xpm[]={
 #include "PlotCurve.h"
 #include "../ApplicationWindow.h"
 #include "ScaleEngine.h"
+#include "RectangleWidget.h"
 
 #ifdef EMF_OUTPUT
 #include "EmfEngine.h"
@@ -5521,6 +5522,12 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 		((ImageWidget *)aux)->clone(i);
 	}
 
+	RectangleWidget *r = qobject_cast<RectangleWidget *>(fw);
+	if (r){
+		aux = new RectangleWidget(this);
+		((RectangleWidget *)aux)->clone(r);
+	}
+	
 	d_enrichments << aux;
 	d_active_enrichment = aux;
 	return aux;
