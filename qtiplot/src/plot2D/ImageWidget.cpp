@@ -38,7 +38,7 @@
 
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
 d_save_xpm(false)
-{
+{	
 	if (load(fn, false)){
 		QSize picSize = d_pix.size();
 		int w = plot->canvas()->width();
@@ -56,8 +56,7 @@ d_save_xpm(false)
 
 ImageWidget::ImageWidget(Graph *plot, const QImage& image):FrameWidget(plot),
 d_save_xpm(true)
-{
-
+{	
 	d_pix = QPixmap::fromImage(image);
 
 	QSize picSize = image.size();

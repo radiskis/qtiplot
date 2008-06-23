@@ -90,6 +90,7 @@
 #include "plot2D/QwtHistogram.h"
 #include "plot2D/FunctionCurve.h"
 #include "plot2D/QwtPieCurve.h"
+#include "plot2D/RectangleWidget.h"
 #include "plot2D/Spectrogram.h"
 
 #include "plot2D/dialogs/EnrichmentDialog.h"
@@ -10623,6 +10624,14 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			LegendWidget::restore(ag, lst);
+		} else if (s == "<Rectangle>"){//version 0.9.7
+			QStringList lst;
+			while ( s != "</Rectangle>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			RectangleWidget::restore(ag, lst);
 		}
 		else if (s.contains("AxisType"))
 		{

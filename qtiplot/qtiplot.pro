@@ -19,8 +19,8 @@ DEFINES         += SCRIPTING_DIALOG
 ######################################################################################
 #CONFIG          += CustomInstall
 
-CONFIG          += release
-#CONFIG          += debug
+#CONFIG          += release
+CONFIG          += debug
 win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
@@ -285,6 +285,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/QwtHistogram.h \
                src/plot2D/QwtPieCurve.h \
 			   src/plot2D/RangeSelectorTool.h \
+			   src/plot2D/RectangleWidget.h \
 			   src/plot2D/ScaleDraw.h \
 			   src/plot2D/ScaleEngine.h \
 			   src/plot2D/ScalePicker.h \
@@ -316,6 +317,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/QwtHistogram.cpp \
                src/plot2D/QwtPieCurve.cpp \
 			   src/plot2D/RangeSelectorTool.cpp \
+			   src/plot2D/RectangleWidget.cpp \
 			   src/plot2D/ScaleDraw.cpp \
 			   src/plot2D/ScaleEngine.cpp \
 			   src/plot2D/ScalePicker.cpp \

@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "AddWidgetTool.h"
 #include "Graph.h"
-#include "FrameWidget.h"
+#include "RectangleWidget.h"
 #include "LegendWidget.h"
 #include "TexWidget.h"
 #include "../ApplicationWindow.h"
@@ -137,15 +137,14 @@ void AddWidgetTool::addText(const QPoint& point)
 void AddWidgetTool::addRectangle(const QPoint& point)
 {
     if (!d_rect)
-        d_rect = new FrameWidget(d_graph);
+        d_rect = new RectangleWidget(d_graph);
 
 	if (!d_rect)
 		return;
 
 	d_rect->move(point);
-	d_rect->setSize(0, 0);
+	//d_rect->setSize(0, 0);
 	d_rect->setFrameColor(Qt::blue);
-	d_rect->setFrameStyle(1);
 	d_graph->add(d_rect, false);
 	//d_graph->setFocus();
 	emit statusText(tr("Move cursor in order to resize the new rectangle!"));
