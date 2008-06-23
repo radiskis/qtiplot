@@ -87,12 +87,12 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 
     	clearButton = buttonBox->addButton(tr("Clea&r"), QDialogButtonBox::ResetRole);
 		connect(clearButton, SIGNAL(clicked()), this, SLOT(clearForm()));
-		updateButton = buttonBox->addButton(tr("&Update"), QDialogButtonBox::ApplyRole);
-	} else {
-		setWindowTitle(tr("QtiPlot") + " - " + tr("Properties Editor"));
-    	updateButton = buttonBox->addButton(tr("&Apply"), QDialogButtonBox::ApplyRole);
-	}
+	} else if (wt == MDIWindow)
+        setWindowTitle(tr("QtiPlot") + " - " + tr("Window Geometry"));
+	else
+		setWindowTitle(tr("QtiPlot") + " - " + tr("Object Properties"));
 
+    updateButton = buttonBox->addButton(tr("&Apply"), QDialogButtonBox::ApplyRole);
 	connect(updateButton, SIGNAL(clicked()), this, SLOT(apply()));
 
 	cancelButton = buttonBox->addButton(tr("&Close"), QDialogButtonBox::RejectRole);
@@ -104,7 +104,8 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	else if (wt == Image)
 		initImagePage();
 
-	initFramePage();
+    if (wt != MDIWindow)
+        initFramePage();
 	initGeometryPage();
 
     QVBoxLayout *layout = new QVBoxLayout;
@@ -193,12 +194,13 @@ void EnrichmentDialog::initGeometryPage()
     geometryPage = new QWidget();
 
 	unitBox = new QComboBox();
-	unitBox->insertItem(tr("Inch"));
-	unitBox->insertItem(tr("Millimeter"));
-	unitBox->insertItem(tr("Centimeter"));
-	unitBox->insertItem(tr("Point"));
-	unitBox->insertItem(tr("Pixel"));
-	unitBox->insertItem(tr("Scale Coordinate"));
+	unitBox->insertItem(tr("inch"));
+	unitBox->insertItem(tr("mm"));
+	unitBox->insertItem(tr("cm"));
+	unitBox->insertItem(tr("point"));
+	unitBox->insertItem(tr("pixel"));
+	if (d_widget_type != MDIWindow)
+        unitBox->insertItem(tr("scale"));
 
 	QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl1->addWidget(new QLabel(tr( "Unit" )));
@@ -281,17 +283,21 @@ void EnrichmentDialog::customButtons(QWidget *w)
 		updateButton->setEnabled(true);
 }
 
-void EnrichmentDialog::setWidget(FrameWidget *w)
+void EnrichmentDialog::setWidget(QWidget *w)
 {
 	if (!w)
 		return;
 
 	d_widget = w;
 
-	frameBox->setCurrentIndex(w->frameStyle());
-	frameColorBtn->setColor(w->frameColor());
+    FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
+    if (fw){
+        frameBox->setCurrentIndex(fw->frameStyle());
+        frameColorBtn->setColor(fw->frameColor());
+    }
 
-	displayCoordinates(0);
+    unitBox->setCurrentIndex(FrameWidget::Pixel);
+	displayCoordinates(FrameWidget::Pixel);
 
 	if (d_widget_type == Tex){
 		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
@@ -323,10 +329,11 @@ void EnrichmentDialog::apply()
 	if (tabWidget->currentPage() == editPage)
 		fetchImage();
 	else if (tabWidget->currentPage() == framePage){
-		if (d_widget){
-			d_widget->setFrameStyle(frameBox->currentIndex());
-			d_widget->setFrameColor(frameColorBtn->color());
-			d_widget->repaint();
+	    FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
+        if (fw){
+			fw->setFrameStyle(frameBox->currentIndex());
+			fw->setFrameColor(frameColorBtn->color());
+			fw->repaint();
 			d_plot->multiLayer()->notifyChanges();
 		}
 	} else if (imagePage && tabWidget->currentPage() == imagePage)
@@ -433,11 +440,15 @@ void EnrichmentDialog::setCoordinates(int unit)
 	if (unit == FrameWidget::Scale){//ScaleCoordinates
 		double left = xBox->value();
 		double top = yBox->value();
-		d_widget->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
+		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
+        if (fw)
+            fw->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
 	} else
-		d_widget->setRect(xBox->value(), yBox->value(), widthBox->value(), heightBox->value(), (FrameWidget::Unit)unit);
+		FrameWidget::setRect(d_widget, xBox->value(), yBox->value(),
+        widthBox->value(), heightBox->value(), (FrameWidget::Unit)unit);
 
-	d_plot->multiLayer()->notifyChanges();
+    if (d_plot)
+        d_plot->multiLayer()->notifyChanges();
 }
 
 void EnrichmentDialog::displayCoordinates(int unit)
@@ -465,13 +476,13 @@ void EnrichmentDialog::displayCoordinates(int unit)
 		yBox->setSingleStep(0.1);
 		widthBox->setSingleStep(0.1);
 		heightBox->setSingleStep(0.1);
-	}  
+	}
 
 	xBox->setValue(FrameWidget::xIn(d_widget, (FrameWidget::Unit)unit));
 	yBox->setValue(FrameWidget::yIn(d_widget, (FrameWidget::Unit)unit));
 	widthBox->setValue(FrameWidget::widthIn(d_widget, (FrameWidget::Unit)unit));
 	heightBox->setValue(FrameWidget::heightIn(d_widget, (FrameWidget::Unit)unit));
-	
+
 	aspect_ratio = widthBox->value()/heightBox->value();
 }
 
@@ -511,7 +522,7 @@ EnrichmentDialog::~EnrichmentDialog()
 
 	TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
 	if (tw && (tw->formula().isEmpty() || tw->pixmap().isNull())){
-		d_plot->remove(d_widget);
+		d_plot->remove(tw);
 		d_plot->setActiveTool(NULL);
 		d_widget->close();
 		d_widget = NULL;

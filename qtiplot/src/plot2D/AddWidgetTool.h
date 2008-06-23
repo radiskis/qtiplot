@@ -31,16 +31,16 @@
 
 #include "PlotToolInterface.h"
 #include <QObject>
-#include <qwt_picker.h>
 
 class QAction;
-	
+class QPoint;
+class FrameWidget;
+
 /*!Plot tool for adding enrichements.
  *
- * This is a rather thin wrapper around QwtPicker, providing selection of points
- * on a Graph.
+ * Provides selection of points on a Graph.
  */
-class AddWidgetTool : public QwtPicker, public PlotToolInterface
+class AddWidgetTool : public QObject, public PlotToolInterface
 {
 	Q_OBJECT
 	public:
@@ -50,27 +50,29 @@ class AddWidgetTool : public QwtPicker, public PlotToolInterface
         	Rectangle,
         	UserWidget = 1000
     	};
-	
+
 		AddWidgetTool(WidgetType type, Graph *graph, QAction *d_action, const QObject *status_target = NULL, const char *status_slot = "");
 		virtual ~AddWidgetTool();
 
 		virtual int rtti() const {return PlotToolInterface::Rtti_AddWidgetTool;};
-		
+
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
 		 *
 		 * You don't have to connect to this signal if you alreay specified a reciever during initialization.
 		 */
 		void statusText(const QString&);
-		
+
 	protected:
+        void addRectangle(const QPoint& point);
 		void addEquation(const QPoint& point);
 		void addText(const QPoint& point);
 		void addWidget(const QPoint& point);
-	
+
         virtual bool eventFilter(QObject *obj, QEvent *event);
 		QAction *d_action;
 		WidgetType d_widget_type;
+		FrameWidget *d_rect;
 };
 
 #endif // ifndef ADD_WIDGET_TOOL_H

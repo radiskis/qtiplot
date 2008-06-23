@@ -475,8 +475,6 @@ public slots:
 	void maximizeWindow(Q3ListViewItem * lbi = 0);
 	void maximizeWindow(MdiSubWindow *w);
 	void minimizeWindow(MdiSubWindow *w = 0);
-    //! Changes the geometry of the active MDI window
-    void setWindowGeometry(int x, int y, int w, int h);
 
 	void updateWindowStatus(MdiSubWindow* );
 
@@ -576,6 +574,7 @@ public slots:
 	void drawPoints();
 	void addText();
 	void addTexFormula();
+	void addRectangle();
 	void addImage();
 	void zoomIn();
 	void zoomOut();
@@ -1019,7 +1018,7 @@ private slots:
 
 	void hideSelectedColumns();
 	void showAllColumns();
-	
+
 // TODO: a lot of this stuff should be private
 public:
 	//! End of line convention used for copy/paste operations and when exporting tables/matrices to ASCII files.
@@ -1268,7 +1267,7 @@ private:
 	QAction *Box, *Frame, *None;
     QAction *front, *back, *right, *left, *ceil, *floor, *floordata, *flooriso, *floornone;
     QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
-    QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula;
+    QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle;
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;

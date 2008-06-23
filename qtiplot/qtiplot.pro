@@ -19,8 +19,8 @@ DEFINES         += SCRIPTING_DIALOG
 ######################################################################################
 #CONFIG          += CustomInstall
 
-#CONFIG          += release
-CONFIG          += debug
+CONFIG          += release
+#CONFIG          += debug
 win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
@@ -187,7 +187,6 @@ HEADERS  += src/ApplicationWindow.h \
 			src/TextDialog.h \
 			src/PlotWizard.h \
 			src/LineNumberDisplay.h \
-			src/WindowGeometryDialog.h \
 
 ###################### SOURCES ##############################################
 
@@ -229,7 +228,6 @@ SOURCES  += src/main.cpp \
 			src/TextDialog.cpp \
 			src/PlotWizard.cpp \
 			src/LineNumberDisplay.cpp \
-			src/WindowGeometryDialog.cpp \
 
 ###############################################################
 ##################### Compression (zlib123) ###################

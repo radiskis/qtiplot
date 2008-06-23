@@ -54,7 +54,6 @@
 #include "SymbolDialog.h"
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
-#include "WindowGeometryDialog.h"
 
 #include "analysis/Fit.h"
 #include "analysis/MultiPeakFit.h"
@@ -747,6 +746,13 @@ void ApplicationWindow::initToolBars()
 	connect(actionAddFormula, SIGNAL(triggered()), this, SLOT(addTexFormula()));
 	plotTools->addAction(actionAddFormula);
 
+    actionAddRectangle = new QAction(tr("Add &Rectangle"), this);
+	actionAddRectangle->setShortcut( tr("CTRL+ALT+R") );
+	actionAddRectangle->setCheckable(true);
+	actionAddRectangle->setIcon(QIcon(QPixmap(rectangle_xpm)));
+	connect(actionAddRectangle, SIGNAL(triggered()), this, SLOT(addRectangle()));
+	plotTools->addAction(actionAddRectangle);
+
 	actionAddText = new QAction(tr("Add &Text"), this);
 	actionAddText->setShortcut( tr("ALT+T") );
 	actionAddText->setIcon(QIcon(QPixmap(text_xpm)));
@@ -768,6 +774,7 @@ void ApplicationWindow::initToolBars()
 	btnLine->setIcon(QIcon(QPixmap(lPlot_xpm)) );
 	plotTools->addAction(btnLine);
 
+    plotTools->addAction(actionAddRectangle);
 	plotTools->addAction(actionTimeStamp);
 	plotTools->addAction(actionAddImage);
 	plotTools->hide();
@@ -987,6 +994,7 @@ void ApplicationWindow::initMainMenu()
 	graph->addAction(actionAddText);
 	graph->addAction(btnArrow);
 	graph->addAction(btnLine);
+	graph->addAction(actionAddRectangle);
 	graph->addAction(actionTimeStamp);
 	graph->addAction(actionAddImage);
 	graph->insertSeparator();//layers section
@@ -7125,6 +7133,24 @@ void ApplicationWindow::addTimeStamp()
 		g->addTimeStamp();
 }
 
+void ApplicationWindow::addRectangle()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph *g = (Graph*)plot->activeLayer();
+	if (!g){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+		tr("There are no layers available on this plot. Operation aborted!"));
+		return;
+	}
+
+    g->setActiveTool(new AddWidgetTool(AddWidgetTool::Rectangle, g, actionAddRectangle, info, SLOT(setText(const QString&))));
+	displayBar->show();
+	btnPointer->setOn(false);
+}
+
 void ApplicationWindow::addTexFormula()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
@@ -7271,10 +7297,15 @@ void ApplicationWindow::showEnrichementDialog()
 		td->setLegendWidget(l);
 		td->exec();
 	} else {
-		EnrichmentDialog::WidgetType wt = EnrichmentDialog::Tex;
+		EnrichmentDialog::WidgetType wt = EnrichmentDialog::Frame;
 		ImageWidget *iw = qobject_cast<ImageWidget *>(g->activeEnrichment());
 		if (iw)
 			wt = EnrichmentDialog::Image;
+        else {
+            TexWidget *tw = qobject_cast<TexWidget *>(g->activeEnrichment());
+            if (tw)
+                wt = EnrichmentDialog::Tex;
+        }
 
 		EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
 		ed->setWidget(g->activeEnrichment());
@@ -7688,14 +7719,9 @@ void ApplicationWindow::resizeActiveWindow()
 	if (!w)
 		return;
 
-	WindowGeometryDialog *id = new WindowGeometryDialog(this);
-	id->setAttribute(Qt::WA_DeleteOnClose);
-	connect (id, SIGNAL(setGeometry(int,int,int,int)), this, SLOT(setWindowGeometry(int,int,int,int)));
-
-	id->setWindowTitle(tr("QtiPlot - Window Geometry"));
-	id->setOrigin(w->pos());
-	id->setSize(w->size());
-	id->exec();
+	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, NULL, this);
+    ed->setWidget(w);
+    ed->exec();
 }
 
 void ApplicationWindow::resizeWindow()
@@ -7707,19 +7733,9 @@ void ApplicationWindow::resizeWindow()
 
 	d_workspace->setActiveSubWindow(w);
 
-	WindowGeometryDialog *id = new WindowGeometryDialog(this);
-	id->setAttribute(Qt::WA_DeleteOnClose);
-	connect (id, SIGNAL(setGeometry(int,int,int,int)), this, SLOT(setWindowGeometry(int,int,int,int)));
-
-	id->setWindowTitle(tr("QtiPlot - Window Geometry"));
-	id->setOrigin(w->pos());
-	id->setSize(w->size());
-	id->exec();
-}
-
-void ApplicationWindow::setWindowGeometry(int x, int y, int w, int h)
-{
-	activeWindow()->setGeometry(x, y, w, h);
+	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, NULL, this);
+    ed->setWidget(w);
+    ed->exec();
 }
 
 void ApplicationWindow::activateWindow()
@@ -12404,6 +12420,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionAddFormula->setMenuText(tr("Add E&quation"));
 	actionAddFormula->setToolTip(tr("Add Equation"));
 	actionAddFormula->setShortcut( tr("ALT+Q") );
+
+    actionAddRectangle->setMenuText(tr("Add &Rectangle"));
+    actionAddRectangle->setToolTip(tr("Add Rectangle"));
+	actionAddRectangle->setShortcut( tr("CTRL+ALT+R") );
 
 	btnArrow->setMenuText(tr("Draw &Arrow"));
 	btnArrow->setShortcut(tr("CTRL+ALT+A"));

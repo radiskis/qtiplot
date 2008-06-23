@@ -403,18 +403,18 @@ void PlotDialog::initLayerGeometryPage()
 	QLocale locale = QLocale();
 	if (app)
 		locale = app->locale();
-	
+
 	unitBox = new QComboBox();
-	unitBox->insertItem(tr("Inch"));
-	unitBox->insertItem(tr("Millimeter"));
-	unitBox->insertItem(tr("Centimeter"));
-	unitBox->insertItem(tr("Point"));
-	unitBox->insertItem(tr("Pixel"));
-	
+	unitBox->insertItem(tr("inch"));
+	unitBox->insertItem(tr("mm"));
+	unitBox->insertItem(tr("cm"));
+	unitBox->insertItem(tr("point"));
+	unitBox->insertItem(tr("pixel"));
+
 	QBoxLayout *bl1 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl1->addWidget(new QLabel(tr( "Unit" )));
 	bl1->addWidget(unitBox);
-	
+
 	QGroupBox *gb1 = new QGroupBox(tr("Origin"));
 	boxX = new DoubleSpinBox();
 	boxX->setLocale(locale);
@@ -1827,7 +1827,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxLayerHeight->blockSignals(true);
 
 	displayCoordinates(unitBox->currentIndex(), g);
-	
+
 	boxLayerWidth->blockSignals(false);
 	boxLayerHeight->blockSignals(false);
 
@@ -2166,15 +2166,8 @@ bool PlotDialog::acceptParams()
 		if (!g)
 			return false;
 
-		/*QPoint pos = QPoint(boxX->value(), boxY->value());
-		QSize size = QSize(boxLayerWidth->value(), boxLayerHeight->value());
-		if (g->pos() == pos && g->size() == size)
-			return true;
-
-		g->setGeometry(QRect(pos, size));*/
-		
-		g->setRect(boxX->value(), boxY->value(), boxLayerWidth->value(), 
-					boxLayerHeight->value(), (Graph::Unit)unitBox->currentIndex());
+		FrameWidget::setRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
+					boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex());
 		d_ml->repaint();
 		return true;
 	}
@@ -2989,13 +2982,13 @@ void PlotDialog::displayCoordinates(int unit, Graph *g)
 		boxY->setSingleStep(0.1);
 		boxLayerWidth->setSingleStep(0.1);
 		boxLayerHeight->setSingleStep(0.1);
-	}  
+	}
 
 	boxX->setValue(FrameWidget::xIn(g, (FrameWidget::Unit)unit));
 	boxY->setValue(FrameWidget::yIn(g, (FrameWidget::Unit)unit));
 	boxLayerWidth->setValue(FrameWidget::widthIn(g, (FrameWidget::Unit)unit));
 	boxLayerHeight->setValue(FrameWidget::heightIn(g, (FrameWidget::Unit)unit));
-	
+
 	aspect_ratio = boxLayerWidth->value()/boxLayerHeight->value();
 }
 /*****************************************************************************

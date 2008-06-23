@@ -86,7 +86,7 @@ void FrameWidget::setFrameStyle(int style)
 		resize(width() + d_frame_width, height() + d_frame_width);
 	else if (old_frame_style == Shadow)
 		resize(width() - d_frame_width, height() - d_frame_width);
-	
+
 	d_x_right = calculateRightValue();
 	d_y_bottom = calculateBottomValue();
 }
@@ -254,7 +254,7 @@ double FrameWidget::xIn(QWidget *w, Unit unit)
 double FrameWidget::yIn(QWidget *w, Unit unit)
 {
 	double dpi = (double)w->logicalDpiY();
-	double val;
+	double val = 0.0;
 	switch(unit){
 		case Pixel:
 			val = (double)w->y();
@@ -282,8 +282,8 @@ double FrameWidget::yIn(QWidget *w, Unit unit)
 
 double FrameWidget::widthIn(QWidget *w, Unit unit)
 {
-	double dpi = (double)w->physicalDpiX();
-	double val;
+	double dpi = (double)w->logicalDpiX();
+	double val = 0.0;
 	switch(unit){
 		case Pixel:
 			val = (double)w->width();
@@ -311,8 +311,8 @@ double FrameWidget::widthIn(QWidget *w, Unit unit)
 
 double FrameWidget::heightIn(QWidget *w, Unit unit)
 {
-	double dpi = (double)w->physicalDpiY();
-	double val;
+	double dpi = (double)w->logicalDpiY();
+	double val = 0.0;
 	switch(unit){
 		case Pixel:
 			val = (double)w->height();
@@ -338,28 +338,56 @@ double FrameWidget::heightIn(QWidget *w, Unit unit)
 	return val;
 }
 
-void FrameWidget::setRect(double x, double y, double w, double h, Unit unit)
+void FrameWidget::setRect(QWidget *widget, double x, double y, double w, double h, Unit unit)
 {
-	int dpiX = logicalDpiX();
-	int dpiY = logicalDpiY();
-	switch(unit){
+    if (!widget)
+        return;
+
+	int dpiX = widget->logicalDpiX();
+	int dpiY = widget->logicalDpiY();
+
+	FrameWidget *fw = qobject_cast<FrameWidget *>(widget);
+    if (fw){
+        switch(unit){
+            case Pixel:
+                fw->setRect(qRound(x), qRound(y), qRound(w), qRound(h));
+            break;
+            case Inch:
+                fw->setRect(qRound(x*dpiX), qRound(y*dpiY), qRound(w*dpiX), qRound(h*dpiY));
+            break;
+            case Millimeter:
+                fw->setRect(qRound(x*dpiX/25.4), qRound(y*dpiY/25.4), qRound(w*dpiX/25.4), qRound(h*dpiY/25.4));
+            break;
+            case Centimeter:
+                fw->setRect(qRound(x*dpiX/2.54), qRound(y*dpiY/2.54), qRound(w*dpiX/2.54), qRound(h*dpiY/2.54));
+            break;
+            case Point:
+                fw->setRect(qRound(x*dpiX/72.0), qRound(y*dpiY/72.0), qRound(w*dpiX/72.0), qRound(h*dpiY/72.0));
+            break;
+            case Scale:
+                fw->setCoordinates(x, y, x + w, y + h);
+            break;
+        }
+        return;
+    }
+
+    switch(unit){
 		case Pixel:
-			setRect((int)x, (int)y, (int)w, (int)h);
+			widget->setGeometry(qRound(x), qRound(y), qRound(w), qRound(h));
 		break;
 		case Inch:
-			setRect(int(x*dpiX), int(y*dpiY), int(w*dpiX), int(h*dpiY));
+			widget->setGeometry(qRound(x*dpiX), qRound(y*dpiY), qRound(w*dpiX), qRound(h*dpiY));
 		break;
 		case Millimeter:
-			setRect(int(x*dpiX/25.4), int(y*dpiY/25.4), int(w*dpiX/25.4), int(h*dpiY/25.4));
+			widget->setGeometry(qRound(x*dpiX/25.4), qRound(y*dpiY/25.4), qRound(w*dpiX/25.4), qRound(h*dpiY/25.4));
 		break;
 		case Centimeter:
-			setRect(int(x*dpiX/2.54), int(y*dpiY/2.54), int(w*dpiX/2.54), int(h*dpiY/2.54));
+			widget->setGeometry(qRound(x*dpiX/2.54), qRound(y*dpiY/2.54), qRound(w*dpiX/2.54), qRound(h*dpiY/2.54));
 		break;
 		case Point:
-			setRect(int(x*dpiX/72.0), int(y*dpiY/72.0), int(w*dpiX/72.0), int(h*dpiY/72.0));
+			widget->setGeometry(qRound(x*dpiX/72.0), qRound(y*dpiY/72.0), qRound(w*dpiX/72.0), qRound(h*dpiY/72.0));
 		break;
-		case Scale:
-			setCoordinates(x, y, x + w, y + h);
-		break;
+		default:
+            break;
 	}
 }
