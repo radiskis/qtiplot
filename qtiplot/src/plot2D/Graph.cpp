@@ -5530,26 +5530,3 @@ LegendWidget* Graph::activeText()
 {
 	return qobject_cast<LegendWidget *>(d_active_enrichment);
 }
-
-void Graph::setRect(double x, double y, double w, double h, Unit unit)
-{
-	int dpiX = logicalDpiX();
-	int dpiY = logicalDpiY();
-	switch(unit){
-		case Pixel:
-			setGeometry((int)x, (int)y, (int)w, (int)h);
-		break;
-		case Inch:
-			setGeometry(int(x*dpiX), int(y*dpiY), int(w*dpiX), int(h*dpiY));
-		break;
-		case Millimeter:
-			setGeometry(int(x*dpiX/25.4), int(y*dpiY/25.4), int(w*dpiX/25.4), int(h*dpiY/25.4));
-		break;
-		case Centimeter:
-			setGeometry(int(x*dpiX/2.54), int(y*dpiY/2.54), int(w*dpiX/2.54), int(h*dpiY/2.54));
-		break;
-		case Point:
-			setGeometry(int(x*dpiX/72.0), int(y*dpiY/72.0), int(w*dpiX/72.0), int(h*dpiY/72.0));
-		break;
-	}
-}

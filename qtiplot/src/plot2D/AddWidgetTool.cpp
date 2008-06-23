@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "AddWidgetTool.h"
 #include "Graph.h"
+#include "FrameWidget.h"
 #include "LegendWidget.h"
 #include "TexWidget.h"
 #include "../ApplicationWindow.h"
@@ -40,18 +41,22 @@
 #include <qwt_text_label.h>
 
 AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, const QObject *status_target, const char *status_slot)
-	: QwtPicker(graph),
+	: QObject(graph),
 	PlotToolInterface(graph),
 	d_action(action),
-	d_widget_type(type)
+	d_widget_type(type),
+	d_rect(NULL)
 {
-	setTrackerMode(QwtPicker::AlwaysOff);
-	setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
-	graph->setCursor(QCursor(Qt::IBeamCursor));
-
-	QwtPlotCanvas *canvas = graph->canvas();
-	canvas->setCursor(QCursor(Qt::IBeamCursor));
+    QwtPlotCanvas *canvas = graph->canvas();
 	canvas->installEventFilter(this);
+
+	if (type == Rectangle){
+        graph->setCursor(QCursor(Qt::CrossCursor));
+        canvas->setCursor(QCursor(Qt::CrossCursor));
+	} else {
+        graph->setCursor(QCursor(Qt::IBeamCursor));
+        canvas->setCursor(QCursor(Qt::IBeamCursor));
+	}
 
 	QwtTextLabel *title = graph->titleLabel();
 	if (title)
@@ -105,6 +110,7 @@ void AddWidgetTool::addEquation(const QPoint& point)
 	t->setFrameStyle(1);
 	d_graph->add(t, false);
 	t->showPropertiesDialog();
+	d_graph->setActiveTool(NULL);
 }
 
 void AddWidgetTool::addText(const QPoint& point)
@@ -125,6 +131,24 @@ void AddWidgetTool::addText(const QPoint& point)
 		l->setBackgroundColor(app->legendBackground);
 	}
     l->showTextDialog();
+    d_graph->setActiveTool(NULL);
+}
+
+void AddWidgetTool::addRectangle(const QPoint& point)
+{
+    if (!d_rect)
+        d_rect = new FrameWidget(d_graph);
+
+	if (!d_rect)
+		return;
+
+	d_rect->move(point);
+	d_rect->setSize(0, 0);
+	d_rect->setFrameColor(Qt::blue);
+	d_rect->setFrameStyle(1);
+	d_graph->add(d_rect, false);
+	//d_graph->setFocus();
+	emit statusText(tr("Move cursor in order to resize the new rectangle!"));
 }
 
 void AddWidgetTool::addWidget(const QPoint& point)
@@ -136,10 +160,12 @@ void AddWidgetTool::addWidget(const QPoint& point)
 		case TexEquation:
 			addEquation(point);
 		break;
+		case Rectangle:
+			addRectangle(point);
+		break;
 		default:
 			break;
 	}
-    d_graph->setActiveTool(NULL);
 }
 
 bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
@@ -148,8 +174,28 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
 		case QEvent::MouseButtonPress:
 			addWidget(d_graph->mapFromGlobal(QCursor::pos()));
 			return true;
+        break;
+
+        case QEvent::MouseMove:
+            if (d_rect){
+                QRect r = d_rect->geometry();
+                r.setBottomRight(d_graph->mapFromGlobal(QCursor::pos()));
+                d_rect->setGeometry(r.normalized());
+            }
+        break;
+
+        case QEvent::MouseButtonRelease:
+            if (d_rect){
+                d_rect->setFrameColor(Qt::black);
+                d_rect->repaint();
+                d_rect = NULL;
+                emit statusText("");
+                d_graph->setActiveTool(NULL);
+            }
+        break;
+
 		default:
 			break;
 	}
-	return QwtPicker::eventFilter(obj, event);
+	return QObject::eventFilter(obj, event);
 }

@@ -53,12 +53,12 @@ class EnrichmentDialog : public QDialog
     Q_OBJECT
 
 public:
-	enum WidgetType{Frame, Text, Image, Tex};
+	enum WidgetType{Frame, Text, Image, Tex, MDIWindow};
 
     EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent = 0);
 	~EnrichmentDialog();
 
-	void setWidget(FrameWidget *w);
+	void setWidget(QWidget *w);
 
 private slots:
     void clearForm();
@@ -98,7 +98,7 @@ private:
 	QCheckBox *keepAspectBox;
 
 	Graph *d_plot;
-	FrameWidget *d_widget;
+	QWidget *d_widget;
 	WidgetType d_widget_type;
 	double aspect_ratio;
 };
