@@ -42,12 +42,14 @@ class QTabWidget;
 class QCheckBox;
 class QLineEdit;
 class QCheckBox;
+class QSpinBox;
 
 class Graph;
 class FrameWidget;
 class ColorButton;
 class DoubleSpinBox;
-
+class PatternBox;
+	
 class EnrichmentDialog : public QDialog
 {
     Q_OBJECT
@@ -78,6 +80,7 @@ private:
 	void initImagePage();
 	void initFramePage();
 	void initGeometryPage();
+	void initPatternPage();
 	void setCoordinates(int unit);
 
     QHttp *http;
@@ -89,13 +92,15 @@ private:
     QTextEdit *equationEditor;
 	QComboBox *frameBox;
 	QTabWidget* tabWidget;
-	QWidget *editPage, *framePage, *geometryPage, *imagePage;
-	ColorButton *frameColorBtn;
+	QWidget *editPage, *framePage, *geometryPage, *imagePage, *patternPage;
+	ColorButton *frameColorBtn, *backgroundColorBtn, *patternColorBtn;
 	QCheckBox *boxSaveImagesInternally;
 	QLineEdit *imagePathBox;
 	DoubleSpinBox *xBox, *yBox, *widthBox, *heightBox;
 	QComboBox *unitBox;
-	QCheckBox *keepAspectBox;
+	QCheckBox *keepAspectBox, *useFrameColorBox;
+	QSpinBox *boxTransparency, *boxFrameWidth;
+	PatternBox *patternBox;
 
 	Graph *d_plot;
 	QWidget *d_widget;

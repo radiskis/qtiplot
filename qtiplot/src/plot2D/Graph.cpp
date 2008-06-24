@@ -3646,11 +3646,11 @@ void Graph::resizeEvent ( QResizeEvent *e )
 	}
 
 	foreach(FrameWidget *f, d_enrichments){
-		ImageWidget *i = qobject_cast<ImageWidget *>(f);
-		if (i)
-			i->resetCoordinates();
+		TexWidget *tw = qobject_cast<TexWidget *>(f);
+		if (tw)
+			tw->resetOrigin();
 		else
-			f->resetOrigin();
+        	f->resetCoordinates();
 	}
 }
 
@@ -5527,7 +5527,7 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 		aux = new RectangleWidget(this);
 		((RectangleWidget *)aux)->clone(r);
 	}
-	
+
 	d_enrichments << aux;
 	d_active_enrichment = aux;
 	return aux;

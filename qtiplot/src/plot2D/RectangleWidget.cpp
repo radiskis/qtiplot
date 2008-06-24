@@ -27,6 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "RectangleWidget.h"
+#include "../PatternBox.h"
+
 #include <QPainter>
 #include <QPaintEngine>
 #include <QPalette>
@@ -37,28 +39,12 @@ RectangleWidget::RectangleWidget(Graph *plot):FrameWidget(plot)
 	setSize(0, 0);
 }
 
-/*void RectangleWidget::paintEvent(QPaintEvent *e)
-{
-	if (d_pix.isNull())
-		return;
-
-	QPainter p(this);
-	draw(&p, rect());
-	e->accept();
-}*/
-
-void RectangleWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
-{
-	int x = map[QwtPlot::xBottom].transform(calculateXValue());
-	int y = map[QwtPlot::yLeft].transform(calculateYValue());
-
-	//draw(painter, QRect(x, y, width(), height()));
-}
-
 void RectangleWidget::clone(RectangleWidget* r)
 {
 	d_frame = r->frameStyle();
-	d_color = r->frameColor();
+	setFramePen(r->framePen());
+	setBackgroundColor(r->backgroundColor());
+	setBrush(r->brush());
 	setCoordinates(r->xValue(), r->yValue(), r->right(), r->bottom());
 }
 
@@ -66,22 +52,31 @@ QString RectangleWidget::saveToString()
 {
 	QString s = "<Rectangle>\n";
 	s += FrameWidget::saveToString();
+	s += "<FrameWidth>" + QString::number(d_frame_pen.width()) + "</FrameWidth>\n";
+	QColor bc = backgroundColor();
+	s += "<Background>" + bc.name() + "</Background>\n";
+	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
+	s += "<BrushColor>" + d_brush.color().name() + "</BrushColor>\n";
+	s += "<BrushStyle>" + QString::number(PatternBox::patternIndex(d_brush.style())) + "</BrushStyle>\n";
 	return s + "</Rectangle>\n";
 }
 
 void RectangleWidget::restore(Graph *g, const QStringList& lst)
 {
-	int frameStyle = 0;
-	QColor frameColor = Qt::black;
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
 	QStringList::const_iterator line;
+	QColor backgroundColor = Qt::white;
+	QBrush brush = QBrush();
 	RectangleWidget *r = new RectangleWidget(g);
+	if (!r)
+		return;
+	
 	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;
         if (s.contains("<Frame>"))
-			frameStyle = s.remove("<Frame>").remove("</Frame>").toInt();
+			r->setFrameStyle(s.remove("<Frame>").remove("</Frame>").toInt());
 		else if (s.contains("<Color>"))
-			frameColor = QColor(s.remove("<Color>").remove("</Color>"));
+			r->setFrameColor(QColor(s.remove("<Color>").remove("</Color>")));
 		else if (s.contains("<x>"))
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
@@ -90,12 +85,20 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			right = s.remove("<right>").remove("</right>").toDouble();
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
+		else if (s.contains("<FrameWidth>"))
+			r->setFrameWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toInt());
+		else if (s.contains("<Background>"))
+			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
+		else if (s.contains("<Alpha>"))
+			backgroundColor.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+		else if (s.contains("<BrushColor>"))
+			brush.setColor(QColor(s.remove("<BrushColor>").remove("</BrushColor>")));
+		else if (s.contains("<BrushStyle>"))
+			brush.setStyle(PatternBox::brushStyle((s.remove("<BrushStyle>").remove("</BrushStyle>")).toInt()));
 	}
 
-	if (r){
-		g->add(r, false);
-		r->setCoordinates(x, y, right, bottom);
-		r->setFrameColor(frameColor);		
-		r->setFrameStyle(frameStyle);
-	}
+	r->setBackgroundColor(backgroundColor);
+	r->setBrush(brush);
+	r->setCoordinates(x, y, right, bottom);
+	g->add(r, false);
 }
