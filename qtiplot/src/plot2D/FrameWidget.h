@@ -82,9 +82,21 @@ public:
 	int frameStyle(){return d_frame;};
 	void setFrameStyle(int style);
 
-	QColor frameColor(){return d_color;};
-	void setFrameColor(const QColor& c){d_color = c;};
+	QPen framePen(){return d_frame_pen;};
+	void setFramePen(const QPen& p){d_frame_pen = p;};
+	
+	QColor frameColor(){return d_frame_pen.color();};
+	void setFrameColor(const QColor& c){d_frame_pen.setColor(c);};
+	
+	QColor frameWidth(){return d_frame_pen.width();};
+	void setFrameWidth(int w){d_frame_pen.setWidth(w);};
 
+	QColor backgroundColor(){return palette().color(QPalette::Window);};
+	void setBackgroundColor(const QColor& c){QPalette pal = palette(); pal.setColor(QPalette::Window, c); setPalette(pal);};
+	
+	QBrush brush(){return d_brush;};
+	void setBrush(const QBrush& b){d_brush = b;};
+		
 	int angle(){return d_angle;};
 	void setAngle(int ang){d_angle = ang;};
 
@@ -122,8 +134,10 @@ protected:
 
 	//! Frame type
 	int d_frame;
-	//! Frame color
-	QColor d_color;
+	//! Pen used to draw the frame
+	QPen d_frame_pen;
+	//! Background brush
+	QBrush d_brush;
 
 	//! Rotation angle: not implemented yet
 	int d_angle;
@@ -137,7 +151,7 @@ protected:
     //! The bottom side position in scale coordinates.
     double d_y_bottom;
 	//! Frame width in pixels
-	int d_frame_width;
+	int d_shadow_width;
 };
 
 #endif

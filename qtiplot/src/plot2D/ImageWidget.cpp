@@ -38,7 +38,7 @@
 
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
 d_save_xpm(false)
-{	
+{
 	if (load(fn, false)){
 		QSize picSize = d_pix.size();
 		int w = plot->canvas()->width();
@@ -56,7 +56,7 @@ d_save_xpm(false)
 
 ImageWidget::ImageWidget(Graph *plot, const QImage& image):FrameWidget(plot),
 d_save_xpm(true)
-{	
+{
 	d_pix = QPixmap::fromImage(image);
 
 	QSize picSize = image.size();
@@ -134,7 +134,7 @@ void ImageWidget::draw(QPainter *painter, const QRect& rect)
 			r.adjust(0, 0, -1, -1);
 		break;
 		case Shadow:
-			r.adjust(0, 0, -d_frame_width, -d_frame_width);
+			r.adjust(0, 0, -d_shadow_width - 1, -d_shadow_width - 1);
 		break;
 	}
 
@@ -151,8 +151,8 @@ void ImageWidget::setPixmap(const QPixmap& pix)
 	int width = pix.width();
 	int height = pix.height();
 	if (d_frame == Shadow){
-		width += d_frame_width;
-		height += d_frame_width;
+		width += d_shadow_width;
+		height += d_shadow_width;
 	}
 	resize(QSize(width, height));
 	repaint();
@@ -161,7 +161,7 @@ void ImageWidget::setPixmap(const QPixmap& pix)
 void ImageWidget::clone(ImageWidget* t)
 {
 	d_frame = t->frameStyle();
-	d_color = t->frameColor();
+	setFramePen(t->framePen());
 	d_file_name = t->fileName();
 	d_save_xpm = t->saveInternally();
 	setPixmap(t->pixmap());

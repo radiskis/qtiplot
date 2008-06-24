@@ -108,13 +108,10 @@ void TexWidget::setBestSize()
 void TexWidget::clone(TexWidget* t)
 {
 	d_frame = t->frameStyle();
-	d_color = t->frameColor();
+	setFramePen(t->framePen());
 	d_formula = t->formula();
 	d_pix = t->pixmap();
-	resize(t->size());
-	setOriginCoord(t->xValue(), t->yValue());
-	d_x_right = t->right();
-	d_y_bottom = t->bottom();
+	setCoordinates(t->xValue(), t->yValue(), t->right(), t->bottom());
 }
 
 QString TexWidget::saveToString()

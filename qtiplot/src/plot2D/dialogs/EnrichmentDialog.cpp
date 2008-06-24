@@ -37,9 +37,11 @@
 #include "../TexWidget.h"
 #include "../FrameWidget.h"
 #include "../ImageWidget.h"
+#include "../RectangleWidget.h"
 #include "../../ColorButton.h"
 #include "../../ApplicationWindow.h"
 #include "../../DoubleSpinBox.h"
+#include "../../PatternBox.h"
 
 static const char* choose_folder_xpm[]={
     "16 16 11 1",
@@ -81,6 +83,7 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	clearButton = NULL;
 	editPage = NULL;
 	imagePage = NULL;
+	patternPage = NULL;
 
 	if (wt == Tex){
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
@@ -103,6 +106,8 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 		initEditorPage();
 	else if (wt == Image)
 		initImagePage();
+	else if (wt == Frame)
+		initPatternPage();
 
     if (wt != MDIWindow)
         initFramePage();
@@ -182,11 +187,58 @@ void EnrichmentDialog::initFramePage()
     gl->addWidget(frameColorBtn, 1, 1);
 	gl->setColumnStretch(1, 1);
 	gl->setRowStretch(2, 1);
+	
+	if (d_widget_type == Frame){
+		gl->addWidget(new QLabel(tr("Width")), 2, 0);
+		boxFrameWidth = new QSpinBox();
+		gl->addWidget(boxFrameWidth, 2, 1);
+		gl->setRowStretch(3, 1);
+	}
 
 	QVBoxLayout *layout = new QVBoxLayout(framePage);
     layout->addWidget(gb);
 
 	tabWidget->addTab(framePage, tr( "&Frame" ) );
+}
+
+void EnrichmentDialog::initPatternPage()
+{
+	patternPage = new QWidget();
+
+	QGroupBox *gb = new QGroupBox();
+	QGridLayout *gl = new QGridLayout(gb);
+    gl->addWidget(new QLabel( tr("Fill Color")), 0, 0);
+
+	backgroundColorBtn = new ColorButton();
+    gl->addWidget(backgroundColorBtn, 0, 1);
+	
+	gl->addWidget(new QLabel(tr("Opacity")), 1, 0);
+	boxTransparency = new QSpinBox();
+	boxTransparency->setRange(0, 255);
+    boxTransparency->setSingleStep(5);
+	boxTransparency->setWrapping(true);
+    boxTransparency->setSpecialValueText(tr("Transparent"));
+	gl->addWidget(boxTransparency, 1, 1);
+	
+	gl->addWidget(new QLabel(tr("Pattern")), 2, 0);
+	patternBox = new PatternBox();
+	gl->addWidget(patternBox, 2, 1);
+	
+	gl->addWidget(new QLabel(tr("Pattern Color")), 3, 0);
+	patternColorBtn = new ColorButton();
+	gl->addWidget(patternColorBtn, 3, 1);
+	
+	useFrameColorBox = new QCheckBox(tr("Use &Frame Color"));
+	connect(useFrameColorBox, SIGNAL(toggled(bool)), patternColorBtn, SLOT(setDisabled(bool)));
+	gl->addWidget(useFrameColorBox, 3, 2);
+	
+	gl->setColumnStretch(1, 1);
+	gl->setRowStretch(4, 1);
+
+	QVBoxLayout *layout = new QVBoxLayout(patternPage);
+    layout->addWidget(gb);
+
+	tabWidget->addTab(patternPage, tr("Fill &Pattern"));
 }
 
 void EnrichmentDialog::initGeometryPage()
@@ -294,6 +346,8 @@ void EnrichmentDialog::setWidget(QWidget *w)
     if (fw){
         frameBox->setCurrentIndex(fw->frameStyle());
         frameColorBtn->setColor(fw->frameColor());
+		if (d_widget_type == Frame)
+			boxFrameWidth->setValue(fw->framePen().width());
     }
 
     unitBox->setCurrentIndex(FrameWidget::Pixel);
@@ -315,6 +369,14 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			boxSaveImagesInternally->setChecked(i->saveInternally());
 			boxSaveImagesInternally->blockSignals(false);
 		}
+	} else if (d_widget_type == Frame){
+		RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
+		if (r){
+			backgroundColorBtn->setColor(r->backgroundColor());
+			boxTransparency->setValue(r->backgroundColor().alpha());
+			patternBox->setPattern(r->brush().style());
+			patternColorBtn->setColor(r->brush().color());
+		}
 	}
 }
 
@@ -332,7 +394,10 @@ void EnrichmentDialog::apply()
 	    FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
         if (fw){
 			fw->setFrameStyle(frameBox->currentIndex());
-			fw->setFrameColor(frameColorBtn->color());
+			QPen pen = QPen(frameColorBtn->color(), 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
+			if (d_widget_type == Frame)
+				pen.setWidth(boxFrameWidth->value());
+			fw->setFramePen(pen);
 			fw->repaint();
 			d_plot->multiLayer()->notifyChanges();
 		}
@@ -340,6 +405,22 @@ void EnrichmentDialog::apply()
 		chooseImageFile(imagePathBox->text());
 	else if (tabWidget->currentPage() == geometryPage)
 		setCoordinates(unitBox->currentIndex());
+	else if (patternPage && tabWidget->currentPage() == patternPage){
+		RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
+        if (r){
+			QColor c = backgroundColorBtn->color();
+			c.setAlpha(boxTransparency->value());
+			r->setBackgroundColor(c);
+			
+			QColor patternColor = patternColorBtn->color();
+			if (useFrameColorBox->isChecked())
+				patternColor = frameColorBtn->color();
+			r->setBrush(QBrush(patternColor, patternBox->getSelectedPattern()));
+			
+			r->repaint();
+			d_plot->multiLayer()->notifyChanges();
+		}
+	}
 }
 
 void EnrichmentDialog::fetchImage()

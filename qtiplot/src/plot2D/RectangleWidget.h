@@ -36,18 +36,12 @@ class RectangleWidget: public FrameWidget
 	Q_OBJECT
 
 public:
-    //! Construct an image widget from a file name.
 	RectangleWidget(Graph *);
 
-	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
 	virtual QString saveToString();
 
 	void clone(RectangleWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
-
-private:
-	//void draw(QPainter *painter, const QRect& r);
-	//void paintEvent(QPaintEvent *e);
 };
 
 #endif
