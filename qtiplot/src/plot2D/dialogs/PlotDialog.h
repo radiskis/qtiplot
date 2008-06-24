@@ -58,7 +58,8 @@ class SymbolBox;
 class ColorMapEditor;
 class QwtPlotItem;
 class DoubleSpinBox;
-
+class PenStyleBox;
+	
 static const char* folder_closed[]={
     "16 16 9 1",
     "g c #808080",
@@ -251,9 +252,6 @@ private slots:
 	bool validInput();
 	void showPlotAssociations(QTreeWidgetItem *item, int);
 
-	void setPenStyle(Qt::PenStyle style);
-	void setPiePenStyle(const Qt::PenStyle& style);
-
 	//box plots
 	void setBoxType(int index);
 	void setBoxRangeType(int index);
@@ -332,7 +330,7 @@ private:
 	DoubleSpinBox *boxPieLineWidth;
     ColorBox *boxFirstColor, *boxPieLineColor;
     PatternBox *boxPiePattern;
-    QComboBox* boxPieLineStyle;
+    PenStyleBox* boxPieLineStyle;
 
     QPushButton* buttonApply, *btnWorksheet;
     QPushButton* buttonOk, *btnMore;
@@ -340,7 +338,7 @@ private:
     QComboBox* boxPlotType;
     QWidget* linePage;
     QComboBox* boxConnect;
-    QComboBox* boxLineStyle;
+    PenStyleBox* boxLineStyle;
     DoubleSpinBox *boxLineWidth, *boxPenWidth;
     ColorBox* boxLineColor, *boxAreaColor;
     QWidget* symbolPage;
@@ -377,7 +375,8 @@ private:
 	QLabel 	*whiskerCoeffLabel, *whiskerRangeLabel, *boxCoeffLabel;
 	QLabel *boxRangeLabel, *whiskerCntLabel, *boxCntLabel;
 	QGroupBox *GroupBoxVectEnd;
-	QComboBox *vectPosBox, *boxXAxis, *boxYAxis, *colorScaleBox, *boxContourStyle;
+	QComboBox *vectPosBox, *boxXAxis, *boxYAxis, *colorScaleBox;
+	PenStyleBox	*boxContourStyle;
   	QSpinBox *levelsBox, *colorScaleWidthBox;
 	DoubleSpinBox *contourWidthBox;
   	QGroupBox *levelsGroupBox, *axisScaleBox, *imageGroupBox;

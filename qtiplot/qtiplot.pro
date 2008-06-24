@@ -187,6 +187,7 @@ HEADERS  += src/ApplicationWindow.h \
 			src/TextDialog.h \
 			src/PlotWizard.h \
 			src/LineNumberDisplay.h \
+			src/PenStyleBox.h \
 
 ###################### SOURCES ##############################################
 
@@ -228,6 +229,7 @@ SOURCES  += src/main.cpp \
 			src/TextDialog.cpp \
 			src/PlotWizard.cpp \
 			src/LineNumberDisplay.cpp \
+			src/PenStyleBox.cpp \
 
 ###############################################################
 ##################### Compression (zlib123) ###################

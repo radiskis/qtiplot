@@ -42,6 +42,7 @@
 #include "../../ApplicationWindow.h"
 #include "../../DoubleSpinBox.h"
 #include "../../PatternBox.h"
+#include "../../PenStyleBox.h"
 
 static const char* choose_folder_xpm[]={
     "16 16 11 1",
@@ -185,14 +186,19 @@ void EnrichmentDialog::initFramePage()
     gl->addWidget(new QLabel(tr("Color")), 1, 0);
 	frameColorBtn = new ColorButton();
     gl->addWidget(frameColorBtn, 1, 1);
-	gl->setColumnStretch(1, 1);
-	gl->setRowStretch(2, 1);
 	
+	gl->addWidget(new QLabel(tr( "Line Style" )), 2, 0);
+	boxFrameLineStyle = new PenStyleBox();
+	gl->addWidget(boxFrameLineStyle, 2, 1);
+	
+	gl->setColumnStretch(1, 1);
+	gl->setRowStretch(3, 1);
+
 	if (d_widget_type == Frame){
-		gl->addWidget(new QLabel(tr("Width")), 2, 0);
+		gl->addWidget(new QLabel(tr("Width")), 3, 0);
 		boxFrameWidth = new QSpinBox();
-		gl->addWidget(boxFrameWidth, 2, 1);
-		gl->setRowStretch(3, 1);
+		gl->addWidget(boxFrameWidth, 3, 1);
+		gl->setRowStretch(4, 1);
 	}
 
 	QVBoxLayout *layout = new QVBoxLayout(framePage);
@@ -346,6 +352,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
     if (fw){
         frameBox->setCurrentIndex(fw->frameStyle());
         frameColorBtn->setColor(fw->frameColor());
+		boxFrameLineStyle->setStyle(fw->framePen().style());
 		if (d_widget_type == Frame)
 			boxFrameWidth->setValue(fw->framePen().width());
     }
@@ -395,6 +402,7 @@ void EnrichmentDialog::apply()
         if (fw){
 			fw->setFrameStyle(frameBox->currentIndex());
 			QPen pen = QPen(frameColorBtn->color(), 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
+			pen.setStyle(boxFrameLineStyle->style());
 			if (d_widget_type == Frame)
 				pen.setWidth(boxFrameWidth->value());
 			fw->setFramePen(pen);

@@ -39,6 +39,7 @@
 #include "../Grid.h"
 #include "../ScaleDraw.h"
 #include "../ScaleEngine.h"
+#include "../../PenStyleBox.h"
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -1452,21 +1453,10 @@ void AxesDialog::initGridPage()
 
     rightLayout->addWidget( new QLabel(tr( "Line Type" )), 2, 0 );
 
-    boxTypeMajor = new QComboBox();
-    boxTypeMajor->addItem("_____");
-    boxTypeMajor->addItem("- - -");
-    boxTypeMajor->addItem(".....");
-    boxTypeMajor->addItem("_._._");
-    boxTypeMajor->addItem("_.._..");
+    boxTypeMajor = new PenStyleBox();
     rightLayout->addWidget( boxTypeMajor, 2, 1);
 
-    boxTypeMinor = new QComboBox();
-    boxTypeMinor->addItem("_____");
-    boxTypeMinor->addItem("- - -");
-    boxTypeMinor->addItem(".....");
-    boxTypeMinor->addItem("_._._");
-    boxTypeMinor->addItem("_.._..");
-    boxTypeMinor->setDisabled(true);
+    boxTypeMinor = new PenStyleBox();
     rightLayout->addWidget( boxTypeMinor, 2, 2);
 
     rightLayout->addWidget( new QLabel(tr( "Thickness" )), 3, 0 );
@@ -2269,9 +2259,9 @@ void AxesDialog::applyChangesToGrid(Grid *grid)
 		grid->enableXMin(boxMinorGrid->isChecked());
 
 		grid->setMajPenX(QPen(ColorBox::color(boxColorMajor->currentIndex()), boxWidthMajor->value(),
-					 		Graph::getPenStyle(boxTypeMajor->currentIndex())));
+					 		boxTypeMajor->style()));
 		grid->setMinPenX(QPen(ColorBox::color(boxColorMinor->currentIndex()), boxWidthMinor->value(),
-					 		Graph::getPenStyle(boxTypeMinor->currentIndex())));
+					 		boxTypeMinor->style()));
 	} else {
 		grid->enableY(boxMajorGrid->isChecked());
 		grid->enableYMin(boxMinorGrid->isChecked());
@@ -2315,12 +2305,12 @@ void AxesDialog::showGridOptions(int axis)
         boxGridYAxis->setDisabled(true);
 
 		QPen majPenX = grd->majPenX();
-		boxTypeMajor->setCurrentIndex(majPenX.style() - 1);
+		boxTypeMajor->setStyle(majPenX.style());
     	boxColorMajor->setColor(majPenX.color());
     	boxWidthMajor->setValue(majPenX.widthF());
 
 		QPen minPenX = grd->minPenX();
-    	boxTypeMinor->setCurrentItem(minPenX.style() - 1);
+    	boxTypeMinor->setStyle(minPenX.style());
     	boxColorMinor->setColor(minPenX.color());
     	boxWidthMinor->setValue(minPenX.widthF());
     } else if (axis == 0) {

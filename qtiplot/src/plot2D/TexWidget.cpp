@@ -27,6 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "TexWidget.h"
+#include "../PenStyleBox.h"
+
 #include <QPainter>
 #include <QBuffer>
 #include <QMessageBox>
@@ -133,6 +135,7 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 {	
 	int frameStyle = 0;
 	QColor frameColor = Qt::black;
+	Qt::PenStyle penStyle = Qt::SolidLine;
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
 	QPixmap pix;
 	QStringList::const_iterator line;
@@ -143,6 +146,8 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 			frameStyle = s.remove("<Frame>").remove("</Frame>").toInt();
 		else if (s.contains("<Color>"))
 			frameColor = QColor(s.remove("<Color>").remove("</Color>"));
+		else if (s.contains("<LineStyle>"))
+			penStyle = PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt());
 		else if (s.contains("<x>"))
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
@@ -166,6 +171,7 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 	}
 	TexWidget *t = g->addTexFormula(formula, pix);
 	t->setFrameStyle(frameStyle);
+	t->setFrameLineStyle(penStyle);
 	t->setFrameColor(frameColor);
 	t->setCoordinates(x, y, right, bottom);
 }

@@ -1,11 +1,11 @@
 /***************************************************************************
-    File                 : LineDialog.h
+    File                 : PenStyleBox.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+    Copyright            : (C) 2008 Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Line options dialog
-
+    Description          : Pen style combo box
+                           
  ***************************************************************************/
 
 /***************************************************************************
@@ -26,61 +26,24 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef LINEDIALOG_H
-#define LINEDIALOG_H
+#ifndef PEN_STYLE_BOX_H
+#define PEN_STYLE_BOX_H
 
-#include <qdialog.h>
+#include <QComboBox>
 
-class QCheckBox;
-class QComboBox;
-class QPushButton;
-class QTabWidget;
-class QWidget;
-class QSpinBox;
-class DoubleSpinBox;
-class ColorButton;
-class ArrowMarker;
-class DoubleSpinBox;
-class PenStyleBox;
-
-//! Line options dialog
-class LineDialog : public QDialog
+//! Pattern combo box
+class PenStyleBox : public QComboBox
 {
-    Q_OBJECT
-
+  Q_OBJECT
+	
 public:
-    LineDialog(ArrowMarker *line, QWidget* parent = 0, Qt::WFlags fl = 0);
+  PenStyleBox(QWidget *parent = 0);
+  void setStyle(const Qt::PenStyle& style);
+  Qt::PenStyle style() const;
 
-    enum Unit{ScaleCoordinates, Pixels};
-
-	void initGeometryTab();
-	void enableHeadTab();
-	void setCoordinates(int unit);
-
-public slots:
-	void enableButtonDefault(QWidget *w);
-	void setDefaultValues();
-	void displayCoordinates(int unit);
-	void accept();
-	void apply();
-
-private:
-	ArrowMarker *lm;
-
-    ColorButton* colorBox;
-    PenStyleBox* styleBox;
-    DoubleSpinBox* widthBox;
-	QComboBox* unitBox;
-    QPushButton* btnOk;
-    QPushButton* btnApply;
-	QPushButton* buttonDefault;
-    QCheckBox* endBox;
-    QCheckBox* startBox,  *filledBox;
-	QTabWidget* tw;
-	QWidget *options, *geometry, *head;
-	DoubleSpinBox *xStartBox, *yStartBox, *xEndBox, *yEndBox;
-	QSpinBox *xStartPixelBox, *yStartPixelBox, *xEndPixelBox, *yEndPixelBox;
-	QSpinBox *boxHeadAngle, *boxHeadLength;
+  static const Qt::PenStyle patterns[];
+  static int styleIndex(const Qt::PenStyle& style);
+  static Qt::PenStyle penStyle(int index);
 };
 
-#endif // LINEDIALOG_H
+#endif

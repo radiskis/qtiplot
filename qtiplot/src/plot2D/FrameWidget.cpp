@@ -29,6 +29,7 @@
 #include "FrameWidget.h"
 #include "SelectionMoveResizer.h"
 #include "../ApplicationWindow.h"
+#include "../PenStyleBox.h"
 
 #include <QPainter>
 
@@ -231,6 +232,8 @@ QString FrameWidget::saveToString()
 {
 	QString s = "<Frame>" + QString::number(d_frame) + "</Frame>\n";
 	s += "<Color>" + d_frame_pen.color().name() + "</Color>\n";
+	s += "<LineStyle>" + QString::number(PenStyleBox::styleIndex(d_frame_pen.style())) + "</LineStyle>\n";
+	
 	s += "<x>" + QString::number(d_x, 'g', 14) + "</x>\n";
 	s += "<y>" + QString::number(d_y, 'g', 14) + "</y>\n";
 	s += "<right>" + QString::number(d_x_right, 'g', 15) + "</right>\n";

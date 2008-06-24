@@ -49,6 +49,7 @@ class FrameWidget;
 class ColorButton;
 class DoubleSpinBox;
 class PatternBox;
+class PenStyleBox;
 	
 class EnrichmentDialog : public QDialog
 {
@@ -98,6 +99,7 @@ private:
 	QLineEdit *imagePathBox;
 	DoubleSpinBox *xBox, *yBox, *widthBox, *heightBox;
 	QComboBox *unitBox;
+	PenStyleBox *boxFrameLineStyle;
 	QCheckBox *keepAspectBox, *useFrameColorBox;
 	QSpinBox *boxTransparency, *boxFrameWidth;
 	PatternBox *patternBox;
