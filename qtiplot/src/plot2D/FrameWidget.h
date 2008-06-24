@@ -84,6 +84,9 @@ public:
 
 	QPen framePen(){return d_frame_pen;};
 	void setFramePen(const QPen& p){d_frame_pen = p;};
+
+	Qt::PenStyle frameLineStyle(){return d_frame_pen.style();};
+	void setFrameLineStyle(const Qt::PenStyle& s){d_frame_pen.setStyle(s);};
 	
 	QColor frameColor(){return d_frame_pen.color();};
 	void setFrameColor(const QColor& c){d_frame_pen.setColor(c);};

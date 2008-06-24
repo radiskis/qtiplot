@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "RectangleWidget.h"
 #include "../PatternBox.h"
+#include "../PenStyleBox.h"
 
 #include <QPainter>
 #include <QPaintEngine>
@@ -77,6 +78,8 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			r->setFrameStyle(s.remove("<Frame>").remove("</Frame>").toInt());
 		else if (s.contains("<Color>"))
 			r->setFrameColor(QColor(s.remove("<Color>").remove("</Color>")));
+		else if (s.contains("<LineStyle>"))
+			r->setFrameLineStyle(PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt()));
 		else if (s.contains("<x>"))
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))

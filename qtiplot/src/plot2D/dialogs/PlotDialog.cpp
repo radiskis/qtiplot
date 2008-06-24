@@ -44,6 +44,7 @@
 #include "../../ColorMapEditor.h"
 #include "../../DoubleSpinBox.h"
 #include "../../Folder.h"
+#include "../../PenStyleBox.h"
 
 #include <QTreeWidget>
 #include <QLineEdit>
@@ -481,12 +482,7 @@ void PlotDialog::initPiePage()
 	gl1->addWidget(boxPieLineColor, 0, 1);
 
 	gl1->addWidget(new QLabel(tr( "Style" )), 1, 0);
-	boxPieLineStyle = new QComboBox( false );
-	boxPieLineStyle->insertItem("_____");
-	boxPieLineStyle->insertItem("- - -");
-	boxPieLineStyle->insertItem(".....");
-	boxPieLineStyle->insertItem("_._._");
-	boxPieLineStyle->insertItem("_.._..");
+	boxPieLineStyle = new PenStyleBox();
 	gl1->addWidget(boxPieLineStyle);
 
 	gl1->addWidget(new QLabel(tr( "Width")), 2, 0);
@@ -745,13 +741,7 @@ void PlotDialog::initLinePage()
 	gl1->addWidget(boxConnect, 0, 1);
 
 	gl1->addWidget(new QLabel(tr( "Style" )), 1, 0);
-	boxLineStyle = new QComboBox();
-	boxLineStyle->setEditable(false);
-	boxLineStyle->addItem("_____");
-	boxLineStyle->addItem("_ _ _");
-	boxLineStyle->addItem(".....");
-	boxLineStyle->addItem("_._._");
-	boxLineStyle->addItem("_.._..");
+	boxLineStyle = new PenStyleBox();
 	gl1->addWidget(boxLineStyle, 1, 1);
 
 	gl1->addWidget(new QLabel(tr( "Width" )), 2, 0);
@@ -1066,13 +1056,7 @@ void PlotDialog::initSpectrogramPage()
     gl1->addWidget(contourWidthBox, 1, 1);
 
     gl1->addWidget(new QLabel(tr( "Style" )), 2, 0);
-  	boxContourStyle = new QComboBox();
-	boxContourStyle->setEditable(false);
-  	boxContourStyle->addItem("_____");
-  	boxContourStyle->addItem("_ _ _");
-  	boxContourStyle->addItem(".....");
-  	boxContourStyle->addItem("_._._");
-  	boxContourStyle->addItem("_.._..");
+  	boxContourStyle = new PenStyleBox();
     gl1->addWidget(boxContourStyle, 2, 1);
     hl2->addWidget(defaultPenBox);
 
@@ -1904,7 +1888,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         boxPiePattern->setPattern(pie->pattern());
         boxPieLineWidth->setValue(pie->pen().widthF());
         boxPieLineColor->setColor(pie->pen().color());
-        setPiePenStyle(pie->pen().style());
+        boxPieLineStyle->setStyle(pie->pen().style());
         boxFirstColor->setCurrentIndex(pie->firstColor());
 
         boxPieViewAngle->blockSignals(true);
@@ -1945,7 +1929,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         style = 6;
     boxConnect->setCurrentIndex(style);
 
-    setPenStyle(c->pen().style());
+	boxLineStyle->setStyle(c->pen().style());
     boxLineColor->setColor(c->pen().color());
 	boxLineWidth->blockSignals(true);
     boxLineWidth->setValue(c->pen().widthF());
@@ -2198,8 +2182,7 @@ bool PlotDialog::acceptParams()
   	    if (autoContourBox->isChecked())
   	    	sp->setDefaultContourPen(Qt::NoPen);
   	    else
-  	    	sp->setDefaultContourPen(QPen(levelsColorBox->color(), contourWidthBox->value(),
-  	                            Graph::getPenStyle(boxContourStyle->currentItem())));
+  	    	sp->setDefaultContourPen(QPen(levelsColorBox->color(), contourWidthBox->value(), boxContourStyle->style()));
 
   	   sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
   	   sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, imageGroupBox->isChecked());
@@ -2224,7 +2207,7 @@ bool PlotDialog::acceptParams()
 		QBrush br = QBrush(boxAreaColor->color(), boxPattern->getSelectedPattern());
 		if (!fillGroupBox->isChecked())
 			br = QBrush();
-		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(), Graph::getPenStyle(boxLineStyle->currentIndex()));
+		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(), boxLineStyle->style());
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setPen(pen);
 		curve->setBrush(br);
@@ -2298,8 +2281,7 @@ bool PlotDialog::acceptParams()
         return true;
 	} else if (privateTabWidget->currentPage() == piePage){
 		QwtPieCurve *pie = (QwtPieCurve*)plotItem;
-		pie->setPen(QPen(boxPieLineColor->color(), boxPieLineWidth->value(),
-                    Graph::getPenStyle(boxPieLineStyle->currentIndex())));
+		pie->setPen(QPen(boxPieLineColor->color(), boxPieLineWidth->value(), boxPieLineStyle->style()));
         pie->setBrushStyle(boxPiePattern->getSelectedPattern());
         pie->setFirstColor(boxFirstColor->currentIndex());
 	} else if (privateTabWidget->currentPage() == pieGeometryPage){
@@ -2505,43 +2487,6 @@ bool PlotDialog::validInput()
 	}
 
 	return true;
-}
-void PlotDialog::setPiePenStyle(const Qt::PenStyle& style)
-{
-	if(style == Qt::SolidLine)
-		boxPieLineStyle->setCurrentItem(0);
-	if(style == Qt::DashLine)
-		boxPieLineStyle->setCurrentItem(1);
-	if(style == Qt::DotLine)
-		boxPieLineStyle->setCurrentItem(2);
-	if(style == Qt::DashDotLine)
-		boxPieLineStyle->setCurrentItem(3);
-	if(style == Qt::DashDotDotLine)
-		boxPieLineStyle->setCurrentItem(4);
-}
-
-void PlotDialog::setPenStyle(Qt::PenStyle style)
-{
-	switch (style)
-	{
-		case Qt::SolidLine:
-			boxLineStyle->setCurrentIndex(0);
-			break;
-		case Qt::DashLine:
-			boxLineStyle->setCurrentIndex(1);
-			break;
-		case Qt::DotLine:
-			boxLineStyle->setCurrentIndex(2);
-			break;
-		case Qt::DashDotLine:
-			boxLineStyle->setCurrentIndex(3);
-			break;
-		case Qt::DashDotDotLine:
-			boxLineStyle->setCurrentIndex(4);
-			break;
-		default:
-			break;
-	}
 }
 
 void PlotDialog::setBoxType(int index)

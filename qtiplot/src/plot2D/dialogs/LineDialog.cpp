@@ -32,6 +32,7 @@
 #include "../Graph.h"
 #include "../../ApplicationWindow.h"
 #include "../../DoubleSpinBox.h"
+#include "../../PenStyleBox.h"
 
 #include <qwt_plot.h>
 
@@ -63,15 +64,9 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
 	gl1->addWidget(colorBox, 0, 1);
 
 	gl1->addWidget(new QLabel(tr("Type")), 1, 0);
-    styleBox = new QComboBox( FALSE);
-	styleBox->insertItem("_____");
-	styleBox->insertItem("- - -");
-	styleBox->insertItem(".....");
-	styleBox->insertItem("_._._");
-	styleBox->insertItem("_.._..");
+    styleBox = new PenStyleBox();
+	styleBox->setStyle(lm->style());
 	gl1->addWidget(styleBox, 1, 1);
-
-	setLineStyle(lm->style());
 
 	gl1->addWidget(new QLabel(tr("Width")), 2, 0);
     widthBox = new DoubleSpinBox('f');
@@ -293,7 +288,7 @@ void LineDialog::setCoordinates(int unit)
 void LineDialog::apply()
 {
     if (tw->currentPage()==(QWidget *)options){
-        lm->setStyle(Graph::getPenStyle(styleBox->currentItem()));
+        lm->setStyle(styleBox->style());
         lm->setColor(colorBox->color());
         lm->setWidth(widthBox->value());
         lm->drawEndArrow(endBox->isChecked());
@@ -310,10 +305,9 @@ void LineDialog::apply()
 	} else if (tw->currentPage()==(QWidget *)geometry)
         setCoordinates(unitBox->currentItem());
 
-	QwtPlot *plot = lm->plot();
-	Graph *g = (Graph *)plot->parent();
-	plot->replot();
-	g->notifyChanges();
+	Graph *g = (Graph *)lm->plot();
+	g->replot();
+	g->multiLayer()->notifyChanges();
 
 	enableHeadTab();
 }
@@ -322,20 +316,6 @@ void LineDialog::accept()
 {
 	apply();
 	close();
-}
-
-void LineDialog::setLineStyle(Qt::PenStyle style)
-{
-if (style==Qt::SolidLine)
-	styleBox->setCurrentItem(0);
-else if (style==Qt::DashLine)
-	styleBox->setCurrentItem(1);
-else if (style==Qt::DotLine)
-	styleBox->setCurrentItem(2);
-else if (style==Qt::DashDotLine)
-	styleBox->setCurrentItem(3);
-else if (style==Qt::DashDotDotLine)
-	styleBox->setCurrentItem(4);
 }
 
 void LineDialog::enableHeadTab()
@@ -352,8 +332,7 @@ ApplicationWindow *app = (ApplicationWindow *)this->parent();
 if (!app)
 	return;
 
-app->setArrowDefaultSettings(widthBox->value(), colorBox->color(),
-							Graph::getPenStyle(styleBox->currentItem()),
+app->setArrowDefaultSettings(widthBox->value(), colorBox->color(), styleBox->style(),
 							boxHeadLength->value(), boxHeadAngle->value(), filledBox->isChecked());
 }
 

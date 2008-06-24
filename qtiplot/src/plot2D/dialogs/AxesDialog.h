@@ -54,7 +54,8 @@ class Graph;
 class TextFormatButtons;
 class DoubleSpinBox;
 class Grid;
-
+class PenStyleBox;
+	
 //! General plot options dialog
 /**
  * Remark: Don't use this dialog as a non modal dialog!
@@ -160,12 +161,12 @@ protected:
     QWidget* gridPage;
     QCheckBox* boxMajorGrid;
     QCheckBox* boxMinorGrid;
-    QComboBox* boxTypeMajor;
+    PenStyleBox* boxTypeMajor;
     ColorBox* boxColorMinor;
     ColorBox* boxColorMajor;
 	ColorButton *boxCanvasColor;
     DoubleSpinBox* boxWidthMajor;
-    QComboBox* boxTypeMinor;
+    PenStyleBox* boxTypeMinor;
     DoubleSpinBox* boxWidthMinor;
     QCheckBox* boxXLine;
     QCheckBox* boxYLine;

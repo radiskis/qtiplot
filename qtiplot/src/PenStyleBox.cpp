@@ -1,11 +1,11 @@
 /***************************************************************************
-    File                 : LineDialog.h
+    File                 : PenStyleBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+    Copyright            : (C) 2008 Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Line options dialog
-
+    Description          : Pen style combox box
+                           
  ***************************************************************************/
 
 /***************************************************************************
@@ -26,61 +26,59 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef LINEDIALOG_H
-#define LINEDIALOG_H
+#include "PenStyleBox.h"
 
-#include <qdialog.h>
+#include <algorithm>
 
-class QCheckBox;
-class QComboBox;
-class QPushButton;
-class QTabWidget;
-class QWidget;
-class QSpinBox;
-class DoubleSpinBox;
-class ColorButton;
-class ArrowMarker;
-class DoubleSpinBox;
-class PenStyleBox;
-
-//! Line options dialog
-class LineDialog : public QDialog
-{
-    Q_OBJECT
-
-public:
-    LineDialog(ArrowMarker *line, QWidget* parent = 0, Qt::WFlags fl = 0);
-
-    enum Unit{ScaleCoordinates, Pixels};
-
-	void initGeometryTab();
-	void enableHeadTab();
-	void setCoordinates(int unit);
-
-public slots:
-	void enableButtonDefault(QWidget *w);
-	void setDefaultValues();
-	void displayCoordinates(int unit);
-	void accept();
-	void apply();
-
-private:
-	ArrowMarker *lm;
-
-    ColorButton* colorBox;
-    PenStyleBox* styleBox;
-    DoubleSpinBox* widthBox;
-	QComboBox* unitBox;
-    QPushButton* btnOk;
-    QPushButton* btnApply;
-	QPushButton* buttonDefault;
-    QCheckBox* endBox;
-    QCheckBox* startBox,  *filledBox;
-	QTabWidget* tw;
-	QWidget *options, *geometry, *head;
-	DoubleSpinBox *xStartBox, *yStartBox, *xEndBox, *yEndBox;
-	QSpinBox *xStartPixelBox, *yStartPixelBox, *xEndPixelBox, *yEndPixelBox;
-	QSpinBox *boxHeadAngle, *boxHeadLength;
+const Qt::PenStyle PenStyleBox::patterns[] = {
+	Qt::SolidLine,
+	Qt::DashLine,
+	Qt::DotLine,
+	Qt::DashDotLine,
+	Qt::DashDotDotLine
 };
 
-#endif // LINEDIALOG_H
+PenStyleBox::PenStyleBox(QWidget *parent) : QComboBox(parent)
+{
+  	setEditable(false);
+	addItem("_____");
+	addItem("_ _ _");
+	addItem(".....");
+	addItem("_._._");
+	addItem("_.._..");
+}
+
+void PenStyleBox::setStyle(const Qt::PenStyle& style)
+{
+  const Qt::PenStyle*ite = std::find(patterns, patterns + sizeof(patterns), style);
+  if (ite == patterns + sizeof(patterns))
+    this->setCurrentIndex(0); // default style is solid.
+  else
+    this->setCurrentIndex(ite - patterns);
+}
+
+Qt::PenStyle PenStyleBox::penStyle(int index)
+{
+  if (index < (int)sizeof(patterns))
+    return patterns[index];
+  else
+    return Qt::SolidLine; // default style is solid. 
+}
+
+Qt::PenStyle PenStyleBox::style() const
+{
+  size_t i = this->currentIndex();
+  if (i < sizeof(patterns))
+    return patterns[i];
+  else
+    return Qt::SolidLine; // default style is solid. 
+}
+
+int PenStyleBox::styleIndex(const Qt::PenStyle& style)
+{
+  const Qt::PenStyle*ite = std::find(patterns, patterns + sizeof(patterns), style);
+  if (ite == patterns + sizeof(patterns))
+    return 0; // default style is solid.
+  else
+    return (ite - patterns);
+}
