@@ -2267,9 +2267,9 @@ void AxesDialog::applyChangesToGrid(Grid *grid)
 		grid->enableYMin(boxMinorGrid->isChecked());
 
 		grid->setMajPenY(QPen(ColorBox::color(boxColorMajor->currentIndex()), boxWidthMajor->value(),
-					 		Graph::getPenStyle(boxTypeMajor->currentIndex())));
+					 		boxTypeMajor->style()));
 		grid->setMinPenY(QPen(ColorBox::color(boxColorMinor->currentIndex()), boxWidthMinor->value(),
-					 		Graph::getPenStyle(boxTypeMinor->currentIndex())));
+					 		boxTypeMinor->style()));
 	}
 
 	grid->enableZeroLineX(boxXLine->isChecked());

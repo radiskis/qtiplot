@@ -53,7 +53,6 @@ QString RectangleWidget::saveToString()
 {
 	QString s = "<Rectangle>\n";
 	s += FrameWidget::saveToString();
-	s += "<FrameWidth>" + QString::number(d_frame_pen.width()) + "</FrameWidth>\n";
 	QColor bc = backgroundColor();
 	s += "<Background>" + bc.name() + "</Background>\n";
 	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
@@ -78,6 +77,8 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			r->setFrameStyle(s.remove("<Frame>").remove("</Frame>").toInt());
 		else if (s.contains("<Color>"))
 			r->setFrameColor(QColor(s.remove("<Color>").remove("</Color>")));
+		else if (s.contains("<FrameWidth>"))
+			r->setFrameWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toInt());
 		else if (s.contains("<LineStyle>"))
 			r->setFrameLineStyle(PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt()));
 		else if (s.contains("<x>"))
@@ -88,8 +89,6 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			right = s.remove("<right>").remove("</right>").toDouble();
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
-		else if (s.contains("<FrameWidth>"))
-			r->setFrameWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toInt());
 		else if (s.contains("<Background>"))
 			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
 		else if (s.contains("<Alpha>"))

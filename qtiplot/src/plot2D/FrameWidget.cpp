@@ -198,15 +198,18 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 			p->setBrush(d_brush);
 		int lw = d_frame_pen.width()/2; 
         QwtPainter::drawRect(p, rect.adjusted(lw, lw, -lw - 1, -lw - 1));
-	} else if (d_frame == Shadow){
-		p->fillRect(QRect(rect.right() - d_shadow_width + 1,
-				rect.y() + d_shadow_width, d_shadow_width, rect.height()), Qt::black);
-		p->fillRect(QRect(rect.x() + d_shadow_width, rect.bottom() - d_shadow_width + 1,
-				rect.width(), d_shadow_width), Qt::black);
-
+	} else if (d_frame == Shadow){		
 		int lw = d_frame_pen.width()/2; 
-		int d = - d_shadow_width - lw;
-		QRect r = rect.adjusted(lw, lw, d, d);
+		int d = d_shadow_width + lw;
+		if (!(lw % 2))
+			d += 1;
+		QRect r = rect.adjusted(lw, lw, -d, -d);
+		
+		QPainterPath shadow, contents;
+		shadow.addRect(r.adjusted(d, d, d, d));
+		contents.addRect(r);
+		p->fillPath(shadow.subtracted(contents), Qt::black);//draw shadow
+		
 		p->fillRect(r, palette().color(QPalette::Window));
 		p->setPen(d_frame_pen);
 		if (d_brush.style() != Qt::NoBrush)
@@ -232,6 +235,7 @@ QString FrameWidget::saveToString()
 {
 	QString s = "<Frame>" + QString::number(d_frame) + "</Frame>\n";
 	s += "<Color>" + d_frame_pen.color().name() + "</Color>\n";
+	s += "<FrameWidth>" + QString::number(d_frame_pen.width()) + "</FrameWidth>\n";
 	s += "<LineStyle>" + QString::number(PenStyleBox::styleIndex(d_frame_pen.style())) + "</LineStyle>\n";
 	
 	s += "<x>" + QString::number(d_x, 'g', 14) + "</x>\n";
