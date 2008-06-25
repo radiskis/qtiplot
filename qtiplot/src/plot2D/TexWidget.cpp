@@ -50,13 +50,14 @@ void TexWidget::paintEvent(QPaintEvent *e)
 	QPainter p(this);	
 	drawFrame(&p, rect());
 	
-	int w = width() - 2*d_margin;
-	int h = height() - 2*d_margin;
+	int lw = d_frame_pen.width();
+	int w = width() - 2*d_margin - 2*lw;
+	int h = height() - 2*d_margin - 2*lw;
 	if (d_frame == Shadow){
 		w -= d_margin;
 		h -= d_margin;
 	}
-	QRect pixRect = QRect (d_margin, d_margin, w, h);
+	QRect pixRect = QRect (lw + d_margin, lw + d_margin, w, h);
 	p.drawPixmap(pixRect, d_pix);
 	
 	e->accept();
@@ -70,21 +71,23 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 	QRect rect = QRect(x, y, width(), height());
 	drawFrame(painter, rect);
 	
-	int w = width() - 2*d_margin;
-	int h = height() - 2*d_margin;
+	int lw = d_frame_pen.width();
+	int w = width() - 2*d_margin  - 2*lw;
+	int h = height() - 2*d_margin - 2*lw;
 	if (d_frame == Shadow){
 		w -= d_margin;
 		h -= d_margin;
 	}
-	QRect pixRect = QRect (x + d_margin, y + d_margin, w, h);
+	QRect pixRect = QRect (x + lw + d_margin, y + lw + d_margin, w, h);
 	painter->drawPixmap(pixRect, d_pix);
 }
 
 void TexWidget::setPixmap(const QPixmap& pix)
 {
 	d_pix = pix;
-	int width = pix.width() + 2*d_margin;
-	int height = pix.height() + 2*d_margin;
+	int lw = 2*d_frame_pen.width();
+	int width = pix.width() + 2*d_margin + lw;
+	int height = pix.height() + 2*d_margin + lw;
 	if (d_frame == Shadow){
 		width += d_margin;
 		height += d_margin;
@@ -95,8 +98,9 @@ void TexWidget::setPixmap(const QPixmap& pix)
 
 void TexWidget::setBestSize()
 {
-	int w = d_pix.width() + 2*d_margin;
-	int h = d_pix.height() + 2*d_margin;
+	int lw = 2*d_frame_pen.width();
+	int w = d_pix.width() + 2*d_margin + lw;
+	int h = d_pix.height() + 2*d_margin + lw;
 	if (d_frame == Shadow){
 		w += d_margin;
 		h += d_margin;
@@ -113,6 +117,7 @@ void TexWidget::clone(TexWidget* t)
 	setFramePen(t->framePen());
 	d_formula = t->formula();
 	d_pix = t->pixmap();
+	resize(t->size());
 	setCoordinates(t->xValue(), t->yValue(), t->right(), t->bottom());
 }
 
@@ -134,8 +139,7 @@ QString TexWidget::saveToString()
 void TexWidget::restore(Graph *g, const QStringList& lst)
 {	
 	int frameStyle = 0;
-	QColor frameColor = Qt::black;
-	Qt::PenStyle penStyle = Qt::SolidLine;
+	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
 	QPixmap pix;
 	QStringList::const_iterator line;
@@ -145,9 +149,11 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
         if (s.contains("<Frame>"))
 			frameStyle = s.remove("<Frame>").remove("</Frame>").toInt();
 		else if (s.contains("<Color>"))
-			frameColor = QColor(s.remove("<Color>").remove("</Color>"));
+			pen.setColor(QColor(s.remove("<Color>").remove("</Color>")));
+		else if (s.contains("<FrameWidth>"))
+			pen.setWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toInt());
 		else if (s.contains("<LineStyle>"))
-			penStyle = PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt());
+			pen.setStyle(PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt()));
 		else if (s.contains("<x>"))
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
@@ -171,7 +177,6 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 	}
 	TexWidget *t = g->addTexFormula(formula, pix);
 	t->setFrameStyle(frameStyle);
-	t->setFrameLineStyle(penStyle);
-	t->setFrameColor(frameColor);
+	t->setFramePen(pen);
 	t->setCoordinates(x, y, right, bottom);
 }

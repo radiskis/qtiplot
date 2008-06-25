@@ -129,14 +129,23 @@ void ImageWidget::draw(QPainter *painter, const QRect& rect)
 	QRect r = rect;
 	drawFrame(painter, r);
 
+	int lw = d_frame_pen.width();
     switch(d_frame){
 		case None:
 			break;
 		case Line:
-			r.adjust(0, 0, -1, -1);
+			//r.adjust(0, 0, -1, -1);
+			if (lw % 2)
+				r.adjust(lw - 1, lw - 1, -lw, -lw);
+			else
+				r.adjust(lw - 1, lw - 1, -lw - 1, -lw - 1);
 		break;
 		case Shadow:
-			r.adjust(0, 0, -d_shadow_width - 1, -d_shadow_width - 1);
+			//r.adjust(0, 0, -d_shadow_width - 1, -d_shadow_width - 1);
+			if (lw == 3)
+				r.adjust(lw - 1, lw - 1, -d_shadow_width - lw + 1, -d_shadow_width - lw + 1);
+			else
+				r.adjust(lw - 1, lw - 1, -d_shadow_width - lw, -d_shadow_width - lw);
 		break;
 	}
 
@@ -190,8 +199,7 @@ QString ImageWidget::saveToString()
 void ImageWidget::restore(Graph *g, const QStringList& lst)
 {
 	int frameStyle = 0;
-	QColor frameColor = Qt::black;
-	Qt::PenStyle penStyle = Qt::SolidLine;
+	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
 	QStringList::const_iterator line;
 	QString fn;
@@ -202,9 +210,11 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
         if (s.contains("<Frame>"))
 			frameStyle = s.remove("<Frame>").remove("</Frame>").toInt();
 		else if (s.contains("<Color>"))
-			frameColor = QColor(s.remove("<Color>").remove("</Color>"));
+			pen.setColor(QColor(s.remove("<Color>").remove("</Color>")));
+		else if (s.contains("<FrameWidth>"))
+			pen.setWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toInt());
 		else if (s.contains("<LineStyle>"))
-			penStyle = PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt());
+			pen.setStyle(PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt()));
 		else if (s.contains("<x>"))
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
@@ -232,8 +242,7 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 
 	if (i){
 		i->setFrameStyle(frameStyle);
-		i->setFrameLineStyle(penStyle);
-		i->setFrameColor(frameColor);
+		i->setFramePen(pen);
 		i->setCoordinates(x, y, right, bottom);
 		i->setSaveInternally(save_xpm);
 	}

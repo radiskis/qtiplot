@@ -192,14 +192,11 @@ void EnrichmentDialog::initFramePage()
 	gl->addWidget(boxFrameLineStyle, 2, 1);
 	
 	gl->setColumnStretch(1, 1);
-	gl->setRowStretch(3, 1);
-
-	if (d_widget_type == Frame){
-		gl->addWidget(new QLabel(tr("Width")), 3, 0);
-		boxFrameWidth = new QSpinBox();
-		gl->addWidget(boxFrameWidth, 3, 1);
-		gl->setRowStretch(4, 1);
-	}
+	gl->addWidget(new QLabel(tr("Width")), 3, 0);
+	boxFrameWidth = new QSpinBox();
+	boxFrameWidth->setRange(1, 100);
+	gl->addWidget(boxFrameWidth, 3, 1);
+	gl->setRowStretch(4, 1);
 
 	QVBoxLayout *layout = new QVBoxLayout(framePage);
     layout->addWidget(gb);
@@ -353,8 +350,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
         frameBox->setCurrentIndex(fw->frameStyle());
         frameColorBtn->setColor(fw->frameColor());
 		boxFrameLineStyle->setStyle(fw->framePen().style());
-		if (d_widget_type == Frame)
-			boxFrameWidth->setValue(fw->framePen().width());
+		boxFrameWidth->setValue(fw->framePen().width());
     }
 
     unitBox->setCurrentIndex(FrameWidget::Pixel);
@@ -401,10 +397,8 @@ void EnrichmentDialog::apply()
 	    FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
         if (fw){
 			fw->setFrameStyle(frameBox->currentIndex());
-			QPen pen = QPen(frameColorBtn->color(), 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
-			pen.setStyle(boxFrameLineStyle->style());
-			if (d_widget_type == Frame)
-				pen.setWidth(boxFrameWidth->value());
+			QPen pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), 
+							boxFrameLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 			fw->setFramePen(pen);
 			fw->repaint();
 			d_plot->multiLayer()->notifyChanges();
