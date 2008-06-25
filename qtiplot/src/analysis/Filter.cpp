@@ -215,9 +215,15 @@ bool Filter::run()
 
 void Filter::output()
 {
+#ifdef Q_CC_MSVC
+    QVarLengthArray<double> X(d_points), Y(d_points);
+    calculateOutputData(X.data(), Y.data()); //does the data analysis
+	addResultCurve(X.data(), Y.data());
+#else
     double X[d_points], Y[d_points];
     calculateOutputData(X, Y); //does the data analysis
 	addResultCurve(X, Y);
+#endif
 }
 
 int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y)

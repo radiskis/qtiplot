@@ -179,10 +179,18 @@ void MultiPeakFit::guessInitialValues()
 	double min_out = d_y[imin];
 	double max_out = d_y[imax];
 
-	double temp[d_n];
+#ifdef Q_CC_MSVC
+    QVarLengthArray<double> temp(d_n);
+#else
+    double temp[d_n];
+#endif
 	for (int i = 0; i < d_n; i++)
 		temp[i] = fabs(d_y[i]);
+#ifdef Q_CC_MSVC
+	size_t imax_temp = gsl_stats_max_index(temp.data(), 1, d_n);
+#else
 	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
+#endif
 
 	double offset, area;
 	if (imax_temp == imax)
@@ -252,7 +260,11 @@ void MultiPeakFit::generateFitCurve()
 		return;
 	}
 
+#ifdef Q_CC_MSVC
+	QVarLengthArray<double> X(d_points), Y(d_points);
+#else
 	double X[d_points], Y[d_points];
+#endif
 	int i, j;
 	int peaks_aux = d_peaks;
 	if (d_peaks == 1)
@@ -279,16 +291,28 @@ void MultiPeakFit::generateFitCurve()
 				d_output_graph = createOutputGraph()->activeLayer();
 
 			if (d_peaks > 1)
+#ifdef Q_CC_MSVC
+				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X.data(), Y.data(), 2);
+#else
 				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y, 2);
+#endif
 			else
+#ifdef Q_CC_MSVC
+				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X.data(), Y.data());
+#else
 				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y);
+#endif
 
 			if (generate_peak_curves){
 				for (i=0; i<peaks_aux; i++){//add the peak curves
 					for (j=0; j<d_points; j++)
 						Y[j] = gsl_matrix_get (m, j, i);
 
+#ifdef Q_CC_MSVC
+				insertPeakFunctionCurve(X.data(), Y.data(), i);
+#else
 				insertPeakFunctionCurve(X, Y, i);
+#endif
 				}
 			}
 			d_output_graph->replot();
@@ -346,7 +370,11 @@ void MultiPeakFit::generateFitCurve()
 				c->setPen(QPen(ColorBox::color(d_curveColorIndex), 2));
 			else
 				c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
+#ifdef Q_CC_MSVC
+			c->setData(X.data(), Y.data(), d_points);
+#else
 			c->setData(X, Y, d_points);
+#endif
 			d_output_graph->insertPlotItem(c, Graph::Line);
 			d_output_graph->addFitCurve(c);
 
@@ -358,7 +386,11 @@ void MultiPeakFit::generateFitCurve()
 					label = tableName + "_" + tr("peak") + QString::number(i+1);
 					c = new DataCurve(d_result_table, tableName + "_1", label);
 					c->setPen(QPen(ColorBox::color(d_peaks_color), 1));
+#ifdef Q_CC_MSVC
+					c->setData(X.data(), Y.data(), d_points);
+#else
 					c->setData(X, Y, d_points);
+#endif
 					d_output_graph->insertPlotItem(c, Graph::Line);
 					d_output_graph->addFitCurve(c);
 				}
@@ -585,10 +617,18 @@ void GaussAmpFit::guessInitialValues()
 
 	gsl_vector_set(d_param_init, 1, fabs(max_out - min_out));
 
+#ifdef Q_CC_MSVC
+	QVarLengthArray<double> temp(d_n);
+#else
 	double temp[d_n];
+#endif
 	for (int i = 0; i < d_n; i++)
 		temp[i] = fabs(d_y[i]);
+#ifdef Q_CC_MSVC
+	size_t imax_temp = gsl_stats_max_index(temp.data(), 1, d_n);
+#else
 	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
+#endif
 
 	gsl_vector_set(d_param_init, 2, d_x[imax_temp]);
 	gsl_vector_set(d_param_init, 3, gsl_stats_sd(d_x, 1, d_n));

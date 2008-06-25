@@ -116,10 +116,18 @@ void MultiPeakFitTool::finalize()
 
 		size_t imin, imax;
 		gsl_stats_minmax_index(&imin, &imax, y, 1, n);
+#ifdef Q_CC_MSVC
+		QVarLengthArray<double> temp(n);
+#else
 		double temp[n];
+#endif
 		for (int i = 0; i < n; i++)
 			temp[i] = fabs(y[i]);
+#ifdef Q_CC_MSVC
+		size_t imax_temp = gsl_stats_max_index(temp.data(), 1, n);
+#else
 		size_t imax_temp = gsl_stats_max_index(temp, 1, n);
+#endif
         double offset = 0.0;
 		if (imax_temp == imax)
 			offset = y[imin];

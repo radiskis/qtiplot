@@ -123,7 +123,11 @@ for (int i = 0; i < rows; i++)
 
 	QColor c = QColor(map.rgb(QwtDoubleInterval(0, 1), colors[i]));
 	it = new QTableWidgetItem(c.name());
+#ifdef Q_CC_MSVC
+	it->setFlags(it->flags() & (~Qt::ItemIsEditable));
+#else
 	it->setFlags(!Qt::ItemIsEditable);
+#endif
 	it->setBackground(QBrush(c));
 	it->setForeground(QBrush(c));
     table->setItem(i, 1, it);
@@ -155,7 +159,11 @@ QTableWidgetItem *it = new QTableWidgetItem(QString::number(val));
 table->setItem(row, 0, it);
 
 it = new QTableWidgetItem(c.name());
+#ifdef Q_CC_MSVC
+it->setFlags(it->flags() & (~Qt::ItemIsEditable));
+#else
 it->setFlags(!Qt::ItemIsEditable);
+#endif
 it->setBackground(QBrush(c));
 it->setForeground(QBrush(c));
 table->setItem(row, 1, it);

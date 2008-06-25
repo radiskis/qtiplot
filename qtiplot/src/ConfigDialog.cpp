@@ -1696,7 +1696,11 @@ void ConfigDialog::chooseTranslationsFolder()
 
 	QFileInfo tfi(app->d_translations_folder);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot translations folder!"),
+#ifdef Q_CC_MSVC
+			tfi.dir().absolutePath(), 0);
+#else
 			tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
+#endif
 
 	if (!dir.isEmpty()){
 		app->d_translations_folder = dir;
@@ -1727,7 +1731,11 @@ void ConfigDialog::choosePythonConfigFolder()
 
 	QFileInfo tfi(app->d_python_config_folder);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the Python configuration files!"),
+#ifdef Q_CC_MSVC
+			tfi.dir().absolutePath(), 0);
+#else
 			tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
+#endif
 
 	if (!dir.isEmpty()){
 		app->d_python_config_folder = dir;

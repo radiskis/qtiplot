@@ -699,7 +699,7 @@ public:
 	if (a0>=sipCpp->curveCount())
 	{
          sipIsErr=1;
-         PyErr_Format(PyExc_ValueError, "Invalid curve index! is %d, should be less than %d",a0,sipCpp->curveCount());\	
+         PyErr_Format(PyExc_ValueError, "Invalid curve index! is %d, should be less than %d",a0,sipCpp->curveCount());\
 	}
 	if (sipIsErr == 0)
 	{

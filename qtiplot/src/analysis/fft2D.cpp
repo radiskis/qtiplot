@@ -29,14 +29,23 @@
 #include "fft2D.h"
 #include "../matrix/Matrix.h"
 
+#ifdef Q_CC_MSVC
+#include <QVarLengthArray>
+#define _USE_MATH_DEFINES 
+#endif
 #include <math.h>
 
 void fft(double* x_int_re, double* x_int_im, int taille)
 {
     int size_2 = taille >> 1, tmp1 = 0;
     double tmp, tmpcos, tmpsin, base = 2*M_PI/taille;
+#ifdef Q_CC_MSVC
+    const double SQ_2=sqrt(2.0);
+    QVarLengthArray<double> pair_re(size_2), pair_im(size_2), impair_re(size_2), impair_im(size_2);
+#else
     const double SQ_2=sqrt(2);
     double pair_re[size_2], pair_im[size_2], impair_re[size_2], impair_im[size_2];
+#endif
     for(int i=0; i<size_2; i++){
         tmp1=(i<<1);
         pair_re[i]=x_int_re[tmp1];
@@ -46,8 +55,13 @@ void fft(double* x_int_re, double* x_int_im, int taille)
     }
 
     if(taille>2){
+#ifdef Q_CC_MSVC
+        fft(pair_re.data(),pair_im.data(),size_2);
+        fft(impair_re.data(),impair_im.data(),size_2);
+#else
         fft(pair_re,pair_im,size_2);
         fft(impair_re,impair_im,size_2);
+#endif
     }
 
     for(int i=0; i<size_2; i++){
@@ -65,8 +79,13 @@ void fft_inv(double* x_int_re, double* x_int_im, int taille)
 {
     int size_2 = taille >> 1, tmp1 = 0;
     double tmp, tmpcos, tmpsin, base=2*M_PI/taille;
+#ifdef Q_CC_MSVC
+    const double SQ_2=sqrt(2.0);
+    QVarLengthArray<double> pair_re(size_2), pair_im(size_2), impair_re(size_2), impair_im(size_2);
+#else
     const double SQ_2=sqrt(2);
     double pair_re[size_2], pair_im[size_2], impair_re[size_2], impair_im[size_2];
+#endif
     for(int i=0; i<size_2; i++){
         tmp1=i<<1;
         pair_re[i]=x_int_re[tmp1];
@@ -76,8 +95,13 @@ void fft_inv(double* x_int_re, double* x_int_im, int taille)
     }
 
     if(taille>2){
+#ifdef Q_CC_MSVC
+        fft_inv(pair_re.data(), pair_im.data(),size_2);
+        fft_inv(impair_re.data(), impair_im.data(),size_2);
+#else
         fft_inv(pair_re, pair_im,size_2);
         fft_inv(impair_re, impair_im,size_2);
+#endif
     }
 
     for(int i=0; i<size_2; i++){
@@ -102,7 +126,11 @@ void fft2d(double **xtre, double **xtim, int width, int height)
         return;
     }
 
+#ifdef Q_CC_MSVC
+    QVarLengthArray<double> x_int_l(width), x_int2_l(width), x_int_c(height), x_int2_c(height);
+#else
     double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
+#endif
     for(int k=0; k<height; k++){
         for(int j=0; j<width; j++){
             //x_int_l[j] = x[k][j];
@@ -111,7 +139,11 @@ void fft2d(double **xtre, double **xtim, int width, int height)
             x_int_l[j] = xtre[k][j];
             x_int2_l[j] = xtim[k][j];
         }
+#ifdef Q_CC_MSVC
+        fft(x_int_l.data(), x_int2_l.data(), width);
+#else
         fft(x_int_l, x_int2_l, width);
+#endif
         for(int j=0; j<width; j++){
             xint_re[k][j]=x_int_l[j];
             xint_im[k][j]=x_int2_l[j];
@@ -123,7 +155,11 @@ void fft2d(double **xtre, double **xtim, int width, int height)
             x_int_c[i]=xint_re[i][k];
             x_int2_c[i]=xint_im[i][k];
         }
+#ifdef Q_CC_MSVC
+        fft(x_int_c.data(),x_int2_c.data(), height) ;
+#else
         fft(x_int_c,x_int2_c, height) ;
+#endif
         for(int i=0; i<height; i++){
             xtre[(i+(height>>1))%height][(k+(width>>1))%width]=x_int_c[i];
             xtim[(i+(height>>1))%height][(k+(width>>1))%width]=x_int2_c[i];
@@ -144,13 +180,21 @@ void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im,
         return;
     }
 
+#ifdef Q_CC_MSVC
+    QVarLengthArray<double> x_int_l(width), x_int2_l(width), x_int_c(height), x_int2_c(height);
+#else
     double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
+#endif
     for(int k=0; k<height; k++){
         for(int j=0; j<width; j++){
             x_int_l[j] = xtre[(k-(height>>1))%height][(j+(width>>1))%width];
             x_int2_l[j] = xtim[(k-(height>>1))%height][(j+(width>>1))%width] ;
         }
+#ifdef Q_CC_MSVC
+        fft_inv(x_int_l.data(), x_int2_l.data(), width) ;
+#else
         fft_inv(x_int_l, x_int2_l, width) ;
+#endif
         for(int j=0; j<width; j++){
             xint_re[k][j] = x_int_l[j];
             xint_im[k][j] = x_int2_l[j];
@@ -161,7 +205,11 @@ void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im,
             x_int_c[i] = xint_re[i][k];
             x_int2_c[i] = xint_im[i][k];
         }
+#ifdef Q_CC_MSVC
+        fft_inv(x_int_c.data(),x_int2_c.data(), height) ;
+#else
         fft_inv(x_int_c,x_int2_c, height) ;
+#endif
         for(int i=0; i<height; i++){
             xrec_re[i][k] = x_int_c[i];
             xrec_im[i][k] = x_int2_c[i];
