@@ -58,6 +58,10 @@
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_sort_vector.h>
 
+#ifdef Q_CC_MSVC
+#include <ctime>
+#endif
+
 Table::Table(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 : MdiSubWindow(label,parent,name,f), scripted(env)
 {

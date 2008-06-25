@@ -180,7 +180,11 @@ void QwtHistogram::loadData()
 	for (int i = 0; i<size; i++ )
 		gsl_histogram_increment (h, Y[i]);
 
-	double X[n]; //stores ranges (x) and bins (y)
+#ifdef Q_CC_MSVC
+    QVarLengthArray<double> X(n); //stores ranges (x) and bins (y)
+#else
+    double X[n]; //stores ranges (x) and bins (y)
+#endif
 	Y.resize(n);
 	for (int i = 0; i<n; i++ ){
 		Y[i] = gsl_histogram_get (h, i);
@@ -188,7 +192,11 @@ void QwtHistogram::loadData()
 		gsl_histogram_get_range (h, i, &lower, &upper);
 		X[i] = lower;
 	}
+#ifdef Q_CC_MSVC
+	setData(X.data(), Y.data(), n);
+#else
 	setData(X, Y.data(), n);
+#endif
 
 	d_mean = gsl_histogram_mean(h);
 	d_standard_deviation = gsl_histogram_sigma(h);
@@ -243,14 +251,22 @@ void QwtHistogram::loadDataFromMatrix()
 	for (int i = 0; i<size; i++ )
 		gsl_histogram_increment (h, data[i]);
 
+#ifdef Q_CC_MSVC
+	QVarLengthArray<double> X(n), Y(n); //stores ranges (x) and bins (y)
+#else
 	double X[n], Y[n]; //stores ranges (x) and bins (y)
+#endif
 	for (int i = 0; i<n; i++ ){
 		Y[i] = gsl_histogram_get (h, i);
 		double lower, upper;
 		gsl_histogram_get_range (h, i, &lower, &upper);
 		X[i] = lower;
 	}
+#ifdef Q_CC_MSVC
+	setData(X.data(), Y.data(), n);
+#else
 	setData(X, Y, n);
+#endif
 
 	d_mean = gsl_histogram_mean(h);
 	d_standard_deviation = gsl_histogram_sigma(h);
@@ -274,7 +290,11 @@ void QwtHistogram::initData(double *Y, int size)
 	}
 
 	int n = 10;//default value
+#ifdef Q_CC_MSVC
+	QVarLengthArray<double> x(n), y(n); //store ranges (x) and bins (y)
+#else
 	double x[n], y[n]; //store ranges (x) and bins (y)
+#endif
 	gsl_histogram * h = gsl_histogram_alloc (n);
 	if (!h)
 		return;
@@ -303,7 +323,11 @@ void QwtHistogram::initData(double *Y, int size)
 		x[i] = lower;
 	}
 
+#ifdef Q_CC_MSVC
+	setData(x.data(), y.data(), n);
+#else
 	setData(x, y, n);
+#endif
 
 	d_bin_size = (d_end - d_begin)/(double)n;
 	d_autoBin = true;

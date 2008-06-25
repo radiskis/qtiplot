@@ -137,7 +137,11 @@ void Convolution::addResultCurve()
 
 	d_table->addCol();
 	d_table->addCol();
-	double x_temp[d_n];
+#ifdef Q_CC_MSVC
+    QVarLengthArray<double> x_temp(d_n);
+#else
+    double x_temp[d_n];
+#endif
 	QLocale locale = app->locale();
 	for (int i = 0; i<d_n; i++){
 		double x = i+1;
@@ -161,7 +165,11 @@ void Convolution::addResultCurve()
 			d_output_graph = createOutputGraph()->activeLayer();
 
     	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
+#ifdef Q_CC_MSVC
+		c->setData(x_temp.data(), d_x, d_n);
+#else
 		c->setData(x_temp, d_x, d_n);
+#endif
     	c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
 		d_output_graph->insertPlotItem(c, Graph::Line);
 		d_output_graph->updatePlot();

@@ -2680,7 +2680,7 @@ void Graph3D::findBestLayout()
 
   	double d = (sp->hull().maxVertex-sp->hull().minVertex).length();
   	sp->setScale(xScale, yScale, zScale);
-  	sp->setZoom(d/sqrt(3));
+  	sp->setZoom(d/sqrt(3.));
 
   	double majl = 0.1/yScale;
   	setAxisTickLength(0, majl, 0.6*majl);
