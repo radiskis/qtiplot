@@ -99,6 +99,7 @@ public:
 	QImage image();
 	void displayImage(const QImage& image);
 	void importImage(const QString& fn);
+	void importImage(const QImage& image);
 	void exportRasterImage(const QString& fileName, int quality = 100);
 	void exportSVG(const QString& fileName);
 	void exportToFile(const QString& fileName);
