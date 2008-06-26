@@ -8306,11 +8306,32 @@ void ApplicationWindow::timerEvent ( QTimerEvent *e)
 
 void ApplicationWindow::dropEvent( QDropEvent* e )
 {
+	if (!e->mimeData()->hasImage() && !e->mimeData()->hasUrls())
+		return;
+		
+	MdiSubWindow *destWindow = NULL;		
+	QList<QMdiSubWindow *> windows = d_workspace->subWindowList(QMdiArea::StackingOrder);
+	QListIterator<QMdiSubWindow *> it(windows);
+	it.toBack();
+	QPoint pos = d_workspace->mapFromGlobal(e->pos());
+	while (it.hasPrevious()){
+		QMdiSubWindow *w = it.previous();
+		if (w->frameGeometry().contains(pos)){
+			destWindow = (MdiSubWindow*)w;
+			break;
+		}
+	}
+
 	if (e->mimeData()->hasImage()){
 		QImage image = qvariant_cast<QImage>(e->mimeData()->imageData());
-		Matrix *m = new Matrix(scriptEnv, image, "", this);
-        initMatrix(m, generateUniqueName(tr("Matrix")));
-        m->show();
+		Matrix *m = qobject_cast<Matrix *>(destWindow);
+        if (m)
+			m->importImage(image);
+		else {	
+			m = new Matrix(scriptEnv, image, "", this);
+        	initMatrix(m, generateUniqueName(tr("Matrix")));
+        	m->show();
+		}
 		return;
 	}
 
@@ -8322,17 +8343,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 
 		QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 		QStringList asciiFiles;
-
-        QPoint pos = e->pos();
-        MdiSubWindow *destWindow = NULL;
-        QList<MdiSubWindow *> windows = current_folder->windowsList();
-		foreach(MdiSubWindow *w, windows){
-		    if (w->geometry().contains(pos)){
-		        destWindow = w;
-		        break;
-		    }
-		}
-
+	
 		for(int i = 0; i<(int)fileNames.count(); i++){
 			QString fn = fileNames[i];
 			QFileInfo fi (fn);

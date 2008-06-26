@@ -74,8 +74,10 @@ void FrameWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 {
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
-
-	drawFrame(painter, QRect(x, y, width(), height()));
+	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
+	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());
+	
+	drawFrame(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
 }
 
 void FrameWidget::setFrameStyle(int style)

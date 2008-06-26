@@ -1263,13 +1263,30 @@ void Matrix::importImage(const QString& fn)
 	if (buffer){
     	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
 							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image") + " \"" + fn + "\""));
-        setWindowLabel(fn);
 		emit modifiedWindow(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->setImage(image);
 		setViewType(ImageView, false);
 		displayImage(image);
-		setWindowLabel(fn);
+		emit modifiedWindow(this);
+	}
+	setWindowLabel(fn);
+}
+
+void Matrix::importImage(const QImage& image)
+{
+	if (image.isNull())
+        return;
+	
+	double *buffer = d_matrix_model->dataCopy();
+	if (buffer){
+    	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
+							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image")));
+		emit modifiedWindow(this);
+	} else if (ignoreUndo()){
+		d_matrix_model->setImage(image);
+		setViewType(ImageView, false);
+		displayImage(image);
 		emit modifiedWindow(this);
 	}
 }
