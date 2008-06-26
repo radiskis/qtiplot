@@ -50,6 +50,7 @@ class ColorButton;
 class DoubleSpinBox;
 class PatternBox;
 class PenStyleBox;
+class RectangleWidget;
 	
 class EnrichmentDialog : public QDialog
 {
@@ -75,6 +76,8 @@ private slots:
 	void adjustWidth(double height);
 	void saveImagesInternally(bool save);
 	void setBestSize();
+	void frameApplyTo();
+	void patternApplyTo();
 
 private:
 	void initEditorPage();
@@ -83,6 +86,8 @@ private:
 	void initGeometryPage();
 	void initPatternPage();
 	void setCoordinates(int unit);
+	void setFrameTo(FrameWidget *fw);
+	void setPatternTo(RectangleWidget *r);
 
     QHttp *http;
     QLabel *outputLabel;
@@ -103,7 +108,9 @@ private:
 	QCheckBox *keepAspectBox, *useFrameColorBox;
 	QSpinBox *boxTransparency, *boxFrameWidth;
 	PatternBox *patternBox;
-
+	QPushButton *frameApplyToBtn, *patternApplyToBtn;
+	QComboBox *frameApplyToBox, *patternApplyToBox;
+	
 	Graph *d_plot;
 	QWidget *d_widget;
 	WidgetType d_widget_type;
