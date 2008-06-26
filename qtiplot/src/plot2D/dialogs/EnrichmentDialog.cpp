@@ -197,9 +197,22 @@ void EnrichmentDialog::initFramePage()
 	boxFrameWidth->setRange(1, 100);
 	gl->addWidget(boxFrameWidth, 3, 1);
 	gl->setRowStretch(4, 1);
+	
+	QVBoxLayout *vl = new QVBoxLayout();
+	frameApplyToBtn = new QPushButton(tr("Apply &to..."));
+	connect(frameApplyToBtn, SIGNAL(clicked()), this, SLOT(frameApplyTo()));
 
-	QVBoxLayout *layout = new QVBoxLayout(framePage);
-    layout->addWidget(gb);
+	vl->addWidget(frameApplyToBtn);
+	frameApplyToBox = new QComboBox();
+	frameApplyToBox->insertItem(tr("This Layer"));
+    frameApplyToBox->insertItem(tr("This Window"));
+    frameApplyToBox->insertItem(tr("All Windows"));
+	vl->addWidget(frameApplyToBox);
+	vl->addStretch();
+	
+	QHBoxLayout *hl = new QHBoxLayout(framePage);
+	hl->addWidget(gb);
+	hl->addLayout(vl);
 
 	tabWidget->addTab(framePage, tr( "&Frame" ) );
 }
@@ -238,9 +251,22 @@ void EnrichmentDialog::initPatternPage()
 	gl->setColumnStretch(1, 1);
 	gl->setRowStretch(4, 1);
 
-	QVBoxLayout *layout = new QVBoxLayout(patternPage);
-    layout->addWidget(gb);
-
+	QVBoxLayout *vl = new QVBoxLayout();
+	patternApplyToBtn = new QPushButton(tr("Apply &to..."));
+	connect(patternApplyToBtn, SIGNAL(clicked()), this, SLOT(patternApplyTo()));
+	vl->addWidget(patternApplyToBtn);
+	
+	patternApplyToBox = new QComboBox();
+	patternApplyToBox->insertItem(tr("This Layer"));
+    patternApplyToBox->insertItem(tr("This Window"));
+    patternApplyToBox->insertItem(tr("All Windows"));
+	vl->addWidget(patternApplyToBox);
+	vl->addStretch();
+	
+	QHBoxLayout *hl = new QHBoxLayout(patternPage);
+	hl->addWidget(gb);
+	hl->addLayout(vl);
+	
 	tabWidget->addTab(patternPage, tr("Fill &Pattern"));
 }
 
@@ -396,11 +422,7 @@ void EnrichmentDialog::apply()
 	else if (tabWidget->currentPage() == framePage){
 	    FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
         if (fw){
-			fw->setFrameStyle(frameBox->currentIndex());
-			QPen pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), 
-							boxFrameLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
-			fw->setFramePen(pen);
-			fw->repaint();
+			setFrameTo(fw);
 			d_plot->multiLayer()->notifyChanges();
 		}
 	} else if (imagePage && tabWidget->currentPage() == imagePage)
@@ -410,16 +432,7 @@ void EnrichmentDialog::apply()
 	else if (patternPage && tabWidget->currentPage() == patternPage){
 		RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
         if (r){
-			QColor c = backgroundColorBtn->color();
-			c.setAlpha(boxTransparency->value());
-			r->setBackgroundColor(c);
-			
-			QColor patternColor = patternColorBtn->color();
-			if (useFrameColorBox->isChecked())
-				patternColor = frameColorBtn->color();
-			r->setBrush(QBrush(patternColor, patternBox->getSelectedPattern()));
-			
-			r->repaint();
+			setPatternTo(r);
 			d_plot->multiLayer()->notifyChanges();
 		}
 	}
@@ -597,6 +610,130 @@ void EnrichmentDialog::setBestSize()
 		displayCoordinates(unitBox->currentIndex());
 		d_plot->multiLayer()->notifyChanges();
 	}
+}
+
+void EnrichmentDialog::frameApplyTo()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(frameApplyToBox->currentIndex()){
+		case 0://this layer
+		{
+			QList <FrameWidget *> lst = d_plot->enrichmentsList();
+			foreach(FrameWidget *fw, lst)
+				setFrameTo(fw);
+		}
+		break;
+		
+		case 1://this window
+		{
+			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
+			foreach(Graph *g, layersLst){
+				QList <FrameWidget *> lst = g->enrichmentsList();
+				foreach(FrameWidget *fw, lst)
+					setFrameTo(fw);
+			}
+		}
+		break;
+		
+		case 2://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst){
+					QList <FrameWidget *> lst = g->enrichmentsList();
+					foreach(FrameWidget *fw, lst)
+						setFrameTo(fw);
+				}
+			}
+		}
+		break;
+		
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void EnrichmentDialog::setFrameTo(FrameWidget *fw)
+{
+	fw->setFrameStyle(frameBox->currentIndex());
+	QPen pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), 
+				boxFrameLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
+	fw->setFramePen(pen);
+	fw->repaint();
+}
+
+void EnrichmentDialog::patternApplyTo()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(patternApplyToBox->currentIndex()){
+		case 0://this layer
+		{
+			QList <FrameWidget *> lst = d_plot->enrichmentsList();
+			foreach(FrameWidget *fw, lst){
+				RectangleWidget *r = qobject_cast<RectangleWidget *>(fw);
+				if (r)
+					setPatternTo(r);
+			}
+		}
+		break;
+		
+		case 1://this window
+		{
+			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
+			foreach(Graph *g, layersLst){
+				QList <FrameWidget *> lst = g->enrichmentsList();
+				foreach(FrameWidget *fw, lst){
+					RectangleWidget *r = qobject_cast<RectangleWidget *>(fw);
+					if (r)
+						setPatternTo(r);
+				}
+			}
+		}
+		break;
+		
+		case 2://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst){
+					QList <FrameWidget *> lst = g->enrichmentsList();
+					foreach(FrameWidget *fw, lst){
+						RectangleWidget *r = qobject_cast<RectangleWidget *>(fw);
+						if (r)
+							setPatternTo(r);
+					}
+				}
+			}
+		}
+		break;
+		
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void EnrichmentDialog::setPatternTo(RectangleWidget *r)
+{	
+	QColor c = backgroundColorBtn->color();
+	c.setAlpha(boxTransparency->value());
+	r->setBackgroundColor(c);
+			
+	QColor patternColor = patternColorBtn->color();
+	if (useFrameColorBox->isChecked())
+		patternColor = frameColorBtn->color();
+	r->setBrush(QBrush(patternColor, patternBox->getSelectedPattern()));
+			
+	r->repaint();
 }
 
 EnrichmentDialog::~EnrichmentDialog()

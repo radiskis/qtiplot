@@ -47,6 +47,7 @@ const Qt::BrushStyle PatternBox::patterns[] = {
   Qt::Dense5Pattern,
   Qt::Dense6Pattern,
   Qt::Dense7Pattern,
+  Qt::NoBrush
 };
 
 PatternBox::PatternBox(QWidget *parent) : QComboBox(parent)
@@ -144,6 +145,9 @@ void PatternBox::init()
   p.drawRect(r);
   this->insertItem(icon, tr( "Dense7" ) );
 
+  p.eraseRect(r);
+  p.drawRect(r);
+  this->insertItem(icon, tr( "None" ) );
   p.end();
 }
 
@@ -151,7 +155,7 @@ void PatternBox::setPattern(const Qt::BrushStyle& style)
 {
   const Qt::BrushStyle*ite = std::find(patterns, patterns + sizeof(patterns), style);
   if (ite == patterns + sizeof(patterns))
-    this->setCurrentIndex(0); // default pattern is solid.
+    this->setCurrentIndex(14); // default pattern is none.
   else
     this->setCurrentIndex(ite - patterns);
 }
@@ -161,7 +165,7 @@ Qt::BrushStyle PatternBox::brushStyle(int index)
   if (index < (int)sizeof(patterns))
     return patterns[index];
   else
-    return Qt::SolidPattern; // default patterns is solid. 
+    return Qt::NoBrush; // default patterns is none. 
 }
 
 Qt::BrushStyle PatternBox::getSelectedPattern() const
@@ -170,14 +174,14 @@ Qt::BrushStyle PatternBox::getSelectedPattern() const
   if (i < sizeof(patterns))
     return patterns[i];
   else
-    return Qt::SolidPattern; // default patterns is solid. 
+    return Qt::NoBrush; // default patterns is none. 
 }
 
 int PatternBox::patternIndex(const Qt::BrushStyle& style)
 {
   const Qt::BrushStyle*ite = std::find(patterns, patterns + sizeof(patterns), style);
   if (ite == patterns + sizeof(patterns))
-    return 0; // default pattern is solid.
+    return 14; // default pattern is none.
   else
     return (ite - patterns);
 }

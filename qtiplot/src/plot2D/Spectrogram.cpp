@@ -294,14 +294,13 @@ QwtDoubleRect Spectrogram::boundingRect() const
 
 double MatrixData::value(double x, double y) const
 {		
-x += 0.5*dx;
-y -= 0.5*dy;
+	x += 0.5*dx;
+	y -= 0.5*dy;
 	
-int i = abs((y - y_start)/dy);
-int j = abs((x - x_start)/dx);
-	
-if (d_m && i >= 0 && i < n_rows && j >=0 && j < n_cols)
-	return d_m[i][j];
-else
+	int i = abs((y - y_start)/dy);
+	int j = abs((x - x_start)/dx);
+	if (d_m && i >= 0 && i < n_rows && j >=0 && j < n_cols)
+		return d_m[i][j];
+
 	return 0.0;
 }
