@@ -123,6 +123,7 @@ private:
 	QStackedWidget *optionStack;
 	QWidget *dotsPage, *conesPage, *crossPage;
 	TextFormatButtons *titleFormatButtons, *axisTitleFormatButtons;
+    double zoom, xScale, yScale, zScale;
 };
 
 #endif
