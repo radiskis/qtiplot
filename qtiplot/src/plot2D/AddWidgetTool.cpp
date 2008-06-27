@@ -70,7 +70,7 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, con
 
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
-	emit statusText(tr("Click on plot to choose the position of the new object!"));
+	emit statusText(tr("Click on plot to choose the position of the new object!"));	
 }
 
 AddWidgetTool::~AddWidgetTool()
@@ -143,10 +143,8 @@ void AddWidgetTool::addRectangle(const QPoint& point)
 		return;
 
 	d_rect->move(point);
-	//d_rect->setSize(0, 0);
 	d_rect->setFrameColor(Qt::blue);
 	d_graph->add(d_rect, false);
-	//d_graph->setFocus();
 	emit statusText(tr("Move cursor in order to resize the new rectangle!"));
 }
 

@@ -87,7 +87,8 @@ public:
 	bool scaleLayersOnResize(){return d_scale_layers;};
 	void setScaleLayersOnResize(bool ok){d_scale_layers = ok;};
 
-	QRect canvasRect(){return canvas->rect();};
+	QWidget *canvas(){return d_canvas;};
+	QRect canvasRect(){return d_canvas->rect();};
 	virtual QString sizeToString();
 
 public slots:
@@ -204,7 +205,7 @@ private:
     QList<LayerButton *> buttonsList;
     QList<Graph *> graphsList;
 	QHBoxLayout *layerButtonsBox;
-    QWidget *canvas;
+    QWidget *d_canvas;
 
 	QPointer<SelectionMoveResizer> d_layers_selector;
 };

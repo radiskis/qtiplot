@@ -49,6 +49,7 @@ private:
 	void closeEvent(QCloseEvent *e);
 	QString d_initial_text;
 	QWidget *d_target;
+	Graph *d_graph;
 };
 
 #endif
