@@ -37,7 +37,7 @@
 #include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
 
-FrameWidget::FrameWidget(Graph *plot):QWidget(plot),
+FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 	d_plot(plot),
 	d_frame (0),
 	d_frame_pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin)),
@@ -58,6 +58,9 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot),
 	connect (this, SIGNAL(showMenu()), plot->multiLayer(), SIGNAL(showMarkerPopupMenu()));
 	connect (this, SIGNAL(showDialog()), plot->multiLayer(), SIGNAL(showEnrichementDialog()));
 
+	d_plot->raiseEnrichements();
+	raise();
+
 	setMouseTracking(true);
 	show();
 	setFocus();
@@ -75,9 +78,10 @@ void FrameWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
-	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());
+	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());	
 	
-	drawFrame(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
+	QRect r = QRect(x, y, abs(right - x), abs(bottom - y));
+	drawFrame(painter, r.translated(-d_plot->x(), -d_plot->y()));
 }
 
 void FrameWidget::setFrameStyle(int style)

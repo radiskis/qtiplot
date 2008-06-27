@@ -36,7 +36,7 @@
 #include <qwt_text_label.h>
 #include <qwt_scale_widget.h>
 
-TextEditor::TextEditor(Graph *g): QTextEdit(g)
+TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setFrameShadow(QFrame::Plain);
@@ -51,6 +51,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g)
 
 	QString text;
 	if (g->activeText()){
+		setParent(g->multiLayer()->canvas());
 		d_target = g->activeText();
 		setGeometry(d_target->geometry());
 		text = ((LegendWidget*)d_target)->text();
@@ -96,25 +97,24 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g)
 
 void TextEditor::closeEvent(QCloseEvent *e)
 {
-    Graph *g = (Graph *)parent();
 	QString s = QString();
 	if (d_target->isA("LegendWidget")){
 		s = text();
 		((LegendWidget*)d_target)->setText(s);
         d_target->show();
-		g->setActiveText(NULL);
+		d_graph->setActiveText(NULL);
 	} else if (d_target->isA("PieLabel")){
 		s = text();
 		((PieLabel*)d_target)->setCustomText(s);
         d_target->show();
-		g->setActiveText(NULL);
+		d_graph->setActiveText(NULL);
 	} else if (d_target->isA("QwtTextLabel")){
-		QwtText title = g->title();
+		QwtText title = d_graph->title();
 		s = text();
 		if(s.isEmpty())
 			s = " ";
 		title.setText(s);
-		((QwtPlot *)g)->setTitle(title);
+		d_graph->setTitle(title);
 	} else if (d_target->isA("QwtScaleWidget")){
 		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
 		QwtText title = scale->title();
@@ -126,7 +126,7 @@ void TextEditor::closeEvent(QCloseEvent *e)
 	}
 
 	if (d_initial_text != s)
-		g->notifyChanges();
+		d_graph->notifyChanges();
 
     d_target->repaint();
 	e->accept();

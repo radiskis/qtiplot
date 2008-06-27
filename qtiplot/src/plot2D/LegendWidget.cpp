@@ -64,10 +64,7 @@ LegendWidget::LegendWidget(Graph *plot):FrameWidget(plot)
 	top_margin = 5;
 	line_length = 20;
 
-	QPoint pos = plot->canvas()->pos();
-	pos = QPoint(pos.x() + 10, pos.y() + 10);
-	move(pos);
-
+	move(plot->mapToParent(plot->canvas()->pos() + QPoint(10, 10)));
 	connect (this, SIGNAL(enableEditor()), plot, SLOT(enableTextEditor()));
 
 	setMouseTracking(true);
@@ -98,10 +95,14 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
     const int symbolLineLength = line_length + symbolsMaxWidth();
-	int width, height;
+	int width, height, dy = d_plot->y();
 	QwtArray<long> heights = itemsHeight(y, symbolLineLength, width, height);
+	for (int i = 0; i < heights.size(); i++)
+		heights[i] -= dy;
 
 	QRect rect = QRect(x, y, width, height);
+	rect.translate(-d_plot->x(), -dy);	
+	
 	drawFrame(painter, rect);
 	drawText(painter, rect, heights, symbolLineLength);
 }

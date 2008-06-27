@@ -365,6 +365,7 @@ void Graph::select(QWidget *l, bool add)
     selectTitle(false);
     scalePicker->deselect();
     deselectCurves();
+	l->raise();
 
     d_active_enrichment = qobject_cast<LegendWidget *>(l);
     if (d_active_enrichment)
@@ -1315,7 +1316,8 @@ void Graph::copyImage()
 
 QPixmap Graph::graphPixmap()
 {
-	QPixmap pixmap(size());
+	QPixmap pixmap(boundingRect().size());
+	pixmap.fill(Qt::white);
     QPainter p(&pixmap);
     print(&p, rect());
     p.end();
@@ -1404,9 +1406,10 @@ void Graph::exportVector(const QString& fileName, int res, bool color, bool keep
 	printer.setOrientation(QPrinter::Portrait);
 
 	QRect plotRect = rect();
-	if (pageSize == QPrinter::Custom)
-        printer.setPaperSize (QSizeF(width(), height()), QPrinter::DevicePixel);
-    else {
+	if (pageSize == QPrinter::Custom){
+		QSize size = boundingRect().size();
+        printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
+    } else {
         printer.setPageSize(pageSize);
 		double plot_aspect = double(frameGeometry().width())/double(frameGeometry().height());
 		if (keepAspect){// export should preserve plot aspect ratio
@@ -2378,6 +2381,7 @@ LegendWidget* Graph::addText(LegendWidget* t)
 	aux->clone(t);
 	d_active_enrichment = aux;
 	d_enrichments << aux;
+	t->raise();
 	return aux;
 }
 
@@ -5536,4 +5540,19 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 LegendWidget* Graph::activeText()
 {
 	return qobject_cast<LegendWidget *>(d_active_enrichment);
+}
+
+void Graph::raiseEnrichements()
+{
+	foreach(FrameWidget *fw, d_enrichments)
+		fw->raise();
+}
+
+QRect Graph::boundingRect()
+{
+	QRect r = this->geometry();
+	foreach(FrameWidget *fw, d_enrichments)
+		r = r.united(fw->geometry());
+	
+	return r;
 }

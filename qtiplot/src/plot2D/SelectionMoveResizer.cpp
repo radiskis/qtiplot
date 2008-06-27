@@ -263,8 +263,7 @@ void SelectionMoveResizer::operateOnTargets()
             QFont f = l->font();
             f.setPointSize(f.pointSize() * new_rect.width() * new_rect.height()/(l->rect().width() * l->rect().height()));
             l->setFont(f);
-            l->repaint();
-            ((Graph *)l->parent()->parent())->notifyFontChange(f);
+            l->plot()->notifyFontChange(f);
 		}
 	}
 
@@ -311,18 +310,19 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 	}
 
 	if (me->button() == Qt::LeftButton){
-		Graph *plot = qobject_cast<Graph *>(parentWidget());
-		if (plot){
-			QList <FrameWidget *> lst = plot->enrichmentsList();
+		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widgets[0]);
+		if (fw && fw->plot()){
+			QList <FrameWidget *> lst = fw->plot()->enrichmentsList();
 			foreach(FrameWidget *f, lst){
 				if(!d_widgets.contains(f) && f->geometry().contains(me->pos()))
-					return plot->select(f, me->modifiers() & Qt::ShiftModifier);
+					return fw->plot()->select(f, me->modifiers() & Qt::ShiftModifier);
 			}
 		}
 	}
 
 	if (me->button() != Qt::LeftButton || !d_bounding_rect.contains(me->pos())) {
 		me->ignore();
+		close();
 		return;
 	}
 	d_op_start = me->pos();

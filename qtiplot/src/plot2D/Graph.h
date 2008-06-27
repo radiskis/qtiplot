@@ -199,6 +199,9 @@ class Graph: public QwtPlot
 
 		FrameWidget* add(FrameWidget* fw, bool copy = true);
 		void remove(FrameWidget*);
+		
+		QRect boundingRect();
+		void raiseEnrichements();
 
 	public slots:
 		void copy(Graph* g);

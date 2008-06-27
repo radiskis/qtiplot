@@ -53,7 +53,7 @@ d_save_xpm(false)
 
 		setSize(picSize);
 	}
-	move(plot->canvas()->pos());
+	move(plot->mapToParent(plot->canvas()->pos()));
 }
 
 ImageWidget::ImageWidget(Graph *plot, const QImage& image):FrameWidget(plot),
@@ -71,7 +71,7 @@ d_save_xpm(true)
 		picSize.setHeight(h);
 
 	setSize(picSize);
-	move(plot->canvas()->pos());
+	move(plot->mapToParent(plot->canvas()->pos()));
 }
 
 bool ImageWidget::load(const QString& fn, bool update)
@@ -120,8 +120,14 @@ void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 {
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
+	
+	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
+	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());	
+	
+	QRect r = QRect(x, y, abs(right - x), abs(bottom - y));
+	draw(painter, r.translated(-d_plot->x(), -d_plot->y()));
 
-	draw(painter, QRect(x, y, width(), height()));
+	//draw(painter, QRect(x, y, width(), height()));
 }
 
 void ImageWidget::draw(QPainter *painter, const QRect& rect)
