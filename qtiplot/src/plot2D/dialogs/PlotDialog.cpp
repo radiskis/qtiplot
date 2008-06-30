@@ -1586,8 +1586,7 @@ void PlotDialog::updateTabWindow(QTreeWidgetItem *currentItem, QTreeWidgetItem *
 
 void PlotDialog::insertTabs(int plot_type)
 {
-    if (plot_type == Graph::Pie)
-	{
+    if (plot_type == Graph::Pie){
 		privateTabWidget->addTab (piePage, tr("Pattern"));
 		privateTabWidget->addTab (pieGeometryPage, tr("Pie Geometry"));
 		privateTabWidget->addTab (pieLabelsPage, tr("Labels"));
@@ -1596,65 +1595,48 @@ void PlotDialog::insertTabs(int plot_type)
 	}
 
     privateTabWidget->addTab (axesPage, tr("Axes"));
-	if (plot_type == Graph::Line)
-	{
+	if (plot_type == Graph::Line){
 		boxConnect->setEnabled(true);
 		privateTabWidget->addTab (linePage, tr("Line"));
 		privateTabWidget->showPage(linePage);
-	}
-	else if (plot_type == Graph::Scatter)
-	{
+	} else if (plot_type == Graph::Scatter){
 		boxConnect->setEnabled(true);
 		privateTabWidget->addTab (symbolPage, tr("Symbol"));
 		privateTabWidget->showPage(symbolPage);
-	}
-	else if (plot_type == Graph::LineSymbols)
-	{
+	} else if (plot_type == Graph::LineSymbols){
 		boxConnect->setEnabled(true);
 		privateTabWidget->addTab (linePage, tr("Line"));
 		privateTabWidget->addTab (symbolPage, tr("Symbol"));
 		privateTabWidget->showPage(symbolPage);
-	}
-	else if (plot_type == Graph::VerticalBars ||
+	} else if (plot_type == Graph::VerticalBars ||
 			plot_type == Graph::HorizontalBars ||
-			plot_type == Graph::Histogram)
-	{
+			plot_type == Graph::Histogram){
 		boxConnect->setEnabled(false);
 		privateTabWidget->addTab (linePage, tr("Pattern"));
 		privateTabWidget->addTab (spacingPage, tr("Spacing"));
 
-		if (plot_type == Graph::Histogram)
-		{
+		if (plot_type == Graph::Histogram){
 			privateTabWidget->addTab (histogramPage, tr("Histogram Data"));
 			privateTabWidget->showPage(histogramPage);
-		}
-		else
+		} else
 			privateTabWidget->showPage(linePage);
-	}
-	else if (plot_type == Graph::VectXYXY || plot_type == Graph::VectXYAM)
-	{
+	} else if (plot_type == Graph::VectXYXY || plot_type == Graph::VectXYAM){
 		boxConnect->setEnabled(true);
 		privateTabWidget->addTab (linePage, tr("Line"));
 		privateTabWidget->addTab (vectPage, tr("Vector"));
 		customVectorsPage(plot_type == Graph::VectXYAM);
 		privateTabWidget->showPage(vectPage);
-	}
-	else if (plot_type == Graph::ErrorBars)
-	{
+	} else if (plot_type == Graph::ErrorBars){
 		privateTabWidget->addTab (errorsPage, tr("Error Bars"));
 		privateTabWidget->showPage(errorsPage);
-	}
-	else if (plot_type == Graph::Box)
-	{
+    } else if (plot_type == Graph::Box) {
 		boxConnect->setEnabled(false);
 		privateTabWidget->addTab (linePage, tr("Pattern"));
 		privateTabWidget->addTab (boxPage, tr("Box/Whiskers"));
 		privateTabWidget->addTab (percentilePage, tr("Percentile"));
 		privateTabWidget->showPage(linePage);
 		return;
-	}
-	else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour)
-  	{
+	} else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour){
   		privateTabWidget->addTab(spectrogramPage, tr("Colors") + " / " + tr("Contour"));
   	    privateTabWidget->showPage(spectrogramPage);
   	    return;
@@ -1665,7 +1647,7 @@ void PlotDialog::insertTabs(int plot_type)
         return;
 
     DataCurve *c = (DataCurve *)((CurveTreeItem *)item)->plotItem();
-    if (c && c->type() != Graph::Function){
+    if (c && c->type() != Graph::Function && c->type() != Graph::ErrorBars){
         privateTabWidget->addTab (labelsPage, tr("Labels"));
 		if (c->hasSelectedLabels())
 			privateTabWidget->showPage(labelsPage);

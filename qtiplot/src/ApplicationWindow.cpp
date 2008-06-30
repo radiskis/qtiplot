@@ -8308,8 +8308,8 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 {
 	if (!e->mimeData()->hasImage() && !e->mimeData()->hasUrls())
 		return;
-		
-	MdiSubWindow *destWindow = NULL;		
+
+	MdiSubWindow *destWindow = NULL;
 	QList<QMdiSubWindow *> windows = d_workspace->subWindowList(QMdiArea::StackingOrder);
 	QListIterator<QMdiSubWindow *> it(windows);
 	it.toBack();
@@ -8324,10 +8324,22 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 
 	if (e->mimeData()->hasImage()){
 		QImage image = qvariant_cast<QImage>(e->mimeData()->imageData());
+		MultiLayer *ml = qobject_cast<MultiLayer *>(destWindow);
+        if (ml){
+            Graph *l = ml->layerAt(pos);
+            if (l)
+                l->addImage(image);
+            else if (ml->activeLayer())
+                ml->activeLayer()->addImage(image);
+            else
+                ml->addLayer()->addImage(image);
+            return;
+        }
+
 		Matrix *m = qobject_cast<Matrix *>(destWindow);
         if (m)
 			m->importImage(image);
-		else {	
+		else {
 			m = new Matrix(scriptEnv, image, "", this);
         	initMatrix(m, generateUniqueName(tr("Matrix")));
         	m->show();
@@ -8343,7 +8355,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 
 		QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 		QStringList asciiFiles;
-	
+
 		for(int i = 0; i<(int)fileNames.count(); i++){
 			QString fn = fileNames[i];
 			QFileInfo fi (fn);
