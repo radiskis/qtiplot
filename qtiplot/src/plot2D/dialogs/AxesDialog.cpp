@@ -34,7 +34,6 @@
 #include "../../Table.h"
 #include "../../DoubleSpinBox.h"
 #include "../../ColorBox.h"
-#include "../../TextDialog.h"
 #include "../Graph.h"
 #include "../Grid.h"
 #include "../ScaleDraw.h"

@@ -377,12 +377,15 @@ QString Fit::legendInfo()
 	info += "Chi^2/doF = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
 	info += tr("R^2") + " = " + locale.toString(rSquare(), 'g', d_prec) + "\n";
 
-	for (int i=0; i<d_p; i++){
+	for (int i = 0; i < d_p; i++){
 		info += d_param_names[i] + " = " + locale.toString(d_results[i], 'e', d_prec) + " +/- ";
 		if (d_scale_errors)
-			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'e', d_prec) + "\n";
+			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'e', d_prec);
 		else
-			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'e', d_prec) + "\n";
+			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'e', d_prec);
+		
+		if (i < d_p - 1)
+			info += "\n";
 	}
 	return info;
 }

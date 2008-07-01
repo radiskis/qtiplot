@@ -171,7 +171,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_active_tool = NULL;
 	d_peak_fit_tool = NULL;
 	d_active_enrichment = NULL;
-	d_legend = NULL; // no legend for an empty graph
 	d_selected_marker = NULL;
 	drawLineOn = false;
 	drawArrowOn = false;
@@ -1586,8 +1585,6 @@ void Graph::remove(FrameWidget* f)
 	if (index >= 0 && index < d_enrichments.size())
 		d_enrichments.removeAt(index);
 
-	if (f == d_legend)
-		d_legend = NULL;
 	if (f == d_active_enrichment)
 		d_active_enrichment = NULL;
 
@@ -1672,14 +1669,6 @@ void Graph::initTitle(bool on, const QFont& fnt)
 		t.setFont(fnt);
 		t.setText(tr("Title"));
 		((QwtPlot *)this)->setTitle (t);
-	}
-}
-
-void Graph::removeLegend()
-{
-	if (d_legend){
-	    delete d_legend;
-	    d_legend = NULL;
 	}
 }
 
@@ -2221,7 +2210,7 @@ LegendWidget* Graph::newLegend(const QString& text)
 		l->setBackgroundColor(app->legendBackground);
 	}
 
-    d_legend = l;
+	l->setAutoUpdate(true);
 	d_enrichments << l;
 	emit modifiedGraph();
 	return l;
@@ -2230,16 +2219,18 @@ LegendWidget* Graph::newLegend(const QString& text)
 LegendWidget* Graph::addTimeStamp()
 {
 	LegendWidget* l = newLegend(QDateTime::currentDateTime().toString(Qt::LocalDate));
-
-	QPoint p = canvas()->pos();
-	l->move(QPoint(p.x() + canvas()->width()/2, p.y() + 10));
+	l->setAutoUpdate(false);
+	
+	QPoint p = canvas()->pos() + QPoint(canvas()->width()/2, 10);
+	l->move(mapToParent(p));
 	emit modifiedGraph();
 	return l;
 }
 
 void Graph::insertLegend(const QStringList& lst, int fileVersion)
 {
-	d_legend = insertText(lst, fileVersion);
+	LegendWidget *l = insertText(lst, fileVersion);
+	l->setAutoUpdate(true);
 }
 
 LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
@@ -3076,9 +3067,6 @@ void Graph::setBarsGap(int curve, int gapPercent, int offset)
 
 void Graph::removePie()
 {
-	if (d_legend)
-        d_legend->setText(QString::null);
-
 	QList <PieLabel *> labels = ((QwtPieCurve *)curve(0))->labelsList();
 	foreach(PieLabel *l, labels)
 		l->setPieCurve(0);
@@ -3165,7 +3153,7 @@ void Graph::removeCurve(QwtPlotItem *it)
 
 void Graph::removeLegendItem(int index)
 {
-	if (!d_legend || index < 0 || index >= d_curves.size())
+	if (index < 0 || index >= d_curves.size())
 		return;
 
 	QwtPlotItem *it = d_curves.at(index);
@@ -3175,65 +3163,68 @@ void Graph::removeLegendItem(int index)
 	if (((PlotCurve *)it)->type() == ErrorBars)
 		return;
 
-	if (isPiePlot()){
-		d_legend->setText(QString::null);
-		return;
-	}
+	foreach(FrameWidget *fw, d_enrichments){
+		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+		if (l && l->isAutoUpdateEnabled()){
+			QString text = l->text();
+			QStringList items = text.split( "\n", QString::SkipEmptyParts);
 
-	QString text = d_legend->text();
-	QStringList items = text.split( "\n", QString::SkipEmptyParts);
+			if (index >= (int) items.count())
+				continue;
 
-	if (index >= (int) items.count())
-		return;
+			QStringList lst = items.grep( "\\l(" + QString::number(index+1) + ")" );
+			if (lst.isEmpty())
+				continue;
 
-	QStringList l = items.grep( "\\l(" + QString::number(index+1) + ")" );
-	if (l.isEmpty())
-		return;
+			items.remove(lst[0]);//remove the corresponding legend string
 
-	items.remove(l[0]);//remove the corresponding legend string
-
-	for (int i=0; i<items.count(); i++){//set new curves indexes in legend text
-		QString item = items[i];
-		int pos1 = item.indexOf("\\l(");
-		int pos2 = item.indexOf(")", pos1);
-		int pos = pos1 + 3;
-		int n = pos2 - pos;
-		int cv = item.mid(pos, n).toInt();
-		if (cv > index){
-			int id = cv - 1;
-			if (!id)
-				id = 1;
-			item.replace(pos, n, QString::number(id));
+			for (int i=0; i<items.count(); i++){//set new curves indexes in legend text
+				QString item = items[i];
+				int pos1 = item.indexOf("\\l(");
+				int pos2 = item.indexOf(")", pos1);
+				int pos = pos1 + 3;
+				int n = pos2 - pos;
+				int cv = item.mid(pos, n).toInt();
+				if (cv > index){
+					int id = cv - 1;
+					if (!id)
+						id = 1;
+					item.replace(pos, n, QString::number(id));
+				}
+				pos1 = item.indexOf("%(", pos2);
+				pos2 = item.indexOf(")", pos1);
+				pos = pos1 + 2;
+				n = pos2 - pos;
+				cv = item.mid(pos, n).toInt();
+				if (cv > index){
+					int id = cv - 1;
+					if (!id)
+						id = 1;
+				item.replace(pos, n, QString::number(id));
+				}
+				items[i] = item;
+			}
+			text = items.join ( "\n" );
+			l->setText(text);
 		}
-		pos1 = item.indexOf("%(", pos2);
-		pos2 = item.indexOf(")", pos1);
-		pos = pos1 + 2;
-		n = pos2 - pos;
-		cv = item.mid(pos, n).toInt();
-		if (cv > index){
-			int id = cv - 1;
-			if (!id)
-				id = 1;
-			item.replace(pos, n, QString::number(id));
-		}
-		items[i] = item;
 	}
-	text = items.join ( "\n" );
-	d_legend->setText(text);
 }
 
 void Graph::addLegendItem()
 {
-	if (d_legend){
-		QString text = d_legend->text();
-		int curves = d_curves.size();
-        if (text.endsWith ("\n") || text.isEmpty())
-            text.append("\\l("+QString::number(curves)+")"+"%("+QString::number(curves)+")");
-        else
-            text.append("\n\\l("+QString::number(curves)+")"+"%("+QString::number(curves)+")");
+	foreach(FrameWidget *fw, d_enrichments){
+		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+		if (l && l->isAutoUpdateEnabled()){
+			QString text = l->text();
+			int curves = d_curves.size();
+        	if (text.endsWith ("\n") || text.isEmpty())
+            	text.append("\\l("+QString::number(curves)+")"+"%("+QString::number(curves)+")");
+        	else
+            	text.append("\n\\l("+QString::number(curves)+")"+"%("+QString::number(curves)+")");
 
-        d_legend->setText(text);
-        d_legend->repaint();
+        	l->setText(text);
+        	l->repaint();
+		}
 	}
 }
 
@@ -3394,9 +3385,12 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 	c->setVariable(var);
 	c->loadData(points);
 
-	if (d_legend){//update the legend marker
-		QString text = (d_legend->text()).replace(oldLegend, c->legend());
-        d_legend->setText(text);
+	foreach(FrameWidget *fw, d_enrichments){
+		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+		if (l && l->isAutoUpdateEnabled()){//update legends
+			QString text = (l->text()).replace(oldLegend, c->legend());
+        	l->setText(text);
+		}
 	}
 	updatePlot();
 	emit modifiedGraph();
@@ -3975,7 +3969,6 @@ void Graph::copy(Graph* g)
 	((QwtPlot *)this)->setTitle (g->title());
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
-	removeLegend();
 
 	QList<QwtPlotItem *> curvesList = g->curvesList();
     foreach (QwtPlotItem *it, curvesList){
@@ -4140,13 +4133,8 @@ void Graph::copy(Graph* g)
 	d_zoomer[1]->setZoomBase();
 
 	QList<FrameWidget *> enrichements = g->enrichmentsList();
-	foreach (FrameWidget *e, enrichements){
-		LegendWidget *l = qobject_cast<LegendWidget *>(e);
-		if (l && l == g->legend())
-			d_legend = addText(l);
-		else
-			add(e);
-	}
+	foreach (FrameWidget *e, enrichements)
+		add(e);
 
 	QList<QwtPlotMarker *> lines = g->linesList();
 	foreach (QwtPlotMarker *i, lines)
@@ -4170,9 +4158,12 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
         c->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(ColorBox::color(j), 1), QSize(7,7)));
 	}
 
-	if (d_legend)
-		d_legend->setText(legendText());
-
+	foreach(FrameWidget *fw, d_enrichments){
+		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+		if (l && l->isAutoUpdateEnabled())
+			l->setText(legendText());
+	}
+	
 	setAxisScaleDraw (QwtPlot::xBottom, new ScaleDraw(this, w->selectedYLabels(), w->objectName(), ScaleDraw::ColHeader));
 	setAxisMaxMajor(QwtPlot::xBottom, names.count()+1);
 	setAxisMaxMinor(QwtPlot::xBottom, 0);
@@ -5544,6 +5535,16 @@ LegendWidget* Graph::activeText()
 
 void Graph::raiseEnrichements()
 {
+	QList<Graph *> lst = multiLayer()->layersList();
+	foreach(Graph *g, lst){
+		if (g == this)
+			continue;
+		
+		QList<FrameWidget *> eLst = g->enrichmentsList();
+		foreach(FrameWidget *fw, eLst)
+			fw->raise();
+	}
+	
 	foreach(FrameWidget *fw, d_enrichments)
 		fw->raise();
 }

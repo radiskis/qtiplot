@@ -27,7 +27,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "Plot3DDialog.h"
-#include "../TextDialog.h"
 #include "../MyParser.h"
 #include "../SymbolDialog.h"
 #include "../ApplicationWindow.h"

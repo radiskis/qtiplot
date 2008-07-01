@@ -193,9 +193,7 @@ setTitleColor
 setTitleAlignment
 removeTitle
 newLegend
-setLegend
 legend
-removeLegend
 addText
 addTimeStamp
 setXTitle
@@ -467,3 +465,5 @@ numSelectedRows
 setSelectedCol
 selectedColumn
 setCurveAxes
+isAutoUpdateEnabled
+setAutoUpdate

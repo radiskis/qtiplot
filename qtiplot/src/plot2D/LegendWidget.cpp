@@ -32,6 +32,7 @@
 #include "VectorCurve.h"
 #include "SelectionMoveResizer.h"
 #include "../ApplicationWindow.h"
+#include "../PenStyleBox.h"
 
 #include <QPainter>
 #include <QPolygon>
@@ -47,7 +48,12 @@
 
 #include <iostream>
 
-LegendWidget::LegendWidget(Graph *plot):FrameWidget(plot)
+LegendWidget::LegendWidget(Graph *plot):FrameWidget(plot),
+h_space(5),
+left_margin(10),
+top_margin(5),
+line_length(20),
+d_auto_update(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -58,11 +64,6 @@ LegendWidget::LegendWidget(Graph *plot):FrameWidget(plot)
 	d_text->setColor(Qt::black);
 	d_text->setBackgroundPen (QPen(Qt::NoPen));
 	d_text->setPaintAttribute(QwtText::PaintBackground);
-
-	h_space = 5;
-	left_margin = 10;
-	top_margin = 5;
-	line_length = 20;
 
 	move(plot->mapToParent(plot->canvas()->pos() + QPoint(10, 10)));
 	connect (this, SIGNAL(enableEditor()), plot, SLOT(enableTextEditor()));
@@ -470,6 +471,7 @@ void LegendWidget::showTextEditor()
 void LegendWidget::clone(LegendWidget* t)
 {
 	d_frame = t->frameStyle();
+	d_auto_update = t->isAutoUpdateEnabled();
 
 	setTextColor(t->textColor());
 	setBackgroundColor(t->backgroundColor());
@@ -496,10 +498,7 @@ QString LegendWidget::saveToString()
 	QColor bc = backgroundColor();
 	s += "<Background>" + bc.name() + "</Background>\n";
 	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
-
-	if (this == plot()->legend())
-		s += "<AutoUpdate>1</AutoUpdate>\n";
-	
+	s += "<AutoUpdate>" + QString::number(d_auto_update) + "</AutoUpdate>\n";
 	return s + "</Legend>\n";
 }
 
@@ -508,7 +507,6 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 	QColor backgroundColor = Qt::white;
 	double x = 0.0, y = 0.0;
 	QStringList::const_iterator line;
-	bool legend = false;
 	LegendWidget *l = new LegendWidget(g);	
 	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;		
@@ -516,6 +514,10 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 			l->setFrameStyle((s.remove("<Frame>").remove("</Frame>").toInt()));
 		else if (s.contains("<Color>"))
 			l->setFrameColor(QColor(s.remove("<Color>").remove("</Color>")));
+		else if (s.contains("<FrameWidth>"))
+			l->setFrameWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toInt());
+		else if (s.contains("<LineStyle>"))
+			l->setFrameLineStyle(PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt()));
 		else if (s.contains("<x>"))
 			x = s.remove("<x>").remove("</x>").toDouble();
 		else if (s.contains("<y>"))
@@ -541,15 +543,13 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 		else if (s.contains("<Alpha>"))
 			backgroundColor.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
 		else if (s.contains("<AutoUpdate>"))
-			legend = s.remove("<AutoUpdate>").remove("</AutoUpdate>").toInt();
+			l->setAutoUpdate(s.remove("<AutoUpdate>").remove("</AutoUpdate>").toInt());
 	}
 	
 	if (l){
 		l->setBackgroundColor(backgroundColor);
 		l->setOriginCoord(x, y);
 		g->add(l, false);
-		if (legend)
-			g->setLegend(l);
 	}
 }
 

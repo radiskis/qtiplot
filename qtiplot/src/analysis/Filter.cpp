@@ -29,6 +29,7 @@
 #include "Filter.h"
 #include "../ColorBox.h"
 #include "../Table.h"
+#include "../plot2D/FrameWidget.h"
 #include "../plot2D/LegendWidget.h"
 #include "../plot2D/FunctionCurve.h"
 #include "../plot2D/PlotCurve.h"
@@ -187,10 +188,18 @@ void Filter::showLegend()
 	if (!d_output_graph)
 		return;
 
-	LegendWidget* legend = d_output_graph->legend();
-	LegendWidget* l = d_output_graph->newLegend(legendInfo());
-	if (legend)
-		l->move(QPoint(legend->x(), legend->y() + legend->height() + 20));
+	QList <FrameWidget *> lst = d_output_graph->enrichmentsList();
+	foreach(FrameWidget *fw, lst){
+		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+		if (l && l->isAutoUpdateEnabled()){
+			l->setText(l->text() + "\n" + legendInfo());
+			l->repaint();
+			return;
+		}
+	}
+	
+	LegendWidget *l = d_output_graph->newLegend(legendInfo());
+	l->repaint();
 }
 
 bool Filter::run()

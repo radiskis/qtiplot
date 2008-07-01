@@ -482,6 +482,9 @@ public:
   void setFont(const QFont&);
   void setOriginCoord(double, double);
   void setOrigin(int, int);
+  
+  bool isAutoUpdateEnabled();
+  void setAutoUpdate(bool);
 
 private:
   LegendWidget(const LegendWidget&);
@@ -627,13 +630,6 @@ public:
   void removeTitle();
 
   LegendWidget* newLegend(const QString& = QString());
-  void setLegend(const QString&) /NoDerived/;
-%MethodCode
-  sipCpp->legend()->setText(*a0);
-%End
-
-  LegendWidget* legend();
-  void removeLegend();
 
   LegendWidget* addText(LegendWidget*);
   void remove(LegendWidget*);

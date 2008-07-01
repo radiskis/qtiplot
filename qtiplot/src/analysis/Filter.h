@@ -95,7 +95,7 @@ class Filter : public QObject
         bool error(){return d_init_err;};
 
 		virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
-
+		
 	protected:
         void init();
         void memoryErrorMessage();
@@ -182,7 +182,7 @@ class Filter : public QObject
 		//! Specifies if the filter should display a result curve
 		bool d_graphics_display;
 
-		QString d_y_col_name;
+		QString d_y_col_name;	
 };
 
 #endif

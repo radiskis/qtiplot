@@ -129,8 +129,7 @@ void PolynomFitDialog::fit()
 
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
     PolynomialFit *fitter = new PolynomialFit(app, graph, boxOrder->value(), boxShowFormula->isChecked());
-    if (fitter->setDataFromCurve(curveName, boxStart->value(), boxEnd->value()))
-    {
+    if (fitter->setDataFromCurve(curveName, boxStart->value(), boxEnd->value())){
         fitter->setColor(boxColor->currentItem());
         fitter->setOutputPrecision(app->fit_output_precision);
 		fitter->generateFunction(app->generateUniformFitPoints, app->fitPoints);
