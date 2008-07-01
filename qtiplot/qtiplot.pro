@@ -184,7 +184,6 @@ HEADERS  += src/ApplicationWindow.h \
             src/OpenProjectDialog.h\
             src/CustomActionDialog.h \
             src/DoubleSpinBox.h \
-			src/TextDialog.h \
 			src/PlotWizard.h \
 			src/LineNumberDisplay.h \
 			src/PenStyleBox.h \
@@ -226,7 +225,6 @@ SOURCES  += src/main.cpp \
             src/OpenProjectDialog.cpp\
             src/CustomActionDialog.cpp \
             src/DoubleSpinBox.cpp \
-			src/TextDialog.cpp \
 			src/PlotWizard.cpp \
 			src/LineNumberDisplay.cpp \
 			src/PenStyleBox.cpp \
@@ -342,6 +340,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LayerDialog.h \
 			   src/plot2D/dialogs/LineDialog.h \
 		       src/plot2D/dialogs/PlotDialog.h \
+			   src/plot2D/dialogs/TextDialog.h \
 			   src/plot2D/dialogs/TextEditor.h \
 
 	SOURCES += src/plot2D/dialogs/AssociationsDialog.cpp \
@@ -355,6 +354,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/dialogs/LayerDialog.cpp \
 			   src/plot2D/dialogs/LineDialog.cpp \
 		       src/plot2D/dialogs/PlotDialog.cpp \
+			   src/plot2D/dialogs/TextDialog.cpp \
 			   src/plot2D/dialogs/TextEditor.cpp \
 
 ###############################################################

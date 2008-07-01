@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
     Copyright            : (C) 2004 - 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Text label/axis label options dialog
+    Description          : Title/axis label options dialog
 
  ***************************************************************************/
 
@@ -40,9 +40,8 @@ class QSpinBox;
 class QCheckBox;
 class Graph;
 class QwtScaleWidget;
-
-#include "ColorButton.h"
-#include "TextFormatButtons.h"
+class ColorButton;
+class TextFormatButtons;
 
 //! Options dialog for text labels/axes labels
 class TextDialog : public QDialog
