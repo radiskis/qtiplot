@@ -38,11 +38,13 @@
 #include "../FrameWidget.h"
 #include "../ImageWidget.h"
 #include "../RectangleWidget.h"
+#include "../LegendWidget.h"
 #include "../../ColorButton.h"
 #include "../../ApplicationWindow.h"
 #include "../../DoubleSpinBox.h"
 #include "../../PatternBox.h"
 #include "../../PenStyleBox.h"
+#include "../../TextFormatButtons.h"
 
 static const char* choose_folder_xpm[]={
     "16 16 11 1",
@@ -85,6 +87,7 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	editPage = NULL;
 	imagePage = NULL;
 	patternPage = NULL;
+	textPage = NULL;
 
 	if (wt == Tex){
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
@@ -103,7 +106,9 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
 	tabWidget = new QTabWidget();
-	if (wt == Tex)
+	if (wt == Text)
+		initTextPage();
+	else if (wt == Tex)
 		initEditorPage();
 	else if (wt == Image)
 		initImagePage();
@@ -139,6 +144,60 @@ void EnrichmentDialog::initEditorPage()
 	layout->addWidget(outputLabel);
 
 	tabWidget->addTab(editPage, tr( "&Text" ) );
+}
+
+void EnrichmentDialog::initTextPage()
+{	
+	QGroupBox *gb1 = new QGroupBox();
+	QGridLayout * gl1 = new QGridLayout(gb1);
+	gl1->addWidget(new QLabel(tr("Color")), 0, 0);
+
+	textColorBtn = new ColorButton();
+	gl1->addWidget(textColorBtn, 0, 1);
+	
+	textDefaultBtn = new QPushButton( tr( "Set As &Default" ) );
+	gl1->addWidget(textDefaultBtn, 0, 2);
+	connect(textDefaultBtn, SIGNAL(clicked()), this, SLOT(setTextDefaultValues()));
+
+	gl1->addWidget(new QLabel(tr("Font")), 1, 0);
+
+	textFontBtn = new QPushButton(tr( "&Font" ));
+	connect(textFontBtn, SIGNAL(clicked()), this, SLOT(customFont()));
+	gl1->addWidget(textFontBtn, 1, 1);
+
+	gl1->addWidget(new QLabel(tr("Opacity")), 2, 0);
+	
+	boxBackgroundTransparency = new QSpinBox();
+	boxBackgroundTransparency->setRange(0, 255);
+    boxBackgroundTransparency->setSingleStep(5);
+	boxBackgroundTransparency->setWrapping(true);
+    boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
+	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), 
+			this, SLOT(updateTransparency(int)));
+
+	gl1->addWidget( boxBackgroundTransparency, 2, 1 );
+	gl1->addWidget(new QLabel(tr("Background color")), 3, 0);
+	textBackgroundBtn = new ColorButton();
+	gl1->addWidget(textBackgroundBtn, 3, 1);
+
+	textEditBox = new QTextEdit();
+	textEditBox->setTextFormat(Qt::PlainText);
+	textEditBox->setFont(QFont());
+
+	formatButtons =  new TextFormatButtons(textEditBox);
+	formatButtons->toggleCurveButton(true);
+
+	setFocusPolicy(Qt::StrongFocus);
+	setFocusProxy(textEditBox);
+
+	textPage = new QWidget();
+
+	QVBoxLayout* vl = new QVBoxLayout(textPage);
+	vl->addWidget(gb1);
+	vl->addWidget(formatButtons);
+	vl->addWidget(textEditBox);
+	
+	tabWidget->addTab(textPage, tr( "&Text" ) );
 }
 
 void EnrichmentDialog::initImagePage()
@@ -382,7 +441,19 @@ void EnrichmentDialog::setWidget(QWidget *w)
     unitBox->setCurrentIndex(FrameWidget::Pixel);
 	displayCoordinates(FrameWidget::Pixel);
 
-	if (d_widget_type == Tex){
+	if (d_widget_type == Text){
+		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
+		if (l){
+			setText(l->text());
+			textFont = l->font();
+			textColorBtn->setColor(l->textColor());
+
+			QColor bc = l->backgroundColor();
+			boxBackgroundTransparency->setValue(bc.alpha());
+			textBackgroundBtn->setEnabled(bc.alpha());
+			textBackgroundBtn->setColor(bc);
+		}
+	} else if (d_widget_type == Tex){
 		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
 		if (tw){
 			equationEditor->setText(tw->formula());
@@ -433,6 +504,18 @@ void EnrichmentDialog::apply()
 		RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
         if (r){
 			setPatternTo(r);
+			d_plot->multiLayer()->notifyChanges();
+		}
+	} else if (textPage && tabWidget->currentPage() == textPage){
+		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
+        if (l){
+			QColor c = textBackgroundBtn->color();
+			c.setAlpha(boxBackgroundTransparency->value());
+			l->setBackgroundColor(c);
+			l->setText(textEditBox->text());
+			l->setTextColor(textColorBtn->color());
+			l->setFont(textFont);
+			l->repaint();
 			d_plot->multiLayer()->notifyChanges();
 		}
 	}
@@ -734,6 +817,52 @@ void EnrichmentDialog::setPatternTo(RectangleWidget *r)
 	r->setBrush(QBrush(patternColor, patternBox->getSelectedPattern()));
 			
 	r->repaint();
+}
+
+void EnrichmentDialog::setText(const QString & t)
+{
+	QTextCursor cursor = textEditBox->textCursor();
+	// select the whole (old) text
+	cursor.movePosition(QTextCursor::Start);
+	cursor.movePosition(QTextCursor::End,QTextCursor::KeepAnchor);
+	// replace old text
+	cursor.insertText(t);
+	// select the whole (new) text
+	cursor.movePosition(QTextCursor::Start);
+	cursor.movePosition(QTextCursor::End,QTextCursor::KeepAnchor);
+	// this line makes the selection visible to the user
+	// (the 2 lines above only change the selection in the
+	// underlying QTextDocument)
+	textEditBox->setTextCursor(cursor);
+	// give focus back to text edit
+	textEditBox->setFocus();
+}
+
+void EnrichmentDialog::customFont()
+{
+	bool okF;
+	QFont fnt = QFontDialog::getFont( &okF, textFont, this);
+	if (okF && fnt != textFont){
+		textFont = fnt;
+		apply();
+	}
+}
+
+void EnrichmentDialog::updateTransparency(int alpha)
+{
+	textBackgroundBtn->setEnabled(alpha);
+	apply();
+}
+
+void EnrichmentDialog::setTextDefaultValues()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	QColor c = textBackgroundBtn->color();
+	c.setAlpha(boxBackgroundTransparency->value());
+	app->setLegendDefaultSettings(frameBox->currentIndex(), textFont, textColorBtn->color(), c);
 }
 
 EnrichmentDialog::~EnrichmentDialog()

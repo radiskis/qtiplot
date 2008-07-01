@@ -55,16 +55,10 @@ public:
 	QColor textColor(){return d_text->color();};
 	void setTextColor(const QColor& c);
 
-	QColor backgroundColor(){return d_text->backgroundBrush().color();};
-	void setBackgroundColor(const QColor& c);
-
 	QFont font(){return d_text->font();};
 	void setFont(const QFont& font);
 
 	void showTextEditor();
-	void showTextDialog(){emit showDialog();};
-	void showContextMenu(){emit showMenu();};
-
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
 	
 	QString saveToString();	
@@ -72,7 +66,6 @@ public:
 
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
-	void drawFrame(QPainter *p, const QRect& rect);
 	void drawVector(PlotCurve *c, QPainter *p, int x, int y, int l);
 	void drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y, int l);
 	void drawText(QPainter *, const QRect&, QwtArray<long>, int);

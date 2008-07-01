@@ -7292,13 +7292,11 @@ void ApplicationWindow::showEnrichementDialog()
 	if ( !g )
 		return;
 
+	EnrichmentDialog::WidgetType wt = EnrichmentDialog::Frame;
 	LegendWidget *l = (LegendWidget *)g->activeText();
-	if (l){
-		TextDialog *td = new TextDialog(TextDialog::TextMarker, this, 0);
-		td->setLegendWidget(l);
-		td->exec();
-	} else {
-		EnrichmentDialog::WidgetType wt = EnrichmentDialog::Frame;
+	if (l)
+		wt = EnrichmentDialog::Text;
+	else {
 		ImageWidget *iw = qobject_cast<ImageWidget *>(g->activeEnrichment());
 		if (iw)
 			wt = EnrichmentDialog::Image;
@@ -7307,12 +7305,12 @@ void ApplicationWindow::showEnrichementDialog()
             if (tw)
                 wt = EnrichmentDialog::Tex;
         }
-
-		EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
-		ed->setWidget(g->activeEnrichment());
-		ed->exec();
 	}
 
+	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
+	ed->setWidget(g->activeEnrichment());
+	ed->exec();
+		
     g->deselectMarker();
 }
 
