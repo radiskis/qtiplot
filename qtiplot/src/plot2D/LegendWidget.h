@@ -63,6 +63,9 @@ public:
 	
 	QString saveToString();	
 	static void restore(Graph *g, const QStringList& lst);
+	
+	bool isAutoUpdateEnabled(){return d_auto_update;};
+	void setAutoUpdate(bool on = true){d_auto_update = on;};
 
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
@@ -87,6 +90,9 @@ private:
 
 	//! Length of the symbol line
 	int line_length;
+	
+	//! Flag telling if the legend should be updated each time a curve is added/removed from the parent plot
+	bool d_auto_update;
 
 signals:
 	void enableEditor();

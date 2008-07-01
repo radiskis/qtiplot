@@ -62,8 +62,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 
 	textType = type;
 
-	// top groupbox
-	groupBox1 = new QGroupBox(QString());
+	groupBox1 = new QGroupBox();
 	QGridLayout * topLayout = new QGridLayout(groupBox1);
 	topLayout->addWidget(new QLabel(tr("Text Color")), 0, 0);
 

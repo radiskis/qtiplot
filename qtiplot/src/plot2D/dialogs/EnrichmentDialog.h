@@ -121,6 +121,7 @@ private:
 	QSpinBox *boxBackgroundTransparency;
 	TextFormatButtons *formatButtons;
 	QPushButton *textDefaultBtn;
+	QCheckBox *autoUpdateTextBox;
 	QFont textFont;
 	
 	Graph *d_plot;

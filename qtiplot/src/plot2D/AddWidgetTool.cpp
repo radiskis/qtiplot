@@ -111,6 +111,7 @@ void AddWidgetTool::addEquation(const QPoint& point)
 	d_graph->add(t, false);
 	t->showPropertiesDialog();
 	d_graph->setActiveTool(NULL);
+	d_graph->notifyChanges();
 }
 
 void AddWidgetTool::addText(const QPoint& point)
@@ -132,6 +133,7 @@ void AddWidgetTool::addText(const QPoint& point)
 	}
     l->showPropertiesDialog();
     d_graph->setActiveTool(NULL);
+	d_graph->notifyChanges();
 }
 
 void AddWidgetTool::addRectangle(const QPoint& point)
@@ -146,6 +148,7 @@ void AddWidgetTool::addRectangle(const QPoint& point)
 	d_rect->setFrameColor(Qt::blue);
 	d_graph->add(d_rect, false);
 	emit statusText(tr("Move cursor in order to resize the new rectangle!"));
+	d_graph->notifyChanges();
 }
 
 void AddWidgetTool::addWidget(const QPoint& point)
@@ -169,14 +172,14 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
 {
 	switch(event->type()) {
 		case QEvent::MouseButtonPress:
-			addWidget(d_graph->mapFromGlobal(QCursor::pos()));
+			addWidget(d_graph->multiLayer()->canvas()->mapFromGlobal(QCursor::pos()));
 			return true;
         break;
 
         case QEvent::MouseMove:
             if (d_rect){
                 QRect r = d_rect->geometry();
-                r.setBottomRight(d_graph->mapFromGlobal(QCursor::pos()));
+                r.setBottomRight(d_graph->multiLayer()->canvas()->mapFromGlobal(QCursor::pos()));
                 d_rect->setGeometry(r.normalized());
             }
         break;
@@ -184,6 +187,7 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
         case QEvent::MouseButtonRelease:
             if (d_rect){
                 d_rect->setFrameColor(Qt::black);
+				d_rect->updateCoordinates();
                 d_rect->repaint();
                 d_rect = NULL;
                 emit statusText("");

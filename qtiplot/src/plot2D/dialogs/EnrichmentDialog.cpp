@@ -164,6 +164,9 @@ void EnrichmentDialog::initTextPage()
 	textFontBtn = new QPushButton(tr( "&Font" ));
 	connect(textFontBtn, SIGNAL(clicked()), this, SLOT(customFont()));
 	gl1->addWidget(textFontBtn, 1, 1);
+	
+	autoUpdateTextBox = new QCheckBox(tr("Auto-&update"));
+	gl1->addWidget(autoUpdateTextBox, 1, 2);
 
 	gl1->addWidget(new QLabel(tr("Opacity")), 2, 0);
 	
@@ -452,6 +455,8 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			boxBackgroundTransparency->setValue(bc.alpha());
 			textBackgroundBtn->setEnabled(bc.alpha());
 			textBackgroundBtn->setColor(bc);
+			
+			autoUpdateTextBox->setChecked(l->isAutoUpdateEnabled());
 		}
 	} else if (d_widget_type == Tex){
 		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
@@ -515,6 +520,7 @@ void EnrichmentDialog::apply()
 			l->setText(textEditBox->text());
 			l->setTextColor(textColorBtn->color());
 			l->setFont(textFont);
+			l->setAutoUpdate(autoUpdateTextBox->isChecked());
 			l->repaint();
 			d_plot->multiLayer()->notifyChanges();
 		}
@@ -842,16 +848,13 @@ void EnrichmentDialog::customFont()
 {
 	bool okF;
 	QFont fnt = QFontDialog::getFont( &okF, textFont, this);
-	if (okF && fnt != textFont){
+	if (okF && fnt != textFont)
 		textFont = fnt;
-		apply();
-	}
 }
 
 void EnrichmentDialog::updateTransparency(int alpha)
 {
 	textBackgroundBtn->setEnabled(alpha);
-	apply();
 }
 
 void EnrichmentDialog::setTextDefaultValues()

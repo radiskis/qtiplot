@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "Differentiation.h"
 #include "../plot2D/MultiLayer.h"
-#include "../plot2D/LegendWidget.h"
 
 #include <QLocale>
 
@@ -94,12 +93,5 @@ void Differentiation::output()
 			d_output_graph = createOutputGraph()->activeLayer();
 
     	d_output_graph->insertCurve(d_result_table, tableName + "_2", 0);
-    	QString legend = "\\l(1)" + tr("Derivative") + " " + tr("of","Derivative of") + " " + dataSet;
-    	LegendWidget *l = d_output_graph->legend();
-		if (l){
-    		l->setText(legend);
-    		l->repaint();
-        } else
-            d_output_graph->newLegend(legend);
 	}
 }

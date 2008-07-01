@@ -93,10 +93,12 @@ void ScalePicker::mouseDblClicked(const QwtScaleWidget *scale, const QPoint &pos
 
 void ScalePicker::mouseRightClicked(const QwtScaleWidget *scale, const QPoint &pos)
 {
-if (scaleRect(scale).contains(pos))
-	emit axisRightClicked(scale->alignment());
-else
-	emit axisTitleRightClicked();
+	plot()->activateGraph();
+	
+	if (scaleRect(scale).contains(pos))
+		emit axisRightClicked(scale->alignment());
+	else
+		emit axisTitleRightClicked();
 }
 
 // The rect of a scale without the title

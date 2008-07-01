@@ -1677,16 +1677,25 @@ Also, the <varname>Maj</varname> word refers to the main grid lines and <varname
 
 <sect3 id="Python-Legends">
 <title>The plot legend</title>
-You need to know that in a plot layer, there's a special text object, the legend,
-which is updated each time you add or remove a curve from the layer.
 You can add a new legend to a plot using: <programlisting>
 legend = l.newLegend()
 #or
 legend = l.newLegend("enter your text here")
 </programlisting>
-If the layer already has a legend when you execute the above code,
-the new text object becomes the default legend and the old one returns to the
-condition of common text. You can add common texts like this:
+
+Plot legends are special text objects which are updated each time you add or remove a curve from the layer. 
+They have a special <varname>auto-update</varname> flag which is enabled by default. 
+The following function returns <varname>True</varname> for a legend object:
+<programlisting>
+legend.isAutoUpdateEnabled()
+</programlisting>
+
+You can disable/enable the auto-update behavior of a legend/text object using:
+<programlisting>
+legend.setAutoUpdate(False/True)
+</programlisting>
+
+You can add common texts like this:
 <programlisting>
 text = l.addText(legend)
 text.setOrigin(legend.x(), legend.y()+50)
@@ -1696,15 +1705,9 @@ to the new text object. You can use this new reference later on in order to remo
 <programlisting>
 l.remove(text)
 </programlisting>
-If you want to remove the default legend, there's the convenience function:
-<programlisting>
-l.removeLegend()
-</programlisting>
 
 Once you have created a legend/text, it's very easy to customize it.
 If you want to modify the text you can use:<programlisting>
-l.setLegend("enter your text here")
-#or
 legend.setText("Enter your text here")
 </programlisting>
 

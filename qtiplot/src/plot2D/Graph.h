@@ -384,12 +384,8 @@ class Graph: public QwtPlot
 		LegendWidget* insertText(const QStringList& list, int fileVersion);
 
 		LegendWidget* addTimeStamp();
-		void removeLegend();
 		void removeLegendItem(int index);
 		void insertLegend(const QStringList& lst, int fileVersion);
-
-		LegendWidget *legend(){return d_legend;};
-		void setLegend(LegendWidget *l){d_legend = l;};
 
 		LegendWidget* newLegend(const QString& text = QString());
 
@@ -741,8 +737,6 @@ signals:
 		PlotToolInterface *d_active_tool, *d_peak_fit_tool;
 		//! Pointer to the currently selected text/legend
 		FrameWidget *d_active_enrichment;
-		//! Pointer to the current legend
-		LegendWidget *d_legend;
         //! Flag indicating if the axes limits should be changed in order to show all data each time a curva data change occurs
 		bool d_auto_scale;
 		//! Axes tick lengths

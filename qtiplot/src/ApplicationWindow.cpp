@@ -2296,7 +2296,6 @@ void ApplicationWindow::loadImage(const QString& fn)
 	g->setTitle("");
 	for (int i=0; i<4; i++)
 		g->enableAxis(i, false);
-	g->removeLegend();
 	g->addImage(fn);
 	QApplication::restoreOverrideCursor();
 }
@@ -3470,10 +3469,8 @@ void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 void ApplicationWindow::setLegendDefaultSettings(int frame, const QFont& font,
 		const QColor& textCol, const QColor& backgroundCol)
 {
-	if (legendFrameStyle == frame &&
-			legendTextColor == textCol &&
-			legendBackground == backgroundCol &&
-			plotLegendFont == font)
+	if (legendFrameStyle == frame && legendTextColor == textCol &&
+		legendBackground == backgroundCol && plotLegendFont == font)
 		return;
 
 	legendFrameStyle = frame;
@@ -4493,7 +4490,7 @@ void ApplicationWindow::readSettings()
 	settings.beginGroup("/Legend");
 	legendFrameStyle = settings.value("/FrameStyle", LegendWidget::Line).toInt();
 	legendTextColor = settings.value("/TextColor", "#000000").value<QColor>(); //default color Qt::black
-	legendBackground = settings.value("/BackgroundColor", "#ffffff").value<QColor>(); //default color Qt::white
+	legendBackground = settings.value("/BackgroundColor", Qt::white).value<QColor>(); //default color Qt::white
 	legendBackground.setAlpha(settings.value("/Transparency", 0).toInt()); // transparent by default;
 	settings.endGroup(); // Legend
 
