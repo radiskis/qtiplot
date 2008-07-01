@@ -77,15 +77,16 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height;
 	QwtArray<long> heights = itemsHeight(0, symbolLineLength, width, height);
-	if (d_frame == Shadow)
-		resize(width + 5, height + 5);
-	else
-    	resize(width, height);
+	if (d_frame == Shadow){
+		width += d_shadow_width;
+		height += d_shadow_width;
+	}
+	int fw = 2*d_frame_pen.width();
+	resize(width + fw, height + fw);
 
-	QRect rect = QRect(0, 0, width - 1, height - 1);
     QPainter p(this);
-	drawFrame(&p, rect);
-	drawText(&p, rect, heights, symbolLineLength);
+	drawFrame(&p, rect());
+	drawText(&p, rect(), heights, symbolLineLength);
 	e->accept();
 }
 
@@ -112,14 +113,6 @@ void LegendWidget::setText(const QString& s)
 	d_text->setText(s);
 }
 
-void LegendWidget::setBackgroundColor(const QColor& c)
-{
-	if (d_text->backgroundBrush().color() == c)
-		return;
-
-	d_text->setBackgroundBrush(QBrush(c));
-}
-
 void LegendWidget::setTextColor(const QColor& c)
 {
 	if ( c == d_text->color() )
@@ -134,27 +127,6 @@ void LegendWidget::setFont(const QFont& font)
 		return;
 
 	d_text->setFont(font);
-}
-
-void LegendWidget::drawFrame(QPainter *p, const QRect& rect)
-{
-	p->save();
-	p->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-    p->fillRect (rect, d_text->backgroundBrush());
-
-	if (d_frame == Line)
-        QwtPainter::drawRect(p, rect);
-	else if (d_frame == Shadow) {
-		QRect shadow_right = QRect(rect.right() + 1, rect.y() + 5, 5, rect.height());
-		QRect shadow_bottom = QRect(rect.x() + 5, rect.bottom() + 1, rect.width(), 5);
-		p->setBrush(QBrush(Qt::black));
-		p->drawRect(shadow_right);
-		p->drawRect(shadow_bottom);
-
-		p->setBrush(d_text->backgroundBrush());
-		QwtPainter::drawRect(p,rect);
-	}
-	p->restore();
 }
 
 void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
@@ -172,7 +144,7 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	p->setPen(pen);
 	p->drawLine(x, y, x + l, y);
 
-	p->translate(x+l, y);
+	p->translate(x + l, y);
 
 	double pi=4*atan(-1.0);
 	int headLength = v->headLength();
@@ -248,9 +220,11 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 
 	for (int i=0; i<(int)titles.count(); i++){
-        int w = rect.x() + left_margin;
+        int w = rect.x() + left_margin + d_frame_pen.width();
+		bool  curveSymbol = false;
 		QString s = titles[i];
 		while (s.contains("\\l(") || s.contains("\\p{")){
+			curveSymbol = true;
 			int pos = s.indexOf("\\l(", 0);
 			if (pos >= 0){
                 QwtText aux(parse(s.left(pos)));
@@ -297,7 +271,8 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 		}
 
 		if (!s.isEmpty()){
-			w += h_space;
+			if (curveSymbol)
+				w += h_space;
 			QwtText aux(parse(s));
 			aux.setFont(d_text->font());
 			aux.setColor(d_text->color());
@@ -319,12 +294,14 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 	width = 0;
 	height = 0;
 	int maxL = 0;
-	int h = top_margin;
+	int h = top_margin + d_frame_pen.width();
 	for (int i=0; i<n; i++){
 		QString s = titles[i];
 		int textL = 0;
+		bool curveSymbol = false;
 		while (s.contains("\\l(") || s.contains("\\p{")){
 			int pos = s.indexOf("\\l(", 0);
+			curveSymbol = true;
 			if (pos >= 0){
                 QwtText aux(parse(s.left(pos)));
                 aux.setFont(d_text->font());
@@ -359,6 +336,8 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 		aux.setFont(d_text->font());
 		QSize size = aux.textSize();
 		textL += size.width();
+		if (curveSymbol)
+			textL += h_space;
 
 		if (textL > maxL)
 			maxL = textL;
@@ -371,7 +350,7 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 	}
 
 	height += 2*top_margin;
-	width = 2*left_margin + maxL + h_space;
+	width = 2*left_margin + maxL;
 
 	return heights;
 }

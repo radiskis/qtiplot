@@ -38,7 +38,6 @@ class QComboBox;
 class QLabel;
 class QSpinBox;
 class QCheckBox;
-class LegendWidget;
 class Graph;
 class QwtScaleWidget;
 
@@ -53,7 +52,6 @@ class TextDialog : public QDialog
 public:
 	//! Label types
 	enum TextType{
-		TextMarker, /*!< normal text label */
 		AxisTitle,   /*!< axis label */
 		LayerTitle
 	};
@@ -82,7 +80,6 @@ public slots:
 	 */
 	void setAlignment(int align);
 	void setGraph(Graph *g);
-	void setLegendWidget(LegendWidget *);
 
 private slots:
 	//! Let the user select another font
@@ -91,9 +88,6 @@ private slots:
 	void accept();
 	//! Apply changes
 	void apply();
-	void setDefaultValues();
-
-	void updateTransparency(int alpha);
 
 protected:
 	void formatAllLabels();
@@ -108,16 +102,12 @@ protected:
 	QPushButton *buttonOk;
 	QPushButton *buttonCancel;
 	QPushButton *buttonApply;
-	QPushButton *buttonDefault;
-	QComboBox *rotateBox;
 	QTextEdit *textEditBox;
 	QGroupBox *groupBox1, *groupBox2;
 	QComboBox *alignmentBox;
 	TextFormatButtons *formatButtons;
-	QSpinBox *boxBackgroundTransparency;
 	QCheckBox *boxApplyToAll;
 
-	LegendWidget *d_legend;
 	Graph *d_graph;
 	QwtScaleWidget *d_scale;
 };

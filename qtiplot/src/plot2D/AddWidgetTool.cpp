@@ -130,7 +130,7 @@ void AddWidgetTool::addText(const QPoint& point)
 		l->setTextColor(app->legendTextColor);
 		l->setBackgroundColor(app->legendBackground);
 	}
-    l->showTextDialog();
+    l->showPropertiesDialog();
     d_graph->setActiveTool(NULL);
 }
 

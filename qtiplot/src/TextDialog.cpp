@@ -30,6 +30,7 @@
 #include "TextDialog.h"
 #include "ApplicationWindow.h"
 #include "plot2D/LegendWidget.h"
+#include "plot2D/FrameWidget.h"
 
 #include <QFontDialog>
 #include <QFont>
@@ -56,7 +57,6 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 
 	d_graph = NULL;
 	d_scale = NULL;
-	d_legend = NULL;
 
 	textType = type;
 
@@ -82,82 +82,28 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	buttonApply->setDefault( true );
 	topLayout->addWidget( buttonApply, 1, 3 );
 
-	if (textType != TextDialog::TextMarker){
-		topLayout->addWidget(new QLabel(tr("Alignment")), 2, 0);
-		alignmentBox = new QComboBox();
-		alignmentBox->addItem( tr( "Center" ) );
-		alignmentBox->addItem( tr( "Left" ) );
-		alignmentBox->addItem( tr( "Right" ) );
-		topLayout->addWidget(alignmentBox, 2, 1);
+	topLayout->addWidget(new QLabel(tr("Alignment")), 2, 0);
+	alignmentBox = new QComboBox();
+	alignmentBox->addItem( tr( "Center" ) );
+	alignmentBox->addItem( tr( "Left" ) );
+	alignmentBox->addItem( tr( "Right" ) );
+	topLayout->addWidget(alignmentBox, 2, 1);
 
-		boxApplyToAll = new QCheckBox(tr("Apply format to all &labels in layer"));
-		topLayout->addWidget(boxApplyToAll, 3, 0 );
-	} else {
-		topLayout->addWidget(new QLabel(tr("Frame")), 2, 0);
-		backgroundBox = new QComboBox();
-		backgroundBox->addItem( tr( "None" ) );
-		backgroundBox->addItem( tr( "Rectangle" ) );
-		backgroundBox->addItem( tr( "Shadow" ) );
-		topLayout->addWidget(backgroundBox, 2, 1);
-	}
+	boxApplyToAll = new QCheckBox(tr("Apply format to all &labels in layer"));
+	topLayout->addWidget(boxApplyToAll, 3, 0 );
 
 	buttonCancel = new QPushButton( tr( "&Cancel" ) );
 	topLayout->addWidget( buttonCancel, 2, 3 );
 
-	if (textType == TextMarker)
-	{ //TODO: Sometime background features for axes lables should be implemented
-		topLayout->addWidget(new QLabel(tr("Opacity")), 3, 0);
-		boxBackgroundTransparency = new QSpinBox();
-		boxBackgroundTransparency->setRange(0, 255);
-     	boxBackgroundTransparency->setSingleStep(5);
-		boxBackgroundTransparency->setWrapping(true);
-     	boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
-
-		topLayout->addWidget( boxBackgroundTransparency, 3, 1 );
-		topLayout->addWidget(new QLabel(tr("Background color")), 4, 0);
-		backgroundBtn = new ColorButton(groupBox1);
-		backgroundBtn->setEnabled(false);
-		topLayout->addWidget( backgroundBtn, 4, 1 );
-
-		connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)),
-				this, SLOT(updateTransparency(int)));
-
-		boxApplyToAll = new QCheckBox(tr("Apply format to all &labels in layer"));
-		topLayout->addWidget(boxApplyToAll, 5, 0 );
-
-		buttonDefault = new QPushButton( tr( "Set As &Default" ) );
-		topLayout->addWidget( buttonDefault, 3, 3 );
-		connect( buttonDefault, SIGNAL(clicked()), this, SLOT(setDefaultValues()));
-	}
-
 	// align the OK, Apply, and Cancel buttons to the right
 	topLayout->setColumnStretch(2, 1);
-
-	/* TODO: Angle feature not implemented, yet
-	 * caution: This code is still the old Qt3 code
-	   QLabel* rotate=new QLabel(tr( "Rotate (deg.)" ),GroupBox1, "TextLabel1_2",0);
-	   rotate->hide();
-
-	   rotateBox = new QComboBox( false, GroupBox1, "rotateBox" );
-	   rotateBox->insertItem( tr( "0" ) );
-	   rotateBox->insertItem( tr( "45" ) );
-	   rotateBox->insertItem( tr( "90" ) );
-	   rotateBox->insertItem( tr( "135" ) );
-	   rotateBox->insertItem( tr( "180" ) );
-	   rotateBox->insertItem( tr( "225" ) );
-	   rotateBox->insertItem( tr( "270" ) );
-	   rotateBox->insertItem( tr( "315" ) );
-	   rotateBox->setEditable (true);
-	   rotateBox->setCurrentItem(0);
-	   rotateBox->hide();
-	   */
 
 	textEditBox = new QTextEdit();
 	textEditBox->setTextFormat(Qt::PlainText);
 	textEditBox->setFont(QFont());
 
 	formatButtons =  new TextFormatButtons(textEditBox);
-	formatButtons->toggleCurveButton(textType == TextMarker);
+	formatButtons->toggleCurveButton(false);
 
 	setFocusPolicy(Qt::StrongFocus);
 	setFocusProxy(textEditBox);
@@ -212,26 +158,6 @@ void TextDialog::setGraph(Graph *g)
 	colorBtn->setColor(l.color());
 }
 
-void TextDialog::setLegendWidget(LegendWidget *l)
-{
-	if (!l)
-		return;
-
-	d_graph = l->plot();
-	d_legend = l;
-
-	setText(l->text());
-	selectedFont = l->font();
-	colorBtn->setColor(l->textColor());
-
-	QColor bc = l->backgroundColor();
-	boxBackgroundTransparency->setValue(bc.alpha());
-	backgroundBtn->setEnabled(bc.alpha());
-	backgroundBtn->setColor(bc);
-
-	backgroundBox->setCurrentIndex(l->frameStyle());
-}
-
 void TextDialog::apply()
 {
 	if (textType == AxisTitle){
@@ -250,21 +176,6 @@ void TextDialog::apply()
 			t.setColor(colorBtn->color());
 			d_scale->setTitle(t);
 			d_graph->replot();
-		}
-	} else if (textType == TextMarker && d_legend){
-		QColor tc = colorBtn->color();
-		QColor c = backgroundBtn->color();
-		c.setAlpha(boxBackgroundTransparency->value());
-
-		d_legend->setText(textEditBox->text());
-		if (boxApplyToAll->isChecked())
-			formatAllLabels();
-		else {
-			d_legend->setTextColor(colorBtn->color());
-			d_legend->setFrameStyle(backgroundBox->currentIndex());
-			d_legend->setFont(selectedFont);
-			d_legend->setBackgroundColor(c);
-			d_legend->repaint();
 		}
 	} else if (textType == LayerTitle){
 		if (!d_graph)
@@ -295,21 +206,16 @@ void TextDialog::formatAllLabels()
 		return;
 
 	QColor tc = colorBtn->color();
-	QObjectList lst = d_graph->children();
-	foreach(QObject *o, lst){
-		if (o->inherits("LegendWidget")){
-			LegendWidget *l = (LegendWidget *)o;
-        	l->setTextColor(tc);
+	
+	QList<FrameWidget*> lst = d_graph->enrichmentsList();
+	foreach(FrameWidget *fw, lst){
+		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+		if (l){
+			l->setTextColor(tc);
 			l->setFont(selectedFont);
-			if(textType == TextMarker){
-				QColor c = backgroundBtn->color();
-				c.setAlpha(boxBackgroundTransparency->value());
-				l->setBackgroundColor(c);
-				l->setFrameStyle(backgroundBox->currentIndex());
-			}
 		}
 	}
-
+		
 	for (int i=0; i < QwtPlot::axisCnt; i++){
 		QwtScaleWidget *scale = (QwtScaleWidget *)d_graph->axisWidget(i);
 		if (scale){
@@ -325,17 +231,6 @@ void TextDialog::formatAllLabels()
 	t.setFont(selectedFont);
 	((QwtPlot *)d_graph)->setTitle (t);
 	d_graph->replot();
-}
-
-void TextDialog::setDefaultValues()
-{
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (!app)
-		return;
-
-	QColor c = backgroundBtn->color();
-	c.setAlpha(boxBackgroundTransparency->value());
-	app->setLegendDefaultSettings(backgroundBox->currentIndex(), selectedFont, colorBtn->color(), c);
 }
 
 void TextDialog::accept()
@@ -405,9 +300,4 @@ void TextDialog::setText(const QString & t)
 	textEditBox->setTextCursor(cursor);
 	// give focus back to text edit
 	textEditBox->setFocus();
-}
-
-void TextDialog::updateTransparency(int alpha)
-{
-backgroundBtn->setEnabled(alpha);
 }

@@ -51,6 +51,7 @@ class DoubleSpinBox;
 class PatternBox;
 class PenStyleBox;
 class RectangleWidget;
+class TextFormatButtons;
 	
 class EnrichmentDialog : public QDialog
 {
@@ -78,8 +79,12 @@ private slots:
 	void setBestSize();
 	void frameApplyTo();
 	void patternApplyTo();
+	void customFont();
+	void updateTransparency(int alpha);
+	void setTextDefaultValues();
 
 private:
+	void initTextPage();
 	void initEditorPage();
 	void initImagePage();
 	void initFramePage();
@@ -88,6 +93,7 @@ private:
 	void setCoordinates(int unit);
 	void setFrameTo(FrameWidget *fw);
 	void setPatternTo(RectangleWidget *r);
+	void setText(const QString & t);
 
     QHttp *http;
     QLabel *outputLabel;
@@ -95,10 +101,10 @@ private:
     QPushButton *updateButton;
 	QPushButton *cancelButton;
 	QPushButton *bestSizeButton;
-    QTextEdit *equationEditor;
+    QTextEdit *equationEditor, *textEditBox;
 	QComboBox *frameBox;
 	QTabWidget* tabWidget;
-	QWidget *editPage, *framePage, *geometryPage, *imagePage, *patternPage;
+	QWidget *editPage, *framePage, *geometryPage, *imagePage, *patternPage, *textPage;
 	ColorButton *frameColorBtn, *backgroundColorBtn, *patternColorBtn;
 	QCheckBox *boxSaveImagesInternally;
 	QLineEdit *imagePathBox;
@@ -110,6 +116,12 @@ private:
 	PatternBox *patternBox;
 	QPushButton *frameApplyToBtn, *patternApplyToBtn;
 	QComboBox *frameApplyToBox, *patternApplyToBox;
+	ColorButton *textColorBtn, *textBackgroundBtn;
+	QPushButton *textFontBtn;
+	QSpinBox *boxBackgroundTransparency;
+	TextFormatButtons *formatButtons;
+	QPushButton *textDefaultBtn;
+	QFont textFont;
 	
 	Graph *d_plot;
 	QWidget *d_widget;
