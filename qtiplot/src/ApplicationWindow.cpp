@@ -32,7 +32,6 @@
 #include "globals.h"
 #include "ApplicationWindow.h"
 #include "pixmaps.h"
-#include "TextDialog.h"
 #include "ExportDialog.h"
 #include "TableDialog.h"
 #include "SetColValuesDialog.h"
@@ -105,6 +104,7 @@
 #include "plot2D/dialogs/ImageExportDialog.h"
 #include "plot2D/dialogs/CurveRangeDialog.h"
 #include "plot2D/dialogs/LayerDialog.h"
+#include "plot2D/dialogs/TextDialog.h"
 
 // TODO: move tool-specific code to an extension manager
 #include "plot2D/ScreenPickerTool.h"

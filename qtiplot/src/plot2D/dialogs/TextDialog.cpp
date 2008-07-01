@@ -4,7 +4,7 @@
     --------------------------------------------------------------------
     Copyright            : (C) 2004 - 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Text label/axis label options dialog
+    Description          : Title/axis label options dialog
 
  ***************************************************************************/
 
@@ -28,9 +28,11 @@
  ***************************************************************************/
 
 #include "TextDialog.h"
-#include "ApplicationWindow.h"
-#include "plot2D/LegendWidget.h"
-#include "plot2D/FrameWidget.h"
+#include "../../ApplicationWindow.h"
+#include "../../ColorButton.h"
+#include "../../TextFormatButtons.h"
+#include "../LegendWidget.h"
+#include "../FrameWidget.h"
 
 #include <QFontDialog>
 #include <QFont>
@@ -95,7 +97,6 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	buttonCancel = new QPushButton( tr( "&Cancel" ) );
 	topLayout->addWidget( buttonCancel, 2, 3 );
 
-	// align the OK, Apply, and Cancel buttons to the right
 	topLayout->setColumnStretch(2, 1);
 
 	textEditBox = new QTextEdit();
