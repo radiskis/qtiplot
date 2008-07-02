@@ -1,5 +1,6 @@
 #include "fit_gsl.h"
 #include "../MyParser.h"
+#include "NonLinearFit.h"
 
 #include <math.h>
 #include <stdlib.h>
@@ -480,15 +481,19 @@ int lorentz_multi_peak_fdf (const gsl_vector * x, void *params, gsl_vector * f, 
     lorentz_multi_peak_df (x, params, J);
     return GSL_SUCCESS;
 }
+
 int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
     size_t n = ((struct FitData *)params)->n;
     size_t p = ((struct FitData *)params)->p;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
     double *sigma = ((struct FitData *)params)->sigma;
-    const char *function = ((struct FitData *) params)->function;
-    QString names = (QString)((struct FitData *) params)->names;
-    QStringList parNames= names.split(",", QString::SkipEmptyParts);
+		
+	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
+	const char *function = fitter->formula().ascii();
+	QStringList parNames = fitter->parameterNames();
+	QList<QString> constNames = fitter->constantsList();
+	
     MyParser parser;
     try {
         double *parameters = new double[p];
@@ -498,6 +503,12 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
             parameters[i]=gsl_vector_get(x,i);
             parser.DefineVar(parNames[i].ascii(), &parameters[i]);
         }
+		
+		for (int k=0; k<constNames.size(); k++){
+			QString constName = constNames[k];
+            parser.DefineConst(constName.ascii(), fitter->constValue(constName));
+		}
+		
         parser.SetExpr(function);
         for (int j = 0; j < (int)n; j++) {
             xvar=X[j];
@@ -507,18 +518,22 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
     } catch (mu::ParserError &e) {
         QMessageBox::critical(0,"QtiPlot - Input function error",QString::fromStdString(e.GetMsg()));
         return GSL_EINVAL;
-    }
+    }	
     return GSL_SUCCESS;
 }
+
 double user_d(const gsl_vector * x, void *params) {
     size_t n = ((struct FitData *)params)->n;
     size_t p = ((struct FitData *)params)->p;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
     double *sigma = ((struct FitData *)params)->sigma;
-    const char *function = ((struct FitData *) params)->function;
-    QString names = (QString)((struct FitData *) params)->names;
-    QStringList parNames= names.split(",", QString::SkipEmptyParts);
+    
+	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
+	const char *function = fitter->formula().ascii();
+	QStringList parNames = fitter->parameterNames();
+	QList<QString> constNames = fitter->constantsList();
+	
     double val=0;
     MyParser parser;
     try {
@@ -529,6 +544,12 @@ double user_d(const gsl_vector * x, void *params) {
             parameters[i]=gsl_vector_get(x,i);
             parser.DefineVar(parNames[i].ascii(), &parameters[i]);
         }
+		
+		for (int k=0; k<constNames.size(); k++){
+			QString constName = constNames[k];
+            parser.DefineConst(constName.ascii(), fitter->constValue(constName));
+		}
+		
         parser.SetExpr(function);
         for (int j = 0; j < (int)n; j++) {
             xvar=X[j];
@@ -542,14 +563,18 @@ double user_d(const gsl_vector * x, void *params) {
     }
     return val;
 }
+
 int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
     size_t n = ((struct FitData *)params)->n;
     size_t p = ((struct FitData *)params)->p;
     double *X = ((struct FitData *)params)->X;
     double *sigma = ((struct FitData *)params)->sigma;
-    const char *function = ((struct FitData *) params)->function;
-    QString names = (QString)((struct FitData *) params)->names;
-    QStringList parNames= names.split(",", QString::SkipEmptyParts);
+    
+	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
+	const char *function = fitter->formula().ascii();
+	QStringList parNames = fitter->parameterNames();
+	QList<QString> constNames = fitter->constantsList();
+	
     try {
         double *param = new double[p];
         MyParser parser;
@@ -559,6 +584,12 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
             param[k]=gsl_vector_get(x,k);
             parser.DefineVar(parNames[k].ascii(), &param[k]);
         }
+		
+		for (int k=0; k<constNames.size(); k++){
+			QString constName = constNames[k];
+            parser.DefineConst(constName.ascii(), fitter->constValue(constName));
+		}
+		
         parser.SetExpr(function);
         for (int i = 0; i<(int)n; i++) {
             xvar = X[i];
@@ -571,11 +602,13 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
     }
     return GSL_SUCCESS;
 }
+
 int user_fdf(const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J) {
     user_f (x, params, f);
     user_df (x, params, J);
     return GSL_SUCCESS;
 }
+
 int boltzmann_f (const gsl_vector * x, void *params, gsl_vector * f) {
     size_t n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;

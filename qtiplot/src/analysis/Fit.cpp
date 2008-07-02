@@ -798,11 +798,7 @@ void Fit::fit()
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	const char *function = d_formula.ascii();
-	QString names = d_param_names.join (",");
-	const char *parNames = names.ascii();
-
-	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, function, parNames};
+	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, this};
 
 	int status, iterations = d_max_iterations;
 	if(d_solver == NelderMeadSimplex){

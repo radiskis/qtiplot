@@ -4,6 +4,8 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
 
+class Fit;
+	
 //! Structure for fitting data
 struct FitData {
   size_t n;// number of points to be fitted (size of X, Y and sigma arrays)
@@ -11,8 +13,7 @@ struct FitData {
   double * X;// the data to be fitted (abscissae) 
   double * Y; // the data to be fitted (ordinates)
   double * sigma; // the weighting data
-  const char *function; // fit model (used only by the NonLinearFit class)
-  const char *names; // names of the fit parameters separated by "," (used only by the NonLinearFit class)
+  Fit *fitter; //pointer to the fitter object (used only for the NonLinearFit class)
 };
 
 int expd3_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J);
