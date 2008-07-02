@@ -97,14 +97,15 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
     const int symbolLineLength = line_length + symbolsMaxWidth();
-	int width, height, dy = d_plot->y();
+	int width, height;
 	QwtArray<long> heights = itemsHeight(y, symbolLineLength, width, height);
-	for (int i = 0; i < heights.size(); i++)
-		heights[i] -= dy;
-
-	QRect rect = QRect(x, y, width, height);
-	rect.translate(-d_plot->x(), -dy);	
+	if (d_frame == Shadow){
+		width += d_shadow_width;
+		height += d_shadow_width;
+	}
 	
+	int fw = 2*d_frame_pen.width();
+	QRect rect = QRect(x, y, width + fw, height + fw);	
 	drawFrame(painter, rect);
 	drawText(painter, rect, heights, symbolLineLength);
 }

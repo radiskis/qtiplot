@@ -80,8 +80,7 @@ void FrameWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
 	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());	
 	
-	QRect r = QRect(x, y, abs(right - x), abs(bottom - y));
-	drawFrame(painter, r.translated(-d_plot->x(), -d_plot->y()));
+	drawFrame(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
 }
 
 void FrameWidget::setFrameStyle(int style)
@@ -112,7 +111,7 @@ void FrameWidget::updateCoordinates()
 void FrameWidget::setOriginCoord(double x, double y)
 {
 	QPoint pos(d_plot->transform(QwtPlot::xBottom, x), d_plot->transform(QwtPlot::yLeft, y));
-	pos = d_plot->canvas()->mapToParent(pos);
+	pos = d_plot->canvas()->mapTo(d_plot->multiLayer()->canvas(), pos);
 	QWidget::move(pos);
 
 	d_x = x;
@@ -135,12 +134,15 @@ void FrameWidget::setCoordinates(double left, double top, double right, double b
     if (!d_plot)
         return;
 
+	QWidget *layerCanvas = d_plot->canvas();
+	QWidget *windowCanvas = (QWidget *)d_plot->parent();
+	
 	QPoint pos(d_plot->transform(QwtPlot::xBottom, d_x), d_plot->transform(QwtPlot::yLeft, d_y));
-	pos = d_plot->canvas()->mapToParent(pos);
+	pos = layerCanvas->mapTo(windowCanvas, pos);
 
 	QPoint bottomRight(d_plot->transform(QwtPlot::xBottom, d_x_right),
 						d_plot->transform(QwtPlot::yLeft, d_y_bottom));
-	bottomRight = d_plot->canvas()->mapToParent(bottomRight);
+	bottomRight = layerCanvas->mapTo(windowCanvas, bottomRight);
 
     resize(QSize(abs(bottomRight.x() - pos.x() + 1), abs(bottomRight.y() - pos.y() + 1)));
 	QWidget::move(pos);
@@ -167,25 +169,25 @@ void FrameWidget::setSize(const QSize& newSize)
 
 double FrameWidget::calculateXValue()
 {
-	QPoint d_pos = d_plot->canvas()->mapFromParent(pos());
+	QPoint d_pos = d_plot->canvas()->mapFrom(d_plot->multiLayer()->canvas(), pos());
 	return d_plot->invTransform(QwtPlot::xBottom, d_pos.x());
 }
 
 double FrameWidget::calculateYValue()
 {
-	QPoint d_pos = d_plot->canvas()->mapFromParent(pos());
+	QPoint d_pos = d_plot->canvas()->mapFrom(d_plot->multiLayer()->canvas(), pos());
 	return d_plot->invTransform(QwtPlot::yLeft, d_pos.y());
 }
 
 double FrameWidget::calculateRightValue()
 {
-	QPoint d_pos = d_plot->canvas()->mapFromParent(geometry().bottomRight());
+	QPoint d_pos = d_plot->canvas()->mapFrom(d_plot->multiLayer()->canvas(), geometry().bottomRight());
 	return d_plot->invTransform(QwtPlot::xBottom, d_pos.x());
 }
 
 double FrameWidget::calculateBottomValue()
 {
-	QPoint d_pos = d_plot->canvas()->mapFromParent(geometry().bottomRight());
+	QPoint d_pos = d_plot->canvas()->mapFrom(d_plot->multiLayer()->canvas(), geometry().bottomRight());
 	return d_plot->invTransform(QwtPlot::yLeft, d_pos.y());
 }
 
