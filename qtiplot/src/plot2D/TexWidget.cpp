@@ -67,9 +67,7 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 {
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
-
-	QRect rect = QRect(x, y, width(), height());
-	drawFrame(painter, rect.translated(-d_plot->x(), -d_plot->y()));
+	drawFrame(painter, QRect(x, y, width(), height()));
 	
 	int lw = d_frame_pen.width();
 	int w = width() - 2*d_margin  - 2*lw;
@@ -77,9 +75,8 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 	if (d_frame == Shadow){
 		w -= d_margin;
 		h -= d_margin;
-	}
-	QRect pixRect = QRect (x + lw + d_margin, y + lw + d_margin, w, h);
-	painter->drawPixmap(pixRect.translated(-d_plot->x(), -d_plot->y()), d_pix);
+	}	
+	painter->drawPixmap(QRect (x + lw + d_margin, y + lw + d_margin, w, h), d_pix);
 }
 
 void TexWidget::setPixmap(const QPixmap& pix)

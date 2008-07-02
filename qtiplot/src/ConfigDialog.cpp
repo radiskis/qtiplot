@@ -1401,12 +1401,14 @@ void ConfigDialog::apply()
 				app->helpFilePath = fi.absoluteFilePath();
 		}
 
+#ifdef SCRIPTING_PYTHON
 		path = pythonConfigDirLine->text();
 		if (path != app->d_python_config_folder){
 			QFileInfo fi(path);
 			if (fi.exists() && fi.isDir())
 				app->d_python_config_folder = fi.absoluteFilePath();
 		}
+#endif
 	}
 
 	

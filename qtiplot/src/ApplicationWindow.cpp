@@ -15442,6 +15442,7 @@ QString ApplicationWindow::endOfLine()
 
 void ApplicationWindow::initCompleter()
 {
+#ifdef SCRIPTING_PYTHON
     QString fn = d_python_config_folder + "/qti_wordlist.txt";
     QFile file(fn);
     if (!file.open(QFile::ReadOnly)){
@@ -15451,9 +15452,7 @@ void ApplicationWindow::initCompleter()
         return;
     }
 
- #ifndef QT_NO_CURSOR
-     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
- #endif
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     QStringList words;
     while (!file.atEnd()){
@@ -15466,14 +15465,13 @@ void ApplicationWindow::initCompleter()
     }
     words.sort();
 
- #ifndef QT_NO_CURSOR
-     QApplication::restoreOverrideCursor();
- #endif
+    QApplication::restoreOverrideCursor();
 
     d_completer = new QCompleter(this);
     d_completer->setModel(new QStringListModel(words, d_completer));
     d_completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
     d_completer->setCompletionMode(QCompleter::PopupCompletion);
+ #endif
 }
 
 void ApplicationWindow::enableCompletion(bool on)

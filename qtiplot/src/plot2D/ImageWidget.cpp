@@ -124,10 +124,7 @@ void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
 	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());	
 	
-	QRect r = QRect(x, y, abs(right - x), abs(bottom - y));
-	draw(painter, r.translated(-d_plot->x(), -d_plot->y()));
-
-	//draw(painter, QRect(x, y, width(), height()));
+	draw(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
 }
 
 void ImageWidget::draw(QPainter *painter, const QRect& rect)
