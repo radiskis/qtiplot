@@ -45,9 +45,16 @@ class NonLinearFit : public Fit
 
 		virtual void setParametersList(const QStringList& lst);
 		virtual void setFormula(const QString& s);
+	
+		void setConstant(const QString& parName, double val);
+		int constantsCount(){return d_constants.size();};
+		QList<QString> constantsList(){return d_constants.keys();};
+		double constValue(const QString& name){return d_constants.value(name);};
 
 	private:
 		void calculateFitCurveData(double *X, double *Y);
 		void init();
+	
+		QMap<QString, double> d_constants;
 };
 #endif

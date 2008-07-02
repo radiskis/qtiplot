@@ -1116,7 +1116,9 @@ void FitDialog::accept()
 					j++;
 				} else {
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
-					formula.replace(boxParams->item(i, 0)->text(), QString::number(val, 'e', app->fit_output_precision));
+					QString constName = boxParams->item(i, 0)->text();
+					((NonLinearFit *)d_current_fit)->setConstant(constName, val);
+					parser.DefineConst(constName.ascii(), val);				
 				}
 			}
 		} else {
