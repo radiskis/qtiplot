@@ -43,6 +43,8 @@
 #include <QStackedWidget>
 #include <QWidget>
 #include <QMessageBox>
+#include <QTableWidget>
+#include <QHeaderView>
 
 FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
@@ -95,8 +97,24 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	boxPoints->setValue(100);
 	gl1->addWidget(boxPoints, 3, 1);
 
+	boxConstants = new QTableWidget();
+    boxConstants->setColumnCount(2);
+    boxConstants->horizontalHeader()->setClickable(false);
+    boxConstants->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
+	boxConstants->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
+    QStringList header = QStringList() << tr("Constant") << tr("Value");
+    boxConstants->setHorizontalHeaderLabels(header);
+    boxConstants->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    boxConstants->verticalHeader()->hide();
+	boxConstants->setMinimumWidth(200);
+	boxConstants->hide();
+	
 	functionPage = new QWidget();
-	functionPage->setLayout(gl1);
+
+	QHBoxLayout *hb = new QHBoxLayout(functionPage);
+	hb->addLayout(gl1);
+	hb->addWidget(boxConstants);
+	
 	optionStack->addWidget( functionPage );
 
 	QGridLayout *gl2 = new QGridLayout();
@@ -219,6 +237,28 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 	curveID = curve;
 	QStringList formulas = c->formulas();
 
+	QMap<QString, double> constants = c->constants();
+	if (!constants.isEmpty()){
+		boxConstants->clearContents();
+		boxConstants->setRowCount(constants.size());
+		boxConstants->show();
+		ApplicationWindow *app = (ApplicationWindow *)parent();
+		QMapIterator<QString, double> i(constants);
+		int row = 0;
+ 		while (i.hasNext()) {
+     		i.next();
+			boxConstants->setItem(row, 0, new QTableWidgetItem(i.key()));
+		
+			DoubleSpinBox *sb = new DoubleSpinBox();
+			sb->setLocale(app->locale());
+			sb->setDecimals(app->fit_output_precision);
+			sb->setValue(i.value());
+        	boxConstants->setCellWidget(row, 1, sb);
+			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(acceptFunction()));
+			row++;
+ 		}
+	}
+	
 	if (c->functionType() == FunctionCurve::Normal){
 		boxFunction->setText(formulas[0]);
 		boxFrom->setValue(c->startRange());
@@ -280,12 +320,22 @@ void FunctionDialog::acceptFunction()
 		return;
 	}
 
+	QMap<QString, double> constants;
+			
 	QString formula = boxFunction->text().simplified();
 	bool error = false;
 	try {
 		double x = start;
 		MyParser parser;
 		parser.DefineVar("x", &x);
+		for (int i = 0; i < boxConstants->rowCount(); i++){
+			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			QString constName = boxConstants->item(i, 0)->text();
+			if (!constName.isEmpty()){
+				constants.insert(constName, val);
+				parser.DefineConst(constName.ascii(), val);
+			}			
+		}
 		parser.SetExpr(formula.ascii());
 
 		parser.Eval();
@@ -310,7 +360,7 @@ void FunctionDialog::acceptFunction()
 				graph = plot->activeLayer();
 		} else {
 			if (curveID >= 0)
-				graph->modifyFunctionCurve(curveID, type, formulas, "x", start, end, boxPoints->value());
+				graph->modifyFunctionCurve(curveID, type, formulas, "x", start, end, boxPoints->value(), constants);
 			else
 				graph->addFunction(formulas, start, end, boxPoints->value(), "x", type);
 		}
@@ -411,7 +461,7 @@ void FunctionDialog::acceptParametric()
 				graph = plot->activeLayer();
 		} else {
 			if (curveID >= 0)
-				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(), start, end, boxParPoints->value());
+				graph->modifyFunctionCurve(curveID, type, formulas, boxParameter->text(), start, end, boxParPoints->value(), QMap<QString, double>());
 			else
 				graph->addFunction(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
 		}
@@ -513,7 +563,7 @@ void FunctionDialog::acceptPolar()
 				graph = plot->activeLayer();
 		} else {
 			if (curveID >= 0)
-				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(), start, end, boxPolarPoints->value());
+				graph->modifyFunctionCurve(curveID, type, formulas, boxPolarParameter->text(), start, end, boxPolarPoints->value(), QMap<QString, double>());
 			else
 				graph->addFunction(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
 		}

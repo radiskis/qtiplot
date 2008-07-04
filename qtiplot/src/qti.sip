@@ -631,6 +631,9 @@ public:
 
   LegendWidget* newLegend(const QString& = QString());
 
+  LegendWidget* legend();
+  void removeLegend();
+  
   LegendWidget* addText(LegendWidget*);
   void remove(LegendWidget*);
 
@@ -1313,7 +1316,7 @@ public:
   void setFormula(const QString&);
 
   bool save(const QString&);
-  bool load(const QString&);
+  bool load(const QString&);	
 };
 
 class PluginFit : Fit

@@ -59,6 +59,7 @@ void FunctionCurve::copy(FunctionCurve* f)
 {
 	d_function_type = f->functionType();
 	d_variable = f->variable();
+	d_constants = f->constants();
 	d_formulas = f->formulas();
 	d_from = f->startRange();
 	d_to = f->endRange();
@@ -73,9 +74,73 @@ QString FunctionCurve::saveToString()
 	s += "<Variable>" + d_variable + "</Variable>\n";
 	s += "<Range>" + QString::number(d_from,'g',15) + "\t" + QString::number(d_to,'g',15) + "</Range>\n";
 	s += "<Points>" + QString::number(dataSize()) + "</Points>\n";
+	QMapIterator<QString, double> i(d_constants);
+ 	while (i.hasNext()) {
+     	i.next();
+		s += "<Constant>" + i.key() + "\t" + QString::number(i.value(), 'g', 15) + "</Constant>\n";
+ 	}
 	s += saveCurveLayout();
 	s += "</Function>\n";
 	return s;
+}
+
+void FunctionCurve::restore(Graph *g, const QStringList& lst)
+{
+	if (!g)
+		return;
+	
+	int type = 0;
+	int points = 0, style = 0;
+	QStringList formulas;
+	QString var, title = QString::null;
+	double start = 0.0, end = 0.0;
+	QMap<QString, double> constants;
+	QStringList::const_iterator line;
+	for (line = lst.begin(); line != lst.end(); line++){
+        QString s = *line;
+        if (s.contains("<Type>"))
+			type = s.remove("<Type>").remove("</Type>").stripWhiteSpace().toInt();
+		else if (s.contains("<Title>"))
+			title = s.remove("<Title>").remove("</Title>").stripWhiteSpace();
+		else if (s.contains("<Expression>"))
+			formulas = s.remove("<Expression>").remove("</Expression>").split("\t");
+		else if (s.contains("<Variable>"))
+			var = s.remove("<Variable>").remove("</Variable>").stripWhiteSpace();
+		else if (s.contains("<Range>")){
+			QStringList l = s.remove("<Range>").remove("</Range>").split("\t");
+			if (l.size() == 2){
+				start = l[0].toDouble();
+				end = l[1].toDouble();
+			}
+		} else if (s.contains("<Points>"))
+			points = s.remove("<Points>").remove("</Points>").stripWhiteSpace().toInt();
+		else if (s.contains("<Constant>")){
+			QStringList l = s.remove("<Constant>").remove("</Constant>").split("\t");
+			if (l.size() == 2)
+				constants.insert(l[0], l[1].toDouble());
+		}
+		else if (s.contains("<Style>")){
+			style = s.remove("<Style>").remove("</Style>").stripWhiteSpace().toInt();
+			break;
+		}
+	}
+
+	FunctionCurve *c = new FunctionCurve((FunctionCurve::FunctionType)type, title);
+	c->setRange(start, end);
+	c->setFormulas(formulas);
+	c->setVariable(var);
+	c->setConstants(constants);
+	c->loadData(points);
+	c->setPlotStyle(style);
+
+	g->insertCurve(c);
+
+	QStringList l;
+	for (line++; line != lst.end(); line++)
+        l << *line;
+	c->restoreCurveLayout(l);
+
+	g->updatePlot();
 }
 
 QString FunctionCurve::legend()
@@ -123,6 +188,11 @@ void FunctionCurve::loadData(int points)
 		double x;
 		try {
 			parser.DefineVar(d_variable.ascii(), &x);
+			QMapIterator<QString, double> i(d_constants);
+ 			while (i.hasNext()) {
+     			i.next();
+				parser.DefineConst(i.key().ascii(), i.value());
+ 			}
 			parser.SetExpr(d_formulas[0].ascii());
 
 			X[0] = d_from; x = d_from; Y[0]=parser.Eval();

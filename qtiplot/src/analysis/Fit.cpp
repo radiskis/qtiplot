@@ -799,7 +799,7 @@ void Fit::fit()
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, this};
-
+	
 	int status, iterations = d_max_iterations;
 	if(d_solver == NelderMeadSimplex){
 		gsl_multimin_function f;
@@ -833,7 +833,7 @@ void Fit::fit()
 	}
 
 	generateFitCurve();
-
+	
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (app->writeFitResultsToLog)
 		app->updateLog(logFitInfo(iterations, status));
@@ -866,29 +866,21 @@ void Fit::generateFitCurve()
 	delete [] Y;
 }
 
-void Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth)
+FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth)
 {
-	QString formula = d_formula;
-	for (int j=0; j<d_p; j++){
-		QString parameter = QString::number(d_results[j], 'e', d_prec);
-		formula.replace(d_param_names[j], parameter);
-	}
-
-	formula = formula.replace("-+", "-").replace("+-", "-");
-	if (formula.startsWith ("--", Qt::CaseInsensitive))
-        formula = formula.right(formula.length() - 2);
-	formula.replace("(--", "(");
-	formula.replace("--", "+");
-	d_result_formula = formula;
-
 	QString title = d_output_graph->generateFunctionName(name);
 	FunctionCurve *c = new FunctionCurve(FunctionCurve::Normal, title);
 	c->setPen(QPen(ColorBox::color(d_curveColorIndex), penWidth));
 	c->setData(x, y, d_points);
 	c->setRange(d_x[0], d_x[d_n-1]);
-	c->setFormula(formula);
+	c->setFormula(d_formula);
+	
+	for (int j=0; j<d_p; j++)
+		c->setConstant(d_param_names[j], d_results[j]);	
+	
 	d_output_graph->insertPlotItem(c, Graph::Line);
 	d_output_graph->addFitCurve(c);
+	return c;
 }
 
 bool Fit::save(const QString& fileName)

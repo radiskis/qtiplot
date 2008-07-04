@@ -30,7 +30,7 @@
 #define NONLINEARFIT_H
 
 #include "Fit.h"
-
+	
 class NonLinearFit : public Fit
 {
 	Q_OBJECT
@@ -40,16 +40,25 @@ class NonLinearFit : public Fit
 		NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		NonLinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
-
+	
         double eval(double *par, double x);
 
 		virtual void setParametersList(const QStringList& lst);
 		virtual void setFormula(const QString& s);
 	
+		QMap<QString, double> constants(){return d_constants;};
 		void setConstant(const QString& parName, double val);
+		void removeConstant(const QString& parName){d_constants.remove(parName);};
+		void removeConstants(){d_constants.clear();};
 		int constantsCount(){return d_constants.size();};
 		QList<QString> constantsList(){return d_constants.keys();};
 		double constValue(const QString& name){return d_constants.value(name);};
+		
+		virtual QString legendInfo();
+				
+	protected:
+		QString logFitInfo(int iterations, int status);
+		FunctionCurve* insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth);
 
 	private:
 		void calculateFitCurveData(double *X, double *Y);
