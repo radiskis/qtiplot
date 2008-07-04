@@ -2188,6 +2188,23 @@ QString Graph::saveCurves()
 	return s;
 }
 
+LegendWidget* Graph::legend()
+{
+	foreach (FrameWidget *w, d_enrichments){
+		LegendWidget *l = qobject_cast<LegendWidget *>(w);
+		if (l && l->isAutoUpdateEnabled())
+			return l;
+	}
+	return NULL;
+}
+
+void Graph::removeLegend()
+{
+	LegendWidget *l = legend();
+	if (l)
+		l->close();
+}
+
 LegendWidget* Graph::newLegend(const QString& text)
 {
 	LegendWidget* l = new LegendWidget(this);
@@ -3363,7 +3380,7 @@ void Graph::drawLine(bool on, bool arrow)
 }
 
 void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas,
-		const QString& var, double start, double end, int points)
+		const QString& var, double start, double end, int points, const QMap<QString, double>& constants)
 {
 	FunctionCurve *c = (FunctionCurve *)this->curve(curve);
 	if (!c)
@@ -3374,7 +3391,8 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 		c->formulas() == formulas &&
 		c->startRange() == start &&
 		c->endRange() == end &&
-		c->dataSize() == points)
+		c->dataSize() == points &&
+		c->constants() == constants)
 		return;
 
 	QString oldLegend = c->legend();
@@ -3383,6 +3401,7 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 	c->setRange(start, end);
 	c->setFormulas(formulas);
 	c->setVariable(var);
+	c->setConstants(constants);
 	c->loadData(points);
 
 	foreach(FrameWidget *fw, d_enrichments){
@@ -3491,57 +3510,6 @@ FunctionCurve* Graph::insertFunctionCurve(const QString& formula, int points, in
 		}
 	}
 	return addFunction(formulas, start, end, points,  var, type, name);
-}
-
-void Graph::restoreFunction(const QStringList& lst)
-{
-	int type = 0;
-	int points = 0, style = 0;
-	QStringList formulas;
-	QString var, title = QString::null;
-	double start = 0.0, end = 0.0;
-
-	QStringList::const_iterator line;
-	for (line = lst.begin(); line != lst.end(); line++){
-        QString s = *line;
-        if (s.contains("<Type>"))
-			type = s.remove("<Type>").remove("</Type>").stripWhiteSpace().toInt();
-		else if (s.contains("<Title>"))
-			title = s.remove("<Title>").remove("</Title>").stripWhiteSpace();
-		else if (s.contains("<Expression>"))
-			formulas = s.remove("<Expression>").remove("</Expression>").split("\t");
-		else if (s.contains("<Variable>"))
-			var = s.remove("<Variable>").remove("</Variable>").stripWhiteSpace();
-		else if (s.contains("<Range>")){
-			QStringList l = s.remove("<Range>").remove("</Range>").split("\t");
-			if (l.size() == 2){
-				start = l[0].toDouble();
-				end = l[1].toDouble();
-			}
-		} else if (s.contains("<Points>"))
-			points = s.remove("<Points>").remove("</Points>").stripWhiteSpace().toInt();
-		else if (s.contains("<Style>")){
-			style = s.remove("<Style>").remove("</Style>").stripWhiteSpace().toInt();
-			break;
-		}
-	}
-
-	FunctionCurve *c = new FunctionCurve((FunctionCurve::FunctionType)type, title);
-	c->setRange(start, end);
-	c->setFormulas(formulas);
-	c->setVariable(var);
-	c->loadData(points);
-	c->setPlotStyle(style);
-
-	insertCurve(c);
-
-	QStringList l;
-	for (line++; line != lst.end(); line++)
-        l << *line;
-	c->restoreCurveLayout(l);
-
-	addLegendItem();
-	updatePlot();
 }
 
 void Graph::createTable(const QString& curveName)

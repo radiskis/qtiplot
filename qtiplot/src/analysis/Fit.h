@@ -169,7 +169,7 @@ class Fit : public Filter
 		//! Frees the memory allocated for the fit workspace
 		void freeWorkspace();
 		//! Adds the result curve as a FunctionCurve to the plot, if d_gen_function = true
-		void insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth = 1);
+		virtual FunctionCurve * insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth = 1);
 
 		//! Adds the result curve to the plot
 		virtual void generateFitCurve();

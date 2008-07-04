@@ -29,8 +29,11 @@
 #include "NonLinearFit.h"
 #include "fit_gsl.h"
 #include "../MyParser.h"
+#include "../plot2D/FunctionCurve.h"
 
+#include <QApplication>
 #include <QMessageBox>
+#include <QTextStream>
 
 NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
@@ -97,16 +100,16 @@ void NonLinearFit::setFormula(const QString& s)
 		MyParser parser;
 		double xvar;
 		parser.DefineVar("x", &xvar);
-		for (int k=0; k<(int)d_p; k++){
-			param[k]=gsl_vector_get(d_param_init, k);
+		for (int k = 0; k < (int)d_p; k++){
+			param[k] = gsl_vector_get(d_param_init, k);
 			parser.DefineVar(d_param_names[k].ascii(), &param[k]);
 		}
 		
-		QList<QString> constNames = d_constants.keys();
-		for (int i=0; i<d_constants.size(); i++){
-			QString constName = constNames[i];
-			parser.DefineConst(constName.ascii(), d_constants.value(constName));
-		}
+		QMapIterator<QString, double> i(d_constants);
+ 		while (i.hasNext()) {
+     		i.next();
+			parser.DefineConst(i.key().ascii(), i.value());
+ 		}
 	
 		parser.SetExpr(s.ascii());
 		parser.Eval() ;
@@ -151,11 +154,11 @@ void NonLinearFit::calculateFitCurveData(double *X, double *Y)
 	for (int i=0; i<d_p; i++)
 		parser.DefineVar(d_param_names[i].ascii(), &d_results[i]);
 
-	QList<QString> constNames = d_constants.keys();
-	for (int i=0; i<d_constants.size(); i++){
-		QString constName = constNames[i];
-		parser.DefineConst(constName.ascii(), d_constants.value(constName));
-	}
+	QMapIterator<QString, double> i(d_constants);
+ 	while (i.hasNext()) {
+     	i.next();
+		parser.DefineConst(i.key().ascii(), i.value());
+ 	}
 	
 	double x;
 	parser.DefineVar("x", &x);
@@ -184,11 +187,11 @@ double NonLinearFit::eval(double *par, double x)
 	for (int i=0; i<d_p; i++)
 		parser.DefineVar(d_param_names[i].ascii(), &par[i]);
 	
-	QList<QString> constNames = d_constants.keys();
-	for (int i=0; i<d_constants.size(); i++){
-		QString constName = constNames[i];
-		parser.DefineConst(constName.ascii(), d_constants.value(constName));
-	}
+	QMapIterator<QString, double> i(d_constants);
+ 	while (i.hasNext()) {
+     	i.next();
+		parser.DefineConst(i.key().ascii(), i.value());
+ 	}
 		
 	parser.DefineVar("x", &x);
 	parser.SetExpr(d_formula.ascii());
@@ -197,6 +200,54 @@ double NonLinearFit::eval(double *par, double x)
 		
 void NonLinearFit::setConstant(const QString& parName, double val)
 {	
-	d_constants.remove(parName);
 	d_constants.insert(parName, val);			
+}
+
+QString NonLinearFit::logFitInfo(int iterations, int status)
+{
+	QString info = Fit::logFitInfo(iterations, status);
+	if (d_constants.isEmpty())
+		return info;
+	
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = app->locale();
+	
+	QMapIterator<QString, double> i(d_constants);
+ 	while (i.hasNext()) {
+     	i.next();
+		info += i.key() + " = " + locale.toString(i.value(), 'g', d_prec) + " ("+ tr("constant") + ")\n";
+ 	}
+
+	info += "---------------------------------------------------------------------------------------\n";
+	return info;
+}
+
+QString NonLinearFit::legendInfo()
+{
+	QString info = Fit::legendInfo();
+	if (d_constants.isEmpty())
+		return info;
+	
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = app->locale();
+	
+	QMapIterator<QString, double> i(d_constants);
+ 	while (i.hasNext()) {
+     	i.next();
+		info += "\n" + i.key() + " = " + locale.toString(i.value(), 'g', d_prec) + " ("+ tr("constant") + ")";
+ 	}
+	return info;
+}
+
+FunctionCurve * NonLinearFit::insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth)
+{
+	FunctionCurve *c = Fit::insertFitFunctionCurve(name, x, y, penWidth);
+	if (c){
+		QMapIterator<QString, double> i(d_constants);
+ 		while (i.hasNext()) {
+     		i.next();
+			c->setConstant(i.key(), i.value());
+ 		}
+	}
+	return c;
 }

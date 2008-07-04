@@ -10377,7 +10377,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				lst << s;
 			}
 			lst.pop_back();
-			ag->restoreFunction(lst);
+			FunctionCurve::restore(ag, lst);
 		} else if (s.contains ("FunctionCurve")){
 			QStringList curve = s.split("\t");
 			CurveLayout cl;

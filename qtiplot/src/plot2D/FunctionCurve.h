@@ -60,17 +60,26 @@ public:
 
 	//! Returns a string used when saving to a project file
 	QString saveToString();
+	//! Used when reading from a project file
+	static void restore(Graph *g, const QStringList& lst);
 
 	//! Returns a string that can be displayed in a plot legend
 	QString legend();
 
 	void loadData(int points = 0);
+	
+	QMap<QString, double> constants(){return d_constants;};
+	void setConstants(const QMap<QString, double>& map){d_constants = map;};
+	void setConstant(const QString& parName, double val){d_constants.insert(parName, val);};
+	void removeConstant(const QString& parName){d_constants.remove(parName);};
+	void removeConstants(){d_constants.clear();};
 
 private:
 	FunctionType d_function_type;
 	QString d_variable;
 	QStringList d_formulas;
 	double d_from, d_to;
+	QMap<QString, double> d_constants;
 };
 
 #endif

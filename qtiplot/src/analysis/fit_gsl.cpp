@@ -492,9 +492,8 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
 	const char *function = fitter->formula().ascii();
 	QStringList parNames = fitter->parameterNames();
-	QList<QString> constNames = fitter->constantsList();
 	
-    MyParser parser;
+	MyParser parser;
     try {
         double *parameters = new double[p];
         double xvar;
@@ -504,10 +503,11 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
             parser.DefineVar(parNames[i].ascii(), &parameters[i]);
         }
 		
-		for (int k=0; k<constNames.size(); k++){
-			QString constName = constNames[k];
-            parser.DefineConst(constName.ascii(), fitter->constValue(constName));
-		}
+		QMapIterator<QString, double> i(fitter->constants());
+ 		while (i.hasNext()){
+     		i.next();
+			parser.DefineConst(i.key().ascii(), i.value());
+ 		}
 		
         parser.SetExpr(function);
         for (int j = 0; j < (int)n; j++) {
@@ -532,7 +532,6 @@ double user_d(const gsl_vector * x, void *params) {
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
 	const char *function = fitter->formula().ascii();
 	QStringList parNames = fitter->parameterNames();
-	QList<QString> constNames = fitter->constantsList();
 	
     double val=0;
     MyParser parser;
@@ -545,10 +544,11 @@ double user_d(const gsl_vector * x, void *params) {
             parser.DefineVar(parNames[i].ascii(), &parameters[i]);
         }
 		
-		for (int k=0; k<constNames.size(); k++){
-			QString constName = constNames[k];
-            parser.DefineConst(constName.ascii(), fitter->constValue(constName));
-		}
+		QMapIterator<QString, double> i(fitter->constants());
+ 		while (i.hasNext()){
+     		i.next();
+			parser.DefineConst(i.key().ascii(), i.value());
+ 		}
 		
         parser.SetExpr(function);
         for (int j = 0; j < (int)n; j++) {
@@ -573,9 +573,8 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
 	const char *function = fitter->formula().ascii();
 	QStringList parNames = fitter->parameterNames();
-	QList<QString> constNames = fitter->constantsList();
 	
-    try {
+	try {
         double *param = new double[p];
         MyParser parser;
         double xvar;
@@ -585,10 +584,11 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
             parser.DefineVar(parNames[k].ascii(), &param[k]);
         }
 		
-		for (int k=0; k<constNames.size(); k++){
-			QString constName = constNames[k];
-            parser.DefineConst(constName.ascii(), fitter->constValue(constName));
-		}
+		QMapIterator<QString, double> i(fitter->constants());
+ 		while (i.hasNext()){
+     		i.next();
+			parser.DefineConst(i.key().ascii(), i.value());
+ 		}
 		
         parser.SetExpr(function);
         for (int i = 0; i<(int)n; i++) {

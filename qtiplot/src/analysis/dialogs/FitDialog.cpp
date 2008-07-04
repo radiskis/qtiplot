@@ -1102,6 +1102,10 @@ void FitDialog::accept()
 	double paramsInit[n], paramRangeLeft[n], paramRangeRight[n];
 #endif
 	QString formula = boxFunction->text();
+	NonLinearFit *nlf = qobject_cast<NonLinearFit *>(d_current_fit);
+	if (nlf)
+		nlf->removeConstants();
+	
 	try {
 		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
@@ -1118,7 +1122,7 @@ void FitDialog::accept()
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					QString constName = boxParams->item(i, 0)->text();
 					((NonLinearFit *)d_current_fit)->setConstant(constName, val);
-					parser.DefineConst(constName.ascii(), val);				
+					parser.DefineConst(constName.ascii(), val);	
 				}
 			}
 		} else {

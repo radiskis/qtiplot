@@ -230,6 +230,7 @@ class Graph: public QwtPlot
 		PlotCurve* insertCurve(Table* w, int xcol, const QString& name, int style);
 		PlotCurve* insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow = 0, int endRow = -1);
 		void insertPlotItem(QwtPlotItem *i, int type);
+		void insertCurve(QwtPlotItem *c);
 
 		//! Shows/Hides a curve defined by its index.
 		void showCurve(int index, bool visible = true);
@@ -387,6 +388,8 @@ class Graph: public QwtPlot
 		void removeLegendItem(int index);
 		void insertLegend(const QStringList& lst, int fileVersion);
 
+		LegendWidget* legend();
+		void removeLegend();
 		LegendWidget* newLegend(const QString& text = QString());
 
 		//! Creates a new legend text using the curves titles
@@ -574,12 +577,11 @@ class Graph: public QwtPlot
 
 		//! \name User-defined Functions
 		//@{
-		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var, double start, double end, int points);
+		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var, 
+			double start, double end, int points, const QMap<QString, double>& constants);
 		FunctionCurve* addFunction(const QStringList &formulas, double start, double end, int points = 100, const QString &var = "x", int type = 0, const QString& title = QString::null);
 		//! Used when reading from a project file with version < 0.9.5.
 		FunctionCurve* insertFunctionCurve(const QString& formula, int points, int fileVersion);
-		//! Used when reading from a project file with version >= 0.9.5.
-		void restoreFunction(const QStringList& lst);
 
 		//! Returns an unique function name
         QString generateFunctionName(const QString& name = tr("F"));
@@ -690,8 +692,6 @@ signals:
         void enableTextEditor(Graph *);
 
 	private:
-		void insertCurve(QwtPlotItem *c);
-
         //! Finds bounding interval of the plot data.
         QwtDoubleInterval axisBoundingInterval(int axis);
         void deselectCurves();

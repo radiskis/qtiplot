@@ -194,6 +194,7 @@ setTitleAlignment
 removeTitle
 newLegend
 legend
+removeLegend
 addText
 addTimeStamp
 setXTitle

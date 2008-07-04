@@ -31,6 +31,7 @@
 
 #include "../Graph.h"
 
+class QTableWidget;
 class QStackedWidget;
 class QWidget;
 class QLineEdit;
@@ -49,7 +50,28 @@ class FunctionDialog : public QDialog
 public:
     FunctionDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
 
-protected:
+protected slots:
+	void raiseWidget(int index);
+
+public slots:
+	void accept();
+	void acceptFunction();
+	void acceptParametric();
+	void acceptPolar();
+	void setCurveToModify(Graph *g, int curve);
+	void insertParamFunctionsList(const QStringList& xList, const QStringList& yList);
+	void insertPolarFunctionsList(const QStringList& rList, const QStringList& thetaList);
+	void clearList();
+	void setGraph(Graph *g){graph = g;};
+
+signals:
+	void clearParamFunctionsList();
+	void clearPolarFunctionsList();
+
+private:
+	Graph *graph;
+	int curveID;
+
 	QComboBox* boxXFunction;
     QComboBox* boxYFunction;
     QComboBox* boxPolarRadius;
@@ -75,28 +97,7 @@ protected:
 	QWidget* functionPage;
 	QWidget* polarPage;
 	QWidget* parametricPage;
-
-protected slots:
-	void raiseWidget(int index);
-
-public slots:
-	void accept();
-	void acceptFunction();
-	void acceptParametric();
-	void acceptPolar();
-	void setCurveToModify(Graph *g, int curve);
-	void insertParamFunctionsList(const QStringList& xList, const QStringList& yList);
-	void insertPolarFunctionsList(const QStringList& rList, const QStringList& thetaList);
-	void clearList();
-	void setGraph(Graph *g){graph = g;};
-
-signals:
-	void clearParamFunctionsList();
-	void clearPolarFunctionsList();
-
-private:
-	Graph *graph;
-	int curveID;
+	QTableWidget *boxConstants;
 };
 
 #endif // FUNCTIONDIALOG_H
