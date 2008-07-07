@@ -60,7 +60,7 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 
 	d_plot->raiseEnrichements();
 	raise();
-
+	
 	setMouseTracking(true);
 	show();
 	setFocus();

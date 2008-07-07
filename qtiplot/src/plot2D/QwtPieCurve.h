@@ -87,7 +87,6 @@ public:
 	void initLabels();
 	
 	void addLabel(PieLabel *l, bool clone = false);
-	void removeLabel(PieLabel *l);
 	
 	QList <PieLabel *> labelsList(){return d_texts_list;};
 

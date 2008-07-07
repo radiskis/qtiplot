@@ -82,6 +82,7 @@ private slots:
 	void customFont();
 	void updateTransparency(int alpha);
 	void setTextDefaultValues();
+	void setFrameDefaultValues();
 
 private:
 	void initTextPage();
@@ -120,7 +121,7 @@ private:
 	QPushButton *textFontBtn;
 	QSpinBox *boxBackgroundTransparency;
 	TextFormatButtons *formatButtons;
-	QPushButton *textDefaultBtn;
+	QPushButton *textDefaultBtn, *frameDefaultBtn;
 	QCheckBox *autoUpdateTextBox;
 	QFont textFont;
 	

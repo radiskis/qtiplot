@@ -108,6 +108,10 @@ void AddWidgetTool::addEquation(const QPoint& point)
 	t->setFormula(tr("enter your text here"));
 	t->move(point);
 	t->setFrameStyle(1);
+	ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
+	if (app)
+		t->setFramePen(app->d_frame_widget_pen);
+	
 	d_graph->add(t, false);
 	t->showPropertiesDialog();
 	d_graph->setActiveTool(NULL);
@@ -130,6 +134,7 @@ void AddWidgetTool::addText(const QPoint& point)
 		l->setFont(app->plotLegendFont);
 		l->setTextColor(app->legendTextColor);
 		l->setBackgroundColor(app->legendBackground);
+		l->setFramePen(app->d_frame_widget_pen);
 	}
     l->showPropertiesDialog();
     d_graph->setActiveTool(NULL);
@@ -186,7 +191,10 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
 
         case QEvent::MouseButtonRelease:
             if (d_rect){
-                d_rect->setFrameColor(Qt::black);
+				ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
+				if (app)
+					d_rect->setFramePen(app->d_frame_widget_pen);
+
 				d_rect->updateCoordinates();
                 d_rect->repaint();
                 d_rect = NULL;
