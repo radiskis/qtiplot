@@ -53,6 +53,7 @@
 #include "SymbolDialog.h"
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
+#include "PenStyleBox.h"
 
 #include "analysis/Fit.h"
 #include "analysis/MultiPeakFit.h"
@@ -545,6 +546,7 @@ void ApplicationWindow::initGlobalConstants()
 	majTicksLength = 9;
 
 	legendFrameStyle = int(LegendWidget::Line);
+	d_frame_widget_pen = QPen(Qt::black, 1, Qt::SolidLine);	
 	legendTextColor = Qt::black;
 	legendBackground = Qt::white;
 	legendBackground.setAlpha(0); // transparent by default;
@@ -3466,20 +3468,6 @@ void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 	}
 }
 
-void ApplicationWindow::setLegendDefaultSettings(int frame, const QFont& font,
-		const QColor& textCol, const QColor& backgroundCol)
-{
-	if (legendFrameStyle == frame && legendTextColor == textCol &&
-		legendBackground == backgroundCol && plotLegendFont == font)
-		return;
-
-	legendFrameStyle = frame;
-	legendTextColor = textCol;
-	legendBackground = backgroundCol;
-	plotLegendFont = font;
-	saveSettings();
-}
-
 void ApplicationWindow::setArrowDefaultSettings(double lineWidth,  const QColor& c, Qt::PenStyle style,
 		int headLength, int headAngle, bool fillHead)
 {
@@ -4489,6 +4477,12 @@ void ApplicationWindow::readSettings()
 
 	settings.beginGroup("/Legend");
 	legendFrameStyle = settings.value("/FrameStyle", LegendWidget::Line).toInt();
+	
+	
+	d_frame_widget_pen.setColor(settings.value("/FrameColor", Qt::black).value<QColor>());
+	d_frame_widget_pen.setWidth(settings.value("/FrameWidth", 1).toInt());
+	d_frame_widget_pen.setStyle(PenStyleBox::penStyle(settings.value("/FramePenStyle", 0).toInt()));
+
 	legendTextColor = settings.value("/TextColor", "#000000").value<QColor>(); //default color Qt::black
 	legendBackground = settings.value("/BackgroundColor", Qt::white).value<QColor>(); //default color Qt::white
 	legendBackground.setAlpha(settings.value("/Transparency", 0).toInt()); // transparent by default;
@@ -4796,6 +4790,9 @@ void ApplicationWindow::saveSettings()
 
 	settings.beginGroup("/Legend");
 	settings.setValue("/FrameStyle", legendFrameStyle);
+	settings.setValue("/FrameColor", d_frame_widget_pen.color().name());
+	settings.setValue("/FrameWidth", d_frame_widget_pen.width());
+	settings.setValue("/FramePenStyle", PenStyleBox::styleIndex(d_frame_widget_pen.style()));
 	settings.setValue("/TextColor", legendTextColor);
 	settings.setValue("/BackgroundColor", legendBackground);
 	settings.setValue("/Transparency", legendBackground.alpha());

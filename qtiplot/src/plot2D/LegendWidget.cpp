@@ -472,6 +472,7 @@ void LegendWidget::showTextEditor()
 void LegendWidget::clone(LegendWidget* t)
 {
 	d_frame = t->frameStyle();
+	setFramePen(t->framePen());
 	d_auto_update = t->isAutoUpdateEnabled();
 
 	setTextColor(t->textColor());

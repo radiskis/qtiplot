@@ -1587,9 +1587,9 @@ void Graph::remove(FrameWidget* f)
 
 	if (f == d_active_enrichment)
 		d_active_enrichment = NULL;
-
-	f->close();
+	
 	emit modifiedGraph();
+	f->close();
 }
 
 bool Graph::arrowMarkerSelected()
@@ -2417,14 +2417,7 @@ QString Graph::saveMarkers()
 		s+=QString::number(mrkL->headAngle())+"\t";
 		s+=QString::number(mrkL->filledArrowHead())+"</line>\n";
 	}
-
-	QObjectList lst = children();
-	foreach(QObject *o, lst){
-		PieLabel *l = qobject_cast<PieLabel *>(o);
-		if (l)
-			s += l->saveToString();
-	}
-
+		
 	foreach(FrameWidget *f, d_enrichments)
 		s += f->saveToString();
 
@@ -3264,7 +3257,7 @@ void Graph::contextMenuEvent(QContextMenuEvent *e)
 }
 
 void Graph::closeEvent(QCloseEvent *e)
-{
+{	
 	emit closedGraph();
 	e->accept();
 }
@@ -4101,8 +4094,13 @@ void Graph::copy(Graph* g)
 	d_zoomer[1]->setZoomBase();
 
 	QList<FrameWidget *> enrichements = g->enrichmentsList();
-	foreach (FrameWidget *e, enrichements)
+	foreach (FrameWidget *e, enrichements){
+		PieLabel *l = qobject_cast<PieLabel *>(e);
+		if (l)
+			continue;
+		
 		add(e);
+	}
 
 	QList<QwtPlotMarker *> lines = g->linesList();
 	foreach (QwtPlotMarker *i, lines)
@@ -4807,15 +4805,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	}
 
     painter->restore();
-
-	// print pie curve labels
-	QObjectList lst = children();
-	foreach(QObject *o, lst){
-		PieLabel *l = qobject_cast<PieLabel *>(o);
-		if (l && !l->isHidden())
-			l->print(painter, map);
-	}
-
+	
 	foreach(FrameWidget *f, d_enrichments){
 		if (f->isVisible())
 			f->print(painter, map);
@@ -5507,12 +5497,12 @@ void Graph::raiseEnrichements()
 	foreach(Graph *g, lst){
 		if (g == this)
 			continue;
-		
+			
 		QList<FrameWidget *> eLst = g->enrichmentsList();
 		foreach(FrameWidget *fw, eLst)
 			fw->raise();
 	}
-	
+		
 	foreach(FrameWidget *fw, d_enrichments)
 		fw->raise();
 }

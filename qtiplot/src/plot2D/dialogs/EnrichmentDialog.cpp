@@ -261,10 +261,15 @@ void EnrichmentDialog::initFramePage()
 	gl->setRowStretch(4, 1);
 	
 	QVBoxLayout *vl = new QVBoxLayout();
+	
+	frameDefaultBtn = new QPushButton(tr("Set As &Default"));
+	connect(frameDefaultBtn, SIGNAL(clicked()), this, SLOT(setFrameDefaultValues()));
+	vl->addWidget(frameDefaultBtn);
+	
 	frameApplyToBtn = new QPushButton(tr("Apply &to..."));
 	connect(frameApplyToBtn, SIGNAL(clicked()), this, SLOT(frameApplyTo()));
-
 	vl->addWidget(frameApplyToBtn);
+	
 	frameApplyToBox = new QComboBox();
 	frameApplyToBox->insertItem(tr("This Layer"));
     frameApplyToBox->insertItem(tr("This Window"));
@@ -401,6 +406,9 @@ void EnrichmentDialog::initGeometryPage()
     QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl2->addWidget(gb1);
 	bl2->addWidget(gb2);
+	
+	if (d_widget_type == Text)
+		gb2->setEnabled(false);
 
 	QVBoxLayout* vl = new QVBoxLayout(geometryPage);
     vl->addLayout(bl1);
@@ -862,10 +870,26 @@ void EnrichmentDialog::setTextDefaultValues()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
+	
+	app->legendTextColor = textColorBtn->color();
+	app->plotLegendFont = textFont;
 
 	QColor c = textBackgroundBtn->color();
 	c.setAlpha(boxBackgroundTransparency->value());
-	app->setLegendDefaultSettings(frameBox->currentIndex(), textFont, textColorBtn->color(), c);
+	app->legendBackground = c;
+	
+	app->saveSettings();
+}
+
+void EnrichmentDialog::setFrameDefaultValues()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+	
+	app->legendFrameStyle = frameBox->currentIndex();
+	app->d_frame_widget_pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), boxFrameLineStyle->style());	
+	app->saveSettings();
 }
 
 EnrichmentDialog::~EnrichmentDialog()

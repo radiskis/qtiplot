@@ -406,8 +406,9 @@ void QwtPieCurve::addLabel(PieLabel *l, bool clone)
 	if (!l)
 		return;
 
+	Graph *g = (Graph *)plot();
 	if (clone){
-		PieLabel *newLabel = new PieLabel((Graph *)plot(), this);
+		PieLabel *newLabel = new PieLabel(g, this);
 		newLabel->clone(l);
 		newLabel->setCustomText(l->customText());
 		d_texts_list << newLabel;
@@ -415,24 +416,6 @@ void QwtPieCurve::addLabel(PieLabel *l, bool clone)
 		l->setPieCurve(this);
 		d_texts_list << l;
 	}
-}
-
-void QwtPieCurve::removeLabel(PieLabel *l)
-{
-	if (!l)
-		return;
-
-	int index = d_texts_list.indexOf(l);
-	if (index < 0 || index >= d_texts_list.size())
-		return;
-
-	PieLabel *newLabel = new PieLabel((Graph *)plot(), this);
-	newLabel->clone(l);
-	newLabel->setCustomText(l->customText());
-	newLabel->hide();
-
-	d_texts_list.removeAt(index);
-	d_texts_list.insert(index, newLabel);
 }
 
 void QwtPieCurve::initLabels()
@@ -461,6 +444,7 @@ PieLabel::PieLabel(Graph *plot, QwtPieCurve *pie):LegendWidget(plot),
 {
 	setBackgroundColor(QColor(255, 255, 255, 0));
 	setFrameStyle(0);
+	plot->add(this, false);
 }
 
 QString PieLabel::customText()
@@ -473,9 +457,10 @@ QString PieLabel::customText()
 
 void PieLabel::closeEvent(QCloseEvent* e)
 {
-	if(d_pie_curve)
-		d_pie_curve->removeLabel(this);
-	e->accept();
+	if(d_pie_curve && !d_pie_curve->labelsAutoFormat())
+		hide();
+	
+	e->ignore();
 }
 
 QString PieLabel::saveToString()
