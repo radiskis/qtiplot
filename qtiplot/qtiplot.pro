@@ -19,8 +19,8 @@ DEFINES         += SCRIPTING_DIALOG
 ######################################################################################
 #CONFIG          += CustomInstall
 
-CONFIG          += release
-#CONFIG          += debug
+#CONFIG          += release
+CONFIG          += debug
 win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################

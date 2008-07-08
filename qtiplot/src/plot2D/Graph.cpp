@@ -1659,10 +1659,8 @@ void Graph::selectTitle(bool select)
 
 void Graph::removeTitle()
 {
-	if (titleLabel()->hasFocus()){
-		setTitle(" ");
-		emit modifiedGraph();
-	}
+	setTitle(" ");
+	emit modifiedGraph();
 }
 
 void Graph::initTitle(bool on, const QFont& fnt)
@@ -4549,7 +4547,7 @@ void Graph::setAntialiasing(bool on, bool update)
 
 bool Graph::focusNextPrevChild ( bool )
 {
-	int markers = d_lines.size();
+	/*int markers = d_lines.size();
 	int enrichments = d_enrichments.size();
 	if (markers < 1 && enrichments < 1)
 		return false;
@@ -4592,7 +4590,8 @@ bool Graph::focusNextPrevChild ( bool )
         deselectMarker();
         setSelectedMarker(d_lines.at(0));
         return true;
-    }
+    }*/
+	
 	return false;
 }
 
