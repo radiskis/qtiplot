@@ -5512,8 +5512,12 @@ void Graph::raiseEnrichements()
 QRect Graph::boundingRect()
 {
 	QRect r = this->geometry();
-	foreach(FrameWidget *fw, d_enrichments)
+	int n = 0;
+	foreach(FrameWidget *fw, d_enrichments){
+		if (fw->isHidden())//pie labels can be hidden
+			continue;
+		
 		r = r.united(fw->geometry());
-
+	}
 	return r;
 }

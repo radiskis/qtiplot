@@ -415,10 +415,14 @@ PieLabel* QwtPieCurve::addLabel(PieLabel *l, bool clone)
 		newLabel->clone(l);
 		newLabel->setCustomText(l->customText());
 		d_texts_list << newLabel;
+		if (l->text().isEmpty())
+			newLabel->hide();
 		return newLabel;
 	} else {
 		l->setPieCurve(this);
 		d_texts_list << l;
+		if (l->text().isEmpty())
+			l->hide();
 	}
 	return l;
 }

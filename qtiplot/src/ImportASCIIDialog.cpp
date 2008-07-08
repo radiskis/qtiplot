@@ -623,8 +623,11 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
                 else if (stripSpaces)
                     s = s.stripWhiteSpace();
                 line = s.split(sep, QString::SkipEmptyParts);
-                for (int i=0; i<line.size(); i++)
-                    comments[startCol + i] = line[i];
+                for (int i=0; i<line.size(); i++){
+					int aux = startCol + i;
+					if (aux < comments.size())
+                    	comments[aux] = line[i];
+				}
                 qApp->processEvents(QEventLoop::ExcludeUserInput);
             }
         } else if (rows > 0){//put values in the first line of the table
