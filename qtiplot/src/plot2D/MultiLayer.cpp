@@ -232,6 +232,14 @@ void MultiLayer::setActiveLayer(Graph* g)
 	}
 }
 
+QRect MultiLayer::canvasChildrenRect()
+{
+	QRect r = QRect();
+	foreach (Graph *g, graphsList)
+		r = r.united(g->boundingRect());
+	return r;
+}
+
 void MultiLayer::resizeLayers (QResizeEvent *re)
 {
 	if (!d_scale_layers || applicationWindow()->d_opening_file)
@@ -241,9 +249,10 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	QSize size = re->size();
 
 	bool scaleLayerFonts = false;
-	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)
-        oldSize = QSize(d_canvas->childrenRect().width() + left_margin + right_margin,
-                        d_canvas->childrenRect().height() + top_margin + bottom_margin);
+	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)		
+		QRect r = canvasChildrenRect();		
+        oldSize = QSize(r.width() + left_margin + right_margin, 
+						r.height() + top_margin + bottom_margin);
 		scaleLayerFonts = true;
 	}
 

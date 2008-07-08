@@ -89,6 +89,7 @@ public:
 
 	QWidget *canvas(){return d_canvas;};
 	QRect canvasRect(){return d_canvas->rect();};
+	QRect canvasChildrenRect();
 	virtual QString sizeToString();
 
 public slots:
