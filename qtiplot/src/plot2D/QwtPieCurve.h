@@ -31,7 +31,7 @@
 #include "LegendWidget.h"
 
 class PieLabel;
-	
+
 //! Pie plot class
 class QwtPieCurve: public DataCurve
 {
@@ -68,7 +68,7 @@ public:
 
 	bool labelCategories(){return d_categories;};
     void setLabelCategories(bool on){d_categories = on;};
-	
+
     bool fixedLabelsPosition(){return d_fixed_labels_pos;};
     void setFixedLabelsPosition(bool on){d_fixed_labels_pos = on;};
 
@@ -85,9 +85,9 @@ public:
 
 	void loadData();
 	void initLabels();
-	
-	void addLabel(PieLabel *l, bool clone = false);
-	
+
+	PieLabel* addLabel(PieLabel *l, bool clone = false);
+
 	QList <PieLabel *> labelsList(){return d_texts_list;};
 
 private:
@@ -124,11 +124,11 @@ public:
 
 	QString customText();
 	void setCustomText(const QString& s){d_custom_text = s;};
-	
+
 	void setPieCurve(QwtPieCurve *pie){d_pie_curve = pie;};
-	
+
 	QString saveToString();
-	
+
 private:
 	void closeEvent(QCloseEvent* e);
 

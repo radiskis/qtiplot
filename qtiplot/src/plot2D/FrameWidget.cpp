@@ -60,7 +60,7 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 
 	d_plot->raiseEnrichements();
 	raise();
-	
+
 	setMouseTracking(true);
 	show();
 	setFocus();
@@ -78,8 +78,8 @@ void FrameWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
-	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());	
-	
+	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());
+
 	drawFrame(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
 }
 
@@ -136,7 +136,7 @@ void FrameWidget::setCoordinates(double left, double top, double right, double b
 
 	QWidget *layerCanvas = d_plot->canvas();
 	QWidget *windowCanvas = (QWidget *)d_plot->parent();
-	
+
 	QPoint pos(d_plot->transform(QwtPlot::xBottom, d_x), d_plot->transform(QwtPlot::yLeft, d_y));
 	pos = layerCanvas->mapTo(windowCanvas, pos);
 
@@ -204,23 +204,23 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 		p->fillRect(rect, palette().color(QPalette::Window));
 		if (d_brush.style() != Qt::NoBrush)
 			p->setBrush(d_brush);
-		int lw = d_frame_pen.width()/2; 
+		int lw = d_frame_pen.width()/2;
         QwtPainter::drawRect(p, rect.adjusted(lw, lw, -lw - 1, -lw - 1));
-	} else if (d_frame == Shadow){		
-		int lw = d_frame_pen.width()/2; 
+	} else if (d_frame == Shadow){
+		int lw = d_frame_pen.width()/2;
 		int d = d_shadow_width + lw;
 		if (!(lw % 2))
 			d += 1;
-		
+
 		QPainterPath contents;
 		QRect r = rect.adjusted(lw, lw, -d, -d);
 		contents.addRect(r);
-	
+
 		QPainterPath shadow;
 		shadow.addRect(rect.adjusted(d_shadow_width, d_shadow_width, 0, 0));
-		
+
 		p->fillPath(shadow.subtracted(contents), Qt::black);//draw shadow
-		
+
 		p->fillRect(r, palette().color(QPalette::Window));
 		p->setPen(d_frame_pen);
 		if (d_brush.style() != Qt::NoBrush)
@@ -248,7 +248,7 @@ QString FrameWidget::saveToString()
 	s += "<Color>" + d_frame_pen.color().name() + "</Color>\n";
 	s += "<FrameWidth>" + QString::number(d_frame_pen.width()) + "</FrameWidth>\n";
 	s += "<LineStyle>" + QString::number(PenStyleBox::styleIndex(d_frame_pen.style())) + "</LineStyle>\n";
-	
+
 	s += "<x>" + QString::number(d_x, 'g', 14) + "</x>\n";
 	s += "<y>" + QString::number(d_y, 'g', 14) + "</y>\n";
 	s += "<right>" + QString::number(d_x_right, 'g', 15) + "</right>\n";

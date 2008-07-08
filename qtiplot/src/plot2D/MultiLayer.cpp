@@ -174,6 +174,7 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height)
 
 	Graph* g = new Graph(x, y, width, height, d_canvas);
     g->show();
+    g->raiseEnrichements();
 	graphsList.append(g);
 
 	active_graph = g;
@@ -862,7 +863,7 @@ void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 	foreach (Graph *g, graphsList){
 		QwtText text = g->title();
   	    text.setFont(titleFnt);
-  	    ((QwtPlot *)g)->setTitle(text);
+  	    g->setTitle(text);
 
 		for (int j= 0; j<QwtPlot::axisCnt; j++){
 			g->setAxisFont(j, numbersFnt);

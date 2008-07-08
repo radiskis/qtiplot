@@ -79,10 +79,13 @@ void QwtPieCurve::clone(QwtPieCurve* c)
 	d_fixed_labels_pos = c->fixedLabelsPosition();
 
 	d_table_rows = c->d_table_rows;
-	
+
 	QList <PieLabel *> lst = c->labelsList();
-	foreach(PieLabel *t, lst)
-		addLabel(t, true);
+	foreach(PieLabel *t, lst){
+		PieLabel *nl = addLabel(t, true);
+		if (nl && t->isHidden())
+            nl->hide();
+	}
 }
 
 void QwtPieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
@@ -387,7 +390,7 @@ void QwtPieCurve::loadData()
 	X.resize(size);
 	d_table_rows.resize(size);
 	setData(X.data(), X.data(), size);
-	
+
 	int labels = d_texts_list.size();
 	//If there are no labels (initLabels() wasn't called yet) or if we have enough labels: do nothing!
 	if(d_texts_list.isEmpty() || labels == size)
@@ -401,10 +404,10 @@ void QwtPieCurve::loadData()
 	}
 }
 
-void QwtPieCurve::addLabel(PieLabel *l, bool clone)
+PieLabel* QwtPieCurve::addLabel(PieLabel *l, bool clone)
 {
 	if (!l)
-		return;
+		return 0;
 
 	Graph *g = (Graph *)plot();
 	if (clone){
@@ -412,10 +415,12 @@ void QwtPieCurve::addLabel(PieLabel *l, bool clone)
 		newLabel->clone(l);
 		newLabel->setCustomText(l->customText());
 		d_texts_list << newLabel;
+		return newLabel;
 	} else {
 		l->setPieCurve(this);
 		d_texts_list << l;
 	}
+	return l;
 }
 
 void QwtPieCurve::initLabels()
@@ -457,17 +462,13 @@ QString PieLabel::customText()
 
 void PieLabel::closeEvent(QCloseEvent* e)
 {
-	if(d_pie_curve && !d_pie_curve->labelsAutoFormat())
-		hide();
-	
+    setText(QString::null);
+    hide();
 	e->ignore();
 }
 
 QString PieLabel::saveToString()
 {
-	if (text().isEmpty())
-		return "";
-	
 	QString s = "<PieLabel>\t";
 	s += QString::number(xValue(), 'g', 15) + "\t";
 	s += QString::number(yValue(), 'g', 15) + "\t";
@@ -486,6 +487,6 @@ QString PieLabel::saveToString()
 	s += QString::number(backgroundColor().alpha())+"\t";
 
 	QStringList textList = text().split("\n", QString::KeepEmptyParts);
-	s += textList.join ("\t");			
+	s += textList.join ("\t");
 	return s + "</PieLabel>\n";
 }
