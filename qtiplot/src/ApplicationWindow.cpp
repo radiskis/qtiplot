@@ -546,7 +546,7 @@ void ApplicationWindow::initGlobalConstants()
 	majTicksLength = 9;
 
 	legendFrameStyle = int(LegendWidget::Line);
-	d_frame_widget_pen = QPen(Qt::black, 1, Qt::SolidLine);	
+	d_frame_widget_pen = QPen(Qt::black, 1, Qt::SolidLine);
 	legendTextColor = Qt::black;
 	legendBackground = Qt::white;
 	legendBackground.setAlpha(0); // transparent by default;
@@ -4477,8 +4477,8 @@ void ApplicationWindow::readSettings()
 
 	settings.beginGroup("/Legend");
 	legendFrameStyle = settings.value("/FrameStyle", LegendWidget::Line).toInt();
-	
-	
+
+
 	d_frame_widget_pen.setColor(settings.value("/FrameColor", Qt::black).value<QColor>());
 	d_frame_widget_pen.setWidth(settings.value("/FrameWidth", 1).toInt());
 	d_frame_widget_pen.setStyle(PenStyleBox::penStyle(settings.value("/FramePenStyle", 0).toInt()));
@@ -7304,7 +7304,7 @@ void ApplicationWindow::showEnrichementDialog()
 	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
 	ed->setWidget(g->activeEnrichment());
 	ed->exec();
-		
+
     g->deselectMarker();
 }
 
@@ -10111,8 +10111,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 	for (int j=0;j<(int)list.count()-1;j++){
 		QString s=list[j];
 		if (s.contains ("ggeometry")){
-			QStringList fList=s.split("\t");
-			ag =(Graph*)plot->addLayer(fList[1].toInt(), fList[2].toInt(),
+			QStringList fList = s.split("\t");
+			ag = (Graph*)plot->addLayer(fList[1].toInt(), fList[2].toInt(),
 					fList[3].toInt(), fList[4].toInt());
             ag->blockSignals(true);
 			ag->enableAutoscaling(autoscale2DPlots);
@@ -10791,7 +10791,9 @@ void ApplicationWindow::copyActiveLayer()
 	if (!g)
 		return;
 
-	delete lastCopiedLayer;
+    if (lastCopiedLayer)
+        delete lastCopiedLayer;
+
 	lastCopiedLayer = new Graph(0, 0, g->width(), g->height());
 	lastCopiedLayer->setLocale(locale());
 	lastCopiedLayer->copy(g);

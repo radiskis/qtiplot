@@ -980,7 +980,7 @@ void Graph::setTitleColor(const QColor & c)
 {
 	QwtText t = title();
 	t.setColor(c);
-	((QwtPlot *)this)->setTitle(t);
+	setTitle(t);
 	replot();
 	emit modifiedGraph();
 }
@@ -989,7 +989,7 @@ void Graph::setTitleAlignment(int align)
 {
 	QwtText t = title();
 	t.setRenderFlags(align);
-	((QwtPlot *)this)->setTitle(t);
+	setTitle(t);
 	replot();
 	emit modifiedGraph();
 }
@@ -998,7 +998,7 @@ void Graph::setTitleFont(const QFont &fnt)
 {
 	QwtText t = title();
 	t.setFont(fnt);
-	((QwtPlot *)this)->setTitle(t);
+	setTitle(t);
 	replot();
 	emit modifiedGraph();
 }
@@ -1581,13 +1581,16 @@ void Graph::remove(FrameWidget* f)
 	if (!f)
 		return;
 
-	int index = d_enrichments.indexOf (f);
-	if (index >= 0 && index < d_enrichments.size())
-		d_enrichments.removeAt(index);
+    PieLabel *l = qobject_cast<PieLabel *>(f);
+    if (!l){
+        int index = d_enrichments.indexOf (f);
+        if (index >= 0 && index < d_enrichments.size())
+            d_enrichments.removeAt(index);
 
-	if (f == d_active_enrichment)
-		d_active_enrichment = NULL;
-	
+        if (f == d_active_enrichment)
+            d_active_enrichment = NULL;
+    }
+
 	emit modifiedGraph();
 	f->close();
 }
@@ -1668,7 +1671,7 @@ void Graph::initTitle(bool on, const QFont& fnt)
 		QwtText t = title();
 		t.setFont(fnt);
 		t.setText(tr("Title"));
-		((QwtPlot *)this)->setTitle (t);
+		setTitle (t);
 	}
 }
 
@@ -2237,7 +2240,7 @@ LegendWidget* Graph::addTimeStamp()
 {
 	LegendWidget* l = newLegend(QDateTime::currentDateTime().toString(Qt::LocalDate));
 	l->setAutoUpdate(false);
-	
+
 	QPoint p = canvas()->pos() + QPoint(canvas()->width()/2, 10);
 	l->move(mapToParent(p));
 	emit modifiedGraph();
@@ -2417,7 +2420,7 @@ QString Graph::saveMarkers()
 		s+=QString::number(mrkL->headAngle())+"\t";
 		s+=QString::number(mrkL->filledArrowHead())+"</line>\n";
 	}
-		
+
 	foreach(FrameWidget *f, d_enrichments)
 		s += f->saveToString();
 
@@ -3257,7 +3260,7 @@ void Graph::contextMenuEvent(QContextMenuEvent *e)
 }
 
 void Graph::closeEvent(QCloseEvent *e)
-{	
+{
 	emit closedGraph();
 	e->accept();
 }
@@ -3606,8 +3609,9 @@ void Graph::resizeEvent ( QResizeEvent *e )
 
 	foreach(FrameWidget *f, d_enrichments){
 		TexWidget *tw = qobject_cast<TexWidget *>(f);
-		if (tw)
-			tw->resetOrigin();
+		LegendWidget *l = qobject_cast<LegendWidget *>(f);
+		if (tw || l)
+			f->resetOrigin();
 		else
         	f->resetCoordinates();
 	}
@@ -3640,7 +3644,7 @@ void Graph::scaleFonts(double factor)
 	QFont font = t.font();
 	font.setPointSizeFloat(factor*font.pointSizeFloat());
 	t.setFont(font);
-	((QwtPlot *)this)->setTitle(t);
+	setTitle(t);
 
 	QList<QwtPlotItem *> curves = curvesList();
     foreach(QwtPlotItem *i, curves){
@@ -3927,7 +3931,7 @@ void Graph::copy(Graph* g)
 	}
 
 	grid()->copy(g->grid());
-	((QwtPlot *)this)->setTitle (g->title());
+	setTitle (g->title());
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
 
@@ -4098,7 +4102,6 @@ void Graph::copy(Graph* g)
 		PieLabel *l = qobject_cast<PieLabel *>(e);
 		if (l)
 			continue;
-		
 		add(e);
 	}
 
@@ -4129,7 +4132,7 @@ void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int
 		if (l && l->isAutoUpdateEnabled())
 			l->setText(legendText());
 	}
-	
+
 	setAxisScaleDraw (QwtPlot::xBottom, new ScaleDraw(this, w->selectedYLabels(), w->objectName(), ScaleDraw::ColHeader));
 	setAxisMaxMajor(QwtPlot::xBottom, names.count()+1);
 	setAxisMaxMinor(QwtPlot::xBottom, 0);
@@ -4713,7 +4716,7 @@ void Graph::setCurrentFont(const QFont& f)
 	} else if (titlePicker->selected()){
 		QwtText t = title();
 		t.setFont(f);
-		((QwtPlot *)this)->setTitle(t);
+		setTitle(t);
 		emit modifiedGraph();
 	} else {
 	    QList<QwtPlotItem *> curves = curvesList();
@@ -4805,7 +4808,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	}
 
     painter->restore();
-	
+
 	foreach(FrameWidget *f, d_enrichments){
 		if (f->isVisible())
 			f->print(painter, map);
@@ -5434,7 +5437,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 
     pfilter.reset((QwtPlot *)this);
     painter->restore();
-    ((QwtPlot *)this)->setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
+    setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
 }
 
 TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
@@ -5497,12 +5500,12 @@ void Graph::raiseEnrichements()
 	foreach(Graph *g, lst){
 		if (g == this)
 			continue;
-			
+
 		QList<FrameWidget *> eLst = g->enrichmentsList();
 		foreach(FrameWidget *fw, eLst)
 			fw->raise();
 	}
-		
+
 	foreach(FrameWidget *fw, d_enrichments)
 		fw->raise();
 }
@@ -5512,6 +5515,6 @@ QRect Graph::boundingRect()
 	QRect r = this->geometry();
 	foreach(FrameWidget *fw, d_enrichments)
 		r = r.united(fw->geometry());
-	
+
 	return r;
 }
