@@ -188,7 +188,6 @@ private:
 	bool eventFilter(QObject *object, QEvent *);
 	void releaseLayer();
 	void resizeLayers(QResizeEvent *);
-	bool focusNextPrevChild(bool next);
 	//@}
 
 	LayerButton* addLayerButton();

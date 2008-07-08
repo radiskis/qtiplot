@@ -311,13 +311,15 @@ void MultiLayer::removeLayer()
 	active_graph->close();
 	if(index >= graphsList.count())
 		index--;
+	
+	emit modifiedWindow(this);
 
 	if (graphsList.count() == 0){
-		active_graph = 0;
+		active_graph = NULL;
 		return;
 	}
 
-	active_graph=(Graph*) graphsList.at(index);
+	active_graph = (Graph*) graphsList.at(index);
 
 	for (i=0; i<(int)graphsList.count(); i++){
 		Graph *gr = (Graph *)graphsList.at(i);
@@ -327,8 +329,6 @@ void MultiLayer::removeLayer()
 			break;
 		}
 	}
-
-	emit modifiedWindow(this);
 }
 
 void MultiLayer::setGraphGeometry(int x, int y, int w, int h)
@@ -1182,16 +1182,6 @@ void MultiLayer::copy(MultiLayer* ml)
 		g2->setAutoscaleFonts(g->autoscaleFonts());
 	}
 	show();
-}
-
-bool MultiLayer::focusNextPrevChild ( bool next )
-{
-	return false;
-
-	if (!active_graph)
-		return true;
-
-	return active_graph->focusNextPrevChild(next);
 }
 
 bool MultiLayer::swapLayers(int src, int dest)

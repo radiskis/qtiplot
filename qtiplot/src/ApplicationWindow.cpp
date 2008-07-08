@@ -10791,12 +10791,8 @@ void ApplicationWindow::copyActiveLayer()
 	if (!g)
 		return;
 
-    if (lastCopiedLayer)
-        delete lastCopiedLayer;
-
-	lastCopiedLayer = new Graph(0, 0, g->width(), g->height());
-	lastCopiedLayer->setLocale(locale());
-	lastCopiedLayer->copy(g);
+	lastCopiedLayer = g;
+	connect (g, SIGNAL(destroyed()), this, SLOT(closedLastCopiedLayer()));
 	g->copyImage();
 }
 
@@ -14679,9 +14675,6 @@ void ApplicationWindow::fitFrameToLayer()
 ApplicationWindow::~ApplicationWindow()
 {
     disableTools();//avoids crash if a plot tol is still active
-
-	if (lastCopiedLayer)
-		delete lastCopiedLayer;
 
 	delete hiddenWindows;
 
