@@ -2330,6 +2330,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
                     	comments[aux] = line[i];
 				}
                 qApp->processEvents(QEventLoop::ExcludeUserInput);
+				showComments(true);
             }
         } else if (rows > 0){//put values in the first line of the table
             for (int i = 0; i<cols; i++)

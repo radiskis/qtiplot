@@ -2680,6 +2680,8 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, const QPen& pen, int 
 	insertCurve(pie);
 
 	pie->loadData();
+	pie->initLabels();
+	
 	pie->setPen(pen);
 	pie->setRadius(size);
 	pie->setFirstColor(firstColor);
@@ -5512,7 +5514,6 @@ void Graph::raiseEnrichements()
 QRect Graph::boundingRect()
 {
 	QRect r = this->geometry();
-	int n = 0;
 	foreach(FrameWidget *fw, d_enrichments){
 		if (fw->isHidden())//pie labels can be hidden
 			continue;
