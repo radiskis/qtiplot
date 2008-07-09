@@ -192,8 +192,12 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
         case QEvent::MouseButtonRelease:
             if (d_rect){
 				ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
-				if (app)
+				if (app){
+					d_rect->setFrameStyle(app->legendFrameStyle);
 					d_rect->setFramePen(app->d_frame_widget_pen);
+					d_rect->setBackgroundColor(app->d_rect_default_background);
+					d_rect->setBrush(app->d_rect_default_brush);
+				}
 
 				d_rect->updateCoordinates();
                 d_rect->repaint();
