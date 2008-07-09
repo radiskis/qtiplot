@@ -54,6 +54,7 @@
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
 #include "PenStyleBox.h"
+#include "PatternBox.h"
 
 #include "analysis/Fit.h"
 #include "analysis/MultiPeakFit.h"
@@ -551,6 +552,9 @@ void ApplicationWindow::initGlobalConstants()
 	legendBackground = Qt::white;
 	legendBackground.setAlpha(0); // transparent by default;
 
+	d_rect_default_background = Qt::white;	
+	d_rect_default_brush = QBrush();
+	
 	defaultArrowLineWidth = 1;
 	defaultArrowColor = Qt::black;
 	defaultArrowHeadLength = 4;
@@ -4496,6 +4500,14 @@ void ApplicationWindow::readSettings()
 	defaultArrowHeadFill = settings.value("/HeadFill", true).toBool();
 	defaultArrowLineStyle = Graph::getPenStyle(settings.value("/LineStyle", "SolidLine").toString());
 	settings.endGroup(); // Arrows
+	
+	settings.beginGroup("/Rectangle");
+	d_rect_default_background = settings.value("/BackgroundColor", Qt::white).value<QColor>();
+	d_rect_default_background.setAlpha(settings.value("/Transparency", 255).toInt());
+	
+	d_rect_default_brush.setColor(settings.value("/BrushColor", Qt::black).value<QColor>());
+	d_rect_default_brush.setStyle(PatternBox::brushStyle(settings.value("/Pattern", 0).toInt()));
+	settings.endGroup(); // Rectangle
 	settings.endGroup();
 	/* ----------------- end group 2D Plots --------------------------- */
 
@@ -4806,6 +4818,13 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/HeadFill", defaultArrowHeadFill);
 	settings.setValue("/LineStyle", Graph::penStyleName(defaultArrowLineStyle));
 	settings.endGroup(); // Arrows
+	
+	settings.beginGroup("/Rectangle");
+	settings.setValue("/BackgroundColor", d_rect_default_background);
+	settings.setValue("/Transparency", d_rect_default_background.alpha());
+	settings.setValue("/BrushColor", d_rect_default_brush.color());
+	settings.setValue("/Pattern", PatternBox::patternIndex(d_rect_default_brush.style()));
+	settings.endGroup(); // Rectangle
 	settings.endGroup();
 	/* ----------------- end group 2D Plots -------- */
 

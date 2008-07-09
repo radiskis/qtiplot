@@ -1102,6 +1102,8 @@ public:
 	//! File version code used when opening project files (= maj * 100 + min * 10 + patch)
 	int d_file_version;
 
+	QColor d_rect_default_background;
+	QBrush d_rect_default_brush;
 	QColor workspaceColor, panelsColor, panelsTextColor;
 	QColor d_graph_background_color, d_graph_canvas_color, d_graph_border_color;
 	int d_graph_background_opacity, d_graph_canvas_opacity, d_graph_border_width;

@@ -319,6 +319,10 @@ void EnrichmentDialog::initPatternPage()
 	gl->setRowStretch(4, 1);
 
 	QVBoxLayout *vl = new QVBoxLayout();
+	rectangleDefaultBtn = new QPushButton(tr("Set As &Default"));
+	connect(rectangleDefaultBtn, SIGNAL(clicked()), this, SLOT(setRectangleDefaultValues()));
+	vl->addWidget(rectangleDefaultBtn);
+	
 	patternApplyToBtn = new QPushButton(tr("Apply &to..."));
 	connect(patternApplyToBtn, SIGNAL(clicked()), this, SLOT(patternApplyTo()));
 	vl->addWidget(patternApplyToBtn);
@@ -889,6 +893,24 @@ void EnrichmentDialog::setFrameDefaultValues()
 	
 	app->legendFrameStyle = frameBox->currentIndex();
 	app->d_frame_widget_pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), boxFrameLineStyle->style());	
+	app->saveSettings();
+}
+
+void EnrichmentDialog::setRectangleDefaultValues()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+	
+	QColor c = backgroundColorBtn->color();
+	c.setAlpha(boxTransparency->value());
+	app->d_rect_default_background = c;
+			
+	QColor patternColor = patternColorBtn->color();
+	if (useFrameColorBox->isChecked())
+		patternColor = frameColorBtn->color();
+	
+	app->d_rect_default_brush = QBrush(patternColor, patternBox->getSelectedPattern());
 	app->saveSettings();
 }
 
