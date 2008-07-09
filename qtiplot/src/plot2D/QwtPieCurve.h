@@ -128,6 +128,7 @@ public:
 	void setPieCurve(QwtPieCurve *pie){d_pie_curve = pie;};
 
 	QString saveToString();
+	static void restore(Graph *g, const QStringList& lst);
 
 private:
 	void closeEvent(QCloseEvent* e);

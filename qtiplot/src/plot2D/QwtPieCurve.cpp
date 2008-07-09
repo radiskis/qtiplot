@@ -29,6 +29,7 @@
 #include "QwtPieCurve.h"
 #include "../ColorBox.h"
 #include "../Table.h"
+#include "../PenStyleBox.h"
 
 #include <QPaintDevice>
 #include <QPainter>
@@ -473,24 +474,92 @@ void PieLabel::closeEvent(QCloseEvent* e)
 
 QString PieLabel::saveToString()
 {
-	QString s = "<PieLabel>\t";
-	s += QString::number(xValue(), 'g', 15) + "\t";
-	s += QString::number(yValue(), 'g', 15) + "\t";
-
+	if (!d_pie_curve)
+		return LegendWidget::saveToString();
+	
+	if (text().isEmpty())
+		return QString::null;
+	
+	QString s = "<PieText>\n";
+	s += "<index>" + QString::number(d_pie_curve->labelsList().indexOf(this)) + "</index>\n";
+	s += FrameWidget::saveToString();
+	s += "<Text>\n" + text() + "\n</Text>\n";
+	
 	QFont f = font();
-	s += f.family() + "\t";
+	s += "<Font>" + f.family() + "\t";
 	s += QString::number(f.pointSize())+"\t";
 	s += QString::number(f.weight())+"\t";
 	s += QString::number(f.italic())+"\t";
 	s += QString::number(f.underline())+"\t";
-	s += QString::number(f.strikeOut())+"\t";
-	s += textColor().name()+"\t";
-	s += QString::number(frameStyle())+"\t";
-	s += QString::number(angle())+"\t";
-	s += backgroundColor().name()+"\t";
-	s += QString::number(backgroundColor().alpha())+"\t";
+	s += QString::number(f.strikeOut())+"</Font>\n";
+	
+	s += "<TextColor>" + textColor().name()+"</TextColor>\n";	
+	QColor bc = backgroundColor();
+	s += "<Background>" + bc.name() + "</Background>\n";
+	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
+	return s + "</PieText>\n";
+}
 
-	QStringList textList = text().split("\n", QString::KeepEmptyParts);
-	s += textList.join ("\t");
-	return s + "</PieLabel>\n";
+void PieLabel::restore(Graph *g, const QStringList& lst)
+{
+	PieLabel *l = NULL;
+	QStringList::const_iterator line;
+	QColor backgroundColor = Qt::white, textColor = Qt::black;
+	QFont f = QFont();
+	double x = 0.0, y = 0.0;	
+	QString text;	
+	int frameStyle;
+	QPen framePen = QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
+	for (line = lst.begin(); line != lst.end(); line++){
+        QString s = *line;	
+		if (s.contains("<index>")){
+			int index = s.remove("<index>").remove("</index>").toInt();
+			QwtPieCurve *pie = (QwtPieCurve *)g->curve(0);
+			if(pie){
+				QList<PieLabel *> labels = pie->labelsList();
+				if (index >= 0 && index < labels.size())
+					l = labels.at(index);
+			}
+		} else if (s.contains("<Frame>"))
+			frameStyle = s.remove("<Frame>").remove("</Frame>").toInt();
+		else if (s.contains("<Color>"))
+			framePen.setColor((QColor(s.remove("<Color>").remove("</Color>"))));
+		else if (s.contains("<FrameWidth>"))
+			framePen.setWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toInt());
+		else if (s.contains("<LineStyle>"))
+			framePen.setStyle(PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt()));
+		else if (s.contains("<x>"))
+			x = s.remove("<x>").remove("</x>").toDouble();
+		else if (s.contains("<y>"))
+			y = s.remove("<y>").remove("</y>").toDouble();
+		else if (s.contains("<Text>")){
+			QStringList txt;
+			while ( s != "</Text>" ){
+				s = *(++line);
+				txt << s;
+			}
+			txt.pop_back();
+			text = txt.join("\n");
+		} else if (s.contains("<Font>")){
+			QStringList lst = s.remove("<Font>").remove("</Font>").split("\t");
+			f = QFont(lst[0], lst[1].toInt(), lst[2].toInt(), lst[3].toInt());
+			f.setUnderline(lst[4].toInt());
+			f.setStrikeOut(lst[5].toInt());
+		} else if (s.contains("<TextColor>"))
+			textColor = QColor(s.remove("<TextColor>").remove("</TextColor>"));
+		else if (s.contains("<Background>"))
+			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
+		else if (s.contains("<Alpha>"))
+			backgroundColor.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+	}
+	
+	if (l){
+		l->setFrameStyle(frameStyle);
+		l->setFramePen(framePen);
+		l->setText(text);
+		l->setFont(f);
+		l->setTextColor(textColor);
+		l->setBackgroundColor(backgroundColor);
+		l->setOriginCoord(x, y);
+	}
 }

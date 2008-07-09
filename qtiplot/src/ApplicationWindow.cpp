@@ -3742,6 +3742,11 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return loadScript(fn);
 
 	QString fname = fn;
+	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive)){//decompress using zlib
+		file_uncompress((char *)fname.ascii());
+		fname = fname.left(fname.size() - 3);
+	}
+	
 	QFile f(fname);
 	QTextStream t( &f );
 	f.open(QIODevice::ReadOnly);
@@ -3763,11 +3768,6 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		}
 
 		return plotFile(fn);
-	}
-
-	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive)){//decompress using zlib
-		file_uncompress((char *)fname.ascii());
-		fname = fname.left(fname.size() - 3);
 	}
 
     QStringList vl = lst[1].split(".", QString::SkipEmptyParts);
@@ -10604,6 +10604,14 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		{
 			QStringList fList = QStringList::split ("\t", s.remove("</PieLabel>"), true);
 			ag->insertText(fList, d_file_version);
+		} else if (s == "<PieText>"){//version 0.9.7
+			QStringList lst;
+			while ( s != "</PieText>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			PieLabel::restore(ag, lst);
 		}
 		else if (s.contains ("lineMarker"))
 		{// version <= 0.8.9
