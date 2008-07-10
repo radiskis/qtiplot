@@ -377,25 +377,28 @@ class Graph: public QwtPlot
 		QString saveAxesFormulas();
 		//@}
 
-		//! \name Text Markers
+		//! \name Texts
 		//@{
 		LegendWidget* addText(LegendWidget*);
-
 		//! Used when opening a project file
 		LegendWidget* insertText(const QStringList& list, int fileVersion);
 
 		LegendWidget* addTimeStamp();
 		void removeLegendItem(int index);
 		void insertLegend(const QStringList& lst, int fileVersion);
-
-		LegendWidget* legend();
-		void removeLegend();
+		
 		LegendWidget* newLegend(const QString& text = QString());
-
 		//! Creates a new legend text using the curves titles
 		QString legendText();
 		//@}
 
+		//! \name Obsolete functions provided to keep existing Python scripts working
+		//@{
+		LegendWidget* legend();
+		void setLegend(const QString&);
+		void removeLegend();
+		//@}
+		
 		//! \name Line Markers
 		//@{
 		ArrowMarker* addArrow(ArrowMarker* mrk);

@@ -30,6 +30,7 @@
 #define PLOT_TOOL_INTERFACE_H
 
 class Graph;
+#include <QObject>
 
 /*! Interface for tools operating on a Graph.
  *
@@ -74,7 +75,7 @@ class PlotToolInterface
         Rtti_PlotUserTool = 1000
     };
 
-		PlotToolInterface(Graph *graph) { d_graph = graph; }
+		PlotToolInterface(Graph *graph, const QObject *status_target = NULL, const char *status_slot = "") { d_graph = graph;};
 		virtual ~PlotToolInterface() {};
 
         virtual int rtti() const { return Rtti_PlotTool;};

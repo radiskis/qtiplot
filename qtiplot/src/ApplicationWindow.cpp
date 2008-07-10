@@ -111,7 +111,6 @@
 // TODO: move tool-specific code to an extension manager
 #include "plot2D/ScreenPickerTool.h"
 #include "plot2D/DataPickerTool.h"
-#include "plot2D/TranslateCurveTool.h"
 #include "plot2D/MultiPeakFitTool.h"
 #include "plot2D/LineProfileTool.h"
 #include "plot2D/RangeSelectorTool.h"
@@ -11806,7 +11805,7 @@ void ApplicationWindow::createActions()
 	connect(actionTranslateHor, SIGNAL(activated()), this, SLOT(translateCurveHor()));
 
 	actionTranslateVert = new QAction(tr("&Vertical"), this);
-	connect(actionTranslateVert, SIGNAL(activated()), this, SLOT(translateCurveVert()));
+	connect(actionTranslateVert, SIGNAL(activated()), this, SLOT(translateCurve()));
 
 	actionSetAscValues = new QAction(QIcon(QPixmap(rowNumbers_xpm)),tr("Ro&w Numbers"), this);
 	connect(actionSetAscValues, SIGNAL(activated()), this, SLOT(setAscValues()));
@@ -12805,39 +12804,10 @@ void ApplicationWindow::updateRecentProjectsList()
 
 void ApplicationWindow::translateCurveHor()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty())
-	{
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setChecked(true);
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
-	if (!g)
-		return;
-
-	if (g->isPiePlot())
-	{
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("This functionality is not available for pie plots!"));
-
-		btnPointer->setChecked(true);
-		return;
-	}
-	else if (g->validCurvesDataSize())
-	{
-		btnPointer->setChecked(true);
-		g->setActiveTool(new TranslateCurveTool(g, this, TranslateCurveTool::Horizontal, info, SLOT(setText(const QString&))));
-		displayBar->show();
-	}
+	translateCurve(TranslateCurveTool::Horizontal);
 }
 
-void ApplicationWindow::translateCurveVert()
+void ApplicationWindow::translateCurve(TranslateCurveTool::Direction direction)
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -12862,7 +12832,7 @@ void ApplicationWindow::translateCurveVert()
 		return;
 	} else if (g->validCurvesDataSize()) {
 		btnPointer->setChecked(true);
-		g->setActiveTool(new TranslateCurveTool(g, this, TranslateCurveTool::Vertical, info, SLOT(setText(const QString&))));
+		g->setActiveTool(new TranslateCurveTool(g, this, direction, info, SLOT(setText(const QString&))));
 		displayBar->show();
 	}
 }

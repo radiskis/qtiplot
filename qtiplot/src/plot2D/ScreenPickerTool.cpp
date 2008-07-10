@@ -37,7 +37,8 @@
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->canvas()),
-	PlotToolInterface(graph)
+	PlotToolInterface(graph),
+	d_move_restriction(NoRestriction)
 {
 	d_selection_marker.setLineStyle(QwtPlotMarker::Cross);
 	d_selection_marker.setLinePen(QPen(Qt::red,1));
@@ -59,12 +60,29 @@ ScreenPickerTool::~ScreenPickerTool()
 
 void ScreenPickerTool::append(const QPoint &point)
 {
-	QwtDoublePoint pos = invTransform(point);
+	append(invTransform(point));
+}
+
+void ScreenPickerTool::append(const QwtDoublePoint &pos)
+{
+	switch(d_move_restriction){
+		case NoRestriction:
+			d_selection_marker.setValue(pos);
+		break;
+		
+		case Vertical:
+			d_selection_marker.setYValue(pos.y());
+		break;
+		
+		case Horizontal:
+			d_selection_marker.setXValue(pos.x());
+		break;
+	}
+	
 	QString info;
-	info.sprintf("x=%g; y=%g", pos.x(), pos.y());
+	info.sprintf("x=%g; y=%g", d_selection_marker.xValue(), d_selection_marker.yValue());
 	emit statusText(info);
 
-	d_selection_marker.setValue(pos);
 	if (d_selection_marker.plot() == NULL)
 		d_selection_marker.attach(d_graph);
 	d_graph->replot();
@@ -84,13 +102,15 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
 					case Qt::Key_Return:
 					{
                         QwtDoublePoint pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
-                        d_selection_marker.setValue(pos);
+                        /*d_selection_marker.setValue(pos);
                         if (d_selection_marker.plot() == NULL)
                             d_selection_marker.attach(d_graph);
                         d_graph->replot();
-						emit selected(d_selection_marker.value());
 						QString info;
-                        emit statusText(info.sprintf("x=%g; y=%g", pos.x(), pos.y()));
+                        emit statusText(info.sprintf("x=%g; y=%g", pos.x(), pos.y()));*/
+						
+						append(pos);
+						emit selected(pos);
 						return true;
 					}
 					default:

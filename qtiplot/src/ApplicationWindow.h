@@ -43,6 +43,7 @@
 #include "Table.h"
 #include "ScriptingEnv.h"
 #include "Script.h"
+#include "plot2D/TranslateCurveTool.h"
 
 class QPixmap;
 class QCloseEvent;
@@ -84,7 +85,7 @@ class LegendWidget;
 class ArrowMarker;
 class TextEditor;
 class AssociationsDialog;
-
+	
 /**
  * \brief QtiPlot's main window.
  *
@@ -708,7 +709,7 @@ public slots:
 	//@}
 
 	void translateCurveHor();
-	void translateCurveVert();
+	void translateCurve(TranslateCurveTool::Direction direction = TranslateCurveTool::Vertical);
 
 	//! Removes the curve identified by a key stored in the data() of actionRemoveCurve.
 	void removeCurve();
