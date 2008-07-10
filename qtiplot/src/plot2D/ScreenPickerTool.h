@@ -48,8 +48,11 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 {
 	Q_OBJECT
 	public:
+		enum MoveRestriction { NoRestriction, Vertical, Horizontal };
 		ScreenPickerTool(Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
 		virtual ~ScreenPickerTool();
+		void append(const QwtDoublePoint &pos);
+		void setMoveRestriction(ScreenPickerTool::MoveRestriction r){d_move_restriction = r;};
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
@@ -61,6 +64,7 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
         virtual bool eventFilter(QObject *obj, QEvent *event);
 		virtual void append(const QPoint &point);
 		QwtPlotMarker d_selection_marker;
+		MoveRestriction d_move_restriction;
 };
 
 /*!Plot tool for drawing arbitrary points.

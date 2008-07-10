@@ -2,10 +2,8 @@
     File                 : TranslateCurveTool.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Plot tool for translating curves.
 
  ***************************************************************************/
@@ -38,21 +36,23 @@
 #include "ScreenPickerTool.h"
 #include <QMessageBox>
 #include <QLocale>
+#include <QLineEdit>
 #include <qwt_plot_curve.h>
 
 TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Direction dir, const QObject *status_target, const char *status_slot)
-	: PlotToolInterface(graph),
+	: PlotToolInterface(graph, status_target, status_slot),
 	d_dir(dir),
 	d_app(app)
 {
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
-	//emit statusText(tr("Double-click on plot to select a data point!"));
 
 	// Phase 1: select curve point
 	d_sub_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
 	connect((DataPickerTool*)d_sub_tool, SIGNAL(selected(QwtPlotCurve*,int)),
 			this, SLOT(selectCurvePoint(QwtPlotCurve*,int)));
+	
+	emit statusText(tr("Double-click on plot to select a data point!"));
 }
 
 void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
@@ -84,6 +84,11 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 
 	// Phase 2: select destination
 	d_sub_tool = new ScreenPickerTool(d_graph, this, SIGNAL(statusText(const QString&)));
+	((ScreenPickerTool*)d_sub_tool)->append(d_curve_point);
+	ScreenPickerTool::MoveRestriction moveRestriction = ScreenPickerTool::Vertical;
+	if (d_dir == Horizontal)
+		moveRestriction = ScreenPickerTool::Horizontal;	
+	((ScreenPickerTool*)d_sub_tool)->setMoveRestriction(moveRestriction);
 	connect((ScreenPickerTool*)d_sub_tool, SIGNAL(selected(const QwtDoublePoint&)), this, SLOT(selectDestination(const QwtDoublePoint&)));
 	emit statusText(tr("Curve selected! Move cursor and click to choose a point and double-click/press 'Enter' to finish!"));
 }
@@ -131,30 +136,32 @@ void TranslateCurveTool::selectDestination(const QwtDoublePoint &point)
 				d = point.x() - d_curve_point.x();
 				break;
 			}
-	}
-	Table *tab = d_app->table(col_name);
-	if (!tab) return;
-	int col = tab->colIndex(col_name);
-	if (tab->columnType(col) != Table::Numeric) {
-		QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
+		}
+		Table *tab = d_app->table(col_name);
+		if (!tab) return;
+		int col = tab->colIndex(col_name);
+		if (tab->columnType(col) != Table::Numeric) {
+			QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
 				tr("This operation cannot be performed on curves plotted from columns having a non-numerical format."));
-		return;
-	}
+			return;
+		}
 
-	int prec; char f;
-	tab->columnNumericFormat(col, &f, &prec);
-	int row_start = c->tableRow(0);
-    int row_end = row_start + c->dataSize();
+		int prec; char f;
+		tab->columnNumericFormat(col, &f, &prec);
+		int row_start = c->tableRow(0);
+    	int row_end = row_start + c->dataSize();
 
-    QLocale locale = d_app->locale();
-	for (int i=row_start; i<row_end; i++){
-		if (!tab->text(i, col).isEmpty())
-			tab->setText(i, col, locale.toString(
-					(d_dir==Horizontal ? d_selected_curve->x(i) : d_selected_curve->y(i)) + d, f, prec));
-	}
-	d_app->updateCurves(tab, col_name);
-	d_app->modifiedProject();
-	d_graph->setActiveTool(NULL);
-	// attention: I'm now deleted. Maybe there is a cleaner solution...*/
+    	QLocale locale = d_app->locale();
+		int j = 0;//point index
+		for (int i = row_start; i<row_end; i++){
+			if (!tab->text(i, col).isEmpty()){
+				tab->setText(i, col, locale.toString(
+					(d_dir == Horizontal ? d_selected_curve->x(j) : d_selected_curve->y(j)) + d, f, prec));
+			j++;
+			}
+		}
+		d_app->updateCurves(tab, col_name);
+		d_app->modifiedProject();
+		d_graph->setActiveTool(NULL);// attention: I'm now deleted. Maybe there is a cleaner solution...*/
     }
 }

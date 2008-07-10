@@ -630,6 +630,7 @@ public:
   void removeTitle();
 
   LegendWidget* newLegend(const QString& = QString());
+  void setLegend(const QString&); 		 
 
   LegendWidget* legend();
   void removeLegend();

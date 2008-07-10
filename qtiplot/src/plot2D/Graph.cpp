@@ -2199,6 +2199,15 @@ LegendWidget* Graph::legend()
 	return NULL;
 }
 
+void Graph::setLegend(const QString& s)
+{
+	LegendWidget *l = legend();
+	if (l){
+		l->setText(s);
+		l->repaint();
+	}
+}
+
 void Graph::removeLegend()
 {
 	LegendWidget *l = legend();
