@@ -52,7 +52,9 @@ sortColumn
 sort
 sortColumns
 setCommand
+comment
 setComment
+showComments
 setReadOnlyColumn
 setColumnRole
 setColumnWidth

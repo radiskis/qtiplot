@@ -333,7 +333,7 @@
 <section ref="x4977.html#Python-MultiLayer" title="Arranging Layers">
 </section>
 <section ref="x4977.html#Python-Plots3D" title="3D Plots">
-<section ref="x4977.html#AEN5539" title="Creating a 3D plot">
+<section ref="x4977.html#AEN5540" title="Creating a 3D plot">
 </section>
 <section ref="x4977.html#Python-3D-View" title="Customizing the view">
 </section>
@@ -374,7 +374,7 @@
 </section>
 </section>
 </section>
-<section ref="c5734.html" title="Credits and License">
+<section ref="c5735.html" title="Credits and License">
 <keyword ref="x82.html#AEN86">Command line parameters</keyword>
 <keyword ref="x82.html#AEN115">Command line options</keyword>
 <keyword ref="x135.html#AEN155">table</keyword>
@@ -387,32 +387,32 @@
 <keyword ref="x4283.html#AEN4285">matrix</keyword>
 <keyword ref="x4298.html#AEN4300">table</keyword>
 <keyword ref="x4336.html#AEN4338">matrix</keyword>
-<section ref="c5734.html#fdl" title="GNU Free Documentation License">
-<section ref="c5734.html#AEN5755" title="Preamble">
+<section ref="c5735.html#fdl" title="GNU Free Documentation License">
+<section ref="c5735.html#AEN5756" title="Preamble">
 </section>
-<section ref="c5734.html#AEN5760" title="Applicability And Definitions">
+<section ref="c5735.html#AEN5761" title="Applicability And Definitions">
 </section>
-<section ref="c5734.html#AEN5769" title="Verbatim Copying">
+<section ref="c5735.html#AEN5770" title="Verbatim Copying">
 </section>
-<section ref="c5734.html#AEN5773" title="Copying In Quantity">
+<section ref="c5735.html#AEN5774" title="Copying In Quantity">
 </section>
-<section ref="c5734.html#AEN5779" title="Modifications">
+<section ref="c5735.html#AEN5780" title="Modifications">
 </section>
-<section ref="c5734.html#AEN5797" title="Combining Documents">
+<section ref="c5735.html#AEN5798" title="Combining Documents">
 </section>
-<section ref="c5734.html#AEN5802" title="Collections Of Documents">
+<section ref="c5735.html#AEN5803" title="Collections Of Documents">
 </section>
-<section ref="c5734.html#AEN5806" title="Aggregation With Independent Works">
+<section ref="c5735.html#AEN5807" title="Aggregation With Independent Works">
 </section>
-<section ref="c5734.html#AEN5810" title="Translation">
+<section ref="c5735.html#AEN5811" title="Translation">
 </section>
-<section ref="c5734.html#AEN5813" title="Termination">
+<section ref="c5735.html#AEN5814" title="Termination">
 </section>
-<section ref="c5734.html#AEN5816" title="Future Revisions Of This License">
+<section ref="c5735.html#AEN5817" title="Future Revisions Of This License">
 </section>
 </section>
 </section>
-<section ref="a5819.html" title="Installation">
+<section ref="a5820.html" title="Installation">
 <keyword ref="x82.html#AEN86">Command line parameters</keyword>
 <keyword ref="x82.html#AEN115">Command line options</keyword>
 <keyword ref="x135.html#AEN155">table</keyword>
@@ -425,20 +425,20 @@
 <keyword ref="x4283.html#AEN4285">matrix</keyword>
 <keyword ref="x4298.html#AEN4300">table</keyword>
 <keyword ref="x4336.html#AEN4338">matrix</keyword>
-<section ref="a5819.html#getting-qtiplot" title="How to obtain QtiPlot">
+<section ref="a5820.html#getting-qtiplot" title="How to obtain QtiPlot">
 </section>
-<section ref="x5825.html" title="Installation from binary packages">
+<section ref="x5826.html" title="Installation from binary packages">
 </section>
-<section ref="x5842.html" title="Compilation and Installation from sources">
-<section ref="x5842.html#requirements" title="Requirements">
+<section ref="x5843.html" title="Compilation and Installation from sources">
+<section ref="x5843.html#requirements" title="Requirements">
 </section>
-<section ref="x5842.html#compilation-linux" title="Linux and Mac OS X">
+<section ref="x5843.html#compilation-linux" title="Linux and Mac OS X">
 </section>
-<section ref="x5842.html#compilation-windows" title="Windows">
+<section ref="x5843.html#compilation-windows" title="Windows">
 </section>
 </section>
 </section>
-<section ref="c5900.html" title="Frequently asked questions">
+<section ref="c5901.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>

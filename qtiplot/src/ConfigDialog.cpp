@@ -640,9 +640,11 @@ void ConfigDialog::initAppPage()
 	boxSearchUpdates->setChecked(app->autoSearchUpdates);
 	topBoxLayout->addWidget( boxSearchUpdates, 9, 0, 1, 2 );
 
+#ifdef SCRIPTING_PYTHON
     completionBox = new QCheckBox();
 	completionBox->setChecked(app->d_completion);
 	topBoxLayout->addWidget(completionBox, 10, 0);
+#endif
 
 	lineNumbersBox = new QCheckBox();
 	lineNumbersBox->setChecked(app->d_note_line_numbers);
@@ -1070,7 +1072,9 @@ void ConfigDialog::languageChange()
 	boxInitWindow->addItem(tr("Empty Graph"));
 	boxInitWindow->addItem(tr("Note"));
 	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
+#ifdef SCRIPTING_PYTHON
     completionBox->setText(tr("&Enable autocompletion (Ctrl+U)"));
+#endif
     lineNumbersBox->setText(tr("&Display line numbers in Notes"));
 
 	lblAppPrecision->setText(tr("Number of Decimal Digits"));
@@ -1318,7 +1322,9 @@ void ConfigDialog::apply()
 	app->d_init_window_type = (ApplicationWindow::WindowType)boxInitWindow->currentIndex();
 	app->setMatrixUndoStackSize(undoStackSizeBox->value());
 	app->d_eol = (ApplicationWindow::EndLineChar)boxEndLine->currentIndex();
+#ifdef SCRIPTING_PYTHON
     app->enableCompletion(completionBox->isChecked());
+#endif
 
     app->d_note_line_numbers = lineNumbersBox->isChecked();
     foreach(MdiSubWindow *w, windows){

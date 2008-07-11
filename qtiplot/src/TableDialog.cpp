@@ -245,7 +245,7 @@ void TableDialog::updateColumn(int sc)
     colName->setFocus();
     colName->selectAll();
 
-    comments->setText(d_table->colComment(sc));
+    comments->setText(d_table->comment(sc));
     displayBox->setCurrentIndex(colType);
     updateDisplay(colType);
 

@@ -801,6 +801,14 @@ int Table::firstXCol()
 	return xcol;
 }
 
+QString Table::comment(int col)
+{
+	if (col < 0 || col >= d_table->numCols())
+		return QString::null;
+	
+	return comments[col];
+}
+
 void Table::setColComment(int col, const QString& s)
 {
 	if (col < 0 || col >= d_table->numCols())
