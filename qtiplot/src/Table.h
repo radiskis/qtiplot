@@ -316,7 +316,7 @@ public slots:
 
 	int verticalHeaderWidth(){return d_table->verticalHeader()->width();};
 
-	QString colComment(int col){return comments[col];};
+	QString comment(int col);
 	void setColComment(int col, const QString& s);
 	QStringList colComments(){return comments;};
 	void setColComments(const QStringList& lst){comments = lst;};

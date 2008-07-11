@@ -1035,7 +1035,7 @@ possible to export only the selected cells of the table.</para>
 <programlisting>
 t.exportASCII(file,sep="\t",ignore=0,ColumnLabels=False,ColumnComments=False,SelectionOnly=False)
 </programlisting>
- Other settings that you can modify are the text displayed as a comment in the header of a column
+Other settings that you can modify are the text displayed as a comment in the header of a column
 or the expression used to calculate the column values. Please beware that changing the command doesn't automatically
 update the values of the column!
 <programlisting>
@@ -1043,9 +1043,10 @@ t.setComment(col, newComment)
 t.setCommand(col, newExpression)
 </programlisting>
 
-After having changed some table values from a script, you will likely want to update dependent Graphs:
+You can access the column comments and enable/disable their display via the following functions:
 <programlisting>
-t.notifyChanges()
+t.comment(col)
+t.showComments(on = True)
 </programlisting>
 
 You can also modify the width of a column (in pixels) or hide/show table columns:
@@ -1054,6 +1055,10 @@ t.setColumnWidth(col, width)
 t.hideColumn(col, True)
 </programlisting>
 
+After having changed some table values from a script, you will likely want to update dependent Graphs:
+<programlisting>
+t.notifyChanges()
+</programlisting>
 
 As a simple example, let's set some column values without using the dialog.
 <programlisting>

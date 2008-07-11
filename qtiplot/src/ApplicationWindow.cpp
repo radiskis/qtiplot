@@ -421,7 +421,7 @@ void ApplicationWindow::initGlobalConstants()
 	autoSearchUpdatesRequest = false;
 
 	show_windows_policy = ActiveFolder;
-	d_script_win_on_top = true;
+	d_script_win_on_top = false;
 	d_script_win_rect = QRect(0, 0, 500, 300);
 	d_init_window_type = TableWindow;
 
@@ -4593,7 +4593,7 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
-	d_script_win_on_top = settings.value("/AlwaysOnTop", true).toBool();
+	d_script_win_on_top = settings.value("/AlwaysOnTop", false).toBool();
 	d_script_win_rect = QRect(settings.value("/x", 0).toInt(), settings.value("/y", 0).toInt(),
 							settings.value("/width", 500).toInt(), settings.value("/height", 300).toInt());
 	settings.endGroup();
@@ -14730,15 +14730,17 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	setScriptingLanguage("Python");
 	restoreApplicationGeometry();
+	
 	showScriptWindow();
 	scriptWindow->open(fn);
+
 	QApplication::restoreOverrideCursor();
+	
 	if (execute){
-		scriptWindow->executeAll();
-		if (!scriptWindow->editor()->error())
-			scriptWindow->hide();
-		else
-			scriptWindow->raise();
+		scriptWindow->hide();
+    	scriptWindow->executeAll();
+		if (scriptWindow->editor()->error())
+			showScriptWindow();
 	}
 	return this;
 #else
@@ -15460,11 +15462,12 @@ void ApplicationWindow::initCompleter()
     d_completer->setModel(new QStringListModel(words, d_completer));
     d_completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
     d_completer->setCompletionMode(QCompleter::PopupCompletion);
- #endif
+#endif
 }
 
 void ApplicationWindow::enableCompletion(bool on)
 {
+#ifdef SCRIPTING_PYTHON
     if (!d_completer || d_completion == on)
         return;
 
@@ -15490,6 +15493,7 @@ void ApplicationWindow::enableCompletion(bool on)
         }
 		f = f->folderBelow();
 	}
+#endif
 }
 
 void ApplicationWindow::showFrequencyCountDialog()

@@ -233,6 +233,14 @@ public:
 	if (sipIsErr == 0)
 		sipCpp->setCommand(col, *a1);
 %End
+	
+	QString comment(SIP_PYOBJECT);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		return Py_BuildValue("s", sipCpp->comment(col).toAscii().constData());
+%End
 
 	void setComment(SIP_PYOBJECT, const QString&);
 %MethodCode
@@ -241,6 +249,8 @@ public:
 	if (sipIsErr == 0)
 		sipCpp->setColComment(col, *a1);
 %End
+
+	void showComments(bool on = true);
 
     void setReadOnlyColumn(SIP_PYOBJECT, bool = true);
 %MethodCode
