@@ -217,6 +217,8 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	if (d_plot->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
 
+	p->setRenderHint(QPainter::TextAntialiasing);
+
 	int l = symbolLineLength;
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
