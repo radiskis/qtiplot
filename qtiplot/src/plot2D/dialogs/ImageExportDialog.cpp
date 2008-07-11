@@ -144,7 +144,10 @@ void ImageExportDialog::initAdvancedOptions()
 	d_keep_aspect = new QCheckBox();
 	d_keep_aspect->setText(tr("&Keep aspect ratio"));
 	d_keep_aspect->setChecked(app->d_keep_plot_aspect);
+	d_keep_aspect->setEnabled(app->d_export_vector_size != QPrinter::Custom);
 	vector_layout->addWidget(d_keep_aspect, 4, 0, 1, 2);
+	
+	connect(d_standard_page, SIGNAL(toggled(bool)), d_keep_aspect, SLOT(setEnabled(bool)));
 
 	d_raster_options = new QGroupBox();
 	QGridLayout *raster_layout = new QGridLayout(d_raster_options);
