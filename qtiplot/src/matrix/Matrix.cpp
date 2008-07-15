@@ -175,9 +175,9 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
 			return;
-	}	
+	}
 	bool notTemplate = !saveAsTemplate;
-	
+
 	QTextStream t( &f );
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	t << "<matrix>\n";
@@ -975,8 +975,7 @@ void Matrix::print(const QString& fileName)
 		}
 }
 
-void Matrix::exportVector(const QString& fileName, int res, bool color, bool keepAspect, 
-			QPrinter::PageSize pageSize)
+void Matrix::exportVector(const QString& fileName, int res, bool color)
 {
     if (d_view_type != ImageView)
         return;
@@ -1006,35 +1005,7 @@ void Matrix::exportVector(const QString& fileName, int res, bool color, bool kee
     int cols = numCols();
     int rows = numRows();
     QRect rect = QRect(0, 0, cols, rows);
-    if (pageSize == QPrinter::Custom)
-        printer.setPaperSize(QSizeF(cols, rows), QPrinter::DevicePixel);
-    else {
-        printer.setPageSize(pageSize);
-
-    	double aspect = (double)cols/(double)rows;
-    	if (keepAspect){// export should preserve aspect ratio
-        	double page_aspect = double(printer.width())/double(printer.height());
-        	if (page_aspect > aspect){
-            	int margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
-            	int height = printer.height() - 2*margin;
-            	int width = int(height*aspect);
-            	int x = (printer.width()- width)/2;
-            	rect = QRect(x, margin, width, height);
-        	} else if (aspect >= page_aspect){
-            	int margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
-            	int width = printer.width() - 2*margin;
-            	int height = int(width/aspect);
-            	int y = (printer.height()- height)/2;
-            	rect = QRect(margin, y, width, height);
-        	}
-		} else {
-	    	int x_margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
-        	int y_margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
-        	int width = printer.width() - 2*x_margin;
-        	int height = printer.height() - 2*y_margin;
-        	rect = QRect(x_margin, y_margin, width, height);
-		}
-	}
+    printer.setPaperSize(QSizeF(cols, rows), QPrinter::DevicePixel);
 
     QPainter paint(&printer);
     paint.drawImage(rect, d_matrix_model->renderImage());
@@ -1277,7 +1248,7 @@ void Matrix::importImage(const QImage& image)
 {
 	if (image.isNull())
         return;
-	
+
 	double *buffer = d_matrix_model->dataCopy();
 	if (buffer){
     	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,

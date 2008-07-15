@@ -316,16 +316,15 @@ void Graph::deselectMarker()
 		a->setEditable(false);
 	}
 
+    deselect(d_active_enrichment);
+	d_active_enrichment = NULL;
 	d_selected_marker = NULL;
 	if (d_markers_selector)
-		delete d_markers_selector;
+        delete d_markers_selector;
 
     emit enableTextEditor(NULL);
 
 	cp->disableEditing();
-
-	deselect(d_active_enrichment);
-	d_active_enrichment = NULL;
 	setFocus();
 }
 
@@ -431,9 +430,8 @@ void Graph::setSelectedMarker(QwtPlotMarker *mrk, bool add)
 	} else {
 	    if (d_lines.contains(mrk)){
 	        if (((ArrowMarker*)mrk)->editable()){
-	            if (d_markers_selector){
+	            if (d_markers_selector)
 	                delete d_markers_selector;
-	            }
                 return;
 	        }
 
@@ -1273,6 +1271,12 @@ void Graph::setScale(int axis, double start, double end, double step,
 	axisWidget(axis)->repaint();
 }
 
+void Graph::setCanvasCoordinates(const QRectF& r)
+{
+    setScale(QwtPlot::xBottom, r.left(), r.right());
+    setScale(QwtPlot::yLeft, r.top(), r.top() - r.height());
+}
+
 QStringList Graph::analysableCurvesList()
 {
 	QStringList cList;
@@ -1374,8 +1378,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 	pic.save(fileName, 0, quality);
 }
 
-void Graph::exportVector(const QString& fileName, int res, bool color, bool keepAspect,
-					QPrinter::PageSize pageSize)
+void Graph::exportVector(const QString& fileName, int res, bool color)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
@@ -1405,35 +1408,8 @@ void Graph::exportVector(const QString& fileName, int res, bool color, bool keep
 	printer.setOrientation(QPrinter::Portrait);
 
 	QRect plotRect = rect();
-	if (pageSize == QPrinter::Custom){
-		QSize size = boundingRect().size();
-        printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
-    } else {
-        printer.setPageSize(pageSize);
-		double plot_aspect = double(frameGeometry().width())/double(frameGeometry().height());
-		if (keepAspect){// export should preserve plot aspect ratio
-        double page_aspect = double(printer.width())/double(printer.height());
-        	if (page_aspect > plot_aspect){
-            	int margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
-            	int height = printer.height() - 2*margin;
-            	int width = int(height*plot_aspect);
-            	int x = (printer.width()- width)/2;
-            	plotRect = QRect(x, margin, width, height);
-        	} else if (plot_aspect >= page_aspect){
-           		int margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
-            	int width = printer.width() - 2*margin;
-            	int height = int(width/plot_aspect);
-            	int y = (printer.height()- height)/2;
-            	plotRect = QRect(margin, y, width, height);
-        	}
-		} else {
-	    	int x_margin = (int) ((0.1/2.54)*printer.logicalDpiX()); // 1 mm margins
-        	int y_margin = (int) ((0.1/2.54)*printer.logicalDpiY()); // 1 mm margins
-        	int width = printer.width() - 2*x_margin;
-        	int height = printer.height() - 2*y_margin;
-        	plotRect = QRect(x_margin, y_margin, width, height);
-		}
-	}
+    QSize size = boundingRect().size();
+    printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
 
     QPainter paint(&printer);
 	print(&paint, plotRect);
@@ -2210,9 +2186,7 @@ void Graph::setLegend(const QString& s)
 
 void Graph::removeLegend()
 {
-	LegendWidget *l = legend();
-	if (l)
-		l->close();
+	remove(legend());
 }
 
 LegendWidget* Graph::newLegend(const QString& text)
@@ -2690,7 +2664,7 @@ QwtPieCurve* Graph::plotPie(Table* w, const QString& name, const QPen& pen, int 
 
 	pie->loadData();
 	pie->initLabels();
-	
+
 	pie->setPen(pen);
 	pie->setRadius(size);
 	pie->setFirstColor(firstColor);
@@ -3944,7 +3918,93 @@ void Graph::copy(Graph* g)
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
 
-	QList<QwtPlotItem *> curvesList = g->curvesList();
+    copyCurves(g);
+
+	for (int i=0; i<QwtPlot::axisCnt; i++){
+		QwtScaleWidget *sc = g->axisWidget(i);
+		if (!sc)
+			continue;
+
+		ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
+		if (sdg->hasComponent(QwtAbstractScaleDraw::Labels))
+		{
+			ScaleDraw::ScaleType type = sdg->scaleType();
+			if (type == ScaleDraw::Numeric)
+				setLabelsNumericFormat(i, g->axisLabelFormat(i), g->axisLabelPrecision(i), sdg->formula());
+			else if (type == ScaleDraw::Day)
+				setLabelsDayFormat(i, sdg->nameFormat());
+			else if (type == ScaleDraw::Month)
+				setLabelsMonthFormat(i, sdg->nameFormat());
+			else if (type == ScaleDraw::Time || type == ScaleDraw::Date)
+				setLabelsDateTimeFormat(i, type, sdg->formatString());
+			else{
+				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(i);
+				setAxisScaleDraw(i, new ScaleDraw(this, sd->labelsList(), sd->formatString(), sd->scaleType()));
+			}
+		} else {
+			ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (i);
+			sd->enableComponent (QwtAbstractScaleDraw::Labels, false);
+		}
+	}
+	for (int i=0; i<QwtPlot::axisCnt; i++){//set same scales
+		const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(i);
+		if (!se)
+			continue;
+
+        ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
+        sc_engine->clone(se);
+
+		int majorTicks = g->axisMaxMajor(i);
+  	    int minorTicks = g->axisMaxMinor(i);
+  	    setAxisMaxMajor (i, majorTicks);
+  	    setAxisMaxMinor (i, minorTicks);
+
+        double step = g->axisStep(i);
+		d_user_step[i] = step;
+		const QwtScaleDiv *sd = g->axisScaleDiv(i);
+		QwtScaleDiv div = sc_engine->divideScale (QMIN(sd->lBound(), sd->hBound()),
+				QMAX(sd->lBound(), sd->hBound()), majorTicks, minorTicks, step);
+
+		if (se->testAttribute(QwtScaleEngine::Inverted))
+			div.invert();
+		setAxisScaleDiv (i, div);
+	}
+
+	drawAxesBackbones(g->drawAxesBackbone);
+	setMajorTicksType(g->getMajorTicksType());
+	setMinorTicksType(g->getMinorTicksType());
+	setTicksLength(g->minorTickLength(), g->majorTickLength());
+
+	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
+  	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
+
+    updateLayout();
+	d_auto_scale = g->isAutoscalingEnabled();
+
+	d_zoomer[0]->setZoomBase();
+	d_zoomer[1]->setZoomBase();
+
+	QList<FrameWidget *> enrichements = g->enrichmentsList();
+	foreach (FrameWidget *e, enrichements){
+		PieLabel *l = qobject_cast<PieLabel *>(e);
+		if (l)
+			continue;
+		add(e);
+	}
+
+	QList<QwtPlotMarker *> lines = g->linesList();
+	foreach (QwtPlotMarker *i, lines)
+		addArrow((ArrowMarker*)i);
+
+	setAntialiasing(g->antialiasing(), true);
+}
+
+void Graph::copyCurves(Graph* g)
+{
+    if (!g)
+        return;
+
+    QList<QwtPlotItem *> curvesList = g->curvesList();
     foreach (QwtPlotItem *it, curvesList){
         if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
   	        DataCurve *cv = (DataCurve *)it;
@@ -4039,87 +4099,10 @@ void Graph::copy(Graph* g)
   	        sp->showColorScale(((Spectrogram *)it)->colorScaleAxis(), ((Spectrogram *)it)->hasColorScale());
   	        sp->setColorBarWidth(((Spectrogram *)it)->colorBarWidth());
 			sp->setVisible(it->isVisible());
-  	        }
-  	    }
-
-	for (int i=0; i<QwtPlot::axisCnt; i++){
-		QwtScaleWidget *sc = g->axisWidget(i);
-		if (!sc)
-			continue;
-
-		ScaleDraw *sdg = (ScaleDraw *)g->axisScaleDraw (i);
-		if (sdg->hasComponent(QwtAbstractScaleDraw::Labels))
-		{
-			ScaleDraw::ScaleType type = sdg->scaleType();
-			if (type == ScaleDraw::Numeric)
-				setLabelsNumericFormat(i, g->axisLabelFormat(i), g->axisLabelPrecision(i), sdg->formula());
-			else if (type == ScaleDraw::Day)
-				setLabelsDayFormat(i, sdg->nameFormat());
-			else if (type == ScaleDraw::Month)
-				setLabelsMonthFormat(i, sdg->nameFormat());
-			else if (type == ScaleDraw::Time || type == ScaleDraw::Date)
-				setLabelsDateTimeFormat(i, type, sdg->formatString());
-			else{
-				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(i);
-				setAxisScaleDraw(i, new ScaleDraw(this, sd->labelsList(), sd->formatString(), sd->scaleType()));
-			}
-		} else {
-			ScaleDraw *sd = (ScaleDraw *)axisScaleDraw (i);
-			sd->enableComponent (QwtAbstractScaleDraw::Labels, false);
-		}
-	}
-	for (int i=0; i<QwtPlot::axisCnt; i++){//set same scales
-		const ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(i);
-		if (!se)
-			continue;
-
-        ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(i);
-        sc_engine->clone(se);
-
-		int majorTicks = g->axisMaxMajor(i);
-  	    int minorTicks = g->axisMaxMinor(i);
-  	    setAxisMaxMajor (i, majorTicks);
-  	    setAxisMaxMinor (i, minorTicks);
-
-        double step = g->axisStep(i);
-		d_user_step[i] = step;
-		const QwtScaleDiv *sd = g->axisScaleDiv(i);
-		QwtScaleDiv div = sc_engine->divideScale (QMIN(sd->lBound(), sd->hBound()),
-				QMAX(sd->lBound(), sd->hBound()), majorTicks, minorTicks, step);
-
-		if (se->testAttribute(QwtScaleEngine::Inverted))
-			div.invert();
-		setAxisScaleDiv (i, div);
-	}
-
-	drawAxesBackbones(g->drawAxesBackbone);
-	setMajorTicksType(g->getMajorTicksType());
-	setMinorTicksType(g->getMinorTicksType());
-	setTicksLength(g->minorTickLength(), g->majorTickLength());
-
-	setAxisLabelRotation(QwtPlot::xBottom, g->labelsRotation(QwtPlot::xBottom));
-  	setAxisLabelRotation(QwtPlot::xTop, g->labelsRotation(QwtPlot::xTop));
-
-    updateLayout();
-	d_auto_scale = g->isAutoscalingEnabled();
-
-	d_zoomer[0]->setZoomBase();
-	d_zoomer[1]->setZoomBase();
-
-	QList<FrameWidget *> enrichements = g->enrichmentsList();
-	foreach (FrameWidget *e, enrichements){
-		PieLabel *l = qobject_cast<PieLabel *>(e);
-		if (l)
-			continue;
-		add(e);
-	}
-
-	QList<QwtPlotMarker *> lines = g->linesList();
-	foreach (QwtPlotMarker *i, lines)
-		addArrow((ArrowMarker*)i);
-
-	setAntialiasing(g->antialiasing(), true);
+        }
+    }
 }
+
 
 void Graph::plotBoxDiagram(Table *w, const QStringList& names, int startRow, int endRow)
 {
@@ -4526,6 +4509,8 @@ bool Graph::validCurvesDataSize()
 
 Graph::~Graph()
 {
+	if(d_markers_selector)
+        delete d_markers_selector;
 	if(d_peak_fit_tool)
         delete d_peak_fit_tool;
 	if(d_active_tool)
@@ -4602,7 +4587,7 @@ bool Graph::focusNextPrevChild ( bool )
         setSelectedMarker(d_lines.at(0));
         return true;
     }*/
-	
+
 	return false;
 }
 
@@ -4806,8 +4791,6 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 
 	painter->setClipping(true);
 	painter->setClipRect(fillRect);
-	
-    //drawItems(painter, canvasRect, map, pfilter);
 	drawItems(painter, fillRect, map, pfilter);
     painter->restore();
 
@@ -4837,7 +4820,7 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
         drawBreak(painter, rect, map[i], i);
     }
     painter->restore();
-	
+
     for (int i=0; i<QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i))
 			continue;
@@ -4860,7 +4843,7 @@ void Graph::drawItems (QPainter *painter, const QRect &rect,
 		else if (i == QwtPlot::yLeft || i == QwtPlot::yRight)
 			painter->setClipRegion(cr.subtracted(QRegion(rect.x(), end, rect.width(), abs(end - start))), Qt::IntersectClip);
 	}
-	
+
 	painter->setRenderHint(QPainter::TextAntialiasing);
 	QwtPlot::drawItems(painter, rect, map, pfilter);
 
@@ -4894,7 +4877,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	painter->save();
 	if (painter->hasClipping())
 		painter->setClipping(false);
-	
+
 	painter->setPen(QPen(color, axesLinewidth(), Qt::SolidLine));
 
 	QwtScaleDiv *scDiv = (QwtScaleDiv *)axisScaleDiv(axis);
@@ -4948,12 +4931,12 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 					for (j = 0; j < minTicks; j++){
 						y = map.transform(minTickList[j]);
 						if (y>low && y< high)
-							QwtPainter::drawLine(painter, x+1, y, x-d_min_tick_length, y);
+							QwtPainter::drawLine(painter, x + 1, y, x - d_min_tick_length, y);
 					}
 					for (j = 0; j < medTicks; j++){
 						y = map.transform(medTickList[j]);
 						if (y>low && y< high)
-							QwtPainter::drawLine(painter, x+1, y, x-d_min_tick_length, y);
+							QwtPainter::drawLine(painter, x + 1, y, x - d_min_tick_length, y);
 					}
 				}
 
@@ -5540,7 +5523,7 @@ QRect Graph::boundingRect()
 	foreach(FrameWidget *fw, d_enrichments){
 		if (fw->isHidden())//pie labels can be hidden
 			continue;
-		
+
 		r = r.united(fw->geometry());
 	}
 	return r;

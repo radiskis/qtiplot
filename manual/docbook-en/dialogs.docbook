@@ -1275,10 +1275,7 @@ which will highly increase the speed of the evaluation!</para>
   <para>This dialog can be opened by several commands such as &format-title-lnk;
   or when you double click on an axis title in your plot.
   The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis>
-  commands allow the modification of the general settings of the text label.
-  By checking the box <emphasis>Apply format to all labels in layer</emphasis>,
-  the formating will be applied to all texts in the plot layer, including the plot title and
-  the axes labels.</para>
+  commands allow the modification of the general settings of the text label.</para>
 
   <figure id="fig-text-options">
     <title>The axis title options dialog.</title>
@@ -1295,6 +1292,15 @@ which will highly increase the speed of the evaluation!</para>
   In order to display the symbol of a curve and the name of the data set,
   the follwing synthax is used: <emphasis>\l(2)%(2)</emphasis>. Here the number 2, refers to the index
   of the curve and the % character is an alias for the name of the data set. </para>
+
+<para>If the <emphasis>Auto-update</emphasis> box is checked the legend is updated each time
+a curve is added or removed from the plot layer.
+By pressing the <emphasis>Set As Default</emphasis> button all text format options will
+be saved to the user preferences and will be applied to new text objects.
+The <emphasis>Apply to...</emphasis> button can be used to apply the format options to
+all text objects in the active plot layer or in the current plot window or in
+all plot windows in the project. The domain of application can be chosen from the
+list box bellow the <emphasis>Apply to...</emphasis> button.</para>
 
   <para>The <emphasis>Opacity</emphasis> of the <emphasis>Background color</emphasis> can have a value
   between 0 (transparent background) and 255 (completely opaque background).</para>

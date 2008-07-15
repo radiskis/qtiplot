@@ -42,6 +42,16 @@ public:
 
 	void clone(RectangleWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
+
+	void updateCoordinates();
+	void setLinkedLayer(int layerIndex);
+
+public slots:
+    void closedLinkedLayer(QObject *);
+
+private:
+    //! Index of the linked layer using the rectangle coordinates as a zoom region
+    int d_linked_layer;
 };
 
 #endif

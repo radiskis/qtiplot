@@ -37,7 +37,6 @@ class QTextCursor;
 class QComboBox;
 class QLabel;
 class QSpinBox;
-class QCheckBox;
 class Graph;
 class QwtScaleWidget;
 class ColorButton;
@@ -83,13 +82,11 @@ public slots:
 private slots:
 	//! Let the user select another font
 	void customFont();
-	//! Accept changes and close dialog
-	void accept();
 	//! Apply changes
 	void apply();
 
-protected:
-	void formatAllLabels();
+private:
+	void formatLayerLabels(Graph *g);
 
 	//! current font
 	QFont selectedFont;
@@ -98,14 +95,13 @@ protected:
 	ColorButton *colorBtn, *backgroundBtn;
 	QPushButton *buttonFont;
 	QComboBox *backgroundBox;
-	QPushButton *buttonOk;
 	QPushButton *buttonCancel;
 	QPushButton *buttonApply;
 	QTextEdit *textEditBox;
 	QGroupBox *groupBox1, *groupBox2;
 	QComboBox *alignmentBox;
 	TextFormatButtons *formatButtons;
-	QCheckBox *boxApplyToAll;
+	QComboBox *formatApplyToBox;
 
 	Graph *d_graph;
 	QwtScaleWidget *d_scale;

@@ -147,41 +147,59 @@ void EnrichmentDialog::initEditorPage()
 }
 
 void EnrichmentDialog::initTextPage()
-{	
+{
 	QGroupBox *gb1 = new QGroupBox();
 	QGridLayout * gl1 = new QGridLayout(gb1);
 	gl1->addWidget(new QLabel(tr("Color")), 0, 0);
 
 	textColorBtn = new ColorButton();
 	gl1->addWidget(textColorBtn, 0, 1);
-	
-	textDefaultBtn = new QPushButton( tr( "Set As &Default" ) );
-	gl1->addWidget(textDefaultBtn, 0, 2);
-	connect(textDefaultBtn, SIGNAL(clicked()), this, SLOT(setTextDefaultValues()));
+
+    autoUpdateTextBox = new QCheckBox(tr("Auto-&update"));
+	gl1->addWidget(autoUpdateTextBox, 0, 2);
 
 	gl1->addWidget(new QLabel(tr("Font")), 1, 0);
 
 	textFontBtn = new QPushButton(tr( "&Font" ));
 	connect(textFontBtn, SIGNAL(clicked()), this, SLOT(customFont()));
 	gl1->addWidget(textFontBtn, 1, 1);
-	
-	autoUpdateTextBox = new QCheckBox(tr("Auto-&update"));
-	gl1->addWidget(autoUpdateTextBox, 1, 2);
 
 	gl1->addWidget(new QLabel(tr("Opacity")), 2, 0);
-	
+
 	boxBackgroundTransparency = new QSpinBox();
 	boxBackgroundTransparency->setRange(0, 255);
     boxBackgroundTransparency->setSingleStep(5);
 	boxBackgroundTransparency->setWrapping(true);
     boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
-	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), 
+	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)),
 			this, SLOT(updateTransparency(int)));
+	gl1->addWidget(boxBackgroundTransparency, 2, 1);
 
-	gl1->addWidget( boxBackgroundTransparency, 2, 1 );
 	gl1->addWidget(new QLabel(tr("Background color")), 3, 0);
 	textBackgroundBtn = new ColorButton();
 	gl1->addWidget(textBackgroundBtn, 3, 1);
+
+	gl1->setColumnStretch(2, 1);
+
+    QVBoxLayout *vl = new QVBoxLayout();
+    textDefaultBtn = new QPushButton( tr( "Set As &Default" ) );
+    connect(textDefaultBtn, SIGNAL(clicked()), this, SLOT(setTextDefaultValues()));
+	vl->addWidget(textDefaultBtn);
+
+    textApplyToBtn = new QPushButton(tr("Apply &to..."));
+	connect(textApplyToBtn, SIGNAL(clicked()), this, SLOT(textFormatApplyTo()));
+	vl->addWidget(textApplyToBtn);
+
+	textApplyToBox = new QComboBox();
+	textApplyToBox->insertItem(tr("Layer"));
+    textApplyToBox->insertItem(tr("Window"));
+    textApplyToBox->insertItem(tr("All Windows"));
+	vl->addWidget(textApplyToBox);
+	vl->addStretch();
+
+    QHBoxLayout *hl = new QHBoxLayout();
+	hl->addWidget(gb1);
+	hl->addLayout(vl);
 
 	textEditBox = new QTextEdit();
 	textEditBox->setTextFormat(Qt::PlainText);
@@ -195,11 +213,11 @@ void EnrichmentDialog::initTextPage()
 
 	textPage = new QWidget();
 
-	QVBoxLayout* vl = new QVBoxLayout(textPage);
-	vl->addWidget(gb1);
-	vl->addWidget(formatButtons);
-	vl->addWidget(textEditBox);
-	
+	QVBoxLayout* ml = new QVBoxLayout(textPage);
+	ml->addLayout(hl);
+	ml->addWidget(formatButtons);
+	ml->addWidget(textEditBox, 1);
+
 	tabWidget->addTab(textPage, tr( "&Text" ) );
 }
 
@@ -248,35 +266,35 @@ void EnrichmentDialog::initFramePage()
     gl->addWidget(new QLabel(tr("Color")), 1, 0);
 	frameColorBtn = new ColorButton();
     gl->addWidget(frameColorBtn, 1, 1);
-	
+
 	gl->addWidget(new QLabel(tr( "Line Style" )), 2, 0);
 	boxFrameLineStyle = new PenStyleBox();
 	gl->addWidget(boxFrameLineStyle, 2, 1);
-	
+
 	gl->setColumnStretch(1, 1);
 	gl->addWidget(new QLabel(tr("Width")), 3, 0);
 	boxFrameWidth = new QSpinBox();
 	boxFrameWidth->setRange(1, 100);
 	gl->addWidget(boxFrameWidth, 3, 1);
 	gl->setRowStretch(4, 1);
-	
+
 	QVBoxLayout *vl = new QVBoxLayout();
-	
+
 	frameDefaultBtn = new QPushButton(tr("Set As &Default"));
 	connect(frameDefaultBtn, SIGNAL(clicked()), this, SLOT(setFrameDefaultValues()));
 	vl->addWidget(frameDefaultBtn);
-	
+
 	frameApplyToBtn = new QPushButton(tr("Apply &to..."));
 	connect(frameApplyToBtn, SIGNAL(clicked()), this, SLOT(frameApplyTo()));
 	vl->addWidget(frameApplyToBtn);
-	
+
 	frameApplyToBox = new QComboBox();
-	frameApplyToBox->insertItem(tr("This Layer"));
-    frameApplyToBox->insertItem(tr("This Window"));
+	frameApplyToBox->insertItem(tr("Layer"));
+    frameApplyToBox->insertItem(tr("Window"));
     frameApplyToBox->insertItem(tr("All Windows"));
 	vl->addWidget(frameApplyToBox);
 	vl->addStretch();
-	
+
 	QHBoxLayout *hl = new QHBoxLayout(framePage);
 	hl->addWidget(gb);
 	hl->addLayout(vl);
@@ -294,7 +312,7 @@ void EnrichmentDialog::initPatternPage()
 
 	backgroundColorBtn = new ColorButton();
     gl->addWidget(backgroundColorBtn, 0, 1);
-	
+
 	gl->addWidget(new QLabel(tr("Opacity")), 1, 0);
 	boxTransparency = new QSpinBox();
 	boxTransparency->setRange(0, 255);
@@ -302,19 +320,19 @@ void EnrichmentDialog::initPatternPage()
 	boxTransparency->setWrapping(true);
     boxTransparency->setSpecialValueText(tr("Transparent"));
 	gl->addWidget(boxTransparency, 1, 1);
-	
+
 	gl->addWidget(new QLabel(tr("Pattern")), 2, 0);
 	patternBox = new PatternBox();
 	gl->addWidget(patternBox, 2, 1);
-	
+
 	gl->addWidget(new QLabel(tr("Pattern Color")), 3, 0);
 	patternColorBtn = new ColorButton();
 	gl->addWidget(patternColorBtn, 3, 1);
-	
+
 	useFrameColorBox = new QCheckBox(tr("Use &Frame Color"));
 	connect(useFrameColorBox, SIGNAL(toggled(bool)), patternColorBtn, SLOT(setDisabled(bool)));
 	gl->addWidget(useFrameColorBox, 3, 2);
-	
+
 	gl->setColumnStretch(1, 1);
 	gl->setRowStretch(4, 1);
 
@@ -322,22 +340,22 @@ void EnrichmentDialog::initPatternPage()
 	rectangleDefaultBtn = new QPushButton(tr("Set As &Default"));
 	connect(rectangleDefaultBtn, SIGNAL(clicked()), this, SLOT(setRectangleDefaultValues()));
 	vl->addWidget(rectangleDefaultBtn);
-	
+
 	patternApplyToBtn = new QPushButton(tr("Apply &to..."));
 	connect(patternApplyToBtn, SIGNAL(clicked()), this, SLOT(patternApplyTo()));
 	vl->addWidget(patternApplyToBtn);
-	
+
 	patternApplyToBox = new QComboBox();
-	patternApplyToBox->insertItem(tr("This Layer"));
-    patternApplyToBox->insertItem(tr("This Window"));
+	patternApplyToBox->insertItem(tr("Layer"));
+    patternApplyToBox->insertItem(tr("Window"));
     patternApplyToBox->insertItem(tr("All Windows"));
 	vl->addWidget(patternApplyToBox);
 	vl->addStretch();
-	
+
 	QHBoxLayout *hl = new QHBoxLayout(patternPage);
 	hl->addWidget(gb);
 	hl->addLayout(vl);
-	
+
 	tabWidget->addTab(patternPage, tr("Fill &Pattern"));
 }
 
@@ -410,7 +428,7 @@ void EnrichmentDialog::initGeometryPage()
     QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl2->addWidget(gb1);
 	bl2->addWidget(gb2);
-	
+
 	if (d_widget_type == Text)
 		gb2->setEnabled(false);
 
@@ -467,7 +485,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			boxBackgroundTransparency->setValue(bc.alpha());
 			textBackgroundBtn->setEnabled(bc.alpha());
 			textBackgroundBtn->setColor(bc);
-			
+
 			autoUpdateTextBox->setChecked(l->isAutoUpdateEnabled());
 		}
 	} else if (d_widget_type == Tex){
@@ -526,14 +544,8 @@ void EnrichmentDialog::apply()
 	} else if (textPage && tabWidget->currentPage() == textPage){
 		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
         if (l){
-			QColor c = textBackgroundBtn->color();
-			c.setAlpha(boxBackgroundTransparency->value());
-			l->setBackgroundColor(c);
-			l->setText(textEditBox->text());
-			l->setTextColor(textColorBtn->color());
-			l->setFont(textFont);
-			l->setAutoUpdate(autoUpdateTextBox->isChecked());
-			l->repaint();
+            l->setText(textEditBox->text());
+			setTextFormatTo(l);
 			d_plot->multiLayer()->notifyChanges();
 		}
 	}
@@ -724,7 +736,7 @@ void EnrichmentDialog::frameApplyTo()
 				setFrameTo(fw);
 		}
 		break;
-		
+
 		case 1://this window
 		{
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
@@ -735,7 +747,7 @@ void EnrichmentDialog::frameApplyTo()
 			}
 		}
 		break;
-		
+
 		case 2://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
@@ -752,7 +764,7 @@ void EnrichmentDialog::frameApplyTo()
 			}
 		}
 		break;
-		
+
 		default:
 			break;
 	}
@@ -762,7 +774,7 @@ void EnrichmentDialog::frameApplyTo()
 void EnrichmentDialog::setFrameTo(FrameWidget *fw)
 {
 	fw->setFrameStyle(frameBox->currentIndex());
-	QPen pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), 
+	QPen pen = QPen(frameColorBtn->color(), boxFrameWidth->value(),
 				boxFrameLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 	fw->setFramePen(pen);
 	fw->repaint();
@@ -782,7 +794,7 @@ void EnrichmentDialog::patternApplyTo()
 			}
 		}
 		break;
-		
+
 		case 1://this window
 		{
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
@@ -796,7 +808,7 @@ void EnrichmentDialog::patternApplyTo()
 			}
 		}
 		break;
-		
+
 		case 2://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
@@ -816,7 +828,7 @@ void EnrichmentDialog::patternApplyTo()
 			}
 		}
 		break;
-		
+
 		default:
 			break;
 	}
@@ -824,16 +836,16 @@ void EnrichmentDialog::patternApplyTo()
 }
 
 void EnrichmentDialog::setPatternTo(RectangleWidget *r)
-{	
+{
 	QColor c = backgroundColorBtn->color();
 	c.setAlpha(boxTransparency->value());
 	r->setBackgroundColor(c);
-			
+
 	QColor patternColor = patternColorBtn->color();
 	if (useFrameColorBox->isChecked())
 		patternColor = frameColorBtn->color();
 	r->setBrush(QBrush(patternColor, patternBox->getSelectedPattern()));
-			
+
 	r->repaint();
 }
 
@@ -869,19 +881,85 @@ void EnrichmentDialog::updateTransparency(int alpha)
 	textBackgroundBtn->setEnabled(alpha);
 }
 
+void EnrichmentDialog::textFormatApplyTo()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(textApplyToBox->currentIndex()){
+		case 0://this layer
+		{
+			QList <FrameWidget *> lst = d_plot->enrichmentsList();
+			foreach(FrameWidget *fw, lst){
+				LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+				if (l)
+					setTextFormatTo(l);
+			}
+		}
+		break;
+
+		case 1://this window
+		{
+			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
+			foreach(Graph *g, layersLst){
+				QList <FrameWidget *> lst = g->enrichmentsList();
+				foreach(FrameWidget *fw, lst){
+					LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+                    if (l)
+                        setTextFormatTo(l);
+				}
+			}
+		}
+		break;
+
+		case 2://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst){
+					QList <FrameWidget *> lst = g->enrichmentsList();
+					foreach(FrameWidget *fw, lst){
+						LegendWidget *l = qobject_cast<LegendWidget *>(fw);
+                        if (l)
+                            setTextFormatTo(l);
+					}
+				}
+			}
+		}
+		break;
+
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void EnrichmentDialog::setTextFormatTo(LegendWidget *l)
+{
+    QColor c = textBackgroundBtn->color();
+    c.setAlpha(boxBackgroundTransparency->value());
+    l->setBackgroundColor(c);
+    l->setTextColor(textColorBtn->color());
+    l->setFont(textFont);
+    l->setAutoUpdate(autoUpdateTextBox->isChecked());
+    l->repaint();
+}
+
 void EnrichmentDialog::setTextDefaultValues()
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
-	
+
 	app->legendTextColor = textColorBtn->color();
 	app->plotLegendFont = textFont;
 
 	QColor c = textBackgroundBtn->color();
 	c.setAlpha(boxBackgroundTransparency->value());
 	app->legendBackground = c;
-	
+
 	app->saveSettings();
 }
 
@@ -890,9 +968,9 @@ void EnrichmentDialog::setFrameDefaultValues()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
-	
+
 	app->legendFrameStyle = frameBox->currentIndex();
-	app->d_frame_widget_pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), boxFrameLineStyle->style());	
+	app->d_frame_widget_pen = QPen(frameColorBtn->color(), boxFrameWidth->value(), boxFrameLineStyle->style());
 	app->saveSettings();
 }
 
@@ -901,15 +979,15 @@ void EnrichmentDialog::setRectangleDefaultValues()
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	if (!app)
 		return;
-	
+
 	QColor c = backgroundColorBtn->color();
 	c.setAlpha(boxTransparency->value());
 	app->d_rect_default_background = c;
-			
+
 	QColor patternColor = patternColorBtn->color();
 	if (useFrameColorBox->isChecked())
 		patternColor = frameColorBtn->color();
-	
+
 	app->d_rect_default_brush = QBrush(patternColor, patternBox->getSelectedPattern());
 	app->saveSettings();
 }

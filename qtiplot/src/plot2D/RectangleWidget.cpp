@@ -33,10 +33,11 @@
 #include <QPainter>
 #include <QPaintEngine>
 #include <QPalette>
- 
-RectangleWidget::RectangleWidget(Graph *plot):FrameWidget(plot)
+
+RectangleWidget::RectangleWidget(Graph *plot):FrameWidget(plot),
+d_linked_layer(-1)
 {
-	setFrameStyle(Line);	
+	setFrameStyle(Line);
 	setSize(0, 0);
 }
 
@@ -58,6 +59,7 @@ QString RectangleWidget::saveToString()
 	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
 	s += "<BrushColor>" + d_brush.color().name() + "</BrushColor>\n";
 	s += "<BrushStyle>" + QString::number(PatternBox::patternIndex(d_brush.style())) + "</BrushStyle>\n";
+    s += "<LinkedLayer>" + QString::number(d_linked_layer) + "</LinkedLayer>\n";
 	return s + "</Rectangle>\n";
 }
 
@@ -70,7 +72,7 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 	RectangleWidget *r = new RectangleWidget(g);
 	if (!r)
 		return;
-	
+
 	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;
         if (s.contains("<Frame>"))
@@ -97,10 +99,41 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			brush.setColor(QColor(s.remove("<BrushColor>").remove("</BrushColor>")));
 		else if (s.contains("<BrushStyle>"))
 			brush.setStyle(PatternBox::brushStyle((s.remove("<BrushStyle>").remove("</BrushStyle>")).toInt()));
+        else if (s.contains("<LinkedLayer>"))
+			r->setLinkedLayer(s.remove("<LinkedLayer>").remove("</LinkedLayer>").toInt());
 	}
 
 	r->setBackgroundColor(backgroundColor);
 	r->setBrush(brush);
 	r->setCoordinates(x, y, right, bottom);
 	g->add(r, false);
+}
+
+void RectangleWidget::updateCoordinates()
+{
+    FrameWidget::updateCoordinates();
+
+    if (d_linked_layer >= 0 && !receivers("changedCoordinates"))
+        setLinkedLayer(d_linked_layer);
+
+    changedCoordinates(boundingRect());
+}
+
+void RectangleWidget::setLinkedLayer(int layerIndex)
+{
+    d_linked_layer = layerIndex;
+
+    Graph *g = plot()->multiLayer()->layer(layerIndex + 1);
+    if (!g)
+        return;
+
+    this->disconnect(g, SLOT(setCanvasCoordinates(const QRectF&)));
+    connect(this, SIGNAL(changedCoordinates(const QRectF&)),
+            g, SLOT(setCanvasCoordinates(const QRectF&)));
+    connect(g, SIGNAL(destroyed(QObject *)), this, SLOT(closedLinkedLayer(QObject *)));
+}
+
+void RectangleWidget::closedLinkedLayer(QObject *o)
+{
+    d_linked_layer = -1;
 }

@@ -71,7 +71,8 @@ void SelectionMoveResizer::init()
 
 SelectionMoveResizer::~SelectionMoveResizer()
 {
-	parentWidget()->removeEventFilter(this);
+    if (parentWidget())
+        parentWidget()->removeEventFilter(this);
 }
 
 void SelectionMoveResizer::add(ArrowMarker *target)
@@ -253,7 +254,6 @@ void SelectionMoveResizer::operateOnTargets()
 			FrameWidget *f = qobject_cast<FrameWidget *>(i);
 			if (f)
 				f->updateCoordinates();
-
 			continue;
 		}
 
