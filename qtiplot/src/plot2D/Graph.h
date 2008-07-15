@@ -541,7 +541,9 @@ class Graph: public QwtPlot
 
 		bool titleSelected();
 		void selectTitle(bool select = true);
-
+		//! Sets the title to an "almost empty" string: " ", thus keeping the QwtText object visible
+		void clearTitle();
+		//! Sets title to an empty string and hides the text label
 		void removeTitle();
 		void initTitle( bool on, const QFont& fnt);
 		//@}
@@ -635,6 +637,7 @@ class Graph: public QwtPlot
 		void copyTitle();
 		void cutTitle();
 
+		void clearAxisTitle();
 		void removeAxisTitle();
 		void cutAxisTitle();
 		void copyAxisTitle();
