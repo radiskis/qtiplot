@@ -57,9 +57,6 @@ private:
 	QGroupBox *d_vector_options;
 	QSpinBox *d_resolution;
 	QCheckBox *d_color;
-	QCheckBox *d_keep_aspect;
-	QCheckBox *d_standard_page;
-	QComboBox *boxPageSize;
 	// raster format options
 	//! Container widget for all options available for raster formats.
 	QGroupBox *d_raster_options;
@@ -79,11 +76,6 @@ public:
 	int resolution() const { return d_resolution->value(); }
 	//! For vector formats: returns whether colors should be enabled for ouput (default: true).
 	bool color() const { return d_color->isChecked(); }
-	//! For vector formats: returns whether the output should preserve aspect ratio of the plot (default: true).
-	bool keepAspect() const { return d_keep_aspect->isChecked(); }
-    //! For vector formats: returns a standard output page size (default: QPrinter::Custom).
-	QPrinter::PageSize pageSize() const;
-	void setPageSize(int size);
 
 	//! Return the quality (in percent) the user selected for export to raster formats.
 	int quality() const { return d_quality->value(); }
@@ -91,7 +83,7 @@ public:
 	bool transparency() const { return d_transparency->isChecked(); }
 
 	void selectFilter(const QString & filter);
-	
+
 protected slots:
 	void closeEvent(QCloseEvent*);
 	//! Update which options are visible and enabled based on the output format.

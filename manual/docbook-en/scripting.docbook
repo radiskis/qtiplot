@@ -1199,7 +1199,7 @@ This is a shortcut function which uses some default parameters in order to gener
 If you need more control over the export parameters you must use one of the following functions:
 <programlisting>
 m1.exportRasterImage(fileName, quality = 100)
-m2.exportVector(fileName,resolution,color = true,keepAspect = true,pageSize = QPrinter::Custom)
+m2.exportVector(fileName, resolution, color = True)
 </programlisting>
 
 <para>You can also import an ASCII data <varname>file</varname>, using <varname>sep</varname> as separator characters, ignoring
@@ -1688,8 +1688,8 @@ legend = l.newLegend()
 legend = l.newLegend("enter your text here")
 </programlisting>
 
-Plot legends are special text objects which are updated each time you add or remove a curve from the layer. 
-They have a special <varname>auto-update</varname> flag which is enabled by default. 
+Plot legends are special text objects which are updated each time you add or remove a curve from the layer.
+They have a special <varname>auto-update</varname> flag which is enabled by default.
 The following function returns <varname>True</varname> for a legend object:
 <programlisting>
 legend.isAutoUpdateEnabled()
@@ -1806,7 +1806,7 @@ l.setAntialiasing(True, bool update = True)
 <title>Resize events</title>
 The default behaviour of 2D plot layers, with respect to the resizing of the graph window
 is to adapt the sizes of the fonts used for the various texts, to the new size
-of the plot window. You can override this behaviour and keep the size of the fonts unchanged: 
+of the plot window. You can override this behaviour and keep the size of the fonts unchanged:
 <programlisting>
 l.setAutoscaleFonts(False)
 </programlisting>
@@ -1822,8 +1822,8 @@ l.export(fileName)
 This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
-l.exportVector(fileName, resolution = 96, color = True, keepAspect = True, pageSize = QtGui.QPrinter.Custom)
-l.exportImage(filename, quality=100, transparent=False)</programlisting>
+l.exportVector(fileName, resolution = 96, color = True)
+l.exportImage(filename, quality = 100, transparent = False)</programlisting>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
 .eps, .ps, .pdf. By setting the <varname>keepAspect</varname> variable to True (the default), the
@@ -1897,6 +1897,13 @@ g = newGraph()
 l1 = g.addLayer()
 l2 = g.addLayer(10, 20, 200, 200)
 l3 = g.addLayer(215, 20)
+</programlisting>
+
+You can remove a plot layer using:
+<programlisting>
+l = g.layer(num)
+g.removeLayer(l)
+g.removeActiveLayer()
 </programlisting>
 
 As you have already seen, in a plot window the active layer is, by default, the last layer added

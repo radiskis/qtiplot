@@ -551,9 +551,9 @@ void ApplicationWindow::initGlobalConstants()
 	legendBackground = Qt::white;
 	legendBackground.setAlpha(0); // transparent by default;
 
-	d_rect_default_background = Qt::white;	
+	d_rect_default_background = Qt::white;
 	d_rect_default_brush = QBrush();
-	
+
 	defaultArrowLineWidth = 1;
 	defaultArrowColor = Qt::black;
 	defaultArrowHeadLength = 4;
@@ -608,8 +608,6 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_quality = 100;
 	d_export_resolution = QPrinter().resolution();
 	d_export_color = true;
-	d_export_vector_size = int(QPrinter::Custom);
-	d_keep_plot_aspect = true;
 }
 
 void ApplicationWindow::initToolBars()
@@ -668,8 +666,14 @@ void ApplicationWindow::initToolBars()
 	addToolBar( plotTools );
 
 	plotTools->addAction(actionAddLayer);
+	plotTools->addAction(actionAddInsetLayer);
+	plotTools->addAction(actionAddInsetCurveLayer);
+	plotTools->addSeparator();
 	plotTools->addAction(actionShowLayerDialog);
 	plotTools->addAction(actionAutomaticLayout);
+	plotTools->addSeparator();
+	plotTools->addAction(actionExtractLayers);
+	plotTools->addAction(actionExtractGraphs);
 	plotTools->addSeparator();
 	plotTools->addAction(actionAddErrorBars);
 	plotTools->addAction(actionShowCurvesDialog);
@@ -801,6 +805,8 @@ void ApplicationWindow::initToolBars()
 	tableTools->addAction(actionBoxPlot);
 	tableTools->addAction(actionPlotVectXYXY);
 	tableTools->addAction(actionPlotVectXYAM);
+	tableTools->addAction(actionPlotDoubleYAxis);
+	tableTools->addAction(actionAddZoomPlot);
 	tableTools->addSeparator ();
 	tableTools->addAction(actionPlot3DRibbon);
 	tableTools->addAction(actionPlot3DBars);
@@ -1005,6 +1011,12 @@ void ApplicationWindow::initMainMenu()
 	graph->addAction(actionAddImage);
 	graph->insertSeparator();//layers section
 	graph->addAction(actionAddLayer);
+	graph->addAction(actionAddInsetLayer);
+	graph->addAction(actionAddInsetCurveLayer);
+	graph->insertSeparator();
+	graph->addAction(actionExtractLayers);
+	graph->addAction(actionExtractGraphs);
+	graph->insertSeparator();
 	graph->addAction(actionDeleteLayer);
 	graph->addAction(actionShowLayerDialog);
 
@@ -1188,6 +1200,10 @@ void ApplicationWindow::plotMenuAboutToShow()
 	specialPlotMenu->addAction(actionPlotSpline);
 	specialPlotMenu->addAction(actionPlotVertSteps);
 	specialPlotMenu->addAction(actionPlotHorSteps);
+	specialPlotMenu->insertSeparator();
+	specialPlotMenu->addAction(actionPlotDoubleYAxis);
+	specialPlotMenu->addAction(actionAddZoomPlot);
+
 	plot2DMenu->insertSeparator();
 	plot2DMenu->addAction(actionPlotVerticalBars);
 	plot2DMenu->addAction(actionPlotHorizontalBars);
@@ -2217,7 +2233,7 @@ void ApplicationWindow::exportMatrix()
 	}
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
-		m->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
+		m->exportVector(file_name, ied->resolution(), ied->color());
 	else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++){
@@ -3749,7 +3765,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		file_uncompress((char *)fname.ascii());
 		fname = fname.left(fname.size() - 3);
 	}
-	
+
 	QFile f(fname);
 	QTextStream t( &f );
 	f.open(QIODevice::ReadOnly);
@@ -4499,11 +4515,11 @@ void ApplicationWindow::readSettings()
 	defaultArrowHeadFill = settings.value("/HeadFill", true).toBool();
 	defaultArrowLineStyle = Graph::getPenStyle(settings.value("/LineStyle", "SolidLine").toString());
 	settings.endGroup(); // Arrows
-	
+
 	settings.beginGroup("/Rectangle");
 	d_rect_default_background = settings.value("/BackgroundColor", Qt::white).value<QColor>();
 	d_rect_default_background.setAlpha(settings.value("/Transparency", 255).toInt());
-	
+
 	d_rect_default_brush.setColor(settings.value("/BrushColor", Qt::black).value<QColor>());
 	d_rect_default_brush.setStyle(PatternBox::brushStyle(settings.value("/Pattern", 0).toInt()));
 	settings.endGroup(); // Rectangle
@@ -4588,8 +4604,6 @@ void ApplicationWindow::readSettings()
 	d_export_quality = settings.value("/ImageQuality", 100).toInt();
 	d_export_resolution = settings.value("/Resolution", QPrinter().resolution()).toInt();
 	d_export_color = settings.value("/ExportColor", true).toBool();
-	d_export_vector_size = settings.value("/ExportPageSize", QPrinter::Custom).toInt();
-	d_keep_plot_aspect = settings.value("/KeepAspect", true).toBool();
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -4817,7 +4831,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/HeadFill", defaultArrowHeadFill);
 	settings.setValue("/LineStyle", Graph::penStyleName(defaultArrowLineStyle));
 	settings.endGroup(); // Arrows
-	
+
 	settings.beginGroup("/Rectangle");
 	settings.setValue("/BackgroundColor", d_rect_default_background);
 	settings.setValue("/Transparency", d_rect_default_background.alpha());
@@ -4912,8 +4926,6 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ImageQuality", d_export_quality);
 	settings.setValue("/Resolution", d_export_resolution);
 	settings.setValue("/ExportColor", d_export_color);
-	settings.setValue("/ExportPageSize", d_export_vector_size);
-	settings.setValue("/KeepAspect", d_keep_plot_aspect);
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -4988,7 +5000,7 @@ void ApplicationWindow::exportGraph()
 			if (selected_filter.contains(".svg"))
 				plot2D->exportSVG(file_name);
 			else
-				plot2D->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
+				plot2D->exportVector(file_name, ied->resolution(), ied->color());
 		}
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
@@ -5037,7 +5049,7 @@ void ApplicationWindow::exportLayer()
 	file.close();
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
-		g->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
+		g->exportVector(file_name, ied->resolution(), ied->color());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name);
     /*else if (selected_filter.contains(".emf"))
@@ -5144,7 +5156,7 @@ void ApplicationWindow::exportAllGraphs()
 				if (file_suffix.contains(".svg"))
 					plot2D->exportSVG(file_name);
 				else
-					plot2D->exportVector(file_name, ied->resolution(), ied->color(), ied->keepAspect(), ied->pageSize());
+					plot2D->exportVector(file_name, ied->resolution(), ied->color());
 			}
 		} else {
 			QList<QByteArray> list = QImageWriter::supportedImageFormats();
@@ -5938,8 +5950,7 @@ void ApplicationWindow::showColMenu(int c)
 	QMenu stat(this);
 	QMenu norm(this);
 
-	if ((int)w->selectedColumns().count()==1)
-	{
+	if ((int)w->selectedColumns().count() == 1){
 		w->setSelectedCol(c);
 		plot.addAction(QIcon(QPixmap(lPlot_xpm)),tr("&Line"), this, SLOT(plotL()));
 		plot.addAction(QIcon(QPixmap(pPlot_xpm)),tr("&Scatter"), this, SLOT(plotP()));
@@ -5949,6 +5960,8 @@ void ApplicationWindow::showColMenu(int c)
 		specialPlot.addAction(QIcon(QPixmap(spline_xpm)),tr("&Spline"), this,SLOT(plotSpline()));
 		specialPlot.addAction(QIcon(QPixmap(vert_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotVertSteps()));
 		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Horizontal Steps"), this, SLOT(plotHorSteps()));
+		specialPlot.insertSeparator();
+        specialPlot.addAction(actionAddZoomPlot);
 		specialPlot.setTitle(tr("Special Line/Symb&ol"));
 		plot.addMenu(&specialPlot);
 		plot.insertSeparator();
@@ -6063,9 +6076,7 @@ void ApplicationWindow::showColMenu(int c)
 
 		contextMenu.insertSeparator();
 		contextMenu.addAction(actionShowColumnOptionsDialog);
-	}
-	else if ((int)w->selectedColumns().count()>1)
-	{
+	} else if ((int)w->selectedColumns().count() > 1){
 		plot.addAction(QIcon(QPixmap(lPlot_xpm)),tr("&Line"), this, SLOT(plotL()));
 		plot.addAction(QIcon(QPixmap(pPlot_xpm)),tr("&Scatter"), this, SLOT(plotP()));
 		plot.addAction(QIcon(QPixmap(lpPlot_xpm)),tr("Line + S&ymbol"), this,SLOT(plotLP()));
@@ -6074,6 +6085,9 @@ void ApplicationWindow::showColMenu(int c)
 		specialPlot.addAction(QIcon(QPixmap(spline_xpm)),tr("&Spline"), this, SLOT(plotSpline()));
 		specialPlot.addAction(QIcon(QPixmap(vert_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotVertSteps()));
 		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotHorSteps()));
+		specialPlot.insertSeparator();
+        specialPlot.addAction(actionPlotDoubleYAxis);
+        specialPlot.addAction(actionAddZoomPlot);
 		specialPlot.setTitle(tr("Special Line/Symb&ol"));
 		plot.addMenu(&specialPlot);
 		plot.insertSeparator();
@@ -6180,6 +6194,93 @@ void ApplicationWindow::plotStackedLayers()
 void ApplicationWindow::plotStackedHistograms()
 {
 	multilayerPlot(1, -1, Graph::Histogram);
+}
+
+void ApplicationWindow::zoomRectanglePlot()
+{
+    Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+    QStringList lst = t->selectedYColumns();
+    int cols = lst.size();
+	if (cols < 1){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+		tr("You need to select at least one Y column for this operation!"));
+		return;
+	}
+
+	Q3TableSelection sel = t->getSelection();
+    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
+    if (ml){
+        Graph *ag = ml->activeLayer();
+        ag->setTitle("");
+        ag->setAxisTitle(QwtPlot::xBottom, "");
+        ag->setAxisTitle(QwtPlot::yLeft, "");
+        ag->setCanvasFrame();
+        ag->drawAxesBackbones(false);
+        ag->showGrid();
+        ag->removeLegend();
+
+        RectangleWidget *r = new RectangleWidget(ag);
+        QColor c = Qt::yellow;
+        c.setAlpha(100);
+        r->setBackgroundColor(c);
+        r->setFrameColor(Qt::blue);
+        ag->add(r, false);
+
+        Graph *g = ml->addLayer();
+        if (!g)
+            return;
+
+        setPreferences(g);
+        g->setTitle("");
+        g->setAxisTitle(QwtPlot::xBottom, "");
+        g->setAxisTitle(QwtPlot::yLeft, "");
+        g->copyCurves(ag);
+        g->drawAxesBackbones(false);
+        g->setCanvasFrame();
+        g->setCanvasBackground(c);
+
+        ml->setRows(2);
+        ml->setCols(1);
+        ml->arrangeLayers(false);
+
+        QRect canvasRect = ag->canvas()->geometry();
+        r->setRect(canvasRect.x(), canvasRect.bottom() - 50, 100, 50);
+
+        g->setCanvasCoordinates(r->boundingRect());
+        r->setLinkedLayer(1);
+    }
+}
+
+void ApplicationWindow::plotDoubleYAxis()
+{
+    Table *t = (Table *)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+    QStringList lst = t->selectedYColumns();
+    int cols = lst.size();
+	if (cols < 2){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+		tr("You need at least two columns for this operation!"));
+		return;
+	}
+
+	Q3TableSelection sel = t->getSelection();
+    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
+    if (ml){
+        Graph *g = ml->activeLayer();
+        g->enableAxis(QwtPlot::yRight);
+        g->setAxisTitle(QwtPlot::yRight, tr("Y2 Axis Title"));
+
+        QwtPlotCurve *c = g->curve(cols - 1);
+        if (c){
+            c->setYAxis(QwtPlot::yRight);
+            g->setAutoScale();
+        }
+    }
 }
 
 void ApplicationWindow::showMatrixDialog()
@@ -7371,6 +7472,12 @@ void ApplicationWindow::clearSelection()
 		Graph* g = ((MultiLayer*)m)->activeLayer();
 		if (!g)
 			return;
+
+        if (((MultiLayer*)m)->hasSelectedLayers()){
+            ((MultiLayer*)m)->confirmRemoveLayer();
+            emit modified();
+            return;
+        }
 
         if (g->activeTool()){
             if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
@@ -9832,6 +9939,94 @@ void ApplicationWindow::autoArrangeLayers()
 	plot->arrangeLayers(true, false);
 }
 
+void ApplicationWindow::extractGraphs()
+{
+    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+    if (plot->numLayers() < 2){
+        QMessageBox::critical(this, tr("QtiPlot - Error"),
+        tr("You must have more than one layer in the active window!"));
+		return;
+    }
+
+    QList<Graph *> lst = plot->layersList();
+    foreach(Graph *g, lst){
+		MultiLayer *nw = multilayerPlot(generateUniqueName(tr("Graph")), 0, plot->getRows(), plot->getCols());
+        nw->resize(plot->size());
+		Graph *ng = nw->addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
+		if (ng)
+            ng->copy(g);
+    }
+}
+
+void ApplicationWindow::extractLayers()
+{
+    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+    Graph *g = plot->activeLayer();
+    if (!g)
+        return;
+
+    int curves = g->curveCount();
+    if (curves < 2){
+        QMessageBox::critical(this, tr("QtiPlot - Error"),
+        tr("You must have more than one dataset in the active layer!"));
+		return;
+    }
+
+    for(int i = 0; i < curves; i++){
+		Graph *ng = plot->addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
+		if (ng){
+            ng->copy(g);
+            for(int j = 0; j < curves; j++){
+                if (j != i)
+                    ng->removeCurve(j);
+            }
+		}
+    }
+    plot->removeLayer(g);
+    plot->arrangeLayers(true, false);
+}
+
+void ApplicationWindow::addInsetLayer(bool curves)
+{
+    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+    Graph *al = plot->activeLayer();
+    if (!al)
+        return;
+
+    QRect r = al->geometry();
+    Graph *g = plot->addLayer(r.x() + r.width()/2, al->canvas()->y(), r.width()/2, r.height()/2);
+    if (g){
+        setPreferences(g);
+
+        g->setTitle("");
+        g->setAxisTitle(QwtPlot::xBottom, "");
+        g->setAxisTitle(QwtPlot::yLeft, "");
+        g->enableAxis(QwtPlot::yRight, false);
+        g->enableAxis(QwtPlot::xTop, false);
+
+        QColor c = Qt::white;
+        c.setAlpha(0);
+        g->setBackgroundColor(c);
+        g->setCanvasBackground(c);
+        if (curves)
+            g->copyCurves(al);
+    }
+}
+
+void ApplicationWindow::addInsetCurveLayer()
+{
+    addInsetLayer(true);
+}
+
 void ApplicationWindow::addLayer()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
@@ -11444,6 +11639,24 @@ void ApplicationWindow::createActions()
 	actionPlotStackedLayers = new QAction(QIcon(QPixmap(stacked_xpm)), tr("&Stacked Layers"), this);
 	connect(actionPlotStackedLayers, SIGNAL(activated()), this, SLOT(plotStackedLayers()));
 
+    actionPlotDoubleYAxis = new QAction(QIcon(QPixmap(plot_double_y_xpm)), tr("D&ouble-Y"), this);
+	connect(actionPlotDoubleYAxis, SIGNAL(activated()), this, SLOT(plotDoubleYAxis()));
+
+    actionAddZoomPlot = new QAction(QIcon(QPixmap(add_zoom_plot_xpm)), tr("&Zoom"), this);
+	connect(actionAddZoomPlot, SIGNAL(activated()), this, SLOT(zoomRectanglePlot()));
+
+    actionExtractGraphs = new QAction(QIcon(QPixmap(extract_graphs_xpm)), tr("E&xtract to Graphs"), this);
+	connect(actionExtractGraphs, SIGNAL(activated()), this, SLOT(extractGraphs()));
+
+    actionExtractLayers = new QAction(QIcon(QPixmap(extract_layers_xpm)), tr("Extract to &Layers"), this);
+	connect(actionExtractLayers, SIGNAL(activated()), this, SLOT(extractLayers()));
+
+    actionAddInsetLayer = new QAction(QIcon(QPixmap(add_inset_layer_xpm)), tr("Add Inset Layer"), this);
+	connect(actionAddInsetLayer, SIGNAL(activated()), this, SLOT(addInsetLayer()));
+
+    actionAddInsetCurveLayer = new QAction(QIcon(QPixmap(add_inset_curve_layer_xpm)), tr("Add Inset Layer"), this);
+	connect(actionAddInsetCurveLayer, SIGNAL(activated()), this, SLOT(addInsetCurveLayer()));
+
 	actionPlot3DRibbon = new QAction(QIcon(QPixmap(ribbon_xpm)), tr("&Ribbon"), this);
 	connect(actionPlot3DRibbon, SIGNAL(activated()), this, SLOT(plot3DRibbon()));
 
@@ -12216,6 +12429,18 @@ void ApplicationWindow::translateActionsStrings()
 	actionPlot2HorizontalLayers->setMenuText(tr("&Horizontal 2 Layers"));
 	actionPlot4Layers->setMenuText(tr("&4 Layers"));
 	actionPlotStackedLayers->setMenuText(tr("&Stacked Layers"));
+
+    actionPlotDoubleYAxis->setMenuText(tr("D&ouble-Y"));
+    actionPlotDoubleYAxis->setToolTip(tr("Double Y Axis"));
+
+    actionAddZoomPlot->setMenuText(tr("&Zoom"));
+    actionAddZoomPlot->setToolTip(tr("Zoom"));
+
+    actionExtractGraphs->setMenuText(tr("E&xtract to Graphs"));
+    actionExtractGraphs->setToolTip(tr("Extract to Graphs"));
+
+    actionExtractLayers->setMenuText(tr("Extract to Layer&s"));
+    actionExtractLayers->setToolTip(tr("Extract to Layers"));
 
 	actionPlot3DRibbon->setMenuText(tr("&Ribbon"));
 	actionPlot3DRibbon->setToolTip(tr("Plot 3D ribbon"));
@@ -14673,6 +14898,13 @@ ApplicationWindow::~ApplicationWindow()
 {
     disableTools();//avoids crash if a plot tol is still active
 
+    QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
+	    MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+		if (ml && ml->hasSelectedLayers())
+			delete ml;
+	}
+
 	delete hiddenWindows;
 
 	if (scriptWindow)
@@ -14730,12 +14962,12 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	setScriptingLanguage("Python");
 	restoreApplicationGeometry();
-	
+
 	showScriptWindow();
 	scriptWindow->open(fn);
 
 	QApplication::restoreOverrideCursor();
-	
+
 	if (execute){
 		scriptWindow->hide();
     	scriptWindow->executeAll();

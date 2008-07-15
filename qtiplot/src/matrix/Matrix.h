@@ -103,7 +103,7 @@ public:
 	void exportRasterImage(const QString& fileName, int quality = 100);
 	void exportSVG(const QString& fileName);
 	void exportToFile(const QString& fileName);
-	void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true, QPrinter::PageSize pageSize = QPrinter::Custom);
+	void exportVector(const QString& fileName, int res = 0, bool color = true);
 
 	MatrixModel * matrixModel(){return d_matrix_model;};
     QUndoStack *undoStack(){return d_undo_stack;};
@@ -292,7 +292,7 @@ public slots:
 	//! Tries to allocate memory for the workspace. Returns a NULL pointer if failure.
 	double *initWorkspace(int size);
 	void freeWorkspace(){free(d_workspace); d_workspace = NULL;};
-	
+
 	bool canCalculate(bool useMuParser = true);
 
 private:

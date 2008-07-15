@@ -46,13 +46,14 @@ class QSpinBox;
 
 class Graph;
 class FrameWidget;
+class LegendWidget;
 class ColorButton;
 class DoubleSpinBox;
 class PatternBox;
 class PenStyleBox;
 class RectangleWidget;
 class TextFormatButtons;
-	
+
 class EnrichmentDialog : public QDialog
 {
     Q_OBJECT
@@ -79,6 +80,7 @@ private slots:
 	void setBestSize();
 	void frameApplyTo();
 	void patternApplyTo();
+	void textFormatApplyTo();
 	void customFont();
 	void updateTransparency(int alpha);
 	void setTextDefaultValues();
@@ -95,6 +97,7 @@ private:
 	void setCoordinates(int unit);
 	void setFrameTo(FrameWidget *fw);
 	void setPatternTo(RectangleWidget *r);
+	void setTextFormatTo(LegendWidget *l);
 	void setText(const QString & t);
 
     QHttp *http;
@@ -116,8 +119,8 @@ private:
 	QCheckBox *keepAspectBox, *useFrameColorBox;
 	QSpinBox *boxTransparency, *boxFrameWidth;
 	PatternBox *patternBox;
-	QPushButton *frameApplyToBtn, *patternApplyToBtn;
-	QComboBox *frameApplyToBox, *patternApplyToBox;
+	QPushButton *frameApplyToBtn, *patternApplyToBtn, *textApplyToBtn;
+	QComboBox *frameApplyToBox, *patternApplyToBox, *textApplyToBox;
 	ColorButton *textColorBtn, *textBackgroundBtn;
 	QPushButton *textFontBtn;
 	QSpinBox *boxBackgroundTransparency;
@@ -125,7 +128,7 @@ private:
 	QPushButton *textDefaultBtn, *frameDefaultBtn, *rectangleDefaultBtn;
 	QCheckBox *autoUpdateTextBox;
 	QFont textFont;
-	
+
 	Graph *d_plot;
 	QWidget *d_widget;
 	WidgetType d_widget_type;

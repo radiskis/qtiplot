@@ -66,6 +66,8 @@ class MultiLayer: public MdiSubWindow
 
 public:
     MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WFlags f=0);
+	~MultiLayer();
+
 	QList<Graph *> layersList(){return graphsList;};
 	Graph *layer(int num);
 	int layerIndex(Graph *g){return graphsList.indexOf(g);};
@@ -96,7 +98,8 @@ public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
 
 	bool isEmpty();
-    void removeLayer();
+    bool removeLayer(Graph *g);
+    bool removeActiveLayer();
 	void confirmRemoveLayer();
 
 	Graph* activeLayer(){return active_graph;};
@@ -144,8 +147,7 @@ public slots:
 	void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 	void exportSVG(const QString& fname);
     void exportPDF(const QString& fname);
-	void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true,
-			QPrinter::PageSize pageSize = QPrinter::Custom);
+	void exportVector(const QString& fileName, int res = 0, bool color = true);
 
 	void copyAllLayers();
 	void print();
@@ -159,6 +161,8 @@ public slots:
 	void connectLayer(Graph *g);
 
 	void save(const QString& fn, const QString& geometry, bool = false);
+
+    bool hasSelectedLayers();
 
 signals:
 	void showEnrichementDialog();

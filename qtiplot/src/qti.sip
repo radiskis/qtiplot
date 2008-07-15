@@ -233,7 +233,7 @@ public:
 	if (sipIsErr == 0)
 		sipCpp->setCommand(col, *a1);
 %End
-	
+
 	QString comment(SIP_PYOBJECT);
 %MethodCode
   	sipIsErr = 0;
@@ -292,7 +292,7 @@ public:
   	CHECK_TABLE_ROW(a0);
 	if (sipIsErr == 0)
 		return Py_BuildValue("b",sipCpp->isRowSelected(row, a1));
- 
+
 %End
 
 	bool isColumnSelected(SIP_PYOBJECT, bool = false)/PyName=isColSelected/;
@@ -305,7 +305,7 @@ public:
 
     int firstSelectedColumn();
 	int numSelectedRows();
-	
+
 	void setSelectedCol(SIP_PYOBJECT);
 %MethodCode
   	sipIsErr = 0;
@@ -313,7 +313,7 @@ public:
 	if (sipIsErr == 0)
 		sipCpp->setSelectedCol(col);
 %End
-	
+
 	int selectedColumn();
 
 private:
@@ -412,7 +412,7 @@ public:
 	void importImage(const QString&);
 	void exportRasterImage(const QString&, int = 100);
 	void exportToFile(const QString&)  /PyName=export/;
-	void exportVector(const QString&, int = 0, bool = true, bool = true, QPrinter::PageSize = QPrinter::Custom);
+	void exportVector(const QString&, int = 0, bool = true);
 
 	void importASCII(const QString&, const QString&="\t", int=0, bool=false, bool=false,
 			const QString&="#", ImportMode = Overwrite, const QLocale& = QLocale(), int = 0, int = -1);
@@ -492,7 +492,7 @@ public:
   void setFont(const QFont&);
   void setOriginCoord(double, double);
   void setOrigin(int, int);
-  
+
   bool isAutoUpdateEnabled();
   void setAutoUpdate(bool);
 
@@ -640,11 +640,11 @@ public:
   void removeTitle();
 
   LegendWidget* newLegend(const QString& = QString());
-  void setLegend(const QString&); 		 
+  void setLegend(const QString&);
 
   LegendWidget* legend();
   void removeLegend();
-  
+
   LegendWidget* addText(LegendWidget*);
   void remove(LegendWidget*);
 
@@ -691,7 +691,7 @@ public:
   void replot();
 
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
-  void exportVector(const QString&, int = 0, bool = true, bool = true, QPrinter::PageSize = QPrinter::Custom);
+  void exportVector(const QString&, int = 0, bool = true);
   void exportToFile(const QString& fileName) /PyName=export/;
 
   void enableAutoscaling(bool = true);
@@ -741,6 +741,9 @@ public:
   Graph* layer(int num);
   Graph* addLayer(int = 0, int = 0, int = 0, int = 0);
 
+  bool removeLayer(Graph *g);
+  bool removeActiveLayer();
+
   void setCols(int);
   void setRows(int);
   void setSpacing (int, int);
@@ -754,7 +757,7 @@ public:
 
   void exportToFile(const QString& fileName) /PyName=export/;
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
-  void exportVector(const QString&, int = 0, bool = true, bool = true, QPrinter::PageSize = QPrinter::Custom);
+  void exportVector(const QString&, int = 0, bool = true);
 
 private:
   MultiLayer(const MultiLayer&);
@@ -1327,7 +1330,7 @@ public:
   void setFormula(const QString&);
 
   bool save(const QString&);
-  bool load(const QString&);	
+  bool load(const QString&);
 };
 
 class PluginFit : Fit

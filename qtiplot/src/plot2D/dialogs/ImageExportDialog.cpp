@@ -2,10 +2,8 @@
     File                 : ImageExportDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : QFileDialog extended with options for image export
 
  ***************************************************************************/
@@ -107,47 +105,6 @@ void ImageExportDialog::initAdvancedOptions()
 	d_color->setText(tr("&Export in &color"));
 	d_color->setChecked(app->d_export_color);
 	vector_layout->addWidget(d_color, 2, 0, 1, 2);
-	
-    d_standard_page = new QCheckBox();
-	d_standard_page->setText(tr("Custom &page size"));
-	vector_layout->addWidget(d_standard_page, 3, 0, 1, 2);
-
-	boxPageSize = new QComboBox();
-	boxPageSize->addItem("A0 - 841 x 1189 mm");
-	boxPageSize->addItem("A1 - 594 x 841 mm");
-	boxPageSize->addItem("A2 - 420 x 594 mm");
-	boxPageSize->addItem("A3 - 297 x 420 mm");
-	boxPageSize->addItem("A4 - 210 x 297 mm");
-	boxPageSize->addItem("A5 - 148 x 210 mm");
-	boxPageSize->addItem("A6 - 105 x 148 mm");
-	boxPageSize->addItem("A7 - 74 x 105 mm");
-	boxPageSize->addItem("A8 - 52 x 74 mm");
-	boxPageSize->addItem("A9 - 37 x 52 mm");
-	boxPageSize->addItem("B0 - 1030 x 1456 mm");
-	boxPageSize->addItem("B1 - 728 x 1030 mm");
-	boxPageSize->addItem("B2 - 515 x 728 mm");
-	boxPageSize->addItem("B3 - 364 x 515 mm");
-	boxPageSize->addItem("B4 - 257 x 364 mm");
-	boxPageSize->addItem("B5 - 182 x 257 mm");
-	boxPageSize->addItem("B6 - 128 x 182 mm");
-	boxPageSize->addItem("B7 - 91 x 128 mm");
-	boxPageSize->addItem("B8 - 64 x 91 mm");
-	boxPageSize->addItem("B9 - 45 x 64 mm");
-
-    setPageSize(app->d_export_vector_size);
-	d_standard_page->setChecked(app->d_export_vector_size != QPrinter::Custom);
-	boxPageSize->setEnabled(app->d_export_vector_size != QPrinter::Custom);
-	vector_layout->addWidget(boxPageSize, 3, 1, 1, 2);
-
-    connect(d_standard_page, SIGNAL(toggled(bool)), boxPageSize, SLOT(setEnabled(bool)));
-
-	d_keep_aspect = new QCheckBox();
-	d_keep_aspect->setText(tr("&Keep aspect ratio"));
-	d_keep_aspect->setChecked(app->d_keep_plot_aspect);
-	d_keep_aspect->setEnabled(app->d_export_vector_size != QPrinter::Custom);
-	vector_layout->addWidget(d_keep_aspect, 4, 0, 1, 2);
-	
-	connect(d_standard_page, SIGNAL(toggled(bool)), d_keep_aspect, SLOT(setEnabled(bool)));
 
 	d_raster_options = new QGroupBox();
 	QGridLayout *raster_layout = new QGridLayout(d_raster_options);
@@ -192,116 +149,9 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 
         app->d_export_resolution = d_resolution->value();
         app->d_export_color = d_color->isChecked();
-        app->d_export_vector_size = (int)pageSize();
-        app->d_keep_plot_aspect = d_keep_aspect->isChecked();
 	}
 
 	e->accept();
-}
-
-QPrinter::PageSize ImageExportDialog::pageSize() const
-{
-if (!d_standard_page->isChecked())
-    return QPrinter::Custom;
-
-QPrinter::PageSize size = QPrinter::A5;
-switch (boxPageSize->currentIndex())
-	{
-	case 0:
-		size = QPrinter::A0;
-	break;
-
-	case 1:
-		size = QPrinter::A1;
-	break;
-
-	case 2:
-		size = QPrinter::A2;
-	break;
-
-	case 3:
-		size = QPrinter::A3;
-	break;
-
-	case 4:
-		size = QPrinter::A4;
-	break;
-
-	case 5:
-		size = QPrinter::A5;
-	break;
-
-	case 6:
-		size = QPrinter::A6;
-	break;
-
-	case 7:
-		size = QPrinter::A7;
-	break;
-
-	case 8:
-		size = QPrinter::A8;
-	break;
-
-	case 9:
-		size = QPrinter::A9;
-	break;
-
-	case 10:
-		size = QPrinter::B0;
-	break;
-
-	case 11:
-		size = QPrinter::B1;
-	break;
-
-	case 12:
-		size = QPrinter::B2;
-	break;
-
-	case 13:
-		size = QPrinter::B3;
-	break;
-
-	case 14:
-		size = QPrinter::B4;
-	break;
-
-	case 15:
-		size = QPrinter::B5;
-	break;
-
-	case 16:
-		size = QPrinter::B6;
-	break;
-
-	case 17:
-		size = QPrinter::B7;
-	break;
-
-	case 18:
-		size = QPrinter::B8;
-	break;
-
-	case 19:
-		size = QPrinter::B9;
-	break;
-	}
-return size;
-}
-
-void ImageExportDialog::setPageSize(int size)
-{
-if (size == QPrinter::Custom)
-    return;
-if (!size)
-    boxPageSize->setCurrentIndex(4);
-else if (size == 1)
-    boxPageSize->setCurrentIndex(15);
-else if (size >= 5 && size <= 8)
-    boxPageSize->setCurrentIndex(size - 5);
-else if (size > 8 && size <= 23)
-    boxPageSize->setCurrentIndex(size - 4);
 }
 
 void ImageExportDialog::selectFilter(const QString & filter)

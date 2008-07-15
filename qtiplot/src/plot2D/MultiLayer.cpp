@@ -249,9 +249,9 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 	QSize size = re->size();
 
 	bool scaleLayerFonts = false;
-	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)		
-		QRect r = canvasChildrenRect();		
-        oldSize = QSize(r.width() + left_margin + right_margin, 
+	if(!oldSize.isValid()){// The old size is invalid when maximizing a window (why?)
+		QRect r = canvasChildrenRect();
+        oldSize = QSize(r.width() + left_margin + right_margin,
 						r.height() + top_margin + bottom_margin);
 		scaleLayerFonts = true;
 	}
@@ -281,12 +281,12 @@ void MultiLayer::confirmRemoveLayer()
 					tr("&Yes"), tr("&No"), tr("&Cancel"),
 					0, 2) ){
 			case 0:
-				removeLayer();
+				removeLayer(active_graph);
 				arrangeLayers(true, false);
 				break;
 
 			case 1:
-				removeLayer();
+				removeLayer(active_graph);
 				break;
 
 			case 2:
@@ -294,38 +294,48 @@ void MultiLayer::confirmRemoveLayer()
 				break;
 		}
 	} else
-		removeLayer();
+		removeLayer(active_graph);
 }
 
-void MultiLayer::removeLayer()
+bool MultiLayer::removeActiveLayer()
 {
+    return removeLayer(active_graph);
+}
+
+bool MultiLayer::removeLayer(Graph *g)
+{
+    if (!g)
+        return false;
+
+    int index = graphsList.indexOf(g);
+    if (index < 0 || index > graphsList.size())
+        return false;
+
 	//remove corresponding button
-	foreach(LayerButton* btn, buttonsList){
-		if (btn->isOn()){
-			buttonsList.removeAll(btn);
-			btn->close(true);
-			break;
-		}
-	}
+	LayerButton* btn = buttonsList.at(index);
+	if (btn)
+        btn->close(true);
+    buttonsList.removeAt(index);
 
 	int i = 0;
-	foreach(LayerButton* btn, buttonsList)//update the texts of the buttons
-		btn->setText(QString::number(++i));
+	foreach(LayerButton* btn, buttonsList){
+		btn->setText(QString::number(++i));//update the texts of the buttons
+		btn->setOn(false);
+    }
 
-	if (active_graph->zoomOn() || active_graph->activeTool())
+	if (g->zoomOn() || g->activeTool())
 		emit setPointerCursor();
 
-	int index = graphsList.indexOf(active_graph);
 	graphsList.removeAt(index);
-	active_graph->close();
+	g->close();
 	if(index >= graphsList.count())
 		index--;
-	
+
 	emit modifiedWindow(this);
 
 	if (graphsList.count() == 0){
 		active_graph = NULL;
-		return;
+		return true;
 	}
 
 	active_graph = (Graph*) graphsList.at(index);
@@ -334,10 +344,11 @@ void MultiLayer::removeLayer()
 		Graph *gr = (Graph *)graphsList.at(i);
 		if (gr == active_graph){
 			LayerButton *button = (LayerButton *)buttonsList.at(i);
-			button->setOn(TRUE);
+			button->setOn(true);
 			break;
 		}
 	}
+	return true;
 }
 
 void MultiLayer::setGraphGeometry(int x, int y, int w, int h)
@@ -653,8 +664,7 @@ void MultiLayer::exportPDF(const QString& fname)
 	exportVector(fname);
 }
 
-void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool keepAspect,
-			QPrinter::PageSize pageSize)
+void MultiLayer::exportVector(const QString& fileName, int res, bool color)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
@@ -685,51 +695,11 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, bool
 	printer.setOrientation(QPrinter::Portrait);
 
 	QRect canvasRect = d_canvas->rect();
-    if (pageSize == QPrinter::Custom){
-		printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
-        QPainter paint(&printer);
-		foreach (Graph *g, graphsList)
-        	g->print(&paint, g->geometry());
-		return;
-    }
 
-	printer.setPageSize(pageSize);
-
-	double canvas_aspect = double(canvasRect.width())/double(canvasRect.height());
-    double x_margin = 0, y_margin = 0, width = 0, height = 0;
-    if (keepAspect){// export should preserve plot aspect ratio
-        double page_aspect = double(printer.width())/double(printer.height());
-        if (page_aspect > canvas_aspect){
-            y_margin = (0.1/2.54)*printer.logicalDpiY(); // 1 mm margins
-            height = printer.height() - 2*y_margin;
-            width = height*canvas_aspect;
-            x_margin = 0.5*(printer.width() - width);
-        } else {
-            x_margin = (0.1/2.54)*printer.logicalDpiX(); // 1 mm margins
-            width = printer.width() - 2*x_margin;
-            height = width/canvas_aspect;
-            y_margin = 0.5*(printer.height() - height);
-        }
-	} else {
-	    x_margin = (0.1/2.54)*printer.logicalDpiX(); // 1 mm margins
-        y_margin = (0.1/2.54)*printer.logicalDpiY(); // 1 mm margins
-        width = printer.width() - 2*x_margin;
-        height = printer.height() - 2*y_margin;
-	}
-
-    double scaleFactorX = width/(double)canvasRect.width();
-    double scaleFactorY = height/(double)canvasRect.height();
-
+    printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
     QPainter paint(&printer);
-	foreach (Graph *g, graphsList){
-        QPoint pos = g->pos();
-        pos = QPoint(qRound(x_margin + pos.x()*scaleFactorX), qRound(y_margin + pos.y()*scaleFactorY));
-
-        int layer_width = qRound(g->frameGeometry().width()*scaleFactorX);
-        int layer_height = qRound(g->frameGeometry().height()*scaleFactorY);
-
-        g->print(&paint, QRect(pos, QSize(layer_width, layer_height)));
-    }
+    foreach (Graph *g, graphsList)
+        g->print(&paint, g->geometry());
 }
 
 void MultiLayer::exportSVG(const QString& fname)
@@ -930,7 +900,7 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
             --i;
             Graph *g = *i;
             if (g->hasSeletedItems()){
-                g->deselect();
+                //g->deselect();
                 return true;
             }
 
@@ -1238,4 +1208,20 @@ Graph* MultiLayer::layerAt(const QPoint& pos)
             return g;
 	}
 	return NULL;
+}
+
+bool MultiLayer::hasSelectedLayers()
+{
+    if (d_layers_selector)
+        return true;
+    return false;
+}
+
+MultiLayer::~MultiLayer()
+{
+	if(d_layers_selector)
+        d_layers_selector->setParent(NULL);
+
+	foreach(Graph *g, graphsList)
+        delete g;
 }

@@ -85,7 +85,7 @@ class LegendWidget;
 class ArrowMarker;
 class TextEditor;
 class AssociationsDialog;
-	
+
 /**
  * \brief QtiPlot's main window.
  *
@@ -234,7 +234,11 @@ public slots:
 	MultiLayer* multilayerPlot(const QStringList& colList);
 	void connectMultilayerPlot(MultiLayer *g);
 	void addLayer();
+	void addInsetLayer(bool curves = false);
+	void addInsetCurveLayer();
 	void deleteLayer();
+	void extractGraphs();
+    void extractLayers();
 
 	//! Creates a new spectrogram graph
   	MultiLayer* plotSpectrogram(Matrix *m, Graph::CurveType type);
@@ -426,6 +430,8 @@ public slots:
 	void plotVectXYXY();
 	void plotVectXYAM();
 	void plotBoxDiagram();
+	void plotDoubleYAxis();
+	void zoomRectanglePlot();
 
     //! Check whether a table is valid for a 3D plot and display an appropriate error if not
     bool validFor3DPlot(Table *table);
@@ -1045,8 +1051,6 @@ public:
 	bool d_export_col_names, d_export_table_selection, d_export_col_comment;
     //! Last selected filter in export image dialog
     QString d_image_export_filter;
-    bool d_keep_plot_aspect;
-    int d_export_vector_size;
     bool d_export_transparency;
     int d_export_quality;
     int d_export_resolution;
@@ -1221,13 +1225,14 @@ private:
 	QAction *actionPlotHorizontalBars, *actionPlotArea, *actionPlotPie, *actionPlotVectXYAM, *actionPlotVectXYXY;
     QAction *actionPlotHistogram, *actionPlotStackedHistograms, *actionPlot2VerticalLayers, *actionPlot2HorizontalLayers, *actionPlot4Layers, *actionPlotStackedLayers;
     QAction *actionPlot3DRibbon, *actionPlot3DBars, *actionPlot3DScatter, *actionPlot3DTrajectory;
+    QAction *actionPlotDoubleYAxis, *actionAddInsetLayer, *actionAddInsetCurveLayer;
     QAction *actionShowColStatistics, *actionShowRowStatistics, *actionShowIntDialog, *actionIntegrate;
     QAction *actionDifferentiate, *actionFitLinear, *actionShowFitPolynomDialog;
     QAction *actionShowExpDecayDialog, *actionShowTwoExpDecayDialog, *actionShowExpDecay3Dialog;
     QAction *actionFitExpGrowth, *actionFitSigmoidal, *actionFitGauss, *actionFitLorentz, *actionShowFitDialog;
     QAction *actionShowAxisDialog, *actionShowTitleDialog;
     QAction *actionShowColumnOptionsDialog, *actionShowColumnValuesDialog, *actionShowColsDialog, *actionShowRowsDialog;
-    QAction *actionTableRecalculate;
+    QAction *actionTableRecalculate, *actionExtractGraphs, *actionExtractLayers;
     QAction *actionAbout, *actionShowHelp, *actionChooseHelpFolder;
     QAction *actionRename, *actionCloseWindow, *actionConvertTable;
     QAction *actionAddColToTable, *actionDeleteLayer, *actionInterpolate;
@@ -1256,7 +1261,7 @@ private:
 	QAction *actionNoteExecute, *actionNoteExecuteAll, *actionNoteEvaluate, *actionSaveNote;
 	QAction *actionShowScriptWindow, *actionFrequencyCount;
 	QAction *actionAnimate, *actionPerspective, *actionFitFrame, *actionResetRotation;
-    QAction *actionDeleteRows, *actionDrawPoints;
+    QAction *actionDeleteRows, *actionDrawPoints, *actionAddZoomPlot;
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints;
 	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;

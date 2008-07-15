@@ -87,19 +87,19 @@ public:
 
 	Qt::PenStyle frameLineStyle(){return d_frame_pen.style();};
 	void setFrameLineStyle(const Qt::PenStyle& s){d_frame_pen.setStyle(s);};
-	
+
 	QColor frameColor(){return d_frame_pen.color();};
 	void setFrameColor(const QColor& c){d_frame_pen.setColor(c);};
-	
+
 	QColor frameWidth(){return d_frame_pen.width();};
 	void setFrameWidth(int w){d_frame_pen.setWidth(w);};
 
 	QColor backgroundColor(){return palette().color(QPalette::Window);};
 	void setBackgroundColor(const QColor& c){QPalette pal = palette(); pal.setColor(QPalette::Window, c); setPalette(pal);};
-	
+
 	QBrush brush(){return d_brush;};
 	void setBrush(const QBrush& b){d_brush = b;};
-		
+
 	int angle(){return d_angle;};
 	void setAngle(int ang){d_angle = ang;};
 
@@ -116,6 +116,7 @@ public:
 signals:
 	void showDialog();
 	void showMenu();
+	void changedCoordinates(const QRectF&);
 
 protected:
     //! Returns the x axis coordinate of the top left corner based on the pixel value

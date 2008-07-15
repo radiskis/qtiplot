@@ -199,12 +199,13 @@ class Graph: public QwtPlot
 
 		FrameWidget* add(FrameWidget* fw, bool copy = true);
 		void remove(FrameWidget*);
-		
+
 		QRect boundingRect();
 		void raiseEnrichements();
 
 	public slots:
 		void copy(Graph* g);
+		void copyCurves(Graph* g);
 
 		//! \name Pie Curves
 		//@{
@@ -292,8 +293,7 @@ class Graph: public QwtPlot
 #ifdef EMF_OUTPUT
 		void exportEMF(const QString& fname);
 #endif
-		void exportVector(const QString& fileName, int res = 0, bool color = true, bool keepAspect = true,
-			QPrinter::PageSize pageSize = QPrinter::Custom);
+		void exportVector(const QString& fileName, int res = 0, bool color = true);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 		//@}
 
@@ -332,6 +332,7 @@ class Graph: public QwtPlot
 				double stepBeforeBreak = 0.0, double stepAfterBreak = 0.0, int minTicksBeforeBreak = 4,
 				int minTicksAfterBreak = 4, bool log10AfterBreak = false, int breakWidth = 4, bool breakDecoration = true);
 		double axisStep(int axis){return d_user_step[axis];};
+		void setCanvasCoordinates(const QRectF&);
 
 		//! \name Curves Layout
 		//@{
@@ -386,7 +387,7 @@ class Graph: public QwtPlot
 		LegendWidget* addTimeStamp();
 		void removeLegendItem(int index);
 		void insertLegend(const QStringList& lst, int fileVersion);
-		
+
 		LegendWidget* newLegend(const QString& text = QString());
 		//! Creates a new legend text using the curves titles
 		QString legendText();
@@ -398,7 +399,7 @@ class Graph: public QwtPlot
 		void setLegend(const QString&);
 		void removeLegend();
 		//@}
-		
+
 		//! \name Line Markers
 		//@{
 		ArrowMarker* addArrow(ArrowMarker* mrk);
@@ -580,7 +581,7 @@ class Graph: public QwtPlot
 
 		//! \name User-defined Functions
 		//@{
-		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var, 
+		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var,
 			double start, double end, int points, const QMap<QString, double>& constants);
 		FunctionCurve* addFunction(const QStringList &formulas, double start, double end, int points = 100, const QString &var = "x", int type = 0, const QString& title = QString::null);
 		//! Used when reading from a project file with version < 0.9.5.
