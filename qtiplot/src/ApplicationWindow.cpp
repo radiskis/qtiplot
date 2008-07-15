@@ -2204,7 +2204,7 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 	customToolBars(plot);
 }
 
-void ApplicationWindow::exportMatrix()
+void ApplicationWindow::exportMatrix(const QString& exportFilter)
 {
 	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
 	if (!m)
@@ -2212,7 +2212,12 @@ void ApplicationWindow::exportMatrix()
 
 	ImageExportDialog *ied = new ImageExportDialog(this, m!=NULL, d_extended_export_dialog);
 	ied->setDir(workingDir);
-    ied->selectFilter(d_image_export_filter);
+	ied->selectFile(m->objectName());
+	if (exportFilter.isEmpty())
+    	ied->selectFilter(d_image_export_filter);
+	else 
+		ied->selectFilter(exportFilter);
+	
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	workingDir = ied->directory().path();
@@ -4949,7 +4954,7 @@ void ApplicationWindow::saveSettings()
 	settings.endGroup();
 }
 
-void ApplicationWindow::exportGraph()
+void ApplicationWindow::exportGraph(const QString& exportFilter)
 {
 	MdiSubWindow *w = activeWindow();
 	if (!w)
@@ -4970,8 +4975,13 @@ void ApplicationWindow::exportGraph()
 		return;
 
 	ImageExportDialog *ied = new ImageExportDialog(this, plot2D!=NULL, d_extended_export_dialog);
-	ied->setDir(workingDir);
-    ied->selectFilter(d_image_export_filter);
+	ied->setDirectory(workingDir);
+	ied->selectFile(w->objectName());
+    if (exportFilter.isEmpty())
+    	ied->selectFilter(d_image_export_filter);
+	else
+		ied->selectFilter(exportFilter);
+	
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	workingDir = ied->directory().path();
@@ -5027,6 +5037,7 @@ void ApplicationWindow::exportLayer()
 
 	ImageExportDialog *ied = new ImageExportDialog(this, g!=NULL, d_extended_export_dialog);
 	ied->setDir(workingDir);
+	ied->selectFile(w->objectName());
 	ied->selectFilter(d_image_export_filter);
 	if ( ied->exec() != QDialog::Accepted )
 		return;
@@ -6798,13 +6809,22 @@ void ApplicationWindow::exportPDF()
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
+	if(w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"));
+			tr("<h4>There are no plot layers available in this window.</h4>"));
+		return;
+	}
+		
+	if (w->isA("MultiLayer")){
+		exportGraph("*.pdf");
+		return;
+	} else if (w->isA("Matrix")){
+		exportMatrix("*.pdf");
 		return;
 	}
 
-    QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"), workingDir, "*.pdf");
+    QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"), 
+					workingDir + "/" + w->objectName(), "*.pdf");
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
 		QString baseName = fi.fileName();

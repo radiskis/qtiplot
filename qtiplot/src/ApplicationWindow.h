@@ -344,7 +344,7 @@ public slots:
 	void rotateMatrixMinus90();
 	void viewMatrixImage();
 	void viewMatrixTable();
-	void exportMatrix();
+	void exportMatrix(const QString& exportFilter = QString::null);
 	void setMatrixGrayScale();
 	void setMatrixRainbowScale();
 	void viewMatrixColumnRow();
@@ -453,7 +453,7 @@ public slots:
 	//! \name Export and Print
 	//@{
 	void exportLayer();
-	void exportGraph();
+	void exportGraph(const QString& exportFilter = QString::null);
 	void exportAllGraphs();
 	void exportPDF();
 	void print();

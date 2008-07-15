@@ -1633,9 +1633,15 @@ void Graph::selectTitle(bool select)
     }
 }
 
-void Graph::removeTitle()
+void Graph::clearTitle()
 {
 	setTitle(" ");
+	emit modifiedGraph();
+}
+
+void Graph::removeTitle()
+{
+	setTitle("");
 	emit modifiedGraph();
 }
 
@@ -3750,8 +3756,9 @@ void Graph::showPlotErrorMessage(QWidget *parent, const QStringList& emptyColumn
 void Graph::showTitleContextMenu()
 {
 	QMenu titleMenu(this);
-	titleMenu.insertItem(QPixmap(cut_xpm), tr("&Cut"),this, SLOT(cutTitle()));
+	titleMenu.insertItem(QPixmap(cut_xpm), tr("Cu&t"),this, SLOT(cutTitle()));
 	titleMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"),this, SLOT(copyTitle()));
+	titleMenu.insertItem(tr("C&lear"),this, SLOT(clearTitle()));
 	titleMenu.insertItem(tr("&Delete"),this, SLOT(removeTitle()));
 	titleMenu.insertSeparator();
 	titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(viewTitleDialog()));
@@ -3770,6 +3777,15 @@ void Graph::copyTitle()
 }
 
 void Graph::removeAxisTitle()
+{
+	int selectedAxis = scalePicker->currentAxis()->alignment();
+	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
+  	//QwtScaleDraw::alignment and QwtPlot::Axis
+  	((QwtPlot *)this)->setAxisTitle(axis, "");//due to the plot layout updates, we must always have a non empty title
+	emit modifiedGraph();
+}
+
+void Graph::clearAxisTitle()
 {
 	int selectedAxis = scalePicker->currentAxis()->alignment();
 	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
@@ -3796,8 +3812,9 @@ void Graph::copyAxisTitle()
 void Graph::showAxisTitleMenu()
 {
 	QMenu titleMenu(this);
-	titleMenu.insertItem(QPixmap(cut_xpm), tr("&Cut"), this, SLOT(cutAxisTitle()));
+	titleMenu.insertItem(QPixmap(cut_xpm), tr("Cu&t"), this, SLOT(cutAxisTitle()));
 	titleMenu.insertItem(QPixmap(copy_xpm), tr("&Copy"), this, SLOT(copyAxisTitle()));
+	titleMenu.insertItem(tr("C&lear"),this, SLOT(clearAxisTitle()));
 	titleMenu.insertItem(tr("&Delete"),this, SLOT(removeAxisTitle()));
 	titleMenu.insertSeparator();
 	titleMenu.insertItem(tr("&Properties..."), this, SIGNAL(showAxisTitleDialog()));
