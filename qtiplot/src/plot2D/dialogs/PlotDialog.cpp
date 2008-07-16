@@ -362,38 +362,46 @@ void PlotDialog::initLayerPage()
     boxBkgLayout->addWidget( new QLabel(tr( "Width" )), 2, 2);
     boxBorderWidth = new QSpinBox();
     boxBkgLayout->addWidget( boxBorderWidth, 2, 3);
-    boxBkgLayout->setRowStretch( 4, 1 );
 
-    QGroupBox * box4 = new QGroupBox(QString());
-    QGridLayout * box4Layout = new QGridLayout( box4 );
-
-    box4Layout->addWidget( new QLabel(tr( "Margin" )), 0, 0 );
-    boxMargin = new QSpinBox();
+	boxAntialiasing = new QCheckBox(tr("Antialiasing"));
+    boxBkgLayout->addWidget( boxAntialiasing, 3, 0);
+	
+	boxBkgLayout->addWidget( new QLabel(tr( "Margin" )), 3, 2);
+	boxMargin = new QSpinBox();
     boxMargin->setRange( 0, 1000 );
     boxMargin->setSingleStep(5);
-    box4Layout->addWidget( boxMargin, 0, 1 );
+    boxBkgLayout->addWidget( boxMargin, 3, 3);
 
-    boxAntialiasing = new QCheckBox(tr("Antialiasing"));
-    box4Layout->addWidget( boxAntialiasing, 1, 1 );
+	boxBkgLayout->setRowStretch(4, 1);
 
-    boxAll = new QCheckBox(tr("Apply to all layers"));
-    box4Layout->addWidget( boxAll, 2, 1 );
-    box4Layout->setRowStretch( 3, 1 );
+    QVBoxLayout *vl = new QVBoxLayout();
 
+	QLabel *l = new QLabel(tr("Apply &to..."));
+	vl->addWidget(l);
+
+	backgroundApplyToBox = new QComboBox();
+	backgroundApplyToBox->insertItem(tr("Layer"));
+    backgroundApplyToBox->insertItem(tr("Window"));
+    backgroundApplyToBox->insertItem(tr("All Windows"));
+	vl->addWidget(backgroundApplyToBox);
+	vl->addStretch();
+	
+	l->setBuddy(backgroundApplyToBox);
+    
     QHBoxLayout * hl = new QHBoxLayout( layerPage );
     hl->addWidget(boxBkg);
-    hl->addWidget(box4);
+    hl->addLayout(vl);
 
     privateTabWidget->addTab(layerPage, tr("Layer"));
 
 	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateBackgroundTransparency(int)));
 	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateCanvasTransparency(int)));
-	connect(boxAntialiasing, SIGNAL(toggled(bool)), this, SLOT(updateAntialiasing(bool)));
-	connect(boxMargin, SIGNAL(valueChanged (int)), this, SLOT(changeMargin(int)));
-	connect(boxBorderColor, SIGNAL(colorChanged()), this, SLOT(pickBorderColor()));
-	connect(boxBackgroundColor, SIGNAL(colorChanged()), this, SLOT(pickBackgroundColor()));
-	connect(boxCanvasColor, SIGNAL(colorChanged()), this, SLOT(pickCanvasColor()));
-	connect(boxBorderWidth,SIGNAL(valueChanged (int)), this, SLOT(updateBorder(int)));
+	connect(boxAntialiasing, SIGNAL(toggled(bool)), this, SLOT(applyLayerFormat()));
+	connect(boxMargin, SIGNAL(valueChanged (int)), this, SLOT(applyLayerFormat()));
+	connect(boxBorderColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
+	connect(boxBackgroundColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
+	connect(boxCanvasColor, SIGNAL(colorChanged()), this, SLOT(applyLayerFormat()));
+	connect(boxBorderWidth, SIGNAL(valueChanged (int)), this, SLOT(applyLayerFormat()));
 }
 
 void PlotDialog::initLayerGeometryPage()
@@ -2095,6 +2103,75 @@ void PlotDialog::updateEndPointColumns(const QString& text)
 	yEndBox->setCurrentText(table + "_" + cols[3].remove("(Y)").remove("(M)"));
 }
 
+void PlotDialog::applyLayerFormat()
+{
+	if (privateTabWidget->currentWidget() != layerPage)
+		return;
+	
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(backgroundApplyToBox->currentIndex()){
+		case 0://this layer
+		{
+			LayerItem *item = (LayerItem *)listBox->currentItem();
+        	if (!item)
+            	return;
+		
+        	Graph *g = item->graph();
+			if (!g)
+				return;
+		
+			applyFormatToLayer(g);
+		}
+		break;
+
+		case 1://this window
+		{
+			QList<Graph *> layersLst = d_ml->layersList();
+			foreach(Graph *g, layersLst)
+				applyFormatToLayer(g);
+		}
+		break;
+
+		case 2://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+				
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applyFormatToLayer(g);
+			}
+		}
+		break;
+
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void PlotDialog::applyFormatToLayer(Graph *g)
+{
+	if (!g)
+		return;
+	
+	g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
+	g->setMargin(boxMargin->value());
+
+	QColor c = boxBackgroundColor->color();
+	c.setAlpha(boxBackgroundTransparency->value());
+	g->setBackgroundColor(c);
+
+	c = boxCanvasColor->color();
+	c.setAlpha(boxCanvasTransparency->value());
+	g->setCanvasBackground(c);
+
+	g->setAntialiasing(boxAntialiasing->isChecked());
+}
+
 bool PlotDialog::acceptParams()
 {
     if (privateTabWidget->currentWidget() == fontsPage){
@@ -2104,27 +2181,10 @@ bool PlotDialog::acceptParams()
 		d_ml->setScaleLayersOnPrint(boxScaleLayers->isChecked());
 		d_ml->printCropmarks(boxPrintCrops->isChecked());
 		return true;
-    } else if (privateTabWidget->currentWidget() == layerPage){
-		if (!boxAll->isChecked())
-			return true;
-
-		QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers){
-            g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
-            g->setMargin(boxMargin->value());
-
-            QColor c = boxBackgroundColor->color();
-            c.setAlpha(boxBackgroundTransparency->value());
-            g->setBackgroundColor(c);
-
-            c = boxCanvasColor->color();
-            c.setAlpha(boxCanvasTransparency->value());
-            g->setCanvasBackground(c);
-
-            g->setAntialiasing(boxAntialiasing->isChecked());
-		}
+    } else if (privateTabWidget->currentWidget() == layerPage)
+		//all changes are already applied by the different GUI objects in the layer tab
 		return true;
-	} else if (privateTabWidget->currentWidget() == layerGeometryPage){
+	else if (privateTabWidget->currentWidget() == layerGeometryPage){
 		LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return false;
@@ -2590,214 +2650,45 @@ void PlotDialog::updateTreeWidgetItem(QTreeWidgetItem *item)
 void PlotDialog::updateBackgroundTransparency(int alpha)
 {
 	boxBackgroundColor->setEnabled(alpha);
-    QColor c = boxBackgroundColor->color();
-    c.setAlpha(boxBackgroundTransparency->value());
-
-	if (boxAll->isChecked()){
-		QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers)
-            g->setBackgroundColor(c);
-	} else {
-	    LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return;
-        Graph *g = item->graph();
-		if (g)
-			g->setBackgroundColor(c);
-	}
+	applyLayerFormat();
 }
 
 void PlotDialog::updateCanvasTransparency(int alpha)
 {
     boxCanvasColor->setEnabled(alpha);
-    QColor c = boxCanvasColor->color();
-    c.setAlpha(boxCanvasTransparency->value());
-
-	if (boxAll->isChecked()){
-		QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers)
-            g->setCanvasBackground(c);
-	} else {
-		LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return;
-        Graph *g = item->graph();
-		if (g)
-			g->setCanvasBackground(c);
-	}
-}
-
-void PlotDialog::pickCanvasColor()
-{
-	QColor c = boxCanvasColor->color();
-    c.setAlpha(boxCanvasTransparency->value());
-
-	if (boxAll->isChecked()){
-		QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers){
-            g->setCanvasBackground(c);
-            g->replot();
-        }
-	} else {
-		LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return;
-        Graph *g = item->graph();
-		if (g){
-			g->setCanvasBackground(c);
-			g->replot();
-		}
-	}
-}
-
-void PlotDialog::pickBackgroundColor()
-{
-	QColor c = boxBackgroundColor->color();
-    c.setAlpha(boxBackgroundTransparency->value());
-
-	if (boxAll->isChecked()){
-		QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers){
-            g->setBackgroundColor(c);
-            g->replot();
-		}
-	} else {
-		LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return;
-        Graph *g = item->graph();
-		if (g){
-			g->setBackgroundColor(c);
-			g->replot();
-		}
-	}
-}
-
-void PlotDialog::pickBorderColor()
-{
-	if (boxAll->isChecked()){
-		QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers)
-            g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
-	} else {
-		LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return;
-        Graph *g = item->graph();
-		if (g)
-			g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
-	}
-	d_ml->notifyChanges();
-}
-
-void PlotDialog::updateAntialiasing(bool on)
-{
-	if (privateTabWidget->currentWidget() != layerPage)
-		return;
-
-	if (boxAll->isChecked())
-	{
-		QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers)
-            g->setAntialiasing(on);
-	}
-	else
-	{
-		LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return;
-        Graph *g = item->graph();
-		if (g)
-			g->setAntialiasing(on);
-	}
-}
-
-void PlotDialog::updateBorder(int width)
-{
-	if (privateTabWidget->currentWidget() != layerPage)
-		return;
-
-	if (boxAll->isChecked())
-	{
-		QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers)
-            g->setFrame(width, boxBorderColor->color());
-	}
-	else
-	{
-		LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return;
-        Graph *g = item->graph();
-		if (g)
-			g->setFrame(width, boxBorderColor->color());
-	}
-	d_ml->notifyChanges();
-}
-
-void PlotDialog::changeMargin(int width)
-{
-	if (privateTabWidget->currentWidget() != layerPage)
-		return;
-
-    if (boxAll->isChecked()){
-        QList<Graph *> layers = d_ml->layersList();
-        foreach(Graph *g, layers)
-            g->setMargin(width);
-    } else {
-        LayerItem *item = (LayerItem *)listBox->currentItem();
-        if (!item)
-            return;
-
-        Graph *g = item->graph();
-        if (g)
-            g->setMargin(width);
-    }
-    d_ml->notifyChanges();
+	applyLayerFormat();
 }
 
 void PlotDialog::setTitlesFont()
 {
 	bool ok;
 	QFont font = QFontDialog::getFont(&ok,titleFont,this);
-	if ( ok ) {
+	if ( ok )
 		titleFont = font;
-	} else {
-		return;
-	}
 }
 
 void PlotDialog::setAxesLabelsFont()
 {
 	bool ok;
 	QFont font = QFontDialog::getFont(&ok,axesFont,this);
-	if ( ok ) {
+	if ( ok )
 		axesFont = font;
-	} else {
-		return;
-	}
 }
 
 void PlotDialog::setAxesNumbersFont()
 {
 	bool ok;
 	QFont font = QFontDialog::getFont(&ok,numbersFont,this);
-	if ( ok ) {
+	if ( ok )
 		numbersFont = font;
-	} else {
-		return;
-	}
 }
 
 void PlotDialog::setLegendsFont()
 {
 	bool ok;
 	QFont font = QFontDialog::getFont(&ok, legendFont,this);
-	if ( ok ) {
+	if ( ok )
 		legendFont = font;
-	} else {
-		return;
-	}
 }
 
 void PlotDialog::initFonts(const QFont& titlefont, const QFont& axesfont, const QFont& numbersfont, const QFont& legendfont)
