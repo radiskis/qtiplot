@@ -271,20 +271,16 @@ protected slots:
     void updateTreeWidgetItem(QTreeWidgetItem *item);
     void updateBackgroundTransparency(int alpha);
     void updateCanvasTransparency(int alpha);
-    void updateAntialiasing(bool on);
-    void updateBorder(int width);
-	void pickBackgroundColor();
-	void pickCanvasColor();
-	void pickBorderColor();
-	void changeMargin(int);
 	void setTitlesFont();
 	void setAxesLabelsFont();
 	void setAxesNumbersFont();
 	void setLegendsFont();
 	void editCurve();
 	void chooseLabelsFont();
+	void applyLayerFormat();
 
 private:
+	void applyFormatToLayer(Graph *g);
     int labelsAlignment();
 	void closeEvent(QCloseEvent* e);
 
@@ -323,7 +319,7 @@ private:
 	ColorMapEditor *colorMapEditor;
     QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage;
     QTreeWidget* listBox;
-    QCheckBox *boxAntialiasing, *boxAll, *boxScaleLayers, *boxPrintCrops;
+    QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops;
     ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxMargin;
 	QSpinBox *boxRadius;
@@ -403,6 +399,7 @@ private:
 	QWidget *pieGeometryPage;
 	
 	QComboBox *unitBox;
+	QComboBox *backgroundApplyToBox;
 };
 
 /*****************************************************************************
