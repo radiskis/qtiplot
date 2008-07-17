@@ -55,7 +55,7 @@ class TextFormatButtons;
 class DoubleSpinBox;
 class Grid;
 class PenStyleBox;
-	
+
 //! General plot options dialog
 /**
  * Remark: Don't use this dialog as a non modal dialog!
@@ -105,7 +105,6 @@ private slots:
 	void customAxisFont();
 	void showAxis();
 	void updateShowBox(int axis);
-	void drawFrame(bool framed);
 	void pickAxisColor();
 	void pickAxisNumColor();
 	void updateAxisColor(int);
@@ -117,7 +116,6 @@ private slots:
 	void updateMajTicksType(int);
 	void updateMinTicksType(int);
 	void updateGrid();
-	void updateFrame(int);
 	void setLabelsNumericFormat(int);
 	void updateLabelsFormat(int);
 	void showAxisFormatOptions(int format);
@@ -125,14 +123,14 @@ private slots:
 	void changeBaselineDist(int baseline);
 	void changeMinorTicksLength (int minLength);
 	void changeMajorTicksLength (int majLength);
-	void pickCanvasFrameColor();
-	void changeAxesLinewidth (int);
-	void drawAxesBackbones (bool);
 	void pageChanged ( QWidget *page);
 	void showAxis(int, int, const QString&, bool, int, int, bool,
 				  const QColor&, int, int, int, int, const QString&, const QColor&);
+    void applyCanvasFormat();
+    void setFrameDefaultValues();
 
 protected:
+    void applyCanvasFormatTo(Graph *g);
 	//! generate UI for the axes page
 	void initAxesPage();
 	//! generate UI for the scales page
@@ -208,6 +206,8 @@ protected:
   	QWidget* lastPage;
     QDateTimeEdit *boxStartDateTime, *boxEndDateTime;
     QTimeEdit *boxStartTime, *boxEndTime;
+    QComboBox *canvasFrameApplyToBox;
+    QPushButton *frameDefaultBtn;
 };
 
 #endif

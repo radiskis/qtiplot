@@ -365,7 +365,7 @@ void PlotDialog::initLayerPage()
 
 	boxAntialiasing = new QCheckBox(tr("Antialiasing"));
     boxBkgLayout->addWidget( boxAntialiasing, 3, 0);
-	
+
 	boxBkgLayout->addWidget( new QLabel(tr( "Margin" )), 3, 2);
 	boxMargin = new QSpinBox();
     boxMargin->setRange( 0, 1000 );
@@ -376,6 +376,10 @@ void PlotDialog::initLayerPage()
 
     QVBoxLayout *vl = new QVBoxLayout();
 
+    layerDefaultBtn = new QPushButton(tr("Set As &Default"));
+    connect(layerDefaultBtn, SIGNAL(clicked()), this, SLOT(setLayerDefaultValues()));
+	vl->addWidget(layerDefaultBtn);
+
 	QLabel *l = new QLabel(tr("Apply &to..."));
 	vl->addWidget(l);
 
@@ -385,9 +389,9 @@ void PlotDialog::initLayerPage()
     backgroundApplyToBox->insertItem(tr("All Windows"));
 	vl->addWidget(backgroundApplyToBox);
 	vl->addStretch();
-	
+
 	l->setBuddy(backgroundApplyToBox);
-    
+
     QHBoxLayout * hl = new QHBoxLayout( layerPage );
     hl->addWidget(boxBkg);
     hl->addLayout(vl);
@@ -2107,7 +2111,7 @@ void PlotDialog::applyLayerFormat()
 {
 	if (privateTabWidget->currentWidget() != layerPage)
 		return;
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	switch(backgroundApplyToBox->currentIndex()){
 		case 0://this layer
@@ -2115,11 +2119,11 @@ void PlotDialog::applyLayerFormat()
 			LayerItem *item = (LayerItem *)listBox->currentItem();
         	if (!item)
             	return;
-		
+
         	Graph *g = item->graph();
 			if (!g)
 				return;
-		
+
 			applyFormatToLayer(g);
 		}
 		break;
@@ -2139,7 +2143,7 @@ void PlotDialog::applyLayerFormat()
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
-				
+
 				QList<Graph *> layersLst = ml->layersList();
 				foreach(Graph *g, layersLst)
 					applyFormatToLayer(g);
@@ -2157,7 +2161,7 @@ void PlotDialog::applyFormatToLayer(Graph *g)
 {
 	if (!g)
 		return;
-	
+
 	g->setFrame(boxBorderWidth->value(), boxBorderColor->color());
 	g->setMargin(boxMargin->value());
 
@@ -2809,6 +2813,25 @@ void PlotDialog::displayCoordinates(int unit, Graph *g)
 
 	aspect_ratio = boxLayerWidth->value()/boxLayerHeight->value();
 }
+
+void PlotDialog::setLayerDefaultValues()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+    app->d_graph_background_color = boxBackgroundColor->color();
+	app->d_graph_background_opacity = boxBackgroundTransparency->value();
+	app->d_graph_canvas_color = boxCanvasColor->color();
+	app->d_graph_canvas_opacity = boxCanvasTransparency->value();
+	app->d_graph_border_color = boxBorderColor->color();
+	app->d_graph_border_width = boxBorderWidth->value();
+	app->defaultPlotMargin = boxMargin->value();
+	app->antialiasing2DPlots = boxAntialiasing->isChecked();
+
+	app->saveSettings();
+}
+
 /*****************************************************************************
  *
  * Class LayerItem
