@@ -59,7 +59,7 @@ class ColorMapEditor;
 class QwtPlotItem;
 class DoubleSpinBox;
 class PenStyleBox;
-	
+
 static const char* folder_closed[]={
     "16 16 9 1",
     "g c #808080",
@@ -278,6 +278,7 @@ protected slots:
 	void editCurve();
 	void chooseLabelsFont();
 	void applyLayerFormat();
+	void setLayerDefaultValues();
 
 private:
 	void applyFormatToLayer(Graph *g);
@@ -397,9 +398,10 @@ private:
 	QWidget *pieLabelsPage;
     QSpinBox *boxPieOffset;
 	QWidget *pieGeometryPage;
-	
+
 	QComboBox *unitBox;
 	QComboBox *backgroundApplyToBox;
+	QPushButton *layerDefaultBtn;
 };
 
 /*****************************************************************************

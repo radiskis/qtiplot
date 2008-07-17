@@ -1800,77 +1800,50 @@ void AxesDialog::initFramePage()
 
     boxAxesLayout->setRowStretch( 4, 1 );
 
-    QHBoxLayout * mainLayout = new QHBoxLayout( frame );
-    mainLayout->addWidget(boxFramed);
-    mainLayout->addWidget(boxAxes);
+    QVBoxLayout *vl = new QVBoxLayout();
+
+    frameDefaultBtn = new QPushButton(tr("Set As &Default"));
+    connect(frameDefaultBtn, SIGNAL(clicked()), this, SLOT(setFrameDefaultValues()));
+	vl->addWidget(frameDefaultBtn);
+
+	QLabel *l = new QLabel(tr("Apply &to..."));
+	vl->addWidget(l);
+
+	canvasFrameApplyToBox = new QComboBox();
+	canvasFrameApplyToBox->insertItem(tr("Layer"));
+    canvasFrameApplyToBox->insertItem(tr("Window"));
+    canvasFrameApplyToBox->insertItem(tr("All Windows"));
+	vl->addWidget(canvasFrameApplyToBox);
+	vl->addStretch();
+
+	l->setBuddy(canvasFrameApplyToBox);
+
+    QHBoxLayout * mainLayout = new QHBoxLayout(frame);
+    mainLayout->addWidget(boxFramed, 1);
+    mainLayout->addWidget(boxAxes, 1);
+    mainLayout->addLayout(vl);
 
     generalDialog->addTab(frame, tr( "General" ) );
 
-	connect(boxFrameColor, SIGNAL(colorChanged()), this, SLOT(pickCanvasFrameColor()));
-	connect(boxBackbones, SIGNAL(toggled(bool)), this, SLOT(drawAxesBackbones(bool)));
-	connect(boxFramed, SIGNAL(toggled(bool)), this, SLOT(drawFrame(bool)));
-	connect(boxFrameWidth, SIGNAL(valueChanged (int)), this, SLOT(updateFrame(int)));
-	connect(boxAxesLinewidth, SIGNAL(valueChanged (int)), this, SLOT(changeAxesLinewidth(int)));
+	connect(boxFrameColor, SIGNAL(colorChanged()), this, SLOT(applyCanvasFormat()));
+	connect(boxBackbones, SIGNAL(toggled(bool)), this, SLOT(applyCanvasFormat()));
+	connect(boxFramed, SIGNAL(toggled(bool)), this, SLOT(applyCanvasFormat()));
+	connect(boxFrameWidth, SIGNAL(valueChanged (int)), this, SLOT(applyCanvasFormat()));
+	connect(boxAxesLinewidth, SIGNAL(valueChanged (int)), this, SLOT(applyCanvasFormat()));
 	connect(boxMajorTicksLength, SIGNAL(valueChanged (int)), this, SLOT(changeMajorTicksLength(int)));
 	connect(boxMinorTicksLength, SIGNAL(valueChanged (int)), this, SLOT(changeMinorTicksLength(int)));
 }
 
 void AxesDialog::changeMinorTicksLength (int minLength)
 {
-	if (generalDialog->currentWidget() != frame)
-		return;
-
-    d_graph->changeTicksLength(minLength, boxMajorTicksLength->value());
+	applyCanvasFormat();
 	boxMajorTicksLength->setMinValue(minLength);
 }
 
 void AxesDialog::changeMajorTicksLength (int majLength)
 {
-	if (generalDialog->currentWidget() != frame)
-		return;
-
-    d_graph->changeTicksLength(boxMinorTicksLength->value(), majLength);
+	applyCanvasFormat();
 	boxMinorTicksLength->setMaxValue(majLength);
-}
-
-void AxesDialog::drawAxesBackbones(bool draw)
-{
-	if (generalDialog->currentWidget() != frame)
-		return;
-
-	d_graph->drawAxesBackbones(draw);
-}
-
-void AxesDialog::changeAxesLinewidth(int width)
-{
-	if (generalDialog->currentWidget() != frame)
-		return;
-
-    d_graph->setAxesLinewidth(width);
-}
-
-void AxesDialog::drawFrame(bool framed)
-{
-	if (generalDialog->currentWidget() != frame)
-		return;
-
-	if (framed)
-		d_graph->setCanvasFrame(boxFrameWidth->value(), boxFrameColor->color());
-	else
-		d_graph->setCanvasFrame(0);
-}
-
-void AxesDialog::updateFrame(int width)
-{
-	if (generalDialog->currentWidget() != frame)
-		return;
-
-    d_graph->setCanvasFrame(width, boxFrameColor->color());
-}
-
-void AxesDialog::pickCanvasFrameColor()
-{
-	d_graph->setCanvasFrame(boxFrameWidth->value(), boxFrameColor->color());
 }
 
 void AxesDialog::showAxisFormatOptions(int format)
@@ -2534,17 +2507,8 @@ bool AxesDialog::updatePlot()
 		showAxis(axis, format, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color());
-	}
-	else if (generalDialog->currentWidget()==(QWidget*)frame){
-		d_graph->setAxesLinewidth(boxAxesLinewidth->value());
-        d_graph->changeTicksLength(boxMinorTicksLength->value(), boxMajorTicksLength->value());
-		if (boxFramed->isChecked())
-        	d_graph->setCanvasFrame(boxFrameWidth->value(), boxFrameColor->color());
-		else
-			d_graph->setCanvasFrame(0);
-        d_graph->drawAxesBackbones(boxBackbones->isChecked());
-        d_graph->replot();
-	}
+	} else if (generalDialog->currentWidget() == (QWidget*)frame)
+		applyCanvasFormatTo(d_graph);
 
 	return true;
 }
@@ -3088,4 +3052,79 @@ void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool
 		return;
 	d_graph->showAxis(axis, type, labelsColName, w, axisOn, majTicksType, minTicksType, labelsOn,
 			c, format, prec, rotation, baselineDist, formula, labelsColor);
+}
+
+void AxesDialog::applyCanvasFormatTo(Graph *g)
+{
+    if (!g)
+        return;
+
+    g->setAxesLinewidth(boxAxesLinewidth->value());
+    g->changeTicksLength(boxMinorTicksLength->value(), boxMajorTicksLength->value());
+    if (boxFramed->isChecked())
+        g->setCanvasFrame(boxFrameWidth->value(), boxFrameColor->color());
+    else
+        g->setCanvasFrame(0);
+    g->drawAxesBackbones(boxBackbones->isChecked());
+    g->replot();
+}
+
+void AxesDialog::applyCanvasFormat()
+{
+    if (generalDialog->currentWidget() != frame)
+		return;
+
+    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(canvasFrameApplyToBox->currentIndex()){
+		case 0://this layer
+			applyCanvasFormatTo(d_graph);
+		break;
+
+		case 1://this window
+		{
+			QList<Graph *> layersLst = d_graph->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				applyCanvasFormatTo(g);
+		}
+		break;
+
+		case 2://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applyCanvasFormatTo(g);
+			}
+		}
+		break;
+
+		default:
+			break;
+	}
+	app->modifiedProject();
+}
+
+void AxesDialog::setFrameDefaultValues()
+{
+    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+    if (boxFramed->isChecked())
+		app->canvasFrameWidth = boxFrameWidth->value();
+	else
+		app->canvasFrameWidth = 0;
+
+    app->d_canvas_frame_color = boxFrameColor->color();
+	app->drawBackbones = boxBackbones->isChecked();
+	app->axesLineWidth = boxAxesLinewidth->value();
+	app->majTicksLength = boxMajorTicksLength->value();
+	app->minTicksLength = boxMinorTicksLength->value();
+
+	app->saveSettings();
 }

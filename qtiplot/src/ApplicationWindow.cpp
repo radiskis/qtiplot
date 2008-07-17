@@ -526,6 +526,7 @@ void ApplicationWindow::initGlobalConstants()
 	titleOn = true;
 	allAxesOn = false;
 	canvasFrameWidth = 0;
+	d_canvas_frame_color = Qt::black;
 	defaultPlotMargin = 0;
 	drawBackbones = true;
 	axesLineWidth = 1;
@@ -2215,9 +2216,9 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 	ied->selectFile(m->objectName());
 	if (exportFilter.isEmpty())
     	ied->selectFilter(d_image_export_filter);
-	else 
+	else
 		ied->selectFilter(exportFilter);
-	
+
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	workingDir = ied->directory().path();
@@ -2542,7 +2543,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 		g->setTicksLength (minTicksLength, majTicksLength);
 		g->setAxesLinewidth(axesLineWidth);
 		g->drawAxesBackbones(drawBackbones);
-		g->setCanvasFrame(canvasFrameWidth);
+		g->setCanvasFrame(canvasFrameWidth, d_canvas_frame_color);
 	}
 
 	g->initFonts(plotAxesFont, plotNumbersFont);
@@ -2552,7 +2553,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 	g->enableAutoscaling(autoscale2DPlots);
 	g->setAutoscaleFonts(autoScaleFonts);
 	g->setAntialiasing(antialiasing2DPlots);
-	g->setFrame (d_graph_border_width, d_graph_border_color);
+	g->setFrame(d_graph_border_width, d_graph_border_color);
 
 	QColor c = d_graph_background_color;
 	c.setAlpha(d_graph_background_opacity);
@@ -4484,6 +4485,7 @@ void ApplicationWindow::readSettings()
 	d_graph_background_opacity = settings.value("/BackgroundOpacity", d_graph_background_opacity).toInt();
 	d_graph_canvas_opacity = settings.value("/BackgroundOpacity", d_graph_canvas_opacity).toInt();
 	d_graph_border_width = settings.value("/FrameWidth", d_graph_border_width).toInt();
+    d_canvas_frame_color = settings.value("/FrameColor", Qt::black).value<QColor>();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -4803,6 +4805,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/BackgroundOpacity", d_graph_background_opacity);
 	settings.setValue("/BackgroundOpacity", d_graph_canvas_opacity);
 	settings.setValue("/FrameWidth", d_graph_border_width);
+	settings.setValue("/FrameColor", d_canvas_frame_color);
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -4981,7 +4984,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
     	ied->selectFilter(d_image_export_filter);
 	else
 		ied->selectFilter(exportFilter);
-	
+
 	if ( ied->exec() != QDialog::Accepted )
 		return;
 	workingDir = ied->directory().path();
@@ -6814,7 +6817,7 @@ void ApplicationWindow::exportPDF()
 			tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
 	}
-		
+
 	if (w->isA("MultiLayer")){
 		exportGraph("*.pdf");
 		return;
@@ -6823,7 +6826,7 @@ void ApplicationWindow::exportPDF()
 		return;
 	}
 
-    QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"), 
+    QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"),
 					workingDir + "/" + w->objectName(), "*.pdf");
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
