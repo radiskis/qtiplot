@@ -664,7 +664,7 @@ void MultiLayer::exportPDF(const QString& fname)
 	exportVector(fname);
 }
 
-void MultiLayer::exportVector(const QString& fileName, int res, bool color)
+void MultiLayer::exportVector(const QString& fileName, int, bool color)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
@@ -693,11 +693,9 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color)
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-
-	QRect canvasRect = d_canvas->rect();
-
     printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
-    QPainter paint(&printer);
+    
+	QPainter paint(&printer);
     foreach (Graph *g, graphsList)
         g->print(&paint, g->geometry());
 }
