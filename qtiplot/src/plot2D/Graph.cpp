@@ -1378,9 +1378,9 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 	pic.save(fileName, 0, quality);
 }
 
-void Graph::exportVector(const QString& fileName, int res, bool color)
+void Graph::exportVector(const QString& fileName, int, bool color)
 {
-	if ( fileName.isEmpty() ){
+	if (fileName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
         return;
 	}
@@ -1406,13 +1406,10 @@ void Graph::exportVector(const QString& fileName, int res, bool color)
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-
-	QRect plotRect = rect();
-    QSize size = boundingRect().size();
-    printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
+    printer.setPaperSize (QSizeF(boundingRect().size()), QPrinter::DevicePixel);
 
     QPainter paint(&printer);
-	print(&paint, plotRect);
+	print(&paint, rect());
 }
 
 void Graph::print()
