@@ -8,7 +8,7 @@
     <para>How can I visualise data from a text file?</para>
   </question>
   <answer>
-    <para>Go to the &file-menu-lnk; and select the &import-ascii-lnk; command.</para>
+    <para>Go to the &file-menu-lnk; and select the &import-ascii-lnk;.</para>
     <para>If the file is not imported correctly, change the columns separator using the &import-ascii-lnk; options command from the &file-menu-lnk; .</para>
     <para>The default columns separator is the TAB.</para>
   </answer>
@@ -38,7 +38,7 @@
     <para>Can I export transparent images?</para>
   </question>
   <answer>
-    <para>Yes, ".png" images have transparent background. See the &export-graph-current-lnk; command.</para>
+    <para>Yes, ".png" images have transparent background. See the &export-graph-current-lnk;.</para>
   </answer>
 </qandaentry>
 
@@ -47,7 +47,7 @@
     <para>How can I export a text file?</para>
   </question>
   <answer>
-    <para>Go to the &file-menu-lnk; and select the &export-ascii-lnk; command.</para>
+    <para>Go to the &file-menu-lnk; and select the &export-ascii-lnk;.</para>
   </answer>
 </qandaentry>
 
@@ -65,7 +65,7 @@
     <para>How can I choose the data range from a plot curve, when doing a curve fit?</para>
   </question>
   <answer>
-    <para>Go to the &data-menu-lnk; and use the &select-data-range-lnk; command. Click in the plot window and use the 'Up' and 'Down' arrows keys to select the curve to analyse. Keeping 'CTRL' button and 'Left' or 'Right' arrow keys simultaneousely pressed permit to move the selected cursor and consequently to modify the data range.</para>
+    <para>Go to the &data-menu-lnk; and use the &select-data-range-lnk;. Click in the plot window and use the 'Up' and 'Down' arrows keys to select the curve to analyse. Keeping 'CTRL' button and 'Left' or 'Right' arrow keys simultaneousely pressed permit to move the selected cursor and consequently to modify the data range.</para>
   </answer>
 </qandaentry>
 
@@ -74,7 +74,7 @@
     <para>Can I fit a plot curve using my own function?</para>
   </question>
   <answer>
-    <para>Go to the &analysis-menu-lnk; and select the &non-linear-curve-fit-lnk; command. Define the function (myFunction=...), enter the initial guesses for the parameters, separated by comas, choose the fitting range and the number of iterations and click 'OK'</para>
+    <para>Go to the &analysis-menu-lnk; and select the &non-linear-curve-fit-lnk;. Define the function (myFunction=...), enter the initial guesses for the parameters, separated by comas, choose the fitting range and the number of iterations and click 'OK'</para>
   </answer>
 </qandaentry>
 
@@ -92,13 +92,8 @@
     <para>How can I make a graph that has one x-axis, but two y-axes with different orders of magnitude?</para>
   </question>
   <answer>
-    <para> 
-	In QtiPlot the procedure is very simple, no need for two plot layers like in Origin.
-First of all select two columns that you want to display and plot them in the same layer.
-Add a right axis to the newly created plot layer, via the "Format | Axes" dialog.
-Double-click on the plot and from the pop-up dialog select one of the two curves.
-Go to the "Axes" tab of the dialog and from the "y Axes" box, select "Right" and click apply. 
-It's done!
+    <para>
+	Select at least two columns that you want to display and use the &double-y-lnk;.
 	</para>
   </answer>
 </qandaentry>

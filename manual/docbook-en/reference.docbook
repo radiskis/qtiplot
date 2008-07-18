@@ -562,6 +562,15 @@ The active items in the menus depend on the active window in the project. If the
       </informalfigure>
 	</listitem>
       </varlistentry>
+
+      <varlistentry id="double-y-cmd">
+	<term>&double-y-cmd;</term>
+	<listitem>
+	  <para>Creates a double Y axis graph.
+	  Requires a selection of at least two Y columns (or a range from at least two columns).</para>
+	</listitem>
+      </varlistentry>
+
     </variablelist>
 <!--		end of Special Line/Symbol		-->
   </listitem>
@@ -1782,7 +1791,7 @@ The active items in the menus depend on the active window in the project. If the
 <varlistentry id="add-custom-action-cmd">
   <term>Scripting -> &add-custom-action-cmd;</term>
   <listitem>
-     <para>Opens the <link linkend="custom-action-dialog">Custom Action dialog</link>, 
+     <para>Opens the <link linkend="custom-action-dialog">Custom Action dialog</link>,
 	 which allows you to define menu items and toolbar buttons used to launch Python scripts.</para>
   </listitem>
 </varlistentry>

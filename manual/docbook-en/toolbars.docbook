@@ -264,12 +264,49 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&add-layer-key;</entry>
    <entry>Adds a new layer to the active plot window.</entry>
   </row>
+
+  <row>
+   <entry>&add-inset-layer-icon;</entry>
+   <entry><link linkend="add-inset-layer-cmd">&add-inset-layer-cmd;</link></entry>
+   <entry></entry>
+   <entry>Adds an empty inset layer to the active plot window.</entry>
+  </row>
+
+  <row>
+   <entry>&add-inset-curve-layer-icon;</entry>
+   <entry><link linkend="add-inset-curve-layer-cmd">&add-inset-curve-layer-cmd;</link></entry>
+   <entry></entry>
+   <entry>Adds an inset layer containing the curves in the active plot layer.</entry>
+  </row>
+
   <row>
    <entry>&arrange-layers-icon;</entry>
    <entry><link linkend="arrange-layers-cmd">&arrange-layers-cmd;</link></entry>
    <entry>&arrange-layers-key;</entry>
    <entry>Arranges the different layers of the active plot window.</entry>
   </row>
+
+  <row>
+   <entry>&auto-arrange-layers-icon;</entry>
+   <entry><link linkend="auto-arrange-layers-cmd">&auto-arrange-layers-cmd;</link></entry>
+   <entry></entry>
+   <entry>Automatically arranges the different layers of the active plot window.</entry>
+  </row>
+
+  <row>
+   <entry>&extract-layers-icon;</entry>
+   <entry><link linkend="extract-layers-cmd">&extract-layers-cmd;</link></entry>
+   <entry></entry>
+   <entry>Extracts datasets in the active layer to separate layers.</entry>
+  </row>
+
+  <row>
+   <entry>&extract-graphs-icon;</entry>
+   <entry><link linkend="extract-graphs-cmd">&extract-graphs-cmd;</link></entry>
+   <entry></entry>
+   <entry>Extracts all layers in the active graph window to separate graphs.</entry>
+  </row>
+
   <row>
    <entry>&add-remove-curve-icon;</entry>
    <entry><link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link></entry>
@@ -294,6 +331,14 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&new-legend-key;</entry>
    <entry>Adds a new legend to the active plot window.</entry>
   </row>
+
+  <row>
+   <entry>&rescale-icon;</entry>
+   <entry><link linkend="rescale-cmd">&rescale-cmd;</link></entry>
+   <entry>&rescale-key;</entry>
+   <entry>Rescales the axes to show all data points.</entry>
+  </row>
+
   <row>
    <entry>&pointer-icon;</entry>
    <entry><link linkend="pointer-cmd">&pointer-cmd;</link></entry>
@@ -342,35 +387,51 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry>&remove-data-points-key;</entry>
    <entry>Allows to remove data points on the active plot.</entry>
   </row>
+
+  <row>
+   <entry>&add-eq-icon;</entry>
+   <entry>&add-eq-lnk;</entry>
+   <entry>&add-eq-key;</entry>
+   <entry>Adds a new Tex equation to the active plot.</entry>
+  </row>
+
   <row>
    <entry>&add-text-icon;</entry>
    <entry>&add-text-lnk;</entry>
    <entry>&add-text-key;</entry>
-   <entry>Add a new text element in the active plot.</entry>
+   <entry>Adds a new text element in the active plot.</entry>
   </row>
   <row>
    <entry>&draw-line-icon;</entry>
    <entry>&draw-line-lnk;</entry>
    <entry>&draw-line-key;</entry>
-   <entry>Add a new line on the active plot.</entry>
+   <entry>Adds a new line on the active plot.</entry>
   </row>
   <row>
    <entry>&draw-arrow-icon;</entry>
    <entry>&draw-arrow-lnk;</entry>
    <entry>&draw-arrow-key;</entry>
-   <entry>Add a new arrow on the active plot.</entry>
+   <entry>Adds a new arrow on the active plot.</entry>
   </row>
+
+   <row>
+   <entry>&draw-rectangle-icon;</entry>
+   <entry>&draw-rectangle-lnk;</entry>
+   <entry>&draw-rectangle-key;</entry>
+   <entry>Adds a new rectangle to the active plot.</entry>
+  </row>
+
   <row>
    <entry>&add-time-stamp-icon;</entry>
    <entry>&add-time-stamp-lnk;</entry>
    <entry>&add-time-stamp-key;</entry>
-   <entry>Add a time/date label on the active plot.</entry>
+   <entry>Adds a time/date label on the active plot.</entry>
   </row>
   <row>
    <entry>&add-image-icon;</entry>
    <entry>&add-image-lnk;</entry>
    <entry>&add-image-key;</entry>
-   <entry>Insert a new image in the active plot.</entry>
+   <entry>Inserts a new image in the active plot.</entry>
   </row>
 </tbody>
 </tgroup>
@@ -463,6 +524,21 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
    <entry></entry>
    <entry>plot with the vector style.</entry>
   </row>
+
+  <row>
+   <entry>&double-y-icon;</entry>
+   <entry><link linkend="double-y-cmd">plot -> &double-y-cmd;</link></entry>
+   <entry></entry>
+   <entry>plot with two different y axes.</entry>
+  </row>
+
+ <row>
+   <entry>&zoom-plot-icon;</entry>
+   <entry><link linkend="zoom-plot-cmd">plot -> &zoom-plot-cmd;</link></entry>
+   <entry></entry>
+   <entry>plots a magnified region of data in the same graph window (along with the full range of data).</entry>
+  </row>
+
   <row>
    <entry>&ribbons-icon;</entry>
    <entry><link linkend="ribbons-cmd">plot -> &ribbons-cmd;</link></entry>
