@@ -52,15 +52,15 @@ Free software is a matter of the users' freedom to run, copy, distribute, study,
 
 <h2>General requirements:</h2>
 For QtiPlot, you need to install the following libraries:
-<a href="http://www.trolltech.com/products/qt/index.html">Qt (>=4.2)</a>, 
-<a href="http://qwtplot3d.sourceforge.net/">QwtPlot3D</a>, 
-<a href="http://qwt.sourceforge.net/index.html">Qwt (5.1)</a>,
-<a href="http://sources.redhat.com/gsl/">GSL</a>, 
-<a href="http://muparser.sourceforge.net/">muParser (1.28)</a>,
+<a href="http://www.trolltech.com/products/qt/index.html">Qt (4.4.0)</a>,
+<a href="http://qwtplot3d.sourceforge.net/">QwtPlot3D</a>,
+<a href="http://qwt.sourceforge.net/index.html">Qwt (5.1.1)</a>,
+<a href="http://sources.redhat.com/gsl/">GSL</a>,
+<a href="http://muparser.sourceforge.net/">muParser (>= 1.28)</a>,
 and <a href="http://www.zlib.net/">zlib</a>.<br>
-<b>QwtPlot3D and Qwt must be compiled against Qt >= 4.2!</b><br>
+<b>QwtPlot3D and Qwt must be compiled against Qt 4.4.0!</b><br>
 The QtiPlot developers also work very actively on the <a href="http://sourceforge.net/projects/liborigin/">liborigin</a> library.
-The development version of this library is shipped with QtiPlot in the "3rdparty" folder and 
+The development version of this library is shipped with QtiPlot in the "3rdparty" folder and
 does not need to be compiled or installed separately. <br>
 In order to build QtiPlot you also need <b>qmake</b>, which is distributed as a part of Qt. <br>
 
@@ -74,24 +74,24 @@ To install the Debian package, download the file <a class="qindex" href="http://
 
 To install the RPM package, download the file <a class="qindex" href="http://soft.proindependent.com/download.html">qtiplot-X.X.X-1.i386.rpm</a> and login to your machine as "root", then execute:<br>
       <code>rpm -i qtiplot-X.X.X-1.i386.rpm</code><br>
-	  
-To install the binary package on Mac OS X 10.4, download the file <a class="qindex" href="http://soft.proindependent.com/download.html">qtiplot-X.X.X.pkg.zip</a>, unzip it, double-click on the "qtiplot-X.X.X.pkg" file and follow the installation instructions. The package provides all needed libraries, except Python 2.5, which must be installed separately on your system. 
+
+To install the binary package on Mac OS X 10.4, download the file <a class="qindex" href="http://soft.proindependent.com/download.html">qtiplot-X.X.X.pkg.zip</a>, unzip it, double-click on the "qtiplot-X.X.X.pkg" file and follow the installation instructions. The package provides all needed libraries, except Python 2.5, which must be installed separately on your system.
 
 <h3>QtiPlot Linux binaries free of charge:</h3>
-The QtiPlot team offers GNU/Linux binaries free of charge but without any guaranteed support. 
-Some time after each release, you will find these (including notes how to install them) on the 
+The QtiPlot team offers GNU/Linux binaries free of charge but without any guaranteed support.
+Some time after each release, you will find these (including notes how to install them) on the
 <a href="http://soft.proindependent.com/download.html">QtiPlot download page</a> or in the files section at the <a href="https://developer.berlios.de/project/showfiles.php?group_id=6626">QtiPlot project page at berliOS</a>.<br>
 
 <h3>Compiling QtiPlot from source:</h3>
 <ol>
-	<li>Install <a href="http://www.trolltech.com/products/qt/index.html">Qt (>=4.2)</a>, <a href="http://sources.redhat.com/gsl/">GSL</a> and <a href="http://www.zlib.net/">zlib</a>; either from your package manager or from the sources. If you are using precompiled packages, make sure you also install the corresponding development packages (*-dev or *-devel).
+	<li>Install <a href="http://www.trolltech.com/products/qt/index.html">Qt (4.4.0)</a>, <a href="http://sources.redhat.com/gsl/">GSL</a> and <a href="http://www.zlib.net/">zlib</a>; either from your package manager or from the sources. If you are using precompiled packages, make sure you also install the corresponding development packages (*-dev or *-devel).
 	If you want to display the manual from within QtiPlot (you can also view it with your favorite browser), you also need the Qt Assistant, which sometimes comes in a separate package (qt4-dev-tools for Ubuntu edgy).</li>
 	<li>Open a terminal window.</li>
 	<li>Download the .tar.bz2 archive with QtiPlot's sources (or the .zip archive, which has the same contents):<br>
 	<code>wget http://soft.proindependent.com/src/qtiplot-X.X.X.tar.bz2</code></li>
 	<li>Unpack the source archive:
 	<code>tar -xvjf qtiplot-X.X.X.tar.bz2</code> (or <code>unzip qtiplot-X.X.X.zip</code>, respectively)</li>
-	<li>Get <a href="http://qwt.sourceforge.net/index.html">Qwt (>=5.0.0)</a> sources and unpack them to the 3rdparty folder:<br>
+	<li>Get <a href="http://qwt.sourceforge.net/index.html">Qwt (5.1.1)</a> sources and unpack them to the 3rdparty folder:<br>
 	<code>cd qtiplot-X.X.X/3rdparty<br>tar -xvjf /path/to/qwt-Y.Y.Y.tar.bz2</code></li>
 	<li>Rename the new directory to <code>qwt</code>:<br>
 	<code>mv qwt-Y.Y.Y qwt</code></li>
@@ -134,7 +134,8 @@ To install:<br>
 </ol>
 
 <h3>Compiling QtiPlot from source:</h3>
-If you want to compile the application from source, you need to install the <a href="http://www.trolltech.com/developer/downloads/qt/windows">Qt/Windows Open Source Edition</a> 4.2. and use <a href="http://www.mingw.org/">MinGW</a> as a compiler.<br>
+If you want to compile the application from source, you need to install the <a href="http://www.trolltech.com/developer/downloads/qt/windows">Qt/Windows Open Source Edition</a> 4.4.0
+and use <a href="http://www.mingw.org/">MinGW</a> as a compiler.<br>
 <br>
 The compilation of QtiPlot from sources requires the following steps:<br>
 <ol>

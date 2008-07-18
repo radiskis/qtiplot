@@ -12,7 +12,7 @@ file included in the KDE distribution. -->
 
 <para>Program copyright:</para>
 <para>2004-2007 &ion; <email>&email-ion;</email></para>
-<para>2006-2007 &tilman; <email>&email-tilman;</email></para> 
+<para>2006-2007 &tilman; <email>&email-tilman;</email></para>
 <para>2006-2007 &knut; <email>&email-knut;</email></para>
 
 <para>Documentation copyright:</para>
@@ -118,31 +118,31 @@ Each version of the License is given a distinguishing version number. If the Doc
 <title>How to obtain &appname;</title>
 
 <para>The &appname; home page can be found at <ulink url="&homepage;">&homepage;</ulink>.
-Updates and news can be found there. &appname; is distributed as a package with sources which have to be compiled. 
+Updates and news can be found there. &appname; is distributed as a package with sources which have to be compiled.
 
-Precompiled packages for most Linux distributions, Mac OS X 10.4 and for Windows can 
+Precompiled packages for most Linux distributions, Mac OS X 10.4 and for Windows can
 also be obtained from the same address.</para>
 </sect1>
 
 <sect1 id="installation-from-binary">
 <title>Installation from binary packages</title>
 
-<para>Ion Vasilief, the founder and main developer of &appname;, 
-distributes precompiled packages for Windows, Mac OS X 10.4 and 
-for the main Linux distributions: a <ulink url="http://www.debian.org/">Debian</ulink> package 
+<para>Ion Vasilief, the founder and main developer of &appname;,
+distributes precompiled packages for Windows, Mac OS X 10.4 and
+for the main Linux distributions: a <ulink url="http://www.debian.org/">Debian</ulink> package
 and a <ulink url="http://www.rpm.org/">RPM</ulink> package.
-Several types of binaries maintainance contracts are available, please check the 
+Several types of binaries maintainance contracts are available, please check the
 <ulink url="http://soft.proindependent.com/pricing.html">pricing details</ulink>,
 or <ulink url="http://soft.proindependent.com/proforma.html">request an invoice</ulink>.
 The fees include technical support and access to all updates available during one year.</para>
 
-<para>On Windows, you need to download the <ulink url="&kappdownload;">qtiplot-&kappversion;.exe</ulink> file. 
-To install, open a Windows Explorer window, double click on the 'qtiplot-&kappversion;.exe' icon and 
+<para>On Windows, you need to download the <ulink url="&kappdownload;">qtiplot-&kappversion;.exe</ulink> file.
+To install, open a Windows Explorer window, double click on the 'qtiplot-&kappversion;.exe' icon and
 follow the installation instructions.</para>
 
 <para>The package provided for Mac OS X is universal and can be installed on both PowerPC and
-Intel Mac Pro systems. You can download it from here: <ulink url="&kappdownload;">qtiplot-&kappversion;.pkg.zip</ulink>. 
-Before installation, you need to uncompress it, then double click on the 'qtiplot-&kappversion;.pkg' icon and 
+Intel Mac Pro systems. You can download it from here: <ulink url="&kappdownload;">qtiplot-&kappversion;.pkg.zip</ulink>.
+Before installation, you need to uncompress it, then double click on the 'qtiplot-&kappversion;.pkg' icon and
 follow the installation instructions.</para>
 
 <para>To install on Linux Debian: download the package file <ulink  url="&kappdownload;">qtiplot_&kappversion;_i386.deb</ulink>,
@@ -164,19 +164,19 @@ The RPM package was created on an <ulink url="http://www.ubuntulinux.org/">Ubunt
 
 <sect2 id="requirements">
 <title>Requirements</title>
-If you want to build &appname; from sources, you need the following libraries: 
+If you want to build &appname; from sources, you need the following libraries:
 <variablelist>
 <varlistentry>
-  <term>Qt (>= 4.3.1)</term>
+  <term>Qt (4.4.0)</term>
   <listitem>
-    <para>&appname; works best with the 4.4.0 version of the 
+    <para>&appname; only works with the 4.4.0 version of the
 	<ulink url="http://trolltech.com/products/qt">Qt</ulink> library</para>
   </listitem>
 </varlistentry>
 <varlistentry>
   <term>Qwt</term>
   <listitem>
-    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.1</ulink> library.</para>
+    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.1.1</ulink> library.</para>
   </listitem>
 </varlistentry>
 <varlistentry>
@@ -213,10 +213,10 @@ If you want to build &appname; from sources, you need the following libraries:
 </varlistentry>
 </variablelist>
 
-<para>Finally, if you want Python scripting support, you will also need to download and install: 
-<ulink url="http://www.python.org/">Python</ulink> 2.5, 
+<para>Finally, if you want Python scripting support, you will also need to download and install:
+<ulink url="http://www.python.org/">Python</ulink> 2.5,
 <ulink url="http://www.riverbankcomputing.co.uk/sip">SIP</ulink>,
-and <ulink url="http://www.riverbankcomputing.co.uk/pyqt">PyQt v4</ulink>. 
+and <ulink url="http://www.riverbankcomputing.co.uk/pyqt">PyQt v4</ulink>.
 All three of them are included in many Linux distributions.
 </para>
 </sect2>
@@ -246,8 +246,8 @@ qtiplot
 
 <sect2 id="compilation-windows">
 <title>Windows</title>
-If you want to compile the application from sources you need to download and install the 
-the <ulink url="http://www.mingw.org/" >MinGW</ulink> compiler, the only one supported by the Qt Open Source edition on Windows. 
+If you want to compile the application from sources you need to download and install the
+the <ulink url="http://www.mingw.org/" >MinGW</ulink> compiler, the only one supported by the Qt Open Source edition on Windows.
 Then you must proceed exactly as on Linux/Mac OS X systems, following the above indications.
 </sect2>
 </sect1>
