@@ -492,6 +492,8 @@ public:
   void setFont(const QFont&);
   void setOriginCoord(double, double);
   void setOrigin(int, int);
+  void setAngle(int);
+  int angle();
 
   bool isAutoUpdateEnabled();
   void setAutoUpdate(bool);

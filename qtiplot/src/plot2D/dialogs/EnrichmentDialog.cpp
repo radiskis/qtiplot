@@ -153,16 +153,17 @@ void EnrichmentDialog::initTextPage()
 	gl1->addWidget(new QLabel(tr("Color")), 0, 0);
 
 	textColorBtn = new ColorButton();
+	connect(textColorBtn, SIGNAL(colorChanged()), this, SLOT(textFormatApplyTo()));
 	gl1->addWidget(textColorBtn, 0, 1);
-
-    autoUpdateTextBox = new QCheckBox(tr("Auto-&update"));
-	gl1->addWidget(autoUpdateTextBox, 0, 2);
-
-	gl1->addWidget(new QLabel(tr("Font")), 1, 0);
 
 	textFontBtn = new QPushButton(tr( "&Font" ));
 	connect(textFontBtn, SIGNAL(clicked()), this, SLOT(customFont()));
-	gl1->addWidget(textFontBtn, 1, 1);
+	gl1->addWidget(textFontBtn, 0, 2);
+
+    gl1->addWidget(new QLabel(tr("Background")), 1, 0);
+	textBackgroundBtn = new ColorButton();
+	connect(textBackgroundBtn, SIGNAL(colorChanged()), this, SLOT(textFormatApplyTo()));
+	gl1->addWidget(textBackgroundBtn, 1, 1);
 
 	gl1->addWidget(new QLabel(tr("Opacity")), 2, 0);
 
@@ -175,11 +176,19 @@ void EnrichmentDialog::initTextPage()
 			this, SLOT(updateTransparency(int)));
 	gl1->addWidget(boxBackgroundTransparency, 2, 1);
 
-	gl1->addWidget(new QLabel(tr("Background color")), 3, 0);
-	textBackgroundBtn = new ColorButton();
-	gl1->addWidget(textBackgroundBtn, 3, 1);
+    gl1->addWidget(new QLabel(tr("Rotate (deg.)")), 3, 0);
 
-	gl1->setColumnStretch(2, 1);
+    boxTextAngle = new QSpinBox();
+    boxTextAngle->setRange(-360, 360);
+    boxTextAngle->setSingleStep(45);
+    boxTextAngle->setWrapping(true);
+    connect(boxTextAngle, SIGNAL(valueChanged(int)), this, SLOT(textFormatApplyTo()));
+    gl1->addWidget(boxTextAngle, 3, 1);
+
+    autoUpdateTextBox = new QCheckBox(tr("Auto-&update"));
+	gl1->addWidget(autoUpdateTextBox, 1, 2);
+
+	gl1->setColumnStretch(4, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
     textDefaultBtn = new QPushButton( tr( "Set As &Default" ) );
@@ -191,6 +200,7 @@ void EnrichmentDialog::initTextPage()
 	vl->addWidget(textApplyToBtn);
 
 	textApplyToBox = new QComboBox();
+	textApplyToBox->insertItem(tr("Object"));
 	textApplyToBox->insertItem(tr("Layer"));
     textApplyToBox->insertItem(tr("Window"));
     textApplyToBox->insertItem(tr("All Windows"));
@@ -479,13 +489,23 @@ void EnrichmentDialog::setWidget(QWidget *w)
 		if (l){
 			setText(l->text());
 			textFont = l->font();
+			textColorBtn->blockSignals(true);
 			textColorBtn->setColor(l->textColor());
+			textColorBtn->blockSignals(false);
 
 			QColor bc = l->backgroundColor();
+			boxBackgroundTransparency->blockSignals(true);
 			boxBackgroundTransparency->setValue(bc.alpha());
+			boxBackgroundTransparency->blockSignals(false);
+			
+			textBackgroundBtn->blockSignals(true);
 			textBackgroundBtn->setEnabled(bc.alpha());
 			textBackgroundBtn->setColor(bc);
+			textBackgroundBtn->blockSignals(false);
 
+			boxTextAngle->blockSignals(true);
+            boxTextAngle->setValue(l->angle());
+			boxTextAngle->blockSignals(false);
 			autoUpdateTextBox->setChecked(l->isAutoUpdateEnabled());
 		}
 	} else if (d_widget_type == Tex){
@@ -879,13 +899,22 @@ void EnrichmentDialog::customFont()
 void EnrichmentDialog::updateTransparency(int alpha)
 {
 	textBackgroundBtn->setEnabled(alpha);
+	textFormatApplyTo();
 }
 
 void EnrichmentDialog::textFormatApplyTo()
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	switch(textApplyToBox->currentIndex()){
-		case 0://this layer
+		case 0://this object
+		{
+			LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
+			if (l)
+				setTextFormatTo(l);
+		}
+		break;
+		
+		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
 			foreach(FrameWidget *fw, lst){
@@ -896,7 +925,7 @@ void EnrichmentDialog::textFormatApplyTo()
 		}
 		break;
 
-		case 1://this window
+		case 2://this window
 		{
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
 			foreach(Graph *g, layersLst){
@@ -910,7 +939,7 @@ void EnrichmentDialog::textFormatApplyTo()
 		}
 		break;
 
-		case 2://all windows
+		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
 			foreach(MdiSubWindow *w, windows){
@@ -943,6 +972,7 @@ void EnrichmentDialog::setTextFormatTo(LegendWidget *l)
     l->setBackgroundColor(c);
     l->setTextColor(textColorBtn->color());
     l->setFont(textFont);
+    l->setAngle(boxTextAngle->value());
     l->setAutoUpdate(autoUpdateTextBox->isChecked());
     l->repaint();
 }
@@ -959,7 +989,7 @@ void EnrichmentDialog::setTextDefaultValues()
 	QColor c = textBackgroundBtn->color();
 	c.setAlpha(boxBackgroundTransparency->value());
 	app->legendBackground = c;
-
+	app->d_legend_default_angle = boxTextAngle->value();
 	app->saveSettings();
 }
 

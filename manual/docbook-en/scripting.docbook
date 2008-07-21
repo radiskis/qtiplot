@@ -1716,8 +1716,9 @@ If you want to modify the text you can use:<programlisting>
 legend.setText("Enter your text here")
 </programlisting>
 
-All other properties of the legend: text color, background color, frame style, font and position of the top-left corner
+All other properties of the legend: rotation angle, text color, background color, frame style, font and position of the top-left corner
 can be modified via the following functions:<programlisting>
+legend.setAngle(90)
 legend.setTextColor(QtGui.QColor("red"))
 legend.setBackgroundColor(QtGui.QColor("yellow"))
 legend.setFrameStyle(Legend.Shadow)
@@ -1726,7 +1727,7 @@ legend.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold, True))
 legend.setOriginCoord(200.5, 600.32)
 # or set top-left position using pixel coordinates:
 legend.setOrigin(5, 10)
-l.replot()
+legend.repaint()
 </programlisting>
 
 Other frame styles available for legends are: <varname>Legend.Line</varname>, which draws a rectangle around the text

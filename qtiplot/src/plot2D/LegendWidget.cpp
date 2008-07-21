@@ -49,6 +49,7 @@
 #include <iostream>
 
 LegendWidget::LegendWidget(Graph *plot):FrameWidget(plot),
+d_angle(0),
 h_space(5),
 left_margin(10),
 top_margin(5),
@@ -76,18 +77,13 @@ d_auto_update(false)
 void LegendWidget::paintEvent(QPaintEvent *e)
 {
 	const int symbolLineLength = line_length + symbolsMaxWidth();
-	int width, height;
-	QwtArray<long> heights = itemsHeight(0, symbolLineLength, width, height);
-	if (d_frame == Shadow){
-		width += d_shadow_width;
-		height += d_shadow_width;
-	}
-	int fw = 2*d_frame_pen.width();
-	resize(width + fw, height + fw);
+	int width, height, textWidth, textHeight;
+	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height, textWidth, textHeight);
+    resize(width, height);
 
     QPainter p(this);
 	drawFrame(&p, rect());
-	drawText(&p, rect(), heights, symbolLineLength);
+	drawText(&p, QRect(0, 0, textWidth, textHeight), heights, symbolLineLength);
 	e->accept();
 }
 
@@ -97,17 +93,11 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
     const int symbolLineLength = line_length + symbolsMaxWidth();
-	int width, height;
-	QwtArray<long> heights = itemsHeight(y, symbolLineLength, width, height);
-	if (d_frame == Shadow){
-		width += d_shadow_width;
-		height += d_shadow_width;
-	}
+	int width, height, textWidth, textHeight;
+	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height, textWidth, textHeight);
 	
-	int fw = 2*d_frame_pen.width();
-	QRect rect = QRect(x, y, width + fw, height + fw);	
-	drawFrame(painter, rect);
-	drawText(painter, rect, heights, symbolLineLength);
+	drawFrame(painter, QRect(x, y, width, height));
+	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
 }
 
 void LegendWidget::setText(const QString& s)
@@ -219,12 +209,29 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 
 	p->setRenderHint(QPainter::TextAntialiasing);
 
+	p->translate(rect.x(), rect.y());	
+	
+	int aux_a = d_angle;
+	if (aux_a >= 270){
+        aux_a -= 270;
+		p->translate(rect.height()*cos(aux_a*M_PI/180.0), 0.0);
+	} else if (aux_a >= 180){
+        aux_a -= 180;
+		p->translate(this->width(), rect.height()*cos(aux_a*M_PI/180.0));
+	} else if (aux_a > 90){
+        aux_a -= 90;
+		p->translate(rect.width()*sin(aux_a*M_PI/180.0), this->height());
+	}  else
+		p->translate(0.0, rect.width()*sin(d_angle*M_PI/180.0));
+	
+    p->rotate(-d_angle);
+	
 	int l = symbolLineLength;
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
 
 	for (int i=0; i<(int)titles.count(); i++){
-        int w = rect.x() + left_margin + d_frame_pen.width();
+		int w = left_margin + d_frame_pen.width();
 		bool  curveSymbol = false;
 		QString s = titles[i];
 		while (s.contains("\\l(") || s.contains("\\p{")){
@@ -288,7 +295,8 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	p->restore();
 }
 
-QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width, int &height)
+QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &height, 
+							 int &textWidth, int &textHeight)
 {
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
@@ -349,13 +357,41 @@ QwtArray<long> LegendWidget::itemsHeight(int y, int symbolLineLength, int &width
 		int textH = size.height();
 		height += textH;
 
-		heights[i] = y + h + textH/2;
+		heights[i] = h + textH/2;
 		h += textH;
 	}
+
 
 	height += 2*top_margin;
 	width = 2*left_margin + maxL;
 
+	if (d_frame == Shadow){
+		width += d_shadow_width;
+		height += d_shadow_width;
+	}
+	int fw = 2*d_frame_pen.width();
+    height += fw;
+    width += fw;
+
+    textHeight = height;
+    textWidth = width;
+	
+    int aux_a = d_angle;	
+	if (aux_a > 270)
+		aux_a -= 270;
+    if (aux_a >= 180)
+        aux_a -= 180;
+    if (aux_a > 90)
+        aux_a -= 90;
+    	
+	double angle = aux_a*M_PI/180.0;
+	if ((d_angle >= 0 && d_angle <= 90) || (d_angle >= 180 && d_angle <= 270)){
+    	height = int(textWidth*sin(angle) + textHeight*cos(angle));
+    	width = int(textWidth*cos(angle) + textHeight*sin(angle));
+	} else {
+    	height = int(textWidth*cos(angle) + textHeight*sin(angle));
+    	width = int(textWidth*sin(angle) + textHeight*cos(angle));
+	}
 	return heights;
 }
 
@@ -474,6 +510,7 @@ void LegendWidget::showTextEditor()
 void LegendWidget::clone(LegendWidget* t)
 {
 	d_frame = t->frameStyle();
+	d_angle = t->angle();
 	setFramePen(t->framePen());
 	d_auto_update = t->isAutoUpdateEnabled();
 
@@ -489,7 +526,7 @@ QString LegendWidget::saveToString()
 	QString s = "<Legend>\n";
 	s += FrameWidget::saveToString();
 	s += "<Text>\n" + d_text->text() + "\n</Text>\n";
-	
+
 	QFont f = d_text->font();
 	s += "<Font>" + f.family() + "\t";
 	s += QString::number(f.pointSize())+"\t";
@@ -497,11 +534,12 @@ QString LegendWidget::saveToString()
 	s += QString::number(f.italic())+"\t";
 	s += QString::number(f.underline())+"\t";
 	s += QString::number(f.strikeOut())+"</Font>\n";
-	
-	s += "<TextColor>" + d_text->color().name()+"</TextColor>\n";	
+
+	s += "<TextColor>" + d_text->color().name()+"</TextColor>\n";
 	QColor bc = backgroundColor();
 	s += "<Background>" + bc.name() + "</Background>\n";
 	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
+	s += "<Angle>" + QString::number(d_angle) + "</Angle>\n";
 	s += "<AutoUpdate>" + QString::number(d_auto_update) + "</AutoUpdate>\n";
 	return s + "</Legend>\n";
 }
@@ -511,9 +549,9 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 	QColor backgroundColor = Qt::white;
 	double x = 0.0, y = 0.0;
 	QStringList::const_iterator line;
-	LegendWidget *l = new LegendWidget(g);	
+	LegendWidget *l = new LegendWidget(g);
 	for (line = lst.begin(); line != lst.end(); line++){
-        QString s = *line;		
+        QString s = *line;
         if (s.contains("<Frame>"))
 			l->setFrameStyle((s.remove("<Frame>").remove("</Frame>").toInt()));
 		else if (s.contains("<Color>"))
@@ -546,15 +584,28 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
 		else if (s.contains("<Alpha>"))
 			backgroundColor.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+		else if (s.contains("<Angle>"))
+			l->setAngle(s.remove("<Angle>").remove("</Angle>").toInt());
 		else if (s.contains("<AutoUpdate>"))
 			l->setAutoUpdate(s.remove("<AutoUpdate>").remove("</AutoUpdate>").toInt());
 	}
-	
 	if (l){
 		l->setBackgroundColor(backgroundColor);
 		l->setOriginCoord(x, y);
 		g->add(l, false);
 	}
+}
+
+void LegendWidget::setAngle(int angle)
+{
+    if (d_angle == angle)
+        return;
+
+    d_angle = angle;
+	if (d_angle < 0)
+		d_angle += 360;
+	else if (d_angle >= 360)
+		d_angle -= 360;
 }
 
 LegendWidget::~LegendWidget()

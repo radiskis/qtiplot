@@ -473,3 +473,6 @@ selectedColumn
 setCurveAxes
 isAutoUpdateEnabled
 setAutoUpdate
+setAngle
+angle
+repaint

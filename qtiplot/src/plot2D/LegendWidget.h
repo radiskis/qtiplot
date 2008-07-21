@@ -34,11 +34,11 @@
 
 #include <qwt_plot.h>
 #include <qwt_text.h>
-	
+
 #include <QWidget>
 
 class PlotCurve;
-	
+
 class LegendWidget: public FrameWidget
 {
 	Q_OBJECT
@@ -60,12 +60,15 @@ public:
 
 	void showTextEditor();
     void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
-	
-	QString saveToString();	
+
+	QString saveToString();
 	static void restore(Graph *g, const QStringList& lst);
-	
+
 	bool isAutoUpdateEnabled(){return d_auto_update;};
 	void setAutoUpdate(bool on = true){d_auto_update = on;};
+
+	int angle(){return d_angle;};
+	void setAngle(int angle);
 
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
@@ -73,7 +76,7 @@ private:
 	void drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y, int l);
 	void drawText(QPainter *, const QRect&, QwtArray<long>, int);
 
-	QwtArray<long> itemsHeight(int y, int symbolLineLength, int &width, int &height);
+	QwtArray<long> itemsHeight(int symbolLineLength, int &width, int &height, int &textWidth, int &textHeight);
 	int symbolsMaxWidth();
 	QString parse(const QString& str);
 
@@ -81,16 +84,14 @@ private:
 
 	//! Pointer to the QwtText object
 	QwtText* d_text;
-
+    //! Rotation angle
+    int d_angle;
 	//! Distance between symbols and legend text
 	int h_space;
-
 	//! Distance between frame and content
 	int left_margin, top_margin;
-
 	//! Length of the symbol line
 	int line_length;
-	
 	//! Flag telling if the legend should be updated each time a curve is added/removed from the parent plot
 	bool d_auto_update;
 

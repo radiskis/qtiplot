@@ -135,6 +135,7 @@ void AddWidgetTool::addText(const QPoint& point)
 		l->setTextColor(app->legendTextColor);
 		l->setBackgroundColor(app->legendBackground);
 		l->setFramePen(app->d_frame_widget_pen);
+		l->setAngle(app->d_legend_default_angle);
 	}
     l->showPropertiesDialog();
     d_graph->setActiveTool(NULL);

@@ -117,7 +117,7 @@ private:
 	QComboBox *unitBox;
 	PenStyleBox *boxFrameLineStyle;
 	QCheckBox *keepAspectBox, *useFrameColorBox;
-	QSpinBox *boxTransparency, *boxFrameWidth;
+	QSpinBox *boxTransparency, *boxFrameWidth, *boxTextAngle;
 	PatternBox *patternBox;
 	QPushButton *frameApplyToBtn, *patternApplyToBtn, *textApplyToBtn;
 	QComboBox *frameApplyToBox, *patternApplyToBox, *textApplyToBox;

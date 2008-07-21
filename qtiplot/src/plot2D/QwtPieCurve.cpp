@@ -497,6 +497,7 @@ QString PieLabel::saveToString()
 	QColor bc = backgroundColor();
 	s += "<Background>" + bc.name() + "</Background>\n";
 	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
+	s += "<Angle>" + QString::number(angle()) + "</Angle>\n";
 	return s + "</PieText>\n";
 }
 
@@ -508,7 +509,7 @@ void PieLabel::restore(Graph *g, const QStringList& lst)
 	QFont f = QFont();
 	double x = 0.0, y = 0.0;	
 	QString text;	
-	int frameStyle;
+	int frameStyle = 0, angle = 0;
 	QPen framePen = QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
 	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;	
@@ -551,6 +552,8 @@ void PieLabel::restore(Graph *g, const QStringList& lst)
 			backgroundColor = QColor(s.remove("<Background>").remove("</Background>"));
 		else if (s.contains("<Alpha>"))
 			backgroundColor.setAlpha(s.remove("<Alpha>").remove("</Alpha>").toInt());
+		else if (s.contains("<Angle>"))
+			angle = s.remove("<Angle>").remove("</Angle>").toInt();
 	}
 	
 	if (l){
@@ -560,6 +563,7 @@ void PieLabel::restore(Graph *g, const QStringList& lst)
 		l->setFont(f);
 		l->setTextColor(textColor);
 		l->setBackgroundColor(backgroundColor);
+		l->setAngle(angle);
 		l->setOriginCoord(x, y);
 	}
 }

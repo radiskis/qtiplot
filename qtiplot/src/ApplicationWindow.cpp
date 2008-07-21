@@ -551,6 +551,7 @@ void ApplicationWindow::initGlobalConstants()
 	legendTextColor = Qt::black;
 	legendBackground = Qt::white;
 	legendBackground.setAlpha(0); // transparent by default;
+	d_legend_default_angle = 0;
 
 	d_rect_default_background = Qt::white;
 	d_rect_default_brush = QBrush();
@@ -4512,6 +4513,7 @@ void ApplicationWindow::readSettings()
 	legendTextColor = settings.value("/TextColor", "#000000").value<QColor>(); //default color Qt::black
 	legendBackground = settings.value("/BackgroundColor", Qt::white).value<QColor>(); //default color Qt::white
 	legendBackground.setAlpha(settings.value("/Transparency", 0).toInt()); // transparent by default;
+	d_legend_default_angle = settings.value("/Angle", 0).toInt();
 	settings.endGroup(); // Legend
 
 	settings.beginGroup("/Arrows");
@@ -4829,6 +4831,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/TextColor", legendTextColor);
 	settings.setValue("/BackgroundColor", legendBackground);
 	settings.setValue("/Transparency", legendBackground.alpha());
+	settings.setValue("/Angle", d_legend_default_angle);
 	settings.endGroup(); // Legend
 
 	settings.beginGroup("/Arrows");
