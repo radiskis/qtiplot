@@ -1122,7 +1122,7 @@ public:
 	bool titleOn, autoSave, drawBackbones, allAxesOn, autoscale2DPlots, antialiasing2DPlots;
 	int majTicksStyle, minTicksStyle, legendFrameStyle, autoSaveTime, axesLineWidth, canvasFrameWidth;
 	QColor legendBackground, legendTextColor, defaultArrowColor;
-	int defaultArrowHeadLength, defaultArrowHeadAngle;
+	int defaultArrowHeadLength, defaultArrowHeadAngle, d_legend_default_angle;
 	double defaultArrowLineWidth, defaultCurveLineWidth;
 	bool defaultArrowHeadFill;
 	Qt::PenStyle defaultArrowLineStyle;
