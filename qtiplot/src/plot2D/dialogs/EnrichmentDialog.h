@@ -119,7 +119,7 @@ private:
 	QCheckBox *keepAspectBox, *useFrameColorBox;
 	QSpinBox *boxTransparency, *boxFrameWidth, *boxTextAngle;
 	PatternBox *patternBox;
-	QPushButton *frameApplyToBtn, *patternApplyToBtn, *textApplyToBtn;
+	QPushButton *textApplyToBtn;
 	QComboBox *frameApplyToBox, *patternApplyToBox, *textApplyToBox;
 	ColorButton *textColorBtn, *textBackgroundBtn;
 	QPushButton *textFontBtn;
