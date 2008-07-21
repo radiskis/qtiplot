@@ -271,20 +271,24 @@ void EnrichmentDialog::initFramePage()
 	frameBox->addItem( tr( "None" ) );
 	frameBox->addItem( tr( "Rectangle" ) );
 	frameBox->addItem( tr( "Shadow" ) );
+	connect(frameBox, SIGNAL(activated(int)), this, SLOT(frameApplyTo()));
     gl->addWidget(frameBox, 0, 1);
 
     gl->addWidget(new QLabel(tr("Color")), 1, 0);
 	frameColorBtn = new ColorButton();
+	connect(frameColorBtn, SIGNAL(colorChanged()), this, SLOT(frameApplyTo()));
     gl->addWidget(frameColorBtn, 1, 1);
 
 	gl->addWidget(new QLabel(tr( "Line Style" )), 2, 0);
 	boxFrameLineStyle = new PenStyleBox();
+	connect(boxFrameLineStyle, SIGNAL(activated(int)), this, SLOT(frameApplyTo()));
 	gl->addWidget(boxFrameLineStyle, 2, 1);
 
 	gl->setColumnStretch(1, 1);
 	gl->addWidget(new QLabel(tr("Width")), 3, 0);
 	boxFrameWidth = new QSpinBox();
 	boxFrameWidth->setRange(1, 100);
+	connect(boxFrameWidth, SIGNAL(valueChanged(int)), this, SLOT(frameApplyTo()));
 	gl->addWidget(boxFrameWidth, 3, 1);
 	gl->setRowStretch(4, 1);
 
@@ -294,16 +298,17 @@ void EnrichmentDialog::initFramePage()
 	connect(frameDefaultBtn, SIGNAL(clicked()), this, SLOT(setFrameDefaultValues()));
 	vl->addWidget(frameDefaultBtn);
 
-	frameApplyToBtn = new QPushButton(tr("Apply &to..."));
-	connect(frameApplyToBtn, SIGNAL(clicked()), this, SLOT(frameApplyTo()));
-	vl->addWidget(frameApplyToBtn);
+	QLabel *l = new QLabel(tr("Apply t&o..."));
+	vl->addWidget(l);
 
 	frameApplyToBox = new QComboBox();
+	frameApplyToBox->insertItem(tr("Object"));
 	frameApplyToBox->insertItem(tr("Layer"));
     frameApplyToBox->insertItem(tr("Window"));
     frameApplyToBox->insertItem(tr("All Windows"));
 	vl->addWidget(frameApplyToBox);
 	vl->addStretch();
+	l->setBuddy(frameApplyToBox);
 
 	QHBoxLayout *hl = new QHBoxLayout(framePage);
 	hl->addWidget(gb);
@@ -321,6 +326,7 @@ void EnrichmentDialog::initPatternPage()
     gl->addWidget(new QLabel( tr("Fill Color")), 0, 0);
 
 	backgroundColorBtn = new ColorButton();
+	connect(backgroundColorBtn, SIGNAL(colorChanged()), this, SLOT(patternApplyTo()));
     gl->addWidget(backgroundColorBtn, 0, 1);
 
 	gl->addWidget(new QLabel(tr("Opacity")), 1, 0);
@@ -329,17 +335,21 @@ void EnrichmentDialog::initPatternPage()
     boxTransparency->setSingleStep(5);
 	boxTransparency->setWrapping(true);
     boxTransparency->setSpecialValueText(tr("Transparent"));
+	connect(boxTransparency, SIGNAL(valueChanged(int)), this, SLOT(patternApplyTo()));
 	gl->addWidget(boxTransparency, 1, 1);
 
 	gl->addWidget(new QLabel(tr("Pattern")), 2, 0);
 	patternBox = new PatternBox();
+	connect(patternBox, SIGNAL(activated(int)), this, SLOT(patternApplyTo()));
 	gl->addWidget(patternBox, 2, 1);
 
 	gl->addWidget(new QLabel(tr("Pattern Color")), 3, 0);
 	patternColorBtn = new ColorButton();
+	connect(patternColorBtn, SIGNAL(colorChanged()), this, SLOT(patternApplyTo()));
 	gl->addWidget(patternColorBtn, 3, 1);
 
 	useFrameColorBox = new QCheckBox(tr("Use &Frame Color"));
+	connect(useFrameColorBox, SIGNAL(toggled(bool)), this, SLOT(patternApplyTo()));
 	connect(useFrameColorBox, SIGNAL(toggled(bool)), patternColorBtn, SLOT(setDisabled(bool)));
 	gl->addWidget(useFrameColorBox, 3, 2);
 
@@ -351,16 +361,17 @@ void EnrichmentDialog::initPatternPage()
 	connect(rectangleDefaultBtn, SIGNAL(clicked()), this, SLOT(setRectangleDefaultValues()));
 	vl->addWidget(rectangleDefaultBtn);
 
-	patternApplyToBtn = new QPushButton(tr("Apply &to..."));
-	connect(patternApplyToBtn, SIGNAL(clicked()), this, SLOT(patternApplyTo()));
-	vl->addWidget(patternApplyToBtn);
+	QLabel *l = new QLabel(tr("Apply t&o..."));
+	vl->addWidget(l);
 
 	patternApplyToBox = new QComboBox();
+	patternApplyToBox->insertItem(tr("Object"));
 	patternApplyToBox->insertItem(tr("Layer"));
     patternApplyToBox->insertItem(tr("Window"));
     patternApplyToBox->insertItem(tr("All Windows"));
 	vl->addWidget(patternApplyToBox);
 	vl->addStretch();
+	l->setBuddy(patternApplyToBox);
 
 	QHBoxLayout *hl = new QHBoxLayout(patternPage);
 	hl->addWidget(gb);
@@ -475,10 +486,21 @@ void EnrichmentDialog::setWidget(QWidget *w)
 
     FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
     if (fw){
+		frameBox->blockSignals(true);
         frameBox->setCurrentIndex(fw->frameStyle());
+		frameBox->blockSignals(false);
+		
+		frameColorBtn->blockSignals(true);
         frameColorBtn->setColor(fw->frameColor());
+		frameColorBtn->blockSignals(false);
+		
+		boxFrameLineStyle->blockSignals(true);
 		boxFrameLineStyle->setStyle(fw->framePen().style());
+		boxFrameLineStyle->blockSignals(false);
+		
+		boxFrameWidth->blockSignals(true);
 		boxFrameWidth->setValue(fw->framePen().width());
+		boxFrameWidth->blockSignals(false);
     }
 
     unitBox->setCurrentIndex(FrameWidget::Pixel);
@@ -527,10 +549,21 @@ void EnrichmentDialog::setWidget(QWidget *w)
 	} else if (d_widget_type == Frame){
 		RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
 		if (r){
+			backgroundColorBtn->blockSignals(true);
 			backgroundColorBtn->setColor(r->backgroundColor());
+			backgroundColorBtn->blockSignals(false);
+			
+			boxTransparency->blockSignals(true);
 			boxTransparency->setValue(r->backgroundColor().alpha());
+			boxTransparency->blockSignals(false);
+			
+			patternBox->blockSignals(true);
 			patternBox->setPattern(r->brush().style());
+			patternBox->blockSignals(false);
+			
+			patternColorBtn->blockSignals(true);
 			patternColorBtn->setColor(r->brush().color());
+			patternColorBtn->blockSignals(false);
 		}
 	}
 }
@@ -751,13 +784,21 @@ void EnrichmentDialog::frameApplyTo()
 	switch(frameApplyToBox->currentIndex()){
 		case 0://this layer
 		{
+			FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
+			if (fw)
+				setFrameTo(fw);
+		}
+		break;
+		
+		case 1://this layer
+		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
 			foreach(FrameWidget *fw, lst)
 				setFrameTo(fw);
 		}
 		break;
 
-		case 1://this window
+		case 2://this window
 		{
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
 			foreach(Graph *g, layersLst){
@@ -768,7 +809,7 @@ void EnrichmentDialog::frameApplyTo()
 		}
 		break;
 
-		case 2://all windows
+		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
 			foreach(MdiSubWindow *w, windows){
@@ -793,7 +834,7 @@ void EnrichmentDialog::frameApplyTo()
 
 void EnrichmentDialog::setFrameTo(FrameWidget *fw)
 {
-	fw->setFrameStyle(frameBox->currentIndex());
+	fw->setFrameStyle(frameBox->currentIndex());	
 	QPen pen = QPen(frameColorBtn->color(), boxFrameWidth->value(),
 				boxFrameLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 	fw->setFramePen(pen);
@@ -804,7 +845,15 @@ void EnrichmentDialog::patternApplyTo()
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	switch(patternApplyToBox->currentIndex()){
-		case 0://this layer
+		case 0://this object
+		{
+			RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
+			if (r)
+				setPatternTo(r);
+		}
+		break;
+		
+		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
 			foreach(FrameWidget *fw, lst){
@@ -815,7 +864,7 @@ void EnrichmentDialog::patternApplyTo()
 		}
 		break;
 
-		case 1://this window
+		case 2://this window
 		{
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
 			foreach(Graph *g, layersLst){
@@ -829,7 +878,7 @@ void EnrichmentDialog::patternApplyTo()
 		}
 		break;
 
-		case 2://all windows
+		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
 			foreach(MdiSubWindow *w, windows){

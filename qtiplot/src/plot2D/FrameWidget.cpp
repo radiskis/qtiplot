@@ -199,13 +199,16 @@ QRectF FrameWidget::boundingRect() const
 void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 {
 	p->save();
-	if (d_frame == Line){
+	if (d_frame == Line){		
 		p->setPen(d_frame_pen);
-		p->fillRect(rect, palette().color(QPalette::Window));
+		int lw = d_frame_pen.width()/2;
+		QRect r = rect.adjusted(lw, lw, -lw - 1, -lw - 1);
+		p->fillRect(r, palette().color(QPalette::Window));
 		if (d_brush.style() != Qt::NoBrush)
 			p->setBrush(d_brush);
-		int lw = d_frame_pen.width()/2;
-        QwtPainter::drawRect(p, rect.adjusted(lw, lw, -lw - 1, -lw - 1));
+		
+        QwtPainter::drawRect(p, r);
+		
 	} else if (d_frame == Shadow){
 		int lw = d_frame_pen.width()/2;
 		int d = d_shadow_width + lw;

@@ -364,11 +364,7 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
 
 	height += 2*top_margin;
 	width = 2*left_margin + maxL;
-
-	if (d_frame == Shadow){
-		width += d_shadow_width;
-		height += d_shadow_width;
-	}
+	
 	int fw = 2*d_frame_pen.width();
     height += fw;
     width += fw;
@@ -392,6 +388,12 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
     	height = int(textWidth*cos(angle) + textHeight*sin(angle));
     	width = int(textWidth*sin(angle) + textHeight*cos(angle));
 	}
+	
+	if (d_frame == Shadow){
+		width += d_shadow_width;
+		height += d_shadow_width;
+	}
+	
 	return heights;
 }
 
