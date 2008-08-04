@@ -13,7 +13,7 @@
         <translation type="obsolete">QtiPlot - Warnung</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - untitled</source>
         <translation type="obsolete">QtiPlot - unbenannt</translation>
     </message>
@@ -28,7 +28,7 @@
         <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Falsches Landeskürzel (locale) or keine Übersetzung vorhanden!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: Unknown command line option or the file doesn&apos;t exist!</source>
         <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Unbekannte Kommandozeilenoption or fehlende Datei!</translation>
     </message>
@@ -48,7 +48,7 @@
         <translation type="obsolete">Origin Projekt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Open Project</source>
         <translation type="obsolete">QtiPlot - Projekt öffnen</translation>
     </message>
@@ -68,7 +68,7 @@
         <translation type="obsolete">Die Datei &lt;b&gt;%1&lt;/b&gt; ist kein QtiPlot or Origin Projekt!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - File Backup Error</source>
         <translation type="obsolete">QtiPlot - Datei Backup Fehler</translation>
     </message>
@@ -78,7 +78,7 @@
         <translation type="obsolete">Kann keine Sicherheitskopie von &lt;b&gt;%1&lt;/b&gt; (nach %2) machen.&lt;br&gt;Falls Sie dies ignorieren, kann es zu &lt;b&gt;Datenverlust&lt;/b&gt; kommen.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - File Save Error</source>
         <translation type="obsolete">QtiPlot - Fehler beim Sichern der Datei</translation>
     </message>
@@ -88,17 +88,17 @@
         <translation type="obsolete">Die Datei &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; wurde im schreibgeschützten Modus geöffnet</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Save Project As</source>
         <translation type="obsolete">Project speichern als</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot -- Overwrite File? </source>
         <translation type="obsolete">QtiPlot - Datei berschreiben? </translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists.
 Do you want to overwrite it?</source>
         <translation type="obsolete">Eine Datei mit dem Namen &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt; existiert bereits.
@@ -240,12 +240,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">Inhalt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Windows</source>
         <translation type="obsolete">Fenster</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Folders</source>
         <translation type="obsolete">Ordner</translation>
     </message>
@@ -310,12 +310,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">Notiz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot</source>
         <translation type="obsolete">Diagramm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot 3D</source>
         <translation type="obsolete">3D-Diagramm</translation>
     </message>
@@ -350,7 +350,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">Kann keinen Ordner in einen seiner Unterordner bewegen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Skipped Moving Folder</source>
         <translation type="obsolete">Ordnerverschieben übersprungen</translation>
     </message>
@@ -440,54 +440,54 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">Es werden Spalten aus der Tabelle gelöscht!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please select two columns for this operation:
  the first represents the signal and the second the response function!</source>
         <translation type="obsolete">Bitte wählen Sie zwei Spalten für diese Operation aus:
 Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The response dataset &apos;%1&apos; must be less then half the size of the signal dataset &apos;%2&apos;!</source>
         <translation type="obsolete">Der Antwortdatensatz &apos;%1&apos; muss weniger als halb so groß wie der Signaldatensatz &apos;%2&apos; sein!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The response dataset &apos;%1&apos; must contain an odd number of points!</source>
         <translation type="obsolete">Der Antwortdatensatz &apos;%1&apos; muss eine ungerade Anzahl von Punkten enthalten!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Frequency</source>
         <translation type="obsolete">Frequenz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Time</source>
         <translation type="obsolete">Zeit</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Real</source>
         <translation type="obsolete">Realteil</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Imaginary</source>
         <translation type="obsolete">Imaginärteil</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Amplitude</source>
         <translation type="obsolete">Amplitude</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Angle</source>
         <translation type="obsolete">Winkel</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - HTTP Get Version File</source>
         <translation type="obsolete">QtiPlot - HTTP Versionsdatei herunterladen</translation>
     </message>
@@ -517,14 +517,14 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation type="obsolete">Eine neuere Version von QtiPlot (%1) ist verfügbar. Wollen Sie sie herunterladen?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cannot write file %1
 %2.</source>
         <translation type="obsolete">Kann nicht in Datei %1 schreiben
 %2.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Qtiplot - Reading file...</source>
         <translation type="obsolete">QtiPlot - Datei lesen...</translation>
     </message>
@@ -534,7 +534,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation type="obsolete">Grafik</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Graph 3D</source>
         <translation type="obsolete">3D Grafik</translation>
     </message>
@@ -2465,38 +2465,38 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <message>
         <location filename="../src/plot2D/AddWidgetTool.cpp" line="73"/>
         <source>Click on plot to choose the position of the new object!</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf den Plot klicken, um die Position des neuen Objects zu wählen!</translation>
     </message>
     <message>
         <location filename="../src/plot2D/AddWidgetTool.cpp" line="130"/>
         <source>enter your text here</source>
-        <translation type="unfinished">Geben Sie hier Ihren Text ein</translation>
+        <translation>Geben Sie hier Ihren Text ein</translation>
     </message>
     <message>
         <location filename="../src/plot2D/AddWidgetTool.cpp" line="156"/>
         <source>Move cursor in order to resize the new rectangle!</source>
-        <translation type="unfinished"></translation>
+        <translation>Cursor bewegen um die Größe des Rechtecks zu ändern!</translation>
     </message>
 </context>
 <context>
     <name>AnalysisDialog</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Analysis Option</source>
         <translation type="obsolete">QtiPlot - Analyseoptionen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Analysis Options</source>
         <translation type="obsolete">QtiPlot - Analyseoptionen</translation>
     </message>
@@ -2516,42 +2516,42 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12687"/>
         <source>Pointer</source>
-        <translation type="unfinished">Mauszeiger</translation>
+        <translation>Mauszeiger</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12463"/>
         <source>Zoom</source>
-        <translation type="unfinished">Zoom</translation>
+        <translation>Zoom</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Show data display</source>
         <translation type="obsolete">Daten anzeigen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12703"/>
         <source>Select data range</source>
-        <translation type="unfinished">Datenbereich setzen</translation>
+        <translation>Datenbereich setzen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Show data cursor</source>
         <translation type="obsolete">Bildschirmkoordinaten</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12713"/>
         <source>Move data points</source>
-        <translation type="unfinished">Datenpunkte verschieben</translation>
+        <translation>Datenpunkte verschieben</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12717"/>
         <source>Remove data points</source>
-        <translation type="unfinished">Datenpunkte löschen</translation>
+        <translation>Datenpunkte löschen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12737"/>
         <source>Draw line</source>
-        <translation type="unfinished">Linien zeichnen</translation>
+        <translation>Linien zeichnen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14512"/>
@@ -2574,7 +2574,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation>&amp;Neu</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Recent projects</source>
         <translation type="obsolete">&amp;Zuletzt geöffnete Projekte</translation>
     </message>
@@ -2604,7 +2604,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation>&amp;Grafik</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Plot3D</source>
         <translation type="obsolete">3&amp;D-Diagramm</translation>
     </message>
@@ -2629,12 +2629,12 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation>&amp;Feld</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Plot 2D</source>
         <translation type="obsolete">2D-&amp;Grafik</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot &amp;3D</source>
         <translation type="obsolete">3&amp;D-Grafik</translation>
     </message>
@@ -2644,12 +2644,12 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation>&amp;Daten</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Inter&amp;polate</source>
         <translation type="obsolete">Inter&amp;polieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;FFT</source>
         <translation type="obsolete">&amp;FFT</translation>
     </message>
@@ -2689,7 +2689,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation>QtiPlot - Datensatz auswählen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&lt;h4&gt;There are no matrixes available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a matrix and try again!&lt;/h4&gt;</source>
         <translation type="obsolete">&lt;h4&gt;Keine Matrizen vorhanden in diesem Projekt&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Bitte erstellen Sie eine Matrix und versuchen Sie es erneut&lt;/h4&gt;</translation>
     </message>
@@ -2699,17 +2699,17 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation>QtiPlot - darzustellende Matrix auswählen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Data Plot 3D</source>
         <translation type="obsolete">3D-Daten-Grafik</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Matrix Plot 3D</source>
         <translation type="obsolete">3D-Matrix-Grafik</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Function Plot 3D</source>
         <translation type="obsolete">3D-Funktionsgrafik</translation>
     </message>
@@ -2759,7 +2759,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation>&lt;h4&gt;Keine Ebenen in diesem Fenster vorhanden&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Overwrite File?</source>
         <translation type="obsolete">QtiPlot - Datei überschreiben?</translation>
     </message>
@@ -2786,20 +2786,20 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="4974"/>
         <source>QtiPlot - Export Error</source>
-        <translation type="unfinished">QtiPlot - Export-Fehler</translation>
+        <translation>QtiPlot - Export-Fehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - File Save Error</source>
         <translation type="obsolete">QtiPlot - Fehler beim Sichern der Datei</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot -- Overwrite File? </source>
         <translation type="obsolete">QtiPlot - Datei überschreiben?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists.
 Do you want to overwrite it?</source>
         <translation type="obsolete">Eine Datei mit dem Namen &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;existiert bereits.
@@ -2808,15 +2808,15 @@ Wollen Sie sie überschreiben?</translation>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="14818"/>
         <source>&amp;No</source>
-        <translation type="unfinished">&amp;Nein</translation>
+        <translation>&amp;Nein</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Rename Window</source>
         <translation type="obsolete">Fenster umbennen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please choose a name</source>
         <translation type="obsolete">Bitte whlen Sie einen Namen</translation>
     </message>
@@ -2836,7 +2836,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Nicht für 3D-Oberflächendiagramme ohne Daten verfügbar!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Custom curves</source>
         <translation type="obsolete">QtiPlot - Benutzerdefinierte Kurven</translation>
     </message>
@@ -2871,7 +2871,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">In die &amp;aktive Ebene</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Define Layout</source>
         <translation type="obsolete">QtiPlot - Layout-Definition</translation>
     </message>
@@ -2886,7 +2886,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>QtiPlot - Fehler beim Duplizieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Empty 3D surface plots can not be duplicated!</source>
         <translation type="obsolete">Eine leeres 3D-Oberflächendiagramm kann nicht dupliziert werden!</translation>
     </message>
@@ -2911,7 +2911,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Über QtiPlot</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;View pixel line profile</source>
         <translation type="obsolete">Linienprofil &amp;anzeigen</translation>
     </message>
@@ -2956,154 +2956,154 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Keine Datei mit dem Namen &lt;b&gt;index.html&lt;/b&gt; in diesem Ordner gefunden.&lt;br&gt;Bitte wählen Sie einen anderen Ordner!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Print</source>
         <translation type="obsolete">Drucken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Backward</source>
         <translation type="obsolete">Zurück</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Forward</source>
         <translation type="obsolete">Weiter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Home</source>
         <translation type="obsolete">Anfang</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Surface 3D</source>
         <translation type="obsolete">3D-Oberflächendiagramm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Coordinates</source>
         <translation type="obsolete">Koordinaten</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Coord</source>
         <translation type="obsolete">&amp;Koord</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12746"/>
         <source>Box</source>
-        <translation type="unfinished">Kasten</translation>
+        <translation>Kasten</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A</source>
         <translation type="obsolete">A</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12750"/>
         <source>Frame</source>
-        <translation type="unfinished">Rahmen</translation>
+        <translation>Rahmen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12748"/>
         <source>&amp;Frame</source>
-        <translation type="unfinished">&amp;Rahmen</translation>
+        <translation>&amp;Rahmen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>F</source>
         <translation type="obsolete">F</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12752"/>
         <source>No Axes</source>
-        <translation type="unfinished">Keine Axen</translation>
+        <translation>Keine Axen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>grid</source>
         <translation type="obsolete">Gitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Action</source>
         <translation type="obsolete">Aktion</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Front Grid</source>
         <translation type="obsolete">Vordergrundgitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Action_2</source>
         <translation type="obsolete">Aktion_2</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Back Grid</source>
         <translation type="obsolete">Hintergrundgitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Action_3</source>
         <translation type="obsolete">Aktion_3</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Right Grid</source>
         <translation type="obsolete">rechtes Gitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Action_4</source>
         <translation type="obsolete">Aktion_4</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Left Grid</source>
         <translation type="obsolete">linkes Gitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Action_5</source>
         <translation type="obsolete">Aktion_5</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Ceiling Grid</source>
         <translation type="obsolete">Deckengitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Action_6</source>
         <translation type="obsolete">Aktion_6</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Floor Grid</source>
         <translation type="obsolete">Bodenflächengitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot Style</source>
         <translation type="obsolete">Diagrammstil</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12766"/>
         <source>Wireframe</source>
-        <translation type="unfinished">Drahtgitter</translation>
+        <translation>Drahtgitter</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12768"/>
         <source>Hidden Line</source>
-        <translation type="unfinished">Versteckte Linien</translation>
+        <translation>Versteckte Linien</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12774"/>
         <source>Polygon only</source>
-        <translation type="unfinished">Nur Polygon</translation>
+        <translation>Nur Polygon</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12778"/>
@@ -3126,12 +3126,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="unfinished">Kegel</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cross Hairs</source>
         <translation type="obsolete">Fadenkreuz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Floor Style</source>
         <translation type="obsolete">Bodenflächenstil</translation>
     </message>
@@ -3193,7 +3193,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+T</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>New spreadsheet</source>
         <translation type="obsolete">Neues Tabellenfenster</translation>
     </message>
@@ -3218,7 +3218,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>New &amp;Surface 3D Plot</source>
         <translation type="obsolete">Neues &amp;3D-Oberflächendiagramm</translation>
     </message>
@@ -3243,7 +3243,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="unfinished">Projekt öffnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Open image &amp;file</source>
         <translation type="obsolete">Bilddatei &amp;öffnen</translation>
     </message>
@@ -3253,7 +3253,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Import &amp;image...</source>
         <translation type="obsolete">Bild &amp;importieren...</translation>
     </message>
@@ -3268,7 +3268,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Save Project &amp;as...</source>
         <translation type="obsolete">Projekt speichern &amp;als...</translation>
     </message>
@@ -3323,7 +3323,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="unfinished">Fenster duplizieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cu&amp;t selection</source>
         <translation type="obsolete">Auswahl ausschnei&amp;den</translation>
     </message>
@@ -3333,7 +3333,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Copy selection</source>
         <translation type="obsolete">Auswahl kopieren</translation>
     </message>
@@ -3343,7 +3343,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+C</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Paste selection</source>
         <translation type="obsolete">Auswahl ein&amp;fügen</translation>
     </message>
@@ -3353,17 +3353,17 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+V</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Delete selection</source>
         <translation type="obsolete">Auswahl &amp;löschen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Delete</source>
         <translation type="obsolete">Löschen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Project &amp;explorer</source>
         <translation type="obsolete">Projekt&amp;explorer</translation>
     </message>
@@ -3383,7 +3383,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="unfinished">Ergebnis-&amp;Log</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Show calculus results</source>
         <translation type="obsolete">Berechnungsergebnis anzeigen</translation>
     </message>
@@ -3393,7 +3393,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Ebene hinzufügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Arran&amp;ge/Custom Layers</source>
         <translation type="obsolete">Ebenen anordnen/Eigene Ebeneneinstellungen</translation>
     </message>
@@ -3433,12 +3433,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Print graph</source>
         <translation type="obsolete">Grafik drucken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Print &amp;All Plots</source>
         <translation type="obsolete">&amp;Alle Diahramme drucken</translation>
     </message>
@@ -3463,12 +3463,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Clear &amp;log information</source>
         <translation type="obsolete">Alle &amp;Log-Einträge löschen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot &amp;wizard</source>
         <translation type="obsolete">Diagramm-&amp;Assistent</translation>
     </message>
@@ -3483,7 +3483,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Add/Remove curve</source>
         <translation type="obsolete">Kurve hinzufügen/entfernen</translation>
     </message>
@@ -3493,7 +3493,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="unfinished">Kurve zu Grafik hinzufügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add &amp;Error Bars</source>
         <translation type="obsolete">Fehlerbalken hinzufügen</translation>
     </message>
@@ -3503,7 +3503,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+B</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add &amp;function curve</source>
         <translation type="obsolete">Funktionskurve hinzufügen</translation>
     </message>
@@ -3513,7 +3513,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Rescale to show all</source>
         <translation type="obsolete">Auf Komplettansicht &amp;reskalieren</translation>
     </message>
@@ -3548,7 +3548,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Text hinzufügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Draw arrow/line</source>
         <translation type="obsolete">Peil/Linie zeichnen</translation>
     </message>
@@ -3558,7 +3558,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Linie</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot with line</source>
         <translation type="obsolete">Als Linie darstellen</translation>
     </message>
@@ -3568,7 +3568,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Punkte</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot with symbols</source>
         <translation type="obsolete">Als Symbole darstellen</translation>
     </message>
@@ -3578,12 +3578,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Linie + S&amp;ymbole</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot with line + symbols</source>
         <translation type="obsolete">Mit Linie + Symbole darstellen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Vertical &amp;drop lines</source>
         <translation type="obsolete">Vertikale &amp;Linien</translation>
     </message>
@@ -3678,7 +3678,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Band</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot 3D Ribbon</source>
         <translation type="obsolete">3D-Band zeichnen</translation>
     </message>
@@ -3688,12 +3688,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Balken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot 3D Bars</source>
         <translation type="obsolete">3D-Balken zeichnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot 3D Scatter</source>
         <translation type="obsolete">3D-Punkte zeichnen</translation>
     </message>
@@ -3703,12 +3703,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Trajektorie</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot 3D Trajectory</source>
         <translation type="obsolete">3D-Trajektorie zeichnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Move data points</source>
         <translation type="obsolete">Datenpunkte verschieben</translation>
     </message>
@@ -3718,7 +3718,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+M</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Remove &amp;bad data points</source>
         <translation type="obsolete">Ausreißer entfernen</translation>
     </message>
@@ -3753,27 +3753,27 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">&amp;Integrieren ...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Li&amp;near</source>
         <translation type="obsolete">Li&amp;near</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cu&amp;bic spline</source>
         <translation type="obsolete">Ku&amp;bischer Spline</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Non-&amp;rounded Akime spline</source>
         <translation type="obsolete">unge&amp;rundeter Akime Spline</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Forward</source>
         <translation type="obsolete">Weiter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Inverse</source>
         <translation type="obsolete">&amp;Invertieren</translation>
     </message>
@@ -3808,7 +3808,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Dritter Ordnung...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Fit Exponential Gro&amp;wth</source>
         <translation type="obsolete">Fit fr Exponentiellen Anstieg</translation>
     </message>
@@ -3823,7 +3823,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Loren&amp;z-Fit</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Non-linear Curve Fit ...</source>
         <translation type="obsolete">&amp;Nicht-linearer Fit...</translation>
     </message>
@@ -3838,7 +3838,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Diagramm ...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Axes/Grid ...</source>
         <translation type="obsolete">&amp;Achsen/Gitter ...</translation>
     </message>
@@ -3848,12 +3848,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Titel ...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Column &amp;options ...</source>
         <translation type="obsolete">Spalten-Optionen ...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Set column values ...</source>
         <translation type="obsolete">Spaltenwerte fe&amp;stlegen ...</translation>
     </message>
@@ -3868,7 +3868,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Zeilen...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;About</source>
         <translation type="obsolete">&amp;Über QtiPlot</translation>
     </message>
@@ -3883,7 +3883,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Choose help folder...</source>
         <translation type="obsolete">&amp;Bitte wählen Sie den Hilfe-Ordner aus...</translation>
     </message>
@@ -3903,12 +3903,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+W</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add column</source>
         <translation type="obsolete">Spalte hinzufügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Delete Layer</source>
         <translation type="obsolete">Ebene löschen</translation>
     </message>
@@ -3928,7 +3928,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Weitere Fenster...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Intensity table</source>
         <translation type="obsolete">&amp;Intensitätstabelle</translation>
     </message>
@@ -3958,22 +3958,22 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Fenster &amp;drucken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Layer geometry</source>
         <translation type="obsolete">&amp;Ebenengeometrie</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>E&amp;mpty 3D plot</source>
         <translation type="obsolete">Leeres 3D-Diagramm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add 3D &amp;Function</source>
         <translation type="obsolete">3D-Funktin hinzufügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add 3D &amp;Data</source>
         <translation type="obsolete">3D-Data hinzufügen</translation>
     </message>
@@ -4008,12 +4008,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>&amp;Determinate</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Convert to spreadsheet</source>
         <translation type="obsolete">In Tabelle &amp;konvertieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Convert to matrix</source>
         <translation type="obsolete">In Matrize &amp;konvertieren</translation>
     </message>
@@ -4043,7 +4043,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>In diesem Diagramm existieren keine Kurven!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The graph you want to analyse doesn&apos;t exist anymore.
 Operation aborted!</source>
         <translation type="obsolete">Die Grafik, die Sie analysieren wollen existiert nicht mehr. Die ausgewhlte Operation wurde abgebrochen!</translation>
@@ -4059,12 +4059,12 @@ Operation aborted!</source>
         <translation type="unfinished">&amp;Zoom</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>ALT+Z</source>
         <translation type="obsolete">ALT+Z</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Data reader</source>
         <translation type="obsolete">&amp;Datenleser</translation>
     </message>
@@ -4079,7 +4079,7 @@ Operation aborted!</source>
         <translation type="unfinished">Datenleser</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Select data range</source>
         <translation type="obsolete">Datenbereich aus&amp;wählen</translation>
     </message>
@@ -4089,7 +4089,7 @@ Operation aborted!</source>
         <translation>ALT+S</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>S&amp;creen reader</source>
         <translation type="obsolete">&amp;Bildschirmleser</translation>
     </message>
@@ -4119,7 +4119,7 @@ Operation aborted!</source>
         <translation>ALT+T</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Draw &amp;Arrow/Line</source>
         <translation type="obsolete">&amp;Pfeil/Linie zeichnen</translation>
     </message>
@@ -4134,7 +4134,7 @@ Operation aborted!</source>
         <translation>&amp;Tabelle</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot 3&amp;D</source>
         <translation type="obsolete">3&amp;D-Diagramm</translation>
     </message>
@@ -4154,7 +4154,7 @@ Operation aborted!</source>
         <translation type="unfinished">Bitte whlen Sie die darzustellende Kolumne aus!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>This operation can not be performed on curves plotted from columns having a non-numerical format.</source>
         <translation type="obsolete">Diese Operation kann nicht auf Spalten, die auf nicht numerischen Daten basieren, angewendet werden.</translation>
     </message>
@@ -4179,17 +4179,17 @@ Operation aborted!</source>
         <translation>Es sind keine Grafikebenen in diesem Fenster vorhanden.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Alt+L</source>
         <translation type="obsolete">ALT+L</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Alt+A</source>
         <translation type="obsolete">ALT+A</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Import i&amp;mage...</source>
         <translation type="obsolete">Bild &amp;importieren...</translation>
     </message>
@@ -4214,12 +4214,12 @@ Operation aborted!</source>
         <translation>Alle Grafiken aus&amp;drucken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Delete &amp;fit tables</source>
         <translation type="obsolete">&amp;Fit-Tabellen löschen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add/Remove &amp;Curve</source>
         <translation type="obsolete">&amp;Kurve hinzufügen/entfernen</translation>
     </message>
@@ -4229,7 +4229,7 @@ Operation aborted!</source>
         <translation>ALT+C</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add &amp;Function</source>
         <translation type="obsolete">&amp;Funktion hinzufügen</translation>
     </message>
@@ -4264,17 +4264,17 @@ Operation aborted!</source>
         <translation>Ebene &amp;entfernen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Convert to &amp;matrix</source>
         <translation type="obsolete">In &amp;Matrix konvertieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Too many command line options (maximum accepted is 2)!</source>
         <translation type="obsolete">Zu viele Kommandozeilenoptionen (maximal 2 erlaubt)!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: Unknown command line option or the file doesn&apos;t exist!</source>
         <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Unbekannte Kommandozeilenoption oder fehlende Datei!</translation>
     </message>
@@ -4349,12 +4349,12 @@ Operation aborted!</source>
         <translation>&amp;Normieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Set columns &amp;as</source>
         <translation type="obsolete">Spalten setzen &amp;als</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Fill columns with</source>
         <translation type="obsolete">Spalten &amp;füllen mit</translation>
     </message>
@@ -4419,7 +4419,7 @@ Operation aborted!</source>
         <translation>Die Tabelle &apos;%1&apos; existiert bereits. Sie wurde in &apos;%2&apos; umbenannt.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The matrix &apos;%1&apos; already exists. It has been renamed &apos;%2&apos;.</source>
         <translation type="obsolete">Die Matrix &apos;%1&apos; existiert bereits. Sie wurde in &apos;%2&apos; umbenannt.</translation>
     </message>
@@ -4479,17 +4479,17 @@ Operation aborted!</source>
         <translation>Die Datei &lt;b&gt;%1&lt;/b&gt; existiert nicht!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>graph1</source>
         <translation type="obsolete">Grafik1</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>table1</source>
         <translation type="obsolete">Tabelle1</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Matrix1</source>
         <translation type="obsolete">Matrix1</translation>
     </message>
@@ -4539,7 +4539,7 @@ Operation aborted!</source>
         <translation>Die Datei &lt;b&gt; %1 &lt;/b&gt; &lt;p&gt; existiert nicht mehr!&lt;p&gt;Sie wird aus der Liste entfernt.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; is the current file!</source>
         <translation type="obsolete">Die Datei &lt;b&gt;%1&lt;/b&gt; ist die aktuelle Datei!</translation>
     </message>
@@ -4564,7 +4564,7 @@ Operation aborted!</source>
         <translation>QtiPlot Matrixvorlage</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot 2D Plot Template</source>
         <translation type="obsolete">QtiPlot 2D Diagrammvorlage</translation>
     </message>
@@ -4664,7 +4664,7 @@ Operation aborted!</source>
         <translation>Bitte zuerst eine Spalten auswählen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Line + s&amp;ymbol</source>
         <translation type="obsolete">Linie + S&amp;ymbol</translation>
     </message>
@@ -4709,17 +4709,17 @@ Operation aborted!</source>
         <translation type="obsolete">Keine</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Set as</source>
         <translation type="obsolete">Setzen als</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Set column &amp;values...</source>
         <translation type="obsolete">Spalten&amp;werte setzen...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Fill column with</source>
         <translation type="obsolete">Spalten &amp;füllen mit</translation>
     </message>
@@ -4739,7 +4739,7 @@ Operation aborted!</source>
         <translation>E&amp;infügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Add column</source>
         <translation type="obsolete">Sp&amp;alte hinzufügen</translation>
     </message>
@@ -4801,7 +4801,7 @@ Wollen Sie fortfahren?</translation>
         <translation type="obsolete">Klicken Sie auf ein Diagramm oder bewegen sie den Cursor, um die Koordinaten anzuzeigen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Click on plot to display information!</source>
         <translation type="obsolete">Klicken Sie auf ein Diagramm, um Informationen anzuzeigen!</translation>
     </message>
@@ -4816,12 +4816,12 @@ Wollen Sie fortfahren?</translation>
         <translation>&amp;Nebeneinander</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Next</source>
         <translation type="obsolete">&amp;Nächstes</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Previous</source>
         <translation type="obsolete">&amp;Voriges</translation>
     </message>
@@ -4871,12 +4871,12 @@ Wollen Sie fortfahren?</translation>
         <translation>&amp;Fenster löschen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>D&amp;epending Plots</source>
         <translation type="obsolete">Abhängig&amp;e Diagramme</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>D&amp;epending 3D Plots</source>
         <translation type="obsolete">Abhängig&amp;e 3D Diagramme</translation>
     </message>
@@ -4896,32 +4896,32 @@ Wollen Sie fortfahren?</translation>
         <translation>Maximiert</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Re&amp;move pie curve</source>
         <translation type="obsolete">&amp;Tortengrafik entfernen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Anal&amp;yse</source>
         <translation type="obsolete">Anal&amp;yse</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Paste layer</source>
         <translation type="obsolete">Ko&amp;pierte Ebene einfügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Paste text</source>
         <translation type="obsolete">Ko&amp;pierten Text einfügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Paste line/arrow</source>
         <translation type="obsolete">Ko&amp;pierte(n) Linie/Pfeil einfügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Paste image</source>
         <translation type="obsolete">Ko&amp;piertes Bild einfügen</translation>
     </message>
@@ -5001,7 +5001,7 @@ Wollen Sie fortfahren?</translation>
         <translation>Zeilen&amp;inhalte löschen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Plot 3D</source>
         <translation type="obsolete">&amp;3D-Diagramm</translation>
     </message>
@@ -5051,12 +5051,12 @@ Wollen Sie fortfahren?</translation>
         <translation>QtiPlot - Hilfedateien nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please indicate the location of the help file!&lt;br&gt;&lt;br&gt;&lt;p&gt;The manual can be downloaded from the following internet address:&lt;/p&gt;&lt;p&gt;&lt;font color=blue&gt;&apos;http://soft.proindependent.com/manuals.html&apos;&lt;/font&gt;&lt;/p&gt;</source>
         <translation type="obsolete">Bitte geben Sie den Speicherort der Hilfedateien an!&lt;br&gt;&lt;br&gt;&lt;p&gt;Das Handbuch kann von der folgenden Internetadresse heruntergeladen werden:&lt;/p&gt;&lt;p&gt;&lt;font color=blue&gt;&apos;http://soft.proindependent.com/manuals.html&apos;&lt;/font&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Help Browser</source>
         <translation type="obsolete">QtiPlot - Hilfe-Browser</translation>
     </message>
@@ -5076,7 +5076,7 @@ Wollen Sie fortfahren?</translation>
         <translation type="unfinished">Ausgeblendet</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Curve:</source>
         <translation type="obsolete">Kurve:</translation>
     </message>
@@ -5101,12 +5101,12 @@ Wollen Sie fortfahren?</translation>
         <translation>Vor&amp;lage öffnen...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Save as &amp;Template...</source>
         <translation type="obsolete">Als &amp;Vorlage speichern...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Key_Delete</source>
         <translation type="obsolete">Entf</translation>
     </message>
@@ -5126,7 +5126,7 @@ Wollen Sie fortfahren?</translation>
         <translation>&amp;Funktion hinzufügen...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add time stamp</source>
         <translation type="obsolete">Zeitstempel hinzufügen</translation>
     </message>
@@ -5286,7 +5286,7 @@ Wollen Sie fortfahren?</translation>
         <translation>&amp;Lorentz...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Search for Updates</source>
         <translation type="obsolete">Nach Updates &amp;suchen</translation>
     </message>
@@ -5296,7 +5296,7 @@ Wollen Sie fortfahren?</translation>
         <translation>&amp;QtiPlot Homepage</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Download &amp;manual</source>
         <translation type="obsolete">&amp;Handbuch herunterladen</translation>
     </message>
@@ -5306,12 +5306,12 @@ Wollen Sie fortfahren?</translation>
         <translation>Ü&amp;bersetzungen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Make a &amp;donation</source>
         <translation type="obsolete">Das Projekt mit einer Spen&amp;de unterstützen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Technical &amp;support</source>
         <translation type="obsolete">Technischer &amp;Support</translation>
     </message>
@@ -5331,7 +5331,7 @@ Wollen Sie fortfahren?</translation>
         <translation type="unfinished">Ein leeres Notizfenster erstellen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>New Table</source>
         <translation type="obsolete">Neue Tabelle</translation>
     </message>
@@ -5346,7 +5346,7 @@ Wollen Sie fortfahren?</translation>
         <translation type="unfinished">Ein neues 3D Oberflächendiagramm erstellen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Save Project</source>
         <translation type="obsolete">Projekt speichern</translation>
     </message>
@@ -5356,12 +5356,12 @@ Wollen Sie fortfahren?</translation>
         <translation type="unfinished">&amp;Vorlage öffnen...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Open Template</source>
         <translation type="obsolete">Vorlage öffnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Save Window as Template</source>
         <translation type="obsolete">Das Fenster als Vorlage speichern</translation>
     </message>
@@ -5401,7 +5401,7 @@ Wollen Sie fortfahren?</translation>
         <translation type="unfinished">Fenster drucken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Date &amp; Time </source>
         <translation type="obsolete">Datum &amp; Zeit</translation>
     </message>
@@ -5426,7 +5426,7 @@ Wollen Sie fortfahren?</translation>
         <translation type="obsolete">&amp;Kurven...</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Box and Whiskers Plot</source>
         <translation type="obsolete">Box-and-Whiskers-Diagramm</translation>
     </message>
@@ -5451,12 +5451,12 @@ Wollen Sie fortfahren?</translation>
         <translation type="obsolete">Wählen Sie einen Punkt durch einen Klick, ein Doppelklick (oder: &apos;Enter&apos;) legt die Position des Peaks fest!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Sorry, QtiPlot couldn&apos;t start the default browser! Please start a browser manually and visit the following link</source>
         <translation type="obsolete">Entschuldigung, QtiPlot konnte den Standardbrowser nicht starten! Bitte starten Sie manuell Ihren Browser und besuchen die folgende Seite</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Ctrl+Q</source>
         <comment>Quit</comment>
         <translation type="obsolete">Ctrl+Q</translation>
@@ -5512,7 +5512,7 @@ Wollen Sie fortfahren?</translation>
         <translation>Leere 3D Oberflächendiagramme können nicht dupliziert werden!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Scripting &amp;Console</source>
         <translation type="obsolete">S&amp;kriptkonsole</translation>
     </message>
@@ -5637,12 +5637,12 @@ Wollen Sie fortfahren?</translation>
         <translation type="obsolete">Y-Fehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Set number of pixels to average</source>
         <translation type="obsolete">QtiPlot - Anzahl der zu mittelnden Pixel setzen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Number of average pixels</source>
         <translation type="obsolete">Anzahl der zu mittelnden Pixel</translation>
     </message>
@@ -5697,7 +5697,7 @@ Wollen Sie fortfahren?</translation>
         <translation>Grafik</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>S&amp;cripting</source>
         <translation type="obsolete">S&amp;cripting</translation>
     </message>
@@ -5737,7 +5737,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation>Skriptsprache &quot;%1&quot; konnte nicht initialisiert werden.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Get existing directory</source>
         <translation type="obsolete">Existirendes Verzeichnis wählen</translation>
     </message>
@@ -5747,17 +5747,17 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation>Ein Verzeichnis für den Export der Grafik wählen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Python Source</source>
         <translation type="obsolete">Python Quellcode</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>All Files</source>
         <translation type="obsolete">Alle Dateien</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Save Notes As...</source>
         <translation type="obsolete">Notizen speichern als...</translation>
     </message>
@@ -5787,7 +5787,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation>Abhängig&amp;e 3D-Grafiken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Graph 3D</source>
         <translation type="obsolete">3D &amp;Grafik</translation>
     </message>
@@ -5797,12 +5797,12 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation>Wählen Sie den QtiPlot Hilfeordner!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Open File</source>
         <translation type="obsolete">Datei öffnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Alt+F4</source>
         <translation type="obsolete">Alt+F4</translation>
     </message>
@@ -5882,7 +5882,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation type="unfinished">&lt;b&gt; %1 &lt;/b&gt;: Falsches Landeskürzel (locale) or keine Übersetzung vorhanden!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - File Backup Error</source>
         <translation type="obsolete">QtiPlot - Datei Backup Fehler</translation>
     </message>
@@ -5972,12 +5972,12 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation type="unfinished">Inhalt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Windows</source>
         <translation type="obsolete">Fenster</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Folders</source>
         <translation type="obsolete">Ordner</translation>
     </message>
@@ -6032,7 +6032,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation type="unfinished">Kann keinen Ordner in einen seiner Unterordner bewegen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Skipped Moving Folder</source>
         <translation type="obsolete">Ordnerverschieben übersprungen</translation>
     </message>
@@ -6042,12 +6042,12 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation type="unfinished">Der Zielordner enthält bereits einen Ordner namens &apos;%1&apos;! Ordner übersprungen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - HTTP Get Version File</source>
         <translation type="obsolete">QtiPlot - HTTP Versionsdatei herunterladen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cannot write file %1
 %2.</source>
         <translation type="obsolete">Kann nicht in Datei %1 schreiben
@@ -6159,7 +6159,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
         <translation>QtiPlot - Hilfeprofil nicht gefunden!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The assistant could not start because the file &lt;b&gt;%1&lt;/b&gt; was not found in the help file directory!&lt;p&gt;This file is provided with the QtiPlot manual which can be downloaded from the following internet address:&lt;/p&gt;&lt;p&gt;&lt;font color=blue&gt;&apos;http://soft.proindependent.com/manuals.html&apos;&lt;/font&gt;&lt;/p&gt;</source>
         <translation type="obsolete">Der Assistent konnte nicht gestartet werden, da die Datei &lt;b&gt;%1&lt;/b&gt; im Hilfeverzeichnis nicht gefunden wurde!&lt;p&gt;Diese Datei gehört zum QtiPlot Handbuch, dass von der folgenden Internetadresse bezogen werden kann:&lt;/p&gt;&lt;p&gt;&lt;font color=blue&gt;&apos;http://soft.proindependent.com/manuals.html&apos;&lt;/font&gt;&lt;/p&gt;</translation>
     </message>
@@ -7038,27 +7038,27 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8154"/>
         <source>Vie&amp;w</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Ansicht</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8157"/>
         <source>&amp;Palette</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Palette</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="6160"/>
         <source>&amp;Read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Schreibgeschützt</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="6161"/>
         <source>Read/&amp;Write</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Schreiben/&amp;Lesen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="1489"/>
         <source>QtiPLot - Plot error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">QtiPlot - Plot Fehler</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="1692"/>
@@ -7068,62 +7068,62 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5089"/>
         <source>Output format:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ausgabeformat:</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5090"/>
         <source>Directory:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Verzeichnis:</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5121"/>
         <source>There are no plot layers available in window &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Graph window not exported!</source>
-        <translation type="unfinished"></translation>
+        <translation>Es sind keine Grafik-Ebenen in Fenster &lt;b&gt;%1&lt;/b&gt; vorhanden. Grafikfenster nicht exportiert!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5753"/>
         <source>QtiPlot - Delete rows</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Zeilen löschen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5750"/>
         <source>Start row</source>
-        <translation type="unfinished"></translation>
+        <translation>Startzeile</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5753"/>
         <source>End row</source>
-        <translation type="unfinished"></translation>
+        <translation>Endzeile</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="6535"/>
         <source>Set Display Range</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzeigebereich setzen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8261"/>
         <source>&amp;Folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Ordner</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12293"/>
         <source>&amp;Import ASCII...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ASCII-&amp;Import...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12353"/>
         <source>Shift+A</source>
-        <translation type="unfinished"></translation>
+        <translation>Umschalt+A</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12519"/>
         <source>Fit &amp;Wizard...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fit-&amp;Assistent...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12537"/>
         <source>&amp;Swap columns</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Spalten &amp;tauschen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12539"/>
@@ -7268,17 +7268,17 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12246"/>
         <source>Create a new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstelle einen neuen Ordner</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12294"/>
         <source>Import data file(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Datendatei(en) importieren</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12538"/>
         <source>Swap selected columns</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ausgewählte Spalten tauschen</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12540"/>
@@ -7668,7 +7668,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13382"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sie haben nicht die Rechte um die Datei &lt;b&gt;%1&lt;/b&gt; zu öffnen.</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="7303"/>
@@ -7839,7 +7839,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="15782"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte genau eine Spalte auswählen die mehr als eine nichtleere Zelle enthält!</translation>
     </message>
 </context>
 <context>
@@ -8075,17 +8075,17 @@ Autocompletion will not be available!</source>
         <translation>&amp;Schriftart</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>B</source>
         <translation type="obsolete">B</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>It</source>
         <translation type="obsolete">It</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>U</source>
         <translation type="obsolete">U</translation>
     </message>
@@ -8140,7 +8140,7 @@ Autocompletion will not be available!</source>
         <translation>Farbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Ticks</source>
         <translation type="obsolete">Achsenmarkierungen</translation>
     </message>
@@ -8155,7 +8155,7 @@ Autocompletion will not be available!</source>
         <translation>Aussen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Both</source>
         <translation type="obsolete">Beides</translation>
     </message>
@@ -8320,7 +8320,7 @@ Autocompletion will not be available!</source>
         <translation>Gültige Variablen sind &apos;x&apos; für die obere/untere Achse und &apos;y&apos; für die linke/rechte Achse!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>milisec.</source>
         <translation type="obsolete">Millisek.</translation>
     </message>
@@ -8462,27 +8462,27 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1499"/>
         <source>Apply To</source>
-        <translation type="unfinished"></translation>
+        <translation>Anwenden auf</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1501"/>
         <source>This Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Ebene</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1502"/>
         <source>This Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1815"/>
         <source>All Windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Fenster</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1506"/>
         <source>An&amp;tialised</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanteng&amp;lättung</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1805"/>
@@ -8497,12 +8497,12 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1813"/>
         <source>Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ebene</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1814"/>
         <source>Window</source>
-        <translation type="unfinished">Fenster</translation>
+        <translation>Fenster</translation>
     </message>
 </context>
 <context>
@@ -8646,22 +8646,22 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="../src/ColorMapDialog.cpp" line="40"/>
         <source>Custom Color Map</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerdefinierte Farbtabelle</translation>
     </message>
     <message>
         <location filename="../src/ColorMapDialog.cpp" line="43"/>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Anwenden</translation>
+        <translation>&amp;Anwenden</translation>
     </message>
     <message>
         <location filename="../src/ColorMapDialog.cpp" line="46"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">S&amp;chließen</translation>
+        <translation>S&amp;chließen</translation>
     </message>
     <message>
         <location filename="../src/ColorMapDialog.cpp" line="81"/>
         <source>Set Custom Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerdefinierte Farbtabelle einstellen</translation>
     </message>
 </context>
 <context>
@@ -8745,7 +8745,7 @@ Autocompletion will not be available!</source>
         <translation>2D-Diagramme</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>2D Curves</source>
         <translation type="obsolete">2D-Kurven</translation>
     </message>
@@ -8765,7 +8765,7 @@ Autocompletion will not be available!</source>
         <translation>Beim Schließen nachfragen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Matrixes</source>
         <translation type="obsolete">Matrizen</translation>
     </message>
@@ -8780,7 +8780,7 @@ Autocompletion will not be available!</source>
         <translation>Rahmenbreite</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Legend frame</source>
         <translation type="obsolete">Legendenrahmen</translation>
     </message>
@@ -8790,22 +8790,22 @@ Autocompletion will not be available!</source>
         <translation>Keine</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Rectangle</source>
         <translation type="obsolete">Rechteck</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Shadow</source>
         <translation type="obsolete">Schatten</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>White out</source>
         <translation type="obsolete">weiß ausfüllen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Black out</source>
         <translation type="obsolete">schwärzen</translation>
     </message>
@@ -8825,12 +8825,12 @@ Autocompletion will not be available!</source>
         <translation>Aussen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Both</source>
         <translation type="obsolete">Beides</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Major ticks length</source>
         <translation type="obsolete">Achsen-Hauptmarkenlänge</translation>
     </message>
@@ -8840,7 +8840,7 @@ Autocompletion will not be available!</source>
         <translation>Achsenlinienbreite</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Minor ticks length</source>
         <translation type="obsolete">Achsen-Nebenmarkenlänge</translation>
     </message>
@@ -8995,12 +8995,12 @@ Autocompletion will not be available!</source>
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Text</source>
         <translation type="obsolete">&amp;Text</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Labels</source>
         <translation type="obsolete">&amp;Beschriftungen</translation>
     </message>
@@ -9015,7 +9015,7 @@ Autocompletion will not be available!</source>
         <translation>&amp;Beschriftungsschriftart</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A&amp;xes Legend</source>
         <translation type="obsolete">A&amp;chsenbeschriftung</translation>
     </message>
@@ -9035,17 +9035,17 @@ Autocompletion will not be available!</source>
         <translation>T&amp;itel</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Workspace</source>
         <translation type="obsolete">&amp;Arbeitsbereich</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Pa&amp;nels</source>
         <translation type="obsolete">Bedienfelder</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Panels Te&amp;xt</source>
         <translation type="obsolete">Bedienfeld Te&amp;xt</translation>
     </message>
@@ -9100,7 +9100,7 @@ Autocompletion will not be available!</source>
         <translation>Unterfenster: Text</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Te&amp;xt</source>
         <translation type="obsolete">Te&amp;xt</translation>
     </message>
@@ -9120,32 +9120,32 @@ Autocompletion will not be available!</source>
         <translation>Leerzeichen (SPACE)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;TAB</source>
         <translation type="obsolete">;TAB</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,TAB</source>
         <translation type="obsolete">,TAB</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;SPACE</source>
         <translation type="obsolete">;LZ</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,SPACE</source>
         <translation type="obsolete">,LZ</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;</source>
         <translation type="obsolete">;</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,</source>
         <translation type="obsolete">,</translation>
     </message>
@@ -9195,7 +9195,7 @@ Autocompletion will not be available!</source>
         <translation>&amp;Notizen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Close</source>
         <translation type="obsolete">S&amp;chließen</translation>
     </message>
@@ -9260,17 +9260,17 @@ Autocompletion will not be available!</source>
         <translation>Innen &amp; Aussen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Draw axes &amp;backbone</source>
         <translation type="obsolete">Achsen&amp;basislinien zeichnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Scale &amp;fonts on resize</source>
         <translation type="obsolete">Schri&amp;ften bei Größenänderungen mitskalieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Auto&amp;scale axes</source>
         <translation type="obsolete">Achsen automatisch &amp;skalieren</translation>
     </message>
@@ -9400,7 +9400,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1081"/>
         <source>Decimal Separators</source>
-        <translation type="unfinished"></translation>
+        <translation>Dezimaltrennzeichen</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1022"/>
@@ -9415,7 +9415,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1024"/>
         <source>&amp;Scale layers to paper size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Skaliere Ebenen auf Papiergröße</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1044"/>
@@ -9425,7 +9425,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1050"/>
         <source>Numeric Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahlenformat</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1061"/>
@@ -9435,37 +9435,37 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1067"/>
         <source>Start New Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein neues Projekt beginnen</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1069"/>
         <source>Empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Leer</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1070"/>
         <source>Table</source>
-        <translation type="unfinished">Tabelle</translation>
+        <translation>Tabelle</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1071"/>
         <source>Matrix</source>
-        <translation type="unfinished">Matrix</translation>
+        <translation>Matrix</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1072"/>
         <source>Empty Graph</source>
-        <translation type="unfinished"></translation>
+        <translation>Leere Grafik</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1073"/>
         <source>Note</source>
-        <translation type="unfinished">Notiz</translation>
+        <translation>Notiz</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1080"/>
         <source>Number of Decimal Digits</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl der Dezimalstellen</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1119"/>
@@ -9475,7 +9475,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1204"/>
         <source>2 points for linear fits</source>
-        <translation type="unfinished"></translation>
+        <translation>2 Punkte für linearen Fit</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="979"/>
@@ -9485,12 +9485,12 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1051"/>
         <source>File Locations</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei Ort</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1706"/>
         <source>Choose the location of the QtiPlot translations folder!</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie das Verzeichnis der QtiPlot-Übersetzungen aus!</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1065"/>
@@ -9505,37 +9505,37 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1112"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hilfe</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="614"/>
         <source>LF (Unix)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LF (Unix)</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="615"/>
         <source>CRLF (Windows)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CRLF (Windows)</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="616"/>
         <source>CR (Mac)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CR (Mac)</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1114"/>
         <source>Python Configuration Files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Python Konfigurationsdateien</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1066"/>
         <source>Endline character</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zeilenabschlusszeichen</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1741"/>
         <source>Choose the location of the Python configuration files!</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie das Verzeichnis der Python-Konfigurationsdateien!</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1118"/>
@@ -9545,7 +9545,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="998"/>
         <source>Background Color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hintergrundfarbe</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1001"/>
@@ -9560,7 +9560,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1002"/>
         <source>Border Color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rahmenfarbe</translation>
     </message>
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1003"/>
@@ -9590,7 +9590,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ConfigDialog.cpp" line="1097"/>
         <source>Clipboard Decimal Separators</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwischenablage Dezimaltrennzeichen</translation>
     </message>
 </context>
 <context>
@@ -9790,12 +9790,12 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cancel</source>
         <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot Associations...</source>
         <translation type="obsolete">Diagramm???</translation>
     </message>
@@ -9815,7 +9815,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Delete</source>
         <translation type="obsolete">&amp;Löschen</translation>
     </message>
@@ -9895,12 +9895,12 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="53"/>
         <source>Add Custom Action</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerdefinierte Aktion hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="65"/>
         <source>Folder</source>
-        <translation type="unfinished">Ordner</translation>
+        <translation>Ordner</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="69"/>
@@ -9910,17 +9910,17 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="72"/>
         <source>Script File</source>
-        <translation type="unfinished"></translation>
+        <translation>Scriptdatei</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="76"/>
         <source>Choose &amp;Script</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Script wählen</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="79"/>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="82"/>
@@ -9940,12 +9940,12 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="93"/>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tastenkombination</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="97"/>
         <source>&amp;Menu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Menü</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="102"/>
@@ -9975,7 +9975,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="271"/>
         <source>Please provide a description for your custom action!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte geben Sie eine Beschreibung für Ihre benutzerdefinierte Aktion ein!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="276"/>
@@ -9985,37 +9985,37 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="286"/>
         <source>You have already defined an action having description: %1 &lt;br&gt;Please provide a different description text!</source>
-        <translation type="unfinished"></translation>
+        <translation>Es existiert bereits eine Aktion mit der Beschreibung: %1 &lt;br&gt;Bitte geben Sie eine andere Beschreibung ein!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="296"/>
         <source>The file you have specified doesn&apos;t exist, please choose a valid script file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die angegebene Datei existiert nicht. Bitte wählen Sie eine gültigte Scriptdatei!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="306"/>
         <source>The image file you have specified doesn&apos;t exist or can&apos;t be read, please choose another file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die angegebene Bilddatei existiert nicht oder kann nicht gelesen werden. Bitte wählen Sie eine andere Datei!</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="330"/>
         <source>Please provide a different key sequence! The following shortcut key sequences are already assigned:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte geben Sie eine andere Tastenkombination an! Die folgenden Kombinationen sind bereits zugewiesen:</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="364"/>
         <source>Are you sure you want to remove this action?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie diese Aktion löschen wollen?</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="365"/>
         <source>Remove Action</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktion entfernen</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="438"/>
         <source>File Save Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei Speicherfehler</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="439"/>
@@ -10030,17 +10030,17 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="472"/>
         <source>QtiPlot - Load icon from file</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Lade icon aus Datei</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="479"/>
         <source>Choose script file</source>
-        <translation type="unfinished"></translation>
+        <translation>Scriptdatei wählen</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="488"/>
         <source>Choose the custom actions folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner für benutzerdefinierte Aktionen wählen</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="112"/>
@@ -10098,7 +10098,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/DataPickerTool.cpp" line="365"/>
         <source>The column &apos;%1&apos; is read-only! Please choose another curve!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Spalte &apos;%1&apos; ist schreibgeschützt! Bitte wählen Sie eine andere Kurve!</translation>
     </message>
 </context>
 <context>
@@ -10135,7 +10135,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Ableitung</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Derivative of</source>
         <translation type="obsolete">Ableitung von</translation>
     </message>
@@ -10156,7 +10156,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/ScreenPickerTool.cpp" line="143"/>
         <source>Draw</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeichnen</translation>
     </message>
 </context>
 <context>
@@ -10169,7 +10169,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="93"/>
         <source>Tex Equation Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Tex Gleichungseditor</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="95"/>
@@ -10179,12 +10179,12 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="98"/>
         <source>Window Geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fenstergeometrie</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="100"/>
         <source>Object Properties</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Objekteigenschaften</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="102"/>
@@ -10199,7 +10199,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="143"/>
         <source>Preview:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vorschau:</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="231"/>
@@ -10219,12 +10219,12 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="159"/>
         <source>&amp;Font</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Schriftart</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="188"/>
         <source>Auto-&amp;update</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Automatisch aktualisieren</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="332"/>
@@ -10249,17 +10249,17 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="250"/>
         <source>&amp;Save internally</source>
-        <translation type="unfinished"></translation>
+        <translation>Intern &amp;speichern</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="259"/>
         <source>&amp;Image</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bild</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="268"/>
         <source>Shape</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="271"/>
@@ -10279,7 +10279,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="282"/>
         <source>Line Style</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Linienstil</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="432"/>
@@ -10294,7 +10294,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="371"/>
         <source>All Windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Fenster</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="317"/>
@@ -10304,57 +10304,57 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="326"/>
         <source>Fill Color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Füllfarbe</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="341"/>
         <source>Pattern</source>
-        <translation type="unfinished"></translation>
+        <translation>Füllmuster</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="346"/>
         <source>Pattern Color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Musterfarbe</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="351"/>
         <source>Use &amp;Frame Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze &amp;Rahmenfarbe</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="380"/>
         <source>Fill &amp;Pattern</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit &amp;Muster füllen</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="388"/>
         <source>inch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoll</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="389"/>
         <source>mm</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">mm</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="390"/>
         <source>cm</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">cm</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="391"/>
         <source>point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Punkt</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="392"/>
         <source>pixel</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixel</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="394"/>
         <source>scale</source>
-        <translation type="unfinished"></translation>
+        <translation>Skala</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="397"/>
@@ -10389,77 +10389,77 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="438"/>
         <source>&amp;Keep aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Seitenverhältnis beibehalten</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="441"/>
         <source>&amp;Best size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Optimale Größe</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="465"/>
         <source>&amp;Geometry</source>
-        <translation type="unfinished">&amp;Geometrie</translation>
+        <translation>&amp;Geometrie</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="647"/>
         <source>Network connection error</source>
-        <translation type="unfinished"></translation>
+        <translation>Netzwerkverbindungsfehler</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="648"/>
         <source>Error while trying to connect to host %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Versuch eine Verbindung zum Host &apos;%1&apos; herzustellen.</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="649"/>
         <source>Please verify your network connection!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte prüfen Sie Ihre Netzwerkverbindung!</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="665"/>
         <source>QtiPlot - Import image from file</source>
-        <translation type="unfinished">QtiPlot - Bild aus Datei importieren</translation>
+        <translation>QtiPlot - Bild aus Datei importieren</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="691"/>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Warnung</translation>
+        <translation>QtiPlot - Warnung</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="692"/>
         <source>The file %1 doesn&apos;t exist. The image cannot be restored when reloading the project file!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Datei &apos;%1&apos; existiert nicht. Das Bild kann beim Neuladen der Projektdatei nicht wiederhergestellt werden!</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="369"/>
         <source>Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ebene</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="370"/>
         <source>Window</source>
-        <translation type="unfinished">Fenster</translation>
+        <translation>Fenster</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="163"/>
         <source>Background</source>
-        <translation type="unfinished">Hintergrund</translation>
+        <translation>Hintergrund</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="179"/>
         <source>Rotate (deg.)</source>
-        <translation type="unfinished">Rotieren (Grad)</translation>
+        <translation>Rotieren (Grad)</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="368"/>
         <source>Object</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekt</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="364"/>
         <source>Apply t&amp;o...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Anwenden auf...</translation>
     </message>
 </context>
 <context>
@@ -10475,7 +10475,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">Seitengröße</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Resolution</source>
         <translation type="obsolete">Auflösung</translation>
     </message>
@@ -10485,7 +10485,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">In Farbe &amp;drucken, falls möglich</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - EPS Export options</source>
         <translation type="obsolete">QtiPlot - EPS-Exportoptionen</translation>
     </message>
@@ -10510,7 +10510,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">Hochformat</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Warning: Windows users need a default post-script printer enabled!</source>
         <translation type="obsolete">Warnung: Windows-Benutzer benötigen einen aktivierten Postscript Drucker!</translation>
     </message>
@@ -10538,7 +10538,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>&amp;X-Fehlerbalken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
@@ -10573,7 +10573,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>&amp;Y-Fehlerbalken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
@@ -10590,7 +10590,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/plot2D/dialogs/ErrDialog.cpp" line="199"/>
         <source>Existing column</source>
-        <translation type="unfinished"></translation>
+        <translation>Existierende Spalte</translation>
     </message>
 </context>
 <context>
@@ -10601,7 +10601,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>QtiPlot - Verifiziere Anfangswerte</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Exponential Decay Fit of</source>
         <translation type="obsolete">Exponentieller Zerfallsanpassung von</translation>
     </message>
@@ -10651,12 +10651,12 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Y-Verschiebung</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
@@ -10726,27 +10726,27 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/analysis/ExponentialFit.cpp" line="91"/>
         <source>amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Amplitude</translation>
     </message>
     <message>
         <location filename="../src/analysis/ExponentialFit.cpp" line="86"/>
         <source>lifetime</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lebenszeit</translation>
     </message>
     <message>
         <location filename="../src/analysis/ExponentialFit.cpp" line="91"/>
         <source>offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Offset</translation>
     </message>
     <message>
         <location filename="../src/analysis/ExponentialFit.cpp" line="88"/>
         <source>ExpDecay1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/analysis/ExponentialFit.cpp" line="91"/>
         <source>e-folding time</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -10772,12 +10772,12 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Include Column Names</source>
         <translation type="obsolete">inkl. Spaltennamen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Export Selection</source>
         <translation type="obsolete">Auswahl exportieren</translation>
     </message>
@@ -10792,32 +10792,32 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Leerzeichen (SPACE)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,TAB</source>
         <translation type="obsolete">,TAB</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;TAB</source>
         <translation type="obsolete">;TAB</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,SPACE</source>
         <translation type="obsolete">,LZ</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;SPACE</source>
         <translation type="obsolete">;LZ</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;</source>
         <translation type="obsolete">;</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,</source>
         <translation type="obsolete">,</translation>
     </message>
@@ -10873,7 +10873,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ExportDialog.cpp" line="89"/>
         <source>Include Column Co&amp;mments</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaltenkommentare &amp;einschließen</translation>
     </message>
 </context>
 <context>
@@ -10881,7 +10881,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/ExtensibleFileDialog.cpp" line="40"/>
         <source>&lt;&lt; &amp;Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;&lt; &amp;Erweitert</translation>
     </message>
 </context>
 <context>
@@ -11040,29 +11040,29 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Bitte eine Spalte für den Realteil der Daten auswählen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Frequency</source>
         <translation type="obsolete">Frequenz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Time</source>
         <translation type="obsolete">Zeit</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Amplitude</source>
         <translation type="obsolete">Amplitude</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="253"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="254"/>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die beiden Matrizen haben unterschiedliche Dimensionen, der Imaginärteil wird vernachlässigt!</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="294"/>
@@ -11072,7 +11072,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="296"/>
         <source>Real part of the FFT transform of</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Realteil der FFT Transformation von</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="299"/>
@@ -11082,7 +11082,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="301"/>
         <source>Imaginary part of the FFT transform of</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Imaginärteil der FFT Transformation von</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="304"/>
@@ -11092,7 +11092,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/analysis/dialogs/FFTDialog.cpp" line="306"/>
         <source>Amplitudes of the FFT transform of</source>
-        <translation type="unfinished"></translation>
+        <translation>Amplituden der FFT Transformation von</translation>
     </message>
 </context>
 <context>
@@ -11223,12 +11223,12 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/analysis/Filter.cpp" line="465"/>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fehler bei der Speicherreservierung</translation>
     </message>
     <message>
         <location filename="../src/analysis/Filter.cpp" line="466"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht genug Speicher, Operation abgebrochen!</translation>
     </message>
 </context>
 <context>
@@ -11327,7 +11327,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Starte von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Search In</source>
         <translation type="obsolete">Suche in</translation>
     </message>
@@ -11367,7 +11367,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>&amp;Suchen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Reset Start From</source>
         <translation type="obsolete">&amp;Ausgangsordner neu setzen</translation>
     </message>
@@ -11395,12 +11395,12 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>QtiPlot - Fit-Fehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>No curve assigned to the fitter! Please assign a curve first!</source>
         <translation type="obsolete">Keine Kurven zum Fitten festgelegt! Bitte erst Kurven auswählen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please enter a valid curve name!</source>
         <translation type="obsolete">Bitte einen gültigen Kurvennamen eingeben!</translation>
     </message>
@@ -11525,7 +11525,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Wert</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You didn&apos;t specify a data set for this fit operation. Operation aborted!</source>
         <translation type="obsolete">Sie haben keinen Datensatz für die Fit-Operation ausgewählt. Abbruch!</translation>
     </message>
@@ -11545,7 +11545,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Fit</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source> of </source>
         <translation type="obsolete"> von </translation>
     </message>
@@ -11555,7 +11555,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You need at least %1 points to perform this operation! Operation aborted!</source>
         <translation type="obsolete">Es werden mindestens %1 Punkte für diese Funktion benötigt. Die Ausführung wurde abgebrochen!</translation>
     </message>
@@ -11577,17 +11577,17 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/analysis/Fit.cpp" line="268"/>
         <source>graphics display disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Grafikanzeige deaktiviert</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="272"/>
         <source>of dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>von Datensatz</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="408"/>
         <source>You cannot use the instrumental weighting method.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sie können nicht nach Datenfehler-Methode gewichten.</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="891"/>
@@ -11597,7 +11597,7 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/analysis/Fit.cpp" line="891"/>
         <source>File Save Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Datei Speicherfehler</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="892"/>
@@ -11613,12 +11613,13 @@ Die folgenden Spezialcodes können benutzt werden:
         <location filename="../src/analysis/Fit.cpp" line="932"/>
         <source>Cannot read file %1:
 %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann Datei &apos;%1&apos; nicht lesen:
+%2.</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="705"/>
         <source>Please perform a fit first!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte zuerst einen Fit ausführen!</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="578"/>
@@ -11628,12 +11629,12 @@ Die folgenden Spezialcodes können benutzt werden:
     <message>
         <location filename="../src/analysis/Fit.cpp" line="582"/>
         <source>residue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rest</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="324"/>
         <source>Adjusted R^2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Angepasstes R^2</translation>
     </message>
     <message>
         <location filename="../src/analysis/Fit.cpp" line="325"/>
@@ -11714,7 +11715,7 @@ Die folgenden Spezialcodes können benutzt werden:
 <context>
     <name>FitDialog</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Non-linear curve fit</source>
         <translation type="obsolete">Nichtlineare Kurvenanpassung</translation>
     </message>
@@ -11764,12 +11765,12 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>&amp;Anpassen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Type:</source>
         <translation type="obsolete">Typ:</translation>
     </message>
@@ -11809,7 +11810,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Grundlegend</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Expresion</source>
         <translation type="obsolete">Ausdruck</translation>
     </message>
@@ -11839,7 +11840,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>&amp;Entfernen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Add &amp;expresion</source>
         <translation type="obsolete">&amp;Ausdruck hinzufügen</translation>
     </message>
@@ -11884,14 +11885,14 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">Funktionen können nicht rekursiv definiert werden!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Built-in function: 
 the order of the parameters matters!</source>
         <translation type="obsolete">Interne Funktionen:
 die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>User defined function</source>
         <translation type="obsolete">Benutzer-definierte Funktion</translation>
     </message>
@@ -11911,7 +11912,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>QtiPlot-interner Funktionsname&lt;p&gt;Bitte wählen Sie einen anderen Namen für Ihre Funktion!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please use exactly one &apos;=&apos; symbol!</source>
         <translation type="obsolete">Bitte benutzen Sie exakt ein &apos;=&apos; Symbol!</translation>
     </message>
@@ -12076,7 +12077,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Generierte Fitkurve</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Uniform X Function</source>
         <translation type="obsolete">Uniforme X-Funktion</translation>
     </message>
@@ -12086,7 +12087,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Punkte</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Same X as Fitting Data</source>
         <translation type="obsolete">Gleiche X-Werte wie Fit-Daten</translation>
     </message>
@@ -12101,7 +12102,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Signifikante Dezimalstellen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Parameters Table</source>
         <translation type="obsolete">Parametertabelle</translation>
     </message>
@@ -12111,7 +12112,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Name: </translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Covariance Matrix</source>
         <translation type="obsolete">Kovarianzmatrix</translation>
     </message>
@@ -12121,12 +12122,12 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>KovMatrix</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Write Parameters to Result Log</source>
         <translation type="obsolete">Parameter ins Ergebnislog schreiben</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Paste Parameters to Plot</source>
         <translation type="obsolete">Parameter ins Diagramm einfügen</translation>
     </message>
@@ -12156,7 +12157,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Bitte zuerst einen Fit ausführen und dann neu versuchen.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Error</source>
         <translation type="obsolete">Fehler</translation>
     </message>
@@ -12243,22 +12244,22 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1249"/>
         <source>No data tables</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Keine Datentabellen</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="92"/>
         <source>QtiPlot - Fit Wizard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">QtiPlot - Fit Assistent</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="433"/>
         <source>&amp;One table for all fits</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%Eine Tabelle für alle Fits</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="147"/>
         <source>&amp;Preview</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Vorschau</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="161"/>
@@ -12273,17 +12274,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="919"/>
         <source>Choose plug&amp;ins folder...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plugin-Ordner &amp;wählen...</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="644"/>
         <source>You can&apos;t define functions recursively!</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie können Funktionen nicht rekursiv definieren!</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1436"/>
         <source>QtiPlot fit model</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot Fitmodell</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1437"/>
@@ -12298,28 +12299,29 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1438"/>
         <source>Save Fit Model As</source>
-        <translation type="unfinished"></translation>
+        <translation>Fitmodell speichern als</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="704"/>
         <source>Are you sure you want to remove fit model file:
  %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie die Fitmodell-Datei
+&apos;%1&apos; löschen wollen?</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="705"/>
         <source>Remove Fit Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Fitmodell entfernen</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="900"/>
         <source>Choose &amp;models folder...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fit&amp;modell-Ordner wählen</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="946"/>
         <source>Choose the fit models folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte Ordner für Fitmodelle wählen</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="457"/>
@@ -12339,7 +12341,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FitDialog.cpp" line="461"/>
         <source>&amp;Scale Errors with sqrt(Chi^2/doF)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Skaliere Fehler mit sqrt(Chi^2/doF)</translation>
     </message>
 </context>
 <context>
@@ -12360,17 +12362,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="55"/>
         <source>QtiPlot - Frequency count</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Frequenzzähler</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="104"/>
         <source>Statistics on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistiken über %1</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="105"/>
         <source>Mean</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mittel</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="106"/>
@@ -12380,7 +12382,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="107"/>
         <source>Median</source>
-        <translation type="unfinished"></translation>
+        <translation>Mittelwert</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="108"/>
@@ -12390,17 +12392,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="114"/>
         <source>From Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Von Minimum</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="122"/>
         <source>To Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bis Maximum</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="130"/>
         <source>Step Size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Schrittgröße</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="141"/>
@@ -12425,7 +12427,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="165"/>
         <source>Not enough data points, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht genügend Datenpunkte, Operation abgebrochen!</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="172"/>
@@ -12435,7 +12437,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="173"/>
         <source>Please enter frequency limits that satisfy: From &lt; To !</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitte geben Sie Frequenzgrenzen ein, die die Bedingung Anfang &lt; Ende erfüllen!</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/FrequencyCountDialog.cpp" line="192"/>
@@ -12598,7 +12600,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="186"/>
         <source>Clea&amp;r Function</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Funktion &amp;löschen</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="188"/>
@@ -12613,7 +12615,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="105"/>
         <source>Constant</source>
-        <translation type="unfinished"></translation>
+        <translation>Konstant</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="105"/>
@@ -12624,97 +12626,97 @@ die Reihenfolge der Parameter ist wichtig!</translation>
 <context>
     <name>FunctionDialogui</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Add function curve</source>
         <translation type="obsolete">QtiPlot - Funktionskurve hinzufügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Curve type </source>
         <translation type="obsolete">Kurventyp</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>f(x)= </source>
         <translation type="obsolete">f(x)=</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>From x= </source>
         <translation type="obsolete">Von x=</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>To x= </source>
         <translation type="obsolete">Bis x=</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Points</source>
         <translation type="obsolete">Punkte</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Clear list</source>
         <translation type="obsolete">Liste leeren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Parameter</source>
         <translation type="obsolete">Parameter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>To</source>
         <translation type="obsolete">Bis</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>y = </source>
         <translation type="obsolete">y =</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>x = </source>
         <translation type="obsolete">x =</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>From</source>
         <translation type="obsolete">Von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>R =</source>
         <translation type="obsolete">R =</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Theta =</source>
         <translation type="obsolete">Theta =</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Function</source>
         <translation type="obsolete">Funktion</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Parametric plot</source>
         <translation type="obsolete">Parametrisches Diagramm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Polar plot</source>
         <translation type="obsolete">Polarkoordinatendiagramm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cancel</source>
         <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Ok</source>
         <translation type="obsolete">Ok</translation>
     </message>
@@ -12754,22 +12756,22 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="573"/>
         <source>offset</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Offset</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="573"/>
         <source>amplitude</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Amplitude</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="573"/>
         <source>center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mitte</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="573"/>
         <source>width</source>
-        <translation type="unfinished"></translation>
+        <translation>Breite</translation>
     </message>
 </context>
 <context>
@@ -12807,488 +12809,488 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="528"/>
         <source>area</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fläche</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="528"/>
         <source>center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mitte</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="528"/>
         <source>width</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Breite</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="528"/>
         <source>offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Offset</translation>
     </message>
 </context>
 <context>
     <name>GenDialog</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - General Plot Options</source>
         <translation type="obsolete">QtiPlot - Allgemeine Diagrammoptionen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Apply</source>
         <translation type="obsolete">&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>From</source>
         <translation type="obsolete">Von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>To</source>
         <translation type="obsolete">Bis</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Type</source>
         <translation type="obsolete">Typ</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>linear</source>
         <translation type="obsolete">linear</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>logarithmic</source>
         <translation type="obsolete">logarithmisch</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Inverted</source>
         <translation type="obsolete">invertiert</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Step</source>
         <translation type="obsolete">Schritt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Major Ticks</source>
         <translation type="obsolete">Achsenhauptmarken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Minor Ticks</source>
         <translation type="obsolete">Achsennebenmarken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Scale</source>
         <translation type="obsolete">Skala</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Major Grids</source>
         <translation type="obsolete">Hauptgitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Minor Grids</source>
         <translation type="obsolete">Untergitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Line Color</source>
         <translation type="obsolete">Farbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Line Type</source>
         <translation type="obsolete">Linientyp</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Thickness</source>
         <translation type="obsolete">Strke</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>X=0</source>
         <translation type="obsolete">X=0</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Y=0</source>
         <translation type="obsolete">Y=0</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Grid</source>
         <translation type="obsolete">Gitter</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Show</source>
         <translation type="obsolete">Anzeigen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Title</source>
         <translation type="obsolete">Titel</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Numeric</source>
         <translation type="obsolete">Numerisch</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Text from table</source>
         <translation type="obsolete">Text aus Tabelle</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Day of the week</source>
         <translation type="obsolete">Wochentag</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Month</source>
         <translation type="obsolete">Monat</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Time</source>
         <translation type="obsolete">Zeit</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Date</source>
         <translation type="obsolete">Datum</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Font</source>
         <translation type="obsolete">Schrift</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Axis &amp;Font</source>
         <translation type="obsolete">&amp;Achsenschrift</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Color</source>
         <translation type="obsolete">Farbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Ticks</source>
         <translation type="obsolete">Achsenmarkierungen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>In</source>
         <translation type="obsolete">lnnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Out</source>
         <translation type="obsolete">Aussen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Both</source>
         <translation type="obsolete">Beide</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>None</source>
         <translation type="obsolete">Keine</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Stand-off</source>
         <translation type="obsolete">Abstand</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Show Labels</source>
         <translation type="obsolete">Beschriftungen anzeigen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Table</source>
         <translation type="obsolete">Tabelle</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Format</source>
         <translation type="obsolete">Format</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Automatic</source>
         <translation type="obsolete">Automatisch</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Decimal: 100.0</source>
         <translation type="obsolete">Dezimal: 100.0</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Scientific: 1e2</source>
         <translation type="obsolete">Wissenschaftlich: 1e2</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Scientific: 10^2</source>
         <translation type="obsolete">Wissenschaftlich: 10^2</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Precision</source>
         <translation type="obsolete">Przision</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Angle</source>
         <translation type="obsolete">Winkel</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Axis</source>
         <translation type="obsolete">Achse</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Canvas frame</source>
         <translation type="obsolete">Zeichenflcherahmen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Width</source>
         <translation type="obsolete">Breite</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Axes</source>
         <translation type="obsolete">Achsen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Draw backbones</source>
         <translation type="obsolete">??? zeichnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Line Width</source>
         <translation type="obsolete">Linienstrke</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Major ticks length</source>
         <translation type="obsolete">Achsen-Hauptmarkenlnge</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Minor ticks length</source>
         <translation type="obsolete">Achsen-Nebenmarkenlnge</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>General</source>
         <translation type="obsolete">Allgemein</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>h</source>
         <translation type="obsolete">h</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>h ap</source>
         <translation type="obsolete">h ap</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>h AP</source>
         <translation type="obsolete">h AP</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>h:mm</source>
         <translation type="obsolete">h:mm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>h:mm ap</source>
         <translation type="obsolete">h:mm ap</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>hh:mm</source>
         <translation type="obsolete">hh:mm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>h:mm:ss</source>
         <translation type="obsolete">h:mm:ss</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>h:mm:ss.zzz</source>
         <translation type="obsolete">h:mm:ss.zzz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>mm:ss</source>
         <translation type="obsolete">mm:ss</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>mm:ss.zzz</source>
         <translation type="obsolete">mm:ss.zzz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>hmm</source>
         <translation type="obsolete">hmm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>hmmss</source>
         <translation type="obsolete">hmmss</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>hhmmss</source>
         <translation type="obsolete">hhmm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>yyyy-MM-dd</source>
         <translation type="obsolete">aaaa-MM-dd</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>dd.MM.yyyy</source>
         <translation type="obsolete">dd.MM.aaaa</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>ddd MMMM d yy</source>
         <translation type="obsolete">ddd MMMM d aa</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>dd/MM/yyyy</source>
         <translation type="obsolete">dd/MM/aaaa</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>milisec.</source>
         <translation type="obsolete">ms</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>sec.</source>
         <translation type="obsolete">s</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>min.</source>
         <translation type="obsolete">min</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>hours</source>
         <translation type="obsolete">Stunden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>days</source>
         <translation type="obsolete">Tage</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>weeks</source>
         <translation type="obsolete">Wochen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Start limit error</source>
         <translation type="obsolete">Qtiplot - Anfangsgrenzwertfehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - End limit error</source>
         <translation type="obsolete">QtiPlot - Endgrenzwertfehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Step input error</source>
         <translation type="obsolete">QtiPlot - Schritteingabefehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please enter a positive step value!</source>
         <translation type="obsolete">Bitte geben Sie einen positiven Schrittwert ein!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Additional lines</source>
         <translation type="obsolete">Zustzliche Linien</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Co&amp;lor</source>
         <translation type="obsolete">F&amp;arbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>C&amp;olor</source>
         <translation type="obsolete">F&amp;arbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Background</source>
         <translation type="obsolete">Hintergrund</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Border Width</source>
         <translation type="obsolete">Randdicke</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Border Color</source>
         <translation type="obsolete">Randfarbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Colo&amp;r</source>
         <translation type="obsolete">Farbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Margin</source>
         <translation type="obsolete">Randbereich</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Apply to all layers</source>
         <translation type="obsolete">Auf alle anwenden</translation>
     </message>
@@ -13296,32 +13298,32 @@ die Reihenfolge der Parameter ist wichtig!</translation>
 <context>
     <name>Graph</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Choose a filename to save under</source>
         <translation type="obsolete">Datei Sichern: Whlen Sie einen Dateinamen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Overwrite File?</source>
         <translation type="obsolete">QtiPlot - Datei berschreiben?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
         <translation type="obsolete">Eine Datei mit dem Namen &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt; existiert bereits. Wollen Sie sie berschreiben?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Yes</source>
         <translation type="obsolete">&amp;Ja</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;No</source>
         <translation type="obsolete">&amp;Nein</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Export Error</source>
         <translation type="obsolete">QtiPlot - Export-Fehler</translation>
     </message>
@@ -13346,17 +13348,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>QtiPlot - Warnung</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You need at least %1 points to perform the fit! Operation aborted!</source>
         <translation type="obsolete">Sie benötigen mindestens %1 Punkte für die Anpassung. Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You need at least %1 points to perform this operation! Operation aborted!</source>
         <translation type="obsolete">Es werden mindestens %1 Punkte für diese Funktion benötigt. Die Ausführung wurde abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Error when loading plugin!</source>
         <translation type="obsolete">Fehler beim Laden des Plugins!</translation>
     </message>
@@ -13421,7 +13423,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Auf Komplettansicht &amp;reskalierenskalieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Ctrl+R</source>
         <translation type="obsolete">Ctrl+R</translation>
     </message>
@@ -13476,239 +13478,239 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Einteilungen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Could not allocate memory, operation aborted!</source>
         <translation type="obsolete">Konnte nicht genug Speicher reservieren, Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Frequency</source>
         <translation type="obsolete">Frequenz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Time</source>
         <translation type="obsolete">Zeit</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Real</source>
         <translation type="obsolete">Realteil</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Imaginary</source>
         <translation type="obsolete">Imaginärteil</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Amplitude</source>
         <translation type="obsolete">Amplitude</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Angle</source>
         <translation type="obsolete">Winkel</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Derivative of</source>
         <translation type="obsolete">Ableitung von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Integration error</source>
         <translation type="obsolete">QtiPlot - Fehler bei der Integration</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You need at least 2 points to integrate! Integration aborted!</source>
         <translation type="obsolete">Sie benötigen mindestens 2 Punkte für die Integration. Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Several points have the same x value causing divisions by zero, integration aborted!</source>
         <translation type="obsolete">Mehrere Punkte haben den gleichen X-Wert und führen zu Divisionen durch Null. Integration abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Linear regresion of </source>
         <translation type="obsolete">Lineare Regression von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>y0 (offset)</source>
         <translation type="obsolete">y0 (Verschiebung)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Lorentz</source>
         <translation type="obsolete">Lorentz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Gauss</source>
         <translation type="obsolete">Gauß</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>multi-peak</source>
         <translation type="obsolete">Mehrere Peaks</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>fit of</source>
         <translation type="obsolete">Fit von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Non-linear fit of </source>
         <translation type="obsolete">Nichtlinearer Fit von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Non-linear</source>
         <translation type="obsolete">Nichtlinear</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Exponential decay fit of </source>
         <translation type="obsolete">Exponentieller Abfall-Fit von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>ExpDecay2 fit of </source>
         <translation type="obsolete">Exponentieller Abfall-Fit 2. Ordnung von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>ExpDecay3 fit of </source>
         <translation type="obsolete">Exponentieller Abfall-Fit 3. Ordnung von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Exponential growth fit of </source>
         <translation type="obsolete">Exponentielles Wachstum-Fit von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Gauss fit of </source>
         <translation type="obsolete">Gauß-Fit von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Lorentz fit of </source>
         <translation type="obsolete">Lorentz-Fit von </translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Order</source>
         <translation type="obsolete">Ordnung</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Polynomial fit of </source>
         <translation type="obsolete">Polynom-Fit von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - File not found</source>
         <translation type="obsolete">QtiPlot - Datei nicht gefunden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plugin file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;not found. Operation aborted!</source>
         <translation type="obsolete">Plugindatei &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;nicht gefunden. Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Error when loading plugin!
 </source>
         <translation type="obsolete">Fehler beim Laden des Plugins!
 </translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>using function</source>
         <translation type="obsolete">unter Benutzung der Funktion</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation type="obsolete">Unskalierter Levenberg-Marquardt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation type="obsolete">Skalierter Levenberg-Marquardt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source> algorithm with tolerance = </source>
         <translation type="obsolete">Algorithmus mit Tolleranz =</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>From x=</source>
         <translation type="obsolete">Von x=</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source> to x=</source>
         <translation type="obsolete">bis x=</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Iterations = </source>
         <translation type="obsolete">Interationen =</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Peak</source>
         <translation type="obsolete">Peak</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Height</source>
         <translation type="obsolete">Höhe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Area</source>
         <translation type="obsolete">Fläche</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Center</source>
         <translation type="obsolete">Zentrum</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Width</source>
         <translation type="obsolete">Breite</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Savitzky-Golay smoothing of </source>
         <translation type="obsolete">Savitzky-Golay-Glättung von </translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Low Pass FFT Filter of </source>
         <translation type="obsolete">Tiefpass FFT Filter von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>High Pass FFT Filter of </source>
         <translation type="obsolete">Hochpass FFT Filter von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Band Pass FFT Filter of </source>
         <translation type="obsolete">Bandpass FFT Filter von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Band Block FFT Filter of </source>
         <translation type="obsolete">Band FFT Filter von</translation>
     </message>
@@ -13728,32 +13730,32 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Es gibt keine Kurven mit mehr als 2 Punkten in diesem Diagramm. Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A1 (init value)</source>
         <translation type="obsolete">A1 (Initialisierungswert)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A2 (final value)</source>
         <translation type="obsolete">A2 (Endwert)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>x0 (center)</source>
         <translation type="obsolete">x0 (Zentrum)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>dx (time constant)</source>
         <translation type="obsolete">dx (Zeitkonstante)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Boltzmann (Sigmoidal)</source>
         <translation type="obsolete">Boltzmann (Sigmoidal)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Boltzmann (Sigmoidal) fit of </source>
         <translation type="obsolete">Boltzmann (Sigmoidal) Fit von</translation>
     </message>
@@ -13773,7 +13775,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Prozent</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Linear regression of </source>
         <translation type="obsolete">Lineare Regression von </translation>
     </message>
@@ -13808,22 +13810,22 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Fehler beim Punkte verschieben</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Linear interpolation of </source>
         <translation type="obsolete">Lineare Interpolation von </translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cubic interpolation of </source>
         <translation type="obsolete">Kubische Interpolation von </translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Akima interpolation of </source>
         <translation type="obsolete">Akima Interpolation von </translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot</source>
         <translation type="obsolete">QtiPlot</translation>
     </message>
@@ -13863,32 +13865,32 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Fit</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please select the start line point inside the image rectangle!</source>
         <translation type="obsolete">Bitte einen Linienstartpunkt im Bildrechteck wählen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please select the end line point inside the image rectangle!</source>
         <translation type="obsolete">Bitte einen Linienendpunkt im Bildrechteck wählen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Smoothed</source>
         <translation type="obsolete">Geglättet</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>points</source>
         <translation type="obsolete">Punkte</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>FFT Smoothing of</source>
         <translation type="obsolete">FFT Glättung von</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>average mmoothing of</source>
         <translation type="obsolete">Mittelungsglättung von</translation>
     </message>
@@ -13920,12 +13922,12 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/plot2D/Graph.cpp" line="840"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte den Achsentyp nicht in das gewünschte Format ändern!</translation>
     </message>
     <message>
         <location filename="../src/plot2D/Graph.cpp" line="195"/>
         <source>Y Axis Title</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Y-Achsentitel</translation>
     </message>
     <message>
         <location filename="../src/plot2D/Graph.cpp" line="196"/>
@@ -13986,7 +13988,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Exportfehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot</source>
         <translation type="obsolete">QtiPlot</translation>
     </message>
@@ -14069,7 +14071,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
@@ -14107,7 +14109,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Export&amp;optionen anzeigen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Image format</source>
         <translation type="obsolete">Bildformat</translation>
     </message>
@@ -14117,17 +14119,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="unfinished">Bildqualität</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Export options</source>
         <translation type="obsolete">QtiPlot - Exportoptionen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
@@ -14139,7 +14141,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="105"/>
         <source>&amp;Export in &amp;color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exportiere in &amp;Farbe</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="120"/>
@@ -14195,7 +14197,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/plot2D/ImageWidget.cpp" line="92"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie haben nicht die Rechte um die Datei &lt;b&gt;%1&lt;/b&gt; zu öffnen.</translation>
     </message>
 </context>
 <context>
@@ -14203,62 +14205,62 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="53"/>
         <source>QtiPlot - Import ASCII File(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Importiere ASCII-Datei(en)</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="56"/>
         <source>All files</source>
-        <translation type="unfinished">Alle Dateien</translation>
+        <translation>Alle Dateien</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="57"/>
         <source>Text files</source>
-        <translation type="unfinished">Textdateien</translation>
+        <translation>Textdateien</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="58"/>
         <source>Data files</source>
-        <translation type="unfinished">Datendateien</translation>
+        <translation>Datendateien</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="59"/>
         <source>Comma Separated Values</source>
-        <translation type="unfinished">Kommagetrennte Werte</translation>
+        <translation>Kommagetrennte Werte</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="127"/>
         <source>Import each file as: </source>
-        <translation type="unfinished">Jede Datei importieren als: </translation>
+        <translation>Jede Datei importieren als: </translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="503"/>
         <source>New Table</source>
-        <translation type="unfinished">Neue Tabelle</translation>
+        <translation>Neue Tabelle</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="132"/>
         <source>New Columns</source>
-        <translation type="unfinished">Neue Spalten</translation>
+        <translation>Neue Spalten</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="133"/>
         <source>New Rows</source>
-        <translation type="unfinished">Neue Zeilen</translation>
+        <translation>Neue Zeilen</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="137"/>
         <source>Separator:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Spaltentrenner:</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="332"/>
         <source>TAB</source>
-        <translation type="unfinished">Tabulator (TAB)</translation>
+        <translation>Tabulator (TAB)</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="334"/>
         <source>SPACE</source>
-        <translation type="unfinished">Leerzeichen (SPACE)</translation>
+        <translation>Leerzeichen (SPACE)</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="152"/>
@@ -14266,7 +14268,10 @@ die Reihenfolge der Parameter ist wichtig!</translation>
 The following special codes can be used:
 \t for a TAB character 
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Der Spaltentrenner kann individuell angepasst werden. 
+Die folgenden Spezialcodes können benutzt werden:
+\t für einen Tabulator 
+\s für ein Leerzeichen</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="153"/>
@@ -14288,7 +14293,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="167"/>
         <source>Ignore lines starting with</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere Zeilen beginnend mit</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="171"/>
@@ -14298,7 +14303,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="174"/>
         <source>Use second row as &amp;comments</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Benutze zweite Zeile für &amp;Kommentare</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="178"/>
@@ -14365,17 +14370,17 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="196"/>
         <source>Decimal Separators</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dezimaltrennzeichen</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="198"/>
         <source>System Locale Setting</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Systemeinstellung verwenden</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="215"/>
         <source>Import as &amp;read-only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Als &amp;schreibgeschützt importieren</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="229"/>
@@ -14444,7 +14449,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="226"/>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alle</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="337"/>
@@ -14459,22 +14464,22 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="218"/>
         <source>&amp;Preview Lines</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Vorschau Zeilen</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="504"/>
         <source>New Matrice</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neue Matrix</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="134"/>
         <source>Overwrite Current Window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Überschreibe aktuelles Fenster</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="207"/>
         <source>Endline character</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zeilenendzeichen</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="209"/>
@@ -14499,12 +14504,12 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="491"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sie haben nicht die Rechte um die Datei &lt;b&gt;%1&lt;/b&gt; zu öffnen.</translation>
     </message>
     <message>
         <location filename="../src/ImportASCIIDialog.cpp" line="204"/>
         <source>Omit &amp;thousands separator</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Tausendertrennzeichen auslassen</translation>
     </message>
 </context>
 <context>
@@ -14520,7 +14525,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">Ignoriere erste</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Use first row to name columns</source>
         <translation type="obsolete">Benutze erste Zeile als Spaltentitel</translation>
     </message>
@@ -14530,37 +14535,37 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">Qti-Plot - ASCII-Import-Optionen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Auto</source>
         <translation type="obsolete">Auto</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>:</source>
         <translation type="obsolete">:</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;</source>
         <translation type="obsolete">;</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,</source>
         <translation type="obsolete">,</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Define</source>
         <translation type="obsolete">Benutzerdefiniert</translation>
     </message>
@@ -14575,22 +14580,22 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">Leerzeichen (SPACE)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;TAB</source>
         <translation type="obsolete">;TAB</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,TAB</source>
         <translation type="obsolete">,TAB</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>;SPACE</source>
         <translation type="obsolete">;LZ</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>,SPACE</source>
         <translation type="obsolete">,LZ</translation>
     </message>
@@ -14624,7 +14629,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">Diese Option bewirkt, dass alle Zwischenraumzeichen am Anfang und Ende der Zeilen in der ASCII-Datei entfernt werden.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Warning: checking this option leads to column overlaping if the columns in the ASCII file don&apos;t have the same number of rows.</source>
         <translation type="obsolete">Warnung: Diese Option führt zu überlappenden Spalten, falls die Spalten in der ASCII-Datei nicht die gleiche Zeilenzahl haben.</translation>
     </message>
@@ -14817,12 +14822,12 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">Alle Dateien</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Text</source>
         <translation type="obsolete">Text</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Data</source>
         <translation type="obsolete">Daten</translation>
     </message>
@@ -14832,7 +14837,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">Kommagetrennte Werte</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Import each file as</source>
         <translation type="obsolete">Einzelne Dateien importieren als</translation>
     </message>
@@ -14890,12 +14895,12 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation>Obere Grenze</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
@@ -14915,7 +14920,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Warning</source>
         <translation type="obsolete">QtiPlot - Warnung</translation>
     </message>
@@ -14925,7 +14930,7 @@ die Spalten unterschiedlich viele Zeilen haben.</translation>
         <translation type="obsolete">Die Kurve &lt;b&gt; %1 &lt;/b&gt; existiert nicht mehr! Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You can not fit index:</source>
         <translation type="obsolete">Sie können den Index nicht fitten:</translation>
     </message>
@@ -14988,7 +14993,7 @@ Falls Sie diesen Wert nicht wissen, geben Sie &apos;min&apos; im Eingabefeld ein
         <translation type="obsolete">QtiPlot - Hilfe zur Integration</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The integration of a curve consists of the following five steps:
  1) Choose which curve you want to integrate
  2) Set the order of the integration. The higher it is the more accurate the calculation is
@@ -15011,7 +15016,7 @@ WICHTIG
 Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekannt sind, kann &apos;min&apos; bzw. &apos;max&apos; in die Eingabefelder geschrieben werden.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You cannot fit index:</source>
         <translation type="obsolete">Sie können den index nicht fitten:</translation>
     </message>
@@ -15061,12 +15066,12 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/analysis/dialogs/IntDialog.cpp" line="60"/>
         <source>Variable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Variable</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/IntDialog.cpp" line="65"/>
         <source>Order (1 - 5, 1 = Trapezoidal Rule)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ordnung (1-5, 1 = Trapez-Regel)</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/IntDialog.cpp" line="70"/>
@@ -15081,7 +15086,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/analysis/dialogs/IntDialog.cpp" line="96"/>
         <source>&amp;Plot area</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Diagrammfläche</translation>
     </message>
 </context>
 <context>
@@ -15174,7 +15179,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/analysis/Integration.cpp" line="210"/>
         <source>using the Trapezoidal Rule</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">benutze die Trapez-Regel</translation>
     </message>
 </context>
 <context>
@@ -15283,12 +15288,12 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
@@ -15343,12 +15348,12 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation>Die Kurve &lt;b&gt; %1 &lt;/b&gt; existiert nicht mehr! Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Error</source>
         <translation type="obsolete">QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You need at least %1 points to perform this operation! Operation aborted!</source>
         <translation type="obsolete">Es werden mindestens 1% Punkte für diese Funktion benötigt. Die Ausführung wurde abgebrochen!</translation>
     </message>
@@ -15396,7 +15401,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="obsolete">Schrifarten</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Image Geometry</source>
         <translation type="obsolete">QtiPlot - Bildgeometrie</translation>
     </message>
@@ -15526,12 +15531,12 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="obsolete">Titel</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Axis Legends</source>
         <translation type="obsolete">Achsenbeschriftung</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Axis Numbers</source>
         <translation type="obsolete">Achsennummerierung</translation>
     </message>
@@ -15583,12 +15588,12 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="49"/>
         <source>Layers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ebenen</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="51"/>
         <source>Number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zahl</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="61"/>
@@ -15598,22 +15603,22 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="161"/>
         <source>Swap Layers</source>
-        <translation type="unfinished"></translation>
+        <translation>Ebenen tauschen</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="163"/>
         <source>Source Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Quellebene</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="168"/>
         <source>Destination Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Zielebene</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="172"/>
         <source>&amp;Swap</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tauschen</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="304"/>
@@ -15623,7 +15628,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/plot2D/dialogs/LayerDialog.cpp" line="305"/>
         <source>Please enter different indexes for the source and destination layers!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitte geben Sie unterschiedliche Inizes für die Quell- und Zielebenen an!</translation>
     </message>
 </context>
 <context>
@@ -15744,17 +15749,17 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Co&amp;lor</source>
         <translation type="obsolete">F&amp;arbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source> pixels</source>
         <translation type="obsolete"> Pixel</translation>
     </message>
@@ -15809,7 +15814,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/plot2D/LineProfileTool.cpp" line="53"/>
         <source>Please select an image marker first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitte zuerst einen Bildmarker auswählen.</translation>
     </message>
     <message>
         <location filename="../src/plot2D/LineProfileTool.cpp" line="65"/>
@@ -15819,12 +15824,12 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/plot2D/LineProfileTool.cpp" line="90"/>
         <source>pixel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pixel</translation>
     </message>
     <message>
         <location filename="../src/plot2D/LineProfileTool.cpp" line="90"/>
         <source>intensity</source>
-        <translation type="unfinished"></translation>
+        <translation>Intensität</translation>
     </message>
     <message>
         <location filename="../src/plot2D/LineProfileTool.cpp" line="138"/>
@@ -15913,27 +15918,27 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/analysis/LogisticFit.cpp" line="68"/>
         <source>Logistic Fit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
         <source>init value</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Anfangswert</translation>
     </message>
     <message>
         <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
         <source>final value</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Endwert</translation>
     </message>
     <message>
         <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
         <source>center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mitte</translation>
     </message>
     <message>
         <location filename="../src/analysis/LogisticFit.cpp" line="66"/>
         <source>power</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -15971,22 +15976,22 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="488"/>
         <source>area</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fläche</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="488"/>
         <source>center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mitte</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="488"/>
         <source>width</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Breite</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="488"/>
         <source>offset</source>
-        <translation type="unfinished"></translation>
+        <translation>Offset</translation>
     </message>
 </context>
 <context>
@@ -16007,7 +16012,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="984"/>
+        <location filename="../src/matrix/Matrix.cpp" line="992"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
@@ -16027,19 +16032,19 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="obsolete">Nein</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The text in the clipboard is larger than your current selection!<byte value="x9"/>        
 Do you want to insert cells?</source>
         <translation type="obsolete">Der Text in der Zwischenablage ist größer als die aktuelle Auswahl!
 Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1472"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1218"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1226"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
@@ -16064,104 +16069,104 @@ Do you want to insert cells?</source>
 Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="984"/>
+        <location filename="../src/matrix/Matrix.cpp" line="992"/>
         <source>Please provide a valid file name!</source>
         <translation type="unfinished">Bitte einen gültigen Dateinamen eingeben!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="847"/>
+        <location filename="../src/matrix/Matrix.cpp" line="855"/>
         <source>File format not handled, operation aborted!</source>
         <translation type="unfinished">Dateiformat konnte nicht verarbeitet werden, Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1390"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1398"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation type="unfinished">QtiPlot - ASCII-Export-Fehler</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1391"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1399"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation type="unfinished">Konnte nicht in Datei &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt; schreiben.&lt;p&gt;Bitte überprüfen Sie Ihre Schreibrechte!</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="409"/>
         <source>Invert</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Imvertieren</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="418"/>
         <source>Transpose</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Transponieren</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="427"/>
         <source>Flip Vertically</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vertikal drehen</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="436"/>
         <source>Flip Horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Horizontal drehen</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="446"/>
         <source>Rotate 90&#xb0;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Um 90° drehen</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="530"/>
         <source>Calculate Values</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Werte berechnen</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="557"/>
         <source>Clear Selection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auswahl aufheben</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="671"/>
+        <location filename="../src/matrix/Matrix.cpp" line="679"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Einfügen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="706"/>
+        <location filename="../src/matrix/Matrix.cpp" line="714"/>
         <source>Delete Rows</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zeilen löschen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="737"/>
+        <location filename="../src/matrix/Matrix.cpp" line="745"/>
         <source>Delete Columns</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Spalten löschen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="790"/>
+        <location filename="../src/matrix/Matrix.cpp" line="798"/>
         <source>Insert Row</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zeile einfügen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="809"/>
+        <location filename="../src/matrix/Matrix.cpp" line="817"/>
         <source>Insert Column</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Spalte einfügen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1255"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1263"/>
         <source>Import Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bild importieren</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1375"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1383"/>
         <source>Forward FFT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vorwärts FFT</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1375"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1383"/>
         <source>Inverse FFT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inverse FFT</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1450"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1458"/>
         <source>Import ASCII File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ASCII-Datei importieren</translation>
     </message>
     <message>
         <location filename="../src/Matrix.cpp" line="323"/>
@@ -16169,42 +16174,42 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Fehler</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1472"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Speicherreservierungsfehler</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1481"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nicht genug Speicher, Operation abgebrochen!</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="448"/>
         <source>Rotate -90&#xb0;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Um -90° drehen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1461"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1469"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aufgrund von Speicherbeschränkungen kann diese Änderung nicht rückgängig gemacht werden. Möchten Sie trotzdem fortfahren?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1463"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1471"/>
         <source>Warning</source>
         <translation type="unfinished">Warnung</translation>
     </message>
     <message>
         <location filename="../src/matrix/Matrix.cpp" line="335"/>
         <source>Set Dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dimensionen festlegen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1086"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1094"/>
         <source>Set Data Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1481"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1489"/>
         <source>kB</source>
         <translation type="unfinished">kB</translation>
     </message>
@@ -16269,27 +16274,27 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/matrix/MatrixDialog.cpp" line="112"/>
         <source>Set Columns Width</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Spaltenbreite setzen</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixDialog.cpp" line="118"/>
         <source>Decimal</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dezimal</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixDialog.cpp" line="121"/>
         <source>Scientific</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wissenschaftlich</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixDialog.cpp" line="128"/>
         <source>Set Data Format %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Datenformat %1 setzen</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixDialog.cpp" line="129"/>
         <source>Precision %1 digits</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Genauigkeit %1 Dezimalstellen</translation>
     </message>
 </context>
 <context>
@@ -16297,7 +16302,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/matrix/MatrixModel.cpp" line="333"/>
         <source>Edited cell</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bearbeitete Zelle</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixModel.cpp" line="716"/>
@@ -16307,12 +16312,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/matrix/MatrixModel.cpp" line="716"/>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Speicherreservierungsfehler</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixModel.cpp" line="717"/>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nicht genug Speicher, Operation abgebrochen!</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixModel.cpp" line="344"/>
@@ -16322,12 +16327,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/matrix/MatrixModel.cpp" line="345"/>
         <source>The dimensions you have specified are not acceptable!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Die von Ihnen angegebenen Dimensionen sind nicht akzeptabel!</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixModel.cpp" line="346"/>
         <source>Please enter positive values for which the product rows*columns does not exceed the maximum integer value available on your system!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitte geben Sie einen nichtnegativen Wert ein, für den das Produkt Zeilen*Spalten nicht die maximale Ganzzahlgröße Ihres Systems überschreitet!</translation>
     </message>
 </context>
 <context>
@@ -16395,7 +16400,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="125"/>
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Setze Koordinaten x[%1 : %2], y[%3 : %4]</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="86"/>
@@ -16456,17 +16461,17 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Input function error</source>
         <translation type="obsolete">QtiPlot - Fehler bei der Funktionseingabe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You can not use cells recursevely!</source>
         <translation type="obsolete">Zellen können nicht rekursiv benutzt werden!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Column and row indexes must be greater than zero!</source>
         <translation type="obsolete">Der Spalten- und Zeilen-Index muss größer 0 sein!</translation>
     </message>
@@ -16478,7 +16483,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/matrix/MatrixValuesDialog.cpp" line="76"/>
         <source>Add Ce&amp;ll</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ze&amp;lle hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixValuesDialog.cpp" line="108"/>
@@ -16493,12 +16498,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/matrix/MatrixValuesDialog.cpp" line="165"/>
         <source>Set New Formula</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neue Formel setzen</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixValuesDialog.cpp" line="121"/>
         <source>Use built-in muParser (much faster)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Benutze eingebauten muParser (viel schneller)</translation>
     </message>
 </context>
 <context>
@@ -16562,12 +16567,12 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>MultiLayer</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot</source>
         <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Guess best origin for the new layer?</source>
         <translation type="obsolete">QtiPlot - Koordinatenursprung für neue Ebene automatisch ermitteln?</translation>
     </message>
@@ -16592,32 +16597,32 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Error: arranging layers failed!</source>
         <translation type="obsolete">QtiPLot - Fehler: Ausrichtung der Ebenen fehlgeschlagen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>There is not enaugh space available in this window.&lt;p&gt;You could try to maximize it first and to rearrange the layers using the automatic option!&lt;/p&gt;</source>
         <translation type="obsolete">In diesem Fenster steht nicht genug Platz zur Verfgung.&lt;p&gt;Versuchen Sie die Fenstergrße zu maximieren und die Ebenen anschließend automatisch ausrichten zu lassen!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Choose a filename to save under</source>
         <translation type="obsolete">Bitte legen Sie einen Namen fest, unter dem die Datei gesichert wird</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Overwrite File?</source>
         <translation type="obsolete">QtiPlot - Datei berschreiben?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
         <translation type="obsolete">Eine Datei mit dem Namen &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt; existiert bereits. Wollen Sie sie berschreiben?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Export Error</source>
         <translation type="obsolete">QtiPlot - Export-Fehler</translation>
     </message>
@@ -16737,22 +16742,22 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="124"/>
         <source>center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mitte</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="125"/>
         <source>width</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Breite</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="127"/>
         <source>offset</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Offset</translation>
     </message>
     <message>
         <location filename="../src/analysis/MultiPeakFit.cpp" line="123"/>
         <source>area</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fläche</translation>
     </message>
 </context>
 <context>
@@ -16771,287 +16776,287 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>MyDialog</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Custom plot</source>
         <translation type="obsolete">QtiPlot - selbstangepasstes Diagramm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plot type</source>
         <translation type="obsolete">Diagrammtyp</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Line</source>
         <translation type="obsolete">Linie</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Scatter</source>
         <translation type="obsolete">Punkte</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Line + Symbol</source>
         <translation type="obsolete">Linie + Symbol</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Vertical Bars</source>
         <translation type="obsolete">Vertikale Balken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Horizontal Bars</source>
         <translation type="obsolete">Horizontale Balken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Histogram</source>
         <translation type="obsolete">Histogramm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Vector XYXY</source>
         <translation type="obsolete">Vektor XYXY</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Error Bars</source>
         <translation type="obsolete">Fehlerbalken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Worksheet</source>
         <translation type="obsolete">&amp;Arbeitsblatt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Apply</source>
         <translation type="obsolete">&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Error</source>
         <translation type="obsolete">QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Style</source>
         <translation type="obsolete">Stil</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Width</source>
         <translation type="obsolete">Breite</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Color</source>
         <translation type="obsolete">Farbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Fill color</source>
         <translation type="obsolete">Fllfarbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Pattern</source>
         <translation type="obsolete">Fllmuster</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Pen Color</source>
         <translation type="obsolete">Stiftfarbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Fill Color</source>
         <translation type="obsolete">Fllfarbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Size</source>
         <translation type="obsolete">Größe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Symbol</source>
         <translation type="obsolete">Symbol</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Direction</source>
         <translation type="obsolete">Richtung</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plus</source>
         <translation type="obsolete">Plus</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Minus</source>
         <translation type="obsolete">Minus</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;X Error Bar</source>
         <translation type="obsolete">&amp;X-Fehlerbalken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Line Width</source>
         <translation type="obsolete">Linienstrke</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>1</source>
         <translation type="obsolete">1</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>2</source>
         <translation type="obsolete">2</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>3</source>
         <translation type="obsolete">3</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>4</source>
         <translation type="obsolete">4</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>5</source>
         <translation type="obsolete">5</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Cap Width</source>
         <translation type="obsolete">Kappenbreite</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>8</source>
         <translation type="obsolete">8</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>10</source>
         <translation type="obsolete">10</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>12</source>
         <translation type="obsolete">12</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>16</source>
         <translation type="obsolete">16</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>20</source>
         <translation type="obsolete">20</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Through Symbol</source>
         <translation type="obsolete">Symbol</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Automatic Binning</source>
         <translation type="obsolete">Automatisches Binnen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Show statistics</source>
         <translation type="obsolete">Statistik anzeigen&gt;</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Bin Size</source>
         <translation type="obsolete">Binbreite</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Begin</source>
         <translation type="obsolete">Anfang</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>End</source>
         <translation type="obsolete">Ende</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Histogram Data</source>
         <translation type="obsolete">Histogrammdaten</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Gap Between Bars (in %)</source>
         <translation type="obsolete">Balkenabstand (in %)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Spacing</source>
         <translation type="obsolete">Abstand</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Arrowheads</source>
         <translation type="obsolete">Pfeilspitzen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Length</source>
         <translation type="obsolete">Länge</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Angle</source>
         <translation type="obsolete">Winkel</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Filled</source>
         <translation type="obsolete">&amp;Gefllt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>End Point</source>
         <translation type="obsolete">Endpunkt</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>X End</source>
         <translation type="obsolete">X-Ende</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Y End</source>
         <translation type="obsolete">Y-Ende</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Vector</source>
         <translation type="obsolete">Vektor</translation>
     </message>
@@ -17149,12 +17154,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/analysis/NonLinearFit.cpp" line="74"/>
         <source>Non-linear Fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nichtlinearer Fit</translation>
     </message>
     <message>
         <location filename="../src/analysis/NonLinearFit.cpp" line="237"/>
         <source>constant</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Konstante</translation>
     </message>
 </context>
 <context>
@@ -17192,7 +17197,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/OpenProjectDialog.cpp" line="48"/>
         <source>Origin graph</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Origin Grafik</translation>
     </message>
     <message>
         <location filename="../src/OpenProjectDialog.cpp" line="49"/>
@@ -17207,12 +17212,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/OpenProjectDialog.cpp" line="57"/>
         <source>Open As</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Öffnen als</translation>
     </message>
     <message>
         <location filename="../src/OpenProjectDialog.cpp" line="60"/>
         <source>New Project Window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neues Projektfenster</translation>
     </message>
     <message>
         <location filename="../src/OpenProjectDialog.cpp" line="61"/>
@@ -17316,57 +17321,57 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Farbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>black</source>
         <translation type="obsolete">schwarz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>red</source>
         <translation type="obsolete">rot</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>green</source>
         <translation type="obsolete">grün</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>blue</source>
         <translation type="obsolete">blau</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>cyan</source>
         <translation type="obsolete">cyan</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>magenta</source>
         <translation type="obsolete">magenta</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>yellow</source>
         <translation type="obsolete">gelb</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>dark yellow</source>
         <translation type="obsolete">dunkelgelb</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>white</source>
         <translation type="obsolete">wei√</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>light gray</source>
         <translation type="obsolete">hellgrau</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>dark gray</source>
         <translation type="obsolete">dunkelgrau</translation>
     </message>
@@ -17396,17 +17401,17 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Muster</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Horizontal</source>
         <translation type="obsolete">Horizontal</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Vertical</source>
         <translation type="obsolete">Vertikal</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Pie ray</source>
         <translation type="obsolete">Tortenradius</translation>
     </message>
@@ -17416,7 +17421,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Tortengrafik</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Frame</source>
         <translation type="obsolete">Rahmen</translation>
     </message>
@@ -17446,7 +17451,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Hintergrund</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Co&amp;lor</source>
         <translation type="obsolete">F&amp;arbe</translation>
     </message>
@@ -17461,7 +17466,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Randfarbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Colo&amp;r</source>
         <translation type="obsolete">F&amp;arbe</translation>
     </message>
@@ -17597,7 +17602,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Achsenhauptmarken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>MinorTicks</source>
         <translation type="obsolete">Achsennebenmarken</translation>
     </message>
@@ -17900,7 +17905,7 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>PlotDialog</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Custom plot</source>
         <translation type="obsolete">QtiPlot - selbstangepasstes Diagramm</translation>
     </message>
@@ -17975,7 +17980,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Error</source>
         <translation type="obsolete">QtiPlot - Fehler</translation>
     </message>
@@ -18010,7 +18015,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Muster</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Pen Color</source>
         <translation type="obsolete">Stiftfarbe</translation>
     </message>
@@ -18050,7 +18055,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;X-Fehlerbalken</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Co&amp;lor</source>
         <translation type="obsolete">F&amp;arbe</translation>
     </message>
@@ -18225,7 +18230,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Vertikale Linien</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Steps</source>
         <translation type="obsolete">Stufen</translation>
     </message>
@@ -18560,12 +18565,12 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;Graustufen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Default Colors</source>
         <translation type="obsolete">Stan&amp;dardfarben</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Custom Co&amp;lors</source>
         <translation type="obsolete">&amp;Benutzerdefinierte Farben</translation>
     </message>
@@ -18672,7 +18677,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="75"/>
         <source>QtiPlot - Plot details</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">QtiPlot - Grafikdetails</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="306"/>
@@ -18697,12 +18702,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1589"/>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Schriftart</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="336"/>
         <source>Background Color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hintergrundfarbe</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="350"/>
@@ -18722,12 +18727,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="358"/>
         <source>Border Color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Randfarbe</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="369"/>
         <source>Margin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Randbereich</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="366"/>
@@ -18737,7 +18742,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1581"/>
         <source>Layer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ebene</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="431"/>
@@ -18772,7 +18777,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1582"/>
         <source>Geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Geometrie</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="508"/>
@@ -18802,12 +18807,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="640"/>
         <source>&amp;Scale layers to paper size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Skaliere Ebenen auf Papiergröße</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="642"/>
         <source>Print Crop&amp;marks</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Schnitt&amp;marken drucken</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1588"/>
@@ -18817,7 +18822,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="654"/>
         <source>&amp;Show</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Anzeigen</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="658"/>
@@ -18827,7 +18832,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="665"/>
         <source>White O&amp;ut</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Weiß aus&amp;füllen</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="668"/>
@@ -18837,27 +18842,27 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="670"/>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zentrieren</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="674"/>
         <source>&amp;Font</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Schriftart</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="677"/>
         <source>Rotate (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rotieren (Grad)</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="684"/>
         <source>X Offset (font height %)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">X Offset (% von Schriftgröße)</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="690"/>
         <source>Y Offset (font height %)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Y Offset (% von Schriftgröße)</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1663"/>
@@ -18867,7 +18872,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="539"/>
         <source>3D View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3D Ansicht</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="541"/>
@@ -18947,7 +18952,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="421"/>
         <source>inch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoll</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="422"/>
@@ -18962,12 +18967,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="424"/>
         <source>point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Punkt</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="425"/>
         <source>pixel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pixel</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="428"/>
@@ -18987,7 +18992,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="389"/>
         <source>All Windows</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alle Fenster</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="379"/>
@@ -19023,7 +19028,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;Diagramm</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
@@ -19043,7 +19048,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You have allready defined a X column!</source>
         <translation type="obsolete">Sie haben bereits eine X-Spalte ausgewählt!</translation>
     </message>
@@ -19053,7 +19058,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Sie müssen zuerst eine X-Spalte auswählen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You have allready defined a Y column!</source>
         <translation type="obsolete">Sie haben bereits eine Y-Spalte ausgewählt!</translation>
     </message>
@@ -19063,7 +19068,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Diese Art Kurve kann vonQtiPlot nicht verarbeitet werden!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You have allready defined a Z column!</source>
         <translation type="obsolete">Sie haben bereits eine Z-Spalte ausgewählt!</translation>
     </message>
@@ -19073,7 +19078,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Sie müssen zuerst eine Y-Spalte auswählen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You have allready defined an error-bars column!</source>
         <translation type="obsolete">Sie haben bereits eine Spalte für Fehlerbalken ausgewählt!</translation>
     </message>
@@ -19141,7 +19146,7 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>PluginFit</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Plugin</source>
         <translation type="obsolete">Plugin</translation>
     </message>
@@ -19224,12 +19229,12 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;Fitten</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
@@ -19259,7 +19264,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Die Kurve &lt;b&gt; %1 &lt;/b&gt; existiert nicht mehr! Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You can not fit curve:</source>
         <translation type="obsolete">Kann die Kurve nicht fitten:</translation>
     </message>
@@ -19299,7 +19304,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/analysis/PolynomialFit.cpp" line="68"/>
         <source>Polynomial Fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Polynom-Fit</translation>
     </message>
 </context>
 <context>
@@ -19307,22 +19312,22 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/analysis/FitModelHandler.cpp" line="46"/>
         <source>The file is not an QtiPlot fit model file.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Die Datei ist keine QtiPlot Fitmodell-Datei.</translation>
     </message>
     <message>
         <location filename="../src/analysis/FitModelHandler.cpp" line="53"/>
         <source>The file is not an QtiPlot fit model version 1.0 file.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Die Datei ist keine QtiPlot Fitmodell Version 1.0 Datei.</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="565"/>
         <source>The file is not a QtiPlot custom action file.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Die Datei ist keine QtiPlot benutzerdifinierte Aktions-Datei.</translation>
     </message>
     <message>
         <location filename="../src/CustomActionDialog.cpp" line="572"/>
         <source>The file is not an QtiPlot custom action version 1.0 file.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Die Datei ist keine QtiPlot benutzerdifinierte Aktion Version 1.0 Datei.</translation>
     </message>
 </context>
 <context>
@@ -19390,7 +19395,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/RangeSelectorTool.cpp" line="338"/>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Die Spalte &apos;%1&apos; ist schreibgeschützt! Operation abgebrochen!</translation>
     </message>
 </context>
 <context>
@@ -19431,7 +19436,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Error</source>
         <translation type="obsolete">QtiPlot - Fehler</translation>
     </message>
@@ -19472,7 +19477,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Text</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Python Source</source>
         <translation type="obsolete">Python Quellcode</translation>
     </message>
@@ -19647,7 +19652,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Ctrl+V</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Del</source>
         <translation type="obsolete">Del</translation>
     </message>
@@ -19727,7 +19732,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation>E&amp;infügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Delete</source>
         <translation type="obsolete">&amp;Löschen</translation>
     </message>
@@ -19759,12 +19764,12 @@ Wollen Sie sie überschreiben?</translation>
     <message>
         <location filename="../src/ScriptWindow.cpp" line="172"/>
         <source>Always on &amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Immer im &amp;Vordergrund</translation>
     </message>
     <message>
         <location filename="../src/ScriptWindow.cpp" line="296"/>
         <source>You need to close and reopen the script window before your changes become effective! Do you want to close it now?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sie müssen das Scriptfenster schließen und wieder öffnen bevor die Änderung wirksam werden! Möchten Sie das Fenster jetzt schließen?</translation>
     </message>
     <message>
         <location filename="../src/ScriptWindow.cpp" line="297"/>
@@ -19774,7 +19779,7 @@ Wollen Sie sie überschreiben?</translation>
     <message>
         <location filename="../src/ScriptWindow.cpp" line="151"/>
         <source>Show &amp;Line Numbers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Zeilennummerierung anzeigen</translation>
     </message>
 </context>
 <context>
@@ -19846,12 +19851,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Zelle hinzufügen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>OK</source>
         <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Apply</source>
         <translation type="obsolete">Anwenden</translation>
     </message>
@@ -19861,12 +19866,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Input function error</source>
         <translation type="obsolete">QtiPlot - Fehler bei der Funktionseingabe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You can not use imbricated columns!</source>
         <translation type="obsolete">Überlappende Spaltenreferenzen!</translation>
     </message>
@@ -19888,7 +19893,7 @@ Wollen Sie sie überschreiben?</translation>
     <message>
         <location filename="../src/SetColValuesDialog.cpp" line="130"/>
         <source>Use built-in muParser (much faster)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eingebauten muParser benutzen (viel schneller)</translation>
     </message>
 </context>
 <context>
@@ -19914,7 +19919,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">(Zeitkonstante)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Boltzmann (Sigmoidal)</source>
         <translation type="obsolete">Boltzmann (Sigmoidal)</translation>
     </message>
@@ -19931,22 +19936,22 @@ Wollen Sie sie überschreiben?</translation>
     <message>
         <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
         <source>init value</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Anfangswert</translation>
     </message>
     <message>
         <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
         <source>final value</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Endwert</translation>
     </message>
     <message>
         <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
         <source>center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zentrum</translation>
     </message>
     <message>
         <location filename="../src/analysis/SigmoidalFit.cpp" line="66"/>
         <source>time constant</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zeitkonstante</translation>
     </message>
 </context>
 <context>
@@ -20047,12 +20052,12 @@ Wollen Sie sie überschreiben?</translation>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="241"/>
         <source>The polynomial order must be lower than the number of left points plus the number of right points!</source>
-        <translation>Die Ordnung des Polygons muss kleiner als die Summe der linken und rechten Punkte sein!</translation>
+        <translation>Die Ordnung des Polynoms muss kleiner als die Summe der linken und rechten Punkte sein!</translation>
     </message>
     <message>
         <location filename="../src/analysis/SmoothFilter.cpp" line="234"/>
         <source>Setting polynomial order is only available for Savitzky-Golay smooth filters! Ignored option!</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellen der Polynomgrads ist nur für Savitzky-Golay Glättungsfilter verfügbar! Ignoriere Einstellung!</translation>
     </message>
 </context>
 <context>
@@ -20078,12 +20083,12 @@ Wollen Sie sie überschreiben?</translation>
         <translation>Sortieren nach</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
@@ -20425,47 +20430,47 @@ Wollen Sie sie überschreiben?</translation>
 <context>
     <name>Table</name>
     <message>
-        <location filename="../src/Table.cpp" line="2184"/>
+        <location filename="../src/Table.cpp" line="2188"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Choose a filename to save under</source>
         <translation type="obsolete">Datei sichern: Whlen Sie den Dateinamen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>QtiPlot - Overwrite File?</source>
         <translation type="obsolete">QtiPlot - Datei berschreiben?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
         <translation type="obsolete">Eine Datei mit dem Namen &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt; existiert bereits. Wollen Sie sie berschreiben?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Yes</source>
         <translation type="obsolete">&amp;Ja</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;No</source>
         <translation type="obsolete">&amp;Nein</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2418"/>
+        <location filename="../src/Table.cpp" line="2422"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation type="unfinished">QtiPlot - ASCII-Export-Fehler</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2701"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2701"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
@@ -20475,29 +20480,29 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">Nein</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2701"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The text in the clipboard is larger than your current selection!<byte value="x9"/>        
 Do you want to insert cells?</source>
         <translation type="obsolete">Der Text in der Zwischenablage ist größer als die aktuelle Auswahl!<byte value="x9"/>        
 Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please select two columns for this operation!</source>
         <translation type="obsolete">Bitte zwei Spalten für diese Operation auswählen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Could not allocate memory, operation aborted!</source>
         <translation type="obsolete">Konnte nicht genug Speicher reservieren, Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Error in GSL forward FFT operation!</source>
         <translation type="obsolete">Fehler in GSL vorwärts FFT Operation!</translation>
     </message>
@@ -20542,69 +20547,69 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
         <translation type="obsolete">Sie müssen zuerst eine Y-Spalte definieren!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Qtiplot - Reading file...</source>
         <translation type="obsolete">QtiPlot - Datei lesen...</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2661"/>
+        <location filename="../src/Table.cpp" line="2665"/>
         <source>Rows will be deleted from the table!</source>
         <translation type="unfinished">Es werden Zeilen aus der Tabelle gelöscht!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2696"/>
+        <location filename="../src/Table.cpp" line="2700"/>
         <source>Do you really want to continue?</source>
         <translation type="unfinished">Wollen Sie wirklich fortfahren?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2695"/>
+        <location filename="../src/Table.cpp" line="2699"/>
         <source>Columns will be deleted from the table!</source>
         <translation type="unfinished">Es werden Spalten aus der Tabelle gelöscht!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Please select two columns for this operation:
  the first represents the signal and the second the response function!</source>
         <translation type="obsolete">Bitte wählen Sie zwei Spalten für diese Operation aus:
 Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The response dataset &apos;%1&apos; must be less then half the size of the signal dataset &apos;%2&apos;!</source>
         <translation type="obsolete">Der Antwortdatensatz &apos;%1&apos; muss weniger als halb so groß wie der Signaldatensatz &apos;%2&apos; sein!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>The response dataset &apos;%1&apos; must contain an odd number of points!</source>
         <translation type="obsolete">Der Antwortdatensatz &apos;%1&apos; muss eine ungerade Anzahl von Punkten enthalten!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Frequency</source>
         <translation type="obsolete">Frequenz</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Time</source>
         <translation type="obsolete">Zeit</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Real</source>
         <translation type="obsolete">Realteil</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Imaginary</source>
         <translation type="obsolete">Imaginärteil</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Amplitude</source>
         <translation type="obsolete">Amplitude</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Angle</source>
         <translation type="obsolete">Winkel</translation>
     </message>
@@ -20626,22 +20631,22 @@ Do you want to insert cells?</source>
 Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1568"/>
+        <location filename="../src/Table.cpp" line="1572"/>
         <source>Please indicate the name of the leading column!</source>
         <translation type="unfinished">Bitte den Namen der führenden Spalte angeben!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1573"/>
+        <location filename="../src/Table.cpp" line="1577"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation type="unfinished">Die führende Spalte hat den Typ &apos;Text&apos;! Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1591"/>
+        <location filename="../src/Table.cpp" line="1595"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation type="unfinished">Die führende Spalte ist leer! Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2419"/>
+        <location filename="../src/Table.cpp" line="2423"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation type="unfinished">Konnte nicht in Datei schreiben: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
@@ -20656,22 +20661,22 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2185"/>
+        <location filename="../src/Table.cpp" line="2189"/>
         <source>The folowing columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2185"/>
+        <location filename="../src/Table.cpp" line="2189"/>
         <source>are read only!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2354"/>
+        <location filename="../src/Table.cpp" line="2358"/>
         <source>Qtiplot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2354"/>
+        <location filename="../src/Table.cpp" line="2358"/>
         <source>Reading file...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20681,7 +20686,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">QtiPlot - Eingabefehler</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="3009"/>
+        <location filename="../src/Table.cpp" line="3013"/>
         <source>kB</source>
         <translation type="unfinished">kB</translation>
     </message>
@@ -20699,7 +20704,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Alle folgenden Spalten nummerieren</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Apply</source>
         <translation type="obsolete">Anwenden</translation>
     </message>
@@ -20804,7 +20809,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished">dd.MM.aaaa</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>ddd MMMM d yy</source>
         <translation type="obsolete">ddd MMMM d aa</translation>
     </message>
@@ -21130,7 +21135,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>QtiPlot - Textoptionen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Color</source>
         <translation type="obsolete">Farbe</translation>
     </message>
@@ -21155,7 +21160,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Alignement</source>
         <translation type="obsolete">Ausrichtung</translation>
     </message>
@@ -21200,77 +21205,77 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Background</source>
         <translation type="obsolete">Hintergrund</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Rotate (deg.)</source>
         <translation type="obsolete">Rotieren (Grad)</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>0</source>
         <translation type="obsolete">0</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>45</source>
         <translation type="obsolete">45</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>90</source>
         <translation type="obsolete">90</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>135</source>
         <translation type="obsolete">135</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>180</source>
         <translation type="obsolete">180</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>225</source>
         <translation type="obsolete">225</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>270</source>
         <translation type="obsolete">270</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>315</source>
         <translation type="obsolete">315</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>B</source>
         <translation type="obsolete">B</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>It</source>
         <translation type="obsolete">It</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>U</source>
         <translation type="obsolete">U</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Set &amp;Default</source>
         <translation type="obsolete">Stan&amp;dardwert setzen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Co&amp;lor</source>
         <translation type="obsolete">F&amp;arbe</translation>
     </message>
@@ -21317,7 +21322,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/TextDialog.cpp" line="145"/>
         <source>Y Axis Title</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Y-Achsentitel</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/TextDialog.cpp" line="148"/>
@@ -21337,12 +21342,12 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/TextDialog.cpp" line="90"/>
         <source>Object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Objekt</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/TextDialog.cpp" line="91"/>
         <source>Layer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ebene</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/TextDialog.cpp" line="92"/>
@@ -21352,7 +21357,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/dialogs/TextDialog.cpp" line="93"/>
         <source>All Windows</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alle Fenster</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/TextDialog.cpp" line="96"/>
@@ -21431,7 +21436,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/analysis/ExponentialFit.cpp" line="249"/>
         <source>offset</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Offset</translation>
     </message>
 </context>
 <context>
@@ -21459,7 +21464,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/plot2D/TranslateCurveTool.cpp" line="74"/>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Spalte &apos;%1&apos; ist schreibgeschützt! Operation abgebrochen!</translation>
     </message>
     <message>
         <location filename="../src/plot2D/TranslateCurveTool.cpp" line="55"/>
@@ -21507,7 +21512,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/analysis/ExponentialFit.cpp" line="170"/>
         <source>offset</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Offset</translation>
     </message>
 </context>
 <context>
@@ -21518,22 +21523,22 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Kein Speicher mehr verfügbar</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You cannot use imbricated columns!</source>
         <translation type="obsolete">Überlappende Spaltenreferenzen!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>You cannot use cells recursively!</source>
         <translation type="obsolete">Funktionen können Zellen nicht rekursiv indizieren!</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Too many &apos;=&apos; in one line.</source>
         <translation type="obsolete">Zu viele &apos;=&apos; in einer Zeile.</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Syntax error: &apos;=&apos; without variable name.</source>
         <translation type="obsolete">Syntaxfehler: &apos;=&apos; ohne Variablenname.</translation>
     </message>
@@ -21575,123 +21580,123 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <location filename="../src/muParserScript.cpp" line="160"/>
         <source>tablecol() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>tablecol() funkioniert nur bei Tabellen!</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="184"/>
         <source>tablecol: wrong number of arguments (need 2, got %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>tablecol: falsche Anzahl an Argumenten (2 benötigt, %1 angegeben)</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="186"/>
         <source>tablecol: first argument must be a string (table name)</source>
-        <translation type="unfinished"></translation>
+        <translation>tablecol: erstes Argument muss vom Typ String sein (Tabellenname)</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="189"/>
         <source>Couldn&apos;t find a table named %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte keine Tabelle mit dem Namen %1 finden.</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="236"/>
         <source>cell() works only on tables and matrices!</source>
-        <translation type="unfinished"></translation>
+        <translation>cell() funktioniert nur mit Tabellen und Matrizen!</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="78"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehrzeilige Ausdrücke benötigen sehr viel mehr Zeit zur Auswertung! Möchten Sie trotzdem fortfahren?</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="79"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="79"/>
         <source>Warning</source>
-        <translation type="unfinished">Warnung</translation>
+        <translation>Warnung</translation>
     </message>
 </context>
 <context>
     <name>textDlg</name>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Color</source>
         <translation type="obsolete">Farbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Co&amp;lor</source>
         <translation type="obsolete">F&amp;arbe</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;OK</source>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Frame</source>
         <translation type="obsolete">Rahmen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>None</source>
         <translation type="obsolete">Keine</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Rectangle</source>
         <translation type="obsolete">Rechteck</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Shadow</source>
         <translation type="obsolete">Schatten</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Apply</source>
         <translation type="obsolete">&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Font</source>
         <translation type="obsolete">Schrift</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Font</source>
         <translation type="obsolete">&amp;Schrift</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>Background</source>
         <translation type="obsolete">Hintergrund</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>&amp;Background</source>
         <translation type="obsolete">&amp;Hintergrund</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>0</source>
         <translation type="obsolete">0</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>270</source>
         <translation type="obsolete">270</translation>
     </message>
     <message>
-        <location filename="" line="135763132"/>
+        <location filename="" line="0"/>
         <source>315</source>
         <translation type="obsolete">315</translation>
     </message>
