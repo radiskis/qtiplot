@@ -157,6 +157,7 @@ public:
 	void setMatrixUndoStackSize(int size);
 
 	QString endOfLine();
+	QString guessEndOfLine(QString* sample);
 	bool autoUpdateTableValues(){return d_auto_update_table_values;};
 	void setAutoUpdateTableValues(bool on = true);
 
