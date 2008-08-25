@@ -448,13 +448,9 @@ bool ImportOPJ::importTables(const OPJFile& opj)
 		vector<double> data = opj.matrixData(s);
 		double *matrix_data = matrix->matrixModel()->dataVector();
 		int size = matrix->numRows()*matrix->numCols();
-		int cell = 0;
-		for(int i=0; i<size; i++){
-			double val = data[cell];
-			if (val < 2.0e-300)
-				val = GSL_NAN;
-			matrix_data[cell] = val;
-            cell++;
+		for(int i=0; i < size; ++i)
+		{
+			matrix_data[i] = fabs(data[i]) < 2.0e-300 && fabs(data[i]) > 0 ? GSL_NAN : data[i];
 		}
 
 		QChar format;
