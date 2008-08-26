@@ -15673,20 +15673,13 @@ void ApplicationWindow::setMatrixUndoStackSize(int size)
 	}
 }
 
-QString ApplicationWindow::guessEndOfLine(QString* sample)
-{
-//Try to guess which end-of-line character is used:
-
-//Try \r\n first
-    if (sample->find("\r\n",0)!=-1)
-    {
+QString ApplicationWindow::guessEndOfLine(const QString& sample)
+{//Try to guess which end-of-line character is used:
+    if (sample.indexOf("\r\n") != -1)//Try \r\n first
         return "\r\n";
-    }else if (sample->find("\r",0)!=-1)
-//then look for \r     
-    {
+    else if (sample.indexOf("\r") != -1)//then look for \r     
         return "\r";
-    }
-// use \n if neither \r\n nor \r have been found
+	// use \n if neither \r\n nor \r have been found
     return "\n";
 }
 

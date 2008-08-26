@@ -606,14 +606,7 @@ void Matrix::pasteSelection()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 
-#ifdef Q_OS_WIN
-   	QStringList linesList = text.split(applicationWindow()->guessEndOfLine(&text), QString::SkipEmptyParts);
-
-#else
-	QStringList linesList = text.split(applicationWindow()->endOfLine(), QString::SkipEmptyParts);
-
-#endif
-
+	QStringList linesList = text.split(ApplicationWindow::guessEndOfLine(text));
 	int rows = linesList.size();
 	if (!rows)
 		return;
