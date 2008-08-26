@@ -1320,14 +1320,8 @@ void Table::pasteSelection()
 	if (text.isEmpty())
 		return;
 		
-//Guess endline character for Windows platform, use settings for linux and OSX
-#ifdef Q_OS_WIN
-    QStringList linesList = text.split(applicationWindow()->guessEndOfLine(&text));
-#else
-	QStringList linesList = text.split(applicationWindow()->endOfLine());
-#endif
+    QStringList linesList = text.split(ApplicationWindow::guessEndOfLine(text));
 	int rows = linesList.size();
-
 	if (rows < 1)
 		return;
 

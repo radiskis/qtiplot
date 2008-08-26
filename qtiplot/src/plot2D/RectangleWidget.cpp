@@ -133,7 +133,7 @@ void RectangleWidget::setLinkedLayer(int layerIndex)
     connect(g, SIGNAL(destroyed(QObject *)), this, SLOT(closedLinkedLayer(QObject *)));
 }
 
-void RectangleWidget::closedLinkedLayer(QObject *o)
+void RectangleWidget::closedLinkedLayer(QObject *)
 {
     d_linked_layer = -1;
 }

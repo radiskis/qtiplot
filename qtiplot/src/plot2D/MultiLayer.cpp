@@ -244,7 +244,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 {
 	if (!d_scale_layers || applicationWindow()->d_opening_file)
 		return;
-
+	
 	QSize oldSize = re->oldSize();
 	QSize size = re->size();
 
@@ -897,10 +897,8 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
         while (i != graphsList.begin()) {
             --i;
             Graph *g = *i;
-            if (g->hasSeletedItems()){
-                //g->deselect();
+            if (g->hasSeletedItems())
                 return true;
-            }
 
             QRect igeo = (*i)->frameGeometry();
             if (igeo.contains(pos)) {

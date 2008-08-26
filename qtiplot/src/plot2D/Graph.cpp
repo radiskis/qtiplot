@@ -5306,6 +5306,8 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
             !plotRect.isValid() || size().isNull() )
        return;
 
+	deselect();
+	
     QwtText t = title();
 	printFrame(painter, plotRect);
 

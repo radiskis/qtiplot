@@ -413,6 +413,13 @@ void SelectionMoveResizer::keyPressEvent(QKeyEvent *ke)
 			ke->accept();
 			break;
 		case Qt::Key_Escape:
+			foreach(QWidget *w, d_widgets){
+				Graph *g = qobject_cast<Graph *>(w);
+				if (g){
+					g->raiseEnrichements();
+					break;
+				}
+			}
 			delete this;
 			ke->accept();
 			return;
