@@ -2943,6 +2943,7 @@ void Table::swapColumns(int col1, int col2)
     d_table->setColumnWidth(col1, width2);
     d_table->setColumnWidth(col2, width1);
     setHeaderColType();
+	emit modifiedWindow(this);
 }
 
 void Table::moveColumnBy(int cols)
@@ -2955,13 +2956,15 @@ void Table::moveColumnBy(int cols)
 		newPos = d_table->numCols() - 1;
 
 	if (abs(cols) > 1){
-		d_table->insertColumns(newPos);
-		if (cols < 0)
+		if (cols < 0){
+			d_table->insertColumns(newPos);
 			d_table->swapColumns(oldPos + 1, newPos);
-		else
+			d_table->removeColumn(oldPos + 1);
+		} else {
+			d_table->insertColumns(newPos + 1);
 			d_table->swapColumns(oldPos, newPos + 1);
-
-		d_table->removeColumn(oldPos);
+			d_table->removeColumn(oldPos);
+		}
 
 		col_label.move(oldPos, newPos);
     	comments.move(oldPos, newPos);
@@ -2977,6 +2980,7 @@ void Table::moveColumnBy(int cols)
 	setSelectedCol(newPos);
     d_table->clearSelection();
     d_table->selectColumn(newPos);
+	emit modifiedWindow(this);
 }
 
 void Table::hideColumn(int col, bool hide)

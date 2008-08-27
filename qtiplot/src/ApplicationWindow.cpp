@@ -15128,7 +15128,7 @@ void ApplicationWindow::moveColumnFirst()
 {
 	Table *t = (Table *)activeWindow(TableWindow);
 	if (t)
-    	t->moveColumnBy(0 - t->selectedColumn());
+    	t->moveColumnBy(-t->selectedColumn());
 }
 
 void ApplicationWindow::moveColumnLast()

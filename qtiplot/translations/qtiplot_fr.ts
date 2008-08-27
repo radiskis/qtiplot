@@ -120,7 +120,7 @@ La première représente le signal et la seconde, la réponse de la fonction !</
         <translation type="obsolete">Angle</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15716"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15709"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished">QtiPlot - Avertissement</translation>
     </message>
@@ -634,7 +634,7 @@ Voulez-vous l&apos;écraser ?</translation>
         <translation type="unfinished">Colonne</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15798"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15791"/>
         <source>QtiPlot - Column selection error</source>
         <translation type="unfinished">QtiPlot - Erreur de sélection de la colonne</translation>
     </message>
@@ -679,13 +679,13 @@ Voulez-vous l&apos;écraser ?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15717"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15710"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15799"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15792"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12740,7 +12740,7 @@ Les limites doivent être dans la gamme de x ; Si vous ne connaissez pas la vale
         <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="992"/>
+        <location filename="../src/matrix/Matrix.cpp" line="985"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Erreur</translation>
     </message>
@@ -12767,12 +12767,12 @@ Voulez-vous insérer des cellules?</translation>
         <translation type="obsolete">Non</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1226"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1219"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
@@ -12790,22 +12790,22 @@ Voulez-vous insérer des cellules?</translation>
         <translation type="obsolete">&lt;p&gt;Voulez-vous vraiment continuer ?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="992"/>
+        <location filename="../src/matrix/Matrix.cpp" line="985"/>
         <source>Please provide a valid file name!</source>
         <translation type="unfinished">Veuillez donner un nom de fichier valide !</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="855"/>
+        <location filename="../src/matrix/Matrix.cpp" line="848"/>
         <source>File format not handled, operation aborted!</source>
         <translation type="unfinished">Format de fichier non supporté, opération annulée !</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1398"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1391"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1399"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1392"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation type="unfinished">Impossible d&apos;enregistrer le fichier : &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;. Vérifiez que vous avez les droits requis pour écrire à cet emplacement !</translation>
     </message>
@@ -12845,47 +12845,47 @@ Voulez-vous insérer des cellules?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="679"/>
+        <location filename="../src/matrix/Matrix.cpp" line="672"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="714"/>
+        <location filename="../src/matrix/Matrix.cpp" line="707"/>
         <source>Delete Rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="745"/>
+        <location filename="../src/matrix/Matrix.cpp" line="738"/>
         <source>Delete Columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="798"/>
+        <location filename="../src/matrix/Matrix.cpp" line="791"/>
         <source>Insert Row</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="817"/>
+        <location filename="../src/matrix/Matrix.cpp" line="810"/>
         <source>Insert Column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1263"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1256"/>
         <source>Import Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1383"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
         <source>Forward FFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1383"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
         <source>Inverse FFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1458"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1451"/>
         <source>Import ASCII File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12895,12 +12895,12 @@ Voulez-vous insérer des cellules?</translation>
         <translation type="obsolete">Erreur</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
         <source>Memory Allocation Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1481"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1474"/>
         <source>Not enough memory, operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12910,12 +12910,12 @@ Voulez-vous insérer des cellules?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1469"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1462"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1471"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1464"/>
         <source>Warning</source>
         <translation type="unfinished">Avertissement</translation>
     </message>
@@ -12925,12 +12925,12 @@ Voulez-vous insérer des cellules?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1094"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1087"/>
         <source>Set Data Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1489"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1482"/>
         <source>kB</source>
         <translation type="unfinished">kOctects</translation>
     </message>
@@ -13353,7 +13353,7 @@ Voulez-vous insérer des cellules?</translation>
         <translation>Format de fichier non supporté, opération annulée !</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1199"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1197"/>
         <source>kB</source>
         <translation type="unfinished">kOctects</translation>
     </message>
@@ -16537,7 +16537,7 @@ Do you want to overwrite it?</source>
 <context>
     <name>Table</name>
     <message>
-        <location filename="../src/Table.cpp" line="2190"/>
+        <location filename="../src/Table.cpp" line="2184"/>
         <source>QtiPlot - Error</source>
         <translation>Qtiplot - Erreur</translation>
     </message>
@@ -16567,12 +16567,12 @@ Do you want to overwrite it?</source>
         <translation type="obsolete">&amp;Non</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2424"/>
+        <location filename="../src/Table.cpp" line="2418"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>Qtiplot - Erreur lors de l&apos;exportation en ASCII</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>QtiPlot</source>
         <translation>Qtiplot</translation>
     </message>
@@ -16639,7 +16639,7 @@ La première représente le signal et la seconde la réponse de la fonction !</t
         <translation type="obsolete">Angle</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
@@ -16649,7 +16649,7 @@ La première représente le signal et la seconde la réponse de la fonction !</t
         <translation type="obsolete">Non</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -16689,17 +16689,17 @@ La première représente le signal et la seconde la réponse de la fonction !</t
         <translation type="obsolete">Vous devez d&apos;abord définir une colonne Y !</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2667"/>
+        <location filename="../src/Table.cpp" line="2661"/>
         <source>Rows will be deleted from the table!</source>
         <translation>Les rangées seront effacées de cette table !</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2702"/>
+        <location filename="../src/Table.cpp" line="2696"/>
         <source>Do you really want to continue?</source>
         <translation>Voulez-vous vraiment continuer ?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2701"/>
+        <location filename="../src/Table.cpp" line="2695"/>
         <source>Columns will be deleted from the table!</source>
         <translation>Les colonnes seront effacées de la table !</translation>
     </message>
@@ -16714,22 +16714,22 @@ La première représente le signal et la seconde la réponse de la fonction !</t
         <translation>Il existe déjà une colonne nommée : &lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1574"/>
+        <location filename="../src/Table.cpp" line="1568"/>
         <source>Please indicate the name of the leading column!</source>
         <translation>Veuillez indiquer le nom de la première colonne !</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1579"/>
+        <location filename="../src/Table.cpp" line="1573"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation>La première colonne n&apos;a pas le type &apos;Texte&apos; ! Opération annulée !</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1597"/>
+        <location filename="../src/Table.cpp" line="1591"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation>La première colonne est vide ! opération annulée !</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2425"/>
+        <location filename="../src/Table.cpp" line="2419"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>Impossible d&apos;écrire dans le fichier : &lt;br&gt;&lt;h4&gt;</translation>
     </message>
@@ -16744,27 +16744,27 @@ La première représente le signal et la seconde la réponse de la fonction !</t
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2191"/>
+        <location filename="../src/Table.cpp" line="2185"/>
         <source>The folowing columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2191"/>
+        <location filename="../src/Table.cpp" line="2185"/>
         <source>are read only!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2360"/>
+        <location filename="../src/Table.cpp" line="2354"/>
         <source>Qtiplot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2360"/>
+        <location filename="../src/Table.cpp" line="2354"/>
         <source>Reading file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="3015"/>
+        <location filename="../src/Table.cpp" line="3009"/>
         <source>kB</source>
         <translation type="unfinished">kOctects</translation>
     </message>

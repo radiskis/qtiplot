@@ -121,6 +121,7 @@ mac:RC_FILE   = icons/qtiplot.icns
 TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_es.ts \
                   translations/qtiplot_fr.ts \
+				  #translations/qtiplot_pt.ts \
                   translations/qtiplot_ru.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
@@ -131,6 +132,7 @@ system(lrelease -verbose qtiplot.pro)
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
                   translations/qtiplot_fr.qm \
+				  #translations/qtiplot_pt.qm \
                   translations/qtiplot_ru.qm \
                   translations/qtiplot_ja.qm \
                   translations/qtiplot_sv.qm

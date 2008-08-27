@@ -363,7 +363,7 @@
         <translation type="unfinished">Нет доступных обновлений. Текущая версия %1 является последней доступной!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15716"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15709"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished">QtiPlot - Предупреждение</translation>
     </message>
@@ -463,19 +463,19 @@
         <translation type="unfinished">Без значка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15717"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15710"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation type="unfinished">Невозможно открыть файл: %1.
 Автодополнение не будет доступно!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15798"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15791"/>
         <source>QtiPlot - Column selection error</source>
         <translation type="unfinished">QtiPlot - Ошибка выбора столбца</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15799"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15792"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation type="unfinished">Выберите только один столбец и более чем одну непустую ячейку!</translation>
     </message>
@@ -10238,7 +10238,7 @@ have the same number of rows.</source>
         <translation>Ошибка вычисления - матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1226"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1219"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
@@ -10249,32 +10249,32 @@ have the same number of rows.</source>
         <translation>Ошибка обращения, матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="992"/>
+        <location filename="../src/matrix/Matrix.cpp" line="985"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="992"/>
+        <location filename="../src/matrix/Matrix.cpp" line="985"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="855"/>
+        <location filename="../src/matrix/Matrix.cpp" line="848"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1398"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1391"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ошибка при экспортировании в ASCII</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1399"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1392"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Невозможно выполнить записать в файл: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Удостоверьтись, что у вас есть права доступа на запись в данное место!</translation>
     </message>
@@ -10314,57 +10314,57 @@ have the same number of rows.</source>
         <translation>Очистить выделенное</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="679"/>
+        <location filename="../src/matrix/Matrix.cpp" line="672"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="714"/>
+        <location filename="../src/matrix/Matrix.cpp" line="707"/>
         <source>Delete Rows</source>
         <translation>Удалить строки</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="745"/>
+        <location filename="../src/matrix/Matrix.cpp" line="738"/>
         <source>Delete Columns</source>
         <translation>Удалить столбцы</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="798"/>
+        <location filename="../src/matrix/Matrix.cpp" line="791"/>
         <source>Insert Row</source>
         <translation>Вставить строку</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="817"/>
+        <location filename="../src/matrix/Matrix.cpp" line="810"/>
         <source>Insert Column</source>
         <translation>Вставить столбец</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1263"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1256"/>
         <source>Import Image</source>
         <translation>Импорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1383"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
         <source>Forward FFT</source>
         <translation>Прямое БПФ</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1383"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
         <source>Inverse FFT</source>
         <translation>Обратное БПФ</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1458"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1451"/>
         <source>Import ASCII File</source>
         <translation>Импорт файла ASCII</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
         <source>Memory Allocation Error</source>
         <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1481"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1474"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
@@ -10374,12 +10374,12 @@ have the same number of rows.</source>
         <translation>Повернуть на -90°</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1469"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1462"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
         <translation>Из-за ограниченной памяти невозможно будет отменить эти изменения. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1471"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1464"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
@@ -10389,12 +10389,12 @@ have the same number of rows.</source>
         <translation>Задать размеры</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1094"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1087"/>
         <source>Set Data Mode</source>
         <translation>Режим данных</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1489"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1482"/>
         <source>kB</source>
         <translation>кб</translation>
     </message>
@@ -10742,7 +10742,7 @@ have the same number of rows.</source>
         <translation>&amp;Да</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1199"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1197"/>
         <source>kB</source>
         <translation>кб</translation>
     </message>
@@ -13616,57 +13616,57 @@ have the same number of rows.</source>
 <context>
     <name>Table</name>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2701"/>
+        <location filename="../src/Table.cpp" line="2695"/>
         <source>Columns will be deleted from the table!</source>
         <translation>Столбцы будут удалены из данной таблицы!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2425"/>
+        <location filename="../src/Table.cpp" line="2419"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>Не удалось записать в файл: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2702"/>
+        <location filename="../src/Table.cpp" line="2696"/>
         <source>Do you really want to continue?</source>
         <translation>Вы действительно хотите продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1574"/>
+        <location filename="../src/Table.cpp" line="1568"/>
         <source>Please indicate the name of the leading column!</source>
         <translation>Укажите имя ведущего столбца!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2424"/>
+        <location filename="../src/Table.cpp" line="2418"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ошибка при экспортировании в ASCII</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2190"/>
+        <location filename="../src/Table.cpp" line="2184"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2667"/>
+        <location filename="../src/Table.cpp" line="2661"/>
         <source>Rows will be deleted from the table!</source>
         <translation>Строки будут удалены из таблицы!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1579"/>
+        <location filename="../src/Table.cpp" line="1573"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation>Ведущий столбец имеет тип \&quot;Текст\&quot;. Операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1597"/>
+        <location filename="../src/Table.cpp" line="1591"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation>Ведущий столбец пуст. Операция отменена!</translation>
     </message>
@@ -13676,7 +13676,7 @@ have the same number of rows.</source>
         <translation>Уже существует столбец с названием : &lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
@@ -13691,27 +13691,27 @@ have the same number of rows.</source>
         <translation>Таблице &apos;%1&apos; содержит столбцы только для чтения! Операция прервана!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2191"/>
+        <location filename="../src/Table.cpp" line="2185"/>
         <source>The folowing columns</source>
         <translation>Следующие столбцы</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2191"/>
+        <location filename="../src/Table.cpp" line="2185"/>
         <source>are read only!</source>
         <translation>только для чтения!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2360"/>
+        <location filename="../src/Table.cpp" line="2354"/>
         <source>Qtiplot</source>
         <translation>Qtiplot</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2360"/>
+        <location filename="../src/Table.cpp" line="2354"/>
         <source>Reading file...</source>
         <translation>Читается файл...</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="3015"/>
+        <location filename="../src/Table.cpp" line="3009"/>
         <source>kB</source>
         <translation>кб</translation>
     </message>
