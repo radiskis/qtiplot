@@ -183,8 +183,9 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
     p->save();
     if (c->style()!=0){
         p->setPen (pen);
-        if (br.style() != Qt::NoBrush || c->type() == Graph::Box){
-            QRect lr = QRect(x, y-4, l, 10);
+		if (c->type() == Graph::VerticalBars || c->type() == Graph::HorizontalBars ||
+			c->type() == Graph::Histogram || c->type() == Graph::Box){
+            QRect lr = QRect(x, y - 4, l, 10);
             p->setBrush(br);
             QwtPainter::drawRect(p, lr);
         } else

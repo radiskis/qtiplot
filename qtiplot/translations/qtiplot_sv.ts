@@ -392,7 +392,7 @@ Vill du skriva över den?</translation>
         <translation type="unfinished">Ingen uppdatering tillgänglig. Din aktuella version %1 är den senaste!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15716"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15709"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished">QtiPlot - Varning</translation>
     </message>
@@ -775,14 +775,14 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="unfinished">Väl en mapp att exportera anpassningsmodellerna till</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15717"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15710"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation type="unfinished">Kunde inte ladda fil: %1.
 Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15798"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15791"/>
         <source>QtiPlot - Column selection error</source>
         <translation type="unfinished">QtiPlot - Kolumnvalsfel</translation>
     </message>
@@ -792,7 +792,7 @@ Automatisk komplettering ej tillgängligt!</translation>
         <translation type="unfinished">Ingen ikon</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15799"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15792"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation type="unfinished">Välj exakt en kolumn och mer än en icke tom cell!</translation>
     </message>
@@ -12933,7 +12933,7 @@ Gränserna måste vara inom definitionsområdet för x; om du inte vet maximum- 
         <translation type="obsolete">Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="992"/>
+        <location filename="../src/matrix/Matrix.cpp" line="985"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
@@ -12966,7 +12966,7 @@ Vill du skjuta in celler?</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1226"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1219"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
@@ -12984,27 +12984,27 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">&lt;p&gt;Vill du verkligen fortsätta?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="992"/>
+        <location filename="../src/matrix/Matrix.cpp" line="985"/>
         <source>Please provide a valid file name!</source>
         <translation>Ange ett giltigt filnamn!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="855"/>
+        <location filename="../src/matrix/Matrix.cpp" line="848"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Filformatet hanteras ej, avbryter!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1398"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1391"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ASCII exportfel</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1399"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1392"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Kunde inte skriva till filen: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Verifiera att du har rättighet att skriva på denna plats!</translation>
     </message>
@@ -13049,47 +13049,47 @@ Vill du skjuta in celler?</translation>
         <translation>Rensa valet</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="679"/>
+        <location filename="../src/matrix/Matrix.cpp" line="672"/>
         <source>Paste</source>
         <translation>Klistra in</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="714"/>
+        <location filename="../src/matrix/Matrix.cpp" line="707"/>
         <source>Delete Rows</source>
         <translation>Tag bort rader</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="745"/>
+        <location filename="../src/matrix/Matrix.cpp" line="738"/>
         <source>Delete Columns</source>
         <translation>Tag bort kolumn</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="798"/>
+        <location filename="../src/matrix/Matrix.cpp" line="791"/>
         <source>Insert Row</source>
         <translation>Sätt in rad</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="817"/>
+        <location filename="../src/matrix/Matrix.cpp" line="810"/>
         <source>Insert Column</source>
         <translation>Sätt in kolumn</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1263"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1256"/>
         <source>Import Image</source>
         <translation>Importera bild</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1383"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
         <source>Forward FFT</source>
         <translation>Framåt FFT</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1383"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
         <source>Inverse FFT</source>
         <translation>Omvänd FFT</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1458"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1451"/>
         <source>Import ASCII File</source>
         <translation>Importera ASCII-fil</translation>
     </message>
@@ -13104,12 +13104,12 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Fel</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
         <source>Memory Allocation Error</source>
         <translation>Minnesallokeringsfel</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1481"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1474"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Ej tillräckligt med minne, uppgiften avbruten!</translation>
     </message>
@@ -13119,22 +13119,22 @@ Vill du skjuta in celler?</translation>
         <translation>Rotera -90</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1469"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1462"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
         <translation>P. g. a. minnesbegränsningar är det inte möjligt att ångra denna ändring. Vill du fortsätta ändå?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1471"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1464"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1094"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1087"/>
         <source>Set Data Mode</source>
         <translation>Ställ in dataläge</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1489"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1482"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
@@ -13527,7 +13527,7 @@ Vill du skjuta in celler?</translation>
         <translation>Filformatet hanteras ej, avbryts!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/MultiLayer.cpp" line="1199"/>
+        <location filename="../src/plot2D/MultiLayer.cpp" line="1197"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
@@ -16801,7 +16801,7 @@ Vill du skriva över den?</translation>
 <context>
     <name>Table</name>
     <message>
-        <location filename="../src/Table.cpp" line="2190"/>
+        <location filename="../src/Table.cpp" line="2184"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
@@ -16813,7 +16813,7 @@ Do you want to insert cells?</source>
 Vill du skjuta in celler?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
@@ -16823,7 +16823,7 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Nej</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -16888,27 +16888,27 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">QtiPlot - Läser fil...</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2424"/>
+        <location filename="../src/Table.cpp" line="2418"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ASCII exportfel</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2667"/>
+        <location filename="../src/Table.cpp" line="2661"/>
         <source>Rows will be deleted from the table!</source>
         <translation>Rader kommer att tas bort från tabellen!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2702"/>
+        <location filename="../src/Table.cpp" line="2696"/>
         <source>Do you really want to continue?</source>
         <translation>Vill du verkligen fortsätta?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2703"/>
+        <location filename="../src/Table.cpp" line="2697"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2701"/>
+        <location filename="../src/Table.cpp" line="2695"/>
         <source>Columns will be deleted from the table!</source>
         <translation>Kolumner kommer att tas bort från tabellen!</translation>
     </message>
@@ -16976,22 +16976,22 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2425"/>
+        <location filename="../src/Table.cpp" line="2419"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>Kunde inte skriva till fil: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1574"/>
+        <location filename="../src/Table.cpp" line="1568"/>
         <source>Please indicate the name of the leading column!</source>
         <translation>Peka ut namnet på inledande kolumn!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1579"/>
+        <location filename="../src/Table.cpp" line="1573"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation>Den inledande kolumnen har typen satt till &apos;Text&apos;! Avbryter!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1597"/>
+        <location filename="../src/Table.cpp" line="1591"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation>Den inledande kolumnen är tom! Avbryter!</translation>
     </message>
@@ -17006,22 +17006,22 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Tabell &apos;%1&apos; innehåller skrivskyddade kolumner! Åtgärd avbryts!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2191"/>
+        <location filename="../src/Table.cpp" line="2185"/>
         <source>The folowing columns</source>
         <translation>Följande kolumner</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2191"/>
+        <location filename="../src/Table.cpp" line="2185"/>
         <source>are read only!</source>
         <translation>är skrivskyddade!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2360"/>
+        <location filename="../src/Table.cpp" line="2354"/>
         <source>Qtiplot</source>
         <translation>Qtiplot</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2360"/>
+        <location filename="../src/Table.cpp" line="2354"/>
         <source>Reading file...</source>
         <translation>Läser fil...</translation>
     </message>
@@ -17031,7 +17031,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">QtiPlot - Indatafel</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="3015"/>
+        <location filename="../src/Table.cpp" line="3009"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
