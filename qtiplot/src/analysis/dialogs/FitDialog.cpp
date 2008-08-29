@@ -232,6 +232,7 @@ void FitDialog::initFitPage()
 	boxWeighting->addItem(tr("Instrumental"));
 	boxWeighting->addItem(tr("Statistical"));
 	boxWeighting->addItem(tr("Arbitrary Dataset"));
+	boxWeighting->addItem(tr("Direct Weighting"));
     hbox2->addWidget(boxWeighting);
     QGroupBox *gb4 = new QGroupBox();
     gb4->setLayout(hbox2);
@@ -1272,7 +1273,7 @@ void FitDialog::selectSrcTable(int tabnr)
 
 void FitDialog::enableWeightingParameters(int index)
 {
-	if (index == Fit::Dataset){
+	if (index == Fit::Dataset || index == Fit::Direct){
 		tableNamesBox->setEnabled(true);
 		colNamesBox->setEnabled(true);
 	} else {

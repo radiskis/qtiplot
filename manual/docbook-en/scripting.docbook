@@ -2472,7 +2472,7 @@ f.setInitialValue(number, value)
 f.setInitialValues(value1, ...)
 f.guessInitialValues()
 f.setAlgorithm(algo) # algo = Fit.ScaledLevenbergMarquardt, Fit.UnscaledLevenbergMarquardt, Fit.NelderMeadSimplex
-f.setWeightingData(method, colname) # method = Fit.NoWeighting, Fit.Instrumental, Fit.Statistical, Fit.Dataset
+f.setWeightingData(method, colname) # method = Fit.NoWeighting, Fit.Instrumental, Fit.Statistical, Fit.Dataset, Fit.Direct
 f.setTolerance(tolerance)
 f.setOutputPrecision(precision)
 f.setMaximumIterations(number)

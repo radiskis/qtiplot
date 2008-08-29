@@ -53,7 +53,7 @@ class Fit : public Filter
 		typedef int (*fit_function_fdf)(const gsl_vector *, void *, gsl_vector *, gsl_matrix *);
 
 		enum Algorithm{ScaledLevenbergMarquardt, UnscaledLevenbergMarquardt, NelderMeadSimplex};
-		enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset};
+		enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset, Direct};
         enum FitType{BuiltIn = 0, Plugin = 1, User = 2};
 
 		Fit(ApplicationWindow *parent, Graph *g = 0, const QString& name = QString());
