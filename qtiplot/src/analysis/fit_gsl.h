@@ -8,8 +8,8 @@ class Fit;
 	
 //! Structure for fitting data
 struct FitData {
-  size_t n;// number of points to be fitted (size of X, Y and sigma arrays)
-  size_t p;// number of fit parameters
+  int n;// number of points to be fitted (size of X, Y and sigma arrays)
+  int p;// number of fit parameters
   double * X;// the data to be fitted (abscissae) 
   double * Y; // the data to be fitted (ordinates)
   double * sigma; // the weighting data

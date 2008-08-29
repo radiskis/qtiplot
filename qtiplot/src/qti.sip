@@ -1014,7 +1014,7 @@ class Fit : Filter
 %End
 public:
   enum Algorithm{ScaledLevenbergMarquardt, UnscaledLevenbergMarquardt, NelderMeadSimplex};
-  enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset};
+  enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset, Direct};
 
   Fit(ApplicationWindow* /TransferThis/, Graph*=0, const char*=0);
   ~Fit();

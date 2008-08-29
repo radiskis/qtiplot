@@ -229,8 +229,10 @@ void Fit::setDataCurve(int curve, double start, double end)
             QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)c;
             if (!er->xErrors()){
                 d_weighting = Instrumental;
-                for (int i=0; i<d_n; i++)
-                    d_w[i] = er->errorValue(i); //d_w are equal to the error bar values
+                for (int i=0; i<d_n; i++){
+					double e = er->errorValue(i);
+					d_w[i] = 1.0/(e*e); 
+				}
                 weighting_dataset = er->title().text();
                 return;
             }
@@ -289,6 +291,9 @@ QString Fit::logFitInfo(int iterations, int status)
 			break;
 		case Dataset:
 			info += tr("Arbitrary Dataset") + ": " + weighting_dataset;
+			break;
+		case Direct:
+			info += tr("Direct Weighting using Dataset") + ": " + weighting_dataset;
 			break;
 	}
 	info +="\n";
@@ -428,8 +433,10 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 					return false;
 				}
 				if (er){
-					for (int j=0; j<d_n; j++)
-						d_w[j] = er->errorValue(j); //d_w are equal to the error bar values
+					for (int j=0; j<d_n; j++){
+						double e = er->errorValue(j);
+						d_w[j] = 1.0/(e*e); 
+					}
 				}
 			}
 			break;
@@ -441,7 +448,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 					weighting_dataset = d_y_col_name;
 
 				for (int i=0; i<d_n; i++)
-					d_w[i] = sqrt(d_y[i]);
+					d_w[i] = 1.0/d_y[i];
 			}
 			break;
 		case Dataset:
@@ -462,7 +469,32 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				weighting_dataset = colName;
 
 				int col = t->colIndex(colName);
-				for (int i=0; i<d_n; i++)
+				for (int i = 0; i < d_n; i++){
+					double e = t->cell(i, col);
+					d_w[i] = 1.0/(e*e);
+				}
+			}
+			break;
+			
+		case Direct:
+			{//d_w are equal to the values of the arbitrary dataset
+				if (colName.isEmpty())
+					return false;
+
+				Table* t = ((ApplicationWindow *)parent())->table(colName);
+				if (!t)
+					return false;
+
+				if (t->numRows() < d_n){
+  	            	QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
+  	                tr("The column %1 has less points than the fitted data set. Please choose another column!.").arg(colName));
+  	                return false;
+  	            }
+
+				weighting_dataset = colName;
+
+				int col = t->colIndex(colName);
+				for (int i = 0; i < d_n; i++)
 					d_w[i] = t->cell(i, col);
 			}
 			break;
