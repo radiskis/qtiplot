@@ -40,16 +40,14 @@ class TextFormatButtons : public QWidget
 	Q_OBJECT
 
 public:
+	enum Buttons{Plot3D, AxisLabel, Legend, Equation};
+	
 	//! Constructor
 	/**
 	 * \param textEdit the QTextEdit that the buttons shall affect
 	 * \param parent parent widget
 	 */
-	TextFormatButtons(QTextEdit * textEdit, QWidget * parent=0);
-	//! Show/Hide the "add curve" button
-	void toggleCurveButton(bool enable);
-	//! Show/Hide the buttons linked to rich text formating: bold, italic, underline.
-	void toggleFontButtons(bool enable);
+	TextFormatButtons(QTextEdit * textEdit, Buttons buttons = Plot3D, QWidget * parent=0);
 
 private:
 	QTextEdit *connectedTextEdit;
@@ -63,11 +61,18 @@ private:
 	QPushButton *buttonBold;
 	QPushButton *buttonItalics; 
 	QPushButton *buttonUnderline;
+	QPushButton *buttonFraction;
+	QPushButton *buttonSquareRoot;
 
+	Buttons d_buttons;
 	//! Internal function: format selected text with prefix and postfix
 	void formatText(const QString & prefix, const QString & postfix);
 
 private slots:
+	//! Format seleted text to fraction
+	void addFraction();
+	//! Format seleted text to square root
+	void addSquareRoot();
 	//! Format seleted text to subscript
 	void addSubscript();
 	//! Format seleted text to superscript
