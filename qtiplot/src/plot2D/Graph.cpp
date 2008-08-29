@@ -3605,15 +3605,15 @@ void Graph::resizeEvent ( QResizeEvent *e )
 
 void Graph::scaleFonts(double factor)
 {
-	QObjectList lst = children();
-	foreach(QObject *o, lst){
-		if (o->inherits("LegendWidget")){
-			QFont font = ((LegendWidget *)o)->font();
-			font.setPointSizeFloat(factor*font.pointSizeFloat());
-			((LegendWidget *)o)->setFont(font);
-		}
+	foreach(FrameWidget *f, d_enrichments){
+		LegendWidget *l = qobject_cast<LegendWidget *>(f);
+		if (!l)
+			continue;
+		QFont font = l->font();
+		font.setPointSizeFloat(factor*font.pointSizeFloat());
+		l->setFont(font);
 	}
-
+	
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		QFont font = axisFont(i);
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
