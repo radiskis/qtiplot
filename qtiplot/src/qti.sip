@@ -599,6 +599,10 @@ public:
   void removeCurve(const QString&);
   void deleteFitCurves();
   int curveCount() /PyName=numCurves/;
+  
+  void setCurveLineColor(int, int);
+  void setCurveLineStyle(int, Qt::PenStyle);
+  void setCurveLineWidth(int, double);
 
 	void addFunction(const QString&, double, double, int=100);
 %MethodCode

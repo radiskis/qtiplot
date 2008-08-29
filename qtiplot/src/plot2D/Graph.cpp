@@ -4631,10 +4631,45 @@ void Graph::updateCurveNames(const QString& oldName, const QString& newName, boo
 void Graph::setCurveFullRange(int curveIndex)
 {
 	DataCurve *c = (DataCurve *)curve(curveIndex);
-	if (c)
-	{
+	if (c){
 		c->setFullRange();
 		updatePlot();
+		emit modifiedGraph();
+	}
+}
+
+void Graph::setCurveLineColor(int curveIndex, int colorIndex)
+{
+	QwtPlotCurve *c = curve(curveIndex);
+	if (c){
+		QPen pen = c->pen();
+		pen.setColor(ColorBox::color(colorIndex));
+		c->setPen(pen);
+		replot();
+		emit modifiedGraph();
+	}
+}
+
+void Graph::setCurveLineStyle(int curveIndex, Qt::PenStyle style)
+{
+	QwtPlotCurve *c = curve(curveIndex);
+	if (c){
+		QPen pen = c->pen();
+		pen.setStyle(style);
+		c->setPen(pen);
+		replot();
+		emit modifiedGraph();
+	}
+}
+
+void Graph::setCurveLineWidth(int curveIndex, double width)
+{
+	QwtPlotCurve *c = curve(curveIndex);
+	if (c){
+		QPen pen = c->pen();
+		pen.setWidthF(width);
+		c->setPen(pen);
+		replot();
 		emit modifiedGraph();
 	}
 }
