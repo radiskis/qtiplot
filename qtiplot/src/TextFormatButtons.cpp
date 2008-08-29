@@ -58,12 +58,72 @@ static const char * lineSymbol_xpm[] = {
 "                ",
 "                "};
 
+/* XPM */
+static const char * fraction_xpm[] = {
+"18 21 5 1",
+" 	c None",
+".	c #000000",
+"+	c #121212",
+"@	c #090909",
+"#	c #FC0F0F",
+"       ..  ..     ",
+"      + .@@...    ",
+"     @   @. .     ",
+"        ..        ",
+"        ..        ",
+"     @ @@   .     ",
+"    @.@@.. .      ",
+"     @.  ..       ",
+"                  ",
+"##################",
+"                  ",
+"      .@@  .@     ",
+"     . .@  .@     ",
+"       .  .@      ",
+"      ..  .@      ",
+"      .   .@      ",
+"      .@ ..       ",
+"       ....       ",
+"     @   @        ",
+"     .. ..        ",
+"      ..@         "};
 
-TextFormatButtons::TextFormatButtons(QTextEdit * textEdit, QWidget * parent)
-: QWidget(parent)
+/* XPM */
+static const char * square_root_xpm[] = {
+"22 19 8 1",
+" 	c None",
+".	c #FC0F0F",
+"+	c #000000",
+"@	c #1A1A1A",
+"#	c #060606",
+"$	c #010101",
+"%	c #070707",
+"&	c #090909",
+"         .............",
+"         ..          .",
+"         .           .",
+"        ..            ",
+"        ..            ",
+"        ..  +@++ +++  ",
+"        .  +# ++++ $+ ",
+"  .    ..  +   ++  ++ ",
+" ..    ..      +#     ",
+"....   ..      +      ",
+". ..   .      #+      ",
+"   .  ..  ++  %+   +  ",
+"   .. ..  ++ ++++ ++  ",
+"   .. ..   +++ +++&   ",
+"    . .               ",
+"    ...               ",
+"    ...               ",
+"     .                ",
+"     .                "};
+
+TextFormatButtons::TextFormatButtons(QTextEdit * textEdit, Buttons buttons, QWidget * parent)
+: QWidget(parent),
+connectedTextEdit(textEdit),
+d_buttons(buttons)
 {
-	connectedTextEdit = textEdit;
-
 	QHBoxLayout * layout = new QHBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
@@ -72,82 +132,106 @@ TextFormatButtons::TextFormatButtons(QTextEdit * textEdit, QWidget * parent)
 	QFont font = this->font();
 	font.setPointSize(14);
 
-	buttonCurve = new QPushButton( QPixmap(lineSymbol_xpm), QString());
-	buttonCurve->setMaximumWidth(40);
-	buttonCurve->setMinimumHeight(35);
-	buttonCurve->setFont(font);
-	layout->addWidget(buttonCurve);
+	if (buttons == Legend){
+		buttonCurve = new QPushButton( QPixmap(lineSymbol_xpm), QString());
+		buttonCurve->setMaximumWidth(40);
+		buttonCurve->setMinimumHeight(35);
+		buttonCurve->setFont(font);
+		layout->addWidget(buttonCurve);
+		connect( buttonCurve, SIGNAL(clicked()), this, SLOT(addCurve()) );
+	}
 
-	buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
-	buttonSubscript->setMaximumWidth(40);
-	buttonSubscript->setMinimumHeight(35);
-	buttonSubscript->setFont(font);
-	layout->addWidget(buttonSubscript);
+	if (buttons != Plot3D){
+		buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
+		buttonSubscript->setMaximumWidth(40);
+		buttonSubscript->setMinimumHeight(35);
+		buttonSubscript->setFont(font);
+		layout->addWidget(buttonSubscript);
+		connect( buttonSubscript, SIGNAL(clicked()), this, SLOT(addSubscript()) );
 
-	buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
-	buttonSuperscript->setMaximumWidth(40);
-	buttonSuperscript->setMinimumHeight(35);
-	buttonSuperscript->setFont(font);
-	layout->addWidget(buttonSuperscript);
+		buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
+		buttonSuperscript->setMaximumWidth(40);
+		buttonSuperscript->setMinimumHeight(35);
+		buttonSuperscript->setFont(font);
+		layout->addWidget(buttonSuperscript);
+		connect( buttonSuperscript, SIGNAL(clicked()), this, SLOT(addSuperscript()));
+	}
 
-	buttonLowerGreek = new QPushButton(QString(QChar(0x3B1)));
-	buttonLowerGreek->setFont(font);
-	buttonLowerGreek->setMaximumWidth(40);
-	layout->addWidget(buttonLowerGreek);
+	if (buttons != Equation){
+		buttonLowerGreek = new QPushButton(QString(QChar(0x3B1)));
+		buttonLowerGreek->setFont(font);
+		buttonLowerGreek->setMaximumWidth(40);
+		layout->addWidget(buttonLowerGreek);
+		connect( buttonLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()));
 
-	buttonUpperGreek = new QPushButton(QString(QChar(0x393)));
-	buttonUpperGreek->setFont(font);
-	buttonUpperGreek->setMaximumWidth(40);
-	layout->addWidget(buttonUpperGreek);
+		buttonUpperGreek = new QPushButton(QString(QChar(0x393)));
+		buttonUpperGreek->setFont(font);
+		buttonUpperGreek->setMaximumWidth(40);
+		layout->addWidget(buttonUpperGreek);
+		connect( buttonUpperGreek, SIGNAL(clicked()), this, SLOT(showUpperGreek()));
 
-	buttonMathSymbols = new QPushButton(QString(QChar(0x222B)));
-	buttonMathSymbols->setFont(font);
-	buttonMathSymbols->setMaximumWidth(40);
-	layout->addWidget(buttonMathSymbols);
+		buttonMathSymbols = new QPushButton(QString(QChar(0x222B)));
+		buttonMathSymbols->setFont(font);
+		buttonMathSymbols->setMaximumWidth(40);
+		layout->addWidget(buttonMathSymbols);
+		connect( buttonMathSymbols, SIGNAL(clicked()), this, SLOT(showMathSymbols()));
 
-	buttonArrowSymbols = new QPushButton(QString(QChar(0x2192)));
-	buttonArrowSymbols->setFont(font);
-	buttonArrowSymbols->setMaximumWidth(40);
-	layout->addWidget(buttonArrowSymbols);
+		buttonArrowSymbols = new QPushButton(QString(QChar(0x2192)));
+		buttonArrowSymbols->setFont(font);
+		buttonArrowSymbols->setMaximumWidth(40);
+		layout->addWidget(buttonArrowSymbols);	
+		connect( buttonArrowSymbols, SIGNAL(clicked()), this, SLOT(showArrowSymbols()));
+	}
 
-	font = this->font();
-	font.setBold(true);
-	font.setPointSize(14);
+	if (buttons != Plot3D && buttons != Equation){
+		font = this->font();
+		font.setBold(true);
+		font.setPointSize(14);
 
-	buttonBold = new QPushButton(tr("B","Button bold"));
-	buttonBold->setFont(font);
-	buttonBold->setMaximumWidth(40);
-	layout->addWidget(buttonBold);
+		buttonBold = new QPushButton(tr("B","Button bold"));
+		buttonBold->setFont(font);
+		buttonBold->setMaximumWidth(40);
+		layout->addWidget(buttonBold);
+		connect( buttonBold, SIGNAL(clicked()), this, SLOT(addBold()));
 
-	font = this->font();
-	font.setItalic(true);
-	font.setPointSize(14);
+		font = this->font();
+		font.setItalic(true);
+		font.setPointSize(14);
 
-	buttonItalics = new QPushButton(tr("It","Button italics"));
-	buttonItalics->setFont(font);
-	buttonItalics->setMaximumWidth(40);
-	layout->addWidget(buttonItalics);
+		buttonItalics = new QPushButton(tr("It","Button italics"));
+		buttonItalics->setFont(font);
+		buttonItalics->setMaximumWidth(40);
+		layout->addWidget(buttonItalics);
+		connect( buttonItalics, SIGNAL(clicked()), this, SLOT(addItalics()));
 
-	font = this->font();
-	font.setUnderline(true);
-	font.setPointSize(14);
+		font = this->font();
+		font.setUnderline(true);
+		font.setPointSize(14);
 
-	buttonUnderline = new QPushButton(tr("U","Button underline"));
-	buttonUnderline->setFont(font);
-	buttonUnderline->setMaximumWidth(40);
-	layout->addWidget(buttonUnderline);
-    layout->addStretch();
-
-	connect( buttonCurve, SIGNAL(clicked()), this, SLOT(addCurve()) );
-	connect( buttonSuperscript, SIGNAL(clicked()), this, SLOT(addSuperscript()) );
-	connect( buttonSubscript, SIGNAL(clicked()), this, SLOT(addSubscript()) );
-	connect( buttonUnderline, SIGNAL(clicked()), this, SLOT(addUnderline()) );
-	connect( buttonItalics, SIGNAL(clicked()), this, SLOT(addItalics()) );
-	connect( buttonBold, SIGNAL(clicked()), this, SLOT(addBold()) );
-	connect( buttonLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()) );
-	connect( buttonUpperGreek, SIGNAL(clicked()), this, SLOT(showUpperGreek()) );
-	connect( buttonMathSymbols, SIGNAL(clicked()), this, SLOT(showMathSymbols()) );
-	connect( buttonArrowSymbols, SIGNAL(clicked()), this, SLOT(showArrowSymbols()) );
+		buttonUnderline = new QPushButton(tr("U","Button underline"));
+		buttonUnderline->setFont(font);
+		buttonUnderline->setMaximumWidth(40);
+		layout->addWidget(buttonUnderline);
+   		layout->addStretch();
+		connect( buttonUnderline, SIGNAL(clicked()), this, SLOT(addUnderline()));
+	}
+	
+	if (buttons == Equation){
+		buttonFraction = new QPushButton(QPixmap(fraction_xpm), QString());
+		buttonFraction->setMaximumWidth(40);
+		buttonFraction->setMinimumHeight(35);
+		buttonFraction->setFont(font);
+		layout->addWidget(buttonFraction);
+		connect(buttonFraction, SIGNAL(clicked()), this, SLOT(addFraction()));
+		
+		buttonSquareRoot = new QPushButton(QPixmap(square_root_xpm), QString());
+		buttonSquareRoot->setMaximumWidth(40);
+		buttonSquareRoot->setMinimumHeight(35);
+		buttonSquareRoot->setFont(font);
+		layout->addWidget(buttonSquareRoot);
+		connect(buttonSquareRoot, SIGNAL(clicked()), this, SLOT(addSquareRoot()));
+		layout->addStretch();
+	}
 }
 
 void TextFormatButtons::showLowerGreek()
@@ -230,12 +314,30 @@ void TextFormatButtons::addBold()
 
 void TextFormatButtons::addSubscript()
 {
-	formatText("<sub>","</sub>");
+	if (d_buttons == Equation)
+		formatText("_{","}");
+	else
+		formatText("<sub>","</sub>");
 }
 
 void TextFormatButtons::addSuperscript()
 {
-	formatText("<sup>","</sup>");
+	if (d_buttons == Equation)
+		formatText("^{","}");
+	else
+		formatText("<sup>","</sup>");
+}
+
+void TextFormatButtons::addFraction()
+{
+	if (d_buttons == Equation)
+		formatText("\\frac{","}{}");
+}
+
+void TextFormatButtons::addSquareRoot()
+{
+	if (d_buttons == Equation)
+		formatText("\\sqrt{","}");
 }
 
 void TextFormatButtons::formatText(const QString & prefix, const QString & postfix)
@@ -255,18 +357,4 @@ void TextFormatButtons::formatText(const QString & prefix, const QString & postf
 	}
 	// give focus back to text edit
 	connectedTextEdit->setFocus();
-}
-
-void TextFormatButtons::toggleCurveButton(bool enable)
-{
-	buttonCurve->setVisible(enable);
-}
-
-void TextFormatButtons::toggleFontButtons(bool enable)
-{
-	buttonBold->setVisible(enable);
-	buttonItalics->setVisible(enable);
-	buttonUnderline->setVisible(enable);
-	buttonSubscript->setVisible(enable);
-	buttonSuperscript->setVisible(enable);
 }

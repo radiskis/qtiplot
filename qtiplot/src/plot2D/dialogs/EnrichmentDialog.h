@@ -98,7 +98,7 @@ private:
 	void setFrameTo(FrameWidget *fw);
 	void setPatternTo(RectangleWidget *r);
 	void setTextFormatTo(LegendWidget *l);
-	void setText(const QString & t);
+	void setText(QTextEdit *editor, const QString & t);
 
     QHttp *http;
     QLabel *outputLabel;
@@ -124,7 +124,7 @@ private:
 	ColorButton *textColorBtn, *textBackgroundBtn;
 	QPushButton *textFontBtn;
 	QSpinBox *boxBackgroundTransparency;
-	TextFormatButtons *formatButtons;
+	TextFormatButtons *formatButtons, *texFormatButtons;
 	QPushButton *textDefaultBtn, *frameDefaultBtn, *rectangleDefaultBtn;
 	QCheckBox *autoUpdateTextBox;
 	QFont textFont;

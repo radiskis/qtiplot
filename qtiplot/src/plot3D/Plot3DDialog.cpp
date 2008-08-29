@@ -163,8 +163,6 @@ void Plot3DDialog::initAxesPage()
     hb1->addWidget(btnLabelFont);
 	
 	axisTitleFormatButtons = new TextFormatButtons(boxLabel);
-	axisTitleFormatButtons->toggleCurveButton(false);
-	axisTitleFormatButtons->toggleFontButtons(false);
 	hb1->addWidget(axisTitleFormatButtons);
 
     hb1->addStretch();
@@ -213,8 +211,6 @@ void Plot3DDialog::initTitlePage()
 	vl->addWidget(boxTitle);
 	
 	titleFormatButtons = new TextFormatButtons(boxTitle);
-	titleFormatButtons->toggleCurveButton(false);
-	titleFormatButtons->toggleFontButtons(false);
 	hb1->addWidget(titleFormatButtons);
     hb1->addStretch();
 

@@ -353,11 +353,6 @@ void SymbolDialog::languageChange()
 }
 
 
-SymbolDialog::~SymbolDialog()
-{
-}
-
-
 void SymbolDialog::focusInEvent( QFocusEvent * event )
 {
 	Q_UNUSED(event)

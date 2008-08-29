@@ -135,11 +135,15 @@ void EnrichmentDialog::initEditorPage()
 	editPage = new QWidget();
 
     equationEditor = new QTextEdit;
+	
+	texFormatButtons = new TextFormatButtons(equationEditor, TextFormatButtons::Equation);
+	
 	outputLabel = new QLabel;
     outputLabel->setFrameShape(QFrame::StyledPanel);
 
 	QVBoxLayout *layout = new QVBoxLayout(editPage);
     layout->addWidget(equationEditor, 1);
+	layout->addWidget(texFormatButtons);
 	layout->addWidget(new QLabel(tr("Preview:")));
 	layout->addWidget(outputLabel);
 
@@ -215,8 +219,7 @@ void EnrichmentDialog::initTextPage()
 	textEditBox->setTextFormat(Qt::PlainText);
 	textEditBox->setFont(QFont());
 
-	formatButtons =  new TextFormatButtons(textEditBox);
-	formatButtons->toggleCurveButton(true);
+	formatButtons =  new TextFormatButtons(textEditBox, TextFormatButtons::Legend);
 
 	setFocusPolicy(Qt::StrongFocus);
 	setFocusProxy(textEditBox);
@@ -509,7 +512,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 	if (d_widget_type == Text){
 		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
 		if (l){
-			setText(l->text());
+			setText(textEditBox, l->text());
 			textFont = l->font();
 			textColorBtn->blockSignals(true);
 			textColorBtn->setColor(l->textColor());
@@ -533,7 +536,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 	} else if (d_widget_type == Tex){
 		TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
 		if (tw){
-			equationEditor->setText(tw->formula());
+			setText(equationEditor, tw->formula());
 			outputLabel->setPixmap(tw->pixmap());
 			bestSizeButton->show();
 		}
@@ -918,9 +921,12 @@ void EnrichmentDialog::setPatternTo(RectangleWidget *r)
 	r->repaint();
 }
 
-void EnrichmentDialog::setText(const QString & t)
+void EnrichmentDialog::setText(QTextEdit *editor, const QString & t)
 {
-	QTextCursor cursor = textEditBox->textCursor();
+	if (!editor)
+		return;
+	
+	QTextCursor cursor = editor->textCursor();
 	// select the whole (old) text
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::End,QTextCursor::KeepAnchor);
@@ -932,9 +938,9 @@ void EnrichmentDialog::setText(const QString & t)
 	// this line makes the selection visible to the user
 	// (the 2 lines above only change the selection in the
 	// underlying QTextDocument)
-	textEditBox->setTextCursor(cursor);
+	editor->setTextCursor(cursor);
 	// give focus back to text edit
-	textEditBox->setFocus();
+	editor->setFocus();
 }
 
 void EnrichmentDialog::customFont()
