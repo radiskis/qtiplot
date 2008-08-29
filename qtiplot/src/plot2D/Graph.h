@@ -276,9 +276,15 @@ class Graph: public QwtPlot
 
         void updateCurveNames(const QString& oldName, const QString& newName, bool updateTableName = true);
 
+		//! \name Customizing plot curves
+		//@{
 		void setCurveStyle(int index, int s);
 		void setCurveFullRange(int curveIndex);
-
+		void setCurveLineColor(int curveIndex, int colorIndex);
+		void setCurveLineStyle(int curveIndex, Qt::PenStyle style);
+		void setCurveLineWidth(int curveIndex, double width);
+		//@}
+		
 		//! \name Output: Copy/Export/Print
 		//@{
 		void print();
