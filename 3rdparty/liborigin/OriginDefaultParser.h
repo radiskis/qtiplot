@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : importOPJ.h
-    Project              : QtiPlot
+    File                 : OriginDefaultParser.h
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2007 by Ion Vasilief, Alex Kargovsky
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
-    Description          : Origin project import class
+    Copyright            : (C) 2005-2007 Stefan Gerlach
+                           (C) 2007-2008 Alex Kargovsky, Ion Vasilief
+    Email (use @ for *)  : kargovsky*yumr.phys.msu.su, ion_vasilief*yahoo.fr
+    Description          : Default Origin file parser class
 
  ***************************************************************************/
 
@@ -26,33 +26,22 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef IMPORTOPJ_H
-#define IMPORTOPJ_H
 
-#include "ApplicationWindow.h"
-#include <OriginFile.h>
+#ifndef ORIGIN_DEFAULT_PARSER_H
+#define ORIGIN_DEFAULT_PARSER_H
 
-//! Origin project import class
-class ImportOPJ
+#include "OriginParser.h"
+
+using namespace std;
+
+class OriginDefaultParser : public OriginParser
 {
 public:
-	ImportOPJ(ApplicationWindow *app, const QString& filename);
-
-	bool createProjectTree(const OriginFile& opj);
-	bool importTables(const OriginFile& opj);
-	bool importGraphs(const OriginFile& opj);
-	bool importNotes(const OriginFile& opj);
-	int error(){return parse_error;};
+	OriginDefaultParser(const string& fileName);
+	bool parse();
 
 private:
-    int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
-	int translateOrigin2QtiplotLineStyle(int linestyle);
-	QString parseOriginText(const QString &str);
-	QString parseOriginTags(const QString &str);
-	void addText(const Origin::TextBox& _text, Graph* graph, LegendWidget* txt, const Origin::Rect& layerRect, double fFontScaleFactor, double fXScale, double fYScale);
-	int parse_error;
-	int xoffset;
-	ApplicationWindow *mw;
+	string fileName;
 };
 
-#endif //IMPORTOPJ_H
+#endif // ORIGIN_DEFAULT_PARSER_H

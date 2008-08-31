@@ -33,6 +33,7 @@ INCLUDEPATH       += ../3rdparty/qwt/src
 INCLUDEPATH       += ../3rdparty/liborigin
 INCLUDEPATH       += ../3rdparty/gsl/include
 INCLUDEPATH       += ../3rdparty/zlib123/include
+INCLUDEPATH       += ../3rdparty/boost_1_36_0
 
 ##################### 3rd PARTY LIBRARIES SECTION ###########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -241,8 +242,15 @@ SOURCES  += src/main.cpp \
 ################# Origin Import (liborigin) ###################
 ###############################################################
 
-	HEADERS += ../3rdparty/liborigin/OPJFile.h
-	SOURCES += ../3rdparty/liborigin/OPJFile.cpp
+  HEADERS += ../3rdparty/liborigin/OriginObj.h
+	HEADERS += ../3rdparty/liborigin/OriginFile.h
+	HEADERS += ../3rdparty/liborigin/OriginParser.h
+	HEADERS += ../3rdparty/liborigin/OriginDefaultParser.h
+	HEADERS += ../3rdparty/liborigin/Origin750Parser.h
+	SOURCES += ../3rdparty/liborigin/OriginFile.cpp
+	SOURCES += ../3rdparty/liborigin/OriginParser.cpp
+	SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
+	SOURCES += ../3rdparty/liborigin/Origin750Parser.cpp
 
 ###############################################################
 ################# Module: Matrix ##############################

@@ -1,10 +1,9 @@
 /***************************************************************************
-    File                 : importOPJ.h
-    Project              : QtiPlot
+    File                 : OriginParser.h
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2007 by Ion Vasilief, Alex Kargovsky
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
-    Description          : Origin project import class
+    Copyright            : (C) 2008 Alex Kargovsky
+    Email (use @ for *)  : kargovsky*yumr.phys.msu.su
+    Description          : Origin file parser base class
 
  ***************************************************************************/
 
@@ -26,33 +25,46 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef IMPORTOPJ_H
-#define IMPORTOPJ_H
 
-#include "ApplicationWindow.h"
-#include <OriginFile.h>
+#ifndef ORIGIN_PARSER_H
+#define ORIGIN_PARSER_H
 
-//! Origin project import class
-class ImportOPJ
+#include "OriginObj.h"
+#include "tree.hh"
+#include <utility>
+
+using namespace std;
+
+class OriginParser
 {
 public:
-	ImportOPJ(ApplicationWindow *app, const QString& filename);
+	virtual ~OriginParser();
+	virtual bool parse() = 0;
 
-	bool createProjectTree(const OriginFile& opj);
-	bool importTables(const OriginFile& opj);
-	bool importGraphs(const OriginFile& opj);
-	bool importNotes(const OriginFile& opj);
-	int error(){return parse_error;};
+	int findSpreadByName(const char* name) const;
+	int findMatrixByName(const char* name) const;
+	int findFunctionByName(const char* name) const;
+	int findExcelByName(const char* name) const;
 
-private:
-    int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
-	int translateOrigin2QtiplotLineStyle(int linestyle);
-	QString parseOriginText(const QString &str);
-	QString parseOriginTags(const QString &str);
-	void addText(const Origin::TextBox& _text, Graph* graph, LegendWidget* txt, const Origin::Rect& layerRect, double fFontScaleFactor, double fXScale, double fYScale);
-	int parse_error;
-	int xoffset;
-	ApplicationWindow *mw;
+protected:
+	int findSpreadColumnByName(int spread, const char* name) const;
+	int findExcelColumnByName(int excel, int sheet, const char* name) const;
+	pair<string, string> findDataByIndex(int index) const;
+	string findObjectByIndex(int index) const;
+	void convertSpreadToExcel(int spread);
+
+public:
+	vector<Origin::SpreadSheet> speadSheets;
+	vector<Origin::Matrix> matrixes;
+	vector<Origin::Excel> excels;
+	vector<Origin::Function> functions;
+	vector<Origin::Graph> graphs;
+	vector<Origin::Note> notes;
+	tree<Origin::ProjectNode> projectTree;
+	string resultsLog;
 };
 
-#endif //IMPORTOPJ_H
+OriginParser* createOriginDefaultParser(const string& fileName);
+OriginParser* createOrigin750Parser(const string& fileName);
+
+#endif // ORIGIN_PARSER_H
