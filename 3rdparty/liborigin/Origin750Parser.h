@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : importOPJ.h
-    Project              : QtiPlot
+    File                 : Origin750Parser.h
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2007 by Ion Vasilief, Alex Kargovsky
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
-    Description          : Origin project import class
+	Copyright            : (C) 2007-2008 Alex Kargovsky, Stefan Gerlach, 
+						   Ion Vasilief
+    Email (use @ for *)  : kargovsky*yumr.phys.msu.su, ion_vasilief*yahoo.fr
+    Description          : Origin 7.5 file parser class
 
  ***************************************************************************/
 
@@ -26,33 +26,38 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef IMPORTOPJ_H
-#define IMPORTOPJ_H
 
-#include "ApplicationWindow.h"
-#include <OriginFile.h>
 
-//! Origin project import class
-class ImportOPJ
+#ifndef ORIGIN_750_PARSER_H
+#define ORIGIN_750_PARSER_H
+
+#include "OriginParser.h"
+#include "endianfstream.hh"
+
+using namespace Origin;
+
+class Origin750Parser : public OriginParser
 {
 public:
-	ImportOPJ(ApplicationWindow *app, const QString& filename);
-
-	bool createProjectTree(const OriginFile& opj);
-	bool importTables(const OriginFile& opj);
-	bool importGraphs(const OriginFile& opj);
-	bool importNotes(const OriginFile& opj);
-	int error(){return parse_error;};
+	Origin750Parser(const string& fileName);
+	bool parse();
 
 private:
-    int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
-	int translateOrigin2QtiplotLineStyle(int linestyle);
-	QString parseOriginText(const QString &str);
-	QString parseOriginTags(const QString &str);
-	void addText(const Origin::TextBox& _text, Graph* graph, LegendWidget* txt, const Origin::Rect& layerRect, double fFontScaleFactor, double fXScale, double fYScale);
-	int parse_error;
-	int xoffset;
-	ApplicationWindow *mw;
+	void readSpreadInfo();
+	void readExcelInfo();
+	void readMatrixInfo();
+	void readGraphInfo();
+	void skipObjectInfo();
+	void readGraphGridInfo(GraphGrid& grid);
+	void readGraphAxisBreakInfo(GraphAxisBreak& axis_break);
+	void readGraphAxisFormatInfo(GraphAxisFormat& format);
+	void readGraphAxisTickLabelsInfo(GraphAxisTick& tick);
+	void readProjectTree();
+	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
+	void readWindowProperties(Window& window, int size);
+
+	unsigned int objectIndex;
+	iendianfstream file;
 };
 
-#endif //IMPORTOPJ_H
+#endif // ORIGIN_750_PARSER_H
