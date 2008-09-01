@@ -1388,12 +1388,12 @@ for i in range(1, t.numRows()+1):
 	t.setCell(2, i, i)
 	t.setCell(3, i, i+2)
 	t.setCell(4, i, i+4)
-	
+
 l = plot(t, (2,3,4), Layer.Line).activeLayer() # plot columns 2, 3 and 4
 for i in range(0, l.numCurves()):
 	l.setCurveLineColor(i, 1 + i) #curve color is defined as an integer value
 	l.setCurveLineWidth(i, 0.5 + 2*i)
-	
+
 l.setCurveLineStyle(1, QtCore.Qt.DotLine)
 l.setCurveLineStyle(2, QtCore.Qt.DashLine)
 </programlisting>
@@ -1740,7 +1740,10 @@ can be modified via the following functions:<programlisting>
 legend.setAngle(90)
 legend.setTextColor(QtGui.QColor("red"))
 legend.setBackgroundColor(QtGui.QColor("yellow"))
-legend.setFrameStyle(Legend.Shadow)
+legend.setFrameStyle(Frame.Shadow)
+legend.setFrameColor(QtCore.Qt.red)
+legend.setFrameWidth(3)
+legend.setFrameLineStyle(QtCore.Qt.DotLine)
 legend.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold, True))
 # set top-left position using scale coordinates:
 legend.setOriginCoord(200.5, 600.32)
@@ -1794,6 +1797,9 @@ new arrow or to delete it with the <varname>remove</varname> function.
 l = newGraph().activeLayer()
 image = l.addImage("C:/poze/adi/PIC00074.jpg")
 image.setCoordinates(200, 800, 800, 200)
+image.setFrameStyle(Frame.Shadow)
+image.setFrameColor(QtCore.Qt.green)
+image.setFrameWidth(3)
 l.replot()
 </programlisting>
 
@@ -1811,7 +1817,31 @@ You can remove an image using its reference:
 <programlisting>
 l.remove(image)
 </programlisting>
+</sect3>
 
+<sect3 id="Python-Rectangles">
+<title>Rectangles</title>
+<programlisting>
+l = newGraph().activeLayer()
+
+r = Rectangle(l)
+r.setSize(100, 100)
+r.setOrigin(100, 200)
+r.setBackgroundColor(QtCore.Qt.yellow)
+r.setFrameColor(QtCore.Qt.red)
+r.setFrameWidth(3)
+r.setFrameLineStyle(QtCore.Qt.DotLine)
+r.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.FDiagPattern))
+
+r1 = l.add(r)
+</programlisting>
+
+You can remove a rectangle using its reference:
+<programlisting>
+r2 = l.add(r)
+r2.setOrigin(200, 200)
+l.remove(r1)
+</programlisting>
 </sect3>
 
 <sect3 id="Python-Antialiasing">

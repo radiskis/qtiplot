@@ -1028,6 +1028,8 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+    int d_notes_tab_length;
+    QFont d_notes_font;
 	//! End of line convention used for copy/paste operations and when exporting tables/matrices to ASCII files.
 	EndLineChar d_eol;
     //! Flag telling if the in-place editing of 2D plot labels is enabled

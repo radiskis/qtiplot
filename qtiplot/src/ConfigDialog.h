@@ -46,6 +46,7 @@ class QListWidget;
 class ColorButton;
 class ColorBox;
 class DoubleSpinBox;
+class QFontComboBox;
 
 //! Preferences dialog
 class ConfigDialog : public QDialog
@@ -101,6 +102,7 @@ private slots:
 #ifdef SCRIPTING_PYTHON
 	void choosePythonConfigFolder();
 #endif
+    void customizeNotes();
 
 private:
 	void initPlotsPage();
@@ -111,6 +113,7 @@ private:
 	void initConfirmationsPage();
 	void initFileLocationsPage();
 	void initFittingPage();
+	void initNotesPage();
 
 	QFont textFont, headerFont, axesFont, numbersFont, legendFont, titleFont, appFont;
 	QFont plot3DTitleFont, plot3DNumbersFont, plot3DAxesFont;
@@ -125,7 +128,7 @@ private:
 	QPushButton* buttonTextFont, *buttonHeaderFont;
 	QStackedWidget * generalDialog;
 	QWidget *appColors, *tables, *plotOptions, *plotTicks, *plotFonts, *confirm, *plotPrint;
-	QWidget *application, *curves, *plots3D, *fitPage, *numericFormatPage;
+	QWidget *application, *curves, *plots3D, *fitPage, *numericFormatPage, *notesPage;
 	QPushButton* buttonAxesFont, *buttonNumbersFont, *buttonLegendFont, *buttonTitleFont, *fontsBtn;
 	QCheckBox *boxSearchUpdates, *boxOrthogonal, *logBox, *plotLabelBox, *scaleErrorsBox;
 	QCheckBox *boxTitle, *boxFrame, *boxPlots3D, *boxPlots2D, *boxTables, *boxNotes, *boxFolders;
@@ -170,8 +173,12 @@ private:
 	QLabel *labelGraphBkgColor, *labelGraphCanvasColor;
 	QLabel *labelGraphBkgOpacity, *labelGraphCanvasOpacity;
 	ColorButton *boxBackgroundColor, *boxCanvasColor, *boxBorderColor;
-	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth;
+	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxTabLength;
 	QCheckBox *completionBox, *lineNumbersBox;
+	QLabel *labelTabLength, *labelNotesFont;
+	QFontComboBox *boxFontFamily;
+	QSpinBox *boxFontSize;
+	QPushButton *buttonItalicFont, *buttonBoldFont;
 };
 
 #endif // CONFIGDIALOG_H

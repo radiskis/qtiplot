@@ -11,7 +11,7 @@ DEFINES         += SCRIPTING_DIALOG
 # comment the following lines to disable donations start-up message
 #DEFINES         += QTIPLOT_SUPPORT
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
-#RESTRICTED_MODULES += EMF
+RESTRICTED_MODULES += EMF
 
 ######################################################################################
 # Uncomment the following line if you want to perform a custom installation using
@@ -528,6 +528,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiFrameWidget.cpp\
 			 $${SIP_DIR}/sipqtiImageWidget.cpp\
 			 $${SIP_DIR}/sipqtiLegendWidget.cpp\
+			 $${SIP_DIR}/sipqtiRectangleWidget.cpp\
 			 $${SIP_DIR}/sipqtiGrid.cpp\
              $${SIP_DIR}/sipqtiMultiLayer.cpp\
              $${SIP_DIR}/sipqtiTable.cpp\

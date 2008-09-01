@@ -39,8 +39,9 @@ public:
 	LineNumberDisplay(QTextEdit *te, QWidget *parent = 0);
 
 public slots:
-	void updateLineNumbers();
-	
+	void updateLineNumbers(bool force = false);
+	void changeCharFormat (const QTextCharFormat &);
+
 private:
 	void showEvent(QShowEvent *);
 	QTextEdit *d_text_edit;
