@@ -11,7 +11,7 @@ DEFINES         += SCRIPTING_DIALOG
 # comment the following lines to disable donations start-up message
 #DEFINES         += QTIPLOT_SUPPORT
 # comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
-RESTRICTED_MODULES += EMF
+#RESTRICTED_MODULES += EMF
 
 ######################################################################################
 # Uncomment the following line if you want to perform a custom installation using
