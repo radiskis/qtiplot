@@ -86,7 +86,7 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	importNotes(opj);
 	if(filename.endsWith(".opj", Qt::CaseInsensitive))
 		createProjectTree(opj);
-	mw->showResults(opj.resultsLogString(), mw->logWindow->isVisible());
+	mw->showResults(opj.resultsLogString().c_str(), mw->logWindow->isVisible());
 }
 
 inline uint qHash(const tree<Origin::ProjectNode>::iterator &key)
@@ -156,42 +156,44 @@ int ImportOPJ::translateOrigin2QtiplotLineStyle(int linestyle) {
 
 bool ImportOPJ::importTables(const OriginFile& opj)
 {
-	int visible_count=0;
-	int QtiPlot_scaling_factor=10; //in Origin width is measured in characters while in QtiPlot - pixels --- need to be accurate
-	for (int s=0; s<opj.numSpreads(); s++)
+	int visible_count = 0;
+	int QtiPlot_scaling_factor = 10; //in Origin width is measured in characters while in QtiPlot - pixels --- need to be accurate
+	for(int s = 0; s < opj.spreadCount(); ++s)
 	{
-		int columnCount = opj.numCols(s);
-		int maxrows = opj.maxRows(s);
+		Origin::SpreadSheet spread = opj.spread(s);
+		int columnCount = spread.columns.size();
+		int maxrows = spread.maxRows;
 		if(!columnCount) //remove tables without cols
 			continue;
 
-		Table *table = (opj.spreadHidden(s)||opj.spreadLoose(s))&&opj.Version()==7.5 ? mw->newHiddenTable(opj.spreadName(s), opj.spreadLabel(s), maxrows, columnCount)
-										: mw->newTable(opj.spreadName(s), maxrows, columnCount);
+		Table *table = (spread.hidden || spread.loose) && opj.version() == 7.5 ? mw->newHiddenTable(spread.name.c_str(), spread.label.c_str(), maxrows, columnCount)
+										: mw->newTable(spread.name.c_str(), maxrows, columnCount);
 		if (!table)
 			return false;
 
 		Origin::Rect windowRect;
-		if(opj.Version() == 7.5)
+		if(opj.version() == 7.5)
 		{
-			windowRect = opj.spreadWindowRect(s);
+			windowRect = spread.clientRect;
 			table->resize(windowRect.width() - (table->frameGeometry().width() - table->width()),
 				windowRect.height() - (table->frameGeometry().height() - table->height()));
 		}
 
-		table->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.spreadTitle(s));
-		table->setBirthDate(posixTimeToString(opj.spreadCreationDate(s)));
+		table->setCaptionPolicy((MdiSubWindow::CaptionPolicy)spread.title);
+		table->setBirthDate(posixTimeToString(spread.creationDate));
 
         QLocale locale = mw->locale();
-		table->setWindowLabel(opj.spreadLabel(s));
-		for (int j=0; j<columnCount; j++)
+		table->setWindowLabel(spread.label.c_str());
+		for(int j = 0; j < columnCount; ++j)
 		{
-			QString name(opj.colName(s,j));
+			Origin::SpreadColumn column = spread.columns[j];
+			QString name(column.name.c_str());
 			table->setColName(j, name.replace(QRegExp(".*_"),""));
-			table->setCommand(j, QString(opj.colCommand(s,j)));
-			table->setColComment(j, QString(opj.colComment(s,j)));
-			table->setColumnWidth(j, opj.colWidth(s,j)*QtiPlot_scaling_factor);
+			table->setCommand(j, QString(column.command.c_str()));
+			table->setColComment(j, QString(column.comment.c_str()));
+			table->setColumnWidth(j, column.width * QtiPlot_scaling_factor);
 
-			switch(opj.colType(s,j))
+			switch(column.type)
 			{
 			case Origin::SpreadColumn::X:
 				table->setColPlotDesignation(j, Table::X);
@@ -221,10 +223,10 @@ bool ImportOPJ::importTables(const OriginFile& opj)
             for(int i = 0; i < columnCount; ++i)
                 d_cells[i] = new double [table->numRows()];
 
-			for(int i=0; i<opj.numRows(s,j); ++i)
+			for(int i = 0; i < column.data.size(); ++i)
 			{
-				Origin::variant value = opj.oData(s,j,i);
-				if(opj.colType(s,j) != Origin::SpreadColumn::Label && opj.colValueType(s,j) != Origin::Text)
+				Origin::variant value = column.data[i];
+				if(column.type != Origin::SpreadColumn::Label && column.valueType != Origin::Text)
 				{// number
 					if(value.type() != typeid(double))
 						continue;
@@ -244,15 +246,15 @@ bool ImportOPJ::importTables(const OriginFile& opj)
             table->saveToMemory(d_cells);
 
 			QString format;
-			switch(opj.colValueType(s,j))
+			switch(column.valueType)
 			{
 			case Origin::Numeric:
 			case Origin::TextNumeric:
 				int f;
-				if(opj.colNumDisplayType(s,j)==0)
-					f=0;
+				if(column.numericDisplayType == 0)
+					f = 0;
 				else
-					switch(opj.colValueTypeSpec(s,j))
+					switch(column.valueTypeSpecification)
 					{
 					case 0: //Decimal 1000
 						f=1;
@@ -265,13 +267,13 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 						f=0;
 						break;
 					}
-				table->setColNumericFormat(f, opj.colDecPlaces(s,j), j);
+				table->setColNumericFormat(f, column.decimalPlaces, j);
 				break;
 			case Origin::Text:
 				table->setTextFormat(j);
 				break;
 			case Origin::Date:
-				switch(opj.colValueTypeSpec(s,j))
+				switch(column.valueTypeSpecification)
 				{
                 case -128:
                     format="dd/MM/yyyy";
@@ -326,7 +328,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 				table->setDateFormat(format, j);
 				break;
 			case Origin::Time:
-				switch(opj.colValueTypeSpec(s,j)+128)
+				switch(column.valueTypeSpecification + 128)
 				{
 				case 0:
 					format="hh:mm";
@@ -365,7 +367,8 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 				table->setTimeFormat(format, j);
 				break;
 			case Origin::Month:
-				switch(opj.colValueTypeSpec(s,j)){
+				switch(column.valueTypeSpecification)
+				{
                     case 0:
                         format = "MMM";
 					break;
@@ -379,7 +382,8 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 				table->setMonthFormat(format, j);
 				break;
 			case Origin::Day:
-				switch(opj.colValueTypeSpec(s,j)){
+				switch(column.valueTypeSpecification)
+				{
                     case 0:
                         format = "ddd";
 					break;
@@ -397,9 +401,9 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		}
 
 
-		if(!(opj.spreadHidden(s)||opj.spreadLoose(s))||opj.Version()!=7.5)
+		if(!(spread.hidden || spread.loose) || opj.version() != 7.5)
 		{
-			switch(opj.spreadState(s))
+			switch(spread.state)
 			{
 			case Origin::Window::Minimized:
 				mw->minimizeWindow(table);
@@ -412,57 +416,61 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			}
 
 			//cascade the tables
-			if(opj.Version() == 7.5)
+			if(opj.version() == 7.5)
 			{
 				table->move(QPoint(windowRect.left, windowRect.top));
 			}
 			else
 			{
-				int dx=table->verticalHeaderWidth();
-				int dy=table->frameGeometry().height() - table->height();
-				table->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
-				visible_count++;
+				int dx = table->verticalHeaderWidth();
+				int dy = table->frameGeometry().height() - table->height();
+				table->move(QPoint(visible_count*dx + xoffset*OBJECTXOFFSET, visible_count*dy));
+				++visible_count;
 			}
 		}
 	}
 
 //Import matrices
-	for (int s=0; s<opj.numMatrices(); s++)
+	for (int s = 0; s < opj.matrixCount(); ++s)
 	{
-		int columnCount = opj.numMatrixCols(s);
-		int rowCount = opj.numMatrixRows(s);
+		Origin::Matrix matrix = opj.matrix(s);
+		int columnCount = matrix.columnCount;
+		int rowCount = matrix.rowCount;
 
-		Matrix* Matrix = mw->newMatrix(opj.matrixName(s), rowCount, columnCount);
+		Matrix* Matrix = mw->newMatrix(matrix.name.c_str(), rowCount, columnCount);
 		if (!Matrix)
 			return false;
 
 		Origin::Rect windowRect;
-		if(opj.Version() == 7.5){
-			windowRect = opj.matrixWindowRect(s);
+		if(opj.version() == 7.5)
+		{
+			windowRect = matrix.clientRect;
 			Matrix->resize(windowRect.width() - (Matrix->frameGeometry().width() - Matrix->width()),
 				windowRect.height() - (Matrix->frameGeometry().height() - Matrix->height()));
 		}
 
-		Matrix->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.matrixTitle(s));
-		Matrix->setBirthDate(posixTimeToString(opj.matrixCreationDate(s)));
+		Matrix->setCaptionPolicy((MdiSubWindow::CaptionPolicy)matrix.title);
+		Matrix->setBirthDate(posixTimeToString(matrix.creationDate));
 
-		Matrix->setWindowLabel(opj.matrixLabel(s));
-		Matrix->setFormula(opj.matrixFormula(s));
-		Matrix->setColumnsWidth(opj.matrixWidth(s)*QtiPlot_scaling_factor);
-		if(opj.matrixViewType(s) == Origin::Matrix::ImageView)
+		Matrix->setWindowLabel(matrix.label.c_str());
+		Matrix->setFormula(matrix.command.c_str());
+		Matrix->setColumnsWidth(matrix.width * QtiPlot_scaling_factor);
+		if(matrix.view == Origin::Matrix::ImageView)
 			Matrix->setViewType(Matrix::ImageView);
-		if(opj.matrixHeaderViewType(s) == Origin::Matrix::XY)
+
+		if(matrix.header == Origin::Matrix::XY)
 			Matrix->setHeaderViewType(Matrix::XY);
-		vector<double> data = opj.matrixData(s);
-		double *matrix_data = Matrix->matrixModel()->dataVector();
+
+		vector<double>* data = &matrix.data;
+		double* matrix_data = Matrix->matrixModel()->dataVector();
 		int size = Matrix->numRows()*Matrix->numCols();
 		for(int i=0; i < size; ++i)
 		{
-			matrix_data[i] = fabs(data[i]) < 2.0e-300 && fabs(data[i]) > 0 ? GSL_NAN : data[i];
+			matrix_data[i] = fabs(data->at(i)) < 2.0e-300 && fabs(data->at(i)) > 0 ? GSL_NAN : data->at(i);
 		}
 
 		QChar format;
-		switch(opj.matrixValueTypeSpec(s))
+		switch(matrix.valueTypeSpecification)
 		{
 		case 0: //Decimal 1000
 			format='f';
@@ -475,11 +483,11 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			format='g';
 			break;
 		}
-		Matrix->setNumericFormat(format, opj.matrixSignificantDigits(s));
+		Matrix->setNumericFormat(format, matrix.significantDigits);
 
-		if(!opj.matrixHidden(s)||opj.Version()!=7.5)
+		if(!matrix.hidden || opj.version() != 7.5)
 		{
-			switch(opj.matrixState(s))
+			switch(matrix.state)
 			{
 			case Origin::Window::Minimized:
 				mw->minimizeWindow(Matrix);
@@ -492,47 +500,55 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			}
 
 			//cascade the matrices
-			if(opj.Version() == 7.5)
+			if(opj.version() == 7.5)
+			{
 				Matrix->move(QPoint(windowRect.left, windowRect.top));
-			else {
-				int dx=Matrix->verticalHeaderWidth();
-				int dy=Matrix->frameGeometry().height() - Matrix->height();
-				Matrix->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
-				visible_count++;
+			}
+			else
+			{
+				int dx = Matrix->verticalHeaderWidth();
+				int dy = Matrix->frameGeometry().height() - Matrix->height();
+				Matrix->move(QPoint(visible_count*dx + xoffset*OBJECTXOFFSET, visible_count*dy));
+				++visible_count;
 			}
 		}
 	}
 
-	if(visible_count>0)
-		xoffset++;
+	if(visible_count > 0)
+		++xoffset;
+
 	return true;
 }
 
 bool ImportOPJ::importNotes(const OriginFile& opj)
 {
-	int visible_count=0;
-	for (int n=0; n<opj.numNotes(); n++)
+	int visible_count = 0;
+	for (int n = 0; n < opj.noteCount(); ++n)
 	{
-		QString name=opj.noteName(n);
+		Origin::Note _note = opj.note(n);
+		QString name = _note.name.c_str();
 		QRegExp rx("^@\\((\\S+)\\)$");
-		if(rx.indexIn(name)==0)
-			name=rx.cap(1);
+		if(rx.indexIn(name) == 0)
+			name = rx.cap(1);
 
-		Note *note = mw->newNote(name);
-		if(!note)
+		Note* Note = mw->newNote(name);
+		if(!Note)
 			return false;
-		note->setWindowLabel(opj.noteLabel(n));
-		note->setText(opj.noteText(n));
-		note->setBirthDate(posixTimeToString(opj.noteCreationDate(n)));
+
+		Note->setWindowLabel(_note.label.c_str());
+		Note->setText(_note.text.c_str());
+		Note->setBirthDate(posixTimeToString(_note.creationDate));
 
 		//cascade the notes
-		int dx=20;
-		int dy=note->frameGeometry().height() - note->height();
-		note->move(QPoint(visible_count*dx+xoffset*OBJECTXOFFSET,visible_count*dy));
-		visible_count++;
+		int dx = 20;
+		int dy = Note->frameGeometry().height() - Note->height();
+		Note->move(QPoint(visible_count*dx + xoffset*OBJECTXOFFSET, visible_count*dy));
+		++visible_count;
 	}
-	if(visible_count>0)
-		xoffset++;
+
+	if(visible_count > 0)
+		++xoffset;
+
 	return true;
 }
 
@@ -541,19 +557,20 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 	double pi=3.141592653589793;
 	int visible_count=0;
 	int tickTypeMap[]={0,3,1,2};
-	for (int g=0; g<opj.numGraphs(); ++g)
+	for (int g = 0; g < opj.graphCount(); ++g)
 	{
-		MultiLayer *ml = mw->multilayerPlot(opj.graphName(g), 0);
+		Origin::Graph _graph = opj.graph(g);
+		MultiLayer *ml = mw->multilayerPlot(_graph.name.c_str(), 0);
 		if (!ml)
 			return false;
 
-		ml->setCaptionPolicy((MdiSubWindow::CaptionPolicy)opj.graphTitle(g));
-		ml->setBirthDate(posixTimeToString(opj.graphCreationDate(g)));
+		ml->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_graph.title);
+		ml->setBirthDate(posixTimeToString(_graph.creationDate));
 		ml->hide();//!hack used in order to avoid resize and repaint events
-		ml->setWindowLabel(opj.graphLabel(g));
+		ml->setWindowLabel(_graph.label.c_str());
 
-		Origin::Rect graphRect = opj.graphRect(g);
-		Origin::Rect graphWindowRect = opj.graphWindowRect(g);
+		Origin::Rect graphRect(_graph.width, _graph.height);
+		Origin::Rect graphWindowRect = _graph.clientRect;
 		ml->resize(graphWindowRect.width() - (ml->frameGeometry().width() - ml->width()),
                     graphWindowRect.height() - (ml->frameGeometry().height() - ml->height()));
 
@@ -565,29 +582,32 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		double fFontScaleFactor = 0.37*fWindowFactor;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
-		for(int l=0; l<opj.numLayers(g); ++l)
+		for(int l = 0; l < _graph.layers.size(); ++l)
 		{
+			Origin::GraphLayer& layer = _graph.layers[l];
 			Graph *graph = ml->addLayer();
 			if(!graph)
 				return false;
 
-			Origin::Rect layerRect = opj.layerRect(g,l);
+			Origin::Rect layerRect = layer.clientRect;
 
-			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerXAxisTitle(g,l).text.c_str())));
-			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(opj.layerYAxisTitle(g,l).text.c_str())));
+			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(layer.xAxis.label.text.c_str())));
+			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(layer.yAxis.label.text.c_str())));
 			LegendWidget* legend = 0;
-			if(!opj.layerLegend(g,l).text.empty())
+			if(!layer.legend.text.empty())
 			{
-				legend = graph->newLegend(parseOriginText(QString::fromLocal8Bit(opj.layerLegend(g,l).text.c_str())));
+				legend = graph->newLegend(parseOriginText(QString::fromLocal8Bit(layer.legend.text.c_str())));
 			}
-			int auto_color=0;
-			int style=0;
-			for(int c=0; c<opj.numCurves(g,l); c++)
+			int auto_color = 0;
+			int style = 0;
+			for(int c = 0; c < layer.curves.size(); ++c)
 			{
-				try{
-				QString data(opj.curveDataName(g,l,c));
-				int color=0;
-				switch(opj.curveType(g,l,c))
+				Origin::GraphCurve& _curve = layer.curves[c];
+				try
+				{
+				QString data(_curve.dataName.c_str());
+				int color = 0;
+				switch(_curve.type)
 				{
 				case Origin::GraphCurve::Line:
 					style=Graph::Line;
@@ -637,32 +657,33 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				QStringList formulas;
 				double start, end;
 				int s;
-				PlotCurve *curve = NULL;
+				PlotCurve* curve = NULL;
+				Origin::Function function;
 				switch(data[0].toAscii())
 				{
 				case 'T':
 					tableName = data.right(data.length()-2);
 					if(style==Graph::ErrorBars)
 					{
-						int flags=opj.curveSymbolType(g,l,c);
-						curve = (PlotCurve *)graph->addErrorBars(tableName + "_" + opj.curveXColName(g,l,c), mw->table(tableName), tableName + "_" + opj.curveYColName(g,l,c),
-							((flags&0x10)==0x10?0:1), ceil(opj.curveLineWidth(g,l,c)), ceil(opj.curveSymbolSize(g,l,c)), QColor(Qt::black),
+						int flags=_curve.symbolType;
+						curve = (PlotCurve*)graph->addErrorBars(QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), mw->table(tableName), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()),
+							((flags&0x10)==0x10?0:1), ceil(_curve.lineWidth), ceil(_curve.symbolSize), QColor(Qt::black),
 							(flags&0x40)==0x40, (flags&2)==2, (flags&1)==1);
 					}
 					else if(style==Graph::Histogram)
-						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveYColName(g,l,c), style);
+						curve = (PlotCurve*)graph->insertCurve(mw->table(tableName), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
 					else if(style==Graph::Pie || style==Graph::Box)
 					{
 						QStringList names;
-						names << (tableName + "_" + opj.curveYColName(g,l,c));
+						names << QString("%1_%2").arg(tableName, _curve.yColumnName.c_str());
 						graph->addCurves(mw->table(tableName), names, style);
 					}
 					else if(style==Graph::VectXYXY)
 					{
 						QStringList names;
-						Origin::VectorProperties vector = opj.curveVectorProperties(g,l,c);
-						names << (tableName + "_" + opj.curveXColName(g,l,c))
-							<< (tableName + "_" + opj.curveYColName(g,l,c))
+						Origin::VectorProperties vector = _curve.vector;
+						names << QString("%1_%2").arg(tableName, _curve.xColumnName.c_str())
+							<< QString("%1_%2").arg(tableName, _curve.yColumnName.c_str())
 							<< (tableName + "_" + QString(vector.endXColumnName.c_str()))
 							<< (tableName + "_" + QString(vector.endYColumnName.c_str()));
 
@@ -671,9 +692,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					else if(style==Graph::VectXYAM)
 					{
 						QStringList names;
-						Origin::VectorProperties vector = opj.curveVectorProperties(g,l,c);
-						names << (tableName + "_" + opj.curveXColName(g,l,c))
-							<< (tableName + "_" + opj.curveYColName(g,l,c))
+						Origin::VectorProperties vector = _curve.vector;
+						names << QString("%1_%2").arg(tableName, _curve.xColumnName.c_str())
+							<< QString("%1_%2").arg(tableName, _curve.yColumnName.c_str())
 							<< (tableName + "_" + QString(vector.angleColumnName.c_str()))
 							<< (tableName + "_" + QString(vector.magnitudeColumnName.c_str()));
 
@@ -682,7 +703,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					else if(style == Origin::GraphCurve::TextPlot)
 					{
 						Table* table = mw->table(tableName);
-						QString labelsCol = opj.curveYColName(g,l,c);
+						QString labelsCol(_curve.yColumnName.c_str());
 						int xcol = table->colX(table->colIndex(labelsCol));
 						int ycol = table->colY(table->colIndex(labelsCol));
 						if (xcol < 0 || ycol < 0)
@@ -696,26 +717,28 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						}
 					}
 					else
-						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), tableName + "_" + opj.curveXColName(g,l,c), tableName + "_" + opj.curveYColName(g,l,c), style);
+						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
 					break;
 				case 'F':
-					s=opj.functionIndex(data.right(data.length()-2).toStdString().c_str());
+					s = opj.functionIndex(data.right(data.length()-2).toLocal8Bit());
+					function = opj.function(s);
+
 					int type;
-					if(opj.functionType(s)==Origin::Function::Polar)//Polar
+					if(function.type == Origin::Function::Polar)//Polar
 					{
-						type=2;
-						formulas << opj.functionFormula(s) << "x";
-						start = pi/180*opj.functionBegin(s) ;
-						end = pi/180*opj.functionEnd(s);
+						type = 2;
+						formulas << function.formula.c_str() << "x";
+						start = pi/180 * function.begin;
+						end = pi/180 * function.end;
 					}
 					else
 					{
-						type=0;
-						formulas << opj.functionFormula(s);
-						start = opj.functionBegin(s);
-						end = opj.functionEnd(s);
+						type = 0;
+						formulas << function.formula.c_str();
+						start = function.begin;
+						end = function.end;
 					}
-					curve = (PlotCurve *)graph->addFunction(formulas, start, end, opj.functionPoints(s), "x", type, opj.functionName(s));
+					curve = (PlotCurve*)graph->addFunction(formulas, start, end, function.totalPoints, "x", type, function.name.c_str());
 
 					mw->updateFunctionLists(type, formulas);
 					break;
@@ -726,17 +749,17 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				//strange behavior of insert curve - legend added - need to roolback legend text
 				if(legend)
 				{
-					legend->setText(parseOriginText(QString::fromLocal8Bit(opj.layerLegend(g,l).text.c_str())));
+					legend->setText(parseOriginText(QString::fromLocal8Bit(layer.legend.text.c_str())));
 				}
 
-				CurveLayout cl = graph->initCurveLayout(style, opj.numCurves(g,l));
-				cl.sSize = ceil(opj.curveSymbolSize(g,l,c));
-				cl.penWidth=opj.curveSymbolThickness(g,l,c);
-				color=opj.curveSymbolColor(g,l,c);
+				CurveLayout cl = graph->initCurveLayout(style, layer.curves.size());
+				cl.sSize = ceil(_curve.symbolSize);
+				cl.penWidth=_curve.symbolThickness;
+				color=_curve.symbolColor;
 				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&color==0xF7)//0xF7 -Automatic color
-					color=auto_color++;
+					color=++auto_color;
 				cl.symCol=color;
-				switch(opj.curveSymbolType(g,l,c)&0xFF)
+				switch(_curve.symbolType&0xFF)
 				{
 				case 0: //NoSymbol
 					cl.sType=0;
@@ -789,7 +812,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					cl.sType=0;
 				}
 
-				switch(opj.curveSymbolType(g,l,c)>>8)
+				switch(_curve.symbolType>>8)
 				{
 				case 0:
 					cl.fillCol=color;
@@ -800,7 +823,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				case 9:
 				case 10:
 				case 11:
-					color=opj.curveSymbolFillColor(g,l,c);
+					color=_curve.symbolFillColor;
 					if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&color==0xF7)//0xF7 -Automatic color
 						color=17;// depend on Origin settings - not stored in file
 					cl.fillCol=color;
@@ -809,14 +832,14 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					cl.fillCol=-1;
 				}
 
-				cl.lWidth = ceil(opj.curveLineWidth(g,l,c));
-				color=opj.curveLineColor(g,l,c);
+				cl.lWidth = ceil(_curve.lineWidth);
+				color=_curve.lineColor;
 				cl.lCol=(color==0xF7?0:color); //0xF7 -Automatic color
-				int linestyle=opj.curveLineStyle(g,l,c);
-				cl.filledArea=(opj.curveIsFilledArea(g,l,c)||style==Graph::VerticalBars||style==Graph::HorizontalBars||style==Graph::Histogram||style == Graph::Pie)?1:0;
+				int linestyle=_curve.lineStyle;
+				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie) ? 1 : 0;
 				if(cl.filledArea)
 				{
-					switch(opj.curveFillPattern(g,l,c))
+					switch(_curve.fillAreaPattern)
 					{
 					case 0:
 						cl.aStyle=0;
@@ -852,16 +875,16 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						cl.aStyle=3;
 						break;
 					}
-					color=(cl.aStyle==0 ? opj.curveFillAreaColor(g,l,c) : opj.curveFillPatternColor(g,l,c));
+					color=(cl.aStyle==0 ?_curve.fillAreaColor : _curve.fillAreaPatternColor);
 					cl.aCol=(color==0xF7?0:color); //0xF7 -Automatic color
 					if (style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie)
 					{
-						color=opj.curveFillPatternBorderColor(g,l,c);
+						color=_curve.fillAreaPatternBorderColor;
 						cl.lCol = (color==0xF7?0:color); //0xF7 -Automatic color
-						color=(cl.aStyle==0 ? opj.curveFillAreaColor(g,l,c) : opj.curveFillPatternColor(g,l,c));
+						color=(cl.aStyle==0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
 						cl.aCol=(color==0xF7?cl.lCol:color); //0xF7 -Automatic color
-						cl.lWidth = ceil(opj.curveFillPatternBorderWidth(g,l,c));
-						linestyle=opj.curveFillPatternBorderStyle(g,l,c);
+						cl.lWidth = ceil(_curve.fillAreaPatternBorderWidth);
+						linestyle=_curve.fillAreaPatternBorderStyle;
 					}
 				}
 				switch (linestyle)
@@ -891,16 +914,16 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				{
 					QwtBarCurve *b = (QwtBarCurve*)graph->curve(c);
 					if (b)
-						b->setGap(qRound(100-opj.curveSymbolSize(g,l,c)*10));
+						b->setGap(qRound(100-_curve.symbolSize*10));
 				}
 				else if(style == Graph::Histogram)
 				{
 					QwtHistogram *h = (QwtHistogram*)graph->curve(c);
 					if (h)
 					{
-						vector<double> bin=opj.layerHistogram(g,l);
-						if(bin.size()==3)
-							h->setBinning(false, bin[0], bin[1], bin[2]);
+						//vector<double> bin=opj.layerHistogram(g,l);
+						//if(bin.size()==3)
+							h->setBinning(false, layer.histogramBin, layer.histogramBegin, layer.histogramEnd);
 						h->loadData();
 					}
 				}
@@ -929,29 +952,28 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						break;
 					}
 					p->setPen(QPen(ColorBox::color(cl.lCol), cl.lWidth, (Qt::PenStyle)cl.lStyle));
-					p->setFirstColor(opj.curveFillAreaFirstColor(g,l,c));
+					p->setFirstColor(_curve.fillAreaFirstColor);
 					//geometry
-                    p->setRadius(opj.curvePieProperties(g,l,c).radius);
-                    p->setThickness(opj.curvePieProperties(g,l,c).thickness);
-					p->setViewAngle(opj.curvePieProperties(g,l,c).viewAngle);
-					p->setStartAzimuth(opj.curvePieProperties(g,l,c).rotation);
-					p->setCounterClockwise(opj.curvePieProperties(g,l,c).clockwiseRotation);
-                    p->setHorizontalOffset(opj.curvePieProperties(g,l,c).horizontalOffset);
+                    p->setRadius(_curve.pie.radius);
+                    p->setThickness(_curve.pie.thickness);
+					p->setViewAngle(_curve.pie.viewAngle);
+					p->setStartAzimuth(_curve.pie.rotation);
+					p->setCounterClockwise(_curve.pie.clockwiseRotation);
+                    p->setHorizontalOffset(_curve.pie.horizontalOffset);
 					//labels
-					p->setLabelsEdgeDistance(opj.curvePieProperties(g,l,c).distance);
-					p->setLabelsAutoFormat(opj.curvePieProperties(g,l,c).formatAutomatic);
-					p->setLabelPercentagesFormat(opj.curvePieProperties(g,l,c).formatPercentages);
-                    p->setLabelValuesFormat(opj.curvePieProperties(g,l,c).formatValues);
-                    p->setLabelCategories(opj.curvePieProperties(g,l,c).formatCategories);
-                    p->setFixedLabelsPosition(opj.curvePieProperties(g,l,c).positionAssociate);
+					p->setLabelsEdgeDistance(_curve.pie.distance);
+					p->setLabelsAutoFormat(_curve.pie.formatAutomatic);
+					p->setLabelPercentagesFormat(_curve.pie.formatPercentages);
+                    p->setLabelValuesFormat(_curve.pie.formatValues);
+                    p->setLabelCategories(_curve.pie.formatCategories);
+                    p->setFixedLabelsPosition(_curve.pie.positionAssociate);
 				}
 				else if(style == Graph::VectXYXY || style == Graph::VectXYAM)
 				{
-					Origin::VectorProperties vector = opj.curveVectorProperties(g,l,c);
-					graph->updateVectorsLayout(c, ColorBox::color(cl.symCol), ceil(vector.width),
-						floor(vector.arrowLenght*fVectorArrowScaleFactor + 0.5), vector.arrowAngle, vector.arrowClosed, vector.position);
+					graph->updateVectorsLayout(c, ColorBox::color(cl.symCol), ceil(_curve.vector.width),
+						floor(_curve.vector.arrowLenght*fVectorArrowScaleFactor + 0.5), _curve.vector.arrowAngle, _curve.vector.arrowClosed, _curve.vector.position);
 				}
-				switch(opj.curveLineConnect(g,l,c))
+				switch(_curve.lineConnect)
 				{
 				case Origin::GraphCurve::NoLine:
 					graph->setCurveStyle(c, QwtPlotCurve::NoCurve);
@@ -979,65 +1001,70 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				{
 				}
 			}
-			Origin::GraphLayerRange rangeX=opj.layerXRange(g,l);
-			vector<int>    ticksX=opj.layerXTicks(g,l);
-			Origin::GraphLayerRange rangeY=opj.layerYRange(g,l);
-			vector<int>	   ticksY=opj.layerYTicks(g,l);
 			if(style == Graph::HorizontalBars)
 			{
-				graph->setScale(0,rangeX.min,rangeX.max,rangeX.step,ticksX[0],ticksX[1],opj.layerXScale(g,l));
-				graph->setScale(2,rangeY.min,rangeY.max,rangeY.step,ticksY[0],ticksY[1],opj.layerYScale(g,l));
+				graph->setScale(0,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale);
+				graph->setScale(2,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale);
 			}
 			else if(style != Graph::Box)
 			{
 
-				Origin::GraphAxisBreak breakX = opj.layerXBreak(g,l);
-				Origin::GraphAxisBreak breakY = opj.layerYBreak(g,l);
+				Origin::GraphAxisBreak breakX = layer.xAxisBreak;
+				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
 				if(breakX.show)
-					graph->setScale(2,rangeX.min,rangeX.max,rangeX.step,ticksX[0],ticksX[1],opj.layerXScale(g,l),
+					graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale,
 									false,
 									breakX.from, breakX.to,
 									breakX.position,
 									breakX.scaleIncrementBefore, breakX.scaleIncrementAfter,
 									breakX.minorTicksBefore, breakX.minorTicksAfter, breakX.log10);
 				else
-					graph->setScale(2,rangeX.min,rangeX.max,rangeX.step,ticksX[0],ticksX[1],opj.layerXScale(g,l));
+					graph->setScale(2,layer.xAxis.min,layer.xAxis.max,layer.xAxis.step,layer.xAxis.majorTicks,layer.xAxis.minorTicks,layer.xAxis.scale);
 
 				if(breakY.show)
-					graph->setScale(0,rangeY.min,rangeY.max,rangeY.step,ticksY[0],ticksY[1],opj.layerXScale(g,l),
+					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.xAxis.scale, //??xAxis??
 					false,
 					breakY.from, breakY.to,
 					breakY.position,
 					breakY.scaleIncrementBefore, breakY.scaleIncrementAfter,
 					breakY.minorTicksBefore, breakY.minorTicksAfter, breakY.log10);
 				else
-					graph->setScale(0,rangeY.min,rangeY.max,rangeY.step,ticksY[0],ticksY[1],opj.layerYScale(g,l));
+					graph->setScale(0,layer.yAxis.min,layer.yAxis.max,layer.yAxis.step,layer.yAxis.majorTicks,layer.yAxis.minorTicks,layer.yAxis.scale);
 			}
 
 			//grid
-			vector<Origin::GraphGrid> grids = opj.layerGrid(g,l);
 			Grid *grid = graph->grid();
-			grid->enableX(!grids[0].hidden);
-			grid->enableXMin(!grids[1].hidden);
-			grid->enableY(!grids[2].hidden);
-			grid->enableYMin(!grids[3].hidden);
+			grid->enableX(!layer.xAxis.majorGrid.hidden);
+			grid->enableXMin(!layer.xAxis.minorGrid.hidden);
+			grid->enableY(!layer.yAxis.majorGrid.hidden);
+			grid->enableYMin(!layer.yAxis.minorGrid.hidden);
 
-			grid->setMajPenX(QPen(ColorBox::color(grids[0].color), ceil(grids[0].width),
-							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(grids[0].style))));
-			grid->setMinPenX(QPen(ColorBox::color(grids[1].color), ceil(grids[1].width),
-							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(grids[1].style))));
-			grid->setMajPenY(QPen(ColorBox::color(grids[2].color), ceil(grids[2].width),
-							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(grids[2].style))));
-			grid->setMinPenY(QPen(ColorBox::color(grids[3].color), ceil(grids[3].width),
-							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(grids[3].style))));
+			grid->setMajPenX(QPen(ColorBox::color(layer.xAxis.majorGrid.color), ceil(layer.xAxis.majorGrid.width),
+							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(layer.xAxis.majorGrid.style))));
+			grid->setMinPenX(QPen(ColorBox::color(layer.xAxis.minorGrid.color), ceil(layer.xAxis.minorGrid.width),
+							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(layer.xAxis.minorGrid.style))));
+			grid->setMajPenY(QPen(ColorBox::color(layer.yAxis.majorGrid.color), ceil(layer.yAxis.majorGrid.width),
+							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(layer.yAxis.majorGrid.style))));
+			grid->setMinPenY(QPen(ColorBox::color(layer.yAxis.minorGrid.color), ceil(layer.yAxis.minorGrid.width),
+							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(layer.yAxis.minorGrid.style))));
 
 			grid->setAxis(2, 0);
 			grid->enableZeroLineX(0);
 			grid->enableZeroLineY(0);
 
-			vector<Origin::GraphAxisFormat> formats=opj.layerAxisFormat(g,l);
-			vector<Origin::GraphAxisTick> ticks=opj.layerAxisTickLabels(g,l);
-			for(int i=0; i<4; ++i)
+			vector<Origin::GraphAxisFormat> formats;
+			formats.push_back(layer.yAxis.formatAxis[0]); //bottom
+			formats.push_back(layer.yAxis.formatAxis[1]); //top
+			formats.push_back(layer.xAxis.formatAxis[0]); //left
+			formats.push_back(layer.xAxis.formatAxis[1]); //right
+
+			vector<Origin::GraphAxisTick> ticks;
+			ticks.push_back(layer.yAxis.tickAxis[0]); //bottom
+			ticks.push_back(layer.yAxis.tickAxis[1]); //top
+			ticks.push_back(layer.xAxis.tickAxis[0]); //left
+			ticks.push_back(layer.xAxis.tickAxis[1]); //right
+
+			for(int i = 0; i < 4; ++i)
 			{
 				QString data(ticks[i].dataName.c_str());
 				QString tableName=data.right(data.length()-2) + "_" + ticks[i].columnName.c_str();
@@ -1121,11 +1148,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				{
 				case 0:
 				case 1:
-					fontSize = opj.layerYAxisTitle(g,l).fontSize;
+					fontSize = layer.yAxis.label.fontSize;
 					break;
 				case 2:
 				case 3:
-					fontSize = opj.layerXAxisTitle(g,l).fontSize;
+					fontSize = layer.xAxis.label.fontSize;
 					break;
 				}
 				if(fontSize > 0)
@@ -1157,33 +1184,31 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				layerRect.height()*fYScale + nYDelta);
 
 			//add texts
-			vector<Origin::TextBox> texts=opj.layerTexts(g, l);
 			if(style != Graph::Pie)
 			{
-				for(int i=0; i<texts.size(); ++i)
+				for(int i = 0; i < layer.texts.size(); ++i)
 				{
-					addText(texts[i], graph, 0, layerRect, fFontScaleFactor, fXScale, fYScale);
+					addText(layer.texts[i], graph, 0, layerRect, fFontScaleFactor, fXScale, fYScale);
 				}
 			}
 
 			if(legend)
-				addText(opj.layerLegend(g,l), graph, legend, layerRect, fFontScaleFactor, fXScale, fYScale);
+				addText(layer.legend, graph, legend, layerRect, fFontScaleFactor, fXScale, fYScale);
 
-			vector<Origin::Line> lines = opj.layerLines(g, l);
-			for(int i=0; i<lines.size(); ++i)
+			for(int i = 0; i < layer.lines.size(); ++i)
 			{
 				ArrowMarker mrk;
-				mrk.setStartPoint(lines[i].begin.x, lines[i].begin.y);
-				mrk.setEndPoint(lines[i].end.x, lines[i].end.y);
-				mrk.drawStartArrow(lines[i].begin.shapeType > 0);
-				mrk.drawEndArrow(lines[i].end.shapeType > 0);
-				mrk.setHeadLength(lines[i].end.shapeLength);
-                mrk.setHeadAngle(arrowAngle(lines[i].end.shapeLength, lines[i].end.shapeWidth));
-				mrk.setColor(ColorBox::color(lines[i].color));
-				mrk.setWidth((int)lines[i].width);
+				mrk.setStartPoint(layer.lines[i].begin.x, layer.lines[i].begin.y);
+				mrk.setEndPoint(layer.lines[i].end.x, layer.lines[i].end.y);
+				mrk.drawStartArrow(layer.lines[i].begin.shapeType > 0);
+				mrk.drawEndArrow(layer.lines[i].end.shapeType > 0);
+				mrk.setHeadLength(layer.lines[i].end.shapeLength);
+                mrk.setHeadAngle(arrowAngle(layer.lines[i].end.shapeLength, layer.lines[i].end.shapeWidth));
+				mrk.setColor(ColorBox::color(layer.lines[i].color));
+				mrk.setWidth((int)layer.lines[i].width);
 				Qt::PenStyle s;
 
-				switch(lines[i].style)
+				switch(layer.lines[i].style)
 				{
 				case Origin::GraphCurve::Solid:
 					s=Qt::SolidLine;
@@ -1210,56 +1235,55 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				graph->addArrow(&mrk);
 			}
 
-			vector<Origin::Bitmap> bitmaps=opj.layerBitmaps(g, l);
-			for(int i=0; i<bitmaps.size(); ++i)
+			for(int i = 0; i < layer.bitmaps.size(); ++i)
 			{
 				QPixmap bmp;
-				bmp.loadFromData(bitmaps[i].data, bitmaps[i].size, "BMP");
+				bmp.loadFromData(layer.bitmaps[i].data, layer.bitmaps[i].size, "BMP");
 				QTemporaryFile file;
 				file.setFileTemplate(QDir::tempPath() + "/XXXXXX.bmp");
-				if (file.open())
+				if(file.open())
 				{
 					bmp.save(file.fileName(), "BMP");
 					ImageWidget *mrk = graph->addImage(file.fileName());
 					double left, top, right, bottom;
 					left = top = right = bottom = 0.0;
-					switch(bitmaps[i].attach)
+					switch(layer.bitmaps[i].attach)
 					{
 					case Origin::Scale:
-						left = bitmaps[i].left;
-						top = bitmaps[i].top;
-						right = left + bitmaps[i].width;
-						bottom = top - bitmaps[i].height;
+						left = layer.bitmaps[i].left;
+						top = layer.bitmaps[i].top;
+						right = left + layer.bitmaps[i].width;
+						bottom = top - layer.bitmaps[i].height;
 						break;
 					case Origin::Frame:
-						if(bitmaps[i].width > 0)
+						if(layer.bitmaps[i].width > 0)
 						{
-							left = (rangeX.max-rangeX.min)*bitmaps[i].left + rangeX.min;
-							right = left + bitmaps[i].width;
+							left = (layer.xAxis.max-layer.xAxis.min)*layer.bitmaps[i].left + layer.xAxis.min;
+							right = left + layer.bitmaps[i].width;
 						}
 						else
 						{
-							right = (rangeX.max-rangeX.min)*bitmaps[i].left + rangeX.min;
-							left = right + bitmaps[i].width;
+							right = (layer.xAxis.max-layer.xAxis.min)*layer.bitmaps[i].left + layer.xAxis.min;
+							left = right + layer.bitmaps[i].width;
 						}
 
-						if(bitmaps[i].height > 0)
+						if(layer.bitmaps[i].height > 0)
 						{
-							top = rangeY.max - (rangeY.max-rangeY.min)*bitmaps[i].top;
-							bottom = top - bitmaps[i].height;
+							top = layer.yAxis.max - (layer.yAxis.max-layer.yAxis.min)*layer.bitmaps[i].top;
+							bottom = top - layer.bitmaps[i].height;
 						}
 						else
 						{
-							bottom = rangeY.max - (rangeY.max-rangeY.min)*bitmaps[i].top;
-							top = bottom - bitmaps[i].height;
+							bottom = layer.yAxis.max - (layer.yAxis.max-layer.yAxis.min)*layer.bitmaps[i].top;
+							top = bottom - layer.bitmaps[i].height;
 						}
 						break;
 					case Origin::Page:
 						//rect graphRect = opj.graphRect(g);
-						left = (rangeX.max-rangeX.min)*(bitmaps[i].left - (double)layerRect.left/(double)graphRect.width())/((double)layerRect.width()/(double)graphRect.width()) + rangeX.min;
-						top = rangeY.max - (rangeY.max-rangeY.min)*(bitmaps[i].top - (double)layerRect.top/(double)graphRect.height())/((double)layerRect.height()/(double)graphRect.height());
-						right = left + bitmaps[i].width;
-						bottom = top - bitmaps[i].height;
+						left = (layer.xAxis.max-layer.xAxis.min)*(layer.bitmaps[i].left - (double)layerRect.left/(double)graphRect.width())/((double)layerRect.width()/(double)graphRect.width()) + layer.xAxis.min;
+						top = layer.yAxis.max - (layer.yAxis.max-layer.yAxis.min)*(layer.bitmaps[i].top - (double)layerRect.top/(double)graphRect.height())/((double)layerRect.height()/(double)graphRect.height());
+						right = left + layer.bitmaps[i].width;
+						bottom = top - layer.bitmaps[i].height;
 						break;
 					}
 
@@ -1268,11 +1292,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			}
 		}
 		//cascade the graphs
-		if(!opj.graphHidden(g))
+		if(!_graph.hidden)
 		{
 			ml->move(QPoint(graphWindowRect.left, graphWindowRect.top));
 
-			switch(opj.graphState(g))
+			switch(_graph.state)
 			{
 			case Origin::Window::Minimized:
 				mw->minimizeWindow(ml);
@@ -1292,8 +1316,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			mw->hideWindow(ml);
 		}
 	}
-	if(visible_count>0)
-		xoffset++;
+
+	if(visible_count > 0)
+		++xoffset;
+
 	return true;
 }
 
