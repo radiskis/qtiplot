@@ -27,30 +27,29 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "OriginFile.h"
 #include <stdio.h>
 #include <fstream>
-#include <stdlib.h>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
-#include "OriginFile.h"
 
 using namespace boost;
 
-OriginFile::OriginFile(const char* fileName)
-:	version(0)
+OriginFile::OriginFile(const string& fileName)
+:	fileVersion(0)
 {
-	ifstream file(fileName, ios_base::binary);
+	ifstream file(fileName.c_str(), ios_base::binary);
 
 	if(!file.is_open())
 	{
-		printf("Could not open %s!\n", fileName);
+		cerr << format("Could not open %s!") % fileName.c_str() << endl;
 		return;
 	}
 	
 	char vers[4];
 	file.seekg(0x7, ios_base::beg);
 	file >> vers;
-	version = lexical_cast<int>(vers);
+	fileVersion = lexical_cast<int>(vers);
 	file.close();
 
 
@@ -58,40 +57,40 @@ OriginFile::OriginFile(const char* fileName)
 
 	if(!debug.is_open())
 	{
-		printf("Could not open log file!\n", fileName);
+		cerr << "Could not open log file!" << endl;
 		return;
 	}
 
-	debug << format("	[version = %d]") % version << endl;
+	debug << format("	[version = %d]") % fileVersion << endl;
 
 	// translate version
-	if(version >= 130 && version <= 140)			// 4.1
-		version = 410;
-	else if(version == 210)							// 5.0
-		version = 500;
-	else if(version == 2625)						// 6.0
-		version = 600;
-	else if(version == 2627)						// 6.0 SR1
-		version = 601;
-	else if(version == 2630)						// 6.0 SR4
-		version = 604;
-	else if(version == 2635)						// 6.1
-		version = 610;
-	else if(version == 2656)						// 7.0
-		version = 700;
-	else if(version == 2672)						// 7.0 SR3
-		version = 703;
-	else if(version >= 2766 && version <= 2769)		// 7.5
-		version = 750;
+	if(fileVersion >= 130 && fileVersion <= 140)		// 4.1
+		fileVersion = 410;
+	else if(fileVersion == 210)							// 5.0
+		fileVersion = 500;
+	else if(fileVersion == 2625)						// 6.0
+		fileVersion = 600;
+	else if(fileVersion == 2627)						// 6.0 SR1
+		fileVersion = 601;
+	else if(fileVersion == 2630)						// 6.0 SR4
+		fileVersion = 604;
+	else if(fileVersion == 2635)						// 6.1
+		fileVersion = 610;
+	else if(fileVersion == 2656)						// 7.0
+		fileVersion = 700;
+	else if(fileVersion == 2672)						// 7.0 SR3
+		fileVersion = 703;
+	else if(fileVersion >= 2766 && fileVersion <= 2769)	// 7.5
+		fileVersion = 750;
 	else
 	{
-		debug << format("Found unknown project version %d") % version << endl;
+		debug << format("Found unknown project version %d") % fileVersion << endl;
 		debug << "Please contact the author of opj2dat" << endl;
 	}
-	debug << format("Found project version %.2f") % (version/100.0) << endl;
+	debug << format("Found project version %.2f") % (fileVersion/100.0) << endl;
 	debug.close();
 
-	switch(version)
+	switch(fileVersion)
 	{
 	case 750:
 		parser.reset(createOrigin750Parser(fileName));
@@ -102,7 +101,77 @@ OriginFile::OriginFile(const char* fileName)
 	}
 }
 
-int OriginFile::parse()
+bool OriginFile::parse()
 {
 	return parser->parse();
+}
+
+double OriginFile::version() const
+{
+	return fileVersion/100.0;
+}
+
+const tree<Origin::ProjectNode>* OriginFile::project() const
+{
+	return &parser->projectTree;
+}
+
+int OriginFile::spreadCount() const
+{
+	return parser->speadSheets.size();
+}
+
+Origin::SpreadSheet& OriginFile::spread(int s) const
+{
+	return parser->speadSheets[s];
+}
+
+int OriginFile::matrixCount() const
+{
+	return parser->matrixes.size();
+}	
+
+Origin::Matrix& OriginFile::matrix(int m) const
+{
+	return parser->matrixes[m];
+}
+
+int OriginFile::functionCount() const
+{
+	return parser->functions.size();
+}
+
+int OriginFile::functionIndex(const char* s) const
+{
+	return parser->findFunctionByName(s);
+}
+
+Origin::Function& OriginFile::function(int f) const
+{
+	return parser->functions[f];
+}
+
+int OriginFile::graphCount() const
+{
+	return parser->graphs.size();
+}
+
+Origin::Graph& OriginFile::graph(int g) const
+{
+	return parser->graphs[g];
+}
+
+int OriginFile::noteCount() const
+{
+	return parser->notes.size();
+}
+
+Origin::Note& OriginFile::note(int n) const
+{
+	return parser->notes[n];
+}
+
+string OriginFile::resultsLogString() const
+{
+	return parser->resultsLog;
 }
