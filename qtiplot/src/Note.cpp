@@ -81,7 +81,7 @@ void Note::save(const QString &fn, const QString &info, bool)
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
 			return;
-	}	
+	}
 	QTextStream t( &f );
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	t << "<note>\n";
@@ -127,4 +127,22 @@ void Note::setAutoexec(bool exec)
     te->setPaletteBackgroundColor(QColor(255,239,185));
   else
     te->unsetPalette();
+}
+
+void Note::setFont(const QFont& f)
+{
+    if (te->toPlainText().isEmpty()){
+        te->setCurrentFont(f);
+        d_line_number->setCurrentFont(f);
+        return;
+    }
+
+    te->selectAll();
+    te->setCurrentFont(f);
+    d_line_number->setCurrentFont(f);
+    d_line_number->updateLineNumbers(true);
+
+    QTextCursor cursor = te->textCursor();
+    cursor.clearSelection();
+    te->setTextCursor(cursor);
 }

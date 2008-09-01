@@ -447,11 +447,50 @@ private:
   ArrowMarker(const ArrowMarker&);
 };
 
-class FrameWidget : QWidget
+class FrameWidget : QWidget  /PyName=Frame/
 {
 %TypeHeaderCode
 #include "src/plot2D/FrameWidget.h"
 %End
+
+public:
+    enum FrameStyle{None = 0, Line = 1, Shadow = 2};
+
+    double xValue();
+	double yValue();
+	void setOriginCoord(double, double);
+	void setOrigin(int x, int y);
+	void move(const QPoint&);
+
+	QRectF boundingRect();
+	void setCoordinates(double left, double top, double right, double bottom);
+    void setSize(int w, int h);
+    void setSize(const QSize& newSize);
+	void setRect(int x, int y, int w, int h);
+
+	double right();
+	double bottom();
+
+	int frameStyle();
+	void setFrameStyle(int);
+
+	QPen framePen();
+	void setFramePen(const QPen&);
+
+	Qt::PenStyle frameLineStyle();
+	void setFrameLineStyle(const Qt::PenStyle&);
+
+	QColor frameColor();
+	void setFrameColor(const QColor&);
+
+	QColor frameWidth();
+	void setFrameWidth(int);
+
+	QColor backgroundColor();
+	void setBackgroundColor(const QColor&);
+
+	QBrush brush();
+	void setBrush(const QBrush& );
 
 private:
   FrameWidget(const FrameWidget&);
@@ -468,11 +507,6 @@ public:
   QString fileName();
   bool load(const QString& fn);
 
-  void setOrigin(int, int);
-  void setSize(int, int);
-  void setRect(int, int, int, int);
-  void setCoordinates(double, double, double, double);
-
 private:
   ImageWidget(const ImageWidget&);
 };
@@ -483,15 +517,10 @@ class LegendWidget : FrameWidget /PyName=Legend/
 #include "src/plot2D/LegendWidget.h"
 %End
 public:
-    enum FrameStyle{None = 0, Line = 1, Shadow=2};
 
   void setText(const QString&);
   void setTextColor(const QColor&);
-  void setFrameStyle(int);
-  void setBackgroundColor(const QColor&);
   void setFont(const QFont&);
-  void setOriginCoord(double, double);
-  void setOrigin(int, int);
   void setAngle(int);
   int angle();
 
@@ -500,6 +529,19 @@ public:
 
 private:
   LegendWidget(const LegendWidget&);
+};
+
+class RectangleWidget : FrameWidget /PyName=Rectangle/
+{
+%TypeHeaderCode
+#include "src/plot2D/RectangleWidget.h"
+%End
+public:
+
+  RectangleWidget(Graph *);
+
+private:
+  RectangleWidget(const RectangleWidget&);
 };
 
 class Grid // : QwtPlotGrid
@@ -599,7 +641,7 @@ public:
   void removeCurve(const QString&);
   void deleteFitCurves();
   int curveCount() /PyName=numCurves/;
-  
+
   void setCurveLineColor(int, int);
   void setCurveLineStyle(int, Qt::PenStyle);
   void setCurveLineWidth(int, double);
@@ -655,6 +697,9 @@ public:
   void remove(LegendWidget*);
 
   LegendWidget* addTimeStamp();
+
+  FrameWidget* add(FrameWidget*, bool = true);
+  void remove(FrameWidget*);
 
   void setXAxisTitle(const QString& text) /PyName=setXTitle/;
   void setYAxisTitle(const QString& text) /PyName=setYTitle/;

@@ -384,6 +384,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+    d_notes_tab_length = 20;
     d_completer = NULL;
     d_completion = true;
     d_note_line_numbers = true;
@@ -456,6 +457,8 @@ void ApplicationWindow::initGlobalConstants()
 	customActionsDirPath = QString::null;
 
 	appFont = QFont();
+    d_notes_font = appFont;
+
 	QString family = appFont.family();
 	int pointSize = appFont.pointSize();
 	tableTextFont = appFont;
@@ -1462,6 +1465,12 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
         else
             plot3DTools->setEnabled(true);
         custom3DActions(w);
+    } else if (w->isA("Note")){
+		if(d_format_tool_bar && !formatToolBar->isVisible())
+            formatToolBar->show();
+
+        formatToolBar->setEnabled (true);
+        setFormatBarFont(((Note*)w)->editor()->currentFont());
     }
 }
 
@@ -2728,6 +2737,8 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	m->askOnCloseEvent(confirmCloseNotes);
 	m->setDirPath(scriptsDirPath);
     m->showLineNumbers(d_note_line_numbers);
+    m->editor()->setTabStopWidth(d_notes_tab_length);
+    m->setFont(d_notes_font);
 	if (d_completer && d_completion)
         m->editor()->setCompleter(d_completer);
 
@@ -4336,7 +4347,6 @@ void ApplicationWindow::readSettings()
     d_backup_files = settings.value("/BackupProjects", true).toBool();
 	d_init_window_type = (WindowType)settings.value("/InitWindow", TableWindow).toInt();
     d_completion = settings.value("/Completion", true).toBool();
-    d_note_line_numbers = settings.value("/LineNumbers", true).toBool();
 	defaultScriptingLang = settings.value("/ScriptingLang","muParser").toString();
 
 	bool thousandsSep = settings.value("/ThousandsSeparator", true).toBool();
@@ -4632,6 +4642,15 @@ void ApplicationWindow::readSettings()
 	d_display_tool_bar = settings.value("/DisplayToolBar", false).toBool();
 	d_format_tool_bar = settings.value("/FormatToolBar", true).toBool();
 	settings.endGroup();
+
+    settings.beginGroup("/Notes");
+    d_note_line_numbers = settings.value("/LineNumbers", true).toBool();
+    d_notes_tab_length = settings.value("/TabLength", d_notes_tab_length).toInt();
+    d_notes_font.setFamily(settings.value("/FontFamily", d_notes_font.family()).toString());
+    d_notes_font.setPointSize(settings.value("/FontSize", d_notes_font.pointSize()).toInt());
+    d_notes_font.setBold(settings.value("/FontBold", d_notes_font.bold()).toBool());
+    d_notes_font.setItalic(settings.value("/FontItalic", d_notes_font.italic()).toBool());
+	settings.endGroup();
 }
 
 void ApplicationWindow::saveSettings()
@@ -4667,7 +4686,6 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/BackupProjects", d_backup_files);
 	settings.setValue("/InitWindow", int(d_init_window_type));
     settings.setValue("/Completion", d_completion);
-    settings.setValue("/LineNumbers", d_note_line_numbers);
 	settings.setValue("/ScriptingLang", defaultScriptingLang);
 
 	bool thousandsSep = (locale().numberOptions() & QLocale::OmitGroupSeparator) ? false : true;
@@ -4957,6 +4975,15 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/Plot3DToolBar", d_plot3D_tool_bar);
     settings.setValue("/DisplayToolBar", d_display_tool_bar);
 	settings.setValue("/FormatToolBar", d_format_tool_bar);
+	settings.endGroup();
+
+	settings.beginGroup("/Notes");
+    settings.setValue("/LineNumbers", d_note_line_numbers);
+    settings.setValue("/TabLength", d_notes_tab_length);
+    settings.setValue("/FontFamily", d_notes_font.family());
+    settings.setValue("/FontSize", d_notes_font.pointSize());
+    settings.setValue("/FontBold", d_notes_font.bold());
+    settings.setValue("/FontItalic", d_notes_font.italic());
 	settings.endGroup();
 }
 
@@ -14868,6 +14895,8 @@ void ApplicationWindow::showScriptWindow()
 		if (d_completion && d_completer)
             scriptWindow->editor()->setCompleter(d_completer);
         scriptWindow->showLineNumbers(d_note_line_numbers);
+        scriptWindow->editor()->setTabStopWidth(d_notes_tab_length);
+        scriptWindow->editor()->setCurrentFont(d_notes_font);
 		scriptWindow->resize(d_script_win_rect.size());
 		scriptWindow->move(d_script_win_rect.topLeft());
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
@@ -15339,72 +15368,108 @@ void ApplicationWindow::setFormatBarFont(const QFont& font)
 
 void ApplicationWindow::setFontSize(int size)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g)
-		return;
-
-	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+    QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
 	QFont f(fb->currentFont().family(), size);
 	f.setBold(actionFontBold->isChecked());
 	f.setItalic(actionFontItalic->isChecked());
-	g->setCurrentFont(f);
+
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (plot){
+        Graph* g = plot->activeLayer();
+        if (g)
+            g->setCurrentFont(f);
+	}
+
+	Note *n = (Note *)activeWindow(NoteWindow);
+	if (n){
+	    d_notes_font = f;
+        QList<MdiSubWindow *> windows = windowsList();
+        foreach(MdiSubWindow *w, windows){
+            Note *m = qobject_cast<Note *>(w);
+            if (m)
+                m->setFont(f);
+        }
+	}
 }
 
 void ApplicationWindow::setFontFamily(const QFont& font)
 {
+    QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
+    QFont f(font.family(), sb->value());
+    f.setBold(actionFontBold->isChecked());
+    f.setItalic(actionFontItalic->isChecked());
+
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
+	if (plot){
+        Graph* g = plot->activeLayer();
+        if (g)
+            g->setCurrentFont(f);
+	}
 
-	Graph* g = plot->activeLayer();
-	if (!g)
-		return;
-
-	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
-	QFont f(font.family(), sb->value());
-	f.setBold(actionFontBold->isChecked());
-	f.setItalic(actionFontItalic->isChecked());
-	g->setCurrentFont(f);
+	Note *n = (Note *)activeWindow(NoteWindow);
+	if (n){
+	    d_notes_font = f;
+        QList<MdiSubWindow *> windows = windowsList();
+        foreach(MdiSubWindow *w, windows){
+            Note *m = qobject_cast<Note *>(w);
+            if (m)
+                m->setFont(f);
+        }
+	}
 }
 
 void ApplicationWindow::setItalicFont(bool italic)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g)
-		return;
-
-	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+    QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
 	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
 	QFont f(fb->currentFont().family(), sb->value());
 	f.setBold(actionFontBold->isChecked());
 	f.setItalic(italic);
-	g->setCurrentFont(f);
+
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (plot){
+        Graph* g = plot->activeLayer();
+        if (g)
+            g->setCurrentFont(f);
+	}
+
+    Note *n = (Note *)activeWindow(NoteWindow);
+	if (n){
+	    d_notes_font = f;
+        QList<MdiSubWindow *> windows = windowsList();
+        foreach(MdiSubWindow *w, windows){
+            Note *m = qobject_cast<Note *>(w);
+            if (m)
+                m->setFont(f);
+        }
+	}
 }
 
 void ApplicationWindow::setBoldFont(bool bold)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g)
-		return;
-
-	QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
+    QFontComboBox *fb = (QFontComboBox *)formatToolBar->widgetForAction(actionFontBox);
 	QSpinBox *sb = (QSpinBox *)formatToolBar->widgetForAction(actionFontSize);
 	QFont f(fb->currentFont().family(), sb->value());
 	f.setBold(bold);
 	f.setItalic(actionFontItalic->isChecked());
-	g->setCurrentFont(f);
+
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (plot){
+        Graph* g = plot->activeLayer();
+        if (g)
+            g->setCurrentFont(f);
+	}
+
+    Note *n = (Note *)activeWindow(NoteWindow);
+	if (n){
+	    d_notes_font = f;
+        QList<MdiSubWindow *> windows = windowsList();
+        foreach(MdiSubWindow *w, windows){
+            Note *m = qobject_cast<Note *>(w);
+            if (m)
+                m->setFont(f);
+        }
+	}
 }
 
 void ApplicationWindow::enableTextEditor(Graph *g)
@@ -15677,7 +15742,7 @@ QString ApplicationWindow::guessEndOfLine(const QString& sample)
 {//Try to guess which end-of-line character is used:
     if (sample.indexOf("\r\n") != -1)//Try \r\n first
         return "\r\n";
-    else if (sample.indexOf("\r") != -1)//then look for \r     
+    else if (sample.indexOf("\r") != -1)//then look for \r
         return "\r";
 	// use \n if neither \r\n nor \r have been found
     return "\n";

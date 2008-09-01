@@ -78,6 +78,8 @@ public slots:
 	void showLineNumbers(bool show = true){d_line_number->setVisible(show);};
 	bool hasLineNumbers(){return d_line_number->isVisible();};
 
+    void setFont(const QFont& f);
+
  signals:
 	void dirPathChanged(const QString& path);
 

@@ -1480,7 +1480,7 @@ void Graph::exportSVG(const QString& fname)
 {
 	QSvgGenerator svg;
 	svg.setFileName(fname);
-	svg.setSize(size());
+	svg.setSize(boundingRect().size());
 
 	QPainter p(&svg);
 	print(&p, rect());
@@ -3613,7 +3613,7 @@ void Graph::scaleFonts(double factor)
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
 		l->setFont(font);
 	}
-	
+
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		QFont font = axisFont(i);
 		font.setPointSizeFloat(factor*font.pointSizeFloat());
@@ -5342,7 +5342,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
        return;
 
 	deselect();
-	
+
     QwtText t = title();
 	printFrame(painter, plotRect);
 

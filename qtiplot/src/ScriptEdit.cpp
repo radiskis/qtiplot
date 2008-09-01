@@ -109,10 +109,6 @@ void ScriptEdit::focusInEvent(QFocusEvent *e)
 
 void ScriptEdit::keyPressEvent(QKeyEvent *e)
 {
-	QTextEdit::keyPressEvent(e);
-	if (d_completer && !d_completer->popup()->isVisible() && e->key() == Qt::Key_Return)
-		updateIndentation();
-
     if (d_completer && d_completer->popup()->isVisible()) {
          // The following keys are forwarded by the completer to the widget
         switch (e->key()) {
@@ -127,6 +123,10 @@ void ScriptEdit::keyPressEvent(QKeyEvent *e)
             break;
         }
      }
+
+    QTextEdit::keyPressEvent(e);
+    if (d_completer && !d_completer->popup()->isVisible() && e->key() == Qt::Key_Return)
+        updateIndentation();
 
      bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_U); // CTRL+U
      const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
@@ -445,7 +445,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 }
 
 void ScriptEdit::updateIndentation()
-{	
+{
 	QTextCursor cursor = textCursor();
 	QTextBlock para = cursor.block();
 	QString prev = para.previous().text();
@@ -481,10 +481,10 @@ void ScriptEdit::setDirPath(const QString& path)
  }
 
  void ScriptEdit::insertCompletion(const QString& completion)
- {	 
+ {
      if (d_completer->widget() != this)
          return;
-	 
+
 	 QTextCursor tc = textCursor();
      int extra = completion.length() - d_completer->completionPrefix().length();
      tc.movePosition(QTextCursor::Left);
