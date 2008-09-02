@@ -1458,6 +1458,21 @@ for more details).
 <programlisting>
 l.removeTitle()
 </programlisting>
+
+Here's how you can add greek symbols in the plot title or in any other text in the plot layer: axis labels, legends:
+<programlisting>
+<![CDATA[
+l.setTitle("normal text <font face=\"Symbol\">greek text</font>")
+]]>
+</programlisting>
+
+Using the font specifications, you can also change the color of some parts of the title only:
+<programlisting>
+<![CDATA[
+l=newGraph().activeLayer()
+l.setTitle("<font color = red>red</font> <font color = yellow>yellow</font> <font color = blue>blue</font>")
+]]>
+</programlisting>
 </sect3>
 
 <sect3 id="Python-Axes">
@@ -1841,6 +1856,24 @@ You can remove a rectangle using its reference:
 r2 = l.add(r)
 r2.setOrigin(200, 200)
 l.remove(r1)
+</programlisting>
+</sect3>
+
+<sect3 id="Python-Ellipses">
+<title>Circles/Ellipses</title>
+<programlisting>
+l = newGraph().activeLayer()
+
+e = Ellipse(l)
+e.setSize(100, 100)
+e.setOrigin(100, 200)
+e.setBackgroundColor(QtCore.Qt.yellow)
+e.setFrameColor(QtCore.Qt.red)
+e.setFrameWidth(0.8)
+e.setFrameLineStyle(QtCore.Qt.DotLine)
+e.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.FDiagPattern))
+
+l.add(e)
 </programlisting>
 </sect3>
 

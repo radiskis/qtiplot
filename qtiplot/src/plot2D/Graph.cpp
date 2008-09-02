@@ -124,6 +124,7 @@ static const char *unzoom_xpm[]={
 #include "../ApplicationWindow.h"
 #include "ScaleEngine.h"
 #include "RectangleWidget.h"
+#include "EllipseWidget.h"
 
 #ifdef EMF_OUTPUT
 #include "EmfEngine.h"
@@ -5542,6 +5543,12 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 		((RectangleWidget *)aux)->clone(r);
 	}
 
+	EllipseWidget *e = qobject_cast<EllipseWidget *>(fw);
+	if (e){
+		aux = new EllipseWidget(this);
+		((EllipseWidget *)aux)->clone(e);
+	}
+	
 	d_enrichments << aux;
 	d_active_enrichment = aux;
 	return aux;

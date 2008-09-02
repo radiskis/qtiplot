@@ -279,6 +279,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/BoxCurve.h \
 			   src/plot2D/CanvasPicker.h \
 			   src/plot2D/DataPickerTool.h \
+			   src/plot2D/EllipseWidget.h \
 			   src/plot2D/FrameWidget.h \
 			   src/plot2D/FunctionCurve.h \
 			   src/plot2D/Graph.h \
@@ -312,6 +313,7 @@ SOURCES  += src/main.cpp \
 			   src/plot2D/BoxCurve.cpp \
 			   src/plot2D/CanvasPicker.cpp \
 			   src/plot2D/DataPickerTool.cpp \
+			   src/plot2D/EllipseWidget.cpp \
 			   src/plot2D/FrameWidget.cpp \
 			   src/plot2D/FunctionCurve.cpp \
 			   src/plot2D/Graph.cpp \
@@ -526,6 +528,7 @@ contains(SCRIPTING_LANGS, Python) {
              $${SIP_DIR}/sipqtiGraph3D.cpp\
              $${SIP_DIR}/sipqtiArrowMarker.cpp\
              $${SIP_DIR}/sipqtiFrameWidget.cpp\
+			 $${SIP_DIR}/sipqtiEllipseWidget.cpp\
 			 $${SIP_DIR}/sipqtiImageWidget.cpp\
 			 $${SIP_DIR}/sipqtiLegendWidget.cpp\
 			 $${SIP_DIR}/sipqtiRectangleWidget.cpp\

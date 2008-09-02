@@ -249,7 +249,7 @@ QString FrameWidget::saveToString()
 {
 	QString s = "<Frame>" + QString::number(d_frame) + "</Frame>\n";
 	s += "<Color>" + d_frame_pen.color().name() + "</Color>\n";
-	s += "<FrameWidth>" + QString::number(d_frame_pen.width()) + "</FrameWidth>\n";
+	s += "<FrameWidth>" + QString::number(d_frame_pen.widthF()) + "</FrameWidth>\n";
 	s += "<LineStyle>" + QString::number(PenStyleBox::styleIndex(d_frame_pen.style())) + "</LineStyle>\n";
 
 	s += "<x>" + QString::number(d_x, 'g', 14) + "</x>\n";

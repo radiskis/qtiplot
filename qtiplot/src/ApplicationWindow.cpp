@@ -91,6 +91,7 @@
 #include "plot2D/QwtHistogram.h"
 #include "plot2D/FunctionCurve.h"
 #include "plot2D/QwtPieCurve.h"
+#include "plot2D/EllipseWidget.h"
 #include "plot2D/RectangleWidget.h"
 #include "plot2D/Spectrogram.h"
 
@@ -760,14 +761,7 @@ void ApplicationWindow::initToolBars()
 	actionAddFormula->setIcon(QIcon(QPixmap(equation_xpm)));
 	connect(actionAddFormula, SIGNAL(triggered()), this, SLOT(addTexFormula()));
 	plotTools->addAction(actionAddFormula);
-
-    actionAddRectangle = new QAction(tr("Add &Rectangle"), this);
-	actionAddRectangle->setShortcut( tr("CTRL+ALT+R") );
-	actionAddRectangle->setCheckable(true);
-	actionAddRectangle->setIcon(QIcon(QPixmap(rectangle_xpm)));
-	connect(actionAddRectangle, SIGNAL(triggered()), this, SLOT(addRectangle()));
-	plotTools->addAction(actionAddRectangle);
-
+	
 	actionAddText = new QAction(tr("Add &Text"), this);
 	actionAddText->setShortcut( tr("ALT+T") );
 	actionAddText->setIcon(QIcon(QPixmap(text_xpm)));
@@ -789,7 +783,31 @@ void ApplicationWindow::initToolBars()
 	btnLine->setIcon(QIcon(QPixmap(lPlot_xpm)) );
 	plotTools->addAction(btnLine);
 
-    plotTools->addAction(actionAddRectangle);
+	QPixmap pix = QPixmap(16, 16);
+	pix.fill(Qt::transparent);
+	QPainter p;
+	p.begin(&pix);
+	p.setBrush(Qt::lightGray);
+	p.drawRect(QRect(1, 2, 12, 10));
+	
+    actionAddRectangle = new QAction(tr("Add &Rectangle"), this);
+	actionAddRectangle->setShortcut( tr("CTRL+ALT+R") );
+	actionAddRectangle->setCheckable(true);
+	actionAddRectangle->setIcon(QIcon(pix));
+	connect(actionAddRectangle, SIGNAL(triggered()), this, SLOT(addRectangle()));
+	plotTools->addAction(actionAddRectangle);
+
+	pix.fill(Qt::transparent);
+	p.drawEllipse(QRect(0, 2, 15, 12));
+	p.end();
+	
+	actionAddEllipse = new QAction(tr("Add &Ellipse"), this);
+	actionAddEllipse->setShortcut( tr("CTRL+ALT+E") );
+	actionAddEllipse->setCheckable(true);
+	actionAddEllipse->setIcon(QIcon(pix));
+	connect(actionAddEllipse, SIGNAL(triggered()), this, SLOT(addEllipse()));
+	plotTools->addAction(actionAddEllipse); 
+	
 	plotTools->addAction(actionTimeStamp);
 	plotTools->addAction(actionAddImage);
 	plotTools->hide();
@@ -1012,6 +1030,7 @@ void ApplicationWindow::initMainMenu()
 	graph->addAction(btnArrow);
 	graph->addAction(btnLine);
 	graph->addAction(actionAddRectangle);
+	graph->addAction(actionAddEllipse);
 	graph->addAction(actionTimeStamp);
 	graph->addAction(actionAddImage);
 	graph->insertSeparator();//layers section
@@ -4517,7 +4536,7 @@ void ApplicationWindow::readSettings()
 
 
 	d_frame_widget_pen.setColor(settings.value("/FrameColor", Qt::black).value<QColor>());
-	d_frame_widget_pen.setWidth(settings.value("/FrameWidth", 1).toInt());
+	d_frame_widget_pen.setWidth(settings.value("/FrameWidth", 1).toDouble());
 	d_frame_widget_pen.setStyle(PenStyleBox::penStyle(settings.value("/FramePenStyle", 0).toInt()));
 
 	legendTextColor = settings.value("/TextColor", "#000000").value<QColor>(); //default color Qt::black
@@ -4844,7 +4863,7 @@ void ApplicationWindow::saveSettings()
 	settings.beginGroup("/Legend");
 	settings.setValue("/FrameStyle", legendFrameStyle);
 	settings.setValue("/FrameColor", d_frame_widget_pen.color().name());
-	settings.setValue("/FrameWidth", d_frame_widget_pen.width());
+	settings.setValue("/FrameWidth", d_frame_widget_pen.widthF());
 	settings.setValue("/FramePenStyle", PenStyleBox::styleIndex(d_frame_widget_pen.style()));
 	settings.setValue("/TextColor", legendTextColor);
 	settings.setValue("/BackgroundColor", legendBackground);
@@ -7318,6 +7337,24 @@ void ApplicationWindow::addRectangle()
 	btnPointer->setOn(false);
 }
 
+void ApplicationWindow::addEllipse()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	Graph *g = (Graph*)plot->activeLayer();
+	if (!g){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+		tr("There are no layers available on this plot. Operation aborted!"));
+		return;
+	}
+
+    g->setActiveTool(new AddWidgetTool(AddWidgetTool::Ellipse, g, actionAddEllipse, info, SLOT(setText(const QString&))));
+	displayBar->show();
+	btnPointer->setOn(false);
+}
+
 void ApplicationWindow::addTexFormula()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
@@ -7470,6 +7507,11 @@ void ApplicationWindow::showEnrichementDialog()
             TexWidget *tw = qobject_cast<TexWidget *>(g->activeEnrichment());
             if (tw)
                 wt = EnrichmentDialog::Tex;
+			else {
+				EllipseWidget *e = qobject_cast<EllipseWidget *>(g->activeEnrichment());
+            	if (e)
+                	wt = EnrichmentDialog::Ellipse;
+			}
         }
 	}
 
@@ -10925,6 +10967,14 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			RectangleWidget::restore(ag, lst);
+		} else if (s == "<Ellipse>"){//version 0.9.7.2
+			QStringList lst;
+			while ( s != "</Ellipse>" ){
+				s = list[++j];
+				lst << s;
+			}
+			lst.pop_back();
+			EllipseWidget::restore(ag, lst);
 		}
 		else if (s.contains("AxisType"))
 		{
@@ -12755,6 +12805,10 @@ void ApplicationWindow::translateActionsStrings()
     actionAddRectangle->setToolTip(tr("Add Rectangle"));
 	actionAddRectangle->setShortcut( tr("CTRL+ALT+R") );
 
+	actionAddEllipse->setMenuText(tr("Add &Ellipse"));
+    actionAddEllipse->setToolTip(tr("Add Ellipse/Circle"));
+	actionAddEllipse->setShortcut( tr("CTRL+ALT+E") );
+	
 	btnArrow->setMenuText(tr("Draw &Arrow"));
 	btnArrow->setShortcut(tr("CTRL+ALT+A"));
 	btnArrow->setToolTip(tr("Draw arrow"));

@@ -35,8 +35,8 @@
 #include <QDate>
 #include <QDir>
 #include <QTemporaryFile>
-#include "Matrix/Matrix.h"
-#include "Matrix/MatrixModel.h"
+#include "matrix/Matrix.h"
+#include "matrix/MatrixModel.h"
 #include "ColorBox.h"
 #include "plot2D/MultiLayer.h"
 #include "Note.h"

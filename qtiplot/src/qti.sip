@@ -483,8 +483,8 @@ public:
 	QColor frameColor();
 	void setFrameColor(const QColor&);
 
-	QColor frameWidth();
-	void setFrameWidth(int);
+	double frameWidth();
+	void setFrameWidth(double);
 
 	QColor backgroundColor();
 	void setBackgroundColor(const QColor&);
@@ -542,6 +542,19 @@ public:
 
 private:
   RectangleWidget(const RectangleWidget&);
+};
+
+class EllipseWidget : FrameWidget /PyName=Ellipse/
+{
+%TypeHeaderCode
+#include "src/plot2D/EllipseWidget.h"
+%End
+public:
+
+  EllipseWidget(Graph *);
+
+private:
+  EllipseWidget(const EllipseWidget&);
 };
 
 class Grid // : QwtPlotGrid

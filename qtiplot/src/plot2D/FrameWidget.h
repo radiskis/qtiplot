@@ -91,8 +91,8 @@ public:
 	QColor frameColor(){return d_frame_pen.color();};
 	void setFrameColor(const QColor& c){d_frame_pen.setColor(c);};
 
-	QColor frameWidth(){return d_frame_pen.width();};
-	void setFrameWidth(int w){d_frame_pen.setWidth(w);};
+	double frameWidth(){return d_frame_pen.widthF();};
+	void setFrameWidth(double w){d_frame_pen.setWidthF(w);};
 
 	QColor backgroundColor(){return palette().color(QPalette::Window);};
 	void setBackgroundColor(const QColor& c){QPalette pal = palette(); pal.setColor(QPalette::Window, c); setPalette(pal);};
@@ -128,7 +128,7 @@ protected:
     //! Returns the y axis coordinate of the bottom right corner based on the pixel value
     double calculateBottomValue();
 
-	void drawFrame(QPainter *p, const QRect& rect);
+	virtual void drawFrame(QPainter *p, const QRect& rect);
 	virtual void paintEvent(QPaintEvent *e);
 	void mousePressEvent(QMouseEvent *);
 	void contextMenuEvent(QContextMenuEvent * ){emit showMenu();};

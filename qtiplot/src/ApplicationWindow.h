@@ -581,6 +581,7 @@ public slots:
 	void addText();
 	void addTexFormula();
 	void addRectangle();
+	void addEllipse();
 	void addImage();
 	void zoomIn();
 	void zoomOut();
@@ -1278,7 +1279,7 @@ private:
 	QAction *Box, *Frame, *None;
     QAction *front, *back, *right, *left, *ceil, *floor, *floordata, *flooriso, *floornone;
     QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
-    QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle;
+    QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle, *actionAddEllipse;
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
