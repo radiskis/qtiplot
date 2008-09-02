@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : AddWidgetTool.h
+    File                 : RectangleWidget.h
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Tool for adding enrichements to a plot.
+    Description          : A widget displaying ellipses/circles in 2D plots
 
  ***************************************************************************/
 
@@ -26,55 +26,25 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef ADD_WIDGET_TOOL_H
-#define ADD_WIDGET_TOOL_H
+#ifndef ELLIPSE_WIDGET_H
+#define ELLIPSE_WIDGET_H
 
-#include "PlotToolInterface.h"
-#include <QObject>
+#include "FrameWidget.h"
 
-class QAction;
-class QPoint;
-class FrameWidget;
-
-/*!Plot tool for adding enrichements.
- *
- * Provides selection of points on a Graph.
- */
-class AddWidgetTool : public QObject, public PlotToolInterface
+class EllipseWidget: public FrameWidget
 {
 	Q_OBJECT
-	public:
-		enum WidgetType{
-        	Text = 0,
-        	TexEquation,
-        	Rectangle,
-			Ellipse,
-        	UserWidget = 1000
-    	};
 
-		AddWidgetTool(WidgetType type, Graph *graph, QAction *d_action, const QObject *status_target = NULL, const char *status_slot = "");
-		virtual ~AddWidgetTool();
+public:
+	EllipseWidget(Graph *);
 
-		virtual int rtti() const {return PlotToolInterface::Rtti_AddWidgetTool;};
+	virtual QString saveToString();
 
-	signals:
-		/*! Emitted whenever a new message should be presented to the user.
-		 *
-		 * You don't have to connect to this signal if you alreay specified a reciever during initialization.
-		 */
-		void statusText(const QString&);
+	void clone(EllipseWidget* t);
+	static void restore(Graph *g, const QStringList& lst);
 
-	protected:
-		void addEllipse(const QPoint& point);
-        void addRectangle(const QPoint& point);
-		void addEquation(const QPoint& point);
-		void addText(const QPoint& point);
-		void addWidget(const QPoint& point);
-
-        virtual bool eventFilter(QObject *obj, QEvent *event);
-		QAction *d_action;
-		WidgetType d_widget_type;
-		FrameWidget *d_fw;
+private:
+	void drawFrame(QPainter *p, const QRect& rect);
 };
 
-#endif // ifndef ADD_WIDGET_TOOL_H
+#endif

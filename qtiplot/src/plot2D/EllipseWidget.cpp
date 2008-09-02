@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : RectangleWidget.cpp
+    File                 : EllipseWidget.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A widget displaying rectangles in 2D plots
+    Description          : A widget displaying ellipses/circles in 2D plots
 
  ***************************************************************************/
 
@@ -26,7 +26,7 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#include "RectangleWidget.h"
+#include "EllipseWidget.h"
 #include "../PatternBox.h"
 #include "../PenStyleBox.h"
 
@@ -34,14 +34,14 @@
 #include <QPaintEngine>
 #include <QPalette>
 
-RectangleWidget::RectangleWidget(Graph *plot):FrameWidget(plot),
-d_linked_layer(-1)
+#include <qwt_painter.h>
+
+EllipseWidget::EllipseWidget(Graph *plot):FrameWidget(plot)
 {
 	setFrameStyle(Line);
-	setSize(100, 50);
 }
 
-void RectangleWidget::clone(RectangleWidget* r)
+void EllipseWidget::clone(EllipseWidget* r)
 {
 	d_frame = r->frameStyle();
 	setFramePen(r->framePen());
@@ -50,26 +50,25 @@ void RectangleWidget::clone(RectangleWidget* r)
 	setCoordinates(r->xValue(), r->yValue(), r->right(), r->bottom());
 }
 
-QString RectangleWidget::saveToString()
+QString EllipseWidget::saveToString()
 {
-	QString s = "<Rectangle>\n";
+	QString s = "<Ellipse>\n";
 	s += FrameWidget::saveToString();
 	QColor bc = backgroundColor();
 	s += "<Background>" + bc.name() + "</Background>\n";
 	s += "<Alpha>" + QString::number(bc.alpha()) + "</Alpha>\n";
 	s += "<BrushColor>" + d_brush.color().name() + "</BrushColor>\n";
 	s += "<BrushStyle>" + QString::number(PatternBox::patternIndex(d_brush.style())) + "</BrushStyle>\n";
-    s += "<LinkedLayer>" + QString::number(d_linked_layer) + "</LinkedLayer>\n";
-	return s + "</Rectangle>\n";
+	return s + "</Ellipse>\n";
 }
 
-void RectangleWidget::restore(Graph *g, const QStringList& lst)
+void EllipseWidget::restore(Graph *g, const QStringList& lst)
 {
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;
 	QStringList::const_iterator line;
 	QColor backgroundColor = Qt::white;
 	QBrush brush = QBrush();
-	RectangleWidget *r = new RectangleWidget(g);
+	EllipseWidget *r = new EllipseWidget(g);
 	if (!r)
 		return;
 
@@ -80,7 +79,7 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 		else if (s.contains("<Color>"))
 			r->setFrameColor(QColor(s.remove("<Color>").remove("</Color>")));
 		else if (s.contains("<FrameWidth>"))
-			r->setFrameWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toInt());
+			r->setFrameWidth(s.remove("<FrameWidth>").remove("</FrameWidth>").toDouble());
 		else if (s.contains("<LineStyle>"))
 			r->setFrameLineStyle(PenStyleBox::penStyle(s.remove("<LineStyle>").remove("</LineStyle>").toInt()));
 		else if (s.contains("<x>"))
@@ -99,8 +98,6 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 			brush.setColor(QColor(s.remove("<BrushColor>").remove("</BrushColor>")));
 		else if (s.contains("<BrushStyle>"))
 			brush.setStyle(PatternBox::brushStyle((s.remove("<BrushStyle>").remove("</BrushStyle>")).toInt()));
-        else if (s.contains("<LinkedLayer>"))
-			r->setLinkedLayer(s.remove("<LinkedLayer>").remove("</LinkedLayer>").toInt());
 	}
 
 	r->setBackgroundColor(backgroundColor);
@@ -109,31 +106,29 @@ void RectangleWidget::restore(Graph *g, const QStringList& lst)
 	g->add(r, false);
 }
 
-void RectangleWidget::updateCoordinates()
+void EllipseWidget::drawFrame(QPainter *p, const QRect& rect)
 {
-    FrameWidget::updateCoordinates();
+	p->save();
+	if (d_plot->antialiasing())
+		p->setRenderHints(QPainter::Antialiasing);
+	
+	QPainterPath ellipse;
+	ellipse.addEllipse(rect);
+	
+	if (d_frame == Line){		
+		p->setPen(d_frame_pen);
+		int lw = d_frame_pen.width()/2;
+		QRect r = rect.adjusted(lw + 1, lw + 1, -lw - 1, -lw - 1);
+		p->fillPath(ellipse, palette().color(QPalette::Window));
+		if (d_brush.style() != Qt::NoBrush)
+			p->setBrush(d_brush);
+		
+        p->drawEllipse(r);
+	} else {
+		p->fillPath(ellipse, palette().color(QPalette::Window));
+		if (d_brush.style() != Qt::NoBrush)
+			p->fillPath(ellipse, d_brush);
+	}
 
-    if (d_linked_layer >= 0 && !receivers("changedCoordinates"))
-        setLinkedLayer(d_linked_layer);
-
-    changedCoordinates(boundingRect());
-}
-
-void RectangleWidget::setLinkedLayer(int layerIndex)
-{
-    d_linked_layer = layerIndex;
-
-    Graph *g = plot()->multiLayer()->layer(layerIndex + 1);
-    if (!g)
-        return;
-
-    this->disconnect(g, SLOT(setCanvasCoordinates(const QRectF&)));
-    connect(this, SIGNAL(changedCoordinates(const QRectF&)),
-            g, SLOT(setCanvasCoordinates(const QRectF&)));
-    connect(g, SIGNAL(destroyed(QObject *)), this, SLOT(closedLinkedLayer(QObject *)));
-}
-
-void RectangleWidget::closedLinkedLayer(QObject *)
-{
-    d_linked_layer = -1;
+	p->restore();
 }

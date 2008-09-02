@@ -59,7 +59,7 @@ class EnrichmentDialog : public QDialog
     Q_OBJECT
 
 public:
-	enum WidgetType{Frame, Text, Image, Tex, MDIWindow};
+	enum WidgetType{Frame, Text, Image, Tex, MDIWindow, Ellipse};
 
     EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent = 0);
 	~EnrichmentDialog();
@@ -96,7 +96,7 @@ private:
 	void initPatternPage();
 	void setCoordinates(int unit);
 	void setFrameTo(FrameWidget *fw);
-	void setPatternTo(RectangleWidget *r);
+	void setPatternTo(FrameWidget *r);
 	void setTextFormatTo(LegendWidget *l);
 	void setText(QTextEdit *editor, const QString & t);
 
@@ -113,11 +113,11 @@ private:
 	ColorButton *frameColorBtn, *backgroundColorBtn, *patternColorBtn;
 	QCheckBox *boxSaveImagesInternally;
 	QLineEdit *imagePathBox;
-	DoubleSpinBox *xBox, *yBox, *widthBox, *heightBox;
+	DoubleSpinBox *xBox, *yBox, *widthBox, *heightBox, *boxFrameWidth;
 	QComboBox *unitBox;
 	PenStyleBox *boxFrameLineStyle;
 	QCheckBox *keepAspectBox, *useFrameColorBox;
-	QSpinBox *boxTransparency, *boxFrameWidth, *boxTextAngle;
+	QSpinBox *boxTransparency, *boxTextAngle;
 	PatternBox *patternBox;
 	QPushButton *textApplyToBtn;
 	QComboBox *frameApplyToBox, *patternApplyToBox, *textApplyToBox;

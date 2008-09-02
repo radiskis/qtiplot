@@ -35,6 +35,7 @@
 #include "EnrichmentDialog.h"
 #include "../Graph.h"
 #include "../TexWidget.h"
+#include "../EllipseWidget.h"
 #include "../FrameWidget.h"
 #include "../ImageWidget.h"
 #include "../RectangleWidget.h"
@@ -112,7 +113,7 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, QWidget *parent)
 		initEditorPage();
 	else if (wt == Image)
 		initImagePage();
-	else if (wt == Frame)
+	else if (wt == Frame || wt == Ellipse)
 		initPatternPage();
 
     if (wt != MDIWindow)
@@ -271,9 +272,13 @@ void EnrichmentDialog::initFramePage()
     gl->addWidget(new QLabel( tr("Shape")), 0, 0);
 
 	frameBox = new QComboBox();
-	frameBox->addItem( tr( "None" ) );
-	frameBox->addItem( tr( "Rectangle" ) );
-	frameBox->addItem( tr( "Shadow" ) );
+	frameBox->addItem(tr("None"));
+	if (d_widget_type == Ellipse)
+		frameBox->addItem(tr("Line"));
+	else {
+		frameBox->addItem(tr("Rectangle"));
+		frameBox->addItem(tr("Shadow"));
+	}
 	connect(frameBox, SIGNAL(activated(int)), this, SLOT(frameApplyTo()));
     gl->addWidget(frameBox, 0, 1);
 
@@ -289,9 +294,19 @@ void EnrichmentDialog::initFramePage()
 
 	gl->setColumnStretch(1, 1);
 	gl->addWidget(new QLabel(tr("Width")), 3, 0);
-	boxFrameWidth = new QSpinBox();
-	boxFrameWidth->setRange(1, 100);
-	connect(boxFrameWidth, SIGNAL(valueChanged(int)), this, SLOT(frameApplyTo()));
+	boxFrameWidth = new DoubleSpinBox();
+	if(d_widget_type == Ellipse){
+		boxFrameWidth->setDecimals(2);
+		boxFrameWidth->setLocale(((ApplicationWindow *)parent())->locale());
+		boxFrameWidth->setSingleStep(0.1);
+		boxFrameWidth->setRange(0.1, 100);
+	} else {
+		boxFrameWidth->setRange(1, 100);
+		boxFrameWidth->setDecimals(0);
+		boxFrameWidth->setSingleStep(1.0);
+	} 
+	
+	connect(boxFrameWidth, SIGNAL(valueChanged(double)), this, SLOT(frameApplyTo()));
 	gl->addWidget(boxFrameWidth, 3, 1);
 	gl->setRowStretch(4, 1);
 
@@ -502,7 +517,10 @@ void EnrichmentDialog::setWidget(QWidget *w)
 		boxFrameLineStyle->blockSignals(false);
 		
 		boxFrameWidth->blockSignals(true);
-		boxFrameWidth->setValue(fw->framePen().width());
+		if (d_widget_type == Ellipse)
+			boxFrameWidth->setValue(fw->framePen().widthF());
+		else
+			boxFrameWidth->setValue(fw->framePen().width());
 		boxFrameWidth->blockSignals(false);
     }
 
@@ -568,6 +586,25 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			patternColorBtn->setColor(r->brush().color());
 			patternColorBtn->blockSignals(false);
 		}
+	} else if (d_widget_type == Ellipse){
+		EllipseWidget *r = qobject_cast<EllipseWidget *>(d_widget);
+		if (r){
+			backgroundColorBtn->blockSignals(true);
+			backgroundColorBtn->setColor(r->backgroundColor());
+			backgroundColorBtn->blockSignals(false);
+			
+			boxTransparency->blockSignals(true);
+			boxTransparency->setValue(r->backgroundColor().alpha());
+			boxTransparency->blockSignals(false);
+			
+			patternBox->blockSignals(true);
+			patternBox->setPattern(r->brush().style());
+			patternBox->blockSignals(false);
+			
+			patternColorBtn->blockSignals(true);
+			patternColorBtn->setColor(r->brush().color());
+			patternColorBtn->blockSignals(false);
+		}
 	}
 }
 
@@ -581,30 +618,16 @@ void EnrichmentDialog::apply()
 {
 	if (tabWidget->currentPage() == editPage)
 		fetchImage();
-	else if (tabWidget->currentPage() == framePage){
-	    FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
-        if (fw){
-			setFrameTo(fw);
-			d_plot->multiLayer()->notifyChanges();
-		}
-	} else if (imagePage && tabWidget->currentPage() == imagePage)
+	else if (tabWidget->currentPage() == framePage)
+		frameApplyTo();
+	else if (imagePage && tabWidget->currentPage() == imagePage)
 		chooseImageFile(imagePathBox->text());
 	else if (tabWidget->currentPage() == geometryPage)
 		setCoordinates(unitBox->currentIndex());
-	else if (patternPage && tabWidget->currentPage() == patternPage){
-		RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
-        if (r){
-			setPatternTo(r);
-			d_plot->multiLayer()->notifyChanges();
-		}
-	} else if (textPage && tabWidget->currentPage() == textPage){
-		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
-        if (l){
-            l->setText(textEditBox->text());
-			setTextFormatTo(l);
-			d_plot->multiLayer()->notifyChanges();
-		}
-	}
+	else if (patternPage && tabWidget->currentPage() == patternPage)
+		patternApplyTo();
+	else if (textPage && tabWidget->currentPage() == textPage)
+		textFormatApplyTo();
 }
 
 void EnrichmentDialog::fetchImage()
@@ -850,7 +873,7 @@ void EnrichmentDialog::patternApplyTo()
 	switch(patternApplyToBox->currentIndex()){
 		case 0://this object
 		{
-			RectangleWidget *r = qobject_cast<RectangleWidget *>(d_widget);
+			FrameWidget *r = qobject_cast<FrameWidget *>(d_widget);
 			if (r)
 				setPatternTo(r);
 		}
@@ -859,11 +882,8 @@ void EnrichmentDialog::patternApplyTo()
 		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
-			foreach(FrameWidget *fw, lst){
-				RectangleWidget *r = qobject_cast<RectangleWidget *>(fw);
-				if (r)
-					setPatternTo(r);
-			}
+			foreach(FrameWidget *fw, lst)
+				setPatternTo(fw);
 		}
 		break;
 
@@ -872,11 +892,8 @@ void EnrichmentDialog::patternApplyTo()
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
 			foreach(Graph *g, layersLst){
 				QList <FrameWidget *> lst = g->enrichmentsList();
-				foreach(FrameWidget *fw, lst){
-					RectangleWidget *r = qobject_cast<RectangleWidget *>(fw);
-					if (r)
-						setPatternTo(r);
-				}
+				foreach(FrameWidget *fw, lst)
+						setPatternTo(fw);
 			}
 		}
 		break;
@@ -891,11 +908,8 @@ void EnrichmentDialog::patternApplyTo()
 				QList<Graph *> layersLst = ml->layersList();
 				foreach(Graph *g, layersLst){
 					QList <FrameWidget *> lst = g->enrichmentsList();
-					foreach(FrameWidget *fw, lst){
-						RectangleWidget *r = qobject_cast<RectangleWidget *>(fw);
-						if (r)
-							setPatternTo(r);
-					}
+					foreach(FrameWidget *fw, lst)
+						setPatternTo(fw);
 				}
 			}
 		}
@@ -907,7 +921,7 @@ void EnrichmentDialog::patternApplyTo()
 	app->modifiedProject();
 }
 
-void EnrichmentDialog::setPatternTo(RectangleWidget *r)
+void EnrichmentDialog::setPatternTo(FrameWidget *r)
 {
 	QColor c = backgroundColorBtn->color();
 	c.setAlpha(boxTransparency->value());

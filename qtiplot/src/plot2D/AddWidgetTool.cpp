@@ -31,6 +31,7 @@
 #include "RectangleWidget.h"
 #include "LegendWidget.h"
 #include "TexWidget.h"
+#include "EllipseWidget.h"
 #include "../ApplicationWindow.h"
 
 #include <QAction>
@@ -45,12 +46,12 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, con
 	PlotToolInterface(graph),
 	d_action(action),
 	d_widget_type(type),
-	d_rect(NULL)
+	d_fw(NULL)
 {
     QwtPlotCanvas *canvas = graph->canvas();
 	canvas->installEventFilter(this);
 
-	if (type == Rectangle){
+	if (type == Rectangle || type == Ellipse){
         graph->setCursor(QCursor(Qt::CrossCursor));
         canvas->setCursor(QCursor(Qt::CrossCursor));
 	} else {
@@ -144,16 +145,33 @@ void AddWidgetTool::addText(const QPoint& point)
 
 void AddWidgetTool::addRectangle(const QPoint& point)
 {
-    if (!d_rect)
-        d_rect = new RectangleWidget(d_graph);
+    if (!d_fw)
+        d_fw = new RectangleWidget(d_graph);
 
-	if (!d_rect)
+	if (!d_fw)
 		return;
 
-	d_rect->move(point);
-	d_rect->setFrameColor(Qt::blue);
-	d_graph->add(d_rect, false);
+	d_fw->setSize(0, 0);
+	d_fw->move(point);
+	d_fw->setFrameColor(Qt::blue);
+	d_graph->add(d_fw, false);
 	emit statusText(tr("Move cursor in order to resize the new rectangle!"));
+	d_graph->notifyChanges();
+}
+
+void AddWidgetTool::addEllipse(const QPoint& point)
+{
+    if (!d_fw)
+        d_fw = new EllipseWidget(d_graph);
+
+	if (!d_fw)
+		return;
+
+	d_fw->setSize(0, 0);
+	d_fw->move(point);
+	d_fw->setFrameColor(Qt::blue);
+	d_graph->add(d_fw, false);
+	emit statusText(tr("Move cursor in order to resize the new ellipse!"));
 	d_graph->notifyChanges();
 }
 
@@ -169,6 +187,9 @@ void AddWidgetTool::addWidget(const QPoint& point)
 		case Rectangle:
 			addRectangle(point);
 		break;
+		case Ellipse:
+			addEllipse(point);
+		break;
 		default:
 			break;
 	}
@@ -183,26 +204,33 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
         break;
 
         case QEvent::MouseMove:
-            if (d_rect){
-                QRect r = d_rect->geometry();
+            if (d_fw){
+                QRect r = d_fw->geometry();
                 r.setBottomRight(d_graph->multiLayer()->canvas()->mapFromGlobal(QCursor::pos()));
-                d_rect->setGeometry(r.normalized());
+                d_fw->setGeometry(r.normalized());
             }
         break;
 
         case QEvent::MouseButtonRelease:
-            if (d_rect){
+            if (d_fw){
 				ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
 				if (app){
-					d_rect->setFrameStyle(app->legendFrameStyle);
-					d_rect->setFramePen(app->d_frame_widget_pen);
-					d_rect->setBackgroundColor(app->d_rect_default_background);
-					d_rect->setBrush(app->d_rect_default_brush);
+					d_fw->setFrameStyle(app->legendFrameStyle);
+					if(d_widget_type == Ellipse)
+						d_fw->setFramePen(app->d_frame_widget_pen);
+					else {
+						QPen pen = app->d_frame_widget_pen;
+						pen.setWidthF(ceil(pen.width()));
+						d_fw->setFramePen(pen);
+					}
+					
+					d_fw->setBackgroundColor(app->d_rect_default_background);
+					d_fw->setBrush(app->d_rect_default_brush);
 				}
 
-				d_rect->updateCoordinates();
-                d_rect->repaint();
-                d_rect = NULL;
+				d_fw->updateCoordinates();
+                d_fw->repaint();
+                d_fw = NULL;
                 emit statusText("");
                 d_graph->setActiveTool(NULL);
             }
