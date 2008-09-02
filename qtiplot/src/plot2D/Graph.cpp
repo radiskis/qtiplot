@@ -2729,8 +2729,21 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 		plotBoxDiagram(w, names, startRow, endRow);
 	else if (style == VectXYXY || style == VectXYAM)
 		plotVectorCurve(w, names, style, startRow, endRow);
-	else {
-		int curves = (int)names.count();
+	else if (style == Histogram){
+		int curves = names.count();
+		for (int i=0; i<curves; i++){
+			QwtHistogram *h = new QwtHistogram(w, names[i], startRow, endRow);
+			if (h){
+				insertCurve(h);
+				h->loadData();
+				CurveLayout cl = initCurveLayout(style, curves);
+				cl.lWidth = lWidth;
+				updateCurveLayout(h, &cl);
+				addLegendItem();
+			}
+		}
+	} else {
+		int curves = names.count();
         int errCurves = 0;
 		QStringList lst = QStringList();
         for (int i=0; i<curves; i++)
@@ -2884,9 +2897,6 @@ PlotCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		c = new QwtBarCurve(QwtBarCurve::Vertical, w, xColName, yColName, startRow, endRow);
 	} else if (style == HorizontalBars){
 		c = new QwtBarCurve(QwtBarCurve::Horizontal, w, xColName, yColName, startRow, endRow);
-	} else if (style == Histogram){
-		c = new QwtHistogram(w, xColName, yColName, startRow, endRow);
-		((QwtHistogram *)c)->initData(Y.data(), size);
 	} else
 		c = new DataCurve(w, xColName, yColName, startRow, endRow);
 
@@ -4059,7 +4069,7 @@ void Graph::copyCurves(Graph* g)
 				if (h->matrix())
 					c = new QwtHistogram(h->matrix());
 				else
-					c = new QwtHistogram(cv->table(), cv->xColumnName(), cv->title().text(), cv->startRow(), cv->endRow());
+					c = new QwtHistogram(cv->table(), cv->title().text(), cv->startRow(), cv->endRow());
 				insertCurve(c);
 				((QwtHistogram *)c)->copy(h);
 			} else if (style == VectXYXY || style == VectXYAM) {

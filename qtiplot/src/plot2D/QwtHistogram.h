@@ -34,7 +34,7 @@ class Matrix;
 class QwtHistogram: public QwtBarCurve
 {
 public:
-	QwtHistogram(Table *t, const QString& xColName, const QString& name, int startRow, int endRow);
+	QwtHistogram(Table *t, const QString& name, int startRow, int endRow);
     QwtHistogram(Matrix *m);
 
 	void copy(QwtHistogram *h);
@@ -48,7 +48,6 @@ public:
 	double binSize(){return d_bin_size;};
 
     void loadData();
-    void initData(double* Y, int size);
 
     double mean(){return d_mean;};
     double standardDeviation(){return d_standard_deviation;};

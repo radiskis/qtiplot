@@ -33,6 +33,7 @@
 #include "../BoxCurve.h"
 #include "../QwtErrorPlotCurve.h"
 #include "../QwtPieCurve.h"
+#include "../QwtHistogram.h"
 #include "../VectorCurve.h"
 
 #include <QLabel>
@@ -134,6 +135,8 @@ void AssociationsDialog::changePlotAssociation(int curve, const QString& text)
 			((BoxCurve*)c)->loadData();
 		else if (c->type() == Graph::Pie)
 			((QwtPieCurve*)c)->loadData();
+		else if (c->type() == Graph::Histogram)
+			((QwtHistogram*)c)->loadData();
 	} else if (lst.count() == 2){
 		c->setXColumnName(lst[0].remove("(X)"));
 		c->setTitle(lst[1].remove("(Y)"));

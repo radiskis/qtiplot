@@ -437,7 +437,7 @@ public slots:
     //! Check whether a table is valid for a 3D plot and display an appropriate error if not
     bool validFor3DPlot(Table *table);
     //! Check whether a table is valid for a 2D plot and display an appropriate error if not
-    bool validFor2DPlot(Table *table);
+    bool validFor2DPlot(Table *table, Graph::CurveType type);
     //! Generate a new 2D graph
     MultiLayer* generate2DGraph(Graph::CurveType type);
 	//@}

@@ -33,8 +33,9 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_histogram.h>
 
-QwtHistogram::QwtHistogram(Table *t, const QString& xColName, const QString& name, int startRow, int endRow):
-	QwtBarCurve(QwtBarCurve::Vertical, t, xColName, name, startRow, endRow)
+QwtHistogram::QwtHistogram(Table *t, const QString& name, int startRow, int endRow):
+	QwtBarCurve(QwtBarCurve::Vertical, t, "", name, startRow, endRow),
+	d_autoBin(true)
 {
     d_matrix = 0;
     setType(Graph::Histogram);
@@ -269,69 +270,6 @@ void QwtHistogram::loadDataFromMatrix()
 #endif
 
 	d_mean = gsl_histogram_mean(h);
-	d_standard_deviation = gsl_histogram_sigma(h);
-	d_min = gsl_histogram_min_val(h);
-	d_max = gsl_histogram_max_val(h);
-
-	gsl_histogram_free (h);
-}
-
-void QwtHistogram::initData(double *Y, int size)
-{
-	if(size<2 || (size == 2 && Y[0] == Y[1]))
-	{//non valid histogram data
-		double x[2], y[2];
-		for (int i = 0; i<2; i++ ){
-			y[i] = 0;
-			x[i] = 0;
-		}
-		setData(x, y, 2);
-		return;
-	}
-
-	int n = 10;//default value
-#ifdef Q_CC_MSVC
-	QVarLengthArray<double> x(n), y(n); //store ranges (x) and bins (y)
-#else
-	double x[n], y[n]; //store ranges (x) and bins (y)
-#endif
-	gsl_histogram * h = gsl_histogram_alloc (n);
-	if (!h)
-		return;
-
-	gsl_vector *v;
-	v = gsl_vector_alloc (size);
-	for (int i = 0; i<size; i++ )
-		gsl_vector_set (v, i, Y[i]);
-
-	double min, max;
-	gsl_vector_minmax (v, &min, &max);
-	gsl_vector_free (v);
-
-	d_begin = floor(min);
-	d_end = ceil(max);
-
-	gsl_histogram_set_ranges_uniform (h, floor(min), ceil(max));
-
-	for (int i = 0; i<size; i++ )
-		gsl_histogram_increment (h, Y[i]);
-
-	for (int i = 0; i<n; i++ ){
-		y[i] = gsl_histogram_get (h, i);
-		double lower, upper;
-		gsl_histogram_get_range (h, i, &lower, &upper);
-		x[i] = lower;
-	}
-
-#ifdef Q_CC_MSVC
-	setData(x.data(), y.data(), n);
-#else
-	setData(x, y, n);
-#endif
-
-	d_bin_size = (d_end - d_begin)/(double)n;
-	d_autoBin = true;
-    d_mean = gsl_histogram_mean(h);
 	d_standard_deviation = gsl_histogram_sigma(h);
 	d_min = gsl_histogram_min_val(h);
 	d_max = gsl_histogram_max_val(h);
