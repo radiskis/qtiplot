@@ -1693,7 +1693,7 @@ void ApplicationWindow::plotVectXYXY()
 	Table *table = (Table *)activeWindow(TableWindow);
     if (!table)
 		return;
-	if (!validFor2DPlot(table))
+	if (!validFor2DPlot(table, Graph::VectXYXY))
 		return;
 
 	QStringList s = table->selectedColumns();
@@ -1709,7 +1709,7 @@ void ApplicationWindow::plotVectXYAM()
     Table *table = (Table *)activeWindow(TableWindow);
     if (!table)
 		return;
-	if (!validFor2DPlot(table))
+	if (!validFor2DPlot(table, Graph::VectXYAM))
 		return;
 
 	QStringList s = table->selectedColumns();
@@ -2417,7 +2417,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
     if (!t)
 		return 0;
 
-	if (!validFor2DPlot(t))
+	if (!validFor2DPlot(t, (Graph::CurveType)style))
 		return 0;
 
 	QStringList list = t->selectedYColumns();
@@ -15091,17 +15091,19 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	return 0;
 }
 
-bool ApplicationWindow::validFor2DPlot(Table *table)
-{
+bool ApplicationWindow::validFor2DPlot(Table *table, Graph::CurveType type)
+{		
 	if (!table->selectedYColumns().count()){
   		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a Y column to plot!"));
   	    return false;
-  	} else if (table->numCols()<2) {
-		QMessageBox::critical(this, tr("QtiPlot - Error"),tr("You need at least two columns for this operation!"));
-		return false;
-	} else if (table->noXColumn()) {
-		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please set a default X column for this table, first!"));
-		return false;
+  	} else if (type != Graph::Box && type != Graph::Histogram && type != Graph::Pie){
+		if (table->numCols() < 2) {
+			QMessageBox::critical(this, tr("QtiPlot - Error"),tr("You need at least two columns for this operation!"));
+			return false;
+		} else if (table->noXColumn()) {
+			QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please set a default X column for this table, first!"));
+			return false;
+		}
 	}
 	return true;
 }
@@ -15114,7 +15116,7 @@ MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
 
     if (w->inherits("Table")){
         Table *table = static_cast<Table *>(w);
-        if (!validFor2DPlot(table))
+        if (!validFor2DPlot(table, type))
             return 0;
 
         Q3TableSelection sel = table->getSelection();
