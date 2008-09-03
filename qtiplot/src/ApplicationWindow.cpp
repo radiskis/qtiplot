@@ -7492,29 +7492,20 @@ void ApplicationWindow::showEnrichementDialog()
 		return;
 
 	Graph* g = plot->activeLayer();
-	if ( !g )
+	if (!g)
 		return;
 
 	EnrichmentDialog::WidgetType wt = EnrichmentDialog::Frame;
 	LegendWidget *l = (LegendWidget *)g->activeText();
 	if (l)
 		wt = EnrichmentDialog::Text;
-	else {
-		ImageWidget *iw = qobject_cast<ImageWidget *>(g->activeEnrichment());
-		if (iw)
-			wt = EnrichmentDialog::Image;
-        else {
-            TexWidget *tw = qobject_cast<TexWidget *>(g->activeEnrichment());
-            if (tw)
-                wt = EnrichmentDialog::Tex;
-			else {
-				EllipseWidget *e = qobject_cast<EllipseWidget *>(g->activeEnrichment());
-            	if (e)
-                	wt = EnrichmentDialog::Ellipse;
-			}
-        }
-	}
-
+	else if (qobject_cast<ImageWidget *>(g->activeEnrichment()))
+		wt = EnrichmentDialog::Image;
+	else if (qobject_cast<TexWidget *>(g->activeEnrichment()))
+		wt = EnrichmentDialog::Tex;
+	else if (qobject_cast<EllipseWidget *>(g->activeEnrichment()))
+		wt = EnrichmentDialog::Ellipse;
+	
 	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
 	ed->setWidget(g->activeEnrichment());
 	ed->exec();
@@ -7725,7 +7716,11 @@ void ApplicationWindow::pasteSelection()
                     ((DataPickerTool *)g->activeTool())->pasteSelection();
             } else if (d_enrichement_copy){
 				FrameWidget *t = g->add(d_enrichement_copy);
-				t->move(g->mapFromGlobal(QCursor::pos()));
+				QPoint pos = g->mapFromGlobal(QCursor::pos());
+				if (g->geometry().contains(pos))
+					t->move(pos);
+				else
+					t->move(g->pos());
 			} else if (d_arrow_copy){
                 ArrowMarker *a = g->addArrow(d_arrow_copy);
                 a->setStartPoint(d_arrow_copy->startPointCoord().x(), d_arrow_copy->startPointCoord().y());
@@ -8925,12 +8920,16 @@ void ApplicationWindow::showGraphContextMenu()
 		cm.insertItem(QPixmap(paste_xpm), tr("&Paste Layer"), this, SLOT(pasteSelection()));
 	} else if (d_enrichement_copy){
 		cm.insertSeparator();
-		if (d_enrichement_copy->isA("LegendWidget"))
+		if (qobject_cast<LegendWidget *>(d_enrichement_copy))
 			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Text"), plot, SIGNAL(pasteMarker()));
-		else if (d_enrichement_copy->isA("TexWidget"))
+		else if (qobject_cast<TexWidget *>(d_enrichement_copy))
 			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Tex Formula"), plot, SIGNAL(pasteMarker()));
-		else if (d_enrichement_copy->isA("ImageWidget"))
+		else if (qobject_cast<ImageWidget *>(d_enrichement_copy))
 			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Image"), plot, SIGNAL(pasteMarker()));
+		else if (qobject_cast<RectangleWidget *>(d_enrichement_copy))
+			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Rectangle"), plot, SIGNAL(pasteMarker()));
+		else if (qobject_cast<EllipseWidget *>(d_enrichement_copy))
+			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Ellipse"), plot, SIGNAL(pasteMarker()));
 	} else if (d_arrow_copy){
 		cm.insertSeparator();
 		cm.insertItem(QPixmap(paste_xpm), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));
