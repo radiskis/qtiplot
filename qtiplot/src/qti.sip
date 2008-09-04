@@ -320,6 +320,28 @@ private:
   Table(const Table&);
 };
 
+class QwtLinearColorMap /PyName=LinearColorMap/
+{
+%TypeHeaderCode
+#include <qwt_color_map.h>
+%End
+public:
+
+  enum Format{RGB, Indexed};
+  enum Mode {FixedColors, ScaledColors};
+  QwtLinearColorMap(const QColor &, const QColor &, QwtLinearColorMap::Format=QwtColorMap::RGB);
+
+  void 	addColorStop (double, const QColor &);
+  void 	setMode (Mode);
+  
+  void  setColorInterval (const QColor &, const QColor &);
+  QColor color1() const;
+  QColor color2() const;
+  
+private:
+  QwtLinearColorMap(const QwtLinearColorMap&);
+};
+
 class Matrix: MdiSubWindow
 {
 %TypeHeaderCode
@@ -406,6 +428,9 @@ public:
 	void setHeaderViewType(HeaderViewType);
 	void setGrayScale();
 	void setRainbowColorMap();
+	
+	QwtLinearColorMap colorMap();
+	void setColorMap(const QwtLinearColorMap&);
 	void resetView();
 
 	QImage image();

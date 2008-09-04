@@ -497,3 +497,15 @@ backgroundColor
 brush
 setBrush
 QBrush
+Format
+RGB
+Indexed
+FixedColors
+ScaledColors
+LinearColorMap
+addColorStop
+setMode
+setColorInterval
+color1
+color2
+QColor

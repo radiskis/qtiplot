@@ -535,6 +535,7 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiGrid.cpp\
              $${SIP_DIR}/sipqtiMultiLayer.cpp\
              $${SIP_DIR}/sipqtiTable.cpp\
+			 $${SIP_DIR}/sipqtiQwtLinearColorMap.cpp\
              $${SIP_DIR}/sipqtiMatrix.cpp\
              $${SIP_DIR}/sipqtiMdiSubWindow.cpp\
              $${SIP_DIR}/sipqtiScriptEdit.cpp\

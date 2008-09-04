@@ -1093,6 +1093,22 @@ m.setGrayScale()
 m.setRainbowColorMap()
 </programlisting>
 
+You can also define custom color maps:
+<programlisting>
+map = LinearColorMap(QtCore.Qt.yellow, QtCore.Qt.blue)
+map.setMode(LinearColorMap.FixedColors) # default mode is LinearColorMap.ScaledColors
+map.addColorStop(0.2, QtCore.Qt.magenta)
+map.addColorStop(0.7, QtCore.Qt.cyan)
+m.setColorMap(map)
+</programlisting>
+
+You have direct access to the color map used for a matrix via the following functions:
+<programlisting>
+map = m.colorMap()
+from = map.color1()
+to = map.color2()
+</programlisting>
+
 Accessing cell values is very similar to Table,
 but since Matrix doesn't use column logic, row arguments are specified
 before columns and obviously you can't use column name.
