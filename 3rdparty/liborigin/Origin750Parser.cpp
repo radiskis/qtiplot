@@ -60,76 +60,37 @@ bool Origin750Parser::parse()
 {
 	int dataIndex = 0;
 
-	////////////////////////////// check version from header ///////////////////////////////
-	char vers[5];
-	vers[4]=0;
-
-	// get version
-	file.seekg(0x7, ios_base::beg);
-	file >> vers;
-
-	Debug("HEADER :");
 	stringstream out;
 	unsigned char c;
-	for(int i = 0; i < 0x16; ++i)
-	{	// skip header + 5 Bytes ("27")
-		file >> c;
-		out << format("%02X ") % (unsigned int)c;
-		if(!((i+1)%16))
-		{
-			out << endl;
-		}
-	}
-	Debug(out.str());
-
-	do
-	{
-		file >> c;
-	}
-	while (c != '\n');
-	Debug(str(format("	[file header @ 0x%X]") % (unsigned int) file.tellg()));
-
 	/////////////////// find column ///////////////////////////////////////////////////////////
+	file.seekg(0x10 + 1, ios_base::beg);
+	unsigned int size;
+	file >> size;
+	file.seekg(1 + size + 1 + 5, ios_base::cur);
 
-	file.seekg(5, ios_base::cur);
-
-	int col_found;
-	file >> col_found;
+	file >> size;
 
 	file.seekg(1, ios_base::cur);
-	Debug(str(format("	[column found = %d/0x%X @ 0x%X]") % col_found % col_found % (unsigned int) file.tellg()));
+	Debug(str(format("	[column found = %d/0x%X @ 0x%X]") % size % size % (unsigned int) file.tellg()));
 
 	unsigned int colpos = file.tellg();
 
 	int current_col = 1, nr = 0, nbytes = 0;
 	double a;
-	char name[25], valuesize;
-	while(col_found > 0 && col_found < 0x84) {	// should be 0x72, 0x73 or 0x83
+	char valuesize;
+	while(size > 0 && size < 0x84) {	// should be 0x72, 0x73 or 0x83
 		//////////////////////////////// COLUMN HEADER /////////////////////////////////////////////
 		short data_type;
 		char data_type_u;
 		unsigned int oldpos = file.tellg();
 
-		file.seekg(oldpos+0x16, ios_base::beg);
+		file.seekg(oldpos + 0x16, ios_base::beg);
 		file >> data_type;
 
-		file.seekg(oldpos+0x3F, ios_base::beg);
+		file.seekg(oldpos + 0x3F, ios_base::beg);
 		file >> data_type_u;
 		
-		file.seekg(oldpos, ios_base::beg);
-
-		Debug("COLUMN HEADER :");
-		out.str(string());
-		for(int i = 0;i < 0x3D; ++i)
-		{	// skip 0x3C chars to value size
-			file >> c;
-			out << format("%02X ") % (unsigned int)c;
-			if(!((i+1)%16))
-			{
-				out << endl;
-			}
-		}
-		Debug(out.str());
+		file.seekg(oldpos + 0x3D, ios_base::beg);
 
 		file >> valuesize;
 		Debug(str(format("	[valuesize = %d @ 0x%X]") % (int)valuesize % ((unsigned int) file.tellg()-1)));
@@ -139,34 +100,22 @@ bool Origin750Parser::parse()
 			valuesize=10;
 		}
 
-		Debug("SKIP :");
-		out.str(string());
-		for(int i = 0; i < 0x1A; ++i)
-		{	// skip to name
-			file >> c;
-			out << format("%02X ") % (unsigned int)c;
-			if(!((i+1)%16))
-			{
-				out << endl;
-			}
-		}
-		Debug(out.str());
-
-		// read name
+		file.seekg(oldpos + 0x58, ios_base::beg);
 		Debug(str(format("	[Spreadsheet @ 0x%X]") % (unsigned int) file.tellg()));
 
-		file.read(name, 25);
+		string name(25, 0);
+		file >> name;
 
-		char sname[26];
-		sprintf(sname,"%s",strtok(name,"_"));	// spreadsheet name
-		char* cname = strtok(NULL,"_");	// column name
-		while(char* tmpstr = strtok(NULL,"_")) {	// get multiple-"_" title correct
-			strcat(sname,"_");
-			strcat(sname,cname);
-			strcpy(cname,tmpstr);
+		string::size_type pos = name.find_last_of("_");
+		string columnname;
+		if(pos != string::npos)
+		{
+			columnname = name.substr(pos + 1);
+			name.resize(pos);
 		}
-		int spread=0;
-		if(cname == 0)
+
+		unsigned int spread = 0;
+		if(columnname.empty())
 		{
 			Debug("NO COLUMN NAME FOUND! Must be a Matrix or Function.");
 			////////////////////////////// READ matrixes or functions ////////////////////////////////////
@@ -177,15 +126,9 @@ bool Origin750Parser::parse()
 			file >> signature;
 			Debug(str(format("	SIGNATURE : %02X ") % signature));
 
-			do{	// skip until '\n'
-				file >> c;
-				// fprintf(debug,"%.2X ",c);
-			} while (c != '\n');
 
-			// read size
-			int size;
+			file.seekg(oldpos + size + 1, ios_base::beg);
 			file >> size;
-
 			file.seekg(1, ios_base::cur);
 			// TODO : use entry size : double, float, ...
 			size /= valuesize;
@@ -201,8 +144,8 @@ bool Origin750Parser::parse()
 			case 0x70CA:
 			case 0x50F2:
 			case 0x50E2:
-				Debug("NEW matrixes");
-				matrixes.push_back(Matrix(sname, dataIndex));
+				Debug("NEW MATRIX");
+				matrixes.push_back(Matrix(name, dataIndex));
 				++dataIndex;
 
 				Debug("VALUES :");
@@ -210,7 +153,7 @@ bool Origin750Parser::parse()
 				switch(data_type)
 				{
 				case 0x6001://double
-					for(int i = 0; i < size; ++i)
+					for(unsigned int i = 0; i < size; ++i)
 					{
 						double value;
 						//fread(&value,valuesize,1,f);
@@ -222,7 +165,7 @@ bool Origin750Parser::parse()
 					Debug(out.str());
 					break;
 				case 0x6003://float
-					for(int i = 0; i < size; ++i)
+					for(unsigned int i = 0; i < size; ++i)
 					{
 						float value;
 						//fread(&value,valuesize,1,f);
@@ -236,7 +179,7 @@ bool Origin750Parser::parse()
 				case 0x6801://int
 					if(data_type_u==8)//unsigned
 					{
-						for(int i = 0; i < size; ++i)
+						for(unsigned int i = 0; i < size; ++i)
 						{
 							unsigned int value;
 							//fread(&value,valuesize,1,f);
@@ -249,7 +192,7 @@ bool Origin750Parser::parse()
 					}
 					else
 					{
-						for(int i = 0; i < size; ++i)
+						for(unsigned int i = 0; i < size; ++i)
 						{
 							int value;
 							//fread(&value,valuesize,1,f);
@@ -262,9 +205,9 @@ bool Origin750Parser::parse()
 					}
 					break;
 				case 0x6803://short
-					if(data_type_u==8)//unsigned
+					if(data_type_u == 8)//unsigned
 					{
-						for(int i = 0; i < size; ++i)
+						for(unsigned int i = 0; i < size; ++i)
 						{
 							unsigned short value;
 							//fread(&value,valuesize,1,f);
@@ -277,7 +220,7 @@ bool Origin750Parser::parse()
 					}
 					else
 					{
-						for(int i = 0; i < size; ++i)
+						for(unsigned int i = 0; i < size; ++i)
 						{
 							short value;
 							//fread(&value,valuesize,1,f);
@@ -290,9 +233,9 @@ bool Origin750Parser::parse()
 					}
 					break;
 				case 0x6821://char
-					if(data_type_u==8)//unsigned
+					if(data_type_u == 8)//unsigned
 					{
-						for(int i = 0; i < size; ++i)
+						for(unsigned int i = 0; i < size; ++i)
 						{
 							unsigned char value;
 							//fread(&value,valuesize,1,f);
@@ -305,7 +248,7 @@ bool Origin750Parser::parse()
 					}
 					else
 					{
-						for(int i = 0; i < size; ++i)
+						for(unsigned int i = 0; i < size; ++i)
 						{
 							char value;
 							//fread(&value,valuesize,1,f);
@@ -318,18 +261,18 @@ bool Origin750Parser::parse()
 					}
 					break;
 				default:
-					Debug(str(format("UNKNOWN matrixes DATATYPE: %02X SKIP DATA") % data_type));
+					Debug(str(format("UNKNOWN MATRIX DATATYPE: %02X SKIP DATA") % data_type));
 					file.seekg(valuesize*size, ios_base::cur);
 					matrixes.pop_back();
 				}
 				break;
 			case 0x10C8:
-				Debug("NEW functions");
-				functions.push_back(Function(sname, dataIndex));
+				Debug("NEW FUNCTION");
+				functions.push_back(Function(name, dataIndex));
 				++dataIndex;
 
-				file.read(&(functions.back().formula.assign(valuesize, 0))[0], valuesize);
-				oldpos=file.tellg();
+				file >> functions.back().formula.assign(valuesize, 0);
+				oldpos = file.tellg();
 				short t;
 
 				file.seekg(colpos + 0xA, ios_base::beg);
@@ -338,17 +281,15 @@ bool Origin750Parser::parse()
 				if(t==0x1194)
 					functions.back().type = Function::Polar;
 
-				file.seekg(colpos+0x21, ios_base::beg);
+				file.seekg(colpos + 0x21, ios_base::beg);
 				file >> functions.back().totalPoints;
 
-				double d;
 				file >> functions.back().begin;
-
+				double d;
 				file >> d;
+				functions.back().end = functions.back().begin + d*(functions.back().totalPoints - 1);
 
-				functions.back().end = functions.back().begin + d*(functions.back().totalPoints-1);
-
-				Debug(str(format("functions %s : %s") % functions.back().name.c_str() % functions.back().formula.c_str()));
+				Debug(str(format("FUNCTION %s : %s") % functions.back().name.c_str() % functions.back().formula.c_str()));
 				Debug(str(format(" interval %g : %g, number of points %d") % functions.back().begin % functions.back().end % functions.back().totalPoints));
 
 				file.seekg(oldpos, ios_base::beg);
@@ -365,276 +306,258 @@ bool Origin750Parser::parse()
 		}
 		else
 		{	// worksheet
-			if(speadSheets.size() == 0 || findSpreadByName(sname) == -1)
+			if(speadSheets.size() == 0 || findSpreadByName(name) == -1)
 			{
-				Debug("NEW speadSheets");
-				current_col=1;
-				speadSheets.push_back(SpreadSheet(sname));
-				spread=speadSheets.size()-1;
-				speadSheets.back().maxRows=0;
+				Debug("NEW SPREADSHEET");
+				current_col = 1;
+				speadSheets.push_back(SpreadSheet(name));
+				spread = speadSheets.size() - 1;
+				speadSheets.back().maxRows = 0;
 			}
 			else
 			{
-				spread = findSpreadByName(sname);
+				spread = findSpreadByName(/*sname*/name);
 
-				current_col=speadSheets[spread].columns.size();
+				current_col = speadSheets[spread].columns.size();
 
 				if(!current_col)
-					current_col=1;
+					current_col = 1;
 				++current_col;
 			}
-			Debug(str(format("speadSheets = %s COLUMN NAME = %s (%d) (@0x%X)") % sname % cname % current_col % (unsigned int)file.tellg()));
-			speadSheets[spread].columns.push_back(SpreadColumn(cname, dataIndex));
-			int sheetpos=speadSheets[spread].columns.back().name.find_last_of("@");
-			if(!speadSheets[spread].multisheet && sheetpos!=-1)
-				if(lexical_cast<int>(string(cname).substr(sheetpos+1).c_str())>1)
+			Debug(str(format("SPREADSHEET = %s COLUMN NAME = %s (%d) (@0x%X)") % name % columnname % current_col % (unsigned int)file.tellg()));
+			speadSheets[spread].columns.push_back(SpreadColumn(columnname, dataIndex));
+			string::size_type sheetpos = speadSheets[spread].columns.back().name.find_last_of("@");
+			if(!speadSheets[spread].multisheet && sheetpos != string::npos)
+			{
+				if(lexical_cast<int>(columnname.substr(sheetpos + 1).c_str()) > 1)
 				{
-					speadSheets[spread].multisheet=true;
-					Debug(str(format("speadSheets \"%s\" IS MULTISHEET") % sname));
+					speadSheets[spread].multisheet = true;
+					Debug(str(format("SPREADSHEET \"%s\" IS MULTISHEET") % name));
 				}
-				++dataIndex;
+			}
+			++dataIndex;
 
-				////////////////////////////// SIZE of column /////////////////////////////////////////////
-				do{	// skip until '\n'
+			////////////////////////////// SIZE of column /////////////////////////////////////////////
+			file.seekg(oldpos + size + 1, ios_base::beg);
+
+			file >> nbytes;
+			if(fmod(nbytes,(double)valuesize)>0)
+			{
+				Debug("WARNING: data section could not be read correct");
+			}
+			nr = nbytes / valuesize;
+			Debug(str(format("	[number of rows = %d (%d Bytes) @ 0x%X]") % nr % nbytes % (unsigned int)file.tellg()));
+
+			speadSheets[spread].maxRows<nr ? speadSheets[spread].maxRows=nr : 0;
+
+			////////////////////////////////////// DATA ////////////////////////////////////////////////
+			file.seekg(1, ios_base::cur);
+
+			Debug(str(format("	[data @ 0x%X]") % (unsigned int)file.tellg()));
+			out.str(string());
+			for(int i = 0; i < nr; ++i)
+			{
+				if(valuesize <= 8)	// Numeric, Time, Date, Month, Day
+				{
+					file >> a;
+					out << format("%g ") % a;
+					speadSheets[spread].columns[(current_col-1)].data.push_back(a);
+				}
+				else if((data_type & 0x100) == 0x100) // Text&Numeric
+				{
 					file >> c;
-				} while (c != '\n');
-
-				file >> nbytes;
-				if(fmod(nbytes,(double)valuesize)>0)
-				{
-					Debug("WARNING: data section could not be read correct");
-				}
-				nr = nbytes / valuesize;
-				Debug(str(format("	[number of rows = %d (%d Bytes) @ 0x%X]") % nr % nbytes % (unsigned int)file.tellg()));
-
-				speadSheets[spread].maxRows<nr ? speadSheets[spread].maxRows=nr : 0;
-
-				////////////////////////////////////// DATA ////////////////////////////////////////////////
-				file.seekg(1, ios_base::cur);
-				/*if(valuesize != 8 && valuesize <= 16 && nbytes>0) {	// skip 0 0
-				fread(&c,1,1,f);
-				fread(&c,1,1,f);
-				}*/
-				Debug(str(format("	[data @ 0x%X]") % (unsigned int)file.tellg()));
-				out.str(string());
-				for(int i = 0; i < nr; ++i)
-				{
-					if(valuesize <= 8)	// Numeric, Time, Date, Month, Day
+					file.seekg(1, ios_base::cur);
+					if(c == 0) //value
 					{
 						file >> a;
 						out << format("%g ") % a;
-						speadSheets[spread].columns[(current_col-1)].data.push_back(/*Data(a)*/a);
+						speadSheets[spread].columns[(current_col-1)].data.push_back(a);
+						file.seekg(valuesize-10, ios_base::cur);
 					}
-					else if((data_type & 0x100) == 0x100) // Text&Numeric
+					else //text
 					{
-						file >> c;
-						file.seekg(1, ios_base::cur);
-						if(c==0) //value
-						{
-							file >> a;
-							out << format("%g ") % a;
-							speadSheets[spread].columns[(current_col-1)].data.push_back(/*Data(a)*/a);
-							file.seekg(valuesize-10, ios_base::cur);
-						}
-						else //text
-						{
-							char *stmp = new char[valuesize-1];
-							file.read(stmp, valuesize-2);
-							if(strchr(stmp,0x0E)) // try find non-printable symbol - garbage test
-								stmp[0]='\0';
-							speadSheets[spread].columns[(current_col-1)].data.push_back(/*Data(stmp)*/string(stmp));
-							out << format("%s ") % stmp;
-							delete stmp;
-						}
-					}
-					else //Text
-					{
-						char *stmp = new char[valuesize+1];
-
-						file.read(stmp, valuesize);
-						if(strchr(stmp,0x0E)) // try find non-printable symbol - garbage test
-							stmp[0]='\0';
-						speadSheets[spread].columns[(current_col-1)].data.push_back(/*Data(stmp)*/string(stmp));
+						string stmp(valuesize-2, 0);
+						file >> stmp;
+						if(stmp.find(0x0E) != string::npos) // try find non-printable symbol - garbage test
+							stmp = string();
+						speadSheets[spread].columns[(current_col-1)].data.push_back(stmp);
 						out << format("%s ") % stmp;
-						delete stmp;
 					}
 				}
-				Debug(out.str());
+				else //text
+				{
+					string stmp(valuesize, 0);
+					file >> stmp;
+					if(stmp.find(0x0E) != string::npos) // try find non-printable symbol - garbage test
+						stmp = string();
+					speadSheets[spread].columns[(current_col-1)].data.push_back(stmp);
+					out << format("%s ") % stmp;
+				}
+			}
+			Debug(out.str());
+		}
 
-		}	// else
-
-		if(nbytes>0||cname==0)
+		if(nbytes > 0 || columnname.empty())
 		{
 			file.seekg(1, ios_base::cur);
 		}
 
-		int tailsize;
-		file >> tailsize;
-		file.seekg(1+tailsize+(tailsize>0?1:0), ios_base::cur);
+		file >> size;
+		file.seekg(1 + size + (size > 0 ? 1 : 0), ios_base::cur);
 
-		
-		file >> col_found;
+		file >> size;
 
 		file.seekg(1, ios_base::cur);
-		Debug(str(format("	[column found = %d/0x%X (@ 0x%X)]") % col_found % col_found %((unsigned int) file.tellg()-5)));
+		Debug(str(format("	[column found = %d/0x%X (@ 0x%X)]") % size % size %((unsigned int) file.tellg()-5)));
 		colpos = file.tellg();
 	}
 
 	////////////////////////////////////////////////////////////////////////////
 	for(unsigned int i = 0; i < speadSheets.size(); ++i)
+	{
 		if(speadSheets[i].multisheet)
 		{
-			Debug(str(format("		CONVERT speadSheets \"%s\" to excels") % speadSheets[i].name.c_str()));
+			Debug(str(format("		CONVERT SPREADSHEET \"%s\" to EXCEL") % speadSheets[i].name.c_str()));
 			convertSpreadToExcel(i);
 			--i;
 		}
-		////////////////////////////////////////////////////////////////////////////
-		////////////////////// HEADER SECTION //////////////////////////////////////
+	}
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////// HEADER SECTION //////////////////////////////////////
 
-		unsigned int POS = (unsigned int)file.tellg()-11;
-		Debug("\nHEADER SECTION");
-		Debug(str(format("	nr_spreads = %d") % speadSheets.size()));
-		Debug(str(format("	[position @ 0x%X]") % POS));
+	unsigned int POS = (unsigned int)file.tellg()-11;
+	Debug("\nHEADER SECTION");
+	Debug(str(format("	nr_spreads = %d") % speadSheets.size()));
+	Debug(str(format("	[position @ 0x%X]") % POS));
 
-		//////////////////////// OBJECT INFOS //////////////////////////////////////
-		POS+=0xB;
+	//////////////////////// OBJECT INFOS //////////////////////////////////////
+	POS += 0xB;
+	file.seekg(POS, ios_base::beg);
+	while(1)
+	{
+		Debug("			reading	Header");
+		// HEADER
+		// check header
+		POS = file.tellg();
+
+		file >> size;
+		if(size == 0)
+			break;
+
+		file.seekg(POS + 0x7, ios_base::beg);
+		string name(25, 0);
+		file >> name;
+
 		file.seekg(POS, ios_base::beg);
-		while(1)
+
+		if(findSpreadByName(name) != -1)
+			readSpreadInfo();
+		else if(findMatrixByName(name) != -1)
+			readMatrixInfo();
+		else if(findExcelByName(name) != -1)
+			readExcelInfo();
+		else
+			readGraphInfo();
+	}
+
+	file.seekg(1, ios_base::cur);
+	Debug(str(format("Some Origin params @ 0x%X:") % (unsigned int)file.tellg()));
+
+	file >> c;
+	while(c != 0)
+	{
+		out.str(string());
+		out << "		";
+		while(c != '\n')
 		{
-			Debug("			reading	Header");
-			// HEADER
-			// check header
-			POS=file.tellg();
-			int headersize;
-			file >> headersize;
-			if(headersize==0)
-				break;
-			char object_type[10];
-			char object_name[25];
-			file.seekg(POS + 0x7, ios_base::beg);
-			file.read(object_name, 25);
-
-			file.seekg(POS + 0x4A, ios_base::beg);
-			file.read(object_type, 10);
-
-			file.seekg(POS, ios_base::beg);
-
-			if(findSpreadByName(object_name) != -1)
-				readSpreadInfo();
-			else if(findMatrixByName(object_name) != -1)
-				readMatrixInfo();
-			else if(findExcelByName(object_name) != -1)
-				readExcelInfo();
-			else
-				readGraphInfo();
-		}
-
-
-		file.seekg(1, ios_base::cur);
-		Debug(str(format("Some Origin params @ 0x%X:") % (unsigned int)file.tellg()));
-
-		file >> c;
-		while(c!=0)
-		{
-			out.str(string());
-			out << "		";
-			while(c!='\n')
-			{
-				out << c;
-				file >> c;
-			}
-			double parvalue;
-			file >> parvalue;
-			out << format(": %g") % parvalue;
-			Debug(out.str());
-
-			file.seekg(1, ios_base::cur);
+			out << c;
 			file >> c;
 		}
-		file.seekg(1+5, ios_base::cur);
-		while(1)
+		double parvalue;
+		file >> parvalue;
+		out << format(": %g") % parvalue;
+		Debug(out.str());
+
+		file.seekg(1, ios_base::cur);
+		file >> c;
+	}
+	file.seekg(1 + 5, ios_base::cur);
+	while(1)
+	{
+		//fseek(f,5+0x40+1,SEEK_CUR);
+		int size;
+		file >> size;
+		if(size != 0x40)
+			break;
+
+		double creationDate, modificationDate;
+		file.seekg(1 + 0x20, ios_base::cur);
+		file >> creationDate;
+		file >> modificationDate;
+
+		unsigned char labellen;
+		file.seekg(0x10-4, ios_base::cur);
+		file >> labellen;
+
+		file.seekg(4, ios_base::cur);
+		file >> size;
+
+		file.seekg(1, ios_base::cur);
+
+		string name(size, 0);
+		file >> name;
+
+		if(name == "ResultsLog")
 		{
-			//fseek(f,5+0x40+1,SEEK_CUR);
-			int size;
+			file.seekg(1, ios_base::cur);
 			file >> size;
-			if(size!=0x40)
-				break;
 
-			double creationDate, modificationDate;
-			file.seekg(1+0x20, ios_base::cur);
-			file >> creationDate;
+			file.seekg(1, ios_base::cur);
+			resultsLog.resize(size);
+			file >> resultsLog;
 
-			file >> modificationDate;
+			Debug(str(format("Results Log: %s") % resultsLog));
+			break;
+		}
+		else
+		{
+			notes.push_back(Note(name));
+			notes.back().objectID = objectIndex;
+			notes.back().creationDate = doubleToPosixTime(creationDate);
+			notes.back().modificationDate = doubleToPosixTime(modificationDate);
+			++objectIndex;
 
-
-			unsigned char labellen;
-			file.seekg(0x10-4, ios_base::cur);
-			file >> labellen;
-
-			file.seekg(4, ios_base::cur);
+			file.seekg(1, ios_base::cur);
 			file >> size;
 
 			file.seekg(1, ios_base::cur);
 
-			char *stmp = new char[size];
-			file.read(stmp, size);
-
-			if(0==strcmp(stmp,"ResultsLog"))
+			if(labellen > 1)
 			{
-				delete stmp;
-
-				file.seekg(1, ios_base::cur);
-				file >> size;
-
-				stmp = new char[size];
-				file.seekg(1, ios_base::cur);
-				file.read(stmp, size);
-
-				resultsLog=stmp;
-				Debug(str(format("Results Log: %s") % resultsLog.c_str()));
-				delete stmp;
-				break;
-			}
-			else
-			{
-				notes.push_back(Note(stmp));
-				notes.back().objectID = objectIndex;
-				notes.back().creationDate = doubleToPosixTime(creationDate);
-				notes.back().modificationDate = doubleToPosixTime(modificationDate);
-				++objectIndex;
-				delete stmp;
-
-				file.seekg(1, ios_base::cur);
-				file >> size;
-
-				file.seekg(1, ios_base::cur);
-
-				if(labellen>1)
-				{
-					file.read(&(notes.back().label.assign(labellen-1, 0))[0], labellen-1);
-					file.seekg(1, ios_base::cur);
-				}
-
-				file.read(&(notes.back().text.assign(size-labellen, 0))[0], size-labellen);
-
-				Debug(str(format("notes %d NAME: %s") % notes.size() % notes.back().name.c_str()));
-				Debug(str(format("notes %d LABEL: %s") % notes.size() % notes.back().label.c_str()));
-				Debug(str(format("notes %d TEXT: %s") % notes.size() % notes.back().text.c_str()));
-
+				file >> notes.back().label.assign(labellen-1, 0);
 				file.seekg(1, ios_base::cur);
 			}
-		}
 
-		file.seekg(1+4*5+0x10+1, ios_base::cur);
-		try
-		{
-			readProjectTree();
-		}
-		catch(...)
-		{}
-		Debug("Done parsing");
+			file >> notes.back().text.assign(size - labellen, 0);
 
-		return true;
+			Debug(str(format("NOTE %d NAME: %s") % notes.size() % notes.back().name));
+			Debug(str(format("NOTE %d LABEL: %s") % notes.size() % notes.back().label));
+			Debug(str(format("NOTE %d TEXT: %s") % notes.size() % notes.back().text));
+
+			file.seekg(1, ios_base::cur);
+		}
+	}
+
+	file.seekg(1 + 4*5 + 0x10 + 1, ios_base::cur);
+	try
+	{
+		readProjectTree();
+	}
+	catch(...)
+	{}
+	Debug("Done parsing");
+
+	return true;
 }
 
 void Origin750Parser::readSpreadInfo()
@@ -649,9 +572,9 @@ void Origin750Parser::readSpreadInfo()
 	Debug(str(format("			[Spreadsheet SECTION (@ 0x%X)]") % POS));
 
 	// check spreadsheet name
-	char name[25];
 	file.seekg(POS + 0x2, ios_base::beg);
-	file.read(name, 25);
+	string name(25, 0);
+	file >> name;
 
 	int spread = findSpreadByName(name);
 	speadSheets[spread].name = name;
@@ -674,8 +597,8 @@ void Origin750Parser::readSpreadInfo()
 
 			//section_header
 			file.seekg(LAYER + 0x46, ios_base::beg);
-			char sec_name[41];
-			file.read(sec_name, 41);
+			string sec_name(41, 0);
+			file >> sec_name;
 
 			Debug(str(format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46)));
 
@@ -691,7 +614,7 @@ void Origin750Parser::readSpreadInfo()
 			int col_index = findSpreadColumnByName(spread, sec_name);
 			if(col_index != -1)
 			{
-				file.read(&(speadSheets[spread].columns[col_index].command.assign(size, 0))[0], size);
+				file >> speadSheets[spread].columns[col_index].command.assign(size, 0);
 			}
 
 			//section_body_2_size
@@ -705,7 +628,7 @@ void Origin750Parser::readSpreadInfo()
 			//close section 00 00 00 00 0A
 			LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
 
-			if(0==strcmp(sec_name, "__LayerInfoStorage"))
+			if(sec_name == "__LayerInfoStorage")
 				break;
 
 		}
@@ -719,7 +642,8 @@ void Origin750Parser::readSpreadInfo()
 	{
 		LAYER += 0x5;
 		file.seekg(LAYER + 0x12, ios_base::beg);
-		file.read(name, 12);
+		name.resize(12);
+		file >> name;
 
 		file.seekg(LAYER + 0x11, ios_base::beg);
 		file >> c;
@@ -828,7 +752,7 @@ void Origin750Parser::readSpreadInfo()
 			if(col_index != -1)
 			{
 				file.seekg(LAYER, ios_base::beg);
-				file.read(&(speadSheets[spread].columns[col_index].comment.assign(size, 0))[0], size);
+				file >> speadSheets[spread].columns[col_index].comment.assign(size, 0);
 			}
 			LAYER += size + 0x1;
 		}
@@ -852,12 +776,12 @@ void Origin750Parser::readExcelInfo()
 
 	POS += 5;
 
-	Debug(str(format("			[excels SECTION (@ 0x%X)]") % POS));
+	Debug(str(format("			[EXCEL SECTION (@ 0x%X)]") % POS));
 
 	// check spreadsheet name
-	char name[25];
+	string name(25, 0);
 	file.seekg(POS + 0x2, ios_base::beg);
-	file.read(name, 25);
+	file >> name;
 
 	int iexcel = findExcelByName(name);
 	excels[iexcel].name = name;
@@ -883,9 +807,9 @@ void Origin750Parser::readExcelInfo()
 
 			//section_header
 
-			char sec_name[41];
+			string sec_name(41, 0);
 			file.seekg(LAYER + 0x46, ios_base::beg);
-			file.read(sec_name, 41);
+			file >> sec_name;
 
 			Debug(str(format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46)));
 
@@ -901,7 +825,7 @@ void Origin750Parser::readExcelInfo()
 			int col_index = findExcelColumnByName(iexcel, isheet, sec_name);
 			if(col_index!=-1)
 			{
-				file.read(&(excels[iexcel].sheets[isheet].columns[col_index].command.assign(size, 0))[0], size);
+				file >> excels[iexcel].sheets[isheet].columns[col_index].command.assign(size, 0);
 			}
 
 			//section_body_2_size
@@ -915,7 +839,7 @@ void Origin750Parser::readExcelInfo()
 			//close section 00 00 00 00 0A
 			LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
 
-			if(0==strcmp(sec_name, "__LayerInfoStorage"))
+			if(sec_name == "__LayerInfoStorage")
 				break;
 
 		}
@@ -928,7 +852,8 @@ void Origin750Parser::readExcelInfo()
 		{
 			LAYER += 0x5;
 			file.seekg(LAYER + 0x12, ios_base::beg);
-			file.read(name, 12);
+			name.resize(12);
+			file >> name;
 
 			file.seekg(LAYER + 0x11, ios_base::beg);
 			file >> c;
@@ -1036,7 +961,7 @@ void Origin750Parser::readExcelInfo()
 				if(col_index != -1)
 				{
 					file.seekg(LAYER, ios_base::beg);
-					file.read(&(excels[iexcel].sheets[isheet].columns[col_index].comment.assign(size, 0))[0], size);
+					file >> excels[iexcel].sheets[isheet].columns[col_index].comment.assign(size, 0);
 				}
 				LAYER += size + 0x1;
 			}
@@ -1074,13 +999,12 @@ void Origin750Parser::readMatrixInfo()
 
 	Debug(str(format("			[Matrix SECTION (@ 0x%X)]") % POS));
 
-	// check spreadsheet name
-	char name[25];
+	string name(25, 0);
 	file.seekg(POS + 0x2, ios_base::beg);
-	file.read(name, 25);
+	file >> name;
 
 	int idx = findMatrixByName(name);
-	matrixes[idx].name=name;
+	matrixes[idx].name = name;
 	file.seekg(POS, ios_base::beg);
 	readWindowProperties(matrixes[idx], size);
 
@@ -1120,9 +1044,9 @@ void Origin750Parser::readMatrixInfo()
 		LAYER += 0x5;
 
 		//section_header
-		char sec_name[41];
+		string sec_name(41, 0);
 		file.seekg(LAYER + 0x46, ios_base::beg);
-		file.read(sec_name, 41);
+		file >> sec_name;
 
 		//section_body_1_size
 		LAYER += 0x6F+0x1;
@@ -1132,14 +1056,14 @@ void Origin750Parser::readMatrixInfo()
 		//section_body_1
 		LAYER += 0x5;
 		//check if it is a formula
-		if(0==strcmp(sec_name,"MV"))
+		if(sec_name == "MV")
 		{
 			file.seekg(LAYER, ios_base::beg);
-			file.read(&(matrixes[idx].command.assign(size, 0))[0], size);
+			file >> matrixes[idx].command.assign(size, 0);
 		}
 
 		//section_body_2_size
-		LAYER += size+0x1;
+		LAYER += size + 0x1;
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 
@@ -1149,7 +1073,7 @@ void Origin750Parser::readMatrixInfo()
 		//close section 00 00 00 00 0A
 		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
 
-		if(0==strcmp(sec_name, "__LayerInfoStorage"))
+		if(sec_name == "__LayerInfoStorage")
 			break;
 
 	}
@@ -1202,7 +1126,6 @@ void Origin750Parser::readMatrixInfo()
 	file.seekg(LAYER + 0x5*0x5 + 0x1ED*0x12 + 0x5, ios_base::beg);
 }
 
-
 void Origin750Parser::readGraphInfo()
 {
 	unsigned int POS = file.tellg();
@@ -1213,9 +1136,9 @@ void Origin750Parser::readGraphInfo()
 
 	Debug(str(format("			[Graph SECTION (@ 0x%X)]") % POS));
 
-	char name[25];
+	string name(25, 0);
 	file.seekg(POS+0x2, ios_base::beg);
-	file.read(name, 25);
+	file >> name;
 
 	graphs.push_back(Graph(name));
 	file.seekg(POS, ios_base::beg);
@@ -1272,9 +1195,9 @@ void Origin750Parser::readGraphInfo()
 
 			//section_header
 
-			char sec_name[41];
+			string sec_name(41, 0);
 			file.seekg(LAYER+0x46, ios_base::beg);
-			file.read(sec_name, 41);
+			file >> sec_name;
 
 			Debug(str(format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46)));
 
@@ -1384,47 +1307,46 @@ void Origin750Parser::readGraphInfo()
 			//check if it is a axis or legend
 
 			file.seekg(1, ios_base::cur);
-			char stmp[255];
-			if(0==strcmp(sec_name,"XB"))
+			if(sec_name == "XB")
 			{
-				stmp[size]='\0';
-				file.read(stmp, size);
+				string stmp(size, 0);
+				file >> stmp;
 
 				graphs.back().layers.back().xAxis.position = GraphAxis::Bottom;
 				graphs.back().layers.back().xAxis.label = TextBox(stmp, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
 			}
-			else if(0==strcmp(sec_name,"XT"))
+			else if(sec_name == "XT")
 			{
-				stmp[size]='\0';
-				file.read(stmp, size);
+				string stmp(size, 0);
+				file >> stmp;
 
 				graphs.back().layers.back().xAxis.position = GraphAxis::Top;
 				graphs.back().layers.back().xAxis.label = TextBox(stmp, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
 			}
-			else if(0==strcmp(sec_name,"YL"))
+			else if(sec_name == "YL")
 			{
-				stmp[size]='\0';
-				file.read(stmp, size);
+				string stmp(size, 0);
+				file >> stmp;
 
 				graphs.back().layers.back().yAxis.position = GraphAxis::Left;
 				graphs.back().layers.back().yAxis.label = TextBox(stmp, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
 			}
-			else if(0==strcmp(sec_name,"YR"))
+			else if(sec_name == "YR")
 			{
-				stmp[size]='\0';
-				file.read(stmp, size);
+				string stmp(size, 0);
+				file >> stmp;
 
 				graphs.back().layers.back().yAxis.position = GraphAxis::Right;
 				graphs.back().layers.back().yAxis.label = TextBox(stmp, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
 			}
-			else if(0==strcmp(sec_name,"Legend"))
+			else if(sec_name == "Legend")
 			{
-				stmp[size]='\0';
-				file.read(stmp, size);
+				string stmp(size, 0);
+				file >> stmp;
 
 				graphs.back().layers.back().legend = TextBox(stmp, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
 			}
-			else if(0==strcmp(sec_name,"__BCO2")) // histogram
+			else if(sec_name == "__BCO2") // histogram
 			{
 				file.seekg(LAYER + 0x10, ios_base::beg);
 				file >> graphs.back().layers.back().histogramBin;
@@ -1435,15 +1357,15 @@ void Origin750Parser::readGraphInfo()
 				file.seekg(LAYER + 0x28, ios_base::beg);
 				file >> graphs.back().layers.back().histogramBegin;
 			}
-			else if(osize==0x3E) // text
+			else if(osize == 0x3E) // text
 			{
-				stmp[size]='\0';
-				file.read(stmp, size);
+				string stmp(size, 0);
+				file >> stmp;
 
 				graphs.back().layers.back().texts.push_back(
 								TextBox(stmp, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach));
 			}
-			else if(osize==0x78 && type==2) // line
+			else if(osize == 0x78 && type == 2) // line
 			{
 				graphs.back().layers.back().lines.push_back(Line());
 				graphs.back().layers.back().lines.back().color=color;
@@ -1454,7 +1376,7 @@ void Origin750Parser::readGraphInfo()
 				graphs.back().layers.back().lines.back().begin=begin;
 				graphs.back().layers.back().lines.back().end=end;
 			}
-			else if(osize==0x28 && type==4) // bitmap
+			else if(osize == 0x28 && type == 4) // bitmap
 			{
 				unsigned long filesize = size + 14;
 				graphs.back().layers.back().bitmaps.push_back(Bitmap());
@@ -1496,7 +1418,7 @@ void Origin750Parser::readGraphInfo()
 			//close section 00 00 00 00 0A
 			LAYER += size + (size > 0 ? 0x1 : 0);
 
-			if(0==strcmp(sec_name,"__LayerInfoStorage"))
+			if(sec_name == "__LayerInfoStorage")
 				break;
 
 		}
@@ -1507,7 +1429,7 @@ void Origin750Parser::readGraphInfo()
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
 
-		if(size==0x1E7)//check layer is not empty
+		if(size == 0x1E7)//check layer is not empty
 		{
 			while(1)
 			{
@@ -1844,14 +1766,13 @@ void Origin750Parser::skipObjectInfo()
 {
 	unsigned int POS = file.tellg();
 
-	int headersize;
-	file >> headersize;
+	unsigned int size;
+	file >> size;
 	
 	POS+=5;
 
 	unsigned int LAYER = POS;
-	LAYER += headersize + 0x1;
-	int sec_size;
+	LAYER += size + 0x1;
 	while(1)// multilayer loop
 	{
 		// LAYER section
@@ -1862,44 +1783,43 @@ void Origin750Parser::skipObjectInfo()
 		while(1)
 		{
 			//section_header_size=0x6F(4 bytes) + '\n'
-			LAYER+=0x5;
+			LAYER += 0x5;
 
 			//section_header
-			char sec_name[42];
-			sec_name[41]='\0';
+			string sec_name(41, 0);
 			file.seekg(LAYER + 0x46, ios_base::beg);
-			file.read(sec_name, 41);
+			file >> sec_name;
 
 			//section_body_1_size
-			LAYER += 0x6F+0x1;
+			LAYER += 0x6F + 0x1;
 			file.seekg(LAYER, ios_base::beg);
-			file >> sec_size;
+			file >> size;
 
 			//section_body_1
 			LAYER += 0x5;
 
 			//section_body_2_size
-			LAYER += sec_size+0x1;
+			LAYER += size + 0x1;
 			file.seekg(LAYER, ios_base::beg);
-			file >> sec_size;
+			file >> size;
 
 			//section_body_2
 			LAYER += 0x5;
 
 			//close section 00 00 00 00 0A
-			LAYER += sec_size+(sec_size>0?0x1:0);
+			LAYER += size + (size > 0 ? 0x1 : 0);
 
 			//section_body_3_size
 			file.seekg(LAYER, ios_base::beg);
-			file >> sec_size;
+			file >> size;
 
 			//section_body_3
 			LAYER += 0x5;
 
 			//close section 00 00 00 00 0A
-			LAYER += sec_size + (sec_size>0 ? 0x1 : 0);
+			LAYER += size + (size > 0 ? 0x1 : 0);
 
-			if(0==strcmp(sec_name,"__LayerInfoStorage"))
+			if(sec_name == "__LayerInfoStorage")
 				break;
 
 		}
@@ -1910,33 +1830,26 @@ void Origin750Parser::skipObjectInfo()
 			LAYER += 0x5;
 
 			LAYER += 0x1E7+0x1;
-			int comm_size;
 			file.seekg(LAYER, ios_base::beg);
-			file >> comm_size;
+			file >> size;
 
-			LAYER += 0x5;
-			if(comm_size>0)
-			{
-				LAYER += comm_size+0x1;
-			}
+			LAYER += 0x5 + size + (size > 0 ? 0x1 : 0);
 
-			int ntmp;
 			file.seekg(LAYER, ios_base::beg);
-			file >> ntmp;
+			file >> size;
 
-			if(ntmp != 0x1E7)
+			if(size != 0x1E7)
 				break;
 		}
 
-		LAYER += 0x5*0x5+0x1ED*0x12;
+		LAYER += 0x5*0x5 + 0x1ED*0x12;
 		file.seekg(LAYER, ios_base::beg);
-		file >> sec_size;
+		file >> size;
 
-		if(sec_size == 0)
+		if(size == 0)
 			break;
 	}
-	POS = LAYER+0x5;
-	file.seekg(POS, ios_base::beg);
+	file.seekg(LAYER + 0x5, ios_base::beg);
 }
 
 void Origin750Parser::readGraphGridInfo(GraphGrid &grid)
@@ -2144,11 +2057,9 @@ void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 	POS += 5;
 
 	// read folder name
-	char* name = new char[size+1];
-	name[size]='\0';
-
+	string name(size, 0);
 	file.seekg(POS, ios_base::beg);
-	file.read(name, size);
+	file >> name;
 
 	tree<ProjectNode>::iterator current_folder = projectTree.append_child(parent, ProjectNode(name, ProjectNode::Folder, doubleToPosixTime(creationDate), doubleToPosixTime(modificationDate)));
 	POS += size + 1 + 5 + 5;
@@ -2241,12 +2152,10 @@ void Origin750Parser::readWindowProperties(Window& window, int size)
 		if(labellen > 0)
 		{
 			file.seekg(POS + 0xC3, ios_base::beg);
-			file.read(&(window.label.assign(labellen, 0))[0], labellen);
+			file >> window.label.assign(labellen, 0);
 		}
-		else
-			window.label = "";
 
-		Debug(str(format("			WINDOW %d LABEL: %s") % objectIndex % window.label.c_str()));
+		Debug(str(format("			WINDOW %d LABEL: %s") % objectIndex % window.label));
 	}
 }
 

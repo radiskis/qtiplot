@@ -45,28 +45,27 @@ class OriginFile
 public:
 	OriginFile(const string& fileName);
 
-	bool parse();												//!< parse Origin file
-	double version() const;										//!< get version of Origin file
+	bool parse();																		//!< parse Origin file
+	double version() const;																//!< get version of Origin file
 
-	const tree<Origin::ProjectNode>* project() const;			//!< get project tree
+	vector<Origin::SpreadSheet>::size_type spreadCount() const;							//!< get number of spreadsheets
+	Origin::SpreadSheet& spread(vector<Origin::SpreadSheet>::size_type s) const;		//!< get spreadsheet s
 
-	int spreadCount() const;									//!< get number of spreadsheets
-	Origin::SpreadSheet& spread(int s) const;					//!< get spreadsheet s
+	vector<Origin::Matrix>::size_type matrixCount() const;								//!< get number of matrices
+	Origin::Matrix& matrix(vector<Origin::Matrix>::size_type m) const;					//!< get matrix m
 
-	int matrixCount() const;									//!< get number of matrices
-	Origin::Matrix& matrix(int m) const;						//!< get matrix m
+	vector<Origin::Function>::size_type functionCount() const;							//!< get number of functions
+	vector<Origin::Function>::size_type functionIndex(const string& name) const;		//!< get name of function s
+	Origin::Function& function(vector<Origin::Function>::size_type f) const;			//!< get function f
 
-	int functionCount() const;									//!< get number of functions
-	int functionIndex(const char* s) const;						//!< get name of function s
-	Origin::Function& function(int f) const;					//!< get function f
-
-	int graphCount() const;										//!< get number of graphs
-	Origin::Graph& graph(int g) const;							//!< get graph g
+	vector<Origin::Graph>::size_type graphCount() const;								//!< get number of graphs
+	Origin::Graph& graph(vector<Origin::Graph>::size_type g) const;						//!< get graph g
 	
-	int noteCount() const;										//!< get number of notes
-	Origin::Note& note(int n) const;							//!< get note n
+	vector<Origin::Note>::size_type noteCount() const;									//!< get number of notes
+	Origin::Note& note(vector<Origin::Note>::size_type n) const;						//!< get note n
 
-	string resultsLogString() const;						//!< get Results Log
+	const tree<Origin::ProjectNode>* project() const;									//!< get project tree
+	string resultsLogString() const;													//!< get Results Log
 
 private:
 	int fileVersion;

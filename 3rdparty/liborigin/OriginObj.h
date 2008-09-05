@@ -80,7 +80,7 @@ namespace Origin
 
 		string name;
 		string label;
-		int objectID;
+		unsigned int objectID;
 		bool hidden;
 		State state;
 		Title title;
@@ -88,7 +88,7 @@ namespace Origin
 		boost::posix_time::ptime creationDate;
 		boost::posix_time::ptime modificationDate;
 
-		Window(string _name= "", string _label = "", bool _hidden = false)
+		Window(const string& _name= "", const string& _label = "", bool _hidden = false)
 		:	name(_name)
 		,	label(_label)
 		,	hidden(_hidden)
@@ -113,10 +113,10 @@ namespace Origin
 		string command;
 		string comment;
 		int width;
-		int index;
+		unsigned int index;
 		vector<variant> data;
 
-		SpreadColumn(string _name = "", int _index = 0)
+		SpreadColumn(const string& _name = "", unsigned int _index = 0)
 		:	name(_name)
 		,	index(_index)
 		,	command("")
@@ -137,7 +137,7 @@ namespace Origin
 		bool multisheet;
 		vector<SpreadColumn> columns;
 
-		SpreadSheet(string _name = "")
+		SpreadSheet(const string& _name = "")
 		:	Window(_name)
 		,	loose(true)
 		,	multisheet(false)
@@ -150,7 +150,7 @@ namespace Origin
 		bool loose;
 		vector<SpreadSheet> sheets;
 
-		Excel(string _name = "", string _label = "", int _maxRows = 0, bool _hidden = false, bool _loose = true)
+		Excel(const string& _name = "", const string& _label = "", int _maxRows = 0, bool _hidden = false, bool _loose = true)
 		:	Window(_name, _label, _hidden)
 		,	maxRows(_maxRows)
 		,	loose(_loose)
@@ -171,12 +171,12 @@ namespace Origin
 		NumericDisplayType numericDisplayType;
 		string command;
 		int width;
-		int index;
+		unsigned int index;
 		ViewType view;
 		HeaderViewType header;
 		vector<double> data;
 
-		Matrix(string _name = "", int _index = 0)
+		Matrix(const string& _name = "", unsigned int _index = 0)
 		:	Window(_name)
 		,	index(_index)
 		,	command("")
@@ -200,9 +200,9 @@ namespace Origin
 		double begin;
 		double end;
 		int totalPoints;
-		int index;
+		unsigned int index;
 
-		Function(string _name = "", int _index = 0)
+		Function(const string& _name = "", unsigned int _index = 0)
 		:	name(_name)
 		,	index(_index)
 		,	type(Normal)
@@ -469,6 +469,34 @@ namespace Origin
 		double top;
 		double width;
 		double height;
+
+		Bitmap()
+		:	size(0)
+		,	data(0)
+		{
+		};
+
+		Bitmap(const Bitmap& bitmap)
+		:	clientRect(bitmap.clientRect)
+		,	attach(bitmap.attach)
+		,	size(bitmap.size)
+		,	left(bitmap.left)
+		,	top(bitmap.top)
+		,	width(bitmap.width)
+		,	height(bitmap.height)
+		{
+			if(size > 0)
+			{
+				data = new unsigned char[size];
+				memcpy(data, bitmap.data, size);
+			}
+		};
+
+		~Bitmap()
+		{
+			if(size > 0)
+				delete data;
+		};
 	};
 
 	struct Metafile
@@ -516,7 +544,7 @@ namespace Origin
 		unsigned short width;
 		unsigned short height;
 
-		Graph(string _name = "")
+		Graph(const string& _name = "")
 		:	Window(_name)
 		{};
 	};
@@ -524,7 +552,7 @@ namespace Origin
 	struct Note : public Window
 	{
 		string text;
-		Note(string _name = "")
+		Note(const string& _name = "")
 		:	Window(_name)
 		{};
 	};
@@ -532,12 +560,13 @@ namespace Origin
 	struct ProjectNode
 	{
 		enum NodeType {Object, Folder};
+
 		NodeType type;
 		string name;
 		boost::posix_time::ptime creationDate;
 		boost::posix_time::ptime modificationDate;
 
-		ProjectNode(string _name = "", NodeType _type = Object, boost::posix_time::ptime _creationDate = boost::posix_time::ptime(), boost::posix_time::ptime _modificationDate = boost::posix_time::ptime())
+		ProjectNode(const string& _name = "", NodeType _type = Object, const boost::posix_time::ptime& _creationDate = boost::posix_time::ptime(), const boost::posix_time::ptime& _modificationDate = boost::posix_time::ptime())
 		:	name(_name)
 		,	type(_type)
 		,	creationDate(_creationDate)
