@@ -65,7 +65,7 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 
 			return *this;
 		}
@@ -74,7 +74,7 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 
 			return *this;
 		}
@@ -83,7 +83,7 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 
 			return *this;
 		}
@@ -92,7 +92,7 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 
 			return *this;
 		}
@@ -101,7 +101,7 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 
 			return *this;
 		}
@@ -110,7 +110,7 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 
 			return *this;
 		}
@@ -119,7 +119,7 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 
 			return *this;
 		}
@@ -128,7 +128,7 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
 
 			return *this;
 		}
@@ -137,14 +137,24 @@ namespace std
 		{
 			read(reinterpret_cast<char*>(&value), sizeof(value));
 			if(bigEndian)
-				swapBytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+				swap_bytes(reinterpret_cast<unsigned char*>(&value), sizeof(value));
+
+			return *this;
+		}
+
+		iendianfstream& operator>>(string& value)
+		{
+			read(reinterpret_cast<char*>(&value[0]), value.size());
+			string::size_type pos = value.find_first_of('\0');
+			if(pos != string::npos)
+				value.resize(pos);
 
 			return *this;
 		}
 
 	private:
 		bool bigEndian;
-		void swapBytes(unsigned char* data, int size)
+		void swap_bytes(unsigned char* data, int size)
 		{
 			register int i = 0;
 			register int j = size - 1;

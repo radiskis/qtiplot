@@ -72,7 +72,10 @@ QString strreverse(const QString &str) //QString reversing
 
 QString posixTimeToString(ptime pt)
 {
-	return QDateTime::fromString(to_iso_string(pt).c_str(), "yyyyMMddThhmmss").toString("dd.MM.yyyy hh:mm:ss");
+	stringstream ss;
+	ss.imbue(locale(locale::classic(), new time_facet("%d.%m.%Y %H:%M:%S")));
+	ss << pt;
+	return QString::fromStdString(ss.str());
 }
 
 ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
@@ -158,7 +161,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 {
 	int visible_count = 0;
 	int QtiPlot_scaling_factor = 10; //in Origin width is measured in characters while in QtiPlot - pixels --- need to be accurate
-	for(int s = 0; s < opj.spreadCount(); ++s)
+	for(unsigned int s = 0; s < opj.spreadCount(); ++s)
 	{
 		Origin::SpreadSheet spread = opj.spread(s);
 		int columnCount = spread.columns.size();
@@ -223,7 +226,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
             for(int i = 0; i < columnCount; ++i)
                 d_cells[i] = new double [table->numRows()];
 
-			for(int i = 0; i < column.data.size(); ++i)
+			for(unsigned int i = 0; i < column.data.size(); ++i)
 			{
 				Origin::variant value = column.data[i];
 				if(column.type != Origin::SpreadColumn::Label && column.valueType != Origin::Text)
@@ -431,7 +434,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 	}
 
 //Import matrices
-	for (int s = 0; s < opj.matrixCount(); ++s)
+	for(unsigned int s = 0; s < opj.matrixCount(); ++s)
 	{
 		Origin::Matrix matrix = opj.matrix(s);
 		int columnCount = matrix.columnCount;
@@ -523,7 +526,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 bool ImportOPJ::importNotes(const OriginFile& opj)
 {
 	int visible_count = 0;
-	for (int n = 0; n < opj.noteCount(); ++n)
+	for(unsigned int n = 0; n < opj.noteCount(); ++n)
 	{
 		Origin::Note _note = opj.note(n);
 		QString name = _note.name.c_str();
@@ -557,7 +560,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 	double pi=3.141592653589793;
 	int visible_count=0;
 	int tickTypeMap[]={0,3,1,2};
-	for (int g = 0; g < opj.graphCount(); ++g)
+	for(unsigned int g = 0; g < opj.graphCount(); ++g)
 	{
 		Origin::Graph _graph = opj.graph(g);
 		MultiLayer *ml = mw->multilayerPlot(_graph.name.c_str(), 0);
@@ -582,7 +585,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		double fFontScaleFactor = 0.37*fWindowFactor;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
-		for(int l = 0; l < _graph.layers.size(); ++l)
+		for(unsigned int l = 0; l < _graph.layers.size(); ++l)
 		{
 			Origin::GraphLayer& layer = _graph.layers[l];
 			Graph *graph = ml->addLayer();
@@ -720,7 +723,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
 					break;
 				case 'F':
-					s = opj.functionIndex(data.right(data.length()-2).toLocal8Bit());
+					s = opj.functionIndex(data.right(data.length()-2).toStdString());
 					function = opj.function(s);
 
 					int type;

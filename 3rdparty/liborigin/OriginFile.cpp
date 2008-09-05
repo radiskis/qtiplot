@@ -116,57 +116,57 @@ const tree<Origin::ProjectNode>* OriginFile::project() const
 	return &parser->projectTree;
 }
 
-int OriginFile::spreadCount() const
+vector<Origin::SpreadSheet>::size_type OriginFile::spreadCount() const
 {
 	return parser->speadSheets.size();
 }
 
-Origin::SpreadSheet& OriginFile::spread(int s) const
+Origin::SpreadSheet& OriginFile::spread(vector<Origin::SpreadSheet>::size_type s) const
 {
 	return parser->speadSheets[s];
 }
 
-int OriginFile::matrixCount() const
+vector<Origin::Matrix>::size_type OriginFile::matrixCount() const
 {
 	return parser->matrixes.size();
 }	
 
-Origin::Matrix& OriginFile::matrix(int m) const
+Origin::Matrix& OriginFile::matrix(vector<Origin::Matrix>::size_type m) const
 {
 	return parser->matrixes[m];
 }
 
-int OriginFile::functionCount() const
+vector<Origin::Function>::size_type OriginFile::functionCount() const
 {
 	return parser->functions.size();
 }
 
-int OriginFile::functionIndex(const char* s) const
+vector<Origin::Function>::size_type OriginFile::functionIndex(const string& name) const
 {
-	return parser->findFunctionByName(s);
+	return parser->findFunctionByName(name);
 }
 
-Origin::Function& OriginFile::function(int f) const
+Origin::Function& OriginFile::function(vector<Origin::Function>::size_type f) const
 {
 	return parser->functions[f];
 }
 
-int OriginFile::graphCount() const
+vector<Origin::Graph>::size_type OriginFile::graphCount() const
 {
 	return parser->graphs.size();
 }
 
-Origin::Graph& OriginFile::graph(int g) const
+Origin::Graph& OriginFile::graph(vector<Origin::Graph>::size_type g) const
 {
 	return parser->graphs[g];
 }
 
-int OriginFile::noteCount() const
+vector<Origin::Note>::size_type OriginFile::noteCount() const
 {
 	return parser->notes.size();
 }
 
-Origin::Note& OriginFile::note(int n) const
+Origin::Note& OriginFile::note(vector<Origin::Note>::size_type n) const
 {
 	return parser->notes[n];
 }

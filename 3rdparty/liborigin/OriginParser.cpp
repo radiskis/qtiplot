@@ -27,105 +27,77 @@
  ***************************************************************************/
 
 #include "OriginParser.h"
-//#include <stdio.h>
-#include <cstring>
+#include <algorithm>
+#include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/lambda/if.hpp>
+#include <boost/algorithm/string.hpp>
 
 using namespace boost;
+using namespace boost::algorithm;
 using namespace Origin;
 
-//compare two strings ignoring case
-int strcmp_i(const char* str1, const char* str2)
+vector<Origin::SpreadSheet>::size_type OriginParser::findSpreadByName(const string& name) const
 {
-#ifdef _WINDOWS
-	return stricmp(str1, str2);
-#else
-	return strcasecmp(str1, str2);
-#endif
+	vector<SpreadSheet>::const_iterator it = find_if(speadSheets.begin(), 
+													 speadSheets.end(),
+													 bind(iequals<string, string>,
+														  bind(&SpreadSheet::name, _1),
+														  name,
+														  locale()));
+	return it != speadSheets.end() ? it - speadSheets.begin() : -1;
 }
 
-OriginParser::~OriginParser()
+vector<Origin::Excel>::size_type OriginParser::findExcelByName(const string& name) const
 {
-	for(vector<Graph>::const_iterator g = graphs.begin(); g != graphs.end(); ++g)
-	{
-		for(vector<GraphLayer>::const_iterator l = g->layers.begin(); l != g->layers.end(); ++l)
-		{
-			for(vector<Bitmap>::const_iterator b = l->bitmaps.begin(); b != l->bitmaps.end(); ++b)
-			{
-				if(b->size > 0)
-					delete b->data;
-			}
-		}
-	}
+	vector<Excel>::const_iterator it = find_if(excels.begin(),
+											   excels.end(),
+											   bind(iequals<string, string>,
+													bind(&Excel::name, _1),
+													name,
+													locale()));
+	return it != excels.end() ? it - excels.begin() : -1;
 }
 
-int OriginParser::findSpreadByName(const char* name) const
+vector<Origin::SpreadColumn>::size_type OriginParser::findSpreadColumnByName(vector<Origin::SpreadSheet>::size_type spread, const string& name) const
 {
-	for(vector<SpreadSheet>::const_iterator it = speadSheets.begin(); it != speadSheets.end(); ++it)
-	{
-		if(0 == strcmp_i(it->name.c_str(), name))
-			return it - speadSheets.begin();
-	}
-
-	return -1;
+	vector<SpreadColumn>::const_iterator it = find_if(speadSheets[spread].columns.begin(),
+													  speadSheets[spread].columns.end(),
+													  bind(&SpreadColumn::name, _1) == name);
+	return it != speadSheets[spread].columns.end() ? it - speadSheets[spread].columns.begin() : -1;
 }
 
-int OriginParser::findExcelByName(const char* name) const
+vector<Origin::SpreadColumn>::size_type OriginParser::findExcelColumnByName(vector<Origin::Excel>::size_type excel, vector<Origin::SpreadSheet>::size_type sheet, const string& name) const
 {
-	for(vector<Excel>::const_iterator it = excels.begin(); it != excels.end(); ++it)
-	{
-		if(0 == strcmp_i(it->name.c_str(), name))
-			return it - excels.begin();
-	}
-
-	return -1;
+	vector<SpreadColumn>::const_iterator it = find_if(excels[excel].sheets[sheet].columns.begin(),
+													  excels[excel].sheets[sheet].columns.end(),
+													  bind(&SpreadColumn::name, _1) == name);
+	return it != excels[excel].sheets[sheet].columns.end() ? it - excels[excel].sheets[sheet].columns.begin() : -1;
 }
 
-int OriginParser::findSpreadColumnByName(int spread, const char* name) const
+vector<Origin::Matrix>::size_type OriginParser::findMatrixByName(const string& name) const
 {
-	for(vector<SpreadColumn>::const_iterator it = speadSheets[spread].columns.begin(); it != speadSheets[spread].columns.end(); ++it)
-	{
-		if(it->name == name)
-			return it - speadSheets[spread].columns.begin();
-	}
-
-	return -1;
+	vector<Matrix>::const_iterator it = find_if(matrixes.begin(),
+												matrixes.end(),
+												bind(iequals<string, string>,
+													 bind(&Matrix::name, _1),
+													 name,
+													 locale()));
+	return it != matrixes.end() ? it - matrixes.begin() : -1;
 }
 
-int OriginParser::findExcelColumnByName(int iexcel, int isheet, const char* name) const
+vector<Origin::Function>::size_type OriginParser::findFunctionByName(const string& name) const
 {
-	for(vector<SpreadColumn>::const_iterator it = excels[iexcel].sheets[isheet].columns.begin(); it != excels[iexcel].sheets[isheet].columns.end(); ++it)
-	{
-		if(it->name == name)
-			return it - excels[iexcel].sheets[isheet].columns.begin();
-	}
-
-	return -1;
+	vector<Function>::const_iterator it = find_if(functions.begin(),
+												  functions.end(),
+												  bind(iequals<string, string>,
+													   bind(&Function::name, _1),
+													   name,
+													   locale()));
+	return it != functions.end() ? it - functions.begin() : -1;
 }
 
-int OriginParser::findMatrixByName(const char* name) const
-{
-	for(vector<Matrix>::const_iterator it = matrixes.begin(); it != matrixes.end(); ++it)
-	{
-		if(0 == strcmp_i(it->name.c_str(), name))
-			return it - matrixes.begin();
-	}
-
-	return -1;
-}
-
-int OriginParser::findFunctionByName(const char* name) const
-{
-	for(vector<Function>::const_iterator it = functions.begin(); it != functions.end(); ++it)
-	{
-		if(0 == strcmp_i(it->name.c_str(), name))
-			return it - functions.begin();
-	}
-
-	return -1;
-}
-
-pair<string, string> OriginParser::findDataByIndex(int index) const
+pair<string, string> OriginParser::findDataByIndex(unsigned int index) const
 {
 	for(vector<SpreadSheet>::const_iterator it = speadSheets.begin(); it != speadSheets.end(); ++it)
 	{
@@ -163,7 +135,7 @@ pair<string, string> OriginParser::findDataByIndex(int index) const
 	return pair<string, string>();
 }
 
-string OriginParser::findObjectByIndex(int index) const
+string OriginParser::findObjectByIndex(unsigned int index) const
 {
 	for(vector<SpreadSheet>::const_iterator it = speadSheets.begin(); it != speadSheets.end(); ++it)
 	{
@@ -192,7 +164,7 @@ string OriginParser::findObjectByIndex(int index) const
 	return "";
 }
 
-void OriginParser::convertSpreadToExcel(int spread)
+void OriginParser::convertSpreadToExcel(vector<Origin::SpreadSheet>::size_type spread)
 {
 	//add new Excel sheet
 	excels.push_back(Excel(speadSheets[spread].name, speadSheets[spread].label, speadSheets[spread].maxRows, speadSheets[spread].hidden, speadSheets[spread].loose));

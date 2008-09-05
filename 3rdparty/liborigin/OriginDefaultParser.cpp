@@ -159,7 +159,7 @@ bool OriginDefaultParser::parse()
 		}
 		int spread=0;
 		if(speadSheets.size() == 0 || findSpreadByName(sname) == -1) {
-			fprintf(debug,"NEW speadSheets\n");
+			fprintf(debug,"NEW SPREADSHEET\n");
 			current_col=1;
 			speadSheets.push_back(SpreadSheet(sname));
 			spread=speadSheets.size()-1;
@@ -175,14 +175,14 @@ bool OriginDefaultParser::parse()
 				current_col=1;
 			current_col++;
 		}
-		fprintf(debug,"speadSheets = %s COLUMN %d NAME = %s (@0x%X)\n",
+		fprintf(debug,"SPREADSHEET = %s COLUMN %d NAME = %s (@0x%X)\n",
 			sname, current_col, cname, (unsigned int) ftell(f));
 		fflush(debug);
 
 		if(cname == 0) {
 			fprintf(debug,"NO COLUMN NAME FOUND! Must be a Matrix or Function.\n");
 			////////////////////////////// READ matrixes or functions ////////////////////////////////////
-			fprintf(debug,"Reading matrixes.\n");
+			fprintf(debug,"Reading MATRIX.\n");
 			fflush(debug);
 
 			fprintf(debug,"	[position @ 0x%X]\n",(unsigned int) ftell(f));
@@ -374,7 +374,7 @@ bool OriginDefaultParser::parse()
 		if(spread == -1)
 			spread=i;
 
-		fprintf(debug,"			speadSheets %d NAME : %s	(@ 0x%X) has %d columns\n",
+		fprintf(debug,"			SPREADSHEET %d NAME : %s	(@ 0x%X) has %d columns\n",
 			spread+1,name,POS + 0x12,speadSheets[spread].columns.size());
 		fflush(debug);
 

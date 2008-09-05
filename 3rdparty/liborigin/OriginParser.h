@@ -31,27 +31,24 @@
 
 #include "OriginObj.h"
 #include "tree.hh"
-#include <utility>
-
-using namespace std;
 
 class OriginParser
 {
 public:
-	virtual ~OriginParser();
+	virtual ~OriginParser() {};
 	virtual bool parse() = 0;
 
-	int findSpreadByName(const char* name) const;
-	int findMatrixByName(const char* name) const;
-	int findFunctionByName(const char* name) const;
-	int findExcelByName(const char* name) const;
+	vector<Origin::SpreadSheet>::size_type findSpreadByName(const string& name) const;
+	vector<Origin::Matrix>::size_type findMatrixByName(const string& name) const;
+	vector<Origin::Function>::size_type findFunctionByName(const string& name) const;
+	vector<Origin::Excel>::size_type findExcelByName(const string& name) const;
 
 protected:
-	int findSpreadColumnByName(int spread, const char* name) const;
-	int findExcelColumnByName(int excel, int sheet, const char* name) const;
-	pair<string, string> findDataByIndex(int index) const;
-	string findObjectByIndex(int index) const;
-	void convertSpreadToExcel(int spread);
+	vector<Origin::SpreadColumn>::size_type findSpreadColumnByName(vector<Origin::SpreadSheet>::size_type spread, const string& name) const;
+	vector<Origin::SpreadColumn>::size_type findExcelColumnByName(vector<Origin::Excel>::size_type excel, vector<Origin::SpreadSheet>::size_type sheet, const string& name) const;
+	pair<string, string> findDataByIndex(unsigned int index) const;
+	string findObjectByIndex(unsigned int index) const;
+	void convertSpreadToExcel(vector<Origin::SpreadSheet>::size_type spread);
 
 public:
 	vector<Origin::SpreadSheet> speadSheets;
