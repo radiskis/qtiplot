@@ -601,7 +601,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			{
 				legend = graph->newLegend(parseOriginText(QString::fromLocal8Bit(layer.legend.text.c_str())));
 			}
-			int auto_color = 0;
+			int auto_color = -1;
 			int style = 0;
 			for(int c = 0; c < layer.curves.size(); ++c)
 			{
@@ -1163,11 +1163,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					fnt.setPointSize(floor(fontSize*fFontScaleFactor + 0.5));
 					fnt.setBold(false);
 					graph->setAxisTitleFont(i, fnt);
-
-					fnt = graph->axisFont(i);
-					fnt.setPointSize(floor(ticks[i].fontSize*fFontScaleFactor + 0.5));
-					graph->setAxisFont(i, fnt);
 				}
+
+				fnt = graph->axisFont(i);
+				fnt.setPointSize(floor(ticks[i].fontSize*fFontScaleFactor + 0.5));
+				graph->setAxisFont(i, fnt);
 			}
 
 			graph->setAutoscaleFonts(true);

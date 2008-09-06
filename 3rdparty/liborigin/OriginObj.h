@@ -336,7 +336,7 @@ namespace Origin
 		unsigned char symbolColor;
 		unsigned char symbolFillColor;
 		double symbolSize;
-		int symbolThickness;
+		unsigned char symbolThickness;
 		unsigned char pointOffset;
 
 		//pie
@@ -353,7 +353,7 @@ namespace Origin
 		bool log10;
 		double from;
 		double to;
-		int position;
+		double position;
 
 		double scaleIncrementBefore;
 		double scaleIncrementAfter;
@@ -370,7 +370,7 @@ namespace Origin
 	{
 		bool hidden;
 		unsigned char color;
-		int style;
+		unsigned char style;
 		double width;
 	};
 
@@ -497,12 +497,6 @@ namespace Origin
 			if(size > 0)
 				delete data;
 		};
-	};
-
-	struct Metafile
-	{
-		Rect clientRect;
-		Attach attach;
 	};
 
 	struct GraphLayer
