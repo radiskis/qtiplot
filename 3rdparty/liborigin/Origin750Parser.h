@@ -54,7 +54,7 @@ private:
 	void readGraphAxisTickLabelsInfo(GraphAxisTick& tick);
 	void readProjectTree();
 	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
-	void readWindowProperties(Window& window, int size);
+	void readWindowProperties(Window& window, unsigned int size);
 
 	unsigned int objectIndex;
 	iendianfstream file;

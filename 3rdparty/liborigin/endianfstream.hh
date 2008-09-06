@@ -45,7 +45,9 @@ namespace std
 
 		iendianfstream& operator>>(bool& value)
 		{
-			read(reinterpret_cast<char*>(&value), sizeof(value));
+			char c;
+			get(c);
+			value = (c != 0);
 			return *this;
 		}
 

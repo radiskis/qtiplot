@@ -300,6 +300,23 @@ namespace Origin
 		{};
 	};
 
+	struct TextProperties
+	{
+		enum Justify {Left, Center, Right};
+
+		unsigned char color;
+		bool fontBold;
+		bool fontItalic;
+		bool fontUnderline;
+		bool whiteOut;
+		Justify justify;
+
+		short rotation;
+		short xOffset;
+		short yOffset;
+		unsigned short fontSize;
+	};
+
 	struct GraphCurve
 	{
 		enum Plot {Line = 200, Scatter=201, LineSymbol=202, Column = 203, Area = 204, HiLoClose = 205, Box = 206,
@@ -344,6 +361,9 @@ namespace Origin
 
 		//vector
 		VectorProperties vector;
+
+		//text
+		TextProperties text;
 	};
 
 	struct GraphAxisBreak

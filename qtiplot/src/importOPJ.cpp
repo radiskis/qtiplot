@@ -603,7 +603,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			}
 			int auto_color = -1;
 			int style = 0;
-			for(int c = 0; c < layer.curves.size(); ++c)
+			for(unsigned int c = 0; c < layer.curves.size(); ++c)
 			{
 				Origin::GraphCurve& _curve = layer.curves[c];
 				try
@@ -717,6 +717,32 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						{
 							graph->replot();
 							mc->setLabelsColumnName(labelsCol);
+							mc->setLabelsRotation(_curve.text.rotation);
+							mc->setLabelsWhiteOut(_curve.text.whiteOut);
+							mc->setLabelsOffset(_curve.text.xOffset, _curve.text.yOffset);
+							mc->setLabelsColor(ColorBox::color(_curve.text.color));
+							int align = -1;
+							switch(_curve.text.justify)
+							{
+							case Origin::TextProperties::Center:
+								align = Qt::AlignHCenter;
+								break;
+
+							case Origin::TextProperties::Left:
+								align = Qt::AlignLeft;
+								break;
+
+							case Origin::TextProperties::Right:
+								align = Qt::AlignRight;
+								break;
+							}
+							mc->setLabelsAlignment(align);
+							QFont fnt = mc->labelsFont();
+							fnt.setBold(_curve.text.fontBold);
+							fnt.setItalic(_curve.text.fontItalic);
+							fnt.setUnderline(_curve.text.fontUnderline);
+							fnt.setPointSize(floor(_curve.text.fontSize*fFontScaleFactor + 0.5));
+							mc->setLabelsFont(fnt);
 						}
 					}
 					else
@@ -1189,7 +1215,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			//add texts
 			if(style != Graph::Pie)
 			{
-				for(int i = 0; i < layer.texts.size(); ++i)
+				for(unsigned int i = 0; i < layer.texts.size(); ++i)
 				{
 					addText(layer.texts[i], graph, 0, layerRect, fFontScaleFactor, fXScale, fYScale);
 				}
@@ -1198,7 +1224,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			if(legend)
 				addText(layer.legend, graph, legend, layerRect, fFontScaleFactor, fXScale, fYScale);
 
-			for(int i = 0; i < layer.lines.size(); ++i)
+			for(unsigned int i = 0; i < layer.lines.size(); ++i)
 			{
 				ArrowMarker mrk;
 				mrk.setStartPoint(layer.lines[i].begin.x, layer.lines[i].begin.y);
@@ -1238,7 +1264,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				graph->addArrow(&mrk);
 			}
 
-			for(int i = 0; i < layer.bitmaps.size(); ++i)
+			for(unsigned int i = 0; i < layer.bitmaps.size(); ++i)
 			{
 				QPixmap bmp;
 				bmp.loadFromData(layer.bitmaps[i].data, layer.bitmaps[i].size, "BMP");
