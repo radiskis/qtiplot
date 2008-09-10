@@ -13917,10 +13917,13 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 		}
 	}
 
+	if (!f.isOpen())
+		f.open(QIODevice::Append);
+	
 	t << "<open>" + QString::number(folder->folderListItem()->isOpen()) + "</open>\n";
 	if (!folder->logInfo().isEmpty())
 		t << "<log>\n" + folder->logInfo() + "</log>" ;
-
+	
 	f.close();
 
 	if (compress)
