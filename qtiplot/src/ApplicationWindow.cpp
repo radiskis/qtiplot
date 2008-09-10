@@ -2022,6 +2022,8 @@ void ApplicationWindow::editSurfacePlot()
 		sd->setFunction(g);
 	else if (g->hasData() && g->parametricSurface())
 		sd->setParametricSurface(g);
+	else
+		sd->setGraph(g);
 	sd->exec();
 }
 
@@ -13379,20 +13381,17 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 
 	QString str;
 	bool exec = false;
+	bool noGui = false;
 	bool default_settings = false;
 	foreach(str, args){
 		if( (str == "-a" || str == "--about") ||
-				(str == "-m" || str == "--manual") )
-		{
+				(str == "-m" || str == "--manual") ){
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 			tr("<b> %1 </b>: This command line option must be used without other arguments!").arg(str));
 		}
 		else if( (str == "-d" || str == "--default-settings"))
-		{
 			default_settings = true;
-		}
-		else if (str == "-v" || str == "--version")
-		{
+		else if (str == "-v" || str == "--version"){
 			QString s = versionString() + "\n";
 			s += QString(copyright_string) + "\n";
 			s += tr("Released") + ": " + release_date + "\n";
@@ -13404,8 +13403,7 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			#endif
 			exit(0);
 		}
-		else if (str == "-h" || str == "--help")
-		{
+		else if (str == "-h" || str == "--help"){
 			QString s = "\n" + tr("Usage") + ": ";
 			s += "qtiplot [" + tr("options") + "] [" + tr("file") + "_" + tr("name") + "]\n\n";
 			s += tr("Valid options are") + ":\n";
@@ -13425,8 +13423,7 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			#endif
 			exit(0);
 		}
-		else if (str.startsWith("--lang=") || str.startsWith("-l="))
-		{
+		else if (str.startsWith("--lang=") || str.startsWith("-l=")){
 			QString locale = str.mid(str.find('=')+1);
 			if (locales.contains(locale))
 				switchToLanguage(locale);
@@ -13437,8 +13434,9 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 		}
 		else if (str.startsWith("--execute") || str.startsWith("-x"))
 			exec = true;
-		else if (str.startsWith("-") || str.startsWith("--"))
-		{
+		else if (str.startsWith("-X"))
+			noGui = true;
+		else if (str.startsWith("-") || str.startsWith("--")){
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 			tr("<b> %1 </b> unknown command line option!").arg(str) + "\n" + tr("Type %1 to see the list of the valid options.").arg("'qtiplot -h'"));
 		}
@@ -13470,8 +13468,8 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 		workingDir = fi.dirPath(true);
 		saveSettings();//the recent projects must be saved
 
-		if (exec)
-			loadScript(file_name, exec, default_settings);
+		if (exec || noGui)
+			loadScript(file_name, exec, noGui, default_settings);
 		else
 			open(file_name, default_settings, false);
 	}
@@ -15064,25 +15062,36 @@ void ApplicationWindow::cascade()
     modifiedProject();
 }
 
-ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute, bool factorySettings)
+ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execute, bool noGui, bool factorySettings)
 {
 #ifdef SCRIPTING_PYTHON
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	setScriptingLanguage("Python");
-	restoreApplicationGeometry();
+	if (noGui){
+		hide();
+		setScriptingLanguage("Python");
+	
+		ScriptEdit *se = new ScriptEdit(scriptEnv, this);
+		se->importASCII(fn);
+		se->executeAll();
+		std::wcout << se->text().toStdWString();
+		exit(0);
+	} else {
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		setScriptingLanguage("Python");
+		restoreApplicationGeometry();
 
-	showScriptWindow();
-	scriptWindow->open(fn);
+		showScriptWindow();
+		scriptWindow->open(fn);
 
-	QApplication::restoreOverrideCursor();
+		QApplication::restoreOverrideCursor();
 
-	if (execute){
-		scriptWindow->hide();
-    	scriptWindow->executeAll();
-		if (scriptWindow->editor()->error())
-			showScriptWindow();
+		if (execute){
+			scriptWindow->hide();
+    		scriptWindow->executeAll();
+			if (scriptWindow->editor()->error())
+				showScriptWindow();
+		}	
+		return this;
 	}
-	return this;
 #else
     QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
     tr("QtiPlot was not built with Python scripting support included!"));

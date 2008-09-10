@@ -31,7 +31,8 @@
 #include <QHBoxLayout>
 #include <QCloseEvent>
 #include <float.h>
-
+#include <math.h>
+	
 DoubleSpinBox::DoubleSpinBox(const char format, QWidget * parent)
 :QAbstractSpinBox(parent),
 d_format(format),
@@ -90,9 +91,13 @@ void DoubleSpinBox::interpretText()
 }
 
 void DoubleSpinBox::stepBy ( int steps )
-{
-	if (setValue(d_value + steps * d_step))
-        emit valueChanged(d_value);
+{		
+	double val = d_value + steps*d_step;
+	if (fabs(fabs(d_value) - d_step) < 1e-14 && d_value * steps < 0)//possible zero
+		val = 0.0;
+		
+	if (setValue(val))
+    	emit valueChanged(d_value);
 }
 
 QAbstractSpinBox::StepEnabled DoubleSpinBox::stepEnabled () const
@@ -120,11 +125,11 @@ bool DoubleSpinBox::setValue(double val)
 	return true;
 }
 
-QString DoubleSpinBox::textFromValue ( double value) const
+QString DoubleSpinBox::textFromValue (double value) const
 {
 	if (!specialValueText().isEmpty() && value == d_min_val)
 		return specialValueText();
-
+	
 	if (d_prec <= 14)
 		return locale().toString(value, d_format, d_prec);
 

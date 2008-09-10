@@ -32,9 +32,9 @@
 #include "../ApplicationWindow.h"
 #include "../ColorButton.h"
 #include "../TextFormatButtons.h"
+#include "../DoubleSpinBox.h"
 
 #include <QListWidget>
-#include <QLineEdit>
 #include <QTextEdit>
 #include <QLayout>
 #include <QSpinBox>
@@ -100,14 +100,19 @@ void Plot3DDialog::initScalesPage()
 	axesList->setFixedWidth(50);
 	axesList->setCurrentRow(0);
 
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("From")), 0, 0);
-	boxFrom = new QLineEdit();
-	boxFrom->setMaximumWidth(150);
+	boxFrom = new DoubleSpinBox();
+	boxFrom->setLocale(app->locale());
+    boxFrom->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxFrom, 0, 1);
+	
     gl1->addWidget(new QLabel(tr("To")), 1, 0);
-	boxTo = new QLineEdit();
-	boxTo->setMaximumWidth(150);
+	boxTo = new DoubleSpinBox();
+	boxTo->setLocale(app->locale());
+    boxTo->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxTo, 1, 1);
     gl1->addWidget(new QLabel(tr("Type")), 2, 0);
 	boxType=new QComboBox();
@@ -134,8 +139,8 @@ void Plot3DDialog::initScalesPage()
 
 	QHBoxLayout* hb = new QHBoxLayout();
 	hb->addWidget(axesList);
-	hb->addWidget(gb1);
-    hb->addWidget(TicksGroupBox);
+	hb->addWidget(gb1, 1);
+    hb->addWidget(TicksGroupBox, 1);
 
     scale = new QWidget();
     scale->setLayout(hb);
@@ -168,11 +173,18 @@ void Plot3DDialog::initAxesPage()
     hb1->addStretch();
     gl1->addLayout(hb1, 1, 1);
 
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	
     gl1->addWidget(new QLabel(tr("Major Ticks Length")), 2, 0);
-	boxMajorLength = new QLineEdit();
+	boxMajorLength = new DoubleSpinBox();
+	boxMajorLength->setLocale(app->locale());
+    boxMajorLength->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxMajorLength, 2, 1);
+	
     gl1->addWidget(new QLabel(tr("Minor Ticks Length")), 3, 0);
-	boxMinorLength = new QLineEdit();
+	boxMinorLength = new DoubleSpinBox();
+	boxMinorLength->setLocale(app->locale());
+    boxMinorLength->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxMinorLength, 3, 1);
     gl1->setRowStretch(4, 1);
 
@@ -411,9 +423,14 @@ void Plot3DDialog::initPointsOptionsStack()
 	optionStack->setFrameShape( QFrame::StyledPanel );
 	optionStack->setFrameShadow( QStackedWidget::Plain );
 
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel( tr( "Width" )), 0, 0);
-	boxSize = new QLineEdit("5");
+	boxSize = new DoubleSpinBox();
+	boxSize->setLocale(app->locale());
+    boxSize->setDecimals(app->d_decimal_digits);
+	boxSize->setValue(5);
     gl1->addWidget(boxSize, 0, 1);
 
 	gl1->addWidget(new QLabel( tr( "Smooth angles" )), 1, 0);
@@ -427,11 +444,19 @@ void Plot3DDialog::initPointsOptionsStack()
 
     QGridLayout *gl2 = new QGridLayout();
     gl2->addWidget(new QLabel( tr( "Radius" )), 0, 0);
-	boxCrossRad = new QLineEdit("0.01");
+	boxCrossRad = new DoubleSpinBox();
+	boxCrossRad->setLocale(app->locale());
+    boxCrossRad->setDecimals(app->d_decimal_digits);
+	boxCrossRad->setValue(0.01);
     gl2->addWidget(boxCrossRad, 0, 1);
+	
 	gl2->addWidget(new QLabel(tr( "Line Width")), 1, 0);
-	boxCrossLinewidth = new QLineEdit("1");
+	boxCrossLinewidth = new DoubleSpinBox();
+	boxCrossLinewidth->setLocale(app->locale());
+    boxCrossLinewidth->setDecimals(app->d_decimal_digits);
+	boxCrossLinewidth->setValue(1);
     gl2->addWidget(boxCrossLinewidth, 1, 1);
+	
 	gl2->addWidget(new QLabel(tr( "Smooth line" )), 2, 0);
 	boxCrossSmooth = new QCheckBox();
     boxCrossSmooth->setChecked(true);
@@ -447,8 +472,12 @@ void Plot3DDialog::initPointsOptionsStack()
 
     QGridLayout *gl3 = new QGridLayout();
     gl3->addWidget(new QLabel( tr( "Width" )), 0, 0);
-	boxConesRad = new QLineEdit("0.5");
+	boxConesRad = new DoubleSpinBox();
+	boxConesRad->setLocale(app->locale());
+    boxConesRad->setDecimals(app->d_decimal_digits);
+	boxConesRad->setValue(0.5);
     gl3->addWidget(boxConesRad, 0, 1);
+	
     gl3->addWidget(new QLabel( tr( "Quality" )), 1, 0);
 	boxQuality = new QSpinBox();
     boxQuality->setRange(0, 40);
@@ -511,16 +540,16 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	boxLabel->setText(labels[0]);
 
 	tickLengths = g->axisTickLengths();
-	boxMajorLength->setText(tickLengths[0]);
-	boxMinorLength->setText(tickLengths[1]);
+	boxMajorLength->setValue(tickLengths[0].toDouble());
+	boxMinorLength->setValue(tickLengths[1].toDouble());
 
 	xAxisFont = g->xAxisLabelFont();
 	yAxisFont = g->yAxisLabelFont();
 	zAxisFont = g->zAxisLabelFont();
 
 	scales = g->scaleLimits();
-	boxFrom->setText(scales[0]);
-	boxTo->setText(scales[1]);
+	boxFrom->setValue(scales[0].toDouble());
+	boxTo->setValue(scales[1].toDouble());
 	boxMajors->setValue(scales[2].toInt());
 	boxMinors->setValue(scales[3].toInt());
 	boxType->setCurrentIndex(scales[4].toInt());
@@ -604,8 +633,11 @@ void Plot3DDialog::showBarsTab(double rad)
 	QHBoxLayout* hb = new QHBoxLayout(bars);
 	hb->addWidget(new QLabel( tr( "Width" )));
 
-	boxBarsRad = new QLineEdit();
-	boxBarsRad->setText(QString::number(rad));
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	boxBarsRad = new DoubleSpinBox();
+	boxBarsRad->setLocale(app->locale());
+    boxBarsRad->setDecimals(app->d_decimal_digits);
+	boxBarsRad->setValue(rad);
 	hb->addWidget(boxBarsRad);
 
 	generalDialog->insertTab(bars, tr( "Bars" ), 4);
@@ -614,7 +646,7 @@ void Plot3DDialog::showBarsTab(double rad)
 void Plot3DDialog::showPointsTab(double rad, bool smooth)
 {
 	boxPointStyle->setCurrentIndex(0);
-	boxSize->setText(QString::number(rad));
+	boxSize->setValue(rad);
 	boxSmooth->setChecked(smooth);
 	optionStack->setCurrentIndex(0);
 }
@@ -622,7 +654,7 @@ void Plot3DDialog::showPointsTab(double rad, bool smooth)
 void Plot3DDialog::showConesTab(double rad, int quality)
 {
 	boxPointStyle->setCurrentIndex(2);
-	boxConesRad->setText(QString::number(rad));
+	boxConesRad->setValue(rad);
 	boxQuality->setValue(quality);
 	optionStack->setCurrentIndex (2);
 }
@@ -630,8 +662,8 @@ void Plot3DDialog::showConesTab(double rad, int quality)
 void Plot3DDialog::showCrossHairTab(double rad, double linewidth, bool smooth, bool boxed)
 {
 	boxPointStyle->setCurrentIndex(1);
-	boxCrossRad->setText(QString::number(rad));
-	boxCrossLinewidth->setText(QString::number(linewidth));
+	boxCrossRad->setValue(rad);
+	boxCrossLinewidth->setValue(linewidth);
 	boxCrossSmooth->setChecked(smooth);
 	boxBoxed->setChecked(boxed);
 	optionStack->setCurrentIndex(1);
@@ -676,14 +708,14 @@ void Plot3DDialog::viewAxisOptions(int axis)
 {
 	boxLabel->setText(labels[axis]);
 
-	boxMajorLength->setText(tickLengths[2*axis+0]);
-	boxMinorLength->setText(tickLengths[2*axis+1]);
+	boxMajorLength->setValue(tickLengths[2*axis+0].toDouble());
+	boxMinorLength->setValue(tickLengths[2*axis+1].toDouble());
 }
 
 void Plot3DDialog::viewScaleLimits(int axis)
 {
-	boxFrom->setText(scales[5*axis+0]);
-	boxTo->setText(scales[5*axis+1]);
+	boxFrom->setValue(scales[5*axis+0].toDouble());
+	boxTo->setValue(scales[5*axis+1].toDouble());
 	boxMajors->setValue(scales[5*axis+2].toInt());
 	boxMinors->setValue(scales[5*axis+3].toInt());
 	boxType->setCurrentIndex(scales[5*axis+4].toInt());
@@ -763,30 +795,7 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setScale(xScale*boxXScale->value()*0.01, yScale*boxYScale->value()*0.01, zScale*boxZScale->value()*0.01);
 	} else if (generalDialog->currentPage()==(QWidget*)scale){
 		int axis = axesList->currentRow();
-		QString from=boxFrom->text().lower();
-		QString to=boxTo->text().lower();
-		double start, end;
-		try {
-			MyParser parser;
-			parser.SetExpr(from.ascii());
-			start = parser.Eval();
-		} catch(mu::ParserError &e){
-			QMessageBox::critical(0,tr("QtiPlot - Start limit error"),  QString::fromStdString(e.GetMsg()));
-			boxFrom->setFocus();
-			return false;
-		}
-
-		try {
-			MyParser parser;
-			parser.SetExpr(to.ascii());
-			end = parser.Eval();
-		} catch(mu::ParserError &e){
-			QMessageBox::critical(0,tr("QtiPlot - End limit error"), QString::fromStdString(e.GetMsg()));
-			boxTo->setFocus();
-			return false;
-		}
-
-        d_plot->updateScale(axis, scaleOptions(axis, start, end, boxMajors->text(), boxMinors->text()));
+        d_plot->updateScale(axis, scaleOptions(axis, boxFrom->value(), boxTo->value(), boxMajors->text(), boxMinors->text()));
 	} else if (generalDialog->currentPage()==(QWidget*)axes){
 		int axis = axesList2->currentRow();
 		labels[axis] = boxLabel->text();

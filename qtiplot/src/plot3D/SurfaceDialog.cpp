@@ -535,7 +535,7 @@ catch(mu::ParserError &e)
 
 if (!error){
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	if (!d_graph){
+	if (!d_graph){		
 		app->plotSurface(boxFunction->currentText(),fromX, toX, fromY, toY, fromZ, toZ,
 					 boxFuncColumns->value(), boxFuncRows->value());
 	} else
