@@ -34,7 +34,6 @@
 
 class QComboBox;
 class QLabel;
-class QLineEdit;
 class QTextEdit;
 class QListWidget;
 class QPushButton;
@@ -47,6 +46,7 @@ class QStackedWidget;
 class QDoubleSpinBox;
 class ColorButton;
 class TextFormatButtons;
+class DoubleSpinBox;
 
 using namespace Qwt3D;
 
@@ -109,7 +109,7 @@ private:
 	ColorButton *btnFromColor, *btnToColor, *btnNumbers, *btnGrid;
     QTabWidget* generalDialog;
 	QWidget *scale, *colors, *general, *axes, *title, *bars, *points;
-	QLineEdit *boxFrom, *boxTo;
+	DoubleSpinBox *boxFrom, *boxTo;
 	QTextEdit *boxTitle, *boxLabel;
 	QSpinBox *boxMajors, *boxMinors;
 	QGroupBox *TicksGroupBox, *AxesColorGroupBox;
@@ -117,9 +117,9 @@ private:
 	QCheckBox *boxLegend, *boxSmooth, *boxBoxed, *boxCrossSmooth, *boxOrthogonal;
 	QListWidget *axesList, *axesList2;
 	QComboBox *boxType, *boxPointStyle;
-	QLineEdit *boxMajorLength, *boxMinorLength, *boxConesRad;
+	DoubleSpinBox *boxMajorLength, *boxMinorLength, *boxConesRad;
 	QSpinBox *boxZoom, *boxXScale, *boxYScale, *boxZScale, *boxQuality;
-	QLineEdit *boxSize, *boxBarsRad, *boxCrossRad, *boxCrossLinewidth;
+	DoubleSpinBox *boxSize, *boxBarsRad, *boxCrossRad, *boxCrossLinewidth;
 	QStackedWidget *optionStack;
 	QWidget *dotsPage, *conesPage, *crossPage;
 	TextFormatButtons *titleFormatButtons, *axisTitleFormatButtons;

@@ -51,6 +51,7 @@ public slots:
 	void accept();
 	void setFunction(Graph3D *);
 	void setParametricSurface(Graph3D *);
+	void setGraph(Graph3D *g){d_graph = g;};
 
 private slots:
 	void clearList();
