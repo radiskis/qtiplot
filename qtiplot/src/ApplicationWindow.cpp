@@ -761,7 +761,7 @@ void ApplicationWindow::initToolBars()
 	actionAddFormula->setIcon(QIcon(QPixmap(equation_xpm)));
 	connect(actionAddFormula, SIGNAL(triggered()), this, SLOT(addTexFormula()));
 	plotTools->addAction(actionAddFormula);
-	
+
 	actionAddText = new QAction(tr("Add &Text"), this);
 	actionAddText->setShortcut( tr("ALT+T") );
 	actionAddText->setIcon(QIcon(QPixmap(text_xpm)));
@@ -789,7 +789,7 @@ void ApplicationWindow::initToolBars()
 	p.begin(&pix);
 	p.setBrush(Qt::lightGray);
 	p.drawRect(QRect(1, 2, 12, 10));
-	
+
     actionAddRectangle = new QAction(tr("Add &Rectangle"), this);
 	actionAddRectangle->setShortcut( tr("CTRL+ALT+R") );
 	actionAddRectangle->setCheckable(true);
@@ -800,14 +800,14 @@ void ApplicationWindow::initToolBars()
 	pix.fill(Qt::transparent);
 	p.drawEllipse(QRect(0, 2, 15, 12));
 	p.end();
-	
+
 	actionAddEllipse = new QAction(tr("Add &Ellipse"), this);
 	actionAddEllipse->setShortcut( tr("CTRL+ALT+E") );
 	actionAddEllipse->setCheckable(true);
 	actionAddEllipse->setIcon(QIcon(pix));
 	connect(actionAddEllipse, SIGNAL(triggered()), this, SLOT(addEllipse()));
-	plotTools->addAction(actionAddEllipse); 
-	
+	plotTools->addAction(actionAddEllipse);
+
 	plotTools->addAction(actionTimeStamp);
 	plotTools->addAction(actionAddImage);
 	plotTools->hide();
@@ -7507,7 +7507,7 @@ void ApplicationWindow::showEnrichementDialog()
 		wt = EnrichmentDialog::Tex;
 	else if (qobject_cast<EllipseWidget *>(g->activeEnrichment()))
 		wt = EnrichmentDialog::Ellipse;
-	
+
 	EnrichmentDialog *ed = new EnrichmentDialog(wt, g, this);
 	ed->setWidget(g->activeEnrichment());
 	ed->exec();
@@ -12809,7 +12809,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionAddEllipse->setMenuText(tr("Add &Ellipse"));
     actionAddEllipse->setToolTip(tr("Add Ellipse/Circle"));
 	actionAddEllipse->setShortcut( tr("CTRL+ALT+E") );
-	
+
 	btnArrow->setMenuText(tr("Draw &Arrow"));
 	btnArrow->setShortcut(tr("CTRL+ALT+A"));
 	btnArrow->setToolTip(tr("Draw arrow"));
@@ -13919,11 +13919,11 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 
 	if (!f.isOpen())
 		f.open(QIODevice::Append);
-	
+
 	t << "<open>" + QString::number(folder->folderListItem()->isOpen()) + "</open>\n";
 	if (!folder->logInfo().isEmpty())
 		t << "<log>\n" + folder->logInfo() + "</log>" ;
-	
+
 	f.close();
 
 	if (compress)
@@ -15071,11 +15071,15 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	if (noGui){
 		hide();
 		setScriptingLanguage("Python");
-	
+
 		ScriptEdit *se = new ScriptEdit(scriptEnv, this);
 		se->importASCII(fn);
 		se->executeAll();
-		std::wcout << se->text().toStdWString();
+
+		#ifndef Q_OS_WIN
+            std::wcout << se->text().toStdWString();
+        #endif
+
 		exit(0);
 	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -15092,7 +15096,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
     		scriptWindow->executeAll();
 			if (scriptWindow->editor()->error())
 				showScriptWindow();
-		}	
+		}
 		return this;
 	}
 #else
@@ -15103,7 +15107,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 }
 
 bool ApplicationWindow::validFor2DPlot(Table *table, Graph::CurveType type)
-{		
+{
 	if (!table->selectedYColumns().count()){
   		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a Y column to plot!"));
   	    return false;
