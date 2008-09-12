@@ -1029,6 +1029,8 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	//! Default geometry unit to be displayed in the EnrichmentDialog.
+	int d_frame_geometry_unit;
     int d_notes_tab_length;
     QFont d_notes_font;
 	//! End of line convention used for copy/paste operations and when exporting tables/matrices to ASCII files.

@@ -556,6 +556,7 @@ void ApplicationWindow::initGlobalConstants()
 	legendBackground = Qt::white;
 	legendBackground.setAlpha(0); // transparent by default;
 	d_legend_default_angle = 0;
+	d_frame_geometry_unit = (int)FrameWidget::Scale;
 
 	d_rect_default_background = Qt::white;
 	d_rect_default_brush = QBrush();
@@ -3158,10 +3159,10 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 }
 
 MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
-{
+{		
 	if (!d_active_window)
         return NULL;
-
+	
 	switch(type){
 		case NoWindow:
 		break;
@@ -3174,31 +3175,19 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 		break;
 
 		case MatrixWindow:
-			if (d_active_window->isA("Matrix"))
-				return d_active_window;
-			else
-				return NULL;
+			return qobject_cast<Matrix *>(d_active_window);
 		break;
 
 		case MultiLayerWindow:
-			if (d_active_window->isA("MultiLayer"))
-				return d_active_window;
-			else
-				return NULL;
+			return qobject_cast<MultiLayer *>(d_active_window);
 		break;
 
 		case NoteWindow:
-			if (d_active_window->isA("Note"))
-				return d_active_window;
-			else
-				return NULL;
+			return qobject_cast<Note *>(d_active_window);
 		break;
 
 		case Plot3DWindow:
-			if (d_active_window->isA("Graph3D"))
-				return d_active_window;
-			else
-				return NULL;
+			return qobject_cast<Graph3D *>(d_active_window);
 		break;
 	}
 	return d_active_window;
@@ -4535,8 +4524,6 @@ void ApplicationWindow::readSettings()
 
 	settings.beginGroup("/Legend");
 	legendFrameStyle = settings.value("/FrameStyle", LegendWidget::Line).toInt();
-
-
 	d_frame_widget_pen.setColor(settings.value("/FrameColor", Qt::black).value<QColor>());
 	d_frame_widget_pen.setWidth(settings.value("/FrameWidth", 1).toDouble());
 	d_frame_widget_pen.setStyle(PenStyleBox::penStyle(settings.value("/FramePenStyle", 0).toInt()));
@@ -4545,6 +4532,7 @@ void ApplicationWindow::readSettings()
 	legendBackground = settings.value("/BackgroundColor", Qt::white).value<QColor>(); //default color Qt::white
 	legendBackground.setAlpha(settings.value("/Transparency", 0).toInt()); // transparent by default;
 	d_legend_default_angle = settings.value("/Angle", 0).toInt();
+	d_frame_geometry_unit = settings.value("/DefaultGeometryUnit", FrameWidget::Scale).toInt();
 	settings.endGroup(); // Legend
 
 	settings.beginGroup("/Arrows");
@@ -4871,6 +4859,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/BackgroundColor", legendBackground);
 	settings.setValue("/Transparency", legendBackground.alpha());
 	settings.setValue("/Angle", d_legend_default_angle);
+	settings.setValue("/DefaultGeometryUnit", d_frame_geometry_unit);
 	settings.endGroup(); // Legend
 
 	settings.beginGroup("/Arrows");
