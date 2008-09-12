@@ -500,6 +500,10 @@ void EnrichmentDialog::setWidget(QWidget *w)
 	if (!w)
 		return;
 
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (!app)
+		return;
+	
 	d_widget = w;
 
     FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
@@ -522,10 +526,13 @@ void EnrichmentDialog::setWidget(QWidget *w)
 		else
 			boxFrameWidth->setValue(fw->framePen().width());
 		boxFrameWidth->blockSignals(false);
-    }
-
-    unitBox->setCurrentIndex(FrameWidget::Pixel);
-	displayCoordinates(FrameWidget::Pixel);
+		
+		unitBox->setCurrentIndex(app->d_frame_geometry_unit);
+		displayCoordinates(app->d_frame_geometry_unit);
+    } else {
+		unitBox->setCurrentIndex(FrameWidget::Pixel);
+		displayCoordinates(FrameWidget::Pixel);
+	}
 
 	if (d_widget_type == Text){
 		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
@@ -737,6 +744,10 @@ void EnrichmentDialog::setCoordinates(int unit)
 
     if (d_plot)
         d_plot->multiLayer()->notifyChanges();
+	
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (app)
+		app->d_frame_geometry_unit = unit;
 }
 
 void EnrichmentDialog::displayCoordinates(int unit)
