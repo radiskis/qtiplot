@@ -349,8 +349,7 @@ void ApplicationWindow::init(bool factorySettings)
 	connect(scriptEnv, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
 	connect(recent, SIGNAL(activated(int)), this, SLOT(openRecentProject(int)));
-	connect(&http, SIGNAL(done(bool)), this, SLOT(receivedVersionFile(bool)));
-
+				 
 	// this has to be done after connecting scriptEnv
 	scriptEnv->initialize();
 
@@ -4525,7 +4524,7 @@ void ApplicationWindow::readSettings()
 	settings.beginGroup("/Legend");
 	legendFrameStyle = settings.value("/FrameStyle", LegendWidget::Line).toInt();
 	d_frame_widget_pen.setColor(settings.value("/FrameColor", Qt::black).value<QColor>());
-	d_frame_widget_pen.setWidth(settings.value("/FrameWidth", 1).toDouble());
+	d_frame_widget_pen.setWidthF(settings.value("/FrameWidth", 1).toDouble());
 	d_frame_widget_pen.setStyle(PenStyleBox::penStyle(settings.value("/FramePenStyle", 0).toInt()));
 
 	legendTextColor = settings.value("/TextColor", "#000000").value<QColor>(); //default color Qt::black
@@ -14796,9 +14795,10 @@ void ApplicationWindow::searchForUpdates()
 
     if (choice == QMessageBox::Yes){
         version_buffer.open(IO_WriteOnly);
-        http.setHost("soft.proindependent.com");
-        http.get("/version.txt", &version_buffer);
-        http.closeConnection();
+		http = new QHttp(this);
+		connect(http, SIGNAL(done(bool)), this, SLOT(receivedVersionFile(bool)));
+        http->setHost("soft.proindependent.com");
+        http->get("/version.txt", &version_buffer);
     }
 }
 
@@ -14806,14 +14806,12 @@ void ApplicationWindow::receivedVersionFile(bool error)
 {
 	if (error){
 		QMessageBox::warning(this, tr("QtiPlot - HTTP get version file"),
-				tr("Error while fetching version file with HTTP: %1.").arg(http.errorString()));
+				tr("Error while fetching version file with HTTP: %1.").arg(http->errorString()));
 		return;
 	}
 
 	version_buffer.close();
-
-	if (version_buffer.open(IO_ReadOnly))
-	{
+	if (version_buffer.open(IO_ReadOnly)){
 		QTextStream t( &version_buffer );
 		t.setEncoding(QTextStream::UnicodeUTF8);
 		QString version = t.readLine();
@@ -14822,20 +14820,19 @@ void ApplicationWindow::receivedVersionFile(bool error)
 		QString currentVersion = QString::number(maj_version) + "." + QString::number(min_version) +
 			"." + QString::number(patch_version) + QString(extra_version);
 
-		if (currentVersion != version)
-		{
+		if (currentVersion != version){
 			if(QMessageBox::question(this, tr("QtiPlot - Updates Available"),
 						tr("There is a newer version of QtiPlot (%1) available for download. Would you like to download it?").arg(version),
 						QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) == QMessageBox::Yes)
 				QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/download.html"));
-		}
-		else if (!autoSearchUpdatesRequest)
-		{
+		} else if (!autoSearchUpdatesRequest){
 			QMessageBox::information(this, tr("QtiPlot - No Updates Available"),
 					tr("No updates available. Your current version %1 is the last version available!").arg(version));
 		}
 		autoSearchUpdatesRequest = false;
 	}
+	http->abort();
+	delete http;
 }
 
 /*!

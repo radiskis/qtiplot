@@ -785,7 +785,7 @@ public slots:
 	void updateRecentProjectsList();
 
 	//!  connected to the done(bool) signal of the http object
-	void receivedVersionFile(bool error);
+	void receivedVersionFile(bool error);	 
 	//!  called when the user presses the actionCheckUpdates
 	void searchForUpdates();
 #ifdef QTIPLOT_SUPPORT
@@ -1178,7 +1178,7 @@ private:
 	QList<Q3ListViewItem *> draggedItems;
 
 	//! Used when checking for new versions
-	QHttp http;
+	QHttp *http;
 	//! Used when checking for new versions
 	QBuffer version_buffer;
 
