@@ -1411,6 +1411,16 @@ void Graph::exportVector(const QString& fileName, int, bool color)
 
     QPainter paint(&printer);
 	print(&paint, rect());
+	
+	/*QRect r = rect();
+	if (res){//only printing with screen resolution works correctly for the moment
+		double w = width()*(double)res/(double)logicalDpiX();
+		double h = height()*(double)res/(double)logicalDpiY();
+		printer.setResolution(res);
+		printer.setPaperSize (QSizeF(w, h), QPrinter::DevicePixel);
+		r.setSize(QSize(w, h));
+	}
+	print(&paint, r);*/
 }
 
 void Graph::print()
