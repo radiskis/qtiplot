@@ -690,17 +690,17 @@ which opens a dialog allowing to edit the plot range.</para>
   	   <para><emphasis>Instrumental</emphasis>: the values of the associated error bars are used as weighting coeficients <emphasis>w<subscript>i</subscript> = 1/er<subscript>i</subscript><superscript>2</superscript></emphasis>, where <emphasis>er<subscript>i</subscript></emphasis> are the error bar sizes stored in error bar columns. You must add Y-error bars to the analysed curve before performing the fit.</para>
   	  </listitem>
   	  <listitem>
-  	    <para><emphasis>Statistical</emphasis>: the weighting coeficients are calculated as <emphasis>w<subscript>i</subscript> = 1/y<subscript>i</subscript></emphasis>, 
+  	    <para><emphasis>Statistical</emphasis>: the weighting coeficients are calculated as <emphasis>w<subscript>i</subscript> = 1/y<subscript>i</subscript></emphasis>,
 		where <emphasis>y<subscript>i</subscript></emphasis> are the y values in the fitted data set.</para>
   	  </listitem>
   	  <listitem>
-  	    <para><emphasis>Arbitrary Dataset</emphasis>: you have the possibility to set the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = 1/c<subscript>i</subscript></emphasis><superscript>2</superscript>, 
-		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set. 
+  	    <para><emphasis>Arbitrary Dataset</emphasis>: you have the possibility to set the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = 1/c<subscript>i</subscript></emphasis><superscript>2</superscript>,
+		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set.
 		The column used for the weighting must have a number of rows equal to the number of points in the fitted curve. </para>
   	  </listitem>
 	  <listitem>
-  	    <para><emphasis>Direct Weighting</emphasis>: you have the possibility to set the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = c<subscript>i</subscript></emphasis>, 
-		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set. 
+  	    <para><emphasis>Direct Weighting</emphasis>: you have the possibility to set the weighting coeficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = c<subscript>i</subscript></emphasis>,
+		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set.
 		The column used for the weighting must have a number of rows equal to the number of points in the fitted curve. </para>
   	  </listitem>
   	</orderedlist>
@@ -1000,6 +1000,21 @@ scripting support.</para>
       </imageobject>
     </mediaobject>
   </figure>
+
+<para>The <emphasis>Notes</emphasis> tab allows the user to customize some default options for the text editors, such as
+the length of the <emphasis>TAB</emphasis> character and the font.
+The user can also specify whether the line numbers should be displayed or not.
+Displaying the line numbers can be particularly helpful when debugging Python scripts.</para>
+
+  <figure id="fig-preferences-dialog-14">
+    <title>The preferences dialog: note options.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog14.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
   <figure id="fig-preferences-dialog-10">
     <title>The preferences dialog: fitting options.</title>
     <mediaobject>
