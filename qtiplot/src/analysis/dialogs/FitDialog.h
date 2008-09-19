@@ -108,6 +108,7 @@ private slots:
 	void returnToFitPage();
 	void updatePreview();
 	void showParameterRange(bool);
+	void guessParameters();
 
 private:
 	void loadPlugins();
@@ -118,6 +119,7 @@ private:
 	QStringList userFunctionNames();
 	QStringList plugInNames();
 	QString parseFormula(const QString& s);
+	void setEditorTextColor(const QColor& c);
 
     Fit *d_current_fit;
 	Graph *d_graph;
@@ -148,6 +150,7 @@ private:
 	QTextEdit *editBox, *explainBox, *boxFunction;
 	QListWidget *categoryBox, *funcBox;
 	QLineEdit *boxName, *boxParam;
+	QLabel *boxErrorMsg;
 	QLabel *lblFunction, *lblPoints, *polynomOrderLabel;
 	QPushButton *btnAddFunc, *btnDelFunc, *btnContinue, *btnApply;
 	QPushButton *buttonEdit, *btnAddTxt, *btnAddName, *btnDeleteFitCurves;

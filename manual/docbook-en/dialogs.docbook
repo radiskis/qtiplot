@@ -915,13 +915,13 @@ option.</para>
 folders containing the translation files, the manual files and the Python configuration files,
 <emphasis>qtiplotrc.py</emphasis> and <emphasis>qtiUtil.py</emphasis>, in case &appname; was built with Python
 scripting support.</para>
-  <informalfigure id="fig-preferences-dialog-13">
+  <figure id="fig-preferences-dialog-13">
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/preferences-dialog13.png"/>
       </imageobject>
     </mediaobject>
-  </informalfigure>
+  </figure>
 
   <para>The second set of option allows to customize the defaut aspect of <link linkend="sec-intro-table">tables</link>: background, text colors, and fonts for tables and labels.
   By checking the <emphasis>Display Comments in Header</emphasis> option, the column comments will also be

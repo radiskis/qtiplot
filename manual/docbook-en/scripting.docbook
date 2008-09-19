@@ -2,8 +2,16 @@
 
 <title>Mathematical Expressions and Scripting</title>
 
-  <para>Starting with version 0.8.7, QtiPlot supports different interpreters
-  for evaluating mathematical expressions and for executing scripts.</para>
+  <para>QtiPlot supports two different interpreters
+  for evaluating mathematical expressions and for executing scripts: 
+  <emphasis>muParser</emphasis> and <emphasis>Python</emphasis>.
+  <emphasis>muParser</emphasis> can be only used for the evaluation of mathematical expressions,
+  whereas <emphasis>Python</emphasis> can be used to execute scrips. 
+  The default interpreter is <emphasis>muParser</emphasis> therefore if you want to execute scripts you should first
+  enable the <emphasis>Python</emphasis> scripting engine via the 
+  <link linkend="script-language-cmd">Scripting language dialog</link>. 
+  Also, you can define the default scripting interpreter via the <emphasis>General</emphasis> tab
+  of the <link linkend="fig-preferences-dialog-1">Preferences dialog</link>.</para>
 
   <sect1 id="sec-muParser">
     <title>muParser</title>
@@ -450,22 +458,11 @@
       <userinput>table("table1")</userinput> for
       <userinput>qti.app.table("table1")</userinput>.</para>
 
-      <para>When activating Python support, QtiPlot searches the following
-      places, executing the first file it can find:</para>
-
-      <orderedlist>
-        <listitem>
-          <para>~/.qtiplotrc.py[c]</para>
-        </listitem>
-
-        <listitem>
-          <para>/etc/qtiplotrc.py[c]</para>
-        </listitem>
-
-        <listitem>
-          <para>./qtiplotrc.py[c]</para>
-        </listitem>
-      </orderedlist>
+      <para>When activating Python support, QtiPlot searches the initialization file in a 
+	  default folder, which can be customized via the <emphasis>File Locations</emphasis> tab
+  	  of the <link linkend="fig-preferences-dialog-13">Preferences dialog</link>.
+	  If the initialization file is not found, QtiPlot will issue a warning and 
+	  <emphasis>muParser</emphasis> will be kept as the default interpreter.</para>
 
       <para>Files ending in .pyc are compiled versions of the .py source files
       and therefore load a bit faster. The compiled version will be used if
