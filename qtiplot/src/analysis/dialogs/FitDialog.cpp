@@ -61,6 +61,7 @@
 #include <stdio.h>
 
 #include <qwt_plot_curve.h>
+#include <muParserToken.h>
 
 /* XPM */
 static const char * param_range_btn_xpm[] = {
@@ -337,10 +338,15 @@ void FitDialog::initEditPage()
 
     QGroupBox *gb = new QGroupBox();
     gb->setLayout(gl2);
-
+	
 	editBox = new QTextEdit();
 	editBox->setTextFormat(Qt::PlainText);
+	connect(editBox, SIGNAL(textChanged()), this, SLOT(guessParameters()));	
 	editBox->setFocus();
+	
+	boxErrorMsg = new QLabel();
+	boxErrorMsg->setFrameStyle(QFrame::Box | QFrame::Sunken);
+	boxErrorMsg->hide();
 
     QVBoxLayout *vbox1 = new QVBoxLayout();
 	btnAddTxt = new QPushButton(tr( "Add &expression" ) );
@@ -355,8 +361,12 @@ void FitDialog::initEditPage()
     vbox1->addWidget(btnContinue);
     vbox1->addStretch();
 
+	QVBoxLayout *vb = new QVBoxLayout();
+	vb->addWidget(editBox);
+	vb->addWidget(boxErrorMsg);
+
     QHBoxLayout *hbox2 = new QHBoxLayout();
-	hbox2->addWidget(editBox);
+	hbox2->addLayout(vb);
     hbox2->addLayout(vbox1);
 
     QVBoxLayout *vbox2 = new QVBoxLayout();
@@ -1587,4 +1597,61 @@ void FitDialog::showPredictionLimits()
 	}
 
 	d_current_fit->showPredictionLimits(boxConfidenceLevel->value());
+}
+
+void FitDialog::guessParameters()
+{
+	QString text = editBox->text().remove(QRegExp("\\s")).remove(".");
+	if (boxUseBuiltIn->isChecked() || text.isEmpty())
+		return;
+		
+	bool error = false;
+	try{
+		QStringList parList;
+		MyParser parser;
+		ParserTokenReader reader(&parser);
+		
+		const char *formula = text.toAscii().data();
+		int length = text.toAscii().length();
+		reader.SetFormula (formula);
+		reader.IgnoreUndefVar(true);
+		int pos = 0;
+		while(pos < length){
+			ParserToken<value_type, string_type> token = reader.ReadNextToken();
+			QString str = QString(token.GetAsString().c_str());
+			if (token.GetCode () == cmVAR && str.contains(QRegExp("\\D")) 
+				&& str != "x" && !parList.contains(str))
+				parList << str;
+			pos = reader.GetPos();
+		}
+		parList.sort();
+		boxParam->setText(parList.join(", "));
+	} catch(mu::ParserError &e) { 
+		error = true;
+		setEditorTextColor(Qt::red);// highlight text in red
+		boxErrorMsg->setText(tr("Error: ") + QString(e.GetMsg().c_str()));
+		boxErrorMsg->show();
+	}
+	
+	if (!error){// reset text color to black
+		setEditorTextColor(Qt::black);
+		boxErrorMsg->hide();
+		boxErrorMsg->clear();
+	}
+}
+
+void FitDialog::setEditorTextColor(const QColor& c)
+{
+		editBox->blockSignals(true);
+		QTextCursor cursor = editBox->textCursor();
+		int pos = cursor.position();
+		
+		editBox->selectAll ();
+		editBox->setTextColor(c);
+		
+		cursor.clearSelection();
+		cursor.setPosition(pos);
+		
+		editBox->setTextCursor(cursor);
+		editBox->blockSignals(false);
 }
