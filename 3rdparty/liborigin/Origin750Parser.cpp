@@ -1296,6 +1296,33 @@ void Origin750Parser::readGraphInfo()
 			double bitmap_top = 0.0;
 			file >> bitmap_top;
 
+			Figure figure;
+			file.seekg(LAYER + 0x5, ios_base::beg);
+			file >> w1;
+			figure.width = (double)w1/500.0;
+
+			file.seekg(LAYER + 0x8, ios_base::beg);
+			file >> figure.style;
+
+			file.seekg(LAYER + 0x42, ios_base::beg);
+			file >> figure.fillAreaColor;
+
+			file.seekg(LAYER + 0x46, ios_base::beg);
+			file >> w1;
+			figure.fillAreaPatternWidth = (double)w1/500.0;
+
+			file.seekg(LAYER + 0x4A, ios_base::beg);
+			file >> figure.fillAreaPatternColor;
+
+			file.seekg(LAYER + 0x4E, ios_base::beg);
+			file >> figure.fillAreaPattern;
+
+			unsigned char h;
+			file.seekg(LAYER + 0x57, ios_base::beg);
+			file >> h;
+			figure.useBorderColor = (h == 0x10);
+
+
 			//section_body_2_size
 			LAYER += size + 0x1;
 
@@ -1363,6 +1390,25 @@ void Origin750Parser::readGraphInfo()
 				graphs.back().layers.back().texts.push_back(
 								TextBox(text, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach));
 			}
+			else if(osize == 0x5E) // rectangle & circle
+			{
+				switch(type)
+				{
+				case 0:
+				case 1:
+					figure.type = Figure::Rectangle;
+					break;
+				case 2:
+				case 3:
+					figure.type = Figure::Circle;
+					break;
+				}
+				figure.clientRect = r;
+				figure.attach = (Attach)attach;
+				figure.color = color;
+
+				graphs.back().layers.back().figures.push_back(figure);
+			}
 			else if(osize == 0x78 && type == 2) // line
 			{
 				graphs.back().layers.back().lines.push_back(Line());
@@ -1378,6 +1424,7 @@ void Origin750Parser::readGraphInfo()
 			{
 				unsigned long filesize = size + 14;
 				graphs.back().layers.back().bitmaps.push_back(Bitmap());
+				graphs.back().layers.back().bitmaps.back().clientRect = r;
 				graphs.back().layers.back().bitmaps.back().left = bitmap_left;
 				graphs.back().layers.back().bitmaps.back().top = bitmap_top;
 				graphs.back().layers.back().bitmaps.back().width =
