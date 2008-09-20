@@ -38,6 +38,7 @@
 #include "matrix/Matrix.h"
 #include "matrix/MatrixModel.h"
 #include "ColorBox.h"
+#include "PatternBox.h"
 #include "plot2D/MultiLayer.h"
 #include "Note.h"
 #include "Folder.h"
@@ -48,6 +49,8 @@
 #include "plot2D/Grid.h"
 #include "plot2D/ArrowMarker.h"
 #include "plot2D/ImageWidget.h"
+#include "plot2D/RectangleWidget.h"
+#include "plot2D/EllipseWidget.h"
 
 #include "qwt_plot_canvas.h"
 #include "qwt_plot_layout.h"
@@ -59,6 +62,9 @@
 using namespace boost::posix_time;
 
 #define OBJECTXOFFSET 200
+
+QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> ImportOPJ::lineStyles;
+QMap<Origin::FillPattern, int> ImportOPJ::patternStyles;
 
 QString strreverse(const QString &str) //QString reversing
 {
@@ -81,6 +87,37 @@ QString posixTimeToString(ptime pt)
 ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 		mw(app)
 {
+	//////////////////////Origin params to QtiPlot mapping////////////////////
+	lineStyles[Origin::GraphCurve::Solid] = Qt::SolidLine;
+	lineStyles[Origin::GraphCurve::Dash] = Qt::DashLine;
+	lineStyles[Origin::GraphCurve::ShortDash] = Qt::DashLine;
+	lineStyles[Origin::GraphCurve::Dot] = Qt::DotLine;
+	lineStyles[Origin::GraphCurve::ShortDot] = Qt::DotLine;
+	lineStyles[Origin::GraphCurve::DashDot] = Qt::DashDotLine;
+	lineStyles[Origin::GraphCurve::ShortDashDot] = Qt::DashDotLine;
+	lineStyles[Origin::GraphCurve::DashDotDot] = Qt::DashDotDotLine;
+
+	patternStyles[Origin::NoFill] = 255;
+	patternStyles[Origin::BDiagDense] = 4;
+	patternStyles[Origin::BDiagMedium] = 4;
+	patternStyles[Origin::BDiagSparse] = 4;
+	patternStyles[Origin::FDiagDense] = 5;
+	patternStyles[Origin::FDiagMedium] = 5;
+	patternStyles[Origin::FDiagSparse] = 5;
+	patternStyles[Origin::DiagCrossDense] = 6;
+	patternStyles[Origin::DiagCrossMedium] = 6;
+	patternStyles[Origin::DiagCrossSparse] = 6;
+	patternStyles[Origin::HorizontalDense] = 1;
+	patternStyles[Origin::HorizontalMedium] = 1;
+	patternStyles[Origin::HorizontalSparse] = 1;
+	patternStyles[Origin::VerticalDense] = 2;
+	patternStyles[Origin::VerticalMedium] = 2;
+	patternStyles[Origin::VerticalSparse] = 2;
+	patternStyles[Origin::CrossDense] = 3;
+	patternStyles[Origin::CrossMedium] = 3;
+	patternStyles[Origin::CrossSparse] = 3;
+
+	//////////////////////////////////////////////////////////////////////////
 	xoffset=0;
 	OriginFile opj((const char *)filename.latin1());
 	parse_error = opj.parse();
@@ -129,32 +166,6 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 	}
 	mw->changeFolder(projectFolder, true);
 	return true;
-}
-
-int ImportOPJ::translateOrigin2QtiplotLineStyle(int linestyle) {
-	int qtiplotstyle=0;
-	switch (linestyle)
-	{
-		case Origin::GraphCurve::Solid:
-			qtiplotstyle=0;
-			break;
-		case Origin::GraphCurve::Dash:
-		case Origin::GraphCurve::ShortDash:
-			qtiplotstyle=1;
-			break;
-		case Origin::GraphCurve::Dot:
-		case Origin::GraphCurve::ShortDot:
-			qtiplotstyle=2;
-			break;
-		case Origin::GraphCurve::DashDot:
-		case Origin::GraphCurve::ShortDashDot:
-			qtiplotstyle=3;
-			break;
-		case Origin::GraphCurve::DashDotDot:
-			qtiplotstyle=4;
-			break;
-	}
-	return qtiplotstyle;
 }
 
 bool ImportOPJ::importTables(const OriginFile& opj)
@@ -560,6 +571,14 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 	double pi=3.141592653589793;
 	int visible_count=0;
 	int tickTypeMap[]={0,3,1,2};
+
+	MultiLayer* fake = mw->multilayerPlot("fake", 0);
+	fake->setParent(0);
+	int frameWidth = fake->frameGeometry().width() - fake->geometry().width();
+	int frameHeight = fake->frameGeometry().height() - fake->geometry().height();
+	fake->askOnCloseEvent(false);
+	fake->close();
+
 	for(unsigned int g = 0; g < opj.graphCount(); ++g)
 	{
 		Origin::Graph _graph = opj.graph(g);
@@ -574,15 +593,29 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		Origin::Rect graphRect(_graph.width, _graph.height);
 		Origin::Rect graphWindowRect = _graph.clientRect;
-		ml->resize(graphWindowRect.width() - (ml->frameGeometry().width() - ml->width()),
-                    graphWindowRect.height() - (ml->frameGeometry().height() - ml->height()));
+		double ratio = (double)(graphWindowRect.width() - frameWidth)/(double)(graphWindowRect.height() - frameHeight);
 
-		double fXScale = (double)ml->width()/(double)graphRect.width();
-		double fYScale = (double)ml->height()/(double)graphRect.height();
-		fXScale = fYScale = QMIN(fXScale, fYScale);
+		int width = _graph.width;
+		int height = _graph.height;
+		if((double)(_graph.width)/(double)(_graph.height) < ratio)
+		{
+			width = height * ratio;
+		}
+		else
+		{
+			height = width / ratio;
+		}
+
+		//ml->resize(width, height);
+
+		int yOffset = LayerButton::btnSize();
+
+		ml->resize(graphWindowRect.width()/* - frameWidth*/, graphWindowRect.height()/* - frameHeight*/);
+
+		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
 
 		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
-		double fFontScaleFactor = 0.37*fWindowFactor;
+		double fFontScaleFactor = 300*fScale/72;//0.37*fWindowFactor;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
 		for(unsigned int l = 0; l < _graph.layers.size(); ++l)
@@ -868,75 +901,20 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie) ? 1 : 0;
 				if(cl.filledArea)
 				{
-					switch(_curve.fillAreaPattern)
+					cl.aStyle = _curve.fillAreaPattern == Origin::NoFill ? 0 : patternStyles[(Origin::FillPattern)_curve.fillAreaPattern];
+					color = (cl.aStyle==0 ?_curve.fillAreaColor : _curve.fillAreaPatternColor);
+					cl.aCol = (color==0xF7?0:color); //0xF7 -Automatic color
+					if(style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie)
 					{
-					case 0:
-						cl.aStyle=0;
-						break;
-					case 1:
-					case 2:
-					case 3:
-						cl.aStyle=4;
-						break;
-					case 4:
-					case 5:
-					case 6:
-						cl.aStyle=5;
-						break;
-					case 7:
-					case 8:
-					case 9:
-						cl.aStyle=6;
-						break;
-					case 10:
-					case 11:
-					case 12:
-						cl.aStyle=1;
-						break;
-					case 13:
-					case 14:
-					case 15:
-						cl.aStyle=2;
-						break;
-					case 16:
-					case 17:
-					case 18:
-						cl.aStyle=3;
-						break;
-					}
-					color=(cl.aStyle==0 ?_curve.fillAreaColor : _curve.fillAreaPatternColor);
-					cl.aCol=(color==0xF7?0:color); //0xF7 -Automatic color
-					if (style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie)
-					{
-						color=_curve.fillAreaPatternBorderColor;
+						color = _curve.fillAreaPatternBorderColor;
 						cl.lCol = (color==0xF7?0:color); //0xF7 -Automatic color
-						color=(cl.aStyle==0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
-						cl.aCol=(color==0xF7?cl.lCol:color); //0xF7 -Automatic color
+						color = (cl.aStyle==0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
+						cl.aCol = (color==0xF7?cl.lCol:color); //0xF7 -Automatic color
 						cl.lWidth = ceil(_curve.fillAreaPatternBorderWidth);
-						linestyle=_curve.fillAreaPatternBorderStyle;
+						linestyle = _curve.fillAreaPatternBorderStyle;
 					}
 				}
-				switch (linestyle)
-				{
-					case Origin::GraphCurve::Solid:
-						cl.lStyle=0;
-						break;
-					case Origin::GraphCurve::Dash:
-					case Origin::GraphCurve::ShortDash:
-						cl.lStyle=1;
-						break;
-					case Origin::GraphCurve::Dot:
-					case Origin::GraphCurve::ShortDot:
-						cl.lStyle=2;
-						break;
-					case Origin::GraphCurve::DashDot:
-					case Origin::GraphCurve::ShortDashDot:
-						cl.lStyle=3;
-						break;
-					case Origin::GraphCurve::DashDotDot:
-						cl.lStyle=4;
-						break;
-				}
+				cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle] - 1;
 
 				graph->updateCurveLayout(curve, &cl);
 				if (style == Graph::VerticalBars || style == Graph::HorizontalBars)
@@ -959,27 +937,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				else if(style == Graph::Pie)
 				{
 					QwtPieCurve *p = (QwtPieCurve*)graph->curve(c);
-					switch (linestyle)
-					{
-					case Origin::GraphCurve::Solid:
-						cl.lStyle=Qt::SolidLine;
-						break;
-					case Origin::GraphCurve::Dash:
-					case Origin::GraphCurve::ShortDash:
-						cl.lStyle=Qt::DashLine;
-						break;
-					case Origin::GraphCurve::Dot:
-					case Origin::GraphCurve::ShortDot:
-						cl.lStyle=Qt::DotLine;
-						break;
-					case Origin::GraphCurve::DashDot:
-					case Origin::GraphCurve::ShortDashDot:
-						cl.lStyle=Qt::DashDotLine;
-						break;
-					case Origin::GraphCurve::DashDotDot:
-						cl.lStyle=Qt::DashDotDotLine;
-						break;
-					}
+					cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle];
 					p->setPen(QPen(ColorBox::color(cl.lCol), cl.lWidth, (Qt::PenStyle)cl.lStyle));
 					p->setFirstColor(_curve.fillAreaFirstColor);
 					//geometry
@@ -1069,13 +1027,13 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			grid->enableYMin(!layer.yAxis.minorGrid.hidden);
 
 			grid->setMajPenX(QPen(ColorBox::color(layer.xAxis.majorGrid.color), ceil(layer.xAxis.majorGrid.width),
-							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(layer.xAxis.majorGrid.style))));
+							lineStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style]));
 			grid->setMinPenX(QPen(ColorBox::color(layer.xAxis.minorGrid.color), ceil(layer.xAxis.minorGrid.width),
-							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(layer.xAxis.minorGrid.style))));
+							lineStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.minorGrid.style]));
 			grid->setMajPenY(QPen(ColorBox::color(layer.yAxis.majorGrid.color), ceil(layer.yAxis.majorGrid.width),
-							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(layer.yAxis.majorGrid.style))));
+							lineStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.majorGrid.style]));
 			grid->setMinPenY(QPen(ColorBox::color(layer.yAxis.minorGrid.color), ceil(layer.yAxis.minorGrid.width),
-							Graph::getPenStyle(translateOrigin2QtiplotLineStyle(layer.yAxis.minorGrid.style))));
+							lineStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style]));
 
 			grid->setAxis(2, 0);
 			grid->enableZeroLineX(0);
@@ -1202,27 +1160,26 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			int nYDelta = graph->height() - graph->canvas()->height();
 			QPoint posCanvas =  graph->canvas()->pos();
 
-			graph->resize(layerRect.width()*fXScale + nXDelta,
-				layerRect.height()*fYScale + nYDelta);
+			graph->resize(layerRect.width()*fScale + nXDelta, layerRect.height()*fScale + nYDelta);
+			graph->updateLayout();
+			graph->updateCurveLabels();
 
-			int newXGraphPos = layerRect.left*fXScale - posCanvas.x() - ml->x();
-			int newYGraphPos = layerRect.top*fYScale - posCanvas.y() - ml->y();
-			graph->move((newXGraphPos > 0 ? newXGraphPos : 0), (newYGraphPos > 0 ? newYGraphPos : 0));
-
-			graph->resize(layerRect.width()*fXScale + nXDelta,
-				layerRect.height()*fYScale + nYDelta);
+			//int newXGraphPos = layerRect.left*fScale - posCanvas.x() - ml->x();
+			//int newYGraphPos = layerRect.top*fScale - posCanvas.y() - yOffset - ml->y();
+			//graph->move((newXGraphPos > 0 ? newXGraphPos : 0), (newYGraphPos > 0 ? newYGraphPos : 0));
+			graph->move(layerRect.left*fScale - posCanvas.x(), layerRect.top*fScale - posCanvas.y() - yOffset);
 
 			//add texts
 			if(style != Graph::Pie)
 			{
 				for(unsigned int i = 0; i < layer.texts.size(); ++i)
 				{
-					addText(layer.texts[i], graph, 0, layerRect, fFontScaleFactor, fXScale, fYScale);
+					addText(layer.texts[i], graph, 0, layerRect, fFontScaleFactor, fScale);
 				}
 			}
 
 			if(legend)
-				addText(layer.legend, graph, legend, layerRect, fFontScaleFactor, fXScale, fYScale);
+				addText(layer.legend, graph, legend, layerRect, fFontScaleFactor, fScale);
 
 			for(unsigned int i = 0; i < layer.lines.size(); ++i)
 			{
@@ -1235,33 +1192,31 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
                 mrk.setHeadAngle(arrowAngle(layer.lines[i].end.shapeLength, layer.lines[i].end.shapeWidth));
 				mrk.setColor(ColorBox::color(layer.lines[i].color));
 				mrk.setWidth((int)layer.lines[i].width);
-				Qt::PenStyle s;
-
-				switch(layer.lines[i].style)
-				{
-				case Origin::GraphCurve::Solid:
-					s=Qt::SolidLine;
-					break;
-				case Origin::GraphCurve::Dash:
-				case Origin::GraphCurve::ShortDash:
-					s=Qt::DashLine;
-					break;
-				case Origin::GraphCurve::Dot:
-				case Origin::GraphCurve::ShortDot:
-					s=Qt::DotLine;
-					break;
-				case Origin::GraphCurve::DashDot:
-				case Origin::GraphCurve::ShortDashDot:
-					s=Qt::DashDotLine;
-					break;
-				case Origin::GraphCurve::DashDotDot:
-					s=Qt::DashDotDotLine;
-					break;
-				default:
-					s=Qt::SolidLine;
-				}
-				mrk.setStyle(s);
+				mrk.setStyle(lineStyles[(Origin::GraphCurve::LineStyle)layer.lines[i].style]);
 				graph->addArrow(&mrk);
+			}
+
+			for(unsigned int i = 0; i < layer.figures.size(); ++i)
+			{
+				FrameWidget* fw;
+				switch(layer.figures[i].type)
+				{
+				case Origin::Figure::Rectangle:
+					fw = new RectangleWidget(graph);
+					break;
+				case Origin::Figure::Circle:
+					fw = new EllipseWidget(graph);
+				    break;
+				}
+
+				fw->setSize(layer.figures[i].clientRect.width()*fScale, layer.figures[i].clientRect.height()*fScale);
+				fw->move(QPoint(layer.figures[i].clientRect.left*fScale, layer.figures[i].clientRect.top*fScale - yOffset));
+				fw->setFrameColor(ColorBox::color(layer.figures[i].color));
+				fw->setFrameWidth(layer.figures[i].width);
+				fw->setFrameLineStyle(lineStyles[(Origin::GraphCurve::LineStyle)layer.figures[i].style]);
+				fw->setBackgroundColor(ColorBox::color(layer.figures[i].fillAreaColor));
+				fw->setBrush(QBrush(ColorBox::color(layer.figures[i].useBorderColor ? layer.figures[i].color : layer.figures[i].fillAreaPatternColor), PatternBox::brushStyle(patternStyles[(Origin::FillPattern)layer.figures[i].fillAreaPattern])));
+				graph->add(fw, false);
 			}
 
 			for(unsigned int i = 0; i < layer.bitmaps.size(); ++i)
@@ -1273,53 +1228,13 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				if(file.open())
 				{
 					bmp.save(file.fileName(), "BMP");
-					ImageWidget *mrk = graph->addImage(file.fileName());
-					double left, top, right, bottom;
-					left = top = right = bottom = 0.0;
-					switch(layer.bitmaps[i].attach)
-					{
-					case Origin::Scale:
-						left = layer.bitmaps[i].left;
-						top = layer.bitmaps[i].top;
-						right = left + layer.bitmaps[i].width;
-						bottom = top - layer.bitmaps[i].height;
-						break;
-					case Origin::Frame:
-						if(layer.bitmaps[i].width > 0)
-						{
-							left = (layer.xAxis.max-layer.xAxis.min)*layer.bitmaps[i].left + layer.xAxis.min;
-							right = left + layer.bitmaps[i].width;
-						}
-						else
-						{
-							right = (layer.xAxis.max-layer.xAxis.min)*layer.bitmaps[i].left + layer.xAxis.min;
-							left = right + layer.bitmaps[i].width;
-						}
-
-						if(layer.bitmaps[i].height > 0)
-						{
-							top = layer.yAxis.max - (layer.yAxis.max-layer.yAxis.min)*layer.bitmaps[i].top;
-							bottom = top - layer.bitmaps[i].height;
-						}
-						else
-						{
-							bottom = layer.yAxis.max - (layer.yAxis.max-layer.yAxis.min)*layer.bitmaps[i].top;
-							top = bottom - layer.bitmaps[i].height;
-						}
-						break;
-					case Origin::Page:
-						//rect graphRect = opj.graphRect(g);
-						left = (layer.xAxis.max-layer.xAxis.min)*(layer.bitmaps[i].left - (double)layerRect.left/(double)graphRect.width())/((double)layerRect.width()/(double)graphRect.width()) + layer.xAxis.min;
-						top = layer.yAxis.max - (layer.yAxis.max-layer.yAxis.min)*(layer.bitmaps[i].top - (double)layerRect.top/(double)graphRect.height())/((double)layerRect.height()/(double)graphRect.height());
-						right = left + layer.bitmaps[i].width;
-						bottom = top - layer.bitmaps[i].height;
-						break;
-					}
-
-					mrk->setCoordinates(left, top, right, bottom);
+					ImageWidget* mrk = graph->addImage(file.fileName());
+					mrk->setRect(layer.bitmaps[i].clientRect.left*fScale, layer.bitmaps[i].clientRect.top*fScale - yOffset, layer.bitmaps[i].clientRect.width()*fScale, layer.bitmaps[i].clientRect.height()*fScale);
 				}
 			}
 		}
+		
+		//ml->resize(graphWindowRect.width() - frameWidth, graphWindowRect.height() - frameWidth);
 		//cascade the graphs
 		if(!_graph.hidden)
 		{
@@ -1335,7 +1250,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				mw->maximizeWindow(ml);
 				break;
 			default:
+				ml->setScaleLayersOnResize(false);
 				ml->show();
+				ml->setScaleLayersOnResize(true);
 			}
 		}
 		else
@@ -1352,20 +1269,20 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 	return true;
 }
 
-void ImportOPJ::addText(const Origin::TextBox& _text, Graph* graph, LegendWidget* txt, const Origin::Rect& layerRect, double fFontScaleFactor, double fXScale, double fYScale)
+void ImportOPJ::addText(const Origin::TextBox& _text, Graph* graph, LegendWidget* txt, const Origin::Rect& layerRect, double fFontScaleFactor, double fScale)
 {
 	int bkg;
 	switch(_text.borderType)
 	{
 	case Origin::TextBox::BlackLine:
-		bkg=1;
+		bkg = 1;
 		break;
 	case Origin::TextBox::Shadow:
 	case Origin::TextBox::DarkMarble:
-		bkg=2;
+		bkg = 2;
 		break;
 	default:
-		bkg=0;
+		bkg = 0;
 		break;
 	}
 
@@ -1379,10 +1296,11 @@ void ImportOPJ::addText(const Origin::TextBox& _text, Graph* graph, LegendWidget
 	txt->setFont(font);
 	txt->setFrameStyle(bkg);
 
-	Origin::Rect txtRect=_text.clientRect;
-	int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
-	int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
-	txt->move(QPoint(x*fXScale, y*fYScale));
+	//Origin::Rect txtRect=_text.clientRect;
+	//int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
+	//int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
+	//txt->move(QPoint((_text.clientRect.left+_text.clientRect.width()/2)*fScale - txt->width()/2, (_text.clientRect.top+_text.clientRect.height()/2)*fScale - LayerButton::btnSize() - txt->height()/2));
+	txt->move(QPoint(_text.clientRect.left*fScale, _text.clientRect.top*fScale - LayerButton::btnSize()));
 
 	/*QRect qtiRect=graph->canvas()->geometry();
 	txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),

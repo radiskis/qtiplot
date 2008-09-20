@@ -44,8 +44,11 @@ namespace Origin
 	enum NumericDisplayType {DefaultDecimalDigits = 0, DecimalPlaces = 1, SignificantDigits = 2};
 	enum Attach {Frame = 0, Page = 1, Scale = 2};
 	enum Color {Black = 0, Red = 1, Green = 2, Blue = 3, Cyan = 4, Magenta = 5, Yellow = 6, DarkYellow = 7, Navy = 8,
-	Purple = 9, Wine = 10, Olive = 11, DarkCyan = 12, Royal=  13, Orange = 14, Violet = 15, Pink = 16, White = 17,
-	LightGray = 18, Gray = 19, LTYellow = 20, LTCyan = 21, LTMagenta = 22, DarkGray = 23, Custom = 255};
+		Purple = 9, Wine = 10, Olive = 11, DarkCyan = 12, Royal=  13, Orange = 14, Violet = 15, Pink = 16, White = 17,
+		LightGray = 18, Gray = 19, LTYellow = 20, LTCyan = 21, LTMagenta = 22, DarkGray = 23, Custom = 255};
+	enum FillPattern {NoFill, BDiagDense, BDiagMedium, BDiagSparse, FDiagDense, FDiagMedium, FDiagSparse, 
+		DiagCrossDense, DiagCrossMedium, DiagCrossSparse, HorizontalDense, HorizontalMedium, HorizontalSparse, 
+		VerticalDense, VerticalMedium, VerticalSparse, CrossDense, CrossMedium, CrossSparse};
 
 	struct Rect
 	{
@@ -132,7 +135,7 @@ namespace Origin
 
 	struct SpreadSheet : public Window
 	{
-		int maxRows;
+		unsigned int maxRows;
 		bool loose;
 		bool multisheet;
 		vector<SpreadColumn> columns;
@@ -146,7 +149,7 @@ namespace Origin
 
 	struct Excel : public Window
 	{
-		int maxRows;
+		unsigned int maxRows;
 		bool loose;
 		vector<SpreadSheet> sheets;
 
@@ -439,16 +442,26 @@ namespace Origin
 		GraphAxisTick tickAxis[2]; //bottom-top, left-right
 	};
 
-	struct Rectangle
+	struct Figure
 	{
-		Rect clientRect;
-		Attach attach;
-	};
+		enum FigureType {Rectangle, Circle};
 
-	struct Circle
-	{
+		FigureType type;
 		Rect clientRect;
 		Attach attach;
+		unsigned char color;
+		unsigned char style;
+		double width;
+		unsigned char fillAreaColor;
+		unsigned char fillAreaPattern;
+		unsigned char fillAreaPatternColor;
+		double fillAreaPatternWidth;
+		bool useBorderColor;
+
+		Figure(FigureType _type = Rectangle)
+		:	type(_type)
+		{
+		};
 	};
 
 	struct LineVertex
@@ -535,6 +548,7 @@ namespace Origin
 
 		vector<TextBox> texts;
 		vector<Line> lines;
+		vector<Figure> figures;
 		vector<Bitmap> bitmaps;
 		vector<GraphCurve> curves;
 	};
