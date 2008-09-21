@@ -1060,6 +1060,20 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				int format = 0;
 				int type = 0;
 				int prec = ticks[i].decimalPlaces;
+				int precisionNeeded = 0;
+				if(prec == -1)
+				{
+					foreach(double value, graph->axisScaleDiv(i)->ticks(QwtScaleDiv::MajorTick))
+					{
+						QStringList decimals = QString::number(value).split(".");
+						if(decimals.size() > 1)
+						{
+							int p = decimals[1].length();
+							if(p > precisionNeeded)
+								precisionNeeded = p;
+						}
+					}
+				}
 				switch(ticks[i].valueType)
 				{
 				case Origin::Numeric:
@@ -1067,17 +1081,14 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					switch(ticks[i].valueTypeSpecification)
 					{
 					case 0: //Decimal 1000
-						if(prec != -1)
-							format = 1;
-						else
-							format = 0;
-
+					case 3: //Decimal 1,000
+						format = 1;
+						prec = (prec != -1 ? prec : precisionNeeded);
 						break;
 					case 1: //Scientific
 						format=2;
 						break;
 					case 2: //Engeneering
-					case 3: //Decimal 1,000
 						format=0;
 						break;
 					}
