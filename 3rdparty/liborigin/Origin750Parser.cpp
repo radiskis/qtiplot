@@ -489,8 +489,20 @@ bool Origin750Parser::parse()
 		if(size != 0x40)
 			break;
 
+		file.seekg(1, ios_base::cur);
+		Rect rect;
+		unsigned int coord;
+		file >> coord;
+		rect.left = coord;
+		file >> coord;
+		rect.top = coord;
+		file >> coord;
+		rect.right = coord;
+		file >> coord;
+		rect.bottom = coord;
+
 		double creationDate, modificationDate;
-		file.seekg(1 + 0x20, ios_base::cur);
+		file.seekg(0x10, ios_base::cur);
 		file >> creationDate;
 		file >> modificationDate;
 
@@ -522,6 +534,7 @@ bool Origin750Parser::parse()
 		{
 			notes.push_back(Note(name));
 			notes.back().objectID = objectIndex;
+			notes.back().clientRect = rect;
 			notes.back().creationDate = doubleToPosixTime(creationDate);
 			notes.back().modificationDate = doubleToPosixTime(modificationDate);
 			++objectIndex;
@@ -2151,7 +2164,7 @@ void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 
 	POS += 5 + 5;
 
-	for(int i = 0; i < objectcount; ++i)
+	for(unsigned int i = 0; i < objectcount; ++i)
 	{
 		POS += 5;
 		char c;
@@ -2163,9 +2176,14 @@ void Origin750Parser::readProjectTreeFolder(tree<ProjectNode>::iterator parent)
 		file >> objectID;
 
 		if(c == 0x10)
-			projectTree.append_child(current_folder, ProjectNode(notes[objectID].name));
+		{
+			projectTree.append_child(current_folder, ProjectNode(notes[objectID].name, ProjectNode::Note));
+		}
 		else
-			projectTree.append_child(current_folder, ProjectNode(findObjectByIndex(objectID)));
+		{
+			pair<ProjectNode::NodeType, string> object = findObjectByIndex(objectID);
+			projectTree.append_child(current_folder, ProjectNode(object.second, object.first));
+		}
 
 		POS += 8 + 1 + 5 + 5;
 	}

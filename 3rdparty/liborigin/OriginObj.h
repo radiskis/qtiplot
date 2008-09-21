@@ -587,14 +587,14 @@ namespace Origin
 
 	struct ProjectNode
 	{
-		enum NodeType {Object, Folder};
+		enum NodeType {SpreadSheet, Matrix, Excel, Graph, Note, Folder};
 
 		NodeType type;
 		string name;
 		boost::posix_time::ptime creationDate;
 		boost::posix_time::ptime modificationDate;
 
-		ProjectNode(const string& _name = "", NodeType _type = Object, const boost::posix_time::ptime& _creationDate = boost::posix_time::ptime(), const boost::posix_time::ptime& _modificationDate = boost::posix_time::ptime())
+		ProjectNode(const string& _name = "", NodeType _type = Folder, const boost::posix_time::ptime& _creationDate = boost::posix_time::ptime(), const boost::posix_time::ptime& _modificationDate = boost::posix_time::ptime())
 		:	name(_name)
 		,	type(_type)
 		,	creationDate(_creationDate)
