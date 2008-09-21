@@ -65,6 +65,7 @@ using namespace boost::posix_time;
 
 QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> ImportOPJ::lineStyles;
 QMap<Origin::FillPattern, int> ImportOPJ::patternStyles;
+QMap<Origin::ProjectNode::NodeType, QString> ImportOPJ::classes;
 
 QString strreverse(const QString &str) //QString reversing
 {
@@ -88,6 +89,10 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 		mw(app)
 {
 	//////////////////////Origin params to QtiPlot mapping////////////////////
+	classes[Origin::ProjectNode::SpreadSheet] = "Table";
+	classes[Origin::ProjectNode::Matrix] = "Matrix";
+	classes[Origin::ProjectNode::Graph] = "MultiLayer";
+	classes[Origin::ProjectNode::Note] = "Note";
 	lineStyles[Origin::GraphCurve::Solid] = Qt::SolidLine;
 	lineStyles[Origin::GraphCurve::Dash] = Qt::DashLine;
 	lineStyles[Origin::GraphCurve::ShortDash] = Qt::DashLine;
@@ -148,7 +153,7 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 	parent[root] = projectFolder;
 	for(tree<Origin::ProjectNode>::iterator sib = projectTree->begin(root); sib != projectTree->end(root); ++sib)
 	{
-		if(sib->type == 1)
+		if(sib->type == Origin::ProjectNode::Folder)
 		{
 			parent[sib] = mw->addFolder(sib->name.c_str(), parent.value(projectTree->parent(sib)));
 			parent[sib]->setBirthDate(posixTimeToString(sib->creationDate));
@@ -156,7 +161,15 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 		}
 		else
 		{
-			MdiSubWindow* w = projectFolder->window(sib->name.c_str());
+			QString name = sib->name.c_str();
+			if(sib->type == Origin::ProjectNode::Note)
+			{
+				QRegExp rx("^@\\((\\S+)\\)$");
+				if(rx.indexIn(name) == 0)
+					name = rx.cap(1);
+			}
+
+			MdiSubWindow* w = projectFolder->window(name, classes[sib->type]);
 			if(w)
 			{
 				parent.value(projectTree->parent(sib))->addWindow(w);
@@ -549,15 +562,32 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 		if(!Note)
 			return false;
 
+		Note->setName(name);
+
 		Note->setWindowLabel(_note.label.c_str());
 		Note->setText(_note.text.c_str());
 		Note->setBirthDate(posixTimeToString(_note.creationDate));
 
+		Origin::Rect windowRect;
+		if(opj.version() == 7.5)
+		{
+			windowRect = _note.clientRect;
+			Note->resize(windowRect.width() - (Note->frameGeometry().width() - Note->width()),
+				windowRect.height() - (Note->frameGeometry().height() - Note->height()));
+		}
+
 		//cascade the notes
-		int dx = 20;
-		int dy = Note->frameGeometry().height() - Note->height();
-		Note->move(QPoint(visible_count*dx + xoffset*OBJECTXOFFSET, visible_count*dy));
-		++visible_count;
+		if(opj.version() == 7.5)
+		{
+			Note->move(QPoint(windowRect.left, windowRect.top));
+		}
+		else
+		{
+			int dx = 20;
+			int dy = Note->frameGeometry().height() - Note->height();
+			Note->move(QPoint(visible_count*dx + xoffset*OBJECTXOFFSET, visible_count*dy));
+			++visible_count;
+		}
 	}
 
 	if(visible_count > 0)
@@ -1311,6 +1341,7 @@ void ImportOPJ::addText(const Origin::TextBox& _text, Graph* graph, LegendWidget
 	//int x=(txtRect.left>layerRect.left ? txtRect.left-layerRect.left : 0);
 	//int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
 	//txt->move(QPoint((_text.clientRect.left+_text.clientRect.width()/2)*fScale - txt->width()/2, (_text.clientRect.top+_text.clientRect.height()/2)*fScale - LayerButton::btnSize() - txt->height()/2));
+	//txt->setRect(_text.clientRect.left*fScale, _text.clientRect.top*fScale - LayerButton::btnSize(), _text.clientRect.width()*fScale, _text.clientRect.height()*fScale);
 	txt->move(QPoint(_text.clientRect.left*fScale, _text.clientRect.top*fScale - LayerButton::btnSize()));
 
 	/*QRect qtiRect=graph->canvas()->geometry();

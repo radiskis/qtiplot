@@ -135,33 +135,33 @@ pair<string, string> OriginParser::findDataByIndex(unsigned int index) const
 	return pair<string, string>();
 }
 
-string OriginParser::findObjectByIndex(unsigned int index) const
+pair<ProjectNode::NodeType, string> OriginParser::findObjectByIndex(unsigned int index) const
 {
 	for(vector<SpreadSheet>::const_iterator it = speadSheets.begin(); it != speadSheets.end(); ++it)
 	{
 		if(it->objectID == index)
-			return it->name;
+			return make_pair(ProjectNode::SpreadSheet, it->name);
 	}
 
 	for(vector<Matrix>::const_iterator it = matrixes.begin(); it != matrixes.end(); ++it)
 	{
 		if(it->objectID == index)
-			return it->name;
+			return make_pair(ProjectNode::Matrix, it->name);
 	}
 
 	for(vector<Excel>::const_iterator it = excels.begin(); it != excels.end(); ++it)
 	{
 		if(it->objectID == index)
-			return it->name;
+			return make_pair(ProjectNode::Excel, it->name);
 	}
 
 	for(vector<Graph>::const_iterator it = graphs.begin(); it != graphs.end(); ++it)
 	{
 		if(it->objectID == index)
-			return it->name;
+			return make_pair(ProjectNode::Graph, it->name);
 	}
 
-	return "";
+	return pair<ProjectNode::NodeType, string>();
 }
 
 void OriginParser::convertSpreadToExcel(vector<Origin::SpreadSheet>::size_type spread)

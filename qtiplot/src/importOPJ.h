@@ -55,6 +55,7 @@ private:
 
 	static QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> lineStyles;
 	static QMap<Origin::FillPattern, int> patternStyles;
+	static QMap<Origin::ProjectNode::NodeType, QString> classes;
 };
 
 #endif //IMPORTOPJ_H
