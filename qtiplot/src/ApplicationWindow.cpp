@@ -15355,14 +15355,6 @@ void ApplicationWindow::saveFitFunctions(const QStringList& lst)
             if (!s.isEmpty()){
                 NonLinearFit *fit = new NonLinearFit(this, 0);
 
-                int pos1 = s.find("(", 0);
-                fit->setObjectName(s.left(pos1));
-
-                int pos2 = s.find(")", pos1);
-                QString par = s.mid(pos1+4, pos2-pos1-4);
-                QStringList paramList = par.split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts);
-                fit->setParametersList(paramList);
-
                 QStringList l = s.split("=");
                 if (l.count() == 2)
                     fit->setFormula(l[1]);

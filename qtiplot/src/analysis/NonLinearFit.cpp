@@ -75,7 +75,7 @@ void NonLinearFit::init()
     d_fit_type = User;
 }
 
-void NonLinearFit::setFormula(const QString& s)
+void NonLinearFit::setFormula(const QString& s, bool guess)
 {
 	if (s.isEmpty()){
 		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"),
@@ -84,18 +84,19 @@ void NonLinearFit::setFormula(const QString& s)
 		return;
 	}
 
+	if (d_formula == s)
+		return;
+
+	if (guess)
+		setParametersList(guessParameters(s));
 	if (!d_p){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("There are no parameters specified for this fit operation. Please define a list of parameters first!"));
 		d_init_err = true;
 		return;
 	}
-
-	if (d_formula == s)
-		return;
-
-	try
-	{
+	
+	try {
 		double *param = new double[d_p];
 		MyParser parser;
 		double xvar;
@@ -114,9 +115,7 @@ void NonLinearFit::setFormula(const QString& s)
 		parser.SetExpr(s.ascii());
 		parser.Eval() ;
 		delete[] param;
-	}
-	catch(mu::ParserError &e)
-	{
+	} catch(mu::ParserError &e){
 		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		d_init_err = true;
 		return;
@@ -250,4 +249,40 @@ FunctionCurve * NonLinearFit::insertFitFunctionCurve(const QString& name, double
  		}
 	}
 	return c;
+}
+
+QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string *errMsg)
+{
+	QString text = s;
+	text.remove(QRegExp("\\s")).remove(".");
+		
+	QStringList parList;
+	try {
+		MyParser parser;
+		ParserTokenReader reader(&parser);
+		
+		const char *formula = text.toAscii().data();
+		int length = text.toAscii().length();
+		reader.SetFormula (formula);
+		reader.IgnoreUndefVar(true);
+		int pos = 0;
+		while(pos < length){
+			ParserToken<value_type, string_type> token = reader.ReadNextToken();
+			QString str = QString(token.GetAsString().c_str());
+			if (token.GetCode () == cmVAR && str.contains(QRegExp("\\D")) 
+				&& str != "x" && !parList.contains(str))
+				parList << str;
+			pos = reader.GetPos();
+		}
+		parList.sort();
+	} catch(mu::ParserError &e) { 
+		if (error){
+			*error = true;
+			*errMsg = e.GetMsg();
+		}
+		return parList;	
+	}
+	if (error)
+		*error = false;
+	return parList;
 }

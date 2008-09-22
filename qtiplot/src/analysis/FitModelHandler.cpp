@@ -78,7 +78,7 @@ bool FitModelHandler::endElement(const QString & /* namespaceURI */,
         d_values.append(currentText.toDouble());
     else if (qName == "fit"){
         d_fit->setParametersList(d_parameters);
-        d_fit->setFormula(d_formula);
+        d_fit->setFormula(d_formula, false);
         d_fit->setInitialGuesses(d_values.data());
         d_fit->setParameterExplanations(d_explanations);
      }

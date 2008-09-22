@@ -63,6 +63,8 @@
 #include <qwt_plot_curve.h>
 #include <muParserToken.h>
 
+using namespace std;
+
 /* XPM */
 static const char * param_range_btn_xpm[] = {
 "18 14 5 1",
@@ -663,7 +665,6 @@ void FitDialog::saveUserFunction()
 	if (lst.contains(name)){
 		int index = lst.findIndex(name);
 		d_current_fit = (NonLinearFit *)d_user_functions[index];
-		d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
         d_current_fit->setFormula(formula);
         d_current_fit->save(d_current_fit->fileName());
 
@@ -684,7 +685,6 @@ void FitDialog::saveUserFunction()
 
             d_current_fit = new NonLinearFit(app, d_graph);
             d_current_fit->setObjectName(name);
-            d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
             d_current_fit->setFormula(formula);
             if (d_current_fit->save(fn)){
                 QStringList lst = userFunctionNames();
@@ -749,7 +749,6 @@ void FitDialog::showFitPage()
 	ApplicationWindow *app = (ApplicationWindow *)parent();
     if (!boxUseBuiltIn->isChecked()){
         d_current_fit = new NonLinearFit(app, d_graph);
-		d_current_fit->setParametersList(boxParam->text().split(QRegExp("[,;]+[\\s]*"), QString::SkipEmptyParts));
 		formula = parseFormula(formula);
 		d_current_fit->setFormula(formula);
     }
@@ -847,8 +846,6 @@ void FitDialog::showFitPage()
 
 void FitDialog::showEditPage()
 {
-    if (d_current_fit)
-        d_current_fit->freeMemory();
 	tw->setCurrentWidget(editPage);
 }
 
@@ -877,6 +874,11 @@ void FitDialog::setFunction(bool ok)
 	btnAddTxt->setEnabled(!ok);
 	buttonClear->setEnabled(!ok);
 
+	setCurrentFit(funcBox->currentRow());//reset current fit
+	setEditorTextColor(Qt::black);// reset text color to black
+	boxErrorMsg->hide();
+	boxErrorMsg->clear();
+	
 	if (ok){
 		boxName->setText(funcBox->currentItem()->text());
 		editBox->setText(explainBox->text());
@@ -1004,11 +1006,40 @@ void FitDialog::showParseFunctions()
 	funcBox->addItems(MyParser::functionsList());
 }
 
+void FitDialog::setCurrentFit(int function)
+{
+	if (function < 0)
+        return;
+	
+	switch(categoryBox->currentRow()){
+		case 0:
+			if (d_user_functions.size() > function)
+				d_current_fit = d_user_functions[function];
+		break;
+		
+		case 1:
+			d_current_fit = d_built_in_functions[function];
+		break;
+		
+		case 2:
+		break;
+		
+		case 3:
+			if (d_plugins.size() > 0)
+		    	d_current_fit = d_plugins[function];
+		break;
+	}
+}
+
 void FitDialog::showExpression(int function)
 {
     if (function < 0)
         return;
 
+	setCurrentFit(function);
+	if (!d_current_fit)
+		return;
+	
 	if (categoryBox->currentRow() == 2)
 		explainBox->setText(MyParser::explainFunction(function));
 	else if (categoryBox->currentRow() == 1){
@@ -1024,20 +1055,16 @@ void FitDialog::showExpression(int function)
 			polynomOrderLabel->show();
 			polynomOrderBox->show();
 		}
-
-		d_current_fit = d_built_in_functions[function];
 		explainBox->setText(d_current_fit->formula());
 		setFunction(boxUseBuiltIn->isChecked());
 	} else if (categoryBox->currentRow() == 0){
-		if (d_user_functions.size() > function){
-			d_current_fit = d_user_functions[function];
+		if (d_user_functions.size() > function)
 			explainBox->setText(d_current_fit->formula());
-		} else
+		else
 			explainBox->clear();
 		setFunction(boxUseBuiltIn->isChecked());
 	} else if (categoryBox->currentRow() == 3){
 		if (d_plugins.size() > 0){
-		    d_current_fit = d_plugins[function];
 			explainBox->setText(d_current_fit->formula());
 			setFunction(boxUseBuiltIn->isChecked());
 		} else
@@ -1104,7 +1131,6 @@ void FitDialog::accept()
 	} else
 		n = rows;
 
-	QStringList parameters = QStringList();
 	MyParser parser;
 	bool error = false;
 #ifdef Q_CC_MSVC
@@ -1127,7 +1153,6 @@ void FitDialog::accept()
 					paramRangeRight[j] = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
 					paramsInit[j] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
-					parameters << boxParams->item(i, 0)->text();
 					j++;
 				} else {
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
@@ -1142,7 +1167,6 @@ void FitDialog::accept()
 				paramRangeRight[i] = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
 				paramsInit[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 				parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[i]);
-				parameters << boxParams->item(i, 0)->text();
 			}
 		}
 
@@ -1166,10 +1190,8 @@ void FitDialog::accept()
 #else
 			modifyGuesses (paramsInit);
 #endif
-		if (d_current_fit->type() == Fit::User){
-			d_current_fit->setParametersList(parameters);
+		if (d_current_fit->type() == Fit::User)
 			d_current_fit->setFormula(formula);
-		}
 
 #ifdef Q_CC_MSVC
 		d_current_fit->setInitialGuesses(paramsInit.data());
@@ -1302,6 +1324,9 @@ void FitDialog::closeEvent (QCloseEvent * e)
 
 	if(d_current_fit && d_current_fit->dataSize() && plotLabelBox->isChecked())
 		d_current_fit->showLegend();
+
+	if (d_current_fit)
+		delete d_current_fit;
 
 	e->accept();
 }
@@ -1606,35 +1631,14 @@ void FitDialog::guessParameters()
 		return;
 		
 	bool error = false;
-	try{
-		QStringList parList;
-		MyParser parser;
-		ParserTokenReader reader(&parser);
-		
-		const char *formula = text.toAscii().data();
-		int length = text.toAscii().length();
-		reader.SetFormula (formula);
-		reader.IgnoreUndefVar(true);
-		int pos = 0;
-		while(pos < length){
-			ParserToken<value_type, string_type> token = reader.ReadNextToken();
-			QString str = QString(token.GetAsString().c_str());
-			if (token.GetCode () == cmVAR && str.contains(QRegExp("\\D")) 
-				&& str != "x" && !parList.contains(str))
-				parList << str;
-			pos = reader.GetPos();
-		}
-		parList.sort();
-		boxParam->setText(parList.join(", "));
-	} catch(mu::ParserError &e) { 
-		error = true;
+	string errMsg;
+	boxParam->setText(NonLinearFit::guessParameters(text, &error, &errMsg).join(", "));
+	if (error){ 
 		setEditorTextColor(Qt::red);// highlight text in red
-		boxErrorMsg->setText(tr("Error: ") + QString(e.GetMsg().c_str()));
+		boxErrorMsg->setText(tr("Error: ") + QString(errMsg.c_str()));
 		boxErrorMsg->show();
-	}
-	
-	if (!error){// reset text color to black
-		setEditorTextColor(Qt::black);
+	} else {
+		setEditorTextColor(Qt::black);// reset text color to black
 		boxErrorMsg->hide();
 		boxErrorMsg->clear();
 	}

@@ -2516,7 +2516,6 @@ f.fit()
               <para>NonLinearFit(layer, curve)</para>
 		    <programlisting>
 f = NonLinearFit(layer, curve)
-f.setParameters(name1, ...)
 f.setFormula(formula_string)
 f.save(fileName)
 		    </programlisting>
@@ -2537,7 +2536,6 @@ f.fit()
 You can also restrict the search range for any of the fit parameters:
 <programlisting>
 f = NonLinearFit(graph("Graph1").activeLayer(), "Table1_2")
-f.setParameters("a0", "a1", "a2")
 f.setFormula("a0+a1*x+a2*x*x")
 f.setParameterRange(parameterIndex, start, end)
 </programlisting>

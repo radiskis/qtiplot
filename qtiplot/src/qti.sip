@@ -1416,7 +1416,7 @@ public:
   sipCpp->setParametersList(l);
 %End
   // TODO: make it accept Python callables
-  void setFormula(const QString&);
+  void setFormula(const QString&, bool = true);
 
   bool save(const QString&);
   bool load(const QString&);
