@@ -267,9 +267,10 @@ They can also be read directly from an ASCII file with the &import-ascii-lnk; or
 </listitem>
 </itemizedlist>
 
-<para>A right click on a plot element pops-up a context menu allowing fast access to its properties dialog.</para>
-<para>Last but not least, you should know that QtiPlot provides multiple selection for arrows and images.
-In order to add an arrow or an image to an existing selection keep the <emphasis>Shift</emphasis> 
+<para>A left click on a plot element selects it. You can deselect any element by presing the <emphasis>Escape</emphasis> key. 
+A right click on a plot element pops-up a context menu allowing fast access to its properties dialog. 
+Last but not least, you should know that QtiPlot provides multiple selection for objects in a plot layer.
+In order to add an object to an existing selection keep the <emphasis>Shift</emphasis> 
 key pressed and click on the element you want to add to the selection. 
 Elements in a multiple selection can be moved and resized together with the mouse.</para>
 
@@ -302,8 +303,6 @@ Elements in a multiple selection can be moved and resized together with the mous
 <para>Note windows also provide some basic text editor functionality, particularly helpful
 when writing scripts: they can display the line numbers and pop-up autocompletion suggestions
 for words that have more than two characters. You can trigger autocompletion using Ctrl+U.</para>
-
-<para>You can also change the text input method. <emphasis>Simple Composing Input Method</emphasis> is the standard method to enter text in QT applications. <emphasis>Xim</emphasis> is the X input method, it is the legacy system of the X window environment to support localized text input. The default choice is the second one, it allows to enter special characters and accents from your localised environment.</para>
 
 </sect2>
 
