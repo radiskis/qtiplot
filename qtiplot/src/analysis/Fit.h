@@ -72,7 +72,7 @@ class Fit : public Filter
 
 		QString resultFormula(){return d_result_formula;};
 		QString formula(){return d_formula;};
-		virtual void setFormula(const QString&, bool = true){};
+		virtual bool setFormula(const QString&, bool = true){return true;};
 
 		int numParameters(){return d_p;};
 		QStringList parameterNames(){return d_param_names;};

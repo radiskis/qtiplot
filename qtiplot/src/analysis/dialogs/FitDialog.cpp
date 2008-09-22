@@ -333,7 +333,8 @@ void FitDialog::initEditPage()
 	btnAddFunc = new QPushButton(tr( "&Save" ));
     gl2->addWidget(btnAddFunc, 0, 2);
     gl2->addWidget(new QLabel(tr("Parameters")), 1, 0);
-	boxParam = new QLineEdit();
+	boxParam = new QLabel();
+	boxParam->setFrameStyle(QFrame::Box | QFrame::Sunken);
     gl2->addWidget(boxParam, 1, 1);
 	btnDelFunc = new QPushButton( tr( "&Remove" ));
     gl2->addWidget(btnDelFunc, 1, 2);
@@ -637,12 +638,7 @@ void FitDialog::saveUserFunction()
 				tr("Please enter a function name!"));
 		boxName->setFocus();
 		return;
-	} else if (boxParam->text().remove(QRegExp("[,;\\s]")).isEmpty()){
-		QMessageBox::critical(this, tr("QtiPlot - Input function error"),
-				tr("Please enter at least one parameter name!"));
-		boxParam->setFocus();
-		return;
-	}
+	} 
 
 	if (builtInFunctionNames().contains(boxName->text())){
 		QMessageBox::critical(this, tr("QtiPlot - Error: function name"),
@@ -665,13 +661,17 @@ void FitDialog::saveUserFunction()
 	if (lst.contains(name)){
 		int index = lst.findIndex(name);
 		d_current_fit = (NonLinearFit *)d_user_functions[index];
-        d_current_fit->setFormula(formula);
-        d_current_fit->save(d_current_fit->fileName());
+        if (d_current_fit->setFormula(formula))
+        	d_current_fit->save(d_current_fit->fileName());
 
 		if (funcBox->currentItem()->text() == name)
 			showExpression(index);
 	} else {
-	    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		d_current_fit = new NonLinearFit(app, d_graph);
+		if (!d_current_fit->setFormula(formula))
+			return;
+	    
 		QString filter = tr("QtiPlot fit model")+" (*.fit);;";
 		filter += tr("All files")+" (*.*)";
 		QString fn = QFileDialog::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
@@ -683,9 +683,8 @@ void FitDialog::saveUserFunction()
             if (!baseName.contains("."))
                 fn.append(".fit");
 
-            d_current_fit = new NonLinearFit(app, d_graph);
             d_current_fit->setObjectName(name);
-            d_current_fit->setFormula(formula);
+			
             if (d_current_fit->save(fn)){
                 QStringList lst = userFunctionNames();
                 lst << name;
@@ -867,7 +866,6 @@ void FitDialog::showAdvancedPage()
 void FitDialog::setFunction(bool ok)
 {
 	editBox->setEnabled(!ok);
-	boxParam->setEnabled(!ok);
 	boxName->setEnabled(!ok);
 	btnAddFunc->setEnabled(!ok);
 	btnAddName->setEnabled(!ok);
@@ -1626,10 +1624,15 @@ void FitDialog::showPredictionLimits()
 
 void FitDialog::guessParameters()
 {
-	QString text = editBox->text().remove(QRegExp("\\s")).remove(".");
-	if (boxUseBuiltIn->isChecked() || text.isEmpty())
+	if (boxUseBuiltIn->isChecked())
 		return;
 		
+	QString text = editBox->text().remove(QRegExp("\\s")).remove(".");
+	if (text.isEmpty()){
+		boxParam->clear();
+		return;
+	}
+	
 	bool error = false;
 	string errMsg;
 	boxParam->setText(NonLinearFit::guessParameters(text, &error, &errMsg).join(", "));

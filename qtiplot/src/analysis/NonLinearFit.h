@@ -46,7 +46,7 @@ class NonLinearFit : public Fit
         double eval(double *par, double x);
 
 		virtual void setParametersList(const QStringList& lst);
-		virtual void setFormula(const QString& s, bool = true);
+		virtual bool setFormula(const QString& s, bool = true);
 	
 		QMap<QString, double> constants(){return d_constants;};
 		void setConstant(const QString& parName, double val);

@@ -9,8 +9,6 @@
   </question>
   <answer>
     <para>Go to the &file-menu-lnk; and select the &import-ascii-lnk;.</para>
-    <para>If the file is not imported correctly, change the columns separator using the &import-ascii-lnk; options command from the &file-menu-lnk; .</para>
-    <para>The default columns separator is the TAB.</para>
   </answer>
 </qandaentry>
 
@@ -74,7 +72,7 @@
     <para>Can I fit a plot curve using my own function?</para>
   </question>
   <answer>
-    <para>Go to the &analysis-menu-lnk; and select the &non-linear-curve-fit-lnk;. Define the function (myFunction=...), enter the initial guesses for the parameters, separated by comas, choose the fitting range and the number of iterations and click 'OK'</para>
+    <para>Go to the &analysis-menu-lnk; and select the &non-linear-curve-fit-lnk;. Define the function (myFunction=...), enter the initial guesses for the parameters, choose the fitting range and the number of iterations and click 'OK'</para>
   </answer>
 </qandaentry>
 

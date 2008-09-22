@@ -75,17 +75,17 @@ void NonLinearFit::init()
     d_fit_type = User;
 }
 
-void NonLinearFit::setFormula(const QString& s, bool guess)
+bool NonLinearFit::setFormula(const QString& s, bool guess)
 {
 	if (s.isEmpty()){
 		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"),
 				tr("Please enter a valid non-empty expression! Operation aborted!"));
 		d_init_err = true;
-		return;
+		return false;
 	}
 
 	if (d_formula == s)
-		return;
+		return true;
 
 	if (guess)
 		setParametersList(guessParameters(s));
@@ -93,7 +93,7 @@ void NonLinearFit::setFormula(const QString& s, bool guess)
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("There are no parameters specified for this fit operation. Please define a list of parameters first!"));
 		d_init_err = true;
-		return;
+		return false;
 	}
 	
 	try {
@@ -118,11 +118,12 @@ void NonLinearFit::setFormula(const QString& s, bool guess)
 	} catch(mu::ParserError &e){
 		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
 		d_init_err = true;
-		return;
+		return false;
 	}
 
 	d_init_err = false;
 	d_formula = s;
+	return true;
 }
 
 void NonLinearFit::setParametersList(const QStringList& lst)
