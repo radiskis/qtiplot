@@ -120,6 +120,7 @@ private:
 	QStringList plugInNames();
 	QString parseFormula(const QString& s);
 	void setEditorTextColor(const QColor& c);
+	void setCurrentFit(int);
 
     Fit *d_current_fit;
 	Graph *d_graph;

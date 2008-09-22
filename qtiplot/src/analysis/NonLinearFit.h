@@ -31,6 +31,8 @@
 
 #include "Fit.h"
 	
+using namespace std;
+
 class NonLinearFit : public Fit
 {
 	Q_OBJECT
@@ -44,7 +46,7 @@ class NonLinearFit : public Fit
         double eval(double *par, double x);
 
 		virtual void setParametersList(const QStringList& lst);
-		virtual void setFormula(const QString& s);
+		virtual void setFormula(const QString& s, bool = true);
 	
 		QMap<QString, double> constants(){return d_constants;};
 		void setConstant(const QString& parName, double val);
@@ -55,6 +57,7 @@ class NonLinearFit : public Fit
 		double constValue(const QString& name){return d_constants.value(name);};
 		
 		virtual QString legendInfo();
+		static QStringList guessParameters(const QString& s, bool *error = 0, string *errMsg = 0);
 				
 	protected:
 		QString logFitInfo(int iterations, int status);
