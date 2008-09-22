@@ -442,7 +442,7 @@
 </section>
 </section>
 </section>
-<section ref="c6066.html" title="Frequently asked questions">
+<section ref="c6071.html" title="Frequently asked questions">
 </section>
 </DCF>
 </assistantconfig>

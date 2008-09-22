@@ -150,8 +150,8 @@ private:
 	QWidget *fitPage, *editPage, *advancedPage;
 	QTextEdit *editBox, *explainBox, *boxFunction;
 	QListWidget *categoryBox, *funcBox;
-	QLineEdit *boxName, *boxParam;
-	QLabel *boxErrorMsg;
+	QLineEdit *boxName;
+	QLabel *boxErrorMsg, *boxParam;
 	QLabel *lblFunction, *lblPoints, *polynomOrderLabel;
 	QPushButton *btnAddFunc, *btnDelFunc, *btnContinue, *btnApply;
 	QPushButton *buttonEdit, *btnAddTxt, *btnAddName, *btnDeleteFitCurves;

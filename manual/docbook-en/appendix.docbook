@@ -128,7 +128,7 @@ also be obtained from the same address.</para>
 <title>Installation from binary packages</title>
 
 <para>Ion Vasilief, the founder and main developer of &appname;,
-distributes precompiled packages for Windows, Mac OS X 10.4 and
+distributes precompiled packages for Windows, Mac OS X (>= 10.4) and
 for the main Linux distributions: a <ulink url="http://www.debian.org/">Debian</ulink> package
 and a <ulink url="http://www.rpm.org/">RPM</ulink> package.
 Several types of binaries maintainance contracts are available, please check the
@@ -167,10 +167,10 @@ The RPM package was created on an <ulink url="http://www.ubuntulinux.org/">Ubunt
 If you want to build &appname; from sources, you need the following libraries:
 <variablelist>
 <varlistentry>
-  <term>Qt (4.4.0)</term>
+  <term>Qt (>= 4.4.0)</term>
   <listitem>
-    <para>&appname; only works with the 4.4.0 version of the
-	<ulink url="http://trolltech.com/products/qt">Qt</ulink> library</para>
+    <para>&appname; only works with the 4.4.x versions of the
+	<ulink url="http://trolltech.com/products/qt">Qt</ulink> library.</para>
   </listitem>
 </varlistentry>
 <varlistentry>
@@ -197,6 +197,12 @@ If you want to build &appname; from sources, you need the following libraries:
   <listitem>
     <para>The last version of the <ulink url="http://sourceforge.net/projects/liborigin/">liborigin</ulink>
 	 allows to read OriginLab OPJ project files. It is included in &appname; ("3rdparty/liborigin" folder), so you don't need to download and install it.</para>
+  </listitem>
+</varlistentry>
+<varlistentry>
+  <term>BOOST C++ libraries</term>
+  <listitem>
+    <para>liborigin depends on the <ulink url="http://www.boost.org/">BOOST C++ libraries (1.36.0)</ulink>, so you need to download and install them separately.</para>
   </listitem>
 </varlistentry>
 <varlistentry>
