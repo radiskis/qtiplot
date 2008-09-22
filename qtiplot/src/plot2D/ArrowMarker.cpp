@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ArrowMarker.h"
+#include "Graph.h"
 #include "dialogs/LineDialog.h"
 
 #include <QPainter>
@@ -481,6 +482,15 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 				ld->exec();
 				return true;
 			}
+		case QEvent::KeyPress:
+			{
+				const QKeyEvent *ke = (const QKeyEvent *)e;
+				if (ke->key() == Qt::Key_Escape){
+					((Graph *)plot())->deselectMarker();
+					return true;
+				}
+			}
+
 		default:
 			return false;
 	}

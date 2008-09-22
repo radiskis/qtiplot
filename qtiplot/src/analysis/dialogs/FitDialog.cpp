@@ -331,7 +331,7 @@ void FitDialog::initEditPage()
 	btnAddFunc = new QPushButton(tr( "&Save" ));
     gl2->addWidget(btnAddFunc, 0, 2);
     gl2->addWidget(new QLabel(tr("Parameters")), 1, 0);
-	boxParam = new QLineEdit("a, b");
+	boxParam = new QLineEdit();
     gl2->addWidget(boxParam, 1, 1);
 	btnDelFunc = new QPushButton( tr( "&Remove" ));
     gl2->addWidget(btnDelFunc, 1, 2);
