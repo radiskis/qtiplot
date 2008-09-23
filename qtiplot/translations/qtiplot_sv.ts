@@ -8,7 +8,7 @@
         <translation type="obsolete">QtiPlot - namnlös</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15147"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15143"/>
         <source>QtiPlot - Error</source>
         <translation type="unfinished">QtiPlot - Fel</translation>
     </message>
@@ -340,7 +340,7 @@ Vill du skriva över den?</translation>
         <translation type="unfinished">Kan ej flytta en mapp till en av dess undermappar!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15694"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15690"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
@@ -392,7 +392,7 @@ Vill du skriva över den?</translation>
         <translation type="unfinished">Ingen uppdatering tillgänglig. Din aktuella version %1 är den senaste!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15823"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15819"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished">QtiPlot - Varning</translation>
     </message>
@@ -427,12 +427,12 @@ Vill du skriva över den?</translation>
         <translation type="obsolete">Fel i GSL fram-FFT-åtgärd!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15098"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15094"/>
         <source>Please select a Y column to plot!</source>
         <translation type="unfinished">Välj en Y-kolumn för plottning!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15105"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15101"/>
         <source>Please set a default X column for this table, first!</source>
         <translation type="unfinished">Bestäm en standard X-kolumn till denna tabell först!</translation>
     </message>
@@ -447,22 +447,22 @@ Vill du skriva över den?</translation>
         <translation type="obsolete">Välj fyra kolumner för denna åtgärd!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15135"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15131"/>
         <source>You need at least two columns for this operation!</source>
         <translation type="unfinished">Du behöver minst två kolumner för denna åtgärd!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15139"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15135"/>
         <source>Please select a Z column for this operation!</source>
         <translation type="unfinished">Välj en Z-kolumn för denna åtgärd!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15143"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15139"/>
         <source>You need to define a X column first!</source>
         <translation type="unfinished">Du måste definiera en X-kolumn först!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15147"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15143"/>
         <source>You need to define a Y column first!</source>
         <translation type="unfinished">Du måste definiera en Y-kolumn först!</translation>
     </message>
@@ -725,7 +725,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">Den inledande kolumnen är tom! Avbryter!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15694"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15690"/>
         <source>Error</source>
         <translation type="unfinished">Fel</translation>
     </message>
@@ -750,49 +750,49 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="unfinished">Kolumn</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15695"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15691"/>
         <source>QtiPlot was not built with Python scripting support included!</source>
         <translation type="unfinished">QtoPlot skapades inte med Python-skriptning inkluderat!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15344"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15340"/>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
         <translation type="unfinished">Med början av version lagrar 0.9.1 QtiPlot användardefinierade anpassningsmodeller på en anna plats. </translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15345"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15341"/>
         <source>If you want to save your already defined models, please choose a destination folder.</source>
         <translation type="unfinished">Om du vill spara dina befitliga modeller, välj en målmapp.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15346"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15342"/>
         <source>Import fit models</source>
         <translation type="unfinished">Importera anpassningsmodeller</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15349"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15345"/>
         <source>Choose a directory to export the fit models to</source>
         <translation type="unfinished">Väl en mapp att exportera anpassningsmodellerna till</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15824"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15820"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation type="unfinished">Kunde inte ladda fil: %1.
 Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15905"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15901"/>
         <source>QtiPlot - Column selection error</source>
         <translation type="unfinished">QtiPlot - Kolumnvalsfel</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15645"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15641"/>
         <source>No Icon</source>
         <translation type="unfinished">Ingen ikon</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15906"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15902"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation type="unfinished">Välj exakt en kolumn och mer än en icke tom cell!</translation>
     </message>

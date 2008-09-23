@@ -76,6 +76,8 @@ You must take care of the format of the ASCII file because it will be read with 
 <listitem><para>-m or --manual: show &appname; manual in a standalone window</para></listitem>
 <listitem><para>-v or --version: print &appname; version and release date</para></listitem>
 <listitem><para>-x or --execute: execute the script file given as argument</para></listitem>
+<listitem><para>-X: execute the script file given as argument without displaying the user interface.
+Warning: 2D plots are not correctly handled in this functioning mode!</para></listitem>
 </itemizedlist>
 </sect2>
 </sect1>

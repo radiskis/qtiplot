@@ -2616,7 +2616,7 @@ f.generateFunction(True, points=100)
 </para>
 
 If the first parameter of the above function is set to True,
-QtiPlot will generate an analytical function curve. If the <varname>points</varname> parameter
+QtiPlot will generate an analytical function curve. If the <varname>points </varname> parameter
 is not specified, by default the function will be estimated over 100 points.
 You can get the analytical formula of the fit curve via a call to resultFormula():
 <programlisting>
@@ -2719,9 +2719,141 @@ for i in range (0, lst.count()):
     t = newTable()
     t.importASCII(dirPath + fileNames[i], " ", 0, False, True, True)
 </programlisting>
-
 For a detailed description of all the dialogs and utility classes provided by Qt/PyQt
 please take a look at the
-<ulink url="http://www.riverbankcomputing.com/Docs/PyQt4/html/classes.html">PyQt documentation</ulink>.
+<ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/classes.html">PyQt documentation</ulink>.
+</sect2>
+
+<sect2 id="Python-AutomatizationExample">
+<title>Task automatization example</title>
+Bellow you can find a detailed example showing how to completely automatize tasks in QtiPlot. 
+It can be used in order to verify the accuracy of the curve fitting algorithms in QtiPlot. The data used
+in this example is retrieved from the <ulink url="http://www.itl.nist.gov/div898/strd/">
+Statistical Reference Datasets Project of the National Institute of Standards and Technology (NIST)</ulink>.
+
+In order to run this example, you need an internet connection, since the script will try to download all the 
+<ulink url="http://www.itl.nist.gov/div898/strd/nls/nls_main.shtml">nonlinear regression test files </ulink> from the Statistical Reference Datasets Project. 
+
+<programlisting>
+import urllib, re, sys
+
+# Pop-up a file dialog allowing to chose the working folder:
+dirPath = QtGui.QFileDialog.getExistingDirectory(qti.app, "Choose Working Folder")
+
+host = "http://www.itl.nist.gov/div898/strd/nls/data/LINKS/DATA/"
+url = urllib.urlopen(host)
+url_string = url.read()
+p = re.compile( '\w{,}.dat">' )
+iterator = p.finditer( url_string )
+for m in iterator:
+	name = (m.group()).replace("\">", "")
+	if (name == "Nelson.dat"):
+		continue
+		
+	url = host + name
+	print >> sys.__stdout__, "\nRetrieving file: " + url 
+	path = dirPath + name
+	urllib.urlretrieve( url, path ) # retrieve .dat file to specified location
+				
+	file = QtCore.QFile(path)	
+	if file.open(QtCore.QIODevice.ReadOnly):
+		ts = QtCore.QTextStream(file)
+		name = name.replace(".dat", "")
+		changeFolder(addFolder(name)) #create a new folder and move to it
+		formula = ""
+		parameters = 0
+		initValues = list()
+		certifiedValues = list()
+		standardDevValues = list()
+		xLabel = "X"
+		yLabel = "Y"
+					
+		while (ts.atEnd() == False):
+			s = ts.readLine().simplified()
+				
+			if (s.contains("(y = ")):
+				lst = s.split("=")
+				yLabel = lst[1].remove(")")
+					
+			if (s.contains("(x = ")):
+				lst = s.split("=")
+				xLabel = lst[1].remove(")")
+				
+			if (s.contains("Model:")):
+				s = ts.readLine().simplified()
+				lst = s.split(QtCore.QRegExp("\\s"))
+				s = lst[0]
+				parameters = s.toInt()[0]
+				ts.readLine()
+				if (name == "Roszman1"):
+					ts.readLine() 
+					formula = ts.readLine().simplified()
+				else:
+					formula = (ts.readLine() + ts.readLine() + ts.readLine()).simplified()
+				formula.remove("+ e").remove("y =").replace("[", "(").replace("]", ")")
+				formula.replace("**", "^").replace("arctan", "atan")
+			
+			if (s.contains("Starting")):
+				ts.readLine()
+				ts.readLine()
+				for i in range (1, parameters + 1):
+					s = ts.readLine().simplified()
+					lst = s.split(" = ")
+					s = lst[1].simplified()
+					lst = s.split(QtCore.QRegExp("\\s"))
+					initValues.append(lst[1])
+					certifiedValues.append(lst[2])
+					standardDevValues.append(lst[3])
+				
+			if (s.contains("Data: y")):
+				row = 0
+				t = newTable(name, 300, 2)
+				t.setColName(1, "y")
+				t.setColumnRole(1, Table.Y)
+				t.setColName(2, "x")
+				t.setColumnRole(2, Table.X)
+				while (ts.atEnd() == False):
+					row = row + 1
+					s = ts.readLine().simplified()
+					lst = s.split(QtCore.QRegExp("\\s"))
+					t.setText(1, row, lst[0])
+					t.setText(2, row, lst[1])
+				
+				g = plot(t, t.colName(1), Layer.Scatter).activeLayer()
+				g.setTitle("Data set: " + name + ".dat")
+				g.setAxisTitle(Layer.Bottom, xLabel)
+				g.setAxisTitle(Layer.Left, yLabel)
+				
+				f = NonLinearFit(g, name + "_" + t.colName(1))
+				if (f.setFormula(formula) == False) :
+					file.close()
+					changeFolder(rootFolder())
+					continue
+					
+				f.scaleErrors()
+				for i in range (0, parameters):
+					f.setInitialValue(i, initValues[i].toDouble()[0])
+				f.fit()
+				g.removeLegend()
+				f.showLegend()
+				print >> sys.__stdout__, "QtiPlot Results:\n" + f.legendInfo()
+				
+				print >> sys.__stdout__, "\nCertified Values:"
+				paramNames = f.parameterNames()
+				for i in range (0, parameters):
+					print >> sys.__stdout__, '%s = %s +/- %s' % (paramNames[i], certifiedValues[i], standardDevValues[i])
+
+				print >> sys.__stdout__, "\nDifference with QtiPlot results:"
+				results = f.results()
+				for i in range (0, parameters):
+					diff = fabs(results[i] - certifiedValues[i].toDouble()[0])
+					print >> sys.__stdout__, 'db%d = %6g' % (i+1, diff)
+					
+				file.close()
+				changeFolder(rootFolder())
+				
+		saveProjectAs("test_NIST_fit.qti")
+</programlisting>
+
 </sect2>
 </sect1>

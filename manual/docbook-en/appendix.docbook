@@ -120,7 +120,7 @@ Each version of the License is given a distinguishing version number. If the Doc
 <para>The &appname; home page can be found at <ulink url="&homepage;">&homepage;</ulink>.
 Updates and news can be found there. &appname; is distributed as a package with sources which have to be compiled.
 
-Precompiled packages for most Linux distributions, Mac OS X 10.4 and for Windows can
+Precompiled packages for most Linux distributions, Mac OS X (>= 10.4) and for Windows can
 also be obtained from the same address.</para>
 </sect1>
 

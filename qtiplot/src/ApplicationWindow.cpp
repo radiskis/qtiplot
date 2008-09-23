@@ -13401,7 +13401,8 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			s += "-l=XX " + tr("or") + " --lang=XX: " + tr("start QtiPlot in language") + " XX ('en', 'fr', 'de', ...)\n";
 			s += "-m " + tr("or") + " --manual: " + tr("show QtiPlot manual in a standalone window") + "\n";
 			s += "-v " + tr("or") + " --version: " + tr("print QtiPlot version and release date") + "\n";
-			s += "-x " + tr("or") + " --execute: " + tr("execute the script file given as argument") + "\n\n";
+			s += "-x " + tr("or") + " --execute: " + tr("execute the script file given as argument") + "\n";
+			s += "-X: " + tr("execute the script file given as argument without displying the user interface. Warning: 2D plots are not correctly handled in this functioning mode!") + "\n\n";
 			s += "'" + tr("file") + "_" + tr("name") + "' " + tr("can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py or ASCII file") + "\n";
 			#ifdef Q_OS_WIN
                 hide();
@@ -15061,10 +15062,6 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		ScriptEdit *se = new ScriptEdit(scriptEnv, this);
 		se->importASCII(fn);
 		se->executeAll();
-
-		#ifndef Q_OS_WIN
-            std::wcout << se->text().toStdWString();
-        #endif
 
 		exit(0);
 	} else {
