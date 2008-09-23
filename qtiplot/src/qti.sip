@@ -1120,6 +1120,7 @@ public:
   QString formula();
   QString resultFormula();
   int numParameters();
+  QStringList parameterNames();
 
   void setInitialGuess(int, double) /PyName=setInitialValue/;
   void setInitialGuesses(...) /PyName=setInitialValues/;

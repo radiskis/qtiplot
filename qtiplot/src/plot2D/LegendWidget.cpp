@@ -95,7 +95,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
     const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height, textWidth, textHeight;
 	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height, textWidth, textHeight);
-	
+		
 	drawFrame(painter, QRect(x, y, width, height));
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
 }

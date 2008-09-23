@@ -657,7 +657,7 @@ which opens a dialog allowing to edit the plot range.</para>
   </sidebar>
   <para>The top of the dialog box is used to choose a function among the one which are already define. Four types of functions are availables: the user defined functions which have been saved, the classical functions proposed by &appname; in the analysis menu, the simple elementary built-in functions, and external functions via pluggins.</para>
   <para>To choose one of these functions, you just have to select it and to click on the checkbox under the selector.</para>
-  <para>If you want to define your own function, you can use the bottom half of the dialog box. You can write you own mathematical expression or add expressions obtained with the function selector. Then you need to define the parameters which have to be fitted in a comma separated list.</para>
+  <para>If you want to define your own function, you can use the bottom half of the dialog box. You can write you own mathematical expression or add expressions obtained with the function selector.</para>
   <figure id="fig-non-linear-curve-fit-1">
     <title>The first step of the &non-linear-curve-fit-cmd; dialog box.</title>
     <informalexample>

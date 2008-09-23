@@ -1379,7 +1379,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 	pic.save(fileName, 0, quality);
 }
 
-void Graph::exportVector(const QString& fileName, int, bool color)
+void Graph::exportVector(const QString& fileName, int res, bool color)
 {
 	if (fileName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
@@ -1389,8 +1389,16 @@ void Graph::exportVector(const QString& fileName, int, bool color)
 	QPrinter printer;
     printer.setCreator("QtiPlot");
 	printer.setFullPage(true);
-	//if (res) //only printing with screen resolution works correctly for the moment
-		//printer.setResolution(res);
+	QRect r = rect();
+	QRect br = boundingRect();
+	if (res){
+		double wfactor = (double)res/(double)logicalDpiX();
+		double hfactor = (double)res/(double)logicalDpiY();
+		printer.setResolution(res);
+		printer.setPaperSize (QSizeF(br.width()*wfactor, br.height()*hfactor), QPrinter::DevicePixel);
+		r.setSize(QSize(int(width()*wfactor), int(height()*hfactor)));
+	} else 
+		printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
 
     printer.setOutputFileName(fileName);
     if (fileName.contains(".eps"))
@@ -1407,22 +1415,11 @@ void Graph::exportVector(const QString& fileName, int, bool color)
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-    printer.setPaperSize (QSizeF(boundingRect().size()), QPrinter::DevicePixel);
-
+    
     QPainter paint(&printer);
-	print(&paint, rect());
-	
-	/*QRect r = rect();
-	if (res){//only printing with screen resolution works correctly for the moment
-		double w = width()*(double)res/(double)logicalDpiX();
-		double h = height()*(double)res/(double)logicalDpiY();
-		printer.setResolution(res);
-		printer.setPaperSize (QSizeF(w, h), QPrinter::DevicePixel);
-		r.setSize(QSize(w, h));
-	}
-	print(&paint, r);*/
+	print(&paint, r);
 }
-
+	
 void Graph::print()
 {
 	QPrinter printer;

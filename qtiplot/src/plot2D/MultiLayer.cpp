@@ -664,7 +664,7 @@ void MultiLayer::exportPDF(const QString& fname)
 	exportVector(fname);
 }
 
-void MultiLayer::exportVector(const QString& fileName, int, bool color)
+void MultiLayer::exportVector(const QString& fileName, int res, bool color)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
@@ -684,20 +684,31 @@ void MultiLayer::exportVector(const QString& fileName, int, bool color)
     if (fileName.contains(".pdf")) // use native Mac OS X print engine
     	printer.setOutputFormat(QPrinter::NativeFormat);
 #endif
-	//if (res) //only printing with screen resolution works correctly for the moment
-		//printer.setResolution(res);
-
 	if (color)
 		printer.setColorMode(QPrinter::Color);
 	else
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-    printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
-    
-	QPainter paint(&printer);
-    foreach (Graph *g, graphsList)
-        g->print(&paint, g->geometry());
+
+	if (res){
+		double wfactor = (double)res/(double)logicalDpiX();
+		double hfactor = (double)res/(double)logicalDpiY();
+		printer.setResolution(res);
+		printer.setPaperSize (QSizeF(d_canvas->width()*wfactor, d_canvas->height()*hfactor), QPrinter::DevicePixel);
+		QPainter paint(&printer);
+		foreach (Graph *g, graphsList){
+			QRect r = g->geometry();
+			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
+			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
+        	g->print(&paint, r);
+		}
+	} else {
+    	printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
+		QPainter paint(&printer);
+    	foreach (Graph *g, graphsList)
+        	g->print(&paint, g->geometry());
+	}
 }
 
 void MultiLayer::exportSVG(const QString& fname)

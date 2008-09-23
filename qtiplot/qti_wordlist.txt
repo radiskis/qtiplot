@@ -509,3 +509,5 @@ setColorInterval
 color1
 color2
 QColor
+parameterNames
+Ellipse
