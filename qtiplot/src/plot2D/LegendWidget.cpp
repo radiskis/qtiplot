@@ -35,6 +35,7 @@
 #include "../PenStyleBox.h"
 
 #include <QPainter>
+#include <QPaintEngine>
 #include <QPolygon>
 #include <QMessageBox>
 
@@ -92,12 +93,28 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
-    const int symbolLineLength = line_length + symbolsMaxWidth();
+	// calculate resolution factor
+	double factor = (double)painter->paintEngine()->paintDevice()->logicalDpiX()/(double)plot()->logicalDpiX();
+	// save screen geometry parameters
+	int space = h_space;
+	int left = left_margin;
+	int top = top_margin;
+	
+	h_space = int(h_space*factor);
+	left_margin = int(left_margin*factor);
+	top_margin = int(top_margin*factor);
+	
+    const int symbolLineLength = int((line_length + symbolsMaxWidth())*factor);
 	int width, height, textWidth, textHeight;
 	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height, textWidth, textHeight);
 		
 	drawFrame(painter, QRect(x, y, width, height));
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
+	
+	// restore screen geometry parameters
+	h_space = space;
+	left_margin = left;
+	top_margin = top;
 }
 
 void LegendWidget::setText(const QString& s)

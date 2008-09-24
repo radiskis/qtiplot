@@ -263,6 +263,7 @@ void ScriptEdit::handleContentsChange(int position, int, int)
 	QTextCursor cursor = textCursor();
 	cursor.setPosition(position);
 	cursor.mergeBlockFormat(d_fmt_default);
+	textChanged();
 }
 
 void ScriptEdit::execute()

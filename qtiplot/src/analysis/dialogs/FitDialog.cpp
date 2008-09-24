@@ -344,7 +344,9 @@ void FitDialog::initEditPage()
 	
 	editBox = new QTextEdit();
 	editBox->setTextFormat(Qt::PlainText);
-	connect(editBox, SIGNAL(textChanged()), this, SLOT(guessParameters()));	
+	editBox->setAcceptRichText(false);
+	//connect(editBox, SIGNAL(textChanged()), this, SLOT(guessParameters()));
+	connect(editBox->document(), SIGNAL(contentsChange(int,int,int)), this, SLOT(guessParameters()));
 	editBox->setFocus();
 	
 	boxErrorMsg = new QLabel();
@@ -1649,16 +1651,7 @@ void FitDialog::guessParameters()
 
 void FitDialog::setEditorTextColor(const QColor& c)
 {
-		editBox->blockSignals(true);
-		QTextCursor cursor = editBox->textCursor();
-		int pos = cursor.position();
-		
-		editBox->selectAll ();
-		editBox->setTextColor(c);
-		
-		cursor.clearSelection();
-		cursor.setPosition(pos);
-		
-		editBox->setTextCursor(cursor);
-		editBox->blockSignals(false);
+	QPalette palette = editBox->palette();
+	palette.setColor (QPalette::Text, c);
+	editBox->setPalette(palette);
 }
