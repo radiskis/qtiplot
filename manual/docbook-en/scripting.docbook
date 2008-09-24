@@ -2737,8 +2737,19 @@ In order to run this example, you need an internet connection, since the script 
 <programlisting>
 import urllib, re, sys
 
-# Pop-up a file dialog allowing to chose the working folder:
-dirPath = QtGui.QFileDialog.getExistingDirectory(qti.app, "Choose Working Folder")
+# Pop-up a file dialog allowing to chose a destination folder:
+dirPath = QtGui.QFileDialog.getExistingDirectory(qti.app, "Choose Destination Folder")
+
+saveout = sys.stdout
+# create a log file in the destination folder                                    
+fsock = open(dirPath + "/" + "results.txt", "w")                             
+sys.stdout = fsock   
+
+# on Unix systems you can redirect the output directly to a console by uncommenting the line bellow:
+#sys.stdout = sys.__stdout__ 
+
+# make sure that the decimal separator is the dot character 
+qti.app.setLocale(QtCore.QLocale.c())
 
 host = "http://www.itl.nist.gov/div898/strd/nls/data/LINKS/DATA/"
 url = urllib.urlopen(host)
@@ -2751,8 +2762,8 @@ for m in iterator:
 		continue
 		
 	url = host + name
-	print >> sys.__stdout__, "\nRetrieving file: " + url 
-	path = dirPath + name
+	print  "\nRetrieving file: " + url 
+	path = dirPath + "/" + name
 	urllib.urlretrieve( url, path ) # retrieve .dat file to specified location
 				
 	file = QtCore.QFile(path)	
@@ -2836,23 +2847,25 @@ for m in iterator:
 				f.fit()
 				g.removeLegend()
 				f.showLegend()
-				print >> sys.__stdout__, "QtiPlot Results:\n" + f.legendInfo()
+				print  "QtiPlot Results:\n" + f.legendInfo()
 				
-				print >> sys.__stdout__, "\nCertified Values:"
+				print  "\nCertified Values:"
 				paramNames = f.parameterNames()
 				for i in range (0, parameters):
-					print >> sys.__stdout__, '%s = %s +/- %s' % (paramNames[i], certifiedValues[i], standardDevValues[i])
+					print  '%s = %s +/- %s' % (paramNames[i], certifiedValues[i], standardDevValues[i])
 
-				print >> sys.__stdout__, "\nDifference with QtiPlot results:"
+				print  "\nDifference with QtiPlot results:"
 				results = f.results()
 				for i in range (0, parameters):
 					diff = fabs(results[i] - certifiedValues[i].toDouble()[0])
-					print >> sys.__stdout__, 'db%d = %6g' % (i+1, diff)
+					print  'db%d = %6g' % (i+1, diff)
 					
 				file.close()
 				changeFolder(rootFolder())
 				
-		saveProjectAs("test_NIST_fit.qti")
+saveProjectAs(dirPath + "/" + "StRD_NIST.qti")	
+sys.stdout = saveout                                     
+fsock.close()
 </programlisting>
 
 </sect2>
