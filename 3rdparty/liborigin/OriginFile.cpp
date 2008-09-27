@@ -32,12 +32,18 @@
 #include <fstream>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
+#include <logging.hpp>
 
 using namespace boost;
 
 OriginFile::OriginFile(const string& fileName)
 :	fileVersion(0)
 {
+	BOOST_LOG_INIT((logging::trace >> logging::eol)); // log format
+	logging::sink s(new ofstream("./opjfile.log"), 1);
+	s.attach_qualifier(logging::log);
+	BOOST_LOG_ADD_OUTPUT_STREAM(s);
+
 	ifstream file(fileName.c_str(), ios_base::binary);
 
 	if(!file.is_open())
@@ -46,22 +52,13 @@ OriginFile::OriginFile(const string& fileName)
 		return;
 	}
 	
-	char vers[4];
+	string vers(4, 0);
 	file.seekg(0x7, ios_base::beg);
 	file >> vers;
 	fileVersion = lexical_cast<int>(vers);
 	file.close();
 
-
-	ofstream debug("opjfile.log", ios_base::trunc);
-
-	if(!debug.is_open())
-	{
-		cerr << "Could not open log file!" << endl;
-		return;
-	}
-
-	debug << format("	[version = %d]") % fileVersion << endl;
+	BOOST_LOG_(1, format("	[version = %d]") % fileVersion);
 
 	// translate version
 	if(fileVersion >= 130 && fileVersion <= 140)		// 4.1
@@ -84,11 +81,10 @@ OriginFile::OriginFile(const string& fileName)
 		fileVersion = 750;
 	else
 	{
-		debug << format("Found unknown project version %d") % fileVersion << endl;
-		debug << "Please contact the author of opj2dat" << endl;
+		BOOST_LOG_(1, format("Found unknown project version %d") % fileVersion);
+		BOOST_LOG_(1, "Please contact the author of opj2dat");
 	}
-	debug << format("Found project version %.2f") % (fileVersion/100.0) << endl;
-	debug.close();
+	BOOST_LOG_(1, format("Found project version %.2f") % (fileVersion/100.0));
 
 	switch(fileVersion)
 	{
