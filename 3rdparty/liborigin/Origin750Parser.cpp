@@ -32,18 +32,12 @@
 #include <sstream>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
-#include "boost/date_time/posix_time/posix_time.hpp"
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <logging.hpp>
 
 using namespace boost;
 
 const char* colTypeNames[] = {"X", "Y", "Z", "XErr", "YErr", "Label", "None"};
-
-void Debug(const string& s)
-{
-	ofstream out("opjfile.log", ios_base::app);
-	out << s << endl;
-	out.close();
-}
 
 inline boost::posix_time::ptime doubleToPosixTime(double jdt)
 {
@@ -71,7 +65,7 @@ bool Origin750Parser::parse()
 	file >> size;
 
 	file.seekg(1, ios_base::cur);
-	Debug(str(format("	[column found = %d/0x%X @ 0x%X]") % size % size % (unsigned int) file.tellg()));
+	BOOST_LOG_(1, format("	[column found = %d/0x%X @ 0x%X]") % size % size % (unsigned int) file.tellg());
 
 	unsigned int colpos = file.tellg();
 	unsigned int current_col = 1, nr = 0, nbytes = 0;
@@ -92,15 +86,15 @@ bool Origin750Parser::parse()
 		file.seekg(oldpos + 0x3D, ios_base::beg);
 		file >> valuesize;
 
-		Debug(str(format("	[valuesize = %d @ 0x%X]") % (int)valuesize % ((unsigned int) file.tellg()-1)));
+		BOOST_LOG_(1, format("	[valuesize = %d @ 0x%X]") % (int)valuesize % ((unsigned int) file.tellg()-1));
 		if(valuesize <= 0)
 		{
-			Debug(str(format("	WARNING : found strange valuesize of %d") % (int)valuesize));
+			BOOST_LOG_(1, format("	WARNING : found strange valuesize of %d") % (int)valuesize);
 			valuesize = 10;
 		}
 
 		file.seekg(oldpos + 0x58, ios_base::beg);
-		Debug(str(format("	[Spreadsheet @ 0x%X]") % (unsigned int) file.tellg()));
+		BOOST_LOG_(1, format("	[Spreadsheet @ 0x%X]") % (unsigned int) file.tellg());
 
 		string name(25, 0);
 		file >> name;
@@ -116,21 +110,21 @@ bool Origin750Parser::parse()
 		unsigned int spread = 0;
 		if(columnname.empty())
 		{
-			Debug("NO COLUMN NAME FOUND! Must be a Matrix or Function.");
+			BOOST_LOG_(1, "NO COLUMN NAME FOUND! Must be a Matrix or Function.");
 			////////////////////////////// READ matrixes or functions ////////////////////////////////////
 
-			Debug(str(format("	[position @ 0x%X]") % (unsigned int) file.tellg()));
+			BOOST_LOG_(1, format("	[position @ 0x%X]") % (unsigned int) file.tellg());
 			// TODO
 			short signature;
 			file >> signature;
-			Debug(str(format("	SIGNATURE : %02X ") % signature));
+			BOOST_LOG_(1, format("	SIGNATURE : %02X ") % signature);
 
 
 			file.seekg(oldpos + size + 1, ios_base::beg);
 			file >> size;
 			file.seekg(1, ios_base::cur);
 			size /= valuesize;
-			Debug(str(format("	SIZE = %d") % size));
+			BOOST_LOG_(1, format("	SIZE = %d") % size);
 
 			// catch exception
 			/*if(size>10000)
@@ -142,11 +136,11 @@ bool Origin750Parser::parse()
 			case 0x70CA:
 			case 0x50F2:
 			case 0x50E2:
-				Debug("NEW MATRIX");
+				BOOST_LOG_(1, "NEW MATRIX");
 				matrixes.push_back(Matrix(name, dataIndex));
 				++dataIndex;
 
-				Debug("VALUES :");
+				BOOST_LOG_(1, "VALUES :");
 				out.str(string());
 				switch(data_type)
 				{
@@ -160,7 +154,7 @@ bool Origin750Parser::parse()
 						matrixes.back().data.push_back((double)value);
 						out << format("%g ") % matrixes.back().data.back();
 					}
-					Debug(out.str());
+					BOOST_LOG_(1, out.str());
 					break;
 				case 0x6003://float
 					for(unsigned int i = 0; i < size; ++i)
@@ -172,7 +166,7 @@ bool Origin750Parser::parse()
 						matrixes.back().data.push_back((double)value);
 						out << format("%g ") % matrixes.back().data.back();
 					}
-					Debug(out.str());
+					BOOST_LOG_(1, out.str());
 					break;
 				case 0x6801://int
 					if(data_type_u == 8)//unsigned
@@ -186,7 +180,7 @@ bool Origin750Parser::parse()
 							matrixes.back().data.push_back((double)value);
 							out << format("%g ") % matrixes.back().data.back();
 						}
-						Debug(out.str());
+						BOOST_LOG_(1, out.str());
 					}
 					else
 					{
@@ -199,7 +193,7 @@ bool Origin750Parser::parse()
 							matrixes.back().data.push_back((double)value);
 							out << format("%g ") % matrixes.back().data.back();
 						}
-						Debug(out.str());
+						BOOST_LOG_(1, out.str());
 					}
 					break;
 				case 0x6803://short
@@ -214,7 +208,7 @@ bool Origin750Parser::parse()
 							matrixes.back().data.push_back((double)value);
 							out << format("%g ") % matrixes.back().data.back();
 						}
-						Debug(out.str());
+						BOOST_LOG_(1, out.str());
 					}
 					else
 					{
@@ -227,7 +221,7 @@ bool Origin750Parser::parse()
 							matrixes.back().data.push_back((double)value);
 							out << format("%g ") % matrixes.back().data.back();
 						}
-						Debug(out.str());
+						BOOST_LOG_(1, out.str());
 					}
 					break;
 				case 0x6821://char
@@ -242,7 +236,7 @@ bool Origin750Parser::parse()
 							matrixes.back().data.push_back((double)value);
 							out << format("%g ") % matrixes.back().data.back();
 						}
-						Debug(out.str());
+						BOOST_LOG_(1, out.str());
 					}
 					else
 					{
@@ -255,17 +249,17 @@ bool Origin750Parser::parse()
 							matrixes.back().data.push_back((double)value);
 							out << format("%g ") % matrixes.back().data.back();
 						}
-						Debug(out.str());
+						BOOST_LOG_(1, out.str());
 					}
 					break;
 				default:
-					Debug(str(format("UNKNOWN MATRIX DATATYPE: %02X SKIP DATA") % data_type));
+					BOOST_LOG_(1, format("UNKNOWN MATRIX DATATYPE: %02X SKIP DATA") % data_type);
 					file.seekg(valuesize*size, ios_base::cur);
 					matrixes.pop_back();
 				}
 				break;
 			case 0x10C8:
-				Debug("NEW FUNCTION");
+				BOOST_LOG_(1, "NEW FUNCTION");
 				functions.push_back(Function(name, dataIndex));
 				++dataIndex;
 
@@ -287,13 +281,13 @@ bool Origin750Parser::parse()
 				file >> d;
 				functions.back().end = functions.back().begin + d*(functions.back().totalPoints - 1);
 
-				Debug(str(format("FUNCTION %s : %s") % functions.back().name.c_str() % functions.back().formula.c_str()));
-				Debug(str(format(" interval %g : %g, number of points %d") % functions.back().begin % functions.back().end % functions.back().totalPoints));
+				BOOST_LOG_(1, format("FUNCTION %s : %s") % functions.back().name.c_str() % functions.back().formula.c_str());
+				BOOST_LOG_(1, format(" interval %g : %g, number of points %d") % functions.back().begin % functions.back().end % functions.back().totalPoints);
 
 				file.seekg(oldpos, ios_base::beg);
 				break;
 			default:
-				Debug(str(format("UNKNOWN SIGNATURE: %.2X SKIP DATA") % signature));
+				BOOST_LOG_(1, format("UNKNOWN SIGNATURE: %.2X SKIP DATA") % signature);
 				file.seekg(valuesize*size, ios_base::cur);
 
 				if(valuesize != 8 && valuesize <= 16)
@@ -306,7 +300,7 @@ bool Origin750Parser::parse()
 		{	// worksheet
 			if(speadSheets.size() == 0 || findSpreadByName(name) == -1)
 			{
-				Debug("NEW SPREADSHEET");
+				BOOST_LOG_(1, "NEW SPREADSHEET");
 				current_col = 1;
 				speadSheets.push_back(SpreadSheet(name));
 				spread = speadSheets.size() - 1;
@@ -322,7 +316,7 @@ bool Origin750Parser::parse()
 					current_col = 1;
 				++current_col;
 			}
-			Debug(str(format("SPREADSHEET = %s COLUMN NAME = %s (%d) (@0x%X)") % name % columnname % current_col % (unsigned int)file.tellg()));
+			BOOST_LOG_(1, format("SPREADSHEET = %s COLUMN NAME = %s (%d) (@0x%X)") % name % columnname % current_col % (unsigned int)file.tellg());
 			speadSheets[spread].columns.push_back(SpreadColumn(columnname, dataIndex));
 			string::size_type sheetpos = speadSheets[spread].columns.back().name.find_last_of("@");
 			if(!speadSheets[spread].multisheet && sheetpos != string::npos)
@@ -330,7 +324,7 @@ bool Origin750Parser::parse()
 				if(lexical_cast<int>(columnname.substr(sheetpos + 1).c_str()) > 1)
 				{
 					speadSheets[spread].multisheet = true;
-					Debug(str(format("SPREADSHEET \"%s\" IS MULTISHEET") % name));
+					BOOST_LOG_(1, format("SPREADSHEET \"%s\" IS MULTISHEET") % name);
 				}
 			}
 			++dataIndex;
@@ -341,17 +335,17 @@ bool Origin750Parser::parse()
 			file >> nbytes;
 			if(fmod(nbytes, (double)valuesize)>0)
 			{
-				Debug("WARNING: data section could not be read correct");
+				BOOST_LOG_(1, "WARNING: data section could not be read correct");
 			}
 			nr = nbytes / valuesize;
-			Debug(str(format("	[number of rows = %d (%d Bytes) @ 0x%X]") % nr % nbytes % (unsigned int)file.tellg()));
+			BOOST_LOG_(1, format("	[number of rows = %d (%d Bytes) @ 0x%X]") % nr % nbytes % (unsigned int)file.tellg());
 
 			speadSheets[spread].maxRows<nr ? speadSheets[spread].maxRows=nr : 0;
 
 			////////////////////////////////////// DATA ////////////////////////////////////////////////
 			file.seekg(1, ios_base::cur);
 
-			Debug(str(format("	[data @ 0x%X]") % (unsigned int)file.tellg()));
+			BOOST_LOG_(1, format("	[data @ 0x%X]") % (unsigned int)file.tellg());
 			out.str(string());
 			for(unsigned int i = 0; i < nr; ++i)
 			{
@@ -393,7 +387,7 @@ bool Origin750Parser::parse()
 					out << format("%s ") % stmp;
 				}
 			}
-			Debug(out.str());
+			BOOST_LOG_(1, out.str());
 		}
 
 		if(nbytes > 0 || columnname.empty())
@@ -407,7 +401,7 @@ bool Origin750Parser::parse()
 		file >> size;
 
 		file.seekg(1, ios_base::cur);
-		Debug(str(format("	[column found = %d/0x%X (@ 0x%X)]") % size % size %((unsigned int) file.tellg()-5)));
+		BOOST_LOG_(1, format("	[column found = %d/0x%X (@ 0x%X)]") % size % size %((unsigned int) file.tellg()-5));
 		colpos = file.tellg();
 	}
 
@@ -416,7 +410,7 @@ bool Origin750Parser::parse()
 	{
 		if(speadSheets[i].multisheet)
 		{
-			Debug(str(format("		CONVERT SPREADSHEET \"%s\" to EXCEL") % speadSheets[i].name.c_str()));
+			BOOST_LOG_(1, format("		CONVERT SPREADSHEET \"%s\" to EXCEL") % speadSheets[i].name.c_str());
 			convertSpreadToExcel(i);
 			--i;
 		}
@@ -425,16 +419,16 @@ bool Origin750Parser::parse()
 	////////////////////// HEADER SECTION //////////////////////////////////////
 
 	unsigned int POS = (unsigned int)file.tellg()-11;
-	Debug("\nHEADER SECTION");
-	Debug(str(format("	nr_spreads = %d") % speadSheets.size()));
-	Debug(str(format("	[position @ 0x%X]") % POS));
+	BOOST_LOG_(1, "\nHEADER SECTION");
+	BOOST_LOG_(1, format("	nr_spreads = %d") % speadSheets.size());
+	BOOST_LOG_(1, format("	[position @ 0x%X]") % POS);
 
 	//////////////////////// OBJECT INFOS //////////////////////////////////////
 	POS += 0xB;
 	file.seekg(POS, ios_base::beg);
 	while(1)
 	{
-		Debug("			reading	Header");
+		BOOST_LOG_(1, "			reading	Header");
 		// HEADER
 		// check header
 		POS = file.tellg();
@@ -460,7 +454,7 @@ bool Origin750Parser::parse()
 	}
 
 	file.seekg(1, ios_base::cur);
-	Debug(str(format("Some Origin params @ 0x%X:") % (unsigned int)file.tellg()));
+	BOOST_LOG_(1, format("Some Origin params @ 0x%X:") % (unsigned int)file.tellg());
 
 	file >> c;
 	while(c != 0)
@@ -475,7 +469,7 @@ bool Origin750Parser::parse()
 		double parvalue;
 		file >> parvalue;
 		out << format(": %g") % parvalue;
-		Debug(out.str());
+		BOOST_LOG_(1, out.str());
 
 		file.seekg(1, ios_base::cur);
 		file >> c;
@@ -501,13 +495,20 @@ bool Origin750Parser::parse()
 		file >> coord;
 		rect.bottom = coord;
 
+		unsigned char state;
+		file.seekg(0x8, ios_base::cur);
+		file >> state;
+
 		double creationDate, modificationDate;
-		file.seekg(0x10, ios_base::cur);
+		file.seekg(0x7, ios_base::cur);
 		file >> creationDate;
 		file >> modificationDate;
 
+		file.seekg(0x8, ios_base::cur);
+		file >> c;
+
 		unsigned char labellen;
-		file.seekg(0x10-4, ios_base::cur);
+		file.seekg(0x3, ios_base::cur);
 		file >> labellen;
 
 		file.seekg(4, ios_base::cur);
@@ -527,16 +528,26 @@ bool Origin750Parser::parse()
 			resultsLog.resize(size);
 			file >> resultsLog;
 
-			Debug(str(format("Results Log: %s") % resultsLog));
+			BOOST_LOG_(1, format("Results Log: %s") % resultsLog);
 			break;
 		}
 		else
 		{
 			notes.push_back(Note(name));
 			notes.back().objectID = objectIndex;
-			notes.back().clientRect = rect;
+			notes.back().frameRect = rect;
 			notes.back().creationDate = doubleToPosixTime(creationDate);
 			notes.back().modificationDate = doubleToPosixTime(modificationDate);
+			
+			if(c & 0x01)
+				notes.back().title = Window::Label;
+			else if(c & 0x02)
+				notes.back().title = Window::Name;
+			else
+				notes.back().title = Window::Both;
+
+			notes.back().hidden = (state & 0x40);
+
 			++objectIndex;
 
 			file.seekg(1, ios_base::cur);
@@ -552,9 +563,9 @@ bool Origin750Parser::parse()
 
 			file >> notes.back().text.assign(size - labellen, 0);
 
-			Debug(str(format("NOTE %d NAME: %s") % notes.size() % notes.back().name));
-			Debug(str(format("NOTE %d LABEL: %s") % notes.size() % notes.back().label));
-			Debug(str(format("NOTE %d TEXT: %s") % notes.size() % notes.back().text));
+			BOOST_LOG_(1, format("NOTE %d NAME: %s") % notes.size() % notes.back().name);
+			BOOST_LOG_(1, format("NOTE %d LABEL: %s") % notes.size() % notes.back().label);
+			BOOST_LOG_(1, format("NOTE %d TEXT: %s") % notes.size() % notes.back().text);
 
 			file.seekg(1, ios_base::cur);
 		}
@@ -567,7 +578,8 @@ bool Origin750Parser::parse()
 	}
 	catch(...)
 	{}
-	Debug("Done parsing");
+	BOOST_LOG_(1, "Done parsing");
+	BOOST_LOG_FINALIZE();
 
 	return true;
 }
@@ -581,7 +593,7 @@ void Origin750Parser::readSpreadInfo()
 
 	POS += 5;
 
-	Debug(str(format("			[Spreadsheet SECTION (@ 0x%X)]") % POS));
+	BOOST_LOG_(1, format("			[Spreadsheet SECTION (@ 0x%X)]") % POS);
 
 	// check spreadsheet name
 	file.seekg(POS + 0x2, ios_base::beg);
@@ -612,7 +624,7 @@ void Origin750Parser::readSpreadInfo()
 			string sec_name(41, 0);
 			file >> sec_name;
 
-			Debug(str(format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46)));
+			BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
 
 			//section_body_1_size
 			LAYER += 0x6F + 0x1;
@@ -648,7 +660,7 @@ void Origin750Parser::readSpreadInfo()
 	}
 
 	/////////////// COLUMN Types ///////////////////////////////////////////
-	Debug(str(format("			Spreadsheet has %d columns") % speadSheets[spread].columns.size()));
+	BOOST_LOG_(1, format("			Spreadsheet has %d columns") % speadSheets[spread].columns.size());
 
 	while(1)
 	{
@@ -750,7 +762,7 @@ void Origin750Parser::readSpreadInfo()
 				speadSheets[spread].columns[col_index].valueType = Text;
 				break;
 			}
-			Debug(str(format("				COLUMN \"%s\" type = %s(%d) (@ 0x%X)") % speadSheets[spread].columns[col_index].name.c_str() % colTypeNames[type] % (int)c % (LAYER + 0x11)));
+			BOOST_LOG_(1, format("				COLUMN \"%s\" type = %s(%d) (@ 0x%X)") % speadSheets[spread].columns[col_index].name.c_str() % colTypeNames[type] % (int)c % (LAYER + 0x11));
 		}
 		LAYER += 0x1E7 + 0x1;
 
@@ -774,7 +786,7 @@ void Origin750Parser::readSpreadInfo()
 		if(size != 0x1E7)
 			break;
 	}
-	Debug(str(format("		Done with spreadsheet %d") % spread));
+	BOOST_LOG_(1, format("		Done with spreadsheet %d") % spread);
 
 	file.seekg(LAYER + 0x5*0x6 + 0x1ED*0x12, ios_base::beg);
 }
@@ -788,7 +800,7 @@ void Origin750Parser::readExcelInfo()
 
 	POS += 5;
 
-	Debug(str(format("			[EXCEL SECTION (@ 0x%X)]") % POS));
+	BOOST_LOG_(1, format("			[EXCEL SECTION (@ 0x%X)]") % POS);
 
 	// check spreadsheet name
 	string name(25, 0);
@@ -823,7 +835,7 @@ void Origin750Parser::readExcelInfo()
 			file.seekg(LAYER + 0x46, ios_base::beg);
 			file >> sec_name;
 
-			Debug(str(format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46)));
+			BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
 
 			//section_body_1_size
 			LAYER += 0x6F + 0x1;
@@ -858,7 +870,7 @@ void Origin750Parser::readExcelInfo()
 		LAYER += 0x5;
 
 		/////////////// COLUMN Types ///////////////////////////////////////////
-		Debug(str(format("			Excel sheet %d has %d columns") % isheet % excels[iexcel].sheets[isheet].columns.size()));
+		BOOST_LOG_(1, format("			Excel sheet %d has %d columns") % isheet % excels[iexcel].sheets[isheet].columns.size());
 
 		while(1)
 		{
@@ -960,7 +972,7 @@ void Origin750Parser::readExcelInfo()
 					excels[iexcel].sheets[isheet].columns[col_index].valueType = Text;
 					break;
 				}
-				Debug(str(format("				COLUMN \"%s\" type = %s(%d) (@ 0x%X)") % excels[iexcel].sheets[isheet].columns[col_index].name.c_str() % type % (int)c % (LAYER + 0x11)));
+				BOOST_LOG_(1, format("				COLUMN \"%s\" type = %s(%d) (@ 0x%X)") % excels[iexcel].sheets[isheet].columns[col_index].name.c_str() % type % (int)c % (LAYER + 0x11));
 			}
 			LAYER += 0x1E7 + 0x1;
 
@@ -984,7 +996,7 @@ void Origin750Parser::readExcelInfo()
 			if(size != 0x1E7)
 				break;
 		}
-		Debug(str(format("		Done with Excel %d") % iexcel));
+		BOOST_LOG_(1, format("		Done with Excel %d") % iexcel);
 
 		//POS = LAYER+0x5*0x6+0x1ED*0x12;
 		LAYER += 0x5*0x5 + 0x1ED*0x12;
@@ -1009,7 +1021,7 @@ void Origin750Parser::readMatrixInfo()
 
 	POS+=5;
 
-	Debug(str(format("			[Matrix SECTION (@ 0x%X)]") % POS));
+	BOOST_LOG_(1, format("			[Matrix SECTION (@ 0x%X)]") % POS);
 
 	string name(25, 0);
 	file.seekg(POS + 0x2, ios_base::beg);
@@ -1146,7 +1158,7 @@ void Origin750Parser::readGraphInfo()
 	file >> size;
 	POS += 5;
 
-	Debug(str(format("			[Graph SECTION (@ 0x%X)]") % POS));
+	BOOST_LOG_(1, format("			[Graph SECTION (@ 0x%X)]") % POS);
 
 	string name(25, 0);
 	file.seekg(POS + 0x2, ios_base::beg);
@@ -1211,7 +1223,7 @@ void Origin750Parser::readGraphInfo()
 			file.seekg(LAYER + 0x46, ios_base::beg);
 			file >> sec_name;
 
-			Debug(str(format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46)));
+			BOOST_LOG_(1, format("				SECTION NAME: %s (@ 0x%X)") % sec_name % (LAYER + 0x46));
 
 			Rect r;
 			file.seekg(LAYER + 0x3, ios_base::beg);
@@ -1293,21 +1305,6 @@ void Origin750Parser::readGraphInfo()
 
 			file >> w;
 			end.shapeLength = (double)w/500.0;
-
-			// bitmap properties
-			short bitmap_width;
-			file.seekg(LAYER + 0x1, ios_base::beg);
-			file >> bitmap_width;
-
-			short bitmap_height;
-			file >> bitmap_height;
-
-			double bitmap_left = 0.0;
-			file.seekg(LAYER + 0x13, ios_base::beg);
-			file >> bitmap_left;
-
-			double bitmap_top = 0.0;
-			file >> bitmap_top;
 
 			Figure figure;
 			file.seekg(LAYER + 0x5, ios_base::beg);
@@ -1438,12 +1435,6 @@ void Origin750Parser::readGraphInfo()
 				unsigned long filesize = size + 14;
 				graphs.back().layers.back().bitmaps.push_back(Bitmap());
 				graphs.back().layers.back().bitmaps.back().clientRect = r;
-				graphs.back().layers.back().bitmaps.back().left = bitmap_left;
-				graphs.back().layers.back().bitmaps.back().top = bitmap_top;
-				graphs.back().layers.back().bitmaps.back().width =
-					(graphs.back().layers.back().xAxis.max - graphs.back().layers.back().xAxis.min)*bitmap_width/10000;
-				graphs.back().layers.back().bitmaps.back().height =
-					(graphs.back().layers.back().yAxis.max - graphs.back().layers.back().yAxis.min)*bitmap_height/10000;
 				graphs.back().layers.back().bitmaps.back().attach = (Attach)attach;
 				graphs.back().layers.back().bitmaps.back().size = filesize;
 				graphs.back().layers.back().bitmaps.back().data = new unsigned char[filesize];
@@ -1502,7 +1493,7 @@ void Origin750Parser::readGraphInfo()
 				short nColY = w;
 				if(column.first.size() > 0)
 				{
-					Debug(str(format("			graphs %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str()));
+					BOOST_LOG_(1, format("			graphs %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 					curve.dataName = column.first;
 					curve.yColumnName = column.second;
 				}
@@ -1513,11 +1504,11 @@ void Origin750Parser::readGraphInfo()
 				column = findDataByIndex(w-1);
 				if(column.first.size() > 0)
 				{
-					Debug(str(format("			graphs %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str()));
+					BOOST_LOG_(1, format("			graphs %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 					curve.xColumnName = column.second;
 					if(curve.dataName != column.first)
 					{
-						Debug(str(format("			graphs %d X and Y from different tables") % graphs.size()));
+						BOOST_LOG_(1, format("			graphs %d X and Y from different tables") % graphs.size());
 					}
 				}
 
@@ -2124,10 +2115,10 @@ void Origin750Parser::readProjectTree()
 {
 	readProjectTreeFolder(projectTree.begin());
 
-	Debug("Origin project Tree");
+	BOOST_LOG_(1, "Origin project Tree");
 	for(tree<ProjectNode>::iterator it = projectTree.begin(projectTree.begin()); it != projectTree.end(projectTree.begin()); ++it)
 	{
-		Debug(string(projectTree.depth(it) - 1, ' ') + (*it).name);
+		BOOST_LOG_(1, string(projectTree.depth(it) - 1, ' ') + (*it).name);
 	}
 }
 
@@ -2204,7 +2195,7 @@ void Origin750Parser::readWindowProperties(Window& window, unsigned int size)
 	++objectIndex;
 
 	file.seekg(POS + 0x1B, ios_base::beg);
-	file.read(reinterpret_cast<char*>(&window.clientRect), sizeof(window.clientRect));
+	file.read(reinterpret_cast<char*>(&window.frameRect), sizeof(window.frameRect));
 
 	char c;
 	file.seekg(POS + 0x32, ios_base::beg);
@@ -2228,7 +2219,7 @@ void Origin750Parser::readWindowProperties(Window& window, unsigned int size)
 	window.hidden = (c & 0x08);
 	if(window.hidden)
 	{
-		Debug(str(format("			WINDOW %d NAME : %s	is hidden") % objectIndex % window.name.c_str()));
+		BOOST_LOG_(1, format("			WINDOW %d NAME : %s	is hidden") % objectIndex % window.name.c_str());
 	}
 	
 	double creationDate, modificationDate;
@@ -2254,7 +2245,7 @@ void Origin750Parser::readWindowProperties(Window& window, unsigned int size)
 			file >> window.label.assign(labellen, 0);
 		}
 
-		Debug(str(format("			WINDOW %d LABEL: %s") % objectIndex % window.label));
+		BOOST_LOG_(1, format("			WINDOW %d LABEL: %s") % objectIndex % window.label);
 	}
 }
 

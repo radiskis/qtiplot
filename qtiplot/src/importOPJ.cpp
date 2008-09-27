@@ -201,7 +201,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		Origin::Rect windowRect;
 		if(opj.version() == 7.5)
 		{
-			windowRect = spread.clientRect;
+			windowRect = spread.frameRect;
 			table->resize(windowRect.width() - (table->frameGeometry().width() - table->width()),
 				windowRect.height() - (table->frameGeometry().height() - table->height()));
 		}
@@ -471,7 +471,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		Origin::Rect windowRect;
 		if(opj.version() == 7.5)
 		{
-			windowRect = matrix.clientRect;
+			windowRect = matrix.frameRect;
 			Matrix->resize(windowRect.width() - (Matrix->frameGeometry().width() - Matrix->width()),
 				windowRect.height() - (Matrix->frameGeometry().height() - Matrix->height()));
 		}
@@ -549,7 +549,6 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 
 bool ImportOPJ::importNotes(const OriginFile& opj)
 {
-	int visible_count = 0;
 	for(unsigned int n = 0; n < opj.noteCount(); ++n)
 	{
 		Origin::Note _note = opj.note(n);
@@ -558,40 +557,39 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 		if(rx.indexIn(name) == 0)
 			name = rx.cap(1);
 
-		Note* Note = mw->newNote(name);
-		if(!Note)
+		Note* note = mw->newNote(name);
+		if(!note)
 			return false;
 
-		Note->setName(name);
+		note->setName(name);
 
-		Note->setWindowLabel(_note.label.c_str());
-		Note->setText(_note.text.c_str());
-		Note->setBirthDate(posixTimeToString(_note.creationDate));
+		note->setWindowLabel(_note.label.c_str());
+		note->setText(_note.text.c_str());
+		note->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_note.title);
+		note->setBirthDate(posixTimeToString(_note.creationDate));
 
 		Origin::Rect windowRect;
-		if(opj.version() == 7.5)
-		{
-			windowRect = _note.clientRect;
-			Note->resize(windowRect.width() - (Note->frameGeometry().width() - Note->width()),
-				windowRect.height() - (Note->frameGeometry().height() - Note->height()));
-		}
+		windowRect = _note.frameRect;
+		note->resize(windowRect.width() - (note->frameGeometry().width() - note->width()),
+			windowRect.height() - (note->frameGeometry().height() - note->height()));
 
-		//cascade the notes
-		if(opj.version() == 7.5)
+		note->move(QPoint(windowRect.left, windowRect.top));
+
+		/*switch(_note.state)
 		{
-			Note->move(QPoint(windowRect.left, windowRect.top));
-		}
-		else
-		{
-			int dx = 20;
-			int dy = Note->frameGeometry().height() - Note->height();
-			Note->move(QPoint(visible_count*dx + xoffset*OBJECTXOFFSET, visible_count*dy));
-			++visible_count;
-		}
+		case Origin::Window::Minimized:
+			mw->minimizeWindow(note);
+			break;
+		case Origin::Window::Maximized:
+			mw->maximizeWindow(note);
+			break;
+		default:
+			note->showNormal();
+		}*/
+
+		if(_note.hidden)
+			mw->hideWindow(note);
 	}
-
-	if(visible_count > 0)
-		++xoffset;
 
 	return true;
 }
@@ -599,7 +597,6 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 bool ImportOPJ::importGraphs(const OriginFile& opj)
 {
 	double pi=3.141592653589793;
-	int visible_count=0;
 	int tickTypeMap[]={0,3,1,2};
 
 	MultiLayer* fake = mw->multilayerPlot("fake", 0);
@@ -622,7 +619,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		ml->setWindowLabel(_graph.label.c_str());
 
 		Origin::Rect graphRect(_graph.width, _graph.height);
-		Origin::Rect graphWindowRect = _graph.clientRect;
+		Origin::Rect graphWindowRect = _graph.frameRect;
 		double ratio = (double)(graphWindowRect.width() - frameWidth)/(double)(graphWindowRect.height() - frameHeight);
 
 		int width = _graph.width;
@@ -659,11 +656,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(layer.xAxis.label.text.c_str())));
 			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(layer.yAxis.label.text.c_str())));
-			LegendWidget* legend = 0;
-			if(!layer.legend.text.empty())
-			{
-				legend = graph->newLegend(parseOriginText(QString::fromLocal8Bit(layer.legend.text.c_str())));
-			}
+
 			int auto_color = -1;
 			int style = 0;
 			for(unsigned int c = 0; c < layer.curves.size(); ++c)
@@ -836,12 +829,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					break;
 				default:
 					continue;
-				}
-
-				//strange behavior of insert curve - legend added - need to roolback legend text
-				if(legend)
-				{
-					legend->setText(parseOriginText(QString::fromLocal8Bit(layer.legend.text.c_str())));
 				}
 
 				CurveLayout cl = graph->initCurveLayout(style, layer.curves.size());
@@ -1210,18 +1197,19 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			//graph->move((newXGraphPos > 0 ? newXGraphPos : 0), (newYGraphPos > 0 ? newYGraphPos : 0));
 			graph->move(layerRect.left*fScale - posCanvas.x(), layerRect.top*fScale - posCanvas.y() - yOffset);
 
+			if(!layer.legend.text.empty())
+			{
+				addText(layer.legend, graph, fFontScaleFactor, fScale);
+			}
 			//add texts
 			if(style != Graph::Pie)
 			{
 				for(unsigned int i = 0; i < layer.texts.size(); ++i)
 				{
-					addText(layer.texts[i], graph, 0, layerRect, fFontScaleFactor, fScale);
+					addText(layer.texts[i], graph, fFontScaleFactor, fScale);
 				}
 			}
-
-			if(legend)
-				addText(layer.legend, graph, legend, layerRect, fFontScaleFactor, fScale);
-
+				
 			for(unsigned int i = 0; i < layer.lines.size(); ++i)
 			{
 				ArrowMarker mrk;
@@ -1304,16 +1292,13 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		}
 	}
 
-	if(visible_count > 0)
-		++xoffset;
-
 	return true;
 }
 
-void ImportOPJ::addText(const Origin::TextBox& _text, Graph* graph, LegendWidget* txt, const Origin::Rect& layerRect, double fFontScaleFactor, double fScale)
+void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale)
 {
 	int bkg;
-	switch(_text.borderType)
+	switch(text.borderType)
 	{
 	case Origin::TextBox::BlackLine:
 		bkg = 1;
@@ -1327,13 +1312,12 @@ void ImportOPJ::addText(const Origin::TextBox& _text, Graph* graph, LegendWidget
 		break;
 	}
 
-	if(!txt)
-		txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(_text.text.c_str())));
+	LegendWidget* txt=graph->newLegend(parseOriginText(QString::fromLocal8Bit(text.text.c_str())));
 
 	QFont font(mw->plotLegendFont);
-	font.setPointSize(floor(_text.fontSize*fFontScaleFactor + 0.5));
-	txt->setAngle(_text.rotation);
-	txt->setTextColor(ColorBox::color(_text.color));
+	font.setPointSize(floor(text.fontSize*fFontScaleFactor + 0.5));
+	txt->setAngle(text.rotation);
+	txt->setTextColor(ColorBox::color(text.color));
 	txt->setFont(font);
 	txt->setFrameStyle(bkg);
 
@@ -1342,11 +1326,7 @@ void ImportOPJ::addText(const Origin::TextBox& _text, Graph* graph, LegendWidget
 	//int y=(txtRect.top>layerRect.top ? txtRect.top-layerRect.top : 0);
 	//txt->move(QPoint((_text.clientRect.left+_text.clientRect.width()/2)*fScale - txt->width()/2, (_text.clientRect.top+_text.clientRect.height()/2)*fScale - LayerButton::btnSize() - txt->height()/2));
 	//txt->setRect(_text.clientRect.left*fScale, _text.clientRect.top*fScale - LayerButton::btnSize(), _text.clientRect.width()*fScale, _text.clientRect.height()*fScale);
-	txt->move(QPoint(_text.clientRect.left*fScale, _text.clientRect.top*fScale - LayerButton::btnSize()));
-
-	/*QRect qtiRect=graph->canvas()->geometry();
-	txt->setOrigin(QPoint(x*qtiRect.width()/layerRect.width(),
-		y*qtiRect.height()/layerRect.height()));*/
+	txt->move(QPoint(text.clientRect.left*fScale, text.clientRect.top*fScale - LayerButton::btnSize()));
 }
 
 QString ImportOPJ::parseOriginText(const QString &str)

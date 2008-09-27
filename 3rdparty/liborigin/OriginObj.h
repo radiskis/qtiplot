@@ -87,7 +87,7 @@ namespace Origin
 		bool hidden;
 		State state;
 		Title title;
-		Rect clientRect;
+		Rect frameRect;
 		boost::posix_time::ptime creationDate;
 		boost::posix_time::ptime modificationDate;
 
@@ -498,10 +498,6 @@ namespace Origin
 		Attach attach;
 		unsigned long size;
 		unsigned char* data;
-		double left;
-		double top;
-		double width;
-		double height;
 
 		Bitmap()
 		:	size(0)
@@ -513,10 +509,6 @@ namespace Origin
 		:	clientRect(bitmap.clientRect)
 		,	attach(bitmap.attach)
 		,	size(bitmap.size)
-		,	left(bitmap.left)
-		,	top(bitmap.top)
-		,	width(bitmap.width)
-		,	height(bitmap.height)
 		{
 			if(size > 0)
 			{

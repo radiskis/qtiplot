@@ -48,7 +48,7 @@ private:
     int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
 	QString parseOriginText(const QString &str);
 	QString parseOriginTags(const QString &str);
-	void addText(const Origin::TextBox& _text, Graph* graph, LegendWidget* txt, const Origin::Rect& layerRect, double fFontScaleFactor, double fScale);
+	void addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale);
 	int parse_error;
 	int xoffset;
 	ApplicationWindow *mw;
