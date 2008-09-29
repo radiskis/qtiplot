@@ -45,14 +45,16 @@ INCLUDEPATH       += ../3rdparty/boost_1_36_0
 unix:LIBS         += ../3rdparty/muparser/lib/libmuparser.a
 unix:LIBS         += ../3rdparty/qwtplot3d/lib/libqwtplot3d.a
 unix:LIBS         += ../3rdparty/qwt/lib/libqwt.a
-#unix:LIBS         += ../3rdparty/gsl/lib/libgsl.a
-#unix:LIBS         += ../3rdparty/gsl/lib/libgslcblas.a
+unix:LIBS         += ../3rdparty/gsl/lib/libgsl.a
+unix:LIBS         += ../3rdparty/gsl/lib/libgslcblas.a
+unix:LIBS         += /usr/local/lib/libboost_date_time-gcc41-mt.a
+unix:LIBS         += /usr/local/lib/libboost_thread-gcc41-mt.a
 
 # dynamically link against dependencies if they are installed system-wide
 #unix:LIBS         += -lmuparser
 #unix:LIBS         += -lqwtplot3d
 #unix:LIBS         += -lqwt
-unix:LIBS         += -lgsl -lgslcblas
+#unix:LIBS         += -lgsl -lgslcblas
 
 ##################### Windows ###############################################
 
@@ -127,8 +129,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
@@ -242,11 +244,12 @@ SOURCES  += src/main.cpp \
 ################# Origin Import (liborigin) ###################
 ###############################################################
 
-  HEADERS += ../3rdparty/liborigin/OriginObj.h
+  	HEADERS += ../3rdparty/liborigin/OriginObj.h
 	HEADERS += ../3rdparty/liborigin/OriginFile.h
 	HEADERS += ../3rdparty/liborigin/OriginParser.h
 	HEADERS += ../3rdparty/liborigin/OriginDefaultParser.h
 	HEADERS += ../3rdparty/liborigin/Origin750Parser.h
+	
 	SOURCES += ../3rdparty/liborigin/OriginFile.cpp
 	SOURCES += ../3rdparty/liborigin/OriginParser.cpp
 	SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
