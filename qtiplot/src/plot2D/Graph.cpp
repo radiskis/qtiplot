@@ -4029,6 +4029,7 @@ void Graph::copy(Graph* g)
 		addArrow((ArrowMarker*)i);
 
 	setAntialiasing(g->antialiasing(), true);
+	autoScaleFonts = g->autoscaleFonts();
 }
 
 void Graph::copyCurves(Graph* g)
