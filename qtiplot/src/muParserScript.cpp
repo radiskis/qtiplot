@@ -68,12 +68,16 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 	  parser.DefineFun("cell", mu_cell);
 
 	rparser = parser;
-	parser.SetVarFactory(mu_addVariable);
-    rparser.SetVarFactory(mu_addVariableR);
-  
 	if (Context->inherits("Table") || Context->isA("Matrix")){							   
 		connect(this, SIGNAL(error(const QString&,const QString&,int)), env, SIGNAL(error(const QString&,const QString&,int)));
 		connect(this, SIGNAL(print(const QString&)), env, SIGNAL(print(const QString&)));
+		if (code.count("\n") > 0){//autodetect new variables only for scripts having minimum 2 lines
+			parser.SetVarFactory(mu_addVariable);
+    		rparser.SetVarFactory(mu_addVariableR);
+		}
+	} else {
+		parser.SetVarFactory(mu_addVariable);
+    	rparser.SetVarFactory(mu_addVariableR);
 	}
 }
 
