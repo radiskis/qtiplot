@@ -73,11 +73,11 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 		connect(this, SIGNAL(print(const QString&)), env, SIGNAL(print(const QString&)));
 		if (code.count("\n") > 0){//autodetect new variables only for scripts having minimum 2 lines
 			parser.SetVarFactory(mu_addVariable);
-    		rparser.SetVarFactory(mu_addVariableR);
+			rparser.SetVarFactory(mu_addVariableR);
 		}
 	} else {
 		parser.SetVarFactory(mu_addVariable);
-    	rparser.SetVarFactory(mu_addVariableR);
+		rparser.SetVarFactory(mu_addVariableR);
 	}
 }
 
