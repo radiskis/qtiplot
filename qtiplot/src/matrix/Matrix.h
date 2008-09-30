@@ -153,7 +153,7 @@ public:
 	void invert();
 
 	//! Calculate matrix values using the #formula_str.
-	bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1, bool forceMuParser = true);
+	bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1, bool forceMuParser = false);
 	//! Calculate matrix values using the #formula_str (optimization for muParser).
 	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 

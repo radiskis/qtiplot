@@ -509,12 +509,16 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
         return true;
 	}
 
+	if (cmd.count("\n") > 0){
+        QString mess = tr("Multiline expressions take much more time to evaluate! Do you want to continue anyways?");
+        if (QMessageBox::Yes != QMessageBox::warning(this, tr("QtiPlot") + " - " + tr("Warning"), mess,
+                           QMessageBox::Yes, QMessageBox::Cancel))
+			return false;
+	}
+		
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     muParserScript *mup = new muParserScript(scriptEnv, cmd, this,  QString("<%1>").arg(colName(col)));
-	connect(mup, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
-	connect(mup, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
-
     double *r = mup->defineVariable("i");
     mup->defineVariable("j", (double)col);
     mup->defineVariable("sr", startRow + 1.0);
@@ -1040,12 +1044,16 @@ void Table::insertCols(int start, int count)
         start = 0;
 
 	int max = 0;
-	for (int i = 0; i<d_table->numCols(); i++){
+	int cols = d_table->numCols();
+	QList<bool> hiddenCols;
+	
+	for (int i = 0; i<cols; i++){
 		if (!col_label[i].contains(QRegExp ("\\D"))){
 			int id = col_label[i].toInt();
 			if (id > max)
 				max = id;
 		}
+		hiddenCols << d_table->isColumnHidden(i);
 	}
     max++;
 
@@ -1059,8 +1067,13 @@ void Table::insertCols(int start, int count)
 		col_label.insert(j, QString::number(max + i));
 		colTypes.insert(j, Numeric);
 		col_plot_type.insert(j, Y);
+		hiddenCols.insert(j, false);
 	}
 	setHeaderColType();
+	
+	for (int i = 0; i<d_table->numCols(); i++)
+		hideColumn(i, hiddenCols[i]);
+		
 	emit modifiedWindow(this);
 }
 
