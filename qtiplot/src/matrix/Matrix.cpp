@@ -454,9 +454,7 @@ bool Matrix::canCalculate(bool useMuParser)
 		return false;
 
 	if (useMuParser){
-    	muParserScript *mup = new muParserScript(scriptEnv, formula_str, this, QString("<%1>").arg(objectName()), false);
-		connect(mup, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&, const QString&,int)));
-
+    	muParserScript *mup = new muParserScript(scriptEnv, formula_str, this, QString("<%1>").arg(objectName()));
     	double *ri = mup->defineVariable("i");
     	double *rr = mup->defineVariable("row");
     	double *cj = mup->defineVariable("j");

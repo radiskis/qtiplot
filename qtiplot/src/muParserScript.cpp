@@ -35,16 +35,13 @@
 
 #include <QStringList>
 #include <QApplication>
-#include <QMessageBox>
 
 #include <gsl/gsl_math.h>
 
 using namespace mu;
 
-muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *context, 
-							const QString &name, bool checkMultilineCode)
-  : Script(env, code, context, name),
-  d_warn_multiline_code(checkMultilineCode)
+muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *context, const QString &name)
+  : Script(env, code, context, name)
 {
   variables.setAutoDelete(true);
   rvariables.setAutoDelete(true);
@@ -70,26 +67,14 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
   } else if (Context->isA("Matrix"))
 	  parser.DefineFun("cell", mu_cell);
 
-  rparser = parser;
-  if (Context->isA("Table") || Context->isA("Matrix")){
-    if (code.count("\n") > 0){//only autodetect new variables for a script which has min 2 lines
-		if (d_warn_multiline_code){
-        	QApplication::restoreOverrideCursor();
-        	QString mess = tr("Multiline expressions take much more time to evaluate! Do you want to continue anyways?");
-        	if (QMessageBox::Yes == QMessageBox::warning((QWidget *)Context, tr("QtiPlot") + " - " + tr("Warning"), mess,
-                           QMessageBox::Yes, QMessageBox::Cancel)){
-           		parser.SetVarFactory(mu_addVariable);
-            	rparser.SetVarFactory(mu_addVariableR);
-			}
-		} else {
-            parser.SetVarFactory(mu_addVariable);
-            rparser.SetVarFactory(mu_addVariableR);
-		}
+	rparser = parser;
+	parser.SetVarFactory(mu_addVariable);
+    rparser.SetVarFactory(mu_addVariableR);
+  
+	if (Context->inherits("Table") || Context->isA("Matrix")){							   
+		connect(this, SIGNAL(error(const QString&,const QString&,int)), env, SIGNAL(error(const QString&,const QString&,int)));
+		connect(this, SIGNAL(print(const QString&)), env, SIGNAL(print(const QString&)));
 	}
-  } else {
-      parser.SetVarFactory(mu_addVariable);
-      rparser.SetVarFactory(mu_addVariableR);
-  }
 }
 
 double muParserScript::col(const QString &arg)

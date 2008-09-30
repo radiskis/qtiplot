@@ -796,11 +796,15 @@ double * MatrixModel::dataCopy(int startRow, int endRow, int startCol, int endCo
 
 bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int endCol)
 {
-	ScriptingEnv *scriptEnv = d_matrix->scriptingEnv();
-    muParserScript *mup = new muParserScript(scriptEnv, d_matrix->formula(), d_matrix, QString("<%1>").arg(d_matrix->objectName()));
-	connect(mup, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
-	connect(mup, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
-
+	if (d_matrix->formula().count("\n") > 0){
+        QString mess = tr("Multiline expressions take much more time to evaluate! Do you want to continue anyways?");
+        if (QMessageBox::Yes != QMessageBox::warning(matrix(), tr("QtiPlot") + " - " + tr("Warning"), mess,
+                           QMessageBox::Yes, QMessageBox::Cancel))
+			return false;
+	}
+	
+    muParserScript *mup = new muParserScript(d_matrix->scriptingEnv(), d_matrix->formula(), 
+											d_matrix, QString("<%1>").arg(d_matrix->objectName()));
 	if (endRow < 0)
 		endRow = d_rows - 1;
 	if (endCol < 0)

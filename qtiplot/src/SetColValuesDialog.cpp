@@ -32,6 +32,7 @@
 #include "SetColValuesDialog.h"
 #include "Table.h"
 #include "ScriptEdit.h"
+#include "ApplicationWindow.h"
 
 #include <QTableWidget>
 #include <QTableWidgetSelectionRange>
@@ -104,12 +105,14 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	QPalette palette = explain->palette();
 	palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
 	explain->setPalette(palette);
-
+	
 	QHBoxLayout *hbox2 = new QHBoxLayout();
 	hbox2->addWidget(explain);
 	hbox2->addWidget(gb);
 
-	commands = new ScriptEdit( scriptEnv);
+	commands = new ScriptEdit(scriptEnv);
+	commands->setTabStopWidth(((ApplicationWindow *)parent)->d_notes_tab_length);
+    commands->setFont(((ApplicationWindow *)parent)->d_notes_font);
 
 	QVBoxLayout *vbox2 = new QVBoxLayout();
 	btnApply = new QPushButton(tr( "&Apply" ));

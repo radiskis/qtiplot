@@ -2,11 +2,8 @@
     File                 : MatrixValuesDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Set matrix values dialog
 
  ***************************************************************************/
@@ -31,6 +28,7 @@
  ***************************************************************************/
 #include "MatrixValuesDialog.h"
 #include "MatrixCommand.h"
+#include "../ApplicationWindow.h"
 
 #include <QLayout>
 #include <QSpinBox>
@@ -101,6 +99,8 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	QHBoxLayout *hbox3 = new QHBoxLayout();
 
 	commands = new ScriptEdit( scriptEnv);
+	commands->setTabStopWidth(((ApplicationWindow *)parent)->d_notes_tab_length);
+    commands->setFont(((ApplicationWindow *)parent)->d_notes_font);
 	commands->setFocus();
 	hbox3->addWidget(commands);
 
