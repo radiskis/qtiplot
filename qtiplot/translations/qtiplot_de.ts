@@ -10192,7 +10192,7 @@ Die folgenden Spezialcodes können benutzt werden:
 <context>
     <name>EnrichmentDialog</name>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="680"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="685"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
@@ -10317,11 +10317,6 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="unfinished">Breite</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="203"/>
-        <source>Apply &amp;to...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="389"/>
         <source>All Windows</source>
         <translation>Alle Fenster</translation>
@@ -10432,32 +10427,32 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>&amp;Geometrie</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="680"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="685"/>
         <source>Network connection error</source>
         <translation>Netzwerkverbindungsfehler</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="681"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="686"/>
         <source>Error while trying to connect to host %1:</source>
         <translation>Fehler beim Versuch eine Verbindung zum Host &apos;%1&apos; herzustellen.</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="682"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="687"/>
         <source>Please verify your network connection!</source>
         <translation>Bitte prüfen Sie Ihre Netzwerkverbindung!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="698"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="703"/>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - Bild aus Datei importieren</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="724"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="729"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Warnung</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="725"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="730"/>
         <source>The file %1 doesn&apos;t exist. The image cannot be restored when reloading the project file!</source>
         <translation>Die Datei &apos;%1&apos; existiert nicht. Das Bild kann beim Neuladen der Projektdatei nicht wiederhergestellt werden!</translation>
     </message>
@@ -10495,6 +10490,11 @@ Die folgenden Spezialcodes können benutzt werden:
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="277"/>
         <source>Line</source>
         <translation type="unfinished">Linie</translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="203"/>
+        <source>Apply format &amp;to...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -11900,7 +11900,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>&amp;Anpassen &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1181"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1184"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Fehler bei der Funktionseingabe</translation>
     </message>
@@ -11937,7 +11937,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Benutzer-definierte Funktion</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1179"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1182"/>
         <source>Please verify that you have initialized all the parameters!</source>
         <translation>Bitte berprüfen Sie, ob alle Parameter initialisiert wurden!</translation>
     </message>
@@ -12182,7 +12182,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1619"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1629"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
@@ -12192,7 +12192,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Bitte geben Sie einen gültigen Namen für die Parametertabelle ein.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1620"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1630"/>
         <source>Please perform a fit first and try again.</source>
         <translation>Bitte zuerst einen Fit ausführen und dann neu versuchen.</translation>
     </message>
@@ -12207,7 +12207,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Bitte geben Sie einen gültigen Namen für die Kovarianzmatrix ein.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1388"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1398"/>
         <source>Gauss</source>
         <translation>Gauß</translation>
     </message>
@@ -12217,12 +12217,12 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Peaks</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1388"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1398"/>
         <source>Lorentz</source>
         <translation>Lorentz</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1390"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1400"/>
         <source>Polynomial</source>
         <translation>Polynomiell</translation>
     </message>
@@ -12282,7 +12282,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>&amp;Parameter im Diagramm anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1282"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1292"/>
         <source>No data tables</source>
         <translation type="unfinished">Keine Datentabellen</translation>
     </message>
@@ -12322,22 +12322,22 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation>Sie können Funktionen nicht rekursiv definieren!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1472"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1482"/>
         <source>QtiPlot fit model</source>
         <translation>QtiPlot Fitmodell</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1473"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1483"/>
         <source>All files</source>
         <translation type="unfinished">Alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1474"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1484"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1474"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1484"/>
         <source>Save Fit Model As</source>
         <translation>Fitmodell speichern als</translation>
     </message>
@@ -12389,7 +12389,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1643"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1653"/>
         <source>Error: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -13393,7 +13393,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Pixelauswahl-Warnung</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4526"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4527"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Warnung</translation>
     </message>
@@ -13765,17 +13765,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Band FFT Filter von</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4526"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4527"/>
         <source>There are no curves available on this plot!</source>
         <translation>In diesem Diagramm existieren keine Kurven!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4536"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4537"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4537"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4538"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Es gibt keine Kurven mit mehr als 2 Punkten in diesem Diagramm. Operation abgebrochen!</translation>
     </message>
@@ -16062,7 +16062,7 @@ Die Grenzen müssen innerhalb des X-Bereichs sein. Fall diese Werte nicht bekann
         <translation type="obsolete">Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="985"/>
+        <location filename="../src/matrix/Matrix.cpp" line="983"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
@@ -16089,12 +16089,12 @@ Do you want to insert cells?</source>
 Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1471"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1219"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1217"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
@@ -16119,22 +16119,22 @@ Do you want to insert cells?</source>
 Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="985"/>
+        <location filename="../src/matrix/Matrix.cpp" line="983"/>
         <source>Please provide a valid file name!</source>
         <translation type="unfinished">Bitte einen gültigen Dateinamen eingeben!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="848"/>
+        <location filename="../src/matrix/Matrix.cpp" line="846"/>
         <source>File format not handled, operation aborted!</source>
         <translation type="unfinished">Dateiformat konnte nicht verarbeitet werden, Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1391"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1389"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation type="unfinished">QtiPlot - ASCII-Export-Fehler</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1392"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1390"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation type="unfinished">Konnte nicht in Datei &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt; schreiben.&lt;p&gt;Bitte überprüfen Sie Ihre Schreibrechte!</translation>
     </message>
@@ -16164,57 +16164,57 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished">Um 90° drehen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="530"/>
+        <location filename="../src/matrix/Matrix.cpp" line="528"/>
         <source>Calculate Values</source>
         <translation type="unfinished">Werte berechnen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="557"/>
+        <location filename="../src/matrix/Matrix.cpp" line="555"/>
         <source>Clear Selection</source>
         <translation type="unfinished">Auswahl aufheben</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="672"/>
+        <location filename="../src/matrix/Matrix.cpp" line="670"/>
         <source>Paste</source>
         <translation type="unfinished">Einfügen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="707"/>
+        <location filename="../src/matrix/Matrix.cpp" line="705"/>
         <source>Delete Rows</source>
         <translation type="unfinished">Zeilen löschen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="738"/>
+        <location filename="../src/matrix/Matrix.cpp" line="736"/>
         <source>Delete Columns</source>
         <translation type="unfinished">Spalten löschen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="791"/>
+        <location filename="../src/matrix/Matrix.cpp" line="789"/>
         <source>Insert Row</source>
         <translation type="unfinished">Zeile einfügen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="810"/>
+        <location filename="../src/matrix/Matrix.cpp" line="808"/>
         <source>Insert Column</source>
         <translation type="unfinished">Spalte einfügen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1256"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1254"/>
         <source>Import Image</source>
         <translation type="unfinished">Bild importieren</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1374"/>
         <source>Forward FFT</source>
         <translation type="unfinished">Vorwärts FFT</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1374"/>
         <source>Inverse FFT</source>
         <translation type="unfinished">Inverse FFT</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1451"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1449"/>
         <source>Import ASCII File</source>
         <translation type="unfinished">ASCII-Datei importieren</translation>
     </message>
@@ -16224,12 +16224,12 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Fehler</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1471"/>
         <source>Memory Allocation Error</source>
         <translation type="unfinished">Speicherreservierungsfehler</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1474"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1472"/>
         <source>Not enough memory, operation aborted!</source>
         <translation type="unfinished">Nicht genug Speicher, Operation abgebrochen!</translation>
     </message>
@@ -16239,12 +16239,12 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished">Um -90° drehen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1462"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1460"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
         <translation type="unfinished">Aufgrund von Speicherbeschränkungen kann diese Änderung nicht rückgängig gemacht werden. Möchten Sie trotzdem fortfahren?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1464"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1462"/>
         <source>Warning</source>
         <translation type="unfinished">Warnung</translation>
     </message>
@@ -16254,12 +16254,12 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished">Dimensionen festlegen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1087"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1085"/>
         <source>Set Data Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1482"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
         <source>kB</source>
         <translation type="unfinished">kB</translation>
     </message>
@@ -16355,7 +16355,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished">Bearbeitete Zelle</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixModel.cpp" line="716"/>
+        <location filename="../src/matrix/MatrixModel.cpp" line="801"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
@@ -16383,6 +16383,16 @@ Wollen sie Zellen einfügen?</translation>
         <location filename="../src/matrix/MatrixModel.cpp" line="346"/>
         <source>Please enter positive values for which the product rows*columns does not exceed the maximum integer value available on your system!</source>
         <translation type="unfinished">Bitte geben Sie einen nichtnegativen Wert ein, für den das Produkt Zeilen*Spalten nicht die maximale Ganzzahlgröße Ihres Systems überschreitet!</translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixModel.cpp" line="800"/>
+        <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
+        <translation type="unfinished">Mehrzeilige Ausdrücke benötigen sehr viel mehr Zeit zur Auswertung! Möchten Sie trotzdem fortfahren?</translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixModel.cpp" line="801"/>
+        <source>Warning</source>
+        <translation type="unfinished">Warnung</translation>
     </message>
 </context>
 <context>
@@ -16461,22 +16471,22 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>MatrixValuesDialog</name>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="52"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="50"/>
         <source>QtiPlot - Set Matrix Values</source>
         <translation>QtiPlot - Setze Matrix-Werte</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="57"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="55"/>
         <source>For row (i)</source>
         <translation>Für Zeile (i)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="69"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="67"/>
         <source>to</source>
         <translation>bis</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="65"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="63"/>
         <source>For col (j)</source>
         <translation>Für Spalte (j)</translation>
     </message>
@@ -16526,12 +16536,12 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Der Spalten- und Zeilen-Index muss größer 0 sein!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="75"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="73"/>
         <source>Add &amp;Function</source>
         <translation type="unfinished">&amp;Funktion hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="76"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="74"/>
         <source>Add Ce&amp;ll</source>
         <translation type="unfinished">Ze&amp;lle hinzufügen</translation>
     </message>
@@ -17207,7 +17217,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="unfinished">Nichtlinearer Fit</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="237"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="242"/>
         <source>constant</source>
         <translation type="unfinished">Konstante</translation>
     </message>
@@ -19512,17 +19522,17 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>ScriptEdit</name>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="172"/>
+        <location filename="../src/ScriptEdit.cpp" line="186"/>
         <source>Auto&amp;exec</source>
         <translation>Automatisch ausführ&amp;en</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="206"/>
+        <location filename="../src/ScriptEdit.cpp" line="220"/>
         <source>&amp;Functions</source>
         <translation>&amp;Funktionen</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="410"/>
+        <location filename="../src/ScriptEdit.cpp" line="431"/>
         <source>Text</source>
         <translation>Text</translation>
     </message>
@@ -19532,27 +19542,27 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Python Quellcode</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="412"/>
+        <location filename="../src/ScriptEdit.cpp" line="433"/>
         <source>All Files</source>
         <translation>Alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="374"/>
+        <location filename="../src/ScriptEdit.cpp" line="388"/>
         <source>QtiPlot - Import Text From File</source>
         <translation>QtiPlot - Text aus Datei importieren</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="381"/>
+        <location filename="../src/ScriptEdit.cpp" line="395"/>
         <source>QtiPlot - Error Opening File</source>
         <translation>QtiPlot - Fehler beim Öffnen der Datei</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="381"/>
+        <location filename="../src/ScriptEdit.cpp" line="395"/>
         <source>Could not open file &quot;%1&quot; for reading.</source>
         <translation>Konnte Datei &quot;%1&quot; nicht zum Lesen öffnen.</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="417"/>
+        <location filename="../src/ScriptEdit.cpp" line="438"/>
         <source>Save Text to File</source>
         <translation>Text in Datei speichern</translation>
     </message>
@@ -19579,59 +19589,74 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">&amp;Nein</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="435"/>
+        <location filename="../src/ScriptEdit.cpp" line="456"/>
         <source>QtiPlot - File Save Error</source>
         <translation>QtiPlot - Fehler beim Sichern der Datei</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="436"/>
+        <location filename="../src/ScriptEdit.cpp" line="457"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Konnte nicht in Datei &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt; schreiben.&lt;p&gt;Bitte überprüfen Sie Ihre Schreibrechte!</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="64"/>
+        <location filename="../src/ScriptEdit.cpp" line="65"/>
         <source>E&amp;xecute</source>
         <translation>&amp;Ausführen</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="65"/>
+        <location filename="../src/ScriptEdit.cpp" line="66"/>
         <source>Ctrl+J</source>
         <translation>Ctrl+J</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="68"/>
+        <location filename="../src/ScriptEdit.cpp" line="69"/>
         <source>Execute &amp;All</source>
         <translation>&amp;Alles ausführen</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="69"/>
+        <location filename="../src/ScriptEdit.cpp" line="70"/>
         <source>Ctrl+Shift+J</source>
         <translation>Ctrl+Shift+J</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="72"/>
+        <location filename="../src/ScriptEdit.cpp" line="73"/>
         <source>&amp;Evaluate Expression</source>
         <translation>Ausdruck ausw&amp;erten</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="73"/>
+        <location filename="../src/ScriptEdit.cpp" line="74"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+Return</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="76"/>
+        <location filename="../src/ScriptEdit.cpp" line="77"/>
         <source>&amp;Print</source>
         <translation>&amp;Drucken</translation>
     </message>
     <message>
         <location filename="../src/ScriptEdit.cpp" line="79"/>
         <source>&amp;Import</source>
-        <translation>&amp;Importieren</translation>
+        <translation type="obsolete">&amp;Importieren</translation>
     </message>
     <message>
         <location filename="../src/ScriptEdit.cpp" line="82"/>
         <source>&amp;Export</source>
-        <translation>&amp;Exportieren</translation>
+        <translation type="obsolete">&amp;Exportieren</translation>
+    </message>
+    <message>
+        <location filename="../src/ScriptEdit.cpp" line="87"/>
+        <source>&amp;Save</source>
+        <translation type="unfinished">&amp;Speichern</translation>
+    </message>
+    <message>
+        <location filename="../src/ScriptEdit.cpp" line="80"/>
+        <source>&amp;Import...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ScriptEdit.cpp" line="94"/>
+        <source>Sa&amp;ve as...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -19871,32 +19896,32 @@ Wollen Sie sie überschreiben?</translation>
 <context>
     <name>SetColValuesDialog</name>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="56"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="57"/>
         <source>QtiPlot - Set column values</source>
         <translation>QtiPlot - Spaltenwerte setzen</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="61"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="62"/>
         <source>For row (i)</source>
         <translation>Für Zeile (i)</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="67"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="68"/>
         <source>to</source>
         <translation>bis</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="77"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="78"/>
         <source>Add function</source>
         <translation>Funktion hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="81"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="82"/>
         <source>Add column</source>
         <translation>Spalte hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="91"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="92"/>
         <source>Add cell</source>
         <translation>Zelle hinzufügen</translation>
     </message>
@@ -19931,17 +19956,17 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="115"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="118"/>
         <source>&amp;Apply</source>
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="117"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="120"/>
         <source>&amp;Close</source>
         <translation type="unfinished">S&amp;chließen</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="130"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="133"/>
         <source>Use built-in muParser (much faster)</source>
         <translation type="unfinished">Eingebauten muParser benutzen (viel schneller)</translation>
     </message>
@@ -20480,7 +20505,7 @@ Wollen Sie sie überschreiben?</translation>
 <context>
     <name>Table</name>
     <message>
-        <location filename="../src/Table.cpp" line="2184"/>
+        <location filename="../src/Table.cpp" line="2197"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
@@ -20510,17 +20535,17 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">&amp;Nein</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2418"/>
+        <location filename="../src/Table.cpp" line="2431"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation type="unfinished">QtiPlot - ASCII-Export-Fehler</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2710"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2710"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
@@ -20530,7 +20555,7 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">Nein</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2710"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -20602,17 +20627,17 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
         <translation type="obsolete">QtiPlot - Datei lesen...</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2661"/>
+        <location filename="../src/Table.cpp" line="2674"/>
         <source>Rows will be deleted from the table!</source>
         <translation type="unfinished">Es werden Zeilen aus der Tabelle gelöscht!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2696"/>
+        <location filename="../src/Table.cpp" line="2709"/>
         <source>Do you really want to continue?</source>
         <translation type="unfinished">Wollen Sie wirklich fortfahren?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2695"/>
+        <location filename="../src/Table.cpp" line="2708"/>
         <source>Columns will be deleted from the table!</source>
         <translation type="unfinished">Es werden Spalten aus der Tabelle gelöscht!</translation>
     </message>
@@ -20669,7 +20694,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <translation type="obsolete">Der Name der Spalte muss sich vom Namen der Tabelle unterscheiden: &lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="886"/>
+        <location filename="../src/Table.cpp" line="890"/>
         <source>There is already a column called : &lt;b&gt;</source>
         <translation>Es gibt bereits eine Spalte namens: &lt;b&gt;</translation>
     </message>
@@ -20681,52 +20706,52 @@ Do you want to insert cells?</source>
 Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1568"/>
+        <location filename="../src/Table.cpp" line="1581"/>
         <source>Please indicate the name of the leading column!</source>
         <translation type="unfinished">Bitte den Namen der führenden Spalte angeben!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1573"/>
+        <location filename="../src/Table.cpp" line="1586"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation type="unfinished">Die führende Spalte hat den Typ &apos;Text&apos;! Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1591"/>
+        <location filename="../src/Table.cpp" line="1604"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation type="unfinished">Die führende Spalte ist leer! Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2419"/>
+        <location filename="../src/Table.cpp" line="2432"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation type="unfinished">Konnte nicht in Datei schreiben: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1244"/>
+        <location filename="../src/Table.cpp" line="1257"/>
         <source>Column &apos;%1&apos; is read only!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1169"/>
+        <location filename="../src/Table.cpp" line="1182"/>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2185"/>
+        <location filename="../src/Table.cpp" line="2198"/>
         <source>The folowing columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2185"/>
+        <location filename="../src/Table.cpp" line="2198"/>
         <source>are read only!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2354"/>
+        <location filename="../src/Table.cpp" line="2367"/>
         <source>Qtiplot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2354"/>
+        <location filename="../src/Table.cpp" line="2367"/>
         <source>Reading file...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20736,9 +20761,19 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">QtiPlot - Eingabefehler</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="3013"/>
+        <location filename="../src/Table.cpp" line="3026"/>
         <source>kB</source>
         <translation type="unfinished">kB</translation>
+    </message>
+    <message>
+        <location filename="../src/Table.cpp" line="513"/>
+        <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
+        <translation type="unfinished">Mehrzeilige Ausdrücke benötigen sehr viel mehr Zeit zur Auswertung! Möchten Sie trotzdem fortfahren?</translation>
+    </message>
+    <message>
+        <location filename="../src/Table.cpp" line="514"/>
+        <source>Warning</source>
+        <translation type="unfinished">Warnung</translation>
     </message>
 </context>
 <context>
@@ -21568,7 +21603,7 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>muParserScript</name>
     <message>
-        <location filename="../src/muParserScript.cpp" line="304"/>
+        <location filename="../src/muParserScript.cpp" line="293"/>
         <source>Out of memory</source>
         <translation>Kein Speicher mehr verfügbar</translation>
     </message>
@@ -21593,7 +21628,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Syntaxfehler: &apos;=&apos; ohne Variablenname.</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="98"/>
+        <location filename="../src/muParserScript.cpp" line="87"/>
         <source>col() works only on tables!</source>
         <translation>col() funktioniert nur bei Tabellen!</translation>
     </message>
@@ -21603,69 +21638,69 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">cell() funktioniert nur bei Matrizen!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="194"/>
+        <location filename="../src/muParserScript.cpp" line="183"/>
         <source>There&apos;s no column named %1 in table %2!</source>
         <translation>Es gibt keine Spalte namens %1 in Tabelle %2!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="240"/>
+        <location filename="../src/muParserScript.cpp" line="229"/>
         <source>There&apos;s no row %1 in table %2!</source>
         <translation>Es gibt keine Zeile %1 in Tabelle %2!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="243"/>
+        <location filename="../src/muParserScript.cpp" line="232"/>
         <source>There&apos;s no column %1 in table %2!</source>
         <translation>Es gibt keine Spalte namens %1 in Tabelle %2!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="223"/>
+        <location filename="../src/muParserScript.cpp" line="212"/>
         <source>There&apos;s no row %1 in matrix %2!</source>
         <translation>Es gibt keine Zeile %1 in Matrix %2!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="226"/>
+        <location filename="../src/muParserScript.cpp" line="215"/>
         <source>There&apos;s no column %1 in matrix %2!</source>
         <translation>Es gibt keine Spalte namens %1 in Matrix %2!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="160"/>
+        <location filename="../src/muParserScript.cpp" line="149"/>
         <source>tablecol() works only on tables!</source>
         <translation>tablecol() funkioniert nur bei Tabellen!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="184"/>
+        <location filename="../src/muParserScript.cpp" line="173"/>
         <source>tablecol: wrong number of arguments (need 2, got %1)</source>
         <translation>tablecol: falsche Anzahl an Argumenten (2 benötigt, %1 angegeben)</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="186"/>
+        <location filename="../src/muParserScript.cpp" line="175"/>
         <source>tablecol: first argument must be a string (table name)</source>
         <translation>tablecol: erstes Argument muss vom Typ String sein (Tabellenname)</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="189"/>
+        <location filename="../src/muParserScript.cpp" line="178"/>
         <source>Couldn&apos;t find a table named %1.</source>
         <translation>Konnte keine Tabelle mit dem Namen %1 finden.</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="236"/>
+        <location filename="../src/muParserScript.cpp" line="225"/>
         <source>cell() works only on tables and matrices!</source>
         <translation>cell() funktioniert nur mit Tabellen und Matrizen!</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="78"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
-        <translation>Mehrzeilige Ausdrücke benötigen sehr viel mehr Zeit zur Auswertung! Möchten Sie trotzdem fortfahren?</translation>
+        <translation type="obsolete">Mehrzeilige Ausdrücke benötigen sehr viel mehr Zeit zur Auswertung! Möchten Sie trotzdem fortfahren?</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="79"/>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="79"/>
         <source>Warning</source>
-        <translation>Warnung</translation>
+        <translation type="obsolete">Warnung</translation>
     </message>
 </context>
 <context>

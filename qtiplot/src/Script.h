@@ -60,7 +60,7 @@ class Script : public QObject
     //! Return the code that will be executed when calling exec() or eval()
     const QString code() const { return Code; }
     //! Return the context in which the code is to be executed.
-    const QObject* context() const { return Context; }
+    QObject* context() const { return Context; }
     //! Like QObject::name, but with unicode support.
     const QString name() const { return Name; }
     //! Return whether errors / exceptions are to be emitted or silently ignored

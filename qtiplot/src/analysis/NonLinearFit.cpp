@@ -126,13 +126,16 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 	return true;
 }
 
-void NonLinearFit::setParametersList(const QStringList& lst)
+bool NonLinearFit::setParametersList(const QStringList& lst)
 {
 	if (lst.count() < 1){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("You must provide a list containing at least one parameter for this type of fit. Operation aborted!"));
 		d_init_err = true;
-		return;
+		if (d_p > 0)
+			freeWorkspace();
+		d_p = 0;
+		return false;
 	}
 
 	d_init_err = false;
@@ -146,6 +149,8 @@ void NonLinearFit::setParametersList(const QStringList& lst)
 	d_param_explain.clear();
 	for (int i=0; i<d_p; i++)
 		d_param_explain << "";
+	
+	return true;
 }
 
 void NonLinearFit::calculateFitCurveData(double *X, double *Y)

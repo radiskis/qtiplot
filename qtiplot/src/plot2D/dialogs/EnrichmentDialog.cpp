@@ -200,7 +200,7 @@ void EnrichmentDialog::initTextPage()
     connect(textDefaultBtn, SIGNAL(clicked()), this, SLOT(setTextDefaultValues()));
 	vl->addWidget(textDefaultBtn);
 
-    textApplyToBtn = new QPushButton(tr("Apply &to..."));
+    textApplyToBtn = new QPushButton(tr("Apply format &to..."));
 	connect(textApplyToBtn, SIGNAL(clicked()), this, SLOT(textFormatApplyTo()));
 	vl->addWidget(textApplyToBtn);
 
@@ -633,8 +633,13 @@ void EnrichmentDialog::apply()
 		setCoordinates(unitBox->currentIndex());
 	else if (patternPage && tabWidget->currentPage() == patternPage)
 		patternApplyTo();
-	else if (textPage && tabWidget->currentPage() == textPage)
+	else if (textPage && tabWidget->currentPage() == textPage){
+		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
+		if (l)
+			l->setText(textEditBox->text());
+		
 		textFormatApplyTo();
+	}
 }
 
 void EnrichmentDialog::fetchImage()
@@ -983,7 +988,7 @@ void EnrichmentDialog::updateTransparency(int alpha)
 }
 
 void EnrichmentDialog::textFormatApplyTo()
-{
+{	
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	switch(textApplyToBox->currentIndex()){
 		case 0://this object

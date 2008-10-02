@@ -6702,7 +6702,7 @@ The following special codes can be used:
 <context>
     <name>EnrichmentDialog</name>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="680"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="685"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -6834,7 +6834,7 @@ The following special codes can be used:
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="203"/>
         <source>Apply &amp;to...</source>
-        <translation>Применить &amp;к...</translation>
+        <translation type="obsolete">Применить &amp;к...</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="331"/>
@@ -6957,32 +6957,32 @@ The following special codes can be used:
         <translation>&amp;Геометрия</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="680"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="685"/>
         <source>Network connection error</source>
         <translation>Ошибка сетевого соединения</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="681"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="686"/>
         <source>Error while trying to connect to host %1:</source>
         <translation>Ошибка при попытке соединения с %1:</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="682"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="687"/>
         <source>Please verify your network connection!</source>
         <translation>Проверьте сетевое соединение!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="698"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="703"/>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - Импортировать изображение из файла</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="724"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="729"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="725"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="730"/>
         <source>The file %1 doesn&apos;t exist. The image cannot be restored when reloading the project file!</source>
         <translation>Файл %1 не существует. Изображение не может быть восстановлено при повторном открытии проекта!</translation>
     </message>
@@ -7020,6 +7020,11 @@ The following special codes can be used:
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="277"/>
         <source>Line</source>
         <translation>Линия</translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="203"/>
+        <source>Apply format &amp;to...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8197,7 +8202,7 @@ The following special codes can be used:
         <translation>Функция</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1388"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1398"/>
         <source>Gauss</source>
         <translation>Гаусс</translation>
     </message>
@@ -8222,7 +8227,7 @@ The following special codes can be used:
         <translation>Итераций</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1388"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1398"/>
         <source>Lorentz</source>
         <translation>Лоренц</translation>
     </message>
@@ -8242,7 +8247,7 @@ The following special codes can be used:
         <translation>Симплекс Нелдера-Мида</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1282"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1292"/>
         <source>No data tables</source>
         <translation>Нет таблиц данных</translation>
     </message>
@@ -8312,12 +8317,12 @@ The following special codes can be used:
         <translation>Введите параметры удовлетворяющие условию: начало &lt; конец!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1620"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1630"/>
         <source>Please perform a fit first and try again.</source>
         <translation>Сперва нужно аппроксимировать данные.</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1179"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1182"/>
         <source>Please verify that you have initialized all the parameters!</source>
         <translation>Пожалуйста проверьте, что все параметры заданы!</translation>
     </message>
@@ -8332,7 +8337,7 @@ The following special codes can be used:
         <translation>Точек</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1390"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1400"/>
         <source>Polynomial</source>
         <translation>Полиномиальная</translation>
     </message>
@@ -8342,7 +8347,7 @@ The following special codes can be used:
         <translation>Порядок полинома</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1619"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1629"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
@@ -8362,7 +8367,7 @@ The following special codes can be used:
         <translation>QtiPlot - Ошибка ввода</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1181"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1184"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Ошибка ввода функции</translation>
     </message>
@@ -8492,22 +8497,22 @@ The following special codes can be used:
         <translation>Вы не можете определять функции рекурсивно!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1472"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1482"/>
         <source>QtiPlot fit model</source>
         <translation>Аппроксимационная модель</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1473"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1483"/>
         <source>All files</source>
         <translation>Все файлы</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1474"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1484"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1474"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1484"/>
         <source>Save Fit Model As</source>
         <translation>Сохранить аппроксимационную модель как</translation>
     </message>
@@ -8574,7 +8579,7 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1643"/>
+        <location filename="../src/analysis/dialogs/FitDialog.cpp" line="1653"/>
         <source>Error: </source>
         <translation>Ошибка:</translation>
     </message>
@@ -8972,7 +8977,7 @@ The following special codes can be used:
         <translation>&amp;Свойства...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4536"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4537"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
@@ -8982,7 +8987,7 @@ The following special codes can be used:
         <translation>QtiPlot - Ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4526"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4527"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
@@ -9017,12 +9022,12 @@ The following special codes can be used:
         <translation>Столбцы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4526"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4527"/>
         <source>There are no curves available on this plot!</source>
         <translation>На данном графике нет доступных кривых!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4537"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4538"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>На данном графике нет кривых с более чем двумя точками. Операция прервана!</translation>
     </message>
@@ -10318,7 +10323,7 @@ have the same number of rows.</source>
         <translation>Ошибка вычисления - матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1219"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1217"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
@@ -10329,32 +10334,32 @@ have the same number of rows.</source>
         <translation>Ошибка обращения, матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1471"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="985"/>
+        <location filename="../src/matrix/Matrix.cpp" line="983"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="985"/>
+        <location filename="../src/matrix/Matrix.cpp" line="983"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="848"/>
+        <location filename="../src/matrix/Matrix.cpp" line="846"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1391"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1389"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ошибка при экспортировании в ASCII</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1392"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1390"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Невозможно выполнить записать в файл: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Удостоверьтись, что у вас есть права доступа на запись в данное место!</translation>
     </message>
@@ -10384,67 +10389,67 @@ have the same number of rows.</source>
         <translation>Повернуть на 90°</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="530"/>
+        <location filename="../src/matrix/Matrix.cpp" line="528"/>
         <source>Calculate Values</source>
         <translation>Рассчитать значения</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="557"/>
+        <location filename="../src/matrix/Matrix.cpp" line="555"/>
         <source>Clear Selection</source>
         <translation>Очистить выделенное</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="672"/>
+        <location filename="../src/matrix/Matrix.cpp" line="670"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="707"/>
+        <location filename="../src/matrix/Matrix.cpp" line="705"/>
         <source>Delete Rows</source>
         <translation>Удалить строки</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="738"/>
+        <location filename="../src/matrix/Matrix.cpp" line="736"/>
         <source>Delete Columns</source>
         <translation>Удалить столбцы</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="791"/>
+        <location filename="../src/matrix/Matrix.cpp" line="789"/>
         <source>Insert Row</source>
         <translation>Вставить строку</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="810"/>
+        <location filename="../src/matrix/Matrix.cpp" line="808"/>
         <source>Insert Column</source>
         <translation>Вставить столбец</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1256"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1254"/>
         <source>Import Image</source>
         <translation>Импорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1374"/>
         <source>Forward FFT</source>
         <translation>Прямое БПФ</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1376"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1374"/>
         <source>Inverse FFT</source>
         <translation>Обратное БПФ</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1451"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1449"/>
         <source>Import ASCII File</source>
         <translation>Импорт файла ASCII</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1473"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1471"/>
         <source>Memory Allocation Error</source>
         <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1474"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1472"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
@@ -10454,12 +10459,12 @@ have the same number of rows.</source>
         <translation>Повернуть на -90°</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1462"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1460"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
         <translation>Из-за ограниченной памяти невозможно будет отменить эти изменения. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1464"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1462"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
@@ -10469,12 +10474,12 @@ have the same number of rows.</source>
         <translation>Задать размеры</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1087"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1085"/>
         <source>Set Data Mode</source>
         <translation>Режим данных</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1482"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1480"/>
         <source>kB</source>
         <translation>кб</translation>
     </message>
@@ -10570,7 +10575,7 @@ have the same number of rows.</source>
         <translation>Редактирование ячейки</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixModel.cpp" line="716"/>
+        <location filename="../src/matrix/MatrixModel.cpp" line="801"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -10598,6 +10603,16 @@ have the same number of rows.</source>
         <location filename="../src/matrix/MatrixModel.cpp" line="346"/>
         <source>Please enter positive values for which the product rows*columns does not exceed the maximum integer value available on your system!</source>
         <translation>Введите положительные числа, произведение которых не превышает INT_MAX в вашей системе!</translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixModel.cpp" line="800"/>
+        <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
+        <translation type="unfinished">Многострочные выражения требуют намного больше времени для вычисления! Продолжить?</translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixModel.cpp" line="801"/>
+        <source>Warning</source>
+        <translation type="unfinished">Предупреждение</translation>
     </message>
 </context>
 <context>
@@ -10671,12 +10686,12 @@ have the same number of rows.</source>
 <context>
     <name>MatrixValuesDialog</name>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="76"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="74"/>
         <source>Add Ce&amp;ll</source>
         <translation>Добавить &amp;ячейку</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="75"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="73"/>
         <source>Add &amp;Function</source>
         <translation>Добавить &amp;функцию</translation>
     </message>
@@ -10696,22 +10711,22 @@ have the same number of rows.</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="65"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="63"/>
         <source>For col (j)</source>
         <translation>Кол. (j) от</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="57"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="55"/>
         <source>For row (i)</source>
         <translation>Строки (i) от</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="52"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="50"/>
         <source>QtiPlot - Set Matrix Values</source>
         <translation>QtiPlot - Задание элементов матрицы</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="69"/>
+        <location filename="../src/matrix/MatrixValuesDialog.cpp" line="67"/>
         <source>to</source>
         <translation>до</translation>
     </message>
@@ -10976,7 +10991,7 @@ have the same number of rows.</source>
         <translation>Для выполнения этого типа аппроксимации список параметров должен содержать хотя бы один элемент. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/NonLinearFit.cpp" line="237"/>
+        <location filename="../src/analysis/NonLinearFit.cpp" line="242"/>
         <source>constant</source>
         <translation>константа</translation>
     </message>
@@ -12840,99 +12855,114 @@ have the same number of rows.</source>
 <context>
     <name>ScriptEdit</name>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="412"/>
+        <location filename="../src/ScriptEdit.cpp" line="433"/>
         <source>All Files</source>
         <translation>Все файлы</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="172"/>
+        <location filename="../src/ScriptEdit.cpp" line="186"/>
         <source>Auto&amp;exec</source>
         <translation>Авто&amp;выполнение</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="381"/>
+        <location filename="../src/ScriptEdit.cpp" line="395"/>
         <source>Could not open file &quot;%1&quot; for reading.</source>
         <translation>Невозможно открыть файл &quot;%1&quot; для чтения.</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="436"/>
+        <location filename="../src/ScriptEdit.cpp" line="457"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Невозможно выполнить запись в файл: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Удостоверьтесь, что у вас есть права доступа на запись в данное место!</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="65"/>
+        <location filename="../src/ScriptEdit.cpp" line="66"/>
         <source>Ctrl+J</source>
         <translation>Ctrl+J</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="73"/>
+        <location filename="../src/ScriptEdit.cpp" line="74"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+Return</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="69"/>
+        <location filename="../src/ScriptEdit.cpp" line="70"/>
         <source>Ctrl+Shift+J</source>
         <translation>Ctrl+Shift+J</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="72"/>
+        <location filename="../src/ScriptEdit.cpp" line="73"/>
         <source>&amp;Evaluate Expression</source>
         <translation>&amp;Вычислить выражение</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="64"/>
+        <location filename="../src/ScriptEdit.cpp" line="65"/>
         <source>E&amp;xecute</source>
         <translation>&amp;Выполнить</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="68"/>
+        <location filename="../src/ScriptEdit.cpp" line="69"/>
         <source>Execute &amp;All</source>
         <translation>Выполнить в&amp;сё</translation>
     </message>
     <message>
         <location filename="../src/ScriptEdit.cpp" line="82"/>
         <source>&amp;Export</source>
-        <translation>&amp;Экспортировать</translation>
+        <translation type="obsolete">&amp;Экспортировать</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="206"/>
+        <location filename="../src/ScriptEdit.cpp" line="220"/>
         <source>&amp;Functions</source>
         <translation>&amp;Функции</translation>
     </message>
     <message>
         <location filename="../src/ScriptEdit.cpp" line="79"/>
         <source>&amp;Import</source>
-        <translation>&amp;Импортировать</translation>
+        <translation type="obsolete">&amp;Импортировать</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="76"/>
+        <location filename="../src/ScriptEdit.cpp" line="77"/>
         <source>&amp;Print</source>
         <translation>&amp;Печать</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="381"/>
+        <location filename="../src/ScriptEdit.cpp" line="395"/>
         <source>QtiPlot - Error Opening File</source>
         <translation>QtiPlot - Ошибка открытия файла</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="435"/>
+        <location filename="../src/ScriptEdit.cpp" line="456"/>
         <source>QtiPlot - File Save Error</source>
         <translation>QtiPlot - ошибка сохранения файла</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="374"/>
+        <location filename="../src/ScriptEdit.cpp" line="388"/>
         <source>QtiPlot - Import Text From File</source>
         <translation>QtiPlot - Импортировать текст из файла</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="417"/>
+        <location filename="../src/ScriptEdit.cpp" line="438"/>
         <source>Save Text to File</source>
         <translation>Сохранить текст в файл</translation>
     </message>
     <message>
-        <location filename="../src/ScriptEdit.cpp" line="410"/>
+        <location filename="../src/ScriptEdit.cpp" line="431"/>
         <source>Text</source>
         <translation>Текст</translation>
+    </message>
+    <message>
+        <location filename="../src/ScriptEdit.cpp" line="87"/>
+        <source>&amp;Save</source>
+        <translation type="unfinished">&amp;Сохранить</translation>
+    </message>
+    <message>
+        <location filename="../src/ScriptEdit.cpp" line="80"/>
+        <source>&amp;Import...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ScriptEdit.cpp" line="94"/>
+        <source>Sa&amp;ve as...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13157,47 +13187,47 @@ have the same number of rows.</source>
 <context>
     <name>SetColValuesDialog</name>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="91"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="92"/>
         <source>Add cell</source>
         <translation>Добавить ячейку</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="81"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="82"/>
         <source>Add column</source>
         <translation>Добавить столбец</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="77"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="78"/>
         <source>Add function</source>
         <translation>Добавить функцию</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="115"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="118"/>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="117"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="120"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="61"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="62"/>
         <source>For row (i)</source>
         <translation>Строки (i) от</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="56"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="57"/>
         <source>QtiPlot - Set column values</source>
         <translation>QtiPlot - Установка значений столбца</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="67"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="68"/>
         <source>to</source>
         <translation>до</translation>
     </message>
     <message>
-        <location filename="../src/SetColValuesDialog.cpp" line="130"/>
+        <location filename="../src/SetColValuesDialog.cpp" line="133"/>
         <source>Use built-in muParser (much faster)</source>
         <translation>Использовать встроенный muParser (значительно быстрее)</translation>
     </message>
@@ -13696,104 +13726,114 @@ have the same number of rows.</source>
 <context>
     <name>Table</name>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2710"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2695"/>
+        <location filename="../src/Table.cpp" line="2708"/>
         <source>Columns will be deleted from the table!</source>
         <translation>Столбцы будут удалены из данной таблицы!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2419"/>
+        <location filename="../src/Table.cpp" line="2432"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>Не удалось записать в файл: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2696"/>
+        <location filename="../src/Table.cpp" line="2709"/>
         <source>Do you really want to continue?</source>
         <translation>Вы действительно хотите продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1568"/>
+        <location filename="../src/Table.cpp" line="1581"/>
         <source>Please indicate the name of the leading column!</source>
         <translation>Укажите имя ведущего столбца!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2710"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2418"/>
+        <location filename="../src/Table.cpp" line="2431"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ошибка при экспортировании в ASCII</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2184"/>
+        <location filename="../src/Table.cpp" line="2197"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2661"/>
+        <location filename="../src/Table.cpp" line="2674"/>
         <source>Rows will be deleted from the table!</source>
         <translation>Строки будут удалены из таблицы!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1573"/>
+        <location filename="../src/Table.cpp" line="1586"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation>Ведущий столбец имеет тип \&quot;Текст\&quot;. Операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1591"/>
+        <location filename="../src/Table.cpp" line="1604"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation>Ведущий столбец пуст. Операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="886"/>
+        <location filename="../src/Table.cpp" line="890"/>
         <source>There is already a column called : &lt;b&gt;</source>
         <translation>Уже существует столбец с названием : &lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2697"/>
+        <location filename="../src/Table.cpp" line="2710"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1244"/>
+        <location filename="../src/Table.cpp" line="1257"/>
         <source>Column &apos;%1&apos; is read only!</source>
         <translation>Столбец &apos;%1&apos; - только для чтения!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="1169"/>
+        <location filename="../src/Table.cpp" line="1182"/>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
         <translation>Таблице &apos;%1&apos; содержит столбцы только для чтения! Операция прервана!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2185"/>
+        <location filename="../src/Table.cpp" line="2198"/>
         <source>The folowing columns</source>
         <translation>Следующие столбцы</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2185"/>
+        <location filename="../src/Table.cpp" line="2198"/>
         <source>are read only!</source>
         <translation>только для чтения!</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2354"/>
+        <location filename="../src/Table.cpp" line="2367"/>
         <source>Qtiplot</source>
         <translation>Qtiplot</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="2354"/>
+        <location filename="../src/Table.cpp" line="2367"/>
         <source>Reading file...</source>
         <translation>Читается файл...</translation>
     </message>
     <message>
-        <location filename="../src/Table.cpp" line="3013"/>
+        <location filename="../src/Table.cpp" line="3026"/>
         <source>kB</source>
         <translation>кб</translation>
+    </message>
+    <message>
+        <location filename="../src/Table.cpp" line="513"/>
+        <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
+        <translation type="unfinished">Многострочные выражения требуют намного больше времени для вычисления! Продолжить?</translation>
+    </message>
+    <message>
+        <location filename="../src/Table.cpp" line="514"/>
+        <source>Warning</source>
+        <translation type="unfinished">Предупреждение</translation>
     </message>
 </context>
 <context>
@@ -14616,79 +14656,79 @@ have the same number of rows.</source>
 <context>
     <name>muParserScript</name>
     <message>
-        <location filename="../src/muParserScript.cpp" line="189"/>
+        <location filename="../src/muParserScript.cpp" line="178"/>
         <source>Couldn&apos;t find a table named %1.</source>
         <translation>Не могу найти таблицу с именем %1.</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="304"/>
+        <location filename="../src/muParserScript.cpp" line="293"/>
         <source>Out of memory</source>
         <translation>Вне области памяти</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="226"/>
+        <location filename="../src/muParserScript.cpp" line="215"/>
         <source>There&apos;s no column %1 in matrix %2!</source>
         <translation>В матрице %2 нет столбца %1!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="243"/>
+        <location filename="../src/muParserScript.cpp" line="232"/>
         <source>There&apos;s no column %1 in table %2!</source>
         <translation>В таблице %2 нет столбца %1!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="194"/>
+        <location filename="../src/muParserScript.cpp" line="183"/>
         <source>There&apos;s no column named %1 in table %2!</source>
         <translation>В таблице %2 нет столбца с именем %1!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="223"/>
+        <location filename="../src/muParserScript.cpp" line="212"/>
         <source>There&apos;s no row %1 in matrix %2!</source>
         <translation>В матрице %2 нет строки %1!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="240"/>
+        <location filename="../src/muParserScript.cpp" line="229"/>
         <source>There&apos;s no row %1 in table %2!</source>
         <translation>В таблице %2 нет строки %1!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="236"/>
+        <location filename="../src/muParserScript.cpp" line="225"/>
         <source>cell() works only on tables and matrices!</source>
         <translation>cell() работает только с таблицами и матрицами!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="98"/>
+        <location filename="../src/muParserScript.cpp" line="87"/>
         <source>col() works only on tables!</source>
         <translation>col() работает только с таблицами!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="160"/>
+        <location filename="../src/muParserScript.cpp" line="149"/>
         <source>tablecol() works only on tables!</source>
         <translation>tablecol() работает только с таблицами!</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="186"/>
+        <location filename="../src/muParserScript.cpp" line="175"/>
         <source>tablecol: first argument must be a string (table name)</source>
         <translation>tablecol: первый аргумент должен быть строкой (имя таблицы)</translation>
     </message>
     <message>
-        <location filename="../src/muParserScript.cpp" line="184"/>
+        <location filename="../src/muParserScript.cpp" line="173"/>
         <source>tablecol: wrong number of arguments (need 2, got %1)</source>
         <translation>tablecol: неверное число аргументов (требуется 2, получили %1)</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="78"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
-        <translation>Многострочные выражения требуют намного больше времени для вычисления! Продолжить?</translation>
+        <translation type="obsolete">Многострочные выражения требуют намного больше времени для вычисления! Продолжить?</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="79"/>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <location filename="../src/muParserScript.cpp" line="79"/>
         <source>Warning</source>
-        <translation>Предупреждение</translation>
+        <translation type="obsolete">Предупреждение</translation>
     </message>
 </context>
 </TS>
