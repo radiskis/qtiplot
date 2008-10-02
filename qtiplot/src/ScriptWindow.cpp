@@ -249,7 +249,7 @@ void ScriptWindow::newScript()
 
 void ScriptWindow::open(const QString& fn)
 {
-	QString s = te->importASCII(fn);
+	QString s = te->import(fn);
 	if (!s.isEmpty())
 		fileName = s;
 }

@@ -76,7 +76,7 @@ class Fit : public Filter
 
 		int numParameters(){return d_p;};
 		QStringList parameterNames(){return d_param_names;};
-		virtual void setParametersList(const QStringList&){};
+		virtual bool setParametersList(const QStringList&){return true;};
         void setParameterExplanations(const QStringList& lst){d_param_explain = lst;};
 
         double initialGuess(int parIndex){return gsl_vector_get(d_param_init, parIndex);};

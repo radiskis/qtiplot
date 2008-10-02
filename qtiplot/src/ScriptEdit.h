@@ -58,6 +58,7 @@ class ScriptEdit: public QTextEdit, public scripted
 	bool error(){return d_error;};
 
     void setCompleter(QCompleter *c);
+	void setFileName(const QString& fn);
 
   public slots:
     void execute();
@@ -65,8 +66,9 @@ class ScriptEdit: public QTextEdit, public scripted
     void evaluate();
     void print();
     void exportPDF(const QString& fileName);
+  	QString save();
     QString exportASCII(const QString &file=QString::null);
-    QString importASCII(const QString &file=QString::null);
+    QString import(const QString &file=QString::null);
     void insertFunction(const QString &);
     void insertFunction(QAction * action);
     void setContext(QObject *context) { myScript->setContext(context); }
@@ -84,7 +86,7 @@ class ScriptEdit: public QTextEdit, public scripted
 
   private:
     Script *myScript;
-    QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionImport, *actionExport;
+    QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionImport, *actionSave, *actionExport;
     //! Submenu of context menu with mathematical functions.
   	QMenu *functionsMenu;
   	//! Cursor used for output of evaluation results and error messages.
@@ -103,6 +105,7 @@ class ScriptEdit: public QTextEdit, public scripted
 	bool d_changing_fmt;
 
 	QCompleter *d_completer;
+  	QString d_file_name;
 
   private slots:
 	  //! Insert an error message from the scripting system at printCursor.

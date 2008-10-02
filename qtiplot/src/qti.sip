@@ -869,8 +869,8 @@ public:
   void setText(const QString &s);
 
   void exportPDF(const QString& fileName);
-  QString exportASCII(const QString &file=QString::null);
-  QString importASCII(const QString &file=QString::null);
+  QString exportASCII(const QString &file=QString::null)/PyName=export/;
+  QString import(const QString &file=QString::null);
 
   void showLineNumbers(bool = true);
 
@@ -1405,7 +1405,7 @@ public:
 %MethodCode
   SIPQTI_APP(new sipNonLinearFit(app, a0, *a1, a2, a3))
 %End
-  void setParametersList(...) /PyName=setParameters/;
+  void setParameters(...);
 %MethodCode
   QStringList l;
   char *item;
@@ -1414,6 +1414,7 @@ public:
       l << item;
     else
       sipIsErr = 1;
+	 
   sipCpp->setParametersList(l);
 %End
   // TODO: make it accept Python callables

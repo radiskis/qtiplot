@@ -1131,6 +1131,7 @@ void FitDialog::accept()
 	} else
 		n = rows;
 
+	QStringList parameters = QStringList();
 	MyParser parser;
 	bool error = false;
 #ifdef Q_CC_MSVC
@@ -1153,11 +1154,12 @@ void FitDialog::accept()
 					paramRangeRight[j] = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
 					paramsInit[j] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
+					parameters << boxParams->item(i, 0)->text();
 					j++;
 				} else {
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					QString constName = boxParams->item(i, 0)->text();
-					((NonLinearFit *)d_current_fit)->setConstant(constName, val);
+					nlf->setConstant(constName, val);
 					parser.DefineConst(constName.ascii(), val);	
 				}
 			}
@@ -1167,6 +1169,7 @@ void FitDialog::accept()
 				paramRangeRight[i] = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
 				paramsInit[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 				parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[i]);
+				parameters << boxParams->item(i, 0)->text();
 			}
 		}
 
@@ -1190,9 +1193,12 @@ void FitDialog::accept()
 #else
 			modifyGuesses (paramsInit);
 #endif
-		if (d_current_fit->type() == Fit::User)
-			d_current_fit->setFormula(formula);
-
+		
+		if (nlf){
+			if (!nlf->setParametersList(parameters)) return;
+			if (!nlf->setFormula(formula, false)) return;
+		}
+		
 #ifdef Q_CC_MSVC
 		d_current_fit->setInitialGuesses(paramsInit.data());
 #else

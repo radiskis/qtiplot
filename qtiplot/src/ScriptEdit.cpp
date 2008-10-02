@@ -41,9 +41,10 @@
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QStringListModel>
+#include <QShortcut>
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
-  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0)
+  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0), d_file_name(QString::null)
 {
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&,const QString&,int)), this, SLOT(insertErrorMsg(const QString&)));
@@ -76,10 +77,21 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionPrint = new QAction(tr("&Print"), this);
 	connect(actionPrint, SIGNAL(activated()), this, SLOT(print()));
 
-	actionImport = new QAction(tr("&Import"), this);
-	connect(actionImport, SIGNAL(activated()), this, SLOT(importASCII()));
+	actionImport = new QAction(tr("&Import..."), this);
+	actionImport->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O));
+	connect(actionImport, SIGNAL(activated()), this, SLOT(import()));
 
-	actionExport = new QAction(tr("&Export"), this);
+	QShortcut *accelImport = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O), this);
+	connect(accelImport, SIGNAL(activated()), this, SLOT(import()));
+	
+	actionSave = new QAction(tr("&Save"), this);
+	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
+	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
+	
+	QShortcut *accelSave = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S), this);
+	connect(accelSave, SIGNAL(activated()), this, SLOT(save()));
+	
+	actionExport = new QAction(tr("Sa&ve as..."), this);
 	connect(actionExport, SIGNAL(activated()), this, SLOT(exportASCII()));
 
 	functionsMenu = new QMenu(this);
@@ -161,6 +173,8 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 
 	menu->addAction(actionPrint);
 	menu->addAction(actionImport);
+	menu->insertSeparator();
+	menu->addAction(actionSave);
 	menu->addAction(actionExport);
 	menu->insertSeparator();
 
@@ -363,7 +377,7 @@ void ScriptEdit::print()
 		doc->print(&printer);
 }
 
-QString ScriptEdit::importASCII(const QString &filename)
+QString ScriptEdit::import(const QString &filename)
 {
 	QString filter = tr("Text") + " (*.txt *.TXT);;";
 	filter += scriptEnv->fileFilter();
@@ -382,7 +396,9 @@ QString ScriptEdit::importASCII(const QString &filename)
 		return QString::null;
 	}
 
-	QFileInfo fi(f);
+	setFileName(f);
+
+	QFileInfo fi(f);	
 	if (scriptsDirPath != fi.absolutePath()){
 		scriptsDirPath = fi.absolutePath();
 		emit dirPathChanged(scriptsDirPath);
@@ -405,6 +421,11 @@ QString ScriptEdit::importASCII(const QString &filename)
 	return f;
 }
 
+QString ScriptEdit::save()
+{
+	return exportASCII(d_file_name);
+}
+
 QString ScriptEdit::exportASCII(const QString &filename)
 {
 	QString filter = tr("Text") + " (*.txt *.TXT);;";
@@ -418,7 +439,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 	else
 		fn = filename;
 
-	if ( !fn.isEmpty() ){
+	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		scriptsDirPath = fi.absolutePath();
 
@@ -441,8 +462,21 @@ QString ScriptEdit::exportASCII(const QString &filename)
 		t.setEncoding(QTextStream::UnicodeUTF8);
 		t << text();
 		f.close();
+		
+		setFileName(fn);
 	}
 	return fn;
+}
+
+void ScriptEdit::setFileName(const QString& fn)
+{
+	if (d_file_name == fn)
+		return;
+	
+	d_file_name = fn;
+	Note *note = qobject_cast<Note *>(myScript->context());
+	if (note)
+		note->setWindowLabel(d_file_name);
 }
 
 void ScriptEdit::updateIndentation()
