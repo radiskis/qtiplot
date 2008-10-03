@@ -878,10 +878,24 @@ void Fit::generateFitCurve()
 	if (!d_gen_function)
 		d_points = d_n;
 
-	double *X = new double[d_points];
-	double *Y = new double[d_points];
-
-	calculateFitCurveData(X, Y);
+	double *X = NULL, *Y = NULL;
+	if (d_graphics_display && !d_gen_function){
+		X = (double *)malloc(d_points*sizeof(double));
+		if (!X){
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
+			tr("Could not allocate enough memory for the fit curves!"));
+			return;
+		}
+		Y = (double *)malloc(d_points*sizeof(double));
+		if (!Y){
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot  - Memory Allocation Error"),
+			tr("Could not allocate enough memory for the fit curves!"));
+			free(X);
+			return;
+		}
+		calculateFitCurveData(X, Y);
+	}
+	
     customizeFitResults();
 
 	if (d_graphics_display){
@@ -889,27 +903,28 @@ void Fit::generateFitCurve()
 			d_output_graph = createOutputGraph()->activeLayer();
 
 		if (d_gen_function){
-			insertFitFunctionCurve(QString(objectName()) + tr("Fit"), X, Y);
+			insertFitFunctionCurve(QString(objectName()) + tr("Fit"));
 			d_output_graph->replot();
-		} else
+		} else {
         	d_output_graph->addFitCurve(addResultCurve(X, Y));
+			free(X);
+			free(Y);
+		}
 	}
-	delete [] X;
-	delete [] Y;
 }
 
-FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth)
+FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth)
 {
 	QString title = d_output_graph->generateFunctionName(name);
 	FunctionCurve *c = new FunctionCurve(FunctionCurve::Normal, title);
 	c->setPen(QPen(ColorBox::color(d_curveColorIndex), penWidth));
-	c->setData(x, y, d_points);
-	c->setRange(d_x[0], d_x[d_n-1]);
+	c->setRange(d_from, d_to);
 	c->setFormula(d_formula);
 	
 	for (int j=0; j<d_p; j++)
 		c->setConstant(d_param_names[j], d_results[j]);	
 	
+	c->loadData(d_points);
 	d_output_graph->insertPlotItem(c, Graph::Line);
 	d_output_graph->addFitCurve(c);
 	return c;
