@@ -64,7 +64,7 @@ class MultiPeakFit : public Fit
 		void generateFitCurve();
 		static QString peakFormula(int peakIndex, PeakProfile profile);
 		//! Inserts a peak function curve into the plot
-		void insertPeakFunctionCurve(double *x, double *y, int peak);
+		void insertPeakFunctionCurve(int peak);
 		void customizeFitResults();
 
 		//! Number of peaks

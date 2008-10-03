@@ -244,9 +244,9 @@ QString NonLinearFit::legendInfo()
 	return info;
 }
 
-FunctionCurve * NonLinearFit::insertFitFunctionCurve(const QString& name, double *x, double *y, int penWidth)
+FunctionCurve * NonLinearFit::insertFitFunctionCurve(const QString& name, int penWidth)
 {
-	FunctionCurve *c = Fit::insertFitFunctionCurve(name, x, y, penWidth);
+	FunctionCurve *c = Fit::insertFitFunctionCurve(name, penWidth);
 	if (c){
 		QMapIterator<QString, double> i(d_constants);
  		while (i.hasNext()) {
