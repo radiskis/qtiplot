@@ -1723,7 +1723,7 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
 	foreach(QwtPlotItem *it, d_curves){
     	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
 			PlotCurve *c = (PlotCurve*)it;
-        	if (c->type() == ErrorBars || c->type() == Function)
+			if (c->type() == Function)
 				continue;
 			if(((DataCurve *)it)->updateData(w, yColName))
             	updated_curves++;
@@ -2796,9 +2796,13 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
                     return false;
 
                 if (w->colPlotDesignation(j) == Table::xErr)
-                    c = (PlotCurve *)addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
+                    c = addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
                 else
-                    c = (PlotCurve *)addErrorBars(w->colName(ycol), w, names[i]);
+                    c = addErrorBars(w->colName(ycol), w, names[i]);
+				
+				DataCurve *mc = ((QwtErrorPlotCurve*)c)->masterCurve();
+				if (mc)
+					((QwtErrorPlotCurve*)c)->setColor(mc->pen().color());
 			} else if (w->colPlotDesignation(j) == Table::Label){
 				QString labelsCol = names[i];
 				int xcol = w->colX(w->colIndex(labelsCol));
