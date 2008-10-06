@@ -58,7 +58,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	d_graph = NULL;
 	d_scale = NULL;
 
-	textType = type;
+	d_text_type = type;
 
 	groupBox1 = new QGroupBox();
 	QGridLayout * topLayout = new QGridLayout(groupBox1);
@@ -79,6 +79,13 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 	alignmentBox->addItem( tr( "Right" ) );
 	topLayout->addWidget(alignmentBox, 2, 1);
 
+	if (type == AxisTitle){
+		topLayout->addWidget(new QLabel(tr("Distance to axis")), 3, 0);
+		distanceBox = new QSpinBox();
+		distanceBox->setRange(0, 1000);
+		topLayout->addWidget(distanceBox, 3, 1);
+	}
+	
 	topLayout->setColumnStretch(2, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
@@ -128,9 +135,9 @@ void TextDialog::setGraph(Graph *g)
 
 	d_graph = g;
 	QwtText l;
-	if (textType == LayerTitle)
+	if (d_text_type == LayerTitle)
 		l = d_graph->title();
-	else if (textType == AxisTitle){
+	else if (d_text_type == AxisTitle){
 		d_scale = g->currentScale();
 		if (!d_scale)
 			return;
@@ -150,6 +157,8 @@ void TextDialog::setGraph(Graph *g)
 				setWindowTitle(tr("QtiPlot") + " - " + tr("Right Axis Title"));
 			break;
 		}
+		
+		distanceBox->setValue(d_scale->spacing());
 	}
 
 	setAlignment(l.renderFlags());
@@ -163,32 +172,31 @@ void TextDialog::apply()
     if (!d_graph)
         return;
 
+	if (d_text_type == AxisTitle){
+		if (!d_scale)
+			return;
+
+		QwtText t =	d_scale->title();
+		t.setRenderFlags(alignment());
+		t.setText(textEditBox->toPlainText());
+		t.setFont(selectedFont);
+		t.setColor(colorBtn->color());
+		d_scale->setTitle(t);
+		d_scale->setSpacing(distanceBox->value());
+	} else if (d_text_type == LayerTitle){
+		QwtText t =	d_graph->title();
+		t.setRenderFlags(alignment());
+		t.setText(textEditBox->toPlainText());
+		t.setFont(selectedFont);
+		t.setColor(colorBtn->color());
+		d_graph->setTitle(t);
+	}
+
+	d_graph->notifyChanges();
+		
 	switch(formatApplyToBox->currentIndex()){
 		case 0:
-		{//this object
-        if (textType == AxisTitle){
-            if (!d_scale)
-                return;
-
-            QwtText t =	d_scale->title();
-            t.setRenderFlags(alignment());
-            t.setText(textEditBox->toPlainText());
-            t.setFont(selectedFont);
-            t.setColor(colorBtn->color());
-            d_scale->setTitle(t);
-            d_graph->replot();
-        } else if (textType == LayerTitle){
-            QwtText t =	d_graph->title();
-            t.setRenderFlags(alignment());
-            t.setText(textEditBox->toPlainText());
-            t.setFont(selectedFont);
-            t.setColor(colorBtn->color());
-            d_graph->setTitle(t);
-            d_graph->replot();
-        }
-
-        d_graph->notifyChanges();
-		}
+			d_graph->replot();
 		break;
 
 		case 1://this layer
@@ -237,6 +245,8 @@ void TextDialog::formatLayerLabels(Graph *g)
 			t.setFont(selectedFont);
 			t.setRenderFlags(align);
 			scale->setTitle(t);
+			if (d_text_type == AxisTitle)
+				scale->setSpacing(distanceBox->value());
 		}
 	}
 

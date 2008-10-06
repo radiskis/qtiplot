@@ -750,6 +750,9 @@ public:
   void setAxisTitleFont(int axis,const QFont &fnt);
   void setAxisTitleColor(int axis, const QColor& c);
   void setAxisTitleAlignment(int axis, int align);
+  
+  int axisTitleDistance(int axis);
+  void setAxisTitleDistance(int axis, int dist);
 
   void setAxisTicksLength(int axis, int majTicksType, int minTicksType, int minLength, int majLength);
   void setAxisLabelRotation(int axis, int rotation);

@@ -1042,6 +1042,24 @@ void Graph::setAxisTitleAlignment(int axis, int align)
 	((QwtPlot *)this)->setAxisTitle(axis, t);
 }
 
+int Graph::axisTitleDistance(int axis)
+{
+	if (!axisEnabled(axis))
+		return 0;
+	
+	return axisWidget(axis)->spacing();
+}
+
+void Graph::setAxisTitleDistance(int axis, int dist)
+{
+	if (!axisEnabled(axis))
+		return;
+	
+	QwtScaleWidget *scale = axisWidget(axis);
+	if (scale)
+		scale->setSpacing(dist);
+}
+
 void Graph::setScaleTitle(int axis, const QString& text)
 {
 	int a = 0;
@@ -2002,21 +2020,26 @@ QString Graph::saveScaleTitles()
 
 QString Graph::saveAxesTitleAlignement()
 {
-	QString s="AxesTitleAlignment\t";
-	QStringList axes;
-	int i;
-	for (i=0;i<4;i++)
-		axes<<QString::number(Qt::AlignHCenter);
-
-	for (i=0;i<4;i++)
-	{
-
+	QString s = "AxesTitleAlignment\t";
+	
+	QStringList axes;		
+	for (int i = 0; i<4; i++){
+		axes << QString::number(Qt::AlignHCenter);
 		if (axisEnabled(i))
-			axes[i]=QString::number(axisTitle(i).renderFlags());
+			axes[i] = QString::number(axisTitle(i).renderFlags());
 	}
 
-	s+=axes.join("\t")+"\n";
-	return s;
+	s += axes.join("\t")+"\n";
+	
+	s += "AxesTitleDistance\t";
+	for (int i = 0; i<4; i++){
+		axes[i] = "-1";
+		if (axisEnabled(i)){
+			const QwtScaleWidget *scale = axisWidget(i);
+			axes[i] = QString::number(scale->spacing());
+		}	
+	}
+	return s + axes.join("\t")+"\n";
 }
 
 QString Graph::savePieCurveLayout()
@@ -3926,6 +3949,7 @@ void Graph::copy(Graph* g)
 			enableAxis(i);
 			QwtScaleWidget *scale = (QwtScaleWidget *)axisWidget(i);
 			if (scale){
+				scale->setSpacing(g->axisWidget(i)->spacing());
 				scale->setMargin(g->axisWidget(i)->margin());
 				QPalette pal = scale->palette();
 				pal.setColor(QColorGroup::Foreground, g->axisColor(i));

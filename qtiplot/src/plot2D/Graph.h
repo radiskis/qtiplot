@@ -481,6 +481,9 @@ class Graph: public QwtPlot
 		int axisTitleAlignment (int axis);
 		void setAxisTitleAlignment(int axis, int align);
 
+		int axisTitleDistance(int axis);
+		void setAxisTitleDistance(int axis, int dist);
+
         QColor axisColor(int axis);
 		void setAxisColor(int axis, const QColor& color);
 

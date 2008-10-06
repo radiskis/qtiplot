@@ -489,6 +489,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_graph_background_opacity = 255;
 	d_graph_canvas_opacity = 255;
 	d_graph_border_width = 0;
+	d_graph_axes_labels_dist = 2;
 
 	plot3DColors = QStringList();
 	plot3DColors << "blue";
@@ -2558,7 +2559,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 {
 	if (!g->isPiePlot()){
 		if (allAxesOn){
-			for (int i=0; i<4; i++)
+			for (int i = 0; i < 4; i++)
 				g->enableAxis(i);
 			g->updateSecondaryAxis(QwtPlot::xTop);
 			g->updateSecondaryAxis(QwtPlot::yRight);
@@ -2575,6 +2576,8 @@ void ApplicationWindow::setPreferences(Graph* g)
 		g->setAxesLinewidth(axesLineWidth);
 		g->drawAxesBackbones(drawBackbones);
 		g->setCanvasFrame(canvasFrameWidth, d_canvas_frame_color);
+		for (int i = 0; i < QwtPlot::axisCnt; i++)
+			g->setAxisTitleDistance(i, d_graph_axes_labels_dist);
 	}
 
 	g->initFonts(plotAxesFont, plotNumbersFont);
@@ -4506,6 +4509,7 @@ void ApplicationWindow::readSettings()
 	d_graph_canvas_opacity = settings.value("/BackgroundOpacity", d_graph_canvas_opacity).toInt();
 	d_graph_border_width = settings.value("/FrameWidth", d_graph_border_width).toInt();
     d_canvas_frame_color = settings.value("/FrameColor", Qt::black).value<QColor>();
+	d_graph_axes_labels_dist = settings.value("/LabelsAxesDist", d_graph_axes_labels_dist).toInt();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -4834,6 +4838,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/BackgroundOpacity", d_graph_canvas_opacity);
 	settings.setValue("/FrameWidth", d_graph_border_width);
 	settings.setValue("/FrameColor", d_canvas_frame_color);
+	settings.setValue("/LabelsAxesDist", d_graph_axes_labels_dist);
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -8339,8 +8344,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 #endif
 
 	windowsMenu->addAction(actionResizeActiveWindow);
-	windowsMenu->insertItem(tr("&Hide Window"),
-			this, SLOT(hideActiveWindow()));
+	windowsMenu->addAction(actionHideActiveWindow);
 	windowsMenu->insertItem(QPixmap(close_xpm), tr("Close &Window"),
 			this, SLOT(closeActiveWindow()), Qt::CTRL+Qt::Key_W );
 
@@ -8726,7 +8730,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 		return;
 	}
 
-	MdiSubWindow *w= ((WindowListItem *)it)->window();
+	MdiSubWindow *w = ((WindowListItem *)it)->window();
 	if (w){
 		QMenu cm(this);
 		QMenu plots(this);
@@ -10810,7 +10814,12 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			align.pop_front();
 			for (int i=0; i<(int)align.count(); i++)
 				ag->setAxisTitleAlignment(i, align[i].toInt());
-		}else if (s.contains ("ScaleFont")){
+		} else if (s.contains ("AxesTitleDistance")){
+			QStringList align = s.split("\t", QString::SkipEmptyParts);
+			align.pop_front();
+			for (int i=0; i<(int)align.count(); i++)
+				ag->setAxisTitleDistance(i, align[i].toInt());
+		} else if (s.contains ("ScaleFont")){
 			QStringList fList=s.split("\t");
 			QFont fnt=QFont (fList[1],fList[2].toInt(),fList[3].toInt(),fList[4].toInt());
 			fnt.setUnderline(fList[5].toInt());
@@ -11931,6 +11940,7 @@ void ApplicationWindow::createActions()
 	connect(actionResizeActiveWindow, SIGNAL(activated()), this, SLOT(resizeActiveWindow()));
 
 	actionHideActiveWindow = new QAction(tr("&Hide Window"), this);
+	actionHideActiveWindow->setShortcut(tr("Ctrl+Alt+H"));
 	connect(actionHideActiveWindow, SIGNAL(activated()), this, SLOT(hideActiveWindow()));
 
 	actionShowMoreWindows = new QAction(tr("More windows..."), this);
@@ -11958,6 +11968,7 @@ void ApplicationWindow::createActions()
 	connect(actionMaximizeWindow, SIGNAL(activated()), this, SLOT(maximizeWindow()));
 
 	actionHideWindow = new QAction(tr("&Hide Window"), this);
+	actionHideWindow->setShortcut(tr("Ctrl+Alt+H"));
 	connect(actionHideWindow, SIGNAL(activated()), this, SLOT(hideWindow()));
 
 	actionResizeWindow = new QAction(QIcon(QPixmap(resize_xpm)), tr("Re&size Window..."), this);
@@ -12641,6 +12652,7 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionResizeActiveWindow->setMenuText(tr("Window &Geometry..."));
 	actionHideActiveWindow->setMenuText(tr("&Hide Window"));
+	actionHideActiveWindow->setShortcut(tr("Ctrl+Alt+H"));
 	actionShowMoreWindows->setMenuText(tr("More Windows..."));
 	actionPixelLineProfile->setMenuText(tr("&View Pixel Line Profile"));
 	actionIntensityTable->setMenuText(tr("&Intensity Table"));
@@ -12650,6 +12662,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionMinimizeWindow->setMenuText(tr("Mi&nimize Window"));
 	actionMaximizeWindow->setMenuText(tr("Ma&ximize Window"));
 	actionHideWindow->setMenuText(tr("&Hide Window"));
+	actionHideWindow->setShortcut(tr("Ctrl+Alt+H"));
 	actionResizeWindow->setMenuText(tr("Re&size Window..."));
 	actionEditSurfacePlot->setMenuText(tr("&Surface..."));
 	actionAdd3DData->setMenuText(tr("&Data Set..."));

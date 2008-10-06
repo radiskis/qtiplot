@@ -1117,7 +1117,7 @@ public:
 	QBrush d_rect_default_brush;
 	QColor workspaceColor, panelsColor, panelsTextColor;
 	QColor d_graph_background_color, d_graph_canvas_color, d_graph_border_color, d_canvas_frame_color;
-	int d_graph_background_opacity, d_graph_canvas_opacity, d_graph_border_width;
+	int d_graph_background_opacity, d_graph_canvas_opacity, d_graph_border_width, d_graph_axes_labels_dist;
 	QString appStyle, workingDir;
 
 	//! Path to the folder where the last template file was opened/saved
