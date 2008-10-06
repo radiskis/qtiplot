@@ -90,7 +90,7 @@ private:
 
 	//! current font
 	QFont selectedFont;
-	TextType textType;
+	TextType d_text_type;
 
 	ColorButton *colorBtn, *backgroundBtn;
 	QPushButton *buttonFont;
@@ -102,6 +102,7 @@ private:
 	QComboBox *alignmentBox;
 	TextFormatButtons *formatButtons;
 	QComboBox *formatApplyToBox;
+	QSpinBox *distanceBox;
 
 	Graph *d_graph;
 	QwtScaleWidget *d_scale;

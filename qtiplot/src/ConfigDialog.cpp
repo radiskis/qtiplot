@@ -698,14 +698,21 @@ void ConfigDialog::initPlotsPage()
 	boxLineWidth->setValue(app->axesLineWidth);
 	optionsLayout->addWidget(boxLineWidth, 5, 1);
 
+	labelGraphAxesLabelsDist = new QLabel();
+	optionsLayout->addWidget(labelGraphAxesLabelsDist, 6, 0);
+	boxAxesLabelsDist = new QSpinBox();
+	boxAxesLabelsDist->setRange(0, 1000);
+	boxAxesLabelsDist->setValue(app->d_graph_axes_labels_dist);
+	optionsLayout->addWidget(boxAxesLabelsDist, 6, 1);
+	
 	lblMargin = new QLabel();
-	optionsLayout->addWidget(lblMargin, 6, 0);
-	boxMargin= new QSpinBox();
+	optionsLayout->addWidget(lblMargin, 7, 0);
+	boxMargin = new QSpinBox();
 	boxMargin->setRange(0, 1000);
 	boxMargin->setSingleStep(5);
 	boxMargin->setValue(app->defaultPlotMargin);
-	optionsLayout->addWidget(boxMargin, 6, 1);
-	optionsLayout->setRowStretch(7, 1);
+	optionsLayout->addWidget(boxMargin, 7, 1);
+	optionsLayout->setRowStretch(8, 1);
 
 	groupBackgroundOptions = new QGroupBox(tr("Background"));
 	optionsTabLayout->addWidget( groupBackgroundOptions );
@@ -1426,6 +1433,7 @@ void ConfigDialog::languageChange()
 	lblMinTicks->setText(tr("Minor Ticks" ));
 
 	lblMargin->setText(tr("Margin" ));
+	labelGraphAxesLabelsDist->setText(tr("Axes title space" ));
 	labelFrameWidth->setText(tr("Frame width" ));
 	boxBackbones->setText(tr("Axes &backbones"));
 	boxFrame->setText(tr("Canvas Fra&me"));
@@ -1731,6 +1739,7 @@ void ConfigDialog::apply()
 	app->drawBackbones = boxBackbones->isChecked();
 	app->axesLineWidth = boxLineWidth->value();
 	app->defaultPlotMargin = boxMargin->value();
+	app->d_graph_axes_labels_dist = boxAxesLabelsDist->value();
 	app->setGraphDefaultSettings(boxAutoscaling->isChecked(),boxScaleFonts->isChecked(),
 								boxResize->isChecked(), boxAntialiasing->isChecked());
 	// 2D plots page: curves tab

@@ -127,7 +127,6 @@ d_buttons(buttons)
 	QHBoxLayout * layout = new QHBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
-    layout->addStretch();
 
 	QFont font = this->font();
 	font.setPointSize(14);

@@ -208,6 +208,7 @@ protected:
     QTimeEdit *boxStartTime, *boxEndTime;
     QComboBox *canvasFrameApplyToBox;
     QPushButton *frameDefaultBtn;
+	QSpinBox *boxLabelsDistance;
 };
 
 #endif

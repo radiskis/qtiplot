@@ -211,6 +211,8 @@ setAxisTitleColor
 setAxisTitleAlignment
 setAxisTicksLength
 setAxisLabelRotation
+axisTitleDistance
+setAxisTitleDistance
 setAxesLinewidth
 drawAxesBackbones
 setTicksLength

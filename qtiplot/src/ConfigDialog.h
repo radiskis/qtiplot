@@ -179,6 +179,8 @@ private:
 	QFontComboBox *boxFontFamily;
 	QSpinBox *boxFontSize;
 	QPushButton *buttonItalicFont, *buttonBoldFont;
+	QLabel *labelGraphAxesLabelsDist;
+	QSpinBox *boxAxesLabelsDist;
 };
 
 #endif // CONFIGDIALOG_H

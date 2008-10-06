@@ -1575,8 +1575,8 @@ void AxesDialog::initAxesPage()
 	// calculate a sensible width for the items list
 	// (default QListWidget size is 256 which looks too big)
 	QFontMetrics fm(axesTitlesList->font());
-	int width = 32,i;
-	for(i=0 ; i<axesTitlesList->count() ; i++)
+	int width = 32;
+	for(int i=0 ; i<axesTitlesList->count() ; i++)
 		if( fm.width(axesTitlesList->item(i)->text()) > width)
 			width = fm.width(axesTitlesList->item(i)->text());
 	axesTitlesList->setMaximumWidth( axesTitlesList->iconSize().width() + width + 50 );
@@ -1593,27 +1593,27 @@ void AxesDialog::initAxesPage()
 	topLayout->addWidget( labelBox );
 
 	QVBoxLayout *labelBoxLayout = new QVBoxLayout( labelBox );
-    labelBoxLayout->setSpacing(2);
-
+		
 	boxTitle = new QTextEdit();
 	boxTitle->setTextFormat(Qt::PlainText);
 	QFontMetrics metrics(this->font());
 	boxTitle->setMaximumHeight(3*metrics.height());
     labelBoxLayout->addWidget(boxTitle);
 
+	formatButtons = new TextFormatButtons(boxTitle, TextFormatButtons::AxisLabel);
+	labelBoxLayout->addWidget(formatButtons);
+	
 	QHBoxLayout *hl = new QHBoxLayout();
-	hl->setMargin(0);
-	hl->setSpacing(2);
+	hl->addWidget(new QLabel(tr("Distance to axis")));
+	boxLabelsDistance = new QSpinBox();
+	boxLabelsDistance->setRange(0, 1000);
+	hl->addWidget(boxLabelsDistance);
+	
 	buttonLabelFont = new QPushButton(tr("&Font"));
 	hl->addWidget(buttonLabelFont);
-
-	formatButtons = new TextFormatButtons(boxTitle, TextFormatButtons::AxisLabel);
-	hl->addWidget(formatButtons);
 	hl->addStretch();
-
-	boxTitle->setMaximumWidth(buttonLabelFont->width() + formatButtons->width());
 	labelBoxLayout->addLayout(hl);
-
+	
 	QHBoxLayout * bottomLayout = new QHBoxLayout();
 
 	QGroupBox *leftBox = new QGroupBox(QString());
@@ -2495,10 +2495,12 @@ bool AxesDialog::updatePlot()
 		if (d_graph->axisTitleString(axis) != boxTitle->text())
 			d_graph->setAxisTitle(axis, boxTitle->text());
 
+		d_graph->setAxisTitleDistance(axis, boxLabelsDistance->value());
+
 		if (axis == QwtPlot::xBottom)
-			xBottomLabelsRotation=boxAngle->value();
+			xBottomLabelsRotation = boxAngle->value();
 		else if (axis == QwtPlot::xTop)
-			xTopLabelsRotation=boxAngle->value();
+			xTopLabelsRotation = boxAngle->value();
 
 		QString formula = boxFormula->text();
 		if (!boxShowFormula->isChecked())
@@ -2737,6 +2739,7 @@ void AxesDialog::updateTitleBox(int axis)
 {
 	int axisId = mapToQwtAxis(axis);
 	boxTitle->setText(d_graph->axisTitleString(axisId));
+	boxLabelsDistance->setValue(d_graph->axisTitleDistance(axisId));
 }
 
 void AxesDialog::pickAxisColor()
