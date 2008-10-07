@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "ScriptEdit.h"
 #include "Note.h"
+#include "PythonSyntaxHighlighter.h"
 
 #include <QAction>
 #include <QMenu>
@@ -44,7 +45,8 @@
 #include <QShortcut>
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
-  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0), d_file_name(QString::null)
+  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0), 
+  d_file_name(QString::null), d_highlighter(0)
 {
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&,const QString&,int)), this, SLOT(insertErrorMsg(const QString&)));
@@ -55,6 +57,9 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	setTextFormat(Qt::PlainText);
 	setAcceptRichText (false);
 
+	if (scriptEnv->name() == QString("Python"))
+		d_highlighter = new PythonSyntaxHighlighter(this);
+	
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 	d_fmt_success.setBackground(QBrush(QColor(128, 255, 128)));
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
@@ -109,6 +114,14 @@ void ScriptEdit::customEvent(QEvent *e)
 		myScript = scriptEnv->newScript("", this, name());
 		connect(myScript, SIGNAL(error(const QString&,const QString&,int)), this, SLOT(insertErrorMsg(const QString&)));
 		connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
+				
+		if (scriptEnv->name() == QString("Python") && !d_highlighter)
+			d_highlighter = new PythonSyntaxHighlighter(this);
+		else {
+			if (d_highlighter)
+				delete d_highlighter;
+			d_highlighter = 0;
+		}
 	}
 }
 
@@ -534,3 +547,14 @@ void ScriptEdit::setDirPath(const QString& path)
      tc.select(QTextCursor::WordUnderCursor);
      return tc.selectedText();
  }
+ 
+void ScriptEdit::rehighlight()
+{
+	if (scriptEnv->name() != QString("Python"))
+		return;
+	
+	if (d_highlighter)
+		delete d_highlighter;
+			
+	d_highlighter = new PythonSyntaxHighlighter(this);
+}

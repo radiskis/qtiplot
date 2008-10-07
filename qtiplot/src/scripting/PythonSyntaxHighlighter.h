@@ -1,10 +1,11 @@
 /***************************************************************************
-    File                 : MatrixValuesDialog.h
+    File                 : PythonSyntaxHighlighter.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
-    Description          : Set matrix values dialog
+    Copyright            : (C) 2008 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+    Description          : Python Syntax Highlighting based on the Qt Syntax Highlighter Example
+							(http://doc.trolltech.com/4.4/richtext-syntaxhighlighter.html)
 
  ***************************************************************************/
 
@@ -26,59 +27,44 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef MVALUESDIALOG_H
-#define MVALUESDIALOG_H
 
-#include <QDialog>
-#include "../scripting/ScriptingEnv.h"
-#include "../scripting/Script.h"
-#include "../scripting/ScriptEdit.h"
-#include "Matrix.h"
+#ifndef PYTHON_HIGHLIGHTER_H
+#define PYTHON_HIGHLIGHTER_H
 
-#ifdef SCRIPTING_PYTHON
-class QCheckBox;
-#endif
-class QComboBox;
-class QTextEdit;
-class QCompleter;
-class QSpinBox;
-class QPushButton;
-class ScriptEdit;
-class Matrix;
+#include <QSyntaxHighlighter>
+#include <QHash>
+#include <QTextCharFormat>
 
-//! Set matrix values dialog
-class MatrixValuesDialog : public QDialog, public scripted
+#include "ScriptEdit.h"
+
+QT_BEGIN_NAMESPACE
+class QTextDocument;
+QT_END_NAMESPACE
+
+class PythonSyntaxHighlighter : public QSyntaxHighlighter
 {
     Q_OBJECT
 
 public:
-    MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
-	void setMatrix(Matrix *m);
-    void setCompleter(QCompleter *);
+    PythonSyntaxHighlighter(ScriptEdit *parent = 0);
 
-private slots:
-	bool apply();
-	void addCell();
-	void insertFunction();
-	void insertExplain(int index);
+protected:
+    void highlightBlock(const QString &text);
 
 private:
-	Matrix *matrix;
+    struct HighlightingRule
+    {
+        QRegExp pattern;
+        QTextCharFormat format;
+    };
+    QVector<HighlightingRule> highlightingRules;
 
-	QSize sizeHint() const ;
-	void customEvent( QEvent *e);
-
-	ScriptEdit* commands;
-    QComboBox* functions;
-    QPushButton* btnAddFunction;
-	QPushButton* btnAddCell;
-    QPushButton* btnCancel;
-    QTextEdit* explain;
-	QSpinBox *startRow, *endRow, *startCol, *endCol;
-	QPushButton *btnApply;
-#ifdef SCRIPTING_PYTHON
-	QCheckBox *boxMuParser;
-#endif
+    QTextCharFormat keywordFormat;
+    QTextCharFormat classFormat;
+    QTextCharFormat commentFormat;
+    QTextCharFormat quotationFormat;
+    QTextCharFormat functionFormat;
+	QTextCharFormat numericFormat;
 };
 
-#endif //
+#endif

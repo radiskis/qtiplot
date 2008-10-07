@@ -28,7 +28,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ScriptingLangDialog.h"
-#include "ApplicationWindow.h"
+#include "../ApplicationWindow.h"
 
 #include <QListWidget>
 #include <QPushButton>
@@ -79,4 +79,3 @@ void ScriptingLangDialog::accept()
 		QMessageBox::critical(this, tr("QtiPlot - Scripting Error"),
 				tr("Scripting language \"%1\" failed to initialize.").arg(langList->currentItem()->text()));
 }
-

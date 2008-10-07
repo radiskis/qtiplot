@@ -30,8 +30,8 @@
 #include "MatrixCommand.h"
 #include "../plot2D/Graph.h"
 #include "../ApplicationWindow.h"
-#include "../muParserScript.h"
-#include "../ScriptingEnv.h"
+#include "../scripting/muParserScript.h"
+#include "../scripting/ScriptingEnv.h"
 
 #include <QtGlobal>
 #include <QTextStream>

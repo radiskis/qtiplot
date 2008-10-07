@@ -29,10 +29,10 @@
  *                                                                         *
  ***************************************************************************/
 #include "ScriptWindow.h"
-#include "ApplicationWindow.h"
+#include "../ApplicationWindow.h"
 #include "ScriptEdit.h"
 #include "LineNumberDisplay.h"
-#include "pixmaps.h"
+#include "../pixmaps.h"
 
 #include <QMenuBar>
 #include <QMenu>

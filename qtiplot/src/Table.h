@@ -38,8 +38,8 @@
 
 #include "plot2D/Graph.h"
 #include "MdiSubWindow.h"
-#include "ScriptingEnv.h"
-#include "Script.h"
+#include "scripting/ScriptingEnv.h"
+#include "scripting/Script.h"
 
 class MyTable : public Q3Table
 {

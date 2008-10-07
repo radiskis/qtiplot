@@ -36,7 +36,7 @@
 class ScriptEdit: QTextEdit
 {
 %TypeHeaderCode
-#include "src/ScriptEdit.h"
+#include "src/scripting/ScriptEdit.h"
 %End
 public slots:
   void execute();
@@ -858,7 +858,7 @@ private:
 class Note: MdiSubWindow
 {
 %TypeHeaderCode
-#include "src/Note.h"
+#include "src/scripting/Note.h"
 %End
 public:
   void execute() const;
@@ -1835,7 +1835,7 @@ public:
 class PythonScripting
 {
 %TypeHeaderCode
-#include "src/PythonScripting.h"
+#include "src/scripting/PythonScripting.h"
 %End
 public:
   void write(const QString&);
@@ -1845,7 +1845,7 @@ private:
 class PythonScript
 {
 %TypeHeaderCode
-#include "src/PythonScript.h"
+#include "src/scripting/PythonScript.h"
 %End
 public:
   void write(const QString&);

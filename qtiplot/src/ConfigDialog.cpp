@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "ConfigDialog.h"
 #include "ApplicationWindow.h"
-#include "Note.h"
+#include "scripting/Note.h"
 #include "plot2D/MultiLayer.h"
 #include "plot2D/Graph.h"
 #include "matrix/Matrix.h"
@@ -1171,11 +1171,49 @@ void ConfigDialog::initNotesPage()
 	lineNumbersBox->setChecked(app->d_note_line_numbers);
     connect(lineNumbersBox, SIGNAL(toggled(bool)), this, SLOT(customizeNotes()));
 	gl1->addWidget(lineNumbersBox, 2, 0);
-	gl1->setRowStretch(3, 1);
 	gl1->setColumnStretch(5, 1);
 
 	QVBoxLayout* vl = new QVBoxLayout(notesPage);
 	vl->addWidget(gb1);
+
+#ifdef SCRIPTING_PYTHON
+	groupSyntaxHighlighter = new QGroupBox();
+	QGridLayout *gl = new QGridLayout(groupSyntaxHighlighter);
+
+	buttonCommentColor = new ColorButton();
+	buttonCommentColor->setColor(app->d_comment_highlight_color);
+	connect(buttonCommentColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	gl->addWidget(buttonCommentColor, 0, 0);
+	
+	buttonKeywordColor = new ColorButton();
+	buttonKeywordColor->setColor(app->d_keyword_highlight_color);
+	connect(buttonKeywordColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	gl->addWidget(buttonKeywordColor, 0, 1);
+	
+	buttonQuotationColor = new ColorButton();
+	buttonQuotationColor->setColor(app->d_quotation_highlight_color);
+	connect(buttonQuotationColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	gl->addWidget(buttonQuotationColor, 1, 0);
+	
+	buttonNumericColor = new ColorButton();
+	buttonNumericColor->setColor(app->d_numeric_highlight_color);
+	connect(buttonNumericColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	gl->addWidget(buttonNumericColor, 1, 1);
+	
+	buttonFunctionColor = new ColorButton();
+	buttonFunctionColor->setColor(app->d_function_highlight_color);
+	connect(buttonFunctionColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	gl->addWidget(buttonFunctionColor, 2, 0);
+	
+	buttonClassColor = new ColorButton();
+	buttonClassColor->setColor(app->d_class_highlight_color);
+	connect(buttonClassColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	gl->addWidget(buttonClassColor, 2, 1);
+	
+	vl->addWidget(groupSyntaxHighlighter);
+#endif
+
+	vl->addStretch();
 }
 
 void ConfigDialog::initFittingPage()
@@ -1648,7 +1686,16 @@ void ConfigDialog::languageChange()
     labelTabLength->setText(tr("Tab length (pixels)"));
     labelNotesFont->setText(tr("Font"));
     lineNumbersBox->setText(tr("&Display line numbers"));
-
+#ifdef SCRIPTING_PYTHON
+	groupSyntaxHighlighter->setTitle(tr("Syntax Highlighting"));
+	buttonCommentColor->setText(tr("Co&mments"));
+	buttonKeywordColor->setText(tr("&Keywords"));
+	buttonNumericColor->setText(tr("&Numbers"));
+	buttonQuotationColor->setText(tr("&Quotations"));
+	buttonFunctionColor->setText(tr("&Functions"));
+	buttonClassColor->setText(tr("Q&t Classes"));
+#endif
+	
 	//Fitting page
 	groupBoxFittingCurve->setTitle(tr("Generated Fit Curve"));
 	generatePointsBtn->setText(tr("Uniform X Function"));
@@ -1760,9 +1807,10 @@ void ConfigDialog::apply()
 	app->d_print_cropmarks = boxPrintCropmarks->isChecked();
 	app->d_scale_plots_on_print = boxScaleLayersOnPrint->isChecked();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer")){
-			((MultiLayer*)w)->setScaleLayersOnPrint(boxScaleLayersOnPrint->isChecked());
-			((MultiLayer*)w)->printCropmarks(boxPrintCropmarks->isChecked());
+		MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+		if (ml){
+			ml->setScaleLayersOnPrint(boxScaleLayersOnPrint->isChecked());
+			ml->printCropmarks(boxPrintCropmarks->isChecked());
 		}
 	}
 	// general page: application tab
@@ -2200,6 +2248,30 @@ void ConfigDialog::choosePythonConfigFolder()
 		if (app->scriptingEnv()->name() == QString("Python"))
 			app->setScriptingLanguage(QString("Python"), true);
 	}
+}
+
+void ConfigDialog::rehighlight()
+{
+    if (generalDialog->currentWidget() != notesPage)
+        return;
+
+    ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+    app->d_comment_highlight_color = buttonCommentColor->color();
+	app->d_keyword_highlight_color = buttonKeywordColor->color();
+	app->d_quotation_highlight_color = buttonQuotationColor->color();
+	app->d_numeric_highlight_color = buttonNumericColor->color();
+	app->d_function_highlight_color = buttonFunctionColor->color();
+	app->d_class_highlight_color = buttonClassColor->color();
+	
+    QList<MdiSubWindow *> windows = app->windowsList();
+    foreach(MdiSubWindow *w, windows){
+        Note *n = qobject_cast<Note *>(w);
+        if (n)
+			n->editor()->rehighlight();
+    }
 }
 #endif
 

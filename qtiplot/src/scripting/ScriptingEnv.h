@@ -77,7 +77,7 @@ class ScriptingEnv : public QObject
     //! Construct a filter expression from fileExtension(), suitable for QFileDialog.
     const QString fileFilter() const;
 
-//    virtual QSyntaxHighlighter syntaxHighlighter(QTextEdit *textEdit) const;
+	ApplicationWindow *application(){return d_parent;};
 
   public slots:
     // global variables

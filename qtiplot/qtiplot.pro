@@ -131,8 +131,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
@@ -174,15 +174,8 @@ HEADERS  += src/ApplicationWindow.h \
             src/RenameWindowDialog.h \
 			src/MdiSubWindow.h \
             src/ImportASCIIDialog.h \
-            src/Note.h\
             src/Folder.h\
             src/FindDialog.h\
-            src/ScriptingEnv.h\
-            src/Script.h\
-            src/ScriptEdit.h\
-            src/customevents.h\
-            src/ScriptingLangDialog.h\
-            src/ScriptWindow.h\
             src/TextFormatButtons.h\
             src/TableStatistics.h\
             src/ColorMapEditor.h\
@@ -192,7 +185,6 @@ HEADERS  += src/ApplicationWindow.h \
             src/CustomActionDialog.h \
             src/DoubleSpinBox.h \
 			src/PlotWizard.h \
-			src/LineNumberDisplay.h \
 			src/PenStyleBox.h \
 
 ###################### SOURCES ##############################################
@@ -216,14 +208,8 @@ SOURCES  += src/main.cpp \
             src/RenameWindowDialog.cpp \
 			src/MdiSubWindow.cpp \
             src/ImportASCIIDialog.cpp \
-            src/Note.cpp\
             src/Folder.cpp\
             src/FindDialog.cpp\
-            src/ScriptingEnv.cpp\
-            src/Script.cpp\
-            src/ScriptEdit.cpp\
-            src/ScriptingLangDialog.cpp\
-            src/ScriptWindow.cpp\
             src/TextFormatButtons.cpp\
             src/TableStatistics.cpp\
             src/ColorMapEditor.cpp\
@@ -233,7 +219,6 @@ SOURCES  += src/main.cpp \
             src/CustomActionDialog.cpp \
             src/DoubleSpinBox.cpp \
 			src/PlotWizard.cpp \
-			src/LineNumberDisplay.cpp \
 			src/PenStyleBox.cpp \
 
 ###############################################################
@@ -457,7 +442,7 @@ SOURCES  += src/main.cpp \
 			   src/analysis/dialogs/InterpolationDialog.cpp \
 			   src/analysis/dialogs/PolynomFitDialog.cpp \
 			   src/analysis/dialogs/SmoothCurveDialog.cpp \
-
+			   
 ###############################################################
 ################# Restricted Module: EmfEngine ################
 ###############################################################
@@ -478,16 +463,33 @@ contains(RESTRICTED_MODULES, EMF) {
 ##################### SCRIPTING LANGUAGES SECTION #############
 ###############################################################
 
+HEADERS  += src/scripting/customevents.h\
+			src/scripting/LineNumberDisplay.h\
+			src/scripting/Note.h\
+            src/scripting/ScriptingEnv.h\
+            src/scripting/Script.h\
+            src/scripting/ScriptEdit.h\
+            src/scripting/ScriptingLangDialog.h\
+            src/scripting/ScriptWindow.h\
+			
+SOURCES  += src/scripting/LineNumberDisplay.cpp\
+			src/scripting/Note.cpp\
+            src/scripting/ScriptingEnv.cpp\
+            src/scripting/Script.cpp\
+            src/scripting/ScriptEdit.cpp\
+            src/scripting/ScriptingLangDialog.cpp\
+            src/scripting/ScriptWindow.cpp\
+			
 ##################### Default: muParser v1.28 #################
 
 contains(SCRIPTING_LANGS, muParser) {
   DEFINES += SCRIPTING_MUPARSER
 
-  HEADERS += src/muParserScript.h \
-             src/muParserScripting.h \
+  HEADERS += src/scripting/muParserScript.h \
+             src/scripting/muParserScripting.h \
 
-  SOURCES += src/muParserScript.cpp \
-             src/muParserScripting.cpp \
+  SOURCES += src/scripting/muParserScript.cpp \
+             src/scripting/muParserScripting.cpp \
 }
 
 ##################### PYTHON + SIP + PyQT #####################
@@ -507,21 +509,26 @@ contains(SCRIPTING_LANGS, Python) {
 
   DEFINES += SCRIPTING_PYTHON
 
-  HEADERS += src/PythonScript.h src/PythonScripting.h
-  SOURCES += src/PythonScript.cpp src/PythonScripting.cpp
+  HEADERS += src/scripting/PythonScript.h\
+  			 src/scripting/PythonScripting.h\
+			 src/scripting/PythonSyntaxHighlighter.h\
+			 
+  SOURCES += src/scripting/PythonScript.cpp\
+  			 src/scripting/PythonScripting.cpp\
+			 src/scripting/PythonSyntaxHighlighter.cpp\
 
   unix {
     INCLUDEPATH += $$system(python python-includepath.py)
     LIBS        += $$system(python -c "\"from distutils import sysconfig; print '-lpython'+sysconfig.get_config_var('VERSION')\"")
     LIBS        += -lm
     system(mkdir -p $${SIP_DIR})
-    system($$system(python python-sipcmd.py) -c $${SIP_DIR} src/qti.sip)
+    system($$system(python python-sipcmd.py) -c $${SIP_DIR} src/scripting/qti.sip)
   }
 
   win32 {
     INCLUDEPATH += $$system(call python-includepath.py)
     LIBS        += $$system(call python-libs-win.py)
-    system($$system(call python-sipcmd.py) -c $${SIP_DIR} src/qti.sip)
+    system($$system(call python-sipcmd.py) -c $${SIP_DIR} src/scripting/qti.sip)
   }
 
 ##################### SIP generated files #####################
