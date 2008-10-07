@@ -41,8 +41,8 @@
 #include <QBuffer>
 
 #include "Table.h"
-#include "ScriptingEnv.h"
-#include "Script.h"
+#include "scripting/ScriptingEnv.h"
+#include "scripting/Script.h"
 #include "plot2D/TranslateCurveTool.h"
 
 class QPixmap;
@@ -1164,6 +1164,10 @@ public:
 	//! The scripting language to use for new projects.
 	QString defaultScriptingLang;
 
+	//! User custom colors used for Python syntax highlighting
+	QColor d_comment_highlight_color, d_class_highlight_color, d_numeric_highlight_color;
+	QColor d_keyword_highlight_color, d_function_highlight_color, d_quotation_highlight_color;
+	
 private:
 	MdiSubWindow *d_active_window;
     TextEditor *d_text_editor;

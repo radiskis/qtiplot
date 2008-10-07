@@ -41,11 +41,8 @@
 #include "importOPJ.h"
 #include "RenameWindowDialog.h"
 #include "ImportASCIIDialog.h"
-#include "Note.h"
 #include "Folder.h"
 #include "FindDialog.h"
-#include "ScriptingLangDialog.h"
-#include "ScriptWindow.h"
 #include "TableStatistics.h"
 #include "ColorBox.h"
 #include "OpenProjectDialog.h"
@@ -127,6 +124,10 @@
 #include "matrix/MatrixValuesDialog.h"
 #include "matrix/MatrixModel.h"
 #include "matrix/MatrixCommand.h"
+
+#include "scripting/Note.h"
+#include "scripting/ScriptingLangDialog.h"
+#include "scripting/ScriptWindow.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -384,6 +385,13 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_comment_highlight_color = Qt::red;
+	d_class_highlight_color = Qt::darkMagenta;
+	d_numeric_highlight_color = Qt::darkGreen;
+	d_keyword_highlight_color = Qt::darkBlue;
+	d_function_highlight_color = Qt::blue;
+	d_quotation_highlight_color = Qt::darkYellow;
+
     d_notes_tab_length = 20;
     d_completer = NULL;
     d_completion = true;
@@ -4670,6 +4678,15 @@ void ApplicationWindow::readSettings()
     d_notes_font.setPointSize(settings.value("/FontSize", d_notes_font.pointSize()).toInt());
     d_notes_font.setBold(settings.value("/FontBold", d_notes_font.bold()).toBool());
     d_notes_font.setItalic(settings.value("/FontItalic", d_notes_font.italic()).toBool());
+	
+	settings.beginGroup("/SyntaxHighlighting");
+	d_comment_highlight_color = settings.value("/Comments", d_comment_highlight_color).value<QColor>();
+	d_keyword_highlight_color = settings.value("/Keywords", d_keyword_highlight_color).value<QColor>();
+	d_quotation_highlight_color = settings.value("/Quotations", d_quotation_highlight_color).value<QColor>();
+	d_numeric_highlight_color = settings.value("/Numbers", d_numeric_highlight_color).value<QColor>();
+	d_function_highlight_color = settings.value("/Functions", d_function_highlight_color).value<QColor>();
+	d_class_highlight_color = settings.value("/QtClasses", d_class_highlight_color).value<QColor>();
+	settings.endGroup();
 	settings.endGroup();
 }
 
@@ -5006,6 +5023,14 @@ void ApplicationWindow::saveSettings()
     settings.setValue("/FontSize", d_notes_font.pointSize());
     settings.setValue("/FontBold", d_notes_font.bold());
     settings.setValue("/FontItalic", d_notes_font.italic());
+	settings.beginGroup("/SyntaxHighlighting");
+	settings.setValue("/Comments", d_comment_highlight_color.name());
+	settings.setValue("/Keywords", d_keyword_highlight_color.name());
+	settings.setValue("/Quotations", d_quotation_highlight_color.name());
+	settings.setValue("/Numbers", d_numeric_highlight_color.name());
+	settings.setValue("/Functions", d_function_highlight_color.name());
+	settings.setValue("/QtClasses", d_class_highlight_color.name());
+	settings.endGroup();
 	settings.endGroup();
 }
 

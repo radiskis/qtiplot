@@ -33,8 +33,8 @@
 #include "Matrix.h"
 #include "MatrixModel.h"
 #include "MatrixCommand.h"
-#include "../muParserScript.h"
-#include "../ScriptingEnv.h"
+#include "../scripting/muParserScript.h"
+#include "../scripting/ScriptingEnv.h"
 #include "../analysis/fft2D.h"
 
 #include <gsl/gsl_math.h>

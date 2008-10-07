@@ -38,6 +38,7 @@
 class QAction;
 class QMenu;
 class QCompleter;
+class PythonSyntaxHighlighter;
 
 /*!\brief Editor widget with support for evaluating expressions and executing code.
  *
@@ -59,6 +60,7 @@ class ScriptEdit: public QTextEdit, public scripted
 
     void setCompleter(QCompleter *c);
 	void setFileName(const QString& fn);
+	void rehighlight();
 
   public slots:
     void execute();
@@ -106,6 +108,7 @@ class ScriptEdit: public QTextEdit, public scripted
 
 	QCompleter *d_completer;
   	QString d_file_name;
+	PythonSyntaxHighlighter *d_highlighter;
 
   private slots:
 	  //! Insert an error message from the scripting system at printCursor.

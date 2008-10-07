@@ -101,9 +101,10 @@ private slots:
 	void chooseHelpFolder();
 #ifdef SCRIPTING_PYTHON
 	void choosePythonConfigFolder();
+	void rehighlight();
 #endif
     void customizeNotes();
-
+	
 private:
 	void initPlotsPage();
 	void initAppPage();
@@ -181,6 +182,11 @@ private:
 	QPushButton *buttonItalicFont, *buttonBoldFont;
 	QLabel *labelGraphAxesLabelsDist;
 	QSpinBox *boxAxesLabelsDist;
+#ifdef SCRIPTING_PYTHON
+	QGroupBox *groupSyntaxHighlighter;
+	ColorButton *buttonCommentColor, *buttonNumericColor, *buttonQuotationColor;
+	ColorButton *buttonKeywordColor, *buttonFunctionColor, *buttonClassColor;
+#endif
 };
 
 #endif // CONFIGDIALOG_H

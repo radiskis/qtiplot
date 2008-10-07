@@ -32,7 +32,7 @@
 #include "Table.h"
 #include "SortDialog.h"
 #include "ImportASCIIDialog.h"
-#include "muParserScript.h"
+#include "scripting/muParserScript.h"
 #include "ApplicationWindow.h"
 
 #include <QMessageBox>

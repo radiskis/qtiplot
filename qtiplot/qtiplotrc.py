@@ -224,6 +224,9 @@ from PyQt4 import QtGui
 global QtCore
 from PyQt4 import QtCore
 
+global Qt
+from PyQt4.QtCore import Qt
+  
 # import QtiPlot's classes to the global namespace (particularly useful for fits)
 from qti import *
 
