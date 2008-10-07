@@ -2795,14 +2795,18 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
                 if (ycol < 0)
                     return false;
 
+				QwtErrorPlotCurve *er = NULL;
                 if (w->colPlotDesignation(j) == Table::xErr)
-                    c = addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
+                    er = addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
                 else
-                    c = addErrorBars(w->colName(ycol), w, names[i]);
+                    er = addErrorBars(w->colName(ycol), w, names[i]);
+						
+				if (!er)
+					continue;
 				
-				DataCurve *mc = ((QwtErrorPlotCurve*)c)->masterCurve();
+				DataCurve *mc = er->masterCurve();
 				if (mc)
-					((QwtErrorPlotCurve*)c)->setColor(mc->pen().color());
+					er->setColor(mc->pen().color());
 			} else if (w->colPlotDesignation(j) == Table::Label){
 				QString labelsCol = names[i];
 				int xcol = w->colX(w->colIndex(labelsCol));
