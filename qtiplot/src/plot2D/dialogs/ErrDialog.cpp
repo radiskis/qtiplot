@@ -47,6 +47,7 @@
 ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
+	setAttribute(Qt::WA_DeleteOnClose);
     setFocusPolicy( Qt::StrongFocus );
     setSizeGripEnabled( true );
 

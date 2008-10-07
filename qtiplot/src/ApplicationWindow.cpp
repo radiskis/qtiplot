@@ -3252,7 +3252,6 @@ void ApplicationWindow::addErrorBars()
 	}
 
     ErrDialog* ed = new ErrDialog(this);
-    ed->setAttribute(Qt::WA_DeleteOnClose);
     connect (ed,SIGNAL(options(const QString&,int,const QString&,int)),this,SLOT(defineErrorBars(const QString&,int,const QString&,int)));
     connect (ed,SIGNAL(options(const QString&,const QString&,int)),this,SLOT(defineErrorBars(const QString&,const QString&,int)));
 
@@ -3273,7 +3272,7 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 
 	Table *t = table(name);
 	if (!t){//user defined function
-		QMessageBox::critical(this,tr("QtiPlot - Error bars error"),
+		QMessageBox::critical(this, tr("QtiPlot - Error bars error"),
 				tr("This feature is not available for user defined function curves!"));
 		return;
 	}
@@ -3311,31 +3310,33 @@ void ApplicationWindow::defineErrorBars(const QString& name, int type, const QSt
 				t->setCell(i, c, sd);
 		}
 	}
-	g->addErrorBars(xColName, name, t, errColName, direction);
+	QwtErrorPlotCurve *er = g->addErrorBars(xColName, name, t, errColName, direction);
+	if (er){
+		er->setColor(master_curve->pen().color());
+		g->replot();
+		emit modified();
+	}
 }
 
 void ApplicationWindow::defineErrorBars(const QString& curveName, const QString& errColumnName, int direction)
 {
-	Table *w=table(curveName);
+	Table *w = table(curveName);
 	if (!w){//user defined function --> no worksheet available
 		QMessageBox::critical(this,tr("QtiPlot - Error"),
 				tr("This feature is not available for user defined function curves!"));
 		return;
 	}
 
-	Table *errTable=table(errColumnName);
+	Table *errTable = table(errColumnName);
 	if (w->numRows() != errTable->numRows()){
-		QMessageBox::critical(this,tr("QtiPlot - Error"),
-				tr("The selected columns have different numbers of rows!"));
-
+		QMessageBox::critical(this,tr("QtiPlot - Error"),  tr("The selected columns have different numbers of rows!"));
 		addErrorBars();
 		return;
 	}
 
-	int errCol=errTable->colIndex(errColumnName);
+	int errCol = errTable->colIndex(errColumnName);
 	if (errTable->isEmptyColumn(errCol)){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-				tr("The selected error column is empty!"));
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("The selected error column is empty!"));
 		addErrorBars();
 		return;
 	}
@@ -3348,8 +3349,15 @@ void ApplicationWindow::defineErrorBars(const QString& curveName, const QString&
 	if (!g)
 		return;
 
-	g->addErrorBars(curveName, errTable, errColumnName, direction);
-	emit modified();
+	QwtErrorPlotCurve *er = g->addErrorBars(curveName, errTable, errColumnName, direction);
+	if (er){
+		DataCurve *mc = er->masterCurve();
+		if (mc){
+			er->setColor(mc->pen().color());
+			g->replot();
+		}
+		emit modified();
+	}
 }
 
 void ApplicationWindow::removeCurves(const QString& name)
