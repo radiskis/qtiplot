@@ -29,6 +29,7 @@
 #include "ScriptEdit.h"
 #include "Note.h"
 #include "PythonSyntaxHighlighter.h"
+#include "FindReplaceDialog.h"
 
 #include <QAction>
 #include <QMenu>
@@ -49,7 +50,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
   d_file_name(QString::null), d_highlighter(0)
 {
 	myScript = scriptEnv->newScript("", this, name);
-	connect(myScript, SIGNAL(error(const QString&,const QString&,int)), this, SLOT(insertErrorMsg(const QString&)));
+	connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
 	connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
 	setLineWrapMode(NoWrap);
@@ -61,7 +62,6 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 		d_highlighter = new PythonSyntaxHighlighter(this);
 	
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
-	d_fmt_success.setBackground(QBrush(QColor(128, 255, 128)));
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
 
 	printCursor = textCursor();
@@ -99,6 +99,20 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionExport = new QAction(tr("Sa&ve as..."), this);
 	connect(actionExport, SIGNAL(activated()), this, SLOT(exportASCII()));
 
+	actionFind = new QAction(tr("&Find"), this);
+	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
+	connect(actionFind, SIGNAL(activated()), this, SLOT(find()));
+	
+	QShortcut *accelFind = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F), this);
+	connect(accelFind, SIGNAL(activated()), this, SLOT(find()));
+	
+	actionReplace = new QAction(tr("&Replace"), this);
+	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_R));
+	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
+	
+	QShortcut *accelReplace = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_R), this);
+	connect(accelReplace, SIGNAL(activated()), this, SLOT(replace()));
+
 	functionsMenu = new QMenu(this);
 	Q_CHECK_PTR(functionsMenu);
 	connect(functionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFunction(QAction *)));
@@ -112,7 +126,7 @@ void ScriptEdit::customEvent(QEvent *e)
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
 		delete myScript;
 		myScript = scriptEnv->newScript("", this, name());
-		connect(myScript, SIGNAL(error(const QString&,const QString&,int)), this, SLOT(insertErrorMsg(const QString&)));
+		connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
 		connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 				
 		if (scriptEnv->name() == QString("Python") && !d_highlighter)
@@ -184,6 +198,10 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 	QMenu *menu = createStandardContextMenu();
 	Q_CHECK_PTR(menu);
 
+	menu->insertSeparator();
+	menu->addAction(actionFind);
+	menu->addAction(actionReplace);
+	menu->insertSeparator();
 	menu->addAction(actionPrint);
 	menu->addAction(actionImport);
 	menu->insertSeparator();
@@ -278,7 +296,7 @@ void ScriptEdit::insertFunction(QAction *action)
 
 int ScriptEdit::lineNumber(int pos) const
 {
-	int n=1;
+	int n = 1;
 	for(QTextBlock i=document()->begin(); !i.contains(pos) && i!=document()->end(); i=i.next())
 		n++;
 	return n;
@@ -306,27 +324,40 @@ void ScriptEdit::execute()
 
 	myScript->setName(fname);
 	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
-	printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
-	printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
+	//printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
+	//printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	myScript->exec();
 
 	d_changing_fmt = true;
 	if (d_error)
 		codeCursor.mergeBlockFormat(d_fmt_failure);
 	else
-		codeCursor.mergeBlockFormat(d_fmt_success);
+		codeCursor.mergeBlockFormat(d_fmt_default);
+	
 	d_changing_fmt = false;
 	d_error = false;
 }
 
 void ScriptEdit::executeAll()
 {
+	QTextCursor codeCursor = textCursor();
+	codeCursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
+	codeCursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+	
 	QString fname = "<%1>";
 	fname = fname.arg(name());
 	myScript->setName(fname);
 	myScript->setCode(text());
-	printCursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
 	myScript->exec();
+	
+	d_changing_fmt = true;
+	if (d_error)
+		codeCursor.mergeBlockFormat(d_fmt_failure);
+	else
+		codeCursor.mergeBlockFormat(d_fmt_default);
+	
+	d_changing_fmt = false;
+	d_error = false;
 }
 
 void ScriptEdit::evaluate()
@@ -342,15 +373,15 @@ void ScriptEdit::evaluate()
 
 	myScript->setName(fname);
 	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
-	printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
-	printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
+	//printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
+	//printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	QVariant res = myScript->eval();
 
 	d_changing_fmt = true;
 	if (d_error)
 		codeCursor.mergeBlockFormat(d_fmt_failure);
 	else
-		codeCursor.mergeBlockFormat(d_fmt_success);
+		codeCursor.mergeBlockFormat(d_fmt_default);
 
 	if (res.isValid())
 		if (!res.isNull() && res.canConvert(QVariant::String)){
@@ -557,4 +588,13 @@ void ScriptEdit::rehighlight()
 		delete d_highlighter;
 			
 	d_highlighter = new PythonSyntaxHighlighter(this);
+}
+
+void ScriptEdit::find(bool replace)
+{
+	if (toPlainText().isEmpty())
+		return;
+		
+	FindReplaceDialog *frd = new FindReplaceDialog(this, replace, (QWidget *)scriptingEnv()->application());
+	frd->exec();
 }
