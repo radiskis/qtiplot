@@ -464,6 +464,7 @@ contains(RESTRICTED_MODULES, EMF) {
 ###############################################################
 
 HEADERS  += src/scripting/customevents.h\
+			src/scripting/FindReplaceDialog.h\
 			src/scripting/LineNumberDisplay.h\
 			src/scripting/Note.h\
             src/scripting/ScriptingEnv.h\
@@ -472,7 +473,8 @@ HEADERS  += src/scripting/customevents.h\
             src/scripting/ScriptingLangDialog.h\
             src/scripting/ScriptWindow.h\
 			
-SOURCES  += src/scripting/LineNumberDisplay.cpp\
+SOURCES  += src/scripting/FindReplaceDialog.cpp\
+			src/scripting/LineNumberDisplay.cpp\
 			src/scripting/Note.cpp\
             src/scripting/ScriptingEnv.cpp\
             src/scripting/Script.cpp\

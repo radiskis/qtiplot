@@ -77,6 +77,8 @@ class ScriptEdit: public QTextEdit, public scripted
     void scriptPrint(const QString&);
     void updateIndentation();
 	void setDirPath(const QString& path);
+	void find(bool replace = false);
+	void replace(){find(true);};
 
   signals:
 	void dirPathChanged(const QString& path);
@@ -89,7 +91,8 @@ class ScriptEdit: public QTextEdit, public scripted
   private:
     Script *myScript;
     QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionImport, *actionSave, *actionExport;
-    //! Submenu of context menu with mathematical functions.
+    QAction *actionFind, *actionReplace;
+  	//! Submenu of context menu with mathematical functions.
   	QMenu *functionsMenu;
   	//! Cursor used for output of evaluation results and error messages.
   	QTextCursor printCursor;
@@ -97,8 +100,6 @@ class ScriptEdit: public QTextEdit, public scripted
 
    //! Format used for resetting success/failure markers.
 	QTextBlockFormat d_fmt_default;
-	//! Format used for marking code that was executed or evaluated successfully.
-	QTextBlockFormat d_fmt_success;
 	//! Format used for marking code that resulted in an error.
 	QTextBlockFormat d_fmt_failure;
 	//! True if we are inside evaluate(), execute() or executeAll() there were errors.

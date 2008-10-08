@@ -94,22 +94,21 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
         }
     }
     setCurrentBlockState(0);
-
-	QRegExp comment = QRegExp("\"{3}");
 	
-     int startIndex = 0;
-     if (previousBlockState() != 1)
-         startIndex = text.indexOf(comment);
-
-     while (startIndex >= 0) {
-         int endIndex = text.indexOf(comment, startIndex + 3);
-         int commentLength;
-         if (endIndex == -1) {
-             setCurrentBlockState(1);
-             commentLength = text.length() - startIndex;
-         } else
-             commentLength = endIndex - startIndex + comment.matchedLength();
-         setFormat(startIndex, commentLength, commentFormat);
-         startIndex = text.indexOf(comment, startIndex + commentLength + 3);
-     }
+	QRegExp comment = QRegExp("\"{3}");	
+	int startIndex = 0;
+	if (previousBlockState() != 1)
+		startIndex = text.indexOf(comment);
+	
+	while (startIndex >= 0) {
+		int endIndex = text.indexOf(comment, startIndex + 3);
+		int commentLength;
+		if (endIndex == -1) {
+			setCurrentBlockState(1);
+			commentLength = text.length() - startIndex;
+		} else
+			commentLength = endIndex - startIndex + comment.matchedLength();
+		setFormat(startIndex, commentLength, commentFormat);
+		startIndex = text.indexOf(comment, startIndex + commentLength + 3);
+	}
 }
