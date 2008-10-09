@@ -46,7 +46,7 @@
 #include <QShortcut>
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
-  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0), 
+  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0),
   d_file_name(QString::null), d_highlighter(0)
 {
 	myScript = scriptEnv->newScript("", this, name);
@@ -60,7 +60,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 
 	if (scriptEnv->name() == QString("Python"))
 		d_highlighter = new PythonSyntaxHighlighter(this);
-	
+
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
 
@@ -88,28 +88,28 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 
 	QShortcut *accelImport = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O), this);
 	connect(accelImport, SIGNAL(activated()), this, SLOT(import()));
-	
+
 	actionSave = new QAction(tr("&Save"), this);
 	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
 	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
-	
+
 	QShortcut *accelSave = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S), this);
 	connect(accelSave, SIGNAL(activated()), this, SLOT(save()));
-	
+
 	actionExport = new QAction(tr("Sa&ve as..."), this);
 	connect(actionExport, SIGNAL(activated()), this, SLOT(exportASCII()));
 
-	actionFind = new QAction(tr("&Find"), this);
+	actionFind = new QAction(tr("&Find..."), this);
 	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
 	connect(actionFind, SIGNAL(activated()), this, SLOT(find()));
-	
+
 	QShortcut *accelFind = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F), this);
 	connect(accelFind, SIGNAL(activated()), this, SLOT(find()));
-	
-	actionReplace = new QAction(tr("&Replace"), this);
+
+	actionReplace = new QAction(tr("&Replace..."), this);
 	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_R));
 	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
-	
+
 	QShortcut *accelReplace = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_R), this);
 	connect(accelReplace, SIGNAL(activated()), this, SLOT(replace()));
 
@@ -128,7 +128,7 @@ void ScriptEdit::customEvent(QEvent *e)
 		myScript = scriptEnv->newScript("", this, name());
 		connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
 		connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
-				
+
 		if (scriptEnv->name() == QString("Python") && !d_highlighter)
 			d_highlighter = new PythonSyntaxHighlighter(this);
 		else {
@@ -333,7 +333,7 @@ void ScriptEdit::execute()
 		codeCursor.mergeBlockFormat(d_fmt_failure);
 	else
 		codeCursor.mergeBlockFormat(d_fmt_default);
-	
+
 	d_changing_fmt = false;
 	d_error = false;
 }
@@ -343,19 +343,19 @@ void ScriptEdit::executeAll()
 	QTextCursor codeCursor = textCursor();
 	codeCursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
 	codeCursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
-	
+
 	QString fname = "<%1>";
 	fname = fname.arg(name());
 	myScript->setName(fname);
 	myScript->setCode(text());
 	myScript->exec();
-	
+
 	d_changing_fmt = true;
 	if (d_error)
 		codeCursor.mergeBlockFormat(d_fmt_failure);
 	else
 		codeCursor.mergeBlockFormat(d_fmt_default);
-	
+
 	d_changing_fmt = false;
 	d_error = false;
 }
@@ -442,7 +442,7 @@ QString ScriptEdit::import(const QString &filename)
 
 	setFileName(f);
 
-	QFileInfo fi(f);	
+	QFileInfo fi(f);
 	if (scriptsDirPath != fi.absolutePath()){
 		scriptsDirPath = fi.absolutePath();
 		emit dirPathChanged(scriptsDirPath);
@@ -506,7 +506,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 		t.setEncoding(QTextStream::UnicodeUTF8);
 		t << text();
 		f.close();
-		
+
 		setFileName(fn);
 	}
 	return fn;
@@ -516,7 +516,7 @@ void ScriptEdit::setFileName(const QString& fn)
 {
 	if (d_file_name == fn)
 		return;
-	
+
 	d_file_name = fn;
 	Note *note = qobject_cast<Note *>(myScript->context());
 	if (note)
@@ -578,15 +578,15 @@ void ScriptEdit::setDirPath(const QString& path)
      tc.select(QTextCursor::WordUnderCursor);
      return tc.selectedText();
  }
- 
+
 void ScriptEdit::rehighlight()
 {
 	if (scriptEnv->name() != QString("Python"))
 		return;
-	
+
 	if (d_highlighter)
 		delete d_highlighter;
-			
+
 	d_highlighter = new PythonSyntaxHighlighter(this);
 }
 
@@ -594,7 +594,7 @@ void ScriptEdit::find(bool replace)
 {
 	if (toPlainText().isEmpty())
 		return;
-		
+
 	FindReplaceDialog *frd = new FindReplaceDialog(this, replace, (QWidget *)scriptingEnv()->application());
 	frd->exec();
 }

@@ -5,7 +5,7 @@
     Copyright            : (C) 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Find/Replace dialog for ScriptEdit
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -41,15 +41,14 @@
 #include <QMessageBox>
 
 FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* parent, Qt::WFlags fl )
-    : QDialog( parent, fl ),
-	d_editor(editor), d_replace_mode(replace), d_counter(0)
+    : QDialog( parent, fl ), d_editor(editor)
 {
 	setWindowTitle (tr("QtiPlot") + " - " + tr("Find"));
 	setSizeGripEnabled( true );
 
 	QGroupBox *gb1 = new QGroupBox();
 	QGridLayout * topLayout = new QGridLayout(gb1);
-	
+
 	topLayout->addWidget( new QLabel(tr( "Find" )), 0, 0);
 	boxFind = new QComboBox();
 	boxFind->setEditable(true);
@@ -58,22 +57,21 @@ FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* 
 	boxFind->setAutoCompletion(true);
 	boxFind->setMaxCount ( 10 );
 	boxFind->setMaxVisibleItems ( 10 );
+	boxFind->setMinimumWidth(250);
 	boxFind->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
-	
-	highlightCursor = QTextCursor(editor->document()); 
+
+    d_highlight_cursor = editor->textCursor();
 	if (editor->textCursor().hasSelection()){
 		QString text = editor->textCursor().selectedText();
 		boxFind->setEditText(text);
 		boxFind->addItem(text);
 	}
-		
+
 	topLayout->addWidget(boxFind, 0, 1);
 
-	if (d_replace_mode){
+	if (replace){
 		setWindowTitle (tr("QtiPlot") + " - " + tr("Find and Replace"));
-		lblReplace = new QLabel(tr( "Replace with" ));
-	
-		topLayout->addWidget( lblReplace, 1, 0 );
+		topLayout->addWidget(new QLabel(tr( "Replace with" )), 1, 0);
 		boxReplace = new QComboBox();
 		boxReplace->setEditable(true);
 		boxReplace->setDuplicatesEnabled(false);
@@ -85,105 +83,116 @@ FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* 
 		topLayout->addWidget( boxReplace, 1, 1);
 		topLayout->setColumnStretch(1, 10);
 	}
-	
+
 	QGroupBox *gb2 = new QGroupBox();
 	QGridLayout * bottomLayout = new QGridLayout(gb2);
-	
-	boxCaseSensitive = new QCheckBox(tr("Case &Sensitive"));
+
+	boxCaseSensitive = new QCheckBox(tr("&Match case"));
     boxCaseSensitive->setChecked(false);
 	bottomLayout->addWidget( boxCaseSensitive, 0, 0);
-		
-	boxWholeWords = new QCheckBox(tr("&Whole words"));
+
+	boxWholeWords = new QCheckBox(tr("&Whole word"));
     boxWholeWords->setChecked(false);
 	bottomLayout->addWidget(boxWholeWords, 1, 0);
-	
-	boxCircularSearch = new QCheckBox(tr("Circu&lar search"));
-    boxCircularSearch->setChecked(true);
-	bottomLayout->addWidget(boxCircularSearch, 2, 0);
-	bottomLayout->setRowStretch(3, 1);
-		
-	QHBoxLayout *hb = new QHBoxLayout();
-	hb->addStretch();
-	
-	if (d_replace_mode)
-		buttonFind = new QPushButton(tr("&Replace"));
-	else
-		buttonFind = new QPushButton(tr("&Find"));
-    buttonFind->setDefault( true );
-	hb->addWidget(buttonFind);
-   
-	if (d_replace_mode){
+	bottomLayout->setRowStretch(2, 1);
+
+    QVBoxLayout *vb1 = new QVBoxLayout();
+    vb1->addWidget(gb1);
+	vb1->addWidget(gb2);
+
+	QVBoxLayout *vb2 = new QVBoxLayout();
+
+    buttonNext = new QPushButton(tr("&Next"));
+    buttonNext->setDefault(true);
+	vb2->addWidget(buttonNext);
+
+	buttonPrevious = new QPushButton(tr("&Previous"));
+	vb2->addWidget(buttonPrevious);
+
+	if (replace){
+        buttonReplace = new QPushButton(tr("&Replace"));
+        connect(buttonReplace, SIGNAL(clicked()), this, SLOT(replace()));
+		vb2->addWidget(buttonReplace);
+
 		buttonReplaceAll = new QPushButton(tr("Replace &all"));
 		connect(buttonReplaceAll, SIGNAL(clicked()), this, SLOT(replaceAll()));
-		hb->addWidget(buttonReplaceAll);
+		vb2->addWidget(buttonReplaceAll);
 	}
-	
+
     buttonCancel = new QPushButton(tr("&Close"));
-	hb->addWidget(buttonCancel);
+	vb2->addWidget(buttonCancel);
+	vb2->addStretch();
 
-	QVBoxLayout* mainLayout = new QVBoxLayout(this);
-	mainLayout->addWidget(gb1);
-	mainLayout->addWidget(gb2);
-	mainLayout->addLayout(hb);
-   
-	connect(boxFind, SIGNAL(editTextChanged(const QString &)), this, SLOT(resetSearch()));
-	connect(boxCaseSensitive, SIGNAL(clicked()), this, SLOT(resetSearch()));
-	connect(boxWholeWords, SIGNAL(clicked()), this, SLOT(resetSearch()));
+	QHBoxLayout *hb = new QHBoxLayout(this);
+	hb->addLayout(vb1);
+	hb->addLayout(vb2);
 
-    connect(buttonFind, SIGNAL(clicked()), this, SLOT(find()));
+    connect(buttonNext, SIGNAL(clicked()), this, SLOT(find()));
+    connect(buttonPrevious, SIGNAL(clicked()), this, SLOT(findPrevious()));
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
-void FindReplaceDialog::resetSearch()
-{	
-	d_counter = 0;
-	highlightCursor = QTextCursor(d_editor->document());
-}
-
-void FindReplaceDialog::find()
+bool FindReplaceDialog::find(bool previous)
 {
 	QString searchString = boxFind->currentText();
 	if (searchString.isEmpty()){
         QMessageBox::warning(this, tr("Empty Search Field"),
                 tr("The search field is empty. Please enter some text and try again."));
 		boxFind->setFocus();
-		return;
-    } 
-		
+		return false;
+    }
+
 	if(boxFind->findText(searchString) == -1)
 		boxFind->addItem (searchString);
-		
-    QTextDocument *document = d_editor->document();	
-	QTextCursor cursor(document);
+
+    bool stop = previous ? d_highlight_cursor.atStart() : d_highlight_cursor.atEnd();
+
 	QTextDocument::FindFlags flags = searchFlags();
-	while (!highlightCursor.isNull() && !highlightCursor.atEnd()){
-		highlightCursor = document->find(searchString, highlightCursor, flags);
-		if (!highlightCursor.isNull()){
-			d_counter++;	
-			if (d_replace_mode){
-				QString replaceString = boxReplace->currentText();
-     			highlightCursor.insertText(replaceString);
-				if(boxReplace->findText(replaceString) == -1)
-					boxReplace->addItem(replaceString);
-			}
-			
-			d_editor->setTextCursor(highlightCursor);
-			return;
+    if (previous)
+        flags |= QTextDocument::FindBackward;
+
+	bool found = false;
+	while (!d_highlight_cursor.isNull() && !stop){
+		d_highlight_cursor = d_editor->document()->find(searchString, d_highlight_cursor, flags);
+		if (!d_highlight_cursor.isNull()){
+			found = true;
+			d_editor->setTextCursor(d_highlight_cursor);
+			return true;
 		}
+		stop = previous ? d_highlight_cursor.atStart() : d_highlight_cursor.atEnd();
 	}
 
-	if (!d_counter){
-		QMessageBox::information(this, tr("Word Not Found"), 
-				tr("Sorry, the expression cannot be found."));
-	} else {
-		if (boxCircularSearch->isChecked()){
-			highlightCursor = QTextCursor(d_editor->document());
-			if (!d_replace_mode)			
-				find();
-		} else
-			QMessageBox::information(this, tr("End of document"), 
-					tr("The end of the document was reached!"));
-	} 
+    if (!found){
+        QMessageBox::information(this, tr("QtiPlot"), tr("QtiPlot has finished searching the document."));
+        if (d_highlight_cursor.isNull())
+            d_highlight_cursor = d_editor->textCursor();
+    }
+
+	return found;
+}
+
+void FindReplaceDialog::replace()
+{
+    QString searchString = boxFind->currentText();
+	if (searchString.isEmpty()){
+        QMessageBox::warning(this, tr("Empty Search Field"),
+                tr("The search field is empty. Please enter some text and try again."));
+		boxFind->setFocus();
+		return;
+    }
+
+    QTextCursor cursor = d_editor->textCursor();
+    if (!cursor.hasSelection() || cursor.selectedText() != searchString){
+        find();//find and select next match
+        return;
+    }
+
+    QString replaceString = boxReplace->currentText();
+    cursor.insertText(replaceString);
+    find();//find and select next match
+
+    if(boxReplace->findText(replaceString) == -1)
+        boxReplace->addItem(replaceString);
 }
 
 void FindReplaceDialog::replaceAll()
@@ -195,29 +204,28 @@ void FindReplaceDialog::replaceAll()
 		boxFind->setFocus();
 		return;
     }
-	
+
 	if(boxFind->findText(searchString) == -1)
 		boxFind->addItem (searchString);
 
 	QString replaceString = boxReplace->currentText();
 	if(boxReplace->findText(replaceString) == -1)
 		boxReplace->addItem(replaceString);
-	
-    QTextDocument *document = d_editor->document();
+
 	QTextDocument::FindFlags flags = searchFlags();
+	QTextDocument *document = d_editor->document();
+	QTextCursor cursor(document);
     bool found = false;
-	while (!highlightCursor.isNull() && !highlightCursor.atEnd()){
-		highlightCursor = document->find(searchString, highlightCursor, flags);
-		if (!highlightCursor.isNull()){
+	while (!cursor.isNull() && !cursor.atEnd()){
+		cursor = document->find(searchString, cursor, flags);
+		if (!cursor.isNull()){
 			found = true;
-			highlightCursor.insertText(replaceString);
+			cursor.insertText(replaceString);
 		}
 	}
-	
-	if (!found){
-		QMessageBox::information(this, tr("Word Not Found"), 
-				tr("Sorry, the expression cannot be found."));
-	}    
+
+	if (!found)
+		QMessageBox::information(this, tr("QtiPlot"), tr("QtiPlot has finished searching the document."));
 }
 
 QTextDocument::FindFlags FindReplaceDialog::searchFlags()
@@ -226,6 +234,6 @@ QTextDocument::FindFlags FindReplaceDialog::searchFlags()
 	if (boxCaseSensitive->isChecked())
 		flags |= QTextDocument::FindCaseSensitively;
 	if (boxWholeWords->isChecked())
-		flags |= QTextDocument::FindWholeWords;	
+		flags |= QTextDocument::FindWholeWords;
 	return flags;
 }
