@@ -266,7 +266,7 @@ public slots:
 
 	QString colorMap(){return color_map;};
 	void setDataColorMap(const QString& fileName);
-	bool openColorMap(ColorVector& cv, QString fname);
+	static bool openColorMap(ColorVector& cv, QString fname);
 
 	void setMeshColor(const QColor&);
 	void setAxesColor(const QColor&);
