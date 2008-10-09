@@ -88,6 +88,8 @@ private slots:
 	void changeZoom(int);
 	void changeTransparency(int val);
     void pickDataColorMap();
+	void updateColorMapFileGroupBox(bool);
+	void updateLinearColorMapGroupBox(bool);
 
 private:
     void initScalesPage();
@@ -95,8 +97,11 @@ private:
 	void initTitlePage();
 	void initColorsPage();
 	void initGeneralPage();
+	void setColorMapPreview(const QString& fileName);
 
     Graph3D *d_plot;
+	QGroupBox *linearColorMapGroupBox, *colorMapFileGroupBox;
+	QLabel *colorMapPreviewLabel;
 	QFont titleFont, xAxisFont,yAxisFont,zAxisFont, numbersFont;
 	QStringList labels, scales, tickLengths;
     QDoubleSpinBox *boxMeshLineWidth;
@@ -124,6 +129,7 @@ private:
 	QWidget *dotsPage, *conesPage, *crossPage;
 	TextFormatButtons *titleFormatButtons, *axisTitleFormatButtons;
     double zoom, xScale, yScale, zScale;
+	QString d_color_map_file;
 };
 
 #endif

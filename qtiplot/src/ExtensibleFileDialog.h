@@ -60,6 +60,7 @@ class ExtensibleFileDialog : public QFileDialog
 		bool isExtendable(){return d_extension != NULL;};
 		bool isExtended(){return d_extension_toggle->isChecked();};
 		void setExtended(bool extended){if (extended) d_extension_toggle->toggle();};
+		void setExtentionToggleButtonText(const QString& text){d_extension_toggle->setText(text);};
 		
 	protected:
 		//! Button for toggling display of extension on/off.

@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "Plot3DDialog.h"
+#include "ColorMapPreviewDialog.h"
 #include "../MyParser.h"
 #include "../SymbolDialog.h"
 #include "../ApplicationWindow.h"
@@ -53,6 +54,36 @@
 
 #include <qwt3d_color.h>
 
+static const char* choose_folder_xpm[]={
+    "16 16 11 1",
+    "# c #000000",
+    "g c #c0c0c0",
+    "e c #303030",
+    "a c #ffa858",
+    "b c #808080",
+    "d c #a0a0a4",
+    "f c #585858",
+    "c c #ffdca8",
+    "h c #dcdcdc",
+    "i c #ffffff",
+    ". c None",
+    "....###.........",
+    "....#ab##.......",
+    "....#acab####...",
+    "###.#acccccca#..",
+    "#ddefaaaccccca#.",
+    "#bdddbaaaacccab#",
+    ".eddddbbaaaacab#",
+    ".#bddggdbbaaaab#",
+    "..edgdggggbbaab#",
+    "..#bgggghghdaab#",
+    "...ebhggghicfab#",
+    "....#edhhiiidab#",
+    "......#egiiicfb#",
+    "........#egiibb#",
+    "..........#egib#",
+    "............#ee#"};
+	
 Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WFlags fl )
     : QDialog( parent, fl )
 {
@@ -238,7 +269,12 @@ void Plot3DDialog::initTitlePage()
 
 void Plot3DDialog::initColorsPage()
 {
-    QGridLayout* vl1 = new QGridLayout();
+	linearColorMapGroupBox = new QGroupBox(tr( "Linea&r color map" ));
+	linearColorMapGroupBox->setCheckable(true);
+	connect(linearColorMapGroupBox, SIGNAL(clicked(bool)), 
+			this, SLOT(updateColorMapFileGroupBox(bool)));
+	
+    QGridLayout* vl1 = new QGridLayout(linearColorMapGroupBox);
     btnFromColor = new ColorButton();
     QLabel *maxLabel = new QLabel(tr( "&Max" ));
     maxLabel->setBuddy(btnFromColor);
@@ -251,12 +287,28 @@ void Plot3DDialog::initColorsPage()
     vl1->addWidget(minLabel, 1, 0);
     vl1->addWidget(btnToColor, 1, 1);
 
-	btnColorMap = new QPushButton(tr( "Color Ma&p" ));
-    vl1->addWidget(btnColorMap, 2, 1);
-    vl1->setRowStretch(3, 1);
+    colorMapFileGroupBox = new QGroupBox(tr( "Color map &file" ));
+	colorMapFileGroupBox->setCheckable(true);
+	connect(colorMapFileGroupBox, SIGNAL(clicked(bool)), this, 
+			SLOT(updateLinearColorMapGroupBox(bool)));
+	
+	QGridLayout* layout = new QGridLayout(colorMapFileGroupBox);
+	
+	btnColorMap = new QPushButton();
+	btnColorMap->setIcon(QIcon(QPixmap(choose_folder_xpm)));
+	layout->addWidget(btnColorMap, 0, 0);
 
-    QGroupBox *gb1 = new QGroupBox(tr( "Data" ));
-    gb1->setLayout(vl1);
+	colorMapPreviewLabel = new QLabel(tr("None"));
+	colorMapPreviewLabel->setScaledContents(true);
+	colorMapPreviewLabel->setFrameShape( QFrame::StyledPanel );
+	colorMapPreviewLabel->setFrameShadow( QFrame::Sunken );
+	layout->addWidget(colorMapPreviewLabel, 0, 1);
+	layout->setRowStretch(1, 1);
+	layout->setColumnStretch(1, 1);
+	
+	QVBoxLayout *vl0 = new QVBoxLayout();
+	vl0->addWidget(linearColorMapGroupBox);
+	vl0->addWidget(colorMapFileGroupBox);
 
     QGridLayout* vl2 = new QGridLayout();
     btnMesh = new ColorButton();
@@ -305,7 +357,7 @@ void Plot3DDialog::initColorsPage()
     AxesColorGroupBox->setLayout(gl1);
 
     QHBoxLayout* hb1 = new QHBoxLayout();
-	hb1->addWidget(gb1);
+	hb1->addLayout(vl0);
     hb1->addWidget(gb2);
     hb1->addWidget(AxesColorGroupBox);
 
@@ -515,6 +567,11 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	btnLabels->setColor(g->labelColor());
 	btnBackground->setColor(g->bgColor());
 	btnGrid->setColor(g->gridColor());
+	
+	d_color_map_file = g->colorMap();
+	setColorMapPreview(d_color_map_file);
+	linearColorMapGroupBox->setChecked(d_color_map_file.isEmpty());
+	colorMapFileGroupBox->setChecked(!d_color_map_file.isEmpty());
 
 	boxMeshLineWidth->setValue(g->meshLineWidth());
 	boxTransparency->setValue(int(100*g->transparency()));
@@ -677,9 +734,45 @@ void Plot3DDialog::disableMeshOptions()
 
 void Plot3DDialog::pickDataColorMap()
 {
-QString fn = QFileDialog::getOpenFileName(d_plot->colorMap(), tr("Colormap files") + " (*.map *.MAP)", this);
-if (!fn.isEmpty())
-   d_plot->setDataColorMap(fn);
+	ColorMapPreviewDialog *pd = new ColorMapPreviewDialog(this);
+	pd->selectFile(d_color_map_file);
+	pd->updatePreview(d_color_map_file);
+	if (pd->exec() != QDialog::Accepted)
+		return;
+
+	QString fn = pd->selectedFiles()[0];
+	if (!fn.isEmpty()){
+   		d_plot->setDataColorMap(fn);
+		d_color_map_file = fn;
+		setColorMapPreview(d_color_map_file);
+	}
+}
+
+void Plot3DDialog::setColorMapPreview(const QString& fileName) 
+{
+	if (fileName.isEmpty()){
+		colorMapPreviewLabel->setText(tr("None"));
+   		return;
+	}
+	
+	ColorVector cv;
+	if (!Graph3D::openColorMap(cv, fileName)){
+		colorMapPreviewLabel->setText(tr("None"));
+   		return;
+	}
+		
+	int height = 20;
+	QPixmap pix;
+	pix.resize(cv.size(), height);
+	QPainter p(&pix);
+	for (unsigned i = 0; i != cv.size(); ++i){
+		RGBA rgb = cv[i];
+		p.setPen(GL2Qt(rgb.r, rgb.g, rgb.b));
+		p.drawLine(QPoint(0, 0), QPoint(0, height));	
+   		p.translate(1, 0);
+	}
+  	p.end();
+	colorMapPreviewLabel->setPixmap(pix);
 }
 
 void Plot3DDialog::pickTitleFont()
@@ -778,7 +871,13 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setTitle(boxTitle->text().remove("\n"), btnTitleColor->color(), titleFont);
 	} else if (generalDialog->currentPage()==(QWidget*)colors){
 		d_plot->changeTransparency(boxTransparency->value()*0.01);
-		d_plot->setDataColors(btnFromColor->color(), btnToColor->color());
+		if (linearColorMapGroupBox->isChecked())
+			d_plot->setDataColors(btnFromColor->color(), btnToColor->color());
+		else if (colorMapFileGroupBox->isChecked() && !d_color_map_file.isEmpty()){
+			d_plot->setDataColorMap(d_color_map_file);
+			setColorMapPreview(d_color_map_file);
+		}
+		
 		d_plot->setMeshColor(btnMesh->color());
 		d_plot->setAxesColor(btnAxes->color());
 		d_plot->setNumbersColor(btnNumbers->color());
@@ -905,4 +1004,14 @@ void Plot3DDialog::showTitleTab()
 void Plot3DDialog::showAxisTab()
 {
 	generalDialog->setCurrentWidget (axes);
+}
+
+void Plot3DDialog::updateColorMapFileGroupBox(bool checked)
+{
+	colorMapFileGroupBox->setChecked(!checked);
+}
+
+void Plot3DDialog::updateLinearColorMapGroupBox(bool checked)
+{
+	linearColorMapGroupBox->setChecked(!checked);
 }

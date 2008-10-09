@@ -2512,11 +2512,11 @@ QColor Graph3D::maxDataColor()
 
 void Graph3D::setDataColors(const QColor& cMin, const QColor& cMax)
 {
-	if (cMin == fromColor && cMax == toColor)
+	if (cMin == fromColor && cMax == toColor && color_map.isEmpty())
 		return;
 
-	fromColor=cMin;
-	toColor=cMax;
+	fromColor = cMin;
+	toColor = cMax;
 
 	Qwt3D::ColorVector cv;
 
@@ -2552,6 +2552,8 @@ void Graph3D::setDataColors(const QColor& cMin, const QColor& cMax)
 	col_->setColorVector(cv);
 	sp->setDataColor(col_);
 
+	color_map = QString::null;
+	
 	if (legendOn) {
 		sp->showColorLegend(false);
 		sp->showColorLegend(legendOn);
