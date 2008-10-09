@@ -5,7 +5,7 @@
     Copyright            : (C) 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Find/Replace dialog for ScriptEdit
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -37,7 +37,6 @@
 class QPushButton;
 class QCheckBox;
 class QComboBox;
-class QLabel;
 class ScriptEdit;
 
 //! Find/Replace dialog
@@ -52,26 +51,25 @@ private:
 	QTextDocument::FindFlags searchFlags();
 
 	ScriptEdit *d_editor;
-	bool d_replace_mode;
-	int d_counter;
-	QTextCursor highlightCursor;
+	QTextCursor d_highlight_cursor;
 
-	QPushButton* buttonFind;
+	QPushButton* buttonNext;
+	QPushButton* buttonPrevious;
+	QPushButton* buttonReplace;
 	QPushButton* buttonReplaceAll;
 	QPushButton* buttonCancel;
 
 	QComboBox* boxFind;
-	QLabel *lblReplace;
 	QComboBox* boxReplace;
 
 	QCheckBox* boxCaseSensitive;
 	QCheckBox* boxWholeWords;
-	QCheckBox* boxCircularSearch;
 
 protected slots:
-	void find();
+	bool find(bool previous = false);
+	bool findPrevious(){return find(true);};
+	void replace();
 	void replaceAll();
-	void resetSearch();
 };
 
 #endif
