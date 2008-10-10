@@ -34,6 +34,7 @@
 #include "../ColorButton.h"
 #include "../TextFormatButtons.h"
 #include "../DoubleSpinBox.h"
+#include "../ColorMapEditor.h"
 
 #include <QListWidget>
 #include <QTextEdit>
@@ -274,18 +275,9 @@ void Plot3DDialog::initColorsPage()
 	connect(linearColorMapGroupBox, SIGNAL(clicked(bool)), 
 			this, SLOT(updateColorMapFileGroupBox(bool)));
 	
-    QGridLayout* vl1 = new QGridLayout(linearColorMapGroupBox);
-    btnFromColor = new ColorButton();
-    QLabel *maxLabel = new QLabel(tr( "&Max" ));
-    maxLabel->setBuddy(btnFromColor);
-    vl1->addWidget(maxLabel, 0, 0);
-    vl1->addWidget(btnFromColor, 0, 1);
-
-	btnToColor = new ColorButton();
-	QLabel *minLabel = new QLabel(tr( "M&in" ));
-	minLabel->setBuddy(btnToColor);
-    vl1->addWidget(minLabel, 1, 0);
-    vl1->addWidget(btnToColor, 1, 1);
+	QHBoxLayout* hb = new QHBoxLayout(linearColorMapGroupBox);
+	d_color_map_editor = new ColorMapEditor();
+	hb->addWidget(d_color_map_editor);
 
     colorMapFileGroupBox = new QGroupBox(tr( "Color map &file" ));
 	colorMapFileGroupBox->setCheckable(true);
@@ -558,8 +550,8 @@ void Plot3DDialog::setPlot(Graph3D *g)
 
 	d_plot = g;
 
-	btnFromColor->setColor(g->minDataColor());
-	btnToColor->setColor(g->maxDataColor());
+	d_color_map_editor->setRange(g->zStart(), g->zStop());
+	d_color_map_editor->setColorMap(g->colorMap());
 	btnTitleColor->setColor(g->titleColor());
 	btnMesh->setColor(g->meshColor());
 	btnAxes->setColor(g->axesColor());
@@ -568,7 +560,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	btnBackground->setColor(g->bgColor());
 	btnGrid->setColor(g->gridColor());
 	
-	d_color_map_file = g->colorMap();
+	d_color_map_file = g->colorMapFile();
 	setColorMapPreview(d_color_map_file);
 	linearColorMapGroupBox->setChecked(d_color_map_file.isEmpty());
 	colorMapFileGroupBox->setChecked(!d_color_map_file.isEmpty());
@@ -756,7 +748,7 @@ void Plot3DDialog::setColorMapPreview(const QString& fileName)
 	}
 	
 	ColorVector cv;
-	if (!Graph3D::openColorMap(cv, fileName)){
+	if (!Graph3D::openColorMapFile(cv, fileName)){
 		colorMapPreviewLabel->setText(tr("None"));
    		return;
 	}
@@ -872,7 +864,7 @@ bool Plot3DDialog::updatePlot()
 	} else if (generalDialog->currentPage()==(QWidget*)colors){
 		d_plot->changeTransparency(boxTransparency->value()*0.01);
 		if (linearColorMapGroupBox->isChecked())
-			d_plot->setDataColors(btnFromColor->color(), btnToColor->color());
+			d_plot->setDataColorMap(d_color_map_editor->colorMap());
 		else if (colorMapFileGroupBox->isChecked() && !d_color_map_file.isEmpty()){
 			d_plot->setDataColorMap(d_color_map_file);
 			setColorMapPreview(d_color_map_file);

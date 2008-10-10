@@ -275,6 +275,8 @@ setLabelsDistance
 setGridColor
 setDataColors
 setDataColorMap
+colorMap
+colorMapFile
 setOpacity
 setResolution
 setTitle

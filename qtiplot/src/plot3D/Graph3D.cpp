@@ -29,6 +29,8 @@
 #include "Graph3D.h"
 #include "Bar.h"
 #include "Cone3D.h"
+#include "../ApplicationWindow.h"
+#include "../ColorMapEditor.h"
 #include "../MyParser.h"
 #include "../matrix/MatrixModel.h"
 
@@ -45,6 +47,7 @@
 
 #include <qwt3d_io_gl2ps.h>
 #include <qwt3d_coordsys.h>
+#include <qwt_color_map.h>
 
 #include <gsl/gsl_vector.h>
 #include <fstream>
@@ -149,7 +152,7 @@ void Graph3D::initPlot()
 	d_matrix = 0;
     plotAssociation = QString();
 
-    color_map = QString::null;
+    d_color_map_file = QString::null;
     animation_redraw_wait = 50;
     d_timer = new QTimer(this);
     connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()));
@@ -185,9 +188,8 @@ void Graph3D::initPlot()
 	numCol=QColor(Qt::black);
 	meshCol=QColor(Qt::black);
 	gridCol=QColor(Qt::black);
-	bgCol=QColor(255, 255, 255);
-	fromColor=QColor(Qt::red);
-	toColor=QColor(Qt::blue);
+	bgCol = QColor(255, 255, 255);
+	d_color_map = QwtLinearColorMap(Qt::red, Qt::blue);
 
 	col_ = 0;
 
@@ -206,7 +208,7 @@ void Graph3D::initPlot()
 	pointStyle = None;
 	d_func = 0;
 	d_surface = 0;
-	alpha = 1.0;
+	d_alpha = 1.0;
 	barsRad = 0.007;
 	d_point_size = 5; d_smooth_points = false;
 	crossHairRad = 0.03, crossHairLineWidth = 2;
@@ -1600,13 +1602,11 @@ void Graph3D::setColors(const QStringList& colors)
 	sp->coordinates()->setGridLinesColor(Qt2GL(gridCol));
 
 	if ((int)colors.count()>7){
-		QColor min=QColor(colors[7]);
-		QColor max=QColor(colors[8]);
-		alpha = colors[9].toDouble();
+		d_alpha = colors[9].toDouble();
 		if ((int)colors.count() == 11)
             setDataColorMap(colors[10]);
         else
-		    setDataColors(min,max);
+		    setDataColors(QColor(colors[7]), QColor(colors[8]));
 	}
 }
 
@@ -2346,9 +2346,9 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << labelsCol.name()+"\t";
 	t << bgCol.name()+"\t";
 	t << gridCol.name()+"\t";
-	t << fromColor.name()+"\t";
-	t << toColor.name()+"\t";
-	t << QString::number(alpha) + "\t" + color_map + "\n";
+	t << d_color_map.color1().name()+"\t"; // obsolete: saved for compatibility with files older than 0.9.7.3
+	t << d_color_map.color2().name()+"\t"; // obsolete: saved for compatibility with files older than 0.9.7.3
+	t << QString::number(d_alpha) + "\t" + d_color_map_file + "\n";
 
 	t << "axesLabels\t";
 	t << labels.join("\t")+"\n";
@@ -2416,6 +2416,8 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << QString::number(sp->meshLineWidth())+"\n";
 	t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	t << "Orthogonal\t" + QString::number(sp->ortho())+"\n";
+	if (d_color_map_file.isEmpty())
+		t << ColorMapEditor::saveToXmlString(d_color_map);
 	t << "</SurfacePlot>\n";
 }
 
@@ -2500,61 +2502,30 @@ void Graph3D::setOptions(bool legend, int r, int dist)
 	setLabelsDistance(dist);
 }
 
-QColor Graph3D::minDataColor()
-{
-	return fromColor;
-}
-
-QColor Graph3D::maxDataColor()
-{
-	return toColor;
-}
-
-void Graph3D::setDataColors(const QColor& cMin, const QColor& cMax)
-{
-	if (cMin == fromColor && cMax == toColor && color_map.isEmpty())
-		return;
-
-	fromColor = cMin;
-	toColor = cMax;
-
-	Qwt3D::ColorVector cv;
-
-	int size=255;
+void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
+{	
+	d_color_map = colorMap;
+	d_color_map_file = QString::null;
+	
+	double zmin, zmax;
+	sp->coordinates()->axes[Z1].limits (zmin, zmax);
+	const QwtDoubleInterval intensityRange = QwtDoubleInterval(zmin, zmax);
+	
+	int size = 255;
 	double dsize = size;
-
-	double r1=cMax.red()/dsize;
-	double r2=cMin.red()/dsize;
-
-	double stepR = (r1-r2)/dsize;
-
-	double g1=cMax.green()/dsize;
-	double g2=cMin.green()/dsize;
-
-	double stepG = (g1-g2)/dsize;
-
-	double b1=cMax.blue()/dsize;
-	double b2=cMin.blue()/dsize;
-
-	double stepB = (b1-b2)/dsize;
-
-	RGBA rgb;
-	for (int i=0; i<size; i++) {
-		rgb.r = r1-i*stepR;
-		rgb.g = g1-i*stepG;
-		rgb.b = b1-i*stepB;
-		rgb.a = alpha;
-
+	double dz = fabs(zmax - zmin)/dsize;
+	Qwt3D::ColorVector cv;
+	for (int i = 0; i < size; i++){
+		QRgb color = colorMap.rgb(intensityRange, zmin + i*dz);
+		RGBA rgb(qRed(color)/dsize, qGreen(color)/dsize, qBlue(color)/dsize, d_alpha);
 		cv.push_back(rgb);
 	}
 
 	col_ = new StandardColor(sp);
 	col_->setColorVector(cv);
 	sp->setDataColor(col_);
-
-	color_map = QString::null;
 	
-	if (legendOn) {
+	if (legendOn){
 		sp->showColorLegend(false);
 		sp->showColorLegend(legendOn);
 	}
@@ -2562,10 +2533,10 @@ void Graph3D::setDataColors(const QColor& cMin, const QColor& cMax)
 
 void Graph3D::changeTransparency(double t)
 {
-	if (alpha == t)
+	if (d_alpha == t)
 		return;
 
-	alpha = t;
+	d_alpha = t;
 
 	Qwt3D::StandardColor* color=(StandardColor*) sp->dataColor ();
 	color->setAlpha(t);
@@ -2578,10 +2549,10 @@ void Graph3D::changeTransparency(double t)
 
 void Graph3D::setTransparency(double t)
 {
-	if (alpha == t)
+	if (d_alpha == t)
 		return;
 
-	alpha = t;
+	d_alpha = t;
 
 	Qwt3D::StandardColor* color=(StandardColor*) sp->dataColor ();
 	color->setAlpha(t);
@@ -2625,14 +2596,14 @@ sp->setRotation(int(sp->xRotation() + 1) % 360, int(sp->yRotation() + 1) % 360, 
 
 void Graph3D::setDataColorMap(const QString& fileName)
 {
-if (color_map == fileName)
+if (d_color_map_file == fileName)
    return;
 
 ColorVector cv;
-if (!openColorMap(cv, fileName))
+if (!openColorMapFile(cv, fileName))
    return;
 
-color_map = fileName;
+d_color_map_file = fileName;
 
 col_ = new StandardColor(sp);
 col_->setColorVector(cv);
@@ -2643,7 +2614,7 @@ sp->showColorLegend(legendOn);
 sp->updateGL();
 }
 
-bool Graph3D::openColorMap(ColorVector& cv, QString fname)
+bool Graph3D::openColorMapFile(ColorVector& cv, QString fname)
 {
 if (fname.isEmpty())
    return false;
@@ -2738,10 +2709,10 @@ void Graph3D::copy(Graph3D* g)
 	setGrid(g->grids());
 	setTitle(g->plotTitle(),g->titleColor(),g->titleFont());
 	setTransparency(g->transparency());
-	if (!g->colorMap().isEmpty())
-		setDataColorMap(g->colorMap());
+	if (!g->colorMapFile().isEmpty())
+		setDataColorMap(g->colorMapFile());
 	else
-		setDataColors(g->minDataColor(),g->maxDataColor());
+		setDataColorMap(g->colorMap());
 
 	setMeshColor(g->meshColor());
 	setAxesColor(g->axesColor());
@@ -2773,6 +2744,124 @@ void Graph3D::copy(Graph3D* g)
 	sp->updateData();
 	sp->updateGL();
 	animate(g->isAnimated());
+}
+
+Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fileVersion)
+{
+	QStringList fList=lst[0].split("\t");
+	QString caption=fList[0];
+	QString date=fList[1];
+	if (date.isEmpty())
+		date = QDateTime::currentDateTime().toString(Qt::LocalDate);
+
+	fList=lst[2].split("\t", QString::SkipEmptyParts);
+	Graph3D *plot=0;
+
+	if (fList[1].endsWith("(Y)",true))//Ribbon plot
+		plot=app->dataPlot3D(caption, fList[1],fList[2].toDouble(),fList[3].toDouble(),
+				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
+	else if (fList[1].contains("(Z)",true) > 0)
+		plot=app->openPlotXYZ(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
+				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
+	else if (fList[1].startsWith("matrix<",true) && fList[1].endsWith(">",false))
+		plot=app->openMatrixPlot3D(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
+				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
+	else if (fList[1].contains(",")){
+		QStringList l = fList[1].split(",", QString::SkipEmptyParts);
+		plot = app->plotParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
+				l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
+		app->setWindowName(plot, caption);
+	} else {
+		QStringList l = fList[1].split(";", QString::SkipEmptyParts);
+		if (l.count() == 1)
+			plot = app->plotSurface(fList[1], fList[2].toDouble(), fList[3].toDouble(),
+				fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
+		else if (l.count() == 3)
+			plot = app->plotSurface(l[0], fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
+					fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble(), l[1].toInt(), l[2].toInt());
+		app->setWindowName(plot, caption);
+	}
+
+	if (!plot)
+		return 0;
+
+	app->setListViewDate(caption, date);
+	plot->setBirthDate(date);
+	plot->setIgnoreFonts(true);
+	ApplicationWindow::restoreWindowGeometry(app, plot, lst[1]);
+
+	fList=lst[4].split("\t", QString::SkipEmptyParts);
+	plot->setGrid(fList[1].toInt());
+
+	plot->setTitle(lst[5].split("\t"));
+	plot->setColors(lst[6].split("\t", QString::SkipEmptyParts));
+
+	fList=lst[7].split("\t", QString::SkipEmptyParts);
+	fList.pop_front();
+	plot->setAxesLabels(fList);
+
+	plot->setTicks(lst[8].split("\t", QString::SkipEmptyParts));
+	plot->setTickLengths(lst[9].split("\t", QString::SkipEmptyParts));
+	plot->setOptions(lst[10].split("\t", QString::SkipEmptyParts));
+	plot->setNumbersFont(lst[11].split("\t", QString::SkipEmptyParts));
+	plot->setXAxisLabelFont(lst[12].split("\t", QString::SkipEmptyParts));
+	plot->setYAxisLabelFont(lst[13].split("\t", QString::SkipEmptyParts));
+	plot->setZAxisLabelFont(lst[14].split("\t", QString::SkipEmptyParts));
+
+	fList=lst[15].split("\t", QString::SkipEmptyParts);
+	plot->setRotation(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
+
+	fList=lst[16].split("\t", QString::SkipEmptyParts);
+	plot->setZoom(fList[1].toDouble());
+
+	fList=lst[17].split("\t", QString::SkipEmptyParts);
+	plot->setScale(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
+
+	fList=lst[18].split("\t", QString::SkipEmptyParts);
+	plot->setShift(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
+
+	fList=lst[19].split("\t", QString::SkipEmptyParts);
+	plot->setMeshLineWidth(fList[1].toDouble());
+
+	if (fileVersion > 71){
+		fList=lst[20].split("\t"); // using QString::SkipEmptyParts here causes a crash for empty window labels
+		plot->setWindowLabel(fList[1]);
+		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fList[2].toInt());
+	}
+
+	if (fileVersion >= 88){
+		fList=lst[21].split("\t", QString::SkipEmptyParts);
+		plot->setOrthogonal(fList[1].toInt());
+	}
+
+	plot->setStyle(lst[3].split("\t", QString::SkipEmptyParts));
+	plot->setIgnoreFonts(true);
+	
+	QListIterator<QString> line = QListIterator<QString>(lst);
+	if (!line.findNext("<ColorMap>")){
+		plot->update();
+		return plot;
+	}		
+	QString s = line.next().stripWhiteSpace();
+	int mode = s.remove("<Mode>").remove("</Mode>").stripWhiteSpace().toInt();
+	s = line.next();
+	QColor color1 = QColor(s.remove("<MinColor>").remove("</MinColor>").stripWhiteSpace());
+	s = line.next();
+	QColor color2 = QColor(s.remove("<MaxColor>").remove("</MaxColor>").stripWhiteSpace());
+
+	QwtLinearColorMap colorMap = QwtLinearColorMap(color1, color2);
+	colorMap.setMode((QwtLinearColorMap::Mode)mode);
+
+	s = line.next();
+	int stops = s.remove("<ColorStops>").remove("</ColorStops>").stripWhiteSpace().toInt();
+	for (int i = 0; i < stops; i++){
+		s = line.next().stripWhiteSpace();
+		QStringList l = QStringList::split("\t", s.remove("<Stop>").remove("</Stop>"));
+		colorMap.addColorStop(l[0].toDouble(), QColor(l[1]));
+	}
+	plot->setDataColorMap(colorMap);
+	plot->update();
+	return plot;
 }
 
 Graph3D::~Graph3D()

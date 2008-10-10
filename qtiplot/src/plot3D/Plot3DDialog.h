@@ -47,6 +47,7 @@ class QDoubleSpinBox;
 class ColorButton;
 class TextFormatButtons;
 class DoubleSpinBox;
+class ColorMapEditor;
 
 using namespace Qwt3D;
 
@@ -110,8 +111,8 @@ private:
     QPushButton* buttonCancel;
 	QPushButton *btnTitleFont, *btnLabelFont;
     QPushButton *btnNumbersFont, *btnTable, *btnColorMap;
-	ColorButton *btnBackground, *btnMesh, *btnAxes, *btnTitleColor, *btnLabels;
-	ColorButton *btnFromColor, *btnToColor, *btnNumbers, *btnGrid;
+	ColorButton *btnBackground, *btnMesh, *btnAxes, *btnTitleColor, *btnLabels, *btnNumbers, *btnGrid;
+	ColorMapEditor *d_color_map_editor;
     QTabWidget* generalDialog;
 	QWidget *scale, *colors, *general, *axes, *title, *bars, *points;
 	DoubleSpinBox *boxFrom, *boxTo;

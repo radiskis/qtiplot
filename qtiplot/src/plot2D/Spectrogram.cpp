@@ -27,6 +27,8 @@
  ***************************************************************************/
 
 #include "Spectrogram.h"
+#include "../ColorMapEditor.h"
+
 #include <math.h>
 #include <QPen>
 #include <qwt_scale_widget.h>
@@ -244,22 +246,7 @@ s += "\t<matrix>" + QString(d_matrix->objectName()) + "</matrix>\n";
 if (color_map_policy != Custom)
 	s += "\t<ColorPolicy>" + QString::number(color_map_policy) + "</ColorPolicy>\n";
 else
-	{
-	s += "\t<ColorMap>\n";
-	s += "\t\t<Mode>" + QString::number(color_map.mode()) + "</Mode>\n";
-	s += "\t\t<MinColor>" + color_map.color1().name() + "</MinColor>\n";
-	s += "\t\t<MaxColor>" + color_map.color2().name() + "</MaxColor>\n";
-	QwtArray <double> colors = color_map.colorStops();
-	int stops = (int)colors.size();
-	s += "\t\t<ColorStops>" + QString::number(stops - 2) + "</ColorStops>\n";
-	for (int i = 1; i < stops - 1; i++)
-		{
-		s += "\t\t<Stop>" + QString::number(colors[i]) + "\t";
-		s += QColor(color_map.rgb(QwtDoubleInterval(0,1), colors[i])).name();
-		s += "</Stop>\n";
-		}
-	s += "\t</ColorMap>\n";
-	}
+	s += ColorMapEditor::saveToXmlString(color_map);
 s += "\t<Image>"+QString::number(testDisplayMode(QwtPlotSpectrogram::ImageMode))+"</Image>\n";
 
 bool contourLines = testDisplayMode(QwtPlotSpectrogram::ContourMode);

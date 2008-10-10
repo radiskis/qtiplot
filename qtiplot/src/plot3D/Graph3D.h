@@ -65,6 +65,7 @@ public:
 
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon =  3};
 	enum PointStyle{None = 0, Dots = 1, VerticalBars = 2, HairCross = 3, Cones = 4};
+	static Graph3D* restore(ApplicationWindow* app, const QStringList &lst, int fileVersion);
 
 public slots:
 	void copy(Graph3D* g);
@@ -249,14 +250,14 @@ public slots:
 
 	//! \name Colors
 	//@{
-	void setDataColors(const QColor& cMax, const QColor& cMin);
-
+	void setDataColors(const QColor& cMin, const QColor& cMax){setDataColorMap(QwtLinearColorMap(cMin, cMax));};
+	void setDataColorMap(const QwtLinearColorMap& colorMap);
+	void setDataColorMap(const QString& fileName);
+	
 	void changeTransparency(double t);
 	void setTransparency(double t);
-	double transparency(){return alpha;};
+	double transparency(){return d_alpha;};
 
-	QColor minDataColor();
-	QColor maxDataColor();
 	QColor meshColor(){return meshCol;};
 	QColor axesColor(){return axesCol;};
 	QColor labelColor(){return labelsCol;};
@@ -264,10 +265,11 @@ public slots:
 	QColor bgColor(){return bgCol;};
 	QColor gridColor(){return gridCol;};
 
-	QString colorMap(){return color_map;};
-	void setDataColorMap(const QString& fileName);
-	static bool openColorMap(ColorVector& cv, QString fname);
-
+	QString colorMapFile(){return d_color_map_file;};
+	QwtLinearColorMap colorMap(){return d_color_map;};
+	
+	static bool openColorMapFile(ColorVector& cv, QString fname);
+	
 	void setMeshColor(const QColor&);
 	void setAxesColor(const QColor&);
 	void setNumbersColor(const QColor&);
@@ -356,7 +358,8 @@ private:
 	//! Wait this many msecs before redraw 3D plot (used for animations)
   	int animation_redraw_wait;
 	//! File name of the color map used for the data (if any)
-  	QString color_map;
+  	QString d_color_map_file;
+	QwtLinearColorMap d_color_map;
 
 	QTimer *d_timer;
 	QString title, plotAssociation;
@@ -364,13 +367,13 @@ private:
 	QFont titleFnt;
 	bool legendOn, d_autoscale;
 	QVector<int> scaleType;
-	QColor axesCol,labelsCol,titleCol,meshCol,bgCol,numCol,gridCol;
-	//! Custom data colors.
-	QColor fromColor, toColor;
+	QColor axesCol, labelsCol, titleCol, meshCol, bgCol, numCol, gridCol;
 	int labelsDist, legendMajorTicks;
 	bool ignoreFonts;
 	Qwt3D::StandardColor* col_;
-	double barsRad, alpha, d_point_size, crossHairRad, crossHairLineWidth, conesRad;
+	//! Transparency
+	double d_alpha;
+	double barsRad, d_point_size, crossHairRad, crossHairLineWidth, conesRad;
 	//! Draw 3D points with smoothed angles.
 	bool d_smooth_points;
 	bool crossHairSmooth, crossHairBoxed;

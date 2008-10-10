@@ -512,7 +512,7 @@ public slots:
 	MdiSubWindow* openTemplate(const QString& fn);
 
 	QString windowGeometryInfo(MdiSubWindow *w);
-	void restoreWindowGeometry(ApplicationWindow *app, MdiSubWindow *w, const QString s);
+	static void restoreWindowGeometry(ApplicationWindow *app, MdiSubWindow *w, const QString s);
 	void restoreApplicationGeometry();
 	void resizeActiveWindow();
 	void resizeWindow();
@@ -550,7 +550,6 @@ public slots:
 	Matrix* openMatrix(ApplicationWindow* app, const QStringList &flist);
 	Table* openTable(ApplicationWindow* app, const QStringList &flist);
 	TableStatistics* openTableStatistics(const QStringList &flist);
-	Graph3D* openSurfacePlot(ApplicationWindow* app, const QStringList &lst);
 	Graph* openGraph(ApplicationWindow* app, MultiLayer *plot, const QStringList &list);
 
 	void openRecentProject(int index);
