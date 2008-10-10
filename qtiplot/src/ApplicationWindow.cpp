@@ -2049,10 +2049,9 @@ Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, doubl
 	QString label = generateUniqueName(tr("Graph"));
 
 	Graph3D *plot = new Graph3D("", this);
-	plot->resize(500,400);
+	plot->resize(500, 400);
 	plot->setWindowTitle(label);
 	plot->setName(label);
-	customPlot3D(plot);
 	plot->addFunction(formula, xl, xr, yl, yr, zl, zr, columns, rows);
 
 	initPlot3D(plot);
@@ -2071,7 +2070,6 @@ Graph3D* ApplicationWindow::plotParametricSurface(const QString& xFormula, const
 	plot->resize(500, 400);
 	plot->setWindowTitle(label);
 	plot->setName(label);
-	customPlot3D(plot);
 	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr,
 								columns, rows, uPeriodic, vPeriodic);
 	initPlot3D(plot);
@@ -2106,7 +2104,6 @@ Graph3D* ApplicationWindow::dataPlot3D(const QString& caption,const QString& for
 
 	Graph3D *plot = new Graph3D("", this, 0);
 	plot->addData(w, xCol, yCol, xl, xr, yl, yr, zl, zr);
-	plot->update();
 
 	QString label=caption;
 	while(alreadyUsedName(label))
@@ -2129,7 +2126,6 @@ Graph3D* ApplicationWindow::newPlot3D()
 	plot->setWindowTitle(label);
 	plot->setName(label);
 
-	customPlot3D(plot);
 	initPlot3D(plot);
 
 	emit modified();
@@ -2150,7 +2146,6 @@ Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int t
 	plot->setWindowTitle(label);
 	plot->setName(label);
 
-	customPlot3D(plot);
 	if (type == Graph3D::Ribbon) {
 		int ycol = table->colIndex(zColName);
 		plot->addData(table, table->colName(table->colX(ycol)), zColName);
@@ -2198,13 +2193,13 @@ Graph3D* ApplicationWindow::openPlotXYZ(const QString& caption,const QString& fo
 
 	plot->setWindowTitle(label);
 	plot->setName(label);
-	initPlot3D(plot);
+	initPlot3D(plot, false);
 	return plot;
 }
 
 void ApplicationWindow::customPlot3D(Graph3D *plot)
 {
-	plot->setDataColors(QColor(plot3DColors[4]), QColor(plot3DColors[0]));
+	plot->setDataColors(QColor(plot3DColors[0]), QColor(plot3DColors[4]));
 	plot->setMeshColor(QColor(plot3DColors[2]));
 	plot->setAxesColor(QColor(plot3DColors[6]));
 	plot->setNumbersColor(QColor(plot3DColors[5]));
@@ -2222,10 +2217,14 @@ void ApplicationWindow::customPlot3D(Graph3D *plot)
 	plot->setYAxisLabelFont(plot3DAxesFont);
 	plot->setZAxisLabelFont(plot3DAxesFont);
 	plot->setTitleFont(plot3DTitleFont);
+	plot->setAutoscale(autoscale3DPlots);
+	plot->update();
 }
 
-void ApplicationWindow::initPlot3D(Graph3D *plot)
+void ApplicationWindow::initPlot3D(Graph3D *plot, bool custom)
 {
+	if (custom)
+		customPlot3D(plot);
 	d_workspace->addSubWindow(plot);
 	connectSurfacePlot(plot);
 
@@ -12865,9 +12864,7 @@ Graph3D * ApplicationWindow::openMatrixPlot3D(const QString& caption, const QStr
 	plot->setWindowTitle(caption);
 	plot->setName(caption);
 	plot->addMatrixData(m, xl, xr, yl, yr, zl, zr);
-	plot->update();
-
-	initPlot3D(plot);
+	initPlot3D(plot, false);
 	return plot;
 }
 
@@ -12885,13 +12882,12 @@ Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 	Graph3D *plot = new Graph3D("", this, 0);
 	plot->addMatrixData(m);
 	plot->customPlotStyle(style);
-	customPlot3D(plot);
-	plot->update();
-
 	plot->resize(500, 400);
 	plot->setWindowTitle(label);
 	plot->setName(label);
 	initPlot3D(plot);
+	plot->setDataColorMap(m->colorMap());
+	plot->update();
 
 	emit modified();
 	QApplication::restoreOverrideCursor();
