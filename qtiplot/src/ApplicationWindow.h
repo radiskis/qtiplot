@@ -293,7 +293,7 @@ public slots:
 	void insertNew3DData(const QString& colName);
 	void add3DMatrixPlot();
 	void insert3DMatrixPlot(const QString& matrix_name);
-	void initPlot3D(Graph3D *plot);
+	void initPlot3D(Graph3D *plot, bool custom = true);
 	void customPlot3D(Graph3D *plot);
 	void setPlot3DOptions();
 
