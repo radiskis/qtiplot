@@ -47,7 +47,7 @@
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
   : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0),
-  d_file_name(QString::null), d_highlighter(0)
+  d_file_name(QString::null), d_highlighter(0), d_search_string(QString::null)
 {
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
@@ -60,7 +60,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 
 	if (scriptEnv->name() == QString("Python"))
 		d_highlighter = new PythonSyntaxHighlighter(this);
-
+	
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
 
@@ -101,18 +101,32 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 
 	actionFind = new QAction(tr("&Find..."), this);
 	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
-	connect(actionFind, SIGNAL(activated()), this, SLOT(find()));
+	connect(actionFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
 
-	QShortcut *accelFind = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F), this);
-	connect(accelFind, SIGNAL(activated()), this, SLOT(find()));
+	QShortcut *accelFind = new QShortcut(actionFind->shortcut(), this);
+	connect(accelFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
 
 	actionReplace = new QAction(tr("&Replace..."), this);
 	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_R));
 	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
 
-	QShortcut *accelReplace = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_R), this);
+	QShortcut *accelReplace = new QShortcut(actionReplace->shortcut(), this);
 	connect(accelReplace, SIGNAL(activated()), this, SLOT(replace()));
 
+	actionFindNext = new QAction(tr("&Find next"), this);
+	actionFindNext->setShortcut(QKeySequence(Qt::Key_F3));
+	connect(actionFindNext, SIGNAL(activated()), this, SLOT(findNext()));
+
+	QShortcut *accelFindNext = new QShortcut(actionFindNext->shortcut(), this);
+	connect(accelFindNext, SIGNAL(activated()), this, SLOT(findNext()));
+	
+	actionFindPrevious = new QAction(tr("&Find previous"), this);
+	actionFindPrevious->setShortcut(QKeySequence(Qt::Key_F4));
+	connect(actionFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
+
+	QShortcut *accelFindPrevious = new QShortcut(actionFindPrevious->shortcut(), this);
+	connect(accelFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
+	
 	functionsMenu = new QMenu(this);
 	Q_CHECK_PTR(functionsMenu);
 	connect(functionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFunction(QAction *)));
@@ -199,19 +213,25 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 	Q_CHECK_PTR(menu);
 
 	menu->insertSeparator();
-	menu->addAction(actionFind);
-	menu->addAction(actionReplace);
-	menu->insertSeparator();
+	bool emptyText = toPlainText().isEmpty();
+	if (!emptyText){
+		menu->addAction(actionFind);
+		menu->addAction(actionFindNext);
+		menu->addAction(actionFindPrevious);
+		menu->addAction(actionReplace);
+		menu->insertSeparator();
+	}
 	menu->addAction(actionPrint);
 	menu->addAction(actionImport);
 	menu->insertSeparator();
 	menu->addAction(actionSave);
 	menu->addAction(actionExport);
 	menu->insertSeparator();
-
-	menu->addAction(actionExecute);
-	menu->addAction(actionExecuteAll);
-	menu->addAction(actionEval);
+	if (!emptyText){
+		menu->addAction(actionExecute);
+		menu->addAction(actionExecuteAll);
+		menu->addAction(actionEval);
+	}
 	if (parent()->isA("Note")){
 		Note *sp = (Note*) parent();
 		QAction *actionAutoexec = new QAction(tr("Auto&exec"), menu);
@@ -590,11 +610,64 @@ void ScriptEdit::rehighlight()
 	d_highlighter = new PythonSyntaxHighlighter(this);
 }
 
-void ScriptEdit::find(bool replace)
+void ScriptEdit::showFindDialog(bool replace)
 {
 	if (toPlainText().isEmpty())
 		return;
 
 	FindReplaceDialog *frd = new FindReplaceDialog(this, replace, (QWidget *)scriptingEnv()->application());
 	frd->exec();
+}
+
+bool ScriptEdit::find(const QString& searchString, QTextDocument::FindFlags flags, bool previous)
+{
+	d_search_string = searchString;
+	d_search_flags = flags;
+	if (previous)
+        flags |= QTextDocument::FindBackward;
+
+	QTextCursor d_highlight_cursor = textCursor();
+    bool stop = previous ? d_highlight_cursor.atStart() : d_highlight_cursor.atEnd();
+	bool found = false;
+	while (!d_highlight_cursor.isNull() && !stop){
+		d_highlight_cursor = document()->find(searchString, d_highlight_cursor, flags);
+		if (!d_highlight_cursor.isNull()){
+			found = true;
+			setTextCursor(d_highlight_cursor);
+			return true;
+		}
+		stop = previous ? d_highlight_cursor.atStart() : d_highlight_cursor.atEnd();
+	}
+
+    if (!found)
+        QMessageBox::information(this, tr("QtiPlot"), tr("QtiPlot has finished searching the document."));
+	return found;
+}
+
+void ScriptEdit::findNext()
+{
+	if (textCursor().hasSelection())
+		d_search_string = textCursor().selectedText();
+
+	if (!d_search_string.isEmpty())
+		find(d_search_string, d_search_flags);
+	else
+		showFindDialog();
+}
+	
+void ScriptEdit::findPrevious()
+{
+	if (textCursor().hasSelection())
+		d_search_string = textCursor().selectedText();
+	
+	if (!d_search_string.isEmpty())
+		find(d_search_string, d_search_flags, true);
+	else
+		showFindDialog();	
+}
+
+ScriptEdit::~ScriptEdit()
+{
+	if (d_highlighter)
+		delete d_highlighter;
 }

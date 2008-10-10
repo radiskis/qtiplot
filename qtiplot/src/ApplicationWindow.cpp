@@ -12245,7 +12245,7 @@ void ApplicationWindow::createActions()
 
 #ifdef SCRIPTING_PYTHON
 	actionShowScriptWindow = new QAction(QPixmap(python_xpm), tr("&Script Window"), this);
-	actionShowScriptWindow->setShortcut(tr("F3"));
+	actionShowScriptWindow->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F3));
 	actionShowScriptWindow->setToggleAction( true );
 	connect(actionShowScriptWindow, SIGNAL(activated()), this, SLOT(showScriptWindow()));
 #endif
@@ -12449,7 +12449,6 @@ void ApplicationWindow::translateActionsStrings()
 #ifdef SCRIPTING_PYTHON
 	actionShowScriptWindow->setMenuText(tr("&Script Window"));
 	actionShowScriptWindow->setToolTip(tr("Script Window"));
-	actionShowScriptWindow->setShortcut(tr("F3"));
 #endif
 
 	actionCustomActionDialog->setMenuText(tr("Add &Custom Script Action..."));

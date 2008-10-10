@@ -52,6 +52,7 @@ class ScriptEdit: public QTextEdit, public scripted
 
   public:
     ScriptEdit(ScriptingEnv *env, QWidget *parent=0, const char *name=0);
+  	~ScriptEdit();
 	//! Handle changing of scripting environment.
     void customEvent(QEvent*);
   	//! Map cursor positions to line numbers.
@@ -75,10 +76,14 @@ class ScriptEdit: public QTextEdit, public scripted
     void insertFunction(QAction * action);
     void setContext(QObject *context) { myScript->setContext(context); }
     void scriptPrint(const QString&);
+
     void updateIndentation();
 	void setDirPath(const QString& path);
-	void find(bool replace = false);
-	void replace(){find(true);};
+	void showFindDialog(bool replace = false);
+	void replace(){showFindDialog(true);};
+	bool find(const QString& searchString, QTextDocument::FindFlags flags, bool previous = false);
+	void findNext();
+	void findPrevious();
 
   signals:
 	void dirPathChanged(const QString& path);
@@ -91,7 +96,7 @@ class ScriptEdit: public QTextEdit, public scripted
   private:
     Script *myScript;
     QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionImport, *actionSave, *actionExport;
-    QAction *actionFind, *actionReplace;
+    QAction *actionFind, *actionReplace, *actionFindNext, *actionFindPrevious;
   	//! Submenu of context menu with mathematical functions.
   	QMenu *functionsMenu;
   	//! Cursor used for output of evaluation results and error messages.
@@ -110,6 +115,8 @@ class ScriptEdit: public QTextEdit, public scripted
 	QCompleter *d_completer;
   	QString d_file_name;
 	PythonSyntaxHighlighter *d_highlighter;
+	QString d_search_string;
+	QTextDocument::FindFlags d_search_flags;
 
   private slots:
 	  //! Insert an error message from the scripting system at printCursor.

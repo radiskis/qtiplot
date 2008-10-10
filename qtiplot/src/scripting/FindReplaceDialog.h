@@ -31,7 +31,6 @@
 
 #include <QDialog>
 #include <QLabel>
-#include <QTextCursor>
 #include <QTextDocument>
 
 class QPushButton;
@@ -51,7 +50,6 @@ private:
 	QTextDocument::FindFlags searchFlags();
 
 	ScriptEdit *d_editor;
-	QTextCursor d_highlight_cursor;
 
 	QPushButton* buttonNext;
 	QPushButton* buttonPrevious;
