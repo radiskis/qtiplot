@@ -60,7 +60,6 @@ FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* 
 	boxFind->setMinimumWidth(250);
 	boxFind->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 
-    d_highlight_cursor = editor->textCursor();
 	if (editor->textCursor().hasSelection()){
 		QString text = editor->textCursor().selectedText();
 		boxFind->setEditText(text);
@@ -144,31 +143,8 @@ bool FindReplaceDialog::find(bool previous)
 
 	if(boxFind->findText(searchString) == -1)
 		boxFind->addItem (searchString);
-
-    bool stop = previous ? d_highlight_cursor.atStart() : d_highlight_cursor.atEnd();
-
-	QTextDocument::FindFlags flags = searchFlags();
-    if (previous)
-        flags |= QTextDocument::FindBackward;
-
-	bool found = false;
-	while (!d_highlight_cursor.isNull() && !stop){
-		d_highlight_cursor = d_editor->document()->find(searchString, d_highlight_cursor, flags);
-		if (!d_highlight_cursor.isNull()){
-			found = true;
-			d_editor->setTextCursor(d_highlight_cursor);
-			return true;
-		}
-		stop = previous ? d_highlight_cursor.atStart() : d_highlight_cursor.atEnd();
-	}
-
-    if (!found){
-        QMessageBox::information(this, tr("QtiPlot"), tr("QtiPlot has finished searching the document."));
-        if (d_highlight_cursor.isNull())
-            d_highlight_cursor = d_editor->textCursor();
-    }
-
-	return found;
+	
+	return d_editor->find(searchString, searchFlags(), previous);
 }
 
 void FindReplaceDialog::replace()
