@@ -4095,7 +4095,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 				s=t.readLine();
 				list<<s;
 			}
-			openSurfacePlot(app,list);
+			Graph3D::restore(app, list, d_file_version);
 			progress.setValue(aux);
 		}
 		else if (s == "</folder>")
@@ -4274,7 +4274,7 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 		QStringList lst;
 		while (!t.atEnd())
 			lst << t.readLine();
-		w = openSurfacePlot(this, lst);
+		w = Graph3D::restore(this, lst, d_file_version);
 		if (w)
 			((Graph3D *)w)->clearData();
 	} else {
@@ -11042,100 +11042,6 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
     return ag;
 }
 
-Graph3D* ApplicationWindow::openSurfacePlot(ApplicationWindow* app, const QStringList &lst)
-{
-	QStringList fList=lst[0].split("\t");
-	QString caption=fList[0];
-	QString date=fList[1];
-	if (date.isEmpty())
-		date = QDateTime::currentDateTime().toString(Qt::LocalDate);
-
-	fList=lst[2].split("\t", QString::SkipEmptyParts);
-	Graph3D *plot=0;
-
-	if (fList[1].endsWith("(Y)",true))//Ribbon plot
-		plot=app->dataPlot3D(caption, fList[1],fList[2].toDouble(),fList[3].toDouble(),
-				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	else if (fList[1].contains("(Z)",true) > 0)
-		plot=app->openPlotXYZ(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
-				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	else if (fList[1].startsWith("matrix<",true) && fList[1].endsWith(">",false))
-		plot=app->openMatrixPlot3D(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
-				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	else if (fList[1].contains(",")){
-		QStringList l = fList[1].split(",", QString::SkipEmptyParts);
-		plot = app->plotParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
-				l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
-		app->setWindowName(plot, caption);
-	} else {
-		QStringList l = fList[1].split(";", QString::SkipEmptyParts);
-		if (l.count() == 1)
-			plot = app->plotSurface(fList[1], fList[2].toDouble(), fList[3].toDouble(),
-				fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
-		else if (l.count() == 3)
-			plot = app->plotSurface(l[0], fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
-					fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble(), l[1].toInt(), l[2].toInt());
-		app->setWindowName(plot, caption);
-	}
-
-	if (!plot)
-		return 0;
-
-	app->setListViewDate(caption, date);
-	plot->setBirthDate(date);
-	plot->setIgnoreFonts(true);
-	restoreWindowGeometry(app, plot, lst[1]);
-
-	fList=lst[4].split("\t", QString::SkipEmptyParts);
-	plot->setGrid(fList[1].toInt());
-
-	plot->setTitle(lst[5].split("\t"));
-	plot->setColors(lst[6].split("\t", QString::SkipEmptyParts));
-
-	fList=lst[7].split("\t", QString::SkipEmptyParts);
-	fList.pop_front();
-	plot->setAxesLabels(fList);
-
-	plot->setTicks(lst[8].split("\t", QString::SkipEmptyParts));
-	plot->setTickLengths(lst[9].split("\t", QString::SkipEmptyParts));
-	plot->setOptions(lst[10].split("\t", QString::SkipEmptyParts));
-	plot->setNumbersFont(lst[11].split("\t", QString::SkipEmptyParts));
-	plot->setXAxisLabelFont(lst[12].split("\t", QString::SkipEmptyParts));
-	plot->setYAxisLabelFont(lst[13].split("\t", QString::SkipEmptyParts));
-	plot->setZAxisLabelFont(lst[14].split("\t", QString::SkipEmptyParts));
-
-	fList=lst[15].split("\t", QString::SkipEmptyParts);
-	plot->setRotation(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
-
-	fList=lst[16].split("\t", QString::SkipEmptyParts);
-	plot->setZoom(fList[1].toDouble());
-
-	fList=lst[17].split("\t", QString::SkipEmptyParts);
-	plot->setScale(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
-
-	fList=lst[18].split("\t", QString::SkipEmptyParts);
-	plot->setShift(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
-
-	fList=lst[19].split("\t", QString::SkipEmptyParts);
-	plot->setMeshLineWidth(fList[1].toDouble());
-
-	if (d_file_version > 71){
-		fList=lst[20].split("\t"); // using QString::SkipEmptyParts here causes a crash for empty window labels
-		plot->setWindowLabel(fList[1]);
-		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fList[2].toInt());
-	}
-
-	if (d_file_version >= 88){
-		fList=lst[21].split("\t", QString::SkipEmptyParts);
-		plot->setOrthogonal(fList[1].toInt());
-	}
-
-	plot->setStyle(lst[3].split("\t", QString::SkipEmptyParts));
-	plot->setIgnoreFonts(true);
-	plot->update();
-	return plot;
-}
-
 void ApplicationWindow::copyActiveLayer()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
@@ -13812,10 +13718,10 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 			}else if  (s == "<SurfacePlot>"){//process 3D plots information
 				lst.clear();
 				while ( s!="</SurfacePlot>" ){
-					s=t.readLine();
+					s = t.readLine();
 					lst<<s;
 				}
-				openSurfacePlot(this,lst);
+				Graph3D::restore(this, lst, d_file_version);
 			}else if  (s == "</folder>"){
 				Folder *parent = (Folder *)current_folder->parent();
 				if (!parent)

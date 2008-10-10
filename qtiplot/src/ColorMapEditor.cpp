@@ -288,3 +288,21 @@ if (scale)
 else
 	color_map.setMode(QwtLinearColorMap::FixedColors);
 }
+
+QString ColorMapEditor::saveToXmlString(const QwtLinearColorMap& color_map)
+{
+	QString s = "<ColorMap>\n";
+	s += "\t<Mode>" + QString::number(color_map.mode()) + "</Mode>\n";
+	s += "\t<MinColor>" + color_map.color1().name() + "</MinColor>\n";
+	s += "\t<MaxColor>" + color_map.color2().name() + "</MaxColor>\n";
+	QwtArray <double> colors = color_map.colorStops();
+	int stops = (int)colors.size();
+	s += "\t<ColorStops>" + QString::number(stops - 2) + "</ColorStops>\n";
+	for (int i = 1; i < stops - 1; i++)
+		{
+		s += "\t<Stop>" + QString::number(colors[i]) + "\t";
+		s += QColor(color_map.rgb(QwtDoubleInterval(0,1), colors[i])).name();
+		s += "</Stop>\n";
+		}
+	return s += "</ColorMap>\n";
+}

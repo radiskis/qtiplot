@@ -75,7 +75,7 @@ void ColorMapPreviewDialog::updatePreview(const QString& fileName)
 	}
 	
 	ColorVector cv;
-	if (!Graph3D::openColorMap(cv, fileName)){
+	if (!Graph3D::openColorMapFile(cv, fileName)){
 		d_preview_label->setText(tr("None"));
    		return;
 	}

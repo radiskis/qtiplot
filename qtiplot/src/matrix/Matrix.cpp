@@ -30,6 +30,7 @@
 #include "MatrixCommand.h"
 #include "../plot2D/Graph.h"
 #include "../ApplicationWindow.h"
+#include "../ColorMapEditor.h"
 #include "../scripting/muParserScript.h"
 #include "../scripting/ScriptingEnv.h"
 
@@ -200,21 +201,8 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 
 	if (d_color_map_type != Custom)
 		t << "ColorPolicy\t" + QString::number(d_color_map_type) + "\n";
-	else {
-		t << "<ColorMap>\n";
-		t << "\t<Mode>" + QString::number(d_color_map.mode()) + "</Mode>\n";
-		t << "\t<MinColor>" + d_color_map.color1().name() + "</MinColor>\n";
-		t << "\t<MaxColor>" + d_color_map.color2().name() + "</MaxColor>\n";
-		QwtArray <double> colors = d_color_map.colorStops();
-		int stops = (int)colors.size();
-		t << "\t<ColorStops>" + QString::number(stops - 2) + "</ColorStops>\n";
-		for (int i = 1; i < stops - 1; i++){
-			t << "\t<Stop>" + QString::number(colors[i]) + "\t";
-			t << QColor(d_color_map.rgb(QwtDoubleInterval(0,1), colors[i])).name();
-			t << "</Stop>\n";
-		}
-		t << "</ColorMap>\n";
-	}
+	else 
+		t << ColorMapEditor::saveToXmlString(d_color_map);
 
     if (notTemplate)
         t << d_matrix_model->saveToString();

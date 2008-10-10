@@ -46,6 +46,7 @@ public:
 	void setColorMap(const QwtLinearColorMap& map);
 
 	void setRange(double min, double max);
+	static QString saveToXmlString(const QwtLinearColorMap& color_map);
 
 protected slots:
 	void updateColorMap();

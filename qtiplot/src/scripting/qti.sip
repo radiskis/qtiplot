@@ -906,8 +906,12 @@ public:
     void setLabelsDistance(int);
 	void setBackgroundColor(const QColor&);
 	void setGridColor(const QColor&);
-    void setDataColors(const QColor& cMax, const QColor& cMin);
+    void setDataColors(const QColor&, const QColor&);
+	QString colorMapFile();
     void setDataColorMap(const QString& fileName);
+	QwtLinearColorMap colorMap();
+	void setDataColorMap(const QwtLinearColorMap&);
+	
     void changeTransparency(double) /PyName=setOpacity/;
     void setResolution(int);
     void showColorLegend(bool = true) /PyName=showLegend/;
