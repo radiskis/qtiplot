@@ -29,7 +29,7 @@
 #include "ScreenPickerTool.h"
 #include "../ApplicationWindow.h"
 #include "../SymbolBox.h"
-#include "../Table.h"
+#include "../table/Table.h"
 #include "Graph.h"
 #include "PlotCurve.h"
 #include "../cursors.h"

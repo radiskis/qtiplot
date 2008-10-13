@@ -30,7 +30,7 @@
 
 #include "ImportASCIIDialog.h"
 #include "ApplicationWindow.h"
-#include "Table.h"
+#include "table/Table.h"
 #include "matrix/Matrix.h"
 #include "matrix/MatrixModel.h"
 

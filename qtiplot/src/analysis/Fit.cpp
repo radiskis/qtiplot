@@ -30,7 +30,7 @@
 #include "FitModelHandler.h"
 #include "fit_gsl.h"
 #include "../ColorBox.h"
-#include "../Table.h"
+#include "../table/Table.h"
 #include "../matrix/Matrix.h"
 #include "../plot2D/QwtErrorPlotCurve.h"
 #include "../plot2D/FunctionCurve.h"

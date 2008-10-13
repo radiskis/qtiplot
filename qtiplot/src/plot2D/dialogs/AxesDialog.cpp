@@ -31,7 +31,7 @@
 #include "../../MyParser.h"
 #include "../../ColorButton.h"
 #include "../../TextFormatButtons.h"
-#include "../../Table.h"
+#include "../../table/Table.h"
 #include "../../DoubleSpinBox.h"
 #include "../../ColorBox.h"
 #include "../Graph.h"

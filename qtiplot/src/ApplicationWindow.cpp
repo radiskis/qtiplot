@@ -33,8 +33,6 @@
 #include "ApplicationWindow.h"
 #include "pixmaps.h"
 #include "ExportDialog.h"
-#include "TableDialog.h"
-#include "SetColValuesDialog.h"
 #include "PlotWizard.h"
 #include "DataSetDialog.h"
 #include "ConfigDialog.h"
@@ -43,7 +41,6 @@
 #include "ImportASCIIDialog.h"
 #include "Folder.h"
 #include "FindDialog.h"
-#include "TableStatistics.h"
 #include "ColorBox.h"
 #include "OpenProjectDialog.h"
 #include "ColorMapDialog.h"
@@ -52,6 +49,10 @@
 #include "MdiSubWindow.h"
 #include "PenStyleBox.h"
 #include "PatternBox.h"
+
+#include "table/SetColValuesDialog.h"
+#include "table/TableDialog.h"
+#include "table/TableStatistics.h"
 
 #include "analysis/Fit.h"
 #include "analysis/MultiPeakFit.h"

@@ -29,7 +29,7 @@
  ***************************************************************************/
 #include "muParserScript.h"
 #include "muParserScripting.h"
-#include "../Table.h"
+#include "../table/Table.h"
 #include "../matrix/Matrix.h"
 #include "../Folder.h"
 
