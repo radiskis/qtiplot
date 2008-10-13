@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ImageWidget.h"
-#include "../PenStyleBox.h"
+#include <PenStyleBox.h>
 
 #include <QPainter>
 #include <QPaintEngine>

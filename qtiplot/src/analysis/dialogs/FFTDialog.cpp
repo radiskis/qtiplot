@@ -30,11 +30,11 @@
 #include "../FFT.h"
 #include "../fft2D.h"
 #include "../../ApplicationWindow.h"
-#include "../../DoubleSpinBox.h"
 #include "../../table/Table.h"
 #include "../../plot2D/Graph.h"
 #include "../../plot2D/MultiLayer.h"
 #include "../../matrix/Matrix.h"
+#include <DoubleSpinBox.h>
 
 #include <QRadioButton>
 #include <QGroupBox>

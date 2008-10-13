@@ -113,9 +113,6 @@ static const char *unzoom_xpm[]={
 #include "QwtHistogram.h"
 #include "VectorCurve.h"
 #include "ScaleDraw.h"
-#include "../ColorBox.h"
-#include "../PatternBox.h"
-#include "../SymbolBox.h"
 #include "FunctionCurve.h"
 #include "Spectrogram.h"
 #include "SelectionMoveResizer.h"
@@ -129,6 +126,10 @@ static const char *unzoom_xpm[]={
 #ifdef EMF_OUTPUT
 #include "EmfEngine.h"
 #endif
+
+#include <ColorBox.h>
+#include <PatternBox.h>
+#include <SymbolBox.h>
 
 #include <QApplication>
 #include <QBitmap>

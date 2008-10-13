@@ -29,16 +29,17 @@
 #include "AxesDialog.h"
 #include "../../ApplicationWindow.h"
 #include "../../MyParser.h"
-#include "../../ColorButton.h"
 #include "../../TextFormatButtons.h"
 #include "../../table/Table.h"
-#include "../../DoubleSpinBox.h"
-#include "../../ColorBox.h"
 #include "../Graph.h"
 #include "../Grid.h"
 #include "../ScaleDraw.h"
 #include "../ScaleEngine.h"
-#include "../../PenStyleBox.h"
+
+#include <DoubleSpinBox.h>
+#include <ColorBox.h>
+#include <ColorButton.h>
+#include <PenStyleBox.h>
 
 #include <QCheckBox>
 #include <QComboBox>

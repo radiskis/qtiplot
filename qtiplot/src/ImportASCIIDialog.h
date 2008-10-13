@@ -29,7 +29,7 @@
 #ifndef IMPORTFILESDIALOG_H
 #define IMPORTFILESDIALOG_H
 
-#include "ExtensibleFileDialog.h"
+#include <ExtensibleFileDialog.h>
 
 #include <QComboBox>
 #include <QCheckBox>

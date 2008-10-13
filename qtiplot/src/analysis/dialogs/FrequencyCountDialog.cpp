@@ -28,9 +28,9 @@
  ***************************************************************************/
 #include "FrequencyCountDialog.h"
 #include "../../ApplicationWindow.h"
-#include "../../DoubleSpinBox.h"
 #include "../../Folder.h"
 #include "../../table/Table.h"
+#include <DoubleSpinBox.h>
 
 #include <QGroupBox>
 #include <QMessageBox>

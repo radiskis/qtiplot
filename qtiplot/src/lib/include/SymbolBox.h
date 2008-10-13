@@ -1,11 +1,11 @@
 /***************************************************************************
-    File                 : ColorBox.h
+    File                 : SymbolBox.h
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A combo box to select a standard color
-
+    Description          : Plot symbol combo box
+                           
  ***************************************************************************/
 
 /***************************************************************************
@@ -26,45 +26,37 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef COLORBOX_H
-#define COLORBOX_H
+#ifndef SYMBOLBOX_H
+#define SYMBOLBOX_H
 
 #include <QComboBox>
+#include <qwt_symbol.h>
 
-//! A combo box to select a standard color
-class ColorBox : public QComboBox
+//! A modified QComboBox allowing to choose a QwtSmbol style.
+/**
+ * This is a simple hack on top of the QComboBox class.
+ */
+class SymbolBox : public QComboBox
 {
-	Q_OBJECT
-
+  Q_OBJECT
 public:
-	//! Constructor
-	/**
-	 * \param parent parent widget
-	 */
-	ColorBox(QWidget *parent = 0);
-	//! Set the current color
-	void setColor(const QColor& c);
-	//! Return the current color
-	QColor color() const;
+		//! Constructor.
+		/**
+		 * \param parent parent widget (only affects placement of the widget)
+		 */
+  		SymbolBox(QWidget *parent);
 
-	//! Return the index for a given color
-	static int colorIndex(const QColor& c);
-	//! Return the color at index 'colorindex'
-	static QColor color(int colorIndex);
-    //! Returns TRUE if the color is included in the color box, otherwise returns FALSE.
-    static bool isValidColor(const QColor& color);
-	//! Returns the number of predefined colors
-    static int numPredefinedColors();
+  		void setStyle(const QwtSymbol::Style& c);
+ 		QwtSymbol::Style selectedSymbol() const;
 
+  		static QwtSymbol::Style style(int index);
+  		static int symbolIndex(const QwtSymbol::Style& style);
 
 protected:
-	//! Internal initialization function
-	void init();
-	//! The number of predefined colors
-	static const int colors_count = 24;
-	//! Array containing the 24 predefined colors
-	static const QColor colors[];
+  		void init();
+
+private:
+		static const QwtSymbol::Style symbols[];
 };
 
 #endif
-

@@ -161,26 +161,18 @@ HEADERS  += src/ApplicationWindow.h \
             src/ConfigDialog.h \
             src/DataSetDialog.h \
             src/MyParser.h \
-            src/ColorBox.h \
-            src/SymbolBox.h \
-            src/PatternBox.h \
             src/importOPJ.h\
             src/SymbolDialog.h \
-            src/ColorButton.h \
             src/RenameWindowDialog.h \
 			src/MdiSubWindow.h \
             src/ImportASCIIDialog.h \
             src/Folder.h\
             src/FindDialog.h\
             src/TextFormatButtons.h\
-            src/ColorMapEditor.h\
 			src/ColorMapDialog.h\
-            src/ExtensibleFileDialog.h\
             src/OpenProjectDialog.h\
             src/CustomActionDialog.h \
-            src/DoubleSpinBox.h \
 			src/PlotWizard.h \
-			src/PenStyleBox.h \
 
 ###################### SOURCES ##############################################
 
@@ -190,27 +182,42 @@ SOURCES  += src/main.cpp \
             src/ConfigDialog.cpp \
             src/DataSetDialog.cpp \
             src/MyParser.cpp \
-            src/ColorBox.cpp \
-            src/SymbolBox.cpp \
-            src/PatternBox.cpp \
             src/importOPJ.cpp\
             src/SymbolDialog.cpp \
-            src/ColorButton.cpp \
             src/RenameWindowDialog.cpp \
 			src/MdiSubWindow.cpp \
             src/ImportASCIIDialog.cpp \
             src/Folder.cpp\
             src/FindDialog.cpp\
             src/TextFormatButtons.cpp\
-            src/ColorMapEditor.cpp\
 			src/ColorMapDialog.cpp\
-            src/ExtensibleFileDialog.cpp\
             src/OpenProjectDialog.cpp\
             src/CustomActionDialog.cpp \
-            src/DoubleSpinBox.cpp \
 			src/PlotWizard.cpp \
-			src/PenStyleBox.cpp \
+			
+###############################################################
+##################### libqti ##################################
+###############################################################
+INCLUDEPATH       += src/lib/include
 
+HEADERS  += src/lib/include/ColorBox.h \
+			src/lib/include/ColorButton.h \
+            src/lib/include/ColorMapEditor.h \
+			src/lib/include/DoubleSpinBox.h \
+			src/lib/include/ExtensibleFileDialog.h \
+            src/lib/include/PatternBox.h \
+			src/lib/include/PenStyleBox.h \
+			src/lib/include/SymbolBox.h \
+
+SOURCES  += src/lib/src/ColorBox.cpp \
+			src/lib/src/ColorButton.cpp \
+            src/lib/src/ColorMapEditor.cpp \
+			src/lib/src/DoubleSpinBox.cpp \
+			src/lib/src/ExtensibleFileDialog.cpp \
+            src/lib/src/PatternBox.cpp \
+			src/lib/src/PenStyleBox.cpp \
+			src/lib/src/SymbolBox.cpp \
+			
 ###############################################################
 ##################### Compression (zlib123) ###################
 ###############################################################

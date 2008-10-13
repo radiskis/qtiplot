@@ -29,9 +29,9 @@
 #include "PolynomFitDialog.h"
 #include "../PolynomialFit.h"
 #include "../../plot2D/Graph.h"
-#include "../../ColorBox.h"
 #include "../../ApplicationWindow.h"
-#include "../../DoubleSpinBox.h"
+#include <DoubleSpinBox.h>
+#include <ColorBox.h>
 
 #include <QSpinBox>
 #include <QCheckBox>

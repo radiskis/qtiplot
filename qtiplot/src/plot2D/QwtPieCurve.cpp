@@ -27,9 +27,10 @@
  *                                                                         *
  ***************************************************************************/
 #include "QwtPieCurve.h"
-#include "../ColorBox.h"
 #include "../table/Table.h"
-#include "../PenStyleBox.h"
+
+#include <ColorBox.h>
+#include <PenStyleBox.h>
 
 #include <QPaintDevice>
 #include <QPainter>

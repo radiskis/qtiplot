@@ -1,0 +1,52 @@
+/*!
+  \mainpage Qti - Qt widgets for QtiPlot
+
+The Qti library contains GUI Components and utility classes which were primarily
+developed for QtiPlot, a scientific plotting and data analysis software.
+
+  \section license License
+
+  Qti is distributed under the terms of the \ref gpllicense.
+
+  \section platforms Platforms
+
+  Qti might be usable in all environments where you find
+  <a href="http://www.trolltech.com/products/qt">Qt 4</a>.
+
+  \section downloads Downloads
+  Stable releases, prereleases and snapshots are available at the QtiPlot <a href="http://www.qtiplot.ro">project page</a>.
+
+  \section installonmainpage Installation
+ 
+  Have a look at the qti.pro project file. It is prepared for building
+  static libraries in Win32 and Unix/X11 environments. 
+  If you don't know what to do with it, read the file \ref qwtinstall and/or 
+  Trolltechs <a href="http://doc.trolltech.com/4.4/qmake-manual.html">qmake</a> manual. 
+
+  \section support Support
+  If you are looking for individual support, or need someone who implements 
+  your Qti component/application contact ion.vasilief@proindependent.com.
+
+  \section relatedprojects Related Projects
+
+  <a href="http://qwt.sourceforge.net">Qwt</a>, Qt Widgets for Technical Applications.\n
+  <a href="http://soft.proindependent.com/qtiplot.html">QtiPlot</a>, data analysis and scientific plotting tool.
+
+  \section credits Credits:
+  \par Authors: 
+    Ion Vasilief
+   \par Contributors: 
+    Knut Franke, Tomomasa Ohkubo
+  \par Project admin:
+    Ion Vasilief \<ion.vasilief@proindependent.com\>
+*/
+
+/*!
+  \page gpllicense GPL License, Version 3
+  \include "gpl-3.0.txt"
+*/
+
+/*!
+  \page qwtinstall INSTALL
+  \include "INSTALL"
+*/

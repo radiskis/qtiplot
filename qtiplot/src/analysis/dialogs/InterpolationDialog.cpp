@@ -29,8 +29,8 @@
 #include "InterpolationDialog.h"
 #include "../Interpolation.h"
 #include "../../plot2D/Graph.h"
-#include "../../ColorBox.h"
-#include "../../DoubleSpinBox.h"
+#include <ColorBox.h>
+#include <DoubleSpinBox.h>
 
 #include <QGroupBox>
 #include <QSpinBox>

@@ -40,12 +40,13 @@
 #include "../ImageWidget.h"
 #include "../RectangleWidget.h"
 #include "../LegendWidget.h"
-#include "../../ColorButton.h"
 #include "../../ApplicationWindow.h"
-#include "../../DoubleSpinBox.h"
-#include "../../PatternBox.h"
-#include "../../PenStyleBox.h"
 #include "../../TextFormatButtons.h"
+
+#include <ColorButton.h>
+#include <DoubleSpinBox.h>
+#include <PatternBox.h>
+#include <PenStyleBox.h>
 
 static const char* choose_folder_xpm[]={
     "16 16 11 1",

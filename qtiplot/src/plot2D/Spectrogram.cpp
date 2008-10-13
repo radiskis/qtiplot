@@ -27,7 +27,7 @@
  ***************************************************************************/
 
 #include "Spectrogram.h"
-#include "../ColorMapEditor.h"
+#include <ColorMapEditor.h>
 
 #include <math.h>
 #include <QPen>

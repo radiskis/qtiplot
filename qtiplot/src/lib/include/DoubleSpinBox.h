@@ -32,11 +32,20 @@
 #include <QAbstractSpinBox>
 #include <QCheckBox>
 
+//! A QDoubleSpinBox allowing to customize numbers display with respect to locale settings. 
+/**
+ * It allows the user to specify a custom display format.
+ */
 class DoubleSpinBox : public QAbstractSpinBox
 {
 	Q_OBJECT
 
 public:
+	//! Constructor.
+	/**
+	* \param format format used to display numbers: has the same meaning as in QLocale::toString ( double i, char f = 'g', int prec = 6 )
+	* \param parent parent widget (only affects placement of the dialog)
+	*/
     DoubleSpinBox(const char format = 'g', QWidget * parent = 0);
 
 	void setSingleStep(double val);
@@ -74,6 +83,7 @@ private:
 	int d_prec;
 };
 
+//! A checkable DoubleSpinBox that can be used to select the limits of a double interval. 
 class RangeLimitBox : public QWidget
 {
 public:

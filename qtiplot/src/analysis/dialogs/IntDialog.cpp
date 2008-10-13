@@ -30,7 +30,7 @@
 #include "../Integration.h"
 #include "../../ApplicationWindow.h"
 #include "../../plot2D/Graph.h"
-#include "../../DoubleSpinBox.h"
+#include <DoubleSpinBox.h>
 
 #include <QGroupBox>
 #include <QSpinBox>

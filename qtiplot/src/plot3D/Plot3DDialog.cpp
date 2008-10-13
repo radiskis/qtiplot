@@ -31,10 +31,11 @@
 #include "../MyParser.h"
 #include "../SymbolDialog.h"
 #include "../ApplicationWindow.h"
-#include "../ColorButton.h"
 #include "../TextFormatButtons.h"
-#include "../DoubleSpinBox.h"
-#include "../ColorMapEditor.h"
+
+#include <DoubleSpinBox.h>
+#include <ColorMapEditor.h>
+#include <ColorButton.h>
 
 #include <QListWidget>
 #include <QTextEdit>

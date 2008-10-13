@@ -59,7 +59,9 @@ class ExtensibleFileDialog : public QFileDialog
 		//! Tells weather the dialog has a valid extension widget
 		bool isExtendable(){return d_extension != NULL;};
 		bool isExtended(){return d_extension_toggle->isChecked();};
+		//! Toggle extension widget on/off
 		void setExtended(bool extended){if (extended) d_extension_toggle->toggle();};
+		//! Sets the text to be displayed in the toggle button
 		void setExtentionToggleButtonText(const QString& text){d_extension_toggle->setText(text);};
 		
 	protected:

@@ -1,11 +1,11 @@
 /***************************************************************************
-    File                 : PatternBox.h
+    File                 : ColorButton.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Tomomasa Ohkubo, Ion Vasilief
+    Copyright            : (C) 2007 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Pattern combo box
-                           
+    Description          : A button used for color selection
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -26,27 +26,41 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef PATTERNBOX_H
-#define PATTERNBOX_H
 
-#include <QComboBox>
+#ifndef COLORBUTTON_H
+#define COLORBUTTON_H
 
-//! Pattern combo box
-class PatternBox : public QComboBox
+#include <QPushButton>
+
+//! A modified QPushButton used for color selection.
+/**
+ * The QPushButton displays its current color. When clicked it pops-up a QColorDialog allowing to select the color to be displayed.
+ */
+class ColorButton : public QPushButton
 {
-  Q_OBJECT
-	
+	Q_OBJECT
+
 public:
-  PatternBox(QWidget *parent = 0);
-  void setPattern(const Qt::BrushStyle& c);
-  Qt::BrushStyle getSelectedPattern() const;
+	//! Constructor.
+	/**
+	* \param parent parent widget (only affects placement of the widget)
+	*/
+	ColorButton(QWidget *parent = 0);
+	//! Set the current color to be displayed
+	void setColor(const QColor& c);
+	//! Get the current color
+	QColor color(){return d_color;};
 
-  static const Qt::BrushStyle patterns[];
-  static int patternIndex(const Qt::BrushStyle& style);
-  static Qt::BrushStyle brushStyle(int index);
+signals:
+    void colorChanged();
 
-protected:
-  void init();
+private slots:
+    void pickColor();
+
+private:
+    void updateColor();
+	//! Current color
+	QColor d_color;
 };
 
 #endif

@@ -37,8 +37,8 @@
 #include "../LogisticFit.h"
 #include "../../MyParser.h"
 #include "../../ApplicationWindow.h"
-#include "../../ColorBox.h"
-#include "../../DoubleSpinBox.h"
+#include <ColorBox.h>
+#include <DoubleSpinBox.h>
 
 #include <QListWidget>
 #include <QTableWidget>

@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "TexWidget.h"
-#include "../PenStyleBox.h"
+#include <PenStyleBox.h>
 
 #include <QPainter>
 #include <QBuffer>

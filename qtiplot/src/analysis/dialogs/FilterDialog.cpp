@@ -29,8 +29,8 @@
 #include "FilterDialog.h"
 #include "../FFTFilter.h"
 #include "../../plot2D/Graph.h"
-#include "../../ColorBox.h"
-#include "../../DoubleSpinBox.h"
+#include <ColorBox.h>
+#include <DoubleSpinBox.h>
 
 #include <QGroupBox>
 #include <QCheckBox>
