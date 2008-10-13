@@ -8,479 +8,479 @@
         <translation type="unfinished">QtiPlot - ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13538"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13546"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
         <translation type="unfinished">Файл: &lt;b&gt;%1&lt;/b&gt; не существует!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13542"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13550"/>
         <source>QtiPlot - File opening error</source>
         <translation type="unfinished">QtiPlot - ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13543"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13551"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
         <translation type="unfinished">Файл: &lt;b&gt; %1 &lt;/b&gt; не является файлом проекта QtiPlot или Origin!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13740"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13748"/>
         <source>QtiPlot - Demo Version</source>
         <translation type="unfinished">QtiPlot - Демонстрационная версия</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13742"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13750"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="xd"/></source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13765"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13773"/>
         <source>QtiPlot - File backup error</source>
         <translation type="unfinished">QtiPlot - Ошибка при резервном копировании файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13766"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13774"/>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
         <translation type="unfinished">Невозможно создать резервную копию &lt;b&gt;%1&lt;/b&gt; (в %2).&lt;br&gt;Если вы проигнорируете эту ситуацию, то рискуете &lt;b&gt;потерять данные&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13783"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13791"/>
         <source>QtiPlot - File save error</source>
         <translation type="unfinished">QtiPlot - Ошибка при сохранении файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13783"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13791"/>
         <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
         <translation type="unfinished">Файл: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; открыт в режиме &quot;только для чтения&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13877"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13885"/>
         <source>QtiPlot project</source>
         <translation type="unfinished">Проект QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13878"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13886"/>
         <source>Compressed QtiPlot project</source>
         <translation type="unfinished">Сжатый проект QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13881"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13889"/>
         <source>Save project as</source>
         <translation type="unfinished">Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13908"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13916"/>
         <source>&amp;Find...</source>
         <translation type="unfinished">&amp;Найти...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13910"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13918"/>
         <source>App&amp;end Project...</source>
         <translation type="unfinished">&amp;Добавить в проект...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13912"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13920"/>
         <source>Save &amp;As Project...</source>
         <translation type="unfinished">Сохр&amp;анить как проект...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13914"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13922"/>
         <source>Save Project &amp;As...</source>
         <translation type="unfinished">Сохранить проект &amp;как...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13919"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13927"/>
         <source>&amp;Show All Windows</source>
         <translation type="unfinished">Показать &amp;все окна</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13920"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13928"/>
         <source>&amp;Hide All Windows</source>
         <translation type="unfinished">&amp;Скрыть все окна</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13926"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13934"/>
         <source>&amp;Delete Folder</source>
         <translation type="unfinished">&amp;Удалить папку</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13927"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13935"/>
         <source>&amp;Rename</source>
         <translation type="unfinished">&amp;Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13939"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13947"/>
         <source>New &amp;Window</source>
         <translation type="unfinished">&amp;Новое окно</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13942"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13950"/>
         <source>New F&amp;older</source>
         <translation type="unfinished">Новая &amp;папка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13946"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13954"/>
         <source>&amp;None</source>
         <translation type="unfinished">&amp;Нет</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13946"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13954"/>
         <source>&amp;Windows in Active Folder</source>
         <translation type="unfinished">Окна в т&amp;екущей папке</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13946"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13954"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
         <translation type="unfinished">Окна в &amp;текущей и вложенных папках</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13953"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13961"/>
         <source>&amp;View Windows</source>
         <translation type="unfinished">П&amp;росмотр окон</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13955"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13963"/>
         <source>&amp;Properties...</source>
         <translation type="unfinished">&amp;Свойства...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13970"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13978"/>
         <source>Hidden</source>
         <translation type="unfinished">Скрытый</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15086"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15094"/>
         <source>QtiPlot - Error</source>
         <translation type="unfinished">QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14023"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14031"/>
         <source>Please enter a valid name!</source>
         <translation type="unfinished">Пожалуйста введите корректное название!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14033"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14041"/>
         <source>Name already exists!</source>
         <translation type="unfinished">Имя уже существует!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14033"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14041"/>
         <source>Please choose another name!</source>
         <translation type="unfinished">Пожалуйста выберите другое имя!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14533"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14541"/>
         <source>Type</source>
         <translation type="unfinished">Тип</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14144"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14152"/>
         <source>Project</source>
         <translation type="unfinished">Проект</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14535"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14543"/>
         <source>Path</source>
         <translation type="unfinished">Путь</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14536"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14544"/>
         <source>Size</source>
         <translation type="unfinished">Размер</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14150"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14158"/>
         <source>bytes</source>
         <translation type="unfinished">байт</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14186"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14194"/>
         <source>Contents</source>
         <translation type="unfinished">Содержимое</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14186"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14194"/>
         <source>windows</source>
         <translation type="unfinished">окна</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14187"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14195"/>
         <source>folders</source>
         <translation type="unfinished">папки</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14537"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14545"/>
         <source>Created</source>
         <translation type="unfinished">Создан</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14161"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14169"/>
         <source>Modified</source>
         <translation type="unfinished">Изменён</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14511"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14519"/>
         <source>Properties</source>
         <translation type="unfinished">Свойства</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14551"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14559"/>
         <source>Folder</source>
         <translation type="unfinished">Папка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14205"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14213"/>
         <source>New Folder</source>
         <translation type="unfinished">Новая папка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14250"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14258"/>
         <source>QtiPlot - Delete folder?</source>
         <translation type="unfinished">QtiPlot - Удалить папку?</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14251"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14259"/>
         <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
         <translation type="unfinished">Удалить папку &apos;%1&apos; и все содержащиеся в ней окна?</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14252"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14260"/>
         <source>Yes</source>
         <translation type="unfinished">Да</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14252"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14260"/>
         <source>No</source>
         <translation type="unfinished">Нет</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14521"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14529"/>
         <source>Matrix</source>
         <translation type="unfinished">Матрица</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14524"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14532"/>
         <source>Table</source>
         <translation type="unfinished">Таблица</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14527"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14535"/>
         <source>Note</source>
         <translation type="unfinished">Заметка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14530"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14538"/>
         <source>Graph</source>
         <translation type="unfinished">График</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14533"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14541"/>
         <source>3D Graph</source>
         <translation type="unfinished">3D График</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14517"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14525"/>
         <source>Label</source>
         <translation type="unfinished">Метка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14538"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14546"/>
         <source>Status</source>
         <translation type="unfinished">Состояние</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14602"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14610"/>
         <source>QtiPlot - No match found</source>
         <translation type="unfinished">QtiPlot - Совпадений не найдено</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14603"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14611"/>
         <source>Sorry, no match found for string: &apos;%1&apos;</source>
         <translation type="unfinished">Совпадений для строки &apos;%1&apos; не найдено</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14621"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14629"/>
         <source>Cannot move an object to itself!</source>
         <translation type="unfinished">Невозможно переместить объект в самого себя!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14626"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14634"/>
         <source>Cannot move a parent folder into a child folder!</source>
         <translation type="unfinished">Невозможно переместить родительскую папку в дочернюю!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15633"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15641"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14639"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14647"/>
         <source>Skipped moving folder</source>
         <translation type="unfinished">Перемещение папки пропущено</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14683"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14691"/>
         <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
         <translation type="unfinished">Папка назначения уже содержит папку с именем &apos;%1&apos;! Операция пропускается!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15633"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15641"/>
         <source>Error</source>
         <translation type="unfinished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14735"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14743"/>
         <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
         <translation type="unfinished">QtiPlot попытается загрузить необходимую информацию о последних доступных обновлениях. Пожалуйста, измените настройки брандмауэра, чтобы QtiPlot мог соединиться с интернетом!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14736"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14744"/>
         <source>Do you wish to continue?</source>
         <translation type="unfinished">Продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14751"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14759"/>
         <source>QtiPlot - HTTP get version file</source>
         <translation type="unfinished">QtiPlot - HTTP получить файл версии</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14752"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14760"/>
         <source>Error while fetching version file with HTTP: %1.</source>
         <translation type="unfinished">Ошибка при получении файла версии с помощью HTTP: %1.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14767"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14775"/>
         <source>QtiPlot - Updates Available</source>
         <translation type="unfinished">QtiPlot - Имеются обновления</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14768"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14776"/>
         <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
         <translation type="unfinished">Для загрузки доступна более свежая версия QtiPlot (%1). Вы хотите скачать её?</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14772"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14780"/>
         <source>QtiPlot - No Updates Available</source>
         <translation type="unfinished">QtiPlot - Нет доступных обновлений</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14773"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14781"/>
         <source>No updates available. Your current version %1 is the last version available!</source>
         <translation type="unfinished">Нет доступных обновлений. Текущая версия %1 является последней доступной!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15762"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15770"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished">QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14827"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14835"/>
         <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
         <translation type="unfinished">Все данные, связанные с таблицей, будут удалены. Вы уверены?</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14828"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14836"/>
         <source>&amp;Yes</source>
         <translation type="unfinished">&amp;Да</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14828"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14836"/>
         <source>&amp;No</source>
         <translation type="unfinished">&amp;Нет</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14842"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14850"/>
         <source>QtiPlot - Enter row number</source>
         <translation type="unfinished">QtiPlot - Введите номер строки</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14842"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14850"/>
         <source>Row</source>
         <translation type="unfinished">Строка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14862"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14870"/>
         <source>QtiPlot - Enter column number</source>
         <translation type="unfinished">QtiPlot - Введите номер столбца</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14862"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14870"/>
         <source>Column</source>
         <translation type="unfinished">Столбец</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15634"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15642"/>
         <source>QtiPlot was not built with Python scripting support included!</source>
         <translation type="unfinished">QtiPlot скомпилирован без поддержки сценариев на языке Python!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15037"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15045"/>
         <source>Please select a Y column to plot!</source>
         <translation type="unfinished">Пожалуйста, выберите Y столбец для построения!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15074"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15082"/>
         <source>You need at least two columns for this operation!</source>
         <translation type="unfinished">Для выполнения этой операции нужно как минимум два столбца!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15044"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15052"/>
         <source>Please set a default X column for this table, first!</source>
         <translation type="unfinished">Пожалуйста, установите сначала X столбец по умолчанию для данной таблицы!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15078"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15086"/>
         <source>Please select a Z column for this operation!</source>
         <translation type="unfinished">Пожалуйста, выберите Z столбец для данной операции!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15082"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15090"/>
         <source>You need to define a X column first!</source>
         <translation type="unfinished">Сначала нужно задать X столбец!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15086"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15094"/>
         <source>You need to define a Y column first!</source>
         <translation type="unfinished">Сначала нужно задать Y столбец!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15283"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15291"/>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
         <translation type="unfinished">Начиная с версии 0.9.1 QtiPlot хранит пользовательские аппроксимационные модели в ином месте.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15284"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15292"/>
         <source>If you want to save your already defined models, please choose a destination folder.</source>
         <translation type="unfinished">Если хотите сохранить ваши модели, пожалуйста, выберите папку назначения.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15285"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15293"/>
         <source>Import fit models</source>
         <translation type="unfinished">Импортировать аппроксимационные модели</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15288"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15296"/>
         <source>Choose a directory to export the fit models to</source>
         <translation type="unfinished">Выберите каталог для экспорта аппроксимационных моделей</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15584"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15592"/>
         <source>No Icon</source>
         <translation type="unfinished">Без значка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15763"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15771"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation type="unfinished">Невозможно открыть файл: %1.
 Автодополнение не будет доступно!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15844"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15852"/>
         <source>QtiPlot - Column selection error</source>
         <translation type="unfinished">QtiPlot - Ошибка выбора столбца</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15845"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15853"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation type="unfinished">Выберите только один столбец и более чем одну непустую ячейку!</translation>
     </message>
@@ -4725,482 +4725,482 @@ Autocompletion will not be available!</source>
 <context>
     <name>AxesDialog</name>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1490"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1491"/>
         <source>Additional lines</source>
         <translation>Дополнительные линии</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1700"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1701"/>
         <source>Angle</source>
         <translation>Угол</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1202"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1203"/>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1870"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1871"/>
         <source>Automatic</source>
         <translation>Автоматический</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1779"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1780"/>
         <source>Axes</source>
         <translation>Оси</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1730"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1731"/>
         <source>Axis</source>
         <translation>Ось</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1638"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1639"/>
         <source>Axis &amp;Font</source>
         <translation>&amp;Шрифт осей</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1566"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1567"/>
         <source>Bottom</source>
         <translation>Снизу</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1211"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1212"/>
         <source>&amp;Cancel</source>
         <translation>О&amp;тмена</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1764"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1765"/>
         <source>Canvas frame</source>
         <translation>Рамка холста</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1768"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1769"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1675"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1676"/>
         <source>Column</source>
         <translation>Столбец</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1632"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1633"/>
         <source>Column Headings</source>
         <translation>Заголовки столбцов</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1631"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1632"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1628"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1629"/>
         <source>Day of the week</source>
         <translation>День недели</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1871"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1872"/>
         <source>Decimal: 100.0</source>
         <translation>Десятичный: 100.0</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1782"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1783"/>
         <source>Draw backbones</source>
         <translation>Нарисовать каркас осей</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1612"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1613"/>
         <source>&amp;Font</source>
         <translation>&amp;Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1635"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1636"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1687"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1688"/>
         <source>Format</source>
         <translation>Формат</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1711"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1712"/>
         <source>For&amp;mula</source>
         <translation>&amp;Формула</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1286"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1287"/>
         <source>From</source>
         <translation>От</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1825"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1826"/>
         <source>General</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1537"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1538"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1516"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1517"/>
         <source>Horizontal</source>
         <translation>Горизонтальная</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1660"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1661"/>
         <source>In</source>
         <translation>Внутри</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1659"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1660"/>
         <source>In &amp; Out</source>
         <translation>Внутри и Снаружи</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1273"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1274"/>
         <source>Inverted</source>
         <translation>В обратном порядке</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1567"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1568"/>
         <source>Left</source>
         <translation>Слева</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1444"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1445"/>
         <source>Line Color</source>
         <translation>Цвет линии</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1453"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1454"/>
         <source>Line Type</source>
         <translation>Тип линии</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1785"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1786"/>
         <source>Line Width</source>
         <translation>Толщина линии</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1435"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1436"/>
         <source>Major Grids</source>
         <translation>Основная сетка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1645"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1646"/>
         <source>Major Ticks</source>
         <translation>Главные деления</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1790"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1791"/>
         <source>Major ticks length</source>
         <translation>Длина штрихов главных делений</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1440"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1441"/>
         <source>Minor Grids</source>
         <translation>Дополнительная сетка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1654"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1655"/>
         <source>Minor Ticks</source>
         <translation>Дополнительные деления</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1795"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1796"/>
         <source>Minor ticks length</source>
         <translation>Длина штрихов дополнительной делений</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1629"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1630"/>
         <source>Month</source>
         <translation>Месяц</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1657"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1658"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1626"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1627"/>
         <source>Numeric</source>
         <translation>Числовой</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1206"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1207"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1658"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1659"/>
         <source>Out</source>
         <translation>Снаружи</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1694"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1695"/>
         <source>Precision</source>
         <translation>Точность</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2477"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2478"/>
         <source>QtiPlot - Formula input error</source>
         <translation>QtiPlot - Ошибка ввода формулы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1189"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1190"/>
         <source>QtiPlot - General Plot Options</source>
         <translation>QtiPlot - Общие параметры отображения графика</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1569"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1570"/>
         <source>Right</source>
         <translation>Справа</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1418"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1419"/>
         <source>Scale</source>
         <translation>Масштаб</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1873"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1874"/>
         <source>Scientific: 10^2</source>
         <translation>Научный: 10^2</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1872"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1873"/>
         <source>Scientific: 1e2</source>
         <translation>Научный: 1e2</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1588"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1589"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1668"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1669"/>
         <source>Show Labels</source>
         <translation>Показать метки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1663"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1664"/>
         <source>Stand-off</source>
         <translation>Отступить на</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1346"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1347"/>
         <source>Step</source>
         <translation>Шаг</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1681"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1682"/>
         <source>Table</source>
         <translation>Таблица</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1627"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1628"/>
         <source>Text from table</source>
         <translation>Текст из таблицы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1461"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1462"/>
         <source>Thickness</source>
         <translation>Толщина</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1630"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1631"/>
         <source>Time</source>
         <translation>Время</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1592"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1593"/>
         <source>Title</source>
         <translation>Подпись</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1292"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1293"/>
         <source>To</source>
         <translation>До</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1568"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1569"/>
         <source>Top</source>
         <translation>Вверху</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1623"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1624"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2478"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2479"/>
         <source>Valid variables are &apos;x&apos; for Top/Bottom axes and &apos;y&apos; for Left/Right axes!</source>
         <translation>Допустимыми переменными являются &apos;x&apos; для верхней/нижней оси и &apos;y&apos; для левой/правой оси!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1517"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1518"/>
         <source>Vertical</source>
         <translation>Вертикальная</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1772"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1773"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1492"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1493"/>
         <source>X=0</source>
         <translation>X=0</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1496"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1497"/>
         <source>Y=0</source>
         <translation>Y=0</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2636"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2637"/>
         <source>days</source>
         <translation>дни</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2660"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2661"/>
         <source>hours</source>
         <translation>часы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1267"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1268"/>
         <source>linear</source>
         <translation>линейный</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1268"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1269"/>
         <source>logarithmic</source>
         <translation>логарифмический</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2657"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2658"/>
         <source>millisec.</source>
         <translation>мс</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2659"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2660"/>
         <source>min.</source>
         <translation>мин</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2658"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2659"/>
         <source>sec.</source>
         <translation>с</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2637"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="2638"/>
         <source>weeks</source>
         <translation>недели</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1278"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1279"/>
         <source>Show Axis &amp;Break</source>
         <translation>Показать разрыв &amp;оси</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1283"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1284"/>
         <source>Draw Break &amp;Decoration</source>
         <translation>Отметить &amp;разрыв</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1298"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1299"/>
         <source>Position</source>
         <translation>Положение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1300"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1301"/>
         <source>% of Axis Length</source>
         <translation>% от длины оси</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1305"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1306"/>
         <source>pixels</source>
         <translation>точки растра</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1308"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1309"/>
         <source>&amp;Log10 Scale After Break</source>
         <translation>&amp;Log10 шкала после разрыва</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1311"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1312"/>
         <source>Step Before Break</source>
         <translation>Шаг до разрыва</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1322"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1323"/>
         <source>Guess</source>
         <translation>Авто</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1319"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1320"/>
         <source>Step After Break</source>
         <translation>Шаг после разрыва</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1327"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1328"/>
         <source>Minor Ticks Before</source>
         <translation>Дополнительные деления до</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1333"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1334"/>
         <source>Minor Ticks After</source>
         <translation>Дополнительные деления после</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1499"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1500"/>
         <source>Apply To</source>
         <translation>Применить к</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1501"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1502"/>
         <source>This Layer</source>
         <translation>слою</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1502"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1503"/>
         <source>This Window</source>
         <translation>окну</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1814"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1815"/>
         <source>All Windows</source>
         <translation>всем окнам</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1506"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1507"/>
         <source>An&amp;tialised</source>
         <translation>Сгла&amp;живание</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1804"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1805"/>
         <source>Set As &amp;Default</source>
         <translation>Установить по &amp;умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1808"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1809"/>
         <source>Apply &amp;to...</source>
         <translation>Применить &amp;к...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1812"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1813"/>
         <source>Layer</source>
         <translation>Слой</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1813"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1814"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1607"/>
+        <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="1608"/>
         <source>Distance to axis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5216,124 +5216,124 @@ Autocompletion will not be available!</source>
 <context>
     <name>ColorBox</name>
     <message>
-        <location filename="../src/ColorBox.cpp" line="74"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="74"/>
         <source>black</source>
-        <translation>чёрный</translation>
+        <translation type="unfinished">чёрный</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="88"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="88"/>
         <source>blue</source>
-        <translation>синий</translation>
+        <translation type="unfinished">синий</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="92"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="92"/>
         <source>cyan</source>
-        <translation>голубой</translation>
+        <translation type="unfinished">голубой</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="124"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="124"/>
         <source>dark cyan</source>
-        <translation>тёмно-голубой</translation>
+        <translation type="unfinished">тёмно-голубой</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="168"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="168"/>
         <source>dark gray</source>
-        <translation>тёмно-серый</translation>
+        <translation type="unfinished">тёмно-серый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="104"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="104"/>
         <source>dark yellow</source>
-        <translation>темно-жёлтый</translation>
+        <translation type="unfinished">темно-жёлтый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="152"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="152"/>
         <source>gray</source>
-        <translation>серый</translation>
+        <translation type="unfinished">серый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="84"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="84"/>
         <source>green</source>
-        <translation>зелёный</translation>
+        <translation type="unfinished">зелёный</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="160"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="160"/>
         <source>light cyan</source>
-        <translation>светло-голубой</translation>
+        <translation type="unfinished">светло-голубой</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="148"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="148"/>
         <source>light gray</source>
-        <translation>светло-серый</translation>
+        <translation type="unfinished">светло-серый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="164"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="164"/>
         <source>light magenta</source>
-        <translation>светло-малиновый</translation>
+        <translation type="unfinished">светло-малиновый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="156"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="156"/>
         <source>light yellow</source>
-        <translation>светло-жёлтый</translation>
+        <translation type="unfinished">светло-жёлтый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="96"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="96"/>
         <source>magenta</source>
-        <translation>пурпурный</translation>
+        <translation type="unfinished">пурпурный</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="108"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="108"/>
         <source>navy</source>
-        <translation>тёмно-синий</translation>
+        <translation type="unfinished">тёмно-синий</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="120"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="120"/>
         <source>olive</source>
-        <translation>оливковый</translation>
+        <translation type="unfinished">оливковый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="132"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="132"/>
         <source>orange</source>
-        <translation>оранжевый</translation>
+        <translation type="unfinished">оранжевый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="140"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="140"/>
         <source>pink</source>
-        <translation>розовый</translation>
+        <translation type="unfinished">розовый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="112"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="112"/>
         <source>purple</source>
-        <translation>фиолетовый</translation>
+        <translation type="unfinished">фиолетовый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="80"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="80"/>
         <source>red</source>
-        <translation>красный</translation>
+        <translation type="unfinished">красный</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="128"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="128"/>
         <source>royal</source>
-        <translation>ярко-синий</translation>
+        <translation type="unfinished">ярко-синий</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="136"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="136"/>
         <source>violet</source>
-        <translation>фиолетовый</translation>
+        <translation type="unfinished">фиолетовый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="144"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="144"/>
         <source>white</source>
-        <translation>белый</translation>
+        <translation type="unfinished">белый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="116"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="116"/>
         <source>wine</source>
-        <translation>бордовый</translation>
+        <translation type="unfinished">бордовый</translation>
     </message>
     <message>
-        <location filename="../src/ColorBox.cpp" line="100"/>
+        <location filename="../src/lib/src/ColorBox.cpp" line="100"/>
         <source>yellow</source>
-        <translation>жёлтый</translation>
+        <translation type="unfinished">жёлтый</translation>
     </message>
 </context>
 <context>
@@ -5367,44 +5367,44 @@ Autocompletion will not be available!</source>
 <context>
     <name>ColorMapEditor</name>
     <message>
-        <location filename="../src/ColorMapEditor.cpp" line="55"/>
+        <location filename="../src/lib/src/ColorMapEditor.cpp" line="55"/>
         <source>Color</source>
-        <translation>Цвет</translation>
+        <translation type="unfinished">Цвет</translation>
     </message>
     <message>
-        <location filename="../src/ColorMapEditor.cpp" line="68"/>
+        <location filename="../src/lib/src/ColorMapEditor.cpp" line="68"/>
         <source>&amp;Delete</source>
-        <translation>&amp;Удалить</translation>
+        <translation type="unfinished">&amp;Удалить</translation>
     </message>
     <message>
-        <location filename="../src/ColorMapEditor.cpp" line="64"/>
+        <location filename="../src/lib/src/ColorMapEditor.cpp" line="64"/>
         <source>&amp;Insert</source>
-        <translation>&amp;Вставить столбец</translation>
+        <translation type="unfinished">&amp;Вставить столбец</translation>
     </message>
     <message>
-        <location filename="../src/ColorMapEditor.cpp" line="55"/>
+        <location filename="../src/lib/src/ColorMapEditor.cpp" line="55"/>
         <source>Level</source>
-        <translation>Уровень</translation>
+        <translation type="unfinished">Уровень</translation>
     </message>
     <message>
-        <location filename="../src/ColorMapEditor.cpp" line="252"/>
+        <location filename="../src/lib/src/ColorMapEditor.cpp" line="252"/>
         <source>Please enter a valid color level value!</source>
-        <translation>Пожалуйста введите допустимое значение уровня цвета!</translation>
+        <translation type="unfinished">Пожалуйста введите допустимое значение уровня цвета!</translation>
     </message>
     <message>
-        <location filename="../src/ColorMapEditor.cpp" line="252"/>
+        <location filename="../src/lib/src/ColorMapEditor.cpp" line="252"/>
         <source>QtiPlot - Input Error</source>
-        <translation>QtiPlot - Ошибка ввода</translation>
+        <translation type="unfinished">QtiPlot - Ошибка ввода</translation>
     </message>
     <message>
-        <location filename="../src/ColorMapEditor.cpp" line="76"/>
+        <location filename="../src/lib/src/ColorMapEditor.cpp" line="76"/>
         <source>&amp;Scale Colors</source>
-        <translation>&amp;Шкала цветов</translation>
+        <translation type="unfinished">&amp;Шкала цветов</translation>
     </message>
     <message>
-        <location filename="../src/ColorMapEditor.cpp" line="238"/>
+        <location filename="../src/lib/src/ColorMapEditor.cpp" line="238"/>
         <source>Sorry, you cannot edit this value!</source>
-        <translation>Извините, но вы не можете изменять это значение!</translation>
+        <translation type="unfinished">Извините, но вы не можете изменять это значение!</translation>
     </message>
 </context>
 <context>
@@ -6322,37 +6322,37 @@ The following special codes can be used:
 <context>
     <name>Correlation</name>
     <message>
-        <location filename="../src/analysis/Correlation.cpp" line="41"/>
+        <location filename="../src/analysis/Correlation.cpp" line="42"/>
         <source>Correlation</source>
         <translation>Корреляция</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Correlation.cpp" line="99"/>
+        <location filename="../src/analysis/Correlation.cpp" line="100"/>
         <source>Could not allocate memory, operation aborted!</source>
         <translation>Не удалось выделить память, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Correlation.cpp" line="125"/>
+        <location filename="../src/analysis/Correlation.cpp" line="126"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Correlation.cpp" line="126"/>
+        <location filename="../src/analysis/Correlation.cpp" line="127"/>
         <source>Error in GSL forward FFT operation!</source>
         <translation>Ошибка в библиотеке GSL при прямом БПФ!</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Correlation.cpp" line="177"/>
+        <location filename="../src/analysis/Correlation.cpp" line="178"/>
         <source>Lag</source>
         <translation>Запаздывание</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Correlation.cpp" line="125"/>
+        <location filename="../src/analysis/Correlation.cpp" line="126"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/analysis/Correlation.cpp" line="62"/>
+        <location filename="../src/analysis/Correlation.cpp" line="63"/>
         <source>The data set %1 does not exist!</source>
         <translation>Набор данных %1 не существует!</translation>
     </message>
@@ -6805,57 +6805,57 @@ The following special codes can be used:
 <context>
     <name>EnrichmentDialog</name>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="685"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="686"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="94"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="95"/>
         <source>Tex Equation Editor</source>
         <translation>Редактор формул Tex</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="96"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="97"/>
         <source>Clea&amp;r</source>
         <translation>&amp;Очистить</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="99"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="100"/>
         <source>Window Geometry</source>
         <translation>Геометрия окна</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="101"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="102"/>
         <source>Object Properties</source>
         <translation>Свойства объекта</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="103"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="104"/>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="106"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="107"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="148"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="149"/>
         <source>Preview:</source>
         <translation>Просмотр:</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="235"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="236"/>
         <source>&amp;Text</source>
         <translation>&amp;Текст</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="285"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="286"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="378"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="379"/>
         <source>Set As &amp;Default</source>
         <translation>Установить по &amp;умолчанию</translation>
     </message>
@@ -6865,22 +6865,22 @@ The following special codes can be used:
         <translation type="obsolete">Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="164"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="165"/>
         <source>&amp;Font</source>
         <translation>&amp;Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="193"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="194"/>
         <source>Auto-&amp;update</source>
         <translation>Авто&amp;обновление</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="350"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="351"/>
         <source>Opacity</source>
         <translation>Непрозрачность</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="355"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="356"/>
         <source>Transparent</source>
         <translation>Прозрачный</translation>
     </message>
@@ -6890,47 +6890,47 @@ The following special codes can be used:
         <translation type="obsolete">Цвет фона</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="244"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="245"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="254"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="255"/>
         <source>&amp;Save internally</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="263"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="264"/>
         <source>&amp;Image</source>
         <translation>&amp;Изображение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="272"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="273"/>
         <source>Shape</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="275"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="276"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="279"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="280"/>
         <source>Rectangle</source>
         <translation>Прямоугольник</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="280"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="281"/>
         <source>Shadow</source>
         <translation>Тень</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="290"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="291"/>
         <source>Line Style</source>
         <translation>Тип линии</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="450"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="451"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
@@ -6950,182 +6950,182 @@ The following special codes can be used:
         <translation type="obsolete">окну</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="389"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="390"/>
         <source>All Windows</source>
         <translation>всем окнам</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="335"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="336"/>
         <source>&amp;Frame</source>
         <translation>&amp;Рамка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="344"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="345"/>
         <source>Fill Color</source>
         <translation>Цвет заполнения</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="359"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="360"/>
         <source>Pattern</source>
         <translation>Шаблон</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="364"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="365"/>
         <source>Pattern Color</source>
         <translation>Цвет шаблона</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="369"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="370"/>
         <source>Use &amp;Frame Color</source>
         <translation>Цвет &amp;рамки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="398"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="399"/>
         <source>Fill &amp;Pattern</source>
         <translation>&amp;Заполнение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="406"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="407"/>
         <source>inch</source>
         <translation>дюйм</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="407"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="408"/>
         <source>mm</source>
         <translation>мм</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="408"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="409"/>
         <source>cm</source>
         <translation>см</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="409"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="410"/>
         <source>point</source>
         <translation>точка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="410"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="411"/>
         <source>pixel</source>
         <translation>точка растра</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="412"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="413"/>
         <source>scale</source>
         <translation>шкала</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="415"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="416"/>
         <source>Unit</source>
         <translation>Размеры в</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="423"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="424"/>
         <source>Position</source>
         <translation>Положение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="433"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="434"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="435"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="436"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="441"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="442"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="453"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="454"/>
         <source>Height</source>
         <translation>Высота</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="456"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="457"/>
         <source>&amp;Keep aspect ratio</source>
         <translation> &amp;Сохранять пропорции</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="459"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="460"/>
         <source>&amp;Best size</source>
         <translation>&amp;Оптимальный размер</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="483"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="484"/>
         <source>&amp;Geometry</source>
         <translation>&amp;Геометрия</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="685"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="686"/>
         <source>Network connection error</source>
         <translation>Ошибка сетевого соединения</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="686"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="687"/>
         <source>Error while trying to connect to host %1:</source>
         <translation>Ошибка при попытке соединения с %1:</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="687"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="688"/>
         <source>Please verify your network connection!</source>
         <translation>Проверьте сетевое соединение!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="703"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="704"/>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - Импортировать изображение из файла</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="729"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="730"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="730"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="731"/>
         <source>The file %1 doesn&apos;t exist. The image cannot be restored when reloading the project file!</source>
         <translation>Файл %1 не существует. Изображение не может быть восстановлено при повторном открытии проекта!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="387"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="388"/>
         <source>Layer</source>
         <translation>Слой</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="388"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="389"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="168"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="169"/>
         <source>Background</source>
         <translation>Фон</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="184"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="185"/>
         <source>Rotate (deg.)</source>
         <translation>Повернуть (град)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="386"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="387"/>
         <source>Object</source>
         <translation>Объект</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="382"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="383"/>
         <source>Apply t&amp;o...</source>
         <translation>Применить &amp;к...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="277"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="278"/>
         <source>Line</source>
         <translation>Линия</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="203"/>
+        <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="204"/>
         <source>Apply format &amp;to...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7394,9 +7394,9 @@ The following special codes can be used:
 <context>
     <name>ExtensibleFileDialog</name>
     <message>
-        <location filename="../src/ExtensibleFileDialog.cpp" line="40"/>
+        <location filename="../src/lib/src/ExtensibleFileDialog.cpp" line="40"/>
         <source>&lt;&lt; &amp;Advanced</source>
-        <translation>&lt;&lt; &amp;Подробно</translation>
+        <translation type="unfinished">&lt;&lt; &amp;Подробно</translation>
     </message>
 </context>
 <context>
@@ -9113,12 +9113,12 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3862"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3863"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копировать</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3874"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3875"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -9128,12 +9128,12 @@ The following special codes can be used:
         <translation type="obsolete">&amp;Вырезать</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3570"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3571"/>
         <source>Data set generated from curve</source>
         <translation>Набор данных, полученных из кривой</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3864"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3865"/>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
     </message>
@@ -9143,127 +9143,127 @@ The following special codes can be used:
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="1370"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1371"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3876"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3877"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Скрыть оси</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3383"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3384"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Файл изображения: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;больше не существует!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="1403"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1404"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3889"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3890"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Свойства...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4569"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4570"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3382"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3383"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4559"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4560"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3874"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3875"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Перерисовать и отобразить всё</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3888"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3889"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Масштаб...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3878"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3879"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Показать сетку</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3571"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3572"/>
         <source>Table</source>
         <translation>Таблица</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3799"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3800"/>
         <source>The column</source>
         <translation>Столбец</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3795"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3796"/>
         <source>The columns</source>
         <translation>Столбцы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4559"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4560"/>
         <source>There are no curves available on this plot!</source>
         <translation>На данном графике нет доступных кривых!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="4570"/>
+        <location filename="../src/plot2D/Graph.cpp" line="4571"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>На данном графике нет кривых с более чем двумя точками. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="1676"/>
+        <location filename="../src/plot2D/Graph.cpp" line="1677"/>
         <source>Title</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3795"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3796"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>являются пустыми и их содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3799"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3800"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>является пустой и её содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="841"/>
+        <location filename="../src/plot2D/Graph.cpp" line="842"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Невозможно изменить тип оси на требуемый!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="196"/>
+        <location filename="../src/plot2D/Graph.cpp" line="197"/>
         <source>Y Axis Title</source>
         <translation>Подпись оси Y</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="197"/>
+        <location filename="../src/plot2D/Graph.cpp" line="198"/>
         <source>X Axis Title</source>
         <translation>Подпись оси X</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="200"/>
+        <location filename="../src/plot2D/Graph.cpp" line="201"/>
         <source> </source>
         <translation> </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3861"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3862"/>
         <source>Cu&amp;t</source>
         <translation>В&amp;ырезать</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/Graph.cpp" line="3863"/>
+        <location filename="../src/plot2D/Graph.cpp" line="3864"/>
         <source>C&amp;lear</source>
         <translation>Сте&amp;реть</translation>
     </message>
@@ -9271,32 +9271,32 @@ The following special codes can be used:
 <context>
     <name>Graph3D</name>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2028"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2029"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2012"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2013"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2028"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2029"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="246"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="247"/>
         <source>X axis</source>
         <translation>Ось X</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="253"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="254"/>
         <source>Y axis</source>
         <translation>Ось Y</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="260"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="261"/>
         <source>Z axis</source>
         <translation>Ось Z</translation>
     </message>
@@ -10509,168 +10509,168 @@ have the same number of rows.</source>
 <context>
     <name>Matrix</name>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="354"/>
+        <location filename="../src/matrix/Matrix.cpp" line="355"/>
         <source>Calculation failed, the matrix is not square!</source>
         <translation>Ошибка вычисления - матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1205"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1206"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="393"/>
+        <location filename="../src/matrix/Matrix.cpp" line="394"/>
         <source>Inversion failed, the matrix is not square!</source>
         <translation>Ошибка обращения, матрица не является квадратной!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1459"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1460"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="971"/>
+        <location filename="../src/matrix/Matrix.cpp" line="972"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="971"/>
+        <location filename="../src/matrix/Matrix.cpp" line="972"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="834"/>
+        <location filename="../src/matrix/Matrix.cpp" line="835"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1377"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1378"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ошибка при экспортировании в ASCII</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1378"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1379"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Невозможно выполнить записать в файл: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Удостоверьтись, что у вас есть права доступа на запись в данное место!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="397"/>
+        <location filename="../src/matrix/Matrix.cpp" line="398"/>
         <source>Invert</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="406"/>
+        <location filename="../src/matrix/Matrix.cpp" line="407"/>
         <source>Transpose</source>
         <translation>Транспонировать</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="415"/>
+        <location filename="../src/matrix/Matrix.cpp" line="416"/>
         <source>Flip Vertically</source>
         <translation>Отразить вертикально</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="424"/>
+        <location filename="../src/matrix/Matrix.cpp" line="425"/>
         <source>Flip Horizontally</source>
         <translation>Отразить горизонтально</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="434"/>
+        <location filename="../src/matrix/Matrix.cpp" line="435"/>
         <source>Rotate 90&#xb0;</source>
         <translation>Повернуть на 90°</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="516"/>
+        <location filename="../src/matrix/Matrix.cpp" line="517"/>
         <source>Calculate Values</source>
         <translation>Рассчитать значения</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="543"/>
+        <location filename="../src/matrix/Matrix.cpp" line="544"/>
         <source>Clear Selection</source>
         <translation>Очистить выделенное</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="658"/>
+        <location filename="../src/matrix/Matrix.cpp" line="659"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="693"/>
+        <location filename="../src/matrix/Matrix.cpp" line="694"/>
         <source>Delete Rows</source>
         <translation>Удалить строки</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="724"/>
+        <location filename="../src/matrix/Matrix.cpp" line="725"/>
         <source>Delete Columns</source>
         <translation>Удалить столбцы</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="777"/>
+        <location filename="../src/matrix/Matrix.cpp" line="778"/>
         <source>Insert Row</source>
         <translation>Вставить строку</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="796"/>
+        <location filename="../src/matrix/Matrix.cpp" line="797"/>
         <source>Insert Column</source>
         <translation>Вставить столбец</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1242"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1243"/>
         <source>Import Image</source>
         <translation>Импорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1362"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1363"/>
         <source>Forward FFT</source>
         <translation>Прямое БПФ</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1362"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1363"/>
         <source>Inverse FFT</source>
         <translation>Обратное БПФ</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1437"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1438"/>
         <source>Import ASCII File</source>
         <translation>Импорт файла ASCII</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1459"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1460"/>
         <source>Memory Allocation Error</source>
         <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1460"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1461"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="436"/>
+        <location filename="../src/matrix/Matrix.cpp" line="437"/>
         <source>Rotate -90&#xb0;</source>
         <translation>Повернуть на -90°</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1448"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1449"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
         <translation>Из-за ограниченной памяти невозможно будет отменить эти изменения. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1450"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1451"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="323"/>
+        <location filename="../src/matrix/Matrix.cpp" line="324"/>
         <source>Set Dimensions</source>
         <translation>Задать размеры</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1073"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1074"/>
         <source>Set Data Mode</source>
         <translation>Режим данных</translation>
     </message>
     <message>
-        <location filename="../src/matrix/Matrix.cpp" line="1468"/>
+        <location filename="../src/matrix/Matrix.cpp" line="1469"/>
         <source>kB</source>
         <translation>кб</translation>
     </message>
@@ -10809,67 +10809,67 @@ have the same number of rows.</source>
 <context>
     <name>MatrixSizeDialog</name>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="91"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="92"/>
         <source>&amp;Cancel</source>
         <translation>О&amp;тмена</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="53"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="54"/>
         <source>Columns</source>
         <translation>Столбцов</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="58"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="59"/>
         <source>Coordinates</source>
         <translation>Координаты</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="46"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="47"/>
         <source>Dimensions</source>
         <translation>Размерность</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="63"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="64"/>
         <source>First</source>
         <translation>Первая</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="74"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="75"/>
         <source>Last</source>
         <translation>Последняя</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="89"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="90"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="44"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="45"/>
         <source>QtiPlot - Matrix Dimensions</source>
         <translation>QtiPlot - Размерность матрицы</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="48"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="49"/>
         <source>Rows</source>
         <translation>Строк</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="60"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="61"/>
         <source>X (Columns)</source>
         <translation>X (Столбцы)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="61"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="62"/>
         <source>Y (Rows)</source>
         <translation>Y (Строки)</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="125"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="126"/>
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
         <translation>Задать координаты x[%1 : %2], y[%3 : %4]</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="86"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="87"/>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
@@ -11253,125 +11253,125 @@ have the same number of rows.</source>
 <context>
     <name>PatternBox</name>
     <message>
-        <location filename="../src/PatternBox.cpp" line="92"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="92"/>
         <source>BDiagonal</source>
-        <translation>Обратный штрих</translation>
+        <translation type="unfinished">Обратный штрих</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="86"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="86"/>
         <source>Cross</source>
-        <translation>Перекрестие</translation>
+        <translation type="unfinished">Перекрестие</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="110"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="110"/>
         <source>Dense1</source>
-        <translation>Плотность1</translation>
+        <translation type="unfinished">Плотность1</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="116"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="116"/>
         <source>Dense2</source>
-        <translation>Плотность2</translation>
+        <translation type="unfinished">Плотность2</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="122"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="122"/>
         <source>Dense3</source>
-        <translation>Плотность3</translation>
+        <translation type="unfinished">Плотность3</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="128"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="128"/>
         <source>Dense4</source>
-        <translation>Плотность4</translation>
+        <translation type="unfinished">Плотность4</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="134"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="134"/>
         <source>Dense5</source>
-        <translation>Плотность5</translation>
+        <translation type="unfinished">Плотность5</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="140"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="140"/>
         <source>Dense6</source>
-        <translation>Плотность6</translation>
+        <translation type="unfinished">Плотность6</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="146"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="146"/>
         <source>Dense7</source>
-        <translation>Плотность7</translation>
+        <translation type="unfinished">Плотность7</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="104"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="104"/>
         <source>DiagCross</source>
-        <translation>Дранка</translation>
+        <translation type="unfinished">Дранка</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="98"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="98"/>
         <source>FDiagonal</source>
-        <translation>Прямой штрих</translation>
+        <translation type="unfinished">Прямой штрих</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="74"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="74"/>
         <source>Horizontal</source>
-        <translation>Горизонтальная</translation>
+        <translation type="unfinished">Горизонтальная</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="68"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="68"/>
         <source>Solid</source>
-        <translation>Сплошной</translation>
+        <translation type="unfinished">Сплошной</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="80"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="80"/>
         <source>Vertical</source>
-        <translation>Вертикальная</translation>
+        <translation type="unfinished">Вертикальная</translation>
     </message>
     <message>
-        <location filename="../src/PatternBox.cpp" line="150"/>
+        <location filename="../src/lib/src/PatternBox.cpp" line="150"/>
         <source>None</source>
-        <translation>Нет</translation>
+        <translation type="unfinished">Нет</translation>
     </message>
 </context>
 <context>
     <name>Plot3DDialog</name>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="100"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="101"/>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="232"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="233"/>
         <source>&amp;Axis</source>
         <translation>&amp;Ось</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="196"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="197"/>
         <source>Axis Font</source>
         <translation>Шрифт оси</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="315"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="316"/>
         <source>&amp;Background</source>
         <translation>&amp;Фон</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="695"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="696"/>
         <source>Bars</source>
         <translation>Блоки</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="502"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="503"/>
         <source>Boxed</source>
         <translation>Заключённый в ящик</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="105"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="106"/>
         <source>&amp;Cancel</source>
         <translation>О&amp;тмена</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="392"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="393"/>
         <source>&amp;Choose Font</source>
         <translation>&amp;Выбор шрифта</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="199"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="200"/>
         <source>&amp;Choose font</source>
         <translation>&amp;Выбор шрифта</translation>
     </message>
@@ -11386,22 +11386,22 @@ have the same number of rows.</source>
         <translation type="obsolete">Файлы цветовой шкалы</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="364"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="365"/>
         <source>&amp;Colors</source>
         <translation>&amp;Цвета</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="457"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="458"/>
         <source>Cone</source>
         <translation>Конус</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="350"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="351"/>
         <source>Coordinate System</source>
         <translation>Система координат</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="456"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="457"/>
         <source>Cross Hair</source>
         <translation>Перекрестие</translation>
     </message>
@@ -11411,107 +11411,107 @@ have the same number of rows.</source>
         <translation type="obsolete">Данные</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="395"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="396"/>
         <source>Distance labels - axis</source>
         <translation>Расстояние метка - ось</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="455"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="456"/>
         <source>Dot</source>
         <translation>Точка</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="249"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="250"/>
         <source>&amp;Font</source>
         <translation>&amp;Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="138"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="139"/>
         <source>From</source>
         <translation>От</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="321"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="322"/>
         <source>General</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="440"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="441"/>
         <source>&amp;General</source>
         <translation>&amp;Общие</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="344"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="345"/>
         <source>&amp;Grid</source>
         <translation>&amp;Сетка</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="332"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="333"/>
         <source>Lab&amp;els</source>
         <translation>&amp;Метки</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="309"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="310"/>
         <source>&amp;Line</source>
         <translation>&amp;Линия</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="491"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="492"/>
         <source>Line Width</source>
         <translation>Толщина линии</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="161"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="162"/>
         <source>Major Ticks</source>
         <translation>Главные деления</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="210"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="211"/>
         <source>Major Ticks Length</source>
         <translation>Длина штрихов главных делений</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="657"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="658"/>
         <source>&amp;Matrix</source>
         <translation>&amp;Матрица</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="164"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="165"/>
         <source>Minor Ticks</source>
         <translation>Дополнительные деления</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="216"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="217"/>
         <source>Minor Ticks Length</source>
         <translation>Длина штрихов дополнительной делений</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="338"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="339"/>
         <source>&amp;Numbers</source>
         <translation>&amp;Числа</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="391"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="392"/>
         <source>Numbers Font</source>
         <translation>Шрифт чисел</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="102"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="103"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="302"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="303"/>
         <source>Opacity</source>
         <translation>Непрозрачность</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="375"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="376"/>
         <source>Orthogonal</source>
         <translation>Ортогональный</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="536"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="537"/>
         <source>Points</source>
         <translation>Точек</translation>
     </message>
@@ -11526,127 +11526,127 @@ have the same number of rows.</source>
         <translation type="obsolete">QtiPlot - Ошибка выбора начальной границы</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="92"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="93"/>
         <source>QtiPlot - Surface Plot Options</source>
         <translation>QtiPlot - Параметры отрисовки трёхмерной поверхности</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="519"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="520"/>
         <source>Quality</source>
         <translation>Качество</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="484"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="485"/>
         <source>Radius</source>
         <translation>Радиус</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="385"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="386"/>
         <source>Resolution</source>
         <translation>Разрешение</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="179"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="180"/>
         <source>&amp;Scale</source>
         <translation>&amp;Масштаб</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="373"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="374"/>
         <source>Show Legend</source>
         <translation>Отобразить легенду</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="474"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="475"/>
         <source>Smooth angles</source>
         <translation>Угол сглаживания</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="498"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="499"/>
         <source>Smooth line</source>
         <translation>Гладкая линия</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="453"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="454"/>
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="192"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="193"/>
         <source>Title</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="266"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="267"/>
         <source>&amp;Title</source>
         <translation>&amp;Заголовок</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="144"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="145"/>
         <source>To</source>
         <translation>До</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="149"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="150"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="677"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="678"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="655"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="656"/>
         <source>&amp;Worksheet</source>
         <translation>Рабочая &amp;таблица</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="185"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="186"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="412"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="413"/>
         <source>X Zoom (%)</source>
         <translation>Масштабирование по X (%)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="186"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="187"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="418"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="419"/>
         <source>Y Zoom (%)</source>
         <translation>Масштабирование по Y (%)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="187"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="188"/>
         <source>Z</source>
         <translation>Z</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="424"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="425"/>
         <source>Z Zoom (%)</source>
         <translation>Масштабирование по Z (%)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="406"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="407"/>
         <source>Zoom (%)</source>
         <translation>Масштабирование (%)</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="151"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="152"/>
         <source>linear</source>
         <translation>линейный</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="152"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="153"/>
         <source>logarithmic</source>
         <translation>логарифмический</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="243"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="244"/>
         <source>Co&amp;lor</source>
         <translation>&amp;Цвет</translation>
     </message>
@@ -11661,32 +11661,32 @@ have the same number of rows.</source>
         <translation type="obsolete">М&amp;ин</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="326"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="327"/>
         <source>A&amp;xes</source>
         <translation>&amp;Оси</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="273"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="274"/>
         <source>Linea&amp;r color map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="282"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="283"/>
         <source>Color map &amp;file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="755"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="756"/>
         <source>None</source>
         <translation type="unfinished">Нет</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="686"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="687"/>
         <source>Draw lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Plot3DDialog.cpp" line="690"/>
+        <location filename="../src/plot3D/Plot3DDialog.cpp" line="691"/>
         <source>Filled bars</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11699,72 +11699,72 @@ have the same number of rows.</source>
         <translation type="obsolete"> точек</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="957"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="958"/>
         <source>1%</source>
         <translation>1%</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1145"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1146"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1146"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1147"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1147"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1148"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1148"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1149"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="898"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="899"/>
         <source>75-25</source>
         <translation>75-25</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1144"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1145"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="899"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="900"/>
         <source>90-10</source>
         <translation>90-10</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="900"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="901"/>
         <source>95-5</source>
         <translation>95-5</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="949"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="950"/>
         <source>99%</source>
         <translation>99%</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="901"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="902"/>
         <source>99-1</source>
         <translation>99-1</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2610"/>
         <source>Angle</source>
         <translation>Угол</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="366"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="367"/>
         <source>Antialiasing</source>
         <translation>Сглаживание</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="134"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="135"/>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
@@ -11774,952 +11774,952 @@ have the same number of rows.</source>
         <translation type="obsolete">Применить ко всем слоям</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1237"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1238"/>
         <source>Arrowheads</source>
         <translation>Наконечники стрелок</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="716"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="717"/>
         <source>Attach curve to: </source>
         <translation>Прикрепить кривую к: </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1173"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1174"/>
         <source>Automatic Binning</source>
         <translation>Автоматический выбор корзин</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1609"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1610"/>
         <source>Axes</source>
         <translation>Оси</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="307"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="308"/>
         <source>Axes Labels</source>
         <translation>Подписи к осям</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="308"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="309"/>
         <source>Axes Numbers</source>
         <translation>Числа на осях</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1079"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1080"/>
         <source>Axis</source>
         <translation>Ось</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="336"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="337"/>
         <source>Background Color</source>
         <translation>Цвет фона</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1184"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1185"/>
         <source>Begin</source>
         <translation>Начала</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1181"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1182"/>
         <source>Bin Size</source>
         <translation>Размер корзины</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1377"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1378"/>
         <source>Bins</source>
         <translation>Корзины (bins)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="508"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="509"/>
         <source>Border</source>
         <translation>Граница</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="358"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="359"/>
         <source>Border Color</source>
         <translation>Цвет границы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1084"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1085"/>
         <source>Bottom</source>
         <translation>Внизу</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1735"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1736"/>
         <source>Box</source>
         <translation>Короб</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="882"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="883"/>
         <source>Box Width</source>
         <translation>Ширина ящика</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1647"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1648"/>
         <source>Box/Whiskers</source>
         <translation>Ящик/усы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="132"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="133"/>
         <source>&amp;Cancel</source>
         <translation>О&amp;тмена</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="347"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="348"/>
         <source>Canvas Color</source>
         <translation>Цвет холста</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1142"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1143"/>
         <source>Cap Width</source>
         <translation>Ширина шляпы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="913"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="914"/>
         <source>Coef</source>
         <translation>Коэф</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="874"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="875"/>
         <source>Coefficient</source>
         <translation>Коэффициент</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1227"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1228"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1075"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1076"/>
         <source>Color Bar Scale</source>
         <translation>Шкала цветов</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1652"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1653"/>
         <source>Colors</source>
         <translation>Цвета</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="742"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="743"/>
         <source>Connect</source>
         <translation>Сочленение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="903"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="904"/>
         <source>Constant</source>
         <translation>Константа</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1737"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1738"/>
         <source>Contour</source>
         <translation>Контур</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1031"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1032"/>
         <source>Contour Lines</source>
         <translation>Линии контура</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1022"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1023"/>
         <source>&amp;Custom Color Map</source>
         <translation>&amp;Пользовательская карта цветов</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1019"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1020"/>
         <source>&amp;Default Color Map</source>
         <translation>&amp;Карта цветов по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1402"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1403"/>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="848"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="849"/>
         <source>Diamond</source>
         <translation>Ромб</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1116"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1117"/>
         <source>Direction</source>
         <translation>Направление</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="750"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="751"/>
         <source>Dots</source>
         <translation>Точки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="979"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="980"/>
         <source>Edge Color</source>
         <translation>Цвет грани</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="983"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="984"/>
         <source>Edge Width</source>
         <translation>Толщина кромки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1875"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1876"/>
         <source>&amp;Edit...</source>
         <translation>&amp;Правка...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1187"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1188"/>
         <source>End</source>
         <translation>Конец</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
         <source>End Point</source>
         <translation>Конечная точка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1720"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1721"/>
         <source>Error Bars</source>
         <translation>Усы погрешности</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="522"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="523"/>
         <source>Fill</source>
         <translation>Заполнение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="974"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="975"/>
         <source>Fill Color</source>
         <translation>Цвет заполнения</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="772"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="773"/>
         <source>Fill area under curve</source>
         <translation>Заполнить область под кривой</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="775"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="776"/>
         <source>Fill color</source>
         <translation>Цвет заполнения</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1248"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1249"/>
         <source>&amp;Filled</source>
         <translation>&amp;Заполненная</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="512"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="513"/>
         <source>First color</source>
         <translation>Первый цвет</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1589"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1590"/>
         <source>Fonts</source>
         <translation>Шрифты</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1208"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1209"/>
         <source>Gap Between Bars (in %)</source>
         <translation>Интервал между блоками (в %)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1582"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1583"/>
         <source>Geometry</source>
         <translation>Геометрия</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1016"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1017"/>
         <source>&amp;Gray Scale</source>
         <translation>Уровни &amp;серого</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1269"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1270"/>
         <source>Head</source>
         <translation>Начало</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1728"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1729"/>
         <source>Histogram</source>
         <translation>Гистограмма</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1631"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1632"/>
         <source>Histogram Data</source>
         <translation>Данные гистограммы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1372"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1373"/>
         <source>Histogram and Probabilities for</source>
         <translation>Гистограмма и вероятности для</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1726"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1727"/>
         <source>Horizontal Bars</source>
         <translation>Горизонтальные блоки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="749"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="750"/>
         <source>Horizontal Steps</source>
         <translation>Горизонтальные шаги</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1737"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1738"/>
         <source>Image</source>
         <translation>Изображения</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="465"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="466"/>
         <source>Keep aspect ratio</source>
         <translation>Сохранять пропорции</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1581"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1582"/>
         <source>Layer</source>
         <translation>Слой</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1082"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1083"/>
         <source>Left</source>
         <translation>Слева</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="309"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="310"/>
         <source>Legends</source>
         <translation>Легенды</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1239"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1240"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1035"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1036"/>
         <source>Levels</source>
         <translation>Уровни</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1739"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1740"/>
         <source>Line</source>
         <translation>Линия</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1741"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1742"/>
         <source>Line + Symbol</source>
         <translation>Линия + символ</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1230"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1231"/>
         <source>Line Width</source>
         <translation>Толщина линии</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="747"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="748"/>
         <source>Lines</source>
         <translation>Линии</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2610"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2611"/>
         <source>Magnitude</source>
         <translation>Величина</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="369"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="370"/>
         <source>Margin</source>
         <translation>Поля</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="944"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="945"/>
         <source>Max</source>
         <translation>Макс</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="902"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="903"/>
         <source>Max-Min</source>
         <translation>Max-Min</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1376"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1377"/>
         <source>Maximum</source>
         <translation>Максимум</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1373"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1374"/>
         <source>Mean</source>
         <translation>Среднее</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1268"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1269"/>
         <source>Middle</source>
         <translation>Середина</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="961"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="962"/>
         <source>Min</source>
         <translation>Мин</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1375"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1376"/>
         <source>Minimum</source>
         <translation>Минимум</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1121"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1122"/>
         <source>Minus</source>
         <translation>Минус</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="846"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="847"/>
         <source>No Box</source>
         <translation>Без фигуры</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="895"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="896"/>
         <source>No Whiskers</source>
         <translation>Без усов</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="746"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="747"/>
         <source>No line</source>
         <translation>Без линий</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="850"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="851"/>
         <source>Notch</source>
         <translation>Катушка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="129"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="130"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1213"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1214"/>
         <source>Offset (in %)</source>
         <translation>Смещение (в %)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="350"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="351"/>
         <source>Opacity</source>
         <translation>Непрозрачность</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="431"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="432"/>
         <source>Origin</source>
         <translation>Исходная точка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1646"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1647"/>
         <source>Pattern</source>
         <translation>Шаблон</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="862"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="863"/>
         <source>Perc 1, 99</source>
         <translation>Проц 1, 99</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="849"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="850"/>
         <source>Perc 10, 25, 75, 90</source>
         <translation>Проц 10, 25, 75, 90</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="860"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="861"/>
         <source>Perc 10, 90</source>
         <translation>Проц 10, 90</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="859"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="860"/>
         <source>Perc 25, 75</source>
         <translation>Проц 25, 75</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="861"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="862"/>
         <source>Perc 5, 95</source>
         <translation>Проц 5, 95</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1367"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1368"/>
         <source>Percent</source>
         <translation>Процент</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1648"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1649"/>
         <source>Percentile</source>
         <translation>Процентиль</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="906"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="907"/>
         <source>Percentile (%)</source>
         <translation>Процентиль (%)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1722"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1723"/>
         <source>Pie</source>
         <translation>Круговая диаграмма</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2531"/>
         <source>Please enter a positive bin size value!</source>
         <translation>Пожалуйста введите положительное значение размера столбика!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2445"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2446"/>
         <source>Please enter a valid bin size value!</source>
         <translation>Пожалуйста введите корректное значение размера столбика!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2438"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2439"/>
         <source>Please enter a valid end limit!</source>
         <translation>Пожалуйста введите корректную конечную границу!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2431"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2432"/>
         <source>Please enter a valid start limit!</source>
         <translation>Пожалуйста введите корректную начальную границу!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2505"/>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
         <translation>Пожалуйста введите пределы, удовлетворяющие соотношению: от &lt; до!</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1877"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1878"/>
         <source>&amp;Plot Associations...</source>
         <translation>&amp;Соответствие координат...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="93"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="94"/>
         <source>Plot type</source>
         <translation>Тип графика</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1119"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1120"/>
         <source>Plus</source>
         <translation>Плюс</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1264"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1265"/>
         <source>Position</source>
         <translation>Положение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1588"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1589"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="642"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="643"/>
         <source>Print Crop&amp;marks</source>
         <translation>Печатать &amp;метки обреза</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2531"/>
         <source>QtiPlot - Bin size input error</source>
         <translation>QtiPlot - Ошибка ввода размера корзины</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2493"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2494"/>
         <source>QtiPlot - End limit error</source>
         <translation>QtiPlot - Ошибка выбора конечной границы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2505"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Ошибка ввода</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="75"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="76"/>
         <source>QtiPlot - Plot details</source>
         <translation>QtiPlot - Детали построения</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2474"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2475"/>
         <source>QtiPlot - Start limit error</source>
         <translation>QtiPlot - Ошибка выбора начальной границы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1367"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1368"/>
         <source>Quantity</source>
         <translation>Количество</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="890"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="891"/>
         <source>Range</source>
         <translation>Диапазон</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="847"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="848"/>
         <source>Rectangle</source>
         <translation>Прямоугольник</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1083"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1084"/>
         <source>Right</source>
         <translation>Справа</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="640"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="641"/>
         <source>&amp;Scale layers to paper size</source>
         <translation>&amp;Масштабировать слои по размеру бумаги</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1740"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1741"/>
         <source>Scatter</source>
         <translation>Точки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1176"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1177"/>
         <source>&amp;Show statistics</source>
         <translation>&amp;Вывести статистику</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="968"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="969"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1628"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1629"/>
         <source>Spacing</source>
         <translation>Интервал</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="751"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="752"/>
         <source>Spline</source>
         <translation>Сплайн</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1374"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1375"/>
         <source>Standard Deviation</source>
         <translation>Среднеквадратичное отклонение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="897"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="898"/>
         <source>Standard Error</source>
         <translation>Стандартная Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="748"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="749"/>
         <source>Sticks</source>
         <translation>Вертикальные отрезки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1128"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1129"/>
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1367"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1368"/>
         <source>Sum</source>
         <translation>Сумма</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1621"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1622"/>
         <source>Symbol</source>
         <translation>Символ</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1267"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1268"/>
         <source>Tail</source>
         <translation>Конец</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1152"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1153"/>
         <source>Through Symbol</source>
         <translation>Через символ</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="306"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="307"/>
         <source>Titles</source>
         <translation>Заголовки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1085"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1086"/>
         <source>Top</source>
         <translation>Вверху</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="355"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="356"/>
         <source>Transparent</source>
         <translation>Прозрачность</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="942"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="943"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1045"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1046"/>
         <source>Use &amp;Color Map</source>
         <translation>Использовать шкалу &amp;цветов</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1049"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1050"/>
         <source>Use Default &amp;Pen</source>
         <translation>Установить карандаш по &amp;умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1638"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1639"/>
         <source>Vector</source>
         <translation>Вектор</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
         <source>Vector Data</source>
         <translation>Данные вектора</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1731"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1732"/>
         <source>Vector XYAM</source>
         <translation>Вектор XYAM</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1730"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1731"/>
         <source>Vector XYXY</source>
         <translation>Вектор XYXY</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1724"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1725"/>
         <source>Vertical Bars</source>
         <translation>Вертикальные блоки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="752"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="753"/>
         <source>Vertical Steps</source>
         <translation>Вертикальные шаги</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="888"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="889"/>
         <source>Whiskers</source>
         <translation>Усы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1088"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1089"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="127"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="128"/>
         <source>&amp;Worksheet</source>
         <translation>Рабочая &amp;таблица</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2618"/>
         <source>X End</source>
         <translation>Конец X</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1123"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1124"/>
         <source>&amp;X Error Bar</source>
         <translation>Погрешность по &amp;X</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="441"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="442"/>
         <source>X= </source>
         <translation>X= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2618"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="2619"/>
         <source>Y End</source>
         <translation>Конец Y</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="443"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="444"/>
         <source>Y= </source>
         <translation>Y= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="462"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="463"/>
         <source>height= </source>
         <translation>высота= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="459"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="460"/>
         <source>width= </source>
         <translation>ширина= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="718"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="719"/>
         <source>x Axis</source>
         <translation>Ось x</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="724"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="725"/>
         <source>y Axis</source>
         <translation>Ось y</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="654"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="655"/>
         <source>&amp;Show</source>
         <translation>&amp;Показать</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="658"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="659"/>
         <source>Column</source>
         <translation>Столбец</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="665"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="666"/>
         <source>White O&amp;ut</source>
         <translation>Непрозрачный &amp;фон</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="668"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="669"/>
         <source>Justify</source>
         <translation>По ширине</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="670"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="671"/>
         <source>Center</source>
         <translation>По центру</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="674"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="675"/>
         <source>&amp;Font</source>
         <translation>&amp;Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="677"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="678"/>
         <source>Rotate (deg)</source>
         <translation>Повернуть (град)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="684"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="685"/>
         <source>X Offset (font height %)</source>
         <translation>Смещение по X (высота шрифта %)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="690"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="691"/>
         <source>Y Offset (font height %)</source>
         <translation>Смещение по Y (высота шрифта %)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1663"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1664"/>
         <source>Labels</source>
         <translation>Метки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="539"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="540"/>
         <source>3D View</source>
         <translation>3D Вид</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="541"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="542"/>
         <source>View Angle (deg)</source>
         <translation>Угол обзора</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="548"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="549"/>
         <source>Thickness (% of radius)</source>
         <translation>Толщина (% от радиуса)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="555"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="556"/>
         <source>Rotation</source>
         <translation>Вращение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="557"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="558"/>
         <source>Starting Azimuth (deg)</source>
         <translation>Угол поворота</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="569"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="570"/>
         <source>Radius/Center</source>
         <translation>Радиус/Центр</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="571"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="572"/>
         <source>Radius (% of frame)</source>
         <translation>Радиус (% от рамки)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="576"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="577"/>
         <source>Horizontal Offset (% of frame)</source>
         <translation>Горизонтальное смещение (% от рамки)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1603"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="1604"/>
         <source>Pie Geometry</source>
         <translation>Круговая диаграмма</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="601"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="602"/>
         <source>Automatic &amp;Format</source>
         <translation>Авто&amp;формат</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="605"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="606"/>
         <source>&amp;Values</source>
         <translation>&amp;Значения</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="608"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="609"/>
         <source>&amp;Percentages</source>
         <translation>&amp;Проценты</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="611"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="612"/>
         <source>Categories/&amp;Rows</source>
         <translation>Категории/&amp;Строки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="616"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="617"/>
         <source>Associate Position with &amp;Wedge</source>
         <translation>&amp;Расположение</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="620"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="621"/>
         <source>Dist. from Pie Edge</source>
         <translation>Расстояние от края диаграммы</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="565"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="566"/>
         <source>Counter cloc&amp;kwise</source>
         <translation>Против &amp;часовой стрелки</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="421"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="422"/>
         <source>inch</source>
         <translation>дюйм</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="422"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="423"/>
         <source>mm</source>
         <translation>мм</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="423"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="424"/>
         <source>cm</source>
         <translation>см</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="424"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="425"/>
         <source>point</source>
         <translation>точка</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="425"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="426"/>
         <source>pixel</source>
         <translation>точка растра</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="428"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="429"/>
         <source>Unit</source>
         <translation>Размеры в</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="379"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="380"/>
         <source>Set As &amp;Default</source>
         <translation>Установить по &amp;умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="383"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="384"/>
         <source>Apply &amp;to...</source>
         <translation>Применить &amp;к...</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="388"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="389"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="389"/>
+        <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="390"/>
         <source>All Windows</source>
         <translation>Всем окнам</translation>
     </message>
@@ -13876,84 +13876,84 @@ have the same number of rows.</source>
 <context>
     <name>SymbolBox</name>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="120"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="114"/>
         <source>Cross</source>
-        <translation>Перекрестие</translation>
+        <translation type="unfinished">Перекрестие</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="125"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="119"/>
         <source>Diagonal Cross</source>
-        <translation>Диагональное перекрестие</translation>
+        <translation type="unfinished">Диагональное перекрестие</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="90"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="84"/>
         <source>Diamond</source>
-        <translation>Ромб</translation>
+        <translation type="unfinished">Ромб</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="100"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="94"/>
         <source>Down Triangle</source>
-        <translation>Треугольник с вершиной внизу</translation>
+        <translation type="unfinished">Треугольник с вершиной внизу</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="80"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="74"/>
         <source>Ellipse</source>
-        <translation>Эллипс</translation>
+        <translation type="unfinished">Эллипс</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="150"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="144"/>
         <source>Hexagon</source>
-        <translation>Шестиугольник</translation>
+        <translation type="unfinished">Шестиугольник</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="130"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="124"/>
         <source>Horizontal Line</source>
-        <translation>Горизонтальная чёрточка</translation>
+        <translation type="unfinished">Горизонтальная чёрточка</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="110"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="104"/>
         <source>Left Triangle</source>
-        <translation>Треугольник с вершиной слева</translation>
+        <translation type="unfinished">Треугольник с вершиной слева</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="76"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="70"/>
         <source>No Symbol</source>
-        <translation>Без символа</translation>
+        <translation type="unfinished">Без символа</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="85"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="79"/>
         <source>Rectangle</source>
-        <translation>Прямоугольник</translation>
+        <translation type="unfinished">Прямоугольник</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="115"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="109"/>
         <source>Right Triangle</source>
-        <translation>Треугольник с вершиной справа</translation>
+        <translation type="unfinished">Треугольник с вершиной справа</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="140"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="134"/>
         <source>Star 1</source>
-        <translation>Звёздочка 1</translation>
+        <translation type="unfinished">Звёздочка 1</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="145"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="139"/>
         <source>Star 2</source>
-        <translation>Звёздочка 2</translation>
+        <translation type="unfinished">Звёздочка 2</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="95"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="89"/>
         <source>Triangle</source>
-        <translation>Треугольник</translation>
+        <translation type="unfinished">Треугольник</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="105"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="99"/>
         <source>Up Triangle</source>
-        <translation>Треугольник с вершиной наверху</translation>
+        <translation type="unfinished">Треугольник с вершиной наверху</translation>
     </message>
     <message>
-        <location filename="../src/SymbolBox.cpp" line="135"/>
+        <location filename="../src/lib/src/SymbolBox.cpp" line="129"/>
         <source>Vertical Line</source>
-        <translation>Вертикальная чёрточка</translation>
+        <translation type="unfinished">Вертикальная чёрточка</translation>
     </message>
 </context>
 <context>

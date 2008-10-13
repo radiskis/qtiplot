@@ -27,8 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "EllipseWidget.h"
-#include "../PatternBox.h"
-#include "../PenStyleBox.h"
+#include <PatternBox.h>
+#include <PenStyleBox.h>
 
 #include <QPainter>
 #include <QPaintEngine>

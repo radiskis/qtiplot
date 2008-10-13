@@ -31,7 +31,7 @@
 #ifndef IMAGEEXPORTDIALOG_H
 #define IMAGEEXPORTDIALOG_H
 
-#include "../../ExtensibleFileDialog.h"
+#include <ExtensibleFileDialog.h>
 
 #include <QSpinBox>
 #include <QCheckBox>

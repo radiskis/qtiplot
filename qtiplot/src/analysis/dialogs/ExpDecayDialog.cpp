@@ -30,9 +30,9 @@
 #include "../Fit.h"
 #include "../ExponentialFit.h"
 #include "../../plot2D/Graph.h"
-#include "../../ColorBox.h"
 #include "../../ApplicationWindow.h"
-#include "../../DoubleSpinBox.h"
+#include <DoubleSpinBox.h>
+#include <ColorBox.h>
 
 #include <QMessageBox>
 #include <QLayout>

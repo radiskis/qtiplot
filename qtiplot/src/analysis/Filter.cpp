@@ -27,13 +27,13 @@
  *                                                                         *
  ***************************************************************************/
 #include "Filter.h"
-#include "../ColorBox.h"
 #include "../table/Table.h"
 #include "../plot2D/FrameWidget.h"
 #include "../plot2D/LegendWidget.h"
 #include "../plot2D/FunctionCurve.h"
 #include "../plot2D/PlotCurve.h"
 #include "../plot2D/MultiLayer.h"
+#include <ColorBox.h>
 
 #include <QApplication>
 #include <QMessageBox>

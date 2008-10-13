@@ -30,7 +30,7 @@
 #include "../SmoothFilter.h"
 #include "../../plot2D/Graph.h"
 #include "../../MyParser.h"
-#include "../../ColorBox.h"
+#include <ColorBox.h>
 
 #include <QGroupBox>
 #include <QSpinBox>

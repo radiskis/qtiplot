@@ -32,7 +32,7 @@
 #include "VectorCurve.h"
 #include "SelectionMoveResizer.h"
 #include "../ApplicationWindow.h"
-#include "../PenStyleBox.h"
+#include <PenStyleBox.h>
 
 #include <QPainter>
 #include <QPaintEngine>

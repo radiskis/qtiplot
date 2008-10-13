@@ -29,12 +29,12 @@
 #include "Fit.h"
 #include "FitModelHandler.h"
 #include "fit_gsl.h"
-#include "../ColorBox.h"
 #include "../table/Table.h"
 #include "../matrix/Matrix.h"
 #include "../plot2D/QwtErrorPlotCurve.h"
 #include "../plot2D/FunctionCurve.h"
 #include "../plot2D/MultiLayer.h"
+#include <ColorBox.h>
 
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_blas.h>

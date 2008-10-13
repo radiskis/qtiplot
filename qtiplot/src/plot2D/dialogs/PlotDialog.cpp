@@ -28,10 +28,6 @@
  ***************************************************************************/
 #include "PlotDialog.h"
 #include "../../ApplicationWindow.h"
-#include "../../ColorBox.h"
-#include "../../ColorButton.h"
-#include "../../PatternBox.h"
-#include "../../SymbolBox.h"
 #include "../../table/Table.h"
 #include "../../MyParser.h"
 #include "../QwtHistogram.h"
@@ -41,10 +37,15 @@
 #include "../FunctionCurve.h"
 #include "../Spectrogram.h"
 #include "../QwtPieCurve.h"
-#include "../../ColorMapEditor.h"
-#include "../../DoubleSpinBox.h"
 #include "../../Folder.h"
-#include "../../PenStyleBox.h"
+
+#include <ColorMapEditor.h>
+#include <DoubleSpinBox.h>
+#include <PenStyleBox.h>
+#include <ColorBox.h>
+#include <ColorButton.h>
+#include <PatternBox.h>
+#include <SymbolBox.h>
 
 #include <QTreeWidget>
 #include <QLineEdit>

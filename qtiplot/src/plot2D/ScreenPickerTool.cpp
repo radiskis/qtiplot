@@ -28,11 +28,11 @@
  ***************************************************************************/
 #include "ScreenPickerTool.h"
 #include "../ApplicationWindow.h"
-#include "../SymbolBox.h"
 #include "../table/Table.h"
 #include "Graph.h"
 #include "PlotCurve.h"
 #include "../cursors.h"
+#include <SymbolBox.h>
 #include <qwt_symbol.h>
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)

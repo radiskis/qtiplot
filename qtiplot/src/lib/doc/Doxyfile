@@ -1,9 +1,9 @@
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
-PROJECT_NAME           = QtiPlot
-PROJECT_NUMBER         = 0.9.7.3
-OUTPUT_DIRECTORY       = API
+PROJECT_NAME           = Qti
+PROJECT_NUMBER         = 0.0.1
+OUTPUT_DIRECTORY       = .
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = NO
@@ -68,17 +68,19 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = qtiplot/src
+INPUT                  = ..
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
                          *.cpp \
                          *.c++ \
+						 *.dox \
                          *.h \
                          *.hh \
                          *.hxx \
                          *.hpp \
                          *.h++ \
+						 *.txt \
                          *.CC \
                          *.C++ \
                          *.HH \
@@ -89,7 +91,7 @@ RECURSIVE              = yes
 EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = *moc_*
-EXAMPLE_PATH           =
+EXAMPLE_PATH           = ../INSTALL ../gpl-3.0.txt
 EXAMPLE_PATTERNS       =
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             =

@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : SymbolBox.h
+    File                 : PenStyleBox.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
-    Description          : Plot symbol combo box
+    Copyright            : (C) 2008 Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
+    Description          : Pen style combo box
                            
  ***************************************************************************/
 
@@ -26,30 +26,33 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef SYMBOLBOX_H
-#define SYMBOLBOX_H
+#ifndef PEN_STYLE_BOX_H
+#define PEN_STYLE_BOX_H
 
 #include <QComboBox>
-#include <qwt_symbol.h>
 
-//! Plot symbol combo box
-class SymbolBox : public QComboBox
+//! A modified QComboBox allowing to choose a Qt::PenStyle.
+/**
+ * This is a simple hack on top of the QComboBox class.
+ */
+class PenStyleBox : public QComboBox
 {
   Q_OBJECT
+	
 public:
-  SymbolBox(bool rw, QWidget *parent);
-  SymbolBox(QWidget *parent);
+		//! Constructor.
+		/**
+		 * \param parent parent widget (only affects placement of the widget)
+		 */
+		PenStyleBox(QWidget *parent = 0);
+  		void setStyle(const Qt::PenStyle& style);
+  		Qt::PenStyle style() const;
 
-  void setStyle(const QwtSymbol::Style& c);
-  QwtSymbol::Style selectedSymbol() const;
+  		static int styleIndex(const Qt::PenStyle& style);
+  		static Qt::PenStyle penStyle(int index);
 
-  static QwtSymbol::Style style(int index);
-  static int symbolIndex(const QwtSymbol::Style& style);
-
-  static const QwtSymbol::Style symbols[];
-
-protected:
-  void init();
+private:
+  		static const Qt::PenStyle patterns[];
 };
 
 #endif

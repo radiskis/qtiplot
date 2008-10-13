@@ -30,9 +30,10 @@
 #include "Bar.h"
 #include "Cone3D.h"
 #include "../ApplicationWindow.h"
-#include "../ColorMapEditor.h"
 #include "../MyParser.h"
 #include "../matrix/MatrixModel.h"
+
+#include <ColorMapEditor.h>
 
 #include <QApplication>
 #include <QMessageBox>

@@ -35,17 +35,27 @@ class QPushButton;
 class QTableWidget;
 class QCheckBox;
 
+//! A complex widget allowing to customize a QwtLinearColorMap.
+/**
+ * It uses a QTableWidget to display the values in one column and their corresponding colors in a second column.
+ */
 class ColorMapEditor: public QWidget
 {
     Q_OBJECT
 
 public:
-	ColorMapEditor(QWidget* parent=0);
-	
+	//! Constructor.
+	/**
+	* \param parent parent widget (only affects placement of the widget)
+	*/
+	ColorMapEditor(QWidget* parent = 0);
+	//! Returns the customized color map.
 	QwtLinearColorMap colorMap(){return color_map;};
+	//! Use this function to initialize the color map to be edited.
 	void setColorMap(const QwtLinearColorMap& map);
-
+	//! Use this function to initialize the values range.
 	void setRange(double min, double max);
+	//! Exports the map to a pseudo-XML string
 	static QString saveToXmlString(const QwtLinearColorMap& color_map);
 
 protected slots:
@@ -60,6 +70,7 @@ protected slots:
 	bool eventFilter(QObject *object, QEvent *e);
 
 private:
+	//! Table displaying the values ranges in the first column and their corresponding colors in the second column
 	QTableWidget *table;	
 	QPushButton *insertBtn, *deleteBtn;
 	QCheckBox *scaleColorsBox;

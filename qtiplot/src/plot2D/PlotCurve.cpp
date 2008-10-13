@@ -28,9 +28,11 @@
  ***************************************************************************/
 #include "PlotCurve.h"
 #include "ScaleDraw.h"
-#include "../SymbolBox.h"
-#include "../PatternBox.h"
 #include "ScaleEngine.h"
+
+#include <SymbolBox.h>
+#include <PatternBox.h>
+
 #include <QDateTime>
 #include <QMessageBox>
 #include <QPainter>

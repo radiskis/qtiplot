@@ -29,9 +29,9 @@
 
 #include "TextDialog.h"
 #include "../../ApplicationWindow.h"
-#include "../../ColorButton.h"
 #include "../../TextFormatButtons.h"
 #include "../FrameWidget.h"
+#include <ColorButton.h>
 
 #include <QFontDialog>
 #include <QFont>

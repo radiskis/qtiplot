@@ -1,11 +1,11 @@
 /***************************************************************************
-    File                 : ColorButton.h
+    File                 : PatternBox.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+    Copyright            : (C) 2006 by Tomomasa Ohkubo, Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A button used for color selection
-
+    Description          : Pattern combo box
+                           
  ***************************************************************************/
 
 /***************************************************************************
@@ -26,34 +26,36 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
+#ifndef PATTERNBOX_H
+#define PATTERNBOX_H
 
-#ifndef COLORBUTTON_H
-#define COLORBUTTON_H
+#include <QComboBox>
 
-#include <QPushButton>
-
-//! A button used for color selection
-class ColorButton : public QPushButton
+//! A modified QComboBox allowing to choose a Qt::BrushStyle style.
+/**
+ * This is a simple hack on top of the QComboBox class.
+ */
+class PatternBox : public QComboBox
 {
-	Q_OBJECT
-
+  Q_OBJECT
+	
 public:
-	//! Constructor
-	ColorButton(QWidget *parent = 0);
-	//! Set the color of the display part
-	void setColor(const QColor& c);
-	//! Get the color of the display part
-	QColor color(){return d_color;};
+		//! Constructor.
+		/**
+		 * \param parent parent widget (only affects placement of the widget)
+		 */
+		PatternBox(QWidget *parent = 0);
+		void setPattern(const Qt::BrushStyle& c);
+		Qt::BrushStyle getSelectedPattern() const;
 
-signals:
-    void colorChanged();
+		static int patternIndex(const Qt::BrushStyle& style);
+		static Qt::BrushStyle brushStyle(int index);
 
-private slots:
-    void pickColor();
+protected:
+		void init();
 
 private:
-    void updateColor();
-	QColor d_color;
+		static const Qt::BrushStyle patterns[];
 };
 
 #endif

@@ -29,7 +29,7 @@
 #ifndef ColorMapPreviewDialog_H
 #define ColorMapPreviewDialog_H
 
-#include "../ExtensibleFileDialog.h"
+#include <ExtensibleFileDialog.h>
 
 #include <QLabel>
 
