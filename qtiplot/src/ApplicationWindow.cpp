@@ -350,7 +350,7 @@ void ApplicationWindow::init(bool factorySettings)
 	connect(scriptEnv, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
 	connect(recent, SIGNAL(activated(int)), this, SLOT(openRecentProject(int)));
-				 
+
 	// this has to be done after connecting scriptEnv
 	scriptEnv->initialize();
 
@@ -476,10 +476,6 @@ void ApplicationWindow::initGlobalConstants()
 	plotLegendFont = appFont;
 	plotTitleFont = QFont(family, pointSize + 2, QFont::Bold,false);
 
-	plot3DAxesFont = QFont(family, pointSize, QFont::Bold, false );
-	plot3DNumbersFont = QFont(family, pointSize);
-	plot3DTitleFont = QFont(family, pointSize + 2, QFont::Bold,false);
-
 	autoSearchUpdates = false;
 	appLanguage = QLocale::system().name().section('_',0,0);
 	show_windows_policy = ApplicationWindow::ActiveFolder;
@@ -498,16 +494,6 @@ void ApplicationWindow::initGlobalConstants()
 	d_graph_canvas_opacity = 255;
 	d_graph_border_width = 0;
 	d_graph_axes_labels_dist = 2;
-
-	plot3DColors = QStringList();
-	plot3DColors << "blue";
-	plot3DColors << "#000000";
-	plot3DColors << "#000000";
-	plot3DColors << "#000000";
-	plot3DColors << "red";
-	plot3DColors << "#000000";
-	plot3DColors << "#000000";
-	plot3DColors << "#ffffff";
 
 	autoSave = true;
 	autoSaveTime = 15;
@@ -576,12 +562,22 @@ void ApplicationWindow::initGlobalConstants()
 	defaultArrowHeadFill = true;
 	defaultArrowLineStyle = Graph::getPenStyle("SolidLine");
 
-	showPlot3DLegend = true;
-	showPlot3DProjection = false;
-	smooth3DMesh = true;
-	plot3DResolution = 1;
-	orthogonal3DPlots = false;
-	autoscale3DPlots = true;
+	d_3D_legend = true;
+	d_3D_projection = NOFLOOR;
+	d_3D_smooth_mesh = true;
+	d_3D_resolution = 1;
+	d_3D_orthogonal = false;
+	d_3D_autoscale = true;
+    d_3D_axes_font = QFont(family, pointSize, QFont::Bold, false );
+	d_3D_numbers_font = QFont(family, pointSize);
+	d_3D_title_font = QFont(family, pointSize + 2, QFont::Bold,false);
+    d_3D_color_map = QwtLinearColorMap(Qt::blue, Qt::red);
+	d_3D_mesh_color = Qt::black;
+	d_3D_axes_color = Qt::black;
+	d_3D_numbers_color = Qt::black;
+	d_3D_labels_color = Qt::black;
+	d_3D_background_color = Qt::white;
+	d_3D_grid_color = Qt::black;
 
 	fit_output_precision = 13;
 	pasteFitResultsToPlot = false;
@@ -1919,8 +1915,7 @@ void ApplicationWindow::add3DData()
 		return;
 	}
 
-	DataSetDialog *ad = new DataSetDialog(tr("Column") + " : ", this);
-	ad->setAttribute(Qt::WA_DeleteOnClose);
+	DataSetDialog *ad = new DataSetDialog(tr("Column") + ": ", this);
 	connect (ad,SIGNAL(options(const QString&)), this, SLOT(insertNew3DData(const QString&)));
 	ad->setWindowTitle(tr("QtiPlot - Choose data set"));
 	ad->setCurveNames(zColumns);
@@ -1929,9 +1924,8 @@ void ApplicationWindow::add3DData()
 
 void ApplicationWindow::change3DData()
 {
-	DataSetDialog *ad = new DataSetDialog(tr("Column") + " : ", this);
-	ad->setAttribute(Qt::WA_DeleteOnClose);
-	connect (ad,SIGNAL(options(const QString&)), this, SLOT(change3DData(const QString&)));
+	DataSetDialog *ad = new DataSetDialog(tr("Column") + ": ", this);
+	connect (ad, SIGNAL(options(const QString&)), this, SLOT(change3DData(const QString&)));
 
 	ad->setWindowTitle(tr("QtiPlot - Choose data set"));
 	ad->setCurveNames(columnsList(Table::Z));
@@ -1940,8 +1934,7 @@ void ApplicationWindow::change3DData()
 
 void ApplicationWindow::change3DMatrix()
 {
-	DataSetDialog *ad = new DataSetDialog(tr("Matrix") + " : ", this);
-	ad->setAttribute(Qt::WA_DeleteOnClose);
+	DataSetDialog *ad = new DataSetDialog(tr("Matrix") + ": ", this);
 	connect (ad, SIGNAL(options(const QString&)), this, SLOT(change3DMatrix(const QString&)));
 
 	ad->setWindowTitle(tr("QtiPlot - Choose matrix to plot"));
@@ -1955,14 +1948,18 @@ void ApplicationWindow::change3DMatrix()
 
 void ApplicationWindow::change3DMatrix(const QString& matrix_name)
 {
-	MdiSubWindow *w = activeWindow(Plot3DWindow);
-    if (!w)
+	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
+    if (!g)
 		return;
 
-	Graph3D* g = (Graph3D*)w;
 	Matrix *m = matrix(matrix_name);
-	if (m && g)
-		g->addMatrixData(m);
+	if (!m)
+        return;
+
+	if (d_3D_autoscale)
+        g->addMatrixData(m);
+    else
+		g->addMatrixData(m, g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
 
 	emit modified();
 }
@@ -1979,7 +1976,6 @@ void ApplicationWindow::add3DMatrixPlot()
 	}
 
 	DataSetDialog *ad = new DataSetDialog(tr("Matrix") + " :", this);
-	ad->setAttribute(Qt::WA_DeleteOnClose);
 	connect (ad,SIGNAL(options(const QString&)), this, SLOT(insert3DMatrixPlot(const QString&)));
 
 	ad->setWindowTitle(tr("QtiPlot - Choose matrix to plot"));
@@ -1989,41 +1985,40 @@ void ApplicationWindow::add3DMatrixPlot()
 
 void ApplicationWindow::insert3DMatrixPlot(const QString& matrix_name)
 {
-	MdiSubWindow *w = activeWindow(Plot3DWindow);
-    if (!w)
+	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
+    if (!g)
 		return;
 
-	((Graph3D*)w)->addMatrixData(matrix(matrix_name));
+	g->addMatrixData(matrix(matrix_name));
 	emit modified();
 }
 
 void ApplicationWindow::insertNew3DData(const QString& colName)
 {
-	MdiSubWindow *w = activeWindow(Plot3DWindow);
-    if (!w)
+	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
+    if (!g)
 		return;
 
-	((Graph3D*)w)->insertNewData(table(colName),colName);
+	g->insertNewData(table(colName),colName);
 	emit modified();
 }
 
 void ApplicationWindow::change3DData(const QString& colName)
 {
-	MdiSubWindow *w = activeWindow(Plot3DWindow);
-    if (!w)
+	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
+    if (!g)
 		return;
 
-	((Graph3D*)w)->changeDataColumn(table(colName), colName);
+	g->changeDataColumn(table(colName), colName, g->tablePlotType());
 	emit modified();
 }
 
 void ApplicationWindow::editSurfacePlot()
 {
-	MdiSubWindow *w = activeWindow(Plot3DWindow);
-    if (!w)
+	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
+    if (!g)
 		return;
 
-	Graph3D* g = (Graph3D*)w;
 	SurfaceDialog* sd = new SurfaceDialog(this);
 	sd->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -2085,7 +2080,7 @@ void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 		surfaceFunc.pop_back();
 }
 
-Graph3D* ApplicationWindow::dataPlot3D(const QString& caption,const QString& formula,
+Graph3D* ApplicationWindow::addRibbon(const QString& caption,const QString& formula,
 		double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	int pos=formula.find("_",0);
@@ -2103,7 +2098,7 @@ Graph3D* ApplicationWindow::dataPlot3D(const QString& caption,const QString& for
 	QString yCol=formula.mid(pos+1,posX-pos-1);
 
 	Graph3D *plot = new Graph3D("", this, 0);
-	plot->addData(w, xCol, yCol, xl, xr, yl, yr, zl, zr);
+	plot->addRibbon(w, xCol, yCol, xl, xr, yl, yr, zl, zr);
 
 	QString label=caption;
 	while(alreadyUsedName(label))
@@ -2148,7 +2143,7 @@ Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int t
 
 	if (type == Graph3D::Ribbon) {
 		int ycol = table->colIndex(zColName);
-		plot->addData(table, table->colName(table->colX(ycol)), zColName);
+		plot->addRibbon(table, table->colName(table->colX(ycol)), zColName);
 	} else
 		plot->addData(table, table->colX(zCol), table->colY(zCol), zCol, type);
 	initPlot3D(plot);
@@ -2197,34 +2192,13 @@ Graph3D* ApplicationWindow::openPlotXYZ(const QString& caption,const QString& fo
 	return plot;
 }
 
-void ApplicationWindow::customPlot3D(Graph3D *plot)
-{
-	plot->setDataColors(QColor(plot3DColors[0]), QColor(plot3DColors[4]));
-	plot->setMeshColor(QColor(plot3DColors[2]));
-	plot->setAxesColor(QColor(plot3DColors[6]));
-	plot->setNumbersColor(QColor(plot3DColors[5]));
-	plot->setLabelsColor(QColor(plot3DColors[1]));
-	plot->setBackgroundColor(QColor(plot3DColors[7]));
-	plot->setGridColor(QColor(plot3DColors[3]));
-	plot->setResolution(plot3DResolution);
-	plot->showColorLegend(showPlot3DLegend);
-	plot->setAntialiasing(smooth3DMesh);
-	plot->setOrthogonal(orthogonal3DPlots);
-	if (showPlot3DProjection)
-		plot->setFloorData();
-	plot->setNumbersFont(plot3DNumbersFont);
-	plot->setXAxisLabelFont(plot3DAxesFont);
-	plot->setYAxisLabelFont(plot3DAxesFont);
-	plot->setZAxisLabelFont(plot3DAxesFont);
-	plot->setTitleFont(plot3DTitleFont);
-	plot->setAutoscale(autoscale3DPlots);
-	plot->update();
-}
-
 void ApplicationWindow::initPlot3D(Graph3D *plot, bool custom)
 {
-	if (custom)
-		customPlot3D(plot);
+    if (custom){
+        plot->setDataColorMap(d_3D_color_map);
+        plot->update();
+    }
+
 	d_workspace->addSubWindow(plot);
 	connectSurfacePlot(plot);
 
@@ -3168,10 +3142,10 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 }
 
 MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
-{		
+{
 	if (!d_active_window)
         return NULL;
-	
+
 	switch(type){
 		case NoWindow:
 		break;
@@ -4574,30 +4548,37 @@ void ApplicationWindow::readSettings()
 
 	/* ----------------- group 3D Plots --------------------------- */
 	settings.beginGroup("/3DPlots");
-	showPlot3DLegend = settings.value("/Legend",true).toBool();
-	showPlot3DProjection = settings.value("/Projection", false).toBool();
-	smooth3DMesh = settings.value("/Antialiasing", true).toBool();
-	plot3DResolution = settings.value ("/Resolution", 1).toInt();
-	orthogonal3DPlots = settings.value("/Orthogonal", false).toBool();
-	autoscale3DPlots = settings.value ("/Autoscale", true).toBool();
+	d_3D_legend = settings.value("/Legend",true).toBool();
+	d_3D_projection = settings.value("/Projection", d_3D_projection).toInt();
+	d_3D_smooth_mesh = settings.value("/Antialiasing", true).toBool();
+	d_3D_resolution = settings.value ("/Resolution", 1).toInt();
+	d_3D_orthogonal = settings.value("/Orthogonal", false).toBool();
+	d_3D_autoscale = settings.value ("/Autoscale", true).toBool();
 
 	QStringList plot3DFonts = settings.value("/Fonts").toStringList();
 	if (plot3DFonts.size() == 12){
-		plot3DTitleFont=QFont (plot3DFonts[0],plot3DFonts[1].toInt(),plot3DFonts[2].toInt(),plot3DFonts[3].toInt());
-		plot3DNumbersFont=QFont (plot3DFonts[4],plot3DFonts[5].toInt(),plot3DFonts[6].toInt(),plot3DFonts[7].toInt());
-		plot3DAxesFont=QFont (plot3DFonts[8],plot3DFonts[9].toInt(),plot3DFonts[10].toInt(),plot3DFonts[11].toInt());
+		d_3D_title_font=QFont (plot3DFonts[0],plot3DFonts[1].toInt(),plot3DFonts[2].toInt(),plot3DFonts[3].toInt());
+		d_3D_numbers_font=QFont (plot3DFonts[4],plot3DFonts[5].toInt(),plot3DFonts[6].toInt(),plot3DFonts[7].toInt());
+		d_3D_axes_font=QFont (plot3DFonts[8],plot3DFonts[9].toInt(),plot3DFonts[10].toInt(),plot3DFonts[11].toInt());
 	}
 
 	settings.beginGroup("/Colors");
-	plot3DColors = QStringList();
-	plot3DColors << QColor(settings.value("/MaxData", "blue").value<QColor>()).name();
-	plot3DColors << QColor(settings.value("/Labels", "#000000").value<QColor>()).name();
-	plot3DColors << QColor(settings.value("/Mesh", "#000000").value<QColor>()).name();
-	plot3DColors << QColor(settings.value("/Grid", "#000000").value<QColor>()).name();
-	plot3DColors << QColor(settings.value("/MinData", "red").value<QColor>()).name();
-	plot3DColors << QColor(settings.value("/Numbers", "#000000").value<QColor>()).name();
-	plot3DColors << QColor(settings.value("/Axes", "#000000").value<QColor>()).name();
-	plot3DColors << QColor(settings.value("/Background", "#ffffff").value<QColor>()).name();
+	QColor max_color = settings.value("/MaxData", Qt::red).value<QColor>();
+	d_3D_labels_color = settings.value("/Labels", d_3D_labels_color).value<QColor>();
+	d_3D_mesh_color = settings.value("/Mesh", d_3D_mesh_color).value<QColor>();
+	d_3D_grid_color = settings.value("/Grid", d_3D_grid_color).value<QColor>();
+	QColor min_color = settings.value("/MinData", Qt::blue).value<QColor>();
+	d_3D_numbers_color = settings.value("/Numbers", d_3D_numbers_color).value<QColor>();
+	d_3D_axes_color = settings.value("/Axes", d_3D_axes_color).value<QColor>();
+	d_3D_background_color = settings.value("/Background", d_3D_background_color).value<QColor>();
+
+	d_3D_color_map = QwtLinearColorMap(min_color, max_color);
+	d_3D_color_map.setMode((QwtLinearColorMap::Mode)settings.value("/ColorMapMode", QwtLinearColorMap::ScaledColors).toInt());
+	QList<QVariant> stop_values = settings.value("/ColorMapStops").toList();
+	QStringList stop_colors = settings.value("/ColorMapColors").toStringList();
+	for (int i = 0; i < stop_colors.size(); i++)
+        d_3D_color_map.addColorStop(stop_values[i].toDouble(), QColor(stop_colors[i]));
+
 	settings.endGroup(); // Colors
 	settings.endGroup();
 	/* ----------------- end group 3D Plots --------------------------- */
@@ -4677,7 +4658,7 @@ void ApplicationWindow::readSettings()
     d_notes_font.setPointSize(settings.value("/FontSize", d_notes_font.pointSize()).toInt());
     d_notes_font.setBold(settings.value("/FontBold", d_notes_font.bold()).toBool());
     d_notes_font.setItalic(settings.value("/FontItalic", d_notes_font.italic()).toBool());
-	
+
 	settings.beginGroup("/SyntaxHighlighting");
 	d_comment_highlight_color = settings.value("/Comments", d_comment_highlight_color).value<QColor>();
 	d_keyword_highlight_color = settings.value("/Keywords", d_keyword_highlight_color).value<QColor>();
@@ -4910,37 +4891,50 @@ void ApplicationWindow::saveSettings()
 
 	/* ----------------- group 3D Plots ------------ */
 	settings.beginGroup("/3DPlots");
-	settings.setValue("/Legend", showPlot3DLegend);
-	settings.setValue("/Projection", showPlot3DProjection);
-	settings.setValue("/Antialiasing", smooth3DMesh);
-	settings.setValue("/Resolution", plot3DResolution);
-	settings.setValue("/Orthogonal", orthogonal3DPlots);
-	settings.setValue("/Autoscale", autoscale3DPlots);
+	settings.setValue("/Legend", d_3D_legend);
+	settings.setValue("/Projection", d_3D_projection);
+	settings.setValue("/Antialiasing", d_3D_smooth_mesh);
+	settings.setValue("/Resolution", d_3D_resolution);
+	settings.setValue("/Orthogonal", d_3D_orthogonal);
+	settings.setValue("/Autoscale", d_3D_autoscale);
 
 	QStringList plot3DFonts;
-	plot3DFonts<<plot3DTitleFont.family();
-	plot3DFonts<<QString::number(plot3DTitleFont.pointSize());
-	plot3DFonts<<QString::number(plot3DTitleFont.weight());
-	plot3DFonts<<QString::number(plot3DTitleFont.italic());
-	plot3DFonts<<plot3DNumbersFont.family();
-	plot3DFonts<<QString::number(plot3DNumbersFont.pointSize());
-	plot3DFonts<<QString::number(plot3DNumbersFont.weight());
-	plot3DFonts<<QString::number(plot3DNumbersFont.italic());
-	plot3DFonts<<plot3DAxesFont.family();
-	plot3DFonts<<QString::number(plot3DAxesFont.pointSize());
-	plot3DFonts<<QString::number(plot3DAxesFont.weight());
-	plot3DFonts<<QString::number(plot3DAxesFont.italic());
+	plot3DFonts<<d_3D_title_font.family();
+	plot3DFonts<<QString::number(d_3D_title_font.pointSize());
+	plot3DFonts<<QString::number(d_3D_title_font.weight());
+	plot3DFonts<<QString::number(d_3D_title_font.italic());
+	plot3DFonts<<d_3D_numbers_font.family();
+	plot3DFonts<<QString::number(d_3D_numbers_font.pointSize());
+	plot3DFonts<<QString::number(d_3D_numbers_font.weight());
+	plot3DFonts<<QString::number(d_3D_numbers_font.italic());
+	plot3DFonts<<d_3D_axes_font.family();
+	plot3DFonts<<QString::number(d_3D_axes_font.pointSize());
+	plot3DFonts<<QString::number(d_3D_axes_font.weight());
+	plot3DFonts<<QString::number(d_3D_axes_font.italic());
 	settings.setValue("/Fonts", plot3DFonts);
 
 	settings.beginGroup("/Colors");
-	settings.setValue("/MaxData", plot3DColors[0]);
-	settings.setValue("/Labels", plot3DColors[1]);
-	settings.setValue("/Mesh", plot3DColors[2]);
-	settings.setValue("/Grid", plot3DColors[3]);
-	settings.setValue("/MinData", plot3DColors[4]);
-	settings.setValue("/Numbers", plot3DColors[5]);
-	settings.setValue("/Axes", plot3DColors[6]);
-	settings.setValue("/Background", plot3DColors[7]);
+	settings.setValue("/MaxData", d_3D_color_map.color2());
+	settings.setValue("/Labels", d_3D_labels_color);
+	settings.setValue("/Mesh", d_3D_mesh_color);
+	settings.setValue("/Grid", d_3D_grid_color);
+	settings.setValue("/MinData", d_3D_color_map.color1());
+	settings.setValue("/Numbers", d_3D_numbers_color);
+	settings.setValue("/Axes", d_3D_axes_color);
+	settings.setValue("/Background", d_3D_background_color);
+
+    settings.setValue("/ColorMapMode", d_3D_color_map.mode());
+	QList<QVariant> stop_values;
+	QStringList stop_colors;
+	QwtArray <double> colors = d_3D_color_map.colorStops();
+	int stops = (int)colors.size() - 1;
+	for (int i = 1; i < stops; i++){
+        stop_values << QVariant(colors[i]);
+		stop_colors << QColor(d_3D_color_map.rgb(QwtDoubleInterval(0, 1), colors[i])).name();
+    }
+    settings.setValue("/ColorMapStops", QVariant(stop_values));
+    settings.setValue("/ColorMapColors", stop_colors);
+
 	settings.endGroup(); // Colors
 	settings.endGroup();
 	/* ----------------- end group 2D Plots -------- */
@@ -7808,7 +7802,7 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 		} else if (s.endsWith("(Z)"))
 			nw = openPlotXYZ(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
 		else if (s.endsWith("(Y)"))//Ribbon plot
-			nw = dataPlot3D(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
+			nw = addRibbon(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
 		else
 			nw = openMatrixPlot3D(caption, s, g->xStart(), g->xStop(), g->yStart(), g->yStop(),g->zStart(),g->zStop());
 
@@ -9907,7 +9901,7 @@ void ApplicationWindow::initPlot3DToolBar()
 	actionPerspective->setToggleAction( TRUE );
 	actionPerspective->setIconSet(QPixmap(perspective_xpm) );
 	actionPerspective->addTo( plot3DTools );
-	actionPerspective->setOn(!orthogonal3DPlots);
+	actionPerspective->setOn(!d_3D_orthogonal);
 	connect(actionPerspective, SIGNAL(toggled(bool)), this, SLOT(togglePerspective(bool)));
 
 	actionResetRotation = new QAction( this );
@@ -11428,9 +11422,9 @@ void ApplicationWindow::setPlot3DOptions()
 	foreach(MdiSubWindow *w, windows){
 		if (w->isA("Graph3D")){
 			Graph3D *g = (Graph3D*)w;
-			g->setOrthogonal(orthogonal3DPlots);
-			g->setAutoscale(autoscale3DPlots);
-			g->setAntialiasing(smooth3DMesh);
+			g->setOrthogonal(d_3D_orthogonal);
+			g->setAutoscale(d_3D_autoscale);
+			g->setAntialiasing(d_3D_smooth_mesh);
 		}
 	}
 }
@@ -12886,8 +12880,8 @@ Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 	plot->setWindowTitle(label);
 	plot->setName(label);
 	initPlot3D(plot);
-	plot->setDataColorMap(m->colorMap());
-	plot->update();
+	//plot->setDataColorMap(m->colorMap());
+	//plot->update();
 
 	emit modified();
 	QApplication::restoreOverrideCursor();

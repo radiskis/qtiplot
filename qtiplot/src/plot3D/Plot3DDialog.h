@@ -78,10 +78,6 @@ private slots:
 							const QString& majors, const QString& minors);
 	void viewScaleLimits(int axis);
 	void disableMeshOptions();
-	void showBarsTab(double rad);
-	void showPointsTab(double rad, bool smooth);
-	void showConesTab(double rad, int quality);
-	void showCrossHairTab(double rad, double linewidth, bool smooth, bool boxed);
 
 	void worksheet();
 
@@ -99,6 +95,11 @@ private:
 	void initColorsPage();
 	void initGeneralPage();
 	void setColorMapPreview(const QString& fileName);
+
+	void showBarsTab();
+    void showPointsTab(double rad, bool smooth);
+	void showConesTab(double rad, int quality);
+	void showCrossHairTab(double rad, double linewidth, bool smooth, bool boxed);
 
     Graph3D *d_plot;
 	QGroupBox *linearColorMapGroupBox, *colorMapFileGroupBox;
@@ -128,6 +129,7 @@ private:
 	DoubleSpinBox *boxSize, *boxBarsRad, *boxCrossRad, *boxCrossLinewidth;
 	QStackedWidget *optionStack;
 	QWidget *dotsPage, *conesPage, *crossPage;
+	QCheckBox *boxBarLines, *boxFilledBars;
 	TextFormatButtons *titleFormatButtons, *axisTitleFormatButtons;
     double zoom, xScale, yScale, zScale;
 	QString d_color_map_file;

@@ -45,6 +45,8 @@
 #include "scripting/Script.h"
 #include "plot2D/TranslateCurveTool.h"
 
+#include <qwt_color_map.h>
+
 class QPixmap;
 class QCloseEvent;
 class QDropEvent;
@@ -265,8 +267,7 @@ public slots:
 	Graph3D* openMatrixPlot3D(const QString& caption, const QString& matrix_name,
 							 double xl,double xr,double yl,double yr,double zl,double zr);
 	Graph3D* plotXYZ(Table* table,const QString& zColName, int type);
-		//when reading from .qti file
-	Graph3D* dataPlot3D(const QString& caption,const QString& formula,
+	Graph3D* addRibbon(const QString& caption, const QString& formula,
 						double xl, double xr, double yl, double yr, double zl, double zr);
 	Graph3D* openPlotXYZ(const QString& caption,const QString& formula,
  						double xl, double xr, double yl, double yr, double zl, double zr);
@@ -293,9 +294,6 @@ public slots:
 	void insertNew3DData(const QString& colName);
 	void add3DMatrixPlot();
 	void insert3DMatrixPlot(const QString& matrix_name);
-	void initPlot3D(Graph3D *plot, bool custom = true);
-	void customPlot3D(Graph3D *plot);
-	void setPlot3DOptions();
 
 	void plot3DWireframe();
 	void plot3DHiddenLine();
@@ -784,7 +782,7 @@ public slots:
 	void updateRecentProjectsList();
 
 	//!  connected to the done(bool) signal of the http object
-	void receivedVersionFile(bool error);	 
+	void receivedVersionFile(bool error);
 	//!  called when the user presses the actionCheckUpdates
 	void searchForUpdates();
 #ifdef QTIPLOT_SUPPORT
@@ -975,6 +973,8 @@ private:
     void initCompleter();
 	virtual QMenu * createPopupMenu(){return NULL;};
 
+    void initPlot3D(Graph3D *plot, bool custom = true);
+
 private slots:
     //! \name Initialization
 	//@{
@@ -1121,7 +1121,7 @@ public:
 
 	//! Path to the folder where the last template file was opened/saved
 	QString templatesDir;
-	bool smooth3DMesh, autoScaleFonts, autoResizeLayers, autoSearchUpdates;
+	bool autoScaleFonts, autoResizeLayers, autoSearchUpdates;
 	bool confirmCloseTable, confirmCloseMatrix, confirmClosePlot2D, confirmClosePlot3D;
 	bool confirmCloseFolder, confirmCloseNotes;
 	bool titleOn, autoSave, drawBackbones, allAxesOn, autoscale2DPlots, antialiasing2DPlots;
@@ -1134,16 +1134,16 @@ public:
 	QPen d_frame_widget_pen;
 	int majTicksLength, minTicksLength, defaultPlotMargin;
 	int defaultCurveStyle, defaultSymbolSize;
-	QFont appFont, plot3DTitleFont, plot3DNumbersFont, plot3DAxesFont;
+	QFont appFont;
 	QFont tableTextFont, tableHeaderFont, plotAxesFont, plotLegendFont, plotNumbersFont, plotTitleFont;
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;
 	QString projectname,columnSeparator, helpFilePath, appLanguage;
 	QString configFilePath, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
-	int ignoredLines, savingTimerId, plot3DResolution, recentMenuID;
+	int ignoredLines, savingTimerId, recentMenuID;
 	bool renameColumns, strip_spaces, simplify_spaces;
 	QStringList recentProjects;
-	bool saved, showPlot3DProjection, showPlot3DLegend, orthogonal3DPlots, autoscale3DPlots;
-	QStringList plot3DColors, locales;
+	bool saved;
+	QStringList locales;
 	QStringList functions; //user-defined functions;
 	QStringList xFunctions, yFunctions, rFunctions, thetaFunctions; // user functions for parametric and polar plots
 	QStringList surfaceFunc; //user-defined surface functions;
@@ -1166,7 +1166,23 @@ public:
 	//! User custom colors used for Python syntax highlighting
 	QColor d_comment_highlight_color, d_class_highlight_color, d_numeric_highlight_color;
 	QColor d_keyword_highlight_color, d_function_highlight_color, d_quotation_highlight_color;
-	
+
+	//! \name user custom values for 3D plots look
+	//@{
+	bool d_3D_smooth_mesh, d_3D_legend, d_3D_orthogonal, d_3D_autoscale;
+	int d_3D_resolution, d_3D_projection;
+	QFont d_3D_title_font, d_3D_numbers_font, d_3D_axes_font;
+	QwtLinearColorMap d_3D_color_map;
+	QColor d_3D_mesh_color;
+	QColor d_3D_axes_color;
+	QColor d_3D_numbers_color;
+	QColor d_3D_labels_color;
+	QColor d_3D_background_color;
+	QColor d_3D_grid_color;
+
+    void setPlot3DOptions();
+	//@}
+
 private:
 	MdiSubWindow *d_active_window;
     TextEditor *d_text_editor;

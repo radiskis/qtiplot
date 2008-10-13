@@ -801,7 +801,8 @@ reduced chi-squared value. You can choose to enable this option by checking the
   <title>Plot Wizard</title>
   <para>This dialog is activated by selecting the command <link linkend="plot-wizard-cmd">&plot-wizard-cmd;</link> from the <link linkend="sec-view-menu">View Menu</link> or with the &plot-wizard-key; key. This command is always active.</para>
   <para>This dialog is used to build a new plot by selecting the columns in the tables available in the current project. At first, you have to select the table you want to use, and then click on <emphasis>New curve</emphasis> to create the curve.
-  After that, you have to select at least one column for X and one for Y. You can also select one more column for X-errors or for Y-errors. The plot created will have the default style you defined using the <link linkend="preferences-dialog">Preferences dialog</link> through the '2D Plots -> Curves' tab.</para>
+  After that, you have to select at least one column for X and one for Y. You can also select one more column for X-errors or for Y-errors.
+  The plot created will have the default style you defined using the <link linkend="preferences-dialog">Preferences dialog</link> through the '2D Plots -> Curves' tab.</para>
   <figure id="fig-plot-wizard">
     <title>The plot wizard dialog box.</title>
     <informalexample>
@@ -1006,7 +1007,7 @@ the length of the <emphasis>TAB</emphasis> character and the font.
 The user can also specify whether the line numbers should be displayed or not.
 Displaying the line numbers can be particularly helpful when debugging Python scripts.</para>
 
-  <figure id="fig-preferences-dialog-14">
+  <figure id="fig-preferences-dialog-notes">
     <title>The preferences dialog: note options.</title>
     <mediaobject>
       <imageobject>

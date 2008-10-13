@@ -5,7 +5,7 @@
     Copyright            : (C) 2006 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : 3D bars (modifed enrichment from QwtPlot3D)
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -36,11 +36,11 @@ class Bar : public Qwt3D::VertexEnrichment
 {
 public:
   Bar();
-  Bar(double rad);
+  Bar(double rad, bool lines = true, bool filled = true, bool smooth = true);
 
   Qwt3D::Enrichment* clone() const {return new Bar(*this);}
-  
-  void configure(double rad);
+
+  void configure(double rad, bool lines = true, bool filled = true, bool smooth = true);
   void drawBegin();
   void drawEnd();
   void draw(Qwt3D::Triple const&);
@@ -48,6 +48,9 @@ public:
 private:
   double radius_;
   double diag_;
+  bool d_smooth;
+  bool d_draw_lines;
+  bool d_filled_bars;
 };
 
 

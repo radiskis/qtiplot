@@ -305,6 +305,8 @@ setConeOptions
 setCrossOptions
 setDotOptions
 setBarRadius
+setBarLines
+setFilledBars
 animate
 findBestLayout
 setData

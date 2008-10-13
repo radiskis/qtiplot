@@ -36,6 +36,7 @@
 #include "ColorBox.h"
 #include "pixmaps.h"
 #include "DoubleSpinBox.h"
+#include "ColorMapEditor.h"
 
 #include <QLocale>
 #include <QPushButton>
@@ -476,11 +477,10 @@ static const char* choose_folder_xpm[]={
 ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
-	// get current values from app window
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	plot3DTitleFont = app->plot3DTitleFont;
-	plot3DNumbersFont = app->plot3DNumbersFont;
-	plot3DAxesFont = app->plot3DAxesFont;
+	d_3D_title_font = app->d_3D_title_font;
+	d_3D_numbers_font = app->d_3D_numbers_font;
+	d_3D_axes_font = app->d_3D_axes_font;
 	textFont = app->tableTextFont;
 	headerFont = app->tableHeaderFont;
 	appFont = app->appFont;
@@ -489,11 +489,9 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 	legendFont = app->plotLegendFont;
 	titleFont = app->plotTitleFont;
 
-	// create the GUI
 	generalDialog = new QStackedWidget();
 	itemsList = new QListWidget();
 	itemsList->setSpacing(10);
-	itemsList->setAlternatingRowColors( true );
 
 	initAppPage();
 	initTablesPage();
@@ -704,7 +702,7 @@ void ConfigDialog::initPlotsPage()
 	boxAxesLabelsDist->setRange(0, 1000);
 	boxAxesLabelsDist->setValue(app->d_graph_axes_labels_dist);
 	optionsLayout->addWidget(boxAxesLabelsDist, 6, 1);
-	
+
 	lblMargin = new QLabel();
 	optionsLayout->addWidget(lblMargin, 7, 0);
 	boxMargin = new QSpinBox();
@@ -876,73 +874,85 @@ void ConfigDialog::initPlots3DPage()
 	topLayout->addWidget( lblResolution, 0, 0 );
 	boxResolution = new QSpinBox();
 	boxResolution->setRange(1, 100);
-	boxResolution->setValue(app->plot3DResolution);
+	boxResolution->setValue(app->d_3D_resolution);
 	topLayout->addWidget( boxResolution, 0, 1 );
+    lblResolution->setBuddy(boxResolution);
+
+    lblFloorStyle = new QLabel();
+	topLayout->addWidget( lblFloorStyle, 1, 0 );
+
+    boxProjection = new QComboBox();
+	boxProjection->setCurrentIndex(app->d_3D_projection);
+	topLayout->addWidget(boxProjection, 1, 1);
+	lblFloorStyle->setBuddy(boxProjection);
 
 	boxShowLegend = new QCheckBox();
-	boxShowLegend->setChecked(app->showPlot3DLegend);
-	topLayout->addWidget( boxShowLegend, 1, 0 );
-
-	boxShowProjection = new QCheckBox();
-	boxShowProjection->setChecked(app->showPlot3DProjection);
-	topLayout->addWidget( boxShowProjection, 1, 1 );
+	boxShowLegend->setChecked(app->d_3D_legend);
+	topLayout->addWidget(boxShowLegend, 2, 0);
 
 	boxSmoothMesh = new QCheckBox();
-	boxSmoothMesh->setChecked(app->smooth3DMesh);
-	topLayout->addWidget( boxSmoothMesh, 2, 0 );
+	boxSmoothMesh->setChecked(app->d_3D_smooth_mesh);
+	topLayout->addWidget(boxSmoothMesh, 2, 1);
 
 	boxOrthogonal = new QCheckBox();
-	boxOrthogonal->setChecked(app->orthogonal3DPlots);
-	topLayout->addWidget( boxOrthogonal, 2, 1 );
+	boxOrthogonal->setChecked(app->d_3D_orthogonal);
+	topLayout->addWidget(boxOrthogonal, 3, 1);
 
 	boxAutoscale3DPlots = new QCheckBox();
-	boxAutoscale3DPlots->setChecked(app->autoscale3DPlots);
-	topLayout->addWidget( boxAutoscale3DPlots, 3, 0 );
+	boxAutoscale3DPlots->setChecked(app->d_3D_autoscale);
+	topLayout->addWidget(boxAutoscale3DPlots, 3, 0);
+
+    colorMapBox = new QGroupBox();
+    QHBoxLayout *colorMapLayout = new QHBoxLayout( colorMapBox );
+    colorMapLayout->setMargin(0);
+    colorMapLayout->setSpacing(0);
+
+    colorMapEditor = new ColorMapEditor();
+    colorMapEditor->setColorMap(app->d_3D_color_map);
+    colorMapLayout->addWidget(colorMapEditor);
 
 	groupBox3DCol = new QGroupBox();
 	QGridLayout * middleLayout = new QGridLayout( groupBox3DCol );
-
-	QStringList plot3DColors = app->plot3DColors;
-
-	btnFromColor = new ColorButton();
-	btnFromColor->setColor(QColor(plot3DColors[4]));
-	middleLayout->addWidget( btnFromColor, 0, 0 );
-	btnLabels = new ColorButton();
-	btnLabels->setColor(QColor(plot3DColors[1]));
-	middleLayout->addWidget( btnLabels, 0, 1 );
-	btnMesh = new ColorButton();
-	btnMesh->setColor(QColor(plot3DColors[2]));
-	middleLayout->addWidget( btnMesh, 0, 2 );
-	btnGrid = new ColorButton();
-	btnGrid->setColor(QColor(plot3DColors[3]));
-	middleLayout->addWidget( btnGrid, 0, 3 );
-	btnToColor = new ColorButton();
-	btnToColor->setColor(QColor(plot3DColors[0]));
-	middleLayout->addWidget( btnToColor, 1, 0 );
-	btnNumbers = new ColorButton();
-	btnNumbers->setColor(QColor(plot3DColors[5]));
-	middleLayout->addWidget( btnNumbers, 1, 1 );
 	btnAxes = new ColorButton();
-	btnAxes->setColor(QColor(plot3DColors[6]));
-	middleLayout->addWidget( btnAxes, 1, 2 );
+	btnAxes->setColor(app->d_3D_axes_color);
+	middleLayout->addWidget(btnAxes, 0, 0);
+	btnLabels = new ColorButton();
+	btnLabels->setColor(app->d_3D_labels_color);
+	middleLayout->addWidget(btnLabels, 1, 0);
+	btnNumbers = new ColorButton();
+	btnNumbers->setColor(app->d_3D_numbers_color);
+	middleLayout->addWidget(btnNumbers, 2, 0);
+	btnMesh = new ColorButton();
+	btnMesh->setColor(app->d_3D_mesh_color);
+	middleLayout->addWidget(btnMesh, 0, 1);
+	btnGrid = new ColorButton();
+	btnGrid->setColor(app->d_3D_grid_color);
+	middleLayout->addWidget(btnGrid, 1, 1);
 	btnBackground3D = new ColorButton();
-	btnBackground3D->setColor(QColor(plot3DColors[7]));
-	middleLayout->addWidget( btnBackground3D, 1, 3 );
+	btnBackground3D->setColor(app->d_3D_background_color);
+	middleLayout->addWidget(btnBackground3D, 2, 1);
 
-	groupBox3DFonts = new QGroupBox();
-	QHBoxLayout * bottomLayout = new QHBoxLayout( groupBox3DFonts );
+    groupBox3DFonts = new QGroupBox();
+	QGridLayout * fl = new QGridLayout( groupBox3DFonts );
 	btnTitleFnt = new QPushButton();
-	bottomLayout->addWidget( btnTitleFnt );
+	fl->addWidget( btnTitleFnt, 0, 0);
 	btnLabelsFnt = new QPushButton();
-	bottomLayout->addWidget( btnLabelsFnt );
+	fl->addWidget( btnLabelsFnt, 0, 1);
 	btnNumFnt = new QPushButton();
-	bottomLayout->addWidget( btnNumFnt );
+	fl->addWidget( btnNumFnt, 0, 2);
+	fl->setRowStretch(1, 1);
+
+    QVBoxLayout *vl = new QVBoxLayout();
+    vl->addWidget(groupBox3DCol);
+    vl->addWidget(groupBox3DFonts);
+
+    QHBoxLayout *hb = new QHBoxLayout();
+    hb->addWidget(colorMapBox);
+    hb->addLayout(vl);
 
 	QVBoxLayout * plots3DPageLayout = new QVBoxLayout( plots3D );
 	plots3DPageLayout->addWidget(topBox);
-	plots3DPageLayout->addWidget(groupBox3DCol);
-	plots3DPageLayout->addWidget(groupBox3DFonts);
-	plots3DPageLayout->addStretch();
+	plots3DPageLayout->addLayout(hb);
 
 	connect( btnNumFnt, SIGNAL( clicked() ), this, SLOT(pick3DNumbersFont() ) );
 	connect( btnTitleFnt, SIGNAL( clicked() ), this, SLOT(pick3DTitleFont() ) );
@@ -1184,32 +1194,32 @@ void ConfigDialog::initNotesPage()
 	buttonCommentColor->setColor(app->d_comment_highlight_color);
 	connect(buttonCommentColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
 	gl->addWidget(buttonCommentColor, 0, 0);
-	
+
 	buttonKeywordColor = new ColorButton();
 	buttonKeywordColor->setColor(app->d_keyword_highlight_color);
 	connect(buttonKeywordColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
 	gl->addWidget(buttonKeywordColor, 0, 1);
-	
+
 	buttonQuotationColor = new ColorButton();
 	buttonQuotationColor->setColor(app->d_quotation_highlight_color);
 	connect(buttonQuotationColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
 	gl->addWidget(buttonQuotationColor, 1, 0);
-	
+
 	buttonNumericColor = new ColorButton();
 	buttonNumericColor->setColor(app->d_numeric_highlight_color);
 	connect(buttonNumericColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
 	gl->addWidget(buttonNumericColor, 1, 1);
-	
+
 	buttonFunctionColor = new ColorButton();
 	buttonFunctionColor->setColor(app->d_function_highlight_color);
 	connect(buttonFunctionColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
 	gl->addWidget(buttonFunctionColor, 2, 0);
-	
+
 	buttonClassColor = new ColorButton();
 	buttonClassColor->setColor(app->d_class_highlight_color);
 	connect(buttonClassColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
 	gl->addWidget(buttonClassColor, 2, 1);
-	
+
 	vl->addWidget(groupSyntaxHighlighter);
 #endif
 
@@ -1661,21 +1671,26 @@ void ConfigDialog::languageChange()
 		boxCurveStyle->setCurrentItem(9);
 
 	//plots 3D
-	lblResolution->setText(tr("Resolution"));
+	lblResolution->setText(tr("&Resolution"));
 	boxResolution->setSpecialValueText( "1 " + tr("(all data shown)") );
 	boxShowLegend->setText(tr( "&Show Legend" ));
-	boxShowProjection->setText(tr( "Show &Projection" ));
-	btnFromColor->setText( tr( "&Data Max" ) );
+	lblFloorStyle->setText(tr( "&Floor style" ));
+	boxProjection->addItem(tr( "Empty" ));
+	boxProjection->addItem(tr( "Isolines" ));
+	boxProjection->addItem(tr( "Projection" ));
+	boxProjection->setCurrentIndex(app->d_3D_projection);
+
 	boxSmoothMesh->setText(tr( "Smoot&h Line" ));
 	boxOrthogonal->setText(tr( "O&rthogonal" ));
 	btnLabels->setText( tr( "Lab&els" ) );
-	btnMesh->setText( tr( "Mesh &Line" ) );
+	btnMesh->setText( tr( "&Mesh" ) );
 	btnGrid->setText( tr( "&Grid" ) );
-	btnToColor->setText( tr( "Data &Min" ) );
 	btnNumbers->setText( tr( "&Numbers" ) );
 	btnAxes->setText( tr( "A&xes" ) );
 	btnBackground3D->setText( tr( "&Background" ) );
 	groupBox3DCol->setTitle(tr("Colors" ));
+	colorMapBox->setTitle(tr("Data Color Map" ));
+
 	groupBox3DFonts->setTitle(tr("Fonts" ));
 	btnTitleFnt->setText( tr( "&Title" ) );
 	btnLabelsFnt->setText( tr( "&Axes Labels" ) );
@@ -1695,7 +1710,7 @@ void ConfigDialog::languageChange()
 	buttonFunctionColor->setText(tr("&Functions"));
 	buttonClassColor->setText(tr("Q&t Classes"));
 #endif
-	
+
 	//Fitting page
 	groupBoxFittingCurve->setTitle(tr("Generated Fit Curve"));
 	generatePointsBtn->setText(tr("Uniform X Function"));
@@ -1923,20 +1938,22 @@ void ConfigDialog::apply()
 	// general page: colors tab
 	app->setAppColors(btnWorkspace->color(), btnPanels->color(), btnPanelsText->color());
 	// 3D plots page
-	QStringList plot3DColors = QStringList() << btnToColor->color().name() << btnLabels->color().name();
-	plot3DColors << btnMesh->color().name() << btnGrid->color().name() << btnFromColor->color().name();
-	plot3DColors << btnNumbers->color().name() << btnAxes->color().name() << btnBackground3D->color().name();
-	app->plot3DColors = plot3DColors;
-
-	app->showPlot3DLegend = boxShowLegend->isChecked();
-	app->showPlot3DProjection = boxShowProjection->isChecked();
-	app->plot3DResolution = boxResolution->value();
-	app->plot3DTitleFont = plot3DTitleFont;
-	app->plot3DNumbersFont = plot3DNumbersFont;
-	app->plot3DAxesFont = plot3DAxesFont;
-	app->orthogonal3DPlots = boxOrthogonal->isChecked();
-	app->smooth3DMesh = boxSmoothMesh->isChecked();
-	app->autoscale3DPlots = boxAutoscale3DPlots->isChecked();
+	app->d_3D_color_map = colorMapEditor->colorMap();
+	app->d_3D_axes_color = btnAxes->color();
+	app->d_3D_numbers_color = btnNumbers->color();
+	app->d_3D_grid_color = btnGrid->color();
+	app->d_3D_mesh_color = btnMesh->color();
+	app->d_3D_background_color = btnBackground3D->color();
+	app->d_3D_labels_color = btnLabels->color();
+	app->d_3D_legend = boxShowLegend->isChecked();
+	app->d_3D_projection = boxProjection->currentIndex();
+	app->d_3D_resolution = boxResolution->value();
+	app->d_3D_title_font = d_3D_title_font;
+	app->d_3D_numbers_font = d_3D_numbers_font;
+	app->d_3D_axes_font = d_3D_axes_font;
+	app->d_3D_orthogonal = boxOrthogonal->isChecked();
+	app->d_3D_smooth_mesh = boxSmoothMesh->isChecked();
+	app->d_3D_autoscale = boxAutoscale3DPlots->isChecked();
 	app->setPlot3DOptions();
 
 	// fitting page
@@ -2081,9 +2098,9 @@ void ConfigDialog::pickApplicationFont()
 void ConfigDialog::pick3DTitleFont()
 {
 	bool ok;
-	QFont font = QFontDialog::getFont(&ok, plot3DTitleFont,this);
+	QFont font = QFontDialog::getFont(&ok, d_3D_title_font,this);
 	if ( ok )
-		plot3DTitleFont = font;
+		d_3D_title_font = font;
 	else
 		return;
 }
@@ -2091,9 +2108,9 @@ void ConfigDialog::pick3DTitleFont()
 void ConfigDialog::pick3DNumbersFont()
 {
 	bool ok;
-	QFont font = QFontDialog::getFont(&ok, plot3DNumbersFont,this);
+	QFont font = QFontDialog::getFont(&ok, d_3D_numbers_font,this);
 	if ( ok )
-		plot3DNumbersFont = font;
+		d_3D_numbers_font = font;
 	else
 		return;
 }
@@ -2101,9 +2118,9 @@ void ConfigDialog::pick3DNumbersFont()
 void ConfigDialog::pick3DAxesFont()
 {
 	bool ok;
-	QFont font = QFontDialog::getFont(&ok, plot3DAxesFont,this);
+	QFont font = QFontDialog::getFont(&ok, d_3D_axes_font,this);
 	if ( ok )
-		plot3DAxesFont = font;
+		d_3D_axes_font = font;
 	else
 		return;
 }
@@ -2265,7 +2282,7 @@ void ConfigDialog::rehighlight()
 	app->d_numeric_highlight_color = buttonNumericColor->color();
 	app->d_function_highlight_color = buttonFunctionColor->color();
 	app->d_class_highlight_color = buttonClassColor->color();
-	
+
     QList<MdiSubWindow *> windows = app->windowsList();
     foreach(MdiSubWindow *w, windows){
         Note *n = qobject_cast<Note *>(w);

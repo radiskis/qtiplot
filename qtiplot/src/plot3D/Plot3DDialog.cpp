@@ -84,7 +84,7 @@ static const char* choose_folder_xpm[]={
     "........#egiibb#",
     "..........#egib#",
     "............#ee#"};
-	
+
 Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WFlags fl )
     : QDialog( parent, fl )
 {
@@ -133,14 +133,14 @@ void Plot3DDialog::initScalesPage()
 	axesList->setCurrentRow(0);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	
+
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel(tr("From")), 0, 0);
 	boxFrom = new DoubleSpinBox();
 	boxFrom->setLocale(app->locale());
     boxFrom->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxFrom, 0, 1);
-	
+
     gl1->addWidget(new QLabel(tr("To")), 1, 0);
 	boxTo = new DoubleSpinBox();
 	boxTo->setLocale(app->locale());
@@ -198,7 +198,7 @@ void Plot3DDialog::initAxesPage()
     QHBoxLayout* hb1 = new QHBoxLayout();
 	btnLabelFont = new QPushButton(tr( "&Choose font" ));
     hb1->addWidget(btnLabelFont);
-	
+
 	axisTitleFormatButtons = new TextFormatButtons(boxLabel);
 	hb1->addWidget(axisTitleFormatButtons);
 
@@ -206,13 +206,13 @@ void Plot3DDialog::initAxesPage()
     gl1->addLayout(hb1, 1, 1);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	
+
     gl1->addWidget(new QLabel(tr("Major Ticks Length")), 2, 0);
 	boxMajorLength = new DoubleSpinBox();
 	boxMajorLength->setLocale(app->locale());
     boxMajorLength->setDecimals(app->d_decimal_digits);
     gl1->addWidget(boxMajorLength, 2, 1);
-	
+
     gl1->addWidget(new QLabel(tr("Minor Ticks Length")), 3, 0);
 	boxMinorLength = new DoubleSpinBox();
 	boxMinorLength->setLocale(app->locale());
@@ -248,12 +248,12 @@ void Plot3DDialog::initTitlePage()
 
     btnTitleFont = new QPushButton(tr( "&Font" ));
     hb1->addWidget(btnTitleFont);
-	
+
 	QVBoxLayout* vl = new QVBoxLayout();
 	boxTitle = new QTextEdit();
 	boxTitle->setMaximumHeight(80);
 	vl->addWidget(boxTitle);
-	
+
 	titleFormatButtons = new TextFormatButtons(boxTitle);
 	hb1->addWidget(titleFormatButtons);
     hb1->addStretch();
@@ -272,20 +272,20 @@ void Plot3DDialog::initColorsPage()
 {
 	linearColorMapGroupBox = new QGroupBox(tr( "Linea&r color map" ));
 	linearColorMapGroupBox->setCheckable(true);
-	connect(linearColorMapGroupBox, SIGNAL(clicked(bool)), 
+	connect(linearColorMapGroupBox, SIGNAL(clicked(bool)),
 			this, SLOT(updateColorMapFileGroupBox(bool)));
-	
+
 	QHBoxLayout* hb = new QHBoxLayout(linearColorMapGroupBox);
 	d_color_map_editor = new ColorMapEditor();
 	hb->addWidget(d_color_map_editor);
 
     colorMapFileGroupBox = new QGroupBox(tr( "Color map &file" ));
 	colorMapFileGroupBox->setCheckable(true);
-	connect(colorMapFileGroupBox, SIGNAL(clicked(bool)), this, 
+	connect(colorMapFileGroupBox, SIGNAL(clicked(bool)), this,
 			SLOT(updateLinearColorMapGroupBox(bool)));
-	
+
 	QGridLayout* layout = new QGridLayout(colorMapFileGroupBox);
-	
+
 	btnColorMap = new QPushButton();
 	btnColorMap->setIcon(QIcon(QPixmap(choose_folder_xpm)));
 	layout->addWidget(btnColorMap, 0, 0);
@@ -297,24 +297,26 @@ void Plot3DDialog::initColorsPage()
 	layout->addWidget(colorMapPreviewLabel, 0, 1);
 	layout->setRowStretch(1, 1);
 	layout->setColumnStretch(1, 1);
-	
-	QVBoxLayout *vl0 = new QVBoxLayout();
-	vl0->addWidget(linearColorMapGroupBox);
-	vl0->addWidget(colorMapFileGroupBox);
 
     QGridLayout* vl2 = new QGridLayout();
+    vl2->addWidget(new QLabel( tr( "Opacity" )), 0, 0);
+	boxTransparency = new QSpinBox();
+    boxTransparency->setRange(0, 100);
+    boxTransparency->setSingleStep(5);
+    vl2->addWidget(boxTransparency, 0, 1);
+
     btnMesh = new ColorButton();
     QLabel *meshLabel = new QLabel(tr( "&Line" ));
     meshLabel->setBuddy(btnMesh);
-    vl2->addWidget(meshLabel, 0, 0);
-    vl2->addWidget(btnMesh, 0, 1);
+    vl2->addWidget(meshLabel, 1, 0);
+    vl2->addWidget(btnMesh, 1, 1);
 
     btnBackground = new ColorButton();
     QLabel *backgroundLabel = new QLabel(tr( "&Background" ));
     backgroundLabel->setBuddy(btnBackground);
-    vl2->addWidget(backgroundLabel, 1, 0);
-    vl2->addWidget(btnBackground, 1, 1);
-    vl2->setRowStretch(2, 1);
+    vl2->addWidget(backgroundLabel, 2, 0);
+    vl2->addWidget(btnBackground, 2, 1);
+    vl2->setRowStretch(3, 1);
 
     QGroupBox *gb2 = new QGroupBox(tr( "General" ));
     gb2->setLayout(vl2);
@@ -349,24 +351,16 @@ void Plot3DDialog::initColorsPage()
     AxesColorGroupBox->setLayout(gl1);
 
     QHBoxLayout* hb1 = new QHBoxLayout();
-	hb1->addLayout(vl0);
+	hb1->addWidget(linearColorMapGroupBox);
     hb1->addWidget(gb2);
     hb1->addWidget(AxesColorGroupBox);
 
-    QHBoxLayout* hb2 = new QHBoxLayout();
-    hb2->addStretch();
-	hb2->addWidget(new QLabel( tr( "Opacity" )));
-	boxTransparency = new QSpinBox();
-    boxTransparency->setRange(0, 100);
-    boxTransparency->setSingleStep(5);
-    hb2->addWidget(boxTransparency);
-
-	QVBoxLayout* vl = new QVBoxLayout();
-	vl->addLayout(hb2);
-	vl->addLayout(hb1);
+    QVBoxLayout *vl0 = new QVBoxLayout();
+	vl0->addLayout(hb1);
+	vl0->addWidget(colorMapFileGroupBox);
 
     colors = new QWidget();
-    colors->setLayout(vl);
+    colors->setLayout(vl0);
 	generalDialog->insertTab(colors, tr( "&Colors" ) );
 
 	connect( btnColorMap, SIGNAL( clicked() ), this, SLOT(pickDataColorMap() ) );
@@ -468,7 +462,7 @@ void Plot3DDialog::initPointsOptionsStack()
 	optionStack->setFrameShadow( QStackedWidget::Plain );
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	
+
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel( tr( "Width" )), 0, 0);
 	boxSize = new DoubleSpinBox();
@@ -493,14 +487,14 @@ void Plot3DDialog::initPointsOptionsStack()
     boxCrossRad->setDecimals(app->d_decimal_digits);
 	boxCrossRad->setValue(0.01);
     gl2->addWidget(boxCrossRad, 0, 1);
-	
+
 	gl2->addWidget(new QLabel(tr( "Line Width")), 1, 0);
 	boxCrossLinewidth = new DoubleSpinBox();
 	boxCrossLinewidth->setLocale(app->locale());
     boxCrossLinewidth->setDecimals(app->d_decimal_digits);
 	boxCrossLinewidth->setValue(1);
     gl2->addWidget(boxCrossLinewidth, 1, 1);
-	
+
 	gl2->addWidget(new QLabel(tr( "Smooth line" )), 2, 0);
 	boxCrossSmooth = new QCheckBox();
     boxCrossSmooth->setChecked(true);
@@ -521,7 +515,7 @@ void Plot3DDialog::initPointsOptionsStack()
     boxConesRad->setDecimals(app->d_decimal_digits);
 	boxConesRad->setValue(0.5);
     gl3->addWidget(boxConesRad, 0, 1);
-	
+
     gl3->addWidget(new QLabel( tr( "Quality" )), 1, 0);
 	boxQuality = new QSpinBox();
     boxQuality->setRange(0, 40);
@@ -559,7 +553,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	btnLabels->setColor(g->labelColor());
 	btnBackground->setColor(g->bgColor());
 	btnGrid->setColor(g->gridColor());
-	
+
 	d_color_map_file = g->colorMapFile();
 	setColorMapPreview(d_color_map_file);
 	linearColorMapGroupBox->setChecked(d_color_map_file.isEmpty());
@@ -630,7 +624,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 					break;
 
 				case Graph3D::VerticalBars :
-					showBarsTab(g->barsRadius());
+					showBarsTab();
 					break;
 
 				case Graph3D::HairCross :
@@ -675,19 +669,28 @@ void Plot3DDialog::worksheet()
 	close();
 }
 
-void Plot3DDialog::showBarsTab(double rad)
+void Plot3DDialog::showBarsTab()
 {
 	bars = new QWidget( generalDialog );
 
-	QHBoxLayout* hb = new QHBoxLayout(bars);
-	hb->addWidget(new QLabel( tr( "Width" )));
+	QGridLayout* hb = new QGridLayout(bars);
+	hb->addWidget(new QLabel( tr( "Width" )), 0, 0);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	boxBarsRad = new DoubleSpinBox();
 	boxBarsRad->setLocale(app->locale());
     boxBarsRad->setDecimals(app->d_decimal_digits);
-	boxBarsRad->setValue(rad);
-	hb->addWidget(boxBarsRad);
+	boxBarsRad->setValue(d_plot->barsRadius());
+	hb->addWidget(boxBarsRad, 0, 1);
+
+	boxBarLines = new QCheckBox(tr("Draw lines"));
+	boxBarLines->setChecked(d_plot->barLines());
+	hb->addWidget(boxBarLines, 1, 0);
+
+	boxFilledBars = new QCheckBox(tr("Filled bars"));
+	boxFilledBars->setChecked(d_plot->filledBars());
+	hb->addWidget(boxFilledBars, 2, 0);
+    hb->setRowStretch(3, 1);
 
 	generalDialog->insertTab(bars, tr( "Bars" ), 4);
 }
@@ -740,19 +743,19 @@ void Plot3DDialog::pickDataColorMap()
 	}
 }
 
-void Plot3DDialog::setColorMapPreview(const QString& fileName) 
+void Plot3DDialog::setColorMapPreview(const QString& fileName)
 {
 	if (fileName.isEmpty()){
 		colorMapPreviewLabel->setText(tr("None"));
    		return;
 	}
-	
+
 	ColorVector cv;
 	if (!Graph3D::openColorMapFile(cv, fileName)){
 		colorMapPreviewLabel->setText(tr("None"));
    		return;
 	}
-		
+
 	int height = 20;
 	QPixmap pix;
 	pix.resize(cv.size(), height);
@@ -760,7 +763,7 @@ void Plot3DDialog::setColorMapPreview(const QString& fileName)
 	for (unsigned i = 0; i != cv.size(); ++i){
 		RGBA rgb = cv[i];
 		p.setPen(GL2Qt(rgb.r, rgb.g, rgb.b));
-		p.drawLine(QPoint(0, 0), QPoint(0, height));	
+		p.drawLine(QPoint(0, 0), QPoint(0, height));
    		p.translate(1, 0);
 	}
   	p.end();
@@ -844,6 +847,8 @@ bool Plot3DDialog::updatePlot()
 
 	if (generalDialog->currentPage()==(QWidget*)bars){
 		d_plot->setBarRadius(boxBarsRad->text().toDouble());
+		d_plot->setBarLines(boxBarLines->isChecked());
+		d_plot->setFilledBars(boxFilledBars->isChecked());
 		d_plot->setBarStyle();
 	} else if (generalDialog->currentPage() == (QWidget*)points){
 		if (boxPointStyle->currentIndex() == 0) {
@@ -869,7 +874,7 @@ bool Plot3DDialog::updatePlot()
 			d_plot->setDataColorMap(d_color_map_file);
 			setColorMapPreview(d_color_map_file);
 		}
-		
+
 		d_plot->setMeshColor(btnMesh->color());
 		d_plot->setAxesColor(btnAxes->color());
 		d_plot->setNumbersColor(btnNumbers->color());

@@ -333,11 +333,11 @@ public:
 
   void 	addColorStop (double, const QColor &);
   void 	setMode (Mode);
-  
+
   void  setColorInterval (const QColor &, const QColor &);
   QColor color1() const;
   QColor color2() const;
-  
+
 private:
   QwtLinearColorMap(const QwtLinearColorMap&);
 };
@@ -428,7 +428,7 @@ public:
 	void setHeaderViewType(HeaderViewType);
 	void setGrayScale();
 	void setRainbowColorMap();
-	
+
 	QwtLinearColorMap colorMap();
 	void setColorMap(const QwtLinearColorMap&);
 	void resetView();
@@ -750,7 +750,7 @@ public:
   void setAxisTitleFont(int axis,const QFont &fnt);
   void setAxisTitleColor(int axis, const QColor& c);
   void setAxisTitleAlignment(int axis, int align);
-  
+
   int axisTitleDistance(int axis);
   void setAxisTitleDistance(int axis, int dist);
 
@@ -911,7 +911,7 @@ public:
     void setDataColorMap(const QString& fileName);
 	QwtLinearColorMap colorMap();
 	void setDataColorMap(const QwtLinearColorMap&);
-	
+
     void changeTransparency(double) /PyName=setOpacity/;
     void setResolution(int);
     void showColorLegend(bool = true) /PyName=showLegend/;
@@ -945,6 +945,8 @@ public:
     void setCrossOptions(double rad, double linewidth, bool smooth, bool boxed);
     void setDotOptions(double size, bool smooth);
     void setBarRadius(double rad);
+    void setBarLines(bool lines = true);
+    void setFilledBars(bool filled = true);
 
     void animate(bool = true);
     void findBestLayout();
@@ -1421,7 +1423,7 @@ public:
       l << item;
     else
       sipIsErr = 1;
-	 
+
   sipCpp->setParametersList(l);
 %End
   // TODO: make it accept Python callables
