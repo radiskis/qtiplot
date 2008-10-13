@@ -1206,7 +1206,7 @@ private:
 
 	QAssistantClient *assistant;
 	ScriptWindow *scriptWindow;
-	QTranslator *appTranslator, *qtTranslator, *qtiTranslator;
+	QTranslator *appTranslator, *qtTranslator;
 	QDockWidget *explorerWindow, *undoStackWindow;
 	QTextEdit *results;
 #ifdef SCRIPTING_CONSOLE

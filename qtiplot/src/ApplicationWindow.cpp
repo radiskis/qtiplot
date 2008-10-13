@@ -13412,10 +13412,8 @@ void ApplicationWindow::createLanguagesList()
 
 	appTranslator = new QTranslator(this);
 	qtTranslator = new QTranslator(this);
-	qtiTranslator = new QTranslator(this);
 	qApp->installTranslator(appTranslator);
 	qApp->installTranslator(qtTranslator);
-	qApp->installTranslator(qtiTranslator);
 
 	QString qmPath = d_translations_folder;
 	QDir dir(qmPath);
@@ -13434,7 +13432,6 @@ void ApplicationWindow::createLanguagesList()
 	{
 		appTranslator->load("qtiplot_" + appLanguage, qmPath);
 		qtTranslator->load("qt_" + appLanguage, qmPath+"/qt");
-		qtiTranslator->load("qti_" + appLanguage, qmPath+"/qti");
 	}
 }
 
@@ -13454,23 +13451,18 @@ void ApplicationWindow::switchToLanguage(const QString& locale)
 	{
 		qApp->removeTranslator(appTranslator);
 		qApp->removeTranslator(qtTranslator);
-		qApp->removeTranslator(qtiTranslator);
 		delete appTranslator;
 		delete qtTranslator;
-		delete qtiTranslator;
 		appTranslator = new QTranslator(this);
 		qtTranslator = new QTranslator(this);
-		qtiTranslator = new QTranslator(this);
 		qApp->installTranslator(appTranslator);
 		qApp->installTranslator(qtTranslator);
-		qApp->installTranslator(qtiTranslator);
 	}
 	else
 	{
 		QString qmPath = d_translations_folder;
 		appTranslator->load("qtiplot_" + locale, qmPath);
 		qtTranslator->load("qt_" + locale, qmPath+"/qt");
-		qtiTranslator->load("qti_" + locale, qmPath+"/qti");
 	}
 	insertTranslatedStrings();
 }
