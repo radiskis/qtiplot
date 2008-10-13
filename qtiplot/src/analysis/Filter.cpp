@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "Filter.h"
 #include "../ColorBox.h"
-#include "../Table.h"
+#include "../table/Table.h"
 #include "../plot2D/FrameWidget.h"
 #include "../plot2D/LegendWidget.h"
 #include "../plot2D/FunctionCurve.h"

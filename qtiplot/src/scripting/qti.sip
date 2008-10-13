@@ -79,7 +79,7 @@ typedef QList<MdiSubWindow*> MDIWindowList;
 class Table: MdiSubWindow
 {
 %TypeHeaderCode
-#include "src/Table.h"
+#include "src/table/Table.h"
 #include <QMessageBox>
 #define CHECK_TABLE_COL(arg)\
     int col;\

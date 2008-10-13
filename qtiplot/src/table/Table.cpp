@@ -31,9 +31,9 @@
  ***************************************************************************/
 #include "Table.h"
 #include "SortDialog.h"
-#include "ImportASCIIDialog.h"
-#include "scripting/muParserScript.h"
-#include "ApplicationWindow.h"
+#include "../ImportASCIIDialog.h"
+#include "../scripting/muParserScript.h"
+#include "../ApplicationWindow.h"
 
 #include <QMessageBox>
 #include <QDateTime>

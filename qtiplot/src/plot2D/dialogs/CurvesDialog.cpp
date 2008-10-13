@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "CurvesDialog.h"
 #include "../Graph.h"
-#include "../../Table.h"
+#include "../../table/Table.h"
 #include "../../matrix/Matrix.h"
 #include "../FunctionCurve.h"
 #include "../PlotCurve.h"

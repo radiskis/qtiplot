@@ -40,7 +40,7 @@
 #include <QDesktopServices>
 #include <QBuffer>
 
-#include "Table.h"
+#include "table/Table.h"
 #include "scripting/ScriptingEnv.h"
 #include "scripting/Script.h"
 #include "plot2D/TranslateCurveTool.h"

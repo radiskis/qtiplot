@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "PlotWizard.h"
 #include "ApplicationWindow.h"
-#include "Table.h"
+#include "table/Table.h"
 #include "plot3D/Graph3D.h"
 
 #include <QApplication>

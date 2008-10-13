@@ -32,7 +32,7 @@
 #include "../../ColorButton.h"
 #include "../../PatternBox.h"
 #include "../../SymbolBox.h"
-#include "../../Table.h"
+#include "../../table/Table.h"
 #include "../../MyParser.h"
 #include "../QwtHistogram.h"
 #include "../VectorCurve.h"

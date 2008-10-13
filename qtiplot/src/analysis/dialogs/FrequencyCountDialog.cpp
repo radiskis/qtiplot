@@ -30,7 +30,7 @@
 #include "../../ApplicationWindow.h"
 #include "../../DoubleSpinBox.h"
 #include "../../Folder.h"
-#include "../../Table.h"
+#include "../../table/Table.h"
 
 #include <QGroupBox>
 #include <QMessageBox>

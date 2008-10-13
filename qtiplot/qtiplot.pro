@@ -21,7 +21,7 @@ DEFINES         += SCRIPTING_DIALOG
 
 CONFIG          += release
 #CONFIG          += debug
-win32: CONFIG   += console
+#win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -131,8 +131,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-#system(lupdate -verbose qtiplot.pro)
-#system(lrelease -verbose qtiplot.pro)
+system(lupdate -verbose qtiplot.pro)
+system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
@@ -156,12 +156,8 @@ unix: man.files += ../qtiplot.1
 
 HEADERS  += src/ApplicationWindow.h \
             src/globals.h\
-            src/Table.h \
-            src/SetColValuesDialog.h \
             src/ExportDialog.h \
-            src/TableDialog.h \
             src/pixmaps.h\
-            src/SortDialog.h\
             src/ConfigDialog.h \
             src/DataSetDialog.h \
             src/MyParser.h \
@@ -177,7 +173,6 @@ HEADERS  += src/ApplicationWindow.h \
             src/Folder.h\
             src/FindDialog.h\
             src/TextFormatButtons.h\
-            src/TableStatistics.h\
             src/ColorMapEditor.h\
 			src/ColorMapDialog.h\
             src/ExtensibleFileDialog.h\
@@ -191,11 +186,7 @@ HEADERS  += src/ApplicationWindow.h \
 
 SOURCES  += src/main.cpp \
 			src/ApplicationWindow.cpp \
-            src/Table.cpp \
-            src/SetColValuesDialog.cpp \
             src/ExportDialog.cpp \
-            src/TableDialog.cpp \
-            src/SortDialog.cpp\
             src/ConfigDialog.cpp \
             src/DataSetDialog.cpp \
             src/MyParser.cpp \
@@ -211,7 +202,6 @@ SOURCES  += src/main.cpp \
             src/Folder.cpp\
             src/FindDialog.cpp\
             src/TextFormatButtons.cpp\
-            src/TableStatistics.cpp\
             src/ColorMapEditor.cpp\
 			src/ColorMapDialog.cpp\
             src/ExtensibleFileDialog.cpp\
@@ -242,6 +232,22 @@ SOURCES  += src/main.cpp \
 	SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
 	SOURCES += ../3rdparty/liborigin/Origin750Parser.cpp
 
+###############################################################
+################# Module: Table ##############################
+###############################################################
+
+HEADERS  += src/table/SetColValuesDialog.h \
+            src/table/SortDialog.h \
+			src/table/Table.h \
+            src/table/TableDialog.h \
+			src/table/TableStatistics.h \
+         
+SOURCES  += src/table/SetColValuesDialog.cpp \
+            src/table/SortDialog.cpp \
+			src/table/Table.cpp \
+            src/table/TableDialog.cpp \
+			src/table/TableStatistics.cpp \
+			
 ###############################################################
 ################# Module: Matrix ##############################
 ###############################################################
