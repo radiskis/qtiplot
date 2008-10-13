@@ -21,7 +21,7 @@ DEFINES         += SCRIPTING_DIALOG
 
 CONFIG          += release
 #CONFIG          += debug
-#win32: CONFIG   += console
+win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -236,7 +236,7 @@ SOURCES  += src/main.cpp \
 	HEADERS += ../3rdparty/liborigin/OriginParser.h
 	HEADERS += ../3rdparty/liborigin/OriginDefaultParser.h
 	HEADERS += ../3rdparty/liborigin/Origin750Parser.h
-	
+
 	SOURCES += ../3rdparty/liborigin/OriginFile.cpp
 	SOURCES += ../3rdparty/liborigin/OriginParser.cpp
 	SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
@@ -444,7 +444,7 @@ SOURCES  += src/main.cpp \
 			   src/analysis/dialogs/InterpolationDialog.cpp \
 			   src/analysis/dialogs/PolynomFitDialog.cpp \
 			   src/analysis/dialogs/SmoothCurveDialog.cpp \
-			   
+
 ###############################################################
 ################# Restricted Module: EmfEngine ################
 ###############################################################
@@ -474,7 +474,7 @@ HEADERS  += src/scripting/customevents.h\
             src/scripting/ScriptEdit.h\
             src/scripting/ScriptingLangDialog.h\
             src/scripting/ScriptWindow.h\
-			
+
 SOURCES  += src/scripting/FindReplaceDialog.cpp\
 			src/scripting/LineNumberDisplay.cpp\
 			src/scripting/Note.cpp\
@@ -483,7 +483,7 @@ SOURCES  += src/scripting/FindReplaceDialog.cpp\
             src/scripting/ScriptEdit.cpp\
             src/scripting/ScriptingLangDialog.cpp\
             src/scripting/ScriptWindow.cpp\
-			
+
 ##################### Default: muParser v1.28 #################
 
 contains(SCRIPTING_LANGS, muParser) {
@@ -516,7 +516,7 @@ contains(SCRIPTING_LANGS, Python) {
   HEADERS += src/scripting/PythonScript.h\
   			 src/scripting/PythonScripting.h\
 			 src/scripting/PythonSyntaxHighlighter.h\
-			 
+
   SOURCES += src/scripting/PythonScript.cpp\
   			 src/scripting/PythonScripting.cpp\
 			 src/scripting/PythonSyntaxHighlighter.cpp\

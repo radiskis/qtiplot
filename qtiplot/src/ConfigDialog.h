@@ -47,6 +47,7 @@ class ColorButton;
 class ColorBox;
 class DoubleSpinBox;
 class QFontComboBox;
+class ColorMapEditor;
 
 //! Preferences dialog
 class ConfigDialog : public QDialog
@@ -104,7 +105,7 @@ private slots:
 	void rehighlight();
 #endif
     void customizeNotes();
-	
+
 private:
 	void initPlotsPage();
 	void initAppPage();
@@ -117,12 +118,13 @@ private:
 	void initNotesPage();
 
 	QFont textFont, headerFont, axesFont, numbersFont, legendFont, titleFont, appFont;
-	QFont plot3DTitleFont, plot3DNumbersFont, plot3DAxesFont;
+	QFont d_3D_title_font, d_3D_numbers_font, d_3D_axes_font;
 
 	QCheckBox *boxScaleLayersOnPrint, *boxPrintCropmarks, *linearFit2PointsBox;
 	QTabWidget *plotsTabWidget, *appTabWidget;
-	ColorButton *btnBackground3D, *btnMesh, *btnAxes, *btnLabels, *btnNumbers;
-	ColorButton *btnFromColor, *btnToColor, *btnGrid;
+	ColorButton *btnBackground3D, *btnMesh, *btnAxes, *btnLabels, *btnNumbers, *btnGrid;
+	QGroupBox *colorMapBox;
+	ColorMapEditor *colorMapEditor;
 	QPushButton	*btnTitleFnt, *btnLabelsFnt, *btnNumFnt;
 	ColorButton *buttonBackground, *buttonText, *buttonHeader;
     QPushButton *buttonOk, *buttonCancel, *buttonApply;
@@ -134,10 +136,10 @@ private:
 	QCheckBox *boxSearchUpdates, *boxOrthogonal, *logBox, *plotLabelBox, *scaleErrorsBox;
 	QCheckBox *boxTitle, *boxFrame, *boxPlots3D, *boxPlots2D, *boxTables, *boxNotes, *boxFolders;
 	QCheckBox *boxSave, *boxBackbones, *boxAllAxes, *boxShowLegend, *boxSmoothMesh;
-	QCheckBox *boxAutoscaling, *boxShowProjection, *boxMatrices, *boxScaleFonts, *boxResize;
+	QCheckBox *boxAutoscaling, *boxMatrices, *boxScaleFonts, *boxResize;
 	QComboBox *boxMajTicks, *boxMinTicks, *boxStyle, *boxCurveStyle, *boxSeparator, *boxLanguage, *boxDecimalSeparator;
-	QComboBox *boxClipboardLocale;
-	QLabel *lblClipboardSeparator;
+	QComboBox *boxClipboardLocale, *boxProjection;
+	QLabel *lblClipboardSeparator, *lblFloorStyle;
 	QSpinBox *boxMinutes, *boxLineWidth, *boxFrameWidth, *boxResolution, *boxMargin, *boxPrecision, *boxAppPrecision;
 	QSpinBox *boxSymbolSize, *boxMinTicksLength, *boxMajTicksLength, *generatePointsBox;
 	DoubleSpinBox *boxCurveLineWidth;

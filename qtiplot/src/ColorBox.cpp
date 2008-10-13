@@ -2,8 +2,8 @@
     File                 : ColorBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2007 by Ion Vasilief, Alex Kargovsky, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su, thzs*gmx.net
+    Copyright            : (C) 2006-2007 by Ion Vasilief, Alex Kargovsky
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
     Description          : A combo box to select a standard color
 
  ***************************************************************************/
@@ -72,53 +72,53 @@ void ColorBox::init()
 
 	icon.fill ( colors[0] );
 	this->addItem(icon, tr( "black" ) );
-	
+
 	QPainter p;
 	p.begin(&icon);
 	p.setBrush(QBrush(colors[1]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "red" ) );
-	
+
 	p.setBrush(QBrush(colors[2]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "green" ) );
-	
+
 	p.setBrush(QBrush(colors[3]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "blue" ) );
-	
+
 	p.setBrush(QBrush(colors[4]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "cyan" ) );
-	
+
 	p.setBrush(QBrush(colors[5]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "magenta" ) );
-	
+
 	p.setBrush(QBrush(colors[6]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "yellow" ) );
-	
+
 	p.setBrush(QBrush(colors[7]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "dark yellow" ) );
-		
+
 	p.setBrush(QBrush(colors[8]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "navy" ) );
-	
+
 	p.setBrush(QBrush(colors[9]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "purple" ) );
-	
+
 	p.setBrush(QBrush(colors[10]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "wine" ) );
-	
+
 	p.setBrush(QBrush(colors[11]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "olive" ) );
-	
+
 	p.setBrush(QBrush(colors[12]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "dark cyan" ) );
@@ -126,15 +126,15 @@ void ColorBox::init()
 	p.setBrush(QBrush(colors[13]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "royal" ) );
-	
+
 	p.setBrush(QBrush(colors[14]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "orange" ) );
-	
+
 	p.setBrush(QBrush(colors[15]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "violet" ) );
-	
+
 	p.setBrush(QBrush(colors[16]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "pink" ) );
@@ -142,7 +142,7 @@ void ColorBox::init()
 	p.setBrush(QBrush(colors[17]));
 	p.drawRect(r);
 	this->addItem(icon,tr( "white" ) );
-	
+
 	p.setBrush(QBrush(colors[18]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "light gray" ) );
@@ -150,15 +150,15 @@ void ColorBox::init()
 	p.setBrush(QBrush(colors[19]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "gray" ) );
-	
+
 	p.setBrush(QBrush(colors[20]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "light yellow" ) );
-	
+
 	p.setBrush(QBrush(colors[21]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "light cyan" ) );
-	
+
 	p.setBrush(QBrush(colors[22]));
 	p.drawRect(r);
 	this->addItem(icon, tr( "light magenta" ) );

@@ -350,7 +350,8 @@ void PlotWizard::plot3DRibbon(const QStringList& lst)
 
             Graph3D *g = app->newPlot3D();
             if (g) {
-                g->addData(t, xColName, yColName);
+                g->addRibbon(t, xColName, yColName);
+                g->setDataColorMap(app->d_3D_color_map);
                 g->update();
             }
         }

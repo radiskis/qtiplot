@@ -3,13 +3,13 @@
 <title>Mathematical Expressions and Scripting</title>
 
   <para>QtiPlot supports two different interpreters
-  for evaluating mathematical expressions and for executing scripts: 
+  for evaluating mathematical expressions and for executing scripts:
   <emphasis>muParser</emphasis> and <emphasis>Python</emphasis>.
   <emphasis>muParser</emphasis> can be only used for the evaluation of mathematical expressions,
-  whereas <emphasis>Python</emphasis> can be used to execute scrips. 
+  whereas <emphasis>Python</emphasis> can be used to execute scrips.
   The default interpreter is <emphasis>muParser</emphasis> therefore if you want to execute scripts you should first
-  enable the <emphasis>Python</emphasis> scripting engine via the 
-  <link linkend="script-language-cmd">Scripting language dialog</link>. 
+  enable the <emphasis>Python</emphasis> scripting engine via the
+  <link linkend="script-language-cmd">Scripting language dialog</link>.
   Also, you can define the default scripting interpreter via the <emphasis>General</emphasis> tab
   of the <link linkend="fig-preferences-dialog-1">Preferences dialog</link>.</para>
 
@@ -458,10 +458,10 @@
       <userinput>table("table1")</userinput> for
       <userinput>qti.app.table("table1")</userinput>.</para>
 
-      <para>When activating Python support, QtiPlot searches the initialization file in a 
+      <para>When activating Python support, QtiPlot searches the initialization file in a
 	  default folder, which can be customized via the <emphasis>File Locations</emphasis> tab
   	  of the <link linkend="fig-preferences-dialog-13">Preferences dialog</link>.
-	  If the initialization file is not found, QtiPlot will issue a warning and 
+	  If the initialization file is not found, QtiPlot will issue a warning and
 	  <emphasis>muParser</emphasis> will be kept as the default interpreter.</para>
 
       <para>Files ending in .pyc are compiled versions of the .py source files
@@ -2195,6 +2195,8 @@ g.setDotStyle()
 Other symbols available for scatter plots are: bars
 <programlisting>
 g.setBarRadius(0.01)
+g.setBarLines(False)
+g.setFilledBars(True)
 g.setBarStyle()
 </programlisting>
 cones
@@ -2262,14 +2264,29 @@ g.setBackGrid(False)
 
 <sect3 id="Python-3D-Colors">
 <title>Customizing the Plot Colors</title>
-The color map of the plot can be defined using two colors, one for the maximum data values and
-one for the minimum data values, or you can use more complex color maps defined in .map files.
+The default color map of the plot is defined using two colors: red for the maximum data values and
+blue for the minimum data values. You can change these default colors:
+
+<programlisting>
+g.setDataColors(QtCore.Qt.black, QtCore.Qt.green)
+g.update()
+</programlisting>
+
+Of course, you can define more complex color maps, using <emphasis>LinearColorMap</emphasis> objects:
+<programlisting>
+map = LinearColorMap(QtCore.Qt.yellow, QtCore.Qt.blue)
+map.setMode(LinearColorMap.FixedColors) # default mode is LinearColorMap.ScaledColors
+map.addColorStop(0.2, QtCore.Qt.magenta)
+map.addColorStop(0.7, QtCore.Qt.cyan)
+g.setDataColorMap(map)
+g.update()
+</programlisting>
+
+Also, you can use predifined color maps stored in .map files.
 A .map file consists of a of 255 lines, each line defining a color coded as RGB values.
 A set of predefined color map files can be downloaded from QtiPlot web site, in the "Miscelanous"
 section.
 <programlisting>
-g.setDataColors(QtGui.QColor("red"), QtGui.QColor("orange"))
-#or
 g.setDataColorMap(fileName)
 g.update()
 </programlisting>
@@ -2726,13 +2743,13 @@ please take a look at the
 
 <sect2 id="Python-AutomatizationExample">
 <title>Task automatization example</title>
-Bellow you can find a detailed example showing how to completely automatize tasks in QtiPlot. 
+Bellow you can find a detailed example showing how to completely automatize tasks in QtiPlot.
 It can be used in order to verify the accuracy of the curve fitting algorithms in QtiPlot. The data used
 in this example is retrieved from the <ulink url="http://www.itl.nist.gov/div898/strd/">
 Statistical Reference Datasets Project of the National Institute of Standards and Technology (NIST)</ulink>.
 
-In order to run this example, you need an internet connection, since the script will try to download all the 
-<ulink url="http://www.itl.nist.gov/div898/strd/nls/nls_main.shtml">nonlinear regression test files </ulink> from the Statistical Reference Datasets Project. 
+In order to run this example, you need an internet connection, since the script will try to download all the
+<ulink url="http://www.itl.nist.gov/div898/strd/nls/nls_main.shtml">nonlinear regression test files </ulink> from the Statistical Reference Datasets Project.
 
 <programlisting>
 import urllib, re, sys
@@ -2741,14 +2758,14 @@ import urllib, re, sys
 dirPath = QtGui.QFileDialog.getExistingDirectory(qti.app, "Choose Destination Folder")
 
 saveout = sys.stdout
-# create a log file in the destination folder                                    
-fsock = open(dirPath + "/" + "results.txt", "w")                             
-sys.stdout = fsock   
+# create a log file in the destination folder
+fsock = open(dirPath + "/" + "results.txt", "w")
+sys.stdout = fsock
 
 # on Unix systems you can redirect the output directly to a console by uncommenting the line bellow:
-#sys.stdout = sys.__stdout__ 
+#sys.stdout = sys.__stdout__
 
-# make sure that the decimal separator is the dot character 
+# make sure that the decimal separator is the dot character
 qti.app.setLocale(QtCore.QLocale.c())
 
 host = "http://www.itl.nist.gov/div898/strd/nls/data/LINKS/DATA/"
@@ -2760,13 +2777,13 @@ for m in iterator:
 	name = (m.group()).replace("\">", "")
 	if (name == "Nelson.dat"):
 		continue
-		
+
 	url = host + name
-	print  "\nRetrieving file: " + url 
+	print  "\nRetrieving file: " + url
 	path = dirPath + "/" + name
 	urllib.urlretrieve( url, path ) # retrieve .dat file to specified location
-				
-	file = QtCore.QFile(path)	
+
+	file = QtCore.QFile(path)
 	if file.open(QtCore.QIODevice.ReadOnly):
 		ts = QtCore.QTextStream(file)
 		name = name.replace(".dat", "")
@@ -2778,18 +2795,18 @@ for m in iterator:
 		standardDevValues = list()
 		xLabel = "X"
 		yLabel = "Y"
-					
+
 		while (ts.atEnd() == False):
 			s = ts.readLine().simplified()
-				
+
 			if (s.contains("(y = ")):
 				lst = s.split("=")
 				yLabel = lst[1].remove(")")
-					
+
 			if (s.contains("(x = ")):
 				lst = s.split("=")
 				xLabel = lst[1].remove(")")
-				
+
 			if (s.contains("Model:")):
 				s = ts.readLine().simplified()
 				lst = s.split(QtCore.QRegExp("\\s"))
@@ -2797,13 +2814,13 @@ for m in iterator:
 				parameters = s.toInt()[0]
 				ts.readLine()
 				if (name == "Roszman1"):
-					ts.readLine() 
+					ts.readLine()
 					formula = ts.readLine().simplified()
 				else:
 					formula = (ts.readLine() + ts.readLine() + ts.readLine()).simplified()
 				formula.remove("+ e").remove("y =").replace("[", "(").replace("]", ")")
 				formula.replace("**", "^").replace("arctan", "atan")
-			
+
 			if (s.contains("Starting")):
 				ts.readLine()
 				ts.readLine()
@@ -2815,7 +2832,7 @@ for m in iterator:
 					initValues.append(lst[1])
 					certifiedValues.append(lst[2])
 					standardDevValues.append(lst[3])
-				
+
 			if (s.contains("Data: y")):
 				row = 0
 				t = newTable(name, 300, 2)
@@ -2829,18 +2846,18 @@ for m in iterator:
 					lst = s.split(QtCore.QRegExp("\\s"))
 					t.setText(1, row, lst[0])
 					t.setText(2, row, lst[1])
-				
+
 				g = plot(t, t.colName(1), Layer.Scatter).activeLayer()
 				g.setTitle("Data set: " + name + ".dat")
 				g.setAxisTitle(Layer.Bottom, xLabel)
 				g.setAxisTitle(Layer.Left, yLabel)
-				
+
 				f = NonLinearFit(g, name + "_" + t.colName(1))
 				if (f.setFormula(formula) == False) :
 					file.close()
 					changeFolder(rootFolder())
 					continue
-					
+
 				f.scaleErrors()
 				for i in range (0, parameters):
 					f.setInitialValue(i, initValues[i].toDouble()[0])
@@ -2848,7 +2865,7 @@ for m in iterator:
 				g.removeLegend()
 				f.showLegend()
 				print  "QtiPlot Results:\n" + f.legendInfo()
-				
+
 				print  "\nCertified Values:"
 				paramNames = f.parameterNames()
 				for i in range (0, parameters):
@@ -2859,12 +2876,12 @@ for m in iterator:
 				for i in range (0, parameters):
 					diff = fabs(results[i] - certifiedValues[i].toDouble()[0])
 					print  'db%d = %6g' % (i+1, diff)
-					
+
 				file.close()
 				changeFolder(rootFolder())
-				
-saveProjectAs(dirPath + "/" + "StRD_NIST.qti")	
-sys.stdout = saveout                                     
+
+saveProjectAs(dirPath + "/" + "StRD_NIST.qti")
+sys.stdout = saveout
 fsock.close()
 </programlisting>
 

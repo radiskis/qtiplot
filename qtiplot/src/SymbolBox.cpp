@@ -2,10 +2,10 @@
     File                 : SymbolBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Plot symbol combo box
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -41,13 +41,13 @@ const QwtSymbol::Style SymbolBox::symbols[] = {
   QwtSymbol::DTriangle,
   QwtSymbol::UTriangle,
   QwtSymbol::LTriangle,
-  QwtSymbol::RTriangle, 
-  QwtSymbol::Cross, 
-  QwtSymbol::XCross, 
+  QwtSymbol::RTriangle,
+  QwtSymbol::Cross,
+  QwtSymbol::XCross,
   QwtSymbol::HLine,
   QwtSymbol::VLine,
-  QwtSymbol::Star1, 
-  QwtSymbol::Star2, 
+  QwtSymbol::Star1,
+  QwtSymbol::Star2,
   QwtSymbol::Hexagon
 };
 
@@ -157,7 +157,7 @@ void SymbolBox::setStyle(const QwtSymbol::Style& style)
   const QwtSymbol::Style*ite = std::find(symbols, symbols + sizeof(symbols), style);
   if (ite == symbols + sizeof(symbols))
     this->setCurrentItem(0);
-  else 
+  else
     this->setCurrentItem(ite - symbols);
 }
 
@@ -174,7 +174,7 @@ int SymbolBox::symbolIndex(const QwtSymbol::Style& style)
 {
   const QwtSymbol::Style*ite = std::find(symbols, symbols + sizeof(symbols), style);
   if (ite == symbols + sizeof(symbols))
-    return 0; 
+    return 0;
   else
     return (ite - symbols);
 }

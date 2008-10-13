@@ -63,7 +63,7 @@ public:
 	Graph3D (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WFlags f=0);
 	~Graph3D();
 
-	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon =  3};
+	enum PlotType{NoTable = -1, Scatter = 0, Trajectory = 1, Bars = 2, Ribbon =  3};
 	enum PointStyle{None = 0, Dots = 1, VerticalBars = 2, HairCross = 3, Cones = 4};
 	static Graph3D* restore(ApplicationWindow* app, const QStringList &lst, int fileVersion);
 
@@ -83,12 +83,14 @@ public slots:
 	void addMatrixData(Matrix* m,double xl,double xr,double yl,double yr,double zl,double zr);
 	void updateMatrixData(Matrix* m);
 
-	void addData(Table* table,const QString& xColName,const QString& yColName);
-	void addData(Table* table,const QString& xColName,const QString& yColName,
+	void addRibbon(Table* table,const QString& xColName,const QString& yColName);
+	void addRibbon(Table* table,const QString& xColName,const QString& yColName,
                 double xl, double xr, double yl, double yr, double zl, double zr);
 	void addData(Table* table, int xCol, int yCol, int zCol, int type = 0);
 	void loadData(Table* table, int xCol, int yCol, int zCol,
                 double xl=0.0, double xr=0.0, double yl=0.0, double yr=0.0, double zl=0.0, double zr=0.0);
+
+    PlotType tablePlotType(){return d_table_plot_type;};
 
 	void clearData();
 	bool hasData(){return sp->hasData();};
@@ -253,7 +255,7 @@ public slots:
 	void setDataColors(const QColor& cMin, const QColor& cMax){setDataColorMap(QwtLinearColorMap(cMin, cMax));};
 	void setDataColorMap(const QwtLinearColorMap& colorMap);
 	void setDataColorMap(const QString& fileName);
-	
+
 	void changeTransparency(double t);
 	void setTransparency(double t);
 	double transparency(){return d_alpha;};
@@ -267,9 +269,9 @@ public slots:
 
 	QString colorMapFile(){return d_color_map_file;};
 	QwtLinearColorMap colorMap(){return d_color_map;};
-	
+
 	static bool openColorMapFile(ColorVector& cv, QString fname);
-	
+
 	void setMeshColor(const QColor&);
 	void setAxesColor(const QColor&);
 	void setNumbersColor(const QColor&);
@@ -310,6 +312,10 @@ public slots:
 	//@{
 	double barsRadius();
 	void setBarRadius(double rad);
+	bool barLines(){return d_bar_lines;};
+	void setBarLines(bool lines = true);
+	bool filledBars(){return d_filled_bars;};
+	void setFilledBars(bool filled = true);
 	//@}
 
 	//! \name Scatter Plots
@@ -373,7 +379,14 @@ private:
 	Qwt3D::StandardColor* col_;
 	//! Transparency
 	double d_alpha;
-	double barsRad, d_point_size, crossHairRad, crossHairLineWidth, conesRad;
+
+	//! \name Bar options
+	//@{
+	double d_bars_rad;
+	bool d_filled_bars, d_bar_lines;
+	//@}
+
+	double d_point_size, crossHairRad, crossHairLineWidth, conesRad;
 	//! Draw 3D points with smoothed angles.
 	bool d_smooth_points;
 	bool crossHairSmooth, crossHairBoxed;
@@ -385,6 +398,7 @@ private:
 	UserFunction *d_func;
 	UserParametricSurface *d_surface;
 	Qwt3D::PLOTSTYLE style_;
+	PlotType d_table_plot_type;
 };
 
 //! Class for user defined surfaces

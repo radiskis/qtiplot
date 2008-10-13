@@ -2,10 +2,10 @@
     File                 : ColorBox.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A combo box to select a standard color
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -46,7 +46,7 @@ public:
 	void setColor(const QColor& c);
 	//! Return the current color
 	QColor color() const;
-		
+
 	//! Return the index for a given color
 	static int colorIndex(const QColor& c);
 	//! Return the color at index 'colorindex'

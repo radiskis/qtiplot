@@ -53,7 +53,7 @@ table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 table->viewport()->setMouseTracking(true);
 table->viewport()->installEventFilter(this);
 table->setHorizontalHeaderLabels(QStringList() << tr("Level") << tr("Color"));
-table->setMinimumHeight(6*table->horizontalHeader()->height()+2);
+table->setMinimumHeight(6*table->horizontalHeader()->height() + 2);
 table->installEventFilter(this);
 
 connect(table, SIGNAL(cellClicked (int, int)), this, SLOT(showColorDialog(int, int)));
