@@ -34,6 +34,8 @@
 #include <math.h>
 #include <cstring>
 
+#include <logging.hpp>
+
 using namespace Origin;
 
 #define MAX_LEVEL 20
@@ -66,6 +68,8 @@ OriginDefaultParser::OriginDefaultParser(const string& fileName)
 
 bool OriginDefaultParser::parse()
 {
+	BOOST_LOG_FINALIZE();
+
 	int i;
 	FILE *f, *debug;
 	if((f=fopen(fileName.c_str(),"rb")) == NULL ) {
@@ -73,7 +77,7 @@ bool OriginDefaultParser::parse()
 		return false;
 	}
 
-	if((debug=fopen("opjfile.log","w+")) == NULL ) {
+	if((debug=fopen("opjfile.log","a")) == NULL ) {
 		printf("Could not open log file!\n");
 		return false;
 	}
@@ -437,7 +441,7 @@ bool OriginDefaultParser::parse()
 
 			speadSheets[spread].columns[j].type=type;
 
-			fprintf(debug,"				COLUMN \"%s\" type = %s (@ 0x%X)\n",
+			fprintf(debug,"				COLUMN \"%s\" type = %d (@ 0x%X)\n",
 				speadSheets[spread].columns[j].name.c_str(),type,LAYER+ATYPE+j*COL_JUMP);
 			fflush(debug);
 

@@ -83,6 +83,8 @@ OriginFile::OriginFile(const string& fileName)
 	{
 		BOOST_LOG_(1, format("Found unknown project version %d") % fileVersion);
 		BOOST_LOG_(1, "Please contact the author of opj2dat");
+		BOOST_LOG_FINALIZE();
+		throw std::logic_error("Unknown project version");
 	}
 	BOOST_LOG_(1, format("Found project version %.2f") % (fileVersion/100.0));
 
