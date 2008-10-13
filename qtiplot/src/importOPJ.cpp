@@ -124,14 +124,20 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 
 	//////////////////////////////////////////////////////////////////////////
 	xoffset=0;
-	OriginFile opj((const char *)filename.latin1());
-	parse_error = opj.parse();
-	importTables(opj);
-	importGraphs(opj);
-	importNotes(opj);
-	if(filename.endsWith(".opj", Qt::CaseInsensitive))
-		createProjectTree(opj);
-	mw->showResults(opj.resultsLogString().c_str(), mw->logWindow->isVisible());
+	try
+	{
+		OriginFile opj((const char *)filename.latin1());
+		parse_error = opj.parse();
+		importTables(opj);
+		importGraphs(opj);
+		importNotes(opj);
+		if(filename.endsWith(".opj", Qt::CaseInsensitive))
+			createProjectTree(opj);
+		mw->showResults(opj.resultsLogString().c_str(), mw->logWindow->isVisible());
+	}
+	catch(const std::logic_error&)
+	{	
+	}
 }
 
 inline uint qHash(const tree<Origin::ProjectNode>::iterator &key)
