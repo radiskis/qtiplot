@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "importOPJ.h"
 
+#include <QApplication>
 #include <QRegExp>
 #include <QMessageBox>
 #include <QDockWidget>
@@ -135,8 +136,10 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 			createProjectTree(opj);
 		mw->showResults(opj.resultsLogString().c_str(), mw->logWindow->isVisible());
 	}
-	catch(const std::logic_error&)
+	catch(const std::logic_error& er)
 	{	
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(mw, "Origin Project Import Error", QString(er.what()));
 	}
 }
 
