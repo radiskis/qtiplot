@@ -145,9 +145,6 @@ class Fit : public Filter
         QString fileName(){return d_file_name;};
 		void setFileName(const QString& fn){d_file_name = fn;};
 
-        //! Frees the memory allocated for the X and Y data sets
-        void freeMemory();
-
         //! Calculates the data for the output fit curve
         virtual double eval(double *, double){return 0.0;};
 

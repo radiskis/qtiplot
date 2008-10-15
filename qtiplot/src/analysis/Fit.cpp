@@ -64,6 +64,7 @@ void Fit::init()
 	d_n = 0;
 	d_x = 0;
 	d_y = 0;
+	d_w = 0;
 	d_curveColorIndex = 1;
 	d_solver = ScaledLevenbergMarquardt;
 	d_tolerance = 1e-4;
@@ -141,6 +142,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 	} while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	gsl_multifit_covar (s->J, 0.0, covar);
+	
 	iterations = iter;
 	return s;
 }
@@ -216,12 +218,17 @@ bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yCo
 
 void Fit::setDataCurve(int curve, double start, double end)
 {
-    if (d_n > 0)
-		delete[] d_w;
-
     Filter::setDataCurve(curve, start, end);
 
-    d_w = new double[d_n];
+    if (d_w)
+		free(d_w);
+
+	d_w = (double *)malloc(d_n*sizeof(double));
+	if (!d_w){
+		memoryErrorMessage();
+		return;
+	}
+	
     if (d_graph && d_curve && ((PlotCurve *)d_curve)->type() != Graph::Function)
     {
         QList<DataCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
@@ -397,6 +404,15 @@ QString Fit::legendInfo()
 
 bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 {
+	if (d_w)
+		free(d_w);
+	
+	d_w = (double *)malloc(d_n*sizeof(double));
+	if (!d_w){
+		memoryErrorMessage();		
+		return false;
+	} 
+	
 	switch (w)
 	{
 		case NoWeighting:
@@ -499,7 +515,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 			}
 			break;
 	}
-
+		
 	d_weighting = w;
 	return true;
 }
@@ -1047,23 +1063,11 @@ void Fit::freeWorkspace()
 	}
 }
 
-void Fit::freeMemory()
-{
-	if (!d_p)
-		return;
-
-	if (d_x){
-		delete[] d_x;
-		d_x = NULL;
-	}
-	if (d_y) {
-		delete[] d_y;
-		d_y = NULL;
-	}
-}
-
 Fit::~Fit()
 {
+	if (d_w)
+		free(d_w);
+
 	if (!d_p)
 		return;
 

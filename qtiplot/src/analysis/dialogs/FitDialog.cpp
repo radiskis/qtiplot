@@ -114,8 +114,28 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 
 	setGraph(g);
 	initBuiltInFunctions();
-    loadPlugins();
-    loadUserFunctions();
+	
+	ApplicationWindow *app = (ApplicationWindow *)parent;
+	QString pluginsPath = app->fitPluginsPath;
+	QFileInfo fi(pluginsPath);
+	if (pluginsPath.isEmpty() || !fi.isDir() || !fi.isWritable())
+		choosePluginsFolder();
+	else
+    	loadPlugins();
+	
+	QString modelsPath = app->fitModelsPath;
+	QFileInfo fim(modelsPath);
+	if (modelsPath.isEmpty() || !fim.isDir() || !fim.isWritable())
+		chooseFitModelsFolder();
+	else
+    	loadUserFunctions();
+	
+	if (d_user_functions.size())
+		categoryBox->setCurrentRow(0);
+	else if (d_plugins.size())
+		categoryBox->setCurrentRow(3);
+	else
+		categoryBox->setCurrentRow(1);	
 }
 
 void FitDialog::initFitPage()
@@ -345,7 +365,6 @@ void FitDialog::initEditPage()
 	editBox = new QTextEdit();
 	editBox->setTextFormat(Qt::PlainText);
 	editBox->setAcceptRichText(false);
-	//connect(editBox, SIGNAL(textChanged()), this, SLOT(guessParameters()));
 	connect(editBox->document(), SIGNAL(contentsChange(int,int,int)), this, SLOT(guessParameters()));
 	editBox->setFocus();
 	
@@ -630,7 +649,7 @@ void FitDialog::activateCurve(const QString& curveName)
 };
 
 void FitDialog::saveUserFunction()
-{
+{	
 	if (editBox->text().isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), tr("Please enter a valid function!"));
 		editBox->setFocus();
@@ -946,27 +965,37 @@ void FitDialog::showFunctionsList(int category)
 
 void FitDialog::chooseFolder()
 {
+	if (categoryBox->currentRow() == 3)//plugins
+        choosePluginsFolder();
+	else if (!categoryBox->currentRow())//user-defined
+	    chooseFitModelsFolder();
+}
+
+void FitDialog::choosePluginsFolder()
+{
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	if (categoryBox->currentRow() == 3){//plugins
-        QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the plugins folder"), app->fitPluginsPath);
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the plugins folder"), app->fitPluginsPath);
         if (!dir.isEmpty()){
             funcBox->clear();
             explainBox->clear();
             app->fitPluginsPath = dir;
             loadPlugins();
         }
-	} else if (!categoryBox->currentRow()){//user-defined
-	    QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the fit models folder"), app->fitModelsPath);
-        if (!dir.isEmpty()){
-            funcBox->clear();
-            explainBox->clear();
-            app->fitModelsPath = dir;
-            loadUserFunctions();
+}
 
-            QString path = app->fitModelsPath + "/";
-            foreach(Fit *fit, d_built_in_functions)
-                fit->setFileName(path + fit->objectName() + ".fit");
-        }
+void FitDialog::chooseFitModelsFolder()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the fit models folder"), app->fitModelsPath);
+	if (!dir.isEmpty()){
+		funcBox->clear();
+		explainBox->clear();
+		app->fitModelsPath = dir;
+		loadUserFunctions();
+
+		QString path = app->fitModelsPath + "/";
+		foreach(Fit *fit, d_built_in_functions)
+			fit->setFileName(path + fit->objectName() + ".fit");
 	}
 }
 
@@ -1208,12 +1237,12 @@ void FitDialog::accept()
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
-			
+				
 		if (btnParamRange->isEnabled()){
 			for (int i=0; i<n; i++)
 				d_current_fit->setParameterRange(i, paramRangeLeft[i], paramRangeRight[i]);
 		}
-		
+				
 		d_current_fit->setTolerance(eps);
 		d_current_fit->setOutputPrecision(app->fit_output_precision);
 		d_current_fit->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
@@ -1466,6 +1495,11 @@ void FitDialog::saveInitialGuesses()
     if (!d_current_fit)
         return;
 
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	QFileInfo fi(app->fitModelsPath);
+	if (app->fitModelsPath.isEmpty() || !fi.isDir() || !fi.isWritable())
+		chooseFitModelsFolder();
+	
 	int rows = boxParams->rowCount();
     for (int i=0; i<rows; i++)
         d_current_fit->setInitialGuess(i, ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value());
@@ -1474,7 +1508,6 @@ void FitDialog::saveInitialGuesses()
     if (!fileName.isEmpty())
         d_current_fit->save(fileName);
     else {
-	    ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		QString filter = tr("QtiPlot fit model") + " (*.fit);;";
 		filter += tr("All files") + " (*.*)";
 		QString fn = QFileDialog::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),

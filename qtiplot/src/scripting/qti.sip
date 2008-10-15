@@ -873,7 +873,7 @@ public:
 
   void exportPDF(const QString& fileName);
   QString exportASCII(const QString &file=QString::null)/PyName=export/;
-  QString import(const QString &file=QString::null);
+  QString importASCII(const QString &file=QString::null);
 
   void showLineNumbers(bool = true);
 

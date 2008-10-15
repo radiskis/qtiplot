@@ -156,7 +156,8 @@ for m in iterator:
 					
 				file.close()
 				changeFolder(rootFolder())
-				
+		
+newNote("ResultsLog").importASCII(dirPath + "/" + "results.txt")		
 saveProjectAs(dirPath + "/" + "StRD_NIST.qti")	
 sys.stdout = saveout                                     
 fsock.close()

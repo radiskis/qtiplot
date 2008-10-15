@@ -3,8 +3,8 @@
 #include <math.h>
 
 struct data {
-	size_t n;
-	size_t p;
+	int n;
+	int p;
 	double * X;
 	double * Y;
 	double * sigma;
@@ -23,12 +23,13 @@ double function_eval(double x, double * params)
 
 int function_f(const gsl_vector * params, void * void_data, gsl_vector * f)
 {
-	struct data * d = (struct data*) void_data;
+	struct data * d = (struct data*) void_data;	
 	double b1 = gsl_vector_get(params, 0);
 	double b2 = gsl_vector_get(params, 1);
-	size_t i;
+	int i;
 	for (i=0; i<d->n; i++)
 		gsl_vector_set(f, i, (b1*(1-exp(-b2*d->X[i])) - d->Y[i])/d->sigma[i]);
+	
 	return GSL_SUCCESS;
 }
 
@@ -37,7 +38,7 @@ int function_df(const gsl_vector * params, void * void_data, gsl_matrix *J)
 	struct data * d = (struct data*) void_data;
 	double b1 = gsl_vector_get(params, 0);
 	double b2 = gsl_vector_get(params, 1);
-	size_t i;
+	int i;
 	for (i=0; i<d->n; i++) {
 		double x = d->X[i];
 		gsl_matrix_set(J, i, 0, (1-exp(-b2*x)));
@@ -58,7 +59,7 @@ double function_d(const gsl_vector * params, void * void_data)
 	struct data * d = (struct data*) void_data;
 	gsl_vector * f = gsl_vector_alloc(d->n);
 	double result = 0;
-	size_t i;
+	int i;
 
 	function_f(params, void_data, f);
 	for (i=0; i<d->n; i++)
@@ -67,4 +68,3 @@ double function_d(const gsl_vector * params, void * void_data)
 	gsl_vector_free(f);
 	return result;
 }
-

@@ -66,6 +66,8 @@ protected:
     void initFitPage();
 	void initEditPage();
 	void initAdvancedPage();
+	void chooseFitModelsFolder();
+	void choosePluginsFolder();
 
 private slots:
 	void accept();

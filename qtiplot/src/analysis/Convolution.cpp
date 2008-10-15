@@ -65,11 +65,8 @@ void Convolution::setDataFromTable(Table *t, const QString& signalColName, const
 		return;
 	}
 
-    if (d_n > 0)
-	{//delete previously allocated memory
-		delete[] d_x;
-		delete[] d_y;
-	}
+    if (d_n > 0)//delete previously allocated memory
+		freeMemory();
 
 	d_n_response = 0;
 	int rows = d_table->numRows();
