@@ -91,10 +91,8 @@ void Filter::setInterval(double from, double to)
 
 void Filter::setDataCurve(int curve, double start, double end)
 {
-	if (d_n > 0){//delete previousely allocated memory
-		if (d_x) delete[] d_x;
-		if (d_y) delete[] d_y;
-	}
+    if (d_n > 0)//delete previousely allocated memory
+		freeMemory();
 
 	d_init_err = false;
 	d_curve = d_graph->curve(curve);
@@ -423,10 +421,8 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
         return false;
 	}
 
-	if (d_n > 0){//delete previousely allocated memory
-		delete[] d_x;
-		delete[] d_y;
-	}
+    if (d_n > 0)//delete previousely allocated memory
+		freeMemory();
 
 	d_graph = 0;
 	d_curve = 0;
@@ -461,15 +457,27 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 
 void Filter::memoryErrorMessage()
 {
+	d_init_err = true;
+	
     QMessageBox::critical((ApplicationWindow *)parent(),
         tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
         tr("Not enough memory, operation aborted!"));
 }
 
+void Filter::freeMemory()
+{
+	if (d_x){
+		delete[] d_x;
+		d_x = NULL;
+	}
+	if (d_y) {
+		delete[] d_y;
+		d_y = NULL;
+	}
+}
+
 Filter::~Filter()
 {
-	if (d_n > 0){//delete the memory allocated for the data
-		if (d_x) delete[] d_x;
-		if (d_y) delete[] d_y;
-	}
+	if (d_n > 0)//delete the memory allocated for the data
+		freeMemory();
 }

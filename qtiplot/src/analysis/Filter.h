@@ -99,6 +99,8 @@ class Filter : public QObject
 	protected:
         void init();
         void memoryErrorMessage();
+	    //! Frees the memory allocated for the X and Y data sets
+        void freeMemory();
 
         //! Sets x and y to the curve points between start and end. Memory will be allocated with new double[].
   	    //! Returns the number of points within range == size of x and y arrays.

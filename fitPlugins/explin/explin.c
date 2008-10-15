@@ -3,14 +3,14 @@
 #include <math.h>
 
 struct data {
-	size_t n;
-	size_t p;
+	int n;
+	int p;
 	double * X;
 	double * Y;
 	double * sigma;
 };
 
-char * name() { return "Exp/Lin"; }
+char * name() { return "ExpLin"; }
 
 char * function() { return "exp(-b1*x)/(b2+b3*x)"; }
 
@@ -25,7 +25,7 @@ int function_f(const gsl_vector * params, void * void_data, gsl_vector * f)
 {
 	struct data * d = (struct data*) void_data;
 	double p[3];
-	size_t i;
+	int i;
 	for (i=0; i<d->p; i++)
 		p[i] = gsl_vector_get(params, i);
 
@@ -40,7 +40,7 @@ double function_d(const gsl_vector * params, void * void_data)
 	struct data * d = (struct data*) void_data;
 	gsl_vector * f = gsl_vector_alloc(d->n);
 	double result = 0;
-	size_t i;
+	int i;
 
 	function_f(params, void_data, f);
 	for (i=0; i<d->n; i++)
@@ -56,7 +56,7 @@ int function_df(const gsl_vector * params, void * void_data, gsl_matrix * J)
 	double b1 = gsl_vector_get(params, 0);
 	double b2 = gsl_vector_get(params, 1);
 	double b3 = gsl_vector_get(params, 2);
-	size_t i;
+	int i;
 	for (i=0; i<d->n; i++) {
 		double x = d->X[i];
 		double l = b2+b3*x;

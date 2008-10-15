@@ -68,7 +68,7 @@ public slots:
 	void print() { te->print(); };
 	void exportPDF(const QString& fileName){te->exportPDF(fileName);};
 	QString exportASCII(const QString &file=QString::null) { return te->exportASCII(file); };
-	QString import(const QString &file=QString::null){ return te->import(file);};
+	QString importASCII(const QString &file=QString::null){ return te->importASCII(file);};
 	void execute() { te->execute(); };
 	void executeAll() { te->executeAll(); };
 	void evaluate() { te->evaluate(); };

@@ -71,7 +71,7 @@ class ScriptEdit: public QTextEdit, public scripted
     void exportPDF(const QString& fileName);
   	QString save();
     QString exportASCII(const QString &file=QString::null);
-    QString import(const QString &file=QString::null);
+    QString importASCII(const QString &file=QString::null);
     void insertFunction(const QString &);
     void insertFunction(QAction * action);
     void setContext(QObject *context) { myScript->setContext(context); }

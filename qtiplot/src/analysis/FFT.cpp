@@ -310,10 +310,8 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
     if (t && d_table != t)
         d_table = t;
 
-    if (d_n > 0) {//delete previousely allocated memory
-		delete[] d_x;
-		delete[] d_y;
-	}
+    if (d_n > 0)//delete previousely allocated memory
+		freeMemory();
 
 	d_graph = 0;
 	d_curve = 0;
@@ -333,9 +331,7 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 				d_y[i2+1] = d_table->cell(i, d_imag_col);
 		}
 	} else {
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-                        tr("Could not allocate memory, operation aborted!"));
-        d_init_err = true;
+		memoryErrorMessage();
 		return false;
 	}
 	return true;

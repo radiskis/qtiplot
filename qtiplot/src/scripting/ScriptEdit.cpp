@@ -84,16 +84,16 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 
 	actionImport = new QAction(tr("&Import..."), this);
 	actionImport->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O));
-	connect(actionImport, SIGNAL(activated()), this, SLOT(import()));
+	connect(actionImport, SIGNAL(activated()), this, SLOT(importASCII()));
 
-	QShortcut *accelImport = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O), this);
-	connect(accelImport, SIGNAL(activated()), this, SLOT(import()));
+	QShortcut *accelImport = new QShortcut(actionImport->shortcut(), this);
+	connect(accelImport, SIGNAL(activated()), this, SLOT(importASCII()));
 
 	actionSave = new QAction(tr("&Save"), this);
 	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
 	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
 
-	QShortcut *accelSave = new QShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S), this);
+	QShortcut *accelSave = new QShortcut(actionSave->shortcut(), this);
 	connect(accelSave, SIGNAL(activated()), this, SLOT(save()));
 
 	actionExport = new QAction(tr("Sa&ve as..."), this);
@@ -441,7 +441,7 @@ void ScriptEdit::print()
 		doc->print(&printer);
 }
 
-QString ScriptEdit::import(const QString &filename)
+QString ScriptEdit::importASCII(const QString &filename)
 {
 	QString filter = tr("Text") + " (*.txt *.TXT);;";
 	filter += scriptEnv->fileFilter();

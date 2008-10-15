@@ -15002,7 +15002,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		setScriptingLanguage("Python");
 
 		ScriptEdit *se = new ScriptEdit(scriptEnv, this);
-		se->import(fn);
+		se->importASCII(fn);
 		se->executeAll();
 
 		exit(0);
@@ -15626,7 +15626,7 @@ void ApplicationWindow::performCustomAction(QAction *action)
 	setScriptingLanguage("Python");
 
     ScriptEdit *script = new ScriptEdit(scriptEnv, 0);
-    script->import(action->data().toString());
+    script->importASCII(action->data().toString());
     script->executeAll();
     delete script;
 #else

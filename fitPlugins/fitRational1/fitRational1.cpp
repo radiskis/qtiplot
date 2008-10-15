@@ -14,8 +14,8 @@
 #endif
 
 struct fitData {
-  size_t n;
-  size_t p;
+  int n;
+  int p;
   double * X;
   double * Y;
   double * sigma;//weighting data
@@ -45,7 +45,7 @@ return (params[0]*t2*x/(1+4*M_SQRTPI*x*x*t2));
 extern "C" MY_EXPORT int function_f (const gsl_vector * x, void *params,
         gsl_vector * f)
 {
-  size_t n = ((struct fitData *)params)->n;
+  int n = ((struct fitData *)params)->n;
   double *X = ((struct fitData *)params)->X;
   double *Y = ((struct fitData *)params)->Y;
   double *sigma = ((struct fitData *)params)->sigma;
@@ -54,7 +54,7 @@ extern "C" MY_EXPORT int function_f (const gsl_vector * x, void *params,
   double tau = gsl_vector_get (x, 1);
   double tau2 = tau*tau;
 
-  size_t i;
+  int i;
   for (i = 0; i < n; i++)
     {
 	  double t = X[i];
@@ -65,10 +65,9 @@ extern "C" MY_EXPORT int function_f (const gsl_vector * x, void *params,
   return GSL_SUCCESS;
 }
 
-extern "C" MY_EXPORT double function_d (const gsl_vector * x, void *params,
-        gsl_vector * f)
+extern "C" MY_EXPORT double function_d (const gsl_vector * x, void *params)
 {
-  size_t n = ((struct fitData *)params)->n;
+  int n = ((struct fitData *)params)->n;
   double *X = ((struct fitData *)params)->X;
   double *Y = ((struct fitData *)params)->Y;
   double *sigma = ((struct fitData *)params)->sigma;
@@ -77,7 +76,7 @@ extern "C" MY_EXPORT double function_d (const gsl_vector * x, void *params,
   double tau = gsl_vector_get (x, 1);
   double tau2 = tau*tau;
 
-  size_t i;
+  int i;
   double val=0;
   for (i = 0; i < n; i++)
     {
@@ -92,7 +91,7 @@ extern "C" MY_EXPORT double function_d (const gsl_vector * x, void *params,
 extern "C" MY_EXPORT int function_df (const gsl_vector * x, void *params,
          gsl_matrix * J)
 {
-  size_t n = ((struct fitData *)params)->n;
+  int n = ((struct fitData *)params)->n;
   double *X = ((struct fitData *)params)->X;
   double *sigma = ((struct fitData *)params)->sigma;
 
@@ -100,7 +99,7 @@ extern "C" MY_EXPORT int function_df (const gsl_vector * x, void *params,
   double tau = gsl_vector_get (x, 1);
   double tau2 = tau*tau;
 
-  size_t i;
+  int i;
   for (i = 0; i < n; i++)
     {
       /* Jacobian matrix J(i,j) = dfi / dxj, 

@@ -65,10 +65,8 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 		return false;
 	}
 
-    if (d_n > 0){//delete previousely allocated memory
-		delete[] d_x;
-		delete[] d_y;
-	}
+    if (d_n > 0)//delete previousely allocated memory
+		freeMemory();
 
     startRow--; endRow--;
 	if (startRow < 0 || startRow >= t->numRows())
@@ -96,9 +94,7 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 			d_y[i] = d_table->cell(j, col2);
 		}
 	} else {
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-                        tr("Could not allocate memory, operation aborted!"));
-        d_init_err = true;
+		memoryErrorMessage();
 		d_n = 0;
 		return false;
 	}
