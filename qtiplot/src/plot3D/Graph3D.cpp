@@ -2001,8 +2001,11 @@ void Graph3D::exportVector(const QString& fileName)
         format = "SVG";
 
     VectorWriter * gl2ps = (VectorWriter*)IO::outputHandler(format);
-    if (gl2ps)
-      gl2ps->setTextMode(VectorWriter::NATIVE);
+    if (gl2ps){
+      	gl2ps->setTextMode(VectorWriter::NATIVE);
+		//gl2ps->setTextMode(VectorWriter::PIXEL);
+		gl2ps->setLandscape(VectorWriter::OFF);
+	}
 
     IO::save(sp, fileName, format);
 }
