@@ -2226,7 +2226,7 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 		return;
 
 	ImageExportDialog *ied = new ImageExportDialog(this, m!=NULL, d_extended_export_dialog);
-	ied->setDir(workingDir);
+	ied->setDir(imagesDirPath);
 	ied->selectFile(m->objectName());
 	if (exportFilter.isEmpty())
     	ied->selectFilter(d_image_export_filter);
@@ -2235,7 +2235,7 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 
 	if ( ied->exec() != QDialog::Accepted )
 		return;
-	workingDir = ied->directory().path();
+	imagesDirPath = ied->directory().path();
 	if (ied->selectedFiles().isEmpty())
 		return;
 
@@ -3552,7 +3552,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
                 app->d_ASCII_import_comments, app->d_ASCII_comment_string,
 				app->d_ASCII_import_read_only, Table::Overwrite, app->d_ASCII_end_line);
         t->setCaptionPolicy(MdiSubWindow::Both);
-        app->multilayerPlot(t, t->YColumns(),Graph::LineSymbols);
+        app->multilayerPlot(t, t->YColumns(), defaultCurveStyle);
     }
 
 	QApplication::restoreOverrideCursor();
@@ -5034,22 +5034,19 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 	if (!w)
 		return;
 
-	MultiLayer *plot2D = 0;
-	Graph3D *plot3D = 0;
-	if(w->isA("MultiLayer")){
-		plot2D = (MultiLayer*)w;
-		if (plot2D->isEmpty()){
-			QMessageBox::critical(this, tr("QtiPlot - Export Error"),
+	MultiLayer *plot2D = qobject_cast<MultiLayer *>(w);
+	Graph3D *plot3D = qobject_cast<Graph3D *>(w);
+	if(plot2D && plot2D->isEmpty()){
+		QMessageBox::critical(this, tr("QtiPlot - Export Error"),
 					tr("<h4>There are no plot layers available in this window!</h4>"));
-			return;
-		}
-	} else if (w->isA("Graph3D"))
-		plot3D = (Graph3D*)w;
-	else
+		return;
+	} 
+	
+	if (!plot2D && !plot3D)
 		return;
 
-	ImageExportDialog *ied = new ImageExportDialog(this, plot2D!=NULL, d_extended_export_dialog);
-	ied->setDirectory(workingDir);
+	ImageExportDialog *ied = new ImageExportDialog(this, plot2D != NULL, d_extended_export_dialog);
+	ied->setDirectory(imagesDirPath);
 	ied->selectFile(w->objectName());
     if (exportFilter.isEmpty())
     	ied->selectFilter(d_image_export_filter);
@@ -5058,7 +5055,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 
 	if ( ied->exec() != QDialog::Accepted )
 		return;
-	workingDir = ied->directory().path();
+	imagesDirPath = ied->directory().path();
 	if (ied->selectedFiles().isEmpty())
 		return;
 
@@ -5110,12 +5107,12 @@ void ApplicationWindow::exportLayer()
 		return;
 
 	ImageExportDialog *ied = new ImageExportDialog(this, g!=NULL, d_extended_export_dialog);
-	ied->setDir(workingDir);
+	ied->setDir(imagesDirPath);
 	ied->selectFile(w->objectName());
 	ied->selectFilter(d_image_export_filter);
 	if ( ied->exec() != QDialog::Accepted )
 		return;
-	workingDir = ied->directory().path();
+	imagesDirPath = ied->directory().path();
 	if (ied->selectedFiles().isEmpty())
 		return;
 
@@ -5157,12 +5154,12 @@ void ApplicationWindow::exportAllGraphs()
 	ied->setLabelText(QFileDialog::FileType, tr("Output format:"));
 	ied->setLabelText(QFileDialog::FileName, tr("Directory:"));
 
-	ied->setDir(workingDir);
+	ied->setDir(imagesDirPath);
     ied->selectFilter(d_image_export_filter);
 
 	if ( ied->exec() != QDialog::Accepted )
 		return;
-	workingDir = ied->directory().path();
+	imagesDirPath = ied->directory().path();
 	if (ied->selectedFiles().isEmpty())
 		return;
 
@@ -6898,14 +6895,14 @@ void ApplicationWindow::exportPDF()
 	}
 
     QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"),
-					workingDir + "/" + w->objectName(), "*.pdf");
+					imagesDirPath + "/" + w->objectName(), "*.pdf");
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
 		QString baseName = fi.fileName();
 		if (!baseName.contains("."))
 			fname.append(".pdf");
 
-        workingDir = fi.dirPath(true);
+        imagesDirPath = fi.dirPath(true);
 
         QFile f(fname);
         if (!f.open(QIODevice::WriteOnly)){
