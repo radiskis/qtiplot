@@ -4387,6 +4387,8 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
   		return 0;
 
   	Spectrogram *d_spectrogram = new Spectrogram(m);
+	insertCurve(d_spectrogram);
+	
   	if (type == GrayScale)
   		d_spectrogram->setGrayScale();
   	else if (type == Contour){
@@ -4396,8 +4398,6 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
   	    d_spectrogram->setDefaultColorMap();
   	    d_spectrogram->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
 	}
-
-  	insertCurve(d_spectrogram);
 
   	QwtScaleWidget *rightAxis = axisWidget(QwtPlot::yRight);
   	rightAxis->setColorBarEnabled(type != Contour);

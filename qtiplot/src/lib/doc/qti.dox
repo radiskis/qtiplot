@@ -12,15 +12,21 @@ developed for QtiPlot, a scientific plotting and data analysis software.
 
   Qti might be usable in all environments where you find
   <a href="http://www.trolltech.com/products/qt">Qt 4</a>.
+  
+  \section dependencies Dependencies
+
+  Qti depends on the following libraries:
+  <a href="http://www.trolltech.com/products/qt">Qt 4</a>,
+  <a href="http://qwt.sourceforge.net">Qwt 5.1</a>.\n
 
   \section downloads Downloads
-  Stable releases, prereleases and snapshots are available at the QtiPlot <a href="http://www.qtiplot.ro">project page</a>.
+  Stable releases are available at the <a href="http://soft.proindependent.com/download.html">QtiPlot project page</a>.
 
   \section installonmainpage Installation
  
   Have a look at the qti.pro project file. It is prepared for building
   static libraries in Win32 and Unix/X11 environments. 
-  If you don't know what to do with it, read the file \ref qwtinstall and/or 
+  If you don't know what to do with it, read the file \ref qtiinstall and/or 
   Trolltechs <a href="http://doc.trolltech.com/4.4/qmake-manual.html">qmake</a> manual. 
 
   \section support Support
@@ -47,6 +53,6 @@ developed for QtiPlot, a scientific plotting and data analysis software.
 */
 
 /*!
-  \page qwtinstall INSTALL
+  \page qtiinstall INSTALL
   \include "INSTALL"
 */

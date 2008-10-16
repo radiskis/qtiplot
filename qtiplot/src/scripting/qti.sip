@@ -426,11 +426,13 @@ public:
 
 	void setViewType(ViewType);
 	void setHeaderViewType(HeaderViewType);
+	
+	void setDefaultColorMap();
 	void setGrayScale();
 	void setRainbowColorMap();
-
 	QwtLinearColorMap colorMap();
 	void setColorMap(const QwtLinearColorMap&);
+	
 	void resetView();
 
 	QImage image();

@@ -7,6 +7,8 @@ qmake is part of a Qt distribution.
 qmake reads project files, that contain the options and rules how to 
 build a certain project. A project file ends with the suffix "*.pro". 
 
+You need Qt4 and Qwt 5.1 installed on your system.
+
 A) Unix Qt4
 ==========================
 

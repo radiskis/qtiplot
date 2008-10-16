@@ -1689,7 +1689,7 @@ void ConfigDialog::languageChange()
 	btnAxes->setText( tr( "A&xes" ) );
 	btnBackground3D->setText( tr( "&Background" ) );
 	groupBox3DCol->setTitle(tr("Colors" ));
-	colorMapBox->setTitle(tr("Data Color Map" ));
+	colorMapBox->setTitle(tr("Default Color Map" ));
 
 	groupBox3DFonts->setTitle(tr("Fonts" ));
 	btnTitleFnt->setText( tr( "&Title" ) );

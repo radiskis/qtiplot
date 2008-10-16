@@ -2239,7 +2239,7 @@ bool PlotDialog::acceptParams()
 	   	   colorMapEditor->setColorMap(QwtLinearColorMap(Qt::black, Qt::white));
   	   } else if (defaultScaleBox->isChecked()){
 	   	   sp->setDefaultColorMap();
-		   colorMapEditor->setColorMap(Spectrogram::defaultColorMap());
+		   colorMapEditor->setColorMap(sp->colorMap());
 	   } else
 	   	   sp->setCustomColorMap(colorMapEditor->colorMap());
 
