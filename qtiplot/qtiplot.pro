@@ -153,7 +153,7 @@ documentation.files += ../README.html \
 unix: man.files += ../qtiplot.1
 
 ###################### HEADERS ##############################################
-
+INCLUDEPATH       += src/
 HEADERS  += src/ApplicationWindow.h \
             src/globals.h\
             src/ExportDialog.h \

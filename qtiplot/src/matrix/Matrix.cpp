@@ -86,8 +86,8 @@ void Matrix::initGlobals()
     imageLabel = NULL;
 
     d_header_view_type = ColumnRow;
-	d_color_map_type = GrayScale;
-	d_color_map = QwtLinearColorMap(Qt::black, Qt::white);
+	d_color_map_type = Default;
+	d_color_map = applicationWindow()->d_3D_color_map;
     d_column_width = 100;
 
 	formula_str = "";
@@ -1248,6 +1248,15 @@ void Matrix::importImage(const QImage& image)
 		displayImage(image);
 		emit modifiedWindow(this);
 	}
+}
+
+void Matrix::setDefaultColorMap()
+{
+	d_color_map_type = Default;
+	d_color_map = applicationWindow()->d_3D_color_map;
+	if (d_view_type == ImageView)
+		displayImage(d_matrix_model->renderImage());
+	emit modifiedWindow(this);
 }
 
 void Matrix::setGrayScale()

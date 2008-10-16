@@ -83,7 +83,7 @@ public:
 				  RotateCounterClockwise, FFT, Clear, Calculate, MuParserCalculate, SetImage, ImportAscii};
     enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};
-	enum ColorMapType{GrayScale, Rainbow, Custom};
+	enum ColorMapType{Default, GrayScale, Rainbow, Custom};
 	enum ImportMode {
 		NewColumns, //!< add file as new columns to the current matrix
 		NewRows, //!< add file as new rows to the current matrix
@@ -140,7 +140,8 @@ public:
 	void setColorMap(const QwtLinearColorMap& map);
 	//! Used when restoring from project files
 	void setColorMap(const QStringList& lst);
-
+	//! Resets the color map to the one defined by the user in the Preferences dialog (3D plots tab)
+	void setDefaultColorMap();
 	void setGrayScale();
 	void setRainbowColorMap();
 	//! Calculate the volume integral

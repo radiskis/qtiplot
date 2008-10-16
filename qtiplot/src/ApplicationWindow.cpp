@@ -2839,6 +2839,19 @@ void ApplicationWindow::viewMatrixColumnRow()
 	QApplication::restoreOverrideCursor();
 }
 
+void ApplicationWindow::setMatrixDefaultScale()
+{
+	Matrix* m = static_cast<Matrix*>(activeWindow(MatrixWindow));
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	m->undoStack()->push(new MatrixSetColorMapCommand(m, m->colorMapType(), m->colorMap(),
+						Matrix::Default, QwtLinearColorMap(), tr("Set Default Palette")));
+	m->setDefaultColorMap();
+	QApplication::restoreOverrideCursor();
+}
+
 void ApplicationWindow::setMatrixGrayScale()
 {
 	Matrix* m = static_cast<Matrix*>(activeWindow(MatrixWindow));
@@ -8238,6 +8251,7 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	matrixViewMenu->addAction(actionViewMatrixImage);
 	matrixViewMenu->addAction(actionViewMatrix);
     QMenu *matrixPaletteMenu = matrixMenu->addMenu (tr("&Palette"));
+	matrixPaletteMenu->addAction(actionMatrixDefaultScale);
 	matrixPaletteMenu->addAction(actionMatrixGrayScale);
 	matrixPaletteMenu->addAction(actionMatrixRainbowScale);
 	matrixPaletteMenu->addAction(actionMatrixCustomScale);
@@ -8261,6 +8275,7 @@ void ApplicationWindow::matrixMenuAboutToShow()
 	actionMatrixXY->setChecked(m->headerViewType() == Matrix::XY);
 	actionMatrixXY->setEnabled(m->viewType() == Matrix::TableView);
 
+	actionMatrixDefaultScale->setChecked(m->colorMapType() == Matrix::Default);
     actionMatrixGrayScale->setChecked(m->colorMapType() == Matrix::GrayScale);
 	actionMatrixRainbowScale->setChecked(m->colorMapType() == Matrix::Rainbow);
 	actionMatrixCustomScale->setChecked(m->colorMapType() == Matrix::Custom);
@@ -11973,6 +11988,10 @@ void ApplicationWindow::createActions()
 	connect(actionMatrixGrayScale, SIGNAL(activated()), this, SLOT(setMatrixGrayScale()));
 	actionMatrixGrayScale->setCheckable(true);
 
+	actionMatrixDefaultScale = new QAction(tr("&Default"), this);
+	connect(actionMatrixDefaultScale, SIGNAL(activated()), this, SLOT(setMatrixDefaultScale()));
+	actionMatrixDefaultScale->setCheckable(true);
+	
 	actionMatrixRainbowScale = new QAction(tr("&Rainbow"), this);
 	connect(actionMatrixRainbowScale, SIGNAL(activated()), this, SLOT(setMatrixRainbowScale()));
 	actionMatrixRainbowScale->setCheckable(true);
@@ -12617,6 +12636,7 @@ void ApplicationWindow::translateActionsStrings()
     actionMatrixColumnRow->setMenuText(tr("Show &Column/Row"));
 	actionViewMatrix->setMenuText(tr("&Data mode"));
 	actionViewMatrixImage->setMenuText(tr("&Image mode"));
+	actionMatrixDefaultScale->setMenuText(tr("&Default"));
     actionMatrixGrayScale->setMenuText(tr("&Gray Scale"));
 	actionMatrixRainbowScale->setMenuText(tr("&Rainbow"));
 	actionMatrixCustomScale->setMenuText(tr("&Custom"));

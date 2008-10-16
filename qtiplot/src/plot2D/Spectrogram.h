@@ -60,8 +60,8 @@ public:
 
 	void setGrayScale();
 	void setDefaultColorMap();
-	static QwtLinearColorMap defaultColorMap();
 
+	QwtLinearColorMap colorMap(){return color_map;};
 	void setCustomColorMap(const QwtLinearColorMap& map);
 	void updateData(Matrix *m);
 

@@ -344,6 +344,7 @@ public slots:
 	void viewMatrixImage();
 	void viewMatrixTable();
 	void exportMatrix(const QString& exportFilter = QString::null);
+	void setMatrixDefaultScale();
 	void setMatrixGrayScale();
 	void setMatrixRainbowScale();
 	void viewMatrixColumnRow();
@@ -1290,7 +1291,7 @@ private:
 	QAction *btnCursor, *btnSelect, *btnPicker, *btnRemovePoints, *btnMovePoints;
 	QAction *btnZoomIn, *btnZoomOut, *btnPointer, *btnLine, *btnArrow;
 	QAction *actionFlipMatrixVertically, *actionFlipMatrixHorizontally, *actionRotateMatrix;
-	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix;
+	QAction *actionViewMatrixImage, *actionViewMatrix, *actionExportMatrix, *actionMatrixDefaultScale;
     QAction *actionMatrixGrayScale, *actionMatrixRainbowScale, *actionMatrixCustomScale, *actionRotateMatrixMinus;
     QAction *actionMatrixXY, *actionMatrixColumnRow, *actionImagePlot, *actionToolBars;
     QAction *actionMatrixFFTDirect, *actionMatrixFFTInverse;

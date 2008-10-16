@@ -25,9 +25,10 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-
 #include "Spectrogram.h"
+#include "Graph.h"
 #include <ColorMapEditor.h>
+#include <ApplicationWindow.h>
 
 #include <math.h>
 #include <QPen>
@@ -201,13 +202,13 @@ if (colorAxis)
 
 void Spectrogram::setDefaultColorMap()
 {
-color_map = defaultColorMap();
-setColorMap(color_map);
-color_map_policy = Default;
-
-QwtPlot *plot = this->plot();
+Graph *plot = qobject_cast<Graph *>(this->plot());
 if (!plot)
 	return;
+
+color_map = plot->multiLayer()->applicationWindow()->d_3D_color_map;
+setColorMap(color_map);
+color_map_policy = Default;
 
 QwtScaleWidget *colorAxis = plot->axisWidget(color_axis);
 if (colorAxis)
@@ -227,15 +228,6 @@ if (!plot)
 QwtScaleWidget *colorAxis = plot->axisWidget(color_axis);
 if (colorAxis)
 	colorAxis->setColorMap(this->data().range(), this->colorMap());
-}
-
-QwtLinearColorMap Spectrogram::defaultColorMap()
-{
-QwtLinearColorMap colorMap(Qt::blue, Qt::red);
-colorMap.addColorStop(0.25, Qt::cyan);
-colorMap.addColorStop(0.5, Qt::green);
-colorMap.addColorStop(0.75, Qt::yellow);
-return colorMap;
 }
 
 QString Spectrogram::saveToString()
