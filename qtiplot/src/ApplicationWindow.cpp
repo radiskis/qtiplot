@@ -116,9 +116,9 @@
 #include "plot2D/PlotToolInterface.h"
 #include "plot2D/AddWidgetTool.h"
 
-#include "plot3D/SurfaceDialog.h"
-#include "plot3D/Graph3D.h"
-#include "plot3D/Plot3DDialog.h"
+#include <SurfaceDialog.h>
+#include <Graph3D.h>
+#include <Plot3DDialog.h>
 
 #include "matrix/MatrixDialog.h"
 #include "matrix/MatrixSizeDialog.h"
@@ -620,6 +620,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_quality = 100;
 	d_export_resolution = QPrinter().resolution();
 	d_export_color = true;
+	d_3D_export_text_mode = 0; //Qwt3D::PIXEL
 }
 
 void ApplicationWindow::initToolBars()
@@ -2225,7 +2226,7 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 	if (!m)
 		return;
 
-	ImageExportDialog *ied = new ImageExportDialog(this, m!=NULL, d_extended_export_dialog);
+	ImageExportDialog *ied = new ImageExportDialog(m, this, d_extended_export_dialog);
 	ied->setDir(imagesDirPath);
 	ied->selectFile(m->objectName());
 	if (exportFilter.isEmpty())
@@ -4645,6 +4646,7 @@ void ApplicationWindow::readSettings()
 	d_export_quality = settings.value("/ImageQuality", 100).toInt();
 	d_export_resolution = settings.value("/Resolution", QPrinter().resolution()).toInt();
 	d_export_color = settings.value("/ExportColor", true).toBool();
+	d_3D_export_text_mode = settings.value("/3DTextMode", d_3D_export_text_mode).toInt();
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5001,6 +5003,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ImageQuality", d_export_quality);
 	settings.setValue("/Resolution", d_export_resolution);
 	settings.setValue("/ExportColor", d_export_color);
+	settings.setValue("/3DTextMode", d_3D_export_text_mode);
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5058,7 +5061,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 	if (!plot2D && !plot3D)
 		return;
 
-	ImageExportDialog *ied = new ImageExportDialog(this, plot2D != NULL, d_extended_export_dialog);
+	ImageExportDialog *ied = new ImageExportDialog(w, this, d_extended_export_dialog);
 	ied->setDirectory(imagesDirPath);
 	ied->selectFile(w->objectName());
     if (exportFilter.isEmpty())
@@ -5089,7 +5092,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
 		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
 		if (plot3D)
-			plot3D->exportVector(file_name);
+			plot3D->exportVector(file_name, ied->textExportMode());
 		else if (plot2D){
 			if (selected_filter.contains(".svg"))
 				plot2D->exportSVG(file_name);
@@ -5119,7 +5122,7 @@ void ApplicationWindow::exportLayer()
 	if (!g)
 		return;
 
-	ImageExportDialog *ied = new ImageExportDialog(this, g!=NULL, d_extended_export_dialog);
+	ImageExportDialog *ied = new ImageExportDialog(w, this, d_extended_export_dialog);
 	ied->setDir(imagesDirPath);
 	ied->selectFile(w->objectName());
 	ied->selectFilter(d_image_export_filter);
@@ -5159,7 +5162,7 @@ void ApplicationWindow::exportLayer()
 
 void ApplicationWindow::exportAllGraphs()
 {
-	ImageExportDialog *ied = new ImageExportDialog(this, true, d_extended_export_dialog);
+	ImageExportDialog *ied = new ImageExportDialog(NULL, this, d_extended_export_dialog);
 	ied->setWindowTitle(tr("Choose a directory to export the graphs to"));
 	QStringList tmp = ied->filters();
 	ied->setFileMode(QFileDialog::Directory);

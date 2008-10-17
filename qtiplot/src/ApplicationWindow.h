@@ -1061,6 +1061,7 @@ public:
     int d_export_quality;
     int d_export_resolution;
     bool d_export_color;
+	int d_3D_export_text_mode;
 	//! Locale used to specify the decimal separators in imported ASCII files
 	QLocale d_clipboard_locale;
 	//! Locale used to specify the decimal separators in imported ASCII files
