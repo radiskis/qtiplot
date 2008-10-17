@@ -11780,17 +11780,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Ne peut pas impriemr &lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="1999"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2000"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Erreur</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="1983"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="1984"/>
         <source>Please provide a valid file name!</source>
         <translation>Veuillez donner un nom de fichier valide !</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="1999"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2000"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fichier non supporté, opération annulée !</translation>
     </message>
