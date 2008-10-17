@@ -43,7 +43,6 @@ INCLUDEPATH       += ../3rdparty/boost_1_36_0
 
 # statically link against libraries in 3rdparty
 unix:LIBS         += ../3rdparty/muparser/lib/libmuparser.a
-unix:LIBS         += ../3rdparty/qwtplot3d/lib/libqwtplot3d.a
 unix:LIBS         += ../3rdparty/qwt/lib/libqwt.a
 unix:LIBS         += ../3rdparty/gsl/lib/libgsl.a
 unix:LIBS         += ../3rdparty/gsl/lib/libgslcblas.a
@@ -52,14 +51,12 @@ unix:LIBS         += /usr/local/lib/libboost_thread-gcc41-mt.a
 
 # dynamically link against dependencies if they are installed system-wide
 #unix:LIBS         += -lmuparser
-#unix:LIBS         += -lqwtplot3d
 #unix:LIBS         += -lqwt
 #unix:LIBS         += -lgsl -lgslcblas
 
 ##################### Windows ###############################################
 
 win32:LIBS        += ../3rdparty/muparser/lib/libmuparser.a
-win32:LIBS        += ../3rdparty/qwtplot3d/lib/libqwtplot3d.a
 win32:LIBS        += ../3rdparty/qwt/lib/libqwt.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgsl.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgslcblas.a
@@ -375,7 +372,8 @@ SOURCES  += src/table/SetColValuesDialog.cpp \
 ###############################################################
 ################# Module: Plot 3D #############################
 ###############################################################
-
+include(../3rdparty/qwtplot3d/qwtplot3d.pri)
+INCLUDEPATH += src/plot3D/
     HEADERS += src/plot3D/Bar.h \
                src/plot3D/ColorMapPreviewDialog.h\
                src/plot3D/Cone3D.h \

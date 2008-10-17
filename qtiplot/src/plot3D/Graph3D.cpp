@@ -1952,7 +1952,7 @@ void Graph3D::exportPDF(const QString& fileName)
 	exportVector(fileName);
 }
 
-void Graph3D::exportVector(const QString& fileName)
+void Graph3D::exportVector(const QString& fileName, int textExportMode)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
@@ -1969,7 +1969,7 @@ void Graph3D::exportVector(const QString& fileName)
 
     VectorWriter * gl2ps = (VectorWriter*)IO::outputHandler(format);
     if (gl2ps){
-		gl2ps->setTextMode(VectorWriter::PIXEL);
+		gl2ps->setTextMode((VectorWriter::TEXTMODE)textExportMode);
 		gl2ps->setLandscape(VectorWriter::OFF);
 		gl2ps->setSortMode(VectorWriter::BSPSORT);
 	}

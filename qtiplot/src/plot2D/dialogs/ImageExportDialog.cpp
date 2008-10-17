@@ -28,7 +28,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "ImageExportDialog.h"
-#include "../../ApplicationWindow.h"
+#include <ApplicationWindow.h>
+#include <MdiSubWindow.h>
+#include <Graph3D.h>
 
 #include <QStackedWidget>
 #include <QImageWriter>
@@ -37,10 +39,9 @@
 #include <QGridLayout>
 #include <QPrinter>
 #include <QLabel>
-#include <QComboBox>
 
-ImageExportDialog::ImageExportDialog(QWidget * parent, bool vector_options, bool extended, Qt::WFlags flags)
-	: ExtensibleFileDialog( parent, extended, flags )
+ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Qt::WFlags flags)
+	: ExtensibleFileDialog( parent, extended, flags ), d_window(window)
 {
 	setWindowTitle( tr( "QtiPlot - Choose a filename to save under" ) );
 	setAcceptMode(QFileDialog::AcceptSave);
@@ -66,7 +67,7 @@ ImageExportDialog::ImageExportDialog(QWidget * parent, bool vector_options, bool
 	setFileMode( QFileDialog::AnyFile );
 
 	initAdvancedOptions();
-	d_vector_options->setEnabled(vector_options);
+	//d_vector_options->setEnabled(vector_options);
 	setExtensionWidget(d_advanced_options);
 
 #if QT_VERSION >= 0x040300
@@ -89,18 +90,28 @@ void ImageExportDialog::initAdvancedOptions()
 	d_vector_options = new QGroupBox();
 	QGridLayout *vector_layout = new QGridLayout(d_vector_options);
 	d_advanced_options->addWidget(d_vector_options);
-
-    QLabel *resLabel = new QLabel(tr("Resolution (DPI)"));
+	
+	QLabel *resLabel = new QLabel(tr("Resolution (DPI)"));
 	vector_layout->addWidget(resLabel, 1, 0);
+	
 	d_resolution = new QSpinBox();
 	d_resolution->setRange(0, 1000);
 	d_resolution->setValue(app->d_export_resolution);
 	vector_layout->addWidget(d_resolution, 1, 1);
-
+	
 	d_color = new QCheckBox();
 	d_color->setText(tr("&Export in &color"));
 	d_color->setChecked(app->d_export_color);
 	vector_layout->addWidget(d_color, 2, 0, 1, 2);
+	
+	QLabel *text3DLabel = new QLabel(tr("3D Text export mode"));
+	vector_layout->addWidget(text3DLabel, 4, 0);
+	
+	d_3D_text_export_mode = new QComboBox();
+	d_3D_text_export_mode->addItem(tr("Bitmap image"));
+	d_3D_text_export_mode->addItem(tr("Native"));
+	d_3D_text_export_mode->setCurrentIndex(app->d_3D_export_text_mode);
+	vector_layout->addWidget(d_3D_text_export_mode, 4, 1);
 
 	d_raster_options = new QGroupBox();
 	QGridLayout *raster_layout = new QGridLayout(d_raster_options);
@@ -116,15 +127,39 @@ void ImageExportDialog::initAdvancedOptions()
 	d_transparency->setText(tr("Save transparency"));
 	d_transparency->setChecked(app->d_export_transparency);
 	raster_layout->addWidget(d_transparency, 2, 0, 1, 2);
+	
+	if (!d_window)
+		return;
+	
+	if (qobject_cast<Graph3D *> (d_window)){
+		resLabel->hide();
+		d_resolution->hide();
+		d_color->hide();
+	} else {
+    	text3DLabel->hide();	
+		d_3D_text_export_mode->hide();
+	}
 }
 
 void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 {
-	if (filter.contains("*.svg") || filter.contains("*.emf")) {
+	/*if (filter.contains("*.emf")) {
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
 		return;
+	}*/
+	
+	if (filter.contains("*.svg")){
+		if (qobject_cast<Graph3D *> (d_window)){
+			d_extension_toggle->setEnabled(true);
+			d_advanced_options->setCurrentIndex(0);
+		} else {
+			d_extension_toggle->setChecked(false);
+			d_extension_toggle->setEnabled(false);
+		}
+		return;
 	}
+	
 	d_extension_toggle->setEnabled(true);
 	if (filter.contains("*.eps") || filter.contains("*.ps") || filter.contains("*.pdf"))
 		d_advanced_options->setCurrentIndex(0);
@@ -145,6 +180,8 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 
         app->d_export_resolution = d_resolution->value();
         app->d_export_color = d_color->isChecked();
+		
+		app->d_3D_export_text_mode = d_3D_text_export_mode->currentIndex();
 	}
 
 	e->accept();

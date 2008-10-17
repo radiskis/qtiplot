@@ -892,7 +892,7 @@ public:
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon = 3};
 
     void exportToFile(const QString& fileName) /PyName=export/;
-    void exportVector(const QString& fileName);
+    void exportVector(const QString& fileName, int = 0);
     void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 
     void setRotation(double xVal, double yVal, double zVal);

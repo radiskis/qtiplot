@@ -40,7 +40,8 @@
 
 class QStackedWidget;
 class QGroupBox;
-
+class MdiSubWindow;
+	
 //! QFileDialog extended with options for image export
 class ImageExportDialog: public ExtensibleFileDialog
 {
@@ -50,6 +51,8 @@ private:
 	//! Create #d_advanced_options and everything it contains.
 	void initAdvancedOptions();
 
+	//! Pointer to the window to be exported.
+	MdiSubWindow *d_window;
 	//! Container widget for all advanced options.
 	QStackedWidget *d_advanced_options;
 	// vector format options
@@ -63,15 +66,18 @@ private:
 	QSpinBox *d_quality;
 	QCheckBox *d_transparency;
 
+	QComboBox *d_3D_text_export_mode;
+
 public:
 	//! Constructor
 	/**
+	 * \param window window to be exported
 	 * \param parent parent widget
 	 * \param vector_options whether advanced options are to be provided for export to vector formats
 	 * \param extended flag: show/hide the advanced options on start-up
 	 * \param flags window flags
 	 */
-	ImageExportDialog(QWidget * parent = 0, bool vector_options = true, bool extended = true, Qt::WFlags flags = 0 );
+	ImageExportDialog(MdiSubWindow *window, QWidget * parent = 0, bool extended = true, Qt::WFlags flags = 0 );
 	//! For vector formats: returns the output resolution the user selected, defaulting to the screen resolution.
 	int resolution() const { return d_resolution->value(); }
 	//! For vector formats: returns whether colors should be enabled for ouput (default: true).
@@ -81,7 +87,9 @@ public:
 	int quality() const { return d_quality->value(); }
 	//! Return whether the output's background should be transparent.
 	bool transparency() const { return d_transparency->isChecked(); }
-
+	//! Return the text export mode for 3D plots.
+	int textExportMode() const {return d_3D_text_export_mode->currentIndex();};
+		
 	void selectFilter(const QString & filter);
 
 protected slots:

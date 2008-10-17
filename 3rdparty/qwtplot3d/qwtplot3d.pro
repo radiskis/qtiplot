@@ -13,7 +13,6 @@ DESTDIR      			= lib
 QT += opengl
 DEFINES += GL2PS_HAVE_LIBPNG
 
-win32:TEMPLATE    = vclib
 win32:CONFIG     += dll exceptions
 win32:dll:DEFINES    += QT_DLL QWT3D_DLL QWT3D_MAKEDLL
 win32:QMAKE_CXXFLAGS     += $$QMAKE_CFLAGS_STL
