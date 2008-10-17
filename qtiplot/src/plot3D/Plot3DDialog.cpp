@@ -28,10 +28,10 @@
  ***************************************************************************/
 #include "Plot3DDialog.h"
 #include "ColorMapPreviewDialog.h"
-#include "../MyParser.h"
-#include "../SymbolDialog.h"
-#include "../ApplicationWindow.h"
-#include "../TextFormatButtons.h"
+#include <MyParser.h>
+#include <SymbolDialog.h>
+#include <ApplicationWindow.h>
+#include <TextFormatButtons.h>
 
 #include <DoubleSpinBox.h>
 #include <ColorMapEditor.h>
