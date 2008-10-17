@@ -149,7 +149,6 @@ public slots:
 
 	QFont numbersFont();
 	void setNumbersFont(const QFont& font);
-	void setNumbersFont(const QStringList& lst);
 
 	double xStart();
 	double xStop();
@@ -278,8 +277,6 @@ public slots:
 	void setLabelsColor(const QColor&);
 	void setBackgroundColor(const QColor&);
 	void setGridColor(const QColor&);
-
-	void setColors(const QStringList& colors);
 	//@}
 
 	//! \name Title
