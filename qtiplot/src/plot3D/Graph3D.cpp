@@ -177,7 +177,7 @@ void Graph3D::initPlot()
 
 	d_autoscale = app->d_3D_autoscale;
 
-	title = QString();
+	title = QString::null;
 	sp->setTitle(title);
 
 	titleCol = Qt::black;
@@ -778,14 +778,9 @@ QFont Graph3D::numbersFont()
 void Graph3D::setNumbersFont(const QFont& font)
 {
 	sp->coordinates()->setNumberFont (font);
+	sp->legend()->axis()->setNumberFont (font);
 	sp->makeCurrent();
 	sp->updateGL();
-}
-
-void Graph3D::setNumbersFont(const QStringList& lst)
-{
-	QFont fnt=QFont(lst[1],lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
-	sp->coordinates()->setNumberFont(fnt);
 }
 
 void Graph3D::setXAxisLabelFont(const QFont& fnt)
@@ -1575,9 +1570,10 @@ void Graph3D::setAxesColor(const QColor& axesColor)
 
 void Graph3D::setNumbersColor(const QColor& numColor)
 {
-	if(numCol !=numColor){
+	if(numCol != numColor){
+		sp->legend()->axis()->setNumberColor(Qt2GL(numColor));
 		sp->coordinates()->setNumberColor(Qt2GL(numColor));
-		numCol=numColor;
+		numCol = numColor;
 	}
 }
 
@@ -1602,35 +1598,6 @@ void Graph3D::setGridColor(const QColor& gridColor)
 	if(gridCol !=gridColor){
 		sp->coordinates()->setGridLinesColor(Qt2GL(gridColor));
 		gridCol=gridColor;
-	}
-}
-
-void Graph3D::setColors(const QStringList& colors)
-{
-	meshCol=QColor(colors[1]);
-	sp->setMeshColor(Qt2GL(meshCol));
-
-	axesCol=QColor(colors[2]);
-	sp->coordinates()->setAxesColor(Qt2GL(axesCol));
-
-	numCol=QColor(colors[3]);
-	sp->coordinates()->setNumberColor(Qt2GL(numCol));
-
-	labelsCol=QColor(colors[4]);
-	sp->coordinates()->setLabelColor(Qt2GL(labelsCol));
-
-	bgCol=QColor(colors[5]);
-	sp->setBackgroundColor(Qt2GL(bgCol));
-
-	gridCol=QColor(colors[6]);
-	sp->coordinates()->setGridLinesColor(Qt2GL(gridCol));
-
-	if ((int)colors.count()>7){
-		d_alpha = colors[9].toDouble();
-		if ((int)colors.count() == 11)
-            setDataColorMap(colors[10]);
-        else
-		    setDataColors(QColor(colors[7]), QColor(colors[8]));
 	}
 }
 
@@ -2002,9 +1969,9 @@ void Graph3D::exportVector(const QString& fileName)
 
     VectorWriter * gl2ps = (VectorWriter*)IO::outputHandler(format);
     if (gl2ps){
-      	//gl2ps->setTextMode(VectorWriter::NATIVE);
 		gl2ps->setTextMode(VectorWriter::PIXEL);
 		gl2ps->setLandscape(VectorWriter::OFF);
+		gl2ps->setSortMode(VectorWriter::BSPSORT);
 	}
 
     IO::save(sp, fileName, format);
@@ -2479,8 +2446,7 @@ void Graph3D::showColorLegend(bool show)
 
 	sp->makeCurrent();
 	sp->showColorLegend(show);
-
-	legendOn=show;
+	legendOn = show;
 	sp->updateGL();
 	emit modified();
 }
@@ -2851,7 +2817,22 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	plot->setGrid(fList[1].toInt());
 
 	plot->setTitle(lst[5].split("\t"));
-	plot->setColors(lst[6].split("\t", QString::SkipEmptyParts));
+	
+	QStringList colors = lst[6].split("\t", QString::SkipEmptyParts);
+	plot->setMeshColor(QColor(colors[1]));
+	plot->setAxesColor(QColor(colors[2]));
+	plot->setNumbersColor(QColor(colors[3]));
+	plot->setLabelsColor(QColor(colors[4]));
+	plot->setBackgroundColor(QColor(colors[5]));
+	plot->setGridColor(QColor(colors[6]));
+
+	if ((int)colors.count() > 7){
+		plot->setTransparency(colors[9].toDouble());
+		if ((int)colors.count() == 11)
+            plot->setDataColorMap(colors[10]);
+        else
+		    plot->setDataColors(QColor(colors[7]), QColor(colors[8]));
+	}
 
 	fList=lst[7].split("\t", QString::SkipEmptyParts);
 	fList.pop_front();
@@ -2860,7 +2841,10 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	plot->setTicks(lst[8].split("\t", QString::SkipEmptyParts));
 	plot->setTickLengths(lst[9].split("\t", QString::SkipEmptyParts));
 	plot->setOptions(lst[10].split("\t", QString::SkipEmptyParts));
-	plot->setNumbersFont(lst[11].split("\t", QString::SkipEmptyParts));
+	
+	QStringList fLst = lst[11].split("\t", QString::SkipEmptyParts);
+	plot->setNumbersFont(QFont(fLst[1], fLst[2].toInt(), fLst[3].toInt(), fLst[4].toInt()));
+
 	plot->setXAxisLabelFont(lst[12].split("\t", QString::SkipEmptyParts));
 	plot->setYAxisLabelFont(lst[13].split("\t", QString::SkipEmptyParts));
 	plot->setZAxisLabelFont(lst[14].split("\t", QString::SkipEmptyParts));

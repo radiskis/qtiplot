@@ -6519,7 +6519,7 @@ QDialog* ApplicationWindow::showPlot3dDialog()
 					tr("Not available for empty 3D surface plots!"));
 		return 0;
 	}
-
+	
 	Plot3DDialog* pd = new Plot3DDialog(this);
 	pd->setPlot(g);
 	pd->show();
