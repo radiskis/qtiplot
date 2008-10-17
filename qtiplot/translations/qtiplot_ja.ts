@@ -9146,17 +9146,17 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2000"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="1999"/>
         <source>QtiPlot - Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="1984"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="1983"/>
         <source>Please provide a valid file name!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="2000"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="1999"/>
         <source>File format not handled, operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9179,12 +9179,12 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="120"/>
+        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="121"/>
         <source>Image quality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="127"/>
+        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="128"/>
         <source>Save transparency</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9194,13 +9194,18 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="112"/>
-        <source>Native</source>
+        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="107"/>
+        <source>3D Text export mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="107"/>
-        <source>3D Text export mode</source>
+        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="112"/>
+        <source>Native fonts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/dialogs/ImageExportDialog.cpp" line="113"/>
+        <source>LaTeX file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14336,19 +14341,19 @@ have the same number of rows.</source>
 <context>
     <name>TextFormatButtons</name>
     <message>
-        <location filename="../src/TextFormatButtons.cpp" line="190"/>
+        <location filename="../src/TextFormatButtons.cpp" line="188"/>
         <source>B</source>
         <comment>Button bold</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/TextFormatButtons.cpp" line="200"/>
+        <location filename="../src/TextFormatButtons.cpp" line="198"/>
         <source>It</source>
         <comment>Button italics</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/TextFormatButtons.cpp" line="210"/>
+        <location filename="../src/TextFormatButtons.cpp" line="208"/>
         <source>U</source>
         <comment>Button underline</comment>
         <translation type="unfinished"></translation>

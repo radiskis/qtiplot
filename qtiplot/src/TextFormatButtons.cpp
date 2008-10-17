@@ -140,21 +140,19 @@ d_buttons(buttons)
 		connect( buttonCurve, SIGNAL(clicked()), this, SLOT(addCurve()) );
 	}
 
-	if (buttons != Plot3D){
-		buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
-		buttonSubscript->setMaximumWidth(40);
-		buttonSubscript->setMinimumHeight(35);
-		buttonSubscript->setFont(font);
-		layout->addWidget(buttonSubscript);
-		connect( buttonSubscript, SIGNAL(clicked()), this, SLOT(addSubscript()) );
+	buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
+	buttonSubscript->setMaximumWidth(40);
+	buttonSubscript->setMinimumHeight(35);
+	buttonSubscript->setFont(font);
+	layout->addWidget(buttonSubscript);
+	connect( buttonSubscript, SIGNAL(clicked()), this, SLOT(addSubscript()) );
 
-		buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
-		buttonSuperscript->setMaximumWidth(40);
-		buttonSuperscript->setMinimumHeight(35);
-		buttonSuperscript->setFont(font);
-		layout->addWidget(buttonSuperscript);
-		connect( buttonSuperscript, SIGNAL(clicked()), this, SLOT(addSuperscript()));
-	}
+	buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
+	buttonSuperscript->setMaximumWidth(40);
+	buttonSuperscript->setMinimumHeight(35);
+	buttonSuperscript->setFont(font);
+	layout->addWidget(buttonSuperscript);
+	connect( buttonSuperscript, SIGNAL(clicked()), this, SLOT(addSuperscript()));
 
 	if (buttons != Equation){
 		buttonLowerGreek = new QPushButton(QString(QChar(0x3B1)));
@@ -313,7 +311,7 @@ void TextFormatButtons::addBold()
 
 void TextFormatButtons::addSubscript()
 {
-	if (d_buttons == Equation)
+	if (d_buttons == Equation || d_buttons == Plot3D)
 		formatText("_{","}");
 	else
 		formatText("<sub>","</sub>");
@@ -321,7 +319,7 @@ void TextFormatButtons::addSubscript()
 
 void TextFormatButtons::addSuperscript()
 {
-	if (d_buttons == Equation)
+	if (d_buttons == Equation  || d_buttons == Plot3D)
 		formatText("^{","}");
 	else
 		formatText("<sup>","</sup>");
