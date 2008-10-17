@@ -11886,17 +11886,17 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Kunde inte skriva till fil: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="1999"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2000"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="1983"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="1984"/>
         <source>Please provide a valid file name!</source>
         <translation>Ange ett giltigt filnamn!</translation>
     </message>
     <message>
-        <location filename="../src/plot3D/Graph3D.cpp" line="1999"/>
+        <location filename="../src/plot3D/Graph3D.cpp" line="2000"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Filformatet hanteras ej, avbryts!</translation>
     </message>

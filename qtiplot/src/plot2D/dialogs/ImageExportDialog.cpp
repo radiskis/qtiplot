@@ -109,7 +109,8 @@ void ImageExportDialog::initAdvancedOptions()
 	
 	d_3D_text_export_mode = new QComboBox();
 	d_3D_text_export_mode->addItem(tr("Bitmap image"));
-	d_3D_text_export_mode->addItem(tr("Native"));
+	d_3D_text_export_mode->addItem(tr("Native fonts"));
+	d_3D_text_export_mode->addItem(tr("LaTeX file"));
 	d_3D_text_export_mode->setCurrentIndex(app->d_3D_export_text_mode);
 	vector_layout->addWidget(d_3D_text_export_mode, 4, 1);
 
