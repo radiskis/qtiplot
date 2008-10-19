@@ -1952,7 +1952,7 @@ void Graph3D::exportPDF(const QString& fileName)
 	exportVector(fileName);
 }
 
-void Graph3D::exportVector(const QString& fileName, int textExportMode)
+void Graph3D::exportVector(const QString& fileName, int textExportMode, int sortMode)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
@@ -1966,12 +1966,14 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode)
         format = "PS";
 	else if (fileName.endsWith(".svg", Qt::CaseInsensitive))
         format = "SVG";
+    else if (fileName.endsWith(".pgf", Qt::CaseInsensitive))
+        format = "PGF";
 
     VectorWriter * gl2ps = (VectorWriter*)IO::outputHandler(format);
     if (gl2ps){
 		gl2ps->setTextMode((VectorWriter::TEXTMODE)textExportMode);
 		gl2ps->setLandscape(VectorWriter::OFF);
-		gl2ps->setSortMode(VectorWriter::BSPSORT);
+		gl2ps->setSortMode((VectorWriter::SORTMODE)sortMode);
 	}
 
     IO::save(sp, fileName, format);
@@ -2817,7 +2819,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	plot->setGrid(fList[1].toInt());
 
 	plot->setTitle(lst[5].split("\t"));
-	
+
 	QStringList colors = lst[6].split("\t", QString::SkipEmptyParts);
 	plot->setMeshColor(QColor(colors[1]));
 	plot->setAxesColor(QColor(colors[2]));
@@ -2841,7 +2843,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	plot->setTicks(lst[8].split("\t", QString::SkipEmptyParts));
 	plot->setTickLengths(lst[9].split("\t", QString::SkipEmptyParts));
 	plot->setOptions(lst[10].split("\t", QString::SkipEmptyParts));
-	
+
 	QStringList fLst = lst[11].split("\t", QString::SkipEmptyParts);
 	plot->setNumbersFont(QFont(fLst[1], fLst[2].toInt(), fLst[3].toInt(), fLst[4].toInt()));
 

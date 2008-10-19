@@ -58,6 +58,9 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 		list<<"EMF";
 	#endif
 
+	if (qobject_cast<Graph3D *> (d_window))
+        list<<"PGF";
+
 	QStringList filters;
 	for(int i=0 ; i<list.count() ; i++)
 		filters << "*."+list[i].toLower();
@@ -67,7 +70,6 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 	setFileMode( QFileDialog::AnyFile );
 
 	initAdvancedOptions();
-	//d_vector_options->setEnabled(vector_options);
 	setExtensionWidget(d_advanced_options);
 
 #if QT_VERSION >= 0x040300
@@ -90,29 +92,38 @@ void ImageExportDialog::initAdvancedOptions()
 	d_vector_options = new QGroupBox();
 	QGridLayout *vector_layout = new QGridLayout(d_vector_options);
 	d_advanced_options->addWidget(d_vector_options);
-	
+
 	QLabel *resLabel = new QLabel(tr("Resolution (DPI)"));
 	vector_layout->addWidget(resLabel, 1, 0);
-	
+
 	d_resolution = new QSpinBox();
 	d_resolution->setRange(0, 1000);
 	d_resolution->setValue(app->d_export_resolution);
 	vector_layout->addWidget(d_resolution, 1, 1);
-	
+
 	d_color = new QCheckBox();
 	d_color->setText(tr("&Export in &color"));
 	d_color->setChecked(app->d_export_color);
 	vector_layout->addWidget(d_color, 2, 0, 1, 2);
-	
-	QLabel *text3DLabel = new QLabel(tr("3D Text export mode"));
+
+	QLabel *text3DLabel = new QLabel(tr("Export 3D texts as"));
 	vector_layout->addWidget(text3DLabel, 4, 0);
-	
+
 	d_3D_text_export_mode = new QComboBox();
-	d_3D_text_export_mode->addItem(tr("Bitmap image"));
+	d_3D_text_export_mode->addItem(tr("Bitmap images"));
 	d_3D_text_export_mode->addItem(tr("Native fonts"));
 	d_3D_text_export_mode->addItem(tr("LaTeX file"));
 	d_3D_text_export_mode->setCurrentIndex(app->d_3D_export_text_mode);
 	vector_layout->addWidget(d_3D_text_export_mode, 4, 1);
+
+    QLabel *sort3DLabel = new QLabel(tr("3D Sort mode"));
+	vector_layout->addWidget(sort3DLabel, 5, 0);
+    d_3D_export_sort = new QComboBox();
+	d_3D_export_sort->addItem(tr("No sort"));
+	d_3D_export_sort->addItem(tr("Simple sort"));
+	d_3D_export_sort->addItem(tr("BSP sort"));
+	d_3D_export_sort->setCurrentIndex(app->d_3D_export_sort);
+	vector_layout->addWidget(d_3D_export_sort, 5, 1);
 
 	d_raster_options = new QGroupBox();
 	QGridLayout *raster_layout = new QGridLayout(d_raster_options);
@@ -128,17 +139,19 @@ void ImageExportDialog::initAdvancedOptions()
 	d_transparency->setText(tr("Save transparency"));
 	d_transparency->setChecked(app->d_export_transparency);
 	raster_layout->addWidget(d_transparency, 2, 0, 1, 2);
-	
+
 	if (!d_window)
 		return;
-	
+
 	if (qobject_cast<Graph3D *> (d_window)){
 		resLabel->hide();
 		d_resolution->hide();
 		d_color->hide();
 	} else {
-    	text3DLabel->hide();	
+    	text3DLabel->hide();
 		d_3D_text_export_mode->hide();
+		sort3DLabel->hide();
+		d_3D_export_sort->hide();
 	}
 }
 
@@ -149,7 +162,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		d_extension_toggle->setEnabled(false);
 		return;
 	}*/
-	
+
 	if (filter.contains("*.svg")){
 		if (qobject_cast<Graph3D *> (d_window)){
 			d_extension_toggle->setEnabled(true);
@@ -160,9 +173,10 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		}
 		return;
 	}
-	
+
 	d_extension_toggle->setEnabled(true);
-	if (filter.contains("*.eps") || filter.contains("*.ps") || filter.contains("*.pdf"))
+	if (filter.contains("*.eps") || filter.contains("*.ps") ||
+        filter.contains("*.pdf") || filter.contains("*.pgf"))
 		d_advanced_options->setCurrentIndex(0);
 	else {
 		d_advanced_options->setCurrentIndex(1);
@@ -181,8 +195,9 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 
         app->d_export_resolution = d_resolution->value();
         app->d_export_color = d_color->isChecked();
-		
+
 		app->d_3D_export_text_mode = d_3D_text_export_mode->currentIndex();
+		app->d_3D_export_sort = d_3D_export_sort->currentIndex();
 	}
 
 	e->accept();

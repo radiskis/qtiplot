@@ -38,8 +38,18 @@
 #include <QPainter>
 #include <qwt_symbol.h>
 
+PlotCurve::PlotCurve(const QString& name): QwtPlotCurve(name),
+d_type(0),
+d_plot_style(0),
+d_x_offset(0.0),
+d_y_offset(0.0)
+{
+    setPaintAttribute(PaintFiltered);
+    setPaintAttribute(ClipPolygons);
+}
+
 QString PlotCurve::saveCurveLayout()
-{			
+{
 	QString s = "<Style>" + QString::number(d_plot_style) + "</Style>\n";
 	if (d_plot_style == Graph::Spline)
 		s += "<LineStyle>5</LineStyle>\n";
@@ -47,7 +57,7 @@ QString PlotCurve::saveCurveLayout()
 		s += "<LineStyle>6</LineStyle>\n";
 	else
 		s += "<LineStyle>" + QString::number(this->style()) + "</LineStyle>\n";
-			
+
 	QPen pen = this->pen();
 	if (pen.style() != Qt::NoPen){
 		s += "<Pen>\n";
@@ -56,7 +66,7 @@ QString PlotCurve::saveCurveLayout()
 		s += "\t<Width>" + QString::number(pen.widthF()) + "</Width>\n";
 		s += "</Pen>\n";
 	}
-	
+
 	QBrush brush = this->brush();
 	if (brush.style() != Qt::NoBrush){
 		s += "<Brush>\n";
@@ -64,18 +74,18 @@ QString PlotCurve::saveCurveLayout()
 		s += "\t<Style>" + QString::number(PatternBox::patternIndex(brush.style())) + "</Style>\n";
 		s += "</Brush>\n";
 	}
-	
+
 	const QwtSymbol symbol = this->symbol();
 	if (symbol.style() != QwtSymbol::NoSymbol){
 		s += "<Symbol>\n";
 		s += "\t<Style>" + QString::number(SymbolBox::symbolIndex(symbol.style())) + "</Style>\n";
 		s += "\t<Size>" + QString::number(symbol.size().width()) + "</Size>\n";
-	
+
 		s += "\t<SymbolPen>\n";
 		s += "\t\t<Color>" + symbol.pen().color().name() + "</Color>\n";
 		s += "\t\t<Width>" + QString::number(symbol.pen().widthF()) + "</Width>\n";
 		s += "\t</SymbolPen>\n";
-	
+
 		brush = this->brush();
 		if (brush.style() != Qt::NoBrush){
 			s += "\t<SymbolBrush>\n";
@@ -105,7 +115,7 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 				else if (s.contains("<Style>"))
 					pen.setStyle(Graph::getPenStyle(s.remove("<Style>").remove("</Style>").toInt()));
 				else if (s.contains("<Width>"))
-					pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());	
+					pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());
 			}
 			setPen(pen);
 		} else if (s == "<Brush>"){
@@ -135,7 +145,7 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 						else if (s.contains("<Style>"))
 							pen.setStyle(Graph::getPenStyle(s.remove("<Style>").remove("</Style>").toInt()));
 						else if (s.contains("<Width>"))
-							pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());	
+							pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());
 					}
 				symbol.setPen(pen);
 				} else if (s == "<SymbolBrush>"){
@@ -150,7 +160,7 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 					symbol.setBrush(brush);
 				}
 				setSymbol(symbol);
-			}		
+			}
 		} else if (s.contains("<xAxis>"))
 			setXAxis(s.remove("<xAxis>").remove("</xAxis>").toInt());
 		else if (s.contains("<yAxis>"))

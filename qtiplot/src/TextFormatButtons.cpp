@@ -176,7 +176,7 @@ d_buttons(buttons)
 		buttonArrowSymbols = new QPushButton(QString(QChar(0x2192)));
 		buttonArrowSymbols->setFont(font);
 		buttonArrowSymbols->setMaximumWidth(40);
-		layout->addWidget(buttonArrowSymbols);	
+		layout->addWidget(buttonArrowSymbols);
 		connect( buttonArrowSymbols, SIGNAL(clicked()), this, SLOT(showArrowSymbols()));
 	}
 
@@ -212,7 +212,7 @@ d_buttons(buttons)
    		layout->addStretch();
 		connect( buttonUnderline, SIGNAL(clicked()), this, SLOT(addUnderline()));
 	}
-	
+
 	if (buttons == Equation){
 		buttonFraction = new QPushButton(QPixmap(fraction_xpm), QString());
 		buttonFraction->setMaximumWidth(40);
@@ -220,7 +220,7 @@ d_buttons(buttons)
 		buttonFraction->setFont(font);
 		layout->addWidget(buttonFraction);
 		connect(buttonFraction, SIGNAL(clicked()), this, SLOT(addFraction()));
-		
+
 		buttonSquareRoot = new QPushButton(QPixmap(square_root_xpm), QString());
 		buttonSquareRoot->setMaximumWidth(40);
 		buttonSquareRoot->setMinimumHeight(35);

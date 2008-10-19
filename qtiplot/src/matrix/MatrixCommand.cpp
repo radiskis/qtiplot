@@ -275,6 +275,10 @@ void MatrixSetColorMapCommand::redo()
         return;
 
 	switch(d_map_type_after){
+        case Matrix::Default:
+			d_matrix->setDefaultColorMap();
+		break;
+
 		case Matrix::GrayScale:
 			d_matrix->setGrayScale();
 		break;
@@ -294,7 +298,11 @@ void MatrixSetColorMapCommand::undo()
     if (!d_matrix)
         return;
 
-    	switch(d_map_type_before){
+    switch(d_map_type_before){
+        case Matrix::Default:
+			d_matrix->setDefaultColorMap();
+		break;
+
 		case Matrix::GrayScale:
 			d_matrix->setGrayScale();
 		break;
@@ -481,11 +489,11 @@ void MatrixSetSizeCommand::undo()
 {
     if (!d_model)
         return;
-	
+
 	int rows = d_old_size.width();
 	int cols = d_old_size.height();
     d_model->setDimensions(rows, cols);
-	
+
 	double *data = d_model->dataVector();
     if (!data)
         return;
@@ -741,7 +749,7 @@ void MatrixPasteCommand::redo()
     if (!d_model)
         return;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));	
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     d_model->pasteData(d_clipboard_data, d_start_row, d_start_col, d_rows, d_cols);
 	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();

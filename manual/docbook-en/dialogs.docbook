@@ -1227,7 +1227,17 @@ which will highly increase the speed of the evaluation!</para>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>The second tab defines the main parameters of the three axis: the axis label and its font, and the length of the ticks. This length is defined in the same units as the range of the axis. If something is changed in the scales of the graph, the length of the ticks is re-calculated by &appname;. The font button allows to modify only the font used for the label, if you want to customize the font of the numbers used for the axis, you must used the fifth tab.</para>
+  <para>The second tab defines the main parameters of the three axis: the axis label and its font,
+  and the length of the ticks. This length is defined in the same units as the range of the axis.
+  If something is changed in the scales of the graph, the length of the ticks is re-calculated by &appname;.
+  The font button allows to modify only the font used for the label,
+  if you want to customize the font of the numbers used for the axis, you must used the fifth tab.
+  The superscript and subscript buttons allow an easy insertion of LaTeX superscript/subscript commands.
+  The superscript/subscript texts will only be rendered as such if you export the plot to a .tex file, by
+  choosing the <emphasis>LaTeX file</emphasis> text mode in the advanced settings of the export dialog.
+  In order to render the superscripts/subscripts, this file must be compiled separatelly, therefore you need
+  a LaTeX environement installed on your computer.
+  </para>
   <informalfigure id="fig-surface-plot-options-2">
     <mediaobject>
       <imageobject>
@@ -1251,35 +1261,14 @@ which will highly increase the speed of the evaluation!</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The first set of two colors (data min and data max) defines the color scheme which is used to show the Z-values. They are the colors used for the minimum value of Z (Z<subscript>min</subscript>) and the maximum value of Z (Z<subscript>max</subscript>). We can define the colors by their Red, Green and Blue parameters: [R,G,B]. Then, a value Z will be represented by a color defined as a linear interpolation:</para>
-  <informalequation>
-  <mediaobject>
-    <imageobject>
-      <imagedata  format="PNG" fileref="equations/equation_couleur.png"/>
-    </imageobject>
-  </mediaobject>
-  </informalequation>
-  <para>The default colors for Z<subscript>min</subscript> and Z<subscript>max</subscript> are respectively blue ( [R,G,B] = [0,0,255] ) and red ( [R,G,B] = [255,0,0] ). This lead to the following color scheme:</para>
+<para>The <emphasis>Linear color map</emphasis> group defines the color scheme which is used to show
+the Z-values. If the <emphasis>Scale Colors</emphasis> box is checked, a Z value will be represented by a
+color defined as a linear interpolation between the adjacent values in the color table.</para>
 
-  <informalfigure id="fig-default-color-scheme">
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics/default-color-scheme.png"/>
-      </imageobject>
-    </mediaobject>
-  </informalfigure>
-
-<para>Another classical color scheme can be built with Z<subscript>min</subscript> = [160,32,32] and Z<subscript>max</subscript> = [255,255,0] (yellow). It leads to:</para>
-
-  <informalfigure id="fig-color-scheme-1">
-    <mediaobject>
-      <imageobject>
-        <imagedata  format="PNG" fileref="pics/color-scheme-1.png"/>
-      </imageobject>
-    </mediaobject>
-  </informalfigure>
-
-<para>Another way to define colors is to read a colormap from a file. The format of the file is simple: each line defines a color by red, green and blue values as integers between 0 and 255. The numbers should be separated by spaces. You can find several examples of colormaps on the <ulink url="http://sourceforge.net/project/showfiles.php?group_id=78209">QwtPlot3D web site</ulink>.</para>
+<para>Another way to define colors is to read a colormap from a file.
+The format of the file is simple: each line defines a color by red, green and blue values as integers
+ between 0 and 255. The numbers should be separated by spaces. You can find several examples of colormaps on the
+ <ulink url="http://soft.proindependent.com/download.html">QtiPlot web site</ulink>.</para>
 
 <para>The last tab is used to define some global parameters and the aspect ratio of the plot. The default behaviour is to use the perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use vertical Z axis whatever the view angle of the plot.</para>
 
