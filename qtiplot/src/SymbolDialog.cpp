@@ -67,9 +67,7 @@ SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WFlags fl )
 	connect(buttons, SIGNAL(buttonClicked(int)), this, SLOT(getChar(int)));
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 	QShortcut *shortcut = new QShortcut(Qt::Key_Return, this);
-	connect( shortcut , SIGNAL(activated()),
-			this, SLOT(addCurrentChar()) );
-
+	connect( shortcut , SIGNAL(activated()), this, SLOT(addCurrentChar()) );
 }
 
 void SymbolDialog::initLowerGreekChars()

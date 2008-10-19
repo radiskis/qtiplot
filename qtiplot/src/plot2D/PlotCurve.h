@@ -41,12 +41,12 @@ class PlotCurve: public QwtPlotCurve
 {
 
 public:
-	PlotCurve(const QString& name = QString()): QwtPlotCurve(name), d_type(0), d_plot_style(0), d_x_offset(0.0), d_y_offset(0.0){};
+    PlotCurve(const QString& name = QString());
 
 	//! Sort of rtti()
 	int type(){return d_type;};
 	void setType(int t){d_type = t;};
-	
+
 	/*!\brief The plot style of the curve.
 	 * \sa Graph::CurveType
 	 */

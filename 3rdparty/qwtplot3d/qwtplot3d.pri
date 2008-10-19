@@ -1,4 +1,4 @@
-DEFINES += GL2PS_HAVE_LIBPNG
+#DEFINES += GL2PS_HAVE_LIBPNG
 
 # Comment the next line, if you have zlib on your windows system
 win32:CONFIG -= zlib
@@ -26,7 +26,7 @@ SOURCES += ../3rdparty/qwtplot3d/src/qwt3d_axis.cpp \
 		   ../3rdparty/qwtplot3d/src/qwt3d_surfaceplot.cpp \
            ../3rdparty/qwtplot3d/src/qwt3d_gridplot.cpp \
            ../3rdparty/qwtplot3d/src/qwt3d_meshplot.cpp
-          
+
 
 HEADERS += ../3rdparty/qwtplot3d/include/qwt3d_color.h \
            ../3rdparty/qwtplot3d/include/qwt3d_global.h \
@@ -59,7 +59,7 @@ HEADERS += ../3rdparty/qwtplot3d/include/qwt3d_color.h \
 # gl2ps support
 HEADERS += ../3rdparty/qwtplot3d/3rdparty/gl2ps/gl2ps.h \
          ../3rdparty/qwtplot3d/include/qwt3d_io_gl2ps.h
-         
+
 SOURCES += ../3rdparty/qwtplot3d/src/qwt3d_io_gl2ps.cpp \
          ../3rdparty/qwtplot3d/3rdparty/gl2ps/gl2ps.c
 

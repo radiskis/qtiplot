@@ -87,6 +87,7 @@ setViewType
 setHeaderViewType
 setGrayScale
 setRainbowColorMap
+setDefaultColorMap
 resetView
 image
 exportRasterImage

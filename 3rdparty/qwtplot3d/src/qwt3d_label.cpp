@@ -57,7 +57,7 @@ void Label::setColor(double r, double g, double b, double a)
 {
   Drawable::setColor(r,g,b,a);
   flagforupdate_ = true;
-}	
+}
 
 void Label::setColor(Qwt3D::RGBA rgba)
 {
@@ -70,7 +70,7 @@ example:
 
 \verbatim
 
-   Anchor TopCenter (*)  resp. BottomRight(X) 
+   Anchor TopCenter (*)  resp. BottomRight(X)
 
    +----*----+
    |  Pixmap |
@@ -90,61 +90,66 @@ void Label::setRelPosition(Tuple rpos, ANCHOR a)
 
 	getMatrices(modelMatrix, projMatrix, viewport);
 	beg_ = relativePosition(Triple(rpos.x, rpos.y, ot));
-	setPosition(beg_, a);	
+	setPosition(beg_, a);
 }
 
 void Label::update()
 {
 	QPainter p;
 	QFontMetrics fm(font_);
+    QFontInfo info(font_);
 
-  QFontInfo info(font_);
-
-  QRect r = 	QRect(QPoint(0,0),fm.size(Qwt3D::SingleLine, text_));//fm.boundingRect(text_)  misbehaviour under linux;
-  
+    QRect r = QRect(QPoint(0, 0), fm.size(Qwt3D::SingleLine, text_));//fm.boundingRect(text_)  misbehaviour under linux;
 #if QT_VERSION < 0x040000
- 		r.moveBy(0, -r.top());
+    r.moveBy(0, -r.top());
 #else
- 		r.translate(0, -r.top());
+    r.translate(0, -r.top());
 #endif
-	
-	pm_ = QPixmap(r.width(), r.bottom());
 
-	if (pm_.isNull()) // else crash under linux
-	{
+	pm_ = QPixmap(r.width(), r.bottom());
+	if (pm_.isNull()){ // else crash under linux
 		r = 	QRect(QPoint(0,0),fm.size(Qwt3D::SingleLine, QString(" "))); // draw empty space else //todo
 #if QT_VERSION < 0x040000
  		r.moveBy(0, -r.top());
 #else
  		r.translate(0, -r.top());
 #endif
-		pm_ = QPixmap(r.width(), r.bottom());		
+		pm_ = QPixmap(r.width(), r.bottom());
 	}
-	
-#if QT_VERSION >= 0x040000 // avoids uninitialized areas in some cases
-	if (plot()){
-		Qwt3D::RGBA rgba = plot()->backgroundRGBAColor();
-		pm_.fill(GL2Qt(rgba.r, rgba.g, rgba.b));
-	}
-#else
-	pm_.fill();
-#endif
-	
+
+    if (plot() && plot()->isExportingVector()){
+    #if QT_VERSION >= 0x040000 // avoids uninitialized areas in some cases
+        Qwt3D::RGBA rgba = plot()->backgroundRGBAColor();
+        pm_.fill(GL2Qt(rgba.r, rgba.g, rgba.b));
+    #else
+        pm_.fill();
+    #endif
+    } else {
+        QBitmap bm(pm_.width(), pm_.height());
+        bm.fill(Qt::color0);
+        p.begin( &bm );
+        p.setPen(Qt::color1);
+        p.setFont(font_);
+        p.drawText(0, r.height() - fm.descent() - 1, text_);
+        p.end();
+
+        pm_.setMask(bm);
+    }
+
 	p.begin( &pm_ );
     p.setFont( font_ );
     p.setPen( Qt::SolidLine );
     p.setPen( GL2Qt(color.r, color.g, color.b) );
-
-    p.drawText(0,r.height() - fm.descent() -1 , text_);
-	p.end();	
+    p.drawText(0, r.height() - fm.descent() - 1, text_);
+	p.end();
 
 #if QT_VERSION < 0x040000
-  buf_ = pm_.convertToImage();
+    buf_ = pm_.convertToImage();
 #else
-  buf_ = pm_.toImage();
+    buf_ = pm_.toImage();
 #endif
-	
-	tex_ = QGLWidget::convertToGLFormat( buf_ );	  // flipped 32bit RGBA ?		
+
+	tex_ = QGLWidget::convertToGLFormat( buf_ );	  // flipped 32bit RGBA ?
 }
 
 /**
@@ -155,7 +160,7 @@ anchor type         shift
 
 left aligned         -->
 right aligned        <--
-top aligned          top-down            
+top aligned          top-down
 bottom aligned       bottom-up
 \endverbatim
 The unit is user space dependend (one pixel on screen - play around to get satisfying results)
@@ -168,7 +173,7 @@ void Label::adjust(int gap)
 void Label::convert2screen()
 {
 	Triple start = World2ViewPort(pos_);
-	
+
 	switch (anchor_)
 	{
 		case BottomLeft :
@@ -202,62 +207,57 @@ void Label::convert2screen()
 			break;
 	}
 	start = World2ViewPort(beg_);
-	end_ = ViewPort2World(start + Triple(width(), height(), 0));	
+	end_ = ViewPort2World(start + Triple(width(), height(), 0));
 }
 
 void Label::draw()
 {
 	if (text_.isEmpty())
 		return;
-	
-	if (flagforupdate_)
-	{
+
+	if (flagforupdate_){
 		update();
 		flagforupdate_ = false;
 	}
 
+    if (plot() && plot()->isExportingVector())
+        update();
+
 	if (buf_.isNull())
 		return;
-		
+
 	GLboolean b;
 	GLint func;
 	GLdouble v;
 	glGetBooleanv(GL_ALPHA_TEST, &b);
 	glGetIntegerv(GL_ALPHA_TEST_FUNC, &func);
 	glGetDoublev(GL_ALPHA_TEST_REF, &v);
-	
+
 	glEnable (GL_ALPHA_TEST);
 	glAlphaFunc (GL_NOTEQUAL, 0.0);
-	
+
 	convert2screen();
 	glRasterPos3d(beg_.x, beg_.y, beg_.z);
- 
-	
+
 	int w = tex_.width();
 	int h = tex_.height();
- 
-	if (devicefonts_)
-	{		
-		drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_);
-	}
-	else
-	{
-		drawDevicePixels(w, h, GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
-//    glDrawPixels(w, h, GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());	
-	}
 
+	if (devicefonts_)
+		drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_);
+	else
+		drawDevicePixels(w, h, GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
 
 	glAlphaFunc(func,v);
 	Enable(GL_ALPHA_TEST, b);
 }
 
 
-double Label::width() const 
-{ 
-	return pm_.width(); 
+double Label::width() const
+{
+	return pm_.width();
 }
 
-double Label::height() const 
-{ 
-	return pm_.height(); 
+double Label::height() const
+{
+	return pm_.height();
 }

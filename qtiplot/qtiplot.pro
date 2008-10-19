@@ -5,18 +5,23 @@ SCRIPTING_LANGS += Python
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
 #DEFINES         += SCRIPTING_CONSOLE
+
 # a dialog for selecting the scripting language on a per-project basis
 DEFINES         += SCRIPTING_DIALOG
+
 #DEFINES         += QTIPLOT_DEMO
-# comment the following lines to disable donations start-up message
+
+# Comment the following lines to disable donations start-up message.
 #DEFINES         += QTIPLOT_SUPPORT
-# comment the following lines if you haven't subscribed for a QtiPlot binaries maintenance contract
+
+# Comment the following line if you haven't subscribed for a QtiPlot binaries maintenance contract.
 #RESTRICTED_MODULES += EMF
 
-######################################################################################
-# Uncomment the following line if you want to perform a custom installation using
-# the *.path variables defined bellow.
-######################################################################################
+# Comment the next line, if you don't have libpng on your windows system.
+#DEFINES += GL2PS_HAVE_LIBPNG
+win32:INCLUDEPATH += ../3rdparty/libpng/
+
+# Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall
 
 CONFIG          += release
@@ -123,18 +128,18 @@ mac:RC_FILE   = icons/qtiplot.icns
 TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_es.ts \
                   translations/qtiplot_fr.ts \
-				  #translations/qtiplot_pt.ts \
+                  #translations/qtiplot_pt.ts \
                   translations/qtiplot_ru.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
                   translations/qtiplot_fr.qm \
-				  #translations/qtiplot_pt.qm \
+                  #translations/qtiplot_pt.qm \
                   translations/qtiplot_ru.qm \
                   translations/qtiplot_ja.qm \
                   translations/qtiplot_sv.qm
@@ -161,20 +166,20 @@ HEADERS  += src/ApplicationWindow.h \
             src/importOPJ.h\
             src/SymbolDialog.h \
             src/RenameWindowDialog.h \
-			src/MdiSubWindow.h \
+            src/MdiSubWindow.h \
             src/ImportASCIIDialog.h \
             src/Folder.h\
             src/FindDialog.h\
             src/TextFormatButtons.h\
-			src/ColorMapDialog.h\
+            src/ColorMapDialog.h\
             src/OpenProjectDialog.h\
             src/CustomActionDialog.h \
-			src/PlotWizard.h \
+            src/PlotWizard.h \
 
 ###################### SOURCES ##############################################
 
 SOURCES  += src/main.cpp \
-			src/ApplicationWindow.cpp \
+            src/ApplicationWindow.cpp \
             src/ExportDialog.cpp \
             src/ConfigDialog.cpp \
             src/DataSetDialog.cpp \
@@ -182,279 +187,49 @@ SOURCES  += src/main.cpp \
             src/importOPJ.cpp\
             src/SymbolDialog.cpp \
             src/RenameWindowDialog.cpp \
-			src/MdiSubWindow.cpp \
+            src/MdiSubWindow.cpp \
             src/ImportASCIIDialog.cpp \
             src/Folder.cpp\
             src/FindDialog.cpp\
             src/TextFormatButtons.cpp\
-			src/ColorMapDialog.cpp\
+            src/ColorMapDialog.cpp\
             src/OpenProjectDialog.cpp\
             src/CustomActionDialog.cpp \
-			src/PlotWizard.cpp \
-			
-###############################################################
-##################### libqti ##################################
-###############################################################
-INCLUDEPATH       += src/lib/include
+            src/PlotWizard.cpp \
 
-HEADERS  += src/lib/include/ColorBox.h \
-			src/lib/include/ColorButton.h \
-            src/lib/include/ColorMapEditor.h \
-			src/lib/include/DoubleSpinBox.h \
-			src/lib/include/ExtensibleFileDialog.h \
-            src/lib/include/PatternBox.h \
-			src/lib/include/PenStyleBox.h \
-			src/lib/include/SymbolBox.h \
-
-SOURCES  += src/lib/src/ColorBox.cpp \
-			src/lib/src/ColorButton.cpp \
-            src/lib/src/ColorMapEditor.cpp \
-			src/lib/src/DoubleSpinBox.cpp \
-			src/lib/src/ExtensibleFileDialog.cpp \
-            src/lib/src/PatternBox.cpp \
-			src/lib/src/PenStyleBox.cpp \
-			src/lib/src/SymbolBox.cpp \
-			
 ###############################################################
 ##################### Compression (zlib123) ###################
 ###############################################################
 
-	SOURCES += ../3rdparty/zlib123/minigzip.c
+SOURCES += ../3rdparty/zlib123/minigzip.c
 
 ###############################################################
 ################# Origin Import (liborigin) ###################
 ###############################################################
 
-  	HEADERS += ../3rdparty/liborigin/OriginObj.h
-	HEADERS += ../3rdparty/liborigin/OriginFile.h
-	HEADERS += ../3rdparty/liborigin/OriginParser.h
-	HEADERS += ../3rdparty/liborigin/OriginDefaultParser.h
-	HEADERS += ../3rdparty/liborigin/Origin750Parser.h
+HEADERS += ../3rdparty/liborigin/OriginObj.h
+HEADERS += ../3rdparty/liborigin/OriginFile.h
+HEADERS += ../3rdparty/liborigin/OriginParser.h
+HEADERS += ../3rdparty/liborigin/OriginDefaultParser.h
+HEADERS += ../3rdparty/liborigin/Origin750Parser.h
 
-	SOURCES += ../3rdparty/liborigin/OriginFile.cpp
-	SOURCES += ../3rdparty/liborigin/OriginParser.cpp
-	SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
-	SOURCES += ../3rdparty/liborigin/Origin750Parser.cpp
-
-###############################################################
-################# Module: Table ##############################
-###############################################################
-
-HEADERS  += src/table/SetColValuesDialog.h \
-            src/table/SortDialog.h \
-			src/table/Table.h \
-            src/table/TableDialog.h \
-			src/table/TableStatistics.h \
-         
-SOURCES  += src/table/SetColValuesDialog.cpp \
-            src/table/SortDialog.cpp \
-			src/table/Table.cpp \
-            src/table/TableDialog.cpp \
-			src/table/TableStatistics.cpp \
-			
-###############################################################
-################# Module: Matrix ##############################
-###############################################################
-
-	HEADERS += src/matrix/Matrix.h \
-			   src/matrix/MatrixCommand.h \
-               src/matrix/MatrixDialog.h \
-			   src/matrix/MatrixModel.h \
-               src/matrix/MatrixSizeDialog.h \
-               src/matrix/MatrixValuesDialog.h \
-
-	SOURCES += src/matrix/Matrix.cpp \
-			   src/matrix/MatrixCommand.cpp \
-               src/matrix/MatrixDialog.cpp \
-			   src/matrix/MatrixModel.cpp \
-               src/matrix/MatrixSizeDialog.cpp \
-               src/matrix/MatrixValuesDialog.cpp \
+SOURCES += ../3rdparty/liborigin/OriginFile.cpp
+SOURCES += ../3rdparty/liborigin/OriginParser.cpp
+SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
+SOURCES += ../3rdparty/liborigin/Origin750Parser.cpp
 
 ###############################################################
-################# Module: Plot 2D #############################
+################# Other Default Modules #######################
 ###############################################################
 
-    HEADERS += src/plot2D/AddWidgetTool.h \
-			   src/plot2D/ArrowMarker.h \
-			   src/plot2D/BoxCurve.h \
-			   src/plot2D/CanvasPicker.h \
-			   src/plot2D/DataPickerTool.h \
-			   src/plot2D/EllipseWidget.h \
-			   src/plot2D/FrameWidget.h \
-			   src/plot2D/FunctionCurve.h \
-			   src/plot2D/Graph.h \
-			   src/plot2D/Grid.h \
-			   src/plot2D/ImageWidget.h \
-			   src/plot2D/LegendWidget.h \
-			   src/plot2D/LineProfileTool.h \
-			   src/plot2D/MultiLayer.h \
-			   src/plot2D/MultiPeakFitTool.h \
-			   src/plot2D/PlotCurve.h \
-			   src/plot2D/PlotToolInterface.h \
-			   src/plot2D/QwtBarCurve.h \
-               src/plot2D/QwtErrorPlotCurve.h \
-			   src/plot2D/QwtHistogram.h \
-               src/plot2D/QwtPieCurve.h \
-			   src/plot2D/RangeSelectorTool.h \
-			   src/plot2D/RectangleWidget.h \
-			   src/plot2D/ScaleDraw.h \
-			   src/plot2D/ScaleEngine.h \
-			   src/plot2D/ScalePicker.h \
-			   src/plot2D/ScreenPickerTool.h \
-			   src/plot2D/SelectionMoveResizer.h \
-			   src/plot2D/Spectrogram.h \
-			   src/plot2D/TexWidget.h \
-			   src/plot2D/TitlePicker.h \
-			   src/plot2D/TranslateCurveTool.h \
-			   src/plot2D/VectorCurve.h \
-
-    SOURCES += src/plot2D/AddWidgetTool.cpp \
-			   src/plot2D/ArrowMarker.cpp \
-			   src/plot2D/BoxCurve.cpp \
-			   src/plot2D/CanvasPicker.cpp \
-			   src/plot2D/DataPickerTool.cpp \
-			   src/plot2D/EllipseWidget.cpp \
-			   src/plot2D/FrameWidget.cpp \
-			   src/plot2D/FunctionCurve.cpp \
-			   src/plot2D/Graph.cpp \
-			   src/plot2D/Grid.cpp \
-			   src/plot2D/ImageWidget.cpp \
-			   src/plot2D/LegendWidget.cpp \
-			   src/plot2D/LineProfileTool.cpp \
-			   src/plot2D/MultiLayer.cpp \
-			   src/plot2D/MultiPeakFitTool.cpp \
-			   src/plot2D/PlotCurve.cpp \
-			   src/plot2D/QwtBarCurve.cpp \
-               src/plot2D/QwtErrorPlotCurve.cpp \
-			   src/plot2D/QwtHistogram.cpp \
-               src/plot2D/QwtPieCurve.cpp \
-			   src/plot2D/RangeSelectorTool.cpp \
-			   src/plot2D/RectangleWidget.cpp \
-			   src/plot2D/ScaleDraw.cpp \
-			   src/plot2D/ScaleEngine.cpp \
-			   src/plot2D/ScalePicker.cpp \
-			   src/plot2D/ScreenPickerTool.cpp \
-			   src/plot2D/SelectionMoveResizer.cpp \
-			   src/plot2D/Spectrogram.cpp \
-			   src/plot2D/TexWidget.cpp \
-			   src/plot2D/TitlePicker.cpp \
-			   src/plot2D/TranslateCurveTool.cpp \
-			   src/plot2D/VectorCurve.cpp \
-
-	HEADERS += src/plot2D/dialogs/AssociationsDialog.h \
-			   src/plot2D/dialogs/AxesDialog.h \
-			   src/plot2D/dialogs/CurvesDialog.h \
-			   src/plot2D/dialogs/CurveRangeDialog.h \
-			   src/plot2D/dialogs/EnrichmentDialog.h \
-			   src/plot2D/dialogs/ErrDialog.h \
-			   src/plot2D/dialogs/FunctionDialog.h \
-			   src/plot2D/dialogs/ImageExportDialog.h \
-			   src/plot2D/dialogs/LayerDialog.h \
-			   src/plot2D/dialogs/LineDialog.h \
-		       src/plot2D/dialogs/PlotDialog.h \
-			   src/plot2D/dialogs/TextDialog.h \
-			   src/plot2D/dialogs/TextEditor.h \
-
-	SOURCES += src/plot2D/dialogs/AssociationsDialog.cpp \
-			   src/plot2D/dialogs/AxesDialog.cpp \
-			   src/plot2D/dialogs/CurvesDialog.cpp \
-			   src/plot2D/dialogs/CurveRangeDialog.cpp \
-			   src/plot2D/dialogs/EnrichmentDialog.cpp \
-			   src/plot2D/dialogs/ErrDialog.cpp \
-			   src/plot2D/dialogs/FunctionDialog.cpp \
-			   src/plot2D/dialogs/ImageExportDialog.cpp \
-			   src/plot2D/dialogs/LayerDialog.cpp \
-			   src/plot2D/dialogs/LineDialog.cpp \
-		       src/plot2D/dialogs/PlotDialog.cpp \
-			   src/plot2D/dialogs/TextDialog.cpp \
-			   src/plot2D/dialogs/TextEditor.cpp \
-
-###############################################################
-################# Module: Plot 3D #############################
-###############################################################
 include(../3rdparty/qwtplot3d/qwtplot3d.pri)
-INCLUDEPATH += src/plot3D/
-    HEADERS += src/plot3D/Bar.h \
-               src/plot3D/ColorMapPreviewDialog.h\
-               src/plot3D/Cone3D.h \
-			   src/plot3D/Graph3D.h \
-			   src/plot3D/Plot3DDialog.h \
-			   src/plot3D/SurfaceDialog.h \
-
-	SOURCES += src/plot3D/Bar.cpp \
-			   src/plot3D/ColorMapPreviewDialog.cpp\
-               src/plot3D/Cone3D.cpp \
-			   src/plot3D/Graph3D.cpp \
-			   src/plot3D/Plot3DDialog.cpp \
-			   src/plot3D/SurfaceDialog.cpp \
-
-###############################################################
-################# Module: Analysis ##############################
-###############################################################
-
-    HEADERS += src/analysis/Convolution.h \
-			   src/analysis/Correlation.h \
-			   src/analysis/Differentiation.h \
-			   src/analysis/ExponentialFit.h \
-			   src/analysis/FFTFilter.h \
-			   src/analysis/FFT.h \
-			   src/analysis/Filter.h \
-			   src/analysis/Fit.h \
-			   src/analysis/FitModelHandler.h \
-			   src/analysis/Integration.h \
-			   src/analysis/Interpolation.h \
-			   src/analysis/LogisticFit.h \
-			   src/analysis/MultiPeakFit.h \
-			   src/analysis/NonLinearFit.h \
-			   src/analysis/PluginFit.h \
-			   src/analysis/PolynomialFit.h \
-			   src/analysis/SigmoidalFit.h \
-			   src/analysis/SmoothFilter.h \
-			   src/analysis/fft2D.h \
-               src/analysis/fit_gsl.h \
-			   src/analysis/nrutil.h \
-
-	SOURCES += src/analysis/Convolution.cpp \
-			   src/analysis/Correlation.cpp \
-			   src/analysis/Differentiation.cpp \
-			   src/analysis/ExponentialFit.cpp \
-			   src/analysis/FFTFilter.cpp \
-			   src/analysis/FFT.cpp \
-			   src/analysis/Filter.cpp \
-			   src/analysis/Fit.cpp \
-			   src/analysis/FitModelHandler.cpp \
-			   src/analysis/Integration.cpp \
-			   src/analysis/Interpolation.cpp \
-			   src/analysis/LogisticFit.cpp \
-			   src/analysis/MultiPeakFit.cpp \
-			   src/analysis/NonLinearFit.cpp \
-			   src/analysis/PluginFit.cpp \
-			   src/analysis/PolynomialFit.cpp \
-			   src/analysis/SigmoidalFit.cpp \
-			   src/analysis/SmoothFilter.cpp \
-			   src/analysis/fft2D.cpp \
-               src/analysis/fit_gsl.cpp \
-			   src/analysis/nrutil.cpp \
-
-    HEADERS += src/analysis/dialogs/ExpDecayDialog.h \
-			   src/analysis/dialogs/FFTDialog.h \
-			   src/analysis/dialogs/FitDialog.h \
-			   src/analysis/dialogs/FilterDialog.h \
-			   src/analysis/dialogs/FrequencyCountDialog.h \
-			   src/analysis/dialogs/IntDialog.h \
-			   src/analysis/dialogs/InterpolationDialog.h \
-			   src/analysis/dialogs/PolynomFitDialog.h \
-			   src/analysis/dialogs/SmoothCurveDialog.h \
-
-	SOURCES += src/analysis/dialogs/ExpDecayDialog.cpp \
-			   src/analysis/dialogs/FFTDialog.cpp \
-			   src/analysis/dialogs/FitDialog.cpp \
-			   src/analysis/dialogs/FilterDialog.cpp \
-			   src/analysis/dialogs/FrequencyCountDialog.cpp \
-			   src/analysis/dialogs/IntDialog.cpp \
-			   src/analysis/dialogs/InterpolationDialog.cpp \
-			   src/analysis/dialogs/PolynomFitDialog.cpp \
-			   src/analysis/dialogs/SmoothCurveDialog.cpp \
+include(src/analysis/analysis.pri)
+include(src/lib/libqti.pri)
+include(src/plot2D/plot2D.pri)
+include(src/plot3D/plot3D.pri)
+include(src/matrix/matrix.pri)
+include(src/table/table.pri)
+include(src/scripting/scripting.pri)
 
 ###############################################################
 ################# Restricted Module: EmfEngine ################
@@ -473,41 +248,8 @@ contains(RESTRICTED_MODULES, EMF) {
 }
 
 ###############################################################
-##################### SCRIPTING LANGUAGES SECTION #############
+##################### Scripting: PYTHON + SIP + PyQT ##########
 ###############################################################
-
-HEADERS  += src/scripting/customevents.h\
-			src/scripting/FindReplaceDialog.h\
-			src/scripting/LineNumberDisplay.h\
-			src/scripting/Note.h\
-            src/scripting/ScriptingEnv.h\
-            src/scripting/Script.h\
-            src/scripting/ScriptEdit.h\
-            src/scripting/ScriptingLangDialog.h\
-            src/scripting/ScriptWindow.h\
-
-SOURCES  += src/scripting/FindReplaceDialog.cpp\
-			src/scripting/LineNumberDisplay.cpp\
-			src/scripting/Note.cpp\
-            src/scripting/ScriptingEnv.cpp\
-            src/scripting/Script.cpp\
-            src/scripting/ScriptEdit.cpp\
-            src/scripting/ScriptingLangDialog.cpp\
-            src/scripting/ScriptWindow.cpp\
-
-##################### Default: muParser v1.28 #################
-
-contains(SCRIPTING_LANGS, muParser) {
-  DEFINES += SCRIPTING_MUPARSER
-
-  HEADERS += src/scripting/muParserScript.h \
-             src/scripting/muParserScripting.h \
-
-  SOURCES += src/scripting/muParserScript.cpp \
-             src/scripting/muParserScripting.cpp \
-}
-
-##################### PYTHON + SIP + PyQT #####################
 
 contains(SCRIPTING_LANGS, Python) {
 
@@ -522,16 +264,6 @@ contains(SCRIPTING_LANGS, Python) {
   	DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
   }
 
-  DEFINES += SCRIPTING_PYTHON
-
-  HEADERS += src/scripting/PythonScript.h\
-  			 src/scripting/PythonScripting.h\
-			 src/scripting/PythonSyntaxHighlighter.h\
-
-  SOURCES += src/scripting/PythonScript.cpp\
-  			 src/scripting/PythonScripting.cpp\
-			 src/scripting/PythonSyntaxHighlighter.cpp\
-
   unix {
     INCLUDEPATH += $$system(python python-includepath.py)
     LIBS        += $$system(python -c "\"from distutils import sysconfig; print '-lpython'+sysconfig.get_config_var('VERSION')\"")
@@ -545,55 +277,6 @@ contains(SCRIPTING_LANGS, Python) {
     LIBS        += $$system(call python-libs-win.py)
     system($$system(call python-sipcmd.py) -c $${SIP_DIR} src/scripting/qti.sip)
   }
-
-##################### SIP generated files #####################
-
-  SOURCES += $${SIP_DIR}/sipqticmodule.cpp\
-             $${SIP_DIR}/sipqtiApplicationWindow.cpp\
-			 $${SIP_DIR}/sipqtiQwtPlot.cpp\
-             $${SIP_DIR}/sipqtiGraph.cpp\
-             $${SIP_DIR}/sipqtiGraph3D.cpp\
-             $${SIP_DIR}/sipqtiArrowMarker.cpp\
-             $${SIP_DIR}/sipqtiFrameWidget.cpp\
-			 $${SIP_DIR}/sipqtiEllipseWidget.cpp\
-			 $${SIP_DIR}/sipqtiImageWidget.cpp\
-			 $${SIP_DIR}/sipqtiLegendWidget.cpp\
-			 $${SIP_DIR}/sipqtiRectangleWidget.cpp\
-			 $${SIP_DIR}/sipqtiGrid.cpp\
-             $${SIP_DIR}/sipqtiMultiLayer.cpp\
-             $${SIP_DIR}/sipqtiTable.cpp\
-			 $${SIP_DIR}/sipqtiQwtLinearColorMap.cpp\
-             $${SIP_DIR}/sipqtiMatrix.cpp\
-             $${SIP_DIR}/sipqtiMdiSubWindow.cpp\
-             $${SIP_DIR}/sipqtiScriptEdit.cpp\
-             $${SIP_DIR}/sipqtiNote.cpp\
-             $${SIP_DIR}/sipqtiPythonScript.cpp\
-             $${SIP_DIR}/sipqtiPythonScripting.cpp\
-             $${SIP_DIR}/sipqtiFolder.cpp\
-             $${SIP_DIR}/sipqtiQList.cpp\
-             $${SIP_DIR}/sipqtiFit.cpp \
-             $${SIP_DIR}/sipqtiExponentialFit.cpp \
-             $${SIP_DIR}/sipqtiTwoExpFit.cpp \
-             $${SIP_DIR}/sipqtiThreeExpFit.cpp \
-             $${SIP_DIR}/sipqtiSigmoidalFit.cpp \
-			 $${SIP_DIR}/sipqtiLogisticFit.cpp \
-             $${SIP_DIR}/sipqtiGaussAmpFit.cpp \
-             $${SIP_DIR}/sipqtiLorentzFit.cpp \
-             $${SIP_DIR}/sipqtiNonLinearFit.cpp \
-             $${SIP_DIR}/sipqtiPluginFit.cpp \
-             $${SIP_DIR}/sipqtiMultiPeakFit.cpp \
-             $${SIP_DIR}/sipqtiPolynomialFit.cpp \
-             $${SIP_DIR}/sipqtiLinearFit.cpp \
-             $${SIP_DIR}/sipqtiGaussFit.cpp \
-             $${SIP_DIR}/sipqtiFilter.cpp \
-             $${SIP_DIR}/sipqtiDifferentiation.cpp \
-             $${SIP_DIR}/sipqtiIntegration.cpp \
-			 $${SIP_DIR}/sipqtiInterpolation.cpp \
-			 $${SIP_DIR}/sipqtiSmoothFilter.cpp \
-			 $${SIP_DIR}/sipqtiFFTFilter.cpp \
-			 $${SIP_DIR}/sipqtiFFT.cpp \
-			 $${SIP_DIR}/sipqtiCorrelation.cpp \
-			 $${SIP_DIR}/sipqtiConvolution.cpp \
-			 $${SIP_DIR}/sipqtiDeconvolution.cpp \
 }
+
 ###############################################################

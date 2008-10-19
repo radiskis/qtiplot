@@ -1,491 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ru">
 <context>
-    <name></name>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13414"/>
-        <source>QtiPlot - File openning error</source>
-        <translation type="unfinished">QtiPlot - ошибка при открытии файла</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13558"/>
-        <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
-        <translation type="unfinished">Файл: &lt;b&gt;%1&lt;/b&gt; не существует!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13562"/>
-        <source>QtiPlot - File opening error</source>
-        <translation type="unfinished">QtiPlot - ошибка при открытии файла</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13563"/>
-        <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
-        <translation type="unfinished">Файл: &lt;b&gt; %1 &lt;/b&gt; не является файлом проекта QtiPlot или Origin!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13760"/>
-        <source>QtiPlot - Demo Version</source>
-        <translation type="unfinished">QtiPlot - Демонстрационная версия</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13762"/>
-        <source>You are using the demonstration version of Qtiplot.<byte value="xd"/></source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13785"/>
-        <source>QtiPlot - File backup error</source>
-        <translation type="unfinished">QtiPlot - Ошибка при резервном копировании файла</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13786"/>
-        <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
-        <translation type="unfinished">Невозможно создать резервную копию &lt;b&gt;%1&lt;/b&gt; (в %2).&lt;br&gt;Если вы проигнорируете эту ситуацию, то рискуете &lt;b&gt;потерять данные&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13803"/>
-        <source>QtiPlot - File save error</source>
-        <translation type="unfinished">QtiPlot - Ошибка при сохранении файла</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13803"/>
-        <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
-        <translation type="unfinished">Файл: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; открыт в режиме &quot;только для чтения&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13897"/>
-        <source>QtiPlot project</source>
-        <translation type="unfinished">Проект QtiPlot</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13898"/>
-        <source>Compressed QtiPlot project</source>
-        <translation type="unfinished">Сжатый проект QtiPlot</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13901"/>
-        <source>Save project as</source>
-        <translation type="unfinished">Сохранить проект как</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13928"/>
-        <source>&amp;Find...</source>
-        <translation type="unfinished">&amp;Найти...</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13930"/>
-        <source>App&amp;end Project...</source>
-        <translation type="unfinished">&amp;Добавить в проект...</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13932"/>
-        <source>Save &amp;As Project...</source>
-        <translation type="unfinished">Сохр&amp;анить как проект...</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13934"/>
-        <source>Save Project &amp;As...</source>
-        <translation type="unfinished">Сохранить проект &amp;как...</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13939"/>
-        <source>&amp;Show All Windows</source>
-        <translation type="unfinished">Показать &amp;все окна</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13940"/>
-        <source>&amp;Hide All Windows</source>
-        <translation type="unfinished">&amp;Скрыть все окна</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13946"/>
-        <source>&amp;Delete Folder</source>
-        <translation type="unfinished">&amp;Удалить папку</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13947"/>
-        <source>&amp;Rename</source>
-        <translation type="unfinished">&amp;Переименовать</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13959"/>
-        <source>New &amp;Window</source>
-        <translation type="unfinished">&amp;Новое окно</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13962"/>
-        <source>New F&amp;older</source>
-        <translation type="unfinished">Новая &amp;папка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13966"/>
-        <source>&amp;None</source>
-        <translation type="unfinished">&amp;Нет</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13966"/>
-        <source>&amp;Windows in Active Folder</source>
-        <translation type="unfinished">Окна в т&amp;екущей папке</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13966"/>
-        <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
-        <translation type="unfinished">Окна в &amp;текущей и вложенных папках</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13973"/>
-        <source>&amp;View Windows</source>
-        <translation type="unfinished">П&amp;росмотр окон</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13975"/>
-        <source>&amp;Properties...</source>
-        <translation type="unfinished">&amp;Свойства...</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13990"/>
-        <source>Hidden</source>
-        <translation type="unfinished">Скрытый</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15106"/>
-        <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Ошибка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14043"/>
-        <source>Please enter a valid name!</source>
-        <translation type="unfinished">Пожалуйста введите корректное название!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14053"/>
-        <source>Name already exists!</source>
-        <translation type="unfinished">Имя уже существует!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14053"/>
-        <source>Please choose another name!</source>
-        <translation type="unfinished">Пожалуйста выберите другое имя!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14553"/>
-        <source>Type</source>
-        <translation type="unfinished">Тип</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14164"/>
-        <source>Project</source>
-        <translation type="unfinished">Проект</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14555"/>
-        <source>Path</source>
-        <translation type="unfinished">Путь</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14556"/>
-        <source>Size</source>
-        <translation type="unfinished">Размер</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14170"/>
-        <source>bytes</source>
-        <translation type="unfinished">байт</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14206"/>
-        <source>Contents</source>
-        <translation type="unfinished">Содержимое</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14206"/>
-        <source>windows</source>
-        <translation type="unfinished">окна</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14207"/>
-        <source>folders</source>
-        <translation type="unfinished">папки</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14557"/>
-        <source>Created</source>
-        <translation type="unfinished">Создан</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14181"/>
-        <source>Modified</source>
-        <translation type="unfinished">Изменён</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14531"/>
-        <source>Properties</source>
-        <translation type="unfinished">Свойства</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14571"/>
-        <source>Folder</source>
-        <translation type="unfinished">Папка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14225"/>
-        <source>New Folder</source>
-        <translation type="unfinished">Новая папка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14270"/>
-        <source>QtiPlot - Delete folder?</source>
-        <translation type="unfinished">QtiPlot - Удалить папку?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14271"/>
-        <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
-        <translation type="unfinished">Удалить папку &apos;%1&apos; и все содержащиеся в ней окна?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14272"/>
-        <source>Yes</source>
-        <translation type="unfinished">Да</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14272"/>
-        <source>No</source>
-        <translation type="unfinished">Нет</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14541"/>
-        <source>Matrix</source>
-        <translation type="unfinished">Матрица</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14544"/>
-        <source>Table</source>
-        <translation type="unfinished">Таблица</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14547"/>
-        <source>Note</source>
-        <translation type="unfinished">Заметка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14550"/>
-        <source>Graph</source>
-        <translation type="unfinished">График</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14553"/>
-        <source>3D Graph</source>
-        <translation type="unfinished">3D График</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14537"/>
-        <source>Label</source>
-        <translation type="unfinished">Метка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14558"/>
-        <source>Status</source>
-        <translation type="unfinished">Состояние</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14622"/>
-        <source>QtiPlot - No match found</source>
-        <translation type="unfinished">QtiPlot - Совпадений не найдено</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14623"/>
-        <source>Sorry, no match found for string: &apos;%1&apos;</source>
-        <translation type="unfinished">Совпадений для строки &apos;%1&apos; не найдено</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14641"/>
-        <source>Cannot move an object to itself!</source>
-        <translation type="unfinished">Невозможно переместить объект в самого себя!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14646"/>
-        <source>Cannot move a parent folder into a child folder!</source>
-        <translation type="unfinished">Невозможно переместить родительскую папку в дочернюю!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15653"/>
-        <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14659"/>
-        <source>Skipped moving folder</source>
-        <translation type="unfinished">Перемещение папки пропущено</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14703"/>
-        <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
-        <translation type="unfinished">Папка назначения уже содержит папку с именем &apos;%1&apos;! Операция пропускается!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15653"/>
-        <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14755"/>
-        <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
-        <translation type="unfinished">QtiPlot попытается загрузить необходимую информацию о последних доступных обновлениях. Пожалуйста, измените настройки брандмауэра, чтобы QtiPlot мог соединиться с интернетом!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14756"/>
-        <source>Do you wish to continue?</source>
-        <translation type="unfinished">Продолжить?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14771"/>
-        <source>QtiPlot - HTTP get version file</source>
-        <translation type="unfinished">QtiPlot - HTTP получить файл версии</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14772"/>
-        <source>Error while fetching version file with HTTP: %1.</source>
-        <translation type="unfinished">Ошибка при получении файла версии с помощью HTTP: %1.</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14787"/>
-        <source>QtiPlot - Updates Available</source>
-        <translation type="unfinished">QtiPlot - Имеются обновления</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14788"/>
-        <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
-        <translation type="unfinished">Для загрузки доступна более свежая версия QtiPlot (%1). Вы хотите скачать её?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14792"/>
-        <source>QtiPlot - No Updates Available</source>
-        <translation type="unfinished">QtiPlot - Нет доступных обновлений</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14793"/>
-        <source>No updates available. Your current version %1 is the last version available!</source>
-        <translation type="unfinished">Нет доступных обновлений. Текущая версия %1 является последней доступной!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15782"/>
-        <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Предупреждение</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14847"/>
-        <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
-        <translation type="unfinished">Все данные, связанные с таблицей, будут удалены. Вы уверены?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14848"/>
-        <source>&amp;Yes</source>
-        <translation type="unfinished">&amp;Да</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14848"/>
-        <source>&amp;No</source>
-        <translation type="unfinished">&amp;Нет</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14862"/>
-        <source>QtiPlot - Enter row number</source>
-        <translation type="unfinished">QtiPlot - Введите номер строки</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14862"/>
-        <source>Row</source>
-        <translation type="unfinished">Строка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14882"/>
-        <source>QtiPlot - Enter column number</source>
-        <translation type="unfinished">QtiPlot - Введите номер столбца</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14882"/>
-        <source>Column</source>
-        <translation type="unfinished">Столбец</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15654"/>
-        <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation type="unfinished">QtiPlot скомпилирован без поддержки сценариев на языке Python!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15057"/>
-        <source>Please select a Y column to plot!</source>
-        <translation type="unfinished">Пожалуйста, выберите Y столбец для построения!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15094"/>
-        <source>You need at least two columns for this operation!</source>
-        <translation type="unfinished">Для выполнения этой операции нужно как минимум два столбца!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15064"/>
-        <source>Please set a default X column for this table, first!</source>
-        <translation type="unfinished">Пожалуйста, установите сначала X столбец по умолчанию для данной таблицы!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15098"/>
-        <source>Please select a Z column for this operation!</source>
-        <translation type="unfinished">Пожалуйста, выберите Z столбец для данной операции!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15102"/>
-        <source>You need to define a X column first!</source>
-        <translation type="unfinished">Сначала нужно задать X столбец!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15106"/>
-        <source>You need to define a Y column first!</source>
-        <translation type="unfinished">Сначала нужно задать Y столбец!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15303"/>
-        <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
-        <translation type="unfinished">Начиная с версии 0.9.1 QtiPlot хранит пользовательские аппроксимационные модели в ином месте.</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15304"/>
-        <source>If you want to save your already defined models, please choose a destination folder.</source>
-        <translation type="unfinished">Если хотите сохранить ваши модели, пожалуйста, выберите папку назначения.</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15305"/>
-        <source>Import fit models</source>
-        <translation type="unfinished">Импортировать аппроксимационные модели</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15308"/>
-        <source>Choose a directory to export the fit models to</source>
-        <translation type="unfinished">Выберите каталог для экспорта аппроксимационных моделей</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15604"/>
-        <source>No Icon</source>
-        <translation type="unfinished">Без значка</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15783"/>
-        <source>Couldn&apos;t load file: %1.
-Autocompletion will not be available!</source>
-        <translation type="unfinished">Невозможно открыть файл: %1.
-Автодополнение не будет доступно!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15864"/>
-        <source>QtiPlot - Column selection error</source>
-        <translation type="unfinished">QtiPlot - Ошибка выбора столбца</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15865"/>
-        <source>Please select exactly one column and more than one non empty cell!</source>
-        <translation type="unfinished">Выберите только один столбец и более чем одну непустую ячейку!</translation>
-    </message>
-</context>
-<context>
     <name>@default</name>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13411"/>
@@ -996,9 +511,9 @@ Autocompletion will not be available!</source>
         <translation>3D &amp;Блоки</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14590"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14553"/>
         <source>3D Graph</source>
-        <translation type="obsolete">3D График</translation>
+        <translation type="unfinished">3D График</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12655"/>
@@ -1056,24 +571,24 @@ Autocompletion will not be available!</source>
         <translation>&amp;4 слоя</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13429"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13392"/>
         <source>&lt;b&gt; %1 &lt;/b&gt; unknown command line option!</source>
-        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt; неизвестный параметр командной строки!</translation>
+        <translation type="unfinished">&lt;b&gt; %1 &lt;/b&gt; неизвестный параметр командной строки!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13378"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13340"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: This command line option must be used without other arguments!</source>
-        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Данный параметр командной строки должен использоваться без других аргументов!</translation>
+        <translation type="unfinished">&lt;b&gt; %1 &lt;/b&gt;: Данный параметр командной строки должен использоваться без других аргументов!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13421"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13384"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: Wrong locale option or no translation available!</source>
-        <translation type="obsolete">&lt;b&gt; %1 &lt;/b&gt;: Неправильный параметр локализации или отсутствует перевод!</translation>
+        <translation type="unfinished">&lt;b&gt; %1 &lt;/b&gt;: Неправильный параметр локализации или отсутствует перевод!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13444"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13407"/>
         <source>&lt;b&gt;%1&lt;/b&gt; is a directory, please specify a file name!</source>
-        <translation type="obsolete">&lt;b&gt;%1&lt;/b&gt; - директория, пожалуйста, укажите файл!</translation>
+        <translation type="unfinished">&lt;b&gt;%1&lt;/b&gt; - директория, пожалуйста, укажите файл!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="1976"/>
@@ -1261,9 +776,9 @@ Autocompletion will not be available!</source>
         <translation>Анимация</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13967"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13930"/>
         <source>App&amp;end Project...</source>
-        <translation type="obsolete">&amp;Добавить в проект...</translation>
+        <translation type="unfinished">&amp;Добавить в проект...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12468"/>
@@ -1376,19 +891,19 @@ Autocompletion will not be available!</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13823"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13786"/>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
-        <translation type="obsolete">Невозможно создать резервную копию &lt;b&gt;%1&lt;/b&gt; (в %2).&lt;br&gt;Если вы проигнорируете эту ситуацию, то рискуете &lt;b&gt;потерять данные&lt;/b&gt;.</translation>
+        <translation type="unfinished">Невозможно создать резервную копию &lt;b&gt;%1&lt;/b&gt; (в %2).&lt;br&gt;Если вы проигнорируете эту ситуацию, то рискуете &lt;b&gt;потерять данные&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14683"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14646"/>
         <source>Cannot move a parent folder into a child folder!</source>
-        <translation type="obsolete">Невозможно переместить родительскую папку в дочернюю!</translation>
+        <translation type="unfinished">Невозможно переместить родительскую папку в дочернюю!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14678"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14641"/>
         <source>Cannot move an object to itself!</source>
-        <translation type="obsolete">Невозможно переместить объект в самого себя!</translation>
+        <translation type="unfinished">Невозможно переместить объект в самого себя!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8374"/>
@@ -1471,7 +986,7 @@ Autocompletion will not be available!</source>
         <translation>Закрыть &amp;окно</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11248"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14882"/>
         <source>Column</source>
         <translation>Столбец</translation>
     </message>
@@ -1501,7 +1016,7 @@ Autocompletion will not be available!</source>
         <translation>&amp;Столбцы...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5397"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13898"/>
         <source>Compressed QtiPlot project</source>
         <translation>Сжатый проект QtiPlot</translation>
     </message>
@@ -1516,9 +1031,9 @@ Autocompletion will not be available!</source>
         <translation>&amp;Консоль</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14243"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14206"/>
         <source>Contents</source>
-        <translation type="obsolete">Содержимое</translation>
+        <translation type="unfinished">Содержимое</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="6877"/>
@@ -1631,7 +1146,7 @@ Autocompletion will not be available!</source>
         <translation>Создать пустое окно заметок</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="961"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14557"/>
         <source>Created</source>
         <translation>Создан</translation>
     </message>
@@ -1907,9 +1422,9 @@ Autocompletion will not be available!</source>
         <translation>Удалить &amp;таблицы аппроксимаций</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13983"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13946"/>
         <source>&amp;Delete Folder</source>
-        <translation type="obsolete">&amp;Удалить папку</translation>
+        <translation type="unfinished">&amp;Удалить папку</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8988"/>
@@ -1942,9 +1457,9 @@ Autocompletion will not be available!</source>
         <translation>&amp;Удалить окно</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14308"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14271"/>
         <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
-        <translation type="obsolete">Удалить папку &apos;%1&apos; и все содержащиеся в ней окна?</translation>
+        <translation type="unfinished">Удалить папку &apos;%1&apos; и все содержащиеся в ней окна?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12350"/>
@@ -2009,9 +1524,9 @@ Autocompletion will not be available!</source>
 Предупреждение: существующие слои будет перегруппированы!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14793"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14756"/>
         <source>Do you wish to continue?</source>
-        <translation type="obsolete">Продолжить?</translation>
+        <translation type="unfinished">Продолжить?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12817"/>
@@ -2104,9 +1619,9 @@ Autocompletion will not be available!</source>
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14809"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14772"/>
         <source>Error while fetching version file with HTTP: %1.</source>
-        <translation type="obsolete">Ошибка при получении файла версии с помощью HTTP: %1.</translation>
+        <translation type="unfinished">Ошибка при получении файла версии с помощью HTTP: %1.</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12712"/>
@@ -2226,9 +1741,9 @@ Autocompletion will not be available!</source>
         <translation>&amp;Заполнить столбцы</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13965"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13928"/>
         <source>&amp;Find...</source>
-        <translation type="obsolete">&amp;Найти...</translation>
+        <translation type="unfinished">&amp;Найти...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12539"/>
@@ -2311,7 +1826,7 @@ Autocompletion will not be available!</source>
         <translation>Изолинии на основании</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="212"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14571"/>
         <source>Folder</source>
         <translation>Папка</translation>
     </message>
@@ -2391,9 +1906,9 @@ Autocompletion will not be available!</source>
         <translation>&amp;Справка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14027"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13990"/>
         <source>Hidden</source>
-        <translation type="obsolete">Скрытый</translation>
+        <translation type="unfinished">Скрытый</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12803"/>
@@ -2411,7 +1926,7 @@ Autocompletion will not be available!</source>
         <translation>&amp;Скрыть</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8722"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13940"/>
         <source>&amp;Hide All Windows</source>
         <translation>&amp;Скрыть все окна</translation>
     </message>
@@ -2506,7 +2021,7 @@ Autocompletion will not be available!</source>
         <translation>&amp;Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="962"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14537"/>
         <source>Label</source>
         <translation>Метка</translation>
     </message>
@@ -2546,7 +2061,7 @@ Autocompletion will not be available!</source>
         <translation>Сделать &amp;пожертвование</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8587"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14541"/>
         <source>Matrix</source>
         <translation>Матрица</translation>
     </message>
@@ -2596,9 +2111,9 @@ Autocompletion will not be available!</source>
         <translation>Свёрнутый</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14218"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14181"/>
         <source>Modified</source>
-        <translation type="obsolete">Изменён</translation>
+        <translation type="unfinished">Изменён</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12607"/>
@@ -2636,9 +2151,9 @@ Autocompletion will not be available!</source>
         <translation>Имя &lt;b&gt;%1&lt;/b&gt; уже существует!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14090"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14053"/>
         <source>Name already exists!</source>
-        <translation type="obsolete">Имя уже существует!</translation>
+        <translation type="unfinished">Имя уже существует!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8295"/>
@@ -2651,12 +2166,12 @@ Autocompletion will not be available!</source>
         <translation>Новый график 3D &amp;поверхности</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14262"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14225"/>
         <source>New Folder</source>
-        <translation type="obsolete">Новая папка</translation>
+        <translation type="unfinished">Новая папка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8741"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13962"/>
         <source>New F&amp;older</source>
         <translation>Новая &amp;папка</translation>
     </message>
@@ -2696,7 +2211,7 @@ Autocompletion will not be available!</source>
         <translation>Новая &amp;таблица</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8739"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13959"/>
         <source>New &amp;Window</source>
         <translation>&amp;Новое окно</translation>
     </message>
@@ -2717,12 +2232,12 @@ Autocompletion will not be available!</source>
         <translation>&amp;Следующее</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14885"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14848"/>
         <source>&amp;No</source>
-        <translation type="obsolete">&amp;Нет</translation>
+        <translation type="unfinished">&amp;Нет</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8658"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14272"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
@@ -2737,12 +2252,12 @@ Autocompletion will not be available!</source>
         <translation>Без осей координат</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14830"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14793"/>
         <source>No updates available. Your current version %1 is the last version available!</source>
-        <translation type="obsolete">Нет доступных обновлений. Текущая версия %1 является последней доступной!</translation>
+        <translation type="unfinished">Нет доступных обновлений. Текущая версия %1 является последней доступной!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="6105"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13966"/>
         <source>&amp;None</source>
         <translation>&amp;Нет</translation>
     </message>
@@ -2762,9 +2277,9 @@ Autocompletion will not be available!</source>
         <translation>Не доступно для пустых 3D поверхностей!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14584"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14547"/>
         <source>Note</source>
-        <translation type="obsolete">Заметка</translation>
+        <translation type="unfinished">Заметка</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="2740"/>
@@ -2862,9 +2377,9 @@ Autocompletion will not be available!</source>
         <translation>Вставить выделенное</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14592"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14555"/>
         <source>Path</source>
-        <translation type="obsolete">Путь</translation>
+        <translation type="unfinished">Путь</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="13268"/>
@@ -2877,12 +2392,12 @@ Autocompletion will not be available!</source>
         <translation>&amp;Круговая диаграмма</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5560"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14053"/>
         <source>Please choose another name!</source>
         <translation>Пожалуйста выберите другое имя!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5546"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14043"/>
         <source>Please enter a valid name!</source>
         <translation>Пожалуйста введите корректное название!</translation>
     </message>
@@ -2892,14 +2407,14 @@ Autocompletion will not be available!</source>
         <translation>Пожалуйста, укажите расположение файла справки!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="2411"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15057"/>
         <source>Please select a Y column to plot!</source>
         <translation>Пожалуйста, выберите Y столбец для построения!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15139"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15098"/>
         <source>Please select a Z column for this operation!</source>
-        <translation type="obsolete">Пожалуйста, выберите Z столбец для данной операции!</translation>
+        <translation type="unfinished">Пожалуйста, выберите Z столбец для данной операции!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="6431"/>
@@ -2939,14 +2454,14 @@ Autocompletion will not be available!</source>
  первый представляет сигнал, а второй - функцию-отклик!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15105"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15064"/>
         <source>Please set a default X column for this table, first!</source>
-        <translation type="obsolete">Пожалуйста, установите сначала X столбец по умолчанию для данной таблицы!</translation>
+        <translation type="unfinished">Пожалуйста, установите сначала X столбец по умолчанию для данной таблицы!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13356"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13318"/>
         <source>Please support QtiPlot!</source>
-        <translation type="obsolete">Пожалуйста, поддержите QtiPlot!</translation>
+        <translation type="unfinished">Пожалуйста, поддержите QtiPlot!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8445"/>
@@ -3080,9 +2595,9 @@ Autocompletion will not be available!</source>
         <translation>Распечатать содержимое окна</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14201"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14164"/>
         <source>Project</source>
-        <translation type="obsolete">Проект</translation>
+        <translation type="unfinished">Проект</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="966"/>
@@ -3100,12 +2615,12 @@ Autocompletion will not be available!</source>
         <translation>&amp;Свойства</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14568"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14531"/>
         <source>Properties</source>
-        <translation type="obsolete">Свойства</translation>
+        <translation type="unfinished">Свойства</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8793"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13975"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Свойства...</translation>
     </message>
@@ -3120,7 +2635,7 @@ Autocompletion will not be available!</source>
         <translation>QtiPLot - Ошибка построения</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8658"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15653"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -3135,14 +2650,14 @@ Autocompletion will not be available!</source>
         <translation>QtiPlot - Выберите матрицу для отображения</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11236"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15864"/>
         <source>QtiPlot - Column selection error</source>
         <translation>QtiPlot - Ошибка выбора столбца</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14307"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14270"/>
         <source>QtiPlot - Delete folder?</source>
-        <translation type="obsolete">QtiPlot - Удалить папку?</translation>
+        <translation type="unfinished">QtiPlot - Удалить папку?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5834"/>
@@ -3150,9 +2665,9 @@ Autocompletion will not be available!</source>
         <translation>QtiPlot - Удалить строки</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13797"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13760"/>
         <source>QtiPlot - Demo Version</source>
-        <translation type="obsolete">QtiPlot - Демонстрационная версия</translation>
+        <translation type="unfinished">QtiPlot - Демонстрационная версия</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="7802"/>
@@ -3175,9 +2690,9 @@ Autocompletion will not be available!</source>
         <translation>QtiPlot - Введите число столбцов</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14899"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14862"/>
         <source>QtiPlot - Enter row number</source>
-        <translation type="obsolete">QtiPlot - Введите номер строки</translation>
+        <translation type="unfinished">QtiPlot - Введите номер строки</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="5818"/>
@@ -3190,7 +2705,7 @@ Autocompletion will not be available!</source>
         <translation>QtiPlot - Задайте число вершин</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="10106"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15106"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
@@ -3215,24 +2730,24 @@ Autocompletion will not be available!</source>
         <translation>QtiPlot - Ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13822"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13785"/>
         <source>QtiPlot - File backup error</source>
-        <translation type="obsolete">QtiPlot - Ошибка при резервном копировании файла</translation>
+        <translation type="unfinished">QtiPlot - Ошибка при резервном копировании файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="4247"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13562"/>
         <source>QtiPlot - File opening error</source>
         <translation>QtiPlot - ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="3856"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13414"/>
         <source>QtiPlot - File openning error</source>
         <translation>QtiPlot - ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13840"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13803"/>
         <source>QtiPlot - File save error</source>
-        <translation type="obsolete">QtiPlot - Ошибка при сохранении файла</translation>
+        <translation type="unfinished">QtiPlot - Ошибка при сохранении файла</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="10166"/>
@@ -3240,9 +2755,9 @@ Autocompletion will not be available!</source>
         <translation>QtiPlot - Определить оптимальное положение для нового слоя?</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14808"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14771"/>
         <source>QtiPlot - HTTP get version file</source>
-        <translation type="obsolete">QtiPlot - HTTP получить файл версии</translation>
+        <translation type="unfinished">QtiPlot - HTTP получить файл версии</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="9228"/>
@@ -3270,14 +2785,14 @@ Autocompletion will not be available!</source>
         <translation>QtiPlot - Загрузить изображение из файла</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14829"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14792"/>
         <source>QtiPlot - No Updates Available</source>
-        <translation type="obsolete">QtiPlot - Нет доступных обновлений</translation>
+        <translation type="unfinished">QtiPlot - Нет доступных обновлений</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14659"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14622"/>
         <source>QtiPlot - No match found</source>
-        <translation type="obsolete">QtiPlot - Совпадений не найдено</translation>
+        <translation type="unfinished">QtiPlot - Совпадений не найдено</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="4218"/>
@@ -3325,12 +2840,12 @@ Autocompletion will not be available!</source>
         <translation>QtiPlot - Укажите число точек для усреднения</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14824"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14787"/>
         <source>QtiPlot - Updates Available</source>
-        <translation type="obsolete">QtiPlot - Имеются обновления</translation>
+        <translation type="unfinished">QtiPlot - Имеются обновления</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13262"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15782"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
@@ -3380,14 +2895,14 @@ Autocompletion will not be available!</source>
         <translation>Шаблон таблицы QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5396"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13897"/>
         <source>QtiPlot project</source>
         <translation>Проект QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14792"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14755"/>
         <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
-        <translation type="obsolete">QtiPlot попытается загрузить необходимую информацию о последних доступных обновлениях. Пожалуйста, измените настройки брандмауэра, чтобы QtiPlot мог соединиться с интернетом!</translation>
+        <translation type="unfinished">QtiPlot попытается загрузить необходимую информацию о последних доступных обновлениях. Пожалуйста, измените настройки брандмауэра, чтобы QtiPlot мог соединиться с интернетом!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12405"/>
@@ -3420,7 +2935,7 @@ Autocompletion will not be available!</source>
         <translation>Вернуть изменения</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8132"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13347"/>
         <source>Released</source>
         <translation>Выпущено</translation>
     </message>
@@ -3445,9 +2960,9 @@ Autocompletion will not be available!</source>
         <translation>Удаление данных</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13984"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13947"/>
         <source>&amp;Rename</source>
-        <translation type="obsolete">&amp;Переименовать</translation>
+        <translation type="unfinished">&amp;Переименовать</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12586"/>
@@ -3505,9 +3020,9 @@ Autocompletion will not be available!</source>
         <translation>Сетка справа</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14899"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14862"/>
         <source>Row</source>
-        <translation type="obsolete">Строка</translation>
+        <translation type="unfinished">Строка</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12668"/>
@@ -3530,9 +3045,9 @@ Autocompletion will not be available!</source>
         <translation>&amp;Строки...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13969"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13932"/>
         <source>Save &amp;As Project...</source>
-        <translation type="obsolete">Сохр&amp;анить как проект...</translation>
+        <translation type="unfinished">Сохр&amp;анить как проект...</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12319"/>
@@ -3555,7 +3070,7 @@ Autocompletion will not be available!</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="12314"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13934"/>
         <source>Save Project &amp;As...</source>
         <translation>Сохранить проект &amp;как...</translation>
     </message>
@@ -3575,9 +3090,9 @@ Autocompletion will not be available!</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13938"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13901"/>
         <source>Save project as</source>
-        <translation type="obsolete">Сохранить проект как</translation>
+        <translation type="unfinished">Сохранить проект как</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12320"/>
@@ -3715,7 +3230,7 @@ Autocompletion will not be available!</source>
         <translation>Показать все графики</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8721"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13939"/>
         <source>&amp;Show All Windows</source>
         <translation>Показать &amp;все окна</translation>
     </message>
@@ -3735,14 +3250,14 @@ Autocompletion will not be available!</source>
         <translation>Показать обозреватель проекта</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="960"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14556"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14696"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14659"/>
         <source>Skipped moving folder</source>
-        <translation type="obsolete">Перемещение папки пропущено</translation>
+        <translation type="unfinished">Перемещение папки пропущено</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8160"/>
@@ -3750,9 +3265,9 @@ Autocompletion will not be available!</source>
         <translation>&amp;Сглаживание</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14660"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14623"/>
         <source>Sorry, no match found for string: &apos;%1&apos;</source>
-        <translation type="obsolete">Совпадений для строки &apos;%1&apos; не найдено</translation>
+        <translation type="unfinished">Совпадений для строки &apos;%1&apos; не найдено</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="7203"/>
@@ -3820,9 +3335,9 @@ Autocompletion will not be available!</source>
         <translation>Статистика по &amp;строкам</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14595"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14558"/>
         <source>Status</source>
-        <translation type="obsolete">Состояние</translation>
+        <translation type="unfinished">Состояние</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12618"/>
@@ -3835,7 +3350,7 @@ Autocompletion will not be available!</source>
         <translation>&amp;Таблица</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="7795"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14544"/>
         <source>Table</source>
         <translation>Таблица</translation>
     </message>
@@ -3855,9 +3370,9 @@ Autocompletion will not be available!</source>
         <translation>Помощник не смог запуститься, поскольку файл &lt;b&gt;%1&lt;/b&gt; не был найден в директории с файлами справки!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14740"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14703"/>
         <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
-        <translation type="obsolete">Папка назначения уже содержит папку с именем &apos;%1&apos;! Операция пропускается!</translation>
+        <translation type="unfinished">Папка назначения уже содержит папку с именем &apos;%1&apos;! Операция пропускается!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="3910"/>
@@ -3885,14 +3400,14 @@ Various parts of this file may not be displayed as expected.</source>
         <translation>Файл: &lt;b&gt; %1 &lt;/b&gt; не был создан с помощью QtiPlot!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="4236"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13558"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
         <translation>Файл: &lt;b&gt;%1&lt;/b&gt; не существует!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13600"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13563"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
-        <translation type="obsolete">Файл: &lt;b&gt; %1 &lt;/b&gt; не является файлом проекта QtiPlot или Origin!</translation>
+        <translation type="unfinished">Файл: &lt;b&gt; %1 &lt;/b&gt; не является файлом проекта QtiPlot или Origin!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="4226"/>
@@ -3905,9 +3420,9 @@ Various parts of this file may not be displayed as expected.</source>
         <translation>Файл: &lt;b&gt;%1&lt;/b&gt; является текущим файлом!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13840"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13803"/>
         <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
-        <translation type="obsolete">Файл: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; открыт в режиме &quot;только для чтения&quot;</translation>
+        <translation type="unfinished">Файл: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; открыт в режиме &quot;только для чтения&quot;</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="3857"/>
@@ -3970,9 +3485,9 @@ Various parts of this file may not be displayed as expected.</source>
         <translation>В данном проекте нет доступных окон!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14825"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14788"/>
         <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
-        <translation type="obsolete">Для загрузки доступна более свежая версия QtiPlot (%1). Вы хотите скачать её?</translation>
+        <translation type="unfinished">Для загрузки доступна более свежая версия QtiPlot (%1). Вы хотите скачать её?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="9177"/>
@@ -4000,9 +3515,9 @@ Various parts of this file may not be displayed as expected.</source>
         <translation>Эта функция недоступна для круговой диаграммы!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14884"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14847"/>
         <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
-        <translation type="obsolete">Все данные, связанные с таблицей, будут удалены. Вы уверены?</translation>
+        <translation type="unfinished">Все данные, связанные с таблицей, будут удалены. Вы уверены?</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="6876"/>
@@ -4046,14 +3561,14 @@ Are you sure you want to continue?</source>
         <translation>&amp;Транспонировать</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="958"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14553"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13429"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13392"/>
         <source>Type %1 to see the list of the valid options.</source>
-        <translation type="obsolete">Наберите %1 для вывода списка доступных параметров.</translation>
+        <translation type="unfinished">Наберите %1 для вывода списка доступных параметров.</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="233"/>
@@ -4071,14 +3586,14 @@ Are you sure you want to continue?</source>
         <translation>Отменить изменения</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13395"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13357"/>
         <source>Usage</source>
-        <translation type="obsolete">Использование</translation>
+        <translation type="unfinished">Использование</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13397"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13359"/>
         <source>Valid options are</source>
-        <translation type="obsolete">Допустимые параметры</translation>
+        <translation type="unfinished">Допустимые параметры</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12478"/>
@@ -4111,9 +3626,9 @@ Are you sure you want to continue?</source>
         <translation>Векторы XYXY</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13388"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13350"/>
         <source>Version</source>
-        <translation type="obsolete">Версия</translation>
+        <translation type="unfinished">Версия</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12667"/>
@@ -4156,9 +3671,9 @@ Are you sure you want to continue?</source>
         <translation>Просмотреть профиль &amp;пиксельной линии</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14010"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13973"/>
         <source>&amp;View Windows</source>
-        <translation type="obsolete">П&amp;росмотр окон</translation>
+        <translation type="unfinished">П&amp;росмотр окон</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12694"/>
@@ -4191,14 +3706,14 @@ Are you sure you want to continue?</source>
         <translation>&amp;Окна</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14003"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13966"/>
         <source>&amp;Windows in Active Folder</source>
-        <translation type="obsolete">Окна в т&amp;екущей папке</translation>
+        <translation type="unfinished">Окна в т&amp;екущей папке</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14003"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13966"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
-        <translation type="obsolete">Окна в &amp;текущей и вложенных папках</translation>
+        <translation type="unfinished">Окна в &amp;текущей и вложенных папках</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12801"/>
@@ -4241,12 +3756,12 @@ Are you sure you want to continue?</source>
         <translation>&amp;Погрешность по Y</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="5750"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14848"/>
         <source>&amp;Yes</source>
         <translation>&amp;Да</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="8658"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14272"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
@@ -4256,7 +3771,7 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">Это демонстрационная версия программы.Она идентична полной версии, за тем исключением, что Вы не можете сохранить ваш проект и не можете использовать программу больше 10 минут за сессию.&lt;br&gt;&lt;br&gt;Если Вы желаете полностью функциональную программу, пожалуйста, подпишите&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;однопользовательский договор на поддержку&lt;/a&gt;.&lt;br&gt;&lt;br&gt;QtiPlot - свободное (в смысле свободы слова) программное обеспечение.Если Вы знаете как его использовать, то можете безвозмездно получить &lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;исходный код&lt;/a&gt;.Тем не менее, мы всегда рады&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;принять от Вас пожертвование&lt;/a&gt; на дальнейшую разработку программы.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="3787"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13411"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>У вас нет прав доступа на открытие файла &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
@@ -4266,19 +3781,19 @@ Are you sure you want to continue?</source>
         <translation>Для построения необходимо выбрать только один столбец!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="6365"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15094"/>
         <source>You need at least two columns for this operation!</source>
         <translation>Для выполнения этой операции нужно как минимум два столбца!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15143"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15102"/>
         <source>You need to define a X column first!</source>
-        <translation type="obsolete">Сначала нужно задать X столбец!</translation>
+        <translation type="unfinished">Сначала нужно задать X столбец!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15147"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15106"/>
         <source>You need to define a Y column first!</source>
-        <translation type="obsolete">Сначала нужно задать Y столбец!</translation>
+        <translation type="unfinished">Сначала нужно задать Y столбец!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12676"/>
@@ -4311,79 +3826,79 @@ Are you sure you want to continue?</source>
         <translation>&amp;Уменьшить</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14207"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14170"/>
         <source>bytes</source>
-        <translation type="obsolete">байт</translation>
+        <translation type="unfinished">байт</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13405"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13368"/>
         <source>can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py or ASCII file</source>
-        <translation type="obsolete">может быть файлом следующих типов: .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py, ASCII файл</translation>
+        <translation type="unfinished">может быть файлом следующих типов: .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py, ASCII файл</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13404"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13366"/>
         <source>execute the script file given as argument</source>
-        <translation type="obsolete">выполнить файл сценария, заданного как аргумент</translation>
+        <translation type="unfinished">выполнить файл сценария, заданного как аргумент</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13405"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13368"/>
         <source>file</source>
-        <translation type="obsolete">файл</translation>
+        <translation type="unfinished">файл</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14244"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14207"/>
         <source>folders</source>
-        <translation type="obsolete">папки</translation>
+        <translation type="unfinished">папки</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13405"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13368"/>
         <source>name</source>
-        <translation type="obsolete">имя</translation>
+        <translation type="unfinished">имя</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13396"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13358"/>
         <source>options</source>
-        <translation type="obsolete">параметры</translation>
+        <translation type="unfinished">параметры</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13404"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13366"/>
         <source>or</source>
-        <translation type="obsolete">или</translation>
+        <translation type="unfinished">или</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13403"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13365"/>
         <source>print QtiPlot version and release date</source>
-        <translation type="obsolete">вывести версию QtiPlot и дату выпуска</translation>
+        <translation type="unfinished">вывести версию QtiPlot и дату выпуска</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13402"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13364"/>
         <source>show QtiPlot manual in a standalone window</source>
-        <translation type="obsolete">показать руководство QtiPlot в отдельном окне</translation>
+        <translation type="unfinished">показать руководство QtiPlot в отдельном окне</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13398"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13360"/>
         <source>show about dialog and exit</source>
-        <translation type="obsolete">показать диалог &quot;О программе&quot; и выйти</translation>
+        <translation type="unfinished">показать диалог &quot;О программе&quot; и выйти</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13400"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13362"/>
         <source>show command line options</source>
-        <translation type="obsolete">показать параметры командной строки</translation>
+        <translation type="unfinished">показать параметры командной строки</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13401"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13363"/>
         <source>start QtiPlot in language</source>
-        <translation type="obsolete">запустить QtiPlot на языке</translation>
+        <translation type="unfinished">запустить QtiPlot на языке</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13399"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13361"/>
         <source>start QtiPlot with the default settings</source>
-        <translation type="obsolete">запустить QtiPlot с настройками по умолчанию</translation>
+        <translation type="unfinished">запустить QtiPlot с настройками по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14243"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14206"/>
         <source>windows</source>
-        <translation type="obsolete">окна</translation>
+        <translation type="unfinished">окна</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="8253"/>
@@ -4551,9 +4066,9 @@ Are you sure you want to continue?</source>
         <translation>По &amp;выбору</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13408"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13371"/>
         <source>Help</source>
-        <translation type="obsolete">Справка</translation>
+        <translation type="unfinished">Справка</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12626"/>
@@ -4596,24 +4111,24 @@ Are you sure you want to continue?</source>
         <translation>Нарисовать ломаную</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15344"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15303"/>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
-        <translation type="obsolete">Начиная с версии 0.9.1 QtiPlot хранит пользовательские аппроксимационные модели в ином месте.</translation>
+        <translation type="unfinished">Начиная с версии 0.9.1 QtiPlot хранит пользовательские аппроксимационные модели в ином месте.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15345"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15304"/>
         <source>If you want to save your already defined models, please choose a destination folder.</source>
-        <translation type="obsolete">Если хотите сохранить ваши модели, пожалуйста, выберите папку назначения.</translation>
+        <translation type="unfinished">Если хотите сохранить ваши модели, пожалуйста, выберите папку назначения.</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15346"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15305"/>
         <source>Import fit models</source>
-        <translation type="obsolete">Импортировать аппроксимационные модели</translation>
+        <translation type="unfinished">Импортировать аппроксимационные модели</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15349"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15308"/>
         <source>Choose a directory to export the fit models to</source>
-        <translation type="obsolete">Выберите каталог для экспорта аппроксимационных моделей</translation>
+        <translation type="unfinished">Выберите каталог для экспорта аппроксимационных моделей</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12018"/>
@@ -4671,14 +4186,14 @@ Are you sure you want to continue?</source>
         <translation>Греческие</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15702"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15653"/>
         <source>Error</source>
-        <translation type="obsolete">Ошибка</translation>
+        <translation type="unfinished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15703"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15654"/>
         <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation type="obsolete">QtiPlot скомпилирован без поддержки сценариев на языке Python!</translation>
+        <translation type="unfinished">QtiPlot скомпилирован без поддержки сценариев на языке Python!</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12681"/>
@@ -4806,9 +4321,9 @@ Are you sure you want to continue?</source>
         <translation>Ctrl+Alt+C</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14919"/>
+        <location filename="../src/ApplicationWindow.cpp" line="14882"/>
         <source>QtiPlot - Enter column number</source>
-        <translation type="obsolete">QtiPlot - Введите номер столбца</translation>
+        <translation type="unfinished">QtiPlot - Введите номер столбца</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12624"/>
@@ -4931,10 +4446,10 @@ Are you sure you want to continue?</source>
         <translation>Показать &amp;номера строк</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15832"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15783"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
-        <translation type="obsolete">Невозможно открыть файл: %1.
+        <translation type="unfinished">Невозможно открыть файл: %1.
 Автодополнение не будет доступно!</translation>
     </message>
     <message>
@@ -4958,24 +4473,24 @@ Autocompletion will not be available!</source>
         <translation type="obsolete">Добавить формулу</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15653"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15604"/>
         <source>No Icon</source>
-        <translation type="obsolete">Без значка</translation>
+        <translation type="unfinished">Без значка</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15914"/>
+        <location filename="../src/ApplicationWindow.cpp" line="15865"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
-        <translation type="obsolete">Выберите только один столбец и более чем одну непустую ячейку!</translation>
+        <translation type="unfinished">Выберите только один столбец и более чем одну непустую ячейку!</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13355"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13317"/>
         <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you like it, you&apos;re using it in your work and you would like to see it <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="obsolete">&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot - программное обеспечение с открытым кодом и его разработка потребовала сотни часов работы.&lt;br&gt;&lt;br&gt;Если вам нравится QtiPlot и вы используете его в работе и хотите, чтобы он непрерывно улучшался,&lt;br&gt; пожалуйста, поддержите его авторов.&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation type="unfinished">&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot - программное обеспечение с открытым кодом и его разработка потребовала сотни часов работы.&lt;br&gt;&lt;br&gt;Если вам нравится QtiPlot и вы используете его в работе и хотите, чтобы он непрерывно улучшался,&lt;br&gt; пожалуйста, поддержите его авторов.&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13810"/>
+        <location filename="../src/ApplicationWindow.cpp" line="13773"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
-        <translation type="obsolete">Это демонстрационная версия программы. Она идентична полной версии, за тем исключением, что вы не можете сохранить ваш проект и не можете использовать программу больше 10 минут за сессию.&lt;br&gt;&lt;br&gt;Если вы желаете полностью функциональную программу, пожалуйста, подпишите &lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;однопользовательский договор на поддержку&lt;/a&gt;.&lt;br&gt;&lt;br&gt;QtiPlot - свободное (в смысле свободы слова) программное обеспечение. Если вы знаете как его использовать, то можете безвозмездно получить &lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;исходный код&lt;/a&gt;. Тем не менее, мы всегда рады &lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;принять от вас пожертвование&lt;/a&gt; на дальнейшую разработку программы.</translation>
+        <translation type="unfinished">Это демонстрационная версия программы. Она идентична полной версии, за тем исключением, что вы не можете сохранить ваш проект и не можете использовать программу больше 10 минут за сессию.&lt;br&gt;&lt;br&gt;Если вы желаете полностью функциональную программу, пожалуйста, подпишите &lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;однопользовательский договор на поддержку&lt;/a&gt;.&lt;br&gt;&lt;br&gt;QtiPlot - свободное (в смысле свободы слова) программное обеспечение. Если вы знаете как его использовать, то можете безвозмездно получить &lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;исходный код&lt;/a&gt;. Тем не менее, мы всегда рады &lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;принять от вас пожертвование&lt;/a&gt; на дальнейшую разработку программы.</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12630"/>
@@ -5118,11 +4633,6 @@ Autocompletion will not be available!</source>
         <translation>Добавить эллипс/окружность</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13316"/>
-        <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;<byte value="xd"/></source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/ApplicationWindow.cpp" line="12616"/>
         <source>Ctrl+Alt+H</source>
         <translation type="unfinished"></translation>
@@ -5135,6 +4645,11 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="../src/ApplicationWindow.cpp" line="12642"/>
         <source>&amp;Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="13367"/>
+        <source>execute the script file given as argument without displying the user interface. Warning: 2D plots are not correctly handled in this functioning mode!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

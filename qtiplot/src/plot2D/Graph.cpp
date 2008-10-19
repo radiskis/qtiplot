@@ -1047,7 +1047,7 @@ int Graph::axisTitleDistance(int axis)
 {
 	if (!axisEnabled(axis))
 		return 0;
-	
+
 	return axisWidget(axis)->spacing();
 }
 
@@ -1055,7 +1055,7 @@ void Graph::setAxisTitleDistance(int axis, int dist)
 {
 	if (!axisEnabled(axis))
 		return;
-	
+
 	QwtScaleWidget *scale = axisWidget(axis);
 	if (scale)
 		scale->setSpacing(dist);
@@ -1144,8 +1144,11 @@ void Graph::initScaleLimits()
         intv[item->yAxis()] |= QwtDoubleInterval(rect.top(), rect.bottom());
     }
 
-	if (maxSymbolSize == 0.0)
+	if (maxSymbolSize == 0.0){
+	    d_zoomer[0]->setZoomBase();
+        d_zoomer[1]->setZoomBase();
 		return;
+	}
 
 	maxSymbolSize *= 0.5;
 
@@ -1416,7 +1419,7 @@ void Graph::exportVector(const QString& fileName, int res, bool color)
 		printer.setResolution(res);
 		printer.setPaperSize (QSizeF(br.width()*wfactor, br.height()*hfactor), QPrinter::DevicePixel);
 		r.setSize(QSize(int(width()*wfactor), int(height()*hfactor)));
-	} else 
+	} else
 		printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
 
     printer.setOutputFileName(fileName);
@@ -1434,11 +1437,11 @@ void Graph::exportVector(const QString& fileName, int res, bool color)
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-    
+
     QPainter paint(&printer);
 	print(&paint, r);
 }
-	
+
 void Graph::print()
 {
 	QPrinter printer;
@@ -2022,8 +2025,8 @@ QString Graph::saveScaleTitles()
 QString Graph::saveAxesTitleAlignement()
 {
 	QString s = "AxesTitleAlignment\t";
-	
-	QStringList axes;		
+
+	QStringList axes;
 	for (int i = 0; i<4; i++){
 		axes << QString::number(Qt::AlignHCenter);
 		if (axisEnabled(i))
@@ -2031,14 +2034,14 @@ QString Graph::saveAxesTitleAlignement()
 	}
 
 	s += axes.join("\t")+"\n";
-	
+
 	s += "AxesTitleDistance\t";
 	for (int i = 0; i<4; i++){
 		axes[i] = "-1";
 		if (axisEnabled(i)){
 			const QwtScaleWidget *scale = axisWidget(i);
 			axes[i] = QString::number(scale->spacing());
-		}	
+		}
 	}
 	return s + axes.join("\t")+"\n";
 }
@@ -2801,10 +2804,10 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
                     er = addErrorBars(w->colName(ycol), w, names[i], (int)QwtErrorPlotCurve::Horizontal);
                 else
                     er = addErrorBars(w->colName(ycol), w, names[i]);
-						
+
 				if (!er)
 					continue;
-				
+
 				DataCurve *mc = er->masterCurve();
 				if (mc)
 					er->setColor(mc->pen().color());
@@ -4388,7 +4391,7 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
 
   	Spectrogram *d_spectrogram = new Spectrogram(m);
 	insertCurve(d_spectrogram);
-	
+
   	if (type == GrayScale)
   		d_spectrogram->setGrayScale();
   	else if (type == Contour){
@@ -4409,6 +4412,10 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
   	enableAxis(QwtPlot::yRight, type != Contour);
 
   	replot();
+
+    d_zoomer[0]->setZoomBase();
+    d_zoomer[1]->setZoomBase();
+
 	return d_spectrogram;
 }
 
@@ -5234,9 +5241,6 @@ void Graph::insertCurve(QwtPlotItem *c)
 	if (!d_curves.contains(c))
 		d_curves.append(c);
 
-	if (c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-		((QwtPlotCurve *)c)->setPaintAttribute(QwtPlotCurve::PaintFiltered);
-
 	c->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 	c->attach(this);
 }
@@ -5599,7 +5603,7 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 		aux = new EllipseWidget(this);
 		((EllipseWidget *)aux)->clone(e);
 	}
-	
+
 	d_enrichments << aux;
 	d_active_enrichment = aux;
 	return aux;

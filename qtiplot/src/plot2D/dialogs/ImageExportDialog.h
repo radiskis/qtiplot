@@ -41,7 +41,7 @@
 class QStackedWidget;
 class QGroupBox;
 class MdiSubWindow;
-	
+
 //! QFileDialog extended with options for image export
 class ImageExportDialog: public ExtensibleFileDialog
 {
@@ -67,6 +67,7 @@ private:
 	QCheckBox *d_transparency;
 
 	QComboBox *d_3D_text_export_mode;
+    QComboBox *d_3D_export_sort;
 
 public:
 	//! Constructor
@@ -89,7 +90,9 @@ public:
 	bool transparency() const { return d_transparency->isChecked(); }
 	//! Return the text export mode for 3D plots.
 	int textExportMode() const {return d_3D_text_export_mode->currentIndex();};
-		
+	//! Return the sort export mode for 3D plots.
+	int sortMode() const {return d_3D_export_sort->currentIndex();};
+
 	void selectFilter(const QString & filter);
 
 protected slots:

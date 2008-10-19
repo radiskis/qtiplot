@@ -12,14 +12,14 @@
 
 using namespace Qwt3D;
 
-//! Provides a new VectorWriter object. 
+//! Provides a new VectorWriter object.
 IO::Functor* VectorWriter::clone() const
 {
   return new VectorWriter(*this);
 }
-  
-VectorWriter::VectorWriter() 
-    : gl2ps_format_(GL2PS_EPS), 
+
+VectorWriter::VectorWriter()
+    : gl2ps_format_(GL2PS_EPS),
     formaterror_(false),
 #ifdef GL2PS_HAVE_ZLIB
     compressed_(true),
@@ -32,7 +32,7 @@ VectorWriter::VectorWriter()
     texfname_("")
   {}
 
-  
+
 /*!
   Sets the mode for text output:\n
   \param val The underlying format for the generated output:\n
@@ -42,9 +42,9 @@ VectorWriter::VectorWriter()
   the saved labels are possible. The disadvantage is the need for an additionally TeX run
   to get the final output.\n
   \param fname Optional, used only in conjunction with TeX output; file name
-  for the generated TeX file. If not set, a file called "OUTPUT.FOR.tex" 
+  for the generated TeX file. If not set, a file called "OUTPUT.FOR.tex"
   will be generated, where "OUTPUT.FOR" describes the file name argument for IO::save().\n\n
-  (04/05/27: On Linux platforms, pdflatex seems a file named 'dump_0.pdf.tex' mistakenly to 
+  (04/05/27: On Linux platforms, pdflatex seems a file named 'dump_0.pdf.tex' mistakenly to
   identify as PDF file.)
 */
 void VectorWriter::setTextMode(TEXTMODE val, QString fname)
@@ -69,8 +69,8 @@ void VectorWriter::setCompressed(bool)
 #endif
 
 
-/*! 
-Set output format, must be one of "EPS_GZ", "PS_GZ", "SVG_GZ", "EPS", 
+/*!
+Set output format, must be one of "EPS_GZ", "PS_GZ", "SVG_GZ", "EPS",
 "PS", "PDF", "SVG", or "PGF" (case sensitive)
 */
 bool VectorWriter::setFormat(QString const& format)
@@ -125,11 +125,11 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
 {
   if (formaterror_)
     return false;
-  
+
   char* tmploc = setlocale(LC_ALL, "C");
 
   plot->makeCurrent();
- 	
+
 
 	GLint bufsize = 0, state = GL2PS_OVERFLOW;
 	GLint viewport[4];
@@ -143,7 +143,7 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
   if (compressed_)
     options |= GL2PS_COMPRESS;
 
-  switch (landscape_) 
+  switch (landscape_)
   {
     case VectorWriter::AUTO:
   	  if (viewport[2] - viewport[0] > viewport[3] - viewport[0])
@@ -155,9 +155,9 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
     default:
       break;
   }
-  
+
   int sortmode = GL2PS_SIMPLE_SORT;
-  switch (sortmode_) 
+  switch (sortmode_)
   {
     case VectorWriter::NOSORT:
       sortmode = GL2PS_NO_SORT;
@@ -171,8 +171,8 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
     default:
       break;
   }
-  
-  switch (textmode_) 
+
+  switch (textmode_)
   {
     case NATIVE:
       Label::useDeviceFonts(true);
@@ -186,12 +186,12 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
     default:
       break;
   }
-  
+
 	QString version = QString::number(QWT3D_MAJOR_VERSION) + "."
 		+ QString::number(QWT3D_MINOR_VERSION) + "."
-		+ QString::number(QWT3D_PATCH_VERSION); 
-	    
-	QString producer = QString("QwtPlot3D ") + version + 
+		+ QString::number(QWT3D_PATCH_VERSION);
+
+	QString producer = QString("QwtPlot3D ") + version +
 		", (C) 2002";
 
   // calculate actual year
@@ -200,59 +200,63 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
   time(&now);
   newtime = gmtime(&now);
 	if (newtime && newtime->tm_year + 1900 > 2002)
-	  producer += "-" + QString::number(newtime->tm_year+1900); 
+	  producer += "-" + QString::number(newtime->tm_year+1900);
 
   // the SVG format does not like some of the characters in a mail address
   producer += " Micha Bieber, mailto: krischnamurti at users.sourceforge.net";
 
-	FILE *fp = fopen(QWT3DLOCAL8BIT(fname), "wb");	
+	FILE *fp = fopen(QWT3DLOCAL8BIT(fname), "wb");
 	if (!fp)
   {
     Label::useDeviceFonts(false);
     setlocale(LC_ALL, tmploc);
     return false;
   }
-  while( state == GL2PS_OVERFLOW )
-	{ 
+
+    plot->setExpotingVector();
+
+    while( state == GL2PS_OVERFLOW ){
 		bufsize += 2*1024*1024;
 		gl2psBeginPage ( QWT3DLOCAL8BIT(fname), QWT3DLOCAL8BIT(producer), viewport,
 										 gl2ps_format_, sortmode,
 										 options, GL_RGBA, 0, NULL, 0, 0, 0, bufsize,
 										 fp, QWT3DLOCAL8BIT(fname) );
-		
-	  plot->updateData();
-	  plot->updateGL(); 
+
+        plot->updateData();
+        plot->updateGL();
 		state = gl2psEndPage();
 	}
 	fclose(fp);
 
+	plot->setExpotingVector(false);
+
   // extra TeX file
   if (textmode_ == TEX)
   {
-    QString fn = (texfname_.isEmpty()) 
+    QString fn = (texfname_.isEmpty())
       ? fname + ".tex"
       : texfname_;
 
-    fp = fopen(QWT3DLOCAL8BIT(fn), "wb");	
+    fp = fopen(QWT3DLOCAL8BIT(fn), "wb");
     if (!fp)
     {
       Label::useDeviceFonts(false);
       setlocale(LC_ALL, tmploc);
       return false;
-    }    
+    }
     Label::useDeviceFonts(true);
 		options &= ~GL2PS_NO_PIXMAP & ~GL2PS_NO_TEXT;
     state = GL2PS_OVERFLOW;
     while( state == GL2PS_OVERFLOW )
-    { 
+    {
       bufsize += 2*1024*1024;
       gl2psBeginPage ( QWT3DLOCAL8BIT(fname), QWT3DLOCAL8BIT(producer), viewport,
         GL2PS_TEX, sortmode,
         options, GL_RGBA, 0, NULL, 0, 0, 0, bufsize,
         fp, QWT3DLOCAL8BIT(fn) );
-      
+
       plot->updateData();
-      plot->updateGL(); 
+      plot->updateGL();
       state = gl2psEndPage();
     }
     fclose(fp);
@@ -263,21 +267,21 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
 
   setlocale(LC_ALL, tmploc);
   return true;
-}	    
+}
 
 
 // moved
 
 GLint Qwt3D::setDeviceLineWidth(GLfloat val)
 {
-	if (val<0) 
+	if (val<0)
 		val=0;
 
 	GLint ret = gl2psLineWidth(val);
 
 	GLfloat lw[2];
 	glGetFloatv(GL_LINE_WIDTH_RANGE, lw);
-	
+
 	if (val < lw[0])
 		val = lw[0];
 	else if (val > lw[1])
@@ -289,14 +293,14 @@ GLint Qwt3D::setDeviceLineWidth(GLfloat val)
 
 GLint Qwt3D::setDevicePointSize(GLfloat val)
 {
-	if (val<0) 
+	if (val<0)
 		val=0;
 
 	GLint ret = gl2psPointSize(val);
 
 	GLfloat lw[2];
 	glGetFloatv(GL_POINT_SIZE_RANGE, lw);
-	
+
 	if (val < lw[0])
 		val = lw[0];
 	else if (val > lw[1])
@@ -314,12 +318,12 @@ GLint Qwt3D::drawDevicePixels(GLsizei width, GLsizei height,
 
   if(format != GL_RGBA || type != GL_UNSIGNED_BYTE)
 		return GL2PS_ERROR;
-	
+
 	GLfloat* convertedpixel = (GLfloat*)malloc(3 * width * height * sizeof(GLfloat));
 	if (!convertedpixel)
 		return GL2PS_ERROR;
-	
-	GLubyte* px = (GLubyte*)pixels; 
+
+	GLubyte* px = (GLubyte*)pixels;
 	for (int i=0; i!=3*width*height; i+=3)
 	{
 		int pxi = (4*i)/3;
@@ -343,7 +347,7 @@ GLint Qwt3D::drawDeviceText(const char* str, const char* fontname, int fontsize,
 	glGetDoublev(GL_CURRENT_COLOR, fcol);
 	GLdouble bcol[4];
 	glGetDoublev(GL_COLOR_CLEAR_VALUE, bcol);
-	
+
 	glColor4d(color.r, color.g, color.b, color.a);
 	glClearColor(color.r, color.g, color.b, color.a);
 
@@ -390,10 +394,10 @@ GLint Qwt3D::drawDeviceText(const char* str, const char* fontname, int fontsize,
 		default:
 			break;
 	}
-	
+
 	ViewPort2World(vp[0], vp[1], vp[2], start.x, start.y, start.z);
 	Triple adjpos(vp[0],vp[1],vp[2]);
-	
+
 	glRasterPos3d(adjpos.x, adjpos.y, adjpos.z);
 	ret = gl2psTextOpt(str, fontname, (int)fontsize, a, 0);
 	glColor4dv(fcol);

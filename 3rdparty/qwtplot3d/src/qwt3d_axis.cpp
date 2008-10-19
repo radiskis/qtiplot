@@ -23,13 +23,13 @@ void Axis::init()
 
   scale_ = qwt3d_ptr<Scale>(new LinearScale);
 
-  beg_ = Triple(0.0, 0.0, 0.0);  
+  beg_ = Triple(0.0, 0.0, 0.0);
   end_ = beg_;
-	
+
 	majorintervals_ = 0;
 	minorintervals_ = 0;
-	setMajors(1);	
-	setMinors(1);	
+	setMajors(1);
+	setMinors(1);
 	setLimits(0,0);
 
 	setTicOrientation(0.0, 0.0, 0.0);
@@ -64,7 +64,7 @@ void Axis::setMajors(int val)
 {
 	if (val == majorintervals_)
 		return;
-	
+
 	majorintervals_ = (val<=0) ? 1 : val; // always >= 1
 }
 
@@ -117,11 +117,11 @@ void Axis::draw()
 //	GLStateBewarer sb(GL_LINE_SMOOTH, true);
 //	glBlendFunc(GL_ONE, GL_ZERO);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4d(color.r,color.g,color.b,color.a);		
+	glColor4d(color.r,color.g,color.b,color.a);
 
 	drawBase();
 	drawTics();
-	drawLabel();	
+	drawLabel();
 
 	restoreGLState();
 }
@@ -136,11 +136,11 @@ void Axis::drawLabel()
 
   Triple diff = end() - begin();
 	Triple center = begin() + diff/2;
-	
-	Triple bnumber = biggestNumberString(); 
+
+	Triple bnumber = biggestNumberString();
 //	double fac = 6*(second()-first()).length() / 100;
-	
-	switch (scaleNumberAnchor_) 
+
+	switch (scaleNumberAnchor_)
 	{
 		case BottomLeft:
 		case TopLeft:
@@ -163,10 +163,10 @@ void Axis::drawLabel()
 		default:
 			break;
 	}
-	
+
 	Triple pos = ViewPort2World(World2ViewPort(center + ticOrientation() * lmaj_) + bnumber);
 	setLabelPosition(pos, scaleNumberAnchor_);
-	
+
 	label_.setPlot(plot());
 	label_.adjust(labelgap_);
 	label_.draw();
@@ -176,10 +176,10 @@ void Axis::drawBase()
 {
 	setDeviceLineWidth( lineWidth_ );
 	glBegin( GL_LINES );
-		glVertex3d( beg_.x, beg_.y, beg_.z); 
+		glVertex3d( beg_.x, beg_.y, beg_.z);
 		glVertex3d( end_.x, end_.y, end_.z);
 	glEnd();
-}	
+}
 
 bool Axis::prepTicCalculation(Triple& startpoint)
 {
@@ -189,13 +189,13 @@ bool Axis::prepTicCalculation(Triple& startpoint)
 	autostart_ = start_;
 	autostop_ = stop_;
 
- 	if (autoScale()) 
-  {  
+ 	if (autoScale())
+  {
     setMajors(scale_->autoscale(autostart_, autostop_, start_, stop_, majors()));
     if (isPracticallyZero(autostart_, autostop_))
 		  return false;
   }
-  
+
   scale_->setLimits(start_,stop_);
   scale_->setMajors(majors());
   scale_->setMinors(minors());
@@ -222,13 +222,13 @@ void Axis::recalculateTics()
     return;
 
 	unsigned int i;
-	
-	for (i = 0; i != scale_->majors_p.size(); ++i) 
+
+	for (i = 0; i != scale_->majors_p.size(); ++i)
 	{
 		double t = (scale_->majors_p[i] - start_) / (stop_-start_);
 		majorpos_.push_back(beg_ + t * runningpoint);
 	}
-	for (i = 0; i != scale_->minors_p.size(); ++i) 
+	for (i = 0; i != scale_->minors_p.size(); ++i)
 	{
 		double t = (scale_->minors_p[i] - start_) / (stop_-start_);
 		minorpos_.push_back(beg_ + t * runningpoint);
@@ -240,22 +240,22 @@ void Axis::drawTics()
 	Triple runningpoint;
 	if (!drawTics_ || false == prepTicCalculation(runningpoint))
 		return;
-  
+
 	unsigned int i;
 	Triple nadir;
-	
+
 	markerLabel_.resize(scale_->majors_p.size());
 	setDeviceLineWidth(majLineWidth_);
-	for (i = 0; i != scale_->majors_p.size(); ++i) 
+	for (i = 0; i != scale_->majors_p.size(); ++i)
 	{
 		double t = (scale_->majors_p[i] - start_) / (stop_-start_);
 		nadir = beg_ + t * runningpoint;
 		majorpos_.push_back(drawTic(nadir, lmaj_));
 		drawTicLabel(nadir + 1.2 * lmaj_ * orientation_, i);
 	}
-	
+
 	setDeviceLineWidth(minLineWidth_);
-	for (i = 0; i != scale_->minors_p.size(); ++i) 
+	for (i = 0; i != scale_->minors_p.size(); ++i)
 	{
 		double t = (scale_->minors_p[i] - start_) / (stop_-start_);
 		nadir = beg_ + t * runningpoint;
@@ -267,10 +267,10 @@ void Axis::drawTicLabel(Triple pos, int mtic)
 {
 	if (!drawNumbers_ || (mtic < 0))
 		return;
-	
+
 	markerLabel_[mtic].setFont(numberfont_.family(), numberfont_.pointSize(), numberfont_.weight(), numberfont_.italic());
 	markerLabel_[mtic].setColor(numbercolor_);
-  	markerLabel_[mtic].setString(scale_->ticLabel(mtic));	  
+  	markerLabel_[mtic].setString(scale_->ticLabel(mtic));
   	markerLabel_[mtic].setPosition(pos, scaleNumberAnchor_);
 	markerLabel_[mtic].setPlot(plot());
 	markerLabel_[mtic].adjust(numbergap_);
@@ -284,7 +284,7 @@ Triple Axis::drawTic(Triple nadir, double length)
 	glBegin( GL_LINES );
 	glVertex3d( nadir.x  + ilength * orientation_.x,
 				      nadir.y  + ilength * orientation_.y,
-							nadir.z  + ilength * orientation_.z) ; 
+							nadir.z  + ilength * orientation_.z) ;
 	glVertex3d( nadir.x  + length * orientation_.x,
 							nadir.y  + length * orientation_.y,
 							nadir.z  + length * orientation_.z);
@@ -357,20 +357,20 @@ Triple Axis::biggestNumberString()
 	return ret;
 }
 
-/*! 
+/*!
   This variant sets a user-defined scale object.
   Use with a heap based initialized pointer only.
-  The axis adopts ownership. 
+  The axis adopts ownership.
 */
 void Axis::setScale(Scale* val)
 {
-  scale_ = qwt3d_ptr<Scale>(val); 
+  scale_ = qwt3d_ptr<Scale>(val);
 }
 
 /*!
   Sets one of the predefined scaling types.
-  \warning Too small intervals in logarithmic scales lead to  
-  empty scales (or perhaps a scale only containing an isolated 
+  \warning Too small intervals in logarithmic scales lead to
+  empty scales (or perhaps a scale only containing an isolated
   major tic). Better switch to linear scales in such cases.
 */
 void Axis::setScale(Qwt3D::SCALETYPE val)

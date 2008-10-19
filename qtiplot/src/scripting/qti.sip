@@ -426,13 +426,13 @@ public:
 
 	void setViewType(ViewType);
 	void setHeaderViewType(HeaderViewType);
-	
+
 	void setDefaultColorMap();
 	void setGrayScale();
 	void setRainbowColorMap();
 	QwtLinearColorMap colorMap();
 	void setColorMap(const QwtLinearColorMap&);
-	
+
 	void resetView();
 
 	QImage image();
@@ -892,7 +892,7 @@ public:
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon = 3};
 
     void exportToFile(const QString& fileName) /PyName=export/;
-    void exportVector(const QString& fileName, int = 0);
+    void exportVector(const QString& fileName, int = 0, int = 1);
     void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
 
     void setRotation(double xVal, double yVal, double zVal);

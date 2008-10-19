@@ -620,7 +620,8 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_quality = 100;
 	d_export_resolution = QPrinter().resolution();
 	d_export_color = true;
-	d_3D_export_text_mode = 0; //Qwt3D::PIXEL
+	d_3D_export_text_mode = 0; //VectorWriter::PIXEL
+	d_3D_export_sort = 1; //VectorWriter::SIMPLESORT
 }
 
 void ApplicationWindow::initToolBars()
@@ -4647,6 +4648,7 @@ void ApplicationWindow::readSettings()
 	d_export_resolution = settings.value("/Resolution", QPrinter().resolution()).toInt();
 	d_export_color = settings.value("/ExportColor", true).toBool();
 	d_3D_export_text_mode = settings.value("/3DTextMode", d_3D_export_text_mode).toInt();
+	d_3D_export_sort = settings.value("/3DSortMode", d_3D_export_sort).toInt();
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5004,6 +5006,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Resolution", d_export_resolution);
 	settings.setValue("/ExportColor", d_export_color);
 	settings.setValue("/3DTextMode", d_3D_export_text_mode);
+	settings.setValue("/3DSortMode", d_3D_export_sort);
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5056,8 +5059,8 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 		QMessageBox::critical(this, tr("QtiPlot - Export Error"),
 					tr("<h4>There are no plot layers available in this window!</h4>"));
 		return;
-	} 
-	
+	}
+
 	if (!plot2D && !plot3D)
 		return;
 
@@ -5089,10 +5092,15 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 	}
 	file.close();
 
+    if (plot3D && selected_filter.contains(".pgf")){
+        plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode());
+        return;
+    }
+
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
 		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
 		if (plot3D)
-			plot3D->exportVector(file_name, ied->textExportMode());
+			plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode());
 		else if (plot2D){
 			if (selected_filter.contains(".svg"))
 				plot2D->exportSVG(file_name);
@@ -6522,7 +6530,7 @@ QDialog* ApplicationWindow::showPlot3dDialog()
 					tr("Not available for empty 3D surface plots!"));
 		return 0;
 	}
-	
+
 	Plot3DDialog* pd = new Plot3DDialog(this);
 	pd->setPlot(g);
 	pd->show();
@@ -11994,7 +12002,7 @@ void ApplicationWindow::createActions()
 	actionMatrixDefaultScale = new QAction(tr("&Default"), this);
 	connect(actionMatrixDefaultScale, SIGNAL(activated()), this, SLOT(setMatrixDefaultScale()));
 	actionMatrixDefaultScale->setCheckable(true);
-	
+
 	actionMatrixRainbowScale = new QAction(tr("&Rainbow"), this);
 	connect(actionMatrixRainbowScale, SIGNAL(activated()), this, SLOT(setMatrixRainbowScale()));
 	actionMatrixRainbowScale->setCheckable(true);
