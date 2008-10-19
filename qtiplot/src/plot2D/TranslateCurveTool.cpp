@@ -31,7 +31,7 @@
 #include "PlotCurve.h"
 #include "FunctionCurve.h"
 #include "../ApplicationWindow.h"
-#include "../cursors.h"
+#include <cursors.h>
 #include "DataPickerTool.h"
 #include "ScreenPickerTool.h"
 #include <QMessageBox>
@@ -51,7 +51,7 @@ TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Dir
 	d_sub_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
 	connect((DataPickerTool*)d_sub_tool, SIGNAL(selected(QwtPlotCurve*,int)),
 			this, SLOT(selectCurvePoint(QwtPlotCurve*,int)));
-	
+
 	emit statusText(tr("Double-click on plot to select a data point!"));
 }
 
@@ -62,7 +62,7 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 		Table *t = c->table();
 		if (!t)
 			return;
-		
+
 	    if (d_dir == Horizontal && t->isReadOnlyColumn(t->colIndex(c->xColumnName()))){
             QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
             tr("The column '%1' is read-only! Operation aborted!").arg(c->xColumnName()));
@@ -75,9 +75,9 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 			delete d_sub_tool;
 			d_graph->setActiveTool(NULL);
 			return;
-        } 
+        }
 	}
-		
+
 	d_selected_curve = curve;
 	d_curve_point = QwtDoublePoint(curve->x(point_index), curve->y(point_index));
 	delete d_sub_tool;
@@ -87,7 +87,7 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 	((ScreenPickerTool*)d_sub_tool)->append(d_curve_point);
 	ScreenPickerTool::MoveRestriction moveRestriction = ScreenPickerTool::Vertical;
 	if (d_dir == Horizontal)
-		moveRestriction = ScreenPickerTool::Horizontal;	
+		moveRestriction = ScreenPickerTool::Horizontal;
 	((ScreenPickerTool*)d_sub_tool)->setMoveRestriction(moveRestriction);
 	connect((ScreenPickerTool*)d_sub_tool, SIGNAL(selected(const QwtDoublePoint&)), this, SLOT(selectDestination(const QwtDoublePoint&)));
 	emit statusText(tr("Curve selected! Move cursor and click to choose a point and double-click/press 'Enter' to finish!"));

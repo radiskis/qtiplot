@@ -27,9 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "FunctionDialog.h"
-#include "../../MyParser.h"
-#include "../../ApplicationWindow.h"
-#include "../FunctionCurve.h"
+#include <MyParser.h>
+#include <ApplicationWindow.h>
+#include <FunctionCurve.h>
 #include <DoubleSpinBox.h>
 
 #include <QTextEdit>
@@ -56,7 +56,7 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 		locale = app->locale();
 		prec = app->d_decimal_digits;
 	}
-	
+
     setObjectName( "FunctionDialog" );
 	setWindowTitle( tr( "QtiPlot - Add function curve" ) );
 	setSizeGripEnabled(true);
@@ -108,13 +108,13 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
     boxConstants->verticalHeader()->hide();
 	boxConstants->setMinimumWidth(200);
 	boxConstants->hide();
-	
+
 	functionPage = new QWidget();
 
 	QHBoxLayout *hb = new QHBoxLayout(functionPage);
 	hb->addLayout(gl1);
 	hb->addWidget(boxConstants);
-	
+
 	optionStack->addWidget( functionPage );
 
 	QGridLayout *gl2 = new QGridLayout();
@@ -248,7 +248,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
  		while (i.hasNext()) {
      		i.next();
 			boxConstants->setItem(row, 0, new QTableWidgetItem(i.key()));
-		
+
 			DoubleSpinBox *sb = new DoubleSpinBox();
 			sb->setLocale(app->locale());
 			sb->setDecimals(app->fit_output_precision);
@@ -258,7 +258,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 			row++;
  		}
 	}
-	
+
 	if (c->functionType() == FunctionCurve::Normal){
 		boxFunction->setText(formulas[0]);
 		boxFrom->setValue(c->startRange());
@@ -321,7 +321,7 @@ void FunctionDialog::acceptFunction()
 	}
 
 	QMap<QString, double> constants;
-			
+
 	QString formula = boxFunction->text().simplified();
 	bool error = false;
 	try {
@@ -334,7 +334,7 @@ void FunctionDialog::acceptFunction()
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
 				parser.DefineConst(constName.ascii(), val);
-			}			
+			}
 		}
 		parser.SetExpr(formula.ascii());
 

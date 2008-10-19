@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "DataPickerTool.h"
 #include "Graph.h"
-#include "../cursors.h"
+#include <cursors.h>
 #include "FunctionCurve.h"
 #include "PlotCurve.h"
 #include "QwtErrorPlotCurve.h"
@@ -188,7 +188,7 @@ bool DataPickerTool::keyEventFilter(QKeyEvent *ke)
 			d_graph->setActiveTool(NULL);
 			d_graph->multiLayer()->applicationWindow()->pickPointerCursor();
 			return true;
-		
+
 		case Qt::Key_Enter:
 		case Qt::Key_Return:
 			emit selected(d_selected_curve, d_selected_point);
@@ -355,7 +355,7 @@ void DataPickerTool::movePoint(const QPoint &pos)
 	Table *t = ((DataCurve *)d_selected_curve)->table();
 	if (!t)
 		return;
-	
+
 	if (t->isReadOnlyColumn(t->colIndex(((DataCurve *)d_selected_curve)->xColumnName()))){
     	QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
         tr("The column '%1' is read-only! Please choose another curve!").arg(((DataCurve *)d_selected_curve)->xColumnName()));
@@ -364,7 +364,7 @@ void DataPickerTool::movePoint(const QPoint &pos)
     	QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
 		tr("The column '%1' is read-only! Please choose another curve!").arg(d_selected_curve->title().text()));
 		return;
-    } 
+    }
 
 	double new_x_val = d_graph->invTransform(d_selected_curve->xAxis(), pos.x());
 	double new_y_val = d_graph->invTransform(d_selected_curve->yAxis(), pos.y());

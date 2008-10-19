@@ -12,6 +12,8 @@ HEADERS  += src/lib/include/ColorBox.h \
             src/lib/include/PatternBox.h \
             src/lib/include/PenStyleBox.h \
             src/lib/include/SymbolBox.h \
+            src/lib/include/SymbolDialog.h \
+            src/lib/include/TextFormatButtons.h \
 
 SOURCES  += src/lib/src/ColorBox.cpp \
             src/lib/src/ColorButton.cpp \
@@ -21,3 +23,5 @@ SOURCES  += src/lib/src/ColorBox.cpp \
             src/lib/src/PatternBox.cpp \
             src/lib/src/PenStyleBox.cpp \
             src/lib/src/SymbolBox.cpp \
+            src/lib/src/SymbolDialog.cpp \
+            src/lib/src/TextFormatButtons.cpp \

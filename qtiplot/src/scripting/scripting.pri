@@ -2,9 +2,12 @@
 ##################### SCRIPTING LANGUAGES SECTION #############
 ###############################################################
 
+INCLUDEPATH += src/scripting/
+
 HEADERS  += src/scripting/customevents.h\
             src/scripting/FindReplaceDialog.h\
             src/scripting/LineNumberDisplay.h\
+            src/scripting/MyParser.h\
             src/scripting/Note.h\
             src/scripting/ScriptingEnv.h\
             src/scripting/Script.h\
@@ -14,6 +17,7 @@ HEADERS  += src/scripting/customevents.h\
 
 SOURCES  += src/scripting/FindReplaceDialog.cpp\
             src/scripting/LineNumberDisplay.cpp\
+            src/scripting/MyParser.cpp\
             src/scripting/Note.cpp\
             src/scripting/ScriptingEnv.cpp\
             src/scripting/Script.cpp\

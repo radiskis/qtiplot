@@ -119,7 +119,8 @@ DESTDIR        = ./
 #############################################################################
 
 ###################### ICONS ################################################
-
+INCLUDEPATH  += icons/
+HEADERS      += icons/pixmaps.h
 win32:RC_FILE = icons/qtiplot.rc
 mac:RC_FILE   = icons/qtiplot.icns
 
@@ -157,45 +158,34 @@ unix: man.files += ../qtiplot.1
 ###################### HEADERS ##############################################
 INCLUDEPATH       += src/
 HEADERS  += src/ApplicationWindow.h \
-            src/globals.h\
-            src/ExportDialog.h \
-            src/pixmaps.h\
             src/ConfigDialog.h \
+            src/CustomActionDialog.h \
             src/DataSetDialog.h \
-            src/MyParser.h \
-            src/importOPJ.h\
-            src/SymbolDialog.h \
-            src/RenameWindowDialog.h \
-            src/MdiSubWindow.h \
-            src/ImportASCIIDialog.h \
             src/Folder.h\
             src/FindDialog.h\
-            src/TextFormatButtons.h\
-            src/ColorMapDialog.h\
+            src/ImportASCIIDialog.h \
+            src/MdiSubWindow.h \
             src/OpenProjectDialog.h\
-            src/CustomActionDialog.h \
             src/PlotWizard.h \
+            src/RenameWindowDialog.h \
+            src/globals.h\
+            src/importOPJ.h\
 
 ###################### SOURCES ##############################################
 
 SOURCES  += src/main.cpp \
             src/ApplicationWindow.cpp \
-            src/ExportDialog.cpp \
             src/ConfigDialog.cpp \
+            src/CustomActionDialog.cpp \
             src/DataSetDialog.cpp \
-            src/MyParser.cpp \
-            src/importOPJ.cpp\
-            src/SymbolDialog.cpp \
-            src/RenameWindowDialog.cpp \
-            src/MdiSubWindow.cpp \
-            src/ImportASCIIDialog.cpp \
             src/Folder.cpp\
             src/FindDialog.cpp\
-            src/TextFormatButtons.cpp\
-            src/ColorMapDialog.cpp\
+            src/ImportASCIIDialog.cpp \
+            src/MdiSubWindow.cpp \
             src/OpenProjectDialog.cpp\
-            src/CustomActionDialog.cpp \
             src/PlotWizard.cpp \
+            src/RenameWindowDialog.cpp \
+            src/importOPJ.cpp\
 
 ###############################################################
 ##################### Compression (zlib123) ###################

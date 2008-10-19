@@ -29,7 +29,7 @@
 #include "RangeSelectorTool.h"
 #include "Graph.h"
 #include "PlotCurve.h"
-#include "../cursors.h"
+#include <cursors.h>
 
 #include <qwt_symbol.h>
 #include <QPoint>
@@ -291,8 +291,8 @@ void RangeSelectorTool::clearSelection()
     		QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
 			tr("The column '%1' is read-only! Operation aborted!").arg(d_selected_curve->title().text()));
 		return;
-   		} 
-		
+   		}
+
         int start_point = QMIN(d_active_point, d_inactive_point);
         int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
         int end_point = QMAX(d_active_point, d_inactive_point);
@@ -328,7 +328,7 @@ void RangeSelectorTool::pasteSelection()
     Table *t = ((DataCurve*)d_selected_curve)->table();
     if (!t)
         return;
-	
+
 	if (t->isReadOnlyColumn(t->colIndex(((DataCurve *)d_selected_curve)->xColumnName()))){
     	QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
         tr("The column '%1' is read-only! Operation aborted!").arg(((DataCurve *)d_selected_curve)->xColumnName()));

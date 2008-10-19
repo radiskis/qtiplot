@@ -32,7 +32,6 @@
 #include "globals.h"
 #include "ApplicationWindow.h"
 #include "pixmaps.h"
-#include "ExportDialog.h"
 #include "PlotWizard.h"
 #include "DataSetDialog.h"
 #include "ConfigDialog.h"
@@ -41,18 +40,19 @@
 #include "ImportASCIIDialog.h"
 #include "Folder.h"
 #include "FindDialog.h"
-#include "ColorBox.h"
 #include "OpenProjectDialog.h"
-#include "ColorMapDialog.h"
-#include "SymbolDialog.h"
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
-#include "PenStyleBox.h"
-#include "PatternBox.h"
 
-#include "table/SetColValuesDialog.h"
-#include "table/TableDialog.h"
-#include "table/TableStatistics.h"
+#include <ColorBox.h>
+#include <PenStyleBox.h>
+#include <PatternBox.h>
+#include <SymbolDialog.h>
+
+#include <ExportDialog.h>
+#include <SetColValuesDialog.h>
+#include <TableDialog.h>
+#include <TableStatistics.h>
 
 #include "analysis/Fit.h"
 #include "analysis/MultiPeakFit.h"
@@ -120,6 +120,7 @@
 #include <Graph3D.h>
 #include <Plot3DDialog.h>
 
+#include <ColorMapDialog.h>
 #include "matrix/MatrixDialog.h"
 #include "matrix/MatrixSizeDialog.h"
 #include "matrix/MatrixValuesDialog.h"

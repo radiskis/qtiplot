@@ -28,13 +28,13 @@
  ***************************************************************************/
 #include "AxesDialog.h"
 #include "../../ApplicationWindow.h"
-#include "../../MyParser.h"
-#include "../../TextFormatButtons.h"
-#include "../../table/Table.h"
-#include "../Graph.h"
-#include "../Grid.h"
-#include "../ScaleDraw.h"
-#include "../ScaleEngine.h"
+#include <MyParser.h>
+#include <TextFormatButtons.h>
+#include <Table.h>
+#include <Graph.h>
+#include <Grid.h>
+#include <ScaleDraw.h>
+#include <ScaleEngine.h>
 
 #include <DoubleSpinBox.h>
 #include <ColorBox.h>
@@ -1594,7 +1594,7 @@ void AxesDialog::initAxesPage()
 	topLayout->addWidget( labelBox );
 
 	QVBoxLayout *labelBoxLayout = new QVBoxLayout( labelBox );
-		
+
 	boxTitle = new QTextEdit();
 	boxTitle->setTextFormat(Qt::PlainText);
 	QFontMetrics metrics(this->font());
@@ -1603,18 +1603,18 @@ void AxesDialog::initAxesPage()
 
 	formatButtons = new TextFormatButtons(boxTitle, TextFormatButtons::AxisLabel);
 	labelBoxLayout->addWidget(formatButtons);
-	
+
 	QHBoxLayout *hl = new QHBoxLayout();
 	hl->addWidget(new QLabel(tr("Distance to axis")));
 	boxLabelsDistance = new QSpinBox();
 	boxLabelsDistance->setRange(0, 1000);
 	hl->addWidget(boxLabelsDistance);
-	
+
 	buttonLabelFont = new QPushButton(tr("&Font"));
 	hl->addWidget(buttonLabelFont);
 	hl->addStretch();
 	labelBoxLayout->addLayout(hl);
-	
+
 	QHBoxLayout * bottomLayout = new QHBoxLayout();
 
 	QGroupBox *leftBox = new QGroupBox(QString());

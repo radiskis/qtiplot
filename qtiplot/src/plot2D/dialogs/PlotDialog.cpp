@@ -28,15 +28,15 @@
  ***************************************************************************/
 #include "PlotDialog.h"
 #include "../../ApplicationWindow.h"
-#include "../../table/Table.h"
-#include "../../MyParser.h"
-#include "../QwtHistogram.h"
-#include "../VectorCurve.h"
-#include "../QwtErrorPlotCurve.h"
-#include "../BoxCurve.h"
-#include "../FunctionCurve.h"
-#include "../Spectrogram.h"
-#include "../QwtPieCurve.h"
+#include <Table.h>
+#include <MyParser.h>
+#include <QwtHistogram.h>
+#include <VectorCurve.h>
+#include <QwtErrorPlotCurve.h>
+#include <BoxCurve.h>
+#include <FunctionCurve.h>
+#include <Spectrogram.h>
+#include <QwtPieCurve.h>
 #include "../../Folder.h"
 
 #include <ColorMapEditor.h>

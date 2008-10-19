@@ -33,15 +33,15 @@
 #include <QIODevice>
 
 #include "EnrichmentDialog.h"
-#include "../Graph.h"
-#include "../TexWidget.h"
-#include "../EllipseWidget.h"
-#include "../FrameWidget.h"
-#include "../ImageWidget.h"
-#include "../RectangleWidget.h"
-#include "../LegendWidget.h"
+#include <Graph.h>
+#include <TexWidget.h>
+#include <EllipseWidget.h>
+#include <FrameWidget.h>
+#include <ImageWidget.h>
+#include <RectangleWidget.h>
+#include <LegendWidget.h>
 #include "../../ApplicationWindow.h"
-#include "../../TextFormatButtons.h"
+#include <TextFormatButtons.h>
 
 #include <ColorButton.h>
 #include <DoubleSpinBox.h>
@@ -137,9 +137,9 @@ void EnrichmentDialog::initEditorPage()
 	editPage = new QWidget();
 
     equationEditor = new QTextEdit;
-	
+
 	texFormatButtons = new TextFormatButtons(equationEditor, TextFormatButtons::Equation);
-	
+
 	outputLabel = new QLabel;
     outputLabel->setFrameShape(QFrame::StyledPanel);
 
@@ -305,8 +305,8 @@ void EnrichmentDialog::initFramePage()
 		boxFrameWidth->setRange(1, 100);
 		boxFrameWidth->setDecimals(0);
 		boxFrameWidth->setSingleStep(1.0);
-	} 
-	
+	}
+
 	connect(boxFrameWidth, SIGNAL(valueChanged(double)), this, SLOT(frameApplyTo()));
 	gl->addWidget(boxFrameWidth, 3, 1);
 	gl->setRowStretch(4, 1);
@@ -504,7 +504,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (!app)
 		return;
-	
+
 	d_widget = w;
 
     FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
@@ -512,22 +512,22 @@ void EnrichmentDialog::setWidget(QWidget *w)
 		frameBox->blockSignals(true);
         frameBox->setCurrentIndex(fw->frameStyle());
 		frameBox->blockSignals(false);
-		
+
 		frameColorBtn->blockSignals(true);
         frameColorBtn->setColor(fw->frameColor());
 		frameColorBtn->blockSignals(false);
-		
+
 		boxFrameLineStyle->blockSignals(true);
 		boxFrameLineStyle->setStyle(fw->framePen().style());
 		boxFrameLineStyle->blockSignals(false);
-		
+
 		boxFrameWidth->blockSignals(true);
 		if (d_widget_type == Ellipse)
 			boxFrameWidth->setValue(fw->framePen().widthF());
 		else
 			boxFrameWidth->setValue(fw->framePen().width());
 		boxFrameWidth->blockSignals(false);
-		
+
 		unitBox->setCurrentIndex(app->d_frame_geometry_unit);
 		displayCoordinates(app->d_frame_geometry_unit);
     } else {
@@ -548,7 +548,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			boxBackgroundTransparency->blockSignals(true);
 			boxBackgroundTransparency->setValue(bc.alpha());
 			boxBackgroundTransparency->blockSignals(false);
-			
+
 			textBackgroundBtn->blockSignals(true);
 			textBackgroundBtn->setEnabled(bc.alpha());
 			textBackgroundBtn->setColor(bc);
@@ -581,15 +581,15 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			backgroundColorBtn->blockSignals(true);
 			backgroundColorBtn->setColor(r->backgroundColor());
 			backgroundColorBtn->blockSignals(false);
-			
+
 			boxTransparency->blockSignals(true);
 			boxTransparency->setValue(r->backgroundColor().alpha());
 			boxTransparency->blockSignals(false);
-			
+
 			patternBox->blockSignals(true);
 			patternBox->setPattern(r->brush().style());
 			patternBox->blockSignals(false);
-			
+
 			patternColorBtn->blockSignals(true);
 			patternColorBtn->setColor(r->brush().color());
 			patternColorBtn->blockSignals(false);
@@ -600,15 +600,15 @@ void EnrichmentDialog::setWidget(QWidget *w)
 			backgroundColorBtn->blockSignals(true);
 			backgroundColorBtn->setColor(r->backgroundColor());
 			backgroundColorBtn->blockSignals(false);
-			
+
 			boxTransparency->blockSignals(true);
 			boxTransparency->setValue(r->backgroundColor().alpha());
 			boxTransparency->blockSignals(false);
-			
+
 			patternBox->blockSignals(true);
 			patternBox->setPattern(r->brush().style());
 			patternBox->blockSignals(false);
-			
+
 			patternColorBtn->blockSignals(true);
 			patternColorBtn->setColor(r->brush().color());
 			patternColorBtn->blockSignals(false);
@@ -638,7 +638,7 @@ void EnrichmentDialog::apply()
 		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
 		if (l)
 			l->setText(textEditBox->text());
-		
+
 		textFormatApplyTo();
 	}
 }
@@ -750,7 +750,7 @@ void EnrichmentDialog::setCoordinates(int unit)
 
     if (d_plot)
         d_plot->multiLayer()->notifyChanges();
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	if (app)
 		app->d_frame_geometry_unit = unit;
@@ -832,7 +832,7 @@ void EnrichmentDialog::frameApplyTo()
 				setFrameTo(fw);
 		}
 		break;
-		
+
 		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
@@ -877,7 +877,7 @@ void EnrichmentDialog::frameApplyTo()
 
 void EnrichmentDialog::setFrameTo(FrameWidget *fw)
 {
-	fw->setFrameStyle(frameBox->currentIndex());	
+	fw->setFrameStyle(frameBox->currentIndex());
 	QPen pen = QPen(frameColorBtn->color(), boxFrameWidth->value(),
 				boxFrameLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 	fw->setFramePen(pen);
@@ -895,7 +895,7 @@ void EnrichmentDialog::patternApplyTo()
 				setPatternTo(r);
 		}
 		break;
-		
+
 		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
@@ -956,7 +956,7 @@ void EnrichmentDialog::setText(QTextEdit *editor, const QString & t)
 {
 	if (!editor)
 		return;
-	
+
 	QTextCursor cursor = editor->textCursor();
 	// select the whole (old) text
 	cursor.movePosition(QTextCursor::Start);
@@ -989,7 +989,7 @@ void EnrichmentDialog::updateTransparency(int alpha)
 }
 
 void EnrichmentDialog::textFormatApplyTo()
-{	
+{
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	switch(textApplyToBox->currentIndex()){
 		case 0://this object
@@ -999,7 +999,7 @@ void EnrichmentDialog::textFormatApplyTo()
 				setTextFormatTo(l);
 		}
 		break;
-		
+
 		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();

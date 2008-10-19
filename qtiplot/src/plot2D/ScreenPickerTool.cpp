@@ -31,7 +31,7 @@
 #include "../table/Table.h"
 #include "Graph.h"
 #include "PlotCurve.h"
-#include "../cursors.h"
+#include <cursors.h>
 #include <SymbolBox.h>
 #include <qwt_symbol.h>
 
@@ -69,16 +69,16 @@ void ScreenPickerTool::append(const QwtDoublePoint &pos)
 		case NoRestriction:
 			d_selection_marker.setValue(pos);
 		break;
-		
+
 		case Vertical:
 			d_selection_marker.setYValue(pos.y());
 		break;
-		
+
 		case Horizontal:
 			d_selection_marker.setXValue(pos.x());
 		break;
 	}
-	
+
 	QString info;
 	info.sprintf("x=%g; y=%g", d_selection_marker.xValue(), d_selection_marker.yValue());
 	emit statusText(info);
@@ -108,7 +108,7 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
                         d_graph->replot();
 						QString info;
                         emit statusText(info.sprintf("x=%g; y=%g", pos.x(), pos.y()));*/
-						
+
 						append(pos);
 						emit selected(pos);
 						return true;
