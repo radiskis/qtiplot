@@ -1,12 +1,12 @@
 #include "fit_gsl.h"
-#include "../MyParser.h"
+#include <MyParser.h>
 #include "NonLinearFit.h"
 
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_math.h>
 
@@ -316,7 +316,7 @@ double gauss_multi_peak_d (const gsl_vector * x, void *params) {
     double *xc = new double[peaks];
     double *w2 = new double[peaks];
     double offset = gsl_vector_get (x, p-1);
-    
+
     for (int i = 0; i < peaks; i++) {
         xc[i] = gsl_vector_get(x, 3*i+1);
         double wi = gsl_vector_get(x, 3*i+2);
@@ -421,7 +421,7 @@ double lorentz_multi_peak_d (const gsl_vector * x, void *params) {
         xc[i] = gsl_vector_get(x, 3*i+1);
         w[i] = gsl_vector_get(x, 3*i+2);
     }
-	
+
 	double val = 0;
     for (int i = 0; i < n; i++) {
         double res = 0;
@@ -484,11 +484,11 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
     double *sigma = ((struct FitData *)params)->sigma;
-		
+
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
 	const char *function = fitter->formula().ascii();
 	QStringList parNames = fitter->parameterNames();
-	
+
 	MyParser parser;
     try {
         double *parameters = new double[p];
@@ -498,13 +498,13 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
             parameters[i]=gsl_vector_get(x,i);
             parser.DefineVar(parNames[i].ascii(), &parameters[i]);
         }
-		
+
 		QMapIterator<QString, double> i(fitter->constants());
  		while (i.hasNext()){
      		i.next();
 			parser.DefineConst(i.key().ascii(), i.value());
  		}
-		
+
         parser.SetExpr(function);
         for (int j = 0; j < n; j++) {
             xvar = X[j];
@@ -515,7 +515,7 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
     } catch (mu::ParserError &e) {
         QMessageBox::critical(0,"QtiPlot - Input function error",QString::fromStdString(e.GetMsg()));
         return GSL_EINVAL;
-    }	
+    }
     return GSL_SUCCESS;
 }
 
@@ -525,11 +525,11 @@ double user_d(const gsl_vector * x, void *params) {
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
     double *sigma = ((struct FitData *)params)->sigma;
-    
+
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
 	const char *function = fitter->formula().ascii();
 	QStringList parNames = fitter->parameterNames();
-	
+
     double val=0;
     MyParser parser;
     try {
@@ -540,13 +540,13 @@ double user_d(const gsl_vector * x, void *params) {
             parameters[i]=gsl_vector_get(x,i);
             parser.DefineVar(parNames[i].ascii(), &parameters[i]);
         }
-		
+
 		QMapIterator<QString, double> i(fitter->constants());
  		while (i.hasNext()){
      		i.next();
 			parser.DefineConst(i.key().ascii(), i.value());
  		}
-		
+
         parser.SetExpr(function);
         for (int j = 0; j < n; j++) {
             xvar = X[j];
@@ -567,11 +567,11 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
     int p = ((struct FitData *)params)->p;
     double *X = ((struct FitData *)params)->X;
     double *sigma = ((struct FitData *)params)->sigma;
-    
+
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
 	const char *function = fitter->formula().ascii();
 	QStringList parNames = fitter->parameterNames();
-	
+
 	try {
         double *param = new double[p];
         MyParser parser;
@@ -581,13 +581,13 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
             param[k]=gsl_vector_get(x,k);
             parser.DefineVar(parNames[k].ascii(), &param[k]);
         }
-		
+
 		QMapIterator<QString, double> i(fitter->constants());
  		while (i.hasNext()){
      		i.next();
 			parser.DefineConst(i.key().ascii(), i.value());
  		}
-		
+
         parser.SetExpr(function);
         for (int i = 0; i<n; i++) {
             xvar = X[i];

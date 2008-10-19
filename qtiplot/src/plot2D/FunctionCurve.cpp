@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "FunctionCurve.h"
-#include "../MyParser.h"
+#include <MyParser.h>
 
 #include <QMessageBox>
 
@@ -66,7 +66,7 @@ void FunctionCurve::copy(FunctionCurve* f)
 }
 
 QString FunctionCurve::saveToString()
-{	
+{
 	QString s = "<Function>\n";
 	s += "<Type>" + QString::number(d_function_type) + "</Type>\n";
 	s += "<Title>" + title().text() + "</Title>\n";
@@ -88,7 +88,7 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 {
 	if (!g)
 		return;
-	
+
 	int type = 0;
 	int points = 0, style = 0;
 	QStringList formulas;
@@ -165,7 +165,7 @@ void FunctionCurve::loadData(int points)
 {
     if (!points)
         points = dataSize();
-	
+
 	double *X = (double *)malloc(points*sizeof(double));
 	if (!X){
 		QMessageBox::critical(0, "QtiPlot - Memory Allocation Error",
@@ -179,7 +179,7 @@ void FunctionCurve::loadData(int points)
 		free(X);
 		return;
 	}
-	
+
     double step = (d_to - d_from)/(double)(points - 1);
     bool error = false;
 

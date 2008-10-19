@@ -28,10 +28,10 @@
  ***************************************************************************/
 #include "Integration.h"
 #include "nrutil.h"
-#include "../MyParser.h"
-#include "../plot2D/MultiLayer.h"
-#include "../plot2D/FunctionCurve.h"
-#include "../plot2D/LegendWidget.h"
+#include <MyParser.h>
+#include <MultiLayer.h>
+#include <FunctionCurve.h>
+#include <LegendWidget.h>
 
 #include <QMessageBox>
 #include <QDateTime>

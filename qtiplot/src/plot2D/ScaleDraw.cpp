@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "ScaleDraw.h"
 #include "Graph.h"
-#include "../MyParser.h"
+#include <MyParser.h>
 #include "ScaleEngine.h"
 
 #include <QDateTime>

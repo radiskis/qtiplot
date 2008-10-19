@@ -35,7 +35,7 @@
 #include "../NonLinearFit.h"
 #include "../SigmoidalFit.h"
 #include "../LogisticFit.h"
-#include "../../MyParser.h"
+#include <MyParser.h>
 #include "../../ApplicationWindow.h"
 #include <ColorBox.h>
 #include <DoubleSpinBox.h>
@@ -114,7 +114,7 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 
 	setGraph(g);
 	initBuiltInFunctions();
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 	QString pluginsPath = app->fitPluginsPath;
 	QFileInfo fi(pluginsPath);
@@ -122,20 +122,20 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 		choosePluginsFolder();
 	else
     	loadPlugins();
-	
+
 	QString modelsPath = app->fitModelsPath;
 	QFileInfo fim(modelsPath);
 	if (modelsPath.isEmpty() || !fim.isDir() || !fim.isWritable())
 		chooseFitModelsFolder();
 	else
     	loadUserFunctions();
-	
+
 	if (d_user_functions.size())
 		categoryBox->setCurrentRow(0);
 	else if (d_plugins.size())
 		categoryBox->setCurrentRow(3);
 	else
-		categoryBox->setCurrentRow(1);	
+		categoryBox->setCurrentRow(1);
 }
 
 void FitDialog::initFitPage()
@@ -361,13 +361,13 @@ void FitDialog::initEditPage()
 
     QGroupBox *gb = new QGroupBox();
     gb->setLayout(gl2);
-	
+
 	editBox = new QTextEdit();
 	editBox->setTextFormat(Qt::PlainText);
 	editBox->setAcceptRichText(false);
 	connect(editBox->document(), SIGNAL(contentsChange(int,int,int)), this, SLOT(guessParameters()));
 	editBox->setFocus();
-	
+
 	boxErrorMsg = new QLabel();
 	boxErrorMsg->setFrameStyle(QFrame::Box | QFrame::Sunken);
 	boxErrorMsg->hide();
@@ -649,7 +649,7 @@ void FitDialog::activateCurve(const QString& curveName)
 };
 
 void FitDialog::saveUserFunction()
-{	
+{
 	if (editBox->text().isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), tr("Please enter a valid function!"));
 		editBox->setFocus();
@@ -659,7 +659,7 @@ void FitDialog::saveUserFunction()
 				tr("Please enter a function name!"));
 		boxName->setFocus();
 		return;
-	} 
+	}
 
 	if (builtInFunctionNames().contains(boxName->text())){
 		QMessageBox::critical(this, tr("QtiPlot - Error: function name"),
@@ -692,7 +692,7 @@ void FitDialog::saveUserFunction()
 		d_current_fit = new NonLinearFit(app, d_graph);
 		if (!d_current_fit->setFormula(formula))
 			return;
-	    
+
 		QString filter = tr("QtiPlot fit model")+" (*.fit);;";
 		filter += tr("All files")+" (*.*)";
 		QString fn = QFileDialog::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
@@ -705,7 +705,7 @@ void FitDialog::saveUserFunction()
                 fn.append(".fit");
 
             d_current_fit->setObjectName(name);
-			
+
             if (d_current_fit->save(fn)){
                 QStringList lst = userFunctionNames();
                 lst << name;
@@ -897,7 +897,7 @@ void FitDialog::setFunction(bool ok)
 	setEditorTextColor(Qt::black);// reset text color to black
 	boxErrorMsg->hide();
 	boxErrorMsg->clear();
-	
+
 	if (ok){
 		boxName->setText(funcBox->currentItem()->text());
 		editBox->setText(explainBox->text());
@@ -1039,20 +1039,20 @@ void FitDialog::setCurrentFit(int function)
 {
 	if (function < 0)
         return;
-	
+
 	switch(categoryBox->currentRow()){
 		case 0:
 			if (d_user_functions.size() > function)
 				d_current_fit = d_user_functions[function];
 		break;
-		
+
 		case 1:
 			d_current_fit = d_built_in_functions[function];
 		break;
-		
+
 		case 2:
 		break;
-		
+
 		case 3:
 			if (d_plugins.size() > 0)
 		    	d_current_fit = d_plugins[function];
@@ -1068,7 +1068,7 @@ void FitDialog::showExpression(int function)
 	setCurrentFit(function);
 	if (!d_current_fit)
 		return;
-	
+
 	if (categoryBox->currentRow() == 2)
 		explainBox->setText(MyParser::explainFunction(function));
 	else if (categoryBox->currentRow() == 1){
@@ -1172,7 +1172,7 @@ void FitDialog::accept()
 	NonLinearFit *nlf = qobject_cast<NonLinearFit *>(d_current_fit);
 	if (nlf)
 		nlf->removeConstants();
-	
+
 	try {
 		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
@@ -1189,7 +1189,7 @@ void FitDialog::accept()
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					QString constName = boxParams->item(i, 0)->text();
 					nlf->setConstant(constName, val);
-					parser.DefineConst(constName.ascii(), val);	
+					parser.DefineConst(constName.ascii(), val);
 				}
 			}
 		} else {
@@ -1222,12 +1222,12 @@ void FitDialog::accept()
 #else
 			modifyGuesses (paramsInit);
 #endif
-		
+
 		if (nlf){
 			if (!nlf->setParametersList(parameters)) return;
 			if (!nlf->setFormula(formula, false)) return;
 		}
-		
+
 #ifdef Q_CC_MSVC
 		d_current_fit->setInitialGuesses(paramsInit.data());
 #else
@@ -1237,12 +1237,12 @@ void FitDialog::accept()
 		if (!d_current_fit->setDataFromCurve(curve, start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 					       tableNamesBox->currentText()+"_"+colNamesBox->currentText())) return;
-				
+
 		if (btnParamRange->isEnabled()){
 			for (int i=0; i<n; i++)
 				d_current_fit->setParameterRange(i, paramRangeLeft[i], paramRangeRight[i]);
 		}
-				
+
 		d_current_fit->setTolerance(eps);
 		d_current_fit->setOutputPrecision(app->fit_output_precision);
 		d_current_fit->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
@@ -1267,7 +1267,7 @@ void FitDialog::accept()
 
 		if (globalParamTableBox->isChecked() && d_param_table)
 			d_current_fit->writeParametersToTable(d_param_table, true);
-		
+
 		if (previewBox->isChecked())
 			updatePreview();
 	}
@@ -1282,18 +1282,18 @@ void FitDialog::modifyGuesses(double* initVal)
 	if (ef){
 		if (ef->isExponentialGrowth())
 			initVal[1] = -1/initVal[1];
-		else 
+		else
 			initVal[1] = 1/initVal[1];
 		return;
 	}
-	
+
 	TwoExpFit *two_ef = qobject_cast<TwoExpFit *>(d_current_fit);
 	if (two_ef){
 		initVal[1] = 1/initVal[1];
 		initVal[3] = 1/initVal[3];
 		return;
 	}
-	
+
 	ThreeExpFit *three_ef = qobject_cast<ThreeExpFit *>(d_current_fit);
 	if (three_ef){
 		initVal[1] = 1/initVal[1];
@@ -1499,7 +1499,7 @@ void FitDialog::saveInitialGuesses()
 	QFileInfo fi(app->fitModelsPath);
 	if (app->fitModelsPath.isEmpty() || !fi.isDir() || !fi.isWritable())
 		chooseFitModelsFolder();
-	
+
 	int rows = boxParams->rowCount();
     for (int i=0; i<rows; i++)
         d_current_fit->setInitialGuess(i, ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value());
@@ -1667,17 +1667,17 @@ void FitDialog::guessParameters()
 {
 	if (boxUseBuiltIn->isChecked())
 		return;
-		
+
 	QString text = editBox->text().remove(QRegExp("\\s")).remove(".");
 	if (text.isEmpty()){
 		boxParam->clear();
 		return;
 	}
-	
+
 	bool error = false;
 	string errMsg;
 	boxParam->setText(NonLinearFit::guessParameters(text, &error, &errMsg).join(", "));
-	if (error){ 
+	if (error){
 		setEditorTextColor(Qt::red);// highlight text in red
 		boxErrorMsg->setText(tr("Error: ") + QString(errMsg.c_str()));
 		boxErrorMsg->show();

@@ -27,14 +27,14 @@
  *                                                                         *
  ***************************************************************************/
 #include "CurvesDialog.h"
-#include "../Graph.h"
-#include "../../table/Table.h"
-#include "../../matrix/Matrix.h"
-#include "../FunctionCurve.h"
-#include "../PlotCurve.h"
+#include <Graph.h>
+#include <Table.h>
+#include <Matrix.h>
+#include <FunctionCurve.h>
+#include <PlotCurve.h>
 #include "../../ApplicationWindow.h"
 #include "../../Folder.h"
-#include "../../pixmaps.h"
+#include <pixmaps.h>
 
 #include <QPushButton>
 #include <QLabel>

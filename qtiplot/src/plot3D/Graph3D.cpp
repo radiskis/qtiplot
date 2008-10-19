@@ -30,8 +30,8 @@
 #include "Bar.h"
 #include "Cone3D.h"
 #include "../ApplicationWindow.h"
-#include "../MyParser.h"
-#include "../matrix/MatrixModel.h"
+#include <MyParser.h>
+#include <MatrixModel.h>
 
 #include <ColorMapEditor.h>
 

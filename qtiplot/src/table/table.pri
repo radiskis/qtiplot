@@ -2,13 +2,17 @@
 ################# Module: Table ##############################
 ###############################################################
 
-HEADERS  += src/table/SetColValuesDialog.h \
+INCLUDEPATH += src/table/
+
+HEADERS  += src/table/ExportDialog.h \
+            src/table/SetColValuesDialog.h \
             src/table/SortDialog.h \
             src/table/Table.h \
             src/table/TableDialog.h \
             src/table/TableStatistics.h \
 
-SOURCES  += src/table/SetColValuesDialog.cpp \
+SOURCES  += src/table/ExportDialog.cpp \
+            src/table/SetColValuesDialog.cpp \
             src/table/SortDialog.cpp \
             src/table/Table.cpp \
             src/table/TableDialog.cpp \

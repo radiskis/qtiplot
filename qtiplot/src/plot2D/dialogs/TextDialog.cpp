@@ -29,8 +29,8 @@
 
 #include "TextDialog.h"
 #include "../../ApplicationWindow.h"
-#include "../../TextFormatButtons.h"
-#include "../FrameWidget.h"
+#include <TextFormatButtons.h>
+#include <FrameWidget.h>
 #include <ColorButton.h>
 
 #include <QFontDialog>
@@ -85,7 +85,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 		distanceBox->setRange(0, 1000);
 		topLayout->addWidget(distanceBox, 3, 1);
 	}
-	
+
 	topLayout->setColumnStretch(2, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
@@ -157,7 +157,7 @@ void TextDialog::setGraph(Graph *g)
 				setWindowTitle(tr("QtiPlot") + " - " + tr("Right Axis Title"));
 			break;
 		}
-		
+
 		distanceBox->setValue(d_scale->spacing());
 	}
 
@@ -193,7 +193,7 @@ void TextDialog::apply()
 	}
 
 	d_graph->notifyChanges();
-		
+
 	switch(formatApplyToBox->currentIndex()){
 		case 0:
 			d_graph->replot();

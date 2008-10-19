@@ -28,8 +28,8 @@
  ***************************************************************************/
 #include "NonLinearFit.h"
 #include "fit_gsl.h"
-#include "../MyParser.h"
-#include "../plot2D/FunctionCurve.h"
+#include <MyParser.h>
+#include <FunctionCurve.h>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -95,7 +95,7 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 		d_init_err = true;
 		return false;
 	}
-	
+
 	try {
 		double *param = new double[d_p];
 		MyParser parser;
@@ -105,13 +105,13 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 			param[k] = gsl_vector_get(d_param_init, k);
 			parser.DefineVar(d_param_names[k].ascii(), &param[k]);
 		}
-		
+
 		QMapIterator<QString, double> i(d_constants);
  		while (i.hasNext()) {
      		i.next();
 			parser.DefineConst(i.key().ascii(), i.value());
  		}
-	
+
 		parser.SetExpr(s.ascii());
 		parser.Eval() ;
 		delete[] param;
@@ -149,7 +149,7 @@ bool NonLinearFit::setParametersList(const QStringList& lst)
 	d_param_explain.clear();
 	for (int i=0; i<d_p; i++)
 		d_param_explain << "";
-	
+
 	return true;
 }
 
@@ -164,7 +164,7 @@ void NonLinearFit::calculateFitCurveData(double *X, double *Y)
      	i.next();
 		parser.DefineConst(i.key().ascii(), i.value());
  	}
-	
+
 	double x;
 	parser.DefineVar("x", &x);
 	parser.SetExpr(d_formula.ascii());
@@ -191,21 +191,21 @@ double NonLinearFit::eval(double *par, double x)
 	MyParser parser;
 	for (int i=0; i<d_p; i++)
 		parser.DefineVar(d_param_names[i].ascii(), &par[i]);
-	
+
 	QMapIterator<QString, double> i(d_constants);
  	while (i.hasNext()) {
      	i.next();
 		parser.DefineConst(i.key().ascii(), i.value());
  	}
-		
+
 	parser.DefineVar("x", &x);
 	parser.SetExpr(d_formula.ascii());
     return parser.Eval();
 }
-		
+
 void NonLinearFit::setConstant(const QString& parName, double val)
-{	
-	d_constants.insert(parName, val);			
+{
+	d_constants.insert(parName, val);
 }
 
 QString NonLinearFit::logFitInfo(int iterations, int status)
@@ -213,10 +213,10 @@ QString NonLinearFit::logFitInfo(int iterations, int status)
 	QString info = Fit::logFitInfo(iterations, status);
 	if (d_constants.isEmpty())
 		return info;
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
-	
+
 	QMapIterator<QString, double> i(d_constants);
  	while (i.hasNext()) {
      	i.next();
@@ -232,10 +232,10 @@ QString NonLinearFit::legendInfo()
 	QString info = Fit::legendInfo();
 	if (d_constants.isEmpty())
 		return info;
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
-	
+
 	QMapIterator<QString, double> i(d_constants);
  	while (i.hasNext()) {
      	i.next();
@@ -261,12 +261,12 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 {
 	QString text = s;
 	text.remove(QRegExp("\\s")).remove(".");
-		
+
 	QStringList parList;
 	try {
 		MyParser parser;
 		ParserTokenReader reader(&parser);
-		
+
 		const char *formula = text.toAscii().data();
 		int length = text.toAscii().length();
 		reader.SetFormula (formula);
@@ -275,18 +275,18 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 		while(pos < length){
 			ParserToken<value_type, string_type> token = reader.ReadNextToken();
 			QString str = QString(token.GetAsString().c_str());
-			if (token.GetCode () == cmVAR && str.contains(QRegExp("\\D")) 
+			if (token.GetCode () == cmVAR && str.contains(QRegExp("\\D"))
 				&& str != "x" && !parList.contains(str))
 				parList << str;
 			pos = reader.GetPos();
 		}
 		parList.sort();
-	} catch(mu::ParserError &e) { 
+	} catch(mu::ParserError &e) {
 		if (error){
 			*error = true;
 			*errMsg = e.GetMsg();
 		}
-		return parList;	
+		return parList;
 	}
 	if (error)
 		*error = false;

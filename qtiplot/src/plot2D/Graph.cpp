@@ -103,7 +103,7 @@ static const char *unzoom_xpm[]={
 #include "LegendWidget.h"
 #include "FrameWidget.h"
 #include "ArrowMarker.h"
-#include "../cursors.h"
+#include <cursors.h>
 #include "ScalePicker.h"
 #include "TitlePicker.h"
 #include "QwtPieCurve.h"

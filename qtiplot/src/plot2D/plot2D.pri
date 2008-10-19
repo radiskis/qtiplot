@@ -2,6 +2,9 @@
 ################# Module: Plot 2D #############################
 ###############################################################
 
+    INCLUDEPATH += src/plot2D/
+    INCLUDEPATH += src/plot2D/dialogs/
+
     HEADERS += src/plot2D/AddWidgetTool.h \
 			   src/plot2D/ArrowMarker.h \
 			   src/plot2D/BoxCurve.h \
@@ -35,6 +38,7 @@
 			   src/plot2D/TitlePicker.h \
 			   src/plot2D/TranslateCurveTool.h \
 			   src/plot2D/VectorCurve.h \
+			   src/plot2D/cursors.h \
 
     SOURCES += src/plot2D/AddWidgetTool.cpp \
 			   src/plot2D/ArrowMarker.cpp \
