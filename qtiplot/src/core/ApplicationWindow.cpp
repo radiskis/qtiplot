@@ -7604,7 +7604,7 @@ void ApplicationWindow::clearSelection()
 			g->removeMarker();
 	}
 	else if (m->isA("Note"))
-		((Note*)m)->editor()->clear();
+		((Note*)m)->editor()->textCursor().removeSelectedText();
 	emit modified();
 }
 
@@ -8342,8 +8342,6 @@ void ApplicationWindow::editMenuAboutToShow()
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(false);
 	}
-	
-	//reloadCustomActions();
 }
 
 void ApplicationWindow::windowsMenuAboutToShow()

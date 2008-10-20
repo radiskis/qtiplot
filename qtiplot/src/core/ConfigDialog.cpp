@@ -2316,4 +2316,5 @@ void ConfigDialog::customizeNotes()
             n->setFont(f);
         }
     }
+	app->setFormatBarFont(f);
 }

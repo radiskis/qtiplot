@@ -966,6 +966,7 @@ public slots:
 	//@}
 
 	void showToolBarsMenu();
+	void setFormatBarFont(const QFont &);
 
 signals:
 	void modified();
@@ -1008,7 +1009,6 @@ private slots:
 	//! \name Font Format Functions
 	//@{
 	void enableTextEditor(Graph *g);
-	void setFormatBarFont(const QFont &);
 	void setFontSize(int);
 	void setFontFamily(const QFont &);
 	void setItalicFont(bool);
