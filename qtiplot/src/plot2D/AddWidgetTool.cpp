@@ -32,7 +32,7 @@
 #include "LegendWidget.h"
 #include "TexWidget.h"
 #include "EllipseWidget.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 
 #include <QAction>
 #include <QCursor>

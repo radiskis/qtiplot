@@ -36,10 +36,10 @@
 #include <Q3ValueList>
 #include <QVarLengthArray>
 
-#include "../plot2D/Graph.h"
-#include "../MdiSubWindow.h"
-#include "../scripting/ScriptingEnv.h"
-#include "../scripting/Script.h"
+#include <Graph.h>
+#include <MdiSubWindow.h>
+#include <ScriptingEnv.h>
+#include <Script.h>
 
 class MyTable : public Q3Table
 {

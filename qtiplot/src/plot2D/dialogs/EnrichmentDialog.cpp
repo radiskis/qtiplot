@@ -40,9 +40,8 @@
 #include <ImageWidget.h>
 #include <RectangleWidget.h>
 #include <LegendWidget.h>
-#include "../../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include <TextFormatButtons.h>
-
 #include <ColorButton.h>
 #include <DoubleSpinBox.h>
 #include <PatternBox.h>

@@ -2,6 +2,9 @@
 ################# Module: Analysis ##############################
 ###############################################################
 
+INCLUDEPATH += src/analysis/
+INCLUDEPATH += src/analysis/dialogs/
+
     HEADERS += src/analysis/Convolution.h \
 			   src/analysis/Correlation.h \
 			   src/analysis/Differentiation.h \

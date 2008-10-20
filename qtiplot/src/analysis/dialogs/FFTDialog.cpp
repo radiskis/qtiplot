@@ -27,13 +27,13 @@
  *                                                                         *
  ***************************************************************************/
 #include "FFTDialog.h"
-#include "../FFT.h"
-#include "../fft2D.h"
-#include "../../ApplicationWindow.h"
-#include "../../table/Table.h"
-#include "../../plot2D/Graph.h"
-#include "../../plot2D/MultiLayer.h"
-#include "../../matrix/Matrix.h"
+#include <FFT.h>
+#include <fft2D.h>
+#include <ApplicationWindow.h>
+#include <Table.h>
+#include <Graph.h>
+#include <MultiLayer.h>
+#include <Matrix.h>
 #include <DoubleSpinBox.h>
 
 #include <QRadioButton>

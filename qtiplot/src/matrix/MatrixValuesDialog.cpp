@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "MatrixValuesDialog.h"
 #include "MatrixCommand.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 
 #include <QLayout>
 #include <QSpinBox>

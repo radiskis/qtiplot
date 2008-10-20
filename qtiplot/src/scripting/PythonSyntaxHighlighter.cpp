@@ -30,7 +30,7 @@
 
 #include <QtGui>
 #include "PythonSyntaxHighlighter.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 
 PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     : QSyntaxHighlighter(parent->document())

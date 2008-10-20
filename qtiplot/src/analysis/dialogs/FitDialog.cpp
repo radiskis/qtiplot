@@ -27,16 +27,16 @@
  *                                                                         *
  ***************************************************************************/
 #include "FitDialog.h"
-#include "../Fit.h"
-#include "../MultiPeakFit.h"
-#include "../ExponentialFit.h"
-#include "../PolynomialFit.h"
-#include "../PluginFit.h"
-#include "../NonLinearFit.h"
-#include "../SigmoidalFit.h"
-#include "../LogisticFit.h"
+#include <Fit.h>
+#include <MultiPeakFit.h>
+#include <ExponentialFit.h>
+#include <PolynomialFit.h>
+#include <PluginFit.h>
+#include <NonLinearFit.h>
+#include <SigmoidalFit.h>
+#include <LogisticFit.h>
 #include <MyParser.h>
-#include "../../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include <ColorBox.h>
 #include <DoubleSpinBox.h>
 

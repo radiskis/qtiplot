@@ -28,8 +28,8 @@
  ***************************************************************************/
 #include "FindReplaceDialog.h"
 #include "ScriptEdit.h"
-#include "../ApplicationWindow.h"
-#include "../Folder.h"
+#include <ApplicationWindow.h>
+#include <Folder.h>
 
 #include <QPushButton>
 #include <QCheckBox>

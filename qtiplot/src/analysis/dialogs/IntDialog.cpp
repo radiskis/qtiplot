@@ -27,9 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "IntDialog.h"
-#include "../Integration.h"
-#include "../../ApplicationWindow.h"
-#include "../../plot2D/Graph.h"
+#include <Integration.h>
+#include <ApplicationWindow.h>
+#include <Graph.h>
 #include <DoubleSpinBox.h>
 
 #include <QGroupBox>

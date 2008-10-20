@@ -31,7 +31,7 @@
 
 #include <QObject>
 
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include "Filter.h"
 
 #include <gsl/gsl_multifit_nlin.h>

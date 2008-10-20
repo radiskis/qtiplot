@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "FrameWidget.h"
 #include "SelectionMoveResizer.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include <PenStyleBox.h>
 
 #include <QPainter>

@@ -53,7 +53,7 @@
 #include "LegendWidget.h"
 #include "Spectrogram.h"
 #include "SelectionMoveResizer.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 
 #include <gsl/gsl_vector.h>
 

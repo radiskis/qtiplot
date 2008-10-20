@@ -34,6 +34,7 @@ HEADERS  += include/ColorBox.h \
             include/ColorMapEditor.h \
 			include/DoubleSpinBox.h \
 			include/ExtensibleFileDialog.h \
+			include/LineNumberDisplay.h \
             include/PatternBox.h \
 			include/PenStyleBox.h \
 			include/SymbolBox.h \
@@ -43,6 +44,7 @@ SOURCES  += src/ColorBox.cpp \
             src/ColorMapEditor.cpp \
 			src/DoubleSpinBox.cpp \
 			src/ExtensibleFileDialog.cpp \
+			src/LineNumberDisplay.cpp \
             src/PatternBox.cpp \
 			src/PenStyleBox.cpp \
 			src/SymbolBox.cpp \

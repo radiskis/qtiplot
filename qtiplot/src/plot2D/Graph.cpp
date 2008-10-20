@@ -118,7 +118,7 @@ static const char *unzoom_xpm[]={
 #include "SelectionMoveResizer.h"
 #include "RangeSelectorTool.h"
 #include "PlotCurve.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include "ScaleEngine.h"
 #include "RectangleWidget.h"
 #include "EllipseWidget.h"

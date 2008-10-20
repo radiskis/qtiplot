@@ -27,9 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "LineDialog.h"
-#include "../ArrowMarker.h"
-#include "../Graph.h"
-#include "../../ApplicationWindow.h"
+#include <ArrowMarker.h>
+#include <Graph.h>
+#include <ApplicationWindow.h>
 #include <ColorButton.h>
 #include <DoubleSpinBox.h>
 #include <PenStyleBox.h>

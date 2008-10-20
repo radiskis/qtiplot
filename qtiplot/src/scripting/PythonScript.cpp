@@ -34,7 +34,7 @@
 
 #include "PythonScript.h"
 #include "PythonScripting.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 
 #include <QObject>
 #include <QVariant>

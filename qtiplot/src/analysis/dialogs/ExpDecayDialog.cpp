@@ -27,10 +27,10 @@
  *                                                                         *
  ***************************************************************************/
 #include "ExpDecayDialog.h"
-#include "../Fit.h"
-#include "../ExponentialFit.h"
-#include "../../plot2D/Graph.h"
-#include "../../ApplicationWindow.h"
+#include <Fit.h>
+#include <ExponentialFit.h>
+#include <Graph.h>
+#include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
 #include <ColorBox.h>
 

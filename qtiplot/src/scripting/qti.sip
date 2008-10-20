@@ -51,7 +51,7 @@ private:
 class MdiSubWindow: QMdiSubWindow /PyName=MDIWindow/
 {
 %TypeHeaderCode
-#include "src/MdiSubWindow.h"
+#include "src/core/MdiSubWindow.h"
 %End
 public:
   enum CaptionPolicy{Name = 0, Label = 1, Both = 2};
@@ -978,7 +978,7 @@ private:
 class ApplicationWindow: QMainWindow
 {
 %TypeHeaderCode
-#include "src/ApplicationWindow.h"
+#include "src/core/ApplicationWindow.h"
 %End
 %ConvertToSubClassCode
 // we have to do this to override casting in qt/qobject.sip (PyQt 3.16)
@@ -1864,7 +1864,7 @@ private:
 class Folder : QObject
 {
 %TypeHeaderCode
-#include "src/Folder.h"
+#include "src/core/Folder.h"
 %End
 public:
   MDIWindowList windowsList() /PyName=windows/;

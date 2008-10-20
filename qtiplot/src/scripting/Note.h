@@ -29,9 +29,9 @@
 #ifndef NOTE_H
 #define NOTE_H
 
-#include "../MdiSubWindow.h"
-#include "ScriptEdit.h"
-#include "LineNumberDisplay.h"
+#include <MdiSubWindow.h>
+#include <ScriptEdit.h>
+#include <LineNumberDisplay.h>
 #include <QTextEdit>
 
 class ScriptingEnv;
