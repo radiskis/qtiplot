@@ -56,7 +56,6 @@ hbox->setMargin(0);
 hbox->setSpacing(0);
 hbox->addWidget(d_line_number);
 hbox->addWidget(te);
-
 setWidget(d_frame);
 
 setGeometry(0, 0, 500, 200);

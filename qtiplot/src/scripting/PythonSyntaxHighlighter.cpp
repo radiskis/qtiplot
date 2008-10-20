@@ -60,11 +60,6 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     rule.format = classFormat;
     highlightingRules.append(rule);
 
-	quotationFormat.setForeground(app->d_quotation_highlight_color);
-    rule.pattern = QRegExp("\".*\"");
-    rule.format = quotationFormat;
-    highlightingRules.append(rule);
-
     functionFormat.setFontItalic(true);
 	functionFormat.setForeground(app->d_function_highlight_color);
     rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
@@ -76,6 +71,11 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     rule.format = numericFormat;
     highlightingRules.append(rule);
 	
+	quotationFormat.setForeground(app->d_quotation_highlight_color);
+    rule.pattern = QRegExp("\".*\"");
+    rule.format = quotationFormat;
+    highlightingRules.append(rule);
+
 	commentFormat.setForeground(app->d_comment_highlight_color);
 	rule.pattern = QRegExp("#[^\n]*");
     rule.format = commentFormat;
