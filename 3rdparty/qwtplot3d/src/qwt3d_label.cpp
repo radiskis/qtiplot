@@ -117,32 +117,65 @@ void Label::update()
 		pm_ = QPixmap(r.width(), r.bottom());
 	}
 
-    if (plot() && plot()->isExportingVector()){
-    #if QT_VERSION >= 0x040000 // avoids uninitialized areas in some cases
+	if (plot() && plot()->isExportingVector()){
+    #if QT_VERSION >= 0x040000
         Qwt3D::RGBA rgba = plot()->backgroundRGBAColor();
         pm_.fill(GL2Qt(rgba.r, rgba.g, rgba.b));
     #else
         pm_.fill();
     #endif
+		p.begin( &pm_ );
+    	p.setFont( font_ );
+    	p.setPen( Qt::SolidLine );
+    	p.setPen( GL2Qt(color.r, color.g, color.b) );
+    	p.drawText(0, r.height() - fm.descent() - 1, text_);
+		p.end();
     } else {
-        QBitmap bm(pm_.width(), pm_.height());
-        bm.fill(Qt::color0);
-        p.begin( &bm );
-        p.setPen(Qt::color1);
-        p.setFont(font_);
-        p.drawText(0, r.height() - fm.descent() - 1, text_);
-        p.end();
+		QBitmap bm(pm_.width(),pm_.height());
+	#if QT_VERSION >= 0x040000 && defined(Q_WS_X11)
+  		bm.fill(Qt::white);
+		p.begin( &bm );
+    	p.setPen(Qt::black);
+    	p.setFont(font_);
+    	p.drawText(0,r.height() - fm.descent() -1 , text_);
+  		p.end();
 
-        pm_.setMask(bm);
-    }
+  		pm_.setMask(bm);
+  
+  		// avoids uninitialized areas in some cases
+  		pm_.fill(Qt::white);
+  		p.begin( &pm_ );
+    	p.setFont( font_ );
+    	p.setPen( Qt::SolidLine );
+    	p.setPen( GL2Qt(color.r, color.g, color.b) );
 
-	p.begin( &pm_ );
-    p.setFont( font_ );
-    p.setPen( Qt::SolidLine );
-    p.setPen( GL2Qt(color.r, color.g, color.b) );
-    p.drawText(0, r.height() - fm.descent() - 1, text_);
-	p.end();
+    	p.drawText(0,r.height() - fm.descent() -1 , text_);
+  		p.end();
 
+  		buf_ = pm_.toImage();
+	#else
+  		bm.fill(Qt::color0);
+		p.begin( &bm );
+		p.setPen(Qt::color1);
+		p.setFont(font_);
+		p.drawText(0,r.height() - fm.descent() -1 , text_);
+		p.end();
+
+		pm_.setMask(bm);
+  
+  		// avoids uninitialized areas in some cases
+	#if QT_VERSION < 0x040000
+		pm_.fill();
+	#endif
+		p.begin( &pm_ );
+	  	p.setFont( font_ );
+	  	p.setPen( Qt::SolidLine );
+	  	p.setPen( GL2Qt(color.r, color.g, color.b) );
+	  	p.drawText(0,r.height() - fm.descent() -1 , text_);
+		p.end();     
+	#endif	    
+	}
+	
 #if QT_VERSION < 0x040000
     buf_ = pm_.convertToImage();
 #else
