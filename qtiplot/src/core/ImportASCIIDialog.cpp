@@ -29,10 +29,10 @@
  ***************************************************************************/
 
 #include "ImportASCIIDialog.h"
-#include "ApplicationWindow.h"
-#include "table/Table.h"
-#include "matrix/Matrix.h"
-#include "matrix/MatrixModel.h"
+#include <ApplicationWindow.h>
+#include <Table.h>
+#include <Matrix.h>
+#include <MatrixModel.h>
 
 #include <QLayout>
 #include <QGroupBox>

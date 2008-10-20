@@ -32,8 +32,8 @@
 #include <Matrix.h>
 #include <FunctionCurve.h>
 #include <PlotCurve.h>
-#include "../../ApplicationWindow.h"
-#include "../../Folder.h"
+#include <ApplicationWindow.h>
+#include <Folder.h>
 #include <pixmaps.h>
 
 #include <QPushButton>

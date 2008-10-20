@@ -30,7 +30,7 @@
 #include "LineProfileTool.h"
 #include "ImageWidget.h"
 #include "Graph.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include "MultiLayer.h"
 
 #include <QPoint>

@@ -29,10 +29,9 @@
 #include "Graph3D.h"
 #include "Bar.h"
 #include "Cone3D.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include <MyParser.h>
 #include <MatrixModel.h>
-
 #include <ColorMapEditor.h>
 
 #include <QApplication>

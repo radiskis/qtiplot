@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "MultiPeakFitTool.h"
 #include "RangeSelectorTool.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include "DataPickerTool.h"
 #include <cursors.h>
 

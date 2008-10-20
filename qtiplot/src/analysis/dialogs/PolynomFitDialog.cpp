@@ -27,9 +27,9 @@
  *                                                                         *
  ***************************************************************************/
 #include "PolynomFitDialog.h"
-#include "../PolynomialFit.h"
-#include "../../plot2D/Graph.h"
-#include "../../ApplicationWindow.h"
+#include <PolynomialFit.h>
+#include <Graph.h>
+#include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
 #include <ColorBox.h>
 

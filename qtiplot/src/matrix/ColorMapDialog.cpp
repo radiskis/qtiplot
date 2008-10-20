@@ -27,8 +27,8 @@
  ***************************************************************************/
 #include "ColorMapDialog.h"
 #include "ColorMapEditor.h"
-#include "matrix/Matrix.h"
-#include "matrix/MatrixCommand.h"
+#include <Matrix.h>
+#include <MatrixCommand.h>
 
 #include <QPushButton>
 #include <QLayout>

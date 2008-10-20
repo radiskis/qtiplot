@@ -155,38 +155,6 @@ documentation.files += ../README.html \
 
 unix: man.files += ../qtiplot.1
 
-###################### HEADERS ##############################################
-INCLUDEPATH       += src/
-HEADERS  += src/ApplicationWindow.h \
-            src/ConfigDialog.h \
-            src/CustomActionDialog.h \
-            src/DataSetDialog.h \
-            src/Folder.h\
-            src/FindDialog.h\
-            src/ImportASCIIDialog.h \
-            src/MdiSubWindow.h \
-            src/OpenProjectDialog.h\
-            src/PlotWizard.h \
-            src/RenameWindowDialog.h \
-            src/globals.h\
-            src/importOPJ.h\
-
-###################### SOURCES ##############################################
-
-SOURCES  += src/main.cpp \
-            src/ApplicationWindow.cpp \
-            src/ConfigDialog.cpp \
-            src/CustomActionDialog.cpp \
-            src/DataSetDialog.cpp \
-            src/Folder.cpp\
-            src/FindDialog.cpp\
-            src/ImportASCIIDialog.cpp \
-            src/MdiSubWindow.cpp \
-            src/OpenProjectDialog.cpp\
-            src/PlotWizard.cpp \
-            src/RenameWindowDialog.cpp \
-            src/importOPJ.cpp\
-
 ###############################################################
 ##################### Compression (zlib123) ###################
 ###############################################################
@@ -196,24 +164,28 @@ SOURCES += ../3rdparty/zlib123/minigzip.c
 ###############################################################
 ################# Origin Import (liborigin) ###################
 ###############################################################
+INCLUDEPATH += src/
 
+HEADERS += src/importOPJ.h
 HEADERS += ../3rdparty/liborigin/OriginObj.h
 HEADERS += ../3rdparty/liborigin/OriginFile.h
 HEADERS += ../3rdparty/liborigin/OriginParser.h
 HEADERS += ../3rdparty/liborigin/OriginDefaultParser.h
 HEADERS += ../3rdparty/liborigin/Origin750Parser.h
 
+SOURCES += src/importOPJ.cpp
 SOURCES += ../3rdparty/liborigin/OriginFile.cpp
 SOURCES += ../3rdparty/liborigin/OriginParser.cpp
 SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
 SOURCES += ../3rdparty/liborigin/Origin750Parser.cpp
 
 ###############################################################
-################# Other Default Modules #######################
+################# Default Modules #############################
 ###############################################################
 
 include(../3rdparty/qwtplot3d/qwtplot3d.pri)
 include(src/analysis/analysis.pri)
+include(src/core/core.pri)
 include(src/lib/libqti.pri)
 include(src/plot2D/plot2D.pri)
 include(src/plot3D/plot3D.pri)

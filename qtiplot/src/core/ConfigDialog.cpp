@@ -27,16 +27,16 @@
  *                                                                         *
  ***************************************************************************/
 #include "ConfigDialog.h"
-#include "ApplicationWindow.h"
-#include "scripting/Note.h"
-#include "plot2D/MultiLayer.h"
-#include "plot2D/Graph.h"
-#include "matrix/Matrix.h"
-#include "ColorButton.h"
-#include "ColorBox.h"
-#include "pixmaps.h"
-#include "DoubleSpinBox.h"
-#include "ColorMapEditor.h"
+#include <ApplicationWindow.h>
+#include <Note.h>
+#include <MultiLayer.h>
+#include <Graph.h>
+#include <Matrix.h>
+#include <ColorButton.h>
+#include <ColorBox.h>
+#include <pixmaps.h>
+#include <DoubleSpinBox.h>
+#include <ColorMapEditor.h>
 
 #include <QLocale>
 #include <QPushButton>

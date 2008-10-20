@@ -40,10 +40,10 @@
 #include <QDesktopServices>
 #include <QBuffer>
 
-#include "table/Table.h"
-#include "scripting/ScriptingEnv.h"
-#include "scripting/Script.h"
-#include "plot2D/TranslateCurveTool.h"
+#include <Table.h>
+#include <ScriptingEnv.h>
+#include <Script.h>
+#include <TranslateCurveTool.h>
 
 #include <qwt_color_map.h>
 

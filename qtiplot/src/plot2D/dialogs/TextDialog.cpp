@@ -28,7 +28,7 @@
  ***************************************************************************/
 
 #include "TextDialog.h"
-#include "../../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include <TextFormatButtons.h>
 #include <FrameWidget.h>
 #include <ColorButton.h>

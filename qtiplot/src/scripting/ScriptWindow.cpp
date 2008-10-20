@@ -29,7 +29,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "ScriptWindow.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include "ScriptEdit.h"
 #include "LineNumberDisplay.h"
 #include <pixmaps.h>

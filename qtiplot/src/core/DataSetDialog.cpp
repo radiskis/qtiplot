@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "DataSetDialog.h"
-#include "plot2D/Graph.h"
+#include <Graph.h>
 
 #include <QPushButton>
 #include <QCheckBox>

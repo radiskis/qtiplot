@@ -31,7 +31,7 @@
 #include "CanvasPicker.h"
 #include "ArrowMarker.h"
 #include "PlotCurve.h"
-#include "../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 
 #include <QVector>
 #include <QMessageBox>

@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "PlotDialog.h"
-#include "../../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include <Table.h>
 #include <MyParser.h>
 #include <QwtHistogram.h>
@@ -37,8 +37,7 @@
 #include <FunctionCurve.h>
 #include <Spectrogram.h>
 #include <QwtPieCurve.h>
-#include "../../Folder.h"
-
+#include <Folder.h>
 #include <ColorMapEditor.h>
 #include <DoubleSpinBox.h>
 #include <PenStyleBox.h>

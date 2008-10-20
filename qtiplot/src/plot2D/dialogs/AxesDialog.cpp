@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "AxesDialog.h"
-#include "../../ApplicationWindow.h"
+#include <ApplicationWindow.h>
 #include <MyParser.h>
 #include <TextFormatButtons.h>
 #include <Table.h>
