@@ -130,7 +130,6 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	functionsMenu = new QMenu(this);
 	Q_CHECK_PTR(functionsMenu);
 	connect(functionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFunction(QAction *)));
-	connect(document(), SIGNAL(contentsChange(int,int,int)), this, SLOT(handleContentsChange(int,int,int)));
 }
 
 void ScriptEdit::customEvent(QEvent *e)
@@ -322,15 +321,6 @@ int ScriptEdit::lineNumber(int pos) const
 	return n;
 }
 
-void ScriptEdit::handleContentsChange(int position, int, int)
-{
-	if (d_changing_fmt) return; // otherwise we overwrite our own changes
-	QTextCursor cursor = textCursor();
-	cursor.setPosition(position);
-	cursor.mergeBlockFormat(d_fmt_default);
-	textChanged();
-}
-
 void ScriptEdit::execute()
 {
 	QString fname = "<%1:%2>";
@@ -348,13 +338,11 @@ void ScriptEdit::execute()
 	//printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	myScript->exec();
 
-	d_changing_fmt = true;
 	if (d_error)
 		codeCursor.mergeBlockFormat(d_fmt_failure);
 	else
 		codeCursor.mergeBlockFormat(d_fmt_default);
 
-	d_changing_fmt = false;
 	d_error = false;
 }
 
@@ -370,13 +358,11 @@ void ScriptEdit::executeAll()
 	myScript->setCode(text());
 	myScript->exec();
 
-	d_changing_fmt = true;
 	if (d_error)
 		codeCursor.mergeBlockFormat(d_fmt_failure);
 	else
 		codeCursor.mergeBlockFormat(d_fmt_default);
 
-	d_changing_fmt = false;
 	d_error = false;
 }
 
@@ -397,7 +383,6 @@ void ScriptEdit::evaluate()
 	//printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	QVariant res = myScript->eval();
 
-	d_changing_fmt = true;
 	if (d_error)
 		codeCursor.mergeBlockFormat(d_fmt_failure);
 	else
@@ -414,7 +399,6 @@ void ScriptEdit::evaluate()
 				 printCursor.insertText("#> "+strVal+"\n");
 		}
 
-	d_changing_fmt = false;
 	d_error = false;
 	setTextCursor(printCursor);
 }
