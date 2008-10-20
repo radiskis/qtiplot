@@ -132,12 +132,14 @@ void Note::setFont(const QFont& f)
 {
     if (te->toPlainText().isEmpty()){
         te->setCurrentFont(f);
+		te->document()->setDefaultFont(f);
         d_line_number->setCurrentFont(f);
         return;
     }
 
     te->selectAll();
     te->setCurrentFont(f);
+	te->document()->setDefaultFont(f);
     d_line_number->setCurrentFont(f);
     d_line_number->updateLineNumbers(true);
 
