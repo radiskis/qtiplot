@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "LineNumberDisplay.h"
 #include <QScrollBar>
+#include <QShowEvent>
 
 LineNumberDisplay::LineNumberDisplay(QTextEdit *te, QWidget *parent)
 		 : QTextEdit(parent), d_text_edit(te)
@@ -65,7 +66,7 @@ void LineNumberDisplay::updateLineNumbers(bool force)
 
 	setPlainText(aux);
 
-	QFontMetrics fm(font(), this);
+	QFontMetrics fm(d_text_edit->currentFont(), this);
 	setMaximumWidth(2*fm.boundingRect(QString::number(lines)).width());
 	verticalScrollBar()->setValue(d_text_edit->verticalScrollBar()->value());
 }

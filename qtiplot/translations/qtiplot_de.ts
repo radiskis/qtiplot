@@ -1,7 +1,411 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="de_DE">
 <context>
-    <name></name>
+    <name>@default</name>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13415"/>
+        <source>QtiPlot - File openning error</source>
+        <translation type="obsolete">QtiPlot - Fehler beim Öffnen der Datei</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13559"/>
+        <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
+        <translation type="obsolete">Die Datei &lt;b&gt;%1&lt;/b&gt; existiert nicht!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13563"/>
+        <source>QtiPlot - File opening error</source>
+        <translation type="obsolete">QtiPlot - Fehler beim Öffnen der Datei</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13761"/>
+        <source>QtiPlot - Demo Version</source>
+        <translation type="obsolete">QtiPlot - Demoversion</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13763"/>
+        <source>You are using the demonstration version of Qtiplot.<byte value="xd"/></source>
+        <translation type="obsolete">Sie benutzen die Demonstrationsversion von QtiPlot.
+</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13786"/>
+        <source>QtiPlot - File backup error</source>
+        <translation type="obsolete">QtiPlot - Datei Backup Fehler</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13787"/>
+        <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
+        <translation type="obsolete">Kann keine Sicherheitskopie von &lt;b&gt;%1&lt;/b&gt; (nach %2) machen.&lt;br&gt;Falls Sie dies ignorieren, kann es zu &lt;b&gt;Datenverlust&lt;/b&gt; kommen.</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13804"/>
+        <source>QtiPlot - File save error</source>
+        <translation type="obsolete">QtiPlot - Fehler beim Sichern der Datei</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13804"/>
+        <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
+        <translation type="obsolete">Die Datei &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; wurde im schreibgeschützten Modus geöffnet</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13898"/>
+        <source>QtiPlot project</source>
+        <translation type="obsolete">QtiPlot Projekt</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13899"/>
+        <source>Compressed QtiPlot project</source>
+        <translation type="obsolete">Gepacktes QtiPlot Projekt</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13902"/>
+        <source>Save project as</source>
+        <translation type="obsolete">Project speichern als</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13929"/>
+        <source>&amp;Find...</source>
+        <translation type="obsolete">&amp;Suchen...</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13931"/>
+        <source>App&amp;end Project...</source>
+        <translation type="obsolete">Projekt an&amp;hängen...</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13941"/>
+        <source>&amp;Hide All Windows</source>
+        <translation type="obsolete">Alle Fenster a&amp;usblenden</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13947"/>
+        <source>&amp;Delete Folder</source>
+        <translation type="obsolete">Or&amp;dner löschen</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13948"/>
+        <source>&amp;Rename</source>
+        <translation type="obsolete">&amp;Umbenennen</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13960"/>
+        <source>New &amp;Window</source>
+        <translation type="obsolete">Neues &amp;Fenster</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13963"/>
+        <source>New F&amp;older</source>
+        <translation type="obsolete">Neuer &amp;Ordner</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13967"/>
+        <source>&amp;None</source>
+        <translation type="obsolete">&amp;Keine</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13967"/>
+        <source>&amp;Windows in Active Folder</source>
+        <translation type="obsolete">Fenster im aktiven &amp;Ordner</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13974"/>
+        <source>&amp;View Windows</source>
+        <translation type="obsolete">Fenster a&amp;nzeigen</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13976"/>
+        <source>&amp;Properties...</source>
+        <translation type="obsolete">&amp;Eigenschaften...</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13991"/>
+        <source>Hidden</source>
+        <translation type="obsolete">Ausgeblendet</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15107"/>
+        <source>QtiPlot - Error</source>
+        <translation type="obsolete">QtiPlot - Fehler</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14044"/>
+        <source>Please enter a valid name!</source>
+        <translation type="obsolete">Bitte einen gültigen Namen eingeben!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14054"/>
+        <source>Name already exists!</source>
+        <translation type="obsolete">Der Name existiert bereits!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14054"/>
+        <source>Please choose another name!</source>
+        <translation type="obsolete">Bitte einen anderen Namen wählen!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14554"/>
+        <source>Type</source>
+        <translation type="obsolete">Typ</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14165"/>
+        <source>Project</source>
+        <translation type="obsolete">Projekt</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14556"/>
+        <source>Path</source>
+        <translation type="obsolete">Pfad</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14557"/>
+        <source>Size</source>
+        <translation type="obsolete">Größe</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14171"/>
+        <source>bytes</source>
+        <translation type="obsolete">Bytes</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14207"/>
+        <source>Contents</source>
+        <translation type="obsolete">Inhalt</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14207"/>
+        <source>windows</source>
+        <translation type="obsolete">Fenster</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14208"/>
+        <source>folders</source>
+        <translation type="obsolete">Ordner</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14558"/>
+        <source>Created</source>
+        <translation type="obsolete">Erstellt</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14182"/>
+        <source>Modified</source>
+        <translation type="obsolete">Geändert</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14532"/>
+        <source>Properties</source>
+        <translation type="obsolete">Eigenschaften</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14572"/>
+        <source>Folder</source>
+        <translation type="obsolete">Ordner</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14226"/>
+        <source>New Folder</source>
+        <translation type="obsolete">Neuer Ordner</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14271"/>
+        <source>QtiPlot - Delete folder?</source>
+        <translation type="obsolete">QtiPlot - Order löschen?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14272"/>
+        <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
+        <translation type="obsolete">Ordner &apos;%1&apos; und alle enthaltenen Fenster löschen?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14273"/>
+        <source>Yes</source>
+        <translation type="obsolete">Ja</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14273"/>
+        <source>No</source>
+        <translation type="obsolete">Nein</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14542"/>
+        <source>Matrix</source>
+        <translation type="obsolete">Matrix</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14545"/>
+        <source>Table</source>
+        <translation type="obsolete">Tabelle</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14548"/>
+        <source>Note</source>
+        <translation type="obsolete">Notiz</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14551"/>
+        <source>Graph</source>
+        <translation type="obsolete">Grafik</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14554"/>
+        <source>3D Graph</source>
+        <translation type="obsolete">3D Grafik</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14538"/>
+        <source>Label</source>
+        <translation type="obsolete">Beschriftung</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14559"/>
+        <source>Status</source>
+        <translation type="obsolete">Status</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14623"/>
+        <source>QtiPlot - No match found</source>
+        <translation type="obsolete">QtiPlot - Keine Übereinstimmung gefunden</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14642"/>
+        <source>Cannot move an object to itself!</source>
+        <translation type="obsolete">Kann Object nicht auf sich selbst bewegen!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14647"/>
+        <source>Cannot move a parent folder into a child folder!</source>
+        <translation type="obsolete">Kann keinen Ordner in einen seiner Unterordner bewegen!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15654"/>
+        <source>QtiPlot</source>
+        <translation type="obsolete">QtiPlot</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14660"/>
+        <source>Skipped moving folder</source>
+        <translation type="obsolete">Ordnerverschieben übersprungen</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14704"/>
+        <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
+        <translation type="obsolete">Der Zielordner enthält bereits einen Ordner namens &apos;%1&apos;! Ordner übersprungen!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15654"/>
+        <source>Error</source>
+        <translation type="obsolete">Fehler</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14772"/>
+        <source>QtiPlot - HTTP get version file</source>
+        <translation type="obsolete">QtiPlot - HTTP Versionsdatei herunterladen</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14773"/>
+        <source>Error while fetching version file with HTTP: %1.</source>
+        <translation type="obsolete">Fehler beim Herunterladen der Versionsdatei über HTTP: %1.</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14788"/>
+        <source>QtiPlot - Updates Available</source>
+        <translation type="obsolete">QtiPlot - Updates verfügbar</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14789"/>
+        <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
+        <translation type="obsolete">Eine neuere Version von QtiPlot (%1) ist verfügbar. Wollen Sie sie herunterladen?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14793"/>
+        <source>QtiPlot - No Updates Available</source>
+        <translation type="obsolete">QtiPlot - Keine Updates verfügbar</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14794"/>
+        <source>No updates available. Your current version %1 is the last version available!</source>
+        <translation type="obsolete">Keine Updates verfügbar. Die verwendete Version %1 ist bereits die aktuellste!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15783"/>
+        <source>QtiPlot - Warning</source>
+        <translation type="obsolete">QtiPlot - Warnung</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14848"/>
+        <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
+        <translation type="obsolete">Diese Operation löscht alle der Tabelle zugeordneten Daten. Sind Sie sicher?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14849"/>
+        <source>&amp;Yes</source>
+        <translation type="obsolete">&amp;Ja</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14849"/>
+        <source>&amp;No</source>
+        <translation type="obsolete">&amp;Nein</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14863"/>
+        <source>QtiPlot - Enter row number</source>
+        <translation type="obsolete">QtiPlot - Zeilennummer eingeben</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14863"/>
+        <source>Row</source>
+        <translation type="obsolete">Zeile</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14883"/>
+        <source>Column</source>
+        <translation type="obsolete">Spalte</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15058"/>
+        <source>Please select a Y column to plot!</source>
+        <translation type="obsolete">Bitte eine Y-Spalte zum Plotten auswählen!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15095"/>
+        <source>You need at least two columns for this operation!</source>
+        <translation type="obsolete">Es werden mindestens zwei Spalten für diese Operation benötigt!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15065"/>
+        <source>Please set a default X column for this table, first!</source>
+        <translation type="obsolete">Bitte zuerst eine Spalte als Standard X-Spalte der Tabelle auswählen!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15099"/>
+        <source>Please select a Z column for this operation!</source>
+        <translation type="obsolete">Bitte eine Z-Spalte für diese Operation wählen!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15103"/>
+        <source>You need to define a X column first!</source>
+        <translation type="obsolete">Sie müssen zuerst eine X-Spalte definieren!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15107"/>
+        <source>You need to define a Y column first!</source>
+        <translation type="obsolete">Sie müssen zuerst eine Y-Spalte definieren!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15865"/>
+        <source>QtiPlot - Column selection error</source>
+        <translation type="obsolete">QtiPlot - Fehler bei der Spaltenauswahl</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15866"/>
+        <source>Please select exactly one column and more than one non empty cell!</source>
+        <translation type="obsolete">Bitte genau eine Spalte auswählen die mehr als eine nichtleere Zelle enthält!</translation>
+    </message>
+</context>
+<context>
+    <name>@default</name>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13415"/>
         <source>QtiPlot - File openning error</source>
@@ -16,11 +420,6 @@
         <location filename="src/core/ApplicationWindow.cpp" line="13563"/>
         <source>QtiPlot - File opening error</source>
         <translation type="unfinished">QtiPlot - Fehler beim Öffnen der Datei</translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13564"/>
-        <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13761"/>
@@ -79,21 +478,6 @@
         <translation type="unfinished">Projekt an&amp;hängen...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13933"/>
-        <source>Save &amp;As Project...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13935"/>
-        <source>Save Project &amp;As...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13940"/>
-        <source>&amp;Show All Windows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13941"/>
         <source>&amp;Hide All Windows</source>
         <translation type="unfinished">Alle Fenster a&amp;usblenden</translation>
@@ -127,11 +511,6 @@
         <location filename="src/core/ApplicationWindow.cpp" line="13967"/>
         <source>&amp;Windows in Active Folder</source>
         <translation type="unfinished">Fenster im aktiven &amp;Ordner</translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13967"/>
-        <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13974"/>
@@ -294,11 +673,6 @@
         <translation type="unfinished">QtiPlot - Keine Übereinstimmung gefunden</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14624"/>
-        <source>Sorry, no match found for string: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14642"/>
         <source>Cannot move an object to itself!</source>
         <translation type="unfinished">Kann Object nicht auf sich selbst bewegen!</translation>
@@ -327,16 +701,6 @@
         <location filename="src/core/ApplicationWindow.cpp" line="15654"/>
         <source>Error</source>
         <translation type="unfinished">Fehler</translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14756"/>
-        <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14757"/>
-        <source>Do you wish to continue?</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14772"/>
@@ -400,18 +764,8 @@
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14883"/>
-        <source>QtiPlot - Enter column number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14883"/>
         <source>Column</source>
         <translation type="unfinished">Spalte</translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15655"/>
-        <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15058"/>
@@ -444,37 +798,6 @@
         <translation type="unfinished">Sie müssen zuerst eine Y-Spalte definieren!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15304"/>
-        <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15305"/>
-        <source>If you want to save your already defined models, please choose a destination folder.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15306"/>
-        <source>Import fit models</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15309"/>
-        <source>Choose a directory to export the fit models to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15605"/>
-        <source>No Icon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15784"/>
-        <source>Couldn&apos;t load file: %1.
-Autocompletion will not be available!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15865"/>
         <source>QtiPlot - Column selection error</source>
         <translation type="unfinished">QtiPlot - Fehler bei der Spaltenauswahl</translation>
@@ -483,410 +806,6 @@ Autocompletion will not be available!</source>
         <location filename="src/core/ApplicationWindow.cpp" line="15866"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation type="unfinished">Bitte genau eine Spalte auswählen die mehr als eine nichtleere Zelle enthält!</translation>
-    </message>
-</context>
-<context>
-    <name>@default</name>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13411"/>
-        <source>QtiPlot - File openning error</source>
-        <translation type="obsolete">QtiPlot - Fehler beim Öffnen der Datei</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13555"/>
-        <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
-        <translation type="obsolete">Die Datei &lt;b&gt;%1&lt;/b&gt; existiert nicht!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13559"/>
-        <source>QtiPlot - File opening error</source>
-        <translation type="obsolete">QtiPlot - Fehler beim Öffnen der Datei</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13757"/>
-        <source>QtiPlot - Demo Version</source>
-        <translation type="obsolete">QtiPlot - Demoversion</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13759"/>
-        <source>You are using the demonstration version of Qtiplot.<byte value="xd"/></source>
-        <translation type="obsolete">Sie benutzen die Demonstrationsversion von QtiPlot.
-</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13782"/>
-        <source>QtiPlot - File backup error</source>
-        <translation type="obsolete">QtiPlot - Datei Backup Fehler</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13783"/>
-        <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
-        <translation type="obsolete">Kann keine Sicherheitskopie von &lt;b&gt;%1&lt;/b&gt; (nach %2) machen.&lt;br&gt;Falls Sie dies ignorieren, kann es zu &lt;b&gt;Datenverlust&lt;/b&gt; kommen.</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13800"/>
-        <source>QtiPlot - File save error</source>
-        <translation type="obsolete">QtiPlot - Fehler beim Sichern der Datei</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13800"/>
-        <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
-        <translation type="obsolete">Die Datei &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; wurde im schreibgeschützten Modus geöffnet</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13894"/>
-        <source>QtiPlot project</source>
-        <translation type="obsolete">QtiPlot Projekt</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13895"/>
-        <source>Compressed QtiPlot project</source>
-        <translation type="obsolete">Gepacktes QtiPlot Projekt</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13898"/>
-        <source>Save project as</source>
-        <translation type="obsolete">Project speichern als</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13925"/>
-        <source>&amp;Find...</source>
-        <translation type="obsolete">&amp;Suchen...</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13927"/>
-        <source>App&amp;end Project...</source>
-        <translation type="obsolete">Projekt an&amp;hängen...</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13937"/>
-        <source>&amp;Hide All Windows</source>
-        <translation type="obsolete">Alle Fenster a&amp;usblenden</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13943"/>
-        <source>&amp;Delete Folder</source>
-        <translation type="obsolete">Or&amp;dner löschen</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13944"/>
-        <source>&amp;Rename</source>
-        <translation type="obsolete">&amp;Umbenennen</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13956"/>
-        <source>New &amp;Window</source>
-        <translation type="obsolete">Neues &amp;Fenster</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13959"/>
-        <source>New F&amp;older</source>
-        <translation type="obsolete">Neuer &amp;Ordner</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13963"/>
-        <source>&amp;None</source>
-        <translation type="obsolete">&amp;Keine</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13963"/>
-        <source>&amp;Windows in Active Folder</source>
-        <translation type="obsolete">Fenster im aktiven &amp;Ordner</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13970"/>
-        <source>&amp;View Windows</source>
-        <translation type="obsolete">Fenster a&amp;nzeigen</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13972"/>
-        <source>&amp;Properties...</source>
-        <translation type="obsolete">&amp;Eigenschaften...</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13987"/>
-        <source>Hidden</source>
-        <translation type="obsolete">Ausgeblendet</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15103"/>
-        <source>QtiPlot - Error</source>
-        <translation type="obsolete">QtiPlot - Fehler</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14040"/>
-        <source>Please enter a valid name!</source>
-        <translation type="obsolete">Bitte einen gültigen Namen eingeben!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14050"/>
-        <source>Name already exists!</source>
-        <translation type="obsolete">Der Name existiert bereits!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14050"/>
-        <source>Please choose another name!</source>
-        <translation type="obsolete">Bitte einen anderen Namen wählen!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14550"/>
-        <source>Type</source>
-        <translation type="obsolete">Typ</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14161"/>
-        <source>Project</source>
-        <translation type="obsolete">Projekt</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14552"/>
-        <source>Path</source>
-        <translation type="obsolete">Pfad</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14553"/>
-        <source>Size</source>
-        <translation type="obsolete">Größe</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14167"/>
-        <source>bytes</source>
-        <translation type="obsolete">Bytes</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14203"/>
-        <source>Contents</source>
-        <translation type="obsolete">Inhalt</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14203"/>
-        <source>windows</source>
-        <translation type="obsolete">Fenster</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14204"/>
-        <source>folders</source>
-        <translation type="obsolete">Ordner</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14554"/>
-        <source>Created</source>
-        <translation type="obsolete">Erstellt</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14178"/>
-        <source>Modified</source>
-        <translation type="obsolete">Geändert</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14528"/>
-        <source>Properties</source>
-        <translation type="obsolete">Eigenschaften</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14568"/>
-        <source>Folder</source>
-        <translation type="obsolete">Ordner</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14222"/>
-        <source>New Folder</source>
-        <translation type="obsolete">Neuer Ordner</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14267"/>
-        <source>QtiPlot - Delete folder?</source>
-        <translation type="obsolete">QtiPlot - Order löschen?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14268"/>
-        <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
-        <translation type="obsolete">Ordner &apos;%1&apos; und alle enthaltenen Fenster löschen?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14269"/>
-        <source>Yes</source>
-        <translation type="obsolete">Ja</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14269"/>
-        <source>No</source>
-        <translation type="obsolete">Nein</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14538"/>
-        <source>Matrix</source>
-        <translation type="obsolete">Matrix</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14541"/>
-        <source>Table</source>
-        <translation type="obsolete">Tabelle</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14544"/>
-        <source>Note</source>
-        <translation type="obsolete">Notiz</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14547"/>
-        <source>Graph</source>
-        <translation type="obsolete">Grafik</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14550"/>
-        <source>3D Graph</source>
-        <translation type="obsolete">3D Grafik</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14534"/>
-        <source>Label</source>
-        <translation type="obsolete">Beschriftung</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14555"/>
-        <source>Status</source>
-        <translation type="obsolete">Status</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14619"/>
-        <source>QtiPlot - No match found</source>
-        <translation type="obsolete">QtiPlot - Keine Übereinstimmung gefunden</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14638"/>
-        <source>Cannot move an object to itself!</source>
-        <translation type="obsolete">Kann Object nicht auf sich selbst bewegen!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14643"/>
-        <source>Cannot move a parent folder into a child folder!</source>
-        <translation type="obsolete">Kann keinen Ordner in einen seiner Unterordner bewegen!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15650"/>
-        <source>QtiPlot</source>
-        <translation type="obsolete">QtiPlot</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14656"/>
-        <source>Skipped moving folder</source>
-        <translation type="obsolete">Ordnerverschieben übersprungen</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14700"/>
-        <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
-        <translation type="obsolete">Der Zielordner enthält bereits einen Ordner namens &apos;%1&apos;! Ordner übersprungen!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15650"/>
-        <source>Error</source>
-        <translation type="obsolete">Fehler</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14768"/>
-        <source>QtiPlot - HTTP get version file</source>
-        <translation type="obsolete">QtiPlot - HTTP Versionsdatei herunterladen</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14769"/>
-        <source>Error while fetching version file with HTTP: %1.</source>
-        <translation type="obsolete">Fehler beim Herunterladen der Versionsdatei über HTTP: %1.</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14784"/>
-        <source>QtiPlot - Updates Available</source>
-        <translation type="obsolete">QtiPlot - Updates verfügbar</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14785"/>
-        <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
-        <translation type="obsolete">Eine neuere Version von QtiPlot (%1) ist verfügbar. Wollen Sie sie herunterladen?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14789"/>
-        <source>QtiPlot - No Updates Available</source>
-        <translation type="obsolete">QtiPlot - Keine Updates verfügbar</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14790"/>
-        <source>No updates available. Your current version %1 is the last version available!</source>
-        <translation type="obsolete">Keine Updates verfügbar. Die verwendete Version %1 ist bereits die aktuellste!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15779"/>
-        <source>QtiPlot - Warning</source>
-        <translation type="obsolete">QtiPlot - Warnung</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14844"/>
-        <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
-        <translation type="obsolete">Diese Operation löscht alle der Tabelle zugeordneten Daten. Sind Sie sicher?</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14845"/>
-        <source>&amp;Yes</source>
-        <translation type="obsolete">&amp;Ja</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14845"/>
-        <source>&amp;No</source>
-        <translation type="obsolete">&amp;Nein</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14859"/>
-        <source>QtiPlot - Enter row number</source>
-        <translation type="obsolete">QtiPlot - Zeilennummer eingeben</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14859"/>
-        <source>Row</source>
-        <translation type="obsolete">Zeile</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14879"/>
-        <source>Column</source>
-        <translation type="obsolete">Spalte</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15054"/>
-        <source>Please select a Y column to plot!</source>
-        <translation type="obsolete">Bitte eine Y-Spalte zum Plotten auswählen!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15091"/>
-        <source>You need at least two columns for this operation!</source>
-        <translation type="obsolete">Es werden mindestens zwei Spalten für diese Operation benötigt!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15061"/>
-        <source>Please set a default X column for this table, first!</source>
-        <translation type="obsolete">Bitte zuerst eine Spalte als Standard X-Spalte der Tabelle auswählen!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15095"/>
-        <source>Please select a Z column for this operation!</source>
-        <translation type="obsolete">Bitte eine Z-Spalte für diese Operation wählen!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15099"/>
-        <source>You need to define a X column first!</source>
-        <translation type="obsolete">Sie müssen zuerst eine X-Spalte definieren!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15103"/>
-        <source>You need to define a Y column first!</source>
-        <translation type="obsolete">Sie müssen zuerst eine Y-Spalte definieren!</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15861"/>
-        <source>QtiPlot - Column selection error</source>
-        <translation type="obsolete">QtiPlot - Fehler bei der Spaltenauswahl</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="15862"/>
-        <source>Please select exactly one column and more than one non empty cell!</source>
-        <translation type="obsolete">Bitte genau eine Spalte auswählen die mehr als eine nichtleere Zelle enthält!</translation>
     </message>
     <message>
         <location filename="" line="0"/>
@@ -914,9 +833,9 @@ Autocompletion will not be available!</source>
         <translation type="obsolete">QtiPlot - Projekt öffnen</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13560"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13564"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
-        <translation type="obsolete">Die Datei &lt;b&gt;%1&lt;/b&gt; ist kein QtiPlot or Origin Projekt!</translation>
+        <translation type="unfinished">Die Datei &lt;b&gt;%1&lt;/b&gt; ist kein QtiPlot or Origin Projekt!</translation>
     </message>
     <message>
         <location filename="" line="0"/>
@@ -946,24 +865,24 @@ Do you want to overwrite it?</source>
 Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13929"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13933"/>
         <source>Save &amp;As Project...</source>
-        <translation type="obsolete">&amp;Als Projekt speichern...</translation>
+        <translation type="unfinished">&amp;Als Projekt speichern...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13931"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13935"/>
         <source>Save Project &amp;As...</source>
-        <translation type="obsolete">Projekt speichern &amp;als...</translation>
+        <translation type="unfinished">Projekt speichern &amp;als...</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13936"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13940"/>
         <source>&amp;Show All Windows</source>
-        <translation type="obsolete">Alle Fen&amp;ster anzeigen</translation>
+        <translation type="unfinished">Alle Fen&amp;ster anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="13963"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13967"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
-        <translation type="obsolete">Fenster im &amp;aktiven Ordner &amp;&amp; Unterordnern</translation>
+        <translation type="unfinished">Fenster im &amp;aktiven Ordner &amp;&amp; Unterordnern</translation>
     </message>
     <message>
         <location filename="" line="0"/>
@@ -986,9 +905,9 @@ Wollen Sie sie überschreiben?</translation>
         <translation type="obsolete">3D-Diagramm</translation>
     </message>
     <message>
-        <location filename="../src/ApplicationWindow.cpp" line="14620"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14624"/>
         <source>Sorry, no match found for string: &apos;%1&apos;</source>
-        <translation type="obsolete">Entschuldigung, keine Übereinstimmung für Zeichenkette gefunden: &apos;%1&apos;</translation>
+        <translation type="unfinished">Entschuldigung, keine Übereinstimmung für Zeichenkette gefunden: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="" line="0"/>
@@ -2948,6 +2867,57 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
         <location filename="../src/ApplicationWindow.cpp" line="12904"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
         <translation type="obsolete">Sie benutzen die Demoversion von QtiPlot.<byte value="x9"/>Sie ist mit der Vollversion identisch bis auf die Limitierung, dass Sie keine Projekte speichern können und nicht länger als 10 Minuten pro Sitzung arbeiten können.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>Wenn Sie eine sofort benutzbare, voll funktionstüchtige Version möchten, schließen Sie bitte einen<byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt; ab.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>QtiPlot ist freie Software im Sinne von freier Rede.<byte value="x9"/>Wenn Sie wissen, wie dieser zur handhaben ist, können Sie den<byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;Quellcode&lt;/a&gt;<byte value="x9"/>kostenlos herunterladen.<byte value="x9"/>Trotzdem,<byte value="x9"/>erwägen Sie bitte, eine<byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;Spende&lt;/a&gt;<byte value="x9"/> abzugeben, um die weitere Entwicklung QtiPlot zu unterstützen.</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14756"/>
+        <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14757"/>
+        <source>Do you wish to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14883"/>
+        <source>QtiPlot - Enter column number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15655"/>
+        <source>QtiPlot was not built with Python scripting support included!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15304"/>
+        <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15305"/>
+        <source>If you want to save your already defined models, please choose a destination folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15306"/>
+        <source>Import fit models</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15309"/>
+        <source>Choose a directory to export the fit models to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15605"/>
+        <source>No Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15784"/>
+        <source>Couldn&apos;t load file: %1.
+Autocompletion will not be available!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

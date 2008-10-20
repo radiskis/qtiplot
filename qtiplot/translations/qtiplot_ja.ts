@@ -1,7 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ja">
 <context>
-    <name></name>
+    <name>@default</name>
+</context>
+<context>
+    <name>@default</name>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11436"/>
+        <source>New &amp;Project</source>
+        <translation type="obsolete">新規プロジェクト(&amp;N)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11451"/>
+        <source>New &amp;Table</source>
+        <translation type="obsolete">新規テーブル(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11467"/>
+        <source>&amp;Open</source>
+        <translation type="obsolete">開く(&amp;O)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11476"/>
+        <source>&amp;Save Project</source>
+        <translation type="obsolete">プロジェクトの保存(&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11492"/>
+        <source>&amp;Undo</source>
+        <translation type="obsolete">元に戻す(&amp;U)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11496"/>
+        <source>&amp;Redo</source>
+        <translation type="obsolete">やり直す(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11523"/>
+        <source>Results &amp;Log</source>
+        <translation type="obsolete">結果ログ(&amp;L)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11537"/>
+        <source>Add La&amp;yer</source>
+        <translation type="obsolete">レイヤーの追加(&amp;Y)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11548"/>
+        <source>&amp;Current</source>
+        <translation type="obsolete">現在の物のみ(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11552"/>
+        <source>&amp;All</source>
+        <translation type="obsolete">全て(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11560"/>
+        <source>&amp;Print</source>
+        <translation type="obsolete">印刷(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11567"/>
+        <source>&amp;Quit</source>
+        <translation type="obsolete">終了(&amp;Q)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11576"/>
+        <source>&amp;Preferences...</source>
+        <translation type="obsolete">設定...(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11594"/>
+        <source>New &amp;Legend</source>
+        <translation type="obsolete">新規凡例(&amp;L)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11602"/>
+        <source>Add &amp;Image</source>
+        <translation type="obsolete">画像の追加(&amp;I)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11606"/>
+        <source>&amp;Line</source>
+        <translation type="obsolete">直線(&amp;L)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11652"/>
+        <source>&amp;Scatter</source>
+        <translation type="obsolete">点のみ(&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11612"/>
+        <source>Line + S&amp;ymbol</source>
+        <translation type="obsolete">直線+点(&amp;Y)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11617"/>
+        <source>&amp;Spline</source>
+        <translation type="obsolete">スプライン(&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11783"/>
+        <source>&amp;Columns</source>
+        <translation type="obsolete">縦の棒グラフ(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11624"/>
+        <source>&amp;Rows</source>
+        <translation type="obsolete">横の棒グラフ(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11627"/>
+        <source>&amp;Area</source>
+        <translation type="obsolete">積み上げ面グラフ(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11630"/>
+        <source>&amp;Pie</source>
+        <translation type="obsolete">円グラフ(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11639"/>
+        <source>&amp;Histogram</source>
+        <translation type="obsolete">ヒストグラム(&amp;H)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11641"/>
+        <source>&amp;Vertical 2 Layers</source>
+        <translation type="obsolete">上下2段レイヤー(&amp;V)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11642"/>
+        <source>&amp;Horizontal 2 Layers</source>
+        <translation type="obsolete">左右2段レイヤー(&amp;H)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11643"/>
+        <source>&amp;4 Layers</source>
+        <translation type="obsolete">&amp;4レイヤー</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11646"/>
+        <source>&amp;Ribbon</source>
+        <translation type="obsolete">リボン(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11649"/>
+        <source>&amp;Bars</source>
+        <translation type="obsolete">縦棒(&amp;B)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11655"/>
+        <source>&amp;Trajectory</source>
+        <translation type="obsolete">軌跡(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11667"/>
+        <source>Statistics on &amp;Columns</source>
+        <translation type="obsolete">列に関する統計(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11670"/>
+        <source>Statistics on &amp;Rows</source>
+        <translation type="obsolete">行に関する統計(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11672"/>
+        <source>&amp;Integrate ...</source>
+        <translation type="obsolete">積分...(&amp;I)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11682"/>
+        <source>&amp;Differentiate</source>
+        <translation type="obsolete">微分(&amp;D)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11683"/>
+        <source>Fit &amp;Linear</source>
+        <translation type="obsolete">直線フィッティング(&amp;L)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11684"/>
+        <source>Fit &amp;Polynomial ...</source>
+        <translation type="obsolete">多項式フィッティング...(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11685"/>
+        <source>&amp;First Order ...</source>
+        <translation type="obsolete">一次...(&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11686"/>
+        <source>&amp;Second Order ...</source>
+        <translation type="obsolete">二次...(&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11687"/>
+        <source>&amp;Third Order ...</source>
+        <translation type="obsolete">三次...(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11690"/>
+        <source>Fit &amp;Gaussian</source>
+        <translation type="obsolete">ガウシアンフィッティング(&amp;G)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11691"/>
+        <source>Fit Lorent&amp;zian</source>
+        <translation type="obsolete">ローレシアンフィッティング(&amp;Z)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11696"/>
+        <source>&amp;Plot ...</source>
+        <translation type="obsolete">プロット...(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11700"/>
+        <source>&amp;Title ...</source>
+        <translation type="obsolete">タイトル...(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11716"/>
+        <source>&amp;Columns...</source>
+        <translation type="obsolete">列...(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11717"/>
+        <source>&amp;Rows...</source>
+        <translation type="obsolete">行...(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11722"/>
+        <source>&amp;Help</source>
+        <translation type="obsolete">ヘルプ(&amp;H)</translation>
+    </message>
+    <message>
+        <location filename="../src/ApplicationWindow.cpp" line="11858"/>
+        <source>Add &amp;Text</source>
+        <translation type="obsolete">テキストの追加(&amp;T)</translation>
+    </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13415"/>
         <source>QtiPlot - File openning error</source>
@@ -482,244 +720,6 @@ Autocompletion will not be available!</source>
         <location filename="src/core/ApplicationWindow.cpp" line="15866"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>@default</name>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11436"/>
-        <source>New &amp;Project</source>
-        <translation type="obsolete">新規プロジェクト(&amp;N)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11451"/>
-        <source>New &amp;Table</source>
-        <translation type="obsolete">新規テーブル(&amp;T)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11467"/>
-        <source>&amp;Open</source>
-        <translation type="obsolete">開く(&amp;O)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11476"/>
-        <source>&amp;Save Project</source>
-        <translation type="obsolete">プロジェクトの保存(&amp;S)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11492"/>
-        <source>&amp;Undo</source>
-        <translation type="obsolete">元に戻す(&amp;U)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11496"/>
-        <source>&amp;Redo</source>
-        <translation type="obsolete">やり直す(&amp;R)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11523"/>
-        <source>Results &amp;Log</source>
-        <translation type="obsolete">結果ログ(&amp;L)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11537"/>
-        <source>Add La&amp;yer</source>
-        <translation type="obsolete">レイヤーの追加(&amp;Y)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11548"/>
-        <source>&amp;Current</source>
-        <translation type="obsolete">現在の物のみ(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11552"/>
-        <source>&amp;All</source>
-        <translation type="obsolete">全て(&amp;A)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11560"/>
-        <source>&amp;Print</source>
-        <translation type="obsolete">印刷(&amp;P)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11567"/>
-        <source>&amp;Quit</source>
-        <translation type="obsolete">終了(&amp;Q)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11576"/>
-        <source>&amp;Preferences...</source>
-        <translation type="obsolete">設定...(&amp;P)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11594"/>
-        <source>New &amp;Legend</source>
-        <translation type="obsolete">新規凡例(&amp;L)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11602"/>
-        <source>Add &amp;Image</source>
-        <translation type="obsolete">画像の追加(&amp;I)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11606"/>
-        <source>&amp;Line</source>
-        <translation type="obsolete">直線(&amp;L)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11652"/>
-        <source>&amp;Scatter</source>
-        <translation type="obsolete">点のみ(&amp;S)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11612"/>
-        <source>Line + S&amp;ymbol</source>
-        <translation type="obsolete">直線+点(&amp;Y)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11617"/>
-        <source>&amp;Spline</source>
-        <translation type="obsolete">スプライン(&amp;S)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11783"/>
-        <source>&amp;Columns</source>
-        <translation type="obsolete">縦の棒グラフ(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11624"/>
-        <source>&amp;Rows</source>
-        <translation type="obsolete">横の棒グラフ(&amp;R)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11627"/>
-        <source>&amp;Area</source>
-        <translation type="obsolete">積み上げ面グラフ(&amp;A)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11630"/>
-        <source>&amp;Pie</source>
-        <translation type="obsolete">円グラフ(&amp;P)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11639"/>
-        <source>&amp;Histogram</source>
-        <translation type="obsolete">ヒストグラム(&amp;H)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11641"/>
-        <source>&amp;Vertical 2 Layers</source>
-        <translation type="obsolete">上下2段レイヤー(&amp;V)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11642"/>
-        <source>&amp;Horizontal 2 Layers</source>
-        <translation type="obsolete">左右2段レイヤー(&amp;H)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11643"/>
-        <source>&amp;4 Layers</source>
-        <translation type="obsolete">&amp;4レイヤー</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11646"/>
-        <source>&amp;Ribbon</source>
-        <translation type="obsolete">リボン(&amp;R)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11649"/>
-        <source>&amp;Bars</source>
-        <translation type="obsolete">縦棒(&amp;B)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11655"/>
-        <source>&amp;Trajectory</source>
-        <translation type="obsolete">軌跡(&amp;T)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11667"/>
-        <source>Statistics on &amp;Columns</source>
-        <translation type="obsolete">列に関する統計(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11670"/>
-        <source>Statistics on &amp;Rows</source>
-        <translation type="obsolete">行に関する統計(&amp;R)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11672"/>
-        <source>&amp;Integrate ...</source>
-        <translation type="obsolete">積分...(&amp;I)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11682"/>
-        <source>&amp;Differentiate</source>
-        <translation type="obsolete">微分(&amp;D)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11683"/>
-        <source>Fit &amp;Linear</source>
-        <translation type="obsolete">直線フィッティング(&amp;L)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11684"/>
-        <source>Fit &amp;Polynomial ...</source>
-        <translation type="obsolete">多項式フィッティング...(&amp;P)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11685"/>
-        <source>&amp;First Order ...</source>
-        <translation type="obsolete">一次...(&amp;F)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11686"/>
-        <source>&amp;Second Order ...</source>
-        <translation type="obsolete">二次...(&amp;S)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11687"/>
-        <source>&amp;Third Order ...</source>
-        <translation type="obsolete">三次...(&amp;T)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11690"/>
-        <source>Fit &amp;Gaussian</source>
-        <translation type="obsolete">ガウシアンフィッティング(&amp;G)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11691"/>
-        <source>Fit Lorent&amp;zian</source>
-        <translation type="obsolete">ローレシアンフィッティング(&amp;Z)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11696"/>
-        <source>&amp;Plot ...</source>
-        <translation type="obsolete">プロット...(&amp;P)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11700"/>
-        <source>&amp;Title ...</source>
-        <translation type="obsolete">タイトル...(&amp;T)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11716"/>
-        <source>&amp;Columns...</source>
-        <translation type="obsolete">列...(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11717"/>
-        <source>&amp;Rows...</source>
-        <translation type="obsolete">行...(&amp;R)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11722"/>
-        <source>&amp;Help</source>
-        <translation type="obsolete">ヘルプ(&amp;H)</translation>
-    </message>
-    <message>
-        <location filename="../src/ApplicationWindow.cpp" line="11858"/>
-        <source>Add &amp;Text</source>
-        <translation type="obsolete">テキストの追加(&amp;T)</translation>
     </message>
 </context>
 <context>
