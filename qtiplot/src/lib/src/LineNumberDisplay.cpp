@@ -43,7 +43,7 @@ LineNumberDisplay::LineNumberDisplay(QTextEdit *te, QWidget *parent)
 	setCurrentFont(te->currentFont());
 
 	if (te){
-		connect(te, SIGNAL(textChanged()), this, SLOT(updateLineNumbers()));
+		connect(te->document(), SIGNAL(contentsChanged()), this, SLOT(updateLineNumbers()));
 		connect((QObject *)te->verticalScrollBar(), SIGNAL(valueChanged(int)),
 			(QObject *)verticalScrollBar(), SLOT(setValue(int)));
         connect(te, SIGNAL(currentCharFormatChanged (const QTextCharFormat &)),
@@ -65,10 +65,10 @@ void LineNumberDisplay::updateLineNumbers(bool force)
 		aux += QString::number(i + 1) + "\n";
 
 	setPlainText(aux);
-
+	
 	QFontMetrics fm(d_text_edit->currentFont(), this);
 	setMaximumWidth(2*fm.boundingRect(QString::number(lines)).width());
-	verticalScrollBar()->setValue(d_text_edit->verticalScrollBar()->value());
+	verticalScrollBar()->setValue(d_text_edit->verticalScrollBar()->value());	
 }
 
 void LineNumberDisplay::showEvent(QShowEvent *e)

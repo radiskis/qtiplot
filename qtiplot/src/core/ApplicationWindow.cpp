@@ -993,7 +993,7 @@ void ApplicationWindow::initMainMenu()
 
 	edit = new QMenu(this);
 	edit->setObjectName("editMenu");
-
+		
 	edit->addAction(actionUndo);
 	edit->addAction(actionRedo);
 	edit->insertSeparator();
@@ -1003,6 +1003,8 @@ void ApplicationWindow::initMainMenu()
 	edit->insertSeparator();
 	edit->addAction(actionDeleteFitTables);
 	edit->addAction(actionClearLogInfo);
+
+	connect(edit, SIGNAL(aboutToShow()), this, SLOT(editMenuAboutToShow()));
 
 	view = new QMenu(this);
 	view->setObjectName("viewMenu");
@@ -1264,6 +1266,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	menuBar()->insertItem(tr("&File"), fileMenu);
 	fileMenuAboutToShow();
 	menuBar()->insertItem(tr("&Edit"), edit);
+	editMenuAboutToShow();
 	menuBar()->insertItem(tr("&View"), view);
 	menuBar()->insertItem(tr("&Scripting"), scriptingMenu);
 
@@ -1336,10 +1339,6 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
             menuBar()->insertItem(tr("&Table"), tableMenu);
 			tableMenuAboutToShow();
 			actionTableRecalculate->setEnabled(true);
-			if (!saved){
-				actionUndo->setEnabled(true);
-				actionRedo->setEnabled(true);
-			}
 		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
 			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
@@ -1351,8 +1350,6 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Empty Stack"));
 			QUndoStack *stack = ((Matrix *)w)->undoStack();
 			d_undo_view->setStack(stack);
-			actionUndo->setEnabled(stack->canUndo());
-			actionRedo->setEnabled(stack->canRedo());
 		} else if (w->isA("Note")) {
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
@@ -1387,9 +1384,6 @@ void ApplicationWindow::disableActions()
 	actionSaveTemplate->setEnabled(false);
 	actionPrintAllPlots->setEnabled(false);
 	actionPrint->setEnabled(false);
-
-	actionUndo->setEnabled(false);
-	actionRedo->setEnabled(false);
 
 	actionCutSelection->setEnabled(false);
 	actionCopySelection->setEnabled(false);
@@ -2746,8 +2740,6 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	d_workspace->addSubWindow(m);
 	addListViewItem(m);
 
-	connect(m->editor(), SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
-	connect(m->editor(), SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
 	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
 	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect(m, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
@@ -7873,14 +7865,9 @@ void ApplicationWindow::undo()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	if (w->inherits("Table")){
-		actionUndo->setEnabled(false);
-		actionRedo->setEnabled(false);
-	} else if (w->isA("Note")) {
+	if (qobject_cast<Note*>(w))
 		((Note*)w)->editor()->undo();
-		actionUndo->setEnabled(false);
-		actionRedo->setEnabled(true);
-	} else if (w->isA("Matrix")){
+	else if (qobject_cast<Matrix*>(w)){
 	    QUndoStack *stack = ((Matrix *)w)->undoStack();
 	    if (stack && stack->canUndo())
 			stack->undo();
@@ -7895,14 +7882,9 @@ void ApplicationWindow::redo()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	if (w->inherits("Table")){
-		actionUndo->setEnabled(false);
-		actionRedo->setEnabled(false);
-	} else if (w->isA("Note")){
+	if (qobject_cast<Note*>(w))
 		((Note*)w)->editor()->redo();
-		actionUndo->setEnabled(true);
-		actionRedo->setEnabled(false);
-	} else if (w->isA("Matrix")){
+	else if (qobject_cast<Matrix*>(w)){
 	    QUndoStack *stack = ((Matrix *)w)->undoStack();
 	    if (stack && stack->canRedo())
 			stack->redo();
@@ -8339,6 +8321,31 @@ void ApplicationWindow::fileMenuAboutToShow()
 	reloadCustomActions();
 }
 
+void ApplicationWindow::editMenuAboutToShow()
+{
+	MdiSubWindow *w = activeWindow();
+	if (!w){
+		actionUndo->setEnabled(false);
+		actionRedo->setEnabled(false);
+		return;
+	}
+	
+	if (qobject_cast<Note *>(w)){
+		QTextDocument *doc = ((Note *)w)->editor()->document();
+		actionUndo->setEnabled(doc->isUndoAvailable());
+		actionRedo->setEnabled(doc->isRedoAvailable());
+	} else if (qobject_cast<Matrix *>(w)){
+		QUndoStack *stack = ((Matrix *)w)->undoStack();
+		actionUndo->setEnabled(stack->canUndo());
+		actionRedo->setEnabled(stack->canRedo());
+	} else {
+		actionUndo->setEnabled(false);
+		actionRedo->setEnabled(false);
+	}
+	
+	//reloadCustomActions();
+}
+
 void ApplicationWindow::windowsMenuAboutToShow()
 {
 	windowsMenu->clear();
@@ -8495,9 +8502,6 @@ void ApplicationWindow::savedProject()
 	QCoreApplication::processEvents();
 
 	actionSaveProject->setEnabled(false);
-	actionUndo->setEnabled(false);
-	actionRedo->setEnabled(false);
-
 	saved = true;
 
 	Folder *f = projectFolder();
@@ -8527,13 +8531,6 @@ void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 		return;
 
 	modifiedProject();
-
-	if (w->isA("Matrix") || w->isA("Note"))
-		actionUndo->setEnabled(true);
-	else {
-		actionUndo->setEnabled(false);
-		actionRedo->setEnabled(false);
-	}
 
 	Q3ListViewItem *it = lv->findItem (w->objectName(), 0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
@@ -11515,12 +11512,10 @@ void ApplicationWindow::createActions()
 	actionUndo = new QAction(QIcon(QPixmap(undo_xpm)), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
 	connect(actionUndo, SIGNAL(activated()), this, SLOT(undo()));
-	actionUndo->setEnabled(false);
 
 	actionRedo = new QAction(QIcon(QPixmap(redo_xpm)), tr("&Redo"), this);
-	actionRedo->setShortcut( tr("Ctrl+R") );
+	actionRedo->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Z));
 	connect(actionRedo, SIGNAL(activated()), this, SLOT(redo()));
-	actionRedo->setEnabled(false);
 
 	actionCopyWindow = new QAction(QIcon(QPixmap(duplicate_xpm)), tr("&Duplicate"), this);
 	connect(actionCopyWindow, SIGNAL(activated()), this, SLOT(clone()));
@@ -12330,7 +12325,6 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionRedo->setMenuText(tr("&Redo"));
 	actionRedo->setToolTip(tr("Redo changes"));
-	actionRedo->setShortcut(tr("Ctrl+R"));
 
 	actionCopyWindow->setMenuText(tr("&Duplicate"));
 	actionCopyWindow->setToolTip(tr("Duplicate window"));
