@@ -72,7 +72,7 @@ void Table::init(int rows, int cols)
 {
 	selectedCol=-1;
 	d_saved_cells = 0;
-	d_show_comments = false;
+	d_show_comments = true;
 	d_numeric_precision = 13;
 
 	d_table = new MyTable(rows, cols, this, "table");
@@ -387,15 +387,12 @@ void Table::setColPlotDesignation(int col, PlotDesignation pd)
 void Table::columnNumericFormat(int col, int *f, int *precision)
 {
 	QStringList format = col_format[col].split("/", QString::KeepEmptyParts);
-	if (format.count() == 2)
-	{
+	if (format.count() == 2){
 		*f = format[0].toInt();
 		*precision = format[1].toInt();
 		if (*precision > 14)
 			*precision = 14;
-	}
-	else
-	{
+	} else {
 		*f = 0;
 		*precision = 14;
 	}
@@ -404,10 +401,8 @@ void Table::columnNumericFormat(int col, int *f, int *precision)
 void Table::columnNumericFormat(int col, char *f, int *precision)
 {
 	QStringList format = col_format[col].split("/", QString::KeepEmptyParts);
-	if (format.count() == 2)
-	{
-		switch(format[0].toInt())
-		{
+	if (format.count() == 2){
+		switch(format[0].toInt()){
 			case 0:
 			*f = 'g';
 			break;
