@@ -391,7 +391,7 @@ void Table::columnNumericFormat(int col, int *f, int *precision)
 	{
 		*f = format[0].toInt();
 		*precision = format[1].toInt();
-		if (*precision >= 14)
+		if (*precision > 14)
 			*precision = 14;
 	}
 	else
@@ -421,7 +421,7 @@ void Table::columnNumericFormat(int col, char *f, int *precision)
 			break;
 		}
 		*precision = format[1].toInt();
-		if (*precision >= 14)
+		if (*precision > 14)
 			*precision = 14;		
 	} else {
 		*f = 'g';
@@ -2877,7 +2877,7 @@ void Table::showComments(bool on)
 
 void Table::setNumericPrecision(int prec)
 {
-	if (prec >= 14)
+	if (prec > 14)
 		prec = 14;
 
 	d_numeric_precision = prec;
