@@ -131,7 +131,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	gl1->addWidget(labelNumeric, 3, 0);
 
     precisionBox = new QSpinBox();
-    precisionBox->setRange(0, 13);
+    precisionBox->setRange(0, 14);
     gl1->addWidget(precisionBox, 3, 1);
 
     boxReadOnly = new QCheckBox(tr("&Read-only" ));
