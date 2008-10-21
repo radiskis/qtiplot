@@ -703,10 +703,10 @@ void PreviewTable::setHeader()
 	Q3Header *head = horizontalHeader();
 	for (int i=0; i<numCols(); i++){
 		QString s = col_label[i];
-		int lines = columnWidth(i)/head->fontMetrics().averageCharWidth();
 	#ifdef Q_OS_MAC
 		head->setLabel(i, s.remove("\n"));
 	#else
+		int lines = columnWidth(i)/head->fontMetrics().averageCharWidth();
 		head->setLabel(i, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[i]);
 	#endif
 	}
