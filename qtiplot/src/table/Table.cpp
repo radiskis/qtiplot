@@ -391,6 +391,8 @@ void Table::columnNumericFormat(int col, int *f, int *precision)
 	{
 		*f = format[0].toInt();
 		*precision = format[1].toInt();
+		if (*precision >= 14)
+			*precision = 14;
 	}
 	else
 	{
@@ -419,9 +421,9 @@ void Table::columnNumericFormat(int col, char *f, int *precision)
 			break;
 		}
 		*precision = format[1].toInt();
-	}
-	else
-	{
+		if (*precision >= 14)
+			*precision = 14;		
+	} else {
 		*f = 'g';
 		*precision = 14;
 	}
@@ -450,8 +452,7 @@ void Table::setColWidths(const QStringList& widths)
 void Table::setColumnTypes(const QStringList& ctl)
 {
 	int n = QMIN((int)ctl.count(), numCols());
-	for (int i=0; i<n; i++)
-	{
+	for (int i=0; i<n; i++){
 		QStringList l = ctl[i].split(";");
 		colTypes[i] = l[0].toInt();
 
@@ -1131,10 +1132,10 @@ void Table::addColumns(int c)
 	d_table->insertColumns(cols, c);
 	for (int i=0; i<c; i++){
 		comments << QString();
-		commands<<"";
-		colTypes<<Numeric;
-		col_format<<"0/" + QString::number(d_numeric_precision);
-		col_label<< QString::number(max+i);
+		commands << "";
+		colTypes << Numeric;
+		col_format << "0/" + QString::number(d_numeric_precision);
+		col_label << QString::number(max+i);
 		col_plot_type << Y;
 	}
 }
@@ -1847,9 +1848,9 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells)
 		if (old_f == f && old_prec == prec)
 			return;
 	}
-
+	
 	colTypes[col] = Numeric;
-	col_format[col] = QString::number(f)+"/"+QString::number(prec);
+	col_format[col] = QString::number(f) + "/" + QString::number(prec);
 
     if (!updateCells)
         return;
@@ -2876,6 +2877,9 @@ void Table::showComments(bool on)
 
 void Table::setNumericPrecision(int prec)
 {
+	if (prec >= 14)
+		prec = 14;
+
 	d_numeric_precision = prec;
 	for (int i=0; i<d_table->numCols(); i++){
 		if (colTypes[i] == Numeric)
