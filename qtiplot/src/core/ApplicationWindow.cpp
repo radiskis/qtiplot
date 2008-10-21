@@ -3378,8 +3378,7 @@ void ApplicationWindow::updateCurves(Table *t, const QString& name)
 
 void ApplicationWindow::showPreferencesDialog()
 {
-	ConfigDialog* cd= new ConfigDialog(this);
-	cd->setAttribute(Qt::WA_DeleteOnClose);
+	ConfigDialog* cd = new ConfigDialog(this);
 	cd->setColumnSeparator(columnSeparator);
 	cd->exec();
 }

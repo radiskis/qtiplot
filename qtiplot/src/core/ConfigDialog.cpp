@@ -477,6 +477,8 @@ static const char* choose_folder_xpm[]={
 ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
     : QDialog( parent, fl )
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	d_3D_title_font = app->d_3D_title_font;
 	d_3D_numbers_font = app->d_3D_numbers_font;
@@ -492,6 +494,7 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 	generalDialog = new QStackedWidget();
 	itemsList = new QListWidget();
 	itemsList->setSpacing(10);
+	itemsList->setIconSize(QSize(32, 32));
 
 	initAppPage();
 	initTablesPage();
@@ -527,9 +530,10 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 	QHBoxLayout * topLayout = new QHBoxLayout();
 	topLayout->setSpacing(5);
 	topLayout->setMargin(5);
-	topLayout->addWidget( itemsList );
-	topLayout->addLayout( rightLayout );
-
+	topLayout->addWidget(itemsList, 0);
+	topLayout->addLayout(rightLayout, 1);
+	topLayout->addStretch();
+	
 	QHBoxLayout * bottomButtons = new QHBoxLayout();
 	bottomButtons->addStretch();
 	buttonApply = new QPushButton();
@@ -1453,17 +1457,6 @@ void ConfigDialog::languageChange()
 	itemsList->item(3)->setIcon(QIcon(QPixmap(logo_xpm)));
 	itemsList->item(4)->setIcon(QIcon(QPixmap(notes_32_xpm)));
 	itemsList->item(5)->setIcon(QIcon(QPixmap(fit_xpm)));
-	itemsList->setIconSize(QSize(32,32));
-	// calculate a sensible width for the items list
-	// (default QListWidget size is 256 which looks too big)
-	QFontMetrics fm(itemsList->font());
-	int width = 32,i;
-	for(i=0 ; i<itemsList->count() ; i++)
-		if( fm.width(itemsList->item(i)->text()) > width)
-			width = fm.width(itemsList->item(i)->text());
-	itemsList->setMaximumWidth( itemsList->iconSize().width() + width + 50 );
-	// resize the list to the maximum width
-	itemsList->resize(itemsList->maximumWidth(),itemsList->height());
 
 	//plots 2D page
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotOptions), tr("Options"));
@@ -1727,6 +1720,8 @@ void ConfigDialog::languageChange()
 	scaleErrorsBox->setText(tr("Scale Errors with sqrt(Chi^2/doF)"));
 	groupBoxMultiPeak->setTitle(tr("Display Peak Curves for Multi-peak Fits"));
 	lblPeaksColor->setText(tr("Peaks Color"));
+	
+	updateMenuList();
 }
 
 void ConfigDialog::accept()
@@ -1968,16 +1963,7 @@ void ConfigDialog::apply()
 	app->d_2_linear_fit_points = linearFit2PointsBox->isChecked();
 	app->saveSettings();
 
-	// calculate a sensible width for the items list
-	// (default QListWidget size is 256 which looks too big)
-	QFontMetrics fm(itemsList->font());
-	int width = 32;
-	for(int i=0; i<itemsList->count(); i++)
-		if( fm.width(itemsList->item(i)->text()) > width)
-			width = fm.width(itemsList->item(i)->text());
-	itemsList->setMaximumWidth( itemsList->iconSize().width() + width + 50 );
-	// resize the list to the maximum width
-	itemsList->resize(itemsList->maximumWidth(),itemsList->height());
+	updateMenuList();
 }
 
 int ConfigDialog::curveStyle()
@@ -2195,14 +2181,11 @@ void ConfigDialog::insertLanguagesList()
 
 void ConfigDialog::showPointsBox(bool)
 {
-	if (generatePointsBtn->isChecked())
-	{
+	if (generatePointsBtn->isChecked()){
 		lblPoints->show();
 		generatePointsBox->show();
 		linearFit2PointsBox->show();
-	}
-	else
-	{
+	} else {
 		lblPoints->hide();
 		generatePointsBox->hide();
 		linearFit2PointsBox->hide();
@@ -2317,4 +2300,17 @@ void ConfigDialog::customizeNotes()
         }
     }
 	app->setFormatBarFont(f);
+}
+
+void ConfigDialog::updateMenuList()
+{
+	QFontMetrics fm(itemsList->font());
+	int width = 0;
+	for(int i = 0; i<itemsList->count() ; i++){
+		int itemWidth = fm.boundingRect(itemsList->item(i)->text()).width();
+		if(itemWidth > width)
+			width = itemWidth;
+	}
+	
+	itemsList->setFixedWidth(itemsList->iconSize().width() + width + 50);
 }
