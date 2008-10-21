@@ -18,8 +18,9 @@ DEFINES         += SCRIPTING_DIALOG
 #RESTRICTED_MODULES += EMF
 
 # Comment the next line, if you don't have libpng on your windows system.
-#DEFINES += GL2PS_HAVE_LIBPNG
+DEFINES += GL2PS_HAVE_LIBPNG
 win32:INCLUDEPATH += ../3rdparty/libpng/
+win32:LIBS 		  += ../3rdparty/libpng/libpng.a
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall

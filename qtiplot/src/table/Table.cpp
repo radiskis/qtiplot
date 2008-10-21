@@ -2867,9 +2867,11 @@ void Table::showComments(bool on)
 
 	d_show_comments = on;
 	setHeaderColType();
-
+		
+#ifndef Q_OS_MAC
 	if(!on)
 		d_table->setTopMargin (d_table->horizontalHeader()->height()/2);
+#endif	
 }
 
 void Table::setNumericPrecision(int prec)

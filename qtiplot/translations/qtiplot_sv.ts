@@ -1,454 +1,940 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="sv">
 <context>
-    <name>@default</name>
+    <name></name>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13409"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13407"/>
         <source>QtiPlot - File openning error</source>
         <translation type="unfinished">QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13553"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13551"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
         <translation type="unfinished">Filen: &lt;b&gt;&gt;%1&lt;/b&gt; saknas!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13557"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13555"/>
         <source>QtiPlot - File opening error</source>
         <translation type="unfinished">QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13755"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13556"/>
+        <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13753"/>
         <source>QtiPlot - Demo Version</source>
         <translation type="unfinished">QtiPlot - Demoversion</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13757"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13755"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="xd"/></source>
         <translation type="unfinished">Du använder demoversionen av QtiPlot.
 </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13780"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13778"/>
         <source>QtiPlot - File backup error</source>
         <translation type="unfinished">QtiPlot - Filbackuppfel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13781"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13779"/>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
         <translation type="unfinished">Kan ej göra säkerhetskopiering av &lt;b&gt;%1&lt;/b&gt; (till %2).&lt;br&gt;Om du ignorerar detta, riskerar du &lt;b&gt;dataförlust&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13798"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13796"/>
         <source>QtiPlot - File save error</source>
         <translation type="unfinished">QtiPlot - Filsparningsfel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13798"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13796"/>
         <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
         <translation type="unfinished">Filen: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; är redan öppnad i skrivskyddat läge</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13892"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13890"/>
         <source>QtiPlot project</source>
         <translation type="unfinished">QtiPlot-projekt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13893"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13891"/>
         <source>Compressed QtiPlot project</source>
         <translation type="unfinished">Komprimerat QtiPlot-projekt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13896"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13894"/>
         <source>Save project as</source>
         <translation type="unfinished">Spara projekt som</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13923"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13921"/>
         <source>&amp;Find...</source>
         <translation type="unfinished">&amp;Leta...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13925"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13923"/>
         <source>App&amp;end Project...</source>
         <translation type="unfinished">Lägg till proj&amp;ekt...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13927"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13925"/>
         <source>Save &amp;As Project...</source>
         <translation type="unfinished">Sp&amp;ara som projekt...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13929"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13927"/>
         <source>Save Project &amp;As...</source>
         <translation type="unfinished">Sp&amp;ara projekt som...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13934"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13932"/>
         <source>&amp;Show All Windows</source>
         <translation type="unfinished">&amp;Visa alla fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13935"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13933"/>
         <source>&amp;Hide All Windows</source>
         <translation type="unfinished">&amp;Göm alla fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13941"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13939"/>
         <source>&amp;Delete Folder</source>
         <translation type="unfinished">&amp;Tag bort mapp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13942"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13940"/>
         <source>&amp;Rename</source>
         <translation type="unfinished">&amp;Döp om</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13954"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13952"/>
         <source>New &amp;Window</source>
         <translation type="unfinished">Nytt &amp;fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13957"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13955"/>
         <source>New F&amp;older</source>
         <translation type="unfinished">Ny m&amp;app</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13961"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13959"/>
         <source>&amp;None</source>
         <translation type="unfinished">&amp;Inget</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13961"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13959"/>
         <source>&amp;Windows in Active Folder</source>
         <translation type="unfinished">&amp;Fönster i aktiv mapp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13961"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13959"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
         <translation type="unfinished">&amp;Fönster i aktiv mapp &amp;&amp; undermappar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13968"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13966"/>
         <source>&amp;View Windows</source>
         <translation type="unfinished">&amp;Visa fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13970"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13968"/>
         <source>&amp;Properties...</source>
         <translation type="unfinished">&amp;Egenskaper...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15101"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13983"/>
+        <source>Hidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15099"/>
         <source>QtiPlot - Error</source>
         <translation type="unfinished">QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14038"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14036"/>
         <source>Please enter a valid name!</source>
         <translation type="unfinished">Mata in ett giltigt namn!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14048"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14046"/>
         <source>Name already exists!</source>
         <translation type="unfinished">Namnet finns redan!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14048"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14046"/>
         <source>Please choose another name!</source>
         <translation type="unfinished">Mata in ett annat namn!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14548"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14546"/>
         <source>Type</source>
         <translation type="unfinished">Typ</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14159"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14157"/>
         <source>Project</source>
         <translation type="unfinished">Projekt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14550"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14548"/>
         <source>Path</source>
         <translation type="unfinished">Sökväg</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14551"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14549"/>
         <source>Size</source>
         <translation type="unfinished">Storlek</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14165"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14163"/>
         <source>bytes</source>
         <translation type="unfinished">byte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14201"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14199"/>
         <source>Contents</source>
         <translation type="unfinished">Innehåll</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14201"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14199"/>
         <source>windows</source>
         <translation type="unfinished">fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14202"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14200"/>
         <source>folders</source>
         <translation type="unfinished">mapp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14552"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14550"/>
         <source>Created</source>
         <translation type="unfinished">Skapad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14176"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14174"/>
         <source>Modified</source>
         <translation type="unfinished">Ändrad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14526"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14524"/>
         <source>Properties</source>
         <translation type="unfinished">Egenskaper</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14566"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14564"/>
         <source>Folder</source>
         <translation type="unfinished">Mapp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14220"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14218"/>
         <source>New Folder</source>
         <translation type="unfinished">Ny mapp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14265"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14263"/>
         <source>QtiPlot - Delete folder?</source>
         <translation type="unfinished">QtiPlot - Tag bort mapp?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14266"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14264"/>
         <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
         <translation type="unfinished">Tag bort mapp &apos;%1&apos; och alla fönster den innehåller?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14267"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14265"/>
         <source>Yes</source>
         <translation type="unfinished">Ja</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14267"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14265"/>
         <source>No</source>
         <translation type="unfinished">Nej</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14536"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14534"/>
         <source>Matrix</source>
         <translation type="unfinished">Matris</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14539"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14537"/>
         <source>Table</source>
         <translation type="unfinished">Tabell</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14542"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14540"/>
         <source>Note</source>
         <translation type="unfinished">Notera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14545"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14543"/>
         <source>Graph</source>
         <translation type="unfinished">Diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14548"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14546"/>
         <source>3D Graph</source>
         <translation type="unfinished">3D-diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14532"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14530"/>
         <source>Label</source>
         <translation type="unfinished">Etikett</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14553"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14551"/>
         <source>Status</source>
         <translation type="unfinished">Status</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14617"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14615"/>
         <source>QtiPlot - No match found</source>
         <translation type="unfinished">QtiPlot - Ingen matchning hittad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14618"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14616"/>
         <source>Sorry, no match found for string: &apos;%1&apos;</source>
         <translation type="unfinished">Ingen matchning hittad för strängen: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14636"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14634"/>
         <source>Cannot move an object to itself!</source>
         <translation type="unfinished">Kan ej flytta ett objekt till sig självt!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15648"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14639"/>
+        <source>Cannot move a parent folder into a child folder!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15646"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14654"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14652"/>
         <source>Skipped moving folder</source>
         <translation type="unfinished">Hoppande över att flytta mapp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15648"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14696"/>
+        <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15646"/>
         <source>Error</source>
         <translation type="unfinished">Fel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14750"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14748"/>
         <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
         <translation type="unfinished">QtiPlot kommer att försöka matt ladda ner nödvändig information om senaste tillgängliga uppdatering. Justera din brandvägg till att tillåta QtiPlot att kontakta Internet!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14751"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14749"/>
         <source>Do you wish to continue?</source>
         <translation type="unfinished">Vill du fortsätta?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14766"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14764"/>
         <source>QtiPlot - HTTP get version file</source>
         <translation type="unfinished">QtiPlot - HTTP hämta versionsfil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14783"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14765"/>
+        <source>Error while fetching version file with HTTP: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14780"/>
+        <source>QtiPlot - Updates Available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14781"/>
         <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
         <translation type="unfinished">Det finns en nyare version av QtiPlot (%1) tillgänglig för nerladdning. Vill du ladda ner den?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14787"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14785"/>
         <source>QtiPlot - No Updates Available</source>
         <translation type="unfinished">QtiPlot - Ingen uppdatering tillgänglig</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15777"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14786"/>
+        <source>No updates available. Your current version %1 is the last version available!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15775"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished">QtiPlot - Varning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14842"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14840"/>
         <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
         <translation type="unfinished">Detta kommer att rensa innehållet i alla data kopplat till tabellen. Är du säker?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14843"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14841"/>
         <source>&amp;Yes</source>
         <translation type="unfinished">&amp;Ja</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14843"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14841"/>
         <source>&amp;No</source>
         <translation type="unfinished">&amp;Nej</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14857"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14855"/>
         <source>QtiPlot - Enter row number</source>
         <translation type="unfinished">QtiPlot - Mata in radnummer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14857"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14855"/>
         <source>Row</source>
         <translation type="unfinished">Rad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14877"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14875"/>
         <source>QtiPlot - Enter column number</source>
         <translation type="unfinished">QtiPlot - mata in kolumnnummer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14877"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14875"/>
         <source>Column</source>
         <translation type="unfinished">Kolumn</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15649"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15647"/>
         <source>QtiPlot was not built with Python scripting support included!</source>
         <translation type="unfinished">QtoPlot skapades inte med Python-skriptning inkluderat!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15052"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15050"/>
         <source>Please select a Y column to plot!</source>
         <translation type="unfinished">Välj en Y-kolumn för plottning!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15089"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15087"/>
         <source>You need at least two columns for this operation!</source>
         <translation type="unfinished">Du behöver minst två kolumner för denna åtgärd!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15059"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15057"/>
         <source>Please set a default X column for this table, first!</source>
         <translation type="unfinished">Bestäm en standard X-kolumn till denna tabell först!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15093"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15091"/>
         <source>Please select a Z column for this operation!</source>
         <translation type="unfinished">Välj en Z-kolumn för denna åtgärd!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15097"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15095"/>
         <source>You need to define a X column first!</source>
         <translation type="unfinished">Du måste definiera en X-kolumn först!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15101"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15099"/>
         <source>You need to define a Y column first!</source>
         <translation type="unfinished">Du måste definiera en Y-kolumn först!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15298"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15296"/>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
         <translation type="unfinished">Med början av version lagrar 0.9.1 QtiPlot användardefinierade anpassningsmodeller på en anna plats. </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15299"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15297"/>
         <source>If you want to save your already defined models, please choose a destination folder.</source>
         <translation type="unfinished">Om du vill spara dina befitliga modeller, välj en målmapp.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15300"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15298"/>
         <source>Import fit models</source>
         <translation type="unfinished">Importera anpassningsmodeller</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15303"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15301"/>
         <source>Choose a directory to export the fit models to</source>
         <translation type="unfinished">Väl en mapp att exportera anpassningsmodellerna till</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15599"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15597"/>
         <source>No Icon</source>
         <translation type="unfinished">Ingen ikon</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15778"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15776"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation type="unfinished">Kunde inte ladda fil: %1.
 Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15859"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15857"/>
         <source>QtiPlot - Column selection error</source>
         <translation type="unfinished">QtiPlot - Kolumnvalsfel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15860"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15858"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation type="unfinished">Välj exakt en kolumn och mer än en icke tom cell!</translation>
+    </message>
+</context>
+<context>
+    <name>@default</name>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13409"/>
+        <source>QtiPlot - File openning error</source>
+        <translation type="obsolete">QtiPlot - Filöppningsfel</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13553"/>
+        <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
+        <translation type="obsolete">Filen: &lt;b&gt;&gt;%1&lt;/b&gt; saknas!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13557"/>
+        <source>QtiPlot - File opening error</source>
+        <translation type="obsolete">QtiPlot - Filöppningsfel</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13755"/>
+        <source>QtiPlot - Demo Version</source>
+        <translation type="obsolete">QtiPlot - Demoversion</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13757"/>
+        <source>You are using the demonstration version of Qtiplot.<byte value="xd"/></source>
+        <translation type="obsolete">Du använder demoversionen av QtiPlot.
+</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13780"/>
+        <source>QtiPlot - File backup error</source>
+        <translation type="obsolete">QtiPlot - Filbackuppfel</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13781"/>
+        <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
+        <translation type="obsolete">Kan ej göra säkerhetskopiering av &lt;b&gt;%1&lt;/b&gt; (till %2).&lt;br&gt;Om du ignorerar detta, riskerar du &lt;b&gt;dataförlust&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13798"/>
+        <source>QtiPlot - File save error</source>
+        <translation type="obsolete">QtiPlot - Filsparningsfel</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13798"/>
+        <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
+        <translation type="obsolete">Filen: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; är redan öppnad i skrivskyddat läge</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13892"/>
+        <source>QtiPlot project</source>
+        <translation type="obsolete">QtiPlot-projekt</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13893"/>
+        <source>Compressed QtiPlot project</source>
+        <translation type="obsolete">Komprimerat QtiPlot-projekt</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13896"/>
+        <source>Save project as</source>
+        <translation type="obsolete">Spara projekt som</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13923"/>
+        <source>&amp;Find...</source>
+        <translation type="obsolete">&amp;Leta...</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13925"/>
+        <source>App&amp;end Project...</source>
+        <translation type="obsolete">Lägg till proj&amp;ekt...</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13927"/>
+        <source>Save &amp;As Project...</source>
+        <translation type="obsolete">Sp&amp;ara som projekt...</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13929"/>
+        <source>Save Project &amp;As...</source>
+        <translation type="obsolete">Sp&amp;ara projekt som...</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13934"/>
+        <source>&amp;Show All Windows</source>
+        <translation type="obsolete">&amp;Visa alla fönster</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13935"/>
+        <source>&amp;Hide All Windows</source>
+        <translation type="obsolete">&amp;Göm alla fönster</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13941"/>
+        <source>&amp;Delete Folder</source>
+        <translation type="obsolete">&amp;Tag bort mapp</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13942"/>
+        <source>&amp;Rename</source>
+        <translation type="obsolete">&amp;Döp om</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13954"/>
+        <source>New &amp;Window</source>
+        <translation type="obsolete">Nytt &amp;fönster</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13957"/>
+        <source>New F&amp;older</source>
+        <translation type="obsolete">Ny m&amp;app</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13961"/>
+        <source>&amp;None</source>
+        <translation type="obsolete">&amp;Inget</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13961"/>
+        <source>&amp;Windows in Active Folder</source>
+        <translation type="obsolete">&amp;Fönster i aktiv mapp</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13961"/>
+        <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
+        <translation type="obsolete">&amp;Fönster i aktiv mapp &amp;&amp; undermappar</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13968"/>
+        <source>&amp;View Windows</source>
+        <translation type="obsolete">&amp;Visa fönster</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13970"/>
+        <source>&amp;Properties...</source>
+        <translation type="obsolete">&amp;Egenskaper...</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15101"/>
+        <source>QtiPlot - Error</source>
+        <translation type="obsolete">QtiPlot - Fel</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14038"/>
+        <source>Please enter a valid name!</source>
+        <translation type="obsolete">Mata in ett giltigt namn!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14048"/>
+        <source>Name already exists!</source>
+        <translation type="obsolete">Namnet finns redan!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14048"/>
+        <source>Please choose another name!</source>
+        <translation type="obsolete">Mata in ett annat namn!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14548"/>
+        <source>Type</source>
+        <translation type="obsolete">Typ</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14159"/>
+        <source>Project</source>
+        <translation type="obsolete">Projekt</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14550"/>
+        <source>Path</source>
+        <translation type="obsolete">Sökväg</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14551"/>
+        <source>Size</source>
+        <translation type="obsolete">Storlek</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14165"/>
+        <source>bytes</source>
+        <translation type="obsolete">byte</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14201"/>
+        <source>Contents</source>
+        <translation type="obsolete">Innehåll</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14201"/>
+        <source>windows</source>
+        <translation type="obsolete">fönster</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14202"/>
+        <source>folders</source>
+        <translation type="obsolete">mapp</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14552"/>
+        <source>Created</source>
+        <translation type="obsolete">Skapad</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14176"/>
+        <source>Modified</source>
+        <translation type="obsolete">Ändrad</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14526"/>
+        <source>Properties</source>
+        <translation type="obsolete">Egenskaper</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14566"/>
+        <source>Folder</source>
+        <translation type="obsolete">Mapp</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14220"/>
+        <source>New Folder</source>
+        <translation type="obsolete">Ny mapp</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14265"/>
+        <source>QtiPlot - Delete folder?</source>
+        <translation type="obsolete">QtiPlot - Tag bort mapp?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14266"/>
+        <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
+        <translation type="obsolete">Tag bort mapp &apos;%1&apos; och alla fönster den innehåller?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14267"/>
+        <source>Yes</source>
+        <translation type="obsolete">Ja</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14267"/>
+        <source>No</source>
+        <translation type="obsolete">Nej</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14536"/>
+        <source>Matrix</source>
+        <translation type="obsolete">Matris</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14539"/>
+        <source>Table</source>
+        <translation type="obsolete">Tabell</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14542"/>
+        <source>Note</source>
+        <translation type="obsolete">Notera</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14545"/>
+        <source>Graph</source>
+        <translation type="obsolete">Diagram</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14548"/>
+        <source>3D Graph</source>
+        <translation type="obsolete">3D-diagram</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14532"/>
+        <source>Label</source>
+        <translation type="obsolete">Etikett</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14553"/>
+        <source>Status</source>
+        <translation type="obsolete">Status</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14617"/>
+        <source>QtiPlot - No match found</source>
+        <translation type="obsolete">QtiPlot - Ingen matchning hittad</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14618"/>
+        <source>Sorry, no match found for string: &apos;%1&apos;</source>
+        <translation type="obsolete">Ingen matchning hittad för strängen: &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14636"/>
+        <source>Cannot move an object to itself!</source>
+        <translation type="obsolete">Kan ej flytta ett objekt till sig självt!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15648"/>
+        <source>QtiPlot</source>
+        <translation type="obsolete">QtiPlot</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14654"/>
+        <source>Skipped moving folder</source>
+        <translation type="obsolete">Hoppande över att flytta mapp</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15648"/>
+        <source>Error</source>
+        <translation type="obsolete">Fel</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14750"/>
+        <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
+        <translation type="obsolete">QtiPlot kommer att försöka matt ladda ner nödvändig information om senaste tillgängliga uppdatering. Justera din brandvägg till att tillåta QtiPlot att kontakta Internet!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14751"/>
+        <source>Do you wish to continue?</source>
+        <translation type="obsolete">Vill du fortsätta?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14766"/>
+        <source>QtiPlot - HTTP get version file</source>
+        <translation type="obsolete">QtiPlot - HTTP hämta versionsfil</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14783"/>
+        <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
+        <translation type="obsolete">Det finns en nyare version av QtiPlot (%1) tillgänglig för nerladdning. Vill du ladda ner den?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14787"/>
+        <source>QtiPlot - No Updates Available</source>
+        <translation type="obsolete">QtiPlot - Ingen uppdatering tillgänglig</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15777"/>
+        <source>QtiPlot - Warning</source>
+        <translation type="obsolete">QtiPlot - Varning</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14842"/>
+        <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
+        <translation type="obsolete">Detta kommer att rensa innehållet i alla data kopplat till tabellen. Är du säker?</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14843"/>
+        <source>&amp;Yes</source>
+        <translation type="obsolete">&amp;Ja</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14843"/>
+        <source>&amp;No</source>
+        <translation type="obsolete">&amp;Nej</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14857"/>
+        <source>QtiPlot - Enter row number</source>
+        <translation type="obsolete">QtiPlot - Mata in radnummer</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14857"/>
+        <source>Row</source>
+        <translation type="obsolete">Rad</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14877"/>
+        <source>QtiPlot - Enter column number</source>
+        <translation type="obsolete">QtiPlot - mata in kolumnnummer</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="14877"/>
+        <source>Column</source>
+        <translation type="obsolete">Kolumn</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15649"/>
+        <source>QtiPlot was not built with Python scripting support included!</source>
+        <translation type="obsolete">QtoPlot skapades inte med Python-skriptning inkluderat!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15052"/>
+        <source>Please select a Y column to plot!</source>
+        <translation type="obsolete">Välj en Y-kolumn för plottning!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15089"/>
+        <source>You need at least two columns for this operation!</source>
+        <translation type="obsolete">Du behöver minst två kolumner för denna åtgärd!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15059"/>
+        <source>Please set a default X column for this table, first!</source>
+        <translation type="obsolete">Bestäm en standard X-kolumn till denna tabell först!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15093"/>
+        <source>Please select a Z column for this operation!</source>
+        <translation type="obsolete">Välj en Z-kolumn för denna åtgärd!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15097"/>
+        <source>You need to define a X column first!</source>
+        <translation type="obsolete">Du måste definiera en X-kolumn först!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15101"/>
+        <source>You need to define a Y column first!</source>
+        <translation type="obsolete">Du måste definiera en Y-kolumn först!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15298"/>
+        <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
+        <translation type="obsolete">Med början av version lagrar 0.9.1 QtiPlot användardefinierade anpassningsmodeller på en anna plats. </translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15299"/>
+        <source>If you want to save your already defined models, please choose a destination folder.</source>
+        <translation type="obsolete">Om du vill spara dina befitliga modeller, välj en målmapp.</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15300"/>
+        <source>Import fit models</source>
+        <translation type="obsolete">Importera anpassningsmodeller</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15303"/>
+        <source>Choose a directory to export the fit models to</source>
+        <translation type="obsolete">Väl en mapp att exportera anpassningsmodellerna till</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15599"/>
+        <source>No Icon</source>
+        <translation type="obsolete">Ingen ikon</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15778"/>
+        <source>Couldn&apos;t load file: %1.
+Autocompletion will not be available!</source>
+        <translation type="obsolete">Kunde inte ladda fil: %1.
+Automatisk komplettering ej tillgängligt!</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15859"/>
+        <source>QtiPlot - Column selection error</source>
+        <translation type="obsolete">QtiPlot - Kolumnvalsfel</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="15860"/>
+        <source>Please select exactly one column and more than one non empty cell!</source>
+        <translation type="obsolete">Välj exakt en kolumn och mer än en icke tom cell!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -478,7 +964,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13558"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
-        <translation type="unfinished">Filen: &lt;b&gt;%1&lt;/b&gt;är inte en QtiPLot- eller Origin-projektfil!!</translation>
+        <translation type="obsolete">Filen: &lt;b&gt;%1&lt;/b&gt;är inte en QtiPLot- eller Origin-projektfil!!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -510,7 +996,7 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13985"/>
         <source>Hidden</source>
-        <translation type="unfinished">Dold</translation>
+        <translation type="obsolete">Dold</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -530,7 +1016,7 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14641"/>
         <source>Cannot move a parent folder into a child folder!</source>
-        <translation type="unfinished">Kan ej flytta en mapp till en av dess undermappar!</translation>
+        <translation type="obsolete">Kan ej flytta en mapp till en av dess undermappar!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -540,7 +1026,7 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14698"/>
         <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
-        <translation type="unfinished">Målmappen innehåller redan en mapp kallad &apos;%1*! Mappen hoppas över!</translation>
+        <translation type="obsolete">Målmappen innehåller redan en mapp kallad &apos;%1*! Mappen hoppas över!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -557,17 +1043,17 @@ Vill du skriva över den?</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14767"/>
         <source>Error while fetching version file with HTTP: %1.</source>
-        <translation type="unfinished">Fel vid hämtning av versionsfil HTTP: %1.</translation>
+        <translation type="obsolete">Fel vid hämtning av versionsfil HTTP: %1.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14782"/>
         <source>QtiPlot - Updates Available</source>
-        <translation type="unfinished">QtiPlot - Uppdateringar finns</translation>
+        <translation type="obsolete">QtiPlot - Uppdateringar finns</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14788"/>
         <source>No updates available. Your current version %1 is the last version available!</source>
-        <translation type="unfinished">Ingen uppdatering tillgänglig. Din aktuella version %1 är den senaste!</translation>
+        <translation type="obsolete">Ingen uppdatering tillgänglig. Din aktuella version %1 är den senaste!</translation>
     </message>
     <message>
         <location filename="" line="97"/>
@@ -823,7 +1309,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
 <context>
     <name>ApplicationWindow</name>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10104"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10102"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
@@ -908,27 +1394,27 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Rita</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12712"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12710"/>
         <source>Disable &amp;tools</source>
         <translation>Stäng av verk&amp;tyg</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12715"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12713"/>
         <source>&amp;Zoom In</source>
         <translation>&amp;Zooma in</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12716"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12714"/>
         <source>Ctrl++</source>
         <translation>Ctrl++</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12719"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12717"/>
         <source>Zoom &amp;Out</source>
         <translation>Z&amp;ooma ut</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12720"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12718"/>
         <source>Ctrl+-</source>
         <translation>Ctrl+-</translation>
     </message>
@@ -938,7 +1424,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">&amp;Dataläsare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12724"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12722"/>
         <source>CTRL+D</source>
         <translation>CTRL+D</translation>
     </message>
@@ -948,7 +1434,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">&amp;Välj dataområde</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12728"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12726"/>
         <source>ALT+S</source>
         <translation>ALT+V</translation>
     </message>
@@ -958,52 +1444,52 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">S&amp;kärmläsare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12737"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12735"/>
         <source>&amp;Move Data Points...</source>
         <translation>&amp;Flytta datapunkter...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12738"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12736"/>
         <source>Ctrl+ALT+M</source>
         <translation>Ctrl+ALT+F</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12741"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12739"/>
         <source>Remove &amp;Bad Data Points...</source>
         <translation>Tag bort &amp;dåliga datapunkter...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12742"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12740"/>
         <source>Alt+B</source>
         <translation>Alt+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12745"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12743"/>
         <source>Add &amp;Text</source>
         <translation>Lägg till &amp;text</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12747"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12745"/>
         <source>ALT+T</source>
         <translation>ALT+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12761"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12759"/>
         <source>Draw &amp;Arrow</source>
         <translation>Rita &amp;pil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12762"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12760"/>
         <source>CTRL+ALT+A</source>
         <translation>CTTRL+ALT+P</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12765"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12763"/>
         <source>Draw &amp;Line</source>
         <translation>Rita &amp;linje</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12766"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12764"/>
         <source>CTRL+ALT+L</source>
         <translation>STRL+ALT+L</translation>
     </message>
@@ -1108,7 +1594,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Anpassa &amp;flera toppar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12656"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12654"/>
         <source>&amp;Columns</source>
         <translation>&amp;Kolumner</translation>
     </message>
@@ -1153,7 +1639,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>&amp;Diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12655"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12653"/>
         <source>&amp;Table</source>
         <translation>&amp;Tabell</translation>
     </message>
@@ -1173,7 +1659,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>&amp;Fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12577"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12575"/>
         <source>&amp;Help</source>
         <translation>&amp;Hjälp</translation>
     </message>
@@ -1188,7 +1674,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Du måste välja exakt en kolumn för plottning!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13257"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13255"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
@@ -1198,7 +1684,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">Denna åtgärd kan ej utföras på kurvor ritade från kolumner med ett icke-numeriskt format.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9270"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9268"/>
         <source>&lt;h4&gt;There are no tables available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a table and try again!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt; Det finns inga tabell tillgängliga i detta projekt.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Skapa en tabell och försök igen!&lt;/h4&gt;</translation>
     </message>
@@ -1223,7 +1709,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">&lt;h4&gt;Det finns inga matriser tillgängliga i detta projekt.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Skapa en matris och försök igen!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8585"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8583"/>
         <source>Matrix</source>
         <translation>Matris</translation>
     </message>
@@ -1288,12 +1774,12 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Determinant av </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13247"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13245"/>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
         <translation>&lt;h4&lt;Det finns inga plottlager i detta fönster.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Lägg till ett lager och försök igen!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13258"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13256"/>
         <source>This functionality is not available for pie plots!</source>
         <translation>Denna egenskap är inte tillgänglig för pajdiagram!</translation>
     </message>
@@ -1413,7 +1899,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">Filen: &lt;b&gt; %1 &lt;/b&gt; är den nuvarande filen!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8656"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8654"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -1483,12 +1969,12 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Kunde inte skriva till filen: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Verifiera att du har rättighet att skriva på denna plats!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12385"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12383"/>
         <source>&amp;All</source>
         <translation>&amp;Allt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10166"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10164"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Avbryt</translation>
     </message>
@@ -1615,7 +2101,7 @@ Vill du skriva över den?</translation>
         <translation>Kolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11234"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11232"/>
         <source>QtiPlot - Column selection error</source>
         <translation>QtiPlot - Kolumnvalsfel</translation>
     </message>
@@ -1635,12 +2121,12 @@ Vill du skriva över den?</translation>
         <translation>Välj en rad först!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12442"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12440"/>
         <source>&amp;Line</source>
         <translation>&amp;Linje</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12500"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12498"/>
         <source>&amp;Scatter</source>
         <translation>S&amp;pridning</translation>
     </message>
@@ -1655,27 +2141,27 @@ Vill du skriva över den?</translation>
         <translation type="obsolete"> Vertikala &amp;droplinjer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12453"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12451"/>
         <source>&amp;Spline</source>
         <translation>Anpa&amp;ssad kurva</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12454"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12452"/>
         <source>&amp;Vertical Steps</source>
         <translation> &amp;Vertikala steg</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12460"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12458"/>
         <source>&amp;Rows</source>
         <translation>&amp;Rader</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12463"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12461"/>
         <source>&amp;Area</source>
         <translation>Yt&amp;a</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12466"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12464"/>
         <source>&amp;Pie</source>
         <translation>&amp;Paj</translation>
     </message>
@@ -1700,7 +2186,7 @@ Vill du skriva över den?</translation>
         <translation>3D-Spå&amp;r</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12475"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12473"/>
         <source>&amp;Histogram</source>
         <translation>&amp;Histogram</translation>
     </message>
@@ -1710,12 +2196,12 @@ Vill du skriva över den?</translation>
         <translation>&amp;Staplade histogram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9140"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9138"/>
         <source>Cu&amp;t</source>
         <translation>Klipp u&amp;t</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9141"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9139"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiera</translation>
     </message>
@@ -1760,7 +2246,7 @@ Vill du skriva över den?</translation>
         <translation type="obsolete">Sätt som</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12554"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12552"/>
         <source>Recalculate</source>
         <translation>Räkna om</translation>
     </message>
@@ -1780,12 +2266,12 @@ Vill du skriva över den?</translation>
         <translation>&amp;Kolumn</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9145"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9143"/>
         <source>Clea&amp;r</source>
         <translation>&amp;Rensa</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12257"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12255"/>
         <source>&amp;Delete</source>
         <translation>&amp;Tag bort</translation>
     </message>
@@ -1820,22 +2306,22 @@ Vill du skriva över den?</translation>
         <translation>Vektorer &amp;XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12477"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12475"/>
         <source>&amp;Vertical 2 Layers</source>
         <translation>&amp;Vertikalt 2 lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12478"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12476"/>
         <source>&amp;Horizontal 2 Layers</source>
         <translation>&amp;Horisontellt 2 lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12479"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12477"/>
         <source>&amp;4 Layers</source>
         <translation>&amp;4 Lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12480"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12478"/>
         <source>&amp;Stacked Layers</source>
         <translation>&amp;Staplade lager</translation>
     </message>
@@ -1845,7 +2331,7 @@ Vill du skriva över den?</translation>
         <translation>Inte tillgängligt för tomma 3D-ytdiagram!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12256"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12254"/>
         <source>&amp;Worksheet</source>
         <translation>&amp;Arbetsblad</translation>
     </message>
@@ -1877,7 +2363,7 @@ Are you sure you want to continue?</source>
         <translation>Fortsätt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8657"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8655"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -1977,12 +2463,12 @@ Are you sure you want to continue?</source>
         <translation>Om QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8382"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8380"/>
         <source>&amp;Cascade</source>
         <translation>&amp;Kaskad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8383"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8381"/>
         <source>&amp;Tile</source>
         <translation>&amp;Bricka</translation>
     </message>
@@ -1997,17 +2483,17 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">&amp;Föregående</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12610"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12608"/>
         <source>&amp;Hide Window</source>
         <translation>Döl&amp;j fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12583"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12581"/>
         <source>Close &amp;Window</source>
         <translation>&amp;Stäng fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11890"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11888"/>
         <source>More windows...</source>
         <translation>Fler fönster...</translation>
     </message>
@@ -2017,72 +2503,72 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">&amp;Betrakta pixelradsprofil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8434"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8432"/>
         <source>&amp;Intensity Matrix</source>
         <translation>&amp;Intensitetsmatris</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8438"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8436"/>
         <source>&amp;Cut</source>
         <translation>Klipp &amp;ut</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8791"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8789"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Egenskaper...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8453"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8451"/>
         <source>Please use the project explorer to select a window!</source>
         <translation>Använd projektutforskaren till att välja ett fänster!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8467"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8465"/>
         <source>Normal</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8655"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8653"/>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
         <translation>Spara ändringar till projekt: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; ?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8656"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8654"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8656"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8654"/>
         <source>No</source>
         <translation>Nej</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12344"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12342"/>
         <source>&amp;Delete Selection</source>
         <translation>&amp;Tag bort det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8737"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8735"/>
         <source>New &amp;Window</source>
         <translation>Nytt &amp;fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8739"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8737"/>
         <source>New F&amp;older</source>
         <translation>Ny m&amp;app</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8741"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8739"/>
         <source>Auto &amp;Column Width</source>
         <translation>Automatisk &amp;kolumnbredd</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8784"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8782"/>
         <source>&amp;Delete Window</source>
         <translation>&amp;Tag bort fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12581"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12579"/>
         <source>&amp;Rename Window</source>
         <translation>&amp;Döp om fönster</translation>
     </message>
@@ -2097,17 +2583,17 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">B&amp;eroende 3D-diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8835"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8833"/>
         <source>D&amp;epends on</source>
         <translation>B&amp;eror på</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8838"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8836"/>
         <source>Function</source>
         <translation>Funktion</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8874"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8872"/>
         <source>Maximized</source>
         <translation>Maximerad</translation>
     </message>
@@ -2142,22 +2628,22 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">&amp;Klistrar in bild</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8980"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8978"/>
         <source>&amp;Layer</source>
         <translation>&amp;Lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8981"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8979"/>
         <source>&amp;Window</source>
         <translation>&amp;Fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8978"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8976"/>
         <source>E&amp;xport</source>
         <translation>E&amp;xportera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12393"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12391"/>
         <source>&amp;Print</source>
         <translation>&amp;Skriv ut</translation>
     </message>
@@ -2167,27 +2653,27 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">&amp;Geometri...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8984"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8982"/>
         <source>P&amp;roperties...</source>
         <translation>E&amp;genskaper...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8986"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8984"/>
         <source>&amp;Delete Layer</source>
         <translation>&amp;Tag bort lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9001"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8999"/>
         <source>&amp;Paste Layer</source>
         <translation>&amp;Klistra in lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9014"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9012"/>
         <source>&amp;Copy Page</source>
         <translation>&amp;Kopiera sida</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9015"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9013"/>
         <source>E&amp;xport Page</source>
         <translation>E&amp;xportera sida</translation>
     </message>
@@ -2197,82 +2683,82 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">&amp;Rita 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9024"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9022"/>
         <source>&amp;Matrix...</source>
         <translation>&amp;Matris...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9028"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9026"/>
         <source>Choose &amp;Data Set...</source>
         <translation>Välj &amp;datamängd...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9030"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9028"/>
         <source>Choose &amp;Matrix...</source>
         <translation>Välj &amp;matris...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9033"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9031"/>
         <source>C&amp;lear</source>
         <translation>&amp;Rensa</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9040"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9038"/>
         <source>&amp;Copy Graph</source>
         <translation>&amp;Kopiera diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9041"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9039"/>
         <source>&amp;Export</source>
         <translation>E&amp;xportera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9142"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9140"/>
         <source>&amp;Paste</source>
         <translation>Klistra &amp;in</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9122"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9120"/>
         <source>&amp;Insert Row</source>
         <translation>Sätt &amp;in rad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9134"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9132"/>
         <source>&amp;Delete Rows</source>
         <translation>&amp;Tag bort rader</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9053"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9051"/>
         <source>&amp;Insert Column</source>
         <translation>Sätt &amp;in kolumn</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9057"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9055"/>
         <source>&amp;Delete Columns</source>
         <translation>&amp;Tag bort kolumn</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9123"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9121"/>
         <source>&amp;Delete Row</source>
         <translation>&amp;Tag bort rad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9124"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9122"/>
         <source>Clea&amp;r Row</source>
         <translation>&amp;Rensa rad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9135"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9133"/>
         <source>Clea&amp;r Rows</source>
         <translation>&amp;Rensa rader</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9174"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9172"/>
         <source>QtiPlot - index.html File Not Found!</source>
         <translation>QtiPlot - Index.html-fil ej funnen!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9175"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9173"/>
         <source>There is no file called &lt;b&gt;index.html&lt;/b&gt; in this folder.&lt;br&gt;Please choose another folder!</source>
         <translation>Det finns igne fil kallad &lt;b&gt;index.html&lt;/b&gt; i denna mapp. &lt;br&gt;Välj en annan mapp!</translation>
     </message>
@@ -2297,7 +2783,7 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">Hem</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9226"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9224"/>
         <source>QtiPlot - Help Files Not Found!</source>
         <translation>QtiPlot - Hjälpfiler inte hittade!</translation>
     </message>
@@ -2312,39 +2798,39 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">QtiPlot - Hjälpbläddrare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9330"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9328"/>
         <source>QtiPlot - Edit function</source>
         <translation>QtiPlot - Redigera funktion</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10034"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10032"/>
         <source>QtiPlot - Set the number of pixels to average</source>
         <translation>QtiPlot - Sätt antal pixlar för medelvärdesbildning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10034"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10032"/>
         <source>Number of averaged pixels</source>
         <translation>Antal medelvärdesbildade pixlar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10164"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10162"/>
         <source>QtiPlot - Guess best origin for the new layer?</source>
         <translation>QtiPlot - Gissa bästa ursprung för det nya lagret?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10165"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10163"/>
         <source>Do you want QtiPlot to guess the best position for the new layer?
  Warning: this will rearrange existing layers!</source>
         <translation>Vill du att QtiPlot skall gissa positionen för det nya lagret?
 Varning: detta kommer att arrangera om befintliga lager!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10166"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10164"/>
         <source>&amp;Guess</source>
         <translation>&amp;Gissa</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10166"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10164"/>
         <source>&amp;Top-left corner</source>
         <translation>&amp;Övre vänstra hörnet</translation>
     </message>
@@ -2359,57 +2845,57 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Kurva:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12266"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12264"/>
         <source>New &amp;Project</source>
         <translation>Nytt &amp;projekt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12268"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12266"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12274"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12272"/>
         <source>New &amp;Graph</source>
         <translation>Nytt dia&amp;gram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12276"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12274"/>
         <source>Ctrl+G</source>
         <translation>Ctrl+G</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12278"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12276"/>
         <source>New &amp;Note</source>
         <translation>Ny a&amp;nteckning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12281"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12279"/>
         <source>New &amp;Table</source>
         <translation>Ny &amp;tabell</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12282"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12280"/>
         <source>Ctrl+T</source>
         <translation>Ctrl+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12285"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12283"/>
         <source>New &amp;Matrix</source>
         <translation>Ny &amp;matris</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12286"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12284"/>
         <source>Ctrl+M</source>
         <translation>Ctrl+M</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12289"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12287"/>
         <source>New &amp;Function Plot</source>
         <translation>Nytt &amp;funktionsdiagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12291"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12289"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
@@ -2419,17 +2905,17 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Nytt 3D-&amp;ytdiagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12295"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12293"/>
         <source>Ctrl+ALT+Z</source>
         <translation>Ctrl+Alt+Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12297"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12295"/>
         <source>&amp;Open</source>
         <translation>&amp;Öppna</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12298"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12296"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
@@ -2439,7 +2925,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Öppna bild&amp;fil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12302"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12300"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
@@ -2449,12 +2935,12 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Importera b&amp;ild...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12306"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12304"/>
         <source>&amp;Save Project</source>
         <translation>Spara pro&amp;jet</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12308"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12306"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
@@ -2464,7 +2950,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Spara pr&amp;ojekt som...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11500"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11498"/>
         <source>Open Temp&amp;late...</source>
         <translation>Öppna Ma&amp;ll...</translation>
     </message>
@@ -2484,17 +2970,17 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Flera filer...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12322"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12320"/>
         <source>&amp;Undo</source>
         <translation>&amp;Ångra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12324"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12322"/>
         <source>Ctrl+Z</source>
         <translation>Ctrl+Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12326"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12324"/>
         <source>&amp;Redo</source>
         <translation>Gö&amp;r om</translation>
     </message>
@@ -2504,7 +2990,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12329"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12327"/>
         <source>&amp;Duplicate</source>
         <translation>D&amp;uplicera</translation>
     </message>
@@ -2514,7 +3000,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Klipp &amp;ut det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12334"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12332"/>
         <source>Ctrl+X</source>
         <translation>Ctrl+X</translation>
     </message>
@@ -2524,7 +3010,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Kopiera &amp;in det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12338"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12336"/>
         <source>Ctrl+C</source>
         <translation>Ctrl+C</translation>
     </message>
@@ -2534,7 +3020,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Klistra in det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12342"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12340"/>
         <source>Ctrl+V</source>
         <translation>Ctrl+V</translation>
     </message>
@@ -2554,12 +3040,12 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Projektutforskar&amp;e</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12349"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12347"/>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12352"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12350"/>
         <source>Results &amp;Log</source>
         <translation>Resultat&amp;logg</translation>
     </message>
@@ -2569,17 +3055,17 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Konsol för skript</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12370"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12368"/>
         <source>Add La&amp;yer</source>
         <translation>L&amp;ägg till lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12372"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12370"/>
         <source>ALT+L</source>
         <translation>ALT+L</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12374"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12372"/>
         <source>Arran&amp;ge Layers</source>
         <translation>Arran&amp;gera lager</translation>
     </message>
@@ -2589,7 +3075,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">ALT+A</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12381"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12379"/>
         <source>&amp;Current</source>
         <translation>&amp;Aktuellt</translation>
     </message>
@@ -2599,22 +3085,22 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Alt+G</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12386"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12384"/>
         <source>Alt+X</source>
         <translation>Alt+X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12394"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12392"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12397"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12395"/>
         <source>Print All Plo&amp;ts</source>
         <translation>Skriv u&amp;t alla diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12398"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12396"/>
         <source>E&amp;xport ASCII</source>
         <translation>Ex&amp;portera ASCII</translation>
     </message>
@@ -2624,12 +3110,12 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Ställ in imp&amp;ortalternativ</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12400"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12398"/>
         <source>&amp;Quit</source>
         <translation>&amp;Avsluta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12401"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12399"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
@@ -2649,42 +3135,42 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Diagram&amp;hjälp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12410"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12408"/>
         <source>Ctrl+Alt+W</source>
         <translation>Ctrl+Alt+W</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12412"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12410"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Inställningar...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12414"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12412"/>
         <source>Add/Remove &amp;Curve...</source>
         <translation>Lägg till/tag bort &amp;kurva...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12415"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12413"/>
         <source>ALT+C</source>
         <translation>ALT+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12418"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12416"/>
         <source>Add &amp;Error Bars...</source>
         <translation>Lägg till f&amp;elstaplar...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12420"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12418"/>
         <source>Ctrl+B</source>
         <translation>Ctrl+B</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12422"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12420"/>
         <source>Add &amp;Function...</source>
         <translation>Lägg till &amp;funktion...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12424"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12422"/>
         <source>Ctrl+Alt+F</source>
         <translation>Ctrl+Alt+F</translation>
     </message>
@@ -2694,17 +3180,17 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Skala om fö&amp;r att visa allt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12427"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12425"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12430"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12428"/>
         <source>New &amp;Legend</source>
         <translation>Ny &amp;beskrivning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12431"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12429"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
@@ -2714,62 +3200,62 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Lägg till tidstämpel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12435"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12433"/>
         <source>Ctrl+ALT+T</source>
         <translation>Ctrl+ALT+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12438"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12436"/>
         <source>Add &amp;Image</source>
         <translation>Lägg till b&amp;ild</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12440"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12438"/>
         <source>ALT+I</source>
         <translation>ALT+I</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12448"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12446"/>
         <source>Line + S&amp;ymbol</source>
         <translation>Linje + s&amp;ymbol</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12472"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12470"/>
         <source>Vectors XY&amp;AM</source>
         <translation>Vektorer XYA&amp;M</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11666"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11664"/>
         <source>&amp;Vectors &amp;XYXY</source>
         <translation>&amp;Vektorer &amp;XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12476"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12474"/>
         <source>&amp;Stacked Histogram</source>
         <translation>&amp;Staplade histogram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12494"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12492"/>
         <source>&amp;Ribbon</source>
         <translation>&amp;Band</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12497"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12495"/>
         <source>&amp;Bars</source>
         <translation>&amp;Staplar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12503"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12501"/>
         <source>&amp;Trajectory</source>
         <translation>Spå&amp;r</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12515"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12513"/>
         <source>Statistics on &amp;Columns</source>
         <translation>Statistik för &amp;kolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12518"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12516"/>
         <source>Statistics on &amp;Rows</source>
         <translation>Statistik för &amp;rader</translation>
     </message>
@@ -2779,97 +3265,97 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Integrering...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12522"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12520"/>
         <source>Inte&amp;rpolate ...</source>
         <translation>Inte&amp;rpolering...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12523"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12521"/>
         <source>&amp;Low Pass...</source>
         <translation>&amp;Lågpass...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12524"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12522"/>
         <source>&amp;High Pass...</source>
         <translation>&amp;Högpass...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12525"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12523"/>
         <source>&amp;Band Pass...</source>
         <translation>&amp;Bandpass...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12526"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12524"/>
         <source>&amp;Band Block...</source>
         <translation>&amp;Bandspärr...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12527"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12525"/>
         <source>&amp;FFT...</source>
         <translation>&amp;FFT...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12528"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12526"/>
         <source>&amp;Savitzky-Golay...</source>
         <translation>&amp;Savitzky-Golay...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12529"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12527"/>
         <source>&amp;FFT Filter...</source>
         <translation>&amp;FFT-filter...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12530"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12528"/>
         <source>Moving Window &amp;Average...</source>
         <translation>Flytt&amp;ar fönstermedelvärdesbildning...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12531"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12529"/>
         <source>&amp;Differentiate</source>
         <translation>&amp;Differentieria</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12532"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12530"/>
         <source>Fit &amp;Linear</source>
         <translation>Anpassa &amp;linjärt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12533"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12531"/>
         <source>Fit &amp;Polynomial ...</source>
         <translation>Anpassa &amp;polynom ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12534"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12532"/>
         <source>&amp;First Order ...</source>
         <translation>&amp;Första ordningens ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12535"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12533"/>
         <source>&amp;Second Order ...</source>
         <translation>&amp;Andra ordningens ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12536"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12534"/>
         <source>&amp;Third Order ...</source>
         <translation>&amp;tredje ordningens ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12537"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12535"/>
         <source>Fit Exponential Gro&amp;wth ...</source>
         <translation>Anpassa exponetiell till&amp;växt ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12538"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12536"/>
         <source>Fit &amp;Boltzmann (Sigmoidal)</source>
         <translation>Anpassa &amp;Boltzmann (Sigmoidal)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12539"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12537"/>
         <source>Fit &amp;Gaussian</source>
         <translation>Anpassa &amp;Gaussiskt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12540"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12538"/>
         <source>Fit Lorent&amp;zian</source>
         <translation>Anpassa Lorent&amp;ziskt</translation>
     </message>
@@ -2879,12 +3365,12 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Icke-linjär kurvanpassning ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12543"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12541"/>
         <source>Ctrl+Y</source>
         <translation>Ctrl+Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12545"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12543"/>
         <source>&amp;Plot ...</source>
         <translation>&amp;Diagram ...</translation>
     </message>
@@ -2894,57 +3380,57 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Kurvor ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12546"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12544"/>
         <source>&amp;Scales...</source>
         <translation>&amp;Skalor...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12547"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12545"/>
         <source>&amp;Axes...</source>
         <translation>&amp;Axlar...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12548"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12546"/>
         <source>&amp;Grid ...</source>
         <translation>&amp;Rutnät...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12549"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12547"/>
         <source>&amp;Title ...</source>
         <translation>&amp;Titel ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12550"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12548"/>
         <source>Column &amp;Options ...</source>
         <translation>K&amp;olumnalternativ ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12552"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12550"/>
         <source>Set Column &amp;Values ...</source>
         <translation>Sätt kolumn&amp;värden ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12570"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12568"/>
         <source>&amp;Columns...</source>
         <translation>&amp;Kolumner...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12571"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12569"/>
         <source>&amp;Rows...</source>
         <translation>&amp;Rader...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12574"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12572"/>
         <source>&amp;About QtiPlot</source>
         <translation>&amp;Om QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12575"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12573"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12578"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12576"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
@@ -2954,7 +3440,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Välj hjälpmapp...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12584"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12582"/>
         <source>Ctrl+W</source>
         <translation>Ctrl+W</translation>
     </message>
@@ -2964,17 +3450,17 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Lägg till kolumn</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12596"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12594"/>
         <source>&amp;Remove Layer</source>
         <translation>&amp;Tag bort lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12597"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12595"/>
         <source>Alt+R</source>
         <translation>Alt+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12599"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12597"/>
         <source>Window &amp;Geometry...</source>
         <translation>Fönster&amp;geometri...</translation>
     </message>
@@ -2984,32 +3470,32 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Intensitetstabell</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12606"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12604"/>
         <source>&amp;Properties</source>
         <translation>&amp;Egenskaper</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12607"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12605"/>
         <source>&amp;Activate Window</source>
         <translation>&amp;Aktiver fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12608"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12606"/>
         <source>Mi&amp;nimize Window</source>
         <translation>Mi&amp;nimera fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12609"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12607"/>
         <source>Ma&amp;ximize Window</source>
         <translation>Ma&amp;ximera fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12612"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12610"/>
         <source>Re&amp;size Window...</source>
         <translation>Ändra fönster&amp;storlek...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8789"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8787"/>
         <source>&amp;Print Window</source>
         <translation>&amp;Skriv ut fönster</translation>
     </message>
@@ -3019,42 +3505,42 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Lagergeometri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12613"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12611"/>
         <source>&amp;Surface...</source>
         <translation>&amp;Yt...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12614"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12612"/>
         <source>&amp;Data Set...</source>
         <translation>&amp;Data mängd...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12615"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12613"/>
         <source>Set &amp;Properties...</source>
         <translation>Ställ in egenska&amp;per...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12616"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12614"/>
         <source>Set &amp;Dimensions...</source>
         <translation>Ställ in &amp;dimensioner...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12618"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12616"/>
         <source>Set &amp;Values...</source>
         <translation>Ställ in &amp;värden...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12623"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12621"/>
         <source>&amp;Transpose</source>
         <translation>&amp;Transponera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12641"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12639"/>
         <source>&amp;Invert</source>
         <translation>&amp;Invertera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12642"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12640"/>
         <source>&amp;Determinant</source>
         <translation>&amp;Determinant</translation>
     </message>
@@ -3069,62 +3555,62 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Omvandla till &amp;matris</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12649"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12647"/>
         <source>3D &amp;Wire Frame</source>
         <translation>3D-t&amp;rådram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12650"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12648"/>
         <source>3D &amp;Hidden Line</source>
         <translation>3D &amp;Dold linje</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12651"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12649"/>
         <source>3D &amp;Polygons</source>
         <translation>3D &amp;Polygoner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12652"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12650"/>
         <source>3D Wire &amp;Surface</source>
         <translation>3D Tråd&amp;yta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12653"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12651"/>
         <source>Sort Ta&amp;ble</source>
         <translation>Sortera ta&amp;bell</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12654"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12652"/>
         <source>Sort Columns</source>
         <translation>Sortera kolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12657"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12655"/>
         <source>Co&amp;rrelate</source>
         <translation>K&amp;orrelera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12659"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12657"/>
         <source>&amp;Convolute</source>
         <translation>Fa&amp;lta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12660"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12658"/>
         <source>&amp;Deconvolute</source>
         <translation>O&amp;mfalta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12661"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12659"/>
         <source>&amp;Horizontal</source>
         <translation>&amp;Horisontell</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12662"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12660"/>
         <source>&amp;Vertical</source>
         <translation>&amp;Vertikal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12663"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12661"/>
         <source>Ro&amp;w Numbers</source>
         <translation>Ra&amp;dnummer</translation>
     </message>
@@ -3134,27 +3620,27 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Slumptal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12667"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12665"/>
         <source>&amp;X</source>
         <translation>&amp;X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12669"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12667"/>
         <source>&amp;Y</source>
         <translation>&amp;Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12671"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12669"/>
         <source>&amp;Z</source>
         <translation>&amp;Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12673"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12671"/>
         <source>X E&amp;rror</source>
         <translation>X-f&amp;el</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12674"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12672"/>
         <source>Y &amp;Error</source>
         <translation>Y-&amp;fel</translation>
     </message>
@@ -3164,27 +3650,27 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation>&amp;Inget</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12682"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12680"/>
         <source>&amp;Box Plot</source>
         <translation>&amp;Låddiagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12685"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12683"/>
         <source>&amp;Gaussian...</source>
         <translation>&amp;Gaussiskt...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12686"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12684"/>
         <source>&amp;Lorentzian...</source>
         <translation>&amp;Lorentziskt...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12688"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12686"/>
         <source>Search for &amp;Updates</source>
         <translation>Leta efter &amp;uppdateringar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12687"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12685"/>
         <source>&amp;QtiPlot Homepage</source>
         <translation>&amp;QtiPlots Hemsida</translation>
     </message>
@@ -3194,7 +3680,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Ladda ner hand&amp;bok</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12692"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12690"/>
         <source>&amp;Translations</source>
         <translation>Ö&amp;versätttningar</translation>
     </message>
@@ -3209,17 +3695,17 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Teknisk &amp;stöd</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12267"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12265"/>
         <source>Open a new project</source>
         <translation>Öppna ett nytt projekt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12275"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12273"/>
         <source>Create an empty 2D plot</source>
         <translation>Skapa ett tomt 2D-diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12279"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12277"/>
         <source>Create an empty note window</source>
         <translation>Skapa ett tomt anteckningsfönster</translation>
     </message>
@@ -3229,22 +3715,22 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Ny tabell</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12287"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12285"/>
         <source>New matrix</source>
         <translation>Ny matris</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12290"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12288"/>
         <source>Create a new 2D function plot</source>
         <translation>Skapa ett nytt 2D-funktionsdiagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12294"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12292"/>
         <source>Create a new 3D surface plot</source>
         <translation>Skapa ett nytt 3D-ytdiagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12299"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12297"/>
         <source>Open project</source>
         <translation>Öppna projekt</translation>
     </message>
@@ -3254,7 +3740,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Spara projekt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12312"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12310"/>
         <source>Open Te&amp;mplate...</source>
         <translation>Öppna &amp;mall...</translation>
     </message>
@@ -3279,42 +3765,42 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Importera flera datafiler</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12323"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12321"/>
         <source>Undo changes</source>
         <translation>Ångra ändringar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12327"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12325"/>
         <source>Redo changes</source>
         <translation>Gör om ändringar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12330"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12328"/>
         <source>Duplicate window</source>
         <translation>Duplicera fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12333"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12331"/>
         <source>Cut selection</source>
         <translation>Klipp ut det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12337"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12335"/>
         <source>Copy selection</source>
         <translation>Kopiera det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12341"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12339"/>
         <source>Paste selection</source>
         <translation>Klistra in det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12345"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12343"/>
         <source>Delete selection</source>
         <translation>Tag bort det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12350"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12348"/>
         <source>Show project explorer</source>
         <translation>Visa projektutforskaren</translation>
     </message>
@@ -3324,42 +3810,42 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Visa beräkningsresultat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12359"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12357"/>
         <source>&amp;Console</source>
         <translation>&amp;Konsol</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12360"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12358"/>
         <source>Show Scripting console</source>
         <translation>Visa konsol för skript</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12383"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12381"/>
         <source>Export current graph</source>
         <translation>Exportera aktuellt diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12387"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12385"/>
         <source>Export all graphs</source>
         <translation>Exportera alla diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12395"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12393"/>
         <source>Print window</source>
         <translation>Skriv ut fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12416"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12414"/>
         <source>Add curve to graph</source>
         <translation>Lägg till kurva till diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12428"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12426"/>
         <source>Best fit</source>
         <translation>Bästa anpassning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12432"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12430"/>
         <source>Add new legend</source>
         <translation>Lägg till ny beskrivning</translation>
     </message>
@@ -3384,37 +3870,37 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Rita med linjer +  symboler</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12458"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12456"/>
         <source>Plot with vertical bars</source>
         <translation>Rita med vertikala staplar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12461"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12459"/>
         <source>Plot with horizontal bars</source>
         <translation>Rita med horisontella staplar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12464"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12462"/>
         <source>Plot area</source>
         <translation>Rita yta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12467"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12465"/>
         <source>Plot pie</source>
         <translation>Rita paj</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12469"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12467"/>
         <source>&amp;Vectors XYXY</source>
         <translation>&amp;Vektorer XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12470"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12468"/>
         <source>Vectors XYXY</source>
         <translation>Vektorer XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12473"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12471"/>
         <source>Vectors XYAM</source>
         <translation>Vektorer XYAM</translation>
     </message>
@@ -3439,12 +3925,12 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Rita 3D-spår</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12516"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12514"/>
         <source>Selected columns statistics</source>
         <translation>Valda kolumners statistik</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12519"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12517"/>
         <source>Selected rows statistics</source>
         <translation>Valda raders statistik</translation>
     </message>
@@ -3459,52 +3945,52 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Låd- och morrhårsdiagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12713"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12711"/>
         <source>Pointer</source>
         <translation>Pekare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12717"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12715"/>
         <source>Zoom In</source>
         <translation>Zooma in</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12721"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12719"/>
         <source>Zoom Out</source>
         <translation>Zooma ut</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12725"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12723"/>
         <source>Data reader</source>
         <translation>Dataläsare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12729"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12727"/>
         <source>Select data range</source>
         <translation>Välj dataområde</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12732"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12730"/>
         <source>Screen reader</source>
         <translation>Skärmläsare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12739"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12737"/>
         <source>Move data points</source>
         <translation>Flytta datapunkter</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12743"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12741"/>
         <source>Remove data points</source>
         <translation>Tab bort datapunkter</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12763"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12761"/>
         <source>Draw arrow</source>
         <translation>Rita pil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12767"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12765"/>
         <source>Draw line</source>
         <translation>Rita linje</translation>
     </message>
@@ -3519,22 +4005,22 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">&amp;Koord</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12776"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12774"/>
         <source>Box</source>
         <translation>Låda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12780"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12778"/>
         <source>Frame</source>
         <translation>Ram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12778"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12776"/>
         <source>&amp;Frame</source>
         <translation>&amp;Ram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12782"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12780"/>
         <source>No Axes</source>
         <translation>Inga axlar</translation>
     </message>
@@ -3579,37 +4065,37 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Diagramstil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12796"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12794"/>
         <source>Wireframe</source>
         <translation>Trådram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12798"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12796"/>
         <source>Hidden Line</source>
         <translation>Dold linje</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12804"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12802"/>
         <source>Polygon only</source>
         <translation>Endast polygon</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12808"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12806"/>
         <source>Mesh &amp; filled Polygons</source>
         <translation>Nät &amp; fyllda ploygoner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12812"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12810"/>
         <source>Dots</source>
         <translation>Prickar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12816"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12814"/>
         <source>Bars</source>
         <translation>Staplar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12820"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12818"/>
         <source>Cones</source>
         <translation>Koner</translation>
     </message>
@@ -3624,17 +4110,17 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Golvstil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12830"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12828"/>
         <source>Floor Data Projection</source>
         <translation>Golvdataprojektion</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12834"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12832"/>
         <source>Floor Isolines</source>
         <translation>Isolinjer på golv</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12838"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12836"/>
         <source>Empty Floor</source>
         <translation>Tomt golv</translation>
     </message>
@@ -3644,12 +4130,12 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Dubbelklicka på diagram för att välja datapunkt!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13262"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13260"/>
         <source>QtiPlot - Enter the number of peaks</source>
         <translation>QtiPlot - Mata in antal toppar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13263"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13261"/>
         <source>Peaks</source>
         <translation>Toppar</translation>
     </message>
@@ -3729,17 +4215,17 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
         <translation type="obsolete">Sp&amp;ara som projekt...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12310"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12308"/>
         <source>Save Project &amp;As...</source>
         <translation>Sp&amp;ara projekt som...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8719"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8717"/>
         <source>&amp;Show All Windows</source>
         <translation>&amp;Visa alla fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8720"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8718"/>
         <source>&amp;Hide All Windows</source>
         <translation>&amp;Göm alla fönster</translation>
     </message>
@@ -3992,22 +4478,22 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation>QtiPlot - 2D-diagrammall</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12258"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12256"/>
         <source>&amp;Edit Function...</source>
         <translation>R&amp;edigera funktion...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12255"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12253"/>
         <source>&amp;Plot details...</source>
         <translation>&amp;Diagramdetaljer...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8800"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8798"/>
         <source>D&amp;epending Graphs</source>
         <translation>B&amp;eroende diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8809"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8807"/>
         <source>D&amp;epending 3D Graphs</source>
         <translation>B&amp;eroende 3D-diagram</translation>
     </message>
@@ -4017,7 +4503,7 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation type="obsolete">Rita 3D-dia&amp;gram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9162"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9160"/>
         <source>Choose the location of the QtiPlot help folder!</source>
         <translation>Välj platsen för QtiPlots hjälpmapp!</translation>
     </message>
@@ -4032,62 +4518,62 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation type="obsolete">Alt+F4</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12551"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12549"/>
         <source>Ctrl+Alt+O</source>
         <translation>Ctrl+Alt+O</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12708"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12706"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+vagnretur</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12590"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12588"/>
         <source>&amp;Go to Row...</source>
         <translation>&amp;Gå till rad...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12591"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12589"/>
         <source>Ctrl+Alt+G</source>
         <translation>Ctrl+Alt+G</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12589"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12587"/>
         <source>Clear</source>
         <translation>Rensa</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12697"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12695"/>
         <source>Scripting &amp;language</source>
         <translation>Skripts&amp;pråk</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12699"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12697"/>
         <source>&amp;Restart scripting</source>
         <translation>Sta&amp;rta om skriptning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12701"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12699"/>
         <source>E&amp;xecute</source>
         <translation>Ut&amp;för</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12702"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12700"/>
         <source>Ctrl+J</source>
         <translation>Ctrl+J</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12704"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12702"/>
         <source>Execute &amp;All</source>
         <translation>Utför &amp;allt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12705"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12703"/>
         <source>Ctrl+Shift+J</source>
         <translation>Ctrl+Shift+J</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12707"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12705"/>
         <source>&amp;Evaluate Expression</source>
         <translation>Utvärd&amp;era uttryck</translation>
     </message>
@@ -4132,87 +4618,87 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation>QtiPlot - Skriptfönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12455"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12453"/>
         <source>&amp;Horizontal Steps</source>
         <translation>&amp;Horisontella steg</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12379"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12377"/>
         <source>Automatic Layout</source>
         <translation>Automatisk layout</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12035"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12033"/>
         <source>Contour - &amp;Color Fill</source>
         <translation>Kontur - &amp;färgfyllnad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12509"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12507"/>
         <source>Contour &amp;Lines</source>
         <translation>Kontur&amp;linjer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12512"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12510"/>
         <source>&amp;Gray Scale Map</source>
         <translation>&amp;Gråskalekarta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12365"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12363"/>
         <source>Script Window</source>
         <translation>Skriptfönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12371"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12369"/>
         <source>Add Layer</source>
         <translation>Lägg till lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12375"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12373"/>
         <source>Arrange Layers</source>
         <translation>Arrangera lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12419"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12417"/>
         <source>Add Error Bars...</source>
         <translation>Lägg till felstaplar...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12423"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12421"/>
         <source>Add Function...</source>
         <translation>Lägg till funktion...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12439"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12437"/>
         <source>Add Image</source>
         <translation>Lägg till bild</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12506"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12504"/>
         <source>Contour + &amp;Color Fill</source>
         <translation>Kontur - &amp;färgfyllnad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12507"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12505"/>
         <source>Contour Lines + Color Fill</source>
         <translation>Konturlinjer + färgfyllnad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12510"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12508"/>
         <source>Contour Lines</source>
         <translation>Konturlinjer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12513"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12511"/>
         <source>Gray Scale Map</source>
         <translation>Gråskalekarta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12746"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12744"/>
         <source>Add Text</source>
         <translation>Lägg till text</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12845"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12843"/>
         <source>Animation</source>
         <translation>Animering</translation>
     </message>
@@ -4247,7 +4733,7 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation type="obsolete">&lt;h2&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9243"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9241"/>
         <source>QtiPlot - Help Profile Not Found!</source>
         <translation>QtiPlot - Hjälpprofil ej funnen!</translation>
     </message>
@@ -4257,7 +4743,7 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation type="obsolete">Assistenten kunde inte startas ty filen &lt;b&gt;%1&lt;/b&gt; fanns inte i hjälpmappen!&lt;p&gt; Denna fil kommer tillsammans med QtiPlot-handboken, som kan laddas ned från följande internetadress:&lt;/p&gt;&lt;p&gt;&lt;font color=blue&gt;&apos;http://soft.proindependent.com/manuals.html&apos;&lt;/font&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12320"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12318"/>
         <source>Ctrl+K</source>
         <translation>Ctrl+K</translation>
     </message>
@@ -4267,27 +4753,27 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation type="obsolete">Ctrl+Alt+K</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12620"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12618"/>
         <source>Alt+Q</source>
         <translation>Alt+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12850"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12848"/>
         <source>Enable perspective</source>
         <translation>Tillåt perspektiv</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12855"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12853"/>
         <source>Reset rotation</source>
         <translation>Återställ rotation</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12860"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12858"/>
         <source>Fit frame to window</source>
         <translation>Anpassa ram till fönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13311"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13309"/>
         <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;<byte value="xd"/></source>
         <translation type="unfinished">&lt;font size=+2, color=darkBlue&gt;&lt;b&gt;QtiPlot är öppenkällprogramvara och utvecklingen av den har krävt hundratals timmars arbete.&lt;br&gt;&lt;br&gt;
 </translation>
@@ -4327,22 +4813,22 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation>&amp;Zooma ut</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12723"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12721"/>
         <source>&amp;Data Reader</source>
         <translation>&amp;Dataläsare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12727"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12725"/>
         <source>&amp;Select Data Range</source>
         <translation>&amp;Välj dataområde</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12731"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12729"/>
         <source>S&amp;creen Reader</source>
         <translation>S&amp;kärmläsare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9856"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9854"/>
         <source>3D Surface</source>
         <translation>3D-yta</translation>
     </message>
@@ -4382,12 +4868,12 @@ Delar av denna fil kanske inte visas som väntat.</translation>
         <translation type="obsolete">Skriptning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9022"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9020"/>
         <source>3D &amp;Plot</source>
         <translation>3D Dia&amp;gram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11246"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11244"/>
         <source>Column</source>
         <translation>Kolumn</translation>
     </message>
@@ -4454,7 +4940,7 @@ Delar av denna fil kanske inte visas som väntat.</translation>
 den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12451"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12449"/>
         <source>Vertical &amp;Drop Lines</source>
         <translation>Vertikal &amp;dropplinje</translation>
     </message>
@@ -4484,133 +4970,133 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Släppt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8941"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8939"/>
         <source>Re&amp;move Pie Curve</source>
         <translation>Tag bort tårtdiagra&amp;m</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8949"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8947"/>
         <source>Anal&amp;yze</source>
         <translation>Anal&amp;ysera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8958"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8956"/>
         <source>&amp;Paste Text</source>
         <translation>&amp;Klistra in ntext</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8969"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8967"/>
         <source>&amp;Paste Line/Arrow</source>
         <translation>&amp;Klistra in rad/pil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8962"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8960"/>
         <source>&amp;Paste Image</source>
         <translation>&amp;Klistra in bild</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9229"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9227"/>
         <source>The manual can be downloaded from the following internet address:</source>
         <translation>Handboken kan laddas ner från följande internetadress:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9244"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9242"/>
         <source>The assistant could not start because the file &lt;b&gt;%1&lt;/b&gt; was not found in the help file directory!</source>
         <translation>Hjälpredan kunde inte startas ty filen &lt;b&gt;%1&lt;/b&gt; kunde inte  hittas i hjälpmappen!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9246"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9244"/>
         <source>This file is provided with the QtiPlot manual which can be downloaded from the following internet address:</source>
         <translation>Denna fil kommer med QtoPlot-handboken, som kan laddas ner från följande internetadress:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9227"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9225"/>
         <source>Please indicate the location of the help file!</source>
         <translation>Peka ut platsen för hjälpfilen!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11077"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11075"/>
         <source>Curve</source>
         <translation>Kurva</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12293"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12291"/>
         <source>New 3D &amp;Surface Plot</source>
         <translation>Nytt 3D-&amp;ytdiagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12301"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12299"/>
         <source>Open Image &amp;File</source>
         <translation>Öppna bild&amp;fil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12304"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12302"/>
         <source>Import I&amp;mage...</source>
         <translation>I&amp;mportera bildfil...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12315"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12313"/>
         <source>Save As &amp;Template...</source>
         <translation>Spara som &amp;mall...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11506"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11504"/>
         <source>Save Note As...</source>
         <translation>Spara anteckning som...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12332"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12330"/>
         <source>Cu&amp;t Selection</source>
         <translation>Klipp u&amp;t det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12336"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12334"/>
         <source>&amp;Copy Selection</source>
         <translation>&amp;Kopiera det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12340"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12338"/>
         <source>&amp;Paste Selection</source>
         <translation>K&amp;listra in det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12346"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12344"/>
         <source>Del</source>
         <comment>delete key</comment>
         <translation>Tag bort</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12389"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12387"/>
         <source>&amp;Export PDF</source>
         <translation>&amp;Exportera PDF</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12390"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12388"/>
         <source>Ctrl+Alt+P</source>
         <translation>Ctrl+Alt+P</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12403"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12401"/>
         <source>Clear &amp;Log Information</source>
         <translation>Nollställ &amp;logginformation</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12404"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12402"/>
         <source>Delete &amp;Fit Tables</source>
         <translation>Tag &amp;bort anpassningstabeller</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12409"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12407"/>
         <source>Plot &amp;Wizard</source>
         <translation>Diagram&amp;hjälp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12426"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12424"/>
         <source>&amp;Rescale to Show All</source>
         <translation>Skala om fö&amp;r att visa allt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12434"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12432"/>
         <source>Add Time Stamp</source>
         <translation>Lägg till tidsstämpel</translation>
     </message>
@@ -4620,22 +5106,22 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">Ickeli&amp;njär kurvanpassning...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12580"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12578"/>
         <source>&amp;Choose Help Folder...</source>
         <translation>Väl&amp;j hjälpmapp...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12587"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12585"/>
         <source>Add Column</source>
         <translation>Lägg till kolumn</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12603"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12601"/>
         <source>&amp;View Pixel Line Profile</source>
         <translation>&amp;Visa pixellinjeprofil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12604"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12602"/>
         <source>&amp;Intensity Table</source>
         <translation>&amp;Intensitetstabell</translation>
     </message>
@@ -4650,92 +5136,92 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>&amp;Omvandla till kalkylblad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12648"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12646"/>
         <source>Convert to &amp;Matrix</source>
         <translation>Omvandla till &amp;matris</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12658"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12656"/>
         <source>&amp;Autocorrelate</source>
         <translation>&amp;Autokorrelera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12665"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12663"/>
         <source>&amp;Random Values</source>
         <translation>&amp;Slumptal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12122"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12120"/>
         <source>QtiPlot &amp;Forums</source>
         <translation>QtiPlot &amp;Forum</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12690"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12688"/>
         <source>Report a &amp;Bug</source>
         <translation>Rapportera ett &amp;fel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12691"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12689"/>
         <source>Download &amp;Manual</source>
         <translation>Ladda ner &amp;handbok</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12693"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12691"/>
         <source>Make a &amp;Donation</source>
         <translation>Gör en &amp;donation</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12694"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12692"/>
         <source>Technical &amp;Support</source>
         <translation>Teknisk &amp;stöd</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12364"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12362"/>
         <source>&amp;Script Window</source>
         <translation>&amp;Skriptfönster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12260"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12258"/>
         <source>&amp;Reset to Full Range</source>
         <translation>&amp;Återställ till fullt område</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12261"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12259"/>
         <source>Edit &amp;Range...</source>
         <translation>Redige&amp;ra område...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12262"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12260"/>
         <source>&amp;Hide</source>
         <translation>&amp;Göm</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12263"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12261"/>
         <source>Hide &amp;Other Curves</source>
         <translation>Göm &amp;andra kurvor</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12264"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12262"/>
         <source>&amp;Show All Curves</source>
         <translation>Vi&amp;sa alla kurvor</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12283"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12281"/>
         <source>New table</source>
         <translation>Ny tabell</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12307"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12305"/>
         <source>Save project</source>
         <translation>Spara projekt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12313"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12311"/>
         <source>Open template</source>
         <translation>Öppna mall</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12316"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12314"/>
         <source>Save window as template</source>
         <translation>Spara fönster som mall</translation>
     </message>
@@ -4750,17 +5236,17 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">&amp;Flera filer...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12348"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12346"/>
         <source>Project &amp;Explorer</source>
         <translation>Projektutforskar&amp;e</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12353"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12351"/>
         <source>Show analysis results</source>
         <translation>Visa analysresultat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12391"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12389"/>
         <source>Export to PDF</source>
         <translation>Exportera till PDF</translation>
     </message>
@@ -4770,127 +5256,127 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">Ctrl+Alt+0</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12436"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12434"/>
         <source>Date &amp; time </source>
         <translation>Datum &amp; klockslag </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12443"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12441"/>
         <source>Plot as line</source>
         <translation>Rita som linje</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12446"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12444"/>
         <source>Plot as symbols</source>
         <translation>Rita som synbol</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12449"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12447"/>
         <source>Plot as line + symbols</source>
         <translation>Rita som linje+symbol</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12495"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12493"/>
         <source>Plot 3D ribbon</source>
         <translation>Rita n3D-band</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12498"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12496"/>
         <source>Plot 3D bars</source>
         <translation>Rita 3D-staplar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12501"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12499"/>
         <source>Plot 3D scatter</source>
         <translation>Rita 3D-spridning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12504"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12502"/>
         <source>Plot 3D trajectory</source>
         <translation>Rita 3D-spår</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12602"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12600"/>
         <source>More Windows...</source>
         <translation>Fler fönster...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12683"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12681"/>
         <source>Box and whiskers plot</source>
         <translation>Låd- och morrhårskurva</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12689"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12687"/>
         <source>Visit QtiPlot &amp;Forums</source>
         <translation>Besök QtiPlot &amp;Forum</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12784"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12782"/>
         <source>No axes</source>
         <translation>Inga axlar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12786"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12784"/>
         <source>Front grid</source>
         <translation>Främre rutnät</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12787"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12785"/>
         <source>Back grid</source>
         <translation>Bakre rutnät</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12788"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12786"/>
         <source>Right grid</source>
         <translation>Höger rutnät</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12789"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12787"/>
         <source>Left grid</source>
         <translation>Vänster rutnät</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12790"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12788"/>
         <source>Ceiling grid</source>
         <translation>Takrutnät</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12791"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12789"/>
         <source>Floor grid</source>
         <translation>Golvrutnät</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12800"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12798"/>
         <source>Hidden line</source>
         <translation>Gömd linje</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12802"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12800"/>
         <source>Polygon Only</source>
         <translation>Endast polygon</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12806"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12804"/>
         <source>Mesh &amp; Filled Polygons</source>
         <translation>Nät &amp; fyllda polygoner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12824"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12822"/>
         <source>Crosshairs</source>
         <translation>Hårkors</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12832"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12830"/>
         <source>Floor data projection</source>
         <translation>Golvdataprojektion</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12836"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12834"/>
         <source>Floor isolines</source>
         <translation>Golvisolinjer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12840"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12838"/>
         <source>Empty floor</source>
         <translation>Tomt golv</translation>
     </message>
@@ -4920,7 +5406,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Ställ in visningsområde</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8433"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8431"/>
         <source>&amp;View Pixel Line profile</source>
         <translation>&amp;Visa pixellinjeprofil</translation>
     </message>
@@ -4930,17 +5416,17 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">Importera bildfil...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12318"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12316"/>
         <source>&amp;Import ASCII...</source>
         <translation>&amp;Importera ASCII...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12542"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12540"/>
         <source>Fit &amp;Wizard...</source>
         <translation>An&amp;passningshjälpreda...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12319"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12317"/>
         <source>Import data file(s)</source>
         <translation>Importera datafil(er)</translation>
     </message>
@@ -5105,7 +5591,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">QtiPlot - HTTP hämta versionsfil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12734"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12732"/>
         <source>&amp;Draw Data Points</source>
         <translation>&amp;Rita datapunkter</translation>
     </message>
@@ -5170,162 +5656,162 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>&amp;Palett</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8370"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8368"/>
         <source>&amp;Folders</source>
         <translation>&amp;Mappar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12376"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12374"/>
         <source>Shift+A</source>
         <translation>Shift+A</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12560"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12558"/>
         <source>&amp;Swap columns</source>
         <translation>&amp;Byt kolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12562"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12560"/>
         <source>Move &amp;Right</source>
         <translation>Flytta åt &amp;höger</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12564"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12562"/>
         <source>Move &amp;Left</source>
         <translation>Flytta åt &amp;vänster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12566"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12564"/>
         <source>Move to F&amp;irst</source>
         <translation>Flytta &amp;först</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12568"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12566"/>
         <source>Move to Las&amp;t</source>
         <translation>Flytta &amp;sist</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12572"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12570"/>
         <source>&amp;Delete Rows Interval...</source>
         <translation>&amp;Tag bort radintervall...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12621"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12619"/>
         <source>&amp;Image Plot</source>
         <translation>B&amp;ilddiagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12628"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12626"/>
         <source>Flip &amp;V</source>
         <translation>Vänd &amp;V</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11945"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11943"/>
         <source>Ctrl+Shift+V</source>
         <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12630"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12628"/>
         <source>Flip &amp;H</source>
         <translation>Vänd %H</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11949"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11947"/>
         <source>Ctrl+Shift+H</source>
         <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12624"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12622"/>
         <source>R&amp;otate 90</source>
         <translation>V&amp;rid 90</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12626"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12624"/>
         <source>Rotate &amp;-90</source>
         <translation>Vrid &amp;-90</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11957"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11955"/>
         <source>Ctrl+Alt+R</source>
         <translation>Ctrl+Alt+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12636"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12634"/>
         <source>&amp;Image mode</source>
         <translation>B&amp;ildläge</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11967"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11965"/>
         <source>Ctrl+Shift+I</source>
         <translation>Ctrl+Shift+I</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12635"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12633"/>
         <source>&amp;Data mode</source>
         <translation>&amp;Dataläge</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11972"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11970"/>
         <source>Ctrl+Shift+D</source>
         <translation>Ctrl+Shift+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12633"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12631"/>
         <source>Show &amp;X/Y</source>
         <translation>Visa &amp;X/Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11977"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11975"/>
         <source>Ctrl+Shift+X</source>
         <translation>Ctrl+Shift+X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12634"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12632"/>
         <source>Show &amp;Column/Row</source>
         <translation>Visa &amp;kolumn/rad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11982"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11980"/>
         <source>Ctrl+Shift+C</source>
         <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12638"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12636"/>
         <source>&amp;Gray Scale</source>
         <translation>&amp;Gråskala</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12639"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12637"/>
         <source>&amp;Rainbow</source>
         <translation>&amp;Regnbåge</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12640"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12638"/>
         <source>&amp;Custom</source>
         <translation>&amp;Anpassad</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12646"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12644"/>
         <source>&amp;Export Image ...</source>
         <translation>&amp;Exportera bild...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12014"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12012"/>
         <source>&amp;Forward FFT</source>
         <translation>&amp;Framåt FFT</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12017"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12015"/>
         <source>&amp;Inverse FFT</source>
         <translation>&amp;Omvänd FFT</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12680"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12678"/>
         <source>&amp;Read Only</source>
         <translation>Sk&amp;rivskyddat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12678"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12676"/>
         <source>&amp;Disregard</source>
         <translation>&amp;Förbise</translation>
     </message>
@@ -5335,47 +5821,47 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">Verktygsrader...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12407"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12405"/>
         <source>Ctrl+Shift+T</source>
         <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12270"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12268"/>
         <source>New Fol&amp;der</source>
         <translation>Ny ma&amp;pp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12271"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12269"/>
         <source>Create a new folder</source>
         <translation>Skapa en ny mapp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12561"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12559"/>
         <source>Swap selected columns</source>
         <translation>Byt valda kolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12563"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12561"/>
         <source>Move Right</source>
         <translation>Flytta år höger</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12565"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12563"/>
         <source>Move Left</source>
         <translation>Flytta åt vänster</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12567"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12565"/>
         <source>Move to First</source>
         <translation>Flytta först</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12569"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12567"/>
         <source>Move to Last</source>
         <translation>Flytta sist</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12735"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12733"/>
         <source>Draw Data Points</source>
         <translation>Rita datapunkter</translation>
     </message>
@@ -5440,42 +5926,42 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Format</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12368"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12366"/>
         <source>Add &amp;Custom Script Action...</source>
         <translation>Lägg till &amp;anpassad skriptåtgärd...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12247"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12245"/>
         <source>Bold</source>
         <translation>Fetstil</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12248"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12246"/>
         <source>Italic</source>
         <translation>Kursiv</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12215"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12213"/>
         <source>Superscript</source>
         <translation>Exponent</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12219"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12217"/>
         <source>Subscript</source>
         <translation>Index</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12249"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12247"/>
         <source>Underline (Ctrl+U)</source>
         <translation>Understrykning (Ctrl+U)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12250"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12248"/>
         <source>Ctrl+U</source>
         <translation>Ctrl+U</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12252"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12250"/>
         <source>Greek</source>
         <translation>Grekiska</translation>
     </message>
@@ -5490,7 +5976,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">QtoPlot skapades inte med Python-skriptning inkluderat!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12676"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12674"/>
         <source>&amp;Label</source>
         <translation>&amp;Etikett</translation>
     </message>
@@ -5535,27 +6021,27 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Ställ in regnbågspalett</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12556"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12554"/>
         <source>&amp;Hide Selected</source>
         <translation>&amp;Göm det valda</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12558"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12556"/>
         <source>Sho&amp;w All Columns</source>
         <translation>&amp;Visa alla kolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12643"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12641"/>
         <source>&amp;Direct</source>
         <translation>&amp;Direkt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12644"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12642"/>
         <source>&amp;XYZ Columns</source>
         <translation>&amp;XYZ-kolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12645"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12643"/>
         <source>&amp;YXZ Columns</source>
         <translation>&amp;YXZ-kolumner</translation>
     </message>
@@ -5565,127 +6051,127 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">Ångra/göra om-stack</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12356"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12354"/>
         <source>Show available undo/redo commands</source>
         <translation>Visa tillgängliga ångra/göra om kommandon</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12557"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12555"/>
         <source>Hide selected columns</source>
         <translation>Göm valda kolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12559"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12557"/>
         <source>Show all table columns</source>
         <translation>Visa alla tabellkolumner</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11184"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11182"/>
         <source>Integration of %1 from zero is</source>
         <translation>Integration av %1 från noll är</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12521"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12519"/>
         <source>&amp;Integrate</source>
         <translation>&amp;Integrera</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12520"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12518"/>
         <source>Integr&amp;ate Function...</source>
         <translation>Integrer&amp;a funktion...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12617"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12615"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12406"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12404"/>
         <source>&amp;Toolbars...</source>
         <translation>&amp;Verktygsrad...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12355"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12353"/>
         <source>&amp;Undo/Redo Stack</source>
         <translation>&amp;Ångra/göra-om stack</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12593"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12591"/>
         <source>Go to Colum&amp;n...</source>
         <translation>Gå till kolum&amp;n...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12594"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12592"/>
         <source>Ctrl+Alt+C</source>
         <translation>Ctrl+Alt+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12619"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12617"/>
         <source>Set Matrix Values</source>
         <translation>Ge matrisvärden</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12622"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12620"/>
         <source>Image Plot</source>
         <translation>Bildritning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12625"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12623"/>
         <source>Rotate 90&#xb0; Clockwise</source>
         <translation>Rotera 90 medsols</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12627"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12625"/>
         <source>Rotate 90&#xb0; Counterclockwise</source>
         <translation>Rotera 90 motsols</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12629"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12627"/>
         <source>Flip Vertically</source>
         <translation>Vik vertikalt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12631"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12629"/>
         <source>Flip Horizontally</source>
         <translation>Vik horisontellt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12664"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12662"/>
         <source>Fill selected columns with row numbers</source>
         <translation>Fyll valda kolumner med radnummer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12666"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12664"/>
         <source>Fill selected columns with random numbers</source>
         <translation>Fyll valda kolumner med slumptal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12668"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12666"/>
         <source>Set column as X</source>
         <translation>Sätt kolumn till X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12670"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12668"/>
         <source>Set column as Y</source>
         <translation>Sätt kolumn till Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12672"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12670"/>
         <source>Set column as Z</source>
         <translation>Sätt kolumn till Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12675"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12673"/>
         <source>Set as Y Error Bars</source>
         <translation>Sätt som Y-felstapel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12677"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12675"/>
         <source>Set as Labels</source>
         <translation>Sätt som etiketter</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12679"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12677"/>
         <source>Disregard Columns</source>
         <translation>Bortse från kolumner</translation>
     </message>
@@ -5695,47 +6181,47 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">QtiPlot - mata in kolumnnummer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12253"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12251"/>
         <source>Mathematical Symbols</source>
         <translation>Matematiska symboler</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11199"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11197"/>
         <source>Integration of %1</source>
         <translation>Integrering av v%1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11201"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11199"/>
         <source>Area</source>
         <translation>Yta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11234"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11232"/>
         <source>Please select a &apos;Y&apos; column first!</source>
         <translation>Välj en &apos;Y&apos;-kolumn först!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11242"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11240"/>
         <source>Linear Regression of %1</source>
         <translation>Linjär regression av %1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11247"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11245"/>
         <source>Slope</source>
         <translation>Lutning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11248"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11246"/>
         <source>Intercept</source>
         <translation>Skärningspunkt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11249"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11247"/>
         <source>Chi^2</source>
         <translation>Chi²</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11250"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11248"/>
         <source>R^2</source>
         <translation>R²</translation>
     </message>
@@ -5745,27 +6231,27 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>&amp;Skriptning</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12710"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12708"/>
         <source>Show Line &amp;Numbers</source>
         <translation>Visa rad&amp;nummer</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12749"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12747"/>
         <source>Add E&amp;quation</source>
         <translation>Lägg till e&amp;kvation</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12751"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12749"/>
         <source>ALT+Q</source>
         <translation>ALT+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12753"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12751"/>
         <source>Add &amp;Rectangle</source>
         <translation>Lägg till &amp;rektangel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12755"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12753"/>
         <source>CTRL+ALT+R</source>
         <translation>CTRL+ALT+R</translation>
     </message>
@@ -5775,22 +6261,22 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Det finns inga lager tillgängliga för detta diagram. Åtgärd avbryts!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8960"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8958"/>
         <source>&amp;Paste Tex Formula</source>
         <translation>&amp;Klista in texformel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12080"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12078"/>
         <source>&amp;Frequency Count ...</source>
         <translation>&amp;Frekvensräknare...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12750"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12748"/>
         <source>Add Equation</source>
         <translation>Lägg till ekvation</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12754"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12752"/>
         <source>Add Rectangle</source>
         <translation>Lägg till rektangel</translation>
     </message>
@@ -5805,62 +6291,62 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation>Y2-axeltitel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10078"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10076"/>
         <source>You must have more than one layer in the active window!</source>
         <translation>Du måste ha fler än ett lager i det aktiva fönstret!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10105"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10103"/>
         <source>You must have more than one dataset in the active layer!</source>
         <translation>Du måste ha fler än en datamängd i det aktiva lagret!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12482"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12480"/>
         <source>D&amp;ouble-Y</source>
         <translation>D&amp;ubbel-Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12485"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12483"/>
         <source>&amp;Zoom</source>
         <translation>&amp;Zoom</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12488"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12486"/>
         <source>E&amp;xtract to Graphs</source>
         <translation>Ploc&amp;ka ut till diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11696"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11694"/>
         <source>Extract to &amp;Layers</source>
         <translation>Plocka ut till &amp;lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11702"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11700"/>
         <source>Add Inset Layer</source>
         <translation>Lägg till &quot;Inset&quot; lager</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12483"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12481"/>
         <source>Double Y Axis</source>
         <translation>Dubbla Y-axlar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12486"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12484"/>
         <source>Zoom</source>
         <translation>Zoom</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12489"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12487"/>
         <source>Extract to Graphs</source>
         <translation>Plocka ut till diagram</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12491"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12489"/>
         <source>Extract to Layer&amp;s</source>
         <translation>Plocka ut till lage&amp;r</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12492"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12490"/>
         <source>Extract to Layers</source>
         <translation>Plocka ut till lager</translation>
     </message>
@@ -5887,32 +6373,32 @@ Automatisk komplettering ej tillgängligt!</translation>
         <translation type="obsolete">Välj exakt en kolumn och mer än en icke tom cell!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12757"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12755"/>
         <source>Add &amp;Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12759"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12757"/>
         <source>CTRL+ALT+E</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8964"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8962"/>
         <source>&amp;Paste Rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8966"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8964"/>
         <source>&amp;Paste Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12758"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12756"/>
         <source>Add Ellipse/Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12611"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12609"/>
         <source>Ctrl+Alt+H</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5922,7 +6408,7 @@ Automatisk komplettering ej tillgängligt!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12637"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12635"/>
         <source>&amp;Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17437,7 +17923,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
         <translation type="obsolete">QtiPlot - Indatafel</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="3026"/>
+        <location filename="src/table/Table.cpp" line="3028"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
