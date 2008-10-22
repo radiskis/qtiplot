@@ -532,6 +532,7 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 	setMinimumHeight(4*horizontalHeader()->height());
 #else
 	setMinimumHeight(2*horizontalHeader()->height());
+	connect(horizontalHeader(), SIGNAL(sizeChange(int, int, int)), this, SLOT(setHeader()));
 #endif
 }
 
@@ -706,7 +707,7 @@ void PreviewTable::setHeader()
 	#ifdef Q_OS_MAC
 		head->setLabel(i, s.remove("\n"));
 	#else
-		int lines = columnWidth(i)/head->fontMetrics().averageCharWidth();
+		int lines = columnWidth(i)/head->fontMetrics().boundingRect("_").width();
 		head->setLabel(i, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[i]);
 	#endif
 	}

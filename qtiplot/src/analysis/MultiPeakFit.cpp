@@ -67,9 +67,9 @@ void MultiPeakFit::init(int peaks)
 		d_fsimplex = lorentz_multi_peak_d;
 	}
 
-	d_param_init = NULL;
+	/*d_param_init = NULL;
 	covar = NULL;
-	d_results = NULL;
+	d_results = NULL;*/
 
 	setNumPeaks(peaks);
 
@@ -101,7 +101,7 @@ QStringList MultiPeakFit::generateParameterList(int peaks)
 	if (peaks == 1)
 		return QStringList() << "A" << "xc" << "w" << "y0";
 
-	QStringList lst;
+	QStringList lst = QStringList();
 	for (int i = 0; i<peaks; i++){
 		QString index = QString::number(i+1);
 		lst << "A" + index;
@@ -261,7 +261,7 @@ void MultiPeakFit::generateFitCurve()
 
 		if (d_graphics_display){
 			if (!d_output_graph)
-				d_output_graph = createOutputGraph()->activeLayer();
+				createOutputGraph();
 
 			if (d_peaks > 1)
 				insertFitFunctionCurve(QString(objectName()) + tr("Fit"), 2);
@@ -332,7 +332,7 @@ void MultiPeakFit::generateFitCurve()
 
 		if (d_graphics_display){
 			if (!d_output_graph)
-				d_output_graph = createOutputGraph()->activeLayer();
+				createOutputGraph();
 
 			label = tableName + "_2";
 			DataCurve *c = new DataCurve(d_result_table, tableName + "_1", label);

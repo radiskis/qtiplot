@@ -90,8 +90,8 @@ void Differentiation::output()
 
 	if (d_graphics_display){
 		if (!d_output_graph)
-			d_output_graph = createOutputGraph()->activeLayer();
-
+			createOutputGraph();
     	d_output_graph->insertCurve(d_result_table, tableName + "_2", 0);
+		d_output_graph->updatePlot();
 	}
 }

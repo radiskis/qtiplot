@@ -48,6 +48,8 @@ class MatrixModel;
 
 class PreviewTable : public Q3Table
 {
+	Q_OBJECT
+	
 public:
     PreviewTable(int numRows, int numCols, QWidget * parent = 0, const char * name = 0);
 
@@ -60,8 +62,10 @@ public:
 	void updateDecimalSeparators(const QLocale& oldSeparators);
 	void setNumericPrecision(int prec) {d_numeric_precision = prec;};
 
-private:
+private slots:
 	void setHeader();
+
+private:
 	void addColumns(int c);
 	QStringList comments, col_label;
 	int d_numeric_precision;

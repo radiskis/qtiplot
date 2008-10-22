@@ -159,7 +159,7 @@ void Convolution::addResultCurve()
 
 	if (d_graphics_display){
 		if (!d_output_graph)
-			d_output_graph = createOutputGraph()->activeLayer();
+			createOutputGraph();
 
     	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
 #ifdef Q_CC_MSVC

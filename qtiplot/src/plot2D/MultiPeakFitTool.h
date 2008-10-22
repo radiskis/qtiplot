@@ -64,8 +64,7 @@ class MultiPeakFitTool : public QObject, public PlotToolInterface
 		void selectPeak(QwtPlotCurve *curve, int point_index);
 	private:
 		void finalize();
-		MultiPeakFit::PeakProfile d_profile;
-		int d_num_peaks, d_selected_peaks;
+		int d_selected_peaks;
 		DataPickerTool *d_picker_tool;
 		MultiPeakFit *d_fit;
 		QwtPlotCurve *d_curve;

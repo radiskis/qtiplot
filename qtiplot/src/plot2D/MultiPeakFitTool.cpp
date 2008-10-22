@@ -39,14 +39,12 @@
 #include <gsl/gsl_statistics.h>
 
 MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPeakFit::PeakProfile profile, int num_peaks, const QObject *status_target, const char *status_slot)
-	: PlotToolInterface(graph),
-	d_profile(profile),
-	d_num_peaks(num_peaks)
+	: PlotToolInterface(graph)
 {
 	d_selected_peaks = 0;
 	d_curve = 0;
 
-	d_fit = new MultiPeakFit(app, d_graph, d_profile, d_num_peaks);
+	d_fit = new MultiPeakFit(app, graph, profile, num_peaks);
 	d_fit->enablePeakCurves(app->generatePeakCurves);
 	d_fit->setPeakCurvesColor(app->peakCurvesColor);
 	d_fit->generateFunction(app->generateUniformFitPoints, app->fitPoints);
@@ -95,7 +93,7 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 	d_graph->replot();
 
 	d_selected_peaks++;
-	if (d_selected_peaks == d_num_peaks)
+	if (d_selected_peaks == d_fit->peaks())
 		finalize();
 	else
 		emit statusText(
@@ -140,7 +138,7 @@ void MultiPeakFitTool::finalize()
 		    int aux = 3*i;
 			d_fit->setInitialGuess(aux + 2, w);
 			double yc = d_fit->initialGuess(aux);
-			if (d_profile == MultiPeakFit::Lorentz)
+			if (d_fit->profile() == MultiPeakFit::Lorentz)
                 d_fit->setInitialGuess(aux, (yc - offset)*M_PI_2*w);
             else
                 d_fit->setInitialGuess(aux, (yc - offset)*sqrt(M_PI_2)*w);

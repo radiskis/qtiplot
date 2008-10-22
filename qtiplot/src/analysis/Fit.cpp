@@ -637,7 +637,7 @@ QwtPlotCurve* Fit::showResiduals()
 	app->hideWindow(outputTable);
 
 	if (!d_output_graph)
-		d_output_graph = createOutputGraph()->activeLayer();
+		createOutputGraph();
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_residue");
@@ -707,7 +707,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	app->hideWindow(outputTable);
 
 	if (!d_output_graph)
-		d_output_graph = createOutputGraph()->activeLayer();
+		createOutputGraph();
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LCL");
@@ -800,7 +800,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	app->hideWindow(outputTable);
 
 	if (!d_output_graph)
-		d_output_graph = createOutputGraph()->activeLayer();
+		createOutputGraph();
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LPL");
@@ -916,7 +916,7 @@ void Fit::generateFitCurve()
 
 	if (d_graphics_display){
 		if (!d_output_graph)
-			d_output_graph = createOutputGraph()->activeLayer();
+			createOutputGraph();
 
 		if (d_gen_function){
 			insertFitFunctionCurve(QString(objectName()) + tr("Fit"));
@@ -1020,7 +1020,13 @@ void Fit::initWorkspace(int par)
 	d_param_init = gsl_vector_alloc(par);
 	gsl_vector_set_all (d_param_init, 1.0);
 
+	//gsl_set_error_handler_off();
 	covar = gsl_matrix_alloc (par, par);
+	/*if (!covar){
+		memoryErrorMessage();
+		return;
+	}*/
+	
 	d_results = new double[par];
 	d_param_range_left = new double[par];
 	d_param_range_right = new double[par];
