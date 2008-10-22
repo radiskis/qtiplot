@@ -49,7 +49,7 @@ class ColorBox;
 class Fit;
 class Table;
 class DoubleSpinBox;
-class QwtPlotCurve;
+class FunctionCurve;
 
 //! Fit Wizard
 class FitDialog : public QDialog
@@ -109,6 +109,8 @@ private slots:
 	void saveInitialGuesses();
 	void returnToFitPage();
 	void updatePreview();
+	void updatePreviewColor(int);
+	void showPreview(bool on);
 	void showParameterRange(bool);
 	void guessParameters();
 
@@ -129,7 +131,7 @@ private:
 	Table *d_param_table;
 	QList <Fit*> d_user_functions, d_built_in_functions, d_plugins;
 	QList <MdiSubWindow*> srcTables;
-	QwtPlotCurve *d_preview_curve;
+	FunctionCurve *d_preview_curve;
 
     QCheckBox* boxUseBuiltIn;
 	QStackedWidget* tw;

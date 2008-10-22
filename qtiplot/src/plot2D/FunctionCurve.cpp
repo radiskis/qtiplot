@@ -201,7 +201,7 @@ void FunctionCurve::loadData(int points)
 				X[i] = x;
 				Y[i] = parser.Eval();
 			}
-		} catch(mu::ParserError &) {
+		} catch(mu::ParserError &e) {
 			error = true;
 		}
 	} else if (d_function_type == Parametric || d_function_type == Polar) {
@@ -222,9 +222,9 @@ void FunctionCurve::loadData(int points)
 			yparser.SetExpr(aux[1].ascii());
 			par = d_from;
 			for (int i = 0; i<points; i++ ){
-				X[i]=xparser.Eval();
-				Y[i]=yparser.Eval();
-				par+=step;
+				X[i] = xparser.Eval();
+				Y[i] = yparser.Eval();
+				par += step;
 			}
 		} catch(mu::ParserError &) {
 			error = true;

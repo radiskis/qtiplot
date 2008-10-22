@@ -61,7 +61,7 @@ class NonLinearFit : public Fit
 				
 	protected:
 		QString logFitInfo(int iterations, int status);
-		FunctionCurve* insertFitFunctionCurve(const QString& name, int penWidth);
+		FunctionCurve* insertFitFunctionCurve(const QString& name, int penWidth = 1, bool updateData = true);
 
 	private:
 		void calculateFitCurveData(double *X, double *Y);
