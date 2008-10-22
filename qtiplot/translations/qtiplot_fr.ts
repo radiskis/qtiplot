@@ -5598,7 +5598,7 @@ Quelques parties de ce fichier peuvent ne pas être affichés comme attendu.</tr
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12077"/>
         <source>&amp;Frequency Count ...</source>
-        <translation></translation>
+        <translation type="unfinished">calcul des fréquences</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12747"/>
@@ -10051,7 +10051,7 @@ Les codes spéciaux suivant peuvent être utilisés :
     <message>
         <location filename="src/analysis/dialogs/FrequencyCountDialog.cpp" line="55"/>
         <source>QtiPlot - Frequency count</source>
-        <translation>Qtiplot - Calculs de fréquences -</translation>
+        <translation type="unfinished">Qtiplot - Calculs de fréquences</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FrequencyCountDialog.cpp" line="104"/>
