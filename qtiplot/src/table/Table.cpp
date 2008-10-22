@@ -72,7 +72,7 @@ void Table::init(int rows, int cols)
 {
 	selectedCol=-1;
 	d_saved_cells = 0;
-	d_show_comments = true;
+	d_show_comments = false;
 	d_numeric_precision = 13;
 
 	d_table = new MyTable(rows, cols, this, "table");
@@ -2849,8 +2849,8 @@ void Table::setColumnHeader(int index, const QString& label)
 {
 	Q3Header *head = d_table->horizontalHeader();
 	if (d_show_comments){
-		QString s = label;
-		int lines = d_table->columnWidth(index)/head->fontMetrics().averageCharWidth();
+		QString s = label;		
+		int lines = d_table->columnWidth(index)/head->fontMetrics().boundingRect("_").width();
 		head->setLabel(index, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[index]);
 	} else
 		head->setLabel(index, label);

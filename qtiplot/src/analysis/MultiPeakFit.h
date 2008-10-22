@@ -56,6 +56,8 @@ class MultiPeakFit : public Fit
 
 		virtual double eval(double *par, double x);
 		double evalPeak(double *par, double x, int peak);
+		
+		PeakProfile profile(){return d_profile;};
 
 	private:
 		void init(int);

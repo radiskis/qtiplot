@@ -262,11 +262,8 @@ void FFT::output(const QString &text)
     d_result_table = app->newHiddenTable(tableName, d_explanation, d_n, 5, text);
 
 	if (d_graphics_display){
-	    MultiLayer *ml = 0;
-	    if (!d_output_graph){
-            ml = createOutputGraph();
-            d_output_graph = ml->activeLayer();
-	    }
+	    if (!d_output_graph)
+            createOutputGraph();
 
 		d_output_graph->setTitle(QString());
 		if (!d_inverse)
@@ -277,10 +274,7 @@ void FFT::output(const QString &text)
 
         PlotCurve *c = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
 		c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
-        d_output_graph->replot();
-
-        if (ml)
-            ml->showMaximized();
+        d_output_graph->updatePlot();
 	}
 }
 

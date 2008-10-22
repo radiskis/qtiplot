@@ -349,7 +349,7 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
     	c->setPen(QPen(ColorBox::color(d_curveColorIndex), 1));
 
 		if (!d_output_graph)
-			d_output_graph = createOutputGraph()->activeLayer();
+			createOutputGraph();
 
 		d_output_graph->insertPlotItem(c, Graph::Line);
     	d_output_graph->updatePlot();
@@ -364,14 +364,15 @@ void Filter::enableGraphicsDisplay(bool on, Graph *g)
 		if (g)
 			d_output_graph = g;
 		else
-			d_output_graph = createOutputGraph()->activeLayer();
+			createOutputGraph();
 	}
 }
 
 MultiLayer * Filter::createOutputGraph()
 {
 	MultiLayer *ml = ((ApplicationWindow *)parent())->newGraph(tr("Plot") + objectName());
-   	d_output_graph = ml->activeLayer();
+	if (ml)
+   		d_output_graph = ml->activeLayer();
 	return ml;
 }
 
