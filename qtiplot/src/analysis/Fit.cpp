@@ -929,7 +929,7 @@ void Fit::generateFitCurve()
 	}
 }
 
-FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth)
+FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth, bool updateData)
 {
 	QString title = d_output_graph->generateFunctionName(name);
 	FunctionCurve *c = new FunctionCurve(FunctionCurve::Normal, title);
@@ -939,8 +939,9 @@ FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth)
 	
 	for (int j=0; j<d_p; j++)
 		c->setConstant(d_param_names[j], d_results[j]);	
-	
-	c->loadData(d_points);
+		
+	if (updateData)
+		c->loadData(d_points);
 	d_output_graph->insertPlotItem(c, Graph::Line);
 	d_output_graph->addFitCurve(c);
 	return c;

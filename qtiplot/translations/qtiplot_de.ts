@@ -11811,27 +11811,27 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="unfinished">Sie können nicht nach Datenfehler-Methode gewichten.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="954"/>
+        <location filename="src/analysis/Fit.cpp" line="955"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="954"/>
+        <location filename="src/analysis/Fit.cpp" line="955"/>
         <source>File Save Error</source>
         <translation type="unfinished">Datei Speicherfehler</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="955"/>
+        <location filename="src/analysis/Fit.cpp" line="956"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation type="unfinished">Konnte nicht in Datei &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt; schreiben.&lt;p&gt;Bitte überprüfen Sie Ihre Schreibrechte!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="993"/>
+        <location filename="src/analysis/Fit.cpp" line="994"/>
         <source>QtiPlot Fit Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="995"/>
+        <location filename="src/analysis/Fit.cpp" line="996"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Kann Datei &apos;%1&apos; nicht lesen:
@@ -11966,7 +11966,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Kurve</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="311"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="312"/>
         <source>Function</source>
         <translation>Funktion</translation>
     </message>
@@ -11976,32 +11976,32 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Anfangsschätzwerte</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="208"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="209"/>
         <source>From x=</source>
         <translation>Von x=</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="216"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="217"/>
         <source>To x=</source>
         <translation>Bis x=</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="228"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="229"/>
         <source>Iterations</source>
         <translation>Iterationen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="234"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="235"/>
         <source>Tolerance</source>
         <translation>Toleranz</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="192"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="193"/>
         <source>Algorithm</source>
         <translation>Algorithmus</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="275"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="276"/>
         <source>&amp;Fit</source>
         <translation>&amp;Anpassen</translation>
     </message>
@@ -12016,37 +12016,37 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">Typ:</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="194"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="195"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation>Skalierter Levenberg-Marquardt</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="195"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="196"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation>Unskalierter Levenberg-Marquardt</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="271"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="272"/>
         <source>&lt;&lt; &amp;Edit function</source>
         <translation>&lt;&lt; Funktion b&amp;earbeiten</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="310"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="311"/>
         <source>Category</source>
         <translation>Kategorie</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="315"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="316"/>
         <source>User defined</source>
         <translation>Benutzerdefiniert</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="316"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="317"/>
         <source>Built-in</source>
         <translation>Eingebaut</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="317"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="318"/>
         <source>Basic</source>
         <translation>Grundlegend</translation>
     </message>
@@ -12056,27 +12056,27 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">Ausdruck</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="327"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="328"/>
         <source>Fit with &amp;built-in function</source>
         <translation>Anpassung mit einge&amp;bauter Funktion</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="350"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="351"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="353"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="354"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="466"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="467"/>
         <source>Parameters</source>
         <translation>Parameter</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="359"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="360"/>
         <source>&amp;Remove</source>
         <translation>&amp;Entfernen</translation>
     </message>
@@ -12086,7 +12086,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">&amp;Ausdruck hinzufügen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="378"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="379"/>
         <source>Add &amp;name</source>
         <translation>&amp;Name hinzufügen</translation>
     </message>
@@ -12096,22 +12096,22 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation type="obsolete">Daten in Benutzer&amp;liste löschen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="384"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="385"/>
         <source>&amp;Fit &gt;&gt;</source>
         <translation>&amp;Anpassen &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1213"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1215"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Fehler bei der Funktionseingabe</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="764"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="766"/>
         <source>Please enter a valid function!</source>
         <translation>Bitte geben Sie eine gültige Funktion ein!</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="659"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="661"/>
         <source>Please enter a function name!</source>
         <translation>Bitte geben Sie einen Funktionsnamen an!</translation>
     </message>
@@ -12138,17 +12138,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Benutzer-definierte Funktion</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1211"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1213"/>
         <source>Please verify that you have initialized all the parameters!</source>
         <translation>Bitte berprüfen Sie, ob alle Parameter initialisiert wurden!</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="665"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="667"/>
         <source>QtiPlot - Error: function name</source>
         <translation>QtiPlot - Fehler: Funktionsname</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="667"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="669"/>
         <source> is a built-in function name&lt;p&gt;You must choose another name for your function!</source>
         <translation>QtiPlot-interner Funktionsname&lt;p&gt;Bitte wählen Sie einen anderen Namen für Ihre Funktion!</translation>
     </message>
@@ -12158,7 +12158,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Bitte benutzen Sie exakt ein &apos;=&apos; Symbol!</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1147"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1149"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Eingabefehler</translation>
     </message>
@@ -12178,7 +12178,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Endwertfehler</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1148"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1150"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation>Bitte geben Sie einen X-Bereich ein, so dass Anfang &lt; Ende ist!</translation>
     </message>
@@ -12193,42 +12193,42 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Toleranzwerte müssen positiv und kleiner 1 sein!</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="318"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="319"/>
         <source>Plugins</source>
         <translation>Plugins</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1135"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1137"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Warnung</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1136"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1138"/>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
         <translation>Die Kurve &lt;b&gt; %1 &lt;/b&gt; existiert nicht mehr! Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="184"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="185"/>
         <source>Parameter</source>
         <translation>Parameter</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="184"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="185"/>
         <source>Value</source>
         <translation>Wert</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="196"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="197"/>
         <source>Nelder-Mead Simplex</source>
         <translation>Nelder-Mead Simplex</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="199"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="200"/>
         <source>Color</source>
         <translation>Farbe</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="273"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="274"/>
         <source>&amp;Delete Fit Curves</source>
         <translation>Fit-Kurven &amp;löschen</translation>
     </message>
@@ -12238,82 +12238,82 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Plugin-Ordner &amp;wählen...</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="184"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="185"/>
         <source>Constant</source>
         <translation>Konstante</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="934"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="936"/>
         <source>Fit with selected &amp;user function</source>
         <translation>Mit ben&amp;utzerdefinierter Funktion fitten</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="940"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="942"/>
         <source>Fit using &amp;built-in function</source>
         <translation>Mit einge&amp;bauter Funktion fitten</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="953"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="955"/>
         <source>Fit using &amp;plugin function</source>
         <translation>Mit &amp;Plugin-Funktion fitten</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="977"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="979"/>
         <source>Choose the plugins folder</source>
         <translation>Bitte Ordner für Plugins wählen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="312"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="313"/>
         <source>Expression</source>
         <translation>Ausdruck</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="376"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="377"/>
         <source>Add &amp;expression</source>
         <translation>Ausdruck &amp;hinzufügen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="252"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="253"/>
         <source>Weighting Method</source>
         <translation>Gewichtete Methode</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="254"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="255"/>
         <source>No weighting</source>
         <translation>Keine Gewichtung</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="255"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="256"/>
         <source>Instrumental</source>
         <translation>Instrumentell</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="256"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="257"/>
         <source>Statistical</source>
         <translation>Statistisch</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="257"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="258"/>
         <source>Arbitrary Dataset</source>
         <translation>Beliebiger Datensatz</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="522"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="523"/>
         <source>&amp;Close</source>
         <translation>S&amp;chließen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="280"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="281"/>
         <source>Custom &amp;Output &gt;&gt;</source>
         <translation>Benutzerdefinierte &amp;Ausgabe &gt;&gt;</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1083"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1085"/>
         <source>Polynomial Order</source>
         <translation>Grad des Polynoms</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="452"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="453"/>
         <source>Generated Fit Curve</source>
         <translation>Generierte Fitkurve</translation>
     </message>
@@ -12323,7 +12323,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Uniforme X-Funktion</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="431"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="432"/>
         <source>Points</source>
         <translation>Punkte</translation>
     </message>
@@ -12333,12 +12333,12 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Gleiche X-Werte wie Fit-Daten</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="500"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="501"/>
         <source>Parameters Output</source>
         <translation>Parameterausgabe</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="456"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="457"/>
         <source>Significant Digits</source>
         <translation>Signifikante Dezimalstellen</translation>
     </message>
@@ -12348,7 +12348,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Parametertabelle</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="472"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="473"/>
         <source>Name: </source>
         <translation>Name: </translation>
     </message>
@@ -12358,7 +12358,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Kovarianzmatrix</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="473"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="474"/>
         <source>CovMatrix</source>
         <translation>KovMatrix</translation>
     </message>
@@ -12373,27 +12373,27 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Parameter ins Diagramm einfügen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="513"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="514"/>
         <source>&lt;&lt; &amp;Fit</source>
         <translation>&lt;&lt; &amp;Anpassen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="517"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="518"/>
         <source>&amp;Apply</source>
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1658"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1671"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="575"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="576"/>
         <source>Please enter a valid name for the parameters table.</source>
         <translation>Bitte geben Sie einen gültigen Namen für die Parametertabelle ein.</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1659"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1672"/>
         <source>Please perform a fit first and try again.</source>
         <translation>Bitte zuerst einen Fit ausführen und dann neu versuchen.</translation>
     </message>
@@ -12403,27 +12403,27 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Fehler</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="593"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="594"/>
         <source>Please enter a valid name for the covariance matrix.</source>
         <translation>Bitte geben Sie einen gültigen Namen für die Kovarianzmatrix ein.</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1423"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1425"/>
         <source>Gauss</source>
         <translation>Gauß</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1079"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1081"/>
         <source>Peaks</source>
         <translation>Peaks</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1423"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1425"/>
         <source>Lorentz</source>
         <translation>Lorentz</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1425"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1427"/>
         <source>Polynomial</source>
         <translation>Polynomiell</translation>
     </message>
@@ -12443,47 +12443,47 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Nichtlineare Kurvenanpassung</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="351"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="352"/>
         <source>user1</source>
         <translation>Benutzer1</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="380"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="381"/>
         <source>Rese&amp;t</source>
         <translation>Zurückse&amp;tzen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="424"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="425"/>
         <source>&amp;Uniform X Function</source>
         <translation>&amp;Uniforme X-Funktion</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="447"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="448"/>
         <source>Same X as Fitting &amp;Data</source>
         <translation>Die selben X-Werte wie die Fit-&amp;Daten</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="463"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="464"/>
         <source>Parameters &amp;Table</source>
         <translation>Parameter&amp;tabelle</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="470"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="471"/>
         <source>Covariance &amp;Matrix</source>
         <translation>Kovarianz&amp;matrix</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="503"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="504"/>
         <source>&amp;Write Parameters to Result Log</source>
         <translation>&amp;Ausgabe der Parameter im Ergebnislog</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="507"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="508"/>
         <source>&amp;Paste Parameters to Plot</source>
         <translation>&amp;Parameter im Diagramm anzeigen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1317"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1319"/>
         <source>No data tables</source>
         <translation type="unfinished">Keine Datentabellen</translation>
     </message>
@@ -12493,7 +12493,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="unfinished">QtiPlot - Fit Assistent</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="468"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="469"/>
         <source>&amp;One table for all fits</source>
         <translation type="unfinished">%Eine Tabelle für alle Fits</translation>
     </message>
@@ -12503,94 +12503,94 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="unfinished">&amp;Vorschau</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="184"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="185"/>
         <source>From</source>
         <translation type="unfinished">Von</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="184"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="185"/>
         <source>To</source>
         <translation type="unfinished">Bis</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="951"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="953"/>
         <source>Choose plug&amp;ins folder...</source>
         <translation type="unfinished">Plugin-Ordner &amp;wählen...</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="674"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="676"/>
         <source>You can&apos;t define functions recursively!</source>
         <translation>Sie können Funktionen nicht rekursiv definieren!</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1511"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1513"/>
         <source>QtiPlot fit model</source>
         <translation>QtiPlot Fitmodell</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1512"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1514"/>
         <source>All files</source>
         <translation type="unfinished">Alle Dateien</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1513"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1515"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1513"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1515"/>
         <source>Save Fit Model As</source>
         <translation>Fitmodell speichern als</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="735"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="737"/>
         <source>Are you sure you want to remove fit model file:
  %1 ?</source>
         <translation>Sind Sie sicher, dass Sie die Fitmodell-Datei
 &apos;%1&apos; löschen wollen?</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="736"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="738"/>
         <source>Remove Fit Model</source>
         <translation>Fitmodell entfernen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="932"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="934"/>
         <source>Choose &amp;models folder...</source>
         <translation>Fit&amp;modell-Ordner wählen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="989"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="991"/>
         <source>Choose the fit models folder</source>
         <translation>Bitte Ordner für Fitmodelle wählen</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="492"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="493"/>
         <source>&amp;Residuals Plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="476"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="477"/>
         <source>Co&amp;nf. Bands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="488"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="489"/>
         <source>Pred. &amp;Bands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="496"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="497"/>
         <source>&amp;Scale Errors with sqrt(Chi^2/doF)</source>
         <translation>&amp;Skaliere Fehler mit sqrt(Chi^2/doF)</translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="258"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="259"/>
         <source>Direct Weighting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1682"/>
+        <location filename="src/analysis/dialogs/FitDialog.cpp" line="1695"/>
         <source>Error: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -17064,12 +17064,12 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>MultiPeakFitTool</name>
     <message>
-        <location filename="src/plot2D/MultiPeakFitTool.cpp" line="62"/>
+        <location filename="src/plot2D/MultiPeakFitTool.cpp" line="60"/>
         <source>Move cursor and click to select a point and double-click/press &apos;Enter&apos; to set the position of a peak!</source>
         <translation>Wählen Sie einen Punkt durch einen Klick, ein Doppelklick (oder die Eingabetaste) legt die Position des Peaks fest!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiPeakFitTool.cpp" line="103"/>
+        <location filename="src/plot2D/MultiPeakFitTool.cpp" line="101"/>
         <source>Peak %1 selected! Click to select a point and double-click/press &apos;Enter&apos; to set the position of the next peak!</source>
         <translation>Peak %1 ausgewählt! Bewegen Sie den Cursor, wählen Sie durch einen Klick einen Punkt aus und bestätigen Sie durch einen Doppelklick oder der Eingabetaste den nächsten Peak!</translation>
     </message>

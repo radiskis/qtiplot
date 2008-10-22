@@ -39,6 +39,7 @@
 #include <ApplicationWindow.h>
 #include <ColorBox.h>
 #include <DoubleSpinBox.h>
+#include <FunctionCurve.h>
 
 #include <QListWidget>
 #include <QTableWidget>
@@ -60,7 +61,6 @@
 #include <QLocale>
 #include <stdio.h>
 
-#include <qwt_plot_curve.h>
 #include <muParserToken.h>
 
 using namespace std;
@@ -97,7 +97,7 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 
 	d_param_table = 0;
 	d_current_fit = 0;
-	d_preview_curve = 0;
+	d_preview_curve = NULL;
 
 	tw = new QStackedWidget();
 
@@ -168,7 +168,8 @@ void FitDialog::initFitPage()
     connect(btnParamRange, SIGNAL(toggled(bool)), this, SLOT(showParameterRange(bool)));
     vb->addWidget(btnParamRange);
     previewBox = new QCheckBox(tr("&Preview"));
-    connect(previewBox, SIGNAL(stateChanged(int)), this, SLOT(updatePreview()));
+	previewBox->setChecked(false);
+    connect(previewBox, SIGNAL(clicked(bool)), this, SLOT(showPreview(bool)));
     vb->addWidget(previewBox);
     vb->addStretch();
 	gl1->addLayout(vb, 3, 0);
@@ -300,7 +301,7 @@ void FitDialog::initFitPage()
 	connect( buttonAdvanced, SIGNAL(clicked()), this, SLOT(showAdvancedPage() ) );
     connect( tableNamesBox, SIGNAL( activated(int) ), this, SLOT( selectSrcTable(int) ) );
 
-	connect(boxColor, SIGNAL(activated(int)), this, SLOT(updatePreview()));
+	connect(boxColor, SIGNAL(activated(int)), this, SLOT(updatePreviewColor(int)));
 	setFocusProxy(boxFunction);
 }
 
@@ -620,6 +621,7 @@ void FitDialog::setGraph(Graph *g)
 		return;
 
 	d_graph = g;
+		
 	boxCurve->clear();
 	boxCurve->addItems(d_graph->analysableCurvesList());
 
@@ -1353,8 +1355,8 @@ void FitDialog::closeEvent (QCloseEvent * e)
 {
     if (d_preview_curve){
         d_preview_curve->detach();
-        d_graph->replot();
         delete d_preview_curve;
+        d_graph->replot();
     }
 
 	if(d_current_fit && d_current_fit->dataSize() && plotLabelBox->isChecked())
@@ -1538,65 +1540,76 @@ void FitDialog::returnToFitPage()
 	tw->setCurrentWidget(fitPage);
 }
 
-void FitDialog::updatePreview()
+void FitDialog::showPreview(bool on)
 {
-    if (!previewBox->isChecked() && d_preview_curve){
-        d_preview_curve->detach();
+	if (on)
+		updatePreview();
+	else if (d_preview_curve){
+        d_preview_curve->setVisible(false);
         d_graph->replot();
-        delete d_preview_curve;
-        d_preview_curve = 0;
-        return;
     }
+}
 
+void FitDialog::updatePreview()
+{	
     if (!d_current_fit || !previewBox->isChecked())
-        return;
-
-    int d_points = generatePointsBox->value();
-#ifdef Q_CC_MSVC
-    QVarLengthArray<double> X(d_points), Y(d_points);
-#else
-    double X[d_points], Y[d_points];
-#endif
-    int p = boxParams->rowCount();
-#ifdef Q_CC_MSVC
-    QVarLengthArray<double> parameters(p);
-#else
-    double parameters[p];
-#endif
-    for (int i=0; i<p; i++)
-        parameters[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
-    if (d_current_fit->type() == Fit::BuiltIn)
-#ifdef Q_CC_MSVC
-        modifyGuesses(parameters.data());
-#else
-        modifyGuesses(parameters);
-#endif
-
-    double x0 = boxFrom->value();
-    double step = (boxTo->value() - x0)/(d_points - 1);
-    for (int i=0; i<d_points; i++){
-        double x = x0 + i*step;
-        X[i] = x;
-#ifdef Q_CC_MSVC
-        Y[i] = d_current_fit->eval(parameters.data(), x);
-#else
-        Y[i] = d_current_fit->eval(parameters, x);
-#endif
-    }
-
+		return;
+		 
 	if (!d_preview_curve){
-        d_preview_curve = new QwtPlotCurve();
+		d_preview_curve = new FunctionCurve();
+		d_preview_curve->attach(d_graph);
 		d_preview_curve->setRenderHint(QwtPlotItem::RenderAntialiased, d_graph->antialiasing());
-        d_preview_curve->attach(d_graph);
+		d_preview_curve->setPen(QPen(ColorBox::color(boxColor->currentIndex()), 1));
 	}
+		
+	bool changedVar = false;
+	int parameters = boxParams->rowCount();
+	QMap<QString, double> variables = d_preview_curve->constants();
+	if (variables.size () != parameters)
+		changedVar = true;
+	else {
+		for (int i = 0; i < parameters; i++){
+			QString key = boxParams->item(i, 0)->text();
+			if (variables.value(key) != ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value()){
+				changedVar = true;
+				break;
+			}
+		}
+ 	}
+	
+	if (!changedVar && d_preview_curve->startRange() == boxFrom->value() &&
+		d_preview_curve->endRange() == boxTo->value() &&
+		d_preview_curve->formulas()[0] == d_current_fit->formula()){
+		if (!d_preview_curve->isVisible()){
+			d_preview_curve->setVisible(true);
+			d_graph->replot();
+		}
+		return;
+	}
+			
+	d_preview_curve->setRange(boxFrom->value(), boxTo->value());
+	d_preview_curve->setFormula(d_current_fit->formula());	
+	
+	if (changedVar){
+		d_preview_curve->removeConstants();
+		for (int i = 0; i < parameters; i++)
+			d_preview_curve->setConstant(boxParams->item(i, 0)->text(), 
+						((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value());
+	}		
+	
+	d_preview_curve->loadData(generatePointsBox->value());
+	if (!d_preview_curve->isVisible())
+		d_preview_curve->setVisible(true);
+	d_graph->replot();
+}
 
-    d_preview_curve->setPen(QPen(ColorBox::color(boxColor->currentIndex()), 1));
-#ifdef Q_CC_MSVC
-    d_preview_curve->setData(X.data(), Y.data(), d_points);
-#else
-    d_preview_curve->setData(X, Y, d_points);
-#endif
-    d_graph->replot();
+void FitDialog::updatePreviewColor(int colorIndex)
+{	
+    if (!d_preview_curve)
+		return;
+		 	
+    d_preview_curve->setPen(QPen(ColorBox::color(colorIndex), 1));
+	d_graph->replot();
 }
 
 void FitDialog::showParameterRange(bool on)
