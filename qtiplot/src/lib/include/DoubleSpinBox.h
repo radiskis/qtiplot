@@ -66,6 +66,8 @@ public:
 
 signals:
 	void valueChanged ( double d );
+	//! Signal emitted when the spin box gains focus
+	void activated(DoubleSpinBox *);
 
 private slots:
 	void interpretText();
@@ -73,6 +75,7 @@ private slots:
 protected:
 	void stepBy ( int steps );
 	StepEnabled stepEnabled () const;
+	void focusInEvent(QFocusEvent *);
 
 private:
     char d_format;

@@ -32,7 +32,7 @@
 #include <QCloseEvent>
 #include <float.h>
 #include <math.h>
-	
+
 DoubleSpinBox::DoubleSpinBox(const char format, QWidget * parent)
 :QAbstractSpinBox(parent),
 d_format(format),
@@ -95,7 +95,7 @@ void DoubleSpinBox::stepBy ( int steps )
 	double val = d_value + steps*d_step;
 	if (fabs(fabs(d_value) - d_step) < 1e-14 && d_value * steps < 0)//possible zero
 		val = 0.0;
-		
+	
 	if (setValue(val))
     	emit valueChanged(d_value);
 }
@@ -115,14 +115,14 @@ QAbstractSpinBox::StepEnabled DoubleSpinBox::stepEnabled () const
 
 bool DoubleSpinBox::setValue(double val)
 {
-	if (val < d_min_val || val > d_max_val){
+	if (val >= d_min_val || val <= d_max_val){
+		d_value = val;
         lineEdit()->setText(textFromValue(d_value));
-        return false;
+        return true;
 	}
 
-    d_value = val;
 	lineEdit()->setText(textFromValue(d_value));
-	return true;
+	return false;
 }
 
 QString DoubleSpinBox::textFromValue (double value) const
@@ -139,6 +139,12 @@ QString DoubleSpinBox::textFromValue (double value) const
 QValidator::State DoubleSpinBox::validate(QString & , int & ) const
 {
 	return QValidator::Acceptable;
+}
+
+void DoubleSpinBox::focusInEvent(QFocusEvent * e)
+{
+	emit activated(this);
+	return QAbstractSpinBox::focusInEvent(e);
 }
 
 /*****************************************************************************

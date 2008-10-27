@@ -911,7 +911,7 @@ void ConfigDialog::initPlots3DPage()
     colorMapLayout->setMargin(0);
     colorMapLayout->setSpacing(0);
 
-    colorMapEditor = new ColorMapEditor();
+    colorMapEditor = new ColorMapEditor(app->locale(), app->d_decimal_digits);
     colorMapEditor->setColorMap(app->d_3D_color_map);
     colorMapLayout->addWidget(colorMapEditor);
 

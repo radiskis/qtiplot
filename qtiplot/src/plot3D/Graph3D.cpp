@@ -1605,6 +1605,7 @@ void Graph3D::scaleFonts(double factor)
 	QFont font = sp->coordinates()->axes[X1].numberFont();
 	font.setPointSizeFloat(font.pointSizeFloat()*factor);
 	sp->coordinates()->setNumberFont (font);
+	sp->legend()->axis()->setNumberFont (font);
 
 	titleFnt.setPointSizeFloat(factor*titleFnt.pointSizeFloat());
 	sp->setTitleFont(titleFnt.family(),titleFnt.pointSize(),titleFnt.weight(),titleFnt.italic());
@@ -1623,9 +1624,9 @@ void Graph3D::scaleFonts(double factor)
 }
 
 void Graph3D::resizeEvent(QResizeEvent *e)
-{
+{	
 	if (!ignoreFonts && this->isVisible()){
-		double ratio=(double)e->size().height()/(double)e->oldSize().height();
+		double ratio = (double)e->size().height()/(double)e->oldSize().height();
 		scaleFonts(ratio);
 	}
 	emit resizedWindow(this);

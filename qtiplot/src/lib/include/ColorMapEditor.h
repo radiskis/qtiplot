@@ -29,11 +29,13 @@
 #define COLORMAPEDITOR_H
 
 #include <QWidget>
+#include <QLocale>
 #include <qwt_color_map.h>
 
 class QPushButton;
 class QTableWidget;
 class QCheckBox;
+class DoubleSpinBox;
 
 //! A complex widget allowing to customize a QwtLinearColorMap.
 /**
@@ -48,7 +50,7 @@ public:
 	/**
 	* \param parent parent widget (only affects placement of the widget)
 	*/
-	ColorMapEditor(QWidget* parent = 0);
+	ColorMapEditor(const QLocale& locale = QLocale::system(), int precision = 6, QWidget* parent = 0);
 	//! Returns the customized color map.
 	QwtLinearColorMap colorMap(){return color_map;};
 	//! Use this function to initialize the color map to be edited.
@@ -60,12 +62,12 @@ public:
 
 protected slots:
 	void updateColorMap();
-	void validateLevel(int row, int col);
-	void enableButtons(int row, int col, int = 0, int = 0);
+	void enableButtons(int row);
 	void showColorDialog(int row, int col);
 	void insertLevel();
 	void deleteLevel();
 	void setScaledColors(bool scale = true);
+	void spinBoxActivated(DoubleSpinBox *);
 
 	bool eventFilter(QObject *object, QEvent *e);
 
@@ -80,6 +82,12 @@ private:
 
 	//! Levels range
 	double min_val, max_val;
+
+	//! Locale settings used to display lavel values
+	QLocale d_locale;
+
+	//! Precision used to display lavel values
+	int d_precision;
 };
    
 #endif
