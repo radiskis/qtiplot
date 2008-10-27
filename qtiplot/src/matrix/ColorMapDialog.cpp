@@ -39,10 +39,10 @@ ColorMapDialog::ColorMapDialog(QWidget* parent, Qt::WFlags fl)
 {
 setObjectName( "ColorMapDialog" );
 setWindowTitle(tr("QtiPlot") + " - " + tr("Custom Color Map"));
-	
+
 ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 if (app)
-	editor = new ColorMapEditor(app->locale(), app->d_decimal_digits);
+	editor = new ColorMapEditor(app->locale());
 else
 	editor = new ColorMapEditor();
 
@@ -58,12 +58,12 @@ hb->addStretch();
 hb->addWidget(applyBtn);
 hb->addWidget(closeBtn);
 hb->addStretch();
-	
+
 QVBoxLayout* vl = new QVBoxLayout(this);
 vl->setSpacing(0);
-vl->addWidget(editor);	
+vl->addWidget(editor);
 vl->addLayout(hb);
-	
+
 setMaximumWidth(editor->width() + 20);
 }
 
@@ -71,19 +71,19 @@ void ColorMapDialog::setMatrix(Matrix *m)
 {
 	if (!m)
 		return;
-	
+
 	d_matrix = m;
-	
+
 	double minValue = 0.0, maxValue = 0.0;
 	m->range(&minValue, &maxValue);
-	
+
 	editor->setRange(minValue, maxValue);
 	editor->setColorMap(m->colorMap());
 }
 
 void ColorMapDialog::apply()
 {
-	d_matrix->undoStack()->push(new MatrixSetColorMapCommand(d_matrix, d_matrix->colorMapType(), 
+	d_matrix->undoStack()->push(new MatrixSetColorMapCommand(d_matrix, d_matrix->colorMapType(),
 						d_matrix->colorMap(), Matrix::Custom, editor->colorMap(), tr("Set Custom Palette")));
 	d_matrix->setColorMap(editor->colorMap());
 }

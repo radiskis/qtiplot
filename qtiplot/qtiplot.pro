@@ -121,7 +121,7 @@ DESTDIR        = ./
 
 ###################### ICONS ################################################
 INCLUDEPATH  += icons/
-HEADERS      += icons/pixlink:maps.h
+HEADERS      += icons/pixmaps.h
 win32:RC_FILE = icons/qtiplot.rc
 mac:RC_FILE   = icons/qtiplot.icns
 

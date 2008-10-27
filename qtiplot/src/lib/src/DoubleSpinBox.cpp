@@ -45,7 +45,7 @@ d_prec(14)
     if (format == 'f')
         d_prec = 1;
 
-	setFocusPolicy(Qt::StrongFocus);	
+	setFocusPolicy(Qt::StrongFocus);
     lineEdit()->setText(locale().toString(d_value, d_format, d_prec));
 	setKeyboardTracking(false);
 	setWrapping(false);
@@ -91,11 +91,11 @@ void DoubleSpinBox::interpretText()
 }
 
 void DoubleSpinBox::stepBy ( int steps )
-{		
+{
 	double val = d_value + steps*d_step;
 	if (fabs(fabs(d_value) - d_step) < 1e-14 && d_value * steps < 0)//possible zero
 		val = 0.0;
-	
+
 	if (setValue(val))
     	emit valueChanged(d_value);
 }
@@ -115,7 +115,7 @@ QAbstractSpinBox::StepEnabled DoubleSpinBox::stepEnabled () const
 
 bool DoubleSpinBox::setValue(double val)
 {
-	if (val >= d_min_val || val <= d_max_val){
+	if (val >= d_min_val && val <= d_max_val){
 		d_value = val;
         lineEdit()->setText(textFromValue(d_value));
         return true;
@@ -129,7 +129,7 @@ QString DoubleSpinBox::textFromValue (double value) const
 {
 	if (!specialValueText().isEmpty() && value == d_min_val)
 		return specialValueText();
-	
+
 	if (d_prec <= 14)
 		return locale().toString(value, d_format, d_prec);
 
