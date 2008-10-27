@@ -533,7 +533,7 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 	topLayout->addWidget(itemsList, 0);
 	topLayout->addLayout(rightLayout, 1);
 	topLayout->addStretch();
-	
+
 	QHBoxLayout * bottomButtons = new QHBoxLayout();
 	bottomButtons->addStretch();
 	buttonApply = new QPushButton();
@@ -911,7 +911,7 @@ void ConfigDialog::initPlots3DPage()
     colorMapLayout->setMargin(0);
     colorMapLayout->setSpacing(0);
 
-    colorMapEditor = new ColorMapEditor(app->locale(), app->d_decimal_digits);
+    colorMapEditor = new ColorMapEditor(app->locale());
     colorMapEditor->setColorMap(app->d_3D_color_map);
     colorMapLayout->addWidget(colorMapEditor);
 
@@ -1720,7 +1720,7 @@ void ConfigDialog::languageChange()
 	scaleErrorsBox->setText(tr("Scale Errors with sqrt(Chi^2/doF)"));
 	groupBoxMultiPeak->setTitle(tr("Display Peak Curves for Multi-peak Fits"));
 	lblPeaksColor->setText(tr("Peaks Color"));
-	
+
 	updateMenuList();
 }
 
@@ -2311,6 +2311,6 @@ void ConfigDialog::updateMenuList()
 		if(itemWidth > width)
 			width = itemWidth;
 	}
-	
+
 	itemsList->setFixedWidth(itemsList->iconSize().width() + width + 50);
 }

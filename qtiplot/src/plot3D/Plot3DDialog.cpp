@@ -277,9 +277,9 @@ void Plot3DDialog::initColorsPage()
 			this, SLOT(updateColorMapFileGroupBox(bool)));
 
 	QHBoxLayout* hb = new QHBoxLayout(linearColorMapGroupBox);
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	d_color_map_editor = new ColorMapEditor(app->locale(), app->d_decimal_digits);
+	d_color_map_editor = new ColorMapEditor(app->locale());
 	hb->addWidget(d_color_map_editor);
 
     colorMapFileGroupBox = new QGroupBox(tr( "Color map &file" ));
