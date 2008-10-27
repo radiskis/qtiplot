@@ -121,7 +121,7 @@ DESTDIR        = ./
 
 ###################### ICONS ################################################
 INCLUDEPATH  += icons/
-HEADERS      += icons/pixmaps.h
+HEADERS      += icons/pixlink:maps.h
 win32:RC_FILE = icons/qtiplot.rc
 mac:RC_FILE   = icons/qtiplot.icns
 
@@ -135,8 +135,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \

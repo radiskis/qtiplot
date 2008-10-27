@@ -29,6 +29,7 @@
 #include "ColorMapEditor.h"
 #include <Matrix.h>
 #include <MatrixCommand.h>
+#include <ApplicationWindow.h>
 
 #include <QPushButton>
 #include <QLayout>
@@ -38,8 +39,13 @@ ColorMapDialog::ColorMapDialog(QWidget* parent, Qt::WFlags fl)
 {
 setObjectName( "ColorMapDialog" );
 setWindowTitle(tr("QtiPlot") + " - " + tr("Custom Color Map"));
-editor = new ColorMapEditor();
 	
+ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+if (app)
+	editor = new ColorMapEditor(app->locale(), app->d_decimal_digits);
+else
+	editor = new ColorMapEditor();
+
 applyBtn = new QPushButton(tr("&Apply"));
 connect(applyBtn, SIGNAL(clicked()), this, SLOT(apply()));
 
