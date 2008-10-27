@@ -20,6 +20,7 @@ Plot3D::Plot3D( QWidget * parent, const QGLWidget * shareWidget)
     : QGLWidget( parent, shareWidget) 
 #endif
 {  
+	d_exporting_vector = false;
 	initializedGL_ = false;
 	renderpixmaprequest_ = false;
 	xRot_ = yRot_ = zRot_ = 0.0;		// default object rotation

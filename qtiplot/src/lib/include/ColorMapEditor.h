@@ -79,14 +79,11 @@ private:
 
 	//! Color map object
 	QwtLinearColorMap color_map;
-
 	//! Levels range
 	double min_val, max_val;
-
-	//! Locale settings used to display lavel values
+	//! Locale settings used to display level values
 	QLocale d_locale;
-
-	//! Precision used to display lavel values
+	//! Precision used to display level values
 	int d_precision;
 };
    

@@ -2,7 +2,7 @@
     File                 : Bar.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+    Copyright            : (C) 2006 - 2008 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : 3D bars (modifed enrichment from QwtPlot3D)
 
@@ -82,47 +82,36 @@ void Bar::draw(Qwt3D::Triple const& pos)
 
     if (d_filled_bars){
         RGBA rgbat = (*plot->dataColor())(pos);
-        RGBA rgbab = (*plot->dataColor())(pos.x, pos.y, minz);
-
+		glColor4d(rgbat.r,rgbat.g,rgbat.b,rgbat.a);
+		
         glBegin(GL_QUADS);
-        glColor4d(rgbab.r,rgbab.g,rgbab.b,rgbab.a);
         glVertex3d(pos.x-diag_,pos.y-diag_,minz);
         glVertex3d(pos.x+diag_,pos.y-diag_,minz);
         glVertex3d(pos.x+diag_,pos.y+diag_,minz);
         glVertex3d(pos.x-diag_,pos.y+diag_,minz);
-
-        glColor4d(rgbat.r,rgbat.g,rgbat.b,rgbat.a);
 
         glVertex3d(pos.x-diag_,pos.y-diag_,pos.z);
         glVertex3d(pos.x+diag_,pos.y-diag_,pos.z);
         glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
         glVertex3d(pos.x-diag_,pos.y+diag_,pos.z);
 
-        glColor4d(rgbab.r,rgbab.g,rgbat.b,rgbab.a);
         glVertex3d(pos.x-diag_,pos.y-diag_,minz);
         glVertex3d(pos.x+diag_,pos.y-diag_,minz);
-        glColor4d(rgbat.r,rgbat.g,rgbat.b,rgbat.a);
         glVertex3d(pos.x+diag_,pos.y-diag_,pos.z);
         glVertex3d(pos.x-diag_,pos.y-diag_,pos.z);
 
-        glColor4d(rgbab.r,rgbab.g,rgbat.b,rgbab.a);
         glVertex3d(pos.x-diag_,pos.y+diag_,minz);
         glVertex3d(pos.x+diag_,pos.y+diag_,minz);
-        glColor4d(rgbat.r,rgbat.g,rgbat.b,rgbat.a);
         glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
         glVertex3d(pos.x-diag_,pos.y+diag_,pos.z);
 
-        glColor4d(rgbab.r,rgbab.g,rgbat.b,rgbab.a);
         glVertex3d(pos.x-diag_,pos.y-diag_,minz);
         glVertex3d(pos.x-diag_,pos.y+diag_,minz);
-        glColor4d(rgbat.r,rgbat.g,rgbat.b,rgbat.a);
         glVertex3d(pos.x-diag_,pos.y+diag_,pos.z);
         glVertex3d(pos.x-diag_,pos.y-diag_,pos.z);
 
-        glColor4d(rgbab.r,rgbab.g,rgbat.b,rgbab.a);
         glVertex3d(pos.x+diag_,pos.y-diag_,minz);
         glVertex3d(pos.x+diag_,pos.y+diag_,minz);
-        glColor4d(rgbat.r,rgbat.g,rgbat.b,rgbat.a);
         glVertex3d(pos.x+diag_,pos.y+diag_,pos.z);
         glVertex3d(pos.x+diag_,pos.y-diag_,pos.z);
         glEnd();
