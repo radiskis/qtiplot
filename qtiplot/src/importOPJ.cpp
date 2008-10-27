@@ -2,8 +2,8 @@
     File                 : importOPJ.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2007 by Ion Vasilief, Alex Kargovsky, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su, thzs*gmx.net
+    Copyright            : (C) 2006-2008 by Ion Vasilief, Alex Kargovsky
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
     Description          : Origin project import class
 
  ***************************************************************************/
