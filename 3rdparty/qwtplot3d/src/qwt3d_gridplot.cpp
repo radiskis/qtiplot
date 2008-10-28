@@ -56,29 +56,29 @@ void SurfacePlot::createDataG()
 			col = backgroundRGBAColor();
 			glColor4d(col.r, col.g, col.b, col.a);
 		}
+		
+		for (i = 0; i < lastcol - step; i += step){
+			glBegin(GL_TRIANGLE_STRIP);
+			setColorFromVertexG(i, 0, hl);
+			glNormal3dv(actualDataG_->normals[i][0]);
+			glVertex3dv(actualDataG_->vertices[i][0]);
+							
+			int ni = i + step;			
+			setColorFromVertexG(ni, 0, hl);
+			glNormal3dv(actualDataG_->normals[ni][0]);
+			glVertex3dv(actualDataG_->vertices[ni][0]);
 
-		for (i = 0; i < lastcol - step; i += step) 
-		{
-		  glBegin(GL_TRIANGLE_STRIP);
-				setColorFromVertexG(i, 0, hl);
-				glNormal3dv(actualDataG_->normals[i][0]);
-				glVertex3dv(actualDataG_->vertices[i][0]);
-					
-				setColorFromVertexG(i+step, 0, hl);
-				glNormal3dv(actualDataG_->normals[i+step][0]);
-				glVertex3dv(actualDataG_->vertices[i+step][0]);
+			for (j = 0; j < lastrow - step; j += step){				
+				int nj = j + step;
+				setColorFromVertexG(i, nj, hl);
+				glNormal3dv(actualDataG_->normals[i][nj]);
+				glVertex3dv(actualDataG_->vertices[i][nj]);
 
-				for (j = 0; j < lastrow - step; j += step) 
-				{				
-					setColorFromVertexG(i,j+step, hl);
-					glNormal3dv(actualDataG_->normals[i][j+step]);
-					glVertex3dv(actualDataG_->vertices[i][j+step]);
-
-					setColorFromVertexG(i+step, j+step, hl);
-					glNormal3dv(actualDataG_->normals[i+step][j+step]);
-					glVertex3dv(actualDataG_->vertices[i+step][j+step]);
-				}
-			glEnd();
+				setColorFromVertexG(ni, nj, hl);
+				glNormal3dv(actualDataG_->normals[ni][nj]);
+				glVertex3dv(actualDataG_->vertices[ni][nj]);
+			}
+		glEnd();
 		}
   }
 
@@ -127,7 +127,7 @@ void SurfacePlot::setColorFromVertexG(int ix, int iy, bool skip)
 		actualDataG_->vertices[ix][iy][0],
 		actualDataG_->vertices[ix][iy][1],
 		actualDataG_->vertices[ix][iy][2]);
-		
+	
 	glColor4d(col.r, col.g, col.b, col.a);
 }
 
@@ -451,23 +451,23 @@ void SurfacePlot::Data2FloorG()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_QUADS);
 	
 	double zshift = actualData_p->hull().minVertex.z;
-	for (int i = 0; i < actualDataG_->columns() - step; i += step) 
-	{
+	for (int i = 0; i < actualDataG_->columns() - step; i += step){
 		glBegin(GL_TRIANGLE_STRIP);
-  		setColorFromVertexG(i, 0);
-			glVertex3d(actualDataG_->vertices[i][0][0], actualDataG_->vertices[i][0][1], zshift);
+		setColorFromVertexG(i, 0);
+		glVertex3d(actualDataG_->vertices[i][0][0], actualDataG_->vertices[i][0][1], zshift);
+		
+		int ni = i + step;
+		setColorFromVertexG(ni, 0);
+		glVertex3d(actualDataG_->vertices[ni][0][0],actualDataG_->vertices[ni][0][1], zshift);
+		for (int j = 0; j < actualDataG_->rows() - step; j += step) {
+			int nj = j + step;
+			setColorFromVertexG(i, nj);
+			glVertex3d(actualDataG_->vertices[i][nj][0], actualDataG_->vertices[i][nj][1], zshift);
 			
-			setColorFromVertexG(i+step, 0);
-			glVertex3d(actualDataG_->vertices[i+step][0][0],actualDataG_->vertices[i+step][0][1], zshift);
-			for (int j = 0; j < actualDataG_->rows() - step; j += step) 
-			{
-				setColorFromVertexG(i, j+step);
-				glVertex3d(actualDataG_->vertices[i][j+step][0],actualDataG_->vertices[i][j+step][1], zshift);
-				
-				setColorFromVertexG(i+step, j+step);
-				glVertex3d(actualDataG_->vertices[i+step][j+step][0],actualDataG_->vertices[i+step][j+step][1], zshift);				
-			}
-		glEnd();
+			setColorFromVertexG(ni, nj);
+			glVertex3d(actualDataG_->vertices[ni][nj][0], actualDataG_->vertices[ni][nj][1], zshift);				
+		}
+	glEnd();
 	}
 }
 
@@ -593,4 +593,3 @@ void SurfacePlot::calcLowResolution()
   
   
 }*/
-

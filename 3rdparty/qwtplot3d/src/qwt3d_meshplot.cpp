@@ -57,7 +57,7 @@ void SurfacePlot::createDataC()
 			for (unsigned j=0; j!=actualDataC_->cells[i].size(); ++j)
 			{
 				idx = actualDataC_->cells[i][j];
-				setColorFromVertexC(idx, hl);
+				setColorFromVertexC(idx, hl);				
 				glVertex3d( actualDataC_->nodes[idx].x, actualDataC_->nodes[idx].y, actualDataC_->nodes[idx].z );
 				glNormal3d( actualDataC_->normals[idx].x, actualDataC_->normals[idx].y, actualDataC_->normals[idx].z );
 			}
@@ -316,5 +316,3 @@ bool SurfacePlot::loadFromData(TripleField const& data, CellField const& poly)
 
 	return true;
 }
-
-
