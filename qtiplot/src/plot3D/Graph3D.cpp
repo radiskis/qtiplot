@@ -2539,7 +2539,7 @@ void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 		RGBA rgb(qRed(color)/dsize, qGreen(color)/dsize, qBlue(color)/dsize, d_alpha);
 		cv.push_back(rgb);
 	}
-
+	
 	col_ = new StandardColor(sp);
 	col_->setColorVector(cv);
 	sp->setDataColor(col_);

@@ -68,8 +68,7 @@ public:
 	double normalLength() const { return normalLength_p; }//!< Returns relative length of normals
 	void setNormalQuality(int val); //!< Increases plotting quality of normal arrows
 	int normalQuality() const { return normalQuality_p; }//!< Returns plotting quality of normal arrows
-
-
+		
 signals:
 	void resolutionChanged(int);
 
@@ -113,7 +112,6 @@ private:
 	void Data2FloorG();
 	void Isolines2FloorG();
 	void setColorFromVertexG(int ix, int iy, bool skip = false);
-
 
   // mesh plot
 
