@@ -2512,7 +2512,6 @@ void Graph3D::setOptions(const QStringList& lst)
 	setLabelsDistance(lst[3].toInt());
 }
 
-
 void Graph3D::setOptions(bool legend, int r, int dist)
 {
 	sp->showColorLegend(legend);
