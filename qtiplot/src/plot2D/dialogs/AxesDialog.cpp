@@ -2510,7 +2510,7 @@ bool AxesDialog::updatePlot()
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color());
 	} else if (generalDialog->currentWidget() == (QWidget*)frame)
-		applyCanvasFormatTo(d_graph);
+		applyCanvasFormat();
 
 	return true;
 }
