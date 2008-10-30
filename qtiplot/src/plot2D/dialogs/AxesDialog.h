@@ -141,6 +141,9 @@ protected:
 	void initFramePage();
 	//! Modifies the grid
 	void applyChangesToGrid(Grid *grid);
+	void applyAxisFormat();
+	//! Customizes graph axes
+	void applyAxisFormatToLayer(Graph *g);
 
     QPushButton* buttonApply;
     QPushButton* buttonOk;
@@ -209,6 +212,8 @@ protected:
     QComboBox *canvasFrameApplyToBox;
     QPushButton *frameDefaultBtn;
 	QSpinBox *boxLabelsDistance;
+	QGroupBox *axisFormatBox;
+	QComboBox *axisFormatApplyToBox;
 };
 
 #endif

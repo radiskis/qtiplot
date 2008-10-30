@@ -1617,13 +1617,13 @@ void AxesDialog::initAxesPage()
 
 	QHBoxLayout * bottomLayout = new QHBoxLayout();
 
-	QGroupBox *leftBox = new QGroupBox(QString());
-	bottomLayout->addWidget( leftBox );
-	QGridLayout * leftBoxLayout = new QGridLayout( leftBox );
+	axisFormatBox = new QGroupBox(tr("Format"));
+	bottomLayout->addWidget( axisFormatBox );
+	QGridLayout *leftBoxLayout = new QGridLayout(axisFormatBox);
 
 	leftBoxLayout->addWidget( new QLabel(tr( "Type" )), 0, 0 );
 
-	boxAxisType= new QComboBox();
+	boxAxisType = new QComboBox();
 	boxAxisType->addItem(tr("Numeric"));
 	boxAxisType->addItem(tr("Text from table"));
 	boxAxisType->addItem(tr("Day of the week"));
@@ -1640,7 +1640,7 @@ void AxesDialog::initAxesPage()
 	leftBoxLayout->addWidget( btnAxesFont, 1, 1 );
 
 	leftBoxLayout->addWidget( new QLabel(tr( "Color" )), 2, 0 );
-	boxAxisColor= new ColorButton();
+	boxAxisColor = new ColorButton();
 	leftBoxLayout->addWidget( boxAxisColor, 2, 1 );
 
 	leftBoxLayout->addWidget( new QLabel(tr( "Major Ticks" )), 3, 0 );
@@ -1664,7 +1664,18 @@ void AxesDialog::initAxesPage()
 	leftBoxLayout->addWidget( new QLabel(tr("Stand-off")), 5, 0);
 	boxBaseline = new QSpinBox();
 	boxBaseline->setRange( 0, 1000 );
-	leftBoxLayout->addWidget( boxBaseline );
+	leftBoxLayout->addWidget(boxBaseline, 5, 1);
+
+	QLabel *l = new QLabel(tr("Apply &to"));
+	leftBoxLayout->addWidget(l, 6, 0);
+
+	axisFormatApplyToBox = new QComboBox();
+	axisFormatApplyToBox->insertItem(tr("Axis"));
+	axisFormatApplyToBox->insertItem(tr("Layer"));
+    axisFormatApplyToBox->insertItem(tr("Window"));
+    axisFormatApplyToBox->insertItem(tr("All Windows"));
+	leftBoxLayout->addWidget(axisFormatApplyToBox, 6, 1);
+	l->setBuddy(axisFormatApplyToBox);
 
 	boxShowLabels = new QGroupBox(tr("Show Labels"));
 	boxShowLabels->setCheckable(true);
@@ -1746,8 +1757,8 @@ void AxesDialog::initAxesPage()
     connect(boxAxisNumColor, SIGNAL(colorChanged()), this, SLOT(pickAxisNumColor()));
 	connect(boxShowFormula, SIGNAL(clicked()), this, SLOT(showFormulaBox()));
 
-	connect(boxMajorTicksType, SIGNAL(activated(int)), this, SLOT(updateMajTicksType(int)));
-	connect(boxMinorTicksType, SIGNAL(activated(int)), this, SLOT(updateMinTicksType(int)));
+	//connect(boxMajorTicksType, SIGNAL(activated(int)), this, SLOT(updateMajTicksType(int)));
+	//connect(boxMinorTicksType, SIGNAL(activated(int)), this, SLOT(updateMinTicksType(int)));
 
 	connect(boxShowAxis, SIGNAL(clicked()), this, SLOT(showAxis()));
 	connect(boxFormat, SIGNAL(activated(int)), this, SLOT(setLabelsNumericFormat(int)));
@@ -1976,16 +1987,9 @@ boxAxisType->setCurrentIndex(a);
 
 void AxesDialog::showAxis()
 {
-	bool ok=boxShowAxis->isChecked();
-	boxTitle->setEnabled(ok);
-	boxAxisColor->setEnabled(ok);
-    boxAxisNumColor->setEnabled(ok);
-	btnAxesFont->setEnabled(ok);
+	bool ok = boxShowAxis->isChecked();
+	axisFormatBox->setEnabled(ok);
 	boxShowLabels->setEnabled(ok);
-	boxMajorTicksType->setEnabled(ok);
-	boxMinorTicksType->setEnabled(ok);
-	boxAxisType->setEnabled(ok);
-	boxBaseline->setEnabled(ok);
 	labelBox->setEnabled(ok);
 
     int axis = -1;
@@ -2084,16 +2088,9 @@ void AxesDialog::updateShowBox(int axis)
 			}
 	}
 
-	bool ok=boxShowAxis->isChecked();
-	boxTitle->setEnabled(ok);
-	boxAxisColor->setEnabled(ok);
-    boxAxisNumColor->setEnabled(ok);
-	btnAxesFont->setEnabled(ok);
+	bool ok = boxShowAxis->isChecked();
+	axisFormatBox->setEnabled(ok);
 	boxShowLabels->setEnabled(ok);
-	boxMajorTicksType->setEnabled(ok);
-	boxMinorTicksType->setEnabled(ok);
-	boxAxisType->setEnabled(ok);
-	boxBaseline->setEnabled(ok);
 	labelBox->setEnabled(ok);
 }
 
@@ -2509,6 +2506,8 @@ bool AxesDialog::updatePlot()
 		showAxis(axis, format, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color());
+
+        applyAxisFormat();
 	} else if (generalDialog->currentWidget() == (QWidget*)frame)
 		applyCanvasFormat();
 
@@ -2794,8 +2793,8 @@ void AxesDialog::setTicksType(int)
 
 void AxesDialog::updateMajTicksType(int)
 {
-	int axis=mapToQwtAxisId();
-	int type=boxMajorTicksType->currentIndex();
+	int axis = mapToQwtAxisId();
+	int type = boxMajorTicksType->currentIndex();
 	if (majTicks[axis] == type)
 		return;
 
@@ -3130,4 +3129,88 @@ void AxesDialog::setFrameDefaultValues()
 	app->minTicksLength = boxMinorTicksLength->value();
 
 	app->saveSettings();
+}
+
+void AxesDialog::applyAxisFormatToLayer(Graph *g)
+{
+    if (!g)
+        return;
+
+    for (int i=0; i<QwtPlot::axisCnt; i++){
+        if (!g->axisEnabled(i))
+            continue;
+
+		QwtScaleWidget *axis = (QwtScaleWidget*)g->axisWidget(i);
+		if (axis){
+			axis->setMargin(boxBaseline->value());
+            QPalette pal = axis->palette();
+            if (pal.color(QPalette::Active, QColorGroup::Foreground) != boxAxisColor->color())
+                pal.setColor(QColorGroup::Foreground, boxAxisColor->color());
+            if (pal.color(QPalette::Active, QColorGroup::Text) != boxAxisNumColor->color())
+                pal.setColor(QColorGroup::Text, boxAxisNumColor->color());
+            axis->setPalette(pal);
+
+            g->setAxisTicksLength(i, boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
+                                boxMinorTicksLength->value(), boxMajorTicksLength->value());
+
+            QFont fnt;
+            switch(axesTitlesList->currentRow()){
+                case 0:
+                    fnt = xBottomFont;
+                break;
+                case 1:
+                    fnt = yLeftFont;
+                break;
+                case 2:
+                    fnt = xTopFont;
+                break;
+                case 3:
+                    fnt = yRightFont;
+                break;
+            }
+            g->setAxisFont(i, fnt);
+		}
+	}
+	g->updateLayout();
+    g->replot();
+}
+
+void AxesDialog::applyAxisFormat()
+{
+    if (generalDialog->currentWidget() != axesPage)
+		return;
+
+    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	switch(axisFormatApplyToBox->currentIndex()){
+		case 1://this layer
+			applyAxisFormatToLayer(d_graph);
+		break;
+
+		case 2://this window
+		{
+			QList<Graph *> layersLst = d_graph->multiLayer()->layersList();
+			foreach(Graph *g, layersLst)
+				applyAxisFormatToLayer(g);
+		}
+		break;
+
+		case 3://all windows
+		{
+			QList<MdiSubWindow *> windows = app->windowsList();
+			foreach(MdiSubWindow *w, windows){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
+				if (!ml)
+					continue;
+
+				QList<Graph *> layersLst = ml->layersList();
+				foreach(Graph *g, layersLst)
+					applyAxisFormatToLayer(g);
+			}
+		}
+		break;
+
+		default:
+			break;
+	}
+	app->modifiedProject();
 }
