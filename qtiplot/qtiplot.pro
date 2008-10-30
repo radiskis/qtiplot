@@ -14,9 +14,6 @@ DEFINES         += SCRIPTING_DIALOG
 # Comment the following lines to disable donations start-up message.
 #DEFINES         += QTIPLOT_SUPPORT
 
-# Comment the following line if you haven't subscribed for a QtiPlot binaries maintenance contract.
-#RESTRICTED_MODULES += EMF
-
 # Comment the next line, if you don't have libpng on your windows system.
 DEFINES += GL2PS_HAVE_LIBPNG
 win32:INCLUDEPATH += ../3rdparty/libpng/
@@ -36,7 +33,7 @@ CONFIG          += release
 INCLUDEPATH       += ../3rdparty/muparser/include
 INCLUDEPATH       += ../3rdparty/qwtplot3d/include
 INCLUDEPATH       += ../3rdparty/qwt/src
-#INCLUDEPATH       += ../3rdparty/liborigin
+INCLUDEPATH       += ../3rdparty/liborigin
 INCLUDEPATH       += ../3rdparty/gsl/include
 INCLUDEPATH       += ../3rdparty/zlib123/include
 INCLUDEPATH       += ../3rdparty/boost_1_36_0
@@ -163,13 +160,6 @@ unix: man.files += ../qtiplot.1
 SOURCES += ../3rdparty/zlib123/minigzip.c
 
 ###############################################################
-################# Origin Import (liborigin) ###################
-###############################################################
-INCLUDEPATH += src/
-
-HEADERS += src/importOPJ.h
-
-###############################################################
 ################# Default Modules #############################
 ###############################################################
 
@@ -180,24 +170,9 @@ include(src/lib/libqti.pri)
 include(src/plot2D/plot2D.pri)
 include(src/plot3D/plot3D.pri)
 include(src/matrix/matrix.pri)
+include(src/origin/origin.pri)
 include(src/table/table.pri)
 include(src/scripting/scripting.pri)
-
-###############################################################
-################# Restricted Module: EmfEngine ################
-###############################################################
-
-contains(RESTRICTED_MODULES, EMF) {
-	DEFINES += EMF_OUTPUT
-
-    INCLUDEPATH += ../3rdparty/libEMF/include
-	unix:LIBS += -L../3rdparty/libEMF/lib
-	win32:LIBS += -lgdi32
-
-	INCLUDEPATH += ../3rdparty/EmfEngine
-    HEADERS += ../3rdparty/EmfEngine/EmfEngine.h
-    SOURCES += ../3rdparty/EmfEngine/EmfEngine.cpp
-}
 
 ###############################################################
 ##################### Scripting: PYTHON + SIP + PyQT ##########
