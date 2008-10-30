@@ -36,7 +36,7 @@ CONFIG          += release
 INCLUDEPATH       += ../3rdparty/muparser/include
 INCLUDEPATH       += ../3rdparty/qwtplot3d/include
 INCLUDEPATH       += ../3rdparty/qwt/src
-INCLUDEPATH       += ../3rdparty/liborigin
+#INCLUDEPATH       += ../3rdparty/liborigin
 INCLUDEPATH       += ../3rdparty/gsl/include
 INCLUDEPATH       += ../3rdparty/zlib123/include
 INCLUDEPATH       += ../3rdparty/boost_1_36_0
@@ -168,17 +168,6 @@ SOURCES += ../3rdparty/zlib123/minigzip.c
 INCLUDEPATH += src/
 
 HEADERS += src/importOPJ.h
-HEADERS += ../3rdparty/liborigin/OriginObj.h
-HEADERS += ../3rdparty/liborigin/OriginFile.h
-HEADERS += ../3rdparty/liborigin/OriginParser.h
-HEADERS += ../3rdparty/liborigin/OriginDefaultParser.h
-HEADERS += ../3rdparty/liborigin/Origin750Parser.h
-
-SOURCES += src/importOPJ.cpp
-SOURCES += ../3rdparty/liborigin/OriginFile.cpp
-SOURCES += ../3rdparty/liborigin/OriginParser.cpp
-SOURCES += ../3rdparty/liborigin/OriginDefaultParser.cpp
-SOURCES += ../3rdparty/liborigin/Origin750Parser.cpp
 
 ###############################################################
 ################# Default Modules #############################
