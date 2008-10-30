@@ -221,3 +221,13 @@ def factor(n):
 		n = n - 1
 	return f
 qti.mathFunctions["factor"] = factor
+
+global derivative
+def derivative(yCol, xCol, row, table = 0):
+	"derivative(yCol, xCol, row, table = 0):\n\nCalculates the derivative of column yCol with respect to column xCol in table. If not specified table = self."
+	if (table == 0):
+		table = qti.app.currentTable()
+	d1 = (table.cell(yCol, row+1) - table.cell(yCol, row))/(table.cell(xCol, row+1) - table.cell(xCol, row))
+	d2 = (table.cell(yCol, row) - table.cell(yCol, row-1))/(table.cell(xCol, row) - table.cell(xCol, row-1))
+	return 0.5*(d1 + d2)
+qti.mathFunctions["derivative"] = derivative

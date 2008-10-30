@@ -8196,9 +8196,11 @@ void ApplicationWindow::analysisMenuAboutToShow()
         normMenu->addAction(actionNormalizeTable);
 
         analysisMenu->insertSeparator();
-        analysisMenu->addAction(actionFFT);
+		analysisMenu->addAction(actionDifferentiate);
 		analysisMenu->addAction(actionIntegrate);
         analysisMenu->insertSeparator();
+		analysisMenu->addAction(actionFFT);
+		analysisMenu->insertSeparator();
         analysisMenu->addAction(actionCorrelate);
         analysisMenu->addAction(actionAutoCorrelate);
         analysisMenu->insertSeparator();
@@ -11211,8 +11213,43 @@ void ApplicationWindow::integrate()
 }
 
 void ApplicationWindow::differentiate()
-{
-	analysis(Diff);
+{	
+	MdiSubWindow *w = activeWindow();
+	if (!w)
+		return;
+
+	if (qobject_cast<MultiLayer *>(w))
+		analysis(Diff);
+	else if (w->inherits("Table")){
+		Table *t = qobject_cast<Table *>(w);
+		QStringList lst = t->selectedYColumns();
+		int cols = lst.size();
+		if (!cols){
+        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
+        	tr("Please select a 'Y' column first!"));
+			return;
+		}
+		
+		Differentiation *diff = new Differentiation(this, NULL, "", "");
+		int aux = 0;
+		foreach (QString yCol, lst){
+			int xCol = t->colX(t->colIndex(yCol));
+			diff->setDataFromTable(t, t->colName(xCol), yCol);
+			diff->run();
+			Graph *g = diff->outputGraph();
+			if (!g)
+				continue;
+			
+			QwtPlotCurve *c = g->curve(aux);
+			if (c){
+				QPen pen = c->pen();
+				pen.setColor(ColorBox::color(aux));
+				c->setPen(pen);
+				aux++;
+			}
+		}
+		delete diff;
+	}
 }
 
 void ApplicationWindow::fitLinear()

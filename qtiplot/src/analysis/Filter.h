@@ -91,6 +91,8 @@ class Filter : public QObject
 		double* y(){return d_y;};
 		//! Returns a pointer to the table created to display the results
         Table *resultTable(){return d_result_table;};
+		//! Returns a pointer to the graph where the result curve should be displayed
+		Graph *outputGraph(){return d_output_graph;};
 
         bool error(){return d_init_err;};
 
