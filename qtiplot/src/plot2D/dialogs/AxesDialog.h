@@ -55,7 +55,7 @@ class TextFormatButtons;
 class DoubleSpinBox;
 class Grid;
 class PenStyleBox;
-
+	
 //! General plot options dialog
 /**
  * Remark: Don't use this dialog as a non modal dialog!
@@ -105,22 +105,17 @@ private slots:
 	void customAxisFont();
 	void showAxis();
 	void updateShowBox(int axis);
-	void pickAxisColor();
-	void pickAxisNumColor();
 	void updateAxisColor(int);
 	int mapToQwtAxis(int axis);
 	int mapToQwtAxisId();
 	void updateTickLabelsList(bool);
 	void updateMinorTicksList(int scaleType);
 	void setTicksType(int);
-	void updateMajTicksType(int);
-	void updateMinTicksType(int);
 	void updateGrid();
 	void setLabelsNumericFormat(int);
 	void updateLabelsFormat(int);
 	void showAxisFormatOptions(int format);
 	void setBaselineDist(int);
-	void changeBaselineDist(int baseline);
 	void changeMinorTicksLength (int minLength);
 	void changeMajorTicksLength (int majLength);
 	void pageChanged ( QWidget *page);
@@ -128,6 +123,7 @@ private slots:
 				  const QColor&, int, int, int, int, const QString&, const QColor&);
     void applyCanvasFormat();
     void setFrameDefaultValues();
+	void applyAxisFormat();
 
 protected:
     void applyCanvasFormatTo(Graph *g);
@@ -141,7 +137,6 @@ protected:
 	void initFramePage();
 	//! Modifies the grid
 	void applyChangesToGrid(Grid *grid);
-	void applyAxisFormat();
 	//! Customizes graph axes
 	void applyAxisFormatToLayer(Graph *g);
 
@@ -194,7 +189,6 @@ protected:
 
 	QStringList tickLabelsOn, tablesList;
 	QList<int> majTicks, minTicks, axesBaseline;
-	QFont xBottomFont, yLeftFont, xTopFont, yRightFont;
 	bool xAxisOn, yAxisOn, topAxisOn, rightAxisOn;
 	int xBottomLabelsRotation, xTopLabelsRotation;
 

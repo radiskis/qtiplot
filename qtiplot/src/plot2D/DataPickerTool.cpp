@@ -96,7 +96,7 @@ void DataPickerTool::append(const QPoint &pos)
 	}
 	setSelection((QwtPlotCurve *)c, point_index);
 	if (!d_selected_curve) return;
-
+	
 	QwtPlotPicker::append(transform(QwtDoublePoint(d_selected_curve->x(d_selected_point),
 					d_selected_curve->y(d_selected_point))));
 }
@@ -115,10 +115,11 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
 		return;
 	}
 
+	d_selection_marker.setAxis(d_selected_curve->xAxis(), d_selected_curve->yAxis());
 	setAxis(d_selected_curve->xAxis(), d_selected_curve->yAxis());
 
     d_restricted_move_pos = QPoint(plot()->transform(xAxis(), d_selected_curve->x(d_selected_point)),
-                                    plot()->transform(yAxis(), d_selected_curve->y(d_selected_point)));
+                                   plot()->transform(yAxis(), d_selected_curve->y(d_selected_point)));
 
     if (((PlotCurve *)d_selected_curve)->type() == Graph::Function) {
          QLocale locale = d_app->locale();
@@ -161,6 +162,8 @@ bool DataPickerTool::eventFilter(QObject *obj, QEvent *event)
 						emit selected(d_selected_curve, d_selected_point);
 					return true;
 			}
+		break;
+			
         case QEvent::MouseMove:
             if (((QMouseEvent *)event)->modifiers() == Qt::ControlModifier)
                 d_move_mode = Vertical;
@@ -168,9 +171,9 @@ bool DataPickerTool::eventFilter(QObject *obj, QEvent *event)
                 d_move_mode = Horizontal;
             else
                 d_move_mode = Free;
-            break;
+		break;
 
-		case QEvent::KeyPress:
+		case QEvent::KeyPress:	
 			if (keyEventFilter((QKeyEvent*)event))
 				return true;
 			break;
