@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "CurvesDialog.h"
+#include "QwtHistogram.h"
 #include <Graph.h>
 #include <Table.h>
 #include <Matrix.h>
@@ -72,6 +73,7 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 	boxStyle->addItem( QPixmap(area_xpm), tr( " Area" ) );
 	boxStyle->addItem( QPixmap(vertBars_xpm), tr( " Vertical Bars" ) );
 	boxStyle->addItem( QPixmap(hBars_xpm), tr( " Horizontal Bars" ) );
+	boxStyle->addItem( QPixmap(histogram_xpm), tr( " Histogram" ) );
     hl->addWidget(boxStyle);
 
     boxMatrixStyle = new QComboBox();
@@ -366,45 +368,64 @@ bool CurvesDialog::addCurve(const QString& name)
 		return true;
     }
 
-	int style = curveStyle();
 	Table* t = app->table(name);
-	if (t){
-		PlotCurve *c = d_graph->insertCurve(t, name, style);
-		CurveLayout cl = Graph::initCurveLayout();
-		int color, symbol;
-		d_graph->guessUniqueCurveLayout(color, symbol);
+	if (!t)
+		return false;
+	
+	int style = curveStyle();
+	PlotCurve *c = NULL;
+	if (style == Graph::Histogram){
+		c = new QwtHistogram(t, name);
+		if (c){
+			d_graph->insertCurve(c);
+			((QwtHistogram *)c)->loadData();
+			d_graph->addLegendItem();
+		}
+	} else
+		c = d_graph->insertCurve(t, name, style);
+	
+	if (!c)
+		return false;
+	
+	CurveLayout cl = Graph::initCurveLayout();
+	int color, symbol;
+	d_graph->guessUniqueCurveLayout(color, symbol);
 
+	cl.lCol = color;
+	cl.symCol = color;
+	cl.fillCol = color;
+	cl.lWidth = app->defaultCurveLineWidth;
+	cl.sSize = app->defaultSymbolSize;
+	cl.sType = symbol;
+
+	if (style == Graph::Line)
+		cl.sType = 0;
+	else if (style == Graph::Histogram ){
+		cl.filledArea = 1;
 		cl.lCol = color;
-		cl.symCol = color;
-		cl.fillCol = color;
-		cl.lWidth = app->defaultCurveLineWidth;
-		cl.sSize = app->defaultSymbolSize;
-		cl.sType = symbol;
+		cl.aCol = color;
+		cl.aStyle = 4;
+		cl.sType = 0;
+	} else if (style == Graph::VerticalBars || style == Graph::HorizontalBars ){
+		cl.filledArea = 1;
+		cl.lCol = 0;
+		cl.aCol = color;
+		cl.sType = 0;
+	} else if (style == Graph::Area ){
+		cl.filledArea = 1;
+		cl.aCol = color;
+		cl.sType = 0;
+	} else if (style == Graph::VerticalDropLines)
+		cl.connectType = 2;
+	else if (style == Graph::VerticalSteps || style == Graph::HorizontalSteps){
+		cl.connectType = 3;
+		cl.sType = 0;
+	} else if (style == Graph::Spline)
+		cl.connectType = 5;
 
-		if (style == Graph::Line)
-			cl.sType = 0;
-		else if (style == Graph::VerticalBars || style == Graph::HorizontalBars ){
-			cl.filledArea = 1;
-			cl.lCol = 0;
-			cl.aCol = color;
-			cl.sType = 0;
-		} else if (style == Graph::Area ){
-			cl.filledArea = 1;
-			cl.aCol = color;
-			cl.sType = 0;
-		} else if (style == Graph::VerticalDropLines)
-			cl.connectType = 2;
-		else if (style == Graph::VerticalSteps || style == Graph::HorizontalSteps){
-			cl.connectType = 3;
-			cl.sType = 0;
-		} else if (style == Graph::Spline)
-			cl.connectType = 5;
-
-		d_graph->updateCurveLayout(c, &cl);
-		contents->addItem(name);
-		return true;
-	}
-	return false;
+	d_graph->updateCurveLayout(c, &cl);
+	contents->addItem(name);
+	return true;
 }
 
 void CurvesDialog::removeCurves()
@@ -468,6 +489,9 @@ int CurvesDialog::curveStyle()
 			break;
 		case 9:
 			style = Graph::HorizontalBars;
+			break;
+		case 10:
+			style = Graph::Histogram;
 			break;
 	}
 	return style;

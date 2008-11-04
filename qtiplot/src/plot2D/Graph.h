@@ -202,6 +202,7 @@ class Graph: public QwtPlot
 
 		QRect boundingRect();
 		void raiseEnrichements();
+		void addLegendItem();
 
 	public slots:
 		void copy(Graph* g);
@@ -711,7 +712,6 @@ signals:
         //! Finds bounding interval of the plot data.
         QwtDoubleInterval axisBoundingInterval(int axis);
         void deselectCurves();
-		void addLegendItem();
 
 		void showEvent (QShowEvent * event);
     	void printFrame(QPainter *painter, const QRect &rect) const;
