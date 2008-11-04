@@ -353,6 +353,9 @@ public slots:
 	//! Enables/Disables autoscaling using findBestLayout().
 	void setAutoscale(bool on = true){d_autoscale = on;};
 
+	Qwt3D::CoordinateSystem* coordinateSystem() {return sp->coordinates();};
+	void setScale(int axis, double start, double end, int majorTicks, int minorTicks, Qwt3D::SCALETYPE type);
+
 signals:
 	void showOptionsDialog();
 	void modified();

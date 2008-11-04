@@ -1181,6 +1181,80 @@ QStringList Graph3D::scaleTicks()
 	return limits;
 }
 
+void Graph3D::setScale(int axis, double start, double end, int majorTicks, int minorTicks, Qwt3D::SCALETYPE type)
+{
+	double xMin, xMax, yMin, yMax, zMin, zMax;
+	int baseAxis;
+
+	sp->makeCurrent();
+	sp->coordinates()->axes[X1].limits(xMin, xMax);
+	sp->coordinates()->axes[Y1].limits(yMin, yMax);
+	sp->coordinates()->axes[Z1].limits(zMin, zMax);
+
+	switch(axis)
+	{
+	case 0:
+		if (xMin != start || xMax != end)
+		{
+			xMin = start;
+			xMax = end;
+		}
+		baseAxis = X1;
+		break;
+	case 1:
+		if (yMin != start || yMax != end)
+		{
+			yMin = start;
+			yMax = end;
+		}
+		baseAxis = Y1;
+		break;
+	case 2:
+		if (zMin != start || zMax != end)
+		{
+			zMin = start;
+			zMax = end;
+		}
+		baseAxis = Z1;
+		break;
+	}
+
+	if (d_func){
+		d_func->setDomain(xMin, xMax, yMin, yMax);
+		d_func->setMinZ(zMin);
+		d_func->setMaxZ(zMax);
+		d_func->create();
+		sp->createCoordinateSystem(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax));
+	} else if (d_surface){
+		d_surface->restrictRange(ParallelEpiped(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax)));
+		d_surface->create();
+		sp->createCoordinateSystem(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax));
+	} else
+		setScales(xMin, xMax, yMin, yMax, zMin, zMax);
+
+	if(scaleType[axis] != type){
+		sp->coordinates()->axes[baseAxis].setScale(type);
+		scaleType[axis] = type;
+	}
+
+	if (sp->coordinates()->axes[baseAxis].majors() != majorTicks){
+		sp->coordinates()->axes[baseAxis].setMajors(majorTicks);
+		sp->coordinates()->axes[(baseAxis+1)*3].setMajors(majorTicks);
+		sp->coordinates()->axes[(baseAxis+1)*3+1].setMajors(majorTicks);
+		sp->coordinates()->axes[(baseAxis+1)*3+2].setMajors(majorTicks);
+	}
+
+	if (sp->coordinates()->axes[baseAxis].minors() != minorTicks){
+		sp->coordinates()->axes[baseAxis].setMinors(minorTicks);
+		sp->coordinates()->axes[(baseAxis+1)*3].setMinors(minorTicks);
+		sp->coordinates()->axes[(baseAxis+1)*3+1].setMinors(minorTicks);
+		sp->coordinates()->axes[(baseAxis+1)*3+2].setMinors(minorTicks);
+	}
+
+	update();
+	emit modified();
+}
+
 void Graph3D::updateScale(int axis, const QStringList& options)
 {
 	QString st = QString::number(scaleType[axis]);
@@ -2642,7 +2716,7 @@ if (fname.isEmpty())
    return false;
 
 using std::ifstream;
-ifstream file(QWT3DLOCAL8BIT(fname));
+ifstream file(fname.toLocal8Bit());
 if (!file)
    return false;
 
