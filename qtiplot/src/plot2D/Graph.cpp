@@ -2176,6 +2176,8 @@ QString Graph::saveCurves()
 					continue;
 				} else if (c->type() == Box)
 					s += "curve\t" + QString::number(c->x(0)) + "\t" + c->title().text() + "\t";
+				else if (c->type() == Histogram) 
+					s += "curve\t-\t" + c->title().text() + "\t";//ugly hack to avoid having an empty string for c->xColumnName()
 				else
 					s += "curve\t" + c->xColumnName() + "\t" + c->title().text() + "\t";
 
@@ -2856,12 +2858,18 @@ PlotCurve* Graph::insertCurve(Table* w, int xcol, const QString& name, int style
 }
 
 PlotCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
-{
+{	
+	if (style == Histogram){  	 	 
+		PlotCurve *c = new QwtHistogram(w, yColName, startRow, endRow); 		 
+		insertCurve(c);
+		return c; 		 
+	} 
+	
 	int xcol=w->colIndex(xColName);
 	int ycol=w->colIndex(yColName);
 	if (xcol < 0 || ycol < 0)
 		return NULL;
-
+	
 	int xColType = w->columnType(xcol);
 	int yColType = w->columnType(ycol);
 	int size=0;
@@ -2948,7 +2956,7 @@ PlotCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 
 	if (style == HorizontalBars)
 		c->setData(Y.data(), X.data(), size);
-	else if (style != Histogram)
+	else
 		c->setData(X.data(), Y.data(), size);
 
 	if (xColType == Table::Text ){
