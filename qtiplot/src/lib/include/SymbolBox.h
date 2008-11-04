@@ -35,6 +35,7 @@
 //! A modified QComboBox allowing to choose a QwtSmbol style.
 /**
  * This is a simple hack on top of the QComboBox class.
+ \image html images/symbol_box.png
  */
 class SymbolBox : public QComboBox
 {

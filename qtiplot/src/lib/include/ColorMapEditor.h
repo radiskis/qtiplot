@@ -40,6 +40,9 @@ class DoubleSpinBox;
 //! A complex widget allowing to customize a QwtLinearColorMap.
 /**
  * It uses a QTableWidget to display the values in one column and their corresponding colors in a second column.
+ * A click on a table color pops-up a QColorDialog allowing to customize it.
+
+	\image html images/color_map_editor.png
  */
 class ColorMapEditor: public QWidget
 {

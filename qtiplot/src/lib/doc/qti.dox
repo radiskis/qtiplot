@@ -4,6 +4,8 @@
 The Qti library contains GUI Components and utility classes which were primarily
 developed for QtiPlot, a scientific plotting and data analysis software.
 
+  \image html images/color_map_editor.png
+
   \section license License
 
   Qti is distributed under the terms of the \ref gpllicense.
