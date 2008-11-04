@@ -34,7 +34,7 @@ class Matrix;
 class QwtHistogram: public QwtBarCurve
 {
 public:
-	QwtHistogram(Table *t, const QString& name, int startRow, int endRow);
+	QwtHistogram(Table *t, const QString& name, int startRow = 0, int endRow = -1);
     QwtHistogram(Matrix *m);
 
 	void copy(QwtHistogram *h);
