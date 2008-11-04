@@ -53,6 +53,8 @@
 #include <RectangleWidget.h>
 #include <EllipseWidget.h>
 
+#include <Graph3D.h>
+
 #include "qwt_plot_canvas.h"
 #include "qwt_plot_layout.h"
 #include "qwt_scale_widget.h"
@@ -65,8 +67,10 @@ using namespace boost::posix_time;
 #define OBJECTXOFFSET 200
 
 QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> ImportOPJ::lineStyles;
+QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> ImportOPJ::line3DStyles;
 QMap<Origin::FillPattern, int> ImportOPJ::patternStyles;
 QMap<Origin::ProjectNode::NodeType, QString> ImportOPJ::classes;
+QMap<Origin::GraphAxis::Scale, Qwt3D::SCALETYPE> ImportOPJ::scaleTypes;
 
 QString strreverse(const QString &str) //QString reversing
 {
@@ -94,6 +98,7 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	classes[Origin::ProjectNode::Matrix] = "Matrix";
 	classes[Origin::ProjectNode::Graph] = "MultiLayer";
 	classes[Origin::ProjectNode::Note] = "Note";
+
 	lineStyles[Origin::GraphCurve::Solid] = Qt::SolidLine;
 	lineStyles[Origin::GraphCurve::Dash] = Qt::DashLine;
 	lineStyles[Origin::GraphCurve::ShortDash] = Qt::DashLine;
@@ -102,6 +107,25 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	lineStyles[Origin::GraphCurve::DashDot] = Qt::DashDotLine;
 	lineStyles[Origin::GraphCurve::ShortDashDot] = Qt::DashDotLine;
 	lineStyles[Origin::GraphCurve::DashDotDot] = Qt::DashDotDotLine;
+
+	line3DStyles[Origin::GraphCurve::Solid] = Qwt3D::SOLID;
+	line3DStyles[Origin::GraphCurve::Dash] = Qwt3D::DASH;
+	line3DStyles[Origin::GraphCurve::ShortDash] = Qwt3D::SHORTDASH;
+	line3DStyles[Origin::GraphCurve::Dot] = Qwt3D::DOT;
+	line3DStyles[Origin::GraphCurve::ShortDot] = Qwt3D::SHORTDOT;
+	line3DStyles[Origin::GraphCurve::DashDot] = Qwt3D::DASHDOT;
+	line3DStyles[Origin::GraphCurve::ShortDashDot] = Qwt3D::SHORTDASHDOT;
+	line3DStyles[Origin::GraphCurve::DashDotDot] = Qwt3D::DASHDOTDOT;
+
+	scaleTypes[Origin::GraphAxis::Linear] = Qwt3D::LINEARSCALE;
+	scaleTypes[Origin::GraphAxis::Log10] = Qwt3D::LOG10SCALE;
+	scaleTypes[Origin::GraphAxis::Probability] = Qwt3D::LINEARSCALE;
+	scaleTypes[Origin::GraphAxis::Probit] = Qwt3D::LINEARSCALE;
+	scaleTypes[Origin::GraphAxis::Reciprocal] = Qwt3D::LINEARSCALE;
+	scaleTypes[Origin::GraphAxis::OffsetReciprocal] = Qwt3D::LINEARSCALE;
+	scaleTypes[Origin::GraphAxis::Logit] = Qwt3D::LINEARSCALE;
+	scaleTypes[Origin::GraphAxis::Ln] = Qwt3D::LOG10SCALE;
+	scaleTypes[Origin::GraphAxis::Log2] = Qwt3D::LOG10SCALE;
 
 	patternStyles[Origin::NoFill] = 255;
 	patternStyles[Origin::BDiagDense] = 4;
@@ -610,8 +634,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 	MultiLayer* fake = mw->multilayerPlot("fake", 0);
 	fake->setParent(0);
-	int frameWidth = fake->frameGeometry().width() - fake->geometry().width();
-	int frameHeight = fake->frameGeometry().height() - fake->geometry().height();
+	frameWidth = fake->frameGeometry().width() - fake->geometry().width();
+	frameHeight = fake->frameGeometry().height() - fake->geometry().height();
 	fake->askOnCloseEvent(false);
 	fake->close();
 
@@ -657,6 +681,12 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		for(unsigned int l = 0; l < _graph.layers.size(); ++l)
 		{
 			Origin::GraphLayer& layer = _graph.layers[l];
+			if(layer.threeDimensional)
+			{
+				importGraph3D(opj, g, l);
+				continue;
+			}
+
 			Graph *graph = ml->addLayer();
 			if(!graph)
 				return false;
@@ -952,11 +982,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				else if(style == Graph::Histogram)
 				{
 					QwtHistogram *h = (QwtHistogram*)graph->curve(c);
-					if (h)
+					if(h)
 					{
-						//vector<double> bin=opj.layerHistogram(g,l);
-						//if(bin.size()==3)
-							h->setBinning(false, layer.histogramBin, layer.histogramBegin, layer.histogramEnd);
+						h->setBinning(false, layer.histogramBin, layer.histogramBegin, layer.histogramEnd);
 						h->loadData();
 					}
 				}
@@ -1274,46 +1302,273 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		
 		//ml->resize(graphWindowRect.width() - frameWidth, graphWindowRect.height() - frameWidth);
 		//cascade the graphs
-		if(!_graph.hidden)
+		if(ml->numLayers() > 0)
 		{
-			ml->move(QPoint(graphWindowRect.left, graphWindowRect.top));
-
-			switch(_graph.state)
+			if(!_graph.hidden)
 			{
-			case Origin::Window::Minimized:
-				mw->minimizeWindow(ml);
-				break;
-			case Origin::Window::Maximized:
-				ml->show(); // to correct scaling with maximize
-				mw->maximizeWindow(ml);
-				break;
-			default:
-				ml->setScaleLayersOnResize(false);
+				ml->move(QPoint(graphWindowRect.left, graphWindowRect.top));
+
+				switch(_graph.state)
+				{
+				case Origin::Window::Minimized:
+					mw->minimizeWindow(ml);
+					break;
+				case Origin::Window::Maximized:
+					ml->show(); // to correct scaling with maximize
+					mw->maximizeWindow(ml);
+					break;
+				default:
+					ml->setScaleLayersOnResize(false);
+					ml->show();
+					ml->setScaleLayersOnResize(true);
+				}
+			}
+			else
+			{
 				ml->show();
-				ml->setScaleLayersOnResize(true);
+				//ml->arrangeLayers(true,true);
+				mw->hideWindow(ml);
 			}
 		}
 		else
 		{
-			ml->show();
-			//ml->arrangeLayers(true,true);
-			mw->hideWindow(ml);
+			ml->askOnCloseEvent(false);
+			ml->close();
 		}
 	}
 
 	return true;
 }
 
+bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned int l)
+{
+	static QVector<Qwt3D::AXIS> xAxes, yAxes, zAxes;
+	xAxes << Qwt3D::X1 << Qwt3D::X2 << Qwt3D::X3 << Qwt3D::X4;
+	yAxes << Qwt3D::Y1 << Qwt3D::Y2 << Qwt3D::Y3 << Qwt3D::Y4;
+	zAxes << Qwt3D::Z1 << Qwt3D::Z2 << Qwt3D::Z3 << Qwt3D::Z4;
+
+	int auto_color = -1;
+	int type = 0;
+	Origin::Graph _graph = opj.graph(g);
+	Origin::GraphLayer& layer = _graph.layers[l];
+	for(unsigned int c = 0; c < layer.curves.size(); ++c)
+	{
+		Origin::GraphCurve& _curve = layer.curves[c];
+		QString data(_curve.dataName.c_str());
+		int color = 0;
+		switch(_curve.type)
+		{
+		case Origin::GraphCurve::Line3D:
+			type = _curve.connectSymbols ? Graph3D::Trajectory : Graph3D::Scatter;
+			break;
+		/*case Origin::GraphCurve::Column:
+			type = Graph3D::Bars;
+			break;*/
+		default:
+			continue;
+		}
+		
+		Graph3D *plot = mw->newPlot3D();
+		if (!plot)
+			return false;
+
+		plot->setName(_graph.name.c_str());
+		plot->setWindowLabel(_graph.label.c_str());
+
+		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_graph.title);
+		plot->setBirthDate(posixTimeToString(_graph.creationDate));
+		plot->hide();//!hack used in order to avoid resize and repaint events
+
+		Origin::Rect graphRect(_graph.width, _graph.height);
+		Origin::Rect graphWindowRect = _graph.frameRect;
+		double fFontScaleFactor;
+		{
+			double ratio = (double)(graphWindowRect.width() - frameWidth)/(double)(graphWindowRect.height() - frameHeight);
+			int width = _graph.width;
+			int height = _graph.height;
+			if((double)(_graph.width)/(double)(_graph.height) < ratio)
+			{
+				width = height * ratio;
+			}
+			else
+			{
+				height = width / ratio;
+			}
+
+			//plot->resize(graphWindowRect.width(), graphWindowRect.height());
+
+			double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
+			fFontScaleFactor = 300*fScale/72*1.3;
+		}
+
+		Origin::Rect layerRect = layer.clientRect;
+
+		plot->setXAxisLabel(parseOriginText(QString::fromLocal8Bit(layer.xAxis.label.text.c_str())));
+		plot->setYAxisLabel(parseOriginText(QString::fromLocal8Bit(layer.yAxis.label.text.c_str())));
+		plot->setZAxisLabel(parseOriginText(QString::fromLocal8Bit(layer.zAxis.label.text.c_str())));
+
+		QFont font = plot->xAxisLabelFont();
+		font.setPointSize(floor(layer.xAxis.label.fontSize*fFontScaleFactor + 0.5));
+		plot->setXAxisLabelFont(font);
+		font.setPointSize(floor(layer.yAxis.label.fontSize*fFontScaleFactor + 0.5));
+		plot->setYAxisLabelFont(font);
+		font.setPointSize(floor(layer.zAxis.label.fontSize*fFontScaleFactor + 0.5));
+		plot->setZAxisLabelFont(font);
+
+		double majorTickLength =  layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].majorTickLength;
+		plot->setXAxisTickLength(majorTickLength, majorTickLength*0.6);
+		majorTickLength =  layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].majorTickLength;
+		plot->setYAxisTickLength(majorTickLength, majorTickLength*0.6);
+		majorTickLength =  layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].majorTickLength;
+		plot->setZAxisTickLength(majorTickLength, majorTickLength*0.6);
+
+		if(layer.backgroundColor != 0xFC)
+			plot->setBackgroundColor(ColorBox::color(layer.backgroundColor));
+
+		plot->coordinateSystem()->setGridLines(true, true, Qwt3D::LEFT | Qwt3D::FLOOR | Qwt3D::BACK);
+
+		RGBA axisColor = Qt2GL(ColorBox::color(layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
+		RGBA numberColor = layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
+		RGBA labelColor = Qt2GL(ColorBox::color(layer.xAxis.label.color));
+		Qwt3D::GridLine majorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
+		Qwt3D::GridLine minorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
+		double width = layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].thickness;
+		font = plot->numbersFont();
+		font.setBold(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].fontBold);
+		font.setPointSize(floor(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
+		foreach(Qwt3D::AXIS axis, xAxes)
+		{
+			plot->coordinateSystem()->axes[axis].setColor(axisColor);
+			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
+			plot->coordinateSystem()->axes[axis].setLabelColor(labelColor);
+			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
+			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			plot->coordinateSystem()->axes[axis].setLineWidth(width);
+			plot->setNumbersFont(font);
+		}
+
+		axisColor = Qt2GL(ColorBox::color(layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
+		numberColor = layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
+		labelColor = Qt2GL(ColorBox::color(layer.yAxis.label.color));
+		majorGrid = Qwt3D::GridLine(!layer.yAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.yAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.majorGrid.style], layer.yAxis.majorGrid.width);
+		minorGrid = Qwt3D::GridLine(!layer.yAxis.minorGrid.hidden, Qt2GL(ColorBox::color(layer.yAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style], layer.yAxis.minorGrid.width);
+		width = layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].thickness;
+		font.setBold(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].fontBold);
+		font.setPointSize(floor(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
+		foreach(Qwt3D::AXIS axis, yAxes)
+		{
+			plot->coordinateSystem()->axes[axis].setColor(axisColor);
+			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
+			plot->coordinateSystem()->axes[axis].setLabelColor(labelColor);
+			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
+			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			plot->coordinateSystem()->axes[axis].setLineWidth(width);
+			plot->setNumbersFont(font);
+		}
+
+		axisColor = Qt2GL(ColorBox::color(layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
+		numberColor = layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
+		labelColor = Qt2GL(ColorBox::color(layer.zAxis.label.color));
+		majorGrid = Qwt3D::GridLine(!layer.zAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.zAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.majorGrid.style], layer.zAxis.majorGrid.width);
+		minorGrid = Qwt3D::GridLine(!layer.zAxis.minorGrid.hidden, Qt2GL(ColorBox::color(layer.zAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.minorGrid.style], layer.zAxis.minorGrid.width);
+		width = layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].thickness;
+		font.setBold(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].fontBold);
+		font.setPointSize(floor(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
+		foreach(Qwt3D::AXIS axis, zAxes)
+		{
+			plot->coordinateSystem()->axes[axis].setColor(axisColor);
+			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
+			plot->coordinateSystem()->axes[axis].setLabelColor(labelColor);
+			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
+			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			plot->coordinateSystem()->axes[axis].setLineWidth(width);
+			plot->setNumbersFont(font);
+		}
+
+		QString tableName;
+		QStringList formulas;
+		double start, end;
+
+		plot->showColorLegend(false);
+		plot->setFramed();
+
+		Table* table = 0;
+		QColor clr = ColorBox::color(_curve.symbolColor == 0xF7 ? ++auto_color : _curve.symbolColor);
+		plot->setDataColors(clr, clr);
+		
+		bool smooth;
+		switch(_curve.symbolType&0xFF)
+		{
+		case 2: //Ellipse
+		case 20://Sphere
+			smooth = true;
+			break;
+		default:
+			smooth = false;
+		}
+		plot->setDotOptions(ceil(_curve.symbolSize), smooth);
+		plot->setMeshColor(ColorBox::color(_curve.lineColor == 0xF7 ? 0 : _curve.lineColor));
+		plot->setMeshLineWidth(_curve.lineWidth);
+
+		switch(data[0].toAscii())
+		{
+		case 'T':
+			tableName = data.right(data.length()-2);
+			table = mw->table(tableName);
+			plot->addData(table, table->colIndex(_curve.xColumnName.c_str()), table->colIndex(_curve.yColumnName.c_str()), table->colIndex(_curve.zColumnName.c_str()), type);
+			break;
+		default:
+			continue;
+		}
+
+		/*if(_curve.connectSymbols)
+			plot->setWireframeStyle();
+		else
+			plot->setDotStyle();*/
+		//plot->setScales(layer.xAxis.min, layer.xAxis.max, layer.yAxis.min, layer.yAxis.max, layer.zAxis.min, layer.zAxis.max);
+		plot->setScale(0, layer.xAxis.min, layer.xAxis.max, layer.xAxis.majorTicks, layer.xAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale]);
+		plot->setScale(1, layer.yAxis.min, layer.yAxis.max, layer.yAxis.majorTicks, layer.yAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale]);
+		plot->setScale(2, layer.zAxis.min, layer.zAxis.max, layer.zAxis.majorTicks, layer.zAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.zAxis.scale]);
+					
+		if(!_graph.hidden)
+		{
+			plot->move(QPoint(graphWindowRect.left, graphWindowRect.top));
+
+			switch(_graph.state)
+			{
+			case Origin::Window::Minimized:
+				mw->minimizeWindow(plot);
+				break;
+			case Origin::Window::Maximized:
+				plot->show(); // to correct scaling with maximize
+				mw->maximizeWindow(plot);
+				break;
+			default:
+				plot->show();
+			}
+		}
+		else
+		{
+			plot->show();
+			//ml->arrangeLayers(true,true);
+			mw->hideWindow(plot);
+		}
+		}
+
+	return true;
+}
+
+
 void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale)
 {
 	int bkg;
 	switch(text.borderType)
 	{
-	case Origin::TextBox::BlackLine:
+	case Origin::BlackLine:
 		bkg = 1;
 		break;
-	case Origin::TextBox::Shadow:
-	case Origin::TextBox::DarkMarble:
+	case Origin::Shadow:
+	case Origin::DarkMarble:
 		bkg = 2;
 		break;
 	default:

@@ -1208,6 +1208,14 @@ void Origin750Parser::readGraphInfo()
 		file.seekg(LAYER+0x71, ios_base::beg);
 		file.read(reinterpret_cast<char*>(&graphs.back().layers.back().clientRect), sizeof(Rect));
 
+		unsigned char border;
+		file.seekg(LAYER+0x89, ios_base::beg);
+		file >> border;
+		graphs.back().layers.back().borderType = (BorderType)(border >= 0x80 ? border-0x80 : None);
+
+		file.seekg(LAYER+0x105, ios_base::beg);
+		file >> graphs.back().layers.back().backgroundColor;
+
 		LAYER += 0x12D + 0x1;
 		//now structure is next : section_header_size=0x6F(4 bytes) + '\n' + section_header(0x6F bytes) + section_body_1_size(4 bytes) + '\n' + section_body_1 + section_body_2_size(maybe=0)(4 bytes) + '\n' + section_body_2 + '\n'
 		//possible sections: axes, legend, __BC02, _202, _231, _232, __LayerInfoStorage etc
@@ -1350,7 +1358,7 @@ void Origin750Parser::readGraphInfo()
 				file >> text;
 
 				graphs.back().layers.back().xAxis.position = GraphAxis::Bottom;
-				graphs.back().layers.back().xAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
+				graphs.back().layers.back().xAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "XT")
 			{
@@ -1358,7 +1366,7 @@ void Origin750Parser::readGraphInfo()
 				file >> text;
 
 				graphs.back().layers.back().xAxis.position = GraphAxis::Top;
-				graphs.back().layers.back().xAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
+				graphs.back().layers.back().xAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "YL")
 			{
@@ -1366,7 +1374,7 @@ void Origin750Parser::readGraphInfo()
 				file >> text;
 
 				graphs.back().layers.back().yAxis.position = GraphAxis::Left;
-				graphs.back().layers.back().yAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
+				graphs.back().layers.back().yAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "YR")
 			{
@@ -1374,14 +1382,45 @@ void Origin750Parser::readGraphInfo()
 				file >> text;
 
 				graphs.back().layers.back().yAxis.position = GraphAxis::Right;
-				graphs.back().layers.back().yAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
+				graphs.back().layers.back().yAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "ZF")
+			{
+				string text(size, 0);
+				file >> text;
+
+				graphs.back().layers.back().zAxis.position = GraphAxis::Front;
+				graphs.back().layers.back().zAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "ZB")
+			{
+				string text(size, 0);
+				file >> text;
+
+				graphs.back().layers.back().zAxis.position = GraphAxis::Back;
+				graphs.back().layers.back().zAxis.label = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
+			}
+			else if(sec_name == "3D")
+			{
+				graphs.back().layers.back().threeDimensional = true;
+
+				file >> graphs.back().layers.back().zAxis.min;
+				file >> graphs.back().layers.back().zAxis.max;
+				file >> graphs.back().layers.back().zAxis.step;
+
+				file.seekg(LAYER+0x1C, ios_base::beg);
+				file >> graphs.back().layers.back().zAxis.majorTicks;
+
+				file.seekg(LAYER+0x28, ios_base::beg);
+				file >> graphs.back().layers.back().zAxis.minorTicks;
+				file >> graphs.back().layers.back().zAxis.scale;
 			}
 			else if(sec_name == "Legend")
 			{
 				string text(size, 0);
 				file >> text;
 
-				graphs.back().layers.back().legend = TextBox(text, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach);
+				graphs.back().layers.back().legend = TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach);
 			}
 			else if(sec_name == "__BCO2") // histogram
 			{
@@ -1398,7 +1437,7 @@ void Origin750Parser::readGraphInfo()
 				file >> text;
 
 				graphs.back().layers.back().texts.push_back(
-								TextBox(text, r, color, fontSize, rotation/10, tab, (TextBox::BorderType)(border >= 0x80 ? border-0x80 : TextBox::None), (Attach)attach));
+								TextBox(text, r, color, fontSize, rotation/10, tab, (BorderType)(border >= 0x80 ? border-0x80 : None), (Attach)attach));
 			}
 			else if(osize == 0x5E) // rectangle & circle
 			{
@@ -1485,24 +1524,54 @@ void Origin750Parser::readGraphInfo()
 				LAYER += 0x5;
 
 				GraphCurve curve;
+				file.seekg(LAYER + 0x4C, ios_base::beg);
+				file >> curve.type;
 
-				file.seekg(LAYER + 0x4, ios_base::beg);
+				file.seekg(LAYER + 0x04, ios_base::beg);
 				file >> w;
-
 				pair<string, string> column = findDataByIndex(w-1);
 				short nColY = w;
 				if(column.first.size() > 0)
 				{
-					BOOST_LOG_(1, format("			graphs %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 					curve.dataName = column.first;
-					curve.yColumnName = column.second;
+					if(graphs.back().layers.back().threeDimensional)
+					{
+						BOOST_LOG_(1, format("			graphs %d layer %d curve %d Z : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+						curve.zColumnName = column.second;
+					}
+					else
+					{
+						BOOST_LOG_(1, format("			graphs %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+						curve.yColumnName = column.second;
+					}
 				}
 
 				file.seekg(LAYER + 0x23, ios_base::beg);
 				file >> w;
-
 				column = findDataByIndex(w-1);
 				if(column.first.size() > 0)
+				{
+					if(curve.dataName != column.first)
+					{
+						BOOST_LOG_(1, format("			graphs %d X and Y from different tables") % graphs.size());
+					}
+
+					if(graphs.back().layers.back().threeDimensional)
+					{
+						BOOST_LOG_(1, format("			graphs %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+						curve.yColumnName = column.second;
+					}
+					else
+					{
+						BOOST_LOG_(1, format("			graphs %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+						curve.xColumnName = column.second;
+					}
+				}
+
+				file.seekg(LAYER + 0x4D, ios_base::beg);
+				file >> w;
+				column = findDataByIndex(w-1);
+				if(column.first.size() > 0 && graphs.back().layers.back().threeDimensional)
 				{
 					BOOST_LOG_(1, format("			graphs %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 					curve.xColumnName = column.second;
@@ -1511,9 +1580,6 @@ void Origin750Parser::readGraphInfo()
 						BOOST_LOG_(1, format("			graphs %d X and Y from different tables") % graphs.size());
 					}
 				}
-
-				file.seekg(LAYER + 0x4C, ios_base::beg);
-				file >> curve.type;
 
 				file.seekg(LAYER + 0x11, ios_base::beg);
 				file >> curve.lineConnect;
@@ -1719,6 +1785,10 @@ void Origin750Parser::readGraphInfo()
 				curve.symbolThickness = (h == 255 ? 1 : h);
 				file >> curve.pointOffset;
 
+				file.seekg(LAYER + 0x143, ios_base::beg);
+				file >> h;
+				curve.connectSymbols = (h&0x8);
+
 				graphs.back().layers.back().curves.push_back(curve);
 
 				LAYER += 0x1E7 + 0x1;
@@ -1774,70 +1844,25 @@ void Origin750Parser::readGraphInfo()
 		}
 		LAYER += 0x5;
 
-		LAYER += 0x5;
 		file.seekg(LAYER, ios_base::beg);
-		readGraphGridInfo(graphs.back().layers.back().xAxis.minorGrid);
-		LAYER += 0x1E7 + 1;
+		readGraphAxisInfo(graphs.back().layers.back().xAxis);
+		LAYER += 0x1ED*0x6;
 
 		LAYER += 0x5;
+
 		file.seekg(LAYER, ios_base::beg);
-		readGraphGridInfo(graphs.back().layers.back().xAxis.majorGrid);
-		LAYER += 0x1E7 + 1;
+		readGraphAxisInfo(graphs.back().layers.back().yAxis);
+		LAYER += 0x1ED*0x6;
 
 		LAYER += 0x5;
+
 		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisTickLabelsInfo(graphs.back().layers.back().xAxis.tickAxis[0]);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisFormatInfo(graphs.back().layers.back().xAxis.formatAxis[0]);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisTickLabelsInfo(graphs.back().layers.back().xAxis.tickAxis[1]);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisFormatInfo(graphs.back().layers.back().xAxis.formatAxis[1]);
-		LAYER += 0x1E7 + 1;
+		readGraphAxisInfo(graphs.back().layers.back().zAxis);
+		LAYER += 0x1ED*0x6;
 
 		LAYER += 0x5;
 
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphGridInfo(graphs.back().layers.back().yAxis.minorGrid);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphGridInfo(graphs.back().layers.back().yAxis.majorGrid);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisTickLabelsInfo(graphs.back().layers.back().yAxis.tickAxis[0]);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisFormatInfo(graphs.back().layers.back().yAxis.formatAxis[0]);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisTickLabelsInfo(graphs.back().layers.back().yAxis.tickAxis[1]);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x5;
-		file.seekg(LAYER, ios_base::beg);
-		readGraphAxisFormatInfo(graphs.back().layers.back().yAxis.formatAxis[1]);
-		LAYER += 0x1E7 + 1;
-
-		LAYER += 0x2*0x5 + 0x1ED*0x6;
+		//LAYER += 0x2*0x5 + 0x1ED*0x6;
 
 		file.seekg(LAYER, ios_base::beg);
 		file >> size;
@@ -2109,6 +2134,39 @@ void Origin750Parser::readGraphAxisTickLabelsInfo(GraphAxisTick& tick)
 		tick.valueTypeSpecification = 0;
 		break;
 	}
+}
+
+void Origin750Parser::readGraphAxisInfo(GraphAxis& axis)
+{
+	unsigned int POS = file.tellg();
+	POS += 0x5;
+	file.seekg(POS, ios_base::beg);
+	readGraphGridInfo(axis.minorGrid);
+	POS += 0x1E7 + 1;
+
+	POS += 0x5;
+	file.seekg(POS, ios_base::beg);
+	readGraphGridInfo(axis.majorGrid);
+	POS += 0x1E7 + 1;
+
+	POS += 0x5;
+	file.seekg(POS, ios_base::beg);
+	readGraphAxisTickLabelsInfo(axis.tickAxis[0]);
+	POS += 0x1E7 + 1;
+
+	POS += 0x5;
+	file.seekg(POS, ios_base::beg);
+	readGraphAxisFormatInfo(axis.formatAxis[0]);
+	POS += 0x1E7 + 1;
+
+	POS += 0x5;
+	file.seekg(POS, ios_base::beg);
+	readGraphAxisTickLabelsInfo(axis.tickAxis[1]);
+	POS += 0x1E7 + 1;
+
+	POS += 0x5;
+	file.seekg(POS, ios_base::beg);
+	readGraphAxisFormatInfo(axis.formatAxis[1]);
 }
 
 void Origin750Parser::readProjectTree()

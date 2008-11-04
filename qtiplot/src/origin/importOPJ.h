@@ -31,6 +31,8 @@
 
 #include "ApplicationWindow.h"
 #include <OriginFile.h>
+#include "qwt3d_types.h"
+#include "qwt3d_coordsys.h"
 
 //! Origin project import class
 class ImportOPJ
@@ -42,6 +44,7 @@ public:
 	bool importTables(const OriginFile& opj);
 	bool importGraphs(const OriginFile& opj);
 	bool importNotes(const OriginFile& opj);
+	bool importGraph3D(const OriginFile& opj, unsigned int graph, unsigned int layer);
 	int error(){return parse_error;};
 
 private:
@@ -51,9 +54,13 @@ private:
 	void addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale);
 	int parse_error;
 	int xoffset;
+	int frameWidth;
+	int frameHeight;
 	ApplicationWindow *mw;
 
 	static QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> lineStyles;
+	static QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> line3DStyles;
+	static QMap<Origin::GraphAxis::Scale, Qwt3D::SCALETYPE> scaleTypes;
 	static QMap<Origin::FillPattern, int> patternStyles;
 	static QMap<Origin::ProjectNode::NodeType, QString> classes;
 };

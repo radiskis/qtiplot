@@ -43,6 +43,7 @@ namespace Origin
 	enum ValueType {Numeric = 0, Text = 1, Time = 2, Date = 3,  Month = 4, Day = 5, ColumnHeading = 6, TickIndexedDataset = 7, TextNumeric = 9, Categorical = 10};
 	enum NumericDisplayType {DefaultDecimalDigits = 0, DecimalPlaces = 1, SignificantDigits = 2};
 	enum Attach {Frame = 0, Page = 1, Scale = 2};
+	enum BorderType {BlackLine = 0, Shadow = 1, DarkMarble = 2, WhiteOut = 3, BlackOut = 4, None = -1};
 	enum Color {Black = 0, Red = 1, Green = 2, Blue = 3, Cyan = 4, Magenta = 5, Yellow = 6, DarkYellow = 7, Navy = 8,
 		Purple = 9, Wine = 10, Olive = 11, DarkCyan = 12, Royal=  13, Orange = 14, Violet = 15, Pink = 16, White = 17,
 		LightGray = 18, Gray = 19, LTYellow = 20, LTCyan = 21, LTMagenta = 22, DarkGray = 23, Custom = 255};
@@ -219,8 +220,6 @@ namespace Origin
 
 	struct TextBox
 	{
-		enum BorderType {BlackLine = 0, Shadow = 1, DarkMarble = 2, WhiteOut = 3, BlackOut = 4, None = -1};
-
 		string text;
 		Rect clientRect;
 		unsigned char color;
@@ -336,6 +335,7 @@ namespace Origin
 		string dataName;
 		string xColumnName;
 		string yColumnName;
+		string zColumnName;
 		unsigned char lineColor;
 		unsigned char lineStyle;
 		unsigned char lineConnect;
@@ -358,6 +358,8 @@ namespace Origin
 		double symbolSize;
 		unsigned char symbolThickness;
 		unsigned char pointOffset;
+
+		bool connectSymbols;
 
 		//pie
 		PieProperties pie;
@@ -425,7 +427,7 @@ namespace Origin
 
 	struct GraphAxis
 	{
-		enum AxisPosition {Left = 0, Bottom = 1, Right = 2, Top = 3};
+		enum AxisPosition {Left = 0, Bottom, Right, Top, Front, Back};
 		enum Scale {Linear = 0, Log10 = 1, Probability = 2, Probit = 3, Reciprocal = 4, OffsetReciprocal = 5, Logit = 6, Ln = 7, Log2 = 8};
 
 		AxisPosition position;
@@ -528,11 +530,16 @@ namespace Origin
 	{
 		Rect clientRect;
 		TextBox legend;
+		unsigned char backgroundColor;
+		BorderType borderType;
+
 		GraphAxis xAxis;
 		GraphAxis yAxis;
+		GraphAxis zAxis;
 
 		GraphAxisBreak xAxisBreak;
 		GraphAxisBreak yAxisBreak;
+		GraphAxisBreak zAxisBreak;
 
 		double histogramBin;
 		double histogramBegin;
@@ -543,6 +550,8 @@ namespace Origin
 		vector<Figure> figures;
 		vector<Bitmap> bitmaps;
 		vector<GraphCurve> curves;
+
+		bool threeDimensional;
 	};
 
 	struct GraphLayerRange

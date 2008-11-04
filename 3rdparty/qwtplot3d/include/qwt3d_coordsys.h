@@ -6,6 +6,22 @@
 
 namespace Qwt3D
 {
+	enum LINESTYLE {SOLID, DASH, DOT, DASHDOT, DASHDOTDOT, SHORTDASH, SHORTDOT, SHORTDASHDOT};
+
+	struct GridLine
+	{
+		bool visible_;
+		RGBA color_;
+		LINESTYLE style_;
+		double width_;
+
+		GridLine(bool visible = false, RGBA color = RGBA(), LINESTYLE style = SOLID, double width = 1.0)
+		:	visible_(visible)
+		,	color_(color)
+		,	style_(style)
+		,	width_(width)
+		{}
+	};
 
 //! A coordinate system with different styles (BOX, FRAME)
 class QWT3D_EXPORT CoordinateSystem : public Drawable
@@ -36,7 +52,9 @@ public:
 	void adjustLabels(int val); //!< Fine tunes distance between axis label and axis body
 
 	//! Sets color for the grid lines
-  void setGridLinesColor(Qwt3D::RGBA val) {gridlinecolor_ = val;}
+	void setGridLinesColor(Qwt3D::RGBA val){gridlinecolor_ = val;}
+	void setMajorGridLines(Qwt3D::AXIS axis, Qwt3D::GridLine val) {gridmajors_[axis] = val;}
+	void setMinorGridLines(Qwt3D::AXIS axis, Qwt3D::GridLine val) {gridminors_[axis] = val;}
 	
 	//! Set common font for all axis labels
 	void setLabelFont(QString const& family, int pointSize, int weight = QFont::Normal, bool italic = false);
@@ -79,6 +97,9 @@ private:
 	Qwt3D::COORDSTYLE style_;
 	
 	Qwt3D::RGBA gridlinecolor_;
+
+	QMap<Qwt3D::AXIS, Qwt3D::GridLine> gridmajors_;
+	QMap<Qwt3D::AXIS, Qwt3D::GridLine> gridminors_;
 
 	bool smooth_;
 	

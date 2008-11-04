@@ -48,6 +48,7 @@ private:
 	void readMatrixInfo();
 	void readGraphInfo();
 	void skipObjectInfo();
+	void readGraphAxisInfo(GraphAxis& axis);
 	void readGraphGridInfo(GraphGrid& grid);
 	void readGraphAxisBreakInfo(GraphAxisBreak& axis_break);
 	void readGraphAxisFormatInfo(GraphAxisFormat& format);

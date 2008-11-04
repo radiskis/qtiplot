@@ -526,7 +526,7 @@ For most cases an identical tic distribution is therefore recommended.
 void CoordinateSystem::setGridLines(bool majors, bool minors, int sides) 
 {
 	sides_ = sides;
-  majorgridlines_ = majors; 
+	majorgridlines_ = majors; 
 	minorgridlines_ = minors;
 } 
 
@@ -536,38 +536,84 @@ void CoordinateSystem::drawMajorGridLines()
 	glColor4d(gridlinecolor_.r,gridlinecolor_.g,gridlinecolor_.b,gridlinecolor_.a);		
 	setDeviceLineWidth(axes[X1].majLineWidth());
 
-  glBegin( GL_LINES );
-  if (sides_ & Qwt3D::FLOOR)  
-  {
-		drawMajorGridLines(axes[X1],axes[X4]);
-		drawMajorGridLines(axes[Y1],axes[Y2]);
-  }
-  if (sides_ & Qwt3D::CEIL)  
-  {
-		drawMajorGridLines(axes[X2],axes[X3]);
-		drawMajorGridLines(axes[Y3],axes[Y4]);
-  }
-  if (sides_ & Qwt3D::LEFT)  
-  {
-		drawMajorGridLines(axes[Y1],axes[Y4]);
-		drawMajorGridLines(axes[Z1],axes[Z2]);
-  }
-  if (sides_ & Qwt3D::RIGHT)  
-  {
-		drawMajorGridLines(axes[Y2],axes[Y3]);
-		drawMajorGridLines(axes[Z3],axes[Z4]);
-  }
-  if (sides_ & Qwt3D::FRONT)  
-  {
-		drawMajorGridLines(axes[X1],axes[X2]);
-		drawMajorGridLines(axes[Z2],axes[Z3]);
-  }
-  if (sides_ & Qwt3D::BACK) 
-  {
-		drawMajorGridLines(axes[X3],axes[X4]);
-		drawMajorGridLines(axes[Z4],axes[Z1]);
-  }
-  glEnd();
+	std::vector<std::pair<Qwt3D::AXIS, Qwt3D::AXIS> > axis;
+	if (sides_ & Qwt3D::FLOOR)  
+	{
+		axis.push_back(make_pair(X1,X4));
+		axis.push_back(make_pair(Y1,Y2));
+	}
+	if (sides_ & Qwt3D::CEIL)  
+	{
+		axis.push_back(make_pair(X2,X3));
+		axis.push_back(make_pair(Y3,Y4));
+	}
+	if (sides_ & Qwt3D::LEFT)  
+	{
+		axis.push_back(make_pair(Y1,Y4));
+		axis.push_back(make_pair(Z1,Z2));
+	}
+	if (sides_ & Qwt3D::RIGHT)  
+	{
+		axis.push_back(make_pair(Y2,Y3));
+		axis.push_back(make_pair(Z3,Z4));
+	}
+	if (sides_ & Qwt3D::FRONT)  
+	{
+		axis.push_back(make_pair(X1,X2));
+		axis.push_back(make_pair(Z2,Z3));
+	}
+	if (sides_ & Qwt3D::BACK)  
+	{
+		axis.push_back(make_pair(X3,X4));
+		axis.push_back(make_pair(Z4,Z1));
+	}
+
+	for(std::vector<std::pair<Qwt3D::AXIS, Qwt3D::AXIS> >::const_iterator it=axis.begin(); it!=axis.end(); ++it)
+	{
+		GridLine grid = GridLine(majorgridlines_, gridlinecolor_);
+		if(!gridmajors_.value(it->first, grid).visible_)
+			continue;
+
+		Qwt3D::RGBA gridcolor = gridmajors_.value(it->first, grid).color_;
+		glColor4d(gridcolor.r,gridcolor.g,gridcolor.b,gridcolor.a);
+
+		setDeviceLineWidth(gridmajors_.value(it->first, grid).width_);
+
+		glEnable(GL_LINE_STIPPLE);
+		switch(gridmajors_.value(it->first, grid).style_)
+		{
+		case SOLID:
+			glLineStipple(1, 0xFFFF);
+			break;
+		case DASH:
+			glLineStipple(2, 0x7777);
+			break;
+		case DOT:
+			glLineStipple(2, 0x1111);
+			break;
+		case DASHDOT:
+			glLineStipple(2, 0x087F);
+			break;
+		case DASHDOTDOT:
+			glLineStipple(2, 0x24FF);
+			break;
+		case SHORTDASH:
+			glLineStipple(1, 0x7777);
+			break;
+		case SHORTDOT:
+			glLineStipple(1, 0x1111);
+			break;
+		case SHORTDASHDOT:
+			glLineStipple(1, 0x087F);
+			break;
+		}
+
+		glBegin(GL_LINES);
+		drawMajorGridLines(axes[it->first],axes[it->second]);
+		glEnd();
+
+		glDisable(GL_LINE_STIPPLE);
+	}
 }
 
 void CoordinateSystem::drawMinorGridLines()
@@ -576,38 +622,84 @@ void CoordinateSystem::drawMinorGridLines()
 	glColor4d(gridlinecolor_.r,gridlinecolor_.g,gridlinecolor_.b,gridlinecolor_.a);		
 	setDeviceLineWidth(axes[X1].minLineWidth());
 
-  glBegin( GL_LINES );
-  if (sides_ & Qwt3D::FLOOR)  
-  {
-		drawMinorGridLines(axes[X1],axes[X4]);
-		drawMinorGridLines(axes[Y1],axes[Y2]);
-  }
-  if (sides_ & Qwt3D::CEIL)  
-  {
-		drawMinorGridLines(axes[X2],axes[X3]);
-		drawMinorGridLines(axes[Y3],axes[Y4]);
-  }
-  if (sides_ & Qwt3D::LEFT)  
-  {
-		drawMinorGridLines(axes[Y1],axes[Y4]);
-		drawMinorGridLines(axes[Z1],axes[Z2]);
-  }
-  if (sides_ & Qwt3D::RIGHT)  
-  {
-		drawMinorGridLines(axes[Y2],axes[Y3]);
-		drawMinorGridLines(axes[Z3],axes[Z4]);
-  }
-  if (sides_ & Qwt3D::FRONT)  
-  {
-		drawMinorGridLines(axes[X1],axes[X2]);
-		drawMinorGridLines(axes[Z2],axes[Z3]);
-  }
-  if (sides_ & Qwt3D::BACK)  
-  {
-		drawMinorGridLines(axes[X3],axes[X4]);
-		drawMinorGridLines(axes[Z4],axes[Z1]);
-  }
-  glEnd();
+	std::vector<std::pair<Qwt3D::AXIS, Qwt3D::AXIS> > axis;
+	if (sides_ & Qwt3D::FLOOR)  
+	{
+		axis.push_back(make_pair(X1,X4));
+		axis.push_back(make_pair(Y1,Y2));
+	}
+	if (sides_ & Qwt3D::CEIL)  
+	{
+		axis.push_back(make_pair(X2,X3));
+		axis.push_back(make_pair(Y3,Y4));
+	}
+	if (sides_ & Qwt3D::LEFT)  
+	{
+		axis.push_back(make_pair(Y1,Y4));
+		axis.push_back(make_pair(Z1,Z2));
+	}
+	if (sides_ & Qwt3D::RIGHT)  
+	{
+		axis.push_back(make_pair(Y2,Y3));
+		axis.push_back(make_pair(Z3,Z4));
+	}
+	if (sides_ & Qwt3D::FRONT)  
+	{
+		axis.push_back(make_pair(X1,X2));
+		axis.push_back(make_pair(Z2,Z3));
+	}
+	if (sides_ & Qwt3D::BACK)  
+	{
+		axis.push_back(make_pair(X3,X4));
+		axis.push_back(make_pair(Z4,Z1));
+	}
+
+	for(std::vector<std::pair<Qwt3D::AXIS, Qwt3D::AXIS> >::const_iterator it=axis.begin(); it!=axis.end(); ++it)
+	{
+		GridLine grid = GridLine(minorgridlines_, gridlinecolor_);
+		if(!gridminors_.value(it->first, grid).visible_)
+			continue;
+	
+		Qwt3D::RGBA gridcolor = gridminors_.value(it->first, grid).color_;
+		glColor4d(gridcolor.r,gridcolor.g,gridcolor.b,gridcolor.a);
+
+		setDeviceLineWidth(gridminors_.value(it->first, grid).width_);
+		
+		glEnable(GL_LINE_STIPPLE);
+		switch(gridminors_.value(it->first, grid).style_)
+		{
+		case SOLID:
+			glLineStipple(1, 0xFFFF);
+			break;
+		case DASH:
+			glLineStipple(2, 0x7777);
+			break;
+		case DOT:
+			glLineStipple(2, 0x1111);
+			break;
+		case DASHDOT:
+			glLineStipple(2, 0x087F);
+			break;
+		case DASHDOTDOT:
+			glLineStipple(2, 0x24FF);
+			break;
+		case SHORTDASH:
+			glLineStipple(1, 0x7777);
+			break;
+		case SHORTDOT:
+			glLineStipple(1, 0x1111);
+			break;
+		case SHORTDASHDOT:
+			glLineStipple(1, 0x087F);
+			break;
+		}
+
+		glBegin(GL_LINES);
+		drawMinorGridLines(axes[it->first],axes[it->second]);
+		glEnd();
+
+		glDisable(GL_LINE_STIPPLE);
+	}
 }
 
 void CoordinateSystem::drawMajorGridLines(Axis& a0, Axis& a1)
