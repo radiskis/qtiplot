@@ -146,7 +146,7 @@ translations.files += translations/qtiplot_de.qm \
 ###################### DOCUMENTATION ########################################
 
 manual.files += ../manual/html \
-				../manual/qtiplot-manual-en.pdf
+                ../manual/qtiplot-manual-en.pdf
 
 documentation.files += ../README.html \
                        ../gpl_licence.txt
