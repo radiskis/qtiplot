@@ -4009,12 +4009,15 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			list = s.split("\t");
 			app->current_folder = app->current_folder->findSubfolder(list[1]);
 		} else if  (s == "<multiLayer>"){//process multilayers information
-			title = titleBase + QString::number(++aux)+"/"+QString::number(widgets);
+			title = titleBase + QString::number(++aux) + "/" + QString::number(widgets);
 			progress.setLabelText(title);
 
-			s=t.readLine();
-			QStringList graph=s.split("\t");
-			QString caption=graph[0];
+			s = t.readLine();
+			QStringList graph = s.split("\t");
+			QString caption = graph[0];
+			
+			//printf("%s\n", caption.toAscii().constData());
+			
 			plot = app->multilayerPlot(caption, 0,  graph[2].toInt(), graph[1].toInt());
 
 			app->setListViewDate(caption, graph[3]);
@@ -10658,7 +10661,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 						c = (PlotCurve *)ag->insertCurve(w, curve[1].toInt(), curve[2], plotType);
 					else if (d_file_version < 90)
 						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType);
-					else{
+					else {
 						int startRow = curve[curve.count()-3].toInt();
 						int endRow = curve[curve.count()-2].toInt();
 						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType, startRow, endRow);
