@@ -46,6 +46,7 @@ d_y_offset(0.0)
 {
     setPaintAttribute(PaintFiltered);
     setPaintAttribute(ClipPolygons);
+	setCurveAttribute(QwtPlotCurve::Fitted, false);
 }
 
 QString PlotCurve::saveCurveLayout()
