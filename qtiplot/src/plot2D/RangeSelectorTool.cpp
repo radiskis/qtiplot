@@ -59,6 +59,7 @@ RangeSelectorTool::RangeSelectorTool(Graph *graph, const QObject *status_target,
 	}
 
     d_enabled = true;
+	d_visible = true;
 	d_active_point = 0;
 	d_inactive_point = d_selected_curve->dataSize() - 1;
 	int marker_size = 20;
@@ -94,7 +95,7 @@ RangeSelectorTool::~RangeSelectorTool()
 	d_active_marker.detach();
 	d_inactive_marker.detach();
 	d_graph->canvas()->unsetCursor();
-	d_graph->replot();
+	d_graph->replot();	
 }
 
 void RangeSelectorTool::pointSelected(const QPoint &pos)
@@ -399,4 +400,26 @@ void RangeSelectorTool::setEnabled(bool on)
     d_enabled = on;
     if (on)
         d_graph->canvas()->setCursor(QCursor(QPixmap(vizor_xpm), -1, -1));
+}
+
+void RangeSelectorTool::setVisible(bool on)
+{
+	if (d_visible == on)
+		return;
+	
+	d_visible = on;
+	
+    if (on){
+		setTrackerMode(QwtPicker::AlwaysOn);
+        d_graph->canvas()->setCursor(QCursor(QPixmap(vizor_xpm), -1, -1));
+		d_active_marker.attach(d_graph);
+		d_inactive_marker.attach(d_graph);
+	} else {
+		d_enabled = false;	
+		setTrackerMode(QwtPicker::AlwaysOff);
+        d_active_marker.detach();
+		d_inactive_marker.detach();
+		d_graph->canvas()->unsetCursor();
+	}
+	d_graph->replot();
 }

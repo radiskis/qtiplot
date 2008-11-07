@@ -171,6 +171,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
     setAttribute(Qt::WA_DeleteOnClose);
 
 	d_active_tool = NULL;
+	d_range_selector = NULL;
 	d_peak_fit_tool = NULL;
 	d_active_enrichment = NULL;
 	d_selected_marker = NULL;
@@ -1531,7 +1532,7 @@ void Graph::exportEMF(const QString& fname)
 
 QString Graph::selectedCurveTitle()
 {
-	if (d_range_selector)
+	if (d_range_selector && d_range_selector->isVisible())
 		return d_range_selector->selectedCurve()->title().text();
 	else
 		return QString::null;
@@ -2450,7 +2451,7 @@ QString Graph::saveMarkers()
 
 double Graph::selectedXStartValue()
 {
-	if (d_range_selector)
+	if (d_range_selector && d_range_selector->isVisible())
 		return d_range_selector->minXValue();
 	else
 		return 0;
@@ -2458,7 +2459,7 @@ double Graph::selectedXStartValue()
 
 double Graph::selectedXEndValue()
 {
-	if (d_range_selector)
+	if (d_range_selector && d_range_selector->isVisible())
 		return d_range_selector->maxXValue();
 	else
 		return 0;
@@ -2488,7 +2489,8 @@ QwtPlotCurve *Graph::curve(int index)
 
 int Graph::range(const QString& curveTitle, double *start, double *end)
 {
-	if (d_range_selector && d_range_selector->selectedCurve() == curve(curveTitle)) {
+	if (d_range_selector && d_range_selector->isVisible() &&
+		d_range_selector->selectedCurve() == curve(curveTitle)) {
 		*start = d_range_selector->minXValue();
 		*end = d_range_selector->maxXValue();
 		return d_range_selector->dataSize();
@@ -3196,7 +3198,8 @@ void Graph::removeCurve(QwtPlotItem *it)
   	    	colorAxis->setColorBarEnabled(false);
   	}
 
-    if (d_range_selector && curve(index) == d_range_selector->selectedCurve()){
+    if (d_range_selector && d_range_selector->isVisible() &&
+		curve(index) == d_range_selector->selectedCurve()){
 		int curves = d_curves.size();
         if (curves > 1 && (index - 1) >= 0)
             d_range_selector->setSelectedCurve(curve(index - 1));
@@ -4321,19 +4324,18 @@ void Graph::disableTools()
 	d_peak_fit_tool = NULL;
 
 	if (d_range_selector)
-		delete d_range_selector;
-	d_range_selector = NULL;
+		d_range_selector->setVisible(false);
 }
 
 bool Graph::enableRangeSelectors(const QObject *status_target, const char *status_slot)
 {
-	if (d_range_selector){
-		delete d_range_selector;
-		d_range_selector = NULL;
+	if (!d_range_selector){
+		d_range_selector = new RangeSelectorTool(this, status_target, status_slot);
+		//setActiveTool(d_range_selector);
+		connect(d_range_selector, SIGNAL(changed()), this, SIGNAL(dataRangeChanged()));
 	}
-	d_range_selector = new RangeSelectorTool(this, status_target, status_slot);
-	setActiveTool(d_range_selector);
-	connect(d_range_selector, SIGNAL(changed()), this, SIGNAL(dataRangeChanged()));
+	
+	d_range_selector->setVisible(true);
 	return true;
 }
 
