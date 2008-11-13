@@ -53,6 +53,8 @@ class TableStatistics : public Table
 		virtual void save(const QString&, const QString &geometry, bool = false);
 
     public slots:
+        //! update statistics when the user triggers a recaculate action
+        void update();
         //! update statistics after a column has changed (to be connected with Table::modifiedData)
         void update(Table*, const QString& colName);
 		//! handle renaming of columns (to be connected with Table::changedColHeader)

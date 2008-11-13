@@ -1762,7 +1762,7 @@ double Table::cell(int row, int col)
 
 void Table::setCell(int row, int col, double val)
 {
-	char format;
+    char format;
     int prec;
     columnNumericFormat(col, &format, &prec);
     d_table->setText(row, col, locale().toString(val, format, prec));

@@ -164,8 +164,7 @@ void ColorLegend::draw()
 	Triple two = pe_.maxVertex; 
 	
 	double h = (orientation_ == ColorLegend::BottomTop)
-	         ? (two-one).z / colors.size()
-					 : (two-one).x / colors.size(); 
+	         ? (two-one).z / colors.size() : (two-one).x / colors.size(); 
 
 	//glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
