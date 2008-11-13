@@ -3145,7 +3145,7 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 {
 	if (!d_active_window)
-        return NULL;
+            return NULL;
 
 	switch(type){
 		case NoWindow:
@@ -5866,12 +5866,14 @@ void ApplicationWindow::recalculateTable()
 {
 	MdiSubWindow* w = activeWindow();
 	if (!w)
-		return;
+            return;
 
-	if (w->inherits("Table"))
-		((Table*)w)->calculate();
-	else if (w->isA("Matrix"))
-		((Matrix*)w)->calculate();
+        if (qobject_cast<TableStatistics *>(w))
+            ((TableStatistics*)w)->update();
+        else if (qobject_cast<Table *>(w))
+            ((Table*)w)->calculate();
+        else if (qobject_cast<Matrix *>(w))
+            ((Matrix*)w)->calculate();
 }
 
 void ApplicationWindow::sortActiveTable()
@@ -6150,7 +6152,7 @@ void ApplicationWindow::showColMenu(int c)
 
 			contextMenu.insertSeparator();
 
-			contextMenu.addAction(QIcon(QPixmap(erase_xpm)), tr("Clea&r"), w, SLOT(clearSelection()));
+                        contextMenu.addAction(QIcon(QPixmap(erase_xpm)), tr("Clea&r"), w, SLOT(clearSelection()));
 			contextMenu.addAction(QIcon(QPixmap(delete_column_xpm)), tr("&Delete"), w, SLOT(removeCol()));
 			contextMenu.addAction(actionHideSelectedColumns);
 			contextMenu.addAction(actionShowAllColumns);
@@ -12659,9 +12661,9 @@ void ApplicationWindow::translateActionsStrings()
     actionImagePlot->setToolTip(tr("Image Plot"));
 	actionTransposeMatrix->setMenuText(tr("&Transpose"));
 	actionRotateMatrix->setMenuText(tr("R&otate 90"));
-    actionRotateMatrix->setToolTip(tr("Rotate 90° Clockwise"));
+    actionRotateMatrix->setToolTip(tr("Rotate 90 Clockwise"));
     actionRotateMatrixMinus->setMenuText(tr("Rotate &-90"));
-    actionRotateMatrixMinus->setToolTip(tr("Rotate 90° Counterclockwise"));
+    actionRotateMatrixMinus->setToolTip(tr("Rotate 90 Counterclockwise"));
 	actionFlipMatrixVertically->setMenuText(tr("Flip &V"));
 	actionFlipMatrixVertically->setToolTip(tr("Flip Vertically"));
 	actionFlipMatrixHorizontally->setMenuText(tr("Flip &H"));

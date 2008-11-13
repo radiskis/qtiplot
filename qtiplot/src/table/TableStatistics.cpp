@@ -40,70 +40,69 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 	: Table(env, 1, 1, "", parent, ""),
 	d_base(base), d_type(t), d_targets(targets)
 {
-	// FIXME: Haven't found a set read-only method in Qt4 yet
-	// d_table->setReadOnly(true);
+        d_table->setReadOnly(true);
 	setCaptionPolicy(MdiSubWindow::Both);
-	if (d_type == row)
-	{
+	if (d_type == row){
 		setName(QString(d_base->objectName())+"-"+tr("RowStats"));
 		setWindowLabel(tr("Row Statistics of %1").arg(base->objectName()));
 		resizeRows(d_targets.size());
-		resizeCols(9);
+                resizeCols(10);
 		setColName(0, tr("Row"));
 		setColName(1, tr("Cols"));
 		setColName(2, tr("Mean"));
-		setColName(3, tr("StandardDev"));
-		setColName(4, tr("Variance"));
-		setColName(5, tr("Sum"));
-		setColName(6, tr("Max"));
-		setColName(7, tr("Min"));
-		setColName(8, "N");
+                setColName(3, tr("StandardDev"));
+                setColName(4, tr("StandardError"));
+                setColName(5, tr("Variance"));
+                setColName(6, tr("Sum"));
+                setColName(7, tr("Max"));
+                setColName(8, tr("Min"));
+                setColName(9, "N");
 
-		for (int i=0; i < 9; i++)
-			setColumnType(i, Text);
+                for (int i=0; i < numCols(); i++)
+                    setColumnType(i, Text);
 
 		for (int i=0; i < d_targets.size(); i++)
-			setText(i, 0, QString::number(d_targets[i]+1));
+                    setText(i, 0, QString::number(d_targets[i]+1));
 		update(d_base, QString::null);
-	}
-	else if (d_type == column)
-	{
+        } else if (d_type == column) {
 		setName(QString(d_base->objectName())+"-"+tr("ColStats"));
 		setWindowLabel(tr("Column Statistics of %1").arg(base->objectName()));
 		resizeRows(d_targets.size());
-		resizeCols(11);
+                resizeCols(12);
 		setColName(0, tr("Col"));
 		setColName(1, tr("Rows"));
 		setColName(2, tr("Mean"));
-		setColName(3, tr("StandardDev"));
-		setColName(4, tr("Variance"));
-		setColName(5, tr("Sum"));
-		setColName(6, tr("iMax"));
-		setColName(7, tr("Max"));
-		setColName(8, tr("iMin"));
-		setColName(9, tr("Min"));
-		setColName(10, "N");
+                setColName(3, tr("StandardDev"));
+                setColName(4, tr("StandardError"));
+                setColName(5, tr("Variance"));
+                setColName(6, tr("Sum"));
+                setColName(7, tr("iMax"));
+                setColName(8, tr("Max"));
+                setColName(9, tr("iMin"));
+                setColName(10, tr("Min"));
+                setColName(11, "N");
 
-		for (int i=0; i < 11; i++)
-			setColumnType(i, Text);
+                for (int i = 0; i < numCols(); i++)
+                    setColumnType(i, Text);
 
 		for (int i=0; i < d_targets.size(); i++){
-			setText(i, 0, d_base->colLabel(d_targets[i]));
-			update(d_base, d_base->colName(d_targets[i]));
+                    setText(i, 0, d_base->colLabel(d_targets[i]));
+                    update(d_base, d_base->colName(d_targets[i]));
 		}
 	}
-	int w=9*(d_table->horizontalHeader())->sectionSize(0);
+        int w = 9*(d_table->horizontalHeader())->sectionSize(0);
 	int h;
 	if (numRows()>11)
-		h=11*(d_table->verticalHeader())->sectionSize(0);
+            h = 11*(d_table->verticalHeader())->sectionSize(0);
 	else
-		h=(numRows()+1)*(d_table->verticalHeader())->sectionSize(0);
+            h = (numRows()+1)*(d_table->verticalHeader())->sectionSize(0);
 	setGeometry(50,50,w + 45, h + 45);
 
-	setColPlotDesignation(0, Table::X);
+        setColPlotDesignation(0, Table::X);
+        setColPlotDesignation(4, Table::yErr);
 	setHeaderColType();
 	
-	connect(d_base, SIGNAL(modifiedData(Table*,const QString&)), this, SLOT(update(Table*,const QString&)));
+        connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
 	connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
 	connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
 	connect (d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
@@ -114,132 +113,144 @@ void TableStatistics::closedBase()
 	d_base = NULL;
 }
 
+void TableStatistics::update()
+{
+    if (!d_base)
+        return;
+
+    for (int i = 0; i < d_base->numCols (); i++)
+        update(d_base, d_base->colName(i));
+}
+
 void TableStatistics::update(Table *t, const QString& colName)
 {
-	if (!d_base)
-		return;
+        if (!d_base || t != d_base)
+            return;
 	
-	if (t != d_base) return;
-
 	int j;
-	if (d_type == row)
-		for (int r=0; r < d_targets.size(); r++)
-		{
-			int cols=d_base->numCols();
-			int i = d_targets[r];
-			int m = 0;
-			for (j = 0; j < cols; j++)
-				if (!d_base->text(i, j).isEmpty() && d_base->columnType(j) == Numeric)
-					m++;
+        if (d_type == row){
+            if (numCols () < 10){ //modified columns structure
+                d_base = NULL;
+                return;
+            }
 
-			if (!m)
-			{//clear row statistics
-				for (j = 1; j<9; j++)
-					setText(r, j, QString::null);
-			}
+            for (int r=0; r < d_targets.size(); r++){
+                int cols = d_base->numCols();
+                int i = d_targets[r];
+                int m = 0;
+                for (j = 0; j < cols; j++)
+                        if (!d_base->text(i, j).isEmpty() && d_base->columnType(j) == Numeric)
+                                m++;
 
-			if (m > 0)
-			{
-				double *dat = new double[m];
-				gsl_vector *y = gsl_vector_alloc (m);
-				int aux = 0;
-				for (j = 0; j<cols; j++)
-				{
-					QString text = d_base->text(i,j);
-					if (!text.isEmpty() && d_base->columnType(j) == Numeric)
-					{
-						double val = d_base->cell(i,j);
-						gsl_vector_set (y, aux, val);
-						dat[aux] = val;
-						aux++;
-					}
-				}
-				double mean = gsl_stats_mean (dat, 1, m);
-				double min, max;
-				gsl_vector_minmax (y, &min, &max);
+                if (!m){//clear row statistics
+                    for (j = 1; j < numCols(); j++)
+                        setText(r, j, QString::null);
+                }
 
-				setText(r, 1, QString::number(d_base->numCols()));
-				setText(r, 2, QString::number(mean));
-				setText(r, 3, QString::number(gsl_stats_sd(dat, 1, m)));
-				setText(r, 4, QString::number(gsl_stats_variance(dat, 1, m)));
-				setText(r, 5, QString::number(mean*m));
-				setText(r, 6, QString::number(max));
-				setText(r, 7, QString::number(min));
-				setText(r, 8, QString::number(m));
+                if (m > 0){
+                    double *dat = new double[m];
+                    gsl_vector *y = gsl_vector_alloc (m);
+                    int aux = 0;
+                    for (j = 0; j<cols; j++){
+                        QString text = d_base->text(i,j);
+                        if (!text.isEmpty() && d_base->columnType(j) == Numeric){
+                            double val = d_base->cell(i, j);
+                            gsl_vector_set (y, aux, val);
+                            dat[aux] = val;
+                            aux++;
+                        }
+                    }
+                    double mean = gsl_stats_mean (dat, 1, m);
+                    double min, max;
+                    gsl_vector_minmax (y, &min, &max);
 
-				gsl_vector_free (y);
-				delete[] dat;
-			}
-		}
-	else if (d_type == column)
-		for (int c=0; c < d_targets.size(); c++)
-			if (colName == QString(d_base->objectName())+"_"+text(c, 0))
-			{
-				int i = d_base->colIndex(colName);
-				if (d_base->columnType(i) != Numeric) return;
+                    setText(r, 1, QString::number(d_base->numCols()));
+                    setCell(r, 2, mean);
+                    double sd = gsl_stats_sd(dat, 1, m);
+                    setCell(r, 3, sd);
+                    setCell(r, 4, sd/sqrt(m));
+                    setCell(r, 5, gsl_stats_variance(dat, 1, m));
+                    setCell(r, 5, mean*m);
+                    setCell(r, 7, max);
+                    setCell(r, 8, min);
+                    setText(r, 9, QString::number(m));
 
-				int rows = d_base->numRows();
-				int start = -1, m = 0;
-				for (j=0; j<rows; j++)
-					if (!d_base->text(j,i).isEmpty())
-					{
-						m++;
-						if (start<0) start=j;
-					}
+                    gsl_vector_free (y);
+                    delete[] dat;
+                }
+            }
+        } else if (d_type == column){
+            if (numCols () < 12){ //modified columns structure
+                d_base = NULL;
+                return;
+            }
+            for (int c = 0; c < d_targets.size(); c++){
+                if (colName == QString(d_base->objectName()) + "_" + text(c, 0)){
+                    int i = d_base->colIndex(colName);
+                    if (d_base->columnType(i) != Numeric) return;
 
-				if (!m)
-				{//clear col statistics
-					for (j = 1; j<11; j++)
-						setText(c, j, QString::null);
-					return;
-				}
+                    int rows = d_base->numRows();
+                    int start = -1, m = 0;
+                    for (j=0; j<rows; j++){
+                        if (!d_base->text(j, i).isEmpty()){
+                            m++;
+                            if (start < 0) start = j;
+                        }
+                    }
 
-				if (start<0) return;
+                    if (!m){//clear col statistics
+                        for (j = 1; j<numCols(); j++)
+                            setText(c, j, QString::null);
+                        return;
+                    }
 
-				double *dat = new double[m];
-				gsl_vector *y = gsl_vector_alloc (m);
+                    if (start < 0)
+                        return;
 
-				int aux = 0, min_index = start, max_index = start;
-				double val = d_base->cell(start, i);
-				gsl_vector_set (y, 0, val);
-				dat[0] = val;
-				double min = val, max = val;
-				for (j = start + 1; j<rows; j++)
-				{
-					if (!d_base->text(j, i).isEmpty())
-					{
-						aux++;
-						val = d_base->cell(j, i);
-						gsl_vector_set (y, aux, val);
-						dat[aux] = val;
-						if (val < min)
-						{
-							min = val;
-							min_index = j;
-						}
-						if (val > max)
-						{
-							max = val;
-							max_index = j;
-						}
-					}
-				}
-				double mean=gsl_stats_mean (dat, 1, m);
+                    double *dat = new double[m];
+                    gsl_vector *y = gsl_vector_alloc (m);
 
-				setText(c, 1, "[1:"+QString::number(rows)+"]");
-				setText(c, 2, QString::number(mean));
-				setText(c, 3, QString::number(gsl_stats_sd(dat, 1, m)));
-				setText(c, 4, QString::number(gsl_stats_variance(dat, 1, m)));
-				setText(c, 5, QString::number(mean*m));
-				setText(c, 6, QString::number(max_index + 1));
-				setText(c, 7, QString::number(max));
-				setText(c, 8, QString::number(min_index + 1));
-				setText(c, 9, QString::number(min));
-				setText(c, 10, QString::number(m));
+                    int aux = 0, min_index = start, max_index = start;
+                    double val = d_base->cell(start, i);
+                    gsl_vector_set (y, 0, val);
+                    dat[0] = val;
+                    double min = val, max = val;
+                    for (j = start + 1; j<rows; j++){
+                        if (!d_base->text(j, i).isEmpty()){
+                            aux++;
+                            val = d_base->cell(j, i);
+                            gsl_vector_set (y, aux, val);
+                            dat[aux] = val;
+                            if (val < min){
+                                min = val;
+                                min_index = j;
+                            }
+                            if (val > max){
+                                max = val;
+                                max_index = j;
+                            }
+                        }
+                    }
+                    double mean = gsl_stats_mean (dat, 1, m);
 
-				gsl_vector_free (y);
-				delete[] dat;
-			}
+                    setText(c, 1, "[1:"+QString::number(rows)+"]");
+                    setCell(c, 2, mean);
+                    double sd = gsl_stats_sd(dat, 1, m);
+                    setCell(c, 3, sd);
+                    setCell(c, 4, sd/sqrt(m));
+                    setCell(c, 5, gsl_stats_variance(dat, 1, m));
+                    setCell(c, 6, mean*m);
+                    setText(c, 7, QString::number(max_index + 1));
+                    setCell(c, 8, max);
+                    setText(c, 9, QString::number(min_index + 1));
+                    setCell(c, 10, min);
+                    setText(c, 11, QString::number(m));
+
+                    gsl_vector_free (y);
+                    delete[] dat;
+                }
+            }
+        }
 
 	for (int i=0; i<numCols(); i++)
 		emit modifiedData(this, Table::colName(i));
