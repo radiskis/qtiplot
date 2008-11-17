@@ -48,6 +48,9 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, con
 	d_widget_type(type),
 	d_fw(NULL)
 {
+	graph->disableTools();
+	graph->multiLayer()->applicationWindow()->pickPointerCursor();
+	
     QwtPlotCanvas *canvas = graph->canvas();
 	canvas->installEventFilter(this);
 
