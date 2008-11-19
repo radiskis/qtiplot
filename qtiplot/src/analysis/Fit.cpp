@@ -660,15 +660,38 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		return;
 	}
 
-	double *lcl = new double[d_n];
-	if (!lcl)
+	int points = d_n;
+	double *X = NULL;		
+	if (d_gen_function){
+		X = (double *)malloc(d_points*sizeof(double));
+		if (!X){
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
+			tr("Not enough memory!"));
+			return;
+		}
+		points = d_points;
+		double X0 = d_x[0];
+		double step = (d_x[d_n - 1] - X0)/(points - 1);
+		for (int i = 0; i < points; i++)
+			X[i] = X0 + i*step;
+	} else
+		X = d_x;
+	
+	double *lcl = (double *)malloc(d_points*sizeof(double));
+	if (!lcl){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
+		tr("Not enough memory!"));
 		return;
-	double *ucl = new double[d_n];
-	if (!ucl)
+	}
+	double *ucl = (double *)malloc(d_points*sizeof(double));
+	if (!ucl){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
+		tr("Not enough memory!"));
 		return;
+	}
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	Table *outputTable = app->newTable(d_n, 3, app->generateUniqueName(tr("FitStats"), true), tr("Confidence Limits of %1").arg(d_explanation));
+	Table *outputTable = app->newTable(points, 3, app->generateUniqueName(tr("FitStats"), true), tr("Confidence Limits of %1").arg(d_explanation));
 	if (!outputTable)
 		return;
 
@@ -685,14 +708,13 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		double dx = d_x[i] - x_mean;
 		sxx += dx*dx;
 	}
-
 	double mse = d_rss/double(d_n - d_p);
 
-	for (int i = 0; i < d_n; i++){
-		double x = d_x[i];
+	for (int i = 0; i < points; i++){
+		double x = X[i];
 		double dx = x - x_mean;
 		double aux = t*sqrt(mse*(1.0/(double)d_n + dx*dx/sxx));
-
+	
 		outputTable->setCell(i, 0, x);
 		double y = eval(d_results, x);
 		double lowLimit = y - aux;
@@ -702,6 +724,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		outputTable->setCell(i, 2, upLimit);
 		ucl[i] = upLimit;
 	}
+	
 	for (int i = 0; i < outputTable->numCols(); i++)
 		outputTable->table()->adjustColumn(i);
 	app->hideWindow(outputTable);
@@ -711,18 +734,20 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LCL");
-	c->setData(d_x, lcl, d_n);
+	c->setData(X, lcl, points);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex + 2), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
 	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UCL");
-	c->setData(d_x, ucl, d_n);
+	c->setData(X, ucl, points);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex + 2), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
     d_output_graph->updatePlot();
-	delete [] lcl;
-	delete [] ucl;
+	free (lcl);
+	free (ucl);
+	if (d_gen_function)
+		free (X);
 }
 
 double Fit::lcl(int parIndex, double confidenceLevel)
@@ -754,15 +779,38 @@ void Fit::showPredictionLimits(double confidenceLevel)
 		return;
 	}
 
-	double *lcl = new double[d_n];
-	if (!lcl)
+	int points = d_n;
+	double *X = NULL;		
+	if (d_gen_function){
+		X = (double *)malloc(d_points*sizeof(double));
+		if (!X){
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
+			tr("Not enough memory!"));
+			return;
+		}
+		points = d_points;
+		double X0 = d_x[0];
+		double step = (d_x[d_n - 1] - X0)/(points - 1);
+		for (int i = 0; i < points; i++)
+			X[i] = X0 + i*step;
+	} else
+		X = d_x;
+	
+	double *lcl = (double *)malloc(d_points*sizeof(double));
+	if (!lcl){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
+		tr("Not enough memory!"));
 		return;
-	double *ucl = new double[d_n];
-	if (!ucl)
+	}
+	double *ucl = (double *)malloc(d_points*sizeof(double));
+	if (!ucl){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
+		tr("Not enough memory!"));
 		return;
+	}
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	Table *outputTable = app->newTable(d_n, 3, app->generateUniqueName(tr("FitStats"), true), tr("Prediction Limits of %1").arg(d_explanation));
+	Table *outputTable = app->newTable(points, 3, app->generateUniqueName(tr("FitStats"), true), tr("Prediction Limits of %1").arg(d_explanation));
 	if (!outputTable)
 		return;
 
@@ -781,8 +829,8 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	}
 
 	double mse = d_rss/double(d_n - d_p);
-	for (int i = 0; i < d_n; i++){
-		double x = d_x[i];
+	for (int i = 0; i < points; i++){
+		double x = X[i];
 		double dx = x - x_mean;
 		double aux = t*sqrt(mse*(1 + 1.0/(double)d_n + dx*dx/sxx));
 
@@ -804,18 +852,20 @@ void Fit::showPredictionLimits(double confidenceLevel)
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LPL");
-	c->setData(d_x, lcl, d_n);
+	c->setData(X, lcl, points);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex + 3), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
 	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UPL");
-	c->setData(d_x, ucl, d_n);
+	c->setData(X, ucl, points);
     c->setPen(QPen(ColorBox::color(d_curveColorIndex + 3), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
     d_output_graph->updatePlot();
-	delete [] lcl;
-	delete [] ucl;
+	free (lcl);
+	free (ucl);
+	if (d_gen_function)
+		free (X);
 }
 
 void Fit::fit()
