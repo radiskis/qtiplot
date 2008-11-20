@@ -1291,7 +1291,9 @@ The format of the file is simple: each line defines a color by red, green and bl
   <para>This dialog can be opened by several commands such as &format-title-lnk;
   or when you double click on an axis title in your plot.
   The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis>
-  commands allow the modification of the general settings of the text label.</para>
+  commands allow the modification of the general settings of the text label. 
+  You can also specify the distance between the label and the corresponding axis, using the 
+  <emphasis>Distance to axis</emphasis> box.</para>
 
   <figure id="fig-text-options">
     <title>The axis title options dialog.</title>
