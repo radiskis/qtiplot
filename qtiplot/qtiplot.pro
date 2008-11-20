@@ -20,7 +20,7 @@ win32:INCLUDEPATH += ../3rdparty/libpng/
 win32:LIBS 		  += ../3rdparty/libpng/libpng.a
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
-CONFIG          += CustomInstall
+#CONFIG          += CustomInstall
 
 CONFIG          += release
 #CONFIG          += debug
