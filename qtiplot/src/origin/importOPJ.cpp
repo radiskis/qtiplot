@@ -1528,27 +1528,67 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			{
 				Matrix* matrix = mw->matrix(data.right(data.length()-2));
 				plot->addMatrixData(matrix);
-				if(_curve.surface.surface.fill && _curve.surface.grids != Origin::SurfaceProperties::None)
-					plot->customPlotStyle(Qwt3D::FILLEDMESH);
-				else if(_curve.surface.surface.fill)
-					plot->customPlotStyle(Qwt3D::FILLED);
-				else if(_curve.surface.grids != Origin::SurfaceProperties::None)
-					plot->customPlotStyle(Qwt3D::WIREFRAME);
+				switch(_curve.surface.type)
+				{
+				case Origin::SurfaceProperties::ColorMap:
+					{
+						if(_curve.surface.surface.fill && _curve.surface.grids != Origin::SurfaceProperties::None)
+							plot->customPlotStyle(Qwt3D::FILLEDMESH);
+						else if(_curve.surface.surface.fill)
+							plot->customPlotStyle(Qwt3D::FILLED);
+						else if(_curve.surface.grids != Origin::SurfaceProperties::None)
+							plot->customPlotStyle(Qwt3D::WIREFRAME);
+
+						ColorVector colors;
+						for(vector<pair<double, Origin::Color> >::const_iterator it = _curve.surface.colorMap.begin() + 1; it != _curve.surface.colorMap.end(); ++it)
+						{
+							colors.push_back(Qt2GL(originToQtColor(it->second)));
+						}
+						plot->setDataColorMap(colors);
+
+						if(_curve.surface.bottomContour.fill)
+							plot->setFloorData();
+						else if(_curve.surface.bottomContour.contour)
+							plot->setFloorIsolines();
+					}
+					break;
+				case Origin::SurfaceProperties::ColorFill:
+					{
+						if(_curve.surface.grids != Origin::SurfaceProperties::None)
+							plot->customPlotStyle(Qwt3D::FILLEDMESH);
+						else
+							plot->customPlotStyle(Qwt3D::FILLED);
+
+						ColorVector colors;
+						colors.push_back(Qt2GL(originToQtColor(_curve.surface.frontColor)));
+						plot->setDataColorMap(colors);
+					}
+					break;
+				case Origin::SurfaceProperties::WireFrame:
+					{
+						if(_curve.surface.grids != Origin::SurfaceProperties::None)
+							plot->customPlotStyle(Qwt3D::WIREFRAME);
+						else
+							plot->customPlotStyle(Qwt3D::HIDDENLINE);
+					}
+				    break;
+				case Origin::SurfaceProperties::Bars:
+					{
+						plot->customPlotStyle(Qwt3D::USER);
+						ColorVector colors;
+						for(vector<pair<double, Origin::Color> >::const_iterator it = _curve.surface.colorMap.begin() + 1; it != _curve.surface.colorMap.end(); ++it)
+						{
+							colors.push_back(Qt2GL(originToQtColor(it->second)));
+						}
+						plot->setDataColorMap(colors);
+					}
+				    break;
+				default:
+				    break;
+				}
 
 				plot->setMeshColor(originToQtColor(_curve.surface.gridColor));
 				plot->setMeshLineWidth(_curve.surface.gridLineWidth);
-
-				ColorVector colors;
-				for(vector<pair<double, Origin::Color> >::const_iterator it = _curve.surface.colorMap.begin() + 1; it != _curve.surface.colorMap.end(); ++it)
-				{
-					colors.push_back(Qt2GL(originToQtColor(it->second)));
-				}
-				plot->setDataColorMap(colors);
-
-				if(_curve.surface.bottomContour.fill)
-					plot->setFloorData();
-				else if(_curve.surface.bottomContour.contour)
-					plot->setFloorIsolines();
 			}
 			break;
 		default:
