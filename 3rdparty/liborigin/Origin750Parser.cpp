@@ -1526,6 +1526,7 @@ void Origin750Parser::readGraphInfo()
 				GraphCurve curve;
 				file.seekg(LAYER + 0x4C, ios_base::beg);
 				file >> curve.type;
+				BOOST_LOG_(1, format("			graph %d layer %d curve %d type : %d") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % (int)curve.type);
 
 				file.seekg(LAYER + 0x04, ios_base::beg);
 				file >> w;
@@ -1536,12 +1537,12 @@ void Origin750Parser::readGraphInfo()
 					curve.dataName = column.first;
 					if(graphs.back().layers.back().threeDimensional)
 					{
-						BOOST_LOG_(1, format("			graphs %d layer %d curve %d Z : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+						BOOST_LOG_(1, format("			graph %d layer %d curve %d Z : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 						curve.zColumnName = column.second;
 					}
 					else
 					{
-						BOOST_LOG_(1, format("			graphs %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
 					}
 				}
@@ -1553,17 +1554,17 @@ void Origin750Parser::readGraphInfo()
 				{
 					if(curve.dataName != column.first)
 					{
-						BOOST_LOG_(1, format("			graphs %d X and Y from different tables") % graphs.size());
+						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
 					}
 
 					if(graphs.back().layers.back().threeDimensional)
 					{
-						BOOST_LOG_(1, format("			graphs %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
 					}
 					else
 					{
-						BOOST_LOG_(1, format("			graphs %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+						BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 						curve.xColumnName = column.second;
 					}
 				}
@@ -1573,11 +1574,11 @@ void Origin750Parser::readGraphInfo()
 				column = findDataByIndex(w-1);
 				if(column.first.size() > 0 && graphs.back().layers.back().threeDimensional)
 				{
-					BOOST_LOG_(1, format("			graphs %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
+					BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 					curve.xColumnName = column.second;
 					if(curve.dataName != column.first)
 					{
-						BOOST_LOG_(1, format("			graphs %d X and Y from different tables") % graphs.size());
+						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
 					}
 				}
 
@@ -1746,6 +1747,74 @@ void Origin750Parser::readGraphInfo()
 
 					file.seekg(LAYER + 0xA6, ios_base::beg);
 					file >> curve.pie.displacedSectionCount;
+				}
+				//surface
+				if(curve.type == GraphCurve::Mesh3D)
+				{
+					file.seekg(LAYER + 0x1C, ios_base::beg);
+					file >> h;
+					if(h & 0x60 == 0x60)
+						curve.surface.grids = SurfaceProperties::X;
+					else if(h & 0x20)
+						curve.surface.grids = SurfaceProperties::Y;
+					else if(h & 0x40)
+						curve.surface.grids = SurfaceProperties::None;
+					else
+						curve.surface.grids = SurfaceProperties::XY;
+
+					curve.surface.sideWallEnabled = (h & 0x10);
+					file >> curve.surface.frontColor;
+
+					file.seekg(LAYER + 0x14C, ios_base::beg);
+					file >> w;
+					curve.surface.gridLineWidth = (double)w/500.0;
+					file >> curve.surface.gridColor;
+
+					file.seekg(LAYER + 0x13, ios_base::beg);
+					file >> h;
+					curve.surface.backColorEnabled = (h & 0x08);				
+					file.seekg(LAYER + 0x15A, ios_base::beg);
+					file >> curve.surface.backColor;
+					file >> curve.surface.xSideWallColor;
+					file >> curve.surface.ySideWallColor;
+
+					curve.surface.surface.fill = (h & 0x10);
+					curve.surface.surface.contour = (h & 0x40);
+					file.seekg(LAYER + 0x94, ios_base::beg);
+					file >> w;
+					curve.surface.surface.lineWidth = (double)w/500.0;
+					file >> curve.surface.surface.lineColor;
+
+					curve.surface.topContour.fill = (h & 0x02);
+					curve.surface.topContour.contour = (h & 0x04);
+					file.seekg(LAYER + 0xB4, ios_base::beg);
+					file >> w;
+					curve.surface.topContour.lineWidth = (double)w/500.0;
+					file >> curve.surface.topContour.lineColor;
+
+					curve.surface.bottomContour.fill = (h & 0x80);
+					curve.surface.bottomContour.contour = (h & 0x01);
+					file.seekg(LAYER + 0xA4, ios_base::beg);
+					file >> w;
+					curve.surface.bottomContour.lineWidth = (double)w/500.0;
+					file >> curve.surface.bottomContour.lineColor;
+
+
+					file.seekg(LAYER + 0x376, ios_base::beg);
+					do
+					{
+						file.seekg(0x1F, ios_base::cur);
+						Color color;
+						file >> color;
+						file.seekg(0x04, ios_base::cur);
+						double level;
+						file >> level;
+						curve.surface.colorMap.push_back(make_pair(level, color));
+						file.seekg(0x07, ios_base::cur);
+						file >> w;
+					}
+					while(w == -1535);
+					curve.surface.colorMap.pop_back();
 				}
 
 				file.seekg(LAYER + 0xC2, ios_base::beg);

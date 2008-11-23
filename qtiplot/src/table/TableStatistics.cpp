@@ -168,7 +168,7 @@ void TableStatistics::update(Table *t, const QString& colName)
                     setCell(r, 2, mean);
                     double sd = gsl_stats_sd(dat, 1, m);
                     setCell(r, 3, sd);
-                    setCell(r, 4, sd/sqrt(m));
+                    setCell(r, 4, sd/sqrt((double)m));
                     setCell(r, 5, gsl_stats_variance(dat, 1, m));
                     setCell(r, 5, mean*m);
                     setCell(r, 7, max);
@@ -237,7 +237,7 @@ void TableStatistics::update(Table *t, const QString& colName)
                     setCell(c, 2, mean);
                     double sd = gsl_stats_sd(dat, 1, m);
                     setCell(c, 3, sd);
-                    setCell(c, 4, sd/sqrt(m));
+                    setCell(c, 4, sd/sqrt((double)m));
                     setCell(c, 5, gsl_stats_variance(dat, 1, m));
                     setCell(c, 6, mean*m);
                     setText(c, 7, QString::number(max_index + 1));

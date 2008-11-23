@@ -2710,6 +2710,17 @@ sp->showColorLegend(legendOn);
 sp->updateGL();
 }
 
+void Graph3D::setDataColorMap(const ColorVector& colors)
+{
+	col_ = new StandardColor(sp);
+	col_->setColorVector(colors);
+
+	sp->setDataColor(col_);
+	sp->updateData();
+	sp->showColorLegend(legendOn);
+	sp->updateGL();
+}
+
 bool Graph3D::openColorMapFile(ColorVector& cv, QString fname)
 {
 if (fname.isEmpty())
