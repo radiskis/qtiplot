@@ -44,12 +44,24 @@ namespace Origin
 	enum NumericDisplayType {DefaultDecimalDigits = 0, DecimalPlaces = 1, SignificantDigits = 2};
 	enum Attach {Frame = 0, Page = 1, Scale = 2};
 	enum BorderType {BlackLine = 0, Shadow = 1, DarkMarble = 2, WhiteOut = 3, BlackOut = 4, None = -1};
-	enum Color {Black = 0, Red = 1, Green = 2, Blue = 3, Cyan = 4, Magenta = 5, Yellow = 6, DarkYellow = 7, Navy = 8,
-		Purple = 9, Wine = 10, Olive = 11, DarkCyan = 12, Royal=  13, Orange = 14, Violet = 15, Pink = 16, White = 17,
-		LightGray = 18, Gray = 19, LTYellow = 20, LTCyan = 21, LTMagenta = 22, DarkGray = 23, Custom = 255};
 	enum FillPattern {NoFill, BDiagDense, BDiagMedium, BDiagSparse, FDiagDense, FDiagMedium, FDiagSparse, 
 		DiagCrossDense, DiagCrossMedium, DiagCrossSparse, HorizontalDense, HorizontalMedium, HorizontalSparse, 
 		VerticalDense, VerticalMedium, VerticalSparse, CrossDense, CrossMedium, CrossSparse};
+
+	struct Color
+	{
+		enum ColorType {Regular, Custom};
+		enum RegularColor {Black = 0, Red = 1, Green = 2, Blue = 3, Cyan = 4, Magenta = 5, Yellow = 6, DarkYellow = 7, Navy = 8,
+			Purple = 9, Wine = 10, Olive = 11, DarkCyan = 12, Royal=  13, Orange = 14, Violet = 15, Pink = 16, White = 17,
+			LightGray = 18, Gray = 19, LTYellow = 20, LTCyan = 21, LTMagenta = 22, DarkGray = 23/*, Custom = 255*/};
+
+		ColorType type;
+		union
+		{
+			unsigned char regular;
+			unsigned char custom[3];
+		};
+	};
 
 	struct Rect
 	{
@@ -319,6 +331,37 @@ namespace Origin
 		unsigned short fontSize;
 	};
 
+	struct SurfaceProperties
+	{
+		struct SurfaceColoration
+		{
+			bool fill;
+			bool contour;
+			Color lineColor;
+			double lineWidth;
+		};
+
+		enum Grids {None, X, Y, XY};
+
+		Grids grids;
+		double gridLineWidth;
+		Color gridColor;
+
+		bool backColorEnabled;
+		Color frontColor;
+		Color backColor;
+
+		bool sideWallEnabled;
+		Color xSideWallColor;
+		Color ySideWallColor;
+
+		SurfaceColoration surface;
+		SurfaceColoration topContour;
+		SurfaceColoration bottomContour;
+
+		vector<pair<double, Color> > colorMap;
+	};
+
 	struct GraphCurve
 	{
 		enum Plot {Line = 200, Scatter=201, LineSymbol=202, Column = 203, Area = 204, HiLoClose = 205, Box = 206,
@@ -369,6 +412,9 @@ namespace Origin
 
 		//text
 		TextProperties text;
+
+		//surface
+		SurfaceProperties surface;
 	};
 
 	struct GraphAxisBreak

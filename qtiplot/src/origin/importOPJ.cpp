@@ -172,6 +172,11 @@ inline uint qHash(const tree<Origin::ProjectNode>::iterator &key)
 	return qHash(key->name.c_str());
 }
 
+QColor originToQtColor(const Origin::Color& color)
+{
+	return (color.type == Origin::Color::Regular ? ColorBox::color(color.regular) : QColor(color.custom[0], color.custom[1], color.custom[2]));
+}
+
 bool ImportOPJ::createProjectTree(const OriginFile& opj)
 {
 	const tree<Origin::ProjectNode>* projectTree = opj.project();
@@ -1356,6 +1361,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		Origin::GraphCurve& _curve = layer.curves[c];
 		QString data(_curve.dataName.c_str());
 		int color = 0;
+		double fFontScaleFactor = 1.0;
 		switch(_curve.type)
 		{
 		case Origin::GraphCurve::Line3D:
@@ -1364,6 +1370,9 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		/*case Origin::GraphCurve::Column:
 			type = Graph3D::Bars;
 			break;*/
+		case Origin::GraphCurve::Mesh3D:
+			fFontScaleFactor = 2.0;
+			break;
 		default:
 			continue;
 		}
@@ -1381,7 +1390,6 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		Origin::Rect graphRect(_graph.width, _graph.height);
 		Origin::Rect graphWindowRect = _graph.frameRect;
-		double fFontScaleFactor;
 		{
 			double ratio = (double)(graphWindowRect.width() - frameWidth)/(double)(graphWindowRect.height() - frameHeight);
 			int width = _graph.width;
@@ -1398,7 +1406,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			//plot->resize(graphWindowRect.width(), graphWindowRect.height());
 
 			double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
-			fFontScaleFactor = 300*fScale/72*1.3;
+			fFontScaleFactor *= 300*fScale/72*1.3;
 		}
 
 		Origin::Rect layerRect = layer.clientRect;
@@ -1485,14 +1493,12 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->setNumbersFont(font);
 		}
 
-		QString tableName;
 		QStringList formulas;
 		double start, end;
 
 		plot->showColorLegend(false);
 		plot->setFramed();
 
-		Table* table = 0;
 		QColor clr = ColorBox::color(_curve.symbolColor == 0xF7 ? ++auto_color : _curve.symbolColor);
 		plot->setDataColors(clr, clr);
 		
@@ -1513,9 +1519,37 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		switch(data[0].toAscii())
 		{
 		case 'T':
-			tableName = data.right(data.length()-2);
-			table = mw->table(tableName);
-			plot->addData(table, table->colIndex(_curve.xColumnName.c_str()), table->colIndex(_curve.yColumnName.c_str()), table->colIndex(_curve.zColumnName.c_str()), type);
+			{
+				Table* table = mw->table(data.right(data.length()-2));
+				plot->addData(table, table->colIndex(_curve.xColumnName.c_str()), table->colIndex(_curve.yColumnName.c_str()), table->colIndex(_curve.zColumnName.c_str()), type);
+			}
+			break;
+		case 'M':
+			{
+				Matrix* matrix = mw->matrix(data.right(data.length()-2));
+				plot->addMatrixData(matrix);
+				if(_curve.surface.surface.fill && _curve.surface.grids != Origin::SurfaceProperties::None)
+					plot->customPlotStyle(Qwt3D::FILLEDMESH);
+				else if(_curve.surface.surface.fill)
+					plot->customPlotStyle(Qwt3D::FILLED);
+				else if(_curve.surface.grids != Origin::SurfaceProperties::None)
+					plot->customPlotStyle(Qwt3D::WIREFRAME);
+
+				plot->setMeshColor(originToQtColor(_curve.surface.gridColor));
+				plot->setMeshLineWidth(_curve.surface.gridLineWidth);
+
+				ColorVector colors;
+				for(vector<pair<double, Origin::Color> >::const_iterator it = _curve.surface.colorMap.begin() + 1; it != _curve.surface.colorMap.end(); ++it)
+				{
+					colors.push_back(Qt2GL(originToQtColor(it->second)));
+				}
+				plot->setDataColorMap(colors);
+
+				if(_curve.surface.bottomContour.fill)
+					plot->setFloorData();
+				else if(_curve.surface.bottomContour.contour)
+					plot->setFloorIsolines();
+			}
 			break;
 		default:
 			continue;

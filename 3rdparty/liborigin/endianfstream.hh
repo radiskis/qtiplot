@@ -30,6 +30,7 @@
 #define ENDIAN_FSTREAM_H
 
 #include <fstream>
+#include "OriginObj.h"
 
 namespace std
 {
@@ -150,6 +151,25 @@ namespace std
 			string::size_type pos = value.find_first_of('\0');
 			if(pos != string::npos)
 				value.resize(pos);
+
+			return *this;
+		}
+
+		iendianfstream& operator>>(Origin::Color& value)
+		{
+			unsigned char color[4];
+			read(reinterpret_cast<char*>(&color), sizeof(color));
+			if(color[3] == 0)
+			{
+				value.type = Origin::Color::Regular;
+				value.regular = color[0];
+			}
+			else
+			{
+				value.type = Origin::Color::Custom;
+				for(int i = 0; i < 3; ++i)
+					value.custom[i] = color[i];
+			}
 
 			return *this;
 		}
