@@ -1751,6 +1751,8 @@ void Origin750Parser::readGraphInfo()
 				//surface
 				if(curve.type == GraphCurve::Mesh3D)
 				{
+					file.seekg(LAYER + 0x17, ios_base::beg);
+					file >> curve.surface.type;
 					file.seekg(LAYER + 0x1C, ios_base::beg);
 					file >> h;
 					if(h & 0x60 == 0x60)

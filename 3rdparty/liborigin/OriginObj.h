@@ -341,8 +341,10 @@ namespace Origin
 			double lineWidth;
 		};
 
+		enum Type {ColorMap, ColorFill, WireFrame, Bars};
 		enum Grids {None, X, Y, XY};
 
+		unsigned char type;
 		Grids grids;
 		double gridLineWidth;
 		Color gridColor;
