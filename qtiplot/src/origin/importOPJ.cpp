@@ -1356,8 +1356,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 	int type = 0;
 	Origin::Graph _graph = opj.graph(g);
 	Origin::GraphLayer& layer = _graph.layers[l];
-	for(unsigned int c = 0; c < layer.curves.size(); ++c)
-	{
+	for(unsigned int c = 0; c < layer.curves.size(); ++c){
 		Origin::GraphCurve& _curve = layer.curves[c];
 		QString data(_curve.dataName.c_str());
 		int color = 0;
@@ -1386,6 +1385,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_graph.title);
 		plot->setBirthDate(posixTimeToString(_graph.creationDate));
+		plot->setIgnoreFonts(true);
 		plot->hide();//!hack used in order to avoid resize and repaint events
 
 		Origin::Rect graphRect(_graph.width, _graph.height);
@@ -1406,7 +1406,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			//plot->resize(graphWindowRect.width(), graphWindowRect.height());
 
 			double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
-			fFontScaleFactor *= 300*fScale/72*1.3;
+			fFontScaleFactor *= 60*fScale/72*1.3;
 		}
 
 		Origin::Rect layerRect = layer.clientRect;
@@ -1544,8 +1544,8 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 						{
 							colors.push_back(Qt2GL(originToQtColor(it->second)));
 						}
-						plot->setDataColorMap(colors);
-
+						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
+													
 						if(_curve.surface.bottomContour.fill)
 							plot->setFloorData();
 						else if(_curve.surface.bottomContour.contour)
@@ -1559,9 +1559,8 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 						else
 							plot->customPlotStyle(Qwt3D::FILLED);
 
-						ColorVector colors;
-						colors.push_back(Qt2GL(originToQtColor(_curve.surface.frontColor)));
-						plot->setDataColorMap(colors);
+						QColor color = originToQtColor(_curve.surface.frontColor);
+						plot->setDataColorMap(QwtLinearColorMap(color, color));
 					}
 					break;
 				case Origin::SurfaceProperties::WireFrame:
@@ -1580,7 +1579,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 						{
 							colors.push_back(Qt2GL(originToQtColor(it->second)));
 						}
-						plot->setDataColorMap(colors);
+						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
 					}
 				    break;
 				default:
@@ -1604,8 +1603,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		plot->setScale(1, layer.yAxis.min, layer.yAxis.max, layer.yAxis.majorTicks, layer.yAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale]);
 		plot->setScale(2, layer.zAxis.min, layer.zAxis.max, layer.zAxis.majorTicks, layer.zAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.zAxis.scale]);
 					
-		if(!_graph.hidden)
-		{
+		if(!_graph.hidden){
 			plot->move(QPoint(graphWindowRect.left, graphWindowRect.top));
 
 			switch(_graph.state)
@@ -1620,14 +1618,11 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			default:
 				plot->show();
 			}
-		}
-		else
-		{
+		} else {
 			plot->show();
-			//ml->arrangeLayers(true,true);
 			mw->hideWindow(plot);
 		}
-		}
+	}
 
 	return true;
 }
@@ -1792,6 +1787,25 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 	return line;
 }
 
+QwtLinearColorMap ImportOPJ::qwtColorMap(vector<pair<double, Origin::Color> > colorMap)
+{	
+	vector<pair<double, Origin::Color> >::const_iterator it = colorMap.begin() + 1;
+	QColor color1 = originToQtColor(it->second);
+	double level1 = it->first;
+	
+	it = colorMap.end() - 1;
+	QColor color2 = originToQtColor(it->second);
+	double level2 = it->first;
+	
+	QwtLinearColorMap qwt_color_map = QwtLinearColorMap(color1, color2);
+	qwt_color_map.setMode(QwtLinearColorMap::FixedColors);
+	
+	double dl = fabs(level2 - level1);
+	for(it = colorMap.begin() + 2; it != colorMap.end() - 1; ++it)
+		qwt_color_map.addColorStop((it->first - level1)/dl, originToQtColor(it->second));
+	return qwt_color_map;
+}
+					
 //TODO: bug in grid dialog
 //		scale/minor ticks checkbox
 //		histogram: autobin export

@@ -2602,7 +2602,7 @@ void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 	double zmin, zmax;
 	sp->coordinates()->axes[Z1].limits (zmin, zmax);
 	const QwtDoubleInterval intensityRange = QwtDoubleInterval(zmin, zmax);
-
+	
 	int size = 255;
 	double dsize = size;
 	double dz = fabs(zmax - zmin)/dsize;
@@ -2621,6 +2621,14 @@ void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 		sp->showColorLegend(false);
 		sp->showColorLegend(legendOn);
 	}
+}
+
+void Graph3D::setDataColorMap(const ColorVector& colors, const QwtLinearColorMap& colorMap)
+{
+	d_color_map = colorMap;
+	d_color_map_file = QString::null;
+
+	setDataColorMap(colors);
 }
 
 void Graph3D::changeTransparency(double t)
@@ -2692,22 +2700,15 @@ sp->setRotation(int(sp->xRotation() + 1) % 360, int(sp->yRotation() + 1) % 360, 
 
 void Graph3D::setDataColorMap(const QString& fileName)
 {
-if (d_color_map_file == fileName)
-   return;
-
-ColorVector cv;
-if (!openColorMapFile(cv, fileName))
-   return;
-
-d_color_map_file = fileName;
-
-col_ = new StandardColor(sp);
-col_->setColorVector(cv);
-
-sp->setDataColor(col_);
-sp->updateData();
-sp->showColorLegend(legendOn);
-sp->updateGL();
+	if (d_color_map_file == fileName)
+	   return;
+	
+	ColorVector cv;
+	if (!openColorMapFile(cv, fileName))
+	   return;
+	
+	d_color_map_file = fileName;
+	setDataColorMap(cv);
 }
 
 void Graph3D::setDataColorMap(const ColorVector& colors)
