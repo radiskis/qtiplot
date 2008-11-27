@@ -1405,7 +1405,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			//plot->resize(graphWindowRect.width(), graphWindowRect.height());
 
 			double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
-			fFontScaleFactor *= 60*fScale/72*1.3; //Ion: empirically decresed if from 300*...
+			fFontScaleFactor *= 100*fScale/72*1.3; //Ion: empirically decresed if from 300*...
 		}
 
 		Origin::Rect layerRect = layer.clientRect;
