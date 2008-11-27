@@ -255,6 +255,7 @@ public slots:
 	void setDataColorMap(const QwtLinearColorMap& colorMap);
 	void setDataColorMap(const QString& fileName);
 	void setDataColorMap(const ColorVector& colors);
+	void setDataColorMap(const ColorVector& colors, const QwtLinearColorMap& colorMap);
 
 	void changeTransparency(double t);
 	void setTransparency(double t);
