@@ -172,13 +172,14 @@ void TextDialog::apply()
     if (!d_graph)
         return;
 
+
 	if (d_text_type == AxisTitle){
 		if (!d_scale)
 			return;
 
 		QwtText t =	d_scale->title();
 		t.setRenderFlags(alignment());
-		t.setText(textEditBox->toPlainText());
+		t.setText(textEditBox->toPlainText().replace("\n", "<br>"));
 		t.setFont(selectedFont);
 		t.setColor(colorBtn->color());
 		d_scale->setTitle(t);
@@ -186,7 +187,7 @@ void TextDialog::apply()
 	} else if (d_text_type == LayerTitle){
 		QwtText t =	d_graph->title();
 		t.setRenderFlags(alignment());
-		t.setText(textEditBox->toPlainText());
+		t.setText(textEditBox->toPlainText().replace("\n", "<br>"));
 		t.setFont(selectedFont);
 		t.setColor(colorBtn->color());
 		d_graph->setTitle(t);
