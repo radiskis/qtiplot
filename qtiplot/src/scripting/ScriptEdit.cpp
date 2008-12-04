@@ -47,7 +47,7 @@
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
   : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0),
-  d_file_name(QString::null), d_highlighter(0), d_search_string(QString::null)
+  d_file_name(QString::null), d_search_string(QString::null)
 {
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
@@ -58,8 +58,12 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	setTextFormat(Qt::PlainText);
 	setAcceptRichText (false);
 
+#ifdef SCRIPTING_PYTHON
 	if (scriptEnv->name() == QString("Python"))
 		d_highlighter = new PythonSyntaxHighlighter(this);
+	else
+		d_highlighter = NULL;
+#endif
 	
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
@@ -142,6 +146,7 @@ void ScriptEdit::customEvent(QEvent *e)
 		connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
 		connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
+	#ifdef SCRIPTING_PYTHON
 		if (scriptEnv->name() == QString("Python") && !d_highlighter)
 			d_highlighter = new PythonSyntaxHighlighter(this);
 		else {
@@ -149,6 +154,7 @@ void ScriptEdit::customEvent(QEvent *e)
 				delete d_highlighter;
 			d_highlighter = 0;
 		}
+	#endif
 	}
 }
 
@@ -583,8 +589,10 @@ void ScriptEdit::setDirPath(const QString& path)
      return tc.selectedText();
  }
 
+
 void ScriptEdit::rehighlight()
 {
+#ifdef SCRIPTING_PYTHON
 	if (scriptEnv->name() != QString("Python"))
 		return;
 
@@ -592,6 +600,7 @@ void ScriptEdit::rehighlight()
 		delete d_highlighter;
 
 	d_highlighter = new PythonSyntaxHighlighter(this);
+#endif
 }
 
 void ScriptEdit::showFindDialog(bool replace)
@@ -652,6 +661,8 @@ void ScriptEdit::findPrevious()
 
 ScriptEdit::~ScriptEdit()
 {
+ #ifdef SCRIPTING_PYTHON
 	if (d_highlighter)
 		delete d_highlighter;
+ #endif
 }

@@ -38,7 +38,9 @@
 class QAction;
 class QMenu;
 class QCompleter;
+#ifdef SCRIPTING_PYTHON
 class PythonSyntaxHighlighter;
+#endif
 
 /*!\brief Editor widget with support for evaluating expressions and executing code.
  *
@@ -62,7 +64,7 @@ class ScriptEdit: public QTextEdit, public scripted
     void setCompleter(QCompleter *c);
 	void setFileName(const QString& fn);
 	void rehighlight();
-
+	
   public slots:
     void execute();
     void executeAll();
@@ -112,7 +114,9 @@ class ScriptEdit: public QTextEdit, public scripted
 
 	QCompleter *d_completer;
   	QString d_file_name;
+ #ifdef SCRIPTING_PYTHON
 	PythonSyntaxHighlighter *d_highlighter;
+ #endif
 	QString d_search_string;
 	QTextDocument::FindFlags d_search_flags;
 
