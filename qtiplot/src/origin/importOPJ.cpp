@@ -686,7 +686,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		for(unsigned int l = 0; l < _graph.layers.size(); ++l)
 		{
 			Origin::GraphLayer& layer = _graph.layers[l];
-			if(layer.threeDimensional)
+			if(layer.is3D())
 			{
 				importGraph3D(opj, g, l);
 				continue;
