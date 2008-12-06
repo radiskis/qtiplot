@@ -1402,7 +1402,7 @@ void Origin750Parser::readGraphInfo()
 			}
 			else if(sec_name == "3D")
 			{
-				graphs.back().layers.back().threeDimensional = true;
+				//graphs.back().layers.back().threeDimensional = true;
 
 				file >> graphs.back().layers.back().zAxis.min;
 				file >> graphs.back().layers.back().zAxis.max;
@@ -1414,6 +1414,15 @@ void Origin750Parser::readGraphInfo()
 				file.seekg(LAYER+0x28, ios_base::beg);
 				file >> graphs.back().layers.back().zAxis.minorTicks;
 				file >> graphs.back().layers.back().zAxis.scale;
+
+				file.seekg(LAYER+0x218, ios_base::beg);
+				file >> graphs.back().layers.back().xLength;
+				file >> graphs.back().layers.back().yLength;
+				file >> graphs.back().layers.back().zLength;
+
+				graphs.back().layers.back().xLength /= 23.0;
+				graphs.back().layers.back().yLength /= 23.0;
+				graphs.back().layers.back().zLength /= 23.0;
 			}
 			else if(sec_name == "Legend")
 			{
@@ -1523,7 +1532,8 @@ void Origin750Parser::readGraphInfo()
 			{
 				LAYER += 0x5;
 
-				GraphCurve curve;
+				graphs.back().layers.back().curves.push_back(GraphCurve());
+				GraphCurve& curve(graphs.back().layers.back().curves.back());
 				file.seekg(LAYER + 0x4C, ios_base::beg);
 				file >> curve.type;
 				BOOST_LOG_(1, format("			graph %d layer %d curve %d type : %d") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % (int)curve.type);
@@ -1535,7 +1545,7 @@ void Origin750Parser::readGraphInfo()
 				if(column.first.size() > 0)
 				{
 					curve.dataName = column.first;
-					if(graphs.back().layers.back().threeDimensional)
+					if(graphs.back().layers.back().is3D())
 					{
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Z : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 						curve.zColumnName = column.second;
@@ -1557,7 +1567,7 @@ void Origin750Parser::readGraphInfo()
 						BOOST_LOG_(1, format("			graph %d X and Y from different tables") % graphs.size());
 					}
 
-					if(graphs.back().layers.back().threeDimensional)
+					if(graphs.back().layers.back().is3D())
 					{
 						BOOST_LOG_(1, format("			graph %d layer %d curve %d Y : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 						curve.yColumnName = column.second;
@@ -1572,7 +1582,7 @@ void Origin750Parser::readGraphInfo()
 				file.seekg(LAYER + 0x4D, ios_base::beg);
 				file >> w;
 				column = findDataByIndex(w-1);
-				if(column.first.size() > 0 && graphs.back().layers.back().threeDimensional)
+				if(column.first.size() > 0 && graphs.back().layers.back().is3D())
 				{
 					BOOST_LOG_(1, format("			graph %d layer %d curve %d X : %s.%s") % graphs.size() % graphs.back().layers.size() % graphs.back().layers.back().curves.size() % column.first.c_str() % column.second.c_str());
 					curve.xColumnName = column.second;
@@ -1859,8 +1869,6 @@ void Origin750Parser::readGraphInfo()
 				file.seekg(LAYER + 0x143, ios_base::beg);
 				file >> h;
 				curve.connectSymbols = (h&0x8);
-
-				graphs.back().layers.back().curves.push_back(curve);
 
 				LAYER += 0x1E7 + 0x1;
 

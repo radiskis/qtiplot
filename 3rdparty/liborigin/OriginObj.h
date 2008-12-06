@@ -34,9 +34,12 @@
 #include <string>
 #include <vector>
 #include "boost/variant.hpp"
+#include "boost/bind.hpp"
 #include "boost/date_time/posix_time/ptime.hpp"
 
 using namespace std;
+
+#define	_ONAN		(-1.23456789E-300)
 
 namespace Origin
 {
@@ -599,7 +602,17 @@ namespace Origin
 		vector<Bitmap> bitmaps;
 		vector<GraphCurve> curves;
 
-		bool threeDimensional;
+		float xLength;
+		float yLength;
+		float zLength;
+
+		//bool threeDimensional;
+		bool is3D() const
+		{
+			return curves.end() != find_if(curves.begin(), curves.end(), 
+											boost::bind(logical_or<bool>(), boost::bind(&GraphCurve::type, _1) == GraphCurve::Line3D,  
+																			boost::bind(&GraphCurve::type, _1) == GraphCurve::Mesh3D));
+		}
 	};
 
 	struct GraphLayerRange
