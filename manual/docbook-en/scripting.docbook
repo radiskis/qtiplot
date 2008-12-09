@@ -1024,6 +1024,39 @@ Possible values are: 0 for line feed (LF), which is the default value,
 <para>The last parameter <varname>maxRows</varname> allows you to specify a maximum number of imported
 lines. Negative values mean that all data lines must be imported.</para>
 
+<para>If the decimal seperator of the imported file does not match the currently used conventions, you have to
+adjust them before using the table:</para>
+<programlisting>
+t.setDecimalSeperators(country,ignoreGroupSeperator=True)
+</programlisting>
+<para>Where country can have one of the following values:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Use the system value</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Use the following format: 1,000.00</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Use the following format: 1.000,00</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Use the following format: 1 000,00</para>
+              </listitem>
+            </varlistentry>
+</variablelist></para>
+
 <para>You can export values from a table to an ASCII <varname>file</varname>, using
 <varname>sep</varname> as separator chararacter. The <varname>ColumnLabels</varname> option
 allows you to export or ignore the column labels, <varname>ColumnComments</varname> does the same for the comments
