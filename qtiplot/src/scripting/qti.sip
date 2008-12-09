@@ -192,6 +192,30 @@ public:
   					bool=true, bool=false, bool=false, const QString&="#", bool=false,
 					ImportMode = Overwrite, int = 0, int = -1);
   bool exportASCII(const QString&, const QString&="\t", bool=false, bool=false, bool=false);
+  
+  void setDecimalSeperators(int,bool=true);
+%MethodCode
+	QLocale locale;
+    switch (a0){
+        case 0:
+            locale = QLocale::system();
+        break;
+        case 1:
+            locale = QLocale::c();
+        break;
+        case 2:
+            locale = QLocale(QLocale::German);
+        break;
+        case 3:
+            locale = QLocale(QLocale::French);
+        break;
+    }
+ 	if (a1==true)
+		locale.setNumberOptions(QLocale::OmitGroupSeparator);
+
+    sipCpp->updateDecimalSeparators(locale);
+%End
+  
   void normalizeCol(SIP_PYOBJECT) /PyName=normalize/;
 %MethodCode
 	sipIsErr = 0;

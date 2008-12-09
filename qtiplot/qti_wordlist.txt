@@ -519,3 +519,4 @@ QColor
 parameterNames
 Ellipse
 import
+setDecimalSeperators
