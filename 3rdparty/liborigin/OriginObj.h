@@ -334,6 +334,30 @@ namespace Origin
 		unsigned short fontSize;
 	};
 
+
+	struct ColorMapLevel
+	{
+		Color fillColor;
+		unsigned char fillPattern;
+		Color fillPatternColor;
+		double fillPatternLineWidth;
+
+		bool lineVisible;
+		Color lineColor;
+		unsigned char lineStyle;
+		double lineWidth;
+
+		bool labelVisible;
+	};
+
+	typedef vector<pair<double, ColorMapLevel> > ColorMapVector;
+
+	struct ColorMap
+	{
+		bool fillEnabled;
+		ColorMapVector levels;
+	};
+
 	struct SurfaceProperties
 	{
 		struct SurfaceColoration
@@ -344,7 +368,7 @@ namespace Origin
 			double lineWidth;
 		};
 
-		enum Type {ColorMap, ColorFill, WireFrame, Bars};
+		enum Type {ColorMap3D, ColorFill, WireFrame, Bars};
 		enum Grids {None, X, Y, XY};
 
 		unsigned char type;
@@ -364,7 +388,7 @@ namespace Origin
 		SurfaceColoration topContour;
 		SurfaceColoration bottomContour;
 
-		vector<pair<double, Color> > colorMap;
+		ColorMap colorMap;
 	};
 
 	struct GraphCurve
@@ -420,6 +444,9 @@ namespace Origin
 
 		//surface
 		SurfaceProperties surface;
+
+		//contour
+		ColorMap colorMap;
 	};
 
 	struct GraphAxisBreak

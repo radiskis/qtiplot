@@ -48,7 +48,7 @@ public:
 	int error(){return parse_error;};
 
 private:
-	QwtLinearColorMap qwtColorMap(vector<pair<double, Origin::Color> > colorMap);
+	QwtLinearColorMap qwtColorMap(const Origin::ColorMap& colorMap);
     int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
 	QString parseOriginText(const QString &str);
 	QString parseOriginTags(const QString &str);

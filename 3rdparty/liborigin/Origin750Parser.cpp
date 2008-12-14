@@ -1810,23 +1810,49 @@ void Origin750Parser::readGraphInfo()
 					file >> w;
 					curve.surface.bottomContour.lineWidth = (double)w/500.0;
 					file >> curve.surface.bottomContour.lineColor;
+				}
 
-
-					file.seekg(LAYER + 0x376, ios_base::beg);
-					do
+				if(curve.type == GraphCurve::Mesh3D || curve.type == GraphCurve::Contour)
+				{
+					ColorMap& colorMap = (curve.type == GraphCurve::Mesh3D ? curve.surface.colorMap : curve.colorMap);
+					file.seekg(LAYER + 0x13, ios_base::beg);
+					file >> h;
+					colorMap.fillEnabled = (h & 0x82);
+					file.seekg(LAYER + 0x36D, ios_base::beg);
+					while(true)
 					{
-						file.seekg(0x1F, ios_base::cur);
-						Color color;
-						file >> color;
-						file.seekg(0x04, ios_base::cur);
-						double level;
-						file >> level;
-						curve.surface.colorMap.push_back(make_pair(level, color));
-						file.seekg(0x07, ios_base::cur);
+						ColorMapLevel level;
+						file >> level.fillPattern;
+
+						file.seekg(0x03, ios_base::cur);
+						file >> level.fillPatternColor;
 						file >> w;
+						level.fillPatternLineWidth = (double)w/500.0;
+
+						file.seekg(0x06, ios_base::cur);
+						file >> level.lineStyle;
+
+						file.seekg(0x01, ios_base::cur);
+						file >> w;
+						level.lineWidth = (double)w/500.0;
+						file >> level.lineColor;
+
+						file.seekg(0x02, ios_base::cur);
+						file >> h;
+						level.labelVisible = (h & 0x1);
+						level.lineVisible = !(h & 0x2);
+						
+						file.seekg(0x0D, ios_base::cur);
+						file >> level.fillColor;
+						file.seekg(0x04, ios_base::cur);
+						double value;
+						file >> value;
+						if(value == 0.0 && colorMap.levels.size() > 0 && colorMap.levels.back().first == 0.0)
+							break;
+
+						colorMap.levels.push_back(make_pair(value, level));
 					}
-					while(w == -1535);
-					curve.surface.colorMap.pop_back();
+					colorMap.levels.pop_back();
 				}
 
 				file.seekg(LAYER + 0xC2, ios_base::beg);

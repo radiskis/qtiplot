@@ -52,6 +52,7 @@
 #include <ImageWidget.h>
 #include <RectangleWidget.h>
 #include <EllipseWidget.h>
+#include <Spectrogram.h>
 
 #include <Graph3D.h>
 
@@ -713,45 +714,48 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				switch(_curve.type)
 				{
 				case Origin::GraphCurve::Line:
-					style=Graph::Line;
+					style = Graph::Line;
 					break;
 				case Origin::GraphCurve::Scatter:
-					style=Graph::Scatter;
+					style = Graph::Scatter;
 					break;
 				case Origin::GraphCurve::LineSymbol:
-					style=Graph::LineSymbols;
+					style = Graph::LineSymbols;
 					break;
 				case Origin::GraphCurve::ErrorBar:
 				case Origin::GraphCurve::XErrorBar:
-					style=Graph::ErrorBars;
+					style = Graph::ErrorBars;
 					break;
 				case Origin::GraphCurve::Column:
-					style=Graph::VerticalBars;
+					style = Graph::VerticalBars;
 					break;
 				case Origin::GraphCurve::Bar:
-					style=Graph::HorizontalBars;
+					style = Graph::HorizontalBars;
 					break;
 				case Origin::GraphCurve::Histogram:
-					style=Graph::Histogram;
+					style = Graph::Histogram;
 					break;
 				case Origin::GraphCurve::Pie:
-					style=Graph::Pie;
+					style = Graph::Pie;
 					break;
 				case Origin::GraphCurve::Box:
-					style=Graph::Box;
+					style = Graph::Box;
 					break;
 				case Origin::GraphCurve::FlowVector:
-					style=Graph::VectXYXY;
+					style = Graph::VectXYXY;
 					break;
 				case Origin::GraphCurve::Vector:
-					style=Graph::VectXYAM;
+					style = Graph::VectXYAM;
 					break;
 				case Origin::GraphCurve::Area:
 				case Origin::GraphCurve::AreaStack:
-					style=Graph::Area;
+					style = Graph::Area;
 					break;
 				case Origin::GraphCurve::TextPlot:
-					style=Origin::GraphCurve::TextPlot;
+					style = Origin::GraphCurve::TextPlot;
+					break;
+				case Origin::GraphCurve::Contour:
+					style = Origin::GraphCurve::Contour;
 					break;
 				default:
 					continue;
@@ -847,6 +851,30 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					}
 					else
 						curve = (PlotCurve *)graph->insertCurve(mw->table(tableName), QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
+					break;
+				case 'M':
+					if(style == Origin::GraphCurve::Contour)
+					{
+						QString matrixName = data.right(data.length()-2);
+						Matrix* matrix = mw->matrix(matrixName);
+						curve = (PlotCurve*)graph->plotSpectrogram(matrix, Graph::ColorMap);
+						Spectrogram* sp = (Spectrogram*) curve;
+						sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
+						QwtValueList levels;
+						QPen pen;
+						for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1; it != _curve.colorMap.levels.end(); ++it)
+						{
+							if(it->second.lineVisible)
+							{
+								levels.push_back(it->first);
+								pen = QPen(originToQtColor(it->second.lineColor), ceil(it->second.lineWidth), lineStyles[(Origin::GraphCurve::LineStyle)it->second.lineStyle]);
+								sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, true);
+							}
+						}
+						sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, _curve.colorMap.fillEnabled);
+						sp->setContourLevels(levels);
+						sp->setDefaultContourPen(pen);
+					}
 					break;
 				case 'F':
 					s = opj.functionIndex(data.right(data.length()-2).toStdString());
@@ -977,7 +1005,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				}
 				cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle] - 1;
 
-				graph->updateCurveLayout(curve, &cl);
+				if (style != Origin::GraphCurve::Contour)
+					graph->updateCurveLayout(curve, &cl);
+
 				if (style == Graph::VerticalBars || style == Graph::HorizontalBars)
 				{
 					QwtBarCurve *b = (QwtBarCurve*)graph->curve(c);
@@ -1019,6 +1049,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					graph->updateVectorsLayout(c, ColorBox::color(cl.symCol), ceil(_curve.vector.width),
 						floor(_curve.vector.arrowLenght*fVectorArrowScaleFactor + 0.5), _curve.vector.arrowAngle, _curve.vector.arrowClosed, _curve.vector.position);
 				}
+	
 				switch(_curve.lineConnect)
 				{
 				case Origin::GraphCurve::NoLine:
@@ -1054,7 +1085,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			}
 			else if(style != Graph::Box)
 			{
-
 				Origin::GraphAxisBreak breakX = layer.xAxisBreak;
 				Origin::GraphAxisBreak breakY = layer.yAxisBreak;
 				if(breakX.show)
@@ -1529,7 +1559,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 				plot->addMatrixData(matrix);
 				switch(_curve.surface.type)
 				{
-				case Origin::SurfaceProperties::ColorMap:
+				case Origin::SurfaceProperties::ColorMap3D:
 					{
 						if(_curve.surface.surface.fill && _curve.surface.grids != Origin::SurfaceProperties::None)
 							plot->customPlotStyle(Qwt3D::FILLEDMESH);
@@ -1539,9 +1569,9 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 							plot->customPlotStyle(Qwt3D::WIREFRAME);
 
 						ColorVector colors;
-						for(vector<pair<double, Origin::Color> >::const_iterator it = _curve.surface.colorMap.begin() + 1; it != _curve.surface.colorMap.end(); ++it)
+						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end(); ++it)
 						{
-							colors.push_back(Qt2GL(originToQtColor(it->second)));
+							colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
 						}
 						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
 													
@@ -1574,9 +1604,9 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 					{
 						plot->customPlotStyle(Qwt3D::USER);
 						ColorVector colors;
-						for(vector<pair<double, Origin::Color> >::const_iterator it = _curve.surface.colorMap.begin() + 1; it != _curve.surface.colorMap.end(); ++it)
+						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end(); ++it)
 						{
-							colors.push_back(Qt2GL(originToQtColor(it->second)));
+							colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
 						}
 						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
 					}
@@ -1786,22 +1816,22 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 	return line;
 }
 
-QwtLinearColorMap ImportOPJ::qwtColorMap(vector<pair<double, Origin::Color> > colorMap)
+QwtLinearColorMap ImportOPJ::qwtColorMap(const Origin::ColorMap& colorMap)
 {	
-	vector<pair<double, Origin::Color> >::const_iterator it = colorMap.begin() + 1;
-	QColor color1 = originToQtColor(it->second);
+	Origin::ColorMapVector::const_iterator it = colorMap.levels.begin() + 1;
+	QColor color1 = originToQtColor(it->second.fillColor);
 	double level1 = it->first;
 	
-	it = colorMap.end() - 1;
-	QColor color2 = originToQtColor(it->second);
+	it = colorMap.levels.end() - 1;
+	QColor color2 = originToQtColor(it->second.fillColor);
 	double level2 = it->first;
 	
 	QwtLinearColorMap qwt_color_map = QwtLinearColorMap(color1, color2);
 	qwt_color_map.setMode(QwtLinearColorMap::FixedColors);
 	
 	double dl = fabs(level2 - level1);
-	for(it = colorMap.begin() + 2; it != colorMap.end() - 1; ++it)
-		qwt_color_map.addColorStop((it->first - level1)/dl, originToQtColor(it->second));
+	for(it = colorMap.levels.begin() + 2; it != colorMap.levels.end() - 1; ++it)
+		qwt_color_map.addColorStop((it->first - level1)/dl, originToQtColor(it->second.fillColor));
 	return qwt_color_map;
 }
 					
