@@ -910,6 +910,10 @@ You can delete a range of rows using:
 <programlisting>
 t.deleteRows(startRowNumber, endRowNumber)
 </programlisting>
+You can delete a colum using:
+<programlisting>
+t.removeCol(number)
+</programlisting>
 Column names can be read and written with:
 <programlisting>
 t.colName(number)
