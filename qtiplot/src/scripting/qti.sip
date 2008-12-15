@@ -141,6 +141,18 @@ public:
 	}
 %End
 
+    void removeCol(SIP_PYOBJECT);
+%MethodCode
+    sipIsErr=0;
+    CHECK_TABLE_COL(a0);
+    if (sipIsErr==0)
+    {
+        QStringList list;
+        list <<  "_" + sipCpp->colLabel(col);
+        sipCpp->removeCol(list);
+    }
+%End
+
   double cell(SIP_PYOBJECT, int);
 %MethodCode
   sipIsErr = 0;
