@@ -874,6 +874,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, _curve.colorMap.fillEnabled);
 						sp->setContourLevels(levels);
 						sp->setDefaultContourPen(pen);
+
+						matrix->setGrayScale();
 					}
 					break;
 				case 'F':
@@ -1005,10 +1007,10 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				}
 				cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle] - 1;
 
-				if (style != Origin::GraphCurve::Contour)
+				if(style != Origin::GraphCurve::Contour)
 					graph->updateCurveLayout(curve, &cl);
 
-				if (style == Graph::VerticalBars || style == Graph::HorizontalBars)
+				if(style == Graph::VerticalBars || style == Graph::HorizontalBars)
 				{
 					QwtBarCurve *b = (QwtBarCurve*)graph->curve(c);
 					if (b)

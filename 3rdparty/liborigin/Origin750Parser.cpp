@@ -141,30 +141,28 @@ bool Origin750Parser::parse()
 				++dataIndex;
 
 				BOOST_LOG_(1, "VALUES :");
-				out.str(string());
+				out.str(size > 100 ? "matrix too big..." : string());
 				switch(data_type)
 				{
 				case 0x6001://double
 					for(unsigned int i = 0; i < size; ++i)
 					{
-						double value;
-						//fread(&value,valuesize,1,f);
-						
+						double value;				
 						file >> value;
 						matrixes.back().data.push_back((double)value);
-						out << format("%g ") % matrixes.back().data.back();
+						if(size < 100)
+							out << format("%g ") % matrixes.back().data.back();
 					}
 					BOOST_LOG_(1, out.str());
 					break;
 				case 0x6003://float
 					for(unsigned int i = 0; i < size; ++i)
 					{
-						float value;
-						//fread(&value,valuesize,1,f);
-						
+						float value;						
 						file >> value;
 						matrixes.back().data.push_back((double)value);
-						out << format("%g ") % matrixes.back().data.back();
+						if(size < 100)
+							out << format("%g ") % matrixes.back().data.back();
 					}
 					BOOST_LOG_(1, out.str());
 					break;
@@ -173,12 +171,11 @@ bool Origin750Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							unsigned int value;
-							//fread(&value,valuesize,1,f);
-							
+							unsigned int value;						
 							file >> value;
 							matrixes.back().data.push_back((double)value);
-							out << format("%g ") % matrixes.back().data.back();
+							if(size < 100)
+								out << format("%g ") % matrixes.back().data.back();
 						}
 						BOOST_LOG_(1, out.str());
 					}
@@ -186,12 +183,11 @@ bool Origin750Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							int value;
-							//fread(&value,valuesize,1,f);
-							
+							int value;							
 							file >> value;
 							matrixes.back().data.push_back((double)value);
-							out << format("%g ") % matrixes.back().data.back();
+							if(size < 100)
+								out << format("%g ") % matrixes.back().data.back();
 						}
 						BOOST_LOG_(1, out.str());
 					}
@@ -201,12 +197,11 @@ bool Origin750Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							unsigned short value;
-							//fread(&value,valuesize,1,f);
-							
+							unsigned short value;						
 							file >> value;
 							matrixes.back().data.push_back((double)value);
-							out << format("%g ") % matrixes.back().data.back();
+							if(size < 100)
+								out << format("%g ") % matrixes.back().data.back();
 						}
 						BOOST_LOG_(1, out.str());
 					}
@@ -214,12 +209,11 @@ bool Origin750Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							short value;
-							//fread(&value,valuesize,1,f);
-							
+							short value;							
 							file >> value;
 							matrixes.back().data.push_back((double)value);
-							out << format("%g ") % matrixes.back().data.back();
+							if(size < 100)
+								out << format("%g ") % matrixes.back().data.back();
 						}
 						BOOST_LOG_(1, out.str());
 					}
@@ -229,12 +223,11 @@ bool Origin750Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							unsigned char value;
-							//fread(&value,valuesize,1,f);
-							
+							unsigned char value;						
 							file >> value;
 							matrixes.back().data.push_back((double)value);
-							out << format("%g ") % matrixes.back().data.back();
+							if(size < 100)
+								out << format("%g ") % matrixes.back().data.back();
 						}
 						BOOST_LOG_(1, out.str());
 					}
@@ -242,12 +235,11 @@ bool Origin750Parser::parse()
 					{
 						for(unsigned int i = 0; i < size; ++i)
 						{
-							char value;
-							//fread(&value,valuesize,1,f);
-							
+							char value;							
 							file >> value;
 							matrixes.back().data.push_back((double)value);
-							out << format("%g ") % matrixes.back().data.back();
+							if(size < 100)
+								out << format("%g ") % matrixes.back().data.back();
 						}
 						BOOST_LOG_(1, out.str());
 					}
@@ -1818,8 +1810,11 @@ void Origin750Parser::readGraphInfo()
 					file.seekg(LAYER + 0x13, ios_base::beg);
 					file >> h;
 					colorMap.fillEnabled = (h & 0x82);
+					file.seekg(LAYER + 0x259, ios_base::beg);
+					unsigned int colorMapSize;
+					file >> colorMapSize;
 					file.seekg(LAYER + 0x36D, ios_base::beg);
-					while(true)
+					for(unsigned int i = 0; i < colorMapSize + 2; ++i)
 					{
 						ColorMapLevel level;
 						file >> level.fillPattern;
@@ -1847,12 +1842,9 @@ void Origin750Parser::readGraphInfo()
 						file.seekg(0x04, ios_base::cur);
 						double value;
 						file >> value;
-						if(value == 0.0 && colorMap.levels.size() > 0 && colorMap.levels.back().first == 0.0)
-							break;
 
 						colorMap.levels.push_back(make_pair(value, level));
 					}
-					colorMap.levels.pop_back();
 				}
 
 				file.seekg(LAYER + 0xC2, ios_base::beg);
