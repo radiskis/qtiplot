@@ -56,6 +56,7 @@ private:
 	void readProjectTree();
 	void readProjectTreeFolder(tree<ProjectNode>::iterator parent);
 	void readWindowProperties(Window& window, unsigned int size);
+	void readColorMap(ColorMap& colorMap);
 
 	unsigned int objectIndex;
 	iendianfstream file;

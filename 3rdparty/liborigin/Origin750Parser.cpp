@@ -1085,6 +1085,11 @@ void Origin750Parser::readMatrixInfo()
 
 		//section_body_2
 		LAYER += 0x5;
+		if(sec_name == "COLORMAP")
+		{
+			file.seekg(LAYER + 0x14, ios_base::beg);
+			readColorMap(matrixes[idx].colorMap);
+		}
 
 		//close section 00 00 00 00 0A
 		LAYER += size + (size > 0 ? 0x1 : 0) + 0x5;
@@ -1811,40 +1816,7 @@ void Origin750Parser::readGraphInfo()
 					file >> h;
 					colorMap.fillEnabled = (h & 0x82);
 					file.seekg(LAYER + 0x259, ios_base::beg);
-					unsigned int colorMapSize;
-					file >> colorMapSize;
-					file.seekg(LAYER + 0x36D, ios_base::beg);
-					for(unsigned int i = 0; i < colorMapSize + 2; ++i)
-					{
-						ColorMapLevel level;
-						file >> level.fillPattern;
-
-						file.seekg(0x03, ios_base::cur);
-						file >> level.fillPatternColor;
-						file >> w;
-						level.fillPatternLineWidth = (double)w/500.0;
-
-						file.seekg(0x06, ios_base::cur);
-						file >> level.lineStyle;
-
-						file.seekg(0x01, ios_base::cur);
-						file >> w;
-						level.lineWidth = (double)w/500.0;
-						file >> level.lineColor;
-
-						file.seekg(0x02, ios_base::cur);
-						file >> h;
-						level.labelVisible = (h & 0x1);
-						level.lineVisible = !(h & 0x2);
-						
-						file.seekg(0x0D, ios_base::cur);
-						file >> level.fillColor;
-						file.seekg(0x04, ios_base::cur);
-						double value;
-						file >> value;
-
-						colorMap.levels.push_back(make_pair(value, level));
-					}
+					readColorMap(colorMap);
 				}
 
 				file.seekg(LAYER + 0xC2, ios_base::beg);
@@ -2401,6 +2373,46 @@ void Origin750Parser::readWindowProperties(Window& window, unsigned int size)
 		}
 
 		BOOST_LOG_(1, format("			WINDOW %d LABEL: %s") % objectIndex % window.label);
+	}
+}
+
+void Origin750Parser::readColorMap(ColorMap& colorMap)
+{
+	unsigned char h;
+	short w;
+	unsigned int colorMapSize;
+	file >> colorMapSize;
+	file.seekg(0x110, ios_base::cur);
+	for(unsigned int i = 0; i < colorMapSize + 2; ++i)
+	{
+		ColorMapLevel level;
+		file >> level.fillPattern;
+
+		file.seekg(0x03, ios_base::cur);
+		file >> level.fillPatternColor;
+		file >> w;
+		level.fillPatternLineWidth = (double)w/500.0;
+
+		file.seekg(0x06, ios_base::cur);
+		file >> level.lineStyle;
+
+		file.seekg(0x01, ios_base::cur);
+		file >> w;
+		level.lineWidth = (double)w/500.0;
+		file >> level.lineColor;
+
+		file.seekg(0x02, ios_base::cur);
+		file >> h;
+		level.labelVisible = (h & 0x1);
+		level.lineVisible = !(h & 0x2);
+
+		file.seekg(0x0D, ios_base::cur);
+		file >> level.fillColor;
+		file.seekg(0x04, ios_base::cur);
+		double value;
+		file >> value;
+
+		colorMap.levels.push_back(make_pair(value, level));
 	}
 }
 
