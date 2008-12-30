@@ -92,6 +92,29 @@ namespace Origin
 		};
 	};
 
+	struct ColorMapLevel
+	{
+		Color fillColor;
+		unsigned char fillPattern;
+		Color fillPatternColor;
+		double fillPatternLineWidth;
+
+		bool lineVisible;
+		Color lineColor;
+		unsigned char lineStyle;
+		double lineWidth;
+
+		bool labelVisible;
+	};
+
+	typedef vector<pair<double, ColorMapLevel> > ColorMapVector;
+
+	struct ColorMap
+	{
+		bool fillEnabled;
+		ColorMapVector levels;
+	};
+
 	struct Window
 	{
 		enum State {Normal, Minimized, Maximized};
@@ -193,6 +216,7 @@ namespace Origin
 		unsigned int index;
 		ViewType view;
 		HeaderViewType header;
+		ColorMap colorMap;
 		vector<double> data;
 
 		Matrix(const string& _name = "", unsigned int _index = 0)
@@ -332,30 +356,6 @@ namespace Origin
 		short xOffset;
 		short yOffset;
 		unsigned short fontSize;
-	};
-
-
-	struct ColorMapLevel
-	{
-		Color fillColor;
-		unsigned char fillPattern;
-		Color fillPatternColor;
-		double fillPatternLineWidth;
-
-		bool lineVisible;
-		Color lineColor;
-		unsigned char lineStyle;
-		double lineWidth;
-
-		bool labelVisible;
-	};
-
-	typedef vector<pair<double, ColorMapLevel> > ColorMapVector;
-
-	struct ColorMap
-	{
-		bool fillEnabled;
-		ColorMapVector levels;
 	};
 
 	struct SurfaceProperties

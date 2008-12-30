@@ -522,7 +522,12 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		Matrix->setFormula(matrix.command.c_str());
 		Matrix->setColumnsWidth(matrix.width * QtiPlot_scaling_factor);
 		if(matrix.view == Origin::Matrix::ImageView)
+		{
 			Matrix->setViewType(Matrix::ImageView);
+			Origin::ColorMap colorMap = matrix.colorMap;
+			colorMap.levels.pop_back();
+			Matrix->setColorMap(qwtColorMap(colorMap));
+		}
 
 		if(matrix.header == Origin::Matrix::XY)
 			Matrix->setHeaderViewType(Matrix::XY);
@@ -874,8 +879,6 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, _curve.colorMap.fillEnabled);
 						sp->setContourLevels(levels);
 						sp->setDefaultContourPen(pen);
-
-						matrix->setGrayScale();
 					}
 					break;
 				case 'F':
