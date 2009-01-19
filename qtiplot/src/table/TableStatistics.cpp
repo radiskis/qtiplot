@@ -35,6 +35,7 @@
 
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_statistics.h>
+#include <gsl/gsl_sort.h>
 
 TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type t, QList<int> targets)
 	: Table(env, 1, 1, "", parent, ""),
@@ -46,7 +47,7 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 		setName(QString(d_base->objectName())+"-"+tr("RowStats"));
 		setWindowLabel(tr("Row Statistics of %1").arg(base->objectName()));
 		resizeRows(d_targets.size());
-                resizeCols(10);
+                resizeCols(11);
 		setColName(0, tr("Row"));
 		setColName(1, tr("Cols"));
 		setColName(2, tr("Mean"));
@@ -57,7 +58,8 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
                 setColName(7, tr("Max"));
                 setColName(8, tr("Min"));
                 setColName(9, "N");
-
+                setColName(10, tr("Median"));
+                
                 for (int i=0; i < numCols(); i++)
                     setColumnType(i, Text);
 
@@ -68,7 +70,7 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 		setName(QString(d_base->objectName())+"-"+tr("ColStats"));
 		setWindowLabel(tr("Column Statistics of %1").arg(base->objectName()));
 		resizeRows(d_targets.size());
-                resizeCols(12);
+                resizeCols(13);
 		setColName(0, tr("Col"));
 		setColName(1, tr("Rows"));
 		setColName(2, tr("Mean"));
@@ -81,7 +83,8 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
                 setColName(9, tr("iMin"));
                 setColName(10, tr("Min"));
                 setColName(11, "N");
-
+                setColName(12, tr("Median"));
+                
                 for (int i = 0; i < numCols(); i++)
                     setColumnType(i, Text);
 
@@ -129,7 +132,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 	
 	int j;
         if (d_type == row){
-            if (numCols () < 10){ //modified columns structure
+            if (numCols () < 11){ //modified columns structure
                 d_base = NULL;
                 return;
             }
@@ -175,12 +178,17 @@ void TableStatistics::update(Table *t, const QString& colName)
                     setCell(r, 8, min);
                     setText(r, 9, QString::number(m));
 
+                    //after everything else is done, calculate median
+                    gsl_sort(dat,1,m); //sort data
+                    double median = gsl_stats_median_from_sorted_data(dat,1,m); //get median
+                    setCell(r, 10, median);
+
                     gsl_vector_free (y);
                     delete[] dat;
                 }
             }
         } else if (d_type == column){
-            if (numCols () < 12){ //modified columns structure
+            if (numCols () < 13){ //modified columns structure
                 d_base = NULL;
                 return;
             }
@@ -245,7 +253,11 @@ void TableStatistics::update(Table *t, const QString& colName)
                     setText(c, 9, QString::number(min_index + 1));
                     setCell(c, 10, min);
                     setText(c, 11, QString::number(m));
-
+                    //after everything else is done, calculate median
+                    gsl_sort(dat,1,m); //sort data
+                    double median = gsl_stats_median_from_sorted_data(dat,1,m); //get median
+                    setCell(c, 12, median);
+                    
                     gsl_vector_free (y);
                     delete[] dat;
                 }
