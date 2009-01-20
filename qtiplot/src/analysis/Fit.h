@@ -165,6 +165,8 @@ class Fit : public Filter
 		void initWorkspace(int par);
 		//! Frees the memory allocated for the fit workspace
 		void freeWorkspace();
+        //! Frees all the arrays with size d_n. Used when changing the source data sets.
+        virtual void freeMemory();
 		//! Adds the result curve as a FunctionCurve to the plot, if d_gen_function = true
 		virtual FunctionCurve * insertFitFunctionCurve(const QString& name, int penWidth = 1, bool updateData = true);
 

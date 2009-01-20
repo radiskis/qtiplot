@@ -97,12 +97,12 @@ class Filter : public QObject
         bool error(){return d_init_err;};
 
 		virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
-		
+
 	protected:
         void init();
         void memoryErrorMessage();
 	    //! Frees the memory allocated for the X and Y data sets
-        void freeMemory();
+        virtual void freeMemory();
 
         //! Sets x and y to the curve points between start and end. Memory will be allocated with new double[].
   	    //! Returns the number of points within range == size of x and y arrays.
@@ -186,7 +186,7 @@ class Filter : public QObject
 		//! Specifies if the filter should display a result curve
 		bool d_graphics_display;
 
-		QString d_y_col_name;	
+		QString d_y_col_name;
 };
 
 #endif

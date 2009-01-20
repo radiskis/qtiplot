@@ -204,9 +204,6 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 
 bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to)
 {
-	if (d_n > 0)//delete old weighting data set
-		delete[] d_w;
-
     if (Filter::setDataFromTable(t, xColName, yColName, from, to)){
     	d_w = new double[d_n];
     	for (int i=0; i<d_n; i++)//initialize the weighting data to 1.0
@@ -220,13 +217,12 @@ void Fit::setDataCurve(int curve, double start, double end)
 {
     Filter::setDataCurve(curve, start, end);
 
-    if (d_w)
-		free(d_w);
-
-	d_w = (double *)malloc(d_n*sizeof(double));
-	if (!d_w){
-		memoryErrorMessage();
-		return;
+    if (!d_w){
+        d_w = (double *)malloc(d_n*sizeof(double));
+        if (!d_w){
+            memoryErrorMessage();
+            return;
+        }
 	}
 	
     if (d_graph && d_curve && ((PlotCurve *)d_curve)->type() != Graph::Function)
@@ -1120,15 +1116,26 @@ void Fit::freeWorkspace()
 	}
 }
 
+void Fit::freeMemory()
+{
+	Filter::freeMemory();
+	if (d_w){
+		free(d_w);
+		d_w = NULL;
+	}
+
+    if (d_residuals) {
+		delete[] d_residuals;
+		d_residuals = NULL;
+    }
+}
+
 Fit::~Fit()
 {
-	if (d_w)
-		free(d_w);
+	freeMemory();
 
 	if (!d_p)
 		return;
 
 	freeWorkspace();
-	if (d_residuals) 
-		delete[] d_residuals;
 }
