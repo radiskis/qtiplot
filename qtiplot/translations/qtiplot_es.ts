@@ -17131,17 +17131,17 @@ Do you want to insert cells?</source>
 <context>
     <name>ScriptEdit</name>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="236"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="242"/>
         <source>Auto&amp;exec</source>
         <translation>Auto&amp;ejecutar</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="270"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="276"/>
         <source>&amp;Functions</source>
         <translation>&amp;Funciones</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="479"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="485"/>
         <source>Text</source>
         <translation>Texto</translation>
     </message>
@@ -17151,27 +17151,27 @@ Do you want to insert cells?</source>
         <translation type="obsolete">Fuente Python</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="481"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="487"/>
         <source>All Files</source>
         <translation>Todos los Archivos</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="436"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="442"/>
         <source>QtiPlot - Import Text From File</source>
         <translation>QtiPlot - Importar Texto desde Archivo</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="443"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="449"/>
         <source>QtiPlot - Error Opening File</source>
         <translation>QtiPlot - Error Abriendo Archivo</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="443"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="449"/>
         <source>Could not open file &quot;%1&quot; for reading.</source>
         <translation>Imposible abrir archivo &quot;%1&quot; para lectura.</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="486"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="492"/>
         <source>Save Text to File</source>
         <translation>Guardar el Texto en Archivo</translation>
     </message>
@@ -17198,47 +17198,47 @@ Do you want to overwrite it?</source>
         <translation type="obsolete">&amp;No</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="504"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="510"/>
         <source>QtiPlot - File Save Error</source>
         <translation>QtiPlot - Error Guardando Archivo</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="505"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="511"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>No se pudo escribir en el archivo &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;¡Por favor, verifique que tiene permiso de escritura!</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="70"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="74"/>
         <source>E&amp;xecute</source>
         <translation type="unfinished">Ejecutar</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="71"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="75"/>
         <source>Ctrl+J</source>
         <translation type="unfinished">Ctrl+J</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="74"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="78"/>
         <source>Execute &amp;All</source>
         <translation type="unfinished">Ejecut&amp;ar Todo</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="75"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="79"/>
         <source>Ctrl+Shift+J</source>
         <translation type="unfinished">Ctrl+Shift+J</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="78"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="82"/>
         <source>&amp;Evaluate Expression</source>
         <translation type="unfinished">&amp;Evaluar Expresión</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="79"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="83"/>
         <source>Ctrl+Return</source>
         <translation type="unfinished">Ctrl+Return</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="82"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="86"/>
         <source>&amp;Print</source>
         <translation type="unfinished">Im&amp;primir</translation>
     </message>
@@ -17248,47 +17248,47 @@ Do you want to overwrite it?</source>
         <translation type="obsolete">&amp;Exportar</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="92"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="96"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="85"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="89"/>
         <source>&amp;Import...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="99"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="103"/>
         <source>Sa&amp;ve as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="102"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="106"/>
         <source>&amp;Find...</source>
         <translation type="unfinished">Buscar...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="109"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="113"/>
         <source>&amp;Replace...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="116"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="120"/>
         <source>&amp;Find next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="123"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="127"/>
         <source>&amp;Find previous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="627"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="636"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="627"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="636"/>
         <source>QtiPlot has finished searching the document.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -16264,17 +16264,17 @@ Vill du skjuta in celler?</translation>
 <context>
     <name>ScriptEdit</name>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="236"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="242"/>
         <source>Auto&amp;exec</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="270"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="276"/>
         <source>&amp;Functions</source>
         <translation>&amp;Funktioner</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="479"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="485"/>
         <source>Text</source>
         <translation>Text</translation>
     </message>
@@ -16284,27 +16284,27 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">Pythonkälla</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="481"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="487"/>
         <source>All Files</source>
         <translation>Alla filer</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="436"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="442"/>
         <source>QtiPlot - Import Text From File</source>
         <translation>QtiPlot - Importera text från fil</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="443"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="449"/>
         <source>QtiPlot - Error Opening File</source>
         <translation>QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="443"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="449"/>
         <source>Could not open file &quot;%1&quot; for reading.</source>
         <translation>Kunde inte öppna fil för läsning.</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="486"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="492"/>
         <source>Save Text to File</source>
         <translation>Spara text till fil</translation>
     </message>
@@ -16331,47 +16331,47 @@ Vill du skriva över den?</translation>
         <translation type="obsolete">&amp;Nej</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="504"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="510"/>
         <source>QtiPlot - File Save Error</source>
         <translation>QtiPlot - Filsparningsfel</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="505"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="511"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Kunde inte skriva till filen: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Verifiera att du har rättighet att skriva på denna plats!</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="70"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="74"/>
         <source>E&amp;xecute</source>
         <translation>&amp;Utför</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="71"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="75"/>
         <source>Ctrl+J</source>
         <translation>Ctrl+J</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="74"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="78"/>
         <source>Execute &amp;All</source>
         <translation>Utför &amp;allt</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="75"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="79"/>
         <source>Ctrl+Shift+J</source>
         <translation>Ctrl+Shift+J</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="78"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="82"/>
         <source>&amp;Evaluate Expression</source>
         <translation>Utvärd&amp;era uttryck</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="79"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="83"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+vagnretur</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="82"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="86"/>
         <source>&amp;Print</source>
         <translation>&amp;Skriv ut</translation>
     </message>
@@ -16386,47 +16386,47 @@ Vill du skriva över den?</translation>
         <translation type="obsolete">E&amp;xportera</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="92"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="96"/>
         <source>&amp;Save</source>
         <translation>&amp;Spara</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="85"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="89"/>
         <source>&amp;Import...</source>
         <translation>&amp;Importera...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="99"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="103"/>
         <source>Sa&amp;ve as...</source>
         <translation>Sp&amp;ara som...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="102"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="106"/>
         <source>&amp;Find...</source>
         <translation>&amp;Leta...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="109"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="113"/>
         <source>&amp;Replace...</source>
         <translation>&amp;Byt ut...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="116"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="120"/>
         <source>&amp;Find next</source>
         <translation>Sök &amp;nästa</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="123"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="127"/>
         <source>&amp;Find previous</source>
         <translation>Sök &amp;föregående</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="627"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="636"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="627"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="636"/>
         <source>QtiPlot has finished searching the document.</source>
         <translation>QtoPlot är klar med att söka i dokumentet.</translation>
     </message>
