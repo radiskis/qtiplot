@@ -551,11 +551,17 @@ void Fit::writeParametersToTable(Table *t, bool append)
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
 
+	double chi_2_dof = chi_2/(d_n - d_p);
+
 	for (int i=0; i<d_p; i++){
 		int j = rows + i;
 		t->setText(j, 0, d_param_names[i]);
 		t->setText(j, 1, locale.toString(d_results[i], 'g', d_prec));
-		t->setText(j, 2, locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'g', d_prec));
+		if (d_scale_errors)
+		    t->setText(j, 2, locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar,i,i)), 'g', d_prec));
+		else
+		    t->setText(j, 2, locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'g', d_prec));
+
 	}
 
 	for (int i=0; i<3; i++)
