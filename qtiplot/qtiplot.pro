@@ -128,13 +128,13 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_es.ts \
                   translations/qtiplot_fr.ts \
                   #translations/qtiplot_pt.ts \
-			translations/qtiplot_ro.ts \
+                  translations/qtiplot_ro.ts \
                   translations/qtiplot_ru.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
