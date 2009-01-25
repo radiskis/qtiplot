@@ -41,71 +41,70 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 	: Table(env, 1, 1, "", parent, ""),
 	d_base(base), d_type(t), d_targets(targets)
 {
-        d_table->setReadOnly(true);
+    d_table->setReadOnly(true);
 	setCaptionPolicy(MdiSubWindow::Both);
 	if (d_type == row){
 		setName(QString(d_base->objectName())+"-"+tr("RowStats"));
 		setWindowLabel(tr("Row Statistics of %1").arg(base->objectName()));
 		resizeRows(d_targets.size());
-                resizeCols(11);
+        resizeCols(11);
 		setColName(0, tr("Row"));
 		setColName(1, tr("Cols"));
 		setColName(2, tr("Mean"));
-                setColName(3, tr("StandardDev"));
-                setColName(4, tr("StandardError"));
-                setColName(5, tr("Variance"));
-                setColName(6, tr("Sum"));
-                setColName(7, tr("Max"));
-                setColName(8, tr("Min"));
-                setColName(9, "N");
-                setColName(10, tr("Median"));
-                
-                for (int i=0; i < numCols(); i++)
-                    setColumnType(i, Text);
+        setColName(3, tr("StandardDev"));
+        setColName(4, tr("StandardError"));
+        setColName(5, tr("Variance"));
+        setColName(6, tr("Sum"));
+        setColName(7, tr("Max"));
+        setColName(8, tr("Min"));
+        setColName(9, "N");
+        setColName(10, tr("Median"));
 
 		for (int i=0; i < d_targets.size(); i++)
-                    setText(i, 0, QString::number(d_targets[i]+1));
+            setText(i, 0, QString::number(d_targets[i]+1));
+
 		update(d_base, QString::null);
-        } else if (d_type == column) {
-		setName(QString(d_base->objectName())+"-"+tr("ColStats"));
-		setWindowLabel(tr("Column Statistics of %1").arg(base->objectName()));
-		resizeRows(d_targets.size());
-                resizeCols(13);
-		setColName(0, tr("Col"));
-		setColName(1, tr("Rows"));
-		setColName(2, tr("Mean"));
-                setColName(3, tr("StandardDev"));
-                setColName(4, tr("StandardError"));
-                setColName(5, tr("Variance"));
-                setColName(6, tr("Sum"));
-                setColName(7, tr("iMax"));
-                setColName(8, tr("Max"));
-                setColName(9, tr("iMin"));
-                setColName(10, tr("Min"));
-                setColName(11, "N");
-                setColName(12, tr("Median"));
-                
-                for (int i = 0; i < numCols(); i++)
-                    setColumnType(i, Text);
+    } else if (d_type == column) {
+            setName(QString(d_base->objectName())+"-"+tr("ColStats"));
+            setWindowLabel(tr("Column Statistics of %1").arg(base->objectName()));
+            resizeRows(d_targets.size());
+            resizeCols(13);
+            setColName(0, tr("Col"));
+            setColName(1, tr("Rows"));
+            setColName(2, tr("Mean"));
+            setColName(3, tr("StandardDev"));
+            setColName(4, tr("StandardError"));
+
+            setColName(5, tr("Variance"));
+            setColName(6, tr("Sum"));
+            setColName(7, tr("iMax"));
+            setColName(8, tr("Max"));
+            setColName(9, tr("iMin"));
+            setColName(10, tr("Min"));
+            setColName(11, "N");
+            setColName(12, tr("Median"));
+
+            //setColumnType(0, Text);
+            setColumnType(1, Text);
 
 		for (int i=0; i < d_targets.size(); i++){
-                    setText(i, 0, d_base->colLabel(d_targets[i]));
-                    update(d_base, d_base->colName(d_targets[i]));
+            setText(i, 0, d_base->colLabel(d_targets[i]));
+            update(d_base, d_base->colName(d_targets[i]));
 		}
 	}
-        int w = 9*(d_table->horizontalHeader())->sectionSize(0);
+    int w = 9*(d_table->horizontalHeader())->sectionSize(0);
 	int h;
 	if (numRows()>11)
-            h = 11*(d_table->verticalHeader())->sectionSize(0);
+        h = 11*(d_table->verticalHeader())->sectionSize(0);
 	else
-            h = (numRows()+1)*(d_table->verticalHeader())->sectionSize(0);
+        h = (numRows()+1)*(d_table->verticalHeader())->sectionSize(0);
 	setGeometry(50,50,w + 45, h + 45);
 
-        setColPlotDesignation(0, Table::X);
-        setColPlotDesignation(4, Table::yErr);
+    setColPlotDesignation(0, Table::X);
+    setColPlotDesignation(4, Table::yErr);
 	setHeaderColType();
-	
-        connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
+
+    connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
 	connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
 	connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
 	connect (d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
@@ -129,7 +128,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 {
         if (!d_base || t != d_base)
             return;
-	
+
 	int j;
         if (d_type == row){
             if (numCols () < 11){ //modified columns structure
@@ -257,7 +256,7 @@ void TableStatistics::update(Table *t, const QString& colName)
                     gsl_sort(dat,1,m); //sort data
                     double median = gsl_stats_median_from_sorted_data(dat,1,m); //get median
                     setCell(c, 12, median);
-                    
+
                     gsl_vector_free (y);
                     delete[] dat;
                 }
@@ -272,7 +271,7 @@ void TableStatistics::renameCol(const QString &from, const QString &to)
 {
 	if (!d_base)
 		return;
-	
+
 	if (d_type == row) return;
 	for (int c=0; c < d_targets.size(); c++)
 		if (from == QString(d_base->objectName())+"_"+text(c, 0))
@@ -286,7 +285,7 @@ void TableStatistics::removeCol(const QString &col)
 {
 	if (!d_base)
 		return;
-	
+
 	if (d_type == row)
 	{
 		update(d_base, col);
@@ -305,13 +304,13 @@ void TableStatistics::save(const QString& fn, const QString &geometry, bool)
 {
 	if (!d_base)
 		Table::save(fn, geometry, false);
-		
+
 	QFile f(fn);
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
 			return;
 	}
-	
+
 	QTextStream t( &f );
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	t << "<TableStatistics>\n";

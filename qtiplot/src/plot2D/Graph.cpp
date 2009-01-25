@@ -197,10 +197,6 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 
 	setAxisTitle(QwtPlot::yLeft, tr("Y Axis Title"));
 	setAxisTitle(QwtPlot::xBottom, tr("X Axis Title"));
-	//due to the plot layout updates, we must always have a non empty title
-	setAxisTitle(QwtPlot::yRight, tr(" "));
-	setAxisTitle(QwtPlot::xTop, tr(" "));
-
 	// grid
 	d_grid = new Grid();
 	d_grid->attach(this);
@@ -1085,11 +1081,7 @@ void Graph::setScaleTitle(int axis, const QString& text)
 
 void Graph::setAxisTitle(int axis, const QString& text)
 {
-	if (text.isEmpty())//avoid empty titles due to plot layout behavior
-		((QwtPlot *)this)->setAxisTitle(axis, " ");
-	else
-		((QwtPlot *)this)->setAxisTitle(axis, text);
-
+	((QwtPlot *)this)->setAxisTitle(axis, text);
 	replot();
 	emit modifiedGraph();
 }
@@ -2177,7 +2169,7 @@ QString Graph::saveCurves()
 					continue;
 				} else if (c->type() == Box)
 					s += "curve\t" + QString::number(c->x(0)) + "\t" + c->title().text() + "\t";
-				else if (c->type() == Histogram) 
+				else if (c->type() == Histogram)
 					s += "curve\t-\t" + c->title().text() + "\t";//ugly hack to avoid having an empty string for c->xColumnName()
 				else
 					s += "curve\t" + c->xColumnName() + "\t" + c->title().text() + "\t";
@@ -2860,18 +2852,18 @@ PlotCurve* Graph::insertCurve(Table* w, int xcol, const QString& name, int style
 }
 
 PlotCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
-{	
-	if (style == Histogram){  	 	 
-		PlotCurve *c = new QwtHistogram(w, yColName, startRow, endRow); 		 
+{
+	if (style == Histogram){
+		PlotCurve *c = new QwtHistogram(w, yColName, startRow, endRow);
 		insertCurve(c);
-		return c; 		 
-	} 
-	
+		return c;
+	}
+
 	int xcol=w->colIndex(xColName);
 	int ycol=w->colIndex(yColName);
 	if (xcol < 0 || ycol < 0)
 		return NULL;
-	
+
 	int xColType = w->columnType(xcol);
 	int yColType = w->columnType(ycol);
 	int size=0;
@@ -3842,8 +3834,7 @@ void Graph::removeAxisTitle()
 	int selectedAxis = scalePicker->currentAxis()->alignment();
 	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
   	//QwtScaleDraw::alignment and QwtPlot::Axis
-  	((QwtPlot *)this)->setAxisTitle(axis, "");//due to the plot layout updates, we must always have a non empty title
-	emit modifiedGraph();
+  	setAxisTitle(axis, "");//due to the plot layout updates, we must always have a non empty title
 }
 
 void Graph::clearAxisTitle()
@@ -3852,8 +3843,6 @@ void Graph::clearAxisTitle()
 	int axis = (selectedAxis + 2)%4;//unconsistent notation in Qwt enumerations between
   	//QwtScaleDraw::alignment and QwtPlot::Axis
   	setAxisTitle(axis, " ");//due to the plot layout updates, we must always have a non empty title
-	replot();
-	emit modifiedGraph();
 }
 
 void Graph::cutAxisTitle()
@@ -4334,7 +4323,7 @@ bool Graph::enableRangeSelectors(const QObject *status_target, const char *statu
 		//setActiveTool(d_range_selector);
 		connect(d_range_selector, SIGNAL(changed()), this, SIGNAL(dataRangeChanged()));
 	}
-	
+
 	d_range_selector->setVisible(true);
 	return true;
 }

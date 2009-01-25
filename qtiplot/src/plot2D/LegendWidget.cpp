@@ -99,18 +99,18 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int space = h_space;
 	int left = left_margin;
 	int top = top_margin;
-	
+
 	h_space = int(h_space*factor);
 	left_margin = int(left_margin*factor);
 	top_margin = int(top_margin*factor);
-	
+
     const int symbolLineLength = int((line_length + symbolsMaxWidth())*factor);
 	int width, height, textWidth, textHeight;
 	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height, textWidth, textHeight);
-		
+
 	drawFrame(painter, QRect(x, y, width, height));
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
-	
+
 	// restore screen geometry parameters
 	h_space = space;
 	left_margin = left;
@@ -227,8 +227,8 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 
 	p->setRenderHint(QPainter::TextAntialiasing);
 
-	p->translate(rect.x(), rect.y());	
-	
+	p->translate(rect.x(), rect.y());
+
 	int aux_a = d_angle;
 	if (aux_a >= 270){
         aux_a -= 270;
@@ -241,9 +241,9 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 		p->translate(rect.width()*sin(aux_a*M_PI/180.0), this->height());
 	}  else
 		p->translate(0.0, rect.width()*sin(d_angle*M_PI/180.0));
-	
+
     p->rotate(-d_angle);
-	
+
 	int l = symbolLineLength;
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", QString::KeepEmptyParts);
@@ -313,7 +313,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	p->restore();
 }
 
-QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &height, 
+QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &height,
 							 int &textWidth, int &textHeight)
 {
 	QString text = d_text->text();
@@ -382,22 +382,22 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
 
 	height += 2*top_margin;
 	width = 2*left_margin + maxL;
-	
+
 	int fw = 2*d_frame_pen.width();
     height += fw;
     width += fw;
 
     textHeight = height;
     textWidth = width;
-	
-    int aux_a = d_angle;	
+
+    int aux_a = d_angle;
 	if (aux_a > 270)
 		aux_a -= 270;
     if (aux_a >= 180)
         aux_a -= 180;
     if (aux_a > 90)
         aux_a -= 90;
-    	
+
 	double angle = aux_a*M_PI/180.0;
 	if ((d_angle >= 0 && d_angle <= 90) || (d_angle >= 180 && d_angle <= 270)){
     	height = int(textWidth*sin(angle) + textHeight*cos(angle));
@@ -406,12 +406,12 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
     	height = int(textWidth*cos(angle) + textHeight*sin(angle));
     	width = int(textWidth*sin(angle) + textHeight*cos(angle));
 	}
-	
+
 	if (d_frame == Shadow){
 		width += d_shadow_width;
 		height += d_shadow_width;
 	}
-	
+
 	return heights;
 }
 
