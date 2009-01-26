@@ -2820,11 +2820,6 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1512"/>
-        <source>QtiPLot - Plot error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1648"/>
         <source>Please select a column to plot!</source>
         <translation type="unfinished"></translation>
@@ -7767,318 +7762,318 @@ The following special codes can be used:
 <context>
     <name>Fit</name>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="275"/>
+        <location filename="src/analysis/Fit.cpp" line="271"/>
         <source>Plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="283"/>
+        <location filename="src/analysis/Fit.cpp" line="279"/>
         <source>using function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="287"/>
+        <location filename="src/analysis/Fit.cpp" line="283"/>
         <source>Weighting Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="291"/>
+        <location filename="src/analysis/Fit.cpp" line="287"/>
         <source>No weighting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="294"/>
+        <location filename="src/analysis/Fit.cpp" line="290"/>
         <source>Instrumental</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="294"/>
+        <location filename="src/analysis/Fit.cpp" line="290"/>
         <source>using error bars dataset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="297"/>
+        <location filename="src/analysis/Fit.cpp" line="293"/>
         <source>Statistical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="300"/>
+        <location filename="src/analysis/Fit.cpp" line="296"/>
         <source>Arbitrary Dataset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="312"/>
+        <location filename="src/analysis/Fit.cpp" line="308"/>
         <source>Nelder-Mead Simplex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="314"/>
+        <location filename="src/analysis/Fit.cpp" line="310"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="316"/>
+        <location filename="src/analysis/Fit.cpp" line="312"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="318"/>
+        <location filename="src/analysis/Fit.cpp" line="314"/>
         <source> algorithm with tolerance = </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="321"/>
+        <location filename="src/analysis/Fit.cpp" line="317"/>
         <source>From x</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="321"/>
+        <location filename="src/analysis/Fit.cpp" line="317"/>
         <source>to x</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="390"/>
+        <location filename="src/analysis/Fit.cpp" line="386"/>
         <source>R^2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="341"/>
+        <location filename="src/analysis/Fit.cpp" line="337"/>
         <source>Iterations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="342"/>
+        <location filename="src/analysis/Fit.cpp" line="338"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="382"/>
+        <location filename="src/analysis/Fit.cpp" line="378"/>
         <source>Dataset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="383"/>
+        <location filename="src/analysis/Fit.cpp" line="379"/>
         <source>Function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="505"/>
+        <location filename="src/analysis/Fit.cpp" line="501"/>
         <source>QtiPlot - Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="448"/>
+        <location filename="src/analysis/Fit.cpp" line="444"/>
         <source>The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="506"/>
+        <location filename="src/analysis/Fit.cpp" line="502"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="531"/>
+        <location filename="src/analysis/Fit.cpp" line="527"/>
         <source>Parameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="531"/>
+        <location filename="src/analysis/Fit.cpp" line="527"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="531"/>
+        <location filename="src/analysis/Fit.cpp" line="527"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="892"/>
+        <location filename="src/analysis/Fit.cpp" line="894"/>
         <source>QtiPlot - Fit Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="878"/>
+        <location filename="src/analysis/Fit.cpp" line="880"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="883"/>
+        <location filename="src/analysis/Fit.cpp" line="885"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="888"/>
+        <location filename="src/analysis/Fit.cpp" line="890"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="893"/>
+        <location filename="src/analysis/Fit.cpp" line="895"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="972"/>
+        <location filename="src/analysis/Fit.cpp" line="974"/>
         <source>Fit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="277"/>
+        <location filename="src/analysis/Fit.cpp" line="273"/>
         <source>graphics display disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="281"/>
+        <location filename="src/analysis/Fit.cpp" line="277"/>
         <source>of dataset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="429"/>
+        <location filename="src/analysis/Fit.cpp" line="425"/>
         <source>You cannot use the instrumental weighting method.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1005"/>
+        <location filename="src/analysis/Fit.cpp" line="1007"/>
         <source>QtiPlot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1005"/>
+        <location filename="src/analysis/Fit.cpp" line="1007"/>
         <source>File Save Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1006"/>
+        <location filename="src/analysis/Fit.cpp" line="1008"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1044"/>
+        <location filename="src/analysis/Fit.cpp" line="1046"/>
         <source>QtiPlot Fit Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1046"/>
+        <location filename="src/analysis/Fit.cpp" line="1048"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="778"/>
+        <location filename="src/analysis/Fit.cpp" line="780"/>
         <source>Please perform a fit first!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="626"/>
+        <location filename="src/analysis/Fit.cpp" line="628"/>
         <source>Residuals of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="630"/>
+        <location filename="src/analysis/Fit.cpp" line="632"/>
         <source>residue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="336"/>
+        <location filename="src/analysis/Fit.cpp" line="332"/>
         <source>Adjusted R^2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="337"/>
+        <location filename="src/analysis/Fit.cpp" line="333"/>
         <source>RMSE (Root Mean Squared Error)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="338"/>
+        <location filename="src/analysis/Fit.cpp" line="334"/>
         <source>RSS (Residual Sum of Squares)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="626"/>
+        <location filename="src/analysis/Fit.cpp" line="628"/>
         <source>FitResiduals</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="813"/>
+        <location filename="src/analysis/Fit.cpp" line="815"/>
         <source>FitStats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="694"/>
+        <location filename="src/analysis/Fit.cpp" line="696"/>
         <source>Confidence Limits of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="817"/>
+        <location filename="src/analysis/Fit.cpp" line="819"/>
         <source>Independent Variable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="699"/>
+        <location filename="src/analysis/Fit.cpp" line="701"/>
         <source>LCL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="700"/>
+        <location filename="src/analysis/Fit.cpp" line="702"/>
         <source>Lower %1 Confidence Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="701"/>
+        <location filename="src/analysis/Fit.cpp" line="703"/>
         <source>UCL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="702"/>
+        <location filename="src/analysis/Fit.cpp" line="704"/>
         <source>Upper %1 Confidence Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="813"/>
+        <location filename="src/analysis/Fit.cpp" line="815"/>
         <source>Prediction Limits of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="818"/>
+        <location filename="src/analysis/Fit.cpp" line="820"/>
         <source>LPL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="819"/>
+        <location filename="src/analysis/Fit.cpp" line="821"/>
         <source>Lower %1 Prediction Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="820"/>
+        <location filename="src/analysis/Fit.cpp" line="822"/>
         <source>UPL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="821"/>
+        <location filename="src/analysis/Fit.cpp" line="823"/>
         <source>Upper %1 Prediction Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="303"/>
+        <location filename="src/analysis/Fit.cpp" line="299"/>
         <source>Direct Weighting using Dataset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="951"/>
+        <location filename="src/analysis/Fit.cpp" line="953"/>
         <source>QtiPlot - Memory Allocation Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="958"/>
+        <location filename="src/analysis/Fit.cpp" line="960"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="957"/>
+        <location filename="src/analysis/Fit.cpp" line="959"/>
         <source>QtiPlot  - Memory Allocation Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="808"/>
+        <location filename="src/analysis/Fit.cpp" line="810"/>
         <source>Not enough memory!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8925,117 +8920,117 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3397"/>
+        <location filename="src/plot2D/Graph.cpp" line="3389"/>
         <source>QtiPlot - File open error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4577"/>
+        <location filename="src/plot2D/Graph.cpp" line="4566"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4587"/>
+        <location filename="src/plot2D/Graph.cpp" line="4576"/>
         <source>QtiPlot - Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1408"/>
+        <location filename="src/plot2D/Graph.cpp" line="1400"/>
         <source>Please provide a valid file name!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1375"/>
+        <location filename="src/plot2D/Graph.cpp" line="1367"/>
         <source>File format not handled, operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1681"/>
+        <location filename="src/plot2D/Graph.cpp" line="1673"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3398"/>
+        <location filename="src/plot2D/Graph.cpp" line="3390"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3585"/>
+        <location filename="src/plot2D/Graph.cpp" line="3577"/>
         <source>Data set generated from curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3586"/>
+        <location filename="src/plot2D/Graph.cpp" line="3578"/>
         <source>Table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3810"/>
+        <location filename="src/plot2D/Graph.cpp" line="3802"/>
         <source>The columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3810"/>
+        <location filename="src/plot2D/Graph.cpp" line="3802"/>
         <source>are empty and will not be added to the plot!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3814"/>
+        <location filename="src/plot2D/Graph.cpp" line="3806"/>
         <source>The column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3814"/>
+        <location filename="src/plot2D/Graph.cpp" line="3806"/>
         <source>is empty and will not be added to the plot!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3877"/>
+        <location filename="src/plot2D/Graph.cpp" line="3866"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3879"/>
+        <location filename="src/plot2D/Graph.cpp" line="3868"/>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3904"/>
+        <location filename="src/plot2D/Graph.cpp" line="3893"/>
         <source>&amp;Properties...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3889"/>
+        <location filename="src/plot2D/Graph.cpp" line="3878"/>
         <source>&amp;Rescale to show all</source>
         <translation type="unfinished">全体表示可能にリサイズ(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3889"/>
+        <location filename="src/plot2D/Graph.cpp" line="3878"/>
         <source>Ctrl+Shift+R</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3891"/>
+        <location filename="src/plot2D/Graph.cpp" line="3880"/>
         <source>&amp;Hide axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3893"/>
+        <location filename="src/plot2D/Graph.cpp" line="3882"/>
         <source>&amp;Show grids</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3903"/>
+        <location filename="src/plot2D/Graph.cpp" line="3892"/>
         <source>&amp;Scale...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4577"/>
+        <location filename="src/plot2D/Graph.cpp" line="4566"/>
         <source>There are no curves available on this plot!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4588"/>
+        <location filename="src/plot2D/Graph.cpp" line="4577"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9045,7 +9040,7 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="843"/>
+        <location filename="src/plot2D/Graph.cpp" line="839"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9060,17 +9055,12 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="202"/>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/plot2D/Graph.cpp" line="3876"/>
+        <location filename="src/plot2D/Graph.cpp" line="3865"/>
         <source>Cu&amp;t</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3878"/>
+        <location filename="src/plot2D/Graph.cpp" line="3867"/>
         <source>C&amp;lear</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14122,22 +14112,22 @@ have the same number of rows.</source>
 <context>
     <name>TableStatistics</name>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="46"/>
+        <location filename="src/table/TableStatistics.cpp" line="47"/>
         <source>RowStats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="47"/>
+        <location filename="src/table/TableStatistics.cpp" line="48"/>
         <source>Row Statistics of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="50"/>
+        <location filename="src/table/TableStatistics.cpp" line="51"/>
         <source>Row</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="51"/>
+        <location filename="src/table/TableStatistics.cpp" line="52"/>
         <source>Cols</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14152,22 +14142,22 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="77"/>
+        <location filename="src/table/TableStatistics.cpp" line="78"/>
         <source>Variance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="78"/>
+        <location filename="src/table/TableStatistics.cpp" line="79"/>
         <source>Sum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="80"/>
+        <location filename="src/table/TableStatistics.cpp" line="81"/>
         <source>Max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="82"/>
+        <location filename="src/table/TableStatistics.cpp" line="83"/>
         <source>Min</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14192,18 +14182,23 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="79"/>
+        <location filename="src/table/TableStatistics.cpp" line="80"/>
         <source>iMax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="81"/>
+        <location filename="src/table/TableStatistics.cpp" line="82"/>
         <source>iMin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/table/TableStatistics.cpp" line="76"/>
         <source>StandardError</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/table/TableStatistics.cpp" line="85"/>
+        <source>Median</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

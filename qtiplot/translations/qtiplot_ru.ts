@@ -2632,7 +2632,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="1512"/>
         <source>QtiPLot - Plot error</source>
-        <translation>QtiPLot - Ошибка построения</translation>
+        <translation type="obsolete">QtiPLot - Ошибка построения</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15687"/>
@@ -7958,319 +7958,319 @@ The following special codes can be used:
 <context>
     <name>Fit</name>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="318"/>
+        <location filename="src/analysis/Fit.cpp" line="314"/>
         <source> algorithm with tolerance = </source>
         <translation>алгоритм с допустимым отклонением =</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="300"/>
+        <location filename="src/analysis/Fit.cpp" line="296"/>
         <source>Arbitrary Dataset</source>
         <translation>Произвольный набор данных</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="382"/>
+        <location filename="src/analysis/Fit.cpp" line="378"/>
         <source>Dataset</source>
         <translation>Набор данных</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="531"/>
+        <location filename="src/analysis/Fit.cpp" line="527"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="972"/>
+        <location filename="src/analysis/Fit.cpp" line="974"/>
         <source>Fit</source>
         <translation>Аппроксимация</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="321"/>
+        <location filename="src/analysis/Fit.cpp" line="317"/>
         <source>From x</source>
         <translation>От значения по x</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="383"/>
+        <location filename="src/analysis/Fit.cpp" line="379"/>
         <source>Function</source>
         <translation>Функция</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="294"/>
+        <location filename="src/analysis/Fit.cpp" line="290"/>
         <source>Instrumental</source>
         <translation>Инструментальный</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="341"/>
+        <location filename="src/analysis/Fit.cpp" line="337"/>
         <source>Iterations</source>
         <translation>Итераций</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="312"/>
+        <location filename="src/analysis/Fit.cpp" line="308"/>
         <source>Nelder-Mead Simplex</source>
         <translation>Симплекс Нелдера-Мида</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="291"/>
+        <location filename="src/analysis/Fit.cpp" line="287"/>
         <source>No weighting</source>
         <translation>Без взвешивания</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="531"/>
+        <location filename="src/analysis/Fit.cpp" line="527"/>
         <source>Parameter</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="275"/>
+        <location filename="src/analysis/Fit.cpp" line="271"/>
         <source>Plot</source>
         <translation>График</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="505"/>
+        <location filename="src/analysis/Fit.cpp" line="501"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="892"/>
+        <location filename="src/analysis/Fit.cpp" line="894"/>
         <source>QtiPlot - Fit Error</source>
         <translation>Ошибка аппроксимации</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="390"/>
+        <location filename="src/analysis/Fit.cpp" line="386"/>
         <source>R^2</source>
         <translation>R^2</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="316"/>
+        <location filename="src/analysis/Fit.cpp" line="312"/>
         <source>Scaled Levenberg-Marquardt</source>
         <translation>Масштабированный Левенберг-Макуардт</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="297"/>
+        <location filename="src/analysis/Fit.cpp" line="293"/>
         <source>Statistical</source>
         <translation>Статистический</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="342"/>
+        <location filename="src/analysis/Fit.cpp" line="338"/>
         <source>Status</source>
         <translation>Состояние</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="506"/>
+        <location filename="src/analysis/Fit.cpp" line="502"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!.</source>
         <translation>Столбец %1 содержит меньше точек, чем обрабатываемый набор данных. Пожалуйста, выберите другой столбец!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="448"/>
+        <location filename="src/analysis/Fit.cpp" line="444"/>
         <source>The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.</source>
         <translation>У кривой %1 нет соответствующей погрешности по Y. Использование метода инструментального взвешивания невозможно.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="883"/>
+        <location filename="src/analysis/Fit.cpp" line="885"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
         <translation>Не указаны параметры для выполнения операции. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="314"/>
+        <location filename="src/analysis/Fit.cpp" line="310"/>
         <source>Unscaled Levenberg-Marquardt</source>
         <translation>Немасштабированный Левенберг-Макуардт</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="531"/>
+        <location filename="src/analysis/Fit.cpp" line="527"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="287"/>
+        <location filename="src/analysis/Fit.cpp" line="283"/>
         <source>Weighting Method</source>
         <translation>Способ взвешивания</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="429"/>
+        <location filename="src/analysis/Fit.cpp" line="425"/>
         <source>You cannot use the instrumental weighting method.</source>
         <translation>Невозможно использование метода инструментального взвешивания.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="878"/>
+        <location filename="src/analysis/Fit.cpp" line="880"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
         <translation>Не указан допустимый набор данных для этой операции. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="893"/>
+        <location filename="src/analysis/Fit.cpp" line="895"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
         <translation>Необходимо сначала указать допустимую функцию для аппроксимации. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="888"/>
+        <location filename="src/analysis/Fit.cpp" line="890"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Необходимо как минимум %1 точек данных для аппроксимации. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="277"/>
+        <location filename="src/analysis/Fit.cpp" line="273"/>
         <source>graphics display disabled</source>
         <translation>графическое отображение отключено</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="281"/>
+        <location filename="src/analysis/Fit.cpp" line="277"/>
         <source>of dataset</source>
         <translation>набора данных</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="321"/>
+        <location filename="src/analysis/Fit.cpp" line="317"/>
         <source>to x</source>
         <translation>до значения по x</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="294"/>
+        <location filename="src/analysis/Fit.cpp" line="290"/>
         <source>using error bars dataset</source>
         <translation>использую набор данных о погрешности</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="283"/>
+        <location filename="src/analysis/Fit.cpp" line="279"/>
         <source>using function</source>
         <translation>используя функцию</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1005"/>
+        <location filename="src/analysis/Fit.cpp" line="1007"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1005"/>
+        <location filename="src/analysis/Fit.cpp" line="1007"/>
         <source>File Save Error</source>
         <translation>Ошибка сохранения файла</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1006"/>
+        <location filename="src/analysis/Fit.cpp" line="1008"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Невозможно выполнить запись в файл: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Удостоверьтесь, что у вас есть права доступа на запись в данное место!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1044"/>
+        <location filename="src/analysis/Fit.cpp" line="1046"/>
         <source>QtiPlot Fit Model</source>
         <translation>Аппроксимационная модель</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1046"/>
+        <location filename="src/analysis/Fit.cpp" line="1048"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Не удалось открыть файл %1:
 %2.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="778"/>
+        <location filename="src/analysis/Fit.cpp" line="780"/>
         <source>Please perform a fit first!</source>
         <translation>Сперва нужно аппроксимировать данные!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="626"/>
+        <location filename="src/analysis/Fit.cpp" line="628"/>
         <source>Residuals of %1</source>
         <translation>Остаток %1</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="630"/>
+        <location filename="src/analysis/Fit.cpp" line="632"/>
         <source>residue</source>
         <translation>разность</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="336"/>
+        <location filename="src/analysis/Fit.cpp" line="332"/>
         <source>Adjusted R^2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="337"/>
+        <location filename="src/analysis/Fit.cpp" line="333"/>
         <source>RMSE (Root Mean Squared Error)</source>
         <translation>Среднеквадратичная ошибка</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="338"/>
+        <location filename="src/analysis/Fit.cpp" line="334"/>
         <source>RSS (Residual Sum of Squares)</source>
         <translation>Сумма квадратов разностей</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="626"/>
+        <location filename="src/analysis/Fit.cpp" line="628"/>
         <source>FitResiduals</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="813"/>
+        <location filename="src/analysis/Fit.cpp" line="815"/>
         <source>FitStats</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="694"/>
+        <location filename="src/analysis/Fit.cpp" line="696"/>
         <source>Confidence Limits of %1</source>
         <translation>Доверительный интервал %1</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="817"/>
+        <location filename="src/analysis/Fit.cpp" line="819"/>
         <source>Independent Variable</source>
         <translation>Независимая переменная</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="699"/>
+        <location filename="src/analysis/Fit.cpp" line="701"/>
         <source>LCL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="700"/>
+        <location filename="src/analysis/Fit.cpp" line="702"/>
         <source>Lower %1 Confidence Limit</source>
         <translation>Нижняя %1 доверительная граница</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="701"/>
+        <location filename="src/analysis/Fit.cpp" line="703"/>
         <source>UCL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="702"/>
+        <location filename="src/analysis/Fit.cpp" line="704"/>
         <source>Upper %1 Confidence Limit</source>
         <translation>Верхняя %1 доверительная граница</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="813"/>
+        <location filename="src/analysis/Fit.cpp" line="815"/>
         <source>Prediction Limits of %1</source>
         <translation>Прогнозируемый интервал %1</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="818"/>
+        <location filename="src/analysis/Fit.cpp" line="820"/>
         <source>LPL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="819"/>
+        <location filename="src/analysis/Fit.cpp" line="821"/>
         <source>Lower %1 Prediction Limit</source>
         <translation>Нижняя %1 прогнозируемая граница</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="820"/>
+        <location filename="src/analysis/Fit.cpp" line="822"/>
         <source>UPL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="821"/>
+        <location filename="src/analysis/Fit.cpp" line="823"/>
         <source>Upper %1 Prediction Limit</source>
         <translation>Верхняя %1 прогнозируемая граница</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="303"/>
+        <location filename="src/analysis/Fit.cpp" line="299"/>
         <source>Direct Weighting using Dataset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="951"/>
+        <location filename="src/analysis/Fit.cpp" line="953"/>
         <source>QtiPlot - Memory Allocation Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="958"/>
+        <location filename="src/analysis/Fit.cpp" line="960"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation type="unfinished">Невозможно выделить память для аппроксимации кривых!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="957"/>
+        <location filename="src/analysis/Fit.cpp" line="959"/>
         <source>QtiPlot  - Memory Allocation Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="808"/>
+        <location filename="src/analysis/Fit.cpp" line="810"/>
         <source>Not enough memory!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9143,12 +9143,12 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3877"/>
+        <location filename="src/plot2D/Graph.cpp" line="3866"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копировать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3889"/>
+        <location filename="src/plot2D/Graph.cpp" line="3878"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -9158,12 +9158,12 @@ The following special codes can be used:
         <translation type="obsolete">&amp;Вырезать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3585"/>
+        <location filename="src/plot2D/Graph.cpp" line="3577"/>
         <source>Data set generated from curve</source>
         <translation>Набор данных, полученных из кривой</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3879"/>
+        <location filename="src/plot2D/Graph.cpp" line="3868"/>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
     </message>
@@ -9173,102 +9173,102 @@ The following special codes can be used:
         <translation>F</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1375"/>
+        <location filename="src/plot2D/Graph.cpp" line="1367"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3891"/>
+        <location filename="src/plot2D/Graph.cpp" line="3880"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Скрыть оси</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3398"/>
+        <location filename="src/plot2D/Graph.cpp" line="3390"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Файл изображения: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;больше не существует!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1408"/>
+        <location filename="src/plot2D/Graph.cpp" line="1400"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3904"/>
+        <location filename="src/plot2D/Graph.cpp" line="3893"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Свойства...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4587"/>
+        <location filename="src/plot2D/Graph.cpp" line="4576"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3397"/>
+        <location filename="src/plot2D/Graph.cpp" line="3389"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4577"/>
+        <location filename="src/plot2D/Graph.cpp" line="4566"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3889"/>
+        <location filename="src/plot2D/Graph.cpp" line="3878"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Перерисовать и отобразить всё</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3903"/>
+        <location filename="src/plot2D/Graph.cpp" line="3892"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Масштаб...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3893"/>
+        <location filename="src/plot2D/Graph.cpp" line="3882"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Показать сетку</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3586"/>
+        <location filename="src/plot2D/Graph.cpp" line="3578"/>
         <source>Table</source>
         <translation>Таблица</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3814"/>
+        <location filename="src/plot2D/Graph.cpp" line="3806"/>
         <source>The column</source>
         <translation>Столбец</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3810"/>
+        <location filename="src/plot2D/Graph.cpp" line="3802"/>
         <source>The columns</source>
         <translation>Столбцы</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4577"/>
+        <location filename="src/plot2D/Graph.cpp" line="4566"/>
         <source>There are no curves available on this plot!</source>
         <translation>На данном графике нет доступных кривых!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4588"/>
+        <location filename="src/plot2D/Graph.cpp" line="4577"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>На данном графике нет кривых с более чем двумя точками. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1681"/>
+        <location filename="src/plot2D/Graph.cpp" line="1673"/>
         <source>Title</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3810"/>
+        <location filename="src/plot2D/Graph.cpp" line="3802"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>являются пустыми и их содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3814"/>
+        <location filename="src/plot2D/Graph.cpp" line="3806"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>является пустой и её содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="843"/>
+        <location filename="src/plot2D/Graph.cpp" line="839"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Невозможно изменить тип оси на требуемый!</translation>
     </message>
@@ -9285,15 +9285,15 @@ The following special codes can be used:
     <message>
         <location filename="src/plot2D/Graph.cpp" line="202"/>
         <source> </source>
-        <translation> </translation>
+        <translation type="obsolete"> </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3876"/>
+        <location filename="src/plot2D/Graph.cpp" line="3865"/>
         <source>Cu&amp;t</source>
         <translation>В&amp;ырезать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3878"/>
+        <location filename="src/plot2D/Graph.cpp" line="3867"/>
         <source>C&amp;lear</source>
         <translation>Сте&amp;реть</translation>
     </message>
@@ -14508,7 +14508,7 @@ have the same number of rows.</source>
         <translation>ColStats</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="51"/>
+        <location filename="src/table/TableStatistics.cpp" line="52"/>
         <source>Cols</source>
         <translation>Столбцов</translation>
     </message>
@@ -14518,7 +14518,7 @@ have the same number of rows.</source>
         <translation>Статистика столбцов %1</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="80"/>
+        <location filename="src/table/TableStatistics.cpp" line="81"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
@@ -14528,22 +14528,22 @@ have the same number of rows.</source>
         <translation>Среднее</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="82"/>
+        <location filename="src/table/TableStatistics.cpp" line="83"/>
         <source>Min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="50"/>
+        <location filename="src/table/TableStatistics.cpp" line="51"/>
         <source>Row</source>
         <translation>Строка</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="47"/>
+        <location filename="src/table/TableStatistics.cpp" line="48"/>
         <source>Row Statistics of %1</source>
         <translation>Статистика строк %1</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="46"/>
+        <location filename="src/table/TableStatistics.cpp" line="47"/>
         <source>RowStats</source>
         <translation>RowStats</translation>
     </message>
@@ -14558,22 +14558,22 @@ have the same number of rows.</source>
         <translation>СтандартОтклон</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="78"/>
+        <location filename="src/table/TableStatistics.cpp" line="79"/>
         <source>Sum</source>
         <translation>Сумма</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="77"/>
+        <location filename="src/table/TableStatistics.cpp" line="78"/>
         <source>Variance</source>
         <translation>Вариация</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="79"/>
+        <location filename="src/table/TableStatistics.cpp" line="80"/>
         <source>iMax</source>
         <translation>iMax</translation>
     </message>
     <message>
-        <location filename="src/table/TableStatistics.cpp" line="81"/>
+        <location filename="src/table/TableStatistics.cpp" line="82"/>
         <source>iMin</source>
         <translation>iMin</translation>
     </message>
@@ -14581,6 +14581,11 @@ have the same number of rows.</source>
         <location filename="src/table/TableStatistics.cpp" line="76"/>
         <source>StandardError</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/table/TableStatistics.cpp" line="85"/>
+        <source>Median</source>
+        <translation type="unfinished">Медиана</translation>
     </message>
 </context>
 <context>
