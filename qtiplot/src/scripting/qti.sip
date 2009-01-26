@@ -205,7 +205,7 @@ public:
 					ImportMode = Overwrite, int = 0, int = -1);
   bool exportASCII(const QString&, const QString&="\t", bool=false, bool=false, bool=false);
   
-  void setDecimalSeperators(int,bool=true);
+  void setDecimalSeparators(int,bool=true);
 %MethodCode
 	QLocale locale;
     switch (a0){

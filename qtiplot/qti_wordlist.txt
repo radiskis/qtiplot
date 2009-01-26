@@ -519,5 +519,5 @@ QColor
 parameterNames
 Ellipse
 import
-setDecimalSeperators
+setDecimalSeparators
 removeCol

@@ -1028,10 +1028,10 @@ Possible values are: 0 for line feed (LF), which is the default value,
 <para>The last parameter <varname>maxRows</varname> allows you to specify a maximum number of imported
 lines. Negative values mean that all data lines must be imported.</para>
 
-<para>If the decimal seperator of the imported file does not match the currently used conventions, you have to
+<para>If the decimal separator of the imported file does not match the currently used conventions, you have to
 adjust them before using the table:</para>
 <programlisting>
-t.setDecimalSeperators(country,ignoreGroupSeperator=True)
+t.setDecimalSeparators(country,ignoreGroupSeparator=True)
 </programlisting>
 <para>Where country can have one of the following values:
 <variablelist spacing="compact">

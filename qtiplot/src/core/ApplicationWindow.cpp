@@ -1509,7 +1509,7 @@ void ApplicationWindow::plot3DRibbon()
 			return;
 		plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Ribbon);
 	} else
-		QMessageBox::warning(this, tr("QtiPLot - Plot error"), tr("You must select exactly one column for plotting!"));
+		QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("You must select exactly one column for plotting!"));
 }
 
 void ApplicationWindow::plot3DWireframe()

@@ -1,6 +1,6 @@
 # building without muParser doesn't work yet
 SCRIPTING_LANGS += muParser
-SCRIPTING_LANGS += Python
+#SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
@@ -15,7 +15,7 @@ DEFINES         += SCRIPTING_DIALOG
 #DEFINES         += QTIPLOT_SUPPORT
 
 # Comment the next line, if you don't have libpng on your windows system.
-DEFINES += GL2PS_HAVE_LIBPNG
+#DEFINES += GL2PS_HAVE_LIBPNG
 win32:INCLUDEPATH += ../3rdparty/libpng/
 win32:LIBS 		  += ../3rdparty/libpng/libpng.a
 
@@ -133,7 +133,7 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-#system(lupdate -verbose qtiplot.pro)
+system(lupdate -verbose qtiplot.pro)
 #system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
