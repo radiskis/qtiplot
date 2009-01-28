@@ -127,6 +127,87 @@ QwtText ScaleDraw::label(double value) const
 					return QwtText("10<sup>" + s + "</sup>");
 				else
 					return QwtText(list[0] + "x10<sup>" + s + "</sup>");
+					
+			}
+			else if (d_numeric_format == Engineering){
+					
+				QString eng_suff;			
+				bool ok;
+				double new_value = QString("%1").arg(value, 0, 'e', d_prec).toDouble(&ok);
+
+				if(fabs(new_value) >= 1e18)
+				{					
+					eng_suff = 'E';
+					new_value /= 1e18;
+				}
+				else if(fabs(new_value) >= 1e15)
+				{
+					eng_suff = 'P';
+					new_value /= 1e15;
+				}
+				else if(fabs(new_value) >= 1e12)
+				{
+					eng_suff = 'T';
+					new_value /= 1e12;
+				}
+				else if(fabs(new_value) >= 1e9)
+				{
+					eng_suff = 'G';
+					new_value /= 1e9;
+				}
+				else if(fabs(new_value) >= 1e6)
+				{
+					eng_suff = 'M';
+					new_value /= 1e6;
+				}
+				else if(fabs(new_value) >= 1e3)
+				{
+					eng_suff = 'k';
+					new_value /= 1e3;
+				}
+				else if(fabs(new_value) >= 1)
+				{
+					eng_suff = "";
+					new_value /= 1;
+				}
+				else if(fabs(new_value) >= 1e-3)
+				{
+					eng_suff = 'm';
+					new_value /= 1e-3;
+				}
+				else if(fabs(new_value) >= 1e-6)
+				{
+					eng_suff = 'µ';
+					new_value /= 1e-6;
+				}
+				else if(fabs(new_value) >= 1e-9)
+				{
+					eng_suff = 'n';
+					new_value /= 1e-9;
+				}
+				else if(fabs(new_value) >= 1e-12)
+				{
+					eng_suff = 'p';
+					new_value /= 1e-12;
+				}
+				else if(fabs(new_value) >= 1e-15)
+				{
+					eng_suff = 'f';
+					new_value /= 1e-15;
+				}
+				else 	
+				{
+					eng_suff = 'a';
+					new_value /= 1e-18;
+				}			
+				
+				QString txt = locale.toString((new_value), 'f', d_prec);
+
+				if(txt.contains(QRegExp("^0[\\.,]?0*$")))
+					return "0";
+				
+				return QwtText(txt + eng_suff);
+				
 			} else
 				return QwtText(locale.toString(transformValue(value), d_fmt, d_prec));
 		break;
@@ -333,6 +414,9 @@ void ScaleDraw::setNumericFormat(NumericFormat format)
 		case Superscripts:
 			d_fmt = 's';
 		break;
+		case Engineering:
+			d_fmt = 'f';
+		break;		
 	}
 }
 
