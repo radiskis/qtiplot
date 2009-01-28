@@ -1878,9 +1878,10 @@ void AxesDialog::showAxisFormatOptions(int format)
 			label2->show();
 			boxFormat->show();
 			boxFormat->insertItem(tr( "Automatic" ) );
-			boxFormat->insertItem(tr( "Decimal: 100.0" ) );
-			boxFormat->insertItem(tr( "Scientific: 1e2" ) );
-			boxFormat->insertItem(tr( "Scientific: 10^2" ) );
+			boxFormat->insertItem(tr( "Decimal: 10000.0" ) );
+			boxFormat->insertItem(tr( "Scientific: 1e4" ) );
+			boxFormat->insertItem(tr( "Scientific: 1x10^4" ) );
+			boxFormat->insertItem(tr( "Engineering: 10k" ) );
 			boxFormat->setCurrentIndex(d_graph->axisLabelFormat(axis));
 
 			label3->show();
