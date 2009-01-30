@@ -2665,6 +2665,12 @@ f.load("/fit_models/poly_fit.txt")
 f.fit()
 </programlisting>
 
+If your script relies on a specific numbering of the fit parameters use setParameters() before setting
+the formula and switch of automatic detection of the fit parameters when the fit formula is set:
+<programlisting>
+f.setParameters("a2","a0","a1")
+f.setFormula("a0+a1*x+a2*x*x",0)
+</programlisting>
         <para>After creating the Fit object and before calling its fit()
         method, you can set a number of parameters that influence the fit:
         <programlisting>
