@@ -127,16 +127,16 @@ QwtText ScaleDraw::label(double value) const
 					return QwtText("10<sup>" + s + "</sup>");
 				else
 					return QwtText(list[0] + "x10<sup>" + s + "</sup>");
-					
+
 			}
 			else if (d_numeric_format == Engineering){
-					
-				QString eng_suff;			
+
+				QString eng_suff;
 				bool ok;
 				double new_value = QString("%1").arg(value, 0, 'e', d_prec).toDouble(&ok);
 
 				if(fabs(new_value) >= 1e18)
-				{					
+				{
 					eng_suff = 'E';
 					new_value /= 1e18;
 				}
@@ -195,19 +195,19 @@ QwtText ScaleDraw::label(double value) const
 					eng_suff = 'f';
 					new_value /= 1e-15;
 				}
-				else 	
+				else
 				{
 					eng_suff = 'a';
 					new_value /= 1e-18;
-				}			
-				
+				}
+
 				QString txt = locale.toString((new_value), 'f', d_prec);
 
 				if(txt.contains(QRegExp("^0[\\.,]?0*$")))
-					return "0";
-				
+					return QwtText("0");
+
 				return QwtText(txt + eng_suff);
-				
+
 			} else
 				return QwtText(locale.toString(transformValue(value), d_fmt, d_prec));
 		break;
@@ -416,7 +416,7 @@ void ScaleDraw::setNumericFormat(NumericFormat format)
 		break;
 		case Engineering:
 			d_fmt = 'f';
-		break;		
+		break;
 	}
 }
 

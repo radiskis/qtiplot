@@ -107,7 +107,7 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
     connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
 	connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
 	connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
-	connect (d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
+	connect(d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
 }
 
 void TableStatistics::closedBase()
@@ -302,8 +302,10 @@ void TableStatistics::removeCol(const QString &col)
 
 void TableStatistics::save(const QString& fn, const QString &geometry, bool)
 {
-	if (!d_base)
+	if (!d_base){
 		Table::save(fn, geometry, false);
+		return;
+	}
 
 	QFile f(fn);
 	if (!f.isOpen()){
