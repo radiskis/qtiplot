@@ -106,6 +106,7 @@ bool Origin750Parser::parse()
 			columnname = name.substr(pos + 1);
 			name.resize(pos);
 		}
+		BOOST_LOG_(1, format("	NAME: %s") % name.c_str());
 
 		unsigned int spread = 0;
 		if(columnname.empty())
@@ -136,6 +137,8 @@ bool Origin750Parser::parse()
 			case 0x70CA:
 			case 0x50F2:
 			case 0x50E2:
+			case 0x50C8:
+			case 0x50E7:
 				BOOST_LOG_(1, "NEW MATRIX");
 				matrixes.push_back(Matrix(name, dataIndex));
 				++dataIndex;
