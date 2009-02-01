@@ -707,6 +707,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			graph->setXAxisTitle(parseOriginText(QString::fromLocal8Bit(layer.xAxis.label.text.c_str())));
 			graph->setYAxisTitle(parseOriginText(QString::fromLocal8Bit(layer.yAxis.label.text.c_str())));
 
+			if(layer.backgroundColor.type != Origin::Color::None)
+				graph->setCanvasBackground(originToQtColor(layer.backgroundColor));
+
 			int auto_color = -1;
 			int style = 0;
 			for(unsigned int c = 0; c < layer.curves.size(); ++c)
@@ -829,7 +832,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							mc->setLabelsRotation(_curve.text.rotation);
 							mc->setLabelsWhiteOut(_curve.text.whiteOut);
 							mc->setLabelsOffset(_curve.text.xOffset, _curve.text.yOffset);
-							mc->setLabelsColor(ColorBox::color(_curve.text.color));
+							mc->setLabelsColor(originToQtColor(_curve.text.color));
 							int align = -1;
 							switch(_curve.text.justify)
 							{
@@ -911,8 +914,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				CurveLayout cl = graph->initCurveLayout(style, layer.curves.size());
 				cl.sSize = ceil(_curve.symbolSize);
 				cl.penWidth=_curve.symbolThickness;
-				color=_curve.symbolColor;
-				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&color==0xF7)//0xF7 -Automatic color
+				color=_curve.symbolColor.regular;
+				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&_curve.symbolColor.type == Origin::Color::Automatic)//0xF7 -Automatic color
 					color=++auto_color;
 				cl.symCol=color;
 				switch(_curve.symbolType&0xFF)
@@ -979,8 +982,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				case 9:
 				case 10:
 				case 11:
-					color=_curve.symbolFillColor;
-					if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&color==0xF7)//0xF7 -Automatic color
+					color=_curve.symbolFillColor.regular;
+					if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&_curve.symbolFillColor.type==Origin::Color::Automatic)//0xF7 -Automatic color
 						color=17;// depend on Origin settings - not stored in file
 					cl.fillCol=color;
 					break;
@@ -989,21 +992,22 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				}
 
 				cl.lWidth = ceil(_curve.lineWidth);
-				color=_curve.lineColor;
-				cl.lCol=(color==0xF7?0:color); //0xF7 -Automatic color
+				color=_curve.lineColor.regular;
+				cl.lCol=(_curve.lineColor.type==Origin::Color::Automatic?0:color); //0xF7 -Automatic color
 				int linestyle=_curve.lineStyle;
 				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie) ? 1 : 0;
 				if(cl.filledArea)
 				{
+					Origin::Color color;
 					cl.aStyle = _curve.fillAreaPattern == Origin::NoFill ? 0 : patternStyles[(Origin::FillPattern)_curve.fillAreaPattern];
-					color = (cl.aStyle==0 ?_curve.fillAreaColor : _curve.fillAreaPatternColor);
-					cl.aCol = (color==0xF7?0:color); //0xF7 -Automatic color
+					color = (cl.aStyle == 0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
+					cl.aCol = (color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
 					if(style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie)
 					{
 						color = _curve.fillAreaPatternBorderColor;
-						cl.lCol = (color==0xF7?0:color); //0xF7 -Automatic color
-						color = (cl.aStyle==0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
-						cl.aCol = (color==0xF7?cl.lCol:color); //0xF7 -Automatic color
+						cl.lCol = (color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
+						color = (cl.aStyle == 0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
+						cl.aCol = (color.type == Origin::Color::Automatic ? cl.lCol : color.regular); //0xF7 -Automatic color
 						cl.lWidth = ceil(_curve.fillAreaPatternBorderWidth);
 						linestyle = _curve.fillAreaPatternBorderStyle;
 					}
@@ -1033,7 +1037,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					QwtPieCurve *p = (QwtPieCurve*)graph->curve(c);
 					cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle];
 					p->setPen(QPen(ColorBox::color(cl.lCol), cl.lWidth, (Qt::PenStyle)cl.lStyle));
-					p->setFirstColor(_curve.fillAreaFirstColor);
+					if(_curve.fillAreaColor.type == Origin::Color::Increment)
+						p->setFirstColor(_curve.fillAreaColor.starting);
 					//geometry
                     p->setRadius(_curve.pie.radius);
                     p->setThickness(_curve.pie.thickness);
@@ -1296,7 +1301,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				mrk.drawEndArrow(layer.lines[i].end.shapeType > 0);
 				mrk.setHeadLength(layer.lines[i].end.shapeLength);
                 mrk.setHeadAngle(arrowAngle(layer.lines[i].end.shapeLength, layer.lines[i].end.shapeWidth));
-				mrk.setColor(ColorBox::color(layer.lines[i].color));
+				mrk.setColor(originToQtColor(layer.lines[i].color));
 				mrk.setWidth((int)layer.lines[i].width);
 				mrk.setStyle(lineStyles[(Origin::GraphCurve::LineStyle)layer.lines[i].style]);
 				graph->addArrow(&mrk);
@@ -1317,11 +1322,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				fw->setSize(layer.figures[i].clientRect.width()*fScale, layer.figures[i].clientRect.height()*fScale);
 				fw->move(QPoint(layer.figures[i].clientRect.left*fScale, layer.figures[i].clientRect.top*fScale - yOffset));
-				fw->setFrameColor(ColorBox::color(layer.figures[i].color));
+				fw->setFrameColor(originToQtColor(layer.figures[i].color));
 				fw->setFrameWidth(layer.figures[i].width);
 				fw->setFrameLineStyle(lineStyles[(Origin::GraphCurve::LineStyle)layer.figures[i].style]);
-				fw->setBackgroundColor(ColorBox::color(layer.figures[i].fillAreaColor));
-				fw->setBrush(QBrush(ColorBox::color(layer.figures[i].useBorderColor ? layer.figures[i].color : layer.figures[i].fillAreaPatternColor), PatternBox::brushStyle(patternStyles[(Origin::FillPattern)layer.figures[i].fillAreaPattern])));
+				fw->setBackgroundColor(originToQtColor(layer.figures[i].fillAreaColor));
+				fw->setBrush(QBrush(originToQtColor(layer.figures[i].useBorderColor ? layer.figures[i].color : layer.figures[i].fillAreaPatternColor), PatternBox::brushStyle(patternStyles[(Origin::FillPattern)layer.figures[i].fillAreaPattern])));
 				graph->add(fw, false);
 			}
 
@@ -1464,14 +1469,14 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		majorTickLength =  layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].majorTickLength;
 		plot->setZAxisTickLength(majorTickLength, majorTickLength*0.6);
 
-		if(layer.backgroundColor != 0xFC)
-			plot->setBackgroundColor(ColorBox::color(layer.backgroundColor));
+		if(layer.backgroundColor.type != Origin::Color::None)
+			plot->setBackgroundColor(originToQtColor(layer.backgroundColor));
 
 		plot->coordinateSystem()->setGridLines(true, true, Qwt3D::LEFT | Qwt3D::FLOOR | Qwt3D::BACK);
 
 		RGBA axisColor = Qt2GL(ColorBox::color(layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
 		RGBA numberColor = layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
-		RGBA labelColor = Qt2GL(ColorBox::color(layer.xAxis.label.color));
+		RGBA labelColor = Qt2GL(originToQtColor(layer.xAxis.label.color));
 		Qwt3D::GridLine majorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
 		Qwt3D::GridLine minorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
 		double width = layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].thickness;
@@ -1491,7 +1496,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		axisColor = Qt2GL(ColorBox::color(layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
 		numberColor = layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
-		labelColor = Qt2GL(ColorBox::color(layer.yAxis.label.color));
+		labelColor = Qt2GL(originToQtColor(layer.yAxis.label.color));
 		majorGrid = Qwt3D::GridLine(!layer.yAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.yAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.majorGrid.style], layer.yAxis.majorGrid.width);
 		minorGrid = Qwt3D::GridLine(!layer.yAxis.minorGrid.hidden, Qt2GL(ColorBox::color(layer.yAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style], layer.yAxis.minorGrid.width);
 		width = layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].thickness;
@@ -1510,7 +1515,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		axisColor = Qt2GL(ColorBox::color(layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
 		numberColor = layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::color(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
-		labelColor = Qt2GL(ColorBox::color(layer.zAxis.label.color));
+		labelColor = Qt2GL(originToQtColor(layer.zAxis.label.color));
 		majorGrid = Qwt3D::GridLine(!layer.zAxis.majorGrid.hidden, Qt2GL(ColorBox::color(layer.zAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.majorGrid.style], layer.zAxis.majorGrid.width);
 		minorGrid = Qwt3D::GridLine(!layer.zAxis.minorGrid.hidden, Qt2GL(ColorBox::color(layer.zAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.minorGrid.style], layer.zAxis.minorGrid.width);
 		width = layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].thickness;
@@ -1533,7 +1538,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		plot->showColorLegend(false);
 		plot->setFramed();
 
-		QColor clr = ColorBox::color(_curve.symbolColor == 0xF7 ? ++auto_color : _curve.symbolColor);
+		QColor clr = (_curve.symbolColor.type == Origin::Color::Automatic ? ColorBox::color(++auto_color) : originToQtColor(_curve.symbolColor));
 		plot->setDataColors(clr, clr);
 		
 		bool smooth;
@@ -1547,7 +1552,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			smooth = false;
 		}
 		plot->setDotOptions(ceil(_curve.symbolSize), smooth);
-		plot->setMeshColor(ColorBox::color(_curve.lineColor == 0xF7 ? 0 : _curve.lineColor));
+		plot->setMeshColor(_curve.lineColor.type == Origin::Color::Automatic ? ColorBox::color(0) : originToQtColor(_curve.lineColor));
 		plot->setMeshLineWidth(_curve.lineWidth);
 
 		switch(data[0].toAscii())
@@ -1684,7 +1689,7 @@ void ImportOPJ::addText(const Origin::TextBox& text, Graph* graph, double fFontS
 	QFont font(mw->plotLegendFont);
 	font.setPointSize(floor(text.fontSize*fFontScaleFactor + 0.5));
 	txt->setAngle(text.rotation);
-	txt->setTextColor(ColorBox::color(text.color));
+	txt->setTextColor(originToQtColor(text.color));
 	txt->setFont(font);
 	txt->setFrameStyle(bkg);
 
