@@ -53,7 +53,7 @@ namespace Origin
 
 	struct Color
 	{
-		enum ColorType {Regular, Custom};
+		enum ColorType {None, Automatic, Regular, Custom, Increment, Indexing, RGB, Mapping};
 		enum RegularColor {Black = 0, Red = 1, Green = 2, Blue = 3, Cyan = 4, Magenta = 5, Yellow = 6, DarkYellow = 7, Navy = 8,
 			Purple = 9, Wine = 10, Olive = 11, DarkCyan = 12, Royal=  13, Orange = 14, Violet = 15, Pink = 16, White = 17,
 			LightGray = 18, Gray = 19, LTYellow = 20, LTCyan = 21, LTMagenta = 22, DarkGray = 23/*, Custom = 255*/};
@@ -63,6 +63,8 @@ namespace Origin
 		{
 			unsigned char regular;
 			unsigned char custom[3];
+			unsigned char starting;
+			unsigned char column;
 		};
 	};
 
@@ -261,7 +263,7 @@ namespace Origin
 	{
 		string text;
 		Rect clientRect;
-		unsigned char color;
+		Color color;
 		unsigned short fontSize;
 		int rotation;
 		int tab;
@@ -272,7 +274,7 @@ namespace Origin
 		:	text(_text)
 		{};
 
-		TextBox(const string& _text, const Rect& _clientRect, unsigned char _color, unsigned short _fontSize, int _rotation, int _tab, BorderType _borderType, Attach _attach)
+		TextBox(const string& _text, const Rect& _clientRect, const Color& _color, unsigned short _fontSize, int _rotation, int _tab, BorderType _borderType, Attach _attach)
 		:	text(_text)
 		,	clientRect(_clientRect)
 		,	color(_color)
@@ -317,7 +319,7 @@ namespace Origin
 	{
 		enum VectorPosition {Tail, Midpoint, Head};
 
-		unsigned char color;
+		Color color;
 		double width;
 		unsigned short arrowLenght;
 		unsigned char arrowAngle;
@@ -345,7 +347,7 @@ namespace Origin
 	{
 		enum Justify {Left, Center, Right};
 
-		unsigned char color;
+		Color color;
 		bool fontBold;
 		bool fontItalic;
 		bool fontUnderline;
@@ -408,7 +410,7 @@ namespace Origin
 		string xColumnName;
 		string yColumnName;
 		string zColumnName;
-		unsigned char lineColor;
+		Color lineColor;
 		unsigned char lineStyle;
 		unsigned char lineConnect;
 		double lineWidth;
@@ -416,17 +418,16 @@ namespace Origin
 		bool fillArea;
 		unsigned char fillAreaType;
 		unsigned char fillAreaPattern;
-		unsigned char fillAreaColor;
-		unsigned char fillAreaFirstColor;
-		unsigned char fillAreaPatternColor;
+		Color fillAreaColor;
+		Color fillAreaPatternColor;
 		double fillAreaPatternWidth;
 		unsigned char fillAreaPatternBorderStyle;
-		unsigned char fillAreaPatternBorderColor;
+		Color fillAreaPatternBorderColor;
 		double fillAreaPatternBorderWidth;
 
 		unsigned short symbolType;
-		unsigned char symbolColor;
-		unsigned char symbolFillColor;
+		Color symbolColor;
+		Color symbolFillColor;
 		double symbolSize;
 		unsigned char symbolThickness;
 		unsigned char pointOffset;
@@ -529,12 +530,12 @@ namespace Origin
 		FigureType type;
 		Rect clientRect;
 		Attach attach;
-		unsigned char color;
+		Color color;
 		unsigned char style;
 		double width;
-		unsigned char fillAreaColor;
+		Color fillAreaColor;
 		unsigned char fillAreaPattern;
-		unsigned char fillAreaPatternColor;
+		Color fillAreaPatternColor;
 		double fillAreaPatternWidth;
 		bool useBorderColor;
 
@@ -564,7 +565,7 @@ namespace Origin
 	struct Line
 	{
 		Rect clientRect;
-		unsigned char color;
+		Color color;
 		Attach attach;
 		double width;
 		unsigned char style;
@@ -608,7 +609,7 @@ namespace Origin
 	{
 		Rect clientRect;
 		TextBox legend;
-		unsigned char backgroundColor;
+		Color backgroundColor;
 		BorderType borderType;
 
 		GraphAxis xAxis;
