@@ -633,7 +633,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13445"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Nu aveţi permisiunea sădeschideţi fişierul: &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>Nu aveţi permisiunea să deschideţi fişierul: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13596"/>
@@ -676,7 +676,10 @@
 
 Initializing support for this language FAILED; I&apos;m using &quot;%3&quot; instead.
 Various parts of this file may not be displayed as expected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fişierul &quot;%1&quot; a fost creat folosind ca limbaj de programare &quot;%2&quot;.
+
+Iniţializarea suportului pentru acest limbaj de programare nu a fost posibilă; se foloseşte în loc limbajul &quot;%3&quot;.
+Diverse părţi din acest fişier ar putea fi afişate incorect.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="3902"/>
@@ -906,7 +909,7 @@ Various parts of this file may not be displayed as expected.</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6428"/>
         <source>Please select a column first!</source>
-        <translation>Vă rugam să selectaţi mai întai o coloană!</translation>
+        <translation>Vă rugam să selectaţi mai întâi o coloană!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="5932"/>
@@ -932,7 +935,7 @@ Various parts of this file may not be displayed as expected.</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6028"/>
         <source>Please select a row first!</source>
-        <translation>Vă rugam să selectaţi mai întai o linie!</translation>
+        <translation>Vă rugam să selectaţi mai întâi o linie!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12481"/>
@@ -1313,7 +1316,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8387"/>
         <source>&amp;Tile</source>
-        <translation type="unfinished"></translation>
+        <translation>Aranjare pe &amp;tot ecranul</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12622"/>
@@ -1358,7 +1361,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="8659"/>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
-        <translation>Salvează schimările din proiectul: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</translation>
+        <translation>Salvează modificările proiectului: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14306"/>
@@ -1694,7 +1697,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="11273"/>
         <source>Please select a &apos;Y&apos; column first!</source>
-        <translation>Vă rugam să selectaţi mai întai o coloana de tip Y!</translation>
+        <translation>Vă rugam să selectaţi mai întâi o coloana de tip Y!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="11203"/>
@@ -2350,7 +2353,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12603"/>
         <source>Move &amp;Left</source>
-        <translation>Mută la &amp;stanga</translation>
+        <translation>Mută la &amp;stânga</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12605"/>
@@ -2670,7 +2673,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12688"/>
         <source>3D &amp;Wire Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Sar&amp;ma 3D</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12689"/>
@@ -3330,7 +3333,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12604"/>
         <source>Move Left</source>
-        <translation>Mută la stanga</translation>
+        <translation>Mută la stânga</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12606"/>
@@ -3555,7 +3558,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12828"/>
         <source>Left grid</source>
-        <translation>Grilaj stanga</translation>
+        <translation>Grilaj stânga</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12829"/>
@@ -3815,7 +3818,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13807"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
-        <translation type="unfinished"></translation>
+        <translation>Folosiţi versiunea de demonstraţie a programului Qtiplot. Este identică cu versiunea integrală, exceptand faptul că nu puteţi salva proiectele deschise si nu poate fi utilizat mai mult de 10 minute pe sesiune.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>Dacă doriţi să instalaţi versiunea integrala, vă rugăm să suscrieţi la&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;un contract de mentenanţă&lt;/a&gt;.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>QtiPlot este un program liber.<byte value="x9"/>Dacă doriţi, puteţi obtine gratis &lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;codul sursă&lt;/a&gt;. &lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;Donaţiile&lt;/a&gt; în vederea sprijinirii dezvoltării programului<byte value="x9"/>QtiPlot sunt binevenite.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13819"/>
@@ -3880,7 +3883,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14007"/>
         <source>&amp;View Windows</source>
-        <translation>Afişaza &amp;ferestrele</translation>
+        <translation>Afişază &amp;ferestrele</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14024"/>
@@ -4070,7 +4073,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15098"/>
         <source>Please set a default X column for this table, first!</source>
-        <translation>Vă rugăm să definiţi mai întai o coloană de tip X pentru acest tabel!</translation>
+        <translation>Vă rugăm să definiţi mai întâi o coloană de tip X pentru acest tabel!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15132"/>
@@ -4080,17 +4083,17 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15136"/>
         <source>You need to define a X column first!</source>
-        <translation>Vă rugam să definiţi mai întai o coloana de tip X!</translation>
+        <translation>Vă rugam să definiţi mai întâi o coloana de tip X!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15140"/>
         <source>You need to define a Y column first!</source>
-        <translation>Vă rugam să definiţi mai întai o coloana de tip Y!</translation>
+        <translation>Vă rugam să definiţi mai întâi o coloana de tip Y!</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15337"/>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
-        <translation type="unfinished"></translation>
+        <translation>Începând cu versiunea 0.9.1 QtiPlot salveaza funcţiile de ajustare definite de utilizator într-un alt loc.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15338"/>
@@ -4338,7 +4341,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="1568"/>
         <source>Left</source>
-        <translation>Stanga</translation>
+        <translation>Stânga</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/AxesDialog.cpp" line="1569"/>
@@ -7074,7 +7077,7 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/Filter.cpp" line="86"/>
         <source>Please assign a curve first!</source>
-        <translation>Vă rugam să selectaţi mai întai o coloană!</translation>
+        <translation>Vă rugam să selectaţi mai întâi o coloană!</translation>
     </message>
     <message>
         <location filename="src/analysis/Filter.cpp" line="106"/>
@@ -7346,7 +7349,7 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/Fit.cpp" line="273"/>
         <source>graphics display disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>afişaj grafic dezactivat</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="277"/>
@@ -7431,17 +7434,17 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/Fit.cpp" line="332"/>
         <source>Adjusted R^2</source>
-        <translation type="unfinished"></translation>
+        <translation>R^2 ajustat</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="333"/>
         <source>RMSE (Root Mean Squared Error)</source>
-        <translation type="unfinished"></translation>
+        <translation>RMSE (Eroarea medie pătratică)</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="334"/>
         <source>RSS (Residual Sum of Squares)</source>
-        <translation type="unfinished"></translation>
+        <translation>RSS (Suma reziduală a pătratelor)</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="337"/>
@@ -7476,12 +7479,12 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/Fit.cpp" line="444"/>
         <source>The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.</source>
-        <translation type="unfinished"></translation>
+        <translation>Curba %1 nu are ataşate bare de eroare. Nu puteţi folosi metoda de ponderare instrumentală.</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="502"/>
         <source>The column %1 has less points than the fitted data set. Please choose another column!.</source>
-        <translation type="unfinished"></translation>
+        <translation>Coloana %1 are mai puţine puncte decat setul de date folosit pentru ajustare. Vă rugăm să alegeţi o altă coloană!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="527"/>
@@ -7506,22 +7509,22 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/Fit.cpp" line="780"/>
         <source>Please perform a fit first!</source>
-        <translation>Vă rugam să efectuaţi mai întai o ajustare!</translation>
+        <translation>Vă rugam să efectuaţi mai întâi o ajustare!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="628"/>
         <source>FitResiduals</source>
-        <translation type="unfinished"></translation>
+        <translation>ReziduuriAjustare</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="628"/>
         <source>Residuals of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Reziduuri ale %1</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="632"/>
         <source>residue</source>
-        <translation type="unfinished"></translation>
+        <translation>reziduu</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="953"/>
@@ -7541,7 +7544,7 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/Fit.cpp" line="696"/>
         <source>Confidence Limits of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval de încredere pentru %1</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="819"/>
@@ -7551,72 +7554,72 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/Fit.cpp" line="701"/>
         <source>LCL</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="702"/>
         <source>Lower %1 Confidence Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Limită de încredere inferioară %1</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="703"/>
         <source>UCL</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="704"/>
         <source>Upper %1 Confidence Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Limită de încredere superioară %1</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="815"/>
         <source>Prediction Limits of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Benzi de predicţie pentru %1</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="820"/>
         <source>LPL</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="821"/>
         <source>Lower %1 Prediction Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Limită de predicţie inferioară %1</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="822"/>
         <source>UPL</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="823"/>
         <source>Upper %1 Prediction Limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Limită de predicţie superioară %1</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="880"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu aţi specificat un set de date valid pentru această operaţie. Operaţia a fost abandonată!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="885"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu aţi definit parametrii pentru această operaţie de ajustare. Operaţia a fost abandonată!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="890"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua operaţia de ajustare. Operaţia fost abandonată!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="895"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Trebuie să specificaţi mai întâi o funcţie de ajustare validă. Operaţia a fost abandonată!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="960"/>
         <source>Could not allocate enough memory for the fit curves!</source>
-        <translation type="unfinished"></translation>
+        <translation>Memorie insuficientă pentru curbele de ajustare!</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="959"/>
@@ -7950,12 +7953,12 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="477"/>
         <source>Co&amp;nf. Bands</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval de î&amp;ncredere </translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="489"/>
         <source>Pred. &amp;Bands</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Benzi de predicţie</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="493"/>
@@ -8005,7 +8008,7 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="1672"/>
         <source>Please perform a fit first and try again.</source>
-        <translation>Vă rugam să efectuaţi mai întai o ajustare şi apoi să încercaţi din nu.</translation>
+        <translation>Vă rugam să efectuaţi mai întâi o ajustare şi apoi să încercaţi din nu.</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="594"/>
@@ -8035,7 +8038,7 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="669"/>
         <source> is a built-in function name&lt;p&gt;You must choose another name for your function!</source>
-        <translation type="unfinished"></translation>
+        <translation>este un nume de funcţie predefinită. &lt;p&gt; Trebuie să alegeţi un alt nume pentru funcţia dumneavoastră!</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FitDialog.cpp" line="676"/>
@@ -8267,12 +8270,12 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/dialogs/FrequencyCountDialog.cpp" line="191"/>
         <source>BinCtr</source>
-        <translation type="unfinished"></translation>
+        <translation>Eşantion</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FrequencyCountDialog.cpp" line="193"/>
         <source>BinEnd</source>
-        <translation type="unfinished"></translation>
+        <translation>SfarşitEşantion</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/FrequencyCountDialog.cpp" line="194"/>
@@ -9367,7 +9370,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="67"/>
         <source>Left</source>
-        <translation>Stanga</translation>
+        <translation>Stânga</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/LayerDialog.cpp" line="68"/>
@@ -9668,7 +9671,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/LineProfileTool.cpp" line="53"/>
         <source>Please select an image marker first.</source>
-        <translation>Vă rugam să selectaţi mai întai o imagine.</translation>
+        <translation>Vă rugam să selectaţi mai întâi o imagine.</translation>
     </message>
     <message>
         <location filename="src/plot2D/LineProfileTool.cpp" line="65"/>
@@ -10481,7 +10484,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="94"/>
         <source>There are no parameters specified for this fit operation. Please define a list of parameters first!</source>
-        <translation>Nu aţi definit parametrii pentru această operaţie de ajustare. Vă rugăm să definiţi mai întai o listă de parametri!</translation>
+        <translation>Nu aţi definit parametrii pentru această operaţie de ajustare. Vă rugăm să definiţi mai întâi o listă de parametri!</translation>
     </message>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="133"/>
@@ -11213,12 +11216,12 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="557"/>
         <source>Starting Azimuth (deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Azimut (grade)</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="565"/>
         <source>Counter cloc&amp;kwise</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrar acelor de &amp;ceasornic</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="569"/>
@@ -11233,7 +11236,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="576"/>
         <source>Horizontal Offset (% of frame)</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanţă orizontală (% din bordură)</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1603"/>
@@ -11533,7 +11536,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="906"/>
         <source>Percentile (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Percentile (%)</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="874"/>
@@ -11613,7 +11616,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1648"/>
         <source>Percentile</source>
-        <translation type="unfinished"></translation>
+        <translation>Percentile</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1737"/>
@@ -11653,7 +11656,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1049"/>
         <source>Use Default &amp;Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Foloseşte stilul im&amp;plicit</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1075"/>
@@ -11698,32 +11701,32 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1142"/>
         <source>Cap Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Lungime linie</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1144"/>
         <source>8</source>
-        <translation type="unfinished"></translation>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1145"/>
         <source>10</source>
-        <translation type="unfinished"></translation>
+        <translation>10</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1146"/>
         <source>12</source>
-        <translation type="unfinished"></translation>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1147"/>
         <source>16</source>
-        <translation type="unfinished"></translation>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1148"/>
         <source>20</source>
-        <translation type="unfinished"></translation>
+        <translation>20</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1152"/>
@@ -11738,7 +11741,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1173"/>
         <source>Automatic Binning</source>
-        <translation type="unfinished"></translation>
+        <translation>Eşantionaj automat</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1176"/>
@@ -11748,7 +11751,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1181"/>
         <source>Bin Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de eşantionaj</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1184"/>
@@ -11843,7 +11846,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1377"/>
         <source>Bins</source>
-        <translation type="unfinished"></translation>
+        <translation>Eşantioane</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1372"/>
@@ -11948,7 +11951,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2445"/>
         <source>Please enter a valid bin size value!</source>
-        <translation type="unfinished"></translation>
+        <translation>Vă rugăm introduceţi un pas de eşantionajului valid!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2474"/>
@@ -11968,12 +11971,12 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Eroare detectată în pasul de eşantionaj</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
         <source>Please enter a positive bin size value!</source>
-        <translation type="unfinished"></translation>
+        <translation>Vă rugăm introduceţi un pas de eşantionajului pozitiv!</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
@@ -12051,7 +12054,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="148"/>
         <source>Please define a Y column for the following curve</source>
-        <translation>Vă rugăm să definiţi mai întai o coloană de tip Y pentru curba</translation>
+        <translation>Vă rugăm să definiţi mai întâi o coloană de tip Y pentru curba</translation>
     </message>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="208"/>
@@ -12061,7 +12064,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="278"/>
         <source>You must define a X column first!</source>
-        <translation>Vă rugam să definiţi mai întai o coloana de tip X!</translation>
+        <translation>Vă rugam să definiţi mai întâi o coloana de tip X!</translation>
     </message>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="224"/>
@@ -12081,7 +12084,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="280"/>
         <source>You must define a Y column first!</source>
-        <translation>Vă rugam să definiţi mai întai o coloana de tip Y!</translation>
+        <translation>Vă rugam să definiţi mai întâi o coloana de tip Y!</translation>
     </message>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="282"/>
@@ -12091,7 +12094,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/core/PlotWizard.cpp" line="321"/>
         <source>You must add a new curve first!</source>
-        <translation>Vă rugam să adăugaţi mai întai o curbă!</translation>
+        <translation>Vă rugam să adăugaţi mai întâi o curbă!</translation>
     </message>
 </context>
 <context>
@@ -12099,7 +12102,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="63"/>
         <source>Plugin Fit</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustare folosind o extensie</translation>
     </message>
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="70"/>
@@ -12109,22 +12112,22 @@ have the same number of rows.</source>
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="71"/>
         <source>Plugin file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;not found. Operation aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Fişierul extensie&lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;nu a fost găsit! Operaţiunea a fost abandonată!</translation>
     </message>
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="101"/>
         <source>QtiPlot - Plugin Error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Eroare extensie</translation>
     </message>
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="81"/>
         <source>The plugin does not implement a %1 method necessary for simplex fitting.</source>
-        <translation type="unfinished"></translation>
+        <translation>Extensia nu implementează metoda %1 necesară pentru ajustările de tip simplex.</translation>
     </message>
     <message>
         <location filename="src/analysis/PluginFit.cpp" line="102"/>
         <source>The plugin does not implement a %1 method necessary for Levenberg-Marquardt fitting.</source>
-        <translation type="unfinished"></translation>
+        <translation>Extensia nu implementează metoda %1 necesară pentru ajustările de tip Levenberg-Marquardt.</translation>
     </message>
 </context>
 <context>
@@ -12783,7 +12786,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/analysis/dialogs/SmoothCurveDialog.cpp" line="69"/>
         <source>Points to the Left</source>
-        <translation>Puncte la stanga</translation>
+        <translation>Puncte la stânga</translation>
     </message>
     <message>
         <location filename="src/analysis/dialogs/SmoothCurveDialog.cpp" line="75"/>
@@ -12861,7 +12864,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/analysis/SmoothFilter.cpp" line="241"/>
         <source>The polynomial order must be lower than the number of left points plus the number of right points!</source>
-        <translation>Ordinul polinomului trebuie să fie mai mic decat numărul de puncte la stanga adunat cu numărul de puncte la dreapta!</translation>
+        <translation>Ordinul polinomului trebuie să fie mai mic decat numărul de puncte la stânga adunat cu numărul de puncte la dreapta!</translation>
     </message>
     <message>
         <location filename="src/analysis/SmoothFilter.cpp" line="234"/>
@@ -13165,7 +13168,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="104"/>
         <source>Left Triangle</source>
-        <translation>Triunghi îndreptat la stanga</translation>
+        <translation>Triunghi îndreptat la stânga</translation>
     </message>
     <message>
         <location filename="src/lib/src/SymbolBox.cpp" line="109"/>
@@ -13529,142 +13532,142 @@ have the same number of rows.</source>
     <message>
         <location filename="src/table/TableDialog.cpp" line="439"/>
         <source>dd/MM/yyyy</source>
-        <translation type="unfinished"></translation>
+        <translation>zz/LL/aaaa</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="440"/>
         <source>dd/MM/yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>zz/LL/aaaa  OO:mm</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="441"/>
         <source>dd/MM/yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>zz/LL/aaaa  OO:mm:ss</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="443"/>
         <source>dd.MM.yyyy</source>
-        <translation type="unfinished"></translation>
+        <translation>zz.LL.aaaa</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="444"/>
         <source>dd.MM.yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>zz.LL.aaaa OO:mm</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="445"/>
         <source>dd.MM.yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>zz.LL.aaaa OO:mm:ss</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="447"/>
         <source>dd MM yyyy</source>
-        <translation type="unfinished"></translation>
+        <translation>zz LL aaaa</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="448"/>
         <source>dd MM yyyy HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>zz LL aaaa  OO:mm</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="449"/>
         <source>dd MM yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>zz LL aaaa  OO:mm:ss</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="451"/>
         <source>yyyy-MM-dd</source>
-        <translation type="unfinished"></translation>
+        <translation>aaaa-LL-zz</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="452"/>
         <source>yyyy-MM-dd HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>aaaa-LL-zz OO:mm</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="453"/>
         <source>yyyy-MM-dd HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>aaaa-LL-zz OO:mm:ss</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="455"/>
         <source>yyyyMMdd</source>
-        <translation type="unfinished"></translation>
+        <translation>aaaaLLzz</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="456"/>
         <source>yyyyMMdd HH:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>aaaaLLzz OO:mm</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="457"/>
         <source>yyyyMMdd HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>aaaaLLzz OO:mm:ss</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="464"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>o</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="465"/>
         <source>h ap</source>
-        <translation type="unfinished"></translation>
+        <translation>o ap</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="466"/>
         <source>h AP</source>
-        <translation type="unfinished"></translation>
+        <translation>o AP</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="467"/>
         <source>h:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>o:mm</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="468"/>
         <source>h:mm ap</source>
-        <translation type="unfinished"></translation>
+        <translation>o:mm ap</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="469"/>
         <source>hh:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>oo:mm</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="470"/>
         <source>h:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>o:mm:ss</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="471"/>
         <source>h:mm:ss.zzz</source>
-        <translation type="unfinished"></translation>
+        <translation>o:mm:ss.zzz</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="472"/>
         <source>mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="473"/>
         <source>mm:ss.zzz</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="474"/>
         <source>hmm</source>
-        <translation type="unfinished"></translation>
+        <translation>omm</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="475"/>
         <source>hmmss</source>
-        <translation type="unfinished"></translation>
+        <translation>ommss</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="476"/>
         <source>hhmmss</source>
-        <translation type="unfinished"></translation>
+        <translation>oommss</translation>
     </message>
     <message>
         <location filename="src/table/TableDialog.cpp" line="524"/>
@@ -13805,7 +13808,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/TextDialog.cpp" line="78"/>
         <source>Left</source>
-        <translation>Stanga</translation>
+        <translation>Stânga</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/TextDialog.cpp" line="79"/>
@@ -14018,62 +14021,62 @@ have the same number of rows.</source>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="87"/>
         <source>col() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>funcţia col() poate fi folosită doar pentru tabele!</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="183"/>
         <source>There&apos;s no column named %1 in table %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu există o coloană numită %1 în tabelul %2!</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="229"/>
         <source>There&apos;s no row %1 in table %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu există linia %1 în tabelul %2!</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="232"/>
         <source>There&apos;s no column %1 in table %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu există o coloană numită %1 în tabelul %2!</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="149"/>
         <source>tablecol() works only on tables!</source>
-        <translation type="unfinished"></translation>
+        <translation>funcţia tablecol() poate fi folosită doar pentru tabele!</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="173"/>
         <source>tablecol: wrong number of arguments (need 2, got %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>tablecol: număr incorect de argumente (e nevoie de două, au fost furnizate %1)</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="175"/>
         <source>tablecol: first argument must be a string (table name)</source>
-        <translation type="unfinished"></translation>
+        <translation>tablecol: primul argument trebuie să fie un şir de caractere (numele tabelului)</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="178"/>
         <source>Couldn&apos;t find a table named %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu există un tabel numit %1.</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="225"/>
         <source>cell() works only on tables and matrices!</source>
-        <translation type="unfinished"></translation>
+        <translation>funcţia cell() poate fi folosită doar pentru tabele sau matrici!</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="212"/>
         <source>There&apos;s no row %1 in matrix %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu există linia %1 în matricea %2!</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="215"/>
         <source>There&apos;s no column %1 in matrix %2!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu există coloana %1 în matricea %2!</translation>
     </message>
     <message>
         <location filename="src/scripting/muParserScript.cpp" line="293"/>
         <source>Out of memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Memorie insuficientă</translation>
     </message>
 </context>
 </TS>
