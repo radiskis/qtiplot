@@ -34,6 +34,7 @@
 
 class QLineEdit;
 class QGroupBox;
+class QGridLayout;
 class QPushButton;
 class QTabWidget;
 class QStackedWidget;
@@ -110,6 +111,7 @@ private:
 	void initPlotsPage();
 	void initAppPage();
 	void initCurvesPage();
+	void initAxesPage();
 	void initPlots3DPage();
 	void initTablesPage();
 	void initConfirmationsPage();
@@ -133,11 +135,11 @@ private:
 	QPushButton* buttonTextFont, *buttonHeaderFont;
 	QStackedWidget * generalDialog;
 	QWidget *appColors, *tables, *plotOptions, *plotTicks, *plotFonts, *confirm, *plotPrint;
-	QWidget *application, *curves, *plots3D, *fitPage, *numericFormatPage, *notesPage;
+	QWidget *application, *curves, *axesPage, *plots3D, *fitPage, *numericFormatPage, *notesPage;
 	QPushButton* buttonAxesFont, *buttonNumbersFont, *buttonLegendFont, *buttonTitleFont, *fontsBtn;
 	QCheckBox *boxSearchUpdates, *boxOrthogonal, *logBox, *plotLabelBox, *scaleErrorsBox;
 	QCheckBox *boxTitle, *boxFrame, *boxPlots3D, *boxPlots2D, *boxTables, *boxNotes, *boxFolders;
-	QCheckBox *boxSave, *boxBackbones, *boxAllAxes, *boxShowLegend, *boxSmoothMesh;
+	QCheckBox *boxSave, *boxBackbones, *boxShowLegend, *boxSmoothMesh;
 	QCheckBox *boxAutoscaling, *boxMatrices, *boxScaleFonts, *boxResize;
 	QComboBox *boxMajTicks, *boxMinTicks, *boxStyle, *boxCurveStyle, *boxSeparator, *boxLanguage, *boxDecimalSeparator;
 	QComboBox *boxClipboardLocale, *boxProjection;
@@ -186,6 +188,11 @@ private:
 	QPushButton *buttonItalicFont, *buttonBoldFont;
 	QLabel *labelGraphAxesLabelsDist;
 	QSpinBox *boxAxesLabelsDist;
+	QLabel *xBottomLabel, *xTopLabel, *yLeftLabel, *yRightLabel, *enableAxisLabel, *showNumbersLabel;
+	QCheckBox *boxEnableAxis, *boxShowAxisLabels;
+	QGroupBox * enabledAxesGroupBox;
+	QGridLayout *enabledAxesGrid;
+
 #ifdef SCRIPTING_PYTHON
 	QGroupBox *groupSyntaxHighlighter;
 	ColorButton *buttonCommentColor, *buttonNumericColor, *buttonQuotationColor;

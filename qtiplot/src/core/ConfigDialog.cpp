@@ -35,6 +35,7 @@
 #include <ColorButton.h>
 #include <ColorBox.h>
 #include <pixmaps.h>
+#include <axes_icons.h>
 #include <DoubleSpinBox.h>
 #include <ColorMapEditor.h>
 
@@ -664,19 +665,11 @@ void ConfigDialog::initPlotsPage()
 
 	boxAntialiasing = new QCheckBox();
 	boxAntialiasing->setChecked(app->antialiasing2DPlots);
-	optionsLayout->addWidget( boxAntialiasing, 0, 2);
+	optionsLayout->addWidget( boxAntialiasing, 1, 1);
 
 	boxTitle = new QCheckBox();
 	boxTitle->setChecked(app->titleOn);
 	optionsLayout->addWidget(boxTitle, 1, 0);
-
-	boxAllAxes = new QCheckBox();
-	boxAllAxes->setChecked (app->allAxesOn);
-	optionsLayout->addWidget(boxAllAxes, 1, 1);
-
-	boxBackbones= new QCheckBox();
-	boxBackbones->setChecked(app->drawBackbones);
-	optionsLayout->addWidget(boxBackbones, 1, 2);
 
 	boxFrame = new QCheckBox();
 	boxFrame->setChecked(app->canvasFrameWidth > 0);
@@ -685,7 +678,7 @@ void ConfigDialog::initPlotsPage()
 	labelFrameWidth = new QLabel();
 	optionsLayout->addWidget(labelFrameWidth, 4, 0);
 	boxFrameWidth= new QSpinBox();
-	optionsLayout->addWidget(boxFrameWidth, 4, 1 );
+	optionsLayout->addWidget(boxFrameWidth, 4, 1);
 	boxFrameWidth->setRange(1, 100);
 	boxFrameWidth->setValue(app->canvasFrameWidth);
 	if (!app->canvasFrameWidth){
@@ -693,28 +686,14 @@ void ConfigDialog::initPlotsPage()
 		boxFrameWidth->hide();
 	}
 
-	lblAxesLineWidth = new QLabel();
-	optionsLayout->addWidget(lblAxesLineWidth, 5, 0);
-	boxLineWidth= new QSpinBox();
-	boxLineWidth->setRange(0, 100);
-	boxLineWidth->setValue(app->axesLineWidth);
-	optionsLayout->addWidget(boxLineWidth, 5, 1);
-
-	labelGraphAxesLabelsDist = new QLabel();
-	optionsLayout->addWidget(labelGraphAxesLabelsDist, 6, 0);
-	boxAxesLabelsDist = new QSpinBox();
-	boxAxesLabelsDist->setRange(0, 1000);
-	boxAxesLabelsDist->setValue(app->d_graph_axes_labels_dist);
-	optionsLayout->addWidget(boxAxesLabelsDist, 6, 1);
-
 	lblMargin = new QLabel();
-	optionsLayout->addWidget(lblMargin, 7, 0);
+	optionsLayout->addWidget(lblMargin, 5, 0);
 	boxMargin = new QSpinBox();
 	boxMargin->setRange(0, 1000);
 	boxMargin->setSingleStep(5);
 	boxMargin->setValue(app->defaultPlotMargin);
-	optionsLayout->addWidget(boxMargin, 7, 1);
-	optionsLayout->setRowStretch(8, 1);
+	optionsLayout->addWidget(boxMargin, 5, 1);
+	optionsLayout->setRowStretch(6, 1);
 
 	groupBackgroundOptions = new QGroupBox(tr("Background"));
 	optionsTabLayout->addWidget( groupBackgroundOptions );
@@ -775,8 +754,10 @@ void ConfigDialog::initPlotsPage()
 	plotsTabWidget->addTab( plotOptions, QString() );
 
 	initCurvesPage();
-
 	plotsTabWidget->addTab( curves, QString() );
+
+	initAxesPage();
+	plotsTabWidget->addTab( axesPage, QString() );
 
 	plotTicks = new QWidget();
 	QVBoxLayout * plotTicksLayout = new QVBoxLayout( plotTicks );
@@ -1341,6 +1322,92 @@ void ConfigDialog::initCurvesPage()
 	curvesPageLayout->addWidget( curvesGroupBox );
 }
 
+void ConfigDialog::initAxesPage()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	axesPage = new QWidget();
+
+	QGroupBox * axisOptions = new QGroupBox();
+	QGridLayout * axisOptionsLayout = new QGridLayout( axisOptions );
+
+	boxBackbones= new QCheckBox();
+	boxBackbones->setChecked(app->drawBackbones);
+	axisOptionsLayout->addWidget(boxBackbones, 0, 0);
+
+	lblAxesLineWidth = new QLabel();
+	axisOptionsLayout->addWidget(lblAxesLineWidth, 1, 0);
+	boxLineWidth= new QSpinBox();
+	boxLineWidth->setRange(0, 100);
+	boxLineWidth->setValue(app->axesLineWidth);
+	axisOptionsLayout->addWidget(boxLineWidth, 1, 1);
+
+	labelGraphAxesLabelsDist = new QLabel();
+	axisOptionsLayout->addWidget(labelGraphAxesLabelsDist, 2, 0);
+	boxAxesLabelsDist = new QSpinBox();
+	boxAxesLabelsDist->setRange(0, 1000);
+	boxAxesLabelsDist->setValue(app->d_graph_axes_labels_dist);
+	axisOptionsLayout->addWidget(boxAxesLabelsDist, 2, 1);
+	axisOptionsLayout->setRowStretch(3, 1);
+
+	enabledAxesGroupBox = new QGroupBox();
+	enabledAxesGrid = new QGridLayout( enabledAxesGroupBox );
+
+	enableAxisLabel = new QLabel();
+	enabledAxesGrid->addWidget(enableAxisLabel, 0, 2);
+	showNumbersLabel = new QLabel();
+	enabledAxesGrid->addWidget(showNumbersLabel, 0, 3);
+
+	QLabel *pixLabel = new QLabel();
+	pixLabel->setPixmap (QPixmap ( ( const char** ) left_axis_xpm ));
+	enabledAxesGrid->addWidget(pixLabel, 1, 0);
+	yLeftLabel = new QLabel();
+	enabledAxesGrid->addWidget(yLeftLabel, 1, 1);
+
+	pixLabel = new QLabel();
+	pixLabel->setPixmap (QPixmap ( ( const char** ) right_axis_xpm ));
+	enabledAxesGrid->addWidget(pixLabel, 2, 0);
+	yRightLabel = new QLabel();
+	enabledAxesGrid->addWidget(yRightLabel, 2, 1);
+
+	pixLabel = new QLabel();
+	pixLabel->setPixmap (QPixmap ( ( const char** ) bottom_axis_xpm ));
+	enabledAxesGrid->addWidget(pixLabel, 3, 0);
+	xBottomLabel = new QLabel();
+	enabledAxesGrid->addWidget(xBottomLabel, 3, 1);
+
+	pixLabel = new QLabel();
+	pixLabel->setPixmap (QPixmap ( ( const char** ) top_axis_xpm ));
+	enabledAxesGrid->addWidget(pixLabel, 4, 0);
+	xTopLabel = new QLabel();
+	enabledAxesGrid->addWidget(xTopLabel, 4, 1);
+
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
+		QCheckBox *box1 = new QCheckBox();
+		int row = i + 1;
+
+		enabledAxesGrid->addWidget(box1, row, 2);
+		bool enabledAxis = app->d_show_axes[i];
+		box1->setChecked(enabledAxis);
+
+		QCheckBox *box2 = new QCheckBox();
+		enabledAxesGrid->addWidget(box2, row, 3);
+		box2->setChecked(app->d_show_axes_labels[i]);
+		box2->setEnabled(enabledAxis);
+
+		connect(box1, SIGNAL(toggled(bool)), box2, SLOT(setEnabled(bool)));
+	}
+	enabledAxesGrid->setColumnStretch (0, 0);
+	enabledAxesGrid->setColumnStretch (1, 1);
+	enabledAxesGrid->setColumnStretch (2, 1);
+
+	QVBoxLayout * axesPageLayout = new QVBoxLayout( axesPage );
+	axesPageLayout->addWidget(axisOptions);
+	axesPageLayout->addWidget(enabledAxesGroupBox);
+}
+
 void ConfigDialog::initConfirmationsPage()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
@@ -1461,6 +1528,7 @@ void ConfigDialog::languageChange()
 	//plots 2D page
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotOptions), tr("Options"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(curves), tr("Curves"));
+	plotsTabWidget->setTabText(plotsTabWidget->indexOf(axesPage), tr("Axes"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotTicks), tr("Ticks"));
 	plotsTabWidget->setTabText(plotsTabWidget->indexOf(plotFonts), tr("Fonts"));
 
@@ -1468,7 +1536,6 @@ void ConfigDialog::languageChange()
     boxLabelsEditing->setText(tr("&Disable in-place editing"));
 	lblMinTicksLength->setText(tr("Length"));
 
-	lblAxesLineWidth->setText(tr("Axes linewidth" ));
 	lblMajTicksLength->setText(tr("Length" ));
 	lblMajTicks->setText(tr("Major Ticks" ));
 	lblMinTicks->setText(tr("Minor Ticks" ));
@@ -1476,9 +1543,7 @@ void ConfigDialog::languageChange()
 	lblMargin->setText(tr("Margin" ));
 	labelGraphAxesLabelsDist->setText(tr("Axes title space" ));
 	labelFrameWidth->setText(tr("Frame width" ));
-	boxBackbones->setText(tr("Axes &backbones"));
 	boxFrame->setText(tr("Canvas Fra&me"));
-	boxAllAxes->setText(tr("Sho&w all axes"));
 	boxTitle->setText(tr("Show &Title"));
 	boxScaleFonts->setText(tr("Scale &Fonts"));
 	boxAutoscaling->setText(tr("Auto&scaling"));
@@ -1493,6 +1558,19 @@ void ConfigDialog::languageChange()
 	labelGraphFrameWidth->setText(tr( "Width" ));
 	boxBackgroundTransparency->setSpecialValueText(tr("Transparent"));
 	boxCanvasTransparency->setSpecialValueText(tr("Transparent"));
+
+	// axes page
+	boxBackbones->setText(tr("Axes &backbones"));
+	lblAxesLineWidth->setText(tr("Axes linewidth" ));
+
+	yLeftLabel->setText(tr("Left"));
+	yRightLabel->setText(tr("Right"));
+	xBottomLabel->setText(tr("Bottom"));
+	xTopLabel->setText(tr("Top"));
+
+	enabledAxesGroupBox->setTitle(tr("Enabled axes" ));
+	enableAxisLabel->setText(tr( "Show" ));
+	showNumbersLabel->setText(tr( "Labels" ));
 
 	boxMajTicks->clear();
 	boxMajTicks->addItem(tr("None"));
@@ -1785,24 +1863,39 @@ void ConfigDialog::apply()
 
 	// 2D plots page: options tab
 	app->d_in_place_editing = !boxLabelsEditing->isChecked();
-	app->titleOn=boxTitle->isChecked();
-	app->allAxesOn = boxAllAxes->isChecked();
+	app->titleOn = boxTitle->isChecked();
 
 	if (boxFrame->isChecked())
 		app->canvasFrameWidth = boxFrameWidth->value();
 	else
 		app->canvasFrameWidth = 0;
 
-	app->drawBackbones = boxBackbones->isChecked();
-	app->axesLineWidth = boxLineWidth->value();
 	app->defaultPlotMargin = boxMargin->value();
 	app->d_graph_axes_labels_dist = boxAxesLabelsDist->value();
-	app->setGraphDefaultSettings(boxAutoscaling->isChecked(),boxScaleFonts->isChecked(),
-								boxResize->isChecked(), boxAntialiasing->isChecked());
+	app->setGraphDefaultSettings(boxAutoscaling->isChecked(), boxScaleFonts->isChecked(),
+		boxResize->isChecked(), boxAntialiasing->isChecked());
 	// 2D plots page: curves tab
 	app->defaultCurveStyle = curveStyle();
 	app->defaultCurveLineWidth = boxCurveLineWidth->value();
 	app->defaultSymbolSize = 2*boxSymbolSize->value() + 1;
+	// 2D plots page: axes tab
+	if (generalDialog->currentWidget() == plotsTabWidget &&
+		plotsTabWidget->currentWidget() == axesPage){
+		app->drawBackbones = boxBackbones->isChecked();
+		app->axesLineWidth = boxLineWidth->value();
+
+		for (int i = 0; i < QwtPlot::axisCnt; i++){
+			int row = i + 1;
+			QLayoutItem *item = enabledAxesGrid->itemAtPosition(row, 2);
+			QCheckBox *box = qobject_cast<QCheckBox *>(item->widget());
+			app->d_show_axes[i] = box->isChecked();
+
+			item = enabledAxesGrid->itemAtPosition(row, 3);
+			box = qobject_cast<QCheckBox *>(item->widget());
+			app->d_show_axes_labels[i] = box->isChecked();
+		}
+	}
+
 	// 2D plots page: ticks tab
 	app->majTicksLength = boxMajTicksLength->value();
 	app->minTicksLength = boxMinTicksLength->value();
@@ -2314,3 +2407,21 @@ void ConfigDialog::updateMenuList()
 
 	itemsList->setFixedWidth(itemsList->iconSize().width() + width + 50);
 }
+
+/*void ConfigDialog::displayAxisOptions(int axis)
+{
+	if (axis < 0 || axis >= QwtPlot::axisCnt){
+		boxEnableAxis->setDisabled(true);
+		boxShowAxisLabels->setDisabled(true);
+		return;
+	}
+
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	if (!app)
+		return;
+
+	boxEnableAxis->setEnabled(true);
+	boxEnableAxis->setChecked(app->d_show_axes[axis]);
+	boxShowAxisLabels->setEnabled(true);
+	boxShowAxisLabels->setChecked(app->d_show_axes_labels[axis]);
+}*/

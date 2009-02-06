@@ -40,6 +40,7 @@
 #include <ColorBox.h>
 #include <ColorButton.h>
 #include <PenStyleBox.h>
+#include <axes_icons.h>
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -1018,164 +1019,6 @@ static const char* const image3_data[] = {
 ". . @ 7.&.] d x.l . . . . . . . . . . . . . . . . . . . . . . @ , , &.# , K . . . . . . . . . . . . . . . . . . . J.% G.4.4.4.4.K.. . . . . . . . . ",
 ". . . _ D., 5 : . . . . . . . . . . . . . . . . . . . . . . . 2., , , , , j . . . . . . . . . . . . . . . . . . . 9., , , , , , 8.. . . . . . . . . "};
 
-static const char* const image4_data[] = {
-"35 32 4 1",
-"# c #000000",
-"a c #bfbfbf",
-"b c #ff0000",
-". c #ffffff",
-"...................................",
-".........#.....#.....#.....#.......",
-".....#.#.#.#.#.#.#.#.#.#.#.#.......",
-".....#.#.#.#.#.#.#.#.#.#.#.#.......",
-"....##########################.....",
-"....#aaaaaaaaaaaaaaaaaaaaaaaa#.....",
-"..###aaaaaaaaaaaaaaaaaaaaaaaa###...",
-"....#aaaaaaaaaaaaaaaaaaaaaaaa#.....",
-"..###aaaaaaaaaaaaaaaaaaaaaaaa###...",
-"....#aaaaaaaaaaaaaaaaaaaaaaaa#.....",
-".####aaaaaaaaaaaaaaaa#aaaaaaa####..",
-"....#aaaaaaaaaaaaaaa#a#aaaaaa#.....",
-"..###aaaaaaaaaaaaaaa#a#aaaaaa###...",
-"....#aaaaaaaaaaaaaa#aaa#aaaaa#.....",
-"..###aaaaaaa#aaaaaa#aaa#aaaaa###...",
-"....#aaaaaa#a#aaaa#aaaaa#aaaa#.....",
-".####aaaaaa#a#aaaa#aaaaa#aaaa####..",
-"....#aaaaa#aaa#aa#aaaaaaa#aaa#.....",
-"..###aaaaa#aaa###aaaaaaaaa######...",
-"....#aaaa#aaaaa#aaaaaaaaaaaaa#.....",
-"..###aaaa#aaaaa#aaaaaaaaaaaaa###...",
-"....#aaa#aaaaaaa#aaaaaaaaaaaa#.....",
-".#######aaaaaaaaa#####aaaaaaa####..",
-"....#aaaaaaaaaaaaaaaaaaaaaaaa#.....",
-"..###aaaaaaaaaaaaaaaaaaaaaaaa###...",
-"....#aaaaaaaaaaaaaaaaaaaaaaaa#.....",
-"....bbbbbbbbbbbbbbbbbbbbbbbbbb.....",
-"....bbbbbbbbbbbbbbbbbbbbbbbbbb.....",
-".....b.b.b.b.b.b.b.b.b.b.b.b.......",
-".....b.b.b.b.b.b.b.b.b.b.b.b.......",
-".........b.....b.....b.....b.......",
-"..................................."};
-
-static const char* const image5_data[] = {
-"33 32 4 1",
-"# c #000000",
-"b c #bfbfbf",
-"a c #ff0000",
-". c #ffffff",
-".................................",
-".........#.....#.....#.....#.....",
-".....#.#.#.#.#.#.#.#.#.#.#.#.....",
-".....#.#.#.#.#.#.#.#.#.#.#.#.....",
-"....aa########################...",
-"....aabbbbbbbbbbbbbbbbbbbbbbb#...",
-"..aaaabbbbbbbbbbbbbbbbbbbbbbb###.",
-"....aabbbbbbbbbbbbbbbbbbbbbbb#...",
-"..aaaabbbbbbbbbbbbbbbbbbbbbbb###.",
-"....aabbbbbbbbbbbbbbbbbbbbbbb#...",
-".aaaaabbbbbbbbbbbbbbb#bbbbbbb####",
-"....aabbbbbbbbbbbbbb#b#bbbbbb#...",
-"..aaaabbbbbbbbbbbbbb#b#bbbbbb###.",
-"....aabbbbbbbbbbbbb#bbb#bbbbb#...",
-"..aaaabbbbbb#bbbbbb#bbb#bbbbb###.",
-"....aabbbbb#b#bbbb#bbbbb#bbbb#...",
-".aaaaabbbbb#b#bbbb#bbbbb#bbbb####",
-"....aabbbb#bbb#bb#bbbbbbb#bbb#...",
-"..aaaabbbb#bbb###bbbbbbbbb######.",
-"....aabbb#bbbbb#bbbbbbbbbbbbb#...",
-"..aaaabbb#bbbbb#bbbbbbbbbbbbb###.",
-"....aabb#bbbbbbb#bbbbbbbbbbbb#...",
-".aaaaa##bbbbbbbbb#####bbbbbbb####",
-"....aabbbbbbbbbbbbbbbbbbbbbbb#...",
-"..aaaabbbbbbbbbbbbbbbbbbbbbbb###.",
-"....aabbbbbbbbbbbbbbbbbbbbbbb#...",
-"....aabbbbbbbbbbbbbbbbbbbbbbb#...",
-"....aa########################...",
-".....#.#.#.#.#.#.#.#.#.#.#.#.....",
-".....#.#.#.#.#.#.#.#.#.#.#.#.....",
-".........#.....#.....#.....#.....",
-"................................."};
-
-static const char* const image6_data[] = {
-"34 34 4 1",
-"a c #000000",
-"b c #bfbfbf",
-"# c #ff0000",
-". c #ffffff",
-"..................................",
-"..................................",
-".........#.....#.....#.....#......",
-".....#.#.#.#.#.#.#.#.#.#.#.#......",
-".....#.#.#.#.#.#.#.#.#.#.#.#......",
-"....##########################....",
-"....##########################....",
-"..aaabbbbbbbbbbbbbbbbbbbbbbbbaaa..",
-"....abbbbbbbbbbbbbbbbbbbbbbbba....",
-"..aaabbbbbbbbbbbbbbbbbbbbbbbbaaa..",
-"....abbbbbbbbbbbbbbbbbbbbbbbba....",
-".aaaabbbbbbbbbbbbbbbbabbbbbbbaaaa.",
-"....abbbbbbbbbbbbbbbababbbbbba....",
-"..aaabbbbbbbbbbbbbbbababbbbbbaaa..",
-"....abbbbbbbbbbbbbbabbbabbbbba....",
-"..aaabbbbbbbabbbbbbabbbabbbbbaaa..",
-"....abbbbbbababbbbabbbbbabbbba....",
-".aaaabbbbbbababbbbabbbbbabbbbaaaa.",
-"....abbbbbabbbabbabbbbbbbabbba....",
-"..aaabbbbbabbbaaabbbbbbbbbaaaaaa..",
-"....abbbbabbbbbabbbbbbbbbbbbba....",
-"..aaabbbbabbbbbabbbbbbbbbbbbbaaa..",
-"....abbbabbbbbbbabbbbbbbbbbbba....",
-".aaaaaaabbbbbbbbbaaaaabbbbbbbaaaa.",
-"....abbbbbbbbbbbbbbbbbbbbbbbba....",
-"..aaabbbbbbbbbbbbbbbbbbbbbbbbaaa..",
-"....abbbbbbbbbbbbbbbbbbbbbbbba....",
-"....abbbbbbbbbbbbbbbbbbbbbbbba....",
-"....aaaaaaaaaaaaaaaaaaaaaaaaaa....",
-".....a.a.a.a.a.a.a.a.a.a.a.a......",
-".....a.a.a.a.a.a.a.a.a.a.a.a......",
-".........a.....a.....a.....a......",
-"..................................",
-".................................."};
-
-static const char* const image7_data[] = {
-"32 32 4 1",
-"# c #000000",
-"b c #bfbfbf",
-"a c #ff0000",
-". c #ffffff",
-"................................",
-"........#.....#.....#.....#.....",
-"....#.#.#.#.#.#.#.#.#.#.#.#.....",
-"....#.#.#.#.#.#.#.#.#.#.#.#.....",
-"...########################aa...",
-"...#bbbbbbbbbbbbbbbbbbbbbbbaa...",
-".###bbbbbbbbbbbbbbbbbbbbbbbaaaa.",
-"...#bbbbbbbbbbbbbbbbbbbbbbbaa...",
-".###bbbbbbbbbbbbbbbbbbbbbbbaaaa.",
-"...#bbbbbbbbbbbbbbbbbbbbbbbaa...",
-"####bbbbbbbbbbbbbbbb#bbbbbbaaaaa",
-"...#bbbbbbbbbbbbbbb#b#bbbbbaa...",
-".###bbbbbbbbbbbbbbb#b#bbbbbaaaa.",
-"...#bbbbbbbbbbbbbb#bbb#bbbbaa...",
-".###bbbbbbb#bbbbbb#bbb#bbbbaaaa.",
-"...#bbbbbb#b#bbbb#bbbbb#bbbaa...",
-"####bbbbbb#b#bbbb#bbbbb#bbbaaaaa",
-"...#bbbbb#bbb#bb#bbbbbbb#bbaa...",
-".###bbbbb#bbb###bbbbbbbbb##aaaa.",
-"...#bbbb#bbbbb#bbbbbbbbbbbbaa...",
-".###bbbb#bbbbb#bbbbbbbbbbbbaaaa.",
-"...#bbb#bbbbbbb#bbbbbbbbbbbaa...",
-"#######bbbbbbbbb#####bbbbbbaaaaa",
-"...#bbbbbbbbbbbbbbbbbbbbbbbaa...",
-".###bbbbbbbbbbbbbbbbbbbbbbbaaaa.",
-"...#bbbbbbbbbbbbbbbbbbbbbbbaa...",
-"...#bbbbbbbbbbbbbbbbbbbbbbbaa...",
-"...########################aa...",
-"....#.#.#.#.#.#.#.#.#.#.#.#.....",
-"....#.#.#.#.#.#.#.#.#.#.#.#.....",
-"........#.....#.....#.....#.....",
-"................................"};
-
 #ifndef M_PI
 #define M_PI	3.141592653589793238462643
 #endif
@@ -1183,10 +1026,6 @@ static const char* const image7_data[] = {
 AxesDialog::AxesDialog( QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
 {
-	QPixmap image4( ( const char** ) image4_data );
-    QPixmap image5( ( const char** ) image5_data );
-    QPixmap image6( ( const char** ) image6_data );
-    QPixmap image7( ( const char** ) image7_data );
     setWindowTitle( tr( "QtiPlot - General Plot Options" ) );
 
     generalDialog = new QTabWidget();
@@ -1556,20 +1395,20 @@ void AxesDialog::initGridPage()
 void AxesDialog::initAxesPage()
 {
 	//axes page
-	QPixmap image4( ( const char** ) image4_data );
-	QPixmap image5( ( const char** ) image5_data );
-	QPixmap image6( ( const char** ) image6_data );
-	QPixmap image7( ( const char** ) image7_data );
+	QPixmap bottom_axis_pic( ( const char** ) bottom_axis_xpm );
+	QPixmap left_axis_pic( ( const char** ) left_axis_xpm );
+	QPixmap top_axis_pic( ( const char** ) top_axis_xpm );
+	QPixmap right_axis_pic( ( const char** ) right_axis_xpm );
 
 	axesPage = new QWidget();
 
 	axesTitlesList = new QListWidget();
-	axesTitlesList->addItem( new QListWidgetItem(image4, tr("Bottom")));
-	axesTitlesList->addItem( new QListWidgetItem(image5, tr("Left")));
-	axesTitlesList->addItem( new QListWidgetItem(image6, tr("Top")));
-	axesTitlesList->addItem( new QListWidgetItem(image7, tr("Right")));
-	axesTitlesList->setIconSize(image6.size());
-	axesTitlesList->setMaximumWidth((int)(image6.width()*1.5));
+	axesTitlesList->addItem( new QListWidgetItem(bottom_axis_pic, tr("Bottom")));
+	axesTitlesList->addItem( new QListWidgetItem(left_axis_pic, tr("Left")));
+	axesTitlesList->addItem( new QListWidgetItem(top_axis_pic, tr("Top")));
+	axesTitlesList->addItem( new QListWidgetItem(right_axis_pic, tr("Right")));
+	axesTitlesList->setIconSize(bottom_axis_pic.size());
+	axesTitlesList->setMaximumWidth((int)(bottom_axis_pic.width()*1.5));
 	axesTitlesList->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding));
 	axesTitlesList->setCurrentRow(-1);
 
@@ -3018,7 +2857,7 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 {
     if (!g)
         return;
-	
+
     for (int i=0; i<QwtPlot::axisCnt; i++){
         if (!g->axisEnabled(i))
             continue;
@@ -3026,7 +2865,7 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 		QwtScaleWidget *axis = g->axisWidget(i);
 		if (!axis)
 			continue;
-	
+
 		axis->setMargin(boxBaseline->value());
 		QPalette pal = axis->palette();
 		if (pal.color(QPalette::Active, QColorGroup::Foreground) != boxAxisColor->color())
@@ -3034,9 +2873,9 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 		if (pal.color(QPalette::Active, QColorGroup::Text) != boxAxisNumColor->color())
 			pal.setColor(QColorGroup::Text, boxAxisNumColor->color());
 		axis->setPalette(pal);
-		
+
 		g->setAxisTicksLength(i, boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
-							boxMinorTicksLength->value(), boxMajorTicksLength->value());		
+							boxMinorTicksLength->value(), boxMajorTicksLength->value());
 		g->setAxisFont(i, d_graph->axisFont(mapToQwtAxisId()));
 		axis->repaint();
 	}
@@ -3052,7 +2891,7 @@ void AxesDialog::applyAxisFormat()
     ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	switch(axisFormatApplyToBox->currentIndex()){
 		case 0://current axis
-		break;			
+		break;
 		case 1://this layer
 			applyAxisFormatToLayer(d_graph);
 		break;

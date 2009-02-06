@@ -1119,7 +1119,7 @@ public:
 	QBrush d_rect_default_brush;
 	QColor workspaceColor, panelsColor, panelsTextColor;
 	QColor d_graph_background_color, d_graph_canvas_color, d_graph_border_color, d_canvas_frame_color;
-	int d_graph_background_opacity, d_graph_canvas_opacity, d_graph_border_width, d_graph_axes_labels_dist;
+	int d_graph_background_opacity, d_graph_canvas_opacity, d_graph_border_width;
 	QString appStyle, workingDir;
 
 	//! Path to the folder where the last template file was opened/saved
@@ -1127,8 +1127,21 @@ public:
 	bool autoScaleFonts, autoResizeLayers, autoSearchUpdates;
 	bool confirmCloseTable, confirmCloseMatrix, confirmClosePlot2D, confirmClosePlot3D;
 	bool confirmCloseFolder, confirmCloseNotes;
-	bool titleOn, autoSave, drawBackbones, allAxesOn, autoscale2DPlots, antialiasing2DPlots;
-	int majTicksStyle, minTicksStyle, legendFrameStyle, autoSaveTime, axesLineWidth, canvasFrameWidth;
+	bool titleOn, autoSave, autoscale2DPlots, antialiasing2DPlots;
+	//! \name User preferences for axes in new 2D plot layers
+	//@{
+	//! Axes to be shown
+	QVector<bool> d_show_axes;
+	//! Axes with labels enabled
+	QVector<bool> d_show_axes_labels;
+	//! Draw axes backbones
+	bool drawBackbones;
+	//! Distance between the axes title and the backbone
+	int d_graph_axes_labels_dist;
+	//! Default axes linewidth
+	int axesLineWidth;
+	//@}
+	int majTicksStyle, minTicksStyle, legendFrameStyle, autoSaveTime, canvasFrameWidth;
 	QColor legendBackground, legendTextColor, defaultArrowColor;
 	int defaultArrowHeadLength, defaultArrowHeadAngle, d_legend_default_angle;
 	double defaultArrowLineWidth, defaultCurveLineWidth;
