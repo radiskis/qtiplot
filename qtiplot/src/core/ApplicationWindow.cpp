@@ -516,7 +516,8 @@ void ApplicationWindow::initGlobalConstants()
 	d_show_table_comments = false;
 
 	titleOn = true;
-	allAxesOn = false;
+	d_show_axes = QVector<bool> (QwtPlot::axisCnt, true);
+	d_show_axes_labels = QVector<bool> (QwtPlot::axisCnt, true);
 	canvasFrameWidth = 0;
 	d_canvas_frame_color = Qt::black;
 	defaultPlotMargin = 0;
@@ -993,7 +994,7 @@ void ApplicationWindow::initMainMenu()
 
 	edit = new QMenu(this);
 	edit->setObjectName("editMenu");
-		
+
 	edit->addAction(actionUndo);
 	edit->addAction(actionRedo);
 	edit->insertSeparator();
@@ -2529,12 +2530,17 @@ void ApplicationWindow::customTable(Table* w)
 void ApplicationWindow::setPreferences(Graph* g)
 {
 	if (!g->isPiePlot()){
-		if (allAxesOn){
-			for (int i = 0; i < 4; i++)
-				g->enableAxis(i);
-			g->updateSecondaryAxis(QwtPlot::xTop);
-			g->updateSecondaryAxis(QwtPlot::yRight);
-		}
+                for (int i = 0; i < QwtPlot::axisCnt; i++){
+                	bool show = d_show_axes[i];
+                    g->enableAxis(i, show);
+                    if(show){
+						ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw (i);
+						sd->enableComponent(QwtAbstractScaleDraw::Labels, d_show_axes_labels[i]);
+                    }
+                }
+
+                g->updateSecondaryAxis(QwtPlot::xTop);
+                g->updateSecondaryAxis(QwtPlot::yRight);
 
 		QList<int> ticksList;
 		ticksList<<majTicksStyle<<majTicksStyle<<majTicksStyle<<majTicksStyle;
@@ -4015,9 +4021,9 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			s = t.readLine();
 			QStringList graph = s.split("\t");
 			QString caption = graph[0];
-			
+
 			//printf("%s\n", caption.toAscii().constData());
-			
+
 			plot = app->multilayerPlot(caption, 0,  graph[2].toInt(), graph[1].toInt());
 
 			app->setListViewDate(caption, graph[3]);
@@ -4474,7 +4480,6 @@ void ApplicationWindow::readSettings()
 	settings.beginGroup("/2DPlots");
 	settings.beginGroup("/General");
 	titleOn = settings.value("/Title", true).toBool();
-	allAxesOn = settings.value("/AllAxes", false).toBool();
 	canvasFrameWidth = settings.value("/CanvasFrameWidth", 0).toInt();
 	defaultPlotMargin = settings.value("/Margin", 0).toInt();
 	drawBackbones = settings.value("/AxesBackbones", true).toBool();
@@ -4502,6 +4507,13 @@ void ApplicationWindow::readSettings()
 	d_graph_border_width = settings.value("/FrameWidth", d_graph_border_width).toInt();
     d_canvas_frame_color = settings.value("/FrameColor", Qt::black).value<QColor>();
 	d_graph_axes_labels_dist = settings.value("/LabelsAxesDist", d_graph_axes_labels_dist).toInt();
+	int size = settings.beginReadArray("EnabledAxes");
+	for (int i = 0; i < size; ++i) {
+		settings.setArrayIndex(i);
+		d_show_axes[i] = settings.value("enabled", true).toBool();
+		d_show_axes_labels[i] = settings.value("labels", true).toBool();
+	}
+	settings.endArray();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -4808,7 +4820,6 @@ void ApplicationWindow::saveSettings()
 	settings.beginGroup("/2DPlots");
 	settings.beginGroup("/General");
 	settings.setValue("/Title", titleOn);
-	settings.setValue("/AllAxes", allAxesOn);
 	settings.setValue("/CanvasFrameWidth", canvasFrameWidth);
 	settings.setValue("/Margin", defaultPlotMargin);
 	settings.setValue("/AxesBackbones", drawBackbones);
@@ -4849,6 +4860,14 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/FrameWidth", d_graph_border_width);
 	settings.setValue("/FrameColor", d_canvas_frame_color);
 	settings.setValue("/LabelsAxesDist", d_graph_axes_labels_dist);
+	settings.beginWriteArray("EnabledAxes");
+	for (int i = 0; i < QwtPlot::axisCnt; ++i) {
+		settings.setArrayIndex(i);
+		settings.setValue("axis", i);
+		settings.setValue("enabled", d_show_axes[i]);
+		settings.setValue("labels", d_show_axes_labels[i]);
+	}
+	settings.endArray();
 	settings.endGroup(); // General
 
 	settings.beginGroup("/Curves");
@@ -8335,7 +8354,7 @@ void ApplicationWindow::editMenuAboutToShow()
 		actionRedo->setEnabled(false);
 		return;
 	}
-	
+
 	if (qobject_cast<Note *>(w)){
 		QTextDocument *doc = ((Note *)w)->editor()->document();
 		actionUndo->setEnabled(doc->isUndoAvailable());
@@ -11218,7 +11237,7 @@ void ApplicationWindow::integrate()
 }
 
 void ApplicationWindow::differentiate()
-{	
+{
 	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
@@ -11234,7 +11253,7 @@ void ApplicationWindow::differentiate()
         	tr("Please select a 'Y' column first!"));
 			return;
 		}
-		
+
 		Differentiation *diff = new Differentiation(this, NULL, "", "");
 		int aux = 0;
 		foreach (QString yCol, lst){
@@ -11244,7 +11263,7 @@ void ApplicationWindow::differentiate()
 			Graph *g = diff->outputGraph();
 			if (!g)
 				continue;
-			
+
 			QwtPlotCurve *c = g->curve(aux);
 			if (c){
 				QPen pen = c->pen();
