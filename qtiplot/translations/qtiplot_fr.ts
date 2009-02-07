@@ -3603,7 +3603,7 @@ Etes vous sûr de vouloir continuer ?</translation>
         <translation type="obsolete">Désolé, QtiPlot ne parvient pas démarrer le navigateur ! Lancez votre navigateur manuellement et visitez le lien suivant</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2257"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2260"/>
         <source>English</source>
         <translation>Français</translation>
     </message>
@@ -7487,7 +7487,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>Chemin des fichiers</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2292"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2295"/>
         <source>Choose the location of the QtiPlot translations folder!</source>
         <translation>Choisissez le chemin des fichiers de traduction de Qtiplot</translation>
     </message>
@@ -7532,7 +7532,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>Caractère de fin de ligne</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2327"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2330"/>
         <source>Choose the location of the Python configuration files!</source>
         <translation>Choisissez le chemin des fichiers de configuration de python</translation>
     </message>
@@ -18008,47 +18008,47 @@ La première représente le signal et la seconde la réponse de la fonction !</t
 <context>
     <name>ThreeExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="245"/>
         <source>Exponential decay</source>
         <translation>Décroissance exponentielle</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="237"/>
         <source>ExpDecay3</source>
         <translation>Décroissance exponentielle, troisème ordre</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first amplitude</source>
         <translation>Premier amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first lifetime</source>
         <translation>premier constante de temps</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second amplitude</source>
         <translation>deuxième amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second lifetime</source>
         <translation>deuxième constante de temps</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third amplitude</source>
         <translation>troisième amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third lifetime</source>
         <translation>troisième constante de temps</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>offset</source>
         <translation>Décalage en Y</translation>
     </message>
@@ -18089,37 +18089,37 @@ La première représente le signal et la seconde la réponse de la fonction !</t
 <context>
     <name>TwoExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="166"/>
         <source>Exponential decay</source>
         <translation>Décroissance exponentielle</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="160"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="158"/>
         <source>ExpDecay2</source>
         <translation>Décroissance exponentielle, deux ordres</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first amplitude</source>
         <translation>Première amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first lifetime</source>
         <translation>Première constante de temps</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second amplitude</source>
         <translation>deuxième amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second lifetime</source>
         <translation>deuxième contante de temps</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>offset</source>
         <translation>Décalage en Y</translation>
     </message>

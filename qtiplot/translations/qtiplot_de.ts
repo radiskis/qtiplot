@@ -5472,7 +5472,7 @@ Wollen Sie fortfahren?</translation>
         <translation type="obsolete">Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2257"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2260"/>
         <source>English</source>
         <translation>Deutsch</translation>
     </message>
@@ -9611,7 +9611,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Datei Ort</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2292"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2295"/>
         <source>Choose the location of the QtiPlot translations folder!</source>
         <translation>Wählen Sie das Verzeichnis der QtiPlot-Übersetzungen aus!</translation>
     </message>
@@ -9656,7 +9656,7 @@ Die folgenden Spezialcodes können benutzt werden:
         <translation>Zeilenabschlusszeichen</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2327"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2330"/>
         <source>Choose the location of the Python configuration files!</source>
         <translation>Wählen Sie das Verzeichnis der Python-Konfigurationsdateien!</translation>
     </message>
@@ -21885,7 +21885,7 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>ThreeExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="245"/>
         <source>Exponential decay</source>
         <translation>Exponentielles Abklingen</translation>
     </message>
@@ -21895,42 +21895,42 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">(Offset)</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="237"/>
         <source>ExpDecay3</source>
         <translation>ExpAbnahme3</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first amplitude</source>
         <translation>erste Amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first lifetime</source>
         <translation>erste Lebensdauer</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second amplitude</source>
         <translation>zweite Lebensdauer</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second lifetime</source>
         <translation>zweite Lebensdauer</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third amplitude</source>
         <translation>dritte Amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third lifetime</source>
         <translation>dritte Lebensdauer</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>offset</source>
         <translation>Offset</translation>
     </message>
@@ -21971,7 +21971,7 @@ Wollen sie Zellen einfügen?</translation>
 <context>
     <name>TwoExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="166"/>
         <source>Exponential decay</source>
         <translation>Exponentielles Abklingen</translation>
     </message>
@@ -21981,32 +21981,32 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">(Offset)</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="160"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="158"/>
         <source>ExpDecay2</source>
         <translation>ExpAbnahme2</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first amplitude</source>
         <translation>erste Amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first lifetime</source>
         <translation>erste Lebensdauer</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second amplitude</source>
         <translation>zweite Amplitude</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second lifetime</source>
         <translation>zweite Lebensdauer</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>offset</source>
         <translation>Offset</translation>
     </message>

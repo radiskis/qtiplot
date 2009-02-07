@@ -215,8 +215,8 @@ void MultiPeakFit::guessInitialValues()
 void MultiPeakFit::customizeFitResults()
 {
 	for (int j=0; j<d_peaks; j++){
-	    d_results[3*j] = fabs(d_results[3*j]);
-        d_results[3*j + 2] = fabs(d_results[3*j + 2]);
+            d_results[3*j] = fabs(d_results[3*j]);
+            d_results[3*j + 2] = fabs(d_results[3*j + 2]);
 	}
 }
 

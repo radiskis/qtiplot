@@ -124,9 +124,9 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 		status = gsl_multifit_fdfsolver_iterate (s);
 		if (status)
 			break;
-		
+
 		for (int i=0; i<d_p; i++){
-			double p = gsl_vector_get(s->x, i);			
+			double p = gsl_vector_get(s->x, i);
 			if (p < d_param_range_left[i] || p > d_param_range_right[i]){
 				inRange = false;
 				break;
@@ -135,14 +135,14 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 		if (!inRange)
 			break;
 
-		for (int i=0; i<d_p; i++)
+		for (int i = 0; i < d_p; i++)
 			d_results[i] = gsl_vector_get(s->x, i);
 
 		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
 	} while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	gsl_multifit_covar (s->J, 0.0, covar);
-	
+
 	iterations = iter;
 	return s;
 }
@@ -224,7 +224,7 @@ void Fit::setDataCurve(int curve, double start, double end)
             return;
         }
 	}
-	
+
     if (d_graph && d_curve && ((PlotCurve *)d_curve)->type() != Graph::Function)
     {
         QList<DataCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
@@ -234,7 +234,7 @@ void Fit::setDataCurve(int curve, double start, double end)
                 d_weighting = Instrumental;
                 for (int i=0; i<d_n; i++){
 					double e = er->errorValue(i);
-					d_w[i] = 1.0/(e*e); 
+					d_w[i] = 1.0/(e*e);
 				}
                 weighting_dataset = er->title().text();
                 return;
@@ -391,7 +391,7 @@ QString Fit::legendInfo()
 			info += locale.toString(sqrt(chi_2_dof*gsl_matrix_get(covar, i, i)), 'e', d_prec);
 		else
 			info += locale.toString(sqrt(gsl_matrix_get(covar, i, i)), 'e', d_prec);
-		
+
 		if (i < d_p - 1)
 			info += "\n";
 	}
@@ -402,13 +402,13 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 {
 	if (d_w)
 		free(d_w);
-	
+
 	d_w = (double *)malloc(d_n*sizeof(double));
 	if (!d_w){
-		memoryErrorMessage();		
+		memoryErrorMessage();
 		return false;
-	} 
-	
+	}
+
 	switch (w)
 	{
 		case NoWeighting:
@@ -447,7 +447,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				if (er){
 					for (int j=0; j<d_n; j++){
 						double e = er->errorValue(j);
-						d_w[j] = 1.0/(e*e); 
+						d_w[j] = 1.0/(e*e);
 					}
 				}
 			}
@@ -487,7 +487,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				}
 			}
 			break;
-			
+
 		case Direct:
 			{//d_w are equal to the values of the arbitrary dataset
 				if (colName.isEmpty())
@@ -511,7 +511,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 			}
 			break;
 	}
-		
+
 	d_weighting = w;
 	return true;
 }
@@ -590,7 +590,7 @@ double *Fit::errors()
 	if (!d_errors) {
 		d_errors = new double[d_p];
 		double chi_2_dof = chi_2/(d_n - d_p);
-		for (int i=0; i<d_p; i++){
+                for (int i = 0; i < d_p; i++){
 			if (d_scale_errors)
 				d_errors[i] = sqrt(chi_2_dof*gsl_matrix_get(covar,i,i));
 			else
@@ -663,7 +663,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	}
 
 	int points = d_n;
-	double *X = NULL;		
+	double *X = NULL;
 	if (d_gen_function){
 		X = (double *)malloc(d_points*sizeof(double));
 		if (!X){
@@ -678,7 +678,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 			X[i] = X0 + i*step;
 	} else
 		X = d_x;
-	
+
 	double *lcl = (double *)malloc(d_points*sizeof(double));
 	if (!lcl){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
@@ -716,7 +716,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		double x = X[i];
 		double dx = x - x_mean;
 		double aux = t*sqrt(mse*(1.0/(double)d_n + dx*dx/sxx));
-	
+
 		outputTable->setCell(i, 0, x);
 		double y = eval(d_results, x);
 		double lowLimit = y - aux;
@@ -726,7 +726,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		outputTable->setCell(i, 2, upLimit);
 		ucl[i] = upLimit;
 	}
-	
+
 	for (int i = 0; i < outputTable->numCols(); i++)
 		outputTable->table()->adjustColumn(i);
 	app->hideWindow(outputTable);
@@ -782,7 +782,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	}
 
 	int points = d_n;
-	double *X = NULL;		
+	double *X = NULL;
 	if (d_gen_function){
 		X = (double *)malloc(d_points*sizeof(double));
 		if (!X){
@@ -797,7 +797,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 			X[i] = X0 + i*step;
 	} else
 		X = d_x;
-	
+
 	double *lcl = (double *)malloc(d_points*sizeof(double));
 	if (!lcl){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
@@ -899,7 +899,7 @@ void Fit::fit()
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, this};
-	
+
 	int status, iterations = d_max_iterations;
 	if(d_solver == NelderMeadSimplex){
 		gsl_multimin_function f;
@@ -933,7 +933,7 @@ void Fit::fit()
 	}
 
 	generateFitCurve();
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (app->writeFitResultsToLog)
 		app->updateLog(logFitInfo(iterations, status));
@@ -963,7 +963,7 @@ void Fit::generateFitCurve()
 		}
 		calculateFitCurveData(X, Y);
 	}
-	
+
     customizeFitResults();
 
 	if (d_graphics_display){
@@ -988,10 +988,10 @@ FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth, b
 	c->setPen(QPen(ColorBox::color(d_curveColorIndex), penWidth));
 	c->setRange(d_from, d_to);
 	c->setFormula(d_formula);
-	
+
 	for (int j=0; j<d_p; j++)
-		c->setConstant(d_param_names[j], d_results[j]);	
-		
+		c->setConstant(d_param_names[j], d_results[j]);
+
 	if (updateData)
 		c->loadData(d_points);
 	d_output_graph->insertPlotItem(c, Graph::Line);
@@ -1062,7 +1062,7 @@ void Fit::setParameterRange(int parIndex, double left, double right)
 {
 	if (!d_param_range_left || !d_param_range_right || parIndex < 0 || parIndex >= d_p)
 		return;
-	
+
 	d_param_range_left[parIndex] = left;
 	d_param_range_right[parIndex] = right;
 }
@@ -1079,7 +1079,7 @@ void Fit::initWorkspace(int par)
 		memoryErrorMessage();
 		return;
 	}*/
-	
+
 	d_results = new double[par];
 	d_param_range_left = new double[par];
 	d_param_range_right = new double[par];
@@ -1095,27 +1095,27 @@ void Fit::freeWorkspace()
 		gsl_vector_free(d_param_init);
 		d_param_init = NULL;
 	}
-	
+
 	if (covar){
 		gsl_matrix_free (covar);
 		covar = NULL;
 	}
-	
+
 	if (d_results){
 		delete[] d_results;
 		d_results = NULL;
 	}
-	
+
 	if (d_errors){
 		delete[] d_errors;
 		d_errors = NULL;
 	}
-		
+
 	if (d_param_range_left){
 		delete[] d_param_range_left;
 		d_param_range_left = NULL;
 	}
-	
+
 	if (d_param_range_right){
 		delete[] d_param_range_right;
 		d_param_range_right = NULL;

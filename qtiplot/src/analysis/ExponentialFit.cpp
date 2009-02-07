@@ -1,9 +1,9 @@
 /***************************************************************************
-    File                 : fitclasses.cpp
+    File                 : ExponentialFit.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Exponential fit classes
 
  ***************************************************************************/
@@ -95,9 +95,7 @@ void ExponentialFit::init()
 void ExponentialFit::customizeFitResults()
 {
 	if (is_exp_growth)
-		d_results[1] = -1.0/d_results[1];
-	else
-		d_results[1] = 1.0/d_results[1];
+		d_results[1] = -d_results[1];
 }
 
 void ExponentialFit::calculateFitCurveData(double *X, double *Y)
@@ -107,17 +105,17 @@ void ExponentialFit::calculateFitCurveData(double *X, double *Y)
 	double y0 = d_results[2];
 	if (d_gen_function){
 		double X0 = d_x[0];
-		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++) {
-		    double x = X0+i*step;
+		double step = (d_x[d_n-1] - X0)/(d_points - 1);
+		for (int i = 0; i < d_points; i++) {
+			double x = X0 + i*step;
 			X[i] = x;
-			Y[i] = a*exp(l*x) + y0;
+			Y[i] = a*exp(x/l) + y0;
 		}
 	} else {
-		for (int i=0; i<d_points; i++) {
+		for (int i = 0; i < d_points; i++) {
 		    double x = d_x[i];
 			X[i] = x;
-			Y[i] = a*exp(l*x) + y0;
+			Y[i] = a*exp(x/l) + y0;
 		}
 	}
 }
@@ -170,12 +168,6 @@ void TwoExpFit::init()
 	d_param_explain << tr("first amplitude") << tr("first lifetime") << tr("second amplitude") << tr("second lifetime") << tr("offset");
 }
 
-void TwoExpFit::customizeFitResults()
-{
-    d_results[1] = 1.0/d_results[1];
-	d_results[3] = 1.0/d_results[3];
-}
-
 void TwoExpFit::calculateFitCurveData(double *X, double *Y)
 {
 	double a1 = d_results[0];
@@ -183,20 +175,20 @@ void TwoExpFit::calculateFitCurveData(double *X, double *Y)
 	double a2 = d_results[2];
 	double l2 = -d_results[3];
 	double y0 = d_results[4];
-	
+
 	if (d_gen_function){
 		double X0 = d_x[0];
-		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++){
+		double step = (d_x[d_n - 1] - X0)/(d_points - 1);
+		for (int i = 0; i < d_points; i++){
 		    double x = X0 + i*step;
 			X[i] = x;
-			Y[i] = a1*exp(l1*x) + a2*exp(l2*x) + y0;
+			Y[i] = a1*exp(x/l1) + a2*exp(x/l2) + y0;
 		}
 	} else {
-		for (int i=0; i<d_points; i++){
+		for (int i = 0; i < d_points; i++){
 		    double x = d_x[i];
 			X[i] = x;
-			Y[i] = a1*exp(l1*x) + a2*exp(l2*x) + y0;
+			Y[i] = a1*exp(x/l1) + a2*exp(x/l2) + y0;
 		}
 	}
 }
@@ -249,13 +241,6 @@ void ThreeExpFit::init()
 	d_param_explain << tr("first amplitude") << tr("first lifetime") << tr("second amplitude") << tr("second lifetime") << tr("third amplitude") << tr("third lifetime") << tr("offset");
 }
 
-void ThreeExpFit::customizeFitResults()
-{
-	d_results[1]=1.0/d_results[1];
-	d_results[3]=1.0/d_results[3];
-	d_results[5]=1.0/d_results[5];
-}
-
 void ThreeExpFit::calculateFitCurveData(double *X, double *Y)
 {
 	double a1 = d_results[0];
@@ -265,20 +250,20 @@ void ThreeExpFit::calculateFitCurveData(double *X, double *Y)
 	double a3 = d_results[4];
 	double l3 = -d_results[5];
 	double y0 = d_results[6];
-	
+
 	if (d_gen_function){
 		double X0 = d_x[0];
-		double step = (d_x[d_n-1]-X0)/(d_points-1);
-		for (int i=0; i<d_points; i++){
-		    double x = X0+i*step;
+		double step = (d_x[d_n - 1] - X0)/(d_points - 1);
+		for (int i = 0; i < d_points; i++){
+		    double x = X0 + i*step;
 			X[i] = x;
-			Y[i] = a1*exp(x*l1) + a2*exp(x*l2) + a3*exp(x*l3) + y0;
+			Y[i] = a1*exp(x/l1) + a2*exp(x/l2) + a3*exp(x/l3) + y0;
 		}
 	} else {
-		for (int i=0; i<d_points; i++){
+		for (int i = 0; i < d_points; i++){
 		    double x = d_x[i];
 			X[i] = x;
-			Y[i] = a1*exp(x*l1) + a2*exp(x*l2) + a3*exp(x*l3) + y0;
+			Y[i] = a1*exp(x/l1) + a2*exp(x/l2) + a3*exp(x/l3) + y0;
 		}
 	}
 }

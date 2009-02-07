@@ -32,9 +32,10 @@
 #include <QMessageBox>
 
 FunctionCurve::FunctionCurve(const QString& name):
-	PlotCurve(name)
+	PlotCurve(name),
+	d_function_type(Normal),
+	d_variable("x")
 {
-	d_variable = "x";
 	setType(Graph::Function);
 	setPlotStyle(Graph::Line);
 	d_formulas = QStringList();
@@ -42,9 +43,9 @@ FunctionCurve::FunctionCurve(const QString& name):
 
 FunctionCurve::FunctionCurve(const FunctionType& t, const QString& name):
 	PlotCurve(name),
-	d_function_type(t)
+	d_function_type(t),
+	d_variable("x")
 {
-	d_variable = "x";
 	setType(Graph::Function);
 	setPlotStyle(Graph::Line);
 }
@@ -189,14 +190,14 @@ void FunctionCurve::loadData(int points)
 		try {
 			parser.DefineVar(d_variable.ascii(), &x);
 			QMapIterator<QString, double> i(d_constants);
- 			while (i.hasNext()) {
+ 			while (i.hasNext()){
      			i.next();
 				parser.DefineConst(i.key().ascii(), i.value());
  			}
 			parser.SetExpr(d_formulas[0].ascii());
 
-			X[0] = d_from; x = d_from; Y[0]=parser.Eval();
-			for (int i = 1; i<points; i++ ){
+			X[0] = d_from; x = d_from; Y[0] = parser.Eval();
+			for (int i = 1; i < points; i++ ){
 				x += step;
 				X[i] = x;
 				Y[i] = parser.Eval();

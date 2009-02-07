@@ -43,7 +43,7 @@
 
 ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl ), slopes(type)
-{	
+{
     setName( "ExpDecayDialog" );
 	setWindowTitle(tr("QtiPlot - Verify initial guesses"));
 	setSizeGripEnabled( true );
@@ -227,7 +227,7 @@ void ExpDecayDialog::fit()
 		fitter = new TwoExpFit(app, graph);
 		fitter->setInitialGuesses(x_init);
 	} else if (slopes == 1 || slopes == -1){
-		double x_init[3] = {boxAmplitude->value(), slopes/boxFirst->value(), boxYOffset->value()};
+		double x_init[3] = {boxAmplitude->value(), slopes*boxFirst->value(), boxYOffset->value()};
 		fitter = new ExponentialFit(app, graph, slopes == -1);
 		fitter->setInitialGuesses(x_init);
 	}

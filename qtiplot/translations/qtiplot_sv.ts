@@ -3906,7 +3906,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
 %2.</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2257"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2260"/>
         <source>English</source>
         <translation>Svenska</translation>
     </message>
@@ -7475,7 +7475,7 @@ Följande specialkoder kan användas:
         <translation>Filplats</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2292"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2295"/>
         <source>Choose the location of the QtiPlot translations folder!</source>
         <translation>Välj plats för QtiPlots översättningsmapp!</translation>
     </message>
@@ -7520,7 +7520,7 @@ Följande specialkoder kan användas:
         <translation>Radslutstecken</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2327"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2330"/>
         <source>Choose the location of the Python configuration files!</source>
         <translation>Välj plats för Pythons konfigurationsfiler!</translation>
     </message>
@@ -18250,47 +18250,47 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
 <context>
     <name>ThreeExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="245"/>
         <source>Exponential decay</source>
         <translation>Exponentiellt avtagande</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="237"/>
         <source>ExpDecay3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first amplitude</source>
         <translation>första anmplitud</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first lifetime</source>
         <translation>första livslängd</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second amplitude</source>
         <translation>andra anmplitud</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second lifetime</source>
         <translation>andra livslängd</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third amplitude</source>
         <translation>tredje anmplitud</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third lifetime</source>
         <translation>tredje livslängd</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
@@ -18331,37 +18331,37 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
 <context>
     <name>TwoExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="166"/>
         <source>Exponential decay</source>
         <translation>Exponentiellt avtagande</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="160"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="158"/>
         <source>ExpDecay2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first amplitude</source>
         <translation>första anmplitud</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first lifetime</source>
         <translation>första livslängd</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second amplitude</source>
         <translation>andra anmplitud</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second lifetime</source>
         <translation>andra livslängd</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>offset</source>
         <translation>förskjutning</translation>
     </message>
