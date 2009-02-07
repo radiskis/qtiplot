@@ -10,142 +10,145 @@
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_math.h>
 
-int expd3_f (const gsl_vector * x, void *params, gsl_vector * f) {
+int expd3_f (const gsl_vector * x, void *params, gsl_vector * f){
     int n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
     double *sigma = ((struct FitData *)params)->sigma;
-    double A1=gsl_vector_get(x,0);
-    double t1=gsl_vector_get(x,1);
-    double A2=gsl_vector_get(x,2);
-    double t2=gsl_vector_get(x,3);
-    double A3=gsl_vector_get(x,4);
-    double t3=gsl_vector_get(x,5);
-    double y0=gsl_vector_get(x,6);
+    double A1 = gsl_vector_get(x, 0);
+    double t1 = gsl_vector_get(x, 1);
+    double A2 = gsl_vector_get(x, 2);
+    double t2 = gsl_vector_get(x, 3);
+    double A3 = gsl_vector_get(x, 4);
+    double t3 = gsl_vector_get(x, 5);
+    double y0 = gsl_vector_get(x, 6);
     for (int i = 0; i < n; i++) {
-        double Yi = A1 * exp (-X[i]*t1) + A2 * exp (-X[i]*t2) + A3 * exp (-X[i]*t3) + y0;
+    	double t = -X[i];
+        double Yi = A1 * exp(t/t1) + A2 * exp(t/t2) + A3 * exp(t/t3) + y0;
 		double s = 1.0/sqrt(sigma[i]);
         gsl_vector_set (f, i, (Yi - Y[i])/s);
     }
     return GSL_SUCCESS;
 }
-double expd3_d (const gsl_vector * x, void *params) {
+double expd3_d (const gsl_vector * x, void *params){
     int n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
     double *sigma = ((struct FitData *)params)->sigma;
-    double A1=gsl_vector_get(x,0);
-    double t1=gsl_vector_get(x,1);
-    double A2=gsl_vector_get(x,2);
-    double t2=gsl_vector_get(x,3);
-    double A3=gsl_vector_get(x,4);
-    double t3=gsl_vector_get(x,5);
-    double y0=gsl_vector_get(x,6);
-    double val=0;
+    double A1 = gsl_vector_get(x, 0);
+    double t1 = gsl_vector_get(x, 1);
+    double A2 = gsl_vector_get(x, 2);
+    double t2 = gsl_vector_get(x, 3);
+    double A3 = gsl_vector_get(x, 4);
+    double t3 = gsl_vector_get(x, 5);
+    double y0 = gsl_vector_get(x, 6);
+    double val = 0;
     for (int i = 0; i < n; i++) {
+    	double t = -X[i];
 		double s = 1.0/sqrt(sigma[i]);
-        double dYi = ((A1 * exp (-X[i]*t1) + A2 * exp (-X[i]*t2) + A3 * exp (-X[i]*t3) +y0)-Y[i])/s;
+        double dYi = ((A1 * exp(t/t1) + A2 * exp(t/t2) + A3 * exp(t/t3) + y0) - Y[i])/s;
         val += dYi * dYi;
     }
     return val;
 }
-int expd3_df (const gsl_vector * x, void *params, gsl_matrix * J) {
+int expd3_df (const gsl_vector * x, void *params, gsl_matrix * J){
     int n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *sigma = ((struct FitData *)params)->sigma;
-    double A1=gsl_vector_get(x,0);
-    double l1=gsl_vector_get(x,1);
-    double A2=gsl_vector_get(x,2);
-    double l2=gsl_vector_get(x,3);
-    double A3=gsl_vector_get(x,4);
-    double l3=gsl_vector_get(x,5);
+    double A1 = gsl_vector_get(x, 0);
+    double l1 = gsl_vector_get(x, 1);
+    double A2 = gsl_vector_get(x, 2);
+    double l2 = gsl_vector_get(x, 3);
+    double A3 = gsl_vector_get(x, 4);
+    double l3 = gsl_vector_get(x, 5);
     for (int i = 0; i < n; i++) {
         /* Jacobian matrix J(i,j) = dfi / dxj, */
         /* where fi = (Yi - yi)/sigma[i],      */
-        /*       Yi = A1 * exp(-xi*l1) + A2 * exp(-xi*l2) +y0  */
-        /* and the xj are the parameters (A1,l1,A2,l2,y0) */
+        /*       Yi = A1 * exp(-xi/l1) + A2 * exp(-xi/l2) + A3 * exp(-xi/l3) + y0  */
+        /* and the xj are the parameters (A1, l1 ,A2, l2, A3, l3, y0) */
         double t = X[i];
         double s = 1.0/sqrt(sigma[i]);
         double e1 = exp(-t*l1)/s;
         double e2 = exp(-t*l2)/s;
         double e3 = exp(-t*l3)/s;
         gsl_matrix_set (J, i, 0, e1);
-        gsl_matrix_set (J, i, 1, -t * A1 * e1);
+        gsl_matrix_set (J, i, 1, t * A1 * e1/(l1*l1));
         gsl_matrix_set (J, i, 2, e2);
-        gsl_matrix_set (J, i, 3, -t * A2 * e2);
+        gsl_matrix_set (J, i, 3, t * A2 * e2/(l2*l2));
         gsl_matrix_set (J, i, 4, e3);
-        gsl_matrix_set (J, i, 5, -t * A3 * e3);
+        gsl_matrix_set (J, i, 5, t * A3 * e3/(l3*l3));
         gsl_matrix_set (J, i, 6, 1/s);
     }
     return GSL_SUCCESS;
 }
-int expd3_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J) {
+int expd3_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J){
     expd3_f (x, params, f);
     expd3_df (x, params, J);
     return GSL_SUCCESS;
 }
-int expd2_f (const gsl_vector * x, void *params, gsl_vector * f) {
+int expd2_f (const gsl_vector * x, void *params, gsl_vector * f){
     int n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
     double *sigma = ((struct FitData *)params)->sigma;
-    double A1=gsl_vector_get(x,0);
-    double t1=gsl_vector_get(x,1);
-    double A2=gsl_vector_get(x,2);
-    double t2=gsl_vector_get(x,3);
-    double y0=gsl_vector_get(x,4);
+    double A1 = gsl_vector_get(x, 0);
+    double t1 = gsl_vector_get(x, 1);
+    double A2 = gsl_vector_get(x, 2);
+    double t2 = gsl_vector_get(x, 3);
+    double y0 = gsl_vector_get(x, 4);
     for (int i = 0; i < n; i++) {
-        double Yi = A1 * exp (-X[i]*t1) + A2 * exp (-X[i]*t2) + y0;
+    	double t = -X[i];
+        double Yi = A1 * exp (t/t1) + A2 * exp (t/t2) + y0;
 		double s = 1.0/sqrt(sigma[i]);
         gsl_vector_set (f, i, (Yi - Y[i])/s);
     }
     return GSL_SUCCESS;
 }
-double expd2_d (const gsl_vector * x, void *params) {
+double expd2_d (const gsl_vector * x, void *params){
     int n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *Y = ((struct FitData *)params)->Y;
     double *sigma = ((struct FitData *)params)->sigma;
-    double A1=gsl_vector_get(x,0);
-    double t1=gsl_vector_get(x,1);
-    double A2=gsl_vector_get(x,2);
-    double t2=gsl_vector_get(x,3);
-    double y0=gsl_vector_get(x,4);
-    double val=0;
+    double A1 = gsl_vector_get(x, 0);
+    double t1 = gsl_vector_get(x, 1);
+    double A2 = gsl_vector_get(x, 2);
+    double t2 = gsl_vector_get(x, 3);
+    double y0 = gsl_vector_get(x, 4);
+    double val = 0;
     for (int i = 0; i < n; i++) {
+    	double t = -X[i];
 		double s = 1.0/sqrt(sigma[i]);
-        double dYi = ((A1 * exp (-X[i]*t1) + A2 * exp (-X[i]*t2) + y0)-Y[i])/s;
+        double dYi = ((A1 * exp (t/t1) + A2 * exp (t/t2) + y0) - Y[i])/s;
         val += dYi * dYi;
     }
     return val;
 }
-int expd2_df (const gsl_vector * x, void *params, gsl_matrix * J) {
+int expd2_df (const gsl_vector * x, void *params, gsl_matrix * J){
     int n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *sigma = ((struct FitData *)params)->sigma;
-    double A1=gsl_vector_get(x,0);
-    double l1=gsl_vector_get(x,1);
-    double A2=gsl_vector_get(x,2);
-    double l2=gsl_vector_get(x,3);
+    double A1 = gsl_vector_get(x, 0);
+    double l1 = gsl_vector_get(x, 1);
+    double A2 = gsl_vector_get(x, 2);
+    double l2 = gsl_vector_get(x, 3);
     for (int i = 0; i < n; i++) {
         /* Jacobian matrix J(i,j) = dfi / dxj, */
         /* where fi = (Yi - yi)/sigma[i],      */
-        /*       Yi = A1 * exp(-xi*l1) + A2 * exp(-xi*l2) +y0  */
-        /* and the xj are the parameters (A1,l1,A2,l2,y0) */
+        /*       Yi = A1 * exp(-xi/l1) + A2 * exp(-xi/l2) + y0  */
+        /* and the xj are the parameters (A1, l1, A2, l2, y0) */
         double s = 1.0/sqrt(sigma[i]);
         double t = X[i];
-        double e1 = exp(-t*l1)/s;
-        double e2 = exp(-t*l2)/s;
+        double e1 = exp(-t/l1)/s;
+        double e2 = exp(-t/l2)/s;
         gsl_matrix_set (J, i, 0, e1);
-        gsl_matrix_set (J, i, 1, -t * A1 * e1);
+        gsl_matrix_set (J, i, 1, t * A1 * e1/(l1*l1));
         gsl_matrix_set (J, i, 2, e2);
-        gsl_matrix_set (J, i, 3, -t * A2 * e2);
+        gsl_matrix_set (J, i, 3, t * A2 * e2/(l2*l2));
         gsl_matrix_set (J, i, 4, 1/s);
     }
     return GSL_SUCCESS;
 }
-int expd2_fdf (const gsl_vector * x, void *params,
-               gsl_vector * f, gsl_matrix * J) {
+int expd2_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J){
     expd2_f (x, params, f);
     expd2_df (x, params, J);
     return GSL_SUCCESS;
@@ -159,8 +162,8 @@ int exp_f (const gsl_vector * x, void *params, gsl_vector * f) {
     double lambda = gsl_vector_get (x, 1);
     double b = gsl_vector_get (x, 2);
     for (int i = 0; i < n; i++) {
-        double Yi = A * exp (-lambda * X[i]) + b;
-		double s = 1.0/sqrt(sigma[i]);
+        double Yi = A * exp (-X[i]/lambda) + b;
+        double s = 1.0/sqrt(sigma[i]);
         gsl_vector_set (f, i, (Yi - Y[i])/s);
     }
     return GSL_SUCCESS;
@@ -175,14 +178,13 @@ double exp_d (const gsl_vector * x, void *params) {
     double b = gsl_vector_get (x, 2);
     double val=0;
     for (int i = 0; i < n; i++) {
-		double s = 1.0/sqrt(sigma[i]);
-        double dYi = ((A * exp (-lambda * X[i]) + b)-Y[i])/s;
+        double s = 1.0/sqrt(sigma[i]);
+        double dYi = ((A * exp(-X[i]/lambda) + b) - Y[i])/s;
         val += dYi * dYi;
     }
     return val;
 }
-int exp_df (const gsl_vector * x, void *params,
-            gsl_matrix * J) {
+int exp_df (const gsl_vector * x, void *params, gsl_matrix * J) {
     int n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *sigma = ((struct FitData *)params)->sigma;
@@ -191,19 +193,19 @@ int exp_df (const gsl_vector * x, void *params,
     for (int i = 0; i < n; i++) {
         /* Jacobian matrix J(i,j) = dfi / dxj, */
         /* where fi = (Yi - yi)/sigma[i],      */
-        /*       Yi = A * exp(-lambda * i) + b  */
-        /* and the xj are the parameters (A,lambda,b) */
+        /*       Yi = A * exp(-i/lambda) + b  */
+        /* and the xj are the parameters (A, lambda, b) */
         double t = X[i];
         double s = 1.0/sqrt(sigma[i]);
-        double e = exp(-lambda * t);
+        double e = exp(-t/lambda);
         gsl_matrix_set (J, i, 0, e/s);
-        gsl_matrix_set (J, i, 1, -t * A * e/s);
+        gsl_matrix_set (J, i, 1, t * A * e/(s*lambda*lambda));
         gsl_matrix_set (J, i, 2, 1/s);
     }
     return GSL_SUCCESS;
 }
-int exp_fdf (const gsl_vector * x, void *params,
-             gsl_vector * f, gsl_matrix * J) {
+
+int exp_fdf (const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J) {
     exp_f (x, params, f);
     exp_df (x, params, J);
     return GSL_SUCCESS;
@@ -238,14 +240,13 @@ double gauss_d (const gsl_vector * x, void *params) {
     double val=0;
     for (int i = 0; i < n; i++) {
         double diff = X[i] - C;
-		double s = 1.0/sqrt(sigma[i]);
+        double s = 1.0/sqrt(sigma[i]);
         double dYi = ((A*exp(-0.5*diff*diff/(w*w)) + Y0) - Y[i])/s;
         val += dYi * dYi;
     }
     return val;
 }
-int gauss_df (const gsl_vector * x, void *params,
-              gsl_matrix * J) {
+int gauss_df (const gsl_vector * x, void *params, gsl_matrix * J) {
     int n = ((struct FitData *)params)->n;
     double *X = ((struct FitData *)params)->X;
     double *sigma = ((struct FitData *)params)->sigma;
@@ -258,7 +259,7 @@ int gauss_df (const gsl_vector * x, void *params,
         /* Yi = y=A*exp[-(Xi-xc)^2/(2*w*w)]+B		*/
         /* and the xj are the parameters (B,A,C,w) */
         //double s = sigma[i];
-		double s = 1.0/sqrt(sigma[i]);
+        double s = 1.0/sqrt(sigma[i]);
         double diff = X[i]-C;
         double e = exp(-0.5*diff*diff/(w*w))/s;
         gsl_matrix_set (J, i, 0, 1/s);

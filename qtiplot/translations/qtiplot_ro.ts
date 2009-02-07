@@ -4127,7 +4127,7 @@ Autocompletion will not be available!</source>
         <translation>Vă rugăm să selectaţi o singură coloană si cel puţin două celule cu conţinut valid!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2257"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2260"/>
         <source>English</source>
         <translation>Română</translation>
     </message>
@@ -5715,12 +5715,12 @@ The following special codes can be used:
         <translation>Separatorul de coloane nu trebuie să conţină caracterele următoare: 0-9eE.+-</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2292"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2295"/>
         <source>Choose the location of the QtiPlot translations folder!</source>
         <translation>Alegeţi dosarul conţinând traducerile pentru QtiPlot!</translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2327"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2330"/>
         <source>Choose the location of the Python configuration files!</source>
         <translation>Alegeţi dosarul conţinând fişierele de configurare pentru Python!</translation>
     </message>
@@ -7494,7 +7494,7 @@ The following special codes can be used:
     <message>
         <location filename="src/analysis/Fit.cpp" line="333"/>
         <source>RMSE (Root Mean Squared Error)</source>
-        <translation>RMSE (Eroarea medie pătratică)</translation>
+        <translation>RMSE (Eroarea pătratică medie)</translation>
     </message>
     <message>
         <location filename="src/analysis/Fit.cpp" line="334"/>
@@ -13955,47 +13955,47 @@ have the same number of rows.</source>
 <context>
     <name>ThreeExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="237"/>
         <source>ExpDecay3</source>
         <translation>ScădereExp3</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="245"/>
         <source>Exponential decay</source>
         <translation>Scădere exponenţială</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first amplitude</source>
         <translation>prima amplitudine</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first lifetime</source>
         <translation>prima durată de viaţă</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second amplitude</source>
         <translation>a doua amplitudine</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second lifetime</source>
         <translation>a doua durată de viaţă</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third amplitude</source>
         <translation>a treia amplitudine</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third lifetime</source>
         <translation>a treia durată de viaţă</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>
@@ -14036,37 +14036,37 @@ have the same number of rows.</source>
 <context>
     <name>TwoExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="160"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="158"/>
         <source>ExpDecay2</source>
         <translation>ScădereExp2</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="166"/>
         <source>Exponential decay</source>
         <translation>Scădere exponenţială</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first amplitude</source>
         <translation>prima amplitudine</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first lifetime</source>
         <translation>prima durată de viaţă</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second amplitude</source>
         <translation>a doua amplitudine</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second lifetime</source>
         <translation>a doua durată de viaţă</translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>offset</source>
         <translation>constantă</translation>
     </message>

@@ -84,6 +84,9 @@ void DoubleSpinBox::interpretText()
 {
 	bool ok = false;
 	double value = locale().toDouble(text(), &ok);
+	if (ok && value == d_value)
+		return;
+
 	if (ok && setValue(value))
         emit valueChanged(d_value);
     else

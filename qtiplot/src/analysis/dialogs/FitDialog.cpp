@@ -94,6 +94,7 @@ FitDialog::FitDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
     setObjectName("FitDialog");
 	setWindowTitle(tr("QtiPlot - Fit Wizard"));
 	setSizeGripEnabled(true);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	d_param_table = 0;
 	d_current_fit = 0;
@@ -621,7 +622,7 @@ void FitDialog::setGraph(Graph *g)
 		return;
 
 	d_graph = g;
-		
+
 	boxCurve->clear();
 	boxCurve->addItems(d_graph->analysableCurvesList());
 
@@ -1257,13 +1258,13 @@ void FitDialog::accept()
 		double *res = d_current_fit->results();
 		if (!boxParams->isColumnHidden(4)){
 			int j = 0;
-			for (int i=0; i<rows; i++){
+			for (int i = 0; i < rows; i++){
                 QCheckBox *cb = (QCheckBox*)boxParams->cellWidget(i, 4);
 				if (!cb->isChecked())
 					((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[j++]);
 			}
 		} else {
-			for (int i=0; i<rows; i++)
+			for (int i = 0; i < rows; i++)
 				((DoubleSpinBox*)boxParams->cellWidget(i, 2))->setValue(res[i]);
 		}
 
@@ -1283,24 +1284,8 @@ void FitDialog::modifyGuesses(double* initVal)
 	ExponentialFit *ef = qobject_cast<ExponentialFit *>(d_current_fit);
 	if (ef){
 		if (ef->isExponentialGrowth())
-			initVal[1] = -1/initVal[1];
-		else
-			initVal[1] = 1/initVal[1];
+			initVal[1] = -initVal[1];
 		return;
-	}
-
-	TwoExpFit *two_ef = qobject_cast<TwoExpFit *>(d_current_fit);
-	if (two_ef){
-		initVal[1] = 1/initVal[1];
-		initVal[3] = 1/initVal[3];
-		return;
-	}
-
-	ThreeExpFit *three_ef = qobject_cast<ThreeExpFit *>(d_current_fit);
-	if (three_ef){
-		initVal[1] = 1/initVal[1];
-		initVal[3] = 1/initVal[3];
-		initVal[5] = 1/initVal[5];
 	}
 }
 
@@ -1551,17 +1536,17 @@ void FitDialog::showPreview(bool on)
 }
 
 void FitDialog::updatePreview()
-{	
+{
     if (!d_current_fit || !previewBox->isChecked())
 		return;
-		 
+
 	if (!d_preview_curve){
 		d_preview_curve = new FunctionCurve();
 		d_preview_curve->attach(d_graph);
 		d_preview_curve->setRenderHint(QwtPlotItem::RenderAntialiased, d_graph->antialiasing());
 		d_preview_curve->setPen(QPen(ColorBox::color(boxColor->currentIndex()), 1));
 	}
-		
+
 	bool changedVar = false;
 	int parameters = boxParams->rowCount();
 	QMap<QString, double> variables = d_preview_curve->constants();
@@ -1576,7 +1561,7 @@ void FitDialog::updatePreview()
 			}
 		}
  	}
-	
+
 	if (!changedVar && d_preview_curve->startRange() == boxFrom->value() &&
 		d_preview_curve->endRange() == boxTo->value() &&
 		d_preview_curve->formulas()[0] == d_current_fit->formula()){
@@ -1586,17 +1571,17 @@ void FitDialog::updatePreview()
 		}
 		return;
 	}
-			
+
 	d_preview_curve->setRange(boxFrom->value(), boxTo->value());
-	d_preview_curve->setFormula(d_current_fit->formula());	
-	
+	d_preview_curve->setFormula(d_current_fit->formula());
+
 	if (changedVar){
 		d_preview_curve->removeConstants();
 		for (int i = 0; i < parameters; i++)
-			d_preview_curve->setConstant(boxParams->item(i, 0)->text(), 
+			d_preview_curve->setConstant(boxParams->item(i, 0)->text(),
 						((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value());
-	}		
-	
+	}
+
 	d_preview_curve->loadData(generatePointsBox->value());
 	if (!d_preview_curve->isVisible())
 		d_preview_curve->setVisible(true);
@@ -1604,10 +1589,10 @@ void FitDialog::updatePreview()
 }
 
 void FitDialog::updatePreviewColor(int colorIndex)
-{	
+{
     if (!d_preview_curve)
 		return;
-		 	
+
     d_preview_curve->setPen(QPen(ColorBox::color(colorIndex), 1));
 	d_graph->replot();
 }

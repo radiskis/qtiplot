@@ -2795,7 +2795,7 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2257"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2260"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5932,7 +5932,7 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2292"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2295"/>
         <source>Choose the location of the QtiPlot translations folder!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5977,7 +5977,7 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ConfigDialog.cpp" line="2327"/>
+        <location filename="src/core/ConfigDialog.cpp" line="2330"/>
         <source>Choose the location of the Python configuration files!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14364,47 +14364,47 @@ have the same number of rows.</source>
 <context>
     <name>ThreeExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="245"/>
         <source>Exponential decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="239"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="237"/>
         <source>ExpDecay3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>first lifetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>second lifetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>third lifetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="249"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="247"/>
         <source>offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14445,37 +14445,37 @@ have the same number of rows.</source>
 <context>
     <name>TwoExpFit</name>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="166"/>
         <source>Exponential decay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="160"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="158"/>
         <source>ExpDecay2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>first lifetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>second lifetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/ExponentialFit.cpp" line="170"/>
+        <location filename="src/analysis/ExponentialFit.cpp" line="168"/>
         <source>offset</source>
         <translation type="unfinished"></translation>
     </message>

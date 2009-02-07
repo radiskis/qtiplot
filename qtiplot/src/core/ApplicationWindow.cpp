@@ -7052,7 +7052,6 @@ void ApplicationWindow::showFitDialog()
 		return;
 
 	FitDialog *fd = new FitDialog(g, this);
-	fd->setAttribute(Qt::WA_DeleteOnClose);
 	connect (plot, SIGNAL(destroyed()), fd, SLOT(close()));
 
 	fd->setSrcTables(tableList());
