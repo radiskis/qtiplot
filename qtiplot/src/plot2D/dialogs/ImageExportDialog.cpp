@@ -31,6 +31,7 @@
 #include <ApplicationWindow.h>
 #include <MdiSubWindow.h>
 #include <Graph3D.h>
+#include <DoubleSpinBox.h>
 
 #include <QStackedWidget>
 #include <QImageWriter>
@@ -86,7 +87,7 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 
 void ImageExportDialog::initAdvancedOptions()
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
 	d_advanced_options = new QStackedWidget();
 
 	d_vector_options = new QGroupBox();
@@ -116,9 +117,9 @@ void ImageExportDialog::initAdvancedOptions()
 	d_3D_text_export_mode->setCurrentIndex(app->d_3D_export_text_mode);
 	vector_layout->addWidget(d_3D_text_export_mode, 4, 1);
 
-    QLabel *sort3DLabel = new QLabel(tr("3D Sort mode"));
+	QLabel *sort3DLabel = new QLabel(tr("3D Sort mode"));
 	vector_layout->addWidget(sort3DLabel, 5, 0);
-    d_3D_export_sort = new QComboBox();
+	d_3D_export_sort = new QComboBox();
 	d_3D_export_sort->addItem(tr("No sort"));
 	d_3D_export_sort->addItem(tr("Simple sort"));
 	d_3D_export_sort->addItem(tr("BSP sort"));
@@ -126,7 +127,9 @@ void ImageExportDialog::initAdvancedOptions()
 	vector_layout->addWidget(d_3D_export_sort, 5, 1);
 
 	d_raster_options = new QGroupBox();
-	QGridLayout *raster_layout = new QGridLayout(d_raster_options);
+	QVBoxLayout *vert_raster_layout = new QVBoxLayout(d_raster_options);
+
+	QGridLayout *raster_layout = new QGridLayout();
 	d_advanced_options->addWidget(d_raster_options);
 
 	raster_layout->addWidget(new QLabel(tr("Image quality")), 1, 0);
@@ -139,6 +142,39 @@ void ImageExportDialog::initAdvancedOptions()
 	d_transparency->setText(tr("Save transparency"));
 	d_transparency->setChecked(app->d_export_transparency);
 	raster_layout->addWidget(d_transparency, 2, 0, 1, 2);
+
+	vert_raster_layout->addLayout(raster_layout);
+
+	/*d_custom_size_box = new QGroupBox(tr("Custom size"));
+	d_custom_size_box->setCheckable(true);
+	QGridLayout *size_layout = new QGridLayout(d_custom_size_box);
+
+	unitBox = new QComboBox();
+	unitBox->insertItem(tr("inch"));
+	unitBox->insertItem(tr("mm"));
+	unitBox->insertItem(tr("cm"));
+	unitBox->insertItem(tr("point"));
+	unitBox->insertItem(tr("pixel"));
+
+	size_layout->addWidget(new QLabel(tr( "Unit" )), 0, 0);
+	size_layout->addWidget(unitBox, 0, 1);
+
+	size_layout->addWidget(new QLabel( tr("Width")), 1, 0);
+	widthBox = new DoubleSpinBox();
+	widthBox->setLocale(app->locale());
+	widthBox->setDecimals(6);
+	size_layout->addWidget(widthBox, 1, 1);
+
+	size_layout->addWidget(new QLabel(tr("Height")), 2, 0);
+	heightBox = new DoubleSpinBox();
+	heightBox->setLocale(app->locale());
+	heightBox->setDecimals(6);
+	size_layout->addWidget(heightBox, 2, 1);
+
+	keepAspectBox = new QCheckBox(tr("&Keep aspect ratio"));
+	size_layout->addWidget(keepAspectBox, 3, 1);
+
+	vert_raster_layout->addWidget(d_custom_size_box);*/
 
 	if (!d_window)
 		return;

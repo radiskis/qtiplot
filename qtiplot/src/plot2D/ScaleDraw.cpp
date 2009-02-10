@@ -49,7 +49,7 @@ ScaleDraw::ScaleDraw(Graph *plot, const QString& formula):
 	d_type(Numeric),
 	d_numeric_format(Automatic),
 	d_fmt('g'),
-    d_prec(4),
+	d_prec(4),
 	d_formula(formula),
 	d_majTicks(Out),
 	d_minTicks(Out),
@@ -65,7 +65,7 @@ ScaleDraw::ScaleDraw(Graph *plot, const QStringList& labels, const QString& form
 	d_type(type),
 	d_numeric_format(Automatic),
 	d_fmt('g'),
-    d_prec(4),
+	d_prec(4),
 	d_formula(""),
 	d_majTicks(Out),
 	d_minTicks(Out),
@@ -82,7 +82,7 @@ ScaleDraw::ScaleDraw(Graph *plot, ScaleDraw* sd):
 	d_type = sd->d_type;
 	d_numeric_format = sd->d_numeric_format;
 	d_fmt = sd->d_fmt;
-    d_prec = sd->d_prec;
+	d_prec = sd->d_prec;
 	d_formula = sd->d_formula;
 	d_majTicks = sd->d_majTicks;
 	d_minTicks = sd->d_minTicks;
@@ -669,10 +669,10 @@ void ScaleDraw::setDateFormat(const QDateTime& d, const QString& format)
 
 QString ScaleDraw::formatString()
 {
-    if (d_type == Time)
-        return d_date_time_origin.time().toString() + ";" + d_format_info;
-    else if (d_type == Date)
-        return d_date_time_origin.toString(Qt::ISODate) + ";" + d_format_info;
+	if (d_type == Time)
+		return d_date_time_origin.time().toString() + ";" + d_format_info;
+	else if (d_type == Date)
+		return d_date_time_origin.toString(Qt::ISODate) + ";" + d_format_info;
 
-    return d_format_info;
+	return d_format_info;
 }

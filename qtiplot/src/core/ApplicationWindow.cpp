@@ -2331,22 +2331,6 @@ void ApplicationWindow::loadImage(const QString& fn)
 	QApplication::restoreOverrideCursor();
 }
 
-void ApplicationWindow::polishGraph(Graph *g, int style)
-{
-	if (style == Graph::VerticalBars || style == Graph::HorizontalBars ||style == Graph::Histogram)
-	{
-		QList<int> ticksList;
-		int ticksStyle = ScaleDraw::Out;
-		ticksList<<ticksStyle<<ticksStyle<<ticksStyle<<ticksStyle;
-		g->setMajorTicksType(ticksList);
-		g->setMinorTicksType(ticksList);
-	}
-	if (style == Graph::HorizontalBars){
-		g->setAxisTitle(QwtPlot::xBottom, tr("X Axis Title"));
-		g->setAxisTitle(QwtPlot::yLeft, tr("Y Axis Title"));
-	}
-}
-
 MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption, int layers, int rows, int cols)
 {
 	MultiLayer* ml = new MultiLayer(this, layers, rows, cols);
@@ -2379,7 +2363,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colLi
     setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
 
-	polishGraph(ag, style);
 	ag->newLegend();
 
 	QApplication::restoreOverrideCursor();
@@ -2414,7 +2397,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style)
 		if (i < curves)
 			ag->addCurves(t, QStringList(list[i]), style, defaultCurveLineWidth, defaultSymbolSize);
 		ag->newLegend();
-		polishGraph(ag, style);
 		i++;
 	}
 	return g;
@@ -2426,7 +2408,6 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
 	Graph *ag = g->activeLayer();
 	setPreferences(ag);
-	polishGraph(ag, defaultCurveStyle);
 	int curves = (int)colList.count();
 	int errorBars = 0;
 	for (int i=0; i<curves; i++) {
@@ -2471,7 +2452,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
         ag->updateCurveLayout(c, &cl);
 	}
 	ag->newLegend();
-	ag->initScaleLimits();
+	ag->initScaleLimits(defaultCurveStyle);
 	QApplication::restoreOverrideCursor();
 	return g;
 }

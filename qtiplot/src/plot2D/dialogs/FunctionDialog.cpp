@@ -373,12 +373,12 @@ void FunctionDialog::acceptParametric()
 	QString to=boxParTo->text().lower();
 	QString points=boxParPoints->text().lower();
 
-	double start, end;
+	double start = 0.0, end = 0.0;
 	try
 	{
 		MyParser parser;
 		parser.SetExpr(from.ascii());
-		start=parser.Eval();
+		start = parser.Eval();
 	}
 	catch(mu::ParserError &e)
 	{

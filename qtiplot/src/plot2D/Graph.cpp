@@ -827,28 +827,23 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 		return;
 
 	QStringList list = formatInfo.split(";", QString::KeepEmptyParts);
-	if ((int)list.count() < 2)
-	{
-        QMessageBox::critical(this, tr("QtiPlot - Error"),
+	if ((int)list.count() < 2){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
 		tr("Couldn't change the axis type to the requested format!"));
-        return;
+		return;
     }
-    if (list[0].isEmpty() || list[1].isEmpty())
-    {
-        QMessageBox::critical(this, tr("QtiPlot - Error"),
+	if (list[0].isEmpty() || list[1].isEmpty()){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
 		tr("Couldn't change the axis type to the requested format!"));
-        return;
+		return;
     }
 
-	if (type == ScaleDraw::Time)
-	{
+	if (type == ScaleDraw::Time){
 		ScaleDraw *sd = new ScaleDraw(this);
 		sd->setTimeFormat(QTime::fromString (list[0]), list[1]);
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
 		setAxisScaleDraw (axis, sd);
-	}
-	else if (type == ScaleDraw::Date)
-	{
+	} else if (type == ScaleDraw::Date) {
 		ScaleDraw *sd = new ScaleDraw(this);
 		sd->setDateFormat(QDateTime::fromString (list[0], Qt::ISODate), list[1]);
 		sd->enableComponent (QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
@@ -1114,10 +1109,29 @@ void Graph::updateSecondaryAxis(int axis)
 	d_user_step[axis] = d_user_step[a];
 }
 
-void Graph::initScaleLimits()
+void Graph::initScaleLimits(int style)
 {//We call this function the first time we add curves to a plot in order to avoid curves with cut symbols.
 	replot();
 
+	if (style == HorizontalBars || style == VerticalBars){
+		int axis = QwtPlot::yLeft;
+		if (style == VerticalBars)
+			axis = QwtPlot::xBottom;
+
+		ScaleDraw *scaleDraw = (ScaleDraw *)axisScaleDraw(axis);
+		if (scaleDraw && scaleDraw->scaleType() == ScaleDraw::Text){
+			QwtScaleDiv *scaleDiv = axisScaleDiv (axis);
+			setAxisScale (axis, scaleDiv->lBound(), scaleDiv->hBound(), 1.0);
+			setAxisMaxMinor (axis, 2);
+			scaleDraw->enableComponent(QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
+			if (style == VerticalBars)
+				setAxisLabelRotation (axis, -90);
+		}
+		d_zoomer[0]->setZoomBase();
+		d_zoomer[1]->setZoomBase();
+		return;
+	}
+	
 	QwtDoubleInterval intv[QwtPlot::axisCnt];
     const QwtPlotItemList& itmList = itemList();
     QwtPlotItemIterator it;
@@ -2831,7 +2845,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 			}
 		}
 	}
-	initScaleLimits();
+	initScaleLimits(style);
 	return true;
 }
 

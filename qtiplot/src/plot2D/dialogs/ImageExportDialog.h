@@ -41,6 +41,7 @@
 class QStackedWidget;
 class QGroupBox;
 class MdiSubWindow;
+class DoubleSpinBox;
 
 //! QFileDialog extended with options for image export
 class ImageExportDialog: public ExtensibleFileDialog
@@ -68,6 +69,12 @@ private:
 
 	QComboBox *d_3D_text_export_mode;
     QComboBox *d_3D_export_sort;
+
+    //! Container widget for user defined export size.
+	/*QGroupBox *d_custom_size_box;
+	DoubleSpinBox *widthBox, *heightBox;
+	QComboBox *unitBox;
+	QCheckBox *keepAspectBox;*/
 
 public:
 	//! Constructor
