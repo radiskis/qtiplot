@@ -253,7 +253,6 @@ public slots:
 	//! Rearrange the layersin order to fit to the size of the plot window
   	void autoArrangeLayers();
 	void initMultilayerPlot(MultiLayer* g, const QString& name);
-	void polishGraph(Graph *g, int style);
 	void plot2VerticalLayers();
 	void plot2HorizontalLayers();
 	void plot4Layers();
