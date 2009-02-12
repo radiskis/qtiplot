@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "ScaleDraw.h"
 #include "Graph.h"
+#include "MultiLayer.h"
 #include <MyParser.h>
 #include "ScaleEngine.h"
 

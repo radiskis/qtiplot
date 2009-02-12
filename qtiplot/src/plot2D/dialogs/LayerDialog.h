@@ -29,7 +29,9 @@
 #ifndef LAYERDIALOG_H
 #define LAYERDIALOG_H
 
-#include "../MultiLayer.h"
+#include <MultiLayer.h>
+
+#include <QDialog>
 
 class QGroupBox;
 class QPushButton;

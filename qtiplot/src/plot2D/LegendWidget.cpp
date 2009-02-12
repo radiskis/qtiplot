@@ -31,6 +31,7 @@
 #include "QwtPieCurve.h"
 #include "VectorCurve.h"
 #include "SelectionMoveResizer.h"
+#include "MultiLayer.h"
 #include <ApplicationWindow.h>
 #include <PenStyleBox.h>
 

@@ -27,11 +27,13 @@
  *                                                                         *
  ***************************************************************************/
 #include "TexWidget.h"
+#include <Graph.h>
 #include <PenStyleBox.h>
 
 #include <QPainter>
 #include <QBuffer>
 #include <QMessageBox>
+#include <QPaintEvent>
 
 TexWidget::TexWidget(Graph *plot, const QString& s, const QPixmap& pix):FrameWidget(plot),
 d_pix(pix),
@@ -41,15 +43,15 @@ d_margin(5)
 	if (!d_pix.isNull())
 		setSize(QSize(pix.width() + 2*d_margin, pix.height() + 2*d_margin));
 }
-	
+
 void TexWidget::paintEvent(QPaintEvent *e)
 {
 	if (d_pix.isNull())
 		return;
-	
-	QPainter p(this);	
+
+	QPainter p(this);
 	drawFrame(&p, rect());
-	
+
 	int lw = d_frame_pen.width();
 	int w = width() - 2*d_margin - 2*lw;
 	int h = height() - 2*d_margin - 2*lw;
@@ -59,7 +61,7 @@ void TexWidget::paintEvent(QPaintEvent *e)
 	}
 	QRect pixRect = QRect (lw + d_margin, lw + d_margin, w, h);
 	p.drawPixmap(pixRect, d_pix);
-	
+
 	e->accept();
 }
 
@@ -68,14 +70,14 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 	drawFrame(painter, QRect(x, y, width(), height()));
-	
+
 	int lw = d_frame_pen.width();
 	int w = width() - 2*d_margin  - 2*lw;
 	int h = height() - 2*d_margin - 2*lw;
 	if (d_frame == Shadow){
 		w -= d_margin;
 		h -= d_margin;
-	}	
+	}
 	painter->drawPixmap(QRect (x + lw + d_margin, y + lw + d_margin, w, h), d_pix);
 }
 
@@ -104,7 +106,7 @@ void TexWidget::setBestSize()
 	}
 	if (size() == QSize(w,h))
 		return;
-	
+
 	setSize(QSize(w,h));
 }
 
@@ -134,7 +136,7 @@ QString TexWidget::saveToString()
 }
 
 void TexWidget::restore(Graph *g, const QStringList& lst)
-{	
+{
 	int frameStyle = 0;
 	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
 	double x = 0.0, y = 0.0, right = 0.0, bottom = 0.0;

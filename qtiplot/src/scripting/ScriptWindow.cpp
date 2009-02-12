@@ -42,6 +42,7 @@
 #include <QPixmap>
 #include <QCloseEvent>
 #include <QTextStream>
+#include <QLayout>
 
 ScriptWindow::ScriptWindow(ScriptingEnv *env, ApplicationWindow *app)
 : QMainWindow(),

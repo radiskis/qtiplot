@@ -74,8 +74,6 @@ private:
   MdiSubWindow(const MdiSubWindow&);
 };
 
-typedef QList<MdiSubWindow*> MDIWindowList;
-
 class Table: MdiSubWindow
 {
 %TypeHeaderCode
@@ -204,7 +202,7 @@ public:
   					bool=true, bool=false, bool=false, const QString&="#", bool=false,
 					ImportMode = Overwrite, int = 0, int = -1);
   bool exportASCII(const QString&, const QString&="\t", bool=false, bool=false, bool=false);
-  
+
   void setDecimalSeparators(int,bool=true);
 %MethodCode
 	QLocale locale;
@@ -227,7 +225,7 @@ public:
 
     sipCpp->updateDecimalSeparators(locale);
 %End
-  
+
   void normalizeCol(SIP_PYOBJECT) /PyName=normalize/;
 %MethodCode
 	sipIsErr = 0;
@@ -473,7 +471,7 @@ public:
 
 	QImage image();
 	void importImage(const QString&);
-	void exportRasterImage(const QString&, int = 100);
+	void exportRasterImage(const QString&, int = 100, int dpi = 0);
 	void exportToFile(const QString&)  /PyName=export/;
 	void exportVector(const QString&, int = 0, bool = true);
 
@@ -518,6 +516,7 @@ class FrameWidget : QWidget  /PyName=Frame/
 
 public:
     enum FrameStyle{None = 0, Line = 1, Shadow = 2};
+    enum Unit{Inch = 0, Millimeter, Centimeter, Point, Pixel, Scale};
 
     double xValue();
 	double yValue();
@@ -820,7 +819,8 @@ public:
 
   void replot();
 
-  void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
+  void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
+				int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
   void exportVector(const QString&, int = 0, bool = true);
   void exportToFile(const QString& fileName) /PyName=export/;
 
@@ -886,7 +886,8 @@ public:
   void setScaleLayersOnResize(bool = true);
 
   void exportToFile(const QString& fileName) /PyName=export/;
-  void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
+  void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
+		int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
   void exportVector(const QString&, int = 0, bool = true);
 
 private:
@@ -1108,7 +1109,7 @@ public:
     Graph3D* plotParametricSurface(const QString&, const QString&, const QString&,
             double, double, double, double, int=40, int=40, bool=true, bool=true) /PyName=plot3D/;
 
-  MDIWindowList windowsList() /PyName=windows/;
+  QList<MdiSubWindow*> windowsList() /PyName=windows/;
 
   // folders
   Folder *activeFolder() /NoDerived/;
@@ -1903,7 +1904,7 @@ class Folder : QObject
 #include "src/core/Folder.h"
 %End
 public:
-  MDIWindowList windowsList() /PyName=windows/;
+  QList<MdiSubWindow*> windowsList() /PyName=windows/;
 // TODO: implement signal Folder::nameChanged and make it update the project explorer; adjust renaming from GUI accordingly
 //  void setFolderName(const QString&) /PyName=setName/;
   QString name();

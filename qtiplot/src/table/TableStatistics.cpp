@@ -36,6 +36,7 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_sort.h>
+#include <math.h>
 
 TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type t, QList<int> targets)
 	: Table(env, 1, 1, "", parent, ""),

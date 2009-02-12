@@ -34,6 +34,7 @@
 
 #include "EnrichmentDialog.h"
 #include <Graph.h>
+#include <MultiLayer.h>
 #include <TexWidget.h>
 #include <EllipseWidget.h>
 #include <FrameWidget.h>

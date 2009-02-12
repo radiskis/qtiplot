@@ -29,6 +29,7 @@
 #include "RangeSelectorTool.h"
 #include "Graph.h"
 #include "PlotCurve.h"
+#include "MultiLayer.h"
 #include <cursors.h>
 
 #include <qwt_symbol.h>
@@ -95,7 +96,7 @@ RangeSelectorTool::~RangeSelectorTool()
 	d_active_marker.detach();
 	d_inactive_marker.detach();
 	d_graph->canvas()->unsetCursor();
-	d_graph->replot();	
+	d_graph->replot();
 }
 
 void RangeSelectorTool::pointSelected(const QPoint &pos)
@@ -406,16 +407,16 @@ void RangeSelectorTool::setVisible(bool on)
 {
 	if (d_visible == on)
 		return;
-	
+
 	d_visible = on;
-	
+
     if (on){
 		setTrackerMode(QwtPicker::AlwaysOn);
         d_graph->canvas()->setCursor(QCursor(QPixmap(vizor_xpm), -1, -1));
 		d_active_marker.attach(d_graph);
 		d_inactive_marker.attach(d_graph);
 	} else {
-		d_enabled = false;	
+		d_enabled = false;
 		setTrackerMode(QwtPicker::AlwaysOff);
         d_active_marker.detach();
 		d_inactive_marker.detach();

@@ -32,6 +32,7 @@
 #include "Graph3D.h"
 #include <QCheckBox>
 
+class QGroupBox;
 class QComboBox;
 class QLabel;
 class QTextEdit;

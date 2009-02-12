@@ -97,15 +97,15 @@ void ImageExportDialog::initAdvancedOptions()
 	QLabel *resLabel = new QLabel(tr("Resolution (DPI)"));
 	vector_layout->addWidget(resLabel, 1, 0);
 
-	d_resolution = new QSpinBox();
-	d_resolution->setRange(0, 1000);
-	d_resolution->setValue(app->d_export_resolution);
-	vector_layout->addWidget(d_resolution, 1, 1);
+	d_vector_resolution = new QSpinBox();
+	d_vector_resolution->setRange(0, 1000);
+	d_vector_resolution->setValue(app->d_export_vector_resolution);
+	vector_layout->addWidget(d_vector_resolution, 1, 1);
 
 	d_color = new QCheckBox();
 	d_color->setText(tr("&Export in &color"));
 	d_color->setChecked(app->d_export_color);
-	vector_layout->addWidget(d_color, 2, 0, 1, 2);
+	vector_layout->addWidget(d_color, 2, 0);
 
 	QLabel *text3DLabel = new QLabel(tr("Export 3D texts as"));
 	vector_layout->addWidget(text3DLabel, 4, 0);
@@ -138,15 +138,26 @@ void ImageExportDialog::initAdvancedOptions()
 	d_quality->setValue(app->d_export_quality);
 	raster_layout->addWidget(d_quality, 1, 1);
 
+	QLabel *rasterResLabel = new QLabel(tr("Resolution (DPI)"));
+	raster_layout->addWidget(rasterResLabel, 2, 0);
+
+	d_bitmap_resolution = new QSpinBox();
+	d_bitmap_resolution->setRange(0, 1000);
+	d_bitmap_resolution->setValue(app->d_export_bitmap_resolution);
+	raster_layout->addWidget(d_bitmap_resolution, 2, 1);
+
 	d_transparency = new QCheckBox();
 	d_transparency->setText(tr("Save transparency"));
 	d_transparency->setChecked(app->d_export_transparency);
-	raster_layout->addWidget(d_transparency, 2, 0, 1, 2);
+	raster_layout->addWidget(d_transparency, 3, 1, 1, 2);
 
 	vert_raster_layout->addLayout(raster_layout);
 
-	/*d_custom_size_box = new QGroupBox(tr("Custom size"));
+	QSizeF customSize = app->d_export_raster_size;
+
+	d_custom_size_box = new QGroupBox(tr("Custom size"));
 	d_custom_size_box->setCheckable(true);
+	d_custom_size_box->setChecked(customSize.isValid());
 	QGridLayout *size_layout = new QGridLayout(d_custom_size_box);
 
 	unitBox = new QComboBox();
@@ -155,6 +166,7 @@ void ImageExportDialog::initAdvancedOptions()
 	unitBox->insertItem(tr("cm"));
 	unitBox->insertItem(tr("point"));
 	unitBox->insertItem(tr("pixel"));
+	unitBox->setCurrentIndex(app->d_export_size_unit);
 
 	size_layout->addWidget(new QLabel(tr( "Unit" )), 0, 0);
 	size_layout->addWidget(unitBox, 0, 1);
@@ -163,27 +175,29 @@ void ImageExportDialog::initAdvancedOptions()
 	widthBox = new DoubleSpinBox();
 	widthBox->setLocale(app->locale());
 	widthBox->setDecimals(6);
+	widthBox->setValue(customSize.width());
+
 	size_layout->addWidget(widthBox, 1, 1);
 
 	size_layout->addWidget(new QLabel(tr("Height")), 2, 0);
 	heightBox = new DoubleSpinBox();
 	heightBox->setLocale(app->locale());
 	heightBox->setDecimals(6);
+	heightBox->setValue(customSize.height());
 	size_layout->addWidget(heightBox, 2, 1);
 
-	keepAspectBox = new QCheckBox(tr("&Keep aspect ratio"));
-	size_layout->addWidget(keepAspectBox, 3, 1);
-
-	vert_raster_layout->addWidget(d_custom_size_box);*/
+	vert_raster_layout->addWidget(d_custom_size_box);
 
 	if (!d_window)
 		return;
 
 	if (qobject_cast<Graph3D *> (d_window)){
 		resLabel->hide();
-		d_resolution->hide();
+		d_vector_resolution->hide();
 		d_color->hide();
 	} else {
+		if (qobject_cast<Matrix *> (d_window))
+			d_custom_size_box->hide();
     	text3DLabel->hide();
 		d_3D_text_export_mode->hide();
 		sort3DLabel->hide();
@@ -228,9 +242,11 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 		app->d_image_export_filter = this->selectedFilter();
 		app->d_export_transparency = d_transparency->isChecked();
         app->d_export_quality = d_quality->value();
-
-        app->d_export_resolution = d_resolution->value();
+        app->d_export_bitmap_resolution = d_bitmap_resolution->value();
+		app->d_export_size_unit = unitBox->currentIndex();
+        app->d_export_vector_resolution = d_vector_resolution->value();
         app->d_export_color = d_color->isChecked();
+        app->d_export_raster_size = customExportSize();
 
 		app->d_3D_export_text_mode = d_3D_text_export_mode->currentIndex();
 		app->d_3D_export_sort = d_3D_export_sort->currentIndex();
@@ -244,3 +260,20 @@ void ImageExportDialog::selectFilter(const QString & filter)
 	QFileDialog::selectFilter(filter);
 	updateAdvancedOptions(filter);
 }
+
+QSizeF ImageExportDialog::customExportSize()
+{
+	if (!d_custom_size_box->isChecked())
+		return QSizeF();
+
+	return QSizeF(widthBox->value(), heightBox->value());
+}
+
+bool ImageExportDialog::transparency() const
+{
+	if (d_transparency->isEnabled())
+		return d_transparency->isChecked();
+
+	return false;
+}
+

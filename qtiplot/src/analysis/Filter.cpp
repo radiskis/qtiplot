@@ -27,12 +27,13 @@
  *                                                                         *
  ***************************************************************************/
 #include "Filter.h"
-#include "../table/Table.h"
-#include "../plot2D/FrameWidget.h"
-#include "../plot2D/LegendWidget.h"
-#include "../plot2D/FunctionCurve.h"
-#include "../plot2D/PlotCurve.h"
-#include "../plot2D/MultiLayer.h"
+
+#include <Table.h>
+#include <FrameWidget.h>
+#include <LegendWidget.h>
+#include <FunctionCurve.h>
+#include <PlotCurve.h>
+#include <MultiLayer.h>
 #include <ColorBox.h>
 
 #include <QApplication>
@@ -195,7 +196,7 @@ void Filter::showLegend()
 			return;
 		}
 	}
-	
+
 	LegendWidget *l = d_output_graph->newLegend(legendInfo());
 	l->repaint();
 }
@@ -459,7 +460,7 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 void Filter::memoryErrorMessage()
 {
 	d_init_err = true;
-	
+
     QMessageBox::critical((ApplicationWindow *)parent(),
         tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
         tr("Not enough memory, operation aborted!"));

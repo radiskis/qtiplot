@@ -1698,7 +1698,7 @@ void Graph3D::scaleFonts(double factor)
 }
 
 void Graph3D::resizeEvent(QResizeEvent *e)
-{	
+{
 	if (!ignoreFonts && this->isVisible()){
 		double ratio = (double)e->size().height()/(double)e->oldSize().height();
 		scaleFonts(ratio);
@@ -1988,37 +1988,61 @@ void Graph3D::copyImage()
     sp->updateData();
 }
 
-void Graph3D::exportImage(const QString& fileName, int quality, bool transparent)
+void Graph3D::exportImage(const QString& fileName, int quality, bool transparent,
+							int dpi, const QSizeF& customSize, int unit)
 {
-	if (transparent){
-        QPixmap pic = sp->renderPixmap();
-        sp->updateData();
+    if (!dpi)
+		dpi = logicalDpiX();
 
-        QBitmap mask(pic.size());
+	QSize size = this->size();
+	if (customSize.isValid()){
+		switch(unit){
+			case FrameWidget::Pixel:
+				size = customSize.toSize();
+			break;
+			case FrameWidget::Inch:
+				size = QSize((qRound)(customSize.width()*dpi), (qRound)(customSize.height()*dpi));
+			break;
+			case FrameWidget::Millimeter:
+				size = QSize((qRound)(customSize.width()*dpi/25.4), (qRound)(customSize.height()*dpi/25.4));
+			break;
+			case FrameWidget::Centimeter:
+				size = QSize((qRound)(customSize.width()*dpi/2.54), (qRound)(customSize.height()*dpi/2.54));
+			break;
+			case FrameWidget::Point:
+				size = QSize((qRound)(customSize.width()*dpi/72.0), (qRound)(customSize.height()*dpi/72.0));
+			break;
+		}
+	}
+
+	QPixmap pic = sp->renderPixmap(size.width(), size.height());
+	sp->updateData();
+	QImage image = pic.toImage();
+
+	if (transparent){
+		QBitmap mask(size);
 		mask.fill(Qt::color1);
-		QPainter p;
-		p.begin(&mask);
+		QPainter p(&mask);
 		p.setPen(Qt::color0);
 
-		QColor background = QColor (Qt::white);
-		QRgb backgroundPixel = background.rgb ();
-		QImage image = pic.convertToImage();
-		for (int y=0; y<image.height(); y++){
-			for ( int x=0; x<image.width(); x++ ){
+		QRgb backgroundPixel = QColor(Qt::white).rgb ();
+		for (int y = 0; y < image.height(); y++){
+			for (int x = 0; x < image.width(); x++){
 				QRgb rgb = image.pixel(x, y);
 				if (rgb == backgroundPixel) // we want the frame transparent
-					p.drawPoint( x, y );
+					p.drawPoint(x, y);
 			}
 		}
 		p.end();
 		pic.setMask(mask);
-		pic.save(fileName, 0, quality);
-	} else {
-        QImage im = sp->grabFrameBuffer(true);
-        QImageWriter iw(fileName);
-        iw.setQuality(quality);
-        iw.write(im);
-    }
+		image = pic.toImage();
+	}
+
+	int dpm = (int)ceil(100.0/2.54*dpi);
+	image.setDotsPerMeterX(dpm);
+	image.setDotsPerMeterY(dpm);
+	image.save(fileName, 0, quality);
+
 }
 
 void Graph3D::exportPDF(const QString& fileName)
@@ -2602,7 +2626,7 @@ void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 	double zmin, zmax;
 	sp->coordinates()->axes[Z1].limits (zmin, zmax);
 	const QwtDoubleInterval intensityRange = QwtDoubleInterval(zmin, zmax);
-	
+
 	int size = 255;
 	double dsize = size;
 	double dz = fabs(zmax - zmin)/dsize;
@@ -2612,7 +2636,7 @@ void Graph3D::setDataColorMap(const QwtLinearColorMap& colorMap)
 		RGBA rgb(qRed(color)/dsize, qGreen(color)/dsize, qBlue(color)/dsize, d_alpha);
 		cv.push_back(rgb);
 	}
-	
+
 	col_ = new StandardColor(sp);
 	col_->setColorVector(cv);
 	sp->setDataColor(col_);
@@ -2702,11 +2726,11 @@ void Graph3D::setDataColorMap(const QString& fileName)
 {
 	if (d_color_map_file == fileName)
 	   return;
-	
+
 	ColorVector cv;
 	if (!openColorMapFile(cv, fileName))
 	   return;
-	
+
 	d_color_map_file = fileName;
 	setDataColorMap(cv);
 }

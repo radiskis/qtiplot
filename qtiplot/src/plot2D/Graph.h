@@ -41,12 +41,10 @@
 #include <qwt_plot_marker.h>
 #include <qwt_plot_curve.h>
 
-#include "../table/Table.h"
-#include "dialogs/AxesDialog.h"
-#include "PlotToolInterface.h"
-#include "MultiLayer.h"
-#include "ScaleDraw.h"
-
+#include <AxesDialog.h>
+#include <PlotToolInterface.h>
+#include <ScaleDraw.h>
+#include <FrameWidget.h>
 #include <float.h>
 
 class QwtPlotCurve;
@@ -74,7 +72,6 @@ class QwtHistogram;
 class Grid;
 class TexWidget;
 class LegendWidget;
-class FrameWidget;
 
 //! Structure containing curve layout parameters
 typedef struct{
@@ -285,7 +282,7 @@ class Graph: public QwtPlot
 		void setCurveLineStyle(int curveIndex, Qt::PenStyle style);
 		void setCurveLineWidth(int curveIndex, double width);
 		//@}
-		
+
 		//! \name Output: Copy/Export/Print
 		//@{
 		void print();
@@ -293,7 +290,7 @@ class Graph: public QwtPlot
 		void printCropmarks(bool on){d_print_cropmarks = on;};
 
 		void copyImage();
-		QPixmap graphPixmap();
+		QPixmap graphPixmap(const QSize& size = QSize());
 		//! Provided for convenience in scripts
 		void exportToFile(const QString& fileName);
 		void exportSVG(const QString& fname);
@@ -301,7 +298,8 @@ class Graph: public QwtPlot
 		void exportEMF(const QString& fname);
 #endif
 		void exportVector(const QString& fileName, int res = 0, bool color = true);
-		void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
+		void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
+						 int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
 		//@}
 
 		void updatePlot();

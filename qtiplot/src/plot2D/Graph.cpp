@@ -96,12 +96,12 @@ static const char *unzoom_xpm[]={
 ".......#......#..."};
 
 #include "Graph.h"
+#include "MultiLayer.h"
 #include "Grid.h"
 #include "CanvasPicker.h"
 #include "QwtErrorPlotCurve.h"
 #include "TexWidget.h"
 #include "LegendWidget.h"
-#include "FrameWidget.h"
 #include "ArrowMarker.h"
 #include <cursors.h>
 #include "ScalePicker.h"
@@ -118,10 +118,11 @@ static const char *unzoom_xpm[]={
 #include "SelectionMoveResizer.h"
 #include "RangeSelectorTool.h"
 #include "PlotCurve.h"
-#include <ApplicationWindow.h>
+#include "ApplicationWindow.h"
 #include "ScaleEngine.h"
 #include "RectangleWidget.h"
 #include "EllipseWidget.h"
+#include <FrameWidget.h>
 
 #ifdef EMF_OUTPUT
 #include "EmfEngine.h"
@@ -1131,7 +1132,7 @@ void Graph::initScaleLimits(int style)
 		d_zoomer[1]->setZoomBase();
 		return;
 	}
-	
+
 	QwtDoubleInterval intv[QwtPlot::axisCnt];
     const QwtPlotItemList& itmList = itemList();
     QwtPlotItemIterator it;
@@ -1347,13 +1348,23 @@ void Graph::copyImage()
 	QApplication::clipboard()->setPixmap(graphPixmap(), QClipboard::Clipboard);
 }
 
-QPixmap Graph::graphPixmap()
+QPixmap Graph::graphPixmap(const QSize& size)
 {
-	QPixmap pixmap(boundingRect().size());
+	if (!size.isValid()){
+		QPixmap pixmap(boundingRect().size());
+		pixmap.fill(Qt::white);
+		QPainter p(&pixmap);
+		print(&p, rect());
+		p.end();
+		return pixmap;
+	}
+
+	QPixmap pixmap(size);
 	pixmap.fill(Qt::white);
-    QPainter p(&pixmap);
-    print(&p, rect());
-    p.end();
+	QPainter p(&pixmap);
+	print(&p, QRect(QPoint(0, 0), size));
+	p.end();
+
 	return pixmap;
 }
 
@@ -1382,21 +1393,44 @@ void Graph::exportToFile(const QString& fileName)
 	}
 }
 
-void Graph::exportImage(const QString& fileName, int quality, bool transparent)
+void Graph::exportImage(const QString& fileName, int quality, bool transparent, int dpi, const QSizeF& customSize, int unit)
 {
-    QPixmap pic = graphPixmap();
+	if (!dpi)
+		dpi = logicalDpiX();
+
+	QSize size = this->size();
+	if (customSize.isValid()){
+		switch(unit){
+			case FrameWidget::Pixel:
+				size = customSize.toSize();
+			break;
+			case FrameWidget::Inch:
+				size = QSize((qRound)(customSize.width()*dpi), (qRound)(customSize.height()*dpi));
+			break;
+			case FrameWidget::Millimeter:
+				size = QSize((qRound)(customSize.width()*dpi/25.4), (qRound)(customSize.height()*dpi/25.4));
+			break;
+			case FrameWidget::Centimeter:
+				size = QSize((qRound)(customSize.width()*dpi/2.54), (qRound)(customSize.height()*dpi/2.54));
+			break;
+			case FrameWidget::Point:
+				size = QSize((qRound)(customSize.width()*dpi/72.0), (qRound)(customSize.height()*dpi/72.0));
+			break;
+		}
+	}
+
+	QPixmap pic = graphPixmap(size);
+	QImage image = pic.toImage();
 
 	if (transparent){
-		QBitmap mask(size());
+		QBitmap mask(size);
 		mask.fill(Qt::color1);
 		QPainter p(&mask);
 		p.setPen(Qt::color0);
 
-        QColor background = QColor (Qt::white);
-		QRgb backgroundPixel = background.rgb ();
-		QImage image = pic.convertToImage();
-		for (int y=0; y < image.height(); y++){
-			for (int x=0; x < image.width(); x++){
+		QRgb backgroundPixel = QColor(Qt::white).rgb ();
+		for (int y = 0; y < image.height(); y++){
+			for (int x = 0; x < image.width(); x++){
 				QRgb rgb = image.pixel(x, y);
 				if (rgb == backgroundPixel) // we want the frame transparent
 					p.drawPoint(x, y);
@@ -1404,8 +1438,13 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent)
 		}
 		p.end();
 		pic.setMask(mask);
+		image = pic.toImage();
 	}
-	pic.save(fileName, 0, quality);
+
+	int dpm = (int)ceil(100.0/2.54*dpi);
+	image.setDotsPerMeterX(dpm);
+	image.setDotsPerMeterY(dpm);
+	image.save(fileName, 0, quality);
 }
 
 void Graph::exportVector(const QString& fileName, int res, bool color)

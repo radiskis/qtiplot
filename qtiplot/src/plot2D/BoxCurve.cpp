@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "BoxCurve.h"
+#include "Graph.h"
 #include <QPainter>
 
 #include <gsl/gsl_sort.h>
@@ -81,7 +82,7 @@ void BoxCurve::draw(QPainter *painter,
 
 	painter->save();
 	painter->setPen(pen());
-	
+
 	double *dat = new double[size];
 	for (int i = from; i<= to; i++)
 		dat[i] = y(i);

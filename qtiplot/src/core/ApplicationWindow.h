@@ -40,6 +40,7 @@
 #include <QDesktopServices>
 #include <QBuffer>
 
+#include <Graph.h>
 #include <Table.h>
 #include <ScriptingEnv.h>
 #include <Script.h>
@@ -70,7 +71,6 @@ class QCompleter;
 
 class Matrix;
 class Table;
-class Graph;
 class ScalePicker;
 class Graph3D;
 class Note;
@@ -119,6 +119,7 @@ class AssociationsDialog;
 class ApplicationWindow: public QMainWindow, public scripted
 {
     Q_OBJECT
+
 public:
     ApplicationWindow(bool factorySettings = false);
 	ApplicationWindow(const QStringList& l);
@@ -1059,7 +1060,8 @@ public:
     QString d_image_export_filter;
     bool d_export_transparency;
     int d_export_quality;
-    int d_export_resolution;
+    int d_export_vector_resolution, d_export_bitmap_resolution, d_export_size_unit;
+    QSizeF d_export_raster_size;
     bool d_export_color;
 	int d_3D_export_text_mode, d_3D_export_sort;
 	//! Locale used to specify the decimal separators in imported ASCII files

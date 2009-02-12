@@ -59,22 +59,22 @@ private:
 	// vector format options
 	//! Container widget for all options available for vector formats.
 	QGroupBox *d_vector_options;
-	QSpinBox *d_resolution;
+	QSpinBox *d_vector_resolution;
 	QCheckBox *d_color;
 	// raster format options
 	//! Container widget for all options available for raster formats.
 	QGroupBox *d_raster_options;
 	QSpinBox *d_quality;
 	QCheckBox *d_transparency;
+	QSpinBox *d_bitmap_resolution;
 
 	QComboBox *d_3D_text_export_mode;
     QComboBox *d_3D_export_sort;
 
     //! Container widget for user defined export size.
-	/*QGroupBox *d_custom_size_box;
+	QGroupBox *d_custom_size_box;
 	DoubleSpinBox *widthBox, *heightBox;
 	QComboBox *unitBox;
-	QCheckBox *keepAspectBox;*/
 
 public:
 	//! Constructor
@@ -87,20 +87,27 @@ public:
 	 */
 	ImageExportDialog(MdiSubWindow *window, QWidget * parent = 0, bool extended = true, Qt::WFlags flags = 0 );
 	//! For vector formats: returns the output resolution the user selected, defaulting to the screen resolution.
-	int resolution() const { return d_resolution->value(); }
+	int vectorResolution() const { return d_vector_resolution->value(); };
 	//! For vector formats: returns whether colors should be enabled for ouput (default: true).
-	bool color() const { return d_color->isChecked(); }
+	bool color() const { return d_color->isChecked(); };
+
+	//! For raster formats: returns the output resolution the user selected, defaulting to the screen resolution.
+	int bitmapResolution() const { return d_bitmap_resolution->value(); };
 
 	//! Return the quality (in percent) the user selected for export to raster formats.
-	int quality() const { return d_quality->value(); }
+	int quality() const { return d_quality->value(); };
 	//! Return whether the output's background should be transparent.
-	bool transparency() const { return d_transparency->isChecked(); }
+	bool transparency() const;
 	//! Return the text export mode for 3D plots.
 	int textExportMode() const {return d_3D_text_export_mode->currentIndex();};
 	//! Return the sort export mode for 3D plots.
 	int sortMode() const {return d_3D_export_sort->currentIndex();};
 
 	void selectFilter(const QString & filter);
+	//! Return the custom export size.
+	QSizeF customExportSize();
+	//! Return the unit used for the custom export size
+	int sizeUnit(){return unitBox->currentIndex();};
 
 protected slots:
 	void closeEvent(QCloseEvent*);

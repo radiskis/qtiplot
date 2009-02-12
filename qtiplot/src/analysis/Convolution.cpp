@@ -27,8 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "Convolution.h"
-#include "../plot2D/MultiLayer.h"
-#include "../plot2D/PlotCurve.h"
+#include <PlotCurve.h>
 #include <ColorBox.h>
 
 #include <QMessageBox>

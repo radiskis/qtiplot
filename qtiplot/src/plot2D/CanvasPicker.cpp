@@ -32,6 +32,7 @@
 #include "ArrowMarker.h"
 #include "PlotCurve.h"
 #include <ApplicationWindow.h>
+#include <MultiLayer.h>
 
 #include <QVector>
 #include <QMessageBox>

@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "PlotCurve.h"
+#include "Graph.h"
 #include "ScaleDraw.h"
 #include "ScaleEngine.h"
 

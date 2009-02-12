@@ -29,6 +29,7 @@
 #include "FunctionDialog.h"
 #include <MyParser.h>
 #include <ApplicationWindow.h>
+#include <MultiLayer.h>
 #include <FunctionCurve.h>
 #include <DoubleSpinBox.h>
 

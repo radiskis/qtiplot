@@ -29,6 +29,7 @@
 
 #include "TextDialog.h"
 #include <ApplicationWindow.h>
+#include <MultiLayer.h>
 #include <TextFormatButtons.h>
 #include <FrameWidget.h>
 #include <ColorButton.h>

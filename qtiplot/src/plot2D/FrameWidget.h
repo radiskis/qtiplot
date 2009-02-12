@@ -30,15 +30,17 @@
 #define FRAMEWIDGET_H
 
 #include <QWidget>
+#include <QPen>
 #include <qwt_plot.h>
 
-#include "Graph.h"
+class Graph;
 
 class FrameWidget: public QWidget
 {
 	Q_OBJECT
 
 public:
+	//! Length units.
 	enum Unit{Inch, Millimeter, Centimeter, Point, Pixel, Scale};
 
     FrameWidget(Graph *);

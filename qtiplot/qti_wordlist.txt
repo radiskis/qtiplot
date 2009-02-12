@@ -22,7 +22,6 @@ restore
 Folder
 folder
 confirmClose
-MDIWindowList
 Table
 QMessageBox
 None
@@ -521,3 +520,9 @@ Ellipse
 import
 setDecimalSeparators
 removeCol
+Inch
+Millimeter
+Centimeter
+Point
+Pixel
+Scale

@@ -2,8 +2,8 @@
     File                 : MultiLayer.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Multi layer widget
 
  ***************************************************************************/
@@ -244,7 +244,7 @@ void MultiLayer::resizeLayers (QResizeEvent *re)
 {
 	if (!d_scale_layers || applicationWindow()->d_opening_file)
 		return;
-	
+
 	QSize oldSize = re->oldSize();
 	QSize size = re->size();
 
@@ -592,14 +592,36 @@ void MultiLayer::setRows(int r)
 		d_rows = r;
 }
 
-QPixmap MultiLayer::canvasPixmap()
+QPixmap MultiLayer::canvasPixmap(const QSize& size)
 {
-    QPixmap pic(d_canvas->size());
-    pic.fill();
-    QPainter p(&pic);
-	foreach (Graph *g, graphsList)
-		g->print(&p, g->geometry());
+	if (!size.isValid()){
+		QPixmap pic(d_canvas->size());
+		pic.fill();
+		QPainter p(&pic);
+		foreach (Graph *g, graphsList)
+			g->print(&p, g->geometry());
 
+		p.end();
+		return pic;
+	}
+
+
+	QRect canvasRect = d_canvas->rect();
+	double scaleFactorX = (double)size.width()/(double)canvasRect.width();
+	double scaleFactorY = (double)size.height()/(double)canvasRect.height();
+
+	QPixmap pic(size);
+	pic.fill();
+	QPainter p(&pic);
+	foreach (Graph *g, graphsList){
+		QPoint pos = g->pos();
+		pos = QPoint(int(pos.x()*scaleFactorX), int(pos.y()*scaleFactorY));
+
+		int width = int(g->frameGeometry().width()*scaleFactorX);
+		int height = int(g->frameGeometry().height()*scaleFactorY);
+
+		g->print(&p, QRect(pos, QSize(width,height)));
+	}
 	p.end();
 	return pic;
 }
@@ -629,34 +651,58 @@ void MultiLayer::exportToFile(const QString& fileName)
 	}
 }
 
-void MultiLayer::exportImage(const QString& fileName, int quality, bool transparent)
+void MultiLayer::exportImage(const QString& fileName, int quality, bool transparent, int dpi, const QSizeF& customSize, int unit)
 {
-	QPixmap pic = canvasPixmap();
-	if (transparent)
-	{
-		QBitmap mask(pic.size());
+	if (!dpi)
+		dpi = logicalDpiX();
+
+	QSize size = d_canvas->size();
+	if (customSize.isValid()){
+		switch(unit){
+			case FrameWidget::Pixel:
+				size = customSize.toSize();
+			break;
+			case FrameWidget::Inch:
+				size = QSize((qRound)(customSize.width()*dpi), (qRound)(customSize.height()*dpi));
+			break;
+			case FrameWidget::Millimeter:
+				size = QSize((qRound)(customSize.width()*dpi/25.4), (qRound)(customSize.height()*dpi/25.4));
+			break;
+			case FrameWidget::Centimeter:
+				size = QSize((qRound)(customSize.width()*dpi/2.54), (qRound)(customSize.height()*dpi/2.54));
+			break;
+			case FrameWidget::Point:
+				size = QSize((qRound)(customSize.width()*dpi/72.0), (qRound)(customSize.height()*dpi/72.0));
+			break;
+		}
+	}
+
+	QPixmap pic = canvasPixmap(size);
+	QImage image = pic.toImage();
+
+	if (transparent){
+		QBitmap mask(size);
 		mask.fill(Qt::color1);
-		QPainter p;
-		p.begin(&mask);
+		QPainter p(&mask);
 		p.setPen(Qt::color0);
 
-		QColor background = QColor (Qt::white);
-		QRgb backgroundPixel = background.rgb ();
-
-		QImage image = pic.convertToImage();
-		for (int y=0; y<image.height(); y++)
-		{
-			for ( int x=0; x<image.width(); x++ )
-			{
+		QRgb backgroundPixel = QColor(Qt::white).rgb ();
+		for (int y = 0; y < image.height(); y++){
+			for (int x = 0; x < image.width(); x++){
 				QRgb rgb = image.pixel(x, y);
 				if (rgb == backgroundPixel) // we want the frame transparent
-					p.drawPoint( x, y );
+					p.drawPoint(x, y);
 			}
 		}
 		p.end();
 		pic.setMask(mask);
+		image = pic.toImage();
 	}
-	pic.save(fileName, 0, quality);
+
+	int dpm = (int)ceil(100.0/2.54*dpi);
+	image.setDotsPerMeterX(dpm);
+	image.setDotsPerMeterY(dpm);
+	image.save(fileName, 0, quality);
 }
 
 void MultiLayer::exportPDF(const QString& fname)

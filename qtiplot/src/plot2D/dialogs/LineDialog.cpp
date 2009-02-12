@@ -29,6 +29,7 @@
 #include "LineDialog.h"
 #include <ArrowMarker.h>
 #include <Graph.h>
+#include <MultiLayer.h>
 #include <ApplicationWindow.h>
 #include <ColorButton.h>
 #include <DoubleSpinBox.h>
