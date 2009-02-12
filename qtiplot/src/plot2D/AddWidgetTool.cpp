@@ -33,6 +33,7 @@
 #include "TexWidget.h"
 #include "EllipseWidget.h"
 #include <ApplicationWindow.h>
+#include <MultiLayer.h>
 
 #include <QAction>
 #include <QCursor>
@@ -50,7 +51,7 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, con
 {
 	graph->disableTools();
 	graph->multiLayer()->applicationWindow()->pickPointerCursor();
-	
+
     QwtPlotCanvas *canvas = graph->canvas();
 	canvas->installEventFilter(this);
 
@@ -74,7 +75,7 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, con
 
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
-	emit statusText(tr("Click on plot to choose the position of the new object!"));	
+	emit statusText(tr("Click on plot to choose the position of the new object!"));
 }
 
 AddWidgetTool::~AddWidgetTool()
@@ -115,7 +116,7 @@ void AddWidgetTool::addEquation(const QPoint& point)
 	ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
 	if (app)
 		t->setFramePen(app->d_frame_widget_pen);
-	
+
 	d_graph->add(t, false);
 	t->showPropertiesDialog();
 	d_graph->setActiveTool(NULL);
@@ -226,7 +227,7 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
 						pen.setWidthF(ceil((double)pen.width()));
 						d_fw->setFramePen(pen);
 					}
-					
+
 					d_fw->setBackgroundColor(app->d_rect_default_background);
 					d_fw->setBrush(app->d_rect_default_brush);
 				}

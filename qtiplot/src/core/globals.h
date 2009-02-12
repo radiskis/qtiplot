@@ -26,7 +26,6 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-
 //  Don't forget to change the Doxyfile when changing these!
 //! Major version number
 const int maj_version = 0;

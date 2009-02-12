@@ -50,6 +50,7 @@ class Fit;
 class Table;
 class DoubleSpinBox;
 class FunctionCurve;
+class MdiSubWindow;
 
 //! Fit Wizard
 class FitDialog : public QDialog
@@ -96,7 +97,7 @@ private slots:
 	void showResiduals();
 	void showConfidenceLimits();
 	void showPredictionLimits();
-	
+
 	//! Applies the user changes to the numerical format of the output results
 	void applyChanges();
 

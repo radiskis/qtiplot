@@ -31,6 +31,8 @@
 
 #include "PlotCurve.h"
 
+class Graph;
+
 // Function curve class
 class FunctionCurve: public PlotCurve
 {
@@ -67,7 +69,7 @@ public:
 	QString legend();
 
 	void loadData(int points = 0);
-	
+
 	QMap<QString, double> constants(){return d_constants;};
 	void setConstants(const QMap<QString, double>& map){d_constants = map;};
 	void setConstant(const QString& parName, double val){d_constants.insert(parName, val);};

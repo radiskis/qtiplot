@@ -162,7 +162,7 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 		mw->showResults(opj.resultsLogString().c_str(), mw->logWindow->isVisible());
 	}
 	catch(const std::logic_error& er)
-	{	
+	{
 		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(mw, "Origin Project Import Error", QString(er.what()));
 	}
@@ -1059,7 +1059,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					graph->updateVectorsLayout(c, ColorBox::color(cl.symCol), ceil(_curve.vector.width),
 						floor(_curve.vector.arrowLenght*fVectorArrowScaleFactor + 0.5), _curve.vector.arrowAngle, _curve.vector.arrowClosed, _curve.vector.position);
 				}
-	
+
 				switch(_curve.lineConnect)
 				{
 				case Origin::GraphCurve::NoLine:
@@ -1291,7 +1291,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					addText(layer.texts[i], graph, fFontScaleFactor, fScale);
 				}
 			}
-				
+
 			for(unsigned int i = 0; i < layer.lines.size(); ++i)
 			{
 				ArrowMarker mrk;
@@ -1344,7 +1344,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				}
 			}
 		}
-		
+
 		//ml->resize(graphWindowRect.width() - frameWidth, graphWindowRect.height() - frameWidth);
 		//cascade the graphs
 		if(ml->numLayers() > 0)
@@ -1415,7 +1415,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		default:
 			continue;
 		}
-		
+
 		Graph3D *plot = mw->newPlot3D();
 		if (!plot)
 			return false;
@@ -1540,7 +1540,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		QColor clr = (_curve.symbolColor.type == Origin::Color::Automatic ? ColorBox::color(++auto_color) : originToQtColor(_curve.symbolColor));
 		plot->setDataColors(clr, clr);
-		
+
 		bool smooth;
 		switch(_curve.symbolType&0xFF)
 		{
@@ -1584,7 +1584,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 							colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
 						}
 						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
-													
+
 						if(_curve.surface.bottomContour.fill)
 							plot->setFloorData();
 						else if(_curve.surface.bottomContour.contour)
@@ -1641,7 +1641,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		plot->setScale(0, layer.xAxis.min, layer.xAxis.max, layer.xAxis.majorTicks, layer.xAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale]);
 		plot->setScale(1, layer.yAxis.min, layer.yAxis.max, layer.yAxis.majorTicks, layer.yAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale]);
 		plot->setScale(2, layer.zAxis.min, layer.zAxis.max, layer.zAxis.majorTicks, layer.zAxis.minorTicks, scaleTypes[(Origin::GraphAxis::Scale)layer.zAxis.scale]);
-					
+
 		if(!_graph.hidden){
 			plot->move(QPoint(graphWindowRect.left, graphWindowRect.top));
 
@@ -1827,24 +1827,24 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 }
 
 QwtLinearColorMap ImportOPJ::qwtColorMap(const Origin::ColorMap& colorMap)
-{	
+{
 	Origin::ColorMapVector::const_iterator it = colorMap.levels.begin() + 1;
 	QColor color1 = originToQtColor(it->second.fillColor);
 	double level1 = it->first;
-	
+
 	it = colorMap.levels.end() - 1;
 	QColor color2 = originToQtColor(it->second.fillColor);
 	double level2 = it->first;
-	
+
 	QwtLinearColorMap qwt_color_map = QwtLinearColorMap(color1, color2);
 	qwt_color_map.setMode(QwtLinearColorMap::FixedColors);
-	
+
 	double dl = fabs(level2 - level1);
 	for(it = colorMap.levels.begin() + 2; it != colorMap.levels.end() - 1; ++it)
 		qwt_color_map.addColorStop((it->first - level1)/dl, originToQtColor(it->second.fillColor));
 	return qwt_color_map;
 }
-					
+
 //TODO: bug in grid dialog
 //		scale/minor ticks checkbox
 //		histogram: autobin export

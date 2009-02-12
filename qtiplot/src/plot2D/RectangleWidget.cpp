@@ -27,7 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "RectangleWidget.h"
-
+#include <MultiLayer.h>
+#include <Graph.h>
 #include <PatternBox.h>
 #include <PenStyleBox.h>
 

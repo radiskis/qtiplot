@@ -100,7 +100,7 @@ public:
 	void displayImage(const QImage& image);
 	void importImage(const QString& fn);
 	void importImage(const QImage& image);
-	void exportRasterImage(const QString& fileName, int quality = 100);
+	void exportRasterImage(const QString& fileName, int quality = 100, int dpi = 0);
 	void exportSVG(const QString& fileName);
 	void exportToFile(const QString& fileName);
 	void exportVector(const QString& fileName, int res = 0, bool color = true);

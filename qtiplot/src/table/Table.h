@@ -36,7 +36,6 @@
 #include <Q3ValueList>
 #include <QVarLengthArray>
 
-#include <Graph.h>
 #include <MdiSubWindow.h>
 #include <ScriptingEnv.h>
 #include <Script.h>

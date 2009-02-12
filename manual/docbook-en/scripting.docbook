@@ -1249,9 +1249,13 @@ m.export(fileName)
 This is a shortcut function which uses some default parameters in order to generate the output image.
 If you need more control over the export parameters you must use one of the following functions:
 <programlisting>
-m1.exportRasterImage(fileName, quality = 100)
+m1.exportRasterImage(fileName, quality = 100, dpi = 0)
 m2.exportVector(fileName, resolution, color = True)
-</programlisting>
+</programlisting>,
+
+where the <varname>quality</varname> parameter influences the size of the output file.
+The higher this value (maximum is 100), the higher the qualitity of the image, but the larger the size of the resulting files.
+The <varname>dpi</varname> parameter represents the export resolution in pixels per inch (the default is screen resolution).
 
 <para>You can also import an ASCII data <varname>file</varname>, using <varname>sep</varname> as separator characters, ignoring
 <varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string:
@@ -1957,7 +1961,7 @@ This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
 l.exportVector(fileName, resolution = 96, color = True)
-l.exportImage(filename, quality = 100, transparent = False)</programlisting>
+l.exportImage(filename, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel)</programlisting>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
 .eps, .ps, .pdf. By setting the <varname>keepAspect</varname> variable to True (the default), the
@@ -1971,7 +1975,48 @@ real size of the plot, but you can specify a standard output page size, like: Qt
 one of the Qt supported bitmap image formats (.bmp, .png, .jpg, etc...). The <varname>transparent</varname>
 option can only be used in conjunction with the file formats supporting transprency: .png and .tif (.tiff).
 The <varname>quality</varname> parameter influences the size of the output file. The higher this value (maximum is 100),
-the higher the qualitity of the image, but the larger the size of the resulting files.</para>
+the higher the qualitity of the image, but the larger the size of the resulting files.
+The <varname>dpi</varname> parameter represents the export resolution in pixels per inch (the default is screen resolution),
+<varname>size</varname> is the printed size of the image (the default is the size on screen) and
+<varname>unit</varname> is the length unit used to express the custom size
+and can take one of the following values:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Inch</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Millimeter</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Centimeter</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Point: 1/72th of an inch</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>4.</term>
+              <listitem>
+                <para>Pixel</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+</para>
 
 <para>All the export functions rely on the file name suffix in order to choose the image format.</para>
 </sect3></sect2>
@@ -2354,10 +2399,50 @@ g.export(fileName)
 This function uses some default export options. If you want to customize the exported image, you should use the
 following function in order to export to raster image formats:
 <programlisting>
-g.exportImage(fileName, int quality = 100, bool transparent = False)
+g.exportImage(fileName, int quality = 100, bool transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel)
 </programlisting>
 where <varname>quality</varname> is a compression factor: the larger its value, the better the quality of the
 exported image, but also the larger the file size.
+The <varname>dpi</varname> parameter represents the export resolution in pixels per inch (the default is screen resolution),
+<varname>size</varname> is the printed size of the image (the default is the size on screen) and
+<varname>unit</varname> is the length unit used to express the custom size
+and can take one of the following values:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Inch</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Millimeter</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Centimeter</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Point: 1/72th of an inch</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>4.</term>
+              <listitem>
+                <para>Pixel</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
 
 <para>
 3D plots can be exported to any of the following vector formats: .eps, .ps, .pdf, .pgf and .svg, using

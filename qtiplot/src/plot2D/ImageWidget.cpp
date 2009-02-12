@@ -27,6 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "ImageWidget.h"
+#include "MultiLayer.h"
+#include <Graph.h>
 #include <PenStyleBox.h>
 
 #include <QPainter>
@@ -120,10 +122,10 @@ void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCn
 {
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
-	
+
 	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
-	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());	
-	
+	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());
+
 	draw(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
 }
 

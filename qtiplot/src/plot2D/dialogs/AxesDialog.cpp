@@ -32,6 +32,7 @@
 #include <TextFormatButtons.h>
 #include <Table.h>
 #include <Graph.h>
+#include <MultiLayer.h>
 #include <Grid.h>
 #include <ScaleDraw.h>
 #include <ScaleEngine.h>
@@ -2749,6 +2750,7 @@ void AxesDialog::pageChanged ( QWidget *page )
   	    lastPage = page;
   	}else if (lastPage == axesPage && page == scalesPage){
   		axesList->setCurrentRow(axesTitlesList->currentRow());
+  		updateScale();
   	    lastPage = page;
   	}
 }

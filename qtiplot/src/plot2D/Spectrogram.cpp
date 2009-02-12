@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "Spectrogram.h"
 #include "Graph.h"
+#include "MultiLayer.h"
 #include <ColorMapEditor.h>
 #include <ApplicationWindow.h>
 
@@ -272,10 +273,10 @@ QwtDoubleRect Spectrogram::boundingRect() const
 }
 
 double MatrixData::value(double x, double y) const
-{		
+{
 	x += 0.5*dx;
 	y -= 0.5*dy;
-	
+
 	int i = abs((y - y_start)/dy);
 	int j = abs((x - x_start)/dx);
 	if (d_m && i >= 0 && i < n_rows && j >=0 && j < n_cols)

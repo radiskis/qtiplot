@@ -33,6 +33,7 @@
 #include "PlotCurve.h"
 #include "QwtErrorPlotCurve.h"
 #include <ApplicationWindow.h>
+#include <MultiLayer.h>
 #include <QClipboard>
 
 #include <qwt_symbol.h>
@@ -96,7 +97,7 @@ void DataPickerTool::append(const QPoint &pos)
 	}
 	setSelection((QwtPlotCurve *)c, point_index);
 	if (!d_selected_curve) return;
-	
+
 	QwtPlotPicker::append(transform(QwtDoublePoint(d_selected_curve->x(d_selected_point),
 					d_selected_curve->y(d_selected_point))));
 }
@@ -163,7 +164,7 @@ bool DataPickerTool::eventFilter(QObject *obj, QEvent *event)
 					return true;
 			}
 		break;
-			
+
         case QEvent::MouseMove:
             if (((QMouseEvent *)event)->modifiers() == Qt::ControlModifier)
                 d_move_mode = Vertical;
@@ -173,7 +174,7 @@ bool DataPickerTool::eventFilter(QObject *obj, QEvent *event)
                 d_move_mode = Free;
 		break;
 
-		case QEvent::KeyPress:	
+		case QEvent::KeyPress:
 			if (keyEventFilter((QKeyEvent*)event))
 				return true;
 			break;

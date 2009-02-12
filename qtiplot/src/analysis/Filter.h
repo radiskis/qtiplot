@@ -33,6 +33,7 @@
 
 #include <ApplicationWindow.h>
 
+class MultiLayer;
 class QwtPlotCurve;
 class Graph;
 class Table;

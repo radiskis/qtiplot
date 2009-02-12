@@ -31,7 +31,7 @@
 
 #include <qwt_plot_curve.h>
 #include <qwt_plot_marker.h>
-#include "../table/Table.h"
+#include <Table.h>
 
 class PlotMarker;
 class Table;

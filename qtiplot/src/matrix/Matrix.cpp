@@ -201,7 +201,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 
 	if (d_color_map_type != Custom)
 		t << "ColorPolicy\t" + QString::number(d_color_map_type) + "\n";
-	else 
+	else
 		t << ColorMapEditor::saveToXmlString(d_color_map);
 
     if (notTemplate)
@@ -805,9 +805,16 @@ void Matrix::customEvent(QEvent *e)
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
 }
 
-void Matrix::exportRasterImage(const QString& fileName, int quality)
+void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi)
 {
-	d_matrix_model->renderImage().save(fileName, 0, quality);
+	if (!dpi)
+		dpi = logicalDpiX();
+
+	QImage image = d_matrix_model->renderImage();
+	int dpm = (int)ceil(100.0/2.54*dpi);
+	image.setDotsPerMeterX(dpm);
+	image.setDotsPerMeterY(dpm);
+	image.save(fileName, 0, quality);
 }
 
 void Matrix::exportToFile(const QString& fileName)

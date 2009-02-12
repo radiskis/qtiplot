@@ -28,7 +28,8 @@
  ***************************************************************************/
 #include "FrameWidget.h"
 #include "SelectionMoveResizer.h"
-#include <ApplicationWindow.h>
+#include <Graph.h>
+#include <MultiLayer.h>
 #include <PenStyleBox.h>
 
 #include <QPainter>
@@ -199,16 +200,16 @@ QRectF FrameWidget::boundingRect() const
 void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 {
 	p->save();
-	if (d_frame == Line){		
+	if (d_frame == Line){
 		p->setPen(d_frame_pen);
 		int lw = d_frame_pen.width()/2;
 		QRect r = rect.adjusted(lw, lw, -lw - 1, -lw - 1);
 		p->fillRect(r, palette().color(QPalette::Window));
 		if (d_brush.style() != Qt::NoBrush)
 			p->setBrush(d_brush);
-		
+
         QwtPainter::drawRect(p, r);
-		
+
 	} else if (d_frame == Shadow){
 		int lw = d_frame_pen.width()/2;
 		int d = d_shadow_width + lw;

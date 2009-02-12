@@ -33,7 +33,7 @@
 #define MULTILAYER_H
 
 #include <MdiSubWindow.h>
-#include "Graph.h"
+#include <FrameWidget.h>
 #include <QPushButton>
 #include <QLayout>
 #include <QPointer>
@@ -42,6 +42,8 @@ class QLabel;
 class LayerButton;
 class SelectionMoveResizer;
 class LegendWidget;
+class Graph;
+class QwtPlotCurve;
 
 /**
  * \brief An MDI window (MdiSubWindow) managing one or more Graph objects.
@@ -142,9 +144,10 @@ public slots:
 
 	//! \name Print and Export
 	//@{
-	QPixmap canvasPixmap();
+	QPixmap canvasPixmap(const QSize& size = QSize());
 	void exportToFile(const QString& fileName);
-	void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
+	void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
+					int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
 	void exportSVG(const QString& fname);
     void exportPDF(const QString& fname);
 	void exportVector(const QString& fileName, int res = 0, bool color = true);

@@ -29,6 +29,7 @@
 #include "QwtErrorPlotCurve.h"
 #include "QwtBarCurve.h"
 #include "ScaleEngine.h"
+#include "Graph.h"
 
 #include <qwt_painter.h>
 #include <qwt_symbol.h>
@@ -108,7 +109,7 @@ void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 
 	ScaleEngine *yScaleEngine = (ScaleEngine *)plot()->axisScaleEngine(yAxis());
 	bool logYScale = (yScaleEngine->type() == QwtScaleTransformation::Log10) ? true : false;
-	
+
 	for (int i = from; i <= to; i++){
 		const int xi = xMap.transform(x(i) + d_xOffset);
 		const int yi = yMap.transform(y(i) + d_yOffset);

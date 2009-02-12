@@ -79,7 +79,6 @@
 #include <TexWidget.h>
 #include <ArrowMarker.h>
 #include <ImageWidget.h>
-#include <Graph.h>
 #include <Grid.h>
 #include <ScaleDraw.h>
 #include <ScaleEngine.h>
@@ -563,9 +562,9 @@ void ApplicationWindow::initGlobalConstants()
 	d_3D_resolution = 1;
 	d_3D_orthogonal = false;
 	d_3D_autoscale = true;
-    d_3D_axes_font = QFont(family, pointSize, QFont::Bold, false );
+    d_3D_axes_font = QFont(family, pointSize, QFont::Bold, false);
 	d_3D_numbers_font = QFont(family, pointSize);
-	d_3D_title_font = QFont(family, pointSize + 2, QFont::Bold,false);
+	d_3D_title_font = QFont(family, pointSize + 2, QFont::Bold, false);
     d_3D_color_map = QwtLinearColorMap(Qt::blue, Qt::red);
 	d_3D_mesh_color = Qt::black;
 	d_3D_axes_color = Qt::black;
@@ -612,7 +611,10 @@ void ApplicationWindow::initGlobalConstants()
 	d_image_export_filter = ".png";
 	d_export_transparency = false;
 	d_export_quality = 100;
-	d_export_resolution = QPrinter().resolution();
+	d_export_raster_size = QSizeF();
+	d_export_size_unit = FrameWidget::Pixel;
+	d_export_vector_resolution = QPrinter().resolution();
+	d_export_bitmap_resolution = QWidget().logicalDpiX();
 	d_export_color = true;
 	d_3D_export_text_mode = 0; //VectorWriter::PIXEL
 	d_3D_export_sort = 1; //VectorWriter::SIMPLESORT
@@ -2243,12 +2245,12 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 	}
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
-		m->exportVector(file_name, ied->resolution(), ied->color());
+		m->exportVector(file_name, ied->vectorResolution(), ied->color());
 	else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++){
 			if (selected_filter.contains("." + (list[i]).lower()))
-				m->image().save(file_name, list[i], ied->quality());
+				m->exportRasterImage(file_name, ied->quality(), ied->bitmapResolution());
 		}
 	}
 }
@@ -4625,10 +4627,13 @@ void ApplicationWindow::readSettings()
 	d_image_export_filter = settings.value("/ImageFileTypeFilter", ".png").toString();
 	d_export_transparency = settings.value("/ExportTransparency", false).toBool();
 	d_export_quality = settings.value("/ImageQuality", 100).toInt();
-	d_export_resolution = settings.value("/Resolution", QPrinter().resolution()).toInt();
+	d_export_vector_resolution = settings.value("/Resolution", QPrinter().resolution()).toInt();
 	d_export_color = settings.value("/ExportColor", true).toBool();
 	d_3D_export_text_mode = settings.value("/3DTextMode", d_3D_export_text_mode).toInt();
 	d_3D_export_sort = settings.value("/3DSortMode", d_3D_export_sort).toInt();
+	d_export_bitmap_resolution = settings.value("/BitmapResolution", d_export_bitmap_resolution).toInt();
+	d_export_raster_size = settings.value("/RasterSize", d_export_raster_size).toSizeF();
+	d_export_size_unit = settings.value("/SizeUnit", d_export_size_unit).toInt();
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -4990,10 +4995,13 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ImageFileTypeFilter", d_image_export_filter);
 	settings.setValue("/ExportTransparency", d_export_transparency);
 	settings.setValue("/ImageQuality", d_export_quality);
-	settings.setValue("/Resolution", d_export_resolution);
+	settings.setValue("/Resolution", d_export_vector_resolution);
 	settings.setValue("/ExportColor", d_export_color);
 	settings.setValue("/3DTextMode", d_3D_export_text_mode);
 	settings.setValue("/3DSortMode", d_3D_export_sort);
+	settings.setValue("/BitmapResolution", d_export_bitmap_resolution);
+	settings.setValue("/RasterSize", d_export_raster_size);
+	settings.setValue("/SizeUnit", d_export_size_unit);
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5092,16 +5100,19 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 			if (selected_filter.contains(".svg"))
 				plot2D->exportSVG(file_name);
 			else
-				plot2D->exportVector(file_name, ied->resolution(), ied->color());
+				plot2D->exportVector(file_name, ied->vectorResolution(), ied->color());
 		}
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++){
 			if (selected_filter.contains("." + (list[i]).lower())) {
 				if (plot2D)
-					plot2D->exportImage(file_name, ied->quality(), ied->transparency());
-				else if (plot3D)
-					plot3D->exportImage(file_name, ied->quality(), ied->transparency());
+					plot2D->exportImage(file_name, ied->quality(), ied->transparency(),
+						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
+				else if (plot3D){
+					plot3D->exportImage(file_name, ied->quality(), ied->transparency(),
+						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
+				}
 			}
 		}
 	}
@@ -5142,7 +5153,7 @@ void ApplicationWindow::exportLayer()
 	file.close();
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
-		g->exportVector(file_name, ied->resolution(), ied->color());
+		g->exportVector(file_name, ied->vectorResolution(), ied->color());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name);
     /*else if (selected_filter.contains(".emf"))
@@ -5151,7 +5162,8 @@ void ApplicationWindow::exportLayer()
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++)
 			if (selected_filter.contains("."+(list[i]).lower()))
-				g->exportImage(file_name, ied->quality(), ied->transparency());
+				g->exportImage(file_name, ied->quality(), ied->transparency(),
+				ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
 	}
 }
 
@@ -5249,16 +5261,18 @@ void ApplicationWindow::exportAllGraphs()
 				if (file_suffix.contains(".svg"))
 					plot2D->exportSVG(file_name);
 				else
-					plot2D->exportVector(file_name, ied->resolution(), ied->color());
+					plot2D->exportVector(file_name, ied->vectorResolution(), ied->color());
 			}
 		} else {
 			QList<QByteArray> list = QImageWriter::supportedImageFormats();
 			for (int i=0; i<(int)list.count(); i++){
 				if (file_suffix.contains("." + (list[i]).lower())) {
 					if (plot2D)
-						plot2D->exportImage(file_name, ied->quality(), ied->transparency());
+						plot2D->exportImage(file_name, ied->quality(), ied->transparency(),
+						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
 					else if (plot3D)
-						plot3D->exportImage(file_name, ied->quality(), ied->transparency());
+						plot3D->exportImage(file_name, ied->quality(), ied->transparency(),
+						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
 				}
 			}
 		}

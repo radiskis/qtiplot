@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "EllipseWidget.h"
+#include <Graph.h>
 #include <PatternBox.h>
 #include <PenStyleBox.h>
 
@@ -111,18 +112,18 @@ void EllipseWidget::drawFrame(QPainter *p, const QRect& rect)
 	p->save();
 	if (d_plot->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
-	
+
 	QPainterPath ellipse;
 	ellipse.addEllipse(rect);
-	
-	if (d_frame == Line){		
+
+	if (d_frame == Line){
 		p->setPen(d_frame_pen);
 		int lw = d_frame_pen.width()/2;
 		QRect r = rect.adjusted(lw + 1, lw + 1, -lw - 1, -lw - 1);
 		p->fillPath(ellipse, palette().color(QPalette::Window));
 		if (d_brush.style() != Qt::NoBrush)
 			p->setBrush(d_brush);
-		
+
         p->drawEllipse(r);
 	} else {
 		p->fillPath(ellipse, palette().color(QPalette::Window));

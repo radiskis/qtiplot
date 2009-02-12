@@ -27,6 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "VectorCurve.h"
+#include "Graph.h"
+#include "MultiLayer.h"
 
 #include <qwt_painter.h>
 #include <qwt_double_rect.h>
