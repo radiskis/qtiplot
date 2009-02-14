@@ -547,7 +547,7 @@ void ApplicationWindow::initGlobalConstants()
 	d_frame_geometry_unit = (int)FrameWidget::Scale;
 
 	d_rect_default_background = Qt::white;
-	d_rect_default_brush = QBrush();
+	d_rect_default_brush = QBrush(Qt::white);
 
 	defaultArrowLineWidth = 1;
 	defaultArrowColor = Qt::black;
@@ -4538,7 +4538,7 @@ void ApplicationWindow::readSettings()
 	d_rect_default_background = settings.value("/BackgroundColor", Qt::white).value<QColor>();
 	d_rect_default_background.setAlpha(settings.value("/Transparency", 255).toInt());
 
-	d_rect_default_brush.setColor(settings.value("/BrushColor", Qt::black).value<QColor>());
+	d_rect_default_brush.setColor(settings.value("/BrushColor", d_rect_default_brush).value<QColor>());
 	d_rect_default_brush.setStyle(PatternBox::brushStyle(settings.value("/Pattern", 0).toInt()));
 	settings.endGroup(); // Rectangle
 	settings.endGroup();
