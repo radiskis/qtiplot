@@ -33,6 +33,7 @@
 #include <PenStyleBox.h>
 
 #include <QPainter>
+#include <QPaintEngine>
 
 #include <qwt_plot.h>
 #include <qwt_painter.h>
@@ -212,16 +213,21 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 
 	} else if (d_frame == Shadow){
 		int lw = d_frame_pen.width()/2;
+
+		// calculate resolution factor
+		double factorX = (double)p->paintEngine()->paintDevice()->logicalDpiX()/(double)plot()->logicalDpiX();
+		double factorY = (double)p->paintEngine()->paintDevice()->logicalDpiY()/(double)plot()->logicalDpiY();
+
 		int d = d_shadow_width + lw;
 		if (!(lw % 2))
 			d += 1;
 
 		QPainterPath contents;
-		QRect r = rect.adjusted(lw, lw, -d, -d);
+		QRect r = rect.adjusted(lw, lw, -d*factorX, -d*factorY);
 		contents.addRect(r);
 
 		QPainterPath shadow;
-		shadow.addRect(rect.adjusted(d_shadow_width, d_shadow_width, 0, 0));
+		shadow.addRect(rect.adjusted(d_shadow_width*factorX, d_shadow_width*factorY, 0, 0));
 
 		p->fillPath(shadow.subtracted(contents), Qt::black);//draw shadow
 

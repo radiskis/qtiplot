@@ -31,7 +31,7 @@
 #ifndef ORIGIN_OBJ_H
 #define ORIGIN_OBJ_H
 
-#include <string>
+#include <string.h>
 #include <vector>
 #include "boost/variant.hpp"
 #include "boost/bind.hpp"

@@ -79,6 +79,7 @@ private:
 	QwtArray<long> itemsHeight(int symbolLineLength, int &width, int &height, int &textWidth, int &textHeight);
 	int symbolsMaxWidth();
 	QString parse(const QString& str);
+	QSize textSize(QPainter *p, const QwtText& text);
 
 	virtual void paintEvent(QPaintEvent *e);
 

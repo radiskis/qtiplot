@@ -105,7 +105,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	left_margin = int(left_margin*factor);
 	top_margin = int(top_margin*factor);
 
-    const int symbolLineLength = int((line_length + symbolsMaxWidth())*factor);
+	const int symbolLineLength = int((line_length + symbolsMaxWidth())*factor);
 	int width, height, textWidth, textHeight;
 	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height, textWidth, textHeight);
 
@@ -188,7 +188,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 		QPen pen = pie->pen();
 		p->save();
 		p->setPen (QPen(pen.color(), pen.widthF(), Qt::SolidLine));
-		QRect lr = QRect(x, y - 4, l, 10);
+		QRect lr = QRect(x, y - l/4, l, l/2);
 		p->setBrush(br);
 		QwtPainter::drawRect(p, lr);
 		p->restore();
@@ -203,7 +203,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
         p->setPen (pen);
 		if (c->type() == Graph::VerticalBars || c->type() == Graph::HorizontalBars ||
 			c->type() == Graph::Histogram || c->type() == Graph::Box){
-            QRect lr = QRect(x, y - 4, l, 10);
+			QRect lr = QRect(x, y - l/4, l, l/2);
             p->setBrush(br);
             QwtPainter::drawRect(p, lr);
         } else
@@ -260,8 +260,9 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                 QwtText aux(parse(s.left(pos)));
                 aux.setFont(d_text->font());
                 aux.setColor(d_text->color());
+				aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
 
-                QSize size = aux.textSize();
+				QSize size = textSize(p, aux);
                 QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
                 aux.draw(p, tr);
                 w += size.width();
@@ -284,8 +285,9 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
                     aux.setColor(d_text->color());
+					aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
 
-                    QSize size = aux.textSize();
+					QSize size = textSize(p, aux);
                     QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
                     aux.draw(p, tr);
                     w += size.width();
@@ -306,7 +308,9 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 			QwtText aux(parse(s));
 			aux.setFont(d_text->font());
 			aux.setColor(d_text->color());
-			QSize size = aux.textSize();
+			aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
+
+			QSize size = textSize(p, aux);
 			QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
 			aux.draw(p, tr);
 		}
@@ -627,6 +631,24 @@ void LegendWidget::setAngle(int angle)
 		d_angle += 360;
 	else if (d_angle >= 360)
 		d_angle -= 360;
+}
+
+/*
+  // bug in Qwt; workaround in QwtText::textSize() only works for short texts.
+  // This hack was ported from SciDavis (code originally written by Knut Franke).
+*/
+QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
+{
+	QSize size = text.textSize();
+	QwtMetricsMap map;
+	map.setMetrics (plot(), p->device());
+	if (!map.isIdentity()) {
+		int screen_width = map.layoutToScreenX(size.width());
+		screen_width -= 3;
+		screen_width *= 1.1;
+		size = QSize(map.screenToLayoutX(screen_width), size.height());
+	}
+	return size;
 }
 
 LegendWidget::~LegendWidget()
