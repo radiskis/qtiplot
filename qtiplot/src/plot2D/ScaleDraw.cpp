@@ -355,20 +355,19 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 
     const QPoint pos = labelPosition(value);
 
-    QSize labelSize = lbl.textSize(painter->font());
+	QSize labelSize = lbl.textSize(painter->font());
     if ( labelSize.height() % 2 )
         labelSize.setHeight(labelSize.height() + 1);
 
-    const QMatrix m = labelMatrix(pos, labelSize);
-
     painter->save();
-    painter->setMatrix(m, true);
+    painter->setMatrix(labelMatrix(pos, labelSize), true);
     if (d_selected)
         lbl.setBackgroundPen(QPen(Qt::blue));
     else
         lbl.setBackgroundPen(QPen(Qt::NoPen));
 
-    lbl.draw(painter, QRect(QPoint(0, 0), labelSize));
+	lbl.draw(painter, QRect(QPoint(0, 0), labelSize));
+
     painter->restore();
 }
 

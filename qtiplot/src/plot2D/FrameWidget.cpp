@@ -210,7 +210,6 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 			p->setBrush(d_brush);
 
         QwtPainter::drawRect(p, r);
-
 	} else if (d_frame == Shadow){
 		int lw = d_frame_pen.width()/2;
 
