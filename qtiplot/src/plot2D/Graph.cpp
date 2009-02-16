@@ -854,17 +854,14 @@ void Graph::setLabelsDateTimeFormat(int axis, int type, const QString& formatInf
 
 void Graph::setAxisLabelRotation(int axis, int rotation)
 {
-	if (axis==QwtPlot::xBottom)
-	{
+	if (axis == QwtPlot::xBottom){
 		if (rotation > 0)
 			setAxisLabelAlignment(axis, Qt::AlignRight|Qt::AlignVCenter);
 		else if (rotation < 0)
 			setAxisLabelAlignment(axis, Qt::AlignLeft|Qt::AlignVCenter);
 		else if (rotation == 0)
 			setAxisLabelAlignment(axis, Qt::AlignHCenter|Qt::AlignBottom);
-	}
-	else if (axis==QwtPlot::xTop)
-	{
+	} else if (axis == QwtPlot::xTop){
 		if (rotation > 0)
 			setAxisLabelAlignment(axis, Qt::AlignLeft|Qt::AlignVCenter);
 		else if (rotation < 0)
@@ -1455,16 +1452,24 @@ void Graph::exportVector(const QString& fileName, int res, bool color)
 	}
 
 	QPrinter printer;
+	if (!printer.resolution())
+		printer.setResolution(logicalDpiX());//we set screen resolution as default
+
+	printer.setDocName(multiLayer()->objectName());
     printer.setCreator("QtiPlot");
 	printer.setFullPage(true);
 	QRect r = rect();
 	QRect br = boundingRect();
-	if (res){
+
+	if (res && res != printer.resolution()){
 		double wfactor = (double)res/(double)logicalDpiX();
 		double hfactor = (double)res/(double)logicalDpiY();
 		printer.setResolution(res);
-		printer.setPaperSize (QSizeF(br.width()*wfactor, br.height()*hfactor), QPrinter::DevicePixel);
-		r.setSize(QSize(int(width()*wfactor), int(height()*hfactor)));
+		// LegendWidget size doesn't increase linearly with resolution.
+		// The extra width multiplication factor accounts for this.
+		// We could calculate it precisely, but it's quite complicated...
+		printer.setPaperSize (QSizeF(br.width()*wfactor*1.07, br.height()*hfactor), QPrinter::DevicePixel);
+		r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
 	} else
 		printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
 
@@ -1557,6 +1562,7 @@ void Graph::exportSVG(const QString& fname)
 	QSvgGenerator svg;
 	svg.setFileName(fname);
 	svg.setSize(boundingRect().size());
+	svg.setResolution(96);
 
 	QPainter p(&svg);
 	print(&p, rect());

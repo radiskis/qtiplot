@@ -78,12 +78,13 @@ d_auto_update(false)
 
 void LegendWidget::paintEvent(QPaintEvent *e)
 {
+	QPainter p(this);
+
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height, textWidth, textHeight;
-	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height, textWidth, textHeight);
+	QwtArray<long> heights = itemsHeight(&p, symbolLineLength, width, height, textWidth, textHeight);
     resize(width, height);
 
-    QPainter p(this);
 	drawFrame(&p, rect());
 	drawText(&p, QRect(0, 0, textWidth, textHeight), heights, symbolLineLength);
 	e->accept();
@@ -107,7 +108,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 
 	const int symbolLineLength = int((line_length + symbolsMaxWidth())*factor);
 	int width, height, textWidth, textHeight;
-	QwtArray<long> heights = itemsHeight(symbolLineLength, width, height, textWidth, textHeight);
+	QwtArray<long> heights = itemsHeight(painter, symbolLineLength, width, height, textWidth, textHeight);
 
 	drawFrame(painter, QRect(x, y, width, height));
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
@@ -318,7 +319,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 	p->restore();
 }
 
-QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &height,
+QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int &width, int &height,
 							 int &textWidth, int &textHeight)
 {
 	QString text = d_text->text();
@@ -340,7 +341,7 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
 			if (pos >= 0){
                 QwtText aux(parse(s.left(pos)));
                 aux.setFont(d_text->font());
-                QSize size = aux.textSize();
+                QSize size = textSize(p, aux);
                 textL += size.width();
 
                 int pos1 = s.indexOf("(", pos);
@@ -359,7 +360,7 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
                 if (pos >= 0){
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
-                    QSize size = aux.textSize();
+                    QSize size = textSize(p, aux);
                     textL += size.width();
                     textL += symbolLineLength;
                     s = s.right(s.length() - s.indexOf("}", pos) - 1);
@@ -369,7 +370,7 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
 
 		QwtText aux(parse(s));
 		aux.setFont(d_text->font());
-		QSize size = aux.textSize();
+		QSize size = textSize(p, aux);
 		textL += size.width();
 		if (curveSymbol)
 			textL += h_space;
@@ -383,7 +384,6 @@ QwtArray<long> LegendWidget::itemsHeight(int symbolLineLength, int &width, int &
 		heights[i] = h + textH/2;
 		h += textH;
 	}
-
 
 	height += 2*top_margin;
 	width = 2*left_margin + maxL;
@@ -634,21 +634,14 @@ void LegendWidget::setAngle(int angle)
 }
 
 /*
-  // bug in Qwt; workaround in QwtText::textSize() only works for short texts.
-  // This hack was ported from SciDavis (code originally written by Knut Franke).
+  // bug in Qwt; workaround in QwtText::textSize() doesn't work.
 */
 QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 {
-	QSize size = text.textSize();
-	QwtMetricsMap map;
-	map.setMetrics (plot(), p->device());
-	if (!map.isIdentity()) {
-		int screen_width = map.layoutToScreenX(size.width());
-		screen_width -= 3;
-		screen_width *= 1.1;
-		size = QSize(map.screenToLayoutX(screen_width), size.height());
-	}
-	return size;
+	QString s = text.text();
+	s.remove("<sub>").remove("</sub>").remove("<sup>").remove("</sup>");
+	QFontMetrics fm(text.font(), p->device());
+	return fm.boundingRect(s).size();
 }
 
 LegendWidget::~LegendWidget()

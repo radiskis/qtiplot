@@ -48,6 +48,7 @@
 #include <qwt_plot_layout.h>
 #include <qwt_scale_widget.h>
 #include <qwt_text_label.h>
+#include <qwt_layout_metrics.h>
 
 #include "MultiLayer.h"
 #include "LegendWidget.h"
@@ -605,7 +606,6 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size)
 		return pic;
 	}
 
-
 	QRect canvasRect = d_canvas->rect();
 	double scaleFactorX = (double)size.width()/(double)canvasRect.width();
 	double scaleFactorY = (double)size.height()/(double)canvasRect.height();
@@ -719,6 +719,9 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color)
 	}
 
 	QPrinter printer;
+	if (!printer.resolution())
+		printer.setResolution(logicalDpiX());//we set screen resolution as default
+
     printer.setDocName (objectName());
     printer.setCreator("QtiPlot");
 	printer.setFullPage(true);
@@ -736,8 +739,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color)
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-
-	if (res){
+	if (res && res != printer.resolution()){
 		double wfactor = (double)res/(double)logicalDpiX();
 		double hfactor = (double)res/(double)logicalDpiY();
 		printer.setResolution(res);
@@ -762,6 +764,7 @@ void MultiLayer::exportSVG(const QString& fname)
 	QSvgGenerator generator;
 	generator.setFileName(fname);
 	generator.setSize(d_canvas->size());
+	generator.setResolution(96);
 
 	QPainter p(&generator);
 	foreach (Graph *g, graphsList)

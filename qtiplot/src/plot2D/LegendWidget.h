@@ -70,16 +70,17 @@ public:
 	int angle(){return d_angle;};
 	void setAngle(int angle);
 
+	static QSize textSize(QPainter *p, const QwtText& text);
+
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
 	void drawVector(PlotCurve *c, QPainter *p, int x, int y, int l);
 	void drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y, int l);
 	void drawText(QPainter *, const QRect&, QwtArray<long>, int);
 
-	QwtArray<long> itemsHeight(int symbolLineLength, int &width, int &height, int &textWidth, int &textHeight);
+	QwtArray<long> itemsHeight(QPainter *p, int symbolLineLength, int &width, int &height, int &textWidth, int &textHeight);
 	int symbolsMaxWidth();
 	QString parse(const QString& str);
-	QSize textSize(QPainter *p, const QwtText& text);
 
 	virtual void paintEvent(QPaintEvent *e);
 
