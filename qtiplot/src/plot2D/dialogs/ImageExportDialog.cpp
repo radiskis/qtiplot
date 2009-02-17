@@ -157,7 +157,7 @@ void ImageExportDialog::initAdvancedOptions()
 
 	QSizeF customSize = app->d_export_raster_size;
 
-	d_custom_size_box = new QGroupBox(tr("Custom size"));
+	d_custom_size_box = new QGroupBox(tr("Custom print size"));
 	d_custom_size_box->setCheckable(true);
 	d_custom_size_box->setChecked(customSize.isValid());
 	QGridLayout *size_layout = new QGridLayout(d_custom_size_box);

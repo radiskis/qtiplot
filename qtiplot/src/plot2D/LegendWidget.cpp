@@ -157,9 +157,9 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 
 	p->translate(x + l, y);
 
-	double pi=4*atan(-1.0);
+	double pi = 4*atan(-1.0);
 	int headLength = v->headLength();
-	int d=qRound(headLength*tan(pi*(double)v->headAngle()/180.0));
+	int d = qRound(headLength*tan(pi*(double)v->headAngle()/180.0));
 
 	QPolygon endArray(3);
 	endArray[0] = QPoint(0, 0);
@@ -413,8 +413,9 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 	}
 
 	if (d_frame == Shadow){
-		width += d_shadow_width;
-		height += d_shadow_width;
+		QPaintDevice *pd = p->paintEngine()->paintDevice();
+		width += qRound(d_shadow_width*pd->logicalDpiX()/(double)plot()->logicalDpiX());
+		height += qRound(d_shadow_width*pd->logicalDpiY()/(double)plot()->logicalDpiY());
 	}
 
 	return heights;

@@ -10815,7 +10815,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Höger</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4621"/>
+        <location filename="src/plot2D/Graph.cpp" line="4629"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
@@ -10835,7 +10835,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Topp %1 vald! Klicka för att välja punkt och dubbelklicka/tryck &apos;Retur&apos; för att ställa in position för nästa punkt!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1728"/>
+        <location filename="src/plot2D/Graph.cpp" line="1736"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
@@ -10855,12 +10855,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Flytta punktfel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3444"/>
+        <location filename="src/plot2D/Graph.cpp" line="3452"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3445"/>
+        <location filename="src/plot2D/Graph.cpp" line="3453"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Bildfil: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; finns inte längre!</translation>
     </message>
@@ -10870,22 +10870,22 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Fel i indatafuktion</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3857"/>
+        <location filename="src/plot2D/Graph.cpp" line="3865"/>
         <source>The columns</source>
         <translation>Kolumnerna</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3857"/>
+        <location filename="src/plot2D/Graph.cpp" line="3865"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>är tomma och kommer ej att läggas till diagrammet!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3861"/>
+        <location filename="src/plot2D/Graph.cpp" line="3869"/>
         <source>The column</source>
         <translation>Kolumnen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3861"/>
+        <location filename="src/plot2D/Graph.cpp" line="3869"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>är tom och kommer ej att läggas till diagrammet!</translation>
     </message>
@@ -10895,42 +10895,42 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Klipp &amp;ut</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3921"/>
+        <location filename="src/plot2D/Graph.cpp" line="3929"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiera</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3923"/>
+        <location filename="src/plot2D/Graph.cpp" line="3931"/>
         <source>&amp;Delete</source>
         <translation>&amp;Tag bort</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3948"/>
+        <location filename="src/plot2D/Graph.cpp" line="3956"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Egenskaper...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3933"/>
+        <location filename="src/plot2D/Graph.cpp" line="3941"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Skala om för att visa allt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3933"/>
+        <location filename="src/plot2D/Graph.cpp" line="3941"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3935"/>
+        <location filename="src/plot2D/Graph.cpp" line="3943"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Dölj axlar</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3937"/>
+        <location filename="src/plot2D/Graph.cpp" line="3945"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Visa rutnät</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3947"/>
+        <location filename="src/plot2D/Graph.cpp" line="3955"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Skala...</translation>
     </message>
@@ -11272,17 +11272,17 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Bandsspärr-FFT-filter av </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4621"/>
+        <location filename="src/plot2D/Graph.cpp" line="4629"/>
         <source>There are no curves available on this plot!</source>
         <translation>Det finns inga kurvor tillgängliga på detta diagram!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4631"/>
+        <location filename="src/plot2D/Graph.cpp" line="4639"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4632"/>
+        <location filename="src/plot2D/Graph.cpp" line="4640"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Det finns inga kurvor med mer än två punkter i detta diagram. Åtgärd avbruten!</translation>
     </message>
@@ -11372,22 +11372,22 @@ Följande specialkoder kan användas:
         <translation type="obsolete">medelvärdesutjämning av</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1433"/>
+        <location filename="src/plot2D/Graph.cpp" line="1441"/>
         <source>Please provide a valid file name!</source>
         <translation>Ange ett giltigt filnamn!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1389"/>
+        <location filename="src/plot2D/Graph.cpp" line="1397"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Filformatet hanteras ej, avbryts!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3632"/>
+        <location filename="src/plot2D/Graph.cpp" line="3640"/>
         <source>Data set generated from curve</source>
         <translation>Datamängd genererad från kurva</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3633"/>
+        <location filename="src/plot2D/Graph.cpp" line="3641"/>
         <source>Table</source>
         <translation>Tabell</translation>
     </message>
@@ -11417,12 +11417,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete"> </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3920"/>
+        <location filename="src/plot2D/Graph.cpp" line="3928"/>
         <source>Cu&amp;t</source>
         <translation>Klipp u&amp;t</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3922"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>C&amp;lear</source>
         <translation>&amp;Rensa</translation>
     </message>
@@ -11661,11 +11661,6 @@ Följande specialkoder kan användas:
         <translation>BSO-sortering</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="160"/>
-        <source>Custom size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="166"/>
         <source>inch</source>
         <translation type="unfinished">inch</translation>
@@ -11704,6 +11699,11 @@ Följande specialkoder kan användas:
         <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="184"/>
         <source>Height</source>
         <translation type="unfinished">Höjd</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="160"/>
+        <source>Custom print size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

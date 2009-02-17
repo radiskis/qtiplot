@@ -656,7 +656,7 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 	if (!dpi)
 		dpi = logicalDpiX();
 
-	QSize size = d_canvas->size();
+	QSize size = QSize();
 	if (customSize.isValid())
 		size = Graph::customPrintSize(customSize, unit, dpi);
 
@@ -740,7 +740,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, cons
 		double wfactor = (double)res/(double)logicalDpiX();
 		double hfactor = (double)res/(double)logicalDpiY();
 		printer.setResolution(res);
-		printer.setPaperSize (QSizeF(d_canvas->width()*wfactor, d_canvas->height()*hfactor), QPrinter::DevicePixel);
+		printer.setPaperSize (QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor), QPrinter::DevicePixel);
 		QPainter paint(&printer);
 		foreach (Graph *g, graphsList){
 			QRect r = g->geometry();
