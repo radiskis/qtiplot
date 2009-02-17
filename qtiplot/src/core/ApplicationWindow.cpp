@@ -613,8 +613,8 @@ void ApplicationWindow::initGlobalConstants()
 	d_export_quality = 100;
 	d_export_raster_size = QSizeF();
 	d_export_size_unit = FrameWidget::Pixel;
-	d_export_vector_resolution = QPrinter().resolution();
-	d_export_bitmap_resolution = QWidget().logicalDpiX();
+	d_export_vector_resolution = QWidget().logicalDpiX();
+	d_export_bitmap_resolution = d_export_vector_resolution;
 	d_export_color = true;
 	d_3D_export_text_mode = 0; //VectorWriter::PIXEL
 	d_3D_export_sort = 1; //VectorWriter::SIMPLESORT
@@ -4627,7 +4627,7 @@ void ApplicationWindow::readSettings()
 	d_image_export_filter = settings.value("/ImageFileTypeFilter", ".png").toString();
 	d_export_transparency = settings.value("/ExportTransparency", false).toBool();
 	d_export_quality = settings.value("/ImageQuality", 100).toInt();
-	d_export_vector_resolution = settings.value("/Resolution", QPrinter().resolution()).toInt();
+	d_export_vector_resolution = settings.value("/Resolution", d_export_vector_resolution).toInt();
 	d_export_color = settings.value("/ExportColor", true).toBool();
 	d_3D_export_text_mode = settings.value("/3DTextMode", d_3D_export_text_mode).toInt();
 	d_3D_export_sort = settings.value("/3DSortMode", d_3D_export_sort).toInt();
@@ -5100,7 +5100,8 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 			if (selected_filter.contains(".svg"))
 				plot2D->exportSVG(file_name);
 			else
-				plot2D->exportVector(file_name, ied->vectorResolution(), ied->color());
+				plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
+									ied->customExportSize(), ied->sizeUnit());
 		}
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
@@ -5153,7 +5154,7 @@ void ApplicationWindow::exportLayer()
 	file.close();
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
-		g->exportVector(file_name, ied->vectorResolution(), ied->color());
+		g->exportVector(file_name, ied->vectorResolution(), ied->color(), ied->customExportSize(), ied->sizeUnit());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name);
     /*else if (selected_filter.contains(".emf"))
@@ -5261,7 +5262,8 @@ void ApplicationWindow::exportAllGraphs()
 				if (file_suffix.contains(".svg"))
 					plot2D->exportSVG(file_name);
 				else
-					plot2D->exportVector(file_name, ied->vectorResolution(), ied->color());
+					plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
+										ied->customExportSize(), ied->sizeUnit());
 			}
 		} else {
 			QList<QByteArray> list = QImageWriter::supportedImageFormats();

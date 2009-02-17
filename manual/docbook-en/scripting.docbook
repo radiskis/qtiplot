@@ -1960,16 +1960,11 @@ l.export(fileName)
 This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
-l.exportVector(fileName, resolution = 96, color = True)
+l.exportVector(fileName, dpi = 96, color = True, size = QSizeF(), unit = Frame.Pixel)
 l.exportImage(filename, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel)</programlisting>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
-.eps, .ps, .pdf. By setting the <varname>keepAspect</varname> variable to True (the default), the
-width/height ratio of the plot will be maintained in the exported image. This has the drawback that sometimes
-there are some visible white margins around the plot. In order to avoid the white borders you can set this option to False
-and in this case the plot will be scaled to fill the whole area of the <varname>pageSize</varname>,
-thus modifing its aspect. By default QtiPlot chooses a <varname>pageSize</varname> which fits best the
-real size of the plot, but you can specify a standard output page size, like: QtGui.QPrinter.A4, QtGui.QPrinter.A5, etc...</para>
+.eps, .ps, .pdf.</para>
 
 <para>The function <varname>exportImage</varname> can be used if you need to export to
 one of the Qt supported bitmap image formats (.bmp, .png, .jpg, etc...). The <varname>transparent</varname>

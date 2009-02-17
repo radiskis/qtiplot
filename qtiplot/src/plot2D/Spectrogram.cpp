@@ -139,9 +139,9 @@ setAxis(xAxis, yAxis);
 // Next we switch axes scales
 QwtScaleDiv *scDiv = plot->axisScaleDiv(oldMainAxis);
 if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
-	plot->setAxisScale(xAxis, scDiv->lBound(), scDiv->hBound());
+	plot->setAxisScale(xAxis, scDiv->lowerBound(), scDiv->upperBound());
 else if (axis == QwtPlot::yLeft || color_axis == QwtPlot::yRight)
-	plot->setAxisScale(yAxis, scDiv->lBound(), scDiv->hBound());
+	plot->setAxisScale(yAxis, scDiv->lowerBound(), scDiv->upperBound());
 
 colorAxis = plot->axisWidget(color_axis);
 plot->setAxisScale(color_axis, data().range().minValue(), data().range().maxValue());

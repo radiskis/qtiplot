@@ -55,7 +55,7 @@ private:
 	//! Pointer to the window to be exported.
 	MdiSubWindow *d_window;
 	//! Container widget for all advanced options.
-	QStackedWidget *d_advanced_options;
+	QWidget *d_advanced_options;
 	// vector format options
 	//! Container widget for all options available for vector formats.
 	QGroupBox *d_vector_options;

@@ -31,6 +31,7 @@
 #include <ApplicationWindow.h>
 #include <MdiSubWindow.h>
 #include <Graph3D.h>
+#include <MultiLayer.h>
 #include <DoubleSpinBox.h>
 
 #include <QStackedWidget>
@@ -88,24 +89,24 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 void ImageExportDialog::initAdvancedOptions()
 {
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	d_advanced_options = new QStackedWidget();
+	d_advanced_options = new QWidget();
+	QVBoxLayout *vert_layout = new QVBoxLayout(d_advanced_options);
 
 	d_vector_options = new QGroupBox();
 	QGridLayout *vector_layout = new QGridLayout(d_vector_options);
-	d_advanced_options->addWidget(d_vector_options);
 
 	QLabel *resLabel = new QLabel(tr("Resolution (DPI)"));
 	vector_layout->addWidget(resLabel, 1, 0);
 
 	d_vector_resolution = new QSpinBox();
-	d_vector_resolution->setRange(0, 1000);
+	d_vector_resolution->setRange(0, 10000);
 	d_vector_resolution->setValue(app->d_export_vector_resolution);
 	vector_layout->addWidget(d_vector_resolution, 1, 1);
 
 	d_color = new QCheckBox();
 	d_color->setText(tr("&Export in &color"));
 	d_color->setChecked(app->d_export_color);
-	vector_layout->addWidget(d_color, 2, 0);
+	vector_layout->addWidget(d_color, 2, 1);
 
 	QLabel *text3DLabel = new QLabel(tr("Export 3D texts as"));
 	vector_layout->addWidget(text3DLabel, 4, 0);
@@ -126,11 +127,11 @@ void ImageExportDialog::initAdvancedOptions()
 	d_3D_export_sort->setCurrentIndex(app->d_3D_export_sort);
 	vector_layout->addWidget(d_3D_export_sort, 5, 1);
 
-	d_raster_options = new QGroupBox();
-	QVBoxLayout *vert_raster_layout = new QVBoxLayout(d_raster_options);
+	d_vector_options->hide();
+	vert_layout->addWidget(d_vector_options);
 
-	QGridLayout *raster_layout = new QGridLayout();
-	d_advanced_options->addWidget(d_raster_options);
+	d_raster_options = new QGroupBox();
+	QGridLayout *raster_layout = new QGridLayout(d_raster_options);
 
 	raster_layout->addWidget(new QLabel(tr("Image quality")), 1, 0);
 	d_quality = new QSpinBox();
@@ -142,7 +143,7 @@ void ImageExportDialog::initAdvancedOptions()
 	raster_layout->addWidget(rasterResLabel, 2, 0);
 
 	d_bitmap_resolution = new QSpinBox();
-	d_bitmap_resolution->setRange(0, 1000);
+	d_bitmap_resolution->setRange(0, 10000);
 	d_bitmap_resolution->setValue(app->d_export_bitmap_resolution);
 	raster_layout->addWidget(d_bitmap_resolution, 2, 1);
 
@@ -151,7 +152,8 @@ void ImageExportDialog::initAdvancedOptions()
 	d_transparency->setChecked(app->d_export_transparency);
 	raster_layout->addWidget(d_transparency, 3, 1, 1, 2);
 
-	vert_raster_layout->addLayout(raster_layout);
+	d_raster_options->hide();
+	vert_layout->addWidget(d_raster_options);
 
 	QSizeF customSize = app->d_export_raster_size;
 
@@ -186,7 +188,7 @@ void ImageExportDialog::initAdvancedOptions()
 	heightBox->setValue(customSize.height());
 	size_layout->addWidget(heightBox, 2, 1);
 
-	vert_raster_layout->addWidget(d_custom_size_box);
+	vert_layout->addWidget(d_custom_size_box);
 
 	if (!d_window)
 		return;
@@ -207,6 +209,10 @@ void ImageExportDialog::initAdvancedOptions()
 
 void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 {
+	d_vector_options->hide();
+	d_raster_options->hide();
+	d_custom_size_box->hide();
+
 	/*if (filter.contains("*.emf")) {
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
@@ -216,7 +222,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 	if (filter.contains("*.svg")){
 		if (qobject_cast<Graph3D *> (d_window)){
 			d_extension_toggle->setEnabled(true);
-			d_advanced_options->setCurrentIndex(0);
+			d_vector_options->show();
 		} else {
 			d_extension_toggle->setChecked(false);
 			d_extension_toggle->setEnabled(false);
@@ -226,10 +232,14 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 
 	d_extension_toggle->setEnabled(true);
 	if (filter.contains("*.eps") || filter.contains("*.ps") ||
-        filter.contains("*.pdf") || filter.contains("*.pgf"))
-		d_advanced_options->setCurrentIndex(0);
-	else {
-		d_advanced_options->setCurrentIndex(1);
+        filter.contains("*.pdf") || filter.contains("*.pgf")){
+		d_vector_options->show();
+		if (qobject_cast<MultiLayer *> (d_window))
+			d_custom_size_box->show();
+	} else {
+		d_raster_options->show();
+		if (!qobject_cast<Matrix *> (d_window))
+			d_custom_size_box->show();
 		d_transparency->setEnabled(filter.contains("*.tif") || filter.contains("*.tiff") || filter.contains("*.png") || filter.contains("*.xpm"));
 	}
 }

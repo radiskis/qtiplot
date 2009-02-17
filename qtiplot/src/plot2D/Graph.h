@@ -297,9 +297,12 @@ class Graph: public QwtPlot
 #ifdef EMF_OUTPUT
 		void exportEMF(const QString& fname);
 #endif
-		void exportVector(const QString& fileName, int res = 0, bool color = true);
+		void exportVector(const QString& fileName, int res = 0, bool color = true,
+						const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
 						 int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
+
+		static QSize customPrintSize(const QSizeF& customSize, int unit, int dpi);
 		//@}
 
 		void updatePlot();
