@@ -10807,7 +10807,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot - Erreur lors de l&apos;exportation</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3444"/>
+        <location filename="src/plot2D/Graph.cpp" line="3452"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Erreur lors de l&apos;ouverture du fichier</translation>
     </message>
@@ -10822,7 +10822,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot - Avertissement lors de la sélection de pixel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4621"/>
+        <location filename="src/plot2D/Graph.cpp" line="4629"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertissement</translation>
     </message>
@@ -10842,22 +10842,22 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">&amp;Couper</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3921"/>
+        <location filename="src/plot2D/Graph.cpp" line="3929"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copier</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3923"/>
+        <location filename="src/plot2D/Graph.cpp" line="3931"/>
         <source>&amp;Delete</source>
         <translation>&amp;Supprimer</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3948"/>
+        <location filename="src/plot2D/Graph.cpp" line="3956"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Propriétés...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3933"/>
+        <location filename="src/plot2D/Graph.cpp" line="3941"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Echelle automatique</translation>
     </message>
@@ -10867,17 +10867,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3935"/>
+        <location filename="src/plot2D/Graph.cpp" line="3943"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Cacher les axes</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3937"/>
+        <location filename="src/plot2D/Graph.cpp" line="3945"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Afficher la grille</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3947"/>
+        <location filename="src/plot2D/Graph.cpp" line="3955"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Echelle...</translation>
     </message>
@@ -11029,17 +11029,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Ajustement polynomial de </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4621"/>
+        <location filename="src/plot2D/Graph.cpp" line="4629"/>
         <source>There are no curves available on this plot!</source>
         <translation>Il n&apos;y a pas de courbes disponibles sur ce graphe !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4631"/>
+        <location filename="src/plot2D/Graph.cpp" line="4639"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Erreur</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4632"/>
+        <location filename="src/plot2D/Graph.cpp" line="4640"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Il n&apos;y a pas de courbes avec plus de 2 points sur ce graphe. Opération annulée !</translation>
     </message>
@@ -11054,22 +11054,22 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Pic %1 sélectionné ! Cliquez pour sélectionner un point et double-cliquez (ou pressez &apos;Entrée&apos;) pour fixer la position du prochain pic !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3857"/>
+        <location filename="src/plot2D/Graph.cpp" line="3865"/>
         <source>The columns</source>
         <translation>Les colonnes</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3857"/>
+        <location filename="src/plot2D/Graph.cpp" line="3865"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>sont vides et ne seront pas ajoutées au graphe !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3861"/>
+        <location filename="src/plot2D/Graph.cpp" line="3869"/>
         <source>The column</source>
         <translation>La colonne</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3861"/>
+        <location filename="src/plot2D/Graph.cpp" line="3869"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>est vide et ne sera pas ajoutée au graphe !</translation>
     </message>
@@ -11254,7 +11254,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Droite</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1728"/>
+        <location filename="src/plot2D/Graph.cpp" line="1736"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
@@ -11274,7 +11274,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot - Déplacer l&apos;erreur de point</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3445"/>
+        <location filename="src/plot2D/Graph.cpp" line="3453"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Fichier image : &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; n&apos;existe plus !</translation>
     </message>
@@ -11284,7 +11284,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot - Erreur de la fonction d&apos;entrée</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3933"/>
+        <location filename="src/plot2D/Graph.cpp" line="3941"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -11384,22 +11384,22 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">moyenne lissée de </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1433"/>
+        <location filename="src/plot2D/Graph.cpp" line="1441"/>
         <source>Please provide a valid file name!</source>
         <translation>Veuillez donner un nom de fichier valide !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1389"/>
+        <location filename="src/plot2D/Graph.cpp" line="1397"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fichier non supporté, opération annulée !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3632"/>
+        <location filename="src/plot2D/Graph.cpp" line="3640"/>
         <source>Data set generated from curve</source>
         <translation>Données générées à partir de la courbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3633"/>
+        <location filename="src/plot2D/Graph.cpp" line="3641"/>
         <source>Table</source>
         <translation>Table</translation>
     </message>
@@ -11424,12 +11424,12 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>Étiquette de l&apos;axe X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3920"/>
+        <location filename="src/plot2D/Graph.cpp" line="3928"/>
         <source>Cu&amp;t</source>
         <translation>Co&amp;uper</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3922"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>C&amp;lear</source>
         <translation>Supprimer</translation>
     </message>
@@ -11658,11 +11658,6 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>tri BSP</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="160"/>
-        <source>Custom size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="166"/>
         <source>inch</source>
         <translation type="unfinished">pouce</translation>
@@ -11701,6 +11696,11 @@ Les codes spéciaux suivant peuvent être utilisés :
         <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="184"/>
         <source>Height</source>
         <translation type="unfinished">Hauteur</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="160"/>
+        <source>Custom print size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

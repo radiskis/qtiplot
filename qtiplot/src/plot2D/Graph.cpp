@@ -1356,10 +1356,19 @@ QPixmap Graph::graphPixmap(const QSize& size)
 		return pixmap;
 	}
 
+	QRect r = rect();
+	QRect br = boundingRect();
+	if (br.width() != width() || br.height() != height()){
+		double wfactor = (double)br.width()/(double)width();
+		double hfactor = (double)br.height()/(double)height();
+		r.setSize(QSize(qRound(size.width()/wfactor), qRound(size.height()/hfactor)));
+	} else
+		r.setSize(size);
+
 	QPixmap pixmap(size);
 	pixmap.fill(Qt::white);
 	QPainter p(&pixmap);
-	print(&p, QRect(QPoint(0, 0), size));
+	print(&p, r);
 	p.end();
 
 	return pixmap;
@@ -1395,7 +1404,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	if (!dpi)
 		dpi = logicalDpiX();
 
-	QSize size = this->size();
+	QSize size = QSize();
 	if (customSize.isValid())
 		size = customPrintSize(customSize, unit, dpi);
 
@@ -1450,9 +1459,9 @@ void Graph::exportVector(const QString& fileName, int res, bool color, const QSi
 			printer.setResolution(res);
 		printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
 
-		if (br.width() != r.width() || br.height() != r.height()){
-			double wfactor = (double)br.width()/(double)r.width();
-			double hfactor = (double)br.height()/(double)r.height();
+		if (br.width() != width() || br.height() != height()){
+			double wfactor = (double)br.width()/(double)width();
+			double hfactor = (double)br.height()/(double)height();
 			r.setSize(QSize(qRound(size.width()/(wfactor*1.3)),
 						qRound(size.height()/hfactor)));
 		} else
@@ -1464,7 +1473,7 @@ void Graph::exportVector(const QString& fileName, int res, bool color, const QSi
 			// LegendWidget size doesn't increase linearly with resolution.
 			// The extra width multiplication factor bellow accounts for this.
 			// We could calculate it precisely, but it's quite complicated...
-			printer.setPaperSize (QSizeF(br.width()*wfactor*1.07, br.height()*hfactor), QPrinter::DevicePixel);
+			printer.setPaperSize (QSizeF(br.width()*wfactor*1.05, br.height()*hfactor), QPrinter::DevicePixel);
 			r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
 	} else
 			printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
@@ -5698,6 +5707,9 @@ QRect Graph::boundingRect()
 
 QSize Graph::customPrintSize(const QSizeF& customSize, int unit, int dpi)
 {
+	if (!customSize.isValid())
+		return QSize();
+
 	QSize size = QSize();
 	switch(unit){
 		case FrameWidget::Pixel:

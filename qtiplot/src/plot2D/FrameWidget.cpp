@@ -222,14 +222,13 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 			d += 1;
 
 		QPainterPath contents;
-		QRect r = rect.adjusted(lw, lw, -d*factorX, -d*factorY);
+		QRect r = rect.adjusted(lw, lw, -qRound(d*factorX), -qRound(d*factorY));
 		contents.addRect(r);
 
 		QPainterPath shadow;
-		shadow.addRect(rect.adjusted(d_shadow_width*factorX, d_shadow_width*factorY, 0, 0));
+		shadow.addRect(rect.adjusted(qRound(d_shadow_width*factorX), qRound(d_shadow_width*factorY), 0, 0));
 
 		p->fillPath(shadow.subtracted(contents), Qt::black);//draw shadow
-
 		p->fillRect(r, palette().color(QPalette::Window));
 		p->setPen(d_frame_pen);
 		if (d_brush.style() != Qt::NoBrush)
