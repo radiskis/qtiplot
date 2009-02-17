@@ -150,7 +150,8 @@ public slots:
 					int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
 	void exportSVG(const QString& fname);
     void exportPDF(const QString& fname);
-	void exportVector(const QString& fileName, int res = 0, bool color = true);
+	void exportVector(const QString& fileName, int res = 0, bool color = true,
+					const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
 
 	void copyAllLayers();
 	void print();

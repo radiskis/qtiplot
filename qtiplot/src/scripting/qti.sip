@@ -820,8 +820,9 @@ public:
   void replot();
 
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
-				int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
-  void exportVector(const QString&, int = 0, bool = true);
+				int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
+  void exportVector(const QString&, int = 0, bool = true,
+				const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
   void exportToFile(const QString& fileName) /PyName=export/;
 
   void enableAutoscaling(bool = true);
@@ -887,8 +888,9 @@ public:
 
   void exportToFile(const QString& fileName) /PyName=export/;
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
-		int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
-  void exportVector(const QString&, int = 0, bool = true);
+		int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
+  void exportVector(const QString&, int = 0, bool = true,
+		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
 
 private:
   MultiLayer(const MultiLayer&);

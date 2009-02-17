@@ -2417,8 +2417,8 @@ void AxesDialog::updateScale()
 
     int a = mapToQwtAxis(axis);
     const QwtScaleDiv *scDiv = d_graph->axisScaleDiv(a);
-    double start = QMIN(scDiv->lBound(), scDiv->hBound());
-    double end = QMAX(scDiv->lBound(), scDiv->hBound());
+    double start = QMIN(scDiv->lowerBound(), scDiv->upperBound());
+    double end = QMAX(scDiv->lowerBound(), scDiv->upperBound());
 
     ScaleDraw::ScaleType type = d_graph->axisType(a);
 	if (type == ScaleDraw::Date){

@@ -1119,7 +1119,7 @@ void Graph::initScaleLimits(int style)
 		ScaleDraw *scaleDraw = (ScaleDraw *)axisScaleDraw(axis);
 		if (scaleDraw && scaleDraw->scaleType() == ScaleDraw::Text){
 			QwtScaleDiv *scaleDiv = axisScaleDiv (axis);
-			setAxisScale (axis, scaleDiv->lBound(), scaleDiv->hBound(), 1.0);
+			setAxisScale (axis, scaleDiv->lowerBound(), scaleDiv->upperBound(), 1.0);
 			setAxisMaxMinor (axis, 2);
 			scaleDraw->enableComponent(QwtAbstractScaleDraw::Backbone, drawAxesBackbone);
 			if (style == VerticalBars)
@@ -1158,8 +1158,8 @@ void Graph::initScaleLimits(int style)
 	maxSymbolSize *= 0.5;
 
 	QwtScaleDiv *div = axisScaleDiv(QwtPlot::xBottom);
-	double start = div->lBound();
-	double end = div->hBound();
+	double start = div->lowerBound();
+	double end = div->upperBound();
 	QwtValueList majTicksLst = div->ticks(QwtScaleDiv::MajorTick);
 	int ticks = majTicksLst.size();
 	double step = fabs(end - start)/(double)(ticks - 1.0);
@@ -1170,18 +1170,18 @@ void Graph::initScaleLimits(int style)
     double x_left = xMap.xTransform(intv[QwtPlot::xBottom].minValue());
 
 	if (start >= xMap.invTransform(x_left - maxSymbolSize))
-		start = div->lBound() - step;
+		start = div->lowerBound() - step;
 
 	double x_right = xMap.xTransform(intv[QwtPlot::xBottom].maxValue());
 	if (end <= xMap.invTransform(x_right + maxSymbolSize))
-		end = div->hBound() + step;
+		end = div->upperBound() + step;
 
 	setAxisScale(QwtPlot::xBottom, start, end, step);
 	setAxisScale(QwtPlot::xTop, start, end, step);
 
 	div = axisScaleDiv(QwtPlot::yLeft);
-	start = div->lBound();
-	end = div->hBound();
+	start = div->lowerBound();
+	end = div->upperBound();
 	majTicksLst = div->ticks(QwtScaleDiv::MajorTick);
 	ticks = majTicksLst.size();
 	step = fabs(end - start)/(double)(ticks - 1.0);
@@ -1191,11 +1191,11 @@ void Graph::initScaleLimits(int style)
 	const QwtScaleMap &yMap = canvasMap(QwtPlot::yLeft);
     double y_bottom = yMap.xTransform(intv[QwtPlot::yLeft].minValue());
 	if (start >= yMap.invTransform(y_bottom + maxSymbolSize))
-		start = div->lBound() - step;
+		start = div->lowerBound() - step;
 
 	double y_top = yMap.xTransform(intv[QwtPlot::yLeft].maxValue());
 	if (end <= yMap.invTransform(y_top - maxSymbolSize))
-		end = div->hBound() + step;
+		end = div->upperBound() + step;
 
 	setAxisScale(QwtPlot::yLeft, start, end, step);
 	setAxisScale(QwtPlot::yRight, start, end, step);
@@ -1396,25 +1396,8 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 		dpi = logicalDpiX();
 
 	QSize size = this->size();
-	if (customSize.isValid()){
-		switch(unit){
-			case FrameWidget::Pixel:
-				size = customSize.toSize();
-			break;
-			case FrameWidget::Inch:
-				size = QSize((qRound)(customSize.width()*dpi), (qRound)(customSize.height()*dpi));
-			break;
-			case FrameWidget::Millimeter:
-				size = QSize((qRound)(customSize.width()*dpi/25.4), (qRound)(customSize.height()*dpi/25.4));
-			break;
-			case FrameWidget::Centimeter:
-				size = QSize((qRound)(customSize.width()*dpi/2.54), (qRound)(customSize.height()*dpi/2.54));
-			break;
-			case FrameWidget::Point:
-				size = QSize((qRound)(customSize.width()*dpi/72.0), (qRound)(customSize.height()*dpi/72.0));
-			break;
-		}
-	}
+	if (customSize.isValid())
+		size = customPrintSize(customSize, unit, dpi);
 
 	QPixmap pic = graphPixmap(size);
 	QImage image = pic.toImage();
@@ -1444,7 +1427,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	image.save(fileName, 0, quality);
 }
 
-void Graph::exportVector(const QString& fileName, int res, bool color)
+void Graph::exportVector(const QString& fileName, int res, bool color, const QSizeF& customSize, int unit)
 {
 	if (fileName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
@@ -1461,17 +1444,30 @@ void Graph::exportVector(const QString& fileName, int res, bool color)
 	QRect r = rect();
 	QRect br = boundingRect();
 
-	if (res && res != printer.resolution()){
-		double wfactor = (double)res/(double)logicalDpiX();
-		double hfactor = (double)res/(double)logicalDpiY();
-		printer.setResolution(res);
-		// LegendWidget size doesn't increase linearly with resolution.
-		// The extra width multiplication factor accounts for this.
-		// We could calculate it precisely, but it's quite complicated...
-		printer.setPaperSize (QSizeF(br.width()*wfactor*1.07, br.height()*hfactor), QPrinter::DevicePixel);
-		r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
+	if (customSize.isValid()){
+		QSize size = customPrintSize(customSize, unit, res);
+		if (res && res != printer.resolution())
+			printer.setResolution(res);
+		printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
+
+		if (br.width() != r.width() || br.height() != r.height()){
+			double wfactor = (double)br.width()/(double)r.width();
+			double hfactor = (double)br.height()/(double)r.height();
+			r.setSize(QSize(qRound(size.width()/(wfactor*1.3)),
+						qRound(size.height()/hfactor)));
+		} else
+			r.setSize(size);
+	} else if (res && res != printer.resolution()){
+			double wfactor = (double)res/(double)logicalDpiX();
+			double hfactor = (double)res/(double)logicalDpiY();
+			printer.setResolution(res);
+			// LegendWidget size doesn't increase linearly with resolution.
+			// The extra width multiplication factor bellow accounts for this.
+			// We could calculate it precisely, but it's quite complicated...
+			printer.setPaperSize (QSizeF(br.width()*wfactor*1.07, br.height()*hfactor), QPrinter::DevicePixel);
+			r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
 	} else
-		printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
+			printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
 
     printer.setOutputFileName(fileName);
     if (fileName.contains(".eps"))
@@ -1980,8 +1976,8 @@ QString Graph::saveScale()
 		const QwtScaleDiv *scDiv = axisScaleDiv(i);
 		QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 
-		s += QString::number(QMIN(scDiv->lBound(), scDiv->hBound()), 'g', 15)+"\t";
-		s += QString::number(QMAX(scDiv->lBound(), scDiv->hBound()), 'g', 15)+"\t";
+		s += QString::number(QMIN(scDiv->lowerBound(), scDiv->upperBound()), 'g', 15)+"\t";
+		s += QString::number(QMAX(scDiv->lowerBound(), scDiv->upperBound()), 'g', 15)+"\t";
 		s += QString::number(d_user_step[i], 'g', 15)+"\t";
 		s += QString::number(axisMaxMajor(i))+"\t";
 		s += QString::number(axisMaxMinor(i))+"\t";
@@ -4089,8 +4085,8 @@ void Graph::copy(Graph* g)
         double step = g->axisStep(i);
 		d_user_step[i] = step;
 		const QwtScaleDiv *sd = g->axisScaleDiv(i);
-		QwtScaleDiv div = sc_engine->divideScale (QMIN(sd->lBound(), sd->hBound()),
-				QMAX(sd->lBound(), sd->hBound()), majorTicks, minorTicks, step);
+		QwtScaleDiv div = sc_engine->divideScale (QMIN(sd->lowerBound(), sd->upperBound()),
+				QMAX(sd->lowerBound(), sd->upperBound()), majorTicks, minorTicks, step);
 
 		if (se->testAttribute(QwtScaleEngine::Inverted))
 			div.invert();
@@ -5562,7 +5558,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
         map[axisId].setTransformation(axisScaleEngine(axisId)->transformation());
 
         const QwtScaleDiv &scaleDiv = *axisScaleDiv(axisId);
-        map[axisId].setScaleInterval(scaleDiv.lBound(), scaleDiv.hBound());
+        map[axisId].setScaleInterval(scaleDiv.lowerBound(), scaleDiv.upperBound());
 
         double from, to;
         if ( axisEnabled(axisId) ){
@@ -5698,4 +5694,27 @@ QRect Graph::boundingRect()
 		r = r.united(fw->geometry());
 	}
 	return r;
+}
+
+QSize Graph::customPrintSize(const QSizeF& customSize, int unit, int dpi)
+{
+	QSize size = QSize();
+	switch(unit){
+		case FrameWidget::Pixel:
+			size = customSize.toSize();
+		break;
+		case FrameWidget::Inch:
+			size = QSize((ceil)(customSize.width()*dpi), (ceil)(customSize.height()*dpi));
+		break;
+		case FrameWidget::Millimeter:
+			size = QSize((ceil)(customSize.width()*dpi/25.4), (ceil)(customSize.height()*dpi/25.4));
+		break;
+		case FrameWidget::Centimeter:
+			size = QSize((ceil)(customSize.width()*dpi/2.54), (ceil)(customSize.height()*dpi/2.54));
+		break;
+		case FrameWidget::Point:
+			size = QSize((ceil)(customSize.width()*dpi/72.0), (ceil)(customSize.height()*dpi/72.0));
+		break;
+	}
+	return size;
 }

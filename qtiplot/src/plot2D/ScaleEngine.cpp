@@ -264,7 +264,7 @@ void ScaleEngine::clone(const ScaleEngine *engine)
     d_break_width = engine->breakWidth();
 	d_break_decoration = engine->hasBreakDecoration();
 	setAttributes(engine->attributes());
-    setMargins(engine->lowMargin(), engine->highMargin());
+    setMargins(engine->lowerMargin(), engine->upperMargin());
 }
 
 QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
@@ -346,7 +346,7 @@ void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &st
 
 		engine->setAttributes(attributes());
     	engine->setReference(reference());
-    	engine->setMargins(lowMargin(), highMargin());
+    	engine->setMargins(lowerMargin(), upperMargin());
 		engine->autoScale(maxNumSteps, x1, x2, stepSize);
 		delete engine;
 	} else {

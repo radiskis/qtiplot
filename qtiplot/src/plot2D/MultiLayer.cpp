@@ -657,25 +657,8 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 		dpi = logicalDpiX();
 
 	QSize size = d_canvas->size();
-	if (customSize.isValid()){
-		switch(unit){
-			case FrameWidget::Pixel:
-				size = customSize.toSize();
-			break;
-			case FrameWidget::Inch:
-				size = QSize((qRound)(customSize.width()*dpi), (qRound)(customSize.height()*dpi));
-			break;
-			case FrameWidget::Millimeter:
-				size = QSize((qRound)(customSize.width()*dpi/25.4), (qRound)(customSize.height()*dpi/25.4));
-			break;
-			case FrameWidget::Centimeter:
-				size = QSize((qRound)(customSize.width()*dpi/2.54), (qRound)(customSize.height()*dpi/2.54));
-			break;
-			case FrameWidget::Point:
-				size = QSize((qRound)(customSize.width()*dpi/72.0), (qRound)(customSize.height()*dpi/72.0));
-			break;
-		}
-	}
+	if (customSize.isValid())
+		size = Graph::customPrintSize(customSize, unit, dpi);
 
 	QPixmap pic = canvasPixmap(size);
 	QImage image = pic.toImage();
@@ -710,7 +693,7 @@ void MultiLayer::exportPDF(const QString& fname)
 	exportVector(fname);
 }
 
-void MultiLayer::exportVector(const QString& fileName, int res, bool color)
+void MultiLayer::exportVector(const QString& fileName, int res, bool color, const QSizeF& customSize, int unit)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
@@ -739,7 +722,21 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color)
 		printer.setColorMode(QPrinter::GrayScale);
 
 	printer.setOrientation(QPrinter::Portrait);
-	if (res && res != printer.resolution()){
+	if (customSize.isValid()){
+		QSize size = Graph::customPrintSize(customSize, unit, res);
+		if (res && res != printer.resolution())
+			printer.setResolution(res);
+		printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
+		QPainter paint(&printer);
+		foreach (Graph *g, graphsList){
+			QRect r = g->geometry();
+			double wfactor = (double)size.width()/(double)d_canvas->width();
+			double hfactor = (double)size.height()/(double)d_canvas->height();
+			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
+			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
+        	g->print(&paint, r);
+		}
+	} else if (res && res != printer.resolution()){
 		double wfactor = (double)res/(double)logicalDpiX();
 		double hfactor = (double)res/(double)logicalDpiY();
 		printer.setResolution(res);
