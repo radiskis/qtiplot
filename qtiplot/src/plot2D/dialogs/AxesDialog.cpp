@@ -2573,6 +2573,10 @@ void AxesDialog::setTicksType(int)
 void AxesDialog::updateTickLabelsList(bool on)
 {
 	int axis = mapToQwtAxisId();
+
+	boxFormat->setEnabled(on && boxShowAxis->isChecked());
+	boxColName->setEnabled(on && boxShowAxis->isChecked());
+
 	if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
 		boxAngle->setEnabled(on);
 
@@ -2583,7 +2587,7 @@ void AxesDialog::updateTickLabelsList(bool on)
 
 	if (tickLabelsOn[axis] == QString::number(on))
 		return;
-	tickLabelsOn[axis]=QString::number(on);
+	tickLabelsOn[axis] = QString::number(on);
 
     QString formatInfo = QString::null;
 	int type = boxAxisType->currentIndex();
