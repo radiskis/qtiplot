@@ -5042,6 +5042,10 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	int y1 = rect.top();
 	int y2 = rect.bottom();
 
+	double factor = (double)painter->device()->logicalDpiX()/(double)logicalDpiX();
+	int maj_tick_length = qRound(d_maj_tick_length*factor);
+	int min_tick_length = qRound(d_min_tick_length*factor);
+
 	QPalette pal = axisWidget(axis)->palette();
 	QColor color = pal.color(QPalette::Active, QColorGroup::Foreground);
 
@@ -5067,18 +5071,18 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	{
 		case QwtPlot::yLeft:
 			x = x1;
-			low = y1 + d_maj_tick_length;
-			high = y2 - d_maj_tick_length;
+			low = y1 + maj_tick_length;
+			high = y2 - maj_tick_length;
 			if (min){
 				for (j = 0; j < minTicks; j++){
 					y = map.transform(minTickList[j]);
 					if (y>low && y< high)
-						QwtPainter::drawLine(painter, x, y, x+d_min_tick_length, y);
+						QwtPainter::drawLine(painter, x, y, x+min_tick_length, y);
 				}
 				for (j = 0; j < medTicks; j++){
 					y = map.transform(medTickList[j]);
 					if (y>low && y< high)
-						QwtPainter::drawLine(painter, x, y, x+d_min_tick_length, y);
+						QwtPainter::drawLine(painter, x, y, x+min_tick_length, y);
 				}
 			}
 
@@ -5088,7 +5092,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 					if ((y > low && y < high) ||
 						(y > high && !axisEnabled (QwtPlot::xBottom) && !clw) ||
 						(y < low && !axisEnabled(QwtPlot::xTop) && !clw))
-						QwtPainter::drawLine(painter, x, y, x + d_maj_tick_length, y);
+						QwtPainter::drawLine(painter, x, y, x + maj_tick_length, y);
 				}
 			}
 			break;
@@ -5096,18 +5100,18 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 		case QwtPlot::yRight:
 			{
 				x = x2;
-				low = y1 + d_maj_tick_length;
-				high = y2 - d_maj_tick_length;
+				low = y1 + maj_tick_length;
+				high = y2 - maj_tick_length;
 				if (min){
 					for (j = 0; j < minTicks; j++){
 						y = map.transform(minTickList[j]);
 						if (y>low && y< high)
-							QwtPainter::drawLine(painter, x + 1, y, x - d_min_tick_length, y);
+							QwtPainter::drawLine(painter, x + 1, y, x - min_tick_length, y);
 					}
 					for (j = 0; j < medTicks; j++){
 						y = map.transform(medTickList[j]);
 						if (y>low && y< high)
-							QwtPainter::drawLine(painter, x + 1, y, x - d_min_tick_length, y);
+							QwtPainter::drawLine(painter, x + 1, y, x - min_tick_length, y);
 					}
 				}
 
@@ -5117,7 +5121,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 						if ((y > low && y < high) ||
 						(y > high && !axisEnabled (QwtPlot::xBottom) && !clw) ||
 						(y < low && !axisEnabled(QwtPlot::xTop) && !clw))
-							QwtPainter::drawLine(painter, x + 1, y, x - d_maj_tick_length, y);
+							QwtPainter::drawLine(painter, x + 1, y, x - maj_tick_length, y);
 					}
 				}
 			}
@@ -5125,18 +5129,18 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 
 		case QwtPlot::xBottom:
 			y = y2;
-			low = x1 + d_maj_tick_length;
-			high = x2 - d_maj_tick_length;
+			low = x1 + maj_tick_length;
+			high = x2 - maj_tick_length;
 			if (min){
 				for (j = 0; j < minTicks; j++){
 					x = map.transform(minTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y+1, x, y-d_min_tick_length);
+						QwtPainter::drawLine(painter, x, y+1, x, y-min_tick_length);
 				}
 				for (j = 0; j < medTicks; j++){
 					x = map.transform(medTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y+1, x, y-d_min_tick_length);
+						QwtPainter::drawLine(painter, x, y+1, x, y-min_tick_length);
 				}
 			}
 
@@ -5146,26 +5150,26 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 					if ((x > low && x < high) ||
 						(x > high && !axisEnabled(QwtPlot::yRight) && !clw) ||
 						(x < low && !axisEnabled(QwtPlot::yLeft) && !clw))
-						QwtPainter::drawLine(painter, x, y + 1, x, y - d_maj_tick_length);
+						QwtPainter::drawLine(painter, x, y + 1, x, y - maj_tick_length);
 				}
 			}
 			break;
 
 		case QwtPlot::xTop:
 			y = y1;
-			low = x1 + d_maj_tick_length;
-			high = x2 - d_maj_tick_length;
+			low = x1 + maj_tick_length;
+			high = x2 - maj_tick_length;
 
 			if (min){
 				for (j = 0; j < minTicks; j++){
 					x = map.transform(minTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y, x, y + d_min_tick_length);
+						QwtPainter::drawLine(painter, x, y, x, y + min_tick_length);
 				}
 				for (j = 0; j < medTicks; j++){
 					x = map.transform(medTickList[j]);
 					if (x>low && x<high)
-						QwtPainter::drawLine(painter, x, y, x, y + d_min_tick_length);
+						QwtPainter::drawLine(painter, x, y, x, y + min_tick_length);
 				}
 			}
 
@@ -5175,7 +5179,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 					if ((x > low && x < high) ||
 						(x > high && !axisEnabled(QwtPlot::yRight) && !clw) ||
 						(x < low && !axisEnabled(QwtPlot::yLeft) && !clw))
-						QwtPainter::drawLine(painter, x, y, x, y + d_maj_tick_length);
+						QwtPainter::drawLine(painter, x, y, x, y + maj_tick_length);
 				}
 			}
 			break;

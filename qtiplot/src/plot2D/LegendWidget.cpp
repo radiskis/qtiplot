@@ -96,7 +96,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
 	// calculate resolution factor
-	double factor = (double)painter->paintEngine()->paintDevice()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
 	// save screen geometry parameters
 	int space = h_space;
 	int left = left_margin;
@@ -413,9 +413,8 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 	}
 
 	if (d_frame == Shadow){
-		QPaintDevice *pd = p->paintEngine()->paintDevice();
-		width += qRound(d_shadow_width*pd->logicalDpiX()/(double)plot()->logicalDpiX());
-		height += qRound(d_shadow_width*pd->logicalDpiY()/(double)plot()->logicalDpiY());
+		width += qRound(d_shadow_width*p->device()->logicalDpiX()/(double)plot()->logicalDpiX());
+		height += qRound(d_shadow_width*p->device()->logicalDpiY()/(double)plot()->logicalDpiY());
 	}
 
 	return heights;
