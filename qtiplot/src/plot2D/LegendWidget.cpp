@@ -258,23 +258,23 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 			curveSymbol = true;
 			int pos = s.indexOf("\\l(", 0);
 			if (pos >= 0){
-                QwtText aux(parse(s.left(pos)));
-                aux.setFont(d_text->font());
-                aux.setColor(d_text->color());
+				QwtText aux(parse(s.left(pos)));
+				aux.setFont(d_text->font());
+				aux.setColor(d_text->color());
 				aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
 
 				QSize size = textSize(p, aux);
-                QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
-                aux.draw(p, tr);
-                w += size.width();
+				QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
+				aux.draw(p, tr);
+				w += size.width();
 
-                int pos1 = s.indexOf("(", pos);
-                int pos2 = s.indexOf(")", pos1);
+				int pos1 = s.indexOf("(", pos);
+				int pos2 = s.indexOf(")", pos1);
 				int point = -1;
 				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
 				if (!curve){
-                	s = s.right(s.length() - pos2 - 1);
-                    continue;
+					s = s.right(s.length() - pos2 - 1);
+					continue;
                 }
 
             	drawSymbol(curve, point, p, w, height[i], l);

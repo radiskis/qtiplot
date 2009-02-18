@@ -9203,12 +9203,12 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3929"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копировать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3941"/>
+        <location filename="src/plot2D/Graph.cpp" line="3942"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -9218,12 +9218,12 @@ The following special codes can be used:
         <translation type="obsolete">&amp;Вырезать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3640"/>
+        <location filename="src/plot2D/Graph.cpp" line="3641"/>
         <source>Data set generated from curve</source>
         <translation>Набор данных, полученных из кривой</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3931"/>
+        <location filename="src/plot2D/Graph.cpp" line="3932"/>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
     </message>
@@ -9233,97 +9233,97 @@ The following special codes can be used:
         <translation>F</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1397"/>
+        <location filename="src/plot2D/Graph.cpp" line="1398"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3943"/>
+        <location filename="src/plot2D/Graph.cpp" line="3944"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Скрыть оси</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3453"/>
+        <location filename="src/plot2D/Graph.cpp" line="3454"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Файл изображения: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;больше не существует!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1441"/>
+        <location filename="src/plot2D/Graph.cpp" line="1442"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3956"/>
+        <location filename="src/plot2D/Graph.cpp" line="3957"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Свойства...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4639"/>
+        <location filename="src/plot2D/Graph.cpp" line="4640"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3452"/>
+        <location filename="src/plot2D/Graph.cpp" line="3453"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4629"/>
+        <location filename="src/plot2D/Graph.cpp" line="4630"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3941"/>
+        <location filename="src/plot2D/Graph.cpp" line="3942"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Перерисовать и отобразить всё</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3955"/>
+        <location filename="src/plot2D/Graph.cpp" line="3956"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Масштаб...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3945"/>
+        <location filename="src/plot2D/Graph.cpp" line="3946"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Показать сетку</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3641"/>
+        <location filename="src/plot2D/Graph.cpp" line="3642"/>
         <source>Table</source>
         <translation>Таблица</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3869"/>
+        <location filename="src/plot2D/Graph.cpp" line="3870"/>
         <source>The column</source>
         <translation>Столбец</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3865"/>
+        <location filename="src/plot2D/Graph.cpp" line="3866"/>
         <source>The columns</source>
         <translation>Столбцы</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4629"/>
+        <location filename="src/plot2D/Graph.cpp" line="4630"/>
         <source>There are no curves available on this plot!</source>
         <translation>На данном графике нет доступных кривых!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4640"/>
+        <location filename="src/plot2D/Graph.cpp" line="4641"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>На данном графике нет кривых с более чем двумя точками. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1736"/>
+        <location filename="src/plot2D/Graph.cpp" line="1737"/>
         <source>Title</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3865"/>
+        <location filename="src/plot2D/Graph.cpp" line="3866"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>являются пустыми и их содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3869"/>
+        <location filename="src/plot2D/Graph.cpp" line="3870"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>является пустой и её содержимое не может быть отображено на графике!</translation>
     </message>
@@ -9348,12 +9348,12 @@ The following special codes can be used:
         <translation type="obsolete"> </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3928"/>
+        <location filename="src/plot2D/Graph.cpp" line="3929"/>
         <source>Cu&amp;t</source>
         <translation>В&amp;ырезать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3930"/>
+        <location filename="src/plot2D/Graph.cpp" line="3931"/>
         <source>C&amp;lear</source>
         <translation>Сте&amp;реть</translation>
     </message>

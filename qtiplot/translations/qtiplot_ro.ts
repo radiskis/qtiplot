@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ro">
-<defaultcodec></defaultcodec>
 <context>
     <name>AddWidgetTool</name>
     <message>
@@ -8570,7 +8569,7 @@ The following special codes can be used:
         <translation>Titlu axă X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4639"/>
+        <location filename="src/plot2D/Graph.cpp" line="4640"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
@@ -8580,122 +8579,122 @@ The following special codes can be used:
         <translation>Formatul axei nu a putut fi schimbat!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1441"/>
+        <location filename="src/plot2D/Graph.cpp" line="1442"/>
         <source>Please provide a valid file name!</source>
         <translation>Vă rugăm introduceţi un nume valid!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1397"/>
+        <location filename="src/plot2D/Graph.cpp" line="1398"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1736"/>
+        <location filename="src/plot2D/Graph.cpp" line="1737"/>
         <source>Title</source>
         <translation>Titlu</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3452"/>
+        <location filename="src/plot2D/Graph.cpp" line="3453"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Eroare de deschidere fişier</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3453"/>
+        <location filename="src/plot2D/Graph.cpp" line="3454"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Fişierul imagine: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; nu mai există!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3640"/>
+        <location filename="src/plot2D/Graph.cpp" line="3641"/>
         <source>Data set generated from curve</source>
         <translation>Set de date generat folosind curba</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3641"/>
+        <location filename="src/plot2D/Graph.cpp" line="3642"/>
         <source>Table</source>
         <translation>Tabel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4629"/>
+        <location filename="src/plot2D/Graph.cpp" line="4630"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertisment</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3865"/>
+        <location filename="src/plot2D/Graph.cpp" line="3866"/>
         <source>The columns</source>
         <translation>Coloanele</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3865"/>
+        <location filename="src/plot2D/Graph.cpp" line="3866"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>sunt vide şi nu vor fi adăugate graficului!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3869"/>
+        <location filename="src/plot2D/Graph.cpp" line="3870"/>
         <source>The column</source>
         <translation>Coloana</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3869"/>
+        <location filename="src/plot2D/Graph.cpp" line="3870"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>este vidă şi nu va fi adăugată graficului!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3928"/>
+        <location filename="src/plot2D/Graph.cpp" line="3929"/>
         <source>Cu&amp;t</source>
         <translation>&amp;Taie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3929"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copiază</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3930"/>
+        <location filename="src/plot2D/Graph.cpp" line="3931"/>
         <source>C&amp;lear</source>
         <translation>Go&amp;leşte</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3931"/>
+        <location filename="src/plot2D/Graph.cpp" line="3932"/>
         <source>&amp;Delete</source>
         <translation>Şte&amp;rge</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3956"/>
+        <location filename="src/plot2D/Graph.cpp" line="3957"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Proprietăti...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3941"/>
+        <location filename="src/plot2D/Graph.cpp" line="3942"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Afişază toate datele</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3941"/>
+        <location filename="src/plot2D/Graph.cpp" line="3942"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3943"/>
+        <location filename="src/plot2D/Graph.cpp" line="3944"/>
         <source>&amp;Hide axis</source>
         <translation>Ascu&amp;nde axa</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3945"/>
+        <location filename="src/plot2D/Graph.cpp" line="3946"/>
         <source>&amp;Show grids</source>
         <translation>Afişază &amp;grilajul</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3955"/>
+        <location filename="src/plot2D/Graph.cpp" line="3956"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Scală...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4629"/>
+        <location filename="src/plot2D/Graph.cpp" line="4630"/>
         <source>There are no curves available on this plot!</source>
         <translation>Nu există curbe disponibile în acest grafic!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4640"/>
+        <location filename="src/plot2D/Graph.cpp" line="4641"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Nu există curbe conţinând mai mult de două puncte în acest grafic. Operaţie abandonată!</translation>
     </message>
