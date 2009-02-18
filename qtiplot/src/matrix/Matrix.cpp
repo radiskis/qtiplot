@@ -311,9 +311,6 @@ void Matrix::setDimensions(int rows, int cols)
 	if (r == rows && c == cols)
 		return;
 
-	if (rows <= 0 || cols <= 0 || INT_MAX/rows < cols) //avoid integer overflow
-		return;
-
 	if(rows*cols > r*c && !d_matrix_model->canResize(rows, cols))
 		return;
 

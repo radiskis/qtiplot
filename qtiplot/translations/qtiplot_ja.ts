@@ -8950,117 +8950,117 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3452"/>
+        <location filename="src/plot2D/Graph.cpp" line="3453"/>
         <source>QtiPlot - File open error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4629"/>
+        <location filename="src/plot2D/Graph.cpp" line="4630"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4639"/>
+        <location filename="src/plot2D/Graph.cpp" line="4640"/>
         <source>QtiPlot - Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1441"/>
+        <location filename="src/plot2D/Graph.cpp" line="1442"/>
         <source>Please provide a valid file name!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1397"/>
+        <location filename="src/plot2D/Graph.cpp" line="1398"/>
         <source>File format not handled, operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1736"/>
+        <location filename="src/plot2D/Graph.cpp" line="1737"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3453"/>
+        <location filename="src/plot2D/Graph.cpp" line="3454"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3640"/>
+        <location filename="src/plot2D/Graph.cpp" line="3641"/>
         <source>Data set generated from curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3641"/>
+        <location filename="src/plot2D/Graph.cpp" line="3642"/>
         <source>Table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3865"/>
+        <location filename="src/plot2D/Graph.cpp" line="3866"/>
         <source>The columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3865"/>
+        <location filename="src/plot2D/Graph.cpp" line="3866"/>
         <source>are empty and will not be added to the plot!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3869"/>
+        <location filename="src/plot2D/Graph.cpp" line="3870"/>
         <source>The column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3869"/>
+        <location filename="src/plot2D/Graph.cpp" line="3870"/>
         <source>is empty and will not be added to the plot!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3929"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3931"/>
+        <location filename="src/plot2D/Graph.cpp" line="3932"/>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3956"/>
+        <location filename="src/plot2D/Graph.cpp" line="3957"/>
         <source>&amp;Properties...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3941"/>
+        <location filename="src/plot2D/Graph.cpp" line="3942"/>
         <source>&amp;Rescale to show all</source>
         <translation type="unfinished">全体表示可能にリサイズ(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3941"/>
+        <location filename="src/plot2D/Graph.cpp" line="3942"/>
         <source>Ctrl+Shift+R</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3943"/>
+        <location filename="src/plot2D/Graph.cpp" line="3944"/>
         <source>&amp;Hide axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3945"/>
+        <location filename="src/plot2D/Graph.cpp" line="3946"/>
         <source>&amp;Show grids</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3955"/>
+        <location filename="src/plot2D/Graph.cpp" line="3956"/>
         <source>&amp;Scale...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4629"/>
+        <location filename="src/plot2D/Graph.cpp" line="4630"/>
         <source>There are no curves available on this plot!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4640"/>
+        <location filename="src/plot2D/Graph.cpp" line="4641"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9085,12 +9085,12 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3928"/>
+        <location filename="src/plot2D/Graph.cpp" line="3929"/>
         <source>Cu&amp;t</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3930"/>
+        <location filename="src/plot2D/Graph.cpp" line="3931"/>
         <source>C&amp;lear</source>
         <translation type="unfinished"></translation>
     </message>

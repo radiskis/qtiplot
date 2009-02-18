@@ -11549,6 +11549,7 @@ void ApplicationWindow::createActions()
 	connect(actionSaveProject, SIGNAL(activated()), this, SLOT(saveProject()));
 
 	actionSaveProjectAs = new QAction(tr("Save Project &As..."), this);
+	actionSaveProjectAs->setShortcut( tr("Ctrl+Shift+S") );
 	connect(actionSaveProjectAs, SIGNAL(activated()), this, SLOT(saveProjectAs()));
 
 	actionOpenTemplate = new QAction(QIcon(QPixmap(open_template_xpm)),tr("Open Temp&late..."), this);
@@ -12362,6 +12363,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionSaveProject->setShortcut(tr("Ctrl+S"));
 
 	actionSaveProjectAs->setMenuText(tr("Save Project &As..."));
+	actionSaveProjectAs->setShortcut( tr("Ctrl+Shift+S") );
 
 	actionOpenTemplate->setMenuText(tr("Open Te&mplate..."));
 	actionOpenTemplate->setToolTip(tr("Open template"));
