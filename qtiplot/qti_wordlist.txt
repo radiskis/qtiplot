@@ -526,3 +526,5 @@ Centimeter
 Point
 Pixel
 Scale
+resultsLog
+stemPlot

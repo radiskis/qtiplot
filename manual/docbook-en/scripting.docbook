@@ -760,6 +760,8 @@ t = table("Table1")
 m = matrix("Matrix1")
 g = graph("Graph1")
 n = note("Notes1")
+# get a pointer to the QTextEdit object used to display information in the results log window:
+log = resultsLog()
 	  </programlisting> as is creating new objects: <programlisting>
 # create an empty table named "tony" with 5 rows and 2 columns:
 t = newTable("tony", 5, 2)
@@ -774,9 +776,9 @@ g = newGraph()
 # create a graph window named "test" with two layers disposed on a 2 rows x 1 column grid
 g = newGraph("test", 2, 2, 1)
 # create an empty note named "momo"
-n = note("momo")
+n = newNote("momo")
 # use defaults
-n = note()
+n = newNote()
 </programlisting>The currently selected Table/Matrix etc. can be accessed with the follwing commands:
 <programlisting>
 t = currentTable()
@@ -1302,6 +1304,41 @@ possible to export only the selected cells of the matrix.</para>
 <programlisting>
 m.exportASCII(file, sep="\t", SelectionOnly=False)
 </programlisting>
+</sect2>
+
+<sect2 id = "Python-Stem-and-Leaf-Plot">
+<title>Stem Plots</title>
+<para>
+A stemplot (or stem-and-leaf plot), in statistics, is a device for presenting
+quantitative data in a graphical format, similar to a histogram,
+to assist in visualizing the shape of a distribution.
+A basic stemplot contains two columns separated by a vertical line.
+The left column contains the stems and the right column contains the leaves.
+See <ulink url="http://en.wikipedia.org/wiki/Stemplot">Wikipedia</ulink> for more details.
+</para>
+
+<para>
+QtiPlot provides a text representation of a stemplot. The following function
+returns a string of characters reprezenting the statistical analysis of the data:
+
+<programlisting>
+text = stemPlot(Table *t, columnName, power = 1001, startRow = 0, endRow = -1)
+</programlisting>
+
+where the <varname>power</varname> variable is used to specify the stem unit as a power of 10.
+If this parameter is greater than 1000 (the default behavior), than QtiPlot will
+try to guess the stem unit from the input data and will pop-up a dialog asking you to
+confirm the automatically detected stem unit.
+</para>
+
+<para>
+Once you have created the string representation of the stemplot, you can display it in any text editor you like:
+in a note within the project or even in the results log:
+
+<programlisting>
+resultsLog().append(stemPlot(table("Table1"), "Table1_2", 1, 2, 15))
+</programlisting>
+</para>
 </sect2>
 
 <sect2 id = "Python-Plots2D">

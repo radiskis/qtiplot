@@ -226,7 +226,7 @@ from PyQt4 import QtCore
 
 global Qt
 from PyQt4.QtCore import Qt
-  
+
 # import QtiPlot's classes to the global namespace (particularly useful for fits)
 from qti import *
 
@@ -242,11 +242,12 @@ appImports = (
 	"clone", "setWindowName",
 	"importImage",
 	"setPreferences",
-	"plot", "plot3D",
+	"plot", "plot3D", "stemPlot",
 	"activeFolder", "rootFolder",
 	"addFolder", "deleteFolder", "changeFolder", "copyFolder",
 	"saveFolder", "appendProject", "saveProjectAs",
-	"currentTable","currentMatrix","currentGraph","currentNote"
+	"currentTable","currentMatrix","currentGraph","currentNote",
+	"resultsLog"
 	)
 for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))

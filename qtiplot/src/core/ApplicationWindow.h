@@ -170,6 +170,8 @@ public:
 	QLocale clipboardLocale(){return d_clipboard_locale;};
 	void setClipboardLocale(const QLocale& locale){d_clipboard_locale = locale;};
 
+	QTextEdit *resultsLog(){return results;};
+
 public slots:
 	//! \name Projects and Project Files
 	//@{
@@ -432,6 +434,8 @@ public slots:
 	void plotBoxDiagram();
 	void plotDoubleYAxis();
 	void zoomRectanglePlot();
+	QString stemPlot(Table *t = 0, const QString& colName = QString(), int power = 0, int startRow = 0, int endRow = -1);
+	Note *newStemPlot();
 
     //! Check whether a table is valid for a 3D plot and display an appropriate error if not
     bool validFor3DPlot(Table *table);
@@ -1259,7 +1263,7 @@ private:
 #endif
     QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast;
     QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
-    QAction *actionExportPDF, *actionReadOnlyCol;
+    QAction *actionExportPDF, *actionReadOnlyCol, *actionStemPlot;
     QAction *actionCloseAllWindows, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
     QAction *actionShowCurvesDialog, *actionAddErrorBars, *actionAddFunctionCurve, *actionUnzoom, *actionNewLegend, *actionAddImage, *actionAddText;
     QAction *actionPlotL, *actionPlotP, *actionPlotLP, *actionPlotVerticalDropLines, *actionPlotSpline;

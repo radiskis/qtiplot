@@ -1140,6 +1140,9 @@ public:
   Matrix* tableToMatrix(Table* t);
   Table* matrixToTable(Matrix* m, MatrixToTableConversion = Direct);
 
+  QTextEdit *resultsLog();
+  QString stemPlot(Table *t, const QString& colName, int power = 1001, int startRow = 0, int endRow = -1);
+
 private:
   ApplicationWindow(const ApplicationWindow&);
 };
