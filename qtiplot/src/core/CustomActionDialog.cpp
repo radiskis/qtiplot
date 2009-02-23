@@ -476,7 +476,9 @@ void CustomActionDialog::chooseIcon()
 
 void CustomActionDialog::chooseFile()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Choose script file"), fileBox->text());
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Choose script file"),
+													((ApplicationWindow *)parentWidget())->customActionsDirPath,
+													fileBox->text());
     if (!fileName.isEmpty())
         fileBox->setText(fileName);
 }

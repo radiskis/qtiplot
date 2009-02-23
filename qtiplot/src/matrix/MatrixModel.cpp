@@ -33,9 +33,9 @@
 #include "Matrix.h"
 #include "MatrixModel.h"
 #include "MatrixCommand.h"
-#include "../scripting/muParserScript.h"
-#include "../scripting/ScriptingEnv.h"
-#include "../analysis/fft2D.h"
+#include <muParserScript.h>
+#include <ScriptingEnv.h>
+#include <fft2D.h>
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_linalg.h>
@@ -49,7 +49,7 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
 	 d_matrix((Matrix*)parent)
 {
 	init();
-	
+
 	if (d_matrix){
 		d_txt_format = d_matrix->textFormat().toAscii();
 		d_num_precision = d_matrix->precision();
@@ -82,7 +82,7 @@ void MatrixModel::init()
 	d_direct_matrix = NULL;
 	d_inv_matrix = NULL;
 	d_inv_perm = NULL;
-	
+
 	d_rows = 1;
 	d_cols = 1;
 	d_data_block_size = QSize(1, 1);
@@ -346,7 +346,7 @@ bool MatrixModel::canResize(int rows, int cols)
 		tr("Please enter positive values for which the product rows*columns does not exceed the maximum integer value available on your system!"));
 		return false;
 	}
-	
+
     if (d_data_block_size.width()*d_data_block_size.height() >= rows*cols)
 		return true;
 
@@ -481,7 +481,7 @@ QString MatrixModel::saveToString()
 QImage MatrixModel::renderImage()
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	
+
 	QImage image(QSize(d_cols, d_rows), QImage::Format_RGB32);
 	QwtLinearColorMap color_map = d_matrix->colorMap();
 
@@ -802,8 +802,8 @@ bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int 
                            QMessageBox::Yes, QMessageBox::Cancel))
 			return false;
 	}
-	
-    muParserScript *mup = new muParserScript(d_matrix->scriptingEnv(), d_matrix->formula(), 
+
+    muParserScript *mup = new muParserScript(d_matrix->scriptingEnv(), d_matrix->formula(),
 											d_matrix, QString("<%1>").arg(d_matrix->objectName()));
 	if (endRow < 0)
 		endRow = d_rows - 1;
@@ -881,7 +881,7 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 	Script *script = scriptEnv->newScript(formula, this, QString("<%1>").arg(objectName()));
 	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
 	connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
-	
+
 	if (!script->compile()){
 		QApplication::restoreOverrideCursor();
 		return false;
@@ -997,11 +997,11 @@ void MatrixModel::pasteData(double *clipboardBuffer, int topRow, int leftCol, in
 	int newCols = leftCol + cols;
 	if (newCols > d_cols)
 		insertColumns(d_cols, newCols - d_cols);
-	
+
 	int newRows = topRow + rows;
 	if (newRows > d_rows)
 		insertRows(d_rows, newRows - d_rows);
-		
+
 	int cell = 0;
 	int bottomRow = newRows - 1;
 	int rightCol = newCols - 1;

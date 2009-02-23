@@ -339,13 +339,13 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 			int pos = s.indexOf("\\l(", 0);
 			curveSymbol = true;
 			if (pos >= 0){
-                QwtText aux(parse(s.left(pos)));
-                aux.setFont(d_text->font());
-                QSize size = textSize(p, aux);
-                textL += size.width();
+				QwtText aux(parse(s.left(pos)));
+				aux.setFont(d_text->font());
+				QSize size = textSize(p, aux);
+				textL += size.width();
 
-                int pos1 = s.indexOf("(", pos);
-                int pos2 = s.indexOf(")", pos1);
+				int pos1 = s.indexOf("(", pos);
+				int pos2 = s.indexOf(")", pos1);
 				int point = -1;
 				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
 				if (!curve){
