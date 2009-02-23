@@ -11736,7 +11736,7 @@ void ApplicationWindow::createActions()
 	actionPlotStackedHistograms = new QAction(QIcon(QPixmap(stacked_hist_xpm)), tr("&Stacked Histogram"), this);
 	connect(actionPlotStackedHistograms, SIGNAL(activated()), this, SLOT(plotStackedHistograms()));
 
-	actionStemPlot = new QAction(QIcon(QPixmap(leaf_xpm)), tr("Stem and &Leaf Plot"), this);
+	actionStemPlot = new QAction(QIcon(QPixmap(leaf_xpm)), tr("Stem-and-&Leaf Plot"), this);
 	connect(actionStemPlot, SIGNAL(activated()), this, SLOT(newStemPlot()));
 
 	actionPlot2VerticalLayers = new QAction(QIcon(QPixmap(panel_v2_xpm)), tr("&Vertical 2 Layers"), this);
@@ -12546,7 +12546,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionPlot2HorizontalLayers->setMenuText(tr("&Horizontal 2 Layers"));
 	actionPlot4Layers->setMenuText(tr("&4 Layers"));
 	actionPlotStackedLayers->setMenuText(tr("&Stacked Layers"));
-	actionStemPlot->setMenuText(tr("Stem and &Leaf Plot"));
+	actionStemPlot->setMenuText(tr("Stem-and-&Leaf Plot"));
 	actionStemPlot->setToolTip(tr("Stem-and-Leaf Plot"));
 
     actionPlotDoubleYAxis->setMenuText(tr("D&ouble-Y"));

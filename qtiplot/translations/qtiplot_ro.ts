@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ro">
+<defaultcodec></defaultcodec>
 <context>
     <name>AddWidgetTool</name>
     <message>
@@ -4138,7 +4139,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12549"/>
         <source>Stem and &amp;Leaf Plot</source>
-        <translation>Grafic tulpină cu &amp;frunze</translation>
+        <translation type="obsolete">Grafic tulpină cu &amp;frunze</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15971"/>
@@ -4219,6 +4220,11 @@ Autocompletion will not be available!</source>
         <location filename="src/core/ApplicationWindow.cpp" line="12550"/>
         <source>Stem-and-Leaf Plot</source>
         <translation>Grafic tulpină cu frunze</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="12549"/>
+        <source>Stem-and-&amp;Leaf Plot</source>
+        <translation>Grafic tulpină cu &amp;frunze</translation>
     </message>
 </context>
 <context>
