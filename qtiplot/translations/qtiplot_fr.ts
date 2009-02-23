@@ -5994,11 +5994,6 @@ L&apos;autocomplétion ne sera pas disponible</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12549"/>
-        <source>Stem and &amp;Leaf Plot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/core/ApplicationWindow.cpp" line="15971"/>
         <source>Data set: %1 doesn&apos;t exist!</source>
         <translation type="unfinished"></translation>
@@ -6076,6 +6071,11 @@ L&apos;autocomplétion ne sera pas disponible</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12550"/>
         <source>Stem-and-Leaf Plot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="12549"/>
+        <source>Stem-and-&amp;Leaf Plot</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

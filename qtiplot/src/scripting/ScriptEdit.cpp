@@ -64,7 +64,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	else
 		d_highlighter = NULL;
 #endif
-	
+
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
 
@@ -123,14 +123,14 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 
 	QShortcut *accelFindNext = new QShortcut(actionFindNext->shortcut(), this);
 	connect(accelFindNext, SIGNAL(activated()), this, SLOT(findNext()));
-	
+
 	actionFindPrevious = new QAction(tr("&Find previous"), this);
 	actionFindPrevious->setShortcut(QKeySequence(Qt::Key_F4));
 	connect(actionFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
 
 	QShortcut *accelFindPrevious = new QShortcut(actionFindPrevious->shortcut(), this);
 	connect(accelFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
-	
+
 	functionsMenu = new QMenu(this);
 	Q_CHECK_PTR(functionsMenu);
 	connect(functionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFunction(QAction *)));
@@ -147,13 +147,13 @@ void ScriptEdit::customEvent(QEvent *e)
 		connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
 	#ifdef SCRIPTING_PYTHON
-		if (scriptEnv->name() == QString("Python") && !d_highlighter)
+		if (d_highlighter)
+			delete d_highlighter;
+
+		if (scriptEnv->name() == QString("Python"))
 			d_highlighter = new PythonSyntaxHighlighter(this);
-		else {
-			if (d_highlighter)
-				delete d_highlighter;
+		else
 			d_highlighter = 0;
-		}
 	#endif
 	}
 }
@@ -647,16 +647,16 @@ void ScriptEdit::findNext()
 	else
 		showFindDialog();
 }
-	
+
 void ScriptEdit::findPrevious()
 {
 	if (textCursor().hasSelection())
 		d_search_string = textCursor().selectedText();
-	
+
 	if (!d_search_string.isEmpty())
 		find(d_search_string, d_search_flags, true);
 	else
-		showFindDialog();	
+		showFindDialog();
 }
 
 ScriptEdit::~ScriptEdit()
