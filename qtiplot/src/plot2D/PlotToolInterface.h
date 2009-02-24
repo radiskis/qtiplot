@@ -71,7 +71,8 @@ class PlotToolInterface
         Rtti_MultiPeakFitTool,
         Rtti_LineProfileTool,
 		Rtti_AddWidgetTool,
-		
+		Rtti_DrawDataPoints,
+
         Rtti_PlotUserTool = 1000
     };
 

@@ -78,9 +78,7 @@ QString FFT::fftCurve()
 	double *result = new double[2*d_n];
 
 	if(!amp || !result){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-                        tr("Could not allocate memory, operation aborted!"));
-        d_init_err = true;
+        memoryErrorMessage();
         return "";
 	}
 
@@ -91,17 +89,15 @@ QString FFT::fftCurve()
         d_explanation = tr("Forward") + " " + tr("FFT") + " " + tr("of") + " " + d_curve->title().text();
 		text = tr("Frequency");
 
-		gsl_fft_real_workspace *work=gsl_fft_real_workspace_alloc(d_n);
-		gsl_fft_real_wavetable *real=gsl_fft_real_wavetable_alloc(d_n);
+		gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
+		gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
 
 		if(!work || !real){
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-                        tr("Could not allocate memory, operation aborted!"));
-            d_init_err = true;
+            memoryErrorMessage();
 			return "";
 		}
 
-		gsl_fft_real_transform(d_y, 1, d_n, real,work);
+		gsl_fft_real_transform(d_y, 1, d_n, real, work);
 		gsl_fft_halfcomplex_unpack (d_y, result, 1, d_n);
 
 		gsl_fft_real_wavetable_free(real);
@@ -115,9 +111,7 @@ QString FFT::fftCurve()
 		gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
 
 		if(!workspace || !wavetable){
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-                        tr("Could not allocate memory, operation aborted!"));
-            d_init_err = true;
+            memoryErrorMessage();
 			return "";
 		}
 
@@ -179,9 +173,7 @@ QString FFT::fftTable()
 	gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
 
 	if(!amp || !wavetable || !workspace){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-                        tr("Could not allocate memory, operation aborted!"));
-        d_init_err = true;
+		memoryErrorMessage();
         return "";
 	}
 

@@ -7577,77 +7577,77 @@ The following special codes can be used:
 <context>
     <name>FFT</name>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="275"/>
+        <location filename="src/analysis/FFT.cpp" line="267"/>
         <source>Amplitude</source>
         <translation>Амплитуда</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="230"/>
+        <location filename="src/analysis/FFT.cpp" line="222"/>
         <source>Angle</source>
         <translation>Угол</translation>
     </message>
     <message>
         <location filename="src/analysis/FFT.cpp" line="183"/>
         <source>Could not allocate memory, operation aborted!</source>
-        <translation>Не удалось выделить память, операция отменена!</translation>
+        <translation type="obsolete">Не удалось выделить память, операция отменена!</translation>
     </message>
     <message>
         <location filename="src/analysis/FFT.cpp" line="182"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="obsolete">Ошибка</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="196"/>
+        <location filename="src/analysis/FFT.cpp" line="188"/>
         <source>FFT</source>
         <translation>БПФ</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="192"/>
+        <location filename="src/analysis/FFT.cpp" line="184"/>
         <source>Forward</source>
         <translation>Прямое</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="270"/>
+        <location filename="src/analysis/FFT.cpp" line="262"/>
         <source>Frequency</source>
         <translation>Частота</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="270"/>
+        <location filename="src/analysis/FFT.cpp" line="262"/>
         <source>Hz</source>
         <translation>Гц</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="230"/>
+        <location filename="src/analysis/FFT.cpp" line="222"/>
         <source>Imaginary</source>
         <translation>Мнимая часть</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="196"/>
+        <location filename="src/analysis/FFT.cpp" line="188"/>
         <source>Inverse</source>
         <translation>Обратное</translation>
     </message>
     <message>
         <location filename="src/analysis/FFT.cpp" line="182"/>
         <source>QtiPlot</source>
-        <translation>QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="230"/>
+        <location filename="src/analysis/FFT.cpp" line="222"/>
         <source>Real</source>
         <translation>Действительная часть</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="272"/>
+        <location filename="src/analysis/FFT.cpp" line="264"/>
         <source>Time</source>
         <translation>Время</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="196"/>
+        <location filename="src/analysis/FFT.cpp" line="188"/>
         <source>of</source>
         <translation>от</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="272"/>
+        <location filename="src/analysis/FFT.cpp" line="264"/>
         <source>s</source>
         <translation>с</translation>
     </message>

@@ -573,7 +573,7 @@ class Graph: public QwtPlot
 		 * tool interface.
 		 */
 		bool enableRangeSelectors(const QObject *status_target=NULL, const char *status_slot="");
-
+		bool rangeSelectorsEnabled();
 		//! \name Border and background
 		//@{
 		void setFrame(int width = 1, const QColor& color = Qt::black);

@@ -56,6 +56,10 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
         void cutSelection();
         void pasteSelection();
         void removePoint();
+
+        //! Returns the information about the functioning mode of the tool
+        Mode mode(){return d_mode;};
+
         //! Searches the index of the closest point to the given x coordinate
         int findClosestPoint(QwtPlotCurve *c, double x, bool up);
 

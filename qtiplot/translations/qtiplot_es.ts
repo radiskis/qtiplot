@@ -10154,77 +10154,77 @@ The following special codes can be used:
 <context>
     <name>FFT</name>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="196"/>
+        <location filename="src/analysis/FFT.cpp" line="188"/>
         <source>FFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/analysis/FFT.cpp" line="182"/>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
         <location filename="src/analysis/FFT.cpp" line="182"/>
         <source>Error</source>
-        <translation type="unfinished">Error</translation>
+        <translation type="obsolete">Error</translation>
     </message>
     <message>
         <location filename="src/analysis/FFT.cpp" line="183"/>
         <source>Could not allocate memory, operation aborted!</source>
-        <translation type="unfinished">¡No se pudo reservar memoria, operación abortada!</translation>
+        <translation type="obsolete">¡No se pudo reservar memoria, operación abortada!</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="192"/>
+        <location filename="src/analysis/FFT.cpp" line="184"/>
         <source>Forward</source>
         <translation type="unfinished">Hacia adelante</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="196"/>
+        <location filename="src/analysis/FFT.cpp" line="188"/>
         <source>of</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="270"/>
+        <location filename="src/analysis/FFT.cpp" line="262"/>
         <source>Frequency</source>
         <translation type="unfinished">Frecuencia</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="196"/>
+        <location filename="src/analysis/FFT.cpp" line="188"/>
         <source>Inverse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="272"/>
+        <location filename="src/analysis/FFT.cpp" line="264"/>
         <source>Time</source>
         <translation type="unfinished">Tiempo</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="230"/>
+        <location filename="src/analysis/FFT.cpp" line="222"/>
         <source>Real</source>
         <translation type="unfinished">Real</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="230"/>
+        <location filename="src/analysis/FFT.cpp" line="222"/>
         <source>Imaginary</source>
         <translation type="unfinished">Imaginario</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="275"/>
+        <location filename="src/analysis/FFT.cpp" line="267"/>
         <source>Amplitude</source>
         <translation type="unfinished">Amplitud</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="230"/>
+        <location filename="src/analysis/FFT.cpp" line="222"/>
         <source>Angle</source>
         <translation type="unfinished">Ángulo</translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="270"/>
+        <location filename="src/analysis/FFT.cpp" line="262"/>
         <source>Hz</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/analysis/FFT.cpp" line="272"/>
+        <location filename="src/analysis/FFT.cpp" line="264"/>
         <source>s</source>
         <translation type="unfinished"></translation>
     </message>

@@ -998,6 +998,7 @@ private slots:
 	void customToolBars(QMdiSubWindow* w);
 	void customMenu(QMdiSubWindow* w);
 	void windowActivated(QMdiSubWindow *w);
+	void custom2DPlotTools(MultiLayer *);
 	//@}
 
 	void analysisMenuAboutToShow();
