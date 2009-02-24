@@ -5734,3 +5734,10 @@ QSize Graph::customPrintSize(const QSizeF& customSize, int unit, int dpi)
 	}
 	return size;
 }
+
+bool Graph::rangeSelectorsEnabled()
+{
+	if (d_range_selector && d_range_selector->isVisible())
+		return true;
+	return false;
+}

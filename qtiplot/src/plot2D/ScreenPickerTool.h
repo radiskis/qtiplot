@@ -75,6 +75,7 @@ class DrawPointTool : public ScreenPickerTool
 	Q_OBJECT
 	public:
 		DrawPointTool(ApplicationWindow *app, Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
+		virtual int rtti() const { return Rtti_DrawDataPoints;};
 
 	protected:
         virtual bool eventFilter(QObject *obj, QEvent *event);

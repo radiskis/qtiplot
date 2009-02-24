@@ -1458,6 +1458,7 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
         if(!plotTools->isVisible())
             plotTools->show();
         plotTools->setEnabled (true);
+        custom2DPlotTools((MultiLayer *)w);
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
             formatToolBar->show();
@@ -11380,7 +11381,13 @@ void ApplicationWindow::pickDataTool( QAction* action )
 	if (!action)
 		return;
 
-	disableTools();
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	QList<Graph *> layers = plot->layersList();
+	foreach(Graph *g, layers)
+		g->disableTools();
 
 	if (action == btnCursor)
 		showCursor();
@@ -11402,6 +11409,73 @@ void ApplicationWindow::pickDataTool( QAction* action )
 		drawArrow();
 	else if (action == btnLine)
 		drawLine();
+}
+
+void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
+{
+	if (!plot)
+		return;
+
+	actionAddText->setChecked(false);
+	actionAddFormula->setChecked(false);
+	actionAddRectangle->setChecked(false);
+	actionAddEllipse->setChecked(false);
+
+	QList<Graph *> layers = plot->layersList();
+    foreach(Graph *g, layers){
+    	PlotToolInterface *active_tool = g->activeTool();
+    	if (active_tool){
+			if (active_tool->rtti() == PlotToolInterface::Rtti_PlotTool){
+				btnPicker->setChecked(true);
+				return;
+			} else if (active_tool->rtti() == PlotToolInterface::Rtti_DataPicker){
+				switch(((DataPickerTool *)active_tool)->mode()){
+					case DataPickerTool::Display:
+						btnCursor->setChecked(true);
+					break;
+					case DataPickerTool::Move:
+						btnMovePoints->setChecked(true);
+					break;
+					case DataPickerTool::Remove:
+						btnRemovePoints->setChecked(true);
+					break;
+				}
+				return;
+			} else if (active_tool->rtti() == PlotToolInterface::Rtti_DrawDataPoints){
+				actionDrawPoints->setChecked(true);
+				return;
+			} else if (active_tool->rtti() == PlotToolInterface::Rtti_AddWidgetTool){
+				switch(((AddWidgetTool *)active_tool)->widgetType()){
+					case AddWidgetTool::Text:
+						actionAddText->setChecked(true);
+					break;
+					case AddWidgetTool::TexEquation:
+						actionAddFormula->setChecked(true);
+					break;
+					case AddWidgetTool::Rectangle:
+						actionAddRectangle->setChecked(true);
+					break;
+					case AddWidgetTool::Ellipse:
+						actionAddEllipse->setChecked(true);
+					break;
+				}
+				return;
+			}
+		} else if (g->drawArrow()){
+			btnArrow->setChecked(true);
+			return;
+    	} else if (g->drawLineActive()){
+			btnLine->setChecked(true);
+			return;
+    	} else if (g->rangeSelectorsEnabled()){
+			btnSelect->setChecked(true);
+			return;
+		} else if (g->zoomOn()){
+    		btnZoomIn->setChecked(true);
+    		return;
+    	}
+    }
+	btnPointer->setChecked(true);
 }
 
 void ApplicationWindow::connectSurfacePlot(Graph3D *plot)

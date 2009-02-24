@@ -56,6 +56,8 @@ class AddWidgetTool : public QObject, public PlotToolInterface
 		virtual ~AddWidgetTool();
 
 		virtual int rtti() const {return PlotToolInterface::Rtti_AddWidgetTool;};
+		//! Returns the type of widget to be added
+		WidgetType widgetType(){return d_widget_type;};
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.

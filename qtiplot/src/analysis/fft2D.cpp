@@ -27,11 +27,11 @@
  *                                                                         *
  ***************************************************************************/
 #include "fft2D.h"
-#include "../matrix/Matrix.h"
+#include <Matrix.h>
 
 #ifdef Q_CC_MSVC
 #include <QVarLengthArray>
-#define _USE_MATH_DEFINES 
+#define _USE_MATH_DEFINES
 #endif
 #include <math.h>
 
