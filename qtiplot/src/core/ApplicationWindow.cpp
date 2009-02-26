@@ -1314,7 +1314,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			plotDataMenuAboutToShow();
 			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
 			analysisMenuAboutToShow();
-			menuBar()->insertItem(tr("For&mat"), format);
+			menuBar()->insertItem(tr("F&ormat"), format);
 
 			format->clear();
 			format->addAction(actionShowPlotDialog);
@@ -1328,7 +1328,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 		} else if (w->isA("Graph3D")) {
 			disableActions();
 
-			menuBar()->insertItem(tr("For&mat"), format);
+			menuBar()->insertItem(tr("F&ormat"), format);
 
 			actionPrint->setEnabled(true);
 			actionSaveTemplate->setEnabled(true);
