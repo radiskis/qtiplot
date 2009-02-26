@@ -29,8 +29,6 @@
 #include "ExponentialFit.h"
 #include "fit_gsl.h"
 
-#include <QMessageBox>
-
 /*****************************************************************************
  *
  * Class ExponentialFit
