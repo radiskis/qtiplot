@@ -55,6 +55,7 @@ typedef struct _traceback {
 #include <QDir>
 #include <QDateTime>
 #include <QCoreApplication>
+#include <QMessageBox>
 
 // includes sip.h, which undefines Qt's "slots" macro since SIP 4.6
 #include "sipAPIqti.h"
@@ -223,7 +224,11 @@ PythonScripting::PythonScripting(ApplicationWindow *parent)
 	{
 		PyDict_SetItemString(globals, "qti", qtimod);
 		PyObject *qtiDict = PyModule_GetDict(qtimod);
-		setQObject(d_parent, "app", qtiDict);
+		if (!setQObject(d_parent, "app", qtiDict))
+			QMessageBox::warning(d_parent, tr("Failed to export QtiPlot API"),
+			tr("Accessing QtiPlot functions or objects from Python code won't work."\
+			"Probably your version of SIP differs from the one QtiPlot was compiled against."));
+
 		PyDict_SetItemString(qtiDict, "mathFunctions", math);
 		Py_DECREF(qtimod);
 	} else
@@ -327,7 +332,7 @@ bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 {
 	if(!val) return false;
 	PyObject *pyobj=NULL;
-	sipTypeDef *t;
+	/*sipTypeDef *t;
 	for (int i=0; i<sipModuleAPI_qti.em_nrtypes; i++)
 			// Note that the SIP API is a bit confusing here.
 			// sipTypeDef.td_cname holds the C++ class name, but is NULL if that's the same as the Python class name.
@@ -348,7 +353,12 @@ bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 					if (!pyobj) return false;
 					break;
 				}
-	}
+	}*/
+
+	sipWrapperType * klass = sipFindClass(val->className());
+	if (!klass) return false;
+		pyobj = sipConvertFromInstance(val, klass, NULL);
+
 	if (!pyobj) return false;
 
 	if (dict)

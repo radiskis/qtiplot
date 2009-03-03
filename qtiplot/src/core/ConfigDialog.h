@@ -120,6 +120,7 @@ private:
 	void initNotesPage();
 	//! Calculates a sensible width for the items list
 	void updateMenuList();
+	bool validFolderPath(const QString& path);
 
 	QFont textFont, headerFont, axesFont, numbersFont, legendFont, titleFont, appFont;
 	QFont d_3D_title_font, d_3D_numbers_font, d_3D_axes_font;

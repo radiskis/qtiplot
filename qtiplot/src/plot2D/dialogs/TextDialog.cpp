@@ -173,7 +173,6 @@ void TextDialog::apply()
     if (!d_graph)
         return;
 
-
 	if (d_text_type == AxisTitle){
 		if (!d_scale)
 			return;
