@@ -265,14 +265,10 @@ public slots:
 
 	//! \name 3D Data Plots
 	//@{
-    Graph3D* newPlot3D();
-	Graph3D* openMatrixPlot3D(const QString& caption, const QString& matrix_name,
-							 double xl,double xr,double yl,double yr,double zl,double zr);
+	Graph3D* newPlot3D(const QString& title = QString());
 	Graph3D* plotXYZ(Table* table,const QString& zColName, int type);
 	Graph3D* addRibbon(const QString& caption, const QString& formula,
 						double xl, double xr, double yl, double yr, double zl, double zr);
-	Graph3D* openPlotXYZ(const QString& caption,const QString& formula,
- 						double xl, double xr, double yl, double yr, double zl, double zr);
 	//@}
 
 	//! \name Surface Plots
@@ -979,7 +975,7 @@ private:
     void initCompleter();
 	virtual QMenu * createPopupMenu(){return NULL;};
 
-    void initPlot3D(Graph3D *plot, bool custom = true);
+	void initPlot3D(Graph3D *plot);
 
 private slots:
     //! \name Initialization

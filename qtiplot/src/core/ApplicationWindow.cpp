@@ -2040,15 +2040,13 @@ void ApplicationWindow::newSurfacePlot()
 Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, double xr,
 		double yl, double yr, double zl, double zr, int columns, int rows)
 {
-	QString label = generateUniqueName(tr("Graph"));
+	Graph3D *plot = newPlot3D();
+	if(!plot)
+		return 0;
 
-	Graph3D *plot = new Graph3D("", this);
-	plot->resize(500, 400);
-	plot->setWindowTitle(label);
-	plot->setName(label);
 	plot->addFunction(formula, xl, xr, yl, yr, zl, zr, columns, rows);
-
-	initPlot3D(plot);
+	plot->setDataColorMap(d_3D_color_map);
+	plot->update();
 
 	emit modified();
 	return plot;
@@ -2058,15 +2056,14 @@ Graph3D* ApplicationWindow::plotParametricSurface(const QString& xFormula, const
 		const QString& zFormula, double ul, double ur, double vl, double vr,
 		int columns, int rows, bool uPeriodic, bool vPeriodic)
 {
-	QString label = generateUniqueName(tr("Graph"));
-
-	Graph3D *plot = new Graph3D("", this);
-	plot->resize(500, 400);
-	plot->setWindowTitle(label);
-	plot->setName(label);
+	Graph3D *plot = newPlot3D();
+	if(!plot)
+		return 0;
 	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr,
 								columns, rows, uPeriodic, vPeriodic);
-	initPlot3D(plot);
+	plot->setDataColorMap(d_3D_color_map);
+	plot->update();
+
 	emit modified();
 	return plot;
 }
@@ -2079,42 +2076,37 @@ void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 		surfaceFunc.pop_back();
 }
 
-Graph3D* ApplicationWindow::addRibbon(const QString& caption,const QString& formula,
+Graph3D* ApplicationWindow::addRibbon(const QString& caption, const QString& formula,
 		double xl, double xr, double yl, double yr, double zl, double zr)
 {
-	int pos=formula.find("_",0);
-	QString wCaption=formula.left(pos);
-
-	Table* w=table(wCaption);
-	if (!w)
+	Table* t = table(formula.left(formula.find("_", 0)));
+	if (!t)
 		return 0;
 
-	int posX=formula.find("(",pos);
-	QString xCol=formula.mid(pos+1,posX-pos-1);
+	QString s = formula;
+	s.remove("(X)").remove("(Y)");
+	QStringList l = s.split(",");
+	if (l.size() != 2)
+		return 0;
 
-	pos=formula.find(",",posX);
-	posX=formula.find("(",pos);
-	QString yCol=formula.mid(pos+1,posX-pos-1);
+	Graph3D *plot = newPlot3D(caption);
+	if(!plot)
+		return 0;
 
-	Graph3D *plot = new Graph3D("", this, 0);
-	plot->addRibbon(w, xCol, yCol, xl, xr, yl, yr, zl, zr);
-
-	QString label=caption;
-	while(alreadyUsedName(label))
-		label = generateUniqueName(tr("Graph"));
-
-	plot->setWindowTitle(label);
-	plot->setName(label);
-	initPlot3D(plot);
+	plot->addRibbon(t, l[0], l[1], xl, xr, yl, yr, zl, zr);
+	plot->setDataColorMap(d_3D_color_map);
+	plot->update();
 
 	return plot;
 }
 
-Graph3D* ApplicationWindow::newPlot3D()
+Graph3D* ApplicationWindow::newPlot3D(const QString& title)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QString label = generateUniqueName(tr("Graph"));
+	QString label = title;
+	if (label.isEmpty() || alreadyUsedName(label))
+		label = generateUniqueName(tr("Graph"));
 
 	Graph3D *plot = new Graph3D("", this, 0);
 	plot->setWindowTitle(label);
@@ -2135,74 +2127,34 @@ Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int t
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	Graph3D *plot = new Graph3D("", this, 0);
-	QString label = generateUniqueName(tr("Graph"));
-	plot->setWindowTitle(label);
-	plot->setName(label);
+	Graph3D *plot = newPlot3D();
+	if(!plot)
+		return 0;
 
 	if (type == Graph3D::Ribbon) {
 		int ycol = table->colIndex(zColName);
 		plot->addRibbon(table, table->colName(table->colX(ycol)), zColName);
 	} else
 		plot->addData(table, table->colX(zCol), table->colY(zCol), zCol, type);
-	initPlot3D(plot);
+
+	plot->setDataColorMap(d_3D_color_map);
+	plot->update();
 
 	emit modified();
 	QApplication::restoreOverrideCursor();
 	return plot;
 }
 
-Graph3D* ApplicationWindow::openPlotXYZ(const QString& caption,const QString& formula,
-		double xl, double xr, double yl, double yr, double zl, double zr)
+void ApplicationWindow::initPlot3D(Graph3D *plot)
 {
-	int pos=formula.find("_",0);
-	QString wCaption=formula.left(pos);
-
-	Table* w=table(wCaption);
-	if (!w)
-		return 0;
-
-	int posX=formula.find("(X)",pos);
-	QString xColName=formula.mid(pos+1,posX-pos-1);
-
-	pos=formula.find(",",posX);
-
-	posX=formula.find("(Y)",pos);
-	QString yColName=formula.mid(pos+1,posX-pos-1);
-
-	pos=formula.find(",",posX);
-	posX=formula.find("(Z)",pos);
-	QString zColName=formula.mid(pos+1,posX-pos-1);
-
-	int xCol=w->colIndex(xColName);
-	int yCol=w->colIndex(yColName);
-	int zCol=w->colIndex(zColName);
-
-	Graph3D *plot=new Graph3D("", this, 0);
-	plot->loadData(w, xCol, yCol, zCol, xl, xr, yl, yr, zl, zr);
-
-	QString label = caption;
-	if (alreadyUsedName(label))
-		label = generateUniqueName(tr("Graph"));
-
-	plot->setWindowTitle(label);
-	plot->setName(label);
-	initPlot3D(plot, false);
-	return plot;
-}
-
-void ApplicationWindow::initPlot3D(Graph3D *plot, bool custom)
-{
-    if (custom){
-        plot->setDataColorMap(d_3D_color_map);
-        plot->update();
-    }
-
 	d_workspace->addSubWindow(plot);
 	connectSurfacePlot(plot);
 
 	plot->setIcon(QPixmap(trajectory_xpm));
 	plot->show();
+#ifdef Q_OS_MAC // otherwise crash on Mac OS X
+	plot->surface()->resize(plot->size());
+#endif
 	plot->setFocus();
 
 	addListViewItem(plot);
@@ -4011,8 +3963,6 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			QStringList graph = s.split("\t");
 			QString caption = graph[0];
 
-			//printf("%s\n", caption.toAscii().constData());
-
 			plot = app->multilayerPlot(caption, 0,  graph[2].toInt(), graph[1].toInt());
 
 			app->setListViewDate(caption, graph[3]);
@@ -4114,7 +4064,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 
 	app->restoreApplicationGeometry();
 	app->executeNotes();
-    app->savedProject();
+	app->savedProject();
 	app->d_opening_file = false;
 	app->d_workspace->blockSignals(false);
 	return app;
@@ -5329,7 +5279,8 @@ QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
 
 void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWindow *w, const QString s)
 {
-	w->hide();
+	if (qobject_cast<Graph3D *>(w))
+		w->hide();
 
 	QString caption = w->objectName();
 	if (s.contains ("minimized")) {
@@ -7824,27 +7775,9 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
         	QMessageBox::warning(this, tr("QtiPlot - Duplicate error"), tr("Empty 3D surface plots cannot be duplicated!"));
         	return 0;
     	}
-
-		QString caption = generateUniqueName(tr("Graph"));
-		QString s = g->formula();
-		if (g->userFunction()){
-			UserFunction *f = g->userFunction();
-			nw = plotSurface(f->function(), g->xStart(), g->xStop(), g->yStart(), g->yStop(),
-							 g->zStart(), g->zStop(), f->columns(), f->rows());
-		} else if (g->parametricSurface()){
-			UserParametricSurface *s = g->parametricSurface();
-			nw = plotParametricSurface(s->xFormula(), s->yFormula(), s->zFormula(), s->uStart(), s->uEnd(),
-				 	s->vStart(), s->vEnd(), s->columns(), s->rows(), s->uPeriodic(), s->vPeriodic());
-		} else if (s.endsWith("(Z)"))
-			nw = openPlotXYZ(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
-		else if (s.endsWith("(Y)"))//Ribbon plot
-			nw = addRibbon(caption, s, g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
-		else
-			nw = openMatrixPlot3D(caption, s, g->xStart(), g->xStop(), g->yStart(), g->yStop(),g->zStart(),g->zStop());
-
+		nw = newPlot3D();
 		if (!nw)
 			return 0;
-
         if (status == MdiSubWindow::Maximized)
             nw->hide();
 		((Graph3D *)nw)->copy(g);
@@ -8302,9 +8235,12 @@ void ApplicationWindow::matrixMenuAboutToShow()
 
 void ApplicationWindow::fileMenuAboutToShow()
 {
-	fileMenu->clear();
-	newMenu->clear();
-	exportPlotMenu->clear();
+	if (fileMenu)
+		fileMenu->clear();
+	if (newMenu)
+		newMenu->clear();
+	if (exportPlotMenu)
+		exportPlotMenu->clear();
 
 	newMenu = fileMenu->addMenu(tr("&New"));
 	newMenu->addAction(actionNewProject);
@@ -9190,9 +9126,9 @@ void ApplicationWindow::chooseHelpFolder()
 	QFileInfo hfi(helpFilePath);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
 #ifdef Q_CC_MSVC
-			hfi.dir().absolutePath(), 0);
+		hfi.dir().absolutePath(), 0);
 #else
-			hfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
+		hfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
 #endif
 
 	if (!dir.isEmpty()){
@@ -11363,7 +11299,7 @@ void ApplicationWindow::pickPointerCursor()
 
 void ApplicationWindow::disableTools()
 {
-	if (displayBar->isVisible())
+	if (displayBar && displayBar->isVisible())
 		displayBar->hide();
 
 	QList<MdiSubWindow *> windows = windowsList();
@@ -11458,6 +11394,8 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 					case AddWidgetTool::Ellipse:
 						actionAddEllipse->setChecked(true);
 					break;
+					default:
+						break;
 				}
 				return;
 			}
@@ -13004,24 +12942,6 @@ void ApplicationWindow::translateActionsStrings()
 	actionFitFrame->setStatusTip( tr( "Fit frame to window" ) );
 }
 
-Graph3D * ApplicationWindow::openMatrixPlot3D(const QString& caption, const QString& matrix_name,
-		double xl,double xr,double yl,double yr,double zl,double zr)
-{
-	QString name = matrix_name;
-	name.remove("matrix<", true);
-	name.remove(">");
-	Matrix* m = matrix(name);
-	if (!m)
-		return 0;
-
-	Graph3D *plot = new Graph3D("", this, 0, 0);
-	plot->setWindowTitle(caption);
-	plot->setName(caption);
-	plot->addMatrixData(m, xl, xr, yl, yr, zl, zr);
-	initPlot3D(plot, false);
-	return plot;
-}
-
 Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 {
 	if (!m) {
@@ -13031,17 +12951,14 @@ Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 	}
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
-	QString label = generateUniqueName(tr("Graph"));
+	Graph3D *plot = newPlot3D();
+	if(!plot)
+		return 0;
 
-	Graph3D *plot = new Graph3D("", this, 0);
 	plot->addMatrixData(m);
 	plot->customPlotStyle(style);
-	plot->resize(500, 400);
-	plot->setWindowTitle(label);
-	plot->setName(label);
-	initPlot3D(plot);
-	//plot->setDataColorMap(m->colorMap());
-	//plot->update();
+	plot->setDataColorMap(m->colorMap());
+	plot->update();
 
 	emit modified();
 	QApplication::restoreOverrideCursor();
@@ -15093,7 +15010,7 @@ void ApplicationWindow::fitFrameToLayer()
 
 ApplicationWindow::~ApplicationWindow()
 {
-    disableTools();//avoids crash if a plot tol is still active
+	disableTools();//avoids crash if a plot tol is still active
 
     QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){

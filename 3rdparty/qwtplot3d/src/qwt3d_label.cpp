@@ -106,7 +106,7 @@ void Label::update()
     r.translate(0, -r.top());
 #endif
 
-	pm_ = QPixmap(r.width(), r.bottom());
+	pm_ = QPixmap(r.width(), r.height());
 	if (pm_.isNull()){ // else crash under linux
 		r = 	QRect(QPoint(0,0),fm.size(Qwt3D::SingleLine, QString(" "))); // draw empty space else //todo
 #if QT_VERSION < 0x040000
@@ -114,7 +114,7 @@ void Label::update()
 #else
  		r.translate(0, -r.top());
 #endif
-		pm_ = QPixmap(r.width(), r.bottom());
+		pm_ = QPixmap(r.width(), r.height());
 	}
 
 	if (plot() && plot()->isExportingVector()){
@@ -141,7 +141,7 @@ void Label::update()
   		p.end();
 
   		pm_.setMask(bm);
-  
+
   		// avoids uninitialized areas in some cases
   		pm_.fill(Qt::white);
   		p.begin( &pm_ );
@@ -162,7 +162,7 @@ void Label::update()
 		p.end();
 
 		pm_.setMask(bm);
-  
+
   		// avoids uninitialized areas in some cases
 	#if QT_VERSION < 0x040000
 		pm_.fill();
@@ -172,10 +172,10 @@ void Label::update()
 	  	p.setPen( Qt::SolidLine );
 	  	p.setPen( GL2Qt(color.r, color.g, color.b) );
 	  	p.drawText(0,r.height() - fm.descent() -1 , text_);
-		p.end();     
-	#endif	    
+		p.end();
+	#endif
 	}
-	
+
 #if QT_VERSION < 0x040000
     buf_ = pm_.convertToImage();
 #else
@@ -245,6 +245,9 @@ void Label::convert2screen()
 
 void Label::draw()
 {
+	if (!plot()->isVisible())
+		return;
+
 	if (text_.isEmpty())
 		return;
 
@@ -272,13 +275,11 @@ void Label::draw()
 	convert2screen();
 	glRasterPos3d(beg_.x, beg_.y, beg_.z);
 
-	int w = tex_.width();
-	int h = tex_.height();
-
 	if (devicefonts_)
 		drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_, gap_);
 	else
-		drawDevicePixels(w, h, GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
+		drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
+		//plot()->renderText(beg_.x, beg_.y, beg_.z, text_, font_);
 
 	glAlphaFunc(func,v);
 	Enable(GL_ALPHA_TEST, b);

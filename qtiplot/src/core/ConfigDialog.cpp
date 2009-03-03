@@ -1999,12 +1999,26 @@ void ConfigDialog::apply()
 			}
 		}
 
-		path = helpPathLine->text() + "/index.html";
-		if (path != app->helpFilePath){
-			QFileInfo fi(path);
-			if (fi.exists() && fi.isFile())
-				app->helpFilePath = fi.absoluteFilePath();
-		}
+		QFileInfo hfi(helpPathLine->text());
+		if (hfi.exists() && hfi.isDir()){
+			path = helpPathLine->text() + "/index.html";
+			if (path != app->helpFilePath){
+				QFileInfo fi(path);
+				if (fi.exists() && fi.isFile())
+					app->helpFilePath = fi.absoluteFilePath();
+				else
+					QMessageBox::critical(this, tr("QtiPlot - index.html File Not Found!"),
+					tr("There is no file called <b>index.html</b> in folder %1.<br>Please choose another folder!").
+					arg(helpPathLine->text()));
+			}
+		} else if (!hfi.exists())
+			QMessageBox::critical(this, tr("QtiPlot - Folder Not Found!"),
+			tr("The folder %1 doesn't exist.<br>Please choose another folder!").
+			arg(helpPathLine->text()));
+		else if (!hfi.isDir())
+			QMessageBox::critical(this, tr("QtiPlot - Folder Not Found!"),
+			tr("%1 is not a folder.<br>Please choose another folder!").
+			arg(helpPathLine->text()));
 
 #ifdef SCRIPTING_PYTHON
 		path = pythonConfigDirLine->text();
@@ -2313,10 +2327,27 @@ void ConfigDialog::chooseHelpFolder()
 	if (!app)
 		return;
 
-	app->chooseHelpFolder();
+	//app->chooseHelpFolder();
 
 	QFileInfo hfi(app->helpFilePath);
-	helpPathLine->setText(hfi.dir().absolutePath());
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
+#ifdef Q_CC_MSVC
+		hfi.dir().absolutePath(), 0);
+#else
+		hfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
+#endif
+
+	if (!dir.isEmpty()){
+		QString helpFilePath = dir + "index.html";
+		QFile helpFile(helpFilePath);
+		if (!helpFile.exists()){
+			QMessageBox::critical(this, tr("QtiPlot - index.html File Not Found!"),
+					tr("There is no file called <b>index.html</b> in this folder.<br>Please choose another folder!"));
+		} else
+			app->helpFilePath = helpFilePath;
+	}
+
+	helpPathLine->setText(QFileInfo(app->helpFilePath).dir().absolutePath());
 }
 
 #ifdef SCRIPTING_PYTHON
