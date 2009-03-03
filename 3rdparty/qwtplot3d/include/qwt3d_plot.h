@@ -140,7 +140,7 @@ public:
     bool hasData() const { return (actualData_p) ? !actualData_p->empty() : false;}
 
     bool isExportingVector(){return d_exporting_vector;};
-    void setExpotingVector(bool on = true){d_exporting_vector = on;};
+    void setExportingVector(bool on = true){d_exporting_vector = on;};
 
 signals:
 

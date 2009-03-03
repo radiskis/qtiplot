@@ -36,6 +36,6 @@ const int patch_version = 7;
 //! Extra version information string (like "alpha", "-2", etc...)
 const char * extra_version = ".5";
 //! Copyright string containing the author names
-const char * copyright_string = "Copyright (C) 2004-2008 Ion Vasilief";
+const char * copyright_string = "Copyright (C) 2004-2009 Ion Vasilief";
 //! Release date as a string
-const char * release_date = " 2009/02/09";
+const char * release_date = " 2009/03/04";

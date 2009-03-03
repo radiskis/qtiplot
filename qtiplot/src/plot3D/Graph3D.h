@@ -68,12 +68,14 @@ public:
 	enum PointStyle{None = 0, Dots = 1, VerticalBars = 2, HairCross = 3, Cones = 4};
 	static Graph3D* restore(ApplicationWindow* app, const QStringList &lst, int fileVersion);
 
+	Qwt3D::SurfacePlot* surface(){return sp;};
+
 public slots:
 	void copy(Graph3D* g);
 	void initPlot();
 	void initCoord();
 	void addFunction(const QString& s, double xl, double xr, double yl,
-						  double yr, double zl, double zr, int columns, int rows);
+					double yr, double zl, double zr, int columns = 40, int rows = 30);
 	void addParametricSurface(const QString& xFormula, const QString& yFormula,
 						const QString& zFormula, double ul, double ur, double vl, double vr,
 						int columns, int rows, bool uPeriodic, bool vPeriodic);

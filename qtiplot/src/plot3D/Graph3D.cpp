@@ -151,16 +151,16 @@ void Graph3D::initPlot()
 	d_table = 0;
 	d_table_plot_type = NoTable;
 	d_matrix = 0;
-    plotAssociation = QString();
+	plotAssociation = QString();
 
-    animation_redraw_wait = 50;
-    d_timer = new QTimer(this);
-    connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()));
+	animation_redraw_wait = 50;
+	d_timer = new QTimer(this);
+	connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()));
 	ignoreFonts = false;
 
-    setGeometry(0, 0, 500, 400);
+	setGeometry(0, 0, 500, 400);
 
-    ApplicationWindow *app = applicationWindow();
+	ApplicationWindow *app = applicationWindow();
 
 	sp = new SurfacePlot(this);
 	sp->installEventFilter(this);
@@ -170,8 +170,9 @@ void Graph3D::initPlot()
 	sp->setZoom(0.9);
 	sp->setOrtho(app->d_3D_orthogonal);
 	sp->setSmoothMesh(app->d_3D_smooth_mesh);
-    sp->setResolution(app->d_3D_resolution);
-    sp->setFloorStyle((Qwt3D::FLOORSTYLE)app->d_3D_projection);
+	sp->setResolution(app->d_3D_resolution);
+	sp->setFloorStyle((Qwt3D::FLOORSTYLE)app->d_3D_projection);
+	sp->resize(500, 400);
 	setWidget(sp);
 
 	d_autoscale = app->d_3D_autoscale;
@@ -186,7 +187,7 @@ void Graph3D::initPlot()
 	sp->setTitleFont(titleFnt.family(), titleFnt.pointSize(), titleFnt.weight(), titleFnt.italic());
 
 	col_ = 0;
-    d_color_map_file = QString::null;
+	d_color_map_file = QString::null;
 	d_color_map = app->d_3D_color_map;
 
 	legendOn = app->d_3D_legend;
@@ -215,7 +216,7 @@ void Graph3D::initPlot()
 
 	style_ = NOPLOT;
 	initCoord();
-    sp->coordinates()->setLineSmooth(app->d_3D_smooth_mesh);
+	sp->coordinates()->setLineSmooth(app->d_3D_smooth_mesh);
 
 	setNumbersFont(app->d_3D_numbers_font);
 	setXAxisLabelFont(app->d_3D_axes_font);
@@ -587,7 +588,8 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 			index ++;
 		}
 	}
-
+	sp->makeCurrent();
+	sp->resize(this->size());
 	sp->loadFromData (data, cells);
 	if (check_limits)
 		sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
@@ -2803,6 +2805,34 @@ void Graph3D::copy(Graph3D* g)
 	if (!g)
         return;
 
+	QString s = g->formula();
+
+	if (g->userFunction()){
+		UserFunction *f = g->userFunction();
+		addFunction(f->function(), g->xStart(), g->xStop(), g->yStart(), g->yStop(),
+					g->zStart(), g->zStop(), f->columns(), f->rows());
+	} else if (g->parametricSurface()){
+		UserParametricSurface *ps = g->parametricSurface();
+		addParametricSurface(ps->xFormula(), ps->yFormula(), ps->zFormula(), ps->uStart(), ps->uEnd(),
+				ps->vStart(), ps->vEnd(), ps->columns(), ps->rows(), ps->uPeriodic(), ps->vPeriodic());
+	} else if (s.endsWith("(Z)")){
+		Table *t = g->table();
+		if (!t)
+			return;
+		s.remove("(X)").remove("(Y)").remove("(Z)");
+		QStringList l = s.split(",");
+		if (l.size() == 3)
+			loadData(t, t->colIndex(l[0]), t->colIndex(l[1]), t->colIndex(l[2]),
+			g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
+	} else if (s.endsWith("(Y)")){//Ribbon plot
+		s.remove("(X)").remove("(Y)");
+		QStringList l = s.split(",");
+		if (l.size() == 2)
+			addRibbon(g->table(), l[0], l[1],g->xStart(),g->xStop(), g->yStart(),g->yStop(),g->zStart(),g->zStop());
+	} else
+		addMatrixData(g->matrix(), g->xStart(), g->xStop(), g->yStart(), g->yStop(),g->zStart(),g->zStop());
+
+
 	pointStyle = g->pointType();
 	style_ = g->plotStyle();
 	if (g->plotStyle() == Qwt3D::USER ){
@@ -2889,31 +2919,53 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 		date = QDateTime::currentDateTime().toString(Qt::LocalDate);
 
 	fList=lst[2].split("\t", QString::SkipEmptyParts);
-	Graph3D *plot=0;
 
-	if (fList[1].endsWith("(Y)",true))//Ribbon plot
-		plot=app->addRibbon(caption, fList[1],fList[2].toDouble(),fList[3].toDouble(),
+	Graph3D *plot = app->newPlot3D(caption);
+
+	ApplicationWindow::restoreWindowGeometry(app, plot, lst[1]);
+	QString formula = fList[1];
+	if (formula.endsWith("(Y)",true)){//Ribbon plot
+		Table* t = app->table(formula.left(formula.find("_", 0)));
+		if (!t)
+			return 0;
+
+		formula.remove("(X)").remove("(Y)");
+		QStringList l = formula.split(",");
+		if (l.size() == 2)
+			plot->addRibbon(t, l[0], l[1], fList[2].toDouble(), fList[3].toDouble(),
+			fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
+	} else if (formula.contains("(Z)",true) > 0){
+		Table* t = app->table(formula.left(formula.find("_", 0)));
+		if (!t)
+			return 0;
+
+		plot->show();
+		formula.remove("(X)").remove("(Y)").remove("(Z)");
+		QStringList l = formula.split(",");
+		if (l.size() == 3)
+			plot->loadData(t, t->colIndex(l[0]), t->colIndex(l[1]), t->colIndex(l[2]),
+					   fList[2].toDouble(),fList[3].toDouble(), fList[4].toDouble(),
+					   fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
+	} else if (formula.startsWith("matrix<",true) && fList[1].endsWith(">",false)){
+		formula.remove("matrix<", true).remove(">");
+		Matrix* m = app->matrix(formula);
+		if (!m)
+			return 0;
+
+		plot->addMatrixData(m, fList[2].toDouble(),fList[3].toDouble(),
 				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	else if (fList[1].contains("(Z)",true) > 0)
-		plot=app->openPlotXYZ(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
-				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	else if (fList[1].startsWith("matrix<",true) && fList[1].endsWith(">",false))
-		plot=app->openMatrixPlot3D(caption, fList[1], fList[2].toDouble(),fList[3].toDouble(),
-				fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
-	else if (fList[1].contains(",")){
-		QStringList l = fList[1].split(",", QString::SkipEmptyParts);
-		plot = app->plotParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
+	} else if (formula.contains(",")){
+		QStringList l = formula.split(",", QString::SkipEmptyParts);
+		plot->addParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
 				l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
-		app->setWindowName(plot, caption);
 	} else {
-		QStringList l = fList[1].split(";", QString::SkipEmptyParts);
+		QStringList l = formula.split(";", QString::SkipEmptyParts);
 		if (l.count() == 1)
-			plot = app->plotSurface(fList[1], fList[2].toDouble(), fList[3].toDouble(),
+			plot->addFunction(formula, fList[2].toDouble(), fList[3].toDouble(),
 				fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
 		else if (l.count() == 3)
-			plot = app->plotSurface(l[0], fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
+			plot->addFunction(l[0], fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
 					fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble(), l[1].toInt(), l[2].toInt());
-		app->setWindowName(plot, caption);
 	}
 
 	if (!plot)
@@ -2922,7 +2974,6 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	app->setListViewDate(caption, date);
 	plot->setBirthDate(date);
 	plot->setIgnoreFonts(true);
-	ApplicationWindow::restoreWindowGeometry(app, plot, lst[1]);
 
 	fList=lst[4].split("\t", QString::SkipEmptyParts);
 	plot->setGrid(fList[1].toInt());
@@ -2940,9 +2991,9 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	if ((int)colors.count() > 7){
 		plot->setTransparency(colors[9].toDouble());
 		if ((int)colors.count() == 11)
-            plot->setDataColorMap(colors[10]);
-        else
-		    plot->setDataColors(QColor(colors[7]), QColor(colors[8]));
+			plot->setDataColorMap(colors[10]);
+		else
+			plot->setDataColors(QColor(colors[7]), QColor(colors[8]));
 	}
 
 	fList=lst[7].split("\t", QString::SkipEmptyParts);
