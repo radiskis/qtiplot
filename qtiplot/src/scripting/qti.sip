@@ -1020,14 +1020,8 @@ class ApplicationWindow: QMainWindow
 #include "src/core/ApplicationWindow.h"
 %End
 %ConvertToSubClassCode
-// we have to do this to override casting in qt/qobject.sip (PyQt 3.16)
-sipClass=NULL;
-QString cN = sipCpp->className();
-sipTypeDef *t;
-  for (int i=0; i<sipModuleAPI_qti.em_nrtypes; i++)
-  if (((t=sipModuleAPI_qti.em_types[i]->type)->td_cname && cN == t->td_cname) ||
-      (!t->td_cname && cN == t->td_name+4))
-    sipClass = sipModuleAPI_qti.em_types[i];
+// we have to do this to override casting in qt/qobject.sip
+ sipClass = sipFindClass(sipCpp->className());
 %End
 
 public:

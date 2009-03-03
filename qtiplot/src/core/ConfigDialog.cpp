@@ -1990,17 +1990,13 @@ void ConfigDialog::apply()
 	if (generalDialog->currentWidget() == appTabWidget &&
 		appTabWidget->currentWidget() == fileLocationsPage){
 		QString path = translationsPathLine->text();
-		if (path != app->d_translations_folder){
-			QFileInfo fi(path);
-			if (fi.exists() && fi.isDir()){
-				app->d_translations_folder = fi.absoluteFilePath();
-				app->createLanguagesList();
-				insertLanguagesList();
-			}
+		if (path != app->d_translations_folder && validFolderPath(path)){
+			app->d_translations_folder = QFileInfo(path).absoluteFilePath();
+			app->createLanguagesList();
+			insertLanguagesList();
 		}
 
-		QFileInfo hfi(helpPathLine->text());
-		if (hfi.exists() && hfi.isDir()){
+		if (validFolderPath(helpPathLine->text())){
 			path = helpPathLine->text() + "/index.html";
 			if (path != app->helpFilePath){
 				QFileInfo fi(path);
@@ -2011,25 +2007,14 @@ void ConfigDialog::apply()
 					tr("There is no file called <b>index.html</b> in folder %1.<br>Please choose another folder!").
 					arg(helpPathLine->text()));
 			}
-		} else if (!hfi.exists())
-			QMessageBox::critical(this, tr("QtiPlot - Folder Not Found!"),
-			tr("The folder %1 doesn't exist.<br>Please choose another folder!").
-			arg(helpPathLine->text()));
-		else if (!hfi.isDir())
-			QMessageBox::critical(this, tr("QtiPlot - Folder Not Found!"),
-			tr("%1 is not a folder.<br>Please choose another folder!").
-			arg(helpPathLine->text()));
+		}
 
 #ifdef SCRIPTING_PYTHON
 		path = pythonConfigDirLine->text();
-		if (path != app->d_python_config_folder){
-			QFileInfo fi(path);
-			if (fi.exists() && fi.isDir())
-				app->d_python_config_folder = fi.absoluteFilePath();
-		}
+		if (path != app->d_python_config_folder && validFolderPath(path))
+			app->d_python_config_folder = QFileInfo(path).absoluteFilePath();
 #endif
 	}
-
 
 	// general page: confirmations tab
 	app->d_inform_rename_table = boxPromptRenameTables->isChecked();
@@ -2439,20 +2424,26 @@ void ConfigDialog::updateMenuList()
 	itemsList->setFixedWidth(itemsList->iconSize().width() + width + 50);
 }
 
-/*void ConfigDialog::displayAxisOptions(int axis)
+bool ConfigDialog::validFolderPath(const QString& path)
 {
-	if (axis < 0 || axis >= QwtPlot::axisCnt){
-		boxEnableAxis->setDisabled(true);
-		boxShowAxisLabels->setDisabled(true);
-		return;
+	QFileInfo fi(path);
+	if (!fi.exists()){
+		QMessageBox::critical(this, tr("QtiPlot - Folder Not Found!"),
+		tr("The folder %1 doesn't exist.<br>Please choose another folder!").arg(path));
+		return false;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
-	if (!app)
-		return;
+	if (!fi.isDir()){
+		QMessageBox::critical(this, tr("QtiPlot - Folder Not Found!"),
+		tr("%1 is not a folder.<br>Please choose another folder!").arg(path));
+		return false;
+	}
 
-	boxEnableAxis->setEnabled(true);
-	boxEnableAxis->setChecked(app->d_show_axes[axis]);
-	boxShowAxisLabels->setEnabled(true);
-	boxShowAxisLabels->setChecked(app->d_show_axes_labels[axis]);
-}*/
+	if (!fi.isReadable()){
+		QMessageBox::critical(this, tr("QtiPlot"),
+		tr("You don't have read access rights to folder %1.<br>Please choose another folder!").arg(path));
+		return false;
+	}
+	return true;
+}
+
