@@ -219,7 +219,7 @@ void EnrichmentDialog::initTextPage()
 
 	textEditBox = new QTextEdit();
 	textEditBox->setTextFormat(Qt::PlainText);
-	textEditBox->setFont(QFont());
+	//textEditBox->setFont(QFont());
 
 	formatButtons =  new TextFormatButtons(textEditBox, TextFormatButtons::Legend);
 
@@ -540,6 +540,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 		if (l){
 			setText(textEditBox, l->text());
 			textFont = l->font();
+			textEditBox->setFont(textFont);
 			textColorBtn->blockSignals(true);
 			textColorBtn->setColor(l->textColor());
 			textColorBtn->blockSignals(false);
@@ -978,8 +979,11 @@ void EnrichmentDialog::customFont()
 {
 	bool okF;
 	QFont fnt = QFontDialog::getFont( &okF, textFont, this);
-	if (okF && fnt != textFont)
+	if (okF && fnt != textFont){
 		textFont = fnt;
+		textEditBox->setFont(fnt);
+	}
+
 }
 
 void EnrichmentDialog::updateTransparency(int alpha)

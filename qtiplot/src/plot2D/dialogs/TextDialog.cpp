@@ -111,7 +111,6 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 
 	textEditBox = new QTextEdit();
 	textEditBox->setTextFormat(Qt::PlainText);
-	textEditBox->setFont(QFont());
 
 	formatButtons =  new TextFormatButtons(textEditBox, TextFormatButtons::AxisLabel);
 
@@ -166,6 +165,7 @@ void TextDialog::setGraph(Graph *g)
 	setText(l.text());
 	selectedFont = l.font();
 	colorBtn->setColor(l.color());
+	textEditBox->setFont(l.font());
 }
 
 void TextDialog::apply()
@@ -300,8 +300,10 @@ void TextDialog::customFont()
 {
 	bool okF;
 	QFont fnt = QFontDialog::getFont( &okF, selectedFont, this);
-	if (okF && fnt != selectedFont)
+	if (okF && fnt != selectedFont){
 		selectedFont = fnt;
+		textEditBox->setFont(fnt);
+	}
 }
 
 void TextDialog::setText(const QString & t)

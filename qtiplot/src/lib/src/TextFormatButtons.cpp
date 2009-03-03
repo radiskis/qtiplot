@@ -128,28 +128,27 @@ d_buttons(buttons)
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	QFont font = this->font();
-	font.setPointSize(14);
-
+	QFont font = QFont();
+	int btnSize = 32;
 	if (buttons == Legend){
 		buttonCurve = new QPushButton( QPixmap(lineSymbol_xpm), QString());
-		buttonCurve->setMaximumWidth(40);
-		buttonCurve->setMinimumHeight(35);
+		buttonCurve->setFixedWidth(btnSize);
+		buttonCurve->setFixedHeight(btnSize);
 		buttonCurve->setFont(font);
 		layout->addWidget(buttonCurve);
 		connect( buttonCurve, SIGNAL(clicked()), this, SLOT(addCurve()) );
 	}
 
 	buttonSubscript = new QPushButton(QPixmap(index_xpm), QString());
-	buttonSubscript->setMaximumWidth(40);
-	buttonSubscript->setMinimumHeight(35);
+	buttonSubscript->setFixedWidth(btnSize);
+	buttonSubscript->setFixedHeight(btnSize);
 	buttonSubscript->setFont(font);
 	layout->addWidget(buttonSubscript);
 	connect( buttonSubscript, SIGNAL(clicked()), this, SLOT(addSubscript()) );
 
 	buttonSuperscript = new QPushButton(QPixmap(exp_xpm), QString());
-	buttonSuperscript->setMaximumWidth(40);
-	buttonSuperscript->setMinimumHeight(35);
+	buttonSuperscript->setFixedWidth(btnSize);
+	buttonSuperscript->setFixedHeight(btnSize);
 	buttonSuperscript->setFont(font);
 	layout->addWidget(buttonSuperscript);
 	connect( buttonSuperscript, SIGNAL(clicked()), this, SLOT(addSuperscript()));
@@ -157,25 +156,29 @@ d_buttons(buttons)
 	if (buttons != Equation){
 		buttonLowerGreek = new QPushButton(QString(QChar(0x3B1)));
 		buttonLowerGreek->setFont(font);
-		buttonLowerGreek->setMaximumWidth(40);
+		buttonLowerGreek->setFixedWidth(btnSize);
+		buttonLowerGreek->setFixedHeight(btnSize);
 		layout->addWidget(buttonLowerGreek);
 		connect( buttonLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()));
 
 		buttonUpperGreek = new QPushButton(QString(QChar(0x393)));
 		buttonUpperGreek->setFont(font);
-		buttonUpperGreek->setMaximumWidth(40);
+		buttonUpperGreek->setFixedWidth(btnSize);
+		buttonUpperGreek->setFixedHeight(btnSize);
 		layout->addWidget(buttonUpperGreek);
 		connect( buttonUpperGreek, SIGNAL(clicked()), this, SLOT(showUpperGreek()));
 
 		buttonMathSymbols = new QPushButton(QString(QChar(0x222B)));
 		buttonMathSymbols->setFont(font);
-		buttonMathSymbols->setMaximumWidth(40);
+		buttonMathSymbols->setFixedWidth(btnSize);
+		buttonMathSymbols->setFixedHeight(btnSize);
 		layout->addWidget(buttonMathSymbols);
 		connect( buttonMathSymbols, SIGNAL(clicked()), this, SLOT(showMathSymbols()));
 
 		buttonArrowSymbols = new QPushButton(QString(QChar(0x2192)));
 		buttonArrowSymbols->setFont(font);
-		buttonArrowSymbols->setMaximumWidth(40);
+		buttonArrowSymbols->setFixedWidth(btnSize);
+		buttonArrowSymbols->setFixedHeight(btnSize);
 		layout->addWidget(buttonArrowSymbols);
 		connect( buttonArrowSymbols, SIGNAL(clicked()), this, SLOT(showArrowSymbols()));
 	}
@@ -183,31 +186,31 @@ d_buttons(buttons)
 	if (buttons != Plot3D && buttons != Equation){
 		font = this->font();
 		font.setBold(true);
-		font.setPointSize(14);
 
 		buttonBold = new QPushButton(tr("B","Button bold"));
 		buttonBold->setFont(font);
-		buttonBold->setMaximumWidth(40);
+		buttonBold->setFixedWidth(btnSize);
+		buttonBold->setFixedHeight(btnSize);
 		layout->addWidget(buttonBold);
 		connect( buttonBold, SIGNAL(clicked()), this, SLOT(addBold()));
 
 		font = this->font();
 		font.setItalic(true);
-		font.setPointSize(14);
 
 		buttonItalics = new QPushButton(tr("It","Button italics"));
 		buttonItalics->setFont(font);
-		buttonItalics->setMaximumWidth(40);
+		buttonItalics->setFixedWidth(btnSize);
+		buttonItalics->setFixedHeight(btnSize);
 		layout->addWidget(buttonItalics);
 		connect( buttonItalics, SIGNAL(clicked()), this, SLOT(addItalics()));
 
 		font = this->font();
 		font.setUnderline(true);
-		font.setPointSize(14);
 
 		buttonUnderline = new QPushButton(tr("U","Button underline"));
 		buttonUnderline->setFont(font);
-		buttonUnderline->setMaximumWidth(40);
+		buttonUnderline->setFixedWidth(btnSize);
+		buttonUnderline->setFixedHeight(btnSize);
 		layout->addWidget(buttonUnderline);
    		layout->addStretch();
 		connect( buttonUnderline, SIGNAL(clicked()), this, SLOT(addUnderline()));
@@ -215,15 +218,15 @@ d_buttons(buttons)
 
 	if (buttons == Equation){
 		buttonFraction = new QPushButton(QPixmap(fraction_xpm), QString());
-		buttonFraction->setMaximumWidth(40);
-		buttonFraction->setMinimumHeight(35);
+		buttonFraction->setFixedWidth(btnSize);
+		buttonFraction->setFixedHeight(btnSize);
 		buttonFraction->setFont(font);
 		layout->addWidget(buttonFraction);
 		connect(buttonFraction, SIGNAL(clicked()), this, SLOT(addFraction()));
 
 		buttonSquareRoot = new QPushButton(QPixmap(square_root_xpm), QString());
-		buttonSquareRoot->setMaximumWidth(40);
-		buttonSquareRoot->setMinimumHeight(35);
+		buttonSquareRoot->setFixedWidth(btnSize);
+		buttonSquareRoot->setFixedHeight(btnSize);
 		buttonSquareRoot->setFont(font);
 		layout->addWidget(buttonSquareRoot);
 		connect(buttonSquareRoot, SIGNAL(clicked()), this, SLOT(addSquareRoot()));
@@ -236,8 +239,7 @@ void TextFormatButtons::showLowerGreek()
 	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::lowerGreek, this, Qt::Tool);
 	greekLetters->setAttribute(Qt::WA_DeleteOnClose);
 	QFont f = connectedTextEdit->font();
-	if(f.pointSize()<14)
-		f.setPointSize(14);
+	f.setPointSize(12);
 	greekLetters->setFont(f);
 	connect(greekLetters, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
 	greekLetters->show();
@@ -249,8 +251,7 @@ void TextFormatButtons::showUpperGreek()
 	SymbolDialog *greekLetters = new SymbolDialog(SymbolDialog::upperGreek, this, Qt::Tool);
 	greekLetters->setAttribute(Qt::WA_DeleteOnClose);
 	QFont f = connectedTextEdit->font();
-	if(f.pointSize()<14)
-		f.setPointSize(14);
+	f.setPointSize(12);
 	greekLetters->setFont(f);
 	connect(greekLetters, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
 	greekLetters->show();
@@ -262,8 +263,7 @@ void TextFormatButtons::showMathSymbols()
 	SymbolDialog *mathSymbols = new SymbolDialog(SymbolDialog::mathSymbols, this, Qt::Tool);
 	mathSymbols->setAttribute(Qt::WA_DeleteOnClose);
 	QFont f = connectedTextEdit->font();
-	if(f.pointSize()<14)
-		f.setPointSize(14);
+	f.setPointSize(12);
 	mathSymbols->setFont(f);
 	connect(mathSymbols, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
 	mathSymbols->show();
@@ -276,8 +276,7 @@ void TextFormatButtons::showArrowSymbols()
 	arrowSymbols->setAttribute(Qt::WA_DeleteOnClose);
 	arrowSymbols->setFont(connectedTextEdit->font());
 	QFont f = connectedTextEdit->font();
-	if(f.pointSize()<14)
-		f.setPointSize(14);
+	f.setPointSize(12);
 	arrowSymbols->setFont(f);
 	connect(arrowSymbols, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
 	arrowSymbols->show();
