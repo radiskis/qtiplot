@@ -172,7 +172,6 @@ void Graph3D::initPlot()
 	sp->setSmoothMesh(app->d_3D_smooth_mesh);
 	sp->setResolution(app->d_3D_resolution);
 	sp->setFloorStyle((Qwt3D::FLOORSTYLE)app->d_3D_projection);
-	sp->resize(500, 400);
 	setWidget(sp);
 
 	d_autoscale = app->d_3D_autoscale;
@@ -278,7 +277,6 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 		delete d_func;
 
 	sp->makeCurrent();
-	sp->resize(this->size());
 
 	d_func = new UserFunction(s, *sp);
 
@@ -589,7 +587,6 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 		}
 	}
 	sp->makeCurrent();
-	sp->resize(this->size());
 	sp->loadFromData (data, cells);
 	if (check_limits)
 		sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));

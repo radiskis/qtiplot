@@ -1097,7 +1097,7 @@ public:
   sipRes = sipCpp->newFunctionPlot(l, a1, a2, a3);
 %End
 
-    Graph3D* newPlot3D();
+    Graph3D* newPlot3D(const QString& = QString());
     Graph3D* plotXYZ(Table* table, const QString&, int = 0) /PyName=plot3D/;
 	Graph3D* plot3DMatrix(Matrix *, int style = 5) /PyName=plot3D/;
     Graph3D* plotSurface(const QString&, double xl, double xr, double yl, double yr,

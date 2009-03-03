@@ -332,28 +332,6 @@ bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 {
 	if(!val) return false;
 	PyObject *pyobj=NULL;
-	/*sipTypeDef *t;
-	for (int i=0; i<sipModuleAPI_qti.em_nrtypes; i++)
-			// Note that the SIP API is a bit confusing here.
-			// sipTypeDef.td_cname holds the C++ class name, but is NULL if that's the same as the Python class name.
-			// sipTypeDef.td_name OTOH always holds the Python class name, but prepended by the module name ("qti.")
-			if (((t=sipModuleAPI_qti.em_types[i]->type)->td_cname && !strcmp(val->className(),t->td_cname)) ||
-					(!t->td_cname && !strcmp(val->className(),t->td_name+4)))
-			{
-				pyobj=sipConvertFromInstance(val,sipModuleAPI_qti.em_types[i],NULL);
-				if (!pyobj) return false;
-				break;
-			}
-	if (!pyobj) {
-		for (int i=0; i<sipModuleAPI_qti_QtCore->em_nrtypes; i++)
-				if (((t=sipModuleAPI_qti_QtCore->em_types[i]->type)->td_cname && !strcmp(val->className(),t->td_cname)) ||
-						(!t->td_cname && !strcmp(val->className(),t->td_name+3)))
-				{
-					pyobj=sipConvertFromInstance(val,sipModuleAPI_qti_QtCore->em_types[i],NULL);
-					if (!pyobj) return false;
-					break;
-				}
-	}*/
 
 	sipWrapperType * klass = sipFindClass(val->className());
 	if (!klass) return false;

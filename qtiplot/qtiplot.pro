@@ -24,7 +24,7 @@ win32:LIBS 		  += ../3rdparty/libpng/libpng.a
 
 CONFIG          += release
 #CONFIG          += debug
-win32: CONFIG   += console
+#win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings

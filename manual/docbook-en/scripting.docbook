@@ -2239,7 +2239,7 @@ For large data sets you can increase the drawing speed by reducing the number of
 taken into account. The lower the resolution parameter, the higher the number of points used:
 for an integer value of 1, all the data points are drawn.
 <programlisting>
-g = newPlot3D()
+g = newPlot3D("test3D")
 g.setTitle("My 3D Plot", QtGui.QColor("blue"), QtGui.QFont("Arial",14))
 g.setResolution(2)
 g.setFunction("sin(x*y)", -10.0, 10.0, -10.0, 10.0, -2.0, 2.0)
