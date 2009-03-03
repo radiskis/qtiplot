@@ -57,11 +57,13 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 		setGeometry(d_target->geometry());
 		text = ((LegendWidget*)d_target)->text();
 		d_target->hide();
+		setFont(((LegendWidget*)d_target)->font());
 	} else if (g->titleSelected()){
 		d_target = g->titleLabel();
 		QwtText t = g->title();
 		text = t.text();
 		setAlignment((Qt::Alignment)t.renderFlags());
+		setFont(t.font());
 		setGeometry(d_target->geometry());
 	} else if (g->selectedScale()){
 		d_target = g->selectedScale();
@@ -69,6 +71,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 		QwtText t = scale->title();
 		text = t.text();
 		setAlignment((Qt::Alignment)t.renderFlags());
+		setFont(t.font());
 
 		QRect rect = g->axisTitleRect(scale);
 		if (scale->alignment() == QwtScaleDraw::BottomScale ||

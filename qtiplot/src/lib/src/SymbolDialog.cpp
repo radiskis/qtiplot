@@ -33,6 +33,8 @@
 #include <QShortcut>
 #include <QHBoxLayout>
 #include <QButtonGroup>
+#include <QTextCodec>
+#include <QMessageBox>
 
 SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WFlags fl )
 : QDialog( parent, fl )
@@ -163,6 +165,16 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
+	// MULTIPLICATION SIGN
+	for ( i=0; i <= (0x00D7-0x00D7) ; i++,counter++ ){
+		QPushButton *btn = new QPushButton(QString(QChar(i+0x00D7)));
+		btn->setMaximumWidth(40);
+		btn->setFlat ( true );
+		btn->setAutoDefault (false);
+		buttons->addButton(btn,counter+1);
+		gridLayout->addWidget(btn,counter/8,counter%8);
+	}
+
 	for ( i=0 ; i <= (0x221E - 0x2217) ; i++,counter++ )
 	{
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x2217)));
@@ -262,6 +274,7 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
+
 	// h bar
 	for ( i=0 ; i <= (0x210F-0x210F) ; i++,counter++ )
 	{
@@ -272,10 +285,20 @@ void SymbolDialog::initMathSymbols()
 		buttons->addButton(btn,counter+1);
 		gridLayout->addWidget(btn,counter/8,counter%8);
 	}
+
 	// angstrom
 	for ( i=0 ; i <= (0x212B-0x212B) ; i++,counter++ )
 	{
 		QPushButton *btn = new QPushButton(QString(QChar(i+0x212B)));
+		btn->setMaximumWidth(40);
+		btn->setFlat ( true );
+		btn->setAutoDefault (false);
+		buttons->addButton(btn,counter+1);
+		gridLayout->addWidget(btn,counter/8,counter%8);
+	}
+	// per mille and per ten thousand (thanks to Knut Franke)
+	for ( i=0; i <= (0x2031-0x2030) ; i++,counter++ ){
+		QPushButton *btn = new QPushButton(QString(QChar(i+0x2030)));
 		btn->setMaximumWidth(40);
 		btn->setFlat ( true );
 		btn->setAutoDefault (false);
