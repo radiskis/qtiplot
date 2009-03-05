@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS = fitPlugins \
-	      manual \
+	    manual \
+	    3rdparty/qwt \
           qtiplot

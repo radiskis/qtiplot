@@ -6,7 +6,7 @@
 <!DOCTYPE style-sheet PUBLIC "-//James Clark//DTD DSSSL Style Sheet//EN" [
 
 <!-- Path to main Docbook->html stylesheet. You have to adapt this to your installation. -->
-<!ENTITY docbook-html-stylesheet SYSTEM "/usr/share/sgml/docbook/dsssl-stylesheets-1.79/html/docbook.dsl" CDATA DSSSL>
+<!ENTITY docbook-html-stylesheet SYSTEM "/usr/share/sgml/docbook/stylesheet/dsssl/modular/html/docbook.dsl" CDATA DSSSL>
 
 <!-- Stylesheet function library for creating Windows HTML help and Qt Assistant profiles. -->
 <!ENTITY docbook-help-stylesheet SYSTEM "./help.dsl" CDATA DSSSL>

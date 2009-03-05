@@ -15,9 +15,9 @@ DEFINES         += SCRIPTING_DIALOG
 #DEFINES         += QTIPLOT_SUPPORT
 
 # Comment the next line, if you don't have libpng on your windows system.
-#DEFINES += GL2PS_HAVE_LIBPNG
+DEFINES += GL2PS_HAVE_LIBPNG
 win32:INCLUDEPATH += ../3rdparty/libpng/
-win32:LIBS 		  += ../3rdparty/libpng/libpng.a
+win32:LIBS        += ../3rdparty/libpng/libpng.a
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall
@@ -49,8 +49,8 @@ unix:LIBS         += ../3rdparty/muparser/lib/libmuparser.a
 unix:LIBS         += ../3rdparty/qwt/lib/libqwt.a
 unix:LIBS         += ../3rdparty/gsl/lib/libgsl.a
 unix:LIBS         += ../3rdparty/gsl/lib/libgslcblas.a
-unix:LIBS         += /usr/local/lib/libboost_date_time-gcc41-mt.a
-unix:LIBS         += /usr/local/lib/libboost_thread-gcc41-mt.a
+unix:LIBS         += ../3rdparty/boost_1_36_0/lib/libboost_date_time-gcc43-mt-1_36.a
+unix:LIBS         += ../3rdparty/boost_1_36_0/lib/libboost_thread-gcc43-mt-1_36.a
 
 # dynamically link against dependencies if they are installed system-wide
 #unix:LIBS         += -lmuparser
@@ -134,8 +134,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-#system(lupdate -verbose qtiplot.pro)
-#system(lrelease -verbose qtiplot.pro)
+system(lupdate -verbose qtiplot.pro)
+system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \

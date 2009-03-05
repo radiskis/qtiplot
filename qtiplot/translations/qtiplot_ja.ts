@@ -9223,32 +9223,32 @@ The following special codes can be used:
 <context>
     <name>Graph3D</name>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="247"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="246"/>
         <source>X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="254"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="253"/>
         <source>Y axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="261"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="260"/>
         <source>Z axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2101"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2098"/>
         <source>QtiPlot - Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2085"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2082"/>
         <source>Please provide a valid file name!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2101"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2098"/>
         <source>File format not handled, operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12853,12 +12853,12 @@ have the same number of rows.</source>
 <context>
     <name>PythonScripting</name>
     <message>
-        <location filename="src/scripting/PythonScripting.cpp" line="227"/>
+        <location filename="src/scripting/PythonScripting.cpp" line="228"/>
         <source>Failed to export QtiPlot API</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/PythonScripting.cpp" line="229"/>
+        <location filename="src/scripting/PythonScripting.cpp" line="230"/>
         <source>Accessing QtiPlot functions or objects from Python code won&apos;t work.Probably your version of SIP differs from the one QtiPlot was compiled against.</source>
         <translation type="unfinished"></translation>
     </message>

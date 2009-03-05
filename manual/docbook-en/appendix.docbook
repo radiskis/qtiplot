@@ -129,8 +129,8 @@ also be obtained from the same address.</para>
 
 <para>Ion Vasilief, the founder and main developer of &appname;,
 distributes precompiled packages for Windows, Mac OS X (>= 10.4) and
-for the main Linux distributions: a <ulink url="http://www.debian.org/">Debian</ulink> package
-and a <ulink url="http://www.rpm.org/">RPM</ulink> package.
+for the Linux .deb based distributions: <ulink url="http://www.debian.org/">Debian</ulink>, <ulink url="http://www.ubuntulinux.org/">Ubuntu</ulink>, etc... Generic Linux binaries, suitable for all Linux distributions, are also available.
+
 Several types of binaries maintainance contracts are available, please check the
 <ulink url="http://soft.proindependent.com/pricing.html">pricing details</ulink>,
 or <ulink url="http://soft.proindependent.com/proforma.html">request an invoice</ulink>.
@@ -150,13 +150,6 @@ then login as "root" and type:</para>
 <screen>
 dpkg -i qtiplot_0.x.x_i386.deb
 </screen>
-
-To install the RPM package: download the file <ulink url="&kappdownload;">qtiplot-&kappversion;-1.i386.rpm</ulink>,
-then login as "root" and type:
-<screen>
-rpm -i qtiplot-0.x.x-1.i386.rpm
-</screen>
-The RPM package was created on an <ulink url="http://www.ubuntulinux.org/">Ubuntu</ulink> distribution.
 </sect1>
 
 <sect1 id="compilation">
@@ -176,7 +169,8 @@ If you want to build &appname; from sources, you need the following libraries:
 <varlistentry>
   <term>Qwt</term>
   <listitem>
-    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.1.1</ulink> library.</para>
+    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.2</ulink> library. The last SVN version of this library is 
+	included in &appname; ("3rdparty/qwt" folder), so you don't need to install it separately.</para>
   </listitem>
 </varlistentry>
 <varlistentry>
@@ -229,8 +223,8 @@ If you want to build &appname; from sources, you need the following libraries:
 
 <para>Finally, if you want Python scripting support, you will also need to download and install:
 <ulink url="http://www.python.org/">Python</ulink> 2.5,
-<ulink url="http://www.riverbankcomputing.co.uk/sip">SIP</ulink>,
-and <ulink url="http://www.riverbankcomputing.co.uk/pyqt">PyQt v4</ulink>.
+<ulink url="http://www.riverbankcomputing.co.uk/software/sip/intro">SIP</ulink>,
+and <ulink url="http://www.riverbankcomputing.co.uk/software/pyqt/intro">PyQt v4</ulink>.
 All three of them are included in many Linux distributions.
 </para>
 </sect2>

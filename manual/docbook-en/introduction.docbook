@@ -41,14 +41,14 @@ which automatically creates new tables.</para>
 <para>When starting &appname; from the command prompt, you can supply the name of a project file:</para>
 
 <screen>
-&appname; file_name.&file-ext;
+qtiplot file_name.&file-ext;
 </screen>
 
 <para>Other file formats are also accepted: <emphasis>.opj, .ogm, .ogw, .ogg</emphasis> for Origin projects, and <emphasis>.qti, qti.gz</emphasis> for &appname; projects.</para>
 <para>The name can also refer to an ASCII file:</para>
 
 <screen>
-&appname; ASCII_file_name
+qtiplot ASCII_file_name
 </screen>
 
 <para> In this latter case a new "untitled" project will be created, containing a spreadsheet with the ASCII data in the file and a 2D plot of all columns as a function of the first column in the file.

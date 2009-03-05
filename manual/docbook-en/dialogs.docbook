@@ -961,7 +961,16 @@ scripting support.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The third tab named <emphasis>Ticks</emphasis> defines the default style for the ticks of the axes used when you create a new plot.</para>
+  <para>The third tab named <emphasis>Axes</emphasis> allows you to specify which plot axes will be displayed
+   in a new layer and the main aspect parameters of an axis.</para>
+  <informalfigure id="fig-preferences-dialog-15">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog15.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <para>The fourth tab named <emphasis>Ticks</emphasis> defines the default style for the ticks of the axes used when you create a new plot.</para>
   <informalfigure id="fig-preferences-dialog-7">
     <mediaobject>
       <imageobject>
@@ -969,7 +978,7 @@ scripting support.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The fourth tab named <emphasis>Fonts</emphasis> defines the default fonts used when you create a new plot.</para>
+  <para>The fifth tab named <emphasis>Fonts</emphasis> defines the default fonts used when you create a new plot.</para>
   <informalfigure id="fig-preferences-dialog-8">
     <mediaobject>
       <imageobject>
@@ -977,7 +986,7 @@ scripting support.</para>
       </imageobject>
     </mediaobject>
   </informalfigure>
-   <para>The fifth tab named <emphasis>Print</emphasis> allows you to define the default options
+   <para>The last tab named <emphasis>Print</emphasis> allows you to define the default options
    used when printing 2D plots. If you want the layers to be printed with their original dimensions,
    you must be sure to uncheck the option <emphasis>Scale layers to paper size</emphasis>. By checking the <emphasis>Print Cropmarks</emphasis>
    option you ensure that some visible marks are drawn around the borders of the plot.</para>
@@ -1291,8 +1300,8 @@ The format of the file is simple: each line defines a color by red, green and bl
   <para>This dialog can be opened by several commands such as &format-title-lnk;
   or when you double click on an axis title in your plot.
   The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis>
-  commands allow the modification of the general settings of the text label. 
-  You can also specify the distance between the label and the corresponding axis, using the 
+  commands allow the modification of the general settings of the text label.
+  You can also specify the distance between the label and the corresponding axis, using the
   <emphasis>Distance to axis</emphasis> box.</para>
 
   <figure id="fig-text-options">

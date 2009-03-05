@@ -100,60 +100,26 @@ void Label::update()
     QFontInfo info(font_);
 
     QRect r = QRect(QPoint(0, 0), fm.size(Qwt3D::SingleLine, text_));//fm.boundingRect(text_)  misbehaviour under linux;
-#if QT_VERSION < 0x040000
-    r.moveBy(0, -r.top());
-#else
     r.translate(0, -r.top());
-#endif
 
 	pm_ = QPixmap(r.width(), r.height());
 	if (pm_.isNull()){ // else crash under linux
-		r = 	QRect(QPoint(0,0),fm.size(Qwt3D::SingleLine, QString(" "))); // draw empty space else //todo
-#if QT_VERSION < 0x040000
- 		r.moveBy(0, -r.top());
-#else
+		r = QRect(QPoint(0,0),fm.size(Qwt3D::SingleLine, QString(" "))); // draw empty space else //todo
  		r.translate(0, -r.top());
-#endif
 		pm_ = QPixmap(r.width(), r.height());
 	}
 
 	if (plot() && plot()->isExportingVector()){
-    #if QT_VERSION >= 0x040000
-        Qwt3D::RGBA rgba = plot()->backgroundRGBAColor();
-        pm_.fill(GL2Qt(rgba.r, rgba.g, rgba.b));
-    #else
-        pm_.fill();
-    #endif
+		Qwt3D::RGBA rgba = plot()->backgroundRGBAColor();
+		pm_.fill(GL2Qt(rgba.r, rgba.g, rgba.b));
 		p.begin( &pm_ );
     	p.setFont( font_ );
     	p.setPen( Qt::SolidLine );
     	p.setPen( GL2Qt(color.r, color.g, color.b) );
     	p.drawText(0, r.height() - fm.descent() - 1, text_);
 		p.end();
-    } else {
-		QBitmap bm(pm_.width(),pm_.height());
-	#if QT_VERSION >= 0x040000 && defined(Q_WS_X11)
-  		bm.fill(Qt::white);
-		p.begin( &bm );
-    	p.setPen(Qt::black);
-    	p.setFont(font_);
-    	p.drawText(0,r.height() - fm.descent() -1 , text_);
-  		p.end();
-
-  		pm_.setMask(bm);
-
-  		// avoids uninitialized areas in some cases
-  		pm_.fill(Qt::white);
-  		p.begin( &pm_ );
-    	p.setFont( font_ );
-    	p.setPen( Qt::SolidLine );
-    	p.setPen( GL2Qt(color.r, color.g, color.b) );
-
-    	p.drawText(0,r.height() - fm.descent() -1 , text_);
-  		p.end();
-
-  		buf_ = pm_.toImage();
-	#else
+	} else {
+		QBitmap bm(pm_.width(), pm_.height());
   		bm.fill(Qt::color0);
 		p.begin( &bm );
 		p.setPen(Qt::color1);
@@ -164,24 +130,15 @@ void Label::update()
 		pm_.setMask(bm);
 
   		// avoids uninitialized areas in some cases
-	#if QT_VERSION < 0x040000
-		pm_.fill();
-	#endif
 		p.begin( &pm_ );
 	  	p.setFont( font_ );
 	  	p.setPen( Qt::SolidLine );
 	  	p.setPen( GL2Qt(color.r, color.g, color.b) );
 	  	p.drawText(0,r.height() - fm.descent() -1 , text_);
 		p.end();
-	#endif
 	}
 
-#if QT_VERSION < 0x040000
-    buf_ = pm_.convertToImage();
-#else
     buf_ = pm_.toImage();
-#endif
-
 	tex_ = QGLWidget::convertToGLFormat( buf_ );	  // flipped 32bit RGBA ?
 }
 
