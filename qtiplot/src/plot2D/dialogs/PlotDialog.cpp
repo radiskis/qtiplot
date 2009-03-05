@@ -2264,8 +2264,7 @@ bool PlotDialog::acceptParams()
 			br = QBrush();
 		QPen pen = QPen(boxSymbolColor->color(), boxPenWidth->value(), Qt::SolidLine);
 		QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
-		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
-		curve->setSymbol(s);
+		((QwtPlotCurve *)plotItem)->setSymbol(s);
 	} else if (privateTabWidget->currentPage() == histogramPage){
         QwtHistogram *h = (QwtHistogram *)plotItem;
 		if (!h)

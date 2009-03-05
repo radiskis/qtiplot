@@ -4965,14 +4965,13 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	drawItems(painter, fillRect, map, pfilter);
     painter->restore();
 
-    painter->save();
 	if(lw > 0){
+		painter->save();
 		QColor color = plotCanvas->palette().color(QPalette::Active, QColorGroup::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 		painter->drawRect(rect.adjusted(0, 0, -2, -2));
+		painter->restore();
 	}
-
-    painter->restore();
 
 	foreach(FrameWidget *f, d_enrichments){
 		if (f->isVisible())
@@ -5616,7 +5615,6 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
         }
     }
 
-    pfilter.reset((QwtPlot *)this);
     painter->restore();
     setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
 }

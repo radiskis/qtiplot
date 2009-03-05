@@ -11,12 +11,12 @@ file included in the KDE distribution. -->
 <para>&appname;</para>
 
 <para>Program copyright:</para>
-<para>2004-2007 &ion; <email>&email-ion;</email></para>
+<para>2004-2009 &ion; <email>&email-ion;</email></para>
 <para>2006-2007 &tilman; <email>&email-tilman;</email></para>
 <para>2006-2007 &knut; <email>&email-knut;</email></para>
 
 <para>Documentation copyright:</para>
-<para>2004-2007 &ion; &email-ion;</para>
+<para>2004-2009 &ion; &email-ion;</para>
 <para>2006-2007 &roger; <email>&email-roger;</email></para>
 <para>2006-2007 &knut; &email-knut;</para>
 
@@ -169,7 +169,7 @@ If you want to build &appname; from sources, you need the following libraries:
 <varlistentry>
   <term>Qwt</term>
   <listitem>
-    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.2</ulink> library. The last SVN version of this library is 
+    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.2</ulink> library. The last SVN version of this library is
 	included in &appname; ("3rdparty/qwt" folder), so you don't need to install it separately.</para>
   </listitem>
 </varlistentry>
@@ -177,7 +177,7 @@ If you want to build &appname; from sources, you need the following libraries:
   <term>QwtPlot3D</term>
   <listitem>
     <para>A modified version of the <ulink url="http://sourceforge.net/projects/qwtplot3d/">QwtPlot3D</ulink> library
-	 is used to create the 3D plots. It is included in &appname; ("3rdparty/liborigin" folder), 
+	 is used to create the 3D plots. It is included in &appname; ("3rdparty/liborigin" folder),
 	 so you don't need to install it separately.</para>
   </listitem>
 </varlistentry>
@@ -191,7 +191,7 @@ If you want to build &appname; from sources, you need the following libraries:
   <term>liborigin</term>
   <listitem>
     <para>The last version of the <ulink url="http://sourceforge.net/projects/liborigin/">liborigin</ulink>
-	 allows to read OriginLab OPJ project files. It is included in &appname; ("3rdparty/liborigin" folder), 
+	 allows to read OriginLab OPJ project files. It is included in &appname; ("3rdparty/liborigin" folder),
 	 so you don't need to download and install it.</para>
   </listitem>
 </varlistentry>
@@ -232,9 +232,9 @@ All three of them are included in many Linux distributions.
 <sect2 id="compilation-linux">
 <title>Linux and Mac OS X</title>
 
-<para>Download the <ulink url="&kappdownload;">qtiplot archive</ulink> (.tar.bz2 or .zip file) and decompress it. Then open a terminal (console) window and go to the main folder of the decompressed archive (which should be named &kappdirectory;-&version;). 
-You must be sure that &appname; is able to find the third party libraries it depends on. 
-You have to go to the &kappdirectory; directory and open the file &kappdirectory;.pro. 
+<para>Download the <ulink url="&kappdownload;">qtiplot archive</ulink> (.tar.bz2 or .zip file) and decompress it. Then open a terminal (console) window and go to the main folder of the decompressed archive (which should be named &kappdirectory;-&version;).
+You must be sure that &appname; is able to find the third party libraries it depends on.
+You have to go to the &kappdirectory; directory and open the file &kappdirectory;.pro.
 As an example, the folowing line describes the path to the Qwt library header files which should be available for the compilation:</para>
 <screen>
 unix:INCLUDEPATH  += ../3rdparty/qwt/include/
