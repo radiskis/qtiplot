@@ -11617,17 +11617,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="247"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="246"/>
         <source>X axis</source>
         <translation>Axe X</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="254"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="253"/>
         <source>Y axis</source>
         <translation>Axe Y</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="261"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="260"/>
         <source>Z axis</source>
         <translation>Axes Z</translation>
     </message>
@@ -11637,17 +11637,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Ne peut pas impriemr &lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2101"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2098"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Erreur</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2085"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2082"/>
         <source>Please provide a valid file name!</source>
         <translation>Veuillez donner un nom de fichier valide !</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2101"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2098"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fichier non supporté, opération annulée !</translation>
     </message>
@@ -16174,12 +16174,12 @@ Voulez-vous insérer des cellules?</translation>
 <context>
     <name>PythonScripting</name>
     <message>
-        <location filename="src/scripting/PythonScripting.cpp" line="227"/>
+        <location filename="src/scripting/PythonScripting.cpp" line="228"/>
         <source>Failed to export QtiPlot API</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/PythonScripting.cpp" line="229"/>
+        <location filename="src/scripting/PythonScripting.cpp" line="230"/>
         <source>Accessing QtiPlot functions or objects from Python code won&apos;t work.Probably your version of SIP differs from the one QtiPlot was compiled against.</source>
         <translation type="unfinished"></translation>
     </message>
