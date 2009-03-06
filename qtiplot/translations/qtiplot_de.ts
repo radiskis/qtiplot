@@ -18796,7 +18796,7 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
         <source>Angle</source>
         <translation>Winkel</translation>
     </message>
@@ -18806,17 +18806,17 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;Gefüllt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2615"/>
         <source>End Point</source>
         <translation>Endpunkt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
         <source>X End</source>
         <translation>X-Ende</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2618"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
         <source>Y End</source>
         <translation>Y-Ende</translation>
     </message>
@@ -19081,47 +19081,47 @@ Wollen sie Zellen einfügen?</translation>
         <translation>Vektor XYAM</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2503"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Eingabefehler</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2431"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2430"/>
         <source>Please enter a valid start limit!</source>
         <translation>Bitte einen gültigen Startwert eingeben!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2438"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2437"/>
         <source>Please enter a valid end limit!</source>
         <translation>Bitte einen gültigen Endwert eingeben!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2445"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2444"/>
         <source>Please enter a valid bin size value!</source>
         <translation>Bitte eine gültige Intervallbreite eingeben!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2503"/>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
         <translation>Bitte Grenzen eingeben, so dass Anfang &lt; Ende!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2529"/>
         <source>QtiPlot - Bin size input error</source>
         <translation>QtiPlot - Fehler bei der Intervallgröße</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2529"/>
         <source>Please enter a positive bin size value!</source>
         <translation>Bitte eine positive Intervallgröße eingeben!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2607"/>
         <source>Vector Data</source>
         <translation>Vektordaten</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2610"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
         <source>Magnitude</source>
         <translation>Betrag</translation>
     </message>
@@ -19251,12 +19251,12 @@ Wollen sie Zellen einfügen?</translation>
         <translation>&amp;Benutzerdefinierte Farbtabelle</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2474"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2473"/>
         <source>QtiPlot - Start limit error</source>
         <translation>Qtiplot - Startwertfehler</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2493"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2492"/>
         <source>QtiPlot - End limit error</source>
         <translation>QtiPlot - Endwertfehler</translation>
     </message>

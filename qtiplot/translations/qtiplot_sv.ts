@@ -15598,7 +15598,7 @@ Vill du skjuta in celler?</translation>
         <translation>Längd</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
         <source>Angle</source>
         <translation>Vinkel</translation>
     </message>
@@ -15608,17 +15608,17 @@ Vill du skjuta in celler?</translation>
         <translation>&amp;Fylld</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2615"/>
         <source>End Point</source>
         <translation>Slutpunkt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
         <source>X End</source>
         <translation>X-slut</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2618"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
         <source>Y End</source>
         <translation>Y-slut</translation>
     </message>
@@ -15733,57 +15733,57 @@ Vill du skjuta in celler?</translation>
         <translation> Linje + Symbol</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2503"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Indatafel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2431"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2430"/>
         <source>Please enter a valid start limit!</source>
         <translation>Mata in en giltig startgräns!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2438"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2437"/>
         <source>Please enter a valid end limit!</source>
         <translation>Mata in en giltig slutgräns!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2445"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2444"/>
         <source>Please enter a valid bin size value!</source>
         <translation>Mata in ett giltigt högvärde!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2474"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2473"/>
         <source>QtiPlot - Start limit error</source>
         <translation>QtiPlot - Startgränsfel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2493"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2492"/>
         <source>QtiPlot - End limit error</source>
         <translation>QtiPlot - Slutgränsfel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2503"/>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
         <translation>Mata in gränser som tillfredställer villkoret: början &lt; slut!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2529"/>
         <source>QtiPlot - Bin size input error</source>
         <translation>QtiPlot - Fel storlek för högar</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2529"/>
         <source>Please enter a positive bin size value!</source>
         <translation>Mata in ett positivt högvärde!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2607"/>
         <source>Vector Data</source>
         <translation>Vektordata</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2610"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
         <source>Magnitude</source>
         <translation>Magnitud</translation>
     </message>

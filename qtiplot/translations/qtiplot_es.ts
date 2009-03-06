@@ -16484,7 +16484,7 @@ Do you want to insert cells?</source>
         <translation type="unfinished">Longitud</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
         <source>Angle</source>
         <translation type="unfinished">Ángulo</translation>
     </message>
@@ -16494,17 +16494,17 @@ Do you want to insert cells?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2615"/>
         <source>End Point</source>
         <translation type="unfinished">Punto Final</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
         <source>X End</source>
         <translation type="unfinished">X Final</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2618"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
         <source>Y End</source>
         <translation type="unfinished">Y Final</translation>
     </message>
@@ -16619,57 +16619,57 @@ Do you want to insert cells?</source>
         <translation type="unfinished"> Línea + Símbolo</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2503"/>
         <source>QtiPlot - Input error</source>
         <translation type="unfinished">QtiPlot - Error de entrada</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2431"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2430"/>
         <source>Please enter a valid start limit!</source>
         <translation type="unfinished">¡Por favor, introduzca un límite inicial válido!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2438"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2437"/>
         <source>Please enter a valid end limit!</source>
         <translation type="unfinished">¡Por favor, introduzca un límite final válido!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2445"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2444"/>
         <source>Please enter a valid bin size value!</source>
         <translation type="unfinished">¡Por favor, introduzca un valor de bin válido!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2474"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2473"/>
         <source>QtiPlot - Start limit error</source>
         <translation type="unfinished">QtiPlot - Error en el límite inicial</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2493"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2492"/>
         <source>QtiPlot - End limit error</source>
         <translation type="unfinished">QtiPlot - Error en el límite final</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2503"/>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
         <translation type="unfinished">¡Por favor, introduzca límites en tales que: inicio &lt; fin!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2529"/>
         <source>QtiPlot - Bin size input error</source>
         <translation type="unfinished">QtiPlot - Error en el tamaño del bin</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2529"/>
         <source>Please enter a positive bin size value!</source>
         <translation type="unfinished">¡Por favor, introduzca un valor positivo de bin!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2607"/>
         <source>Vector Data</source>
         <translation type="unfinished">Datos Vectoriales</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2610"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
         <source>Magnitude</source>
         <translation type="unfinished">Magnitud</translation>
     </message>
