@@ -35,7 +35,7 @@ INCLUDEPATH       += ../3rdparty/qwtplot3d/include
 INCLUDEPATH       += ../3rdparty/qwt/src
 INCLUDEPATH       += ../3rdparty/liborigin
 INCLUDEPATH       += ../3rdparty/gsl/include
-INCLUDEPATH       += ../3rdparty/zlib123/include
+INCLUDEPATH       += ../3rdparty/zlib
 INCLUDEPATH       += ../3rdparty/boost_1_36_0
 
 ##################### 3rd PARTY LIBRARIES SECTION ###########################
@@ -63,7 +63,7 @@ win32:LIBS        += ../3rdparty/muparser/lib/libmuparser.a
 win32:LIBS        += ../3rdparty/qwt/lib/libqwt.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgsl.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgslcblas.a
-win32:LIBS        += ../3rdparty/zlib123/lib/zdll.lib
+win32:LIBS        += ../3rdparty/zlib/libz.a
 win32:LIBS        += ../3rdparty/boost_1_36_0/lib/libboost_date_time-mgw34-mt.lib
 win32:LIBS        += ../3rdparty/boost_1_36_0/lib/libboost_thread-mgw34-mt.lib
 

@@ -2073,7 +2073,7 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
 		gl2ps->setSortMode((VectorWriter::SORTMODE)sortMode);
 	}
 
-    IO::save(sp, fileName, format);
+	IO::save(sp, fileName, format);
 }
 
 void Graph3D::exportToFile(const QString& fileName)

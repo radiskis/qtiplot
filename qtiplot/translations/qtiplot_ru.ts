@@ -12069,7 +12069,7 @@ have the same number of rows.</source>
         <translation>99-1</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
         <source>Angle</source>
         <translation>Угол</translation>
     </message>
@@ -12284,7 +12284,7 @@ have the same number of rows.</source>
         <translation>Конец</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2615"/>
         <source>End Point</source>
         <translation>Конечная точка</translation>
     </message>
@@ -12429,7 +12429,7 @@ have the same number of rows.</source>
         <translation>Линии</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2610"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2609"/>
         <source>Magnitude</source>
         <translation>Величина</translation>
     </message>
@@ -12569,27 +12569,27 @@ have the same number of rows.</source>
         <translation>Круговая диаграмма</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2529"/>
         <source>Please enter a positive bin size value!</source>
         <translation>Пожалуйста введите положительное значение размера столбика!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2445"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2444"/>
         <source>Please enter a valid bin size value!</source>
         <translation>Пожалуйста введите корректное значение размера столбика!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2438"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2437"/>
         <source>Please enter a valid end limit!</source>
         <translation>Пожалуйста введите корректную конечную границу!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2431"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2430"/>
         <source>Please enter a valid start limit!</source>
         <translation>Пожалуйста введите корректную начальную границу!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2503"/>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
         <translation>Пожалуйста введите пределы, удовлетворяющие соотношению: от &lt; до!</translation>
     </message>
@@ -12624,17 +12624,17 @@ have the same number of rows.</source>
         <translation>Печатать &amp;метки обреза</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2530"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2529"/>
         <source>QtiPlot - Bin size input error</source>
         <translation>QtiPlot - Ошибка ввода размера корзины</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2493"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2492"/>
         <source>QtiPlot - End limit error</source>
         <translation>QtiPlot - Ошибка выбора конечной границы</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2504"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2503"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Ошибка ввода</translation>
     </message>
@@ -12644,7 +12644,7 @@ have the same number of rows.</source>
         <translation>QtiPlot - Детали построения</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2474"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2473"/>
         <source>QtiPlot - Start limit error</source>
         <translation>QtiPlot - Ошибка выбора начальной границы</translation>
     </message>
@@ -12774,7 +12774,7 @@ have the same number of rows.</source>
         <translation>Вектор</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2608"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2607"/>
         <source>Vector Data</source>
         <translation>Данные вектора</translation>
     </message>
@@ -12814,7 +12814,7 @@ have the same number of rows.</source>
         <translation>Рабочая &amp;таблица</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2616"/>
         <source>X End</source>
         <translation>Конец X</translation>
     </message>
@@ -12829,7 +12829,7 @@ have the same number of rows.</source>
         <translation>X= </translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2618"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2617"/>
         <source>Y End</source>
         <translation>Конец Y</translation>
     </message>

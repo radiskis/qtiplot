@@ -213,7 +213,7 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
     return false;
   }
 
-    plot->setExportingVector();
+   plot->setExportingVector();
 
     while( state == GL2PS_OVERFLOW ){
 		bufsize += 2*1024*1024;
@@ -222,8 +222,7 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
 										 options, GL_RGBA, 0, NULL, 0, 0, 0, bufsize,
 										 fp, QWT3DLOCAL8BIT(fname) );
 
-        plot->updateData();
-        plot->updateGL();
+		plot->updateGL();
 		state = gl2psEndPage();
 	}
 	fclose(fp);
@@ -255,7 +254,6 @@ bool VectorWriter::operator()(Plot3D* plot, QString const& fname)
         options, GL_RGBA, 0, NULL, 0, 0, 0, bufsize,
         fp, QWT3DLOCAL8BIT(fn) );
 
-      plot->updateData();
       plot->updateGL();
       state = gl2psEndPage();
     }
