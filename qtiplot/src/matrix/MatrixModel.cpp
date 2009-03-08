@@ -447,37 +447,6 @@ bool MatrixModel::removeRows(int row, int count, const QModelIndex & parent)
 	return true;
 }
 
-QString MatrixModel::saveToString()
-{
-	QString s = "<data>\n";
-	int cols = d_cols - 1;
-	for(int i = 0; i < d_rows; i++){
-		int aux = d_cols*i;
-		bool emptyRow = true;
-		for(int j = 0; j < d_cols; j++){
-			if (gsl_finite(d_data[aux + j])){
-				emptyRow = false;
-				break;
-			}
-		}
-		if (emptyRow)
-			continue;
-
-		s += QString::number(i) + "\t";
-		for(int j = 0; j < cols; j++){
-			double val = d_data[aux + j];
-			if (gsl_finite(val))
-				s += QString::number(val, 'e', 16);
-			s += "\t";
-		}
-		double val = d_data[aux + cols];
-		if (gsl_finite(val))
-			s += QString::number(val, 'e', 16);
-		s += "\n";
-	}
-	return s + "</data>\n";
-}
-
 QImage MatrixModel::renderImage()
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
