@@ -32,6 +32,7 @@
 #include <MultiLayer.h>
 
 #include <QTextCursor>
+#include <QMessageBox>
 
 #include <qwt_text.h>
 #include <qwt_text_label.h>
@@ -101,20 +102,24 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 
 void TextEditor::closeEvent(QCloseEvent *e)
 {
-	QString s = QString();
+	QString s = text();
+	int lines = s.count(QRegExp("\n"));
+	if ( lines >= 100 && QMessageBox::question(d_graph->multiLayer(),
+		tr("QtiPlot") + " - " + tr("Confirmation"),
+		tr("Are you sure you want to add %1 text lines into this text box?").arg(lines),
+		QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+		s = d_initial_text;
+
 	if (d_target->isA("LegendWidget")){
-		s = text();
 		((LegendWidget*)d_target)->setText(s);
         d_target->show();
 		d_graph->setActiveText(NULL);
 	} else if (d_target->isA("PieLabel")){
-		s = text();
 		((PieLabel*)d_target)->setCustomText(s);
         d_target->show();
 		d_graph->setActiveText(NULL);
 	} else if (d_target->isA("QwtTextLabel")){
 		QwtText title = d_graph->title();
-		s = text();
 		if(s.isEmpty())
 			s = " ";
 		title.setText(s);
@@ -122,7 +127,6 @@ void TextEditor::closeEvent(QCloseEvent *e)
 	} else if (d_target->isA("QwtScaleWidget")){
 		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
 		QwtText title = scale->title();
-		s = text();
 		if(s.isEmpty())
 			s = " ";
 		title.setText(s);

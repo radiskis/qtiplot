@@ -14,10 +14,8 @@ DEFINES         += SCRIPTING_DIALOG
 # Comment the following lines to disable donations start-up message.
 #DEFINES         += QTIPLOT_SUPPORT
 
-# Comment the next line, if you don't have libpng on your windows system.
-DEFINES += GL2PS_HAVE_LIBPNG
-win32:INCLUDEPATH += ../3rdparty/libpng/
-win32:LIBS        += ../3rdparty/libpng/libpng.a
+# Comment the next line, if you don't have libpng on your system.
+CONFIG          += HAVE_LIBPNG
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall
@@ -156,10 +154,10 @@ documentation.files += ../README.html \
 unix: man.files += ../qtiplot.1
 
 ###############################################################
-##################### Compression (zlib123) ###################
+##################### Compression (zlib-1.2.3) ################
 ###############################################################
 
-SOURCES += ../3rdparty/zlib123/minigzip.c
+SOURCES += ../3rdparty/zlib/minigzip.c
 
 ###############################################################
 ################# Default Modules #############################
@@ -185,8 +183,8 @@ contains(SCRIPTING_LANGS, Python) {
   contains(CONFIG, CustomInstall){
   	INSTALLS += pythonconfig
   	pythonconfig.files += qtiplotrc.py \
-  						qtiUtil.py \
-  						qti_wordlist.txt \
+  				    qtiUtil.py \
+  				    qti_wordlist.txt \
 
   	unix: pythonconfig.path = /usr/local/qtiplot
   	win32: pythonconfig.path = $$INSTALLBASE
@@ -206,6 +204,14 @@ contains(SCRIPTING_LANGS, Python) {
     LIBS        += $$system(call python-libs-win.py)
     system($$system(call python-sipcmd.py) -c $${SIP_DIR} src/scripting/qti.sip)
   }
+}
+
+###############################################################
+
+contains(CONFIG, HAVE_LIBPNG){
+	DEFINES += GL2PS_HAVE_LIBPNG
+	INCLUDEPATH += ../3rdparty/libpng/
+	LIBS        += ../3rdparty/libpng/libpng.a
 }
 
 ###############################################################

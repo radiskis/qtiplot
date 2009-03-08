@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ro">
+<defaultcodec></defaultcodec>
 <context>
     <name>AddWidgetTool</name>
     <message>
@@ -14146,6 +14147,24 @@ have the same number of rows.</source>
         <location filename="src/plot2D/dialogs/TextDialog.cpp" line="157"/>
         <source>Right Axis Title</source>
         <translation>Titlu axă dreapta</translation>
+    </message>
+</context>
+<context>
+    <name>TextEditor</name>
+    <message>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="108"/>
+        <source>QtiPlot</source>
+        <translation>QtiPlot</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="108"/>
+        <source>Confirmation</source>
+        <translation>Confirmare</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="109"/>
+        <source>Are you sure you want to add %1 text lines into this text box?</source>
+        <translation>Sunteţi sigur că vreţi să adăugaţi %1 linii acestui text?</translation>
     </message>
 </context>
 <context>
