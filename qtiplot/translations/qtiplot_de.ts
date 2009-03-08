@@ -22070,6 +22070,24 @@ Wollen sie Zellen einfügen?</translation>
     </message>
 </context>
 <context>
+    <name>TextEditor</name>
+    <message>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="108"/>
+        <source>QtiPlot</source>
+        <translation type="unfinished">QtiPlot</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="108"/>
+        <source>Confirmation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="109"/>
+        <source>Are you sure you want to add %1 text lines into this text box?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TextFormatButtons</name>
     <message>
         <location filename="src/lib/src/TextFormatButtons.cpp" line="190"/>
