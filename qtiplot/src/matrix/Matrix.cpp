@@ -204,9 +204,39 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	else
 		t << ColorMapEditor::saveToXmlString(d_color_map);
 
-    if (notTemplate)
-        t << d_matrix_model->saveToString();
-    t <<"</matrix>\n";
+    if (notTemplate){//save data
+		t << "<data>\n";
+		double* d_data = d_matrix_model->dataVector();
+		int d_rows = numRows();
+		int d_cols = numCols();
+		int cols = d_cols - 1;
+		for(int i = 0; i < d_rows; i++){
+			int aux = d_cols*i;
+			bool emptyRow = true;
+			for(int j = 0; j < d_cols; j++){
+				if (gsl_finite(d_data[aux + j])){
+					emptyRow = false;
+					break;
+				}
+			}
+			if (emptyRow)
+				continue;
+
+			t << QString::number(i) + "\t";
+			for(int j = 0; j < cols; j++){
+				double val = d_data[aux + j];
+				if (gsl_finite(val))
+					t << QString::number(val, 'e', 16);
+				t << "\t";
+			}
+			double val = d_data[aux + cols];
+			if (gsl_finite(val))
+				t << QString::number(val, 'e', 16);
+			t << "\n";
+		}
+		t << "</data>\n";
+    }
+    t << "</matrix>\n";
 }
 
 void Matrix::restore(const QStringList &lst)

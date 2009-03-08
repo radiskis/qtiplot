@@ -130,6 +130,9 @@ d_buttons(buttons)
 
 	QFont font = QFont();
 	int btnSize = 32;
+#ifdef Q_OS_MAC
+	btnSize = 38;
+#endif
 	if (buttons == Legend){
 		buttonCurve = new QPushButton( QPixmap(lineSymbol_xpm), QString());
 		buttonCurve->setFixedWidth(btnSize);

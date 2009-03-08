@@ -77,7 +77,6 @@ public:
 	QString text(int row, int col);
 	void setText(int row, int col, const QString&);
 
-	QString saveToString();
 	QImage renderImage();
 
 	double data(int row, int col) const;
