@@ -4,7 +4,7 @@ SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
-#DEFINES         += SCRIPTING_CONSOLE
+DEFINES         += SCRIPTING_CONSOLE
 
 # a dialog for selecting the scripting language on a per-project basis
 DEFINES         += SCRIPTING_DIALOG

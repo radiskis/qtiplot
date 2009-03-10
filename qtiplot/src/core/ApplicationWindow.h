@@ -149,6 +149,11 @@ public:
 	void addCustomAction(QAction *, const QString& parentName, int index = -1);
     QList<QAction *> customActionsList(){return d_user_actions;};
 	QList<QMenu *> customizableMenusList();
+
+	void reloadCustomMenus();
+	QMenu* addCustomMenu(const QString& title, const QString& parentName);
+	void removeCustomMenu(const QString& title);
+	QList<QMenu *> customMenusList(){return d_user_menus;};
 	//@}
 
 	QList<QMenu *> menusList();
@@ -1033,6 +1038,8 @@ private slots:
 public:
 	//! Default geometry unit to be displayed in the EnrichmentDialog.
 	int d_frame_geometry_unit;
+	//! Default geometry unit to be displayed in the PlotDialog.
+	int d_layer_geometry_unit;
     int d_notes_tab_length;
     QFont d_notes_font;
 	//! End of line convention used for copy/paste operations and when exporting tables/matrices to ASCII files.
@@ -1322,5 +1329,6 @@ private:
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
+    QList<QMenu *> d_user_menus;
 };
 #endif

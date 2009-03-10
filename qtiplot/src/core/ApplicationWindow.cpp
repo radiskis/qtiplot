@@ -547,6 +547,7 @@ void ApplicationWindow::initGlobalConstants()
 	legendBackground.setAlpha(0); // transparent by default;
 	d_legend_default_angle = 0;
 	d_frame_geometry_unit = (int)FrameWidget::Scale;
+	d_layer_geometry_unit = (int)FrameWidget::Pixel;
 
 	d_rect_default_background = Qt::white;
 	d_rect_default_brush = QBrush(Qt::white);
@@ -980,6 +981,28 @@ void ApplicationWindow::insertTranslatedStrings()
 	formatToolBar->setWindowTitle(tr("Format"));
 
 	fileMenu->changeItem(recentMenuID, tr("&Recent Projects"));
+	fileMenu->setTitle(tr("&File"));
+	newMenu->setTitle(tr("&New"));
+	exportPlotMenu->setTitle(tr("&Export Graph"));
+	edit->setTitle(tr("&Edit"));
+	view->setTitle(tr("&View"));
+	graph->setTitle(tr("&Graph"));
+	plot3DMenu->setTitle(tr("3D &Plot"));
+	matrixMenu->setTitle(tr("&Matrix"));
+    plot2DMenu->setTitle(tr("&Plot"));
+    plotDataMenu->setTitle(tr("&Data"));
+	normMenu->setTitle(tr("&Normalize"));
+	fillMenu->setTitle(tr("&Fill Columns With"));
+	tableMenu->setTitle(tr("&Table"));
+	smoothMenu->setTitle(tr("&Smooth"));
+	filterMenu->setTitle(tr("&FFT filter"));
+	decayMenu->setTitle(tr("Fit E&xponential Decay"));
+	multiPeakMenu->setTitle(tr("Fit &Multi-peak"));
+	analysisMenu->setTitle(tr("&Analysis"));
+	format->setTitle(tr("F&ormat"));
+	scriptingMenu->setTitle(tr("&Scripting"));
+	windowsMenu->setTitle(tr("&Windows"));
+	help->setTitle(tr("&Help"));
 
 	translateActionsStrings();
 	customMenu(activeWindow());
@@ -987,6 +1010,8 @@ void ApplicationWindow::insertTranslatedStrings()
 
 void ApplicationWindow::initMainMenu()
 {
+	menuBar()->setObjectName("menuBar");
+
 	fileMenu = new QMenu(this);
 	fileMenu->setObjectName("fileMenu");
 	connect(fileMenu, SIGNAL(aboutToShow()), this, SLOT(fileMenuAboutToShow()));
@@ -1086,7 +1111,7 @@ void ApplicationWindow::initMainMenu()
 	normMenu = new QMenu(this);
 	normMenu->setObjectName("normMenu");
 
-	fillMenu = new QMenu(this);
+	fillMenu = new QMenu();
 	fillMenu->setObjectName("fillMenu");
 
 	tableMenu = new QMenu(this);
@@ -1140,7 +1165,12 @@ void ApplicationWindow::initMainMenu()
 	help->insertSeparator();
 	help->addAction(actionAbout);
 
-	QList<QMenu *> menus = customizableMenusList();
+	QList<QMenu *> menus;
+	menus << windowsMenu << view << graph << fileMenu << format << edit;
+	menus << help << plot2DMenu << analysisMenu;
+	menus << matrixMenu << plot3DMenu << plotDataMenu << scriptingMenu;
+	menus << tableMenu << newMenu << exportPlotMenu;
+
 	foreach (QMenu *m, menus)
     	connect(m, SIGNAL(triggered(QAction *)), this, SLOT(performCustomAction(QAction *)));
 
@@ -1172,9 +1202,9 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->addAction(actionShowColumnValuesDialog);
 	tableMenu->addAction(actionTableRecalculate);
 
-    fillMenu = tableMenu->addMenu (tr("&Fill Columns With"));
 	fillMenu->addAction(actionSetAscValues);
 	fillMenu->addAction(actionSetRandomValues);
+	tableMenu->addMenu (fillMenu);
 
 	tableMenu->addAction(actionClearTable);
 	tableMenu->insertSeparator();
@@ -1271,12 +1301,12 @@ void ApplicationWindow::plotMenuAboutToShow()
 void ApplicationWindow::customMenu(QMdiSubWindow* w)
 {
 	menuBar()->clear();
-	menuBar()->insertItem(tr("&File"), fileMenu);
+	menuBar()->addMenu (fileMenu);
 	fileMenuAboutToShow();
-	menuBar()->insertItem(tr("&Edit"), edit);
+	menuBar()->addMenu(edit);
 	editMenuAboutToShow();
-	menuBar()->insertItem(tr("&View"), view);
-	menuBar()->insertItem(tr("&Scripting"), scriptingMenu);
+	menuBar()->addMenu(view);
+	menuBar()->addMenu(scriptingMenu);
 
 	scriptingMenu->clear();
 #ifdef SCRIPTING_DIALOG
@@ -1309,12 +1339,12 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			actionShowExportASCIIDialog->setEnabled(false);
 
 		if (w->isA("MultiLayer")) {
-			menuBar()->insertItem(tr("&Graph"), graph);
-			menuBar()->insertItem(tr("&Data"), plotDataMenu);
+			menuBar()->addMenu(graph);
+			menuBar()->addMenu(plotDataMenu);
 			plotDataMenuAboutToShow();
-			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
+			menuBar()->addMenu(analysisMenu);
 			analysisMenuAboutToShow();
-			menuBar()->insertItem(tr("F&ormat"), format);
+			menuBar()->addMenu(format);
 
 			format->clear();
 			format->addAction(actionShowPlotDialog);
@@ -1328,7 +1358,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 		} else if (w->isA("Graph3D")) {
 			disableActions();
 
-			menuBar()->insertItem(tr("F&ormat"), format);
+			menuBar()->addMenu(format);
 
 			actionPrint->setEnabled(true);
 			actionSaveTemplate->setEnabled(true);
@@ -1341,18 +1371,18 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			if (((Graph3D*)w)->coordStyle() == Qwt3D::NOCOORD)
 				actionShowAxisDialog->setEnabled(false);
 		} else if (w->inherits("Table")) {
-			menuBar()->insertItem(tr("&Plot"), plot2DMenu);
-            menuBar()->insertItem(tr("&Analysis"), analysisMenu);
+			menuBar()->addMenu(plot2DMenu);
+            menuBar()->addMenu(analysisMenu);
 			analysisMenuAboutToShow();
-            menuBar()->insertItem(tr("&Table"), tableMenu);
+            menuBar()->addMenu(tableMenu);
 			tableMenuAboutToShow();
 			actionTableRecalculate->setEnabled(true);
 		} else if (w->isA("Matrix")){
 			actionTableRecalculate->setEnabled(true);
-			menuBar()->insertItem(tr("3D &Plot"), plot3DMenu);
-			menuBar()->insertItem(tr("&Matrix"), matrixMenu);
+			menuBar()->addMenu(plot3DMenu);
+			menuBar()->addMenu(matrixMenu);
 			matrixMenuAboutToShow();
-			menuBar()->insertItem(tr("&Analysis"), analysisMenu);
+			menuBar()->addMenu(analysisMenu);
 			analysisMenuAboutToShow();
 
 			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Empty Stack"));
@@ -1380,9 +1410,9 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	} else
 		disableActions();
 
-    menuBar()->insertItem(tr("&Windows"), windowsMenu);
+    menuBar()->addMenu(windowsMenu);
 	windowsMenuAboutToShow();
-	menuBar()->insertItem(tr("&Help"), help );
+	menuBar()->addMenu(help);
 
 	reloadCustomActions();
 }
@@ -4429,6 +4459,7 @@ void ApplicationWindow::readSettings()
 	antialiasing2DPlots = settings.value("/Antialiasing", true).toBool();
 	d_scale_plots_on_print = settings.value("/ScaleLayersOnPrint", false).toBool();
 	d_print_cropmarks = settings.value("/PrintCropmarks", false).toBool();
+	d_layer_geometry_unit = settings.value("/GeometryUnit", d_layer_geometry_unit).toInt();
 
 	QStringList graphFonts = settings.value("/Fonts").toStringList();
 	if (graphFonts.size() == 16) {
@@ -4772,6 +4803,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Antialiasing", antialiasing2DPlots);
 	settings.setValue("/ScaleLayersOnPrint", d_scale_plots_on_print);
 	settings.setValue("/PrintCropmarks", d_print_cropmarks);
+	settings.setValue("/GeometryUnit", d_layer_geometry_unit);
 
 	QStringList graphFonts;
 	graphFonts<<plotAxesFont.family();
@@ -8102,13 +8134,13 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->insertSeparator();
 
 		smoothMenu->clear();
-        smoothMenu = analysisMenu->addMenu (tr("&Smooth"));
+        analysisMenu->addMenu(smoothMenu);
         smoothMenu->addAction(actionSmoothSavGol);
         smoothMenu->addAction(actionSmoothAverage);
         smoothMenu->addAction(actionSmoothFFT);
 
 		filterMenu->clear();
-		filterMenu = analysisMenu->addMenu (tr("&FFT filter"));
+		analysisMenu->addMenu(filterMenu);
         filterMenu->addAction(actionLowPassFilter);
         filterMenu->addAction(actionHighPassFilter);
         filterMenu->addAction(actionBandPassFilter);
@@ -8123,7 +8155,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->insertSeparator();
 
 		decayMenu->clear();
-        decayMenu = analysisMenu->addMenu (tr("Fit E&xponential Decay"));
+		analysisMenu->addMenu(decayMenu);
         decayMenu->addAction(actionShowExpDecayDialog);
         decayMenu->addAction(actionShowTwoExpDecayDialog);
         decayMenu->addAction(actionShowExpDecay3Dialog);
@@ -8134,7 +8166,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionFitLorentz);
 
 		multiPeakMenu->clear();
-		multiPeakMenu = analysisMenu->addMenu (tr("Fit &Multi-peak"));
+		analysisMenu->addMenu(multiPeakMenu);
         multiPeakMenu->addAction(actionMultiPeakGauss);
         multiPeakMenu->addAction(actionMultiPeakLorentz);
         analysisMenu->insertSeparator();
@@ -8154,7 +8186,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionSortTable);
 
 		normMenu->clear();
-		normMenu = analysisMenu->addMenu (tr("&Normalize"));
+		analysisMenu->addMenu(normMenu);
         normMenu->addAction(actionNormalizeSelection);
         normMenu->addAction(actionNormalizeTable);
 
@@ -8242,7 +8274,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	if (exportPlotMenu)
 		exportPlotMenu->clear();
 
-	newMenu = fileMenu->addMenu(tr("&New"));
+	fileMenu->addMenu(newMenu);
 	newMenu->addAction(actionNewProject);
     newMenu->addAction(actionNewFolder);
 	newMenu->addAction(actionNewTable);
@@ -8272,7 +8304,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	fileMenu->insertSeparator();
 
 	if (w && (w->isA("MultiLayer") || w->isA("Graph3D"))){
-		exportPlotMenu = fileMenu->addMenu (tr("&Export Graph"));
+		fileMenu->addMenu (exportPlotMenu);
 		exportPlotMenu->addAction(actionExportGraph);
 		exportPlotMenu->addAction(actionExportAllGraphs);
 	}
@@ -15654,6 +15686,7 @@ void ApplicationWindow::addCustomAction(QAction *action, const QString& parentNa
     }
 
     QList<QMenu *> menus = customizableMenusList();
+    menus += d_user_menus;
     foreach (QMenu *m, menus){
         if (m->objectName() == parentName){
 			if (action->icon().isNull())
@@ -15670,6 +15703,8 @@ void ApplicationWindow::addCustomAction(QAction *action, const QString& parentNa
 
 void ApplicationWindow::reloadCustomActions()
 {
+	reloadCustomMenus();
+
     QList<QMenu *> menus = customizableMenusList();
 	foreach(QAction *a, d_user_actions){
 		if (!a->statusTip().isEmpty()){
@@ -15678,6 +15713,8 @@ void ApplicationWindow::reloadCustomActions()
         		    QList<QAction *> lst = m->actions();
         		    if (!lst.contains(a))
                         m->addAction(a);
+
+					break;
         		}
         	}
 		}
@@ -15699,12 +15736,15 @@ void ApplicationWindow::performCustomAction(QAction *action)
 		return;
 
 #ifdef SCRIPTING_PYTHON
+	QString lang = scriptEnv->name();
 	setScriptingLanguage("Python");
 
     ScriptEdit *script = new ScriptEdit(scriptEnv, 0);
     script->importASCII(action->data().toString());
     script->executeAll();
     delete script;
+
+    setScriptingLanguage(lang);// reset old scripting language
 #else
     QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
     tr("QtiPlot was not built with Python scripting support included!"));
@@ -15716,20 +15756,43 @@ void ApplicationWindow::loadCustomActions()
     QString path = customActionsDirPath + "/";
 	QDir dir(path);
 	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks, QDir::Name);
-	for (int i=0; i<lst.count(); i++){
+	for (int i = 0; i < lst.count(); i++){// parse menu files first
 	    QString fileName = path + lst[i];
         QFile file(fileName);
         QFileInfo fi(file);
         if (!file.open(QFile::ReadOnly | QFile::Text))
             continue;
 
-        QAction *action = new QAction(this);
-        CustomActionHandler handler(action);
-        QXmlSimpleReader reader;
-        reader.setContentHandler(&handler);
-        reader.setErrorHandler(&handler);
+		if (fi.completeSuffix () != "qcm")
+			continue;
 
-        QXmlInputSource xmlInputSource(&file);
+		CustomMenuHandler handler;
+		QXmlSimpleReader reader;
+		reader.setContentHandler(&handler);
+		reader.setErrorHandler(&handler);
+
+		QXmlInputSource xmlInputSource(&file);
+		if (reader.parse(xmlInputSource))
+			addCustomMenu(handler.title(), handler.location());
+	}
+
+	for (int i = 0; i < lst.count(); i++){// parse action files
+	    QString fileName = path + lst[i];
+        QFile file(fileName);
+        QFileInfo fi(file);
+        if (!file.open(QFile::ReadOnly | QFile::Text))
+            continue;
+
+		if (fi.completeSuffix () != "qca")
+			continue;
+
+		QAction *action = new QAction(this);
+		CustomActionHandler handler(action);
+		QXmlSimpleReader reader;
+		reader.setContentHandler(&handler);
+		reader.setErrorHandler(&handler);
+
+		QXmlInputSource xmlInputSource(&file);
 		if (reader.parse(xmlInputSource))
 			addCustomAction(action, handler.parentName());
 	}
@@ -15738,11 +15801,11 @@ void ApplicationWindow::loadCustomActions()
 QList<QMenu *> ApplicationWindow::customizableMenusList()
 {
 	QList<QMenu *> lst;
-	lst << 	windowsMenu << view << graph << fileMenu << format << edit;
-	lst << help << plot2DMenu << analysisMenu << multiPeakMenu;
+	lst << windowsMenu << view << graph << fileMenu << format << edit;
+	lst << help << plot2DMenu;
+	lst << analysisMenu << multiPeakMenu  << smoothMenu << filterMenu << decayMenu  << normMenu;
 	lst << matrixMenu << plot3DMenu << plotDataMenu << scriptingMenu;
-	lst << tableMenu << fillMenu << normMenu << newMenu << exportPlotMenu << smoothMenu;
-	lst << filterMenu << decayMenu;
+	lst << tableMenu << fillMenu << newMenu << exportPlotMenu;
 	return lst;
 }
 
@@ -16039,4 +16102,52 @@ QString ApplicationWindow::stemPlot(Table *t, const QString& colName, int power,
 	} else
 		result += "\t" + tr("Input error: empty data set!") + "\n";
 	return result;
+}
+
+QMenu* ApplicationWindow::addCustomMenu(const QString& title, const QString& parentName)
+{
+	if (parentName == menuBar()->objectName()){
+		QMenu *menu = menuBar()->addMenu(title);
+		if (menu){
+			menu->setObjectName(title);
+			d_user_menus.append(menu);
+			connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(performCustomAction(QAction *)));
+			return menu;
+		}
+	}
+
+	QList<QMenu *> menus = customizableMenusList();
+	foreach (QMenu *m, menus){
+		if (m->objectName() == parentName){
+			QMenu *menu = m->addMenu(title);
+			if (menu){
+				menu->setObjectName(title);
+				d_user_menus.append(menu);
+				return menu;
+			}
+		}
+	}
+	return NULL;
+}
+
+void ApplicationWindow::removeCustomMenu(const QString& title)
+{
+	foreach (QMenu *m, d_user_menus){
+		if (m->objectName() == title){
+			int index = d_user_menus.indexOf(m);
+			if (index >= 0 && index < d_user_menus.count()){
+				d_user_menus.removeAt(index);
+				delete m;
+				return;
+			}
+		}
+	}
+}
+
+void ApplicationWindow::reloadCustomMenus()
+{
+	foreach(QMenu *m, d_user_menus){
+		if (m->parentWidget())
+			((QMenu *)m->parentWidget())->addMenu (m);
+	}
 }

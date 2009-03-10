@@ -210,6 +210,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 		int d_rows = numRows();
 		int d_cols = numCols();
 		int cols = d_cols - 1;
+
 		for(int i = 0; i < d_rows; i++){
 			int aux = d_cols*i;
 			bool emptyRow = true;
@@ -223,6 +224,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 				continue;
 
 			t << QString::number(i) + "\t";
+
 			for(int j = 0; j < cols; j++){
 				double val = d_data[aux + j];
 				if (gsl_finite(val))
