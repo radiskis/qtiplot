@@ -481,6 +481,7 @@ void PlotDialog::initLayerGeometryPage()
 	connect(boxLayerWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustLayerHeight(double)));
 	connect(boxLayerHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustLayerWidth(double)));
 	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
+	unitBox->setCurrentIndex(app->d_layer_geometry_unit);
 }
 
 void PlotDialog::initPiePage()
@@ -2198,7 +2199,13 @@ bool PlotDialog::acceptParams()
 
 		FrameWidget::setRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
 					boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex());
+
 		d_ml->repaint();
+
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		if (app)
+			app->d_layer_geometry_unit = unitBox->currentIndex();
+
 		return true;
 	}
 

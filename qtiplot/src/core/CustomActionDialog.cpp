@@ -46,6 +46,8 @@
 #include <QImageReader>
 #include <QShortcut>
 #include <QMessageBox>
+#include <QInputDialog>
+#include <QMenuBar>
 
 CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
     : QDialog(parent, fl)
@@ -99,6 +101,12 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
     menuBox = new QComboBox();
     gl1->addWidget(menuBox, 6, 1);
 
+	newMenuBtn = new QPushButton(tr("&New Menu..."));
+    gl1->addWidget(newMenuBtn, 6, 2);
+
+    removeMenuBtn = new QPushButton(tr("&Delete Menu"));
+    gl1->addWidget(removeMenuBtn, 6, 3);
+
     toolBarBtn = new QRadioButton(tr("&Tool Bar"));
     toolBarBtn->setChecked(true);
     gl1->addWidget(toolBarBtn, 7, 0);
@@ -112,7 +120,7 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 	buttonSave = new QPushButton(tr("&Save"));
 	buttonSave->setAutoDefault( true );
 	bottomButtons->addWidget(buttonSave);
-	
+
 	buttonAdd = new QPushButton(tr("&Add"));
 	buttonAdd->setAutoDefault( true );
 	bottomButtons->addWidget(buttonAdd);
@@ -138,6 +146,11 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
 	QShortcut *accelRemove = new QShortcut(QKeySequence(Qt::Key_Delete), this);
 	connect(accelRemove, SIGNAL(activated()), this, SLOT(removeAction()));
 
+	connect(newMenuBtn, SIGNAL(clicked()), this, SLOT(addMenu()));
+	connect(removeMenuBtn, SIGNAL(clicked()), this, SLOT(removeMenu()));
+	connect(menuBox, SIGNAL(currentIndexChanged (const QString &)),
+			this, SLOT(enableDeleteMenuBtn(const QString &)));
+
 	connect(buttonSave, SIGNAL(clicked()), this, SLOT(saveCurrentAction()));
 	connect(buttonAdd, SIGNAL(clicked()), this, SLOT(addAction()));
 	connect(buttonRemove, SIGNAL(clicked()), this, SLOT(removeAction()));
@@ -158,7 +171,7 @@ void CustomActionDialog::init()
 	QList<QMenu *> d_app_menus = app->menusList();
 
 	QStringList toolBars, menus;
-	foreach (QMenu *m, d_menus){
+	foreach (QMenu *m, d_menus + app->customMenusList()){
 		if (!m->title().isEmpty()){
 			menus << m->title().remove("&");
 	   }
@@ -189,6 +202,7 @@ void CustomActionDialog::init()
 	toolBarBox->addItems(toolBars);
 
 	updateDisplayList();
+	enableDeleteMenuBtn(menuBox->currentText());
 }
 
 void CustomActionDialog::updateDisplayList()
@@ -230,7 +244,7 @@ QAction* CustomActionDialog::addAction()
                 }
             }
         } else {
-            foreach (QMenu *m, d_menus){
+            foreach (QMenu *m, d_menus + app->customMenusList()){
                 if (m->title().remove("&") == menuBox->currentText()){
                     action->setStatusTip(m->objectName());
                     app->addCustomAction(action, m->objectName());
@@ -339,18 +353,16 @@ void CustomActionDialog::customizeAction(QAction *action)
 {
 	if (!action)
 		return;
-	
+
 	action->setText(textBox->text().remove(".").simplified());
     action->setData(QFileInfo(fileBox->text()).absoluteFilePath());
 
-	QString iconPath = iconBox->text();	
+	QString iconPath = iconBox->text();
 	QFileInfo iconInfo(iconPath);
     if (!iconPath.isEmpty() && iconInfo.exists() && iconInfo.isFile()){
         action->setIcon(QIcon(iconPath));
         action->setIconText(iconInfo.absoluteFilePath());
-    } else {
-
-	}
+    }
 
     if (!toolTipBox->text().isEmpty())
         action->setToolTip(toolTipBox->text().simplified());
@@ -369,34 +381,38 @@ void CustomActionDialog::removeAction()
     QAction *action = actionAt(row);
 	if (!action)
 		return;
-	
+
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
     QFile f(app->customActionsDirPath + "/" + action->text() + ".qca");
     f.remove();
-	
+
 	app->removeCustomAction(action);
-	
-    itemsList->takeItem(row);
+
+	itemsList->takeItem(row);
+	QListWidgetItem *item = itemsList->item(row);
+	if (item)
+		itemsList->removeItemWidget(item);
+
 	if (itemsList->count())
 		setCurrentAction(0);
 }
 
 void CustomActionDialog::saveCurrentAction()
 {
-	int row = itemsList->currentRow(); 
+	int row = itemsList->currentRow();
 	QAction *action = actionAt(row);
 	if (!action)
 		return;
-	
+
 	QList<QWidget *> list = action->associatedWidgets();
     QWidget *w = list[0];
    	QString parentName = w->objectName();
-	if ((toolBarBtn->isChecked() && w->objectName() != toolBarBox->currentText()) || 
+	if ((toolBarBtn->isChecked() && w->objectName() != toolBarBox->currentText()) ||
 		(menuBtn->isChecked() && w->objectName() != menuBox->currentText())){
 		//relocate action: create a new one and delete the old
 		ApplicationWindow *app = (ApplicationWindow *)parent();
 		QAction *newAction = new QAction(app);
-		customizeAction(newAction);			
+		customizeAction(newAction);
 		if (toolBarBtn->isChecked()){
             foreach (QToolBar *t, d_app_toolbars){
                 if (t->windowTitle() == toolBarBox->currentText()){
@@ -405,7 +421,7 @@ void CustomActionDialog::saveCurrentAction()
                 }
             }
         } else {
-            foreach (QMenu *m, d_menus){
+            foreach (QMenu *m, d_menus + app->customMenusList()){
                 if (m->title().remove("&") == menuBox->currentText()){
                     newAction->setStatusTip(m->objectName());
                     app->addCustomAction(newAction, m->objectName(), row);
@@ -419,8 +435,8 @@ void CustomActionDialog::saveCurrentAction()
 	} else {
 		customizeAction(action);
 		saveAction(action);
-	} 	
-	
+	}
+
 	updateDisplayList();
 	itemsList->setCurrentRow(row);
 }
@@ -476,9 +492,13 @@ void CustomActionDialog::chooseIcon()
 
 void CustomActionDialog::chooseFile()
 {
+	QString filter = tr("Python Script") + " (*.py);;";
+	filter += tr("Text") + " (*.txt *.TXT);;";
+	filter += tr("All Files")+" (*)";
+
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Choose script file"),
 													((ApplicationWindow *)parentWidget())->customActionsDirPath,
-													fileBox->text());
+													filter);
     if (!fileName.isEmpty())
         fileBox->setText(fileName);
 }
@@ -544,6 +564,127 @@ void CustomActionDialog::setCurrentAction(int row)
     }
 }
 
+void CustomActionDialog::addMenu()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+
+	bool ok;
+	QString text = QInputDialog::getText(this, tr("Add menu"),
+								tr("Menu title:"), QLineEdit::Normal, QString(), &ok);
+	if (ok && !text.isEmpty() && menuBox->findText(text) == -1){
+		QStringList menus;
+		foreach (QMenu *m, d_menus)
+			menus << m->title().remove("&");
+
+		menus.sort();
+		menus.prepend(tr("Menu Bar"));
+		QString parentName = QInputDialog::getItem(this,
+							 tr("Please, choose the location of the new menu"),
+							 tr("Menu:"), menus, 0, false, &ok);
+		if (ok && !parentName.isEmpty()){
+			if (parentName == tr("Menu Bar"))
+				parentName = app->menuBar()->objectName();
+			else {
+				foreach (QMenu *m, d_menus){
+					if (m->title().remove("&") == parentName)
+						parentName = m->objectName();
+				}
+			}
+
+			text.remove("&");
+			saveMenu(app->addCustomMenu(text, parentName));
+			menuBox->addItem(text);
+			menuBox->setCurrentIndex(menuBox->findText(text));
+		}
+	} else {
+		QMessageBox::critical(app, tr("Error"),
+		tr("Thers's already a menu item with this title, please choose another title!"));
+	}
+}
+
+void CustomActionDialog::removeMenu()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	QString title = menuBox->currentText();
+	if (QMessageBox::question(app, tr("QtiPlot") + " - " + tr("Remove Menu"),
+		tr("Are you sure you want to remove menu '%1' and all its actions?").arg(title),
+		QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Yes){
+
+		QMenu *menu = NULL;
+		QList<QMenu *> userMenus = app->customMenusList();
+		foreach(QMenu *m, userMenus){
+			if(m->title().remove("&") == title){
+				menu = m;
+				break;
+			}
+		}
+
+		if (!menu)
+			return;
+
+		QList<QAction *> actionsList = app->customActionsList();
+		foreach (QAction *a, actionsList){
+			if (a->statusTip() == menu->objectName()){
+				QFile f(app->customActionsDirPath + "/" + a->text() + ".qca");
+				f.remove();
+
+				QList<QListWidgetItem *> lst = itemsList->findItems(a->text(), Qt::MatchExactly | Qt::MatchCaseSensitive);
+				foreach(QListWidgetItem * item, lst){
+					itemsList->takeItem(itemsList->row(item));
+					itemsList->removeItemWidget(item);
+				}
+
+				app->removeCustomAction(a);
+			}
+		}
+
+		title = menu->objectName();
+		app->removeCustomMenu(title);
+		QFile f(app->customActionsDirPath + "/" + title + ".qcm");
+		f.remove();
+		menuBox->removeItem(menuBox->findText(title));
+	}
+	setCurrentAction(0);
+}
+
+void CustomActionDialog::enableDeleteMenuBtn(const QString & title)
+{
+	bool userMenu = true;
+	foreach (QMenu *m, d_menus){
+		if (m->title().remove("&") == title){
+			userMenu = false;
+			break;
+		}
+	}
+	removeMenuBtn->setEnabled(userMenu);
+}
+
+void CustomActionDialog::saveMenu(QMenu *menu)
+{
+    if (!menu)
+        return;
+
+    ApplicationWindow *app = (ApplicationWindow *)parent();
+    QString fileName = app->customActionsDirPath + "/" + menu->objectName() + ".qcm";
+    QFile f(fileName);
+	if (!f.open( QIODevice::WriteOnly)){
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("File Save Error"),
+				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fileName));
+		return;
+	}
+
+    QTextStream out( &f );
+    out.setCodec("UTF-8");
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+         << "<!DOCTYPE action>\n"
+         << "<menu version=\"1.0\">\n";
+
+     out << "<title>" + menu->title() + "</title>\n";
+     out << "<location>" + menu->parentWidget()->objectName() + "</location>\n";
+     out << "</menu>\n";
+}
+
 /*****************************************************************************
  *
  * Class CustomActionHandler
@@ -602,6 +743,54 @@ bool CustomActionHandler::endElement(const QString & /* namespaceURI */,
         d_action->setStatusTip(currentText);
     } else if (qName == "action")
         d_action->setData(filePath);
-	
+
+    return true;
+}
+
+/*****************************************************************************
+ *
+ * Class CustomMenuHandler
+ *
+ *****************************************************************************/
+
+CustomMenuHandler::CustomMenuHandler()
+ {
+     metFitTag = false;
+     d_title = QString();
+	 d_location = QString();
+ }
+
+bool CustomMenuHandler::startElement(const QString & /* namespaceURI */,
+                                const QString & /* localName */,
+                                const QString &qName,
+                                const QXmlAttributes &attributes)
+{
+     if (!metFitTag && qName != "menu") {
+         errorStr = QObject::tr("The file is not a QtiPlot custom menu file.");
+         return false;
+     }
+
+     if (qName == "menu") {
+         QString version = attributes.value("version");
+         if (!version.isEmpty() && version != "1.0") {
+             errorStr = QObject::tr("The file is not a QtiPlot custom menu version 1.0 file.");
+             return false;
+         }
+         metFitTag = true;
+     }
+
+     currentText.clear();
+     return true;
+}
+
+bool CustomMenuHandler::endElement(const QString & /* namespaceURI */,
+                              const QString & /* localName */,
+                              const QString &qName)
+{
+    if (qName == "title")
+        d_title = currentText;
+    else if (qName == "location")
+		d_location = currentText;
+
     return true;
 }

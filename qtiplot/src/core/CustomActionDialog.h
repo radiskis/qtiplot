@@ -61,6 +61,9 @@ private slots:
 	void removeAction();
 	void setCurrentAction(int);
 	void saveCurrentAction();
+	void addMenu();
+	void removeMenu();
+	void enableDeleteMenuBtn(const QString &);
 
 private:
 	void init();
@@ -69,6 +72,8 @@ private:
 	void saveAction(QAction *action);
 	void customizeAction(QAction *action);
 	bool validUserInput();
+	void saveMenu(QMenu *menu);
+
 	QStringList d_app_shortcut_keys;
 
 	QList<QMenu *> d_menus;
@@ -80,6 +85,7 @@ private:
     QLineEdit *folderBox, *fileBox, *iconBox, *textBox, *toolTipBox, *shortcutBox;
     QRadioButton *menuBtn, *toolBarBtn;
     QComboBox *menuBox, *toolBarBox;
+    QPushButton *newMenuBtn, *removeMenuBtn;
 };
 
 class CustomActionHandler : public QXmlDefaultHandler
@@ -103,5 +109,27 @@ private:
     QString filePath;
 	QString d_widget_name;
     QAction *d_action;
+};
+
+class CustomMenuHandler : public QXmlDefaultHandler
+{
+public:
+    CustomMenuHandler();
+
+    bool startElement(const QString &namespaceURI, const QString &localName,
+                       const QString &qName, const QXmlAttributes &attributes);
+    bool endElement(const QString &namespaceURI, const QString &localName,
+                     const QString &qName);
+    bool characters(const QString &str){currentText += str; return true;};
+    bool fatalError(const QXmlParseException &){return false;};
+    QString errorString() const {return errorStr;};
+	QString location(){return d_location;};
+	QString title(){return d_title;};
+
+private:
+    bool metFitTag;
+    QString currentText;
+    QString errorStr;
+	QString d_location, d_title;
 };
 #endif
