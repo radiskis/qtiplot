@@ -349,26 +349,35 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
         	return;
 	}
 
-    QwtText lbl = tickLabel(painter->font(), value);
-    if (lbl.isEmpty())
+	QwtText lbl = tickLabel(painter->font(), value);
+    if ( lbl.isEmpty() )
         return;
 
-    const QPoint pos = labelPosition(value);
+    QPoint pos = labelPosition(value);
 
-	QSize labelSize = lbl.textSize(painter->font());
+    QSize labelSize = lbl.textSize(painter->font());
     if ( labelSize.height() % 2 )
         labelSize.setHeight(labelSize.height() + 1);
 
+    const QwtMetricsMap metricsMap = QwtPainter::metricsMap();
+    QwtPainter::resetMetricsMap();
+
+    labelSize = metricsMap.layoutToDevice(labelSize);
+    pos = metricsMap.layoutToDevice(pos);
+
     painter->save();
-    painter->setMatrix(labelMatrix(pos, labelSize), true);
-    if (d_selected)
+    painter->setMatrix(labelMatrix( pos, labelSize), true);
+
+	if (d_selected)
         lbl.setBackgroundPen(QPen(Qt::blue));
     else
         lbl.setBackgroundPen(QPen(Qt::NoPen));
 
 	lbl.setRenderFlags(labelAlignment());
 
-	lbl.draw(painter, QRect(QPoint(0, 0), labelSize));
+    lbl.draw (painter, QRect(QPoint(0, 0), labelSize) );
+
+    QwtPainter::setMetricsMap(metricsMap); // restore metrics map
 
     painter->restore();
 }
