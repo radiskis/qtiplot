@@ -270,6 +270,11 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 
 				int pos1 = s.indexOf("(", pos);
 				int pos2 = s.indexOf(")", pos1);
+                if (pos2 == -1)
+                {
+                     s = s.right(s.length() - pos1 - 1);
+				     continue;            
+                }
 				int point = -1;
 				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
 				if (!curve){
@@ -295,6 +300,11 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 
                     int pos1 = s.indexOf("{", pos);
                     int pos2 = s.indexOf("}", pos1);
+                    if (pos2 == -1)
+                    {
+				         s = s.right(s.length() - pos1 - 1);
+				         continue;            
+                    }
                     int point = s.mid(pos1 + 1, pos2 - pos1 - 1).toInt() - 1;
 					drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
                 	w += l;
@@ -346,6 +356,11 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 
 				int pos1 = s.indexOf("(", pos);
 				int pos2 = s.indexOf(")", pos1);
+                if (pos2 == -1)
+                {
+				    s = s.right(s.length() - pos1 - 1);
+				    continue;            
+                }
 				int point = -1;
 				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
 				if (!curve){
@@ -435,6 +450,11 @@ int LegendWidget::symbolsMaxWidth()
 			int pos = s.indexOf("\\l(", 0);
 		    int pos1 = s.indexOf("(", pos);
             int pos2 = s.indexOf(")", pos1);
+            if (pos2 == -1)
+            {
+				s = s.right(s.length() - pos1 - 1);
+				continue;            
+            }
 			int cv = s.mid(pos1+1, pos2-pos1-1).toInt()-1;
 			if (cv < 0 || cv >= curves){
 				s = s.right(s.length() - pos2 - 1);
@@ -465,7 +485,7 @@ QString LegendWidget::parse(const QString& str)
     QString s = str;
     s.remove(QRegExp("\\l(*)", Qt::CaseSensitive, QRegExp::Wildcard));
     s.remove(QRegExp("\\p{*}", Qt::CaseSensitive, QRegExp::Wildcard));
-
+    
 	QString aux = str;
     while (aux.contains(QRegExp("%(*)", Qt::CaseInsensitive, QRegExp::Wildcard))){//curve name specification
 		int pos = str.indexOf("%(", 0, Qt::CaseInsensitive);
@@ -473,12 +493,45 @@ QString LegendWidget::parse(const QString& str)
 		QString spec = str.mid(pos + 2, pos2 - pos - 2);
 		QStringList lst = spec.split(",");
 		if (!lst.isEmpty()){
+		    int lcmd=0;
+		    if (lst[0].contains("L")) //look for L cmd
+		    {
+		          lst[0]=lst[0].left(lst[0].length()-1);
+		          lcmd=1;
+		    }
+ 		    if (lst[0].contains("C")) //look for C cmd
+		    {
+		          lst[0]=lst[0].left(lst[0].length()-1);
+		          lcmd=2;
+		    }
         	int cv = lst[0].toInt() - 1;
         	if (d_plot && cv >= 0 && cv < d_plot->curveCount()){
 				PlotCurve *c = (PlotCurve *)d_plot->curve(cv);
             	if (c){
 					if (lst.count() == 1)
-						s = s.replace(pos, pos2-pos+1, c->title().text());
+					{
+					     switch(lcmd)
+					     {
+					     case 0: //use curve title
+ 					     {
+     						s = s.replace(pos, pos2-pos+1, c->title().text());
+     						break;
+     					 }
+     					 case 1: //use col label
+                         {
+                            int ycol = ((DataCurve *)c)->table()->colIndex(c->title().text());
+                            s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->colLabel(ycol));
+                            break;
+					     }
+     					 case 2: //use col comment
+                         {
+                            int ycol = ((DataCurve *)c)->table()->colIndex(c->title().text());
+                            s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->comment(ycol));
+                            break;
+
+					     }
+                        }
+					}
 					else if (lst.count() == 3 && c->type() == Graph::Pie){
 						Table *t = ((DataCurve *)c)->table();
 						int col = t->colIndex(c->title().text());
