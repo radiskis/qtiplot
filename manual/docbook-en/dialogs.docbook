@@ -1318,7 +1318,9 @@ The format of the file is simple: each line defines a color by red, green and bl
   lines are also drawn in the text box, in front of the curve names.
   In order to display the symbol of a curve and the name of the data set,
   the follwing synthax is used: <emphasis>\l(2)%(2)</emphasis>. Here the number 2, refers to the index
-  of the curve and the % character is an alias for the name of the data set. </para>
+  of the curve and the % character is an alias for the name of the data set.
+  By adding "C" or "L" to the number you can alternativly use the label or comment of the dataset, e.g.
+  <emphasis>\l(2)%(2L)</emphasis> will use the label instead of the name.</para>
 
 <para>If the <emphasis>Auto-update</emphasis> box is checked the legend is updated each time
 a curve is added or removed from the plot layer.
