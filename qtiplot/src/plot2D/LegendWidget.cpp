@@ -273,7 +273,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                 if (pos2 == -1)
                 {
                      s = s.right(s.length() - pos1 - 1);
-				     continue;            
+				     continue;
                 }
 				int point = -1;
 				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
@@ -303,7 +303,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                     if (pos2 == -1)
                     {
 				         s = s.right(s.length() - pos1 - 1);
-				         continue;            
+				         continue;
                     }
                     int point = s.mid(pos1 + 1, pos2 - pos1 - 1).toInt() - 1;
 					drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
@@ -359,7 +359,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
                 if (pos2 == -1)
                 {
 				    s = s.right(s.length() - pos1 - 1);
-				    continue;            
+				    continue;
                 }
 				int point = -1;
 				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
@@ -450,32 +450,39 @@ int LegendWidget::symbolsMaxWidth()
 			int pos = s.indexOf("\\l(", 0);
 		    int pos1 = s.indexOf("(", pos);
             int pos2 = s.indexOf(")", pos1);
-            if (pos2 == -1)
-            {
+            if (pos2 == -1){
 				s = s.right(s.length() - pos1 - 1);
-				continue;            
-            }
-			int cv = s.mid(pos1+1, pos2-pos1-1).toInt()-1;
-			if (cv < 0 || cv >= curves){
-				s = s.right(s.length() - pos2 - 1);
 				continue;
-			}
+            }
 
-			const QwtPlotCurve *c = (QwtPlotCurve *)d_plot->curve(cv);
+			int point = 0;
+			PlotCurve* c = getCurve(s.mid(pos1 + 1, pos2 - pos1 - 1), point);
+
 			if (c && c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram) {
-				int l = c->symbol().size().width();
-				if (l < 3)
-  	            	l = 3;
-  	            else if (l > 15)
-  	            	l = 15;
-  	            if (l>maxL && c->symbol().style() != QwtSymbol::NoSymbol)
-					maxL = l;
+				if (c->type() == Graph::Pie ||
+					c->type() == Graph::VerticalBars ||
+					c->type() == Graph::HorizontalBars ||
+					c->type() == Graph::Histogram ||
+					c->type() == Graph::Box){
+					maxL = 2*d_text->font().pointSize();//10;
+					line_length = 0;
+				} else {
+					int l = c->symbol().size().width();
+					if (l < 3)
+						l = 3;
+					else if (l > 15)
+						l = 15;
+					if (l > maxL && c->symbol().style() != QwtSymbol::NoSymbol)
+						maxL = l;
+				}
 			}
 			s = s.right(s.length() - pos2 - 1);
 		}
 
-		if (titles[i].contains("\\p{"))
-			maxL = 10;
+		if (titles[i].contains("\\p{")){
+			maxL = 2*d_text->font().pointSize();//10;
+			line_length = 0;
+		}
 	}
 	return maxL;
 }
@@ -485,7 +492,7 @@ QString LegendWidget::parse(const QString& str)
     QString s = str;
     s.remove(QRegExp("\\l(*)", Qt::CaseSensitive, QRegExp::Wildcard));
     s.remove(QRegExp("\\p{*}", Qt::CaseSensitive, QRegExp::Wildcard));
-    
+
 	QString aux = str;
     while (aux.contains(QRegExp("%(*)", Qt::CaseInsensitive, QRegExp::Wildcard))){//curve name specification
 		int pos = str.indexOf("%(", 0, Qt::CaseInsensitive);

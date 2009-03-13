@@ -86,7 +86,7 @@ void Fit::init()
 	d_rss = 0.0;
 	d_adjusted_r_square = GSL_NAN;
 	d_scale_errors = false;
-	d_sort_data = true;
+	d_sort_data = false;
 	d_prec = (((ApplicationWindow *)parent())->fit_output_precision);
 	d_param_table = 0;
 	d_cov_matrix = 0;
