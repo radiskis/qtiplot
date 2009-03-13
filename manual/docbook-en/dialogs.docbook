@@ -1319,8 +1319,12 @@ The format of the file is simple: each line defines a color by red, green and bl
   In order to display the symbol of a curve and the name of the data set,
   the follwing synthax is used: <emphasis>\l(2)%(2)</emphasis>. Here the number 2, refers to the index
   of the curve and the % character is an alias for the name of the data set.
-  By adding "C" or "L" to the number you can alternativly use the label or comment of the dataset, e.g.
-  <emphasis>\l(2)%(2L)</emphasis> will use the label instead of the name.</para>
+  By adding ",@C" or ",@L" to the number you can alternativly use the name or comment of the dataset, e.g.
+  <emphasis>\l(2)%(2,@C)</emphasis> will use the column name.
+  Additionaly you can use "@W" to display the table name and "@WL" for the table label.
+  To display the contents of a specific cell of the source data table use <emphasis>%(curve #,@L,col,row)</emphasis>.
+  If the col parameter is missing the y-column of the dataset is used.
+  </para>
 
 <para>If the <emphasis>Auto-update</emphasis> box is checked the legend is updated each time
 a curve is added or removed from the plot layer.

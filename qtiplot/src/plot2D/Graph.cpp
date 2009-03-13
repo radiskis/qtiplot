@@ -1768,9 +1768,9 @@ QString Graph::pieLegendText()
 	const QwtPlotCurve *c = (QwtPlotCurve *)d_curves.first();
 	if (c){
 		for (int i=0;i<int(c->dataSize());i++){
-			text += "\\p{";
+			text += "\\l(1,";
 			text += QString::number(i+1);
-			text += "} ";
+			text += ") ";
 			text += QString::number(i+1);
 			text += "\n";
 		}
