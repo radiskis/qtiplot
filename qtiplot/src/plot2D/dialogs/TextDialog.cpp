@@ -165,7 +165,10 @@ void TextDialog::setGraph(Graph *g)
 	setText(l.text());
 	selectedFont = l.font();
 	colorBtn->setColor(l.color());
-	textEditBox->setFont(l.font());
+
+	QFont fnt = selectedFont;
+	fnt.setPointSize(QFont().pointSize() + 2);
+	textEditBox->setFont(fnt);
 }
 
 void TextDialog::apply()
@@ -228,6 +231,10 @@ void TextDialog::apply()
 		}
 		break;
 	}
+
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (app)
+		app->setFormatBarFont(selectedFont);
 }
 
 void TextDialog::formatLayerLabels(Graph *g)
@@ -301,6 +308,8 @@ void TextDialog::customFont()
 	QFont fnt = QFontDialog::getFont( &okF, selectedFont, this);
 	if (okF && fnt != selectedFont){
 		selectedFont = fnt;
+
+		fnt.setPointSize(QFont().pointSize() + 2);
 		textEditBox->setFont(fnt);
 	}
 }

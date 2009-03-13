@@ -51,6 +51,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 	palette.setColor(QPalette::Active, QPalette::Base, Qt::white);
 	setPalette(palette);
 
+	bool moveCrs = true;
 	QString text;
 	if (g->activeText()){
 		setParent(g->multiLayer()->canvas());
@@ -89,6 +90,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 			t.setText(" ");
 			t.setBackgroundPen(QPen(Qt::NoPen));
 			scale->setTitle(t);
+			moveCrs = false;
 		}
 	}
 
@@ -96,7 +98,17 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 	cursor.insertText(text);
 	d_initial_text = text;
 
+	setWordWrapMode (QTextOption::NoWrap);
+	setAlignment(Qt::AlignCenter);
+
+	QTextFrame *frame = document()->rootFrame();
+	QTextFrameFormat format = frame->frameFormat();
+	format.setTopMargin(format.topMargin () + 3);
+	frame->setFrameFormat(format);
 	show();
+
+	if (moveCrs)
+		setTextCursor(cursorForPosition(mapFromGlobal(QCursor::pos())));
 	setFocus();
 }
 
