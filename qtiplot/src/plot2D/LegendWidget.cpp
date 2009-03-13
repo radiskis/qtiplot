@@ -698,11 +698,13 @@ void LegendWidget::setAngle(int angle)
 */
 QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 {
-	QTextDocument td;
-	td.setHtml(text.text());
-	QString s = td.toPlainText();
+	QString s = text.text();
+	s.remove("<sub>").remove("</sub>").remove("<sup>").remove("</sup>");
+	s.remove("<i>").remove("</i>").remove("<u>").remove("</u>");
+	s.remove("<b>").remove("</b>");
 	if (text.font().italic())
 		s += " ";
+
 	return QFontMetrics(text.font(), p->device()).boundingRect(s).size();
 }
 
