@@ -540,7 +540,9 @@ void EnrichmentDialog::setWidget(QWidget *w)
 		if (l){
 			setText(textEditBox, l->text());
 			textFont = l->font();
-			textEditBox->setFont(textFont);
+			QFont fnt = textFont;
+			fnt.setPointSize(QFont().pointSize() + 2);
+			textEditBox->setFont(fnt);
 			textColorBtn->blockSignals(true);
 			textColorBtn->setColor(l->textColor());
 			textColorBtn->blockSignals(false);
@@ -641,6 +643,9 @@ void EnrichmentDialog::apply()
 			l->setText(textEditBox->text());
 
 		textFormatApplyTo();
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		if (app)
+			app->setFormatBarFont(textFont);
 	}
 }
 
@@ -981,6 +986,8 @@ void EnrichmentDialog::customFont()
 	QFont fnt = QFontDialog::getFont( &okF, textFont, this);
 	if (okF && fnt != textFont){
 		textFont = fnt;
+
+		fnt.setPointSize(QFont().pointSize() + 2);
 		textEditBox->setFont(fnt);
 	}
 
