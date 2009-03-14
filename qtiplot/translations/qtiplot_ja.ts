@@ -6891,7 +6891,7 @@ The following special codes can be used:
 <context>
     <name>EnrichmentDialog</name>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="687"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="692"/>
         <source>QtiPlot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7121,32 +7121,32 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="687"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="692"/>
         <source>Network connection error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="688"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="693"/>
         <source>Error while trying to connect to host %1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="689"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="694"/>
         <source>Please verify your network connection!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="705"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="710"/>
         <source>QtiPlot - Import image from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="731"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="736"/>
         <source>QtiPlot - Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="732"/>
+        <location filename="src/plot2D/dialogs/EnrichmentDialog.cpp" line="737"/>
         <source>The file %1 doesn&apos;t exist. The image cannot be restored when reloading the project file!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14591,17 +14591,17 @@ have the same number of rows.</source>
 <context>
     <name>TextEditor</name>
     <message>
-        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="108"/>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="120"/>
         <source>QtiPlot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="108"/>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="120"/>
         <source>Confirmation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="109"/>
+        <location filename="src/plot2D/dialogs/TextEditor.cpp" line="121"/>
         <source>Are you sure you want to add %1 text lines into this text box?</source>
         <translation type="unfinished"></translation>
     </message>
