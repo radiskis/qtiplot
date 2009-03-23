@@ -317,24 +317,33 @@ if (n > 2){
     }
 }
 
-for (int i=0; i < table->rowCount(); i++){
-	it = (QCheckBox *)table->cellWidget(i, 3);
-	if (xerr || vectors){
-		if (table->item(i,0)->text() == errColName || table->item(i,0)->text() == xEndColName)
-			it->setChecked(true);
-		else
+	for (int i=0; i < table->rowCount(); i++){
+		it = (QCheckBox *)table->cellWidget(i, 3);
+		if (xerr || vectors){
+			if (table->item(i,0)->text() == errColName || table->item(i,0)->text() == xEndColName)
+				it->setChecked(true);
+			else
+				it->setChecked(false);
+		} else
 			it->setChecked(false);
-    } else
-		it->setChecked(false);
 
-	it = (QCheckBox *)table->cellWidget(i, 4);
-	if (yerr || vectors){
-		if (table->item(i,0)->text() == errColName || table->item(i,0)->text() == yEndColName)
-			it->setChecked(true);
-		else
+		it = (QCheckBox *)table->cellWidget(i, 4);
+		if (yerr || vectors){
+			if (table->item(i,0)->text() == errColName || table->item(i,0)->text() == yEndColName)
+				it->setChecked(true);
+			else
+				it->setChecked(false);
+		} else
 			it->setChecked(false);
-    } else
-		it->setChecked(false);
+
+		it = (QCheckBox *)table->cellWidget(i, 1);
+		if (xerr || yerr){
+			it->setEnabled(false);
+			table->cellWidget(i, 2)->setEnabled(false);
+		} else {
+			it->setEnabled(true);
+			table->cellWidget(i, 2)->setEnabled(true);
+		}
 	}
 }
 
@@ -421,12 +430,13 @@ else if (col == 4){
 
 //change associations for error bars depending on the curve "index"
 QString old_as = plotAssociationsList[index];
-for (int i=0; i<(int)plotAssociationsList.count(); i++){
+for (int i = 0; i<(int)plotAssociationsList.count(); i++){
 	QString as = plotAssociationsList[i];
 	if (as.contains(old_as) && (as.contains("(xErr)") || as.contains("(yErr)"))){
 		QStringList ls = as.split(",", QString::SkipEmptyParts);
 		as = text + "," + ls[2];
 		plotAssociationsList[i] = as;
+		associations->item(i)->setText(as);
 		}
 	}
 
@@ -441,7 +451,7 @@ if (!it)
 	return false;
 
 if (e->type() == QEvent::MouseButtonPress){
-	if (((QCheckBox*)it)->isChecked())
+	if (((QCheckBox*)it)->isChecked() || !((QCheckBox*)it)->isEnabled())
 		return true;
 
 	int col = 0, row = 0;
