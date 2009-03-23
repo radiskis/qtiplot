@@ -528,3 +528,7 @@ Pixel
 Scale
 resultsLog
 stemPlot
+addColumn
+insertColumns
+swapColumns
+showAllColumns
