@@ -312,6 +312,7 @@ public:
 		sipCpp->setColumnWidth(col, a1);
 %End
 
+	void showAllColumns();
 	void hideColumn(SIP_PYOBJECT, bool = true);
 %MethodCode
   	sipIsErr = 0;
@@ -349,6 +350,46 @@ public:
 %End
 
 	int selectedColumn();
+
+	void addCol(PlotDesignation pd = Y)/PyName=addColumn/;
+	void insertColumns(SIP_PYOBJECT, int);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		sipCpp->insertCols(col, a1);
+%End
+
+	void swapColumns(SIP_PYOBJECT, SIP_PYOBJECT);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+
+  	int col2;
+    if (PyInt_Check(a1)) {
+      col2 = (int)PyInt_AsLong(a1) - 1;
+		if (col2 < 0 || col2 >= sipCpp->numCols()) {
+			sipIsErr = 1;
+			PyErr_Format(PyExc_ValueError, "There's no column %d in table %s!", col2+1, sipCpp->name().ascii());
+		}
+	 } else {
+      PyObject *tmp = PyObject_Str(a1);
+		if (!tmp) {
+			sipIsErr = 1;
+			PyErr_Format(PyExc_TypeError, "Column argument must be either int or string.");
+		} else {
+			col2 = sipCpp->colNames().findIndex(PyString_AsString(tmp));
+			if (col2 < 0) {
+				sipIsErr = 1;
+				PyErr_Format(PyExc_ValueError, "There's no column named %s in table %s!", PyString_AsString(tmp),sipCpp->name().ascii());
+				Py_DECREF(tmp);
+			}
+		}
+	 }
+
+	if (sipIsErr == 0)
+		sipCpp->swapColumns(col, col2);
+%End
 
 private:
   Table(const Table&);

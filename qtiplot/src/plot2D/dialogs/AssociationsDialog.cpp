@@ -254,7 +254,7 @@ QStringList cols = lst[1].split(",", QString::SkipEmptyParts);
 QString xColName, yColName;
 
 int n = (int)cols.count();
-if (n == 2){
+if (n >= 2){
 	xColName = cols[0].remove("(X)");
 	yColName = cols[1].remove("(Y)");
 

@@ -141,7 +141,7 @@ for m in iterator:
 				f.fit()
 				g.removeLegend()
 				f.showLegend()
-				print  "QtiPlot Results:\n" + f.legendInfo()
+				print  "QtiPlot Results:\n" + f.legendInfo().toAscii()
 				
 				print  "\nCertified Values:"
 				paramNames = f.parameterNames()

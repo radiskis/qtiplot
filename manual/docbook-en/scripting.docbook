@@ -825,6 +825,13 @@ Also, you can easily clone a MDI window:
 <programlisting>
 g1 = clone(graph("Graph1"))
 </programlisting>
+
+If you want to delete a project window, you can use the close() method.
+You might want to deactivate the confirmation message, first:
+<programlisting>
+w.confirmClose(False)
+w.close()
+</programlisting>
 </sect2>
 
 <sect2 id="Python-Folders">
@@ -908,14 +915,25 @@ t.numCols()
 t.setNumRows(number)
 t.setNumCols(number)
 </programlisting>
-You can delete a range of rows using:
+
+You can add a new column at the end of the table or you can insert new columns before a
+<varname>startColumn</varname> using the functions bellow:
 <programlisting>
-t.deleteRows(startRowNumber, endRowNumber)
+t.addColumn()
+t.insertColumns(startColumn, count)
 </programlisting>
-You can delete a colum using:
+
+It is also possible to swap two columns using:
+<programlisting>
+t.swapColumns(column1, column2)
+</programlisting>
+
+You can delete a colum or a range of rows using the functions bellow:
 <programlisting>
 t.removeCol(number)
+t.deleteRows(startRowNumber, endRowNumber)
 </programlisting>
+
 Column names can be read and written with:
 <programlisting>
 t.colName(number)
@@ -1089,6 +1107,11 @@ You can also modify the width of a column (in pixels) or hide/show table columns
 <programlisting>
 t.setColumnWidth(col, width)
 t.hideColumn(col, True)
+</programlisting>
+
+If one or several tabel columns are hidden you can make them visible again using:
+<programlisting>
+t.showAllColumns()
 </programlisting>
 
 After having changed some table values from a script, you will likely want to update dependent Graphs:
