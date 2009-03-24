@@ -1767,12 +1767,12 @@ QString Graph::pieLegendText()
 	QString text;
 	const QwtPlotCurve *c = (QwtPlotCurve *)d_curves.first();
 	if (c){
-		for (int i=0;i<int(c->dataSize());i++){
+		for (int i = 0; i < int(c->dataSize()); i++){
 			text += "\\l(1,";
 			text += QString::number(i+1);
-			text += ") ";
+			text += ") %(1,@L,";
 			text += QString::number(i+1);
-			text += "\n";
+			text += ")\n";
 		}
 	}
 	return text.trimmed();
