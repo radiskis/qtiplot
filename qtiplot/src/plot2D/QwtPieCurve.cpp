@@ -38,6 +38,8 @@
 #include <QPainterPath>
 #include <QVarLengthArray>
 
+#include <qwt_plot_canvas.h>
+
 QwtPieCurve::QwtPieCurve(Table *t, const QString& name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow),
 	d_pie_ray(50),
@@ -108,10 +110,19 @@ void QwtPieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScal
 
 void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap) const
 {
-    const double x_width = fabs(xMap.p1() - xMap.p2());
-	const double x_center = (xMap.p1() + xMap.p2())*0.5 + d_horizontal_offset*0.01*x_width;
-	const double y_center = (yMap.p1() + yMap.p2())*0.5;
-	const double ray_x = d_pie_ray*0.005*qMin(x_width, fabs(yMap.p1() - yMap.p2()));
+	QwtPlotCanvas* canvas = plot()->canvas();
+	QPoint center = QPoint(canvas->x() + canvas->width()/2, canvas->y() + canvas->height()/2);
+
+	// calculate resolution factors
+	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+
+	const double width = canvas->width()*x_factor;
+	const double height = canvas->height()*y_factor;
+	const double x_center = center.x()*x_factor + d_horizontal_offset*0.01*width;
+	const double y_center = center.y()*y_factor;
+
+	const double ray_x = d_pie_ray*0.005*qMin(width, height);
 	const double view_angle_rad = d_view_angle*M_PI/180.0;
 	const double ray_y = ray_x*sin(view_angle_rad);
 	const double thick = 0.01*d_thickness*ray_x*cos(view_angle_rad);
@@ -173,8 +184,8 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
                 if (a_deg > 0 && a_deg < 180)
                     y += thick;
 
-                double dx = xMap.invTransform(x - l->width()/2);
-                double dy = yMap.invTransform(y - l->height()/2);
+                double dx = xMap.invTransform(x - l->width()*x_factor/2);
+                double dy = yMap.invTransform(y - l->height()*y_factor/2);
                 l->setOriginCoord(dx, dy);
             }
         }
@@ -184,10 +195,19 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
 
 void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
-    const double x_width = fabs(xMap.p1() - xMap.p2());
-	const double x_center = (xMap.p1() + xMap.p2())*0.5 + d_horizontal_offset*0.01*x_width;
-	const double y_center = (yMap.p1() + yMap.p2())*0.5;
-	const double ray_x = d_pie_ray*0.005*qMin(x_width, fabs(yMap.p1() - yMap.p2()));
+	QwtPlotCanvas* canvas = plot()->canvas();
+	QPoint center = QPoint(canvas->x() + canvas->width()/2, canvas->y() + canvas->height()/2);
+
+	// calculate resolution factors
+	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+
+	const double width = canvas->width()*x_factor;
+	const double height = canvas->height()*y_factor;
+	const double x_center = center.x()*x_factor + d_horizontal_offset*0.01*width;
+	const double y_center = center.y()*y_factor;
+
+	const double ray_x = d_pie_ray*0.005*qMin(width, height);
 	const double view_angle_rad = d_view_angle*M_PI/180.0;
 	const double ray_y = ray_x*sin(view_angle_rad);
 	const double thick = 0.01*d_thickness*ray_x*cos(view_angle_rad);
@@ -344,8 +364,8 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
                 if (a_deg > 0 && a_deg < 180)
                     y += thick;
 
-                double dx = xMap.invTransform(x - l->width()/2);
-                double dy = yMap.invTransform(y - l->height()/2);
+                double dx = xMap.invTransform(x - l->width()*x_factor/2);
+                double dy = yMap.invTransform(y - l->height()*y_factor/2);
                 l->setOriginCoord(dx, dy);
             }
 		}

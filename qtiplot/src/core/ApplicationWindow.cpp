@@ -7373,7 +7373,6 @@ void ApplicationWindow::addRectangle()
 	}
 
     g->setActiveTool(new AddWidgetTool(AddWidgetTool::Rectangle, g, actionAddRectangle, info, SLOT(setText(const QString&))));
-	displayBar->show();
 	btnPointer->setOn(false);
 }
 
@@ -7391,7 +7390,6 @@ void ApplicationWindow::addEllipse()
 	}
 
     g->setActiveTool(new AddWidgetTool(AddWidgetTool::Ellipse, g, actionAddEllipse, info, SLOT(setText(const QString&))));
-	displayBar->show();
 	btnPointer->setOn(false);
 }
 
@@ -7409,7 +7407,6 @@ void ApplicationWindow::addTexFormula()
 	}
 
 	g->setActiveTool(new AddWidgetTool(AddWidgetTool::TexEquation, g, actionAddFormula, info, SLOT(setText(const QString&))));
-	displayBar->show();
 	btnPointer->setOn(false);
 }
 
@@ -7421,7 +7418,6 @@ void ApplicationWindow::addText()
 	Graph *g = (Graph*)plot->activeLayer();
 	if (g){
 		g->setActiveTool(new AddWidgetTool(AddWidgetTool::Text, g, actionAddText, info, SLOT(setText(const QString&))));
-		displayBar->show();
 		btnPointer->setOn(false);
 	}
 }

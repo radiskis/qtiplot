@@ -1053,6 +1053,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
                     p->setLabelValuesFormat(_curve.pie.formatValues);
                     p->setLabelCategories(_curve.pie.formatCategories);
                     p->setFixedLabelsPosition(_curve.pie.positionAssociate);
+
+                    graph->setFrame(0);
 				}
 				else if(style == Graph::VectXYXY || style == Graph::VectXYAM)
 				{
