@@ -49,8 +49,8 @@ public:
 	QwtArray<double> errors(){return err;};
 	void setErrors(const QwtArray<double>&data){err=data;};
 
-	int capLength(){return cap;};
-	void setCapLength(int t){cap=t;};
+	int capLength(){return d_cap_length;};
+	void setCapLength(int t){d_cap_length = t;};
 
 	double width(){return pen().widthF();};
 	void setWidth(double w);
@@ -99,7 +99,7 @@ private:
 	int type;
 
 	//! Length of the bar cap decoration
-	int cap;
+	int d_cap_length;
 
 	bool plus, minus, through;
 

@@ -91,9 +91,12 @@ public:
     QString plotAssociation();
 	void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName);
 
+	QPen vectorPen(){return d_pen;};
+	void setVectorPen(const QPen& pen){d_pen = pen;};
+
 protected:
 	QwtArrayData *vectorEnd;
-	QPen pen;
+	QPen d_pen;
 	bool filledArrow;
 	int d_style, d_headLength, d_headAngle, d_position;
 

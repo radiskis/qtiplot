@@ -39,6 +39,7 @@
 #include <QVarLengthArray>
 
 #include <qwt_plot_canvas.h>
+#include <qwt_painter.h>
 
 QwtPieCurve::QwtPieCurve(Table *t, const QString& name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow),
@@ -138,7 +139,7 @@ void QwtPieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const Qwt
 
     painter->save();
 
-    painter->setPen(QwtPlotCurve::pen());
+    painter->setPen(QwtPainter::scaledPen(pen()));
     painter->setBrush(QBrush(color(0), QwtPlotCurve::brush().style()));
 
     QPointF start(x_center + ray_x, y_center);
@@ -257,7 +258,7 @@ void QwtPieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const Q
 		const double q = yi/sum;
 		const int value = (int)(q*5760);
 
-		painter->setPen(QwtPlotCurve::pen());
+		painter->setPen(QwtPainter::scaledPen(pen()));
 		painter->setBrush(QBrush(color(i), QwtPlotCurve::brush().style()));
 
 		double deg = q*360;

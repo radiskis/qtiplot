@@ -29,15 +29,18 @@
 #include "QwtBarCurve.h"
 #include "Graph.h"
 #include <QPainter>
+#include <qwt_painter.h>
 
 QwtBarCurve::QwtBarCurve(BarStyle style, Table *t, const QString& xColName, const QString& name, int startRow, int endRow):
     DataCurve(t, xColName, name, startRow, endRow)
 {
-bar_offset=0;
-bar_gap=0;
-bar_style=style;
+	bar_offset = 0;
+	bar_gap = 0;
+	bar_style = style;
 
-	setPen(QPen(Qt::black, 1, Qt::SolidLine));
+	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+	pen.setCosmetic(true);
+	setPen(pen);
 	setBrush(QBrush(Qt::red));
 	setStyle(QwtPlotCurve::UserCurve);
 
@@ -52,9 +55,9 @@ bar_style=style;
 
 void QwtBarCurve::copy(const QwtBarCurve *b)
 {
-bar_gap = b->bar_gap;
-bar_offset = b->bar_offset;
-bar_style = b->bar_style;
+	bar_gap = b->bar_gap;
+	bar_offset = b->bar_offset;
+	bar_style = b->bar_style;
 }
 
 void QwtBarCurve::draw(QPainter *painter,
@@ -67,7 +70,7 @@ void QwtBarCurve::draw(QPainter *painter,
         to = dataSize() - 1;
 
     painter->save();
-    painter->setPen(QwtPlotCurve::pen());
+    painter->setPen(QwtPainter::scaledPen(pen()));
     painter->setBrush(QwtPlotCurve::brush());
 
     int dx, dy, ref;
