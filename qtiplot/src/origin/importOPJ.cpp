@@ -289,11 +289,17 @@ bool ImportOPJ::importTables(const OriginFile& opj)
             for(int i = 0; i < columnCount; ++i)
                 d_cells[i] = new double [table->numRows()];
 
+			bool set_text_column = false;
 			for(unsigned int i = 0; i < column.data.size(); ++i)
 			{
 				Origin::variant value = column.data[i];
 				if(column.type != Origin::SpreadColumn::Label && column.valueType != Origin::Text)
 				{// number
+					if(value.type() == typeid(string)){//Origin::TextNumeric column should be set to Text
+						set_text_column = true;
+						table->setText(i, j, QString(boost::get<string>(value).c_str()));
+					}
+
 					if(value.type() != typeid(double))
 						continue;
 
@@ -309,6 +315,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 					table->setText(i, j, QString(value.type() == typeid(string) ? boost::get<string>(value).c_str() : ""));
 				}
 			}
+
             table->saveToMemory(d_cells);
 
 			QString format;
@@ -316,6 +323,11 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 			{
 			case Origin::Numeric:
 			case Origin::TextNumeric:
+				if (set_text_column){
+					table->setTextFormat(j);
+					break;
+				}
+
 				int f;
 				if(column.numericDisplayType == 0)
 					f = 0;
@@ -768,6 +780,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				default:
 					continue;
 				}
+
 				QString tableName;
 				QStringList formulas;
 				double start, end;
@@ -1239,7 +1252,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				graph->showAxis(i, type, tableName, mw->table(tableName), !(formats[i].hidden),
 					tickTypeMap[formats[i].majorTicksType], tickTypeMap[formats[i].minorTicksType],
 					!(ticks[i].hidden),	ColorBox::color(formats[i].color), format, prec,
-					ticks[i].rotation, 0, "", (ticks[i].color==0xF7 ? ColorBox::color(formats[i].color) : ColorBox::color(ticks[i].color)));
+					-ticks[i].rotation, 0, "", (ticks[i].color==0xF7 ? ColorBox::color(formats[i].color) : ColorBox::color(ticks[i].color)));
 
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = 0;

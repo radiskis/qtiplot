@@ -1036,6 +1036,8 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
+	//! Last selected filter in open project dialog
+    QString d_open_project_filter;
 	//! Default geometry unit to be displayed in the EnrichmentDialog.
 	int d_frame_geometry_unit;
 	//! Default geometry unit to be displayed in the PlotDialog.

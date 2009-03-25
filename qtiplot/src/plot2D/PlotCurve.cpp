@@ -463,6 +463,12 @@ int DataCurve::tableRow(int point)
                     return i;
             }
         }
+    } else if (xColType == Table::Text){
+		double y_val = y(point);
+        for (int i = d_start_row; i <= d_end_row; i++ ){
+			if (d_table->cell(i, ycol) == y_val)
+				return i;
+        }
     }
 
 	double x_val = x(point);
