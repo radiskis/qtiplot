@@ -265,10 +265,13 @@ void PlotDialog::changePlotType(int plotType)
 		insertTabs(curveType);
 
 		VectorCurve *v = (VectorCurve*)item->plotItem();
-		if (plotType)
+		if (plotType){
 			v->setVectorStyle(VectorCurve::XYAM);
-		else
+			v->setPlotStyle(Graph::VectXYAM);
+		} else {
 			v->setVectorStyle(VectorCurve::XYXY);
+			v->setPlotStyle(Graph::VectXYXY);
+		}
 		customVectorsPage(plotType);
 	} else {
 		clearTabWidget();
@@ -1635,7 +1638,7 @@ void PlotDialog::insertTabs(int plot_type)
 			privateTabWidget->showPage(linePage);
 	} else if (plot_type == Graph::VectXYXY || plot_type == Graph::VectXYAM){
 		boxConnect->setEnabled(true);
-		privateTabWidget->addTab (linePage, tr("Line"));
+		//privateTabWidget->addTab (linePage, tr("Line")); //TODO: Restore this in 0.9.8 together with saving/restoring of vector curves
 		privateTabWidget->addTab (vectPage, tr("Vector"));
 		customVectorsPage(plot_type == Graph::VectXYAM);
 		privateTabWidget->showPage(vectPage);
@@ -2313,24 +2316,9 @@ bool PlotDialog::acceptParams()
 				vectWidthBox->value(), headLengthBox->value(), headAngleBox->value(),
 				filledHeadBox->isChecked(), vectPosBox->currentIndex(), xEndCol, yEndCol);
 
-		QString text = item->text(0);
-		QStringList t = text.split(": ", QString::SkipEmptyParts);
-		QString table = t[0];
-
-		QStringList cols = t[1].split(",", QString::SkipEmptyParts);
-		if (((VectorCurve *)plotItem)->type() == Graph::VectXYXY){
-			xEndCol = xEndCol.remove(table + "_") + "(X)";
-			yEndCol = yEndCol.remove(table + "_") + "(Y)";
-		} else {
-			xEndCol = xEndCol.remove(table + "_") + "(A)";
-			yEndCol = yEndCol.remove(table + "_") + "(M)";
-		}
-
-		if (cols[2] != xEndCol || cols[3] != yEndCol){
-			cols[2] = xEndCol;
-			cols[3] = yEndCol;
-			item->setText(0, table + ": " + cols.join(","));
-		}
+		VectorCurve *v = (VectorCurve*)item->plotItem();
+		QString table = v->table()->name();
+		item->setText(0, table + ": " + v->plotAssociation().remove(table + "_"));
 		return true;
 	} else if (privateTabWidget->currentPage() == errorsPage){
 		graph->updateErrorBars((QwtErrorPlotCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
