@@ -131,7 +131,6 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
 			.arg(locale.toString(d_selected_curve->y(d_selected_point), 'G', d_app->d_decimal_digits)));
     } else {
         int row = ((DataCurve*)d_selected_curve)->tableRow(d_selected_point);
-
         Table *t = ((DataCurve*)d_selected_curve)->table();
         int xCol = t->colIndex(((DataCurve*)d_selected_curve)->xColumnName());
         int yCol = t->colIndex(d_selected_curve->title().text());

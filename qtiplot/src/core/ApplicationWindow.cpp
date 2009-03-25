@@ -380,6 +380,8 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_open_project_filter = QString::null;//tr("QtiPlot project") + " (*.qti)";
+
 	d_comment_highlight_color = Qt::red;
 	d_class_highlight_color = Qt::darkMagenta;
 	d_numeric_highlight_color = Qt::darkGreen;
@@ -3699,6 +3701,8 @@ void ApplicationWindow::open()
 {
 	OpenProjectDialog *open_dialog = new OpenProjectDialog(this, d_extended_open_dialog);
 	open_dialog->setDirectory(workingDir);
+	open_dialog->selectNameFilter(d_open_project_filter);
+
 	if (open_dialog->exec() != QDialog::Accepted || open_dialog->selectedFiles().isEmpty())
 		return;
 	workingDir = open_dialog->directory().path();
@@ -4397,6 +4401,8 @@ void ApplicationWindow::readSettings()
 	d_translations_folder = settings.value("/Translations", d_translations_folder).toString();
 	d_python_config_folder = settings.value("/PythonConfigDir", d_python_config_folder).toString();
 	settings.endGroup(); // Paths
+
+	d_open_project_filter = settings.value("/OpenProjectFilter", d_open_project_filter).toString();
 	settings.endGroup();
 	/* ------------- end group General ------------------- */
 
@@ -4744,6 +4750,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Translations", d_translations_folder);
 	settings.setValue("/PythonConfigDir", d_python_config_folder);
 	settings.endGroup(); // Paths
+
+	settings.setValue("/OpenProjectFilter", d_open_project_filter);
 	settings.endGroup();
 	/* ---------------- end group General --------------- */
 
@@ -13619,6 +13627,7 @@ void ApplicationWindow::appendProject()
 	OpenProjectDialog *open_dialog = new OpenProjectDialog(this, false);
 	open_dialog->setDirectory(workingDir);
 	open_dialog->setExtensionWidget(0);
+	open_dialog->selectNameFilter(d_open_project_filter);
 	if (open_dialog->exec() != QDialog::Accepted || open_dialog->selectedFiles().isEmpty())
 		return;
 	workingDir = open_dialog->directory().path();

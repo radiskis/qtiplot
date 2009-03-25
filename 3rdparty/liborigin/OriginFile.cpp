@@ -51,7 +51,7 @@ OriginFile::OriginFile(const string& fileName)
 		cerr << format("Could not open %s!") % fileName.c_str() << endl;
 		return;
 	}
-	
+
 	string vers(4, 0);
 	file.seekg(0x7, ios_base::beg);
 	file >> vers;
@@ -82,7 +82,7 @@ OriginFile::OriginFile(const string& fileName)
 	else
 	{
 		BOOST_LOG_(1, format("Found unknown project version %d") % fileVersion);
-		BOOST_LOG_(1, "Please contact the author of opj2dat");
+		BOOST_LOG_(1, "Please contact the authors of liborigin2");
 		BOOST_LOG_FINALIZE();
 		throw std::logic_error("Unknown project version");
 	}
@@ -127,7 +127,7 @@ Origin::SpreadSheet& OriginFile::spread(vector<Origin::SpreadSheet>::size_type s
 vector<Origin::Matrix>::size_type OriginFile::matrixCount() const
 {
 	return parser->matrixes.size();
-}	
+}
 
 Origin::Matrix& OriginFile::matrix(vector<Origin::Matrix>::size_type m) const
 {

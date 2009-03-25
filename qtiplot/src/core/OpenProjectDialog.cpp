@@ -88,8 +88,10 @@ void OpenProjectDialog::closeEvent(QCloseEvent* e)
 {
 	if (isExtendable()){
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
-		if (app)
+		if (app){
 			app->d_extended_open_dialog = this->isExtended();
+			app->d_open_project_filter = selectedNameFilter();
+		}
 	}
 
 	e->accept();
