@@ -37,7 +37,7 @@
 VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, const char *name,
 				const QString& endCol1, const QString& endCol2, int startRow, int endRow):
     DataCurve(t, xColName, name, startRow, endRow),
-	pen(QPen(Qt::black, 1, Qt::SolidLine)),
+	d_pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin)),
 	filledArrow (true),
 	d_style (style),
 	d_headLength (4),
@@ -46,6 +46,7 @@ VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, c
 	d_end_x_a (endCol1),
 	d_end_y_m (endCol2)
 {
+	d_pen.setCosmetic(true);
 	if (style == XYXY){
 		setType(Graph::VectXYXY);
 		setPlotStyle(Graph::VectXYXY);
@@ -57,13 +58,13 @@ VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, c
 
 void VectorCurve::copy(const VectorCurve *vc)
 {
-d_style = vc->d_style;
-filledArrow = vc->filledArrow;
-d_headLength = vc->d_headLength;
-d_headAngle = vc->d_headAngle;
-d_position = vc->d_position;
-pen = vc->pen;
-vectorEnd = (QwtArrayData *)vc->vectorEnd->copy();
+	d_style = vc->d_style;
+	filledArrow = vc->filledArrow;
+	d_headLength = vc->d_headLength;
+	d_headAngle = vc->d_headAngle;
+	d_position = vc->d_position;
+	d_pen = vc->d_pen;
+	vectorEnd = (QwtArrayData *)vc->vectorEnd->copy();
 }
 
 void VectorCurve::draw(QPainter *painter,
@@ -78,7 +79,7 @@ void VectorCurve::draw(QPainter *painter,
 	QwtPlotCurve::draw(painter, xMap, yMap, from, to);
 
     painter->save();
-    painter->setPen(pen);
+    painter->setPen(QwtPainter::scaledPen(d_pen));
     drawVector(painter, xMap, yMap, from, to);
     painter->restore();
 }
@@ -143,24 +144,25 @@ else
 
 void VectorCurve::drawArrowHead(QPainter *p, int xs, int ys, int xe, int ye) const
 {
-p->save();
-p->translate(xe, ye);
-double t=theta(xs, ys, xe, ye);
-p->rotate(-t);
+	p->save();
+	p->translate(xe, ye);
+	double t = theta(xs, ys, xe, ye);
+	p->rotate(-t);
 
-double pi=4*atan(-1.0);
-int d=qRound(d_headLength*tan(pi*(double)d_headAngle/180.0));
+	double pi = 4*atan(-1.0);
+	double headLength = d_headLength*(double)p->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	int d = qRound(headLength*tan(pi*(double)d_headAngle/180.0));
 
-QPolygon endArray(3);
-endArray[0] = QPoint(0, 0);
-endArray[1] = QPoint(-d_headLength, d);
-endArray[2] = QPoint(-d_headLength, -d);
+	QPolygon endArray(3);
+	endArray[0] = QPoint(0, 0);
+	endArray[1] = QPoint(-headLength, d);
+	endArray[2] = QPoint(-headLength, -d);
 
-if (filledArrow)
-	p->setBrush(QBrush(pen.color(), Qt::SolidPattern));
+	if (filledArrow)
+		p->setBrush(QBrush(d_pen.color(), Qt::SolidPattern));
 
-QwtPainter::drawPolygon(p,endArray);
-p->restore();
+	QwtPainter::drawPolygon(p, endArray);
+	p->restore();
 }
 
 double VectorCurve::theta(int x0, int y0, int x1, int y1) const
@@ -184,39 +186,39 @@ return t;
 
 void VectorCurve::setVectorEnd(const QString& xColName, const QString& yColName)
 {
-if (d_end_x_a == xColName && d_end_y_m == yColName)
-	return;
+	if (d_end_x_a == xColName && d_end_y_m == yColName)
+		return;
 
-d_end_x_a = xColName;
-d_end_y_m = yColName;
+	d_end_x_a = xColName;
+	d_end_y_m = yColName;
 
-loadData();
+	loadData();
 }
 
 void VectorCurve::setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&y)
 {
-    vectorEnd=new QwtArrayData(x, y);
+    vectorEnd = new QwtArrayData(x, y);
 }
 
 double VectorCurve::width()
 {
-return pen.widthF();
+	return d_pen.widthF();
 }
 
 void VectorCurve::setWidth(double w)
 {
-pen.setWidthF(w);
+	d_pen.setWidthF(w);
 }
 
 QColor VectorCurve::color()
 {
-return pen.color();
+	return d_pen.color();
 }
 
 void VectorCurve::setColor(const QColor& c)
 {
-if (pen.color() != c)
-	pen.setColor(c);
+if (d_pen.color() != c)
+	d_pen.setColor(c);
 }
 
 void VectorCurve::setHeadLength(int l)

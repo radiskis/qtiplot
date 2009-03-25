@@ -2636,13 +2636,16 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 	if (d_curves.size() < index)
 		return;
 
-	QPen pen = QPen(ColorBox::color(cL->symCol), cL->penWidth, Qt::SolidLine);
+	QPen pen = QPen(ColorBox::color(cL->symCol), cL->penWidth, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+	pen.setCosmetic(true);
 	if (cL->fillCol != -1)
 		c->setSymbol(QwtSymbol(SymbolBox::style(cL->sType), QBrush(ColorBox::color(cL->fillCol)), pen, QSize(cL->sSize, cL->sSize)));
 	else
 		c->setSymbol(QwtSymbol(SymbolBox::style(cL->sType), QBrush(), pen, QSize(cL->sSize, cL->sSize)));
 
-	c->setPen(QPen(ColorBox::color(cL->lCol), cL->lWidth, getPenStyle(cL->lStyle)));
+	pen = QPen(ColorBox::color(cL->lCol), cL->lWidth, getPenStyle(cL->lStyle), Qt::FlatCap, Qt::MiterJoin);
+	pen.setCosmetic(true);
+	c->setPen(pen);
 
 	switch (c->plotStyle()){
 		case Scatter:
@@ -2677,7 +2680,8 @@ void Graph::updateErrorBars(QwtErrorPlotCurve *er, bool xErr, double width, int 
 
 	if (er->width() == width && er->capLength() == cap &&
 		er->color() == c && er->plusSide() == plus &&
-		er->minusSide() == minus && er->throughSymbol() == through && er->xErrors() == xErr)
+		er->minusSide() == minus && er->throughSymbol() == through &&
+		er->xErrors() == xErr)
 		return;
 
 	er->setWidth(width);
@@ -4555,7 +4559,9 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                     double width = s.remove("<PenWidth>").remove("</PenWidth>").toDouble();
                     s = (*(++line)).stripWhiteSpace();
                     int style = s.remove("<PenStyle>").remove("</PenStyle>").toInt();
-                    sp->setDefaultContourPen(QPen(c, width, Graph::getPenStyle(style)));
+                    QPen pen = QPen(c, width, Graph::getPenStyle(style));
+                    pen.setCosmetic(true);
+                    sp->setDefaultContourPen(pen);
                 }
             }
         }
@@ -5598,10 +5604,63 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
         map[axisId].setPaintXInterval(from, to);
     }
 
+	if (!metricsMap.isIdentity()){//we set non-cosmetic pens in order to scale pen width
+		foreach (QwtPlotItem *item, d_curves){
+			if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+				Spectrogram *sp = (Spectrogram *)item;
+				QPen pen = sp->defaultContourPen();
+				pen.setCosmetic(false);
+				sp->setDefaultContourPen(pen);
+			} else {
+				PlotCurve *c = (PlotCurve *)item;
+				QPen pen = c->pen();
+				pen.setCosmetic(false);
+				c->setPen(pen);
+				if (c->type() == Graph::VectXYXY || c->type() == Graph::VectXYAM){
+					VectorCurve *v = (VectorCurve *)item;
+					pen = v->vectorPen();
+					pen.setCosmetic(false);
+					v->setVectorPen(pen);
+				}
+				QwtSymbol symbol = c->symbol();
+				pen = symbol.pen();
+				pen.setCosmetic(false);
+				symbol.setPen(pen);
+				c->setSymbol(symbol);
+			}
+		}
+	}
+
     // The canvas maps are already scaled.
     QwtPainter::setMetricsMap(painter->device(), painter->device());
     printCanvas(painter, canvasRect, map, pfilter);
     QwtPainter::resetMetricsMap();
+
+	foreach (QwtPlotItem *item, d_curves){
+		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+			Spectrogram *sp = (Spectrogram *)item;
+			QPen pen = sp->defaultContourPen();
+			pen.setCosmetic(true);
+			sp->setDefaultContourPen(pen);
+		} else {
+			PlotCurve *c = (PlotCurve *)item;
+			QPen pen = c->pen();
+			pen.setCosmetic(true);
+			c->setPen(pen);
+			if (c->type() == Graph::VectXYXY || c->type() == Graph::VectXYAM){
+				VectorCurve *v = (VectorCurve *)item;
+				pen = v->vectorPen();
+				pen.setCosmetic(true);
+				v->setVectorPen(pen);
+			}
+
+			QwtSymbol symbol = c->symbol();
+			pen = symbol.pen();
+			pen.setCosmetic(true);
+			symbol.setPen(pen);
+			c->setSymbol(symbol);
+		}
+	}
 
     ((QwtPlot *)this)->plotLayout()->invalidate();
 

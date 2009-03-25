@@ -110,6 +110,7 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
         QString s = *line;
         if (s == "<Pen>"){
 			QPen pen;
+			pen.setCosmetic(true);
 			while(s != "</Pen>"){
 				s = (*(++line)).stripWhiteSpace();
 				if (s.contains("<Color>"))
@@ -149,7 +150,8 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 						else if (s.contains("<Width>"))
 							pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());
 					}
-				symbol.setPen(pen);
+					pen.setCosmetic(true);
+					symbol.setPen(pen);
 				} else if (s == "<SymbolBrush>"){
 					QBrush brush;
 					while(s != "</SymbolBrush>"){

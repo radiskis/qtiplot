@@ -2234,8 +2234,11 @@ bool PlotDialog::acceptParams()
   	    sp->setLevelsNumber(levelsBox->value());
   	    if (autoContourBox->isChecked())
   	    	sp->setDefaultContourPen(Qt::NoPen);
-  	    else
-  	    	sp->setDefaultContourPen(QPen(levelsColorBox->color(), contourWidthBox->value(), boxContourStyle->style()));
+  	    else {
+  	    	QPen pen = QPen(levelsColorBox->color(), contourWidthBox->value(), boxContourStyle->style());
+  	    	pen.setCosmetic(true);
+  	    	sp->setDefaultContourPen(pen);
+  	    }
 
   	   sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
   	   sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, imageGroupBox->isChecked());
@@ -2260,7 +2263,9 @@ bool PlotDialog::acceptParams()
 		QBrush br = QBrush(boxAreaColor->color(), boxPattern->getSelectedPattern());
 		if (!fillGroupBox->isChecked())
 			br = QBrush();
-		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(), boxLineStyle->style());
+		QPen pen = QPen(boxLineColor->color(), boxLineWidth->value(),
+						boxLineStyle->style(), Qt::FlatCap, Qt::MiterJoin);
+		pen.setCosmetic(true);
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
 		curve->setPen(pen);
 		curve->setBrush(br);
@@ -2269,7 +2274,8 @@ bool PlotDialog::acceptParams()
 		QBrush br = QBrush(boxFillColor->color(), Qt::SolidPattern);
 		if (!boxFillSymbol->isChecked())
 			br = QBrush();
-		QPen pen = QPen(boxSymbolColor->color(), boxPenWidth->value(), Qt::SolidLine);
+		QPen pen = QPen(boxSymbolColor->color(), boxPenWidth->value(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+		pen.setCosmetic(true);
 		QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
 		((QwtPlotCurve *)plotItem)->setSymbol(s);
 	} else if (privateTabWidget->currentPage() == histogramPage){
@@ -2366,9 +2372,11 @@ bool PlotDialog::acceptParams()
             QBrush br = QBrush(boxPercFillColor->color(), Qt::SolidPattern);
             if (!boxFillSymbols->isChecked())
                 br = QBrush();
-            QwtSymbol s = QwtSymbol(QwtSymbol::NoSymbol, br, QPen(boxEdgeColor->color(),
-                                    boxEdgeWidth->value(),Qt::SolidLine), QSize(size, size));
-			b->setSymbol(s);
+
+			QPen pen = QPen(boxEdgeColor->color(), boxEdgeWidth->value(),
+							Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+			pen.setCosmetic(true);
+			b->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, br, pen, QSize(size, size)));
 		}
 	} else if (privateTabWidget->currentPage() == boxPage){
 		BoxCurve *b = (BoxCurve*)plotItem;

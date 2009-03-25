@@ -33,6 +33,8 @@
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_statistics.h>
 
+#include <qwt_painter.h>
+
 BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow)
 {
@@ -81,7 +83,7 @@ void BoxCurve::draw(QPainter *painter,
 		to = size - 1;
 
 	painter->save();
-	painter->setPen(pen());
+	painter->setPen(QwtPainter::scaledPen(pen()));
 
 	double *dat = new double[size];
 	for (int i = from; i<= to; i++)
@@ -235,6 +237,8 @@ void BoxCurve::drawSymbols(QPainter *painter, const QwtScaleMap &xMap,
 	const int px = xMap.transform(x(0));
 
 	QwtSymbol s = this->symbol();
+	s.setPen(QwtPainter::scaledPen(s.pen()));
+
 	if (min_style != QwtSymbol::NoSymbol)
 	{
 		const int py_min = yMap.transform(y(0));

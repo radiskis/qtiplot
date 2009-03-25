@@ -151,14 +151,13 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	if (d_plot->antialiasing())
 		p->setRenderHints(QPainter::Antialiasing);
 
-	QPen pen(v->color(), v->width(), Qt::SolidLine);
-	p->setPen(pen);
+	p->setPen(QwtPainter::scaledPen(v->vectorPen()));
 	p->drawLine(x, y, x + l, y);
 
 	p->translate(x + l, y);
 
 	double pi = 4*atan(-1.0);
-	int headLength = v->headLength();
+	int headLength = v->headLength()*(double)p->device()->logicalDpiX()/(double)d_plot->logicalDpiX();
 	int d = qRound(headLength*tan(pi*(double)v->headAngle()/180.0));
 
 	QPolygon endArray(3);
@@ -167,7 +166,7 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	endArray[2] = QPoint(-headLength, -d);
 
 	if (v->filledArrowHead())
-		p->setBrush(QBrush(pen.color(), Qt::SolidPattern));
+		p->setBrush(QBrush(v->color(), Qt::SolidPattern));
 
 	p->drawPolygon(endArray);
 	p->restore();
@@ -186,9 +185,9 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 	if (c->type() == Graph::Pie){
 		QwtPieCurve *pie = (QwtPieCurve *)c;
 		const QBrush br = QBrush(pie->color(point), pie->pattern());
-		QPen pen = pie->pen();
+		QPen pen = QwtPainter::scaledPen(pie->pen());
 		p->save();
-		p->setPen (QPen(pen.color(), pen.widthF(), Qt::SolidLine));
+		p->setPen (QPen(pen.color(), pen.widthF(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 		QRect lr = QRect(x, y - l/4, l, l/2);
 		p->setBrush(br);
 		QwtPainter::drawRect(p, lr);
@@ -196,20 +195,19 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 		return;
 	}
 
-    QwtSymbol symb = c->symbol();
-    const QBrush br = c->brush();
-    QPen pen = c->pen();
     p->save();
-    if (c->style()!=0){
-        p->setPen (pen);
+    if (c->style() != 0){
+        p->setPen (QwtPainter::scaledPen(c->pen()));
 		if (c->type() == Graph::VerticalBars || c->type() == Graph::HorizontalBars ||
 			c->type() == Graph::Histogram || c->type() == Graph::Box){
 			QRect lr = QRect(x, y - l/4, l, l/2);
-            p->setBrush(br);
+            p->setBrush(c->brush());
             QwtPainter::drawRect(p, lr);
         } else
             QwtPainter::drawLine(p, x, y, x + l, y);
     }
+
+	QwtSymbol symb = c->symbol();
     int symb_size = symb.size().width();
     if (symb_size > 15)
         symb_size = 15;
@@ -275,7 +273,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                 if (pos2 == -1)
                 {
                      s = s.right(s.length() - pos1 - 1);
-				     continue;            
+				     continue;
                 }
 				int point = -1;
 				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
@@ -288,7 +286,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
             	w += l + h_space;
             	s = s.right(s.length() - pos2 - 1);
 			} else { // pie chart?
-				pos = s.indexOf("\\p{", 0); 
+				pos = s.indexOf("\\p{", 0);
                 if (pos >= 0){  // old syntax
                     QwtText aux(parse(s.left(pos)));
                     aux.setFont(d_text->font());
@@ -305,7 +303,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                     if (pos2 == -1)
                     {
 				         s = s.right(s.length() - pos1 - 1);
-				         continue;            
+				         continue;
                     }
                     int point = s.mid(pos1 + 1, pos2 - pos1 - 1).toInt() - 1;
 					drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
@@ -330,15 +328,15 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
                     if (pos3 == -1)
                     {
 				         s = s.right(s.length() - pos1 - 1);
-				         continue;            
+				         continue;
                     }
                     int point = s.mid(pos1 + 1, pos3 - pos1 - 1).toInt() - 1;
 					drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
                 	w += l;
                 	s = s.right(s.length() - pos3 - 1);
-                }			    
+                }
 
-				
+
 				}
 			}
 		}
@@ -391,7 +389,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
                 if (pos2 == -1)
                 {
 				    s = s.right(s.length() - pos1 - 1);
-				    continue;            
+				    continue;
                 }
 				int point = -1;
 				PlotCurve *curve = getCurve(s.mid(pos1+1, pos2-pos1-1), point);
@@ -425,7 +423,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 						int pos2=s.indexOf(")", pos);
 						if (pos2==-1) pos2=pos+3;
 						s = s.right(s.length() - pos2 - 1);
-					} 
+					}
 				}
             }
 		}
@@ -501,9 +499,9 @@ int LegendWidget::symbolsMaxWidth()
 			if (pos3 != -1 && pos3 < pos2 ) pos2=pos3; // for pi charts get dataset number
             if (pos2 == -1){
 				s = s.right(s.length() - pos1 - 1);
-				continue;            
+				continue;
             }
-			
+
 			int point = 0;
 			PlotCurve* c = getCurve(s.mid(pos1 + 1, pos2 - pos1 - 1), point);
 			if (c && c->type() == Graph::Pie){
@@ -512,7 +510,7 @@ int LegendWidget::symbolsMaxWidth()
 				s = s.right(s.length() - pos2 - 1);
 				continue;
 			}
-			
+
 			if (c && c->rtti() != QwtPlotItem::Rtti_PlotSpectrogram) {
 				if (c->type() == Graph::Pie ||
 					c->type() == Graph::VerticalBars ||
@@ -547,7 +545,7 @@ QString LegendWidget::parse(const QString& str)
     QString s = str;
     s.remove(QRegExp("\\l(*)", Qt::CaseInsensitive, QRegExp::Wildcard));
     s.remove(QRegExp("\\p{*}", Qt::CaseInsensitive, QRegExp::Wildcard));
-    
+
 	QString aux = str;
     while (aux.contains(QRegExp("%(*)", Qt::CaseInsensitive, QRegExp::Wildcard))){//curve name specification
 		int pos = str.indexOf("%(", 0, Qt::CaseInsensitive);
@@ -617,13 +615,13 @@ QString LegendWidget::parse(const QString& str)
 							case 2: //2 arguments
 							{
 	                            int ycol = ((DataCurve *)c)->table()->colIndex(c->title().text());
-								s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->comment(ycol));							
+								s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->comment(ycol));
 								break;
 							}
 							case 3:  //3 arguments, display cell contents
 							{
 								Table *t = ((DataCurve *)c)->table();
-								int col = t->colIndex(c->title().text()); //use y column 
+								int col = t->colIndex(c->title().text()); //use y column
 								int row = lst[2].toInt() - 1;
 								s = s.replace(pos, pos2-pos+1, t->text(row, col));
 								break;
@@ -640,7 +638,7 @@ QString LegendWidget::parse(const QString& str)
 							break;
 					    }
                         }
-					
+
 				}
         	}
 			aux = aux.right(aux.length() - pos2 - 1);

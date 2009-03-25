@@ -40,7 +40,7 @@ QwtErrorPlotCurve::QwtErrorPlotCurve(int orientation, Table *t, const QString& n
 	DataCurve(t, QString(), name),
 	d_master_curve(NULL)
 {
-	cap = 10;
+	d_cap_length = 10;
 	type = orientation;
 	plus = true;
 	minus = true;
@@ -54,7 +54,7 @@ QwtErrorPlotCurve::QwtErrorPlotCurve(Table *t, const QString& name):
 	DataCurve(t, QString(), name),
 	d_master_curve(NULL)
 {
-	cap=10;
+	d_cap_length = 10;
 	type = Vertical;
 	plus = true;
 	minus = true;
@@ -66,7 +66,7 @@ QwtErrorPlotCurve::QwtErrorPlotCurve(Table *t, const QString& name):
 
 void QwtErrorPlotCurve::copy(const QwtErrorPlotCurve *e)
 {
-	cap = e->cap;
+	d_cap_length = e->d_cap_length;
 	type = e->type;
 	plus = e->plus;
 	minus = e->minus;
@@ -85,7 +85,10 @@ void QwtErrorPlotCurve::draw(QPainter *painter,
 		to = dataSize() - 1;
 
   painter->save();
-  painter->setPen(pen());
+  QPen p = QwtPainter::scaledPen(pen());
+  p.setCapStyle(Qt::FlatCap);
+  p.setJoinStyle(Qt::MiterJoin);
+  painter->setPen(p);
   drawErrorBars(painter, xMap, yMap, from, to);
   painter->restore();
 }
@@ -93,11 +96,13 @@ void QwtErrorPlotCurve::draw(QPainter *painter,
 void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 		const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
-    int sh = 0, sw =0;
+    int sh2 = 0, sw2 = 0;
+    double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+    double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
     const QwtSymbol symbol = d_master_curve->symbol();
     if (symbol.style() != QwtSymbol::NoSymbol){
-        sh = symbol.size().height();
-        sw = symbol.size().width();
+        sh2 = int(0.5*y_factor*symbol.size().height());
+        sw2 = int(0.5*x_factor*symbol.size().width());
     }
 
 	double d_xOffset = 0.0;
@@ -117,34 +122,36 @@ void QwtErrorPlotCurve::drawErrorBars(QPainter *painter,
 		if (type == Vertical){
 			const int yh = yMap.transform(y(i) + err[i]);
 			const int yl = yMap.transform(y(i) - err[i]);
-			const int yhl = yi - sh/2;
-			const int ylh = yi + sh/2;
+			const int yhl = yi - sh2;
+			const int ylh = yi + sh2;
+			const int cap2 = qRound(d_cap_length*0.5*x_factor);
 
 			if (plus){
 				QwtPainter::drawLine(painter, xi, yhl, xi, yh);
-				QwtPainter::drawLine(painter, xi - cap/2, yh, xi + cap/2, yh);
+				QwtPainter::drawLine(painter, xi - cap2, yh, xi + cap2, yh);
 			}
 			if (minus && (!logYScale || (logYScale && yl > 0))){
 				QwtPainter::drawLine(painter, xi, ylh, xi, yl);
-				QwtPainter::drawLine(painter, xi - cap/2, yl, xi + cap/2, yl);
+				QwtPainter::drawLine(painter, xi - cap2, yl, xi + cap2, yl);
 			}
-			if (through)
+			if (through && (plus || minus))
 				QwtPainter::drawLine(painter, xi, yhl, xi, ylh);
 		} else if (type == Horizontal) {
 			const int xp = xMap.transform(x(i) + err[i]);
 			const int xm = xMap.transform(x(i) - err[i]);
-  			const int xpm = xi + sw/2;
-  	        const int xmp = xi - sw/2;
+  			const int xpm = xi + sw2;
+  	        const int xmp = xi - sw2;
+			const int cap2 = qRound(d_cap_length*0.5*y_factor);
 
 			if (plus){
 				QwtPainter::drawLine(painter, xp, yi, xpm, yi);
-				QwtPainter::drawLine(painter, xp, yi - cap/2, xp, yi + cap/2);
+				QwtPainter::drawLine(painter, xp, yi - cap2, xp, yi + cap2);
 			}
 			if (minus){
 				QwtPainter::drawLine(painter, xm, yi, xmp, yi);
-				QwtPainter::drawLine(painter, xm, yi - cap/2, xm, yi + cap/2);
+				QwtPainter::drawLine(painter, xm, yi - cap2, xm, yi + cap2);
 			}
-			if (through)
+			if (through && (plus || minus))
 				QwtPainter::drawLine(painter, xmp, yi, xpm, yi);
 		}
 	}
