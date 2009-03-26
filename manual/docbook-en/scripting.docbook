@@ -826,12 +826,24 @@ Also, you can easily clone a MDI window:
 g1 = clone(graph("Graph1"))
 </programlisting>
 
-If you want to delete a project window, you can use the close() method.
+If you want to delete a project window, you can use the <userinput>close()</userinput> method.
 You might want to deactivate the confirmation message, first:
 <programlisting>
 w.confirmClose(False)
 w.close()
 </programlisting>
+
+All QtiPlot subwindows are displayed in a QMdiArea. You can get a pointer to this object
+via the <userinput>workspace()</userinput> method. This can be particularly usefull if you need to customize the
+behavior of the workspace via your scripts. Here follows a small example script that
+pops-up a message displaying the name of the active MDI subwindow each time a new window is activated:
+<programlisting>
+def showMessage():
+	QtGui.QMessageBox.about(qti.app, "", workspace().activeSubWindow().objectName())
+
+QtCore.QObject.connect(workspace(), QtCore.SIGNAL("subWindowActivated(QMdiSubWindow *)"), showMessage)
+</programlisting>
+
 </sect2>
 
 <sect2 id="Python-Folders">
