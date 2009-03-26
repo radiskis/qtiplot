@@ -4931,10 +4931,10 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 {
 	painter->save();
 
-	int lw = lineWidth();
+	int lw = qRound((double)painter->device()->logicalDpiX()/(double)logicalDpiX()*lineWidth());
 	if (lw){
 		QColor color = palette().color(QPalette::Active, QPalette::Foreground);
-		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
+		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 	} else
 		painter->setPen(QPen(Qt::NoPen));
 
@@ -4956,7 +4956,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 
 	QRect rect = canvasRect;
 	const QwtPlotCanvas* plotCanvas = canvas();
-	int lw = plotCanvas->lineWidth();
+	int lw = qRound((double)painter->device()->logicalDpiX()/(double)logicalDpiX()*plotCanvas->lineWidth());
 	int lw2 = lw/2;
 	if (lw % 2)
 		rect = rect.adjusted(-lw2, -lw2, (lw2 + 1), (lw2 + 1));

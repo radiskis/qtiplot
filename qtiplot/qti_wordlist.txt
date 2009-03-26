@@ -532,3 +532,8 @@ addColumn
 insertColumns
 swapColumns
 showAllColumns
+logInfo
+appendLogInfo
+clearLogInfo
+workspace
+append

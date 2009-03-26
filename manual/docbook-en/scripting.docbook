@@ -899,6 +899,18 @@ newFolder = appendProject("projectName", parentFolder = 0)
 If you don't want to be asked for confirmation when a table/matrix is renamed during this operation,
 or when deleting a folder via a Python script, you must change your preferences
 concerning prompting of warning messages, using the <link linkend="fig-preferences-dialog-2">Preferences dialog ("Confirmations" tab)</link>.
+
+<para>
+Folders store their own log information containing the results
+of the analysis operations performed on the child windows. This information
+is updated in the result log window each time you change the active folder
+in the project. You can access and manipulate these log strings via the following functions:
+<programlisting>
+text = folder.logInfo()
+folder.appendLogInfo("Hello!")
+folder.clearLogInfo()
+</programlisting>
+</para>
 </sect2>
 
 <sect2 id="Python-Tables">

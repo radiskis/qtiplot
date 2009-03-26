@@ -2189,10 +2189,10 @@ bool PlotDialog::acceptParams()
 		d_ml->setScaleLayersOnPrint(boxScaleLayers->isChecked());
 		d_ml->printCropmarks(boxPrintCrops->isChecked());
 		return true;
-    } else if (privateTabWidget->currentWidget() == layerPage)
-		//all changes are already applied by the different GUI objects in the layer tab
+    } else if (privateTabWidget->currentWidget() == layerPage){
+		applyLayerFormat();
 		return true;
-	else if (privateTabWidget->currentWidget() == layerGeometryPage){
+	} else if (privateTabWidget->currentWidget() == layerGeometryPage){
 		LayerItem *item = (LayerItem *)listBox->currentItem();
         if (!item)
             return false;
