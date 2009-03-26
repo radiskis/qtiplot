@@ -1964,6 +1964,10 @@ public:
 
   Folder* rootFolder();
 
+  QString logInfo();
+  void appendLogInfo(const QString&);
+  void clearLogInfo();
+
 private:
   Folder(const Folder&);
 };
