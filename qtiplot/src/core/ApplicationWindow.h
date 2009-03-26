@@ -160,6 +160,7 @@ public:
 	QList<QToolBar *> toolBarsList();
 
 	MdiSubWindow *activeWindow(WindowType type = NoWindow);
+	QMdiArea* workspace(){return d_workspace;};
 
 	int matrixUndoStackSize(){return d_matrix_undo_stack_size;};
 	void setMatrixUndoStackSize(int size);
