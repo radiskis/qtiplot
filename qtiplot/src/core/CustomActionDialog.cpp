@@ -598,7 +598,7 @@ void CustomActionDialog::addMenu()
 		}
 	} else {
 		QMessageBox::critical(app, tr("Error"),
-		tr("Thers's already a menu item with this title, please choose another title!"));
+		tr("There's already a menu item with this title, please choose another title!"));
 	}
 }
 
