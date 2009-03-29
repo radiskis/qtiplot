@@ -92,6 +92,11 @@ namespace Origin
 		{
 			return right - left;
 		};
+
+		bool isValid() const
+		{
+			return height() > 0 && width() > 0;
+		}
 	};
 
 	struct ColorMapLevel

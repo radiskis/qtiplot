@@ -152,10 +152,10 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	xoffset=0;
 	try
 	{
-		OriginFile opj((const char *)filename.latin1());
+		OriginFile opj((const char *)filename.toLocal8Bit());
 		parse_error = opj.parse();
-		importTables(opj);
 		importGraphs(opj);
+		importTables(opj);
 		importNotes(opj);
 		if(filename.endsWith(".opj", Qt::CaseInsensitive))
 			createProjectTree(opj);
@@ -659,6 +659,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 	fake->setParent(0);
 	frameWidth = fake->frameGeometry().width() - fake->geometry().width();
 	frameHeight = fake->frameGeometry().height() - fake->geometry().height();
+	Origin::Rect standardFrame(fake->geometry().width(), fake->geometry().height());
+	fake->setMaximized();
+	Origin::Rect maximazedFrame(fake->geometry().width(), fake->geometry().height());
 	fake->askOnCloseEvent(false);
 	fake->close();
 
@@ -675,7 +678,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		ml->setWindowLabel(_graph.label.c_str());
 
 		Origin::Rect graphRect(_graph.width, _graph.height);
-		Origin::Rect graphWindowRect = _graph.frameRect;
+		Origin::Rect graphWindowRect = _graph.frameRect.isValid() ? _graph.frameRect : (_graph.state == Origin::Window::Maximized ? maximazedFrame : standardFrame);
 		double ratio = (double)(graphWindowRect.width() - frameWidth)/(double)(graphWindowRect.height() - frameHeight);
 
 		int width = _graph.width;
@@ -693,7 +696,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		int yOffset = LayerButton::btnSize();
 
-		ml->resize(graphWindowRect.width()/* - frameWidth*/, graphWindowRect.height()/* - frameHeight*/);
+		ml->resize(graphWindowRect.width(), graphWindowRect.height());
 
 		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
 
