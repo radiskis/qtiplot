@@ -60,7 +60,7 @@ d_auto_update(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	d_text = new QwtText(QString::null, QwtText::RichText);
+	d_text = new QwtText(QString::null);
 	d_text->setFont(QFont("Arial", 12, QFont::Normal, false));
 	d_text->setRenderFlags(Qt::AlignTop|Qt::AlignLeft);
 	d_text->setBackgroundBrush(QBrush(Qt::NoBrush));
@@ -257,7 +257,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 			int pos = s.indexOf("\\l(", 0,Qt::CaseInsensitive);
 			int pos2 = s.indexOf(",",pos); // two arguments in case if pie chart
 			int pos3 = s.indexOf(")",pos);
-			if (pos >= 0 && (pos2==-1 || pos2>pos3)){
+			if (pos >= 0 && (pos2 == -1 || pos2 > pos3)){
 				QwtText aux(parse(s.left(pos))); //not a pie chart
 				aux.setFont(d_text->font());
 				aux.setColor(d_text->color());
@@ -270,8 +270,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 
 				int pos1 = s.indexOf("(", pos);
 				int pos2 = s.indexOf(")", pos1);
-                if (pos2 == -1)
-                {
+                if (pos2 == -1){
                      s = s.right(s.length() - pos1 - 1);
 				     continue;
                 }
@@ -300,8 +299,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 
                     int pos1 = s.indexOf("{", pos);
                     int pos2 = s.indexOf("}", pos1);
-                    if (pos2 == -1)
-                    {
+                    if (pos2 == -1){
 				         s = s.right(s.length() - pos1 - 1);
 				         continue;
                     }
@@ -309,34 +307,30 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect,
 					drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
                 	w += l;
                 	s = s.right(s.length() - pos2 - 1);
-                }else
-				{
+                } else {
 					pos = s.indexOf("\\l(", 0,Qt::CaseInsensitive);
-					if (pos >= 0 && pos2!=-1){ //new syntax
-                    QwtText aux(parse(s.left(pos)));
-                    aux.setFont(d_text->font());
-                    aux.setColor(d_text->color());
-					aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
+					if (pos >= 0 && pos2 != -1){ //new syntax
+						QwtText aux(parse(s.left(pos)));
+						aux.setFont(d_text->font());
+						aux.setColor(d_text->color());
+						aux.setRenderFlags (Qt::AlignLeft | Qt::AlignVCenter);
 
-					QSize size = textSize(p, aux);
-                    QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
-                    aux.draw(p, tr);
-                    w += size.width();
+						QSize size = textSize(p, aux);
+						QRect tr = QRect(QPoint(w, height[i] - size.height()/2), size);
+						aux.draw(p, tr);
+						w += size.width();
 
-                    int pos1 = s.indexOf(",", pos);
-                    int pos3 = s.indexOf(")", pos1);
-                    if (pos3 == -1)
-                    {
-				         s = s.right(s.length() - pos1 - 1);
-				         continue;
-                    }
-                    int point = s.mid(pos1 + 1, pos3 - pos1 - 1).toInt() - 1;
-					drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
-                	w += l;
-                	s = s.right(s.length() - pos3 - 1);
-                }
-
-
+						int pos1 = s.indexOf(",", pos);
+						int pos3 = s.indexOf(")", pos1);
+						if (pos3 == -1){
+							 s = s.right(s.length() - pos1 - 1);
+							 continue;
+						}
+						int point = s.mid(pos1 + 1, pos3 - pos1 - 1).toInt() - 1;
+						drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
+						w += l;
+						s = s.right(s.length() - pos3 - 1);
+					}
 				}
 			}
 		}

@@ -64,7 +64,7 @@ class ScriptEdit: public QTextEdit, public scripted
     void setCompleter(QCompleter *c);
 	void setFileName(const QString& fn);
 	void rehighlight();
-	
+
   public slots:
     void execute();
     void executeAll();
@@ -96,6 +96,9 @@ class ScriptEdit: public QTextEdit, public scripted
     void focusInEvent(QFocusEvent *e);
 
   private:
+	void clearErrorHighlighting();
+	void highlightErrorLine(int offset);
+
     Script *myScript;
     QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionImport, *actionSave, *actionExport;
     QAction *actionFind, *actionReplace, *actionFindNext, *actionFindPrevious;
@@ -105,12 +108,11 @@ class ScriptEdit: public QTextEdit, public scripted
   	QTextCursor printCursor;
   	QString scriptsDirPath;
 
-   //! Format used for resetting success/failure markers.
+    //! Format used for resetting success/failure markers.
 	QTextBlockFormat d_fmt_default;
-	//! Format used for marking code that resulted in an error.
-	QTextBlockFormat d_fmt_failure;
 	//! True if we are inside evaluate(), execute() or executeAll() there were errors.
 	bool d_error;
+	QString d_err_message;
 
 	QCompleter *d_completer;
   	QString d_file_name;

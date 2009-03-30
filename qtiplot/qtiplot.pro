@@ -4,7 +4,7 @@ SCRIPTING_LANGS += Python
 
 # a console displaying output of scripts; particularly useful on Windows
 # where running QtiPlot from a terminal is inconvenient
-#DEFINES         += SCRIPTING_CONSOLE
+DEFINES         += SCRIPTING_CONSOLE
 
 # a dialog for selecting the scripting language on a per-project basis
 DEFINES         += SCRIPTING_DIALOG
@@ -59,6 +59,7 @@ unix:LIBS         += ../3rdparty/boost_1_36_0/lib/libboost_thread-gcc43-mt-1_36.
 
 win32:LIBS        += ../3rdparty/muparser/lib/libmuparser.a
 win32:LIBS        += ../3rdparty/qwt/lib/libqwt.a
+win32:LIBS        += ../3rdparty/qwt/lib/libqwtmathml.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgsl.a
 win32:LIBS        += ../3rdparty/gsl/lib/libgslcblas.a
 win32:LIBS        += ../3rdparty/zlib/libz.a
