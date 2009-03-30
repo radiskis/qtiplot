@@ -144,14 +144,14 @@ public slots:
 
 	//! \name Print and Export
 	//@{
-	QPixmap canvasPixmap(const QSize& size = QSize());
+	QPixmap canvasPixmap(const QSize& size = QSize(), double scaleFontsFactor = 1.0);
 	void exportToFile(const QString& fileName);
 	void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
-					int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
+		int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 	void exportSVG(const QString& fname);
     void exportPDF(const QString& fname);
 	void exportVector(const QString& fileName, int res = 0, bool color = true,
-					const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
+		const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
 	void copyAllLayers();
 	void print();

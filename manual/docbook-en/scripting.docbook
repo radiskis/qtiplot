@@ -759,6 +759,7 @@ for i in range(1, 11):
 t = table("Table1")
 m = matrix("Matrix1")
 g = graph("Graph1")
+p = plot3D("Graph2")
 n = note("Notes1")
 # get a pointer to the QTextEdit object used to display information in the results log window:
 log = resultsLog()
@@ -775,6 +776,8 @@ m = newMatrix()
 g = newGraph()
 # create a graph window named "test" with two layers disposed on a 2 rows x 1 column grid
 g = newGraph("test", 2, 2, 1)
+# create an empty 3D plot window with default title
+p = newPlot3D()
 # create an empty note named "momo"
 n = newNote("momo")
 # use defaults
@@ -2044,8 +2047,8 @@ l.export(fileName)
 This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
-l.exportVector(fileName, dpi = 96, color = True, size = QSizeF(), unit = Frame.Pixel)
-l.exportImage(filename, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel)</programlisting>
+l.exportVector(fileName, dpi = 96, color = True, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
+l.exportImage(filename, quality = 100, transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)</programlisting>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
 .eps, .ps, .pdf.</para>
@@ -2095,6 +2098,11 @@ and can take one of the following values:
               </listitem>
             </varlistentry>
           </variablelist>
+
+The <varname>fontsFactor</varname> parameter represents a scaling factor
+for the font sizes of all texts in the plot (the default is 1.0, meaning no scaling).
+If you set this parameter to 0, the program will automatically try to calculate
+a scale factor.
 </para>
 
 <para>All the export functions rely on the file name suffix in order to choose the image format.</para>
@@ -2478,7 +2486,7 @@ g.export(fileName)
 This function uses some default export options. If you want to customize the exported image, you should use the
 following function in order to export to raster image formats:
 <programlisting>
-g.exportImage(fileName, int quality = 100, bool transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel)
+g.exportImage(fileName, int quality = 100, bool transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
 </programlisting>
 where <varname>quality</varname> is a compression factor: the larger its value, the better the quality of the
 exported image, but also the larger the file size.
@@ -2522,6 +2530,11 @@ and can take one of the following values:
               </listitem>
             </varlistentry>
           </variablelist>
+
+The <varname>fontsFactor</varname> parameter represents a scaling factor
+for the font sizes of all texts in the plot (the default is 1.0, meaning no scaling).
+If you set this parameter to 0, the program will automatically try to calculate
+a scale factor.
 
 <para>
 3D plots can be exported to any of the following vector formats: .eps, .ps, .pdf, .pgf and .svg, using

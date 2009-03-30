@@ -593,7 +593,7 @@ void MultiLayer::setRows(int r)
 		d_rows = r;
 }
 
-QPixmap MultiLayer::canvasPixmap(const QSize& size)
+QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor)
 {
 	if (!size.isValid()){
 		QPixmap pic(d_canvas->size());
@@ -609,6 +609,8 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size)
 	QRect canvasRect = d_canvas->rect();
 	double scaleFactorX = (double)size.width()/(double)canvasRect.width();
 	double scaleFactorY = (double)size.height()/(double)canvasRect.height();
+	if (scaleFontsFactor == 0)
+		scaleFontsFactor = scaleFactorY;
 
 	QPixmap pic(size);
 	pic.fill();
@@ -620,7 +622,9 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size)
 		int width = int(g->frameGeometry().width()*scaleFactorX);
 		int height = int(g->frameGeometry().height()*scaleFactorY);
 
-		g->print(&p, QRect(pos, QSize(width,height)));
+		g->scaleFonts(scaleFontsFactor);
+		g->print(&p, QRect(pos, QSize(width, height)));
+		g->scaleFonts(1.0/scaleFontsFactor);
 	}
 	p.end();
 	return pic;
@@ -651,7 +655,8 @@ void MultiLayer::exportToFile(const QString& fileName)
 	}
 }
 
-void MultiLayer::exportImage(const QString& fileName, int quality, bool transparent, int dpi, const QSizeF& customSize, int unit)
+void MultiLayer::exportImage(const QString& fileName, int quality, bool transparent,
+				int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
 	if (!dpi)
 		dpi = logicalDpiX();
@@ -660,7 +665,7 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 	if (customSize.isValid())
 		size = Graph::customPrintSize(customSize, unit, dpi);
 
-	QPixmap pic = canvasPixmap(size);
+	QPixmap pic = canvasPixmap(size, fontsFactor);
 	QImage image = pic.toImage();
 
 	if (transparent){
@@ -693,7 +698,8 @@ void MultiLayer::exportPDF(const QString& fname)
 	exportVector(fname);
 }
 
-void MultiLayer::exportVector(const QString& fileName, int res, bool color, const QSizeF& customSize, int unit)
+void MultiLayer::exportVector(const QString& fileName, int res, bool color,
+				const QSizeF& customSize, int unit, double fontsFactor)
 {
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
@@ -734,7 +740,13 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color, cons
 			double hfactor = (double)size.height()/(double)d_canvas->height();
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
+
+			if (fontsFactor == 0.0)
+				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
+
+			g->scaleFonts(fontsFactor);
         	g->print(&paint, r);
+        	g->scaleFonts(1.0/fontsFactor);
 		}
 	} else if (res && res != printer.resolution()){
 		double wfactor = (double)res/(double)logicalDpiX();

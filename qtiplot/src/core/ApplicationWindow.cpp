@@ -613,6 +613,7 @@ void ApplicationWindow::initGlobalConstants()
     d_export_col_comment = false;
 	d_export_table_selection = false;
 
+	d_scale_fonts_factor = 0.0;
 	d_image_export_filter = ".png";
 	d_export_transparency = false;
 	d_export_quality = 100;
@@ -4627,6 +4628,7 @@ void ApplicationWindow::readSettings()
 	d_export_bitmap_resolution = settings.value("/BitmapResolution", d_export_bitmap_resolution).toInt();
 	d_export_raster_size = settings.value("/RasterSize", d_export_raster_size).toSizeF();
 	d_export_size_unit = settings.value("/SizeUnit", d_export_size_unit).toInt();
+	d_scale_fonts_factor = settings.value("/ScaleFontsFactor", d_scale_fonts_factor).toDouble();
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -4998,6 +5000,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/BitmapResolution", d_export_bitmap_resolution);
 	settings.setValue("/RasterSize", d_export_raster_size);
 	settings.setValue("/SizeUnit", d_export_size_unit);
+	settings.setValue("/ScaleFontsFactor", d_scale_fonts_factor);
 	settings.endGroup(); // ExportImage
 
 	settings.beginGroup("/ScriptWindow");
@@ -5097,7 +5100,7 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 				plot2D->exportSVG(file_name);
 			else
 				plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
-									ied->customExportSize(), ied->sizeUnit());
+						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		}
 	} else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
@@ -5105,10 +5108,11 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 			if (selected_filter.contains("." + (list[i]).lower())) {
 				if (plot2D)
 					plot2D->exportImage(file_name, ied->quality(), ied->transparency(),
-						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
+						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(),
+						ied->scaleFontsFactor());
 				else if (plot3D){
 					plot3D->exportImage(file_name, ied->quality(), ied->transparency(),
-						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
+						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 				}
 			}
 		}
@@ -5150,7 +5154,8 @@ void ApplicationWindow::exportLayer()
 	file.close();
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
-		g->exportVector(file_name, ied->vectorResolution(), ied->color(), ied->customExportSize(), ied->sizeUnit());
+		g->exportVector(file_name, ied->vectorResolution(), ied->color(),
+			ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name);
     /*else if (selected_filter.contains(".emf"))
@@ -5160,7 +5165,8 @@ void ApplicationWindow::exportLayer()
 		for (int i=0; i<(int)list.count(); i++)
 			if (selected_filter.contains("."+(list[i]).lower()))
 				g->exportImage(file_name, ied->quality(), ied->transparency(),
-				ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
+				ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(),
+				ied->scaleFontsFactor());
 	}
 }
 
@@ -5259,7 +5265,7 @@ void ApplicationWindow::exportAllGraphs()
 					plot2D->exportSVG(file_name);
 				else
 					plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
-										ied->customExportSize(), ied->sizeUnit());
+							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 			}
 		} else {
 			QList<QByteArray> list = QImageWriter::supportedImageFormats();
@@ -5267,10 +5273,11 @@ void ApplicationWindow::exportAllGraphs()
 				if (file_suffix.contains("." + (list[i]).lower())) {
 					if (plot2D)
 						plot2D->exportImage(file_name, ied->quality(), ied->transparency(),
-						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
+						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(),
+						ied->scaleFontsFactor());
 					else if (plot3D)
 						plot3D->exportImage(file_name, ied->quality(), ied->transparency(),
-						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit());
+						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 				}
 			}
 		}

@@ -1667,7 +1667,7 @@ void Graph3D::setBackgroundColor(const QColor& bgColor)
 
 void Graph3D::setGridColor(const QColor& gridColor)
 {
-	if(gridCol !=gridColor){
+	if(gridCol != gridColor){
 		sp->coordinates()->setGridLinesColor(Qt2GL(gridColor));
 		gridCol=gridColor;
 	}
@@ -1675,6 +1675,9 @@ void Graph3D::setGridColor(const QColor& gridColor)
 
 void Graph3D::scaleFonts(double factor)
 {
+	if (factor == 1.0 || factor <= 0.0)
+		return;
+
 	QFont font = sp->coordinates()->axes[X1].numberFont();
 	font.setPointSizeFloat(font.pointSizeFloat()*factor);
 	sp->coordinates()->setNumberFont (font);
@@ -1988,7 +1991,7 @@ void Graph3D::copyImage()
 }
 
 void Graph3D::exportImage(const QString& fileName, int quality, bool transparent,
-							int dpi, const QSizeF& customSize, int unit)
+						int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
     if (!dpi)
 		dpi = logicalDpiX();
@@ -2014,7 +2017,15 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 		}
 	}
 
+	if (fontsFactor == 0.0)
+		fontsFactor = (double)size.height()/(double)this->height();
+
+	scaleFonts(fontsFactor);
+
 	QPixmap pic = sp->renderPixmap(size.width(), size.height());
+
+	scaleFonts(1.0/fontsFactor);
+
 	sp->updateData();
 	QImage image = pic.toImage();
 

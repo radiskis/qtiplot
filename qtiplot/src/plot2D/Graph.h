@@ -290,7 +290,7 @@ class Graph: public QwtPlot
 		void printCropmarks(bool on){d_print_cropmarks = on;};
 
 		void copyImage();
-		QPixmap graphPixmap(const QSize& size = QSize());
+		QPixmap graphPixmap(const QSize& size = QSize(), double scaleFontsFactor = 1.0);
 		//! Provided for convenience in scripts
 		void exportToFile(const QString& fileName);
 		void exportSVG(const QString& fname);
@@ -298,9 +298,10 @@ class Graph: public QwtPlot
 		void exportEMF(const QString& fname);
 #endif
 		void exportVector(const QString& fileName, int res = 0, bool color = true,
-						const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
+						const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 		void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
-						 int dpi = 0, const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel);
+						 int dpi = 0, const QSizeF& customSize = QSizeF (),
+						 int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
 		static QSize customPrintSize(const QSizeF& customSize, int unit, int dpi);
 		//@}
