@@ -30,6 +30,7 @@
 #include "Note.h"
 #include "PythonSyntaxHighlighter.h"
 #include "FindReplaceDialog.h"
+#include <ApplicationWindow.h>
 
 #include <QAction>
 #include <QMenu>
@@ -44,6 +45,7 @@
 #include <QScrollBar>
 #include <QStringListModel>
 #include <QShortcut>
+#include <QDockWidget>
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
   : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0),
@@ -66,7 +68,6 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 #endif
 
 	d_fmt_default.setBackground(palette().brush(QPalette::Base));
-	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
 
 	printCursor = textCursor();
 	scriptsDirPath = qApp->applicationDirPath();
@@ -284,11 +285,21 @@ void ScriptEdit::insertErrorMsg(const QString &message)
 {
 	QString err = message;
 	err.prepend("\n").replace("\n","\n#> ");
+
+#ifdef SCRIPTING_CONSOLE
+	QTextEdit *console = scriptEnv->application()->scriptingConsole();
+	console->setPlainText(err);
+	if (!console->isVisible())
+		((QDockWidget *)console->parent())->show();
+#elif
 	int start = printCursor.position();
 	printCursor.insertText(err);
 	printCursor.setPosition(start, QTextCursor::KeepAnchor);
 	setTextCursor(printCursor);
+#endif
+
 	d_error = true;
+	d_err_message = message;
 }
 
 void ScriptEdit::scriptPrint(const QString &text)
@@ -329,6 +340,8 @@ int ScriptEdit::lineNumber(int pos) const
 
 void ScriptEdit::execute()
 {
+	clearErrorHighlighting();
+
 	QString fname = "<%1:%2>";
 	fname = fname.arg(name());
 	QTextCursor codeCursor = textCursor();
@@ -336,27 +349,22 @@ void ScriptEdit::execute()
 		codeCursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
 		codeCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
 	}
-	fname = fname.arg(lineNumber(codeCursor.selectionStart()));
+	int startLineNumber = lineNumber(codeCursor.selectionStart());
+	fname = fname.arg(startLineNumber);
 
 	myScript->setName(fname);
 	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
-	//printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
-	//printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
+	printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
+	printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	myScript->exec();
 
-	if (d_error)
-		codeCursor.mergeBlockFormat(d_fmt_failure);
-	else
-		codeCursor.mergeBlockFormat(d_fmt_default);
-
+	highlightErrorLine(startLineNumber - 1);
 	d_error = false;
 }
 
 void ScriptEdit::executeAll()
 {
-	QTextCursor codeCursor = textCursor();
-	codeCursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
-	codeCursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+	clearErrorHighlighting();
 
 	QString fname = "<%1>";
 	fname = fname.arg(name());
@@ -364,16 +372,14 @@ void ScriptEdit::executeAll()
 	myScript->setCode(text());
 	myScript->exec();
 
-	if (d_error)
-		codeCursor.mergeBlockFormat(d_fmt_failure);
-	else
-		codeCursor.mergeBlockFormat(d_fmt_default);
-
+	highlightErrorLine(0);
 	d_error = false;
 }
 
 void ScriptEdit::evaluate()
 {
+	clearErrorHighlighting();
+
 	QString fname = "<%1:%2>";
 	fname = fname.arg(name());
 	QTextCursor codeCursor = textCursor();
@@ -381,18 +387,14 @@ void ScriptEdit::evaluate()
 		codeCursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
 		codeCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
 	}
-	fname = fname.arg(lineNumber(codeCursor.selectionStart()));
+	int startLineNumber = lineNumber(codeCursor.selectionStart());
+	fname = fname.arg(startLineNumber);
 
 	myScript->setName(fname);
 	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
 	//printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
 	//printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
 	QVariant res = myScript->eval();
-
-	if (d_error)
-		codeCursor.mergeBlockFormat(d_fmt_failure);
-	else
-		codeCursor.mergeBlockFormat(d_fmt_default);
 
 	if (res.isValid())
 		if (!res.isNull() && res.canConvert(QVariant::String)){
@@ -402,11 +404,11 @@ void ScriptEdit::evaluate()
 			printCursor.insertText("\n");
 			printCursor.mergeBlockFormat(d_fmt_default);
 			if (!strVal.isEmpty())
-				 printCursor.insertText("#> "+strVal+"\n");
+				 printCursor.insertText("#> " + strVal + "\n");
 		}
 
+	highlightErrorLine(startLineNumber - 2);//we need to substract a line due to __doit__ line prepended to Python scripts.
 	d_error = false;
-	setTextCursor(printCursor);
 }
 
 void ScriptEdit::exportPDF(const QString& fileName)
@@ -657,6 +659,41 @@ void ScriptEdit::findPrevious()
 		find(d_search_string, d_search_flags, true);
 	else
 		showFindDialog();
+}
+
+void ScriptEdit::clearErrorHighlighting()
+{
+	QTextCursor codeCursor = textCursor();
+	codeCursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
+	codeCursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+	codeCursor.mergeBlockFormat(d_fmt_default);
+}
+
+void ScriptEdit::highlightErrorLine(int offset)
+{
+	if (!d_error)
+		return;
+
+	QTextCursor codeCursor = textCursor();
+	codeCursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
+
+	if (scriptEnv->name() == QString("Python")){
+		QRegExp rx("<*>:(\\d+)");
+		rx.indexIn(d_err_message);
+		QStringList list = rx.capturedTexts();
+		int lineNumber = 0;
+		if (!list.isEmpty())
+			lineNumber = list.last().toInt();
+
+		codeCursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, offset + lineNumber - 1);
+		codeCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
+	} else
+		codeCursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+
+	QTextBlockFormat d_fmt_failure;
+	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
+	codeCursor.mergeBlockFormat(d_fmt_failure);
+	setTextCursor(codeCursor);
 }
 
 ScriptEdit::~ScriptEdit()

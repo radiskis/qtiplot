@@ -226,8 +226,8 @@ PythonScripting::PythonScripting(ApplicationWindow *parent)
 		PyObject *qtiDict = PyModule_GetDict(qtimod);
 		if (!setQObject(d_parent, "app", qtiDict))
 			QMessageBox::warning(d_parent, tr("Failed to export QtiPlot API"),
-			tr("Accessing QtiPlot functions or objects from Python code won't work."\
-			"Probably your version of SIP differs from the one QtiPlot was compiled against."));
+			tr("Accessing QtiPlot functions or objects from Python code won't work. "\
+			"Probably your version of Qt/SIP/PyQt differs from the one QtiPlot was compiled against."));
 
 		PyDict_SetItemString(qtiDict, "mathFunctions", math);
 		Py_DECREF(qtimod);

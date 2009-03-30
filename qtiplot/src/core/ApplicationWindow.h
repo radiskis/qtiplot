@@ -177,6 +177,9 @@ public:
 	void setClipboardLocale(const QLocale& locale){d_clipboard_locale = locale;};
 
 	QTextEdit *resultsLog(){return results;};
+#ifdef SCRIPTING_CONSOLE
+	QTextEdit *scriptingConsole(){return console;};
+#endif
 
 public slots:
 	//! \name Projects and Project Files

@@ -31,7 +31,7 @@
 
 #include <QTextEdit>
 
-//! A QTextEdit displaying line numbers. 
+//! A QTextEdit displaying line numbers.
 /**
  * It must be used in connection with another "source" QTextEdit.
  */
@@ -57,5 +57,4 @@ private:
 	void showEvent(QShowEvent *);
 	QTextEdit *d_text_edit;
 };
-
 #endif
