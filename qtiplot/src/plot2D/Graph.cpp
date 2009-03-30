@@ -1345,7 +1345,7 @@ void Graph::copyImage()
 	QApplication::clipboard()->setPixmap(graphPixmap(), QClipboard::Clipboard);
 }
 
-QPixmap Graph::graphPixmap(const QSize& size)
+QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor)
 {
 	if (!size.isValid()){
 		QPixmap pixmap(boundingRect().size());
@@ -1365,12 +1365,18 @@ QPixmap Graph::graphPixmap(const QSize& size)
 	} else
 		r.setSize(size);
 
+	if (scaleFontsFactor == 0)
+		scaleFontsFactor = (double)size.height()/(double)height();
+
+	scaleFonts(scaleFontsFactor);
+
 	QPixmap pixmap(size);
 	pixmap.fill(Qt::white);
 	QPainter p(&pixmap);
 	print(&p, r);
 	p.end();
 
+	scaleFonts(1.0/scaleFontsFactor);
 	return pixmap;
 }
 
@@ -1399,7 +1405,8 @@ void Graph::exportToFile(const QString& fileName)
 	}
 }
 
-void Graph::exportImage(const QString& fileName, int quality, bool transparent, int dpi, const QSizeF& customSize, int unit)
+void Graph::exportImage(const QString& fileName, int quality, bool transparent, int dpi,
+						const QSizeF& customSize, int unit, double fontsFactor)
 {
 	if (!dpi)
 		dpi = logicalDpiX();
@@ -1408,7 +1415,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	if (customSize.isValid())
 		size = customPrintSize(customSize, unit, dpi);
 
-	QPixmap pic = graphPixmap(size);
+	QPixmap pic = graphPixmap(size, fontsFactor);
 	QImage image = pic.toImage();
 
 	if (transparent){
@@ -1436,7 +1443,8 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	image.save(fileName, 0, quality);
 }
 
-void Graph::exportVector(const QString& fileName, int res, bool color, const QSizeF& customSize, int unit)
+void Graph::exportVector(const QString& fileName, int res, bool color,
+						const QSizeF& customSize, int unit, double fontsFactor)
 {
 	if (fileName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
@@ -1455,6 +1463,10 @@ void Graph::exportVector(const QString& fileName, int res, bool color, const QSi
 
 	if (customSize.isValid()){
 		QSize size = customPrintSize(customSize, unit, res);
+
+		if (fontsFactor == 0.0)
+			fontsFactor = customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
+
 		if (res && res != printer.resolution())
 			printer.setResolution(res);
 		printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
@@ -1467,16 +1479,17 @@ void Graph::exportVector(const QString& fileName, int res, bool color, const QSi
 		} else
 			r.setSize(size);
 	} else if (res && res != printer.resolution()){
-			double wfactor = (double)res/(double)logicalDpiX();
-			double hfactor = (double)res/(double)logicalDpiY();
-			printer.setResolution(res);
-			// LegendWidget size doesn't increase linearly with resolution.
-			// The extra width multiplication factor bellow accounts for this.
-			// We could calculate it precisely, but it's quite complicated...
-			printer.setPaperSize (QSizeF(br.width()*wfactor*1.05, br.height()*hfactor), QPrinter::DevicePixel);
-			r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
+		double wfactor = (double)res/(double)logicalDpiX();
+		double hfactor = (double)res/(double)logicalDpiY();
+		printer.setResolution(res);
+
+		// LegendWidget size doesn't increase linearly with resolution.
+		// The extra width multiplication factor bellow accounts for this.
+		// We could calculate it precisely, but it's quite complicated...
+		printer.setPaperSize (QSizeF(br.width()*wfactor*1.05, br.height()*hfactor), QPrinter::DevicePixel);
+		r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
 	} else
-			printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
+		printer.setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
 
     printer.setOutputFileName(fileName);
     if (fileName.contains(".eps"))
@@ -1494,8 +1507,12 @@ void Graph::exportVector(const QString& fileName, int res, bool color, const QSi
 
 	printer.setOrientation(QPrinter::Portrait);
 
+	scaleFonts(fontsFactor);
+
     QPainter paint(&printer);
 	print(&paint, r);
+
+	scaleFonts(1.0/fontsFactor);
 }
 
 void Graph::print()
@@ -3729,14 +3746,8 @@ void Graph::resizeEvent ( QResizeEvent *e )
 
 void Graph::scaleFonts(double factor)
 {
-	foreach(FrameWidget *f, d_enrichments){
-		LegendWidget *l = qobject_cast<LegendWidget *>(f);
-		if (!l)
-			continue;
-		QFont font = l->font();
-		font.setPointSizeFloat(factor*font.pointSizeFloat());
-		l->setFont(font);
-	}
+	if (factor == 1.0 || factor <= 0.0)
+		return;
 
 	for (int i = 0; i<QwtPlot::axisCnt; i++){
 		QFont font = axisFont(i);
@@ -3768,7 +3779,16 @@ void Graph::scaleFonts(double factor)
                 notifyFontChange(font);
         }
     }
-    replot();
+
+    foreach(FrameWidget *f, d_enrichments){
+		LegendWidget *l = qobject_cast<LegendWidget *>(f);
+		if (!l)
+			continue;
+		QFont font = l->font();
+		font.setPointSizeFloat(factor*font.pointSizeFloat());
+		l->setFont(font);
+		l->resetOrigin();
+	}
 }
 
 void Graph::setFrame (int width, const QColor& color)

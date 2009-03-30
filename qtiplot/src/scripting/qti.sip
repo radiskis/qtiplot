@@ -861,9 +861,9 @@ public:
   void replot();
 
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
-				int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
+				int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
   void exportVector(const QString&, int = 0, bool = true,
-				const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
+				const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
   void exportToFile(const QString& fileName) /PyName=export/;
 
   void enableAutoscaling(bool = true);
@@ -929,9 +929,10 @@ public:
 
   void exportToFile(const QString& fileName) /PyName=export/;
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
-		int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
+		int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel,
+		double fontsFactor = 1.0);
   void exportVector(const QString&, int = 0, bool = true,
-		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel);
+		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
 private:
   MultiLayer(const MultiLayer&);
@@ -973,7 +974,8 @@ public:
 
     void exportToFile(const QString& fileName) /PyName=export/;
     void exportVector(const QString& fileName, int = 0, int = 1);
-    void exportImage(const QString& fileName, int quality = 100, bool transparent = false);
+    void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
+		int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
     void setRotation(double xVal, double yVal, double zVal);
 	void setScale(double xVal, double yVal, double zVal);
@@ -1136,6 +1138,13 @@ public:
   QStringList l;
   l << *a0;
   sipRes = sipCpp->newFunctionPlot(l, a1, a2, a3);
+%End
+
+  Graph3D *plot3D(const QString&);
+%MethodCode
+  sipRes = sipCpp->current_folder->plot3D(*a0, false);
+  if(!sipRes)
+    sipRes = sipCpp->projectFolder()->plot3D(*a0, true);
 %End
 
     Graph3D* newPlot3D(const QString& = QString());
@@ -1961,6 +1970,7 @@ public:
   Matrix *matrix(const QString &name, bool recursive=false);
   MultiLayer *graph(const QString &name, bool recursive=false);
   Note *note(const QString &name, bool recursive=false);
+  Graph3D *plot3D(const QString &name, bool recursive=false);
 
   Folder* rootFolder();
 

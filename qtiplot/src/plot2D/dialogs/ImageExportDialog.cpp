@@ -188,6 +188,18 @@ void ImageExportDialog::initAdvancedOptions()
 	heightBox->setValue(customSize.height());
 	size_layout->addWidget(heightBox, 2, 1);
 
+	size_layout->addWidget(new QLabel(tr("Scale Fonts Factor")), 3, 0);
+	scaleFontsBox = new DoubleSpinBox();
+	scaleFontsBox->setMinimum (0.0);
+	scaleFontsBox->setSpecialValueText (tr("Automatic"));
+	scaleFontsBox->setLocale(app->locale());
+	scaleFontsBox->setFormat('f', 1);
+	if (customSize.isValid())
+		scaleFontsBox->setValue(app->d_scale_fonts_factor);
+	else
+		scaleFontsBox->setValue(0.0);
+	size_layout->addWidget(scaleFontsBox, 3, 1);
+
 	vert_layout->addWidget(d_custom_size_box);
 
 	if (!d_window)
@@ -257,6 +269,7 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
         app->d_export_vector_resolution = d_vector_resolution->value();
         app->d_export_color = d_color->isChecked();
         app->d_export_raster_size = customExportSize();
+        app->d_scale_fonts_factor = scaleFontsBox->value();
 
 		app->d_3D_export_text_mode = d_3D_text_export_mode->currentIndex();
 		app->d_3D_export_sort = d_3D_export_sort->currentIndex();
@@ -285,5 +298,13 @@ bool ImageExportDialog::transparency() const
 		return d_transparency->isChecked();
 
 	return false;
+}
+
+double ImageExportDialog::scaleFontsFactor()
+{
+	if (!d_custom_size_box->isChecked())
+		return 1.0;
+
+	return scaleFontsBox->value();
 }
 

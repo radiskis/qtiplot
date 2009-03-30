@@ -95,6 +95,8 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int x = map[QwtPlot::xBottom].transform(calculateXValue());
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
+	//QMessageBox::about(0, "", QString::number(calculateXValue()));
+
 	// calculate resolution factor
 	double factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
 	// save screen geometry parameters

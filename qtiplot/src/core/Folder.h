@@ -41,6 +41,7 @@ class Table;
 class Matrix;
 class MultiLayer;
 class Note;
+class Graph3D;
 
 class QDragEnterEvent;
 class QDragMoveEvent;
@@ -89,13 +90,15 @@ public:
 	MultiLayer *graph(const QString &name, bool recursive=false) { return (MultiLayer*) window(name, "MultiLayer", recursive); }
 	//! Return note named name or NULL
 	Note *note(const QString &name, bool recursive=false) { return (Note*) window(name, "Note", recursive); }
+	//! Return plot 3D named name or NULL
+	Graph3D *plot3D(const QString &name, bool recursive=false) { return (Graph3D*) window(name, "Graph3D", recursive); }
 
 	//! The complete path of the folder in the project tree
 	QString path();
-	
+
 	//! The depth of the folder in the project tree
 	int depth();
-	
+
 	Folder *folderBelow();
 
 	//! The root of the hierarchy this folder belongs to.
@@ -120,7 +123,7 @@ public:
 	QString logInfo(){return d_log_info;};
 	void appendLogInfo(const QString& text){d_log_info += text;};
 	void clearLogInfo(){d_log_info = QString();};
-	
+
 protected:
     QString birthdate, modifDate;
 	QString d_log_info;

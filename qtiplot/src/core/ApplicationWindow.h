@@ -1072,6 +1072,7 @@ public:
 	bool d_export_col_names, d_export_table_selection, d_export_col_comment;
     //! Last selected filter in export image dialog
     QString d_image_export_filter;
+    double d_scale_fonts_factor;
     bool d_export_transparency;
     int d_export_quality;
     int d_export_vector_resolution, d_export_bitmap_resolution, d_export_size_unit;

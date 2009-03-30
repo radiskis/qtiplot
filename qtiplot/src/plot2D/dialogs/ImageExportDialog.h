@@ -73,7 +73,7 @@ private:
 
     //! Container widget for user defined export size.
 	QGroupBox *d_custom_size_box;
-	DoubleSpinBox *widthBox, *heightBox;
+	DoubleSpinBox *widthBox, *heightBox, *scaleFontsBox;
 	QComboBox *unitBox;
 
 public:
@@ -108,6 +108,8 @@ public:
 	QSizeF customExportSize();
 	//! Return the unit used for the custom export size
 	int sizeUnit(){return unitBox->currentIndex();};
+	//! Return the scale fonts factor
+	double scaleFontsFactor();
 
 protected slots:
 	void closeEvent(QCloseEvent*);
