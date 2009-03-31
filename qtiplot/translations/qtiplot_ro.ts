@@ -84,7 +84,7 @@
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="974"/>
         <source>Scripting Console</source>
-        <translation>Consolă de programere</translation>
+        <translation>Consolă de programare</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="972"/>
