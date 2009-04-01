@@ -566,7 +566,7 @@ The <emphasis>File Toolbar</emphasis> allows to access commands mainly from the 
   <row>
    <entry>&add-column-icon;</entry>
    <entry><link linkend="add-column-cmd">plot -> &add-column-cmd;</link></entry>
-   <entry></entry>
+   <entry>Alt + C</entry>
    <entry>add a new column to the table</entry>
   </row>
   <row>

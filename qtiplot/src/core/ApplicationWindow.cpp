@@ -12710,6 +12710,7 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionAddColToTable->setMenuText(tr("Add Column"));
 	actionAddColToTable->setToolTip(tr("Add Column"));
+	actionAddColToTable->setShortcut(tr("Alt+C"));
 
 	actionClearTable->setMenuText(tr("Clear"));
 	actionGoToRow->setMenuText(tr("&Go to Row..."));
