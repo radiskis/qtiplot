@@ -202,8 +202,9 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 {
 	p->save();
 	if (d_frame == Line){
-		p->setPen(d_frame_pen);
-		int lw = d_frame_pen.width()/2;
+		QPen pen = QwtPainter::scaledPen(d_frame_pen);
+		p->setPen(pen);
+		int lw = pen.width()/2;
 		QRect r = rect.adjusted(lw, lw, -lw - 1, -lw - 1);
 		p->fillRect(r, palette().color(QPalette::Window));
 		if (d_brush.style() != Qt::NoBrush)
@@ -230,7 +231,7 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 
 		p->fillPath(shadow.subtracted(contents), Qt::black);//draw shadow
 		p->fillRect(r, palette().color(QPalette::Window));
-		p->setPen(d_frame_pen);
+		p->setPen(QwtPainter::scaledPen(d_frame_pen));
 		if (d_brush.style() != Qt::NoBrush)
 			p->setBrush(d_brush);
 		QwtPainter::drawRect(p, r);
