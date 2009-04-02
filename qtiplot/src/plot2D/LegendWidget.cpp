@@ -157,7 +157,7 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	p->translate(x + l, y);
 
 	double pi = 4*atan(-1.0);
-	int headLength = v->headLength()*(double)p->device()->logicalDpiX()/(double)d_plot->logicalDpiX();
+	int headLength = qRound(v->headLength()*(double)p->device()->logicalDpiX()/(double)d_plot->logicalDpiX());
 	int d = qRound(headLength*tan(pi*(double)v->headAngle()/180.0));
 
 	QPolygon endArray(3);
@@ -380,8 +380,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 
 				int pos1 = s.indexOf("(", pos);
 				int pos2 = s.indexOf(")", pos1);
-                if (pos2 == -1)
-                {
+                if (pos2 == -1){
 				    s = s.right(s.length() - pos1 - 1);
 				    continue;
                 }
@@ -405,8 +404,7 @@ QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int 
 					int pos2=s.indexOf("}", pos);
 					if (pos2==-1) pos2=pos+3;
 					s = s.right(s.length() - pos2 - 1);
-                }else
-				{
+                } else {
 					pos = s.indexOf("\\l(", 0,Qt::CaseInsensitive); // new syntax
 					if (pos >= 0){
 						QwtText aux(parse(s.left(pos)));
@@ -579,7 +577,6 @@ QString LegendWidget::parse(const QString& str)
         	if (d_plot && cv >= 0 && cv < d_plot->curveCount()){
 				PlotCurve *c = (PlotCurve *)d_plot->curve(cv);
             	if (c){
-
 					    switch(lcmd)
 					    {
 					    case 0: //use curve title
@@ -782,17 +779,31 @@ void LegendWidget::setAngle(int angle)
 }
 
 /*
-  // bug in Qwt; workaround in QwtText::textSize() doesn't work.
+  // bug in Qwt; workaround in QwtText::textSize() doesn't work, the returned value is still too small.
 */
 QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 {
-	QString s = text.text();
-	s.remove("<sub>").remove("</sub>").remove("<sup>").remove("</sup>");
-	s.remove("<i>").remove("</i>").remove("<u>").remove("</u>");
-	s.remove("<b>").remove("</b>");
-	if (text.font().italic())
-		s += " ";
-	return QFontMetrics(text.font(), p->device()).boundingRect(s).size();
+	QwtMetricsMap map;
+	map.setMetrics(this, p->device());
+	if (!map.isIdentity()){
+		QSize size1 = text.textSize(text.font());
+		double screen_width = map.layoutToScreenX(size1.width());
+		screen_width -= 3;
+		screen_width *= 1.06;
+		size1 = QSize(map.screenToLayoutX(qRound(screen_width)), size1.height());
+
+		QString s = text.text();
+		s.remove("<sub>").remove("</sub>").remove("<sup>").remove("</sup>");
+		s.remove("<i>").remove("</i>").remove("<u>").remove("</u>");
+		s.remove("<b>").remove("</b>");
+		if (text.font().italic())
+			s += " ";
+		QSize size2 = QFontMetrics(text.font(), p->device()).boundingRect(s).size();
+
+		// we return the size with minimum width (they are both too large)
+		return (size1.width() < size2.width()) ? size1 : size2;
+	}
+	return text.textSize(text.font());
 }
 
 LegendWidget::~LegendWidget()

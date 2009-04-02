@@ -154,8 +154,8 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	{
 		OriginFile opj((const char *)filename.toLocal8Bit());
 		parse_error = opj.parse();
-		importGraphs(opj);
 		importTables(opj);
+		importGraphs(opj);
 		importNotes(opj);
 		if(filename.endsWith(".opj", Qt::CaseInsensitive))
 			createProjectTree(opj);
