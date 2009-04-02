@@ -5079,7 +5079,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	if (painter->hasClipping())
 		painter->setClipping(false);
 
-	painter->setPen(QPen(color, qRound(factor*axesLinewidth()), Qt::SolidLine));
+	painter->setPen(QPen(color, factor*axesLinewidth(), Qt::SolidLine));
 
 	QwtScaleDiv *scDiv = (QwtScaleDiv *)axisScaleDiv(axis);
 	const QwtValueList minTickList = scDiv->ticks(QwtScaleDiv::MinorTick);
@@ -5914,7 +5914,7 @@ void Graph::printScale(QPainter *painter,
     painter->setFont(scaleWidget->font());
 
     QPen pen = painter->pen();
-    pen.setWidth(qRound(scaleWidget->penWidth()*(double)painter->device()->logicalDpiX()/(double)logicalDpiX()));
+    pen.setWidthF(scaleWidget->penWidth()*(double)painter->device()->logicalDpiX()/(double)logicalDpiX());
     painter->setPen(QwtPainter::scaledPen(pen));
 
     QwtScaleDraw *sd = (QwtScaleDraw *)scaleWidget->scaleDraw();
