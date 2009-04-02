@@ -103,6 +103,9 @@ d_print_cropmarks(false),
 d_scale_layers(parent->autoResizeLayers)
 {
 	layerButtonsBox = new QHBoxLayout();
+#ifdef Q_OS_MAC
+	layerButtonsBox->setSpacing(12);
+#endif
 	QHBoxLayout *hbox = new QHBoxLayout();
 	hbox->addLayout(layerButtonsBox);
 	hbox->addStretch();
