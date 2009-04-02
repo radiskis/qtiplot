@@ -184,6 +184,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_antialiasing = false;
 	d_scale_on_print = true;
 	d_print_cropmarks = false;
+	d_is_printing = false;
 
 	d_user_step = QVector<double>(QwtPlot::axisCnt);
 	for (int i=0; i<QwtPlot::axisCnt; i++)
@@ -5078,7 +5079,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 	if (painter->hasClipping())
 		painter->setClipping(false);
 
-	painter->setPen(QPen(color, axesLinewidth(), Qt::SolidLine));
+	painter->setPen(QPen(color, qRound(factor*axesLinewidth()), Qt::SolidLine));
 
 	QwtScaleDiv *scDiv = (QwtScaleDiv *)axisScaleDiv(axis);
 	const QwtValueList minTickList = scDiv->ticks(QwtScaleDiv::MinorTick);
@@ -5491,6 +5492,8 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 
 	deselect();
 
+	d_is_printing = true;
+
     QwtText t = title();
 	printFrame(painter, plotRect);
 
@@ -5542,37 +5545,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
         printTitle(painter, plotLayout()->titleRect());
     }
 
-	bw = canvas()->lineWidth();
-    QRect canvasRect = plotLayout()->canvasRect().adjusted(bw, bw, -bw, -bw);
-
-    for ( axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
-        QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
-        if (scaleWidget){
-            int baseDist = scaleWidget->margin();
-
-            int startDist, endDist;
-            scaleWidget->getBorderDistHint(startDist, endDist);
-
-            QRect scaleRect = plotLayout()->scaleRect(axisId);
-            if (!scaleWidget->margin()){
-                switch(axisId){
-                    case xBottom:
-                        scaleRect.translate(0, canvasRect.bottom() - scaleRect.top());
-                    break;
-                    case xTop:
-                        scaleRect.translate(0, canvasRect.top() - scaleRect.bottom());
-                    break;
-                    case yLeft:
-                        scaleRect.translate(canvasRect.left() - scaleRect.right(), 0);
-                    break;
-                    case yRight:
-                        scaleRect.translate(canvasRect.right() - scaleRect.left(), 0);
-                    break;
-                }
-            }
-            printScale(painter, axisId, startDist, endDist, baseDist, scaleRect);
-        }
-    }
+	QRect canvasRect = plotLayout()->canvasRect();
 
 	/*
        The border of the bounding rect needs to ba scaled to
@@ -5682,6 +5655,41 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 		}
 	}
 
+	QwtPainter::setMetricsMap(this, painter->device());
+
+	bw = canvas()->lineWidth();
+	canvasRect = plotLayout()->canvasRect().adjusted(bw, bw, -bw, -bw);
+
+    for ( axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
+        QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
+        if (scaleWidget){
+            int baseDist = scaleWidget->margin();
+
+            int startDist, endDist;
+            scaleWidget->getBorderDistHint(startDist, endDist);
+
+            QRect scaleRect = plotLayout()->scaleRect(axisId);
+            if (!scaleWidget->margin()){
+                switch(axisId){
+                    case xBottom:
+                        scaleRect.translate(0, canvasRect.bottom() - scaleRect.top());
+                    break;
+                    case xTop:
+                        scaleRect.translate(0, canvasRect.top() - scaleRect.bottom());
+                    break;
+                    case yLeft:
+                        scaleRect.translate(canvasRect.left() - scaleRect.right(), 0);
+                    break;
+                    case yRight:
+                        scaleRect.translate(canvasRect.right() - scaleRect.left(), 0);
+                    break;
+                }
+            }
+            printScale(painter, axisId, startDist, endDist, baseDist, scaleRect);
+        }
+    }
+	QwtPainter::resetMetricsMap();
+
     ((QwtPlot *)this)->plotLayout()->invalidate();
 
     // reset all widgets with their original attributes.
@@ -5695,6 +5703,8 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
     }
 
     painter->restore();
+
+	d_is_printing = false;
     setTitle(t);//hack used to avoid bug in Qwt::printTitle(): the title attributes are overwritten
 }
 
@@ -5817,4 +5827,111 @@ bool Graph::rangeSelectorsEnabled()
 	if (d_range_selector && d_range_selector->isVisible())
 		return true;
 	return false;
+}
+
+/*!
+  \brief Paint a scale into a given rectangle.
+  Paint the scale into a given rectangle (modified code from Qwt).
+
+  \param painter Painter
+  \param axisId Axis
+  \param startDist Start border distance
+  \param endDist End border distance
+  \param baseDist Base distance
+  \param rect Bounding rectangle
+*/
+
+void Graph::printScale(QPainter *painter,
+    int axisId, int startDist, int endDist, int baseDist,
+    const QRect &rect) const
+{
+    if (!axisEnabled(axisId))
+        return;
+
+    const QwtScaleWidget *scaleWidget = axisWidget(axisId);
+    if ( scaleWidget->isColorBarEnabled()
+        && scaleWidget->colorBarWidth() > 0)
+    {
+        const QwtMetricsMap map = QwtPainter::metricsMap();
+
+        QRect r = map.layoutToScreen(rect);
+        r.setWidth(r.width() - 1);
+        r.setHeight(r.height() - 1);
+
+        scaleWidget->drawColorBar(painter, scaleWidget->colorBarRect(r));
+
+        const int off = scaleWidget->colorBarWidth() + scaleWidget->spacing();
+        if ( scaleWidget->scaleDraw()->orientation() == Qt::Horizontal )
+            baseDist += map.screenToLayoutY(off);
+        else
+            baseDist += map.screenToLayoutX(off);
+    }
+
+    QwtScaleDraw::Alignment align;
+    int x, y, w;
+
+    switch(axisId)
+    {
+        case yLeft:
+        {
+            x = rect.right() - baseDist;
+            y = rect.y() + startDist;
+            w = rect.height() - startDist - endDist;
+            align = QwtScaleDraw::LeftScale;
+            break;
+        }
+        case yRight:
+        {
+            x = rect.left() + baseDist;
+            y = rect.y() + startDist;
+            w = rect.height() - startDist - endDist;
+            align = QwtScaleDraw::RightScale;
+            break;
+        }
+        case xTop:
+        {
+            x = rect.left() + startDist;
+            y = rect.bottom() - baseDist;
+            w = rect.width() - startDist - endDist;
+            align = QwtScaleDraw::TopScale;
+            break;
+        }
+        case xBottom:
+        {
+            x = rect.left() + startDist;
+            y = rect.top() + baseDist;
+            w = rect.width() - startDist - endDist;
+            align = QwtScaleDraw::BottomScale;
+            break;
+        }
+        default:
+            return;
+    }
+
+    scaleWidget->drawTitle(painter, align, rect);
+
+    painter->save();
+    painter->setFont(scaleWidget->font());
+
+    QPen pen = painter->pen();
+    pen.setWidth(qRound(scaleWidget->penWidth()*(double)painter->device()->logicalDpiX()/(double)logicalDpiX()));
+    painter->setPen(QwtPainter::scaledPen(pen));
+
+    QwtScaleDraw *sd = (QwtScaleDraw *)scaleWidget->scaleDraw();
+    const QPoint sdPos = sd->pos();
+    const int sdLength = sd->length();
+
+    sd->move(x, y);
+    sd->setLength(w);
+
+    QPalette palette = scaleWidget->palette();
+    palette.setCurrentColorGroup(QPalette::Active);
+
+    sd->draw(painter, palette);
+
+    // reset previous values
+    sd->move(sdPos);
+    sd->setLength(sdLength);
+
+    painter->restore();
 }

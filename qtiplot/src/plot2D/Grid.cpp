@@ -64,8 +64,14 @@ void Grid::draw(QPainter *painter,
 		const QwtScaleMap &mx, const QwtScaleMap &my,
 		const QRect &r) const
 {
+
+	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+
 	//  draw minor X gridlines
-	painter->setPen(minPen());
+	QPen pen = minPen();
+	pen.setWidthF(pen.widthF() * x_factor);
+	painter->setPen(pen);
 
 	if (xMinEnabled()){
 		drawLines(painter, r, Qt::Vertical, mx,
@@ -75,7 +81,9 @@ void Grid::draw(QPainter *painter,
 	}
 
 	//  draw minor Y gridlines
-	painter->setPen(d_min_pen_y);
+	pen = d_min_pen_y;
+	pen.setWidthF(pen.widthF() * y_factor);
+	painter->setPen(pen);
 
 	if (yMinEnabled()){
 		drawLines(painter, r, Qt::Horizontal, my,
@@ -85,7 +93,9 @@ void Grid::draw(QPainter *painter,
 	}
 
 	//  draw major X gridlines
-	painter->setPen(majPen());
+	pen = majPen();
+	pen.setWidthF(pen.widthF() * x_factor);
+	painter->setPen(pen);
 
 	if (xEnabled()){
 		drawLines(painter, r, Qt::Vertical, mx,
@@ -93,7 +103,9 @@ void Grid::draw(QPainter *painter,
 	}
 
 	//  draw major Y gridlines
-	painter->setPen(d_maj_pen_y);
+	pen = d_maj_pen_y;
+	pen.setWidthF(pen.widthF() * y_factor);
+	painter->setPen(pen);
 
 	if (yEnabled()){
 		drawLines(painter, r, Qt::Horizontal, my,

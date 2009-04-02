@@ -200,6 +200,7 @@ class Graph: public QwtPlot
 		QRect boundingRect();
 		void raiseEnrichements();
 		void addLegendItem();
+		bool isPrinting(){return d_is_printing;};
 
 	public slots:
 		void copy(Graph* g);
@@ -719,6 +720,8 @@ signals:
     	void printFrame(QPainter *painter, const QRect &rect) const;
 		void printCanvas(QPainter *painter, const QRect &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
+		virtual void printScale (QPainter *, int axisId, int startDist, int endDist,
+			int baseDist, const QRect &) const;
 		virtual void drawItems (QPainter *painter, const QRect &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 
@@ -741,6 +744,8 @@ signals:
 		bool autoScaleFonts;
 		bool d_scale_on_print, d_print_cropmarks;
 		bool drawLineOn, drawArrowOn, drawAxesBackbone;
+		//! Flag telling if we are performing a print operation
+		bool d_is_printing;
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
 		//! Arrows/lines on plot
