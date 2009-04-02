@@ -70,7 +70,7 @@ public:
 	int angle(){return d_angle;};
 	void setAngle(int angle);
 
-	static QSize textSize(QPainter *p, const QwtText& text);
+	QSize textSize(QPainter *p, const QwtText& text);
 
 private:
 	PlotCurve* getCurve(const QString& s, int &point);
