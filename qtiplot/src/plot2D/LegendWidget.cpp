@@ -783,27 +783,18 @@ void LegendWidget::setAngle(int angle)
 */
 QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 {
+	QSize size = text.textSize(text.font());
 	QwtMetricsMap map;
 	map.setMetrics(this, p->device());
 	if (!map.isIdentity()){
-		QSize size1 = text.textSize(text.font());
-		double screen_width = map.layoutToScreenX(size1.width());
-		screen_width -= 3;
-		screen_width *= 1.06;
-		size1 = QSize(map.screenToLayoutX(qRound(screen_width)), size1.height());
-
 		QString s = text.text();
-		s.remove("<sub>").remove("</sub>").remove("<sup>").remove("</sup>");
-		s.remove("<i>").remove("</i>").remove("<u>").remove("</u>");
-		s.remove("<b>").remove("</b>");
-		if (text.font().italic())
-			s += " ";
-		QSize size2 = QFontMetrics(text.font(), p->device()).boundingRect(s).size();
-
-		// we return the size with minimum width (they are both too large)
-		return (size1.width() < size2.width()) ? size1 : size2;
+		if (s.contains("<sub>") || s.contains("<sup>")){
+			int width = size.width() + QFontMetrics(text.font(), p->device()).boundingRect(" ").width();
+			size =  QSize(width, size.height());
+		} else
+			size = QFontMetrics(text.font(), p->device()).boundingRect(s + " ").size();
 	}
-	return text.textSize(text.font());
+	return size;
 }
 
 LegendWidget::~LegendWidget()
