@@ -96,21 +96,25 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int y = map[QwtPlot::yLeft].transform(calculateYValue());
 
 	// calculate resolution factor
-	double factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+
 	// save screen geometry parameters
 	int space = h_space;
 	int left = left_margin;
 	int top = top_margin;
 
-	h_space = int(h_space*factor);
-	left_margin = int(left_margin*factor);
-	top_margin = int(top_margin*factor);
+	h_space = int(h_space*xfactor);
+	left_margin = int(left_margin*xfactor);
+	top_margin = int(top_margin*yfactor);
 
-	const int symbolLineLength = int((line_length + symbolsMaxWidth())*factor);
+	const int symbolLineLength = int((line_length + symbolsMaxWidth())*xfactor);
 	int width, height, textWidth, textHeight;
 	QwtArray<long> heights = itemsHeight(painter, symbolLineLength, width, height, textWidth, textHeight);
 
-	drawFrame(painter, QRect(x, y, width, height));
+	int dfx = qRound(d_frame_pen.width()*xfactor);
+	int dfy = qRound(d_frame_pen.width()*yfactor);
+	drawFrame(painter, QRect(x, y, width, height).adjusted(-dfx, -dfy, dfx, dfy));
 	drawText(painter, QRect(x, y, textWidth, textHeight), heights, symbolLineLength);
 
 	// restore screen geometry parameters
