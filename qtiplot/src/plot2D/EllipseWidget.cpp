@@ -117,8 +117,9 @@ void EllipseWidget::drawFrame(QPainter *p, const QRect& rect)
 	ellipse.addEllipse(rect);
 
 	if (d_frame == Line){
-		p->setPen(d_frame_pen);
-		int lw = d_frame_pen.width()/2;
+		QPen pen = QwtPainter::scaledPen(d_frame_pen);
+		p->setPen(pen);
+		int lw = pen.width()/2;
 		QRect r = rect.adjusted(lw + 1, lw + 1, -lw - 1, -lw - 1);
 		p->fillPath(ellipse, palette().color(QPalette::Window));
 		if (d_brush.style() != Qt::NoBrush)

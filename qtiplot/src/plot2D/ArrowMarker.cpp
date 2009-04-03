@@ -61,58 +61,64 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 	const int y1 = yMap.transform(d_rect.bottom());
 
 	p->save();
-	QPen pen = linePen();
+	QPen pen = QwtPainter::scaledPen(linePen());
+	pen.setCapStyle(Qt::FlatCap);
+	pen.setJoinStyle(Qt::MiterJoin);
 	p->setPen(pen);
 
 	QBrush brush = QBrush(pen.color(), Qt::SolidPattern);
-	QwtPainter::drawLine(p,x0,y0,x1,y1);
+	QwtPainter::drawLine(p, x0, y0, x1, y1);
 	p->restore();
+
+	int headLength = qRound(d_head_length*(double)p->device()->logicalDpiX()/(double)plot()->logicalDpiX());
 
 	if (d_end_arrow){
 		p->save();
-		p->translate(x1,y1);
+		p->translate(x1, y1);
 		const double t = theta(x0, y0, x1, y1);
 		p->rotate(-t);
 
 		QPolygon endArray(3);
-		endArray[0] = QPoint(0,0);
+		endArray[0] = QPoint(0, 0);
 
-		int d=(int)floor(d_head_length*tan(M_PI*d_head_angle/180.0)+0.5);
-		endArray[1] = QPoint(-d_head_length,d);
-		endArray[2] = QPoint(-d_head_length,-d);
+		int d = qRound(headLength*tan(M_PI*d_head_angle/180.0) + 0.5);
+		endArray[1] = QPoint(-headLength, d);
+		endArray[2] = QPoint(-headLength, -d);
 
-		p->setPen(QPen(pen.color(), pen.width(), Qt::SolidLine));
+		pen.setStyle(Qt::SolidLine);
+		p->setPen(pen);
 		if (d_fill_head)
 			p->setBrush(brush);
 
-		QwtPainter::drawPolygon(p,endArray);
+		QwtPainter::drawPolygon(p, endArray);
 		p->restore();
     }
 
 	if (d_start_arrow){
 		p->save();
-		p->translate(x0,y0);
+		p->translate(x0, y0);
 		const double t = theta(x0, y0, x1, y1);
 		p->rotate(-t);
 
 		QPolygon startArray(3);
-		startArray[0] = QPoint(0,0);
+		startArray[0] = QPoint(0, 0);
 
-		int d=(int)floor(d_head_length*tan(M_PI*d_head_angle/180.0)+0.5);
-		startArray[1] = QPoint(d_head_length,d);
-		startArray[2] = QPoint(d_head_length,-d);
+		int d = qRound(headLength*tan(M_PI*d_head_angle/180.0) + 0.5);
+		startArray[1] = QPoint(headLength, d);
+		startArray[2] = QPoint(headLength, -d);
 
-		p->setPen(QPen(pen.color(), pen.width(), Qt::SolidLine));
+		pen.setStyle(Qt::SolidLine);
+		p->setPen(pen);
 		if (d_fill_head)
 			p->setBrush(brush);
-		QwtPainter::drawPolygon(p,startArray);
+		QwtPainter::drawPolygon(p, startArray);
 		p->restore();
     }
 
-	if (d_editable) {
+	if (d_editable){
 		p->save();
-		p->setPen(QPen(Qt::black,1,Qt::SolidLine));
-		QRect handler(QPoint(0,0), QSize(10,10));
+		p->setPen(QPen(Qt::black, 1, Qt::SolidLine));
+		QRect handler(QPoint(0, 0), QSize(10, 10));
 		handler.moveCenter(startPoint());
 		p->fillRect(handler, QBrush(Qt::black));
 		handler.moveCenter(endPoint());
