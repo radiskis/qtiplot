@@ -1496,11 +1496,6 @@ void Graph::exportVector(const QString& fileName, int res, bool color,
     if (fileName.contains(".eps"))
     	printer.setOutputFormat(QPrinter::PostScriptFormat);
 
-#ifdef Q_OS_MAC
-    if (fileName.contains(".pdf"))
-    	printer.setOutputFormat(QPrinter::NativeFormat);
-#endif
-
     if (color)
 		printer.setColorMode(QPrinter::Color);
 	else
@@ -5657,8 +5652,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 
 	QwtPainter::setMetricsMap(this, painter->device());
 
-	bw = canvas()->lineWidth();
-	canvasRect = plotLayout()->canvasRect().adjusted(bw, bw, -bw, -bw);
+	canvasRect = plotLayout()->canvasRect();
 
     for ( axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
         QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);

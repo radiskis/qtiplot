@@ -721,10 +721,6 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
     if (fileName.contains(".eps"))
     	printer.setOutputFormat(QPrinter::PostScriptFormat);
 
-#ifdef Q_OS_MAC
-    if (fileName.contains(".pdf")) // use native Mac OS X print engine
-    	printer.setOutputFormat(QPrinter::NativeFormat);
-#endif
 	if (color)
 		printer.setColorMode(QPrinter::Color);
 	else
