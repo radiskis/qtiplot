@@ -537,4 +537,4 @@ appendLogInfo
 clearLogInfo
 workspace
 append
-name
+objectName

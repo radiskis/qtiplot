@@ -818,6 +818,8 @@ The caption policy can have one of the following values:
         </listitem>
       </orderedlist>
 
+You can access the name or label of a window by using the <userinput>objectName()</userinput> and <userinput>windowLabel()</userinput> functions.
+	  
 For a fast editing process, you can create template files from existing tables, matrices or plots. The templates can be used later on in order to create customized windows very easily:
 <programlisting>
 saveAsTemplate(graph("Graph1"), "my_plot.qpt")

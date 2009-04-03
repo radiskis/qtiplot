@@ -61,11 +61,6 @@ public:
   sipRes = PyString_FromString(sipCpp->windowLabel());
 %End
   void setWindowLabel(const QString&);
-
-  SIP_PYOBJECT name();
-%MethodCode
-  sipRes = PyString_FromString(sipCpp->name());
-%End
   
   CaptionPolicy captionPolicy();
   void setCaptionPolicy(CaptionPolicy);
