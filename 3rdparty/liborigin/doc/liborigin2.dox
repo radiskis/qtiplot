@@ -20,10 +20,16 @@
   <a href="http://www.boost.org/">BOOST C++ libraries (version >= 1.33.0)</a> and 
   <a href="http://www.aei.mpg.de/~peekas/tree/">tree.hh</a>.\n
 
-
   \section downloads Downloads
-  <a href="http://prdownload.berlios.de/qtiplot/liborigin2-26032009.zip">liborigin2.zip</a>
+  <a href="http://prdownload.berlios.de/qtiplot/liborigin2-06042009.zip">liborigin2.zip</a>
 
+  \section svn SVN
+  The developement version of liborigin2 can be found inside the QtiPlot project's SVN repository hosted by 
+   <a href="http://developer.berlios.de">BerliOS Developer</a>.
+  It can be checked out through anonymous SVN with the following instruction set:
+
+	svn checkout svn://svn.berlios.de/qtiplot/trunk/3rdparty/liborigin 
+  
   \section installonmainpage Installation
  
   Have a look at the \ref projectfile project file in the source archive. It is prepared for building

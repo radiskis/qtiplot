@@ -13904,7 +13904,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Export-Fehler</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3474"/>
+        <location filename="src/plot2D/Graph.cpp" line="3470"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Fehler beim Öffnen der Datei</translation>
     </message>
@@ -13919,7 +13919,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot - Pixelauswahl-Warnung</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4656"/>
+        <location filename="src/plot2D/Graph.cpp" line="4652"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Warnung</translation>
     </message>
@@ -13954,22 +13954,22 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Peak %1 ausgewählt! Bewegen Sie den Cursor, wählen Sie durch einen Klick einen Punkt aus und bestätigen Sie durch einen Doppelklick oder &apos;Enter&apos; den nächsten Peak!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3890"/>
+        <location filename="src/plot2D/Graph.cpp" line="3886"/>
         <source>The columns</source>
         <translation>Die Spalten</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3890"/>
+        <location filename="src/plot2D/Graph.cpp" line="3886"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>sind leer und werden nicht zum Diagramm hinzugefügt!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3894"/>
+        <location filename="src/plot2D/Graph.cpp" line="3890"/>
         <source>The column</source>
         <translation>Die Spalte</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3894"/>
+        <location filename="src/plot2D/Graph.cpp" line="3890"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>ist leer und wird nicht zum Diagramm hinzugefügt!</translation>
     </message>
@@ -13979,22 +13979,22 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">&amp;Ausschneiden</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3954"/>
+        <location filename="src/plot2D/Graph.cpp" line="3950"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopieren</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3956"/>
+        <location filename="src/plot2D/Graph.cpp" line="3952"/>
         <source>&amp;Delete</source>
         <translation>&amp;Löschen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3981"/>
+        <location filename="src/plot2D/Graph.cpp" line="3977"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Eigenschaften...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3966"/>
+        <location filename="src/plot2D/Graph.cpp" line="3962"/>
         <source>&amp;Rescale to show all</source>
         <translation>Auf Komplettansicht &amp;reskalierenskalieren</translation>
     </message>
@@ -14004,17 +14004,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3968"/>
+        <location filename="src/plot2D/Graph.cpp" line="3964"/>
         <source>&amp;Hide axis</source>
         <translation>Achse &amp;verbergen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3970"/>
+        <location filename="src/plot2D/Graph.cpp" line="3966"/>
         <source>&amp;Show grids</source>
         <translation>Gitter &amp;anzeigen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3980"/>
+        <location filename="src/plot2D/Graph.cpp" line="3976"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Skala...</translation>
     </message>
@@ -14291,17 +14291,17 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Band FFT Filter von</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4656"/>
+        <location filename="src/plot2D/Graph.cpp" line="4652"/>
         <source>There are no curves available on this plot!</source>
         <translation>In diesem Diagramm existieren keine Kurven!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4666"/>
+        <location filename="src/plot2D/Graph.cpp" line="4662"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4667"/>
+        <location filename="src/plot2D/Graph.cpp" line="4663"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Es gibt keine Kurven mit mehr als 2 Punkten in diesem Diagramm. Operation abgebrochen!</translation>
     </message>
@@ -14336,7 +14336,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Boltzmann (Sigmoidal) Fit von</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3966"/>
+        <location filename="src/plot2D/Graph.cpp" line="3962"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -14406,12 +14406,12 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1754"/>
+        <location filename="src/plot2D/Graph.cpp" line="1750"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3475"/>
+        <location filename="src/plot2D/Graph.cpp" line="3471"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Die Bilddatei: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; existiert nicht mehr!</translation>
     </message>
@@ -14471,52 +14471,52 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <translation type="obsolete">Mittelungsglättung von</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1450"/>
+        <location filename="src/plot2D/Graph.cpp" line="1451"/>
         <source>Please provide a valid file name!</source>
         <translation>Bitte einen gültigen Dateinamen eingeben!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.h" line="605"/>
+        <location filename="src/plot2D/Graph.h" line="606"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3662"/>
+        <location filename="src/plot2D/Graph.cpp" line="3658"/>
         <source>Data set generated from curve</source>
         <translation>Aus der Kurve generierter Datensatz</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3663"/>
+        <location filename="src/plot2D/Graph.cpp" line="3659"/>
         <source>Table</source>
         <translation>Tabelle</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1404"/>
+        <location filename="src/plot2D/Graph.cpp" line="1405"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Dateiformat konnte nicht verarbeitet werden, Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="838"/>
+        <location filename="src/plot2D/Graph.cpp" line="839"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Konnte den Achsentyp nicht in das gewünschte Format ändern!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="199"/>
+        <location filename="src/plot2D/Graph.cpp" line="200"/>
         <source>Y Axis Title</source>
         <translation>Y-Achsenbeschriftung</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="200"/>
+        <location filename="src/plot2D/Graph.cpp" line="201"/>
         <source>X Axis Title</source>
         <translation>X-Achsenbeschriftung</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3953"/>
+        <location filename="src/plot2D/Graph.cpp" line="3949"/>
         <source>Cu&amp;t</source>
         <translation>Ausschneiden</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3955"/>
+        <location filename="src/plot2D/Graph.cpp" line="3951"/>
         <source>C&amp;lear</source>
         <translation>Daten &amp;löschen</translation>
     </message>
@@ -17258,22 +17258,22 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">QtiPlot - Koordinatenursprung für neue Ebene automatisch ermitteln?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="281"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="284"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Soll QtiPlot die übrigen Ebenen neu ausrichten?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="282"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
         <source>&amp;Yes</source>
         <translation>&amp;Ja</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="282"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
         <source>&amp;No</source>
         <translation>&amp;Nein</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="282"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
@@ -17313,27 +17313,27 @@ Wollen sie Zellen einfügen?</translation>
         <translation type="obsolete">Geben Sie hier Ihren Text ein</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="280"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="283"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot - Bestes Layout automatisch bestimmen?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="705"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="708"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fehler</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="706"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="709"/>
         <source>Please provide a valid file name!</source>
         <translation>Bitte einen gültigen Dateinamen eingeben!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="654"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="657"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Dateiformat konnte nicht verarbeitet werden, Operation abgebrochen!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1266"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1265"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
