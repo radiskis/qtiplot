@@ -3833,7 +3833,7 @@ void ApplicationWindow::openRecentProject(int index)
 		if (a){
 			if (isSaved)
 				savedProject();//force saved state
-			if (!(fn.endsWith(".ogm",Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive)))
+			if (!(fn.endsWith(".ogm", Qt::CaseInsensitive) || fn.endsWith(".ogw",Qt::CaseInsensitive)))
 				close();
 			else
 				modifiedProject();
@@ -3882,7 +3882,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	int aux=0,widgets=list[1].toInt();
 
 	QString titleBase = tr("Window") + ": ";
-	QString title = titleBase + "1/"+QString::number(widgets)+"  ";
+	QString title = titleBase + "1/" + QString::number(widgets) + "  ";
 
 	QProgressDialog progress(this);
 	progress.setWindowModality(Qt::WindowModal);
@@ -5091,6 +5091,13 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
         return;
     }
 
+#ifdef EMF_OUTPUT
+    if (plot2D && selected_filter.contains(".emf")){
+		plot2D->exportEMF(file_name);
+		return;
+    }
+#endif
+
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
 		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
 		if (plot3D)
@@ -5158,8 +5165,10 @@ void ApplicationWindow::exportLayer()
 			ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 	else if (selected_filter.contains(".svg"))
 		g->exportSVG(file_name);
-    /*else if (selected_filter.contains(".emf"))
-		g->exportEMF(file_name);*/
+#ifdef EMF_OUTPUT
+    else if (selected_filter.contains(".emf"))
+		g->exportEMF(file_name);
+#endif
     else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++)
@@ -5256,6 +5265,12 @@ void ApplicationWindow::exportAllGraphs()
 		}
 		f.close();
 
+#ifdef EMF_OUTPUT
+		if (plot2D && file_suffix.contains(".emf")){
+			plot2D->exportEMF(file_name);
+			return;
+		}
+#endif
 		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") ||
 			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {
 			if (plot3D)
@@ -5341,8 +5356,7 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 		w->setStatus(MdiSubWindow::Minimized);
 		app->setListView(caption, tr("Minimized"));
 	} else if (s.contains ("maximized")){
-		w->setStatus(MdiSubWindow::Maximized);
-		app->setListView(caption, tr("Maximized"));
+		w->setMaximized();
 	} else {
 		QStringList lst = s.split("\t");
 		if (lst.count() > 4){

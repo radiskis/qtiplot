@@ -38,9 +38,10 @@
 #include <QPicture>
 #include <QClipboard>
 #include <QTextStream>
+#include <QSvgGenerator>
 
-#if QT_VERSION >= 0x040300
-	#include <QSvgGenerator>
+#ifdef EMF_OUTPUT
+#include <EmfEngine.h>
 #endif
 
 #include <qwt_plot.h>
@@ -780,6 +781,21 @@ void MultiLayer::exportSVG(const QString& fname)
 
 	p.end();
 }
+
+#ifdef EMF_OUTPUT
+void MultiLayer::exportEMF(const QString& fname)
+{
+	EmfPaintDevice *emf = new EmfPaintDevice(d_canvas->size(), fname);
+	QPainter paint;
+	paint.begin(emf);
+
+	foreach (Graph *g, graphsList)
+		g->print(&paint, g->geometry());
+
+	paint.end();
+	delete emf;
+}
+#endif
 
 void MultiLayer::copyAllLayers()
 {

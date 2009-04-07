@@ -125,7 +125,7 @@ static const char *unzoom_xpm[]={
 #include <FrameWidget.h>
 
 #ifdef EMF_OUTPUT
-#include "EmfEngine.h"
+#include <EmfEngine.h>
 #endif
 
 #include <ColorBox.h>
@@ -146,10 +146,7 @@ static const char *unzoom_xpm[]={
 #include <QPrintDialog>
 #include <QImageWriter>
 #include <QFileInfo>
-
-#if QT_VERSION >= 0x040300
-	#include <QSvgGenerator>
-#endif
+#include <QSvgGenerator>
 
 #include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
@@ -1590,7 +1587,7 @@ void Graph::exportSVG(const QString& fname)
 #ifdef EMF_OUTPUT
 void Graph::exportEMF(const QString& fname)
 {
-	EmfPaintDevice *emf = new EmfPaintDevice(size(), fname);
+	EmfPaintDevice *emf = new EmfPaintDevice(boundingRect().size(), fname);
 	QPainter paint;
 	paint.begin(emf);
 	print(&paint, rect());

@@ -153,6 +153,10 @@ public slots:
 	void exportVector(const QString& fileName, int res = 0, bool color = true,
 		const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
+#ifdef EMF_OUTPUT
+	void exportEMF(const QString& fname);
+#endif
+
 	void copyAllLayers();
 	void print();
 	void printAllLayers(QPainter *painter);

@@ -17,12 +17,15 @@ DEFINES         += SCRIPTING_DIALOG
 # Comment the next line, if you don't have libpng on your system.
 CONFIG          += HAVE_LIBPNG
 
+# Comment the next line, if you don't have EmfEngine on your system.
+#CONFIG          += HAVE_EMF
+
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall
 
 CONFIG          += release
 #CONFIG          += debug
-#win32: CONFIG   += console
+win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -132,8 +135,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-system(lupdate -verbose qtiplot.pro)
-system(lrelease -verbose qtiplot.pro)
+#system(lupdate -verbose qtiplot.pro)
+#system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
@@ -212,6 +215,15 @@ contains(CONFIG, HAVE_LIBPNG){
 	DEFINES += GL2PS_HAVE_LIBPNG
 	INCLUDEPATH += ../3rdparty/libpng/
 	LIBS        += ../3rdparty/libpng/libpng.a
+}
+
+###############################################################
+
+contains(CONFIG, HAVE_EMF){
+	DEFINES += EMF_OUTPUT
+	INCLUDEPATH += ../3rdparty/EmfEngine/
+	HEADERS += ../3rdparty/EmfEngine/EmfEngine.h
+	SOURCES += ../3rdparty/EmfEngine/EmfEngine.cpp
 }
 
 ###############################################################
