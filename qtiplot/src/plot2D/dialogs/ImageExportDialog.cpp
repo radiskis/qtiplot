@@ -225,11 +225,13 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 	d_raster_options->hide();
 	d_custom_size_box->hide();
 
-	/*if (filter.contains("*.emf")) {
+#if EMF_OUTPUT
+	if (filter.contains("*.emf")){
 		d_extension_toggle->setChecked(false);
 		d_extension_toggle->setEnabled(false);
 		return;
-	}*/
+	}
+#endif
 
 	if (filter.contains("*.svg")){
 		if (qobject_cast<Graph3D *> (d_window)){

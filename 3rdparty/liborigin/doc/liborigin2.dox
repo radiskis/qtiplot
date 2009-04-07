@@ -28,7 +28,8 @@
    <a href="http://developer.berlios.de">BerliOS Developer</a>.
   It can be checked out through anonymous SVN with the following instruction set:
 
-	svn checkout svn://svn.berlios.de/qtiplot/trunk/3rdparty/liborigin 
+
+  \code svn checkout svn://svn.berlios.de/qtiplot/trunk/3rdparty/liborigin \endcode
   
   \section installonmainpage Installation
  
