@@ -74,6 +74,7 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 
 	if (d_end_arrow){
 		p->save();
+		p->setClipping(false);
 		p->translate(x1, y1);
 		const double t = theta(x0, y0, x1, y1);
 		p->rotate(-t);

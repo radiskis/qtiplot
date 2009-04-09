@@ -1587,12 +1587,11 @@ void Graph::exportSVG(const QString& fname)
 #ifdef EMF_OUTPUT
 void Graph::exportEMF(const QString& fname)
 {
-	EmfPaintDevice *emf = new EmfPaintDevice(boundingRect().size(), fname);
+	EmfPaintDevice emf(boundingRect().size(), fname);
 	QPainter paint;
-	paint.begin(emf);
+	paint.begin(&emf);
 	print(&paint, rect());
 	paint.end();
-	delete emf;
 }
 #endif
 
@@ -4976,7 +4975,7 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 	else
 		rect = rect.adjusted(-lw2, -lw2, lw2, lw2);
 
-	QRect fillRect = rect.adjusted(1, 1, -2, -2);
+	QRect fillRect = rect.adjusted(1, 1, -1, -1);
 	QwtPainter::fillRect(painter, fillRect, canvasBackground());
 
 	painter->setClipping(true);

@@ -17,7 +17,7 @@ DEFINES         += SCRIPTING_DIALOG
 # Comment the next line, if you don't have libpng on your system.
 CONFIG          += HAVE_LIBPNG
 
-# Comment the next line, if you don't have EmfEngine on your system.
+# Comment the next line, if you don't have EmfEngine on your Windows system.
 #CONFIG          += HAVE_EMF
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
@@ -220,10 +220,12 @@ contains(CONFIG, HAVE_LIBPNG){
 ###############################################################
 
 contains(CONFIG, HAVE_EMF){
-	DEFINES += EMF_OUTPUT
-	INCLUDEPATH += ../3rdparty/EmfEngine/
-	HEADERS += ../3rdparty/EmfEngine/EmfEngine.h
-	SOURCES += ../3rdparty/EmfEngine/EmfEngine.cpp
+	win32 {
+		DEFINES += EMF_OUTPUT
+		INCLUDEPATH += ../3rdparty/EmfEngine/
+		HEADERS += ../3rdparty/EmfEngine/EmfEngine.h
+		SOURCES += ../3rdparty/EmfEngine/EmfEngine.cpp
+	}
 }
 
 ###############################################################
