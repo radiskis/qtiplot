@@ -785,15 +785,14 @@ void MultiLayer::exportSVG(const QString& fname)
 #ifdef EMF_OUTPUT
 void MultiLayer::exportEMF(const QString& fname)
 {
-	EmfPaintDevice *emf = new EmfPaintDevice(d_canvas->size(), fname);
+	EmfPaintDevice emf(d_canvas->size(), fname);
 	QPainter paint;
-	paint.begin(emf);
+	paint.begin(&emf);
 
 	foreach (Graph *g, graphsList)
 		g->print(&paint, g->geometry());
 
 	paint.end();
-	delete emf;
 }
 #endif
 
