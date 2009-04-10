@@ -17,7 +17,7 @@ DEFINES         += SCRIPTING_DIALOG
 # Comment the next line, if you don't have libpng on your system.
 CONFIG          += HAVE_LIBPNG
 
-# Comment the next line, if you don't have EmfEngine on your Windows system.
+# Uncomment the next line in order to enable export of 2D plots to the EMF file format on Windows. You need EmfEngine on your system.
 #CONFIG          += HAVE_EMF
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
@@ -25,7 +25,7 @@ CONFIG          += HAVE_LIBPNG
 
 CONFIG          += release
 #CONFIG          += debug
-win32: CONFIG   += console
+#win32: CONFIG   += console
 
 ##################### 3rd PARTY HEADER FILES SECTION ########################
 #!!! Warning: You must modify these paths according to your computer settings
@@ -135,8 +135,8 @@ TRANSLATIONS    = translations/qtiplot_de.ts \
                   translations/qtiplot_ja.ts \
                   translations/qtiplot_sv.ts
 
-#system(lupdate -verbose qtiplot.pro)
-#system(lrelease -verbose qtiplot.pro)
+system(lupdate -verbose qtiplot.pro)
+system(lrelease -verbose qtiplot.pro)
 
 translations.files += translations/qtiplot_de.qm \
                   translations/qtiplot_es.qm \
