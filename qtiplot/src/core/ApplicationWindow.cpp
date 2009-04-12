@@ -2234,9 +2234,16 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
         tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(file_name));
 		return;
 	}
+	file.close();
 
 	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
 		m->exportVector(file_name, ied->vectorResolution(), ied->color());
+	else if (selected_filter.contains(".svg"))
+		m->exportSVG(file_name);
+#ifdef EMF_OUTPUT
+	else if (selected_filter.contains(".emf"))
+		m->exportEMF(file_name);
+#endif
 	else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for (int i=0; i<(int)list.count(); i++){

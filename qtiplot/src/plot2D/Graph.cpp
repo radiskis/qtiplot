@@ -1588,8 +1588,7 @@ void Graph::exportSVG(const QString& fname)
 void Graph::exportEMF(const QString& fname)
 {
 	EmfPaintDevice emf(boundingRect().size(), fname);
-	QPainter paint;
-	paint.begin(&emf);
+	QPainter paint(&emf);
 	print(&paint, rect());
 	paint.end();
 }

@@ -104,6 +104,9 @@ public:
 	void exportSVG(const QString& fileName);
 	void exportToFile(const QString& fileName);
 	void exportVector(const QString& fileName, int res = 0, bool color = true);
+#ifdef EMF_OUTPUT
+	void exportEMF(const QString& fileName);
+#endif
 
 	MatrixModel * matrixModel(){return d_matrix_model;};
     QUndoStack *undoStack(){return d_undo_stack;};
