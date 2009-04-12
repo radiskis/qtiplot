@@ -49,19 +49,18 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 	setAcceptMode(QFileDialog::AcceptSave);
 
 	QList<QByteArray> list = QImageWriter::supportedImageFormats();
-	list<<"EPS";
-	list<<"PS";
-	list<<"PDF";
-	#if QT_VERSION >= 0x040300
-		list<<"SVG";
-	#endif
+	list << "EPS";
+	list << "PS";
+	list << "PDF";
+	list << "SVG";
 
     #if EMF_OUTPUT
-		list<<"EMF";
+    if (!qobject_cast<Graph3D *> (d_window))
+		list << "EMF";
 	#endif
 
 	if (qobject_cast<Graph3D *> (d_window))
-        list<<"PGF";
+        list << "PGF";
 
 	QStringList filters;
 	for(int i=0 ; i<list.count() ; i++)

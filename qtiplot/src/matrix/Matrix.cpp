@@ -64,6 +64,10 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_linalg.h>
 
+#ifdef EMF_OUTPUT
+#include <EmfEngine.h>
+#endif
+
 Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
 : MdiSubWindow(label, parent, name, f), scripted(env)
 {
@@ -859,7 +863,14 @@ void Matrix::exportToFile(const QString& fileName)
 	} else if(fileName.contains(".svg")){
 		exportSVG(fileName);
 		return;
-	} else {
+	}
+#ifdef EMF_OUTPUT
+	else if(fileName.contains(".emf")){
+		exportEMF(fileName);
+		return;
+	}
+#endif
+	else {
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
     	for(int i=0 ; i<list.count() ; i++){
 			if (fileName.contains( "." + list[i].toLower())){
@@ -873,21 +884,16 @@ void Matrix::exportToFile(const QString& fileName)
 
 void Matrix::exportSVG(const QString& fileName)
 {
-	#if QT_VERSION >= 0x040300
-		if (d_view_type != ImageView)
-			return;
+	int width = numRows();
+	int height = numCols();
 
-		int width = numRows();
-		int height = numCols();
+	QSvgGenerator svg;
+	svg.setFileName(fileName);
+	svg.setSize(QSize(width, height));
 
-		QSvgGenerator svg;
-        svg.setFileName(fileName);
-        svg.setSize(QSize(width, height));
-
-		QPainter p(&svg);
-        p.drawImage (QRect(0, 0, width, height), d_matrix_model->renderImage());
-		p.end();
-	#endif
+	QPainter p(&svg);
+	p.drawImage (QRect(0, 0, width, height), d_matrix_model->renderImage());
+	p.end();
 }
 
 void Matrix::exportPDF(const QString& fileName)
@@ -1000,9 +1006,6 @@ void Matrix::print(const QString& fileName)
 
 void Matrix::exportVector(const QString& fileName, int res, bool color)
 {
-    if (d_view_type != ImageView)
-        return;
-
 	if ( fileName.isEmpty() ){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
         return;
@@ -1034,6 +1037,19 @@ void Matrix::exportVector(const QString& fileName, int res, bool color)
     paint.drawImage(rect, d_matrix_model->renderImage());
     paint.end();
 }
+
+#ifdef EMF_OUTPUT
+void Matrix::exportEMF(const QString& fileName)
+{
+	int width = numRows();
+	int height = numCols();
+
+	EmfPaintDevice emf(QSize(width, height), fileName);
+	QPainter p(&emf);
+	p.drawImage (QRect(0, 0, width, height), d_matrix_model->renderImage());
+	p.end();
+}
+#endif
 
 void Matrix::range(double *min, double *max)
 {
