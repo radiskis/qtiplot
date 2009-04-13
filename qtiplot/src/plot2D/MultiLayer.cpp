@@ -1016,6 +1016,17 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 
 void MultiLayer::keyPressEvent(QKeyEvent * e)
 {
+	if (e->key() == Qt::Key_Escape && d_layers_selector){
+		foreach(Graph *g, graphsList){
+			if (d_layers_selector->contains((QWidget *)g)){
+				g->raiseEnrichements();
+				break;
+			}
+		}
+		delete d_layers_selector;
+		return;
+	}
+
 	if (e->key() == Qt::Key_F12){
 		if (d_layers_selector)
 			delete d_layers_selector;
