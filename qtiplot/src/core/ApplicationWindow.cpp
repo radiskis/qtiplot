@@ -13203,7 +13203,7 @@ void ApplicationWindow::updateRecentProjectsList()
 	recent->clear();
 
 	for (int i = 0; i<(int)recentProjects.size(); i++ )
-        recent->insertItem("&" + QString::number(i+1) + " " + recentProjects[i]);
+        recent->insertItem("&" + QString::number(i+1) + " " + QDir::toNativeSeparators(recentProjects[i]));
 }
 
 void ApplicationWindow::translateCurveHor()
