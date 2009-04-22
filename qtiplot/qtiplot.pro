@@ -224,7 +224,7 @@ contains(CONFIG, HAVE_EMF){
 	win32 {
 		DEFINES += EMF_OUTPUT
 		INCLUDEPATH += ../3rdparty/EmfEngine/src
-		LIBS        += ../3rdparty/EmfEngine/libEmfEngine.a -lgdiplus -lgdi32
+		LIBS        += ../3rdparty/EmfEngine/libEmfEngine.a -lgdiplus
 	}
 }
 

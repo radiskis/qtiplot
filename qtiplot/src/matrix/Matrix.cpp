@@ -615,7 +615,7 @@ void Matrix::copySelection()
 
 void Matrix::pasteSelection()
 {
-     if (d_view_type == ImageView)
+	if (d_view_type == ImageView)
         return;
 
 	QString text = QApplication::clipboard()->text();
@@ -623,7 +623,6 @@ void Matrix::pasteSelection()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
 
 	QStringList linesList = text.split(ApplicationWindow::guessEndOfLine(text));
 	int rows = linesList.size();
