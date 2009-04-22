@@ -7637,12 +7637,11 @@ void ApplicationWindow::clearSelection()
             return;
         }
 
-        if (g->activeTool()){
-            if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
-                ((RangeSelectorTool *)g->activeTool())->clearSelection();
-            else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
-                ((DataPickerTool *)g->activeTool())->removePoint();
-        } else if (g->titleSelected())
+		if (g->rangeSelectorsEnabled())
+			g->rangeSelectorTool()->clearSelection();
+		else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+			((DataPickerTool *)g->activeTool())->removePoint();
+        else if (g->titleSelected())
 			g->removeTitle();
 		else
 			g->removeMarker();
@@ -7679,17 +7678,14 @@ void ApplicationWindow::copySelection()
 		if (!g)
             return;
 
-        if (g->activeTool()){
-            if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
-                ((RangeSelectorTool *)g->activeTool())->copySelection();
-            else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
-                ((DataPickerTool *)g->activeTool())->copySelection();
-		} else if (g->markerSelected())
+		if (g->rangeSelectorsEnabled())
+			g->rangeSelectorTool()->copySelection();
+		else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+			((DataPickerTool *)g->activeTool())->copySelection();
+		else if (g->markerSelected())
 			copyMarker();
-		 else
+		else
 			copyActiveLayer();
-
-		plot->copyAllLayers();
 	} else if (m->isA("Note"))
 		((Note*)m)->editor()->copy();
 }
@@ -7713,12 +7709,11 @@ void ApplicationWindow::cutSelection()
 		if (!g)
             return;
 
-		if (g->activeTool()){
-            if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
-                ((RangeSelectorTool *)g->activeTool())->cutSelection();
-            else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
-                ((DataPickerTool *)g->activeTool())->cutSelection();
-        } else {
+		if (g->rangeSelectorsEnabled())
+			g->rangeSelectorTool()->cutSelection();
+		else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+			((DataPickerTool *)g->activeTool())->cutSelection();
+		else {
             copyMarker();
             g->removeMarker();
         }
@@ -7781,12 +7776,11 @@ void ApplicationWindow::pasteSelection()
 			if (!g)
 				return;
 
-            if (g->activeTool()){
-                if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector)
-                    ((RangeSelectorTool *)g->activeTool())->pasteSelection();
-                else if (g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
-                    ((DataPickerTool *)g->activeTool())->pasteSelection();
-            } else if (d_enrichement_copy){
+			if (g->rangeSelectorsEnabled())
+				g->rangeSelectorTool()->pasteSelection();
+            else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+				((DataPickerTool *)g->activeTool())->pasteSelection();
+            else if (d_enrichement_copy){
 				FrameWidget *t = g->add(d_enrichement_copy);
 				QPoint pos = g->mapFromGlobal(QCursor::pos());
 				if (g->geometry().contains(pos))

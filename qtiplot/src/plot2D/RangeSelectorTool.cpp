@@ -288,11 +288,11 @@ void RangeSelectorTool::clearSelection()
 		if (t->isReadOnlyColumn(t->colIndex(((DataCurve *)d_selected_curve)->xColumnName()))){
     		QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
         	tr("The column '%1' is read-only! Operation aborted!").arg(((DataCurve *)d_selected_curve)->xColumnName()));
-		return;
+			return;
 		} else if (t->isReadOnlyColumn(t->colIndex(d_selected_curve->title().text()))){
     		QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
 			tr("The column '%1' is read-only! Operation aborted!").arg(d_selected_curve->title().text()));
-		return;
+			return;
    		}
 
         int start_point = QMIN(d_active_point, d_inactive_point);
@@ -334,11 +334,11 @@ void RangeSelectorTool::pasteSelection()
 	if (t->isReadOnlyColumn(t->colIndex(((DataCurve *)d_selected_curve)->xColumnName()))){
     	QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
         tr("The column '%1' is read-only! Operation aborted!").arg(((DataCurve *)d_selected_curve)->xColumnName()));
-	return;
+		return;
 	} else if (t->isReadOnlyColumn(t->colIndex(d_selected_curve->title().text()))){
     	QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
 		tr("The column '%1' is read-only! Operation aborted!").arg(d_selected_curve->title().text()));
-	return;
+		return;
    	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
