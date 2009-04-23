@@ -30,6 +30,7 @@
 #include "Graph.h"
 #include "PlotCurve.h"
 #include "MultiLayer.h"
+#include <QwtErrorPlotCurve.h>
 #include <cursors.h>
 
 #include <qwt_symbol.h>
@@ -40,13 +41,17 @@
 #include <QEvent>
 #include <QLocale>
 #include <QTextStream>
+#include <QWidget>
+#include <QCheckBox>
+#include <QDialogButtonBox>
 
 RangeSelectorTool::RangeSelectorTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->canvas()),
 	PlotToolInterface(graph)
 {
+	d_selection_dialog = NULL;
 	d_selected_curve = NULL;
-	for (int i=d_graph->curveCount(); i>=0; --i) {
+	for (int i = 0; i < d_graph->curveCount(); i++) {
 		d_selected_curve = d_graph->curve(i);
 		if (d_selected_curve && d_selected_curve->rtti() == QwtPlotItem::Rtti_PlotCurve
 				&& d_selected_curve->dataSize() > 0)
@@ -93,6 +98,9 @@ RangeSelectorTool::RangeSelectorTool(Graph *graph, const QObject *status_target,
 
 RangeSelectorTool::~RangeSelectorTool()
 {
+	if (d_selection_dialog)
+		delete d_selection_dialog;
+
 	d_active_marker.detach();
 	d_inactive_marker.detach();
 	d_graph->canvas()->unsetCursor();
@@ -155,6 +163,14 @@ void RangeSelectorTool::emitStatusText()
 			.arg(d_active_point + 1)
 			.arg(locale.toString(d_selected_curve->x(d_active_point), 'G', 16))
 			.arg(locale.toString(d_selected_curve->y(d_active_point), 'G', 16)));
+    } else if (((PlotCurve *)d_selected_curve)->type() == Graph::ErrorBars){
+         emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; err=%6")
+			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
+			.arg(d_selected_curve->title().text())
+			.arg(d_active_point + 1)
+			.arg(locale.toString(d_selected_curve->x(d_active_point), 'G', 16))
+			.arg(locale.toString(d_selected_curve->y(d_active_point), 'G', 16))
+			.arg(locale.toString(((QwtErrorPlotCurve*)d_selected_curve)->errorValue(d_active_point), 'G', 16)));
     } else {
         Table *t = ((DataCurve*)d_selected_curve)->table();
         if (!t)
@@ -254,8 +270,15 @@ bool RangeSelectorTool::keyEventFilter(QKeyEvent *ke)
 
 void RangeSelectorTool::cutSelection()
 {
-    copySelection();
-    clearSelection();
+	if (!d_selected_curve)
+        return;
+
+	if (mightNeedMultipleSelection())
+		showSelectionDialog(Cut);
+	else {
+		copySelectedCurve();
+		clearSelectedCurve();
+	}
 }
 
 void RangeSelectorTool::copySelection()
@@ -263,16 +286,10 @@ void RangeSelectorTool::copySelection()
     if (!d_selected_curve)
         return;
 
-    int start_point = QMIN(d_active_point, d_inactive_point);
-    int end_point = QMAX(d_active_point, d_inactive_point);
-    QLocale locale = d_graph->multiLayer()->locale();
-    QString text;
-    for (int i = start_point; i <= end_point; i++){
-        text += locale.toString(d_selected_curve->x(i), 'G', 16) + "\t";
-        text += locale.toString(d_selected_curve->y(i), 'G', 16) + "\n";
-    }
-
-	QApplication::clipboard()->setText(text);
+	if (mightNeedMultipleSelection())
+		showSelectionDialog();
+	else
+		copySelectedCurve();
 }
 
 void RangeSelectorTool::clearSelection()
@@ -280,7 +297,197 @@ void RangeSelectorTool::clearSelection()
     if (!d_selected_curve)
         return;
 
-    if (((PlotCurve *)d_selected_curve)->type() != Graph::Function){
+	if (mightNeedMultipleSelection())
+		showSelectionDialog(Delete);
+	else
+		clearSelectedCurve();
+}
+
+void RangeSelectorTool::copySelectedCurve()
+{
+    if (!d_selected_curve)
+        return;
+
+	int start_point = QMIN(d_active_point, d_inactive_point);
+	int end_point = QMAX(d_active_point, d_inactive_point);
+	QLocale locale = d_graph->multiLayer()->locale();
+	QString text;
+	for (int i = start_point; i <= end_point; i++){
+		text += locale.toString(d_selected_curve->x(i), 'G', 16) + "\t";
+		text += locale.toString(d_selected_curve->y(i), 'G', 16) + "\n";
+	}
+	QApplication::clipboard()->setText(text);
+}
+
+bool RangeSelectorTool::mightNeedMultipleSelection()
+{
+	int count = 0;
+	if (((PlotCurve*)d_selected_curve)->type() != Graph::Function){
+		QString xCol = ((DataCurve*)d_selected_curve)->xColumnName();
+		for (int i = 0; i < d_graph->curveCount(); i++){
+			PlotCurve *curve = (PlotCurve*)d_graph->curve(i);
+			if (curve->type() != Graph::Function &&
+				((DataCurve *)curve)->xColumnName() == xCol)
+				count++;
+		}
+	}
+	return count > 1 ? true : false;
+}
+
+void RangeSelectorTool::cutMultipleSelection()
+{
+	copyMultipleSelection();
+	clearMultipleSelection();
+}
+
+void RangeSelectorTool::copyMultipleSelection()
+{
+	if (d_selection_dialog)
+		d_selection_dialog->hide();
+
+	int start_point = QMIN(d_active_point, d_inactive_point);
+	int end_point = QMAX(d_active_point, d_inactive_point);
+	QLocale locale = d_graph->multiLayer()->locale();
+	QString text;
+
+	QList <PlotCurve*> cvs;
+	for (int j = 0; j < d_selection_lst.count(); j++){
+		QCheckBox *box = d_selection_lst[j];
+		if (box->isChecked())
+			cvs << (PlotCurve*)d_graph->curve(box->text());
+	}
+
+	int curves = cvs.size();
+	for (int i = start_point; i <= end_point; i++){
+		text += locale.toString(d_selected_curve->x(i), 'G', 16);
+		for (int j = 0; j < curves; j++){
+			PlotCurve *curve = cvs[j];
+			if (curve->type() == Graph::ErrorBars)
+				text += "\t" + locale.toString(((QwtErrorPlotCurve*)curve)->errorValue(i), 'G', 16);
+			else
+				text += "\t" + locale.toString(curve->y(i), 'G', 16);
+		}
+		text += "\n";
+	}
+
+	QApplication::clipboard()->setText(text);
+}
+
+void RangeSelectorTool::clearMultipleSelection()
+{
+	if (d_selection_dialog)
+		d_selection_dialog->hide();
+
+	int start_point = QMIN(d_active_point, d_inactive_point);
+	int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
+	int end_point = QMAX(d_active_point, d_inactive_point);
+	int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
+
+	for (int j = 0; j < d_selection_lst.count(); j++){
+		QCheckBox *box = d_selection_lst[j];
+		if (box->isChecked()){
+			PlotCurve *curve = (PlotCurve*)d_graph->curve(box->text());
+			if (!curve || curve->type() == Graph::Function)
+				continue;
+
+			Table *t = ((DataCurve*)curve)->table();
+			if (!t)
+				continue;
+			QString name = curve->title().text();
+			int col = t->colIndex(name);
+			if (t->isReadOnlyColumn(col)){
+				QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
+				tr("The column '%1' is read-only! Operation aborted!").arg(name));
+				continue;
+			}
+
+			for (int i = start_row; i <= end_row; i++)
+				t->setText(i, col, "");
+			t->notifyChanges();
+		}
+	}
+
+	bool ok_update = (end_point - start_point + 1) < d_selected_curve->dataSize() ? true : false;
+	if (ok_update){
+		d_active_point = 0;
+		d_inactive_point = d_selected_curve->dataSize() - 1;
+		d_active_marker.setValue(d_selected_curve->x(d_active_point), d_selected_curve->y(d_active_point));
+		d_inactive_marker.setValue(d_selected_curve->x(d_inactive_point), d_selected_curve->y(d_inactive_point));
+		emitStatusText();
+		emit changed();
+		d_graph->replot();
+	}
+}
+
+void RangeSelectorTool::showSelectionDialog(RangeEditOperation op)
+{
+	d_selection_lst.clear();
+
+	if (d_selection_dialog)
+		delete d_selection_dialog;
+
+	d_selection_dialog = new QDialog(0, Qt::Tool);
+	d_selection_dialog->setAttribute(Qt::WA_DeleteOnClose);
+	if (op > Copy)
+		d_selection_dialog->setWindowTitle(tr("Remove data from curves?"));
+	else
+		d_selection_dialog->setWindowTitle(tr("Copy data to clipboard?"));
+
+	d_selection_dialog->setModal(true);
+	d_selection_dialog->setActiveWindow();
+
+	QVBoxLayout *vb = new QVBoxLayout(d_selection_dialog);
+
+	QString xCol = ((DataCurve*)d_selected_curve)->xColumnName();
+	for (int i = 0; i < d_graph->curveCount(); i++){
+		PlotCurve *curve = (PlotCurve*)d_graph->curve(i);
+		if (curve->type() != Graph::Function &&
+			((DataCurve *)curve)->xColumnName() == xCol){
+			QCheckBox *box = new QCheckBox(curve->title().text());
+			box->setChecked(true);
+			vb->addWidget(box);
+			d_selection_lst << box;
+
+			QList<DataCurve *> errorBars = ((DataCurve *)curve)->errorBarsList();
+			foreach(DataCurve *err, errorBars){
+				box = new QCheckBox(err->title().text());
+				box->setChecked(true);
+				vb->addWidget(box);
+				d_selection_lst << box;
+			}
+		}
+	}
+
+	QDialogButtonBox *btnBox = new QDialogButtonBox ();
+
+	QPushButton *closeBtn = btnBox->addButton(QDialogButtonBox::Ok);
+	switch (op){
+		case Copy:
+			connect(closeBtn, SIGNAL(clicked()), this, SLOT(copyMultipleSelection()));
+		break;
+
+		case Cut:
+			connect(closeBtn, SIGNAL(clicked()), this, SLOT(cutMultipleSelection()));
+		break;
+
+		case Delete:
+			connect(closeBtn, SIGNAL(clicked()), this, SLOT(clearMultipleSelection()));
+		break;
+	}
+
+	QPushButton *cancelBtn = btnBox->addButton(QDialogButtonBox::Cancel);
+	connect(cancelBtn, SIGNAL(clicked()), d_selection_dialog, SLOT(close()));
+	vb->addWidget(btnBox);
+
+	d_selection_dialog->show();
+}
+
+void RangeSelectorTool::clearSelectedCurve()
+{
+	if (!d_selected_curve)
+		return;
+
+	if (((PlotCurve *)d_selected_curve)->type() != Graph::Function){
         Table *t = ((DataCurve*)d_selected_curve)->table();
         if (!t)
             return;
@@ -301,8 +508,9 @@ void RangeSelectorTool::clearSelection()
         int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
         int col = t->colIndex(d_selected_curve->title().text());
         bool ok_update = (end_point - start_point + 1) < d_selected_curve->dataSize() ? true : false;
-        for (int i = start_row; i <= end_row; i++)
+        for (int i = start_row; i <= end_row; i++){
             t->setText(i, col, "");
+        }
         t->notifyChanges();
 
         if (ok_update){
@@ -324,7 +532,8 @@ void RangeSelectorTool::pasteSelection()
 	if (text.isEmpty())
 		return;
 
-    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function)
+    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function ||
+		((PlotCurve *)d_selected_curve)->type() == Graph::Graph::ErrorBars)
         return;
 
     Table *t = ((DataCurve*)d_selected_curve)->table();

@@ -37,6 +37,8 @@
 class QwtPlotCurve;
 class QPoint;
 class QEvent;
+class QDialog;
+class QCheckBox;
 
 /*! Plot tool for selecting ranges on curves.
  *
@@ -70,7 +72,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
         void clearSelection();
         void pasteSelection();
         virtual int rtti() const {return PlotToolInterface::Rtti_RangeSelector;};
-		
+
 		void setVisible(bool on);
 		bool isVisible(){return d_visible;};
 
@@ -78,6 +80,11 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		virtual void pointSelected(const QPoint &point);
         void setCurveRange();
         void setEnabled(bool on = true);
+
+	private slots:
+		void copyMultipleSelection();
+		void clearMultipleSelection();
+		void cutMultipleSelection();
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
@@ -87,18 +94,33 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		void statusText(const QString&);
 		//! Emitted whenever the selected curve and/or range have changed.
 		void changed();
+
 	protected:
 		virtual void append(const QPoint& point) { pointSelected(point); }
 		void emitStatusText();
 		void switchActiveMarker();
 		//! Caller is responsible for replot.
 		void setActivePoint(int index);
+
 	private:
+		enum RangeEditOperation{Copy, Cut, Delete};
+
+		void showSelectionDialog(RangeEditOperation op = Copy);
+		bool mightNeedMultipleSelection();
+		//! Copies data range from the selected curve to clipboard
+		void copySelectedCurve();
+		//! Clears data range from the selected curve
+		void clearSelectedCurve();
+
 		QwtPlotMarker d_active_marker, d_inactive_marker;
 		int d_active_point, d_inactive_point;
 		QwtPlotCurve *d_selected_curve;
 		bool d_enabled;
 		bool d_visible;
+
+		QDialog *d_selection_dialog;
+		//! Keeps track of the multiple curves selection
+		QList<QCheckBox *> d_selection_lst;
 };
 
 #endif // ifndef RANGE_SELECTOR_TOOL_H
