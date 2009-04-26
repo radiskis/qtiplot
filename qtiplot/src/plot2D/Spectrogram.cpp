@@ -244,21 +244,22 @@ s += "\t<Image>"+QString::number(testDisplayMode(QwtPlotSpectrogram::ImageMode))
 
 bool contourLines = testDisplayMode(QwtPlotSpectrogram::ContourMode);
 s += "\t<ContourLines>"+QString::number(contourLines)+"</ContourLines>\n";
-if (contourLines)
-	{
-	s += "\t\t<Levels>"+QString::number(levels())+"</Levels>\n";
+if (contourLines){
+	QwtValueList levels = contourLevels();
+	s += "\t\t<Levels>" + QString::number(levels.size()) + "</Levels>\n";
+	for (int i = 0; i < levels.size(); i++)
+		s += "\t\t<z>" + QString::number(levels[i]) + "</z>\n";
+
 	bool defaultPen = defaultContourPen().style() != Qt::NoPen;
 	s += "\t\t<DefaultPen>"+QString::number(defaultPen)+"</DefaultPen>\n";
-	if (defaultPen)
-		{
+	if (defaultPen){
 		s += "\t\t\t<PenColor>"+defaultContourPen().color().name()+"</PenColor>\n";
 		s += "\t\t\t<PenWidth>"+QString::number(defaultContourPen().widthF())+"</PenWidth>\n";
 		s += "\t\t\t<PenStyle>"+QString::number(defaultContourPen().style() - 1)+"</PenStyle>\n";
 		}
 	}
 QwtScaleWidget *colorAxis = plot()->axisWidget(color_axis);
-if (colorAxis && colorAxis->isColorBarEnabled())
-	{
+if (colorAxis && colorAxis->isColorBarEnabled()){
 	s += "\t<ColorBar>\n\t\t<axis>" + QString::number(color_axis) + "</axis>\n";
 	s += "\t\t<width>" + QString::number(colorAxis->colorBarWidth()) + "</width>\n";
 	s += "\t</ColorBar>\n";

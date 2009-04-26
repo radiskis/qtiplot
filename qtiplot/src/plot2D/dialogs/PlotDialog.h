@@ -296,6 +296,7 @@ private:
 	void initBoxPage();
 	void initPercentilePage();
 	void initSpectrogramPage();
+	void initContourLinesPage();
 	void initLayerPage();
 	void initLayerGeometryPage();
 	void initFontsPage();
@@ -344,7 +345,7 @@ private:
     SymbolBox* boxSymbolStyle;
     PatternBox *boxPattern;
 	QTabWidget* privateTabWidget;
-	QWidget *errorsPage, *spectrogramPage;
+	QWidget *errorsPage, *spectrogramPage, *contourLinesPage;
 	QGroupBox* fillGroupBox;
     QCheckBox* plusBox;
     QCheckBox* minusBox;
@@ -402,6 +403,8 @@ private:
 	QComboBox *unitBox;
 	QComboBox *backgroundApplyToBox;
 	QPushButton *layerDefaultBtn;
+
+	DoubleSpinBox *firstContourLineBox, *contourLinesDistanceBox;
 };
 
 /*****************************************************************************
