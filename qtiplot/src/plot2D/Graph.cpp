@@ -152,6 +152,8 @@ static const char *unzoom_xpm[]={
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_layout.h>
 #include <qwt_plot_zoomer.h>
+#include <qwt_plot_magnifier.h>
+#include <qwt_plot_panner.h>
 #include <qwt_scale_widget.h>
 #include <qwt_scale_engine.h>
 #include <qwt_text_label.h>
@@ -266,6 +268,9 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 			QwtPicker::DragSelection | QwtPicker::CornerToCorner,
 			QwtPicker::AlwaysOff, canvas());
 	zoom(false);
+
+	d_magnifier = NULL;
+	d_panner = NULL;
 
 	connect (cp,SIGNAL(selectPlot()),this,SLOT(activateGraph()));
 	connect (cp,SIGNAL(viewLineDialog()),this,SIGNAL(viewLineDialog()));
@@ -3422,6 +3427,28 @@ void Graph::zoomOut()
   	updateSecondaryAxis(QwtPlot::yRight);
 }
 
+void Graph::enablePanningMagnifier(bool on)
+{
+	if (d_magnifier)
+		delete d_magnifier;
+	if (d_panner)
+		delete d_panner;
+
+	QwtPlotCanvas *cnvs = canvas();
+	if (on){
+		cnvs->setCursor(Qt::pointingHandCursor);
+		d_magnifier = new QwtPlotMagnifier(cnvs);
+		d_magnifier->setZoomInKey(Qt::Key_Plus, Qt::ShiftModifier);
+
+		d_panner = new QwtPlotPanner(cnvs);
+		connect(d_panner, SIGNAL(panned(int, int)), multiLayer(), SLOT(notifyChanges()));
+	} else {
+		cnvs->setCursor(Qt::arrowCursor);
+		d_magnifier = NULL;
+		d_panner = NULL;
+	}
+}
+
 ImageWidget* Graph::addImage(ImageWidget* i)
 {
 	if (!i)
@@ -4380,6 +4407,9 @@ void Graph::disableTools()
 {
 	if (zoomOn())
 		zoom(false);
+
+	enablePanningMagnifier(false);
+
 	if (drawLineActive())
 		drawLine(false);
 
@@ -4673,6 +4703,11 @@ Graph::~Graph()
 	delete titlePicker;
 	delete scalePicker;
 	delete cp;
+
+	if (d_magnifier)
+		delete d_magnifier;
+	if (d_panner)
+		delete d_panner;
 
 	foreach(FrameWidget *fw, d_enrichments)
         fw->close();

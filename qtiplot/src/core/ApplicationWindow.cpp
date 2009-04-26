@@ -708,6 +708,10 @@ void ApplicationWindow::initToolBars()
 	btnPointer->setChecked(true);
 	plotTools->addAction(btnPointer);
 
+	actionMagnify->setActionGroup(dataTools);
+	actionMagnify->setCheckable( true );
+	plotTools->addAction(actionMagnify);
+
 	btnZoomIn = new QAction(tr("&Zoom In"), this);
 	btnZoomIn->setShortcut( tr("Ctrl++") );
 	btnZoomIn->setActionGroup(dataTools);
@@ -1238,6 +1242,8 @@ void ApplicationWindow::plotDataMenuAboutToShow()
 {
     plotDataMenu->clear();
 	plotDataMenu->addAction(btnPointer);
+	plotDataMenu->insertSeparator();
+	plotDataMenu->addAction(actionMagnify);
 	plotDataMenu->addAction(btnZoomIn);
 	plotDataMenu->addAction(btnZoomOut);
 	plotDataMenu->addAction(actionUnzoom);
@@ -6782,6 +6788,25 @@ void ApplicationWindow::showCurveWorksheet()
 	showCurveWorksheet(g, actionShowCurveWorksheet->data().toInt());
 }
 
+void ApplicationWindow::magnify()
+{
+	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	if (!plot)
+		return;
+
+	if (plot->isEmpty()){
+		QMessageBox::warning(this, tr("QtiPlot - Warning"),
+				tr("<h4>There are no plot layers available in this window.</h4>"
+					"<p><h4>Please add a layer and try again!</h4>"));
+		btnPointer->setOn(true);
+		return;
+	}
+
+	QList<Graph *> layers = plot->layersList();
+    foreach(Graph *g, layers)
+    	g->enablePanningMagnifier();
+}
+
 void ApplicationWindow::zoomIn()
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
@@ -8971,6 +8996,8 @@ void ApplicationWindow::showGraphContextMenu()
 		cm.addAction(actionAddFunctionCurve);
 		cm.insertItem(tr("Anal&yze"), analysisMenu);
 	}
+
+	cm.insertItem(tr("&Data"), plotDataMenu);
 
 	if (lastCopiedLayer){
 		cm.insertSeparator();
@@ -11403,6 +11430,8 @@ void ApplicationWindow::pickDataTool( QAction* action )
 		drawArrow();
 	else if (action == btnLine)
 		drawLine();
+	else if (action == actionMagnify)
+		magnify();
 }
 
 void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
@@ -11748,6 +11777,9 @@ void ApplicationWindow::createActions()
 	actionUnzoom = new QAction(QIcon(QPixmap(unzoom_xpm)), tr("&Rescale to Show All"), this);
 	actionUnzoom->setShortcut( tr("Ctrl+Shift+R") );
 	connect(actionUnzoom, SIGNAL(activated()), this, SLOT(setAutoScale()));
+
+	actionMagnify = new QAction(QIcon(QPixmap(magnifier_xpm)), tr("Zoom &In/Out and Drag Canvas"), this);
+	connect(actionMagnify, SIGNAL(activated()), this, SLOT(magnify()));
 
 	actionNewLegend = new QAction(QIcon(QPixmap(legend_xpm)), tr("New &Legend"), this);
 	actionNewLegend->setShortcut( tr("Ctrl+L") );
@@ -12852,6 +12884,9 @@ void ApplicationWindow::translateActionsStrings()
 
 	btnPointer->setMenuText(tr("Disable &tools"));
 	btnPointer->setToolTip( tr( "Pointer" ) );
+
+	actionMagnify->setMenuText(tr("Zoom &In/Out and Drag Canvas"));
+	actionMagnify->setToolTip(tr("Zoom In (Shift++) or Out (-) and Drag Canvas"));
 
 	btnZoomIn->setMenuText(tr("&Zoom In"));
 	btnZoomIn->setShortcut(tr("Ctrl++"));

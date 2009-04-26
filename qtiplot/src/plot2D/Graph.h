@@ -47,6 +47,8 @@
 #include <FrameWidget.h>
 #include <float.h>
 
+class QwtPlotPanner;
+class QwtPlotMagnifier;
 class QwtPlotCurve;
 class QwtPlotZoomer;
 class QwtPieCurve;
@@ -201,6 +203,8 @@ class Graph: public QwtPlot
 		void raiseEnrichements();
 		void addLegendItem();
 		bool isPrinting(){return d_is_printing;};
+
+		void enablePanningMagnifier(bool on = true);
 
 	public slots:
 		void copy(Graph* g);
@@ -766,5 +770,7 @@ signals:
 		//! Axes tick lengths
 		int d_min_tick_length, d_maj_tick_length;
 		QList<FrameWidget*> d_enrichments;
+		QwtPlotMagnifier *d_magnifier;
+		QwtPlotPanner *d_panner;
 };
 #endif // GRAPH_H
