@@ -106,6 +106,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initBoxPage();
 	initPercentilePage();
 	initSpectrogramPage();
+	initContourLinesPage();
 	initPiePage();
 	initPieGeometryPage();
 	initPieLabelsPage();
@@ -1032,50 +1033,6 @@ void PlotDialog::initSpectrogramPage()
     hl->addLayout(vl);
 	hl->addWidget(colorMapEditor);
 
-  	levelsGroupBox = new QGroupBox(tr( "Contour Lines" ));
-  	levelsGroupBox->setCheckable(true);
-
-    QHBoxLayout *hl1 = new QHBoxLayout();
-    hl1->addWidget(new QLabel(tr( "Levels" )));
-
-  	levelsBox = new QSpinBox();
-  	levelsBox->setRange(2, 1000);
-	hl1->addWidget(levelsBox);
-    hl1->addStretch();
-
-    QVBoxLayout *vl1 = new QVBoxLayout();
-    vl1->addLayout(hl1);
-
-  	autoContourBox = new QRadioButton(tr("Use &Color Map"));
-  	connect(autoContourBox, SIGNAL(toggled(bool)), this, SLOT(showDefaultContourLinesBox(bool)));
-    vl1->addWidget(autoContourBox);
-
-  	defaultContourBox = new QRadioButton(tr("Use Default &Pen"));
-  	connect(defaultContourBox, SIGNAL(toggled(bool)), this, SLOT(showDefaultContourLinesBox(bool)));
-    vl1->addWidget(defaultContourBox);
-
-    QHBoxLayout *hl2 = new QHBoxLayout(levelsGroupBox);
-    hl2->addLayout(vl1);
-
-  	defaultPenBox = new QGroupBox();
-    QGridLayout *gl1 = new QGridLayout(defaultPenBox);
-    gl1->addWidget(new QLabel(tr( "Color" )), 0, 0);
-
-  	levelsColorBox = new ColorButton(defaultPenBox);
-    gl1->addWidget(levelsColorBox, 0, 1);
-
-    gl1->addWidget(new QLabel(tr( "Width" )), 1, 0);
-  	contourWidthBox = new DoubleSpinBox('f');
-	contourWidthBox->setLocale(((ApplicationWindow *)parent())->locale());
-	contourWidthBox->setSingleStep(0.1);
-    contourWidthBox->setRange(0, 100);
-    gl1->addWidget(contourWidthBox, 1, 1);
-
-    gl1->addWidget(new QLabel(tr( "Style" )), 2, 0);
-  	boxContourStyle = new PenStyleBox();
-    gl1->addWidget(boxContourStyle, 2, 1);
-    hl2->addWidget(defaultPenBox);
-
   	axisScaleBox = new QGroupBox(tr( "Color Bar Scale" ));
   	axisScaleBox->setCheckable (true);
 
@@ -1096,11 +1053,82 @@ void PlotDialog::initSpectrogramPage()
 
   	QVBoxLayout* vl2 = new QVBoxLayout(spectrogramPage);
   	vl2->addWidget(imageGroupBox);
-  	vl2->addWidget(levelsGroupBox);
   	vl2->addWidget(axisScaleBox);
     vl2->addStretch();
 
-  	privateTabWidget->insertTab(spectrogramPage, tr("Contour") + " / " + tr("Image"));
+  	privateTabWidget->insertTab(spectrogramPage, tr("Colors"));
+}
+
+void PlotDialog::initContourLinesPage()
+{
+	ApplicationWindow *app = (ApplicationWindow *)parent();
+	QLocale locale = QLocale();
+	if (app)
+		locale = app->locale();
+
+  	contourLinesPage = new QWidget();
+
+  	levelsGroupBox = new QGroupBox(tr("Show Equidistant Levels"));
+  	levelsGroupBox->setCheckable(true);
+
+    QGridLayout *hl1 = new QGridLayout(levelsGroupBox);
+
+	hl1->addWidget(new QLabel(tr("Levels")), 0, 0);
+  	levelsBox = new QSpinBox();
+  	levelsBox->setRange(0, 1000);
+	hl1->addWidget(levelsBox, 0, 1);
+
+    hl1->addWidget(new QLabel(tr("First Level")), 1, 0);
+  	firstContourLineBox = new DoubleSpinBox();
+  	firstContourLineBox->setLocale(locale);
+	firstContourLineBox->setDecimals(6);
+	hl1->addWidget(firstContourLineBox, 1, 1);
+
+    hl1->addWidget(new QLabel(tr("Distance between Levels")), 2, 0);
+    contourLinesDistanceBox = new DoubleSpinBox();
+    contourLinesDistanceBox->setLocale(locale);
+	contourLinesDistanceBox->setDecimals(6);
+	hl1->addWidget(contourLinesDistanceBox, 2, 1);
+
+	QGroupBox *penGroupBox = new QGroupBox(tr("Pen"));
+	QHBoxLayout *hl2 = new QHBoxLayout(penGroupBox);
+
+    QVBoxLayout *vl1 = new QVBoxLayout;
+  	autoContourBox = new QRadioButton(tr("Use &Color Map"));
+  	connect(autoContourBox, SIGNAL(toggled(bool)), this, SLOT(showDefaultContourLinesBox(bool)));
+    vl1->addWidget(autoContourBox);
+
+  	defaultContourBox = new QRadioButton(tr("Use Default &Pen"));
+  	connect(defaultContourBox, SIGNAL(toggled(bool)), this, SLOT(showDefaultContourLinesBox(bool)));
+    vl1->addWidget(defaultContourBox);
+
+	hl2->addLayout(vl1);
+
+  	defaultPenBox = new QGroupBox();
+    QGridLayout *gl1 = new QGridLayout(defaultPenBox);
+    gl1->addWidget(new QLabel(tr( "Color" )), 0, 0);
+
+  	levelsColorBox = new ColorButton(defaultPenBox);
+    gl1->addWidget(levelsColorBox, 0, 1);
+
+    gl1->addWidget(new QLabel(tr( "Width" )), 1, 0);
+  	contourWidthBox = new DoubleSpinBox('f');
+	contourWidthBox->setLocale(locale);
+	contourWidthBox->setSingleStep(0.1);
+    contourWidthBox->setRange(0, 100);
+    gl1->addWidget(contourWidthBox, 1, 1);
+
+    gl1->addWidget(new QLabel(tr( "Style" )), 2, 0);
+  	boxContourStyle = new PenStyleBox();
+    gl1->addWidget(boxContourStyle, 2, 1);
+    hl2->addWidget(defaultPenBox);
+
+  	QVBoxLayout* vl2 = new QVBoxLayout(contourLinesPage);
+  	vl2->addWidget(levelsGroupBox);
+  	vl2->addWidget(penGroupBox);
+    vl2->addStretch();
+
+  	privateTabWidget->insertTab(contourLinesPage, tr("Contour Lines"));
 }
 
 void PlotDialog::fillBoxSymbols()
@@ -1653,7 +1681,8 @@ void PlotDialog::insertTabs(int plot_type)
 		privateTabWidget->showPage(linePage);
 		return;
 	} else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour){
-  		privateTabWidget->addTab(spectrogramPage, tr("Colors") + " / " + tr("Contour"));
+  		privateTabWidget->addTab(spectrogramPage, tr("Colors"));
+  		privateTabWidget->addTab(contourLinesPage, tr("Contour Lines"));
   	    privateTabWidget->showPage(spectrogramPage);
   	    return;
   	}
@@ -1683,6 +1712,7 @@ void PlotDialog::clearTabWidget()
 	privateTabWidget->removeTab(privateTabWidget->indexOf(boxPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(percentilePage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(spectrogramPage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(contourLinesPage));
     privateTabWidget->removeTab(privateTabWidget->indexOf(piePage));
     privateTabWidget->removeTab(privateTabWidget->indexOf(pieGeometryPage));
     privateTabWidget->removeTab(privateTabWidget->indexOf(pieLabelsPage));
@@ -1856,7 +1886,12 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         colorMapEditor->setColorMap((const QwtLinearColorMap &)sp->colorMap());
 
         levelsGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));
-        levelsBox->setValue(sp->levels());
+
+        QwtValueList levels = sp->contourLevels();
+        levelsBox->setValue(levels.size());
+		firstContourLineBox->setValue(levels[0]);
+		if (levels.size() >= 2)
+			contourLinesDistanceBox->setValue(fabs(levels[1] - levels[0]));
 
         autoContourBox->setChecked(sp->defaultContourPen().style() == Qt::NoPen);
         defaultContourBox->setChecked(sp->defaultContourPen().style() != Qt::NoPen);
@@ -2234,16 +2269,6 @@ bool PlotDialog::acceptParams()
   	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
   	    	return false;
 
-  	    sp->setLevelsNumber(levelsBox->value());
-  	    if (autoContourBox->isChecked())
-  	    	sp->setDefaultContourPen(Qt::NoPen);
-  	    else {
-  	    	QPen pen = QPen(levelsColorBox->color(), contourWidthBox->value(), boxContourStyle->style());
-  	    	pen.setCosmetic(true);
-  	    	sp->setDefaultContourPen(pen);
-  	    }
-
-  	   sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
   	   sp->setDisplayMode(QwtPlotSpectrogram::ImageMode, imageGroupBox->isChecked());
 
   	   if (grayScaleBox->isChecked()){
@@ -2261,6 +2286,26 @@ bool PlotDialog::acceptParams()
   	   //Update axes page
   	   boxXAxis->setCurrentItem(sp->xAxis()-2);
   	   boxYAxis->setCurrentItem(sp->yAxis());
+  	} else if (privateTabWidget->currentPage() == contourLinesPage){
+  		Spectrogram *sp = (Spectrogram *)plotItem;
+  	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+  	    	return false;
+
+		QwtValueList levels;
+		double firstVal = firstContourLineBox->value();
+		for (int i = 0; i < levelsBox->value(); i++)
+			levels += firstVal + i*contourLinesDistanceBox->value();
+  	    sp->setContourLevels(levels);
+
+  	    if (autoContourBox->isChecked())
+  	    	sp->setDefaultContourPen(Qt::NoPen);
+  	    else {
+  	    	QPen pen = QPen(levelsColorBox->color(), contourWidthBox->value(), boxContourStyle->style());
+  	    	pen.setCosmetic(true);
+  	    	sp->setDefaultContourPen(pen);
+  	    }
+
+  	   sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
   	} else if (privateTabWidget->currentPage() == linePage){
 		graph->setCurveStyle(item->plotItemIndex(), boxConnect->currentIndex());
 		QBrush br = QBrush(boxAreaColor->color(), boxPattern->getSelectedPattern());

@@ -48,7 +48,7 @@ public:
 	Spectrogram* copy();
 	Matrix * matrix(){return d_matrix;};
 
-	int levels(){return (int)contourLevels().size() + 1;};
+	int levels(){return (int)contourLevels().size();};
 	void setLevelsNumber(int levels);
 
 	bool hasColorScale();

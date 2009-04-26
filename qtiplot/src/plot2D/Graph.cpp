@@ -4582,18 +4582,25 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
         {
             int contours = s.remove("<ContourLines>").remove("</ContourLines>").stripWhiteSpace().toInt();
             sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, contours);
-            if (contours)
-            {
+            if (contours){
                 s = (*(++line)).stripWhiteSpace();
                 int levels = s.remove("<Levels>").remove("</Levels>").toInt();
-                sp->setLevelsNumber(levels);
+                QwtValueList levelsLst;
+				for (int i = 0; i < levels; i++){
+					s = (*(++line)).stripWhiteSpace();
+					if (s.contains("</z>"))
+						levelsLst += s.remove("<z>").remove("</z>").toDouble();
+				}
+				if (levelsLst.size() > 0)
+					sp->setContourLevels(levelsLst);
+				else
+					sp->setLevelsNumber(levels);
 
                 s = (*(++line)).stripWhiteSpace();
                 int defaultPen = s.remove("<DefaultPen>").remove("</DefaultPen>").toInt();
                 if (!defaultPen)
                     sp->setDefaultContourPen(Qt::NoPen);
-                else
-                {
+                else {
                     s = (*(++line)).stripWhiteSpace();
                     QColor c = QColor(s.remove("<PenColor>").remove("</PenColor>"));
                     s = (*(++line)).stripWhiteSpace();
