@@ -306,6 +306,7 @@ private:
 	void initPrintPage();
 	void initLabelsPage();
     void contextMenuEvent(QContextMenuEvent *e);
+    void showAllLabelControls(bool show = true);
 
 	double aspect_ratio;
 
@@ -405,6 +406,7 @@ private:
 	QPushButton *layerDefaultBtn;
 
 	DoubleSpinBox *firstContourLineBox, *contourLinesDistanceBox;
+	QLabel *justifyLabelsLbl, *labelsColumnLbl;
 };
 
 /*****************************************************************************

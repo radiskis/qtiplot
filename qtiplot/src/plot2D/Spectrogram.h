@@ -34,21 +34,23 @@
 #include <qwt_plot.h>
 #include <qwt_plot_spectrogram.h>
 #include <qwt_color_map.h>
+#include <qwt_plot_marker.h>
 
 class MatrixData;
+class Graph;
+class PlotMarker;
 
 class Spectrogram: public QwtPlotSpectrogram
 {
 public:
-	Spectrogram();
-    Spectrogram(Matrix *m);
+    Spectrogram(Graph *graph, Matrix *m);
 
 	enum ColorMapPolicy{GrayScale, Default, Custom};
 
-	Spectrogram* copy();
+	Spectrogram* copy(Graph *g);
 	Matrix * matrix(){return d_matrix;};
 
-	int levels(){return (int)contourLevels().size();};
+	int levels(){return (int)contourLevels().size() + 1;};
 	void setLevelsNumber(int levels);
 
 	bool hasColorScale();
@@ -71,8 +73,33 @@ public:
 	ColorMapPolicy colorMapPolicy(){return color_map_policy;};
 
 	virtual QwtDoubleRect boundingRect() const;
+	void setContourLevels (const QwtValueList & levels);
+
+	bool hasLabels(){return d_show_labels;};
+	void showContourLineLabels(bool show = true);
+
+	QFont labelsFont(){return d_labels_font;};
+	void setLabelsFont(const QFont& font);
+
+	QColor labelsColor(){return d_labels_color;};
+	void setLabelsColor(const QColor& c);
+
+	bool labelsWhiteOut(){return d_white_out_labels;};
+	void setLabelsWhiteOut(bool whiteOut);
+
+	int labelsXOffset(){return d_labels_x_offset;};
+    int labelsYOffset(){return d_labels_y_offset;};
+    void setLabelsOffset(int x, int y);
+
+	double labelsRotation(){return d_labels_angle;};
+    void setLabelsRotation(double angle);
 
 protected:
+	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
+	void updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
+	void createLabels();
+	//! Pointer to the parent plot
+	Graph *d_graph;
 	//! Pointer to the source data matrix
 	Matrix *d_matrix;
 
@@ -83,6 +110,19 @@ protected:
 	ColorMapPolicy color_map_policy;
 
 	QwtLinearColorMap color_map;
+	//! Flag telling if we display the labels
+	bool d_show_labels;
+	//! Labels color
+	QColor d_labels_color;
+	//! Labels font
+	QFont d_labels_font;
+	//! Flag telling if we paint a white background for the labels
+	bool d_white_out_labels;
+	double d_labels_angle;
+	int d_labels_x_offset, d_labels_y_offset;
+
+	//! List of the text labels associated to this spectrogram.
+	QList <PlotMarker *> d_labels_list;
 };
 
 

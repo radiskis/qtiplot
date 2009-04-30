@@ -129,7 +129,7 @@ public:
 	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow, Plot3DWindow};
 	enum MatrixToTableConversion{Direct, XYZ, YXZ};
 	enum EndLineChar{LF, CRLF, CR};
-	enum Analysis{NoAnalysis, Integrate, Diff, FitLinear, FitGauss, FitLorentz, FitSigmoidal};
+	enum Analysis{NoAnalysis, Integrate, Diff, FitLinear, FitGauss, FitLorentz, FitSigmoidal, FitSlope};
 
 	FolderListView *lv, *folders;
 	QDockWidget *logWindow;
@@ -614,6 +614,7 @@ public slots:
 	void fitMultiPeak(int profile);
 	void fitMultiPeakGauss();
 	void fitMultiPeakLorentz();
+	void fitSlope();
 	//@}
 
 	//! \name Calculus
@@ -1285,7 +1286,7 @@ private:
     QAction *actionPlot3DRibbon, *actionPlot3DBars, *actionPlot3DScatter, *actionPlot3DTrajectory;
     QAction *actionPlotDoubleYAxis, *actionAddInsetLayer, *actionAddInsetCurveLayer;
     QAction *actionShowColStatistics, *actionShowRowStatistics, *actionShowIntDialog, *actionIntegrate;
-    QAction *actionDifferentiate, *actionFitLinear, *actionShowFitPolynomDialog;
+    QAction *actionDifferentiate, *actionFitLinear, *actionFitSlope, *actionShowFitPolynomDialog;
     QAction *actionShowExpDecayDialog, *actionShowTwoExpDecayDialog, *actionShowExpDecay3Dialog;
     QAction *actionFitExpGrowth, *actionFitSigmoidal, *actionFitGauss, *actionFitLorentz, *actionShowFitDialog;
     QAction *actionShowAxisDialog, *actionShowTitleDialog;

@@ -8201,6 +8201,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionInterpolate);
         analysisMenu->addAction(actionFFT);
         analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionFitSlope);
         analysisMenu->addAction(actionFitLinear);
         analysisMenu->addAction(actionShowFitPolynomDialog);
         analysisMenu->insertSeparator();
@@ -8253,6 +8254,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         analysisMenu->addAction(actionConvolute);
         analysisMenu->addAction(actionDeconvolute);
         analysisMenu->insertSeparator();
+        analysisMenu->addAction(actionFitSlope);
 		analysisMenu->addAction(actionFitLinear);
         analysisMenu->addAction(actionShowFitDialog);
 	}
@@ -11175,13 +11177,16 @@ void ApplicationWindow::analyzeCurve(Graph *g, Analysis operation, const QString
             }
 		}
 		break;
+		case FitSlope:
+			fitter = new LinearSlopeFit (this, g);
+		break;
 	}
 
 	if (!fitter)
 		return;
 
 	if (fitter->setDataFromCurve(curveTitle)){
-		if (operation != FitLinear){
+		if (operation != FitLinear && operation != FitSlope){
 			fitter->guessInitialValues();
 			fitter->scaleErrors(fit_scale_errors);
 			fitter->generateFunction(generateUniformFitPoints, fitPoints);
@@ -11309,7 +11314,7 @@ void ApplicationWindow::fitLinear()
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer"))
+	if (qobject_cast<MultiLayer *>(w))
 		analysis(FitLinear);
 	else if (w->inherits("Table")){
 		Table *t = (Table *)w;
@@ -11352,6 +11357,62 @@ void ApplicationWindow::fitLinear()
 			result->setCell(aux, 2, res[0]);
 			result->setCell(aux, 3, lf->chiSquare());
 			result->setCell(aux, 4, lf->rSquare());
+			aux++;
+		}
+		for (int i = 0; i < result->numCols(); i++)
+			result->table()->adjustColumn(i);
+		result->show();
+		delete lf;
+	}
+}
+
+void ApplicationWindow::fitSlope()
+{
+	MdiSubWindow *w = activeWindow();
+	if (!w)
+		return;
+
+	if (qobject_cast<MultiLayer *>(w))
+		analysis(FitSlope);
+	else if (w->inherits("Table")){
+		Table *t = (Table *)w;
+		QStringList lst = t->selectedYColumns();
+		int cols = lst.size();
+		if (!cols){
+        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a 'Y' column first!"));
+			return;
+		}
+
+		MultiLayer* g = multilayerPlot(t, t->drawableColumnSelection(), Graph::LineSymbols);
+		if (!g)
+			return;
+
+		QString legend = tr("Linear Regression of %1").arg(t->objectName());
+		g->setWindowLabel(legend);
+
+		Table *result = newTable(cols, 4, "", legend);
+		result->setColName(0, tr("Column"));
+		result->setColName(1, tr("Slope"));
+		result->setColName(2, tr("Chi^2"));
+		result->setColName(3, tr("R^2"));
+
+		LinearSlopeFit *lf = new LinearSlopeFit (this, g->activeLayer());
+		if (d_2_linear_fit_points)
+			lf->generateFunction(generateUniformFitPoints, 2);
+		lf->setOutputPrecision(fit_output_precision);
+
+		int aux = 0;
+		foreach (QString yCol, lst){
+			if (!lf->setDataFromCurve(yCol))
+				continue;
+
+			lf->setColor(aux);
+			lf->fit();
+			double *res = lf->results();
+			result->setText(aux, 0, yCol);
+			result->setCell(aux, 1, res[0]);
+			result->setCell(aux, 2, lf->chiSquare());
+			result->setCell(aux, 3, lf->rSquare());
 			aux++;
 		}
 		for (int i = 0; i < result->numCols(); i++)
@@ -11924,6 +11985,9 @@ void ApplicationWindow::createActions()
 
 	actionDifferentiate = new QAction(tr("&Differentiate"), this);
 	connect(actionDifferentiate, SIGNAL(activated()), this, SLOT(differentiate()));
+
+	actionFitSlope = new QAction(tr("Fit Slop&e"), this);
+	connect(actionFitSlope, SIGNAL(activated()), this, SLOT(fitSlope()));
 
 	actionFitLinear = new QAction(tr("Fit &Linear"), this);
 	connect(actionFitLinear, SIGNAL(activated()), this, SLOT(fitLinear()));
@@ -12702,6 +12766,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionSmoothAverage->setMenuText(tr("Moving Window &Average..."));
 	actionDifferentiate->setMenuText(tr("&Differentiate"));
 	actionFitLinear->setMenuText(tr("Fit &Linear"));
+	actionFitSlope->setMenuText(tr("Fit Slop&e"));
 	actionShowFitPolynomDialog->setMenuText(tr("Fit &Polynomial ..."));
 	actionShowExpDecayDialog->setMenuText(tr("&First Order ..."));
 	actionShowTwoExpDecayDialog->setMenuText(tr("&Second Order ..."));

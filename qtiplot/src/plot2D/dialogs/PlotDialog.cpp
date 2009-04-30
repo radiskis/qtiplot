@@ -660,7 +660,8 @@ void PlotDialog::initLabelsPage()
     labelsGroupBox->setCheckable (true);
 
     QGridLayout *gl = new QGridLayout(labelsGroupBox);
-    gl->addWidget(new QLabel(tr( "Column" )), 0, 0);
+    labelsColumnLbl = new QLabel(tr( "Column" ));
+    gl->addWidget(labelsColumnLbl, 0, 0);
     boxLabelsColumn = new QComboBox();
     gl->addWidget(boxLabelsColumn, 0, 1);
 
@@ -670,14 +671,13 @@ void PlotDialog::initLabelsPage()
     boxLabelsWhiteOut = new QCheckBox(tr("White O&ut"));
     gl->addWidget(boxLabelsWhiteOut, 1, 2);
 
-    gl->addWidget(new QLabel(tr( "Justify" )), 2, 0);
+	justifyLabelsLbl = new QLabel(tr( "Justify" ));
+    gl->addWidget(justifyLabelsLbl, 2, 0);
     boxLabelsAlign = new QComboBox();
     boxLabelsAlign->addItem( tr( "Center" ) );
     boxLabelsAlign->addItem( tr( "Left" ) );
     boxLabelsAlign->addItem( tr( "Right" ) );
     gl->addWidget(boxLabelsAlign, 2, 1);
-    btnLabelsFont = new QPushButton(tr("&Font"));
-    gl->addWidget(btnLabelsFont, 2, 2);
 
     gl->addWidget(new QLabel(tr( "Rotate (deg)" )), 3, 0);
     boxLabelsAngle = new DoubleSpinBox('f');
@@ -685,6 +685,8 @@ void PlotDialog::initLabelsPage()
     boxLabelsAngle->setLocale(((ApplicationWindow *)parent())->locale());
     boxLabelsAngle->setRange(0, 180);
     gl->addWidget(boxLabelsAngle, 3, 1);
+    btnLabelsFont = new QPushButton(tr("&Font"));
+    gl->addWidget(btnLabelsFont, 3, 2);
 
     gl->addWidget(new QLabel(tr("X Offset (font height %)")), 4, 0);
     boxLabelsXOffset = new QSpinBox();
@@ -1683,6 +1685,7 @@ void PlotDialog::insertTabs(int plot_type)
 	} else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour){
   		privateTabWidget->addTab(spectrogramPage, tr("Colors"));
   		privateTabWidget->addTab(contourLinesPage, tr("Contour Lines"));
+  		privateTabWidget->addTab(labelsPage, tr("Labels"));
   	    privateTabWidget->showPage(spectrogramPage);
   	    return;
   	}
@@ -1906,6 +1909,25 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         axisScaleBox->setChecked(sp->hasColorScale());
         colorScaleBox->setCurrentItem((int)sp->colorScaleAxis());
         colorScaleWidthBox->setValue(sp->colorBarWidth());
+
+        //labels page
+
+        showAllLabelControls(false);
+
+        labelsGroupBox->blockSignals(true);
+		labelsGroupBox->setChecked(sp->hasLabels());
+		boxLabelsColor->setColor(sp->labelsColor());
+		boxLabelsAngle->setValue(sp->labelsRotation());
+
+		boxLabelsXOffset->blockSignals(true);
+		boxLabelsXOffset->setValue(sp->labelsXOffset());
+		boxLabelsXOffset->blockSignals(false);
+
+		boxLabelsYOffset->blockSignals(true);
+		boxLabelsYOffset->setValue(sp->labelsYOffset());
+		boxLabelsYOffset->blockSignals(false);
+		boxLabelsWhiteOut->setChecked(sp->labelsWhiteOut());
+		labelsGroupBox->blockSignals(false);
         return;
     }
 
@@ -2088,6 +2110,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 		privateTabWidget->removeTab(privateTabWidget->indexOf(labelsPage));
 		return;
 	}
+	showAllLabelControls();
+
     labelsGroupBox->blockSignals(true);
     labelsGroupBox->setChecked(dc->hasLabels());
 
@@ -2427,34 +2451,44 @@ bool PlotDialog::acceptParams()
 				b->setWhiskersRange(boxWhiskersRange->currentIndex(), (double)boxWhiskersCoef->value());
 		}
 	} else if (privateTabWidget->currentPage() == labelsPage){
-		DataCurve *c = (DataCurve *)plotItem;
+		Spectrogram *sp = (Spectrogram *)plotItem;
+  	    if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+  	    	sp->setLabelsRotation(boxLabelsAngle->value());
+  	    	sp->showContourLineLabels(labelsGroupBox->isChecked());
+			sp->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
+			sp->setLabelsOffset(boxLabelsXOffset->value(), boxLabelsYOffset->value());
+			sp->setLabelsColor(boxLabelsColor->color());
+			//c->setLabelsAlignment(labelsAlignment());
+  	    } else {
+			DataCurve *c = (DataCurve *)plotItem;
 
-        QString text = item->text(0);
-        QStringList t = text.split(": ", QString::SkipEmptyParts);
-        QString table = t[0];
-        QStringList cols = t[1].split(",", QString::SkipEmptyParts);
+			QString text = item->text(0);
+			QStringList t = text.split(": ", QString::SkipEmptyParts);
+			QString table = t[0];
+			QStringList cols = t[1].split(",", QString::SkipEmptyParts);
 
-		if (labelsGroupBox->isChecked()){
-            c->setLabelsColumnName(boxLabelsColumn->currentText());
+			if (labelsGroupBox->isChecked()){
+				c->setLabelsColumnName(boxLabelsColumn->currentText());
 
-            if (cols.count() == 3)
-                cols[2] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
-            else if (cols.count() == 5)//vector curves
-                cols[4] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
-            else
-                cols << boxLabelsColumn->currentText().remove(table + "_") + "(L)";
-            item->setText(0, table + ": " + cols.join(","));
-        } else {
-            c->setLabelsColumnName(QString());
-            cols.pop_back();
-            item->setText(0, table + ": " + cols.join(","));
-        }
+				if (cols.count() == 3)
+					cols[2] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
+				else if (cols.count() == 5)//vector curves
+					cols[4] = boxLabelsColumn->currentText().remove(table + "_") + "(L)";
+				else
+					cols << boxLabelsColumn->currentText().remove(table + "_") + "(L)";
+				item->setText(0, table + ": " + cols.join(","));
+			} else {
+				c->setLabelsColumnName(QString());
+				cols.pop_back();
+				item->setText(0, table + ": " + cols.join(","));
+			}
 
-		c->setLabelsRotation(boxLabelsAngle->value());
-		c->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
-		c->setLabelsOffset(boxLabelsXOffset->value(), boxLabelsYOffset->value());
-		c->setLabelsColor(boxLabelsColor->color());
-		c->setLabelsAlignment(labelsAlignment());
+			c->setLabelsRotation(boxLabelsAngle->value());
+			c->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
+			c->setLabelsOffset(boxLabelsXOffset->value(), boxLabelsYOffset->value());
+			c->setLabelsColor(boxLabelsColor->color());
+			c->setLabelsAlignment(labelsAlignment());
+  	    }
 	}
 	graph->replot();
 	graph->notifyChanges();
@@ -2790,11 +2824,22 @@ void PlotDialog::chooseLabelsFont()
     if (!i || !graph)
         return;
 
-    DataCurve *c = (DataCurve *)i;
+	QFont font = QFont();
+	bool spectrogram = false;
+	if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+		spectrogram = true;
+		font = ((Spectrogram *)i)->labelsFont();
+	} else
+		font = ((DataCurve *)i)->labelsFont();
+
     bool okF;
-	QFont fnt = QFontDialog::getFont(&okF, c->labelsFont(), this);
-	if (okF && fnt != c->labelsFont()){
-		c->setLabelsFont(fnt);
+	QFont fnt = QFontDialog::getFont(&okF, font, this);
+	if (okF && fnt != font){
+		if (spectrogram)
+			((Spectrogram *)i)->setLabelsFont(fnt);
+		else
+			((DataCurve *)i)->setLabelsFont(fnt);
+
         graph->replot();
         graph->notifyChanges();
 	}
@@ -2877,6 +2922,21 @@ void PlotDialog::setLayerDefaultValues()
 	app->antialiasing2DPlots = boxAntialiasing->isChecked();
 
 	app->saveSettings();
+}
+
+void PlotDialog::showAllLabelControls(bool show)
+{
+	if (show){
+		boxLabelsColumn->show();
+		boxLabelsAlign->show();
+		justifyLabelsLbl->show();
+		labelsColumnLbl->show();
+	} else {
+		boxLabelsColumn->hide();
+		boxLabelsAlign->hide();
+		justifyLabelsLbl->hide();
+		labelsColumnLbl->hide();
+	}
 }
 
 /*****************************************************************************
