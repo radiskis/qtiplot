@@ -4268,7 +4268,7 @@ void Graph::copyCurves(Graph* g)
 			if (lst.contains((QwtPlotCurve *)it))
 				d_fit_curves << c;
 		} else if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-  	     	Spectrogram *sp = ((Spectrogram *)it)->copy();
+  	     	Spectrogram *sp = ((Spectrogram *)it)->copy(this);
   	        insertCurve(sp);
 
   	        sp->showColorScale(((Spectrogram *)it)->colorScaleAxis(), ((Spectrogram *)it)->hasColorScale());
@@ -4497,7 +4497,7 @@ Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
 	if (type != GrayScale && type != ColorMap && type != Contour)
   		return 0;
 
-  	Spectrogram *d_spectrogram = new Spectrogram(m);
+  	Spectrogram *d_spectrogram = new Spectrogram(this, m);
 	insertCurve(d_spectrogram);
 
   	if (type == GrayScale)
@@ -4536,7 +4536,7 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
   	if (!m)
         return;
 
-  	Spectrogram *sp = new Spectrogram(m);
+  	Spectrogram *sp = new Spectrogram(this, m);
 	insertCurve(sp);
 
   	for (line++; line != lst.end(); line++)

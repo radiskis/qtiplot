@@ -165,7 +165,12 @@ void Table::setTextFont(const QFont& fnt)
 
 void Table::setHeaderColor(const QColor& col)
 {
-	d_table->horizontalHeader()->setPaletteForegroundColor (col);
+	QPalette palette = d_table->horizontalHeader()->palette ();
+    palette.setColor (QColorGroup::ButtonText, col);
+#ifdef Q_OS_MAC //! Highlighting of the header text
+    palette.setColor (QColorGroup::BrightText, col);
+#endif
+    d_table->horizontalHeader()->setPalette (palette);
 }
 
 void Table::setHeaderFont(const QFont& fnt)
@@ -417,7 +422,7 @@ void Table::columnNumericFormat(int col, char *f, int *precision)
 		}
 		*precision = format[1].toInt();
 		if (*precision > 14)
-			*precision = 14;		
+			*precision = 14;
 	} else {
 		*f = 'g';
 		*precision = 14;
@@ -511,7 +516,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
                            QMessageBox::Yes, QMessageBox::Cancel))
 			return false;
 	}
-		
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     muParserScript *mup = new muParserScript(scriptEnv, cmd, this,  QString("<%1>").arg(colName(col)));
@@ -805,7 +810,7 @@ QString Table::comment(int col)
 {
 	if (col < 0 || col >= d_table->numCols())
 		return QString::null;
-	
+
 	return comments[col];
 }
 
@@ -1042,7 +1047,7 @@ void Table::insertCols(int start, int count)
 	int max = 0;
 	int cols = d_table->numCols();
 	QList<bool> hiddenCols;
-	
+
 	for (int i = 0; i<cols; i++){
 		if (!col_label[i].contains(QRegExp ("\\D"))){
 			int id = col_label[i].toInt();
@@ -1066,10 +1071,10 @@ void Table::insertCols(int start, int count)
 		hiddenCols.insert(j, false);
 	}
 	setHeaderColType();
-	
+
 	for (int i = 0; i<d_table->numCols(); i++)
 		hideColumn(i, hiddenCols[i]);
-		
+
 	emit modifiedWindow(this);
 }
 
@@ -1328,7 +1333,7 @@ void Table::pasteSelection()
 	QString text = QApplication::clipboard()->text();
 	if (text.isEmpty())
 		return;
-		
+
     QStringList linesList = text.split(ApplicationWindow::guessEndOfLine(text));
 	int rows = linesList.size();
 	if (rows < 1)
@@ -1843,7 +1848,7 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells)
 		if (old_f == f && old_prec == prec)
 			return;
 	}
-	
+
 	colTypes[col] = Numeric;
 	col_format[col] = QString::number(f) + "/" + QString::number(prec);
 
@@ -2849,7 +2854,7 @@ void Table::setColumnHeader(int index, const QString& label)
 {
 	Q3Header *head = d_table->horizontalHeader();
 	if (d_show_comments){
-		QString s = label;		
+		QString s = label;
 		int lines = d_table->columnWidth(index)/head->fontMetrics().boundingRect("_").width();
 		head->setLabel(index, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[index]);
 	} else
@@ -2863,11 +2868,11 @@ void Table::showComments(bool on)
 
 	d_show_comments = on;
 	setHeaderColType();
-		
+
 #ifndef Q_OS_MAC
 	if(!on)
 		d_table->setTopMargin (d_table->horizontalHeader()->height()/2);
-#endif	
+#endif
 }
 
 void Table::setNumericPrecision(int prec)
