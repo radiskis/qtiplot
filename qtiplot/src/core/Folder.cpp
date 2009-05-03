@@ -193,11 +193,11 @@ MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels
 	foreach(w,lstWindows){
 		if (windowNames){
 			QString name = w->objectName();
-			if (partialMatch && name.startsWith(s, caseSensitive))
+			if (partialMatch && name.contains(s, caseSensitive))
 				return w;
 			else if (caseSensitive && name == s)
 				return w;
-			else{
+			else {
 				QString text = s;
 				if (name == text.lower())
 					return w;
@@ -206,11 +206,11 @@ MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels
 
 		if (labels){
 			QString label = w->windowLabel();
-			if (partialMatch && label.startsWith(s, caseSensitive))
+			if (partialMatch && label.contains(s, caseSensitive))
 				return w;
 			else if (caseSensitive && label == s)
 				return w;
-			else{
+			else {
 				QString text = s;
 				if (label == text.lower())
 					return w;
