@@ -29,11 +29,11 @@
 #include "Fit.h"
 #include "FitModelHandler.h"
 #include "fit_gsl.h"
-#include "../table/Table.h"
-#include "../matrix/Matrix.h"
-#include "../plot2D/QwtErrorPlotCurve.h"
-#include "../plot2D/FunctionCurve.h"
-#include "../plot2D/MultiLayer.h"
+#include <Table.h>
+#include <Matrix.h>
+#include <QwtErrorPlotCurve.h>
+#include <FunctionCurve.h>
+#include <MultiLayer.h>
 #include <ColorBox.h>
 
 #include <gsl/gsl_statistics.h>
@@ -672,8 +672,8 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 			return;
 		}
 		points = d_points;
-		double X0 = d_x[0];
-		double step = (d_x[d_n - 1] - X0)/(points - 1);
+		double X0 = d_from;
+		double step = fabs(d_from - d_to)/(points - 1);
 		for (int i = 0; i < points; i++)
 			X[i] = X0 + i*step;
 	} else
@@ -791,8 +791,8 @@ void Fit::showPredictionLimits(double confidenceLevel)
 			return;
 		}
 		points = d_points;
-		double X0 = d_x[0];
-		double step = (d_x[d_n - 1] - X0)/(points - 1);
+		double X0 = d_from;
+		double step = fabs(d_to - d_from)/(points - 1);
 		for (int i = 0; i < points; i++)
 			X[i] = X0 + i*step;
 	} else
@@ -824,12 +824,11 @@ void Fit::showPredictionLimits(double confidenceLevel)
 
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
 	double x_mean = gsl_stats_mean(d_x, 1, d_n);
-	double sxx = 0.0;//gsl_stats_tss (d_x, 1, d_n);
+	double sxx = 0.0;
 	for (int i = 0; i < d_n; i++){
 		double dx = d_x[i] - x_mean;
 		sxx += dx*dx;
 	}
-
 	double mse = d_rss/double(d_n - d_p);
 	for (int i = 0; i < points; i++){
 		double x = X[i];
