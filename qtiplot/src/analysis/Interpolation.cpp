@@ -64,7 +64,7 @@ void Interpolation::init(int m)
         d_init_err = true;
         return;
     }
-    
+
 	d_method = m;
 	const gsl_interp_type *method = NULL;
 	switch(d_method)
@@ -128,10 +128,10 @@ void Interpolation::setMethod(int m)
     	d_init_err = true;
     	return;
 	}
-	
+
     d_method = m;
     d_min_points = min_points;
-	
+
 	switch(d_method)
 	{
 		case 0:
@@ -196,7 +196,7 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
     }
 
 	double pr_x = 0.0;
-  	int j=0;
+  	int j = 0;
     for (int i = 0; i < n; i++){
         xtemp[j] = c->x(i);
         if (xtemp[j] == pr_x){
@@ -227,7 +227,7 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
         memoryErrorMessage();
     }
 
-    for (int i=0; i<n; i++){
+    for (int i = 0; i < n; i++){
         xtemp2[i] = xtemp[p[i]];
   	    ytemp2[i] = ytemp[p[i]];
     }
@@ -241,17 +241,19 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
   	      i_start = i - 1;
           break;
         }
-    for (int i = i_end-1; i >= 0; i--)
+    for (int i = i_end - 1; i >= 0; i--)
   	    if (xtemp2[i] < end && i < n){
   	      i_end = i + 1;
           break;
         }
 
     n = i_end - i_start + 1;
+    if (n > c->dataSize())
+		n = c->dataSize();
     (*x) = new double[n];
     (*y) = new double[n];
     j = 0;
-	for (int i = i_start; i <= i_end; i++){
+	for (int i = i_start; i < i_end; i++){
         (*x)[j] = xtemp2[i];
   	    (*y)[j] = ytemp2[i];
   	    j++;
