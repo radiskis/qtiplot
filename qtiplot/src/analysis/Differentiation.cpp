@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "Differentiation.h"
-#include "../plot2D/MultiLayer.h"
+#include <MultiLayer.h>
 
 #include <QLocale>
 
@@ -62,6 +62,7 @@ void Differentiation::init()
 {
 	setObjectName(tr("Derivative"));
     d_min_points = 4;
+    d_sort_data = false;
 }
 
 void Differentiation::output()
