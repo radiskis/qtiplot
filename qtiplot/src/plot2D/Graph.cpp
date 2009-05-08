@@ -125,7 +125,7 @@ static const char *unzoom_xpm[]={
 #include <FrameWidget.h>
 
 #ifdef EMF_OUTPUT
-#include <EmfEngine.h>
+	#include <EmfEngine.h>
 #endif
 
 #include <ColorBox.h>
@@ -147,6 +147,7 @@ static const char *unzoom_xpm[]={
 #include <QImageWriter>
 #include <QFileInfo>
 #include <QSvgGenerator>
+#include <QDir>
 
 #include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
@@ -1345,7 +1346,28 @@ QStringList Graph::plotItemsList()
 
 void Graph::copyImage()
 {
+#ifndef Q_OS_WIN
 	QApplication::clipboard()->setPixmap(graphPixmap(), QClipboard::Clipboard);
+	return;
+#endif
+
+#ifdef EMF_OUTPUT
+	if (OpenClipboard(0)){
+		EmptyClipboard();
+
+		QString path = QDir::tempPath();
+		QString name = path + "/" + "qtiplot_clipboard.emf";
+		name = QDir::cleanPath(name);
+		exportEMF(name);
+		HENHMETAFILE handle = GetEnhMetaFile(name.toStdWString().c_str());
+
+		SetClipboardData(CF_ENHMETAFILE, handle);
+		CloseClipboard();
+		QFile::remove(name);
+	}
+#else
+	QApplication::clipboard()->setPixmap(graphPixmap(), QClipboard::Clipboard);
+#endif
 }
 
 QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor)
