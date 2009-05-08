@@ -39,9 +39,10 @@
 #include <QClipboard>
 #include <QTextStream>
 #include <QSvgGenerator>
+#include <QDir>
 
 #ifdef EMF_OUTPUT
-#include <EmfEngine.h>
+	#include <EmfEngine.h>
 #endif
 
 #include <qwt_plot.h>
@@ -804,9 +805,26 @@ void MultiLayer::copyAllLayers()
 	foreach (QWidget* g, graphsList)
 		((Graph *)g)->deselectMarker();
 
+#ifdef EMF_OUTPUT
+	if (OpenClipboard(0)){
+		EmptyClipboard();
+
+		QString path = QDir::tempPath();
+		QString name = path + "/" + "qtiplot_clipboard.emf";
+		name = QDir::cleanPath(name);
+
+		exportEMF(name);
+		HENHMETAFILE handle = GetEnhMetaFile(name.toStdWString().c_str());
+
+		SetClipboardData(CF_ENHMETAFILE, handle);
+		CloseClipboard();
+		QFile::remove(name);
+	}
+#else
 	QPixmap pic = canvasPixmap();
 	QImage image = pic.convertToImage();
 	QApplication::clipboard()->setImage(image);
+#endif
 
 	if (selectionOn)
 		d_layers_selector->show();
