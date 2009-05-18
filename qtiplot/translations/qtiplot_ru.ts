@@ -7093,12 +7093,12 @@ The following special codes can be used:
 <context>
     <name>Differentiation</name>
     <message>
-        <location filename="src/analysis/Differentiation.cpp" line="83"/>
+        <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>Derivative</source>
         <translation>Производная</translation>
     </message>
     <message>
-        <location filename="src/analysis/Differentiation.cpp" line="83"/>
+        <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>of</source>
         <comment>Derivative of</comment>
         <translation>от</translation>
@@ -8102,12 +8102,12 @@ The following special codes can be used:
 <context>
     <name>FindDialog</name>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="87"/>
+        <location filename="src/core/FindDialog.cpp" line="86"/>
         <source>Case &amp;Sensitive</source>
         <translation>С &amp;учётом регистра</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="105"/>
+        <location filename="src/core/FindDialog.cpp" line="104"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
@@ -8117,22 +8117,22 @@ The following special codes can be used:
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="99"/>
+        <location filename="src/core/FindDialog.cpp" line="98"/>
         <source>&amp;Find</source>
         <translation>&amp;Найти</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="81"/>
+        <location filename="src/core/FindDialog.cpp" line="80"/>
         <source>Folder &amp;Names</source>
         <translation>Названия &amp;каталогов</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="95"/>
+        <location filename="src/core/FindDialog.cpp" line="94"/>
         <source>&amp;Include Subfolders</source>
         <translation>Включая &amp;подкаталоги</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="91"/>
+        <location filename="src/core/FindDialog.cpp" line="90"/>
         <source>&amp;Partial Match Allowed</source>
         <translation>Допускается &amp;частичное совпадение</translation>
     </message>
@@ -8142,7 +8142,7 @@ The following special codes can be used:
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="70"/>
+        <location filename="src/core/FindDialog.cpp" line="69"/>
         <source>Search in</source>
         <translation>Искать в</translation>
     </message>
@@ -8152,17 +8152,17 @@ The following special codes can be used:
         <translation>Начать с</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="103"/>
+        <location filename="src/core/FindDialog.cpp" line="102"/>
         <source>&amp;Update Start Path</source>
         <translation>&amp;Обновить начальный путь</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="77"/>
+        <location filename="src/core/FindDialog.cpp" line="76"/>
         <source>Window &amp;Labels</source>
         <translation>&amp;Метки окон</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="73"/>
+        <location filename="src/core/FindDialog.cpp" line="72"/>
         <source>&amp;Window Names</source>
         <translation>&amp;Названия окон</translation>
     </message>
@@ -8263,7 +8263,7 @@ The following special codes can be used:
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="974"/>
+        <location filename="src/analysis/Fit.cpp" line="973"/>
         <source>Fit</source>
         <translation>Аппроксимация</translation>
     </message>
@@ -8313,7 +8313,7 @@ The following special codes can be used:
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="894"/>
+        <location filename="src/analysis/Fit.cpp" line="893"/>
         <source>QtiPlot - Fit Error</source>
         <translation>Ошибка аппроксимации</translation>
     </message>
@@ -8348,7 +8348,7 @@ The following special codes can be used:
         <translation>У кривой %1 нет соответствующей погрешности по Y. Использование метода инструментального взвешивания невозможно.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="885"/>
+        <location filename="src/analysis/Fit.cpp" line="884"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
         <translation>Не указаны параметры для выполнения операции. Операция прервана!</translation>
     </message>
@@ -8373,17 +8373,17 @@ The following special codes can be used:
         <translation>Невозможно использование метода инструментального взвешивания.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="880"/>
+        <location filename="src/analysis/Fit.cpp" line="879"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
         <translation>Не указан допустимый набор данных для этой операции. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="895"/>
+        <location filename="src/analysis/Fit.cpp" line="894"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
         <translation>Необходимо сначала указать допустимую функцию для аппроксимации. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="890"/>
+        <location filename="src/analysis/Fit.cpp" line="889"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Необходимо как минимум %1 точек данных для аппроксимации. Операция прервана!</translation>
     </message>
@@ -8413,27 +8413,27 @@ The following special codes can be used:
         <translation>используя функцию</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1007"/>
+        <location filename="src/analysis/Fit.cpp" line="1006"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1007"/>
+        <location filename="src/analysis/Fit.cpp" line="1006"/>
         <source>File Save Error</source>
         <translation>Ошибка сохранения файла</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1008"/>
+        <location filename="src/analysis/Fit.cpp" line="1007"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Невозможно выполнить запись в файл: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Удостоверьтесь, что у вас есть права доступа на запись в данное место!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1046"/>
+        <location filename="src/analysis/Fit.cpp" line="1045"/>
         <source>QtiPlot Fit Model</source>
         <translation>Аппроксимационная модель</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1048"/>
+        <location filename="src/analysis/Fit.cpp" line="1047"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Не удалось открыть файл %1:
@@ -8540,17 +8540,17 @@ The following special codes can be used:
         <translation>Непосредственное взвешивание, используя набор данных</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="953"/>
+        <location filename="src/analysis/Fit.cpp" line="952"/>
         <source>QtiPlot - Memory Allocation Error</source>
         <translation>QtiPlot - Ошибка выделения памяти</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="960"/>
+        <location filename="src/analysis/Fit.cpp" line="959"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation>Невозможно выделить достаточное количество памяти для аппроксимации кривых!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="959"/>
+        <location filename="src/analysis/Fit.cpp" line="958"/>
         <source>QtiPlot  - Memory Allocation Error</source>
         <translation>QtiPlot - Ошибка выделения памяти</translation>
     </message>
@@ -9428,12 +9428,12 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3972"/>
+        <location filename="src/plot2D/Graph.cpp" line="3994"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копировать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3984"/>
+        <location filename="src/plot2D/Graph.cpp" line="4006"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -9443,12 +9443,12 @@ The following special codes can be used:
         <translation type="obsolete">&amp;Вырезать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3680"/>
+        <location filename="src/plot2D/Graph.cpp" line="3702"/>
         <source>Data set generated from curve</source>
         <translation>Набор данных, полученных из кривой</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3974"/>
+        <location filename="src/plot2D/Graph.cpp" line="3996"/>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
     </message>
@@ -9458,112 +9458,112 @@ The following special codes can be used:
         <translation>F</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1407"/>
+        <location filename="src/plot2D/Graph.cpp" line="1429"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3986"/>
+        <location filename="src/plot2D/Graph.cpp" line="4008"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Скрыть оси</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3493"/>
+        <location filename="src/plot2D/Graph.cpp" line="3515"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Файл изображения: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;больше не существует!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1453"/>
+        <location filename="src/plot2D/Graph.cpp" line="1475"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3999"/>
+        <location filename="src/plot2D/Graph.cpp" line="4021"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Свойства...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4694"/>
+        <location filename="src/plot2D/Graph.cpp" line="4716"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3492"/>
+        <location filename="src/plot2D/Graph.cpp" line="3514"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4684"/>
+        <location filename="src/plot2D/Graph.cpp" line="4706"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3984"/>
+        <location filename="src/plot2D/Graph.cpp" line="4006"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Перерисовать и отобразить всё</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3998"/>
+        <location filename="src/plot2D/Graph.cpp" line="4020"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Масштаб...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3988"/>
+        <location filename="src/plot2D/Graph.cpp" line="4010"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Показать сетку</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3681"/>
+        <location filename="src/plot2D/Graph.cpp" line="3703"/>
         <source>Table</source>
         <translation>Таблица</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3912"/>
+        <location filename="src/plot2D/Graph.cpp" line="3934"/>
         <source>The column</source>
         <translation>Столбец</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3908"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>The columns</source>
         <translation>Столбцы</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4684"/>
+        <location filename="src/plot2D/Graph.cpp" line="4706"/>
         <source>There are no curves available on this plot!</source>
         <translation>На данном графике нет доступных кривых!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4695"/>
+        <location filename="src/plot2D/Graph.cpp" line="4717"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>На данном графике нет кривых с более чем двумя точками. Операция прервана!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1750"/>
+        <location filename="src/plot2D/Graph.cpp" line="1772"/>
         <source>Title</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3908"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>являются пустыми и их содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3912"/>
+        <location filename="src/plot2D/Graph.cpp" line="3934"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>является пустой и её содержимое не может быть отображено на графике!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="841"/>
+        <location filename="src/plot2D/Graph.cpp" line="842"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Невозможно изменить тип оси на требуемый!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="199"/>
+        <location filename="src/plot2D/Graph.cpp" line="200"/>
         <source>Y Axis Title</source>
         <translation>Подпись оси Y</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="200"/>
+        <location filename="src/plot2D/Graph.cpp" line="201"/>
         <source>X Axis Title</source>
         <translation>Подпись оси X</translation>
     </message>
@@ -9573,12 +9573,12 @@ The following special codes can be used:
         <translation type="obsolete"> </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3971"/>
+        <location filename="src/plot2D/Graph.cpp" line="3993"/>
         <source>Cu&amp;t</source>
         <translation>В&amp;ырезать</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3973"/>
+        <location filename="src/plot2D/Graph.cpp" line="3995"/>
         <source>C&amp;lear</source>
         <translation>Сте&amp;реть</translation>
     </message>
@@ -11398,47 +11398,47 @@ have the same number of rows.</source>
 <context>
     <name>MultiLayer</name>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;Cancel</source>
         <translation>О&amp;тмена</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Вы хотите, чтобы QtiPlot перегруппировал оставшиеся слои?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="658"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="659"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Формат файла не поддерживается, операция отменена!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;No</source>
         <translation>&amp;Нет</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="710"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="711"/>
         <source>Please provide a valid file name!</source>
         <translation>Укажите допустимое имя файла!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="709"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="710"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="284"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot - Предложить оптимальное расположение?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;Yes</source>
         <translation>&amp;Да</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1288"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1306"/>
         <source>kB</source>
         <translation>кб</translation>
     </message>

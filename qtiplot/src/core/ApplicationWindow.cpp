@@ -13982,7 +13982,7 @@ void ApplicationWindow::showDemoVersionMessage()
 				<br><br>\
 				QtiPlot is free software in the sense of free speech.\
 				If you know how to use it, you can get\
-				<a href=\"http://developer.berlios.de/project/showfiles.php?group_id=6626\">the source code</a>\
+				<a href=\"http://soft.proindependent.com/download.html\">the source code</a>\
 				free of charge.\
 				Nevertheless, you are welcome to\
 				<a href=\"http://soft.proindependent.com/why_donate.html\">make a donation</a>\

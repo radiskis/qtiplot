@@ -8469,12 +8469,12 @@ Les codes spéciaux suivant peuvent être utilisés :
 <context>
     <name>Differentiation</name>
     <message>
-        <location filename="src/analysis/Differentiation.cpp" line="83"/>
+        <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>Derivative</source>
         <translation>Dérivée</translation>
     </message>
     <message>
-        <location filename="src/analysis/Differentiation.cpp" line="83"/>
+        <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>of</source>
         <comment>Derivative of</comment>
         <translation>de </translation>
@@ -9576,52 +9576,52 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>À partir de </translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="70"/>
+        <location filename="src/core/FindDialog.cpp" line="69"/>
         <source>Search in</source>
         <translation>Chercher dans</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="73"/>
+        <location filename="src/core/FindDialog.cpp" line="72"/>
         <source>&amp;Window Names</source>
         <translation>Noms des fenêtres</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="77"/>
+        <location filename="src/core/FindDialog.cpp" line="76"/>
         <source>Window &amp;Labels</source>
         <translation>Etiquettes des fenêtres</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="81"/>
+        <location filename="src/core/FindDialog.cpp" line="80"/>
         <source>Folder &amp;Names</source>
         <translation>Noms des dossiers</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="87"/>
+        <location filename="src/core/FindDialog.cpp" line="86"/>
         <source>Case &amp;Sensitive</source>
         <translation>Respecter la case</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="91"/>
+        <location filename="src/core/FindDialog.cpp" line="90"/>
         <source>&amp;Partial Match Allowed</source>
         <translation>Correspondance &amp;partielle autorisée</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="95"/>
+        <location filename="src/core/FindDialog.cpp" line="94"/>
         <source>&amp;Include Subfolders</source>
         <translation>&amp;Inclure les sous-dossiers</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="99"/>
+        <location filename="src/core/FindDialog.cpp" line="98"/>
         <source>&amp;Find</source>
         <translation>Chercher</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="103"/>
+        <location filename="src/core/FindDialog.cpp" line="102"/>
         <source>&amp;Update Start Path</source>
         <translation>Mise à jo&amp;ur du chemin</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="105"/>
+        <location filename="src/core/FindDialog.cpp" line="104"/>
         <source>&amp;Close</source>
         <translation>Fermer</translation>
     </message>
@@ -9702,7 +9702,7 @@ Les codes spéciaux suivant peuvent être utilisés :
 <context>
     <name>Fit</name>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="894"/>
+        <location filename="src/analysis/Fit.cpp" line="893"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Erreur d&apos;ajustement</translation>
     </message>
@@ -9842,17 +9842,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Vous n&apos;avez pas spécifié de données pour cette opération. Opération annulée !</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="885"/>
+        <location filename="src/analysis/Fit.cpp" line="884"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
         <translation>Aucun paramètre spécifée pour cette opération. Opération annulée !</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="895"/>
+        <location filename="src/analysis/Fit.cpp" line="894"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
         <translation>Vous devez d&apos;abord spécifier une fonction d&apos;ajustement valide. Opération annulée !</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="974"/>
+        <location filename="src/analysis/Fit.cpp" line="973"/>
         <source>Fit</source>
         <translation>Ajustement</translation>
     </message>
@@ -9877,12 +9877,12 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>La colonne %1 possède moins de points que les données ajustées. Veuillez choisir une autre colonne !.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="880"/>
+        <location filename="src/analysis/Fit.cpp" line="879"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
         <translation>Vous n&apos;avez pas spécifiés des données valides pour cette opération d&apos;ajustement. Opération annulée !</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="890"/>
+        <location filename="src/analysis/Fit.cpp" line="889"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Il faut au moins %1 points pour réaliser cette opération ! Opération annulée !</translation>
     </message>
@@ -9902,27 +9902,27 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>Vous ne pouvez pas utiliser la méthode de la pondération instrumental.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1007"/>
+        <location filename="src/analysis/Fit.cpp" line="1006"/>
         <source>QtiPlot</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1007"/>
+        <location filename="src/analysis/Fit.cpp" line="1006"/>
         <source>File Save Error</source>
         <translation>Erreur lors de la sauvegarde du fichier</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1008"/>
+        <location filename="src/analysis/Fit.cpp" line="1007"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Impossible d&apos;enregistrer dans le fichier &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;. Vérifiez que vous avez les droits requis pour écrire à cet emplacement !</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1046"/>
+        <location filename="src/analysis/Fit.cpp" line="1045"/>
         <source>QtiPlot Fit Model</source>
         <translation>Qtiplot modèle de Régression</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1048"/>
+        <location filename="src/analysis/Fit.cpp" line="1047"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Ne peut pas lire le fichier %1
@@ -10029,17 +10029,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>Pondération à partir des données</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="953"/>
+        <location filename="src/analysis/Fit.cpp" line="952"/>
         <source>QtiPlot - Memory Allocation Error</source>
         <translation>Qtiplot - Erreur d&apos;Allocation mémoire</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="960"/>
+        <location filename="src/analysis/Fit.cpp" line="959"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation>Allocation mémoire impossible pour l&apos;ajustement des courbes !</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="959"/>
+        <location filename="src/analysis/Fit.cpp" line="958"/>
         <source>QtiPlot  - Memory Allocation Error</source>
         <translation>Qtiplot - Erreur d&apos;Allocation mémoire</translation>
     </message>
@@ -11027,7 +11027,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot - Erreur lors de l&apos;exportation</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3492"/>
+        <location filename="src/plot2D/Graph.cpp" line="3514"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Erreur lors de l&apos;ouverture du fichier</translation>
     </message>
@@ -11042,7 +11042,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot - Avertissement lors de la sélection de pixel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4684"/>
+        <location filename="src/plot2D/Graph.cpp" line="4706"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertissement</translation>
     </message>
@@ -11062,22 +11062,22 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">&amp;Couper</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3972"/>
+        <location filename="src/plot2D/Graph.cpp" line="3994"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copier</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3974"/>
+        <location filename="src/plot2D/Graph.cpp" line="3996"/>
         <source>&amp;Delete</source>
         <translation>&amp;Supprimer</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3999"/>
+        <location filename="src/plot2D/Graph.cpp" line="4021"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Propriétés...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3984"/>
+        <location filename="src/plot2D/Graph.cpp" line="4006"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Echelle automatique</translation>
     </message>
@@ -11087,17 +11087,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3986"/>
+        <location filename="src/plot2D/Graph.cpp" line="4008"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Cacher les axes</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3988"/>
+        <location filename="src/plot2D/Graph.cpp" line="4010"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Afficher la grille</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3998"/>
+        <location filename="src/plot2D/Graph.cpp" line="4020"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Echelle...</translation>
     </message>
@@ -11249,17 +11249,17 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Ajustement polynomial de </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4684"/>
+        <location filename="src/plot2D/Graph.cpp" line="4706"/>
         <source>There are no curves available on this plot!</source>
         <translation>Il n&apos;y a pas de courbes disponibles sur ce graphe !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4694"/>
+        <location filename="src/plot2D/Graph.cpp" line="4716"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Erreur</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4695"/>
+        <location filename="src/plot2D/Graph.cpp" line="4717"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Il n&apos;y a pas de courbes avec plus de 2 points sur ce graphe. Opération annulée !</translation>
     </message>
@@ -11274,22 +11274,22 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Pic %1 sélectionné ! Cliquez pour sélectionner un point et double-cliquez (ou pressez &apos;Entrée&apos;) pour fixer la position du prochain pic !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3908"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>The columns</source>
         <translation>Les colonnes</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3908"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>sont vides et ne seront pas ajoutées au graphe !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3912"/>
+        <location filename="src/plot2D/Graph.cpp" line="3934"/>
         <source>The column</source>
         <translation>La colonne</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3912"/>
+        <location filename="src/plot2D/Graph.cpp" line="3934"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>est vide et ne sera pas ajoutée au graphe !</translation>
     </message>
@@ -11474,7 +11474,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">Droite</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1750"/>
+        <location filename="src/plot2D/Graph.cpp" line="1772"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
@@ -11494,7 +11494,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot - Déplacer l&apos;erreur de point</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3493"/>
+        <location filename="src/plot2D/Graph.cpp" line="3515"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Fichier image : &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; n&apos;existe plus !</translation>
     </message>
@@ -11504,7 +11504,7 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">QtiPlot - Erreur de la fonction d&apos;entrée</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3984"/>
+        <location filename="src/plot2D/Graph.cpp" line="4006"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
@@ -11604,22 +11604,22 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation type="obsolete">moyenne lissée de </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1453"/>
+        <location filename="src/plot2D/Graph.cpp" line="1475"/>
         <source>Please provide a valid file name!</source>
         <translation>Veuillez donner un nom de fichier valide !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1407"/>
+        <location filename="src/plot2D/Graph.cpp" line="1429"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fichier non supporté, opération annulée !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3680"/>
+        <location filename="src/plot2D/Graph.cpp" line="3702"/>
         <source>Data set generated from curve</source>
         <translation>Données générées à partir de la courbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3681"/>
+        <location filename="src/plot2D/Graph.cpp" line="3703"/>
         <source>Table</source>
         <translation>Table</translation>
     </message>
@@ -11629,27 +11629,27 @@ Les codes spéciaux suivant peuvent être utilisés :
         <translation>F</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="841"/>
+        <location filename="src/plot2D/Graph.cpp" line="842"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Ne peut changer le type de l&apos;axe au format demandé.</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="199"/>
+        <location filename="src/plot2D/Graph.cpp" line="200"/>
         <source>Y Axis Title</source>
         <translation>Étiquette de l&apos;axe Y</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="200"/>
+        <location filename="src/plot2D/Graph.cpp" line="201"/>
         <source>X Axis Title</source>
         <translation>Étiquette de l&apos;axe X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3971"/>
+        <location filename="src/plot2D/Graph.cpp" line="3993"/>
         <source>Cu&amp;t</source>
         <translation>Co&amp;uper</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3973"/>
+        <location filename="src/plot2D/Graph.cpp" line="3995"/>
         <source>C&amp;lear</source>
         <translation>Supprimer</translation>
     </message>
@@ -14029,22 +14029,22 @@ Voulez-vous insérer des cellules?</translation>
         <translation type="obsolete">QtiPlot - Est-ce que Qtiplot doit proposer la meilleure originie pour la nouvelle planche ?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Voulez-vous que Qtiplot redispose les autres planches ?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;Yes</source>
         <translation>&amp;Oui</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;No</source>
         <translation>&amp;Non</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Annuler</translation>
     </message>
@@ -14084,27 +14084,27 @@ Voulez-vous insérer des cellules?</translation>
         <translation type="obsolete">Entrez votre texte ici</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="284"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot - Arrangement automatique ?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="709"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="710"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Erreur</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="710"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="711"/>
         <source>Please provide a valid file name!</source>
         <translation>Veuillez donner un nom de fichier valide !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="658"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="659"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fichier non supporté, opération annulée !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1288"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1306"/>
         <source>kB</source>
         <translation>kOctects</translation>
     </message>

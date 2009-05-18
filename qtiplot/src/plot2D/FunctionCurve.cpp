@@ -93,6 +93,7 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 
 	int type = 0;
 	int points = 0, style = 0;
+	QwtPlotCurve::CurveStyle lineStyle = QwtPlotCurve::NoCurve;
 	QStringList formulas;
 	QString var, title = QString::null;
 	double start = 0.0, end = 0.0;
@@ -120,9 +121,10 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 			QStringList l = s.remove("<Constant>").remove("</Constant>").split("\t");
 			if (l.size() == 2)
 				constants.insert(l[0], l[1].toDouble());
-		}
-		else if (s.contains("<Style>")){
+		} else if (s.contains("<Style>")){
 			style = s.remove("<Style>").remove("</Style>").stripWhiteSpace().toInt();
+		} else if (s.contains("<LineStyle>")){
+			lineStyle = (QwtPlotCurve::CurveStyle)(s.remove("<LineStyle>").remove("</LineStyle>").stripWhiteSpace().toInt());
 			break;
 		}
 	}
@@ -134,14 +136,13 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 	c->setConstants(constants);
 	c->loadData(points);
 	c->setPlotStyle(style);
-
 	g->insertCurve(c);
+	g->setCurveStyle(g->curveIndex(c), lineStyle);
 
 	QStringList l;
 	for (line++; line != lst.end(); line++)
         l << *line;
 	c->restoreCurveLayout(l);
-
 	g->updatePlot();
 }
 

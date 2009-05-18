@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ro">
-<defaultcodec></defaultcodec>
 <context>
     <name>AddWidgetTool</name>
     <message>
@@ -6517,12 +6516,12 @@ The following special codes can be used:
 <context>
     <name>Differentiation</name>
     <message>
-        <location filename="src/analysis/Differentiation.cpp" line="83"/>
+        <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>Derivative</source>
         <translation>Derivata</translation>
     </message>
     <message>
-        <location filename="src/analysis/Differentiation.cpp" line="83"/>
+        <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>of</source>
         <comment>Derivative of</comment>
         <translation>a</translation>
@@ -7516,52 +7515,52 @@ The following special codes can be used:
         <translation>Începe de la</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="70"/>
+        <location filename="src/core/FindDialog.cpp" line="69"/>
         <source>Search in</source>
         <translation>Cauta în</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="73"/>
+        <location filename="src/core/FindDialog.cpp" line="72"/>
         <source>&amp;Window Names</source>
         <translation>&amp;Numele ferestrelor</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="77"/>
+        <location filename="src/core/FindDialog.cpp" line="76"/>
         <source>Window &amp;Labels</source>
         <translation>&amp;Etichetele ferestrelor</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="81"/>
+        <location filename="src/core/FindDialog.cpp" line="80"/>
         <source>Folder &amp;Names</source>
         <translation>Numele &amp;dosarelor</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="87"/>
+        <location filename="src/core/FindDialog.cpp" line="86"/>
         <source>Case &amp;Sensitive</source>
         <translation>Căutare &amp;sensibilă la majuscule</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="91"/>
+        <location filename="src/core/FindDialog.cpp" line="90"/>
         <source>&amp;Partial Match Allowed</source>
         <translation>&amp;Potrivire parţială</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="95"/>
+        <location filename="src/core/FindDialog.cpp" line="94"/>
         <source>&amp;Include Subfolders</source>
         <translation>&amp;Include dosarele </translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="99"/>
+        <location filename="src/core/FindDialog.cpp" line="98"/>
         <source>&amp;Find</source>
         <translation>Cau&amp;tă</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="103"/>
+        <location filename="src/core/FindDialog.cpp" line="102"/>
         <source>&amp;Update Start Path</source>
         <translation>Act&amp;ualizează calea de pornire</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="105"/>
+        <location filename="src/core/FindDialog.cpp" line="104"/>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
     </message>
@@ -7802,7 +7801,7 @@ The following special codes can be used:
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="894"/>
+        <location filename="src/analysis/Fit.cpp" line="893"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Eroare de ajustare</translation>
     </message>
@@ -7827,7 +7826,7 @@ The following special codes can be used:
         <translation>reziduu</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="953"/>
+        <location filename="src/analysis/Fit.cpp" line="952"/>
         <source>QtiPlot - Memory Allocation Error</source>
         <translation>QtiPlot  - Eroare de alocare a memoriei</translation>
     </message>
@@ -7897,62 +7896,62 @@ The following special codes can be used:
         <translation>Limită de predicţie superioară %1</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="880"/>
+        <location filename="src/analysis/Fit.cpp" line="879"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
         <translation>Nu aţi specificat un set de date valid pentru această operaţie. Operaţia a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="885"/>
+        <location filename="src/analysis/Fit.cpp" line="884"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
         <translation>Nu aţi definit parametrii pentru această operaţie de ajustare. Operaţia a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="890"/>
+        <location filename="src/analysis/Fit.cpp" line="889"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Aveţi nevoie de cel puţin %1 puncte pentru a efectua operaţia de ajustare. Operaţia fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="895"/>
+        <location filename="src/analysis/Fit.cpp" line="894"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
         <translation>Trebuie să specificaţi mai întâi o funcţie de ajustare validă. Operaţia a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="960"/>
+        <location filename="src/analysis/Fit.cpp" line="959"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation>Memorie insuficientă pentru curbele de ajustare!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="959"/>
+        <location filename="src/analysis/Fit.cpp" line="958"/>
         <source>QtiPlot  - Memory Allocation Error</source>
         <translation>QtiPlot  - Eroare de alocare a memoriei</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="974"/>
+        <location filename="src/analysis/Fit.cpp" line="973"/>
         <source>Fit</source>
         <translation>Ajustare</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1007"/>
+        <location filename="src/analysis/Fit.cpp" line="1006"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1007"/>
+        <location filename="src/analysis/Fit.cpp" line="1006"/>
         <source>File Save Error</source>
         <translation>Eroare de salvare a fişerului</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1008"/>
+        <location filename="src/analysis/Fit.cpp" line="1007"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Vă rugam să verificaţi că aveţi drept de scriere in această locaţie!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1046"/>
+        <location filename="src/analysis/Fit.cpp" line="1045"/>
         <source>QtiPlot Fit Model</source>
         <translation>Funcţie de ajustare QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1048"/>
+        <location filename="src/analysis/Fit.cpp" line="1047"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Nu a fost posibilă citirea fişierului %1:%2.</translation>
@@ -8800,142 +8799,142 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="199"/>
+        <location filename="src/plot2D/Graph.cpp" line="200"/>
         <source>Y Axis Title</source>
         <translation>Titlu axă Y</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="200"/>
+        <location filename="src/plot2D/Graph.cpp" line="201"/>
         <source>X Axis Title</source>
         <translation>Titlu axă X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4694"/>
+        <location filename="src/plot2D/Graph.cpp" line="4716"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="841"/>
+        <location filename="src/plot2D/Graph.cpp" line="842"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Formatul axei nu a putut fi schimbat!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1453"/>
+        <location filename="src/plot2D/Graph.cpp" line="1475"/>
         <source>Please provide a valid file name!</source>
         <translation>Vă rugăm introduceţi un nume valid!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1407"/>
+        <location filename="src/plot2D/Graph.cpp" line="1429"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1750"/>
+        <location filename="src/plot2D/Graph.cpp" line="1772"/>
         <source>Title</source>
         <translation>Titlu</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3492"/>
+        <location filename="src/plot2D/Graph.cpp" line="3514"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Eroare de deschidere fişier</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3493"/>
+        <location filename="src/plot2D/Graph.cpp" line="3515"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Fişierul imagine: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; nu mai există!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3680"/>
+        <location filename="src/plot2D/Graph.cpp" line="3702"/>
         <source>Data set generated from curve</source>
         <translation>Set de date generat folosind curba</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3681"/>
+        <location filename="src/plot2D/Graph.cpp" line="3703"/>
         <source>Table</source>
         <translation>Tabel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4684"/>
+        <location filename="src/plot2D/Graph.cpp" line="4706"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertisment</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3908"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>The columns</source>
         <translation>Coloanele</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3908"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>sunt vide şi nu vor fi adăugate graficului!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3912"/>
+        <location filename="src/plot2D/Graph.cpp" line="3934"/>
         <source>The column</source>
         <translation>Coloana</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3912"/>
+        <location filename="src/plot2D/Graph.cpp" line="3934"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>este vidă şi nu va fi adăugată graficului!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3971"/>
+        <location filename="src/plot2D/Graph.cpp" line="3993"/>
         <source>Cu&amp;t</source>
         <translation>&amp;Taie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3972"/>
+        <location filename="src/plot2D/Graph.cpp" line="3994"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copiază</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3973"/>
+        <location filename="src/plot2D/Graph.cpp" line="3995"/>
         <source>C&amp;lear</source>
         <translation>Go&amp;leşte</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3974"/>
+        <location filename="src/plot2D/Graph.cpp" line="3996"/>
         <source>&amp;Delete</source>
         <translation>Şte&amp;rge</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3999"/>
+        <location filename="src/plot2D/Graph.cpp" line="4021"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Proprietăti...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3984"/>
+        <location filename="src/plot2D/Graph.cpp" line="4006"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Afişază toate datele</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3984"/>
+        <location filename="src/plot2D/Graph.cpp" line="4006"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3986"/>
+        <location filename="src/plot2D/Graph.cpp" line="4008"/>
         <source>&amp;Hide axis</source>
         <translation>Ascu&amp;nde axa</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3988"/>
+        <location filename="src/plot2D/Graph.cpp" line="4010"/>
         <source>&amp;Show grids</source>
         <translation>Afişază &amp;grilajul</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3998"/>
+        <location filename="src/plot2D/Graph.cpp" line="4020"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Scală...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4684"/>
+        <location filename="src/plot2D/Graph.cpp" line="4706"/>
         <source>There are no curves available on this plot!</source>
         <translation>Nu există curbe disponibile în acest grafic!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4695"/>
+        <location filename="src/plot2D/Graph.cpp" line="4717"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Nu există curbe conţinând mai mult de două puncte în acest grafic. Operaţie abandonată!</translation>
     </message>
@@ -10663,47 +10662,47 @@ have the same number of rows.</source>
 <context>
     <name>MultiLayer</name>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="284"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot -  Aranjare automată a graficelor?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Doriţi să rearanjaţi graficele rămase?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;Yes</source>
         <translation>&amp;Da</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;No</source>
         <translation>&amp;Nu</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Anulează</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="709"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="710"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="710"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="711"/>
         <source>Please provide a valid file name!</source>
         <translation>Vă rugăm introduceţi un nume valid!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="658"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="659"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1288"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1306"/>
         <source>kB</source>
         <translation>kilobiţi</translation>
     </message>
