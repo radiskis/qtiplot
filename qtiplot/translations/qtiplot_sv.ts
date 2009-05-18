@@ -8542,12 +8542,12 @@ Följande specialkoder kan användas:
 <context>
     <name>Differentiation</name>
     <message>
-        <location filename="src/analysis/Differentiation.cpp" line="83"/>
+        <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>Derivative</source>
         <translation>Derivata</translation>
     </message>
     <message>
-        <location filename="src/analysis/Differentiation.cpp" line="83"/>
+        <location filename="src/analysis/Differentiation.cpp" line="84"/>
         <source>of</source>
         <comment>Derivative of</comment>
         <translation>av</translation>
@@ -9669,52 +9669,52 @@ Följande specialkoder kan användas:
         <translation>Börja från</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="70"/>
+        <location filename="src/core/FindDialog.cpp" line="69"/>
         <source>Search in</source>
         <translation>Sök i</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="73"/>
+        <location filename="src/core/FindDialog.cpp" line="72"/>
         <source>&amp;Window Names</source>
         <translation>&amp;Fönsternamn</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="77"/>
+        <location filename="src/core/FindDialog.cpp" line="76"/>
         <source>Window &amp;Labels</source>
         <translation>Fönster&amp;etiketter</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="81"/>
+        <location filename="src/core/FindDialog.cpp" line="80"/>
         <source>Folder &amp;Names</source>
         <translation>Mapp&amp;namn</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="87"/>
+        <location filename="src/core/FindDialog.cpp" line="86"/>
         <source>Case &amp;Sensitive</source>
         <translation>Känsligt för &amp;gemener/VERSALER</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="91"/>
+        <location filename="src/core/FindDialog.cpp" line="90"/>
         <source>&amp;Partial Match Allowed</source>
         <translation>&amp;Delpassning tillåten</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="95"/>
+        <location filename="src/core/FindDialog.cpp" line="94"/>
         <source>&amp;Include Subfolders</source>
         <translation>&amp;Inkludera undermappar</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="99"/>
+        <location filename="src/core/FindDialog.cpp" line="98"/>
         <source>&amp;Find</source>
         <translation>&amp;Leta</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="103"/>
+        <location filename="src/core/FindDialog.cpp" line="102"/>
         <source>&amp;Update Start Path</source>
         <translation>&amp;Uppdatera startsökväg</translation>
     </message>
     <message>
-        <location filename="src/core/FindDialog.cpp" line="105"/>
+        <location filename="src/core/FindDialog.cpp" line="104"/>
         <source>&amp;Close</source>
         <translation>&amp;Stäng</translation>
     </message>
@@ -9795,7 +9795,7 @@ Följande specialkoder kan användas:
 <context>
     <name>Fit</name>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="894"/>
+        <location filename="src/analysis/Fit.cpp" line="893"/>
         <source>QtiPlot - Fit Error</source>
         <translation>QtiPlot - Anpassningsfel</translation>
     </message>
@@ -9935,17 +9935,17 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Du specificerade inte en datamängd för denna åtgärd. Åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="885"/>
+        <location filename="src/analysis/Fit.cpp" line="884"/>
         <source>There are no parameters specified for this fit operation. Operation aborted!</source>
         <translation>Inga parametrar har specificerats för denna anpassningsåtgärd! Åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="895"/>
+        <location filename="src/analysis/Fit.cpp" line="894"/>
         <source>You must specify a valid fit function first. Operation aborted!</source>
         <translation>Du måste specificera en giltig anpassningsfunktion först. Åtgärden avbröts!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="974"/>
+        <location filename="src/analysis/Fit.cpp" line="973"/>
         <source>Fit</source>
         <translation>Anpassning</translation>
     </message>
@@ -9965,12 +9965,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Du behöver minst %1 punkter för att genomföra denna åtgärd. Åtgärden avbruten!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="880"/>
+        <location filename="src/analysis/Fit.cpp" line="879"/>
         <source>You didn&apos;t specify a valid data set for this fit operation. Operation aborted!</source>
         <translation>Du specificerade inte en giltig datamängd för denna anpassningsåtgärd. Åtgärden avbruten!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="890"/>
+        <location filename="src/analysis/Fit.cpp" line="889"/>
         <source>You need at least %1 data points for this fit operation. Operation aborted!</source>
         <translation>Du behöver minst %1 punkter för att genomföra denna åtgärd. Åtgärden avbruten!</translation>
     </message>
@@ -9995,27 +9995,27 @@ Följande specialkoder kan användas:
         <translation>Man kan inte använda den &quot;instrumentella&quot; viktningsmetoden.</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1007"/>
+        <location filename="src/analysis/Fit.cpp" line="1006"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1007"/>
+        <location filename="src/analysis/Fit.cpp" line="1006"/>
         <source>File Save Error</source>
         <translation>Fillagringsfel</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1008"/>
+        <location filename="src/analysis/Fit.cpp" line="1007"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Kunde inte skriva till filen: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Verifiera att du har rättighet att skriva på denna plats!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1046"/>
+        <location filename="src/analysis/Fit.cpp" line="1045"/>
         <source>QtiPlot Fit Model</source>
         <translation>QtiPlot anpassningsmodell</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="1048"/>
+        <location filename="src/analysis/Fit.cpp" line="1047"/>
         <source>Cannot read file %1:
 %2.</source>
         <translation>Kan ej läsa %!:
@@ -10127,17 +10127,17 @@ Följande specialkoder kan användas:
         <translation>Direkt viktning med datamängd</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="953"/>
+        <location filename="src/analysis/Fit.cpp" line="952"/>
         <source>QtiPlot - Memory Allocation Error</source>
         <translation>QtiPlot - Minnesallokeringsfel</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="960"/>
+        <location filename="src/analysis/Fit.cpp" line="959"/>
         <source>Could not allocate enough memory for the fit curves!</source>
         <translation>Kunde inte tilldela tillräckligt med minne för anpassningskurvorna!</translation>
     </message>
     <message>
-        <location filename="src/analysis/Fit.cpp" line="959"/>
+        <location filename="src/analysis/Fit.cpp" line="958"/>
         <source>QtiPlot  - Memory Allocation Error</source>
         <translation>QtiPlot - Minnesallokeringsfel</translation>
     </message>
@@ -11115,7 +11115,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Höger</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4684"/>
+        <location filename="src/plot2D/Graph.cpp" line="4706"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Varning</translation>
     </message>
@@ -11135,7 +11135,7 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Topp %1 vald! Klicka för att välja punkt och dubbelklicka/tryck &apos;Retur&apos; för att ställa in position för nästa punkt!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1750"/>
+        <location filename="src/plot2D/Graph.cpp" line="1772"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
@@ -11155,12 +11155,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Flytta punktfel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3492"/>
+        <location filename="src/plot2D/Graph.cpp" line="3514"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Filöppningsfel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3493"/>
+        <location filename="src/plot2D/Graph.cpp" line="3515"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Bildfil: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; finns inte längre!</translation>
     </message>
@@ -11170,22 +11170,22 @@ Följande specialkoder kan användas:
         <translation type="obsolete">QtiPlot - Fel i indatafuktion</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3908"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>The columns</source>
         <translation>Kolumnerna</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3908"/>
+        <location filename="src/plot2D/Graph.cpp" line="3930"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>är tomma och kommer ej att läggas till diagrammet!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3912"/>
+        <location filename="src/plot2D/Graph.cpp" line="3934"/>
         <source>The column</source>
         <translation>Kolumnen</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3912"/>
+        <location filename="src/plot2D/Graph.cpp" line="3934"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>är tom och kommer ej att läggas till diagrammet!</translation>
     </message>
@@ -11195,42 +11195,42 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Klipp &amp;ut</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3972"/>
+        <location filename="src/plot2D/Graph.cpp" line="3994"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiera</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3974"/>
+        <location filename="src/plot2D/Graph.cpp" line="3996"/>
         <source>&amp;Delete</source>
         <translation>&amp;Tag bort</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3999"/>
+        <location filename="src/plot2D/Graph.cpp" line="4021"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Egenskaper...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3984"/>
+        <location filename="src/plot2D/Graph.cpp" line="4006"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Skala om för att visa allt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3984"/>
+        <location filename="src/plot2D/Graph.cpp" line="4006"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3986"/>
+        <location filename="src/plot2D/Graph.cpp" line="4008"/>
         <source>&amp;Hide axis</source>
         <translation>&amp;Dölj axlar</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3988"/>
+        <location filename="src/plot2D/Graph.cpp" line="4010"/>
         <source>&amp;Show grids</source>
         <translation>&amp;Visa rutnät</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3998"/>
+        <location filename="src/plot2D/Graph.cpp" line="4020"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Skala...</translation>
     </message>
@@ -11572,17 +11572,17 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Bandsspärr-FFT-filter av </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4684"/>
+        <location filename="src/plot2D/Graph.cpp" line="4706"/>
         <source>There are no curves available on this plot!</source>
         <translation>Det finns inga kurvor tillgängliga på detta diagram!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4694"/>
+        <location filename="src/plot2D/Graph.cpp" line="4716"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4695"/>
+        <location filename="src/plot2D/Graph.cpp" line="4717"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Det finns inga kurvor med mer än två punkter i detta diagram. Åtgärd avbruten!</translation>
     </message>
@@ -11672,22 +11672,22 @@ Följande specialkoder kan användas:
         <translation type="obsolete">medelvärdesutjämning av</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1453"/>
+        <location filename="src/plot2D/Graph.cpp" line="1475"/>
         <source>Please provide a valid file name!</source>
         <translation>Ange ett giltigt filnamn!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1407"/>
+        <location filename="src/plot2D/Graph.cpp" line="1429"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Filformatet hanteras ej, avbryts!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3680"/>
+        <location filename="src/plot2D/Graph.cpp" line="3702"/>
         <source>Data set generated from curve</source>
         <translation>Datamängd genererad från kurva</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3681"/>
+        <location filename="src/plot2D/Graph.cpp" line="3703"/>
         <source>Table</source>
         <translation>Tabell</translation>
     </message>
@@ -11697,17 +11697,17 @@ Följande specialkoder kan användas:
         <translation>F</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="841"/>
+        <location filename="src/plot2D/Graph.cpp" line="842"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Kunde inte ändra axeltyp till det begärda formatet!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="199"/>
+        <location filename="src/plot2D/Graph.cpp" line="200"/>
         <source>Y Axis Title</source>
         <translation>Y-axeltitel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="200"/>
+        <location filename="src/plot2D/Graph.cpp" line="201"/>
         <source>X Axis Title</source>
         <translation>X-axeltitel</translation>
     </message>
@@ -11717,12 +11717,12 @@ Följande specialkoder kan användas:
         <translation type="obsolete"> </translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3971"/>
+        <location filename="src/plot2D/Graph.cpp" line="3993"/>
         <source>Cu&amp;t</source>
         <translation>Klipp u&amp;t</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3973"/>
+        <location filename="src/plot2D/Graph.cpp" line="3995"/>
         <source>C&amp;lear</source>
         <translation>&amp;Rensa</translation>
     </message>
@@ -14268,22 +14268,22 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">QtiPlot - Gissa bästa ursprung för det nya lagret?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
         <source>Do you want QtiPlot to rearrange the remaining layers?</source>
         <translation>Vill du att QtiPlit skall arrangera om de återstående lagren?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;Yes</source>
         <translation>&amp;Ja</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;No</source>
         <translation>&amp;Nej</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="286"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="287"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Avbryt</translation>
     </message>
@@ -14293,27 +14293,27 @@ Vill du skjuta in celler?</translation>
         <translation type="obsolete">mata in din text här</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="284"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="285"/>
         <source>QtiPlot - Guess best layout?</source>
         <translation>QtiPlot - Gissa bästa layout?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="709"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="710"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Fel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="710"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="711"/>
         <source>Please provide a valid file name!</source>
         <translation>Ange ett giltigt filnamn!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="658"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="659"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Filformatet hanteras ej, avbryts!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1288"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1306"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
