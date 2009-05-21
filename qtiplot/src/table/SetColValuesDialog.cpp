@@ -105,7 +105,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	QPalette palette = explain->palette();
 	palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
 	explain->setPalette(palette);
-	
+
 	QHBoxLayout *hbox2 = new QHBoxLayout();
 	hbox2->addWidget(explain);
 	hbox2->addWidget(gb);
@@ -117,6 +117,8 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	QVBoxLayout *vbox2 = new QVBoxLayout();
 	btnApply = new QPushButton(tr( "&Apply" ));
 	vbox2->addWidget(btnApply);
+	buttonClearFormulas = new QPushButton(tr("Clear &Formulas" ));
+	vbox2->addWidget(buttonClearFormulas);
 	btnCancel = new QPushButton(tr( "&Close" ));
 	vbox2->addWidget(btnCancel);
 	vbox2->addStretch();
@@ -156,6 +158,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	connect(functions, SIGNAL(activated(int)),this, SLOT(insertExplain(int)));
 	connect(buttonPrev, SIGNAL(clicked()), this, SLOT(prevColumn()));
 	connect(buttonNext, SIGNAL(clicked()), this, SLOT(nextColumn()));
+	connect(buttonClearFormulas, SIGNAL(clicked()), this, SLOT(clearFormulas()));
 }
 
 void SetColValuesDialog::prevColumn()
@@ -279,4 +282,14 @@ void SetColValuesDialog::setCompleter(QCompleter *completer)
         return;
 
     commands->setCompleter(completer);
+}
+
+void SetColValuesDialog::clearFormulas()
+{
+	if (!table)
+		return;
+
+	table->clearCommands();
+	commands->clear();
+
 }

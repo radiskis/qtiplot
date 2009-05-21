@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ro">
+<defaultcodec></defaultcodec>
 <context>
     <name>AddWidgetTool</name>
     <message>
@@ -3817,7 +3818,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13989"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
-        <translation>Folosiţi versiunea de demonstraţie a programului Qtiplot. Este identică cu versiunea integrală, exceptand faptul că nu puteţi salva proiectele deschise si nu poate fi utilizat mai mult de 10 minute pe sesiune.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>Dacă doriţi să instalaţi versiunea integrala, vă rugăm să suscrieţi la&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;un contract de mentenanţă&lt;/a&gt;.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>QtiPlot este un program liber.<byte value="x9"/>Dacă doriţi, puteţi obtine gratis &lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;codul sursă&lt;/a&gt;. &lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;Donaţiile&lt;/a&gt; în vederea sprijinirii dezvoltării programului<byte value="x9"/>QtiPlot sunt binevenite.</translation>
+        <translation type="obsolete">Folosiţi versiunea de demonstraţie a programului Qtiplot. Este identică cu versiunea integrală, exceptand faptul că nu puteţi salva proiectele deschise si nu poate fi utilizat mai mult de 10 minute pe sesiune.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>Dacă doriţi să instalaţi versiunea integrala, vă rugăm să suscrieţi la&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;un contract de mentenanţă&lt;/a&gt;.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>QtiPlot este un program liber.<byte value="x9"/>Dacă doriţi, puteţi obtine gratis &lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;codul sursă&lt;/a&gt;. &lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;Donaţiile&lt;/a&gt; în vederea sprijinirii dezvoltării programului<byte value="x9"/>QtiPlot sunt binevenite.</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14001"/>
@@ -4254,6 +4255,11 @@ Autocompletion will not be available!</source>
         <location filename="src/core/ApplicationWindow.cpp" line="12769"/>
         <source>Fit Slop&amp;e</source>
         <translation>Aju&amp;stare pantă</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13989"/>
+        <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
+        <translation>Folosiţi versiunea de demonstraţie a programului Qtiplot. Este identică cu versiunea integrală, exceptand faptul că nu puteţi salva proiectele deschise si nu poate fi utilizat mai mult de 10 minute pe sesiune.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>Dacă doriţi să instalaţi versiunea integrala, vă rugăm să suscrieţi la&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;un contract de mentenanţă&lt;/a&gt;.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>QtiPlot este un program liber.<byte value="x9"/>Dacă doriţi, puteţi obtine gratis &lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;codul sursă&lt;/a&gt;. &lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;Donaţiile&lt;/a&gt; în vederea sprijinirii dezvoltării programului<byte value="x9"/>QtiPlot sunt binevenite.</translation>
     </message>
 </context>
 <context>
@@ -10255,7 +10261,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/matrix/Matrix.cpp" line="576"/>
         <source>Clear Selection</source>
-        <translation>Sterge selecţie</translation>
+        <translation>Şterge selecţie</translation>
     </message>
     <message>
         <location filename="src/matrix/Matrix.cpp" line="690"/>
@@ -12355,22 +12361,22 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1073"/>
         <source>Show Equidistant Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişază nivelele echidistante</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1083"/>
         <source>First Level</source>
-        <translation type="unfinished"></translation>
+        <translation>Primul nivel</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1089"/>
         <source>Distance between Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanţa între nivele</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1095"/>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Creion</translation>
     </message>
 </context>
 <context>
@@ -13145,14 +13151,19 @@ have the same number of rows.</source>
         <translation>&amp;Aplică</translation>
     </message>
     <message>
-        <location filename="src/table/SetColValuesDialog.cpp" line="120"/>
+        <location filename="src/table/SetColValuesDialog.cpp" line="122"/>
         <source>&amp;Close</source>
         <translation>În&amp;chide</translation>
     </message>
     <message>
-        <location filename="src/table/SetColValuesDialog.cpp" line="133"/>
+        <location filename="src/table/SetColValuesDialog.cpp" line="135"/>
         <source>Use built-in muParser (much faster)</source>
         <translation>Foloseşte muParser (mult mai rapid)</translation>
+    </message>
+    <message>
+        <location filename="src/table/SetColValuesDialog.cpp" line="120"/>
+        <source>Clear &amp;Formulas</source>
+        <translation>Şterge &amp;formulele</translation>
     </message>
 </context>
 <context>
@@ -13649,112 +13660,112 @@ have the same number of rows.</source>
 <context>
     <name>Table</name>
     <message>
-        <location filename="src/table/Table.cpp" line="514"/>
+        <location filename="src/table/Table.cpp" line="521"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
         <translation>Evaluarea expresiilor conţinand mai multe linii durează mult mai mult timp! Doriţi să continuaţi?</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="515"/>
+        <location filename="src/table/Table.cpp" line="522"/>
         <source>Warning</source>
         <translation>Avertisment</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2198"/>
+        <location filename="src/table/Table.cpp" line="2205"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1258"/>
+        <location filename="src/table/Table.cpp" line="1265"/>
         <source>Column &apos;%1&apos; is read only!</source>
         <translation>Coloana &apos;%1&apos; nu poate fi modificată!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="891"/>
+        <location filename="src/table/Table.cpp" line="898"/>
         <source>There is already a column called : &lt;b&gt;</source>
         <translation>Există deja o coloană denumită: &lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1183"/>
+        <location filename="src/table/Table.cpp" line="1190"/>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
         <translation>Tabelul &apos;%1&apos; conţine numai coloane care nu pot fi modificate! Operaţiune abandonată!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2199"/>
+        <location filename="src/table/Table.cpp" line="2206"/>
         <source>The folowing columns</source>
         <translation>Coloanele următoare</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2199"/>
+        <location filename="src/table/Table.cpp" line="2206"/>
         <source>are read only!</source>
         <translation>nu pot fi modificate!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1582"/>
+        <location filename="src/table/Table.cpp" line="1589"/>
         <source>Please indicate the name of the leading column!</source>
         <translation>Vă rugam să indicaţi numele coloanei principale!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1587"/>
+        <location filename="src/table/Table.cpp" line="1594"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation>Coloana principală este de tip &apos;Text&apos;! Operaţie abandonată!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1605"/>
+        <location filename="src/table/Table.cpp" line="1612"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation>Coloana principală este vidă! Operaţie abandonată!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2368"/>
+        <location filename="src/table/Table.cpp" line="2375"/>
         <source>Qtiplot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2368"/>
+        <location filename="src/table/Table.cpp" line="2375"/>
         <source>Reading file...</source>
         <translation>Citire fişier...</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2432"/>
+        <location filename="src/table/Table.cpp" line="2439"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - Eroare de export ASCII</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2433"/>
+        <location filename="src/table/Table.cpp" line="2440"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2675"/>
+        <location filename="src/table/Table.cpp" line="2682"/>
         <source>Rows will be deleted from the table!</source>
         <translation>Din tabel vor fi şterse linii!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2710"/>
+        <location filename="src/table/Table.cpp" line="2717"/>
         <source>Do you really want to continue?</source>
         <translation>Doriţi intr-adevăr să continuaţi?</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>Yes</source>
         <translation>Da</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>Cancel</source>
         <translation>Anulează</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2709"/>
+        <location filename="src/table/Table.cpp" line="2716"/>
         <source>Columns will be deleted from the table!</source>
         <translation>Din tabel vor fi şterse coloane!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="3032"/>
+        <location filename="src/table/Table.cpp" line="3039"/>
         <source>kB</source>
         <translation>kilobiţi</translation>
     </message>

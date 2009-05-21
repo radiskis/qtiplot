@@ -69,6 +69,7 @@ private slots:
 	void insertCell();
 	void insertExplain(int index);
 	void updateColumn(int sc);
+	void clearFormulas();
 
 private:
 	Table* table;
@@ -85,6 +86,7 @@ private:
     QPushButton *buttonNext;
     QPushButton *addCellButton;
     QPushButton *btnApply;
+	QPushButton* buttonClearFormulas;
     ScriptEdit* commands;
     QTextEdit* explain;
 	QSpinBox* start, *end;
