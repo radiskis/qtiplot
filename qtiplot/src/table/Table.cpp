@@ -463,6 +463,13 @@ void Table::setColumnTypes(const QStringList& ctl)
 	}
 }
 
+void Table::clearCommands()
+{
+	int count = (int)commands.size();
+	for (int i = 0; i < count; i++)
+		commands[i] = QString::null;
+}
+
 void Table::setCommands(const QStringList& com)
 {
 	commands.clear();

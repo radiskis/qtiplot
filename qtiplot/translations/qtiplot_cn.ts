@@ -3825,7 +3825,7 @@ Are you sure you want to continue?</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="13989"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
-        <translation>你正在使用演示版本的Qtiplot。它跟完全版是一致的，不过你不能保存文件，也不能一次使用超过十分钟。&lt;br&gt;&lt;br&gt;如果你准备好使用完整功能版，请在&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;订阅一个单用户带维护通知的版本。&lt;/a&gt;&lt;br&gt;&lt;br&gt;QtiPlot是一个自由软件。如果你想知道如何使用，你可以免费得到&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;源代码&lt;/a&gt;。尽管如此，仍然欢迎你&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;捐助&lt;/a&gt;来支持QtiPlot未来的开发。</translation>
+        <translation type="obsolete">你正在使用演示版本的Qtiplot。它跟完全版是一致的，不过你不能保存文件，也不能一次使用超过十分钟。&lt;br&gt;&lt;br&gt;如果你准备好使用完整功能版，请在&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;订阅一个单用户带维护通知的版本。&lt;/a&gt;&lt;br&gt;&lt;br&gt;QtiPlot是一个自由软件。如果你想知道如何使用，你可以免费得到&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;源代码&lt;/a&gt;。尽管如此，仍然欢迎你&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;捐助&lt;/a&gt;来支持QtiPlot未来的开发。</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14001"/>
@@ -4232,6 +4232,11 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12769"/>
         <source>Fit Slop&amp;e</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13989"/>
+        <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13083,14 +13088,19 @@ have the same number of rows.</source>
         <translation>应用(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/table/SetColValuesDialog.cpp" line="120"/>
+        <location filename="src/table/SetColValuesDialog.cpp" line="122"/>
         <source>&amp;Close</source>
         <translation>关闭(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/table/SetColValuesDialog.cpp" line="133"/>
+        <location filename="src/table/SetColValuesDialog.cpp" line="135"/>
         <source>Use built-in muParser (much faster)</source>
         <translation>使用内置muParser(快很多)</translation>
+    </message>
+    <message>
+        <location filename="src/table/SetColValuesDialog.cpp" line="120"/>
+        <source>Clear &amp;Formulas</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13587,112 +13597,112 @@ have the same number of rows.</source>
 <context>
     <name>Table</name>
     <message>
-        <location filename="src/table/Table.cpp" line="514"/>
+        <location filename="src/table/Table.cpp" line="521"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
         <translation>多行表达式需要很多的时间计算!你希望继续吗?</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="515"/>
+        <location filename="src/table/Table.cpp" line="522"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2198"/>
+        <location filename="src/table/Table.cpp" line="2205"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - 错误</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1258"/>
+        <location filename="src/table/Table.cpp" line="1265"/>
         <source>Column &apos;%1&apos; is read only!</source>
         <translation>列&apos;%1&apos;为只读!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="891"/>
+        <location filename="src/table/Table.cpp" line="898"/>
         <source>There is already a column called : &lt;b&gt;</source>
         <translation>已经存在列: &lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1183"/>
+        <location filename="src/table/Table.cpp" line="1190"/>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
         <translation>表&apos;%1&apos;包含有只读列!操作中止!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2199"/>
+        <location filename="src/table/Table.cpp" line="2206"/>
         <source>The folowing columns</source>
         <translation>以下列</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2199"/>
+        <location filename="src/table/Table.cpp" line="2206"/>
         <source>are read only!</source>
         <translation>是只读!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1582"/>
+        <location filename="src/table/Table.cpp" line="1589"/>
         <source>Please indicate the name of the leading column!</source>
         <translation>请注明前导列的名称!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1587"/>
+        <location filename="src/table/Table.cpp" line="1594"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation>前导列类型必须为&apos;文本&apos;!操作中止!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1605"/>
+        <location filename="src/table/Table.cpp" line="1612"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation>前导列为空!操作中止!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2368"/>
+        <location filename="src/table/Table.cpp" line="2375"/>
         <source>Qtiplot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2368"/>
+        <location filename="src/table/Table.cpp" line="2375"/>
         <source>Reading file...</source>
         <translation>读取文件...</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2432"/>
+        <location filename="src/table/Table.cpp" line="2439"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - ASCII导出错误</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2433"/>
+        <location filename="src/table/Table.cpp" line="2440"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>不能写入文件: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2675"/>
+        <location filename="src/table/Table.cpp" line="2682"/>
         <source>Rows will be deleted from the table!</source>
         <translation>将从表中删除行!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2710"/>
+        <location filename="src/table/Table.cpp" line="2717"/>
         <source>Do you really want to continue?</source>
         <translation>你想继续吗?</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2709"/>
+        <location filename="src/table/Table.cpp" line="2716"/>
         <source>Columns will be deleted from the table!</source>
         <translation>将从表中删除列!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="3032"/>
+        <location filename="src/table/Table.cpp" line="3039"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>

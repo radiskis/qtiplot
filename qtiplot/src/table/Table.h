@@ -201,6 +201,8 @@ public slots:
 	int colY(int col);
 
 	QStringList getCommands(){return commands;};
+	//! Clear all column formulae.
+	void clearCommands();
 	//! Set all column formulae.
 	void setCommands(const QStringList& com);
 	//! Set all column formulae.

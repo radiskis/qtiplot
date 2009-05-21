@@ -7022,11 +7022,6 @@ Varias partes de este archivo pueden no mostrarse como se esperaba.</translation
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13989"/>
-        <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/core/ApplicationWindow.cpp" line="14001"/>
         <source>QtiPlot - File backup error</source>
         <translation type="unfinished"></translation>
@@ -7245,6 +7240,11 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12769"/>
         <source>Fit Slop&amp;e</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="13989"/>
+        <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17953,13 +17953,18 @@ Do you want to overwrite it?</source>
         <translation type="obsolete">Cancelar</translation>
     </message>
     <message>
-        <location filename="src/table/SetColValuesDialog.cpp" line="120"/>
+        <location filename="src/table/SetColValuesDialog.cpp" line="122"/>
         <source>&amp;Close</source>
         <translation type="unfinished">&amp;Cerrar</translation>
     </message>
     <message>
-        <location filename="src/table/SetColValuesDialog.cpp" line="133"/>
+        <location filename="src/table/SetColValuesDialog.cpp" line="135"/>
         <source>Use built-in muParser (much faster)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/table/SetColValuesDialog.cpp" line="120"/>
+        <source>Clear &amp;Formulas</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -18482,12 +18487,12 @@ Do you want to overwrite it?</source>
 <context>
     <name>Table</name>
     <message>
-        <location filename="src/table/Table.cpp" line="2198"/>
+        <location filename="src/table/Table.cpp" line="2205"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Error</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>Yes</source>
         <translation>Sí</translation>
     </message>
@@ -18497,7 +18502,7 @@ Do you want to overwrite it?</source>
         <translation type="obsolete">No</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -18552,22 +18557,22 @@ Do you want to overwrite it?</source>
         <translation type="obsolete">¡Necesita definir una columna X primero!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2432"/>
+        <location filename="src/table/Table.cpp" line="2439"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation type="unfinished">QtiPlot - Error de Exportación ASCII</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2711"/>
+        <location filename="src/table/Table.cpp" line="2718"/>
         <source>QtiPlot</source>
         <translation type="unfinished">QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2709"/>
+        <location filename="src/table/Table.cpp" line="2716"/>
         <source>Columns will be deleted from the table!</source>
         <translation type="unfinished">¡Las columnas serán borradas de la tabla!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2710"/>
+        <location filename="src/table/Table.cpp" line="2717"/>
         <source>Do you really want to continue?</source>
         <translation type="unfinished">¿Desea continuar realmente?</translation>
     </message>
@@ -18626,7 +18631,7 @@ Do you want to insert cells?</source>
 ¿Quiere insertar celdas?</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2675"/>
+        <location filename="src/table/Table.cpp" line="2682"/>
         <source>Rows will be deleted from the table!</source>
         <translation type="unfinished">¡Las filas serán borradas de la tabla!</translation>
     </message>
@@ -18636,57 +18641,57 @@ Do you want to insert cells?</source>
         <translation type="obsolete">QtiPlot - Leyendo archivo...</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="891"/>
+        <location filename="src/table/Table.cpp" line="898"/>
         <source>There is already a column called : &lt;b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1258"/>
+        <location filename="src/table/Table.cpp" line="1265"/>
         <source>Column &apos;%1&apos; is read only!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1183"/>
+        <location filename="src/table/Table.cpp" line="1190"/>
         <source>The table &apos;%1&apos; contains read-only columns! Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2199"/>
+        <location filename="src/table/Table.cpp" line="2206"/>
         <source>The folowing columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2199"/>
+        <location filename="src/table/Table.cpp" line="2206"/>
         <source>are read only!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1582"/>
+        <location filename="src/table/Table.cpp" line="1589"/>
         <source>Please indicate the name of the leading column!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1587"/>
+        <location filename="src/table/Table.cpp" line="1594"/>
         <source>The leading column has the type set to &apos;Text&apos;! Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="1605"/>
+        <location filename="src/table/Table.cpp" line="1612"/>
         <source>The leading column is empty! Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2433"/>
+        <location filename="src/table/Table.cpp" line="2440"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2368"/>
+        <location filename="src/table/Table.cpp" line="2375"/>
         <source>Qtiplot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2368"/>
+        <location filename="src/table/Table.cpp" line="2375"/>
         <source>Reading file...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18696,17 +18701,17 @@ Do you want to insert cells?</source>
         <translation type="obsolete">QtiPlot - Error de entrada</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="3032"/>
+        <location filename="src/table/Table.cpp" line="3039"/>
         <source>kB</source>
         <translation type="unfinished">kB</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="514"/>
+        <location filename="src/table/Table.cpp" line="521"/>
         <source>Multiline expressions take much more time to evaluate! Do you want to continue anyways?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="515"/>
+        <location filename="src/table/Table.cpp" line="522"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
