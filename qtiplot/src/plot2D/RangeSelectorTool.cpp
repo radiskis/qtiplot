@@ -110,10 +110,11 @@ RangeSelectorTool::~RangeSelectorTool()
 void RangeSelectorTool::pointSelected(const QPoint &pos)
 {
 	int dist, point;
-	QwtPlotCurve *curve = d_graph->closestCurve(pos.x(), pos.y(), dist, point);
-	if (!curve || dist >= 5) // 5 pixels tolerance
+	QwtPlotItem *item = d_graph->closestCurve(pos.x(), pos.y(), dist, point);
+	if (!item || item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram || dist >= 5) // 5 pixels tolerance
 		return;
 
+	QwtPlotCurve *curve = (QwtPlotCurve *)item;
 	if (curve == d_selected_curve)
 		setActivePoint(point);
 	else {

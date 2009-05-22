@@ -29,7 +29,7 @@
 #ifndef SPECTROGRAM_H
 #define SPECTROGRAM_H
 
-#include "../matrix/Matrix.h"
+#include <Matrix.h>
 #include <qwt_raster_data.h>
 #include <qwt_plot.h>
 #include <qwt_plot_spectrogram.h>
@@ -76,6 +76,8 @@ public:
 	void setContourLevels (const QwtValueList & levels);
 
 	bool hasLabels(){return d_show_labels;};
+	QList <PlotMarker *> labelsList(){return d_labels_list;};
+
 	void showContourLineLabels(bool show = true);
 
 	QFont labelsFont(){return d_labels_font;};
@@ -93,6 +95,13 @@ public:
 
 	double labelsRotation(){return d_labels_angle;};
     void setLabelsRotation(double angle);
+
+    bool selectedLabels(const QPoint& pos);
+    void selectLabel(bool on);
+    bool hasSelectedLabels();
+	void moveLabel(const QPoint& pos);
+
+    virtual void setVisible(bool on);
 
 protected:
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
@@ -123,6 +132,10 @@ protected:
 
 	//! List of the text labels associated to this spectrogram.
 	QList <PlotMarker *> d_labels_list;
+	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
+	PlotMarker *d_selected_label;
+	//! Keep track of the coordinates of the point where the user clicked when selecting the labels.
+	double d_click_pos_x, d_click_pos_y;
 };
 
 

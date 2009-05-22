@@ -202,6 +202,9 @@ public:
 	void setAngle(double a){d_angle = a;};
 
 	//QwtDoubleRect boundingRect() const;
+	double xLabelOffset(){return d_label_x_offset;};
+	double yLabelOffset(){return d_label_y_offset;};
+	void setLabelOffset(double xOffset, double yOffset){d_label_x_offset = xOffset; d_label_y_offset = yOffset;};
 
 protected:
 	//! Does the actual drawing; see QwtPlotItem::draw.
@@ -209,5 +212,9 @@ protected:
 
 	int d_index;
 	double d_angle;
+	//! x coordinate offset
+	double d_label_x_offset;
+	//! y coordinate offset
+	double d_label_y_offset;
 };
 #endif

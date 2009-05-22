@@ -1715,23 +1715,31 @@ void Graph::deselectCurves()
 {
 	QList<QwtPlotItem *> curves = curvesList();
     foreach(QwtPlotItem *i, curves){
-        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
-          ((PlotCurve *)i)->type() != Graph::Function &&
-          ((DataCurve *)i)->hasSelectedLabels()){
+    	if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram &&
+			((Spectrogram *)i)->hasSelectedLabels()){
+    		((Spectrogram *)i)->selectLabel(false);
+    		return;
+    	} else if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
+			((PlotCurve *)i)->type() != Graph::Function &&
+            ((DataCurve *)i)->hasSelectedLabels()){
             ((DataCurve *)i)->setLabelsSelected(false);
             return;
         }
     }
 }
 
-DataCurve* Graph::selectedCurveLabels()
+QwtPlotItem* Graph::selectedCurveLabels()
 {
 	QList<QwtPlotItem *> curves = curvesList();
     foreach(QwtPlotItem *i, curves){
+    	if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram &&
+          ((Spectrogram *)i)->hasSelectedLabels())
+            return i;
+
         if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
           ((PlotCurve *)i)->type() != Graph::Function &&
           ((DataCurve *)i)->hasSelectedLabels())
-            return (DataCurve *)i;
+            return i;
 	}
     return NULL;
 }
@@ -3395,9 +3403,9 @@ void Graph::contextMenuEvent(QContextMenuEvent *e)
 
 	QPoint pos = canvas()->mapFrom(this, e->pos());
 	int dist, point;
-	QwtPlotCurve *c = closestCurve(pos.x(), pos.y(), dist, point);
-	if (c && dist < 10)//10 pixels tolerance
-		emit showCurveContextMenu(c);
+	QwtPlotItem *item = closestCurve(pos.x(), pos.y(), dist, point);
+	if (item && dist < 10)//10 pixels tolerance
+		emit showCurveContextMenu(item);
 	else
 		emit showContextMenu();
 
@@ -4633,6 +4641,27 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                     pen.setCosmetic(true);
                     sp->setDefaultContourPen(pen);
                 }
+
+				 s = (*(++line)).stripWhiteSpace();
+				 bool showLabels = s.remove("<Labels>").remove("</Labels>").toInt();
+				 sp->showContourLineLabels(showLabels);
+				 if (showLabels){
+				 	s = (*(++line)).stripWhiteSpace();
+				 	sp->setLabelsColor(QColor(s.remove("<LabelsColor>").remove("</LabelsColor>")));
+					s = (*(++line)).stripWhiteSpace();
+					sp->setLabelsWhiteOut(s.remove("<LabelsWhiteOut>").remove("</LabelsWhiteOut>").toInt());
+					s = (*(++line)).stripWhiteSpace();
+					sp->setLabelsRotation(s.remove("<LabelsAngle>").remove("</LabelsAngle>").toDouble());
+					s = (*(++line)).stripWhiteSpace();
+					double xOffset = s.remove("<LabelsXOffset>").remove("</LabelsXOffset>").toDouble();
+					s = (*(++line)).stripWhiteSpace();
+					double yOffset = s.remove("<LabelsYOffset>").remove("</LabelsYOffset>").toDouble();
+					sp->setLabelsOffset(xOffset, yOffset);
+					s = (*(++line)).stripWhiteSpace();
+					QFont fnt;
+					fnt.fromString(s);
+					sp->setLabelsFont(fnt);
+				}
             }
         }
         else if (s.contains("<ColorBar>"))
@@ -5338,38 +5367,58 @@ void Graph::setTickLength (int minLength, int majLength)
 	d_min_tick_length = minLength;
 }
 
-PlotCurve* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
+QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 {
 	QwtScaleMap map[QwtPlot::axisCnt];
 	for ( int axis = 0; axis < QwtPlot::axisCnt; axis++ )
 		map[axis] = canvasMap(axis);
 
 	double dmin = 1.0e10;
-	PlotCurve *curve = NULL;
+	QwtPlotItem *curve = NULL;
 	foreach (QwtPlotItem *item, d_curves){
-		if(item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
-			PlotCurve *c = (PlotCurve *)item;
-			if (c->type() != Graph::Function && ((DataCurve *)c)->hasLabels() &&
-                ((DataCurve *)c)->selectedLabels(QPoint(xpos, ypos))){
-                dist = 0;
-			    return c;
-            } else
-                ((DataCurve *)c)->setLabelsSelected(false);
+		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
 
-			for (int i=0; i<c->dataSize(); i++){
-				double cx = map[c->xAxis()].xTransform(c->x(i)) - double(xpos);
-				double cy = map[c->yAxis()].xTransform(c->y(i)) - double(ypos);
-				double f = qwtSqr(cx) + qwtSqr(cy);
-				if (f < dmin && c->type() != Graph::ErrorBars){
-					dmin = f;
-					curve = c;
-					point = i;
-				}
+		PlotCurve *c = (PlotCurve *)item;
+		if (c->type() != Graph::Function && ((DataCurve *)c)->hasLabels() &&
+			((DataCurve *)c)->selectedLabels(QPoint(xpos, ypos))){
+			dist = 0;
+			return item;
+		} else
+			((DataCurve *)c)->setLabelsSelected(false);
+
+		for (int i=0; i<c->dataSize(); i++){
+			double cx = map[c->xAxis()].xTransform(c->x(i)) - double(xpos);
+			double cy = map[c->yAxis()].xTransform(c->y(i)) - double(ypos);
+			double f = qwtSqr(cx) + qwtSqr(cy);
+			if (f < dmin && c->type() != Graph::ErrorBars){
+				dmin = f;
+				curve = c;
+				point = i;
 			}
 		}
 	}
 	dist = qRound(sqrt(dmin));
-	return curve;
+	if (curve && dist <= 10)
+		return curve;
+
+	foreach (QwtPlotItem *item, d_curves){
+		if(item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		Spectrogram *c = (Spectrogram *)item;
+		if (c->selectedLabels(QPoint(xpos, ypos))){
+			dist = 0;
+			return item;
+		} else {
+			c->selectLabel(false);
+			if (c->transform(map[c->xAxis()], map[c->yAxis()], c->boundingRect()).contains(QPoint(xpos, ypos))){
+				dist = 0;
+				return item;
+			}
+		}
+	}
+	return NULL;
 }
 
 void Graph::insertMarker(QwtPlotMarker *m)

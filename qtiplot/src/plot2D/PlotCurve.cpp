@@ -425,6 +425,8 @@ void DataCurve::setVisible(bool on)
 	QwtPlotCurve::setVisible(on);
 	foreach(DataCurve *c, d_error_bars)
 		c->setVisible(on);
+	foreach(PlotMarker *m, d_labels_list)
+		m->setVisible(on);
 }
 
 int DataCurve::tableRow(int point)
@@ -848,7 +850,9 @@ void DataCurve::moveLabels(const QPoint& pos)
 
 PlotMarker::PlotMarker(int index, double angle):QwtPlotMarker(),
 	d_index(index),
-	d_angle(angle)
+	d_angle(angle),
+	d_label_x_offset(0.0),
+	d_label_y_offset(0.0)
 {}
 
 void PlotMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &) const

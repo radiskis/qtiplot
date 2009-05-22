@@ -50,7 +50,8 @@ Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	d_white_out_labels(false),
 	d_labels_angle(0.0),
 	d_labels_x_offset(0.0),
-	d_labels_y_offset(0.0)
+	d_labels_y_offset(0.0),
+	d_selected_label(NULL)
 {
 setData(MatrixData(m));
 double step = fabs(data().range().maxValue() - data().range().minValue())/5.0;
@@ -187,10 +188,20 @@ Spectrogram* Spectrogram::copy(Graph *g)
 	new_s->d_show_labels = d_show_labels;
 	new_s->d_labels_angle = d_labels_angle;
 	new_s->d_labels_color = d_labels_color;
+	new_s->d_white_out_labels = d_white_out_labels;
 	new_s->d_labels_font = d_labels_font;
 	new_s->d_labels_x_offset = d_labels_x_offset;
 	new_s->d_labels_y_offset = d_labels_y_offset;
+
 	new_s->setContourLevels(contourLevels());
+	QList <PlotMarker *> lst = new_s->labelsList();
+	int count = lst.size();
+	for(int i = 0; i < count; i++){
+		PlotMarker *m = lst[i];
+		PlotMarker *mrk = d_labels_list[i];
+		if (m && mrk)
+			m->setLabelOffset(mrk->xLabelOffset(), mrk->yLabelOffset());
+	}
 	return new_s;
 }
 
@@ -261,8 +272,19 @@ if (contourLines){
 		s += "\t\t\t<PenColor>"+defaultContourPen().color().name()+"</PenColor>\n";
 		s += "\t\t\t<PenWidth>"+QString::number(defaultContourPen().widthF())+"</PenWidth>\n";
 		s += "\t\t\t<PenStyle>"+QString::number(defaultContourPen().style() - 1)+"</PenStyle>\n";
-		}
 	}
+
+	if (d_show_labels){
+		s += "\t\t<Labels>"  + QString::number(d_show_labels) + "</Labels>\n";
+		s += "\t\t<LabelsColor>" + d_labels_color.name() + "</LabelsColor>\n";
+		s += "\t\t<LabelsWhiteOut>" + QString::number(d_white_out_labels) +"</LabelsWhiteOut>\n";
+		s += "\t\t<LabelsAngle>" + QString::number(d_labels_angle) + "</LabelsAngle>\n";
+		s += "\t\t<LabelsXOffset>" + QString::number(d_labels_x_offset) + "</LabelsXOffset>\n";
+		s += "\t\t<LabelsYOffset>" + QString::number(d_labels_y_offset) + "</LabelsYOffset>\n";
+		s += "\t\t<LabelsFont>" + d_labels_font.toString() + "</LabelsFont>\n";
+	}
+}
+
 QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
 if (colorAxis && colorAxis->isColorBarEnabled()){
 	s += "\t<ColorBar>\n\t\t<axis>" + QString::number(color_axis) + "</axis>\n";
@@ -305,23 +327,6 @@ void Spectrogram::createLabels()
         int y_axis = yAxis();
 		m->setAxis(x_axis, y_axis);
 
-		/*QSize size = t.textSize();
-        int dx = int(d_labels_x_offset*0.01*size.height());
-        int dy = -int((d_labels_y_offset*0.01 + 0.5)*size.height());
-        int x2 = d_plot->transform(x_axis, x(index)) + dx;
-        int y2 = d_plot->transform(y_axis, y(index)) + dy;
-
-        switch(d_labels_align){
-            case Qt::AlignLeft:
-            break;
-            case Qt::AlignHCenter:
-                x2 -= size.width()/2;
-            break;
-            case Qt::AlignRight:
-                x2 -= size.width();
-            break;
-        }*/
-
         if (d_graph)
 			m->attach(d_graph);
 		d_labels_list << m;
@@ -362,13 +367,13 @@ void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtSc
         const QPolygonF &lines = contourLines[level];
         int i = (int)lines.size()/2;
 
-		QwtPlotMarker *mrk = d_labels_list[l];
+		PlotMarker *mrk = d_labels_list[l];
 		if (!mrk)
 			return;
 
 		QSize size = mrk->label().textSize();
-        int dx = int(d_labels_x_offset*0.01*size.height());
-        int dy = -int((d_labels_y_offset*0.01 + 0.5)*size.height());
+        int dx = int((d_labels_x_offset + mrk->xLabelOffset())*0.01*size.height());
+        int dy = -int(((d_labels_y_offset + mrk->yLabelOffset())*0.01 + 0.5)*size.height());
 
 		double x = lines[i].x();
 		double y = lines[i].y();
@@ -446,6 +451,96 @@ void Spectrogram::setLabelsRotation(double angle)
 
     foreach(PlotMarker *m, d_labels_list)
 		m->setAngle(angle);
+}
+
+bool Spectrogram::selectedLabels(const QPoint& pos)
+{
+	d_selected_label = NULL;
+    foreach(PlotMarker *m, d_labels_list){
+        int x = d_graph->transform(xAxis(), m->xValue());
+        int y = d_graph->transform(yAxis(), m->yValue());
+        if (QRect(QPoint(x, y), m->label().textSize()).contains(pos)){
+			d_selected_label = m;
+			d_click_pos_x = d_graph->invTransform(xAxis(), pos.x());
+			d_click_pos_y = d_graph->invTransform(yAxis(), pos.y());
+            selectLabel(true);
+            return true;
+        }
+	}
+	return false;
+}
+
+void Spectrogram::selectLabel(bool on)
+{
+	if (on){
+		d_graph->deselect();
+		d_graph->notifyFontChange(d_labels_font);
+	}
+
+	foreach(PlotMarker *m, d_labels_list){
+		QwtText t = m->label();
+		if(t.text().isEmpty())
+			return;
+
+		if (d_selected_label && m == d_selected_label && on)
+			t.setBackgroundPen(QPen(Qt::blue));
+		else
+			t.setBackgroundPen(QPen(Qt::NoPen));
+
+		m->setLabel(t);
+	}
+
+	d_graph->replot();
+}
+
+bool Spectrogram::hasSelectedLabels()
+{
+    /*if (d_labels_list.isEmpty())
+        return false;
+
+    foreach(PlotMarker *m, d_labels_list){
+        if (m->label().backgroundPen() == QPen(Qt::blue))
+            return true;
+        else
+            return false;
+    }
+    return false;*/
+
+    if (d_selected_label)
+		return true;
+	return false;
+}
+
+void Spectrogram::moveLabel(const QPoint& pos)
+{
+	if (!d_selected_label || d_labels_list.isEmpty())
+		return;
+
+    d_graph->replot();
+    int x_axis = xAxis();
+    int y_axis = yAxis();
+
+    int d_x = pos.x() - d_graph->transform(x_axis, d_click_pos_x);
+	int d_y = pos.y() - d_graph->transform(y_axis, d_click_pos_y);
+
+	int height = d_selected_label->label().textSize().height();
+	double x_offset = d_selected_label->xLabelOffset() + d_x*100.0/(double)height;
+    double y_offset = d_selected_label->yLabelOffset() - d_y*100.0/(double)height;
+
+	d_selected_label->setLabelOffset(x_offset, y_offset);
+
+	d_graph->replot();
+    d_graph->notifyChanges();
+
+	d_click_pos_x = d_graph->invTransform(x_axis, pos.x());
+	d_click_pos_y = d_graph->invTransform(y_axis, pos.y());
+}
+
+void Spectrogram::setVisible(bool on)
+{
+	QwtPlotItem::setVisible(on);
+	foreach(PlotMarker *m, d_labels_list)
+		m->setVisible(on);
 }
 
 double MatrixData::value(double x, double y) const

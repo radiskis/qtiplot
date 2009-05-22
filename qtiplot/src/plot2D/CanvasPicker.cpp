@@ -31,6 +31,7 @@
 #include "CanvasPicker.h"
 #include "ArrowMarker.h"
 #include "PlotCurve.h"
+#include <Spectrogram.h>
 #include <ApplicationWindow.h>
 #include <MultiLayer.h>
 
@@ -108,7 +109,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				} else {
 					const QMouseEvent *me = (const QMouseEvent *)e;
                     int dist, point;
-                    QwtPlotCurve *c = g->closestCurve(me->pos().x(), me->pos().y(), dist, point);
+                    QwtPlotItem *c = g->closestCurve(me->pos().x(), me->pos().y(), dist, point);
                     if (c && dist < 10)
                         emit showPlotDialog(g->curveIndex(c));
                     else
@@ -126,9 +127,12 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				QPoint pos = me->pos();
 
-				DataCurve *c = g->selectedCurveLabels();
+				QwtPlotItem *c = g->selectedCurveLabels();
 				if (c){
-					c->moveLabels(pos);
+					if (c->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+						((Spectrogram *)c)->moveLabel(pos);
+					else
+						((DataCurve *)c)->moveLabels(pos);
 					return true;
 				}
 

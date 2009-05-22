@@ -1928,6 +1928,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 		boxLabelsYOffset->blockSignals(false);
 		boxLabelsWhiteOut->setChecked(sp->labelsWhiteOut());
 		labelsGroupBox->blockSignals(false);
+
+		if (sp->hasSelectedLabels())
+			privateTabWidget->showPage(labelsPage);
         return;
     }
 
