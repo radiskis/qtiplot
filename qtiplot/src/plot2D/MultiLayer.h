@@ -178,7 +178,7 @@ signals:
 	void showAxisDialog(int);
 	void showScaleDialog(int);
 	void showGraphContextMenu();
-	void showCurveContextMenu(QwtPlotCurve *);
+	void showCurveContextMenu(QwtPlotItem *);
 	void showCurvesDialog();
 	void drawLineEnded(bool);
 	void showAxisTitleDialog();

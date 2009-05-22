@@ -90,12 +90,14 @@ DataPickerTool::~DataPickerTool()
 void DataPickerTool::append(const QPoint &pos)
 {
 	int dist, point_index;
-	PlotCurve *c = d_graph->closestCurve(pos.x(), pos.y(), dist, point_index);
-	if (!c || dist >= 5) { // 5 pixels tolerance
+	QwtPlotItem *item = d_graph->closestCurve(pos.x(), pos.y(), dist, point_index);
+	if (!item || item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram || dist >= 5)
+	{ // 5 pixels tolerance
 		setSelection(NULL, 0);
 		return;
 	}
-	setSelection((QwtPlotCurve *)c, point_index);
+
+	setSelection((QwtPlotCurve *)item, point_index);
 	if (!d_selected_curve) return;
 
 	QwtPlotPicker::append(transform(QwtDoublePoint(d_selected_curve->x(d_selected_point),

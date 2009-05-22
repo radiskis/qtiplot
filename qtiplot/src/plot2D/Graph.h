@@ -155,7 +155,7 @@ class Graph: public QwtPlot
 		void deselect();
 		void deselect(QWidget *);
 
-		DataCurve* selectedCurveLabels();
+		QwtPlotItem* selectedCurveLabels();
         //! Used when restoring DataCurve curveID from a project file
         void restoreCurveLabels(int curveID, const QStringList& lst);
 		//! Called first time we add curves in order to determine the best plot limits.
@@ -164,7 +164,7 @@ class Graph: public QwtPlot
 		Grid *grid(){return (Grid *)d_grid;};
 		QList<QwtPlotItem *> curvesList(){return d_curves;};
 
-		PlotCurve* closestCurve(int xpos, int ypos, int &dist, int &point);
+		QwtPlotItem* closestCurve(int xpos, int ypos, int &dist, int &point);
 
 		void insertMarker(QwtPlotMarker *m);
 
@@ -260,7 +260,7 @@ class Graph: public QwtPlot
 		double selectedXEndValue();
 
 		//! Map curve pointer to index.
-		int curveIndex(QwtPlotCurve *c){return d_curves.indexOf(c);};
+		int curveIndex(QwtPlotItem *c){return d_curves.indexOf(c);};
 		//! map curve title to index
   	    int curveIndex(const QString &title){return plotItemsList().findIndex(title);}
   	    //! get curve by index
@@ -703,7 +703,7 @@ signals:
 		void hiddenPlot(QWidget*);
 
 		void showContextMenu();
-		void showCurveContextMenu(QwtPlotCurve *);
+		void showCurveContextMenu(QwtPlotItem *);
 		void showMarkerPopupMenu();
 
 		void showAxisDialog(int);

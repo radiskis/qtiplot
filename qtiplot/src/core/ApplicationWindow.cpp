@@ -6436,7 +6436,6 @@ void ApplicationWindow::showMatrixDialog()
 		return;
 
 	MatrixDialog* md = new MatrixDialog(this);
-	md->setAttribute(Qt::WA_DeleteOnClose);
 	md->setMatrix (m);
 	md->exec();
 }
@@ -6448,13 +6447,24 @@ void ApplicationWindow::showMatrixSizeDialog()
 		return;
 
 	MatrixSizeDialog* md = new MatrixSizeDialog(m, this);
-	md->setAttribute(Qt::WA_DeleteOnClose);
 	md->exec();
 }
 
 void ApplicationWindow::showMatrixValuesDialog()
 {
-	Matrix *m = (Matrix*)activeWindow(MatrixWindow);
+	Matrix *m = NULL;
+	MultiLayer *ml = (MultiLayer*)activeWindow(MultiLayerWindow);
+	if (ml){
+		int curveIndex = actionSetMatrixValues->data().toInt();
+		Graph *g = ml->activeLayer();
+		if (g){
+			Spectrogram *sp = (Spectrogram *)g->plotItem(curveIndex);
+			if (sp)
+				m = sp->matrix();
+		}
+	} else
+		m = (Matrix*)activeWindow(MatrixWindow);
+
 	if (!m)
 		return;
 
@@ -6602,7 +6612,7 @@ void ApplicationWindow::showCurvePlotDialog()
 	showPlotDialog(actionShowCurvePlotDialog->data().toInt());
 }
 
-void ApplicationWindow::showCurveContextMenu(QwtPlotCurve *cv)
+void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 {
 	if (!cv || !cv->isVisible())
 		return;
@@ -6619,20 +6629,20 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotCurve *cv)
 	if (curveIndex < 0 || curveIndex >= g->curveCount())
 		return;
 
-	DataCurve *c = (DataCurve *)cv;
 	QMenu curveMenu(this);
-	curveMenu.addAction(c->title().text(), this, SLOT(showCurvePlotDialog()));
+	curveMenu.addAction(cv->title().text(), this, SLOT(showCurvePlotDialog()));
 	curveMenu.insertSeparator();
 
 	curveMenu.addAction(actionHideCurve);
 	actionHideCurve->setData(curveIndex);
 
-	int type = ((PlotCurve *)c)->type();
-    if (g->visibleCurves() > 1 && type == Graph::Function){
+	int type = ((PlotCurve *)cv)->type();
+	bool spectrogram = (cv->rtti() == QwtPlotItem::Rtti_PlotSpectrogram) ? true : false;
+    if (g->visibleCurves() > 1 && (type == Graph::Function || spectrogram)){
         curveMenu.addAction(actionHideOtherCurves);
         actionHideOtherCurves->setData(curveIndex);
-    } else if (type != Graph::Function) {
-        if ((g->visibleCurves() - c->errorBarsList().count()) > 1) {
+    } else if (type != Graph::Function && !spectrogram) {
+        if ((g->visibleCurves() - ((DataCurve *)cv)->errorBarsList().count()) > 1) {
             curveMenu.addAction(actionHideOtherCurves);
             actionHideOtherCurves->setData(curveIndex);
         }
@@ -6648,37 +6658,43 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotCurve *cv)
             curveMenu.addAction(actionCopySelection);
     }
 
-	if (type == Graph::Function){
-        curveMenu.insertSeparator();
-		curveMenu.addAction(actionEditFunction);
-		actionEditFunction->setData(curveIndex);
-	} else if (type != Graph::ErrorBars){
-        if (g->activeTool()){
-            if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector ||
-                g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker){
-                curveMenu.addAction(actionCutSelection);
-                curveMenu.addAction(actionPasteSelection);
-				curveMenu.addAction(actionClearSelection);
-				curveMenu.insertSeparator();
-                if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
-                    QAction *act = new QAction(tr("Set Display Range"), this);
-                    connect(act, SIGNAL(activated()), (RangeSelectorTool *)g->activeTool(), SLOT(setCurveRange()));
-                    curveMenu.addAction(act);
-                }
-			}
-        }
-
-		curveMenu.addAction(actionEditCurveRange);
-		actionEditCurveRange->setData(curveIndex);
-
-		curveMenu.addAction(actionCurveFullRange);
-		if (c->isFullRange())
-			actionCurveFullRange->setDisabled(true);
-		else
-			actionCurveFullRange->setEnabled(true);
-		actionCurveFullRange->setData(curveIndex);
-
+	if (spectrogram){
 		curveMenu.insertSeparator();
+		curveMenu.addAction(actionSetMatrixValues);
+		actionSetMatrixValues->setData(curveIndex);
+	} else {
+		if (type == Graph::Function){
+			curveMenu.insertSeparator();
+			curveMenu.addAction(actionEditFunction);
+			actionEditFunction->setData(curveIndex);
+		} else if (type != Graph::ErrorBars){
+			if (g->activeTool()){
+				if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector ||
+					g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker){
+					curveMenu.addAction(actionCutSelection);
+					curveMenu.addAction(actionPasteSelection);
+					curveMenu.addAction(actionClearSelection);
+					curveMenu.insertSeparator();
+					if (g->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
+						QAction *act = new QAction(tr("Set Display Range"), this);
+						connect(act, SIGNAL(activated()), (RangeSelectorTool *)g->activeTool(), SLOT(setCurveRange()));
+						curveMenu.addAction(act);
+					}
+				}
+			}
+
+			curveMenu.addAction(actionEditCurveRange);
+			actionEditCurveRange->setData(curveIndex);
+
+			curveMenu.addAction(actionCurveFullRange);
+			if (((DataCurve *)cv)->isFullRange())
+				actionCurveFullRange->setDisabled(true);
+			else
+				actionCurveFullRange->setEnabled(true);
+			actionCurveFullRange->setData(curveIndex);
+
+			curveMenu.insertSeparator();
+		}
 	}
 
 	curveMenu.addAction(actionShowCurveWorksheet);
@@ -11582,7 +11598,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g,SIGNAL(showPlotDialog(int)),this,SLOT(showPlotDialog(int)));
 	connect (g,SIGNAL(showScaleDialog(int)), this, SLOT(showScalePageFromAxisDialog(int)));
 	connect (g,SIGNAL(showAxisDialog(int)), this, SLOT(showAxisPageFromAxisDialog(int)));
-	connect (g,SIGNAL(showCurveContextMenu(QwtPlotCurve *)), this, SLOT(showCurveContextMenu(QwtPlotCurve *)));
+	connect (g,SIGNAL(showCurveContextMenu(QwtPlotItem *)), this, SLOT(showCurveContextMenu(QwtPlotItem *)));
 	connect (g,SIGNAL(showContextMenu()),this,SLOT(showWindowContextMenu()));
 	connect (g,SIGNAL(showCurvesDialog()),this,SLOT(showCurvesDialog()));
 	connect (g,SIGNAL(drawLineEnded(bool)), btnPointer, SLOT(setOn(bool)));
