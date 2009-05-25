@@ -283,21 +283,27 @@ void PlotDialog::changePlotType(int plotType)
 
 		boxConnect->setCurrentIndex(1);//show line for Line and LineSymbol plots
 
-		QwtSymbol s = QwtSymbol(QwtSymbol::Ellipse, QBrush(), QPen(), QSize(9,9));
+		int size = 2*boxSymbolSize->value() + 1;
+		QBrush br = QBrush(boxFillColor->color(), Qt::SolidPattern);
+		if (!boxFillSymbol->isChecked())
+			br = QBrush();
+		QPen pen = QPen(boxSymbolColor->color(), boxPenWidth->value(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+		pen.setCosmetic(true);
+		QwtSymbol s = QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
+		if (s.style() == QwtSymbol::NoSymbol){
+			s.setStyle(QwtSymbol::Ellipse);
+			boxSymbolStyle->setCurrentIndex(1);
+		}
+
 		if (plotType == Graph::Line)
 			s.setStyle(QwtSymbol::NoSymbol);
-		else if (plotType == Graph::Scatter)
+		else if (plotType == Graph::Scatter){
 			graph->setCurveStyle(item->plotItemIndex(), QwtPlotCurve::NoCurve);
-		else if (plotType == Graph::LineSymbols)
+		} else if (plotType == Graph::LineSymbols)
 			graph->setCurveStyle(item->plotItemIndex(), QwtPlotCurve::Lines);
 
         c->setSymbol(s);
 
-		if (plotType){
-			boxSymbolStyle->setCurrentIndex(1);
-			boxFillSymbol->setChecked(true);
-			boxFillColor->setEnabled(true);
-		}
 	}
 	acceptParams();
 }
@@ -2345,7 +2351,7 @@ bool PlotDialog::acceptParams()
 		curve->setPen(pen);
 		curve->setBrush(br);
 	} else if (privateTabWidget->currentPage() == symbolPage){
-		int size = 2*boxSymbolSize->value()+1;
+		int size = 2*boxSymbolSize->value() + 1;
 		QBrush br = QBrush(boxFillColor->color(), Qt::SolidPattern);
 		if (!boxFillSymbol->isChecked())
 			br = QBrush();

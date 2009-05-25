@@ -756,7 +756,12 @@ bool DataCurve::selectedLabels(const QPoint& pos)
     foreach(PlotMarker *m, d_labels_list){
         int x = d_plot->transform(xAxis(), m->xValue());
         int y = d_plot->transform(yAxis(), m->yValue());
-        if (QRect(QPoint(x, y), m->label().textSize()).contains(pos)){
+
+        QMatrix wm;
+        wm.translate(x, y);
+		wm.rotate(-d_labels_angle);
+
+        if (wm.mapRect(QRect(QPoint(0, 0), m->label().textSize())).contains(pos)){
 			d_selected_label = m;
 			d_click_pos_x = d_plot->invTransform(xAxis(), pos.x());
 			d_click_pos_y = d_plot->invTransform(yAxis(), pos.y());
