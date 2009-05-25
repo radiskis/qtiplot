@@ -1774,6 +1774,10 @@ double Table::cell(int row, int col)
 
 void Table::setCell(int row, int col, double val)
 {
+	 if (col < 0 || col >= d_table->numCols() ||
+		 row < 0 || row >= d_table->numRows())
+		return;
+
     char format;
     int prec;
     columnNumericFormat(col, &format, &prec);

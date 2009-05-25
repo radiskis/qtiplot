@@ -995,6 +995,9 @@ void Graph3D::resetAxesLabels()
 
 void Graph3D::setAxesLabels(const QStringList& l)
 {
+	if (l.isEmpty())
+		return;
+
 	QString label = l[0];
 	sp->coordinates()->axes[X1].setLabelString(label);
 	sp->coordinates()->axes[X2].setLabelString(label);
@@ -3004,7 +3007,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			plot->setDataColors(QColor(colors[7]), QColor(colors[8]));
 	}
 
-	fList=lst[7].split("\t", QString::SkipEmptyParts);
+	fList = lst[7].split("\t", QString::SkipEmptyParts);
 	fList.pop_front();
 	plot->setAxesLabels(fList);
 
