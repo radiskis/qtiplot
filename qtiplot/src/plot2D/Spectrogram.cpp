@@ -463,7 +463,7 @@ bool Spectrogram::selectedLabels(const QPoint& pos)
         QMatrix wm;
         wm.translate(x, y);
 		wm.rotate(-d_labels_angle);
-        if (wm.mapRect(QRect(QPoint(0, 0), m->label().textSize())).contains(pos)){
+        if (wm.mapToPolygon(QRect(QPoint(0, 0), m->label().textSize())).containsPoint(pos, Qt::OddEvenFill)){
 			d_selected_label = m;
 			d_click_pos_x = d_graph->invTransform(xAxis(), pos.x());
 			d_click_pos_y = d_graph->invTransform(yAxis(), pos.y());
