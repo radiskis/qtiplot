@@ -3296,6 +3296,7 @@ void Graph::removeCurve(QwtPlotItem *it)
 				d_fit_curves.removeAt(i);
 		}
 	} else {
+		((Spectrogram *)it)->clearLabels();
   	    QwtScaleWidget *colorAxis = axisWidget(((Spectrogram *)it)->colorScaleAxis());
   	    if (colorAxis)
   	    	colorAxis->setColorBarEnabled(false);
@@ -4455,6 +4456,16 @@ void Graph::disableTools()
 		d_range_selector->setVisible(false);
 }
 
+bool Graph::hasActiveTool()
+{
+	if (zoomOn() || drawLineActive() || d_active_tool || d_peak_fit_tool ||
+		d_magnifier || d_panner ||
+		(d_range_selector && d_range_selector->isVisible()))
+		return true;
+
+	return false;
+}
+
 bool Graph::enableRangeSelectors(const QObject *status_target, const char *status_slot)
 {
 	if (!d_range_selector){
@@ -4572,7 +4583,11 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
   	for (line++; line != lst.end(); line++)
     {
         QString s = *line;
-        if (s.contains("<ColorPolicy>"))
+        if (s.contains("<useMatrixFormula>") && s.remove("<useMatrixFormula>").remove("</useMatrixFormula>").toInt()){
+			sp->setUseMatrixFormula(true);
+			sp->updateData();
+        }
+        else if (s.contains("<ColorPolicy>"))
         {
             int color_policy = s.remove("<ColorPolicy>").remove("</ColorPolicy>").stripWhiteSpace().toInt();
             if (color_policy == Spectrogram::GrayScale)
@@ -4641,31 +4656,27 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                     pen.setCosmetic(true);
                     sp->setDefaultContourPen(pen);
                 }
-
-				 s = (*(++line)).stripWhiteSpace();
-				 bool showLabels = s.remove("<Labels>").remove("</Labels>").toInt();
-				 sp->showContourLineLabels(showLabels);
-				 if (showLabels){
-				 	s = (*(++line)).stripWhiteSpace();
-				 	sp->setLabelsColor(QColor(s.remove("<LabelsColor>").remove("</LabelsColor>")));
-					s = (*(++line)).stripWhiteSpace();
-					sp->setLabelsWhiteOut(s.remove("<LabelsWhiteOut>").remove("</LabelsWhiteOut>").toInt());
-					s = (*(++line)).stripWhiteSpace();
-					sp->setLabelsRotation(s.remove("<LabelsAngle>").remove("</LabelsAngle>").toDouble());
-					s = (*(++line)).stripWhiteSpace();
-					double xOffset = s.remove("<LabelsXOffset>").remove("</LabelsXOffset>").toDouble();
-					s = (*(++line)).stripWhiteSpace();
-					double yOffset = s.remove("<LabelsYOffset>").remove("</LabelsYOffset>").toDouble();
-					sp->setLabelsOffset(xOffset, yOffset);
-					s = (*(++line)).stripWhiteSpace();
-					QFont fnt;
-					fnt.fromString(s);
-					sp->setLabelsFont(fnt);
-				}
+                sp->showContourLineLabels(false);
             }
-        }
-        else if (s.contains("<ColorBar>"))
-        {
+        } else if (s.contains("<Labels>")){
+        	sp->showContourLineLabels(true);
+        	s = (*(++line)).stripWhiteSpace();
+			sp->setLabelsColor(QColor(s.remove("<Color>").remove("</Color>")));
+			s = (*(++line)).stripWhiteSpace();
+			sp->setLabelsWhiteOut(s.remove("<WhiteOut>").remove("</WhiteOut>").toInt());
+			s = (*(++line)).stripWhiteSpace();
+			sp->setLabelsRotation(s.remove("<Angle>").remove("</Angle>").toDouble());
+			s = (*(++line)).stripWhiteSpace();
+			double xOffset = s.remove("<xOffset>").remove("</xOffset>").toDouble();
+			s = (*(++line)).stripWhiteSpace();
+			double yOffset = s.remove("<yOffset>").remove("</yOffset>").toDouble();
+			sp->setLabelsOffset(xOffset, yOffset);
+			s = (*(++line)).stripWhiteSpace().remove("<Font>").remove("</Font>");
+			QFont fnt;
+			fnt.fromString(s);
+			sp->setLabelsFont(fnt);
+			s = (*(++line)).stripWhiteSpace();
+        } else if (s.contains("<ColorBar>")){
             s = *(++line);
             int color_axis = s.remove("<axis>").remove("</axis>").stripWhiteSpace().toInt();
             s = *(++line);
@@ -4693,40 +4704,7 @@ void Graph::restoreCurveLabels(int curveID, const QStringList& lst)
 	if (!c)
 		return;
 
-    QString labelsColumn = QString();
-    int xoffset = 0, yoffset = 0;
-  	QStringList::const_iterator line = lst.begin();
-  	QString s = *line;
-    if (s.contains("<column>"))
-        labelsColumn = s.remove("<column>").remove("</column>").trimmed();
-
-  	for (line++; line != lst.end(); line++){
-        s = *line;
-        if (s.contains("<color>"))
-            c->setLabelsColor(QColor(s.remove("<color>").remove("</color>").trimmed()));
-        else if (s.contains("<whiteOut>"))
-            c->setLabelsWhiteOut(s.remove("<whiteOut>").remove("</whiteOut>").toInt());
-        else if (s.contains("<font>")){
-            QStringList fontList = s.remove("<font>").remove("</font>").trimmed().split("\t");
-            QFont font = QFont(fontList[0], fontList[1].toInt());
-            if (fontList.count() >= 3)
-                font.setBold(fontList[2].toInt());
-            if (fontList.count() >= 4)
-                font.setItalic(fontList[3].toInt());
-            if (fontList.count() >= 5)
-                font.setUnderline(fontList[4].toInt());
-            c->setLabelsFont(font);
-        } else if (s.contains("<angle>"))
-            c->setLabelsRotation(s.remove("<angle>").remove("</angle>").toDouble());
-        else if (s.contains("<justify>"))
-            c->setLabelsAlignment(s.remove("<justify>").remove("</justify>").toInt());
-        else if (s.contains("<xoffset>"))
-            xoffset = s.remove("<xoffset>").remove("</xoffset>").toInt();
-        else if (s.contains("<yoffset>"))
-            yoffset = s.remove("<yoffset>").remove("</yoffset>").toInt();
-    }
-    c->setLabelsOffset(xoffset, yoffset);
-    c->setLabelsColumnName(labelsColumn);
+    c->restoreLabels(lst);
 }
 
 bool Graph::validCurvesDataSize()

@@ -77,6 +77,7 @@ public:
     void clone(DataCurve* c);
 
     QString saveToString();
+    void restoreLabels(const QStringList& lst);
 
 	QString xColumnName(){return d_x_column;};
 	void setXColumnName(const QString& name){d_x_column = name;};

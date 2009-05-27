@@ -296,6 +296,7 @@ private:
 	void initBoxPage();
 	void initPercentilePage();
 	void initSpectrogramPage();
+	void initSpectrogramValuesPage();
 	void initContourLinesPage();
 	void initLayerPage();
 	void initLayerGeometryPage();
@@ -407,6 +408,10 @@ private:
 
 	DoubleSpinBox *firstContourLineBox, *contourLinesDistanceBox;
 	QLabel *justifyLabelsLbl, *labelsColumnLbl;
+
+	QWidget *spectroValuesPage;
+	QComboBox *boxSpectroMatrix;
+	QCheckBox *boxUseMatrixFormula;
 };
 
 /*****************************************************************************

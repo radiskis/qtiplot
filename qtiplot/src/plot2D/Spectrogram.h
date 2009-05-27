@@ -29,7 +29,10 @@
 #ifndef SPECTROGRAM_H
 #define SPECTROGRAM_H
 
+#include <QApplication.h>
 #include <Matrix.h>
+#include <muParserScript.h>
+
 #include <qwt_raster_data.h>
 #include <qwt_plot.h>
 #include <qwt_plot_spectrogram.h>
@@ -49,6 +52,7 @@ public:
 
 	Spectrogram* copy(Graph *g);
 	Matrix * matrix(){return d_matrix;};
+	void setMatrix(Matrix *m);
 
 	int levels(){return (int)contourLevels().size() + 1;};
 	void setLevelsNumber(int levels);
@@ -65,7 +69,7 @@ public:
 
 	QwtLinearColorMap colorMap(){return color_map;};
 	void setCustomColorMap(const QwtLinearColorMap& map);
-	void updateData(Matrix *m);
+	void updateData();
 
 	//! Used when saving a project file
 	QString saveToString();
@@ -100,8 +104,13 @@ public:
     void selectLabel(bool on);
     bool hasSelectedLabels();
 	void moveLabel(const QPoint& pos);
+	void clearLabels();
 
     virtual void setVisible(bool on);
+    virtual QPen contourPen (double level) const;
+
+    bool useMatrixFormula(){return d_use_matrix_formula;};
+    void setUseMatrixFormula(bool on = true){d_use_matrix_formula = on;};
 
 protected:
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
@@ -136,46 +145,105 @@ protected:
 	PlotMarker *d_selected_label;
 	//! Keep track of the coordinates of the point where the user clicked when selecting the labels.
 	double d_click_pos_x, d_click_pos_y;
-};
 
+	//! Flag telling that we evaluate the matrix expression instead of using the matrix data.
+	bool d_use_matrix_formula;
+};
 
 class MatrixData: public QwtRasterData
 {
 public:
-    MatrixData(Matrix *m):
+    MatrixData(Matrix *m, bool useMatrixFormula = false):
         QwtRasterData(m->boundingRect()),
 		d_matrix(m)
     {
-	n_rows = d_matrix->numRows();
-	n_cols = d_matrix->numCols();
+		n_rows = d_matrix->numRows();
+		n_cols = d_matrix->numCols();
 
-	d_m = new double* [n_rows];
-	for ( int l = 0; l < n_rows; ++l)
-		d_m[l] = new double [n_cols];
+		x_start = d_matrix->xStart();
+		dx = d_matrix->dx();
+		y_start = d_matrix->yStart();
+		dy = d_matrix->dy();
 
-	for (int i = 0; i < n_rows; i++)
-         for (int j = 0; j < n_cols; j++)
-           d_m[i][j] = d_matrix->cell(i, j);
+		d_mup = NULL;
+		if (useMatrixFormula){
+			d_mup = new muParserScript(d_matrix->scriptingEnv(), d_matrix->formula(),
+					d_matrix, QString("<%1>").arg(d_matrix->objectName()));
 
-	m->range(&min_z, &max_z);
+			d_x = d_mup->defineVariable("x");
+			d_y = d_mup->defineVariable("y");
+			d_ri = d_mup->defineVariable("i");
+			d_rr = d_mup->defineVariable("row");
+			d_cj = d_mup->defineVariable("j");
+			d_cc = d_mup->defineVariable("col");
 
-	x_start = d_matrix->xStart();
-	dx = d_matrix->dx();
-	y_start = d_matrix->yStart();
-	dy = d_matrix->dy();
+			d_mup->compile();
+
+			//calculate z range
+			*d_ri = 1.0;
+			*d_rr = 1.0;
+			*d_y = y_start;
+			*d_cj = 1.0;
+			*d_cc = 1.0;
+			*d_x = x_start;
+
+			if (d_mup->codeLines() == 1)
+				min_z = d_mup->evalSingleLine();
+			else
+				min_z = d_mup->eval().toDouble();
+
+			max_z = min_z;
+
+			if (d_mup->codeLines() == 1){
+				for(int row = 0; row < n_rows; row++){
+					double r = row + 1.0;
+					*d_ri = r; *d_rr = r;
+					*d_y = y_start + row*dy;
+					for(int col = 0; col < n_cols; col++){
+						double c = col + 1.0;
+						*d_cj = c; *d_cc = c;
+						*d_x = x_start + col*dx;
+						double aux = d_mup->evalSingleLine();
+						if (aux <= min_z)
+							min_z = aux;
+						if (aux >= max_z)
+							max_z = aux;
+					}
+				}
+			} else {
+				for(int row = 0; row < n_rows; row++){
+					double r = row + 1.0;
+					*d_ri = r; *d_rr = r;
+					*d_y = y_start + row*dy;
+					for(int col = 0; col < n_cols; col++){
+						double c = col + 1.0;
+						*d_cj = c; *d_cc = c;
+						*d_x = x_start + col*dx;
+						double aux = d_mup->eval().toDouble();
+						if (aux <= min_z)
+							min_z = aux;
+						if (aux >= max_z)
+							max_z = aux;
+						qApp->processEvents();
+					}
+				}
+			}
+		} else
+			m->range(&min_z, &max_z);
     }
 
 	~MatrixData()
 	{
-	for (int i = 0; i < n_rows; i++)
-		delete [] d_m[i];
-
-	delete [] d_m;
-	};
+		if (d_mup)
+			delete d_mup;
+	}
 
     virtual QwtRasterData *copy() const
     {
-        return new MatrixData(d_matrix);
+    	if (d_mup)
+			return new MatrixData(d_matrix, true);
+
+		return new MatrixData(d_matrix);
     }
 
     virtual QwtDoubleInterval range() const
@@ -194,9 +262,6 @@ private:
 	//! Pointer to the source data matrix
 	Matrix *d_matrix;
 
-	//! Vector used to store in memory the data from the source matrix window
-	double** d_m;
-
 	//! Data size
 	int n_rows, n_cols;
 
@@ -211,6 +276,11 @@ private:
 
 	//! Y axis bottom value in the data matrix
 	double y_start;
+
+	//! Pointer to a muParserScript
+	muParserScript *d_mup;
+	//! Pointers to internal variables of the muParserScript
+	double *d_x, *d_y, *d_ri, *d_rr, *d_cj, *d_cc;
 };
 
 #endif

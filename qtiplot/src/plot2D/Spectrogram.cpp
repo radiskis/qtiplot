@@ -36,6 +36,7 @@
 #include <QPen>
 #include <QPainter>
 #include <qwt_scale_widget.h>
+#include <qwt_painter.h>
 
 Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	QwtPlotSpectrogram(QString(m->objectName())),
@@ -51,28 +52,26 @@ Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	d_labels_angle(0.0),
 	d_labels_x_offset(0.0),
 	d_labels_y_offset(0.0),
-	d_selected_label(NULL)
+	d_selected_label(NULL),
+	d_use_matrix_formula(false)
 {
-setData(MatrixData(m));
-double step = fabs(data().range().maxValue() - data().range().minValue())/5.0;
+	setData(MatrixData(m));
+	double step = fabs(data().range().maxValue() - data().range().minValue())/5.0;
 
-QwtValueList contourLevels;
-for ( double level = data().range().minValue() + step;
-	level < data().range().maxValue(); level += step )
-    contourLevels += level;
+	QwtValueList contourLevels;
+	for ( double level = data().range().minValue() + step;
+		level < data().range().maxValue(); level += step )
+		contourLevels += level;
 
-setContourLevels(contourLevels);
+	setContourLevels(contourLevels);
 }
 
-void Spectrogram::updateData(Matrix *m)
+void Spectrogram::updateData()
 {
-	if (!m)
+	if (!d_matrix || !d_graph)
 		return;
 
-	if (!d_graph)
-		return;
-
-	setData(MatrixData(m));
+	setData(MatrixData(d_matrix, d_use_matrix_formula));
 	setLevelsNumber(levels());
 
 	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
@@ -81,6 +80,15 @@ void Spectrogram::updateData(Matrix *m)
 
 	d_graph->setAxisScale(color_axis, data().range().minValue(), data().range().maxValue());
 	d_graph->replot();
+}
+
+void Spectrogram::setMatrix(Matrix *m)
+{
+	if (!m || m == d_matrix)
+		return;
+
+	d_matrix = m;
+	updateData();
 }
 
 void Spectrogram::setLevelsNumber(int levels)
@@ -251,6 +259,7 @@ QString Spectrogram::saveToString()
 {
 QString s = "<spectrogram>\n";
 s += "\t<matrix>" + QString(d_matrix->objectName()) + "</matrix>\n";
+s += "\t<useMatrixFormula>" + QString::number(d_use_matrix_formula) + "</useMatrixFormula>\n";
 
 if (color_map_policy != Custom)
 	s += "\t<ColorPolicy>" + QString::number(color_map_policy) + "</ColorPolicy>\n";
@@ -275,13 +284,14 @@ if (contourLines){
 	}
 
 	if (d_show_labels){
-		s += "\t\t<Labels>"  + QString::number(d_show_labels) + "</Labels>\n";
-		s += "\t\t<LabelsColor>" + d_labels_color.name() + "</LabelsColor>\n";
-		s += "\t\t<LabelsWhiteOut>" + QString::number(d_white_out_labels) +"</LabelsWhiteOut>\n";
-		s += "\t\t<LabelsAngle>" + QString::number(d_labels_angle) + "</LabelsAngle>\n";
-		s += "\t\t<LabelsXOffset>" + QString::number(d_labels_x_offset) + "</LabelsXOffset>\n";
-		s += "\t\t<LabelsYOffset>" + QString::number(d_labels_y_offset) + "</LabelsYOffset>\n";
-		s += "\t\t<LabelsFont>" + d_labels_font.toString() + "</LabelsFont>\n";
+		s += "\t\t<Labels>\n";
+		s += "\t\t\t<Color>" + d_labels_color.name() + "</Color>\n";
+		s += "\t\t\t<WhiteOut>" + QString::number(d_white_out_labels) +"</WhiteOut>\n";
+		s += "\t\t\t<Angle>" + QString::number(d_labels_angle) + "</Angle>\n";
+		s += "\t\t\t<xOffset>" + QString::number(d_labels_x_offset) + "</xOffset>\n";
+		s += "\t\t\t<yOffset>" + QString::number(d_labels_y_offset) + "</yOffset>\n";
+		s += "\t\t\t<Font>" + d_labels_font.toString() + "</Font>\n";
+		s += "\t\t</Labels>\n";
 	}
 }
 
@@ -327,7 +337,7 @@ void Spectrogram::createLabels()
         int y_axis = yAxis();
 		m->setAxis(x_axis, y_axis);
 
-        if (d_graph)
+        if (d_graph && d_show_labels)
 			m->attach(d_graph);
 		d_labels_list << m;
 	}
@@ -348,11 +358,37 @@ void Spectrogram::showContourLineLabels(bool show)
 	}
 }
 
-void Spectrogram::drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const
+void Spectrogram::drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &contourLines) const
 {
-	QwtPlotSpectrogram::drawContourLines(p, xMap, yMap, lines);
+	//QwtPlotSpectrogram::drawContourLines(p, xMap, yMap, contourLines);
+
+	QwtValueList levels = contourLevels();
+    const int numLevels = (int)levels.size();
+    for (int l = 0; l < numLevels; l++){
+        const double level = levels[l];
+
+        QPen pen = defaultContourPen();
+        if ( pen.style() == Qt::NoPen )
+            pen = contourPen(level);
+
+        if ( pen.style() == Qt::NoPen )
+            continue;
+
+        p->setPen(QwtPainter::scaledPen(pen));
+
+        const QPolygonF &lines = contourLines[level];
+        for ( int i = 0; i < (int)lines.size(); i += 2 ){
+            const QPointF p1( xMap.xTransform(lines[i].x()),
+                yMap.transform(lines[i].y()) );
+            const QPointF p2( xMap.xTransform(lines[i + 1].x()),
+                yMap.transform(lines[i + 1].y()) );
+
+            p->drawLine(p1, p2);
+        }
+    }
+
 	if (d_show_labels)
-		updateLabels(p, xMap, yMap, lines);
+		updateLabels(p, xMap, yMap, contourLines);
 }
 
 void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap,
@@ -456,6 +492,10 @@ void Spectrogram::setLabelsRotation(double angle)
 bool Spectrogram::selectedLabels(const QPoint& pos)
 {
 	d_selected_label = NULL;
+
+	if (d_graph->hasActiveTool())
+		return false;
+
     foreach(PlotMarker *m, d_labels_list){
         int x = d_graph->transform(xAxis(), m->xValue());
         int y = d_graph->transform(yAxis(), m->yValue());
@@ -540,11 +580,25 @@ void Spectrogram::moveLabel(const QPoint& pos)
 	d_click_pos_y = d_graph->invTransform(y_axis, pos.y());
 }
 
+void Spectrogram::clearLabels()
+{
+	foreach(PlotMarker *m, d_labels_list){
+		m->detach();
+		delete m;
+	}
+	d_labels_list.clear();
+}
+
 void Spectrogram::setVisible(bool on)
 {
 	QwtPlotItem::setVisible(on);
 	foreach(PlotMarker *m, d_labels_list)
 		m->setVisible(on);
+}
+
+QPen Spectrogram::contourPen (double level) const
+{
+	return QwtPlotSpectrogram::contourPen(level);
 }
 
 double MatrixData::value(double x, double y) const
@@ -554,8 +608,21 @@ double MatrixData::value(double x, double y) const
 
 	int i = abs((y - y_start)/dy);
 	int j = abs((x - x_start)/dx);
-	if (d_m && i >= 0 && i < n_rows && j >=0 && j < n_cols)
-		return d_m[i][j];
+
+	if (d_mup){
+		*d_y = y;
+		*d_x = x;
+		*d_ri = i;
+		*d_rr = i;
+		*d_cj = j;
+		*d_cc = j;
+
+		if (d_mup->codeLines() == 1)
+			return d_mup->evalSingleLine();
+		else
+			return d_mup->eval().toDouble();
+	} else if (i >= 0 && i < n_rows && j >=0 && j < n_cols)
+		return d_matrix->cell(i, j);
 
 	return 0.0;
 }
