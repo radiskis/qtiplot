@@ -4675,7 +4675,6 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
 			QFont fnt;
 			fnt.fromString(s);
 			sp->setLabelsFont(fnt);
-			s = (*(++line)).stripWhiteSpace();
         } else if (s.contains("<ColorBar>")){
             s = *(++line);
             int color_axis = s.remove("<axis>").remove("</axis>").stripWhiteSpace().toInt();
