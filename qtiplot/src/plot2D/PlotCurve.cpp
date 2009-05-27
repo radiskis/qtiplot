@@ -727,11 +727,14 @@ QString DataCurve::saveToString()
     s += "\t<column>" + d_labels_column + "</column>\n";
     s += "\t<color>" + d_labels_color.name() + "</color>\n";
     s += "\t<whiteOut>" + QString::number(d_white_out_labels) + "</whiteOut>\n";
+
+    //TODO: in release 0.9.8 change save/restore of fonts to use QFont::toString()/fromString()
     s += "\t<font>" + d_labels_font.family() + "\t";
     s += QString::number(d_labels_font.pointSize()) + "\t";
     s += QString::number(d_labels_font.bold()) + "\t";
     s += QString::number(d_labels_font.italic()) + "\t";
     s += QString::number(d_labels_font.underline()) + "</font>\n";
+
     s += "\t<angle>" + QString::number(d_labels_angle) + "</angle>\n";
     s += "\t<justify>" + QString::number(d_labels_align) + "</justify>\n";
     if (d_labels_x_offset != 0.0)
@@ -741,15 +744,52 @@ QString DataCurve::saveToString()
     return s + "</CurveLabels>\n";
 }
 
+void DataCurve::restoreLabels(const QStringList& lst)
+{
+    QString labelsColumn = QString();
+    int xoffset = 0, yoffset = 0;
+  	QStringList::const_iterator line = lst.begin();
+  	QString s = *line;
+    if (s.contains("<column>"))
+        labelsColumn = s.remove("<column>").remove("</column>").trimmed();
+
+  	for (line++; line != lst.end(); line++){
+        s = *line;
+        if (s.contains("<color>"))
+            setLabelsColor(QColor(s.remove("<color>").remove("</color>").trimmed()));
+        else if (s.contains("<whiteOut>"))
+            setLabelsWhiteOut(s.remove("<whiteOut>").remove("</whiteOut>").toInt());
+        else if (s.contains("<font>")){
+            QStringList fontList = s.remove("<font>").remove("</font>").trimmed().split("\t");
+            QFont font = QFont(fontList[0], fontList[1].toInt());
+            if (fontList.count() >= 3)
+                font.setBold(fontList[2].toInt());
+            if (fontList.count() >= 4)
+                font.setItalic(fontList[3].toInt());
+            if (fontList.count() >= 5)
+                font.setUnderline(fontList[4].toInt());
+            setLabelsFont(font);
+        } else if (s.contains("<angle>"))
+            setLabelsRotation(s.remove("<angle>").remove("</angle>").toDouble());
+        else if (s.contains("<justify>"))
+            setLabelsAlignment(s.remove("<justify>").remove("</justify>").toInt());
+        else if (s.contains("<xoffset>"))
+            xoffset = s.remove("<xoffset>").remove("</xoffset>").toInt();
+        else if (s.contains("<yoffset>"))
+            yoffset = s.remove("<yoffset>").remove("</yoffset>").toInt();
+    }
+    setLabelsOffset(xoffset, yoffset);
+    setLabelsColumnName(labelsColumn);
+}
+
 bool DataCurve::selectedLabels(const QPoint& pos)
 {
 	if (!validCurveType())
 		return false;
 
     QwtPlot *d_plot = plot();
-    if (!d_plot)
+    if (!d_plot || ((Graph *)d_plot)->hasActiveTool())
         return false;
-
 
     bool selected = false;
 	d_selected_label = NULL;

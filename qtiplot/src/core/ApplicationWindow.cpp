@@ -1922,7 +1922,7 @@ void ApplicationWindow::updateMatrixPlots(MdiSubWindow *window)
 					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
                         Spectrogram *sp = (Spectrogram *)it;
                         if (sp->matrix() == m)
-                            sp->updateData(m);
+                            sp->updateData();
 				    } else if (((PlotCurve *)it)->type() == Graph::Histogram){
 						QwtHistogram *h = (QwtHistogram *)it;
                         if (h->matrix() == m)

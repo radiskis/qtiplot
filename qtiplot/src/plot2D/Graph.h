@@ -142,6 +142,8 @@ class Graph: public QwtPlot
 		void setActiveTool(PlotToolInterface *tool);
 		//! Return the active tool, or NULL if none is active.
 		PlotToolInterface* activeTool() const { return d_active_tool; }
+		//! Returns true if a plot/data tool is enabled.
+		bool hasActiveTool();
 
 		QList <LegendWidget *> textsList();
 		LegendWidget *activeText();

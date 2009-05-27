@@ -105,6 +105,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
 	initVectPage();
 	initBoxPage();
 	initPercentilePage();
+	initSpectrogramValuesPage();
 	initSpectrogramPage();
 	initContourLinesPage();
 	initPiePage();
@@ -1018,6 +1019,32 @@ void PlotDialog::initPercentilePage()
 	connect(boxFillSymbols, SIGNAL(clicked()), this, SLOT(fillBoxSymbols()));
 }
 
+void PlotDialog::initSpectrogramValuesPage()
+{
+	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	if (!app)
+		return;
+
+	QGroupBox *gb = new QGroupBox();
+    QGridLayout *gl = new QGridLayout(gb);
+    gl->addWidget(new QLabel( tr( "Matrix" )), 0, 0);
+	boxSpectroMatrix = new QComboBox();
+	boxSpectroMatrix->setEditable(false);
+	boxSpectroMatrix->addItems(app->matrixNames());
+
+	gl->addWidget(boxSpectroMatrix, 0, 1);
+
+	boxUseMatrixFormula = new QCheckBox(tr("Use matrix formula to calculate values"));
+	gl->addWidget(boxUseMatrixFormula, 1, 1);
+
+    gl->setRowStretch (2, 1);
+
+	spectroValuesPage = new QWidget();
+	QHBoxLayout* hlayout = new QHBoxLayout(spectroValuesPage);
+	hlayout->addWidget(gb);
+	privateTabWidget->insertTab(spectroValuesPage, tr( "Values"));
+}
+
 void PlotDialog::initSpectrogramPage()
 {
   	spectrogramPage = new QWidget();
@@ -1689,6 +1716,7 @@ void PlotDialog::insertTabs(int plot_type)
 		privateTabWidget->showPage(linePage);
 		return;
 	} else if (plot_type == Graph::ColorMap || plot_type == Graph::GrayScale || plot_type == Graph::Contour){
+  		privateTabWidget->addTab(spectroValuesPage, tr("Values"));
   		privateTabWidget->addTab(spectrogramPage, tr("Colors"));
   		privateTabWidget->addTab(contourLinesPage, tr("Contour Lines"));
   		privateTabWidget->addTab(labelsPage, tr("Labels"));
@@ -1720,6 +1748,7 @@ void PlotDialog::clearTabWidget()
 	privateTabWidget->removeTab(privateTabWidget->indexOf(vectPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(boxPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(percentilePage));
+	privateTabWidget->removeTab(privateTabWidget->indexOf(spectroValuesPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(spectrogramPage));
 	privateTabWidget->removeTab(privateTabWidget->indexOf(contourLinesPage));
     privateTabWidget->removeTab(privateTabWidget->indexOf(piePage));
@@ -1886,6 +1915,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         btnEditCurve->hide();
         Spectrogram *sp = (Spectrogram *)i;
 
+		boxSpectroMatrix->setCurrentIndex(boxSpectroMatrix->findText (sp->matrix()->objectName()));
+
         imageGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ImageMode));
         grayScaleBox->setChecked(sp->colorMapPolicy() == Spectrogram::GrayScale);
         defaultScaleBox->setChecked(sp->colorMapPolicy() == Spectrogram::Default);
@@ -1893,6 +1924,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
         colorMapEditor->setRange(sp->data().range().minValue(), sp->data().range().maxValue());
         colorMapEditor->setColorMap((const QwtLinearColorMap &)sp->colorMap());
+
+		boxUseMatrixFormula->setChecked(sp->useMatrixFormula());
 
         levelsGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));
 
@@ -2297,7 +2330,24 @@ bool PlotDialog::acceptParams()
 		plotItem->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
 		graph->setAutoScale();
 		return true;
-	} else if (privateTabWidget->currentPage() == spectrogramPage){
+	} else if (privateTabWidget->currentPage() == spectroValuesPage){
+  		Spectrogram *sp = (Spectrogram *)plotItem;
+  	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+  	    	return false;
+
+		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		Matrix *m = app->matrix(boxSpectroMatrix->currentText());
+
+		if (sp->useMatrixFormula() == boxUseMatrixFormula->isChecked() &&
+			sp->matrix() == m)
+			return true;
+
+		sp->setUseMatrixFormula(boxUseMatrixFormula->isChecked());
+		if (m != sp->matrix())
+			sp->setMatrix(m);
+		else
+			sp->updateData();
+  	} else if (privateTabWidget->currentPage() == spectrogramPage){
   		Spectrogram *sp = (Spectrogram *)plotItem;
   	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
   	    	return false;
@@ -2327,7 +2377,7 @@ bool PlotDialog::acceptParams()
 		QwtValueList levels;
 		double firstVal = firstContourLineBox->value();
 		for (int i = 0; i < levelsBox->value(); i++)
-			levels += firstVal + i*contourLinesDistanceBox->value();
+			levels << firstVal + i*contourLinesDistanceBox->value();
   	    sp->setContourLevels(levels);
 
   	    if (autoContourBox->isChecked())
@@ -2339,6 +2389,8 @@ bool PlotDialog::acceptParams()
   	    }
 
   	   sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
+  	   labelsGroupBox->setChecked(levelsGroupBox->isChecked());
+  	   sp->showContourLineLabels(levelsGroupBox->isChecked());
   	} else if (privateTabWidget->currentPage() == linePage){
 		graph->setCurveStyle(item->plotItemIndex(), boxConnect->currentIndex());
 		QBrush br = QBrush(boxAreaColor->color(), boxPattern->getSelectedPattern());
@@ -2467,7 +2519,6 @@ bool PlotDialog::acceptParams()
 			sp->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
 			sp->setLabelsOffset(boxLabelsXOffset->value(), boxLabelsYOffset->value());
 			sp->setLabelsColor(boxLabelsColor->color());
-			//c->setLabelsAlignment(labelsAlignment());
   	    } else {
 			DataCurve *c = (DataCurve *)plotItem;
 
