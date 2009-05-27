@@ -727,14 +727,7 @@ QString DataCurve::saveToString()
     s += "\t<column>" + d_labels_column + "</column>\n";
     s += "\t<color>" + d_labels_color.name() + "</color>\n";
     s += "\t<whiteOut>" + QString::number(d_white_out_labels) + "</whiteOut>\n";
-
-    //TODO: in release 0.9.8 change save/restore of fonts to use QFont::toString()/fromString()
-    s += "\t<font>" + d_labels_font.family() + "\t";
-    s += QString::number(d_labels_font.pointSize()) + "\t";
-    s += QString::number(d_labels_font.bold()) + "\t";
-    s += QString::number(d_labels_font.italic()) + "\t";
-    s += QString::number(d_labels_font.underline()) + "</font>\n";
-
+    s += "\t<Font>" + d_labels_font.toString() + "</Font>\n";
     s += "\t<angle>" + QString::number(d_labels_angle) + "</angle>\n";
     s += "\t<justify>" + QString::number(d_labels_align) + "</justify>\n";
     if (d_labels_x_offset != 0.0)
@@ -759,7 +752,7 @@ void DataCurve::restoreLabels(const QStringList& lst)
             setLabelsColor(QColor(s.remove("<color>").remove("</color>").trimmed()));
         else if (s.contains("<whiteOut>"))
             setLabelsWhiteOut(s.remove("<whiteOut>").remove("</whiteOut>").toInt());
-        else if (s.contains("<font>")){
+        else if (s.contains("<font>")){//versions older than 0.9.7.8
             QStringList fontList = s.remove("<font>").remove("</font>").trimmed().split("\t");
             QFont font = QFont(fontList[0], fontList[1].toInt());
             if (fontList.count() >= 3)
@@ -769,7 +762,12 @@ void DataCurve::restoreLabels(const QStringList& lst)
             if (fontList.count() >= 5)
                 font.setUnderline(fontList[4].toInt());
             setLabelsFont(font);
-        } else if (s.contains("<angle>"))
+        } else if (s.contains("<Font>")){
+            s.remove("<Font>").remove("</Font>").trimmed();
+            QFont fnt;
+			fnt.fromString(s);
+            setLabelsFont(fnt);
+        }else if (s.contains("<angle>"))
             setLabelsRotation(s.remove("<angle>").remove("</angle>").toDouble());
         else if (s.contains("<justify>"))
             setLabelsAlignment(s.remove("<justify>").remove("</justify>").toInt());
