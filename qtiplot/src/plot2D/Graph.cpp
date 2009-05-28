@@ -4584,8 +4584,8 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
     {
         QString s = *line;
         if (s.contains("<useMatrixFormula>") && s.remove("<useMatrixFormula>").remove("</useMatrixFormula>").toInt()){
-			sp->setUseMatrixFormula(true);
-			sp->updateData();
+			if(sp->setUseMatrixFormula(true))
+				sp->updateData();
         }
         else if (s.contains("<ColorPolicy>"))
         {

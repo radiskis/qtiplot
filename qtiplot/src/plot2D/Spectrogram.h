@@ -110,7 +110,7 @@ public:
     virtual QPen contourPen (double level) const;
 
     bool useMatrixFormula(){return d_use_matrix_formula;};
-    void setUseMatrixFormula(bool on = true){d_use_matrix_formula = on;};
+    bool setUseMatrixFormula(bool on = true);
 
 protected:
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
@@ -166,7 +166,7 @@ public:
 		dy = d_matrix->dy();
 
 		d_mup = NULL;
-		if (useMatrixFormula){
+		if (useMatrixFormula && d_matrix->canCalculate()){
 			d_mup = new muParserScript(d_matrix->scriptingEnv(), d_matrix->formula(),
 					d_matrix, QString("<%1>").arg(d_matrix->objectName()));
 
@@ -177,54 +177,58 @@ public:
 			d_cj = d_mup->defineVariable("j");
 			d_cc = d_mup->defineVariable("col");
 
-			d_mup->compile();
+			if (!d_mup->compile()){
+				delete d_mup;
+				d_mup = NULL;
+			}
 
-			//calculate z range
-			*d_ri = 1.0;
-			*d_rr = 1.0;
-			*d_y = y_start;
-			*d_cj = 1.0;
-			*d_cc = 1.0;
-			*d_x = x_start;
+			if (d_mup){//calculate z range
+				*d_ri = 1.0;
+				*d_rr = 1.0;
+				*d_y = y_start;
+				*d_cj = 1.0;
+				*d_cc = 1.0;
+				*d_x = x_start;
 
-			if (d_mup->codeLines() == 1)
-				min_z = d_mup->evalSingleLine();
-			else
-				min_z = d_mup->eval().toDouble();
+				if (d_mup->codeLines() == 1)
+					min_z = d_mup->evalSingleLine();
+				else
+					min_z = d_mup->eval().toDouble();
 
-			max_z = min_z;
+				max_z = min_z;
 
-			if (d_mup->codeLines() == 1){
-				for(int row = 0; row < n_rows; row++){
-					double r = row + 1.0;
-					*d_ri = r; *d_rr = r;
-					*d_y = y_start + row*dy;
-					for(int col = 0; col < n_cols; col++){
-						double c = col + 1.0;
-						*d_cj = c; *d_cc = c;
-						*d_x = x_start + col*dx;
-						double aux = d_mup->evalSingleLine();
-						if (aux <= min_z)
-							min_z = aux;
-						if (aux >= max_z)
-							max_z = aux;
+				if (d_mup->codeLines() == 1){
+					for(int row = 0; row < n_rows; row++){
+						double r = row + 1.0;
+						*d_ri = r; *d_rr = r;
+						*d_y = y_start + row*dy;
+						for(int col = 0; col < n_cols; col++){
+							double c = col + 1.0;
+							*d_cj = c; *d_cc = c;
+							*d_x = x_start + col*dx;
+							double aux = d_mup->evalSingleLine();
+							if (aux <= min_z)
+								min_z = aux;
+							if (aux >= max_z)
+								max_z = aux;
+						}
 					}
-				}
-			} else {
-				for(int row = 0; row < n_rows; row++){
-					double r = row + 1.0;
-					*d_ri = r; *d_rr = r;
-					*d_y = y_start + row*dy;
-					for(int col = 0; col < n_cols; col++){
-						double c = col + 1.0;
-						*d_cj = c; *d_cc = c;
-						*d_x = x_start + col*dx;
-						double aux = d_mup->eval().toDouble();
-						if (aux <= min_z)
-							min_z = aux;
-						if (aux >= max_z)
-							max_z = aux;
-						qApp->processEvents();
+				} else {
+					for(int row = 0; row < n_rows; row++){
+						double r = row + 1.0;
+						*d_ri = r; *d_rr = r;
+						*d_y = y_start + row*dy;
+						for(int col = 0; col < n_cols; col++){
+							double c = col + 1.0;
+							*d_cj = c; *d_cc = c;
+							*d_x = x_start + col*dx;
+							double aux = d_mup->eval().toDouble();
+							if (aux <= min_z)
+								min_z = aux;
+							if (aux >= max_z)
+								max_z = aux;
+							qApp->processEvents();
+						}
 					}
 				}
 			}

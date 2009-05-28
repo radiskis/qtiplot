@@ -1916,6 +1916,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         Spectrogram *sp = (Spectrogram *)i;
 
 		boxSpectroMatrix->setCurrentIndex(boxSpectroMatrix->findText (sp->matrix()->objectName()));
+		boxUseMatrixFormula->setChecked(sp->useMatrixFormula());
+		boxUseMatrixFormula->setEnabled(!sp->matrix()->formula().isEmpty());
 
         imageGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ImageMode));
         grayScaleBox->setChecked(sp->colorMapPolicy() == Spectrogram::GrayScale);
@@ -1925,13 +1927,12 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         colorMapEditor->setRange(sp->data().range().minValue(), sp->data().range().maxValue());
         colorMapEditor->setColorMap((const QwtLinearColorMap &)sp->colorMap());
 
-		boxUseMatrixFormula->setChecked(sp->useMatrixFormula());
-
         levelsGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));
 
         QwtValueList levels = sp->contourLevels();
         levelsBox->setValue(levels.size());
-		firstContourLineBox->setValue(levels[0]);
+        if (levels.size() >= 1)
+			firstContourLineBox->setValue(levels[0]);
 		if (levels.size() >= 2)
 			contourLinesDistanceBox->setValue(fabs(levels[1] - levels[0]));
 
@@ -1954,7 +1955,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         showAllLabelControls(false);
 
         labelsGroupBox->blockSignals(true);
-		labelsGroupBox->setChecked(sp->hasLabels());
+        labelsGroupBox->setEnabled(sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));
+		labelsGroupBox->setChecked(sp->hasLabels() && sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));
 		boxLabelsColor->setColor(sp->labelsColor());
 		boxLabelsAngle->setValue(sp->labelsRotation());
 
@@ -2342,10 +2344,13 @@ bool PlotDialog::acceptParams()
 			sp->matrix() == m)
 			return true;
 
-		sp->setUseMatrixFormula(boxUseMatrixFormula->isChecked());
+		bool canUseFormula = sp->setUseMatrixFormula(boxUseMatrixFormula->isChecked());
+		if (!canUseFormula)
+			boxUseMatrixFormula->setChecked(false);
+
 		if (m != sp->matrix())
 			sp->setMatrix(m);
-		else
+		else if (canUseFormula)
 			sp->updateData();
   	} else if (privateTabWidget->currentPage() == spectrogramPage){
   		Spectrogram *sp = (Spectrogram *)plotItem;
@@ -2390,6 +2395,7 @@ bool PlotDialog::acceptParams()
 
   	   sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
   	   labelsGroupBox->setChecked(levelsGroupBox->isChecked());
+	   labelsGroupBox->setEnabled(levelsGroupBox->isChecked());
   	   sp->showContourLineLabels(levelsGroupBox->isChecked());
   	} else if (privateTabWidget->currentPage() == linePage){
 		graph->setCurveStyle(item->plotItemIndex(), boxConnect->currentIndex());
