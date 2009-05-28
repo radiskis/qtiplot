@@ -601,6 +601,15 @@ QPen Spectrogram::contourPen (double level) const
 	return QwtPlotSpectrogram::contourPen(level);
 }
 
+bool Spectrogram::setUseMatrixFormula(bool on)
+{
+	if (on && !d_matrix->canCalculate())
+		return false;
+
+	d_use_matrix_formula = on;
+	return true;
+}
+
 double MatrixData::value(double x, double y) const
 {
 	x += 0.5*dx;
@@ -621,7 +630,7 @@ double MatrixData::value(double x, double y) const
 			return d_mup->evalSingleLine();
 		else
 			return d_mup->eval().toDouble();
-	} else if (i >= 0 && i < n_rows && j >=0 && j < n_cols)
+	} else
 		return d_matrix->cell(i, j);
 
 	return 0.0;
