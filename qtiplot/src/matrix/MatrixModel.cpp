@@ -180,7 +180,7 @@ double MatrixModel::cell(int row, int col)
 void MatrixModel::setCell(int row, int col, double val)
 {
 	int i = d_cols*row + col;
-    if (i < 0 || i>= d_rows*d_cols)
+    if (i < 0 || i >= d_rows*d_cols)
 		return;
 
     d_data[i] = val;
@@ -190,7 +190,7 @@ QString MatrixModel::text(int row, int col)
 {
 	int i = d_cols*row + col;
 	double val = d_data[i];
-    if (i < 0 || i>= d_rows*d_cols || gsl_isnan(val))
+    if (i < 0 || i >= d_rows*d_cols || gsl_isnan(val))
         return "";
 
 	if (d_matrix){
@@ -847,8 +847,8 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	ScriptingEnv *scriptEnv = d_matrix->scriptingEnv();
-	Script *script = scriptEnv->newScript(formula, this, QString("<%1>").arg(objectName()));
-	connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
+	Script *script = scriptEnv->newScript(formula, d_matrix, QString("<%1>").arg(objectName()));
+	connect(script, SIGNAL(error(const QString&, const QString&, int)), scriptEnv, SIGNAL(error(const QString&, const QString&, int)));
 	connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
 
 	if (!script->compile()){
@@ -883,6 +883,7 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 			script->setDouble(c, "col");
 			script->setDouble(x_start + col*dx, "x");
 			res = script->eval();
+
 			if (res.canConvert(QVariant::Double))
 				d_data[aux++] = res.toDouble();
 			else {

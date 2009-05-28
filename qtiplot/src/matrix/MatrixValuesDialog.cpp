@@ -168,6 +168,7 @@ bool MatrixValuesDialog::apply()
 			startCol->value()-1, endCol->value()-1, useMuParser))
 			return true;
 	}
+
 	matrix->setFormula(oldFormula);
 	return false;
 }
