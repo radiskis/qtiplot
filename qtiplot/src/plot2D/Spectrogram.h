@@ -29,7 +29,7 @@
 #ifndef SPECTROGRAM_H
 #define SPECTROGRAM_H
 
-#include <QApplication.h>
+#include <QApplication>
 #include <Matrix.h>
 #include <muParserScript.h>
 
@@ -227,8 +227,8 @@ public:
 								min_z = aux;
 							if (aux >= max_z)
 								max_z = aux;
-							qApp->processEvents();
 						}
+						qApp->processEvents();
 					}
 				}
 			}
