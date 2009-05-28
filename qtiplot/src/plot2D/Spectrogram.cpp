@@ -50,8 +50,8 @@ Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	d_labels_font(QFont()),
 	d_white_out_labels(false),
 	d_labels_angle(0.0),
-	d_labels_x_offset(0.0),
-	d_labels_y_offset(0.0),
+	d_labels_x_offset(0),
+	d_labels_y_offset(0),
 	d_selected_label(NULL),
 	d_use_matrix_formula(false)
 {
@@ -615,8 +615,8 @@ double MatrixData::value(double x, double y) const
 	x += 0.5*dx;
 	y -= 0.5*dy;
 
-	int i = abs((y - y_start)/dy);
-	int j = abs((x - x_start)/dx);
+	int i = qRound(fabs((y - y_start)/dy));
+	int j = qRound(fabs((x - x_start)/dx));
 
 	if (d_mup){
 		*d_y = y;

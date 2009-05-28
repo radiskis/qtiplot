@@ -2345,8 +2345,11 @@ bool PlotDialog::acceptParams()
 			return true;
 
 		bool canUseFormula = sp->setUseMatrixFormula(boxUseMatrixFormula->isChecked());
-		if (!canUseFormula)
+		if (!canUseFormula){
+			QMessageBox::warning(this, tr("QtiPlot - Script Error"),
+			tr("Python-like syntax is not supported in this case since it severely reduces drawing speed!"));
 			boxUseMatrixFormula->setChecked(false);
+		}
 
 		if (m != sp->matrix())
 			sp->setMatrix(m);

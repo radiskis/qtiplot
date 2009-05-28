@@ -103,7 +103,7 @@ bool PythonScript::compile(bool for_eval)
 	Py_XDECREF(PyCode);
 	// Simplest case: Code is a single expression
 	PyCode = Py_CompileString(Code, Name, Py_eval_input);
-	
+
 	if (PyCode)
 		success = true;
 	else if (for_eval) {
@@ -144,7 +144,7 @@ bool PythonScript::compile(bool for_eval)
 		PyCode = Py_CompileString(Code, Name, Py_file_input);
 		success = (PyCode != NULL);
 	}
-	
+
 	if (!success){
 		compiled = compileErr;
 		emit_error(env()->errorMsg(), 0);
@@ -154,11 +154,11 @@ bool PythonScript::compile(bool for_eval)
 }
 
 QVariant PythonScript::eval()
-{	
+{
 	if (!isFunction) compiled = notCompiled;
 	if (compiled != isCompiled && !compile(true))
 		return QVariant();
-	
+
 	PyObject *pyret;
 	beginStdoutRedirect();
 	if (PyCallable_Check(PyCode)){
@@ -170,7 +170,7 @@ QVariant PythonScript::eval()
 	endStdoutRedirect();
 	if (!pyret){
 		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
-			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){				
+			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){
             PyErr_Clear(); // silently ignore errors
 			return  QVariant("");
 		} else {
@@ -217,6 +217,7 @@ QVariant PythonScript::eval()
 	}
 
 	Py_DECREF(pyret);
+
 	if (PyErr_Occurred()){
 		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
 			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){
@@ -249,7 +250,7 @@ bool PythonScript::exec()
 		pyret = PyEval_EvalCode((PyCodeObject*)PyCode, env()->globalDict(), localDict);
 		//pyret = PyRun_String(Code, 0, env()->globalDict(), localDict);
 	}
-	
+
 	endStdoutRedirect();
 	if (pyret) {
 		Py_DECREF(pyret);
