@@ -292,7 +292,7 @@ public slots:
 	void newSurfacePlot();
 	void editSurfacePlot();
 	void remove3DMatrixPlots(Matrix *m);
-	void updateMatrixPlots(MdiSubWindow *);
+	void updateMatrixPlots(Matrix *);
 	void add3DData();
 	void change3DData();
 	void change3DData(const QString& colName);
@@ -1062,6 +1062,8 @@ public:
 	QString d_translations_folder;
 	//! Flag telling if the application is opening a project file or not
 	bool d_opening_file;
+	//! Flag telling if the application is appending a project file or not
+	bool d_is_appending_file;
     QString customActionsDirPath;
 	bool d_matrix_tool_bar, d_file_tool_bar, d_table_tool_bar, d_column_tool_bar, d_edit_tool_bar;
 	bool d_plot_tool_bar, d_plot3D_tool_bar, d_display_tool_bar, d_format_tool_bar;

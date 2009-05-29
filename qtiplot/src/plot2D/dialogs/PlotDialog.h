@@ -59,6 +59,7 @@ class ColorMapEditor;
 class QwtPlotItem;
 class DoubleSpinBox;
 class PenStyleBox;
+class Spectrogram;
 
 static const char* folder_closed[]={
     "16 16 9 1",
@@ -308,6 +309,7 @@ private:
 	void initLabelsPage();
     void contextMenuEvent(QContextMenuEvent *e);
     void showAllLabelControls(bool show = true);
+    void updateContourLevelsDisplay(Spectrogram *sp);
 
 	double aspect_ratio;
 

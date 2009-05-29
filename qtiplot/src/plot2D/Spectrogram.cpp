@@ -96,7 +96,7 @@ void Spectrogram::setLevelsNumber(int levels)
 double step = fabs(data().range().maxValue() - data().range().minValue())/(double)levels;
 
 QwtValueList contourLevels;
-for ( double level = data().range().minValue() + step;
+for ( double level = data().range().minValue() + 0.5*step;
 	level < data().range().maxValue(); level += step )
     contourLevels += level;
 

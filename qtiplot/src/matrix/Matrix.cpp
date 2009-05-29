@@ -172,6 +172,7 @@ void Matrix::setCoordinates(double xs, double xe, double ys, double ye)
 	y_end = ye;
 
 	emit modifiedWindow(this);
+	modifiedData(this);
 }
 
 void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
@@ -359,6 +360,7 @@ void Matrix::setDimensions(int rows, int cols)
 		resetView();
 	}
 	emit modifiedWindow(this);
+	modifiedData(this);
 }
 
 double Matrix::integrate()
@@ -529,10 +531,12 @@ bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCo
 		d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, MuParserCalculate, startRow, endRow,
 												startCol, endCol, buffer, tr("Calculate Values")));
 		emit modifiedWindow(this);
+		modifiedData(this);
 		return true;
 	} else if(ignoreUndo()){
 		d_matrix_model->muParserCalculate(startRow, endRow, startCol, endCol);
 		emit modifiedWindow(this);
+		modifiedData(this);
 		return true;
 	}
 	return false;
@@ -548,10 +552,12 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
     	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Calculate, startRow, endRow,
 												startCol, endCol, buffer, tr("Calculate Values")));
 		emit modifiedWindow(this);
+		modifiedData(this);
 		return true;
 	} else if(ignoreUndo()){
 		d_matrix_model->calculate(startRow, endRow, startCol, endCol);
 		emit modifiedWindow(this);
+		modifiedData(this);
 		return true;
 	}
 	return false;
@@ -575,9 +581,11 @@ void Matrix::clearSelection()
 	if (buffer){
     	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Clear, startRow, endRow, startCol, endCol, buffer, tr("Clear Selection")));
     	emit modifiedWindow(this);
+    	modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->clear(startRow, endRow, startCol, endCol);
 		emit modifiedWindow(this);
+		modifiedData(this);
 	}
 }
 
@@ -689,9 +697,11 @@ void Matrix::pasteSelection()
 					leftCol, rightCol, clipboardBuffer, rows, cols, backupBuffer, oldRows,
 					oldCols, tr("Paste")));
 		emit modifiedWindow(this);
+		modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->pasteData(clipboardBuffer, topRow, leftCol, rows, cols);
 		emit modifiedWindow(this);
+		modifiedData(this);
 	}
 }
 
@@ -725,10 +735,12 @@ void Matrix::deleteSelectedRows()
     	d_undo_stack->push(new MatrixDeleteRowsCommand(d_matrix_model, startRow, count, buffer, tr("Delete Rows") + " " +
                       QString::number(startRow + 1) + " - " + QString::number(startRow + count)));
     	emit modifiedWindow(this);
+    	modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->removeRows(startRow, count);
 		d_table_view->reset();
 		emit modifiedWindow(this);
+		modifiedData(this);
 	}
 }
 
@@ -756,10 +768,12 @@ void Matrix::deleteSelectedColumns()
     	d_undo_stack->push(new MatrixDeleteColsCommand(d_matrix_model, startCol, count, buffer, tr("Delete Columns") + " " +
                       QString::number(startCol + 1) + " - " + QString::number(startCol + count)));
     	emit modifiedWindow(this);
+    	modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->removeColumns(startCol, count);
 		d_table_view->reset();
 		emit modifiedWindow(this);
+		modifiedData(this);
 	}
 }
 
@@ -810,6 +824,7 @@ void Matrix::insertRow()
                       QString::number(index.row() + 1)));
 	d_table_view->reset();
 	emit modifiedWindow(this);
+	modifiedData(this);
 }
 
 void Matrix::insertColumn()
@@ -829,6 +844,7 @@ void Matrix::insertColumn()
                       QString::number(index.column() + 1)));
 	d_table_view->reset();
 	emit modifiedWindow(this);
+	modifiedData(this);
 }
 
 void Matrix::customEvent(QEvent *e)
@@ -1273,11 +1289,13 @@ void Matrix::importImage(const QString& fn)
     	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
 							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image") + " \"" + fn + "\""));
 		emit modifiedWindow(this);
+		modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->setImage(image);
 		setViewType(ImageView, false);
 		displayImage(image);
 		emit modifiedWindow(this);
+		modifiedData(this);
 	}
 	setWindowLabel(fn);
 }
@@ -1292,11 +1310,13 @@ void Matrix::importImage(const QImage& image)
     	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
 							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image")));
 		emit modifiedWindow(this);
+		modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->setImage(image);
 		setViewType(ImageView, false);
 		displayImage(image);
 		emit modifiedWindow(this);
+		modifiedData(this);
 	}
 }
 
@@ -1423,9 +1443,11 @@ void Matrix::fft(bool inverse)
     	d_undo_stack->push(new MatrixFftCommand(inverse, d_matrix_model, 0, numRows() - 1,
 							0, numCols() - 1, buffer, commandText));
 		emit modifiedWindow(this);
+		modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->fft(inverse);
 		emit modifiedWindow(this);
+		modifiedData(this);
 	}
 }
 
@@ -1496,10 +1518,12 @@ void Matrix::importASCII(const QString &fname, const QString &sep, int ignoredLi
 							d_matrix_model, 0, numRows() - 1, 0, numCols() - 1, buffer,
 							tr("Import ASCII File") + " \"" + fname + "\""));
 		emit modifiedWindow(this);
+		modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->importASCII(fname, sep, ignoredLines, stripSpaces, simplifySpaces,
 									commentString, importAs, locale, endLineChar, maxRows);
 		emit modifiedWindow(this);
+		modifiedData(this);
 	}
 }
 

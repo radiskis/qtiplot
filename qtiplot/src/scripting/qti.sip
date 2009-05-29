@@ -660,6 +660,96 @@ private:
   EllipseWidget(const EllipseWidget&);
 };
 
+class QwtPlotSpectrogram // : QwtPlotItem
+{
+%TypeHeaderCode
+#include <qwt_plot_spectrogram.h>
+%End
+public:
+	enum DisplayMode {
+		ImageMode = 1,
+		ContourMode = 2
+	};
+
+	QwtPlotSpectrogram (const QString &title = QString::null);
+	void setDefaultContourPen (const QPen &);
+	void setDisplayMode (DisplayMode mode, bool on = true);
+
+private:
+	QwtPlotSpectrogram(const QwtPlotSpectrogram&);
+};
+
+class Spectrogram : QwtPlotSpectrogram
+{
+%TypeHeaderCode
+#include "src/plot2D/Spectrogram.h"
+%End
+public:
+
+	Spectrogram(Graph *graph, Matrix *m);
+
+	Matrix * matrix();
+	void setMatrix(Matrix *);
+
+	int levels();
+	void setLevelsNumber(int);
+	void setContourLevels (SIP_PYTUPLE);
+%MethodCode
+  QList<double> l;
+  int n = PyTuple_Size(a0);
+  for (int i=0; i<n; i++) {
+    PyObject *element = PyTuple_GET_ITEM(a0,i);
+    if (element) {
+		l << PyFloat_AS_DOUBLE(element);
+		Py_DECREF(element);
+	 } else {
+		sipIsErr = 1;
+		break;
+    }
+  }
+  sipCpp->setContourLevels(l);
+%End
+
+	bool hasColorScale();
+	int colorScaleAxis();
+	void showColorScale(int axis, bool on = true);
+
+	int colorBarWidth();
+	void setColorBarWidth(int width);
+
+	void setGrayScale();
+	void setDefaultColorMap();
+
+	QwtLinearColorMap colorMap();
+	void setCustomColorMap(const QwtLinearColorMap& map);
+	void updateData();
+
+	bool hasLabels();
+	void showContourLineLabels(bool show = true);
+
+	QFont labelsFont();
+	void setLabelsFont(const QFont& font);
+
+	QColor labelsColor();
+	void setLabelsColor(const QColor& c);
+
+	bool labelsWhiteOut();
+	void setLabelsWhiteOut(bool whiteOut = true);
+
+	int labelsXOffset();
+    int labelsYOffset();
+    void setLabelsOffset(int x, int y);
+
+	double labelsRotation();
+    void setLabelsRotation(double angle);
+
+    bool useMatrixFormula();
+    bool setUseMatrixFormula(bool on = true);
+
+private:
+	Spectrogram(const Spectrogram&);
+};
+
 class Grid // : QwtPlotGrid
 {
 %TypeHeaderCode
@@ -788,6 +878,7 @@ public:
 		  bool through = true, bool minus = true, bool plus = true);
 
   void addHistogram(Matrix*);
+  Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
 
   ArrowMarker* addArrow(ArrowMarker*);
   void remove(ArrowMarker*);

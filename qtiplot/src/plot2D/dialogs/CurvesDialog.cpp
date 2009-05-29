@@ -279,12 +279,6 @@ void CurvesDialog::init()
         boxShowCurrentFolder->setChecked(currentFolderOnly);
 		showCurrentFolder(currentFolderOnly);
 
-        QStringList matrices = app->matrixNames();
-        if (!matrices.isEmpty ()){
-            boxMatrixStyle->show();
-            available->addItems(matrices);
-        }
-
         int style = app->defaultCurveStyle;
         if (style == Graph::Line)
             boxStyle->setCurrentItem(0);
@@ -371,7 +365,7 @@ bool CurvesDialog::addCurve(const QString& name)
 	Table* t = app->table(name);
 	if (!t)
 		return false;
-	
+
 	int style = curveStyle();
 	PlotCurve *c = NULL;
 	if (style == Graph::Histogram){
@@ -383,10 +377,10 @@ bool CurvesDialog::addCurve(const QString& name)
 		}
 	} else
 		c = d_graph->insertCurve(t, name, style);
-	
+
 	if (!c)
 		return false;
-	
+
 	CurveLayout cl = Graph::initCurveLayout();
 	int color, symbol;
 	d_graph->guessUniqueCurveLayout(color, symbol);
@@ -541,21 +535,28 @@ void CurvesDialog::showCurrentFolder(bool currentFolder)
     	Folder *f = app->currentFolder();
 		if (f){
 			QStringList columns;
-			foreach (QWidget *w, f->windowsList()){
-				if (!w->inherits("Table"))
+			QStringList matrices;
+			foreach (MdiSubWindow *w, f->windowsList()){
+				if (w->inherits("Table")){
+					Table *t = (Table *)w;
+					for (int i=0; i < t->numCols(); i++){
+						if(t->colPlotDesignation(i) == Table::Y)
+							columns << QString(t->objectName()) + "_" + t->colLabel(i);
+					}
 					continue;
-
-				Table *t = (Table *)w;
-				for (int i=0; i < t->numCols(); i++){
-					if(t->colPlotDesignation(i) == Table::Y)
-						columns << QString(t->objectName()) + "_" + t->colLabel(i);
 				}
+				Matrix *m = qobject_cast<Matrix *>(w);
+				if (m)
+					matrices << QString(m->objectName());
+
 			}
 			available->addItems(columns);
+			available->addItems(matrices);
 		}
-    }
-	else
+    } else {
         available->addItems(app->columnsList(Table::Y));
+        available->addItems(app->matrixNames());
+    }
 }
 
 void CurvesDialog::closeEvent(QCloseEvent* e)

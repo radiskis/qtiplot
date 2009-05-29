@@ -786,11 +786,15 @@ void MultiLayer::exportSVG(const QString& fname)
 #ifdef EMF_OUTPUT
 void MultiLayer::exportEMF(const QString& fname)
 {
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 	EmfPaintDevice emf(d_canvas->size(), fname);
 	QPainter paint(&emf);
 	foreach (Graph *g, graphsList)
 		g->print(&paint, g->geometry());
 	paint.end();
+
+	QApplication::restoreOverrideCursor();
 }
 #endif
 

@@ -54,8 +54,9 @@ public:
 	Matrix * matrix(){return d_matrix;};
 	void setMatrix(Matrix *m);
 
-	int levels(){return (int)contourLevels().size() + 1;};
+	int levels(){return (int)contourLevels().size();};
 	void setLevelsNumber(int levels);
+	void setContourLevels (const QwtValueList & levels);
 
 	bool hasColorScale();
 	int colorScaleAxis(){return color_axis;};
@@ -77,7 +78,6 @@ public:
 	ColorMapPolicy colorMapPolicy(){return color_map_policy;};
 
 	virtual QwtDoubleRect boundingRect() const;
-	void setContourLevels (const QwtValueList & levels);
 
 	bool hasLabels(){return d_show_labels;};
 	QList <PlotMarker *> labelsList(){return d_labels_list;};
