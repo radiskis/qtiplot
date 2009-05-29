@@ -1614,10 +1614,14 @@ void Graph::exportSVG(const QString& fname)
 #ifdef EMF_OUTPUT
 void Graph::exportEMF(const QString& fname)
 {
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 	EmfPaintDevice emf(boundingRect().size(), fname);
 	QPainter paint(&emf);
 	print(&paint, rect());
 	paint.end();
+
+	QApplication::restoreOverrideCursor();
 }
 #endif
 

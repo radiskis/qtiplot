@@ -63,6 +63,8 @@ contains(SCRIPTING_LANGS, Python) {
 			 $${SIP_DIR}/sipqtiLegendWidget.cpp\
 			 $${SIP_DIR}/sipqtiRectangleWidget.cpp\
 			 $${SIP_DIR}/sipqtiGrid.cpp\
+			 $${SIP_DIR}/sipqtiQwtPlotSpectrogram.cpp\
+			 $${SIP_DIR}/sipqtiSpectrogram.cpp\
              $${SIP_DIR}/sipqtiMultiLayer.cpp\
              $${SIP_DIR}/sipqtiTable.cpp\
 			 $${SIP_DIR}/sipqtiQwtLinearColorMap.cpp\

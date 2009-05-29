@@ -1893,6 +1893,16 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxMargin->blockSignals(false);
 }
 
+void PlotDialog::updateContourLevelsDisplay(Spectrogram *sp)
+{
+	QwtValueList levels = sp->contourLevels();
+	levelsBox->setValue(levels.size());
+	if (levels.size() >= 1)
+		firstContourLineBox->setValue(levels[0]);
+	if (levels.size() >= 2)
+		contourLinesDistanceBox->setValue(fabs(levels[1] - levels[0]));
+}
+
 void PlotDialog::setActiveCurve(CurveTreeItem *item)
 {
     if (!item)
@@ -1929,12 +1939,13 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
         levelsGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));
 
-        QwtValueList levels = sp->contourLevels();
+        /*QwtValueList levels = sp->contourLevels();
         levelsBox->setValue(levels.size());
         if (levels.size() >= 1)
 			firstContourLineBox->setValue(levels[0]);
 		if (levels.size() >= 2)
-			contourLinesDistanceBox->setValue(fabs(levels[1] - levels[0]));
+			contourLinesDistanceBox->setValue(fabs(levels[1] - levels[0]));*/
+		updateContourLevelsDisplay(sp);
 
         autoContourBox->setChecked(sp->defaultContourPen().style() == Qt::NoPen);
         defaultContourBox->setChecked(sp->defaultContourPen().style() != Qt::NoPen);
@@ -2339,6 +2350,8 @@ bool PlotDialog::acceptParams()
 
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		Matrix *m = app->matrix(boxSpectroMatrix->currentText());
+		if (!m)
+			return false;
 
 		if (sp->useMatrixFormula() == boxUseMatrixFormula->isChecked() &&
 			sp->matrix() == m)
@@ -2355,6 +2368,7 @@ bool PlotDialog::acceptParams()
 			sp->setMatrix(m);
 		else if (canUseFormula)
 			sp->updateData();
+		updateContourLevelsDisplay(sp);
   	} else if (privateTabWidget->currentPage() == spectrogramPage){
   		Spectrogram *sp = (Spectrogram *)plotItem;
   	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)

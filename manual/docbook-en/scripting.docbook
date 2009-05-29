@@ -819,7 +819,7 @@ The caption policy can have one of the following values:
       </orderedlist>
 
 You can access the name or label of a window by using the <userinput>objectName()</userinput> and <userinput>windowLabel()</userinput> functions.
-	  
+
 For a fast editing process, you can create template files from existing tables, matrices or plots. The templates can be used later on in order to create customized windows very easily:
 <programlisting>
 saveAsTemplate(graph("Graph1"), "my_plot.qpt")
@@ -1395,15 +1395,6 @@ resultsLog().append(stemPlot(table("Table1"), "Table1_2", 1, 2, 15))
 
 <sect2 id = "Python-Plots2D">
 <title>2D Plots</title>
-As you have seen in the previous section, it is possible create 2D plots from matrices.
-Here's how you can do it in practice:
-<programlisting>
-m = importImage("C:/poze/adi/PIC00074.jpg")
-g1 = plot(m, Layer.ColorMap)
-g2 = plot(m, Layer.Contour)
-g3 = plot(m, Layer.GrayScale)
-</programlisting>
-
 If you want to create a new Graph window for some data in table Table1, you can use the plot command:
 <programlisting>
 t = table("Table1")
@@ -1584,6 +1575,51 @@ l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
 </programlisting>
 In case you need the number of curves on a layer, you can get it with <programlisting>
 l.numCurves()
+</programlisting>
+</sect3>
+
+<sect3 id = "Python-Spectrograms">
+<title>Image and Contour Line Plots (Spectrograms)</title>
+
+As you have seen in the previous section, it is possible create 2D plots from matrices.
+Here's how you can do it in practice:
+<programlisting>
+m = importImage("C:/poze/adi/PIC00074.jpg")
+g1 = plot(m, Layer.ColorMap)
+g2 = plot(m, Layer.Contour)
+g3 = plot(m, Layer.GrayScale)
+</programlisting>
+
+It is possible to fine tune the plots created from the matrix:
+
+<programlisting>
+m = newMatrix("TestMatrix", 1000, 800)
+m.setFormula("x*y")
+m.calculate()
+
+s = newGraph().activeLayer().plotSpectrogram(m, Layer.ColorMap)
+s.setContourLevels((20.0, 30.0, 60.0, 80.0))
+s.setDefaultContourPen(QtGui.QPen(Qt.yellow)) # set pen for the contour lines
+s.setLabelsWhiteOut(True)
+s.setLabelsColor(Qt.red)
+s.setLabelsFont(QtGui.QFont("Arial", 14))
+s.setLabelsRotation(45)
+s.showColorScale(Layer.Top)
+s.setColorBarWidth(20)
+</programlisting>
+
+You can also use any of the following functions:
+<programlisting>
+s.setMatrix(Matrix *)
+s.setLevelsNumber(int)
+s.showColorScale(int axis, bool on = True)
+s.setGrayScale()
+s.setDefaultColorMap()
+s.setCustomColorMap(LinearColorMap map)
+s.showContourLineLabels(bool show = True) # enable/disable contour line labels
+s.setLabelsOffset(int x, int y) # offset values for all labels in % of the text size
+s.setUseMatrixFormula()# calculate data to be drawn using matrix formula (if any)
+s.updateData()
 </programlisting>
 </sect3>
 

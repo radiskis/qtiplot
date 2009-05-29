@@ -299,6 +299,9 @@ public slots:
 
 	bool canCalculate(bool useMuParser = true);
 
+signals:
+	void modifiedData(Matrix *);
+
 private:
 	//! Initialize the matrix
 	void initTable(int rows, int cols);

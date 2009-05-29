@@ -399,6 +399,7 @@ void ApplicationWindow::initGlobalConstants()
     d_matrix_undo_stack_size = 10;
 
 	d_opening_file = false;
+	d_is_appending_file = false;
     d_in_place_editing = true;
 
 	d_matrix_tool_bar = true;
@@ -496,7 +497,6 @@ void ApplicationWindow::initGlobalConstants()
 	autoSaveTime = 15;
 	d_backup_files = true;
 	defaultScriptingLang = "muParser";
-	//d_locale = QLocale::system().name();
 
 	d_decimal_digits = 13;
 
@@ -1902,9 +1902,8 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 	QApplication::restoreOverrideCursor();
 }
 
-void ApplicationWindow::updateMatrixPlots(MdiSubWindow *window)
+void ApplicationWindow::updateMatrixPlots(Matrix *m)
 {
-	Matrix *m = (Matrix *)window;
 	if (!m)
 		return;
 
@@ -2598,11 +2597,13 @@ Table* ApplicationWindow::newTable(const QString& caption, int r, int c)
 {
 	Table* w = new Table(scriptEnv, r, c, "", this, 0);
 	initTable(w, caption);
-	if (w->objectName() != caption){//the table was renamed
+	if (d_is_appending_file && w->objectName() != caption){//the table was renamed
 		renamedTables << caption << w->objectName();
 		if (d_inform_rename_table){
+			QApplication::restoreOverrideCursor();
 			QMessageBox:: warning(this, tr("QtiPlot - Renamed Window"),
 			tr("The table '%1' already exists. It has been renamed '%2'.").arg(caption).arg(w->objectName()));
+			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		}
 	}
 	w->showNormal();
@@ -2764,8 +2765,15 @@ Matrix* ApplicationWindow::newMatrix(const QString& caption, int r, int c)
 {
 	Matrix* w = new Matrix(scriptEnv, r, c, "", this, 0);
 	initMatrix(w, caption);
-	if (w->objectName() != caption)//the matrix was renamed
+	if (d_is_appending_file && w->objectName() != caption){//the matrix was renamed
 		renamedTables << caption << w->objectName();
+		if (d_inform_rename_table){
+			QApplication::restoreOverrideCursor();
+			QMessageBox:: warning(this, tr("QtiPlot - Renamed Window"),
+			tr("The table '%1' already exists. It has been renamed '%2'.").arg(caption).arg(w->objectName()));
+			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		}
+	}
 
 	w->showNormal();
 	return w;
@@ -3038,9 +3046,8 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	QUndoStack *stack = m->undoStack();
 	connect(stack, SIGNAL(canUndoChanged(bool)), actionUndo, SLOT(setEnabled(bool)));
 	connect(stack, SIGNAL(canRedoChanged(bool)), actionRedo, SLOT(setEnabled(bool)));
-
 	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
-	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(updateMatrixPlots(MdiSubWindow *)));
+	connect(m, SIGNAL(modifiedData(Matrix*)), this, SLOT(updateMatrixPlots(Matrix *)));
 	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect(m, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
 	connect(m, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
@@ -3118,9 +3125,9 @@ Table* ApplicationWindow::table(const QString& name)
 Matrix* ApplicationWindow::matrix(const QString& name)
 {
 	QString caption = name;
-	if (!renamedTables.isEmpty() && renamedTables.contains(caption)){
+	if (d_is_appending_file && !renamedTables.isEmpty() && renamedTables.contains(caption)){
 		int index = renamedTables.findIndex(caption);
-		caption = renamedTables[index+1];
+		caption = renamedTables[index + 1];
 	}
 
 	Folder *f = projectFolder();
@@ -13796,9 +13803,13 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 		return 0;
 	}
 
-    recentProjects.remove(fn);
-    recentProjects.push_front(fn);
-    updateRecentProjectsList();
+	d_is_appending_file = true;
+
+	if (fn != projectname){
+		recentProjects.remove(fn);
+		recentProjects.push_front(fn);
+		updateRecentProjectsList();
+	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -13982,6 +13993,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	blockSignals (false);
 	renamedTables = QStringList();
 	QApplication::restoreOverrideCursor();
+	d_is_appending_file = false;
 	return new_folder;
 }
 
