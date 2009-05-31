@@ -689,7 +689,7 @@ public:
 	Spectrogram(Graph *graph, Matrix *m);
 
 	Matrix * matrix();
-	void setMatrix(Matrix *);
+	bool setMatrix(Matrix *, bool = false);
 
 	int levels();
 	void setLevelsNumber(int);
@@ -722,7 +722,6 @@ public:
 
 	QwtLinearColorMap colorMap();
 	void setCustomColorMap(const QwtLinearColorMap& map);
-	void updateData();
 
 	bool hasLabels();
 	void showContourLineLabels(bool show = true);

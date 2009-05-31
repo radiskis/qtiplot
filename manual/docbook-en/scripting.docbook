@@ -1610,7 +1610,8 @@ s.setColorBarWidth(20)
 
 You can also use any of the following functions:
 <programlisting>
-s.setMatrix(Matrix *)
+s.setMatrix(Matrix *, bool useFormula = False)
+s.setUseMatrixFormula(bool useFormula = True)# calculate data to be drawn using matrix formula (if any)
 s.setLevelsNumber(int)
 s.showColorScale(int axis, bool on = True)
 s.setGrayScale()
@@ -1618,8 +1619,6 @@ s.setDefaultColorMap()
 s.setCustomColorMap(LinearColorMap map)
 s.showContourLineLabels(bool show = True) # enable/disable contour line labels
 s.setLabelsOffset(int x, int y) # offset values for all labels in % of the text size
-s.setUseMatrixFormula()# calculate data to be drawn using matrix formula (if any)
-s.updateData()
 </programlisting>
 </sect3>
 
