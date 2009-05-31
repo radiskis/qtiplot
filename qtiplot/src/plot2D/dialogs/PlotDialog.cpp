@@ -2352,22 +2352,8 @@ bool PlotDialog::acceptParams()
 		Matrix *m = app->matrix(boxSpectroMatrix->currentText());
 		if (!m)
 			return false;
-
-		if (sp->useMatrixFormula() == boxUseMatrixFormula->isChecked() &&
-			sp->matrix() == m)
-			return true;
-
-		bool canUseFormula = sp->setUseMatrixFormula(boxUseMatrixFormula->isChecked());
-		if (!canUseFormula){
-			QMessageBox::warning(this, tr("QtiPlot - Script Error"),
-			tr("Python-like syntax is not supported in this case since it severely reduces drawing speed!"));
+		if (!sp->setMatrix(m, boxUseMatrixFormula->isChecked()))
 			boxUseMatrixFormula->setChecked(false);
-		}
-
-		if (m != sp->matrix())
-			sp->setMatrix(m);
-		else if (canUseFormula)
-			sp->updateData();
 		updateContourLevelsDisplay(sp);
   	} else if (privateTabWidget->currentPage() == spectrogramPage){
   		Spectrogram *sp = (Spectrogram *)plotItem;

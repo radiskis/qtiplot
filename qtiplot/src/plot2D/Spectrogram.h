@@ -52,7 +52,7 @@ public:
 
 	Spectrogram* copy(Graph *g);
 	Matrix * matrix(){return d_matrix;};
-	void setMatrix(Matrix *m);
+	bool setMatrix(Matrix *m, bool useFormula = false);
 
 	int levels(){return (int)contourLevels().size();};
 	void setLevelsNumber(int levels);
@@ -70,7 +70,6 @@ public:
 
 	QwtLinearColorMap colorMap(){return color_map;};
 	void setCustomColorMap(const QwtLinearColorMap& map);
-	void updateData();
 
 	//! Used when saving a project file
 	QString saveToString();
@@ -116,6 +115,7 @@ protected:
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void createLabels();
+	void updateData();
 	//! Pointer to the parent plot
 	Graph *d_graph;
 	//! Pointer to the source data matrix

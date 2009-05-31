@@ -82,13 +82,39 @@ void Spectrogram::updateData()
 	d_graph->replot();
 }
 
-void Spectrogram::setMatrix(Matrix *m)
+bool Spectrogram::setMatrix(Matrix *m, bool useFormula)
 {
-	if (!m || m == d_matrix)
-		return;
+	if (!m)
+		return false;
 
-	d_matrix = m;
-	updateData();
+	if (m == d_matrix && useFormula == d_use_matrix_formula)
+		return true;
+
+	bool changedUseFormula = (useFormula != d_use_matrix_formula) ? true : false;
+	bool canCalculate = false;
+	if (useFormula){
+		canCalculate = m->canCalculate();
+		if (!canCalculate){
+			QMessageBox::warning(d_graph->multiLayer(), QObject::tr("QtiPlot - Script Error"),
+			QObject::tr("Python-like syntax is not supported in this case since it severely reduces drawing speed!"));
+			changedUseFormula = false;
+			d_use_matrix_formula = false;
+		}
+	}
+
+	if (changedUseFormula)
+		d_use_matrix_formula = useFormula;
+
+	bool changedMatrix = (d_matrix != m) ? true : false;
+	if (changedMatrix)
+		d_matrix = m;
+
+	if (changedMatrix || changedUseFormula)
+		updateData();
+
+	if (!canCalculate)
+		return false;
+	return true;
 }
 
 void Spectrogram::setLevelsNumber(int levels)
@@ -607,6 +633,7 @@ bool Spectrogram::setUseMatrixFormula(bool on)
 		return false;
 
 	d_use_matrix_formula = on;
+	updateData();
 	return true;
 }
 

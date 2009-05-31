@@ -549,7 +549,6 @@ showColorScale
 colorBarWidth
 setColorBarWidth
 setCustomColorMap
-updateData
 hasLabels
 showContourLineLabels
 labelsFont
