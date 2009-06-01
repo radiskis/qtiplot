@@ -75,6 +75,7 @@
 
 	HEADERS += src/plot2D/dialogs/AssociationsDialog.h \
 			   src/plot2D/dialogs/AxesDialog.h \
+			   src/plot2D/dialogs/ContourLinesEditor.h \
 			   src/plot2D/dialogs/CurvesDialog.h \
 			   src/plot2D/dialogs/CurveRangeDialog.h \
 			   src/plot2D/dialogs/EnrichmentDialog.h \
@@ -89,6 +90,7 @@
 
 	SOURCES += src/plot2D/dialogs/AssociationsDialog.cpp \
 			   src/plot2D/dialogs/AxesDialog.cpp \
+			   src/plot2D/dialogs/ContourLinesEditor.cpp \
 			   src/plot2D/dialogs/CurvesDialog.cpp \
 			   src/plot2D/dialogs/CurveRangeDialog.cpp \
 			   src/plot2D/dialogs/EnrichmentDialog.cpp \

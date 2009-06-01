@@ -31,7 +31,7 @@
 
 #include <QDialog>
 #include <QTreeWidgetItem>
-#include "../MultiLayer.h"
+#include <MultiLayer.h>
 
 class QCheckBox;
 class QComboBox;
@@ -60,6 +60,7 @@ class QwtPlotItem;
 class DoubleSpinBox;
 class PenStyleBox;
 class Spectrogram;
+class ContourLinesEditor;
 
 static const char* folder_closed[]={
     "16 16 9 1",
@@ -280,6 +281,7 @@ protected slots:
 	void chooseLabelsFont();
 	void applyLayerFormat();
 	void setLayerDefaultValues();
+    void setEquidistantLevels();
 
 private:
 	void applyFormatToLayer(Graph *g);
@@ -414,6 +416,8 @@ private:
 	QWidget *spectroValuesPage;
 	QComboBox *boxSpectroMatrix;
 	QCheckBox *boxUseMatrixFormula;
+	ContourLinesEditor *contourLinesEditor;
+	QPushButton *btnSetEquidistantLevels;
 };
 
 /*****************************************************************************
