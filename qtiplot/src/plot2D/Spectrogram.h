@@ -111,11 +111,12 @@ public:
     bool useMatrixFormula(){return d_use_matrix_formula;};
     bool setUseMatrixFormula(bool on = true);
 
+    void updateData();
+
 protected:
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void createLabels();
-	void updateData();
 	//! Pointer to the parent plot
 	Graph *d_graph;
 	//! Pointer to the source data matrix

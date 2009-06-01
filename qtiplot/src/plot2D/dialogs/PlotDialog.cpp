@@ -2,8 +2,8 @@
     File                 : PlotDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006-2009 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Custom curves dialog
 
  ***************************************************************************/
@@ -45,6 +45,7 @@
 #include <ColorButton.h>
 #include <PatternBox.h>
 #include <SymbolBox.h>
+#include <ContourLinesEditor.h>
 
 #include <QTreeWidget>
 #include <QLineEdit>
@@ -1103,27 +1104,40 @@ void PlotDialog::initContourLinesPage()
 
   	contourLinesPage = new QWidget();
 
-  	levelsGroupBox = new QGroupBox(tr("Show Equidistant Levels"));
+  	levelsGroupBox = new QGroupBox(tr("&Show Contour Lines"));
   	levelsGroupBox->setCheckable(true);
+  	QHBoxLayout *hl0 = new QHBoxLayout(levelsGroupBox);
 
-    QGridLayout *hl1 = new QGridLayout(levelsGroupBox);
+	QGroupBox *gb1 = new QGroupBox(tr("Set Equidistant Levels"));
+    QGridLayout *hl1 = new QGridLayout(gb1);
 
 	hl1->addWidget(new QLabel(tr("Levels")), 0, 0);
   	levelsBox = new QSpinBox();
   	levelsBox->setRange(0, 1000);
 	hl1->addWidget(levelsBox, 0, 1);
 
-    hl1->addWidget(new QLabel(tr("First Level")), 1, 0);
+    hl1->addWidget(new QLabel(tr("Start")), 1, 0);
   	firstContourLineBox = new DoubleSpinBox();
   	firstContourLineBox->setLocale(locale);
 	firstContourLineBox->setDecimals(6);
 	hl1->addWidget(firstContourLineBox, 1, 1);
 
-    hl1->addWidget(new QLabel(tr("Distance between Levels")), 2, 0);
+    hl1->addWidget(new QLabel(tr("Step")), 2, 0);
     contourLinesDistanceBox = new DoubleSpinBox();
     contourLinesDistanceBox->setLocale(locale);
 	contourLinesDistanceBox->setDecimals(6);
 	hl1->addWidget(contourLinesDistanceBox, 2, 1);
+
+	btnSetEquidistantLevels = new QPushButton(tr("Set &Levels"));
+	connect(btnSetEquidistantLevels, SIGNAL(clicked()), this, SLOT(setEquidistantLevels()));
+	hl1->addWidget(btnSetEquidistantLevels, 3, 1);
+
+	hl1->setColumnStretch(1, 10);
+	hl1->setRowStretch(4, 1);
+
+	contourLinesEditor = new ContourLinesEditor(app->locale());
+	hl0->addWidget(contourLinesEditor);
+	hl0->addWidget(gb1);
 
 	QGroupBox *penGroupBox = new QGroupBox(tr("Pen"));
 	QHBoxLayout *hl2 = new QHBoxLayout(penGroupBox);
@@ -1939,12 +1953,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
         levelsGroupBox->setChecked(sp->testDisplayMode(QwtPlotSpectrogram::ContourMode));
 
-        /*QwtValueList levels = sp->contourLevels();
-        levelsBox->setValue(levels.size());
-        if (levels.size() >= 1)
-			firstContourLineBox->setValue(levels[0]);
-		if (levels.size() >= 2)
-			contourLinesDistanceBox->setValue(fabs(levels[1] - levels[0]));*/
+        contourLinesEditor->setSpectrogram(sp);
 		updateContourLevelsDisplay(sp);
 
         autoContourBox->setChecked(sp->defaultContourPen().style() == Qt::NoPen);
@@ -2382,11 +2391,7 @@ bool PlotDialog::acceptParams()
   	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
   	    	return false;
 
-		QwtValueList levels;
-		double firstVal = firstContourLineBox->value();
-		for (int i = 0; i < levelsBox->value(); i++)
-			levels << firstVal + i*contourLinesDistanceBox->value();
-  	    sp->setContourLevels(levels);
+  	    contourLinesEditor->updateSpectrogram();
 
   	    if (autoContourBox->isChecked())
   	    	sp->setDefaultContourPen(Qt::NoPen);
@@ -3006,6 +3011,30 @@ void PlotDialog::showAllLabelControls(bool show)
 		justifyLabelsLbl->hide();
 		labelsColumnLbl->hide();
 	}
+}
+
+void PlotDialog::setEquidistantLevels()
+{
+	QTreeWidgetItem *it = listBox->currentItem();
+    if (!it)
+        return;
+
+	CurveTreeItem *item = (CurveTreeItem *)it;
+    QwtPlotItem *plotItem = (QwtPlotItem *)item->plotItem();
+    if (!plotItem)
+        return;
+
+	Spectrogram *sp = (Spectrogram *)plotItem;
+	if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
+		return;
+
+	QwtValueList levels;
+	double firstVal = firstContourLineBox->value();
+	for (int i = 0; i < levelsBox->value(); i++)
+		levels << firstVal + i*contourLinesDistanceBox->value();
+	sp->setContourLevels(levels);
+	sp->plot()->replot();
+	contourLinesEditor->updateContents();
 }
 
 /*****************************************************************************
