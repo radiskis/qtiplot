@@ -1106,7 +1106,7 @@ void PlotDialog::initContourLinesPage()
 
   	levelsGroupBox = new QGroupBox(tr("&Show Contour Lines"));
   	levelsGroupBox->setCheckable(true);
-  	QHBoxLayout *hl0 = new QHBoxLayout(levelsGroupBox);
+  	QHBoxLayout *hl0 = new QHBoxLayout();
 
 	QGroupBox *gb1 = new QGroupBox(tr("Set Equidistant Levels"));
     QGridLayout *hl1 = new QGridLayout(gb1);
@@ -1172,10 +1172,13 @@ void PlotDialog::initContourLinesPage()
     gl1->addWidget(boxContourStyle, 2, 1);
     hl2->addWidget(defaultPenBox);
 
+	QVBoxLayout *vl0 = new QVBoxLayout(levelsGroupBox);
+	vl0->addLayout(hl0);
+	vl0->addWidget(penGroupBox);
+	vl0->addStretch();
+
   	QVBoxLayout* vl2 = new QVBoxLayout(contourLinesPage);
   	vl2->addWidget(levelsGroupBox);
-  	vl2->addWidget(penGroupBox);
-    vl2->addStretch();
 
   	privateTabWidget->insertTab(contourLinesPage, tr("Contour Lines"));
 }

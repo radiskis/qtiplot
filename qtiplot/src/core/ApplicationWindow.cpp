@@ -763,7 +763,7 @@ void ApplicationWindow::initToolBars()
 	btnRemovePoints->setShortcut( tr("Alt+B") );
 	btnRemovePoints->setActionGroup(dataTools);
 	btnRemovePoints->setCheckable( true );
-	btnRemovePoints->setIcon(QIcon(QPixmap(gomme_xpm)));
+	btnRemovePoints->setIcon(QIcon(QPixmap(delete_xpm)));
 	plotTools->addAction(btnRemovePoints);
 
 	connect( dataTools, SIGNAL( triggered( QAction* ) ), this, SLOT( pickDataTool( QAction* ) ) );
@@ -6208,7 +6208,7 @@ void ApplicationWindow::showColMenu(int c)
 
 			contextMenu.insertSeparator();
 
-                        contextMenu.addAction(QIcon(QPixmap(erase_xpm)), tr("Clea&r"), w, SLOT(clearSelection()));
+			contextMenu.addAction(QIcon(QPixmap(erase_xpm)), tr("Clea&r"), w, SLOT(clearSelection()));
 			contextMenu.addAction(QIcon(QPixmap(delete_column_xpm)), tr("&Delete"), w, SLOT(removeCol()));
 			contextMenu.addAction(actionHideSelectedColumns);
 			contextMenu.addAction(actionShowAllColumns);
@@ -8458,6 +8458,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 	windowsMenu->addAction(actionNextWindow);
 	windowsMenu->addAction(actionPrevWindow);
 	windowsMenu->insertSeparator();
+	windowsMenu->addAction(actionFindWindow);
 	windowsMenu->addAction(actionRename);
 	windowsMenu->addAction(actionCopyWindow);
 	windowsMenu->insertSeparator();
@@ -9058,7 +9059,7 @@ void ApplicationWindow::showGraphContextMenu()
 	cm.insertSeparator();
 	cm.insertItem(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
 	cm.insertSeparator();
-	cm.insertItem(QPixmap(close_xpm), tr("&Delete Layer"), plot, SLOT(confirmRemoveLayer()));
+	cm.addAction(actionDeleteLayer);
 	cm.exec(QCursor::pos());
 }
 
@@ -11787,6 +11788,9 @@ void ApplicationWindow::createActions()
 	actionShowExplorer->setIcon(QPixmap(folder_xpm));
 	actionShowExplorer->setShortcut( tr("Ctrl+E") );
 
+	actionFindWindow = new QAction(QIcon(QPixmap(find_xpm)), tr("&Find..."), this);
+	connect(actionFindWindow, SIGNAL(activated()), this, SLOT(showFindDialogue()));
+
 	actionShowLog = logWindow->toggleViewAction();
 	actionShowLog->setIcon(QPixmap(log_xpm));
 
@@ -12132,7 +12136,7 @@ void ApplicationWindow::createActions()
 	actionClearTable = new QAction(QPixmap(erase_xpm), tr("Clear"), this);
 	connect(actionClearTable, SIGNAL(activated()), this, SLOT(clearTable()));
 
-	actionDeleteLayer = new QAction(QIcon(QPixmap(erase_xpm)), tr("&Remove Layer"), this);
+	actionDeleteLayer = new QAction(QIcon(QPixmap(delete_xpm)), tr("&Remove Layer"), this);
 	actionDeleteLayer->setShortcut( tr("Alt+R") );
 	connect(actionDeleteLayer, SIGNAL(activated()), this, SLOT(deleteLayer()));
 
@@ -12605,6 +12609,8 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowExplorer->setMenuText(tr("Project &Explorer"));
 	actionShowExplorer->setShortcut(tr("Ctrl+E"));
 	actionShowExplorer->setToolTip(tr("Show project explorer"));
+
+	actionFindWindow->setMenuText(tr("&Find..."));
 
 	actionShowLog->setMenuText(tr("Results &Log"));
 	actionShowLog->setToolTip(tr("Show analysis results"));
@@ -14169,9 +14175,9 @@ void ApplicationWindow::showFolderPopupMenu(Q3ListViewItem *it, const QPoint &p,
 	QMenu viewWindowsMenu(this);
 	viewWindowsMenu.setCheckable ( true );
 
-	cm.insertItem(tr("&Find..."), this, SLOT(showFindDialogue()));
+	cm.addAction(actionFindWindow);
 	cm.insertSeparator();
-	cm.insertItem(tr("App&end Project..."), this, SLOT(appendProject()));
+	cm.insertItem(QPixmap(append_file_xpm), tr("App&end Project..."), this, SLOT(appendProject()));
 	if (((FolderListItem *)it)->folder()->parent())
 		cm.insertItem(tr("Save &As Project..."), this, SLOT(saveAsProject()));
 	else
