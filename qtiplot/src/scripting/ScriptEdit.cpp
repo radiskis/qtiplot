@@ -31,6 +31,7 @@
 #include "PythonSyntaxHighlighter.h"
 #include "FindReplaceDialog.h"
 #include <ApplicationWindow.h>
+#include <pixmaps.h>
 
 #include <QAction>
 #include <QMenu>
@@ -84,7 +85,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionEval->setShortcut( tr("Ctrl+Return") );
 	connect(actionEval, SIGNAL(activated()), this, SLOT(evaluate()));
 
-	actionPrint = new QAction(tr("&Print"), this);
+	actionPrint = new QAction(QPixmap(fileprint_xpm), tr("&Print"), this);
 	connect(actionPrint, SIGNAL(activated()), this, SLOT(print()));
 
 	actionImport = new QAction(tr("&Import..."), this);
@@ -94,7 +95,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	QShortcut *accelImport = new QShortcut(actionImport->shortcut(), this);
 	connect(accelImport, SIGNAL(activated()), this, SLOT(importASCII()));
 
-	actionSave = new QAction(tr("&Save"), this);
+	actionSave = new QAction(QPixmap(filesave_xpm), tr("&Save"), this);
 	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
 	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
 
@@ -104,7 +105,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	actionExport = new QAction(tr("Sa&ve as..."), this);
 	connect(actionExport, SIGNAL(activated()), this, SLOT(exportASCII()));
 
-	actionFind = new QAction(tr("&Find..."), this);
+	actionFind = new QAction(QPixmap(find_xpm), tr("&Find..."), this);
 	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
 	connect(actionFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
 

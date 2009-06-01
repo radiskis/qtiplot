@@ -1338,7 +1338,7 @@ private:
     QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
     QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle, *actionAddEllipse;
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
-    QAction *actionMagnify;
+    QAction *actionMagnify, *actionFindWindow;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;
