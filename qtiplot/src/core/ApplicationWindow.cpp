@@ -11741,7 +11741,7 @@ void ApplicationWindow::createActions()
 	actionSaveProject->setShortcut( tr("Ctrl+S") );
 	connect(actionSaveProject, SIGNAL(activated()), this, SLOT(saveProject()));
 
-	actionSaveProjectAs = new QAction(tr("Save Project &As..."), this);
+	actionSaveProjectAs = new QAction(QIcon(QPixmap(filesaveas_xpm)), tr("Save Project &As..."), this);
 	actionSaveProjectAs->setShortcut( tr("Ctrl+Shift+S") );
 	connect(actionSaveProjectAs, SIGNAL(activated()), this, SLOT(saveProjectAs()));
 
@@ -14181,7 +14181,7 @@ void ApplicationWindow::showFolderPopupMenu(Q3ListViewItem *it, const QPoint &p,
 	if (((FolderListItem *)it)->folder()->parent())
 		cm.insertItem(tr("Save &As Project..."), this, SLOT(saveAsProject()));
 	else
-		cm.insertItem(tr("Save Project &As..."), this, SLOT(saveProjectAs()));
+		cm.insertItem(QIcon(QPixmap(filesaveas_xpm)), tr("Save Project &As..."), this, SLOT(saveProjectAs()));
 	cm.insertSeparator();
 
 	if (fromFolders && show_windows_policy != HideAll)

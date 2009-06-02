@@ -565,3 +565,5 @@ setLabelsRotation
 useMatrixFormula
 setUseMatrixFormula
 setDefaultContourPen
+setColorMapPen
+setContourLinePen
