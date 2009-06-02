@@ -53,7 +53,8 @@ Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	d_labels_x_offset(0),
 	d_labels_y_offset(0),
 	d_selected_label(NULL),
-	d_use_matrix_formula(false)
+	d_use_matrix_formula(false),
+	d_color_map_pen(false)
 {
 	setData(MatrixData(m));
 	double step = fabs(data().range().maxValue() - data().range().minValue())/5.0;
@@ -228,6 +229,12 @@ Spectrogram* Spectrogram::copy(Graph *g)
 	new_s->d_labels_y_offset = d_labels_y_offset;
 
 	new_s->setContourLevels(contourLevels());
+
+	if (defaultContourPen().style() == Qt::NoPen && !d_color_map_pen)
+		new_s->setContourPenList(d_pen_list);
+	else
+		new_s->d_color_map_pen = d_color_map_pen;
+
 	QList <PlotMarker *> lst = new_s->labelsList();
 	int count = lst.size();
 	for(int i = 0; i < count; i++){
@@ -302,11 +309,11 @@ if (contourLines){
 		s += "\t\t<z>" + QString::number(levels[i]) + "</z>\n";
 
 	bool defaultPen = defaultContourPen().style() != Qt::NoPen;
-	s += "\t\t<DefaultPen>"+QString::number(defaultPen)+"</DefaultPen>\n";
+	s += "\t\t<DefaultPen>" + QString::number(defaultPen) + "</DefaultPen>\n";
 	if (defaultPen){
-		s += "\t\t\t<PenColor>"+defaultContourPen().color().name()+"</PenColor>\n";
-		s += "\t\t\t<PenWidth>"+QString::number(defaultContourPen().widthF())+"</PenWidth>\n";
-		s += "\t\t\t<PenStyle>"+QString::number(defaultContourPen().style() - 1)+"</PenStyle>\n";
+		s += "\t\t\t<PenColor>" + defaultContourPen().color().name() + "</PenColor>\n";
+		s += "\t\t\t<PenWidth>" + QString::number(defaultContourPen().widthF()) + "</PenWidth>\n";
+		s += "\t\t\t<PenStyle>" + QString::number(defaultContourPen().style() - 1) + "</PenStyle>\n";
 	}
 
 	if (d_show_labels){
@@ -624,7 +631,56 @@ void Spectrogram::setVisible(bool on)
 
 QPen Spectrogram::contourPen (double level) const
 {
-	return QwtPlotSpectrogram::contourPen(level);
+	if (d_color_map_pen)
+		return QwtPlotSpectrogram::contourPen(level);
+
+	QwtValueList levels = contourLevels();
+	int index = levels.indexOf (level);
+	if (index >= 0 && index < d_pen_list.size())
+		return d_pen_list[index];
+
+	return QPen();
+}
+
+void Spectrogram::setColorMapPen(bool on)
+{
+	if (d_color_map_pen == on)
+		return;
+
+	d_color_map_pen = on;
+	if (on) {
+		setDefaultContourPen(Qt::NoPen);
+		d_pen_list.clear();
+	}
+}
+
+void Spectrogram::setContourPenList(QList<QPen> lst)
+{
+	d_pen_list = lst;
+	setDefaultContourPen(Qt::NoPen);
+	d_color_map_pen = false;
+}
+
+void Spectrogram::setContourLinePen(int index, const QPen &pen)
+{
+	QwtValueList levels = contourLevels();
+	if (index < 0 || index >= levels.size())
+		return;
+
+	if (d_pen_list.isEmpty()){
+		QPen p = defaultContourPen();
+		for (int i = 0; i < levels.size(); i++){
+			if (p.style() == Qt::NoPen)
+				d_pen_list << contourPen(levels[i]);
+			else
+				d_pen_list << p;
+		}
+	}
+
+	d_pen_list[index] = pen;
+	setDefaultContourPen(Qt::NoPen);
+	d_color_map_pen = false;
+	d_graph->replot();
 }
 
 bool Spectrogram::setUseMatrixFormula(bool on)

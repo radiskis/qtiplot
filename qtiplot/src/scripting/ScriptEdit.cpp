@@ -102,7 +102,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 	QShortcut *accelSave = new QShortcut(actionSave->shortcut(), this);
 	connect(accelSave, SIGNAL(activated()), this, SLOT(save()));
 
-	actionExport = new QAction(tr("Sa&ve as..."), this);
+	actionExport = new QAction(QIcon(QPixmap(filesaveas_xpm)), tr("Sa&ve as..."), this);
 	connect(actionExport, SIGNAL(activated()), this, SLOT(exportASCII()));
 
 	actionFind = new QAction(QPixmap(find_xpm), tr("&Find..."), this);

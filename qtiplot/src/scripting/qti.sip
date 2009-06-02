@@ -745,6 +745,9 @@ public:
     bool useMatrixFormula();
     bool setUseMatrixFormula(bool on = true);
 
+    void setColorMapPen(bool on = true);
+    void setContourLinePen(int, const QPen &);
+
 private:
 	Spectrogram(const Spectrogram&);
 };

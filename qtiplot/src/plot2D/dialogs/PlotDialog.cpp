@@ -1151,6 +1151,10 @@ void PlotDialog::initContourLinesPage()
   	connect(defaultContourBox, SIGNAL(toggled(bool)), this, SLOT(showDefaultContourLinesBox(bool)));
     vl1->addWidget(defaultContourBox);
 
+    customPenBtn = new QRadioButton(tr("Use &Table Custom Pen"));
+  	connect(customPenBtn, SIGNAL(toggled(bool)), this, SLOT(showCustomPenColumn(bool)));
+    vl1->addWidget(customPenBtn);
+
 	hl2->addLayout(vl1);
 
   	defaultPenBox = new QGroupBox();
@@ -1436,17 +1440,17 @@ void PlotDialog::showStatistics()
     if (t)
     {
         double h_sum = 0.0;
-        for (int i = 0; i<h->dataSize(); i++ )
+        for (int i = 0; i < h->dataSize(); i++ )
             h_sum += h->y(i);
 
         double sum = 0.0;
-        for (int i = 0; i<h->dataSize(); i++ )
+        for (int i = 0; i < h->dataSize(); i++ )
         {
             sum += h->y(i);
-            t->setText(i, 0, QString::number(h->x(i)));
-            t->setText(i, 1, QString::number(h->y(i)));
-            t->setText(i, 2, QString::number(sum));
-            t->setText(i, 3, QString::number(sum/h_sum*100));
+            t->setCell(i, 0, h->x(i));
+            t->setCell(i, 1, h->y(i));
+            t->setCell(i, 2, sum);
+            t->setCell(i, 3, sum/h_sum*100);
         }
         t->setHeader(QStringList() << tr("Bins") << tr("Quantity") << tr("Sum") << tr("Percent"));
         t->showMaximized();
@@ -1959,8 +1963,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         contourLinesEditor->setSpectrogram(sp);
 		updateContourLevelsDisplay(sp);
 
-        autoContourBox->setChecked(sp->defaultContourPen().style() == Qt::NoPen);
+        autoContourBox->setChecked(sp->useColorMapPen());
         defaultContourBox->setChecked(sp->defaultContourPen().style() != Qt::NoPen);
+        customPenBtn->setChecked(sp->defaultContourPen().style() == Qt::NoPen && !sp->useColorMapPen());
 
         levelsColorBox->setColor(sp->defaultContourPen().color());
         contourWidthBox->setValue(sp->defaultContourPen().widthF());
@@ -2394,20 +2399,21 @@ bool PlotDialog::acceptParams()
   	    if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
   	    	return false;
 
-  	    contourLinesEditor->updateSpectrogram();
-
-  	    if (autoContourBox->isChecked())
-  	    	sp->setDefaultContourPen(Qt::NoPen);
-  	    else {
-  	    	QPen pen = QPen(levelsColorBox->color(), contourWidthBox->value(), boxContourStyle->style());
+		if (defaultContourBox->isChecked()){
+			QPen pen = QPen(levelsColorBox->color(), contourWidthBox->value(), boxContourStyle->style());
   	    	pen.setCosmetic(true);
   	    	sp->setDefaultContourPen(pen);
-  	    }
+		} else if (customPenBtn->isChecked())
+			contourLinesEditor->updateContourPens();
+		else
+			sp->setColorMapPen();
 
-  	   sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
-  	   labelsGroupBox->setChecked(levelsGroupBox->isChecked());
-	   labelsGroupBox->setEnabled(levelsGroupBox->isChecked());
-  	   sp->showContourLineLabels(levelsGroupBox->isChecked());
+		contourLinesEditor->updateContourLevels();
+
+		sp->setDisplayMode(QwtPlotSpectrogram::ContourMode, levelsGroupBox->isChecked());
+		labelsGroupBox->setChecked(levelsGroupBox->isChecked());
+		labelsGroupBox->setEnabled(levelsGroupBox->isChecked());
+		sp->showContourLineLabels(levelsGroupBox->isChecked());
   	} else if (privateTabWidget->currentPage() == linePage){
 		graph->setCurveStyle(item->plotItemIndex(), boxConnect->currentIndex());
 		QBrush br = QBrush(boxAreaColor->color(), boxPattern->getSelectedPattern());
@@ -2796,6 +2802,13 @@ void PlotDialog::showDefaultContourLinesBox(bool)
   		defaultPenBox->hide();
   	else
   		defaultPenBox->show();
+}
+
+void PlotDialog::showCustomPenColumn(bool on)
+{
+  	contourLinesEditor->showPenColumn(on);
+  	if (on)
+		defaultPenBox->hide();
 }
 
 void PlotDialog::updateTreeWidgetItem(QTreeWidgetItem *item)

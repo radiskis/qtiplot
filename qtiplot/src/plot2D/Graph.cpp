@@ -4646,7 +4646,8 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                 s = (*(++line)).stripWhiteSpace();
                 int defaultPen = s.remove("<DefaultPen>").remove("</DefaultPen>").toInt();
                 if (!defaultPen)
-                    sp->setDefaultContourPen(Qt::NoPen);
+                    //sp->setDefaultContourPen(Qt::NoPen);
+                    sp->setColorMapPen();
                 else {
                     s = (*(++line)).stripWhiteSpace();
                     QColor c = QColor(s.remove("<PenColor>").remove("</PenColor>"));

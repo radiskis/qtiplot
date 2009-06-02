@@ -1599,13 +1599,26 @@ m.calculate()
 
 s = newGraph().activeLayer().plotSpectrogram(m, Layer.ColorMap)
 s.setContourLevels((20.0, 30.0, 60.0, 80.0))
-s.setDefaultContourPen(QtGui.QPen(Qt.yellow)) # set pen for the contour lines
+s.setDefaultContourPen(QtGui.QPen(Qt.yellow)) # set global pen for the contour lines
 s.setLabelsWhiteOut(True)
 s.setLabelsColor(Qt.red)
 s.setLabelsFont(QtGui.QFont("Arial", 14))
 s.setLabelsRotation(45)
 s.showColorScale(Layer.Top)
 s.setColorBarWidth(20)
+</programlisting>
+
+As you have seen earlier, you can set a global pen for the contour lines, using:
+<programlisting>
+s.setDefaultContourPen(QtGui.QPen(Qt.yellow))
+</programlisting>
+You can also assign a specific pen for each contour line, using the function bellow:
+<programlisting>
+s.setContourLinePen(index, QPen)
+</programlisting>
+or you can automatically set pen colors defined by the color map of the spectrogram:
+<programlisting>
+s.setColorMapPen(bool on = True)
 </programlisting>
 
 You can also use any of the following functions:

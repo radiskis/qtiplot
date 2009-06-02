@@ -107,6 +107,13 @@ public:
 
     virtual void setVisible(bool on);
     virtual QPen contourPen (double level) const;
+    void setColorMapPen(bool on = true);
+    bool useColorMapPen(){return d_color_map_pen;};
+
+    QList<QPen> contourPenList(){return d_pen_list;};
+    void setContourPenList(QList<QPen> lst);
+
+    void setContourLinePen(int index, const QPen &pen);
 
     bool useMatrixFormula(){return d_use_matrix_formula;};
     bool setUseMatrixFormula(bool on = true);
@@ -149,6 +156,11 @@ protected:
 
 	//! Flag telling that we evaluate the matrix expression instead of using the matrix data.
 	bool d_use_matrix_formula;
+
+	//! Flag telling if we use the color map to calculate the pen (QwtPlotSpectrogram::contourPen()).
+	bool d_color_map_pen;
+
+	QList<QPen> d_pen_list;
 };
 
 class MatrixData: public QwtRasterData

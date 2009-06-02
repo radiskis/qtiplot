@@ -282,6 +282,7 @@ protected slots:
 	void applyLayerFormat();
 	void setLayerDefaultValues();
     void setEquidistantLevels();
+    void showCustomPenColumn(bool on);
 
 private:
 	void applyFormatToLayer(Graph *g);
@@ -418,6 +419,7 @@ private:
 	QCheckBox *boxUseMatrixFormula;
 	ContourLinesEditor *contourLinesEditor;
 	QPushButton *btnSetEquidistantLevels;
+	QRadioButton *customPenBtn;
 };
 
 /*****************************************************************************
