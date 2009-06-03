@@ -11766,6 +11766,7 @@ void ApplicationWindow::createActions()
 	connect(actionRedo, SIGNAL(activated()), this, SLOT(redo()));
 
 	actionCopyWindow = new QAction(QIcon(QPixmap(duplicate_xpm)), tr("&Duplicate"), this);
+	actionCopyWindow->setShortcut(tr("Ctrl+Alt+D"));
 	connect(actionCopyWindow, SIGNAL(activated()), this, SLOT(clone()));
 
 	actionCutSelection = new QAction(QIcon(QPixmap(cut_xpm)), tr("Cu&t Selection"), this);
@@ -12589,6 +12590,7 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionCopyWindow->setMenuText(tr("&Duplicate"));
 	actionCopyWindow->setToolTip(tr("Duplicate window"));
+	actionCopyWindow->setShortcut(tr("Ctrl+Alt+D"));
 
 	actionCutSelection->setMenuText(tr("Cu&t Selection"));
 	actionCutSelection->setToolTip(tr("Cut selection"));
