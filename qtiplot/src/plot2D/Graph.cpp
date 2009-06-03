@@ -28,6 +28,7 @@
  ***************************************************************************/
 
 #include <QVarLengthArray>
+#include <PenStyleBox.h>
 
 static const char *cut_xpm[]={
 "18 18 3 1",
@@ -4646,7 +4647,6 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                 s = (*(++line)).stripWhiteSpace();
                 int defaultPen = s.remove("<DefaultPen>").remove("</DefaultPen>").toInt();
                 if (!defaultPen)
-                    //sp->setDefaultContourPen(Qt::NoPen);
                     sp->setColorMapPen();
                 else {
                     s = (*(++line)).stripWhiteSpace();
@@ -4661,6 +4661,19 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
                 }
                 sp->showContourLineLabels(false);
             }
+		} else if (s.contains("<PenList>")){
+			int levels = sp->contourLevels().size();
+			QList <QPen> penLst;
+			for (int i = 0; i < levels; i++){
+				s = (*(++line)).stripWhiteSpace();
+				if (s.contains("</pen>")){
+					QStringList lst = s.remove("<pen>").remove("</pen>").split(",");
+					if (lst.size() == 3)
+						penLst << QPen(QColor(lst[0]), lst[1].toDouble(), PenStyleBox::penStyle(lst[2].toInt()));
+				}
+			}
+			if (!penLst.isEmpty())
+				sp->setContourPenList(penLst);
         } else if (s.contains("<Labels>")){
         	sp->showContourLineLabels(true);
         	s = (*(++line)).stripWhiteSpace();
@@ -4678,6 +4691,10 @@ void Graph::restoreSpectrogram(ApplicationWindow *app, const QStringList& lst)
 			QFont fnt;
 			fnt.fromString(s);
 			sp->setLabelsFont(fnt);
+		} else if (s.contains("<offset>")){
+			QStringList lst = s.remove("<offset>").remove("</offset>").split(",");
+			if (lst.size() == 3)
+				sp->setLabelOffset(lst[0].toInt(), lst[1].toDouble(), lst[2].toDouble());
         } else if (s.contains("<ColorBar>")){
             s = *(++line);
             int color_axis = s.remove("<axis>").remove("</axis>").stripWhiteSpace().toInt();

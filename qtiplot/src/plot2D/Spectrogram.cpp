@@ -31,6 +31,7 @@
 #include <ColorMapEditor.h>
 #include <ApplicationWindow.h>
 #include <PlotCurve.h>
+#include <PenStyleBox.h>
 
 #include <math.h>
 #include <QPen>
@@ -314,6 +315,14 @@ if (contourLines){
 		s += "\t\t\t<PenColor>" + defaultContourPen().color().name() + "</PenColor>\n";
 		s += "\t\t\t<PenWidth>" + QString::number(defaultContourPen().widthF()) + "</PenWidth>\n";
 		s += "\t\t\t<PenStyle>" + QString::number(defaultContourPen().style() - 1) + "</PenStyle>\n";
+	} else if (!d_color_map_pen && !d_pen_list.isEmpty()){
+		s += "\t\t<PenList>\n";
+		for (int i = 0; i < d_pen_list.size(); i++){
+			QPen pen = d_pen_list[i];
+			s += "\t\t\t<pen>" + pen.color().name () + "," + QString::number(pen.widthF()) + ",";
+			s += QString::number(PenStyleBox::styleIndex(pen.style())) + "</pen>\n";
+		}
+		s += "\t\t</PenList>\n";
 	}
 
 	if (d_show_labels){
@@ -324,6 +333,13 @@ if (contourLines){
 		s += "\t\t\t<xOffset>" + QString::number(d_labels_x_offset) + "</xOffset>\n";
 		s += "\t\t\t<yOffset>" + QString::number(d_labels_y_offset) + "</yOffset>\n";
 		s += "\t\t\t<Font>" + d_labels_font.toString() + "</Font>\n";
+		foreach(PlotMarker *m, d_labels_list){
+			if (m->xLabelOffset() != 0.0 || m->xLabelOffset() != 0.0){
+				s += "\t\t\t<offset>" + QString::number(m->index()) + ",";
+				s += QString::number(m->xLabelOffset()) + ",";
+				s += QString::number(m->yLabelOffset()) + "</offset>\n";
+			}
+		}
 		s += "\t\t</Labels>\n";
 	}
 }
@@ -452,8 +468,6 @@ void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtSc
 
         mrk->setValue(d_graph->invTransform(x_axis, x2),
 					d_graph->invTransform(y_axis, y2));
-
-		//mrk->setValue(lines[i].x(), lines[i].y());
     }
 }
 
@@ -509,6 +523,18 @@ void Spectrogram::setLabelsOffset(int x, int y)
 
     d_labels_x_offset = x;
     d_labels_y_offset = y;
+}
+
+void Spectrogram::setLabelOffset(int index, double x, double y)
+{
+	if (index < 0 || index >= d_labels_list.size())
+		return;
+
+	PlotMarker *m = d_labels_list[index];
+	if (!m)
+		return;
+
+	m->setLabelOffset(x, y);
 }
 
 void Spectrogram::setLabelsRotation(double angle)

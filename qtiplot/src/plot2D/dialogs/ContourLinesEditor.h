@@ -77,6 +77,8 @@ protected slots:
 	bool eventFilter(QObject *object, QEvent *e);
 
 private:
+	void updatePenColumn();
+
 	//! Table displaying the values ranges in the first column and their corresponding pens in the second column
 	QTableWidget *table;
 	QPushButton *insertBtn, *deleteBtn;
@@ -91,6 +93,7 @@ private:
 	ColorButton *penColorBox;
 	PenStyleBox *penStyleBox;
 	DoubleSpinBox *penWidthBox;
+	QCheckBox *applyAllColorBox, *applyAllWidthBox, *applyAllStyleBox;
 
 	int d_pen_index;
 	QList<QPen> d_pen_list;
