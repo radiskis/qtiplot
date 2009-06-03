@@ -237,25 +237,50 @@ void ContourLinesEditor::showPenDialog(int row, int col)
 
 	if (!penDialog){
 		penDialog = new QDialog(this);
-		penDialog->setWindowTitle(tr("QtiPlot - Edit level pen"));
+		penDialog->setWindowTitle(tr("QtiPlot - Edit pen"));
 
-		QFormLayout *pdl = new QFormLayout(penDialog);
+		QGroupBox *gb1 = new QGroupBox();
+		QGridLayout *hl1 = new QGridLayout(gb1);
 
+		hl1->addWidget(new QLabel(tr("Color")), 0, 0);
 		penColorBox = new ColorButton();
 		penColorBox->setColor(pen.color());
-		pdl->addRow(tr("Color"), penColorBox);
+		hl1->addWidget(penColorBox, 0, 1);
 
+		applyAllColorBox = new QCheckBox(tr("Apply to all"));
+		hl1->addWidget(applyAllColorBox, 0, 2);
+
+		hl1->addWidget(new QLabel(tr("Style")), 1, 0);
 		penStyleBox = new PenStyleBox;
 		penStyleBox->setStyle(pen.style());
-		pdl->addRow(tr("Style"), penStyleBox);
+		hl1->addWidget(penStyleBox, 1, 1);
 
+		applyAllStyleBox = new QCheckBox(tr("Apply to all"));
+		hl1->addWidget(applyAllStyleBox, 1, 2);
+
+		hl1->addWidget(new QLabel(tr("Width")), 2, 0);
 		penWidthBox = new DoubleSpinBox();
 		penWidthBox->setValue(pen.widthF());
-		pdl->addRow(tr("Width"), penWidthBox);
+		hl1->addWidget(penWidthBox, 2, 1);
+		hl1->setRowStretch(3, 1);
 
-		QPushButton *acceptPenBtn = new QPushButton(tr("Ok"));
-		pdl->addRow(acceptPenBtn);
+		applyAllWidthBox = new QCheckBox(tr("Apply to all"));
+		hl1->addWidget(applyAllWidthBox, 2, 2);
+
+		QPushButton *acceptPenBtn = new QPushButton(tr("&Ok"));
 		connect(acceptPenBtn, SIGNAL(clicked()), this, SLOT(updatePen()));
+
+		QPushButton *closeBtn = new QPushButton(tr("&Close"));
+		connect(closeBtn, SIGNAL(clicked()), penDialog, SLOT(reject()));
+
+		QHBoxLayout *hl2 = new QHBoxLayout();
+		hl2->addStretch();
+		hl2->addWidget(acceptPenBtn);
+		hl2->addWidget(closeBtn);
+
+		QVBoxLayout *vl = new QVBoxLayout(penDialog);
+		vl->addWidget(gb1);
+		vl->addLayout(hl2);
 	} else {
 		penColorBox->setColor(pen.color());
 		penStyleBox->setStyle(pen.style());
@@ -266,27 +291,60 @@ void ContourLinesEditor::showPenDialog(int row, int col)
 	penDialog->exec();
 }
 
+void ContourLinesEditor::updatePenColumn()
+{
+	table->blockSignals(true);
+	for (int i = 0; i < table->rowCount(); i++){
+		int width = 80;
+		int height = 20;
+    	QPixmap pix(width, height);
+    	pix.fill(Qt::white);
+    	QPainter paint(&pix);
+    	paint.setRenderHint(QPainter::Antialiasing);
+    	paint.setPen(d_pen_list[i]);
+    	paint.drawLine(0, height/2, width, height/2);
+    	paint.end();
+
+    	QLabel *lbl = new QLabel();
+    	lbl->setPixmap(pix);
+
+    	table->setCellWidget(i, 1, lbl);
+	}
+	table->blockSignals(false);
+}
+
 void ContourLinesEditor::updatePen()
 {
 	QPen pen = QPen(penColorBox->color(), penWidthBox->value(), penStyleBox->style());
 
-	int width = 80;
-	int height = 20;
-	QPixmap pix(width, height);
-	pix.fill(Qt::white);
-	QPainter paint(&pix);
-	paint.setRenderHint(QPainter::Antialiasing);
-	paint.setPen(pen);
-	paint.drawLine(0, height/2, width, height/2);
-	paint.end();
-
-	QLabel *lbl = new QLabel();
-	lbl->setPixmap(pix);
-
-	table->setCellWidget(d_pen_index, 1, lbl);
-	penDialog->close();
-
 	d_pen_list[d_pen_index] = pen;
+
+	if (applyAllColorBox->isChecked()){
+		for (int i = 0; i < d_pen_list.size(); i++){
+			QPen p = d_pen_list[i];
+			p.setColor(penColorBox->color());
+			d_pen_list[i] = p;
+		}
+	}
+
+	if (applyAllStyleBox->isChecked()){
+		for (int i = 0; i < d_pen_list.size(); i++){
+			QPen p = d_pen_list[i];
+			p.setStyle(penStyleBox->style());
+			d_pen_list[i] = p;
+		}
+	}
+
+	if (applyAllWidthBox->isChecked()){
+		for (int i = 0; i < d_pen_list.size(); i++){
+			QPen p = d_pen_list[i];
+			p.setWidthF(penWidthBox->value());
+			d_pen_list[i] = p;
+		}
+	}
+
+	updatePenColumn();
+	penDialog->close();
 }
 
 bool ContourLinesEditor::eventFilter(QObject *object, QEvent *e)

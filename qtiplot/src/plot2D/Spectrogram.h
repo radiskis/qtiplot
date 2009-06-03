@@ -95,6 +95,7 @@ public:
 	int labelsXOffset(){return d_labels_x_offset;};
     int labelsYOffset(){return d_labels_y_offset;};
     void setLabelsOffset(int x, int y);
+	void setLabelOffset(int index, double x, double y);
 
 	double labelsRotation(){return d_labels_angle;};
     void setLabelsRotation(double angle);
