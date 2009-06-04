@@ -1635,6 +1635,38 @@ s.setLabelsOffset(int x, int y) # offset values for all labels in % of the text 
 </programlisting>
 </sect3>
 
+<sect3 id = "Python-Histograms">
+<title>Histograms</title>
+
+As you have seen in the previous section, it is possible create 2D histograms from matrices or tables.
+Here's a small script showing how to customize a histogram and how to get access to the
+statistical information in the histogram (bin positions, counts, mean, standard deviation, etc...):
+<programlisting>
+m = newMatrix("TestHistogram", 1000, 800)
+m.setFormula("x*y")
+m.calculate()
+
+g = newGraph().activeLayer()
+h = g.addHistogram(m)
+h.setBinning(10, 1, 90) # the bin size is set to 10, data range is set to [1, 90]
+h.loadData() # update the histogram
+g.replot() # update the display
+
+# print histogram values:
+for i in range (0, h.dataSize()):
+	print i, "Bin start = ", h.x(i), "counts = ", h.y(i)
+
+# print statistic information:
+print "Standard deviation = ", h.standardDeviation()
+print "Mean = ", h.mean()
+</programlisting>
+
+You can also enable autobinning (a default number of ten bins will be used):
+<programlisting>
+ h.setAutoBinning()
+ </programlisting>
+</sect3>
+
 <sect3 id="Python-Title">
 <title>The plot title</title>
 <programlisting>

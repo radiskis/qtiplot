@@ -660,6 +660,107 @@ private:
   EllipseWidget(const EllipseWidget&);
 };
 
+class QwtSymbol /PyName = PlotSymbol/
+{
+%TypeHeaderCode
+#include <qwt_symbol.h>
+%End
+	public:
+	enum Style
+	{
+		NoSymbol = -1,
+		Ellipse,
+		Rect,
+		Diamond,
+		Triangle,
+		DTriangle,
+		UTriangle,
+		LTriangle,
+		RTriangle,
+		Cross,
+		XCross,
+		HLine,
+		VLine,
+		Star1,
+		Star2,
+		Hexagon,
+
+		StyleCnt
+	};
+
+	QwtSymbol();
+	QwtSymbol(Style st, const QBrush &bd, const QPen &pn, const QSize &s);
+
+	void setSize(const QSize &s);
+	void setSize(int a, int b = -1);
+	void setBrush(const QBrush& b);
+	void setPen(const QPen &p);
+	void setStyle (Style s);
+
+	const QBrush& brush() const;
+	const QPen& pen() const;
+	const QSize& size() const;
+	Style style() const;
+
+	private:
+		QwtSymbol(const QwtSymbol&);
+};
+
+class QwtPlotCurve
+{
+%TypeHeaderCode
+#include <qwt_plot_curve.h>
+%End
+	public:
+		int dataSize() const;
+		double x(int i) const;
+		double y(int i) const;
+		double minXValue() const;
+		double maxXValue() const;
+		double minYValue() const;
+		double maxYValue() const;
+
+		void setPen(const QPen &);
+		const QPen &pen() const;
+
+		void setBrush(const QBrush &);
+		const QBrush &brush() const;
+
+		void setSymbol(const QwtSymbol &s);
+		const QwtSymbol& symbol() const;
+
+	private:
+		QwtPlotCurve(const QwtPlotCurve&);
+};
+
+class QwtHistogram : QwtPlotCurve /PyName=Histogram/
+{
+%TypeHeaderCode
+#include "src/plot2D/QwtHistogram.h"
+%End
+public:
+	QwtHistogram(Table *t, const QString& name, int startRow = 0, int endRow = -1);
+	QwtHistogram(Matrix *m);
+
+	void setBinning(double size, double begin, double end);
+	void setAutoBinning(bool autoBin = true);
+	double begin();
+	double end();
+	double binSize();
+
+	void loadData();
+
+	double mean();
+	double standardDeviation();
+	double minimum();
+	double maximum();
+
+	Matrix* matrix();
+
+private:
+	QwtHistogram(const QwtHistogram&);
+};
+
 class QwtPlotSpectrogram // : QwtPlotItem
 {
 %TypeHeaderCode
@@ -849,6 +950,8 @@ public:
   void removeCurve(const QString&);
   void deleteFitCurves();
   int curveCount() /PyName=numCurves/;
+  QwtPlotCurve* curve(int index);
+  QwtPlotCurve* curve(const QString &title);
 
   void setCurveLineColor(int, int);
   void setCurveLineStyle(int, Qt::PenStyle);
@@ -879,7 +982,7 @@ public:
 		  int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 		  bool through = true, bool minus = true, bool plus = true);
 
-  void addHistogram(Matrix*);
+  QwtHistogram* addHistogram(Matrix*);
   Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
 
   ArrowMarker* addArrow(ArrowMarker*);

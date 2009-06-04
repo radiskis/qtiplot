@@ -42,7 +42,13 @@ public:
 	QwtDoubleRect boundingRect() const;
 
 	void setBinning(bool autoBin, double size, double begin, double end);
+	//! Convenience function. It disables autobinning
+	void setBinning(double binSize, double begin, double end);
+
 	bool autoBinning(){return d_autoBin;};
+	//! Convenience function to be used in scripts
+	void setAutoBinning(bool autoBin = true);
+
 	double begin(){return d_begin;};
 	double end(){return d_end;};
 	double binSize(){return d_bin_size;};

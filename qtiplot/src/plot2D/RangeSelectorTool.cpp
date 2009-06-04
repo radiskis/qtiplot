@@ -157,7 +157,8 @@ void RangeSelectorTool::setActivePoint(int point)
 void RangeSelectorTool::emitStatusText()
 {
     QLocale locale = d_graph->multiLayer()->locale();
-    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function){
+	if (((PlotCurve *)d_selected_curve)->type() == Graph::Function ||
+		((PlotCurve *)d_selected_curve)->type() == Graph::Histogram){
          emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
 			.arg(d_selected_curve->title().text())
