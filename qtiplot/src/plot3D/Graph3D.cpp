@@ -1186,7 +1186,7 @@ QStringList Graph3D::scaleTicks()
 void Graph3D::setScale(int axis, double start, double end, int majorTicks, int minorTicks, Qwt3D::SCALETYPE type)
 {
 	double xMin, xMax, yMin, yMax, zMin, zMax;
-	int baseAxis;
+	int baseAxis = X1;
 
 	sp->makeCurrent();
 	sp->coordinates()->axes[X1].limits(xMin, xMax);
@@ -2792,17 +2792,20 @@ void Graph3D::findBestLayout()
 {
   	double start, end;
   	sp->coordinates()->axes[X1].limits (start, end);
-  	double xScale = 1/fabs(end-start);
+  	double xScale = 1/fabs(end - start);
 
   	sp->coordinates()->axes[Y1].limits (start, end);
-  	double yScale = 1/fabs(end-start);
+  	double yScale = 1/fabs(end - start);
 
   	sp->coordinates()->axes[Z1].limits (start, end);
-  	double zScale = 1/fabs(end-start);
+  	double zScale = 1/fabs(end - start);
 
-  	double d = (sp->hull().maxVertex-sp->hull().minVertex).length();
+  	double d = (sp->hull().maxVertex - sp->hull().minVertex).length();
   	sp->setScale(xScale, yScale, zScale);
+
   	sp->setZoom(d/sqrt(3.));
+
+	sp->setShift(0, 0, 0);
 
   	double majl = 0.1/yScale;
   	setAxisTickLength(0, majl, 0.6*majl);

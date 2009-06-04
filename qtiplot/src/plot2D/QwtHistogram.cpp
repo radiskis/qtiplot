@@ -112,6 +112,22 @@ void QwtHistogram::setBinning(bool autoBin, double size, double begin, double en
 	d_end = end;
 }
 
+void QwtHistogram::setBinning(double binSize, double begin, double end)
+{
+	d_autoBin = false;
+	d_bin_size = binSize;
+	d_begin = begin;
+	d_end = end;
+}
+
+void QwtHistogram::setAutoBinning(bool autoBin)
+{
+	if (d_autoBin == autoBin)
+		return;
+
+	d_autoBin = autoBin;
+}
+
 void QwtHistogram::loadData()
 {
     if (d_matrix){
