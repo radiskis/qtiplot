@@ -2,7 +2,7 @@
     File                 : QwtHistogram.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 - 2008 by Ion Vasilief
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Histogram class
 

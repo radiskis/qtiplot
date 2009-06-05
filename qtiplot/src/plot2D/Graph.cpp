@@ -2869,6 +2869,9 @@ void Graph::insertPlotItem(QwtPlotItem *i, int type)
 bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWidth,
 							int sSize, int startRow, int endRow)
 {
+	if (!w)
+		return false;
+
 	if (style == Pie)
 		plotPie(w, names[0], startRow, endRow);
 	else if (style == Box)
