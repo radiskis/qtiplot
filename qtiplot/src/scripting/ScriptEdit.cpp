@@ -492,7 +492,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 	QString selectedFilter;
 	QString fn;
 	if (filename.isEmpty())
-		fn = QFileDialog::getSaveFileName(this, tr("Save Text to File"), scriptsDirPath, filter, &selectedFilter);
+		fn = ApplicationWindow::getSaveFileName(this, tr("Save Text to File"), scriptsDirPath, filter, &selectedFilter);
 	else
 		fn = filename;
 

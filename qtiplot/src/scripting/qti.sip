@@ -942,9 +942,14 @@ public:
 %End
   bool addCurve(Table*, const QString&, int=0, double=1, int=3, int=0, int=-1);
 %MethodCode
-  QStringList l;
-  l << *a1;
-  sipRes = sipCpp->addCurves(a0, l, a2, a3, a4, a5, a6);
+	if (a0 == 0) {
+	   sipIsErr = 1;
+	   PyErr_Format(PyExc_ValueError, "Invalid table in addCurve().");
+	} else {
+	  QStringList l;
+	  l << *a1;
+	  sipRes = sipCpp->addCurves(a0, l, a2, a3, a4, a5, a6);
+	}
 %End
   void removeCurve(int);
   void removeCurve(const QString&);
@@ -1306,25 +1311,35 @@ public:
   Note* currentNote();
   MultiLayer *multilayerPlot(Table*, SIP_PYTUPLE, int=1) /PyName=plot/;
 %MethodCode
-  QStringList l;
-  int n = PyTuple_Size(a1);
-  for (int i=0; i<n; i++) {
-    PyObject *str = PyObject_Str(PyTuple_GET_ITEM(a1,i));
-    if (str) {
-      l << PyString_AsString(str);
-		Py_DECREF(str);
-	 } else {
-      sipIsErr = 1;
-      break;
-    }
-  }
-  sipRes = sipCpp->multilayerPlot(a0, l, a2);
+	if (a0 == 0) {
+	   sipIsErr = 1;
+	   PyErr_Format(PyExc_ValueError, "Invalid table in argument to plot().");
+	} else {
+	  QStringList l;
+	  int n = PyTuple_Size(a1);
+	  for (int i=0; i<n; i++) {
+		PyObject *str = PyObject_Str(PyTuple_GET_ITEM(a1,i));
+		if (str) {
+		  l << PyString_AsString(str);
+			Py_DECREF(str);
+		 } else {
+		  sipIsErr = 1;
+		  break;
+		}
+	  }
+	  sipRes = sipCpp->multilayerPlot(a0, l, a2);
+	}
 %End
   MultiLayer *multiLayerPlot(Table*, const QString&, int=1) /PyName=plot/;
 %MethodCode
-  QStringList l;
-  l << *a1;
-  sipRes = sipCpp->multilayerPlot(a0, l, a2);
+	if (a0 == 0) {
+	   sipIsErr = 1;
+	   PyErr_Format(PyExc_ValueError, "Invalid table in argument to plot().");
+	} else {
+	  QStringList l;
+	  l << *a1;
+	  sipRes = sipCpp->multilayerPlot(a0, l, a2);
+	}
 %End
 
 	Matrix* importImage(const QString&, bool);

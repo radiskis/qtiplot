@@ -698,7 +698,7 @@ void FitDialog::saveUserFunction()
 
 		QString filter = tr("QtiPlot fit model")+" (*.fit);;";
 		filter += tr("All files")+" (*.*)";
-		QString fn = QFileDialog::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
+		QString fn = ApplicationWindow::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
                                 app->fitModelsPath + "/" + name, filter);
 		if (!fn.isEmpty()){
             QFileInfo fi(fn);
@@ -1497,7 +1497,7 @@ void FitDialog::saveInitialGuesses()
     else {
 		QString filter = tr("QtiPlot fit model") + " (*.fit);;";
 		filter += tr("All files") + " (*.*)";
-		QString fn = QFileDialog::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
+		QString fn = ApplicationWindow::getSaveFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
                                 app->fitModelsPath + "/" + d_current_fit->objectName(), filter);
 		if (!fn.isEmpty()){
             QFileInfo fi(fn);

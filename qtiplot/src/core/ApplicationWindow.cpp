@@ -2358,6 +2358,9 @@ MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 
 MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colList, int style, int startRow, int endRow)
 {//used when plotting selected columns
+	if (!w)
+		return 0;
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
@@ -5433,6 +5436,31 @@ bool ApplicationWindow::saveProject(bool compress)
 	return true;
 }
 
+QString ApplicationWindow::getSaveFileName(QWidget *parent, const QString & caption,
+			const QString & dir, const QString & filter, QString * selectedFilter)
+{
+	QFileDialog fd(parent, caption, dir, filter);
+	fd.setAcceptMode(QFileDialog::AcceptSave);
+	fd.setConfirmOverwrite(true);
+	fd.setFileMode(QFileDialog::AnyFile);
+
+	/*QList<QUrl> urls;
+	urls << QUrl::fromLocalFile("");
+	urls << QUrl::fromLocalFile(QDir::homePath());
+	urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+	urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+	fd.setSidebarUrls(urls);*/
+
+	if (fd.exec() != QDialog::Accepted )
+		return QString();
+
+	if (fd.selectedFiles().isEmpty())
+		return QString();
+
+	*selectedFilter = fd.selectedNameFilter();
+	return fd.selectedFiles()[0];
+}
+
 void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 {
 #ifdef QTIPLOT_DEMO
@@ -5442,11 +5470,11 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 
 	QString fn = fileName;
 	if (fileName.isEmpty()){
-		QString filter = tr("QtiPlot project")+" (*.qti);;";
-		filter += tr("Compressed QtiPlot project")+" (*.qti.gz)";
+		QString filter = tr("QtiPlot project") + " (*.qti);;";
+		filter += tr("Compressed QtiPlot project") + " (*.qti.gz)";
 
 		QString selectedFilter;
-		fn = QFileDialog::getSaveFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter);
+		fn = getSaveFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter);
 		if (selectedFilter.contains(".gz"))
 			compress = true;
 	}
@@ -5511,11 +5539,11 @@ void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 			filter = tr("QtiPlot 3D Surface Template")+" (*.qst)";
 
 		QString selectedFilter;
-		fn = QFileDialog::getSaveFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->objectName(), filter, &selectedFilter);
+		fn = getSaveFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->objectName(), filter, &selectedFilter);
 
 		if (!fn.isEmpty()){
 			QFileInfo fi(fn);
-			workingDir = fi.dirPath(true);
+			templatesDir = fi.dirPath(true);
 			QString baseName = fi.fileName();
 			if (!baseName.contains(".")){
 				selectedFilter = selectedFilter.right(5).left(4);
@@ -5838,7 +5866,7 @@ void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep
 		return;
 
 	QString selectedFilter;
-	QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"),
+	QString fname = getSaveFileName(this, tr("Choose a filename to save under"),
                     asciiDirPath + "/" + w->objectName(), "*.txt;;*.dat;;*.DAT", &selectedFilter);
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
@@ -7000,7 +7028,7 @@ void ApplicationWindow::exportPDF()
 		return;
 	}
 
-    QString fname = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"),
+    QString fname = getSaveFileName(this, tr("Choose a filename to save under"),
 					imagesDirPath + "/" + w->objectName(), "*.pdf");
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
@@ -11751,7 +11779,7 @@ void ApplicationWindow::createActions()
 	actionSaveTemplate = new QAction(QIcon(QPixmap(save_template_xpm)), tr("Save As &Template..."), this);
 	connect(actionSaveTemplate, SIGNAL(activated()), this, SLOT(saveAsTemplate()));
 
-	actionSaveNote = new QAction(tr("Save Note As..."), this);
+	actionSaveNote = new QAction(QIcon(QPixmap(filesaveas_xpm)), tr("Save Note As..."), this);
 	connect(actionSaveNote, SIGNAL(activated()), this, SLOT(saveNoteAs()));
 
 	actionLoad = new QAction(QIcon(QPixmap(import_xpm)), tr("&Import ASCII..."), this);
@@ -14150,7 +14178,7 @@ void ApplicationWindow::saveFolderAsProject(Folder *f)
 	filter += tr("Compressed QtiPlot project")+" (*.qti.gz)";
 
 	QString selectedFilter;
-	QString fn = QFileDialog::getSaveFileName(this, tr("Save project as"), workingDir, filter, &selectedFilter);
+	QString fn = getSaveFileName(this, tr("Save project as"), workingDir, filter, &selectedFilter);
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		workingDir = fi.dirPath(true);
@@ -14181,9 +14209,9 @@ void ApplicationWindow::showFolderPopupMenu(Q3ListViewItem *it, const QPoint &p,
 	cm.insertSeparator();
 	cm.insertItem(QPixmap(append_file_xpm), tr("App&end Project..."), this, SLOT(appendProject()));
 	if (((FolderListItem *)it)->folder()->parent())
-		cm.insertItem(tr("Save &As Project..."), this, SLOT(saveAsProject()));
+		cm.insertItem(QIcon(QPixmap(filesaveas_xpm)), tr("Save &As Project..."), this, SLOT(saveAsProject()));
 	else
-		cm.insertItem(QIcon(QPixmap(filesaveas_xpm)), tr("Save Project &As..."), this, SLOT(saveProjectAs()));
+		cm.addAction(actionSaveProjectAs);
 	cm.insertSeparator();
 
 	if (fromFolders && show_windows_policy != HideAll)
