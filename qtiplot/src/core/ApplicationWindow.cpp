@@ -1061,9 +1061,9 @@ void ApplicationWindow::initMainMenu()
 	graph = new QMenu(this);
 	graph->setObjectName("graphMenu");
 	graph->setCheckable(true);
-	graph->addAction(actionAddErrorBars);
 	graph->addAction(actionShowCurvesDialog);
 	graph->addAction(actionAddFunctionCurve);
+	graph->addAction(actionAddErrorBars);
 	graph->addAction(actionNewLegend);
 	graph->insertSeparator();
 	graph->addAction(actionAddFormula);
@@ -5444,13 +5444,6 @@ QString ApplicationWindow::getSaveFileName(QWidget *parent, const QString & capt
 	fd.setConfirmOverwrite(true);
 	fd.setFileMode(QFileDialog::AnyFile);
 
-	/*QList<QUrl> urls;
-	urls << QUrl::fromLocalFile("");
-	urls << QUrl::fromLocalFile(QDir::homePath());
-	urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-	urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-	fd.setSidebarUrls(urls);*/
-
 	if (fd.exec() != QDialog::Accepted )
 		return QString();
 
@@ -9033,60 +9026,84 @@ void ApplicationWindow::showGraphContextMenu()
 	if (!plot)
 		return;
 
-	QMenu cm(this);
-	QMenu exports(this);
-	QMenu copy(this);
-	QMenu prints(this);
 	Graph* ag = (Graph*)plot->activeLayer();
+	if (!ag)
+		return;
 
-	if (ag->isPiePlot())
-		cm.insertItem(tr("Re&move Pie Curve"),ag, SLOT(removePie()));
-	else {
+	QMenu cm(this);
+
+	QMenu addMenu(this);
+	if (ag->isPiePlot()){
+		cm.addAction(tr("Re&move Pie Curve"),ag, SLOT(removePie()));
+		addMenu.addAction(actionNewLegend);
+	} else {
 		if (ag->visibleCurves() != ag->curveCount()){
 			cm.addAction(actionShowAllCurves);
-			cm.insertSeparator();
+			cm.addSeparator();
 		}
-		cm.addAction(actionShowCurvesDialog);
-		cm.addAction(actionAddFunctionCurve);
+
+		addMenu.addAction(actionShowCurvesDialog);
+		addMenu.addAction(actionAddFunctionCurve);
+		addMenu.addAction(actionAddErrorBars);
+		addMenu.addAction(actionNewLegend);
+		addMenu.addSeparator();
+	}
+
+	addMenu.addAction(actionAddFormula);
+	addMenu.addAction(actionAddText);
+	addMenu.addAction(btnArrow);
+	addMenu.addAction(btnLine);
+	addMenu.addAction(actionAddRectangle);
+	addMenu.addAction(actionAddEllipse);
+	addMenu.addAction(actionTimeStamp);
+	addMenu.addAction(actionAddImage);
+	addMenu.addSeparator();
+	addMenu.addAction(actionAddLayer);
+	addMenu.addAction(actionAddInsetLayer);
+	addMenu.addAction(actionAddInsetCurveLayer);
+	cm.insertItem(tr("&Add"), &addMenu);
+
+	if (!ag->isPiePlot()){
 		cm.insertItem(tr("Anal&yze"), analysisMenu);
+		cm.insertItem(tr("&Data"), plotDataMenu);
 	}
+	cm.addSeparator();
 
-	cm.insertItem(tr("&Data"), plotDataMenu);
-
-	if (lastCopiedLayer){
-		cm.insertSeparator();
-		cm.insertItem(QPixmap(paste_xpm), tr("&Paste Layer"), this, SLOT(pasteSelection()));
-	} else if (d_enrichement_copy){
-		cm.insertSeparator();
-		if (qobject_cast<LegendWidget *>(d_enrichement_copy))
-			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Text"), plot, SIGNAL(pasteMarker()));
-		else if (qobject_cast<TexWidget *>(d_enrichement_copy))
-			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Tex Formula"), plot, SIGNAL(pasteMarker()));
-		else if (qobject_cast<ImageWidget *>(d_enrichement_copy))
-			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Image"), plot, SIGNAL(pasteMarker()));
-		else if (qobject_cast<RectangleWidget *>(d_enrichement_copy))
-			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Rectangle"), plot, SIGNAL(pasteMarker()));
-		else if (qobject_cast<EllipseWidget *>(d_enrichement_copy))
-			cm.insertItem(QPixmap(paste_xpm), tr("&Paste Ellipse"), plot, SIGNAL(pasteMarker()));
-	} else if (d_arrow_copy){
-		cm.insertSeparator();
-		cm.insertItem(QPixmap(paste_xpm), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));
-	}
-	cm.insertSeparator();
-	copy.insertItem(tr("&Layer"), this, SLOT(copyActiveLayer()));
-	copy.insertItem(tr("&Window"), plot, SLOT(copyAllLayers()));
+	QMenu copy(this);
+	copy.addAction(tr("&Layer"), this, SLOT(copyActiveLayer()));
+	copy.addAction(tr("&Window"), plot, SLOT(copyAllLayers()));
 	cm.insertItem(QPixmap(copy_xpm), tr("&Copy"), &copy);
 
-	exports.insertItem(tr("&Layer"), this, SLOT(exportLayer()));
-	exports.insertItem(tr("&Window"), this, SLOT(exportGraph()));
+	if (lastCopiedLayer)
+		cm.addAction(QPixmap(paste_xpm), tr("&Paste Layer"), this, SLOT(pasteSelection()));
+	else if (d_enrichement_copy){
+		if (qobject_cast<LegendWidget *>(d_enrichement_copy))
+			cm.addAction(QPixmap(paste_xpm), tr("&Paste Text"), plot, SIGNAL(pasteMarker()));
+		else if (qobject_cast<TexWidget *>(d_enrichement_copy))
+			cm.addAction(QPixmap(paste_xpm), tr("&Paste Tex Formula"), plot, SIGNAL(pasteMarker()));
+		else if (qobject_cast<ImageWidget *>(d_enrichement_copy))
+			cm.addAction(QPixmap(paste_xpm), tr("&Paste Image"), plot, SIGNAL(pasteMarker()));
+		else if (qobject_cast<RectangleWidget *>(d_enrichement_copy))
+			cm.addAction(QPixmap(paste_xpm), tr("&Paste Rectangle"), plot, SIGNAL(pasteMarker()));
+		else if (qobject_cast<EllipseWidget *>(d_enrichement_copy))
+			cm.addAction(QPixmap(paste_xpm), tr("&Paste Ellipse"), plot, SIGNAL(pasteMarker()));
+	} else if (d_arrow_copy)
+		cm.addAction(QPixmap(paste_xpm), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));
+
+	QMenu exports(this);
+	exports.addAction(tr("&Layer"), this, SLOT(exportLayer()));
+	exports.addAction(tr("&Window"), this, SLOT(exportGraph()));
 	cm.insertItem(tr("E&xport"),&exports);
 
-	prints.insertItem(tr("&Layer"), plot, SLOT(printActiveLayer()));
-	prints.insertItem(tr("&Window"), plot, SLOT(print()));
+	QMenu prints(this);
+	prints.addAction(tr("&Layer"), plot, SLOT(printActiveLayer()));
+	prints.addAction(tr("&Window"), plot, SLOT(print()));
 	cm.insertItem(QPixmap(fileprint_xpm), tr("&Print"),&prints);
-	cm.insertSeparator();
-	cm.insertItem(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
-	cm.insertSeparator();
+
+	cm.addSeparator();
+
+	cm.addAction(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
+	cm.addSeparator();
 	cm.addAction(actionDeleteLayer);
 	cm.exec(QCursor::pos());
 }
