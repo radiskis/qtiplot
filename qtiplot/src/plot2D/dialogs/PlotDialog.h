@@ -345,10 +345,10 @@ private:
     QComboBox* boxConnect;
     PenStyleBox* boxLineStyle;
     DoubleSpinBox *boxLineWidth, *boxPenWidth;
-    ColorBox* boxLineColor, *boxAreaColor;
+    ColorButton* boxLineColor, *boxAreaColor;
     QWidget* symbolPage;
     QSpinBox* boxSymbolSize;
-    ColorBox* boxSymbolColor,*boxFillColor;
+    ColorButton *boxSymbolColor, *boxFillColor;
     SymbolBox* boxSymbolStyle;
     PatternBox *boxPattern;
 	QTabWidget* privateTabWidget;
@@ -357,8 +357,7 @@ private:
     QCheckBox* plusBox;
     QCheckBox* minusBox;
     QCheckBox* xBox;
-    ColorButton *colorBox, *levelsColorBox;
-	ColorBox* vectColorBox;
+    ColorButton *colorBox, *levelsColorBox, *vectColorBox;
     DoubleSpinBox* widthBox;
     QComboBox* capBox;
     QCheckBox* throughBox;
@@ -376,7 +375,7 @@ private:
 	QCheckBox *filledHeadBox;
 	QSpinBox *boxCoef, *boxWhiskersCoef;
 	QCheckBox *boxFillSymbols, *boxFillSymbol;
-	ColorBox *boxPercFillColor, *boxEdgeColor;
+	ColorButton *boxPercFillColor, *boxEdgeColor;
 	QLabel 	*whiskerCoeffLabel, *whiskerRangeLabel, *boxCoeffLabel;
 	QLabel *boxRangeLabel, *whiskerCntLabel, *boxCntLabel;
 	QGroupBox *GroupBoxVectEnd;
@@ -397,7 +396,7 @@ private:
     QCheckBox *boxLabelsWhiteOut;
     QPushButton *btnLabelsFont;
     QComboBox *boxLabelsAlign, *boxLabelsColumn;
-    ColorBox* boxLabelsColor;
+    ColorButton* boxLabelsColor;
     QWidget *labelsPage;
 
     QGroupBox *pieAutoLabelsBox, *boxPieWedge;

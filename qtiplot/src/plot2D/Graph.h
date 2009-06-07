@@ -77,14 +77,14 @@ class LegendWidget;
 
 //! Structure containing curve layout parameters
 typedef struct{
-  int lCol;        //!< line color
+  QColor lCol;     //!< line color
   float lWidth;    //!< line width
   int lStyle;      //!< line style
   int filledArea;  //!< flag: toggles area filling under curve
-  int aCol;        //!< curve area color
+  QColor aCol;     //!< curve area color
   int aStyle;      //!< area filling style
-  int symCol;      //!< symbol outline color
-  int fillCol;     //!< symbol fill color
+  QColor symCol;   //!< symbol outline color
+  QColor fillCol;  //!< symbol fill color
   float penWidth;  //!< symbol outline width
   int sSize;       //!< symbol size
   int sType;       //!< symbol type (shape)

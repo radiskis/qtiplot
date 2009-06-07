@@ -2195,23 +2195,23 @@ QString Graph::saveCurveLayout(int index)
 			s+="6\t";
 		else
 			s+=QString::number(c->style())+"\t";
-		s+=QString::number(ColorBox::colorIndex(c->pen().color()))+"\t";
+		s += c->pen().color().name() + "\t";
 		s+=QString::number(c->pen().style()-1)+"\t";
 		s+=QString::number(c->pen().widthF())+"\t";
 
 		const QwtSymbol symbol = c->symbol();
-		s+=QString::number(symbol.size().width())+"\t";
-		s+=QString::number(SymbolBox::symbolIndex(symbol.style()))+"\t";
-		s+=QString::number(ColorBox::colorIndex(symbol.pen().color()))+"\t";
+		s += QString::number(symbol.size().width()) + "\t";
+		s += QString::number(SymbolBox::symbolIndex(symbol.style())) + "\t";
+		s += symbol.pen().color().name() + "\t";
 		if (symbol.brush().style() != Qt::NoBrush)
-			s+=QString::number(ColorBox::colorIndex(symbol.brush().color()))+"\t";
+			s += symbol.brush().color().name() + "\t";
 		else
-			s+=QString::number(-1)+"\t";
+			s += QString::number(-1) + "\t";
 
 		bool filled = c->brush().style() == Qt::NoBrush ? false : true;
 		s+=QString::number(filled)+"\t";
 
-		s+=QString::number(ColorBox::colorIndex(c->brush().color()))+"\t";
+		s += c->brush().color().name() + "\t";
 		s+=QString::number(PatternBox::patternIndex(c->brush().style()))+"\t";
 		if (style <= LineSymbols || style == Box)
 			s+=QString::number(symbol.pen().widthF())+"\t";
@@ -2618,12 +2618,12 @@ CurveLayout Graph::initCurveLayout()
 	cl.sSize = 3;
 	cl.sType = 0;
 	cl.filledArea = 0;
-	cl.aCol = 0;
+	cl.aCol = Qt::black;
 	cl.aStyle = 0;
-	cl.lCol = 0;
+	cl.lCol = Qt::black;
 	cl.penWidth = 1;
-	cl.symCol = 0;
-	cl.fillCol = 0;
+	cl.symCol = Qt::black;
+	cl.fillCol = Qt::black;
 	return cl;
 }
 
@@ -2635,9 +2635,9 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 	int color;
 	guessUniqueCurveLayout(color, cl.sType);
 
-  	cl.lCol = color;
-  	cl.symCol = color;
-  	cl.fillCol = color;
+  	cl.lCol = ColorBox::color(color);
+  	cl.symCol = ColorBox::color(color);
+  	cl.fillCol = ColorBox::color(color);
 
 	if (style == Graph::Line)
 		cl.sType = 0;
@@ -2652,8 +2652,8 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 		cl.connectType = 5;
 	else if (curves && (style == Graph::VerticalBars || style == Graph::HorizontalBars)){
 		cl.filledArea = 1;
-		cl.lCol = 0;//black color pen
-		cl.aCol = i + 1;
+		cl.lCol = Qt::black;
+		cl.aCol = ColorBox::color(i + 1);
 		cl.sType = 0;
 		QwtBarCurve *b = (QwtBarCurve*)curve(i);
 		if (b && (b->type() == VerticalBars || b->type() == HorizontalBars)){
@@ -2662,13 +2662,13 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 		}
 	} else if (style == Graph::Histogram){
 		cl.filledArea = 1;
-		cl.lCol = i + 1;//start with red color pen
-		cl.aCol = i + 1; //start with red fill color
+		cl.lCol = ColorBox::color(i + 1);//start with red color pen
+		cl.aCol = ColorBox::color(i + 1); //start with red fill color
 		cl.aStyle = 4;
 		cl.sType = 0;
 	} else if (style == Graph::Area){
 		cl.filledArea = 1;
-		cl.aCol = color;
+		cl.aCol = ColorBox::color(color);
 		cl.sType = 0;
 		cl.connectType = 1;
 	}
@@ -2684,14 +2684,14 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 	if (d_curves.size() < index)
 		return;
 
-	QPen pen = QPen(ColorBox::color(cL->symCol), cL->penWidth, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+	QPen pen = QPen(cL->symCol, cL->penWidth, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
 	pen.setCosmetic(true);
-	if (cL->fillCol != -1)
-		c->setSymbol(QwtSymbol(SymbolBox::style(cL->sType), QBrush(ColorBox::color(cL->fillCol)), pen, QSize(cL->sSize, cL->sSize)));
+	if (cL->fillCol.isValid())
+		c->setSymbol(QwtSymbol(SymbolBox::style(cL->sType), QBrush(cL->fillCol), pen, QSize(cL->sSize, cL->sSize)));
 	else
 		c->setSymbol(QwtSymbol(SymbolBox::style(cL->sType), QBrush(), pen, QSize(cL->sSize, cL->sSize)));
 
-	pen = QPen(ColorBox::color(cL->lCol), cL->lWidth, getPenStyle(cL->lStyle), Qt::FlatCap, Qt::MiterJoin);
+	pen = QPen(cL->lCol, cL->lWidth, getPenStyle(cL->lStyle), Qt::FlatCap, Qt::MiterJoin);
 	pen.setCosmetic(true);
 	c->setPen(pen);
 
@@ -2712,7 +2712,7 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 		break;
 	}
 
-	QBrush brush = QBrush(ColorBox::color(cL->aCol));
+	QBrush brush = QBrush(cL->aCol);
 	if (cL->filledArea)
 		brush.setStyle(PatternBox::brushStyle(cL->aStyle));
 	else

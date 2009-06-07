@@ -933,7 +933,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				color=_curve.symbolColor.regular;
 				if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&_curve.symbolColor.type == Origin::Color::Automatic)//0xF7 -Automatic color
 					color=++auto_color;
-				cl.symCol=color;
+				cl.symCol = ColorBox::color(color);
 				switch(_curve.symbolType&0xFF)
 				{
 				case 0: //NoSymbol
@@ -990,7 +990,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				switch(_curve.symbolType>>8)
 				{
 				case 0:
-					cl.fillCol=color;
+					cl.fillCol = ColorBox::color(color);
 					break;
 				case 1:
 				case 2:
@@ -1001,15 +1001,15 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					color=_curve.symbolFillColor.regular;
 					if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area)&&_curve.symbolFillColor.type==Origin::Color::Automatic)//0xF7 -Automatic color
 						color=17;// depend on Origin settings - not stored in file
-					cl.fillCol=color;
+					cl.fillCol = ColorBox::color(color);
 					break;
 				default:
-					cl.fillCol=-1;
+					cl.fillCol = QColor();
 				}
 
 				cl.lWidth = ceil(_curve.lineWidth);
 				color=_curve.lineColor.regular;
-				cl.lCol=(_curve.lineColor.type==Origin::Color::Automatic?0:color); //0xF7 -Automatic color
+				cl.lCol = ColorBox::color(_curve.lineColor.type==Origin::Color::Automatic?0:color); //0xF7 -Automatic color
 				int linestyle=_curve.lineStyle;
 				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie) ? 1 : 0;
 				if(cl.filledArea)
@@ -1021,9 +1021,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					if(style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie)
 					{
 						color = _curve.fillAreaPatternBorderColor;
-						cl.lCol = (color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
+						cl.lCol = ColorBox::color(color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
 						color = (cl.aStyle == 0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
-						cl.aCol = (color.type == Origin::Color::Automatic ? cl.lCol : color.regular); //0xF7 -Automatic color
+						cl.aCol = (color.type == Origin::Color::Automatic ? cl.lCol : ColorBox::color(color.regular)); //0xF7 -Automatic color
 						cl.lWidth = ceil(_curve.fillAreaPatternBorderWidth);
 						linestyle = _curve.fillAreaPatternBorderStyle;
 					}
@@ -1052,7 +1052,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				{
 					QwtPieCurve *p = (QwtPieCurve*)graph->curve(c);
 					cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle];
-					p->setPen(QPen(ColorBox::color(cl.lCol), cl.lWidth, (Qt::PenStyle)cl.lStyle));
+					p->setPen(QPen(cl.lCol, cl.lWidth, (Qt::PenStyle)cl.lStyle));
 					if(_curve.fillAreaColor.type == Origin::Color::Increment)
 						p->setFirstColor(_curve.fillAreaColor.starting);
 					//geometry
@@ -1074,7 +1074,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				}
 				else if(style == Graph::VectXYXY || style == Graph::VectXYAM)
 				{
-					graph->updateVectorsLayout(c, ColorBox::color(cl.symCol), ceil(_curve.vector.width),
+					graph->updateVectorsLayout(c, cl.symCol, ceil(_curve.vector.width),
 						floor(_curve.vector.arrowLenght*fVectorArrowScaleFactor + 0.5), _curve.vector.arrowAngle, _curve.vector.arrowClosed, _curve.vector.position);
 				}
 

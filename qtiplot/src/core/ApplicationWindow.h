@@ -185,6 +185,8 @@ public:
 		const QString & dir = QString(), const QString & filter = QString(),
 		QString * selectedFilter = 0);
 
+	QColor readColorFromProject(const QString& name);
+
 public slots:
 	//! \name Projects and Project Files
 	//@{
