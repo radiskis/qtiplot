@@ -10709,28 +10709,20 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 
 			CurveLayout cl;
 			cl.connectType=curve[4].toInt();
-			cl.lCol=curve[5].toInt();
-			if (d_file_version <= 89)
-				cl.lCol = convertOldToNewColorIndex(cl.lCol);
-			cl.lStyle=curve[6].toInt();
-			cl.lWidth=curve[7].toDouble();
-			cl.sSize=curve[8].toInt();
+			cl.lCol = readColorFromProject(curve[5]);
+			cl.lStyle = curve[6].toInt();
+			cl.lWidth = curve[7].toDouble();
+			cl.sSize = curve[8].toInt();
 			if (d_file_version <= 78)
 				cl.sType=Graph::obsoleteSymbolStyle(curve[9].toInt());
 			else
 				cl.sType=curve[9].toInt();
 
-			cl.symCol=curve[10].toInt();
-			if (d_file_version <= 89)
-				cl.symCol = convertOldToNewColorIndex(cl.symCol);
-			cl.fillCol=curve[11].toInt();
-			if (d_file_version <= 89)
-				cl.fillCol = convertOldToNewColorIndex(cl.fillCol);
-			cl.filledArea=curve[12].toInt();
-			cl.aCol=curve[13].toInt();
-			if (d_file_version <= 89)
-				cl.aCol = convertOldToNewColorIndex(cl.aCol);
-			cl.aStyle=curve[14].toInt();
+			cl.symCol = readColorFromProject(curve[10]);
+			cl.fillCol = readColorFromProject(curve[11]);
+			cl.filledArea = curve[12].toInt();
+			cl.aCol = readColorFromProject(curve[13]);
+			cl.aStyle = curve[14].toInt();
 			if(curve.count() < 16)
 				cl.penWidth = cl.lWidth;
 			else if ((d_file_version >= 79) && (curve[3].toInt() == Graph::Box))
@@ -10840,16 +10832,16 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 		} else if (s.contains ("FunctionCurve")){
 			QStringList curve = s.split("\t");
 			CurveLayout cl;
-			cl.connectType=curve[6].toInt();
-			cl.lCol=curve[7].toInt();
-			cl.lStyle=curve[8].toInt();
+			cl.connectType = curve[6].toInt();
+			cl.lCol = readColorFromProject(curve[7]);
+			cl.lStyle = curve[8].toInt();
 			cl.lWidth=curve[9].toDouble();
 			cl.sSize=curve[10].toInt();
 			cl.sType=curve[11].toInt();
-			cl.symCol=curve[12].toInt();
-			cl.fillCol=curve[13].toInt();
+			cl.symCol = readColorFromProject(curve[12]);
+			cl.fillCol = readColorFromProject(curve[13]);
 			cl.filledArea=curve[14].toInt();
-			cl.aCol=curve[15].toInt();
+			cl.aCol = readColorFromProject(curve[15]);
 			cl.aStyle=curve[16].toInt();
 			int current_index = 17;
 			if(curve.count() < 16)
@@ -16359,4 +16351,21 @@ void ApplicationWindow::reloadCustomMenus()
 		if (m->parentWidget())
 			((QMenu *)m->parentWidget())->addMenu (m);
 	}
+}
+
+QColor ApplicationWindow::readColorFromProject(const QString& name)
+{
+	QColor c = QColor();
+	bool canConvertToInt = false;
+	int fillColIndex = name.toInt(&canConvertToInt);
+	if (canConvertToInt){
+		if (fillColIndex < 0)
+			return c;
+		if (d_file_version <= 89)
+			fillColIndex = convertOldToNewColorIndex(fillColIndex);
+		c = ColorBox::color(fillColIndex);
+	} else
+		c = QColor(name);
+
+	return c;
 }

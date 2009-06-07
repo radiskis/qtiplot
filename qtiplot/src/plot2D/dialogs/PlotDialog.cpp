@@ -674,7 +674,7 @@ void PlotDialog::initLabelsPage()
     gl->addWidget(boxLabelsColumn, 0, 1);
 
     gl->addWidget(new QLabel(tr( "Color" )), 1, 0);
-    boxLabelsColor = new ColorBox();
+    boxLabelsColor = new ColorButton();
     gl->addWidget(boxLabelsColor, 1, 1);
     boxLabelsWhiteOut = new QCheckBox(tr("White O&ut"));
     gl->addWidget(boxLabelsWhiteOut, 1, 2);
@@ -719,7 +719,7 @@ void PlotDialog::initLabelsPage()
     connect(boxLabelsColumn, SIGNAL(activated(int)), this, SLOT(acceptParams()));
     connect(boxLabelsAlign, SIGNAL(activated(int)), this, SLOT(acceptParams()));
     connect(boxLabelsWhiteOut, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
-    connect(boxLabelsColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+    connect(boxLabelsColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
     connect(boxLabelsXOffset, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
     connect(boxLabelsYOffset, SIGNAL(valueChanged(int)), this, SLOT(acceptParams()));
     connect(boxLabelsAngle, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
@@ -780,7 +780,7 @@ void PlotDialog::initLinePage()
 	gl1->addWidget(boxLineWidth, 2, 1);
 
 	gl1->addWidget(new QLabel(tr( "Color" )), 3, 0);
-	boxLineColor = new ColorBox( false);
+	boxLineColor = new ColorButton();
 	gl1->addWidget(boxLineColor, 3, 1);
     gl1->setRowStretch (4, 1);
 
@@ -788,7 +788,7 @@ void PlotDialog::initLinePage()
 	fillGroupBox->setCheckable(true);
 	QGridLayout *gl2 = new QGridLayout(fillGroupBox);
     gl2->addWidget(new QLabel(tr( "Fill color" )), 0, 0);
-	boxAreaColor = new ColorBox(false);
+	boxAreaColor = new ColorButton();
 	gl2->addWidget(boxAreaColor, 0, 1);
 	gl2->addWidget(new QLabel(tr( "Pattern" )), 1, 0);
 	boxPattern = new PatternBox(false);
@@ -802,10 +802,10 @@ void PlotDialog::initLinePage()
 	privateTabWidget->addTab( linePage, tr( "Line" ) );
 
 	connect(boxLineWidth, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
-	connect(boxLineColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+	connect(boxLineColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxConnect, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(boxLineStyle, SIGNAL(activated(int)), this, SLOT(acceptParams()));
-	connect(boxAreaColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+	connect(boxAreaColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxPattern, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(fillGroupBox, SIGNAL(toggled(bool)), this, SLOT(showAreaColor(bool)));
 	connect(fillGroupBox, SIGNAL(clicked()), this, SLOT(acceptParams()));
@@ -825,10 +825,10 @@ void PlotDialog::initSymbolsPage()
     gl->addWidget(boxSymbolSize, 1, 1);
 	boxFillSymbol = new QCheckBox( tr( "Fill Color" ));
     gl->addWidget(boxFillSymbol, 2, 0);
-	boxFillColor = new ColorBox(false);
+	boxFillColor = new ColorButton();
     gl->addWidget(boxFillColor, 2, 1);
     gl->addWidget(new QLabel(tr( "Edge Color" )), 3, 0);
-	boxSymbolColor = new ColorBox( false);
+	boxSymbolColor = new ColorButton();
     gl->addWidget(boxSymbolColor, 3, 1);
     gl->addWidget(new QLabel(tr( "Edge Width" )), 4, 0);
 	boxPenWidth = new DoubleSpinBox('f');
@@ -844,9 +844,9 @@ void PlotDialog::initSymbolsPage()
 
 	privateTabWidget->insertTab(symbolPage, tr( "Symbol" ));
 
-	connect(boxSymbolColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+	connect(boxSymbolColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxSymbolStyle, SIGNAL(activated(int)), this, SLOT(acceptParams()));
-	connect(boxFillColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+	connect(boxFillColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxFillSymbol, SIGNAL(clicked()), this, SLOT(fillSymbols()));
 }
 
@@ -988,11 +988,11 @@ void PlotDialog::initPercentilePage()
 
     boxFillSymbols = new QCheckBox(tr( "Fill Color" ));
     gl2->addWidget(boxFillSymbols, 1, 0);
-	boxPercFillColor = new ColorBox(false);
+	boxPercFillColor = new ColorButton();
     gl2->addWidget(boxPercFillColor, 1, 1);
 
     gl2->addWidget(new QLabel(tr( "Edge Color" )), 2, 0);
-	boxEdgeColor = new ColorBox(false);
+	boxEdgeColor = new ColorButton();
     gl2->addWidget(boxEdgeColor, 2, 1);
 
     gl2->addWidget(new QLabel(tr( "Edge Width" )), 3, 0);
@@ -1015,8 +1015,8 @@ void PlotDialog::initPercentilePage()
 	connect(box99Style, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(box1Style, SIGNAL(activated(int)), this, SLOT(acceptParams()));
 	connect(box1Style, SIGNAL(activated(int)), this, SLOT(acceptParams()));
-	connect(boxEdgeColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
-	connect(boxPercFillColor, SIGNAL(activated(int)), this, SLOT(acceptParams()));
+	connect(boxEdgeColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
+	connect(boxPercFillColor, SIGNAL(colorChanged()), this, SLOT(acceptParams()));
 	connect(boxFillSymbols, SIGNAL(clicked()), this, SLOT(fillBoxSymbols()));
 }
 
@@ -1313,7 +1313,7 @@ void PlotDialog::initVectPage()
     QGroupBox *gb1 = new QGroupBox();
     QGridLayout *gl1 = new QGridLayout(gb1);
     gl1->addWidget(new QLabel(tr( "Color" )), 0, 0);
-	vectColorBox = new ColorBox(false);
+	vectColorBox = new ColorButton();
     gl1->addWidget(vectColorBox, 0, 1);
     gl1->addWidget(new QLabel(tr( "Line Width" )), 1, 0);
 	vectWidthBox = new DoubleSpinBox('f');
@@ -2057,25 +2057,33 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxConnect->setCurrentIndex(style);
 
 	boxLineStyle->setStyle(c->pen().style());
+	boxLineColor->blockSignals(true);
     boxLineColor->setColor(c->pen().color());
+    boxLineColor->blockSignals(false);
 	boxLineWidth->blockSignals(true);
     boxLineWidth->setValue(c->pen().widthF());
 	boxLineWidth->blockSignals(false);
     fillGroupBox->blockSignals(true);
     fillGroupBox->setChecked(c->brush().style() != Qt::NoBrush );
     fillGroupBox->blockSignals(false);
+    boxAreaColor->blockSignals(true);
     boxAreaColor->setColor(c->brush().color());
+    boxAreaColor->blockSignals(false);
     boxPattern->setPattern(c->brush().style());
 
     //symbol page
     const QwtSymbol s = c->symbol();
     boxSymbolSize->setValue(s.size().width()/2);
     boxSymbolStyle->setStyle(s.style());
+    boxSymbolColor->blockSignals(true);
     boxSymbolColor->setColor(s.pen().color());
+    boxSymbolColor->blockSignals(false);
     boxPenWidth->setValue(s.pen().widthF());
     boxFillSymbol->setChecked(s.brush() != Qt::NoBrush);
     boxFillColor->setEnabled(s.brush() != Qt::NoBrush);
+    boxFillColor->blockSignals(true);
     boxFillColor->setColor(s.brush().color());
+    boxFillColor->blockSignals(false);
 
     if (c->type() == Graph::Function)
         return;
@@ -2197,7 +2205,9 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
     boxLabelsColumn->blockSignals(false);
 
     boxLabelsAngle->setValue(dc->labelsRotation());
+    boxLabelsColor->blockSignals(true);
     boxLabelsColor->setColor(dc->labelsColor());
+    boxLabelsColor->blockSignals(false);
 	boxLabelsXOffset->blockSignals(true);
     boxLabelsXOffset->setValue(dc->labelsXOffset());
 	boxLabelsXOffset->blockSignals(false);
