@@ -1589,7 +1589,36 @@ c.setBrush(QtGui.QBrush(Qt.darkYellow))
 c.setSymbol(PlotSymbol(PlotSymbol.Hexagon, QtGui.QBrush(Qt.yellow), QtGui.QPen(Qt.blue, 1.5), QtCore.QSize(15, 15)))
 </programlisting>
 
-You can also get information about the data stored in the curve:
+You can display labels showing the y values for each data point in a plot curve:
+<programlisting>
+c.setLabelsColumnName("Table1_2")
+c.setLabelsOffset(50, 50)
+c.setLabelsColor(Qt.red)
+c.setLabelsFont(QtGui.QFont("Arial", 14))
+c.setLabelsRotation(45)
+c.loadData() # creates the labels and updates the display
+</programlisting>
+
+and, of course, you can disable them using:
+<programlisting>
+c.clearLabels()
+l.replot() # redraw the plot layer object
+</programlisting>
+
+If you need to change the range of data points displayed in a curve you can use
+the following methods:
+<programlisting>
+c.setRowRange(int startRow, int endRow)
+c.setFullRange()
+</programlisting>
+
+Also, you can hide/show a plot curve via:
+<programlisting>
+c.setVisible(bool on)
+</programlisting>
+
+In case you need to get information about the data stored in the curve,
+you have at your disposal the functions bellow:
 <programlisting>
 points = c.dataSize()
 for i in range (0, points):
@@ -1605,14 +1634,14 @@ print c.maxYValue()
 <sect3 id = "Python-PlotSymbols">
 <title>Plot symbols</title>
 
-Here's how you can customize the plot symbol used for a 2D plot curve:
+Here's how you can customize the plot symbol used for a 2D plot curve <varname>c</varname>:
 <programlisting>
-s = PlotSymbol() # or s = c.symbol()
+s = c.symbol()
 s.setSize(QtCore.QSize(7, 7))# or s.setSize(7)
 s.setBrush(QtGui.QBrush(Qt.darkYellow))
 s.setPen(QtGui.QPen(Qt.blue, 3))
 s.setStyle(PlotSymbol.Diamond)
-l.replot()
+l.replot() # redraw the plot layer object
 </programlisting>
 
 The symbol styles available in QtiPlot are:

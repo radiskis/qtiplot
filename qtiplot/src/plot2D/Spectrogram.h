@@ -92,9 +92,9 @@ public:
 	bool labelsWhiteOut(){return d_white_out_labels;};
 	void setLabelsWhiteOut(bool whiteOut);
 
-	int labelsXOffset(){return d_labels_x_offset;};
-    int labelsYOffset(){return d_labels_y_offset;};
-    void setLabelsOffset(int x, int y);
+	double labelsXOffset(){return d_labels_x_offset;};
+    double labelsYOffset(){return d_labels_y_offset;};
+    void setLabelsOffset(double x, double y);
 	void setLabelOffset(int index, double x, double y);
 
 	double labelsRotation(){return d_labels_angle;};
@@ -146,7 +146,7 @@ protected:
 	//! Flag telling if we paint a white background for the labels
 	bool d_white_out_labels;
 	double d_labels_angle;
-	int d_labels_x_offset, d_labels_y_offset;
+	double d_labels_x_offset, d_labels_y_offset;
 
 	//! List of the text labels associated to this spectrogram.
 	QList <PlotMarker *> d_labels_list;

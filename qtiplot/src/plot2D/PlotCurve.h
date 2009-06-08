@@ -202,7 +202,6 @@ public:
 	double angle(){return d_angle;};
 	void setAngle(double a){d_angle = a;};
 
-	//QwtDoubleRect boundingRect() const;
 	double xLabelOffset(){return d_label_x_offset;};
 	double yLabelOffset(){return d_label_y_offset;};
 	void setLabelOffset(double xOffset, double yOffset){d_label_x_offset = xOffset; d_label_y_offset = yOffset;};

@@ -368,7 +368,7 @@ bool CurvesDialog::addCurve(const QString& name)
 		return false;
 
 	int style = curveStyle();
-	PlotCurve *c = NULL;
+	DataCurve *c = NULL;
 	if (style == Graph::Histogram){
 		c = new QwtHistogram(t, name);
 		if (c){

@@ -516,7 +516,7 @@ void Spectrogram::setLabelsWhiteOut(bool whiteOut)
 	}
 }
 
-void Spectrogram::setLabelsOffset(int x, int y)
+void Spectrogram::setLabelsOffset(double x, double y)
 {
     if (x == d_labels_x_offset && y == d_labels_y_offset)
         return;
