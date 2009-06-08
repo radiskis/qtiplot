@@ -36,6 +36,7 @@
 #include <ApplicationWindow.h>
 #include <Folder.h>
 #include <pixmaps.h>
+#include <ColorBox.h>
 
 #include <QPushButton>
 #include <QLabel>
@@ -385,29 +386,28 @@ bool CurvesDialog::addCurve(const QString& name)
 	int color, symbol;
 	d_graph->guessUniqueCurveLayout(color, symbol);
 
-	cl.lCol = color;
-	cl.symCol = color;
-	cl.fillCol = color;
+	cl.lCol = ColorBox::color(color);
+	cl.symCol = cl.lCol;
+	cl.fillCol = cl.lCol;
 	cl.lWidth = app->defaultCurveLineWidth;
 	cl.sSize = app->defaultSymbolSize;
 	cl.sType = symbol;
 
 	if (style == Graph::Line)
 		cl.sType = 0;
-	else if (style == Graph::Histogram ){
+	else if (style == Graph::Histogram){
 		cl.filledArea = 1;
-		cl.lCol = color;
-		cl.aCol = color;
+		cl.aCol = cl.lCol;
 		cl.aStyle = 4;
 		cl.sType = 0;
-	} else if (style == Graph::VerticalBars || style == Graph::HorizontalBars ){
+	} else if (style == Graph::VerticalBars || style == Graph::HorizontalBars){
 		cl.filledArea = 1;
-		cl.lCol = 0;
-		cl.aCol = color;
+		cl.aCol = cl.lCol;
+		cl.lCol = Qt::black;
 		cl.sType = 0;
-	} else if (style == Graph::Area ){
+	} else if (style == Graph::Area){
 		cl.filledArea = 1;
-		cl.aCol = color;
+		cl.aCol = cl.lCol;
 		cl.sType = 0;
 	} else if (style == Graph::VerticalDropLines)
 		cl.connectType = 2;
