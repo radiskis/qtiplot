@@ -733,6 +733,56 @@ class QwtPlotCurve
 		QwtPlotCurve(const QwtPlotCurve&);
 };
 
+class DataCurve : QwtPlotCurve
+{
+%TypeHeaderCode
+#include "src/plot2D/PlotCurve.h"
+%End
+public:
+	DataCurve(Table *t, const QString& xColName, const QString& name, int startRow = 0, int endRow = -1);
+
+	bool hasLabels();
+	QString labelsColumnName();
+	void setLabelsColumnName(const QString& name);
+
+    int labelsAlignment();
+    void setLabelsAlignment(int flags);
+
+    int labelsXOffset();
+    int labelsYOffset();
+    void setLabelsOffset(int x, int y);
+
+    double labelsRotation();
+    void setLabelsRotation(double angle);
+
+    QFont labelsFont();
+    void setLabelsFont(const QFont& font);
+
+    QColor labelsColor();
+    void setLabelsColor(const QColor& c);
+
+    bool labelsWhiteOut();
+    void setLabelsWhiteOut(bool whiteOut = true);
+
+	Table* table();
+
+	int startRow();
+	int endRow();
+	void setRowRange(int startRow, int endRow);
+
+	bool isFullRange();
+	void setFullRange();
+
+	bool updateData(Table *t, const QString& colName);
+	void loadData();
+
+	void clearLabels();
+	void setVisible(bool on);
+
+private:
+	DataCurve(const DataCurve&);
+};
+
 class QwtHistogram : QwtPlotCurve /PyName=Histogram/
 {
 %TypeHeaderCode
@@ -836,9 +886,9 @@ public:
 	bool labelsWhiteOut();
 	void setLabelsWhiteOut(bool whiteOut = true);
 
-	int labelsXOffset();
-    int labelsYOffset();
-    void setLabelsOffset(int x, int y);
+	double labelsXOffset();
+    double labelsYOffset();
+    void setLabelsOffset(double x, double y);
 
 	double labelsRotation();
     void setLabelsRotation(double angle);
@@ -923,8 +973,8 @@ public:
   sipRes = PyString_FromString(sipCpp->pieLegendText());
 %End
 
-  QwtPlotCurve* insertCurve(Table* w, const QString& name, int style = 1, int startRow = 0, int endRow = -1);
-  QwtPlotCurve* insertCurve(Table*, const QString&, const QString&, int style = 1, int startRow = 0, int endRow = -1);
+  DataCurve* insertCurve(Table*, const QString&, int style = 1, int startRow = 0, int endRow = -1);
+  DataCurve* insertCurve(Table*, const QString&, const QString&, int style = 1, int startRow = 0, int endRow = -1);
   bool addCurves(Table*, SIP_PYTUPLE, int=0, double=1, int=3, int=0, int=-1);
 %MethodCode
   QStringList l;

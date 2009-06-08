@@ -1989,11 +1989,11 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 		boxLabelsAngle->setValue(sp->labelsRotation());
 
 		boxLabelsXOffset->blockSignals(true);
-		boxLabelsXOffset->setValue(sp->labelsXOffset());
+		boxLabelsXOffset->setValue(qRound(sp->labelsXOffset()));
 		boxLabelsXOffset->blockSignals(false);
 
 		boxLabelsYOffset->blockSignals(true);
-		boxLabelsYOffset->setValue(sp->labelsYOffset());
+		boxLabelsYOffset->setValue(qRound(sp->labelsYOffset()));
 		boxLabelsYOffset->blockSignals(false);
 		boxLabelsWhiteOut->setChecked(sp->labelsWhiteOut());
 		labelsGroupBox->blockSignals(false);
@@ -2550,7 +2550,7 @@ bool PlotDialog::acceptParams()
   	    	sp->setLabelsRotation(boxLabelsAngle->value());
   	    	sp->showContourLineLabels(labelsGroupBox->isChecked());
 			sp->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
-			sp->setLabelsOffset(boxLabelsXOffset->value(), boxLabelsYOffset->value());
+			sp->setLabelsOffset((double)boxLabelsXOffset->value(), (double)boxLabelsYOffset->value());
 			sp->setLabelsColor(boxLabelsColor->color());
   	    } else {
 			DataCurve *c = (DataCurve *)plotItem;

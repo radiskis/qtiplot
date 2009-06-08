@@ -232,9 +232,9 @@ class Graph: public QwtPlot
 		//@}
 
 		bool addCurves(Table* w, const QStringList& names, int style = 0, double lWidth = 1, int sSize = 3, int startRow = 0, int endRow = -1);
-		PlotCurve* insertCurve(Table* w, const QString& name, int style, int startRow = 0, int endRow = -1);
-		PlotCurve* insertCurve(Table* w, int xcol, const QString& name, int style);
-		PlotCurve* insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow = 0, int endRow = -1);
+		DataCurve* insertCurve(Table* w, const QString& name, int style, int startRow = 0, int endRow = -1);
+		DataCurve* insertCurve(Table* w, int xcol, const QString& name, int style);
+		DataCurve* insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow = 0, int endRow = -1);
 		void insertPlotItem(QwtPlotItem *i, int type);
 		void insertCurve(QwtPlotItem *c);
 

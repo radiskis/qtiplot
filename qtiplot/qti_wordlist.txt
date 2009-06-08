@@ -602,3 +602,15 @@ VLine
 Star1
 Star2
 Hexagon
+labelsColumnName
+setLabelsColumnName
+labelsAlignment
+setLabelsAlignment
+startRow
+endRow
+setRowRange
+isFullRange
+setFullRange
+updateData
+setVisible
+clearLabels

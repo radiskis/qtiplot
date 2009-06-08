@@ -2954,26 +2954,26 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 	return true;
 }
 
-PlotCurve* Graph::insertCurve(Table* w, const QString& name, int style, int startRow, int endRow)
+DataCurve* Graph::insertCurve(Table* w, const QString& name, int style, int startRow, int endRow)
 {//provided for convenience
 	int ycol = w->colIndex(name);
 	int xcol = w->colX(ycol);
 
-	PlotCurve* c = insertCurve(w, w->colName(xcol), w->colName(ycol), style, startRow, endRow);
+	DataCurve* c = insertCurve(w, w->colName(xcol), w->colName(ycol), style, startRow, endRow);
 	if (c)
 		emit modifiedGraph();
 	return c;
 }
 
-PlotCurve* Graph::insertCurve(Table* w, int xcol, const QString& name, int style)
+DataCurve* Graph::insertCurve(Table* w, int xcol, const QString& name, int style)
 {
 	return insertCurve(w, w->colName(xcol), w->colName(w->colIndex(name)), style);
 }
 
-PlotCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
+DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& yColName, int style, int startRow, int endRow)
 {
 	if (style == Histogram){
-		PlotCurve *c = new QwtHistogram(w, yColName, startRow, endRow);
+		DataCurve *c = new QwtHistogram(w, yColName, startRow, endRow);
 		insertCurve(c);
 		return c;
 	}
@@ -5910,16 +5910,16 @@ QSize Graph::customPrintSize(const QSizeF& customSize, int unit, int dpi)
 			size = customSize.toSize();
 		break;
 		case FrameWidget::Inch:
-			size = QSize((ceil)(customSize.width()*dpi), (ceil)(customSize.height()*dpi));
+			size = QSize(qRound(customSize.width()*dpi), qRound(customSize.height()*dpi));
 		break;
 		case FrameWidget::Millimeter:
-			size = QSize((ceil)(customSize.width()*dpi/25.4), (ceil)(customSize.height()*dpi/25.4));
+			size = QSize(qRound(customSize.width()*dpi/25.4), qRound(customSize.height()*dpi/25.4));
 		break;
 		case FrameWidget::Centimeter:
-			size = QSize((ceil)(customSize.width()*dpi/2.54), (ceil)(customSize.height()*dpi/2.54));
+			size = QSize(qRound(customSize.width()*dpi/2.54), qRound(customSize.height()*dpi/2.54));
 		break;
 		case FrameWidget::Point:
-			size = QSize((ceil)(customSize.width()*dpi/72.0), (ceil)(customSize.height()*dpi/72.0));
+			size = QSize(qRound(customSize.width()*dpi/72.0), qRound(customSize.height()*dpi/72.0));
 		break;
 	}
 	return size;
