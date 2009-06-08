@@ -2636,8 +2636,8 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 	guessUniqueCurveLayout(color, cl.sType);
 
   	cl.lCol = ColorBox::color(color);
-  	cl.symCol = ColorBox::color(color);
-  	cl.fillCol = ColorBox::color(color);
+  	cl.symCol = cl.lCol;
+  	cl.fillCol = cl.lCol;
 
 	if (style == Graph::Line)
 		cl.sType = 0;
@@ -2663,12 +2663,12 @@ CurveLayout Graph::initCurveLayout(int style, int curves)
 	} else if (style == Graph::Histogram){
 		cl.filledArea = 1;
 		cl.lCol = ColorBox::color(i + 1);//start with red color pen
-		cl.aCol = ColorBox::color(i + 1); //start with red fill color
+		cl.aCol = cl.lCol; //start with red fill color
 		cl.aStyle = 4;
 		cl.sType = 0;
 	} else if (style == Graph::Area){
 		cl.filledArea = 1;
-		cl.aCol = ColorBox::color(color);
+		cl.aCol = cl.lCol;
 		cl.sType = 0;
 		cl.connectType = 1;
 	}
@@ -3066,6 +3066,9 @@ PlotCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	insertCurve(c);
 	c->setPlotStyle(style);
 	c->setPen(QPen(Qt::black, 1.0));
+
+	CurveLayout cl = initCurveLayout(style);
+	updateCurveLayout(c, &cl);
 
 	if (style == HorizontalBars)
 		c->setData(Y.data(), X.data(), size);

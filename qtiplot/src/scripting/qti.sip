@@ -923,7 +923,8 @@ public:
   sipRes = PyString_FromString(sipCpp->pieLegendText());
 %End
 
-  bool insertCurve(Table*, const QString&, const QString&, int=1);
+  QwtPlotCurve* insertCurve(Table* w, const QString& name, int style = 1, int startRow = 0, int endRow = -1);
+  QwtPlotCurve* insertCurve(Table*, const QString&, const QString&, int style = 1, int startRow = 0, int endRow = -1);
   bool addCurves(Table*, SIP_PYTUPLE, int=0, double=1, int=3, int=0, int=-1);
 %MethodCode
   QStringList l;
@@ -940,6 +941,7 @@ public:
   }
   sipRes = sipCpp->addCurves(a0, l, a2, a3, a4, a5, a6);
 %End
+
   bool addCurve(Table*, const QString&, int=0, double=1, int=3, int=0, int=-1);
 %MethodCode
 	if (a0 == 0) {
@@ -953,6 +955,7 @@ public:
 %End
   void removeCurve(int);
   void removeCurve(const QString&);
+  void removeCurve(QwtPlotCurve*);
   void deleteFitCurves();
   int curveCount() /PyName=numCurves/;
   QwtPlotCurve* curve(int index);

@@ -1555,11 +1555,13 @@ l = g.layer(num)
 <title>Working with curves</title>
 You can then add or remove curves to or from this layer:
 <programlisting>
-l.insertCurve(table, Xcolumn, Ycolumn, type=Layer.Scatter)
-l.addCurve(table, column, type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)
-l.addCurves(table, (2,4), type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)
+l.insertCurve(table, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
+l.insertCurve(table, Xcolumn, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
+l.addCurve(table, column, type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)# returns True on success
+l.addCurves(table, (2,4), type=Layer.Line, lineWidth = 1, symbolSize = 3, startRow = 0, endRow = -1)# returns True on success
 l.removeCurve(curveName)
 l.removeCurve(curveNumber)
+l.removeCurve(curveReference)
 l.deleteFitCurves()
 </programlisting>
 Use the following function to change the axis attachment of a curve:
@@ -1576,6 +1578,170 @@ l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
 In case you need the number of curves on a layer, you can get it with <programlisting>
 l.numCurves()
 </programlisting>
+
+Once you have added a curve to a 2D plot, you can fully customize it's appearance:
+<programlisting>
+l = newGraph().activeLayer()
+l.setAntialiasing()
+c = l.insertCurve(table("Table1"), "Table1_2", Layer.LineSymbols)
+c.setPen(QtGui.QPen(Qt.red, 3))
+c.setBrush(QtGui.QBrush(Qt.darkYellow))
+c.setSymbol(PlotSymbol(PlotSymbol.Hexagon, QtGui.QBrush(Qt.yellow), QtGui.QPen(Qt.blue, 1.5), QtCore.QSize(15, 15)))
+</programlisting>
+
+You can also get information about the data stored in the curve:
+<programlisting>
+points = c.dataSize()
+for i in range (0, points):
+	print i, "x = ", c.x(i), "y = ", c.y(i)
+
+print c.minXValue()
+print c.maxXValue()
+print c.minYValue()
+print c.maxYValue()
+</programlisting>
+</sect3>
+
+<sect3 id = "Python-PlotSymbols">
+<title>Plot symbols</title>
+
+Here's how you can customize the plot symbol used for a 2D plot curve:
+<programlisting>
+s = PlotSymbol() # or s = c.symbol()
+s.setSize(QtCore.QSize(7, 7))# or s.setSize(7)
+s.setBrush(QtGui.QBrush(Qt.darkYellow))
+s.setPen(QtGui.QPen(Qt.blue, 3))
+s.setStyle(PlotSymbol.Diamond)
+l.replot()
+</programlisting>
+
+The symbol styles available in QtiPlot are:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0</term>
+
+              <listitem>
+                <para>PlotSymbol.NoSymbol</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>1</term>
+
+              <listitem>
+                <para>PlotSymbol.Ellipse</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>2</term>
+
+              <listitem>
+                <para>PlotSymbol.Rect</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>3</term>
+
+              <listitem>
+                <para>PlotSymbol.Diamond</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>4</term>
+
+              <listitem>
+                <para>PlotSymbol.Triangle</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>5</term>
+
+              <listitem>
+                <para>PlotSymbol.DTriangle</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>6</term>
+
+              <listitem>
+                <para>PlotSymbol.UTriangle</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>7</term>
+
+              <listitem>
+                <para>PlotSymbol.LTriangle</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>8</term>
+
+              <listitem>
+                <para>PlotSymbol.RTriangle</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>9</term>
+
+              <listitem>
+                <para>PlotSymbol.Cross</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>10</term>
+
+              <listitem>
+                <para>PlotSymbol.XCross</para>
+              </listitem>
+            </varlistentry>
+
+			 <varlistentry>
+              <term>11</term>
+
+              <listitem>
+                <para>PlotSymbol.HLine</para>
+              </listitem>
+            </varlistentry>
+
+			<varlistentry>
+              <term>12</term>
+
+              <listitem>
+                <para>PlotSymbol.VLine</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>13</term>
+
+              <listitem>
+                <para>PlotSymbol.Star1</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>14</term>
+            <listitem>
+                <para>PlotSymbol.Star2</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>15</term>
+            <listitem>
+                <para>PlotSymbol.Hexagon</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
 </sect3>
 
 <sect3 id = "Python-Spectrograms">
