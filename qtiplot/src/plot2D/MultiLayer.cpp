@@ -1326,6 +1326,59 @@ bool MultiLayer::hasSelectedLayers()
     return false;
 }
 
+void MultiLayer::setWaterfallLayout(bool on)
+{
+	if (graphsList.isEmpty())
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	int xOffset = 30;
+	int yOffset = 50;
+
+	int layers = graphsList.size();
+	Graph *first = graphsList[0];
+	first->enableAxis(QwtPlot::xBottom, true);
+	first->enableAxis(QwtPlot::yLeft, true);
+	first->enableAxis(QwtPlot::xTop, false);
+	first->enableAxis(QwtPlot::yRight, false);
+	first->setCanvasFrame(0);
+	first->setTitle(QString::null);
+	first->setMargin(0);
+	first->setFrame(0);
+
+	QSize size = first->canvas()->size();
+	QPoint pos = first->canvas()->pos();
+	first->move(first->x(), pos.y() + (layers - 1)*yOffset);
+
+	QColor c = Qt::white;
+	c.setAlpha(0);
+	first->setBackgroundColor(c);
+	first->setCanvasBackground(c);
+
+	for (int i = 1; i < layers; i++){
+		Graph *g = graphsList[i];
+		if (!g)
+			continue;
+
+		g->setCanvasFrame(0);
+		g->setTitle(QString::null);
+		g->setMargin(0);
+		g->setFrame(0);
+		g->setBackgroundColor(c);
+		g->setCanvasBackground(c);
+		for (int j = 0; j < QwtPlot::axisCnt; j++)
+			g->enableAxis(j, false);
+
+		g->resize(size);
+		g->move(pos.x() + i*xOffset, pos.y() + (layers - i - 1)*yOffset);
+	}
+
+	resize(QSize(first->width() + (layers - 1)*xOffset,
+		height() + layers*yOffset));
+	QApplication::restoreOverrideCursor();
+}
+
 MultiLayer::~MultiLayer()
 {
 	if(d_layers_selector)

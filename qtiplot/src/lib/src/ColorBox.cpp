@@ -2,7 +2,7 @@
     File                 : ColorBox.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006-2007 by Ion Vasilief, Alex Kargovsky
+    Copyright            : (C) 2006-2009 by Ion Vasilief, Alex Kargovsky
     Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
     Description          : A combo box to select a standard color
 
@@ -181,7 +181,7 @@ void ColorBox::setColor(const QColor& c)
 QColor ColorBox::color() const
 {
 	size_t i = this->currentIndex();
-	if (i < sizeof(colors))
+	if (i >= 0 && i < sizeof(colors))
 		return colors[this->currentIndex()];
 	else
 		return QColor(Qt::black); // default color is black.
@@ -189,13 +189,16 @@ QColor ColorBox::color() const
 
 int ColorBox::colorIndex(const QColor& c)
 {
+	if (!isValidColor(c))
+		return 0;
+
 	const QColor *ite = std::find(colors, colors + sizeof(colors), c);
 	return (ite - colors);
 }
 
 QColor ColorBox::color(int colorIndex)
 {
-	if (colorIndex < (int)sizeof(colors))
+	if (colorIndex >= 0 && colorIndex < (int)sizeof(colors))
 		return colors[colorIndex];
 	else
 		return QColor(Qt::black); // default color is black.
@@ -203,8 +206,7 @@ QColor ColorBox::color(int colorIndex)
 
 bool ColorBox::isValidColor(const QColor& color)
 {
-	for (int i = 0; i < colors_count; i++)
-	{
+	for (int i = 0; i < colors_count; i++){
         if (color == colors[i])
             return true;
     }

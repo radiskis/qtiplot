@@ -844,6 +844,7 @@ void ApplicationWindow::initToolBars()
 	tableTools->addAction(actionPlotVectXYXY);
 	tableTools->addAction(actionPlotVectXYAM);
 	tableTools->addAction(actionPlotDoubleYAxis);
+	tableTools->addAction(actionWaterfallPlot);
 	tableTools->addAction(actionAddZoomPlot);
 	tableTools->addSeparator ();
 	tableTools->addAction(actionPlot3DRibbon);
@@ -1274,6 +1275,7 @@ void ApplicationWindow::plotMenuAboutToShow()
 	specialPlotMenu->addAction(actionPlotHorSteps);
 	specialPlotMenu->insertSeparator();
 	specialPlotMenu->addAction(actionPlotDoubleYAxis);
+	specialPlotMenu->addAction(actionWaterfallPlot);
 	specialPlotMenu->addAction(actionAddZoomPlot);
 
 	plot2DMenu->insertSeparator();
@@ -2465,6 +2467,36 @@ MultiLayer* ApplicationWindow::multilayerPlot(const QStringList& colList)
 	return g;
 }
 
+MultiLayer* ApplicationWindow::waterfallPlot()
+{
+	Table *t = (Table *)activeWindow(TableWindow);
+    if (!t)
+		return 0;
+
+	QStringList list = t->selectedYColumns();
+	int curves = list.count();
+	if(curves < 1) {
+		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
+		tr("Please select a Y column to plot!"));
+		return 0;
+	}
+
+	MultiLayer* ml = new MultiLayer(this, curves, 1, 1);
+	//initMultilayerPlot(ml, QString());
+	QList<Graph *> layersList = ml->layersList();
+	int i = 0;
+	foreach(Graph *g, layersList){
+		setPreferences(g);
+		DataCurve *cv = g->insertCurve(t, list[i], Graph::Line);
+		if (cv)
+			cv->setPen(QPen(ColorBox::color(i)));
+		i++;
+	}
+	ml->setWaterfallLayout();
+	initMultilayerPlot(ml, QString());
+	return ml;
+}
+
 void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 {
 	QString label = name;
@@ -2519,17 +2551,17 @@ void ApplicationWindow::customTable(Table* w)
 void ApplicationWindow::setPreferences(Graph* g)
 {
 	if (!g->isPiePlot()){
-                for (int i = 0; i < QwtPlot::axisCnt; i++){
-                	bool show = d_show_axes[i];
-                    g->enableAxis(i, show);
-                    if(show){
-						ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw (i);
-						sd->enableComponent(QwtAbstractScaleDraw::Labels, d_show_axes_labels[i]);
-                    }
-                }
+		for (int i = 0; i < QwtPlot::axisCnt; i++){
+			bool show = d_show_axes[i];
+			g->enableAxis(i, show);
+			if(show){
+				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw (i);
+				sd->enableComponent(QwtAbstractScaleDraw::Labels, d_show_axes_labels[i]);
+			}
+		}
 
-                g->updateSecondaryAxis(QwtPlot::xTop);
-                g->updateSecondaryAxis(QwtPlot::yRight);
+		g->updateSecondaryAxis(QwtPlot::xTop);
+		g->updateSecondaryAxis(QwtPlot::yRight);
 
 		QList<int> ticksList;
 		ticksList<<majTicksStyle<<majTicksStyle<<majTicksStyle<<majTicksStyle;
@@ -6259,6 +6291,7 @@ void ApplicationWindow::showColMenu(int c)
 		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotHorSteps()));
 		specialPlot.insertSeparator();
         specialPlot.addAction(actionPlotDoubleYAxis);
+        specialPlot.addAction(actionWaterfallPlot);
         specialPlot.addAction(actionAddZoomPlot);
 		specialPlot.setTitle(tr("Special Line/Symb&ol"));
 		plot.addMenu(&specialPlot);
@@ -11984,6 +12017,9 @@ void ApplicationWindow::createActions()
 
     actionAddZoomPlot = new QAction(QIcon(QPixmap(add_zoom_plot_xpm)), tr("&Zoom"), this);
 	connect(actionAddZoomPlot, SIGNAL(activated()), this, SLOT(zoomRectanglePlot()));
+
+	actionWaterfallPlot = new QAction(QIcon(QPixmap(waterfall_plot_xpm)), tr("&Waterfall Plot"), this);
+	connect(actionWaterfallPlot, SIGNAL(activated()), this, SLOT(waterfallPlot()));
 
     actionExtractGraphs = new QAction(QIcon(QPixmap(extract_graphs_xpm)), tr("E&xtract to Graphs"), this);
 	connect(actionExtractGraphs, SIGNAL(activated()), this, SLOT(extractGraphs()));
