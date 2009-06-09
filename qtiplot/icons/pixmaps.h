@@ -31,6 +31,30 @@
 #define PIXMAPS_H
 
 /* XPM */
+static const char * waterfall_plot_xpm[] = {
+"16 16 4 1",
+" 	c None",
+".	c #000000",
+"+	c #FF0000",
+"@	c #00FF00",
+"          ..    ",
+"         .  .  .",
+"        .    .. ",
+"       .        ",
+"     ..         ",
+"                ",
+"       ++       ",
+"      +  +  +   ",
+"     +    ++    ",
+"    +           ",
+"  ++            ",
+"     @@         ",
+"    @  @  @     ",
+"   @    @@      ",
+"  @             ",
+"@@              "};
+
+/* XPM */
 static const char * delete_xpm[] = {
 "11 12 40 1",
 " 	c None",

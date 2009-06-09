@@ -253,6 +253,7 @@ public slots:
 	MultiLayer* multilayerPlot(const QString& caption, int layers = 1, int rows = 1, int cols = 1);
 	//! used by the plot wizard
 	MultiLayer* multilayerPlot(const QStringList& colList);
+	MultiLayer* waterfallPlot();
 	void connectMultilayerPlot(MultiLayer *g);
 	void addLayer();
 	void addInsetLayer(bool curves = false);
@@ -1344,7 +1345,7 @@ private:
     QAction *wireframe, *hiddenline, *polygon, *filledmesh, *pointstyle, *barstyle, *conestyle, *crossHairStyle;
     QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle, *actionAddEllipse;
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
-    QAction *actionMagnify, *actionFindWindow;
+    QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;
