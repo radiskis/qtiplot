@@ -70,102 +70,14 @@ void ColorBox::init()
 	QPixmap icon = QPixmap(28, 16);
 	QRect r = QRect(0, 0, 27, 15);
 
-	icon.fill ( colors[0] );
-	this->addItem(icon, tr( "black" ) );
-
 	QPainter p;
 	p.begin(&icon);
-	p.setBrush(QBrush(colors[1]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "red" ) );
-
-	p.setBrush(QBrush(colors[2]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "green" ) );
-
-	p.setBrush(QBrush(colors[3]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "blue" ) );
-
-	p.setBrush(QBrush(colors[4]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "cyan" ) );
-
-	p.setBrush(QBrush(colors[5]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "magenta" ) );
-
-	p.setBrush(QBrush(colors[6]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "yellow" ) );
-
-	p.setBrush(QBrush(colors[7]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "dark yellow" ) );
-
-	p.setBrush(QBrush(colors[8]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "navy" ) );
-
-	p.setBrush(QBrush(colors[9]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "purple" ) );
-
-	p.setBrush(QBrush(colors[10]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "wine" ) );
-
-	p.setBrush(QBrush(colors[11]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "olive" ) );
-
-	p.setBrush(QBrush(colors[12]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "dark cyan" ) );
-
-	p.setBrush(QBrush(colors[13]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "royal" ) );
-
-	p.setBrush(QBrush(colors[14]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "orange" ) );
-
-	p.setBrush(QBrush(colors[15]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "violet" ) );
-
-	p.setBrush(QBrush(colors[16]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "pink" ) );
-
-	p.setBrush(QBrush(colors[17]));
-	p.drawRect(r);
-	this->addItem(icon,tr( "white" ) );
-
-	p.setBrush(QBrush(colors[18]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "light gray" ) );
-
-	p.setBrush(QBrush(colors[19]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "gray" ) );
-
-	p.setBrush(QBrush(colors[20]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "light yellow" ) );
-
-	p.setBrush(QBrush(colors[21]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "light cyan" ) );
-
-	p.setBrush(QBrush(colors[22]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "light magenta" ) );
-
-	p.setBrush(QBrush(colors[23]));
-	p.drawRect(r);
-	this->addItem(icon, tr( "dark gray" ) );
+	QStringList color_names = colorNames();
+	for (int i = 0; i < colors_count; i++){
+		p.setBrush(QBrush(colors[i]));
+		p.drawRect(r);
+		this->addItem(icon, color_names[i]);
+	}
 	p.end();
 }
 
@@ -183,8 +95,8 @@ QColor ColorBox::color() const
 	size_t i = this->currentIndex();
 	if (i >= 0 && i < sizeof(colors))
 		return colors[this->currentIndex()];
-	else
-		return QColor(Qt::black); // default color is black.
+
+	return QColor(Qt::black); // default color is black.
 }
 
 int ColorBox::colorIndex(const QColor& c)
@@ -200,8 +112,8 @@ QColor ColorBox::color(int colorIndex)
 {
 	if (colorIndex >= 0 && colorIndex < (int)sizeof(colors))
 		return colors[colorIndex];
-	else
-		return QColor(Qt::black); // default color is black.
+
+	return QColor(Qt::black); // default color is black.
 }
 
 bool ColorBox::isValidColor(const QColor& color)
@@ -218,3 +130,31 @@ int ColorBox::numPredefinedColors()
 	return colors_count;
 }
 
+QStringList ColorBox::colorNames ()
+{
+	QStringList color_names = QStringList() << tr( "black" );
+	color_names << tr( "red" );
+	color_names << tr( "green" );
+	color_names << tr( "blue" );
+	color_names << tr( "cyan" );
+	color_names << tr( "magenta" );
+	color_names << tr( "yellow" );
+	color_names << tr( "dark yellow" );
+	color_names << tr( "navy" );
+	color_names << tr( "purple" );
+	color_names << tr( "wine" );
+	color_names << tr( "olive" );
+	color_names << tr( "dark cyan" );
+	color_names << tr( "royal" );
+	color_names << tr( "orange" );
+	color_names << tr( "violet" );
+	color_names << tr( "pink" );
+	color_names << tr( "white" );
+	color_names << tr( "light gray" );
+	color_names << tr( "gray" );
+	color_names << tr( "light yellow" );
+	color_names << tr( "light cyan" );
+	color_names << tr( "light magenta" );
+	color_names << tr( "dark gray" );
+	return color_names;
+}

@@ -333,7 +333,8 @@ private:
 	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxMargin;
 	QSpinBox *boxRadius;
 	DoubleSpinBox *boxPieLineWidth;
-    ColorBox *boxFirstColor, *boxPieLineColor;
+    ColorBox *boxFirstColor;
+    ColorButton *boxPieLineColor;
     PatternBox *boxPiePattern;
     PenStyleBox* boxPieLineStyle;
 

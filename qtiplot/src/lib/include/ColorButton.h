@@ -2,9 +2,9 @@
     File                 : ColorButton.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+    Copyright            : (C) 2009 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : A button used for color selection
+    Description          : A wrapper around QtColorPicker from QtSolutions
 
  ***************************************************************************/
 
@@ -30,13 +30,13 @@
 #ifndef COLORBUTTON_H
 #define COLORBUTTON_H
 
-#include <QPushButton>
+#include <qtcolorpicker.h>
 
-//! A modified QPushButton used for color selection.
+//! A customized QtColorPicker used for color selection.
 /**
- * The QPushButton displays its current color. When clicked it pops-up a QColorDialog allowing to select the color to be displayed.
+ *
  */
-class ColorButton : public QPushButton
+class ColorButton : public QtColorPicker
 {
 	Q_OBJECT
 
@@ -47,20 +47,12 @@ public:
 	*/
 	ColorButton(QWidget *parent = 0);
 	//! Set the current color to be displayed
-	void setColor(const QColor& c);
+	void setColor(const QColor& c){setCurrentColor (c);};
 	//! Get the current color
-	QColor color(){return d_color;};
+	QColor color(){return currentColor();};
 
 signals:
     void colorChanged();
-
-private slots:
-    void pickColor();
-
-private:
-    void updateColor();
-	//! Current color
-	QColor d_color;
 };
 
 #endif

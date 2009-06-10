@@ -1462,7 +1462,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(lblTranslationsPath , 0, 0);
 
 	translationsPathLine = new QLineEdit();
-	translationsPathLine->setText(app->d_translations_folder);
+	translationsPathLine->setText(QDir::toNativeSeparators(app->d_translations_folder));
 	gl->addWidget(translationsPathLine, 0, 1);
 
 	QPushButton *browseTranslationsBtn = new QPushButton();
@@ -1473,7 +1473,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(lblHelpPath, 1, 0 );
 
 	QFileInfo hfi(app->helpFilePath);
-	helpPathLine = new QLineEdit(hfi.dir().absolutePath());
+	helpPathLine = new QLineEdit(QDir::toNativeSeparators(hfi.dir().absolutePath()));
 	gl->addWidget( helpPathLine, 1, 1);
 
 	QPushButton *browseHelpBtn = new QPushButton();
@@ -1485,7 +1485,7 @@ void ConfigDialog::initFileLocationsPage()
 	lblPythonConfigDir = new QLabel(tr("Python Configuration Files"));
 	gl->addWidget(lblPythonConfigDir, 2, 0);
 
-	pythonConfigDirLine = new QLineEdit(app->d_python_config_folder);
+	pythonConfigDirLine = new QLineEdit(QDir::toNativeSeparators(app->d_python_config_folder));
 	gl->addWidget(pythonConfigDirLine, 2, 1);
 
 	QPushButton *browsePythonConfigBtn = new QPushButton();
@@ -2293,14 +2293,14 @@ void ConfigDialog::chooseTranslationsFolder()
 	QFileInfo tfi(app->d_translations_folder);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot translations folder!"),
 #ifdef Q_CC_MSVC
-			tfi.dir().absolutePath(), 0);
+		tfi.dir().absolutePath(), 0);
 #else
-			tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
+		tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
 #endif
 
 	if (!dir.isEmpty()){
-		app->d_translations_folder = dir;
-		translationsPathLine->setText(dir);
+		app->d_translations_folder = QDir::toNativeSeparators(dir);
+		translationsPathLine->setText(app->d_translations_folder);
 		app->createLanguagesList();
 		insertLanguagesList();
 	}
@@ -2311,8 +2311,6 @@ void ConfigDialog::chooseHelpFolder()
 	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
 	if (!app)
 		return;
-
-	//app->chooseHelpFolder();
 
 	QFileInfo hfi(app->helpFilePath);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
@@ -2332,7 +2330,7 @@ void ConfigDialog::chooseHelpFolder()
 			app->helpFilePath = helpFilePath;
 	}
 
-	helpPathLine->setText(QFileInfo(app->helpFilePath).dir().absolutePath());
+	helpPathLine->setText(QDir::toNativeSeparators(QFileInfo(app->helpFilePath).dir().absolutePath()));
 }
 
 #ifdef SCRIPTING_PYTHON
@@ -2345,14 +2343,14 @@ void ConfigDialog::choosePythonConfigFolder()
 	QFileInfo tfi(app->d_python_config_folder);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the Python configuration files!"),
 #ifdef Q_CC_MSVC
-			tfi.dir().absolutePath(), 0);
+		tfi.dir().absolutePath(), 0);
 #else
-			tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
+		tfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
 #endif
 
 	if (!dir.isEmpty()){
-		app->d_python_config_folder = dir;
-		pythonConfigDirLine->setText(dir);
+		app->d_python_config_folder = QDir::toNativeSeparators(dir);
+		pythonConfigDirLine->setText(app->d_python_config_folder);
 
 		if (app->scriptingEnv()->name() == QString("Python"))
 			app->setScriptingLanguage(QString("Python"), true);
