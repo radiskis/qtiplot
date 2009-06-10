@@ -503,7 +503,7 @@ void PlotDialog::initPiePage()
 	QGridLayout *gl1 = new QGridLayout();
 	gl1->addWidget(new QLabel( tr( "Color" )), 0, 0);
 
-	boxPieLineColor = new ColorBox(false);
+	boxPieLineColor = new ColorButton();
 	gl1->addWidget(boxPieLineColor, 0, 1);
 
 	gl1->addWidget(new QLabel(tr( "Style" )), 1, 0);

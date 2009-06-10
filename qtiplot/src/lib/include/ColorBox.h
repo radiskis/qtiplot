@@ -58,7 +58,8 @@ public:
     static bool isValidColor(const QColor& color);
 	//! Returns the number of predefined colors
     static int numPredefinedColors();
-
+    //! Returns the color name for the predefined colors
+    static QStringList colorNames();
 
 protected:
 	//! Internal initialization function

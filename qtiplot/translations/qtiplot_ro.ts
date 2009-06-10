@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ro">
-<defaultcodec></defaultcodec>
 <context>
     <name>AddWidgetTool</name>
     <message>
@@ -27,17 +26,17 @@
 <context>
     <name>ApplicationWindow</name>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="963"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="964"/>
         <source>QtiPlot - untitled</source>
         <translation>QtiPlot - neintitulat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="974"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="975"/>
         <source>Project Explorer</source>
         <translation>Explorator de proiect</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14787"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14896"/>
         <source>Folder</source>
         <translation>Dosar</translation>
     </message>
@@ -47,47 +46,47 @@
         <translation>NEINTITULAT</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="965"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="966"/>
         <source>Name</source>
         <translation>Nume</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14769"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14878"/>
         <source>Type</source>
         <translation>Tip</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="967"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="968"/>
         <source>View</source>
         <translation>Afişaj</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14772"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14881"/>
         <source>Size</source>
         <translation>Dimensiune</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14773"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14882"/>
         <source>Created</source>
         <translation>Creat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14753"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14862"/>
         <source>Label</source>
         <translation>Etichetă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="975"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="976"/>
         <source>Results Log</source>
         <translation>Rezultate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="978"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="979"/>
         <source>Scripting Console</source>
         <translation>Consolă de programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="976"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="977"/>
         <source>Undo Stack</source>
         <translation>Listă de modificări</translation>
     </message>
@@ -116,17 +115,17 @@
         <translation>F6</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="984"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="985"/>
         <source>File</source>
         <translation>Fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="985"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="986"/>
         <source>Edit</source>
         <translation>Editare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="983"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="984"/>
         <source>Plot</source>
         <translation>Grafic</translation>
     </message>
@@ -136,12 +135,12 @@
         <translation>Dezactivare unel&amp;te</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12956"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13060"/>
         <source>&amp;Zoom In</source>
         <translation>&amp;Mărire</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12957"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13061"/>
         <source>Ctrl++</source>
         <translation>Ctrl++</translation>
     </message>
@@ -151,232 +150,232 @@
         <translation>Mi&amp;cşorare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12961"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13065"/>
         <source>Ctrl+-</source>
         <translation>Ctrl+-</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12964"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13068"/>
         <source>&amp;Data Reader</source>
         <translation>Cititor de &amp;date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12965"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13069"/>
         <source>CTRL+D</source>
         <translation>CTRL+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12968"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13072"/>
         <source>&amp;Select Data Range</source>
         <translation>&amp;Selectare interval</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12969"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13073"/>
         <source>ALT+S</source>
         <translation>ALT+S</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12972"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13076"/>
         <source>S&amp;creen Reader</source>
         <translation>Coordonate e&amp;cran</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12975"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13079"/>
         <source>&amp;Draw Data Points</source>
         <translation>&amp;Desen date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12978"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13082"/>
         <source>&amp;Move Data Points...</source>
         <translation>&amp;Modificare date...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12979"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13083"/>
         <source>Ctrl+ALT+M</source>
         <translation>Ctrl+ALT+M</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12982"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13086"/>
         <source>Remove &amp;Bad Data Points...</source>
         <translation>Ster&amp;gere date incorecte...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12983"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13087"/>
         <source>Alt+B</source>
         <translation>Alt+B</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12990"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13094"/>
         <source>Add E&amp;quation</source>
         <translation>Adăugare &amp;ecuaţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12992"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13096"/>
         <source>ALT+Q</source>
         <translation>ALT+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12986"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13090"/>
         <source>Add &amp;Text</source>
         <translation>Adăugare &amp;text</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12988"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13092"/>
         <source>ALT+T</source>
         <translation>ALT+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13002"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13106"/>
         <source>Draw &amp;Arrow</source>
         <translation>Desen săge&amp;ată</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13003"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13107"/>
         <source>CTRL+ALT+A</source>
         <translation>CTRL+ALT+A</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13006"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13110"/>
         <source>Draw &amp;Line</source>
         <translation>Desen &amp;linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13007"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13111"/>
         <source>CTRL+ALT+L</source>
         <translation>CTRL+ALT+L</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12994"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13098"/>
         <source>Add &amp;Rectangle</source>
         <translation>Adăugare d&amp;reptunghi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12996"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13100"/>
         <source>CTRL+ALT+R</source>
         <translation>CTRL+ALT+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12998"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13102"/>
         <source>Add &amp;Ellipse</source>
         <translation>Adăugare &amp;elipsă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13000"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13104"/>
         <source>CTRL+ALT+E</source>
         <translation>CTRL+ALT+E</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14760"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14869"/>
         <source>Table</source>
         <translation>Tabel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15098"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15207"/>
         <source>Column</source>
         <translation>Coloană</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="980"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="981"/>
         <source>Data Display</source>
         <translation>Afişaj date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="986"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="987"/>
         <source>Matrix Plot</source>
         <translation>Grafic de matrice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="988"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="989"/>
         <source>Format</source>
         <translation>Format</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="973"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="974"/>
         <source>QtiPlot - Script Window</source>
         <translation>QtiPlot - Fereastră programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9908"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10010"/>
         <source>3D Surface</source>
         <translation>Suprafaţă 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8341"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8418"/>
         <source>&amp;Recent Projects</source>
         <translation>Proiecte &amp;recente</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1192"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1193"/>
         <source>Set Columns &amp;As</source>
         <translation>Definire coloane c&amp;a</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6289"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6350"/>
         <source>&amp;Read-only</source>
         <translation>Numai citi&amp;re</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6290"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6351"/>
         <source>Read/&amp;Write</source>
         <translation>Citire/&amp;Scriere</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6300"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6361"/>
         <source>&amp;Fill Columns With</source>
         <translation>&amp;Umple coloanele cu</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6235"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6296"/>
         <source>Special Line/Symb&amp;ol</source>
         <translation>Linie/Simb&amp;ol special </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6250"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6311"/>
         <source>Statistical &amp;Graphs</source>
         <translation>Grafice &amp;statistice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6257"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6318"/>
         <source>Pa&amp;nel</source>
         <translation>Pa&amp;nou</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1301"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1303"/>
         <source>3&amp;D Plot</source>
         <translation>Grafic 3&amp;D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="991"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="992"/>
         <source>&amp;File</source>
         <translation>&amp;Fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="994"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="995"/>
         <source>&amp;Edit</source>
         <translation>&amp;Editare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="995"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="996"/>
         <source>&amp;View</source>
         <translation>&amp;Afişaj</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1010"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1011"/>
         <source>&amp;Scripting</source>
         <translation>&amp;Programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="996"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="997"/>
         <source>&amp;Graph</source>
         <translation>&amp;Grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9002"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9101"/>
         <source>&amp;Data</source>
         <translation>&amp;Date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1008"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1009"/>
         <source>&amp;Analysis</source>
         <translation>&amp;Analiză</translation>
     </message>
@@ -386,127 +385,127 @@
         <translation type="obsolete">For&amp;mat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6260"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6321"/>
         <source>&amp;Plot</source>
         <translation>&amp;Grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12893"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12997"/>
         <source>&amp;Table</source>
         <translation>&amp;Tabel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9074"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9176"/>
         <source>3D &amp;Plot</source>
         <translation>Grafic 3&amp;D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="998"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="999"/>
         <source>&amp;Matrix</source>
         <translation>&amp;Matrice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1397"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1399"/>
         <source>Empty Stack</source>
         <translation>Lista de modificări vidă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1011"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1012"/>
         <source>&amp;Windows</source>
         <translation>&amp;Ferestre</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12814"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12918"/>
         <source>&amp;Help</source>
         <translation>&amp;Ajutor</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1687"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1689"/>
         <source>You must select exactly one column for plotting!</source>
         <translation>Trebuie să selectaţi o singură coloană!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2389"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2479"/>
         <source>QtiPlot - Plot error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16152"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16261"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1696"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1698"/>
         <source>Please select a column to plot!</source>
         <translation>Vă rugam să selectaţi coloana pe care vreţi să o trasaţi!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1763"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1765"/>
         <source>Please select four columns for this operation!</source>
         <translation>Vă rugam să selectaţi patru coloane pentru aceasta operaţiune!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16029"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16138"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertisment</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9322"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9424"/>
         <source>&lt;h4&gt;There are no tables available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a table and try again!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;Nu există tabele disponibile în acest proiect.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vă rugam creaţi un tabel şi încercaţi din nou!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1952"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1953"/>
         <source>There are no available columns with plot designation set to Z!</source>
         <translation>Nu există coloane de tip Z!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1968"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1969"/>
         <source>QtiPlot - Choose data set</source>
         <translation>QtiPlot - Alegeţi setul de date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14757"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14866"/>
         <source>Matrix</source>
         <translation>Matrice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2019"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2020"/>
         <source>QtiPlot - Choose matrix to plot</source>
         <translation>QtiPlot - Alegeţi matricea pe care vreţi să o reprezentaţi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2012"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2013"/>
         <source>&lt;h4&gt;There are no matrices available in this project.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please create a matrix and try again!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;Nu există matrici disponibile în acest proiect.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vă rugam creaţi o matrice şi încercaţi din nou!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.h" line="243"/>
+        <location filename="src/core/ApplicationWindow.h" line="249"/>
         <source>Graph</source>
         <translation>Grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6992"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7069"/>
         <source>QtiPlot - Export error</source>
         <translation>QtiPlot - Eroare de export</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5524"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5584"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Vă rugam să verificaţi că aveţi drept de scriere in această locaţie!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7503"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7580"/>
         <source>Images</source>
         <translation>Imagini</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2275"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2276"/>
         <source>QtiPlot - Import image from file</source>
         <translation>QtiPlot - Importă imagine din fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2316"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2317"/>
         <source>QtiPlot - Load image from file</source>
         <translation>QtiPlot - Încarcă imagine din fişier</translation>
     </message>
@@ -521,157 +520,157 @@
         <translation type="obsolete">Titlu axă Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15273"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15382"/>
         <source>Please select a Y column to plot!</source>
         <translation>Vă rugam să selectaţi o coloana de tip Y!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2604"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2807"/>
         <source>QtiPlot - Renamed Window</source>
         <translation>QtiPlot - Fereastra redenumită</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2605"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2808"/>
         <source>The table &apos;%1&apos; already exists. It has been renamed &apos;%2&apos;.</source>
         <translation>Există deja un tabel cu numele &apos;%1&apos;. A fost redenumit &apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2721"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2757"/>
         <source>Notes</source>
         <translation>Note</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2781"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2824"/>
         <source>Set Image Mode</source>
         <translation>Setează mod imagine</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2793"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2836"/>
         <source>Set Data Mode</source>
         <translation>Setează mod date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2805"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2848"/>
         <source>Show X/Y</source>
         <translation>Afişaj X/Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2817"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2860"/>
         <source>Show Column/Row</source>
         <translation>Afişaj Coloană/Linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2830"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2873"/>
         <source>Set Default Palette</source>
         <translation>Setează paletă implicită</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2843"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2886"/>
         <source>Set Gray Scale Palette</source>
         <translation>Setează scare de griuri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2856"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2899"/>
         <source>Set Rainbow Palette</source>
         <translation>Setează paletă curcubeu</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="2926"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="2969"/>
         <source>Determinant of </source>
         <translation>Determinantul</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13467"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13571"/>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Please add a layer and try again!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;Nu există grafice disponibile în această fereastra.&lt;/h4&gt;&lt;p&gt;&lt;h4&gt;Vă rugam adăugaţi un grafic şi încercaţi din nou!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7345"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7422"/>
         <source>There are no curves available on this plot!</source>
         <translation>Nu există curbe disponibile în acest grafic!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13478"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13582"/>
         <source>This functionality is not available for pie plots!</source>
         <translation>Această operaţie nu este disponibilă pentru graficele placintă!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3250"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3292"/>
         <source>QtiPlot - Error bars error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3301"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3343"/>
         <source>This feature is not available for user defined function curves!</source>
         <translation>Această operaţie nu este disponibilă pentru funcţii!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3307"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3349"/>
         <source>The selected columns have different numbers of rows!</source>
         <translation>Coloanele selecţionate au un număr diferit de linii!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3314"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3356"/>
         <source>The selected error column is empty!</source>
         <translation>Coloana de bare de eroare selecţionată este goală!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13629"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13733"/>
         <source>QtiPlot - File openning error</source>
         <translation>QtiPlot - Eroare de deschidere fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3735"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3777"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is the current file!</source>
         <translation>Fişierul: &lt;b&gt;%1&lt;/b&gt; este fişierul curent!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13774"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13878"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; doesn&apos;t exist!</source>
         <translation>Fişierul: &lt;b&gt;%1&lt;/b&gt; nu există!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13626"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13730"/>
         <source>You don&apos;t have the permission to open this file: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Nu aveţi permisiunea să deschideţi fişierul: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13778"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13882"/>
         <source>QtiPlot - File opening error</source>
         <translation>QtiPlot - Eroare de deschidere fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3794"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3836"/>
         <source>The file &lt;b&gt;%1&lt;/b&gt; is corrupted, but there exists a backup copy.&lt;br&gt;Do you want to open the backup instead?</source>
         <translation>Fişierul &lt;b&gt;%1&lt;/b&gt; nu poate fi deschis, dar există o copie.&lt;br&gt;Vreţi să o deschideţi pe aceasta?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4229"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4271"/>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; was not created using QtiPlot!</source>
         <translation>Fişierul: &lt;b&gt; %1 &lt;/b&gt; nu a fost creat de QtiPlot!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3823"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3865"/>
         <source>QtiPlot - File Open Error</source>
         <translation>QtiPlot - Eroare de deschidere fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3825"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3867"/>
         <source>The file: &lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;does not exist anymore!&lt;p&gt;It will be removed from the list.</source>
         <translation>Fişierul: &lt;b&gt; %1 &lt;/b&gt; &lt;p&gt;nu mai există!&lt;p&gt;Va fi şters din listă.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3837"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3879"/>
         <source>The file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; is the current file!</source>
         <translation>Fişierul: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; este fişierul curent!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15877"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15986"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3890"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3932"/>
         <source>The file &quot;%1&quot; was created using &quot;%2&quot; as scripting language.
 
 Initializing support for this language FAILED; I&apos;m using &quot;%3&quot; instead.
@@ -682,3136 +681,3136 @@ Iniţializarea suportului pentru acest limbaj de programare nu a fost posibilă;
 Diverse părţi din acest fişier ar putea fi afişate incorect.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3897"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3939"/>
         <source>Window</source>
         <translation>Fereastră</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="3904"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="3946"/>
         <source>QtiPlot - Opening file</source>
         <translation>QtiPlot - Deschidere fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4134"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4176"/>
         <source>Script Error</source>
         <translation>Eroare de programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4188"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4230"/>
         <source>QtiPlot - Scripting Error</source>
         <translation>QtiPlot - Eroare de programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4189"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4231"/>
         <source>Scripting language &quot;%1&quot; failed to initialize.</source>
         <translation>Limbajul de programare &quot;%1&quot; nu a putut fi iniţializat.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4199"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4241"/>
         <source>QtiPlot - Open Template File</source>
         <translation>QtiPlot - Deschidere fişier model</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4207"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4249"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot template file!</source>
         <translation>Fişierul: &lt;b&gt;%1&lt;/b&gt; nu este un fişier model creat de QtiPlot!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="4283"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="4325"/>
         <source>Table1</source>
         <translation>Tabel1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5066"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5108"/>
         <source>QtiPlot - Export Error</source>
         <translation>QtiPlot - Eroare de export</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5067"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5109"/>
         <source>&lt;h4&gt;There are no plot layers available in this window!&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;Nu există grafice disponibile în această fereastra!&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5198"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5240"/>
         <source>Choose a directory to export the graphs to</source>
         <translation>Alegeţi un dosar în care să exportaţi graficele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5202"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5244"/>
         <source>Output format:</source>
         <translation>Format de export:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5203"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5245"/>
         <source>Directory:</source>
         <translation>Dosar:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5234"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5276"/>
         <source>There are no plot layers available in window &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Graph window not exported!</source>
         <translation>Nu există grafice disponibile în fereastra &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Fereastra nu a fost exportată!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5792"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5852"/>
         <source>A file called: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;already exists. Do you want to overwrite it?</source>
         <translation>Există deja un fişier cu numele: &lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;p&gt;. Vreţi să-l rescrieţi?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5790"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5850"/>
         <source>QtiPlot - Overwrite file?</source>
         <translation>QtiPlot - Rescriere fişier?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5276"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5318"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Vă rugam să verificaţi că aveţi drept de scriere in această locaţie!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5370"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5412"/>
         <source>Minimized</source>
         <translation>Minimizat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8924"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9002"/>
         <source>Maximized</source>
         <translation>Maximizat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14113"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14222"/>
         <source>QtiPlot project</source>
         <translation>Proiect QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14114"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14223"/>
         <source>Compressed QtiPlot project</source>
         <translation>Proiect QtiPlot arhivat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5442"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5502"/>
         <source>Save Project As</source>
         <translation>Salvează proiectul ca</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5498"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5558"/>
         <source>QtiPlot Matrix Template</source>
         <translation>Model de matrice QtiPlot </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5500"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5560"/>
         <source>QtiPlot 2D Graph Template</source>
         <translation>Model de grafic 2D QtiPlot </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5502"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5562"/>
         <source>QtiPlot Table Template</source>
         <translation>Model de tabel QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5504"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5564"/>
         <source>QtiPlot 3D Surface Template</source>
         <translation>Model de grafic 3D QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5507"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5567"/>
         <source>Save Window As Template</source>
         <translation>Salvează fereastra ca model</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14259"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14368"/>
         <source>Please enter a valid name!</source>
         <translation>Vă rugăm introduceţi un nume valid!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5593"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5653"/>
         <source>The name you chose is not valid: only letters and digits are allowed!</source>
         <translation>Numele ales nu este valid: sunt permise doar litere şi cifre!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14269"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14378"/>
         <source>Please choose another name!</source>
         <translation>Vă rugăm alegeţi un alt nume!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5600"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5660"/>
         <source>Name &lt;b&gt;%1&lt;/b&gt; already exists!</source>
         <translation>Numele &lt;b&gt;%1&lt;/b&gt; este deja utilizat!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5602"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5662"/>
         <source>Warning: for internal consistency reasons the underscore character is replaced with a minus sign.</source>
         <translation>Avertisment: din motive legate de reprezentarea internă folosită de QtiPlot, caracterul &quot;_&quot; va fi înlocuit cu semnul minus &apos;-&apos;.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5776"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5836"/>
         <source>Choose a directory to export the tables to</source>
         <translation>Alegeţi un dosar în care să exportaţi tabelele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15064"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15173"/>
         <source>&amp;Yes</source>
         <translation>&amp;Da</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12619"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12723"/>
         <source>&amp;All</source>
         <translation>&amp;Toate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10218"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10320"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Anulează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6980"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7057"/>
         <source>Choose a filename to save under</source>
         <translation>Alegeţi un nume de fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5860"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5920"/>
         <source>QtiPlot - Enter rows number</source>
         <translation>QtiPlot - Introduceţi numărul de linii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5860"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5920"/>
         <source>Rows</source>
         <translation>Linii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5876"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5936"/>
         <source>QtiPlot - Delete rows</source>
         <translation>QtiPlot - Ştergere linii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5873"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5933"/>
         <source>Start row</source>
         <translation>Prima linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5876"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5936"/>
         <source>End row</source>
         <translation>Ultima linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5890"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5950"/>
         <source>QtiPlot - Enter columns number</source>
         <translation>QtiPlot - Introduceţi numărul de coloane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5890"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="5950"/>
         <source>Columns</source>
         <translation>Coloane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16111"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16220"/>
         <source>QtiPlot - Column selection error</source>
         <translation>QtiPlot - Eroare de selecţie a coloanei</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6479"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6550"/>
         <source>Please select a column first!</source>
         <translation>Vă rugam să selectaţi mai întâi o coloană!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5979"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6039"/>
         <source>Please select two columns for this operation!</source>
         <translation>Vă rugam să selectaţi două coloane pentru aceasta operaţiune!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="5997"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6057"/>
         <source>Please select exactly one columns for this operation!</source>
         <translation>Vă rugăm să selectaţi o singură coloană!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6033"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6093"/>
         <source>Please select two columns for this operation:
  the first represents the signal and the second the response function!</source>
         <translation>Va rugăm selecţionaţi două coloane pentru această operaţie: prima reprezintă semnalul şi a doua funcţia răspuns!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6074"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6134"/>
         <source>QtiPlot - Row selection error</source>
         <translation>QtiPlot - Eroare de selecţie a liniei</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6075"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6135"/>
         <source>Please select a row first!</source>
         <translation>Vă rugam să selectaţi mai întâi o linie!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12676"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12780"/>
         <source>&amp;Line</source>
         <translation>&amp;Linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12736"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12840"/>
         <source>&amp;Scatter</source>
         <translation>&amp;Simbol</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12682"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12786"/>
         <source>Line + S&amp;ymbol</source>
         <translation>Linie + S&amp;imbol</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12685"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12789"/>
         <source>Vertical &amp;Drop Lines</source>
         <translation>Linii &amp;verticale</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12687"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12791"/>
         <source>&amp;Spline</source>
         <translation>&amp;Spline</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12688"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12792"/>
         <source>&amp;Vertical Steps</source>
         <translation>Trepte &amp;verticale</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12689"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12793"/>
         <source>&amp;Horizontal Steps</source>
         <translation>Trepte &amp;orizontale</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12894"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12998"/>
         <source>&amp;Columns</source>
         <translation>&amp;Coloane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12694"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12798"/>
         <source>&amp;Rows</source>
         <translation>&amp;Linii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12697"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12801"/>
         <source>&amp;Area</source>
         <translation>&amp;Arie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12700"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12804"/>
         <source>&amp;Pie</source>
         <translation>&amp;Placintă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6118"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6178"/>
         <source>3D Ribbo&amp;n</source>
         <translation>Pa&amp;nglică 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6119"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6179"/>
         <source>3D &amp;Bars</source>
         <translation>&amp;Bare 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6120"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6180"/>
         <source>3&amp;D Scatter</source>
         <translation>&amp;Simbol 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6121"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6181"/>
         <source>3D &amp;Trajectory</source>
         <translation>&amp;Traiectorie 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12709"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12813"/>
         <source>&amp;Histogram</source>
         <translation>&amp;Histogramă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6247"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6308"/>
         <source>&amp;Stacked Histograms</source>
         <translation>Histograme &amp;suprapuse</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9192"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9294"/>
         <source>Cu&amp;t</source>
         <translation>&amp;Taie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9193"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9295"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copiază</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6265"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6326"/>
         <source>Past&amp;e</source>
         <translation>Li&amp;peşte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12905"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13009"/>
         <source>&amp;X</source>
         <translation>&amp;X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12907"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13011"/>
         <source>&amp;Y</source>
         <translation>&amp;Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12909"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13013"/>
         <source>&amp;Z</source>
         <translation>&amp;Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12914"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13018"/>
         <source>&amp;Label</source>
         <translation>&amp;Etichetă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14182"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14291"/>
         <source>&amp;None</source>
         <translation>&amp;Nici una</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12911"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13015"/>
         <source>X E&amp;rror</source>
         <translation>E&amp;roare X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12912"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13016"/>
         <source>Y &amp;Error</source>
         <translation>&amp;Eroare Y </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6291"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6352"/>
         <source>Set As</source>
         <translation>Defineşte ca</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6190"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6250"/>
         <source>&amp;Fill Column With</source>
         <translation>&amp;Umplere coloană cu</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6193"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6253"/>
         <source>&amp;Column</source>
         <translation>&amp;Coloană</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6305"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6366"/>
         <source>&amp;Normalize</source>
         <translation>&amp;Normare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9197"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9299"/>
         <source>Clea&amp;r</source>
         <translation>Go&amp;leşte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12490"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12591"/>
         <source>&amp;Delete</source>
         <translation>Şte&amp;rge</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6274"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6335"/>
         <source>&amp;Insert</source>
         <translation>&amp;Insează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6213"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6273"/>
         <source>&amp;Ascending</source>
         <translation>&amp;Ascendent</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6214"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6274"/>
         <source>&amp;Descending</source>
         <translation>&amp;Descendent</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6215"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6275"/>
         <source>Sort Colu&amp;mn</source>
         <translation>Sortare coloa&amp;nă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6242"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6303"/>
         <source>Vectors &amp;XYXY</source>
         <translation>Vectori &amp;XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12711"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12815"/>
         <source>&amp;Vertical 2 Layers</source>
         <translation>2 grafice &amp;verticale</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12712"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12816"/>
         <source>&amp;Horizontal 2 Layers</source>
         <translation>2 grafice &amp;orizontale</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12713"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12817"/>
         <source>&amp;4 Layers</source>
         <translation>&amp;4 grafice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12714"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12818"/>
         <source>&amp;Stacked Layers</source>
         <translation>Grafice &amp;suprapuse</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6355"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6416"/>
         <source>You need to select at least one Y column for this operation!</source>
         <translation>Trebuie să selectaţi cel puţin o coloană de tip Y pentru această operaţiune!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15310"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15419"/>
         <source>You need at least two columns for this operation!</source>
         <translation>E nevoie de cel puţin două coloane pentru aceasta operaţiune!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6422"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6483"/>
         <source>Y2 Axis Title</source>
         <translation>Titlu Axă Y2 </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6570"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6641"/>
         <source>Not available for empty 3D surface plots!</source>
         <translation>Indisponibil pentru suprafeţe 3D goale!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6664"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="6740"/>
         <source>Set Display Range</source>
         <translation>Defineşte intervalul de afişaj</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7012"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7089"/>
         <source>&lt;h4&gt;There are no plot layers available in this window.&lt;/h4&gt;</source>
         <translation>&lt;h4&gt;Nu există grafice disponibile în această fereastra.&lt;/h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6943"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7020"/>
         <source>This will modify the data in the worksheets!
 Are you sure you want to continue?</source>
         <translation>Datele din tabele vor fi modificate. Sunteţi sigur că vreţi să continuaţi?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6944"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7021"/>
         <source>Continue</source>
         <translation>Continuă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8707"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8785"/>
         <source>Cancel</source>
         <translation>Anulează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="6993"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7070"/>
         <source>Could not write to file: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location or that the file is not being used by another application!</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Vă rugam să verificaţi că aveţi drept de scriere in această locaţie sau că fişierul nu este folosit de un alt program!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7269"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7346"/>
         <source>Sorry, there are no results to display!</source>
         <translation>Regretăm, nu există rezultate disponibile pentru afişare!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7335"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7412"/>
         <source>There are no plot layers available in this window!</source>
         <translation>Nu există grafice disponibile în această fereastra!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7466"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7543"/>
         <source>There are no layers available on this plot. Operation aborted!</source>
         <translation>Nu există grafice disponibile în această fereastra!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7511"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7588"/>
         <source>QtiPlot - Insert image from file</source>
         <translation>QtiPlot - Inserează imagine din fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7575"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7652"/>
         <source>There are no plot layers available in this window.</source>
         <translation>Nu există grafice disponibile în această fereastra.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7835"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7912"/>
         <source>QtiPlot - Duplicate window error</source>
         <translation>QtiPlot - Eroare de duplicare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7836"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7913"/>
         <source>There are no windows available in this project!</source>
         <translation>Nu există ferestre disponibile în acest proiect!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7858"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7935"/>
         <source>QtiPlot - Duplicate error</source>
         <translation>QtiPlot - Eroare de duplicare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="7858"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="7935"/>
         <source>Empty 3D surface plots cannot be duplicated!</source>
         <translation>Suprafeţele 3D  nu pot fi duplicate!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13562"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13666"/>
         <source>Released</source>
         <translation>Apărut</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8163"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8240"/>
         <source>About QtiPlot</source>
         <translation>Despre QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8178"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8255"/>
         <source>&amp;Translate</source>
         <translation>&amp;Translatează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1004"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1005"/>
         <source>&amp;Smooth</source>
         <translation>&amp;Netezeşte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1005"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1006"/>
         <source>&amp;FFT filter</source>
         <translation>Filtru &amp;FFT</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1006"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1007"/>
         <source>Fit E&amp;xponential Decay</source>
         <translation>Ajustare e&amp;xponenţială descrescătoare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1007"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1008"/>
         <source>Fit &amp;Multi-peak</source>
         <translation>Ajustare extre&amp;me</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8285"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8362"/>
         <source>Vie&amp;w</source>
         <translation>&amp;Afişaj</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8288"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8365"/>
         <source>&amp;Palette</source>
         <translation>&amp;Paletă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8297"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8374"/>
         <source>&amp;Convert to Spreadsheet</source>
         <translation>&amp;Transformă in tabel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="992"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="993"/>
         <source>&amp;New</source>
         <translation>&amp;Nou</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="993"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="994"/>
         <source>&amp;Export Graph</source>
         <translation>&amp;Exportă grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8420"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8497"/>
         <source>&amp;Folders</source>
         <translation>&amp;Dosare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8432"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8509"/>
         <source>&amp;Cascade</source>
         <translation>Aranjare in &amp;cascadă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8433"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8510"/>
         <source>&amp;Tile</source>
         <translation>Aranjare pe &amp;tot ecranul</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12820"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12924"/>
         <source>Close &amp;Window</source>
         <translation>Închidere &amp;fereastră</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12123"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12224"/>
         <source>More windows...</source>
         <translation>Mai multe ferestre...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8483"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8561"/>
         <source>&amp;View Pixel Line profile</source>
         <translation>&amp;Afişaza profilul liniei de pixeli</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8484"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8562"/>
         <source>&amp;Intensity Matrix</source>
         <translation>Matrice de &amp;intensitate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8488"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8566"/>
         <source>&amp;Cut</source>
         <translation>&amp;Taie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14191"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14300"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Proprietăti...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8503"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8581"/>
         <source>Please use the project explorer to select a window!</source>
         <translation>Vă rugăm utilizaţi exploratorul de proiect pentru a selecţiona o fereastră!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8517"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8595"/>
         <source>Normal</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8705"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8783"/>
         <source>Save changes to project: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</source>
         <translation>Salvează modificările proiectului: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt; ?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14488"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14597"/>
         <source>Yes</source>
         <translation>Da</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14488"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14597"/>
         <source>No</source>
         <translation>Nu</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14155"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14264"/>
         <source>&amp;Show All Windows</source>
         <translation>&amp;Arată toate ferestrele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14156"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14265"/>
         <source>&amp;Hide All Windows</source>
         <translation>Ascu&amp;nde toate ferestrele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12578"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12680"/>
         <source>&amp;Delete Selection</source>
         <translation>Sterge &amp;selecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14175"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14284"/>
         <source>New &amp;Window</source>
         <translation>&amp;Fereastră nouă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14178"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14287"/>
         <source>New F&amp;older</source>
         <translation>D&amp;osar nou</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8791"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8869"/>
         <source>Auto &amp;Column Width</source>
         <translation>Lărgime de &amp;coloană automată</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8834"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8912"/>
         <source>&amp;Delete Window</source>
         <translation>Şte&amp;rge fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12818"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12922"/>
         <source>&amp;Rename Window</source>
         <translation>&amp;Redenumeşte fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8839"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8917"/>
         <source>&amp;Print Window</source>
         <translation>Im&amp;primă fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8850"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8928"/>
         <source>D&amp;epending Graphs</source>
         <translation>Grafice d&amp;ependente</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8859"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8937"/>
         <source>D&amp;epending 3D Graphs</source>
         <translation>Grafice 3D d&amp;ependente</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8885"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8963"/>
         <source>D&amp;epends on</source>
         <translation>D&amp;epinde de</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8888"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="8966"/>
         <source>Function</source>
         <translation>Funcţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8991"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9070"/>
         <source>Re&amp;move Pie Curve</source>
         <translation>Şte&amp;rge graficul plăcintă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="8999"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9100"/>
         <source>Anal&amp;yze</source>
         <translation>Anal&amp;iză</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9053"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9155"/>
         <source>&amp;Paste Layer</source>
         <translation>Li&amp;peşte grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9010"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9114"/>
         <source>&amp;Paste Text</source>
         <translation>Li&amp;peşte text</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9012"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9116"/>
         <source>&amp;Paste Tex Formula</source>
         <translation>Li&amp;peşte formula Tex</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9014"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9118"/>
         <source>&amp;Paste Image</source>
         <translation>Li&amp;peşte imagine</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9016"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9120"/>
         <source>&amp;Paste Rectangle</source>
         <translation>Li&amp;peşte dreptunghi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9018"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9122"/>
         <source>&amp;Paste Ellipse</source>
         <translation>Li&amp;peşte elipsă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9021"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9124"/>
         <source>&amp;Paste Line/Arrow</source>
         <translation>Li&amp;peşte linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9032"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9132"/>
         <source>&amp;Layer</source>
         <translation>&amp;Grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9033"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9133"/>
         <source>&amp;Window</source>
         <translation>&amp;Fereastră</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9030"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9129"/>
         <source>E&amp;xport</source>
         <translation>E&amp;xportă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12627"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12731"/>
         <source>&amp;Print</source>
         <translation>Im&amp;primă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9036"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9138"/>
         <source>P&amp;roperties...</source>
         <translation>P&amp;roprietăti...</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9038"/>
         <source>&amp;Delete Layer</source>
-        <translation>Şterge &amp;selecţie</translation>
+        <translation type="obsolete">Şterge &amp;selecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9066"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9168"/>
         <source>&amp;Copy Page</source>
         <translation>&amp;Copiază pagina</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9067"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9169"/>
         <source>E&amp;xport Page</source>
         <translation>E&amp;xportă pagina</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9076"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9178"/>
         <source>&amp;Matrix...</source>
         <translation>&amp;Matrice...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9080"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9182"/>
         <source>Choose &amp;Data Set...</source>
         <translation>Alegeţi un set de &amp;date...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9082"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9184"/>
         <source>Choose &amp;Matrix...</source>
         <translation>Alegeţi o &amp;matrice...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9085"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9187"/>
         <source>C&amp;lear</source>
         <translation>Go&amp;leşte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9092"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9194"/>
         <source>&amp;Copy Graph</source>
         <translation>&amp;Copiază grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9093"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9195"/>
         <source>&amp;Export</source>
         <translation>&amp;Exportă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9194"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9296"/>
         <source>&amp;Paste</source>
         <translation>Li&amp;peşte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9174"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9276"/>
         <source>&amp;Insert Row</source>
         <translation>&amp;Inserează linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9105"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9207"/>
         <source>&amp;Insert Column</source>
         <translation>&amp;Inserează coloană</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9186"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9288"/>
         <source>&amp;Delete Rows</source>
         <translation>Şte&amp;rge linii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9109"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9211"/>
         <source>&amp;Delete Columns</source>
         <translation>Şte&amp;rge coloane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9175"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9277"/>
         <source>&amp;Delete Row</source>
         <translation>Şte&amp;rge linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9176"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9278"/>
         <source>Clea&amp;r Row</source>
         <translation>Go&amp;leşte linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9187"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9289"/>
         <source>Clea&amp;r Rows</source>
         <translation>Go&amp;leşte liniile</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9214"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9316"/>
         <source>Choose the location of the QtiPlot help folder!</source>
         <translation>Alegeţi dosarul conţinand documentaţia pentru QtiPlot!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9226"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9328"/>
         <source>QtiPlot - index.html File Not Found!</source>
         <translation>QtiPlot - Fişierul index.html nu a fost găsit!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9227"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9329"/>
         <source>There is no file called &lt;b&gt;index.html&lt;/b&gt; in this folder.&lt;br&gt;Please choose another folder!</source>
         <translation>Nu există un fişier numit &lt;b&gt;index.html&lt;/b&gt; în acest dosar.&lt;br&gt;Vă rugăm să alegeţi un alt dosar!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9278"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9380"/>
         <source>QtiPlot - Help Files Not Found!</source>
         <translation>QtiPlot - Fişierele continand documentaţia nu au fost găsite!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9281"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9383"/>
         <source>The manual can be downloaded from the following internet address:</source>
         <translation>Manualul poate fi găsit la adresa de internet următoare:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9295"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9397"/>
         <source>QtiPlot - Help Profile Not Found!</source>
         <translation>QtiPlot - Fişierele continand documentaţia nu au fost găsite!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9296"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9398"/>
         <source>The assistant could not start because the file &lt;b&gt;%1&lt;/b&gt; was not found in the help file directory!</source>
         <translation>Asistentul nu a putut fi lansat pentru că fişierul &lt;b&gt;%1&lt;/b&gt; nu a fost găsit!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9298"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9400"/>
         <source>This file is provided with the QtiPlot manual which can be downloaded from the following internet address:</source>
         <translation>Fişierul este livrat împreună cu manualul pentru QtiPlot, care poate fi găsit la adresa de internet următoare:</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9279"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9381"/>
         <source>Please indicate the location of the help file!</source>
         <translation>Vă rugam să indicaţi locaţia fişierelor continand documentaţia!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="9382"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="9484"/>
         <source>QtiPlot - Edit function</source>
         <translation>QtiPlot - Editează funcţia</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10086"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10188"/>
         <source>QtiPlot - Set the number of pixels to average</source>
         <translation>QtiPlot - Setaţi numărul de pixeli pentru medie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10086"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10188"/>
         <source>Number of averaged pixels</source>
         <translation>Numărul de pixeli pentru medie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10130"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10232"/>
         <source>You must have more than one layer in the active window!</source>
         <translation>Trebuie să existe cel puţin două grafice in fereastra activă!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10157"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10259"/>
         <source>You must have more than one dataset in the active layer!</source>
         <translation>Trebuie să existe cel puţin două curbe in graficul activ!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10216"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10318"/>
         <source>QtiPlot - Guess best origin for the new layer?</source>
         <translation>QtiPlot - Determinaţi cea mai bună poziţie pentru noul grafic?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10217"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10319"/>
         <source>Do you want QtiPlot to guess the best position for the new layer?
  Warning: this will rearrange existing layers!</source>
         <translation>Doriţi ca QtiPlot să determine cea mai bună poziţie pentru noul grafic?Avertisment: graficele existente vor fi rearanjate!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10218"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10320"/>
         <source>&amp;Guess</source>
         <translation>&amp;Determină</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="10218"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="10320"/>
         <source>&amp;Top-left corner</source>
         <translation>Colţul s&amp;tang de sus</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11129"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11223"/>
         <source>Curve</source>
         <translation>Curbă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11239"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11333"/>
         <source>Integration of %1 from zero is</source>
         <translation>Integrala setului de date %1 este</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11382"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11476"/>
         <source>Please select a &apos;Y&apos; column first!</source>
         <translation>Vă rugam să selectaţi mai întâi o coloana de tip Y!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11254"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11348"/>
         <source>Integration of %1</source>
         <translation>Integrala setului de date %1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11256"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11350"/>
         <source>Area</source>
         <translation>Aria</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11390"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11484"/>
         <source>Linear Regression of %1</source>
         <translation>Regresie liniară a %1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11395"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11489"/>
         <source>Slope</source>
         <translation>Pantă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11338"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11432"/>
         <source>Intercept</source>
         <translation>Intersecţia cu axa absciselor</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11396"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11490"/>
         <source>Chi^2</source>
         <translation>Chi^2</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11397"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11491"/>
         <source>R^2</source>
         <translation>R^2</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12602"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12706"/>
         <source>Add &amp;Custom Script Action...</source>
         <translation>Adăugaţi o a&amp;cţiune personalizată...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12499"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12600"/>
         <source>New &amp;Project</source>
         <translation>&amp;Proiect</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12501"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12602"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12507"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12608"/>
         <source>New &amp;Graph</source>
         <translation>&amp;Grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12509"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12610"/>
         <source>Ctrl+G</source>
         <translation>Ctrl+G</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12511"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12612"/>
         <source>New &amp;Note</source>
         <translation>&amp;Notă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12514"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12615"/>
         <source>New &amp;Table</source>
         <translation>&amp;Tabel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12515"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12616"/>
         <source>Ctrl+T</source>
         <translation>Ctrl+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12518"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12619"/>
         <source>New &amp;Matrix</source>
         <translation>&amp;Matrice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12519"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12620"/>
         <source>Ctrl+M</source>
         <translation>Ctrl+M</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12522"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12623"/>
         <source>New &amp;Function Plot</source>
         <translation>&amp;Funcţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12524"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12625"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12526"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12627"/>
         <source>New 3D &amp;Surface Plot</source>
         <translation>&amp;Suprafaţă 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12528"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12629"/>
         <source>Ctrl+ALT+Z</source>
         <translation>Ctrl+ALT+Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12530"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12631"/>
         <source>&amp;Open</source>
         <translation>&amp;Deschide</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12531"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12632"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12534"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12635"/>
         <source>Open Image &amp;File</source>
         <translation>Deschide &amp;fişier imagine</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12535"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12636"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12537"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12638"/>
         <source>Import I&amp;mage...</source>
         <translation>Importă i&amp;magine...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12539"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12640"/>
         <source>&amp;Save Project</source>
         <translation>&amp;Salvează proiectul</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12541"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12642"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14150"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12644"/>
         <source>Save Project &amp;As...</source>
         <translation>Salvează proiectul c&amp;a...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11724"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11818"/>
         <source>Open Temp&amp;late...</source>
         <translation>Deschide mode&amp;l...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12549"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12650"/>
         <source>Save As &amp;Template...</source>
         <translation>Salvează ca mode&amp;l...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11730"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11824"/>
         <source>Save Note As...</source>
         <translation>Salvează nota ca...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12552"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12653"/>
         <source>&amp;Import ASCII...</source>
         <translation>&amp;Importă fişier ASCII...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12556"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12657"/>
         <source>&amp;Undo</source>
         <translation>An&amp;ulează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12558"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12659"/>
         <source>Ctrl+Z</source>
         <translation>Ctrl+Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12560"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12661"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12563"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12664"/>
         <source>&amp;Duplicate</source>
         <translation>&amp;Duplichează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12566"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12668"/>
         <source>Cu&amp;t Selection</source>
         <translation>&amp;Taie selecţia</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12568"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12670"/>
         <source>Ctrl+X</source>
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12570"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12672"/>
         <source>&amp;Copy Selection</source>
         <translation>&amp;Copiază selecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12572"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12674"/>
         <source>Ctrl+C</source>
         <translation>Ctrl+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12574"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12676"/>
         <source>&amp;Paste Selection</source>
         <translation>Li&amp;peşte selecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12576"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12678"/>
         <source>Ctrl+V</source>
         <translation>Ctrl+V</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12580"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12682"/>
         <source>Del</source>
         <comment>delete key</comment>
         <translation>Del</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12583"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12685"/>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12604"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12708"/>
         <source>Add La&amp;yer</source>
         <translation>Adăugare &amp;grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12606"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12710"/>
         <source>ALT+L</source>
         <translation>ALT+L</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12608"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12712"/>
         <source>Arran&amp;ge Layers</source>
         <translation>Aranjază &amp;graficele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12610"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12714"/>
         <source>Shift+A</source>
         <translation>Shift+A</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12613"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12717"/>
         <source>Automatic Layout</source>
         <translation>Aranjare automată</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12615"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12719"/>
         <source>&amp;Current</source>
         <translation>&amp;Curent</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12829"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12933"/>
         <source>Ctrl+Alt+G</source>
         <translation>Ctrl+Alt+G</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12620"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12724"/>
         <source>Alt+X</source>
         <translation>Alt+X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12623"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12727"/>
         <source>&amp;Export PDF</source>
         <translation>&amp;Exportă in format PDF</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12624"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12728"/>
         <source>Ctrl+Alt+P</source>
         <translation>Ctrl+Alt+P</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12628"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12732"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12631"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12735"/>
         <source>Print All Plo&amp;ts</source>
         <translation>Imprimă toate &amp;graficele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12632"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12736"/>
         <source>E&amp;xport ASCII</source>
         <translation>E&amp;xportă fişier ASCII</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12634"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12738"/>
         <source>&amp;Quit</source>
         <translation>În&amp;chide</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12635"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12739"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12637"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12741"/>
         <source>Clear &amp;Log Information</source>
         <translation>Şterge rezu&amp;ltatele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12638"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12742"/>
         <source>Delete &amp;Fit Tables</source>
         <translation>Şterge tabelele de &amp;ajustare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12643"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12747"/>
         <source>Plot &amp;Wizard</source>
         <translation>&amp;Asistent grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12644"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12748"/>
         <source>Ctrl+Alt+W</source>
         <translation>Ctrl+Alt+W</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12646"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12750"/>
         <source>&amp;Preferences...</source>
         <translation>O&amp;pţiuni...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12648"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12752"/>
         <source>Add/Remove &amp;Curve...</source>
         <translation>Adaugă/Şterge &amp;Curbă...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12649"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12753"/>
         <source>ALT+C</source>
         <translation>ALT+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12652"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12756"/>
         <source>Add &amp;Error Bars...</source>
         <translation>Adaugă bare de &amp;eroare...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12654"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12758"/>
         <source>Ctrl+B</source>
         <translation>Ctrl+B</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12656"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12760"/>
         <source>Add &amp;Function...</source>
         <translation>Adaugă &amp;funcţie...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12658"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12762"/>
         <source>Ctrl+Alt+F</source>
         <translation>Ctrl+Alt+F</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12660"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12764"/>
         <source>&amp;Rescale to Show All</source>
         <translation>&amp;Afişază toate datele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12661"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12765"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12664"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12768"/>
         <source>New &amp;Legend</source>
         <translation>Nouă &amp;legendă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12665"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12769"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12668"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12772"/>
         <source>Add Time Stamp</source>
         <translation>Adăugare dată/timp</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12669"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12773"/>
         <source>Ctrl+ALT+T</source>
         <translation>Ctrl+ALT+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12672"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12776"/>
         <source>Add &amp;Image</source>
         <translation>Adăugare &amp;imagine</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12674"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12778"/>
         <source>ALT+I</source>
         <translation>ALT+I</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12706"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12810"/>
         <source>Vectors XY&amp;AM</source>
         <translation>Vectori XY&amp;AM</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11893"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="11991"/>
         <source>&amp;Vectors &amp;XYXY</source>
         <translation>&amp;Vectori &amp;XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12710"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12814"/>
         <source>&amp;Stacked Histogram</source>
         <translation>Histograme &amp;suprapuse</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12718"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12822"/>
         <source>D&amp;ouble-Y</source>
         <translation>D&amp;ouă axe Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12721"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12825"/>
         <source>&amp;Zoom</source>
         <translation>&amp;Mărire zonă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12724"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12828"/>
         <source>E&amp;xtract to Graphs</source>
         <translation>E&amp;xtrage ferestre</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11926"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12027"/>
         <source>Extract to &amp;Layers</source>
         <translation>Extrage &amp;grafice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="11932"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12033"/>
         <source>Add Inset Layer</source>
         <translation>Adăugare grafic interior</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12730"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12834"/>
         <source>&amp;Ribbon</source>
         <translation>&amp;Panglică</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12733"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12837"/>
         <source>&amp;Bars</source>
         <translation>&amp;Bare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12739"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12843"/>
         <source>&amp;Trajectory</source>
         <translation>&amp;Traiectorie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12751"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12855"/>
         <source>Statistics on &amp;Columns</source>
         <translation>Statistici &amp;coloane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12754"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12858"/>
         <source>Statistics on &amp;Rows</source>
         <translation>Statistici &amp;linii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12757"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12861"/>
         <source>&amp;Integrate</source>
         <translation>&amp;Integrează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12756"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12860"/>
         <source>Integr&amp;ate Function...</source>
         <translation>Integr&amp;ează funcţie...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12758"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12862"/>
         <source>Inte&amp;rpolate ...</source>
         <translation>Inte&amp;rpolează ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12759"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12863"/>
         <source>&amp;Low Pass...</source>
         <translation>Trece &amp;jos...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12760"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12864"/>
         <source>&amp;High Pass...</source>
         <translation>Trece &amp;sus...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12761"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12865"/>
         <source>&amp;Band Pass...</source>
         <translation>Trece &amp;bandă...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12762"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12866"/>
         <source>&amp;Band Block...</source>
         <translation>B&amp;lochează bandă...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12763"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12867"/>
         <source>&amp;FFT...</source>
         <translation>&amp;FFT...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12764"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12868"/>
         <source>&amp;Savitzky-Golay...</source>
         <translation>&amp;Savitzky-Golay...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12765"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12869"/>
         <source>&amp;FFT Filter...</source>
         <translation>Filtru &amp;FFT...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12766"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12870"/>
         <source>Moving Window &amp;Average...</source>
         <translation>&amp;Medie...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12767"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12871"/>
         <source>&amp;Differentiate</source>
         <translation>&amp;Diferenţiază</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12768"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12872"/>
         <source>Fit &amp;Linear</source>
         <translation>Ajustare &amp;liniară</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12770"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12874"/>
         <source>Fit &amp;Polynomial ...</source>
         <translation>Ajustare &amp;polinomială...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12771"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12875"/>
         <source>&amp;First Order ...</source>
         <translation>Ordinul &amp;unu...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12772"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12876"/>
         <source>&amp;Second Order ...</source>
         <translation>Ordinul &amp;doi...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12773"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12877"/>
         <source>&amp;Third Order ...</source>
         <translation>Ordinul &amp;trei...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12774"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12878"/>
         <source>Fit Exponential Gro&amp;wth ...</source>
         <translation>Ajustare exponenţială &amp;crescătoare...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12775"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12879"/>
         <source>Fit &amp;Boltzmann (Sigmoidal)</source>
         <translation>Ajustare &amp;Boltzmann (Sigmoidal)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12776"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12880"/>
         <source>Fit &amp;Gaussian</source>
         <translation>Ajustare &amp;Gaussiană</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12777"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12881"/>
         <source>Fit Lorent&amp;zian</source>
         <translation>Ajustare Lorent&amp;z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12779"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12883"/>
         <source>Fit &amp;Wizard...</source>
         <translation>&amp;Asistent de ajustare de date...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12780"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12884"/>
         <source>Ctrl+Y</source>
         <translation>Ctrl+Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12782"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12886"/>
         <source>&amp;Plot ...</source>
         <translation>&amp;Grafic ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12783"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12887"/>
         <source>&amp;Scales...</source>
         <translation>&amp;Scale...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12784"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12888"/>
         <source>&amp;Axes...</source>
         <translation>&amp;Axe...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12785"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12889"/>
         <source>&amp;Grid ...</source>
         <translation>&amp;Grilaj ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12786"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12890"/>
         <source>&amp;Title ...</source>
         <translation>&amp;Titlu ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12787"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12891"/>
         <source>Column &amp;Options ...</source>
         <translation>&amp;Opţiuni coloană ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12788"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12892"/>
         <source>Ctrl+Alt+O</source>
         <translation>Ctrl+Alt+O</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12789"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12893"/>
         <source>Set Column &amp;Values ...</source>
         <translation>Calcul &amp;valori ...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12858"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12962"/>
         <source>Alt+Q</source>
         <translation>Alt+Q</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12791"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12895"/>
         <source>Recalculate</source>
         <translation>Recalculează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12946"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13050"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+Return</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12793"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12897"/>
         <source>&amp;Hide Selected</source>
         <translation>&amp;Ascunde selecţia</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12795"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12899"/>
         <source>Sho&amp;w All Columns</source>
         <translation>Afişază &amp;toate coloanele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12797"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12901"/>
         <source>&amp;Swap columns</source>
         <translation>Inver&amp;sează coloanele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12799"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12903"/>
         <source>Move &amp;Right</source>
         <translation>Mută la d&amp;reapta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12801"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12905"/>
         <source>Move &amp;Left</source>
         <translation>Mută la &amp;stânga</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12803"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12907"/>
         <source>Move to F&amp;irst</source>
         <translation>Mută la înce&amp;put</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12805"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12909"/>
         <source>Move to Las&amp;t</source>
         <translation>Mută la sfarşi&amp;t</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12807"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12911"/>
         <source>&amp;Columns...</source>
         <translation>&amp;Coloane...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12808"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12912"/>
         <source>&amp;Rows...</source>
         <translation>&amp;Linii...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12809"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12913"/>
         <source>&amp;Delete Rows Interval...</source>
         <translation>Şte&amp;rge linii...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12811"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12915"/>
         <source>&amp;About QtiPlot</source>
         <translation>&amp;Despre QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12812"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12916"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12815"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12919"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12817"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12921"/>
         <source>&amp;Choose Help Folder...</source>
         <translation>Alegeţi dosarul cu do&amp;cumentaţia...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12821"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12925"/>
         <source>Ctrl+W</source>
         <translation>Ctrl+W</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12824"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12928"/>
         <source>Add Column</source>
         <translation>Adaugă coloană</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12828"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12932"/>
         <source>&amp;Go to Row...</source>
         <translation>Mer&amp;gi la linia...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12831"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12935"/>
         <source>Go to Colum&amp;n...</source>
         <translation>Mergi la coloa&amp;na...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12832"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12936"/>
         <source>Ctrl+Alt+C</source>
         <translation>Ctrl+Alt+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12827"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12931"/>
         <source>Clear</source>
         <translation>Goleşte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12834"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12938"/>
         <source>&amp;Remove Layer</source>
         <translation>Şte&amp;rge grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12835"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12939"/>
         <source>Alt+R</source>
         <translation>Alt+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12837"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12941"/>
         <source>Window &amp;Geometry...</source>
         <translation>&amp;Geometrie...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12848"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12952"/>
         <source>&amp;Hide Window</source>
         <translation>Ascu&amp;nde fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12849"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12953"/>
         <source>Ctrl+Alt+H</source>
         <translation>Ctrl+Alt+H</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12841"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12945"/>
         <source>&amp;View Pixel Line Profile</source>
         <translation>&amp;Trasează profilul liniei de pixeli</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12842"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12946"/>
         <source>&amp;Intensity Table</source>
         <translation>Tabel de &amp;intensităţi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12844"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12948"/>
         <source>&amp;Properties</source>
         <translation>&amp;Proprietăţi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12845"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12949"/>
         <source>&amp;Activate Window</source>
         <translation>&amp;Activează fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12846"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12950"/>
         <source>Mi&amp;nimize Window</source>
         <translation>&amp;Minimizează fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12847"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12951"/>
         <source>Ma&amp;ximize Window</source>
         <translation>Ma&amp;ximizează fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12850"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12954"/>
         <source>Re&amp;size Window...</source>
         <translation>Redimen&amp;sionează fereastra...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12851"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12955"/>
         <source>&amp;Surface...</source>
         <translation>&amp;Suprafaţă...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12852"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12956"/>
         <source>&amp;Data Set...</source>
         <translation>Set de &amp;date...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12853"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12957"/>
         <source>Set &amp;Properties...</source>
         <translation>&amp;Proprietăti...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12854"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12958"/>
         <source>Set &amp;Dimensions...</source>
         <translation>&amp;Dimensiuni...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12855"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12959"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12856"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12960"/>
         <source>Set &amp;Values...</source>
         <translation>&amp;Valori...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12859"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12963"/>
         <source>&amp;Image Plot</source>
         <translation>Grafic &amp;imagine</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12861"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12965"/>
         <source>&amp;Transpose</source>
         <translation>&amp;Transpune</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12866"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12970"/>
         <source>Flip &amp;V</source>
         <translation>Întoarce &amp;Vertical</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12178"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12279"/>
         <source>Ctrl+Shift+V</source>
         <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12868"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12972"/>
         <source>Flip &amp;H</source>
         <translation>Întoarce &amp;Orizontal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12182"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12283"/>
         <source>Ctrl+Shift+H</source>
         <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12862"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12966"/>
         <source>R&amp;otate 90</source>
         <translation>R&amp;oteşte 90</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12864"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12968"/>
         <source>Rotate &amp;-90</source>
         <translation>Roteşte &amp;-90</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12190"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12291"/>
         <source>Ctrl+Alt+R</source>
         <translation>Ctrl+Alt+R</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12879"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12983"/>
         <source>&amp;Invert</source>
         <translation>&amp;Inversează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12880"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12984"/>
         <source>&amp;Determinant</source>
         <translation>&amp;Determinant</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12874"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12978"/>
         <source>&amp;Image mode</source>
         <translation>Mod &amp;imagine</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12200"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12301"/>
         <source>Ctrl+Shift+I</source>
         <translation>Ctrl+Shift+I</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12873"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12977"/>
         <source>&amp;Data mode</source>
         <translation>Mod &amp;date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12205"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12306"/>
         <source>Ctrl+Shift+D</source>
         <translation>Ctrl+Shift+D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12871"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12975"/>
         <source>Show &amp;X/Y</source>
         <translation>Afişaj &amp;X/Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12210"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12311"/>
         <source>Ctrl+Shift+X</source>
         <translation>Ctrl+Shift+X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12872"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12976"/>
         <source>Show &amp;Column/Row</source>
         <translation>Afişaj &amp;Coloană/Linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12215"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12316"/>
         <source>Ctrl+Shift+C</source>
         <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12876"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12980"/>
         <source>&amp;Gray Scale</source>
         <translation>Scară de &amp;griuri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12875"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12979"/>
         <source>&amp;Default</source>
         <translation>&amp;Implicită</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12877"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12981"/>
         <source>&amp;Rainbow</source>
         <translation>Cu&amp;rcubeu</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12878"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12982"/>
         <source>&amp;Custom</source>
         <translation>&amp;Personalizată</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12884"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12988"/>
         <source>&amp;Export Image ...</source>
         <translation>E&amp;xportă imagine...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12881"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12985"/>
         <source>&amp;Direct</source>
         <translation>&amp;Direct</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12882"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12986"/>
         <source>&amp;XYZ Columns</source>
         <translation>Coloane &amp;XYZ</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12883"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12987"/>
         <source>&amp;YXZ Columns</source>
         <translation>Coloane &amp;YXZ</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12247"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12348"/>
         <source>&amp;Forward FFT</source>
         <translation>&amp;FFT Directă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12250"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12351"/>
         <source>&amp;Inverse FFT</source>
         <translation>FFT &amp;Inversă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12886"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12990"/>
         <source>Convert to &amp;Matrix</source>
         <translation>Transformă in &amp;matrice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12887"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12991"/>
         <source>3D &amp;Wire Frame</source>
         <translation>Sar&amp;ma 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12888"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12992"/>
         <source>3D &amp;Hidden Line</source>
         <translation>3D linie &amp;ascunsă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12889"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12993"/>
         <source>3D &amp;Polygons</source>
         <translation>&amp;Poligoane 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12890"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12994"/>
         <source>3D Wire &amp;Surface</source>
         <translation>&amp;Suprafaţă 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12268"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12369"/>
         <source>Contour - &amp;Color Fill</source>
         <translation>Contour şi &amp;culoare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12745"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12849"/>
         <source>Contour &amp;Lines</source>
         <translation>&amp;Linii de contour</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12748"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12852"/>
         <source>&amp;Gray Scale Map</source>
         <translation>Scară de &amp;griuri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12891"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12995"/>
         <source>Sort Ta&amp;ble</source>
         <translation>Sortare ta&amp;bel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12892"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12996"/>
         <source>Sort Columns</source>
         <translation>Sortare coloane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12895"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12999"/>
         <source>Co&amp;rrelate</source>
         <translation>Co&amp;relare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12896"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13000"/>
         <source>&amp;Autocorrelate</source>
         <translation>&amp;Autocorelare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12897"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13001"/>
         <source>&amp;Convolute</source>
         <translation>&amp;Convoluţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12898"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13002"/>
         <source>&amp;Deconvolute</source>
         <translation>&amp;Deconvoluţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12899"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13003"/>
         <source>&amp;Horizontal</source>
         <translation>&amp;Orizontal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12900"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13004"/>
         <source>&amp;Vertical</source>
         <translation>&amp;Vertical</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12901"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13005"/>
         <source>Ro&amp;w Numbers</source>
         <translation>Indice &amp;linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12903"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13007"/>
         <source>&amp;Random Values</source>
         <translation>Valori aleato&amp;rii </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12313"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12414"/>
         <source>&amp;Frequency Count ...</source>
         <translation>Numără &amp;frecvenţa de apariţie...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12918"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13022"/>
         <source>&amp;Read Only</source>
         <translation>Doa&amp;r citire</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12916"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13020"/>
         <source>&amp;Disregard</source>
         <translation>I&amp;gnoră</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12920"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13024"/>
         <source>&amp;Box Plot</source>
         <translation>Grafic &amp;cutie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12923"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13027"/>
         <source>&amp;Gaussian...</source>
         <translation>Ajustare &amp;Gaussiană...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12924"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13028"/>
         <source>&amp;Lorentzian...</source>
         <translation>Ajustare &amp;Lorentz...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12926"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13030"/>
         <source>Search for &amp;Updates</source>
         <translation>Caută act&amp;ualizări</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12925"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13029"/>
         <source>&amp;QtiPlot Homepage</source>
         <translation>Pagina de internet &amp;QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12355"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12456"/>
         <source>QtiPlot &amp;Forums</source>
         <translation>&amp;Forumuri dedicate QtiPlot </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12928"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13032"/>
         <source>Report a &amp;Bug</source>
         <translation>Semnalează o &amp;eroare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12929"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13033"/>
         <source>Download &amp;Manual</source>
         <translation>Obţine &amp;manualul</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12930"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13034"/>
         <source>&amp;Translations</source>
         <translation>&amp;Traduceri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12931"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13035"/>
         <source>Make a &amp;Donation</source>
         <translation>&amp;Donează</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12932"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13036"/>
         <source>Technical &amp;Support</source>
         <translation>&amp;Suport tehnic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12935"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13039"/>
         <source>Scripting &amp;language</source>
         <translation>&amp;Limbaj de programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12937"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13041"/>
         <source>&amp;Restart scripting</source>
         <translation>&amp;Reinitializează limbajul de programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12939"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13043"/>
         <source>E&amp;xecute</source>
         <translation>E&amp;xecută</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12940"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13044"/>
         <source>Ctrl+J</source>
         <translation>Ctrl+J</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12942"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13046"/>
         <source>Execute &amp;All</source>
         <translation>Execută &amp;tot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12943"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13047"/>
         <source>Ctrl+Shift+J</source>
         <translation>Ctrl+Shift+J</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12945"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13049"/>
         <source>&amp;Evaluate Expression</source>
         <translation>&amp;Evaluează expresia</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12948"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13052"/>
         <source>Show Line &amp;Numbers</source>
         <translation>Afişază &amp;numărul liniei</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12598"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12702"/>
         <source>&amp;Script Window</source>
         <translation>Ferea&amp;stră programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12488"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12589"/>
         <source>&amp;Plot details...</source>
         <translation>&amp;Detalii grafic...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12489"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12590"/>
         <source>&amp;Worksheet</source>
         <translation>&amp;Tabel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12493"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12594"/>
         <source>&amp;Reset to Full Range</source>
         <translation>&amp;Afişaza toate datele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12494"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12595"/>
         <source>Edit &amp;Range...</source>
         <translation>Editează Inte&amp;rval...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12495"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12596"/>
         <source>&amp;Hide</source>
         <translation>Ascu&amp;nde</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12496"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12597"/>
         <source>Hide &amp;Other Curves</source>
         <translation>Ascunde &amp;celelelte curbe</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12497"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12598"/>
         <source>&amp;Show All Curves</source>
         <translation>Afişază &amp;toate curbele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12491"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12592"/>
         <source>&amp;Edit Function...</source>
         <translation>&amp;Editează funcţia...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12640"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12744"/>
         <source>&amp;Toolbars...</source>
         <translation>Bare de unel&amp;te...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12641"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12745"/>
         <source>Ctrl+Shift+T</source>
         <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12480"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12581"/>
         <source>Bold</source>
         <translation>Gros</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12481"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12582"/>
         <source>Italic</source>
         <translation>Italic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12448"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12549"/>
         <source>Superscript</source>
         <translation>Exponent</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12452"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12553"/>
         <source>Subscript</source>
         <translation>Indice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12482"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12583"/>
         <source>Underline (Ctrl+U)</source>
         <translation>Subliniază (Ctrl+U)</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12483"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12584"/>
         <source>Ctrl+U</source>
         <translation>Ctrl+U</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12485"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12586"/>
         <source>Greek</source>
         <translation>Alfabet grec</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12486"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12587"/>
         <source>Mathematical Symbols</source>
         <translation>Simboluri matematice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12500"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12601"/>
         <source>Open a new project</source>
         <translation>Proiect nou </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12503"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12604"/>
         <source>New Fol&amp;der</source>
         <translation>&amp;Dosar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12504"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12605"/>
         <source>Create a new folder</source>
         <translation>Creează un dosar nou</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12508"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12609"/>
         <source>Create an empty 2D plot</source>
         <translation>Creză un grafic 2D gol</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12512"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12613"/>
         <source>Create an empty note window</source>
         <translation>Creză o fereastră de note</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12516"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12617"/>
         <source>New table</source>
         <translation>Tabel nou</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12520"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12621"/>
         <source>New matrix</source>
         <translation>Matrice nouă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12523"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12624"/>
         <source>Create a new 2D function plot</source>
         <translation>Creză un grafic de funcţie 2D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12527"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12628"/>
         <source>Create a new 3D surface plot</source>
         <translation>Creză o suprafaţă 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12532"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12633"/>
         <source>Open project</source>
         <translation>Deschide proiect</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12540"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12641"/>
         <source>Save project</source>
         <translation>Salvează proiectul</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12546"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12647"/>
         <source>Open Te&amp;mplate...</source>
         <translation>Deschide &amp;model...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12547"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12648"/>
         <source>Open template</source>
         <translation>Deschide model</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12550"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12651"/>
         <source>Save window as template</source>
         <translation>Salvează fereastra ca model</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12553"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12654"/>
         <source>Import data file(s)</source>
         <translation>Importă fişier(e) de date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12554"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12655"/>
         <source>Ctrl+K</source>
         <translation>Ctrl+K</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12557"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12658"/>
         <source>Undo changes</source>
         <translation>Anulează modificările</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12561"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12662"/>
         <source>Redo changes</source>
         <translation>Refă modificările</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12564"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12665"/>
         <source>Duplicate window</source>
         <translation>Duplicheză fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12567"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12669"/>
         <source>Cut selection</source>
         <translation>Taie selecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12571"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12673"/>
         <source>Copy selection</source>
         <translation>Copiază selecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12575"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12677"/>
         <source>Paste selection</source>
         <translation>Lipeşte selecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12579"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12681"/>
         <source>Delete selection</source>
         <translation>Sterge selecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12582"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12684"/>
         <source>Project &amp;Explorer</source>
         <translation>&amp;Explorator de proiect</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12584"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12686"/>
         <source>Show project explorer</source>
         <translation>Afişază exploratorul de proiect</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12586"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12690"/>
         <source>Results &amp;Log</source>
         <translation>Rezu&amp;ltate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12587"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12691"/>
         <source>Show analysis results</source>
         <translation>Afişază rezultatele analizei</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12589"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12693"/>
         <source>&amp;Undo/Redo Stack</source>
         <translation>Listă de &amp;modificări reversibile</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12590"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12694"/>
         <source>Show available undo/redo commands</source>
         <translation>Afişază lista de modificări reversibile</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12593"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12697"/>
         <source>&amp;Console</source>
         <translation>&amp;Consolă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12594"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12698"/>
         <source>Show Scripting console</source>
         <translation>Afişază consola de programere</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12599"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12703"/>
         <source>Script Window</source>
         <translation>Fereastră programare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12605"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12709"/>
         <source>Add Layer</source>
         <translation>Adaugă grafic</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12609"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12713"/>
         <source>Arrange Layers</source>
         <translation>Aranjază graficele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12617"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12721"/>
         <source>Export current graph</source>
         <translation>Exportă graficul curent</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12621"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12725"/>
         <source>Export all graphs</source>
         <translation>Exportă toate graficele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12625"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12729"/>
         <source>Export to PDF</source>
         <translation>Exportă in format PDF</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12629"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12733"/>
         <source>Print window</source>
         <translation>Imprimă fereastra</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12650"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12754"/>
         <source>Add curve to graph</source>
         <translation>Adaugă curbă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12653"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12757"/>
         <source>Add Error Bars...</source>
         <translation>Adaugă bare de eroare...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12657"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12761"/>
         <source>Add Function...</source>
         <translation>Adaugă funcţie...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12662"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12766"/>
         <source>Best fit</source>
         <translation>Afişază toate datele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12666"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12770"/>
         <source>Add new legend</source>
         <translation>Adaugă legendă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12670"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12774"/>
         <source>Date &amp; time </source>
         <translation>Dată &amp; timp </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12673"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12777"/>
         <source>Add Image</source>
         <translation>Adaugă imagine</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12677"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12781"/>
         <source>Plot as line</source>
         <translation>Trasează cu linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12680"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12784"/>
         <source>Plot as symbols</source>
         <translation>Trasează cu simboluri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12683"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12787"/>
         <source>Plot as line + symbols</source>
         <translation>Trasează cu linie şi simboluri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12692"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12796"/>
         <source>Plot with vertical bars</source>
         <translation>Trasează cu bare verticale</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12695"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12799"/>
         <source>Plot with horizontal bars</source>
         <translation>Trasează cu bare orizontale</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12698"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12802"/>
         <source>Plot area</source>
         <translation>Trasează ca suprafaţă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12701"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12805"/>
         <source>Plot pie</source>
         <translation>Trasează placintă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12703"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12807"/>
         <source>&amp;Vectors XYXY</source>
         <translation>&amp;Vectori XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12704"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12808"/>
         <source>Vectors XYXY</source>
         <translation>Vectori XYXY</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12707"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12811"/>
         <source>Vectors XYAM</source>
         <translation>Vectori XYAM</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12719"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12823"/>
         <source>Double Y Axis</source>
         <translation>Două axe Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12722"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12826"/>
         <source>Zoom</source>
         <translation>Mărire zonă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12725"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12829"/>
         <source>Extract to Graphs</source>
         <translation>Extrage ferestre</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12727"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12831"/>
         <source>Extract to Layer&amp;s</source>
         <translation>Extrage &amp;grafice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12728"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12832"/>
         <source>Extract to Layers</source>
         <translation>Extrage grafice</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12731"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12835"/>
         <source>Plot 3D ribbon</source>
         <translation>Trasează panglică 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12734"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12838"/>
         <source>Plot 3D bars</source>
         <translation>Trasează bare 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12737"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12841"/>
         <source>Plot 3D scatter</source>
         <translation>Trasează cu simboluri 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12740"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12844"/>
         <source>Plot 3D trajectory</source>
         <translation>Trasează traiectorie 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12742"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12846"/>
         <source>Contour + &amp;Color Fill</source>
         <translation>Contour şi &amp;culoare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12743"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12847"/>
         <source>Contour Lines + Color Fill</source>
         <translation>Linii de contour + culoare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12746"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12850"/>
         <source>Contour Lines</source>
         <translation>Linii de contour</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12749"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12853"/>
         <source>Gray Scale Map</source>
         <translation>Scară de griuri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12752"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12856"/>
         <source>Selected columns statistics</source>
         <translation>Statistici pentru coloanele selectate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12755"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12859"/>
         <source>Selected rows statistics</source>
         <translation>Statistici pentru liniile selectate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12794"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12898"/>
         <source>Hide selected columns</source>
         <translation>Ascunde coloanele selectate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12796"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12900"/>
         <source>Show all table columns</source>
         <translation>Afişază toate coloanele din tabel</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12798"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12902"/>
         <source>Swap selected columns</source>
         <translation>Inversează coloanele selectate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12800"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12904"/>
         <source>Move Right</source>
         <translation>Mută la dreapta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12802"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12906"/>
         <source>Move Left</source>
         <translation>Mută la stânga</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12804"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12908"/>
         <source>Move to First</source>
         <translation>Mută la început</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12806"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12910"/>
         <source>Move to Last</source>
         <translation>Mută la sfarşit</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12840"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12944"/>
         <source>More Windows...</source>
         <translation>Mai multe ferestre...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12857"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12961"/>
         <source>Set Matrix Values</source>
         <translation>Calculează valorile matricii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12860"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12964"/>
         <source>Image Plot</source>
         <translation>Grafic imagine</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12863"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12967"/>
         <source>Rotate 90 Clockwise</source>
         <translation>Roteşte cu 90° în sens orar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12865"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12969"/>
         <source>Rotate 90 Counterclockwise</source>
         <translation>Roteşte cu 90° în sens anti-orar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12867"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12971"/>
         <source>Flip Vertically</source>
         <translation>Întoarce vertical</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12869"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12973"/>
         <source>Flip Horizontally</source>
         <translation>Întoarce orizontal</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12902"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13006"/>
         <source>Fill selected columns with row numbers</source>
         <translation>Umple coloanele selectate cu indicele de linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12904"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13008"/>
         <source>Fill selected columns with random numbers</source>
         <translation>Umple coloanele selectate cu numere aleatorii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12906"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13010"/>
         <source>Set column as X</source>
         <translation>Defineşte coloană de tip X</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12908"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13012"/>
         <source>Set column as Y</source>
         <translation>Defineşte coloană de tip Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12910"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13014"/>
         <source>Set column as Z</source>
         <translation>Defineşte coloană de tip Z</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12913"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13017"/>
         <source>Set as Y Error Bars</source>
         <translation>Defineşte ca bare de eroare în Y</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12915"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13019"/>
         <source>Set as Labels</source>
         <translation>Defineşte ca etichete</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12917"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13021"/>
         <source>Disregard Columns</source>
         <translation>Ignoră coloanele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12921"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13025"/>
         <source>Box and whiskers plot</source>
         <translation>Grafic tip cutie cu mustăţi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12927"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13031"/>
         <source>Visit QtiPlot &amp;Forums</source>
         <translation>Vizitează &amp;forumurile dedicate QtiPlot </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12950"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13054"/>
         <source>Disable &amp;tools</source>
         <translation>Dezactivare unel&amp;te</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12951"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13055"/>
         <source>Pointer</source>
         <translation>Dezactivare unelte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12958"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13062"/>
         <source>Zoom In</source>
         <translation>Mărire</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12960"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13064"/>
         <source>Zoom &amp;Out</source>
         <translation>Micş&amp;orare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12962"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13066"/>
         <source>Zoom Out</source>
         <translation>Micşorare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12966"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13070"/>
         <source>Data reader</source>
         <translation>Cititor de date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12970"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13074"/>
         <source>Select data range</source>
         <translation>Setează intervalul de date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12973"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13077"/>
         <source>Screen reader</source>
         <translation>Coordonate ecran</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12976"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13080"/>
         <source>Draw Data Points</source>
         <translation>Desen date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12980"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13084"/>
         <source>Move data points</source>
         <translation>Modificare date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12984"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13088"/>
         <source>Remove data points</source>
         <translation>Stergere date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12987"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13091"/>
         <source>Add Text</source>
         <translation>Adăugare text</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12991"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13095"/>
         <source>Add Equation</source>
         <translation>Adăugare ecuaţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12995"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13099"/>
         <source>Add Rectangle</source>
         <translation>Adăugare dreptunghi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12999"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13103"/>
         <source>Add Ellipse/Circle</source>
         <translation>Adăugare elipsă/cerc</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13004"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13108"/>
         <source>Draw arrow</source>
         <translation>Desenează săgeată</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13008"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13112"/>
         <source>Draw line</source>
         <translation>Desenează linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13017"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13121"/>
         <source>Box</source>
         <translation>Cutie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13021"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13125"/>
         <source>Frame</source>
         <translation>Bordură</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13019"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13123"/>
         <source>&amp;Frame</source>
         <translation>&amp;Bordură</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13023"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13127"/>
         <source>No Axes</source>
         <translation>Fără axe</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13025"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13129"/>
         <source>No axes</source>
         <translation>Fără axe</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13027"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13131"/>
         <source>Front grid</source>
         <translation>Grilaj faţă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13028"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13132"/>
         <source>Back grid</source>
         <translation>Grilaj spate</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13029"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13133"/>
         <source>Right grid</source>
         <translation>Grilaj dreapta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13030"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13134"/>
         <source>Left grid</source>
         <translation>Grilaj stânga</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13031"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13135"/>
         <source>Ceiling grid</source>
         <translation>Grilaj tavan</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13032"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13136"/>
         <source>Floor grid</source>
         <translation>Grilaj podea</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13037"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13141"/>
         <source>Wireframe</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13039"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13143"/>
         <source>Hidden Line</source>
         <translation>Linie ascunsă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13041"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13145"/>
         <source>Hidden line</source>
         <translation>Linie ascunsă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13043"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13147"/>
         <source>Polygon Only</source>
         <translation>Numai poligoane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13045"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13149"/>
         <source>Polygon only</source>
         <translation>Numai poligoane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13047"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13151"/>
         <source>Mesh &amp; Filled Polygons</source>
         <translation>Linie si poligoane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13049"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13153"/>
         <source>Mesh &amp; filled Polygons</source>
         <translation>Linie si poligoane</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13053"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13157"/>
         <source>Dots</source>
         <translation>Puncte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13057"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13161"/>
         <source>Bars</source>
         <translation>Bare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13061"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13165"/>
         <source>Cones</source>
         <translation>Conuri</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13065"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13169"/>
         <source>Crosshairs</source>
         <translation>Cruci</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13071"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13175"/>
         <source>Floor Data Projection</source>
         <translation>Proiecţie podea</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13073"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13177"/>
         <source>Floor data projection</source>
         <translation>Proiecţie podea</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13075"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13179"/>
         <source>Floor Isolines</source>
         <translation>Proiecţie izolinii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13077"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13181"/>
         <source>Floor isolines</source>
         <translation>Proiecţie izolinii</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13079"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13183"/>
         <source>Empty Floor</source>
         <translation>Fără proiecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13081"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13185"/>
         <source>Empty floor</source>
         <translation>Fără proiecţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13086"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13190"/>
         <source>Animation</source>
         <translation>Animaţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13091"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13195"/>
         <source>Enable perspective</source>
         <translation>Perspectivă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13096"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13200"/>
         <source>Reset rotation</source>
         <translation>Resetează rotaţia</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13101"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13205"/>
         <source>Fit frame to window</source>
         <translation>Ajustează graficul la dimensiunile ferestrei</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13482"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13586"/>
         <source>QtiPlot - Enter the number of peaks</source>
         <translation>QtiPlot - Introduceţi numărul de extreme</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13483"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13587"/>
         <source>Peaks</source>
         <translation>Extreme</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13532"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13636"/>
         <source>&lt;font size=+2, color = darkBlue&gt;&lt;b&gt;QtiPlot is open-source software and its development required hundreds of hours of work.&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you like it, you&apos;re using it in your work and you would like to see it <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>constantly improved, please support its authors by making a donation.&lt;/b&gt;&lt;/font&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13533"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13637"/>
         <source>Please support QtiPlot!</source>
         <translation>Vă rugăm sprijiniţi dezvoltarea proiectului QtiPlot!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13555"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13659"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: This command line option must be used without other arguments!</source>
         <translation>&lt;b&gt; %1 &lt;/b&gt;: Această comandă trebuie folosită fără argumente!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13565"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13669"/>
         <source>Version</source>
         <translation>Versiune</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13572"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13676"/>
         <source>Usage</source>
         <translation>Utilizare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13573"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13677"/>
         <source>options</source>
         <translation>opţiuni</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13583"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13687"/>
         <source>file</source>
         <translation>fişier</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13583"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13687"/>
         <source>name</source>
         <translation>nume</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13574"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13678"/>
         <source>Valid options are</source>
         <translation>Opţiunile valide sunt</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13581"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13685"/>
         <source>or</source>
         <translation>sau</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13575"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13679"/>
         <source>show about dialog and exit</source>
         <translation>afişază mesajul de informare despre QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13576"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13680"/>
         <source>start QtiPlot with the default settings</source>
         <translation>porneşte QtiPlot cu setările din fabrică</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13577"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13681"/>
         <source>show command line options</source>
         <translation>afişază opţiunile disponibile în linia de comandă </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13578"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13682"/>
         <source>start QtiPlot in language</source>
         <translation>porneşte QtiPlot în limba</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13579"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13683"/>
         <source>show QtiPlot manual in a standalone window</source>
         <translation>afişază manualul într-o fereastră de sine stătătoare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13580"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13684"/>
         <source>print QtiPlot version and release date</source>
         <translation>afişaza versiunea si data de apariţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13581"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13685"/>
         <source>execute the script file given as argument</source>
         <translation>execută fişierul de cod introdus ca argument</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13582"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13686"/>
         <source>execute the script file given as argument without displying the user interface. Warning: 2D plots are not correctly handled in this functioning mode!</source>
         <translation>execută fişierul de cod introdus ca argument fără a afişa interfaţa grafică. Avertisment: graficele 2D nu funcţionează corect in acest mod de operare!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13583"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13687"/>
         <source>can be any .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py or ASCII file</source>
         <translation>poate fi orice fişier .qti, qti.gz, .opj, .ogm, .ogw, .ogg, .py sau ASCII</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13586"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13690"/>
         <source>Help</source>
         <translation>Ajutor</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13599"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13703"/>
         <source>&lt;b&gt; %1 &lt;/b&gt;: Wrong locale option or no translation available!</source>
         <translation>&lt;b&gt; %1 &lt;/b&gt;: Parametrii regionali specificaţi sunt incorecţi sau traducerea nu este încă disponibilă!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13607"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13711"/>
         <source>&lt;b&gt; %1 &lt;/b&gt; unknown command line option!</source>
         <translation>&lt;b&gt; %1 &lt;/b&gt; opţiune invalidă!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13607"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13711"/>
         <source>Type %1 to see the list of the valid options.</source>
         <translation>Scrieţi %1 pentru a vedea lista opţiunilor valide.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13622"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13726"/>
         <source>&lt;b&gt;%1&lt;/b&gt; is a directory, please specify a file name!</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; este un dosar, vă rugăm să specificaţi un nume de fişier!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13779"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13883"/>
         <source>The file: &lt;b&gt;%1&lt;/b&gt; is not a QtiPlot or Origin project file!</source>
         <translation>Fişierul: &lt;b&gt;%1&lt;/b&gt; nu este un fişier creat folosind QtiPlot sau OriginLab!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13976"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14085"/>
         <source>QtiPlot - Demo Version</source>
         <translation>QtiPlot - Versiune de test</translation>
     </message>
@@ -3821,308 +3820,308 @@ Are you sure you want to continue?</source>
         <translation type="obsolete">Folosiţi versiunea de demonstraţie a programului Qtiplot. Este identică cu versiunea integrală, exceptand faptul că nu puteţi salva proiectele deschise si nu poate fi utilizat mai mult de 10 minute pe sesiune.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>Dacă doriţi să instalaţi versiunea integrala, vă rugăm să suscrieţi la&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;un contract de mentenanţă&lt;/a&gt;.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>QtiPlot este un program liber.<byte value="x9"/>Dacă doriţi, puteţi obtine gratis &lt;a href=&quot;http://developer.berlios.de/project/showfiles.php?group_id=6626&quot;&gt;codul sursă&lt;/a&gt;. &lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;Donaţiile&lt;/a&gt; în vederea sprijinirii dezvoltării programului<byte value="x9"/>QtiPlot sunt binevenite.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14001"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14110"/>
         <source>QtiPlot - File backup error</source>
         <translation>QtiPlot - Eroare de salvare a fişerului</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14002"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14111"/>
         <source>Cannot make a backup copy of &lt;b&gt;%1&lt;/b&gt; (to %2).&lt;br&gt;If you ignore this, you run the risk of &lt;b&gt;data loss&lt;/b&gt;.</source>
         <translation>Nu a fost posibilă crearea unei copii de siguranţă pentru fişierul &lt;b&gt;%1&lt;/b&gt; (în %2).&lt;br&gt;Daca ignoraţi acest mesaj riscaţi&lt;b&gt;să pierdeţi date&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14019"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14128"/>
         <source>QtiPlot - File save error</source>
         <translation>QtiPlot - Eroare de salvare a fişerului</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14019"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14128"/>
         <source>The file: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; is opened in read-only mode</source>
         <translation>Fişierul: &lt;br&gt;&lt;b&gt;%1&lt;/b&gt; este accesibil doar pentru citire</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14117"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14226"/>
         <source>Save project as</source>
         <translation>Salvează proiectul ca</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14144"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12688"/>
         <source>&amp;Find...</source>
         <translation>&amp;Caută...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14146"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14255"/>
         <source>App&amp;end Project...</source>
         <translation>Adaugă proi&amp;ect...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14148"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14257"/>
         <source>Save &amp;As Project...</source>
         <translation>Salvează c&amp;a proiect...</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14162"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14271"/>
         <source>&amp;Delete Folder</source>
         <translation>Şte&amp;rge dosar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14163"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14272"/>
         <source>&amp;Rename</source>
         <translation>&amp;Redenumeşte</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14182"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14291"/>
         <source>&amp;Windows in Active Folder</source>
         <translation>&amp;Ferestrele din dosarul activ</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14182"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14291"/>
         <source>Windows in &amp;Active Folder &amp;&amp; Subfolders</source>
         <translation>Ferestrele din dosarul &amp;activ şi din dosarele conţinute de acesta</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14189"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14298"/>
         <source>&amp;View Windows</source>
         <translation>Afişază &amp;ferestrele</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14206"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14315"/>
         <source>Hidden</source>
         <translation>Ascuns</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14269"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14378"/>
         <source>Name already exists!</source>
         <translation>Acest nume e deja folosit!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14380"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14489"/>
         <source>Project</source>
         <translation>Proiect</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14771"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14880"/>
         <source>Path</source>
         <translation>Cale</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14386"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14495"/>
         <source>bytes</source>
         <translation>biţi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14422"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14531"/>
         <source>Contents</source>
         <translation>Conţinut</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14422"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14531"/>
         <source>windows</source>
         <translation>ferestre</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14423"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14532"/>
         <source>folders</source>
         <translation>dosare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14397"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14506"/>
         <source>Modified</source>
         <translation>Modificat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14747"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14856"/>
         <source>Properties</source>
         <translation>Proprietăţi</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14441"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14550"/>
         <source>New Folder</source>
         <translation>Dosar</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14486"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14595"/>
         <source>QtiPlot - Delete folder?</source>
         <translation>QtiPlot - Şterge dosarul?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14487"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14596"/>
         <source>Delete folder &apos;%1&apos; and all the windows it contains?</source>
         <translation>Şterge dosarul  &apos;%1&apos; şi toate ferestrele pe care le conţine?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14763"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14872"/>
         <source>Note</source>
         <translation>Notă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14769"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14878"/>
         <source>3D Graph</source>
         <translation>Grafic 3D</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14774"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14883"/>
         <source>Status</source>
         <translation>Statut</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14838"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14947"/>
         <source>QtiPlot - No match found</source>
         <translation>QtiPlot - Căutare fără rezultat </translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14839"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14948"/>
         <source>Sorry, no match found for string: &apos;%1&apos;</source>
         <translation>Ne pare rău, nu a fost găsit nici un rezultat pentru şirul de caractere: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14857"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14966"/>
         <source>Cannot move an object to itself!</source>
         <translation>Un obiect nu poate fi mutat în el însuşi!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14862"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14971"/>
         <source>Cannot move a parent folder into a child folder!</source>
         <translation>Un dosar nu poate fi mutat intr-un dosar pe care îl conţine!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14875"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14984"/>
         <source>Skipped moving folder</source>
         <translation>Dosarul nu a fost mutat</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14919"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15028"/>
         <source>The destination folder already contains a folder called &apos;%1&apos;! Folder skipped!</source>
         <translation>Dosarul de destinaţie conţine deja un dosar numit &apos;%1&apos;! Dosarul a fost sărit!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15877"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15986"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14971"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15080"/>
         <source>QtiPlot will try to download necessary information about the last available updates. Please modify your firewall settings in order to allow QtiPlot to connect to the internet!</source>
         <translation>QtiPlot va încerca să aducă informaţia necesară despre ultima versiune disponibilă. Vă rugăm să permiteţi conectarea la internet!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14972"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15081"/>
         <source>Do you wish to continue?</source>
         <translation>Doriţi să continuaţi?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14987"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15096"/>
         <source>QtiPlot - HTTP get version file</source>
         <translation>QtiPlot -  Acces la informaţia despre ultima versiune folosind HTTP</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="14988"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15097"/>
         <source>Error while fetching version file with HTTP: %1.</source>
         <translation>Eroare de acces la fişierul cu informaţii despre ultima versiune disponibilă folosind HTTP: %1.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15003"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15112"/>
         <source>QtiPlot - Updates Available</source>
         <translation>QtiPlot - Actualizare disponibilă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15004"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15113"/>
         <source>There is a newer version of QtiPlot (%1) available for download. Would you like to download it?</source>
         <translation>Există o versiune mai nouă (%1) pentru QtiPlot. Vreţi să o instalaţi?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15008"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15117"/>
         <source>QtiPlot - No Updates Available</source>
         <translation>QtiPlot - Nu s-au găsit actualizări</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15009"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15118"/>
         <source>No updates available. Your current version %1 is the last version available!</source>
         <translation>Nu e disponibilă o versiune mai nouă. Versiunea dumneavoastră %1 este ultima versiune disponibilă!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15063"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15172"/>
         <source>This will clear the contents of all the data associated with the table. Are you sure?</source>
         <translation>Toate seturile de date asociate cu acest tabel vor fi şterse. Sunteţi sigur?</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15064"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15173"/>
         <source>&amp;No</source>
         <translation>&amp;Nu</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15078"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15187"/>
         <source>QtiPlot - Enter row number</source>
         <translation>QtiPlot - Introduceţi numărul liniei</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15078"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15187"/>
         <source>Row</source>
         <translation>Linie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15098"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15207"/>
         <source>QtiPlot - Enter column number</source>
         <translation>QtiPlot - Introduceţi numărul coloanei</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15878"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15987"/>
         <source>QtiPlot was not built with Python scripting support included!</source>
         <translation>QtiPlot nu a fost compilat cu suport pentru limbajul de programare Python!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15280"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15389"/>
         <source>Please set a default X column for this table, first!</source>
         <translation>Vă rugăm să definiţi mai întâi o coloană de tip X pentru acest tabel!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15314"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15423"/>
         <source>Please select a Z column for this operation!</source>
         <translation>Vă rugăm să selectaţi o coloană de tip Z pentru această operaţie!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15318"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15427"/>
         <source>You need to define a X column first!</source>
         <translation>Vă rugam să definiţi mai întâi o coloana de tip X!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15322"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15431"/>
         <source>You need to define a Y column first!</source>
         <translation>Vă rugam să definiţi mai întâi o coloana de tip Y!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15519"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15628"/>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
         <translation>Începând cu versiunea 0.9.1 QtiPlot salveaza funcţiile de ajustare definite de utilizator într-un alt loc.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15520"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15629"/>
         <source>If you want to save your already defined models, please choose a destination folder.</source>
         <translation>Dacă doriţi să salvaţi funcţiile de ajustare create, vă rugăm să alegeţi un dosar.</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15521"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15630"/>
         <source>Import fit models</source>
         <translation>Importă funcţii de ajustare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15524"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15633"/>
         <source>Choose a directory to export the fit models to</source>
         <translation>Alegeţi un dosar în care să exportaţi funcţiile de ajustare</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="15821"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="15930"/>
         <source>No Icon</source>
         <translation>Fără icoană</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16030"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16139"/>
         <source>Couldn&apos;t load file: %1.
 Autocompletion will not be available!</source>
         <translation>Fişierul: %1 nu a putut fi încărcat.Sugestiile de completare automată nu vorfi disponibile!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16112"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16221"/>
         <source>Please select exactly one column and more than one non empty cell!</source>
         <translation>Vă rugăm să selectaţi o singură coloană si cel puţin două celule cu conţinut valid!</translation>
     </message>
@@ -4132,7 +4131,7 @@ Autocompletion will not be available!</source>
         <translation>Română</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12544"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12645"/>
         <source>Ctrl+Shift+S</source>
         <translation>Ctrl+Shift+</translation>
     </message>
@@ -4142,92 +4141,92 @@ Autocompletion will not be available!</source>
         <translation type="obsolete">Grafic tulpină cu &amp;frunze</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16153"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16262"/>
         <source>Data set: %1 doesn&apos;t exist!</source>
         <translation>Setul de date %1 nu există!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16164"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16273"/>
         <source>Stem and leaf plot of dataset</source>
         <translation>Grafic tulpină cu frunze a setului de date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16165"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16274"/>
         <source>from row</source>
         <translation>de la linia</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16166"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16275"/>
         <source>to row</source>
         <translation>la linia</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16177"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16286"/>
         <source>Not enough memory for this dataset!</source>
         <translation>Memorie insuficientă pentru acest set de date!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16181"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16290"/>
         <source>Stem</source>
         <translation>Tulpină</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16181"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16290"/>
         <source>Leaf</source>
         <translation>Frunze</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16196"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16305"/>
         <source>Please confirm the stem unit!</source>
         <translation>Vă rugam să confirmaţi unitatea de măsură pentru tulpină!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16197"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16306"/>
         <source>Data set</source>
         <translation>Set de date</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16197"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16306"/>
         <source>stem unit</source>
         <translation>unitate pentru tulpină</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16220"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16329"/>
         <source>Stem unit</source>
         <translation>Unitate pentru tulpină</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16221"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16330"/>
         <source>Leaf unit</source>
         <translation>Unitate pentru frunze</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16223"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16332"/>
         <source>Key</source>
         <translation>Legendă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16226"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16335"/>
         <source>means</source>
         <translation>înseamnă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="16231"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="16340"/>
         <source>Input error: empty data set!</source>
         <translation>Eroare: setul de date este vid!</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12716"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12820"/>
         <source>Stem-and-Leaf Plot</source>
         <translation>Grafic tulpină cu frunze</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12715"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12819"/>
         <source>Stem-and-&amp;Leaf Plot</source>
         <translation>Grafic tulpină cu &amp;frunze</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="1009"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="1010"/>
         <source>F&amp;ormat</source>
         <translation>F&amp;ormat</translation>
     </message>
@@ -4237,29 +4236,44 @@ Autocompletion will not be available!</source>
         <translation type="obsolete">Bara de meniu</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12825"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12929"/>
         <source>Alt+C</source>
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12953"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13057"/>
         <source>Zoom &amp;In/Out and Drag Canvas</source>
         <translation>Măr&amp;ire/Micşorare şi Translaţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12954"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="13058"/>
         <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
         <translation>Mărire (Shift++) / Micşorare (-) şi Translaţie</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="12769"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="12873"/>
         <source>Fit Slop&amp;e</source>
         <translation>Aju&amp;stare pantă</translation>
     </message>
     <message>
-        <location filename="src/core/ApplicationWindow.cpp" line="13989"/>
+        <location filename="src/core/ApplicationWindow.cpp" line="14098"/>
         <source>You are using the demonstration version of Qtiplot.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>It is identical with the full version, except that you can&apos;t save your work to project files and you can&apos;t use it for more than 10 minutes per session.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you want to have ready-to-use, fully functional binaries, please subscribe for a<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;single-user binaries maintenance contract&lt;/a&gt;.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>QtiPlot is free software in the sense of free speech.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>If you know how to use it, you can get<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;the source code&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>free of charge.<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>Nevertheless, you are welcome to<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>&lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;make a donation&lt;/a&gt;<byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>in order to support the further development of QtiPlot.</source>
         <translation>Folosiţi versiunea de demonstraţie a programului Qtiplot. Este identică cu versiunea integrală, exceptand faptul că nu puteţi salva proiectele deschise si nu poate fi utilizat mai mult de 10 minute pe sesiune.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>Dacă doriţi să instalaţi versiunea integrala, vă rugăm să suscrieţi la&lt;a href=&quot;http://soft.proindependent.com/individual_contract.html&quot;&gt;un contract de mentenanţă&lt;/a&gt;.<byte value="x9"/>&lt;br&gt;&lt;br&gt;<byte value="x9"/>QtiPlot este un program liber.<byte value="x9"/>Dacă doriţi, puteţi obtine gratis &lt;a href=&quot;http://soft.proindependent.com/download.html&quot;&gt;codul sursă&lt;/a&gt;. &lt;a href=&quot;http://soft.proindependent.com/why_donate.html&quot;&gt;Donaţiile&lt;/a&gt; în vederea sprijinirii dezvoltării programului<byte value="x9"/>QtiPlot sunt binevenite.</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="9097"/>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Adaugă</translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="12666"/>
+        <source>Ctrl+Alt+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/core/ApplicationWindow.cpp" line="12021"/>
+        <source>&amp;Waterfall Plot</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4852,122 +4866,122 @@ Autocompletion will not be available!</source>
 <context>
     <name>ColorBox</name>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="74"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="135"/>
         <source>black</source>
         <translation>negru</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="80"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="136"/>
         <source>red</source>
         <translation>roşu</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="84"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="137"/>
         <source>green</source>
         <translation>verde</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="88"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="138"/>
         <source>blue</source>
         <translation>albastru</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="92"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="139"/>
         <source>cyan</source>
         <translation>turcoaz</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="96"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="140"/>
         <source>magenta</source>
         <translation>magenta</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="100"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="141"/>
         <source>yellow</source>
         <translation>galben</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="104"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="142"/>
         <source>dark yellow</source>
         <translation>galben închis</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="108"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="143"/>
         <source>navy</source>
         <translation>albastru marin</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="112"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="144"/>
         <source>purple</source>
         <translation>purpuriu</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="116"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="145"/>
         <source>wine</source>
         <translation>vişiniu</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="120"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="146"/>
         <source>olive</source>
         <translation>verde măsliniu</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="124"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="147"/>
         <source>dark cyan</source>
         <translation>turcoaz închis</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="128"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="148"/>
         <source>royal</source>
         <translation>albastru regal</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="132"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="149"/>
         <source>orange</source>
         <translation>portocaliu</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="136"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="150"/>
         <source>violet</source>
         <translation>violet</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="140"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="151"/>
         <source>pink</source>
         <translation>roz</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="144"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="152"/>
         <source>white</source>
         <translation>alb</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="148"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="153"/>
         <source>light gray</source>
         <translation>gri deschis</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="152"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="154"/>
         <source>gray</source>
         <translation>gri</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="156"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="155"/>
         <source>light yellow</source>
         <translation>galben deschis</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="160"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="156"/>
         <source>light cyan</source>
         <translation>turcoaz deschis</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="164"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="157"/>
         <source>light magenta</source>
         <translation>magenta deschis</translation>
     </message>
     <message>
-        <location filename="src/lib/src/ColorBox.cpp" line="168"/>
+        <location filename="src/lib/src/ColorBox.cpp" line="158"/>
         <source>dark gray</source>
         <translation>gri închis</translation>
     </message>
@@ -5054,6 +5068,14 @@ Autocompletion will not be available!</source>
         <location filename="src/plot3D/ColorMapPreviewDialog.cpp" line="79"/>
         <source>None</source>
         <translation>Paletă nedefinită</translation>
+    </message>
+</context>
+<context>
+    <name>ColorPickerPopup</name>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="897"/>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5941,6 +5963,64 @@ The following special codes can be used:
     </message>
 </context>
 <context>
+    <name>ContourLinesEditor</name>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="61"/>
+        <source>Level</source>
+        <translation type="unfinished">Nivel</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="61"/>
+        <source>Pen</source>
+        <translation type="unfinished">Creion</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="67"/>
+        <source>&amp;Insert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="71"/>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">Şte&amp;rge</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="240"/>
+        <source>QtiPlot - Edit pen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="245"/>
+        <source>Color</source>
+        <translation type="unfinished">Culoare</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="267"/>
+        <source>Apply to all</source>
+        <translation type="unfinished">Aplică tuturor coloanelor</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="253"/>
+        <source>Style</source>
+        <translation type="unfinished">Stil</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="261"/>
+        <source>Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="270"/>
+        <source>&amp;Ok</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="273"/>
+        <source>&amp;Close</source>
+        <translation type="unfinished">În&amp;chide</translation>
+    </message>
+</context>
+<context>
     <name>Convolution</name>
     <message>
         <location filename="src/analysis/Convolution.cpp" line="40"/>
@@ -6057,152 +6137,152 @@ The following special codes can be used:
 <context>
     <name>CurvesDialog</name>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="58"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="59"/>
         <source>QtiPlot - Add/Remove curves</source>
         <translation>QtiPlot - Adaugă/Şterge curbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="64"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="65"/>
         <source>New curves style</source>
         <translation>Stilul noilor curbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="66"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="67"/>
         <source> Line</source>
         <translation>Linie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="67"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="68"/>
         <source> Scatter</source>
         <translation>Simbol</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="68"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="69"/>
         <source> Line + Symbol</source>
         <translation>Linie + Simbol</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="69"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="70"/>
         <source> Vertical drop lines</source>
         <translation>Linii verticale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="70"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="71"/>
         <source> Spline</source>
         <translation>Spline</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="71"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="72"/>
         <source> Vertical steps</source>
         <translation>Trepte verticale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="72"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="73"/>
         <source> Horizontal steps</source>
         <translation>Trepte orizontale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="73"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="74"/>
         <source> Area</source>
         <translation>Suprafaţă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="74"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="75"/>
         <source> Vertical Bars</source>
         <translation>Bare verticale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="75"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="76"/>
         <source> Horizontal Bars</source>
         <translation>Bare orizontale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="76"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="77"/>
         <source> Histogram</source>
         <translation>Histogramă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="80"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="81"/>
         <source>Contour - Color Fill</source>
         <translation>Linii de contour + culoare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="81"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="82"/>
         <source>Contour Lines</source>
         <translation>Linii de contour</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="82"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="83"/>
         <source>Gray Scale Map</source>
         <translation>Scară de griuri</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="83"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="84"/>
         <source>Histogram</source>
         <translation>Histogramă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="89"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="90"/>
         <source>Available data</source>
         <translation>Seturi de date disponibile</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="90"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="91"/>
         <source>Graph contents</source>
         <translation>Conţinutul graficului</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="116"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="117"/>
         <source>&amp;Plot Associations...</source>
         <translation>&amp;Asocieri de date...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="120"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="121"/>
         <source>Edit &amp;Range...</source>
         <translation>Editează inte&amp;rvalul...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="124"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="125"/>
         <source>&amp;Edit Function...</source>
         <translation>&amp;Editează funcţia...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="128"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="129"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="132"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="133"/>
         <source>Close</source>
         <translation>Închide</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="135"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="136"/>
         <source>&amp;Show Range</source>
         <translation>Afişază &amp;intervalul</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="145"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="146"/>
         <source>Show current &amp;folder only</source>
         <translation>Afişază doar conţinutul dosarului &amp;curent</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="252"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="253"/>
         <source>&amp;Plot Selection</source>
         <translation>&amp;Trasează selecţia</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="254"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="255"/>
         <source>&amp;Plot</source>
         <translation>&amp;Trasează</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="265"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="266"/>
         <source>&amp;Delete Selection</source>
         <translation>Sterge &amp;selecţia</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="267"/>
+        <location filename="src/plot2D/dialogs/CurvesDialog.cpp" line="268"/>
         <source>&amp;Delete Curve</source>
         <translation>Şterge cur&amp;ba</translation>
     </message>
@@ -6458,37 +6538,37 @@ The following special codes can be used:
         <translation>Selectaţi un punct şi efectuaţi un dublu-click pentru a-l şterge!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/DataPickerTool.cpp" line="326"/>
+        <location filename="src/plot2D/DataPickerTool.cpp" line="332"/>
         <source>QtiPlot - Remove point error</source>
         <translation>QtiPlot - Eroare de ştergere a punctului</translation>
     </message>
     <message>
-        <location filename="src/plot2D/DataPickerTool.cpp" line="327"/>
+        <location filename="src/plot2D/DataPickerTool.cpp" line="333"/>
         <source>Sorry, but removing points of a function is not possible.</source>
         <translation>Ne pare rău, dar nu este posibil să ştergeţi puncte aparţinând unei funcţii.</translation>
     </message>
     <message>
-        <location filename="src/plot2D/DataPickerTool.cpp" line="401"/>
+        <location filename="src/plot2D/DataPickerTool.cpp" line="407"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertisment</translation>
     </message>
     <message>
-        <location filename="src/plot2D/DataPickerTool.cpp" line="402"/>
+        <location filename="src/plot2D/DataPickerTool.cpp" line="408"/>
         <source>This operation cannot be performed on curves plotted from columns having a non-numerical format.</source>
         <translation>Această operaţie nu poate fi efectuată pentru curbe ce utilizează ca surse de date coloane având un format diferit de cel numeric.</translation>
     </message>
     <message>
-        <location filename="src/plot2D/DataPickerTool.cpp" line="354"/>
+        <location filename="src/plot2D/DataPickerTool.cpp" line="360"/>
         <source>QtiPlot - Move point error</source>
         <translation>QtiPlot - Eroare de mutare a punctului</translation>
     </message>
     <message>
-        <location filename="src/plot2D/DataPickerTool.cpp" line="355"/>
+        <location filename="src/plot2D/DataPickerTool.cpp" line="361"/>
         <source>Sorry, but moving points of a function is not possible.</source>
         <translation>Ne pare rău, dar nu este posibil să mutaţi puncte aparţinând unei funcţii.</translation>
     </message>
     <message>
-        <location filename="src/plot2D/DataPickerTool.cpp" line="368"/>
+        <location filename="src/plot2D/DataPickerTool.cpp" line="374"/>
         <source>The column &apos;%1&apos; is read-only! Please choose another curve!</source>
         <translation>Coloana &apos;%1&apos; nu poate fi modificată! Vă rugăm să alegeţi o altă curbă!</translation>
     </message>
@@ -8805,147 +8885,147 @@ The following special codes can be used:
 <context>
     <name>Graph</name>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="200"/>
+        <location filename="src/plot2D/Graph.cpp" line="201"/>
         <source>Y Axis Title</source>
         <translation>Titlu axă Y</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="201"/>
+        <location filename="src/plot2D/Graph.cpp" line="202"/>
         <source>X Axis Title</source>
         <translation>Titlu axă X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4716"/>
+        <location filename="src/plot2D/Graph.cpp" line="4748"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="842"/>
+        <location filename="src/plot2D/Graph.cpp" line="843"/>
         <source>Couldn&apos;t change the axis type to the requested format!</source>
         <translation>Formatul axei nu a putut fi schimbat!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1475"/>
+        <location filename="src/plot2D/Graph.cpp" line="1476"/>
         <source>Please provide a valid file name!</source>
         <translation>Vă rugăm introduceţi un nume valid!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1429"/>
+        <location filename="src/plot2D/Graph.cpp" line="1430"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="1772"/>
+        <location filename="src/plot2D/Graph.cpp" line="1785"/>
         <source>Title</source>
         <translation>Titlu</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3514"/>
+        <location filename="src/plot2D/Graph.cpp" line="3534"/>
         <source>QtiPlot - File open error</source>
         <translation>QtiPlot - Eroare de deschidere fişier</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3515"/>
+        <location filename="src/plot2D/Graph.cpp" line="3535"/>
         <source>Image file: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt;does not exist anymore!</source>
         <translation>Fişierul imagine: &lt;p&gt;&lt;b&gt; %1 &lt;/b&gt;&lt;p&gt; nu mai există!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3702"/>
+        <location filename="src/plot2D/Graph.cpp" line="3722"/>
         <source>Data set generated from curve</source>
         <translation>Set de date generat folosind curba</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3703"/>
+        <location filename="src/plot2D/Graph.cpp" line="3723"/>
         <source>Table</source>
         <translation>Tabel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4706"/>
+        <location filename="src/plot2D/Graph.cpp" line="4738"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertisment</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3930"/>
+        <location filename="src/plot2D/Graph.cpp" line="3950"/>
         <source>The columns</source>
         <translation>Coloanele</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3930"/>
+        <location filename="src/plot2D/Graph.cpp" line="3950"/>
         <source>are empty and will not be added to the plot!</source>
         <translation>sunt vide şi nu vor fi adăugate graficului!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3934"/>
+        <location filename="src/plot2D/Graph.cpp" line="3954"/>
         <source>The column</source>
         <translation>Coloana</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3934"/>
+        <location filename="src/plot2D/Graph.cpp" line="3954"/>
         <source>is empty and will not be added to the plot!</source>
         <translation>este vidă şi nu va fi adăugată graficului!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3993"/>
+        <location filename="src/plot2D/Graph.cpp" line="4013"/>
         <source>Cu&amp;t</source>
         <translation>&amp;Taie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3994"/>
+        <location filename="src/plot2D/Graph.cpp" line="4014"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copiază</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3995"/>
+        <location filename="src/plot2D/Graph.cpp" line="4015"/>
         <source>C&amp;lear</source>
         <translation>Go&amp;leşte</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="3996"/>
+        <location filename="src/plot2D/Graph.cpp" line="4016"/>
         <source>&amp;Delete</source>
         <translation>Şte&amp;rge</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4021"/>
+        <location filename="src/plot2D/Graph.cpp" line="4041"/>
         <source>&amp;Properties...</source>
         <translation>&amp;Proprietăti...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4006"/>
+        <location filename="src/plot2D/Graph.cpp" line="4026"/>
         <source>&amp;Rescale to show all</source>
         <translation>&amp;Afişază toate datele</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4006"/>
+        <location filename="src/plot2D/Graph.cpp" line="4026"/>
         <source>Ctrl+Shift+R</source>
         <translation>Ctrl+Shift+R</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4008"/>
+        <location filename="src/plot2D/Graph.cpp" line="4028"/>
         <source>&amp;Hide axis</source>
         <translation>Ascu&amp;nde axa</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4010"/>
+        <location filename="src/plot2D/Graph.cpp" line="4030"/>
         <source>&amp;Show grids</source>
         <translation>Afişază &amp;grilajul</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4020"/>
+        <location filename="src/plot2D/Graph.cpp" line="4040"/>
         <source>&amp;Scale...</source>
         <translation>&amp;Scală...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4706"/>
+        <location filename="src/plot2D/Graph.cpp" line="4738"/>
         <source>There are no curves available on this plot!</source>
         <translation>Nu există curbe disponibile în acest grafic!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.cpp" line="4717"/>
+        <location filename="src/plot2D/Graph.cpp" line="4749"/>
         <source>There are no curves with more than two points on this plot. Operation aborted!</source>
         <translation>Nu există curbe conţinând mai mult de două puncte în acest grafic. Operaţie abandonată!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/Graph.h" line="611"/>
+        <location filename="src/plot2D/Graph.h" line="613"/>
         <source>F</source>
         <translation>F</translation>
     </message>
@@ -8968,17 +9048,17 @@ The following special codes can be used:
         <translation>Axă Z</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2109"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2112"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2093"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2096"/>
         <source>Please provide a valid file name!</source>
         <translation>Vă rugăm introduceţi un nume valid!</translation>
     </message>
     <message>
-        <location filename="src/plot3D/Graph3D.cpp" line="2109"/>
+        <location filename="src/plot3D/Graph3D.cpp" line="2112"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
     </message>
@@ -10189,168 +10269,168 @@ have the same number of rows.</source>
 <context>
     <name>Matrix</name>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="356"/>
+        <location filename="src/matrix/Matrix.cpp" line="357"/>
         <source>Set Dimensions</source>
         <translation>Setează dimensiunile</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1009"/>
+        <location filename="src/matrix/Matrix.cpp" line="1025"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="387"/>
+        <location filename="src/matrix/Matrix.cpp" line="389"/>
         <source>Calculation failed, the matrix is not square!</source>
         <translation>Calcul imposibil, matriceanu este pătrată!</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1519"/>
+        <location filename="src/matrix/Matrix.cpp" line="1543"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1519"/>
+        <location filename="src/matrix/Matrix.cpp" line="1543"/>
         <source>Memory Allocation Error</source>
         <translation>Eroare de alocare a memoriei</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1520"/>
+        <location filename="src/matrix/Matrix.cpp" line="1544"/>
         <source>Not enough memory, operation aborted!</source>
         <translation>Memorie insuficientă, operaţia a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="426"/>
+        <location filename="src/matrix/Matrix.cpp" line="428"/>
         <source>Inversion failed, the matrix is not square!</source>
         <translation>Inversare imposibilă, matricea nu este pătrată!</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="430"/>
+        <location filename="src/matrix/Matrix.cpp" line="432"/>
         <source>Invert</source>
         <translation>Inversează</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="439"/>
+        <location filename="src/matrix/Matrix.cpp" line="441"/>
         <source>Transpose</source>
         <translation>Transpune</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="448"/>
+        <location filename="src/matrix/Matrix.cpp" line="450"/>
         <source>Flip Vertically</source>
         <translation>Răstoarnă vertical</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="457"/>
+        <location filename="src/matrix/Matrix.cpp" line="459"/>
         <source>Flip Horizontally</source>
         <translation>Răstoarnă orizontal</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="467"/>
+        <location filename="src/matrix/Matrix.cpp" line="469"/>
         <source>Rotate 90&#xb0;</source>
         <translation>Rotire cu 90°</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="469"/>
+        <location filename="src/matrix/Matrix.cpp" line="471"/>
         <source>Rotate -90&#xb0;</source>
         <translation>Rotire cu -90°</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="549"/>
+        <location filename="src/matrix/Matrix.cpp" line="553"/>
         <source>Calculate Values</source>
         <translation>Calculează valorile</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="576"/>
+        <location filename="src/matrix/Matrix.cpp" line="582"/>
         <source>Clear Selection</source>
         <translation>Şterge selecţie</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="690"/>
+        <location filename="src/matrix/Matrix.cpp" line="698"/>
         <source>Paste</source>
         <translation>Lipeşte</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="725"/>
+        <location filename="src/matrix/Matrix.cpp" line="735"/>
         <source>Delete Rows</source>
         <translation>Şterge linii</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="756"/>
+        <location filename="src/matrix/Matrix.cpp" line="768"/>
         <source>Delete Columns</source>
         <translation>Şterge coloane</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="809"/>
+        <location filename="src/matrix/Matrix.cpp" line="823"/>
         <source>Insert Row</source>
         <translation>Inserează linie</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="828"/>
+        <location filename="src/matrix/Matrix.cpp" line="843"/>
         <source>Insert Column</source>
         <translation>Inserează coloană</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1009"/>
+        <location filename="src/matrix/Matrix.cpp" line="1025"/>
         <source>Please provide a valid file name!</source>
         <translation>Vă rugăm introduceţi un nume valid!</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="880"/>
+        <location filename="src/matrix/Matrix.cpp" line="896"/>
         <source>File format not handled, operation aborted!</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1124"/>
+        <location filename="src/matrix/Matrix.cpp" line="1140"/>
         <source>Set Data Mode</source>
         <translation>Setează mod date</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1256"/>
+        <location filename="src/matrix/Matrix.cpp" line="1272"/>
         <source>Ctrl+A</source>
         <comment>Matrix: select all</comment>
         <translation>Ctrl+A</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1293"/>
+        <location filename="src/matrix/Matrix.cpp" line="1311"/>
         <source>Import Image</source>
         <translation>Import imagine</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1422"/>
+        <location filename="src/matrix/Matrix.cpp" line="1442"/>
         <source>Inverse FFT</source>
         <translation>FFT Inversă</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1422"/>
+        <location filename="src/matrix/Matrix.cpp" line="1442"/>
         <source>Forward FFT</source>
         <translation>FFT Directă</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1437"/>
+        <location filename="src/matrix/Matrix.cpp" line="1459"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - Eroare de export ASCII</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1438"/>
+        <location filename="src/matrix/Matrix.cpp" line="1460"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;%1&lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Vă rugam să verificaţi că aveţi drept de scriere in această locaţie!</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1497"/>
+        <location filename="src/matrix/Matrix.cpp" line="1519"/>
         <source>Import ASCII File</source>
         <translation>Importă fişier ASCII</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1508"/>
+        <location filename="src/matrix/Matrix.cpp" line="1532"/>
         <source>Due to memory limitations it will not be possible to undo this change. Do you want to continue anyways?</source>
         <translation>Din cauza memoriei insuficiente nu va fi posibil să anulaţi această modificare. Doriţi totuşi să continuaţi?</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1510"/>
+        <location filename="src/matrix/Matrix.cpp" line="1534"/>
         <source>Warning</source>
         <translation>Avertisment</translation>
     </message>
     <message>
-        <location filename="src/matrix/Matrix.cpp" line="1528"/>
+        <location filename="src/matrix/Matrix.cpp" line="1552"/>
         <source>kB</source>
         <translation>kB</translation>
     </message>
@@ -10363,77 +10443,77 @@ have the same number of rows.</source>
         <translation>QtiPlot - Proprietătile matricii</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="49"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="50"/>
         <source>Cell Width</source>
         <translation>Lăţime celulă</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="55"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="56"/>
         <source>Data Format</source>
         <translation>Format date</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="57"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="58"/>
         <source>Decimal: 1000</source>
         <translation>Zecimal: 100.0</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="58"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="59"/>
         <source>Scientific: 1E3</source>
         <translation>Ştiinţific: 1E3</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="62"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="63"/>
         <source>Numeric Display</source>
         <translation>Afişaj numeric</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="64"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="65"/>
         <source>Default Decimal Digits</source>
         <translation>Setări implicite</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="65"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="66"/>
         <source>Significant Digits=</source>
         <translation>Cifre semnificative</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="73"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="74"/>
         <source>&amp;Apply</source>
         <translation>&amp;Aplică</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="77"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="78"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="82"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="83"/>
         <source>&amp;Cancel</source>
         <translation>A&amp;nulează</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="112"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="113"/>
         <source>Set Columns Width</source>
         <translation>Defineşte lăţimea coloanelor</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="118"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="119"/>
         <source>Decimal</source>
         <translation>Zecimal</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="121"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="122"/>
         <source>Scientific</source>
         <translation>Ştiinţific</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="128"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="129"/>
         <source>Set Data Format %1</source>
         <translation>Defineşte formatul de date %1</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixDialog.cpp" line="129"/>
+        <location filename="src/matrix/MatrixDialog.cpp" line="130"/>
         <source>Precision %1 digits</source>
         <translation>%1 Cifre semnificative</translation>
     </message>
@@ -10494,62 +10574,62 @@ have the same number of rows.</source>
         <translation>QtiPlot - Dimensiunile matricii</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="47"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="48"/>
         <source>Dimensions</source>
         <translation>Dimensiuni</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="49"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="50"/>
         <source>Rows</source>
         <translation>Linii</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="54"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="55"/>
         <source>Columns</source>
         <translation>Coloane</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="59"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="60"/>
         <source>Coordinates</source>
         <translation>Coordonate</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="61"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="62"/>
         <source>X (Columns)</source>
         <translation>X (Coloane)</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="62"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="63"/>
         <source>Y (Rows)</source>
         <translation>Y (Linii)</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="64"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="65"/>
         <source>First</source>
         <translation>Început</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="75"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="76"/>
         <source>Last</source>
         <translation>Sfarşit</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="87"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="88"/>
         <source>&amp;Apply</source>
         <translation>&amp;Aplică</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="90"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="91"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="92"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="93"/>
         <source>&amp;Cancel</source>
         <translation>A&amp;nulează</translation>
     </message>
     <message>
-        <location filename="src/matrix/MatrixSizeDialog.cpp" line="126"/>
+        <location filename="src/matrix/MatrixSizeDialog.cpp" line="127"/>
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
         <translation>Definire coordonate x[%1 : %2], y[%3 : %4]</translation>
     </message>
@@ -10708,7 +10788,7 @@ have the same number of rows.</source>
         <translation>Format de fişier necunoscut, operaţiunea a fost abandonată!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1306"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1310"/>
         <source>kB</source>
         <translation>kilobiţi</translation>
     </message>
@@ -11339,1044 +11419,1089 @@ have the same number of rows.</source>
 <context>
     <name>PlotDialog</name>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="75"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="76"/>
         <source>QtiPlot - Plot details</source>
         <translation>QtiPlot - Detalii grafic</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="93"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="94"/>
         <source>Plot type</source>
         <translation>Tip de grafic</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="128"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="130"/>
         <source>&amp;Worksheet</source>
         <translation>&amp;Tabel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="130"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="132"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="133"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="135"/>
         <source>&amp;Cancel</source>
         <translation>A&amp;nulează</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="135"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="137"/>
         <source>&amp;Apply</source>
         <translation>&amp;Aplică</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1938"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2010"/>
         <source>&amp;Plot Associations...</source>
         <translation>&amp;Asocieri de date...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="310"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="318"/>
         <source>Titles</source>
         <translation>Titluri</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="311"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="319"/>
         <source>Axes Labels</source>
         <translation>Titluri axe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="312"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="320"/>
         <source>Axes Numbers</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="313"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="321"/>
         <source>Legends</source>
         <translation>Legende</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1623"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1677"/>
         <source>Fonts</source>
         <translation>Fonturi</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="340"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="348"/>
         <source>Background Color</source>
         <translation>Culoare de fundal</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="354"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="362"/>
         <source>Opacity</source>
         <translation>Opacitate</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="359"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="367"/>
         <source>Transparent</source>
         <translation>Transparent</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="351"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="359"/>
         <source>Canvas Color</source>
         <translation>Culoarea suprafeţei</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="362"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="370"/>
         <source>Border Color</source>
         <translation>Culoare de bordură</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1116"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1167"/>
         <source>Width</source>
         <translation>Lăţime</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="370"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="378"/>
         <source>Antialiasing</source>
         <translation>Linii nete</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="373"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="381"/>
         <source>Margin</source>
         <translation>Margine</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="383"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="391"/>
         <source>Set As &amp;Default</source>
         <translation>&amp;Defineşte ca format implicit</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="387"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="395"/>
         <source>Apply &amp;to...</source>
         <translation>Aplică forma&amp;tul...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1615"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1669"/>
         <source>Layer</source>
         <translation>Grafic</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="392"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="400"/>
         <source>Window</source>
         <translation>Fereastră</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="393"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="401"/>
         <source>All Windows</source>
         <translation>Tuturor ferestrelor</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="425"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="433"/>
         <source>inch</source>
         <translation>ţol</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="426"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="434"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="427"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="435"/>
         <source>cm</source>
         <translation>cm</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="428"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="436"/>
         <source>point</source>
         <translation>punct</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="429"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="437"/>
         <source>pixel</source>
         <translation>pixel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="432"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="440"/>
         <source>Unit</source>
         <translation>Unitate</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="435"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="443"/>
         <source>Origin</source>
         <translation>Origine</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="445"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="453"/>
         <source>X= </source>
         <translation>X=</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="447"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="455"/>
         <source>Y= </source>
         <translation>Y= </translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="975"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="983"/>
         <source>Size</source>
         <translation>Dimensiuni</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="463"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="471"/>
         <source>width= </source>
         <translation>lăţime=</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="466"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="474"/>
         <source>height= </source>
         <translation>înălţime=</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="469"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="477"/>
         <source>Keep aspect ratio</source>
         <translation>Păstrează aspectul</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1616"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1670"/>
         <source>Geometry</source>
         <translation>Geometrie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1261"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1315"/>
         <source>Color</source>
         <translation>Culoare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1162"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1216"/>
         <source>Style</source>
         <translation>Stil</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="513"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="521"/>
         <source>Border</source>
         <translation>Bordură</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="517"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="525"/>
         <source>First color</source>
         <translation>Prima culoare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1680"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1734"/>
         <source>Pattern</source>
         <translation>Model</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="527"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="535"/>
         <source>Fill</source>
         <translation>Umple</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="544"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="552"/>
         <source>3D View</source>
         <translation>Vedere 3D</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="546"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="554"/>
         <source>View Angle (deg)</source>
         <translation>Unghi de vedere (grade)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="553"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="561"/>
         <source>Thickness (% of radius)</source>
         <translation>Grosime (% din rază)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="560"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="568"/>
         <source>Rotation</source>
         <translation>Rotaţie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="562"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="570"/>
         <source>Starting Azimuth (deg)</source>
         <translation>Azimut (grade)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="570"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="578"/>
         <source>Counter cloc&amp;kwise</source>
         <translation>Sens anti-ora&amp;r</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="574"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="582"/>
         <source>Radius/Center</source>
         <translation>Rază/Centru</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="576"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="584"/>
         <source>Radius (% of frame)</source>
         <translation>Rază (% din bordură)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="581"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="589"/>
         <source>Horizontal Offset (% of frame)</source>
         <translation>Distanţă orizontală (% din bordură)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1637"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1691"/>
         <source>Pie Geometry</source>
         <translation>Geometrie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="606"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="614"/>
         <source>Automatic &amp;Format</source>
         <translation>&amp;Format automat</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="610"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="618"/>
         <source>&amp;Values</source>
         <translation>&amp;Valori</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="613"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="621"/>
         <source>&amp;Percentages</source>
         <translation>&amp;Procente</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="616"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="624"/>
         <source>Categories/&amp;Rows</source>
         <translation>Categorii/&amp;Linii</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="621"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="629"/>
         <source>Associate Position with &amp;Wedge</source>
         <translation>Asocia&amp;ză poziţia cu marginea</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="625"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="633"/>
         <source>Dist. from Pie Edge</source>
         <translation>Distanţa pană la marginea plăcintei</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1699"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1754"/>
         <source>Labels</source>
         <translation>Etichete</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="645"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="653"/>
         <source>&amp;Scale layers to paper size</source>
         <translation>Aju&amp;stează graficele la dimensiunile hârtiei</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="647"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="655"/>
         <source>Print Crop&amp;marks</source>
         <translation>Imprimă &amp;liniile ajutătoare pentru decupaj</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1622"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1676"/>
         <source>Print</source>
         <translation>Imprimare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="659"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="667"/>
         <source>&amp;Show</source>
         <translation>Afişa&amp;ză</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="663"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="671"/>
         <source>Column</source>
         <translation>Coloană</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="671"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="679"/>
         <source>White O&amp;ut</source>
         <translation>F&amp;undal alb</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="674"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="682"/>
         <source>Justify</source>
         <translation>Aliniere</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="677"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="685"/>
         <source>Center</source>
         <translation>Centrat</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1045"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1079"/>
         <source>Left</source>
         <translation>Stânga</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1046"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1080"/>
         <source>Right</source>
         <translation>Dreapta</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="688"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="696"/>
         <source>&amp;Font</source>
         <translation>&amp;Font</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="682"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="690"/>
         <source>Rotate (deg)</source>
         <translation>Roteşte (grade)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="691"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="699"/>
         <source>X Offset (font height %)</source>
         <translation>Distanţa X (% din înălţime font)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="697"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="705"/>
         <source>Y Offset (font height %)</source>
         <translation>Distanţa Y (% din înălţime font)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="723"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="731"/>
         <source>Attach curve to: </source>
         <translation>Ataşază curba axelor: </translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="725"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="733"/>
         <source>x Axis</source>
         <translation>Axa X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1047"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1081"/>
         <source>Bottom</source>
         <translation>Jos</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1048"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1082"/>
         <source>Top</source>
         <translation>Sus</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="731"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="739"/>
         <source>y Axis</source>
         <translation>Axa Y</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1643"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1697"/>
         <source>Axes</source>
         <translation>Axe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="749"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="757"/>
         <source>Connect</source>
         <translation>Conectare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="753"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="761"/>
         <source>No line</source>
         <translation>Fără linie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="754"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="762"/>
         <source>Lines</source>
         <translation>Linii</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="755"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="763"/>
         <source>Sticks</source>
         <translation>Beţe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="756"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="764"/>
         <source>Horizontal Steps</source>
         <translation>Trepte orizontale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="757"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="765"/>
         <source>Dots</source>
         <translation>Puncte</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="758"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="766"/>
         <source>Spline</source>
         <translation>Metodă de interpolare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="759"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="767"/>
         <source>Vertical Steps</source>
         <translation>Trepte verticale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="779"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="787"/>
         <source>Fill area under curve</source>
         <translation>Umple suprafaţa de sub curbă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="782"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="790"/>
         <source>Fill color</source>
         <translation>Culoare de umplere</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1776"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1832"/>
         <source>Line</source>
         <translation>Linie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="981"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="989"/>
         <source>Fill Color</source>
         <translation>Culoare de umplere</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="986"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="994"/>
         <source>Edge Color</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="990"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="998"/>
         <source>Edge Width</source>
         <translation>Grosimea marginii</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1655"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1709"/>
         <source>Symbol</source>
         <translation>Simbol</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1772"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1828"/>
         <source>Box</source>
         <translation>Cutie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="949"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="957"/>
         <source>Type</source>
         <translation>Tip</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="853"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="861"/>
         <source>No Box</source>
         <translation>Fără cutie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="854"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="862"/>
         <source>Rectangle</source>
         <translation>Dreptunghi</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="855"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="863"/>
         <source>Diamond</source>
         <translation>Diamant</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="856"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="864"/>
         <source>Perc 10, 25, 75, 90</source>
         <translation>Procente 10, 25, 75, 90</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="857"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="865"/>
         <source>Notch</source>
         <translation>Crestătură</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="897"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="905"/>
         <source>Range</source>
         <translation>Interval</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1408"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1462"/>
         <source>Standard Deviation</source>
         <translation>Deviaţia standard</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="904"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="912"/>
         <source>Standard Error</source>
         <translation>Eroare standard</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="866"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="874"/>
         <source>Perc 25, 75</source>
         <translation>Procente 25, 75</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="867"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="875"/>
         <source>Perc 10, 90</source>
         <translation>Procente 10, 90</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="868"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="876"/>
         <source>Perc 5, 95</source>
         <translation>Procente 5, 95</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="869"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="877"/>
         <source>Perc 1, 99</source>
         <translation>Procente 1, 99</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="909"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="917"/>
         <source>Max-Min</source>
         <translation>Max-Min</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="910"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="918"/>
         <source>Constant</source>
         <translation>Constant</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="913"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="921"/>
         <source>Percentile (%)</source>
         <translation>Percentile (%)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="881"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="889"/>
         <source>Coefficient</source>
         <translation>Coeficient</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="889"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="897"/>
         <source>Box Width</source>
         <translation>Lăţime cutie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="895"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="903"/>
         <source>Whiskers</source>
         <translation>Mustăţi</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="902"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="910"/>
         <source>No Whiskers</source>
         <translation>Fără mustăţi</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="905"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="913"/>
         <source>75-25</source>
         <translation>75-25</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="906"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="914"/>
         <source>90-10</source>
         <translation>90-10</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="907"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="915"/>
         <source>95-5</source>
         <translation>95-5</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="908"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="916"/>
         <source>99-1</source>
         <translation>99-1</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="920"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="928"/>
         <source>Coef</source>
         <translation>Coeficient</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1681"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1735"/>
         <source>Box/Whiskers</source>
         <translation>Cutie/Mustăţi</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="951"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="959"/>
         <source>Max</source>
         <translation>Maxim</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="956"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="964"/>
         <source>99%</source>
         <translation>99%</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1407"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1461"/>
         <source>Mean</source>
         <translation>Medie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="964"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="972"/>
         <source>1%</source>
         <translation>1%</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="968"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="976"/>
         <source>Min</source>
         <translation>Minim</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1682"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1736"/>
         <source>Percentile</source>
         <translation>Percentile</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1774"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1830"/>
         <source>Image</source>
         <translation>Imagine</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1023"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1057"/>
         <source>&amp;Gray Scale</source>
         <translation>Scară de &amp;griuri</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1026"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1060"/>
         <source>&amp;Default Color Map</source>
         <translation>&amp;Paletă de culori liniară</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1029"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1063"/>
         <source>&amp;Custom Color Map</source>
         <translation>Paletă &amp;personalizată</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1687"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1742"/>
         <source>Contour Lines</source>
         <translation>Linii de contour</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1078"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1114"/>
         <source>Levels</source>
         <translation>Nivele</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1099"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1146"/>
         <source>Use &amp;Color Map</source>
         <translation>Foloseşte paleta de &amp;culori</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1103"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1150"/>
         <source>Use Default &amp;Pen</source>
         <translation>Foloseşte stilul im&amp;plicit</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1038"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1072"/>
         <source>Color Bar Scale</source>
         <translation>Scară de culoare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1042"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1076"/>
         <source>Axis</source>
         <translation>Axă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1774"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1830"/>
         <source>Contour</source>
         <translation>Contur</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1150"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1204"/>
         <source>Direction</source>
         <translation>Direcţie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1153"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1207"/>
         <source>Plus</source>
         <translation>Plus</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1155"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1209"/>
         <source>Minus</source>
         <translation>Minus</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1157"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1211"/>
         <source>&amp;X Error Bar</source>
         <translation>Bare de eroare în &amp;X</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1264"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1318"/>
         <source>Line Width</source>
         <translation>Grosimea liniei</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1176"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1230"/>
         <source>Cap Width</source>
         <translation>Lungime linie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1178"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1232"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1179"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1233"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1180"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1234"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1181"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1235"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1182"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1236"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1186"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1240"/>
         <source>Through Symbol</source>
         <translation>Prin simbol</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1757"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1813"/>
         <source>Error Bars</source>
         <translation>Bare de eroare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1207"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1261"/>
         <source>Automatic Binning</source>
         <translation>Eşantionaj automat</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1210"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1264"/>
         <source>&amp;Show statistics</source>
         <translation>Afişază &amp;statistici</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1215"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1269"/>
         <source>Bin Size</source>
         <translation>Pas de eşantionaj</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1218"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1272"/>
         <source>Begin</source>
         <translation>Început</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1221"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1275"/>
         <source>End</source>
         <translation>Sfârşit</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1665"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1719"/>
         <source>Histogram Data</source>
         <translation>Date histogramă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1242"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1296"/>
         <source>Gap Between Bars (in %)</source>
         <translation>Spaţiu între bare (în %)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1247"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1301"/>
         <source>Offset (in %)</source>
         <translation>Distanţă (in %)</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1662"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1716"/>
         <source>Spacing</source>
         <translation>Margini</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1271"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1325"/>
         <source>Arrowheads</source>
         <translation>Capete săgeţi</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1273"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1327"/>
         <source>Length</source>
         <translation>Lungime</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2690"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2783"/>
         <source>Angle</source>
         <translation>Unghi</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1282"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1336"/>
         <source>&amp;Filled</source>
         <translation>&amp;Umplut</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2697"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2790"/>
         <source>End Point</source>
         <translation>Punct de sfarşit</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2698"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2791"/>
         <source>X End</source>
         <translation>X Sfârşit</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2699"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2792"/>
         <source>Y End</source>
         <translation>Y Sfârşit</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1298"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1352"/>
         <source>Position</source>
         <translation>Poziţie</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1301"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1355"/>
         <source>Tail</source>
         <translation>Coadă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1302"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1356"/>
         <source>Middle</source>
         <translation>Mijloc</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1303"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1357"/>
         <source>Head</source>
         <translation>Capăt</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1672"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1726"/>
         <source>Vector</source>
         <translation>Vector</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1411"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1465"/>
         <source>Bins</source>
         <translation>Eşantioane</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1406"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1460"/>
         <source>Histogram and Probabilities for</source>
         <translation>Histogramă şi probabilitaţi pentru</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1401"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1455"/>
         <source>Quantity</source>
         <translation>Cantitate</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1401"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1455"/>
         <source>Sum</source>
         <translation>Sumă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1401"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1455"/>
         <source>Percent</source>
         <translation>Procent</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1409"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1463"/>
         <source>Minimum</source>
         <translation>Minim</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1410"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1464"/>
         <source>Maximum</source>
         <translation>Maxim</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1436"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1490"/>
         <source>&amp;Delete</source>
         <translation>Şte&amp;rge</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1936"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2008"/>
         <source>&amp;Edit...</source>
         <translation>&amp;Editare...</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1686"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1741"/>
         <source>Colors</source>
         <translation>Culori</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1759"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1815"/>
         <source>Pie</source>
         <translation>Placintă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1761"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1817"/>
         <source>Vertical Bars</source>
         <translation>Bare verticale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1763"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1819"/>
         <source>Horizontal Bars</source>
         <translation>Bare orizontale</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1765"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1821"/>
         <source>Histogram</source>
         <translation>Histogramă</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1767"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1823"/>
         <source>Vector XYXY</source>
         <translation>Vectori XYXY</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1768"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1824"/>
         <source>Vector XYAM</source>
         <translation>Vectori XYAM</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1777"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1833"/>
         <source>Scatter</source>
         <translation>Simbol</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1778"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1834"/>
         <source>Line + Symbol</source>
         <translation>Linie + Simbol</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2585"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2678"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2512"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2605"/>
         <source>Please enter a valid start limit!</source>
         <translation>Vă rugăm introduceţi o limita de început validă!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2519"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2612"/>
         <source>Please enter a valid end limit!</source>
         <translation>Vă rugăm introduceţi o limita de sfarşit validă!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2526"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2619"/>
         <source>Please enter a valid bin size value!</source>
         <translation>Vă rugăm introduceţi un pas de eşantionajului valid!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2555"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2648"/>
         <source>QtiPlot - Start limit error</source>
         <translation>QtiPlot - Eroare detectată la valoarea de start</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2574"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2667"/>
         <source>QtiPlot - End limit error</source>
         <translation>QtiPlot - Eroare detectată la valoarea de sfarşit</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2585"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2678"/>
         <source>Please enter limits that satisfy: begin &lt; end!</source>
         <translation>Vă rugam să introduceţi limite care satisfac condiţia: început &lt; sfarşit !</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2611"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2704"/>
         <source>QtiPlot - Bin size input error</source>
         <translation>QtiPlot - Eroare detectată în pasul de eşantionaj</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2611"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2704"/>
         <source>Please enter a positive bin size value!</source>
         <translation>Vă rugăm introduceţi un pas de eşantionajului pozitiv!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2689"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2782"/>
         <source>Vector Data</source>
         <translation>Date vector</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2691"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="2784"/>
         <source>Magnitude</source>
         <translation>Magnitudine</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1073"/>
         <source>Show Equidistant Levels</source>
-        <translation>Afişază nivelele echidistante</translation>
+        <translation type="obsolete">Afişază nivelele echidistante</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1083"/>
         <source>First Level</source>
-        <translation>Primul nivel</translation>
+        <translation type="obsolete">Primul nivel</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1089"/>
         <source>Distance between Levels</source>
-        <translation>Distanţa între nivele</translation>
+        <translation type="obsolete">Distanţa între nivele</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1095"/>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1142"/>
         <source>Pen</source>
         <translation>Creion</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1031"/>
+        <source>Matrix</source>
+        <translation type="unfinished">Matrice</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1038"/>
+        <source>Use matrix formula to calculate values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1740"/>
+        <source>Values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1107"/>
+        <source>&amp;Show Contour Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1111"/>
+        <source>Set Equidistant Levels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1119"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1125"/>
+        <source>Step</source>
+        <translation type="unfinished">Pas</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1131"/>
+        <source>Set &amp;Levels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1154"/>
+        <source>Use &amp;Table Custom Pen</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12661,11 +12786,114 @@ have the same number of rows.</source>
         <source>The file is not a QtiPlot custom menu version 1.0 file.</source>
         <translation>Fişierul nu este un fişier de tip meniu personalizat cu versiunea 1.0 creat de QtiPlot.</translation>
     </message>
+    <message>
+        <location filename="src/plot2D/Spectrogram.cpp" line="100"/>
+        <source>QtiPlot - Script Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/Spectrogram.cpp" line="101"/>
+        <source>Python-like syntax is not supported in this case since it severely reduces drawing speed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtColorPicker</name>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="508"/>
+        <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="509"/>
+        <source>White</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="510"/>
+        <source>Red</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="511"/>
+        <source>Dark red</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="512"/>
+        <source>Green</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="513"/>
+        <source>Dark green</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="514"/>
+        <source>Blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="515"/>
+        <source>Dark blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="516"/>
+        <source>Cyan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="517"/>
+        <source>Dark cyan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="518"/>
+        <source>Magenta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="519"/>
+        <source>Dark magenta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="520"/>
+        <source>Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="521"/>
+        <source>Dark yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="522"/>
+        <source>Gray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="523"/>
+        <source>Dark gray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="524"/>
+        <source>Light gray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="439"/>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RangeSelectorTool</name>
     <message>
-        <location filename="src/plot2D/RangeSelectorTool.cpp" line="548"/>
+        <location filename="src/plot2D/RangeSelectorTool.cpp" line="550"/>
         <source>QtiPlot - Warning</source>
         <translation>QtiPlot - Avertisment</translation>
     </message>
@@ -12680,27 +12908,27 @@ have the same number of rows.</source>
         <translation>Daţi click sau apăsaţi tastele Ctrl+săgeţi pentru a selecta intervalul (săgeţile slectează curba activă)!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/RangeSelectorTool.cpp" line="182"/>
+        <location filename="src/plot2D/RangeSelectorTool.cpp" line="184"/>
         <source>Right</source>
         <translation>Dreapta</translation>
     </message>
     <message>
-        <location filename="src/plot2D/RangeSelectorTool.cpp" line="182"/>
+        <location filename="src/plot2D/RangeSelectorTool.cpp" line="184"/>
         <source>Left</source>
         <translation>Stânga</translation>
     </message>
     <message>
-        <location filename="src/plot2D/RangeSelectorTool.cpp" line="549"/>
+        <location filename="src/plot2D/RangeSelectorTool.cpp" line="551"/>
         <source>The column &apos;%1&apos; is read-only! Operation aborted!</source>
         <translation>Coloana &apos;%1&apos; nu poate fi modificată! Operaţiune abandonată!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/RangeSelectorTool.cpp" line="432"/>
+        <location filename="src/plot2D/RangeSelectorTool.cpp" line="434"/>
         <source>Remove data from curves?</source>
         <translation>Vreţi să ştergeţi datele?</translation>
     </message>
     <message>
-        <location filename="src/plot2D/RangeSelectorTool.cpp" line="434"/>
+        <location filename="src/plot2D/RangeSelectorTool.cpp" line="436"/>
         <source>Copy data to clipboard?</source>
         <translation>Copiază datele?</translation>
     </message>
@@ -12764,132 +12992,132 @@ have the same number of rows.</source>
 <context>
     <name>ScriptEdit</name>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="75"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="76"/>
         <source>E&amp;xecute</source>
         <translation>E&amp;xecută</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="76"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="77"/>
         <source>Ctrl+J</source>
         <translation>Ctrl+J</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="79"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="80"/>
         <source>Execute &amp;All</source>
         <translation>Execută &amp;tot</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="80"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="81"/>
         <source>Ctrl+Shift+J</source>
         <translation>Ctrl+Shift+J</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="83"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="84"/>
         <source>&amp;Evaluate Expression</source>
         <translation>&amp;Evaluează expresia</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="84"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="85"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+Return</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="87"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="88"/>
         <source>&amp;Print</source>
         <translation>Im&amp;primă</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="90"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="91"/>
         <source>&amp;Import...</source>
         <translation>&amp;Importă...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="97"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="98"/>
         <source>&amp;Save</source>
         <translation>&amp;Salvează</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="104"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="105"/>
         <source>Sa&amp;ve as...</source>
         <translation>Salvează c&amp;a...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="107"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="108"/>
         <source>&amp;Find...</source>
         <translation>&amp;Caută...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="114"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="115"/>
         <source>&amp;Replace...</source>
         <translation>În&amp;locuieşte...</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="121"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="122"/>
         <source>&amp;Find next</source>
         <translation>Caută apariţia &amp;următoare</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="128"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="129"/>
         <source>&amp;Find previous</source>
         <translation>Caută apariţia &amp;precedentă</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="243"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="244"/>
         <source>Auto&amp;exec</source>
         <translation>Auto-&amp;execută</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="277"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="278"/>
         <source>&amp;Functions</source>
         <translation>&amp;Funcţii</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="487"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="488"/>
         <source>Text</source>
         <translation>Text</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="489"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="490"/>
         <source>All Files</source>
         <translation>Toate fişierele</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="444"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="445"/>
         <source>QtiPlot - Import Text From File</source>
         <translation>QtiPlot - Importă text din fişier</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="451"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="452"/>
         <source>QtiPlot - Error Opening File</source>
         <translation>QtiPlot - Eroare de deschidere fişier</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="451"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="452"/>
         <source>Could not open file &quot;%1&quot; for reading.</source>
         <translation>Nu a fost posibilă citirea fişierului &quot;%1&quot; .</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="494"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="495"/>
         <source>Save Text to File</source>
         <translation>Salvează text în fişier</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="512"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="513"/>
         <source>QtiPlot - File Save Error</source>
         <translation>QtiPlot - Eroare de salvare a fişerului</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="513"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="514"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Please verify that you have the right to write to this location!</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt; %1 &lt;/h4&gt;&lt;p&gt;Vă rugam să verificaţi că aveţi drept de scriere in această locaţie!</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="638"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="639"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/scripting/ScriptEdit.cpp" line="638"/>
+        <location filename="src/scripting/ScriptEdit.cpp" line="639"/>
         <source>QtiPlot has finished searching the document.</source>
         <translation>QtiPlot a terminat de căutat în document.</translation>
     </message>
@@ -13665,7 +13893,7 @@ have the same number of rows.</source>
         <translation>Evaluarea expresiilor conţinand mai multe linii durează mult mai mult timp! Doriţi să continuaţi?</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2718"/>
+        <location filename="src/table/Table.cpp" line="2722"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
@@ -13675,7 +13903,7 @@ have the same number of rows.</source>
         <translation>Avertisment</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2205"/>
+        <location filename="src/table/Table.cpp" line="2209"/>
         <source>QtiPlot - Error</source>
         <translation>QtiPlot - Eroare</translation>
     </message>
@@ -13695,12 +13923,12 @@ have the same number of rows.</source>
         <translation>Tabelul &apos;%1&apos; conţine numai coloane care nu pot fi modificate! Operaţiune abandonată!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2206"/>
+        <location filename="src/table/Table.cpp" line="2210"/>
         <source>The folowing columns</source>
         <translation>Coloanele următoare</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2206"/>
+        <location filename="src/table/Table.cpp" line="2210"/>
         <source>are read only!</source>
         <translation>nu pot fi modificate!</translation>
     </message>
@@ -13720,52 +13948,52 @@ have the same number of rows.</source>
         <translation>Coloana principală este vidă! Operaţie abandonată!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2375"/>
+        <location filename="src/table/Table.cpp" line="2379"/>
         <source>Qtiplot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2375"/>
+        <location filename="src/table/Table.cpp" line="2379"/>
         <source>Reading file...</source>
         <translation>Citire fişier...</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2439"/>
+        <location filename="src/table/Table.cpp" line="2443"/>
         <source>QtiPlot - ASCII Export Error</source>
         <translation>QtiPlot - Eroare de export ASCII</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2440"/>
+        <location filename="src/table/Table.cpp" line="2444"/>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
         <translation>Nu a fost posibilă scrierea în fişierul: &lt;br&gt;&lt;h4&gt;</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2682"/>
+        <location filename="src/table/Table.cpp" line="2686"/>
         <source>Rows will be deleted from the table!</source>
         <translation>Din tabel vor fi şterse linii!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2717"/>
+        <location filename="src/table/Table.cpp" line="2721"/>
         <source>Do you really want to continue?</source>
         <translation>Doriţi intr-adevăr să continuaţi?</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2718"/>
+        <location filename="src/table/Table.cpp" line="2722"/>
         <source>Yes</source>
         <translation>Da</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2718"/>
+        <location filename="src/table/Table.cpp" line="2722"/>
         <source>Cancel</source>
         <translation>Anulează</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="2716"/>
+        <location filename="src/table/Table.cpp" line="2720"/>
         <source>Columns will be deleted from the table!</source>
         <translation>Din tabel vor fi şterse coloane!</translation>
     </message>
     <message>
-        <location filename="src/table/Table.cpp" line="3039"/>
+        <location filename="src/table/Table.cpp" line="3043"/>
         <source>kB</source>
         <translation>kilobiţi</translation>
     </message>

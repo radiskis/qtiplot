@@ -27,3 +27,11 @@ SOURCES  += src/lib/src/ColorBox.cpp \
             src/lib/src/SymbolBox.cpp \
             src/lib/src/SymbolDialog.cpp \
             src/lib/src/TextFormatButtons.cpp \
+
+###############################################################
+##################### 3rdparty Qt Solutions ###################
+###############################################################
+
+INCLUDEPATH += src/lib/3rdparty/qtcolorpicker/src
+HEADERS  += src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.h
+SOURCES  += src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp

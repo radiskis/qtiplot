@@ -3857,8 +3857,8 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 void ApplicationWindow::openRecentProject(int index)
 {
 	QString fn = recent->text(index);
-	int pos = fn.find(" ",0);
-	fn = fn.right(fn.length()-pos-1);
+	int pos = fn.find(" ", 0);
+	fn = fn.right(fn.length() - pos - 1);
 
 	QFile f(fn);
 	if (!f.exists()){
@@ -3866,7 +3866,12 @@ void ApplicationWindow::openRecentProject(int index)
 				tr("The file: <b> %1 </b> <p>does not exist anymore!"
 					"<p>It will be removed from the list.").arg(fn));
 
-		recentProjects.remove(fn);
+		for (int i = 0; i < recentProjects.size(); i++){
+			if (QDir::toNativeSeparators(recentProjects[i]) == fn){
+				recentProjects.removeAt(i);
+				break;
+			}
+		}
         updateRecentProjectsList();
 		return;
 	}
@@ -4140,7 +4145,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	QFileInfo fi2(f);
 	QString fileName = fi2.absFilePath();
 
-	app->recentProjects.remove(fileName);
+	app->recentProjects.removeAll(fileName);
 	app->recentProjects.push_front(fileName);
 	app->updateRecentProjectsList();
 
@@ -5513,7 +5518,7 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 
 		projectname = fn;
 		if (saveProject(compress)){
-			recentProjects.remove(projectname);
+			recentProjects.removeAll(projectname);
 			recentProjects.push_front(projectname);
 			updateRecentProjectsList();
 
@@ -13326,7 +13331,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 		app->setWindowTitle("QtiPlot - " + filename);
 		app->restoreApplicationGeometry();
 		app->projectname = filename;
-        app->recentProjects.remove(filename);
+        app->recentProjects.removeAll(filename);
         app->recentProjects.push_front(filename);
         app->updateRecentProjectsList();
 
@@ -13338,7 +13343,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
     else if (filename.endsWith(".ogm", Qt::CaseInsensitive) || filename.endsWith(".ogw", Qt::CaseInsensitive))
     {
 		ImportOPJ(this, filename);
-        recentProjects.remove(filename);
+        recentProjects.removeAll(filename);
         recentProjects.push_front(filename);
         updateRecentProjectsList();
         return this;
@@ -13887,7 +13892,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	d_is_appending_file = true;
 
 	if (fn != projectname){
-		recentProjects.remove(fn);
+		recentProjects.removeAll(fn);
 		recentProjects.push_front(fn);
 		updateRecentProjectsList();
 	}
