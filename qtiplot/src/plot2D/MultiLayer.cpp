@@ -2,7 +2,7 @@
     File                 : MultiLayer.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Multi layer widget
 
@@ -41,6 +41,13 @@
 #include <QSvgGenerator>
 #include <QDir>
 
+#include <QPushButton>
+#include <QCheckBox>
+#include <QLayout>
+#include <QLabel>
+#include <QGroupBox>
+#include <QSpinBox>
+
 #ifdef EMF_OUTPUT
 	#include <EmfEngine.h>
 #endif
@@ -57,6 +64,7 @@
 #include "Spectrogram.h"
 #include "SelectionMoveResizer.h"
 #include <ApplicationWindow.h>
+#include <ColorButton.h>
 
 #include <gsl/gsl_vector.h>
 
@@ -102,15 +110,21 @@ hor_align(HCenter),
 vert_align(VCenter),
 d_scale_on_print(true),
 d_print_cropmarks(false),
-d_scale_layers(parent->autoResizeLayers)
+d_scale_layers(parent->autoResizeLayers),
+d_waterfall_offset_x(30),
+d_waterfall_offset_y(50),
+d_is_waterfall_plot(false),
+d_waterfall_fill_color(QColor())
 {
 	layerButtonsBox = new QHBoxLayout();
+	waterfallBox = new QHBoxLayout();
 #ifdef Q_OS_MAC
 	layerButtonsBox->setSpacing(12);
 #endif
 	QHBoxLayout *hbox = new QHBoxLayout();
 	hbox->addLayout(layerButtonsBox);
 	hbox->addStretch();
+	hbox->addLayout(waterfallBox);
 
 	d_canvas = new QWidget();
 
@@ -604,9 +618,11 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor)
 		QPixmap pic(d_canvas->size());
 		pic.fill();
 		QPainter p(&pic);
-		foreach (Graph *g, graphsList)
+		QObjectList lst = d_canvas->children();//! this list is sorted according to the stack order
+		foreach (QObject *o, lst){
+			Graph *g = (Graph *)o;
 			g->print(&p, g->geometry());
-
+		}
 		p.end();
 		return pic;
 	}
@@ -620,7 +636,9 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor)
 	QPixmap pic(size);
 	pic.fill();
 	QPainter p(&pic);
-	foreach (Graph *g, graphsList){
+	QObjectList lst = d_canvas->children();
+	foreach (QObject *o, lst){
+		Graph *g = (Graph *)o;
 		QPoint pos = g->pos();
 		pos = QPoint(int(pos.x()*scaleFactorX), int(pos.y()*scaleFactorY));
 
@@ -735,7 +753,9 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 			printer.setResolution(res);
 		printer.setPaperSize (QSizeF(size), QPrinter::DevicePixel);
 		QPainter paint(&printer);
-		foreach (Graph *g, graphsList){
+		QObjectList lst = d_canvas->children();
+		foreach (QObject *o, lst){
+			Graph *g = (Graph *)o;
 			QRect r = g->geometry();
 			double wfactor = (double)size.width()/(double)d_canvas->width();
 			double hfactor = (double)size.height()/(double)d_canvas->height();
@@ -755,7 +775,9 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 		printer.setResolution(res);
 		printer.setPaperSize (QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor), QPrinter::DevicePixel);
 		QPainter paint(&printer);
-		foreach (Graph *g, graphsList){
+		QObjectList lst = d_canvas->children();
+		foreach (QObject *o, lst){
+			Graph *g = (Graph *)o;
 			QRect r = g->geometry();
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
@@ -764,8 +786,11 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 	} else {
     	printer.setPaperSize(QSizeF(d_canvas->width(), d_canvas->height()), QPrinter::DevicePixel);
 		QPainter paint(&printer);
-    	foreach (Graph *g, graphsList)
+    	QObjectList lst = d_canvas->children();
+		foreach (QObject *o, lst){
+			Graph *g = (Graph *)o;
         	g->print(&paint, g->geometry());
+		}
 	}
 }
 
@@ -777,9 +802,11 @@ void MultiLayer::exportSVG(const QString& fname)
 	generator.setResolution(96);
 
 	QPainter p(&generator);
-	foreach (Graph *g, graphsList)
+	QObjectList lst = d_canvas->children();
+	foreach (QObject *o, lst){
+		Graph *g = (Graph *)o;
 		g->print(&p, g->geometry());
-
+	}
 	p.end();
 }
 
@@ -790,8 +817,11 @@ void MultiLayer::exportEMF(const QString& fname)
 
 	EmfPaintDevice emf(d_canvas->size(), fname);
 	QPainter paint(&emf);
-	foreach (Graph *g, graphsList)
+	QObjectList lst = d_canvas->children();
+	foreach (QObject *o, lst){
+		Graph *g = (Graph *)o;
 		g->print(&paint, g->geometry());
+	}
 	paint.end();
 
 	QApplication::restoreOverrideCursor();
@@ -1162,11 +1192,14 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	t << "Spacing\t"+QString::number(rowsSpace)+"\t"+QString::number(colsSpace)+"\n";
 	t << "LayerCanvasSize\t"+QString::number(l_canvas_width)+"\t"+QString::number(l_canvas_height)+"\n";
 	t << "Alignement\t"+QString::number(hor_align)+"\t"+QString::number(vert_align)+"\n";
+	t << "<waterfall>" + QString::number(d_waterfall_offset_x) + "," + QString::number(d_waterfall_offset_y) + "</waterfall>\n";
 
-	for (int i=0; i<(int)graphsList.count(); i++){
-		Graph* ag=(Graph*)graphsList.at(i);
-		t << ag->saveToString(saveAsTemplate);
+	QObjectList lst = d_canvas->children();
+	foreach (QObject *o, lst){
+		Graph *g = (Graph *)o;
+		t << g->saveToString(saveAsTemplate);
 	}
+
 	t << "</multiLayer>\n";
 }
 
@@ -1263,13 +1296,21 @@ void MultiLayer::copy(MultiLayer* ml)
 	setAlignement(ml->horizontalAlignement(), ml->verticalAlignement());
 	setMargins(ml->leftMargin(), ml->rightMargin(), ml->topMargin(), ml->bottomMargin());
 
-	QList<Graph *> layers = ml->layersList();
-	foreach(Graph *g, layers){
+	QObjectList lst = ml->canvas()->children();
+	foreach (QObject *o, lst){
+		Graph *g = (Graph *)o;
 		Graph* g2 = addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		g2->copy(g);
 		g2->setAutoscaleFonts(g->autoscaleFonts());
 	}
+
 	show();
+
+	if (ml->isWaterfallPlot()){
+		d_waterfall_offset_x = ml->waterfallXOffset();
+		d_waterfall_offset_y = ml->waterfallYOffset();
+		createWaterfallBox();
+	}
 }
 
 bool MultiLayer::swapLayers(int src, int dest)
@@ -1331,13 +1372,48 @@ void MultiLayer::setWaterfallLayout(bool on)
 	if (graphsList.isEmpty())
 		return;
 
+	d_is_waterfall_plot = on;
+
+	if (on){
+		createWaterfallBox();
+		updateWaterfallLayout();
+	} else {
+		for (int i = 0; i < waterfallBox->count(); i++){
+			QLayoutItem *item = waterfallBox->itemAt(i);
+			if (item){
+				waterfallBox->removeItem(item);
+				delete item;
+			}
+		}
+	}
+}
+
+void MultiLayer::createWaterfallBox()
+{
+	QPushButton *btn = new QPushButton(tr("Offset Amount..."));
+	connect (btn, SIGNAL(clicked()), this, SLOT(showWaterfallOffsetDialog()));
+
+	waterfallBox->addWidget(btn);
+	btn = new QPushButton(tr("Reverse Order"));
+	connect (btn, SIGNAL(clicked()), this, SLOT(reverseWaterfallOrder()));
+
+	waterfallBox->addWidget(btn);
+	btn = new QPushButton(tr("Fill Area..."));
+	connect (btn, SIGNAL(clicked()), this, SLOT(showWaterfallFillDialog()));
+	waterfallBox->addWidget(btn);
+
+	d_is_waterfall_plot = true;
+}
+
+void MultiLayer::updateWaterfallLayout()
+{
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	int xOffset = 30;
-	int yOffset = 50;
-
 	int layers = graphsList.size();
-	Graph *first = graphsList[0];
+	int aux = layers - 1;
+	Graph *first = graphsList[aux];
+	bool scaleFonts = first->autoscaleFonts();
+	first->setAutoscaleFonts(false);
 	first->enableAxis(QwtPlot::xBottom, true);
 	first->enableAxis(QwtPlot::yLeft, true);
 	first->enableAxis(QwtPlot::xTop, false);
@@ -1347,17 +1423,20 @@ void MultiLayer::setWaterfallLayout(bool on)
 	first->setMargin(0);
 	first->setFrame(0);
 
-	QSize size = first->canvas()->size();
+	first->resize(QSize(d_canvas->width() - aux*d_waterfall_offset_x - left_margin - right_margin,
+			d_canvas->height() - aux*d_waterfall_offset_y - top_margin - bottom_margin));
+
 	QPoint pos = first->canvas()->pos();
-	first->move(first->x(), pos.y() + (layers - 1)*yOffset);
+	first->move(first->x(), pos.y() + aux*d_waterfall_offset_y);
 
 	QColor c = Qt::white;
 	c.setAlpha(0);
 	first->setBackgroundColor(c);
 	first->setCanvasBackground(c);
 
+	QObjectList lst = d_canvas->children();
 	for (int i = 1; i < layers; i++){
-		Graph *g = graphsList[i];
+		Graph *g = (Graph *)lst[aux - i];
 		if (!g)
 			continue;
 
@@ -1370,13 +1449,174 @@ void MultiLayer::setWaterfallLayout(bool on)
 		for (int j = 0; j < QwtPlot::axisCnt; j++)
 			g->enableAxis(j, false);
 
-		g->resize(size);
-		g->move(pos.x() + i*xOffset, pos.y() + (layers - i - 1)*yOffset);
+		g->move(pos.x() + i*d_waterfall_offset_x,
+				pos.y() + (aux - i)*d_waterfall_offset_y);
+		g->resize(first->canvas()->size());
+	}
+	first->setAutoscaleFonts(scaleFonts);
+
+	QApplication::restoreOverrideCursor();
+}
+
+void MultiLayer::showWaterfallOffsetDialog()
+{
+	QDialog *offsetDialog = new QDialog(this);
+	offsetDialog->setWindowTitle(tr("Offset Dialog"));
+
+	QGroupBox *gb1 = new QGroupBox();
+	QGridLayout *hl1 = new QGridLayout(gb1);
+
+	hl1->addWidget(new QLabel(tr("Total Y Offset")), 0, 0);
+	QSpinBox *yOffsetBox = new QSpinBox();
+	yOffsetBox->setValue(d_waterfall_offset_y);
+	yOffsetBox->setRange(0, 100000);
+	hl1->addWidget(yOffsetBox, 0, 1);
+
+	hl1->addWidget(new QLabel(tr("Total X Offset")), 1, 0);
+	QSpinBox *xOffsetBox = new QSpinBox();
+	xOffsetBox->setValue(d_waterfall_offset_x);
+	xOffsetBox->setRange(0, 100000);
+	hl1->addWidget(xOffsetBox, 1, 1);
+	hl1->setRowStretch(2, 1);
+
+	connect(yOffsetBox, SIGNAL(valueChanged(int)), this, SLOT(changeWaterfallYOffset(int)));
+	connect(xOffsetBox, SIGNAL(valueChanged(int)), this, SLOT(changeWaterfallXOffset(int)));
+
+	QPushButton *closeBtn = new QPushButton(tr("&Close"));
+	connect(closeBtn, SIGNAL(clicked()), offsetDialog, SLOT(reject()));
+
+	QHBoxLayout *hl2 = new QHBoxLayout();
+	hl2->addStretch();
+	hl2->addWidget(closeBtn);
+
+	QVBoxLayout *vl = new QVBoxLayout(offsetDialog);
+	vl->addWidget(gb1);
+	vl->addLayout(hl2);
+	offsetDialog->exec();
+}
+
+void MultiLayer::changeWaterfallXOffset(int offset)
+{
+	if (offset == d_waterfall_offset_x)
+		return;
+
+	d_waterfall_offset_x = offset;
+	updateWaterfallLayout();
+	emit modifiedWindow(this);
+}
+
+void MultiLayer::changeWaterfallYOffset(int offset)
+{
+	if (offset == d_waterfall_offset_y)
+		return;
+
+	d_waterfall_offset_y = offset;
+	updateWaterfallLayout();
+	emit modifiedWindow(this);
+}
+
+void MultiLayer::reverseWaterfallOrder()
+{
+	int layers = graphsList.size();
+	if (layers < 2)
+		return;
+
+	QList<QwtPlotItem *> lst;
+	foreach(Graph *g, graphsList){
+		QwtPlotItem *c = g->curve(0);
+		if (c){
+			lst << c;
+			g->removeCurve(c);
+		}
 	}
 
-	resize(QSize(first->width() + (layers - 1)*xOffset,
-		height() + layers*yOffset));
-	QApplication::restoreOverrideCursor();
+	if (lst.isEmpty())
+		return;
+
+	for (int i = 0; i < layers; i++){
+		Graph *g = graphsList[i];
+		if (!g)
+			continue;
+
+		g->insertCurve(lst[layers - i - 1]);
+		g->replot();
+	}
+	emit modifiedWindow(this);
+}
+
+void MultiLayer::showWaterfallFillDialog()
+{
+	QDialog *waterfallFillDialog = new QDialog(this);
+	waterfallFillDialog->setWindowTitle(tr("Fill Curves"));
+
+	QGroupBox *gb1 = new QGroupBox(tr("Enable Fill?"));
+	gb1->setCheckable(true);
+
+	QHBoxLayout *hl1 = new QHBoxLayout(gb1);
+	hl1->addWidget(new QLabel(tr("Fill with Color")));
+	ColorButton *fillColorBox = new ColorButton();
+	hl1->addWidget(fillColorBox);
+
+	if (active_graph){
+		QwtPlotCurve *cv = (QwtPlotCurve *)active_graph->curve(0);
+		if (cv){
+			d_waterfall_fill_color = cv->brush().color();
+			fillColorBox->setColor(d_waterfall_fill_color);
+			gb1->setChecked(cv->brush().style() != Qt::NoBrush);
+		}
+	}
+
+	connect(gb1, SIGNAL(toggled(bool)), this, SLOT(updateWaterfallFill(bool)));
+	connect(fillColorBox, SIGNAL(colorChanged(const QColor&)),
+			this, SLOT(updateWaterfallFillColor(const QColor&)));
+
+	QPushButton *closeBtn = new QPushButton(tr("&Close"));
+	connect(closeBtn, SIGNAL(clicked()), waterfallFillDialog, SLOT(reject()));
+
+	QHBoxLayout *hl2 = new QHBoxLayout();
+	hl2->addStretch();
+	hl2->addWidget(closeBtn);
+
+	QVBoxLayout *vl = new QVBoxLayout(waterfallFillDialog);
+	vl->addWidget(gb1);
+	vl->addLayout(hl2);
+	waterfallFillDialog->exec();
+}
+
+void MultiLayer::updateWaterfallFillColor(const QColor& c)
+{
+	if (d_waterfall_fill_color == c)
+		return;
+
+	d_waterfall_fill_color = c;
+
+	QObjectList lst = d_canvas->children();
+	foreach (QObject *o, lst){
+		Graph *g = (Graph *)o;
+		QwtPlotCurve *cv = (QwtPlotCurve *)g->curve(0);
+		if (cv){
+			cv->setBrush(QBrush(c));
+			g->replot();
+		}
+	}
+	emit modifiedWindow(this);
+}
+
+void MultiLayer::updateWaterfallFill(bool on)
+{
+	QObjectList lst = d_canvas->children();
+	foreach (QObject *o, lst){
+		Graph *g = (Graph *)o;
+		QwtPlotCurve *cv = (QwtPlotCurve *)g->curve(0);
+		if (cv){
+			if (on)
+				cv->setBrush(QBrush(d_waterfall_fill_color));
+			else
+				cv->setBrush(QBrush());
+			g->replot();
+		}
+	}
+	emit modifiedWindow(this);
 }
 
 MultiLayer::~MultiLayer()

@@ -35,7 +35,7 @@
 #include <QTableWidget>
 #include <QHeaderView>
 #include <QCheckBox>
-#include <QFormLayout>
+#include <QLayout>
 #include <QLabel>
 #include <QKeyEvent>
 #include <QMouseEvent>

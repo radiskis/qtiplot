@@ -2,11 +2,8 @@
     File                 : MultiLayer.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net,
-                           knut.franke*gmx.de
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
     Description          : Multi layer widget
 
  ***************************************************************************/
@@ -97,6 +94,11 @@ public:
 	virtual QString sizeToString();
 
 	void setWaterfallLayout(bool on = true);
+	void createWaterfallBox();
+	bool isWaterfallPlot(){return d_is_waterfall_plot;};
+	int waterfallXOffset(){return d_waterfall_offset_x;};
+	int waterfallYOffset(){return d_waterfall_offset_y;};
+	void setWaterfallOffset(int x, int y){d_waterfall_offset_x = x; d_waterfall_offset_y = y;};
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
@@ -174,6 +176,17 @@ public slots:
 
     bool hasSelectedLayers();
 
+    //! \name Waterfall Plots
+	//@{
+    void showWaterfallOffsetDialog();
+    void reverseWaterfallOrder();
+    void showWaterfallFillDialog();
+    void updateWaterfallFillColor(const QColor&);
+    void updateWaterfallFill(bool on);
+	void changeWaterfallXOffset(int);
+    void changeWaterfallYOffset(int);
+    //@}
+
 signals:
 	void showEnrichementDialog();
 	void showPlotDialog(int);
@@ -206,6 +219,8 @@ private:
 	//@}
 
 	LayerButton* addLayerButton();
+	void updateWaterfallLayout();
+
 
 	Graph* active_graph;
 	//! Used for resizing of layers.
@@ -218,10 +233,14 @@ private:
 
     QList<LayerButton *> buttonsList;
     QList<Graph *> graphsList;
-	QHBoxLayout *layerButtonsBox;
+	QHBoxLayout *layerButtonsBox, *waterfallBox;
     QWidget *d_canvas;
 
 	QPointer<SelectionMoveResizer> d_layers_selector;
+
+	int d_waterfall_offset_x, d_waterfall_offset_y;
+	bool d_is_waterfall_plot;
+	QColor d_waterfall_fill_color;
 };
 
 //! Button with layer number
