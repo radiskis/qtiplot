@@ -2475,25 +2475,28 @@ MultiLayer* ApplicationWindow::waterfallPlot()
 
 	QStringList list = t->selectedYColumns();
 	int curves = list.count();
-	if(curves < 1) {
+	if(curves < 1){
 		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
 		tr("Please select a Y column to plot!"));
 		return 0;
 	}
 
 	MultiLayer* ml = new MultiLayer(this, curves, 1, 1);
-	//initMultilayerPlot(ml, QString());
 	QList<Graph *> layersList = ml->layersList();
 	int i = 0;
 	foreach(Graph *g, layersList){
-		setPreferences(g);
 		DataCurve *cv = g->insertCurve(t, list[i], Graph::Line);
 		if (cv)
 			cv->setPen(QPen(ColorBox::color(i)));
 		i++;
 	}
-	ml->setWaterfallLayout();
 	initMultilayerPlot(ml, QString());
+	foreach(Graph *g, layersList){
+		setPreferences(g);
+		g->raise();
+	}
+	ml->setWaterfallLayout();
+
 	return ml;
 }
 
@@ -4084,15 +4087,19 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 				plot->setAlignement(lst[1].toInt(),lst[2].toInt());
 			}
 
-			while ( s!="</multiLayer>" )
-			{//open layers
+			while ( s != "</multiLayer>" ){//open layers
 				s = t.readLine();
-				if (s.left(7)=="<graph>")
-				{
+				if (s.contains("</waterfall>")){
+					QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
+					if (lst.size() == 2)
+						plot->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+					plot->createWaterfallBox();
+				}
+
+				if (s.left(7) == "<graph>"){
 					list.clear();
-					while ( s!="</graph>" )
-					{
-						s=t.readLine();
+					while ( s != "</graph>" ){
+						s = t.readLine();
 						list<<s;
 					}
 					openGraph(app, plot, list);
@@ -4302,26 +4309,35 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 		if (templateType == "<multiLayer>"){
 			w = multilayerPlot(generateUniqueName(tr("Graph")), 0, rows, cols);
 			if (w){
+				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				restoreWindowGeometry(this, w, geometry);
 				if (d_file_version > 83){
 					QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
-					((MultiLayer*)w)->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
+					ml->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
 					lst=t.readLine().split("\t", QString::SkipEmptyParts);
-					((MultiLayer*)w)->setSpacing(lst[1].toInt(),lst[2].toInt());
+					ml->setSpacing(lst[1].toInt(),lst[2].toInt());
 					lst=t.readLine().split("\t", QString::SkipEmptyParts);
-					((MultiLayer*)w)->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
+					ml->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
 					lst=t.readLine().split("\t", QString::SkipEmptyParts);
-					((MultiLayer*)w)->setAlignement(lst[1].toInt(),lst[2].toInt());
+					ml->setAlignement(lst[1].toInt(),lst[2].toInt());
 				}
 				while (!t.atEnd()){//open layers
-					QString s=t.readLine();
-					if (s.left(7)=="<graph>"){
+					QString s = t.readLine();
+
+					if (s.contains("</waterfall>")){
+						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
+						if (lst.size() == 2)
+							ml->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+						ml->createWaterfallBox();
+					}
+
+					if (s.left(7) == "<graph>"){
 						QStringList lst;
-						while ( s!="</graph>" ){
+						while ( s != "</graph>" ){
 							s = t.readLine();
 							lst << s;
 						}
-					openGraph(this, (MultiLayer*)w, lst);
+					openGraph(this, ml, lst);
 					}
 				}
 			}
@@ -14043,13 +14059,19 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					plot->setAlignement(lst[1].toInt(),lst[2].toInt());
 				}
 
-				while ( s!="</multiLayer>" ){//open layers
-					s=t.readLine();
-					if (s.left(7)=="<graph>"){
+				while ( s != "</multiLayer>" ){//open layers
+					s = t.readLine();
+					if (s.contains("</waterfall>")){
+						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
+						if (lst.size() == 2)
+							plot->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+						plot->createWaterfallBox();
+					}
+					if (s.left(7) == "<graph>"){
 						lst.clear();
-						while ( s!="</graph>" ){
-							s=t.readLine();
-							lst<<s;
+						while ( s != "</graph>" ){
+							s = t.readLine();
+							lst << s;
 						}
 						openGraph(this, plot, lst);
 					}
