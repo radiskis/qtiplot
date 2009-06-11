@@ -476,16 +476,8 @@ void CustomActionDialog::saveAction(QAction *action)
 
 void CustomActionDialog::chooseIcon()
 {
-    QList<QByteArray> list = QImageReader::supportedImageFormats();
-	QString filter = tr("Images") + " (", aux1, aux2;
-	for (int i=0; i<(int)list.count(); i++){
-		aux1 = " *." + list[i] + " ";
-		aux2 += " *." + list[i] + ";;";
-		filter += aux1;
-	}
-	filter+=");;" + aux2;
-
-	QString fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Load icon from file"), iconBox->text(), filter);
+	QString fn = ApplicationWindow::getFileName(this, tr("QtiPlot - Load icon from file"),
+					iconBox->text(), ApplicationWindow::imageFilter(), 0, false);
 	if (!fn.isEmpty())
 		iconBox->setText(fn);
 }
@@ -496,9 +488,8 @@ void CustomActionDialog::chooseFile()
 	filter += tr("Text") + " (*.txt *.TXT);;";
 	filter += tr("All Files")+" (*)";
 
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Choose script file"),
-													((ApplicationWindow *)parentWidget())->customActionsDirPath,
-													filter);
+	QString fileName = ApplicationWindow::getFileName(this, tr("Choose script file"),
+						((ApplicationWindow *)parentWidget())->customActionsDirPath, filter, 0, false);
     if (!fileName.isEmpty())
         fileBox->setText(fileName);
 }

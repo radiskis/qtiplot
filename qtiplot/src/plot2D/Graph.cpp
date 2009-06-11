@@ -1302,6 +1302,7 @@ void Graph::setScale(int axis, double start, double end, double step,
 	updateMarkersBoundingRect();
 	replot();
 	axisWidget(axis)->repaint();
+	emit axisDivChanged(axis);
 }
 
 void Graph::setCanvasCoordinates(const QRectF& r)
@@ -1787,21 +1788,47 @@ void Graph::initTitle(bool on, const QFont& fnt)
 	}
 }
 
-QString Graph::legendText()
+QString Graph::legendText(bool layerSpec)
 {
-	QString text;
+	QString text = QString();
 	int i = 0;
-	foreach (QwtPlotItem *it, d_curves){
-		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-			continue;
 
-		if (((PlotCurve *)it)->type() != ErrorBars ){
-			text += "\\l(";
-			text += QString::number(i + 1);
-			text += ")%(";
-			text += QString::number(i + 1);
-			text += ")\n";
-			i++;
+	if (layerSpec){
+		int layerIndex = 1;
+		MultiLayer *ml = multiLayer();
+		if (ml)
+			layerIndex = ml->layerIndex(this);
+
+		foreach (QwtPlotItem *it, d_curves){
+			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+				continue;
+
+			if (((PlotCurve *)it)->type() != ErrorBars ){
+				text += "\\l(";
+				text += QString::number(layerIndex + 1);
+				text += ".";
+				text += QString::number(i + 1);
+				text += ")%(";
+				text += QString::number(layerIndex + 1);
+				text += ".";
+				text += QString::number(i + 1);
+				text += ")\n";
+				i++;
+			}
+		}
+	} else {
+		foreach (QwtPlotItem *it, d_curves){
+			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+				continue;
+
+			if (((PlotCurve *)it)->type() != ErrorBars ){
+				text += "\\l(";
+				text += QString::number(i + 1);
+				text += ")%(";
+				text += QString::number(i + 1);
+				text += ")\n";
+				i++;
+			}
 		}
 	}
 	return text.trimmed();

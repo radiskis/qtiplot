@@ -181,9 +181,10 @@ public:
 	QTextEdit *scriptingConsole(){return console;};
 #endif
 
-	static QString getSaveFileName(QWidget *parent = 0, const QString & caption = QString(),
+	static QString imageFilter();
+	static QString getFileName(QWidget *parent = 0, const QString & caption = QString(),
 		const QString & dir = QString(), const QString & filter = QString(),
-		QString * selectedFilter = 0);
+		QString * selectedFilter = 0, bool save = true);
 
 	QColor readColorFromProject(const QString& name);
 
