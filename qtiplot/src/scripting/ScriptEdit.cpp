@@ -442,7 +442,7 @@ QString ScriptEdit::importASCII(const QString &filename)
 
 	QString f;
 	if (filename.isEmpty())
-		f = QFileDialog::getOpenFileName(this, tr("QtiPlot - Import Text From File"), scriptsDirPath, filter);
+		f = ApplicationWindow::getFileName(this, tr("QtiPlot - Import Text From File"), scriptsDirPath, filter, 0, false);
 	else
 		f = filename;
 	if (f.isEmpty()) return QString::null;
@@ -492,7 +492,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 	QString selectedFilter;
 	QString fn;
 	if (filename.isEmpty())
-		fn = ApplicationWindow::getSaveFileName(this, tr("Save Text to File"), scriptsDirPath, filter, &selectedFilter);
+		fn = ApplicationWindow::getFileName(this, tr("Save Text to File"), scriptsDirPath, filter, &selectedFilter);
 	else
 		fn = filename;
 

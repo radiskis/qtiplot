@@ -185,6 +185,7 @@ public slots:
     void updateWaterfallFill(bool on);
 	void changeWaterfallXOffset(int);
     void changeWaterfallYOffset(int);
+    void updateWaterfallLayout();
     //@}
 
 signals:
@@ -219,8 +220,6 @@ private:
 	//@}
 
 	LayerButton* addLayerButton();
-	void updateWaterfallLayout();
-
 
 	Graph* active_graph;
 	//! Used for resizing of layers.

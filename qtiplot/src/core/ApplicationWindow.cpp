@@ -2264,16 +2264,7 @@ Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
 {
 	QString fn = fileName;
 	if (fn.isEmpty()){
-		QList<QByteArray> list = QImageReader::supportedImageFormats();
-		QString filter = tr("Images") + " (", aux1, aux2;
-		for (int i=0; i<(int)list.count(); i++){
-			aux1 = " *."+list[i]+" ";
-			aux2 += " *."+list[i]+";;";
-			filter += aux1;
-		}
-		filter+=");;" + aux2;
-
-		fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Import image from file"), imagesDirPath, filter);
+		fn = getFileName(this, tr("QtiPlot - Import image from file"), imagesDirPath, imageFilter(), 0, false);
 		if ( !fn.isEmpty() ){
 			QFileInfo fi(fn);
 			imagesDirPath = fi.dirPath(true);
@@ -2303,18 +2294,22 @@ Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
     return m;
 }
 
-void ApplicationWindow::loadImage()
+QString ApplicationWindow::imageFilter()
 {
 	QList<QByteArray> list = QImageReader::supportedImageFormats();
 	QString filter = tr("Images") + " (", aux1, aux2;
-	for (int i=0; i<(int)list.count(); i++){
-		aux1 = " *."+list[i]+" ";
-		aux2 += " *."+list[i]+";;";
+	for (int i = 0; i < (int)list.count(); i++){
+		aux1 = " *." + list[i] + " ";
+		aux2 += " *." + list[i] + ";;";
 		filter += aux1;
 	}
-	filter+=");;" + aux2;
+	filter += ");;" + aux2;
+	return filter;
+}
 
-	QString fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Load image from file"), imagesDirPath, filter);
+void ApplicationWindow::loadImage()
+{
+	QString fn = getFileName(this, tr("QtiPlot - Load image from file"), imagesDirPath, imageFilter(), 0, false);
 	if ( !fn.isEmpty() ){
 		loadImage(fn);
 		QFileInfo fi(fn);
@@ -2487,16 +2482,21 @@ MultiLayer* ApplicationWindow::waterfallPlot()
 	foreach(Graph *g, layersList){
 		DataCurve *cv = g->insertCurve(t, list[i], Graph::Line);
 		if (cv)
-			cv->setPen(QPen(ColorBox::color(i)));
+			cv->setPen(QPen(ColorBox::color(i), defaultCurveLineWidth));
 		i++;
 	}
+	QString legend = QString();
 	initMultilayerPlot(ml, QString());
 	foreach(Graph *g, layersList){
+		legend += g->legendText(true) + "\n";
 		setPreferences(g);
 		g->raise();
 	}
-	ml->setWaterfallLayout();
 
+	ml->setWaterfallLayout();
+	Graph *g = layersList.last();
+	if (g)
+		g->newLegend(legend.trimmed())->move(QPoint(5, 5));
 	return ml;
 }
 
@@ -4250,7 +4250,7 @@ void ApplicationWindow::openTemplate()
 	filter += "QtiPlot Table Template (*.qtt);;";
 	filter += "QtiPlot Matrix Template (*.qmt);;";
 
-	QString fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Open Template File"), templatesDir, filter);
+	QString fn = getFileName(this, tr("QtiPlot - Open Template File"), templatesDir, filter, 0, false);
 	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		templatesDir = fi.dirPath(true);
@@ -5489,12 +5489,16 @@ bool ApplicationWindow::saveProject(bool compress)
 	return true;
 }
 
-QString ApplicationWindow::getSaveFileName(QWidget *parent, const QString & caption,
-			const QString & dir, const QString & filter, QString * selectedFilter)
+QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
+			const QString & dir, const QString & filter, QString * selectedFilter, bool save)
 {
 	QFileDialog fd(parent, caption, dir, filter);
-	fd.setAcceptMode(QFileDialog::AcceptSave);
-	fd.setConfirmOverwrite(true);
+	if (save){
+		fd.setAcceptMode(QFileDialog::AcceptSave);
+		fd.setConfirmOverwrite(true);
+	} else
+		fd.setAcceptMode(QFileDialog::AcceptOpen);
+
 	fd.setFileMode(QFileDialog::AnyFile);
 
 	if (fd.exec() != QDialog::Accepted )
@@ -5503,7 +5507,8 @@ QString ApplicationWindow::getSaveFileName(QWidget *parent, const QString & capt
 	if (fd.selectedFiles().isEmpty())
 		return QString();
 
-	*selectedFilter = fd.selectedNameFilter();
+	if (selectedFilter)
+		*selectedFilter = fd.selectedNameFilter();
 	return fd.selectedFiles()[0];
 }
 
@@ -5520,7 +5525,7 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 		filter += tr("Compressed QtiPlot project") + " (*.qti.gz)";
 
 		QString selectedFilter;
-		fn = getSaveFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter);
+		fn = getFileName(this, tr("Save Project As"), workingDir, filter, &selectedFilter);
 		if (selectedFilter.contains(".gz"))
 			compress = true;
 	}
@@ -5585,7 +5590,7 @@ void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 			filter = tr("QtiPlot 3D Surface Template")+" (*.qst)";
 
 		QString selectedFilter;
-		fn = getSaveFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->objectName(), filter, &selectedFilter);
+		fn = getFileName(this, tr("Save Window As Template"), templatesDir + "/" + w->objectName(), filter, &selectedFilter);
 
 		if (!fn.isEmpty()){
 			QFileInfo fi(fn);
@@ -5912,7 +5917,7 @@ void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep
 		return;
 
 	QString selectedFilter;
-	QString fname = getSaveFileName(this, tr("Choose a filename to save under"),
+	QString fname = getFileName(this, tr("Choose a filename to save under"),
                     asciiDirPath + "/" + w->objectName(), "*.txt;;*.dat;;*.DAT", &selectedFilter);
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
@@ -7075,7 +7080,7 @@ void ApplicationWindow::exportPDF()
 		return;
 	}
 
-    QString fname = getSaveFileName(this, tr("Choose a filename to save under"),
+    QString fname = getFileName(this, tr("Choose a filename to save under"),
 					imagesDirPath + "/" + w->objectName(), "*.pdf");
 	if (!fname.isEmpty() ){
 		QFileInfo fi(fname);
@@ -7597,16 +7602,7 @@ void ApplicationWindow::addImage()
 	if (!g)
 		return;
 
-	QList<QByteArray> list = QImageReader::supportedImageFormats();
-	QString filter = tr("Images") + " (", aux1, aux2;
-	for (int i=0; i<(int)list.count(); i++){
-		aux1 = " *."+list[i]+" ";
-		aux2 += " *."+list[i]+";;";
-		filter += aux1;
-	}
-	filter+=");;" + aux2;
-
-	QString fn = QFileDialog::getOpenFileName(this, tr("QtiPlot - Insert image from file"), imagesDirPath, filter);
+	QString fn = getFileName(this, tr("QtiPlot - Insert image from file"), imagesDirPath, imageFilter(), 0, false);
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		imagesDirPath = fi.dirPath(true);
@@ -9396,17 +9392,15 @@ void ApplicationWindow::showStandAloneHelp()
 void ApplicationWindow::showHelp()
 {
 	QFile helpFile(helpFilePath);
-	if (!helpFile.exists())
-	{
-		QMessageBox::critical(this,tr("QtiPlot - Help Files Not Found!"),
+	if (!helpFile.exists()){
+		QMessageBox::critical(this, tr("QtiPlot - Help Files Not Found!"),
 				tr("Please indicate the location of the help file!")+"<br>"+
 				tr("The manual can be downloaded from the following internet address:")+
 				"<p><a href = http://soft.proindependent.com/manuals.html>http://soft.proindependent.com/manuals.html</a></p>");
-		QString fn = QFileDialog::getOpenFileName(QDir::currentDirPath(), "*.html", this );
-		if (!fn.isEmpty())
-		{
+		QString fn = getFileName(this, tr("QtiPlot - Help Files Not Found!"), QDir::currentDirPath(), "*.html", 0, false);
+		if (!fn.isEmpty()){
 			QFileInfo fi(fn);
-			helpFilePath=fi.absFilePath();
+			helpFilePath = fi.absFilePath();
 			saveSettings();
 		}
 	}
@@ -10237,9 +10231,14 @@ void ApplicationWindow::autoArrangeLayers()
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
-	plot->setMargins(5, 5, 5, 5);
-	plot->setSpacing(5, 5);
-	plot->arrangeLayers(true, false);
+
+	if (plot->isWaterfallPlot())
+		plot->updateWaterfallLayout();
+	else {
+		plot->setMargins(5, 5, 5, 5);
+		plot->setSpacing(5, 5);
+		plot->arrangeLayers(true, false);
+	}
 }
 
 void ApplicationWindow::extractGraphs()
@@ -14250,7 +14249,7 @@ void ApplicationWindow::saveFolderAsProject(Folder *f)
 	filter += tr("Compressed QtiPlot project")+" (*.qti.gz)";
 
 	QString selectedFilter;
-	QString fn = getSaveFileName(this, tr("Save project as"), workingDir, filter, &selectedFilter);
+	QString fn = getFileName(this, tr("Save project as"), workingDir, filter, &selectedFilter);
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		workingDir = fi.dirPath(true);

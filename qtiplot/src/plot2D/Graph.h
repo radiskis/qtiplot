@@ -406,7 +406,7 @@ class Graph: public QwtPlot
 
 		LegendWidget* newLegend(const QString& text = QString());
 		//! Creates a new legend text using the curves titles
-		QString legendText();
+		QString legendText(bool layerSpec = false);
 		//@}
 
 		//! \name Obsolete functions provided to keep existing Python scripts working
@@ -717,6 +717,7 @@ signals:
 		void showFitResults(const QString&);
 		void currentFontChanged(const QFont&);
         void enableTextEditor(Graph *);
+        void axisDivChanged(int);
 
 	private:
         //! Finds bounding interval of the plot data.

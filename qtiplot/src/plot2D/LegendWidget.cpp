@@ -577,65 +577,64 @@ QString LegendWidget::parse(const QString& str)
 					  lcmd=5;
 				}
 			}
-        	int cv = lst[0].toInt() - 1;
-        	if (d_plot && cv >= 0 && cv < d_plot->curveCount()){
-				PlotCurve *c = (PlotCurve *)d_plot->curve(cv);
-            	if (c){
-					    switch(lcmd)
-					    {
-					    case 0: //use curve title
- 					    {
-     						s = s.replace(pos, pos2-pos+1, c->title().text());
-							break;
-     					}
-     					case 1: //use col label
-                        {
-                            int ycol = ((DataCurve *)c)->table()->colIndex(c->title().text());
-                            if (ycol >= 0) s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->colLabel(ycol));
-                            break;
-					    }
-     					case 2: //use table name
-                        {
-							s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->name());
-                            break;
-						}
-						case 3: // table label
-							s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->windowLabel());
-							break;
-						case 5: //not implemented yet, use case 4 (L) instead
-						case 4: //use col comment for 2 arguments, use cell contents for 3 arguments
-						{
-							switch (lst.count())
-							{
-							case 2: //2 arguments
-							{
-	                            int ycol = ((DataCurve *)c)->table()->colIndex(c->title().text());
-								s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->comment(ycol));
-								break;
-							}
-							case 3:  //3 arguments, display cell contents
-							{
-								Table *t = ((DataCurve *)c)->table();
-								int col = t->colIndex(c->title().text()); //use y column
-								int row = lst[2].toInt() - 1;
-								s = s.replace(pos, pos2-pos+1, t->text(row, col));
-								break;
-							}
-							case 4:  //4 arguments, display cell contents
-							{
-								Table *t = ((DataCurve *)c)->table();
-								int col = lst[0].toInt() - 1;
-								int row = lst[2].toInt() - 1;
-								s = s.replace(pos, pos2-pos+1, t->text(row, col));
-								break;
-							}
-							}
-							break;
-					    }
-                        }
 
-				}
-        	}
+			int point = 0;
+			PlotCurve *c = getCurve(lst[0], point);
+			if (c){
+					switch(lcmd)
+					{
+					case 0: //use curve title
+					{
+						s = s.replace(pos, pos2-pos+1, c->title().text());
+						break;
+					}
+					case 1: //use col label
+					{
+						int ycol = ((DataCurve *)c)->table()->colIndex(c->title().text());
+						if (ycol >= 0) s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->colLabel(ycol));
+						break;
+					}
+					case 2: //use table name
+					{
+						s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->name());
+						break;
+					}
+					case 3: // table label
+						s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->windowLabel());
+						break;
+					case 5: //not implemented yet, use case 4 (L) instead
+					case 4: //use col comment for 2 arguments, use cell contents for 3 arguments
+					{
+						switch (lst.count())
+						{
+						case 2: //2 arguments
+						{
+							int ycol = ((DataCurve *)c)->table()->colIndex(c->title().text());
+							s = s.replace(pos, pos2-pos+1, ((DataCurve *)c)->table()->comment(ycol));
+							break;
+						}
+						case 3:  //3 arguments, display cell contents
+						{
+							Table *t = ((DataCurve *)c)->table();
+							int col = t->colIndex(c->title().text()); //use y column
+							int row = lst[2].toInt() - 1;
+							s = s.replace(pos, pos2-pos+1, t->text(row, col));
+							break;
+						}
+						case 4:  //4 arguments, display cell contents
+						{
+							Table *t = ((DataCurve *)c)->table();
+							int col = lst[0].toInt() - 1;
+							int row = lst[2].toInt() - 1;
+							s = s.replace(pos, pos2-pos+1, t->text(row, col));
+							break;
+						}
+						}
+						break;
+					}
+					}
+
+			}
 			aux = aux.right(aux.length() - pos2 - 1);
 		}
     }
