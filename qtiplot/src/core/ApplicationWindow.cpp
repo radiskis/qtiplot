@@ -2229,11 +2229,10 @@ void ApplicationWindow::exportMatrix(const QString& exportFilter)
 	if (ied->selectedFiles().isEmpty())
 		return;
 
-	QString selected_filter = ied->selectedFilter();
+	QString selected_filter = ied->selectedFilter().remove("*");
 	QString file_name = ied->selectedFiles()[0];
-	QFileInfo file_info(file_name);
-	if (!file_info.fileName().contains("."))
-		file_name.append(selected_filter.remove("*"));
+	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
+		file_name.append(selected_filter);
 
 	QFile file(file_name);
 	if (!file.open( QIODevice::WriteOnly )){
@@ -2468,7 +2467,14 @@ MultiLayer* ApplicationWindow::waterfallPlot()
     if (!t)
 		return 0;
 
-	QStringList list = t->selectedYColumns();
+	return waterfallPlot(t, t->selectedYColumns());
+}
+
+MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
+{
+	if (!t)
+		return 0;
+
 	int curves = list.count();
 	if(curves < 1){
 		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
@@ -4089,10 +4095,12 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 
 			while ( s != "</multiLayer>" ){//open layers
 				s = t.readLine();
-				if (s.contains("</waterfall>")){
+				if (s.contains("<waterfall>")){
 					QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
-					if (lst.size() == 2)
+					if (lst.size() >= 2)
 						plot->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+					if (lst.size() >= 3)
+						plot->setWaterfallSideLines(lst[2].toInt());
 					plot->createWaterfallBox();
 				}
 
@@ -4323,14 +4331,14 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 				}
 				while (!t.atEnd()){//open layers
 					QString s = t.readLine();
-
-					if (s.contains("</waterfall>")){
+					if (s.contains("<waterfall>")){
 						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
-						if (lst.size() == 2)
+						if (lst.size() >= 2)
 							ml->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+						if (lst.size() >= 3)
+							ml->setWaterfallSideLines(lst[2].toInt());
 						ml->createWaterfallBox();
 					}
-
 					if (s.left(7) == "<graph>"){
 						QStringList lst;
 						while ( s != "</graph>" ){
@@ -5148,11 +5156,10 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 	if (ied->selectedFiles().isEmpty())
 		return;
 
-	QString selected_filter = ied->selectedFilter();
+	QString selected_filter = ied->selectedFilter().remove("*");
 	QString file_name = ied->selectedFiles()[0];
-	QFileInfo file_info(file_name);
-	if (!file_info.fileName().contains("."))
-		file_name.append(selected_filter.remove("*"));
+	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
+		file_name.append(selected_filter);
 
 	QFile file(file_name);
 	if (!file.open( QIODevice::WriteOnly )){
@@ -5222,11 +5229,10 @@ void ApplicationWindow::exportLayer()
 	if (ied->selectedFiles().isEmpty())
 		return;
 
-	QString selected_filter = ied->selectedFilter();
+	QString selected_filter = ied->selectedFilter().remove("*");
 	QString file_name = ied->selectedFiles()[0];
-	QFileInfo file_info(file_name);
-	if (!file_info.fileName().contains("."))
-		file_name.append(selected_filter.remove("*"));
+	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
+		file_name.append(selected_filter);
 
 	QFile file(file_name);
 	if ( !file.open( QIODevice::WriteOnly ) ){
@@ -5533,8 +5539,7 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 	if ( !fn.isEmpty() ){
 		QFileInfo fi(fn);
 		workingDir = fi.dirPath(true);
-		QString baseName = fi.fileName();
-		if (!baseName.contains("."))
+		if (!fn.endsWith(".qti", Qt::CaseInsensitive))
 			fn.append(".qti");
 
 		projectname = fn;
@@ -5919,11 +5924,11 @@ void ApplicationWindow::exportASCII(const QString& tableName, const QString& sep
 	QString selectedFilter;
 	QString fname = getFileName(this, tr("Choose a filename to save under"),
                     asciiDirPath + "/" + w->objectName(), "*.txt;;*.dat;;*.DAT", &selectedFilter);
-	if (!fname.isEmpty() ){
+	if (!fname.isEmpty()){
 		QFileInfo fi(fname);
-		QString baseName = fi.fileName();
-		if (baseName.contains(".")==0)
-			fname.append(selectedFilter.remove("*"));
+		selectedFilter.remove("*");
+		if (!fname.endsWith(selectedFilter, Qt::CaseInsensitive))
+			fname.append(selectedFilter);
 
 		asciiDirPath = fi.dirPath(true);
 
@@ -14060,10 +14065,12 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 
 				while ( s != "</multiLayer>" ){//open layers
 					s = t.readLine();
-					if (s.contains("</waterfall>")){
+					if (s.contains("<waterfall>")){
 						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
-						if (lst.size() == 2)
+						if (lst.size() >= 2)
 							plot->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+						if (lst.size() >= 3)
+							plot->setWaterfallSideLines(lst[2].toInt());
 						plot->createWaterfallBox();
 					}
 					if (s.left(7) == "<graph>"){

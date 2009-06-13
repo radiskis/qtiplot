@@ -1395,6 +1395,28 @@ public:
 	}
 %End
 
+	MultiLayer *waterfallPlot(Table*, SIP_PYTUPLE);
+%MethodCode
+	if (a0 == 0) {
+	   sipIsErr = 1;
+	   PyErr_Format(PyExc_ValueError, "Invalid table in argument to waterfallPlot().");
+	} else {
+	  QStringList l;
+	  int n = PyTuple_Size(a1);
+	  for (int i=0; i<n; i++) {
+		PyObject *str = PyObject_Str(PyTuple_GET_ITEM(a1,i));
+		if (str) {
+		  l << PyString_AsString(str);
+			Py_DECREF(str);
+		 } else {
+		  sipIsErr = 1;
+		  break;
+		}
+	  }
+	  sipRes = sipCpp->waterfallPlot(a0, l);
+	}
+%End
+
 	Matrix* importImage(const QString&, bool);
 	MultiLayer* plotSpectrogram(Matrix*, Graph::CurveType = Graph::ColorMap) /PyName=plot/;
 	MultiLayer* plot(const QString&, double, double, int = 100);

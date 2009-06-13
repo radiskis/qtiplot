@@ -1302,7 +1302,7 @@ void Graph::setScale(int axis, double start, double end, double step,
 	updateMarkersBoundingRect();
 	replot();
 	axisWidget(axis)->repaint();
-	emit axisDivChanged(axis);
+	emit axisDivChanged(this, axis);
 }
 
 void Graph::setCanvasCoordinates(const QRectF& r)
@@ -2654,13 +2654,15 @@ CurveLayout Graph::initCurveLayout()
 	return cl;
 }
 
-CurveLayout Graph::initCurveLayout(int style, int curves)
+CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 {
     int i = d_curves.size() - 1;
 
 	CurveLayout cl = initCurveLayout();
-	int color;
-	guessUniqueCurveLayout(color, cl.sType);
+	cl.sType = 1;
+	int color = 0;
+	if (guessLayout)
+		guessUniqueCurveLayout(color, cl.sType);
 
   	cl.lCol = ColorBox::color(color);
   	cl.symCol = cl.lCol;
@@ -3094,7 +3096,7 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	c->setPlotStyle(style);
 	c->setPen(QPen(Qt::black, 1.0));
 
-	CurveLayout cl = initCurveLayout(style);
+	CurveLayout cl = initCurveLayout(style, 0, false);
 	updateCurveLayout(c, &cl);
 
 	if (style == HorizontalBars)
@@ -4547,12 +4549,14 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 				symbolIndex = index;
 		}
 	}
-	if (d_curves.size() > 1)
+	if (d_curves.size() > 1){
 		colorIndex = (++colorIndex)%16;
+		symbolIndex = (++symbolIndex)%15;
+	} else
+		symbolIndex = symbolIndex%15;
 	if (colorIndex == 13) //avoid white invisible curves
 		colorIndex = 0;
 
-	symbolIndex = (++symbolIndex)%15;
 	if (!symbolIndex)
 		symbolIndex = 1;
 }

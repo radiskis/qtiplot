@@ -614,3 +614,4 @@ setFullRange
 updateData
 setVisible
 clearLabels
+waterfallPlot

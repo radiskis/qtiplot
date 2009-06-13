@@ -242,7 +242,7 @@ appImports = (
 	"clone", "setWindowName",
 	"importImage",
 	"setPreferences",
-	"plot", "plot3D", "stemPlot",
+	"plot", "plot3D", "stemPlot", "waterfallPlot",
 	"activeFolder", "rootFolder",
 	"addFolder", "deleteFolder", "changeFolder", "copyFolder",
 	"saveFolder", "appendProject", "saveProjectAs",
