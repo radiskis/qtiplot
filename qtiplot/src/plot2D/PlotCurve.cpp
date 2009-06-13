@@ -43,7 +43,8 @@ PlotCurve::PlotCurve(const QString& name): QwtPlotCurve(name),
 d_type(0),
 d_plot_style(0),
 d_x_offset(0.0),
-d_y_offset(0.0)
+d_y_offset(0.0),
+d_side_lines(false)
 {
     setPaintAttribute(PaintFiltered);
     setPaintAttribute(ClipPolygons);
@@ -172,6 +173,166 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 		else if (s.contains("<Visible>"))
 			setVisible(s.remove("<Visible>").remove("</Visible>").toInt());
 	}
+}
+
+void PlotCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+{
+	if(d_side_lines)
+		drawSideLines(p, xMap, yMap, from, to);
+	QwtPlotCurve::drawCurve(p, style, xMap, yMap, from, to);
+}
+
+void PlotCurve::drawSideLines(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+{
+	if (!p || dataSize() <= 0)
+		return;
+
+	if (to < 0)
+		to = dataSize() - 1;
+
+	p->save();
+	QPen pen = p->pen();
+	pen.setCapStyle(Qt::FlatCap);
+	pen.setJoinStyle(Qt::MiterJoin);
+	p->setPen(pen);
+
+	double lw = 0.5*pen.widthF();
+	const double xl = xMap.xTransform(minXValue());
+	const double xr = xMap.xTransform(maxXValue());
+	const double yl = yMap.xTransform(y(from)) - lw;
+	const double yr = yMap.xTransform(y(to)) - lw;
+	const double base = yMap.xTransform(baseline());
+
+	p->drawLine(QPointF(xl, yl), QPointF(xl, base));
+	p->drawLine(QPointF(xr, yr), QPointF(xr, base));
+
+	p->restore();
+
+	/*int size = to - from + 1;
+    if ( size <= 0 )
+        return;
+
+	size += 2;
+
+	p->save();
+	QPen pen = p->pen();
+	pen.setCapStyle(Qt::FlatCap);
+	pen.setJoinStyle(Qt::MiterJoin);
+	p->setPen(pen);
+
+	const double xl = xMap.xTransform(minXValue());
+	const double xr = xMap.xTransform(maxXValue());
+	const double base = yMap.xTransform(baseline());
+
+    QwtPolygonF polyline;
+    if ( testCurveAttribute(QwtPlotCurve::Fitted) && curveFitter () )
+    {
+        // Transform x and y values to window coordinates
+        // to avoid a distinction between linear and
+        // logarithmic scales.
+
+        QPolygonF points(size);
+        for (int i = from; i <= to; i++)
+        {
+            QwtDoublePoint &p = points[i];
+            p.setX( xMap.xTransform(x(i)) );
+            p.setY( yMap.xTransform(y(i)) );
+        }
+
+        points = curveFitter()->fitCurve(points);
+        size = points.size();
+
+        if ( size == 0 )
+            return;
+
+        // Round QwtDoublePoints to QPoints
+        // When Qwt support for Qt3 has been dropped (Qwt 6.x)
+        // we will use a doubles for painting and the following
+        // step will be obsolete.
+
+        polyline.resize(size);
+
+        const QwtDoublePoint *p = points.data();
+        QPointF *pl = polyline.data();
+        if (testPaintAttribute(QwtPlotCurve::PaintFiltered))
+        {
+
+            QPointF pp(p[0].x(), p[0].y());
+            pl[0] = pp;
+
+            int count = 1;
+            for (int i = 1; i < size; i++)
+            {
+                const QPointF pi(p[i].x(), p[i].y());
+                if ( pi != pp )
+                {
+                    pl[count++] = pi;
+                    pp = pi;
+                }
+            }
+            if ( count != size )
+                polyline.resize(count);
+        }
+        else
+        {
+            for ( int i = 0; i < size; i++ )
+            {
+                pl[i].setX( p[i].x() );
+                pl[i].setY( p[i].y() );
+            }
+        }
+    }
+    else
+    {
+        polyline.resize(size);
+
+        if ( testPaintAttribute(QwtPlotCurve::PaintFiltered) )
+        {
+        	QPointF pp(xl, base);
+            polyline[0] = pp;
+
+            int count = 1;
+            for (int i = from; i <= to; i++)
+            {
+                const QPointF pi(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
+                if ( pi != pp )
+                {
+                    polyline[count] = pi;
+                    count++;
+
+                    pp = pi;
+                }
+            }
+
+            polyline[size - 1] = QPointF(xr, base);
+			count++;
+
+            if ( count != size )
+                polyline.resize(count);
+        }
+        else
+        {
+            polyline[0] = QPointF( xl, base );
+
+            for (int i = from; i <= to; i++)
+            {
+                const QPointF pi(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
+                polyline[i - from + 1] = pi;
+            }
+
+            polyline[size - 1] = QPointF(xr, base);
+        }
+    }
+
+    if ( testPaintAttribute(QwtPlotCurve::ClipPolygons) )
+        polyline = QwtClipper::clipPolygonF(p->window(), polyline);
+
+    QwtPainter::drawPolyline(p, polyline);
+
+    if ( brush().style() != Qt::NoBrush )
+        fillCurve(p, xMap, yMap, polyline);
+
+	p->restore();*/
 }
 
 DataCurve::DataCurve(Table *t, const QString& xColName, const QString& name, int startRow, int endRow):

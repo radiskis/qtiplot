@@ -99,6 +99,7 @@ public:
 	int waterfallXOffset(){return d_waterfall_offset_x;};
 	int waterfallYOffset(){return d_waterfall_offset_y;};
 	void setWaterfallOffset(int x, int y){d_waterfall_offset_x = x; d_waterfall_offset_y = y;};
+	bool sideLinesEnabled(){return d_side_lines;};
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0);
@@ -181,11 +182,13 @@ public slots:
     void showWaterfallOffsetDialog();
     void reverseWaterfallOrder();
     void showWaterfallFillDialog();
-    void updateWaterfallFillColor(const QColor&);
+    void setWaterfallFillColor(const QColor&);
     void updateWaterfallFill(bool on);
+    void setWaterfallSideLines(bool on = true);
 	void changeWaterfallXOffset(int);
     void changeWaterfallYOffset(int);
     void updateWaterfallLayout();
+    void updateWaterfallScales(Graph *g, int axis);
     //@}
 
 signals:
@@ -239,6 +242,8 @@ private:
 
 	int d_waterfall_offset_x, d_waterfall_offset_y;
 	bool d_is_waterfall_plot;
+	//! Flag telling if we need to draw side lines for curves in a waterfall plot
+	bool d_side_lines;
 	QColor d_waterfall_fill_color;
 };
 

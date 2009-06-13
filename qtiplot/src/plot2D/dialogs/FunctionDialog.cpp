@@ -475,7 +475,7 @@ void FunctionDialog::acceptPolar()
 	QString to=boxPolarTo->text().lower();
 	QString points=boxPolarPoints->text().lower();
 
-	double start, end;
+	double start = 0, end = 0;
 	try
 	{
 		MyParser parser;

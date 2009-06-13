@@ -499,9 +499,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		scriptsDirPath = fi.absolutePath();
-
-		QString baseName = fi.fileName();
-		if (!baseName.contains(".")){
+		if (!fn.endsWith(selectedFilter.remove("*"), Qt::CaseInsensitive)){
 			if (selectedFilter.contains(".txt"))
 				fn.append(".txt");
 			else if (selectedFilter.contains(".py"))

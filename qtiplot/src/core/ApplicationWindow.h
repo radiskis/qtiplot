@@ -255,6 +255,7 @@ public slots:
 	//! used by the plot wizard
 	MultiLayer* multilayerPlot(const QStringList& colList);
 	MultiLayer* waterfallPlot();
+	MultiLayer* waterfallPlot(Table *t, const QStringList& list);
 	void connectMultilayerPlot(MultiLayer *g);
 	void addLayer();
 	void addInsetLayer(bool curves = false);

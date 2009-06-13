@@ -352,7 +352,7 @@ class Graph: public QwtPlot
 
 		//! \name Curves Layout
 		//@{
-		CurveLayout initCurveLayout(int style, int curves = 0);
+		CurveLayout initCurveLayout(int style, int curves = 0, bool guessLayout = true);
 		static CurveLayout initCurveLayout();
 		void updateCurveLayout(PlotCurve* c, const CurveLayout *cL);
 		//! Tries to guess not already used curve color and symbol style
@@ -717,7 +717,7 @@ signals:
 		void showFitResults(const QString&);
 		void currentFontChanged(const QFont&);
         void enableTextEditor(Graph *);
-        void axisDivChanged(int);
+        void axisDivChanged(Graph *, int);
 
 	private:
         //! Finds bounding interval of the plot data.

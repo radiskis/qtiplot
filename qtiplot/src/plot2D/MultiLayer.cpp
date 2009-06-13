@@ -59,6 +59,7 @@
 #include <qwt_text_label.h>
 #include <qwt_layout_metrics.h>
 
+#include "PlotCurve.h"
 #include "MultiLayer.h"
 #include "LegendWidget.h"
 #include "Spectrogram.h"
@@ -111,9 +112,10 @@ vert_align(VCenter),
 d_scale_on_print(true),
 d_print_cropmarks(false),
 d_scale_layers(parent->autoResizeLayers),
-d_waterfall_offset_x(30),
-d_waterfall_offset_y(50),
+d_waterfall_offset_x(10),
+d_waterfall_offset_y(20),
 d_is_waterfall_plot(false),
+d_side_lines(false),
 d_waterfall_fill_color(QColor())
 {
 	layerButtonsBox = new QHBoxLayout();
@@ -1211,8 +1213,11 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	foreach (Graph *g, graphsList)
 		t << g->saveToString(saveAsTemplate);
 
-	if (d_is_waterfall_plot)
-		t << "<waterfall>" + QString::number(d_waterfall_offset_x) + "," + QString::number(d_waterfall_offset_y) + "</waterfall>\n";
+	if (d_is_waterfall_plot){
+		t << "<waterfall>" + QString::number(d_waterfall_offset_x) + ",";
+		t << QString::number(d_waterfall_offset_y) + ",";
+		t << QString::number(d_side_lines) + "</waterfall>\n";
+	}
 
 	t << "</multiLayer>\n";
 }
@@ -1325,6 +1330,7 @@ void MultiLayer::copy(MultiLayer* ml)
 		d_waterfall_offset_x = ml->waterfallXOffset();
 		d_waterfall_offset_y = ml->waterfallYOffset();
 		createWaterfallBox();
+		setWaterfallSideLines(ml->sideLinesEnabled());
 	}
 
 	show();
@@ -1426,7 +1432,19 @@ void MultiLayer::createWaterfallBox()
 
 	Graph *first = graphsList.last();
 	if (first)
-		connect(first, SIGNAL(axisDivChanged(int)), this, SLOT(updateWaterfallLayout()));
+		connect(first, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateWaterfallScales(Graph *, int)));
+}
+
+void MultiLayer::updateWaterfallScales(Graph *g, int axis)
+{
+	QwtScaleDiv *scDiv = g->axisScaleDiv(axis);
+	foreach(Graph *l, graphsList){
+		if (l == g)
+			continue;
+
+		l->setAxisScaleDiv(axis, *scDiv);
+		l->replot();
+	}
 }
 
 void MultiLayer::updateWaterfallLayout()
@@ -1450,22 +1468,14 @@ void MultiLayer::updateWaterfallLayout()
 	first->setMargin(0);
 	first->setFrame(0);
 
-	first->resize(QSize(d_canvas->width() - aux*d_waterfall_offset_x - left_margin - right_margin,
-			d_canvas->height() - aux*d_waterfall_offset_y - top_margin - bottom_margin));
+	int dx = qRound(d_waterfall_offset_x*d_canvas->width()/100.0);
+	int dy = qRound(d_waterfall_offset_y*d_canvas->height()/100.0);
+	first->resize(QSize(d_canvas->width() - aux*dx - left_margin - right_margin,
+			d_canvas->height() - aux*dy - top_margin - bottom_margin));
 
 	QPoint pos = first->canvas()->pos();
 	QSize size = first->canvas()->size();
-	QwtPlotCurve *cv = first->curve(0);
-	if (cv){
-		int xl = first->transform(cv->xAxis(), cv->minXValue());
-		int xr = first->transform(cv->xAxis(), cv->maxXValue());
-		int yl = first->transform(cv->yAxis(), cv->minYValue());
-		int yr = first->transform(cv->yAxis(), cv->maxYValue());
-		pos = QPoint(pos.x() + xl, pos.y() + yr);
-		size = QSize(abs(xr - xl), abs(yr - yl));
-	}
-
-	first->move(first->x(), first->canvas()->y() + aux*d_waterfall_offset_y);
+	first->move(first->x(), first->canvas()->y() + aux*dy);
 
 	QColor c = Qt::white;
 	c.setAlpha(0);
@@ -1487,8 +1497,7 @@ void MultiLayer::updateWaterfallLayout()
 		for (int j = 0; j < QwtPlot::axisCnt; j++)
 			g->enableAxis(j, false);
 
-		g->move(pos.x() + i*d_waterfall_offset_x,
-				pos.y() + (aux - i)*d_waterfall_offset_y);
+		g->move(pos.x() + i*dx, pos.y() + (aux - i)*dy);
 		g->resize(size);
 	}
 	first->setAutoscaleFonts(scaleFonts);
@@ -1506,13 +1515,13 @@ void MultiLayer::showWaterfallOffsetDialog()
 	QGroupBox *gb1 = new QGroupBox();
 	QGridLayout *hl1 = new QGridLayout(gb1);
 
-	hl1->addWidget(new QLabel(tr("Total Y Offset")), 0, 0);
+	hl1->addWidget(new QLabel(tr("Total Y Offset (%)")), 0, 0);
 	QSpinBox *yOffsetBox = new QSpinBox();
 	yOffsetBox->setValue(d_waterfall_offset_y);
 	yOffsetBox->setRange(0, 100000);
 	hl1->addWidget(yOffsetBox, 0, 1);
 
-	hl1->addWidget(new QLabel(tr("Total X Offset")), 1, 0);
+	hl1->addWidget(new QLabel(tr("Total X Offset (%)")), 1, 0);
 	QSpinBox *xOffsetBox = new QSpinBox();
 	xOffsetBox->setValue(d_waterfall_offset_x);
 	xOffsetBox->setRange(0, 100000);
@@ -1522,11 +1531,15 @@ void MultiLayer::showWaterfallOffsetDialog()
 	connect(yOffsetBox, SIGNAL(valueChanged(int)), this, SLOT(changeWaterfallYOffset(int)));
 	connect(xOffsetBox, SIGNAL(valueChanged(int)), this, SLOT(changeWaterfallXOffset(int)));
 
+	QPushButton *applyBtn = new QPushButton(tr("&Apply"));
+	connect(applyBtn, SIGNAL(clicked()), this, SLOT(updateWaterfallLayout()));
+
 	QPushButton *closeBtn = new QPushButton(tr("&Close"));
 	connect(closeBtn, SIGNAL(clicked()), offsetDialog, SLOT(reject()));
 
 	QHBoxLayout *hl2 = new QHBoxLayout();
 	hl2->addStretch();
+	hl2->addWidget(applyBtn);
 	hl2->addWidget(closeBtn);
 
 	QVBoxLayout *vl = new QVBoxLayout(offsetDialog);
@@ -1589,13 +1602,17 @@ void MultiLayer::showWaterfallFillDialog()
 	QDialog *waterfallFillDialog = new QDialog(this);
 	waterfallFillDialog->setWindowTitle(tr("Fill Curves"));
 
-	QGroupBox *gb1 = new QGroupBox(tr("Enable Fill?"));
+	QGroupBox *gb1 = new QGroupBox(tr("Enable Fill"));
 	gb1->setCheckable(true);
 
-	QHBoxLayout *hl1 = new QHBoxLayout(gb1);
-	hl1->addWidget(new QLabel(tr("Fill with Color")));
+	QGridLayout *hl1 = new QGridLayout(gb1);
+	hl1->addWidget(new QLabel(tr("Fill with Color")), 0, 0);
 	ColorButton *fillColorBox = new ColorButton();
-	hl1->addWidget(fillColorBox);
+	hl1->addWidget(fillColorBox, 0, 1);
+
+	QCheckBox *sideLinesBox = new QCheckBox(tr("Side Lines"));
+	sideLinesBox->setChecked(d_side_lines);
+	hl1->addWidget(sideLinesBox, 1, 0);
 
 	if (active_graph){
 		QwtPlotCurve *cv = (QwtPlotCurve *)active_graph->curve(0);
@@ -1608,7 +1625,8 @@ void MultiLayer::showWaterfallFillDialog()
 
 	connect(gb1, SIGNAL(toggled(bool)), this, SLOT(updateWaterfallFill(bool)));
 	connect(fillColorBox, SIGNAL(colorChanged(const QColor&)),
-			this, SLOT(updateWaterfallFillColor(const QColor&)));
+			this, SLOT(setWaterfallFillColor(const QColor&)));
+	connect(sideLinesBox, SIGNAL(toggled(bool)), this, SLOT(setWaterfallSideLines(bool)));
 
 	QPushButton *closeBtn = new QPushButton(tr("&Close"));
 	connect(closeBtn, SIGNAL(clicked()), waterfallFillDialog, SLOT(reject()));
@@ -1623,7 +1641,28 @@ void MultiLayer::showWaterfallFillDialog()
 	waterfallFillDialog->exec();
 }
 
-void MultiLayer::updateWaterfallFillColor(const QColor& c)
+void MultiLayer::setWaterfallSideLines(bool on)
+{
+	if (d_side_lines == on)
+		return;
+
+	d_side_lines = on;
+
+	QObjectList lst = d_canvas->children();
+	foreach (QObject *o, lst){
+		Graph *g = qobject_cast<Graph *>(o);
+		if (!g)
+			continue;
+		PlotCurve *cv = (PlotCurve *)g->curve(0);
+		if (cv){
+			cv->enableSideLines(on);
+			g->replot();
+		}
+	}
+	emit modifiedWindow(this);
+}
+
+void MultiLayer::setWaterfallFillColor(const QColor& c)
 {
 	if (d_waterfall_fill_color == c)
 		return;
