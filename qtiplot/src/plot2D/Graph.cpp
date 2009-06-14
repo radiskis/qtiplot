@@ -4940,6 +4940,116 @@ void Graph::setCurveLineWidth(int curveIndex, double width)
 	}
 }
 
+void Graph::setGrayScale()
+{
+	if (isPiePlot())
+		return;
+
+	int curves = d_curves.size();
+	int dv = int(255/double(curves));
+	int i = 0;
+	QColor color = Qt::black;
+	int hue = color.hue();
+	foreach (QwtPlotItem *it, d_curves){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+			((Spectrogram *)it)->setGrayScale();
+			continue;
+		}
+
+		PlotCurve *c = (PlotCurve *)it;
+		if (c->type() == ErrorBars)
+			continue;
+
+		QPen pen = c->pen();
+		if (i){
+			int v = i*dv;
+			if (v > 255)
+				v = 0;
+			color = QColor::fromHsv(hue, 0, v);
+		}
+		pen.setColor(color);
+		c->setPen(pen);
+
+		QBrush brush = c->brush();
+		if (brush.style() != Qt::NoBrush){
+			brush.setColor(color);
+			c->setBrush(brush);
+		}
+
+		QwtSymbol symbol = c->symbol();
+		pen = symbol.pen();
+		pen.setColor(color);
+		symbol.setPen(pen);
+		if (symbol.brush().style() != Qt::NoBrush)
+			symbol.setBrush(QBrush(color));
+		c->setSymbol(symbol);
+		i++;
+	}
+
+	foreach (QwtPlotItem *it, d_curves){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		PlotCurve *c = (PlotCurve *)it;
+		if (c->type() == ErrorBars){
+			QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)it;
+			DataCurve* mc = er->masterCurve();
+			if (mc)
+				er->setColor(mc->pen().color());
+		}
+	}
+
+	replot();
+}
+
+void Graph::setIndexedColors()
+{
+	int i = 0;
+	foreach (QwtPlotItem *it, d_curves){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		PlotCurve *c = (PlotCurve *)it;
+		if (c->type() == ErrorBars)
+			continue;
+
+		QPen pen = c->pen();
+		QColor color = ColorBox::color(i);
+		pen.setColor(color);
+		c->setPen(pen);
+
+		QBrush brush = c->brush();
+		if (brush.style() != Qt::NoBrush){
+			brush.setColor(color);
+			c->setBrush(brush);
+		}
+
+		QwtSymbol symbol = c->symbol();
+		pen = symbol.pen();
+		pen.setColor(color);
+		symbol.setPen(pen);
+		if (symbol.brush().style() != Qt::NoBrush)
+			symbol.setBrush(QBrush(color));
+		c->setSymbol(symbol);
+		i++;
+	}
+
+	foreach (QwtPlotItem *it, d_curves){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		PlotCurve *c = (PlotCurve *)it;
+		if (c->type() == ErrorBars){
+			QwtErrorPlotCurve *er = (QwtErrorPlotCurve *)it;
+			DataCurve* mc = er->masterCurve();
+			if (mc)
+				er->setColor(mc->pen().color());
+		}
+	}
+
+	replot();
+}
+
 DataCurve* Graph::masterCurve(QwtErrorPlotCurve *er)
 {
 	foreach(QwtPlotItem *it, d_curves){

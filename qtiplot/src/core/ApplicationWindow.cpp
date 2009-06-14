@@ -9118,11 +9118,16 @@ void ApplicationWindow::showGraphContextMenu()
 	addMenu.addAction(actionAddInsetCurveLayer);
 	cm.insertItem(tr("&Add"), &addMenu);
 
+	QMenu paletteMenu(this);
 	if (!ag->isPiePlot()){
 		cm.insertItem(tr("Anal&yze"), analysisMenu);
 		cm.insertItem(tr("&Data"), plotDataMenu);
+
+		paletteMenu.addAction(tr("&Gray Scale"), ag, SLOT(setGrayScale()));
+		paletteMenu.addAction(tr("&Indexed Colors"), ag, SLOT(setIndexedColors()));
+		cm.insertItem(tr("Pale&tte"), &paletteMenu);
+		cm.addSeparator();
 	}
-	cm.addSeparator();
 
 	QMenu copy(this);
 	copy.addAction(tr("&Layer"), this, SLOT(copyActiveLayer()));

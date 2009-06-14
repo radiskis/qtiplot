@@ -615,3 +615,4 @@ updateData
 setVisible
 clearLabels
 waterfallPlot
+setIndexedColors

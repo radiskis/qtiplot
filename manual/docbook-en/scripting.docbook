@@ -1589,6 +1589,20 @@ c.setBrush(QtGui.QBrush(Qt.darkYellow))
 c.setSymbol(PlotSymbol(PlotSymbol.Hexagon, QtGui.QBrush(Qt.yellow), QtGui.QPen(Qt.blue, 1.5), QtCore.QSize(15, 15)))
 </programlisting>
 
+An alternative way of customizing a curve is by using the functions bellow:
+<programlisting>
+l.setCurveLineColor(int curve, int color) # uses the index of the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
+l.setCurveLineStyle(int curve, Qt::PenStyle style)
+l.setCurveLineWidth(int curve, double width)
+</programlisting>
+
+You can also define a global color policy for the plot layer using the following
+convenience functions:
+<programlisting>
+l.setGrayScale()
+l.setIndexedColors() # uses the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
+</programlisting>
+
 You can display labels showing the y values for each data point in a plot curve:
 <programlisting>
 c.setLabelsColumnName("Table1_2")

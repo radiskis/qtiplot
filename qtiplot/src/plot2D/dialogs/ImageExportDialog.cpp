@@ -138,7 +138,7 @@ void ImageExportDialog::initAdvancedOptions()
 	d_quality->setValue(app->d_export_quality);
 	raster_layout->addWidget(d_quality, 1, 1);
 
-	QLabel *rasterResLabel = new QLabel(tr("Resolution (DPI)"));
+	QLabel *rasterResLabel = new QLabel(tr("Print Resolution (DPI)"));
 	raster_layout->addWidget(rasterResLabel, 2, 0);
 
 	d_bitmap_resolution = new QSpinBox();
