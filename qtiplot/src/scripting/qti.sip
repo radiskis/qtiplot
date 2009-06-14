@@ -1015,6 +1015,9 @@ public:
   void setCurveLineStyle(int, Qt::PenStyle);
   void setCurveLineWidth(int, double);
 
+  void setGrayScale();
+  void setIndexedColors();
+
 	void addFunction(const QString&, double, double, int=100);
 %MethodCode
   QStringList l;

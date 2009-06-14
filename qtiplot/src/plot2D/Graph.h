@@ -288,6 +288,8 @@ class Graph: public QwtPlot
 		void setCurveLineColor(int curveIndex, int colorIndex);
 		void setCurveLineStyle(int curveIndex, Qt::PenStyle style);
 		void setCurveLineWidth(int curveIndex, double width);
+		void setGrayScale();
+		void setIndexedColors();
 		//@}
 
 		//! \name Output: Copy/Export/Print
