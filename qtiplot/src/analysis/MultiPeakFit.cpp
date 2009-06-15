@@ -178,20 +178,11 @@ void MultiPeakFit::guessInitialValues()
 
 	double min_out = d_y[imin];
 	double max_out = d_y[imax];
-
-#ifdef Q_CC_MSVC
-    QVarLengthArray<double> temp(d_n);
-#else
     double temp[d_n];
-#endif
 	for (int i = 0; i < d_n; i++)
 		temp[i] = fabs(d_y[i]);
-#ifdef Q_CC_MSVC
-	size_t imax_temp = gsl_stats_max_index(temp.data(), 1, d_n);
-#else
-	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
-#endif
 
+	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
 	double offset, area;
 	if (imax_temp == imax)
 		offset = min_out;
@@ -234,13 +225,13 @@ void MultiPeakFit::insertPeakFunctionCurve(int peak)
 	c->setPen(QPen(ColorBox::color(d_peaks_color), 1));
 	c->setRange(d_from, d_to);
 	c->setFormula("y0 + " + peakFormula(peak + 1, d_profile));
-	c->setConstant(d_param_names[d_p - 1], d_results[d_p - 1]);//y0 - offset	
+	c->setConstant(d_param_names[d_p - 1], d_results[d_p - 1]);//y0 - offset
 	for (int j=0; j<3; j++){
 		int p = 3*peak + j;
-		c->setConstant(d_param_names[p], d_results[p]);	
+		c->setConstant(d_param_names[p], d_results[p]);
 	}
 	c->loadData(d_points);
-	
+
 	d_output_graph->insertPlotItem(c, Graph::Line);
 	d_output_graph->addFitCurve(c);
 }
@@ -277,7 +268,7 @@ void MultiPeakFit::generateFitCurve()
 	} else {
 		gsl_matrix * m = gsl_matrix_alloc (d_points, d_peaks);
 		if (!m){
-			QMessageBox::warning(app, tr("QtiPlot - Fit Error"), 
+			QMessageBox::warning(app, tr("QtiPlot - Fit Error"),
 			tr("Could not allocate enough memory for the fit curves!"));
 			return;
 		}
@@ -287,7 +278,7 @@ void MultiPeakFit::generateFitCurve()
 		#else
 			double X[d_points], Y[d_points];
 		#endif
-	
+
 		QString tableName = app->generateUniqueName(tr("Fit"));
 		QString dataSet;
 		if (d_curve)

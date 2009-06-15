@@ -9341,11 +9341,7 @@ void ApplicationWindow::chooseHelpFolder()
 {
 	QFileInfo hfi(helpFilePath);
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the location of the QtiPlot help folder!"),
-#ifdef Q_CC_MSVC
-		hfi.dir().absolutePath(), 0);
-#else
-		hfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
-#endif
+	hfi.dir().absolutePath(), !QFileDialog::ShowDirsOnly);
 
 	if (!dir.isEmpty()){
 		helpFilePath = dir + "index.html";
