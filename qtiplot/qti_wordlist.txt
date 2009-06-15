@@ -615,4 +615,8 @@ updateData
 setVisible
 clearLabels
 waterfallPlot
+setWaterfallSideLines
+setWaterfallFillColor
+setWaterfallOffset
+reverseWaterfallOrder
 setIndexedColors

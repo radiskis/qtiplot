@@ -1558,6 +1558,17 @@ void MultiLayer::changeWaterfallXOffset(int offset)
 	emit modifiedWindow(this);
 }
 
+void MultiLayer::setWaterfallOffset(int x, int y, bool update)
+{
+	d_waterfall_offset_x = x;
+	d_waterfall_offset_y = y;
+
+	if (update){
+		updateWaterfallLayout();
+		emit modifiedWindow(this);
+	}
+}
+
 void MultiLayer::changeWaterfallYOffset(int offset)
 {
 	if (offset == d_waterfall_offset_y)

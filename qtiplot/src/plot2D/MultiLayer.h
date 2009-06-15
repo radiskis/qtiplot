@@ -98,7 +98,7 @@ public:
 	bool isWaterfallPlot(){return d_is_waterfall_plot;};
 	int waterfallXOffset(){return d_waterfall_offset_x;};
 	int waterfallYOffset(){return d_waterfall_offset_y;};
-	void setWaterfallOffset(int x, int y){d_waterfall_offset_x = x; d_waterfall_offset_y = y;};
+	void setWaterfallOffset(int x, int y, bool update = false);
 	bool sideLinesEnabled(){return d_side_lines;};
 
 public slots:
