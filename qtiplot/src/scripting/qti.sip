@@ -1191,6 +1191,11 @@ public:
   void exportVector(const QString&, int = 0, bool = true,
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
+  void setWaterfallSideLines(bool = true);
+  void setWaterfallFillColor(const QColor&);
+  void setWaterfallOffset(int x, int y, bool = true);
+  void reverseWaterfallOrder();
+
 private:
   MultiLayer(const MultiLayer&);
 };

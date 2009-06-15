@@ -2491,6 +2491,20 @@ g.swapLayers(layerNum1, layerNum2)
 </programlisting>
 </sect2>
 
+<sect2 id="Python-WaterfallPlots">
+      <title>Waterfall Plots</title>
+
+Waterfall plots use a cascading layout for the layers in a 2D plot window.
+You can create and customize them using the functions bellow:
+<programlisting>
+g = waterfallPlot(table("Table1"), (2, 3, 4))
+g.setWaterfallOffset(15, 10)
+g.setWaterfallSideLines(True) # draw side lines for all the curves displayed
+g.setWaterfallFillColor(Qt.lightGray)
+g.reverseWaterfallOrder() # reverse the order of the displayed curves
+</programlisting>
+</sect2>
+
 <sect2 id="Python-Plots3D">
 <title>3D Plots</title>
 <sect3>
