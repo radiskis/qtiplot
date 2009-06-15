@@ -14462,27 +14462,27 @@ Vill du skjuta in celler?</translation>
         <translation type="unfinished">&amp;Tillämpa</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1631"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1642"/>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1603"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1614"/>
         <source>Fill Curves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1605"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1616"/>
         <source>Enable Fill</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1609"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1620"/>
         <source>Fill with Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1613"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1624"/>
         <source>Side Lines</source>
         <translation type="unfinished"></translation>
     </message>

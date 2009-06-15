@@ -18,7 +18,7 @@ DEFINES         += SCRIPTING_DIALOG
 CONFIG          += HAVE_LIBPNG
 
 # Uncomment the next line in order to enable export of 2D plots to the EMF file format on Windows. You need EmfEngine on your system.
-CONFIG          += HAVE_EMF
+#CONFIG          += HAVE_EMF
 
 # Uncomment the following line if you want to perform a custom installation using the *.path variables defined bellow.
 #CONFIG          += CustomInstall
@@ -127,7 +127,7 @@ mac:RC_FILE   = icons/qtiplot.icns
 ###################### TRANSLATIONS #########################################
 
 TRANSLATIONS    = translations/qtiplot_cn.ts \
-			translations/qtiplot_de.ts \
+				  translations/qtiplot_de.ts \
                   translations/qtiplot_es.ts \
                   translations/qtiplot_fr.ts \
                   #translations/qtiplot_pt.ts \
