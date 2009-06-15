@@ -169,7 +169,7 @@ If you want to build &appname; from sources, you need the following libraries:
 <varlistentry>
   <term>Qwt</term>
   <listitem>
-    <para>You must use the <ulink url="http://qwt.sourceforge.net/">Qwt 5.2</ulink> version of this library.</para>
+    <para>You must use the slightly modified version of the <ulink url="http://qwt.sourceforge.net/">Qwt 5.2</ulink> library shipped with QtiPlot in the "3rdparty/qwt" folder.</para>
   </listitem>
 </varlistentry>
 <varlistentry>
@@ -197,13 +197,13 @@ If you want to build &appname; from sources, you need the following libraries:
 <varlistentry>
   <term>BOOST C++ libraries</term>
   <listitem>
-    <para>liborigin depends on the <ulink url="http://www.boost.org/">BOOST C++ libraries (1.36.0)</ulink>, so you need to download and install them separately.</para>
+    <para>liborigin depends on the <ulink url="http://www.boost.org/">BOOST C++ libraries (>= 1.33.0)</ulink>, so you need to download and install them separately.</para>
   </listitem>
 </varlistentry>
 <varlistentry>
   <term>GSL</term>
   <listitem>
-    <para>In order to build QtiPlot you also need the <ulink url="http://sources.redhat.com/gsl/">GSL</ulink> library.</para>
+    <para>In order to build QtiPlot you also need the <ulink url="http://www.gnu.org/software/gsl/">GSL</ulink> library.</para>
   </listitem>
 </varlistentry>
 <varlistentry>

@@ -271,8 +271,24 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
 <sect1 id="contour-options-dialog">
   <title>Contour Curves Options</title>
   <para>This dialog is activated by clicking on a contour curve (or on the plotting area) when a 3D plot has been created from a matrix with one of the following commands of the &plot3d-menu-lnk;: &contour-color-lnk;, &contour-lines-lnk; or &gray-scale-lnk;.</para>
+
+  <figure id="fig-contour-options-9">
+    <title>The Values tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-9.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+The <emphasis>Values</emphasis> tab allows you to choose the matrix which is the data source of the plot.
+It is possible to use the formula defined for the matrix in order to calculate the Z values to
+be displayed, by checking the box <emphasis>Use matrix formula to calculate values</emphasis>.
+This results in a higher accuracy, especially when drawing the contour lines, but it
+only works if the formula uses a muParser compatible syntax.
+
   <figure id="fig-contour-options-1">
-    <title>The Contour Options dialog.</title>
+    <title>The Colors tab.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/contour-curve-dialog-1.png"/>
@@ -310,8 +326,40 @@ Finally you have the possibility to swap two layers using the <emphasis>Swap Lay
       </imageobject>
     </mediaobject>
   </informalfigure>
-  <para>The second group of settings is used to customize the contour lines. You can select the number of lines and their color. If you check <emphasis>Use Default Pen</emphasis>, the color of the line will follow the settings defined in the group at the left of the checkbox. If you check <emphasis>Use Color Map</emphasis>, the lines will be colored as a function of the Z levels following the colormap defined in the <emphasis>image</emphasis> setting group.</para>
-  <para>The last group of settings must be checked if you want to have a bar scale on your plot. You can then define its position and width.</para>
+  <para>The second group of settings must be checked if you want to have a bar scale on your plot. You can then define its position and width.</para>
+
+	<figure id="fig-contour-options-7">
+    <title>The Contour Lines tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-7.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>The <emphasis>Contour Lines</emphasis> tab is used to customize the settings of contour lines.
+You can select the number of lines and their color.
+If you check <emphasis>Use Default Pen</emphasis>, the color of the line will follow
+the settings defined in the group at the left of the checkbox.
+If you check <emphasis>Use Color Map</emphasis>, the lines will be colored as a function of the Z levels
+following the colormap defined in the <emphasis>Colors</emphasis> setting tab.
+If you check <emphasis>Use Table Custom Pen</emphasis>, the color of the line will follow
+the settings defined in the <emphasis>Pen</emphasis> column of the table displaying the
+Z levels.</para>
+
+  <figure id="fig-contour-options-8">
+    <title>The Labels tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-8.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>The <emphasis>Labels</emphasis> tab is used to enable/disable the display of the Z value
+  for each of the contour lines. You can globally customize the color, background,
+  font, rotation and position of the text labels. </para>
+
 </sect1>
 
 <!-- ************************************************** -->

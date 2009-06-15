@@ -1701,12 +1701,14 @@ void MultiLayer::updateWaterfallFill(bool on)
 		Graph *g = qobject_cast<Graph *>(o);
 		if (!g)
 			continue;
-		QwtPlotCurve *cv = (QwtPlotCurve *)g->curve(0);
+		PlotCurve *cv = (PlotCurve *)g->curve(0);
 		if (cv){
 			if (on)
 				cv->setBrush(QBrush(d_waterfall_fill_color));
 			else
 				cv->setBrush(QBrush());
+
+			cv->enableSideLines(d_side_lines);
 			g->replot();
 		}
 	}

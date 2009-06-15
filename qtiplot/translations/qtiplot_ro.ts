@@ -1104,7 +1104,7 @@ Diverse părţi din acest fişier ar putea fi afişate incorect.</translation>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6366"/>
         <source>&amp;Insert</source>
-        <translation>&amp;Insează</translation>
+        <translation>&amp;Inserază</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="6304"/>
@@ -4263,27 +4263,27 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9119"/>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Adaugă</translation>
+        <translation>&amp;Adaugă</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12696"/>
         <source>Ctrl+Alt+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Alt+D</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="12051"/>
         <source>&amp;Waterfall Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Gra&amp;fic cascadă</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9127"/>
         <source>&amp;Indexed Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Culori &amp;indexate</translation>
     </message>
     <message>
         <location filename="src/core/ApplicationWindow.cpp" line="9128"/>
         <source>Pale&amp;tte</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Paletă</translation>
     </message>
 </context>
 <context>
@@ -5001,7 +5001,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="src/lib/src/ColorButton.cpp" line="40"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizată</translation>
     </message>
 </context>
 <context>
@@ -5093,7 +5093,7 @@ Autocompletion will not be available!</source>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="897"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizată</translation>
     </message>
 </context>
 <context>
@@ -5985,57 +5985,57 @@ The following special codes can be used:
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="61"/>
         <source>Level</source>
-        <translation type="unfinished">Nivel</translation>
+        <translation>Nivel</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="61"/>
         <source>Pen</source>
-        <translation type="unfinished">Creion</translation>
+        <translation>Creion</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="67"/>
         <source>&amp;Insert</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Inserează</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="71"/>
         <source>&amp;Delete</source>
-        <translation type="unfinished">Şte&amp;rge</translation>
+        <translation>Şte&amp;rge</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="240"/>
         <source>QtiPlot - Edit pen</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Editare creion</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="245"/>
         <source>Color</source>
-        <translation type="unfinished">Culoare</translation>
+        <translation>Culoare</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="267"/>
         <source>Apply to all</source>
-        <translation type="unfinished">Aplică tuturor coloanelor</translation>
+        <translation>Aplică tuturor</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="253"/>
         <source>Style</source>
-        <translation type="unfinished">Stil</translation>
+        <translation>Stil</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="261"/>
         <source>Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Lăţime</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="270"/>
         <source>&amp;Ok</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/ContourLinesEditor.cpp" line="273"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">În&amp;chide</translation>
+        <translation>În&amp;chide</translation>
     </message>
 </context>
 <context>
@@ -9216,7 +9216,7 @@ The following special codes can be used:
     <message>
         <location filename="src/plot2D/dialogs/ImageExportDialog.cpp" line="141"/>
         <source>Print Resolution (DPI)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rezoluţia la imprimare (pixeli/ţol)</translation>
     </message>
 </context>
 <context>
@@ -10818,62 +10818,62 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1416"/>
         <source>Offset Amount...</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanţe...</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1420"/>
         <source>Reverse Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Inversează ordinea</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1424"/>
         <source>Fill Area...</source>
-        <translation type="unfinished"></translation>
+        <translation>Umplere curbe...</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1513"/>
         <source>Offset Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog distanţe</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1518"/>
         <source>Total Y Offset (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanţă Y (% din înlţime)</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1524"/>
         <source>Total X Offset (%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanţă X (% din lăţime)</translation>
     </message>
     <message>
         <location filename="src/plot2D/MultiLayer.cpp" line="1534"/>
         <source>&amp;Apply</source>
-        <translation type="unfinished">&amp;Aplică</translation>
+        <translation>&amp;Aplică</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1631"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1642"/>
         <source>&amp;Close</source>
-        <translation type="unfinished">În&amp;chide</translation>
+        <translation>În&amp;chide</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1603"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1614"/>
         <source>Fill Curves</source>
-        <translation type="unfinished"></translation>
+        <translation>Umplere curbe</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1605"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1616"/>
         <source>Enable Fill</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorizează umplerea</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1609"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1620"/>
         <source>Fill with Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Culoare de umplere</translation>
     </message>
     <message>
-        <location filename="src/plot2D/MultiLayer.cpp" line="1613"/>
+        <location filename="src/plot2D/MultiLayer.cpp" line="1624"/>
         <source>Side Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Linii laterale</translation>
     </message>
 </context>
 <context>
@@ -12544,47 +12544,47 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1031"/>
         <source>Matrix</source>
-        <translation type="unfinished">Matrice</translation>
+        <translation>Matrice</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1038"/>
         <source>Use matrix formula to calculate values</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizează formula matricei pentru calculul valorilor</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1740"/>
         <source>Values</source>
-        <translation type="unfinished"></translation>
+        <translation>Valori</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1107"/>
         <source>&amp;Show Contour Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişa&amp;ză linii de contour</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1111"/>
         <source>Set Equidistant Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişază nivelele echidistante</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1119"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1125"/>
         <source>Step</source>
-        <translation type="unfinished">Pas</translation>
+        <translation>Pas</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1131"/>
         <source>Set &amp;Levels</source>
-        <translation type="unfinished"></translation>
+        <translation>Defineşte nive&amp;lele</translation>
     </message>
     <message>
         <location filename="src/plot2D/dialogs/PlotDialog.cpp" line="1154"/>
         <source>Use &amp;Table Custom Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Foloseşte &amp;valorile din tabel</translation>
     </message>
 </context>
 <context>
@@ -12872,12 +12872,12 @@ have the same number of rows.</source>
     <message>
         <location filename="src/plot2D/Spectrogram.cpp" line="100"/>
         <source>QtiPlot - Script Error</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot - Eroare de programare</translation>
     </message>
     <message>
         <location filename="src/plot2D/Spectrogram.cpp" line="101"/>
         <source>Python-like syntax is not supported in this case since it severely reduces drawing speed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Sintaxa Python nu este acceptată deoarece reduce drastic viteza de afişaj!</translation>
     </message>
 </context>
 <context>
@@ -12970,7 +12970,7 @@ have the same number of rows.</source>
     <message>
         <location filename="src/lib/3rdparty/qtcolorpicker/src/qtcolorpicker.cpp" line="439"/>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Personalizată</translation>
     </message>
 </context>
 <context>
