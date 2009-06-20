@@ -2,7 +2,7 @@
     File                 : Interpolation.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007 by Ion Vasilief
+    Copyright            : (C) 2007-2009 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Numerical interpolation of data sets
 
@@ -195,17 +195,9 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
         memoryErrorMessage();
     }
 
-	double pr_x = 0.0;
-  	int j = 0;
-    for (int i = 0; i < n; i++){
-        xtemp[j] = c->x(i);
-        if (xtemp[j] == pr_x){
-            delete xtemp;
-            delete ytemp;
-            return -1;//this kind of data causes division by zero in GSL interpolation routines
-        }
-        pr_x = xtemp[j];
-        ytemp[j++] = c->y(i);
+	for (int i = 0; i < n; i++){
+        xtemp[i] = c->x(i);
+        ytemp[i] = c->y(i);
     }
 
 	size_t *p = (size_t *)malloc(n*sizeof(size_t));
@@ -252,13 +244,21 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
 		n = c->dataSize();
     (*x) = new double[n];
     (*y) = new double[n];
-    j = 0;
-	for (int i = i_start; i < i_end; i++){
+    int j = 0;
+	for (int i = i_start; i <= i_end; i++){
         (*x)[j] = xtemp2[i];
   	    (*y)[j] = ytemp2[i];
   	    j++;
     }
     free(xtemp2);
     free(ytemp2);
+
+    double pr_x = (*x)[0];
+    for (int i = 1; i < n; i++){
+    	double xval = (*x)[i];
+        if (xval <= pr_x)
+            return -1;//x values must be monotonically increasing in GSL interpolation routines
+        pr_x = xval;
+    }
 	return n;
 }
