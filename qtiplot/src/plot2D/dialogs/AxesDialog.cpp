@@ -36,7 +36,7 @@
 #include <Grid.h>
 #include <ScaleDraw.h>
 #include <ScaleEngine.h>
-
+#include <FunctionCurve.h>
 #include <DoubleSpinBox.h>
 #include <ColorBox.h>
 #include <ColorButton.h>
@@ -2782,6 +2782,24 @@ void AxesDialog::updateMinorTicksList(int scaleType)
 
 	int a = mapToQwtAxis(axesList->currentRow());
 	boxMinorValue->setEditText(QString::number(d_graph->axisMaxMinor(a)));
+
+	if (!d_graph)
+		return;
+
+	int functions = 0;
+	QList<QwtPlotItem *> cvs = d_graph->curvesList();
+	foreach(QwtPlotItem *item, cvs){
+		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+
+		FunctionCurve *c = (FunctionCurve *)item;
+		if (c->type() == Graph::Function){
+			c->loadData();
+			functions++;
+		}
+	}
+	if (functions)
+		d_graph->replot();
 }
 
 void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool axisOn,

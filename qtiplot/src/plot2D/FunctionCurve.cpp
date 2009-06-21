@@ -2,8 +2,8 @@
     File                 : FunctionCurve.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006-2009 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Function curve class
 
  ***************************************************************************/
@@ -29,6 +29,7 @@
 #include "FunctionCurve.h"
 #include <Graph.h>
 #include <MyParser.h>
+#include <ScaleEngine.h>
 
 #include <QMessageBox>
 
@@ -76,6 +77,12 @@ QString FunctionCurve::saveToString()
 	s += "<Variable>" + d_variable + "</Variable>\n";
 	s += "<Range>" + QString::number(d_from,'g',15) + "\t" + QString::number(d_to,'g',15) + "</Range>\n";
 	s += "<Points>" + QString::number(dataSize()) + "</Points>\n";
+
+	ScaleEngine *sc_engine = (ScaleEngine *)plot()->axisScaleEngine(xAxis());
+	if (d_from > 0 && d_to > 0 && sc_engine &&
+		sc_engine->type() == QwtScaleTransformation::Log10)
+		s += "<Log10>1</Log10>\n";
+
 	QMapIterator<QString, double> i(d_constants);
  	while (i.hasNext()) {
      	i.next();
@@ -93,6 +100,7 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 
 	int type = 0;
 	int points = 0, style = 0;
+	int logScale = 0;
 	QwtPlotCurve::CurveStyle lineStyle = QwtPlotCurve::NoCurve;
 	QStringList formulas;
 	QString var, title = QString::null;
@@ -117,6 +125,8 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 			}
 		} else if (s.contains("<Points>"))
 			points = s.remove("<Points>").remove("</Points>").stripWhiteSpace().toInt();
+		else if (s.contains("<Log10>"))
+			logScale = s.remove("<Log10>").remove("</Log10>").stripWhiteSpace().toInt();
 		else if (s.contains("<Constant>")){
 			QStringList l = s.remove("<Constant>").remove("</Constant>").split("\t");
 			if (l.size() == 2)
@@ -134,7 +144,7 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 	c->setFormulas(formulas);
 	c->setVariable(var);
 	c->setConstants(constants);
-	c->loadData(points);
+	c->loadData(points, logScale);
 	c->setPlotStyle(style);
 	g->insertCurve(c);
 	g->setCurveStyle(g->curveIndex(c), lineStyle);
@@ -164,7 +174,7 @@ QString FunctionCurve::legend()
 	return label;
 }
 
-void FunctionCurve::loadData(int points)
+void FunctionCurve::loadData(int points, bool xLog10Scale)
 {
     if (!points)
         points = dataSize();
@@ -199,10 +209,25 @@ void FunctionCurve::loadData(int points)
 			parser.SetExpr(d_formulas[0].ascii());
 
 			X[0] = d_from; x = d_from; Y[0] = parser.Eval();
-			for (int i = 1; i < points; i++ ){
-				x += step;
-				X[i] = x;
-				Y[i] = parser.Eval();
+
+			ScaleEngine *sc_engine = 0;
+			if (plot())
+				sc_engine = (ScaleEngine *)plot()->axisScaleEngine(xAxis());
+
+			if (xLog10Scale || (d_from > 0 && d_to > 0 && sc_engine &&
+				sc_engine->type() == QwtScaleTransformation::Log10)){
+				step = log10(d_to/d_from)/(double)(points - 1);
+				for (int i = 1; i < points; i++ ){
+					x = d_from*pow(10, i*step);
+					X[i] = x;
+					Y[i] = parser.Eval();
+				}
+			} else {
+				for (int i = 1; i < points; i++ ){
+					x += step;
+					X[i] = x;
+					Y[i] = parser.Eval();
+				}
 			}
 		} catch(mu::ParserError &e) {
 			error = true;

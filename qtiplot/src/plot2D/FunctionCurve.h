@@ -68,7 +68,7 @@ public:
 	//! Returns a string that can be displayed in a plot legend
 	QString legend();
 
-	void loadData(int points = 0);
+	void loadData(int points = 0, bool xLog10Scale = false);
 
 	QMap<QString, double> constants(){return d_constants;};
 	void setConstants(const QMap<QString, double>& map){d_constants = map;};
