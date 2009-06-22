@@ -36,15 +36,15 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     : QSyntaxHighlighter(parent->document())
 {
     HighlightingRule rule;
-	ApplicationWindow *app = parent->scriptingEnv()->application();	
-	
+	ApplicationWindow *app = parent->scriptingEnv()->application();
+
 	keywordFormat.setForeground(app->d_keyword_highlight_color);
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
-    keywordPatterns << "\\band\\b" << "\\bassert\\b" << "\\bbreak\\b" 
-					<< "\\bclass\\b" << "\\bcontinue\\b"  << "\\bdef\\b" << "\\bdel\\b" 
+    keywordPatterns << "\\band\\b" << "\\bassert\\b" << "\\bbreak\\b"
+					<< "\\bclass\\b" << "\\bcontinue\\b"  << "\\bdef\\b" << "\\bdel\\b"
 					<< "\\belif\\b" << "\\belse\\b" << "\\bexcept\\b" << "\\bexec\\b"
-					<< "\\bfinally\\b" << "\\bfor\\b" << "\\bfrom\\b" << "\\bglobal\\b" 
+					<< "\\bfinally\\b" << "\\bfor\\b" << "\\bfrom\\b" << "\\bglobal\\b"
 					<< "\\bif\\b" << "\\bimport\\b" << "\\bin\\b" << "\\bis\\b"
 					<< "\\blambda\\b" << "\\bnot\\b" << "\\bor\\b" << "\\bpass\\b"
 					<< "\\bprint\\b" << "\\braise\\b" << "\\breturn\\b" << "\\try\b" << "\\bwhile\\b";
@@ -70,7 +70,7 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     rule.pattern = QRegExp("\\b\\d+[eE.]*\\d*\\b");
     rule.format = numericFormat;
     highlightingRules.append(rule);
-	
+
 	quotationFormat.setForeground(app->d_quotation_highlight_color);
     rule.pattern = QRegExp("\".*\"");
     rule.format = quotationFormat;
@@ -86,6 +86,8 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
 {
     foreach (HighlightingRule rule, highlightingRules) {
         QRegExp expression(rule.pattern);
+        if (expression.pattern() == QString("\".*\""))
+			expression.setMinimal(true);
         int index = text.indexOf(expression);
         while (index >= 0) {
             int length = expression.matchedLength();
@@ -94,12 +96,12 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
         }
     }
     setCurrentBlockState(0);
-	
-	QRegExp comment = QRegExp("\"{3}");	
+
+	QRegExp comment = QRegExp("\"{3}");
 	int startIndex = 0;
 	if (previousBlockState() != 1)
 		startIndex = text.indexOf(comment);
-	
+
 	while (startIndex >= 0) {
 		int endIndex = text.indexOf(comment, startIndex + 3);
 		int commentLength;
