@@ -510,8 +510,8 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
         for (int j = 0; j < n; j++) {
             xvar = X[j];
 			double s = 1.0/sqrt(sigma[j]);
-            gsl_vector_set (f, j, (parser.Eval() - Y[j])/s);
-        }
+			gsl_vector_set (f, j, (parser.EvalRemoveSingularity(&xvar) - Y[j])/s);
+         }
         delete[] parameters;
     } catch (mu::ParserError &e) {
         QMessageBox::critical(0,"QtiPlot - Input function error",QString::fromStdString(e.GetMsg()));
@@ -552,7 +552,7 @@ double user_d(const gsl_vector * x, void *params) {
         for (int j = 0; j < n; j++) {
             xvar = X[j];
 			double s = 1.0/sqrt(sigma[j]);
-            double t = (parser.Eval() - Y[j])/s;
+            double t = (parser.EvalRemoveSingularity(&xvar) - Y[j])/s;
             val += t*t;
         }
         delete[] parameters;
@@ -579,7 +579,7 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
         double xvar;
         parser.DefineVar("x", &xvar);
         for (int k=0; k<p; k++) {
-            param[k]=gsl_vector_get(x,k);
+            param[k] = gsl_vector_get(x,k);
             parser.DefineVar(parNames[k].ascii(), &param[k]);
         }
 
@@ -590,10 +590,21 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
  		}
 
         parser.SetExpr(function);
-        for (int i = 0; i<n; i++) {
+        for (int i = 0; i < n; i++) {
             xvar = X[i];
+            double result = parser.Eval();
+            if (gsl_isinf(result) || gsl_isnan(result)){
+				int n;
+				frexp (xvar, &n);
+				xvar += ldexp(DBL_EPSILON, n);
+				result = parser.Eval();
+				if (gsl_isinf(result) || gsl_isnan(result)){
+					MyParser::SingularityErrorMessage(xvar);
+					return GSL_ESING;
+				}
+			}
 			double s = 1.0/sqrt(sigma[i]);
-            for (int j=0; j<p; j++)
+            for (int j = 0; j < p; j++)
                 gsl_matrix_set (J, i, j, 1.0/s*parser.Diff(&param[j], param[j]));
         }
         delete[] param;

@@ -200,7 +200,7 @@ double NonLinearFit::eval(double *par, double x)
 
 	parser.DefineVar("x", &x);
 	parser.SetExpr(d_formula.ascii());
-    return parser.Eval();
+    return parser.EvalRemoveSingularity(&x);
 }
 
 void NonLinearFit::setConstant(const QString& parName, double val)
