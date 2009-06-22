@@ -13660,8 +13660,15 @@ void ApplicationWindow::showDonationDialog()
 	QString s = tr("<font size=+2, color = darkBlue><b>QtiPlot is open-source software and its development required hundreds of hours of work.<br><br>\
 				If you like it, you're using it in your work and you would like to see it \
 				constantly improved, please support its authors by making a donation.</b></font>");
-	QMessageBox::information(this, tr("Please support QtiPlot!"), s);
-	showDonationsPage();
+
+	QMessageBox *msg = new QMessageBox(this);
+	msg->setText(s);
+	msg->setWindowTitle(tr("Please support QtiPlot!"));
+	QPushButton *btn = msg->addButton(tr("Make a donation"), QMessageBox::AcceptRole);
+	msg->addButton(tr("Close"), QMessageBox::RejectRole);
+	msg->exec();
+	if (msg->clickedButton() == btn)
+		showDonationsPage();
 }
 #endif
 
