@@ -5000,6 +5000,7 @@ void Graph::setGrayScale()
 	}
 
 	replot();
+	emit modifiedGraph();
 }
 
 void Graph::setIndexedColors()
@@ -5048,6 +5049,7 @@ void Graph::setIndexedColors()
 	}
 
 	replot();
+	emit modifiedGraph();
 }
 
 DataCurve* Graph::masterCurve(QwtErrorPlotCurve *er)
