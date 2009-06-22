@@ -53,6 +53,12 @@ public:
 	static QStringList functionsList();
 	static QString explainFunction(int index);
 
+	double EvalRemoveSingularity(double *xvar);
+	static void SingularityErrorMessage(double xvar);
+
+	class Singularity {};
+	class Pole {};
+
 	static double bessel_J0(double x)
 		{
 		return gsl_sf_bessel_J0 (x);
