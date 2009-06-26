@@ -105,8 +105,10 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 	else
 		T = gsl_multifit_fdfsolver_lmsder;
 
+	gsl_set_error_handler_off();
+
 	gsl_multifit_fdfsolver *s = gsl_multifit_fdfsolver_alloc (T, d_n, d_p);
-	gsl_multifit_fdfsolver_set (s, &f, d_param_init);
+	status = gsl_multifit_fdfsolver_set (s, &f, d_param_init);
 
 	size_t iter = 0;
 	bool inRange = true;
@@ -118,6 +120,12 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 			break;
 		}
 	}
+
+	if (status) {
+	    gsl_multifit_covar (s->J, 0.0, covar);
+	    iterations = 0;
+	    return s;
+	}	
 
 	do{
 		iter++;
@@ -158,8 +166,11 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	//set all step sizes to 1 can be increased to converge faster
 	gsl_vector_set_all (ss, 10.0);
 
+	gsl_set_error_handler_off();
+
 	gsl_multimin_fminimizer *s_min = gsl_multimin_fminimizer_alloc (T, f.n);
 	status = gsl_multimin_fminimizer_set (s_min, &f, d_param_init, ss);
+
 	double size;
 	size_t iter = 0;
 	bool inRange = true;
@@ -170,6 +181,12 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 			inRange = false;
 			break;
 		}
+	}
+
+	if (status) {
+	    iterations = 0;
+	    gsl_vector_free(ss);
+	    return s_min;
 	}
 
 	do{
@@ -907,15 +924,18 @@ void Fit::fit()
 		f.params = &d_data;
 		gsl_multimin_fminimizer *s_min = fitSimplex(f, iterations, status);
 
-		// allocate memory and calculate covariance matrix based on residuals
-		gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
-		d_df(s_min->x,(void*)f.params, J);
-		gsl_multifit_covar (J, 0.0, covar);
-		chi_2 = s_min->fval;
+		if (!status) {
+		     // allocate memory and calculate covariance matrix based on residuals
+		     gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
+		     d_df(s_min->x,(void*)f.params, J);
+		     gsl_multifit_covar (J, 0.0, covar);
+		     chi_2 = s_min->fval;
 
-		// free previousely allocated memory
-		gsl_matrix_free (J);
+		     // free previousely allocated memory
+		     gsl_matrix_free (J);
+		}
 		gsl_multimin_fminimizer_free (s_min);
+
 	} else {
 		gsl_multifit_function_fdf f;
 		f.f = d_f;
