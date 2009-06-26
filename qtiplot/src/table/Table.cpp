@@ -649,7 +649,7 @@ void Table::updateValues(Table* t, const QString& columnName)
 			cmd.contains("\"" + col_label[i] + "\""))
             continue;
 
-        calculate(i, 0, endRow, false, false);
+        calculate(i, 0, endRow, false, true);
 	}
 }
 

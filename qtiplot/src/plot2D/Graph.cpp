@@ -205,10 +205,13 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_grid->attach(this);
 
 	//custom scale
-	for (int i= 0; i<QwtPlot::axisCnt; i++) {
+	for (int i = 0; i < QwtPlot::axisCnt; i++) {
 		QwtScaleWidget *scale = (QwtScaleWidget *) axisWidget(i);
-		if (scale) {
+		if (scale){
 			scale->setMargin(0);
+
+			//if (i == QwtPlot::yRight)
+				//scale->setLayoutFlag(QwtScaleWidget::TitleInverted, false);
 
 			//the axis title color must be initialized...
 			QwtText title = scale->title();
@@ -6128,7 +6131,7 @@ void Graph::printScale(QPainter *painter,
         }
         case yRight:
         {
-            x = rect.left() + baseDist;
+			x = rect.left() + baseDist;
             y = rect.y() + startDist;
             w = rect.height() - startDist - endDist;
             align = QwtScaleDraw::RightScale;
