@@ -175,13 +175,13 @@ void NonLinearFit::calculateFitCurveData(double *X, double *Y)
 		for (int i=0; i<d_points; i++){
 		    x = X0 + i*step;
 			X[i] = x;
-			Y[i] = parser.Eval();
+			Y[i] = parser.EvalRemoveSingularity(&x,0);
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
 		    x = d_x[i];
 			X[i] = x;
-			Y[i] = parser.Eval();
+			Y[i] = parser.EvalRemoveSingularity(&x,0);
 		}
 	}
 }
@@ -200,7 +200,7 @@ double NonLinearFit::eval(double *par, double x)
 
 	parser.DefineVar("x", &x);
 	parser.SetExpr(d_formula.ascii());
-    return parser.EvalRemoveSingularity(&x);
+    return parser.EvalRemoveSingularity(&x,0);
 }
 
 void NonLinearFit::setConstant(const QString& parName, double val)

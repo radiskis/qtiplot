@@ -510,7 +510,11 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
         for (int j = 0; j < n; j++) {
             xvar = X[j];
 			double s = 1.0/sqrt(sigma[j]);
-			gsl_vector_set (f, j, (parser.EvalRemoveSingularity(&xvar) - Y[j])/s);
+			try {
+			    gsl_vector_set (f, j, (parser.EvalRemoveSingularity(&xvar) - Y[j])/s);
+			} catch (MyParser::Pole) {
+			    return GSL_ESING;
+			}
          }
         delete[] parameters;
     } catch (mu::ParserError &e) {
@@ -552,8 +556,12 @@ double user_d(const gsl_vector * x, void *params) {
         for (int j = 0; j < n; j++) {
             xvar = X[j];
 			double s = 1.0/sqrt(sigma[j]);
-            double t = (parser.EvalRemoveSingularity(&xvar) - Y[j])/s;
-            val += t*t;
+            try {
+	        double t = (parser.EvalRemoveSingularity(&xvar) - Y[j])/s;
+		val += t*t;
+	    } catch (MyParser::Pole) {
+		return GSL_POSINF; //weird, I know. blame gsl.
+	    }
         }
         delete[] parameters;
     } catch (mu::ParserError &e) {
@@ -592,20 +600,13 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
         parser.SetExpr(function);
         for (int i = 0; i < n; i++) {
             xvar = X[i];
-            double result = parser.Eval();
-            if (gsl_isinf(result) || gsl_isnan(result)){
-				int n;
-				frexp (xvar, &n);
-				xvar += ldexp(DBL_EPSILON, n);
-				result = parser.Eval();
-				if (gsl_isinf(result) || gsl_isnan(result)){
-					MyParser::SingularityErrorMessage(xvar);
-					return GSL_ESING;
-				}
-			}
 			double s = 1.0/sqrt(sigma[i]);
             for (int j = 0; j < p; j++)
-                gsl_matrix_set (J, i, j, 1.0/s*parser.Diff(&param[j], param[j]));
+	        try {
+		    gsl_matrix_set (J, i, j, 1.0/s*parser.DiffRemoveSingularity(&xvar, &param[j], param[j]));
+		} catch (MyParser::Pole) {
+		    return GSL_ESING;
+		}
         }
         delete[] param;
     } catch (mu::ParserError &) {
@@ -615,9 +616,11 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
 }
 
 int user_fdf(const gsl_vector * x, void *params, gsl_vector * f, gsl_matrix * J) {
-    user_f (x, params, f);
-    user_df (x, params, J);
-    return GSL_SUCCESS;
+    int status = user_f (x, params, f);
+    if (status)
+    	return status;
+    status = user_df (x, params, J);
+    return status;
 }
 
 int boltzmann_f (const gsl_vector * x, void *params, gsl_vector * f) {

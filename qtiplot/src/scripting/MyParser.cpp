@@ -194,7 +194,7 @@ break;
 return blabla;
 }
 
-double MyParser::EvalRemoveSingularity(double *xvar)
+double MyParser::EvalRemoveSingularity(double *xvar,bool noisy) const
 {
 	try {
 		double result = Eval();
@@ -202,10 +202,10 @@ double MyParser::EvalRemoveSingularity(double *xvar)
 			throw Singularity();
 		return result;
 	} catch (Singularity) {
-		try {
+	    try {
 			if (isinf(Eval()))
 				throw Pole();
-
+			double backup = *xvar;
 			int n;
 			frexp (*xvar, &n);
 			double xp = *xvar + ldexp(DBL_EPSILON,n);
@@ -218,16 +218,36 @@ double MyParser::EvalRemoveSingularity(double *xvar)
 			double ym = Eval();
 			if (gsl_isinf(ym) || gsl_isnan(ym))
 				throw Pole();
+			*xvar = backup;
 			return (yp + ym)/2;
-		} catch (Pole) {
-			SingularityErrorMessage(*xvar);
-			return GSL_ESING;
+	    } catch (Pole) {
+	        if (noisy) {
+		    QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
+		    QObject::tr("Found non-removable singularity at x = %1. Operation aborted!").arg(*xvar));
+		    throw Pole();
 		}
+		return 0.0;
+	    }
 	}
 }
 
-void MyParser::SingularityErrorMessage(double xvar)
+
+//almost verbatim copy from Parser::Diff, adapted to use EvalRemoveSingularity()
+
+double MyParser::DiffRemoveSingularity(double *xvar, double *a_Var, double a_fPos) const
 {
-	QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
-	QObject::tr("Found non-removable singularity at x = %1. Operation aborted!").arg(xvar));
+    double fRes(0), 
+               fBuf(*a_Var), 
+               f[4] = {0,0,0,0},
+//	       a_fEpsilon = 0.00064;
+	       a_fEpsilon( (a_fPos==0) ? (double)1e-10 : 1e-7 * a_fPos ); 
+
+    *a_Var = a_fPos+2 * a_fEpsilon;  f[0] = EvalRemoveSingularity(xvar);
+    *a_Var = a_fPos+1 * a_fEpsilon;  f[1] = EvalRemoveSingularity(xvar);
+    *a_Var = a_fPos-1 * a_fEpsilon;  f[2] = EvalRemoveSingularity(xvar);
+    *a_Var = a_fPos-2 * a_fEpsilon;  f[3] = EvalRemoveSingularity(xvar);
+    *a_Var = fBuf; // restore variable
+
+    fRes = (-f[0] + 8*f[1] - 8*f[2] + f[3]) / (12*a_fEpsilon);
+    return fRes;
 }

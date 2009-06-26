@@ -53,7 +53,8 @@ public:
 	static QStringList functionsList();
 	static QString explainFunction(int index);
 
-	double EvalRemoveSingularity(double *xvar);
+	double EvalRemoveSingularity(double *xvar,bool noisy = 1) const;
+	double DiffRemoveSingularity(double *xvar, double *a_Var,double a_fPos) const;
 	static void SingularityErrorMessage(double xvar);
 
 	class Singularity {};
