@@ -2411,7 +2411,6 @@ bool PlotDialog::acceptParams()
 
 		if (defaultContourBox->isChecked()){
 			QPen pen = QPen(levelsColorBox->color(), contourWidthBox->value(), boxContourStyle->style());
-  	    	pen.setCosmetic(true);
   	    	sp->setDefaultContourPen(pen);
 		} else if (customPenBtn->isChecked())
 			contourLinesEditor->updateContourPens();
