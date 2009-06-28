@@ -30,7 +30,7 @@
 #define NONLINEARFIT_H
 
 #include "Fit.h"
-	
+
 using namespace std;
 
 class NonLinearFit : public Fit
@@ -42,12 +42,12 @@ class NonLinearFit : public Fit
 		NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		NonLinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
-	
+
         double eval(double *par, double x);
 
 		virtual bool setParametersList(const QStringList& lst);
 		virtual bool setFormula(const QString& s, bool = true);
-	
+
 		QMap<QString, double> constants(){return d_constants;};
 		void setConstant(const QString& parName, double val);
 		void removeConstant(const QString& parName){d_constants.remove(parName);};
@@ -55,10 +55,10 @@ class NonLinearFit : public Fit
 		int constantsCount(){return d_constants.size();};
 		QList<QString> constantsList(){return d_constants.keys();};
 		double constValue(const QString& name){return d_constants.value(name);};
-		
+
 		virtual QString legendInfo();
 		static QStringList guessParameters(const QString& s, bool *error = 0, string *errMsg = 0);
-				
+
 	protected:
 		QString logFitInfo(int iterations, int status);
 		FunctionCurve* insertFitFunctionCurve(const QString& name, int penWidth = 1, bool updateData = true);
@@ -66,7 +66,9 @@ class NonLinearFit : public Fit
 	private:
 		void calculateFitCurveData(double *X, double *Y);
 		void init();
-	
+		virtual void removeDataSingularities();
+		void removePole(int index);
+
 		QMap<QString, double> d_constants;
 };
 #endif

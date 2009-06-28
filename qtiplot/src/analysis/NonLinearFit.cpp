@@ -171,17 +171,17 @@ void NonLinearFit::calculateFitCurveData(double *X, double *Y)
 
 	if (d_gen_function){
 		double X0 = d_x[0];
-		double step = (d_x[d_n-1]-X0)/(d_points-1);
+		double step = (d_x[d_n - 1] - X0)/(d_points - 1);
 		for (int i=0; i<d_points; i++){
 		    x = X0 + i*step;
 			X[i] = x;
-			Y[i] = parser.EvalRemoveSingularity(&x,0);
+			Y[i] = parser.EvalRemoveSingularity(&x, false);
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
 		    x = d_x[i];
 			X[i] = x;
-			Y[i] = parser.EvalRemoveSingularity(&x,0);
+			Y[i] = parser.EvalRemoveSingularity(&x, false);
 		}
 	}
 }
@@ -200,7 +200,7 @@ double NonLinearFit::eval(double *par, double x)
 
 	parser.DefineVar("x", &x);
 	parser.SetExpr(d_formula.ascii());
-    return parser.EvalRemoveSingularity(&x,0);
+    return parser.EvalRemoveSingularity(&x, false);
 }
 
 void NonLinearFit::setConstant(const QString& parName, double val)
@@ -293,4 +293,79 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 	if (error)
 		*error = false;
 	return parList;
+}
+
+void NonLinearFit::removeDataSingularities()
+{
+	MyParser parser;
+	for (int i = 0; i < d_p; i++){
+		double param = 1.0;
+		parser.DefineVar(d_param_names[i].ascii(), &param);
+	}
+
+	QMapIterator<QString, double> it(d_constants);
+ 	while (it.hasNext()) {
+     	it.next();
+		parser.DefineConst(it.key().ascii(), it.value());
+ 	}
+
+	double xvar;
+	parser.DefineVar("x", &xvar);
+	parser.SetExpr(d_formula.ascii());
+
+    for (int i = 0; i < d_n; i++){
+    	xvar = d_x[i];
+    	try {
+			parser.EvalRemoveSingularity(&xvar, false);
+    	} catch(MyParser::Pole){
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
+			QObject::tr("Found non-removable singularity at x = %1. Ignored data point!").arg(xvar));
+
+    		removePole(i);
+    	}
+    }
+}
+
+void NonLinearFit::removePole(int pole)
+{
+	int n = d_n - 1;
+	double *aux_x = (double *)malloc(n*sizeof(double));
+	if (!aux_x)
+		return;
+
+	double *aux_y = (double *)malloc(n*sizeof(double));
+	if (!aux_y){
+		free (aux_x);
+		return;
+	}
+
+	double *aux_w = (double *)malloc(n*sizeof(double));
+	if (!aux_w){
+		free (aux_x);
+		free (aux_y);
+		return;
+	}
+
+	for (int i = 0; i < pole; i++){
+		aux_x [i] = d_x[i];
+		aux_y [i] = d_y[i];
+		aux_w [i] = d_w[i];
+	}
+
+	for (int i = pole + 1; i < d_n; i++){
+		int j = i - 1;
+		aux_x [j] = d_x[i];
+		aux_y [j] = d_y[i];
+		aux_w [j] = d_w[i];
+	}
+
+	free (d_x);
+	free (d_y);
+	free (d_w);
+
+	d_x = aux_x;
+	d_y = aux_y;
+	d_w = aux_w;
+	d_n = n;
 }

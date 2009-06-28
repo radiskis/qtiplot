@@ -160,6 +160,9 @@ class Fit : public Filter
 		//! Customs and stores the fit results according to the derived class specifications. Used by exponential fits.
 		virtual void customizeFitResults(){};
 
+		//! Removes any data singularities before fitting
+		virtual void removeDataSingularities(){};
+
 	protected:
 		//! Allocates the memory for the fit workspace
 		void initWorkspace(int par);

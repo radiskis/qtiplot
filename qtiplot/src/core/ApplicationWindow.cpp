@@ -7200,8 +7200,15 @@ void ApplicationWindow::showFitDialog()
 	MultiLayer* plot = 0;
 	if(w->isA("MultiLayer"))
 		plot = (MultiLayer*)w;
-	else if(w->inherits("Table"))
-		plot = multilayerPlot((Table *)w, ((Table *)w)->drawableColumnSelection(), Graph::LineSymbols);
+	else if(w->inherits("Table")){
+		QStringList columnsLst = ((Table *)w)->drawableColumnSelection();
+		if (columnsLst.isEmpty()){
+			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
+			tr("Please select a 'Y' column first!"));
+			return;
+		}
+		plot = multilayerPlot((Table *)w, columnsLst, Graph::LineSymbols);
+	}
 
 	if (!plot)
 		return;

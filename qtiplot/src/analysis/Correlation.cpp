@@ -82,8 +82,18 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 	while (d_n < rows)
 		d_n *= 2;
 
-    d_x = new double[d_n];
-	d_y = new double[d_n];
+    d_x = (double *)malloc(d_n*sizeof(double));
+	if (!d_x){
+		memoryErrorMessage();
+		return false;
+	};
+
+	d_y = (double *)malloc(d_n*sizeof(double));
+	if (!d_y){
+		memoryErrorMessage();
+		free(d_x);
+		return false;
+	};
 
     if(d_y && d_x){
 		memset( d_x, 0, d_n * sizeof( double ) ); // zero-pad the two arrays...

@@ -107,7 +107,7 @@ QString PlotCurve::saveCurveLayout()
 void PlotCurve::restoreCurveLayout(const QStringList& lst)
 {
 	QStringList::const_iterator line = lst.begin();
-	for (line; line != lst.end(); line++){
+	for (line = lst.begin(); line != lst.end(); line++){
         QString s = (*line).stripWhiteSpace();
         if (s == "<Pen>"){
 			QPen pen;
@@ -640,7 +640,7 @@ int DataCurve::tableRow(int point)
 		if (d_table->cell(i, xcol) == x_val && d_table->cell(i, ycol) == y_val)
 			return i;
 	}
-	return -1;
+	return point;
 }
 
 void DataCurve::setLabelsColumnName(const QString& name)

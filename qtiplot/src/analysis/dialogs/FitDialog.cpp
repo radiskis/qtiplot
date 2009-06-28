@@ -1338,7 +1338,7 @@ void FitDialog::enableWeightingParameters(int index)
 
 void FitDialog::closeEvent (QCloseEvent * e)
 {
-    if (d_preview_curve){
+    if (d_graph && d_preview_curve){
         d_preview_curve->detach();
         delete d_preview_curve;
         d_graph->replot();

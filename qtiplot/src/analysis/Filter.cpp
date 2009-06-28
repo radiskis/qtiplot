@@ -236,12 +236,23 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
 	int i_start = 0, i_end = 0;
 	int n = curveRange(c, start, end, &i_start, &i_end);
 
-    (*x) = new double[n];
-    (*y) = new double[n];
+    (*x) = (double *)malloc(n*sizeof(double));
+	if (!x){
+		memoryErrorMessage();
+		return 0;
+	}
+
+	(*y) = (double *)malloc(n*sizeof(double));
+	if (!y){
+		free(x);
+		memoryErrorMessage();
+		return 0;
+	}
+
     double *xtemp = new double[n];
     double *ytemp = new double[n];
 
-  	int j=0;
+  	int j = 0;
     for (int i = i_start; i <= i_end; i++){
         xtemp[j] = c->x(i);
         ytemp[j++] = c->y(i);
@@ -267,10 +278,20 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
    	int i_start = 0, i_end = 0;
 	int n = curveRange(c, start, end, &i_start, &i_end);
 
-    (*x) = new double[n];
-    (*y) = new double[n];
+	(*x) = (double *)malloc(n*sizeof(double));
+	if (!x){
+		memoryErrorMessage();
+		return 0;
+	}
 
-    int j=0;
+	(*y) = (double *)malloc(n*sizeof(double));
+	if (!y){
+		free(x);
+		memoryErrorMessage();
+		return 0;
+	}
+
+    int j = 0;
     for (int i = i_start; i <= i_end; i++){
         (*x)[j] = c->x(i);
         (*y)[j++] = c->y(i);
@@ -431,8 +452,18 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	d_from = X[0];
     d_to = X[d_n-1];
 
-	d_x = new double[d_n];
-    d_y = new double[d_n];
+	d_x = (double *)malloc(d_n*sizeof(double));
+	if (!d_x){
+		memoryErrorMessage();
+		return false;
+	};
+
+    d_y = (double *)malloc(d_n*sizeof(double));
+	if (!d_y){
+		memoryErrorMessage();
+		free(d_x);
+		return false;
+	};
 
     for (int i = 0; i < d_n; i++){
         d_x[i] = X[i];
@@ -463,11 +494,11 @@ void Filter::memoryErrorMessage()
 void Filter::freeMemory()
 {
 	if (d_x){
-		delete[] d_x;
+		free(d_x);
 		d_x = NULL;
 	}
 	if (d_y) {
-		delete[] d_y;
+		free(d_y);
 		d_y = NULL;
 	}
 }

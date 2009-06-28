@@ -124,10 +124,9 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
     d_restricted_move_pos = QPoint(plot()->transform(xAxis(), d_selected_curve->x(d_selected_point)),
                                    plot()->transform(yAxis(), d_selected_curve->y(d_selected_point)));
 
-
+	QLocale locale = d_app->locale();
 	if (((PlotCurve *)d_selected_curve)->type() == Graph::Function ||
 		((PlotCurve *)d_selected_curve)->type() == Graph::Histogram) {
-		QLocale locale = d_app->locale();
 		emit statusText(QString("%1[%2]: x=%3; y=%4")
 			.arg(d_selected_curve->title().text())
 			.arg(d_selected_point + 1)
@@ -139,12 +138,11 @@ void DataPickerTool::setSelection(QwtPlotCurve *curve, int point_index)
 		if (t){
 			int xCol = t->colIndex(((DataCurve*)d_selected_curve)->xColumnName());
 			int yCol = t->colIndex(d_selected_curve->title().text());
-
 			emit statusText(QString("%1[%2]: x=%3; y=%4")
 				.arg(d_selected_curve->title().text())
 				.arg(row + 1)
-				.arg(t->text(row, xCol))
-				.arg(t->text(row, yCol)));
+				.arg(locale.toString(d_selected_curve->x(d_selected_point), 'G', d_app->d_decimal_digits))
+				.arg(locale.toString(d_selected_curve->y(d_selected_point), 'G', d_app->d_decimal_digits)));
 		}
     }
 
