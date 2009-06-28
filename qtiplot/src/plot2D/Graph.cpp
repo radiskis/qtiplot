@@ -5191,14 +5191,15 @@ void Graph::printFrame(QPainter *painter, const QRect &rect) const
 	} else
 		painter->setPen(QPen(Qt::NoPen));
 
-    painter->setBrush(paletteBackgroundColor());
-
 	int lw2 = lw/2;
+	QRect r = rect;
 	if (lw % 2)
-		painter->drawRect(rect.adjusted(lw2, lw2, -(lw2 + 1), -(lw2 + 1)));
+		r.adjust(lw2, lw2, -(lw2 + 1), -(lw2 + 1));
 	else
-		painter->drawRect(rect.adjusted(lw2, lw2, -lw2, -lw2));
+		r.adjust(lw2, lw2, -lw2, -lw2);
 
+	QwtPainter::fillRect(painter, r, paletteBackgroundColor());
+	painter->drawRect(r);
 	painter->restore();
 }
 
@@ -5798,7 +5799,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
 	QRect canvasRect = plotLayout()->canvasRect();
 
 	/*
-       The border of the bounding rect needs to ba scaled to
+       The border of the bounding rect needs to be scaled to
        layout coordinates, so that it is aligned to the axes
      */
     QRect boundingRect( canvasRect.left() - 1, canvasRect.top() - 1,
@@ -5835,13 +5836,15 @@ void Graph::print(QPainter *painter, const QRect &plotRect,
                 to = metricsMap.layoutToDeviceY(scaleRect.top() + sDist);
             }
         } else {
-            const int margin = plotLayout()->canvasMargin(axisId);
+            int margin = plotLayout()->canvasMargin(axisId);
             if ( axisId == yLeft || axisId == yRight ){
-                from = metricsMap.layoutToDeviceX(canvasRect.bottom() - margin);
-                to = metricsMap.layoutToDeviceX(canvasRect.top() + margin);
+                margin = metricsMap.layoutToDeviceY(margin);
+                from = canvasRect.bottom() - margin;
+                to = canvasRect.top() + margin;
             } else {
-                from = metricsMap.layoutToDeviceY(canvasRect.left() + margin);
-                to = metricsMap.layoutToDeviceY(canvasRect.right() - margin);
+                margin = metricsMap.layoutToDeviceX(margin);
+                from = canvasRect.left() + margin;
+                to = canvasRect.right() - margin;
             }
         }
         map[axisId].setPaintXInterval(from, to);
