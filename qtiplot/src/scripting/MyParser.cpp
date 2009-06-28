@@ -240,7 +240,6 @@ double MyParser::DiffRemoveSingularity(double *xvar, double *a_Var, double a_fPo
     double fRes(0),
 		   fBuf(*a_Var),
            f[4] = {0,0,0,0},
-//	       a_fEpsilon = 0.00064;
 	       a_fEpsilon( (a_fPos == 0) ? (double)1e-10 : 1e-7 * a_fPos );
 
     *a_Var = a_fPos+2 * a_fEpsilon;  f[0] = EvalRemoveSingularity(xvar);
