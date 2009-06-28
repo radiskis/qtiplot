@@ -466,8 +466,10 @@ void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtSc
 		int x2 = d_graph->transform(x_axis, x) + dx;
         int y2 = d_graph->transform(y_axis, y) + dy;
 
-        mrk->setValue(d_graph->invTransform(x_axis, x2),
-					d_graph->invTransform(y_axis, y2));
+		if (p->device()->logicalDpiX() == plot()->logicalDpiX() ||
+			p->device()->logicalDpiY() == plot()->logicalDpiY())
+			mrk->setValue(d_graph->invTransform(x_axis, x2),
+							d_graph->invTransform(y_axis, y2));
     }
 }
 
@@ -670,9 +672,6 @@ QPen Spectrogram::contourPen (double level) const
 
 void Spectrogram::setColorMapPen(bool on)
 {
-	if (d_color_map_pen == on)
-		return;
-
 	d_color_map_pen = on;
 	if (on) {
 		setDefaultContourPen(Qt::NoPen);
