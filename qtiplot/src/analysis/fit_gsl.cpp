@@ -495,8 +495,8 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
         double *parameters = new double[p];
         double xvar;
         parser.DefineVar("x", &xvar);
-        for (int i=0; i < p; i++) {
-            parameters[i]=gsl_vector_get(x,i);
+        for (int i = 0; i < p; i++) {
+            parameters[i] = gsl_vector_get(x,i);
             parser.DefineVar(parNames[i].ascii(), &parameters[i]);
         }
 
@@ -518,7 +518,7 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
          }
         delete[] parameters;
     } catch (mu::ParserError &e) {
-        QMessageBox::critical(0,"QtiPlot - Input function error",QString::fromStdString(e.GetMsg()));
+        QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdString(e.GetMsg()));
         return GSL_EINVAL;
     }
     return GSL_SUCCESS;
@@ -557,11 +557,11 @@ double user_d(const gsl_vector * x, void *params) {
             xvar = X[j];
 			double s = 1.0/sqrt(sigma[j]);
             try {
-	        double t = (parser.EvalRemoveSingularity(&xvar) - Y[j])/s;
-		val += t*t;
-	    } catch (MyParser::Pole) {
-		return GSL_POSINF; //weird, I know. blame gsl.
-	    }
+				double t = (parser.EvalRemoveSingularity(&xvar) - Y[j])/s;
+				val += t*t;
+			} catch (MyParser::Pole) {
+				return GSL_POSINF; //weird, I know. blame gsl.
+			}
         }
         delete[] parameters;
     } catch (mu::ParserError &e) {
@@ -603,10 +603,10 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
 			double s = 1.0/sqrt(sigma[i]);
             for (int j = 0; j < p; j++)
 	        try {
-		    gsl_matrix_set (J, i, j, 1.0/s*parser.DiffRemoveSingularity(&xvar, &param[j], param[j]));
-		} catch (MyParser::Pole) {
-		    return GSL_ESING;
-		}
+				gsl_matrix_set (J, i, j, 1.0/s*parser.DiffRemoveSingularity(&xvar, &param[j], param[j]));
+			} catch (MyParser::Pole) {
+				return GSL_ESING;
+			}
         }
         delete[] param;
     } catch (mu::ParserError &) {

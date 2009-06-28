@@ -121,11 +121,11 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 		}
 	}
 
-	if (status) {
+	if (status){
 	    gsl_multifit_covar (s->J, 0.0, covar);
 	    iterations = 0;
 	    return s;
-	}	
+	}
 
 	do{
 		iter++;
@@ -222,8 +222,16 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to)
 {
     if (Filter::setDataFromTable(t, xColName, yColName, from, to)){
-    	d_w = new double[d_n];
-    	for (int i=0; i<d_n; i++)//initialize the weighting data to 1.0
+    	if (d_w)
+			free(d_w);
+
+    	d_w = (double *)malloc(d_n*sizeof(double));
+        if (!d_w){
+            memoryErrorMessage();
+            return false;
+        }
+
+    	for (int i = 0; i < d_n; i++)//initialize the weighting data to 1.0
        		d_w[i] = 1.0;
 		return true;
 	} else
@@ -914,6 +922,8 @@ void Fit::fit()
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
+	removeDataSingularities();
+
 	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, this};
 
 	int status, iterations = d_max_iterations;
@@ -935,7 +945,6 @@ void Fit::fit()
 		     gsl_matrix_free (J);
 		}
 		gsl_multimin_fminimizer_free (s_min);
-
 	} else {
 		gsl_multifit_function_fdf f;
 		f.f = d_f;

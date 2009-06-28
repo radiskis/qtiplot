@@ -184,8 +184,8 @@ void RangeSelectorTool::emitStatusText()
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
 			.arg(d_selected_curve->title().text())
 			.arg(row + 1)
-			.arg(t->text(row, t->colIndex(((DataCurve*)d_selected_curve)->xColumnName())))
-			.arg(t->text(row, t->colIndex(d_selected_curve->title().text()))));
+			.arg(locale.toString(d_selected_curve->x(d_active_point), 'G', 16))
+			.arg(locale.toString(d_selected_curve->y(d_active_point), 'G', 16)));
     }
 }
 

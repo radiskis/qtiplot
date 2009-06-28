@@ -305,8 +305,19 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 
     d_n = abs(to - from) + 1;
     int n2 = 2*d_n;
-    d_y = new double[n2];
-    d_x = new double[d_n];
+
+    d_y = (double *)malloc(n2*sizeof(double));
+	if (!d_y){
+		memoryErrorMessage();
+		return false;
+	};
+
+    d_x = (double *)malloc(d_n*sizeof(double));
+	if (!d_x){
+		memoryErrorMessage();
+		free(d_y);
+		return false;
+	};
 
     if(d_y && d_x) {// zero-pad data array
 		memset( d_y, 0, n2* sizeof( double ) );

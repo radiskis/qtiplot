@@ -242,8 +242,19 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
     n = i_end - i_start + 1;
     if (n > c->dataSize())
 		n = c->dataSize();
-    (*x) = new double[n];
-    (*y) = new double[n];
+
+    (*x) = (double *)malloc(n*sizeof(double));
+    if (!x){
+        free(xtemp2); free(ytemp2);
+        memoryErrorMessage();
+    }
+
+    (*y) = (double *)malloc(n*sizeof(double));
+    if (!y){
+        free(xtemp2); free(ytemp2); free(x);
+        memoryErrorMessage();
+    }
+
     int j = 0;
 	for (int i = i_start; i <= i_end; i++){
         (*x)[j] = xtemp2[i];

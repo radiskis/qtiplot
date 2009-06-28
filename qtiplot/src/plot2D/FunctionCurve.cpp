@@ -208,7 +208,13 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
  			}
 			parser.SetExpr(d_formulas[0].ascii());
 
-			X[0] = d_from; x = d_from; Y[0] = parser.Eval();
+			X[0] = d_from;
+			x = d_from;
+			try {
+				Y[0] = parser.EvalRemoveSingularity(&x, false);
+			} catch (MyParser::Pole) {
+			    error = true;
+			}
 
 			ScaleEngine *sc_engine = 0;
 			if (plot())
@@ -220,13 +226,21 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 				for (int i = 1; i < points; i++ ){
 					x = d_from*pow(10, i*step);
 					X[i] = x;
-					Y[i] = parser.Eval();
+					try {
+						Y[i] = parser.EvalRemoveSingularity(&x, false);
+					} catch (MyParser::Pole){
+						error = true;
+					}
 				}
 			} else {
 				for (int i = 1; i < points; i++ ){
 					x += step;
 					X[i] = x;
-					Y[i] = parser.Eval();
+					try {
+						Y[i] = parser.EvalRemoveSingularity(&x, false);
+					} catch (MyParser::Pole){
+						error = true;
+					}
 				}
 			}
 		} catch(mu::ParserError &e) {
@@ -258,9 +272,6 @@ void FunctionCurve::loadData(int points, bool xLog10Scale)
 			error = true;
 		}
 	}
-
-	if (error)
-		return;
 
 	setData(X, Y, points);
 	free(X); free(Y);

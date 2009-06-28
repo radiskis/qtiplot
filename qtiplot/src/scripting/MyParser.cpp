@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include "MyParser.h"
 #include <QMessageBox>
-
+#include <QApplication>
 #include "NonLinearFit.h"
 
 MyParser::MyParser()
@@ -194,11 +194,11 @@ break;
 return blabla;
 }
 
-double MyParser::EvalRemoveSingularity(double *xvar,bool noisy) const
+double MyParser::EvalRemoveSingularity(double *xvar, bool noisy) const
 {
 	try {
 		double result = Eval();
-		if ( gsl_isinf(result) || gsl_isnan(result) )
+		if ( gsl_isinf(result) || gsl_isnan(result))
 			throw Singularity();
 		return result;
 	} catch (Singularity) {
@@ -208,8 +208,8 @@ double MyParser::EvalRemoveSingularity(double *xvar,bool noisy) const
 			double backup = *xvar;
 			int n;
 			frexp (*xvar, &n);
-			double xp = *xvar + ldexp(DBL_EPSILON,n);
-			double xm = *xvar - ldexp(DBL_EPSILON,n);
+			double xp = *xvar + ldexp(DBL_EPSILON, n);
+			double xm = *xvar - ldexp(DBL_EPSILON, n);
 			*xvar = xp;
 			double yp = Eval();
 			if (gsl_isinf(yp) || gsl_isnan(yp))
@@ -219,14 +219,15 @@ double MyParser::EvalRemoveSingularity(double *xvar,bool noisy) const
 			if (gsl_isinf(ym) || gsl_isnan(ym))
 				throw Pole();
 			*xvar = backup;
-			return (yp + ym)/2;
+			return 0.5*(yp + ym);
 	    } catch (Pole) {
-	        if (noisy) {
-		    QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
-		    QObject::tr("Found non-removable singularity at x = %1. Operation aborted!").arg(*xvar));
-		    throw Pole();
-		}
-		return 0.0;
+	        if (noisy){
+	        	QApplication::restoreOverrideCursor();
+				QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
+				QObject::tr("Found non-removable singularity at x = %1. Operation aborted!").arg(*xvar));
+			}
+			throw Pole();
+			return GSL_NAN;
 	    }
 	}
 }
@@ -236,11 +237,11 @@ double MyParser::EvalRemoveSingularity(double *xvar,bool noisy) const
 
 double MyParser::DiffRemoveSingularity(double *xvar, double *a_Var, double a_fPos) const
 {
-    double fRes(0), 
-               fBuf(*a_Var), 
-               f[4] = {0,0,0,0},
+    double fRes(0),
+		   fBuf(*a_Var),
+           f[4] = {0,0,0,0},
 //	       a_fEpsilon = 0.00064;
-	       a_fEpsilon( (a_fPos==0) ? (double)1e-10 : 1e-7 * a_fPos ); 
+	       a_fEpsilon( (a_fPos == 0) ? (double)1e-10 : 1e-7 * a_fPos );
 
     *a_Var = a_fPos+2 * a_fEpsilon;  f[0] = EvalRemoveSingularity(xvar);
     *a_Var = a_fPos+1 * a_fEpsilon;  f[1] = EvalRemoveSingularity(xvar);
