@@ -965,7 +965,8 @@ public:
   enum TicksStyle{NoTicks = 0, Out = 1, InOut = 2, In = 3};
   enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
-			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot};
+			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot,
+			StackBar, StackColumn};
 
   bool isPiePlot();
   SIP_PYOBJECT pieLegendText() /PyName=pieLegend/;

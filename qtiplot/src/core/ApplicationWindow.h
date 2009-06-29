@@ -436,6 +436,8 @@ public slots:
 	void plotPie();
 	void plotVerticalBars();
 	void plotHorizontalBars();
+	void plotStackBar();
+	void plotStackColumn();
 	void plotArea();
 	void plotVertSteps();
 	void plotHorSteps();
@@ -1291,7 +1293,7 @@ private:
     QAction *actionCloseAllWindows, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
     QAction *actionShowCurvesDialog, *actionAddErrorBars, *actionAddFunctionCurve, *actionUnzoom, *actionNewLegend, *actionAddImage, *actionAddText;
     QAction *actionPlotL, *actionPlotP, *actionPlotLP, *actionPlotVerticalDropLines, *actionPlotSpline;
-    QAction *actionPlotVertSteps, *actionPlotHorSteps, *actionPlotVerticalBars;
+    QAction *actionPlotVertSteps, *actionPlotHorSteps, *actionPlotVerticalBars, *actionStackBars, *actionStackColumns;
 	QAction *actionPlotHorizontalBars, *actionPlotArea, *actionPlotPie, *actionPlotVectXYAM, *actionPlotVectXYXY;
     QAction *actionPlotHistogram, *actionPlotStackedHistograms, *actionPlot2VerticalLayers, *actionPlot2HorizontalLayers, *actionPlot4Layers, *actionPlotStackedLayers;
     QAction *actionPlot3DRibbon, *actionPlot3DBars, *actionPlot3DScatter, *actionPlot3DTrajectory;

@@ -32,10 +32,11 @@
 #include <qwt_painter.h>
 
 QwtBarCurve::QwtBarCurve(BarStyle style, Table *t, const QString& xColName, const QString& name, int startRow, int endRow):
-    DataCurve(t, xColName, name, startRow, endRow)
+    DataCurve(t, xColName, name, startRow, endRow),
+    bar_offset(0),
+    bar_gap(20),
+    d_white_out(false)
 {
-	bar_offset = 0;
-	bar_gap = 0;
 	bar_style = style;
 
 	QPen pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
@@ -106,25 +107,27 @@ void QwtBarCurve::draw(QPainter *painter,
 
 	const int half_width = int((0.5-bar_offset*0.01)*bar_width);
 	int bw1 = int(bar_width) + 1;
-	for (int i=from; i<=to; i++)
+	for (int i = from; i <= to; i++)
 	{
 		const int px = xMap.transform(x(i));
         const int py = yMap.transform(y(i));
 
-		if (bar_style == Vertical)
-		{
+		QRect rect = QRect();
+		if (bar_style == Vertical){
 			if (y(i) < 0)
-				painter->drawRect(px-half_width, ref, bw1, (py-ref));
+				rect = QRect(px-half_width, ref, bw1, (py-ref));
 			else
-				painter->drawRect(px-half_width, py, bw1, (ref-py+1));
-		}
-		else
-		{
+				rect = QRect(px-half_width, py, bw1, (ref-py+1));
+		} else {
 			if (x(i) < 0)
-				painter->drawRect(px, py-half_width, (ref-px), bw1);
+				rect = QRect(px, py-half_width, (ref-px), bw1);
 			else
-				painter->drawRect(ref, py-half_width, (px-ref), bw1);
+				rect = QRect(ref, py-half_width, (px-ref), bw1);
 		}
+
+		if (d_white_out)
+			painter->fillRect(rect, Qt::white);
+		painter->drawRect(rect);
 	}
 	painter->restore();
 }
@@ -207,4 +210,11 @@ double QwtBarCurve::dataOffset()
 			return 0.5*bar_offset*0.01*bar_width;
 	}
 return 0;
+}
+
+QString QwtBarCurve::saveToString()
+{
+	if (d_white_out)
+		return "<StackWhiteOut>1</StackWhiteOut>\n";
+	return QString::null;
 }

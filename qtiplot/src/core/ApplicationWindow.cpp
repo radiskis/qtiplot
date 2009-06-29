@@ -1281,6 +1281,10 @@ void ApplicationWindow::plotMenuAboutToShow()
 	plot2DMenu->insertSeparator();
 	plot2DMenu->addAction(actionPlotVerticalBars);
 	plot2DMenu->addAction(actionPlotHorizontalBars);
+	QMenu *specialBarMenu = plot2DMenu->addMenu (tr("Spec&ial Bar/Column"));
+	specialBarMenu->addAction(actionStackBars);
+	specialBarMenu->addAction(actionStackColumns);
+
 	plot2DMenu->addAction(actionPlotArea);
 	plot2DMenu->addAction(actionPlotPie);
 	plot2DMenu->addAction(actionPlotVectXYXY);
@@ -1650,6 +1654,16 @@ void ApplicationWindow::plotVerticalBars()
 void ApplicationWindow::plotHorizontalBars()
 {
 	generate2DGraph(Graph::HorizontalBars);
+}
+
+void ApplicationWindow::plotStackBar()
+{
+	generate2DGraph(Graph::StackBar);
+}
+
+void ApplicationWindow::plotStackColumn()
+{
+	generate2DGraph(Graph::StackColumn);
 }
 
 MultiLayer* ApplicationWindow::plotHistogram()
@@ -6175,6 +6189,7 @@ void ApplicationWindow::showColMenu(int c)
 	QMenu contextMenu(this);
 	QMenu plot(this);
 	QMenu specialPlot(this);
+	QMenu specialBarMenu(this);
 	QMenu fill(this);
 	QMenu sorting(this);
 	QMenu colType(this);
@@ -6185,37 +6200,39 @@ void ApplicationWindow::showColMenu(int c)
 
 	if ((int)w->selectedColumns().count() == 1){
 		w->setSelectedCol(c);
-		plot.addAction(QIcon(QPixmap(lPlot_xpm)),tr("&Line"), this, SLOT(plotL()));
-		plot.addAction(QIcon(QPixmap(pPlot_xpm)),tr("&Scatter"), this, SLOT(plotP()));
-		plot.addAction(QIcon(QPixmap(lpPlot_xpm)),tr("Line + S&ymbol"), this, SLOT(plotLP()));
+		plot.addAction(actionPlotL);
+		plot.addAction(actionPlotP);
+		plot.addAction(actionPlotLP);
 
-		specialPlot.addAction(QIcon(QPixmap(dropLines_xpm)),tr("Vertical &Drop Lines"), this, SLOT(plotVerticalDropLines()));
-		specialPlot.addAction(QIcon(QPixmap(spline_xpm)),tr("&Spline"), this,SLOT(plotSpline()));
-		specialPlot.addAction(QIcon(QPixmap(vert_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotVertSteps()));
-		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Horizontal Steps"), this, SLOT(plotHorSteps()));
+		specialPlot.addAction(actionPlotVerticalDropLines);
+		specialPlot.addAction(actionPlotSpline);
+		specialPlot.addAction(actionPlotVertSteps);
+		specialPlot.addAction(actionPlotHorSteps);
 		specialPlot.insertSeparator();
         specialPlot.addAction(actionAddZoomPlot);
 		specialPlot.setTitle(tr("Special Line/Symb&ol"));
 		plot.addMenu(&specialPlot);
 		plot.insertSeparator();
-
-		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"), this, SLOT(plotVerticalBars()));
-		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"), this, SLOT(plotHorizontalBars()));
-		plot.addAction(QIcon(QPixmap(area_xpm)),tr("&Area"), this, SLOT(plotArea()));
-
-		plot.addAction(QIcon(QPixmap(pie_xpm)),tr("&Pie"), this, SLOT(plotPie()));
+		plot.addAction(actionPlotVerticalBars);
+		plot.addAction(actionPlotHorizontalBars);
+		specialBarMenu.addAction(actionStackBars);
+		specialBarMenu.addAction(actionStackColumns);
+		specialBarMenu.setTitle(tr("Spec&ial Bar/Column"));
+		plot.addMenu (&specialBarMenu);
+		plot.addAction(actionPlotArea);
+		plot.addAction(actionPlotPie);
 		plot.insertSeparator();
 
-		plot.addAction(QIcon(QPixmap(ribbon_xpm)),tr("3D Ribbo&n"), this, SLOT(plot3DRibbon()));
-		plot.addAction(QIcon(QPixmap(bars_xpm)),tr("3D &Bars"), this, SLOT(plot3DBars()));
-		plot.addAction(QIcon(QPixmap(scatter_xpm)),tr("3&D Scatter"), this, SLOT(plot3DScatter()));
-		plot.addAction(QIcon(QPixmap(trajectory_xpm)),tr("3D &Trajectory"), this, SLOT(plot3DTrajectory()));
+		plot.addAction(actionPlot3DRibbon);
+		plot.addAction(actionPlot3DBars);
+		plot.addAction(actionPlot3DScatter);
+		plot.addAction(actionPlot3DTrajectory);
 
 		plot.insertSeparator();
 
 		stat.addAction(actionBoxPlot);
-		stat.addAction(QIcon(QPixmap(histogram_xpm)),tr("&Histogram"), this, SLOT(plotHistogram()));
-		stat.addAction(QIcon(QPixmap(stacked_hist_xpm)),tr("&Stacked Histograms"), this, SLOT(plotStackedHistograms()));
+		stat.addAction(actionPlotHistogram);
+		stat.addAction(actionPlotStackedHistograms);
 		stat.insertSeparator();
 		stat.addAction(actionStemPlot);
 		stat.setTitle(tr("Statistical &Graphs"));
@@ -6312,14 +6329,14 @@ void ApplicationWindow::showColMenu(int c)
 		contextMenu.insertSeparator();
 		contextMenu.addAction(actionShowColumnOptionsDialog);
 	} else if ((int)w->selectedColumns().count() > 1){
-		plot.addAction(QIcon(QPixmap(lPlot_xpm)),tr("&Line"), this, SLOT(plotL()));
-		plot.addAction(QIcon(QPixmap(pPlot_xpm)),tr("&Scatter"), this, SLOT(plotP()));
-		plot.addAction(QIcon(QPixmap(lpPlot_xpm)),tr("Line + S&ymbol"), this,SLOT(plotLP()));
+		plot.addAction(actionPlotL);
+		plot.addAction(actionPlotP);
+		plot.addAction(actionPlotLP);
 
-		specialPlot.addAction(QIcon(QPixmap(dropLines_xpm)),tr("Vertical &Drop Lines"), this, SLOT(plotVerticalDropLines()));
-		specialPlot.addAction(QIcon(QPixmap(spline_xpm)),tr("&Spline"), this, SLOT(plotSpline()));
-		specialPlot.addAction(QIcon(QPixmap(vert_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotVertSteps()));
-		specialPlot.addAction(QIcon(QPixmap(hor_steps_xpm)),tr("&Vertical Steps"), this, SLOT(plotHorSteps()));
+		specialPlot.addAction(actionPlotVerticalDropLines);
+		specialPlot.addAction(actionPlotSpline);
+		specialPlot.addAction(actionPlotVertSteps);
+		specialPlot.addAction(actionPlotHorSteps);
 		specialPlot.insertSeparator();
         specialPlot.addAction(actionPlotDoubleYAxis);
         specialPlot.addAction(actionWaterfallPlot);
@@ -6327,25 +6344,30 @@ void ApplicationWindow::showColMenu(int c)
 		specialPlot.setTitle(tr("Special Line/Symb&ol"));
 		plot.addMenu(&specialPlot);
 		plot.insertSeparator();
+		plot.addAction(actionPlotVerticalBars);
+		plot.addAction(actionPlotHorizontalBars);
 
-		plot.addAction(QIcon(QPixmap(vertBars_xpm)),tr("&Columns"), this, SLOT(plotVerticalBars()));
-		plot.addAction(QIcon(QPixmap(hBars_xpm)),tr("&Rows"), this, SLOT(plotHorizontalBars()));
-		plot.addAction(QIcon(QPixmap(area_xpm)),tr("&Area"), this, SLOT(plotArea()));
-		plot.addAction(QIcon(QPixmap(vectXYXY_xpm)),tr("Vectors &XYXY"), this, SLOT(plotVectXYXY()));
+		specialBarMenu.addAction(actionStackBars);
+		specialBarMenu.addAction(actionStackColumns);
+		specialBarMenu.setTitle(tr("Spec&ial Bar/Column"));
+		plot.addMenu (&specialBarMenu);;
+
+		plot.addAction(actionPlotArea);
+		plot.addAction(actionPlotVectXYXY);
+		plot.addAction(actionPlotVectXYAM);
 		plot.insertSeparator();
-
 		stat.addAction(actionBoxPlot);
-		stat.addAction(QIcon(QPixmap(histogram_xpm)),tr("&Histogram"), this, SLOT(plotHistogram()));
-		stat.addAction(QIcon(QPixmap(stacked_hist_xpm)),tr("&Stacked Histograms"), this, SLOT(plotStackedHistograms()));
+		stat.addAction(actionPlotHistogram);
+		stat.addAction(actionPlotStackedHistograms);
 		stat.insertSeparator();
 		stat.addAction(actionStemPlot);
 		stat.setTitle(tr("Statistical &Graphs"));
 		plot.addMenu(&stat);
 
-		panels.addAction(QIcon(QPixmap(panel_v2_xpm)),tr("&Vertical 2 Layers"), this, SLOT(plot2VerticalLayers()));
-		panels.addAction(QIcon(QPixmap(panel_h2_xpm)),tr("&Horizontal 2 Layers"), this, SLOT(plot2HorizontalLayers()));
-		panels.addAction(QIcon(QPixmap(panel_4_xpm)),tr("&4 Layers"), this, SLOT(plot4Layers()));
-		panels.addAction(QIcon(QPixmap(stacked_xpm)),tr("&Stacked Layers"), this, SLOT(plotStackedLayers()));
+		panels.addAction(actionPlot2VerticalLayers);
+		panels.addAction(actionPlot2HorizontalLayers);
+		panels.addAction(actionPlot4Layers);
+		panels.addAction(actionPlotStackedLayers);
 		panels.setTitle(tr("Pa&nel"));
 		plot.addMenu(&panels);
 
@@ -6383,8 +6405,7 @@ void ApplicationWindow::showColMenu(int c)
 		colType.setTitle(tr("Set As"));
 		contextMenu.addMenu(&colType);
 
-		if (w)
-		{
+		if (w){
 			contextMenu.insertSeparator();
 
 			fill.addAction(actionSetAscValues);
@@ -6453,8 +6474,8 @@ void ApplicationWindow::zoomRectanglePlot()
     if (ml){
         Graph *ag = ml->activeLayer();
         ag->setTitle("");
-        ag->setAxisTitle(QwtPlot::xBottom, "");
-        ag->setAxisTitle(QwtPlot::yLeft, "");
+        ag->setAxisTitle(QwtPlot::xBottom, " ");
+        ag->setAxisTitle(QwtPlot::yLeft, " ");
         ag->setCanvasFrame();
         ag->drawAxesBackbones(false);
         ag->showGrid();
@@ -6473,8 +6494,8 @@ void ApplicationWindow::zoomRectanglePlot()
 
         setPreferences(g);
         g->setTitle("");
-        g->setAxisTitle(QwtPlot::xBottom, "");
-        g->setAxisTitle(QwtPlot::yLeft, "");
+        g->setAxisTitle(QwtPlot::xBottom, " ");
+        g->setAxisTitle(QwtPlot::yLeft, " ");
         g->copyCurves(ag);
         g->drawAxesBackbones(false);
         g->setCanvasFrame();
@@ -10740,8 +10761,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 				int endRow = table->numRows() - 1;
 				int first_color = curve[7].toInt();
 				bool visible = true;
-				if (d_file_version >= 90)
-				{
+				if (d_file_version >= 90){
 					startRow = curve[8].toInt();
 					endRow = curve[9].toInt();
 					visible = curve[10].toInt();
@@ -10886,6 +10906,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			}
 			lst.pop_back();
 			ag->restoreCurveLabels(curveID - 1, lst);
+		} else if (s.contains("<StackWhiteOut>")){
+			QwtBarCurve *b = (QwtBarCurve *)ag->curve(curveID - 1);
+			if (b)
+				b->setWhiteOut();
 		} else if (s == "<Function>"){//version 0.9.5
 			curveID++;
 			QStringList lst;
@@ -12012,6 +12036,12 @@ void ApplicationWindow::createActions()
 	actionPlotHorizontalBars = new QAction(QIcon(QPixmap(hBars_xpm)), tr("&Rows"), this);
 	connect(actionPlotHorizontalBars, SIGNAL(activated()), this, SLOT(plotHorizontalBars()));
 
+	actionStackBars = new QAction(QIcon(QPixmap(stack_bar_xpm)), tr("Stack &Bar"), this);
+	connect(actionStackBars, SIGNAL(activated()), this, SLOT(plotStackBar()));
+
+	actionStackColumns = new QAction(QIcon(QPixmap(stack_column_xpm)), tr("Stack &Column"), this);
+	connect(actionStackColumns, SIGNAL(activated()), this, SLOT(plotStackColumn()));
+
 	actionPlotArea = new QAction(QIcon(QPixmap(area_xpm)), tr("&Area"), this);
 	connect(actionPlotArea, SIGNAL(activated()), this, SLOT(plotArea()));
 
@@ -12830,6 +12860,12 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionPlotHorizontalBars->setMenuText(tr("&Rows"));
 	actionPlotHorizontalBars->setToolTip(tr("Plot with horizontal bars"));
+
+	actionStackBars->setMenuText(tr("Stack &Bar"));
+	actionStackBars->setToolTip(tr("Plot stack bar"));
+
+	actionStackColumns->setMenuText(tr("Stack &Column"));
+	actionStackColumns->setToolTip(tr("Plot stack column"));
 
 	actionPlotArea->setMenuText(tr("&Area"));
 	actionPlotArea->setToolTip(tr("Plot area"));

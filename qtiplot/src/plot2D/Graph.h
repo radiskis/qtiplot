@@ -133,7 +133,8 @@ class Graph: public QwtPlot
 		enum MarkerType{None = -1, Text = 0, Arrow = 1, Image = 2};
 		enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
-			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot};
+			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot,
+			StackBar, StackColumn};
 
 		//! Returns a pointer to the parent MultiLayer object.
 		MultiLayer *multiLayer();

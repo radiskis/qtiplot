@@ -211,8 +211,12 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 			MdiSubWindow* w = projectFolder->window(name, classes[sib->type]);
 			if(w)
 			{
-				parent.value(projectTree->parent(sib))->addWindow(w);
-				projectFolder->removeWindow(w);
+				Folder *f = parent.value(projectTree->parent(sib));
+				if (f){
+					f->addWindow(w);
+					projectFolder->removeWindow(w);
+					f->setActiveWindow(w);
+				}
 			}
 		}
 	}
