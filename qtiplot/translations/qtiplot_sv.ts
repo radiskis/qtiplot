@@ -10980,12 +10980,12 @@ Följande specialkoder kan användas:
 <context>
     <name>FunctionDialog</name>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="220"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="229"/>
         <source>Clear list</source>
         <translation>Rensa lista</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="222"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="231"/>
         <source>Clear Function</source>
         <translation>Rensa funktion</translation>
     </message>
@@ -11080,47 +11080,47 @@ Följande specialkoder kan användas:
         <translation type="obsolete">Ok</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="487"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="496"/>
         <source>QtiPlot - Start limit error</source>
         <translation>QtiPlot - Startgränsfel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="500"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="509"/>
         <source>QtiPlot - End limit error</source>
         <translation>QtiPlot - Slutgränsfel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="507"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="516"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - Indatafel</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="319"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="328"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation>Mata in x-gränser som tillfredställer villkoret: från &lt; slut!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="548"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="557"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - Fel i indatafunktion</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="508"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="517"/>
         <source>Please enter parameter limits that satisfy: from &lt; end!</source>
         <translation>Mata in parameter-gränser som tillfredställer villkoret: från &lt; slut!</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="187"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="194"/>
         <source>Clea&amp;r Function</source>
         <translation>&amp;Rensa funktion</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="189"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="196"/>
         <source>&amp;Ok</source>
         <translation>&amp;Ok</translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="191"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="198"/>
         <source>&amp;Close</source>
         <translation>&amp;Stäng</translation>
     </message>
@@ -11133,6 +11133,11 @@ Följande specialkoder kan användas:
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="106"/>
         <source>Value</source>
         <translation>Värde</translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="187"/>
+        <source>&amp;Add Function</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -16927,12 +16932,6 @@ Vill du skjuta in celler?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/MyParser.cpp" line="110"/>
-        <source>bessel_j1(double x, int n):
- Regular cylindrical Bessel function of order n, J_n(x).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/scripting/MyParser.cpp" line="113"/>
         <source>bessel_y0(x):
  Irregular cylindrical Bessel function of zeroth order, Y_0(x), for x&gt;0.</source>
@@ -17106,6 +17105,12 @@ Vill du skjuta in celler?</translation>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="323"/>
         <source>Found non-removable singularity at x = %1. Ignored data point!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/scripting/MyParser.cpp" line="110"/>
+        <source>bessel_jn(double x, int n):
+ Regular cylindrical Bessel function of order n, J_n(x).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -9115,57 +9115,57 @@ The following special codes can be used:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="222"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="231"/>
         <source>Clear Function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="220"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="229"/>
         <source>Clear list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="487"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="496"/>
         <source>QtiPlot - Start limit error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="500"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="509"/>
         <source>QtiPlot - End limit error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="507"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="516"/>
         <source>QtiPlot - Input error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="319"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="328"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="548"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="557"/>
         <source>QtiPlot - Input function error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="508"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="517"/>
         <source>Please enter parameter limits that satisfy: from &lt; end!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="187"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="194"/>
         <source>Clea&amp;r Function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="189"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="196"/>
         <source>&amp;Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="191"/>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="198"/>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9177,6 +9177,11 @@ The following special codes can be used:
     <message>
         <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="106"/>
         <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/plot2D/dialogs/FunctionDialog.cpp" line="187"/>
+        <source>&amp;Add Function</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13265,12 +13270,6 @@ have the same number of rows.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/scripting/MyParser.cpp" line="110"/>
-        <source>bessel_j1(double x, int n):
- Regular cylindrical Bessel function of order n, J_n(x).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="src/scripting/MyParser.cpp" line="113"/>
         <source>bessel_y0(x):
  Irregular cylindrical Bessel function of zeroth order, Y_0(x), for x&gt;0.</source>
@@ -13444,6 +13443,12 @@ have the same number of rows.</source>
     <message>
         <location filename="src/analysis/NonLinearFit.cpp" line="323"/>
         <source>Found non-removable singularity at x = %1. Ignored data point!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/scripting/MyParser.cpp" line="110"/>
+        <source>bessel_jn(double x, int n):
+ Regular cylindrical Bessel function of order n, J_n(x).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
