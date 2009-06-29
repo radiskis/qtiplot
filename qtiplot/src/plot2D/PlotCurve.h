@@ -83,7 +83,7 @@ public:
 	DataCurve(Table *t, const QString& xColName, const QString& name, int startRow = 0, int endRow = -1);
     void clone(DataCurve* c);
 
-    QString saveToString();
+    virtual QString saveToString();
     void restoreLabels(const QStringList& lst);
 
 	QString xColumnName(){return d_x_column;};

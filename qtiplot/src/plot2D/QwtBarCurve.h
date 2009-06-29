@@ -52,12 +52,17 @@ public:
 	int offset() const {return bar_offset;};
 
 	double dataOffset();
+	void setWhiteOut(bool on = true){d_white_out = true;};
+
+	virtual QString saveToString();
 
 private:
 	virtual void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
 
-	int bar_gap, bar_offset;
+	int bar_offset;
+	int bar_gap;
+	bool d_white_out;
 	BarStyle bar_style;
 };
 

@@ -2671,18 +2671,18 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
   	cl.symCol = cl.lCol;
   	cl.fillCol = cl.lCol;
 
-	if (style == Graph::Line)
+	if (style == Line)
 		cl.sType = 0;
-	else if (style == Graph::Scatter)
+	else if (style == Scatter)
 		cl.connectType = 0;
-	else if (style == Graph::VerticalDropLines)
+	else if (style == VerticalDropLines)
 		cl.connectType = 2;
-	else if (style == Graph::HorizontalSteps || style == Graph::VerticalSteps){
+	else if (style == HorizontalSteps || style == VerticalSteps){
 		cl.connectType = 3;
 		cl.sType = 0;
-	} else if (style == Graph::Spline)
+	} else if (style == Spline)
 		cl.connectType = 5;
-	else if (curves && (style == Graph::VerticalBars || style == Graph::HorizontalBars)){
+	else if (curves && (style == VerticalBars || style == HorizontalBars)){
 		cl.filledArea = 1;
 		cl.lCol = Qt::black;
 		cl.aCol = ColorBox::color(i + 1);
@@ -2692,13 +2692,18 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 			b->setGap(qRound(100*(1-1.0/(double)curves)));
 			b->setOffset(-50*(curves-1) + i*100);
 		}
-	} else if (style == Graph::Histogram){
+	} else if (style == StackBar || style == StackColumn){
+		cl.filledArea = 1;
+		cl.lCol = Qt::black;
+		cl.aCol = ColorBox::color(i + 1);
+		cl.sType = 0;
+	} else if (style == Histogram){
 		cl.filledArea = 1;
 		cl.lCol = ColorBox::color(i + 1);//start with red color pen
 		cl.aCol = cl.lCol; //start with red fill color
 		cl.aStyle = 4;
 		cl.sType = 0;
-	} else if (style == Graph::Area){
+	} else if (style == Area){
 		cl.filledArea = 1;
 		cl.aCol = cl.lCol;
 		cl.sType = 0;
@@ -3088,10 +3093,18 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	Y.resize(size);
 
 	DataCurve *c = 0;
-	if (style == VerticalBars){
+	if (style == VerticalBars || style == StackColumn){
 		c = new QwtBarCurve(QwtBarCurve::Vertical, w, xColName, yColName, startRow, endRow);
-	} else if (style == HorizontalBars){
+		if (style == StackColumn){
+			style = VerticalBars;
+			((QwtBarCurve*)c)->setWhiteOut();
+		}
+	} else if (style == HorizontalBars || style == StackBar){
 		c = new QwtBarCurve(QwtBarCurve::Horizontal, w, xColName, yColName, startRow, endRow);
+		if (style == StackBar){
+			style = HorizontalBars;
+			((QwtBarCurve*)c)->setWhiteOut();
+		}
 	} else
 		c = new DataCurve(w, xColName, yColName, startRow, endRow);
 
