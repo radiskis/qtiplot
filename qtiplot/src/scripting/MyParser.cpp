@@ -107,7 +107,7 @@ case 9:
 	blabla = QObject::tr("bessel_j1(x):\n  Regular cylindrical Bessel function of first order, J_1(x).");
 break;
 case 10:
-	blabla = QObject::tr("bessel_j1(double x, int n):\n Regular cylindrical Bessel function of order n, J_n(x).");
+	blabla = QObject::tr("bessel_jn(double x, int n):\n Regular cylindrical Bessel function of order n, J_n(x).");
 break;
 case 11:
 	blabla = QObject::tr("bessel_y0(x):\n Irregular cylindrical Bessel function of zeroth order, Y_0(x), for x>0.");
@@ -250,4 +250,40 @@ double MyParser::DiffRemoveSingularity(double *xvar, double *a_Var, double a_fPo
 
     fRes = (-f[0] + 8*f[1] - 8*f[2] + f[3]) / (12*a_fEpsilon);
     return fRes;
+}
+
+double MyParser::gamma(double x)
+{
+	gsl_set_error_handler_off ();
+	return gsl_sf_gamma (x);
+}
+
+double MyParser::gammaln(double x)
+{
+	gsl_set_error_handler_off ();
+	return gsl_sf_lngamma (x);
+}
+
+double MyParser::bessel_Y0(double x)
+{
+	gsl_set_error_handler_off ();
+	return gsl_sf_bessel_Y0 (x);
+}
+
+double MyParser::bessel_Y1(double x)
+{
+	gsl_set_error_handler_off ();
+	return gsl_sf_bessel_Y1 (x);
+}
+
+double MyParser::bessel_Yn(double x, double n)
+{
+	gsl_set_error_handler_off ();
+	return gsl_sf_bessel_Yn ((int)n, x);
+}
+
+double MyParser::beta(double a, double b)
+{
+	gsl_set_error_handler_off ();
+	return gsl_sf_beta (a, b);
 }

@@ -2,8 +2,8 @@
     File                 : FunctionDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Function dialog
 
  ***************************************************************************/
@@ -184,6 +184,13 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	polarPage->setLayout(gl3);
 	optionStack->addWidget( polarPage );
 
+	addFunctionBtn = new QPushButton(tr( "&Add Function" ));
+	addFunctionBtn->setAutoDefault(false);
+	connect(addFunctionBtn, SIGNAL(clicked()), this, SLOT(insertFunction()));
+
+	boxMathFunctions = new QComboBox();
+	boxMathFunctions->addItems(MyParser::functionsList());
+
 	buttonClear = new QPushButton(tr( "Clea&r Function" ));
 	buttonClear->setAutoDefault(false);
 	buttonOk = new QPushButton(tr( "&Ok" ));
@@ -192,8 +199,10 @@ FunctionDialog::FunctionDialog( QWidget* parent, Qt::WFlags fl )
 	buttonCancel->setAutoDefault(false);
 
 	QHBoxLayout *hbox2 = new QHBoxLayout();
-	hbox2->addStretch();
+	hbox2->addWidget(addFunctionBtn);
+	hbox2->addWidget(boxMathFunctions);
 	hbox2->addWidget(buttonClear);
+	hbox2->addStretch();
 	hbox2->addWidget(buttonOk);
 	hbox2->addWidget(buttonCancel);
 
@@ -599,4 +608,30 @@ void FunctionDialog::insertPolarFunctionsList(const QStringList& rList, const QS
 {
 	boxPolarRadius->insertItems (0, rList);
 	boxPolarTheta->insertItems (0, thetaList);
+}
+
+void FunctionDialog::insertFunction()
+{
+	QString fname = boxMathFunctions->currentText();
+	if (optionStack->currentWidget () == functionPage){
+		QTextCursor cursor = boxFunction->textCursor();
+		QString markedText = cursor.selectedText();
+		if(markedText.isEmpty()){
+			cursor.insertText(fname);
+			cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor,1);
+		} else
+			cursor.insertText(fname.remove(")").remove(",") + markedText + ")");
+
+		boxFunction->setTextCursor(cursor);
+	} else if (optionStack->currentWidget () == parametricPage){
+		if (boxYFunction->lineEdit()->hasFocus())
+			boxYFunction->lineEdit()->insert(fname);
+		else
+			boxXFunction->lineEdit()->insert(fname);
+	} else if (optionStack->currentWidget () == polarPage){
+		if (boxPolarRadius->lineEdit()->hasFocus())
+			boxPolarRadius->lineEdit()->insert(fname);
+		else
+			boxPolarTheta->lineEdit()->insert(fname);
+	}
 }

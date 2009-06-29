@@ -2,8 +2,8 @@
     File                 : FunctionDialog.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Tilman Hoener zu Siederdissen
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Function dialog
 
  ***************************************************************************/
@@ -29,7 +29,7 @@
 #ifndef FUNCTIONDIALOG_H
 #define FUNCTIONDIALOG_H
 
-#include "../Graph.h"
+#include <Graph.h>
 
 class QTableWidget;
 class QStackedWidget;
@@ -52,6 +52,7 @@ public:
 
 protected slots:
 	void raiseWidget(int index);
+	void insertFunction();
 
 public slots:
 	void accept();
@@ -98,6 +99,8 @@ private:
 	QWidget* polarPage;
 	QWidget* parametricPage;
 	QTableWidget *boxConstants;
+	QPushButton *addFunctionBtn;
+	QComboBox* boxMathFunctions;
 };
 
 #endif // FUNCTIONDIALOG_H
