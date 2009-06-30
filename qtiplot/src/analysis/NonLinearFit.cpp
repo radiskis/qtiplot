@@ -299,7 +299,7 @@ void NonLinearFit::removeDataSingularities()
 {
 	MyParser parser;
 	for (int i = 0; i < d_p; i++){
-		double param = 1.0;
+		double param = gsl_vector_get(d_param_init, i);
 		parser.DefineVar(d_param_names[i].ascii(), &param);
 	}
 
@@ -316,11 +316,11 @@ void NonLinearFit::removeDataSingularities()
     for (int i = 0; i < d_n; i++){
     	xvar = d_x[i];
     	try {
-			parser.EvalRemoveSingularity(&xvar, false);
+			parser.EvalRemoveSingularity(&xvar);
     	} catch(MyParser::Pole){
 			QApplication::restoreOverrideCursor();
-			QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
-			QObject::tr("Found non-removable singularity at x = %1. Ignored data point!").arg(xvar));
+			QMessageBox::critical(0, QObject::tr("QtiPlot"),
+			QObject::tr("Ignored data point at x = %1.").arg(xvar));
 
     		removePole(i);
     	}
