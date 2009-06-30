@@ -224,14 +224,13 @@ double MyParser::EvalRemoveSingularity(double *xvar, bool noisy) const
 	        if (noisy){
 	        	QApplication::restoreOverrideCursor();
 				QMessageBox::critical(0, QObject::tr("QtiPlot - Math Error"),
-				QObject::tr("Found non-removable singularity at x = %1. Operation aborted!").arg(*xvar));
+				QObject::tr("Found non-removable singularity at x = %1.").arg(*xvar));
+				throw Pole();
 			}
-			throw Pole();
 			return GSL_NAN;
 	    }
 	}
 }
-
 
 //almost verbatim copy from Parser::Diff, adapted to use EvalRemoveSingularity()
 
