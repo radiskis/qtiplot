@@ -122,6 +122,7 @@ public slots:
 	int nonEmptyRows();
 
 	void print();
+	void print(QPrinter *);
 	void print(const QString& fileName);
 	void exportPDF(const QString& fileName);
 

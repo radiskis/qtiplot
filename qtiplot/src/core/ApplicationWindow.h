@@ -477,6 +477,7 @@ public slots:
 	void exportAllGraphs();
 	void exportPDF();
 	void print();
+	void printPreview();
 	void printAllPlots();
 	//@}
 

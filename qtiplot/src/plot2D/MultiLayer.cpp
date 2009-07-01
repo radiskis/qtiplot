@@ -921,6 +921,16 @@ void MultiLayer::print()
 	}
 }
 
+void MultiLayer::print(QPrinter *printer)
+{
+	if (!printer)
+		return;
+
+	QPainter paint(printer);
+	printAllLayers(&paint);
+	paint.end();
+}
+
 void MultiLayer::printAllLayers(QPainter *painter)
 {
 	if (!painter)

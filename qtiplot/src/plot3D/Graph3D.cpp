@@ -1979,12 +1979,19 @@ void Graph3D::print()
         printer.setOrientation(QPrinter::Portrait);
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(false);
-	if (printer.setup()){
-        QImage im = sp->grabFrameBuffer(true);
-        QPainter paint(&printer);
-        paint.drawImage(printer.pageRect(), im);
-        paint.end();
-	}
+	if (printer.setup())
+		print(&printer);
+}
+
+void Graph3D::print(QPrinter *printer)
+{
+	if (!printer)
+		return;
+
+	QRect rect = printer->pageRect();
+	QPainter paint(printer);
+	paint.drawPixmap(rect, sp->renderPixmap(rect.width(), rect.height()));
+	paint.end();
 }
 
 void Graph3D::copyImage()

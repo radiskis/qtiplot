@@ -70,6 +70,7 @@ class ScriptEdit: public QTextEdit, public scripted
     void executeAll();
     void evaluate();
     void print();
+    void print(QPrinter*);
     void exportPDF(const QString& fileName);
   	QString save();
     QString exportASCII(const QString &file=QString::null);

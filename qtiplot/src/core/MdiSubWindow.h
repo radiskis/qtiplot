@@ -152,6 +152,7 @@ public:
 
 public slots:
 	virtual void print(){};
+	virtual void print(QPrinter *){};
 	//! Notifies the main application that the window has been modified
 	void notifyChanges(){emit modifiedWindow(this);};
 

@@ -172,6 +172,7 @@ public slots:
 	void exportPDF(const QString& fileName);
 	//! Print the Matrix
 	void print();
+	void print(QPrinter *);
 	//! Print the Matrix to fileName
 	void print(const QString& fileName);
 
