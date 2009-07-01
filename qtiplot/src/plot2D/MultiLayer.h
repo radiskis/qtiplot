@@ -164,6 +164,7 @@ public slots:
 
 	void copyAllLayers();
 	void print();
+	void print(QPrinter *);
 	void printAllLayers(QPainter *painter);
 	void printActiveLayer();
 	//@}

@@ -132,6 +132,7 @@
 #include <QInputDialog>
 #include <QProgressDialog>
 #include <QPrintDialog>
+#include <QPrintPreviewDialog>
 #include <QPixmapCache>
 #include <QMenuBar>
 #include <QClipboard>
@@ -7145,6 +7146,24 @@ void ApplicationWindow::print()
 	w->print();
 }
 
+//print preview for active window
+void ApplicationWindow::printPreview()
+{
+	MdiSubWindow* w = activeWindow();
+	if (!w)
+		return;
+
+    if (w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
+		QMessageBox::warning(this,tr("QtiPlot - Warning"),
+				tr("<h4>There are no plot layers available in this window.</h4>"));
+		return;
+	}
+	QPrintPreviewDialog *preview = new QPrintPreviewDialog(this);
+	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Print preview of window: ") + w->objectName());
+	connect(preview, SIGNAL(paintRequested(QPrinter *)), w, SLOT(print(QPrinter *)));
+	preview->exec();
+}
+
 void ApplicationWindow::printAllPlots()
 {
 	QPrinter printer;
@@ -8490,8 +8509,9 @@ void ApplicationWindow::fileMenuAboutToShow()
 		exportPlotMenu->addAction(actionExportGraph);
 		exportPlotMenu->addAction(actionExportAllGraphs);
 	}
-
+	fileMenu->insertSeparator();
 	fileMenu->addAction(actionPrint);
+	fileMenu->insertItem(tr("Print Pre&view"), this, SLOT(printPreview()));
 	fileMenu->addAction(actionPrintAllPlots);
 	fileMenu->insertSeparator();
 	fileMenu->addAction(actionShowExportASCIIDialog);

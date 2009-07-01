@@ -434,6 +434,14 @@ void ScriptEdit::print()
 		doc->print(&printer);
 }
 
+void ScriptEdit::print(QPrinter *printer)
+{
+	if (!printer)
+		return;
+
+	document()->print(printer);
+}
+
 QString ScriptEdit::importASCII(const QString &filename)
 {
 	QString filter = tr("Text") + " (*.txt *.TXT);;";
