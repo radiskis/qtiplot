@@ -860,6 +860,17 @@ void Table::setColumnWidth(int width, bool allCols)
 	}
 }
 
+void Table::adjustColumnsWidth()
+{
+	int cols = d_table->numCols();
+	for (int i = 0; i < cols; i++){
+		if(d_table->isColumnSelected (i, true))
+			d_table->adjustColumn(i);
+	}
+
+	emit modifiedWindow(this);
+}
+
 void Table::setColumnWidth(int col, int width)
 {
 
@@ -3046,6 +3057,22 @@ QString Table::sizeToString()
 {
 	int size = d_table->numRows() * d_table->numCols();
 	return QString::number((sizeof(Table) + size*sizeof(Q3TableItem))/1024.0, 'f', 1) + " " + tr("kB");
+}
+
+void Table::moveRow(bool up)
+{
+	int row = d_table->currentRow();
+	if (up){
+		if (!row)
+			return;
+		d_table->swapRows (row, row - 1);
+	} else {
+		if (row == d_table->numRows() - 1)
+			return;
+		d_table->swapRows (row, row + 1);
+	}
+	d_table->updateContents();
+	emit modifiedWindow(this);
 }
 
 /*****************************************************************************

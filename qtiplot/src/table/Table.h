@@ -224,6 +224,8 @@ public slots:
 	void deleteSelectedRows();
 	void deleteRows(int startRow, int endRow);
 	void insertRow();
+	void moveRow(bool up = true);
+	void moveRowDown(){moveRow(false);};
 	//@}
 
 	//! Selection Operations
@@ -251,6 +253,7 @@ public slots:
 	int columnWidth(int col);
 	QStringList columnWidths();
 	void setColWidths(const QStringList& widths);
+	void adjustColumnsWidth();
 
 	void setSelectedCol(int col){selectedCol = col;};
 	int selectedColumn(){return selectedCol;};
