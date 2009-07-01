@@ -35,6 +35,7 @@ class QGroupBox;
 class QTextEdit;
 class QTextCursor;
 class QComboBox;
+class QCheckBox;
 class QLabel;
 class QSpinBox;
 class Graph;
@@ -103,6 +104,7 @@ private:
 	TextFormatButtons *formatButtons;
 	QComboBox *formatApplyToBox;
 	QSpinBox *distanceBox;
+	QCheckBox *invertTitleBox;
 
 	Graph *d_graph;
 	QwtScaleWidget *d_scale;

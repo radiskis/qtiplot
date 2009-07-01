@@ -127,6 +127,7 @@
 #include <math.h>
 
 #include <qwt_scale_engine.h>
+#include <qwt_scale_widget.h>
 
 #include <QFileDialog>
 #include <QInputDialog>
@@ -11092,6 +11093,10 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot,
 			align.pop_front();
 			for (int i=0; i<(int)align.count(); i++)
 				ag->setAxisTitleDistance(i, align[i].toInt());
+		} else if (s.contains ("<InvertedRightTitle>")){
+			QwtScaleWidget *scale = ag->axisWidget(QwtPlot::yRight);
+			if (scale)
+				scale->setLayoutFlag(QwtScaleWidget::TitleInverted, true);
 		} else if (s.contains ("ScaleFont")){
 			QStringList fList=s.split("\t");
 			QFont fnt=QFont (fList[1],fList[2].toInt(),fList[3].toInt(),fList[4].toInt());

@@ -2,7 +2,7 @@
     File                 : TextDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2004 - 2008 by Ion Vasilief
+    Copyright            : (C) 2004 - 2009 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Title/axis label options dialog
 
@@ -40,6 +40,7 @@
 #include <QTextEdit>
 #include <QTextCursor>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QLabel>
 #include <QGridLayout>
 #include <QVBoxLayout>
@@ -85,6 +86,10 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
 		distanceBox = new QSpinBox();
 		distanceBox->setRange(0, 1000);
 		topLayout->addWidget(distanceBox, 3, 1);
+		invertTitleBox = new QCheckBox(tr("&Inverted"));
+		invertTitleBox->hide();
+		connect(invertTitleBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
+		topLayout->addWidget(invertTitleBox, 4, 1);
 	}
 
 	topLayout->setColumnStretch(2, 1);
@@ -155,6 +160,10 @@ void TextDialog::setGraph(Graph *g)
 			break;
 			case QwtScaleDraw::RightScale:
 				setWindowTitle(tr("QtiPlot") + " - " + tr("Right Axis Title"));
+				invertTitleBox->blockSignals(true);
+				invertTitleBox->setChecked(d_scale->testLayoutFlag(QwtScaleWidget::TitleInverted));
+				invertTitleBox->show();
+				invertTitleBox->blockSignals(false);
 			break;
 		}
 
@@ -187,6 +196,10 @@ void TextDialog::apply()
 		t.setColor(colorBtn->color());
 		d_scale->setTitle(t);
 		d_scale->setSpacing(distanceBox->value());
+		if (d_scale->alignment() == QwtScaleDraw::RightScale){
+			d_scale->setLayoutFlag(QwtScaleWidget::TitleInverted, invertTitleBox->isChecked());
+			d_scale->repaint();
+		}
 	} else if (d_text_type == LayerTitle){
 		QwtText t =	d_graph->title();
 		t.setRenderFlags(alignment());
@@ -253,8 +266,13 @@ void TextDialog::formatLayerLabels(Graph *g)
 			t.setFont(selectedFont);
 			t.setRenderFlags(align);
 			scale->setTitle(t);
-			if (d_text_type == AxisTitle)
+			if (d_text_type == AxisTitle){
 				scale->setSpacing(distanceBox->value());
+				if (i == QwtPlot::yRight){
+					scale->setLayoutFlag(QwtScaleWidget::TitleInverted, invertTitleBox->isChecked());
+					scale->repaint();
+				}
+			}
 		}
 	}
 

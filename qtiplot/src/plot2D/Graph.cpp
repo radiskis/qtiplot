@@ -210,8 +210,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 		if (scale){
 			scale->setMargin(0);
 
-			//if (i == QwtPlot::yRight)
-				//scale->setLayoutFlag(QwtScaleWidget::TitleInverted, false);
+			if (i == QwtPlot::yRight)
+				scale->setLayoutFlag(QwtScaleWidget::TitleInverted, false);
 
 			//the axis title color must be initialized...
 			QwtText title = scale->title();
@@ -2162,7 +2162,7 @@ QString Graph::saveAxesTitleAlignement()
 	QString s = "AxesTitleAlignment\t";
 
 	QStringList axes;
-	for (int i = 0; i<4; i++){
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		axes << QString::number(Qt::AlignHCenter);
 		if (axisEnabled(i))
 			axes[i] = QString::number(axisTitle(i).renderFlags());
@@ -2171,14 +2171,20 @@ QString Graph::saveAxesTitleAlignement()
 	s += axes.join("\t")+"\n";
 
 	s += "AxesTitleDistance\t";
-	for (int i = 0; i<4; i++){
+	bool invertYRightTitle = false;
+	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		axes[i] = "-1";
 		if (axisEnabled(i)){
 			const QwtScaleWidget *scale = axisWidget(i);
 			axes[i] = QString::number(scale->spacing());
+			if (i == yRight && scale->testLayoutFlag(QwtScaleWidget::TitleInverted))
+				invertYRightTitle = true;
 		}
 	}
-	return s + axes.join("\t")+"\n";
+	s += axes.join("\t")+"\n";
+	if (invertYRightTitle)
+		s += "<InvertedRightTitle>1</InvertedRightTitle>\n";
+	return s;
 }
 
 QString Graph::savePieCurveLayout()
@@ -4169,6 +4175,9 @@ void Graph::copy(Graph* g)
 				title.setFont (src_axis_title.font());
 				title.setRenderFlags(src_axis_title.renderFlags());
  				scale->setTitle(title);
+
+ 				if (i == yRight)
+					scale->setLayoutFlag(QwtScaleWidget::TitleInverted, g->axisWidget(i)->testLayoutFlag(QwtScaleWidget::TitleInverted));
 			}
 		} else
 			enableAxis(i, false);
