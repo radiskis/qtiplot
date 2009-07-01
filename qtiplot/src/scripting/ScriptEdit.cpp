@@ -416,7 +416,6 @@ void ScriptEdit::exportPDF(const QString& fileName)
 {
 	QTextDocument *doc = document();
 	QPrinter printer;
-	printer.setColorMode(QPrinter::GrayScale);
 	printer.setCreator("QtiPlot");
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(fileName);
@@ -427,7 +426,6 @@ void ScriptEdit::print()
 {
 	QTextDocument *doc = document();
 	QPrinter printer;
-	printer.setColorMode(QPrinter::GrayScale);
 	QPrintDialog printDialog(&printer);
 	// TODO: Write a dialog to use more features of Qt4's QPrinter class
 	if (printDialog.exec() == QDialog::Accepted)

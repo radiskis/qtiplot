@@ -6327,8 +6327,8 @@ void ApplicationWindow::showColMenu(int c)
 
 			contextMenu.addAction(actionSortTable);
 		}
-
 		contextMenu.insertSeparator();
+		contextMenu.addAction(QIcon(QPixmap(adjust_col_width_xpm)), tr("&Adjust Width"), w, SLOT(adjustColumnsWidth()));
 		contextMenu.addAction(actionShowColumnOptionsDialog);
 	} else if ((int)w->selectedColumns().count() > 1){
 		plot.addAction(actionPlotL);
@@ -6425,6 +6425,8 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addAction(actionSortTable);
 			contextMenu.insertSeparator();
 			contextMenu.addAction(actionShowColStatistics);
+			contextMenu.insertSeparator();
+			contextMenu.addAction(QIcon(QPixmap(adjust_col_width_xpm)), tr("&Adjust Width"), w, SLOT(adjustColumnsWidth()));
 		}
 	}
 
@@ -9339,17 +9341,23 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 		return;
 
 	QMenu cm(this);
+	QMenu moveRow(this);
 	if (selection){
 		if ((int)t->selectedColumns().count() > 0){
 			showColMenu(t->firstSelectedColumn());
 			return;
 		} else if (t->numSelectedRows() == 1) {
 			cm.addAction(actionShowColumnValuesDialog);
+			cm.addAction(actionTableRecalculate);
+			cm.insertSeparator();
 			cm.insertItem(QPixmap(cut_xpm),tr("Cu&t"), t, SLOT(cutSelection()));
 			cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
 			cm.insertItem(QPixmap(paste_xpm),tr("&Paste"), t, SLOT(pasteSelection()));
 			cm.insertSeparator();
-			cm.addAction(actionTableRecalculate);
+			moveRow.insertItem(QPixmap(move_row_up_xpm), tr("&Up"), t, SLOT(moveRow()));
+			moveRow.insertItem(QPixmap(move_row_down_xpm), tr("&Down"), t, SLOT(moveRowDown()));
+			moveRow.setTitle(tr("Move Row"));
+			cm.addMenu (&moveRow);
 			cm.insertItem(QPixmap(insert_row_xpm), tr("&Insert Row"), t, SLOT(insertRow()));
 			cm.insertItem(QPixmap(delete_row_xpm), tr("&Delete Row"), t, SLOT(deleteSelectedRows()));
 			cm.insertItem(QPixmap(erase_xpm), tr("Clea&r Row"), t, SLOT(clearSelection()));
