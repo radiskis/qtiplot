@@ -620,3 +620,4 @@ setWaterfallFillColor
 setWaterfallOffset
 reverseWaterfallOrder
 setIndexedColors
+setObjectName

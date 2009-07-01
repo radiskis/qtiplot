@@ -649,6 +649,7 @@ void ApplicationWindow::initToolBars()
 	fileTools->addSeparator ();
 	fileTools->addAction(actionOpen);
 	fileTools->addAction(actionOpenTemplate);
+	fileTools->addAction(actionAppendProject);
 	fileTools->addAction(actionSaveProject);
 	fileTools->addAction(actionSaveTemplate);
 	fileTools->addSeparator ();
@@ -8464,6 +8465,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	newMenu->addAction(actionNewFunctionPlot);
 	newMenu->addAction(actionNewSurfacePlot);
 	fileMenu->addAction(actionOpen);
+	fileMenu->addAction(actionAppendProject);
 
 	recentMenuID = fileMenu->insertItem(tr("&Recent Projects"), recent);
 
@@ -11826,6 +11828,9 @@ void ApplicationWindow::createActions()
 	actionNewProject->setShortcut( tr("Ctrl+N") );
 	connect(actionNewProject, SIGNAL(activated()), this, SLOT(newProject()));
 
+	actionAppendProject = new QAction(QIcon(QPixmap(append_file_xpm)), tr("App&end Project..."), this);
+	connect(actionAppendProject, SIGNAL(activated()), this, SLOT(appendProject()));
+
     actionNewFolder = new QAction(QIcon(QPixmap(newFolder_xpm)), tr("New &Project"), this);
 	actionNewProject->setShortcut(Qt::Key_F7);
 	connect(actionNewFolder, SIGNAL(activated()), this, SLOT(addFolder()));
@@ -12663,6 +12668,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionNewProject->setMenuText(tr("New &Project"));
 	actionNewProject->setToolTip(tr("Open a new project"));
 	actionNewProject->setShortcut(tr("Ctrl+N"));
+
+	actionAppendProject->setMenuText(tr("App&end Project..."));
+	actionAppendProject->setToolTip(tr("Append a project to the current folder"));
+	actionAppendProject->setShortcut(tr("Ctrl+Alt+A"));
 
     actionNewFolder->setMenuText(tr("New Fol&der"));
 	actionNewFolder->setToolTip(tr("Create a new folder"));
@@ -13795,19 +13804,21 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 		return;
 	}
 
+	savedProject();
+
 	if (!file_name.isEmpty()){
 		QFileInfo fi(file_name);
 		if (fi.isDir()){
 			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
 					tr("<b>%1</b> is a directory, please specify a file name!").arg(file_name));
 			return;
-		} else if (!fi.isReadable()) {
-			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
-					tr("You don't have the permission to open this file: <b>%1</b>").arg(file_name));
-			return;
-		} else if (!fi.exists()) {
+		} else if (!fi.exists()){
 			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
 					tr("The file: <b>%1</b> doesn't exist!").arg(file_name));
+			return;
+		} else if (fi.exists() && !fi.isReadable()){
+			QMessageBox::critical(this, tr("QtiPlot - File openning error"),
+					tr("You don't have the permission to open this file: <b>%1</b>").arg(file_name));
 			return;
 		}
 
@@ -13816,8 +13827,11 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 
 		if (exec || noGui)
 			loadScript(file_name, exec, noGui, default_settings);
-		else
-			open(file_name, default_settings, false);
+		else {
+			ApplicationWindow *app = open(file_name, default_settings);
+			if (app && app != this)
+				close();
+		}
 	}
 }
 
@@ -13954,7 +13968,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					tr("The file: <b>%1</b> doesn't exist!").arg(fn));
 			return 0;
 		}
-	}else{
+	} else {
 		QMessageBox::critical(this,tr("QtiPlot - File opening error"),
 				tr("The file: <b>%1</b> is not a QtiPlot or Origin project file!").arg(fn));
 		return 0;
@@ -14336,7 +14350,7 @@ void ApplicationWindow::showFolderPopupMenu(Q3ListViewItem *it, const QPoint &p,
 
 	cm.addAction(actionFindWindow);
 	cm.insertSeparator();
-	cm.insertItem(QPixmap(append_file_xpm), tr("App&end Project..."), this, SLOT(appendProject()));
+	cm.addAction(actionAppendProject);
 	if (((FolderListItem *)it)->folder()->parent())
 		cm.insertItem(QIcon(QPixmap(filesaveas_xpm)), tr("Save &As Project..."), this, SLOT(saveAsProject()));
 	else

@@ -4593,7 +4593,7 @@ void Graph::deleteFitCurves()
 
 Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
 {
-	if (type != GrayScale && type != ColorMap && type != Contour)
+	if (!m || (type != GrayScale && type != ColorMap && type != Contour))
   		return 0;
 
   	Spectrogram *d_spectrogram = new Spectrogram(this, m);
