@@ -280,9 +280,6 @@ void PlotDialog::changePlotType(int plotType)
 		clearTabWidget();
 		insertTabs(plotType);
 
-		PlotCurve *c = (PlotCurve*)item->plotItem();
-		c->setPlotStyle(plotType);
-
 		boxConnect->setCurrentIndex(1);//show line for Line and LineSymbol plots
 
 		int size = 2*boxSymbolSize->value() + 1;
@@ -299,13 +296,14 @@ void PlotDialog::changePlotType(int plotType)
 
 		if (plotType == Graph::Line)
 			s.setStyle(QwtSymbol::NoSymbol);
-		else if (plotType == Graph::Scatter){
+		else if (plotType == Graph::Scatter)
 			graph->setCurveStyle(item->plotItemIndex(), QwtPlotCurve::NoCurve);
-		} else if (plotType == Graph::LineSymbols)
+		else if (plotType == Graph::LineSymbols)
 			graph->setCurveStyle(item->plotItemIndex(), QwtPlotCurve::Lines);
 
+		PlotCurve *c = (PlotCurve*)item->plotItem();
         c->setSymbol(s);
-
+        c->setPlotStyle(plotType);
 	}
 	acceptParams();
 }

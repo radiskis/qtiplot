@@ -403,41 +403,36 @@ else
 
 void FolderListView::keyPressEvent ( QKeyEvent * e )
 {
-if (isRenaming())
-	{
-	e->ignore();
-	return;
+	if (isRenaming()){
+		e->ignore();
+		return;
 	}
 
-if (currentItem()->rtti() == FolderListItem::RTTI &&
-	(e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return))
-	{
-	emit doubleClicked(currentItem());
-	e->accept();
+	Q3ListViewItem *item = currentItem();
+	if (!item) {
+		Q3ListView::keyPressEvent ( e );
+		 return;
 	}
-else if (e->key() == Qt::Key_F2)
-	{
-	if (currentItem())
-		emit renameItem(currentItem());
-	e->accept();
-	}
-else if(e->key() == Qt::Key_A && e->state() == Qt::ControlModifier)
-	{
-	selectAll(true);
-	e->accept();
-	}
-else if(e->key() == Qt::Key_F7)
-	{
-	emit addFolderItem();
-	e->accept();
-	}
-else if(e->key() == Qt::Key_F8)
-	{
-	emit deleteSelection();
-	e->accept();
-	}
-else
-	Q3ListView::keyPressEvent ( e );
+
+	if (item->rtti() == FolderListItem::RTTI &&
+		(e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)){
+		emit doubleClicked(item);
+		e->accept();
+	} else if (e->key() == Qt::Key_F2) {
+		if (item)
+			emit renameItem(item);
+		e->accept();
+	} else if(e->key() == Qt::Key_A && e->state() == Qt::ControlModifier){
+		selectAll(true);
+		e->accept();
+	} else if(e->key() == Qt::Key_F7) {
+		emit addFolderItem();
+		e->accept();
+	} else if(e->key() == Qt::Key_F8){
+		emit deleteSelection();
+		e->accept();
+	} else
+		Q3ListView::keyPressEvent ( e );
 }
 
 void FolderListView::contentsMouseDoubleClickEvent( QMouseEvent* e )
