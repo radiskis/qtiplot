@@ -588,6 +588,9 @@ public slots:
 	void clearTable();
 	void goToRow();
 	void goToColumn();
+	void moveTableRowUp();
+	void moveTableRowDown();
+	void adjustColumnWidth();
 	//@}
 
 	//! \name Plot Tools
@@ -1351,6 +1354,7 @@ private:
     QAction *actionShowUndoStack, *actionShowNoteLineNumbers, *actionAddFormula, *actionAddRectangle, *actionAddEllipse;
     QActionGroup *coord, *floorstyle, *grids, *plotstyle, *dataTools;
     QAction *actionMagnify, *actionFindWindow, *actionWaterfallPlot;
+    QAction *actionMoveRowUp, *actionMoveRowDown, *actionAdjustColumnWidth;
     QList<QAction *> d_user_actions;
     QUndoView *d_undo_view;
     QList<QMenu *> d_user_menus;

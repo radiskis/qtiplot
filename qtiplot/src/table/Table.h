@@ -225,7 +225,6 @@ public slots:
 	void deleteRows(int startRow, int endRow);
 	void insertRow();
 	void moveRow(bool up = true);
-	void moveRowDown(){moveRow(false);};
 	//@}
 
 	//! Selection Operations

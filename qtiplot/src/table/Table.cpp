@@ -3062,16 +3062,23 @@ QString Table::sizeToString()
 void Table::moveRow(bool up)
 {
 	int row = d_table->currentRow();
+	int nextRow = row - 1;
 	if (up){
 		if (!row)
 			return;
-		d_table->swapRows (row, row - 1);
 	} else {
 		if (row == d_table->numRows() - 1)
 			return;
-		d_table->swapRows (row, row + 1);
+
+		nextRow = row + 1;
 	}
+
+	d_table->clearSelection();
+	d_table->swapRows(row, nextRow);
+	d_table->selectRow(nextRow);
+	d_table->ensureCellVisible(nextRow, 0);
 	d_table->updateContents();
+
 	emit modifiedWindow(this);
 }
 
