@@ -858,6 +858,9 @@ void ApplicationWindow::initToolBars()
 	tableTools->addAction(actionAddColToTable);
 	tableTools->addAction(actionShowColStatistics);
 	tableTools->addAction(actionShowRowStatistics);
+	tableTools->addSeparator();
+	tableTools->addAction(actionMoveRowUp);
+	tableTools->addAction(actionMoveRowDown);
 	tableTools->setEnabled(false);
     tableTools->hide();
 
@@ -882,6 +885,8 @@ void ApplicationWindow::initToolBars()
 	columnTools->addAction(actionMoveColRight);
 	columnTools->addAction(actionMoveColLast);
 	columnTools->addAction(actionSwapColumns);
+	columnTools->addSeparator();
+	columnTools->addAction(actionAdjustColumnWidth);
     columnTools->setEnabled(false);
 	columnTools->hide();
 
@@ -1224,6 +1229,7 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionHideSelectedColumns);
 	tableMenu->addAction(actionShowAllColumns);
+	tableMenu->addAction(actionAdjustColumnWidth);
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionMoveColFirst);
 	tableMenu->addAction(actionMoveColLeft);
@@ -1233,6 +1239,11 @@ void ApplicationWindow::tableMenuAboutToShow()
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionShowRowsDialog);
 	tableMenu->addAction(actionDeleteRows);
+
+	QMenu *moveRowMenu = tableMenu->addMenu(tr("Move Row"));
+	moveRowMenu->addAction(actionMoveRowUp);
+	moveRowMenu->addAction(actionMoveRowDown);
+
 	tableMenu->insertSeparator();
 	tableMenu->addAction(actionGoToRow);
 	tableMenu->addAction(actionGoToColumn);
@@ -1449,6 +1460,7 @@ void ApplicationWindow::disableActions()
 
 void ApplicationWindow::customColumnActions()
 {
+	actionAdjustColumnWidth->setEnabled(false);
     actionMoveColFirst->setEnabled(false);
     actionMoveColLeft->setEnabled(false);
     actionMoveColRight->setEnabled(false);
@@ -1490,6 +1502,7 @@ void ApplicationWindow::customColumnActions()
         actionSetYErrCol->setEnabled(true);
         actionSetLabelCol->setEnabled(true);
         actionDisregardCol->setEnabled(true);
+        actionAdjustColumnWidth->setEnabled(true);
 	}
 
 	if (selectedCols == 2)
@@ -6329,7 +6342,7 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addAction(actionSortTable);
 		}
 		contextMenu.insertSeparator();
-		contextMenu.addAction(QIcon(QPixmap(adjust_col_width_xpm)), tr("&Adjust Width"), w, SLOT(adjustColumnsWidth()));
+		contextMenu.addAction(actionAdjustColumnWidth);
 		contextMenu.addAction(actionShowColumnOptionsDialog);
 	} else if ((int)w->selectedColumns().count() > 1){
 		plot.addAction(actionPlotL);
@@ -6427,7 +6440,7 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.insertSeparator();
 			contextMenu.addAction(actionShowColStatistics);
 			contextMenu.insertSeparator();
-			contextMenu.addAction(QIcon(QPixmap(adjust_col_width_xpm)), tr("&Adjust Width"), w, SLOT(adjustColumnsWidth()));
+			contextMenu.addAction(actionAdjustColumnWidth);
 		}
 	}
 
@@ -9355,8 +9368,8 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.insertItem(QPixmap(copy_xpm),tr("&Copy"), t, SLOT(copySelection()));
 			cm.insertItem(QPixmap(paste_xpm),tr("&Paste"), t, SLOT(pasteSelection()));
 			cm.insertSeparator();
-			moveRow.insertItem(QPixmap(move_row_up_xpm), tr("&Up"), t, SLOT(moveRow()));
-			moveRow.insertItem(QPixmap(move_row_down_xpm), tr("&Down"), t, SLOT(moveRowDown()));
+			moveRow.addAction(actionMoveRowUp);
+			moveRow.addAction(actionMoveRowDown);
 			moveRow.setTitle(tr("Move Row"));
 			cm.addMenu (&moveRow);
 			cm.insertItem(QPixmap(insert_row_xpm), tr("&Insert Row"), t, SLOT(insertRow()));
@@ -12270,6 +12283,9 @@ void ApplicationWindow::createActions()
 	actionMoveColLast = new QAction(QIcon(QPixmap(move_col_last_xpm)), tr("Move to Las&t"), this);
 	connect(actionMoveColLast, SIGNAL(activated()), this, SLOT(moveColumnLast()));
 
+	actionAdjustColumnWidth = new QAction(QIcon(QPixmap(adjust_col_width_xpm)), tr("Ad&just Column Width"), this);
+	connect(actionAdjustColumnWidth, SIGNAL(activated()), this, SLOT(adjustColumnWidth()));
+
 	actionShowColsDialog = new QAction(tr("&Columns..."), this);
 	connect(actionShowColsDialog, SIGNAL(activated()), this, SLOT(showColsDialog()));
 
@@ -12278,6 +12294,12 @@ void ApplicationWindow::createActions()
 
     actionDeleteRows = new QAction(tr("&Delete Rows Interval..."), this);
 	connect(actionDeleteRows, SIGNAL(activated()), this, SLOT(showDeleteRowsDialog()));
+
+	actionMoveRowUp = new QAction(QIcon(QPixmap(move_row_up_xpm)), tr("&Upward"), this);
+	connect(actionMoveRowUp, SIGNAL(activated()), this, SLOT(moveTableRowUp()));
+
+	actionMoveRowDown = new QAction(QIcon(QPixmap(move_row_down_xpm)), tr("&Downward"), this);
+	connect(actionMoveRowDown, SIGNAL(activated()), this, SLOT(moveTableRowDown()));
 
 	actionAbout = new QAction(tr("&About QtiPlot"), this);
 	actionAbout->setShortcut( tr("F1") );
@@ -13022,6 +13044,12 @@ void ApplicationWindow::translateActionsStrings()
 	actionShowColsDialog->setMenuText(tr("&Columns..."));
 	actionShowRowsDialog->setMenuText(tr("&Rows..."));
 	actionDeleteRows->setMenuText(tr("&Delete Rows Interval..."));
+	actionMoveRowUp->setMenuText(tr("&Upward"));
+	actionMoveRowUp->setToolTip(tr("Move current row upward"));
+	actionMoveRowDown->setMenuText(tr("&Downward"));
+	actionMoveRowDown->setToolTip(tr("Move current row downward"));
+	actionAdjustColumnWidth->setMenuText(tr("Ad&just Column Width"));
+	actionAdjustColumnWidth->setToolTip(tr("Set optimal column width"));
 
 	actionAbout->setMenuText(tr("&About QtiPlot"));
 	actionAbout->setShortcut(tr("F1"));
@@ -15639,6 +15667,27 @@ void ApplicationWindow::moveColumnLast()
     	t->moveColumnBy(t->numCols() - t->selectedColumn() - 1);
 }
 
+void ApplicationWindow::adjustColumnWidth()
+{
+    Table *t = (Table *)activeWindow(TableWindow);
+	if (t)
+    	t->adjustColumnsWidth();
+}
+
+void ApplicationWindow::moveTableRowUp()
+{
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (t)
+    	t->moveRow();
+}
+
+void ApplicationWindow::moveTableRowDown()
+{
+	Table *t = (Table *)activeWindow(TableWindow);
+	if (t)
+    	t->moveRow(false);
+}
+
 void ApplicationWindow::restoreApplicationGeometry()
 {
 	if (d_app_rect.isNull())
@@ -16536,3 +16585,5 @@ QColor ApplicationWindow::readColorFromProject(const QString& name)
 
 	return c;
 }
+
+
