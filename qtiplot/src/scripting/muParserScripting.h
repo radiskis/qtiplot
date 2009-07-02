@@ -38,7 +38,6 @@
 #include "math.h"
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_cdf.h>
-#include <q3asciidict.h>
 
 //! TODO
 class muParserScripting: public ScriptingEnv
@@ -47,7 +46,10 @@ class muParserScripting: public ScriptingEnv
 
   public:
     static const char *langName;
-    muParserScripting(ApplicationWindow *parent) : ScriptingEnv(parent, langName) { d_initialized=true; }
+    muParserScripting(ApplicationWindow *parent) : ScriptingEnv(parent, langName){
+    	d_initialized = true;
+    	gsl_set_error_handler_off();
+	}
     static ScriptingEnv *constructor(ApplicationWindow *parent) { return new muParserScripting(parent); }
 
     bool isRunning() const { return true; }
