@@ -1448,10 +1448,17 @@ void AxesDialog::initAxesPage()
 	hl->addWidget(new QLabel(tr("Distance to axis")));
 	boxLabelsDistance = new QSpinBox();
 	boxLabelsDistance->setRange(0, 1000);
+	connect(boxLabelsDistance, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
 	hl->addWidget(boxLabelsDistance);
 
 	buttonLabelFont = new QPushButton(tr("&Font"));
 	hl->addWidget(buttonLabelFont);
+
+	invertTitleBox = new QCheckBox(tr("&Inverted"));
+	invertTitleBox->hide();
+	connect(invertTitleBox, SIGNAL(toggled(bool)), this, SLOT(updatePlot()));
+	hl->addWidget(invertTitleBox);
+
 	hl->addStretch();
 	labelBoxLayout->addLayout(hl);
 
@@ -2317,6 +2324,14 @@ bool AxesDialog::updatePlot()
 				boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 				boxPrecision->value(), boxAngle->value(), baseline, formula, boxAxisNumColor->color());
 
+		if (axis == QwtPlot::yRight){
+			QwtScaleWidget *scale = d_graph->axisWidget(axis);
+			if (scale){
+				scale->setLayoutFlag(QwtScaleWidget::TitleInverted, invertTitleBox->isChecked());
+				scale->repaint();
+			}
+		}
+
         applyAxisFormat();
 	} else if (generalDialog->currentWidget() == (QWidget*)frame)
 		applyCanvasFormat();
@@ -2544,7 +2559,19 @@ void AxesDialog::updateTitleBox(int axis)
 {
 	int axisId = mapToQwtAxis(axis);
 	boxTitle->setText(d_graph->axisTitleString(axisId));
+	boxLabelsDistance->blockSignals(true);
 	boxLabelsDistance->setValue(d_graph->axisTitleDistance(axisId));
+	boxLabelsDistance->blockSignals(false);
+	if (axisId == QwtPlot::yRight){
+		QwtScaleWidget *scale = d_graph->axisWidget(axisId);
+		if (scale){
+			invertTitleBox->blockSignals(true);
+			invertTitleBox->setChecked(scale->testLayoutFlag(QwtScaleWidget::TitleInverted));
+			invertTitleBox->blockSignals(false);
+			invertTitleBox->show();
+		}
+	} else
+		invertTitleBox->hide();
 }
 
 void AxesDialog::setAxisType(int)

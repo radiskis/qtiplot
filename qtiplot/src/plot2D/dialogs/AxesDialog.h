@@ -55,7 +55,7 @@ class TextFormatButtons;
 class DoubleSpinBox;
 class Grid;
 class PenStyleBox;
-	
+
 //! General plot options dialog
 /**
  * Remark: Don't use this dialog as a non modal dialog!
@@ -210,6 +210,7 @@ protected:
 	QGroupBox *axisFormatBox;
 	QComboBox *axisFormatApplyToBox;
 	QDateTimeEdit *originDateTimeBox;
+	QCheckBox *invertTitleBox;
 };
 
 #endif

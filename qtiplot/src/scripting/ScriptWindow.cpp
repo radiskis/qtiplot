@@ -2,10 +2,8 @@
     File                 : ScriptWindow.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief,
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief, Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Python script window
 
  ***************************************************************************/
@@ -43,6 +41,7 @@
 #include <QCloseEvent>
 #include <QTextStream>
 #include <QLayout>
+#include <QDockWidget>
 
 ScriptWindow::ScriptWindow(ScriptingEnv *env, ApplicationWindow *app)
 : QMainWindow(),
@@ -67,6 +66,17 @@ d_app(app)
 	hbox->addWidget(te);
 
 	setCentralWidget(d_frame);
+
+	consoleWindow = new QDockWidget(this);
+	consoleWindow->setAllowedAreas(Qt::BottomDockWidgetArea);
+	consoleWindow->setObjectName("scriptLogWindow"); // this is needed for QMainWindow::restoreState()
+	consoleWindow->setWindowTitle(tr("Script Output"));
+	addDockWidget( Qt::BottomDockWidgetArea, consoleWindow );
+	console = new QTextEdit(consoleWindow);
+	console->setReadOnly(true);
+	consoleWindow->setWidget(console);
+	connect(te, SIGNAL(error(const QString&, const QString&, int)), console, SLOT(setPlainText(const QString&)));
+	te->redirectOutputTo(console);
 
 	initActions();
 	setIcon(QPixmap(logo_xpm));
@@ -154,6 +164,11 @@ void ScriptWindow::initActions()
 	actionShowLineNumbers->setChecked(d_app->d_note_line_numbers);
 	connect(actionShowLineNumbers, SIGNAL(toggled(bool)), d_line_number, SLOT(setVisible(bool)));
 	edit->addAction(actionShowLineNumbers);
+
+	actionShowConsole = consoleWindow->toggleViewAction();
+	actionShowConsole->setMenuText(tr("Show Script &Output"));
+	actionShowConsole->setToolTip(tr("Show Script Output"));
+	edit->addAction(actionShowConsole);
 
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("CTRL+J") );

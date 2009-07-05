@@ -50,11 +50,13 @@
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
   : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0),
-  d_file_name(QString::null), d_search_string(QString::null)
+  d_file_name(QString::null), d_search_string(QString::null), d_output_widget(NULL)
 {
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
 	connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
+	connect(myScript, SIGNAL(error(const QString&, const QString&, int)),
+			this, SIGNAL(error(const QString&, const QString&, int)));
 
 	setLineWrapMode(NoWrap);
 	setUndoRedoEnabled(true);
@@ -672,6 +674,9 @@ void ScriptEdit::clearErrorHighlighting()
 	codeCursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
 	codeCursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
 	codeCursor.mergeBlockFormat(d_fmt_default);
+
+	if (d_output_widget)
+		d_output_widget->clear();
 }
 
 void ScriptEdit::highlightErrorLine(int offset)
@@ -699,6 +704,15 @@ void ScriptEdit::highlightErrorLine(int offset)
 	d_fmt_failure.setBackground(QBrush(QColor(255,128,128)));
 	codeCursor.mergeBlockFormat(d_fmt_failure);
 	setTextCursor(codeCursor);
+}
+
+void ScriptEdit::redirectOutputTo(QTextEdit *te)
+{
+	if (!te)
+		return;
+
+	d_output_widget = te;
+	printCursor = d_output_widget->textCursor();
 }
 
 ScriptEdit::~ScriptEdit()
