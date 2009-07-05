@@ -292,7 +292,7 @@ void ScriptEdit::insertErrorMsg(const QString &message)
 	console->setPlainText(err);
 	if (!console->isVisible())
 		((QDockWidget *)console->parent())->show();
-#elif
+#else
 	int start = printCursor.position();
 	printCursor.insertText(err);
 	printCursor.setPosition(start, QTextCursor::KeepAnchor);
