@@ -2,12 +2,10 @@
     File                 : ScriptWindow.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, 
-                           Tilman Hoener zu Siederdissen,
-                           Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, thzs*gmx.net
+    Copyright            : (C) 2006 - 2009 by Ion Vasilief                           Knut Franke
+    Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Python script window
-                           
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -60,10 +58,10 @@ public slots:
 
 		ScriptEdit* editor(){return te;};
 		void executeAll(){te->executeAll();};
-		
-		//! Enables/Disables the line number display	
+
+		//! Enables/Disables the line number display
 		void showLineNumbers(bool show = true);
-		
+
 private slots:
 		void setAlwaysOnTop(bool on);
 
@@ -88,6 +86,10 @@ private:
 		QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionOpen;
 		QAction *actionSave, *actionSaveAs;
 		QAction *actionAlwaysOnTop, *actionHide, *actionShowLineNumbers;
+		QAction *actionShowConsole;
+
+		QDockWidget *consoleWindow;
+		QTextEdit *console;
 };
 
 #endif

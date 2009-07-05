@@ -2750,14 +2750,14 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
 		name = generateUniqueName(tr("Table"));
 
 	d_workspace->addSubWindow(w);
+	//w->setParent(0);
+	current_folder->setActiveWindow(w);
 
 	connectTable(w);
 	customTable(w);
 
 	w->setName(name);
 	w->setIcon( QPixmap(worksheet_xpm) );
-//	w->setSpecifications(w->saveToString(windowGeometryInfo(w)));
-
 	addListViewItem(w);
 }
 
@@ -3218,8 +3218,12 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 
 MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 {
-	if (!d_active_window)
-            return NULL;
+	if (!d_active_window){
+		if (current_folder->activeWindow())
+			d_active_window = current_folder->activeWindow();
+		else
+			return NULL;
+	}
 
 	switch(type){
 		case NoWindow:

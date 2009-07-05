@@ -64,6 +64,7 @@ class ScriptEdit: public QTextEdit, public scripted
     void setCompleter(QCompleter *c);
 	void setFileName(const QString& fn);
 	void rehighlight();
+	void redirectOutputTo(QTextEdit *);
 
   public slots:
     void execute();
@@ -90,6 +91,7 @@ class ScriptEdit: public QTextEdit, public scripted
 
   signals:
 	void dirPathChanged(const QString& path);
+	void error(const QString&, const QString&, int);
 
   protected:
     virtual void contextMenuEvent(QContextMenuEvent *e);
@@ -122,6 +124,7 @@ class ScriptEdit: public QTextEdit, public scripted
  #endif
 	QString d_search_string;
 	QTextDocument::FindFlags d_search_flags;
+	QTextEdit *d_output_widget;
 
   private slots:
 	  //! Insert an error message from the scripting system at printCursor.

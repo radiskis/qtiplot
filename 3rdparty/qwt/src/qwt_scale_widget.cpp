@@ -507,30 +507,7 @@ void QwtScaleWidget::draw(QPainter *painter) const
     }
 
     if ( !d_data->title.isEmpty() )
-    {
-        QRect tr = r;
-        switch(d_data->scaleDraw->alignment())
-        {
-            case QwtScaleDraw::LeftScale:
-                tr.setRight( r.right() - d_data->titleOffset );
-                break;
-
-            case QwtScaleDraw::RightScale:
-                tr.setLeft( r.left() + d_data->titleOffset );
-                break;
-
-            case QwtScaleDraw::BottomScale:
-                tr.setTop( r.top() + d_data->titleOffset );
-                break;
-
-            case QwtScaleDraw::TopScale:
-            default:
-                tr.setBottom( r.bottom() - d_data->titleOffset );
-                break;
-        }
-
-        drawTitle(painter, d_data->scaleDraw->alignment(), tr);
-    }
+        drawTitle(painter, d_data->scaleDraw->alignment(), r);
 }
 
 QRect QwtScaleWidget::colorBarRect(const QRect& rect) const
@@ -670,7 +647,7 @@ void QwtScaleWidget::drawColorBar(QPainter *painter, const QRect& rect) const
 void QwtScaleWidget::drawTitle(QPainter *painter,
     QwtScaleDraw::Alignment align, const QRect &rect) const
 {
-    QRect r;
+    QRect r = rect;
     double angle;
     int flags = d_data->title.renderFlags() &
         ~(Qt::AlignTop | Qt::AlignBottom | Qt::AlignVCenter);
@@ -678,56 +655,41 @@ void QwtScaleWidget::drawTitle(QPainter *painter,
     switch(align)
     {
         case QwtScaleDraw::LeftScale:
-        {
-			flags |= Qt::AlignTop;
-            if ( d_data->layoutFlags & TitleInverted )
-            {
-                angle = 90.0;
-                r.setRect(rect.right(), rect.top(),
-                    rect.height(), rect.width());
-            }
-            else
-            {
-                angle = -90.0;
-                r.setRect(rect.left(), rect.bottom(),
-                    rect.height(), rect.width());
-            }
+            angle = -90.0;
+            flags |= Qt::AlignTop;
+            r.setRect(r.left(), r.bottom(),
+                r.height(), r.width() - d_data->titleOffset);
             break;
-        }
 
         case QwtScaleDraw::RightScale:
-        {
-            if ( d_data->layoutFlags & TitleInverted )
-            {
-            	flags |= Qt::AlignTop;
-                angle = 90.0;
-                r.setRect(rect.right(), rect.top(),
-                    rect.height(), rect.width());
-            }
-            else
-            {
-            	flags |= Qt::AlignBottom;
-                angle = -90.0;
-                r.setRect(rect.left(), rect.bottom(),
-                    rect.height(), rect.width());
-            }
+            angle = -90.0;
+            flags |= Qt::AlignTop;
+            r.setRect(r.left() + d_data->titleOffset, r.bottom(),
+                r.height(), r.width() - d_data->titleOffset);
             break;
-        }
+
+        case QwtScaleDraw::BottomScale:
+            angle = 0.0;
+            flags |= Qt::AlignBottom;
+            r.setTop( r.top() + d_data->titleOffset );
+            break;
 
         case QwtScaleDraw::TopScale:
-        {
-            flags |= Qt::AlignTop;
-            angle = 0.0;
-            r = rect;
-            break;
-        }
-        case QwtScaleDraw::BottomScale:
         default:
-        {
-            flags |= Qt::AlignBottom;
             angle = 0.0;
-            r = rect;
+            flags |= Qt::AlignTop;
+            r.setBottom( r.bottom() - d_data->titleOffset );
             break;
+    }
+
+    if ( d_data->layoutFlags & TitleInverted )
+    {
+        if ( align == QwtScaleDraw::LeftScale
+            || align == QwtScaleDraw::RightScale )
+        {
+            angle = -angle;
+            r.setRect(r.x() + r.height(), r.y() - r.width(),
+                r.width(), r.height() );
         }
     }
 
@@ -751,6 +713,7 @@ void QwtScaleWidget::drawTitle(QPainter *painter,
     QwtText title = d_data->title;
     title.setRenderFlags(flags);
     title.draw(painter, QRect(0, 0, r.width(), r.height()));
+
 
     QwtPainter::setMetricsMap(metricsMap); // restore metrics map
 

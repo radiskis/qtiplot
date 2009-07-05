@@ -12,8 +12,7 @@ include( qwtconfig.pri )
 TEMPLATE = subdirs
 
 SUBDIRS = \
-    src \
-    textengines
+    src 
 
 contains(CONFIG, QwtDesigner ) {
     SUBDIRS += designer 
