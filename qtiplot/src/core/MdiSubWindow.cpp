@@ -186,6 +186,12 @@ bool MdiSubWindow::eventFilter(QObject *object, QEvent *e)
 			}
 		}
 	}
+
+	if (e->type() == QEvent::WindowActivate && object == widget() && !parent()){
+		d_app->setActiveWindow(this);
+		if (d_folder)
+			d_folder->setActiveWindow(this);
+	}
 	return QMdiSubWindow::eventFilter(object, e);
 }
 

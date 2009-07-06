@@ -58,7 +58,7 @@ hbox->addWidget(d_line_number);
 hbox->addWidget(te);
 setWidget(d_frame);
 
-setGeometry(0, 0, 500, 200);
+resize(500, 200);
 connect(te, SIGNAL(textChanged()), this, SLOT(modifiedNote()));
 connect(te, SIGNAL(dirPathChanged(const QString& )), this, SIGNAL(dirPathChanged(const QString&)));
 }

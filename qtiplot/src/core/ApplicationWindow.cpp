@@ -382,6 +382,7 @@ void ApplicationWindow::initWindow()
 
 void ApplicationWindow::initGlobalConstants()
 {
+	d_mdi_windows_area = true;
 	d_open_project_filter = QString::null;//tr("QtiPlot project") + " (*.qti)";
 
 	d_comment_highlight_color = Qt::red;
@@ -2217,7 +2218,11 @@ Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int t
 
 void ApplicationWindow::initPlot3D(Graph3D *plot)
 {
-	d_workspace->addSubWindow(plot);
+	if (d_mdi_windows_area)
+		d_workspace->addSubWindow(plot);
+	else
+		plot->setParent(0);
+
 	connectSurfacePlot(plot);
 
 	plot->setIcon(QPixmap(trajectory_xpm));
@@ -2548,7 +2553,11 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 	g->setScaleLayersOnPrint(d_scale_plots_on_print);
 	g->printCropmarks(d_print_cropmarks);
 
-	d_workspace->addSubWindow(g);
+	if (d_mdi_windows_area)
+		d_workspace->addSubWindow(g);
+	else
+		g->setParent(0);
+
 	connectMultilayerPlot(g);
 	g->showNormal();
 
@@ -2749,9 +2758,10 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
 	while(name.isEmpty() || alreadyUsedName(name))
 		name = generateUniqueName(tr("Table"));
 
-	d_workspace->addSubWindow(w);
-	//w->setParent(0);
-	current_folder->setActiveWindow(w);
+	if (d_mdi_windows_area)
+		d_workspace->addSubWindow(w);
+	else
+		w->setParent(0);
 
 	connectTable(w);
 	customTable(w);
@@ -2805,7 +2815,11 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	if (d_completer && d_completion)
         m->editor()->setCompleter(d_completer);
 
-	d_workspace->addSubWindow(m);
+	if (d_mdi_windows_area)
+		d_workspace->addSubWindow(m);
+	else
+		m->setParent(0);
+
 	addListViewItem(m);
 
 	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
@@ -3114,7 +3128,11 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	m->askOnCloseEvent(confirmCloseMatrix);
 	m->setNumericPrecision(d_decimal_digits);
 
-	d_workspace->addSubWindow(m);
+	if (d_mdi_windows_area)
+		d_workspace->addSubWindow(m);
+	else
+		m->setParent(0);
+
 	addListViewItem(m);
 
 	QUndoStack *stack = m->undoStack();
@@ -3218,12 +3236,8 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 
 MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 {
-	if (!d_active_window){
-		if (current_folder->activeWindow())
-			d_active_window = current_folder->activeWindow();
-		else
-			return NULL;
-	}
+	if (!d_active_window)
+		return NULL;
 
 	switch(type){
 		case NoWindow:
@@ -13807,6 +13821,12 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 				(str == "-m" || str == "--manual") ){
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 			tr("<b> %1 </b>: This command line option must be used without other arguments!").arg(str));
+		} else if (str == "-c" || str == "--console") {
+			setScriptingLanguage("Python");
+			showScriptWindow(false);
+			enableMdiArea(false);
+			hide();
+			return;
 		}
 		else if( (str == "-d" || str == "--default-settings"))
 			default_settings = true;
@@ -13827,6 +13847,7 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			s += "qtiplot [" + tr("options") + "] [" + tr("file") + "_" + tr("name") + "]\n\n";
 			s += tr("Valid options are") + ":\n";
 			s += "-a " + tr("or") + " --about: " + tr("show about dialog and exit") + "\n";
+			s += "-c " + tr("or") + " --console: " + tr("show standalone scripting window") + "\n";
 			s += "-d " + tr("or") + " --default-settings: " + tr("start QtiPlot with the default settings") + "\n";
 			s += "-h " + tr("or") + " --help: " + tr("show command line options") + "\n";
 			s += "-l=XX " + tr("or") + " --lang=XX: " + tr("start QtiPlot in language") + " XX ('en', 'fr', 'de', ...)\n";
@@ -15379,7 +15400,7 @@ void ApplicationWindow::goToColumn()
 	}
 }
 
-void ApplicationWindow::showScriptWindow()
+void ApplicationWindow::showScriptWindow(bool parent)
 {
 	if (!scriptWindow){
 		scriptWindow = new ScriptWindow(scriptEnv, this);
@@ -15391,6 +15412,12 @@ void ApplicationWindow::showScriptWindow()
 		scriptWindow->resize(d_script_win_rect.size());
 		scriptWindow->move(d_script_win_rect.topLeft());
 		connect(scriptWindow, SIGNAL(visibilityChanged(bool)), actionShowScriptWindow, SLOT(setOn(bool)));
+	}
+
+	if (!parent){
+		scriptWindow->setParent(0);
+		scriptWindow->setAttribute(Qt::WA_DeleteOnClose);
+		connect(scriptWindow, SIGNAL(destroyed()), qApp, SLOT(closeAllWindows()));
 	}
 
 	if (!scriptWindow->isVisible()){

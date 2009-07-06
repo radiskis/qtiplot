@@ -160,6 +160,7 @@ public:
 	QList<QToolBar *> toolBarsList();
 
 	MdiSubWindow *activeWindow(WindowType type = NoWindow);
+	void setActiveWindow(MdiSubWindow *w){d_active_window = w;};
 	QMdiArea* workspace(){return d_workspace;};
 
 	int matrixUndoStackSize(){return d_matrix_undo_stack_size;};
@@ -187,6 +188,7 @@ public:
 		QString * selectedFilter = 0, bool save = true);
 
 	QColor readColorFromProject(const QString& name);
+	void enableMdiArea(bool on = true){d_mdi_windows_area = on;};
 
 public slots:
 	//! \name Projects and Project Files
@@ -703,7 +705,7 @@ public slots:
 	//! Connected to the context menu signal from lv; it's called when there are no items selected in the list
 	void showListViewPopupMenu(const QPoint &p);
 
-	void showScriptWindow();
+	void showScriptWindow(bool parent = true);
 	void showMoreWindows();
 	void showMarkerPopupMenu();
 	void showHelp();
@@ -1235,6 +1237,7 @@ public:
 	//@}
 
 private:
+	bool d_mdi_windows_area;
 	MdiSubWindow *d_active_window;
     TextEditor *d_text_editor;
 	// Flag telling if table values should be automatically recalculated when values in a column are modified.
